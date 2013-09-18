@@ -1,0 +1,33 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "bootstrap-3": {},
+      "accounts-ui-bootstrap-3": {},
+      "iron-router": {},
+      "accounts-entry": {}
+    },
+    "packages": {
+      "bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
+        "tag": "v0.3.4",
+        "commit": "680c056e849d079a1b669247f347da2b443aad91"
+      },
+      "accounts-ui-bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+        "tag": "v0.2.2",
+        "commit": "570ffe3ba084bae10c53915e5b0074dae26cae4a"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.5.4",
+        "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
+      },
+      "accounts-entry": {
+        "git": "https://github.com/BeDifferential/accounts-entry.git",
+        "tag": "v0.2.0",
+        "commit": "1e0d417e92ea8b07b5e149470da502f384f860e0"
+      }
+    }
+  }
+}
