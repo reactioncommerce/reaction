@@ -1,0 +1,51 @@
+<template name="dashnav">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="btn-group navbar-text">
+          <button type="button" class="btn btn-primary">Projects</button>
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            {{#each domains}}
+            <li><a href="#">{{url}}</a></li>
+            {{/each}}
+            <li class="divider"></li>
+            <li><a data-toggle="modal" href="#createProject">Create Project</a></li>
+          </ul>
+        </div>
+    </nav>
+
+  <!-- Modal -->
+  <div class="modal fade" id="createProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal" role="form">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Project</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputEmail1" class="col-lg-2 control-label">Title</label>
+                <div class="col-lg-10">
+                  <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Site Name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputUrl" class="col-lg-2 control-label">Domain</label>
+                <div class="col-lg-10">
+                  <input type="url" class="form-control" id="inputUrl" name="url" placeholder="http://domain.name">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                            {{> errors}}
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" value="Submit" class="btn btn-primary">Save changes</button>
+            </div>
+         </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+</template>

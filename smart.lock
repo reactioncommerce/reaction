@@ -5,7 +5,8 @@
       "bootstrap-3": {},
       "accounts-ui-bootstrap-3": {},
       "iron-router": {},
-      "accounts-entry": {}
+      "accounts-entry": {},
+      "smart-collections": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -27,6 +28,11 @@
         "git": "https://github.com/BeDifferential/accounts-entry.git",
         "tag": "v0.2.0",
         "commit": "1e0d417e92ea8b07b5e149470da502f384f860e0"
+      },
+      "smart-collections": {
+        "git": "https://github.com/arunoda/meteor-smart-collections.git",
+        "tag": "v0.3.14",
+        "commit": "a4e9184a541606dcc11f49145f40c7f9c185cd32"
       }
     }
   }
