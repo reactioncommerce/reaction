@@ -10,8 +10,7 @@
       "spin": {},
       "highcharts": {},
       "headers": {},
-      "roles": {},
-      "x-editable-bootstrap": {}
+      "roles": {}
     },
     "packages": {
       "bootstrap-3": {
