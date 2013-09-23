@@ -8,6 +8,14 @@ body {
 }
 
 
+/* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */
+body.modal-open{
+margin-right:0px!important;
+}
+
+.modal-open .navbar-fixed-top{
+margin-right:0px!important;
+}
 
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
@@ -21,6 +29,14 @@ body {
 .main {
   margin-top: 50px;
   display: block;
+}
+
+#spinner { height: 300px }
+
+.dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* CUSTOMIZE THE CAROUSEL

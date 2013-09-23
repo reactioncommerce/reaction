@@ -10,3 +10,8 @@ accounts-ui-bootstrap-3
 iron-router
 accounts-base
 accounts-password
+paginated-subscription
+spin
+highcharts
+headers
+roles

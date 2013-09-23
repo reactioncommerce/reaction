@@ -6,7 +6,12 @@
       "accounts-ui-bootstrap-3": {},
       "iron-router": {},
       "accounts-entry": {},
-      "smart-collections": {}
+      "paginated-subscription": {},
+      "spin": {},
+      "highcharts": {},
+      "headers": {},
+      "roles": {},
+      "x-editable-bootstrap": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -26,13 +31,33 @@
       },
       "accounts-entry": {
         "git": "https://github.com/BeDifferential/accounts-entry.git",
-        "tag": "v0.2.0",
-        "commit": "1e0d417e92ea8b07b5e149470da502f384f860e0"
+        "tag": "v0.2.2",
+        "commit": "5fe06fccacb6906adf5217d176488104638b229c"
       },
-      "smart-collections": {
-        "git": "https://github.com/arunoda/meteor-smart-collections.git",
-        "tag": "v0.3.14",
-        "commit": "a4e9184a541606dcc11f49145f40c7f9c185cd32"
+      "paginated-subscription": {
+        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
+        "tag": "v0.1.2",
+        "commit": "35e0c6112df2b4cfeb60b559276a93cac5ee2dd6"
+      },
+      "spin": {
+        "git": "https://github.com/SachaG/meteor-spin.git",
+        "tag": "v0.2.0",
+        "commit": "fd3a2871a69442848b4b4e74f5e1ae28fa4a95a4"
+      },
+      "highcharts": {
+        "git": "https://github.com/mikeschaekermann/meteor-highcharts.git",
+        "tag": "v0.1.0",
+        "commit": "eca115ee55e1cc083e389171717760dbaa727534"
+      },
+      "headers": {
+        "git": "https://github.com/gadicohen/meteor-headers.git",
+        "tag": "v0.0.5",
+        "commit": "61fe01bd807cf0ef17201e99491383aa5183740f"
+      },
+      "roles": {
+        "git": "https://github.com/alanning/meteor-roles.git",
+        "tag": "v1.0.6",
+        "commit": "f81cbf7c765a4ed7e16a580c288db6f10a90856b"
       }
     }
   }

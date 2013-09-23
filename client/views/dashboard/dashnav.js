@@ -1,33 +1,16 @@
-Template.dashnav.events({
-  'submit form': function(event) {
-    event.preventDefault();
-    var domain = {
-      url: $(event.target).find('[name=url]').val(),
-      title: $(event.target).find('[name=title]').val(),
-    }
-    Meteor.call('domain', domain, function(error, id) {
-      if (error) {
-        // display the error to the user
-        throwError(error.reason);
-        // if the error is that the domain already exists, take us there
-        if (error.error === 302)
-          console.log("error");
-      } else {
-        console.log("success");
-        $('#createProject').modal('hide')
-      }
-    });
+// Provide full list of projects to the project dropdown
+Template.dashnav.helpers({
+  projectList: function() {
+    return Projects.find();
   }
 });
 
-// Template.dashnav.helpers({
-//   domains: function() {
-//     return Domains.find({}, {sort: this.sort, limit: this.handle.limit()});
-//   }
-// });
-
-Template.dashnav.helpers({
-  domains: function() {
-    return Domains.find();
+// Set project selector dropdown value on click
+Template.dashnav.events({
+  'click .dropdown-menu li a': function(e){
+    var clickedButton = e.currentTarget;
+    var newHeading =  $(clickedButton).text();
+    Session.set("currentProject", newHeading);
   }
+
 });

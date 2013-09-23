@@ -4,6 +4,10 @@
     "accounts-ui-bootstrap-3": {},
     "iron-router": {},
     "accounts-entry": {},
-    "smart-collections": {}
+    "paginated-subscription": {},
+    "spin": {},
+    "highcharts": {},
+    "headers": {},
+    "roles": {},
   }
 }

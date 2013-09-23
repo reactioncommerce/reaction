@@ -7,13 +7,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{pathFor 'home'}}">Resqui</a>
+          <a class="navbar-brand" href="{{pathFor 'home'}}">GREETRAMP</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             {{! We'll show different navigation if user is logged in}}
             {{#if currentUser}}
-            <p class="navbar-text">Dashboard</p>
+            <p class="navbar-text">by ongoworks</p>
             {{else}}
             <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">How it works</a></li>
             <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
