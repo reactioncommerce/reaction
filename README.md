@@ -1,9 +1,9 @@
 Reaction Commerce
 =======
 
-#Install Meteor
+##Install Meteor
         curl https://install.meteor.com | /bin/sh
 
-#Run app
+##Run app
         cd reaction
         meteor
