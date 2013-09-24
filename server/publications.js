@@ -13,3 +13,32 @@ Meteor.publish('singleProject', function(id) {
  Meteor.publish('projects', function() {
   return Projects.find();
 });
+
+
+
+// Meteor.publish('projects', function() {
+//   if (Roles.userIsInRole(this.userId, ['admin'])) {
+
+//     return Projects.find();
+
+//   } else {
+
+//     // user not authorized. do not publish secrets
+//     this.stop();
+//     return;
+//   }
+// });
+
+
+// Meteor.publish('singleProject', function(id) {
+//   if (Roles.userIsInRole(this.userId, ['admin'])) {
+
+//     return id && Projects.find(id);
+
+//   } else {
+
+//     // user not authorized. do not publish secrets
+//     this.stop();
+//     return;
+//   }
+// });

@@ -14,7 +14,7 @@ Template.addProject.events({
         if (error.error === 302)
           console.log("error saving project");
       } else {
-        $('#createProject').modal('hide')
+        $('#createProject').modal('hide');
       }
     });
   }

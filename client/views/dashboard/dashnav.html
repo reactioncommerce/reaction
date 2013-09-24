@@ -1,4 +1,6 @@
 <template name="dashnav">
+    {{> addProject}}
+    {{> projectEdit}}
     <nav class="navbar navbar-default" role="navigation">
         <div class="btn-group navbar-text">
           <button type="button" class="btn btn-primary" id="currentproject">{{currentProject}}</button>
@@ -21,9 +23,4 @@
           {{/if}}
         </div>
     </nav>
-    <div>
-    {{> addProject}}
-    {{> projectEdit}}
-   </div>
-
 </template>

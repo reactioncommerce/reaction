@@ -1,8 +1,10 @@
 Projects = new Meteor.Collection('projects');
+
 Projects.allow({
   update: ownsDocument,
   remove: ownsDocument
 });
+
 Projects.deny({
   update: function(userId, project, fieldNames) {
     // may only edit the following two fields:
@@ -34,27 +36,11 @@ Meteor.methods({
     var project = _.extend(_.pick(projectAttributes, 'url', 'title'), {
         userId: user._id,
         creator: user.username,
-        submitted: new Date().getTime(),
-        commentsCount: 0,
-        upvoters: [],
-        votes: 0
+        submitted: new Date().getTime()
     });
 
     var projectId = Projects.insert(project);
 
     return projectId;
-  },
-    upvote: function(projectId) {
-    var user = Meteor.user();
-    // ensure the user is logged in
-    if (!user)
-    throw new Meteor.Error(401, "You need to login to upvote");
-        Projects.update({
-            _id: projectId,
-            upvoters: {$ne: user._id}
-        }, {
-        $addToSet: {upvoters: user._id},
-        $inc: {votes: 1}
-    });
   }
 });

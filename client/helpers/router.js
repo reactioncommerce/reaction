@@ -8,8 +8,20 @@ Router.configure({
 
     /* render the template named sidebar to the 'sidebar' yield */
     'header': { to: 'header' }
+    },
+    before: function() {
+    var routeName = this.context.route.name;
+    var user = Meteor.user();
+
+    if (_.include(['projects', 'projectList' /*, etc */], routeName) && (!user)) {
+      console.log("here");
+      this.render(Meteor.loggingIn() ? this.loadingTemplate : 'accessDenied');
+      return this.stop();
+    }
     }
 });
+
+
 
 Router.map(function() {
     //Header
@@ -38,3 +50,20 @@ Router.map(function() {
     this.route('termsofuse');
     this.route('privacypolicy');
 });
+
+// Meteor.Router.filters({
+//   'requireLogin': function(page) {
+//     if (Meteor.user())
+//       return page;
+//     else if (Meteor.loggingIn())
+//       return 'loading';
+//     else
+//       return 'accessDenied';
+//   },
+//   'clearErrors': function(page) {
+//     clearErrors();
+//     return page;
+//   }
+// });
+// Meteor.Router.filter('requireLogin', {only: 'postSubmit'});
+// Meteor.Router.filter('clearErrors');
