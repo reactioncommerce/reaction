@@ -3,11 +3,11 @@
         {{> dashnav}}
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="editable panel-title">{{projects.title}}</h3>
+            <b class="panel-title">{{projects.title}}</b>
+            <button type="button" data-toggle="modal" class="btn btn-default btn-sm pull-right" data-target="#createBroadcast"><span class="glyphicon glyphicon-plus"></span></button>
+            <div class="clearfix"></div>
           </div>
-          <div class="panel-body">
-            {{projects.url}}
-          </div>
+          {{> broadcasts}}
         </div>
     </div>
 </template>

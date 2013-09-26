@@ -64,21 +64,20 @@ if (Projects.find().count() === 0) {
     for (var i = 0; i < 305; i++) {
       var projectId = Projects.insert({
         title: 'Test project #' + i,
-        creator: sacha.profile.name,
         userId: sacha._id,
         url: 'http://google.com/?q=test-' + i,
         submitted: now - i * 3600 * 1000,
-        offer: [{title: 0,url_match:'',start:'',end:''}]
+        broadcasts: [{title: 'offer title',url_match:'',start:'',end:'',html:'<b>Test</b>',created:new Date(),userId:sacha._id}]
       });
         // Add test captures
         for (var c = 0; c < it; c++) {
             Captures.insert({
               projectId: projectId,
+              broadcastId:'',
               email:  'email'+c+'@localhost'+c+'.com',
               submitted: randomDate(new Date(2013, 8, 1), new Date()),
-              referrer: headers.get('referer'),
-              ip: headers.get('x-forwarded-for'),
-              offer:''
+              referrer: 'localhost',
+              ip: '127.0.0.1'
             });
         } // end test captures
       } // end test projects

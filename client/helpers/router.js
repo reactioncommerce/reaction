@@ -14,7 +14,6 @@ Router.configure({
     var user = Meteor.user();
 
     if (_.include(['projects', 'projectList' /*, etc */], routeName) && (!user)) {
-      console.log("here");
       this.render(Meteor.loggingIn() ? this.loadingTemplate : 'accessDenied');
       return this.stop();
     }

@@ -15,6 +15,15 @@ Meteor.publish('singleProject', function(id) {
 });
 
 
+Meteor.publish('captures', function(id) {
+  return id && Captures.find({projectId:id});
+});
+
+
+Meteor.publish('broadcasts', function(id) {
+  return id && Projecst.find(id,{broadcasts:true})
+});
+
 
 // Meteor.publish('projects', function() {
 //   if (Roles.userIsInRole(this.userId, ['admin'])) {

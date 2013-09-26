@@ -28,7 +28,7 @@ Meteor.methods({
     // check that there are no previous projects with the same link
     if (projectAttributes.url && projectWithSameLink) {
       throw new Meteor.Error(302,
-        'This link has already created in a project.',
+        'This link has already been created in a project.',
         projectWithSameLink._id);
     }
 
@@ -42,5 +42,25 @@ Meteor.methods({
     var projectId = Projects.insert(project);
 
     return projectId;
-  }
+  },
+  broadcast: function(projectAttributes) {
+  var user = Meteor.user();
+  // ensure the user is logged in
+  if (!user)
+    throw new Meteor.Error(401, "You need to login to create broadcasts");
+
+  // ensure the project has a title
+  if (!projectAttributes.title)
+    throw new Meteor.Error(422, 'Please fill in a title');
+
+  // pick out the whitelisted keys
+  var broadcast = _.extend(_.pick(projectAttributes, 'broadcasts', 'title'), {
+      userId: user._id,
+      submitted: new Date().getTime()
+  });
+
+  var projectId = Projects.insert(project);
+
+  return projectId;
+}
 });
