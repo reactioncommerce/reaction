@@ -17,7 +17,11 @@ margin-right:0px!important;
 margin-right:0px!important;
 }
 
-
+.broadcast-form {
+  display: none;
+  height: 0px;
+  margin: 30px;
+}
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 

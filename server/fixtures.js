@@ -13,11 +13,11 @@ if (Meteor.users.find().fetch().length === 0) {
   console.log('Creating users: ');
 
   var users = [
-      {name:"Normal User",email:"normal@ongolabs.com",roles:[]},
-      {name:"View Projects User",email:"view@ongolabs.com",roles:['view-projects']},
-      {name:"Manage-Users User",email:"manage@ongolabs.com",roles:['manage-users']},
+      {name:"Normal User",email:"normal@ongoworks.com",roles:[]},
+      {name:"View Projects User",email:"view@ongoworks.com",roles:['view-projects']},
+      {name:"Manage-Users User",email:"manage@ongoworks.com",roles:['manage-users']},
       {name:"Aaron Judd",email:"aaronjudd@me.com",roles:['admin']},
-      {name:"Sara Hicks",email:"sara@ongolabs.com",roles:['admin']}
+      {name:"Sara Hicks",email:"sara@ongoworks.com",roles:['admin']}
     ];
 
   _.each(users, function (userData) {

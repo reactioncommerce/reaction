@@ -17,5 +17,11 @@ Template.addBroadcast.events({
         $('#createBroadcast').modal('hide');
       }
     });
+  },
+    'click #broadcastClose': function(event) {
+    $(".broadcast-form").hide().height('0');
+  },
+    'click .close': function(event) {
+    $(".broadcast-form").hide().height('0');
   }
 });
