@@ -43,24 +43,23 @@ Meteor.methods({
 
     return projectId;
   },
-  broadcast: function(projectAttributes) {
+  broadcast: function(broadcastAttributes,projectId) {
   var user = Meteor.user();
   // ensure the user is logged in
   if (!user)
     throw new Meteor.Error(401, "You need to login to create broadcasts");
 
-  // ensure the project has a title
-  if (!projectAttributes.title)
+  // ensure the broadcast has a title
+  if (!broadcastAttributes.title)
     throw new Meteor.Error(422, 'Please fill in a title');
 
   // pick out the whitelisted keys
-  var broadcast = _.extend(_.pick(projectAttributes, 'broadcasts', 'title'), {
+  var broadcast = _.extend(_.pick(broadcastAttributes, 'broadcasts', 'title','url_match','start','end','html'), {
       userId: user._id,
       submitted: new Date().getTime()
   });
 
-  var projectId = Projects.insert(project);
+   Projects.update({"_id":projectId},{$push:{broadcasts:broadcast}});
+  }
 
-  return projectId;
-}
 });

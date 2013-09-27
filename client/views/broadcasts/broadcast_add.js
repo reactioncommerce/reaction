@@ -2,11 +2,15 @@
 Template.addBroadcast.events({
   'submit form': function(event) {
     event.preventDefault();
+    var projectId = Session.get('currentProjectId');
     var broadcast = {
-      url: $(event.target).find('[name=url]').val(),
       title: $(event.target).find('[name=title]').val(),
+      url_match: $(event.target).find('[name=url_match]').val(),
+      start: $(event.target).find('[name=start]').val(),
+      end: $(event.target).find('[name=end]').val(),
+      html: $(event.target).find('[name=html]').val(),
     }
-    Meteor.call('broadcast', broadcast, function(error, id) {
+    Meteor.call('broadcast', broadcast, projectId, function(error, id) {
       if (error) {
         // display the error to the user
         throwError(error.reason);
@@ -14,7 +18,7 @@ Template.addBroadcast.events({
         if (error.error === 302)
           console.log("error saving broadcast");
       } else {
-        $('#createBroadcast').modal('hide');
+        $(".broadcast-form").hide().height('0');
       }
     });
   },

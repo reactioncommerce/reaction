@@ -21,7 +21,7 @@ Meteor.publish('captures', function(id) {
 
 
 Meteor.publish('broadcasts', function(id) {
-  return id && Projecst.find(id,{broadcasts:true})
+  return id && Projects.find(id,{broadcasts:true})
 });
 
 

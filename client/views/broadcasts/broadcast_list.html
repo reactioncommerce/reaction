@@ -1,0 +1,9 @@
+<template name="broadcastList">
+{{#with projects}}
+    {{#each broadcasts}}
+    <ul class="list-group">
+      <li class="list-group-item">{{title}}<span class="glyphicon glyphicon-cog pull-right"></span></li>
+    </ul>
+    {{/each}}
+{{/with}}
+</template>

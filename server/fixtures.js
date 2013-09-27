@@ -59,15 +59,15 @@ if (Projects.find().count() === 0) {
       return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
   };
   var it =Math.floor(Math.random() * 100) + 1;
-  console.log('Creating test projects and sample capture data.');
+  console.log('Creating test campaigns and sample capture data.');
     // add test projects
     for (var i = 0; i < 305; i++) {
       var projectId = Projects.insert({
-        title: 'Test project #' + i,
+        title: 'Campaign # ' + i,
         userId: sacha._id,
         url: 'http://google.com/?q=test-' + i,
         submitted: now - i * 3600 * 1000,
-        broadcasts: [{title: 'offer title',url_match:'',start:'',end:'',html:'<b>Test</b>',created:new Date(),userId:sacha._id}]
+        broadcasts: [{title: 'Broadcast Sample',url_match:'*',start:'',end:'',html:'<b>Sample Broadcast HTML</b>',created:new Date(),userId:sacha._id}]
       });
         // Add test captures
         for (var c = 0; c < it; c++) {
