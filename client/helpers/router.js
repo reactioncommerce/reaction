@@ -34,9 +34,15 @@ Router.map(function() {
         path: '/projects/:_id',
         waitOn: function() {
             Session.set("currentProjectId",this.params._id);
-            return Meteor.subscribe('singleProject', this.params._id);
+            //return Meteor.subscribe('singleProject', this.params._id);
+
+            // Wait for the captures count to populate first
+            return Meteor.subscribe("captures-by-project", this.params._id);
         },
-        data: function() { return { projects: Projects.findOne(this.params._id) };}
+        data: function() {
+            Session.set("currentProjectId",this.params._id);
+            return { projects: Projects.findOne(this.params._id) };
+        }
     });
     this.route('home', {path: '/'});
     this.route('howitworks');

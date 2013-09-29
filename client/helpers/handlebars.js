@@ -7,12 +7,12 @@ Handlebars.registerHelper('pluralize', function(n, thing) {
   }
 });
 
-Handlebars.registerHelper('currentProject', function(current) {
-    if (Session.get('currentProject')) {
-        return Session.get('currentProject');
-    } else {
-        Session.set("currentProject", "Overview");
-    }
-    return Session.get('currentProject');
+Handlebars.registerHelper('currentProjectTitle', function(current) {
+      var currentProjectId = Session.get("currentProjectId");
+      if (currentProjectId) {
+           return Projects.findOne(currentProjectId).title;
+      } else {
+          return "Overview";
+      }
 
 });

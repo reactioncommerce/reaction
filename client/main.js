@@ -1,7 +1,3 @@
-// *****  Subscriptions *******
-//Meteor.subscribe('domains');
-projectHandle = Meteor.subscribeWithPagination('projects', 10);
-
 Template._loginButtonsLoggedInDropdownActions.events({
         'click #login-buttons-logout': function () {
             Session.set("currentProject", "");
@@ -10,3 +6,4 @@ Template._loginButtonsLoggedInDropdownActions.events({
             Meteor.logout();
         }
     });
+
