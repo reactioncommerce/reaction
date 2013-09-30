@@ -9,10 +9,15 @@ Handlebars.registerHelper('pluralize', function(n, thing) {
 
 Handlebars.registerHelper('currentProjectTitle', function(current) {
       var currentProjectId = Session.get("currentProjectId");
-      if (currentProjectId) {
-           return Projects.findOne(currentProjectId).title;
-      } else {
-          return "Overview";
-      }
-
+      switch (currentProjectId) {
+        case 'all':
+              return "All Campaigns";
+        case 'overview':
+              return "Overview";
+        default:
+              if (!currentProjectId) {
+              return "Overview";
+              }
+              return Projects.findOne(currentProjectId).title;
+      };
 });

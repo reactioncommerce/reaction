@@ -9,7 +9,7 @@
           </button>
           <ul class="dropdown-menu" role="menu" id="projectpicker">
             <li><a href="/">Overview</a></li>
-            <li><a href="{{pathFor 'projectsList'}}">All Projects</a></li>
+            <li><a href="{{pathFor 'projectsList'}}">All Campaigns</a></li>
             <li class="divider"></li>
             {{#each projectList}}
             <li><a href="{{pathFor 'projects' this}}" data-target="{{_id}}">{{title}}</a></li>

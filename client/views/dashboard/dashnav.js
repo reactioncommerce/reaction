@@ -5,12 +5,12 @@ Template.dashnav.helpers({
   }
 });
 
-// Set project selector dropdown value on click
-Template.dashnav.events({
-  'click .dropdown-menu li a': function(e){
-    var clickedButton = e.currentTarget;
-    var newHeading =  $(clickedButton).text();
-    Session.set("currentProject", newHeading);
-  }
+// // Set project selector dropdown value on click
+// Template.dashnav.events({
+//   'click .dropdown-menu li a': function(e){
+//     var clickedButton = e.currentTarget;
+//     //var newHeading =  $(clickedButton).text();
+//     //Session.set("currentProject", newHeading);
+//   }
 
-});
+// });

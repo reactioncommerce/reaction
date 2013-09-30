@@ -12,7 +12,7 @@ Meteor.publish('projects', function() {
 });
 
 Meteor.publish('captures', function(id) {
-  return id && Captures.find({projectId:id});
+ return id && Captures.find({projectId:id});
 });
 
 
@@ -22,6 +22,7 @@ Meteor.publish('broadcasts', function(id) {
 
 
 // server: publish the current size of a collection
+//  TODO: limit to current users projects
 Meteor.publish("captures-by-project", function (projectId) {
   var self = this;
   var uuid = Meteor.uuid();
@@ -56,40 +57,3 @@ Meteor.publish("captures-by-project", function (projectId) {
     handle.stop();
   });
 });
-
-
-
-// server: publish the current size of a collection
-// Meteor.publish("captures-by-project", function (projectId) {
-// console.log("captures-by-project: "+projectId);
-//   var self = this;
-//   check(projectId, String);
-//   var count = 0;
-//   var initializing = true;
-//   var handle = Captures.find({projectId: projectId}).observeChanges({
-//     added: function (id) {
-//       count++;
-//       if (!initializing)
-//         self.changed("counts", projectId, {count: count});
-//     },
-//     removed: function (id) {
-//       count--;
-//       self.changed("counts", projectId, {count: count});
-//     }
-//     // don't care about moved or changed
-//   });
-
-//   // Observe only returns after the initial added callbacks have
-//   // run.  Now return an initial value and mark the subscription
-//   // as ready.
-//   initializing = false;
-//   self.added("counts", projectId, {count: count});
-//   self.ready();
-
-//   // Stop observing the cursor when client unsubs.
-//   // Stopping a subscription automatically takes
-//   // care of sending the client any removed messages.
-//   self.onStop(function () {
-//     handle.stop();
-//   });
-// });
