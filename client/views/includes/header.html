@@ -7,7 +7,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{pathFor 'home'}}">GREETRAMP</a>
+          {{#if currentUser}}
+              <a class="navbar-brand" href="{{pathFor 'home'}}">Greet Ramp</a>
+          {{else}}
+              <a class="navbar-brand" href="{{pathFor 'home'}}">Ongo Works</a>
+          {{/if}}
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
