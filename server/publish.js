@@ -11,13 +11,10 @@ Meteor.publish('projects', function() {
   return Projects.find({userId: this.userId});
 });
 
-// Meteor.publish('captures', function(id) {
-//  return id && Captures.find({projectId:id});
-// });
-
-Meteor.publish('captures', function() {
-        return Captures.find();
+Meteor.publish('captures', function(id) {
+ return id && Captures.find({projectId:id});
 });
+
 
 Meteor.publish('broadcasts', function(id) {
   return id && Projects.find(id,{broadcasts:true})
