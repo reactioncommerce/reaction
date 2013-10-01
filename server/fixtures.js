@@ -76,6 +76,6 @@ if (Meteor.users.find().fetch().length === 0) {
             } // end test captures
           } // end test projects
     }); //end user loop
-  console.log("Completed settting up fixture data.");
+  console.log("Completed setting up fixture data.");
   } // end user check
 }); // end meteor startup

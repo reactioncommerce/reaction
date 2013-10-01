@@ -1,34 +1,46 @@
 Template.graph.rendered = function () {
-    //get list of projects for this users
-
-    campaigns = Projects.find({},{userId:Meteor.userId});
-    chartData = new Array;
-
-    // loop through projects and get datapoints for captures
+// Get data from campaigns and countstats collections
+    var campaigns = Projects.find({},{userId:Meteor.userId});
+    var chartData = new Array;
+    var seriesData = new Array();
     var count = 0;
+    // loop through projects and get datapoints for captures
+
         campaigns.forEach(function (campaigns) {
-            captureData = Captures.find({projectId:campaigns._id});
-            console.log(campaigns._id+" : "+captureData.submitted);
+            seriesData = [];
+
+            //console.log("*********************************"+campaigns._id);
+            Session.set('statsProjectId',campaigns._id);
+            var statsData = CountStats.find({projectId:campaigns._id});
+            var statRow = 0;
+
+            statsData.forEach(function(stats){
+                var myDate = new Date(stats.submitted);
+                var captureDate = Date.UTC(myDate.getFullYear(),(myDate.getMonth()+1),myDate.getDate());
+                //TODO: Add 0 for empty dates, if necessary for plotting
+                seriesData[statRow] = [captureDate,stats.count];
+                //console.log("date: "+captureDate);
+                statRow +=1;
+            });
+
+
             chartData[count] = {
                 name: campaigns.title,
-                data: [12,23,45]
+                data: seriesData
             };
+
             count += 1;
+
         });
 
-    //campaignMap = campaigns.map( function(u) { return u.title; } );
-
-    // map captures into date/count array series
-    //
-    //
+// Create and display graph
     $('#graphcontainer').highcharts({
             title: {
-                text: 'Exit Captures',
+                text: 'Captures',
                 x: -20 //center
             },
             xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+               type: 'datetime',
             },
             yAxis: {
                 title: {
@@ -41,13 +53,13 @@ Template.graph.rendered = function () {
                 }]
             },
             tooltip: {
-                valueSuffix: '°C'
+                valueSuffix: ' Submissions'
             },
             legend: {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'middle',
-                borderWidth: 0
+                borderWidth: 1
             },
             series: chartData,
         })

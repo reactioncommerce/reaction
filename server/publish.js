@@ -15,6 +15,10 @@ Meteor.publish('captures', function(id) {
  return id && Captures.find({projectId:id});
 });
 
+Meteor.publish('countstats', function(id) {
+ return CountStats.find({},{sort: {submitted: 1}});
+});
+
 
 Meteor.publish('broadcasts', function(id) {
   return id && Projects.find(id,{broadcasts:true})
@@ -34,10 +38,28 @@ Meteor.publish("captures-by-project", function (projectId) {
       count++;
       if (!initializing)
         self.changed("counts", uuid, {count: count});
+        // submitted = Captures.findOne(doc).submitted;
+        // console.log(submitted);
+        // CountStats.update({projectId:projectId,submitted:submitted},{ $inc: {"count":1}}, {upsert: true});
+        //
+        //
+        //
+        // var statcount = CountStats.findOne({projectId:projectId});
+        // if (statcount === 0) {
+        //     console.log("insert");
+        //     CountStats.insert({"projectId":projectId,"count":count});
+        // } else {
+        //     console.log("update");
+        //     CountStats.update(statcount._id,{ $set: {"count":count}});
+        // }
+
+
+
     },
     removed: function (doc, idx) {
       count--;
       self.changed("counts", uuid, {count: count});
+      //CountStats.update({projectId:projectId},{ $set: {"count":count}}, {upsert: true});
     }
     // don't care about moved or changed
   });
