@@ -8,16 +8,16 @@
             <span class="icon-bar"></span>
           </button>
           {{#if currentUser}}
-              <a class="navbar-brand" href="{{pathFor 'home'}}">Greet Ramp</a>
+              <a class="navbar-brand" href="{{pathFor 'home'}}">REACTION</a>
           {{else}}
-              <a class="navbar-brand" href="{{pathFor 'home'}}">Ongo Works</a>
+              <a class="navbar-brand" href="{{pathFor 'home'}}">REACTION/a>
           {{/if}}
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             {{! We'll show different navigation if user is logged in}}
             {{#if currentUser}}
-            <p class="navbar-text">by ongoworks</p>
+            <p class="navbar-text">Dashboard</p>
             {{else}}
             <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">How it works</a></li>
             <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>

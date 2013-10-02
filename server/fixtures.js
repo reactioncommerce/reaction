@@ -54,7 +54,7 @@ if (Meteor.users.find().fetch().length === 0) {
 
       console.log('Creating test campaigns and sample capture data.');
         // add test projects
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 6; i++) {
           var projectId = Projects.insert({
             title: 'Campaign #' + i,
             userId: userId,
@@ -63,13 +63,13 @@ if (Meteor.users.find().fetch().length === 0) {
             broadcasts: [{title: 'Broadcast Sample',url_match:'*',start:'',end:'',html:'<b>Sample Broadcast HTML</b>',created:new Date(),userId:userId}]
           });
             // Add test captures
-            var it =Math.floor(Math.random() * 100) + 1;
+            var it =Math.floor(Math.random() * 300) + 1;
             for (var c = 0; c < it; c++) {
                 Captures.insert({
                   projectId: projectId,
                   broadcastId:'',
                   email:  'email'+c+'@localhost'+c+'.com',
-                  submitted: randomDate(new Date(2013, 8, 1), new Date()),
+                  submitted: randomDate(new Date(2013, 7, 1), new Date()),
                   referrer: 'localhost',
                   ip: '127.0.0.1'
                 });
