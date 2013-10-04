@@ -30,8 +30,8 @@
       },
       "accounts-entry": {
         "git": "https://github.com/BeDifferential/accounts-entry.git",
-        "tag": "v0.2.5",
-        "commit": "71e10c07a3fc81bb0294482da1793e339f292ba1"
+        "tag": "v0.2.8",
+        "commit": "2c25bd13876508f621c4685b8b656007cfa2c016"
       },
       "paginated-subscription": {
         "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
