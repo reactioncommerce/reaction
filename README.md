@@ -30,6 +30,12 @@ Convention:
 * **core_ **  prefix for core, reaction platform shared collections names (core_accounts)
 * **reaction_** smart package name prefix for smart package specific collection
 * no prefix for external/universal meteor collections
+* HTML5 and CSS3 
+	*  All visible content should have [Schema.org](http://schema.org/docs/full.html) tags
+	*  Preference is to use [data-attribute](http://www.w3.org/TR/2011/WD-html5-20110525/elements.html) tags over element selectors
+	* All interactive elements should have a data-track element, optional data-track-attrs
+			
+			data-track="Open Modal" data-track-attrs="{ show: 'Campaign Properties' }"
 
 
 ###Smart Packages

@@ -1,12 +1,16 @@
 <template name="main">
-<header>
-    {{yield "header"}}
-</header>
-  <section class="main">
-    {{yield}}
-  </section>
+  <head>
+      <title>Reaction Commerce</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <header>
+      {{yield "header"}}
+  </header>
+    <section class="main">
+      {{yield}}
+    </section>
 
-  <footer>
-    {{yield "footer"}}
-  </footer>
+    <footer>
+      {{yield "footer"}}
+    </footer>
 </template>

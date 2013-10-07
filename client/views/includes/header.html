@@ -19,13 +19,13 @@
             {{#if currentUser}}
             <p class="navbar-text">Dashboard</p>
             {{else}}
-            <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">How it works</a></li>
+            <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">Features</a></li>
             <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
-            <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Contact us</a></li>
+            <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
             {{/if}}
           </ul>
           <div class="nav navbar-nav navbar-right">
-          {{ loginButtons}}
+          {{> accounts}}
         </div><!--/.navbar-collapse -->
       </div>
     </div>

@@ -3,9 +3,7 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "accounts-ui-bootstrap-3": {},
       "iron-router": {},
-      "accounts-entry": {},
       "paginated-subscription": {},
       "spin": {},
       "highcharts": {},
@@ -18,20 +16,10 @@
         "tag": "v0.3.5",
         "commit": "47996f67f3987c9f82117394effcbe1586a4fe29"
       },
-      "accounts-ui-bootstrap-3": {
-        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
-        "tag": "v0.2.3",
-        "commit": "c6aac7a331e457abd457a6f3ed030ac1411b220c"
-      },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.5.4",
         "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
-      },
-      "accounts-entry": {
-        "git": "https://github.com/BeDifferential/accounts-entry.git",
-        "tag": "v0.2.8",
-        "commit": "2c25bd13876508f621c4685b8b656007cfa2c016"
       },
       "paginated-subscription": {
         "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",

@@ -6,7 +6,6 @@
 standard-app-packages
 preserve-inputs
 bootstrap-3
-accounts-ui-bootstrap-3
 iron-router
 accounts-base
 accounts-password

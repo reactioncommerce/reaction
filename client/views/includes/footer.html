@@ -1,13 +1,42 @@
 <template name="footer">
+            {{! We'll show different navigation if user is logged in}}
+            {{#if currentUser}}
+                {{#if userhasprofile}}
+                    {{> dashboardfooter}}
+                {{else}}
+                    {{! We'll show different navigation if user is logged in}}
+                {{/if}}
+            {{else}}
+                {{> publicfooter}}
+            {{/if}}
+</template>
+
+<template name="publicfooter">
     <footer>
-    <nav class="navbar navbar-default navbar-fixed-bottom nav-stacked" role="navigation">
-    <p class="navbar-text"><span class="glyphicon glyphicon-copyright-mark"></span>REACTION <a href="http://ongoworks.com">Assembled in LA</a></p>
-    <ul class="nav navbar-nav">
-        <li class="{{activeRouteClass 'about'}}"><a href="{{pathFor 'about'}}">About</a></li>
-        <li class="{{activeRouteClass 'faqs'}}"><a href="{{pathFor 'faqs'}}">Faqs</a></li>
-        <li class="{{activeRouteClass 'termsofuse'}}"><a href="{{pathFor 'termsofuse'}}">Terms of Use</a></li>
-        <li class="{{activeRouteClass 'privacypolicy'}}"><a href="{{pathFor 'privacypolicy'}}">Privacy Policy</a></li>
-    </ul>
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="col-md-2">
+        <ul class="list-unstyled">
+            <li><a href="http://ongoworks.com">Assembled in LA</a></li>
+            <li><a href="{{pathFor 'about'}}">About Reaction</a></li>
+            <li><a href="{{pathFor 'termsofuse'}}">Terms of Service</a></li>
+            <li><a href="{{pathFor 'privacypolicy'}}">Privacy Policy</a></li>
+            <li><a href="{{pathFor 'faqs'}}">FAQ</a></li>
+        </ul>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-6"></div>
+    </nav>
+    </footer>
+</template>
+
+<template name="dashboardfooter">
+    <footer class="unstyled">
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-6"></div>
     </nav>
     </footer>
 </template>

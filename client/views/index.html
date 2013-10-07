@@ -1,8 +1,12 @@
 <template name="index">
-            {{! We'll show different navigation if user is logged in}}
-            {{#if currentUser}}
-              {{> dashboard}}
-            {{else}}
-              {{> home}}
-            {{/if}}
+    {{! We'll show different navigation if user is logged in}}
+    {{#if currentUser}}
+        {{#if userhasprofile}}
+            {{> dashboard}}
+        {{else}}
+            {{> createprofile}}
+        {{/if}}
+    {{else}}
+        {{> home}}
+    {{/if}}
 </template>
