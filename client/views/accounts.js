@@ -67,14 +67,6 @@ Template.accountCreateStep1.events({
     }
 });
 
-Template.createprofile.helpers({
-    fname: function(){
-        var name = Meteor.user().profile.name.split(' ');
-        var fname = name[0];
-        return fname;
-    }
-});
-
 Template.createprofile.events({
   'submit #update-profile': function (event) {
     Meteor.users.update({_id:Meteor.user()._id}, {$set:{"profile.store": $(event.target).find('[id=input-store]').val() }});
