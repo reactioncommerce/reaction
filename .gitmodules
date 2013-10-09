@@ -4,6 +4,6 @@
 [submodule "packages/reaction-greetramp"]
 	path = packages/reaction-greetramp
 	url = https://github.com/ongoworks/reaction-greetramp.git
-[submodule "package/paginated-subscription"]
-	path = package/paginated-subscription
+[submodule "packages/paginated-subscription"]
+	path = packages/paginated-subscription
 	url = https://github.com/aaronjudd/meteor-paginated-subscription.git
