@@ -6,3 +6,9 @@ Handlebars.registerHelper('pluralize', function(n, thing) {
     return n + ' ' + thing + 's';
   }
 });
+
+Handlebars.registerHelper('fname', function(){
+        var name = Meteor.user().profile.name.split(' ');
+        var fname = name[0];
+        return fname;
+});

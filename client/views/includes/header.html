@@ -1,4 +1,5 @@
 <template name="header">
+     {{#unless currentUser}}
        <div class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
         <div class="navbar-header">
@@ -7,26 +8,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          {{#if currentUser}}
-              <a class="navbar-brand" href="{{pathFor 'home'}}">REACTION</a>
-          {{else}}
-              <a class="navbar-brand" href="{{pathFor 'home'}}">REACTION</a>
-          {{/if}}
+          <a class="navbar-brand" href="{{pathFor 'home'}}">REACTION</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse">
           <ul class="nav navbar-nav">
-            {{! We'll show different navigation if user is logged in}}
-            {{#if currentUser}}
-            <p class="navbar-text">Dashboard</p>
-            {{else}}
-            <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">Features</a></li>
-            <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
-            <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
-            {{/if}}
+              <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">Features</a></li>
+              <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
+              <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
           </ul>
-          <div class="nav navbar-nav navbar-right">
+          <div class="nav navbar-right">
           {{> accounts}}
         </div><!--/.navbar-collapse -->
       </div>
     </div>
+    {{/unless}}
 </template>
