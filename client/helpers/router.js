@@ -1,16 +1,16 @@
 Router.configure({
-    layout: 'main',
+    layout: 'layout',
     notFoundTemplate: 'notFound',
     loadingTemplate: 'loading',
     renderTemplates: {
-        'footer': { to: 'footer' },
-        'header': { to: 'header' }
+        'header': { to: 'header' },
+        'footer': { to: 'footer '}
     }
 });
 
 
 Router.map(function() {
-    this.route('home', {path: '/'});
+    this.route('index', {path: '/'});
     this.route('howitworks');
     this.route('pricing');
     this.route('contactus');
@@ -20,4 +20,9 @@ Router.map(function() {
     this.route('faqs');
     this.route('termsofuse');
     this.route('privacypolicy');
+    // this.route('greetramp',{
+    //     renderTemplates: {
+    //         'greetramp': {to: 'main' }
+    //     }
+    // });
 });

@@ -1,0 +1,18 @@
+<template name="layout">
+    <head>
+        <title>Reaction Commerce</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <header>
+        {{yield "header"}}
+    </header>
+
+    <section>
+        {{yield}}
+    </section>
+
+    <footer>
+        {{yield "footer"}}
+    </footer>
+</template>

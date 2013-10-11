@@ -4,10 +4,8 @@
     "basePackages": {
       "bootstrap-3": {},
       "iron-router": {},
-      "paginated-subscription": {},
       "spin": {},
       "highcharts": {},
-      "headers": {},
       "roles": {}
     },
     "packages": {
@@ -21,11 +19,6 @@
         "tag": "v0.5.4",
         "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
       },
-      "paginated-subscription": {
-        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
-        "tag": "v0.1.2",
-        "commit": "35e0c6112df2b4cfeb60b559276a93cac5ee2dd6"
-      },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
         "tag": "v0.2.0",
@@ -35,11 +28,6 @@
         "git": "https://github.com/mikeschaekermann/meteor-highcharts.git",
         "tag": "v0.1.0",
         "commit": "eca115ee55e1cc083e389171717760dbaa727534"
-      },
-      "headers": {
-        "git": "https://github.com/gadicohen/meteor-headers.git",
-        "tag": "v0.0.5",
-        "commit": "61fe01bd807cf0ef17201e99491383aa5183740f"
       },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",

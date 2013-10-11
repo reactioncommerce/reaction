@@ -9,10 +9,8 @@ bootstrap-3
 iron-router
 accounts-base
 accounts-password
-paginated-subscription
 spin
 highcharts
-headers
 roles
 reaction-greetramp
 reaction-dashboard

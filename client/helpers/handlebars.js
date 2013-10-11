@@ -8,9 +8,11 @@ Handlebars.registerHelper('pluralize', function(n, thing) {
 });
 
 Handlebars.registerHelper('fname', function(){
-  var name = Meteor.user().profile.name.split(' ');
-  var fname = name[0];
-  return fname;
+  if (Meteor.user()) {
+    var name = Meteor.user().profile.name.split(' ');
+    var fname = name[0];
+    return fname;
+  }
 });
 
 Handlebars.registerHelper('userhasprofile', function() {
