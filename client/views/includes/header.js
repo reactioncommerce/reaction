@@ -1,4 +1,4 @@
-Template.header.helpers({
+Template.introheader.helpers({
     activeRouteClass: function() {
         var args = Array.prototype.slice.call(arguments, 0);
         args.pop();

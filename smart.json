@@ -1,7 +1,7 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": {},
+    "iron-router-dev": {},
     "spin": {},
     "highcharts": {},
     "roles": {}

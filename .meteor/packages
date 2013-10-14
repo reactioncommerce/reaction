@@ -6,7 +6,7 @@
 standard-app-packages
 preserve-inputs
 bootstrap-3
-iron-router
+iron-router-dev
 accounts-base
 accounts-password
 spin

@@ -3,7 +3,7 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "iron-router": {},
+      "iron-router-dev": {},
       "spin": {},
       "highcharts": {},
       "roles": {}
@@ -14,10 +14,10 @@
         "tag": "v0.3.5",
         "commit": "47996f67f3987c9f82117394effcbe1586a4fe29"
       },
-      "iron-router": {
-        "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.5.4",
-        "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
+      "iron-router-dev": {
+        "git": "https://github.com/deepwell/iron-router.git",
+        "tag": "v0.6.0dev3",
+        "commit": "d6394a4377ee4f2f836f3f9c904f951e4cbf0a96"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
