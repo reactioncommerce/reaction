@@ -4,3 +4,9 @@
 [submodule "packages/reaction-dashboard"]
 	path = packages/reaction-dashboard
 	url = ssh://git@github.com/ongoworks/reaction-dashboard
+[submodule "packages/reaction-helloworld"]
+	path = packages/reaction-helloworld
+	url = git@github.com:ongoworks/reaction-helloworld.git
+[submodule "packages/reaction-pkgmanager"]
+	path = packages/reaction-pkgmanager
+	url = git@github.com:ongoworks/reaction-pkgmanager.git
