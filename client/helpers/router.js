@@ -1,3 +1,12 @@
+// *****************************************************
+// iron-router for reaction commerce
+// see: https://github.com/EventedMind/iron-router
+// iron router handles url path, and renders templates into
+// yields based on the logic in this file
+// individual reaction packages have their own router.js
+// *****************************************************
+
+
 Router.configure({
     layoutTemplate: 'dashboardLayout',
     notFoundTemplate: 'notFound',
@@ -11,13 +20,17 @@ Router.map(function() {
         layoutTemplate:'introLayout',
         before: function() {
             if(!Meteor.loggingIn() && Meteor.user() && Meteor.user().profile.store ){
-                this.redirect('dashboard');
+               Router.go('dashboard');
             }
         }
     });
 
-    this.route('dashboard');
-
+    // *****************************************************
+    // generic routes for reaction marketing site layout
+    // default layout is dashboardLayout template, these
+    // are all exceptions
+    // *****************************************************
+    //Header
     this.route('howitworks',{layoutTemplate:'introLayout'});
     this.route('pricing',{layoutTemplate:'introLayout'});
     this.route('contactus',{layoutTemplate:'introLayout'});
@@ -27,6 +40,7 @@ Router.map(function() {
     this.route('termsofuse',{layoutTemplate:'introLayout'});
     this.route('privacypolicy',{layoutTemplate:'introLayout'});
 
+    // 404 Page for reaction
     this.route('notFound', {
         path: '*',
         layoutTemplate:'introLayout'

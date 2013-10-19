@@ -1,8 +1,7 @@
-Meteor.subscribe("reaction_modules");
+// *****************************************************
+// add subscriptions for reactivity
+//
+// *****************************************************
+Meteor.subscribe("reaction_packages");
 Meteor.subscribe("reaction_config");
-
-// Deps.autorun(function () {
-//   if(!Meteor.loggingIn() && Meteor.user()) {
-//     Router.go('dashboard');
-//   }
-// });
+Meteor.subscribe("user_config",Meteor.userId());

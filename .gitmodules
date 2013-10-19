@@ -10,3 +10,6 @@
 [submodule "packages/reaction-pkgmanager"]
 	path = packages/reaction-pkgmanager
 	url = git@github.com:ongoworks/reaction-pkgmanager.git
+[submodule "packages/iron-router"]
+	path = packages/iron-router
+	url = git@github.com:EventedMind/iron-router.git
