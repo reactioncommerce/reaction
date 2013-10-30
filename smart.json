@@ -3,6 +3,8 @@
     "bootstrap-3": {},
     "spin": {},
     "highcharts": {},
-    "roles": {}
+    "roles": {},
+    "x-editable-bootstrap3": {},
+    "iron-router": {}
   }
 }

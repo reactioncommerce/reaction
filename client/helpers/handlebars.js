@@ -32,3 +32,28 @@ Handlebars.registerHelper('userhasprofile', function() {
   }
   return true;
 });
+
+// *****************************************************
+// general helper to return 'active' when on current path
+// returns string
+// handlebars: {{active '/some/page'}}
+// *****************************************************
+curPath=function(){var c=window.location.pathname;var b=c.slice(0,-1);var a=c.slice(-1);if(b==""){return"/"}else{if(a=="/"){return b}else{return c}}};
+// Determine if current link should be active
+Handlebars.registerHelper('active', function(path) {
+    return curPath() == path ? 'active' : '';
+});
+// *****************************************************
+// general helper to return 'active' when on current path
+// returns string
+// handlebars: {{navLink 'projectsList' 'icon-edit'}}
+// *****************************************************
+
+Handlebars.registerHelper('navLink', function(page, icon) {
+  var ret = "<li ";
+  if (Meteor.Router.page() == page) {
+    ret += "class='active'";
+  }
+  ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>";
+  return new Handlebars.SafeString(ret);
+});

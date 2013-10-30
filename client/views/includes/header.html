@@ -1,25 +1,24 @@
 <template name="introHeader">
 
-       <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{pathFor 'index'}}">REACTION</a>
-        </div>
-        <div class="navbar-collapse">
-          <ul class="nav navbar-nav">
-              <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">Features</a></li>
-              <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
-              <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
-          </ul>
-          <div class="nav navbar-right">
-          {{> accounts}}
-        </div><!--/.navbar-collapse -->
-      </div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{pathFor 'index'}}">REACTION</a>
     </div>
+
+    <div class="collapse navbar-collapse navbar-ex1-collapse navbar-intro">
+      <ul class="nav navbar-nav">
+        <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">Features</a></li>
+        <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
+        <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
+      </ul>
+    <div class="nav navbar-nav navbar-right">
+    {{> accounts}}
+    </div><!--/.navbar-collapse -->
+</div>
 
 </template>

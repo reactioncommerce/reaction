@@ -41,29 +41,24 @@
 
 
 <template name="accountCreateStep1">
-<div class="container">
-    <div class="col-md-2 col-sm-1 col-xs-1"></div>
-        <div class="signup-wrapper text-center col-md-8 col-md-offset-2 col-sm-11  col-xs-11">
-          <div class="signup-form">
-            <form class="form-inline" role="form" id="create-account-form">
-              <div class="form-group">
-              <label class="sr-only" for="create-name">Your full name</label>
-              <input type="text" class="form-control" id="input-name" placeholder="Enter your full name">
-            </div>
-            <div class="form-group">
-              <label class="sr-only" for="create-email">Email address</label>
-              <input type="email" class="form-control" id="input-email" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-              <label class="sr-only" for="create-password">Password</label>
-              <input type="password" class="form-control" id="input-password" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-default">Sign up</button>
-          </form>
-          </div>
-        </div>
-    <div class="col-md-2 col-sm-2"></div>
-</div>
+  <form class="form-inline account-create" role="form" id="create-account-form">
+    <div class="form-group">
+      <label class="sr-only" for="create-name">Your full name</label>
+      <input type="text" class="form-control input-lg" id="input-name" placeholder="Enter your full name">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="create-email">Email address</label>
+      <input type="email" class="form-control input-lg" id="input-email" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="create-password">Password</label>
+      <input type="password" class="form-control input-lg" id="input-password" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <a class="btn btn-large btn-success pull-right" href="#">Sign up today <span class="glyphicon glyphicon-ok-circle"></span></a>
+    </div>
+  </form>
+
 </template>
 
 

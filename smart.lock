@@ -5,7 +5,10 @@
       "bootstrap-3": {},
       "spin": {},
       "highcharts": {},
-      "roles": {}
+      "roles": {},
+      "medium-editor": {},
+      "x-editable-bootstrap3": {},
+      "iron-router": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -27,6 +30,16 @@
         "git": "https://github.com/alanning/meteor-roles.git",
         "tag": "v1.0.6",
         "commit": "f81cbf7c765a4ed7e16a580c288db6f10a90856b"
+      },
+      "x-editable-bootstrap3": {
+        "git": "https://github.com/JustinSGray/meteor-x-editable-bootstrap.git",
+        "tag": "v1.5.1",
+        "commit": "33eeb067df8e68f2db0c66dabc4ae9de2bdd5906"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.6.0",
+        "commit": "c63e92d24c8210e2304ff5fed1b5c463394aeaf6"
       }
     }
   }

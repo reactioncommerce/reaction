@@ -1,15 +1,18 @@
 [submodule "packages/reaction-greetramp"]
 	path = packages/reaction-greetramp
 	url = ssh://git@github.com/ongoworks/reaction-greetramp
-[submodule "packages/reaction-dashboard"]
-	path = packages/reaction-dashboard
-	url = ssh://git@github.com/ongoworks/reaction-dashboard
 [submodule "packages/reaction-helloworld"]
 	path = packages/reaction-helloworld
 	url = git@github.com:ongoworks/reaction-helloworld.git
 [submodule "packages/reaction-pkgmanager"]
 	path = packages/reaction-pkgmanager
 	url = git@github.com:ongoworks/reaction-pkgmanager.git
-[submodule "packages/iron-router"]
-	path = packages/iron-router
-	url = git@github.com:EventedMind/iron-router.git
+[submodule "packages/reaction-dashboard"]
+	path = packages/reaction-dashboard
+	url = git@github.com/ongoworks/reaction-dashboard.git
+[submodule "packages/reaction-shop"]
+	path = packages/reaction-shop
+	url = git@github.com:ongoworks/reaction-shop.git
+[submodule "packages/reaction-filepicker"]
+	path = packages/reaction-filepicker
+	url = git@github.com:ongoworks/reaction-filepicker.git
