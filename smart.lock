@@ -6,7 +6,6 @@
       "spin": {},
       "highcharts": {},
       "roles": {},
-      "medium-editor": {},
       "x-editable-bootstrap3": {},
       "iron-router": {}
     },
@@ -38,8 +37,8 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.0",
-        "commit": "c63e92d24c8210e2304ff5fed1b5c463394aeaf6"
+        "tag": "v0.6.1",
+        "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
       }
     }
   }

@@ -11,7 +11,6 @@ accounts-password
 spin
 highcharts
 roles
-iron-router
 reaction-pkgmanager
 reaction-dashboard
 reaction-greetramp
@@ -20,3 +19,4 @@ http
 reaction-shop
 x-editable-bootstrap3
 reaction-filepicker
+iron-router
