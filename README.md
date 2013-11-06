@@ -27,7 +27,7 @@ Convention:
 
 * lowercased
 * plural
-* **core_ **  prefix for core, reaction platform shared collections names (core_accounts)
+* **core_**  prefix for core, reaction platform shared collections names (core_accounts)
 * **reaction_** smart package name prefix for smart package specific collection
 * no prefix for external/universal meteor collections
 * HTML5 and CSS3 
