@@ -5,6 +5,7 @@
     "highcharts": {},
     "roles": {},
     "x-editable-bootstrap3": {},
-    "iron-router": {}
+    "iron-router": {},
+    "videojs": {}
   }
 }
