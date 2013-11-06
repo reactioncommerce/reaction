@@ -6,11 +6,11 @@ Reactive marketing first commerce platform built with Meteor.
 Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
 		
 ##Installation
-      curl https://install.meteor.com | /bin/sh
-      sudo -H npm install -g meteorite
-      git clone https://github.com/ongoworks/reaction.git
-      cd reaction
-      mrt
+    curl https://install.meteor.com | /bin/sh
+    sudo -H npm install -g meteorite
+    git clone https://github.com/ongoworks/reaction.git
+    cd reaction
+    mrt
 
 Now open [http://localhost:3000](http://localhost:3000) in a browser and you should see Reaction running.
 
