@@ -3,16 +3,16 @@
 	url = ssh://git@github.com/ongoworks/reaction-greetramp
 [submodule "packages/reaction-helloworld"]
 	path = packages/reaction-helloworld
-	url = git@github.com:ongoworks/reaction-helloworld.git
+	url = ssh://git@github.com/ongoworks/reaction-helloworld.git
 [submodule "packages/reaction-pkgmanager"]
 	path = packages/reaction-pkgmanager
-	url = git@github.com:ongoworks/reaction-pkgmanager.git
+	url = ssh://git@github.com/ongoworks/reaction-pkgmanager.git
 [submodule "packages/reaction-dashboard"]
 	path = packages/reaction-dashboard
-	url = git@github.com/ongoworks/reaction-dashboard.git
+	url = ssh://git@github.com/ongoworks/reaction-dashboard.git
 [submodule "packages/reaction-shop"]
 	path = packages/reaction-shop
-	url = git@github.com:ongoworks/reaction-shop.git
+	url = ssh://git@github.com/ongoworks/reaction-shop.git
 [submodule "packages/reaction-filepicker"]
 	path = packages/reaction-filepicker
-	url = git@github.com:ongoworks/reaction-filepicker.git
+	url = ssh://git@github.com/ongoworks/reaction-filepicker.git
