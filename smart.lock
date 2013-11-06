@@ -7,7 +7,8 @@
       "highcharts": {},
       "roles": {},
       "x-editable-bootstrap3": {},
-      "iron-router": {}
+      "iron-router": {},
+      "videojs": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -39,6 +40,11 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.6.1",
         "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
+      },
+      "videojs": {
+        "git": "https://github.com/nate-strauser/meteor-video-js.git",
+        "tag": "v4.1.2",
+        "commit": "26b85c5c75d456556bf1a1c5f00264a834813e73"
       }
     }
   }
