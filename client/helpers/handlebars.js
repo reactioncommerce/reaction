@@ -26,11 +26,14 @@ Handlebars.registerHelper('fname', function(){
 // general helper for determine if user has a store
 // returns boolean
 // *****************************************************
-Handlebars.registerHelper('userhasprofile', function() {
-  if (!Meteor.user().profile.store){
-    return false
-  }
-  return true;
+Handlebars.registerHelper('userHasProfile', function() {
+  var user = Meteor.user();
+  return user && !!user.profile.store;
+});
+
+Handlebars.registerHelper('userHasRole', function(role) {
+  var user = Meteor.user();
+  return user && user.roles.indexOf(role) !== -1;
 });
 
 // *****************************************************
