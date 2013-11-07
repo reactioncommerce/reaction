@@ -25,10 +25,10 @@ Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Gui
 ###Collections
 Convention:
 
-* lowercased
+* UpperCamelCased
 * plural
-* **core_**  prefix for core, reaction platform shared collections names (core_accounts)
-* **reaction_** smart package name prefix for smart package specific collection
+* **Core**  prefix for core, reaction platform shared collections names (e.g. "CoreAccounts")
+* **Reaction** smart package name prefix for smart package specific collection
 * no prefix for external/universal meteor collections
 * HTML5 and CSS3 
 	*  All visible content should have [Schema.org](http://schema.org/docs/full.html) tags
@@ -40,7 +40,7 @@ Convention:
 
 ###Smart Packages
 
-* **reaction_**  prefix followed by camelcased package name
+* **reaction-**  prefix followed by hyphenated package name (e.g. "reaction-shop")
 * name all dependencies in package.js
 * name all files in api
 * create packages in **reaction/packages** directory with the following convention
@@ -64,7 +64,7 @@ Convention:
 		  }
 		}
 
-* create reaction-foo/package.js
+* create reaction-foo/server/package.js
 
 		// Give our package a description
 		Package.describe({
