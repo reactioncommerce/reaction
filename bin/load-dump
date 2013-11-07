@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+MONGO_OUT_DIR="/tmp/dump"
+
+$DIRNAME/dump
+if [[ $? == 0 ]] ; then
+    rm $MONGO_OUT_DIR/reaction_meteor_com/meteor_accounts_loginServiceConfiguration*
+    mongorestore --drop -h 127.0.0.1:3002 --db meteor $MONGO_OUT_DIR/reaction_meteor_com
+fi

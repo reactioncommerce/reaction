@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "filepickerApiKey": "__KEY__",
+  "public": {
+    "isDebug": true
+  }
+}

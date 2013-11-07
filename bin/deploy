@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+CONFIG=$DIRNAME/../settings/prod.json
+. $DIRNAME/check-settings $CONFIG
+sed s/__VERSION__/$(git rev-parse HEAD)/ $CONFIG > /tmp/prod.json
+meteor deploy reaction.meteor.com --settings /tmp/prod.json "$@"

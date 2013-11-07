@@ -1,0 +1,8 @@
+{
+  "baseUrl": "http://reaction.meteor.com",
+  "filepickerApiKey": "__KEY__",
+  "public": {
+    "version": "__VERSION__",
+    "isDebug": false
+  }
+}
