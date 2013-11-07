@@ -1,13 +1,13 @@
 <template name="index">
     {{! We'll show different navigation if user is logged in}}
     {{#if currentUser}}
-    {{#if userhasprofile}}
-    {{> dashboard}}
+        {{#if userHasProfile}}
+            {{> dashboard}}
+        {{else}}
+            {{> createprofile}}
+        {{/if}}
     {{else}}
-    {{> createprofile}}
-    {{/if}}
-    {{else}}
-    {{> home}}
+        {{> home}}
     {{/if}}
 </template>
 
@@ -21,8 +21,7 @@
         <div class="jumbotron">
             <h1>marketing first! <span class="fa fa-bolt" style="color:#428bca;"></span></h1>
 
-            <p class="lead">Reaction Commerce gives you a real time shop that puts marketing first. The secret to
-                successful shops is in our love for marketing. </p>
+            <p class="lead">Reaction Commerce gives you a real time shop that puts marketing first. The secret to successful shops is in our love for marketing.</p>
         </div>
     </div>
 
@@ -32,6 +31,5 @@
                 {{> accountCreateStep1}}
             </div>
         </div>
-        <div>
-
+    </div>
 </template>
