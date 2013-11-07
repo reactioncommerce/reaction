@@ -1,0 +1,6 @@
+#!/bin/bash
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+meteor reset "$@"
+$DIRNAME/run

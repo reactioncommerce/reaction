@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -u
+set -e
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+CONFIG=$DIRNAME/../settings/dev.json
+. $DIRNAME/check-settings $CONFIG
+meteor run --settings $CONFIG "$@"
