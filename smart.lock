@@ -8,7 +8,8 @@
       "roles": {},
       "x-editable-bootstrap3": {},
       "iron-router": {},
-      "videojs": {}
+      "videojs": {},
+      "parsleyjs": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -45,6 +46,11 @@
         "git": "https://github.com/nate-strauser/meteor-video-js.git",
         "tag": "v4.1.2",
         "commit": "26b85c5c75d456556bf1a1c5f00264a834813e73"
+      },
+      "parsleyjs": {
+        "git": "https://github.com/nate-strauser/meteor-parsleyjs.git",
+        "tag": "v1.1.7",
+        "commit": "035a1e56a78e50369686b7e281aa71e3daf3729a"
       }
     }
   }

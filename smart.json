@@ -6,6 +6,7 @@
     "roles": {},
     "x-editable-bootstrap3": {},
     "iron-router": {},
-    "videojs": {}
+    "videojs": {},
+    "parsleyjs": {}
   }
 }
