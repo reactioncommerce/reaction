@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wizard With Disabled Tab Click</title>
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../prettify.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class='container'>
+		
+		<div class="col-md-12">
+			<section id="wizard">
+			  <div class="page-header">
+	            <h1>Wizard With Disabled Tab Click</h1>
+	          </div>
+	
+				<div id="rootwizard">
+					<div class="navbar">
+					  <div class="navbar-inner">
+					    <div class="container">
+					<ul>
+					  	<li><a href="#tab1" data-toggle="tab">First</a></li>
+						<li><a href="#tab2" data-toggle="tab">Second</a></li>
+						<li><a href="#tab3" data-toggle="tab">Third</a></li>
+						<li><a href="#tab4" data-toggle="tab">Forth</a></li>
+						<li><a href="#tab5" data-toggle="tab">Fifth</a></li>
+						<li><a href="#tab6" data-toggle="tab">Sixth</a></li>
+						<li><a href="#tab7" data-toggle="tab">Seventh</a></li>
+					</ul>
+					 </div>
+					  </div>
+					</div>
+					<div class="tab-content">
+					    <div class="tab-pane" id="tab1">
+					      1
+					    </div>
+					    <div class="tab-pane" id="tab2">
+					      2
+					    </div>
+						<div class="tab-pane" id="tab3">
+							3
+					    </div>
+						<div class="tab-pane" id="tab4">
+							4
+					    </div>
+						<div class="tab-pane" id="tab5">
+							5
+					    </div>
+						<div class="tab-pane" id="tab6">
+							6
+					    </div>
+						<div class="tab-pane" id="tab7">
+							7
+					    </div>
+						<ul class="pager wizard">
+							<li class="previous first" style="display:none;"><a href="#">First</a></li>
+							<li class="previous"><a href="#">Previous</a></li>
+							<li class="next last" style="display:none;"><a href="#">Last</a></li>
+						  	<li class="next"><a href="#">Next</a></li>
+						</ul>
+					</div>	
+				</div>
+				
+<h3>HTML</h3>
+<pre class="prettyprint linenums">
+&lt;div id="rootwizard">
+	&lt;div class="navbar">
+	  &lt;div class="navbar-inner">
+	    &lt;div class="container">
+	&lt;ul>
+	  	&lt;li>&lt;a href="#tab1" data-toggle="tab">First&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab2" data-toggle="tab">Second&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab3" data-toggle="tab">Third&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab4" data-toggle="tab">Forth&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab5" data-toggle="tab">Fifth&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab6" data-toggle="tab">Sixth&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab7" data-toggle="tab">Seventh&lt;/a>&lt;/li>
+	&lt;/ul>
+	 &lt;/div>
+	  &lt;/div>
+	&lt;/div>
+	&lt;div class="tab-content">
+	    &lt;div class="tab-pane" id="tab1">
+	      1
+	    &lt;/div>
+	    &lt;div class="tab-pane" id="tab2">
+	      2
+	    &lt;/div>
+		&lt;div class="tab-pane" id="tab3">
+			3
+	    &lt;/div>
+		&lt;div class="tab-pane" id="tab4">
+			4
+	    &lt;/div>
+		&lt;div class="tab-pane" id="tab5">
+			5
+	    &lt;/div>
+		&lt;div class="tab-pane" id="tab6">
+			6
+	    &lt;/div>
+		&lt;div class="tab-pane" id="tab7">
+			7
+	    &lt;/div>
+		&lt;ul class="pager wizard">
+			&lt;li class="previous first" style="display:none;">&lt;a href="#">First&lt;/a>&lt;/li>
+			&lt;li class="previous">&lt;a href="#">Previous&lt;/a>&lt;/li>
+			&lt;li class="next last" style="display:none;">&lt;a href="#">Last&lt;/a>&lt;/li>
+		  	&lt;li class="next">&lt;a href="#">Next&lt;/a>&lt;/li>
+		&lt;/ul>
+	&lt;/div>	
+&lt;/div>
+</pre>
+
+<h3>JS</h3>
+<pre class="prettyprint linenums">
+$(document).ready(function() {
+  	$('#rootwizard').bootstrapWizard({onTabClick: function(tab, navigation, index) {
+		alert('on tab click disabled');
+		return false;
+	}});
+});
+</pre>	
+				
+			</section>
+ 		</div>
+	</div>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../jquery.bootstrap.wizard.js"></script>
+	<script src="../prettify.js"></script>
+	<script>
+	$(document).ready(function() {
+	  	$('#rootwizard').bootstrapWizard({onTabClick: function(tab, navigation, index) {
+			alert('on tab click disabled');
+			return false;
+		}});	
+		window.prettyPrint && prettyPrint()
+	});	
+	</script>
+  </body>
+</html>

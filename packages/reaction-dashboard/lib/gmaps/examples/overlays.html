@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Overlays</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="../gmaps.js"></script>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+  <script type="text/javascript">
+    var map;
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+      });
+      map.drawOverlay({
+        lat: map.getCenter().lat(),
+        lng: map.getCenter().lng(),
+        layer: 'overlayLayer',
+        content: '<div class="overlay">Lima<div class="overlay_arrow above"></div></div>',
+        verticalAlign: 'top',
+        horizontalAlign: 'center'
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>GMaps.js &mdash; Overlays</h1>
+  <div class="row">
+    <div class="col-md-11">
+      <div id="map"></div>
+    </div>
+    <div class="col-md-6">
+      <p>You can add overlays using:</p>
+      <pre>map.drawOverlay({
+  lat: -12.043333,
+  lng: -77.028333,
+  content: '&lt;div class="overlay"&gt;Lima&lt;/div&gt;'
+});</pre>
+      <p>You must define <strong>latitude</strong>, <strong>longitude</strong> and the <strong>content</strong> of the map overlay.</p>
+      <p><span class="label notice">Note: </span>Also, you must define a <strong>height</strong> to the <strong>content</strong>.</p>
+      <p><span class="label notice">Note: </span>Also, you can define a <code>verticalAlign</code>, which can be <code>top</code>, <code>middle</code> or <code>bottom</code>, and <code>horizontalAlign</code>, which can be <code>left</code>, <code>center</code> or <code>right</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

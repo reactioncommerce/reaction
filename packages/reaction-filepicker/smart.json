@@ -1,0 +1,9 @@
+{
+  "name": "reaction-filepicker",
+  "description": "filepicker.io script repackaged for Meteor and made into optional reaction package",
+  "homepage": "https://github.com/ongoworks/reaction-filepicker",
+  "author": "Aaron Judd <aaron@ongoworks.com>",
+  "version": "1.0.0",
+  "git": "https://github.com/ongoworks/reaction-filepicker.git",
+  "packages": {}
+}

@@ -1,0 +1,23 @@
+<template name="variant">
+    <tr>
+        <td>
+            <input type="radio" name="variant"/>
+        </td>
+        <td>
+            <a href="#">{{barcode}}</a>
+        </td>
+        <td>{{inventory_quantity}}</td>
+        <td>{{sku}}</td>
+        <td>{{price}}</td>
+        {{#if userHasRole "admin"}}
+            <td class="edit">
+                <a href="#" class="edit-link"><i class="fa fa-pencil"></i></a>
+                <a href="#" class="remove-link" data-confirm="Are you sure you want to delete this variant?">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
+        {{else}}
+            <td class="buy"><a href="#"><i class="fa fa-shopping-cart"></i></a></td>
+        {{/if}}
+    </tr>
+</template>

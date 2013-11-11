@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Layers Maps: Places</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=places"></script>
+    <script src="../gmaps.js"></script>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="examples.css" />
+    <script>
+        $(function () {
+          var map = new GMaps({
+          el: "#map",
+          lat: -33.8665433,
+          lng: 151.1956316,
+          zoom: 15
+        });
+        
+        map.addLayer('places', {
+          location : new google.maps.LatLng(-33.8665433,151.1956316),
+          radius : 500,
+          types : ['store'],
+          search: function (results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+              for (var i = 0; i < results.length; i++) {
+                var place = results[i];
+                map.addMarker({
+                  lat: place.geometry.location.lat(),
+                  lng: place.geometry.location.lng(),
+                  title : place.name,
+                  infoWindow : {
+                    content : '<h2>'+place.name+'</h2><p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
+                  }
+                });
+              }
+            } 
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>GMaps.js Places layer</h1>
+    <div class="row">
+      <div class="col-md-11">
+        <div id="map"></div>
+      </div>
+      <div class="col-md-6">
+        <p>You can easily add or remove a layer using GMaps.js:</p>
+        <pre>map.addLayer('places', {
+          location : new google.maps.LatLng(-33.8665433,151.1956316),
+          radius : 500,
+          types : ['store'],
+          search: function (results, status) {
+            //do something with the result 
+          }
+        });
+</pre>
+        <p><span class="label notice">Note: </span> There are 3 types of function to use: <strong>search()</strong>, <strong>textSearch()</strong> and <strong>nearbySearch()</strong>. On the <a href="https://developers.google.com/maps/documentation/javascript/places" target="_blank">Google Places</a> page you can see the options to use per search function.</p>
+
+      </div>
+    </div>
+  </body>
+</html>

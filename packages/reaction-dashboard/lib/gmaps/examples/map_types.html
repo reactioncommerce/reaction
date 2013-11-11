@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Map Types</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="../gmaps.js"></script>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+  <script type="text/javascript">
+    var map;
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: -12.043333,
+        lng: -77.028333,
+        mapTypeControlOptions: {
+          mapTypeIds : ["hybrid", "roadmap", "satellite", "terrain", "osm", "cloudmade"]
+        }
+      });
+      map.addMapType("osm", {
+        getTileUrl: function(coord, zoom) {
+          return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+        },
+        tileSize: new google.maps.Size(256, 256),
+        name: "OpenStreetMap",
+        maxZoom: 18
+      });
+      map.addMapType("cloudmade", {
+        getTileUrl: function(coord, zoom) {
+          return "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+        },
+        tileSize: new google.maps.Size(256, 256),
+        name: "CloudMade",
+        maxZoom: 18
+      });
+      map.setMapTypeId("osm");
+    });
+  </script>
+</head>
+<body>
+  <h1>GMaps.js &mdash; Map Types</h1>
+  <div class="row">
+    <div class="col-md-11">
+      <div id="map"></div>
+    </div>
+    <div class="col-md-6">
+      <p>You can define many map types from external map services, like OpenStreetMap:</p>
+      <pre>map.addMapType("osm", {
+  getTileUrl: function(coord, zoom) {
+    return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+  },
+  tileSize: new google.maps.Size(256, 256),
+  name: "OpenStreetMap",
+  maxZoom: 18
+});</pre>
+      <p>You must define a function called <code>getTileUrl</code>, which returns a tile URL according the coordenates in the map.</p>
+    </div>
+  </div>
+</body>
+</html>

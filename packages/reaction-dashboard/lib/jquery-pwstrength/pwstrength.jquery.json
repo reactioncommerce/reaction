@@ -1,0 +1,39 @@
+{
+  "name": "pwstrength",
+  "title": "jQuery Password Strength",
+  "description": "A plugin to indicate the strength of passwords.",
+  "keywords": [
+    "password",
+    "strength",
+    "security"
+  ],
+  "version": "0.1.1",
+  "author": {
+    "name": "Mato Ilic",
+    "url": "http://matoilic.ch"
+  },
+  "maintainers": [
+    {
+      "name": "Mato Ilic",
+      "email": "info@matoilic.ch",
+      "url": "http://matoilic.ch"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jquery/jquery-color/blob/2.1.2/MIT-LICENSE.txt"
+    },
+    {
+      "type": "GPL",
+      "url": "http://www.gnu.org/licenses/gpl.html"
+    }
+  ],
+  "bugs": "https://github.com/matoilic/jquery.pwstrength/issues",
+  "homepage": "http://matoilic.github.com/jquery.pwstrength/",
+  "docs": "http://matoilic.github.com/jquery.pwstrength/",
+  "download": "http://matoilic.github.com/jquery.pwstrength/",
+  "dependencies": {
+    "jquery": ">=1.5"
+  }
+}

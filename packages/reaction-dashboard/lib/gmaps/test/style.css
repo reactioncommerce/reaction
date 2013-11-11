@@ -1,0 +1,30 @@
+body {
+font-family: sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: lighter;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+
+.map,
+.panorama {
+  width: 100%;
+  height: 100px;
+}
+
+.with-columns {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.with-columns .map,
+.with-columns .panorama {
+  display: block;
+  width: 50%;
+  height: 150px;
+  float: left;
+}

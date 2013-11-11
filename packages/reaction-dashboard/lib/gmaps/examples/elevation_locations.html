@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Elevation locations</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="../gmaps.js"></script>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+  <script type="text/javascript">
+    var map;
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+      });
+      //locations request
+      map.getElevations({
+        locations : [[-12.040397656836609,-77.03373871559225], [-12.050047116528843,-77.02448169303511],  [-12.044804866577001,-77.02154422636042]],
+          callback : function (result, status){
+          if (status == google.maps.ElevationStatus.OK) {
+            for (var i in result){
+             map.addMarker({
+              lat: result[i].location.lat(),
+              lng: result[i].location.lng(),
+              title: 'Marker with InfoWindow',
+              infoWindow: {
+                content: '<p>The elevation is '+result[i].elevation+' in meters</p>'
+              }
+            });
+           }
+          }
+        }
+      });    
+    });
+  </script>
+</head>
+<body>
+  <h1>GMaps.js &mdash; Elevation locations</h1>
+  <div class="row">
+    <div class="col-md-11">
+      <div id="map"></div>
+    </div>
+    <div class="col-md-6">
+      <p>With GMaps.js you can add elevation this way:</p>
+      <pre>map.getElevations({
+  locations : [[-12.040397656836609,-77.03373871559225], [-12.050047116528843,-77.02448169303511],  [-12.044804866577001,-77.02154422636042]],
+    callback : function (result, status){
+    if (status == google.maps.ElevationStatus.OK) {
+      console.log(result, status);
+    }
+  }
+});</pre>
+    
+    </div>
+  </div>
+</body>
+</html>

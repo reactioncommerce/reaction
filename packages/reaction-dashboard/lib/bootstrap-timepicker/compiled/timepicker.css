@@ -1,0 +1,88 @@
+.bootstrap-timepicker.dropdown-menu {
+    border-radius: 4px 4px 4px 4px;
+    display: none;
+    left: 0;
+    margin-top: 1px;
+    padding: 4px;
+    top: 0;
+    min-width: 10px;
+    z-index: 99999;
+}
+.bootstrap-timepicker.dropdown-menu.open {
+    display: inline-block;
+}
+.bootstrap-timepicker.dropdown-menu:before {
+    border-bottom: 7px solid rgba(0, 0, 0, 0.2);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    content: "";
+    left: 6px;
+    position: absolute;
+    top: -7px;
+}
+.bootstrap-timepicker.dropdown-menu:after {
+    border-bottom: 6px solid #FFFFFF;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    content: "";
+    left: 7px;
+    position: absolute;
+    top: -6px;
+}
+.bootstrap-timepicker.modal {
+    margin-left: -100px;
+    margin-top: 0;
+    top: 30%;
+    width: 200px;
+}
+.bootstrap-timepicker.modal .modal-header h3 {
+    font-size: 16px !important;
+    margin-top: 3px;
+    margin-bottom: 3px;    
+}
+.bootstrap-timepicker.modal .modal-content {
+    padding: 0;
+}
+.bootstrap-timepicker table {
+    margin: 0;
+    width: 100%;
+}
+.bootstrap-timepicker table td {
+    height: 30px;
+    margin: 0;
+    padding: 2px;
+    text-align: center;
+}
+.bootstrap-timepicker table td span {
+    width: 100%;
+}
+.bootstrap-timepicker table td a {
+    border: 1px solid transparent;
+    display: inline-block;
+    margin: 0;
+    outline: 0 none;
+    padding: 8px 0;
+    width: 3em;
+}
+.bootstrap-timepicker table td a:hover {
+    background-color: #EEEEEE;
+    border-color: #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+    text-decoration: none;
+}
+.bootstrap-timepicker table td a i {
+    margin-top: 2px;
+}
+.bootstrap-timepicker table td input {
+    margin: 0;
+    text-align: center;
+    width: 25px;
+}
+.bootstrap-timepicker-component .input-group-addon {
+    cursor: pointer;
+}
+.bootstrap-timepicker-component .input-group-addon i {
+    display: block;
+    height: 16px;
+    width: 16px;
+}

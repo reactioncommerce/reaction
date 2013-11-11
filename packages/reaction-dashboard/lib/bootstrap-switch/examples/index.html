@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap switch - by Mattia Larentis</title>
+    <meta name="author" content="Mattia Larentis">
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css">
+    <link rel="stylesheet" href="../static/stylesheets/bootstrap-switch.css">
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css">
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/docs.css">
+
+    <style>
+        .col-md-4, h1 {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body style="padding-top: 50px;">
+
+<a href="https://github.com/nostalgiaz/bootstrap-switch"><img
+    style="position: absolute; top: 0; right: 0; border: 0;"
+    src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+    alt="Fork me on GitHub"></a>
+
+<div class="container">
+<div class="row">
+    <div class="col-md-12">
+        <h1>Bootstrap switch
+            <small>- by <a href="http://larentis.eu">Mattia Larentis</a> <a href="https://twitter.com/spiritualguru">(@SpiritualGuru)</a>
+            </small>
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset2" style="text-align: center;">
+        <iframe src="http://ghbtns.com/github-btn.html?user=nostalgiaz&repo=bootstrap-switch&type=watch&count=true"
+                allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=nostalgiaz&repo=bootstrap-switch&type=fork&count=true"
+                allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=nostalgiaz&type=follow&count=true"
+                allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Size</h3>
+        <div class="bs-docs-example">
+            <div class="switch switch-large">
+                <input type="checkbox" checked />
+            </div>
+
+            <div class="switch">
+                <input type="checkbox" checked />
+            </div>
+
+            <div class="switch switch-small">
+                <input type="checkbox" checked />
+            </div>
+
+            <div class="switch switch-mini">
+                <input type="checkbox" checked />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;div class="switch switch-large">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch switch-small">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch switch-mini">
+    &lt;input type="checkbox" checked />
+&lt;/div></pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Colors</h3>
+        <div class="bs-docs-example">
+            <div class="switch" data-on="primary" data-off="info">
+                <input type="checkbox" checked />
+            </div>
+            <div class="switch" data-on="info" data-off="success">
+                <input type="checkbox" checked />
+            </div>
+            <div class="switch" data-on="success" data-off="warning">
+                <input type="checkbox" checked />
+            </div>
+            <div class="switch" data-on="warning" data-off="danger">
+                <input type="checkbox" checked />
+            </div>
+            <div class="switch" data-on="danger" data-off="default">
+                <input type="checkbox" checked />
+            </div>
+            <div class="switch" data-on="default" data-off="primary">
+                <input type="checkbox" checked />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;div class="switch" data-on="primary" data-off="info">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch" data-on="info" data-off="success">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch" data-on="success" data-off="warning">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch" data-on="warning" data-off="danger">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+
+&lt;div class="switch" data-on="danger" data-off="default">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+&lt;div class="switch" data-on="default" data-off="primary">
+    &lt;input type="checkbox" checked />
+&lt;/div>
+</pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Animation</h3>
+
+        <div class="bs-docs-example">
+            <div class="switch" data-animated="false">
+                <input type="checkbox" checked />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;div class="switch" data-animated="false">
+    &lt;input type="checkbox" checked />
+&lt;/div></pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Disabled</h3>
+
+        <div class="bs-docs-example">
+            <div class="switch">
+                <input type="checkbox" checked disabled />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;div class="switch">
+   &lt;input type="checkbox" checked disabled />
+&lt;/div></pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Text</h3>
+
+        <div class="bs-docs-example">
+            <div class="switch" data-on-label="SI" data-off-label="NO">
+                <input type="checkbox" checked />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;div class="switch" data-on-label="SI" data-off-label="NO">
+    &lt;input type="checkbox" checked />
+&lt;/div></pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>HTML text</h3>
+
+        <div class="bs-docs-example">
+            <div class="switch" data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
+                <input type="checkbox" checked />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;div class="switch" data-on-label="&lt;i class='icon-ok icon-white'>&lt;/i>" data-off-label="&lt;i class='icon-remove'>&lt;/i>">
+    &lt;input type="checkbox" checked />
+&lt;/div></pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Event handler <small>javascript</small></h3>
+
+        <div class="bs-docs-example">
+            <div id="mySwitch" class="switch">
+                <input type="checkbox" checked />
+            </div>
+        </div>
+        <pre class="prettyprint linenums">
+$('#mySwitch').on('switch-change', function (e, data) {
+    var $el = $(data.el)
+      , value = data.value;
+    console.log(e, $el, value);
+});</pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Toggle State <small>javascript</small></h3>
+
+        <div class="bs-docs-example">
+            <div id="toggle-state-switch" class="switch">
+                <input type="checkbox" checked />
+            </div>
+            <br>
+            <br>
+            <div id="toggle-state-switch-button-status" class="btn btn-primary">Status!</div>
+            <div id="toggle-state-switch-button-on" class="btn btn-primary">ON!</div>
+            <div id="toggle-state-switch-button" class="btn btn-primary">Toggle me!</div>
+            <div id="toggle-state-switch-button-off" class="btn btn-primary">OFF!</div>
+        </div>
+        <pre class="prettyprint linenums">
+$('#toggle-state-switch').bootstrapSwitch('status'); // true || false
+$('#toggle-state-switch').bootstrapSwitch('toggleState');
+$('#toggle-state-switch').bootstrapSwitch('setState', false); // true || false</pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Destroy <small>javascript</small></h3>
+
+        <div class="bs-docs-example">
+            <div id="destroy-switch" class="switch">
+                <input type="checkbox" checked />
+            </div>
+            <br>
+            <br>
+            <button id="btn-destroy-switch" class="btn btn-danger">
+                Destroy me!
+            </button>
+        </div>
+        <pre class="prettyprint linenums">
+$('#destroy-switch').bootstrapSwitch('destroy');</pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Create <small>javascript</small></h3>
+        <div class="bs-docs-example">
+            <input id="create-switch" type="checkbox" checked />
+            <br>
+            <br>
+            <div id="btn-create" class="btn">Create</div>
+        </div>
+        <pre class="prettyprint linenums">
+$('#create-switch').wrap('&lt;div class="switch" />').parent().bootstrapSwitch();</pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Disabled <small>javascript</small></h3>
+
+        <div class="bs-docs-example">
+            <label for="disable-switch-input">amazing label</label>
+            <div id="disable-switch" class="switch">
+                <input id="disable-switch-input" type="checkbox" checked />
+            </div>
+            <br>
+            <br>
+            <button id="btn-is-active-switch" class="btn">
+                Is active?
+            </button>
+            <button id="btn-toggle-activation-switch" class="btn">
+                Toggle activation!
+            </button>
+            <button id="btn-disable-switch" class="btn">
+                Disable!
+            </button>
+            <button id="btn-activate-switch" class="btn">
+                Activate!
+            </button>
+        </div>
+        <pre class="prettyprint linenums">
+$('#disable-switch').bootstrapSwitch('isActive');
+$('#disable-switch').bootstrapSwitch('toggleActivation');
+$('#disable-switch').bootstrapSwitch('setActive', false);  // true || false</pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Form <small>- try to use tab and space</small></h3>
+
+        <div class="bs-docs-example">
+            <form class="form-horizontal col-md-8 offset2">
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail">Email</label>
+                    <div class="controls">
+                        <input type="text" id="inputEmail" placeholder="Email">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="notification1">Notification 1</label>
+
+                    <div class="controls">
+                        <div class="switch" tabindex="0">
+                            <input id="notification1" type="checkbox" />
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="notification2">Notification 2</label>
+
+                    <div class="controls">
+                        <div class="switch" tabindex="0">
+                            <input id="notification2" type="checkbox" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="clearfix"></div>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;form class="form-horizontal">
+    &lt;div class="control-group">
+        &lt;label class="control-label" for="inputEmail">Email&lt;/label>
+        &lt;div class="controls">
+            &lt;input type="text" id="inputEmail" placeholder="Email">
+        &lt;/div>
+    &lt;/div>
+    &lt;div class="control-group">
+        &lt;label class="control-label" for="notification1">Notification 1&lt;/label>
+        &lt;div class="controls">
+            &lt;div class="switch" tabindex="0">
+                &lt;input id="notification1" type="checkbox" />
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    &lt;div class="control-group">
+        &lt;label class="control-label" for="notification2">Notification 2&lt;/label>
+        &lt;div class="controls">
+            &lt;div class="switch" tabindex="0">
+                &lt;input id="notification2" type="checkbox" />
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+&lt;/form></pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Modal</h3>
+
+        <div class="bs-docs-example">
+            <a href="#myModal" role="button" class="btn" data-toggle="modal">Modal</a>
+        </div>
+        <pre class="prettyprint linenums">
+&lt;a href="#myModal" role="button" class="btn" data-toggle="modal">Modal&lt;/a>
+-----
+&lt;div class="modal-body">
+    &lt;div class="switch">
+        &lt;input type="checkbox" checked />
+    &lt;/div>
+&lt;/div></pre>
+    </div>
+</div>
+
+<p class="pull-right">
+    <a href="https://twitter.com/SpiritualGuru">follow me</a> -
+    <a href="http://www.larentis.eu">my site</a>
+</p>
+</div>
+
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3>Modal</h3>
+    </div>
+    <div class="modal-body">
+        <div class="switch">
+            <input type="checkbox" checked />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
+<script src="../static/js/bootstrap-switch.js"></script>
+<script>
+    window.prettyPrint && prettyPrint();
+    $('#mySwitch').on('switch-change', function (e, data) {
+        var $el = $(data.el)
+            , value = data.value;
+        console.log(e, $el, value);
+    });
+
+    $('#toggle-state-switch-button').on('click', function () {
+        $('#toggle-state-switch').bootstrapSwitch('toggleState');
+    });
+
+    $('#toggle-state-switch-button-on').on('click', function () {
+        $('#toggle-state-switch').bootstrapSwitch('setState', true);
+    });
+
+    $('#toggle-state-switch-button-status').on('click', function () {
+        alert($('#toggle-state-switch').bootstrapSwitch('status'));
+    });
+
+    $('#toggle-state-switch-button-off').on('click', function () {
+        $('#toggle-state-switch').bootstrapSwitch('setState', false);
+    });
+
+    $('#btn-destroy-switch').on('click', function () {
+        $('#destroy-switch').bootstrapSwitch('destroy');
+        $(this).remove();
+    });
+
+    $('#btn-create').on('click', function () {
+        $('#create-switch').wrap('<div class="switch" />').parent().bootstrapSwitch();
+        $(this).remove()
+    });
+
+    $('#btn-is-active-switch').on('click', function () {
+        alert($('#disable-switch').bootstrapSwitch('isActive'));
+    });
+
+    $('#btn-toggle-activation-switch').on('click', function () {
+        $('#disable-switch').bootstrapSwitch('toggleActivation');
+    });
+
+    $('#btn-disable-switch').on('click', function () {
+        $('#disable-switch').bootstrapSwitch('setActive', false);
+    });
+
+    $('#btn-activate-switch').on('click', function () {
+        $('#disable-switch').bootstrapSwitch('setActive', true);
+    });
+</script>
+</body>
+</html>

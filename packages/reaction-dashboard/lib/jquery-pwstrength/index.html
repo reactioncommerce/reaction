@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jQuery PWStrength</title>
+    <link href="demo/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <a href="https://github.com/matoilic/jquery.pwstrength" class="fork"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+    <div id="wrapper">
+        <div class="download">
+            <a href="https://github.com/matoilic/jquery.pwstrength/zipball/master" title="Download as zip">
+                <img border="0" width="60" src="https://github.com/images/modules/download/zip.png">
+            </a>
+            <a href="https://github.com/matoilic/jquery.pwstrength/tarball/master" title="Download as tar.gz">
+                <img border="0" width="60" src="https://github.com/images/modules/download/tar.png">
+            </a>
+        </div>
+        <h1>jQuery Password Strength Indicator</h1>
+        <section id="usage">
+            <h2>Example</h2>
+            <form action="#" method="post">
+                <label for="field">Password:</label><br>
+                <input type="password" id="field" data-indicator="pwindicator">
+                <div id="pwindicator">
+                    <div class="progress-bar"></div>
+                    <div class="label"></div>
+                </div>
+            </form>
+            
+            <h2>Code</h2>
+            
+            <p><strong>HTML</strong></p>
+            <code>
+                <pre>   
+    &lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;
+        &lt;label for=&quot;field&quot;&gt;Password:&lt;/label&gt;&lt;br&gt;
+        &lt;input type=&quot;password&quot; id=&quot;field&quot; data-indicator=&quot;<strong>pwindicator</strong>&quot;&gt;
+        &lt;div id=&quot;<strong>pwindicator</strong>&quot;&gt;
+            &lt;div class=&quot;bar&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;label&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;                    
+                </pre>
+            </code>
+            
+            <p>The data-indicator attribute on the password field specifies which element is used as indicator.</p>
+            
+            <p><strong>JavaScript</strong></p>
+            <code>
+                <pre>   
+    jQuery(function($) { 
+        $('#field').pwstrength(); 
+    });
+                </pre>
+            </code>
+            
+            <p>
+                <strong>You can also check the password manually by calling</strong>
+            </p>
+            <code><pre>    $.pwstrength</pre></code>
+        </section>
+        <section id="options">
+            <h2>Options</h2>
+            <ul>
+                <li>
+                    <p>
+                        <strong>label</strong><br>
+                        The Selector for the label element within the indicator container.<br>
+                        Default: .label
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>classes</strong><br>
+                        The CSS classes which get added for each strength level.<br>
+                        Default: ['pw-very-weak', 'pw-weak', 'pw-mediocre', 'pw-strong', 'pw-very-strong']
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>texts</strong><br>
+                        The texts that get inserted into the label for each strength level.<br>
+                        Default: ['very weak', 'weak', 'mediocre', 'strong', 'very strong']
+                    </p>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h2>Requirements</h2>
+            <p>jQuery 1.5 or higher</p>
+        </section>
+        <section id="support">
+            <h2>Supported Browsers</h2>
+            <ul>
+                <li>Firefox 3+</li>
+                <li>Safari 3+</li>
+                <li>Chrome 10+</li>
+                <li>Opera 9+</li>
+                <li>Internet Explorer 6+</li>
+            </ul>
+        </section>
+        <section id="download">
+            <h2>Download</h2>
+            <p>
+                You can download this project in either
+                <a href="https://github.com/matoilic/jquery.pwstrength/zipball/master">zip</a> or
+                <a href="https://github.com/matoilic/jquery.pwstrength/tarball/master">tar</a> formats.
+            </p>
+            <p>
+                You can also clone the project with <a href="http://git-scm.com">Git</a> by running:
+                <code>$ git clone git://github.com/matoilic/jquery.pwstrength</code>
+            </p>
+        </section>
+        <section id="licence">
+            <h2>Licence</h2>
+            <p>Copyright &copy; 2012 Mato Ilic</p>
+            <p>jquery.pwstrength is dual licensed under the MIT and GPL licenses:</p>
+            <p>
+                <a href="http://www.opensource.org/licenses/mit-license.php">http://www.opensource.org/licenses/mit-license.php</a><br>
+                <a href="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a>
+            </p>
+        </section>
+    </div>
+    <script src="vendor/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="jquery.pwstrength.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        jQuery(function($) { $('#field').pwstrength(); });
+    </script>
+</body>
+</html>

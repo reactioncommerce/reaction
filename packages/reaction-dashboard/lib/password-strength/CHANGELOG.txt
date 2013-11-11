@@ -1,0 +1,6 @@
+Clockface changelog
+=============================
+
+Version 1.0.0  Dec 18, 2012
+-----------------------------
+Initial release.

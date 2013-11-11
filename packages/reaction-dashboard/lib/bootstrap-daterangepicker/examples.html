@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+   <head>
+      <meta charset="UTF-8" />
+      <title>A date range picker for Twitter Bootstrap</title>
+      <link rel="stylesheet" type="text/css" media="all" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+      <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+      <script type="text/javascript" src="date.js"></script>
+      <script type="text/javascript" src="daterangepicker.js"></script>
+   </head>
+   <body>
+
+      <div class="container">
+         <div class="col-md-12">
+
+            <h4>Simple Example</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="reservation">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-group">
+                       <span class="input-group-addon"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="reservation" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reservation').daterangepicker();
+               });
+               </script>
+
+            </div>
+
+            <h4>Options Usage Example</h4>
+
+            <div class="well">
+
+               <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="icon-calendar icon-large"></i>
+                  <span></span> <b class="caret" style="margin-top: 8px"></b>
+               </div>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reportrange').daterangepicker(
+                     {
+                        ranges: {
+                           'Today': ['today', 'today'],
+                           'Yesterday': ['yesterday', 'yesterday'],
+                           'Last 7 Days': [Date.today().add({ days: -6 }), 'today'],
+                           'Last 30 Days': [Date.today().add({ days: -29 }), 'today'],
+                           'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
+                           'Last Month': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })]
+                        },
+                        opens: 'left',
+                        format: 'MM/dd/yyyy',
+                        separator: ' to ',
+                        startDate: Date.today().add({ days: -29 }),
+                        endDate: Date.today(),
+                        minDate: '01/01/2012',
+                        maxDate: '12/31/2013',
+                        locale: {
+                            applyLabel: 'Submit',
+                            fromLabel: 'From',
+                            toLabel: 'To',
+                            customRangeLabel: 'Custom Range',
+                            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                            firstDay: 1
+                        },
+                        showWeekNumbers: true,
+                        buttonClasses: ['btn-danger']
+                     }, 
+                     function(start, end) {
+                        $('#reportrange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+                     }
+                  );
+
+                  //Set the initial state of the picker label
+                  $('#reportrange span').html(Date.today().add({ days: -29 }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
+
+               });
+               </script>
+
+            </div>
+
+         </div>
+      </div>
+
+   </body>
+</html>

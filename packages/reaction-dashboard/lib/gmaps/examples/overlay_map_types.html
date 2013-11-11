@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Overlay Map Types</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="../gmaps.js"></script>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+  <script type="text/javascript">
+    var map;
+
+    var getTile = function(coord, zoom, ownerDocument) {
+      var div = ownerDocument.createElement('div');
+      div.innerHTML = coord;
+      div.style.width = this.tileSize.width + 'px';
+      div.style.height = this.tileSize.height + 'px';
+      div.style.background = 'rgba(250, 250, 250, 0.55)';
+      div.style.fontFamily = 'Monaco, Andale Mono, Courier New, monospace';
+      div.style.fontSize = '10';
+      div.style.fontWeight = 'bolder';
+      div.style.border = 'dotted 1px #aaa';
+      div.style.textAlign = 'center';
+      div.style.lineHeight = this.tileSize.height + 'px';
+      return div;
+    };
+
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+      });
+      map.addOverlayMapType({
+        index: 0,
+        tileSize: new google.maps.Size(256, 256),
+        getTile: getTile
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>GMaps.js &mdash; Overlay Map Types</h1>
+  <div class="row">
+    <div class="col-md-11">
+      <div id="map"></div>
+    </div>
+    <div class="col-md-6">
+      <p>You can define many overlay map types this way:</p>
+      <pre>var getTile = function(coord, zoom, ownerDocument) {
+  var div = ownerDocument.createElement('div');
+  div.innerHTML = coord;
+  div.style.width = this.tileSize.width + 'px';
+  div.style.height = this.tileSize.height + 'px';
+  div.style.background = 'rgba(250, 250, 250, 0.55)';
+  div.style.fontFamily = 'Monaco, Andale Mono, Courier New, monospace';
+  div.style.fontSize = '10';
+  div.style.fontWeight = 'bolder';
+  div.style.border = 'dotted 1px #aaa';
+  div.style.textAlign = 'center';
+  div.style.lineHeight = this.tileSize.height + 'px';
+  return div;
+};
+
+map.addOverlayMapType({
+  index: 0,
+  tileSize: new google.maps.Size(256, 256),
+  getTile: getTile
+});</pre>
+      <p>You must define a function called <code>getTile</code>, which returns a HTML element used to fill the map overlay. Also, you have to set an overlay <code>index</code>, which place the overlay on top of the base map, according this index.</p>
+      <p><span class="label notice">NOTE:</span> You can remove an overlay map type using <code>removeOverlayMapType(overlay_index)</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basic Pills Example</title>
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../prettify.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class='container'>
+		
+		<div class="col-md-12">
+			<section id="wizard">
+			  <div class="page-header">
+	            <h1>Basic Pills Wizard</h1>
+	          </div>
+				<form id="commentForm" method="get" action="" class="form-horizontal">
+				<div id="rootwizard">
+					<ul>
+					  	<li><a href="#tab1" data-toggle="tab">First</a></li>
+						<li><a href="#tab2" data-toggle="tab">Second</a></li>
+						<li><a href="#tab3" data-toggle="tab">Third</a></li>
+					</ul>
+					<div class="tab-content">
+					    <div class="tab-pane" id="tab1">
+					    	<div class="control-group">
+							    <label class="control-label" for="email">Email</label>
+							    <div class="controls">
+							      <input type="text" id="emailfield" name="emailfield" class="required email">
+							    </div>
+							  </div>
+
+							  <div class="control-group">
+							    <label class="control-label" for="name">Name</label>
+							    <div class="controls">
+							      <input type="text" id="namefield" name="namefield" class="required">
+							    </div>
+							  </div>
+					    </div>
+					    <div class="tab-pane" id="tab2">
+					      <div class="control-group">
+							    <label class="control-label" for="url">URL</label>
+							    <div class="controls">
+							      <input type="text" id="urlfield" name="urlfield" class="required url">
+							    </div>
+							  </div>
+					    </div>
+						<div class="tab-pane" id="tab3">
+							3
+					    </div>
+						<ul class="pager wizard">
+							<li class="previous first" style="display:none;"><a href="#">First</a></li>
+							<li class="previous"><a href="#">Previous</a></li>
+							<li class="next last" style="display:none;"><a href="#">Last</a></li>
+						  	<li class="next"><a href="#">Next</a></li>
+						</ul>
+					</div>	
+				</div>
+				</form>
+				
+<h3>HTML</h3>
+<pre class="prettyprint linenums">
+&lt;form id="commentForm" method="get" action="" class="form-horizontal">
+&lt;div id="rootwizard">
+	&lt;ul>
+	  	&lt;li>&lt;a href="#tab1" data-toggle="tab">First&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab2" data-toggle="tab">Second&lt;/a>&lt;/li>
+		&lt;li>&lt;a href="#tab3" data-toggle="tab">Third&lt;/a>&lt;/li>
+	&lt;/ul>
+	&lt;div class="tab-content">
+	    &lt;div class="tab-pane" id="tab1">
+	    	&lt;div class="control-group">
+			    &lt;label class="control-label" for="email">Email&lt;/label>
+			    &lt;div class="controls">
+			      &lt;input type="text" id="emailfield" name="emailfield" class="required email">
+			    &lt;/div>
+			  &lt;/div>
+
+			  &lt;div class="control-group">
+			    &lt;label class="control-label" for="name">Name&lt;/label>
+			    &lt;div class="controls">
+			      &lt;input type="text" id="namefield" name="namefield" class="required">
+			    &lt;/div>
+			  &lt;/div>
+	    &lt;/div>
+	    &lt;div class="tab-pane" id="tab2">
+	      &lt;div class="control-group">
+			    &lt;label class="control-label" for="url">URL&lt;/label>
+			    &lt;div class="controls">
+			      &lt;input type="text" id="urlfield" name="urlfield" class="required url">
+			    &lt;/div>
+			  &lt;/div>
+	    &lt;/div>
+		&lt;div class="tab-pane" id="tab3">
+			3
+	    &lt;/div>
+		&lt;ul class="pager wizard">
+			&lt;li class="previous first" style="display:none;">&lt;a href="#">First&lt;/a>&lt;/li>
+			&lt;li class="previous">&lt;a href="#">Previous&lt;/a>&lt;/li>
+			&lt;li class="next last" style="display:none;">&lt;a href="#">Last&lt;/a>&lt;/li>
+		  	&lt;li class="next">&lt;a href="#">Next&lt;/a>&lt;/li>
+		&lt;/ul>
+	&lt;/div>	
+&lt;/div>
+&lt;/form>
+</pre>
+
+<h3>JS</h3>
+<pre class="prettyprint linenums">
+$(document).ready(function() {
+  	var $validator = $("#commentForm").validate({
+		  rules: {
+		    emailfield: {
+		      required: true,
+		      email: true,
+		      minlength: 3
+		    },
+		    namefield: {
+		      required: true,
+		      minlength: 3
+		    },
+		    urlfield: {
+		      required: true,
+		      minlength: 3,
+		      url: true
+		    }
+		  }
+		});
+
+	  	$('#rootwizard').bootstrapWizard({
+	  		'tabClass': 'nav nav-pills',
+	  		'onNext': function(tab, navigation, index) {
+	  			var $valid = $("#commentForm").valid();
+	  			if(!$valid) {
+	  				$validator.focusInvalid();
+	  				return false;
+	  			}
+	  		}
+	  	});	
+});
+</pre>	
+				
+			</section>
+ 		</div>
+	</div>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../jquery.bootstrap.wizard.js"></script>
+	<script src="../prettify.js"></script>
+	<script>
+	$(document).ready(function() {
+		var $validator = $("#commentForm").validate({
+		  rules: {
+		    emailfield: {
+		      required: true,
+		      email: true,
+		      minlength: 3
+		    },
+		    namefield: {
+		      required: true,
+		      minlength: 3
+		    },
+		    urlfield: {
+		      required: true,
+		      minlength: 3,
+		      url: true
+		    }
+		  }
+		});
+
+	  	$('#rootwizard').bootstrapWizard({
+	  		'tabClass': 'nav nav-pills',
+	  		'onNext': function(tab, navigation, index) {
+	  			var $valid = $("#commentForm").valid();
+	  			if(!$valid) {
+	  				$validator.focusInvalid();
+	  				return false;
+	  			}
+	  		}
+	  	});	
+		window.prettyPrint && prettyPrint()
+	});	
+	</script>
+  </body>
+</html>

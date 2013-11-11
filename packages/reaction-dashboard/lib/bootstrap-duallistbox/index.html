@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bootstrap Dual Listbox</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Responsive dual select boxes (dual list boxes) for Bootstrap.">
+        <meta name="author" content="István Ujj-Mészáros">
+
+        <meta itemprop="name" content="Bootstrap Dual List Box">
+        <meta itemprop="description" content="Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.">
+        <meta itemprop="image" content="http://www.virtuosoft.eu/code/bootstrap-duallistbox/preview/bootstrap-duallistbox.jpg">
+
+        <script src="libraries/modernizr/modernizr-custom.min.js"></script>
+
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+        <link href="bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css" media="all">
+        <link href="libraries/prettify/prettify.css" rel="stylesheet" type="text/css" media="all">
+        <link href="bootstrap-duallistbox/bootstrap-duallistbox.css" rel="stylesheet" type="text/css" media="all">
+
+        <script src="libraries/jquery-1.9.0.min.js"></script>
+        <script src="libraries/prettify/prettify.js"></script>
+        <script src="bootstrap-duallistbox/jquery.bootstrap-duallistbox.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="http://www.virtuosoft.eu/code/bootstrap-duallistbox/">Bootstrap Dual Listbox</a>
+                <a class="btn btn-link pull-right" href="https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox" target="_blank">github project page</a>
+            </div>
+        </div>
+
+
+        <div class="container" style="max-width:920px;margin:0 auto;">
+            <div class="row">
+
+                <h2>Bootstrap Dual Listbox</h2>
+                <p>
+                    Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
+                </p>
+                <h3>Example with default values</h3>
+                <p>
+                    The dual listbox is created from a select multiple by calling <code>.bootstrapDualListbox(settings);</code> on a selector. The selector can be any element, not just selects. When the method is called on a selector other than a select, then all select childrens are converted into dual list boxes.
+                </p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <pre class="prettyprint">
+var demo1 = $('[name="duallistbox_demo1[]"]').bootstrapDualListbox();</pre>
+                        <form id="demoform" action="#" method="post">
+                            <select multiple="multiple" size="10" name="duallistbox_demo1[]">
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3" selected="selected">Option 3</option>
+                                <option value="option4">Option 4</option>
+                                <option value="option5">Option 5</option>
+                                <option value="option6" selected="selected">Option 6</option>
+                                <option value="option7">Option 7</option>
+                                <option value="option8">Option 8</option>
+                                <option value="option9">Option 9</option>
+                                <option value="option0">Option 10</option>
+                            </select>
+                            <br>
+                            <button type="submit" class="btn btn-default btn-block">Submit data</button>
+                        </form>
+                        <script>
+                            var demo1 = $('[name="duallistbox_demo1[]"]').bootstrapDualListbox();
+                            $("#demoform").submit(function(){
+                                alert($('[name="duallistbox_demo1[]"]').val());
+                                return false;
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Example with custom settings</h3>
+
+                    <div class="row">
+                        <pre class="prettyprint col-md-6">
+$('.demo2').bootstrapDualListbox({
+    nonselectedlistlabel: 'Non-selected',
+    selectedlistlabel: 'Selected',
+    preserveselectiononmove: 'moved',
+    moveonselect: false,
+    initialfilterfrom: 'ion ([7-9]|[1][0-2])'
+});
+                        </pre>
+                        <select multiple="multiple" size="10" name="duallistbox_demo2" class='demo2 col-md-6'>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3" selected="selected">Option 3</option>
+                            <option value="option4">Option 4</option>
+                            <option value="option5">Option 5</option>
+                            <option value="option6" selected="selected">Option 6</option>
+                            <option value="option7">Option 7</option>
+                            <option value="option8">Option 8</option>
+                            <option value="option9">Option 9</option>
+                            <option value="option0">Option 10</option>
+                            <option value="option0">Option 11</option>
+                            <option value="option0">Option 12</option>
+                            <option value="option0">Option 13</option>
+                            <option value="option0">Option 14</option>
+                            <option value="option0">Option 15</option>
+                            <option value="option0">Option 16</option>
+                            <option value="option0">Option 17</option>
+                            <option value="option0">Option 18</option>
+                            <option value="option0">Option 19</option>
+                            <option value="option0">Option 20</option>
+                        </select>
+                        <script>
+                            var demo2 = $('.demo2').bootstrapDualListbox({
+                                nonselectedlistlabel: 'Non-selected',
+                                selectedlistlabel: 'Selected',
+                                preserveselectiononmove: 'moved',
+                                moveonselect: false,
+                                initialfilterfrom: 'ion ([7-9]|[1][0-2])'
+                            });
+                        </script>
+                    </div>
+
+                    <div class="row">
+                        <h3>Dynamically add options to the selects</h3>
+                        <p>
+                            The options must be added to/removed from the original select.<br>
+                            Note that the <code>bootstrapduallistbox.refresh</code> event must be triggered on it after manipulating the options.
+                        </p>
+                        <p>
+                            If there are some highlighted options in the lists, then triggering the <code>bootstrapduallistbox.refresh</code> event with the optional <code>true</code> parameter results the highlights to be removed. Example usage: <code>demo2.trigger('bootstrapduallistbox.refresh', true)</code><br>
+                            It has meaning only when <code>moveonselect</code> setting is <code>false</code>.
+                        </p>
+                        <p>
+                            <button id="demo2-add" type="button" class="btn">Add options to demo2</button>
+                            <button id="demo2-add-clear" type="button" class="btn">Add with clearing highlights</button>
+                        </p>
+                        <pre class="prettyprint">
+$(&quot;#demo2-add&quot;).click(function(){
+    demo2.append('&lt;option value=&quot;apples&quot;&gt;Apples&lt;/option&gt;&lt;option value=&quot;oranges&quot; selected&gt;Oranges&lt;/option&gt;');
+    demo2.trigger('bootstrapduallistbox.refresh');
+});
+
+$(&quot;#demo2-add-clear&quot;).click(function(){
+    demo2.append('&lt;option value=&quot;apples&quot;&gt;Apples&lt;/option&gt;&lt;option value=&quot;oranges&quot; selected&gt;Oranges&lt;/option&gt;');
+    demo2.trigger('bootstrapduallistbox.refresh', true);
+});</pre>
+                        <script>
+                            $("#demo2-add").click(function() {
+                                demo2.append('<option value="apples">Apples</option><option value="oranges" selected>Oranges</option>');
+                                demo2.trigger('bootstrapduallistbox.refresh');
+                            });
+
+                            $("#demo2-add-clear").click(function() {
+                                demo2.append('<option value="apples">Apples</option><option value="oranges" selected>Oranges</option>');
+                                demo2.trigger('bootstrapduallistbox.refresh', true);
+                            });
+                        </script>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class="col-md-12">
+                    <h3>Settings</h3>
+                    <dl class="dl-horizontal">
+                        <dt><code>bootstrap2compatible</code></dt>
+                        <dd><code><strong>false</strong></code>: Enable for Bootstrap 2.x compatibility.</dd>
+                        <dt><code>preserveselectiononmove</code></dt>
+                        <dd><code><strong>false</strong></code>: Selections are cleared on move. This is the forced setting on Android because of a <a href="http://code.google.com/p/android/issues/detail?id=16922" target="_blank">bug</a>.</dd>
+                        <dd><code>'moved'</code>: Selection is cleared in the list where the options are moved to, and the moved options are selected after move.</dd>
+                        <dd><code>'all'</code>: Selection is preserved between the lists, so the previously selected options are selected even after moving them or other options into their list.</dd>
+
+                        <dt><code>moveonselect</code></dt>
+                        <dd><code><strong>true</strong></code>: The options are automatically moved on selection. This setting is forced on touch devices.</dd>
+                        <dd><code>false</code>: The selected options can be moved with a button.</dd>
+
+                        <dt><code>initialfilterfrom</code></dt>
+                        <dd><code><strong>''</strong></code>: This is the initial value of the filter for the unselected values (left side). Default is empty string.</dd>
+
+                        <dt><code>initialfilterto</code></dt>
+                        <dd><code><strong>''</strong></code>: This is the initial value of the filter for the selected values (on the right). Default is empty string.</dd>
+
+                        <dt><code>helperselectnamepostfix</code></dt>
+                        <dd><code><strong>'_helper'</strong></code>: when set, the helper selects are submitted with the original selects name postfixed with this value.</dd>
+                        <dd><code>false</code>: the helper selects are not submitted.</dd>
+
+                        <dt><code>infotext</code></dt>
+                        <dd><code><strong>'Showing all {0}'</strong></code>: this is the info text when no filter applied to the options list and the list is not empty.</dd>
+                        <dd><code>false</code>: None of the info texts are visible.
+
+                        <dt><code>infotextfiltered</code></dt>
+                        <dd><code><strong>'&lt;col-md- class="label label-warning"&gt;Filtered&lt;/col-md-&gt; {0} from {1}'</strong></code>: this is the info text when not all of the options are visible.</dd>
+
+                        <dt><code>infotextempty</code></dt>
+                        <dd><code><strong>'Empty list'</strong></code>: this is the info text when the list is empty.</dd>
+
+                        <dt><code>selectorminimalheight</code></dt>
+                        <dd><code><strong>100</strong></code>: this is the minimal height of the rendered selects in pixels (normally they inherit the original selects height, but this is 0 in a modal when duallistbox is initialized, so this will be the height in such cases).</dd>
+
+                        <dt><code>filterplaceholder</code></dt>
+                        <dd><code><strong>'Filter'</strong></code>: this is the text of the placeholder for the filter field</dd>
+
+                        <dt><code>filtertextclear</code></dt>
+                        <dd><code><strong>'show all'</strong></code>: this is the text on the button which clears the filters</dd>
+
+                        <dt><code>nonselectedlistlabel</code></dt>
+                        <dd><code><strong>false</strong></code>: This label is not displayed. Default option.</dd>
+                        <dd><code>'string'</code>: The label for the non-selected options list</dd>
+
+                        <dt><code>selectedlistlabel</code></dt>
+                        <dd><code><strong>false</strong></code>: This label is not displayed. Default option.</dd>
+                        <dd><code>'string'</code>: The label for the selected options list</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <h3>Download</h3>
+                <p><a href="https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox" target="_blank">Download</a> from github. Please report issues and suggestions to github's issue tracker or contact me on <a href="https://plus.google.com/101242556570448529330/posts" target="_blank">g+</a> or <a href="https://twitter.com/styu007" target="_blank">twitter</a>!</p>
+            </div>
+
+        </div>
+
+        <script src="libraries/jquery-placeholder/jquery.placeholder.js"></script>
+
+        <script>
+                            $('input').placeholder();
+                            prettyPrint();
+        </script>
+

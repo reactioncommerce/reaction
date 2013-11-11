@@ -1,0 +1,116 @@
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.btn-file > input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  font-size: 23px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  transform: translate(-300px, 0) scale(4);
+  direction: ltr;
+}
+
+.fileupload {
+  margin-bottom: 9px;
+}
+
+.fileupload .uneditable-input {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+  cursor: text;
+}
+
+.fileupload .img-thumbnail {
+  display: inline-block;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.fileupload .img-thumbnail > img {
+  display: inline-block;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+.fileupload .btn {
+  vertical-align: middle;
+}
+
+.fileupload-exists .fileupload-new,
+.fileupload-new .fileupload-exists {
+  display: none;
+}
+
+.fileupload-inline .fileupload-controls {
+  display: inline;
+}
+
+.fileupload-new .input-group .btn-file {
+  -webkit-border-radius: 0 3px 3px 0;
+     -moz-border-radius: 0 3px 3px 0;
+          border-radius: 0 3px 3px 0;
+}
+
+.img-thumbnail-borderless .img-thumbnail {
+  padding: 0;
+  border: none;
+  -webkit-border-radius: 0;
+     -moz-border-radius: 0;
+          border-radius: 0;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+          box-shadow: none;
+}
+
+.fileupload-new.img-thumbnail-borderless .img-thumbnail {
+  border: 1px solid #ddd;
+}
+
+.control-group.warning .fileupload .uneditable-input {
+  color: #a47e3c;
+  border-color: #a47e3c;
+}
+
+.control-group.warning .fileupload .fileupload-preview {
+  color: #a47e3c;
+}
+
+.control-group.warning .fileupload .img-thumbnail {
+  border-color: #a47e3c;
+}
+
+.control-group.error .fileupload .uneditable-input {
+  color: #b94a48;
+  border-color: #b94a48;
+}
+
+.control-group.error .fileupload .fileupload-preview {
+  color: #b94a48;
+}
+
+.control-group.error .fileupload .img-thumbnail {
+  border-color: #b94a48;
+}
+
+.control-group.success .fileupload .uneditable-input {
+  color: #468847;
+  border-color: #468847;
+}
+
+.control-group.success .fileupload .fileupload-preview {
+  color: #468847;
+}
+
+.control-group.success .fileupload .img-thumbnail {
+  border-color: #468847;
+}

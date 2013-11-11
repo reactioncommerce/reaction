@@ -1,0 +1,47 @@
+############################################
+## Generic System Ignores
+syntax: glob
+
+!.gitignore
+# build directories and files
+#hg syntax
+target/**.*
+#git syntax
+target/
+dist/**.*
+**/build/*
+build/*
+*.pyc
+# Maven
+release.properties
+#Eclipse
+.settings/*.**
+.classpath
+.project
+# Netbeans
+nb-configuration.xml
+nbactions.xml
+# Backup files left behind by the Emacs editor.
+*~
+# Lock files used by the Emacs editor.
+.\#*
+# Temporary files used by TestMate
+._*
+# XCode user data
+**.pbxuser
+**.mode?v?
+**.perspectivev?
+# documentation
+**.docset/*
+# for those crazies using svn and hg at the same time
+*.svn*
+# Random OS stuff
+.DS_Store
+Thumbs.db
+# temporary folders
+syntax: regexp
+.*/te?mp/.*
+# Temporary files used by the vim editor.
+.*.swp
+/nbproject/private/
+/nbproject/

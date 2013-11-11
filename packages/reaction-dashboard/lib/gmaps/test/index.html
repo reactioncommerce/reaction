@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>gmaps.js test</title>
+  <link rel="stylesheet" type="text/css" href="lib/jasmine.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="text/javascript" src="lib/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-html.js"></script>
+
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="../gmaps.js"></script>
+
+  <script type="text/javascript" src="spec/MapSpec.js"></script>
+  <script type="text/javascript" src="spec/MarkerSpec.js"></script>
+  <script type="text/javascript" src="spec/GeometrySpec.js"></script>
+  <script type="text/javascript" src="spec/LayerSpec.js"></script>
+  <script type="text/javascript" src="spec/OverlaySpec.js"></script>
+  <script type="text/javascript" src="spec/RouteSpec.js"></script>
+  <script type="text/javascript" src="spec/StyleSpec.js"></script>
+  <script type="text/javascript" src="spec/StreetViewSpec.js"></script>
+  <script type="text/javascript" src="spec/EventSpec.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+</head>
+<body>
+  <h3>Basic map</h3>
+  <div class="map" id="basic-map"></div>
+  <h3>Advanced map</h3>
+  <div class="map" id="advanced-map"></div>
+  <h3>Map with events</h3>
+  <div class="map" id="map-with-events"></div>
+  <h3>Map with markers</h3>
+  <div class="map" id="map-with-markers"></div>
+  <h3>Map with custom controls</h3>
+  <div class="map" id="map-with-custom-controls"></div>
+  <h3>Map with polygons</h3>
+  <div class="map" id="map-with-polygons"></div>
+  <h3>Map with layers</h3>
+  <div class="map" id="map-with-layers"></div>
+  <h3>Map with overlays</h3>
+  <div class="map" id="map-with-overlays"></div>
+  <h3>Map with routes</h3>
+  <div class="map" id="map-with-routes"></div>
+  <h3>Map with styles</h3>
+  <div class="map" id="map-with-styles"></div>
+  <h3>Street View Panorama</h3>
+  <div class="panorama" id="streetview-standalone-panorama"></div>
+  <h3>Map with Street View</h3>
+  <div class="with-columns">
+    <div class="map" id="map-with-streetview"></div>
+    <div class="panorama" id="streetview-panorama"></div>
+  </div>
+  <h3>Street View Panorama with events</h3>
+  <div class="panorama" id="streetview-with-events"></div>
+  <h3>Events</h3>
+  <div class="map" id="events"></div>
+</body>
+</html>

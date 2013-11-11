@@ -1,0 +1,19 @@
+<template name="productImageGallery">
+    <div id="galleryDropPane" class="galleryDropPane">
+        <ul class="gallery">
+            {{#each images}}
+                <li>
+                    {{#isimage mimetype}}
+                    {{else}}
+                        <a href="#" rel="prettyPhoto" title="{{title}}">
+                            <div class="edit-image">
+                                <img src="{{src}}/convert?w=100&h=75&fit=max" alt="{{title}}"> <i></i>
+                            </div>
+                        </a>
+                    {{/isimage}}
+                </li>
+            {{/each}}
+            <li><i class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add more images</i></li>
+        </ul>
+    </div>
+</template>

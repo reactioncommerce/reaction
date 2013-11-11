@@ -1,0 +1,30 @@
+{
+    "name": "bootstrap-duallistbox",
+    "title": "Bootstrap Duallistbox",
+    "description": "A responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.",
+    "keywords": [
+        "bootstrap",
+        "listbox",
+        "form",
+        "input",
+        "ui"
+    ],
+    "version": "2.0.1",
+    "author": {
+        "name": "István Ujj-Mészáros",
+        "url": "https://github.com/istvan-ujjmeszaros"
+    },
+    "licenses": [
+        {
+            "type": "Apache License v2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        }
+    ],
+    "homepage": "http://www.virtuosoft.eu/code/bootstrap-duallistbox/",
+    "demo": "http://www.virtuosoft.eu/code/bootstrap-duallistbox/",
+    "docs": "http://www.virtuosoft.eu/code/bootstrap-duallistbox/",
+    "download": "https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox/archive/master.zip",
+    "dependencies": {
+        "jquery": ">=1.7"
+    }
+}

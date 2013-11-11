@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Geofences</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="../gmaps.js"></script>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+  <script type="text/javascript">
+    var map;
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+      });
+      var path = [
+            [-12.040397656836609,-77.03373871559225],
+            [-12.040248585302038,-77.03993927003302],
+            [-12.050047116528843,-77.02448169303511],
+            [-12.044804866577001,-77.02154422636042]
+          ];
+
+      polygon = map.drawPolygon({
+        paths: path,
+        strokeColor: '#BBD8E9',
+        strokeOpacity: 1,
+        strokeWeight: 3,
+        fillColor: '#BBD8E9',
+        fillOpacity: 0.6
+      });
+      map.addMarker({
+        lat: -12.043333,
+        lng: -77.028333,
+        draggable: true,
+        fences: [polygon],
+        outside: function(m, f){
+          alert('This marker has been moved outside of its fence');
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>GMaps.js &mdash; Geofences</h1>
+  <div class="row">
+    <div class="col-md-11">
+      <div id="map"></div>
+    </div>
+    <div class="col-md-6">
+      <p>You can attach a geofence (which can be a polygon or a bounds) to a marker with:</p>
+      <pre>polygon = map.drawPolygon({
+  paths: path,
+  strokeColor: '#BBD8E9',
+  strokeOpacity: 1,
+  strokeWeight: 3,
+  fillColor: '#BBD8E9',
+  fillOpacity: 0.6
+});
+map.addMarker({
+  lat: -12.043333,
+  lng: -77.028333,
+  draggable: true,
+  fences: [polygon],
+  outside: function(marker, fence){
+    alert('This marker has been moved outside of its fence');
+  }
+});</pre>
+      <p>You must define an <strong>outside</strong> callback, which will use this <code>marker</code> and its <code>fence</code>.</p>
+      <p><span class="label notice">Note: </span>You also can use <code>checkMarkerGeofence</code> or <code>checkGeofence</code> methods.</p>
+    </div>
+  </div>
+</body>
+</html>
