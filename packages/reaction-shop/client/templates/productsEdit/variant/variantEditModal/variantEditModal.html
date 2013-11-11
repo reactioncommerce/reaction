@@ -52,28 +52,6 @@
             </div>
 
             <div class="form-group">
-              <div class="col-sm-9 col-sm-offset-3">
-                <div class="checkbox">
-                  <label>
-                    <input id="variant-taxable" type="checkbox" name="taxable" value="true" {{#if variant.taxable}}checked="checked"{{/if}} />
-                    Charge taxes on this product
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-9 col-sm-offset-3">
-                <div class="checkbox">
-                  <label>
-                    <input id="variant-requiresShipping" type="checkbox" name="requiresShipping" value="true" {{#if variant.requiresShipping}}checked="checked"{{/if}} />
-                    Require a shipping address
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
               <label for="variant-inventoryManagement" class="col-sm-3 control-label">Inventory policy</label>
               <div class="col-sm-9">
                 <select class="form-control" id="variant-inventoryManagement" name="inventoryManagement">
@@ -95,11 +73,34 @@
                 <div class="checkbox">
                   <label>
                     <input id="variant-inventoryPolicy" type="checkbox" name="inventoryPolicy" value="continue" {{#if condition variant.inventoryPolicy "eq" "continue"}}checked="checked"{{/if}} />
+                    Allow users to purchase this item, even if it is no longer in stock
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <div class="checkbox">
+                  <label>
+                    <input id="variant-taxable" type="checkbox" name="taxable" value="true" {{#if variant.taxable}}checked="checked"{{/if}} />
+                    Charge taxes on this product
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <div class="checkbox">
+                  <label>
+                    <input id="variant-requiresShipping" type="checkbox" name="requiresShipping" value="true" {{#if variant.requiresShipping}}checked="checked"{{/if}} />
                     Require a shipping address
                   </label>
                 </div>
               </div>
             </div>
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default close-button" data-dismiss="modal">Close</button>
