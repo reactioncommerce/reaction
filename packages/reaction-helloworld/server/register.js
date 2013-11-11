@@ -19,7 +19,7 @@ Meteor.startup(function () {
   if (result.insertedId) {
     ReactionPackages.update(result.insertedId, {
       $set: {
-        metafields: {type:'reaction-pkgmanager'}
+        metafields: {type: 'reaction-pkgmanager'}
       }
     })
   }

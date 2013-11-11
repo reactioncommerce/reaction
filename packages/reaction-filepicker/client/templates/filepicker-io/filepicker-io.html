@@ -1,37 +1,37 @@
 <template name="filepicker-io">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-title">
-                    <h3><i class="icon-reorder"></i> Filepicker.io</h3>
-                </div>
-                <div class="box-content">
-                    <div class="form-group">
-                        <p>Filepicker.io enhances product image manipulation by adding drag and drop plus configurable
-                            storage options.</p>
-                    </div>
-                    <form action="#" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-2 col-lg-1 control-label">API Key</label>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-title">
+          <h3><i class="icon-reorder"></i> Filepicker.io</h3>
+        </div>
+        <div class="box-content">
+          <div class="form-group">
+            <p>Filepicker.io enhances product image manipulation by adding drag and drop plus configurable
+              storage options.</p>
+          </div>
+          <form action="#" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 col-lg-1 control-label">API Key</label>
 
-                            <div class="col-sm-3 col-lg-3 controls">
-                                <input type="text" name="input-apikey" id="input-apikey" class="form-control"
-                                       placeholder="Enter your Filepicker.io API Key" required="required"
-                                       title="Filepicker API Key" value="{{pickerData.metafields.apikey}}"/>
+              <div class="col-sm-3 col-lg-3 controls">
+                <input type="text" name="input-apikey" id="input-apikey" class="form-control"
+                       placeholder="Enter your Filepicker.io API Key" required="required"
+                       title="Filepicker API Key" value="{{pickerData.metafields.apikey}}"/>
                                 <span class="help-inline">Register for an API Key at <a href="http://filepicker.io"
                                                                                         target="_blank">filepicker.io</a></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3 col-lg-9 col-lg-offset-3">
-                                <span>{{> errors}}</span>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
-                                <button type="button" class="btn">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+              </div>
             </div>
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3 col-lg-9 col-lg-offset-3">
+                <span>{{> errors}}</span>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                <button type="button" class="btn">Cancel</button>
+              </div>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </template>

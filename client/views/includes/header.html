@@ -1,6 +1,6 @@
 <template name="introHeader">
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="icon-bar"></span>
@@ -16,9 +16,11 @@
         <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
         <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
       </ul>
-    <div class="nav navbar-nav navbar-right">
-    {{> accounts}}
-    </div><!--/.navbar-collapse -->
-</div>
+      <div class="nav navbar-nav navbar-right">
+          {{> accounts}}
+      </div>
+      <!--/.navbar-collapse -->
+    </div>
+  </div>
 
 </template>

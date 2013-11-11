@@ -4,4 +4,4 @@
 // *****************************************************
 Meteor.subscribe("ReactionPackages");
 ReactionConfigHandle = Meteor.subscribe("ReactionConfig");
-Meteor.subscribe("UserConfig",Meteor.userId());
+Meteor.subscribe("UserConfig", Meteor.userId());

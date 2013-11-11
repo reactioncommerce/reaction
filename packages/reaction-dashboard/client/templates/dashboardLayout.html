@@ -1,26 +1,26 @@
 <head>
-    <title>Reaction Commerce</title>
-    <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaction Commerce</title>
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <template name="dashboardLayout">
-    <!-- BEGIN Navbar -->
+  <!-- BEGIN Navbar -->
     {{> dashboardHeader}}
-    <!-- ENDNavbar -->
-    <!-- BEGIN Container -->
-    <div class="container sidebar-gray" id="main-container">
-        {{> dashboardSidebar}}
-        <!-- BEGIN Content -->
-        <div id="main-content">
+  <!-- ENDNavbar -->
+  <!-- BEGIN Container -->
+  <div class="container sidebar-gray" id="main-container">
+      {{> dashboardSidebar}}
+    <!-- BEGIN Content -->
+    <div id="main-content">
 
-            <!-- BEGIN Main Content -->
-            {{yield}}
-            <!-- END Main Content -->
+      <!-- BEGIN Main Content -->
+        {{yield}}
+      <!-- END Main Content -->
 
-            <a id="btn-scrollup" class="btn btn-circle btn-lg" href="#"><i class="icon-chevron-up"></i></a>
-        </div>
-        <!-- END Content -->
+      <a id="btn-scrollup" class="btn btn-circle btn-lg" href="#"><i class="icon-chevron-up"></i></a>
     </div>
-    <!-- END Container -->
+    <!-- END Content -->
+  </div>
+  <!-- END Container -->
 </template>

@@ -8,6 +8,6 @@ Meteor.startup(function () {
     icon: "fa fa-road fa-5x",
     template: "greetramp",
     priority: "2",
-    metafields: {type:''}
-  },{$set:{}},{upsert:true});
+    metafields: {type: ''}
+  }, {$set: {}}, {upsert: true});
 });

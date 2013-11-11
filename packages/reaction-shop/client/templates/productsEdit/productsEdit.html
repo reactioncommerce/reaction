@@ -2,106 +2,106 @@
     {{!-- Edit Product --}}
     {{> shopnav}}
     {{#with products}}
-        <form action="#" class="form-inline">
+      <form action="#" class="form-inline">
+        <div class="row">
+          <!-- BEGIN Left Side -->
+          <div class="col-md-6 image-block">
             <div class="row">
-                <!-- BEGIN Left Side -->
-                <div class="col-md-6 image-block">
-                    <div class="row">
-                        <div class="col-md-12">
-                            {{> productImage}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">{{> productImageGallery}}</div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">{{> productVideos}}</div>
-                    </div>
-                </div>
-                <!-- END Left Side -->
-
-                <!-- BEGIN Right Side -->
-                <div class="col-md-6">
-                    <div class="col-md-8 col-offset-md-4">
-                        <div>
-                            <h1 id="title" class="editable" data-type="text" data-placeholder="Enter title"
-                                data-clear="true" data-emptytext="catchy short title here" data-pk="{{id}}"
-                                tabindex='1'>
-                                {{title}}</h1>
-                        </div>
-                        <div>
-                            <h1 id="price" class="editable price-label" data-type="text" data-placeholder="Enter price"
-                                data-clear="true" data-emptytext="add your price, unless you mean free..."
-                                data-pk="{{id}}"
-                                tabindex='2'>{{variants.[0].price}}</h1>
-
-                            <div>
-                                by
-                                <a id="vendor" class="editable vendor-label" data-type="text"
-                                   data-placeholder="Enter vendor or brand" data-clear="true"
-                                   data-emptytext="manufacturer,vendor,brand here" data-pk="{{id}}"
-                                   tabindex='3'>{{vendor}}</a>
-                            </div>
-                        </div>
-                        <div>
-                            <p id="body_html" class="editable editable-click" data-type="textarea"
-                               data-placeholder="Enter description" data-clear="true"
-                               data-emptytext="add at least a couple of sentences to describe your product. the more you add the better it will look"
-                               data-pk="{{id}}" tabindex='4'>{{body_html}}</p>
-                        </div>
-                        <div><i class="icon-twitter editable" id="twitter-msg"></i> <i class="icon-pinterest editable"
-                                                                                       id="pinterest-msg"></i>
-                            <i class="icon-facebook editable" id="facebook-msg"></i>
-                            <i class="icon-instagram editable" id="instagram-msg"></i>
-                            #
-                            <p id="handle" class="editable" data-type="text" data-placeholder="Enter url/social handle"
-                               data-clear="true" data-emptytext="add-short-social-hashtag" data-pk="{{id}}"
-                               tabindex='5'>
-                                {{handle}}</p>
-                        </div>
-                        <div>
-                            <a href="#" id="tags" data-type="select2" data-pk="{{id}}"
-                               data-original-title="use tags to build nav & search" data-value="{{tags}}"
-                               tabindex='6'></a>
-                        </div>
-
-                        <div>
-                            <table class="table variant-table">
-                                <thead>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>Barcode</th>
-                                    <th>Quantity</th>
-                                    <th>SKU</th>
-                                    <th>Price</th>
-                                    {{#if userHasRole "admin"}}
-                                        <th>Edit</th>
-                                    {{else}}
-                                        <th>Buy</th>
-                                    {{/if}}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {{#each variants}}
-                                    {{> variant}}
-                                {{/each}}
-                                </tbody>
-                            </table>
-                            <a href="#" id="variants" data-type="select2" data-pk="{{id}}"
-                               data-original-title="Variants"
-                               data-emptytext="add a variant, like color or size" tabindex="7"></a>
-                        </div>
-                    </div>
-                </div>
-                <!-- END Right Side -->
+              <div class="col-md-12">
+                  {{> productImage}}
+              </div>
             </div>
-        </form>
+            <div class="row">
+              <div class="col-md-8">
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">{{> productImageGallery}}</div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-12">{{> productVideos}}</div>
+            </div>
+          </div>
+          <!-- END Left Side -->
+
+          <!-- BEGIN Right Side -->
+          <div class="col-md-6">
+            <div class="col-md-8 col-offset-md-4">
+              <div>
+                <h1 id="title" class="editable" data-type="text" data-placeholder="Enter title"
+                    data-clear="true" data-emptytext="catchy short title here" data-pk="{{id}}"
+                    tabindex='1'>
+                    {{title}}</h1>
+              </div>
+              <div>
+                <h1 id="price" class="editable price-label" data-type="text" data-placeholder="Enter price"
+                    data-clear="true" data-emptytext="add your price, unless you mean free..."
+                    data-pk="{{id}}"
+                    tabindex='2'>{{variants.[0].price}}</h1>
+
+                <div>
+                  by
+                  <a id="vendor" class="editable vendor-label" data-type="text"
+                     data-placeholder="Enter vendor or brand" data-clear="true"
+                     data-emptytext="manufacturer,vendor,brand here" data-pk="{{id}}"
+                     tabindex='3'>{{vendor}}</a>
+                </div>
+              </div>
+              <div>
+                <p id="body_html" class="editable editable-click" data-type="textarea"
+                   data-placeholder="Enter description" data-clear="true"
+                   data-emptytext="add at least a couple of sentences to describe your product. the more you add the better it will look"
+                   data-pk="{{id}}" tabindex='4'>{{body_html}}</p>
+              </div>
+              <div><i class="icon-twitter editable" id="twitter-msg"></i> <i class="icon-pinterest editable"
+                                                                             id="pinterest-msg"></i>
+                <i class="icon-facebook editable" id="facebook-msg"></i>
+                <i class="icon-instagram editable" id="instagram-msg"></i>
+                #
+                <p id="handle" class="editable" data-type="text" data-placeholder="Enter url/social handle"
+                   data-clear="true" data-emptytext="add-short-social-hashtag" data-pk="{{id}}"
+                   tabindex='5'>
+                    {{handle}}</p>
+              </div>
+              <div>
+                <a href="#" id="tags" data-type="select2" data-pk="{{id}}"
+                   data-original-title="use tags to build nav & search" data-value="{{tags}}"
+                   tabindex='6'></a>
+              </div>
+
+              <div>
+                <table class="table variant-table">
+                  <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>Barcode</th>
+                    <th>Quantity</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                      {{#if userHasRole "admin"}}
+                        <th>Edit</th>
+                      {{else}}
+                        <th>Buy</th>
+                      {{/if}}
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {{#each variants}}
+                      {{> variant}}
+                  {{/each}}
+                  </tbody>
+                </table>
+                <a href="#" id="variants" data-type="select2" data-pk="{{id}}"
+                   data-original-title="Variants"
+                   data-emptytext="add a variant, like color or size" tabindex="7"></a>
+              </div>
+            </div>
+          </div>
+          <!-- END Right Side -->
+        </div>
+      </form>
         {{> variantEditModal}}
     {{/with}}
 </template>

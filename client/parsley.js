@@ -1,4 +1,4 @@
-$.fn.parsley.defaults.errors.classHandler = function(el) {
+$.fn.parsley.defaults.errors.classHandler = function (el) {
   return $(el).closest('.form-group');
 };
 $.fn.parsley.defaults.errors.errorsWrapper = '<span class=\"error-block\"></span>';

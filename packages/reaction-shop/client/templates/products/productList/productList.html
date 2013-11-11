@@ -1,28 +1,28 @@
 <template name="productList">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th></th>
-            <th>#</th>
-            <th>Title</th>
-            <th>Updated</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each products}}
-            <tr>
-                <td>
-                    <img src="{{image.src}}" height="40px" width="40px"></td>
-                <td>
-                    {{_id}} <strong>/</strong>
-                    {{id}}
-                </td>
-                <td>
-                    <a href="{{pathFor 'shop/product'}}">{{title}}</a>
-                </td>
-                <td>{{updated_at}}</td>
-            </tr>
-        {{/each}}
-        </tbody>
-    </table>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th></th>
+      <th>#</th>
+      <th>Title</th>
+      <th>Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each products}}
+      <tr>
+        <td>
+          <img src="{{image.src}}" height="40px" width="40px"></td>
+        <td>
+            {{_id}} <strong>/</strong>
+            {{id}}
+        </td>
+        <td>
+          <a href="{{pathFor 'shop/product'}}">{{title}}</a>
+        </td>
+        <td>{{updated_at}}</td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
 </template>

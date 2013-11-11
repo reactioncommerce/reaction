@@ -12,24 +12,24 @@
 </template>
 
 <template name="home">
-    <div id="bg">
-        <img src="/resources/collision-balls.jpg" alt="">
+  <div id="bg">
+    <img src="/resources/collision-balls.jpg" alt="">
+  </div>
+
+  <div class="container-narrow">
+
+    <div class="jumbotron">
+      <h1>marketing first! <span class="fa fa-bolt" style="color:#428bca;"></span></h1>
+
+      <p class="lead">Reaction Commerce gives you a real time shop that puts marketing first. The secret to successful shops is in our love for marketing.</p>
     </div>
+  </div>
 
-    <div class="container-narrow">
-
-        <div class="jumbotron">
-            <h1>marketing first! <span class="fa fa-bolt" style="color:#428bca;"></span></h1>
-
-            <p class="lead">Reaction Commerce gives you a real time shop that puts marketing first. The secret to successful shops is in our love for marketing.</p>
-        </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12 col-md-offset-1 col-lg-offset-3">
+      <div>
+          {{> accountCreateStep1}}
+      </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-12 col-lg-12 col-md-offset-1 col-lg-offset-3">
-            <div>
-                {{> accountCreateStep1}}
-            </div>
-        </div>
-    </div>
+  </div>
 </template>

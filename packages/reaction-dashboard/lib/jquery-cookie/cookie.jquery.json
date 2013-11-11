@@ -1,7 +1,7 @@
 {
   "name": "cookie",
   "version": "1.3.1",
-  "title":  "jQuery Cookie",
+  "title": "jQuery Cookie",
   "description": "A simple, lightweight jQuery plugin for reading, writing and deleting cookies.",
   "author": {
     "name": "Klaus Hartl",

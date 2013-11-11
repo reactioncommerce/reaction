@@ -1,4 +1,4 @@
-Meteor.startup(function() {
+Meteor.startup(function () {
   if (!ReactionConfig.find().count()) {
     filepickerPackage = ReactionPackages.findOne({name: "reaction-filepicker"});
     var metafields = filepickerPackage.metafields;
@@ -8,7 +8,7 @@ Meteor.startup(function() {
       packageId: filepickerPackage._id,
       name: filepickerPackage.name,
       label: filepickerPackage.label,
-      enabled:true,
+      enabled: true,
       metafields: metafields
     });
   }

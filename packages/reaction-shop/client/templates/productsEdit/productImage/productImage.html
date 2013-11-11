@@ -1,31 +1,31 @@
 <template name="productImage">
-    <div id="imageDropPane" class="imageDropPane">
-        {{#if image.src}}
-            <ul class="gallery product-image">
-                <li>
-                    <a href="#" rel="prettyPhoto" title="{{title}}">
-                        <div>
-                            <img class="image-src" name="main-image" src="{{image.src}}" alt="{{title}}"> <i></i>
-                        </div>
-                    </a>
+  <div id="imageDropPane" class="imageDropPane">
+      {{#if image.src}}
+        <ul class="gallery product-image">
+          <li>
+            <a href="#" rel="prettyPhoto" title="{{title}}">
+              <div>
+                <img class="image-src" name="main-image" src="{{image.src}}" alt="{{title}}"> <i></i>
+              </div>
+            </a>
 
-                    <div class="gallery-tools">
-                        <a href="#"> <i class="fa fa-link"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fa fa-paperclip"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fa fa-trash-o"></i>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        {{else}}
-            <div id="imageAddButton" class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add main image</div>
-        {{/if}}
-    </div>
+            <div class="gallery-tools">
+              <a href="#"> <i class="fa fa-link"></i>
+              </a>
+              <a href="#">
+                <i class="fa fa-paperclip"></i>
+              </a>
+              <a href="#">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a href="#">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+      {{else}}
+        <div id="imageAddButton" class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add main image</div>
+      {{/if}}
+  </div>
 </template>
