@@ -3,7 +3,7 @@
 // For router documentation.
 //
 Router.map(function () {
-    this.route('packages',
-      {template: 'pkgManager'}
-    );
+  this.route('packages',
+    {template: 'pkgManager'}
+  );
 });

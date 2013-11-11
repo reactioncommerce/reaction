@@ -8,10 +8,9 @@ body {
   color: #422C2C;
 }
 
-
 /* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */
-body.modal-open{
-  margin-right:0px!important;
+body.modal-open {
+  margin-right: 0px !important;
 }
 
 .error-block {
@@ -22,7 +21,7 @@ body.modal-open{
 .jumbotron {
   margin: 5px 0;
   text-align: center;
-  background-color:transparent;
+  background-color: transparent;
 }
 
 .container-narrow {
@@ -37,18 +36,19 @@ body.modal-open{
 .jumbotron {
   margin: 5px 0;
   text-align: center;
-  background-color:transparent;
+  background-color: transparent;
 }
+
 .jumbotron h1 {
   font-size: 82px;
   line-height: 1;
   font-weight: bold;
 }
+
 .account-create .btn {
   font-size: 18px;
   padding: 10px 24px;
 }
-
 
 #bg {
   position: fixed;
@@ -56,8 +56,9 @@ body.modal-open{
   left: -50%;
   width: 200%;
   height: 200%;
-  z-index:-1;
+  z-index: -1;
 }
+
 #bg img {
   position: absolute;
   top: 0;
@@ -69,14 +70,14 @@ body.modal-open{
   min-height: 50%;
   max-width: 100%;
   max-height: 100%;
-  opacity:0.9;
+  opacity: 0.9;
 }
 
-.signup-wrapper{
+.signup-wrapper {
   position: absolute;
 }
 
-.signup-form{
+.signup-form {
   padding: 10px;
 }
 
@@ -85,10 +86,9 @@ body.modal-open{
 
 }
 
-.modal-open .navbar-fixed-top{
-  margin-right:0px!important;
+.modal-open .navbar-fixed-top {
+  margin-right: 0px !important;
 }
-
 
 .navbar-intro {
   height: 40px !important;
@@ -104,15 +104,17 @@ body.modal-open{
 }
 */
 .navbar-fixed-bottom {
-   background-color: rgba(201, 201, 201, 0.09);
+  background-color: rgba(201, 201, 201, 0.09);
 }
 
-#spinner { height: 300px }
+#spinner {
+  height: 300px
+}
 
 .dropdown-menu {
-    max-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* RESPONSIVE CSS
@@ -124,12 +126,13 @@ body.modal-open{
   .navbar-wrapper {
     margin-top: 20px;
   }
+
   /* The navbar becomes detached from the top, so we round the corners */
   .navbar-wrapper .navbar {
     border-radius: 4px;
   }
 
-  .signup-wrapper{
+  .signup-wrapper {
     background-color: rgba(119, 114, 114, 0.56);
     position: absolute;
     bottom: 35%;

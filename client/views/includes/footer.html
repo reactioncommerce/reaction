@@ -1,53 +1,55 @@
 <template name="introFooter">
-            {{! We'll show different navigation if user is logged in}}
-            {{#if currentUser}}
-                {{#if userHasProfile}}
-                    {{> dashboardfooter}}
-                {{else}}
-                    {{! We'll show different navigation if user is logged in}}
-                {{/if}}
-            {{else}}
-                {{> publicfooter}}
-            {{/if}}
+    {{! We'll show different navigation if user is logged in}}
+    {{#if currentUser}}
+        {{#if userHasProfile}}
+            {{> dashboardfooter}}
+        {{else}}
+        {{! We'll show different navigation if user is logged in}}
+        {{/if}}
+    {{else}}
+        {{> publicfooter}}
+    {{/if}}
 </template>
 
 <template name="publicfooter">
-    <footer>
+  <footer>
     <nav class="navbar-fixed-bottom " role="navigation">
-    <div class="row hidden-xs">
+      <div class="row hidden-xs">
         <div class="col-md-3 col-md-offset-1">
-            <ul class="list-unstyled">
-                <li><a href="{{pathFor 'about'}}">About Reaction</a></li>
-                <li><a href="{{pathFor 'about'}}">Reactionaries</a></li>
-                <li><a href="http://ongoworks.com">Assembled with <span class="glyphicon glyphicon-heart" style="color:#428bca;"></span> in Los Angeles</a></li>
-            </ul>
+          <ul class="list-unstyled">
+            <li><a href="{{pathFor 'about'}}">About Reaction</a></li>
+            <li><a href="{{pathFor 'about'}}">Reactionaries</a></li>
+            <li><a href="http://ongoworks.com">Assembled with <span class="glyphicon glyphicon-heart"
+                                                                    style="color:#428bca;"></span> in Los Angeles</a>
+            </li>
+          </ul>
         </div>
         <div class="col-md-2">
-            <ul class="list-unstyled">
-                <li><a href="{{pathFor 'termsofuse'}}">Terms of Service</a></li>
-                <li><a href="{{pathFor 'privacypolicy'}}">Privacy Policy</a></li>
-                <li><a href="{{pathFor 'faqs'}}">FAQ</a></li>
-            </ul>
+          <ul class="list-unstyled">
+            <li><a href="{{pathFor 'termsofuse'}}">Terms of Service</a></li>
+            <li><a href="{{pathFor 'privacypolicy'}}">Privacy Policy</a></li>
+            <li><a href="{{pathFor 'faqs'}}">FAQ</a></li>
+          </ul>
         </div>
 
         <div class="col-md-5">
-            <span class="fa fa-twitter-square fa-4x pull-right"></span>
-            <span class="fa fa-facebook-square fa-4x pull-right"></span>
-            <span class="fa fa-instagram fa-4x pull-right"></span>
-            <span class="fa fa-pinterest-square fa-4x pull-right"></span>
+          <span class="fa fa-twitter-square fa-4x pull-right"></span>
+          <span class="fa fa-facebook-square fa-4x pull-right"></span>
+          <span class="fa fa-instagram fa-4x pull-right"></span>
+          <span class="fa fa-pinterest-square fa-4x pull-right"></span>
         </div>
-    </div>
+      </div>
     </nav>
-    </footer>
+  </footer>
 </template>
 
 <template name="dashboardfooter">
-    <footer class="unstyled">
+  <footer class="unstyled">
     <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
-    <div class="col-md-6"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-6"></div>
     </nav>
-    </footer>
+  </footer>
 </template>

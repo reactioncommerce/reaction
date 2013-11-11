@@ -8,6 +8,6 @@ Meteor.subscribe('captures');
 
 //Counts = new Meteor.Collection('counts');
 Deps.autorun(function () {
-    Meteor.subscribe("captures-by-campaign", Session.get("currentCampaignId"));
-    Meteor.subscribe('countstats', Session.get("statsCampaignId"));
+  Meteor.subscribe("captures-by-campaign", Session.get("currentCampaignId"));
+  Meteor.subscribe('countstats', Session.get("statsCampaignId"));
 });

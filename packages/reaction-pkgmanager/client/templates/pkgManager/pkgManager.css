@@ -1,13 +1,13 @@
 .tile .pkg-status {
-    position: absolute;
-    right: 2px;
-    top: 2px;
+  position: absolute;
+  right: 2px;
+  top: 2px;
 }
 
 .enablePkg {
-    color: #FFF;
+  color: #FFF;
 }
 
 .disablePkg {
-    color: #CDD4D8;
+  color: #CDD4D8;
 }

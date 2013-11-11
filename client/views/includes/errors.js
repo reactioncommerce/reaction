@@ -9,14 +9,14 @@
 //
 // *****************************************************
 Template.errors.helpers({
-  errors: function() {
+  errors: function () {
     return Errors.find();
   }
 });
 
-Template.error.rendered = function() {
+Template.error.rendered = function () {
   var error = this.data;
-  Meteor.defer(function() {
+  Meteor.defer(function () {
     Errors.update(error._id, {$set: {seen: true}});
   });
 };

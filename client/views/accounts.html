@@ -1,37 +1,37 @@
 <template name="accounts">
-  {{#if currentUser}}
-    {{> user_loggedin}}
-  {{else}}
-    {{> user_loggedout}}
-  {{/if}}
+    {{#if currentUser}}
+        {{> user_loggedin}}
+    {{else}}
+        {{> user_loggedout}}
+    {{/if}}
 </template>
 
 <template name="user_loggedin">
-  {{#if loggingin}}
-    <span class="navbar-text pull-right">Logging In...</span>
-  {{else}}
-    <span class="navbar-text pull-right"><a href="" id="logout">Sign out</a></span>
-  {{/if}}
+    {{#if loggingin}}
+      <span class="navbar-text pull-right">Logging In...</span>
+    {{else}}
+      <span class="navbar-text pull-right"><a href="" id="logout">Sign out</a></span>
+    {{/if}}
 </template>
 
 <template name="user_loggedout">
-  {{! Login Template}}
+    {{! Login Template}}
   <ul class="nav pull-right">
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In<b class="caret"></b></a>
       <ul class="dropdown-menu">
         <div class="container">
-          {{> errors}}
+            {{> errors}}
           <form action="" method="POST" role="form" id="login">
-              <div class="form-group">
-                  <label for="input-email" class="sr-only">Email</label>
-                  <input type="email" class="form-control input-sm" id="input-email" placeholder="Email">
-              </div>
-              <div class="form-group">
-                  <label for="input-password" class="sr-only">Password</label>
-                  <input type="password" class="form-control input-sm" id="input-password" placeholder="Password">
-              </div>
-              <button type="submit" class="btn btn-sm btn-primary pull-right">Submit</button>
+            <div class="form-group">
+              <label for="input-email" class="sr-only">Email</label>
+              <input type="email" class="form-control input-sm" id="input-email" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <label for="input-password" class="sr-only">Password</label>
+              <input type="password" class="form-control input-sm" id="input-password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary pull-right">Submit</button>
           </form>
         </div>
       </ul>
@@ -55,7 +55,8 @@
       <input type="password" class="form-control input-lg" id="input-password" placeholder="Password">
     </div>
     <div class="form-group">
-      <a class="btn btn-large btn-success pull-right" href="#">Sign up today <span class="glyphicon glyphicon-ok-circle"></span></a>
+      <a class="btn btn-large btn-success pull-right" href="#">Sign up today <span
+              class="glyphicon glyphicon-ok-circle"></span></a>
     </div>
   </form>
 
@@ -65,12 +66,14 @@
 <template name="createprofile">
   <div class="container">
     <h1 class="text-center">Nice to meet you, {{fname}}!</h1>
+
     <div class="well text-center">Congratulations! Your account has been created. Next up, tell us just a few more details to get started.</div>
     <div class="col-md-4 tellus">Tell us who you are.</div>
     <form class="form-inline" role="form" id="update-profile">
       <div class="form-group col-md-7 col-sm-10 col-xs-10">
         <label class="sr-only" for="input-store">Store Name</label>
-        <input type="text" class="form-control" id="input-store" placeholder="What's your store name? (Don't worry you can change this later.)">
+        <input type="text" class="form-control" id="input-store"
+               placeholder="What's your store name? (Don't worry you can change this later.)">
       </div>
       <button type="submit" class="btn btn-default">Next</button>
     </form>

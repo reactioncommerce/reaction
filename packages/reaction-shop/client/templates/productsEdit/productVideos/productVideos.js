@@ -3,56 +3,56 @@
 // returns boolean
 // *****************************************************
 Template.productVideos.helpers({
-    isvideo: function (mimetype, options) {
-        mimetype = typeof mimetype !== 'undefined' ? mimetype : "image";
-        if (mimetype.match('video.*')) {
-            return options.fn(this);
-        } else {
+  isvideo: function (mimetype, options) {
+    mimetype = typeof mimetype !== 'undefined' ? mimetype : "image";
+    if (mimetype.match('video.*')) {
+      return options.fn(this);
+    } else {
 
-            return options.inverse(this);
-        }
+      return options.inverse(this);
     }
+  }
 });
 
 Template.productVideos.rendered = function () {
-    // *****************************************************
-    // Filepicker.io image upload
-    // https://developers.inkfilepicker.com/docs/
-    // requires apikey
-    // *****************************************************
-    var cb = function () {
-        // Drag and Drop zone
-        var videoDropPane = $('#videoDropPane'),
-            lastenter;
+  // *****************************************************
+  // Filepicker.io image upload
+  // https://developers.inkfilepicker.com/docs/
+  // requires apikey
+  // *****************************************************
+  var cb = function () {
+    // Drag and Drop zone
+    var videoDropPane = $('#videoDropPane'),
+      lastenter;
 
-        filepicker.makeDropPane($('#videoDropPane')[0], {
-            multiple: true,
-            dragEnter: function (event) {
-                lastenter = this.event.target;
-                videoDropPane.addClass("drag-over");
-            },
-            dragLeave: function (event) {
-                if (lastenter === this.event.target) {
-                    console.log('thistarget' + this.target);
-                    videoDropPane.removeClass("drag-over");
-                }
-            },
-            onSuccess: function (InkBlobs) {
-                uploadImages(InkBlobs)
-            },
-            onError: function (FPError) {
-                $.gritter.add({
-                    // (string | mandatory) the heading of the notification
-                    title: '"Filepicker.io Error"',
-                    // (string | mandatory) the text inside the notification
-                    text: FPError.toString()
-                });
-                console.log(FPError.toString());
-            },
-            onProgress: function (percentage) {
-                $("#videoDropPane").text("Uploading (" + percentage + "%)");
-            }
+    filepicker.makeDropPane($('#videoDropPane')[0], {
+      multiple: true,
+      dragEnter: function (event) {
+        lastenter = this.event.target;
+        videoDropPane.addClass("drag-over");
+      },
+      dragLeave: function (event) {
+        if (lastenter === this.event.target) {
+          console.log('thistarget' + this.target);
+          videoDropPane.removeClass("drag-over");
+        }
+      },
+      onSuccess: function (InkBlobs) {
+        uploadImages(InkBlobs)
+      },
+      onError: function (FPError) {
+        $.gritter.add({
+          // (string | mandatory) the heading of the notification
+          title: '"Filepicker.io Error"',
+          // (string | mandatory) the text inside the notification
+          text: FPError.toString()
         });
-    };
-    loadPicker(cb);
+        console.log(FPError.toString());
+      },
+      onProgress: function (percentage) {
+        $("#videoDropPane").text("Uploading (" + percentage + "%)");
+      }
+    });
+  };
+  loadPicker(cb);
 };

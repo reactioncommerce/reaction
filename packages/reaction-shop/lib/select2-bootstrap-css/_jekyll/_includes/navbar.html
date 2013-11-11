@@ -14,8 +14,9 @@
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
       {% for version in site.versions %}
-        <li class="{% if version == page.version %}active{% endif %}"><a href="{{ version }}.html">{{ version }}</a></li>
+      <li class="{% if version == page.version %}active{% endif %}"><a href="{{ version }}.html">{{ version }}</a></li>
       {% endfor %}
     </ul>
-  </div><!-- /.navbar-collapse -->
+  </div>
+  <!-- /.navbar-collapse -->
 </nav>

@@ -4,33 +4,33 @@
 // *****************************************************
 
 loadPicker = function (callback) {
-    if (!filepicker.keyIsSet) {
-        $.gritter.add({
-            title: 'Filepicker.io is not configured',
-            text: 'You can do that on the <a href="/filepicker-io">package dashboard</a>.'
-        });
-        return false;
-    }
-    return callback && callback();
+  if (!filepicker.keyIsSet) {
+    $.gritter.add({
+      title: 'Filepicker.io is not configured',
+      text: 'You can do that on the <a href="/filepicker-io">package dashboard</a>.'
+    });
+    return false;
+  }
+  return callback && callback();
 };
 
 var filepickerLoadCallback = function () {
-    Meteor.startup(function () {
-        Deps.autorun(function () {
-            var keydata = ReactionConfig.findOne({userId: Meteor.userId(), name: "reaction-filepicker", "metafields.apikey": {$exists: true}});
-            if (keydata && keydata.metafields && keydata.metafields.apikey) {
-                filepicker.setKey(keydata.metafields.apikey);
-                filepicker.keyIsSet = true;
-            }
-        });
+  Meteor.startup(function () {
+    Deps.autorun(function () {
+      var keydata = ReactionConfig.findOne({userId: Meteor.userId(), name: "reaction-filepicker", "metafields.apikey": {$exists: true}});
+      if (keydata && keydata.metafields && keydata.metafields.apikey) {
+        filepicker.setKey(keydata.metafields.apikey);
+        filepicker.keyIsSet = true;
+      }
     });
+  });
 };
 
 //If the script doesn't load
 var filepickerErrorCallback = function (error) {
-    if (typeof console != undefined) {
-        console.log(error);
-    }
+  if (typeof console != undefined) {
+    console.log(error);
+  }
 };
 
 //Generate a script tag

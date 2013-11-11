@@ -27,23 +27,28 @@
               , icon = false;
 
             $.each(['switch-mini', 'switch-small', 'switch-large'], function (i, el) {
-              if (classes.indexOf(el) >= 0)
+              if (classes.indexOf(el) >= 0) {
                 myClasses = el;
+              }
             });
 
             $element.addClass('has-switch');
 
-            if ($element.data('on') !== undefined)
+            if ($element.data('on') !== undefined) {
               color = "switch-" + $element.data('on');
+            }
 
-            if ($element.data('on-label') !== undefined)
+            if ($element.data('on-label') !== undefined) {
               onLabel = $element.data('on-label');
+            }
 
-            if ($element.data('off-label') !== undefined)
+            if ($element.data('off-label') !== undefined) {
               offLabel = $element.data('off-label');
+            }
 
-            if ($element.data('icon') !== undefined)
+            if ($element.data('icon') !== undefined) {
               icon = $element.data('icon');
+            }
 
             $switchLeft = $('<span>')
               .addClass("switch-left")
@@ -52,8 +57,9 @@
               .html(onLabel);
 
             color = '';
-            if ($element.data('off') !== undefined)
+            if ($element.data('off') !== undefined) {
               color = "switch-" + $element.data('off');
+            }
 
             $switchRight = $('<span>')
               .addClass("switch-right")
@@ -72,8 +78,9 @@
 
             $div = $element.find(':checkbox').wrap($('<div>')).parent().data('animated', false);
 
-            if ($element.data('animated') !== false)
+            if ($element.data('animated') !== false) {
               $div.addClass('switch-animate').data('animated', true);
+            }
 
             $div
               .append($switchLeft)
@@ -84,8 +91,9 @@
               $element.find('input').is(':checked') ? 'switch-on' : 'switch-off'
             );
 
-            if ($element.find('input').is(':disabled'))
+            if ($element.find('input').is(':disabled')) {
               $(this).addClass('deactivate');
+            }
 
             var changeStatus = function ($this) {
               $this.siblings('label').trigger('mousedown').trigger('mouseup').trigger('click');
@@ -119,15 +127,20 @@
 
               if (state === thisState) {
 
-                if (thisState)
+                if (thisState) {
                   $element.removeClass('switch-off').addClass('switch-on');
-                else $element.removeClass('switch-on').addClass('switch-off');
+                }
+                else {
+                  $element.removeClass('switch-on').addClass('switch-off');
+                }
 
-                if ($element.data('animated') !== false)
+                if ($element.data('animated') !== false) {
                   $element.addClass("switch-animate");
+                }
 
-                if (typeof skipOnChange === 'boolean' && skipOnChange)
+                if (typeof skipOnChange === 'boolean' && skipOnChange) {
                   return;
+                }
 
                 $element.parent().trigger('switch-change', {'el': $this, 'value': thisState})
               }
@@ -142,8 +155,9 @@
 
               $this.closest('div').removeClass('switch-animate');
 
-              if ($this.closest('.has-switch').is('.deactivate'))
+              if ($this.closest('.has-switch').is('.deactivate')) {
                 $this.unbind('click');
+              }
               else {
                 $this.on('mousemove touchmove', function (e) {
                   var $element = $(this).closest('.switch')
@@ -154,10 +168,12 @@
 
                   moving = true;
 
-                  if (percent < left)
+                  if (percent < left) {
                     percent = left;
-                  else if (percent > right)
+                  }
+                  else if (percent > right) {
                     percent = right;
+                  }
 
                   $element.find('>div').css('left', (percent - right) + "%")
                 });
@@ -172,9 +188,12 @@
 
                   $this.unbind('mouseleave');
 
-                  if (moving)
+                  if (moving) {
                     $myCheckBox.prop('checked', !(parseInt($this.parent().css('left')) < -25));
-                  else $myCheckBox.prop("checked", !$myCheckBox.is(":checked"));
+                  }
+                  else {
+                    $myCheckBox.prop("checked", !$myCheckBox.is(":checked"));
+                  }
 
                   moving = false;
                   $myCheckBox.trigger('change');
@@ -250,12 +269,15 @@
       }
     };
 
-    if (methods[method])
+    if (methods[method]) {
       return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-    else if (typeof method === 'object' || !method)
+    }
+    else if (typeof method === 'object' || !method) {
       return methods.init.apply(this, arguments);
-    else
+    }
+    else {
       $.error('Method ' + method + ' does not exist!');
+    }
   };
 }(jQuery);
 

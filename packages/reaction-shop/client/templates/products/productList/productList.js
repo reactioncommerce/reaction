@@ -7,7 +7,7 @@
 // returns object
 // *****************************************************
 Template.productList.helpers({
-    products: function () {
-        return Products.find();
-    }
+  products: function () {
+    return Products.find();
+  }
 });
