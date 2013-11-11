@@ -1,4 +1,4 @@
-<template name="variantEditModal">
+<template name="variantEditModal" xmlns="http://www.w3.org/1999/html">
   <div id="variant-edit-modal" class="modal fade variant-edit-modal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -9,10 +9,95 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label for="variant-price" class="col-sm-2 control-label">Price</label>
+              <label for="variant-title" class="col-sm-3 control-label">Title</label>
+              <div class="col-sm-9">
+                <input id="variant-title" class="form-control" type="text" name="title" value="{{variant.title}}" required="required"/>
+              </div>
+            </div>
 
-              <div class="col-sm-10">
+            <div class="form-group">
+              <label for="variant-barcode" class="col-sm-3 control-label">Barcode</label>
+              <div class="col-sm-9">
+                <input id="variant-barcode" class="form-control" type="text" name="barcode" value="{{variant.barcode}}"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="variant-sku" class="col-sm-3 control-label">SKU</label>
+              <div class="col-sm-9">
+                <input id="variant-sku" class="form-control" type="text" name="sku" value="{{variant.sku}}"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="variant-price" class="col-sm-3 control-label">Price</label>
+              <div class="col-sm-9">
                 <input id="variant-price" class="form-control" type="number" min="0" name="price" value="{{variant.price}}" required="required"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="variant-compareAtPrice" class="col-sm-3 control-label">Compare at price</label>
+              <div class="col-sm-9">
+                <input id="variant-compareAtPrice" class="form-control" type="number" min="0" name="compareAtPrice" value="{{variant.compareAtPrice}}"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="variant-weight" class="col-sm-3 control-label">Weight</label>
+              <div class="col-sm-9">
+                <input id="variant-weight" class="form-control" type="number" min="0" name="weight" value="{{variant.weight}}"/>
+                <span class="help-block">In grams</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <div class="checkbox">
+                  <label>
+                    <input id="variant-taxable" type="checkbox" name="taxable" value="true" {{#if variant.taxable}}checked="checked"{{/if}} />
+                    Charge taxes on this product
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <div class="checkbox">
+                  <label>
+                    <input id="variant-requiresShipping" type="checkbox" name="requiresShipping" value="true" {{#if variant.requiresShipping}}checked="checked"{{/if}} />
+                    Require a shipping address
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="variant-inventoryManagement" class="col-sm-3 control-label">Inventory policy</label>
+              <div class="col-sm-9">
+                <select class="form-control" id="variant-inventoryManagement" name="inventoryManagement">
+                  <option value="" {{#if condition variant.inventoryManagement "eq" ""}}selected="selected"{{/if}}>Don't track inventory</option>
+                  <option value="reaction" {{#if condition variant.inventoryManagement "eq" "reaction"}}selected="selected"{{/if}}>Let Reaction track this variant's inventory</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="variant-inventoryQuantity" class="col-sm-3 control-label">Quantity</label>
+              <div class="col-sm-9">
+                <input id="variant-inventoryQuantity" class="form-control" type="number" min="0" name="inventoryQuantity" value="{{variant.inventoryQuantity}}" required="required"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <div class="checkbox">
+                  <label>
+                    <input id="variant-inventoryPolicy" type="checkbox" name="inventoryPolicy" value="continue" {{#if condition variant.inventoryPolicy "eq" "continue"}}checked="checked"{{/if}} />
+                    Require a shipping address
+                  </label>
+                </div>
               </div>
             </div>
           </div>
