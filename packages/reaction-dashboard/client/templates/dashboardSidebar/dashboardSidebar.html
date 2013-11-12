@@ -1,44 +1,77 @@
 <template name="dashboardSidebar">
-  <!-- BEGIN Sidebar -->
-  <div id="sidebar" class="navbar-collapse collapse sidebar-collapsed">
-    <!-- BEGIN Navlist -->
-    <ul class="nav nav-list">
-      <!-- BEGIN Search Form -->
-      <li>
-        <form target="#" method="GET" class="search-form">
+
+
+<ul class="list-unstyled" id="dashboard-sidebar">
+    <li>
+        <a class="fa fa-angle-double-left dashboard-back">
+            <span>Back</span>
+        </a>
+    </li>
+    <li>
+        <a href="/dashboard" class="fa fa-th dashboard-home">
+            <span>Dashboard</span>
+        </a>
+    </li>
+    <li>
+        <a class="fa fa-power-off dashboard-logout">
+            <span>Logout</span>
+        </a>
+    </li>
+</ul>
+</template>
+
+
+
+
+<template name="dashboardSidebarOld">
+    <!-- BEGIN Sidebar -->
+    <div id="sidebar" class="navbar-collapse collapse sidebar-collapsed">
+        <!-- BEGIN Navlist -->
+        <ul class="nav nav-list">
+            <!-- BEGIN Search Form -->
+            <li>
+                <form target="#" method="GET" class="search-form">
                     <span class="search-pan">
                         <button type="submit">
-                          <i class="fa fa-search"></i>
+                            <i class="fa fa-search"></i>
                         </button>
                         <input type="text" name="search" placeholder="Search ..." autocomplete="off"/>
                     </span>
-        </form>
-      </li>
-      <!-- END Search Form -->
-      <!-- BEGIN Menu -->
-        {{#each categories}}
-          <li class="{{active}}">
-            <a href="{{route}}" class="dropdown-toggle">
-              <i class="{{icon}}"></i>
-              <span id="{{packageId}}" class="dashlink">{{label}}</span>
-            </a>
-            <!-- BEGIN Submenu -->
-            <ul class="submenu" style="display: block;">
-                {{#each children}}
-                  <li class="{{active}}"><a href="{{route}}">{{label}}</a></li>
-                {{/each}}
-            </ul>
-            <!-- END Submenu -->
-          </li>
-        {{/each}}
-      <!-- END Menu -->
-    </ul>
-    <!-- END Navlist -->
-    <!-- BEGIN Sidebar Collapse Button -->
-    <div id="sidebar-collapse" class="visible-lg">
-      <i class="fa fa-angle-double-left fa-lg"></i>
+                </form>
+            </li>
+            <!-- END Search Form -->
+            <!-- BEGIN Menu -->
+            {{#each categories}}
+                <li class="{{active}}">
+                    <a href="{{route}}" class="dropdown-toggle">
+                        <i class="{{icon}}"></i>
+                        <span id="{{packageId}}" class="dashlink">{{label}}</span>
+                    </a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu" style="display: block;">
+                        {{#each children}}
+                            <li class="{{active}}"><a href="{{route}}">{{label}}</a></li>
+                        {{/each}}
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+            {{/each}}
+            <!-- END Menu -->
+        </ul>
+
+        <!-- END Navlist -->
+        <!-- BEGIN Sidebar Collapse Button -->
+        <div id="sidebar-collapse" class="visible-lg">
+            <i class="fa fa-angle-double-left fa-lg"></i>
+        </div>
+        <div class="sidebar-footer">
+            <span class="fa-stack fa-2x">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
+            </span>
+        </div>
+
+        <!-- END Sidebar Collapse Button -->
     </div>
-    <!-- END Sidebar Collapse Button -->
-  </div>
-  <!-- END Sidebar -->
+    <!-- END Sidebar -->
 </template>

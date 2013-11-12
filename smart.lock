@@ -2,21 +2,17 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "bootstrap-3": {},
       "spin": {},
       "highcharts": {},
       "roles": {},
       "x-editable-bootstrap3": {},
       "iron-router": {},
       "videojs": {},
-      "parsleyjs": {}
+      "parsleyjs": {},
+      "font-awesome-4": {},
+      "bootstrap3-less": {}
     },
     "packages": {
-      "bootstrap-3": {
-        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v0.3.5",
-        "commit": "47996f67f3987c9f82117394effcbe1586a4fe29"
-      },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
         "tag": "v0.2.0",
@@ -51,6 +47,16 @@
         "git": "https://github.com/nate-strauser/meteor-parsleyjs.git",
         "tag": "v1.1.7",
         "commit": "035a1e56a78e50369686b7e281aa71e3daf3729a"
+      },
+      "font-awesome-4": {
+        "git": "https://github.com/michaelbishop/meteor-font-awesome-4.git",
+        "tag": "v4.0.0",
+        "commit": "c28b5a0f2a2bd233c495642b40a167eda95172f5"
+      },
+      "bootstrap3-less": {
+        "git": "https://github.com/eprochasson/bootstrap3-less",
+        "tag": "v0.1.4",
+        "commit": "23ec918f8377b15b22cba33e13b717214235c88a"
       }
     }
   }

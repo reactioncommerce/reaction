@@ -143,3 +143,13 @@ Handlebars.registerHelper('navLink', function (page, icon) {
   ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>";
   return new Handlebars.SafeString(ret);
 });
+
+// *****************************************************
+// Function that randomly picks colors for package tiles
+// returns random color
+// *****************************************************
+
+Handlebars.registerHelper('tileColors', function() {
+  var colors = ['blue', 'light-blue', 'dark-blue', 'red', 'orange', 'magenta', 'lime', 'yellow', 'pink', 'aqua', 'fuchsia', 'gray', 'maroon', 'olive', 'purple', 'teal', 'green'];
+  return colors[Math.floor(Math.random() * colors.length)];
+});

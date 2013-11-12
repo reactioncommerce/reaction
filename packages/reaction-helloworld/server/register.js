@@ -9,7 +9,7 @@ Meteor.startup(function () {
       label: "HelloWorld",
       description: "Example Reaction Package",
       icon: "fa fa-globe fa-5x",
-      route: "/helloworld",
+      route: "helloworld",
       template: "helloworld",
       priority: "2"
     }
@@ -19,7 +19,7 @@ Meteor.startup(function () {
   if (result.insertedId) {
     ReactionPackages.update(result.insertedId, {
       $set: {
-        metafields: {type: 'reaction-pkgmanager'}
+        metafields: {type: ''}
       }
     })
   }

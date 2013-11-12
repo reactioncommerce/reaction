@@ -1,0 +1,97 @@
+/**
+* bootstrap3-less Advanced Implementation
+* ---------------------------------------
+*
+* this file:
+*   client/less/index.less
+*
+* other lessimport files are are in:
+*   client/less/config.lessimport
+*   client/less/layout.lessimport
+*   client/less/whatever.lessimport
+*
+* you can use other .less files anywhere you like, but you will have to monitor
+* Meteor's "order of opperations" for them...
+*
+* You might be best sticking to extra .lessimport files, imported here...
+*
+* Your call...
+*/
+
+/*
+* Import Bootstrap Config Defaults
+* ---------------------------------------
+* (you need these first, to get the default setup for bootstrap)
+*/
+
+@import "/packages/bootstrap3-less/lib/less/variables.lessimport";
+@import "/packages/bootstrap3-less/lib/less/mixins.lessimport";
+
+/*
+* Application Overrides (config)
+* ---------------------------------------
+* (Here you can override any variables defined in the default set above)
+*/
+
+@import "config.lessimport";
+
+/*
+* Import Bootstrap
+* ---------------------------------------
+* (This is the full set of package files, include only what you need)
+*/
+
+// Reset
+@import "/packages/bootstrap3-less/lib/less/normalize.lessimport";
+@import "/packages/bootstrap3-less/lib/less/print.lessimport";
+
+// Core CSS
+@import "/packages/bootstrap3-less/lib/less/scaffolding.lessimport";
+@import "/packages/bootstrap3-less/lib/less/type.lessimport";
+@import "/packages/bootstrap3-less/lib/less/code.lessimport";
+@import "/packages/bootstrap3-less/lib/less/grid.lessimport";
+@import "/packages/bootstrap3-less/lib/less/tables.lessimport";
+@import "/packages/bootstrap3-less/lib/less/forms.lessimport";
+@import "/packages/bootstrap3-less/lib/less/buttons.lessimport";
+
+// Components
+@import "/packages/bootstrap3-less/lib/less/component-animations.lessimport";
+@import "/packages/bootstrap3-less/lib/less/glyphicons.lessimport";
+@import "/packages/bootstrap3-less/lib/less/dropdowns.lessimport";
+@import "/packages/bootstrap3-less/lib/less/button-groups.lessimport";
+@import "/packages/bootstrap3-less/lib/less/input-groups.lessimport";
+@import "/packages/bootstrap3-less/lib/less/navs.lessimport";
+@import "/packages/bootstrap3-less/lib/less/navbar.lessimport";
+@import "/packages/bootstrap3-less/lib/less/breadcrumbs.lessimport";
+@import "/packages/bootstrap3-less/lib/less/pagination.lessimport";
+@import "/packages/bootstrap3-less/lib/less/pager.lessimport";
+@import "/packages/bootstrap3-less/lib/less/labels.lessimport";
+@import "/packages/bootstrap3-less/lib/less/badges.lessimport";
+@import "/packages/bootstrap3-less/lib/less/jumbotron.lessimport";
+@import "/packages/bootstrap3-less/lib/less/thumbnails.lessimport";
+@import "/packages/bootstrap3-less/lib/less/alerts.lessimport";
+@import "/packages/bootstrap3-less/lib/less/progress-bars.lessimport";
+@import "/packages/bootstrap3-less/lib/less/media.lessimport";
+@import "/packages/bootstrap3-less/lib/less/list-group.lessimport";
+@import "/packages/bootstrap3-less/lib/less/panels.lessimport";
+@import "/packages/bootstrap3-less/lib/less/wells.lessimport";
+@import "/packages/bootstrap3-less/lib/less/close.lessimport";
+
+// Components w/ JavaScript
+@import "/packages/bootstrap3-less/lib/less/modals.lessimport";
+@import "/packages/bootstrap3-less/lib/less/tooltip.lessimport";
+@import "/packages/bootstrap3-less/lib/less/popovers.lessimport";
+@import "/packages/bootstrap3-less/lib/less/carousel.lessimport";
+
+// Utility classes
+@import "/packages/bootstrap3-less/lib/less/utilities.lessimport";
+@import "/packages/bootstrap3-less/lib/less/responsive-utilities.lessimport";
+
+/*
+* Application Overrides
+* ---------------------------------------
+* (Now, after everything from bootstrap, you can create your own LESS->CSS)
+* (It will overwrite any bootstrap stuff if it needs to, and all bootstrap mixins will be available)
+*/
+
+@import "layout.lessimport";

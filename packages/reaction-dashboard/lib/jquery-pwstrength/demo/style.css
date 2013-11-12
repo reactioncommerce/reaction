@@ -11,172 +11,166 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-  display: block;
+    display: block;
 }
-
 body {
-  line-height: 1;
+    line-height: 1;
 }
-
 ol, ul {
-  list-style: none;
+    list-style: none;
 }
-
 blockquote, q {
-  quotes: none;
+    quotes: none;
 }
-
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
-  content: none;
+    content: '';
+    content: none;
 }
-
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
-
 strong {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 body {
-  background: #aeaeae;
-  color: #000;
-  font-family: Helvetica, Arial, FreeSans, san-serif;
-  font-size: 13px;
+    background: #aeaeae;
+    color: #000;
+    font-family: Helvetica, Arial, FreeSans, san-serif;
+    font-size: 13px;
 }
 
 p, code, h1, h2 {
-  margin: 1em 0;
+    margin: 1em 0;
 }
 
 ul img {
-  margin: 5px;
-  width: 285px;
+    margin: 5px;
+    width: 285px;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 code {
-  background: #c3c3c3;
-  border: 1px solid #838383;
-  display: block;
-  font-family: Monaco, Arial, Verdana, sans-serif;
-  padding: 5px;
+    background: #c3c3c3;
+    border: 1px solid #838383;
+    display: block;
+    font-family: Monaco, Arial, Verdana, sans-serif;
+    padding: 5px;
 }
 
 h1 {
-  font-size: 1.8em;
-  font-weight: bold;
+    font-size: 1.8em;
+    font-weight: bold;
 }
 
 h2 {
-  font-size: 1.5em;
-  font-weight: bold;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 h2 + p {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 section {
-  border: 0 solid #aeaeae;
-  border-width: 1px 0 0 0;
-  padding-bottom: 1em;
+    border: 0 solid #aeaeae;
+    border-width: 1px 0 0 0;
+    padding-bottom: 1em;
 }
 
 label {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 input {
-  font-family: Helvetica, Arial, FreeSans, san-serif;
-  font-size: 13px;
-  width: 150px;
+    font-family: Helvetica, Arial, FreeSans, san-serif;
+    font-size: 13px;
+    width: 150px;
 }
 
 #wrapper {
-  background: #fff;
-  margin: 20px auto;
-  padding: 20px;
-  width: 600px;
+    background: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    width: 600px;
 }
 
 #pwindicator {
-  margin-top: 4px;
-  width: 150px;
+    margin-top: 4px;
+    width: 150px;
 }
 
 .bar {
-  height: 2px;
+    height: 2px;
 }
 
 .pw-very-weak .bar {
-  background: #d00;
-  width: 30px;
+    background: #d00;
+    width: 30px;
 }
 
 .pw-very-weak .label {
-  color: #d00;
+    color: #d00;
 }
 
 .pw-weak .bar {
-  background: #d00;
-  width: 60px;
+    background: #d00;
+    width: 60px;
 }
 
 .pw-weak .label {
-  color: #d00;
+    color: #d00;
 }
 
 .pw-mediocre .bar {
-  background: #f3f01a;
-  width: 90px;
+    background: #f3f01a;
+    width: 90px;
 }
 
 .pw-mediocre .label {
-  color: #f3f01a;
+    color: #f3f01a;
 }
 
 .pw-strong .bar {
-  background: #f3b31a;
-  width: 120px;
+    background: #f3b31a;
+    width: 120px;
 }
 
 .pw-strong .label {
-  color: #f3b31a;
+    color: #f3b31a;
 }
 
 .pw-very-strong .bar {
-  background: #0d0;
-  width: 150px;
+    background: #0d0;
+    width: 150px;
 }
 
 .pw-very-strong .label {
-  color: #0d0;
+    color: #0d0;
 }
 
 .fork img {
-  border: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
+    border: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .download {
-  float: right;
+    float: right;
 }

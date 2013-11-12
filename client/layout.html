@@ -16,3 +16,22 @@
       {{>introFooter}}
   </footer>
 </template>
+
+<template name="storeLayout">
+  <head>
+    <title>Your Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <header>
+     <h1> A Store</h1>
+  </header>
+
+  <section>
+      {{yield}}
+  </section>
+
+  <footer>
+      {{>introFooter}}
+  </footer>
+</template>

@@ -15,9 +15,14 @@ Package.on_use(function (api, where) {
   // in this case load both.js on the client AND the server
   api.add_files([
     'client/router.js',
+    //package views
     'client/templates/helloworld/helloworld.html',
     'client/templates/helloworld/helloworld.js',
-    'client/templates/helloworld/helloworld.less'
+    'client/templates/helloworld/helloworld.less',
+    //dashboard widget
+    'client/templates/dashboard/widget.html',
+    'client/templates/dashboard/widget.js',
+    'client/templates/dashboard/widget.less'
   ], 'client');
 
   api.add_files([

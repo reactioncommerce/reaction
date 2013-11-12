@@ -22,7 +22,7 @@ Clone to reaction/packages then add package to local meteor server:
 		    title:"HelloWorld",
 		    description: "Example Reaction Package",
 		    icon: "fa fa-globe fa-5x",
-		    route: "/helloworld",
+		    route: "helloworld",
 		    template: "helloworld",
 		    priority: "2",
 		    metafields: {type:''}

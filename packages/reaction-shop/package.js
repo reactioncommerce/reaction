@@ -4,7 +4,7 @@ Package.describe({
 
 Package.on_use(function (api, where) {
   api.use('standard-app-packages');
-  api.use(['bootstrap-3', 'accounts-base', 'iron-router', 'less'], 'client');
+  api.use(['accounts-base', 'iron-router', 'less'], 'client');
 
   api.add_files('model/model.js');
 
@@ -14,17 +14,18 @@ Package.on_use(function (api, where) {
   api.add_files('lib/select2-bootstrap-css/select2-bootstrap.css', 'client');
 
   api.add_files([
-    'client/templates/shopnav/shopnav.html',
-    'client/templates/shopnav/shopnav.js',
+    // Dashboard
+    'client/templates/dashboard/shopnav/shopnav.html',
+    'client/templates/dashboard/shopnav/shopnav.js',
 
-    'client/templates/shopwelcome/shopwelcome.html',
-    'client/templates/shopwelcome/shopwelcome.css',
+    'client/templates/dashboard/shopwelcome/shopwelcome.html',
+    'client/templates/dashboard/shopwelcome/shopwelcome.css',
 
-    'client/templates/customers/customers.html',
-    'client/templates/customers/customers.js',
+    'client/templates/dashboard/customers/customers.html',
+    'client/templates/dashboard/customers/customers.js',
 
-    'client/templates/orders/orders.html',
-    'client/templates/orders/orders.js',
+    'client/templates/dashboard/orders/orders.html',
+    'client/templates/dashboard/orders/orders.js',
 
     'client/templates/products/products.html',
     'client/templates/products/products.less',
@@ -45,6 +46,11 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/variant/variantEditModal/variantEditModal.js',
     'client/templates/productsEdit/variant/variantEditModal/variantEditModal.less',
 
+    // Storefront
+    'client/templates/storefront/default/shop/shop.html',
+    'client/templates/storefront/default/shop/shop.less',
+
+    // Package
     'client/subscribe.js',
     'client/router.js'
   ], 'client');

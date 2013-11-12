@@ -1,0 +1,24 @@
+<template name="shopnav">
+  <div class="row">
+    <ul class="nav nav-pills">
+      <li class="{{active '/shop/orders'}}">
+        <a href="{{pathFor 'shop/orders'}}">
+          Orders
+          <span class="badge">{{ocount}}</span>
+        </a>
+      </li>
+      <li class="{{active '/shop/products'}}">
+        <a href="{{pathFor 'shop/products'}}">
+          Products
+          <span class="badge">{{pcount}}</span>
+        </a>
+      </li>
+      <li class="{{active '/shop/customers'}}">
+        <a href="{{pathFor 'shop/customers'}}">
+          Customers
+          <span class="badge">{{ccount}}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</template>

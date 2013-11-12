@@ -1,175 +1,92 @@
 <template name="dashboard">
-  <!-- BEGIN Main Content -->
-  <div class="row">
-    <div class="col-md-7">
-      <div class="box">
-        <div class="box-title">
-          <h3><i class="icon-bar-chart"></i> Visitors Chart</h3>
+    <!-- BEGIN Main Content -->
+    <div class="row">
+        <h1>Hello {{fname}}</h1>
+        {{> activePkgGrid}}
+        {{> availablePkgGrid}}
+    </div>
+    <!-- END Main Content -->
+</template>
 
-          <div class="box-tool">
-            <a data-action="collapse" href="#"><i class="icon-chevron-up"></i></a>
-            <a data-action="close" href="#"><i class="icon-remove"></i></a>
-          </div>
-        </div>
-        <div class="box-content">
-          <div id="visitors-chart" style="margin-top:20px; position:relative; height: 290px;"></div>
-        </div>
+<template name="activePkgGrid">
+    <h3>Your apps</h3>
+    <div class="well well-sm">
+      <div class="pkg-container">
+        {{#each UserConfig}}
+        {{>widget}}
+
+        {{/each}}
       </div>
     </div>
-    <div class="col-md-5">
-      <div class="box">
-        <div class="box-title">
-          <h3><i class="icon-bar-chart"></i> Weekly Visitors Stat</h3>
+</template>
 
-          <div class="box-tool">
-            <a data-action="collapse" href="#"><i class="icon-chevron-up"></i></a>
-            <a data-action="close" href="#"><i class="icon-remove"></i></a>
-          </div>
-        </div>
-        <div class="box-content">
-          <ul class="weekly-stats">
-            <li>
-              <span class="inline-sparkline">134,178,264,196,307,259,287</span>
-              Visits: <span class="value">376</span>
-            </li>
-            <li>
-              <span class="inline-sparkline">89,124,197,138,235,169,186</span>
-              Unique Visitors: <span class="value">238</span>
-            </li>
-            <li>
-              <span class="inline-sparkline">625,517,586,638,669,698,763</span>
-              Page Views: <span class="value">514</span>
-            </li>
-            <li>
-              <span class="inline-sparkline">1.34,2.98,0.76,1.29,1.86,1.68,1.92</span>
-              Pages / Visit: <span class="value">1.43</span>
-            </li>
-            <li>
-              <span class="inline-sparkline">2.34,2.67,1.47,1.97,2.25,2.47,1.27</span>
-              Avg. Visit Time: <span class="value">00:02:34</span>
-            </li>
-            <li>
-              <span class="inline-sparkline">70.34,67.41,59.45,65.43,78.42,75.92,74.29</span>
-              Bounce Rate: <span class="value">73.56%</span>
-            </li>
-            <li>
-              <span class="inline-sparkline">78.12,74.52,81.25,89.23,86.15,91.82,85.18</span>
-              % New Visits: <span class="value">82.65%</span>
-            </li>
-          </ul>
-        </div>
+<template name="availablePkgGrid">
+    <h3>More apps</h3>
+    <div class="well well-sm">
+      <div class="apps-container">
+        {{#each ReactionPackages}}
+        {{>pkg}}
+
+        {{/each}}
       </div>
     </div>
-  </div>
+</template>
 
-  <div class="row">
-    <div class="col-md-7">
-      <div class="box box-black">
-        <div class="box-title">
-          <h3><i class="icon-retweet"></i> Thing To Do</h3>
+<template name="widget">
+    <div class="tile tile-{{tileColors}}" id="{{_id}}">
 
-          <div class="box-tool">
-            <a data-action="collapse" href="#"><i class="icon-chevron-up"></i></a>
-            <a data-action="close" href="#"><i class="icon-remove"></i></a>
-          </div>
+        <i class="{{icon}}"></i>
+        <div class="content">
+            <p class="big">{{label}}</p>
         </div>
-        <div class="box-content">
-          <ul class="things-to-do">
-            <li>
-              <p>
-                <i class="icon-user"></i>
-                <span class="value">4</span>
-                Accept User Registration
-                <a class="btn btn-success" href="#">Go</a>
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-comments"></i>
-                <span class="value">14</span>
-                Review Comments
-                <a class="btn btn-success" href="#">Go</a>
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-shopping-cart blue"></i>
-                <span class="value">7</span>
-                Pending Orders
-                <a class="btn btn-success" href="#">Go</a>
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-file-text-alt"></i>
-                <span class="value">4</span>
-                New Invoice
-                <a class="btn btn-success" href="#">Go</a>
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-gear"></i>
-                <span class="value">3</span>
-                Settings To Change
-                <a class="btn btn-success" href="#">Go</a>
-              </p>
-            </li>
-          </ul>
+        <div class="status">
+            <a href="{{pathFor route}}" class="pull-right disablePkg">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+            <a href="#" class="pull-right disablePkg">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
         </div>
-      </div>
+        <div class="packages">
+            <ul class="list-unstyled">
+                {{#each children}}
+                    <li><a href="{{route}}">{{label}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="widget">
+            {{{getTemplate "reaction-helloworld-widget" "widget"}}}
+            {{widget}}
+        </div>
     </div>
-    <div class="col-md-5">
-      <div class="box box-orange">
-        <div class="box-title">
-          <h3><i class="icon-bar-chart"></i> Weekly Changes</h3>
+</template>
 
-          <div class="box-tool">
-            <a data-action="collapse" href="#"><i class="icon-chevron-up"></i></a>
-            <a data-action="close" href="#"><i class="icon-remove"></i></a>
-          </div>
+
+<template name="pkg">
+    <div class="tile tile-{{tileColors}}" id="{{_id}}">
+        <div class="img"><i class="{{icon}}"></i></div>
+        <div class="content">
+            <p class="big">{{label}}</p>
+            <p class="description">{{{description}}}</p>
         </div>
-        <div class="box-content">
-          <ul class="weekly-changes">
-            <li>
-              <p>
-                <i class="icon-arrow-up light-green"></i>
-                <span class="light-green">186</span>
-                New Comments
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-minus light-blue"></i>
-                <span class="light-blue">53</span>
-                New Users
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-arrow-down light-red"></i>
-                <span class="light-red">17</span>
-                New Articles
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-arrow-up light-green"></i>
-                <span class="light-green">75</span>
-                New Tickets
-              </p>
-            </li>
-            <li>
-              <p>
-                <i class="icon-arrow-down light-red"></i>
-                <span class="light-red">74</span>
-                New Orders
-              </p>
-            </li>
-          </ul>
+        <div class="status">
+            {{#unless type}}
+                {{#if enabledPackage _id}}
+                    <a href="#" class="pull-right disablePkg">
+                        <i class="fa fa-minus-circle fa-3x"></i>
+                    </a>
+                {{else}}
+                    <a href="#" class="pull-right enablePkg">
+                        <i class="fa fa-plus-circle fa-3x"></i>
+                    </a>
+                {{/if}}
+            {{/unless}}
         </div>
-      </div>
     </div>
-  </div>
-  <!-- END Main Content -->
 </template>

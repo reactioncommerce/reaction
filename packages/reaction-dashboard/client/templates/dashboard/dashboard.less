@@ -1,0 +1,58 @@
+/* Metro Colors */
+@metroPurple: #a200ff;
+@metroMagenta: #ff0097;
+@metroTeal: #00aba9;
+@metroLime: #8cbf26;
+@metroBrown: #a05000;
+@metroPink: #e671b8;
+@metroOrange: #f09609;
+@metroBlue: #1ba1e2;
+@metroRed: #e51400;
+@metroGreen: #339933;
+
+.tile {
+  position: relative;
+  background: @metroLime;
+  border: 1px solid #ccc;
+  padding: 4px;
+  min-width: 255px;
+  min-height: 150px;
+}
+
+.tile p.title {
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.tile .content {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+.tile .content > p {
+    text-align: right;
+}
+.tile .content > p.big {
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.tile .status {
+  position:absolute;
+  bottom: 2px;
+  right: 2px;
+}
+.tile .packages {
+  position:relative;
+  left: 2px;
+}
+
+
+.enablePkg {
+    color: #FFF;
+}
+
+.disablePkg {
+    color: #CDD4D8;
+}

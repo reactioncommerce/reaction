@@ -5,6 +5,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  * ============================================================ */
+
 @import "deps/variables";
 @import "deps/mixins";
 
@@ -101,7 +102,7 @@
   }
 
   label {
-    text-align: center;
+  	text-align: center;
     margin-top: -1px;
     margin-bottom: -1px;
     z-index: 100;
@@ -129,7 +130,7 @@
     }
 
     &.switch-right {
-      .buttonBackground(@btnBackgroundHighlight, @btnBackground, @grayDark, 0 1px 1px rgba(255, 255, 255, .75));
+      .buttonBackground(@btnBackgroundHighlight, @btnBackground, @grayDark, 0 1px 1px rgba(255,255,255,.75));
     }
 
     &.switch-primary, &.switch-left {
@@ -153,7 +154,7 @@
     }
 
     &.switch-default {
-      .buttonBackground(@btnBackgroundHighlight, @btnBackground, @grayDark, 0 1px 1px rgba(255, 255, 255, .75));
+      .buttonBackground(@btnBackgroundHighlight, @btnBackground, @grayDark, 0 1px 1px rgba(255,255,255,.75));
     }
   }
 }

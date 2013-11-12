@@ -15,3 +15,5 @@ settings/dev.json
 settings/prod.json
 
 npm-debug.log
+
+/dev.json

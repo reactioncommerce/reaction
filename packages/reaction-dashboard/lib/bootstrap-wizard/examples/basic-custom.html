@@ -1,64 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Basic Custom Example</title>
-  <!-- Bootstrap -->
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!-- custom styles -->
-  <link href="custom.css" rel="stylesheet">
-  <link href="../prettify.css" rel="stylesheet">
-</head>
-<body>
-<div class='container'>
-
-  <div class="col-md-12">
-    <section id="wizard">
-      <div class="page-header">
-        <h1>Basic Custom Wizard</h1>
-      </div>
-
-      <div id="rootwizard">
-        <ul>
-          <li><a href="#tab1" data-toggle="tab"><span class="label">1</span> First</a></li>
-          <li><a href="#tab2" data-toggle="tab"><span class="label">2</span> Second</a></li>
-          <li><a href="#tab3" data-toggle="tab"><span class="label">3</span> Third</a></li>
-          <li><a href="#tab4" data-toggle="tab"><span class="label">4</span> Forth</a></li>
-          <li><a href="#tab5" data-toggle="tab"><span class="label">5</span> Fifth</a></li>
-          <li><a href="#tab6" data-toggle="tab"><span class="label">6</span> Sixth</a></li>
-          <li><a href="#tab7" data-toggle="tab"><span class="label">7</span> Seventh</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane" id="tab1">
-            1
-          </div>
-          <div class="tab-pane" id="tab2">
-            2
-          </div>
-          <div class="tab-pane" id="tab3">
-            3
-          </div>
-          <div class="tab-pane" id="tab4">
-            4
-          </div>
-          <div class="tab-pane" id="tab5">
-            5
-          </div>
-          <div class="tab-pane" id="tab6">
-            6
-          </div>
-          <div class="tab-pane" id="tab7">
-            7
-          </div>
-          <ul class="pager wizard">
-            <li class="previous first" style="display:none;"><a href="#">First</a></li>
-            <li class="previous"><a href="#">Previous</a></li>
-            <li class="next last" style="display:none;"><a href="#">Last</a></li>
-            <li class="next"><a href="#">Next</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <h3>HTML</h3>
+  <head>
+    <title>Basic Custom Example</title>
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- custom styles -->
+	<link href="custom.css" rel="stylesheet">
+	<link href="../prettify.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class='container'>
+		
+		<div class="col-md-12">
+			<section id="wizard">
+			  <div class="page-header">
+	            <h1>Basic Custom Wizard</h1>
+	          </div>
+	
+				<div id="rootwizard">
+					<ul>
+					  	<li><a href="#tab1" data-toggle="tab"><span class="label">1</span> First</a></li>
+						<li><a href="#tab2" data-toggle="tab"><span class="label">2</span> Second</a></li>
+						<li><a href="#tab3" data-toggle="tab"><span class="label">3</span> Third</a></li>
+						<li><a href="#tab4" data-toggle="tab"><span class="label">4</span> Forth</a></li>
+						<li><a href="#tab5" data-toggle="tab"><span class="label">5</span> Fifth</a></li>
+						<li><a href="#tab6" data-toggle="tab"><span class="label">6</span> Sixth</a></li>
+						<li><a href="#tab7" data-toggle="tab"><span class="label">7</span> Seventh</a></li>
+					</ul>
+					<div class="tab-content">
+					    <div class="tab-pane" id="tab1">
+					      1
+					    </div>
+					    <div class="tab-pane" id="tab2">
+					      2
+					    </div>
+						<div class="tab-pane" id="tab3">
+							3
+					    </div>
+						<div class="tab-pane" id="tab4">
+							4
+					    </div>
+						<div class="tab-pane" id="tab5">
+							5
+					    </div>
+						<div class="tab-pane" id="tab6">
+							6
+					    </div>
+						<div class="tab-pane" id="tab7">
+							7
+					    </div>
+						<ul class="pager wizard">
+							<li class="previous first" style="display:none;"><a href="#">First</a></li>
+							<li class="previous"><a href="#">Previous</a></li>
+							<li class="next last" style="display:none;"><a href="#">Last</a></li>
+						  	<li class="next"><a href="#">Next</a></li>
+						</ul>
+					</div>	
+				</div>
+				
+<h3>HTML</h3>
 <pre class="prettyprint linenums">
 &lt;div id="rootwizard">
 	&lt;ul>
@@ -98,18 +98,18 @@
 			&lt;li class="next last" style="display:none;">&lt;a href="#">Last&lt;/a>&lt;/li>
 		  	&lt;li class="next">&lt;a href="#">Next&lt;/a>&lt;/li>
 		&lt;/ul>
-	&lt;/div>
+	&lt;/div>	
 &lt;/div>
 </pre>
 
-      <h3>JS</h3>
+<h3>JS</h3>
 <pre class="prettyprint linenums">
 $(document).ready(function() {
   	$('#rootwizard').bootstrapWizard({'tabClass': 'bwizard-steps'});
 });
-</pre>
+</pre>	
 
-      <h3>CSS</h3>
+<h3>CSS</h3>
 <pre class="prettyprint linenums">
 .bwizard-steps {
 	display: inline-block;
@@ -182,7 +182,7 @@ $(document).ready(function() {
 	border-left-color: #ccc }
 .bwizard-steps.clickable li:hover:not(.active) a {
 	color: #08c }
-@media (max-width: 480px) {
+@media (max-width: 480px) { 
 	/* badges only on small screens */
 	.bwizard-steps li:after,
 	.bwizard-steps li:before {
@@ -196,19 +196,19 @@ $(document).ready(function() {
 		background-color: transparent }
 }
 </pre>
-
-    </section>
-  </div>
-</div>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-<script src="../jquery.bootstrap.wizard.js"></script>
-<script src="../prettify.js"></script>
-<script>
-  $(document).ready(function () {
-    $('#rootwizard').bootstrapWizard({'tabClass': 'bwizard-steps'});
-    window.prettyPrint && prettyPrint()
-  });
-</script>
-</body>
+				
+			</section>
+ 		</div>
+	</div>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../jquery.bootstrap.wizard.js"></script>
+	<script src="../prettify.js"></script>
+	<script>
+	$(document).ready(function() {
+	  	$('#rootwizard').bootstrapWizard({'tabClass': 'bwizard-steps'});	
+		window.prettyPrint && prettyPrint()
+	});	
+	</script>
+  </body>
 </html>

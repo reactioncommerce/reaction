@@ -17,11 +17,11 @@
   text-align: left;
 }
 
-.daterangepicker .ranges .range_inputs > div {
+.daterangepicker .ranges .range_inputs>div {
   float: left;
 }
 
-.daterangepicker .ranges .range_inputs > div:nth-child(2) {
+.daterangepicker .ranges .range_inputs>div:nth-child(2) {
   padding-left: 11px;
 }
 
@@ -157,7 +157,6 @@
 .daterangepicker td.off {
   color: #999;
 }
-
 .daterangepicker td.disabled {
   color: #999;
 }
@@ -178,12 +177,12 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
   border-color: #0044cc #0044cc #002a80;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .daterangepicker td.week, .daterangepicker th.week {
-  font-size: 80%;
-  color: #ccc;
+    font-size: 80%;
+    color: #ccc;
 }

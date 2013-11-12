@@ -1,0 +1,72 @@
+<template name="accounts">
+    {{#if currentUser}}
+        {{> user_loggedin}}
+    {{else}}
+        {{> user_loggedout}}
+    {{/if}}
+</template>
+
+<template name="user_loggedin">
+    {{#if loggingin}}
+      <span class="navbar-text pull-right">Logging In...</span>
+    {{else}}
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="" id="logout">Sign out</a>
+        </li>
+        <li></li>
+      </ul>
+    {{/if}}
+</template>
+
+<template name="user_loggedout">
+    {{! Login Template}}
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li>
+          <form action="" method="POST" role="form" id="login">
+            <div class="form-group">
+              <label for="input-email" class="sr-only">Email</label>
+              <input type="email" class="form-control input-sm" id="input-email" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <label for="input-password" class="sr-only">Password</label>
+              <input type="password" class="form-control input-sm" id="input-password" placeholder="Password">
+            </div>
+            <div class="form-group">
+              {{> errors}}
+              <button type="submit" class="btn btn-sm btn-primary pull-right">Submit</button>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <li></li>
+</template>
+
+<template name="accountCreateStep1">
+  <form class="form-inline account-create" role="form" id="create-account-form">
+    <div class="form-group">
+      <label class="sr-only" for="create-name">Your full name</label>
+      <input type="text" class="form-control input-lg" id="input-name" placeholder="Enter your full name">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="create-email">Email address</label>
+      <input type="email" class="form-control input-lg" id="input-email" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="create-password">Password</label>
+      <input type="password" class="form-control input-lg" id="input-password" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-large btn-success pull-right">Sign up today <span
+              class="glyphicon glyphicon-ok-circle"></span></button>
+    </div>
+  </form>
+
+</template>
+
+

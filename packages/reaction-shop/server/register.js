@@ -5,7 +5,7 @@ Meteor.startup(function () {
     label: "Shop",
     description: "Reaction Shop",
     icon: "fa fa-shopping-cart fa-5x",
-    route: "/shop",
+    route: "shop",
     template: "shopwelcome",
     priority: "3",
     metafields: {type: ''}
@@ -17,7 +17,7 @@ Meteor.startup(function () {
   ReactionPackages.update({
     name: "reaction-shop-orders",
     label: "Orders",
-    route: "/shop/orders",
+    route: "shop/orders",
     metafields: {type: 'reaction-shop', visible: 'nav'}
   }, {$set: {}}, {upsert: true});
 });

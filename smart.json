@@ -1,12 +1,13 @@
 {
   "packages": {
-    "bootstrap-3": {},
     "spin": {},
     "highcharts": {},
     "roles": {},
     "x-editable-bootstrap3": {},
     "iron-router": {},
     "videojs": {},
-    "parsleyjs": {}
+    "parsleyjs": {},
+    "font-awesome-4": {},
+    "bootstrap3-less": {}
   }
 }

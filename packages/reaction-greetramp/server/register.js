@@ -4,7 +4,7 @@ Meteor.startup(function () {
     name: "reaction-greetramp",
     label: "Greetramp",
     description: "Capture Emails on your site.",
-    route: "/greetramp",
+    route: "greetramp",
     icon: "fa fa-road fa-5x",
     template: "greetramp",
     priority: "2",
