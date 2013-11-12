@@ -151,3 +151,13 @@ Handlebars.registerHelper('tileColors', function() {
   var colors = ['blue', 'light-blue', 'dark-blue', 'red', 'orange', 'magenta', 'lime', 'yellow', 'pink', 'aqua', 'fuchsia', 'gray', 'maroon', 'olive', 'purple', 'teal', 'green'];
   return colors[Math.floor(Math.random() * colors.length)];
 });
+
+// *****************************************************
+// Function allows you to load templates dynamically
+// format: {{{getTemplate package context}}}
+// example: {{{getTemplate widget }}}
+// *****************************************************
+Handlebars.registerHelper('getTemplate', function(pkg, context) {
+   templateName = pkg + "-widget";
+   if (Template[templateName]) return Template[templateName](context);
+});

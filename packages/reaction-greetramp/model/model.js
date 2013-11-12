@@ -2,21 +2,21 @@
 //
 //
 //
-Captures = new Meteor.Collection('captures');
-Counts = new Meteor.Collection('counts');
-CountStats = new Meteor.Collection('countstats');
+Captures = new Meteor.Collection('Captures');
+Counts = new Meteor.Collection('Counts');
+CountStats = new Meteor.Collection('CountStats');
 
 // check that the userId specified owns the documents
 ownsDocument = function (userId, doc) {
   return doc && doc.userId === userId;
-}
+};
 
 // Campaigns
 //
 //
 //
 
-Campaigns = new Meteor.Collection('campaigns');
+Campaigns = new Meteor.Collection('Campaigns');
 
 Campaigns.allow({
   update: ownsDocument,
@@ -59,9 +59,7 @@ Meteor.methods({
       submitted: new Date().getTime()
     });
 
-    var campaignId = Campaigns.insert(campaign);
-
-    return campaignId;
+    return Campaigns.insert(campaign);
   },
   broadcast: function (broadcastAttributes, campaignId) {
     var user = Meteor.user();

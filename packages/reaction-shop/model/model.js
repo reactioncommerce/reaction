@@ -1,3 +1,3 @@
-Products = new Meteor.Collection('products');
-Customers = new Meteor.Collection('customers');
-Orders = new Meteor.Collection('orders');
+Products = new Meteor.Collection('Products');
+Customers = new Meteor.Collection('Customers');
+Orders = new Meteor.Collection('Orders');

@@ -18,6 +18,10 @@ Package.on_use(function (api, where) {
     'client/templates/dashboard/shopnav/shopnav.html',
     'client/templates/dashboard/shopnav/shopnav.js',
 
+    'client/templates/dashboard/widget/widget.less',
+    'client/templates/dashboard/widget/widget.html',
+    'client/templates/dashboard/widget/widget.js',
+
     'client/templates/dashboard/shopwelcome/shopwelcome.html',
     'client/templates/dashboard/shopwelcome/shopwelcome.css',
 

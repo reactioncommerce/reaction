@@ -14,31 +14,37 @@ Router.configure({
 });
 
 
+// *****************************************************
+// generic routes for reaction marketing site layout
+// default layout is dashboardLayout template, these
+// are all exceptions
+// *****************************************************
+var pages = [
+  //Header
+  'howitworks',
+  'pricing',
+  'contactus',
+  //Footer
+  'about',
+  'faqs',
+  'termsofuse',
+  'privacypolicy',
+];
+
 Router.map(function () {
   this.route('index', {
     path: '/',
     layoutTemplate: 'introLayout',
     before: function () {
-      if (!Meteor.loggingIn() && Meteor.user() &&(Roles.userIsInRole(Meteor.user(), ['admin','owner']))) {
+      if (!Meteor.loggingIn() && Meteor.user() && (Roles.userIsInRole(Meteor.user(), ['admin', 'owner']))) {
         Router.go('dashboard');
       }
     }
   });
 
-  // *****************************************************
-  // generic routes for reaction marketing site layout
-  // default layout is dashboardLayout template, these
-  // are all exceptions
-  // *****************************************************
-  //Header
-  this.route('howitworks', {layoutTemplate: 'introLayout'});
-  this.route('pricing', {layoutTemplate: 'introLayout'});
-  this.route('contactus', {layoutTemplate: 'introLayout'});
-  //Footer
-  this.route('about', {layoutTemplate: 'introLayout'});
-  this.route('faqs', {layoutTemplate: 'introLayout'});
-  this.route('termsofuse', {layoutTemplate: 'introLayout'});
-  this.route('privacypolicy', {layoutTemplate: 'introLayout'});
+  for (var i = 0; i < pages.length; i++) {
+    this.route(pages[i], {layoutTemplate: 'introLayout'});
+  }
 
   // 404 Page for reaction
   this.route('notFound', {
@@ -47,4 +53,13 @@ Router.map(function () {
   });
 
 
+});
+
+Router.before(function () {
+  if (!Meteor.userId()) {
+    Meteor.loggingIn() ? this.render(this.loadingTemplate) : Router.go('index'); // TODO: there must be a login template render instead of redirect to index route
+    this.stop();
+  }
+}, {
+  except: _.union(['login', 'signup', 'forgotPassword', 'index', 'notFound'], pages)
 });
