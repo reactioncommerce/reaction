@@ -52,6 +52,15 @@
             </div>
 
             <div class="form-group">
+              <label for="variant-fulfillmentService" class="col-sm-3 control-label">Fulfillment service</label>
+              <div class="col-sm-9">
+                <select class="form-control" id="variant-fulfillmentService" name="fulfillmentService">
+                  <option value="manual" {{#if condition variant.fulfillmentService "eq" "manual"}}selected="selected"{{/if}}>Manual</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label for="variant-inventoryManagement" class="col-sm-3 control-label">Inventory policy</label>
               <div class="col-sm-9">
                 <select class="form-control" id="variant-inventoryManagement" name="inventoryManagement">

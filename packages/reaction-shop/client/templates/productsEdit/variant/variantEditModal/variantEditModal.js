@@ -13,11 +13,22 @@ Template.variantEditModal.events({
     // TODO: Make quantity "required" a dynamic attribute
     // TODO: convert data to proper types
     // TODO: Simplify the true : false; in helper
-    var isValid = $(template.find('form')).parsley('validate');
-    if (isValid) {
-      $(template.find('.variant-edit-modal')).modal('hide');
-    }
-    e.preventDefault();
-    e.stopPropagation();
+    var $form = $(template.find('form'));
+    var currentProduct = Products.findOne(Session.get('currentProductId'));
+    var variant = currentProduct.variants[Session.get('currentVariantIndex')];
+    // TODO: Normalize checkboxes... should be done by a library
+    data = {
+      inventoryPolicy: "deny",
+      taxable: false,
+      requiresShipping: false
+    };
+    $.each($form.serializeArray(), function() {
+      data[this.name] = this.value;
+    });
+    $.extend(true, variant, data);
+    var $set = {};
+    $set["variants."+Session.get('currentVariantIndex')] = variant;
+    Products.update(currentProduct._id, {$set: $set});
+    $('#variant-edit-modal').modal('hide'); // manual hide fix for Meteor reactivity
   }
 });
