@@ -93,15 +93,13 @@
                   {{/each}}
                   </tbody>
                 </table>
-                <a href="#" id="variants" data-type="select2" data-pk="{{id}}"
-                   data-original-title="Variants"
-                   data-emptytext="add a variant, like color or size" tabindex="7"></a>
+                <a href="#" id="add-variant" tabindex="7">Add a variant, like color or size</a>
               </div>
             </div>
           </div>
           <!-- END Right Side -->
         </div>
       </form>
-        {{> variantEditModal}}
+        {{> variantFormModal}}
     {{/with}}
 </template>

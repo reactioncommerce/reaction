@@ -309,6 +309,11 @@ Template.productsEdit.events({
   'click .variant-table tr': function (e) {
     $(e.target).closest('tr').find('input').prop('checked', 'checked');
     e.preventDefault();
+  },
+  'click #add-variant': function(e) {
+    Session.set('currentVariantIndex', null);
+    $('#variant-edit-modal').modal();
+    e.preventDefault();
   }
 });
 

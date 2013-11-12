@@ -1,13 +1,13 @@
-Template.variantEditModal.variant = function() {
+Template.variantFormModal.variant = function() {
   var currentProduct = Products.findOne(Session.get("currentProductId"));
   return currentProduct.variants[Session.get("currentVariantIndex")];
 };
 
-Template.variantEditModal.rendered = function() {
+Template.variantFormModal.rendered = function() {
   updateInventoryManagementFieldsVisibility()
 };
 
-Template.variantEditModal.events({
+Template.variantFormModal.events({
   "change #variant-inventoryManagement": function() {
     updateInventoryManagementFieldsVisibility()
   },
@@ -20,9 +20,8 @@ Template.variantEditModal.events({
     // TODO: Make quantity "required" a dynamic attribute
     // TODO: convert data to proper types
     // TODO: Simplify the true : false; in helper
-    var $form = $(template.find("form"));
-    var currentProduct = Products.findOne(Session.get("currentProductId"));
-    var variant = currentProduct.variants[Session.get("currentVariantIndex")];
+    var form = template.find("form");
+    var $form = $(form);
     // TODO: Normalize checkboxes... should be done by a library
     data = {
       inventoryPolicy: "deny",
@@ -32,10 +31,17 @@ Template.variantEditModal.events({
     $.each($form.serializeArray(), function() {
       data[this.name] = this.value;
     });
-    $.extend(true, variant, data);
-    var $set = {};
-    $set["variants."+Session.get("currentVariantIndex")] = variant;
-    Products.update(currentProduct._id, {$set: $set});
+    var currentProduct = Products.findOne(Session.get("currentProductId"));
+    if (Session.get("currentVariantIndex")) {
+      var variant = currentProduct.variants[Session.get("currentVariantIndex")];
+      $.extend(true, variant, data);
+      var $set = {};
+      $set["variants."+Session.get("currentVariantIndex")] = variant;
+      Products.update(currentProduct._id, {$set: $set});
+    } else {
+      Products.update(currentProduct._id, {$push: {variants: data}});
+    }
+    form.reset();
     $("#variant-edit-modal").modal("hide"); // manual hide fix for Meteor reactivity
   }
 });

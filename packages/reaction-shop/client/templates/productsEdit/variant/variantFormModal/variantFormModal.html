@@ -1,11 +1,11 @@
-<template name="variantEditModal" xmlns="http://www.w3.org/1999/html">
+<template name="variantFormModal" xmlns="http://www.w3.org/1999/html">
   <div id="variant-edit-modal" class="modal fade variant-edit-modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <form class="form-horizontal" role="form" data-validate="parsley" novalidate="novalidate">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Edit variant</h4>
+            <h4 class="modal-title">{{#if variant}}Edit{{else}}Add{{/if}} variant</h4>
           </div>
           <div class="modal-body">
             <div class="form-group">
@@ -112,8 +112,8 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default close-button" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary save-button">Save changes</button>
+            <button type="button" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary save-button">Save {{#if variant}}changes{{else}}new{{/if}}</button>
           </div>
         </form>
       </div>

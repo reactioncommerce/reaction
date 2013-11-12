@@ -46,9 +46,9 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/productVideos/productVideos.js',
     'client/templates/productsEdit/variant/variant.html',
     'client/templates/productsEdit/variant/variant.js',
-    'client/templates/productsEdit/variant/variantEditModal/variantEditModal.html',
-    'client/templates/productsEdit/variant/variantEditModal/variantEditModal.js',
-    'client/templates/productsEdit/variant/variantEditModal/variantEditModal.less',
+    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
+    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.js',
+    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
 
     // Storefront
     'client/templates/storefront/default/shop/shop.html',
