@@ -2,37 +2,35 @@ Handlebars.registerHelper("condition", function (v1, operator, v2, options) {
   switch (operator) {
     case "==":
     case "eq":
-      return (v1 == v2) ? true : false;
+      return v1 == v2;
     case "!=":
     case "neq":
-      return (v1 != v2) ? true : false;
+      return v1 != v2;
     case "===":
     case "ideq":
-      return (v1 === v2) ? true : false;
+      return v1 === v2;
     case "!==":
     case "nideq":
-      return (v1 !== v2) ? true : false;
+      return v1 !== v2;
     case "&&":
     case "and":
-      return (v1 && v2) ? true : false;
+      return v1 && v2;
     case "||":
     case "or":
-      return (v1 || v2) ? true : false;
+      return v1 || v2;
     case "<":
     case "lt":
-      return (v1 < v2) ? true : false;
+      return v1 < v2;
     case "<=":
     case "lte":
-      return (v1 <= v2) ? true : false;
+      return v1 <= v2;
     case ">":
     case "gt":
-      return (v1 > v2) ? true : false;
+      return v1 > v2;
     case ">=":
     case "gte":
-      return (v1 >= v2) ? true : false;
+      return v1 >= v2;
     default:
-      console.log(arguments);
-      debugger;
       throw 'Undefined operator "'+operator+'"';
   }
 });
