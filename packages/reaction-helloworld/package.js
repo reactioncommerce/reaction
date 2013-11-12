@@ -20,9 +20,9 @@ Package.on_use(function (api, where) {
     'client/templates/helloworld/helloworld.js',
     'client/templates/helloworld/helloworld.less',
     //dashboard widget
-    'client/templates/dashboard/widget.html',
-    'client/templates/dashboard/widget.js',
-    'client/templates/dashboard/widget.less'
+    'client/templates/dashboard/widget/widget.html',
+    'client/templates/dashboard/widget/widget.js',
+    'client/templates/dashboard/widget/widget.less'
   ], 'client');
 
   api.add_files([
