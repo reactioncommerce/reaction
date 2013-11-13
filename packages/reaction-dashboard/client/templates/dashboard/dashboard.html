@@ -9,19 +9,22 @@
 </template>
 
 <template name="activePkgGrid">
-    <h3>Your apps</h3>
+    <h2>Your apps</h2>
     <div class="well well-sm">
       <div class="pkg-container">
-        {{#each UserConfig}}
-        {{>widget}}
-
-        {{/each}}
+        {{#if hasUserConfig}}
+            {{#each UserConfig}}
+                {{>widget}}
+            {{/each}}
+        {{else}}
+        <h1><i class="fa fa-arrow-circle-down fa-5x"></i> Psst! Go ahead, add some apps!</h1>
+        {{/if}}
       </div>
     </div>
 </template>
 
 <template name="availablePkgGrid">
-    <h3>More apps</h3>
+    <h2>App Gallery</h2>
     <div class="well well-sm">
       <div class="apps-container">
         {{#each ReactionPackages}}
@@ -40,13 +43,13 @@
             <p class="big">{{label}}</p>
         </div>
         <div class="status">
-            <a href="{{pathFor route}}" class="pull-right disablePkg">
+            <a href="{{pathFor route}}" class="pull-right">
                 <span class="fa-stack fa-2x">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
                 </span>
             </a>
-            <a href="#" class="pull-right disablePkg">
+            <a href="{{pathFor route}}" class="pull-right">
                 <span class="fa-stack fa-2x">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
@@ -73,17 +76,17 @@
         <div class="img"><i class="{{icon}}"></i></div>
         <div class="content">
             <p class="big">{{label}}</p>
-            <p class="description">{{{description}}}</p>
+            <p class="title">{{{description}}}</p>
         </div>
         <div class="status">
             {{#unless type}}
                 {{#if enabledPackage _id}}
-                    <a href="#" class="pull-right disablePkg">
-                        <i class="fa fa-minus-circle fa-3x"></i>
+                    <a class="pull-right disablePkg">
+                        <i class="fa fa-minus-circle fa-4x"></i>
                     </a>
                 {{else}}
-                    <a href="#" class="pull-right enablePkg">
-                        <i class="fa fa-plus-circle fa-3x"></i>
+                    <a class="pull-right enablePkg">
+                        <i class="fa fa-plus-circle fa-4x"></i>
                     </a>
                 {{/if}}
             {{/unless}}

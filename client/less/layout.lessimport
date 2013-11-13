@@ -1,12 +1,16 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,500,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700);
 
 body {
   padding-bottom: 50px;
   background-color: transparent;
-  color: #422C2C;
+  font-family: "Roboto","Open Sans","Helvetica";
+  font-size: 13px;
+  color: #393939;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */

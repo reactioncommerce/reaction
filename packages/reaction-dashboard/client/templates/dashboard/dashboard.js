@@ -1,13 +1,18 @@
+// *****************************************************
+// Enable or disable packages
+// Enable adds to reaction_config, sets enabled = true
+// disable just sets enabled flag to false
+// *****************************************************
 
 Template.activePkgGrid.helpers({
   UserConfig: function () {
-        return UserConfig.find({$or: [
-        {metafields: {type: 'core'}},
-        {metafields: {type: ''}}
-    ]}).map(function (parentCategory) {
+        return UserConfig.find({metafields: {type: ''}}).map(function (parentCategory) {
         return _.extend(parentCategory,
             {children: UserConfig.find({"metafields.type": parentCategory.name}).fetch()});
     });
+  },
+  hasUserConfig: function() {
+    if (UserConfig.find({metafields: {type: ''}}).count() > 0) return true;
   }
 });
 
@@ -60,6 +65,7 @@ Template.pkg.events({
         if (this.route) Router.go(this.route);
     },
     'click .disablePkg': function (event, template) {
+        console.log("here");
         event.preventDefault();
 
         var disablePkg = ReactionConfig.find({userId: Meteor.userId(), packageId: this._id, name: this.name, enabled: true});

@@ -1,27 +1,36 @@
-/* Metro Colors */
-@metroPurple: #a200ff;
-@metroMagenta: #ff0097;
-@metroTeal: #00aba9;
-@metroLime: #8cbf26;
-@metroBrown: #a05000;
-@metroPink: #e671b8;
-@metroOrange: #f09609;
-@metroBlue: #1ba1e2;
-@metroRed: #e51400;
-@metroGreen: #339933;
-
 .tile {
   position: relative;
-  background: @metroLime;
   border: 1px solid #ccc;
   padding: 4px;
-  min-width: 255px;
-  min-height: 150px;
+  min-width: 250px;
+  min-height: 250px;
+  color: #fff;
 }
+
+.tile,
+.tile-light-blue {background-color: #009dc6;}
+.tile-blue       {background-color: #0a59c0;}
+.tile-dark-blue  {background-color: #381095;}
+.tile-red        {background-color: #b9231f;}
+.tile-orange     {background-color: #e79712;}
+.tile-pink       {background-color: #c7266c;}
+.tile-magenta    {background-color: #8b4787;}
+.tile-green      {background-color: #31a221;}
+.tile-lime       {background-color: #65b11d;}
+
 
 .tile p.title {
     font-size: 16px;
     margin-bottom: 2px;
+    padding-top: 10px;
+    color: #fff;
+}
+
+.tile p.title a {
+    font-size: 16px;
+    margin-bottom: 2px;
+    padding-top: 10px;
+    color: #fff;
 }
 
 .tile .content {
@@ -29,13 +38,16 @@
     right: 10px;
     top: 15px;
 }
+
 .tile .content > p {
     text-align: right;
 }
+
 .tile .content > p.big {
     font-size: 30px;
-    font-weight: 400;
+    font-weight: 500;
     margin-bottom: 0;
+    color: #fff;
 }
 
 .tile .status {
@@ -50,9 +62,14 @@
 
 .tile .widget {
   position: relative;
-  margin-right: 2px;
+  margin-right: 4px;
   margin-bottom: 2px;
   padding-bottom: 50px;
+}
+
+.tile .widget a  {
+  font: 14px "Roboto", sans-serif;
+  color: #fff;
 }
 
 .enablePkg {
@@ -60,5 +77,8 @@
 }
 
 .disablePkg {
+    color: #CDD4D8;
+}
+.status {
     color: #CDD4D8;
 }
