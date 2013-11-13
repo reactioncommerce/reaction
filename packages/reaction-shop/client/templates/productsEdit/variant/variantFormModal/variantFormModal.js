@@ -4,7 +4,7 @@ Template.variantFormModal.variant = function() {
 };
 
 Template.variantFormModal.rendered = function() {
-  updateInventoryManagementFieldsVisibility()
+  updateInventoryManagementFieldsVisibility();
 };
 
 Template.variantFormModal.events({
@@ -32,7 +32,7 @@ Template.variantFormModal.events({
       data[this.name] = this.value;
     });
     var currentProduct = Products.findOne(Session.get("currentProductId"));
-    if (Session.get("currentVariantIndex")) {
+    if (_.isNumber(Session.get("currentVariantIndex"))) {
       var variant = currentProduct.variants[Session.get("currentVariantIndex")];
       $.extend(true, variant, data);
       var $set = {};

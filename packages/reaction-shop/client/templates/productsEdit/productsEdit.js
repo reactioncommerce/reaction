@@ -311,6 +311,7 @@ Template.productsEdit.events({
     e.preventDefault();
   },
   'click #add-variant': function(e) {
+    $('#variant-edit-modal form').get(0).reset();
     Session.set('currentVariantIndex', null);
     $('#variant-edit-modal').modal();
     e.preventDefault();
