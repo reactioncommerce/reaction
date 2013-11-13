@@ -3,6 +3,9 @@
 // returns logged in, or errors
 // *****************************************************
 Template.user_loggedout.events({
+  "click .sign-in-link": function(event, template) {
+    setTimeout(function() {$('#input-email').focus();}, 100);
+  },
   "submit #login": function (event) {
     event.preventDefault();
     var email = $(event.target).find('[id=input-email]').val();
