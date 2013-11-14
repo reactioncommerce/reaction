@@ -2,28 +2,14 @@
   <div id="options-modal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        {{#autoForm schema="ProductOption" class="form-horizontal" role="form" }}
+        <form class="form-horizontal" role="form" data-validate="parsley" novalidate="novalidate">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Edit variant options</h4>
           </div>
           <div class="modal-body">
-            {{#each options}}
-              <div class="form-group {{cls}} ">
-                <div class="col-sm-3">
-                  <input id="variant-product-options-{{key}}-name" class="form-control label-form-control" type="text" name="options[{{key}}][name]" value="{{value.name}}" placeholder="Name"/>
-                  {{afFieldInput nameFieldName }}
-                </div>
-                <div class="col-sm-9">
-                  <div class="input-group">
-                    <input id="options[{{key}}]" class="form-control" type="text" name="option[]" value="{{value.defaultValue}}" placeholder="Default value (may be empty)"/>
-                      <span class="input-group-btn">
-                        <button class="btn btn-default remove-button" type="button">
-                          <i class="fa fa-trash-o"></i></button>
-                      </span>
-                  </div>
-                </div>
-              </div>
+            {{#each key_value options}}
+              {{> optionFormGroup}}
             {{else}}
               <div class="form-group">
                 <div class="col-sm-12">
@@ -31,18 +17,18 @@
                 </div>
               </div>
             {{/each}}
+            {{> optionFormGroup default}}
             <div class="row">
               <div class="col-sm-3">
                 <a href="#" class="add-option-link">+ Add option</a>
               </div>
             </div>
-
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary save-button">Save</button>
           </div>
-        {{/autoForm}}
+        </form>
       </div>
     </div>
   </div>
