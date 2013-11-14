@@ -228,4 +228,3 @@ CustomerAddressSchema = new SimpleSchema
       type: Date
 
 @Orders = new Meteor.Collection('Orders')
-console.log(Products, 1)
