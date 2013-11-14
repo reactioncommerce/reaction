@@ -16,7 +16,6 @@ x-editable-bootstrap3
 iron-router
 videojs
 parsleyjs
-select2
 autoform
 simple-schema
 moment

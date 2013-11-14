@@ -142,7 +142,7 @@ Meteor.startup(function () {
     ];
 
     _.each(users, function (user) {
-      Meteor.users.insert(user)
+      Meteor.users.insert(user);
 
       ////////////////////////////////////////////////////////////////////
       // Create Test Campaigns and captures
@@ -154,7 +154,7 @@ Meteor.startup(function () {
       // Random date creation for captures
       function randomDate(start, end) {
         return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
-      };
+      }
 
       // add test campaigns
       for (var i = 0; i < 6; i++) {
