@@ -8,7 +8,7 @@ body {
   padding-bottom: 50px;
   background-color: transparent;
   font-family: "Roboto","Open Sans","Helvetica";
-  font-size: 13px;
+  font-size: 14px;
   color: #393939;
   -webkit-font-smoothing: antialiased;
 }

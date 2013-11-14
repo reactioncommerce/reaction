@@ -19,11 +19,8 @@ Template.activePkgGrid.helpers({
 
 
 Template.activePkgGrid.rendered = function () {
-  var pkgGrid = new Packery(document.querySelector('.pkg-container'), {
-    gutter: 2
-  });
+  var pkgGrid = new Packery(document.querySelector('.pkg-container'), {gutter: 2});
 };
-
 
 
 Template.availablePkgGrid.helpers({
@@ -37,12 +34,15 @@ Template.availablePkgGrid.helpers({
 });
 
 Template.availablePkgGrid.rendered = function () {
-  var pkgGrid2 = new Packery(document.querySelector('.apps-container'), {
-    gutter: 2
-  });
+  $('.app-gallery').hide();
 };
 
-
+Template.activePkgGrid.events({
+    'click .tile-gallery': function () {
+        $( ".app-gallery" ).toggle();
+        var appGrid = new Packery(document.querySelector('.apps-container'), {gutter: 2});
+    }
+});
 
 // *****************************************************
 // Enable or disable packages
@@ -65,7 +65,6 @@ Template.pkg.events({
         if (this.route) Router.go(this.route);
     },
     'click .disablePkg': function (event, template) {
-        console.log("here");
         event.preventDefault();
 
         var disablePkg = ReactionConfig.find({userId: Meteor.userId(), packageId: this._id, name: this.name, enabled: true});

@@ -7,7 +7,7 @@
 **
 ** See: http://omnipotent.net/jquery.sparkline
 **/
-Template['reaction-helloworld-widget'].created = function () {
+Template['reaction-helloworld-widget'].created = function (e) {
     var mrefreshinterval = 300; // update display every 300ms
     var lastmousex=-1;
     var lastmousey=-1;

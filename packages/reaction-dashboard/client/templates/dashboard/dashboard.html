@@ -9,38 +9,53 @@
 </template>
 
 <template name="activePkgGrid">
-    <h2>Your apps</h2>
-    <div class="well well-sm">
+
+
       <div class="pkg-container">
-        {{#if hasUserConfig}}
-            {{#each UserConfig}}
-                {{>widget}}
-            {{/each}}
-        {{else}}
-        <h1><i class="fa fa-arrow-circle-down fa-5x"></i> Psst! Go ahead, add some apps!</h1>
-        {{/if}}
+        {{#each UserConfig}}
+            {{>widget}}
+        {{/each}}
+        <div class="tile tile-gallery">
+            <i class="fa fa-plus fa-5x"></i>
+            <div class="content">
+            <p class="big">Apps</p>
+            {{#unless hasUserConfig}}
+            <p class="title">Start here and add some apps!</p>
+            {{/unless}}
+            {{#if hasUserConfig}}
+            <p class="title">Find more apps in the app gallery</p>
+            {{/if}}
+            </div>
+        </div>
+
       </div>
-    </div>
 </template>
 
 <template name="availablePkgGrid">
-    <h2>App Gallery</h2>
-    <div class="well well-sm">
-      <div class="apps-container">
-        {{#each ReactionPackages}}
-        {{>pkg}}
+    <div class="app-gallery">
+        <h2>App Gallery</h2>
+        <div class="well well-sm">
+          <div class="apps-container">
+            {{#each ReactionPackages}}
+            {{>pkg}}
 
-        {{/each}}
-      </div>
+            {{/each}}
+          </div>
+        </div>
     </div>
 </template>
 
 <template name="widget">
-    <div class="tile tile-{{tileColors}}" id="{{_id}}">
+    <div class="tile tile-{{tileColors packageId}}" id="{{_id}}">
 
         <i class="{{icon}}"></i>
         <div class="content">
             <p class="big">{{label}}</p>
+            <ul class="list-unstyled">
+                {{#each children}}
+                    <li>+<a href="{{route}}">{{label}}</a></li>
+                {{/each}}
+            </ul>
         </div>
         <div class="status">
             <a href="{{pathFor route}}" class="pull-right">
@@ -56,13 +71,6 @@
                 </span>
             </a>
         </div>
-        <div class="packages">
-            <ul class="list-unstyled">
-                {{#each children}}
-                    <li><a href="{{route}}">{{label}}</a></li>
-                {{/each}}
-            </ul>
-        </div>
         <div class="widget">
             {{{getTemplate name "widget"}}}
             {{widget}}
@@ -72,8 +80,9 @@
 
 
 <template name="pkg">
-    <div class="tile tile-{{tileColors}}" id="{{_id}}">
-        <div class="img"><i class="{{icon}}"></i></div>
+    <div class="tile tile-{{tileColors _id}}" id="{{_id}}">
+        <div class="tile-icon"><i class="{{icon}}"></i>
+        </div>
         <div class="content">
             <p class="big">{{label}}</p>
             <p class="title">{{{description}}}</p>

@@ -145,11 +145,32 @@ Handlebars.registerHelper('navLink', function (page, icon) {
 // *****************************************************
 // Function that randomly picks colors for package tiles
 // returns random color
+// TODO: assignedColors aren't populated until after this runs!
+// TODO: generate colors for infinite palette, currently will run out of colors
 // *****************************************************
 
-Handlebars.registerHelper('tileColors', function() {
-  var colors = ['blue', 'light-blue', 'dark-blue', 'red', 'orange', 'magenta', 'lime', 'yellow', 'pink', 'aqua', 'fuchsia', 'gray', 'maroon', 'olive', 'purple', 'teal', 'green'];
-  return colors[Math.floor(Math.random() * colors.length)];
+Handlebars.registerHelper('tileColors', function(app) {
+  colors = ['blue', 'light-blue', 'dark-blue', 'red', 'orange', 'brown', 'lime', 'yellow', 'pink', 'aqua', 'fuchsia', 'gray', 'maroon', 'olive', 'purple', 'teal', 'green'];
+
+  var assignedColor = ReactionPalette.findOne({appId: app});
+  //console.log("tileColor exists:" +tileColor);
+
+  if (!assignedColor) {
+    var palette = ReactionPalette.find({}).fetch();
+    palette.forEach(function (palette) {
+      colors = _.without(colors, palette.color); // Remove color duplicates
+    });
+    var tileColor = colors[Math.floor(Math.random() * colors.length)]; // pick random color from unused palette
+
+  } else {
+    tileColor = assignedColor.color;
+    return tileColor;
+  }
+
+  if (tileColor) {
+    ReactionPalette.insert({appId:app,color:tileColor});
+    return tileColor;
+  }
 });
 
 // *****************************************************
