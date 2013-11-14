@@ -32,14 +32,6 @@ Package.on_use(function (api, where) {
     // Selectively adding JS files (the order matters)
     // *****************************************************
     api.add_files(path.join('lib/packery', 'packery.pkgd.js'), 'client');
-    api.add_files(path.join('lib/nicescroll', 'jquery.nicescroll.min.js'), 'client');
-    api.add_files(path.join('lib/jquery-cookie', 'jquery.cookie.js'), 'client');
-    // *****************************************************
-    // Bootstrap switch / toggle buttons
-    // http://www.bootstrap-switch.org/
-    // *****************************************************
-    api.add_files(path.join('lib/bootstrap-switch/static/stylesheets', 'bootstrap-switch.css'), 'client');
-    api.add_files(path.join('lib/bootstrap-switch/static/js', 'bootstrap-switch.js'), 'client');
     // Small sparkline graphs
     // *****************************************************
     api.add_files(path.join('lib/sparkline', 'jquery.sparkline.min.js'), 'client');
