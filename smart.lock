@@ -10,7 +10,9 @@
       "videojs": {},
       "parsleyjs": {},
       "font-awesome-4": {},
-      "bootstrap3-less": {}
+      "bootstrap3-less": {},
+      "autoform": {},
+      "collection2": {}
     },
     "packages": {
       "spin": {
@@ -57,6 +59,26 @@
         "git": "https://github.com/eprochasson/bootstrap3-less",
         "tag": "v0.1.4",
         "commit": "23ec918f8377b15b22cba33e13b717214235c88a"
+      },
+      "autoform": {
+        "git": "https://github.com/aldeed/meteor-autoform.git",
+        "tag": "v0.4.1",
+        "commit": "5f07277746fb8cf9c938ed5c1382348fba8218d7"
+      },
+      "collection2": {
+        "git": "https://github.com/aldeed/meteor-collection2.git",
+        "tag": "v0.2.11",
+        "commit": "34ea61718c8826dfa9236222cec6c097bd41ae6b"
+      },
+      "simple-schema": {
+        "git": "https://github.com/aldeed/meteor-simple-schema.git",
+        "tag": "v0.2.16",
+        "commit": "fae2b014ffc26dfccd3aab38e45d60dda34fd03c"
+      },
+      "moment": {
+        "git": "https://github.com/acreeger/meteor-moment.git",
+        "tag": "v2.2.1",
+        "commit": "9ee12e714afe56b189f53076447b7b54f3012065"
       }
     }
   }

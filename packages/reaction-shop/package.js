@@ -3,10 +3,12 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
-  api.use('standard-app-packages');
-  api.use(['accounts-base', 'iron-router', 'less'], 'client');
+  api.use(['standard-app-packages', 'coffeescript', 'simple-schema', 'collection2']);
+  api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
 
-  api.add_files('model/model.js');
+  api.imply('simple-schema', ['client', 'server']);
+
+  api.add_files('model/model.coffee');
 
   //Loading Select 2 library https://github.com/ivaynberg/select2
   api.add_files('lib/select2/select2.js', 'client');
@@ -49,6 +51,10 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.js',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
+    'client/templates/productsEdit/optionsModal/optionsModal.html',
+    'client/templates/productsEdit/optionsModal/optionsModal.js',
+    'client/templates/productsEdit/optionsModal/optionsModal.less',
+    'client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html',
 
     // Storefront
     'client/templates/storefront/default/shop/shop.html',
@@ -60,9 +66,9 @@ Package.on_use(function (api, where) {
   ], 'client');
 
   api.add_files([
-    'server/fixtures.js',
-    'server/publications.js',
-    'server/register.js'
+    'server/fixtures.coffee',
+    'server/publications.coffee',
+    'server/register.coffee'
   ], 'server');
 
   api.export(['Products', 'Orders', 'Customers', 'variant']);

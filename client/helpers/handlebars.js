@@ -31,8 +31,16 @@ Handlebars.registerHelper("condition", function (v1, operator, v2, options) {
     case "gte":
       return v1 >= v2;
     default:
-      throw 'Undefined operator "'+operator+'"';
+      throw 'Undefined operator "' + operator + '"';
   }
+});
+
+Handlebars.registerHelper('key_value', function (context, options) {
+  var result = [];
+  _.each(context, function (value, key, list) {
+    result.push({key: key, value: value});
+  });
+  return result;
 });
 
 /**
@@ -178,7 +186,7 @@ Handlebars.registerHelper('tileColors', function(app) {
 // format: {{{getTemplate package context}}}
 // example: {{{getTemplate widget }}}
 // *****************************************************
-Handlebars.registerHelper('getTemplate', function(pkg, context) {
-   templateName = pkg + "-widget";
-   if (Template[templateName]) return Template[templateName](context);
+Handlebars.registerHelper('getTemplate', function (pkg, context) {
+  templateName = pkg + "-widget";
+  if (Template[templateName]) return Template[templateName](context);
 });
