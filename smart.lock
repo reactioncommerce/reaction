@@ -10,7 +10,8 @@
       "videojs": {},
       "parsleyjs": {},
       "font-awesome-4": {},
-      "bootstrap3-less": {}
+      "bootstrap3-less": {},
+      "collection2": {}
     },
     "packages": {
       "spin": {
@@ -57,6 +58,16 @@
         "git": "https://github.com/eprochasson/bootstrap3-less",
         "tag": "v0.1.4",
         "commit": "23ec918f8377b15b22cba33e13b717214235c88a"
+      },
+      "collection2": {
+        "git": "https://github.com/aldeed/meteor-collection2.git",
+        "tag": "v0.2.11",
+        "commit": "34ea61718c8826dfa9236222cec6c097bd41ae6b"
+      },
+      "simple-schema": {
+        "git": "https://github.com/aldeed/meteor-simple-schema.git",
+        "tag": "v0.2.16",
+        "commit": "fae2b014ffc26dfccd3aab38e45d60dda34fd03c"
       }
     }
   }

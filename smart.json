@@ -8,6 +8,7 @@
     "videojs": {},
     "parsleyjs": {},
     "font-awesome-4": {},
-    "bootstrap3-less": {}
+    "bootstrap3-less": {},
+    "collection2": {}
   }
 }
