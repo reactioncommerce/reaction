@@ -74,11 +74,11 @@ Template.productsEdit.rendered = function () {
   // Editable product html
   // *****************************************************
   //
-  $('#body_html').editable({
+  $('#bodyHtml').editable({
     showbuttons: true,
     inputclass: 'editable-width',
     success: function (response, newValue) {
-      updateProduct({body_html: newValue});
+      updateProduct({bodyHtml: newValue});
     }
   });
 
@@ -213,7 +213,7 @@ Template.productsEdit.events({
     var productsProperties = {
       title: $(e.target).find('[name=title]').val(),
       vendor: $(e.target).find('[name=vendor]').val(),
-      body_html: $(e.target).find('[name=body_html]').val(),
+      bodyHtml: $(e.target).find('[name=bodyHtml]').val(),
       tags: $(e.target).find('[name=tags]').val(),
       handle: $(e.target).find('[name=handle]').val()
     };

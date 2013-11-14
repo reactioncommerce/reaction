@@ -1,5 +1,3 @@
-
-
 ProductVariant = new SimpleSchema
   barcode:
     type: String
@@ -119,31 +117,30 @@ CustomerAddressSchema = new SimpleSchema
   schema:
     title:
       type: String
-    description:
+    bodyHtml:
       type: String
       optional: true
-    type:
+    productType:
       type: String
     vendor:
       type: String
       optional: true
-
     'options.$.name':
       type: String
       max: 255
     'options.$.defaultValue':
       type: String
       max: 255
+      optional: true
     variants:
       type: [ProductVariant]
-
+      optional: true
     images:
       type: [ProductImage]
-
+      optional: true
     tags:
       type: [String]
       optional: true
-
     pageTitle:
       type: String
       optional: true
@@ -152,21 +149,15 @@ CustomerAddressSchema = new SimpleSchema
       optional: true
     handle:
       type: String
-
-    isVisible:
-      type: Boolean
-
     publishedAt:
       type: Date
       optional: true
     publishedScope:
       type: String
       optional: true
-
     templateSuffix:
       type: String
       optional: true
-
     createdAt:
       type: Date
     updatedAt:
