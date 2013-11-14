@@ -4,7 +4,8 @@ Package.describe({
 
 Package.on_use(function (api, where) {
   api.use('standard-app-packages');
-  api.use(['accounts-base', 'iron-router', 'less'], 'client');
+  api.use(['collection2'], ['client', 'server']);
+  api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
 
   api.add_files('model/model.js');
 
@@ -49,6 +50,10 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.js',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
+    'client/templates/productsEdit/optionsModal/optionsModal.html',
+    'client/templates/productsEdit/optionsModal/optionsModal.js',
+    'client/templates/productsEdit/optionsModal/optionsModal.less',
+    'client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html',
 
     // Storefront
     'client/templates/storefront/default/shop/shop.html',

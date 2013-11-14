@@ -1,0 +1,36 @@
+<template name="optionsModal" xmlns="http://www.w3.org/1999/html">
+  <div id="options-modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      {{#autoForm schema="ProductOption" class="form-horizontal" role="form" data-validate="parsley" novalidate="novalidate"}}
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit variant options</h4>
+          </div>
+          <div class="modal-body">
+            {{#each key_value options}}
+              {{> optionFormGroup}}
+            {{else}}
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <span class="no-options">This product has no options</span>
+                </div>
+              </div>
+            {{/each}}
+            {{> optionFormGroup default}}
+            <div class="row">
+              <div class="col-sm-3">
+                <a href="#" class="add-option-link">+ Add option</a>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary save-button">Save</button>
+          </div>
+        {{/autoForm}}
+      </div>
+    </div>
+  </div>
+</template>

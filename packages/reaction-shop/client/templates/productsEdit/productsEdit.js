@@ -315,7 +315,11 @@ Template.productsEdit.events({
     Session.set('currentVariantIndex', null);
     $('#variant-edit-modal').modal();
     e.preventDefault();
-  }
+  },
+    'click #edit-options': function(e) {
+      $('#options-modal').modal();
+      e.preventDefault();
+    }
 });
 
 uploadImages = function (upload) {

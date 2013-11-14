@@ -124,10 +124,8 @@ if (!Products.find().count()) {
     ],
     "options": [
       {
-        "id": 594680422,
         "name": "Title",
-        "position": 1,
-        "product_id": 632910392
+        "defaultValue": ""
       }
     ]
     // "images": [

@@ -1,15 +1,23 @@
-Template.variantFormModal.variant = function () {
-  var currentProduct = Products.findOne(Session.get("currentProductId"));
-  return currentProduct.variants[Session.get("currentVariantIndex")];
+Template.optionsModal.default = {
+  cls: "form-group-template",
+  key: ""
 };
 
-Template.variantFormModal.rendered = function () {
-  updateInventoryManagementFieldsVisibility();
+Template.optionsModal.rendered = function () {
+
 };
 
-Template.variantFormModal.events({
-  "change #variant-inventoryManagement": function () {
-    updateInventoryManagementFieldsVisibility()
+Template.optionsModal.events({
+  "click .add-option-link": function (e, template) {
+    var $template = $(e.target).closest(".row").prev(".form-group-template");
+    var html = $("<div />").append($template.clone()).html();
+    html = html.replace("__INDEX__", template.findAll(".option-form-group").length, "g").replace("form-group-template", "option-form-group");
+    $template.before(html);
+    setTimeout(function() {$template.prev().find('.label-form-control').focus()}, 1); // DOM manipulation defer
+    e.preventDefault();
+  },
+  "click .remove-button": function (e, template) {
+    $(e.target).closest(".form-group").remove();
   },
   "click .close-button": function (e, template) {
 //    template.find("form").reset();
@@ -22,15 +30,11 @@ Template.variantFormModal.events({
     // TODO: Simplify the true : false; in helper
     var form = template.find("form");
     var $form = $(form);
-    // TODO: Normalize checkboxes... should be done by a library
-    data = {
-      inventoryPolicy: "deny",
-      taxable: false,
-      requiresShipping: false
-    };
+    data = {};
     $.each($form.serializeArray(), function () {
       data[this.name] = this.value;
     });
+    debugger;
     var currentProduct = Products.findOne(Session.get("currentProductId"));
     if (_.isNumber(Session.get("currentVariantIndex"))) {
       var variant = currentProduct.variants[Session.get("currentVariantIndex")];
@@ -45,8 +49,3 @@ Template.variantFormModal.events({
     $(template.find('.modal')).modal("hide"); // manual hide fix for Meteor reactivity
   }
 });
-
-var updateInventoryManagementFieldsVisibility = function () {
-  var $select = $("#variant-inventoryManagement");
-  $("#variant-inventoryQuantity, #variant-inventoryPolicy").closest(".form-group").toggle($select.val() == "reaction");
-};
