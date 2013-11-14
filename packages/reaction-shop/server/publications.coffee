@@ -1,17 +1,23 @@
+root = exports ? this;
 # *****************************************************
 # product collection
 # *****************************************************
 
+# Scope variable import
+Products = @Products
+Customers = @Customers
+Orders = @Orders
+
 Meteor.publish 'products', ->
-  @Products.find()
+  Products.find()
 
 Meteor.publish 'product', (id) ->
-  @Products.findOne(id)
+  Products.findOne(id)
 
 # *****************************************************
 # Client access rights for products
 # *****************************************************
-@Products.allow
+Products.allow
   insert: (userId, doc) ->
     # the user must be logged in, and the document must be owned by the user
     #return (userId && doc.owner === userId);
@@ -30,15 +36,15 @@ Meteor.publish 'product', (id) ->
 # *****************************************************
 
 Meteor.publish 'orders', ->
-  @Orders.find()
+  Orders.find()
 
 Meteor.publish 'order', (id) ->
-  @Orders.findOne(id)
+  Orders.findOne(id)
 
 # *****************************************************
 # Client access rights for orders
 # *****************************************************
-@Orders.allow
+Orders.allow
   insert: (userId, doc) ->
     # the user must be logged in, and the document must be owned by the user
     #return (userId && doc.owner === userId);
@@ -58,15 +64,15 @@ Meteor.publish 'order', (id) ->
 # *****************************************************
 
 Meteor.publish 'customers', ->
-  @Customers.find()
+  Customers.find()
 
 Meteor.publish 'customer', (id) ->
-  @Customers.findOne(id)
+  Customers.findOne(id)
 
 # *****************************************************
 # Client access rights for customers
 # *****************************************************
-@Customers.allow
+Customers.allow
   insert: (userId, doc) ->
     # the user must be logged in, and the document must be owned by the user
     #return (userId && doc.owner === userId);
