@@ -163,6 +163,8 @@ CustomerAddressSchema = new SimpleSchema
     updatedAt:
       type: Date
 
+Products = @Products # package exports
+
 @Customers = new Meteor.Collection2 'Customers',
   schema:
     email:
@@ -218,4 +220,8 @@ CustomerAddressSchema = new SimpleSchema
     updatedAt:
       type: Date
 
+Customers = @Customers # package exports
+
 @Orders = new Meteor.Collection('Orders')
+
+Orders = @Orders # package exports
