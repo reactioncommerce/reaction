@@ -3,6 +3,19 @@ Template.optionsModal.default = {
   key: ""
 };
 
+Template.optionsModal.options = function () {
+  var options = [];
+  _.each(this.options, function(option, key) {
+    options.push({
+      object: option,
+      key: key,
+      nameFieldName: "options."+key+".name",
+      defaultValueFieldName: "options."+key+".defaultValue"
+    })
+  });
+  return options;
+};
+
 Template.optionsModal.rendered = function () {
 
 };

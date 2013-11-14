@@ -115,6 +115,9 @@ CustomerAddressSchema = new SimpleSchema
 
 @Products = new Meteor.Collection2 'Products',
   schema:
+    _id:
+      type: String
+      optional: true
     title:
       type: String
     bodyHtml:
