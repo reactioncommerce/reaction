@@ -8,9 +8,11 @@ preserve-inputs
 jquery
 less
 bootstrap3-less
-iron-router
 accounts-base
 accounts-password
+accounts-ui-bootstrap-3
+
+iron-router
 spin
 roles
 videojs
