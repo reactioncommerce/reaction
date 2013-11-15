@@ -2,7 +2,7 @@
 // returns "active" if we are on the current route
 // we can use this in a class to mark current active nav
 // *****************************************************
-Template.introHeader.helpers({
+Template.siteHeader.helpers({
   activeRouteClass: function () {
     var args = Array.prototype.slice.call(arguments, 0);
     args.pop();

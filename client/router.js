@@ -8,7 +8,7 @@
 
 
 Router.configure({
-  layoutTemplate: 'dashboardLayout',
+  layoutTemplate: 'siteLayout',
   notFoundTemplate: 'notFound',
   loadingTemplate: 'loading'
 });
@@ -21,35 +21,30 @@ Router.configure({
 // *****************************************************
 var pages = [
   //Header
-  'howitworks',
   'pricing',
   'contactus',
   //Footer
   'about',
+  'team',
   'faqs',
-  'termsofuse',
-  'privacypolicy',
+  'terms',
+  'privacy',
 ];
 
 Router.map(function () {
   this.route('index', {
     path: '/',
-    layoutTemplate: 'introLayout',
-    before: function () {
-      if (!Meteor.loggingIn() && Meteor.user() && (Roles.userIsInRole(Meteor.user(), ['admin', 'owner']))) {
-        Router.go('dashboard');
-      }
-    }
+    layoutTemplate: 'siteLayout',
   });
 
   for (var i = 0; i < pages.length; i++) {
-    this.route(pages[i], {layoutTemplate: 'introLayout'});
+    this.route(pages[i], {layoutTemplate: 'siteLayout'});
   }
 
   // 404 Page for reaction
   this.route('notFound', {
     path: '*',
-    layoutTemplate: 'introLayout'
+    layoutTemplate: 'siteLayout'
   });
 
 

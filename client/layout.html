@@ -1,37 +1,13 @@
-<template name="introLayout">
-  <head>
-    <title>Reaction Commerce</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
+<template name="siteLayout">
+<head>
+  <title>Reaction Commerce</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+  {{#if isInRole 'admin'}}
+    {{> dashboardSidebar}}
+  {{/if}}
+  <header>{{> siteHeader}}</header>
 
-  <header>
-      {{> introHeader}}
-  </header>
+  <section>{{yield}}</section>
 
-  <section>
-      {{yield}}
-  </section>
-
-  <footer>
-      {{>introFooter}}
-  </footer>
-</template>
-
-<template name="storeLayout">
-  <head>
-    <title>Your Store</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-
-  <header>
-     <h1> A Store</h1>
-  </header>
-
-  <section>
-      {{yield}}
-  </section>
-
-  <footer>
-      {{>introFooter}}
-  </footer>
+  <footer>{{>siteFooter}}</footer>
 </template>

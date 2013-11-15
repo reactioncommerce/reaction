@@ -1,4 +1,4 @@
-<template name="introHeader">
+<template name="siteHeader">
 
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="navbar-header">
@@ -11,11 +11,6 @@
     </div>
 
     <div class="collapse navbar-collapse navbar-ex1-collapse navbar-intro">
-      <ul class="nav navbar-nav">
-        <li class="{{activeRouteClass 'howitworks'}}"><a href="{{pathFor 'howitworks'}}">Features</a></li>
-        <li class="{{activeRouteClass 'pricing'}}"><a href="{{pathFor 'pricing'}}">Pricing</a></li>
-        <li class="{{activeRouteClass 'contactus'}}"><a href="{{pathFor 'contactus'}}">Support</a></li>
-      </ul>
       <div class="nav navbar-nav navbar-right">
           {{> accounts}}
       </div>

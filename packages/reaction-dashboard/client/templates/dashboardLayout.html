@@ -1,18 +1,13 @@
-<head>
-<title>Reaction</title>
-<link rel="shortcut icon" href="/favicon.ico">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-
 <template name="dashboardLayout">
-    <!-- BEGIN Container -->
-<div class="row">
-  <div class="sidebar">{{> dashboardSidebar}}</div>
-  <div class="container">
-    <!-- BEGIN Main Content -->
-    {{yield}}
-    <!-- END Main Content -->
-  </div>
-</div>
+<head>
+  <title>Reaction Commerce - Dashboard View</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+  {{#if isInRole 'admin'}}
+    {{> dashboardSidebar}}
+  <header>{{> siteHeader}}</header>
 
-<!-- END Container -->
+  <section>{{yield}}</section>
+
+  <footer>{{>siteFooter}}</footer>
+  {{/if}}
 </template>
