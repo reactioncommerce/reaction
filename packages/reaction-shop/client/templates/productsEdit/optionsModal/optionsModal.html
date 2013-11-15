@@ -2,12 +2,13 @@
   <div id="options-modal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form class="form-horizontal" role="form" data-validate="parsley" novalidate="novalidate">
+        <form class="form-horizontal" role="form" novalidate="novalidate">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Edit variant options</h4>
           </div>
           <div class="modal-body">
+            <ul class="error-block"></ul>
             {{#each key_value options}}
               {{> optionFormGroup}}
             {{else}}

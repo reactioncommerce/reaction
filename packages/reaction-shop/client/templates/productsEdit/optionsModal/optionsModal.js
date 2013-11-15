@@ -24,23 +24,43 @@ Template.optionsModal.events({
   },
   "click .remove-button": function (e, template) {
     $(e.target).closest(".form-group").remove();
+    $(template.find("form")).find("input").each(function(index, input) {
+      var $input = $(input);
+      var embeddedDocumentIndex = Math.floor(index / 2);
+      _.each(["id", "name"], function(attr) {
+        $input.attr(attr, $input.attr(attr).replace(/\d+/, embeddedDocumentIndex));
+      });
+    });
+    e.preventDefault();
+    e.stopPropagation();
   },
   "click .close-button": function (e, template) {
 //    template.find("form").reset();
   },
   "click .save-button": function (e, template) {
-    // TODO: check for compliance with Shopify API
-    // TODO: notably, inventory_policy should be "deny" if checkbox isn"t selected
-    // TODO: Make quantity "required" a dynamic attribute
-    // TODO: convert data to proper types
-    // TODO: Simplify the true : false; in helper
     var form = template.find("form");
     var $form = $(form);
-    data = $form.serializeHash();
-    console.log(data);
+    var data = $form.serializeHash();
     Products.update(Session.get("currentProductId"), {$set: data}, {validationContext: "options"}, function(error, result) {
-      console.log(Products.namedContext("options").invalidKeys())
+      $form.find(".has-error").removeClass(".has-error");
+      $form.find(".error-block li").remove();
+      if (error) {
+        var invalidKeys = Products.namedContext("options").invalidKeys();
+        _.each(invalidKeys, function(invalidKey) {
+          var id = invalidKey.name.replace(/\./g, "-");
+          var $formGroup = $form.find("#" + id).closest(".form-group");
+          var $errorBlock;
+          if ($formGroup) {
+            $errorBlock = $formGroup.find(".error-block");
+            $formGroup.addClass("has-error");
+          } else {
+            $errorBlock = $form.find(".error-block");
+          }
+          $errorBlock.append("<li>"+invalidKey.message+"</li>");
+        });
+      } else {
+        $(template.find(".modal")).modal("hide"); // manual hide fix for Meteor reactivity
+      }
     });
-    $(template.find(".modal")).modal("hide"); // manual hide fix for Meteor reactivity
   }
 });

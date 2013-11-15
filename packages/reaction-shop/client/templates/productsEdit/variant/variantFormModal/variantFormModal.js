@@ -1,6 +1,7 @@
 Template.variantFormModal.variant = function () {
   var currentProduct = Products.findOne(Session.get("currentProductId"));
-  return currentProduct.variants[Session.get("currentVariantIndex")];
+  var currentVariantIndex = Session.get("currentVariantIndex");
+  return currentVariantIndex? currentProduct.variants[currentVariantIndex] : null;
 };
 
 Template.variantFormModal.rendered = function () {
@@ -19,7 +20,6 @@ Template.variantFormModal.events({
     // TODO: notably, inventory_policy should be "deny" if checkbox isn"t selected
     // TODO: Make quantity "required" a dynamic attribute
     // TODO: convert data to proper types
-    // TODO: Simplify the true : false; in helper
     var form = template.find("form");
     var $form = $(form);
     // TODO: Normalize checkboxes... should be done by a library

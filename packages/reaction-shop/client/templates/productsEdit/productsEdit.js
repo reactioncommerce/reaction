@@ -274,7 +274,7 @@ Template.productsEdit.events({
   // get session image-url and deletes from images,
   // or deletes from image if no session data
   // *****************************************************
-  'click .fa-trash-o': function (e, template) {
+  'click .image-remove-link': function (e, template) {
     e.preventDefault();
 
     var currentProductId = Session.get('currentProductId');
