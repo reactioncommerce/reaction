@@ -11,6 +11,7 @@
 
 body {
   -webkit-font-smoothing: antialiased;
+  padding-bottom: 76px;
 }
 
 
