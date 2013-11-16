@@ -12,3 +12,9 @@ Template.siteHeader.helpers({
     return active && 'active';
   }
 });
+
+Template.siteHeader.events({
+  "click #login-dropdown-list a.dropdown-toggle": function(e) {
+    setTimeout(function() {$('#login-email').focus();}, 100);
+  }
+});
