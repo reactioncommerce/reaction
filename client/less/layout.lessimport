@@ -1,73 +1,64 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
-/* Padding below the footer and lighter body text */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,500,700);
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700);
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300italic,300,100,500,700italic,400italic);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,700,600,300|Open+Sans+Condensed:300);
+
 @border-radius-base: 0;
-@media (min-width: 768px) {
-  .row { margin-right: 0; margin-left: 0; }
-}
+@input-border-radius: 0px;
+@font-family-sans-serif:  "Roboto","Open Sans","sans-serif";
+@font-size-base:  14px;
 
 body {
-  padding-bottom: 50px;
-  background-color: transparent;
-  font-family: "Roboto","Open Sans","Helvetica";
-  font-size: 14px;
-  color: #393939;
   -webkit-font-smoothing: antialiased;
 }
+
 
 /* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */
 body.modal-open {
   margin-right: 0px !important;
 }
 
-.error-block {
-  color: #b94a48;
+header {
+  padding-bottom: 50px;
 }
 
-
-/* CUSTOMIZE THE HEADER
--------------------------------------------------- */
-header {
-  padding-bottom: 125px;
+footer .navbar-fixed-bottom {
+  background-color: rgba(201, 201, 201, 0.09);
 }
 
 .jumbotron {
-  font-size: 60px;
+  font-size: 40px;
   text-align: center;
+  margin-top: 60px;
+  padding-bottom: 40px;
 }
-/* CUSTOMIZE THE NAVBAR
--------------------------------------------------- */
 
-.navbar-fixed-bottom {
-  background-color: rgba(201, 201, 201, 0.09);
+.error-block {
+  color: #b94a48;
 }
 
 #spinner {
   height: 300px
 }
 
-.dropdown-menu {
-  padding-right: 5px;
-  padding-left: 5px;
+// Doesn't respond to less, probably overwritten in package.
+#login-dropdown-list input:first-of-type {
+margin-top: 0px;
+border-top-left-radius: 0px;
+border-top-right-radius: 0px;
 }
 
+#login-dropdown-list input:last-of-type {
+margin-bottom: 5px;
+border-bottom-left-radius: 0px;
+border-bottom-right-radius: 0px;
+}
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */
-
 @media (min-width: 768px) {
-
-  /* Navbar positioning foo */
-  .navbar-wrapper {
-    margin-top: 20px;
-  }
-
-  /* The navbar becomes detached from the top, so we round the corners */
-  .navbar-wrapper .navbar {
-    border-radius: 4px;
-  }
-
-
+  .row { margin-right: 0; margin-left: 0; }
+  .navbar-wrapper {margin-top: 20px;}
+  .jumbotron {font-size: 60px;}
 }
