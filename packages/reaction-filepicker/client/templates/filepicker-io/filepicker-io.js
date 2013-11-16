@@ -12,13 +12,7 @@ Template["filepicker-io"].events({
     ReactionConfig.update({_id: userPackage._id}, {$set: {metafields: {apikey: apikey}}});
     // TODO: Validate key with filepicker before adding
     // throwError("Success");
-
-    $.gritter.add({
-      // (string | mandatory) the heading of the notification
-      title: 'Saved "' + apikey + '"',
-      // (string | mandatory) the text inside the notification
-      text: 'Filepicker.io is now configured.'
-    });
+    $.pnotify({title: 'Saved "' + apikey + '"',text: 'Filepicker.io is now configured.',type: 'success'});
     Router.go('dashboard');
   }
 });

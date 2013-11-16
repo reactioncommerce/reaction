@@ -3,7 +3,7 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
-  api.use(['standard-app-packages', 'coffeescript', 'simple-schema', 'collection2']);
+  api.use(['standard-app-packages', 'coffeescript', 'simple-schema', 'collection2','reaction-dashboard']);
   api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
 
   api.imply('simple-schema', ['client', 'server']);

@@ -260,10 +260,7 @@ Template.productsEdit.events({
         if (FPError.code == 101) {
           return; // The user closed the picker without choosing a file
         }
-        $.gritter.add({
-          title: '"Filepicker.io Error"',
-          text: FPError.toString()
-        });
+        $.pnotify({title: 'Filepicker.io Error',text:FPError.toString(),type: 'error'});
       }
 
     );

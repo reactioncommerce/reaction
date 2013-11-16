@@ -41,13 +41,7 @@ Template.productVideos.rendered = function () {
         uploadImages(InkBlobs)
       },
       onError: function (FPError) {
-        $.gritter.add({
-          // (string | mandatory) the heading of the notification
-          title: '"Filepicker.io Error"',
-          // (string | mandatory) the text inside the notification
-          text: FPError.toString()
-        });
-        console.log(FPError.toString());
+        $.pnotify({title: 'Filepicker.io Error',text:FPError.toString(),type: 'error'});
       },
       onProgress: function (percentage) {
         $("#videoDropPane").text("Uploading (" + percentage + "%)");

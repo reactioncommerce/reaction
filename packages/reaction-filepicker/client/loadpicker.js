@@ -5,10 +5,7 @@
 
 loadPicker = function (callback) {
   if (!filepicker.keyIsSet) {
-    $.gritter.add({
-      title: 'Filepicker.io is not configured',
-      text: 'You can do that on the <a href="/filepicker-io">package dashboard</a>.'
-    });
+    $.pnotify({title: 'Filepicker.io is not configured',text:'You can do that on the <a href="/filepicker-io">package dashboard</a>.',type: 'error'});
     return false;
   }
   return callback && callback();
