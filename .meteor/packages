@@ -8,7 +8,6 @@ preserve-inputs
 jquery
 less
 bootstrap3-less
-pnotify-bootstrap-3
 
 accounts-base
 accounts-password
@@ -33,3 +32,4 @@ collection2
 autoform
 simple-schema
 moment
+pnotify-bootstrap-3-less
