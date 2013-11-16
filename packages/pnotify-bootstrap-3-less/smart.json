@@ -1,0 +1,11 @@
+{
+    "name": "pnotify-bootstrap3-less",
+    "description": "Bootstrap 3 LESS compatible fork of Pines notify packaged for Meteor.",
+    "homepage": "https://github.com/ongoworks/meteor-pnotify-bootstrap-3",
+    "author": "Emilio Gonzalez <emdagon@gmail.com>",
+    "version": "0.1.1",
+    "git": "https://github.com/ongoworks/meteor-pnotify-bootstrap-3.git",
+    "packages": {
+        "bootstrap3-less": {}
+    }
+}
