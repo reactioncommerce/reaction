@@ -35,24 +35,6 @@ Package.on_use(function (api, where) {
     // Small sparkline graphs
     // *****************************************************
     api.add_files(path.join('lib/sparkline', 'jquery.sparkline.min.js'), 'client');
-    // *****************************************************
-    // Gritter - growl like popup notifications
-    // *****************************************************
-    api.add_files(path.join('lib/gritter/css', 'jquery.gritter.css'), 'client');
-    api.add_files(path.join('lib/gritter/css', 'path-override.css'), 'client');
-    api.add_files(path.join('lib/gritter/images', 'gritter-light.png'), 'client');
-    api.add_files(path.join('lib/gritter/images', 'gritter.png'), 'client');
-    api.add_files(path.join('lib/gritter/js', 'jquery.gritter.js'), 'client');
-
-    // *****************************************************
-    // Register this package with Reaction
-    // *****************************************************
-      api.add_files([
-        'client/templates/pkgManager/pkgManager.html',
-        'client/templates/pkgManager/pkgManager.js',
-        'client/templates/pkgManager/pkgManager.css'
-        ],
-        'client');
 
     api.add_files('server/register.js', 'server');
     api.add_files('server/publish.js', 'server');

@@ -61,7 +61,8 @@ Template.pkg.events({
         event.preventDefault();
 
         ReactionConfig.insert({userId: Meteor.userId(), packageId: this._id, name: this.name, label: this.label, enabled: true, metafields: this.metafields});
-        $.gritter.add({title: 'Enabled Package', text: this.label + ' is now enabled.'});
+
+        $.pnotify({title: 'Enabled Packaged',text: this.label+ ' is now enabled.',type: 'success'});
         if (this.route) Router.go(this.route);
     },
     'click .disablePkg': function (event, template) {
@@ -70,7 +71,7 @@ Template.pkg.events({
         var disablePkg = ReactionConfig.find({userId: Meteor.userId(), packageId: this._id, name: this.name, enabled: true});
         disablePkg.forEach(function (pkg) {
             ReactionConfig.update({_id: pkg._id}, {$set: {enabled: false}});
-            $.gritter.add({title: 'Disabled Package', text: pkg.label + ' is now disabled.'});
+            $.pnotify({title: 'Disabled Packaged',text: pkg.label+ ' is now disabled.',type: 'success'});
         });
     }
 });
