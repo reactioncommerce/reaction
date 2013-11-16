@@ -35,22 +35,35 @@ Package.on_use(function (api, where) {
 
     'client/templates/products/products.html',
     'client/templates/products/products.less',
+
     'client/templates/products/productList/productList.html',
     'client/templates/products/productList/productList.js',
+    'client/templates/products/productList/productList.less',
 
     'client/templates/productsEdit/productsEdit.html',
     'client/templates/productsEdit/productsEdit.js',
+    'client/templates/productsEdit/productsEdit.less',
+
+
     'client/templates/productsEdit/productImage/productImage.html',
     'client/templates/productsEdit/productImage/productImage.js',
+    'client/templates/productsEdit/productImage/productImage.less',
+
     'client/templates/productsEdit/productImageGallery/productImageGallery.html',
     'client/templates/productsEdit/productImageGallery/productImageGallery.js',
+    'client/templates/productsEdit/productImageGallery/productImageGallery.less',
+
     'client/templates/productsEdit/productVideos/productVideos.html',
     'client/templates/productsEdit/productVideos/productVideos.js',
+    'client/templates/productsEdit/productVideos/productVideos.less',
+
     'client/templates/productsEdit/variant/variant.html',
     'client/templates/productsEdit/variant/variant.js',
+
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.js',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
+
     'client/templates/productsEdit/optionsModal/optionsModal.html',
     'client/templates/productsEdit/optionsModal/optionsModal.js',
     'client/templates/productsEdit/optionsModal/optionsModal.less',

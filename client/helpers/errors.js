@@ -6,6 +6,7 @@
 // *****************************************************
 Errors = new Meteor.Collection(null);
 throwError = function (message) {
+  $.pnotify({title: 'Error',text:message,type: 'error'});
   Errors.insert({message: message, seen: false})
 }
 clearErrors = function () {
