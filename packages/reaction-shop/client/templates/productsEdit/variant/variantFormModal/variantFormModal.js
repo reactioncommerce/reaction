@@ -1,7 +1,11 @@
+Template.variantFormModal.currentVariantIndex = function() {
+  return Session.get("currentVariantIndex");
+};
+
 Template.variantFormModal.variant = function () {
   var currentProduct = Products.findOne(Session.get("currentProductId"));
   var currentVariantIndex = Session.get("currentVariantIndex");
-  return currentVariantIndex? currentProduct.variants[currentVariantIndex] : null;
+  return currentProduct.variants[currentVariantIndex];
 };
 
 Template.variantFormModal.rendered = function () {
@@ -9,15 +13,15 @@ Template.variantFormModal.rendered = function () {
 };
 
 Template.variantFormModal.events({
-  "change #variant-inventoryManagement": function () {
+  "change .variant-inventory-management": function () {
     updateInventoryManagementFieldsVisibility()
   },
   "click .close-button": function (e, template) {
 //    template.find("form").reset();
   },
-  "click .save-button": function (e, template) {
+  "submit form": function (e, template) {
     // TODO: check for compliance with Shopify API
-    // TODO: notably, inventory_policy should be "deny" if checkbox isn"t selected
+    // TODO: notably, inventory_policy should be "deny" if checkbox isn't selected
     // TODO: Make quantity "required" a dynamic attribute
     // TODO: convert data to proper types
     var form = template.find("form");
@@ -28,25 +32,47 @@ Template.variantFormModal.events({
       taxable: false,
       requiresShipping: false
     };
-    $.each($form.serializeArray(), function () {
-      data[this.name] = this.value;
-    });
+    // TODO: apply defaults & checkbox values
+    var $set = $form.serializeHash();
     var currentProduct = Products.findOne(Session.get("currentProductId"));
-    if (_.isNumber(Session.get("currentVariantIndex"))) {
+    var validationContext = "variant";
+    var localValidationCallback = _.partial(validationCallback, $form, Products, validationContext, function() {
+      $(template.find('.modal')).modal("hide"); // manual hide fix for Meteor reactivity
+    });
+//    if (_.isNumber(Session.get("currentVariantIndex"))) {
       var variant = currentProduct.variants[Session.get("currentVariantIndex")];
-      $.extend(true, variant, data);
-      var $set = {};
-      $set["variants." + Session.get("currentVariantIndex")] = variant;
-      Products.update(currentProduct._id, {$set: $set});
-    } else {
-      Products.update(currentProduct._id, {$push: {variants: data}});
-    }
-    form.reset();
-    $(template.find('.modal')).modal("hide"); // manual hide fix for Meteor reactivity
+//      $set["variants." + Session.get("currentVariantIndex")] = variant;
+      Products.update(currentProduct._id, {$set: $set}, {validationContext: validationContext}, localValidationCallback);
+//    } else {
+//      Products.update(currentProduct._id, {$push: {variants: data}}, {validationContext: validationContext}, localValidationCallback);
+//    }
   }
 });
 
+var validationCallback = function($form, collection, validationContext, successCallback, error, result) {
+  $form.find(".has-error").removeClass("has-error");
+  $form.find(".error-block li").remove();
+  if (error) {
+    var invalidKeys = collection.namedContext(validationContext).invalidKeys();
+    _.each(invalidKeys, function(invalidKey) {
+      var id = invalidKey.name.replace(/\./g, "-");
+      var $formGroup = $form.find("#" + id).closest(".form-group");
+      var $errorBlock;
+      if ($formGroup.length) {
+        $errorBlock = $formGroup.find(".error-block");
+        $formGroup.addClass("has-error");
+      } else {
+        console.log("here");
+        $errorBlock = $form.find(".error-block");
+      }
+      $errorBlock.first().append("<li>"+invalidKey.message+"</li>");
+    });
+  } else {
+    successCallback && successCallback();
+  }
+};
+
 var updateInventoryManagementFieldsVisibility = function () {
-  var $select = $("#variant-inventoryManagement");
-  $("#variant-inventoryQuantity, #variant-inventoryPolicy").closest(".form-group").toggle($select.val() == "reaction");
+  var $select = $(".variant-inventory-management");
+  $(".variant-inventory-quantity, .variant-inventory-policy").closest(".form-group").toggle($select.val() == "reaction");
 };

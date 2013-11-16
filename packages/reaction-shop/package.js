@@ -71,5 +71,5 @@ Package.on_use(function (api, where) {
     'server/register.coffee'
   ], 'server');
 
-  api.export(['Products', 'Orders', 'Customers', 'variant']);
+  api.export(['Products', 'Orders', 'Customers', 'ProductVariantSchema', 'ProductImageSchema', 'MetafieldSchema', 'variant']);
 });

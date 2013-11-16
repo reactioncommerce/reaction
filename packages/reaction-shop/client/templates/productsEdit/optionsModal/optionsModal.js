@@ -15,11 +15,11 @@ Template.optionsModal.events({
     var html = $("<div />").append($template.clone()).html();
     html = html.replace(/__KEY__/g, template.findAll(".form-group").length-1).replace("form-group-template", "option-form-group");
     $template.before(html);
-    setTimeout(function() {
+    _.defer(function() {
       var $formGroup = $template.prev();
       $formGroup.find("input").prop("disabled", false);
       $formGroup.find(".label-form-control").focus();
-    }, 1); // DOM manipulation defer
+    }); // DOM manipulation defer
     e.preventDefault();
   },
   "click .remove-button": function (e, template) {
@@ -37,12 +37,12 @@ Template.optionsModal.events({
   "click .close-button": function (e, template) {
 //    template.find("form").reset();
   },
-  "click .save-button": function (e, template) {
+  "submit form": function (e, template) {
     var form = template.find("form");
     var $form = $(form);
     var data = $form.serializeHash();
     Products.update(Session.get("currentProductId"), {$set: data}, {validationContext: "options"}, function(error, result) {
-      $form.find(".has-error").removeClass(".has-error");
+      $form.find(".has-error").removeClass("has-error");
       $form.find(".error-block li").remove();
       if (error) {
         var invalidKeys = Products.namedContext("options").invalidKeys();

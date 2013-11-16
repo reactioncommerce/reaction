@@ -305,18 +305,18 @@ Template.productsEdit.events({
 
   'click .variant-table tr': function (e) {
     $(e.target).closest('tr').find('input').prop('checked', 'checked');
-    e.preventDefault();
+    e.stopPropagation();
   },
   'click #add-variant': function(e) {
-    $('#variant-edit-modal form').get(0).reset();
+    $('#variants-modal form').get(0).reset();
     Session.set('currentVariantIndex', null);
-    $('#variant-edit-modal').modal();
+    $('#variants-modal').modal();
     e.preventDefault();
   },
-    'click #edit-options': function(e) {
-      $('#options-modal').modal();
-      e.preventDefault();
-    }
+  'click #edit-options': function(e) {
+    $('#options-modal').modal();
+    e.preventDefault();
+  }
 });
 
 uploadImages = function (upload) {

@@ -37,7 +37,7 @@ unless root.Products.find().count()
         'fulfillmentService': 'manual',
         'grams': 200,
         'id': 808950810,
-        'inventoryManagement': 'manual',
+        'inventoryManagement': 'reaction',
         'inventoryPolicy': 'continue',
         'inventoryQuantity': 10,
         'option1': 'Pink',

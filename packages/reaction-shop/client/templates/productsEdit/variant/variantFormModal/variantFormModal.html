@@ -1,79 +1,81 @@
-<template name="variantFormModal" xmlns="http://www.w3.org/1999/html">
-  <div id="variant-edit-modal" class="modal fade variant-edit-modal">
+<template name="variantFormModal">
+  <div id="variants-modal" class="modal fade" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form class="form-horizontal" role="form" data-validate="parsley" novalidate="novalidate">
+        <form class="form-horizontal" role="form" novalidate="novalidate">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">{{#if variant}}Edit{{else}}Add{{/if}} variant</h4>
           </div>
           <div class="modal-body">
+            <ul class="error-block"></ul>
             <div class="form-group">
               <label for="variant-title" class="col-sm-3 control-label">Title</label>
               <div class="col-sm-9">
-                <input id="variant-title" class="form-control" type="text" name="title" value="{{variant.title}}" required="required"/>
+                <input id="variant-title" class="form-control" type="text" name="variants[{{currentVariantIndex}}][title]" value="{{variant.title}}"/>
+                <ul class="error-block"></ul>
               </div>
             </div>
 
             <div class="form-group">
               <label for="variant-barcode" class="col-sm-3 control-label">Barcode</label>
               <div class="col-sm-9">
-                <input id="variant-barcode" class="form-control" type="text" name="barcode" value="{{variant.barcode}}"/>
+                <input id="variant-barcode" class="form-control" type="text" name="variants[{{currentVariantIndex}}][barcode]" value="{{variant.barcode}}"/>
               </div>
             </div>
 
             <div class="form-group">
               <label for="variant-sku" class="col-sm-3 control-label">SKU</label>
               <div class="col-sm-9">
-                <input id="variant-sku" class="form-control" type="text" name="sku" value="{{variant.sku}}"/>
+                <input id="variant-sku" class="form-control" type="text" name="variants[{{currentVariantIndex}}][sku]" value="{{variant.sku}}"/>
               </div>
             </div>
 
             <div class="form-group">
               <label for="variant-price" class="col-sm-3 control-label">Price</label>
               <div class="col-sm-9">
-                <input id="variant-price" class="form-control" type="number" min="0" name="price" value="{{variant.price}}" required="required"/>
+                <input id="variant-price" class="form-control" type="number" name="variants[{{currentVariantIndex}}][price]" value="{{variant.price}}"/>
               </div>
             </div>
 
             <div class="form-group">
               <label for="variant-compareAtPrice" class="col-sm-3 control-label">Compare at price</label>
               <div class="col-sm-9">
-                <input id="variant-compareAtPrice" class="form-control" type="number" min="0" name="compareAtPrice" value="{{variant.compareAtPrice}}"/>
+                <input id="variant-compareAtPrice" class="form-control" type="number" name="variants[{{currentVariantIndex}}][compareAtPrice]" value="{{variant.compareAtPrice}}"/>
               </div>
             </div>
 
             <div class="form-group">
               <label for="variant-grams" class="col-sm-3 control-label">Weight</label>
               <div class="col-sm-9">
-                <input id="variant-grams" class="form-control" type="number" min="0" name="grams" value="{{variant.grams}}" placeholder="In grams"/>
+                <input id="variant-grams" class="form-control" type="number" name="variants[{{currentVariantIndex}}][grams]" value="{{variant.grams}}" placeholder="In grams"/>
               </div>
             </div>
 
-            <div class="form-group form-group-template">
-              <div class="col-sm-3">
-                <input id="variant-product-options-__INDEX__" class="form-control label-form-control" type="text" name="product-options[]" placeholder="Name"/>
-              </div>
-              <div class="col-sm-9">
-                <div class="input-group">
-                  <input id="variant-option[__INDEX__]" class="form-control" type="text" name="option[]" placeholder="Value"/>
-                  <span class="input-group-btn">
-                    <button class="btn btn-default remove-button" type="button"><i class="fa fa-trash-o"></i></button>
-                  </span>
-                </div>
-              </div>
-            </div>
+            <!--<div class="form-group form-group-template">-->
+              <!--<div class="col-sm-3">-->
+                <!--<input id="variant-product-options-__INDEX__" class="form-control label-form-control" type="text" name="product-options[]" placeholder="Name"/>-->
+              <!--</div>-->
+              <!--<div class="col-sm-9">-->
+                <!--<div class="input-group">-->
+                  <!--<input id="variant-option[__INDEX__]" class="form-control" type="text" name="option[]" placeholder="Value"/>-->
+                  <!--<span class="input-group-btn">-->
+                    <!--<button class="btn btn-default remove-button" type="button"><i class="fa fa-trash-o"></i></button>-->
+                  <!--</span>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
 
-            <div class="form-group">
-              <div class="col-sm-9 col-sm-offset-3">
-                <a href="#" class="add-option-link">Add another option</a>
-              </div>
-            </div>
+            <!--<div class="form-group">-->
+              <!--<div class="col-sm-9 col-sm-offset-3">-->
+                <!--<a href="#" class="add-option-link">Add another option</a>-->
+              <!--</div>-->
+            <!--</div>-->
 
             <div class="form-group">
               <label for="variant-fulfillmentService" class="col-sm-3 control-label">Fulfillment service</label>
               <div class="col-sm-9">
-                <select class="form-control" id="variant-fulfillmentService" name="fulfillmentService">
+                <select class="form-control" id="variant-fulfillmentService" name="variants[{{currentVariantIndex}}][fulfillmentService]">
                   <option value="manual" {{#if condition variant.fulfillmentService "eq" "manual"}}selected="selected"{{/if}}>Manual</option>
                 </select>
               </div>
@@ -82,7 +84,7 @@
             <div class="form-group">
               <label for="variant-inventoryManagement" class="col-sm-3 control-label">Inventory policy</label>
               <div class="col-sm-9">
-                <select class="form-control" id="variant-inventoryManagement" name="inventoryManagement">
+                <select class="form-control variant-inventory-management" id="variant-inventoryManagement" name="variants[{{currentVariantIndex}}][inventoryManagement]">
                   <option value="" {{#if condition variant.inventoryManagement "eq" ""}}selected="selected"{{/if}}>Don't track inventory</option>
                   <option value="reaction" {{#if condition variant.inventoryManagement "eq" "reaction"}}selected="selected"{{/if}}>Let Reaction track this variant's inventory</option>
                 </select>
@@ -92,7 +94,7 @@
             <div class="form-group">
               <label for="variant-inventoryQuantity" class="col-sm-3 control-label">Quantity</label>
               <div class="col-sm-9">
-                <input id="variant-inventoryQuantity" class="form-control" type="number" min="0" name="inventoryQuantity" value="{{variant.inventoryQuantity}}" required="required"/>
+                <input id="variant-inventoryQuantity" class="form-control variant-inventory-quantity" type="number" name="variants[{{currentVariantIndex}}][inventoryQuantity]" value="{{variant.inventoryQuantity}}"/>
               </div>
             </div>
 
@@ -100,7 +102,7 @@
               <div class="col-sm-9 col-sm-offset-3">
                 <div class="checkbox">
                   <label>
-                    <input id="variant-inventoryPolicy" type="checkbox" name="inventoryPolicy" value="continue" {{#if condition variant.inventoryPolicy "eq" "continue"}}checked="checked"{{/if}} />
+                    <input id="variant-inventoryPolicy" class="variant-inventory-policy" type="checkbox" name="variants[{{currentVariantIndex}}][inventoryPolicy]" value="continue" {{#if condition variant.inventoryPolicy "eq" "continue"}}checked="checked"{{/if}} />
                     Allow users to purchase this item, even if it is no longer in stock
                   </label>
                 </div>
@@ -111,7 +113,7 @@
               <div class="col-sm-9 col-sm-offset-3">
                 <div class="checkbox">
                   <label>
-                    <input id="variant-taxable" type="checkbox" name="taxable" value="true" {{#if variant.taxable}}checked="checked"{{/if}} />
+                    <input id="variant-taxable" type="checkbox" name="variants[{{currentVariantIndex}}][taxable]" value="true" {{#if variant.taxable}}checked="checked"{{/if}} />
                     Charge taxes on this product
                   </label>
                 </div>
@@ -122,7 +124,7 @@
               <div class="col-sm-9 col-sm-offset-3">
                 <div class="checkbox">
                   <label>
-                    <input id="variant-requiresShipping" type="checkbox" name="requiresShipping" value="true" {{#if variant.requiresShipping}}checked="checked"{{/if}} />
+                    <input id="variant-requiresShipping" type="checkbox" name="variants[{{currentVariantIndex}}][requiresShipping]" value="true" {{#if variant.requiresShipping}}checked="checked"{{/if}} />
                     Require a shipping address
                   </label>
                 </div>

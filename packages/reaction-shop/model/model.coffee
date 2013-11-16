@@ -1,26 +1,29 @@
-ProductVariant = new SimpleSchema
+ProductVariantSchema = new SimpleSchema
   barcode:
     type: String
     optional: true
   compareAtPrice:
     type: Number
-    decimal: true
     optional: true
+    decimal: true
+    min: 0
   fulfillmentService:
     type: String
     optional: true
   grams:
     type: Number
     optional: true
+    min: 0
   inventoryManagement:
     type: String
-    optional: true
+    allowedValues: ["manual", "reaction"]
   inventoryPolicy:
     type: String
-    optional: true
+    allowedValues: ["deny", "continue"]
   inventoryQuantity:
     type: Number
     optional: true
+    min: 0
   option1:
     type: String
     optional: true
@@ -35,6 +38,7 @@ ProductVariant = new SimpleSchema
   price:
     type: Number
     decimal: true
+    min: 0
   requiresShipping:
     type: Boolean
     optional: true
@@ -46,7 +50,6 @@ ProductVariant = new SimpleSchema
     optional: true
   title:
     type: String
-    optional: true
   metafields:
     type: [MetafieldSchema]
     optional: true
@@ -55,7 +58,7 @@ ProductVariant = new SimpleSchema
   updatedAt:
     type: Date
 
-ProductImage = new SimpleSchema
+ProductImageSchema = new SimpleSchema
   src:
     type: String
   position:
@@ -136,10 +139,10 @@ CustomerAddressSchema = new SimpleSchema
       max: 255
       optional: true
     variants:
-      type: [ProductVariant]
+      type: [ProductVariantSchema]
       optional: true
     images:
-      type: [ProductImage]
+      type: [ProductImageSchema]
       optional: true
     tags:
       type: [String]

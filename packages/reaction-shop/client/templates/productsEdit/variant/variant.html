@@ -1,12 +1,12 @@
 <template name="variant">
   <tr>
     <td>
-      <input type="radio" name="variant"/>
+      <input type="radio" name="variant" />
     </td>
     <td>
       <a href="#">{{barcode}}</a>
     </td>
-    <td>{{inventory_quantity}}</td>
+    <td>{{inventoryQuantity}}</td>
     <td>{{sku}}</td>
     <td>{{price}}</td>
       {{#if userHasRole "admin"}}
