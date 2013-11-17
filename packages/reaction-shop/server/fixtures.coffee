@@ -7,7 +7,7 @@
 # modifications made:
 # original: 'tags': 'Emotive, Flash Memory, MP3, Music' is now an array 'tags'
 # original:  'option1': 'Red', 'option2': null,'option3': null is now an array 'options'
-#
+# original:  'image' (main image) and images(secondary) replaced with single array 'images'
 #
 # *****************************************************
 
@@ -25,7 +25,7 @@ unless root.Products.find().count()
     'publishedAt': now,
     'publishedScope': 'global',
     'templateSuffix': null,
-    'title': 'Damien Hirst x Chuck Taylor HiTops',
+    'title': 'Damien Hirst HiTops',
     'updatedAt': now,
     'vendor': 'Converse',
     'tags': ['Converse', 'Shoes', 'Legendary', 'RED'],
@@ -127,40 +127,37 @@ unless root.Products.find().count()
         'name': 'Title',
         'defaultValue': ''
       }
+    ],
+    'images': [
+      {
+        'createdAt': now,
+        'position': 1,
+        'src': '/resources/sample/converse-1.jpg',
+        'updatedAt': now,
+        'mimeType': 'image/jpeg'
+      },
+      {
+        'createdAt': now,
+        'position': 2,
+        'src': '/resources/sample/converse-2.jpg',
+        'updatedAt': now,
+        'mimeType': 'image/jpeg'
+      },
+      {
+        'createdAt': now,
+        'position': 3,
+        'src': '/resources/sample/converse-3.jpg',
+        'updatedAt': now,
+        'mimeType': 'image/jpeg'
+      },
+      {
+        'createdAt': now,
+        'position': 4,
+        'src': '/resources/sample/converse-4.jpg',
+        'updatedAt': now,
+        'mimeType': 'image/jpeg'
+      }
     ]
-    # 'images': [
-    #   {
-    #     'createdAt': now,
-    #     'id': 850703190,
-    #     'position': 2,
-    #     'src': 'http://streetgiant.com/files/damien-hirst-x-converse-product-red-chuck-taylor-hi-1.jpg',
-    #     'metafields':[{'createdAt':'2013-10-25T13:51:38-04:00','description':'French product image title','id':625663657,'key':'title_fr','namespace':'translation','ownerId':850703190,'updatedAt':'2013-10-25T13:51:38-04:00','value':'tbn','valueType':'string','ownerResource':'productImage'}],
-    #     'updatedAt': now
-    #   },
-    #   {
-    #     'createdAt': now,
-    #     'id': 562641783,
-    #     'position': 1,
-    #     'src': 'http://streetgiant.com/files/damien-hirst-x-converse-product-red-chuck-taylor-hi-2.jpg',
-    #     'metafields':[{'createdAt':'2013-10-25T13:51:38-04:00','description':'French product image title','id':625663657,'key':'title_fr','namespace':'translation','ownerId':850703190,'updatedAt':'2013-10-25T13:51:38-04:00','value':'tbn','valueType':'string','ownerResource':'productImage'}],
-    #     'updatedAt': now
-    #   },
-    #   {
-    #     'createdAt': now,
-    #     'id': 562641783,
-    #     'position': 1,
-    #     'src': 'http://streetgiant.com/files/damien-hirst-x-converse-product-red-chuck-taylor-hi-3.jpg',
-    #     'updatedAt': now
-    #   }
-    # ],
-    # 'image': {
-    #   'createdAt': now,
-    #   'id': 850703190,
-    #   'position': 1,
-    #   'src': 'http://streetgiant.com/files/damien-hirst-x-converse-product-red-chuck-taylor-hi-0.jpg',
-    #   'updatedAt': now
-    # }
-
 #unless root.Orders.find().count()
 #  console.log 'Adding orders fixture data'
 #  root.Orders.insert
