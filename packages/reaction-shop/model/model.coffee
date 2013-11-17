@@ -63,10 +63,18 @@ ProductImageSchema = new SimpleSchema
     type: String
   position:
     type: Number
+    optional: true
   createdAt:
     type: Date
   updatedAt:
     type: Date
+    optional: true
+  metaType:
+    type: String
+    optional: true
+  metafields:
+    type: [MetafieldSchema]
+    optional: true
 
 MetafieldSchema = new SimpleSchema
   key:

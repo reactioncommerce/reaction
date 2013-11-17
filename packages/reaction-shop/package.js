@@ -45,9 +45,9 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/productsEdit.less',
 
 
-    'client/templates/productsEdit/productImage/productImage.html',
-    'client/templates/productsEdit/productImage/productImage.js',
-    'client/templates/productsEdit/productImage/productImage.less',
+    // 'client/templates/productsEdit/productImage/productImage.html',
+    // 'client/templates/productsEdit/productImage/productImage.js',
+    // 'client/templates/productsEdit/productImage/productImage.less',
 
     'client/templates/productsEdit/productImageGallery/productImageGallery.html',
     'client/templates/productsEdit/productImageGallery/productImageGallery.js',

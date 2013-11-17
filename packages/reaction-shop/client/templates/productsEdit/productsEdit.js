@@ -321,30 +321,22 @@ Template.productsEdit.events({
 
 uploadImages = function (upload) {
   var currentProductId = Session.get('currentProductId');
+  console.log("uploadImages: "+currentProductId);
 
   for (var i = upload.length - 1; i >= 0; i--) {
     var imageProperties = {
-      created_at: new Date(),
+      createdAt: new Date(),
       src: upload[i].url,
-      mimetype: upload[i].mimetype,
-      inkblob: upload[i]
+      mimeType: upload[i].mimetype,
+      position: '1'
     };
     //Save image to local data after successfully uploading.
     //Upload to single image structure, if there isn't a main
     //this is some lame legacy structure from shopify
-    if (typeof Products.findOne(currentProductId).image == 'undefined') {
-      Products.update(currentProductId, {$set: {image: imageProperties}}, function (error) {
-        if (error) {
-          throwError(error.reason);
-        }
-      });
-
-    } else { // if product has primary image add to images object
-      Products.update(currentProductId, {$addToSet: {images: imageProperties}}, function (error) {
-        if (error) {
-          throwError(error.reason);
-        }
-      });
-    }
+    Products.update(currentProductId, {$addToSet: {images: imageProperties}}, function (error) {
+      if (error) {
+        throwError(error.reason);
+      }
+    });
   }
 };
