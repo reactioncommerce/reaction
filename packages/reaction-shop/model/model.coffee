@@ -145,7 +145,6 @@ CustomerAddressSchema = new SimpleSchema
     'options.$.defaultValue':
       type: String
       max: 255
-      optional: true
     variants:
       type: [ProductVariantSchema]
       optional: true
@@ -163,6 +162,8 @@ CustomerAddressSchema = new SimpleSchema
       optional: true
     handle:
       type: String
+    isVisible:
+      type: Boolean
     publishedAt:
       type: Date
       optional: true
@@ -176,6 +177,21 @@ CustomerAddressSchema = new SimpleSchema
       type: Date
     updatedAt:
       type: Date
+
+@Products.before.update (userId, doc, fieldNames, modifier, options) ->
+  unless _.indexOf(fieldNames, 'images') is -1
+    addToSet = modifier.$addToSet?.images
+    if addToSet
+      position = (doc.images?.length or 0) + 1
+      createdAt = new Date()
+      if addToSet.$each
+        increment = 0
+        _.each addToSet.$each, (image) ->
+          image.position = position + increment++
+          image.createdAt = createdAt
+      else
+        addToSet.position = position
+        addToSet.createdAt = createdAt
 
 Products = @Products # package exports
 

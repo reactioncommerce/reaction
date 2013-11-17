@@ -3,7 +3,14 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
-  api.use(['standard-app-packages', 'coffeescript', 'simple-schema', 'collection2','reaction-dashboard']);
+  api.use([
+    'standard-app-packages',
+    'coffeescript',
+    'simple-schema',
+    'collection2',
+    'collection-behaviours',
+    'reaction-dashboard'
+  ]);
   api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
 
   api.imply('simple-schema', ['client', 'server']);
@@ -37,7 +44,7 @@ Package.on_use(function (api, where) {
     'client/templates/products/products.less',
 
     'client/templates/products/productList/productList.html',
-    'client/templates/products/productList/productList.js',
+    'client/templates/products/productList/productList.coffee',
     'client/templates/products/productList/productList.less',
 
     'client/templates/productsEdit/productsEdit.html',
@@ -74,8 +81,8 @@ Package.on_use(function (api, where) {
     'client/templates/storefront/default/shop/shop.less',
 
     // Package
-    'client/subscribe.js',
-    'client/router.js'
+    'client/subscribe.coffee',
+    'client/router.coffee'
   ], 'client');
 
   api.add_files([

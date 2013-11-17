@@ -125,7 +125,7 @@ unless root.Products.find().count()
       {
         'id': 594680422,
         'name': 'Title',
-        'defaultValue': ''
+        'defaultValue': 'Default Title'
       }
     ],
     'images': [
@@ -158,6 +158,8 @@ unless root.Products.find().count()
         'mimeType': 'image/jpeg'
       }
     ]
+    isVisible: true
+
 #unless root.Orders.find().count()
 #  console.log 'Adding orders fixture data'
 #  root.Orders.insert

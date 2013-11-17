@@ -13,7 +13,15 @@
       "bootstrap3-less": {},
       "autoform": {},
       "collection2": {},
-      "accounts-ui-bootstrap-3": {}
+      "accounts-ui-bootstrap-3": {},
+      "collection-hooks": {
+        "git": "https://github.com/wsoul/meteor-collection-hooks.git",
+        "branch": "master"
+      },
+      "collection-behaviours": {
+        "git": "https://github.com/wsoul/meteor-collection-behaviours.git",
+        "branch": "master"
+      }
     },
     "packages": {
       "spin": {
@@ -75,6 +83,16 @@
         "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
         "tag": "v0.2.3",
         "commit": "c6aac7a331e457abd457a6f3ed030ac1411b220c"
+      },
+      "collection-hooks": {
+        "git": "https://github.com/wsoul/meteor-collection-hooks.git",
+        "branch": "master",
+        "commit": "a08fb521230b4bf596daf134ab465dbe96a5974b"
+      },
+      "collection-behaviours": {
+        "git": "https://github.com/wsoul/meteor-collection-behaviours.git",
+        "branch": "master",
+        "commit": "2c8296962e2cdb4ef1bf8e95127cf8b6b007d48e"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",

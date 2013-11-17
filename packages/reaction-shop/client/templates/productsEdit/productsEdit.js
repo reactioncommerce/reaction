@@ -323,20 +323,15 @@ uploadImages = function (upload) {
   var currentProductId = Session.get('currentProductId');
   console.log("uploadImages: "+currentProductId);
 
+  var newImages = [];
+
   for (var i = upload.length - 1; i >= 0; i--) {
-    var imageProperties = {
-      createdAt: new Date(),
-      src: upload[i].url,
-      mimeType: upload[i].mimetype,
-      position: '1'
-    };
-    //Save image to local data after successfully uploading.
-    //Upload to single image structure, if there isn't a main
-    //this is some lame legacy structure from shopify
-    Products.update(currentProductId, {$addToSet: {images: imageProperties}}, function (error) {
-      if (error) {
-        throwError(error.reason);
-      }
-    });
+    newImages.push({src: upload[i].url});
   }
+
+  Products.update(currentProductId, {$addToSet: {images: {$each: newImages}}}, function (error) {
+    if (error) {
+      throwError(error.reason);
+    }
+  });
 };
