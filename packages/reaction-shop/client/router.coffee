@@ -9,7 +9,7 @@ Router.map ->
   this.route 'shop/products'
   # edit product page
   this.route 'shop/product',
-    path: '/shop/product/:_id'
+    path: '/shop/products/:_id'
     data: ->
       Session.set('currentProductId', this.params._id)
       Products.findOne(this.params._id)
