@@ -24,17 +24,6 @@ ProductVariantSchema = new SimpleSchema
     type: Number
     optional: true
     min: 0
-  option1:
-    type: String
-    optional: true
-  option2:
-    type: String
-    optional: true
-  option3:
-    type: String
-    optional: true
-  position:
-    type: Number
   price:
     type: Number
     decimal: true

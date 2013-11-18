@@ -5,7 +5,7 @@ Template.variantFormModal.currentVariantIndex = function() {
 Template.variantFormModal.variant = function () {
   var currentProduct = Products.findOne(Session.get("currentProductId"));
   var currentVariantIndex = Session.get("currentVariantIndex");
-  return currentProduct.variants[currentVariantIndex];
+  return typeof currentVariantIndex === "undefined"? null : currentProduct.variants[currentVariantIndex];
 };
 
 Template.variantFormModal.rendered = function () {
@@ -20,29 +20,38 @@ Template.variantFormModal.events({
 //    template.find("form").reset();
   },
   "submit form": function (e, template) {
-    // TODO: check for compliance with Shopify API
-    // TODO: notably, inventory_policy should be "deny" if checkbox isn't selected
-    // TODO: Make quantity "required" a dynamic attribute
-    // TODO: convert data to proper types
-    var form = template.find("form");
-    var $form = $(form);
-    // TODO: Normalize checkboxes... should be done by a library
-    data = {
+    var currentProduct = Products.findOne(Session.get("currentProductId"));
+    var currentVariantIndex = Session.get("currentVariantIndex");
+    var oldVariant = currentProduct.variants[currentVariantIndex];
+    var variant = {
       inventoryPolicy: "deny",
       taxable: false,
       requiresShipping: false
     };
+    var form = template.find("form");
+    var $form = $(form);
     // TODO: apply defaults & checkbox values
-    var $set = $form.serializeHash();
-    var currentProduct = Products.findOne(Session.get("currentProductId"));
+    var hash = $form.serializeHash();
+    // TODO: simple-schema lacks default values, send him a PR
+    _.extend(variant, oldVariant, hash.variants[currentVariantIndex]);
+    console.log(variant.title)
+    // TODO: simple-schema optional decimal validation bug, send him a PR
+    if (!variant.compareAtPrice) {
+      delete variant.compareAtPrice;
+    }
+    // TODO: simple-schema Boolean cleaning bug, send him a PR
+    variant.taxable = !!variant.taxable;
+    variant.requiresShipping = !!variant.requiresShipping;
+    variant.updatedAt = new Date();
+    variant = ProductVariantSchema.clean(variant);
+    currentProduct.variants[currentVariantIndex] = variant;
     var validationContext = "variant";
     var localValidationCallback = _.partial(validationCallback, $form, Products, validationContext, function() {
       $(template.find('.modal')).modal("hide"); // manual hide fix for Meteor reactivity
     });
 //    if (_.isNumber(Session.get("currentVariantIndex"))) {
-      var variant = currentProduct.variants[Session.get("currentVariantIndex")];
-//      $set["variants." + Session.get("currentVariantIndex")] = variant;
-      Products.update(currentProduct._id, {$set: $set}, {validationContext: validationContext}, localValidationCallback);
+//      hash["variants." + Session.get("currentVariantIndex")] = variant;
+      Products.update(currentProduct._id, {$set: {variants: currentProduct.variants}}, {validationContext: validationContext}, localValidationCallback);
 //    } else {
 //      Products.update(currentProduct._id, {$push: {variants: data}}, {validationContext: validationContext}, localValidationCallback);
 //    }
@@ -62,8 +71,10 @@ var validationCallback = function($form, collection, validationContext, successC
         $errorBlock = $formGroup.find(".error-block");
         $formGroup.addClass("has-error");
       } else {
-        console.log("here");
         $errorBlock = $form.find(".error-block");
+      }
+      if (!$errorBlock.length) {
+        throw new Exception("Error block for field "+invalidKey.name);
       }
       $errorBlock.first().append("<li>"+invalidKey.message+"</li>");
     });
