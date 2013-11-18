@@ -30,11 +30,9 @@ Template.variantFormModal.events({
     };
     var form = template.find("form");
     var $form = $(form);
-    // TODO: apply defaults & checkbox values
     var hash = $form.serializeHash();
     // TODO: simple-schema lacks default values, send him a PR
     _.extend(variant, oldVariant, hash.variants[currentVariantIndex]);
-    console.log(variant.title)
     // TODO: simple-schema optional decimal validation bug, send him a PR
     if (!variant.compareAtPrice) {
       delete variant.compareAtPrice;
