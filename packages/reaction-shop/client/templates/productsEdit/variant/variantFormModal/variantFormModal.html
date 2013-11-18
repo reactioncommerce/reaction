@@ -85,7 +85,7 @@
               <label for="variant-inventoryManagement" class="col-sm-3 control-label">Inventory policy</label>
               <div class="col-sm-9">
                 <select class="form-control variant-inventory-management" id="variant-inventoryManagement" name="variants[{{currentVariantIndex}}][inventoryManagement]">
-                  <option value="" {{#if condition variant.inventoryManagement "eq" ""}}selected="selected"{{/if}}>Don't track inventory</option>
+                  <option value="manual" {{#if condition variant.inventoryManagement "eq" ""}}selected="selected"{{/if}}>Don't track inventory</option>
                   <option value="reaction" {{#if condition variant.inventoryManagement "eq" "reaction"}}selected="selected"{{/if}}>Let Reaction track this variant's inventory</option>
                 </select>
               </div>
