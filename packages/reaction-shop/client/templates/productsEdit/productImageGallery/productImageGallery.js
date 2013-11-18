@@ -16,6 +16,7 @@ Template.productImageGallery.helpers({
 });
 
 Template.productImageGallery.rendered = function () {
+  var product = this.data;
   // *****************************************************
   // Filepicker.io image upload
   // https://developers.inkfilepicker.com/docs/
@@ -42,7 +43,7 @@ Template.productImageGallery.rendered = function () {
         uploadImages(InkBlobs)
       },
       onError: function (FPError) {
-        $.pnotify({title: 'Filepicker.io Error',text:FPError.toString(),type: 'error'});
+        $.pnotify({title: 'Filepicker.io Error', text: FPError.toString(), type: 'error'});
       },
       onProgress: function (percentage) {
         $("#galleryDropPane").text("Uploading (" + percentage + "%)");
@@ -50,6 +51,31 @@ Template.productImageGallery.rendered = function () {
     });
   };
   loadPicker(cb);
+
+  var $productImages = $('.product-images');
+  $productImages.sortable({
+    cursor: 'move',
+    opacity: 0.3,
+    helper: 'clone',
+    placeholder: 'sortable-placeholder', // <li class="sortable-placeholder"></li>
+    forcePlaceholderSize: true,
+    update: function (event, $ui) {
+      $productImages.removeClass('is-sorting');
+      var sortedImages = _.map($productImages.sortable('toArray', {'attribute': 'data-index'}), function (index) {
+        return product.images[index];
+      });
+      Products.update(product._id, {$set: {images: sortedImages}});
+    },
+    start: function (event, $ui) {
+      $ui.placeholder.height($ui.helper.height() - 4);
+      $ui.placeholder.html('Drop image to reorder');
+      $ui.placeholder.css('padding-top', $ui.helper.height() / 2 - 18);
+      $productImages.addClass('is-sorting');
+    },
+    stop: function(event, $ui) {
+      return $productImages.removeClass('is-sorting');
+    }
+  });
 };
 
 // *****************************************************

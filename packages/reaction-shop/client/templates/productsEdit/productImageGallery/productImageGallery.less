@@ -70,8 +70,6 @@
 /* gallery drop pane when no images (default) */
 .galleryDropPane {
   max-width: 100%;
-}
-.galleryDropPane {
   text-align: center;
   padding: 20px;
   min-height: 150px !important;
@@ -80,4 +78,22 @@
   border: 1px dashed #666;
   border-radius: 6px;
   margin-bottom: 20px;
+  .product-images {
+    li {
+      padding: 0 10px;
+      margin: 0;
+      position: relative;
+    }
+    .sortable-placeholder {
+      text-align: center;
+      padding: 0 8px;
+      color: #999;
+      border: 2px dashed #ccc;
+      display: inline-block;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      border-radius: 6px;
+    }
+  }
 }

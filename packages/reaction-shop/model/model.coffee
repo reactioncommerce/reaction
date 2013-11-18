@@ -61,9 +61,6 @@ ProductVariantSchema = new SimpleSchema
 ProductImageSchema = new SimpleSchema
   src:
     type: String
-  position:
-    type: Number
-    optional: true
   createdAt:
     type: Date
   updatedAt:
@@ -182,15 +179,11 @@ CustomerAddressSchema = new SimpleSchema
   unless _.indexOf(fieldNames, 'images') is -1
     addToSet = modifier.$addToSet?.images
     if addToSet
-      position = (doc.images?.length or 0) + 1
       createdAt = new Date()
       if addToSet.$each
-        increment = 0
         _.each addToSet.$each, (image) ->
-          image.position = position + increment++
           image.createdAt = createdAt
       else
-        addToSet.position = position
         addToSet.createdAt = createdAt
 
 Products = @Products # package exports

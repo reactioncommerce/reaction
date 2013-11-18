@@ -19,20 +19,21 @@
         </div>
       </li>
     </ul>
+      {{#with images}}
+        <ul class="gallery product-images list-unstyled">
+            {{#each key_value .}}
+              <li data-index="{{key}}">
+                <a href="#" rel="prettyPhoto" title="{{value.title}}">
+                  <div class="edit-image">
+                    <img src="{{value.src}}/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{value.title}}">
+                    <i></i>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+        </ul>
+      {{/with}}
     <ul class="gallery list-unstyled">
-      {{#each images}}
-      <li>
-        {{#isimage mimetype}}
-              {{else}}
-        <a href="#" rel="prettyPhoto" title="{{title}}">
-          <div class="edit-image">
-            <img src="{{src}}?/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{title}}">
-            <i></i>
-          </div>
-        </a>
-        {{/isimage}}
-      </li>
-      {{/each}}
       <li>
         <i class="imageAddButton fa fa-plus-circle fa-4x fa-border">Add images</i>
       </li>
