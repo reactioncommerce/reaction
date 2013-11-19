@@ -1,14 +1,28 @@
+ShopController = RouteController.extend
+  before: ->
+    user = Meteor.user()
+    unless Roles.userIsInRole(user, 'admin')
+      unless ShopRoles.userIsInRole(Session.get('currentShopId'), user, ['owner', 'manager', 'vendor'])
+        this.render('unauthorized')
+        this.stop()
+
 Router.map ->
   # home page intro screen for reaction-shop
-  this.route 'shop', {template: 'shopwelcome'}
+  this.route 'shop',
+    controller: ShopController
+    template: 'shopwelcome'
   # list page of customer records
-  this.route 'shop/customers'
+  this.route 'shop/customers',
+    controller: ShopController
   # list page of shop orders
-  this.route 'shop/orders'
+  this.route 'shop/orders',
+    controller: ShopController
   # list page of products
-  this.route 'shop/products'
+  this.route 'shop/products',
+    controller: ShopController
   # edit product page
   this.route 'shop/product',
+    controller: ShopController
     path: '/shop/products/:_id'
     data: ->
       Session.set('currentProductId', this.params._id)
