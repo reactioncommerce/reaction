@@ -33,7 +33,7 @@ Template.productVideos.rendered = function () {
       },
       dragLeave: function (event) {
         if (lastenter === this.event.target) {
-          console.log('thistarget' + this.target);
+          console.log('thisVideoDropPane' + this.event.target);
           videoDropPane.removeClass("drag-over");
         }
       },

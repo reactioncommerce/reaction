@@ -1,9 +1,33 @@
+.image-src {
+  max-width: 100%;
+  padding: 0px;
+}
+
+.product-image {
+  min-height: 250px;
+  min-width: 250px;
+}
+
+.imageAddButton {
+  cursor: pointer;
+}
+
+.image-src {
+  max-width: 100%;
+  padding: 0px;
+}
+.edit-image {
+  width: 100px;
+}
+
 /* Gallery ------------------------------------------ */
 .gallery {
     display: inline-block;
     list-style: none;
     margin: 0;
     padding: 0;
+    padding: 2px;
+    width: 100%;
 }
 .gallery > li {
     display: inline-block;
@@ -70,14 +94,23 @@
 /* gallery drop pane when no images (default) */
 .galleryDropPane {
   max-width: 100%;
-}
-.galleryDropPane {
   text-align: center;
   padding: 20px;
   min-height: 150px !important;
   max-height: 100%;
   background-color: #F6F6F6;
   border: 1px dashed #666;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.gallery .drag-over {
+  text-align: center;
+  padding: 20px;
+  min-height: 150px !important;
+  max-height: 100%;
+  background-color: #e3fb9b;
+  border: 2px solid #666;
   border-radius: 6px;
   margin-bottom: 20px;
 }

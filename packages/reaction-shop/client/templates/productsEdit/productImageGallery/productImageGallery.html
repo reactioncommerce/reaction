@@ -1,40 +1,51 @@
 <template name="productImageGallery">
   <div id="galleryDropPane" class="galleryDropPane">
-    <ul class="gallery product-image list-unstyled">
-      <li>
-        <div>
-          <img class="image-src" name="main-image" src="{{images.[0].src}}">
-        </div>
-        <div class="gallery-tools">
-          <a href="#"> <i class="fa fa-link"></i>
-          </a>
-          <a href="#"> <i class="fa fa-paperclip"></i>
-          </a>
-          <a href="#">
-            <i class="fa fa-pencil"></i>
-          </a>
-          <a href="#" class="image-remove-link">
-            <i class="fa fa-trash-o"></i>
-          </a>
-        </div>
-      </li>
-    </ul>
     <ul class="gallery list-unstyled">
-      {{#each images}}
-      <li>
-        {{#isimage mimetype}}
-              {{else}}
-        <a href="#" rel="prettyPhoto" title="{{title}}">
-          <div class="edit-image">
-            <img src="{{src}}?/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{title}}">
-            <i></i>
-          </div>
-        </a>
+      {{#foreach gallery}}
+        {{#isimage mimeType}}
+        <!-- No more images -->
+        {{else}}
+          {{#if first}}
+            <li>
+              <div class="product-image">
+                <img class="image-src image-responsive" name="main-image" src="{{src}}">
+              </div>
+              <div class="gallery-tools">
+                <a><i class="fa fa-link"></i></a>
+                <a><i class="fa fa-paperclip"></i></a>
+                <a><i class="fa fa-pencil"></i></a>
+                <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+              </div>
+            </li>
+            {{else}}
+            <li>
+              <a href="#" rel="prettyPhoto" title="{{title}}">
+                <div class="edit-image">
+                  <img src="{{src}}?/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{title}}">
+                  <i></i>
+                </div>
+              </a>
+            </li>
+          {{/if}}
         {{/isimage}}
-      </li>
-      {{/each}}
+        {{#isvideo mimeType}}
+        <li>
+          <video class="video-js vjs-default-skin" width="250px" preload="auto"
+                 data-setup='{"example_option":true}' controls>
+            <source src="{{src}}" type="{{mimeType}}">
+            Your browser does not support the video tag.
+          </video>
+          <div class="gallery-tools">
+            <a><i class="fa fa-link"></i></a>
+            <a><i class="fa fa-paperclip"></i></a>
+            <a><i class="fa fa-pencil"></i></a>
+            <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+          </div>
+        </li>
+        {{/isvideo}}
+      {{/foreach}}
       <li>
-        <i class="imageAddButton fa fa-plus-circle fa-4x fa-border">Add images</i>
+        <i class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add media</i>
       </li>
     </ul>
   </div>
