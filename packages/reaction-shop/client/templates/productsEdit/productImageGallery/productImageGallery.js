@@ -1,3 +1,21 @@
+// *****************************************************
+// save changed image data
+// *****************************************************
+uploadImages = function (upload) {
+  var currentProductId = Session.get('currentProductId');
+  var newImages = [];
+
+  for (var i = upload.length - 1; i >= 0; i--) {
+    newImages.push({src: upload[i].url,mimeType: upload[i].mimetype});
+  }
+
+  Products.update(currentProductId, {$addToSet: {images: {$each: newImages}}}, function (error) {
+    if (error) {
+      throwError(error.reason);
+    }
+  });
+};
+
 Template.productImageGallery.helpers({
   // *****************************************************
   // simple helper to determine if the stored image data is a video
@@ -7,10 +25,17 @@ Template.productImageGallery.helpers({
     mimetype = typeof mimetype !== 'undefined' ? mimetype : "image";
     if (mimetype.match('image.*')) {
       return options.inverse(this);
-      //return options.fn(this);
     } else {
       return options.fn(this);
-      //return options.inverse(this);
+    }
+  },
+  isvideo: function (mimetype, options) {
+    mimetype = typeof mimetype !== 'undefined' ? mimetype : "image";
+    if (mimetype.match('video.*')) {
+      return options.fn(this);
+    } else {
+
+      return options.inverse(this);
     }
   }
 });
@@ -31,11 +56,12 @@ Template.productImageGallery.rendered = function () {
       multiple: true,
       dragEnter: function (event) {
         lastenter = this.event.target;
+        // console.log('thisEnter target: ' + this.event.target);
         galleryDropPane.addClass("drag-over");
       },
       dragLeave: function (event) {
         if (lastenter === this.event.target) {
-          console.log('thistarget' + this.target);
+          // console.log('thisLeav target: ' + this.event.target);
           galleryDropPane.removeClass("drag-over");
         }
       },
@@ -83,9 +109,59 @@ Template.productImageGallery.rendered = function () {
 // returns image url
 // *****************************************************
 Template.productImageGallery.events({
-  'click .edit-image': function () {
+  'click .edit-image': function (event,template) {
     Session.set('image-url', this.src);
     $(".image-src").attr("src", this.src);
     $(".image-src").attr("data-url", this.src);
-  }
+  },
+    // *****************************************************
+  // get session image-url and deletes from images,
+  // or deletes from image if no session data
+  // TODO: Consider path {path: '/myfiles/1234.png'};
+  // *****************************************************
+  'click .imageAddButton': function (event) {
+    filepicker.pickAndStore({multiple: true}, {},
+      function (InkBlob) {
+        uploadImages(InkBlob);
+      },
+      function (FPError) {
+        if (FPError.code == 101) {
+          return; // The user closed the picker without choosing a file
+        }
+        $.pnotify({title: 'Filepicker.io Error',text:FPError.toString(),type: 'error'});
+      }
+
+    );
+
+  },
+
+  // *****************************************************
+  // get session image-url and deletes from images,
+  // or deletes from image if no session data
+  // *****************************************************
+  'click .image-remove-link': function (event, template) {
+    event.preventDefault();
+
+    var currentProductId = Session.get('currentProductId');
+    var sessionImage = Session.get('image-url');
+
+    if (Session.equals("image-url", undefined)) {
+
+        Products.update(currentProductId, {$pull: {images: this}}, function (error) {
+          if (error) {
+            throwError(error.reason);
+          }
+        });
+
+    } else {
+      Products.update(currentProductId, {$pull: {images: {src: sessionImage} } }, function (error) {
+        if (error) {
+          // display the error to the user
+          throwError(error.reason);
+        } else {
+          Session.set('image-url', undefined);
+        }
+      });
+    }
+  },
 });

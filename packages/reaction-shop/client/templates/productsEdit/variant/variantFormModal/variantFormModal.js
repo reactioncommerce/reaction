@@ -62,8 +62,9 @@ var validationCallback = function($form, collection, validationContext, successC
   if (error) {
     var invalidKeys = collection.namedContext(validationContext).invalidKeys();
     _.each(invalidKeys, function(invalidKey) {
-      var id = invalidKey.name.replace(/\./g, "-");
-      var $formGroup = $form.find("#" + id).closest(".form-group");
+      var name = invalidKey.name.replace(".", "\\[").replace(/\./g, "\\]\\[")+"\\]";
+      console.log(name);
+      var $formGroup = $form.find("*[name='" + name + "']").closest(".form-group");
       var $errorBlock;
       if ($formGroup.length) {
         $errorBlock = $formGroup.find(".error-block");

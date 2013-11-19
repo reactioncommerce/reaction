@@ -36,6 +36,8 @@ footer .navbar-fixed-bottom {
 }
 
 .error-block {
+  margin: 5px 0;
+  padding-left: 30px;
   color: #b94a48;
 }
 

@@ -1,42 +1,59 @@
 <template name="productImageGallery">
   <div id="galleryDropPane" class="galleryDropPane">
-    <ul class="gallery product-image list-unstyled">
-      <li>
-        <div>
-          <img class="image-src" name="main-image" src="{{images.[0].src}}">
-        </div>
-        <div class="gallery-tools">
-          <a href="#"> <i class="fa fa-link"></i>
-          </a>
-          <a href="#"> <i class="fa fa-paperclip"></i>
-          </a>
-          <a href="#">
-            <i class="fa fa-pencil"></i>
-          </a>
-          <a href="#" class="image-remove-link">
-            <i class="fa fa-trash-o"></i>
-          </a>
-        </div>
-      </li>
-    </ul>
-      {{#with images}}
-        <ul class="gallery product-images list-unstyled">
-            {{#each key_value .}}
+    {{#with images}}
+      <ul class="gallery list-unstyled">
+        <li>
+          <div class="product-image">
+            <img class="image-src image-responsive" name="main-image"
+                 src="{{[0].src}}">
+          </div>
+          <div class="gallery-tools">
+            <a><i class="fa fa-link"></i></a>
+            <a><i class="fa fa-paperclip"></i></a>
+            <a><i class="fa fa-pencil"></i></a>
+            <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+          </div>
+        </li>
+        <li>
+          <ul class="gallery product-images list-unstyled">
+          {{#foreach key_value .}}
+            {{#isimage value.mimeType}}
+              <!-- No more images -->
+            {{else}}
               <li data-index="{{key}}">
                 <a href="#" rel="prettyPhoto" title="{{value.title}}">
                   <div class="edit-image">
-                    <img src="{{value.src}}/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{value.title}}">
+                    <img src="{{value.src}}?/convert?w=100&h=75&fit=max"
+                         width="100"
+                         height="100" alt="{{value.title}}">
                     <i></i>
                   </div>
                 </a>
               </li>
-            {{/each}}
-        </ul>
-      {{/with}}
-    <ul class="gallery list-unstyled">
-      <li>
-        <i class="imageAddButton fa fa-plus-circle fa-4x fa-border">Add images</i>
-      </li>
-    </ul>
+            {{/isimage}}
+            {{#isvideo value.mimeType}}
+              <li>
+                <video class="video-js vjs-default-skin" width="250px"
+                       preload="auto"
+                       data-setup='{"example_option":true}' controls>
+                  <source src="{{value.src}}" type="{{value.mimeType}}">
+                  Your browser does not support the video tag.
+                </video>
+                <div class="gallery-tools">
+                  <a><i class="fa fa-link"></i></a>
+                  <a><i class="fa fa-paperclip"></i></a>
+                  <a><i class="fa fa-pencil"></i></a>
+                  <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+                </div>
+              </li>
+            {{/isvideo}}
+          {{/foreach}}
+          </ul>
+        </li>
+        <li>
+          <i class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add media</i>
+        </li>
+      </ul>
+    {{/with}}
   </div>
 </template>

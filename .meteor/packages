@@ -34,4 +34,6 @@ simple-schema
 moment
 pnotify-bootstrap-3-less
 collection-hooks
+
+collection-behaviours
 jquery-ui

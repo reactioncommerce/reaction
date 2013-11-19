@@ -55,7 +55,7 @@ ProductImageSchema = new SimpleSchema
   updatedAt:
     type: Date
     optional: true
-  metaType:
+  mimeType:
     type: String
     optional: true
   metafields:

@@ -151,7 +151,7 @@ Handlebars.registerHelper('navLink', function (page, icon) {
 });
 
 // *****************************************************
-// Function that randomly picks colors for package tiles
+// Handler Helper that randomly picks colors for package tiles
 // returns random color
 // TODO: assignedColors aren't populated until after this runs!
 // TODO: generate colors for infinite palette, currently will run out of colors
@@ -182,11 +182,30 @@ Handlebars.registerHelper('tileColors', function(app) {
 });
 
 // *****************************************************
-// Function allows you to load templates dynamically
+// Handler Helper allows you to load templates dynamically
 // format: {{{getTemplate package context}}}
 // example: {{{getTemplate widget }}}
 // *****************************************************
 Handlebars.registerHelper('getTemplate', function (pkg, context) {
   templateName = pkg + "-widget";
   if (Template[templateName]) return Template[templateName](context);
+});
+
+// *****************************************************
+// Handler Helper foreach loop with positional information
+// example:
+// {{#foreach foo}}
+//     <div class='{{#if first}}first{{/if}}{{#if last}} last{{/if}}'>{{index}}</div>
+// {{/foreach}}
+// *****************************************************
+Handlebars.registerHelper("foreach",function(arr,options) {
+    if(options.inverse && !arr.length)
+        return options.inverse(this);
+
+    return arr.map(function(item,index) {
+        item.index = index;
+        item.first = index === 0;
+        item.last  = index === arr.length-1;
+        return options.fn(item);
+    }).join('');
 });

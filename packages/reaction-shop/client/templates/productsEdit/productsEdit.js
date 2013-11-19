@@ -245,64 +245,6 @@ Template.productsEdit.events({
       Router.go('/shop/products');
     }
   },
-
-  // *****************************************************
-  // get session image-url and deletes from images,
-  // or deletes from image if no session data
-  // TODO: Consider path {path: '/myfiles/1234.png'};
-  // *****************************************************
-  'click .imageAddButton': function (e) {
-    filepicker.pickAndStore({multiple: true}, {},
-      function (InkBlob) {
-        uploadImages(InkBlob);
-      },
-      function (FPError) {
-        if (FPError.code == 101) {
-          return; // The user closed the picker without choosing a file
-        }
-        $.pnotify({title: 'Filepicker.io Error',text:FPError.toString(),type: 'error'});
-      }
-
-    );
-
-  },
-
-  // *****************************************************
-  // get session image-url and deletes from images,
-  // or deletes from image if no session data
-  // *****************************************************
-  'click .image-remove-link': function (e, template) {
-    e.preventDefault();
-
-    var currentProductId = Session.get('currentProductId');
-    var sessionImage = Session.get('image-url');
-
-    if (Session.equals("image-url", undefined)) {
-      if (typeof this.image == 'undefined') {
-        Products.update(currentProductId, {$pull: {images: this}}, function (error) {
-          if (error) {
-            throwError(error.reason);
-          }
-        });
-      } else {
-        Products.update(currentProductId, {$unset: {image: ''}}, function (error) {
-          if (error) {
-            throwError(error.reason);
-          }
-        });
-      }
-    } else {
-      Products.update(currentProductId, {$pull: {images: {src: sessionImage} } }, function (error) {
-        if (error) {
-          // display the error to the user
-          throwError(error.reason);
-        } else {
-          Session.set('image-url', undefined);
-        }
-      });
-    }
-  },
-
   'click .variant-table tr': function (e) {
     $(e.target).closest('tr').find('input').prop('checked', 'checked');
     e.stopPropagation();
@@ -318,20 +260,3 @@ Template.productsEdit.events({
     e.preventDefault();
   }
 });
-
-uploadImages = function (upload) {
-  var currentProductId = Session.get('currentProductId');
-  console.log("uploadImages: "+currentProductId);
-
-  var newImages = [];
-
-  for (var i = upload.length - 1; i >= 0; i--) {
-    newImages.push({src: upload[i].url});
-  }
-
-  Products.update(currentProductId, {$addToSet: {images: {$each: newImages}}}, function (error) {
-    if (error) {
-      throwError(error.reason);
-    }
-  });
-};
