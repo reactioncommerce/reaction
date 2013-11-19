@@ -1,19 +1,33 @@
 // *****************************************************
 // save changed image data
 // *****************************************************
-uploadImages = function (upload) {
+uploadMedias = function (upload) {
   var currentProductId = Session.get('currentProductId');
-  var newImages = [];
+  var newMedias = [];
 
   for (var i = upload.length - 1; i >= 0; i--) {
-    newImages.push({src: upload[i].url,mimeType: upload[i].mimetype});
+    newMedias.push({src: upload[i].url,mimeType: upload[i].mimetype});
   }
 
-  Products.update(currentProductId, {$addToSet: {images: {$each: newImages}}}, function (error) {
+  Products.update(currentProductId, {$addToSet: {medias: {$each: newMedias}}}, function (error) {
     if (error) {
       throwError(error.reason);
     }
   });
+};
+
+Template.productImageGallery.firstImage = function() {
+  var imageUrl = Session.get('media-url');
+  if (imageUrl) {
+    return _.find(this, function (media) {
+      return media.src === imageUrl;
+    });
+  } else {
+    return _.find(this, function (media) {
+      mimetype = typeof media.mimeType !== 'undefined' ? media.mimeType : "image";
+      return mimetype.match('image.*')
+    });
+  }
 };
 
 Template.productImageGallery.helpers({
@@ -66,7 +80,7 @@ Template.productImageGallery.rendered = function () {
         }
       },
       onSuccess: function (InkBlobs) {
-        uploadImages(InkBlobs)
+        uploadMedias(InkBlobs)
       },
       onError: function (FPError) {
         $.pnotify({title: 'Filepicker.io Error', text: FPError.toString(), type: 'error'});
@@ -78,51 +92,50 @@ Template.productImageGallery.rendered = function () {
   };
   loadPicker(cb);
 
-  var $productImages = $('.product-images');
-  $productImages.sortable({
+  var $productMedias = $('.product-medias');
+  $productMedias.sortable({
+    items: "> li.sortable",
     cursor: 'move',
     opacity: 0.3,
     helper: 'clone',
     placeholder: 'sortable-placeholder', // <li class="sortable-placeholder"></li>
     forcePlaceholderSize: true,
     update: function (event, $ui) {
-      $productImages.removeClass('is-sorting');
-      var sortedImages = _.map($productImages.sortable('toArray', {'attribute': 'data-index'}), function (index) {
-        return product.images[index];
+      $productMedias.removeClass('is-sorting');
+      var sortedMedias = _.map($productMedias.sortable('toArray', {'attribute': 'data-index'}), function (index) {
+        return product.medias[index];
       });
-      Products.update(product._id, {$set: {images: sortedImages}});
+      Products.update(product._id, {$set: {medias: sortedMedias}});
     },
     start: function (event, $ui) {
       $ui.placeholder.height($ui.helper.height() - 4);
       $ui.placeholder.html('Drop image to reorder');
       $ui.placeholder.css('padding-top', $ui.helper.height() / 2 - 18);
-      $productImages.addClass('is-sorting');
+      $productMedias.addClass('is-sorting');
     },
     stop: function(event, $ui) {
-      return $productImages.removeClass('is-sorting');
+      return $productMedias.removeClass('is-sorting');
     }
   });
 };
 
 // *****************************************************
-// set session image-url whenever a secondary image is clicked
+// set session media-url whenever a secondary image is clicked
 // returns image url
 // *****************************************************
 Template.productImageGallery.events({
-  'click .edit-image': function (event,template) {
-    Session.set('image-url', this.src);
-    $(".image-src").attr("src", this.src);
-    $(".image-src").attr("data-url", this.src);
+  'click .edit-image': function (event, template) {
+    Session.set('media-url', this.src);
   },
     // *****************************************************
-  // get session image-url and deletes from images,
+  // get session media-url and deletes from images,
   // or deletes from image if no session data
   // TODO: Consider path {path: '/myfiles/1234.png'};
   // *****************************************************
   'click .imageAddButton': function (event) {
     filepicker.pickAndStore({multiple: true}, {},
       function (InkBlob) {
-        uploadImages(InkBlob);
+        uploadMedias(InkBlob);
       },
       function (FPError) {
         if (FPError.code == 101) {
@@ -136,30 +149,30 @@ Template.productImageGallery.events({
   },
 
   // *****************************************************
-  // get session image-url and deletes from images,
+  // get session media-url and deletes from images,
   // or deletes from image if no session data
   // *****************************************************
   'click .image-remove-link': function (event, template) {
     event.preventDefault();
 
     var currentProductId = Session.get('currentProductId');
-    var sessionImage = Session.get('image-url');
+    var sessionMedia = Session.get('media-url');
 
-    if (Session.equals("image-url", undefined)) {
+    if (Session.equals("media-url", undefined)) {
 
-        Products.update(currentProductId, {$pull: {images: this}}, function (error) {
+        Products.update(currentProductId, {$pull: {medias: this}}, function (error) {
           if (error) {
             throwError(error.reason);
           }
         });
 
     } else {
-      Products.update(currentProductId, {$pull: {images: {src: sessionImage} } }, function (error) {
+      Products.update(currentProductId, {$pull: {medias: {src: sessionMedia} } }, function (error) {
         if (error) {
           // display the error to the user
           throwError(error.reason);
         } else {
-          Session.set('image-url', undefined);
+          Session.set('media-url', undefined);
         }
       });
     }

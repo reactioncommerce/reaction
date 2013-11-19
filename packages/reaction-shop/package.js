@@ -95,7 +95,7 @@ Package.on_use(function (api, where) {
     'Orders',
     'Customers',
     'ProductVariantSchema',
-    'ProductImageSchema',
+    'ProductMediaSchema',
     'MetafieldSchema',
     'variant'
   ]);

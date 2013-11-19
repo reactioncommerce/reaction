@@ -61,7 +61,7 @@ ProductVariantSchema = new SimpleSchema
     label: "Updated at"
     type: Date
 
-ProductImageSchema = new SimpleSchema
+ProductMediaSchema = new SimpleSchema
   src:
     type: String
   createdAt:
@@ -148,8 +148,8 @@ CustomerAddressSchema = new SimpleSchema
     variants:
       type: [ProductVariantSchema]
       optional: true
-    images:
-      type: [ProductImageSchema]
+    medias:
+      type: [ProductMediaSchema]
       optional: true
     tags:
       type: [String]
@@ -179,8 +179,8 @@ CustomerAddressSchema = new SimpleSchema
       type: Date
 
 @Products.before.update (userId, doc, fieldNames, modifier, options) ->
-  unless _.indexOf(fieldNames, 'images') is -1
-    addToSet = modifier.$addToSet?.images
+  unless _.indexOf(fieldNames, 'medias') is -1
+    addToSet = modifier.$addToSet?.medias
     if addToSet
       createdAt = new Date()
       if addToSet.$each

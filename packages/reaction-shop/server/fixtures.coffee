@@ -128,7 +128,7 @@ unless Products.find().count()
         'defaultValue': 'Default Title'
       }
     ],
-    'images': [
+    'medias': [
       {
         'createdAt': now,
         'position': 1,
