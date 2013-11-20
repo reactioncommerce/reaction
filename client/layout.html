@@ -5,9 +5,8 @@
   {{#if isInRole 'admin'}}
     {{> dashboardSidebar}}
   {{/if}}
-  <header>{{> siteHeader}}</header>
+  <header>{{yield "header"}}</header>
 
   <section>{{yield}}</section>
-
-  {{>siteFooter}}
+  <footer>{{yield "footer"}}</footer>
 </template>

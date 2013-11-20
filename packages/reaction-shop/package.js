@@ -72,10 +72,6 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/optionsModal/optionsModal.less',
     'client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html',
 
-    // Storefront
-    'client/templates/storefront/default/shop/shop.html',
-    'client/templates/storefront/default/shop/shop.less',
-
     // Package
     'client/subscribe.coffee',
     'client/router.coffee'

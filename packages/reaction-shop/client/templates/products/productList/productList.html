@@ -1,28 +1,61 @@
+<template name="productListGrid">
+<div class="navbar">
+  <a id="productGridView"><i class="fa fa-th-large fa-2x pull-right"></i></a>
+  <a id="productListView"><i class="fa fa-th-list fa-2x pull-right"></i></a>
+  {{#if isInRole 'admin'}}
+  <a href="{{pathFor 'shop/product/add'}}"><i class="fa fa-plus fa-2x pull-right" id="productAdd"></i></a>
+  {{/if}}
+</div>
+<div class="row">
+  {{>productGrid}}
+  {{>productList}}
+</div>
+</template>
+
 <template name="productList">
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th></th>
-      <th>#</th>
-      <th>Title</th>
-      <th>Updated</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each products}}
-      <tr>
-        <td>
-          <img src="{{image.src}}" height="40px" width="40px"></td>
-        <td>
-            {{_id}} <strong>/</strong>
-            {{id}}
-        </td>
-        <td>
-          <a href="{{pathFor 'shop/product'}}">{{title}}</a>
-        </td>
-        <td>{{updated_at}}</td>
-      </tr>
-    {{/each}}
-    </tbody>
-  </table>
+  <div class="productList">
+    <table class="table table-hover">
+      <tbody>
+      {{#each products}}
+        <tr>
+          <td>
+            <img src="{{images.[0].src}}" height="100px" width="100px">
+          </td>
+          <td>
+            <a href="{{pathFor 'shop/product'}}">{{title}}</a>
+          </td>
+          <td>{{{bodyHtml}}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template name="productGrid">
+<div class="productGrid">
+  {{#each products}}
+    <div class="product">
+      <div class="productImage">
+        <a href="{{pathFor 'shop/product'}}">
+          <img src="{{images.[0].src}}" class="img-responsive">
+        </a>
+      </div>
+      <div class="productTitle">
+        {{title}}
+      </div>
+    </div>
+  {{/each}}
+</div>
+</template>
+
+
+<template name="productListAdd">
+  <div class="tile tile-gallery">
+    <i class="fa fa-plus fa-5x"></i>
+    <div class="content">
+      <p class="big">Add</p>
+      <a href="{{pathFor 'shop/product/new'}}"><p class="title">Add new product</p></a>
+    </div>
+  </div>
 </template>

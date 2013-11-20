@@ -35,6 +35,10 @@ Router.map(function () {
   this.route('index', {
     path: '/',
     layoutTemplate: 'siteLayout',
+    yieldTemplates: {
+      'siteHeader': {to: 'header'},
+      'siteFooter': {to: 'footer'}
+    }
   });
 
   for (var i = 0; i < pages.length; i++) {

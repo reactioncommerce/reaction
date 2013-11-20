@@ -65,3 +65,8 @@ border-bottom-right-radius: 0px;
   .navbar-wrapper {margin-top: 20px;}
   .jumbotron {font-size: 60px;}
 }
+@media (min-width: 1200px) {
+    .container{
+        max-width: 970px;
+    }
+}

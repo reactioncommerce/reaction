@@ -16,14 +16,15 @@
     {{#each UserConfig}}
       {{>widget}}
     {{/each}}
-    <div class="tile tile-gallery"> <i class="fa fa-plus fa-5x"></i>
+    <div class="tile tile-gallery">
+      <i class="fa fa-plus fa-5x"></i>
       <div class="content">
         <p class="big">Apps</p>
         {{#unless hasUserConfig}}
-        <p class="title">Start here and add some apps!</p>
+          <p class="title">Start here and add some apps!</p>
         {{/unless}}
-            {{#if hasUserConfig}}
-        <p class="title">Find more apps in the app gallery</p>
+        {{#if hasUserConfig}}
+          <p class="title">Find more apps in the app gallery</p>
         {{/if}}
       </div>
     </div>
@@ -38,14 +39,12 @@
     <div class="well well-sm">
       <div class="apps-container">
         {{#each ReactionPackages}}
-            {{>pkg}}
-
-            {{/each}}
+          {{>pkg}}
+        {{/each}}
       </div>
     </div>
   </div>
 </template>
-
 
 
 <template name="widget">
