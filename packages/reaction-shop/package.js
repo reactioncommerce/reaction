@@ -78,6 +78,9 @@ Package.on_use(function (api, where) {
     'client/templates/storefront/default/shop/shop.html',
     'client/templates/storefront/default/shop/shop.less',
 
+    // Unauthorized
+    'client/templates/unauthorized/unauthorized.html',
+
     // Package
     'client/subscribe.coffee',
     'client/router.coffee'
@@ -89,5 +92,19 @@ Package.on_use(function (api, where) {
     'server/register.coffee'
   ], 'server');
 
-  api.export(['Products', 'Orders', 'Customers', 'ProductVariantSchema', 'ProductImageSchema', 'MetafieldSchema', 'variant']);
+  api.export([
+    'Products',
+    'Orders',
+    'Customers',
+    'ProductVariantSchema',
+    'ProductMediaSchema',
+    'MetafieldSchema',
+    'variant'
+  ]);
+
+  api.export('ShopRoles');
+
+  api.add_files('shopRoles/shop_roles_server.coffee', 'server');
+  api.add_files('shopRoles/shop_roles_common.coffee');
+  api.add_files('shopRoles/shop_roles_client.coffee', 'client');
 });

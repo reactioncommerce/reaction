@@ -13,9 +13,9 @@ Meteor.startup(function () {
     console.log("Adding roles fixture data");
 
     Roles.createRole("admin");
-    Roles.createRole("owner");
-    Roles.createRole("manager");
-    Roles.createRole("vendor");
+    ShopRoles.createRole("owner");
+    ShopRoles.createRole("manager");
+    ShopRoles.createRole("vendor");
     Roles.createRole("view-campaigns");
     Roles.createRole("manage-users");
 

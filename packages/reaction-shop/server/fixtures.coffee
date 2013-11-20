@@ -13,9 +13,9 @@
 
 now = new Date()
 
-unless root.Products.find().count()
+unless Products.find().count()
   console.log 'Adding products fixture data'
-  root.Products.insert
+  Products.insert
     '_id': 'fhnqEEfMaESexc26F',
     'bodyHtml': 'The almost legendary Chuck Taylor All Star shoe has been given a high profile makeover by the world’s most expensive living artist, Damien Hirst. Forming part of the Converse (PRODUCT)RED series, the colourway is based on a transposition of Hirst’s “All You Need is Love” painting which features blue and yellow butterflies dance over a red backdrop, which was sold at a RED exhibition back in 2007. Limited to just 400 pairs, look out for a release at colette on November 5. 100% of proceedings will be donated to the RED foundation.',
     'createdAt': now,
@@ -128,7 +128,7 @@ unless root.Products.find().count()
         'defaultValue': 'Default Title'
       }
     ],
-    'images': [
+    'medias': [
       {
         'createdAt': now,
         'position': 1,
@@ -160,9 +160,9 @@ unless root.Products.find().count()
     ]
     isVisible: true
 
-#unless root.Orders.find().count()
+#unless Orders.find().count()
 #  console.log 'Adding orders fixture data'
-#  root.Orders.insert
+#  Orders.insert
 #    '_id': 'DnXxWAD5C7T8jZiW8',
 #    'buyerAcceptsMarketing': false,
 #    'cancelReason': null,
@@ -435,62 +435,59 @@ unless root.Products.find().count()
 #      }
 #    }
 #
-#unless root.Customers.find().count()
-#  console.log 'Adding customers fixture data'
-#  root.Customers.insert
-#    '_id': 'y2ZGmxjuMDGxuxYB2',
-#    'acceptsMarketing': false,
-#    'createdAt': now,
-#    'email': 'bob.norman@hostmail.com',
-#    'firstName': 'Bob',
-#    'id': 207119551,
-#    'lastName': 'Norman',
-#    'lastOrderId': null,
-#    'multipassIdentifier': null,
-#    'note': null,
-#    'ordersCount': 0,
-#    'state': 'disabled',
-#    'totalSpent': '0.00',
-#    'updatedAt': now,
-#    'verifiedEmail': true,
-#    'tags': '',
-#    'lastOrderName': null,
-#    'imageUrl': 'resources/avatar.gif',
-#    'defaultAddress': {
-#      'address1': 'Chestnut Street 92',
-#      'address2': '',
-#      'city': 'Louisville',
-#      'company': null,
-#      'country': 'United States',
-#      'firstName': null,
-#      'id': 207119551,
-#      'lastName': null,
-#      'phone': '555-625-1199',
-#      'province': 'Kentucky',
-#      'zip': '40202',
-#      'name': null,
-#      'provinceCode': 'KY',
-#      'countryCode': 'US',
-#      'countryName': 'United States',
-#      'default': true
-#    },
-#    'addresses': [
-#      {
-#        'address1': 'Chestnut Street 92',
-#        'address2': '',
-#        'city': 'Louisville',
-#        'company': null,
-#        'country': 'United States',
-#        'firstName': null,
-#        'id': 207119551,
-#        'lastName': null,
-#        'phone': '555-625-1199',
-#        'province': 'Kentucky',
-#        'zip': '40202',
-#        'name': null,
-#        'provinceCode': 'KY',
-#        'countryCode': 'US',
-#        'countryName': 'United States',
-#        'default': true
-#      }
-#    ]
+unless Customers.find().count()
+  console.log 'Adding customers fixture data'
+  Customers.insert
+    '_id': 'y2ZGmxjuMDGxuxYB2',
+    'acceptsMarketing': false,
+    'createdAt': now,
+    'email': 'bob.norman@hostmail.com',
+    'firstName': 'Bob',
+    'id': 207119551,
+    'lastName': 'Norman',
+    'lastOrderId': null,
+    'multipassIdentifier': null,
+    'note': null,
+    'ordersCount': 0,
+    'state': 'disabled',
+    'totalSpent': '0.00',
+    'updatedAt': now,
+    'verifiedEmail': true,
+    'lastOrderName': null,
+    'imageUrl': 'resources/avatar.gif',
+    'defaultAddress': {
+      'address1': 'Chestnut Street 92',
+      'address2': 'Apartment 2',
+      'city': 'Louisville',
+      'company': null,
+      'country': 'United States',
+      'firstName': 'Bob',
+      'id': 207119551,
+      'lastName': 'Norman',
+      'phone': '555-625-1199',
+      'province': 'Kentucky',
+      'zip': '40202',
+      'provinceCode': 'KY',
+      'countryCode': 'US',
+      'countryName': 'United States',
+      'default': true
+    },
+    'addresses': [
+      {
+        'address1': 'Chestnut Street 92',
+        'address2': 'Apartment 2',
+        'city': 'Louisville',
+        'company': null,
+        'country': 'United States',
+        'firstName': 'Bob',
+        'id': 207119551,
+        'lastName': 'Norman',
+        'phone': '555-625-1199',
+        'province': 'Kentucky',
+        'zip': '40202',
+        'provinceCode': 'KY',
+        'countryCode': 'US',
+        'countryName': 'United States',
+        'default': true
+      }
+    ]
