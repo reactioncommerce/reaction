@@ -43,7 +43,7 @@ Template.variantFormModal.events({
     var cls = $formGroup.data("form-group-cls");
     $formGroup.remove();
     _.defer(function () {
-      $(template.find("." + cls)).each(function (formGroupIndex, formGroup) {
+      $(template.findAll("." + cls)).each(function (formGroupIndex, formGroup) {
         var $formGroup = $(formGroup);
         if (!$formGroup.hasClass("form-group-template")) {
           $formGroup.find("input, select, textarea").each(function (inputIndex, input) {
