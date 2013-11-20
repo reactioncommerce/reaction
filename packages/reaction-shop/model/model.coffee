@@ -1,53 +1,67 @@
 ProductVariantSchema = new SimpleSchema
   barcode:
+    label: "Barcode"
     type: String
     optional: true
   compareAtPrice:
+    label: "Compare at price"
     type: Number
     optional: true
     decimal: true
     min: 0
   fulfillmentService:
+    label: "Fulfillment service"
     type: String
     optional: true
   grams:
+    label: "Weight"
     type: Number
     optional: true
     min: 0
   inventoryManagement:
+    label: "Inventory policy" # really so
     type: String
     allowedValues: ["manual", "reaction"]
   inventoryPolicy:
+    label: "Allow users to purchase this item, even if it is no longer in stock"
     type: String
     allowedValues: ["deny", "continue"]
   inventoryQuantity:
+    label: "Quantity"
     type: Number
     optional: true
     min: 0
   price:
+    label: "Price"
     type: Number
     decimal: true
     min: 0
   requiresShipping:
+    label: "Require a shipping address"
     type: Boolean
     optional: true
   sku:
+    label: "SKU"
     type: String
     optional: true
   taxable:
+    label: "Charge taxes on this product"
     type: Boolean
     optional: true
   title:
+    label: "Title"
     type: String
   metafields:
     type: [MetafieldSchema]
     optional: true
   createdAt:
+    label: "Created at"
     type: Date
   updatedAt:
+    label: "Updated at"
     type: Date
 
-ProductImageSchema = new SimpleSchema
+ProductMediaSchema = new SimpleSchema
   src:
     type: String
   createdAt:
@@ -134,8 +148,8 @@ CustomerAddressSchema = new SimpleSchema
     variants:
       type: [ProductVariantSchema]
       optional: true
-    images:
-      type: [ProductImageSchema]
+    medias:
+      type: [ProductMediaSchema]
       optional: true
     tags:
       type: [String]
@@ -165,8 +179,8 @@ CustomerAddressSchema = new SimpleSchema
       type: Date
 
 @Products.before.update (userId, doc, fieldNames, modifier, options) ->
-  unless _.indexOf(fieldNames, 'images') is -1
-    addToSet = modifier.$addToSet?.images
+  unless _.indexOf(fieldNames, 'medias') is -1
+    addToSet = modifier.$addToSet?.medias
     if addToSet
       createdAt = new Date()
       if addToSet.$each
