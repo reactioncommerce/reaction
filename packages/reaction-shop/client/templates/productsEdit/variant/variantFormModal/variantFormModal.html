@@ -51,25 +51,15 @@
               </div>
             </div>
 
-            <!--<div class="form-group form-group-template">-->
-              <!--<div class="col-sm-3">-->
-                <!--<input id="variant-product-options-__INDEX__" class="form-control label-form-control" type="text" name="product-options[]" placeholder="Name"/>-->
-              <!--</div>-->
-              <!--<div class="col-sm-9">-->
-                <!--<div class="input-group">-->
-                  <!--<input id="variant-option[__INDEX__]" class="form-control" type="text" name="option[]" placeholder="Value"/>-->
-                  <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-default remove-button" type="button"><i class="fa fa-trash-o"></i></button>-->
-                  <!--</span>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="form-group">-->
-              <!--<div class="col-sm-9 col-sm-offset-3">-->
-                <!--<a href="#" class="add-option-link">Add another option</a>-->
-              <!--</div>-->
-            <!--</div>-->
+            {{#each key_value variant.metafields}}
+              {{> variantMetafieldFormGroup}}
+            {{/each}}
+            {{> variantMetafieldFormGroup defaultMetafield}}
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <a href="#" class="add-embedded-document-link">+ Add metafield</a>
+              </div>
+            </div>
 
             <div class="form-group">
               <label for="variant-fulfillmentService" class="col-sm-3 control-label">Fulfillment service</label>

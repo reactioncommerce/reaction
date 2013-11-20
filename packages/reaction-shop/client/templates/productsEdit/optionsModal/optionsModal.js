@@ -34,9 +34,6 @@ Template.optionsModal.events({
     e.preventDefault();
     e.stopPropagation();
   },
-  "click .close-button": function (e, template) {
-//    template.find("form").reset();
-  },
   "submit form": function (e, template) {
     var form = template.find("form");
     var $form = $(form);
