@@ -1,3 +1,17 @@
+MetafieldSchema = new SimpleSchema
+  key:
+    type: String
+    max: 30
+  namespace:
+    type: String
+    max: 20
+    optional: true
+  value:
+    type: String
+  description:
+    type: String
+    optional: true
+
 ProductVariantSchema = new SimpleSchema
   barcode:
     label: "Barcode"
@@ -74,21 +88,6 @@ ProductMediaSchema = new SimpleSchema
     optional: true
   metafields:
     type: [MetafieldSchema]
-    optional: true
-
-MetafieldSchema = new SimpleSchema
-  key:
-    type: String
-    max: 30
-  namespace:
-    type: String
-    max: 20
-  value:
-    type: String
-  valueType:
-    type: String
-  description:
-    type: String
     optional: true
 
 CustomerAddressSchema = new SimpleSchema

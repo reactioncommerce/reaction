@@ -66,6 +66,8 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.js',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
+    'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html',
+    'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.js',
 
     'client/templates/productsEdit/optionsModal/optionsModal.html',
     'client/templates/productsEdit/optionsModal/optionsModal.js',

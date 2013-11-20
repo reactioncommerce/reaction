@@ -50,7 +50,7 @@ unless Products.find().count()
         'taxable': true,
         'title': 'Pink',
         'metafields': [
-          {'key': 'new', 'value': 'newvalue', 'valueType': 'string', 'namespace': 'global'}
+          {'key': 'new', 'value': 'newvalue', 'namespace': 'global'}
         ],
         'updatedAt': now
       },
@@ -74,7 +74,7 @@ unless Products.find().count()
         'taxable': true,
         'title': 'Red',
         'metafields': [
-          {'createdAt': '2013-10-25T13:52:21-04:00', 'description': null, 'id': 915396092, 'key': 'warehouse', 'namespace': 'inventory', 'ownerId': 690933842, 'updatedAt': '2013-10-25T13:52:21-04:00', 'value': '25', 'valueType': 'integer', 'ownerResource': 'shop'}
+          {'createdAt': '2013-10-25T13:52:21-04:00', 'description': null, 'id': 915396092, 'key': 'warehouse', 'namespace': 'inventory', 'ownerId': 690933842, 'updatedAt': '2013-10-25T13:52:21-04:00', 'value': '25', 'ownerResource': 'shop'}
         ],
         'updatedAt': now
       },
