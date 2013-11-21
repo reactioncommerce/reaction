@@ -1,5 +1,26 @@
+<template name="shopHeader">
+
+  <div class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{pathFor 'index'}}">REACTION</a>
+    </div>
+    {{>shopnav}}
+    <div class="collapse navbar-collapse navbar-ex1-collapse navbar-intro">
+      <div class="nav navbar-nav navbar-right">
+          {{loginButtons align="right"}}
+      </div>
+      <!--/.navbar-collapse -->
+    </div>
+  </div>
+</template>
+
 <template name="shopnav">
-<nav class="navbar navbar-default" role="navigation">
+  <div class="nav navbar-nav shopnav">
     <ul class="nav nav-pills">
       <li class="{{active '/shop/orders'}}">
         <a href="{{pathFor 'shop/orders'}}">
@@ -20,5 +41,5 @@
         </a>
       </li>
     </ul>
-</nav>
+  </div>
 </template>

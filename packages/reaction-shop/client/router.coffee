@@ -21,11 +21,11 @@ Router.map ->
   this.route 'shop/products',
     controller: ShopController,
     yieldTemplates:
-      'shopnav': to: 'header'
+      'shopHeader': to: 'header'
 
   # edit product page
   this.route 'shop/product',
-    controller: ShopController
+    # controller: ShopController
     path: '/shop/products/:_id'
     data: ->
       Session.set('currentProductId', this.params._id)
