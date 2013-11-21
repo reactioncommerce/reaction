@@ -41,7 +41,13 @@ Meteor.startup(function () {
         ],
         "profile": {
           "name": "Normal User"
-        }
+        },
+        "shopRoles": [
+          {
+            "shopId": "WvrKDomkYth3THbDD",
+            "name": "owner"
+          }
+        ]
       },
       {
         "_id": "Cpx5zeNixb9jmePQx",
