@@ -12,10 +12,11 @@ Meteor.publish 'shops', (domain) ->
   Shops.find {domain: domain}
 
 Meteor.publish 'products', (shopId) ->
-  Products.find {shopId: shopId}
+#  Products.find {shopId: shopId}
+  Products.find()
 
 Meteor.publish 'product', (id, shopId) ->
-  Products.findOne {_id: id, shopId: shopId}
+  Products.findOne {_id: id} #, shopId: shopId
 
 # *****************************************************
 # Client access rights for products
@@ -39,7 +40,7 @@ Products.allow
 # *****************************************************
 
 Meteor.publish 'orders', ->
-  Orders.find {shopId: shopId}
+  Orders.find() # {shopId: shopId}
 
 Meteor.publish 'order', (id) ->
   Orders.findOne(id)
@@ -67,7 +68,7 @@ Orders.allow
 # *****************************************************
 
 Meteor.publish 'customers', ->
-  Customers.find {shopId: shopId}
+  Customers.find() # {shopId: shopId}
 
 Meteor.publish 'customer', (id) ->
   Customers.findOne(id)
