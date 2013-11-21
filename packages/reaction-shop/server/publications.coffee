@@ -3,15 +3,20 @@
 # *****************************************************
 
 # Scope variable import
+Shops = @Shops
 Products = @Products
 Customers = @Customers
 Orders = @Orders
 
-Meteor.publish 'products', ->
+Meteor.publish 'shops', (domain) ->
+  Shops.find {domain: domain}
+
+Meteor.publish 'products', (shopId) ->
+#  Products.find {shopId: shopId}
   Products.find()
 
-Meteor.publish 'product', (id) ->
-  Products.findOne(id)
+Meteor.publish 'product', (id, shopId) ->
+  Products.findOne {_id: id} #, shopId: shopId
 
 # *****************************************************
 # Client access rights for products
@@ -35,7 +40,7 @@ Products.allow
 # *****************************************************
 
 Meteor.publish 'orders', ->
-  Orders.find()
+  Orders.find() # {shopId: shopId}
 
 Meteor.publish 'order', (id) ->
   Orders.findOne(id)
@@ -63,7 +68,7 @@ Orders.allow
 # *****************************************************
 
 Meteor.publish 'customers', ->
-  Customers.find()
+  Customers.find() # {shopId: shopId}
 
 Meteor.publish 'customer', (id) ->
   Customers.findOne(id)

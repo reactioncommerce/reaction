@@ -13,6 +13,48 @@
 
 now = new Date()
 
+unless Shops.find().count()
+  console.log 'Adding shops fixture data'
+  Shops.insert
+    "_id": "WvrKDomkYth3THbDD"
+    "address1": "1 Infinite Loop"
+    "city": "Cupertino"
+    "country": "US"
+    "customerEmail": "customers@normal.com"
+    "domain": "shop.normal.com"
+    "email": "steve@normal.com"
+    "id": 690933842
+    "latitude": "45.45"
+    "longitude": "-75.43"
+    "name": "Normal Computers"
+    "phone": "1231231234"
+    "primaryLocationId": null
+    "province": "California"
+    "public": null
+    "source": null
+    "zip": "95014"
+    "countryCode": "US"
+    "countryName": "United States"
+    "currency": "USD"
+    "timezone": "(GMT-05:00) Eastern Time (US & Canada)"
+    "shopOwner": "Steve Normal"
+    "moneyFormat": "$ "
+    "moneyWithCurrencyFormat": "$  USD"
+    "provinceCode": "CA"
+    "taxesIncluded": null
+    "taxShipping": null
+    "countyTaxes": true
+    "planDisplayName": "enterprise"
+    "planName": "enterprise"
+    "myshopifyDomain": "normal.myshopify.com"
+    "googleAppsDomain": null
+    "googleAppsLoginEnabled": null
+    "moneyInEmailsFormat": "$"
+    "moneyWithCurrencyInEmailsFormat": "$ USD"
+    "eligibleForPayments": true
+    "requiresExtraPaymentsAgreement": false
+    "createdAt": now
+
 unless Products.find().count()
   console.log 'Adding products fixture data'
   Products.insert
@@ -52,6 +94,22 @@ unless Products.find().count()
         'metafields': [
           {'key': 'new', 'value': 'newvalue', 'namespace': 'global'}
         ],
+        'medias': [
+          {
+            'createdAt': now,
+            'position': 1,
+            'src': '/resources/sample/converse-1.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
+          {
+            'createdAt': now,
+            'position': 2,
+            'src': '/resources/sample/converse-2.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
+        ],
         'updatedAt': now
       },
       {
@@ -75,6 +133,22 @@ unless Products.find().count()
         'title': 'Red',
         'metafields': [
           {'createdAt': '2013-10-25T13:52:21-04:00', 'description': null, 'id': 915396092, 'key': 'warehouse', 'namespace': 'inventory', 'ownerId': 690933842, 'updatedAt': '2013-10-25T13:52:21-04:00', 'value': '25', 'ownerResource': 'shop'}
+        ],
+        'medias': [
+          {
+            'createdAt': now,
+            'position': 3,
+            'src': '/resources/sample/converse-3.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
+          {
+            'createdAt': now,
+            'position': 4,
+            'src': '/resources/sample/converse-4.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
         ],
         'updatedAt': now
       },
@@ -128,37 +202,8 @@ unless Products.find().count()
         'defaultValue': 'Default Title'
       }
     ],
-    'medias': [
-      {
-        'createdAt': now,
-        'position': 1,
-        'src': '/resources/sample/converse-1.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      },
-      {
-        'createdAt': now,
-        'position': 2,
-        'src': '/resources/sample/converse-2.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      },
-      {
-        'createdAt': now,
-        'position': 3,
-        'src': '/resources/sample/converse-3.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      },
-      {
-        'createdAt': now,
-        'position': 4,
-        'src': '/resources/sample/converse-4.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      }
-    ]
     isVisible: true
+    shopId: "WvrKDomkYth3THbDD"
 
 #unless Orders.find().count()
 #  console.log 'Adding orders fixture data'
@@ -455,7 +500,7 @@ unless Customers.find().count()
     'verifiedEmail': true,
     'lastOrderName': null,
     'imageUrl': 'resources/avatar.gif',
-    'defaultAddress': {
+    'defaultAddress':
       'address1': 'Chestnut Street 92',
       'address2': 'Apartment 2',
       'city': 'Louisville',
@@ -471,7 +516,6 @@ unless Customers.find().count()
       'countryCode': 'US',
       'countryName': 'United States',
       'default': true
-    },
     'addresses': [
       {
         'address1': 'Chestnut Street 92',
