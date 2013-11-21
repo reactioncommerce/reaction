@@ -127,6 +127,111 @@ CustomerAddressSchema = new SimpleSchema
     type: Boolean
     optional: true
 
+@Shops = new Meteor.Collection2 'Shops',
+  schema:
+    _id:
+      type: String
+      optional: true
+    address1:
+      type: String
+      optional: true
+    city:
+      type: String
+      optional: true
+    country:
+      type: String
+    countryCode:
+      type: String
+    countryName:
+      type: String
+    customerEmail:
+      type: String
+    currency:
+      type: String
+    domain:
+      type: String
+    email:
+      type: String
+    googleAppsDomain:
+      type: String
+      optional: true
+    googleAppsLoginEnabled:
+      type: String
+      optional: true
+    id:
+      type: Number
+      optional: true
+    latitude:
+      type: Number
+      decimal: true
+    longitude:
+      type: Number
+      decimal: true
+    moneyFormat:
+      type: String
+    moneyWithCurrencyFormat:
+      type: String
+    moneyInEmailsFormat:
+      type: String
+    moneyWithCurrencyInEmailsFormat:
+      type: String
+    myshopifyDomain:
+      type: String
+      optional: true
+    name:
+      type: String
+    planName:
+      type: String
+      optional: true
+    planDisplayName:
+      type: String
+      optional: true
+    phone:
+      type: String
+      optional: true
+    province:
+      type: String
+      optional: true
+    provinceCode:
+      type: String
+      optional: true
+    public:
+      type: String
+      optional: true
+    shopOwner:
+      type: String
+      optional: true
+    source:
+      type: String
+      optional: true
+    taxShipping:
+      type: String
+      optional: true
+    taxesIncluded:
+      type: Boolean
+      optional: true
+    countyTaxes:
+      type: Boolean
+      optional: true
+    timezone:
+      type: String
+    zip:
+      type: String
+      optional: true
+    eligibleForPayments:
+      type: Boolean
+      optional: true
+    requiresExtraPaymentsAgreement:
+      type: Boolean
+      optional: true
+    createdAt:
+      type: Date
+    updatedAt:
+      type: Date
+      optional: true
+
+Shops = @Shops # package exports
+
 @Products = new Meteor.Collection2 'Products',
   schema:
     _id:
@@ -164,6 +269,8 @@ CustomerAddressSchema = new SimpleSchema
       type: String
     isVisible:
       type: Boolean
+    shopId:
+      type: String
     publishedAt:
       type: Date
       optional: true
