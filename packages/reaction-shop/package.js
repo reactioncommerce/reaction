@@ -53,7 +53,7 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/productsEdit.less',
 
     'client/templates/productsEdit/productImageGallery/productImageGallery.html',
-    'client/templates/productsEdit/productImageGallery/productImageGallery.js',
+    'client/templates/productsEdit/productImageGallery/productImageGallery.coffee',
     'client/templates/productsEdit/productImageGallery/productImageGallery.less',
 
     // 'client/templates/productsEdit/productVideos/productVideos.html',
@@ -97,7 +97,7 @@ Package.on_use(function (api, where) {
     'Orders',
     'Customers',
     'ProductVariantSchema',
-    'ProductMediaSchema',
+    'VariantMediaSchema',
     'MetafieldSchema',
     'variant'
   ]);

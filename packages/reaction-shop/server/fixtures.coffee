@@ -52,6 +52,22 @@ unless Products.find().count()
         'metafields': [
           {'key': 'new', 'value': 'newvalue', 'namespace': 'global'}
         ],
+        'medias': [
+          {
+            'createdAt': now,
+            'position': 1,
+            'src': '/resources/sample/converse-1.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
+          {
+            'createdAt': now,
+            'position': 2,
+            'src': '/resources/sample/converse-2.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
+        ],
         'updatedAt': now
       },
       {
@@ -75,6 +91,22 @@ unless Products.find().count()
         'title': 'Red',
         'metafields': [
           {'createdAt': '2013-10-25T13:52:21-04:00', 'description': null, 'id': 915396092, 'key': 'warehouse', 'namespace': 'inventory', 'ownerId': 690933842, 'updatedAt': '2013-10-25T13:52:21-04:00', 'value': '25', 'ownerResource': 'shop'}
+        ],
+        'medias': [
+          {
+            'createdAt': now,
+            'position': 3,
+            'src': '/resources/sample/converse-3.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
+          {
+            'createdAt': now,
+            'position': 4,
+            'src': '/resources/sample/converse-4.jpg',
+            'updatedAt': now,
+            'mimeType': 'image/jpeg'
+          }
         ],
         'updatedAt': now
       },
@@ -128,36 +160,6 @@ unless Products.find().count()
         'defaultValue': 'Default Title'
       }
     ],
-    'medias': [
-      {
-        'createdAt': now,
-        'position': 1,
-        'src': '/resources/sample/converse-1.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      },
-      {
-        'createdAt': now,
-        'position': 2,
-        'src': '/resources/sample/converse-2.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      },
-      {
-        'createdAt': now,
-        'position': 3,
-        'src': '/resources/sample/converse-3.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      },
-      {
-        'createdAt': now,
-        'position': 4,
-        'src': '/resources/sample/converse-4.jpg',
-        'updatedAt': now,
-        'mimeType': 'image/jpeg'
-      }
-    ]
     isVisible: true
 
 #unless Orders.find().count()

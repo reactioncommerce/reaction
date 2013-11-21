@@ -184,14 +184,14 @@ Template.productsEdit.rendered = function () {
       if (error) {
         throwError(error);
         return false;
-        alert(error.reason);
       } else {
         return true;
       }
     });
   };
 
-  $('.variant-table input:first').prop('checked', 'checked');
+
+  $('.variant-table input[name="variant"]').get(getSelectedVariantIndex()).checked = true;
 }; // End Template.rendered
 
 
@@ -247,6 +247,7 @@ Template.productsEdit.events({
   },
   'click .variant-table tr': function (e) {
     $(e.target).closest('tr').find('input').prop('checked', 'checked');
+    Session.set("selectedVariantIndex", $(e.target).closest('tr').prevAll().length);
     e.stopPropagation();
   },
   'click #add-variant': function(e) {
@@ -260,3 +261,14 @@ Template.productsEdit.events({
     e.preventDefault();
   }
 });
+
+window.getSelectedVariantIndex = function() {
+  return Session.get("selectedVariantIndex") || 0
+};
+
+window.getSelectedVariant = function() {
+  product = Products.findOne(Session.get("currentProductId"));
+  return product.variants[getSelectedVariantIndex()];
+};
+
+

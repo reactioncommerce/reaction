@@ -12,6 +12,22 @@ MetafieldSchema = new SimpleSchema
     type: String
     optional: true
 
+VariantMediaSchema = new SimpleSchema
+  src:
+    type: String
+  mimeType:
+    type: String
+    optional: true
+  metafields:
+    type: [MetafieldSchema]
+    optional: true
+  updatedAt:
+    type: Date
+    optional: true
+  createdAt:
+    type: Date
+
+
 ProductVariantSchema = new SimpleSchema
   barcode:
     label: "Barcode"
@@ -68,27 +84,15 @@ ProductVariantSchema = new SimpleSchema
   metafields:
     type: [MetafieldSchema]
     optional: true
+  medias:
+    type: [VariantMediaSchema]
+    optional: true
   createdAt:
     label: "Created at"
     type: Date
   updatedAt:
     label: "Updated at"
     type: Date
-
-ProductMediaSchema = new SimpleSchema
-  src:
-    type: String
-  createdAt:
-    type: Date
-  updatedAt:
-    type: Date
-    optional: true
-  mimeType:
-    type: String
-    optional: true
-  metafields:
-    type: [MetafieldSchema]
-    optional: true
 
 CustomerAddressSchema = new SimpleSchema
   address1:
@@ -146,9 +150,6 @@ CustomerAddressSchema = new SimpleSchema
       max: 255
     variants:
       type: [ProductVariantSchema]
-      optional: true
-    medias:
-      type: [ProductMediaSchema]
       optional: true
     tags:
       type: [String]
