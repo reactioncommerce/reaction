@@ -3,7 +3,6 @@ ShopController = RouteController.extend
     @subscribe('shops', location.hostname).wait()
     currentShop = Shops.findOne()
     if currentShop
-      console.log currentShop._id
       Session.set('currentShopId', currentShop._id)
     user = Meteor.user()
     unless Roles.userIsInRole(user, 'admin')
