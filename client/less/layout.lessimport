@@ -8,6 +8,7 @@
 @input-border-radius: 0px;
 @font-family-sans-serif:  "Roboto","Open Sans","sans-serif";
 @font-size-base:  14px;
+@grid-gutter-width: 15px;
 
 body {
   -webkit-font-smoothing: antialiased;
@@ -64,9 +65,4 @@ border-bottom-right-radius: 0px;
 @media (min-width: 768px) {
   .row { margin-right: 0; margin-left: 0; }
   .jumbotron {font-size: 60px;}
-}
-@media (min-width: 1200px) {
-    .container{
-        max-width: 1070px;
-    }
 }
