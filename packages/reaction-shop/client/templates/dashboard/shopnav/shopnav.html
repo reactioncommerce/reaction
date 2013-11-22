@@ -1,6 +1,5 @@
 <template name="shopHeader">
-
-  <div class="navbar navbar-fixed-top" role="navigation">
+  <nav class="navbar-wrapper navbar-default navbar-fixed-top" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="icon-bar"></span>
@@ -9,19 +8,20 @@
       </button>
       <a class="navbar-brand" href="{{pathFor 'index'}}">REACTION</a>
     </div>
+    <div class="collapse navbar-collapse">
     {{>shopnav}}
-    <div class="collapse navbar-collapse navbar-ex1-collapse navbar-intro">
-      <div class="nav navbar-nav navbar-right">
-          {{loginButtons align="right"}}
+        <div class="nav navbar-nav navbar-right">{{loginButtons align="right"}}</div>
+    <form class="navbar-form navbar-right" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search"/>
       </div>
-      <!--/.navbar-collapse -->
-    </div>
+    </form>
   </div>
+  </nav>
 </template>
 
 <template name="shopnav">
-  <div class="nav navbar-nav shopnav">
-    <ul class="nav nav-pills">
+    <ul class="nav navbar-nav nav-pills">
       <li class="{{active '/shop/orders'}}">
         <a href="{{pathFor 'shop/orders'}}">
           Orders
@@ -41,5 +41,4 @@
         </a>
       </li>
     </ul>
-  </div>
 </template>

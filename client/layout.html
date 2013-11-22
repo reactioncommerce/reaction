@@ -6,6 +6,10 @@
     {{> dashboardSidebar}}
   {{/if}}
   <header>{{yield "header"}}</header>
-  <section>{{yield}}</section>
+  <section>
+    <div class="content-wrapper">
+      {{yield}}
+    </div>
+  </section>
   <footer>{{yield "footer"}}</footer>
 </template>

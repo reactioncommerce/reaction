@@ -20,8 +20,9 @@ body.modal-open {
   margin-right: 0px !important;
 }
 
-header {
-  padding-bottom: 50px;
+.content-wrapper {
+  margin-top: 90px;
+  height: 100%;
 }
 
 footer .navbar-fixed-bottom {
@@ -62,11 +63,10 @@ border-bottom-right-radius: 0px;
 -------------------------------------------------- */
 @media (min-width: 768px) {
   .row { margin-right: 0; margin-left: 0; }
-  .navbar-wrapper {margin-top: 20px;}
   .jumbotron {font-size: 60px;}
 }
 @media (min-width: 1200px) {
     .container{
-        max-width: 970px;
+        max-width: 1070px;
     }
 }
