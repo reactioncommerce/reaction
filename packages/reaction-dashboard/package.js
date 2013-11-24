@@ -13,8 +13,6 @@ Package.on_use(function (api, where) {
     api.add_files(path.join('client', 'subscribe.js'), 'client');
     api.add_files(path.join('model', 'model.js'), ['client','server']);
 
-    api.add_files(path.join('client/templates', 'dashboardLayout.html'), 'client');
-
     api.add_files(path.join('client/templates/dashboardSidebar', 'dashboardSidebar.html'), 'client');
     api.add_files(path.join('client/templates/dashboardSidebar', 'dashboardSidebar.less'), 'client');
     api.add_files(path.join('client/templates/dashboardSidebar', 'dashboardSidebar.js'), 'client');

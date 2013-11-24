@@ -2,10 +2,8 @@
 <head>
   <title>Reaction Commerce</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-  {{#if isInRole 'admin'}}
-    {{> dashboardSidebar}}
-  {{/if}}
   <header>{{yield "header"}}</header>
+  <sidebar>{{yield "sidebar"}}</sidebar>
   <section>
     <div class="content-wrapper">
       {{yield}}

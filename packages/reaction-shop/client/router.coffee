@@ -30,10 +30,11 @@ Router.map ->
     controller: ShopController,
     yieldTemplates:
       'shopHeader': to: 'header'
+      'dashboardSidebar': to: 'sidebar'
 
   # edit product page
   this.route 'shop/product',
-    # controller: ShopController
+    controller: ShopController
     path: '/shop/products/:_id'
     data: ->
       Session.set('currentProductId', this.params._id)
@@ -41,8 +42,10 @@ Router.map ->
     template: 'productsEdit'
     yieldTemplates:
       'shopHeader': to: 'header'
+      'dashboardSidebar': to: 'sidebar'
   #add new products
   this.route 'shop/product/add',
+    controller: ShopController
     path: '/shop/products/add'
     template: 'productsEdit'
     yieldTemplates:

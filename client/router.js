@@ -10,7 +10,12 @@
 Router.configure({
   layoutTemplate: 'siteLayout',
   notFoundTemplate: 'notFound',
-  loadingTemplate: 'loading'
+  loadingTemplate: 'loading',
+  yieldTemplates: {
+    'siteHeader': {to: 'header'},
+    'siteFooter': {to: 'footer'},
+    'dashboardSidebar': {to: 'sidebar'}
+  }
 });
 
 
@@ -28,17 +33,13 @@ var pages = [
   'team',
   'faqs',
   'terms',
-  'privacy',
+  'privacy'
 ];
 
 Router.map(function () {
   this.route('index', {
     path: '/',
     layoutTemplate: 'siteLayout',
-    yieldTemplates: {
-      'siteHeader': {to: 'header'},
-      'siteFooter': {to: 'footer'}
-    }
   });
 
   for (var i = 0; i < pages.length; i++) {
@@ -51,14 +52,4 @@ Router.map(function () {
     layoutTemplate: 'siteLayout'
   });
 
-
-});
-
-Router.before(function () {
-  if (!Meteor.userId()) {
-    Meteor.loggingIn() ? this.render(this.loadingTemplate) : Router.go('index'); // TODO: there must be a login template render instead of redirect to index route
-    this.stop();
-  }
-}, {
-  except: _.union(['login', 'signup', 'forgotPassword', 'index', 'notFound'], pages)
 });
