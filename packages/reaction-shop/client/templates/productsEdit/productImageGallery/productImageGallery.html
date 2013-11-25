@@ -44,9 +44,11 @@
           {{/isvideo}}
         {{/foreach}}
       {{/with}}
+      {{#if userHasRole "admin"}}
       <li>
         <i class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add media</i>
       </li>
+      {{/if}}
     </ul>
   </div>
 </template>

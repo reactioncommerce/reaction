@@ -4,11 +4,11 @@ ShopController = RouteController.extend
     currentShop = Shops.findOne()
     if currentShop
       Session.set('currentShopId', currentShop._id)
-    user = Meteor.user()
-    unless Roles.userIsInRole(user, 'admin')
-      unless ShopRoles.userIsInRole(Session.get('currentShopId'), user, ['owner', 'manager', 'vendor'])
-        this.render('unauthorized')
-        this.stop()
+    # user = Meteor.user()
+    # unless Roles.userIsInRole(user, 'admin')
+    #   unless ShopRoles.userIsInRole(Session.get('currentShopId'), user, ['owner', 'manager', 'vendor'])
+    #     this.render('unauthorized')
+    #     this.stop()
 
 Router.map ->
   # home page intro screen for reaction-shop

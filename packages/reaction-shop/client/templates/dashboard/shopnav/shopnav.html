@@ -10,7 +10,7 @@
     </div>
     <div class="collapse navbar-collapse">
     {{>shopnav}}
-        <div class="nav navbar-nav navbar-right">{{loginButtons align="right"}}</div>
+    <div class="nav navbar-nav navbar-right">{{loginButtons align="right"}}</div>
     <form class="navbar-form navbar-right" role="search">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="Search"/>
@@ -21,6 +21,7 @@
 </template>
 
 <template name="shopnav">
+    {{#if userHasRole "admin"}}
     <ul class="nav navbar-nav nav-pills">
       <li class="{{active '/shop/orders'}}">
         <a href="{{pathFor 'shop/orders'}}">
@@ -41,4 +42,5 @@
         </a>
       </li>
     </ul>
+    {{/if}}
 </template>

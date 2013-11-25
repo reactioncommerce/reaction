@@ -22,176 +22,180 @@ Template.productsEdit.rendered = function () {
   // You could just do:  $('#username').editable();
   // but we want to maintain reactivity etc.
   // *****************************************************
-
-  $.fn.editable.defaults.mode = 'popup';
-  $.fn.editable.defaults.showbuttons = false;
-
-  // *****************************************************
-  // TODO: Tabbing
-  // SEE: https://github.com/vitalets/x-editable/issues/324
-  // *****************************************************
-
-
-  // *****************************************************
-  // Editable product title entry
-  // *****************************************************
-
-  $('#title').editable({
-    inputclass: 'editable-width',
-    success: function (response, newValue) {
-      updateProduct({title: newValue});
-    },
-    validate: function (value) {
-      if ($.trim(value) == '') {
-        throwError('This field is required');
-        return false;
-      }
-    }
-  });
-
-  // *****************************************************
-  // Editable vendor entry - dropdown
-  // *****************************************************
-
-  $('#vendor').editable({
-    inputclass: 'editable-width',
-    success: function (response, newValue) {
-      updateProduct({vendor: newValue});
-    }
-  });
-
-  // *****************************************************
-  // Editable price - really first variant entry
-  // *****************************************************
-
-  $('#price').editable({
-    success: function (response, newValue) {
-      updateProduct({price: newValue});
-    }
-  });
-
-  // *****************************************************
-  // Editable product html
-  // *****************************************************
   //
-  $('#bodyHtml').editable({
-    showbuttons: true,
-    inputclass: 'editable-width',
-    success: function (response, newValue) {
-      updateProduct({bodyHtml: newValue});
-    }
-  });
 
-  // *****************************************************
-  // Editable social handle (hashtag, url)
-  // *****************************************************
-  //
-  $('#handle').editable({
-    inputclass: 'editable-width',
-    success: function (response, newValue) {
-      updateProduct({handle: newValue});
-    }
-  });
+  if (Roles.userIsInRole(Meteor.user(), 'admin')) {
+      $.fn.editable.defaults.mode = 'popup';
+      $.fn.editable.defaults.showbuttons = false;
 
-  // *****************************************************
-  // Editable twitter, social messages entry
-  // *****************************************************
 
-  $('#twitter-msg').editable({
-    inputclass: 'editable-width',
-    value: 'tweet this!',
-    type: 'text',
-    title: 'Default Twitter message ~100 characters!',
-    success: function (response, newValue) {
-      updateProduct({twitter_msg: newValue});
-    }
-  });
+    // *****************************************************
+    // TODO: Tabbing
+    // SEE: https://github.com/vitalets/x-editable/issues/324
+    // *****************************************************
 
-  // *****************************************************
-  // Editable tag field
-  // *****************************************************
 
-  $('#tags').editable({
-    showbuttons: true,
-    inputclass: 'editable-width',
-    select2: {
-      tags: function () {
-        var currentProductId = Session.get('currentProductId');
-        return Products.findOne({_id: currentProductId}, {fields: {tags: true}});
+    // *****************************************************
+    // Editable product title entry
+    // *****************************************************
+
+    $('#title').editable({
+      inputclass: 'editable-width',
+      success: function (response, newValue) {
+        updateProduct({title: newValue});
       },
-      tokenSeparators: [",", " "]
-    },
-    success: function (response, newValue) {
-      updateProduct({tags: newValue});
-    }
-  });
-
-  // *****************************************************
-  // Editable variants entry
-  // Format
-  //    :description => 'Author of book',
-  //    :namespace => 'book',
-  //    :key => 'author',
-  //    :value => 'Kurt Vonnegut',
-  //    :value_type => 'string'
-  // *****************************************************
-
-  $('#variants').editable({
-    inputclass: 'input-large',
-    select2: {
-      width: '250px',
-      initSelection: function (element, callback) {
-        data = [];
-        var data = {id: "1", text: "text"};
-        callback(data);
-      },
-      data: function (element, callback) {
-        data = [];
-        var data = {id: "2", text: "text2"};
-        callback(data);
-      }
-    },
-    success: function (response, newValue) {
-      updateProduct({variants: newValue});
-    }
-  });
-
-
-  // *****************************************************
-  // Function to return variant data
-  // param: property:value
-  // returns true or err
-  // *****************************************************
-  variants = function (options) {
-    var currentProductId = Session.get('currentProductId');
-    var product = Products.findOne({_id: currentProductId}, {fields: {variants: true}}).variants.valueOf();
-    variant = [];
-    for (var i = 0; i < product.length; i++) {
-      variant[i] = {value: i, text: product[i].sku}
-    }
-    return variant;
-  };
-
-
-  // *****************************************************
-  // Function to update product
-  // param: property:value
-  // returns true or err
-  // *****************************************************
-  var updateProduct = function (productsProperties) {
-    var currentProductId = Session.get('currentProductId');
-    Products.update(currentProductId, {$set: productsProperties}, function (error) {
-      if (error) {
-        throwError(error);
-        return false;
-      } else {
-        return true;
+      validate: function (value) {
+        if ($.trim(value) == '') {
+          throwError('This field is required');
+          return false;
+        }
       }
     });
-  };
+
+    // *****************************************************
+    // Editable vendor entry - dropdown
+    // *****************************************************
+
+    $('#vendor').editable({
+      inputclass: 'editable-width',
+      success: function (response, newValue) {
+        updateProduct({vendor: newValue});
+      }
+    });
+
+    // *****************************************************
+    // Editable price - really first variant entry
+    // *****************************************************
+
+    $('#price').editable({
+      success: function (response, newValue) {
+        updateProduct({price: newValue});
+      }
+    });
+
+    // *****************************************************
+    // Editable product html
+    // *****************************************************
+    //
+    $('#bodyHtml').editable({
+      showbuttons: true,
+      inputclass: 'editable-width',
+      success: function (response, newValue) {
+        updateProduct({bodyHtml: newValue});
+      }
+    });
+
+    // *****************************************************
+    // Editable social handle (hashtag, url)
+    // *****************************************************
+    //
+    $('#handle').editable({
+      inputclass: 'editable-width',
+      success: function (response, newValue) {
+        updateProduct({handle: newValue});
+      }
+    });
+
+    // *****************************************************
+    // Editable twitter, social messages entry
+    // *****************************************************
+
+    $('#twitter-msg').editable({
+      inputclass: 'editable-width',
+      value: 'tweet this!',
+      type: 'text',
+      title: 'Default Twitter message ~100 characters!',
+      success: function (response, newValue) {
+        updateProduct({twitter_msg: newValue});
+      }
+    });
+
+    // *****************************************************
+    // Editable tag field
+    // *****************************************************
+
+    $('#tags').editable({
+      showbuttons: true,
+      inputclass: 'editable-width',
+      select2: {
+        tags: function () {
+          var currentProductId = Session.get('currentProductId');
+          return Products.findOne({_id: currentProductId}, {fields: {tags: true}});
+        },
+        tokenSeparators: [",", " "]
+      },
+      success: function (response, newValue) {
+        updateProduct({tags: newValue});
+      }
+    });
+
+    // *****************************************************
+    // Editable variants entry
+    // Format
+    //    :description => 'Author of book',
+    //    :namespace => 'book',
+    //    :key => 'author',
+    //    :value => 'Kurt Vonnegut',
+    //    :value_type => 'string'
+    // *****************************************************
+
+    $('#variants').editable({
+      inputclass: 'input-large',
+      select2: {
+        width: '250px',
+        initSelection: function (element, callback) {
+          data = [];
+          var data = {id: "1", text: "text"};
+          callback(data);
+        },
+        data: function (element, callback) {
+          data = [];
+          var data = {id: "2", text: "text2"};
+          callback(data);
+        }
+      },
+      success: function (response, newValue) {
+        updateProduct({variants: newValue});
+      }
+    });
 
 
-  $('.variant-table input[name="variant"]').get(getSelectedVariantIndex()).checked = true;
+    // *****************************************************
+    // Function to return variant data
+    // param: property:value
+    // returns true or err
+    // *****************************************************
+    variants = function (options) {
+      var currentProductId = Session.get('currentProductId');
+      var product = Products.findOne({_id: currentProductId}, {fields: {variants: true}}).variants.valueOf();
+      variant = [];
+      for (var i = 0; i < product.length; i++) {
+        variant[i] = {value: i, text: product[i].sku}
+      }
+      return variant;
+    };
+
+
+    // *****************************************************
+    // Function to update product
+    // param: property:value
+    // returns true or err
+    // *****************************************************
+    var updateProduct = function (productsProperties) {
+      var currentProductId = Session.get('currentProductId');
+      Products.update(currentProductId, {$set: productsProperties}, function (error) {
+        if (error) {
+          throwError(error);
+          return false;
+        } else {
+          return true;
+        }
+      });
+    };
+
+
+    $('.variant-table input[name="variant"]').get(getSelectedVariantIndex()).checked = true;
+  }
 }; // End Template.rendered
 
 
