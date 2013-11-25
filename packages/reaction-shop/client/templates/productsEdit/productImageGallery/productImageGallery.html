@@ -7,12 +7,7 @@
             <div class="product-image">
               <img class="image-src image-responsive" name="main-image" src="{{firstImage.src}}">
             </div>
-            <div class="gallery-tools">
-              <a><i class="fa fa-link"></i></a>
-              <a><i class="fa fa-paperclip"></i></a>
-              <a><i class="fa fa-pencil"></i></a>
-              <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
-            </div>
+            {{> galleryTools}}
           </li>
         {{/if}}
         {{#foreach .}}
@@ -34,12 +29,7 @@
                 <source src="{{src}}" type="{{mimeType}}">
                 Your browser does not support the video tag.
               </video>
-              <div class="gallery-tools">
-                <a><i class="fa fa-link"></i></a>
-                <a><i class="fa fa-paperclip"></i></a>
-                <a><i class="fa fa-pencil"></i></a>
-                <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
-              </div>
+              {{> galleryTools}}
             </li>
           {{/isvideo}}
         {{/foreach}}
@@ -51,4 +41,15 @@
       {{/if}}
     </ul>
   </div>
+</template>
+
+<template name="galleryTools">
+  {{#if userHasRole "admin"}}
+    <div class="gallery-tools">
+      <a><i class="fa fa-link"></i></a>
+      <a><i class="fa fa-paperclip"></i></a>
+      <a><i class="fa fa-pencil"></i></a>
+      <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+    </div>
+  {{/if}}
 </template>
