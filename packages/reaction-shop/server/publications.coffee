@@ -8,12 +8,13 @@ Products = @Products
 Customers = @Customers
 Orders = @Orders
 
-Meteor.publish 'shops', (domain) ->
-  Shops.find {domain: domain}
+Meteor.publish 'shops', ->
+  domain = get_http_header(this, 'host').split(':')[0]
+  Shops.find {domains: domain}
 
 Meteor.publish 'products', (shopId) ->
-#  Products.find {shopId: shopId}
-  Products.find()
+  Products.find {shopId: shopId}
+#  Products.find()
 
 Meteor.publish 'product', (id, shopId) ->
   Products.findOne {_id: id} #, shopId: shopId

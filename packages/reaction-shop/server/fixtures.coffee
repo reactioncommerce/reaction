@@ -21,7 +21,7 @@ unless Shops.find().count()
     "city": "Cupertino"
     "country": "US"
     "customerEmail": "customers@normal.com"
-    "domain": "shop.normal.com"
+    "domains": ["localhost", "shop.normal.com", "shop.zingfizz.com", "zingfizz.meteor.com"]
     "email": "steve@normal.com"
     "id": 690933842
     "latitude": "45.45"

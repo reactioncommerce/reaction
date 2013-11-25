@@ -1,6 +1,6 @@
 ShopController = RouteController.extend
   before: ->
-    @subscribe('shops', location.hostname).wait()
+    @subscribe('shops').wait()
     currentShop = Shops.findOne()
     if currentShop
       Session.set('currentShopId', currentShop._id)

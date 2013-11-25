@@ -148,8 +148,8 @@ CustomerAddressSchema = new SimpleSchema
       type: String
     currency:
       type: String
-    domain:
-      type: String
+    domains:
+      type: [String]
     email:
       type: String
     googleAppsDomain:
