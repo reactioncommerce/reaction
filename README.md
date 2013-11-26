@@ -1,6 +1,27 @@
 #Reaction
 Reactive marketing first commerce platform built with Meteor.
 
+The Reaction is building a commerce platform that is built on Meteor and follows a reactive design pattern - most everything you see should be update realtime. Reaction is a commercial/open source endeavor of [Ongo Works](http://ongoworks.com). We welcome contributors, issues, comments!
+
+###Core ideas:
+
+* Limited separation of administrative functionality and "front end". Same template should be used to edit/create/read views.
+* Statistics / event tracking should be built in from the beginning throughout 
+* As modular as possible so that any package can be customized/overwritten - i.e.: need a special order processing process, then override/extend the default
+* Core packages to enable site should be a simple and generic as possible, layering complexity by adding packages through a package store ('app store') approach
+* Common marketing and SEO practices should be fundamental core features
+* User experiences should be as simple as possible, rethinking traditional methods (i.e. inline editing vs forms)
+* Pages/routes only used when user would potentially share/bookmark
+* Realtime synchronization across platforms/browsers
+* Cross platform focus
+* Upgrade paths from existing commerce platforms (Magento, Shopify, BigCommerce)
+* Commercial package and theme development encouraged
+	
+###Current Status:
+**Unstable, with HEAVY ongoing development!**
+Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
+
+
 ---
 ##Prerequisites
 Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
@@ -18,24 +39,17 @@ Now open [http://localhost:3000](http://localhost:3000) in a browser and you sho
 #Development
 ---	
 
-See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com). Meteor and Reaction use a [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) pattern for development, and Javascript and HTML as the only coding languages.
+See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com). Meteor and Reaction use a [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) pattern for development, and Javascript (+Coffeescript) and HTML (CSS/LESS) as the only coding languages.
 
 Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for format and style of contributions.
 
-###Collections
-Convention:
+Feel free to use Coffeescript or plain JS. Our core is being built with a preference for Coffeescript + LESS.
 
-* UpperCamelCased
-* plural
-* **Core**  prefix for core, reaction platform shared collections names (e.g. "CoreAccounts")
-* **Reaction** smart package name prefix for smart package specific collection
-* no prefix for external/universal meteor collections
-* HTML5 and CSS3 
-	*  All visible content should have [Schema.org](http://schema.org/docs/full.html) tags
-	*  Preference is to use [data-attribute](http://www.w3.org/TR/2011/WD-html5-20110525/elements.html) tags over element selectors
-	* All interactive elements should have a data-track element, optional data-track-attrs
-			
-			data-track="Open Modal" data-track-attrs="{ show: 'Campaign Properties' }"
+We are always using latest full release of all packages.
+
+Packages should be able to run independently, whenever possible but many of the core packages will have dependancies on the reaction-shop package.
+
+At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach an Alpha release, these will be moved to individual package repos and published on the Meteor package manager.
 
 
 ###Smart Packages
@@ -88,9 +102,3 @@ Convention:
 		  // the client
 		  api.add_files(["templates.html", "client.js"], "client");
 		});
-####Package References:
-
-* https://www.eventedmind.com/posts/meteor-introducing-the-package-system
-* http://book.discovermeteor.com/chapter/creating-a-meteorite-package/
-* https://npmjs.org/package/meteor-private-package
-* https://atmosphere.meteor.com/wtf/package
