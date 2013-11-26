@@ -14,5 +14,9 @@ Template["filepicker-io"].events({
     // throwError("Success");
     $.pnotify({title: 'Saved "' + apikey + '"',text: 'Filepicker.io is now configured.',type: 'success'});
     Router.go('dashboard');
+  },
+  'click .cancel': function (event){
+    history.go(-1);
+    return false;
   }
 });

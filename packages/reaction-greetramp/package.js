@@ -11,7 +11,7 @@ Package.on_use(function (api, where) {
   // package directory
   api.use('standard-app-packages');
   api.use(['underscore', 'deps', 'session', 'handlebars', 'highcharts']);
-  api.use(['templating', 'accounts-base', 'iron-router']);
+  api.use(['templating', 'accounts-base', 'iron-router','reaction-shop','reaction-dashboard']);
 
   // we can add files to the client, server, or both
   // in this case load model.js on the client AND the server

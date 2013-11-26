@@ -9,6 +9,7 @@ Package.on_use(function (api, where) {
     'simple-schema',
     'collection2',
     'collection-behaviours',
+    'roles',
     'reaction-dashboard'
   ]);
   api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
@@ -24,16 +25,20 @@ Package.on_use(function (api, where) {
   api.add_files('lib/select2-bootstrap-css/select2-bootstrap.css', 'client');
 
   api.add_files([
-    // Dashboard
-    'client/templates/dashboard/shopnav/shopnav.html',
-    'client/templates/dashboard/shopnav/shopnav.js',
+    'client/templates/shopHeader/shopHeader.html',
+    'client/templates/shopHeader/shopHeader.coffee',
+
+    'client/templates/shopNavElements/shopNavElements.html',
+    'client/templates/shopNavElements/shopNavElements.coffee',
+
+    'client/templates/shoppingCart/shoppingCart.html',
+    'client/templates/shoppingCart/shoppingCart.coffee',
 
     'client/templates/dashboard/widget/widget.less',
     'client/templates/dashboard/widget/widget.html',
     'client/templates/dashboard/widget/widget.js',
 
     'client/templates/dashboard/shopwelcome/shopwelcome.html',
-    // 'client/templates/dashboard/shopwelcome/shopwelcome.css',
 
     'client/templates/dashboard/customers/customers.html',
     'client/templates/dashboard/customers/customers.js',
@@ -56,10 +61,6 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/productImageGallery/productImageGallery.coffee',
     'client/templates/productsEdit/productImageGallery/productImageGallery.less',
 
-    // 'client/templates/productsEdit/productVideos/productVideos.html',
-    // 'client/templates/productsEdit/productVideos/productVideos.js',
-    // 'client/templates/productsEdit/productVideos/productVideos.less',
-
     'client/templates/productsEdit/variant/variant.html',
     'client/templates/productsEdit/variant/variant.js',
 
@@ -79,6 +80,10 @@ Package.on_use(function (api, where) {
     'client/router.coffee'
   ], 'client');
 
+  api.add_files('shopRoles/shop_roles_server.coffee', 'server');
+  api.add_files('shopRoles/shop_roles_common.coffee');
+  api.add_files('shopRoles/shop_roles_client.coffee', 'client');
+
   api.add_files([
     'server/fixtures.coffee',
     'server/publications.coffee',
@@ -95,9 +100,5 @@ Package.on_use(function (api, where) {
     'variant'
   ]);
 
-  api.export('ShopRoles');
-
-  api.add_files('shopRoles/shop_roles_server.coffee', 'server');
-  api.add_files('shopRoles/shop_roles_common.coffee');
-  api.add_files('shopRoles/shop_roles_client.coffee', 'client');
+  api.export(['ShopRoles','Shops']);
 });

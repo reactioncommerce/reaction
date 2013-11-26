@@ -1,5 +1,5 @@
-Meteor.publish('allcampaigns', function (limit) {
-  return Campaigns.find({userId: this.userId}, {sort: {submitted: -1}, limit: limit});
+Meteor.publish('allcampaigns', function (shopId,limit) {
+  return Campaigns.find({shopId: shopId}, {sort: {submitted: -1}, limit: limit});
 });
 
 Meteor.publish('singleCampaign', function (id) {
@@ -7,8 +7,8 @@ Meteor.publish('singleCampaign', function (id) {
 });
 
 
-Meteor.publish('campaigns', function () {
-  return Campaigns.find({userId: this.userId});
+Meteor.publish('campaigns', function (shopId) {
+  return Campaigns.find({shopId: shopId});
 });
 
 Meteor.publish('captures', function (id) {

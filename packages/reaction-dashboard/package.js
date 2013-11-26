@@ -5,7 +5,7 @@ Package.describe({
 
 // Tell Meteor what to do with our package at bundle time
 Package.on_use(function (api, where) {
-    api.use(['standard-app-packages', 'underscore','iron-router','less']);
+    api.use(['standard-app-packages', 'underscore','iron-router','less','coffeescript']);
 
     var path = Npm.require('path');
 
@@ -24,7 +24,7 @@ Package.on_use(function (api, where) {
     api.add_files(path.join('client/templates/introduction', 'introduction.html'), 'client');
     api.add_files(path.join('client/templates/introduction', 'introduction.js'), 'client');
 
-    api.add_files(path.join('client', 'router.js'), 'client');
+    api.add_files(path.join('client', 'router.coffee'), 'client');
 
     // *****************************************************
     // Selectively adding JS files (the order matters)

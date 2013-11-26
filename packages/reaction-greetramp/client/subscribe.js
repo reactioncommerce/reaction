@@ -1,6 +1,6 @@
 // *****  Subscriptions *******
 //Meteor.subscribe('domains');
-campaignHandle = Meteor.subscribe('campaigns');
+campaignHandle = Meteor.subscribe('campaigns',Session.get('currentShopId'));
 
 Meteor.subscribe('captures');
 //Meteor.subscribe('countstats');
