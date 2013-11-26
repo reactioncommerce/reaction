@@ -1,5 +1,5 @@
 Meteor.startup ->
-  console.log 'Adding Reaction Shop to packages'
+  console.log 'Adding Shop to packages'
   ReactionPackages.update
     name: 'reaction-shop',
     label: 'Shop',
@@ -12,7 +12,7 @@ Meteor.startup ->
   , {$set: {}}, {upsert: true}
 
 Meteor.startup ->
-  console.log 'Adding Reaction Shop Orders to packages'
+  console.log 'Adding Shop Orders to packages'
   ReactionPackages.update
     name: 'reaction-shop-orders',
     label: 'Orders',

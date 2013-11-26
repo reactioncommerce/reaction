@@ -1,8 +1,8 @@
 {
   "baseUrl": "http://localhost:3000",
   "filepickerApiKey": "__KEY__",
-  "googleAnalyticsProperty": "__KEY__",
   "public": {
-    "isDebug": true
+    "isDebug": true,
+    "googleAnalyticsProperty": "__KEY__"
   }
 }

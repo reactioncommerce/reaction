@@ -1,8 +1,8 @@
-console.log("asdf")
 Meteor.startup ->
-  console.log "Adding Google Analytics to modules"
+  console.log "Adding Google Analytics to packages"
   result = ReactionPackages.upsert(
-    name: "reaction-google-analytics",
+    name: "reaction-google-analytics"
+  ,
     $set:
       label: "Google Analytics"
       description: ""

@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-    console.log("Adding Dashboard to modules");
+    console.log("Adding Dashboard to packages");
     ReactionPackages.update({
         name: "reaction-dashboard",
         label: "Dashboard",
