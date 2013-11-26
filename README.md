@@ -21,6 +21,8 @@ The Reaction is building a commerce platform that is built on Meteor and follows
 **Unstable, with HEAVY ongoing development!**
 Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
 
+Usually, we have playground here: [Demo/test site](http://reaction.meteor.com)
+
 
 ---
 ##Prerequisites
