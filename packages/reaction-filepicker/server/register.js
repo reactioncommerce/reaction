@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  console.log("Adding Reaction Filepicker.io to packages");
+  console.log("Adding Filepicker.io to packages");
   ReactionPackages.update({
     name: "reaction-filepicker",
     label: "Filepicker.io",

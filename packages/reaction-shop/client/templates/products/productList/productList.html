@@ -37,11 +37,11 @@
 </template>
 
 <template name="productGrid">
-<div class="productGrid">
+<div class="productGrid" data-event-category="grid" data-event-action="generic-click" data-event-label="Just some grid click">
   {{#each products}}
     <div class="product">
       <div class="productImage">
-        <a href="{{pathFor 'shop/product'}}">
+        <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" dava-event-value="{{_id}}">
           <img src="{{variants.[0].medias.[0].src}}" class="img-responsive">
         </a>
       </div>

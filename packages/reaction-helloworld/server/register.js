@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  console.log("Adding HelloWorld to modules");
+  console.log("Adding HelloWorld to packages");
   // Upsert the package document
   // There can only be one
   var result = ReactionPackages.upsert({

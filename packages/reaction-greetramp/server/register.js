@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  console.log("Adding Greetramp to modules");
+  console.log("Adding Greetramp to packages");
   ReactionPackages.update({
     name: "reaction-greetramp",
     label: "Greetramp",
