@@ -34,6 +34,8 @@ Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) c
     mrt
 
 Now open [http://localhost:3000](http://localhost:3000) in a browser and you should see Reaction running.
+ 
+* Use admin1@ongoworks.com / ongo1 to test dashboard/admin/editing.
 
 ---	 
 #Development
