@@ -15,5 +15,6 @@ Meteor.startup ->
     ReactionPackages.update result.insertedId,
       $set:
         metafields:
-          type: ""
+          name: "property"
+          value: ""
 
