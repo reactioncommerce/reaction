@@ -13,12 +13,12 @@ Router.configure({
 Router.map(function () {
   //Header
   this.route('greetramp', {
-      path: '/greetramp',
-      before: function () {
-        Session.set("currentCampaignId", 'overview');
-      }
-    }
-  );
+    path: '/greetramp',
+    before: function () {
+      Session.set("currentCampaignId", 'overview');
+    },
+    controller: ShopController
+  });
   this.route('campaignsList', {
     path: '/campaigns',
     waitOn: function () {
@@ -26,6 +26,7 @@ Router.map(function () {
       return Meteor.subscribe('allcampaigns', 10);
     },
     data: function () { return { campaigns: Campaigns.find({}, {sort: {submitted: -1}})};},
+    controller: ShopController
   });
   this.route('campaigns', {
     path: '/campaigns/:_id',
@@ -39,7 +40,8 @@ Router.map(function () {
     data: function () {
       Session.set("currentCampaignId", this.params._id);
       return { campaigns: Campaigns.findOne(this.params._id) };
-    }
+    },
+    controller: ShopController
   });
 });
 

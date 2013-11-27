@@ -7,6 +7,8 @@ Package.describe({
 Package.on_use(function (api, where) {
     api.use(['standard-app-packages', 'underscore','iron-router','less','coffeescript']);
 
+    api.use('reaction-shop');
+
     var path = Npm.require('path');
 
     // This is the Reaction dashboard, all the other files are just the default template stuff, for docs and examples see those.

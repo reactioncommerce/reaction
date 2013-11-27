@@ -4,8 +4,8 @@
 # *****************************************************
 Template.shopNavElements.helpers
   pcount: ->
-    Products.find({shopId:Session.get('currentShopId')}).count()
+    Products.find().count()
   ocount: ->
-    Orders.find({shopId:Session.get('currentShopId')}).count()
+    Orders.find().count()
   ccount: ->
-    Customers.find({shopId:Session.get('currentShopId')}).count()
+    Customers.find().count()

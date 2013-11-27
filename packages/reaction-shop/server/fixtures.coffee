@@ -195,6 +195,7 @@ unless Products.find().count() > 10
   console.log 'Adding products fixture data'
   Products.insert
     #'_id': 'fhnqEEfMaESexc26F',
+    shopId: "WvrKDomkYth3THbDD"
     'bodyHtml': 'The almost legendary Chuck Taylor All Star shoe has been given a high profile makeover by the world’s most expensive living artist, Damien Hirst. Forming part of the Converse (PRODUCT)RED series, the colourway is based on a transposition of Hirst’s “All You Need is Love” painting which features blue and yellow butterflies dance over a red backdrop, which was sold at a RED exhibition back in 2007. Limited to just 400 pairs, look out for a release at colette on November 5. 100% of proceedings will be donated to the RED foundation.',
     'createdAt': now,
     'handle': 'converse-chuck-taylor-all-star',
@@ -339,7 +340,6 @@ unless Products.find().count() > 10
       }
     ],
     isVisible: true
-    shopId: "WvrKDomkYth3THbDD"
 
 #unless Orders.find().count()
 #  console.log 'Adding orders fixture data'
@@ -620,6 +620,7 @@ unless Customers.find().count()
   console.log 'Adding customers fixture data'
   Customers.insert
     '_id': 'y2ZGmxjuMDGxuxYB2',
+    shopId: "WvrKDomkYth3THbDD"
     'acceptsMarketing': false,
     'createdAt': now,
     'email': 'bob.norman@hostmail.com',

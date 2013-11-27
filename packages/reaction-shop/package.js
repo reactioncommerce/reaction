@@ -9,8 +9,7 @@ Package.on_use(function (api, where) {
     'simple-schema',
     'collection2',
     'collection-behaviours',
-    'roles',
-    'reaction-dashboard'
+    'roles'
   ]);
   api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
   api.use('underscore', 'server');
@@ -25,6 +24,8 @@ Package.on_use(function (api, where) {
   api.add_files('lib/select2-bootstrap-css/select2-bootstrap.css', 'client');
 
   api.add_files([
+    'client/lib/config.coffee',
+
     'client/templates/shopHeader/shopHeader.html',
     'client/templates/shopHeader/shopHeader.coffee',
 
@@ -75,6 +76,9 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/optionsModal/optionsModal.less',
     'client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html',
 
+    'client/templates/notice/unauthorized.html',
+    'client/templates/notice/shopNotFound.html',
+
     // Package
     'client/subscribe.coffee',
     'client/router.coffee'
@@ -91,6 +95,8 @@ Package.on_use(function (api, where) {
   ], 'server');
 
   api.export([
+    'packageShop',
+    'ShopController',
     'Products',
     'Orders',
     'Customers',

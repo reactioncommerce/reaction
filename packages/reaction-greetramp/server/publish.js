@@ -1,5 +1,12 @@
-Meteor.publish('allcampaigns', function (shopId,limit) {
-  return Campaigns.find({shopId: shopId}, {sort: {submitted: -1}, limit: limit});
+var getDomain = function(client) {
+  return get_http_header(client, 'host').split(':')[0]
+};
+
+Meteor.publish('allcampaigns', function (limit) {
+  var shop = Shops.findOne({domains: getDomain(this)});
+  if (shop) {
+    return Campaigns.find({shopId: shop._id}, {sort: {submitted: -1}, limit: limit});
+  }
 });
 
 Meteor.publish('singleCampaign', function (id) {
@@ -7,8 +14,11 @@ Meteor.publish('singleCampaign', function (id) {
 });
 
 
-Meteor.publish('campaigns', function (shopId) {
-  return Campaigns.find({shopId: shopId});
+Meteor.publish('campaigns', function () {
+  var shop = Shops.findOne({domains: getDomain(this)});
+  if (shop) {
+    return Campaigns.find({shopId: shop._id});
+  }
 });
 
 Meteor.publish('captures', function (id) {

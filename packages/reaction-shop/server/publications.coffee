@@ -8,16 +8,21 @@ Products = @Products
 Customers = @Customers
 Orders = @Orders
 
+getDomain = (client) ->
+  get_http_header(client, 'host').split(':')[0]
+
 Meteor.publish 'shops', ->
-  domain = get_http_header(this, 'host').split(':')[0]
-  Shops.find {domains: domain}
+  Shops.find domains: getDomain(this)
 
-Meteor.publish 'products', (shopId) ->
-  Products.find {shopId: shopId}
-#  Products.find()
+Meteor.publish 'products', ->
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Products.find shopId: shop._id
 
-Meteor.publish 'product', (id, shopId) ->
-  Products.findOne {_id: id} #, shopId: shopId
+Meteor.publish 'product', (id) ->
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Products.findOne _id: id, shopId: shop._id
 
 # *****************************************************
 # Client access rights for products
@@ -41,10 +46,14 @@ Products.allow
 # *****************************************************
 
 Meteor.publish 'orders', ->
-  Orders.find() # {shopId: shopId}
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Orders.find shopId: shop._id
 
 Meteor.publish 'order', (id) ->
-  Orders.findOne(id)
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Orders.findOne _id: id, shopId: shop._id
 
 # *****************************************************
 # Client access rights for orders
@@ -69,10 +78,14 @@ Orders.allow
 # *****************************************************
 
 Meteor.publish 'customers', ->
-  Customers.find() # {shopId: shopId}
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Customers.find shopId: shop._id
 
 Meteor.publish 'customer', (id) ->
-  Customers.findOne(id)
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Customers.findOne _id: id, shopId: shop._id
 
 # *****************************************************
 # Client access rights for customers

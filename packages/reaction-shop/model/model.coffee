@@ -237,6 +237,8 @@ Shops = @Shops # package exports
     _id:
       type: String
       optional: true
+    shopId:
+      type: String
     title:
       type: String
     bodyHtml:
@@ -269,8 +271,6 @@ Shops = @Shops # package exports
       type: String
     isVisible:
       type: Boolean
-    shopId:
-      type: String
     publishedAt:
       type: Date
       optional: true
@@ -300,6 +300,8 @@ Products = @Products # package exports
 
 @Customers = new Meteor.Collection2 'Customers',
   schema:
+    shopId:
+      type: String
     email:
       type: String
     firstName:
@@ -355,6 +357,9 @@ Products = @Products # package exports
 
 Customers = @Customers # package exports
 
-@Orders = new Meteor.Collection('Orders')
+@Orders = new Meteor.Collection2 'Orders',
+  schema:
+    shopId:
+      type: String
 
 Orders = @Orders # package exports

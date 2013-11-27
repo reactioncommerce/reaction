@@ -8,11 +8,11 @@
 # *****************************************************
 Template.productGrid.helpers
   products: ->
-    Products.find({shopId:Session.get('currentShopId')})
+    Products.find()
 
 Template.productList.helpers
   products: ->
-    Products.find({shopId:Session.get('currentShopId')})
+    Products.find()
 
 Template.productGrid.rendered = ->
   new Packery(document.querySelector('.productGrid'), {gutter: 2})
