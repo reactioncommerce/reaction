@@ -22,7 +22,8 @@ Package.on_use(function (api, where) {
     'client/compatibility/google-analytics-bootstrap.js',
     'client/routing.coffee',
     'client/startup.coffee',
-    'client/templates/googleAnalytics/googleAnalytics.html'
+    'client/templates/googleAnalytics/googleAnalytics.html',
+    'client/templates/googleAnalytics/googleAnalytics.coffee'
   ], 'client');
 
   api.add_files([

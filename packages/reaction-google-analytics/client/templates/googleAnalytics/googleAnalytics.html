@@ -1,7 +1,28 @@
 <template name="googleAnalytics">
   <div class="container">
-    <div class="google-analytics">
-      <h1>Google Analytics package</h1>
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-title">
+          <h3><i class="icon-reorder"></i> Google Analytics</h3>
+        </div>
+        <div class="box-content">
+          <form action="#" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 col-lg-1 control-label">Property</label>
+              <div class="col-sm-3 col-lg-3 controls">
+                <input type="text" name="input-property" id="input-property" class="form-control" placeholder="UA-XXXXX-X" required="required" value="{{aggregateData.property}}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3 col-lg-9 col-lg-offset-3">
+                <span>{{> errors}}</span>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                <button type="button" class="btn cancel">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>

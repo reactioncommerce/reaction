@@ -14,7 +14,10 @@ Meteor.startup ->
   if result.insertedId
     ReactionPackages.update result.insertedId,
       $set:
-        metafields:
-          name: "property"
-          value: ""
+        metafields: [
+          {
+            name: "property"
+            value: ""
+          }
+        ]
 
