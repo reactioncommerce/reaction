@@ -1,0 +1,2 @@
+Meteor.app =
+  packages: []

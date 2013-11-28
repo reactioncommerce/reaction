@@ -34,7 +34,7 @@ Template.availablePkgGrid.helpers({
 });
 
 Template.availablePkgGrid.rendered = function () {
-  $('.app-gallery').hide();
+//  $('.app-gallery').hide();
 };
 
 Template.activePkgGrid.events({
@@ -62,7 +62,7 @@ Template.pkg.events({
 
         ReactionConfig.insert({userId: Meteor.userId(), packageId: this._id, name: this.name, label: this.label, enabled: true, metafields: this.metafields});
 
-        $.pnotify({title: 'Enabled Packaged',text: this.label+ ' is now enabled.',type: 'success'});
+        $.pnotify({title: 'Enabled package',text: this.label+ ' is now enabled.',type: 'success'});
         if (this.route) Router.go(this.route);
     },
     'click .disablePkg': function (event, template) {
