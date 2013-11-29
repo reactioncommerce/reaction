@@ -4,7 +4,9 @@
     "highcharts": {},
     "roles": {},
     "x-editable-bootstrap3": {},
-    "iron-router": {},
+    "iron-router": {
+      "git": "https://github.com/wsoul/iron-router.git"
+    },
     "videojs": {},
     "parsleyjs": {},
     "font-awesome-4": {},
