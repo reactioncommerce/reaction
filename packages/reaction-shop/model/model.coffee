@@ -175,7 +175,7 @@ CustomerAddressSchema = new SimpleSchema
       type: String
     moneyWithCurrencyInEmailsFormat:
       type: String
-    myshopifyDomain:
+    myShopDomain:
       type: String
       optional: true
     name:
@@ -363,3 +363,39 @@ Customers = @Customers # package exports
       type: String
 
 Orders = @Orders # package exports
+
+Cart = @Cart
+
+CartItemSchema = new SimpleSchema
+  productId:
+    type: String
+  quantity:
+    label: "Quantity"
+    type: Number
+    min: 0
+  variants:
+    type: [ProductVariantSchema]
+
+@Cart = new Meteor.Collection2 'Cart',
+  schema:
+    shopId:
+      type: String
+    userId:
+      type: String
+      optional: true
+    items:
+      type: [CartItemSchema]
+    requiresShipping:
+      label: "Require a shipping address"
+      type: Boolean
+      optional: true
+    totalPrice:
+      label: "Total Price"
+      type: Number
+      optional: true
+      decimal: true
+      min: 0
+    createdAt:
+      type: Date
+    updatedAt:
+      type: Date

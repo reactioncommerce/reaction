@@ -1,7 +1,7 @@
 #Reaction
 Reactive marketing first commerce platform built with Meteor.
 
-The Reaction is building a commerce platform that is built on Meteor and follows a reactive design pattern - most everything you see should be update realtime. Reaction is a commercial/open source endeavor of [Ongo Works](http://ongoworks.com). We welcome contributors, issues, comments!
+The Reaction is building a commerce platform that is built on Meteor and follows a reactive design pattern - most everything you see should be update realtime. Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We welcome (and need) contributors, issues, comments!
 
 ###Core ideas:
 

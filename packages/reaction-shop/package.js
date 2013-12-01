@@ -103,8 +103,8 @@ Package.on_use(function (api, where) {
     'ProductVariantSchema',
     'VariantMediaSchema',
     'MetafieldSchema',
-    'variant'
+    'variant',
+    'ShopRoles',
+    'Shops'
   ]);
-
-  api.export(['ShopRoles','Shops']);
 });

@@ -18,5 +18,23 @@ Template.variant.events = {
     $('#variants-modal').modal();
     e.preventDefault();
     e.stopPropagation();
+  },
+  'click .buy': function(e,template) {
+    now = new Date();
+    var validationContext = "cart";
+    Cart.insert({
+     shopId: packageShop.shopId,
+     userId: Meteor.userId(),
+     items: [{
+      productId: Session.get('currentProductId'),
+      quantity: '1',
+      variants: [template.data]
+    }],
+    createdAt: now,
+    updatedAt: now
+    },{validationContext:validationContext},function(error, result) {
+      console.log(Cart.namedContext('cart').invalidKeys());
+    });
+    e.preventDefault();
   }
 };

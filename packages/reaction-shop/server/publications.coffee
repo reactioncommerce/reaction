@@ -7,6 +7,7 @@ Shops = @Shops
 Products = @Products
 Customers = @Customers
 Orders = @Orders
+Cart  = @Cart
 
 getDomain = (client) ->
   get_http_header(client, 'host').split(':')[0]
@@ -105,4 +106,28 @@ Customers.allow
   #fetch: ['owner']
 
 
+# *****************************************************
+# cart collection
+# *****************************************************
 
+Meteor.publish 'cart', (id) ->
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Cart.findOne _id: id, shopId: shop._id
+
+# *****************************************************
+# Client access rights for cart
+# *****************************************************
+Cart.allow
+  insert: (userId, doc) ->
+    # the user must be logged in, and the document must be owned by the user
+    #return (userId && doc.owner === userId);
+    true
+  update: (userId, doc, fields, modifier) ->
+    # can only change your own documents
+    true
+    #return doc.owner === userId;
+  remove: (userId, doc) ->
+    # can only remove your own documents
+    doc.owner is userId
+  #fetch: ['owner']
