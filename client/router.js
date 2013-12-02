@@ -13,7 +13,8 @@ Router.configure({
   loadingTemplate: 'loading',
   yieldTemplates: {
     'siteHeader': {to: 'header'},
-    'siteFooter': {to: 'footer'}
+    'siteFooter': {to: 'footer'},
+    'dashboardSidebar': {to: 'sidebar'}
   }
 });
 

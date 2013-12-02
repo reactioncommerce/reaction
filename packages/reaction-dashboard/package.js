@@ -7,7 +7,7 @@ Package.describe({
 Package.on_use(function (api, where) {
     api.use(['standard-app-packages', 'underscore','iron-router','less','coffeescript']);
 
-    // api.use('reaction-shop');
+    api.use('reaction-shop');
 
     var path = Npm.require('path');
 

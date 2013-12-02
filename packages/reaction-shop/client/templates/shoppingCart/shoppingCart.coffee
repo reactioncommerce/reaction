@@ -1,6 +1,7 @@
 Template.shopCartIcon.helpers
   cartCount: ->
-    Cart.find({sessionId:Session.get('serverSession')._id}).count()
+    if Session.get('serverSession')
+      Cart.find({sessionId:Session.get('serverSession')._id}).count()
 
 Template.shopCartIconList.helpers
   cartList: ->
