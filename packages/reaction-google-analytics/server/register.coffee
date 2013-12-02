@@ -1,6 +1,6 @@
 Meteor.startup ->
   console.log "Adding Google Analytics to packages"
-  result = ReactionPackages.upsert(
+  result = PackageConfigs.upsert(
     name: "reaction-google-analytics"
   ,
     $set:
@@ -12,7 +12,7 @@ Meteor.startup ->
       priority: "4"
   )
   if result.insertedId
-    ReactionPackages.update result.insertedId,
+    PackageConfigs.update result.insertedId,
       $set:
         metafields: [
           {

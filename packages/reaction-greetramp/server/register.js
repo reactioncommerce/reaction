@@ -1,6 +1,6 @@
 Meteor.startup(function () {
   console.log("Adding Greetramp to packages");
-  ReactionPackages.update({
+  PackageConfigs.update({
     name: "reaction-greetramp",
     label: "Greetramp",
     description: "Capture Emails on your site.",

@@ -9,7 +9,7 @@
     </div>
     <div class="status">
       {{#unless type}}
-        {{#if enabledPackage _id}}
+        {{#if isEnabled name}}
         <a class="pull-right disablePkg"> <i class="fa fa-minus-circle fa-4x"></i>
         </a>
         {{else}}

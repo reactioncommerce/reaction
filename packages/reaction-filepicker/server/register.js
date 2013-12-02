@@ -1,6 +1,6 @@
 Meteor.startup(function () {
   console.log("Adding Filepicker.io to packages");
-  ReactionPackages.update({
+  PackageConfigs.update({
     name: "reaction-filepicker",
     label: "Filepicker.io",
     description: "<a href='http://filepicker.io' target='_blank' class='dashlink'>Filepicker.io</a> for Reaction",

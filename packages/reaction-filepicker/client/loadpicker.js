@@ -14,7 +14,7 @@ loadPicker = function (callback) {
 var filepickerLoadCallback = function () {
   Meteor.startup(function () {
     Deps.autorun(function () {
-      var keydata = ReactionConfig.findOne({userId: Meteor.userId(), name: "reaction-filepicker", "metafields.apikey": {$exists: true}});
+      var keydata = PackageConfigs.findOne({userId: Meteor.userId(), name: "reaction-filepicker", "metafields.apikey": {$exists: true}});
       if (keydata && keydata.metafields && keydata.metafields.apikey) {
         filepicker.setKey(keydata.metafields.apikey);
         filepicker.keyIsSet = true;

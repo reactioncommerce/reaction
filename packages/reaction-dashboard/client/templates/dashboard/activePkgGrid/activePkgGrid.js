@@ -1,12 +1,12 @@
 Template.activePkgGrid.helpers({
-  UserConfig: function () {
-    return UserConfig.find({metafields: {type: ''}}).map(function (parentCategory) {
+  PackageConfigs: function () {
+    return PackageConfigs.find({metafields: {type: ''}}).map(function (parentCategory) {
       return _.extend(parentCategory,
-        {children: UserConfig.find({"metafields.type": parentCategory.name}).fetch()});
+        {children: PackageConfigs.find({"metafields.type": parentCategory.name}).fetch()});
     });
   },
-  hasUserConfig: function () {
-    if (UserConfig.find({metafields: {type: ''}}).count() > 0) return true;
+  hasPackageConfigs: function () {
+    if (PackageConfigs.find({metafields: {type: ''}}).count() > 0) return true;
   }
 });
 

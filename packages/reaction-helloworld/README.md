@@ -17,7 +17,7 @@ Clone to reaction/packages then add package to local meteor server:
 
 		Meteor.startup(function () {
 		  console.log("Adding HelloWorld to packages");
-		  ReactionPackages.update({
+		  PackageConfigs.update({
 		    name:"reaction-helloworld",
 		    title:"HelloWorld",
 		    description: "Example Reaction Package",

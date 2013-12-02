@@ -1,6 +1,6 @@
 Meteor.startup ->
   console.log 'Adding Shop to packages'
-  ReactionPackages.update
+  PackageConfigs.update
     name: 'reaction-shop',
     label: 'Shop',
     description: 'Reaction Shop',
@@ -13,7 +13,7 @@ Meteor.startup ->
 
 Meteor.startup ->
   console.log 'Adding Shop Orders to packages'
-  ReactionPackages.update
+  PackageConfigs.update
     name: 'reaction-shop-orders',
     label: 'Orders',
     route: 'shop/orders',

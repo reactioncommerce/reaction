@@ -1,16 +1,16 @@
 <template name="activePkgGrid">
   <div class="pkg-container">
-    {{#each UserConfig}}
+    {{#each PackageConfigs}}
       {{> widget}}
     {{/each}}
     <div class="tile tile-gallery">
       <i class="fa fa-plus fa-5x"></i>
       <div class="content">
         <p class="big">Apps</p>
-        {{#unless hasUserConfig}}
+        {{#unless hasPackageConfigs}}
           <p class="title">Start here and add some apps!</p>
         {{/unless}}
-        {{#if hasUserConfig}}
+        {{#if hasPackageConfigs}}
           <p class="title">Find more apps in the app gallery</p>
         {{/if}}
       </div>

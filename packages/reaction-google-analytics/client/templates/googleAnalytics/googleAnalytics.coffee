@@ -1,5 +1,5 @@
 Template.googleAnalytics.aggregateData = ->
-  config = ReactionConfig.findOne
+  config = PackageConfigs.findOne
     userId: Meteor.userId()
     name: "reaction-google-analytics"
   if config
@@ -11,7 +11,7 @@ Template.googleAnalytics.events
   "submit form": (event) ->
     event.preventDefault()
     property = $(event.target).find("[name=input-property]").val()
-    config = ReactionConfig.findOne(
+    config = PackageConfigs.findOne(
       userId: Meteor.userId()
       name: "reaction-google-analytics"
     )
@@ -25,7 +25,7 @@ Template.googleAnalytics.events
       metafields.push
         name: "property"
         value: property
-    ReactionConfig.update
+    PackageConfigs.update
       _id: config._id
     ,
       $set:

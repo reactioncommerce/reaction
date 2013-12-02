@@ -3,7 +3,7 @@
     <h2>App Gallery</h2>
     <div class="well well-sm">
       <div class="apps-container">
-        {{#each Meteor.app.packages}}
+        {{#each availablePkgs}}
           {{> pkg}}
         {{/each}}
       </div>

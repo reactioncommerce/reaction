@@ -1,6 +1,6 @@
 Meteor.startup ->
   Deps.autorun ->
-    config = ReactionConfig.findOne(
+    config = PackageConfigs.findOne(
       userId: Meteor.userId()
       name: "reaction-google-analytics"
     )
@@ -13,12 +13,12 @@ Meteor.startup ->
           if property && property != "__KEY__"
             ga("create", property, "auto")
             return
-    _.defer ->
-      $.pnotify(
-        title: "Google Analytics"
-        text: "Google Analytics Property is not configured.",
-        type: "error"
-      )
+#    _.defer ->
+#      $.pnotify(
+#        title: "Google Analytics"
+#        text: "Google Analytics Property is not configured.",
+#        type: "error"
+#      )
   $(document.body).click (e) ->
     $targets = $(e.target).closest("*[data-event-action]")
     $targets = $targets.parents("*[data-event-action]").add($targets)

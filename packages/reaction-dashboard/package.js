@@ -55,8 +55,6 @@ Package.on_use(function (api, where) {
 
   api.add_files('server/register.js', 'server');
   api.add_files('server/publish.js', 'server');
-  api.export('ReactionConfig', ['client', 'server']);
-  api.export('ReactionPackages', ['client', 'server']);
-  api.export('ReactionConfigHandle', ['client', 'server']);
-  api.export('UserConfig', ['client']);
+  api.export('PackageConfigs', ['client', 'server']);
+  api.export('PackageConfigsHandle', ['client']);
 });

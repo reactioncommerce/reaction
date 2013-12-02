@@ -1,10 +1,6 @@
 Template.availablePkgGrid.helpers({
-  // returns all registered reaction packages
-  ReactionPackages: function () {
-    return ReactionPackages.find({ $and: [
-      {"metafields.type": {$not: 'core'}},
-      {"metafields.visible": {$not: 'nav'}}
-    ]});
+  availablePkgs: function () {
+    return Meteor.app.packages;
   }
 });
 
