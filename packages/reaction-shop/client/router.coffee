@@ -1,4 +1,7 @@
-ShopController = RouteController.extend
+ShopAdminController = RouteController.extend
+  yieldTemplates:
+    'shopHeader': to: 'header'
+    'dashboardSidebar': to: 'sidebar'
   before: ->
     @subscribe('shops').wait()
     shop = Shops.findOne()
@@ -13,28 +16,32 @@ ShopController = RouteController.extend
           this.render('unauthorized')
           this.stop()
 
+ShopController = RouteController.extend
+  before: ->
+    @subscribe('shops').wait()
+    shop = Shops.findOne()
+    unless shop
+      @render('shopNotFound')
+      @stop()
+    else
+      packageShop.shopId = shop._id
+
+
+
 Router.map ->
   # home page intro screen for reaction-shop
   this.route 'shop',
-    controller: ShopController
+    controller: ShopAdminController
     template: 'shopwelcome'
   # list page of customer records
   this.route 'shop/customers',
-    controller: ShopController
-    yieldTemplates:
-      'shopHeader': to: 'header'
+    controller: ShopAdminController
   # list page of shop orders
   this.route 'shop/orders',
-    controller: ShopController
-    yieldTemplates:
-      'shopHeader': to: 'header'
+    controller: ShopAdminController
   # list page of products
   this.route 'shop/products',
-    controller: ShopController
-    yieldTemplates:
-      'shopHeader': to: 'header'
-      'dashboardSidebar': to: 'sidebar'
-
+    controller: ShopAdminController
   # edit product page
   this.route 'shop/product',
     controller: ShopController
@@ -43,13 +50,8 @@ Router.map ->
       Session.set('currentProductId', this.params._id)
       Products.findOne(this.params._id)
     template: 'productsEdit'
-    yieldTemplates:
-      'shopHeader': to: 'header'
-      'dashboardSidebar': to: 'sidebar'
   #add new products
   this.route 'shop/product/add',
-    controller: ShopController
+    controller: ShopAdminController
     path: '/shop/products/add'
     template: 'productsEdit'
-    yieldTemplates:
-      'shopHeader': to: 'header'

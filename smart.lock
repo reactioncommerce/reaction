@@ -6,7 +6,10 @@
       "highcharts": {},
       "roles": {},
       "x-editable-bootstrap3": {},
-      "iron-router": {},
+      "iron-router": {
+        "git": "https://github.com/wsoul/iron-router.git",
+        "branch": "master"
+      },
       "videojs": {},
       "parsleyjs": {},
       "font-awesome-4": {},
@@ -46,9 +49,9 @@
         "commit": "33eeb067df8e68f2db0c66dabc4ae9de2bdd5906"
       },
       "iron-router": {
-        "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.1",
-        "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
+        "git": "https://github.com/wsoul/iron-router.git",
+        "branch": "master",
+        "commit": "a34ce92ff1ece98e2ec9416b8490c8f9ef3334c0"
       },
       "videojs": {
         "git": "https://github.com/nate-strauser/meteor-video-js.git",
@@ -77,8 +80,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.2.11",
-        "commit": "34ea61718c8826dfa9236222cec6c097bd41ae6b"
+        "tag": "v0.2.14",
+        "commit": "46eeef2c8786f55e3ff3368c99ac0672600bc734"
       },
       "accounts-ui-bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
@@ -102,8 +105,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.17",
-        "commit": "a9d51089becf1142482519ed7f99ef84772d06a3"
+        "tag": "v0.2.18",
+        "commit": "53d0bbf77275ae2035643af4a268b7649af42b28"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
