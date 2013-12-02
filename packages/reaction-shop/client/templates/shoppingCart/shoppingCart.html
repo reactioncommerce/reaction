@@ -1,3 +1,22 @@
 <template name="shopCartIcon">
-{{!--     <div class="nav navbar-nav navbar-right"><i class="fa fa-shopping-cart fa-2x fa-flip-horizontal fa-border"></i></div> --}}
+      <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cart <span class="badge">{{cartCount}}</span><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          {{>shopCartIconList}}
+          <li class="divider"></li>
+          <li><button class="btn btn-primary pull-right">Checkout</button></li>
+        </ul>
+      </li>
+    </ul>
+</template>
+
+<template name="shopCartIconList">
+  {{#each cartList}}
+    {{#with items.[0]}}
+
+        <li><span class="badge">{{quantity}}</span> {{variants.[0].title}}-{{variants.[0].barcode}}</li>
+
+    {{/with}}
+  {{/each}}
 </template>

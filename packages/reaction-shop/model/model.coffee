@@ -364,8 +364,6 @@ Customers = @Customers # package exports
 
 Orders = @Orders # package exports
 
-Cart = @Cart
-
 CartItemSchema = new SimpleSchema
   productId:
     type: String
@@ -379,6 +377,8 @@ CartItemSchema = new SimpleSchema
 @Cart = new Meteor.Collection2 'Cart',
   schema:
     shopId:
+      type: String
+    sessionId:
       type: String
     userId:
       type: String
@@ -399,3 +399,5 @@ CartItemSchema = new SimpleSchema
       type: Date
     updatedAt:
       type: Date
+
+Cart = @Cart # package exports

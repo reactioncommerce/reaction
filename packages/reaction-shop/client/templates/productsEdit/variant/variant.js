@@ -24,6 +24,7 @@ Template.variant.events = {
     var validationContext = "cart";
     Cart.insert({
      shopId: packageShop.shopId,
+     sessionId: Session.get('serverSession')._id,
      userId: Meteor.userId(),
      items: [{
       productId: Session.get('currentProductId'),
@@ -33,7 +34,8 @@ Template.variant.events = {
     createdAt: now,
     updatedAt: now
     },{validationContext:validationContext},function(error, result) {
-      console.log(Cart.namedContext('cart').invalidKeys());
+      if (Cart.namedContext('cart').invalidKeys().length > 0)
+        console.log(Cart.namedContext('cart').invalidKeys());
     });
     e.preventDefault();
   }

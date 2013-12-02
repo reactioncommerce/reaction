@@ -110,10 +110,10 @@ Customers.allow
 # cart collection
 # *****************************************************
 
-Meteor.publish 'cart', (id) ->
+Meteor.publish 'cart', (sessionId) ->
   shop = Shops.findOne domains: getDomain(this)
   if shop
-    Cart.findOne _id: id, shopId: shop._id
+    Cart.find shopId: shop._id, sessionId: sessionId
 
 # *****************************************************
 # Client access rights for cart

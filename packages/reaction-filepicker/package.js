@@ -4,7 +4,7 @@ Package.describe({
 
 Package.on_use(function (api) {
   api.use(['templating', 'jquery', 'iron-router'], 'client');
-  api.use(['reaction-dashboard','reaction-shop']);
+  // api.use(['reaction-dashboard','reaction-shop']);
   api.add_files([
     //Router
     'client/router.js',

@@ -11,7 +11,8 @@ Package.on_use(function (api, where) {
     'collection-behaviours',
     'roles'
   ]);
-  api.use(['autoform', 'accounts-base', 'iron-router', 'less'], 'client');
+
+  api.use(['autoform', 'accounts-base', 'iron-router', 'less','reaction-filepicker'], 'client');
   api.use('underscore', 'server');
 
   api.imply('simple-schema', ['client', 'server']);
@@ -79,7 +80,6 @@ Package.on_use(function (api, where) {
     'client/templates/notice/unauthorized.html',
     'client/templates/notice/shopNotFound.html',
 
-    // Package
     'client/subscribe.coffee',
     'client/router.coffee'
   ], 'client');
@@ -103,8 +103,10 @@ Package.on_use(function (api, where) {
     'ProductVariantSchema',
     'VariantMediaSchema',
     'MetafieldSchema',
+    'CartItemSchema',
     'variant',
     'ShopRoles',
-    'Shops'
+    'Shops',
+    'Cart'
   ]);
 });
