@@ -7,11 +7,10 @@
       <i class="fa fa-plus fa-5x"></i>
       <div class="content">
         <p class="big">Apps</p>
-        {{#unless hasPackageConfigs}}
-          <p class="title">Start here and add some apps!</p>
-        {{/unless}}
         {{#if hasPackageConfigs}}
           <p class="title">Find more apps in the app gallery</p>
+        {{else}}
+          <p class="title">Start here and add some apps!</p>
         {{/if}}
       </div>
     </div>

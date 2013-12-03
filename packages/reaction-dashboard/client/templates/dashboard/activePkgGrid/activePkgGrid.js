@@ -1,12 +1,17 @@
 Template.activePkgGrid.helpers({
   PackageConfigs: function () {
-    return PackageConfigs.find({metafields: {type: ''}}).map(function (parentCategory) {
-      return _.extend(parentCategory,
-        {children: PackageConfigs.find({"metafields.type": parentCategory.name}).fetch()});
+    var packageConfigs = PackageConfigs.find().fetch();
+    _.each(packageConfigs, function(packageConfig) {
+      _.each(Meteor.app.packages, function(packageInfo) {
+        if (packageInfo.name == packageConfig.name) {
+          _.extend(packageConfig, packageInfo)
+        }
+      })
     });
+    return  packageConfigs;
   },
   hasPackageConfigs: function () {
-    if (PackageConfigs.find({metafields: {type: ''}}).count() > 0) return true;
+    return PackageConfigs.find().count();
   }
 });
 

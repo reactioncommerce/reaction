@@ -11,22 +11,17 @@ Meteor.publish('PackageConfigs', function () {
 // *****************************************************
 PackageConfigs.allow({
   insert: function (userId, doc) {
-    // the user must be logged in, and the document must be owned by the user
-    //return (userId && doc.owner === userId);
     doc.shopId = Meteor.app.getCurrentShop()._id;
     return true;
   },
   update: function (userId, doc, fields, modifier) {
-    // can only change your own documents
-//        return doc.owner === userId;
-    if (modifier.$set && modifier.$set.shopId)
+    if (modifier.$set && modifier.$set.shopId) {
       return false;
+    }
     return true;
   },
   remove: function (userId, doc) {
-    // can only remove your own documents
-//        return doc.owner === userId;
-    return true;
+    return doc.shopId == Meteor.app.getCurrentShop()._id;
   }
   //fetch: ['owner']
 });

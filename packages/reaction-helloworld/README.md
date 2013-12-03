@@ -17,16 +17,6 @@ Clone to reaction/packages then add package to local meteor server:
 
 		Meteor.startup(function () {
 		  console.log("Adding HelloWorld to packages");
-		  PackageConfigs.update({
-		    name:"reaction-helloworld",
-		    title:"HelloWorld",
-		    description: "Example Reaction Package",
-		    icon: "fa fa-globe fa-5x",
-		    route: "helloworld",
-		    template: "helloworld",
-		    priority: "2",
-		    metafields: {type:''}
-		  },{$set:{}},{upsert:true});
 		});
 
 Icons available are from the [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/) icon library.

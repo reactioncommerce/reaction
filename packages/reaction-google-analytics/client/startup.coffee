@@ -1,18 +1,13 @@
 Meteor.startup ->
   Deps.autorun ->
     config = PackageConfigs.findOne(
-      userId: Meteor.userId()
       name: "reaction-google-analytics"
     )
     if !config
       return # data not loaded yet
-    if config.metafields
-      for metafield in config.metafields
-        if metafield.name == "property"
-          property = metafield.value
-          if property && property != "__KEY__"
-            ga("create", property, "auto")
-            return
+    if config.property && config.property != "__KEY__"
+      ga("create", property, "auto")
+      return
 #    _.defer ->
 #      $.pnotify(
 #        title: "Google Analytics"

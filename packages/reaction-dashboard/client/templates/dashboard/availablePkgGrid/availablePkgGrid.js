@@ -5,7 +5,7 @@ Template.availablePkgGrid.helpers({
 });
 
 Template.availablePkgGrid.rendered = function () {
-//  $('.app-gallery').hide();
+  var pkgGrid = new Packery(document.querySelector('.apps-container'), {gutter: 2});
 };
 
 Template.availablePkgGrid.events({

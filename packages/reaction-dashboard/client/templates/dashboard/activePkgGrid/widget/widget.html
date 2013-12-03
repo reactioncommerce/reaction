@@ -1,14 +1,9 @@
 <template name="widget">
-  <div class="tile tile-{{tileColors packageId}}" id="{{_id}}"> <i class="{{icon}}"></i>
+  <div class="tile tile-{{tileColors _id}}" id="{{_id}}"> <i class="{{icon}}"></i>
     <div class="content">
       <p class="big">{{label}}</p>
       <ul class="list-unstyled">
-        {{#each children}}
-        <li>
-          +
-          <a href="{{route}}">{{label}}</a>
-        </li>
-        {{/each}}
+        <a href="{{route}}">{{label}}</a>
       </ul>
     </div>
     <div class="status">
@@ -16,12 +11,6 @@
         <span class="fa-stack fa-2x">
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
-      <a href="{{pathFor route}}" class="pull-right">
-        <span class="fa-stack fa-2x">
-          <i class="fa fa-circle fa-stack-2x"></i>
-          <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
         </span>
       </a>
     </div>

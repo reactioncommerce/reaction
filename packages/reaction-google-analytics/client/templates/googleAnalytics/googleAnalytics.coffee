@@ -1,36 +1,16 @@
 Template.googleAnalytics.aggregateData = ->
-  config = PackageConfigs.findOne
-    userId: Meteor.userId()
-    name: "reaction-google-analytics"
-  if config
-    for metafield in config.metafields
-      config[metafield.name] = metafield.value
-  config
+  PackageConfigs.findOne({name: "reaction-google-analytics"})
 
 Template.googleAnalytics.events
   "submit form": (event) ->
     event.preventDefault()
     property = $(event.target).find("[name=input-property]").val()
-    config = PackageConfigs.findOne(
-      userId: Meteor.userId()
-      name: "reaction-google-analytics"
-    )
-    metafields = config.metafields || []
-    set = false
-    for metafield in metafields
-      if metafield.name == "property"
-        metafield.value = property
-        set = true
-    if !set
-      metafields.push
-        name: "property"
-        value: property
+    config = PackageConfigs.findOne({name: "reaction-google-analytics"})
     PackageConfigs.update
       _id: config._id
     ,
       $set:
-        metafields: metafields
-
+        property: property
     $.pnotify
       title: "Saved \"" + property + "\""
       text: "Google Analytics is now configured."

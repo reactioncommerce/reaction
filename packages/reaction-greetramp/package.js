@@ -5,7 +5,7 @@ Package.describe({
 
 // Tell Meteor what to do with our package at bundle time
 Package.on_use(function (api, where) {
-
+  api.imply('reaction-dashboard', ['client', 'server']);
   // The api.use method allows us to depend on other
   // packages that ship with meteor or are in our project's
   // package directory
@@ -49,8 +49,8 @@ Package.on_use(function (api, where) {
     'server/countstats.js',
     'server/fixtures.js',
     'server/publish.js',
-    'server/register.js'
   ], 'server');
+  api.add_files('client/register.js', 'client');
 
   api.export(['CountStats', 'Captures', 'Counts', 'Campaigns']);
 });

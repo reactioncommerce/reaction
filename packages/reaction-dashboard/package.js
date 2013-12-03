@@ -7,8 +7,6 @@ Package.describe({
 Package.on_use(function (api, where) {
   api.use(['standard-app-packages', 'underscore', 'iron-router', 'less', 'coffeescript']);
 
-  api.use('reaction-shop');
-
   api.add_files('lib/app.coffee', 'client');
   api.add_files('client/router.coffee', 'client');
 
@@ -53,7 +51,6 @@ Package.on_use(function (api, where) {
   // *****************************************************
   api.add_files('lib/sparkline/jquery.sparkline.min.js', 'client');
 
-  api.add_files('server/register.js', 'server');
   api.add_files('server/publish.js', 'server');
   api.export('PackageConfigs', ['client', 'server']);
   api.export('PackageConfigsHandle', ['client']);
