@@ -13,10 +13,6 @@
 
 <template name="shopCartIconList">
   {{#each cartList}}
-    {{#with items.[0]}}
-
-        <li><span class="badge">{{quantity}}</span> {{variants.[0].title}}-{{variants.[0].barcode}}</li>
-
-    {{/with}}
+        <li><span class="badge">{{quantity}}</span>{{variants.barcode}}</li>
   {{/each}}
 </template>

@@ -385,6 +385,7 @@ CartItemSchema = new SimpleSchema
       optional: true
     items:
       type: [CartItemSchema]
+      optional: true
     requiresShipping:
       label: "Require a shipping address"
       type: Boolean

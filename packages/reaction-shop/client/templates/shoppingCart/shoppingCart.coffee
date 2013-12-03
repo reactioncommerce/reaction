@@ -1,8 +1,15 @@
 Template.shopCartIcon.helpers
   cartCount: ->
+    count = 0
     if Session.get('serverSession')
-      Cart.find({sessionId:Session.get('serverSession')._id}).count()
+      currentCart = Cart.findOne()
+    if currentCart
+      for items in currentCart.items
+        count += items.quantity
+      return count
 
 Template.shopCartIconList.helpers
   cartList: ->
-    Cart.find()
+    currentCart = Cart.findOne()
+    if currentCart
+      return currentCart.items
