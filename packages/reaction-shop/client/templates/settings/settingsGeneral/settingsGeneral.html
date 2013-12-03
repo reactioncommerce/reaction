@@ -1,0 +1,110 @@
+<template name="settingsGeneral">
+  <div class="container">
+    <h1>General Settings</h1>
+    {{#autoForm schema="Shops" id="shopEditForm" doc=shop class="form-horizontal"}}
+      <fieldset>
+        <div class="form-group {{#if afFieldIsInvalid "name"}}has-error{{/if}}">
+          {{afFieldLabel 'name' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'name'}}
+            {{#if afFieldIsInvalid "name"}}
+              <span class="help-block">{{afFieldMessage "name"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "metaTitle"}}has-error{{/if}}">
+          {{afFieldLabel 'metaTitle' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'metaTitle'}}
+            {{#if afFieldIsInvalid "metaTitle"}}
+              <span class="help-block">{{afFieldMessage "metaTitle"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "metaDescription"}}has-error{{/if}}">
+          {{afFieldLabel 'metaDescription' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'metaDescription'}}
+            {{#if afFieldIsInvalid "metaDescription"}}
+              <span class="help-block">{{afFieldMessage "metaDescription"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "email"}}has-error{{/if}}">
+          {{afFieldLabel 'email' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'email'}}
+            {{#if afFieldIsInvalid "email"}}
+              <span class="help-block">{{afFieldMessage "email"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "customerEmail"}}has-error{{/if}}">
+          {{afFieldLabel 'customerEmail' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'customerEmail'}}
+            {{#if afFieldIsInvalid "customerEmail"}}
+              <span class="help-block">{{afFieldMessage "customerEmail"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "phone"}}has-error{{/if}}">
+          {{afFieldLabel 'phone' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'phone'}}
+            {{#if afFieldIsInvalid "phone"}}
+              <span class="help-block">{{afFieldMessage "phone"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "address1"}}has-error{{/if}}">
+          {{afFieldLabel 'address1' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'address1'}}
+            {{#if afFieldIsInvalid "address1"}}
+              <span class="help-block">{{afFieldMessage "address1"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "city"}}has-error{{/if}}">
+          {{afFieldLabel 'city' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'city'}}
+            {{#if afFieldIsInvalid "city"}}
+              <span class="help-block">{{afFieldMessage "city"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "zip"}}has-error{{/if}}">
+          {{afFieldLabel 'zip' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'zip'}}
+            {{#if afFieldIsInvalid "zip"}}
+              <span class="help-block">{{afFieldMessage "zip"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "country"}}has-error{{/if}}">
+          {{afFieldLabel 'country' class="col-sm-2 col-lg-1 control-label"}}
+          <div class="col-sm-6 controls">
+            {{afFieldInput 'country'}}
+            {{#if afFieldIsInvalid "country"}}
+              <span class="help-block">{{afFieldMessage "country"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary update">Save shop</button>
+      </fieldset>
+    {{/autoForm}}
+  </div>
+</template>

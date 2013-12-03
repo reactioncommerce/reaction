@@ -47,6 +47,14 @@ Package.on_use(function (api, where) {
     'client/templates/dashboard/orders/orders.html',
     'client/templates/dashboard/orders/orders.js',
 
+    'client/templates/settings/settingsGeneral/settingsGeneral.html',
+    'client/templates/settings/settingsAccount/settingsAccount.html',
+    'client/templates/settings/settingsAccount/settingsAccount.coffee',
+    'client/templates/settings/settingsAccount/member/member.html',
+    'client/templates/settings/settingsAccount/member/member.coffee',
+    'client/templates/settings/settingsAccount/member/memberForm/memberForm.html',
+    'client/templates/settings/settingsAccount/member/memberForm/memberForm.coffee',
+
     'client/templates/products/products.html',
     'client/templates/products/products.less',
 
@@ -89,6 +97,7 @@ Package.on_use(function (api, where) {
   api.add_files('shopRoles/shop_roles_client.coffee', 'client');
 
   api.add_files([
+    'server/methods.coffee',
     'server/fixtures.coffee',
     'server/publications.coffee',
     'server/register.coffee'

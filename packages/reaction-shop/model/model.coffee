@@ -224,6 +224,12 @@ CustomerAddressSchema = new SimpleSchema
     requiresExtraPaymentsAgreement:
       type: Boolean
       optional: true
+    metaTitle:
+      type: String
+      optional: true
+    metaDescription:
+      type: String
+      optional: true
     createdAt:
       type: Date
     updatedAt:

@@ -1,3 +1,8 @@
+Meteor.publish 'staff', ->
+  shop = Shops.findOne domains: getDomain(this)
+  if shop
+    Meteor.users.find {'shopRoles.shopId': shop._id}
+
 # *****************************************************
 # product collection
 # *****************************************************
