@@ -1,14 +1,3 @@
-Template.dashboardSidebar.categories = function () {
-    return UserConfig.find({$or: [
-        {metafields: {type: 'core'}},
-        {metafields: {type: ''}}
-    ]}).map(function (parentCategory) {
-        return _.extend(parentCategory,
-            {children: UserConfig.find({"metafields.type": parentCategory.name}).fetch()});
-    });
-}
-
-
 Template.dashboardSidebar.events({
     'click .dashboard-back': function (e) {
         ///e.preventDefault;

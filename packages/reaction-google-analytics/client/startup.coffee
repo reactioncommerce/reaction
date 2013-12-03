@@ -1,18 +1,15 @@
+root = exports ? this
+
 Meteor.startup ->
   Deps.autorun ->
-    config = ReactionConfig.findOne(
-      userId: Meteor.userId()
+    config = PackageConfigs.findOne(
       name: "reaction-google-analytics"
     )
     if !config
       return # data not loaded yet
-    if config.metafields
-      for metafield in config.metafields
-        if metafield.name == "property"
-          property = metafield.value
-          if property && property != "__KEY__"
-            ga("create", property, "auto")
-            return
+    if config.property && config.property != "__KEY__"
+      ga("create", config.property, "auto")
+      return
     _.defer ->
       $.pnotify(
         title: "Google Analytics"
@@ -24,4 +21,10 @@ Meteor.startup ->
     $targets = $targets.parents("*[data-event-action]").add($targets)
     $targets.each (index, element) ->
       $element = $(element)
-      ga("send", "event", $element.data("event-category"), $element.data("event-action"), $element.data("event-label"), $element.data("event-value"))
+      analyticsEvent =
+        category: $element.data("event-category")
+        action: $element.data("event-action")
+        label: $element.data("event-label")
+        value: $element.data("event-value")
+      ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value)
+      root.AnalyticsEvents.insert(analyticsEvent)

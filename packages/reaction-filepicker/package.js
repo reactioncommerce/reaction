@@ -3,6 +3,8 @@ Package.describe({
 });
 
 Package.on_use(function (api) {
+  api.imply('reaction-dashboard', ['client', 'server']);
+
   api.use(['templating', 'jquery', 'iron-router'], 'client');
   api.use(['reaction-dashboard','reaction-shop']);
   api.add_files([
@@ -14,7 +16,7 @@ Package.on_use(function (api) {
     'client/templates/filepicker-io/filepicker-io.js'
   ], 'client');
   // register as reaction package
-  api.add_files('server/register.js', 'server');
+  api.add_files('client/register.js', 'client');
   // Export filePickerIO global
   api.export('loadPicker', 'client');
 });

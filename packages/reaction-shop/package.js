@@ -3,6 +3,7 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
+  api.imply('reaction-dashboard', ['client', 'server']);
   api.use([
     'standard-app-packages',
     'coffeescript',
@@ -100,8 +101,8 @@ Package.on_use(function (api, where) {
     'server/methods.coffee',
     'server/fixtures.coffee',
     'server/publications.coffee',
-    'server/register.coffee'
   ], 'server');
+  api.add_files('client/register.coffee', 'client');
 
   api.export([
     'packageShop',

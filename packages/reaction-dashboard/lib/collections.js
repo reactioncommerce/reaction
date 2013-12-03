@@ -1,5 +1,5 @@
 // *****************************************************
-// add subscriptions for reactivity
+// define meteor/mongo collections for reaction
 //
 // *****************************************************
-PackageConfigsHandle = Meteor.subscribe("PackageConfigs");
+PackageConfigs = new Meteor.Collection("PackageConfigs");

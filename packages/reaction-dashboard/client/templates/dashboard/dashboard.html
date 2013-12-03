@@ -4,104 +4,18 @@
     <div class="row">
       <h1>Hello {{fname}}</h1>
       {{> activePkgGrid}}
-        {{> availablePkgGrid}}
+      {{> availablePkgGrid}}
     </div>
   </div>
 </template>
 
 
 
-<template name="activePkgGrid">
-  <div class="pkg-container">
-    {{#each UserConfig}}
-      {{>widget}}
-    {{/each}}
-    <div class="tile tile-gallery">
-      <i class="fa fa-plus fa-5x"></i>
-      <div class="content">
-        <p class="big">Apps</p>
-        {{#unless hasUserConfig}}
-          <p class="title">Start here and add some apps!</p>
-        {{/unless}}
-        {{#if hasUserConfig}}
-          <p class="title">Find more apps in the app gallery</p>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-</template>
 
 
 
-<template name="availablePkgGrid">
-  <div class="app-gallery">
-    <h2>App Gallery</h2>
-    <div class="well well-sm">
-      <div class="apps-container">
-        {{#each ReactionPackages}}
-          {{>pkg}}
-        {{/each}}
-      </div>
-    </div>
-  </div>
-</template>
-
-
-<template name="widget">
-  <div class="tile tile-{{tileColors packageId}}" id="{{_id}}"> <i class="{{icon}}"></i>
-    <div class="content">
-      <p class="big">{{label}}</p>
-      <ul class="list-unstyled">
-        {{#each children}}
-        <li>
-          +
-          <a href="{{route}}">{{label}}</a>
-        </li>
-        {{/each}}
-      </ul>
-    </div>
-    <div class="status">
-      <a href="{{pathFor route}}" class="pull-right">
-        <span class="fa-stack fa-2x">
-          <i class="fa fa-circle fa-stack-2x"></i>
-          <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
-      <a href="{{pathFor route}}" class="pull-right">
-        <span class="fa-stack fa-2x">
-          <i class="fa fa-circle fa-stack-2x"></i>
-          <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
-    </div>
-    <div class="widget">
-      {{{getTemplate name "widget"}}}
-            {{widget}}
-    </div>
-  </div>
-</template>
 
 
 
-<template name="pkg">
-  <div class="tile tile-{{tileColors _id}}" id="{{_id}}">
-    <div class="tile-icon">
-      <i class="{{icon}}"></i>
-    </div>
-    <div class="content">
-      <p class="big">{{label}}</p>
-      <p class="title">{{{description}}}</p>
-    </div>
-    <div class="status">
-      {{#unless type}}
-        {{#if enabledPackage _id}}
-        <a class="pull-right disablePkg"> <i class="fa fa-minus-circle fa-4x"></i>
-        </a>
-        {{else}}
-        <a class="pull-right enablePkg"> <i class="fa fa-plus-circle fa-4x"></i>
-        </a>
-        {{/if}}
-      {{/unless}}
-    </div>
-  </div>
-</template>
+
+
