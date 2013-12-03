@@ -1,0 +1,21 @@
+<template name="settingsAccount">
+  <div class="container">
+    <h1>Account Settings</h1>
+
+    <h3>Staff members</h3>
+    <table class="table staff-table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Admin Access</th>
+      </tr>
+      </thead>
+      {{#each members}}
+        {{> member}}
+      {{/each}}
+    </table>
+    <button type="button" class="btn btn-default button-add-member">Add a staff member</button>
+    {{> memberForm}}
+  </div>
+</template>

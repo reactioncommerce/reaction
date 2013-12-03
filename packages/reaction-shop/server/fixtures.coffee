@@ -191,7 +191,7 @@ unless Shops.find().count()
     "requiresExtraPaymentsAgreement": false
     "createdAt": now
 
-unless Products.find().count() > 10
+unless Products.find().count()
   console.log 'Adding products fixture data'
   Products.insert
     #'_id': 'fhnqEEfMaESexc26F',

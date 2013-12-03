@@ -1,4 +1,4 @@
-ShopAdminController = RouteController.extend
+ShopController = RouteController.extend
   yieldTemplates:
     'shopHeader': to: 'header'
     'dashboardSidebar': to: 'sidebar'
@@ -10,29 +10,34 @@ ShopAdminController = RouteController.extend
       @stop()
     else
       packageShop.shopId = shop._id
+
+ShopAdminController = ShopController.extend
+  before: ->
+    if packageShop.shopId
       user = Meteor.user()
       unless Roles.userIsInRole(user, 'admin')
         unless ShopRoles.userIsInRole(packageShop.shopId, user, ['owner', 'manager', 'vendor'])
           this.render('unauthorized')
           this.stop()
 
-ShopController = RouteController.extend
-  before: ->
-    @subscribe('shops').wait()
-    shop = Shops.findOne()
-    unless shop
-      @render('shopNotFound')
-      @stop()
-    else
-      packageShop.shopId = shop._id
-
-
-
 Router.map ->
   # home page intro screen for reaction-shop
   this.route 'shop',
     controller: ShopAdminController
     template: 'shopwelcome'
+  this.route 'shop/settings/general',
+    controller: ShopAdminController
+    path: '/shop/settings/general'
+    data: ->
+      shop: Shops.findOne packageShop.shopId
+    template: 'settingsGeneral'
+  this.route 'shop/settings/account',
+    controller: ShopAdminController
+    path: '/shop/settings/account'
+    data: ->
+      shop: Shops.findOne packageShop.shopId
+      members: Meteor.users.find {'shopRoles.shopId': packageShop.shopId}
+    template: 'settingsAccount'
   # list page of customer records
   this.route 'shop/customers',
     controller: ShopAdminController

@@ -1,6 +1,16 @@
 <template name="shopNavElements">
     {{#if userHasRole "admin"}}
     <ul class="nav navbar-nav nav-pills">
+      <li class="{{active 'shop/settings/general'}}">
+        <a href="{{pathFor 'shop/settings/general'}}">
+          General Settings
+        </a>
+      </li>
+      <li class="{{active 'shop/settings/account'}}">
+        <a href="{{pathFor 'shop/settings/account'}}">
+          Account Settings
+        </a>
+      </li>
       <li class="{{active '/shop/orders'}}">
         <a href="{{pathFor 'shop/orders'}}">
           Orders
