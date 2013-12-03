@@ -1,4 +1,4 @@
-Template.googleAnalytics.aggregateData = ->
+Template.googleAnalytics.packageConfig = ->
   PackageConfigs.findOne({name: "reaction-google-analytics"})
 
 Template.googleAnalytics.events
