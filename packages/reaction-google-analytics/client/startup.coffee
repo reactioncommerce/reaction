@@ -1,3 +1,5 @@
+root = exports ? this
+
 Meteor.startup ->
   Deps.autorun ->
     config = PackageConfigs.findOne(
@@ -19,4 +21,10 @@ Meteor.startup ->
     $targets = $targets.parents("*[data-event-action]").add($targets)
     $targets.each (index, element) ->
       $element = $(element)
-      ga("send", "event", $element.data("event-category"), $element.data("event-action"), $element.data("event-label"), $element.data("event-value"))
+      analyticsEvent =
+        category: $element.data("event-category")
+        action: $element.data("event-action")
+        label: $element.data("event-label")
+        value: $element.data("event-value")
+      ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value)
+      root.AnalyticsEvents.insert(analyticsEvent)

@@ -19,6 +19,9 @@ Package.on_use(function (api, where) {
   // we can add files to the client, server, or both
   // in this case load both.js on the client AND the server
   api.add_files([
+    'lib/collections/AnalyticsEvents.coffee'
+  ]);
+  api.add_files([
     'client/register.coffee',
     'client/compatibility/google-analytics-bootstrap.js',
     'client/routing.coffee',
@@ -26,5 +29,8 @@ Package.on_use(function (api, where) {
     'client/templates/googleAnalytics/googleAnalytics.html',
     'client/templates/googleAnalytics/googleAnalytics.coffee'
   ], 'client');
+  api.add_files([
+    'server/collections/AnalyticsEvents.coffee'
+  ], 'server');
 
 });
