@@ -3,10 +3,6 @@ Meteor.publish 'staff', ->
   if shop
     Meteor.users.find {'shopRoles.shopId': shop._id}
 
-# *****************************************************
-# product collection
-# *****************************************************
-
 # Scope variable import
 Shops = @Shops
 Products = @Products
@@ -16,8 +12,32 @@ Orders = @Orders
 getDomain = (client) ->
   get_http_header(client, 'host').split(':')[0]
 
+# *****************************************************
+# shop collection
+# *****************************************************
+
 Meteor.publish 'shops', ->
   Shops.find domains: getDomain(this)
+
+# *****************************************************
+# Client access rights for products
+# *****************************************************
+Shops.allow
+  insert: (userId, doc) ->
+    # the user must be logged in, and the document must be owned by the user
+    true
+  update: (userId, doc, fields, modifier) ->
+    # can only change your own documents
+    true
+    #return doc.owner === userId;
+  remove: (userId, doc) ->
+    # can only remove your own documents
+    doc.owner is userId
+  #fetch: ['owner']
+
+# *****************************************************
+# product collection
+# *****************************************************
 
 Meteor.publish 'products', ->
   shop = Shops.findOne domains: getDomain(this)

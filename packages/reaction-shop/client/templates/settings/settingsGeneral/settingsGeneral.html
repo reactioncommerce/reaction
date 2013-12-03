@@ -1,7 +1,7 @@
 <template name="settingsGeneral">
   <div class="container">
     <h1>General Settings</h1>
-    {{#autoForm schema="Shops" id="shopEditForm" doc=shop class="form-horizontal"}}
+    {{#autoForm schema="Shops" doc=shop id="shopEditForm" class="form-horizontal"}}
       <fieldset>
         <div class="form-group {{#if afFieldIsInvalid "name"}}has-error{{/if}}">
           {{afFieldLabel 'name' class="col-sm-2 col-lg-1 control-label"}}
