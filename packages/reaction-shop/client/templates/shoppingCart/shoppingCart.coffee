@@ -3,7 +3,7 @@ Template.shopCartIcon.helpers
     count = 0
     if Session.get('serverSession')
       currentCart = Cart.findOne()
-    if currentCart
+    if currentCart and currentCart.items
       for items in currentCart.items
         count += items.quantity
     return count
