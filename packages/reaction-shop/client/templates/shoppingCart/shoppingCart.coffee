@@ -6,7 +6,7 @@ Template.shopCartIcon.helpers
     if currentCart
       for items in currentCart.items
         count += items.quantity
-      return count
+    return count
 
 Template.shopCartIconList.helpers
   cartList: ->

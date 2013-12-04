@@ -21,31 +21,18 @@ Template.variant.events = {
   },
   'click .buy': function(e,template) {
     now = new Date();
-    var validationContext = "cart";
-    var currentProductId = Session.get('currentProductId');
+    var sessionId = Session.get('serverSession')._id;
     var variantData = template.data;
-    var currentCart = Cart.findOne();
+    var productId = Session.get('currentProductId');
+    // Check for, create cart
+    Meteor.call('createCart',sessionId,productId,variantData, function(err, cart) {
+      if (err)
+        console.log(err);
+      else      // Insert new item, update quantity for existing
+      var currentCart = Cart.findOne();
+      Meteor.call('addToCart',currentCart._id,productId,variantData);
+    });
 
-    // If user doesn't have a cart, create one
-    if (currentCart == undefined) {
-       currentCart = Cart.insert({
-         shopId: packageShop.shopId,
-         sessionId: Session.get('serverSession')._id,
-         userId: Meteor.userId(),
-         createdAt: now,
-         updatedAt: now
-        // items: [{
-        //   productId: Session.get('currentProductId'),
-        //   quantity: '1',
-        //   variants: [template.data]
-        // }],
-        },{validationContext:validationContext},function(error, result) {
-          if (Cart.namedContext('cart').invalidKeys().length > 0)
-            console.log(Cart.namedContext('cart').invalidKeys());
-        });
-    }
-    // Insert new item, update quantity for existing
-    Meteor.call('addToCart',currentCart._id,currentProductId,variantData);
     e.preventDefault();
   }
 };

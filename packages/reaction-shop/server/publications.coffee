@@ -156,14 +156,3 @@ Cart.allow
     # can only remove your own documents
     doc.owner is userId
   #fetch: ['owner']
-
-Meteor.methods
-  addToCart: (cartId,productId,variantData) ->
-    now = new Date()
-    currentCart = Cart.find({_id: cartId, "items.productId": productId, "items.variants": variantData}).count()
-    if currentCart > 0
-      Cart.update {_id: cartId, "items.productId": productId, "items.variants": variantData},{ $set: {"items.variants": variantData,updatedAt: now}, $inc: {"items.$.quantity": 1}}
-    else
-      Cart.update {_id: cartId},{ $addToSet:{items:{productId: productId, quantity: 1, variants: variantData}}}
-
-
