@@ -24,13 +24,14 @@ Template.variant.events = {
     var sessionId = Session.get('serverSession')._id;
     var variantData = template.data;
     var productId = Session.get('currentProductId');
+    var quantity = 1;
     // Check for, create cart
     Meteor.call('createCart',sessionId,productId,variantData, function(err, cart) {
       if (err)
         console.log(err);
       else      // Insert new item, update quantity for existing
       var currentCart = Cart.findOne();
-      Meteor.call('addToCart',currentCart._id,productId,variantData);
+      Meteor.call('addToCart',currentCart._id,productId,variantData,quantity);
     });
 
     e.preventDefault();

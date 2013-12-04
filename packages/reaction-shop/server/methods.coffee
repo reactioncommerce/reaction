@@ -9,14 +9,15 @@ Meteor.methods
       Meteor.users.update userId, {$set: {shopRoles: [{shopId: shopId, name: role}]}}
       Accounts.sendEnrollmentEmail(userId)
 
-  addToCart: (cartId,productId,variantData) ->
+  addToCart: (cartId,productId,variantData,quantity) ->
     now = new Date()
-    #TODO: Meteor.call('createCart',sessionId,productId,variantData)
-    currentCart = Cart.find({_id: cartId, "items.productId": productId, "items.variants": variantData}).count()
-    if currentCart > 0
-      Cart.update {_id: cartId, "items.productId": productId, "items.variants": variantData},{ $set: {"items.variants": variantData,updatedAt: now}, $inc: {"items.$.quantity": 1}}
+    #TODO: Meteor.call('createCart',sessionId,productId,variantData) so this can be a single call
+    currentCart = Cart.find({_id: cartId, "items.variants._id": variantData._id})
+
+    if currentCart.count() > 0
+      Cart.update {_id: cartId, "items.variants._id": variantData._id},{ $set: {updatedAt: now}, $inc: {"items.$.quantity": quantity}}
     else
-      Cart.update {_id: cartId},{ $addToSet:{items:{productId: productId, quantity: 1, variants: variantData}}}
+      Cart.update {_id: cartId},{ $addToSet:{items:{productId: productId, quantity: quantity, variants: variantData}}}
 
   createCart: (sessionId,productId,variantData) ->
     now = new Date()
@@ -30,15 +31,9 @@ Meteor.methods
         sessionId: sessionId
         userId: Meteor.userId()
         createdAt: now
-        updatedAt: now
-        items: [
-          productId: productId
-          quantity: "1"
-          variants: [variantData]
-        ]
-      ,
-        validationContext: validationContext
-      , (error, result) ->
+        updatedAt: now,
+        validationContext: validationContext,
+        (error, result) ->
         console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
       )
     return currentCart

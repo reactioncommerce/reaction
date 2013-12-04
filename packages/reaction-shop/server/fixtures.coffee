@@ -210,6 +210,7 @@ unless Products.find().count()
     'tags': ['Converse', 'Shoes', 'Legendary', 'RED'],
     'variants': [
       {
+        '_id': new Meteor.Collection.ObjectID()._str,
         'barcode': '1234_pink',
         'compareAtPrice': null,
         'createdAt': now,
@@ -250,6 +251,7 @@ unless Products.find().count()
         'updatedAt': now
       },
       {
+        '_id': new Meteor.Collection.ObjectID()._str,
         'barcode': '1234Red',
         'compareAtPrice': null,
         'createdAt': now,
@@ -290,6 +292,7 @@ unless Products.find().count()
         'updatedAt': now
       },
       {
+        '_id': new Meteor.Collection.ObjectID()._str,
         'barcode': '1234_green',
         'compareAtPrice': null,
         'createdAt': now,
@@ -311,6 +314,7 @@ unless Products.find().count()
         'updatedAt': now
       },
       {
+        '_id': new Meteor.Collection.ObjectID()._str,
         'barcode': '1234Black',
         'compareAtPrice': null,
         'createdAt': now,
@@ -672,3 +676,12 @@ unless Customers.find().count()
         'default': true
       }
     ]
+
+# unless Cart.find().count()
+#   console.log 'Adding empty cart collection'
+#   Cart.insert
+#     shopId: 'default',
+#     sessionId: 'default',
+#     userId: null,
+#     createdAt: now,
+#     updatedAt: now
