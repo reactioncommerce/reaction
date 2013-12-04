@@ -109,7 +109,8 @@ Handlebars.registerHelper('userHasProfile', function () {
 
 Handlebars.registerHelper('userHasRole', function (role) {
   var user = Meteor.user();
-  return user && user.roles.indexOf(role) !== -1;
+  if (user && user.roles)
+    return user && user.roles.indexOf(role) !== -1;
 });
 
 // *****************************************************
