@@ -1,5 +1,5 @@
 Meteor.publish 'staff', ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Meteor.users.find {'shopRoles.shopId': shop._id}
 
@@ -10,15 +10,12 @@ Customers = @Customers
 Orders = @Orders
 Cart  = @Cart
 
-getDomain = (client) ->
-  get_http_header(client, 'host').split(':')[0]
-
 # *****************************************************
 # shop collection
 # *****************************************************
 
 Meteor.publish 'shops', ->
-  Shops.find domains: getDomain(this)
+  Shops.find domains: Meteor.app.getDomain(this)
 
 # *****************************************************
 # Client access rights for products
@@ -41,12 +38,12 @@ Shops.allow
 # *****************************************************
 
 Meteor.publish 'products', ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Products.find shopId: shop._id
 
 Meteor.publish 'product', (id) ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Products.findOne _id: id, shopId: shop._id
 
@@ -72,12 +69,12 @@ Products.allow
 # *****************************************************
 
 Meteor.publish 'orders', ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Orders.find shopId: shop._id
 
 Meteor.publish 'order', (id) ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Orders.findOne _id: id, shopId: shop._id
 
@@ -104,12 +101,12 @@ Orders.allow
 # *****************************************************
 
 Meteor.publish 'customers', ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Customers.find shopId: shop._id
 
 Meteor.publish 'customer', (id) ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Customers.findOne _id: id, shopId: shop._id
 
@@ -136,7 +133,7 @@ Customers.allow
 # *****************************************************
 
 Meteor.publish 'cart', (sessionId) ->
-  shop = Shops.findOne domains: getDomain(this)
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
   if shop
     Cart.find shopId: shop._id, sessionId: sessionId
 

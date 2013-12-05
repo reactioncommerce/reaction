@@ -1,9 +1,5 @@
-var getDomain = function(client) {
-  return get_http_header(client, 'host').split(':')[0]
-};
-
 Meteor.publish('allcampaigns', function (limit) {
-  var shop = Shops.findOne({domains: getDomain(this)});
+  var shop = Shops.findOne({domains: Meteor.app.getDomain(this)});
   if (shop) {
     return Campaigns.find({shopId: shop._id}, {sort: {submitted: -1}, limit: limit});
   }
@@ -15,7 +11,7 @@ Meteor.publish('singleCampaign', function (id) {
 
 
 Meteor.publish('campaigns', function () {
-  var shop = Shops.findOne({domains: getDomain(this)});
+  var shop = Shops.findOne({domains: Meteor.app.getDomain(this)});
   if (shop) {
     return Campaigns.find({shopId: shop._id});
   }

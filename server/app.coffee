@@ -1,4 +1,6 @@
-Meteor.app = _.extend(Meteor.app,
+root = exports ? this
+
+Meteor.app = _.extend(Meteor.app || {},
   getCurrentShop: (client) ->
     Shops.findOne({domains: Meteor.app.getDomain(client)});
   getDomain: (client) ->
@@ -10,6 +12,6 @@ Meteor.app = _.extend(Meteor.app,
             _session: session
           }
     if !client then throw "Could not find current session"
-    get_http_header(client, 'host').split(':')[0]
+    root.get_http_header(client, 'host').split(':')[0]
 )
 
