@@ -39,15 +39,15 @@ Package.on_use(function (api, where) {
 
     'client/templates/dashboard/widget/widget.less',
     'client/templates/dashboard/widget/widget.html',
-    'client/templates/dashboard/widget/widget.js',
+    'client/templates/dashboard/widget/widget.coffee',
 
     'client/templates/dashboard/shopwelcome/shopwelcome.html',
 
     'client/templates/dashboard/customers/customers.html',
-    'client/templates/dashboard/customers/customers.js',
+    'client/templates/dashboard/customers/customers.coffee',
 
     'client/templates/dashboard/orders/orders.html',
-    'client/templates/dashboard/orders/orders.js',
+    'client/templates/dashboard/orders/orders.coffee',
 
     'client/templates/settings/settingsGeneral/settingsGeneral.html',
     'client/templates/settings/settingsAccount/settingsAccount.html',
@@ -65,7 +65,7 @@ Package.on_use(function (api, where) {
     'client/templates/products/productList/productList.less',
 
     'client/templates/productsEdit/productsEdit.html',
-    'client/templates/productsEdit/productsEdit.js',
+    'client/templates/productsEdit/productsEdit.coffee',
     'client/templates/productsEdit/productsEdit.less',
 
     'client/templates/productsEdit/productImageGallery/productImageGallery.html',
@@ -73,16 +73,16 @@ Package.on_use(function (api, where) {
     'client/templates/productsEdit/productImageGallery/productImageGallery.less',
 
     'client/templates/productsEdit/variant/variant.html',
-    'client/templates/productsEdit/variant/variant.js',
+    'client/templates/productsEdit/variant/variant.coffee',
 
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
-    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.js',
+    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.coffee',
     'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
     'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html',
-    'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.js',
+    'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee',
 
     'client/templates/productsEdit/optionsModal/optionsModal.html',
-    'client/templates/productsEdit/optionsModal/optionsModal.js',
+    'client/templates/productsEdit/optionsModal/optionsModal.coffee',
     'client/templates/productsEdit/optionsModal/optionsModal.less',
     'client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html',
 

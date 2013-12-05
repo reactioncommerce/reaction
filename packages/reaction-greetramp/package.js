@@ -9,48 +9,48 @@ Package.on_use(function (api, where) {
   // The api.use method allows us to depend on other
   // packages that ship with meteor or are in our project's
   // package directory
-  api.use('standard-app-packages');
+  api.use(['standard-app-packages', 'coffeescript']);
   api.use(['underscore', 'deps', 'session', 'handlebars', 'highcharts']);
   api.use(['templating', 'accounts-base', 'iron-router','reaction-shop','reaction-dashboard']);
 
   // we can add files to the client, server, or both
-  // in this case load model.js on the client AND the server
-  api.add_files('model/model.js');
+  // in this case load model.coffee on the client AND the server
+  api.add_files('model/model.coffee');
 
-  // Add templates.html and client.js files ONLY on
+  // Add templates.html and client.coffee files ONLY on
   // the client
   api.add_files([
     'client/templates/greetramp/greetramp.html',
     'client/templates/greetramp/greetramp.css',
     'client/templates/greetramp/graph/graph.html',
-    'client/templates/greetramp/graph/graph.js',
+    'client/templates/greetramp/graph/graph.coffee',
 
     'client/templates/greetnav/greetnav.html',
-    'client/templates/greetnav/greetnav.js',
+    'client/templates/greetnav/greetnav.coffee',
     'client/templates/greetnav/addCampaign/addCampaign.html',
-    'client/templates/greetnav/addCampaign/addCampaign.js',
+    'client/templates/greetnav/addCampaign/addCampaign.coffee',
     'client/templates/greetnav/campaignEdit/campaignEdit.html',
-    'client/templates/greetnav/campaignEdit/campaignEdit.js',
+    'client/templates/greetnav/campaignEdit/campaignEdit.coffee',
 
     'client/templates/campaigns/campaigns.html',
-    'client/templates/campaigns/campaigns.js',
+    'client/templates/campaigns/campaigns.coffee',
     'client/templates/campaigns/broadcasts/broadcasts.html',
     'client/templates/campaigns/broadcasts/addBroadcast/addBroadcast.html',
-    'client/templates/campaigns/broadcasts/addBroadcast/addBroadcast.js',
+    'client/templates/campaigns/broadcasts/addBroadcast/addBroadcast.coffee',
     'client/templates/campaigns/broadcasts/broadcastList/broadcastList.html',
 
-    'client/handlebars.js',
-    'client/subscribe.js',
-    'client/router.js'
+    'client/handlebars.coffee',
+    'client/subscribe.coffee',
+    'client/router.coffee'
   ], 'client');
 
-  // Add files *.js that server only
+  // Add files *.coffee that server only
   api.add_files([
-    'server/countstats.js',
-    'server/fixtures.js',
-    'server/publish.js',
+    'server/countstats.coffee',
+    'server/fixtures.coffee',
+    'server/publish.coffee',
   ], 'server');
-  api.add_files('client/register.js', 'client');
+  api.add_files('client/register.coffee', 'client');
 
   api.export(['CountStats', 'Captures', 'Counts', 'Campaigns']);
 });

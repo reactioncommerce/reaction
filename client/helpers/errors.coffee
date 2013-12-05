@@ -1,10 +1,12 @@
+root = exports ? this
+
 # *****************************************************
 # general helper for handling of error messages
 # inserts views/includes/errors.html
 # usage:  throwError("message");  (to display)
 #         clearsErrors();         (to clear)
 # *****************************************************
-Errors = new Meteor.Collection(null)
+root.Errors = new Meteor.Collection(null)
 throwError = (message) ->
   $.pnotify
     title: "Error"
@@ -16,5 +18,5 @@ throwError = (message) ->
     seen: false
 
 
-clearErrors = ->
+root.clearErrors = ->
   Errors.remove seen: true
