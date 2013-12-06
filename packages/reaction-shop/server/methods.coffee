@@ -24,7 +24,6 @@ Meteor.methods
     validationContext = "cart"
     currentCart = Cart.findOne()
     # If user doesn't have a cart, create one
-    #console.log currentCart
     if currentCart is `undefined`
       currentCart = Cart.insert(
         shopId: Meteor.app.getCurrentShop()._id

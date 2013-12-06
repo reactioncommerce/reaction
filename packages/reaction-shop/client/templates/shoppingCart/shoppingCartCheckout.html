@@ -32,6 +32,10 @@
           <span class="badge">{{quantity}}</span>
           <a href="{{pathFor 'shop/products'}}/{{productId}}">{{variants.barcode}}</a>
     </p>
+  {{else}}
+    <p class="list-group-item text-center">
+      <i class="fa fa-frown-o fa-4x"></i><br/><strong>Empty Cart. <br/>Looks like you need to add something!</strong>
+    </p>
   {{/each}}
 </div>
 </template>
