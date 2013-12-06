@@ -40,20 +40,12 @@ pages = [
 ]
 Router.map ->
   @route "index",
+    controller: ShopController
     path: "/"
-    layoutTemplate: "siteLayout"
-
-  i = 0
-
-  while i < pages.length
-    @route pages[i],
-      layoutTemplate: "siteLayout"
-
-    i++
-  
+  for page in pages
+    @route page
   # 404 Page for reaction
   @route "notFound",
     path: "*"
-    layoutTemplate: "siteLayout"
 
 

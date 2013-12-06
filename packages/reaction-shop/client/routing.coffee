@@ -3,6 +3,7 @@ ShopController = RouteController.extend
     'shopHeader': to: 'header'
     'dashboardSidebar': to: 'sidebar'
   before: ->
+# should we make it a default as Router.before?
     @subscribe('shops').wait()
     shop = Shops.findOne()
     unless shop
@@ -17,21 +18,21 @@ ShopAdminController = ShopController.extend
       user = Meteor.user()
       unless Roles.userIsInRole(user, 'admin')
         unless ShopRoles.userIsInRole(packageShop.shopId, user, ['owner', 'manager', 'vendor'])
-          this.render('unauthorized')
-          this.stop()
+          @render('unauthorized')
+          @stop()
 
 Router.map ->
   # home page intro screen for reaction-shop
-  this.route 'shop',
+  @route 'shop',
     controller: ShopAdminController
     template: 'shopwelcome'
-  this.route 'shop/settings/general',
+  @route 'shop/settings/general',
     controller: ShopAdminController
     path: '/shop/settings/general'
     data: ->
       shop: Shops.findOne packageShop.shopId
     template: 'settingsGeneral'
-  this.route 'shop/settings/account',
+  @route 'shop/settings/account',
     controller: ShopAdminController
     path: '/shop/settings/account'
     data: ->
@@ -39,28 +40,36 @@ Router.map ->
       members: Meteor.users.find {'shopRoles.shopId': packageShop.shopId}
     template: 'settingsAccount'
   # list page of customer records
-  this.route 'shop/customers',
+  @route 'shop/customers',
     controller: ShopAdminController
   # list page of shop orders
-  this.route 'shop/orders',
+  @route 'shop/orders',
     controller: ShopAdminController
   # list page of products
-  this.route 'shop/products',
+  @route 'shop/products',
     controller: ShopAdminController
+  @route 'shop/products',
+    controller: ShopAdminController
+  @route 'shop/tag',
+    controller: ShopController
+    path: 'shop/tag/:_id',
+    data: ->
+      tag: Tags.findOne(@params._id)
+    template: "productListGrid"
   # edit product page
-  this.route 'shop/product',
+  @route 'shop/product',
     controller: ShopController
     path: '/shop/products/:_id'
     data: ->
-      Session.set('currentProductId', this.params._id)
-      Products.findOne(this.params._id)
+      Session.set('currentProductId', @params._id)
+      Products.findOne(@params._id)
     template: 'productsEdit'
   #add new products
-  this.route 'shop/product/add',
+  @route 'shop/product/add',
     controller: ShopAdminController
     path: '/shop/products/add'
     template: 'productsEdit'
   #checkout
-  this.route 'shoppingCartCheckout',
+  @route 'shoppingCartCheckout',
     path: 'checkout',
     template: 'shoppingCartCheckout'

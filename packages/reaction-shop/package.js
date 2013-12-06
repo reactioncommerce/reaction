@@ -93,7 +93,7 @@ Package.on_use(function (api, where) {
     'client/templates/notice/shopNotFound.html',
 
     'client/subscribe.coffee',
-    'client/router.coffee'
+    'client/routing.coffee'
   ], 'client');
 
   api.add_files('shopRoles/shop_roles_server.coffee', 'server');
@@ -120,6 +120,7 @@ Package.on_use(function (api, where) {
     'variant',
     'ShopRoles',
     'Shops',
-    'Cart'
+    'Cart',
+    'Tags'
   ]);
 });

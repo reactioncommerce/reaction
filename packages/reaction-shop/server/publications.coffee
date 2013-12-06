@@ -9,6 +9,7 @@ Products = @Products
 Customers = @Customers
 Orders = @Orders
 Cart  = @Cart
+Tags = @Tags
 
 # *****************************************************
 # shop collection
@@ -153,3 +154,19 @@ Cart.allow
     # can only remove your own documents
     doc.owner is userId
   #fetch: ['owner']
+
+Meteor.publish "tags", ->
+  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  if shop
+    Tags.find shopId: shop._id
+
+Tags.allow
+  insert: (userId, doc) ->
+    doc.shopId = Meteor.app.getCurrentShop()._id
+    true
+  update: (userId, doc, fields, modifier) ->
+    if modifier.$set and modifier.$set.shopId
+      false
+    true
+  remove: (userId, doc) ->
+    doc.shopId is Meteor.app.getCurrentShop()._id

@@ -410,3 +410,21 @@ CartItemSchema = new SimpleSchema
       type: Date
 
 Cart = @Cart # package exports
+
+@Tags = new Meteor.Collection2 'Tags',
+  schema:
+    name:
+      type: String
+    relatedTagIds:
+      type: [String]
+      optional: true
+    isTopLevel:
+      type: Boolean
+    shopId:
+      type: String
+    createdAt:
+      type: Date
+    updatedAt:
+      type: Date
+
+Tags = @Tags

@@ -677,6 +677,46 @@ unless Customers.find().count()
       }
     ]
 
+unless Tags.find().count()
+  console.log 'Adding tags fixture data'
+  clothingTagId = Tags.insert
+    name: "Clothing"
+    isTopLevel: false
+    shopId: "WvrKDomkYth3THbDD"
+    createdAt: now
+    updatedAt: now
+  shoesTagId = Tags.insert
+    name: "Shoes"
+    isTopLevel: false
+    shopId: "WvrKDomkYth3THbDD"
+    createdAt: now
+    updatedAt: now
+  accessoriesTagId = Tags.insert
+    name: "Accessories"
+    isTopLevel: false
+    shopId: "WvrKDomkYth3THbDD"
+    createdAt: now
+    updatedAt: now
+  Tags.insert
+    name: "Men's"
+    isTopLevel: true
+    relatedTagIds: [clothingTagId, shoesTagId, accessoriesTagId]
+    shopId: "WvrKDomkYth3THbDD"
+    createdAt: now
+    updatedAt: now
+  Tags.insert
+    name: "Women's"
+    isTopLevel: true
+    shopId: "WvrKDomkYth3THbDD"
+    createdAt: now
+    updatedAt: now
+  Tags.insert
+    name: "Tech"
+    isTopLevel: true
+    shopId: "WvrKDomkYth3THbDD"
+    createdAt: now
+    updatedAt: now
+
 # unless Cart.find().count()
 #   console.log 'Adding empty cart collection'
 #   Cart.insert
