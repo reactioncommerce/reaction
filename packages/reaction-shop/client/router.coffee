@@ -60,3 +60,7 @@ Router.map ->
     controller: ShopAdminController
     path: '/shop/products/add'
     template: 'productsEdit'
+  #checkout
+  this.route 'shoppingCartCheckout',
+    path: 'checkout',
+    template: 'shoppingCartCheckout'

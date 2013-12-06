@@ -80,8 +80,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.2.14",
-        "commit": "46eeef2c8786f55e3ff3368c99ac0672600bc734"
+        "tag": "v0.2.15",
+        "commit": "0fe469aa0c01eda0563c8802e17914307960de79"
       },
       "accounts-ui-bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
@@ -105,8 +105,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.19",
-        "commit": "99f975da6276e352ab9208eaaad907a2f0a8851f"
+        "tag": "v0.2.21",
+        "commit": "13086f01dcbd0168a89dee387de9b639872b769e"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

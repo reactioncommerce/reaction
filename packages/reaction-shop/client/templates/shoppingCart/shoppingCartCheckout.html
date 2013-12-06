@@ -1,0 +1,37 @@
+<template name="shoppingCartCheckout">
+  <div class="container">
+    <h1>Checkout</h1>
+    <div class="row">
+      <div class="well checkout-cart col-md-4">
+        {{>shoppingCartCheckoutList}}
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          Create Account
+        </div>
+        <div class="row">
+          Shipping
+        </div>
+        <div class="row">
+          Cart Totals
+        </div>
+        <div class="row">
+          Pay Now
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="shoppingCartCheckoutList">
+<div class="list-group">
+  {{#each cartList}}
+    <p class="list-group-item">
+          <span class="fa fa-times-circle-o fa-lg pull-right remove" id="{{_id}}"></span>
+          <img class="img-responsive" src="{{image variants._id}}">
+          <span class="badge">{{quantity}}</span>
+          <a href="{{pathFor 'shop/products'}}/{{productId}}">{{variants.barcode}}</a>
+    </p>
+  {{/each}}
+</div>
+</template>

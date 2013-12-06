@@ -37,6 +37,9 @@ Package.on_use(function (api, where) {
     'client/templates/shoppingCart/shoppingCart.html',
     'client/templates/shoppingCart/shoppingCart.coffee',
 
+    'client/templates/shoppingCart/shoppingCartCheckout.html',
+    'client/templates/shoppingCart/shoppingCartCheckout.coffee',
+
     'client/templates/dashboard/widget/widget.less',
     'client/templates/dashboard/widget/widget.html',
     'client/templates/dashboard/widget/widget.coffee',

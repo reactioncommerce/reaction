@@ -37,3 +37,6 @@ Meteor.methods
         console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
       )
     return currentCart
+
+  removeFromCart: (cartId,variantData) ->
+     Cart.update({_id: cartId},{$pull: {"items": {"variants": variantData} } })
