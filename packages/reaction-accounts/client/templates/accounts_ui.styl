@@ -1,0 +1,57 @@
+#login-dropdown-list
+	.dropdown-menu
+		width:	300px;
+		padding: 15px;
+
+#login-dropdown-list
+	#forgot-password-link
+	#signup-link
+		margin-top:10px;
+
+	.btn
+		margin-top: 5px;
+
+	input
+		margin:0px
+		border-radius:0px;
+
+	input:first-of-type
+		margin-top:0px;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+
+	input:last-of-type
+		margin-bottom:5px;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+
+.modal-backdrop
+	opacity: 0.75;
+
+#login-buttons-reset-password-modal, #login-buttons-enroll-account-modal
+	.modal-content
+		margin-top: 30%;
+
+.login-buttons-dropdown-align-left
+	&#login-buttons + li
+		.dropdown-menu
+			float: left;
+			left: 0;
+			right: auto;
+.login-buttons-dropdown-align-right
+	&#login-buttons + li
+		.dropdown-menu
+			float: right;
+			right: 0;
+			left: auto;
+
+#login-buttons
+	display: none;
+
+#login-dropdown-list a
+	cursor: pointer;
+
+#configure-login-service-dialog-modal
+	position: fixed;
+	left: 50%;
+	margin-left: -300px;
