@@ -6,8 +6,9 @@
         {{>shoppingCartCheckoutList}}
       </div>
       <div class="col-md-8">
+        {{#if currentUser}}
         <div class="row">
-          Create Account
+          {{>userAddress}}
         </div>
         <div class="row">
           Shipping
@@ -18,6 +19,11 @@
         <div class="row">
           Pay Now
         </div>
+        {{else}}
+        <div class="row">
+          {{>shoppingCartCheckoutAccount}}
+        </div>
+        {{/if}}
       </div>
     </div>
   </div>
@@ -37,5 +43,30 @@
       <i class="fa fa-frown-o fa-4x"></i><br/><strong>Empty Cart. <br/>Looks like you need to add something!</strong>
     </p>
   {{/each}}
+</div>
+</template>
+
+<template name="shoppingCartCheckoutAccount">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Registration</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-6">
+        {{>_loginInline}}
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<template name="userAddress">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Address</h3>
+  </div>
+  <div class="panel-body">
+    list of addresses
+  </div>
 </div>
 </template>
