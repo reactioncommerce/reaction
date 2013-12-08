@@ -1,21 +1,24 @@
 #Reaction
-Reactive marketing first commerce platform built with Meteor.
+A commerce platform developed with Meteor and following a reactive design pattern.
 
-The Reaction is building a commerce platform that is built on Meteor and follows a reactive design pattern - most everything you see should be update realtime. Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We welcome (and need) contributors, issues, comments!
+Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We welcome (and need) contributors, issues, comments!
 
 ###Core ideas:
 
+
+* Fast, simple and easy to use for end users as well as store owners.
+* A focus on marketing - it's easy to have products, order processing and customer records. Translating that to conversions and traffic are often the difficult component.  
 * Limited separation of administrative functionality and "front end". Same template should be used to edit/create/read views.
 * Statistics / event tracking should be built in from the beginning throughout
 * As modular as possible so that any package can be customized/overwritten - i.e.: need a special order processing process, then override/extend the default
 * Core packages to enable site should be a simple and generic as possible, layering complexity by adding packages through a package store ('app store') approach
 * Common marketing and SEO practices should be fundamental core features
-* User experiences should be as simple as possible, rethinking traditional methods (i.e. inline editing vs forms)
+* UI/UX should be as intuitive as possible, rethinking traditional methods (i.e. inline editing vs forms)
 * Pages/routes only used when user would potentially share/bookmark
 * Realtime synchronization across platforms/browsers
-* Cross platform focus
+* Cross platform, responsive focus - should work well natively, without native apps.
 * Upgrade paths from existing commerce platforms (Magento, Shopify, BigCommerce)
-* Commercial package and theme development encouraged
+* Developer friendly. Commercial package and theme development encouraged. Contributors should be rewarded.
 
 ###Current Status:
 **Unstable, with HEAVY ongoing development!**
