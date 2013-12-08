@@ -23,6 +23,7 @@ Please check our [Trello board for current progress](https://trello.com/b/aGpcYS
 
 Usually, we have playground here: [Demo/test site](http://reaction.meteor.com)
 
+* Use admin1@ongoworks.com / ongo1 to test dashboard/admin/editing.
 
 ---
 ##Prerequisites
@@ -35,19 +36,18 @@ Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) c
     cd reaction
     mrt
 
-Now open [http://localhost:3000](http://localhost:3000) in a browser and you should see Reaction running.
+Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running.
 
-* Use admin1@ongoworks.com / ongo1 to test dashboard/admin/editing.
 
 ---
 #Development
 ---
 
-See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com). Meteor and Reaction use a [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) pattern for development, and Javascript (+Coffeescript) and HTML (CSS/LESS) as the only coding languages.
+See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com).
 
 Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for format and style of contributions.
 
-Feel free to use Coffeescript or plain JS. Our core is being built with a preference for Coffeescript + LESS.
+Our core is being built with a preference for Coffeescript + LESS.
 
 We are always using latest full release of all packages.
 
@@ -55,54 +55,21 @@ Packages should be able to run independently, whenever possible but many of the 
 
 At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach an Alpha release, these will be moved to individual package repos and published on the Meteor package manager. Tests will be added when they are moved to their own repos.
 
+#Dashboard
+Add packages to the reaction dashboard by adding **register.coffee**
 
-###Smart Packages
+	Meteor.app.packages.push(
+	  name: "reaction-helloworld"
+	  label: "HelloWorld"
+	  description: "Example Reaction Package"
+	  icon: "fa fa-globe fa-5x"
+	  route: "helloworld"
+	  template: "helloworld"
+	  priority: "2"
+	)
 
-* **reaction-**  prefix followed by hyphenated package name (e.g. "reaction-shop")
-* name all dependencies in package.js
-* name all files in api
-* create packages in **reaction/packages** directory with the following convention
+Add widgets to dashboard elements by including a template named packagename-widget
 
-		reaction-foo/               # <- all functionality related to package 'foo'
-		reaction-foo/lib/           # <- common code
-		reaction-foo/models/        # <- model definitions
-		reaction-foo/client/        # <- files only sent to the client
-		reaction-foo/server/        # <- files only available on the server
-* create reaction-foo/smart.json
-
-		{
-		  "name": "reaction-greetramp",
-		  "description": "Reaction Greetramp package - an email capture tool",
-		  "homepage": "https://github.com/ongoworks/reaction-greetramp",
-		  "author": "Aaron judd (http://ongoworks.com)",
-		  "version": "0.1.0",
-		  "git": "https://github.com/ongoworks/reaction-greetramp.git",
-		  "packages": {
-		    "reaction-greetramp": "0.0.1"
-		  }
-		}
-
-* create reaction-foo/server/package.js
-
-		// Give our package a description
-		Package.describe({
-		  summary: "Reaction Greetramp package - an email capture tool"
-		});
-
-		// Tell Meteor what to do with our package at bundle time
-		Package.on_use(function (api) {
-
-		  // The api.use method allows us to depend on other
-		  // packages that ship with meteor or are in our project's
-		  // package directory
-		  api.use(["underscore", "templating"], "client");
-
-		  // we can add files to the client, server, or both
-		  // in this case load both.js on the client AND the server
-		  api.add_files("both.js", ["client", "server"]);
-
-
-		  // Add templates.html and client.js files ONLY on
-		  // the client
-		  api.add_files(["templates.html", "client.js"], "client");
-		});
+	<template name="reaction-helloworld-widget">
+		<div> this is a widget that will appear on dashboard</div
+	</template>
