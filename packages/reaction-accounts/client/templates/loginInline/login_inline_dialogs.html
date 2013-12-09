@@ -2,7 +2,7 @@
   {{> _resetPasswordDialog}}
   {{> _enrollAccountDialog}}
   {{> _justVerifiedEmailDialog}}
-  {{> _configureLoginServiceDialog}}
+  {{> _inlineConfigureLoginServiceDialog}}
 
   <!-- if we're not showing a dropdown, we need some other place to show messages -->
   {{> _loginInlineMessagesDialog}}
@@ -67,7 +67,7 @@
   {{/if}}
 </template>
 
-<template name="_loginInlineConfigureLoginServiceDialog">
+<template name="_inlineConfigureLoginServiceDialog">
   {{#if visible}}
   <div class="modal-dialog" id="configure-login-service-dialog-modal">
       <div class="modal-content">
@@ -75,7 +75,7 @@
               <h4 class="modal-title">Configure Service</h4>
           </div>
           <div class="modal-body">
-            <div id="configure-login-service-dialog" class="accounts-dialog accounts-centered-dialog">
+            <div id="inline-configure-login-service-dialog" class="accounts-dialog accounts-centered-dialog">
               {{{configurationSteps}}}
               <p>
                 Now, copy over some details.
@@ -89,10 +89,10 @@
                   {{#each configurationFields}}
                     <tr>
                       <td>
-                        <label for="configure-login-service-dialog-{{property}}">{{label}}</label>
+                        <label for="inline-configure-login-service-dialog-{{property}}">{{label}}</label>
                       </td>
                       <td>
-                        <input id="configure-login-service-dialog-{{property}}" type="text" />
+                        <input id="inline-configure-login-service-dialog-{{property}}" type="text" />
                       </td>
                     </tr>
                   {{/each}}
@@ -101,12 +101,12 @@
             </div>
           </div>
           <div class="modal-footer new-section">
-                <div class="login-button btn btn-danger configure-login-service-dismiss-button">
+                <div class="login-button btn btn-danger inline-configure-login-service-dismiss-button">
                   I'll do this later
                 </div>
                 {{#isolate}}
                   <div class="login-button login-button-configure btn btn-success {{#if saveDisabled}}login-button-disabled{{/if}}"
-                     id="configure-login-service-dialog-save-configuration">
+                     id="inline-configure-login-service-dialog-save-configuration">
                     Save Configuration
                   </div>
                 {{/isolate}}

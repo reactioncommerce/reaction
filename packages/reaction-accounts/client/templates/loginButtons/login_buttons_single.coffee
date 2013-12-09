@@ -1,8 +1,9 @@
 (->
-  
+
   # for convenience
   loginButtonsSession = Accounts._loginButtonsSession
   Template._loginButtonsLoggedOutSingleLoginButton.events "click .login-button": ->
+    console.log "button click"
     serviceName = @name
     loginButtonsSession.resetMessages()
     callback = (err) ->
@@ -10,7 +11,7 @@
         loginButtonsSession.closeDropdown()
       else if err instanceof Accounts.LoginCancelledError
 
-      
+
       # do nothing
       else if err instanceof Accounts.ConfigError
         loginButtonsSession.configureService serviceName
@@ -27,13 +28,13 @@
 
   Template._loginButtonsLoggedOutSingleLoginButton.capitalizedName = ->
     if @name is "github"
-      
+
       # XXX we should allow service packages to set their capitalized name
       "GitHub"
     else
       capitalize @name
 
-  
+
   # XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
   capitalize = (str) ->
     str = (if not str? then "" else String(str))

@@ -3,14 +3,13 @@
   # for convenience
   loginInlineSession = Accounts._loginInlineSession
   Template._loginInlineLoggedOutSingleLoginButton.events "click .login-button": ->
+    console.log "inline click"
     serviceName = @name
     loginInlineSession.resetMessages()
     callback = (err) ->
       unless err
         loginInlineSession.closeDropdown()
       else if err instanceof Accounts.LoginCancelledError
-
-
       # do nothing
       else if err instanceof Accounts.ConfigError
         loginInlineSession.configureService serviceName

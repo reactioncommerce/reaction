@@ -1,8 +1,8 @@
 (->
-  
+
   # for convenience
   loginButtonsSession = Accounts._loginButtonsSession
-  
+
   #
   # populate the session so that the appropriate dialogs are
   # displayed by reading variables set by accounts-urls, which parses
@@ -11,7 +11,7 @@
   #
   loginButtonsSession.set "resetPasswordToken", Accounts._resetPasswordToken  if Accounts._resetPasswordToken
   loginButtonsSession.set "enrollAccountToken", Accounts._enrollAccountToken  if Accounts._enrollAccountToken
-  
+
   # Needs to be in Meteor.startup because of a package loading order
   # issue. We can't be sure that accounts-password is loaded earlier
   # than accounts-ui so Accounts.verifyEmail might not be defined.
@@ -22,9 +22,9 @@
         loginButtonsSession.set "justVerifiedEmail", true  unless error
 
 
-  
+
   # XXX show something if there was an error.
-  
+
   #
   # resetPasswordDialog template
   #
@@ -60,7 +60,7 @@
   Template._resetPasswordDialog.inResetPasswordFlow = ->
     loginButtonsSession.get "resetPasswordToken"
 
-  
+
   #
   # enrollAccountDialog template
   #
@@ -96,7 +96,7 @@
   Template._enrollAccountDialog.inEnrollAccountFlow = ->
     loginButtonsSession.get "enrollAccountToken"
 
-  
+
   #
   # justVerifiedEmailDialog template
   #
@@ -106,11 +106,11 @@
   Template._justVerifiedEmailDialog.visible = ->
     loginButtonsSession.get "justVerifiedEmail"
 
-  
+
   #
   # loginButtonsMessagesDialog template
   #
-  
+
   # Template._loginButtonsMessagesDialog.rendered = function() {
   #   var $modal = $(this.find('#configure-login-service-dialog-modal'));
   #   $modal.modal();
@@ -122,7 +122,7 @@
     hasMessage = loginButtonsSession.get("infoMessage") or loginButtonsSession.get("errorMessage")
     not Accounts._loginButtons.dropdown() and hasMessage
 
-  
+
   #
   # configureLoginServiceDialog template
   #
@@ -132,14 +132,14 @@
 
     "click #configure-login-service-dialog-save-configuration": ->
       if loginButtonsSession.get("configureLoginServiceDialogVisible") and not loginButtonsSession.get("configureLoginServiceDialogSaveDisabled")
-        
+
         # Prepare the configuration document for this login service
         serviceName = loginButtonsSession.get("configureLoginServiceDialogServiceName")
         configuration = service: serviceName
         _.each configurationFields(), (field) ->
           configuration[field.property] = document.getElementById("configure-login-service-dialog-" + field.property).value.replace(/^\s*|\s*$/g, "") # trim;
 
-        
+
         # Configure this login service
         Meteor.call "configureLoginService", configuration, (error, result) ->
           if error
@@ -148,17 +148,17 @@
             loginButtonsSession.set "configureLoginServiceDialogVisible", false
 
 
-    
+
     # IE8 doesn't support the 'input' event, so we'll run this on the keyup as
     # well. (Keeping the 'input' event means that this also fires when you use
     # the mouse to change the contents of the field, eg 'Cut' menu item.)
     "input, keyup input": (event) ->
-      
+
       # if the event fired on one of the configuration input fields,
       # check whether we should enable the 'save configuration' button
       updateSaveDisabled()  if event.target.id.indexOf("configure-login-service-dialog") is 0
 
-  
+
   # check whether the 'save configuration' button should be enabled.
   # this is a really strange way to implement this and a Forms
   # Abstraction would make all of this reactive, and simpler.
@@ -168,7 +168,7 @@
     )
     loginButtonsSession.set "configureLoginServiceDialogSaveDisabled", anyFieldEmpty
 
-  
+
   # Returns the appropriate template for this login service.  This
   # template should be defined in the service's package
   configureLoginServiceDialogTemplateForService = ->
@@ -177,6 +177,7 @@
 
   configurationFields = ->
     template = configureLoginServiceDialogTemplateForService()
+    console.log template
     template.fields()
 
   Template._configureLoginServiceDialog.configurationFields = ->
@@ -186,14 +187,13 @@
     loginButtonsSession.get "configureLoginServiceDialogVisible"
 
   Template._configureLoginServiceDialog.configurationSteps = ->
-    
     # renders the appropriate template
     configureLoginServiceDialogTemplateForService()()
 
   Template._configureLoginServiceDialog.saveDisabled = ->
     loginButtonsSession.get "configureLoginServiceDialogSaveDisabled"
 
-  
+
   # XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
   capitalize = (str) ->
     str = (if not str? then "" else String(str))

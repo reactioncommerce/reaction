@@ -126,18 +126,18 @@
   #
   # configureLoginServiceDialog template
   #
-  Template._configureLoginServiceDialog.events
-    "click .configure-login-service-dismiss-button": ->
-      loginInlineSession.set "configureLoginServiceDialogVisible", false
+  Template._inlineConfigureLoginServiceDialog.events
+    "click .inline-configure-login-service-dismiss-button": ->
+      loginInlineSession.set "inlineConfigureLoginServiceDialogVisible", false
 
-    "click #configure-login-service-dialog-save-configuration": ->
-      if loginInlineSession.get("configureLoginServiceDialogVisible") and not loginInlineSession.get("configureLoginServiceDialogSaveDisabled")
+    "click #inline-configure-login-service-dialog-save-configuration": ->
+      if loginInlineSession.get("inlineConfigureLoginServiceDialogVisible") and not loginInlineSession.get("inlineConfigureLoginServiceDialogSaveDisabled")
 
         # Prepare the configuration document for this login service
-        serviceName = loginInlineSession.get("configureLoginServiceDialogServiceName")
+        serviceName = loginInlineSession.get("inlineConfigureLoginServiceDialogServiceName")
         configuration = service: serviceName
         _.each configurationFields(), (field) ->
-          configuration[field.property] = document.getElementById("configure-login-service-dialog-" + field.property).value.replace(/^\s*|\s*$/g, "") # trim;
+          configuration[field.property] = document.getElementById("inline-configure-login-service-dialog-" + field.property).value.replace(/^\s*|\s*$/g, "") # trim;
 
 
         # Configure this login service
@@ -145,7 +145,7 @@
           if error
             Meteor._debug "Error configuring login service " + serviceName, error
           else
-            loginInlineSession.set "configureLoginServiceDialogVisible", false
+            loginInlineSession.set "inlineConfigureLoginServiceDialogVisible", false
 
 
 
@@ -153,10 +153,9 @@
     # well. (Keeping the 'input' event means that this also fires when you use
     # the mouse to change the contents of the field, eg 'Cut' menu item.)
     "input, keyup input": (event) ->
-
       # if the event fired on one of the configuration input fields,
       # check whether we should enable the 'save configuration' button
-      updateSaveDisabled()  if event.target.id.indexOf("configure-login-service-dialog") is 0
+      updateSaveDisabled()  if event.target.id.indexOf("inline-configure-login-service-dialog") is 0
 
 
   # check whether the 'save configuration' button should be enabled.
@@ -164,34 +163,35 @@
   # Abstraction would make all of this reactive, and simpler.
   updateSaveDisabled = ->
     anyFieldEmpty = _.any(configurationFields(), (field) ->
-      document.getElementById("configure-login-service-dialog-" + field.property).value is ""
+      document.getElementById("inline-configure-login-service-dialog-" + field.property).value is ""
     )
-    loginInlineSession.set "configureLoginServiceDialogSaveDisabled", anyFieldEmpty
+    console.log anyFieldEmpty
+    loginInlineSession.set "inlineConfigureLoginServiceDialogSaveDisabled", anyFieldEmpty
 
 
   # Returns the appropriate template for this login service.  This
   # template should be defined in the service's package
   configureLoginServiceDialogTemplateForService = ->
-    serviceName = loginInlineSession.get("configureLoginServiceDialogServiceName")
+    serviceName = loginInlineSession.get("inlineConfigureLoginServiceDialogServiceName")
     Template["configureLoginServiceDialogFor" + capitalize(serviceName)]
 
   configurationFields = ->
     template = configureLoginServiceDialogTemplateForService()
     template.fields()
 
-  Template._configureLoginServiceDialog.configurationFields = ->
+  Template._inlineConfigureLoginServiceDialog.configurationFields = ->
     configurationFields()
 
-  Template._configureLoginServiceDialog.visible = ->
-    loginInlineSession.get "configureLoginServiceDialogVisible"
+  Template._inlineConfigureLoginServiceDialog.visible = ->
+    loginInlineSession.get "inlineConfigureLoginServiceDialogVisible"
 
-  Template._configureLoginServiceDialog.configurationSteps = ->
+  Template._inlineConfigureLoginServiceDialog.configurationSteps = ->
 
     # renders the appropriate template
     configureLoginServiceDialogTemplateForService()()
 
-  Template._configureLoginServiceDialog.saveDisabled = ->
-    loginInlineSession.get "configureLoginServiceDialogSaveDisabled"
+  Template._inlineConfigureLoginServiceDialog.saveDisabled = ->
+    loginInlineSession.get "inlineConfigureLoginServiceDialogSaveDisabled"
 
 
   # XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js

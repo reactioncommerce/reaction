@@ -14,9 +14,9 @@
     "resetPasswordToken"
     "enrollAccountToken"
     "justVerifiedEmail"
-    "configureLoginServiceDialogVisible"
-    "configureLoginServiceDialogServiceName"
-    "configureLoginServiceDialogSaveDisabled"
+    "inlineConfigureLoginServiceDialogVisible"
+    "inlineConfigureLoginServiceDialogServiceName"
+    "inlineConfigureLoginServiceDialogSaveDisabled"
   ]
   validateKey = (key) ->
     throw new Error("Invalid key in loginInlineSession: " + key)  unless _.contains(VALID_KEYS, key)
@@ -80,7 +80,7 @@
       @_set "infoMessage", null
 
     configureService: (name) ->
-      @set "configureLoginServiceDialogVisible", true
-      @set "configureLoginServiceDialogServiceName", name
-      @set "configureLoginServiceDialogSaveDisabled", true
+      @set "inlineConfigureLoginServiceDialogVisible", true
+      @set "inlineConfigureLoginServiceDialogServiceName", name
+      @set "inlineConfigureLoginServiceDialogSaveDisabled", true
 )()
