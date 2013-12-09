@@ -120,7 +120,7 @@ unless Meteor.users.find().count()
 unless Shops.find().count()
   console.log 'Adding shops fixture data'
   Shops.insert
-    "_id": "WvrKDomkYth3THbDD"
+    "_id": "WvrKDomkYth3THbDD",
     "address1": "1 Infinite Loop"
     "city": "Cupertino"
     "country": "US"
@@ -604,9 +604,8 @@ unless Customers.find().count()
     'acceptsMarketing': false,
     'createdAt': now,
     'email': 'bob.norman@hostmail.com',
-    'firstName': 'Bob',
+    'fullName': 'Bob Normal',
     'id': 207119551,
-    'lastName': 'Norman',
     'lastOrderId': null,
     'multipassIdentifier': null,
     'note': null,
@@ -618,14 +617,13 @@ unless Customers.find().count()
     'lastOrderName': null,
     'imageUrl': 'resources/avatar.gif',
     'defaultAddress':
+      'fullName': 'Bob Normal',
       'address1': 'Chestnut Street 92',
       'address2': 'Apartment 2',
       'city': 'Louisville',
       'company': null,
       'country': 'United States',
-      'firstName': 'Bob',
       'id': 207119551,
-      'lastName': 'Norman',
       'phone': '555-625-1199',
       'province': 'Kentucky',
       'zip': '40202',
@@ -635,14 +633,13 @@ unless Customers.find().count()
       'default': true
     'addresses': [
       {
+        'fullName': 'Bob Normal1',
         'address1': 'Chestnut Street 92',
         'address2': 'Apartment 2',
         'city': 'Louisville',
         'company': null,
         'country': 'United States',
-        'firstName': 'Bob',
         'id': 207119551,
-        'lastName': 'Norman',
         'phone': '555-625-1199',
         'province': 'Kentucky',
         'zip': '40202',
