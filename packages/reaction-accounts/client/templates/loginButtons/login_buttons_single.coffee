@@ -3,7 +3,6 @@
   # for convenience
   loginButtonsSession = Accounts._loginButtonsSession
   Template._loginButtonsLoggedOutSingleLoginButton.events "click .login-button": ->
-    console.log "button click"
     serviceName = @name
     loginButtonsSession.resetMessages()
     callback = (err) ->

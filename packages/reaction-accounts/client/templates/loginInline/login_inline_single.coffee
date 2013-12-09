@@ -3,7 +3,6 @@
   # for convenience
   loginInlineSession = Accounts._loginInlineSession
   Template._loginInlineLoggedOutSingleLoginButton.events "click .login-button": ->
-    console.log "inline click"
     serviceName = @name
     loginInlineSession.resetMessages()
     callback = (err) ->

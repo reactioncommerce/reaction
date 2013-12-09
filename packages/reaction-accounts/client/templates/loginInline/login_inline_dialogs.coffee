@@ -147,8 +147,6 @@
           else
             loginInlineSession.set "inlineConfigureLoginServiceDialogVisible", false
 
-
-
     # IE8 doesn't support the 'input' event, so we'll run this on the keyup as
     # well. (Keeping the 'input' event means that this also fires when you use
     # the mouse to change the contents of the field, eg 'Cut' menu item.)
@@ -157,7 +155,6 @@
       # check whether we should enable the 'save configuration' button
       updateSaveDisabled()  if event.target.id.indexOf("inline-configure-login-service-dialog") is 0
 
-
   # check whether the 'save configuration' button should be enabled.
   # this is a really strange way to implement this and a Forms
   # Abstraction would make all of this reactive, and simpler.
@@ -165,9 +162,7 @@
     anyFieldEmpty = _.any(configurationFields(), (field) ->
       document.getElementById("inline-configure-login-service-dialog-" + field.property).value is ""
     )
-    console.log anyFieldEmpty
     loginInlineSession.set "inlineConfigureLoginServiceDialogSaveDisabled", anyFieldEmpty
-
 
   # Returns the appropriate template for this login service.  This
   # template should be defined in the service's package
