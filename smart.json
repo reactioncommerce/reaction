@@ -13,7 +13,6 @@
     "bootstrap3-less": {},
     "autoform": {},
     "collection2": {},
-    "accounts-ui-bootstrap-3": {},
     "collection-hooks": {
       "git": "https://github.com/wsoul/meteor-collection-hooks.git"
     },
