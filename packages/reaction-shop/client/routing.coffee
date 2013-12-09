@@ -10,16 +10,13 @@ ShopController = RouteController.extend
       @render('shopNotFound')
       @stop()
     else
-      packageShop.shopId = shop._id
+      packageShop.init shop
 
 ShopAdminController = ShopController.extend
   before: ->
-    if packageShop.shopId
-      user = Meteor.user()
-      unless Roles.userIsInRole(user, 'admin')
-        unless ShopRoles.userIsInRole(packageShop.shopId, user, ['owner', 'manager', 'vendor'])
-          @render('unauthorized')
-          @stop()
+    unless packageShop.havePermission(@path)
+      @render('unauthorized')
+      @stop()
 
 Router.map ->
   # home page intro screen for reaction-shop
@@ -46,8 +43,6 @@ Router.map ->
   @route 'shop/orders',
     controller: ShopAdminController
   # list page of products
-  @route 'shop/products',
-    controller: ShopAdminController
   @route 'shop/products',
     controller: ShopAdminController
   @route 'shop/tag',

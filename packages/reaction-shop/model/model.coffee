@@ -1,3 +1,9 @@
+UserPermissionSchema = new SimpleSchema
+  userId:
+    type: String
+  permission:
+    type: String
+
 MetafieldSchema = new SimpleSchema
   key:
     type: String
@@ -232,6 +238,12 @@ CustomerAddressSchema = new SimpleSchema
     metaDescription:
       type: String
       optional: true
+    ownerId:
+      type: String
+    admins:
+      type: [String]
+    usersPermissions:
+      type: [UserPermissionSchema]
     createdAt:
       type: Date
     updatedAt:

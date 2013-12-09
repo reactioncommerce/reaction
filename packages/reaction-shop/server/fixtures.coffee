@@ -16,136 +16,104 @@ now = new Date()
 unless Meteor.users.find().count()
   console.log("Adding roles fixture data")
   Roles.createRole("admin")
-  ShopRoles.createRole("owner")
-  ShopRoles.createRole("manager")
-  ShopRoles.createRole("vendor")
   Roles.createRole("view-campaigns")
   Roles.createRole("manage-users")
   users = [
-      {
-        "_id": "ydFCbJ3TbRXcRJBQ2",
-        "services": {
-          "password": {
-            "srp": {
-              "identity": "rJQGKDQ3PWFAYjGKc",
-              "salt": "oWTKBszTykSthpERd",
-              "verifier": "aad725f1b1d3f35f6afe3e730d648306512b023f1d0e94aa71904a4377b9e5402a5166a8f0eef204db63621b9824fe7a78c2c0e8137a26a2b56e3083f916eba83c7b6eaa4c56de6051e51a120ba99854419654383d143e6c08ca79b7035e450d36658e43f7cbcc5869b62dc9e112308b3850c73e5ef0992ee5a3edb5326e46ea"
-            }
-          }
-        },
-        "emails": [
-          {
-            "address": "normal@ongoworks.com",
-            "verified": true
-          }
-        ],
-        "profile": {
-          "name": "Normal User"
-        },
-        "shopRoles": [
-          {
-            "shopId": "WvrKDomkYth3THbDD",
-            "name": "owner"
-          }
-        ]
-      },
-      {
-        "_id": "Cpx5zeNixb9jmePQx",
-        "emails": [
-          {
-            "address": "view@ongoworks.com",
-            "verified": true
-          }
-        ],
-        "profile": {
-          "name": "View Campaigns User"
-        },
-        "roles": [
-          "view-campaigns"
-        ],
-        "services": {
-          "password": {
-            "srp": {
-              "identity": "ZmBXJH6rSoARphto6",
-              "salt": "FtwWQLWCZ42xvYGCX",
-              "verifier": "dd2ebb3652dc6d7c5a0c510314ede562686e90e8f7ac8ff757efc6acf3e32d9da41078d2563da55a72d83ad72717322379800c0afb37b146d041b391ed464b3275c1aeadaab45c56ada07724a34fb6472a14aab630f0c2be961253b39316a0200090e9a7f5e862c44d8b322b0a1be02bf3ee796eebaf713bd2aaab077dbbda55"
-            }
-          }
+    {
+      "_id": "sp8nAatBMw7cXKLjc",
+      "emails": [
+        {
+          "address": "admin1@ongoworks.com",
+          "verified": true
         }
-      },
-      {
-        "_id": "WZNkqBaZLRqACDLZ2",
-        "emails": [
-          {
-            "address": "manage@ongoworks.com",
-            "verified": true
-          }
-        ],
-        "profile": {
-          "name": "Manage-Users User"
-        },
-        "roles": [
-          "manage-users"
-        ],
-        "services": {
-          "password": {
-            "srp": {
-              "identity": "GeDzsgPvrZn6ZCqk5",
-              "salt": "8NRSKnqN7687bPaSh",
-              "verifier": "2311f16977567cf0b42b954e8798fb1b1a2cc87dfbd67ae298b44b63d5259a1313aef8465cfd9fbabeaef672e29eab843a6c1cc4ff85b9c1adf765fc7e993b76db7da51ace79cbd7b3339347816ce9b7cab6794435ec5863fd04c9f56251334c91d74460127d8a2ea424d9681baeecd01575f3af1c60db4fd4e4fee4a1521b0f"
-            }
-          }
+      ],
+      "profile":
+        "name": "Admin User1"
+      "roles": [
+        "admin"
+      ],
+      "services":
+        "password":
+          "srp":
+            "identity": "K8TCLJrT8zTLbWEN5",
+            "salt": "L7vgT6SkS4rpbxAbr",
+            "verifier": "8ba76a949bd25e34199fce68bb2257c09af4b69bef91bf2b8bb229409b5e77b4f72fcec67c9db2b5d59a434015d45342bf6b3321b3171bae2ec65616d5d10f812826507cc7823fae1eefb7d8e1ed247efb8dd87419422760286d2b20e984aec411b1804bd573e6a00854fa81d67a81bf2c092f690d5b25fb204df939050e42ee"
+    },
+    {
+      "_id": "fLZ4NiDYpbT8dZXQe",
+      "emails": [
+        {
+          "address": "admin2@ongoworks.com",
+          "verified": true
         }
-      },
-      {
-        "_id": "sp8nAatBMw7cXKLjc",
-        "emails": [
-          {
-            "address": "admin1@ongoworks.com",
-            "verified": true
-          }
-        ],
-        "profile": {
-          "name": "Admin User1"
-        },
-        "roles": [
-          "admin"
-        ],
-        "services": {
-          "password": {
-            "srp": {
-              "identity": "K8TCLJrT8zTLbWEN5",
-              "salt": "L7vgT6SkS4rpbxAbr",
-              "verifier": "8ba76a949bd25e34199fce68bb2257c09af4b69bef91bf2b8bb229409b5e77b4f72fcec67c9db2b5d59a434015d45342bf6b3321b3171bae2ec65616d5d10f812826507cc7823fae1eefb7d8e1ed247efb8dd87419422760286d2b20e984aec411b1804bd573e6a00854fa81d67a81bf2c092f690d5b25fb204df939050e42ee"
-            }
-          }
+      ],
+      "profile":
+        "name": "Admin User2"
+      "roles": [
+        "admin"
+      ],
+      "services":
+        "password":
+          "srp":
+            "identity": "6dserefHaNK2ZRBnd",
+            "salt": "F3doYJTaZ3cJAoihW",
+            "verifier": "82d42c546dc057b5fc4f3f75d1da02277876f8a5893a8d72ccc0c82f1113e0e227f883b55082f44ce01a65f66997944a47839a9c71655f22e59d8eebad42c1301b5824c946c9fbda4c72ca0b390b8ce0cc7a00bf189a123a7ba49baf1745cb7ac8d98f9ac250fc1230ae0100f572021411f24509a35b1997c34cdbf24d319c7"
+    },
+    {
+      "_id": "ydFCbJ3TbRXcRJBQ2",
+      "services":
+        "password":
+          "srp":
+            "identity": "rJQGKDQ3PWFAYjGKc",
+            "salt": "oWTKBszTykSthpERd",
+            "verifier": "aad725f1b1d3f35f6afe3e730d648306512b023f1d0e94aa71904a4377b9e5402a5166a8f0eef204db63621b9824fe7a78c2c0e8137a26a2b56e3083f916eba83c7b6eaa4c56de6051e51a120ba99854419654383d143e6c08ca79b7035e450d36658e43f7cbcc5869b62dc9e112308b3850c73e5ef0992ee5a3edb5326e46ea"
+      "emails": [
+        {
+          "address": "normal@ongoworks.com",
+          "verified": true
         }
-      },
-      {
-        "_id": "fLZ4NiDYpbT8dZXQe",
-        "emails": [
-          {
-            "address": "admin2@ongoworks.com",
-            "verified": true
-          }
-        ],
-        "profile": {
-          "name": "Admin User2"
-        },
-        "roles": [
-          "admin"
-        ],
-        "services": {
-          "password": {
-            "srp": {
-              "identity": "6dserefHaNK2ZRBnd",
-              "salt": "F3doYJTaZ3cJAoihW",
-              "verifier": "82d42c546dc057b5fc4f3f75d1da02277876f8a5893a8d72ccc0c82f1113e0e227f883b55082f44ce01a65f66997944a47839a9c71655f22e59d8eebad42c1301b5824c946c9fbda4c72ca0b390b8ce0cc7a00bf189a123a7ba49baf1745cb7ac8d98f9ac250fc1230ae0100f572021411f24509a35b1997c34cdbf24d319c7"
-            }
-          }
+      ],
+      "profile":
+        "name": "Normal User"
+    },
+    {
+      "_id": "Cpx5zeNixb9jmePQx",
+      "emails": [
+        {
+          "address": "view@ongoworks.com",
+          "verified": true
         }
-      }
-    ]
+      ],
+      "profile":
+        "name": "View Campaigns User"
+      "roles": [
+        "view-campaigns"
+      ],
+      "services":
+        "password":
+          "srp":
+            "identity": "ZmBXJH6rSoARphto6",
+            "salt": "FtwWQLWCZ42xvYGCX",
+            "verifier": "dd2ebb3652dc6d7c5a0c510314ede562686e90e8f7ac8ff757efc6acf3e32d9da41078d2563da55a72d83ad72717322379800c0afb37b146d041b391ed464b3275c1aeadaab45c56ada07724a34fb6472a14aab630f0c2be961253b39316a0200090e9a7f5e862c44d8b322b0a1be02bf3ee796eebaf713bd2aaab077dbbda55"
+    },
+    {
+      "_id": "WZNkqBaZLRqACDLZ2",
+      "emails": [
+        {
+          "address": "manage@ongoworks.com",
+          "verified": true
+        }
+      ],
+      "profile":
+        "name": "Manage-Users User"
+      "services":
+        "password":
+          "srp":
+            "identity": "GeDzsgPvrZn6ZCqk5",
+            "salt": "8NRSKnqN7687bPaSh",
+            "verifier": "2311f16977567cf0b42b954e8798fb1b1a2cc87dfbd67ae298b44b63d5259a1313aef8465cfd9fbabeaef672e29eab843a6c1cc4ff85b9c1adf765fc7e993b76db7da51ace79cbd7b3339347816ce9b7cab6794435ec5863fd04c9f56251334c91d74460127d8a2ea424d9681baeecd01575f3af1c60db4fd4e4fee4a1521b0f"
+    }
+  ]
   for user in users
     Meteor.users.insert(user)
 
@@ -190,160 +158,168 @@ unless Shops.find().count()
     "eligibleForPayments": true
     "requiresExtraPaymentsAgreement": false
     "createdAt": now
+    ownerId: "ydFCbJ3TbRXcRJBQ2"
+    admins: ["Cpx5zeNixb9jmePQx"]
+    usersPermissions: [
+      {
+        userId: "WZNkqBaZLRqACDLZ2"
+        permission: "/shop/products"
+      }
+    ]
 
-unless Products.find().count()
-  console.log 'Adding products fixture data'
-  Products.insert
-    #'_id': 'fhnqEEfMaESexc26F',
-    shopId: "WvrKDomkYth3THbDD"
-    'bodyHtml': 'The almost legendary Chuck Taylor All Star shoe has been given a high profile makeover by the world’s most expensive living artist, Damien Hirst. Forming part of the Converse (PRODUCT)RED series, the colourway is based on a transposition of Hirst’s “All You Need is Love” painting which features blue and yellow butterflies dance over a red backdrop, which was sold at a RED exhibition back in 2007. Limited to just 400 pairs, look out for a release at colette on November 5. 100% of proceedings will be donated to the RED foundation.',
-    'createdAt': now,
-    'handle': 'converse-chuck-taylor-all-star',
-    'id': 632910392,
-    'productType': 'Converse',
-    'publishedAt': now,
-    'publishedScope': 'global',
-    'templateSuffix': null,
-    'title': 'Damien Hirst HiTops',
-    'updatedAt': now,
-    'vendor': 'Converse',
-    'tags': ['Converse', 'Shoes', 'Legendary', 'RED'],
-    'variants': [
-      {
-        '_id': new Meteor.Collection.ObjectID()._str,
-        'barcode': '1234_pink',
-        'compareAtPrice': null,
+    unless Products.find().count()
+      console.log 'Adding products fixture data'
+      Products.insert
+      #'_id': 'fhnqEEfMaESexc26F',
+        shopId: "WvrKDomkYth3THbDD"
+        'bodyHtml': 'The almost legendary Chuck Taylor All Star shoe has been given a high profile makeover by the world’s most expensive living artist, Damien Hirst. Forming part of the Converse (PRODUCT)RED series, the colourway is based on a transposition of Hirst’s “All You Need is Love” painting which features blue and yellow butterflies dance over a red backdrop, which was sold at a RED exhibition back in 2007. Limited to just 400 pairs, look out for a release at colette on November 5. 100% of proceedings will be donated to the RED foundation.',
         'createdAt': now,
-        'fulfillmentService': 'manual',
-        'grams': 200,
-        'id': 808950810,
-        'inventoryManagement': 'reaction',
-        'inventoryPolicy': 'continue',
-        'inventoryQuantity': 10,
-        'option1': 'Pink',
-        'option2': null,
-        'option3': null,
-        'position': 1,
-        'price': '199.00',
-        'requiresShipping': true,
-        'sku': 'M9160',
-        'taxable': true,
-        'title': 'Pink',
-        'metafields': [
-          {'key': 'new', 'value': 'newvalue', 'namespace': 'global'}
-        ],
-        'medias': [
+        'handle': 'converse-chuck-taylor-all-star',
+        'id': 632910392,
+        'productType': 'Converse',
+        'publishedAt': now,
+        'publishedScope': 'global',
+        'templateSuffix': null,
+        'title': 'Damien Hirst HiTops',
+        'updatedAt': now,
+        'vendor': 'Converse',
+        'tags': ['Converse', 'Shoes', 'Legendary', 'RED'],
+        'variants': [
           {
+            '_id': new Meteor.Collection.ObjectID()._str,
+            'barcode': '1234_pink',
+            'compareAtPrice': null,
             'createdAt': now,
+            'fulfillmentService': 'manual',
+            'grams': 200,
+            'id': 808950810,
+            'inventoryManagement': 'reaction',
+            'inventoryPolicy': 'continue',
+            'inventoryQuantity': 10,
+            'option1': 'Pink',
+            'option2': null,
+            'option3': null,
             'position': 1,
-            'src': '/resources/sample/converse-1.jpg',
-            'updatedAt': now,
-            'mimeType': 'image/jpeg'
-          }
+            'price': '199.00',
+            'requiresShipping': true,
+            'sku': 'M9160',
+            'taxable': true,
+            'title': 'Pink',
+            'metafields': [
+              {'key': 'new', 'value': 'newvalue', 'namespace': 'global'}
+            ],
+            'medias': [
+              {
+                'createdAt': now,
+                'position': 1,
+                'src': '/resources/sample/converse-1.jpg',
+                'updatedAt': now,
+                'mimeType': 'image/jpeg'
+              }
+              {
+                'createdAt': now,
+                'position': 2,
+                'src': '/resources/sample/converse-2.jpg',
+                'updatedAt': now,
+                'mimeType': 'image/jpeg'
+              }
+            ],
+            'updatedAt': now
+          },
           {
+            '_id': new Meteor.Collection.ObjectID()._str,
+            'barcode': '1234Red',
+            'compareAtPrice': null,
             'createdAt': now,
+            'fulfillmentService': 'manual',
+            'grams': 200,
+            'id': 49148385,
+            'inventoryManagement': 'manual',
+            'inventoryPolicy': 'continue',
+            'inventoryQuantity': 20,
+            'option1': 'Red',
+            'option2': null,
+            'option3': null,
             'position': 2,
-            'src': '/resources/sample/converse-2.jpg',
-            'updatedAt': now,
-            'mimeType': 'image/jpeg'
-          }
-        ],
-        'updatedAt': now
-      },
-      {
-        '_id': new Meteor.Collection.ObjectID()._str,
-        'barcode': '1234Red',
-        'compareAtPrice': null,
-        'createdAt': now,
-        'fulfillmentService': 'manual',
-        'grams': 200,
-        'id': 49148385,
-        'inventoryManagement': 'manual',
-        'inventoryPolicy': 'continue',
-        'inventoryQuantity': 20,
-        'option1': 'Red',
-        'option2': null,
-        'option3': null,
-        'position': 2,
-        'price': '199.00',
-        'requiresShipping': true,
-        'sku': 'IPOD2008RED',
-        'taxable': true,
-        'title': 'Red',
-        'metafields': [
-          {'createdAt': '2013-10-25T13:52:21-04:00', 'description': null, 'id': 915396092, 'key': 'warehouse', 'namespace': 'inventory', 'ownerId': 690933842, 'updatedAt': '2013-10-25T13:52:21-04:00', 'value': '25', 'ownerResource': 'shop'}
-        ],
-        'medias': [
+            'price': '199.00',
+            'requiresShipping': true,
+            'sku': 'IPOD2008RED',
+            'taxable': true,
+            'title': 'Red',
+            'metafields': [
+              {'createdAt': '2013-10-25T13:52:21-04:00', 'description': null, 'id': 915396092, 'key': 'warehouse', 'namespace': 'inventory', 'ownerId': 690933842, 'updatedAt': '2013-10-25T13:52:21-04:00', 'value': '25', 'ownerResource': 'shop'}
+            ],
+            'medias': [
+              {
+                'createdAt': now,
+                'position': 3,
+                'src': '/resources/sample/converse-3.jpg',
+                'updatedAt': now,
+                'mimeType': 'image/jpeg'
+              }
+              {
+                'createdAt': now,
+                'position': 4,
+                'src': '/resources/sample/converse-4.jpg',
+                'updatedAt': now,
+                'mimeType': 'image/jpeg'
+              }
+            ],
+            'updatedAt': now
+          },
           {
+            '_id': new Meteor.Collection.ObjectID()._str,
+            'barcode': '1234_green',
+            'compareAtPrice': null,
             'createdAt': now,
+            'fulfillmentService': 'manual',
+            'grams': 200,
+            'id': 39072856,
+            'inventoryManagement': 'manual',
+            'inventoryPolicy': 'continue',
+            'inventoryQuantity': 30,
+            'option1': 'Green',
+            'option2': null,
+            'option3': null,
             'position': 3,
-            'src': '/resources/sample/converse-3.jpg',
-            'updatedAt': now,
-            'mimeType': 'image/jpeg'
-          }
+            'price': '199.00',
+            'requiresShipping': true,
+            'sku': 'IPOD2008GREEN',
+            'taxable': true,
+            'title': 'Green',
+            'updatedAt': now
+          },
           {
+            '_id': new Meteor.Collection.ObjectID()._str,
+            'barcode': '1234Black',
+            'compareAtPrice': null,
             'createdAt': now,
+            'fulfillmentService': 'manual',
+            'grams': 200,
+            'id': 457924702,
+            'inventoryManagement': 'manual',
+            'inventoryPolicy': 'continue',
+            'inventoryQuantity': 40,
+            'option1': 'Black',
+            'option2': null,
+            'option3': null,
             'position': 4,
-            'src': '/resources/sample/converse-4.jpg',
-            'updatedAt': now,
-            'mimeType': 'image/jpeg'
+            'price': '199.00',
+            'requiresShipping': true,
+            'sku': 'IPOD2008BLACK',
+            'taxable': true,
+            'title': 'Black',
+            'updatedAt': now
           }
         ],
-        'updatedAt': now
-      },
-      {
-        '_id': new Meteor.Collection.ObjectID()._str,
-        'barcode': '1234_green',
-        'compareAtPrice': null,
-        'createdAt': now,
-        'fulfillmentService': 'manual',
-        'grams': 200,
-        'id': 39072856,
-        'inventoryManagement': 'manual',
-        'inventoryPolicy': 'continue',
-        'inventoryQuantity': 30,
-        'option1': 'Green',
-        'option2': null,
-        'option3': null,
-        'position': 3,
-        'price': '199.00',
-        'requiresShipping': true,
-        'sku': 'IPOD2008GREEN',
-        'taxable': true,
-        'title': 'Green',
-        'updatedAt': now
-      },
-      {
-        '_id': new Meteor.Collection.ObjectID()._str,
-        'barcode': '1234Black',
-        'compareAtPrice': null,
-        'createdAt': now,
-        'fulfillmentService': 'manual',
-        'grams': 200,
-        'id': 457924702,
-        'inventoryManagement': 'manual',
-        'inventoryPolicy': 'continue',
-        'inventoryQuantity': 40,
-        'option1': 'Black',
-        'option2': null,
-        'option3': null,
-        'position': 4,
-        'price': '199.00',
-        'requiresShipping': true,
-        'sku': 'IPOD2008BLACK',
-        'taxable': true,
-        'title': 'Black',
-        'updatedAt': now
-      }
-    ],
-    'options': [
-      {
-        'id': 594680422,
-        'name': 'Title',
-        'defaultValue': 'Default Title'
-      }
-    ],
-    isVisible: true
+        'options': [
+          {
+            'id': 594680422,
+            'name': 'Title',
+            'defaultValue': 'Default Title'
+          }
+        ],
+        isVisible: true
 
 #unless Orders.find().count()
 #  console.log 'Adding orders fixture data'

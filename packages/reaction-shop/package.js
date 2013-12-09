@@ -96,10 +96,6 @@ Package.on_use(function (api, where) {
     'client/routing.coffee'
   ], 'client');
 
-  api.add_files('shopRoles/shop_roles_server.coffee', 'server');
-  api.add_files('shopRoles/shop_roles_common.coffee');
-  api.add_files('shopRoles/shop_roles_client.coffee', 'client');
-
   api.add_files([
     'server/methods.coffee',
     'server/fixtures.coffee',
@@ -118,7 +114,6 @@ Package.on_use(function (api, where) {
     'MetafieldSchema',
     'CartItemSchema',
     'variant',
-    'ShopRoles',
     'Shops',
     'Cart',
     'Tags'

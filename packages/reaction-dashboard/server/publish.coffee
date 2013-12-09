@@ -3,11 +3,13 @@
 #  settings, package access rights
 # *****************************************************
 Meteor.publish "PackageConfigs", ->
-  PackageConfigs.find
-    shopId: Meteor.app.getCurrentShop(this)._id
-  ,
-    sort:
-      priority: 1
+  shop = Meteor.app.getCurrentShop(this)
+  if shop
+    PackageConfigs.find
+      shopId: Meteor.app.getCurrentShop(this)._id
+    ,
+      sort:
+        priority: 1
 
 
 
