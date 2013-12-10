@@ -24,7 +24,8 @@
         "git": "https://github.com/wsoul/meteor-collection-behaviours.git",
         "branch": "master"
       },
-      "jquery-ui": {}
+      "jquery-ui": {},
+      "underscore-string-latest": {}
     },
     "packages": {
       "spin": {
@@ -96,6 +97,11 @@
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
         "tag": "v1.9.2",
         "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
+      },
+      "underscore-string-latest": {
+        "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
+        "tag": "v2.3.3",
+        "commit": "4a5d70eee48fbd90a6e6fc78747250d704a0b3bb"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",

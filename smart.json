@@ -19,6 +19,7 @@
     "collection-behaviours": {
       "git": "https://github.com/wsoul/meteor-collection-behaviours.git"
     },
-    "jquery-ui": {}
+    "jquery-ui": {},
+    "underscore-string-latest": {}
   }
 }

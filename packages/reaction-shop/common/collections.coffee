@@ -279,7 +279,7 @@ Shops = @Shops # package exports
     variants:
       type: [ProductVariantSchema]
       optional: true
-    tags:
+    tagIds:
       type: [String]
       optional: true
     pageTitle:
@@ -355,7 +355,7 @@ Products = @Products # package exports
     note:
       type: String
       optional: true
-    tags:
+    tagIds:
       type: [String]
       optional: true
 
@@ -426,6 +426,11 @@ Cart = @Cart # package exports
   schema:
     name:
       type: String
+    slug:
+      type: String
+    position:
+      type: Number
+      optional: true
     relatedTagIds:
       type: [String]
       optional: true

@@ -43,8 +43,14 @@
                   {{handle}}</p>
             </div>
             <div>
+              {{#if userHasRole "admin"}}
               <a href="#" id="tags" data-type="select2" data-pk="{{id}}"
-                 data-original-title="use tags to build nav & search" data-value="{{tags}}"></a>
+                 data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
+              {{else}}
+                {{#each tags}}
+                  <a href="{{pathFor "shop/tag"}}">{{name}}</a>
+                {{/each}}
+              {{/if}}
             </div>
 
             <div>

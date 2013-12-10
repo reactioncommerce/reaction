@@ -10,7 +10,8 @@ Package.on_use(function (api, where) {
     'simple-schema',
     'collection2',
     'collection-behaviours',
-    'roles'
+    'roles',
+    'underscore-string-latest'
   ]);
 
   api.use(['autoform', 'accounts-base', 'iron-router', 'less','reaction-filepicker'], 'client');
@@ -18,7 +19,10 @@ Package.on_use(function (api, where) {
 
   api.imply('simple-schema', ['client', 'server']);
 
-  api.add_files('model/model.coffee');
+  api.add_files([
+    'common/collections.coffee',
+    'common/hooks.coffee'
+  ]);
 
   //Loading Select 2 library https://github.com/ivaynberg/select2
   api.add_files('lib/select2/select2.js', 'client');
@@ -30,6 +34,10 @@ Package.on_use(function (api, where) {
 
     'client/templates/shopHeader/shopHeader.html',
     'client/templates/shopHeader/shopHeader.coffee',
+
+    'client/templates/shopHeader/tags/tags.html',
+    'client/templates/shopHeader/tags/tags.coffee',
+    'client/templates/shopHeader/tags/tags.less',
 
     'client/templates/shopNavElements/shopNavElements.html',
     'client/templates/shopNavElements/shopNavElements.coffee',

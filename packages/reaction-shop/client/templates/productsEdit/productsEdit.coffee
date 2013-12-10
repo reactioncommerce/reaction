@@ -1,3 +1,14 @@
+Template.productsEdit.helpers
+  tags: ->
+    currentProductId = Session.get("currentProductId")
+    product = Products.findOne(currentProductId)
+    if product.tagIds
+      Tags.find({_id: {$in: product.tagIds}}).fetch()
+    else
+      []
+  stringify: (tags) ->
+    _.pluck(tags, "name").join(", ")
+
 Template.productsEdit.rendered = ->
   
   # *****************************************************
@@ -98,26 +109,43 @@ Template.productsEdit.rendered = ->
     # *****************************************************
     # Editable tag field
     # *****************************************************
+    data = []
+    Tags.find().forEach (tag) ->
+      data.push(
+        id: tag.name
+        text: tag.name
+      )
+    console.log data
     $("#tags").editable
       showbuttons: true
       inputclass: "editable-width"
       select2:
-        tags: ->
-          currentProductId = Session.get("currentProductId")
-          Products.findOne
-            _id: currentProductId
-          ,
-            fields:
-              tags: true
-
-
+        tags: data
         tokenSeparators: [
           ","
           " "
         ]
 
-      success: (response, newValue) ->
-        updateProduct tags: newValue
+      success: (response, names) ->
+        tagIds = []
+        for name in names
+          slug = _.slugify(name)
+          existingTag = Tags.findOne({slug: slug})
+          if existingTag
+            tagIds.push(existingTag._id)
+          else
+            _id = Tags.insert(
+              name: name
+              slug: slug
+              shopId: packageShop.shopId
+              isTopLevel: false
+              updatedAt: new Date()
+              createdAt: new Date()
+            )
+            tagIds.push(_id)
+        updateProduct(
+          tagIds: tagIds
+        )
 
     
     # *****************************************************
