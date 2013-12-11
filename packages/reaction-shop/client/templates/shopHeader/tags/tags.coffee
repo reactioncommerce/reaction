@@ -102,7 +102,6 @@ Template.tags.events
       Tags.update(template.data._id, {$set: {relatedTagIds: relatedTagIds}})
     else
       for relatedTagId, index in relatedTagIds
-        console.log index
         Tags.update(relatedTagId, {$set: {position: index + 1}})
     $shopTags.sortable("destroy")
     $(template.find(".shop-tag-reorder-start-link")).show()
