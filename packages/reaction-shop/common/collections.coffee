@@ -106,6 +106,7 @@ CustomerAddressSchema = new SimpleSchema
   fullName:
     type: String
   address1:
+    label: "Address 1"
     type: String
   address2:
     type: String
@@ -115,26 +116,30 @@ CustomerAddressSchema = new SimpleSchema
   company:
     type: String
     optional: true
-  country:
-    type: String
   phone:
     type: String
-  province:
+  region:
+    label: "State/Province/Region"
     type: String
-  zip:
-    type: Number
-  provinceCode:
+  postal:
+    label: "ZIP/Postal Code"
     type: String
-  countryCode:
+  country:
     type: String
-  countryName:
-    type: String
-  addressType:
-    type: String
-    optional: true
-  default:
+  isCommercial:
+    label: "Is this a commercial address?"
     type: Boolean
     optional: true
+  isDefault:
+    label: "Make this your default address?"
+    type: Boolean
+    optional: true
+
+CountrySchema = new SimpleSchema
+  name:
+    type: String
+  code:
+    type: String
 
 @Shops = new Meteor.Collection2 'Shops',
   schema:
