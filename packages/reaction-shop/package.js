@@ -48,6 +48,9 @@ Package.on_use(function (api, where) {
     'client/templates/shoppingCart/shoppingCartCheckout.html',
     'client/templates/shoppingCart/shoppingCartCheckout.coffee',
 
+    'client/templates/shoppingCart/shoppingCartAddress.html',
+    'client/templates/shoppingCart/shoppingCartAddress.coffee',
+
     'client/templates/dashboard/widget/widget.less',
     'client/templates/dashboard/widget/widget.html',
     'client/templates/dashboard/widget/widget.coffee',
@@ -118,6 +121,7 @@ Package.on_use(function (api, where) {
     'Orders',
     'Customers',
     'ProductVariantSchema',
+    'CustomerAddressSchema',
     'VariantMediaSchema',
     'MetafieldSchema',
     'CartItemSchema',

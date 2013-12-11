@@ -1,0 +1,103 @@
+<template name="userAddress">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Address</h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+    {{#each addressList}}
+      <li class="list-group-item">
+        <strong>{{fullName}} </strong>
+        {{address1}}
+        {{address2}},
+        {{city}}, {{region}} {{postal}} {{country}}
+      </li>
+    {{else}}
+    <div class="col-md-10">
+      {{>addAddress}}
+    </div>
+    {{/each}}
+  </ul>
+  </div>
+</div>
+</template>
+
+<template name="addAddress">
+{{#autoForm schema=addAddressForm id="addAddressForm"}}
+  <fieldset>
+      <legend>Add address</legend>
+      <div class="form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
+          {{afFieldLabel "country" class="control-label"}}
+          {{afFieldInput "country"}}
+          {{#if afFieldIsInvalid "country"}}
+          <span class="help-block">{{afFieldMessage "country"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'fullName'}} has-error{{/if}}">
+          {{afFieldLabel "fullName" class="control-label"}}
+          {{afFieldInput "fullName"}}
+          {{#if afFieldIsInvalid "fullName"}}
+          <span class="help-block">{{afFieldMessage "fullName"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'address1'}} has-error{{/if}}">
+          {{afFieldLabel "address1" class="control-label"}}
+          {{afFieldInput "address1"}}
+          {{#if afFieldIsInvalid "address1"}}
+          <span class="help-block">{{afFieldMessage "address1"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'address2'}} has-error{{/if}}">
+          {{afFieldLabel "address2" class="control-label"}}
+          {{afFieldInput "address2"}}
+          {{#if afFieldIsInvalid "address2"}}
+          <span class="help-block">{{afFieldMessage "address2"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'postal'}} has-error{{/if}}">
+          {{afFieldLabel "postal" class="control-label"}}
+          {{afFieldInput "postal"}}
+          {{#if afFieldIsInvalid "postal"}}
+          <span class="help-block">{{afFieldMessage "postal"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'city'}} has-error{{/if}}">
+          {{afFieldLabel "city" class="control-label"}}
+          {{afFieldInput "city"}}
+          {{#if afFieldIsInvalid "city"}}
+          <span class="help-block">{{afFieldMessage "city"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'region'}} has-error{{/if}}">
+          {{afFieldLabel "region" class="control-label"}}
+          {{afFieldInput "region"}}
+          {{#if afFieldIsInvalid "region"}}
+          <span class="help-block">{{afFieldMessage "region"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'phone'}} has-error{{/if}}">
+          {{afFieldLabel "phone" class="control-label"}}
+          {{afFieldInput "phone"}}
+          {{#if afFieldIsInvalid "phone"}}
+          <span class="help-block">{{afFieldMessage "phone"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'isCommercial'}} has-error{{/if}}">
+          {{afFieldInput "isCommercial"}}
+          {{#if afFieldIsInvalid "isCommercial"}}
+          <span class="help-block">{{afFieldMessage "isCommercial"}}</span>
+          {{/if}}
+      </div>
+      <div class="form-group{{#if afFieldIsInvalid 'isDefault'}} has-error{{/if}}">
+          {{afFieldInput "isDefault"}}
+          {{#if afFieldIsInvalid "isDefault"}}
+          <span class="help-block">{{afFieldMessage "isDefault"}}</span>
+          {{/if}}
+      </div>
+      <div>
+          <button type="submit" data-meteor-method="addAddress" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-default">Reset</button>
+      </div>
+  </fieldset>
+{{/autoForm}}
+</template>
