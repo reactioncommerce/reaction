@@ -177,7 +177,6 @@
 
   configurationFields = ->
     template = configureLoginServiceDialogTemplateForService()
-    console.log template
     template.fields()
 
   Template._configureLoginServiceDialog.configurationFields = ->
