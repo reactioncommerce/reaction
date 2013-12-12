@@ -1,5 +1,5 @@
 Meteor.publish 'staff', ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Meteor.users.find {'shopRoles.shopId': shop._id}
 
@@ -16,7 +16,7 @@ Tags = @Tags
 # *****************************************************
 
 Meteor.publish 'shops', ->
-  Shops.find domains: Meteor.app.getDomain(this)
+  Meteor.app.getCurrentShopCursor(this)
 
 # *****************************************************
 # Client access rights for products
@@ -39,12 +39,12 @@ Shops.allow
 # *****************************************************
 
 Meteor.publish 'products', ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Products.find shopId: shop._id
 
 Meteor.publish 'product', (id) ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Products.findOne _id: id, shopId: shop._id
 
@@ -70,12 +70,12 @@ Products.allow
 # *****************************************************
 
 Meteor.publish 'orders', ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Orders.find shopId: shop._id
 
 Meteor.publish 'order', (id) ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Orders.findOne _id: id, shopId: shop._id
 
@@ -102,12 +102,12 @@ Orders.allow
 # *****************************************************
 
 Meteor.publish 'customers', ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Customers.find shopId: shop._id
 
 Meteor.publish 'customer', (id) ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Customers.findOne _id: id, shopId: shop._id
 
@@ -134,7 +134,7 @@ Customers.allow
 # *****************************************************
 
 Meteor.publish 'cart', (sessionId) ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Cart.find shopId: shop._id, sessionId: sessionId
 
@@ -156,7 +156,7 @@ Cart.allow
   #fetch: ['owner']
 
 Meteor.publish "tags", ->
-  shop = Shops.findOne domains: Meteor.app.getDomain(this)
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Tags.find shopId: shop._id
 
