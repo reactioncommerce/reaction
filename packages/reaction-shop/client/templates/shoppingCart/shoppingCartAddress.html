@@ -1,25 +1,46 @@
 <template name="userAddress">
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Address</h3>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-    {{#each addressList}}
-      <li class="list-group-item">
-        <strong>{{fullName}} </strong>
-        {{address1}}
-        {{address2}},
-        {{city}}, {{region}} {{postal}} {{country}}
-      </li>
-    {{else}}
-    <div class="col-md-10">
-      {{>addAddress}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Address Information <i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
+      </h3>
     </div>
-    {{/each}}
-  </ul>
+    <div class="panel-body">
+      {{#if addressList}}
+      <div class="row" id="addressList">
+        <div class="col-md-6">
+          <ul class="list-group">
+            <strong>Bill To:</strong>
+             {{#each addressList shipping}}
+            <li class="list-group-item address-bill-to" data-id="{{_id}}"> <strong>{{fullName}}</strong>
+              {{address1}}
+              {{address2}},
+              {{city}}, {{region}} {{postal}} {{country}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            <strong>Ship To:</strong>
+            {{#each addressList shipping}}
+            <li class="list-group-item address-ship-to" data-id="{{_id}}"> <strong>{{fullName}}</strong>
+              {{address1}}
+              {{address2}},
+              {{city}}, {{region}} {{postal}} {{country}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-11" id="addAddress">
+        <div class="addressForm"></div>
+      </div>
+      {{else}}
+      <div class="col-md-10">{{>addAddress}}</div>
+      {{/if}}
+    </div>
   </div>
-</div>
 </template>
 
 <template name="addAddress">
@@ -96,7 +117,8 @@
       </div>
       <div>
           <button type="submit" data-meteor-method="addAddress" class="btn btn-primary">Submit</button>
-          <button type="reset" class="btn btn-default">Reset</button>
+          {{#if addressList}}<button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
+          {{/if}}
       </div>
   </fieldset>
 {{/autoForm}}

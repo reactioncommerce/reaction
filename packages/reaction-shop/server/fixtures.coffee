@@ -28,7 +28,23 @@ unless Meteor.users.find().count()
         }
       ],
       "profile":
-        "name": "Admin User1"
+        "name": "Admin User1",
+        'addressList': [
+          {
+            '_id': new Meteor.Collection.ObjectID()._str,
+            'fullName': 'Joe Admin',
+            'company': null,
+            'address1': 'Chestnut Street 92',
+            'address2': 'Apartment 2',
+            'city': 'Louisville',
+            'region': 'KY',
+            'postal': '40202',
+            'country': 'United States',
+            'phone': '555-625-1199',
+            'isCommercial': true,
+            'idDefault': true,
+          }
+        ],
       "roles": [
         "admin"
       ],
@@ -661,40 +677,8 @@ unless Customers.find().count()
     'updatedAt': now,
     'verifiedEmail': true,
     'lastOrderName': null,
-    'imageUrl': 'resources/avatar.gif',
-    'defaultAddress':
-      'fullName': 'Bob Normal',
-      'address1': 'Chestnut Street 92',
-      'address2': 'Apartment 2',
-      'city': 'Louisville',
-      'company': null,
-      'country': 'United States',
-      'id': 207119551,
-      'phone': '555-625-1199',
-      'province': 'Kentucky',
-      'zip': '40202',
-      'provinceCode': 'KY',
-      'countryCode': 'US',
-      'countryName': 'United States',
-      'default': true
-    'addresses': [
-      {
-        'fullName': 'Bob Normal1',
-        'address1': 'Chestnut Street 92',
-        'address2': 'Apartment 2',
-        'city': 'Louisville',
-        'company': null,
-        'country': 'United States',
-        'id': 207119551,
-        'phone': '555-625-1199',
-        'province': 'Kentucky',
-        'zip': '40202',
-        'provinceCode': 'KY',
-        'countryCode': 'US',
-        'countryName': 'United States',
-        'default': true
-      }
-    ]
+    'imageUrl': 'resources/avatar.gif'
+
 
 # unless Cart.find().count()
 #   console.log 'Adding empty cart collection'

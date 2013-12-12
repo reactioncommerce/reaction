@@ -103,6 +103,9 @@ ProductVariantSchema = new SimpleSchema
     type: Date
 
 CustomerAddressSchema = new SimpleSchema
+  _id:
+    type: String
+    optional: true
   fullName:
     type: String
   address1:
@@ -334,10 +337,6 @@ Products = @Products # package exports
       type: String
     imageUrl:
       type: String
-    addresses:
-      type: [CustomerAddressSchema]
-    defaultAddress:
-      type: CustomerAddressSchema
 
     acceptsMarketing:
       type: Boolean
