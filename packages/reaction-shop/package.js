@@ -127,7 +127,7 @@ Package.on_use(function (api, where) {
     'MetafieldSchema',
     'CartItemSchema',
     'variant',
-    'Shops',
+    'Shop',
     'Cart',
     'Tags'
   ]);

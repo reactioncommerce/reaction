@@ -1,4 +1,5 @@
 addressForm = new AutoForm(CustomerAddressSchema)
+addressListDep = new Deps.Dependency();
 
 Template.addAddress.helpers
   addAddressForm: ->
@@ -35,12 +36,30 @@ Template.userAddress.events
       ));
   'click .address-ship-to': (event,template) ->
     if Session.get("shippingUserAddressId")?
-      $("ul li[data-id='"+Session.get("shippingUserAddressId")+"']").removeClass("active fa fa-check-circle fa-lg")
+      $("ul li[data-ship-id='"+Session.get("shippingUserAddressId")+"']").removeClass("active fa fa-check-circle fa-lg")
     Session.set("shippingUserAddressId", this._id)
-    $(event.target).addClass("active fa fa-check-circle fa-lg")
+    $(event.currentTarget).addClass("active fa fa-check-circle fa-lg")
 
   'click .address-bill-to': (event,template) ->
     if Session.get("billingUserAddressId")?
-      $("ul li[data-id='"+Session.get("billingUserAddressId")+"']").removeClass("active fa fa-check-circle fa-lg")
+      $("ul li[data-bill-id='"+Session.get("billingUserAddressId")+"']").removeClass("active fa fa-check-circle fa-lg")
     Session.set("billingUserAddressId", this._id)
-    $(event.target).addClass("active fa fa-check-circle fa-lg")
+    $(event.currentTarget).addClass("active fa fa-check-circle fa-lg")
+
+Template.userAddress.rendered = ->
+  profile = Meteor.user().profile
+  if profile
+    if profile.addressList
+      addressListDep #update addresses when user login
+      unless Session.get("shippingUserAddressId")?
+        _.each profile.addressList, ((address) ->
+          if address.isDefault? and address.isDefault is true
+            $("ul li[data-ship-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
+            Session.set("shippingUserAddressId", address._id)
+        )
+      unless Session.get("billingUserAddressId")?
+        _.each profile.addressList, ((address) ->
+          if address.isDefault? and address.isDefault is true
+            $("ul li[data-bill-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
+            Session.set("billingUserAddressId", address._id)
+        )

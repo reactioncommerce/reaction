@@ -12,10 +12,12 @@
           <ul class="list-group">
             <strong>Bill To:</strong>
              {{#each addressList shipping}}
-            <li class="list-group-item address-bill-to" data-id="{{_id}}"> <strong>{{fullName}}</strong>
-              {{address1}}
-              {{address2}},
-              {{city}}, {{region}} {{postal}} {{country}}
+            <li class="list-group-item address-bill-to" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong>
+              <address>
+                {{address1}}
+                {{address2}},
+                {{city}}, {{region}} {{postal}} {{country}}
+              </address>
             </li>
             {{/each}}
           </ul>
@@ -24,10 +26,12 @@
           <ul class="list-group">
             <strong>Ship To:</strong>
             {{#each addressList shipping}}
-            <li class="list-group-item address-ship-to" data-id="{{_id}}"> <strong>{{fullName}}</strong>
-              {{address1}}
-              {{address2}},
-              {{city}}, {{region}} {{postal}} {{country}}
+            <li class="list-group-item address-ship-to" data-ship-id="{{_id}}"> <strong>{{fullName}}</strong>
+              <address>
+                {{address1}}
+                {{address2}},
+                {{city}}, {{region}} {{postal}} {{country}}
+              </address>
             </li>
             {{/each}}
           </ul>
