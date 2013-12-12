@@ -1,5 +1,5 @@
 Meteor.publish "allcampaigns", (limit) ->
-  shop = Shops.findOne(domains: Meteor.app.getDomain(this))
+  shop = Meteor.app.getCurrentShop(@)
   if shop
     Campaigns.find
       shopId: shop._id
@@ -14,7 +14,7 @@ Meteor.publish "singleCampaign", (id) ->
   id and Campaigns.find(id)
 
 Meteor.publish "campaigns", ->
-  shop = Shops.findOne(domains: Meteor.app.getDomain(this))
+  shop = Meteor.app.getCurrentShop(@)
   Campaigns.find shopId: shop._id  if shop
 
 Meteor.publish "captures", (id) ->

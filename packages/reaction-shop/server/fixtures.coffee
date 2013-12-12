@@ -671,6 +671,8 @@ unless Customers.find().count()
       'country': 'United States',
       'id': 207119551,
       'phone': '555-625-1199',
+      'region': 'Some region'
+      'postal': 'Some postal'
       'province': 'Kentucky',
       'zip': '40202',
       'provinceCode': 'KY',
@@ -687,6 +689,8 @@ unless Customers.find().count()
         'country': 'United States',
         'id': 207119551,
         'phone': '555-625-1199',
+        'region': 'Some region'
+        'postal': 'Some postal'
         'province': 'Kentucky',
         'zip': '40202',
         'provinceCode': 'KY',

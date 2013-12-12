@@ -1,8 +1,15 @@
 root = exports ? this
 
 Meteor.app = _.extend(Meteor.app || {},
+  getCurrentShopCursor: (client) ->
+    domain = Meteor.app.getDomain(client)
+    cursor = Shops.find({domains: domain}, {limit: 1});
+    if !cursor.count()
+      cursor = Shops.find({}, {sort: {$natural: 1}, limit: 1});
+    cursor
   getCurrentShop: (client) ->
-    Shops.findOne({domains: Meteor.app.getDomain(client)});
+    cursor = Meteor.app.getCurrentShopCursor(client)
+    cursor.fetch()[0]
   getDomain: (client) ->
     # Pass client in publish functions as "this"
     if !client
