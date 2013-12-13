@@ -23,6 +23,12 @@ Template.userAddress.helpers
     if profile
       if profile.addressList
         profile.addressList
+  selectBillAddress: (id) ->
+    if (id is Session.get("billingUserAddressId"))
+      return "active fa fa-check-circle fa-lg"
+  selectShipAddress: (id) ->
+    if (id is Session.get("shippingUserAddressId"))
+      return "active fa fa-check-circle fa-lg"
 
 Template.userAddress.events
   'click #newAddress': () ->
