@@ -9,6 +9,8 @@ Template.addAddress.helpers
     if profile
       if profile.addressList
         profile.addressList
+  countryOptions: ->
+    SystemConfig.findOne().countries
 
 Template.addAddress.events
   'click #cancel-new': () ->

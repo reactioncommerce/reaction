@@ -1,3 +1,5 @@
+Location = new Meteor.Collection(null)
+
 UserPermissionSchema = new SimpleSchema
   userId:
     type: String

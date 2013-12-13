@@ -1,3 +1,4 @@
+Future = Npm.require('fibers/future')
 Meteor.methods
   inviteShopMember: (shopId, email, name, role) ->
     shop = Shops.findOne shopId
@@ -11,7 +12,6 @@ Meteor.methods
 
   addToCart: (cartId,productId,variantData,quantity) ->
     now = new Date()
-    #TODO: Meteor.call('createCart',sessionId,productId,variantData) so this can be a single call
     currentCart = Cart.find({_id: cartId, "items.variants._id": variantData._id})
 
     if currentCart.count() > 0
@@ -50,3 +50,12 @@ Meteor.methods
   addAddress: (doc) ->
     doc._id = new Meteor.Collection.ObjectID()._str
     Meteor.users.update({_id: Meteor.userId()}, {$addToSet:{"profile.addressList":doc}})
+
+  locateAddress: (lat,long) ->
+    # future = Npm.require('fibers/future')
+    fut = new Future()
+    gm = Npm.require("googlemaps")
+    util = Npm.require("util")
+    location = gm.reverseGeocode gm.checkAndConvertPoint([lat, long]), (err, data) ->
+      fut['return'](data)
+    return fut.wait()

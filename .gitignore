@@ -17,3 +17,5 @@ settings/prod.json
 npm-debug.log
 
 /dev.json
+
+/packages/reaction-shop/.npm/

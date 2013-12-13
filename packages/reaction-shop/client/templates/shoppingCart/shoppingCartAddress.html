@@ -55,7 +55,7 @@
       <legend>Add address</legend>
       <div class="form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
           {{afFieldLabel "country" class="control-label"}}
-          {{afFieldInput "country"}}
+          {{afFieldInput "country" options=countryOptions}}
           {{#if afFieldIsInvalid "country"}}
           <span class="help-block">{{afFieldMessage "country"}}</span>
           {{/if}}
