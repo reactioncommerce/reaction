@@ -286,7 +286,6 @@ Shops = @Shops # package exports
       max: 255
     variants:
       type: [ProductVariantSchema]
-      optional: true
     tagIds:
       type: [String]
       optional: true

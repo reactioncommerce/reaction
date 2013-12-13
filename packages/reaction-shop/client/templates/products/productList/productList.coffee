@@ -28,6 +28,21 @@ Template.productListGrid.events
   "click #productGridView": ->
     $(".productList").hide()
     $(".productGrid").show()
+  "click .add-product-link": (e, t) ->
+    e.preventDefault()
+    e.stopPropagation()
+    productId = Products.insert({
+      title: "New product"
+      variants: [
+        {
+          title: "New product variant"
+          price: 0
+        }
+      ]
+    })
+    Router.go("shop/product",
+      _id: productId
+    )
 
 getProductsByTag = (tag) ->
   selector = {}

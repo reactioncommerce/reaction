@@ -24,6 +24,13 @@ Package.on_use(function (api, where) {
     'common/hooks.coffee'
   ]);
 
+  api.add_files([
+      'server/app.coffee',
+      'server/methods.coffee',
+      'server/fixtures.coffee',
+      'server/publications.coffee',
+    ], 'server');
+
   //Loading Select 2 library https://github.com/ivaynberg/select2
   api.add_files('lib/select2/select2.js', 'client');
   api.add_files('lib/select2/select2.css', 'client');
@@ -108,11 +115,6 @@ Package.on_use(function (api, where) {
     'client/routing.coffee'
   ], 'client');
 
-  api.add_files([
-    'server/methods.coffee',
-    'server/fixtures.coffee',
-    'server/publications.coffee',
-  ], 'server');
   api.add_files('client/register.coffee', 'client');
 
   api.export([

@@ -10,9 +10,7 @@
     <a id="productListView"> <i class="fa fa-th-list fa-2x pull-right"></i>
     </a>
     {{#if isInRole 'admin'}}
-      <a href="{{pathFor 'shop/product/add'}}">
-        <i class="fa fa-plus fa-2x pull-right" id="productAdd"></i>
-      </a>
+      <a href="#" class="add-product-link fa fa-plus fa-2x pull-right"></a>
     {{/if}}
   </div>
   <div class="row">
@@ -44,16 +42,14 @@
 <template name="productGrid">
   <div class="productGrid" data-event-category="grid" data-event-action="generic-click" data-event-label="Just some grid click">
     {{#each products}}
-      <div class="product">
+      <a href="{{pathFor 'shop/product'}}" class="product" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" dava-event-value="{{_id}}">
         <div class="productImage">
-          <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" dava-event-value="{{_id}}">
             <img src="{{variants.[0].medias.[0].src}}" class="img-responsive">
-          </a>
         </div>
         <div class="productTitle">
           {{title}}
         </div>
-      </div>
+      </a>
     {{/each}}
   </div>
 </template>
