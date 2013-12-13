@@ -2,18 +2,21 @@
   <div class="container">
     {{!-- Edit Product --}}
     <form action="#" class="form-inline">
-      <div class="row">
-        <div class="col-md-12">
-          {{#if isVisible}}
-          {{else}}
-            <div class="alert alert-warning">
-              This product is not visible to customers.
-              You can <a href="#" class="toggle-product-isVisible-link">make it visible</a> when you're done editing.
-            </div>
-          {{/if}}
-          Product management: <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+      {{#if userHasRole "admin"}}
+        <div class="row">
+          <div class="col-md-12">
+            {{#if isVisible}}
+            {{else}}
+              <div class="alert alert-warning">
+                This product is not visible to customers.
+                You can <a href="#" class="toggle-product-isVisible-link">make it visible</a> when you're done editing.
+              </div>
+            {{/if}}
+            Product management:
+            <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+          </div>
         </div>
-      </div>
+      {{/if}}
       <div class="row">
         <!-- BEGIN Left Side -->
         <div class="col-md-6 image-block">
