@@ -55,14 +55,15 @@ Router.map ->
   @route 'shop/product',
     controller: ShopController
     path: '/shop/products/:_id'
+    before: ->
+      product = Products.findOne(@params._id)
+      if !product.isVisible
+        if !packageShop.havePermission(@path)
+          @render('unauthorized')
+          @stop()
     data: ->
       Session.set('currentProductId', @params._id)
       Products.findOne(@params._id)
-    template: 'productsEdit'
-  #add new products
-  @route 'shop/product/add',
-    controller: ShopAdminController
-    path: '/shop/products/add'
     template: 'productsEdit'
   #checkout
   @route 'shoppingCartCheckout',

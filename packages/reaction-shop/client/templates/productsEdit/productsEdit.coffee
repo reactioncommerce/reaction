@@ -70,7 +70,7 @@ Template.productsEdit.rendered = ->
     # Editable price - really first variant entry
     # *****************************************************
     $("#price").editable success: (response, newValue) ->
-      updateProduct price: newValue
+      updateProduct({"variants.0.price": newValue})
 
     
     # *****************************************************
@@ -115,7 +115,6 @@ Template.productsEdit.rendered = ->
         id: tag.name
         text: tag.name
       )
-    console.log data
     $("#tags").editable
       showbuttons: true
       inputclass: "editable-width"
@@ -288,6 +287,8 @@ Template.productsEdit.events
   "click #edit-options": (e) ->
     $("#options-modal").modal()
     e.preventDefault()
+  "click .toggle-product-isVisible-link": (e, t) ->
+    Products.update(t.data._id, {$set: {isVisible: !t.data.isVisible}})
 
 window.getSelectedVariantIndex = ->
   Session.get("selectedVariantIndex") or 0

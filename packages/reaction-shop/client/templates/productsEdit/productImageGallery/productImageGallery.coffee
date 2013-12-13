@@ -127,7 +127,6 @@ Template.productImageGallery.events
       media.src == mediaUrl
     $pull = {}
     $pull["variants."+getSelectedVariantIndex()+".medias"] = media
-    console.log({$pull: $pull});
     Products.update currentProductId, {$pull: $pull}, (error) ->
       if error
         throwError error.reason

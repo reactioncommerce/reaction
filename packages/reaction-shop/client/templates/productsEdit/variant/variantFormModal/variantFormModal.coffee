@@ -61,7 +61,7 @@ Template.variantFormModal.events
     currentVariantIndex = window.getDynamicCurrentVariantIndex()
     oldVariant = currentProduct.variants[currentVariantIndex] or getDefaultVariantData()
     variant =
-      _id: new Meteor.Collection.ObjectID()._str
+      _id: Random.id()
       inventoryPolicy: "deny"
       taxable: false
       requiresShipping: false
