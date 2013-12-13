@@ -19,16 +19,23 @@ Meteor.methods
     else
       Cart.update {_id: cartId},{ $addToSet:{items:{productId: productId, quantity: quantity, variants: variantData}}}
 
-  createCart: (sessionId,productId,variantData) ->
+  createCart: (sessionId,userId) ->
+    unless userId
+      userId = Meteor.userId()
     now = new Date()
     validationContext = "cart"
-    currentCart = Cart.findOne()
+    if Cart.findOne({sessionId:sessionId,userId:userId})
+      currentCart = Cart.findOne({sessionId:sessionId,userId:userId})
+    else
+      currentCart = Cart.findOne({sessionId:sessionId})
+      if userId
+        Cart.update({sessionId:sessionId},{$set:{userId:userId}})
     # If user doesn't have a cart, create one
     if currentCart is `undefined`
       currentCart = Cart.insert(
         shopId: Meteor.app.getCurrentShop()._id
         sessionId: sessionId
-        userId: Meteor.userId()
+        userId: userId
         createdAt: now
         updatedAt: now,
         validationContext: validationContext,

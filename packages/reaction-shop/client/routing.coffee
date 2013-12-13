@@ -7,7 +7,7 @@ ShopController = RouteController.extend
     @subscribe('shops').wait()
     shop = Shops.findOne()
     unless shop
-      @render('shopNotFound')
+      @render('loading')
       @stop()
     else
       packageShop.init shop
