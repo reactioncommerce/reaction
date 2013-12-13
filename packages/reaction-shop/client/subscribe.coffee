@@ -3,6 +3,7 @@ Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
+Meteor.subscribe 'SystemConfig'
 
 Deps.autorun ->
   if Session.get('serverSession')

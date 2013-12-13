@@ -2,6 +2,10 @@ Package.describe({
   summary: "Reaction Shop - commerce package for Reaction platform"
 });
 
+Npm.depends({
+  "googlemaps": "0.1.9"
+});
+
 Package.on_use(function (api, where) {
   api.imply('reaction-dashboard', ['client', 'server']);
   api.use([
@@ -116,6 +120,7 @@ Package.on_use(function (api, where) {
   api.add_files('client/register.coffee', 'client');
 
   api.export([
+    'Location',
     'packageShop',
     'ShopController',
     'Products',
