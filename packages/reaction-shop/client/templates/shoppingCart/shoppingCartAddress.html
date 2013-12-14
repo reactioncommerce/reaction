@@ -55,7 +55,7 @@
       <legend>Add address</legend>
       <div class="form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
           {{afFieldLabel "country" class="control-label"}}
-          {{afFieldInput "country" options=countryOptions}}
+          {{afFieldInput "country" options=countryOptions value=defaultCountry }}
           {{#if afFieldIsInvalid "country"}}
           <span class="help-block">{{afFieldMessage "country"}}</span>
           {{/if}}
@@ -83,21 +83,21 @@
       </div>
       <div class="form-group{{#if afFieldIsInvalid 'postal'}} has-error{{/if}}">
           {{afFieldLabel "postal" class="control-label"}}
-          {{afFieldInput "postal"}}
+          {{afFieldInput "postal" value=defaultPostal}}
           {{#if afFieldIsInvalid "postal"}}
           <span class="help-block">{{afFieldMessage "postal"}}</span>
           {{/if}}
       </div>
       <div class="form-group{{#if afFieldIsInvalid 'city'}} has-error{{/if}}">
           {{afFieldLabel "city" class="control-label"}}
-          {{afFieldInput "city"}}
+          {{afFieldInput "city" value=defaultCity}}
           {{#if afFieldIsInvalid "city"}}
           <span class="help-block">{{afFieldMessage "city"}}</span>
           {{/if}}
       </div>
       <div class="form-group{{#if afFieldIsInvalid 'region'}} has-error{{/if}}">
           {{afFieldLabel "region" class="control-label"}}
-          {{afFieldInput "region"}}
+          {{afFieldInput "region" value=defaultRegion}}
           {{#if afFieldIsInvalid "region"}}
           <span class="help-block">{{afFieldMessage "region"}}</span>
           {{/if}}

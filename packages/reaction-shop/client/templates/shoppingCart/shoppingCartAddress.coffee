@@ -11,6 +11,14 @@ Template.addAddress.helpers
         profile.addressList
   countryOptions: ->
     SystemConfig.findOne().countries
+  defaultCountry: ->
+    UserLocation.findOne().country
+  defaultCity: ->
+    UserLocation.findOne().city
+  defaultPostal: ->
+    UserLocation.findOne().postal
+  defaultRegion: ->
+    UserLocation.findOne().region
 
 Template.addAddress.events
   'click #cancel-new': () ->

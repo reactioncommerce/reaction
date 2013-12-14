@@ -52,10 +52,9 @@ Meteor.methods
     Meteor.users.update({_id: Meteor.userId()}, {$addToSet:{"profile.addressList":doc}})
 
   locateAddress: (lat,long) ->
-    # future = Npm.require('fibers/future')
+    Future = Npm.require('fibers/future')
     fut = new Future()
     gm = Npm.require("googlemaps")
-    util = Npm.require("util")
     location = gm.reverseGeocode gm.checkAndConvertPoint([lat, long]), (err, data) ->
       fut['return'](data)
     return fut.wait()

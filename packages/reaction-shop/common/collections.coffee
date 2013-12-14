@@ -1,4 +1,4 @@
-Location = new Meteor.Collection(null)
+UserLocation = new Meteor.Collection(null)
 
 UserPermissionSchema = new SimpleSchema
   userId:
