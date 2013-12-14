@@ -30,5 +30,4 @@ Meteor.startup ->
       postal: null
     }
     id = UserLocation.insert(address)
-    console.log id
     address = navigator.geolocation.getCurrentPosition successFunction, errorFunction  if navigator.geolocation
