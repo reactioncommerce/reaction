@@ -64,7 +64,11 @@ Shops.allow
 Meteor.publish 'products', ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
-    Products.find shopId: shop._id
+    selector =
+      shopId: shop._id
+    if !Roles.userIsInRole(this.userId, ['admin'])
+      selector.isVisible = true
+    Products.find selector
 
 Meteor.publish 'product', (id) ->
   shop = Meteor.app.getCurrentShop(@)
