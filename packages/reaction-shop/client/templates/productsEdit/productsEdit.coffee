@@ -279,8 +279,15 @@ Template.productsEdit.events
     e.stopPropagation()
 
   "click #add-variant": (e) ->
-    $("#variants-modal form").get(0).reset()
-    Session.set "currentVariantIndex", null
+    currentProduct = Products.findOne(Session.get("currentProductId"))
+    lastVariant = _.last(currentProduct.variants)
+    delete lastVariant._id
+    delete lastVariant.updatedAt
+    delete lastVariant.createdAt
+    clonedLastVariant = _.clone(lastVariant)
+    newVariantIndex = currentProduct.variants.length
+    Products.update(currentProduct._id, {$push: {variants: clonedLastVariant}})
+    Session.set "currentVariantIndex", newVariantIndex
     $("#variants-modal").modal()
     e.preventDefault()
 
