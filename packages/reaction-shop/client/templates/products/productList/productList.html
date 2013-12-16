@@ -47,6 +47,10 @@
             <img src="{{variants.[0].medias.[0].src}}" class="img-responsive">
         </div>
         <div class="productTitle">
+          {{#if isVisible}}
+          {{else}}
+            <i class="fa fa-eye-slash"></i>
+          {{/if}}
           {{title}}
         </div>
       </a>
