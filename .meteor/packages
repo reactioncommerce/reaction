@@ -41,3 +41,6 @@ reaction-accounts
 accounts-facebook
 underscore-string-latest
 roles
+jquery-cookie
+handlebars-server
+email

@@ -8,9 +8,34 @@ Meteor.app.packages.push
   priority: '3'
   shopPermissions: [
     {
-      label: "Products management"
-      name: "/shop/products"
-      scope: "shop"
+      label: "Customers"
+      permission: "/shop/customers"
+      group: "Shop Management"
+    }
+    {
+      label: "Orders"
+      permission: "/shop/orders"
+      group: "Shop Management"
+    }
+    {
+      label: "Promotions"
+      permission: "/shop/promotions"
+      group: "Shop Management"
+    }
+    {
+      label: "Products"
+      permission: "/shop/products"
+      group: "Shop Content"
+    }
+    {
+      label: "Collections"
+      permission: "/shop/collections"
+      group: "Shop Content"
+    }
+    {
+      label: "Preferences"
+      permission: "/shop/preferences"
+      group: "Shop Settings"
     }
   ]
 

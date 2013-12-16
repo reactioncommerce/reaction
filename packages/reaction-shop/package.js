@@ -15,7 +15,8 @@ Package.on_use(function (api, where) {
     'collection2',
     'collection-behaviours',
     'roles',
-    'underscore-string-latest'
+    'underscore-string-latest',
+    'handlebars-server'
   ]);
 
   api.use(['autoform', 'accounts-base', 'iron-router', 'less','reaction-filepicker'], 'client');
@@ -33,6 +34,7 @@ Package.on_use(function (api, where) {
       'server/methods.coffee',
       'server/fixtures.coffee',
       'server/publications.coffee',
+      'server/emailTemplates/shopMemberInvite.handlebars'
     ], 'server');
 
   //Loading Select 2 library https://github.com/ivaynberg/select2
@@ -78,10 +80,11 @@ Package.on_use(function (api, where) {
     'client/templates/settings/settingsGeneral/settingsGeneral.html',
     'client/templates/settings/settingsAccount/settingsAccount.html',
     'client/templates/settings/settingsAccount/settingsAccount.coffee',
-    'client/templates/settings/settingsAccount/member/member.html',
-    'client/templates/settings/settingsAccount/member/member.coffee',
-    'client/templates/settings/settingsAccount/member/memberForm/memberForm.html',
-    'client/templates/settings/settingsAccount/member/memberForm/memberForm.coffee',
+    'client/templates/settings/settingsAccount/shopMember/shopMember.html',
+    'client/templates/settings/settingsAccount/shopMember/shopMember.coffee',
+    'client/templates/settings/settingsAccount/shopMember/shopMember.less',
+    'client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.html',
+    'client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.coffee',
 
     'client/templates/products/products.html',
     'client/templates/products/products.less',
@@ -115,6 +118,7 @@ Package.on_use(function (api, where) {
     'client/templates/notice/unauthorized.html',
     'client/templates/notice/shopNotFound.html',
 
+    'client/helpers.coffee',
     'client/subscribe.coffee',
     'client/routing.coffee'
   ], 'client');
@@ -128,6 +132,7 @@ Package.on_use(function (api, where) {
     'Products',
     'Orders',
     'Customers',
+    'ShopMemberSchema',
     'ProductVariantSchema',
     'CustomerAddressSchema',
     'VariantMediaSchema',
