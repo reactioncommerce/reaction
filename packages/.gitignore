@@ -26,3 +26,5 @@ collection-hooks
 collection-behaviours
 jquery-ui
 underscore-string-latest
+jquery-cookie
+handlebars-server

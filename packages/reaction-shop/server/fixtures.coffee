@@ -175,11 +175,14 @@ unless Shops.find().count()
     "requiresExtraPaymentsAgreement": false
     "createdAt": now
     ownerId: "ydFCbJ3TbRXcRJBQ2"
-    admins: ["Cpx5zeNixb9jmePQx"]
-    usersPermissions: [
+    members: [
+      {
+        userId: "Cpx5zeNixb9jmePQx"
+        isAdmin: true
+      }
       {
         userId: "WZNkqBaZLRqACDLZ2"
-        permission: "/shop/products"
+        permissions: ["/shop/products"]
       }
     ]
 

@@ -1,10 +1,14 @@
 UserLocation = new Meteor.Collection(null)
 
-UserPermissionSchema = new SimpleSchema
+ShopMemberSchema = new SimpleSchema
   userId:
     type: String
-  permission:
-    type: String
+  isAdmin:
+    type: Boolean
+    optional: true
+  permissions:
+    type: [String]
+    optional: true
 
 MetafieldSchema = new SimpleSchema
   key:
@@ -251,15 +255,18 @@ CountrySchema = new SimpleSchema
       optional: true
     ownerId:
       type: String
-    admins:
-      type: [String]
-    usersPermissions:
-      type: [UserPermissionSchema]
+    members:
+      type: [ShopMemberSchema]
     createdAt:
       type: Date
     updatedAt:
       type: Date
       optional: true
+  transform: (shop) ->
+    _.each shop.members, (member, index) ->
+      member.index = index
+      member.user = Meteor.users.findOne member.userId
+    shop
 
 Shops = @Shops # package exports
 

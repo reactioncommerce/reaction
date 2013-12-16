@@ -1,14 +1,37 @@
 Future = Npm.require('fibers/future')
 Meteor.methods
-  inviteShopMember: (shopId, email, name, role) ->
+  inviteShopMember: (shopId, email, name) ->
     shop = Shops.findOne shopId
-    if shop and email and name and role
+    if shop and email and name
       userId = Accounts.createUser
         email: email
         profile:
           name: name
-      Meteor.users.update userId, {$set: {shopRoles: [{shopId: shopId, name: role}]}}
-      Accounts.sendEnrollmentEmail(userId)
+      Shops.update shopId, {$addToSet: {members: {userId: userId, isAdmin: true}}}
+
+      user = Meteor.users.findOne(userId)
+      unless user
+        throw new Error("Can't find user")
+      token = Random.id()
+      Meteor.users.update userId,
+        $set:
+          "services.password.reset":
+            token: token
+            email: email
+            when: new Date()
+
+      enrollAccountUrl = Meteor.absoluteUrl('shop/invite/' + token)
+      currentUserName = Meteor.user().profile.name
+      Email.send
+        to: email
+        from: currentUserName + " <robot@reaction.com>"
+        subject: "[Shopify] You have been invited to join the " + shop.name + " staff"
+        html: Handlebars.templates['shopMemberInvite']
+          homepage: Meteor.absoluteUrl()
+          shop: shop
+          currentUserName: currentUserName
+          invitedUserName: name
+          url: enrollAccountUrl
 
   addToCart: (cartId,productId,variantData,quantity) ->
     now = new Date()

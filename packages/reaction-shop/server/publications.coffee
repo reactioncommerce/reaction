@@ -1,8 +1,3 @@
-Meteor.publish 'staff', ->
-  shop = Meteor.app.getCurrentShop(@)
-  if shop
-    Meteor.users.find {'shopRoles.shopId': shop._id}
-
 # Scope variable import
 Shops = @Shops
 Products = @Products
@@ -16,7 +11,35 @@ Tags = @Tags
 # *****************************************************
 
 Meteor.publish 'shops', ->
-  Meteor.app.getCurrentShopCursor(this)
+  Meteor.app.getCurrentShopCursor(@)
+
+Meteor.publish 'shopMembers', ->
+  self = @
+  handle = Meteor.app.getCurrentShopCursor(self).observeChanges
+    added: (id) ->
+      shop = Shops.findOne id
+      memberIds = _.pluck shop.members, "userId"
+      Meteor.users.find({_id: {$in: memberIds}}, {fields: {emails: 1, 'profile': 1}}).forEach (user) ->
+        self.added("users", user._id, user)
+    changed: (id) ->
+      shop = Shops.findOne id
+      memberIds = _.pluck shop.members, "userId"
+      console.log memberIds
+      Meteor.users.find({_id: {$in: memberIds}}, {fields: {emails: 1, 'profile': 1}}).forEach (user) ->
+        self.added("users", user._id, user)
+
+  self.ready()
+
+  self.onStop ->
+    handle.stop()
+
+#  shop = Meteor.app.getCurrentShop(@)
+#  memberIds = _.pluck shop.members, "userId"
+#
+#  Meteor.users.find {_id: {$in: memberIds}},
+#    fields:
+#      emails: 1
+#      'profile': 1
 
 # *****************************************************
 # Client access rights for products

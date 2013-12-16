@@ -25,7 +25,9 @@
         "branch": "master"
       },
       "jquery-ui": {},
-      "underscore-string-latest": {}
+      "underscore-string-latest": {},
+      "jquery-cookie": {},
+      "handlebars-server": {}
     },
     "packages": {
       "spin": {
@@ -102,6 +104,16 @@
         "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
         "tag": "v2.3.3",
         "commit": "4a5d70eee48fbd90a6e6fc78747250d704a0b3bb"
+      },
+      "jquery-cookie": {
+        "git": "https://github.com/BenjaminRH/meteor-jquery-cookie.git",
+        "tag": "v0.1.0",
+        "commit": "084bc5bf612639008efe03f3948e816df44c0f36"
+      },
+      "handlebars-server": {
+        "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
+        "tag": "v1.1.0",
+        "commit": "ed99c8e9280894519f44a5b4c84f66ff596c5450"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",

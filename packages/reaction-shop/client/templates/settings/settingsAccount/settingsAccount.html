@@ -9,10 +9,11 @@
         <th>Name</th>
         <th>Email</th>
         <th>Admin Access</th>
+        <th></th>
       </tr>
       </thead>
-      {{#each members}}
-        {{> member}}
+      {{#each shop.members}}
+        {{> shopMember}}
       {{/each}}
     </table>
     <button type="button" class="btn btn-default button-add-member">Add a staff member</button>

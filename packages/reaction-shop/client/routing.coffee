@@ -14,7 +14,7 @@ ShopController = RouteController.extend
 
 ShopAdminController = ShopController.extend
   before: ->
-    unless packageShop.havePermission(@path)
+    unless packageShop.hasPermission(@path)
       @render('unauthorized')
       @stop()
 
@@ -32,9 +32,10 @@ Router.map ->
   @route 'shop/settings/account',
     controller: ShopAdminController
     path: '/shop/settings/account'
+    waitOn: ->
+      Meteor.subscribe 'shopMembers'
     data: ->
       shop: Shops.findOne packageShop.shopId
-      members: Meteor.users.find {'shopRoles.shopId': packageShop.shopId}
     template: 'settingsAccount'
   # list page of customer records
   @route 'shop/customers',
