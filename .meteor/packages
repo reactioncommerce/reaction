@@ -14,7 +14,6 @@ accounts-password
 
 iron-router
 spin
-roles
 videojs
 parsleyjs
 font-awesome-4
@@ -41,3 +40,4 @@ amplify
 reaction-accounts
 accounts-facebook
 underscore-string-latest
+roles
