@@ -2,8 +2,8 @@
   position: relative;
   border: 1px solid #ccc;
   padding: 4px;
-  width: 310px;
-  height: 250px;
+  min-width: 310px;
+  min-height: 250px;
   color: #fff;
 }
 
@@ -28,8 +28,8 @@
 
 .tile-gallery    {
   background-color: #31a221;
-  height: 125px !important;
-  width: 155px;
+  min-height: 125px !important;
+  min-width: 155px;
 }
 
 .tile p.title {
@@ -55,7 +55,6 @@
 .tile ul li a {
     font-size: 16px;
     margin-bottom: 2px;
-    padding-top: 10px;
     color: #fff;
 }
 
@@ -70,7 +69,8 @@
     text-align: right;
 }
 
-.tile .content > p.big {
+.tile .content > .big {
+    text-align: right;
     font-size: 30px;
     font-weight: 500;
     margin-bottom: 0;
@@ -93,6 +93,7 @@
   margin-bottom: 2px;
   padding-top: 6px;
   padding-bottom: 50px;
+  width: 200px;
 }
 
 .enablePkg {

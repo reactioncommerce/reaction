@@ -61,7 +61,7 @@ At this time, for development ease, we are committing all reaction-* packages in
 #Dashboard
 Add packages to the reaction dashboard by adding **register.coffee**
 
-	Meteor.app.packages.push(
+	Meteor.app.packages.register(
 	  name: "reaction-helloworld"
 	  label: "HelloWorld"
 	  description: "Example Reaction Package"

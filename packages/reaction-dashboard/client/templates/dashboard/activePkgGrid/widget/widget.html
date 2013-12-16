@@ -1,9 +1,11 @@
 <template name="widget">
   <div class="tile tile-{{tileColors _id}}" id="{{_id}}"> <i class="{{icon}}"></i>
     <div class="content">
-      <p class="big">{{label}}</p>
+      <a class="big" href="{{pathFor route}}">{{label}}</a>
       <ul class="list-unstyled">
-        <a href="{{route}}">{{label}}</a>
+        {{#each dependencies}}
+          <li><a href="{{pathFor route}}">{{label}}</a></li>
+        {{/each}}
       </ul>
     </div>
     <div class="status">

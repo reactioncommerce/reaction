@@ -1,3 +1,5 @@
 Meteor.app = _.extend(Meteor.app || {},
-  packages: []
+  packages:
+    register: (packageInfo) ->
+      @[packageInfo.name] = packageInfo
 )
