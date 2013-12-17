@@ -1,6 +1,5 @@
 <template name="shopMember">
-  <tbody id="shop_member_{{userId}}"{{#if hasShopPermission 'shopMembersPermissionsSet'}}
-       class="toggle-shop-member-permissions"{{/if}}>
+  <tbody id="shop_member_{{userId}}"{{#if hasOwnerAccess}} class="toggle-shop-member-permissions"{{/if}}>
   <tr>
     <td>{{user.profile.name}}</td>
     <td>{{userEmail}}</td>
@@ -20,7 +19,7 @@
     {{/if}}
   </tr>
   </tbody>
-  {{#if hasShopPermission 'shopMembersPermissionsSet'}}
+  {{#if hasOwnerAccess}}
     <tbody class="shop-member-permissions">
     <tr>
       <td>

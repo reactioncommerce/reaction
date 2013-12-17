@@ -1,34 +1,42 @@
 <template name="shopNavElements">
-    {{#if userHasRole "admin"}}
-    <ul class="nav navbar-nav nav-pills">
-      <li class="{{active 'shop/settings/general'}}">
+  <ul class="nav navbar-nav nav-pills">
+    {{#if hasShopPermission "/shop/settings/general"}}
+      <li class="{{active '/shop/settings/general'}}">
         <a href="{{pathFor 'shop/settings/general'}}">
           General Settings
         </a>
       </li>
-      <li class="{{active 'shop/settings/account'}}">
+    {{/if}}
+    {{#if hasOwnerAccess}}
+      <li class="{{active '/shop/settings/account'}}">
         <a href="{{pathFor 'shop/settings/account'}}">
           Account Settings
         </a>
       </li>
+    {{/if}}
+    {{#if hasShopPermission "/shop/orders"}}
       <li class="{{active '/shop/orders'}}">
         <a href="{{pathFor 'shop/orders'}}">
           Orders
           <span class="badge">{{ocount}}</span>
         </a>
       </li>
+    {{/if}}
+    {{#if hasShopPermission "/shop/products"}}
       <li class="{{active '/shop/products'}}">
         <a href="{{pathFor 'shop/products'}}">
           Products
           <span class="badge">{{pcount}}</span>
         </a>
       </li>
+    {{/if}}
+    {{#if hasShopPermission "/shop/customers"}}
       <li class="{{active '/shop/customers'}}">
         <a href="{{pathFor 'shop/customers'}}">
           Customers
           <span class="badge">{{ccount}}</span>
         </a>
       </li>
-    </ul>
     {{/if}}
+  </ul>
 </template>
