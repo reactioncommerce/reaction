@@ -20,7 +20,6 @@ Meteor.methods
             email: email
             when: new Date()
 
-      enrollAccountUrl = Meteor.absoluteUrl('shop/invite/' + token)
       currentUserName = Meteor.user().profile.name
       Email.send
         to: email
@@ -31,7 +30,7 @@ Meteor.methods
           shop: shop
           currentUserName: currentUserName
           invitedUserName: name
-          url: enrollAccountUrl
+          url: Accounts.urls.enrollAccount(token)
 
   addToCart: (cartId,productId,variantData,quantity) ->
     now = new Date()
