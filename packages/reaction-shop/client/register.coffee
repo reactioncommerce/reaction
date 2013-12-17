@@ -34,8 +34,8 @@ Meteor.app.packages.register
       group: "Shop Content"
     }
     {
-      label: "Preferences"
-      permission: "/shop/preferences"
+      label: "Settings"
+      permission: "/shop/settings/general"
       group: "Shop Settings"
     }
   ]
