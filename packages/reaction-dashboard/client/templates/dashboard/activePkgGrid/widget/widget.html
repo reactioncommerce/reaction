@@ -1,24 +1,51 @@
 <template name="widget">
-  <div class="tile tile-{{tileColors _id}}" id="{{_id}}"> <i class="{{icon}}"></i>
+  <div class="tile tile-{{tileColors _id}}" id="{{_id}}"><i class="{{icon}}"></i>
+
     <div class="content">
-      <a class="big" href="{{pathFor route}}">{{label}}</a>
+        {{#if overviewRoute}}
+          <a class="big" href="{{pathFor overviewRoute}}">{{label}}</a>
+        {{else}}
+            {{#if settingsRoute}}
+              <a class="big" href="{{pathFor settingsRoute}}">{{label}}</a>
+            {{else}}
+              <p class="big">{{label}}</p>
+            {{/if}}
+        {{/if}}
       <ul class="list-unstyled">
-        {{#each dependencies}}
-          <li><a href="{{pathFor route}}">{{label}}</a></li>
-        {{/each}}
+          {{#each dependencies}}
+            <li>
+                {{label}}:
+                {{#if settingsRoute }}
+                  <a href="{{pathFor settingsRoute}}"><i class="fa fa-wrench"></i></a>
+                {{/if}}
+                {{#if overviewRoute}}
+                  <a href="{{pathFor overviewRoute}}"><i class="fa fa-bar-chart-o"></i></a>
+                {{/if}}
+            </li>
+          {{/each}}
       </ul>
     </div>
     <div class="status">
-      <a href="{{pathFor route}}" class="pull-right">
-        <span class="fa-stack fa-2x">
-          <i class="fa fa-circle fa-stack-2x"></i>
-          <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
+        {{#if settingsRoute}}
+          <a href="{{pathFor settingsRoute}}" class="pull-right">
+            <span class="fa-stack fa-2x">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-wrench fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+        {{/if}}
+        {{#if overviewRoute}}
+          <a href="{{pathFor overviewRoute}}" class="pull-right">
+            <span class="fa-stack fa-2x">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+        {{/if}}
     </div>
     <div class="widget">
-      {{{getTemplate name "widget"}}}
-            {{widget}}
+        {{{getTemplate name "widget"}}}
+        {{widget}}
     </div>
   </div>
 </template>

@@ -3,8 +3,7 @@ Meteor.app.packages.register(
   label: "HelloWorld"
   description: "Example Reaction Package"
   icon: "fa fa-globe fa-5x"
-  route: "helloworld"
-  template: "helloworld"
+  overviewRoute: "helloworld"
   hasWidget: true
   priority: "2"
 )

@@ -3,8 +3,7 @@ Meteor.app.packages.register(
   label: "Google Analytics"
   description: ""
   icon: "fa fa-eye fa-5x"
-  route: "googleAnalytics"
-  template: "googleAnalytics"
+  settingsRoute: "googleAnalytics"
   hasWidget: true
   priority: "4"
 )

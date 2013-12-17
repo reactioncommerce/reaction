@@ -4,8 +4,7 @@ Meteor.app.packages.register
   label: 'Shop'
   description: 'Reaction Shop'
   icon: 'fa fa-shopping-cart fa-5x'
-  route: 'shop'
-  template: 'shopwelcome'
+  overviewRoute: 'shop'
   priority: '3'
   hasWidget: true
   shopPermissions: [
@@ -45,5 +44,5 @@ Meteor.app.packages.register
   name: 'reaction-shop-orders'
   provides: ['orderManager']
   label: 'Orders'
-  route: 'shop/orders'
+  overviewRoute: 'shop/orders'
   hasWidget: false

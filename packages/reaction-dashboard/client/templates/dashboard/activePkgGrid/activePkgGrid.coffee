@@ -18,7 +18,6 @@ Template.activePkgGrid.rendered = ->
 
 Template.activePkgGrid.events "click .tile-gallery": ->
   $(".app-gallery").toggle()
-  appGrid = new Packery(document.querySelector(".apps-container"),
-    gutter: 2
-  )
+  _.defer ->
+    window.availablePkgGridPackery.layout()
 

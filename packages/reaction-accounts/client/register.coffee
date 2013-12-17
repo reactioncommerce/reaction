@@ -3,7 +3,7 @@ Meteor.app.packages.register(
   label: "Accounts"
   description: "Reaction Accounts"
   icon: "fa fa-users fa-5x"
-  route: "accounts"
+  overviewRoute: "accounts"
   hasWidget: true
   priority: "2"
 )
