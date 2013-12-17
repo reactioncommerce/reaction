@@ -24,7 +24,6 @@ Meteor.publish 'shopMembers', ->
     changed: (id) ->
       shop = Shops.findOne id
       memberIds = _.pluck shop.members, "userId"
-      console.log memberIds
       Meteor.users.find({_id: {$in: memberIds}}, {fields: {emails: 1, 'profile': 1}}).forEach (user) ->
         self.added("users", user._id, user)
 
@@ -32,14 +31,6 @@ Meteor.publish 'shopMembers', ->
 
   self.onStop ->
     handle.stop()
-
-#  shop = Meteor.app.getCurrentShop(@)
-#  memberIds = _.pluck shop.members, "userId"
-#
-#  Meteor.users.find {_id: {$in: memberIds}},
-#    fields:
-#      emails: 1
-#      'profile': 1
 
 # *****************************************************
 # Client access rights for products
