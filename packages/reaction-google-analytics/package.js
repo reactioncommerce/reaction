@@ -30,7 +30,8 @@ Package.on_use(function (api, where) {
     'client/templates/googleAnalytics/googleAnalytics.coffee'
   ], 'client');
   api.add_files([
-    'server/collections/AnalyticsEvents.coffee'
+    'server/security/AnalyticsEvents.coffee',
+    'server/publications.coffee'
   ], 'server');
 
 });
