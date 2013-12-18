@@ -8,7 +8,7 @@ Package.on_use(function (api, where) {
   api.use(['standard-app-packages', 'underscore', 'iron-router', 'less', 'coffeescript']);
 
   api.add_files('lib/app.coffee', 'client');
-  api.add_files('client/router.coffee', 'client');
+  api.add_files('client/routing.coffee', 'client');
 
   // This is the Reaction dashboard, all the other files are just the default template stuff, for docs and examples see those.
   api.add_files('client/subscribe.coffee', 'client');
@@ -41,8 +41,6 @@ Package.on_use(function (api, where) {
   api.add_files('client/templates/introduction/introduction.html', 'client');
   api.add_files('client/templates/introduction/introduction.coffee', 'client');
 
-  api.add_files('client/router.coffee', 'client');
-
   // *****************************************************
   // Selectively adding JS files (the order matters)
   // *****************************************************
@@ -51,7 +49,7 @@ Package.on_use(function (api, where) {
   // *****************************************************
   api.add_files('lib/sparkline/jquery.sparkline.min.js', 'client');
 
-  api.add_files('server/publish.coffee', 'server');
+  api.add_files('server/publications.coffee', 'server');
   api.export('PackageConfigs', ['client', 'server']);
   api.export('PackageConfigsHandle', ['client']);
 });

@@ -41,14 +41,14 @@ Package.on_use(function (api, where) {
 
     'client/handlebars.coffee',
     'client/subscribe.coffee',
-    'client/router.coffee'
+    'client/routing.coffee'
   ], 'client');
 
   // Add files *.coffee that server only
   api.add_files([
     'server/countstats.coffee',
     'server/fixtures.coffee',
-    'server/publish.coffee',
+    'server/publications.coffee',
   ], 'server');
   api.add_files('client/register.coffee', 'client');
 
