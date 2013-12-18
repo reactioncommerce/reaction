@@ -42,8 +42,8 @@
       },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",
-        "tag": "v1.2.5",
-        "commit": "aa9cec63c49e313ddb78a179c292f23d9f4ef906"
+        "tag": "v1.2.6",
+        "commit": "f2a9058281f8f2fe028767841d7445aadd6893cf"
       },
       "x-editable-bootstrap3": {
         "git": "https://github.com/JustinSGray/meteor-x-editable-bootstrap.git",
