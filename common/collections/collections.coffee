@@ -1,5 +1,3 @@
-root = exports ? this
+share.ReactionPalette = ReactionPalette = new Meteor.Collection(null)
 
-root.ReactionPalette = new Meteor.Collection(null)
-
-root.SystemConfig = new Meteor.Collection("SystemConfig")
+share.SystemConfig = SystemConfig = new Meteor.Collection("SystemConfig")

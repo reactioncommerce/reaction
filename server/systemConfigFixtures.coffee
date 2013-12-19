@@ -1,7 +1,7 @@
 Meteor.startup ->
-  unless SystemConfig.find().count()
+  unless share.SystemConfig.find().count()
     console.log "Adding countries fixture data"
-    SystemConfig.insert
+    share.SystemConfig.insert
       countries: [
           {
               "label": "Afghanistan",

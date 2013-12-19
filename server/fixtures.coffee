@@ -12,10 +12,6 @@ Meteor.startup ->
 
       PackageConfigs.insert
         shopId: shop._id
-        name: "reaction-greetramp"
-
-      PackageConfigs.insert
-        shopId: shop._id
         name: "reaction-filepicker"
         apikey: Meteor.settings.filepickerApiKey
 

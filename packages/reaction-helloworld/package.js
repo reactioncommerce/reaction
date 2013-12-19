@@ -22,7 +22,7 @@ Package.on_use(function (api, where) {
   // we can add files to the client, server, or both
   api.add_files([
     'client/register.coffee',
-    'client/router.coffee',
+    'client/routing.coffee',
     //package views
     'client/templates/helloworld/helloworld.html',
     'client/templates/helloworld/helloworld.coffee',

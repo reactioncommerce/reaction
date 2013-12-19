@@ -1,10 +1,12 @@
 <template name="userAddress">
   <div class="panel panel-default">
+    {{#if addressList}}
     <div class="panel-heading">
       <h3 class="panel-title">
         Address Information <i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
       </h3>
     </div>
+    {{/if}}
     <div class="panel-body">
       {{#if addressList}}
       <div class="row" id="addressList">
@@ -12,7 +14,7 @@
           <ul class="list-group">
             <strong>Bill To:</strong>
              {{#each addressList shipping}}
-            <li class="list-group-item address-bill-to {{selectBillAddress _id}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong>
+            <li class="list-group-item address-bill-to {{selectBillAddress _id}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong><i class="fa fa-pencil pull-right"></i>
               <address>
                 {{address1}}
                 {{address2}},<br>
@@ -27,7 +29,8 @@
           <ul class="list-group">
             <strong>Ship To:</strong>
             {{#each addressList shipping}}
-            <li class="list-group-item address-ship-to {{selectShipAddress _id}}" data-ship-id="{{_id}}"> <strong>{{fullName}}</strong>
+            <li class="list-group-item address-ship-to {{selectShipAddress _id}}" data-ship-id="{{_id}}">
+              <strong>{{fullName}}</strong>
               <address>
                 {{address1}}
                 {{address2}},<br>
@@ -39,11 +42,11 @@
           </ul>
         </div>
       </div>
-      <div class="col-md-11" id="addAddress">
+      <div class="col-md-12" id="addAddress">
         <div class="addressForm"></div>
       </div>
       {{else}}
-      <div class="col-md-10">{{>addAddress}}</div>
+      <div class="col-md-12">{{>addAddress}}</div>
       {{/if}}
     </div>
   </div>
@@ -53,78 +56,93 @@
 {{#autoForm schema=addAddressForm id="addAddressForm"}}
   <fieldset>
       <legend>Add address</legend>
-      <div class="form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
-          {{afFieldLabel "country" class="control-label"}}
-          {{afFieldInput "country" options=countryOptions value=defaultCountry }}
-          {{#if afFieldIsInvalid "country"}}
-          <span class="help-block">{{afFieldMessage "country"}}</span>
-          {{/if}}
+      <div class="row">
+        <div class="col-md-6 form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
+            {{afFieldLabel "country" class="control-label"}}
+            {{afFieldInput "country" options=countryOptions value=defaultCountry autofocus=''}}
+            {{#if afFieldIsInvalid "country"}}
+            <span class="help-block">{{afFieldMessage "country"}}</span>
+            {{/if}}
+        </div>
       </div>
-      <div class="form-group{{#if afFieldIsInvalid 'fullName'}} has-error{{/if}}">
-          {{afFieldLabel "fullName" class="control-label"}}
-          {{afFieldInput "fullName"}}
-          {{#if afFieldIsInvalid "fullName"}}
-          <span class="help-block">{{afFieldMessage "fullName"}}</span>
-          {{/if}}
+      <div class="row">
+        <div class="col-md-6 form-group{{#if afFieldIsInvalid 'fullName'}} has-error{{/if}}">
+            {{afFieldLabel "fullName" class="control-label"}}
+            {{afFieldInput "fullName"}}
+            {{#if afFieldIsInvalid "fullName"}}
+            <span class="help-block">{{afFieldMessage "fullName"}}</span>
+            {{/if}}
+        </div>
+     </div>
+      <div class="row">
+        <div class="col-md-6 form-group{{#if afFieldIsInvalid 'address1'}} has-error{{/if}}">
+            {{afFieldLabel "address1" class="control-label"}}
+            {{afFieldInput "address1"}}
+            {{#if afFieldIsInvalid "address1"}}
+            <span class="help-block">{{afFieldMessage "address1"}}</span>
+            {{/if}}
+        </div>
+        <div class="col-md-6 form-group{{#if afFieldIsInvalid 'address2'}} has-error{{/if}}">
+            {{afFieldLabel "address2" class="control-label"}}
+            {{afFieldInput "address2"}}
+            {{#if afFieldIsInvalid "address2"}}
+            <span class="help-block">{{afFieldMessage "address2"}}</span>
+            {{/if}}
+        </div>
       </div>
-      <div class="form-group{{#if afFieldIsInvalid 'address1'}} has-error{{/if}}">
-          {{afFieldLabel "address1" class="control-label"}}
-          {{afFieldInput "address1"}}
-          {{#if afFieldIsInvalid "address1"}}
-          <span class="help-block">{{afFieldMessage "address1"}}</span>
-          {{/if}}
-      </div>
-      <div class="form-group{{#if afFieldIsInvalid 'address2'}} has-error{{/if}}">
-          {{afFieldLabel "address2" class="control-label"}}
-          {{afFieldInput "address2"}}
-          {{#if afFieldIsInvalid "address2"}}
-          <span class="help-block">{{afFieldMessage "address2"}}</span>
-          {{/if}}
-      </div>
-      <div class="form-group{{#if afFieldIsInvalid 'postal'}} has-error{{/if}}">
+      <div class="row">
+        <div class="col-md-4 form-group{{#if afFieldIsInvalid 'postal'}} has-error{{/if}}">
           {{afFieldLabel "postal" class="control-label"}}
           {{afFieldInput "postal" value=defaultPostal}}
           {{#if afFieldIsInvalid "postal"}}
           <span class="help-block">{{afFieldMessage "postal"}}</span>
           {{/if}}
+        </div>
+        <div class="col-md-4 form-group{{#if afFieldIsInvalid 'city'}} has-error{{/if}}">
+            {{afFieldLabel "city" class="control-label"}}
+            {{afFieldInput "city" value=defaultCity}}
+            {{#if afFieldIsInvalid "city"}}
+            <span class="help-block">{{afFieldMessage "city"}}</span>
+            {{/if}}
+        </div>
+        <div class="col-md-4 form-group{{#if afFieldIsInvalid 'region'}} has-error{{/if}}">
+            {{afFieldLabel "region" class="control-label"}}
+            {{afFieldInput "region" value=defaultRegion}}
+            {{#if afFieldIsInvalid "region"}}
+            <span class="help-block">{{afFieldMessage "region"}}</span>
+            {{/if}}
+        </div>
       </div>
-      <div class="form-group{{#if afFieldIsInvalid 'city'}} has-error{{/if}}">
-          {{afFieldLabel "city" class="control-label"}}
-          {{afFieldInput "city" value=defaultCity}}
-          {{#if afFieldIsInvalid "city"}}
-          <span class="help-block">{{afFieldMessage "city"}}</span>
-          {{/if}}
+      <div class="row">
+        <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid 'phone'}} has-error{{/if}}">
+              {{afFieldLabel "phone" class="control-label"}}
+              {{afFieldInput "phone"}}
+              {{#if afFieldIsInvalid "phone"}}
+              <span class="help-block">{{afFieldMessage "phone"}}</span>
+              {{/if}}
+        </div>
+        <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid 'isCommercial'}} has-error{{/if}}">
+            <label class="control-label"></label>
+            {{afFieldInput "isCommercial"}}
+            {{#if afFieldIsInvalid "isCommercial"}}
+            <span class="help-block">{{afFieldMessage "isCommercial"}}</span>
+            {{/if}}
+        </div>
+        <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid 'isDefault'}} has-error{{/if}}">
+            <label class="control-label"></label>
+            {{afFieldInput "isDefault"}}
+            {{#if afFieldIsInvalid "isDefault"}}
+            <span class="help-block">{{afFieldMessage "isDefault"}}</span>
+            {{/if}}
+        </div>
       </div>
-      <div class="form-group{{#if afFieldIsInvalid 'region'}} has-error{{/if}}">
-          {{afFieldLabel "region" class="control-label"}}
-          {{afFieldInput "region" value=defaultRegion}}
-          {{#if afFieldIsInvalid "region"}}
-          <span class="help-block">{{afFieldMessage "region"}}</span>
-          {{/if}}
-      </div>
-      <div class="form-group{{#if afFieldIsInvalid 'phone'}} has-error{{/if}}">
-          {{afFieldLabel "phone" class="control-label"}}
-          {{afFieldInput "phone"}}
-          {{#if afFieldIsInvalid "phone"}}
-          <span class="help-block">{{afFieldMessage "phone"}}</span>
-          {{/if}}
-      </div>
-      <div class="form-group{{#if afFieldIsInvalid 'isCommercial'}} has-error{{/if}}">
-          {{afFieldInput "isCommercial"}}
-          {{#if afFieldIsInvalid "isCommercial"}}
-          <span class="help-block">{{afFieldMessage "isCommercial"}}</span>
-          {{/if}}
-      </div>
-      <div class="form-group{{#if afFieldIsInvalid 'isDefault'}} has-error{{/if}}">
-          {{afFieldInput "isDefault"}}
-          {{#if afFieldIsInvalid "isDefault"}}
-          <span class="help-block">{{afFieldMessage "isDefault"}}</span>
-          {{/if}}
-      </div>
-      <div>
-          <button type="submit" data-meteor-method="addAddress" class="btn btn-primary">Submit</button>
-          {{#if addressList}}<button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
-          {{/if}}
+      <div class="row">
+        <div class="col-md-12 col-md-offset-8">
+            <button type="submit" data-meteor-method="addAddress" class="btn btn-primary">Save and Continue</button>
+            {{#if addressList}}
+            <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
+            {{/if}}
+        </div>
       </div>
   </fieldset>
 {{/autoForm}}

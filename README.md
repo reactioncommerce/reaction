@@ -21,7 +21,15 @@ Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We we
 * Developer friendly. Commercial package and theme development encouraged. Contributors should be rewarded.
 
 ###Current Status:
-**Unstable, with HEAVY ongoing development!**
+**Unstable, with HEAVY ongoing development!** 
+
+Only good for contributing/observing progress right now. Our estimated timeline:
+
+* Alpha: Late January 2014
+* Beta: Late February 2014
+* Release Candidate: Q1 2014
+	
+
 Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
 
 Usually, we have playground here: [Demo/test site](http://reaction.meteor.com)
@@ -63,12 +71,19 @@ Add packages to the reaction dashboard by adding **register.coffee**
 
 	Meteor.app.packages.register(
 	  name: "reaction-helloworld"
+	  depends: [] #reaction packages
 	  label: "HelloWorld"
 	  description: "Example Reaction Package"
 	  icon: "fa fa-globe fa-5x"
-	  route: "helloworld"
-	  template: "helloworld"
 	  priority: "2"
+	  overviewRoute: 'helloworld'
+	  hasWidget: true
+	  shopPermissions: [
+	    {
+	      label: "HelloWorld"
+	      permission: "/helloworld"
+	      group: "Hello World"
+	    }
 	)
 
 Add widgets to dashboard elements by including a template named packagename-widget

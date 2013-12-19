@@ -1,5 +1,3 @@
-root = exports ? this
-
 Template.productImageGallery.variant = ->
   getSelectedVariant()
 
@@ -58,7 +56,7 @@ Template.productImageGallery.rendered = ->
           type: "error"
       onProgress: (percentage) ->
         $("#galleryDropPane").text "Uploading (" + percentage + "%)"
-  root.loadPicker cb
+  window.loadPicker cb
   $productMedias = $(".product-medias")
   $productMedias.sortable
     items: "> li.sortable"

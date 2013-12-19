@@ -9,7 +9,7 @@ Package.on_use(function (api) {
   api.use(['templating', 'jquery', 'iron-router','reaction-dashboard'], 'client');
   // api.use(['reaction-dashboard','reaction-shop']);
   api.add_files([
-    'client/router.coffee',
+    'client/routing.coffee',
     'client/loadpicker.coffee',
     'client/templates/filepicker-io/filepicker-io.html',
     'client/templates/filepicker-io/filepicker-io.coffee'

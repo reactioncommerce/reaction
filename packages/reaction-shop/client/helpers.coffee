@@ -1,6 +1,6 @@
 Handlebars.registerHelper "hasShopPermission", (permissions) ->
-  packageShop.hasPermission(permissions)
+  Meteor.app.hasPermission(permissions)
 
 Handlebars.registerHelper "hasOwnerAccess", ->
-  packageShop.hasOwnerAccess()
+  Meteor.app.hasOwnerAccess()
 

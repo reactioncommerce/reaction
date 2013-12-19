@@ -1,5 +1,3 @@
-root = exports ? this
-
 # Install a ghost listener so we can spy on the client headers.
 install_spy = ->
   
@@ -89,6 +87,4 @@ get_http_remote_ip = (client, direct) ->
 
 last_clean = 0
 
-# Hook us into the matrix.
-install_spy()
-root.get_http_header = get_http_header
+share.get_http_header = get_http_header

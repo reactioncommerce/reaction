@@ -1,4 +1,4 @@
-packageShop =
+Meteor.app = _.extend(Meteor.app || {},
   shopId: null
   isOwner: null
   isAdmin: null
@@ -11,7 +11,7 @@ packageShop =
     usedPackages = _.map PackageConfigs.find({shopId: @shopId}).fetch(), (packageConfig) ->
       _.find(Meteor.app.packages, (appPackage) -> packageConfig.name is appPackage.name)
     _.each usedPackages, (usedPackage) ->
-      _.each usedPackage.shopPermissions, (shopPermission) ->
+      _.each usedPackage?.shopPermissions, (shopPermission) ->
         permissions.push shopPermission
     @shopPermissionGroups = for groupName, groupPermissions of _.groupBy(permissions, "group")
       group: groupName
@@ -29,3 +29,4 @@ packageShop =
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner or @isAdmin or _.intersection(permissions, @permissions).length
   hasOwnerAccess: ->
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+)
