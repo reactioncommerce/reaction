@@ -41,7 +41,7 @@ Template.tags.events
         Tags.update(existingTag._id, {$set: {isTopLevel: true, position: $(".shop-tags li").length + 1}})
     else
       newTag.isTopLevel = !currentTagId
-      newTag.shopId = packageShop.shopId
+      newTag.shopId = Meteor.app.shopId
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
       newTag._id = Tags.insert(newTag

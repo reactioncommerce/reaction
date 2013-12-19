@@ -25,6 +25,7 @@ Package.on_use(function (api, where) {
   api.imply('simple-schema', ['client', 'server']);
 
   api.add_files([
+    'lib/vendor/header_spy.coffee',
     'common/collections.coffee',
     'common/hooks.coffee'
   ]);
@@ -43,7 +44,7 @@ Package.on_use(function (api, where) {
   api.add_files('lib/select2-bootstrap-css/select2-bootstrap.css', 'client');
 
   api.add_files([
-    'client/lib/config.coffee',
+    'client/app.coffee',
 
     'client/templates/shopHeader/shopHeader.html',
     'client/templates/shopHeader/shopHeader.coffee',
@@ -126,7 +127,7 @@ Package.on_use(function (api, where) {
   api.add_files('client/register.coffee', 'client');
 
   api.export([
-    'packageShop',
+    'install_spy',
     'ShopController',
     'Products',
     'Orders',

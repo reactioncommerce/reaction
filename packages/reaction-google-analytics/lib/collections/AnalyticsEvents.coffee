@@ -1,3 +1,1 @@
-root = exports ? this
-
-root.AnalyticsEvents = new Meteor.Collection("AnalyticsEvents")
+share.AnalyticsEvents = AnalyticsEvents = new Meteor.Collection("AnalyticsEvents")

@@ -1,6 +1,4 @@
-root = exports ? this
-
-root.AnalyticsEvents.allow
+share.AnalyticsEvents.allow
   insert: (userId, analyticsEvent) ->
     analyticsEvent.shopId = Meteor.app.getCurrentShop()._id;
     true

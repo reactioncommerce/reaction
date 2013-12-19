@@ -1,11 +1,10 @@
-SystemConfig = @SystemConfig
 Meteor.publish 'SystemConfig', ->
-  SystemConfig.find({})
+  share.SystemConfig.find({})
 
 # *****************************************************
 # Client access rights for SystemConfig
 # *****************************************************
-SystemConfig.allow
+share.SystemConfig.allow
   insert: (userId, doc) ->
     # the user must be logged in, and the document must be owned by the user
     #return (userId && doc.owner === userId);

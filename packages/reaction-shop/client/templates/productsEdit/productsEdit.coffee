@@ -136,7 +136,7 @@ Template.productsEdit.rendered = ->
             _id = Tags.insert(
               name: name
               slug: slug
-              shopId: packageShop.shopId
+              shopId: Meteor.app.shopId
               isTopLevel: false
               updatedAt: new Date()
               createdAt: new Date()

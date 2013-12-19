@@ -1,5 +1,3 @@
-root = exports ? this
-
 Meteor.startup ->
   Deps.autorun ->
     config = PackageConfigs.findOne(
@@ -28,4 +26,4 @@ Meteor.startup ->
         label: $element.data("event-label")
         value: $element.data("event-value")
       ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value)
-      root.AnalyticsEvents.insert(analyticsEvent)
+      share.AnalyticsEvents.insert(analyticsEvent)

@@ -31,7 +31,7 @@ unless Meteor.users.find().count()
         "name": "Admin User1",
         'addressList': [
           {
-            '_id': new Meteor.Collection.ObjectID()._str,
+            '_id': Random.id(),
             'fullName': 'Joe Admin',
             'company': null,
             'address1': 'Chestnut Street 92',

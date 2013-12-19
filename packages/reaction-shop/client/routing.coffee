@@ -10,11 +10,11 @@ ShopController = RouteController.extend
       @render('loading')
       @stop()
     else
-      packageShop.init shop
+      Meteor.app.init shop
 
 ShopAdminController = ShopController.extend
   before: ->
-    unless packageShop.hasPermission(@path)
+    unless Meteor.app.hasPermission(@path)
       @render('unauthorized')
       @stop()
 
@@ -27,7 +27,7 @@ Router.map ->
     controller: ShopAdminController
     path: '/shop/settings/general'
     data: ->
-      shop: Shops.findOne packageShop.shopId
+      shop: Shops.findOne Meteor.app.shopId
     template: 'settingsGeneral'
   @route 'shop/settings/account',
     controller: ShopAdminController
@@ -35,7 +35,7 @@ Router.map ->
     waitOn: ->
       Meteor.subscribe 'shopMembers'
     data: ->
-      shop: Shops.findOne packageShop.shopId
+      shop: Shops.findOne Meteor.app.shopId
     template: 'settingsAccount'
   # list page of customer records
   @route 'shop/customers',
@@ -59,7 +59,7 @@ Router.map ->
     before: ->
       product = Products.findOne(@params._id)
       if !product.isVisible
-        if !packageShop.havePermission(@path)
+        if !Meteor.app.hasPermission(@path)
           @render('unauthorized')
           @stop()
     data: ->

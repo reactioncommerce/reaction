@@ -3,7 +3,7 @@ Template.shopMember.helpers
     @user.emails[0].address
 
   permissionGroups: ->
-    packageShop.shopPermissionGroups
+    Meteor.app.shopPermissionGroups
 
   isChecked: (permissions) ->
     @permission in (permissions || [])
@@ -17,7 +17,7 @@ Template.shopMember.events
   "change .shop-member-is-admin": (event) ->
     modifier = {$set: {}}
     modifier.$set["members." + @index + ".isAdmin"] = $(event.currentTarget).val() is "yes"
-    Shops.update packageShop.shopId, modifier
+    Shops.update Meteor.app.shopId, modifier
 
   "change .toggle-shop-member-permission": (event, template) ->
     member = template.data
@@ -25,10 +25,10 @@ Template.shopMember.events
     modifier = {}
     modifier[operator] = {}
     modifier[operator]["members." + member.index + ".permissions"] = @permission
-    Shops.update packageShop.shopId, modifier
+    Shops.update Meteor.app.shopId, modifier
 
   "click .link-shop-member-remove": (event) ->
     event.stopPropagation()
     $icon = $(event.currentTarget)
     if (confirm($icon.data("confirm")))
-      Shops.update packageShop.shopId, {$pull: {members: {userId: @userId}}}
+      Shops.update Meteor.app.shopId, {$pull: {members: {userId: @userId}}}

@@ -1,4 +1,4 @@
-packageShop =
+Meteor.app = _.extend(Meteor.app || {},
   shopId: null
   isOwner: null
   isAdmin: null
@@ -29,3 +29,4 @@ packageShop =
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner or @isAdmin or _.intersection(permissions, @permissions).length
   hasOwnerAccess: ->
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+)

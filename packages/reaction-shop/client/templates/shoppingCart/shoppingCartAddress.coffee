@@ -10,7 +10,7 @@ Template.addAddress.helpers
       if profile.addressList
         profile.addressList
   countryOptions: ->
-    SystemConfig.findOne().countries
+    share.SystemConfig.findOne().countries
   defaultCountry: ->
     Session.get("address").countryCode
   defaultCity: ->

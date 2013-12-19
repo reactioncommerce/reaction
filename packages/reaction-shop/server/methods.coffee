@@ -70,7 +70,7 @@ Meteor.methods
      Cart.update({_id: cartId},{$pull: {"items": {"variants": variantData} } })
 
   addAddress: (doc) ->
-    doc._id = new Meteor.Collection.ObjectID()._str
+    doc._id = Random.id()
     Meteor.users.update({_id: Meteor.userId()}, {$addToSet:{"profile.addressList":doc}})
 
   locateAddress: (latitude,longitude) ->
