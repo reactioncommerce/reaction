@@ -11,7 +11,6 @@
         "branch": "master"
       },
       "videojs": {},
-      "parsleyjs": {},
       "font-awesome-4": {},
       "bootstrap3-less": {},
       "autoform": {},
@@ -42,8 +41,8 @@
       },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",
-        "tag": "v1.2.5",
-        "commit": "aa9cec63c49e313ddb78a179c292f23d9f4ef906"
+        "tag": "v1.2.6",
+        "commit": "f2a9058281f8f2fe028767841d7445aadd6893cf"
       },
       "x-editable-bootstrap3": {
         "git": "https://github.com/JustinSGray/meteor-x-editable-bootstrap.git",
@@ -59,11 +58,6 @@
         "git": "https://github.com/nate-strauser/meteor-video-js.git",
         "tag": "v4.1.2",
         "commit": "26b85c5c75d456556bf1a1c5f00264a834813e73"
-      },
-      "parsleyjs": {
-        "git": "https://github.com/nate-strauser/meteor-parsleyjs.git",
-        "tag": "v1.1.7",
-        "commit": "035a1e56a78e50369686b7e281aa71e3daf3729a"
       },
       "font-awesome-4": {
         "git": "https://github.com/michaelbishop/meteor-font-awesome-4.git",

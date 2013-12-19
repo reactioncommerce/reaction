@@ -15,7 +15,6 @@ accounts-password
 iron-router
 spin
 videojs
-parsleyjs
 font-awesome-4
 x-editable-bootstrap3
 highcharts
