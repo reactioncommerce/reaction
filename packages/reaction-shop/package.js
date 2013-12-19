@@ -7,140 +7,146 @@ Npm.depends({
 });
 
 Package.on_use(function (api, where) {
-  api.imply('reaction-dashboard', ['client', 'server']);
   api.use([
-    'standard-app-packages',
-    'coffeescript',
-    'simple-schema',
-    'collection2',
-    'collection-behaviours',
-    'roles',
-    'underscore-string-latest',
-    'handlebars-server'
-  ]);
-
-  api.use(['autoform', 'accounts-base', 'iron-router', 'less','reaction-filepicker'], 'client');
-  api.use('underscore', 'server');
-
-  api.imply('simple-schema', ['client', 'server']);
-
-  api.add_files([
-    'lib/vendor/header_spy.coffee',
-    'common/collections.coffee',
-    'common/hooks.coffee'
-  ]);
-
-  api.add_files([
-      'server/app.coffee',
-      'server/methods.coffee',
-      'server/fixtures.coffee',
-      'server/publications.coffee',
-      'server/emailTemplates/shopMemberInvite.handlebars',
-    ], 'server');
-
-  //Loading Select 2 library https://github.com/ivaynberg/select2
-  api.add_files('lib/select2/select2.js', 'client');
-  api.add_files('lib/select2/select2.css', 'client');
-  api.add_files('lib/select2-bootstrap-css/select2-bootstrap.css', 'client');
+    "standard-app-packages",
+    "coffeescript",
+    "simple-schema",
+    "collection2",
+    "collection-behaviours",
+    "roles",
+    "underscore-string-latest",
+    "handlebars-server"
+  ], ["client", "server"]);
+  api.use([
+    "autoform",
+    "accounts-base",
+    "iron-router",
+    "less",
+    "reaction-dashboard",
+    "reaction-filepicker"
+  ], ["client"]);
+  api.use([
+    "underscore"
+  ], ["server"]);
 
   api.add_files([
-    'client/app.coffee',
+    "lib/vendor/header_spy.coffee",
+    "common/collections.coffee",
+    "common/hooks.coffee"
+  ], ["client", "server"]);
+  api.add_files([
+    "lib/vendor/select2/select2.js",
+    "lib/vendor/select2/select2.css",
+    "lib/vendor/select2-bootstrap-css/select2-bootstrap.css",
 
-    'client/templates/shopHeader/shopHeader.html',
-    'client/templates/shopHeader/shopHeader.coffee',
+    "client/register.coffee",
+    "client/app.coffee",
+    "client/helpers.coffee",
+    "client/subscribe.coffee",
+    "client/routing.coffee",
 
-    'client/templates/shopHeader/tags/tags.html',
-    'client/templates/shopHeader/tags/tags.coffee',
-    'client/templates/shopHeader/tags/tags.less',
+    "client/templates/shopHeader/shopHeader.html",
+    "client/templates/shopHeader/shopHeader.coffee",
 
-    'client/templates/shopNavElements/shopNavElements.html',
-    'client/templates/shopNavElements/shopNavElements.coffee',
+    "client/templates/shopHeader/tags/tags.html",
+    "client/templates/shopHeader/tags/tags.coffee",
+    "client/templates/shopHeader/tags/tags.less",
 
-    'client/templates/shoppingCart/shoppingCart.html',
-    'client/templates/shoppingCart/shoppingCart.coffee',
+    "client/templates/shopNavElements/shopNavElements.html",
+    "client/templates/shopNavElements/shopNavElements.coffee",
 
-    'client/templates/shoppingCart/shoppingCartCheckout.html',
-    'client/templates/shoppingCart/shoppingCartCheckout.coffee',
+    "client/templates/shoppingCart/shoppingCart.html",
+    "client/templates/shoppingCart/shoppingCart.coffee",
 
-    'client/templates/shoppingCart/shoppingCartAddress.html',
-    'client/templates/shoppingCart/shoppingCartAddress.coffee',
-    'client/templates/shoppingCart/shoppingCartAddress.less',
+    "client/templates/shoppingCart/shoppingCartCheckout.html",
+    "client/templates/shoppingCart/shoppingCartCheckout.coffee",
 
-    'client/templates/dashboard/widget/widget.less',
-    'client/templates/dashboard/widget/widget.html',
-    'client/templates/dashboard/widget/widget.coffee',
+    "client/templates/shoppingCart/shoppingCartAddress.html",
+    "client/templates/shoppingCart/shoppingCartAddress.coffee",
+    "client/templates/shoppingCart/shoppingCartAddress.less",
 
-    'client/templates/dashboard/shopwelcome/shopwelcome.html',
+    "client/templates/dashboard/widget/widget.html",
+    "client/templates/dashboard/widget/widget.coffee",
+    "client/templates/dashboard/widget/widget.less",
 
-    'client/templates/dashboard/customers/customers.html',
-    'client/templates/dashboard/customers/customers.coffee',
+    "client/templates/dashboard/shopwelcome/shopwelcome.html",
 
-    'client/templates/dashboard/orders/orders.html',
-    'client/templates/dashboard/orders/orders.coffee',
+    "client/templates/dashboard/customers/customers.html",
+    "client/templates/dashboard/customers/customers.coffee",
 
-    'client/templates/settings/settingsGeneral/settingsGeneral.html',
-    'client/templates/settings/settingsAccount/settingsAccount.html',
-    'client/templates/settings/settingsAccount/settingsAccount.coffee',
-    'client/templates/settings/settingsAccount/shopMember/shopMember.html',
-    'client/templates/settings/settingsAccount/shopMember/shopMember.coffee',
-    'client/templates/settings/settingsAccount/shopMember/shopMember.less',
-    'client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.html',
-    'client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.coffee',
+    "client/templates/dashboard/orders/orders.html",
+    "client/templates/dashboard/orders/orders.coffee",
 
-    'client/templates/products/products.html',
-    'client/templates/products/products.less',
+    "client/templates/settings/settingsGeneral/settingsGeneral.html",
 
-    'client/templates/products/productList/productList.html',
-    'client/templates/products/productList/productList.coffee',
-    'client/templates/products/productList/productList.less',
+    "client/templates/settings/settingsAccount/settingsAccount.html",
+    "client/templates/settings/settingsAccount/settingsAccount.coffee",
 
-    'client/templates/productsEdit/productsEdit.html',
-    'client/templates/productsEdit/productsEdit.coffee',
-    'client/templates/productsEdit/productsEdit.less',
+    "client/templates/settings/settingsAccount/shopMember/shopMember.html",
+    "client/templates/settings/settingsAccount/shopMember/shopMember.coffee",
+    "client/templates/settings/settingsAccount/shopMember/shopMember.less",
 
-    'client/templates/productsEdit/productImageGallery/productImageGallery.html',
-    'client/templates/productsEdit/productImageGallery/productImageGallery.coffee',
-    'client/templates/productsEdit/productImageGallery/productImageGallery.less',
+    "client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.html",
+    "client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
 
-    'client/templates/productsEdit/variant/variant.html',
-    'client/templates/productsEdit/variant/variant.coffee',
+    "client/templates/products/products.html",
+    "client/templates/products/products.less",
 
-    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.html',
-    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.coffee',
-    'client/templates/productsEdit/variant/variantFormModal/variantFormModal.less',
-    'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html',
-    'client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee',
+    "client/templates/products/productList/productList.html",
+    "client/templates/products/productList/productList.coffee",
+    "client/templates/products/productList/productList.less",
 
-    'client/templates/productsEdit/optionsModal/optionsModal.html',
-    'client/templates/productsEdit/optionsModal/optionsModal.coffee',
-    'client/templates/productsEdit/optionsModal/optionsModal.less',
-    'client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html',
+    "client/templates/productsEdit/productsEdit.html",
+    "client/templates/productsEdit/productsEdit.coffee",
+    "client/templates/productsEdit/productsEdit.less",
 
-    'client/templates/notice/unauthorized.html',
-    'client/templates/notice/shopNotFound.html',
+    "client/templates/productsEdit/productImageGallery/productImageGallery.html",
+    "client/templates/productsEdit/productImageGallery/productImageGallery.coffee",
+    "client/templates/productsEdit/productImageGallery/productImageGallery.less",
 
-    'client/helpers.coffee',
-    'client/subscribe.coffee',
-    'client/routing.coffee'
-  ], 'client');
+    "client/templates/productsEdit/variant/variant.html",
+    "client/templates/productsEdit/variant/variant.coffee",
 
-  api.add_files('client/register.coffee', 'client');
+    "client/templates/productsEdit/variant/variantFormModal/variantFormModal.html",
+    "client/templates/productsEdit/variant/variantFormModal/variantFormModal.coffee",
+    "client/templates/productsEdit/variant/variantFormModal/variantFormModal.less",
+
+    "client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
+    "client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
+
+    "client/templates/productsEdit/optionsModal/optionsModal.html",
+    "client/templates/productsEdit/optionsModal/optionsModal.coffee",
+    "client/templates/productsEdit/optionsModal/optionsModal.less",
+
+    "client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html",
+
+    "client/templates/notice/unauthorized.html",
+
+    "client/templates/notice/shopNotFound.html"
+  ], ["client"]);
+  api.add_files([
+    "server/app.coffee",
+    "server/methods.coffee",
+    "server/fixtures.coffee",
+    "server/publications.coffee",
+    "server/emailTemplates/shopMemberInvite.handlebars"
+  ], ["server"]);
 
   api.export([
-    'install_spy',
-    'ShopController',
-    'Products',
-    'Orders',
-    'Customers',
-    'ShopMemberSchema',
-    'ProductVariantSchema',
-    'CustomerAddressSchema',
-    'VariantMediaSchema',
-    'MetafieldSchema',
-    'CartItemSchema',
-    'variant',
-    'Shop',
-    'Cart',
-    'Tags'
-  ]);
+    "install_spy",
+    "ShopController",
+    "Products",
+    "Orders",
+    "Customers",
+    "ShopMemberSchema",
+    "ProductVariantSchema",
+    "CustomerAddressSchema",
+    "VariantMediaSchema",
+    "MetafieldSchema",
+    "CartItemSchema",
+    "variant",
+    "Shop",
+    "Cart",
+    "Tags"
+  ], ["client", "server"]);
 });

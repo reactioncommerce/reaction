@@ -5,51 +5,61 @@ Package.describe({
 
 // Tell Meteor what to do with our package at bundle time
 Package.on_use(function (api, where) {
-  api.use(['standard-app-packages', 'underscore', 'iron-router', 'less', 'coffeescript']);
+  api.use([
+    "standard-app-packages",
+    "underscore",
+    "iron-router",
+    "less",
+    "coffeescript"
+  ], ["client", "server"]);
 
-  api.add_files('lib/app.coffee', 'client');
-  api.add_files('client/routing.coffee', 'client');
+  api.add_files([
+    "lib/collections.coffee"
+  ], ["client", "server"]);
 
-  // This is the Reaction dashboard, all the other files are just the default template stuff, for docs and examples see those.
-  api.add_files('client/subscribe.coffee', 'client');
-  api.add_files('lib/collections.coffee', ['client', 'server']);
+  api.add_files([
+    "lib/vendor/packery/packery.pkgd.js",
+    "lib/vendor/sparkline/jquery.sparkline.js",
 
-  api.add_files('client/templates/dashboardSidebar/dashboardSidebar.html', 'client');
-  api.add_files('client/templates/dashboardSidebar/dashboardSidebar.less', 'client');
-  api.add_files('client/templates/dashboardSidebar/dashboardSidebar.coffee', 'client');
+    "lib/app.coffee",
+    "client/routing.coffee",
+    "client/subscribe.coffee",
 
-  api.add_files('client/templates/dashboard/activePkgGrid/widget/widget.html', 'client');
-  api.add_files('client/templates/dashboard/activePkgGrid/widget/widget.less', 'client');
-  api.add_files('client/templates/dashboard/activePkgGrid/widget/widget.coffee', 'client');
+    "client/templates/dashboardSidebar/dashboardSidebar.html",
+    "client/templates/dashboardSidebar/dashboardSidebar.less",
+    "client/templates/dashboardSidebar/dashboardSidebar.coffee",
 
-  api.add_files('client/templates/dashboard/activePkgGrid/activePkgGrid.html', 'client');
-  api.add_files('client/templates/dashboard/activePkgGrid/activePkgGrid.less', 'client');
-  api.add_files('client/templates/dashboard/activePkgGrid/activePkgGrid.coffee', 'client');
+    "client/templates/dashboard/activePkgGrid/widget/widget.html",
+    "client/templates/dashboard/activePkgGrid/widget/widget.less",
+    "client/templates/dashboard/activePkgGrid/widget/widget.coffee",
 
-  api.add_files('client/templates/dashboard/availablePkgGrid/pkg/pkg.html', 'client');
-  api.add_files('client/templates/dashboard/availablePkgGrid/pkg/pkg.less', 'client');
-  api.add_files('client/templates/dashboard/availablePkgGrid/pkg/pkg.coffee', 'client');
+    "client/templates/dashboard/activePkgGrid/activePkgGrid.html",
+    "client/templates/dashboard/activePkgGrid/activePkgGrid.less",
+    "client/templates/dashboard/activePkgGrid/activePkgGrid.coffee",
 
-  api.add_files('client/templates/dashboard/availablePkgGrid/availablePkgGrid.html', 'client');
-  api.add_files('client/templates/dashboard/availablePkgGrid/availablePkgGrid.less', 'client');
-  api.add_files('client/templates/dashboard/availablePkgGrid/availablePkgGrid.coffee', 'client');
+    "client/templates/dashboard/availablePkgGrid/pkg/pkg.html",
+    "client/templates/dashboard/availablePkgGrid/pkg/pkg.less",
+    "client/templates/dashboard/availablePkgGrid/pkg/pkg.coffee",
 
-  api.add_files('client/templates/dashboard/dashboard.html', 'client');
-  api.add_files('client/templates/dashboard/dashboard.less', 'client');
-  api.add_files('client/templates/dashboard/dashboard.coffee', 'client');
+    "client/templates/dashboard/availablePkgGrid/availablePkgGrid.html",
+    "client/templates/dashboard/availablePkgGrid/availablePkgGrid.less",
+    "client/templates/dashboard/availablePkgGrid/availablePkgGrid.coffee",
 
-  api.add_files('client/templates/introduction/introduction.html', 'client');
-  api.add_files('client/templates/introduction/introduction.coffee', 'client');
+    "client/templates/dashboard/dashboard.html",
+    "client/templates/dashboard/dashboard.less",
+    "client/templates/dashboard/dashboard.coffee",
 
-  // *****************************************************
-  // Selectively adding JS files (the order matters)
-  // *****************************************************
-  api.add_files('lib/packery/packery.pkgd.js', 'client');
-  // Small sparkline graphs
-  // *****************************************************
-  api.add_files('lib/sparkline/jquery.sparkline.min.js', 'client');
+    "client/templates/introduction/introduction.html",
+    "client/templates/introduction/introduction.coffee"
+    ], ["client"]);
+    api.add_files([
+      "server/publications.coffee"
+    ], ["server"]);
 
-  api.add_files('server/publications.coffee', 'server');
-  api.export('PackageConfigs', ['client', 'server']);
-  api.export('PackageConfigsHandle', ['client']);
+  api.export([
+    "PackageConfigs"
+  ], ["client", "server"]);
+  api.export([
+    "PackageConfigsHandle"
+  ], ["client"]);
 });
