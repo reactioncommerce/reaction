@@ -43,3 +43,5 @@ roles
 jquery-cookie
 handlebars-server
 email
+
+headers

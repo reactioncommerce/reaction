@@ -3,7 +3,7 @@ Package.describe({
 });
 
 Npm.depends({
-  "googlemaps": "0.1.9"
+  "node-geocoder": "0.6.0"
 });
 
 Package.on_use(function (api, where) {
@@ -34,7 +34,7 @@ Package.on_use(function (api, where) {
       'server/methods.coffee',
       'server/fixtures.coffee',
       'server/publications.coffee',
-      'server/emailTemplates/shopMemberInvite.handlebars'
+      'server/emailTemplates/shopMemberInvite.handlebars',
     ], 'server');
 
   //Loading Select 2 library https://github.com/ivaynberg/select2
@@ -126,7 +126,6 @@ Package.on_use(function (api, where) {
   api.add_files('client/register.coffee', 'client');
 
   api.export([
-    'UserLocation',
     'packageShop',
     'ShopController',
     'Products',

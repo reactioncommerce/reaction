@@ -22,6 +22,7 @@
     "jquery-ui": {},
     "underscore-string-latest": {},
     "jquery-cookie": {},
-    "handlebars-server": {}
+    "handlebars-server": {},
+    "headers": {}
   }
 }

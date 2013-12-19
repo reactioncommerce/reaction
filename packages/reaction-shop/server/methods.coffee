@@ -73,10 +73,35 @@ Meteor.methods
     doc._id = new Meteor.Collection.ObjectID()._str
     Meteor.users.update({_id: Meteor.userId()}, {$addToSet:{"profile.addressList":doc}})
 
-  locateAddress: (lat,long) ->
+  locateAddress: (latitude,longitude) ->
     Future = Npm.require('fibers/future')
+    geocoder = Npm.require('node-geocoder')
     fut = new Future()
-    gm = Npm.require("googlemaps")
-    location = gm.reverseGeocode gm.checkAndConvertPoint([lat, long]), (err, data) ->
-      fut['return'](data)
-    return fut.wait()
+    locateCoord = geocoder.getGeocoder('google', 'http')
+    locateIP = geocoder.getGeocoder('freegeoip', 'http')
+    # default location if nothing found is US
+    address = [{
+      latitude: null,
+      longitude: null,
+      country: 'United States',
+      city: null,
+      state: null,
+      stateCode: null,
+      zipcode: null,
+      streetName: null,
+      streetNumber: null,
+      countryCode: 'US'
+    }]
+
+    if latitude
+      locateCoord.reverse latitude, longitude, (err, address) ->
+        fut['return'](address)
+    else
+      ip = headers.methodClientIP(this)
+      #ip = "76.168.14.229"
+      locateIP.geocode ip, (err, address) ->
+        fut['return'](address)
+
+    address = fut.wait() if fut.wait()
+    address = address[0]
+    return address

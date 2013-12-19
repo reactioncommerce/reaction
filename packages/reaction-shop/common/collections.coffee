@@ -1,5 +1,3 @@
-UserLocation = new Meteor.Collection(null)
-
 ShopMemberSchema = new SimpleSchema
   userId:
     type: String
@@ -118,6 +116,7 @@ CustomerAddressSchema = new SimpleSchema
     label: "Address 1"
     type: String
   address2:
+    label: "Address 2"
     type: String
     optional: true
   city:
@@ -140,7 +139,7 @@ CustomerAddressSchema = new SimpleSchema
     type: Boolean
     optional: true
   isDefault:
-    label: "Make this your default address?"
+    label: "Is this your default address?"
     type: Boolean
     optional: true
 

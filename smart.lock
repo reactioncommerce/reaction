@@ -27,7 +27,8 @@
       "jquery-ui": {},
       "underscore-string-latest": {},
       "jquery-cookie": {},
-      "handlebars-server": {}
+      "handlebars-server": {},
+      "headers": {}
     },
     "packages": {
       "spin": {
@@ -114,6 +115,11 @@
         "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
         "tag": "v1.1.0",
         "commit": "ed99c8e9280894519f44a5b4c84f66ff596c5450"
+      },
+      "headers": {
+        "git": "https://github.com/gadicohen/meteor-headers.git",
+        "tag": "v0.0.12",
+        "commit": "33fff7cfc874140cf5d51f93de8b7c20acad4fe8"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",

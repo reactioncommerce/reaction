@@ -12,13 +12,13 @@ Template.addAddress.helpers
   countryOptions: ->
     SystemConfig.findOne().countries
   defaultCountry: ->
-    UserLocation.findOne().country
+    Session.get("address").countryCode
   defaultCity: ->
-    UserLocation.findOne().city
+    Session.get("address").city
   defaultPostal: ->
-    UserLocation.findOne().postal
+    Session.get("address").zipcode
   defaultRegion: ->
-    UserLocation.findOne().region
+    Session.get("address").state
 
 Template.addAddress.events
   'click #cancel-new': () ->
@@ -61,6 +61,8 @@ Template.userAddress.events
       $("ul li[data-bill-id='"+Session.get("billingUserAddressId")+"']").removeClass("active fa fa-check-circle fa-lg")
     Session.set("billingUserAddressId", this._id)
     $(event.currentTarget).addClass("active fa fa-check-circle fa-lg")
+  'click .fa-pencil': (event,template) ->
+    console.log "edit here"
 
 Template.userAddress.rendered = ->
   profile = Meteor.user().profile
