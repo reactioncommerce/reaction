@@ -1,13 +1,13 @@
 <template name="siteLayout">
 <head>
-  <title>Reaction Commerce</title>
+  <title>Reaction Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-  <header>{{yield "header"}}</header>
-  <sidebar>{{yield "sidebar"}}</sidebar>
-  <section>
-    <div class="content-wrapper">
-      {{yield}}
-    </div>
-  </section>
+  <main role="main">
+    <header>{{yield "header"}}</header>
+    <nav>{{yield "sidebar"}}</nav>
+    <section>
+      <div class="container">{{yield}}</div>
+    </section>
+  </main>
   <footer>{{yield "footer"}}</footer>
 </template>

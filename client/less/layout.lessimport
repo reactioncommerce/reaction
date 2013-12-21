@@ -8,27 +8,32 @@
 @input-border-radius: 0px;
 @font-family-sans-serif:  "Roboto","Open Sans","sans-serif";
 @font-size-base:  14px;
-@grid-gutter-width: 15px;
+@grid-gutter-width: 10px;
 
-
-body {
+html, body {
+  height: 100%;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 76px;
 }
-
 
 /* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */
 body.modal-open {
   margin-right: 0px !important;
 }
 
-.content-wrapper {
-  margin-top: 90px;
-  height: 100%;
+main {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -80px;
+  /* Pad bottom by footer height */
+  padding: 0 0 80px;
 }
 
-footer .navbar-fixed-bottom {
-  background-color: rgba(201, 201, 201, 0.09);
+/* Set the fixed height of the footer here */
+footer {
+  height: 80px;
+  background-color: #f5f5f5;
+  padding-top: 10px;
 }
 
 .jumbotron {
@@ -38,27 +43,18 @@ footer .navbar-fixed-bottom {
   padding-bottom: 40px;
 }
 
+.container { width: 95%; }
+
+/* Inline error block */
 .error-block {
   margin: 5px 0;
   padding-left: 30px;
   color: #b94a48;
 }
 
+/* Loading indicator */
 #spinner {
   height: 300px
-}
-
-// Doesn't respond to less, probably overwritten in package.
-#login-dropdown-list input:first-of-type {
-margin-top: 0px;
-border-top-left-radius: 0px;
-border-top-right-radius: 0px;
-}
-
-#login-dropdown-list input:last-of-type {
-margin-bottom: 5px;
-border-bottom-left-radius: 0px;
-border-bottom-right-radius: 0px;
 }
 
 /* RESPONSIVE CSS

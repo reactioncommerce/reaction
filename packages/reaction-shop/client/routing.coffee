@@ -2,6 +2,7 @@ ShopController = RouteController.extend
   yieldTemplates:
     'shopHeader': to: 'header'
     'dashboardSidebar': to: 'sidebar'
+    'siteFooter': to: 'footer'
   before: ->
 # should we make it a default as Router.before?
     @subscribe('shops').wait()
