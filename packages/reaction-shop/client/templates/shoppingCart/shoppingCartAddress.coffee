@@ -1,5 +1,5 @@
 addressForm = new AutoForm(CustomerAddressSchema)
-addressListDep = new Deps.Dependency();
+addressListDep = new Deps.Dependency()
 
 Template.addAddress.helpers
   addAddressForm: ->
@@ -10,7 +10,7 @@ Template.addAddress.helpers
       if profile.addressList
         profile.addressList
   countryOptions: ->
-    share.SystemConfig.findOne().countries
+    SystemConfig.findOne().countries
   defaultCountry: ->
     Session.get("address").countryCode
   defaultCity: ->

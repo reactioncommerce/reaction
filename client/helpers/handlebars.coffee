@@ -39,7 +39,7 @@ Convert new line (\n\r) to <br>
 from http://phpjs.org/functions/nl2br:480
 ###
 Handlebars.registerHelper "nl2br", (text) ->
-  
+
   #        text = Handlebars.Utils.escapeExpression(text);
   nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + "<br>" + "$2")
   new Handlebars.SafeString(nl2br)
@@ -70,7 +70,7 @@ Handlebars.registerHelper "uc", (str) ->
 # returns string with 's' concatenated if n = 1
 # *****************************************************
 Handlebars.registerHelper "pluralize", (n, thing) ->
-  
+
   # fairly stupid pluralizer
   if n is 1
     "1 " + thing
@@ -106,25 +106,18 @@ Handlebars.registerHelper "userHasRole", (role) ->
 # *****************************************************
 # general helper to return 'active' when on current path
 # returns string
-# handlebars: {{active '/some/page'}}
+# handlebars: {{active 'route'}}
 # *****************************************************
-curPath = ->
-  c = window.location.pathname
-  b = c.slice(0, -1)
-  a = c.slice(-1)
-  if b is ""
-    "/"
-  else
-    if a is "/"
-      b
-    else
-      c
 
-
-# Determine if current link should be active
+#Determine if current link should be active
 Handlebars.registerHelper "active", (path) ->
-  (if curPath() is path then "active" else "")
-
+  # Get the current path for URL
+  current = Router.current()
+  routeName = current and current.route.name
+  if routeName is path
+    "active"
+  else
+    ""
 
 # *****************************************************
 # general helper to return 'active' when on current path
@@ -165,7 +158,7 @@ Handlebars.registerHelper "tileColors", (app) ->
     "green"
   ]
   assignedColor = ReactionPalette.findOne(appId: app)
-  
+
   #console.log("tileColor exists:" +tileColor);
   unless assignedColor
     palette = ReactionPalette.find({}).fetch()

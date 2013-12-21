@@ -4,7 +4,7 @@
 # https://github.com/meteor/meteor/issues/662
 #
 WebFontConfig = google:
-  families: ["Open+Sans:400,300,600,700:latin"]
+  families: [ 'Roboto::latin', 'Open+Sans:300italic,400italic,400,300,600,700:latin' ]
 
 (->
   wf = document.createElement("script")
