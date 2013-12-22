@@ -222,13 +222,17 @@ Template.productsEdit.rendered = ->
 Template.productsEdit.events
   "click #add-to-cart": (e, template) ->
     now = new Date()
-
+    return throwError("Oops,select an option before adding to cart") unless Session.get("selectedVariant")
     sessionId = Session.get("serverSession")._id
     variantData = Session.get("selectedVariant")
     productId = Session.get("currentProductId")
     quantity = 1
 
     Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
+    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
+    Session.set("selectedVariant","")
+
+    $("#nav-cart").fadeToggle(600);
     e.preventDefault()
 
   "submit form": (e) ->
@@ -264,7 +268,6 @@ Template.productsEdit.events
       Router.go "/shop/products"
 
   "click .variant-list": (e) ->
-
     $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
     Session.set("selectedVariant",this)#for cart
     Session.set "selectedVariantIndex", $(e.target).closest("li").prevAll().length

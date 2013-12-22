@@ -96,30 +96,30 @@ Package.on_use(function (api, where) {
     "client/templates/products/productList/productList.coffee",
     "client/templates/products/productList/productList.less",
 
-    "client/templates/productsEdit/productsEdit.html",
-    "client/templates/productsEdit/productsEdit.coffee",
-    "client/templates/productsEdit/productsEdit.less",
+    "client/templates/products/productDetail/productDetail.html",
+    "client/templates/products/productDetail/productDetail.coffee",
+    "client/templates/products/productDetail/productDetail.less",
 
-    "client/templates/productsEdit/productImageGallery/productImageGallery.html",
-    "client/templates/productsEdit/productImageGallery/productImageGallery.coffee",
-    "client/templates/productsEdit/productImageGallery/productImageGallery.less",
+    "client/templates/products/productDetail/productImageGallery/productImageGallery.html",
+    "client/templates/products/productDetail/productImageGallery/productImageGallery.coffee",
+    "client/templates/products/productDetail/productImageGallery/productImageGallery.less",
 
-    "client/templates/productsEdit/variant/variant.html",
-    "client/templates/productsEdit/variant/variant.coffee",
-    "client/templates/productsEdit/variant/variant.less",
+    "client/templates/products/productDetail/variant/variant.html",
+    "client/templates/products/productDetail/variant/variant.coffee",
+    "client/templates/products/productDetail/variant/variant.less",
 
-    "client/templates/productsEdit/variant/variantFormModal/variantFormModal.html",
-    "client/templates/productsEdit/variant/variantFormModal/variantFormModal.coffee",
-    "client/templates/productsEdit/variant/variantFormModal/variantFormModal.less",
+    "client/templates/products/productDetail/variant/variantFormModal/variantFormModal.html",
+    "client/templates/products/productDetail/variant/variantFormModal/variantFormModal.coffee",
+    "client/templates/products/productDetail/variant/variantFormModal/variantFormModal.less",
 
-    "client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
-    "client/templates/productsEdit/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
+    "client/templates/products/productDetail/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
+    "client/templates/products/productDetail/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
 
-    "client/templates/productsEdit/optionsModal/optionsModal.html",
-    "client/templates/productsEdit/optionsModal/optionsModal.coffee",
-    "client/templates/productsEdit/optionsModal/optionsModal.less",
+    "client/templates/products/productDetail/optionsModal/optionsModal.html",
+    "client/templates/products/productDetail/optionsModal/optionsModal.coffee",
+    "client/templates/products/productDetail/optionsModal/optionsModal.less",
 
-    "client/templates/productsEdit/optionsModal/optionFormGroup/optionFormGroup.html",
+    "client/templates/products/productDetail/optionsModal/optionFormGroup/optionFormGroup.html",
 
     "client/templates/notice/unauthorized.html",
 

@@ -64,10 +64,10 @@
               <ul class="list-unstyled">
               {{#unless userHasRole "admin"}}
               {{#if variants}}
-                <h3>Choose your option</h3>
+                <h3>Choose your option.</h3>
               {{/if}}
               {{else}}
-                <h3>Edit options</h3>
+                <h3>Edit options.</h3>
               {{/unless}}
               {{#each variants}}
                 {{> variant}}

@@ -4,17 +4,21 @@
 # usage:  throwError("message");  (to display)
 #         clearsErrors();         (to clear)
 # *****************************************************
-share.Errors = Errors = new Meteor.Collection(null)
-throwError = (message) ->
+share.Errors = @Errors = new Meteor.Collection(null)
+@throwError = (message,title,type) ->
+  message = "An error has occurred" unless message
+  title = "Error Notice" unless title
+  type = "error" unless type
+
   $.pnotify
-    title: "Error"
+    title: title
     text: message
-    type: "error"
+    type: type
 
   Errors.insert
     message: message
     seen: false
 
 
-share.clearErrors = ->
+@clearErrors = ->
   Errors.remove seen: true
