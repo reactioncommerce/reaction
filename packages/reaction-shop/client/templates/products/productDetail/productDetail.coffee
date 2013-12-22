@@ -232,6 +232,7 @@ Template.productsEdit.events
     Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
     $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
     Session.set("selectedVariant","")
+    $("html, body").animate({ scrollTop: 0 }, "fast")
     $("#shop-cart-slide").fadeIn(400 ).delay( 5000 ).fadeOut( 300 )
 
 

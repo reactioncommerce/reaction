@@ -36,3 +36,7 @@ Template.shopCartSlide.rendered = ->
     lazyLoad : true
     itemsDesktop: [1199, 3]
     itemsDesktopSmall: [979, 3]
+
+Template.shopCartSlide.events
+  'click #btn-checkout': () ->
+    $("#shop-cart-slide").fadeOut( 100 )
