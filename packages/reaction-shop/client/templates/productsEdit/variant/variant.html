@@ -1,23 +1,22 @@
 <template name="variant">
-  <tr>
-    <td>
-      <input type="radio" name="variant" />
-    </td>
-    <td>
-      <a href="#">{{barcode}}</a>
-    </td>
-    <td>{{inventoryQuantity}}</td>
-    <td>{{sku}}</td>
-    <td>{{price}}</td>
+<li class="variant-list">
+  <div class="variant-detail" id="{{_id}}">
+    <div class="progress">
+      <span class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{maxQty}}" style="width: {{maxLength inventoryQuantity maxQty}}%">
+        <span class="sr-only">{{inventoryQuantity}} Available</span>
+        <span class="variant-qty">{{inventoryQuantity}}</span>
+      </span>
+      <span class="variant-title">{{title}}</span>
       {{#if userHasRole "admin"}}
-        <td class="edit">
-          <a href="#" class="edit-link"><i class="fa fa-pencil"></i></a>
+        <span class="variant-edit pull-right">
+          <a class="edit-link"><i class="fa fa-pencil" data-id="{{_id}}"></i></a>
           <a href="#" class="remove-link" data-confirm="Are you sure you want to delete this variant?">
-            <i class="fa fa-times"></i>
+          <i class="fa fa-times"></i>
           </a>
-        </td>
-      {{else}}
-        <td class="buy"><a href="#"><i class="fa fa-shopping-cart"></i></a></td>
+        </span>
       {{/if}}
-  </tr>
+      <span class="variant-price pull-right">${{price}}</span>
+    </div>
+  </div>
+</li>
 </template>

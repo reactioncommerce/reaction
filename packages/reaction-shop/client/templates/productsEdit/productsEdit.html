@@ -60,38 +60,24 @@
                 {{/each}}
               {{/if}}
             </div>
+            <div class="product-variants">
+              <ul class="list-unstyled">
+              {{#unless userHasRole "admin"}}
+              {{#if variants}}
+                <h3>Choose your option</h3>
+              {{/if}}
+              {{else}}
+                <h3>Edit options</h3>
+              {{/unless}}
+              {{#each variants}}
+                {{> variant}}
+              {{/each}}
 
-            <div>
-              <table class="table variant-table">
-                <thead>
-                <tr>
-                  <th>&nbsp;</th>
-                  <th>Barcode</th>
-                  <th>Quantity</th>
-                  <th>SKU</th>
-                  <th>Price</th>
-                  {{#if userHasRole "admin"}}
-                    <th>Edit</th>
-                  {{else}}
-                    <th>Buy</th>
-                  {{/if}}
-                </tr>
-                </thead>
-                <tbody>
-                  {{#each variants}}
-                    {{> variant}}
-                  {{/each}}
-                <!--<tr>-->
-                <!--<td>-->
-                <!--<input type="radio" name="variant">-->
-                <!--</td>-->
-                <!--<td colspan="5">Are you sure you want to remove "1234_red"?-->
-                <!--<button class="btn btn-xs btn-primary pull-right" style="margin: 0 3px;">No</button>-->
-                <!--<button class="btn btn-xs pull-right">Yes</button>-->
-                <!--</td>-->
-                <!--</tr>-->
-                </tbody>
-              </table>
+              <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">
+               Add to Cart
+              </div>
+
+              </ul>
               {{#if userHasRole "admin"}}
                 <a href="#" id="add-variant">+ Clone last variant</a>
                 |

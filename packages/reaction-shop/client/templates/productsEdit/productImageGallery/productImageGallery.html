@@ -5,7 +5,7 @@
         {{#if firstImage}}
           <li>
             <div class="product-image">
-              <img class="image-src image-responsive" name="main-image" src="{{firstImage.src}}">
+              <img class="image-src img-responsive" name="main-image" src="{{firstImage.src}}">
             </div>
             {{> galleryTools}}
           </li>
@@ -16,7 +16,7 @@
           {{else}}
             <li data-index="{{index}}" class="sortable">
               <a href="#" rel="prettyPhoto" title="{{title}}">
-                <div class="edit-image">
+                <div class="edit-image img-responsive">
                   <img src="{{src}}?/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{title}}">
                   <i></i>
                 </div>

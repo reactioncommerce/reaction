@@ -10,22 +10,12 @@ Template.productsEdit.helpers
     _.pluck(tags, "name").join(", ")
 
 Template.productsEdit.rendered = ->
-  
+
   # *****************************************************
   # function that stores images that have successfully
   # uploaded to filepicker.io
   # *****************************************************
-  
-  # *****************************************************
-  # Enable Medium style rollover wysiwyg markip tool
-  # requires:
-  #   mrt add medium-editor
-  # *****************************************************
-  # var elements = document.querySelectorAll('.editable'),
-  # editor = new MediumEditor(elements);
-  # jquery tags
-  #$('#tags').tagsInput();
-  
+
   # *****************************************************
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html
@@ -37,12 +27,12 @@ Template.productsEdit.rendered = ->
   if Roles.userIsInRole(Meteor.user(), "admin")
     $.fn.editable.defaults.mode = "popup"
     $.fn.editable.defaults.showbuttons = false
-    
+
     # *****************************************************
     # TODO: Tabbing
     # SEE: https://github.com/vitalets/x-editable/issues/324
     # *****************************************************
-    
+
     # *****************************************************
     # Editable product title entry
     # *****************************************************
@@ -56,7 +46,7 @@ Template.productsEdit.rendered = ->
           throwError "This field is required"
           false
 
-    
+
     # *****************************************************
     # Editable vendor entry - dropdown
     # *****************************************************
@@ -65,14 +55,14 @@ Template.productsEdit.rendered = ->
       success: (response, newValue) ->
         updateProduct vendor: newValue
 
-    
+
     # *****************************************************
     # Editable price - really first variant entry
     # *****************************************************
     $("#price").editable success: (response, newValue) ->
       updateProduct({"variants.0.price": newValue})
 
-    
+
     # *****************************************************
     # Editable product html
     # *****************************************************
@@ -83,7 +73,7 @@ Template.productsEdit.rendered = ->
       success: (response, newValue) ->
         updateProduct bodyHtml: newValue
 
-    
+
     # *****************************************************
     # Editable social handle (hashtag, url)
     # *****************************************************
@@ -93,7 +83,7 @@ Template.productsEdit.rendered = ->
       success: (response, newValue) ->
         updateProduct handle: newValue
 
-    
+
     # *****************************************************
     # Editable twitter, social messages entry
     # *****************************************************
@@ -105,7 +95,7 @@ Template.productsEdit.rendered = ->
       success: (response, newValue) ->
         updateProduct twitter_msg: newValue
 
-    
+
     # *****************************************************
     # Editable tag field
     # *****************************************************
@@ -146,7 +136,7 @@ Template.productsEdit.rendered = ->
           tagIds: tagIds
         )
 
-    
+
     # *****************************************************
     # Editable variants entry
     # Format
@@ -179,7 +169,7 @@ Template.productsEdit.rendered = ->
       success: (response, newValue) ->
         updateProduct variants: newValue
 
-    
+
     # *****************************************************
     # Function to return variant data
     # param: property:value
@@ -203,7 +193,7 @@ Template.productsEdit.rendered = ->
         i++
       variant
 
-    
+
     # *****************************************************
     # Function to update product
     # param: property:value
@@ -221,20 +211,26 @@ Template.productsEdit.rendered = ->
           true
 
 
-    $(".variant-table input[name=\"variant\"]").get(getSelectedVariantIndex()).checked = true
+    # $(".variant-table input[name=\"variant\"]").get(getSelectedVariantIndex()).checked = true
 
-# End Template.rendered
 
 # **********************************************************************************************************
-# general helpers for editing products
-# returns int
+# events for main product detail page
+#
 # **********************************************************************************************************
 
-# *****************************************************
-# x-editable inline submitting, each field is indepandly
-# submitted
-# *****************************************************
 Template.productsEdit.events
+  "click #add-to-cart": (e, template) ->
+    now = new Date()
+
+    sessionId = Session.get("serverSession")._id
+    variantData = Session.get("selectedVariant")
+    productId = Session.get("currentProductId")
+    quantity = 1
+
+    Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
+    e.preventDefault()
+
   "submit form": (e) ->
     e.preventDefault()
     currentProductId = Session.get("currentProductId")
@@ -249,15 +245,9 @@ Template.productsEdit.events
       $set: productsProperties
     , (error) ->
       if error
-        
         # display the error to the user
         alert error.reason
-      else
 
-
-  
-  #Router.go('/shop/products');
-  
   # *****************************************************
   # deletes entire product
   # TODO: implement revision control by using
@@ -273,9 +263,12 @@ Template.productsEdit.events
       Products.remove currentProductId
       Router.go "/shop/products"
 
-  "click .variant-table tr": (e) ->
-    $(e.target).closest("tr").find("input").prop "checked", "checked"
-    Session.set "selectedVariantIndex", $(e.target).closest("tr").prevAll().length
+  "click .variant-list": (e) ->
+
+    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
+    Session.set("selectedVariant",this)#for cart
+    Session.set "selectedVariantIndex", $(e.target).closest("li").prevAll().length
+    $('.variant-list #'+this._id).addClass("variant-detail-selected")
     e.stopPropagation()
 
   "click #add-variant": (e) ->

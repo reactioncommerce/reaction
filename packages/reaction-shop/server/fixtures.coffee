@@ -232,7 +232,7 @@ unless Tags.find().count()
     createdAt: now
     updatedAt: now
 
-unless Products.find().count()
+unless Products.find().count() > 20
   console.log 'Adding products fixture data'
   Products.insert
   #'_id': 'fhnqEEfMaESexc26F',
@@ -260,12 +260,12 @@ unless Products.find().count()
         'id': 808950810,
         'inventoryManagement': 'reaction',
         'inventoryPolicy': 'continue',
-        'inventoryQuantity': 10,
+        'inventoryQuantity': 62,
         'option1': 'Pink',
         'option2': null,
         'option3': null,
         'position': 1,
-        'price': '199.00',
+        'price': '209.00',
         'requiresShipping': true,
         'sku': 'M9160',
         'taxable': true,

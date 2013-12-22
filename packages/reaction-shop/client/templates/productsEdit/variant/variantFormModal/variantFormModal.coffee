@@ -69,15 +69,15 @@ Template.variantFormModal.events
     form = template.find("form")
     $form = $(form)
     hash = $form.serializeHash()
-    
+
     # TODO: simple-schema lacks default values, send him a PR
     _.extend variant, oldVariant, hash.variants[currentVariantIndex]
-    
+
     # TODO: simple-schema optional decimal validation bug, send him a PR
     delete variant.compareAtPrice  unless variant.compareAtPrice
     delete variant.grams  unless variant.grams
     delete variant.inventoryQuantity  unless variant.inventoryQuantity
-    
+
     # TODO: simple-schema Boolean cleaning bug, send him a PR
     variant.taxable = !!variant.taxable
     variant.requiresShipping = !!variant.requiresShipping
@@ -85,7 +85,7 @@ Template.variantFormModal.events
     variant = ProductVariantSchema.clean(variant)
     currentProduct.variants[currentVariantIndex] = variant
     validationContext = "variant"
-    
+
     # TODO: simple-schema embedded document invalid key name message bug ("variants.$.metafields.0.value"), send him a PR
     localValidationCallback = _.partial(validationCallback, $form, Products, validationContext, ->
       $(template.find(".modal")).modal "hide" # manual hide fix for Meteor reactivity

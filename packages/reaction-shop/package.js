@@ -106,6 +106,7 @@ Package.on_use(function (api, where) {
 
     "client/templates/productsEdit/variant/variant.html",
     "client/templates/productsEdit/variant/variant.coffee",
+    "client/templates/productsEdit/variant/variant.less",
 
     "client/templates/productsEdit/variant/variantFormModal/variantFormModal.html",
     "client/templates/productsEdit/variant/variantFormModal/variantFormModal.coffee",

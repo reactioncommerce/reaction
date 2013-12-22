@@ -18,17 +18,19 @@ Template.variant.events =
   "click .edit-link": (e, template) ->
 
     #    $('#variants-modal form').get(0).reset();
-    Session.set "currentVariantIndex", $(e.target).closest("tr").prevAll().length
+    Session.set "currentVariantIndex", $(e.target).closest("li").prevAll().length
     $("#variants-modal").modal()
     e.preventDefault()
     e.stopPropagation()
 
-  "click .buy": (e, template) ->
-    now = new Date()
-    sessionId = Session.get("serverSession")._id
-    variantData = template.data
-    productId = Session.get("currentProductId")
-    quantity = 1
-
-    Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
-    e.preventDefault()
+Template.variant.helpers
+  maxQty: () ->
+    qty = 0
+    variants = Products.findOne(Session.get("currentProductId"),{fields:{variants:true}}).variants
+    _.map variants, (value,key) ->
+      qty += variants[key].inventoryQuantity
+    qty
+  maxLength: (qty,max) ->
+    length = (qty / max) * 100
+    length = 75 if (length > 75)
+    length
