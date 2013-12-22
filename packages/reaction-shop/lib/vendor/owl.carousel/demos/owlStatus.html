@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Owl Carousel - Owl Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="jQuery Responsive Carousel - Owl Carusel">
+    <meta name="author" content="Bartosz Wojciechowski">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+    <link href="../assets/css/bootstrapTheme.css" rel="stylesheet">
+    <link href="../assets/css/custom.css" rel="stylesheet">
+
+    <!-- Owl Carousel Assets -->
+    <link href="../owl-carousel/owl.carousel.css" rel="stylesheet">
+    <link href="../owl-carousel/owl.theme.css" rel="stylesheet">
+
+    <link href="../assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+  </head>
+  <body>
+
+      <div id="top-nav" class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              <li><a href="../index.html"><i class="icon-chevron-left"></i> Back to Frontpage</a></li>
+              <li><a href="../owl.carousel.zip" class="download download-on" data-spy="affix" data-offset-top="450">Download</a></li>
+            </ul>
+            <ul class="nav pull-left">
+              
+            </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+    <div id="title">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h1>Owl Status Information</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div id="demo">
+        <div class="container">
+          <div class="row">
+            <div class="span12">
+
+              <div id="owl-demo" class="owl-carousel">
+                  
+                <div class="item"><h1>0</h1></div>
+                <div class="item"><h1>1</h1></div>
+                <div class="item"><h1>2</h1></div>
+                <div class="item"><h1>3</h1></div>
+                <div class="item"><h1>4</h1></div>
+                <div class="item"><h1>5</h1></div>
+                <div class="item"><h1>6</h1></div>
+                <div class="item"><h1>7</h1></div>
+                <div class="item"><h1>8</h1></div>
+                <div class="item"><h1>9</h1></div>
+                <div class="item"><h1>10</h1></div>
+                <div class="item"><h1>11</h1></div>
+                <div class="item"><h1>12</h1></div>
+                <div class="item"><h1>13</h1></div>
+                <div class="item"><h1>14</h1></div>
+                <div class="item"><h1>15</h1></div>
+
+              </div>
+              <table id="owlStatus" class="table" style="width:auto">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr class="owlItems">
+                    <td>owlItems.length</td>
+                    <td class="result"></td>
+                  </tr>
+
+                  <tr class="currentItem">
+                    <td>currentItem</td>
+                    <td class="result"></td>
+                  </tr>
+
+                  <tr class="prevItem">
+                    <td>prevItem</td>
+                    <td class="result"></td>
+                  </tr>
+
+                  <tr class="visibleItems">
+                    <td>visibleItems</td>
+                    <td class="result"></td>
+                  </tr>
+
+                   <tr class="dragDirection">
+                    <td>dragDirection:</td>
+                    <td class="result"></td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+    <div id="example-info">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h1>Setup</h1>
+            <p>This is an example of retrieving <code>this.owl object</code> with basic information.
+            </p>
+            <ul class="nav nav-tabs" id="myTab">
+              <li class="active"><a href="#javascript">Javascript</a></li>
+              <li><a href="#HTML">HTML</a></li>
+              <li><a href="#CSS">CSS</a></li>
+            </ul>
+             
+            <div class="tab-content">
+
+              <div class="tab-pane active" id="javascript">
+<pre class="pre-show prettyprint linenums">
+$(document).ready(function() {
+
+  var owl = $("#owl-demo"),
+      status = $("#owlStatus");
+
+  owl.owlCarousel({
+    navigation : true,
+    afterAction : afterAction
+  });
+
+  function updateResult(pos,value){
+    status.find(pos).find(".result").text(value);
+  }
+
+  function afterAction(){
+    updateResult(".owlItems", this.owl.owlItems.length);
+    updateResult(".currentItem", this.owl.currentItem);
+    updateResult(".prevItem", this.prevItem);
+    updateResult(".visibleItems", this.owl.visibleItems);
+    updateResult(".dragDirection", this.owl.dragDirection);
+  }
+
+  /*
+  All owl object information listed below:
+
+  base.owl = {
+    "userOptions" : base.userOptions,
+    "baseElement" : base.$elem,   
+    "userItems"   : base.$userItems,
+    "owlItems"    : base.$owlItems,
+    "currentItem" : base.currentItem,
+    "prevItem"    : base.prevItem,
+    "visibleItems": base.visibleItems,
+    "isTouch"     : base.browser.isTouch,
+    "browser"     : base.browser,
+    "dragDirection": base.dragDirection
+  }
+  */
+
+
+  
+});
+</pre>
+
+              </div>
+
+              <div class="tab-pane" id="HTML">
+<pre class="pre-show prettyprint linenums">
+&lt;div id="owl-demo" class="owl-carousel"&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;0&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;1&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;2&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;3&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;4&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;5&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;6&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;7&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;8&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;9&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;10&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;11&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;12&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;13&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;14&lt;/h1&gt;&lt;/div&gt;
+  &lt;div class="item"&gt;&lt;h1&gt;15&lt;/h1&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;table id="owlStatus" class="table" style="width:auto"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+
+    &lt;tr class="owlItems"&gt;
+      &lt;td&gt;owlItems.length&lt;/td&gt;
+      &lt;td class="result"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+
+    &lt;tr class="currentItem"&gt;
+      &lt;td&gt;currentItem&lt;/td&gt;
+      &lt;td class="result"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+
+    &lt;tr class="prevItem"&gt;
+      &lt;td&gt;prevItem&lt;/td&gt;
+      &lt;td class="result"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+
+    &lt;tr class="visibleItems"&gt;
+      &lt;td&gt;visibleItems&lt;/td&gt;
+      &lt;td class="result"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+
+     &lt;tr class="dragDirection"&gt;
+      &lt;td&gt;dragDirection:&lt;/td&gt;
+      &lt;td class="result"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+</pre>
+              </div>
+
+              <div class="tab-pane" id="CSS">
+<pre class="pre-show prettyprint linenums">
+#owl-demo .item{
+  background: #3fbf79;
+  padding: 30px 0px;
+  margin: 10px;
+  color: #FFF;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+</pre>
+              </div>
+            </div><!--End Tab Content-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="more">
+      <div class="container">
+
+        <div class="row">
+          <div class="span12">
+            <h1>More Demos</h1>
+          </div>
+        </div>
+
+        <div class="row demos-row">
+          <div class="span3">
+            <a href="images.html" class="demo-box">
+              <div class="demo-wrapper demo-images clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>Images</h3>
+            </a>
+          </div>
+
+          <div class="span3">
+            <a href="custom.html" class="demo-box">
+              <div class="demo-wrapper demo-custom clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>Custom</h3>
+            </a>
+          </div>
+
+          <div class="span3">
+            <a href="itemsCustom.html" class="demo-box">
+              <div class="demo-wrapper demo-full clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>Custom 2</h3>
+            </a>
+          </div>
+
+          <div class="span3">
+            <a href="one.html" class="demo-box">
+              <div class="demo-wrapper demo-one clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>One Slide</h3>
+            </a>
+          </div>
+
+        </div>
+        <div class="row demos-row">
+          <div class="span3">
+            <a href="json.html" class="demo-box">
+              <div class="demo-wrapper demo-Json clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>JSON</h3>
+            </a>
+          </div>
+
+          <div class="span3">
+            <a href="customJson.html" class="demo-box">
+              <div class="demo-wrapper demo-Json-custom clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>JSON Custom</h3>
+            </a>
+          </div>
+
+          <div class="span3">
+            <a href="lazyLoad.html" class="demo-box">
+              <div class="demo-wrapper demo-lazy clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>Lazy Load</h3>
+            </a>
+          </div>
+
+          <div class="span3">
+            <a href="autoHeight.html" class="demo-box">
+              <div class="demo-wrapper demo-height clearfix">
+                <div class="demo-slide"><div class="bg"></div></div>
+              </div>
+              <h3>Auto Height</h3>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+ 
+    <div id="footer">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h5>Bartosz Wojciechowski 2013 / @OwlFonk / 
+            <a href="mailto:owl@owlgraphic.com?subject=Hey Owl!">email</a> / 
+            <a href="../changelog.html">changelog</a> /
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EFSGXZS7V2U9N">donate</a> / 
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://owlgraphic.com/owlcarousel/" data-text="Awesome jQuery Owl Carousel Responsive Plugin" data-via="OwlFonk" data-count="none" data-hashtags="owlcarousel"></a>
+            <script>
+            var owldomain = window.location.hostname.indexOf("owlgraphic");
+            if(owldomain !== -1){
+              !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            }
+            </script>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="../assets/js/jquery-1.9.1.min.js"></script> 
+    <script src="../owl-carousel/owl.carousel.js"></script>
+
+
+    <!-- Demo -->
+
+    <style>
+    #owl-demo .item{
+        background: #3fbf79;
+        padding: 30px 0px;
+        margin: 10px;
+        color: #FFF;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        text-align: center;
+    }
+    </style>
+
+
+    <script>
+    $(document).ready(function() {
+
+      var owl = $("#owl-demo"),
+          status = $("#owlStatus");
+
+      owl.owlCarousel({
+        navigation : true,
+        afterAction : afterAction
+      });
+
+      function updateResult(pos,value){
+        status.find(pos).find(".result").text(value);
+      }
+
+      function afterAction(){
+        updateResult(".owlItems", this.owl.owlItems.length);
+        updateResult(".currentItem", this.owl.currentItem);
+        updateResult(".prevItem", this.prevItem);
+        updateResult(".visibleItems", this.owl.visibleItems);
+        updateResult(".dragDirection", this.owl.dragDirection);
+      }
+
+    });
+    </script>
+
+
+    <script src="../assets/js/bootstrap-collapse.js"></script>
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-tab.js"></script>
+
+    <script src="../assets/js/google-code-prettify/prettify.js"></script>
+    <script src="../assets/js/application.js"></script>
+
+  </body>
+</html>

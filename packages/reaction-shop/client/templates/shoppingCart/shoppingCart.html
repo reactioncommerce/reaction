@@ -1,20 +1,43 @@
 <template name="shopCartIcon">
       <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cart <span class="badge">{{cartCount}}</span><b class="caret"></b></a>
-        <ul class="dropdown-menu" id="nav-cart">
-          {{>shopCartIconList}}
-          <li class="divider"></li>
-          <li><a href="{{pathFor "shoppingCartCheckout"}}"><button class="btn btn-primary pull-right">Checkout</button></a></li>
-        </ul>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="btn-slidenav">Cart <span class="badge">{{cartCount}}</span><b class="caret"></b></a>
       </li>
     </ul>
 </template>
 
 <template name="shopCartIconList">
+  <ul class="dropdown-menu" id="nav-cart">
   {{#each cartList}}
-    <li><span class="badge">{{quantity}}</span>{{variants.barcode}}</li>
+  <li><span class="badge">{{quantity}}</span>{{variants.barcode}}</li>
   {{else}}
-    <li class="text-center"><i class="fa fa-frown-o fa-lg"></i><strong>  Empty Cart.</strong></li>
+  <li class="text-center"><i class="fa fa-frown-o fa-lg"></i><strong>  Empty Cart.</strong></li>
   {{/each}}
+  <li class="divider"></li>
+  <li><a href="{{pathFor "shoppingCartCheckout"}}"><button class="btn btn-primary pull-right">Checkout</button></a></li>
+   </ul>
+</template>
+
+<template name="shopCartSlide">
+  <div class="shop-cart-slide" id="shop-cart-slide">
+    {{#isolate}}
+    <div class="owl-carousel">
+    {{#each cartItems}}
+      <div class="cartItems">
+        <img src="{{image variants._id}}" alt="{{variants.title}}" class="img-responsive">
+       <span class="badge">{{quantity}}</span>{{variants.title}}
+      </div>
+    {{/each}}
+    </div>
+    {{#unless cartItems}}
+      <div class="cartItems">
+        <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're Sad. Your cart is empty.</p></strong></h1>
+      </div>
+    {{else}}
+     <a href="{{pathFor "shoppingCartCheckout"}}" class="btn btn-success btn-lg btn-block">
+      Checkout now
+    </a>
+    {{/unless}}
+  </div>
+  {{/isolate}}
 </template>

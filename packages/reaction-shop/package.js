@@ -39,6 +39,10 @@ Package.on_use(function (api, where) {
     "lib/vendor/select2/select2.css",
     "lib/vendor/select2-bootstrap-css/select2-bootstrap.css",
 
+    "lib/vendor/owl.carousel/owl-carousel/owl.carousel.css",
+    "lib/vendor/owl.carousel/owl-carousel/owl.theme.css",
+    "lib/vendor/owl.carousel/owl-carousel/owl.carousel.js",
+
     "client/register.coffee",
     "client/app.coffee",
     "client/helpers.coffee",
@@ -57,6 +61,7 @@ Package.on_use(function (api, where) {
 
     "client/templates/shoppingCart/shoppingCart.html",
     "client/templates/shoppingCart/shoppingCart.coffee",
+    "client/templates/shoppingCart/shoppingCart.less",
 
     "client/templates/shoppingCart/shoppingCartCheckout.html",
     "client/templates/shoppingCart/shoppingCartCheckout.coffee",

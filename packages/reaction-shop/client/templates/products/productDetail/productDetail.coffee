@@ -221,6 +221,7 @@ Template.productsEdit.rendered = ->
 
 Template.productsEdit.events
   "click #add-to-cart": (e, template) ->
+    e.preventDefault()
     now = new Date()
     return throwError("Oops,select an option before adding to cart") unless Session.get("selectedVariant")
     sessionId = Session.get("serverSession")._id
@@ -231,9 +232,8 @@ Template.productsEdit.events
     Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
     $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
     Session.set("selectedVariant","")
+    $("#shop-cart-slide").fadeIn(400 ).delay( 5000 ).fadeOut( 300 )
 
-    $("#nav-cart").fadeToggle(600);
-    e.preventDefault()
 
   "submit form": (e) ->
     e.preventDefault()
