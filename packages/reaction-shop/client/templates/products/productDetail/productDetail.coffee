@@ -233,7 +233,7 @@ Template.productsEdit.events
     $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
     Session.set("selectedVariant","")
     $("html, body").animate({ scrollTop: 0 }, "fast")
-    $("#shop-cart-slide").fadeIn(400 ).delay( 5000 ).fadeOut( 300 )
+    $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
 
 
   "submit form": (e) ->

@@ -46,7 +46,7 @@ Package.on_use(function (api, where) {
     "client/register.coffee",
     "client/app.coffee",
     "client/helpers.coffee",
-    "client/subscribe.coffee",
+    "client/subscriptions.coffee",
     "client/routing.coffee",
 
     "client/templates/shopHeader/shopHeader.html",

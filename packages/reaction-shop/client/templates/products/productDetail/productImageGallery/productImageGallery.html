@@ -1,55 +1,45 @@
 <template name="productImageGallery">
-  <div id="galleryDropPane" class="galleryDropPane">
-    <ul class="gallery product-medias list-unstyled">
-      {{#with variant.medias}}
-        {{#if firstImage}}
-          <li>
-            <div class="product-image">
-              <img class="image-src img-responsive" name="main-image" src="{{firstImage.src}}">
-            </div>
-            {{> galleryTools}}
-          </li>
-        {{/if}}
-        {{#foreach .}}
-          {{#isimage mimeType}}
-            <!-- No more images -->
-          {{else}}
-            <li data-index="{{index}}" class="sortable">
-              <a href="#" rel="prettyPhoto" title="{{title}}">
-                <div class="edit-image img-responsive">
-                  <img src="{{src}}?/convert?w=100&h=75&fit=max" width="100" height="100" alt="{{title}}">
-                  <i></i>
-                </div>
-              </a>
-            </li>
-          {{/isimage}}
-          {{#isvideo mimeType}}
-            <li data-index="{{index}}" class="sortable">
-              <video class="video-js vjs-default-skin" width="250px" preload="auto" data-setup='{"example_option":true}' controls>
-                <source src="{{src}}" type="{{mimeType}}">
-                Your browser does not support the video tag.
-              </video>
-              {{> galleryTools}}
-            </li>
-          {{/isvideo}}
-        {{/foreach}}
-      {{/with}}
+{{#with variant.medias}}
+  <div class="product-image">
+    {{#if firstImage}}
+        <div class="product-image-main">
+          <img class="img-responsive" name="main-image" src="{{firstImage.src}}">
+        </div>
       {{#if userHasRole "admin"}}
-      <li>
-        <i class="imageAddButton fa fa-plus-circle fa-4x fa-border"> Add media</i>
-      </li>
+        <div class="gallery-tools">
+          <a><i class="fa fa-link"></i></a>
+          <a><i class="fa fa-paperclip"></i></a>
+          <a><i class="fa fa-pencil"></i></a>
+          <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+        </div>
       {{/if}}
-    </ul>
+    {{/if}}
   </div>
-</template>
-
-<template name="galleryTools">
-  {{#if userHasRole "admin"}}
-    <div class="gallery-tools">
-      <a><i class="fa fa-link"></i></a>
-      <a><i class="fa fa-paperclip"></i></a>
-      <a><i class="fa fa-pencil"></i></a>
-      <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
-    </div>
-  {{/if}}
+  <div id="galleryDropPane" class="galleryDropPane">
+    <ul class="gallery">
+    {{#foreach .}}
+      {{#isimage mimeType}}
+        <!-- No more images -->
+      {{else}}
+      <li data-index="{{index}}" class="sortable">
+        <div class="view-image">
+          <img src="{{src}}?/convert?w=100&h=75&fit=max" class="img-responsive" alt="{{title}}">
+        </div>
+      </li>
+      {{/isimage}}
+      {{#isvideo mimeType}}
+        <li data-index="{{index}}" class="sortable video">
+          <video class="video-js vjs-default-skin" width="250px" preload="auto" data-setup='{"example_option":true}' controls>
+            <source src="{{src}}" type="{{mimeType}}">
+            Your browser does not support the video tag.
+          </video>
+        </li>
+      {{/isvideo}}
+    {{/foreach}}
+    </ul>
+    {{#if userHasRole "admin"}}
+      <button type="button" class="btn btn-default btn-lg btn-block imageAddButton">Add media</button>
+    {{/if}}
+</div>
+{{/with}}
 </template>

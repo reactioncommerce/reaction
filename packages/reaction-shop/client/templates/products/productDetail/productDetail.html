@@ -1,5 +1,4 @@
 <template name="productsEdit">
-  <div class="container">
     {{!-- Edit Product --}}
     <form action="#" class="form-inline">
       {{#if userHasRole "admin"}}
@@ -19,16 +18,14 @@
       {{/if}}
       <div class="row">
         <!-- BEGIN Left Side -->
-        <div class="col-md-6 image-block">
-          <div class="row">
-            <div class="col-md-12">{{> productImageGallery}}</div>
-          </div>
+        <div class="col-md-5 col-lg-4 col-lg-offset-1 image-block">
+            {{> productImageGallery}}
         </div>
         <!-- END Left Side -->
 
         <!-- BEGIN Right Side -->
-        <div class="col-md-6">
-          <div class="col-md-8 col-offset-md-4">
+        <div class="col-md-7">
+          <div class="col-md-10 col-offset-md-4">
             <div>
               <h1 id="title" class="editable" data-type="text" data-placeholder="Enter title" data-clear="true" data-emptytext="catchy short title here" data-pk="{{id}}">{{title}}</h1>
             </div>
@@ -91,5 +88,4 @@
     </form>
     {{> variantFormModal}}
     {{> optionsModal}}
-  </div>
 </template>

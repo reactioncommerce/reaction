@@ -10,11 +10,8 @@ Meteor.startup ->
       return
     if Roles.userIsInRole(Meteor.user(), "admin")
       _.defer ->
-        $.pnotify(
-          title: "Google Analytics"
-          text: "Google Analytics Property is not configured.",
-          type: "error"
-        )
+        throwError "Google Analytics Property is not configured.","Google Analytics"
+
   $(document.body).click (e) ->
     $targets = $(e.target).closest("*[data-event-action]")
     $targets = $targets.parents("*[data-event-action]").add($targets)

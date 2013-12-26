@@ -9,6 +9,10 @@ share.Errors = @Errors = new Meteor.Collection(null)
   message = "An error has occurred" unless message
   title = "Error Notice" unless title
   type = "error" unless type
+  delay = 2000
+  closer = false
+  animate_speed: "normal"
+  addclass = "stack-bottomright"
 
   $.pnotify
     title: title

@@ -5,11 +5,7 @@
 # *****************************************************
 loadPicker = (callback) ->
   if (not window.filepicker.keyIsSet) and Roles.userIsInRole(Meteor.user(), "admin")
-    $.pnotify
-      title: "Filepicker.io is not configured"
-      text: "You can do that on the <a href=\"/filepicker-io\">package dashboard</a>."
-      type: "error"
-
+    throwError "You can do that on the <a href=\"/filepicker-io\">package dashboard</a>.","Filepicker.io is not configured"
     return false
   callback and callback()
 
@@ -20,9 +16,6 @@ filepickerLoadCallback = ->
       if packageConfig and packageConfig.apikey
         window.filepicker.setKey packageConfig.apikey
         window.filepicker.keyIsSet = true
-
-
-
 
 #If the script doesn't load
 filepickerErrorCallback = (error) ->

@@ -35,53 +35,54 @@ Template.productImageGallery.rendered = ->
   # https://developers.inkfilepicker.com/docs/
   # requires apikey
   # *****************************************************
-  cb = ->
-    # Drag and Drop zone
-    galleryDropPane = $("#galleryDropPane")
-    lastenter = undefined
-    filepicker.makeDropPane $("#galleryDropPane")[0],
-      multiple: true
-      dragEnter: (event) ->
-        lastenter = this.event.target
-        galleryDropPane.addClass "drag-over"
-      dragLeave: (event) ->
-        galleryDropPane.removeClass "drag-over"  if lastenter == this.event.target
-      onSuccess: (InkBlobs) ->
-        uploadMedias InkBlobs
-      onError: (FPError) ->
-        debugger;
-        $.pnotify
-          title: "Filepicker.io Error"
-          text: FPError.toString()
-          type: "error"
-      onProgress: (percentage) ->
-        $("#galleryDropPane").text "Uploading (" + percentage + "%)"
-  window.loadPicker cb
-  $productMedias = $(".product-medias")
-  $productMedias.sortable
-    items: "> li.sortable"
-    cursor: "move"
-    opacity: 0.3
-    helper: "clone"
-    placeholder: "sortable-placeholder" # <li class="sortable-placeholder"></li>
-    forcePlaceholderSize: true
-    update: (event, ui) ->
-      $productMedias.removeClass "is-sorting"
-      sortedMedias = _.map($productMedias.sortable("toArray",
-        attribute: "data-index"
-      ), (index) ->
-        variant.medias[index]
-      )
-      $set = {}
-      $set["variants."+getSelectedVariantIndex()+".medias"] = sortedMedias
-      Products.update(product._id, {$set: $set})
-    start: (event, $ui) ->
-      $ui.placeholder.height $ui.helper.height() - 4
-      $ui.placeholder.html "Drop image to reorder"
-      $ui.placeholder.css "padding-top", $ui.helper.height() / 2 - 18
-      $productMedias.addClass "is-sorting"
-    stop: (event, $ui) ->
-      $productMedias.removeClass "is-sorting"
+
+  # unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+  #   new Packery(document.querySelector(".gallery"), {gutter: 2,"itemSelector": "li", "stamp": ".product-image"})
+
+  if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    $('#galleryDropPane').css "border", "1px dashed #ccc"
+    cb = ->
+      # Drag and drop image upload
+      galleryDropPane = $("#galleryDropPane")
+      lastenter = undefined
+      filepicker.makeDropPane $("#galleryDropPane")[0],
+        multiple: true
+        dragEnter: (event) ->
+          lastenter = this.event.target
+          $('#galleryDropPane').css "background-color", "#b6d3de"
+        dragLeave: (event) ->
+          galleryDropPane.css "background-color", "#F6F6F6"  if lastenter == this.event.target
+        onSuccess: (InkBlobs) ->
+          uploadMedias InkBlobs
+        onError: (FPError) ->
+          throwError(FPError.toString(),"Filepicker.io Error","error")
+        onProgress: (percentage) ->
+          $("#galleryDropPane").text "Uploading (" + percentage + "%)"
+    window.loadPicker cb
+    # Drag and drop image index update
+    $gallery = $(".gallery")
+    $gallery.sortable
+      items: "> li.sortable"
+      cursor: "move"
+      opacity: 0.3
+      helper: "clone"
+      placeholder: "sortable"
+      forcePlaceholderSize: true
+      update: (event, ui) ->
+        sortedMedias = _.map($gallery.sortable("toArray",
+          attribute: "data-index"
+        ), (index) ->
+          variant.medias[index]
+        )
+        $set = {}
+        $set["variants."+getSelectedVariantIndex()+".medias"] = sortedMedias
+        Products.update(product._id, {$set: $set})
+      start: (event, $ui) ->
+        $ui.placeholder.height $ui.helper.height()
+        $ui.placeholder.html "Drop image to reorder"
+        $ui.placeholder.css "padding-top", $ui.helper.height() / 3
+        $ui.placeholder.css "border", "1px dashed #ccc"
+        $ui.placeholder.css "border-radius","6px"
 
 
 # *****************************************************
@@ -89,7 +90,7 @@ Template.productImageGallery.rendered = ->
 # returns image url
 # *****************************************************
 Template.productImageGallery.events
-  "click .edit-image": (event, template) ->
+  "click .view-image": (event, template) ->
     Session.set "media-url", @src
 
 
@@ -105,12 +106,7 @@ Template.productImageGallery.events
       uploadMedias InkBlob
     ), (FPError) ->
       return  if FPError.code == 101 # The user closed the picker without choosing a file
-      $.pnotify
-        title: "Filepicker.io Error"
-        text: FPError.toString()
-        type: "error"
-
-
+      throwError FPError.toString(),"Filepicker.io Error"
 
 
 # *****************************************************

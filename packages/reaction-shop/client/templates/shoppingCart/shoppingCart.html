@@ -25,13 +25,13 @@
     {{#each cartItems}}
       <div class="cartItems">
         <img src="{{image variants._id}}" alt="{{variants.title}}" class="img-responsive">
-       <span class="badge">{{quantity}}</span>{{variants.title}}
+       <span class="badge">{{quantity}}</span> {{variants.title}}
       </div>
     {{/each}}
     </div>
     {{#unless cartItems}}
       <div class="cartItems">
-        <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're Sad. Your cart is empty.</p></strong></h1>
+        <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong></h1>
       </div>
     {{else}}
      <a href="{{pathFor "shoppingCartCheckout"}}" class="btn btn-success btn-lg btn-block" id="btn-checkout">
