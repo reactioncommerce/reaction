@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+if [ -z "$1" ]; then
+  COMMAND="db.getCollectionNames().forEach(function(collectionName) {if (collectionName != 'system.indexes') {db[collectionName].remove()}})";
+else
+  COMMAND="db.$1.remove()";
+fi
+echo "Executing:" $COMMAND
+echo $COMMAND | meteor mongo

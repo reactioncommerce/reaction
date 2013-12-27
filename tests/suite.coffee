@@ -1,7 +1,9 @@
 expect = require("chai").expect
 webdriverjs = require("webdriverjs")
+check = require("./check")
 os = require("os")
 fs = require("fs")
+exec = require('child_process').exec
 
 before (done) ->
   screenshotPath = os.tmpdir() + "/selenium-screenshots"
@@ -16,8 +18,15 @@ before (done) ->
     logLevel: process.env.LOGLEVEL || "silent"
     screenshotPath: screenshotPath
   )
+  @client.defer = ->
+    @waitFor(".nonexistent", 300, () ->)
   @client.init()
   @client.implicitWait(3000, done)
+
+beforeEach (done) ->
+  exec(__dirname+"/../bin/reload", check (stdout, stderr) ->
+    done()
+  )
 
 after (done) ->
   @client.end(done)

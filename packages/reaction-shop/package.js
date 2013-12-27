@@ -133,7 +133,6 @@ Package.on_use(function (api, where) {
   api.add_files([
     "server/app.coffee",
     "server/methods.coffee",
-    "server/fixtures.coffee",
     "server/publications.coffee",
     "server/emailTemplates/shopMemberInvite.handlebars"
   ], ["server"]);

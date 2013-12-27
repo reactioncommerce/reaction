@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -u
+set -e
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+mocha $DIRNAME/../tests/ --compilers coffee:coffee-script --timeout 60000 $@

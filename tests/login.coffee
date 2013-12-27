@@ -4,9 +4,14 @@ webdriverjs = require("webdriverjs")
 check = require("./check")
 
 describe("Login test suite", ->
-  it "Login test", (done) ->
+  beforeEach (done) ->
     @client
       .url("http://localhost:3000/")
+      .waitFor(".all-subscriptions-loaded", 3000)
+      .call(done)
+
+  it "Login test", (done) ->
+    @client
       .buttonClick(".navbar-toggle")
       .click("*=Sign In")
       .setValue("#login-email", "admin1@ongoworks.com")

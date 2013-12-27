@@ -6,7 +6,7 @@
 # individual reaction packages have their own router.js
 # *****************************************************
 Router.configure
-  layoutTemplate: "siteLayout"
+  layoutTemplate: "layout"
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
   yieldTemplates:
