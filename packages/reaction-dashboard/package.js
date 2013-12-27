@@ -23,7 +23,7 @@ Package.on_use(function (api, where) {
 
     "lib/app.coffee",
     "client/routing.coffee",
-    "client/subscribe.coffee",
+    "client/subscriptions.coffee",
 
     "client/templates/dashboardSidebar/dashboardSidebar.html",
     "client/templates/dashboardSidebar/dashboardSidebar.less",
