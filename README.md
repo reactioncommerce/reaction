@@ -20,18 +20,19 @@ Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We we
 * Upgrade paths from existing commerce platforms (Magento, Shopify, BigCommerce)
 * Developer friendly. Commercial package and theme development encouraged. Contributors should be rewarded.
 
-###Current Status:
-**Unstable, with HEAVY ongoing development!**
+###Roadmap:
+**Current status: Unstable, with HEAVY ongoing development!**
 
 Only good for contributing/observing progress right now. Our estimated timeline:
 
 * Catalog/Product Management - functional now
 * Cart - functional now
 * Checkout (with shipping/payment methods):
-	* Alpha: Late January 2014  (search,shipping calc, payments)
+	* Alpha: Late January 2014  (search, shipping calc, payments)
 	* Beta: Late February 2014 (promotions, hero, cms)
 * Complete PaaS solution:
-	* Release Candidate: Q1 2014 (social tracking, seo, mixed rate shipping)
+	* Release Candidate 1: Q1 2014 (social tracking, seo, mixed rate shipping)
+	* Release Candidate 2: Q1 2014 (migration tools, multiple themes, theme editor)
 
 
 Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
