@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://demo.reactioncommerce.com",
+  "public": {
+    "filepickerApiKey": "AZUDgGDUWREi9yopCVBeoz",
+    "googleAnalyticsProperty": "UA-44704216-3",
+    "version": "__VERSION__",
+    "isDebug": false
+  }
+}

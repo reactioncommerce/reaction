@@ -1,8 +1,10 @@
 #!/bin/bash
 
+usage() { echo "Usage: $0 [hostname] [settings.json]" 1>&2; exit 1; }
 DIRNAME=$(cd `dirname $0` && pwd)
 
-CONFIG=$DIRNAME/../settings/prod.json
+CONFIG=$DIRNAME/../settings/$2
 . $DIRNAME/check-settings $CONFIG
-sed s/__VERSION__/$(git rev-parse HEAD)/ $CONFIG > /tmp/prod.json
-meteor deploy reaction.meteor.com --settings /tmp/prod.json "$@"
+sed s/__VERSION__/$(git rev-parse HEAD)/ $CONFIG > /tmp/$2
+
+meteor deploy --password --settings /tmp/$2 $1

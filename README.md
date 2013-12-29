@@ -7,7 +7,7 @@ Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We we
 
 
 * Fast, simple and easy to use for end users as well as store owners.
-* A focus on marketing - it's easy to have products, order processing and customer records. Translating that to conversions and traffic are often the difficult component.  
+* A focus on marketing - it's easy to have products, order processing and customer records. Translating that to conversions and traffic are often the difficult component.
 * Limited separation of administrative functionality and "front end". Same template should be used to edit/create/read views.
 * Statistics / event tracking should be built in from the beginning throughout
 * As modular as possible so that any package can be customized/overwritten - i.e.: need a special order processing process, then override/extend the default
@@ -21,18 +21,22 @@ Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We we
 * Developer friendly. Commercial package and theme development encouraged. Contributors should be rewarded.
 
 ###Current Status:
-**Unstable, with HEAVY ongoing development!** 
+**Unstable, with HEAVY ongoing development!**
 
 Only good for contributing/observing progress right now. Our estimated timeline:
 
-* Alpha: Late January 2014
-* Beta: Late February 2014
-* Release Candidate: Q1 2014
-	
+* Catalog/Product Management - functional now
+* Cart - functional now
+* Checkout (with shipping/payment methods):
+	* Alpha: Late January 2014  (search,shipping calc, payments)
+	* Beta: Late February 2014 (promotions, hero, cms)
+* Complete PaaS solution:
+	* Release Candidate: Q1 2014 (social tracking, seo, mixed rate shipping)
+
 
 Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
 
-Usually, we have playground here: [Demo/test site](http://reaction.meteor.com)
+Usually, we have playground here: [Demo/test site](http://demo.reactioncommerce.com)
 
 * Use admin1@ongoworks.com / ongo1 to test dashboard/admin/editing.
 
@@ -45,9 +49,21 @@ Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) c
     sudo -H npm install -g meteorite
     git clone https://github.com/ongoworks/reaction.git
     cd reaction
-    mrt
+    mrt update
+   
+##Startup
+	./bin/reset & ./bin/run
+
+./bin/reset will restart server, and give you a fresh test dataset from settings/dev.json
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running.
+
+
+
+##Deploying
+To deploy to a [meteor.com hosted site ](http://docs.meteor.com/#deploying)
+
+	./bin/deploy hostname.meteor.com settings.json
 
 
 ---
