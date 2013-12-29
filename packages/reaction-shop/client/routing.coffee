@@ -59,14 +59,14 @@ Router.map ->
     path: '/shop/products/:_id'
     before: ->
       product = Products.findOne(@params._id)
-      if !product.isVisible
-        if !Meteor.app.hasPermission(@path)
+      unless product.isVisible
+        unless Meteor.app.hasPermission(@path)
           @render('unauthorized')
           @stop()
     data: ->
       Session.set('currentProductId', @params._id)
       Products.findOne(@params._id)
-    template: 'productsEdit'
+    template: 'productDetail'
   #checkout
   @route 'shoppingCartCheckout',
     path: 'checkout',

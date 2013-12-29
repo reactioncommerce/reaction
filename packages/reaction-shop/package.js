@@ -19,6 +19,7 @@ Package.on_use(function (api, where) {
   ], ["client", "server"]);
   api.use([
     "autoform",
+    "bootstrap3-less",
     "accounts-base",
     "iron-router",
     "less",
@@ -56,8 +57,8 @@ Package.on_use(function (api, where) {
     "client/templates/shopHeader/tags/tags.coffee",
     "client/templates/shopHeader/tags/tags.less",
 
-    "client/templates/shopNavElements/shopNavElements.html",
-    "client/templates/shopNavElements/shopNavElements.coffee",
+    "client/templates/shopHeader/shopNavElements/shopNavElements.html",
+    "client/templates/shopHeader/shopNavElements/shopNavElements.coffee",
 
     "client/templates/shoppingCart/shoppingCart.html",
     "client/templates/shoppingCart/shoppingCart.coffee",

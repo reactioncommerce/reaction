@@ -67,18 +67,18 @@
       },
       "bootstrap3-less": {
         "git": "https://github.com/eprochasson/bootstrap3-less",
-        "tag": "v0.1.5",
-        "commit": "5074432c020ffc7a676a812e92104ce0fa96080f"
+        "tag": "v0.1.8",
+        "commit": "48b6db4435d9f01a1fcfe694a180b38e8e38835b"
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.4.4",
-        "commit": "ccc1e559b5d81dea7d22f5831bde8db4105ba71c"
+        "tag": "v0.4.6",
+        "commit": "287c81d41a9422fb009a82b141256214cf2caa1e"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.2.15",
-        "commit": "0fe469aa0c01eda0563c8802e17914307960de79"
+        "tag": "v0.2.16",
+        "commit": "9647881e7cde07a6548dfdd214c67dfdd7424408"
       },
       "collection-hooks": {
         "git": "https://github.com/wsoul/meteor-collection-hooks.git",

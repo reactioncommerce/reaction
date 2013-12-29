@@ -1,21 +1,21 @@
 <template name="shopHeader">
   <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="navbar-header">
+      <a class="navbar-brand" href="{{pathFor 'index'}}">REACTION</a>
+      <div class="visible-xs hidden-sm hidden-lg hidden-md pull-right">{{>shopCartIcon}}</div>
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{pathFor 'index'}}">REACTION</a>
+
     </div>
+
     <div class="collapse navbar-collapse">
-      <div class="nav navbar-nav navbar-left">
-        {{>shopNavElements}}
-      </div>
-      <div class="nav navbar-nav navbar-right">
-      {{>shopCartIcon}}
-      {{loginButtons}}
-      </div>
+      <div class="nav navbar-nav">{{>shopNavElements}}</div>
+      <div class="nav navbar-nav navbar-right hidden-xs">{{>shopCartIcon}}</div>
+      <div class="nav navbar-nav navbar-right">{{loginButtons}}</div>
+
     </div>
   </div>
 </template>

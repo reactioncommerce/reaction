@@ -278,6 +278,9 @@ Shops = @Shops # package exports
       type: String
     title:
       type: String
+    title2:
+      type: String
+      optional: true
     bodyHtml:
       type: String
       optional: true

@@ -23,7 +23,7 @@
       {{else}}
       <li data-index="{{index}}" class="sortable">
         <div class="view-image">
-          <img src="{{src}}?/convert?w=100&h=75&fit=max" class="img-responsive" alt="{{title}}">
+          <img src="{{src}}" class="img-thumbnail" alt="{{title}}">
         </div>
       </li>
       {{/isimage}}
@@ -41,5 +41,12 @@
       <button type="button" class="btn btn-default btn-lg btn-block imageAddButton">Add media</button>
     {{/if}}
 </div>
+{{else}}
+<div id="galleryDropPane" class="galleryDropPane">
+  <img src="../../resources/placeholder.jpeg">
+</div>
+    {{#if userHasRole "admin"}}
+      <button type="button" class="btn btn-default btn-lg btn-block imageAddButton">Add media</button>
+    {{/if}}
 {{/with}}
 </template>

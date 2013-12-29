@@ -2,20 +2,46 @@
   width: auto;
 }
 
-.editable-width {
-  width: 250px !important;
-  padding: 5px;
+#add-to-cart {
+  margin-top: 25px;
 }
-.editable-input {
-  padding: 0px 10px 0px 10px !important;
+// For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
+.img-responsive{width:100%;}
+
+.pdp {
+  height: 30%;
+  #title {
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+  }
+  #pageTitle {
+    text-align: center;
+    margin-top: -10px;
+    font-size: xx-large;
+    color: #428bca;
+    font-weight: bold;
+  }
+  #price {
+    font-weight: bold;
+    font-size: xx-large;
+  }
+  #bodyHtml {
+    font-size:16px;
+    margin-top:5px;
+  }
+}
+
+.xeditable-input {
+  text-align: center;
+  width: auto !important;
+  min-width: 320px;
+  font-size: large;
 }
 
 @media (min-width: 768px) {
-  .editable-width {
+  .xeditable-input {
     width: 500px !important;
     padding: 5px;
   }
 }
-
-// For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
-.img-responsive{width:100%;}

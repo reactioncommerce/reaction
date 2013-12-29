@@ -1,4 +1,4 @@
-Template.productsEdit.helpers
+Template.productDetail.helpers
   tags: ->
     currentProductId = Session.get("currentProductId")
     product = Products.findOne(currentProductId)
@@ -9,7 +9,7 @@ Template.productsEdit.helpers
   stringify: (tags) ->
     _.pluck(tags, "name").join(", ")
 
-Template.productsEdit.rendered = ->
+Template.productDetail.rendered = ->
 
   # *****************************************************
   # function that stores images that have successfully
@@ -24,8 +24,8 @@ Template.productsEdit.rendered = ->
   # but we want to maintain reactivity etc.
   # *****************************************************
   #
-  if Roles.userIsInRole(Meteor.user(), "admin")
-    $.fn.editable.defaults.mode = "popup"
+  if Meteor.app.hasPermission(@path)
+    $.fn.editable.defaults.mode = "popover"
     $.fn.editable.defaults.showbuttons = false
 
     # *****************************************************
@@ -37,7 +37,7 @@ Template.productsEdit.rendered = ->
     # Editable product title entry
     # *****************************************************
     $("#title").editable
-      inputclass: "editable-width"
+      inputclass: "xeditable-input"
       success: (response, newValue) ->
         updateProduct title: newValue
 
@@ -46,12 +46,19 @@ Template.productsEdit.rendered = ->
           throwError "This field is required"
           false
 
+    # *****************************************************
+    # Editable page title entry
+    # *****************************************************
+    $("#pageTitle").editable
+      inputclass: "xeditable-input"
+      success: (response, newValue) ->
+        updateProduct pageTitle: newValue
 
     # *****************************************************
     # Editable vendor entry - dropdown
     # *****************************************************
     $("#vendor").editable
-      inputclass: "editable-width"
+      inputclass: "xeditable-input"
       success: (response, newValue) ->
         updateProduct vendor: newValue
 
@@ -69,7 +76,7 @@ Template.productsEdit.rendered = ->
     #
     $("#bodyHtml").editable
       showbuttons: true
-      inputclass: "editable-width"
+      inputclass: "xeditable-input"
       success: (response, newValue) ->
         updateProduct bodyHtml: newValue
 
@@ -79,7 +86,7 @@ Template.productsEdit.rendered = ->
     # *****************************************************
     #
     $("#handle").editable
-      inputclass: "editable-width"
+      inputclass: "xeditable-input"
       success: (response, newValue) ->
         updateProduct handle: newValue
 
@@ -88,7 +95,7 @@ Template.productsEdit.rendered = ->
     # Editable twitter, social messages entry
     # *****************************************************
     $("#twitter-msg").editable
-      inputclass: "editable-width"
+      inputclass: "xeditable-input"
       value: "tweet this!"
       type: "text"
       title: "Default Twitter message ~100 characters!"
@@ -107,7 +114,7 @@ Template.productsEdit.rendered = ->
       )
     $("#tags").editable
       showbuttons: true
-      inputclass: "editable-width"
+      inputclass: "xeditable-input"
       select2:
         tags: data
         tokenSeparators: [
@@ -219,7 +226,7 @@ Template.productsEdit.rendered = ->
 #
 # **********************************************************************************************************
 
-Template.productsEdit.events
+Template.productDetail.events
   "click #add-to-cart": (e, template) ->
     e.preventDefault()
     now = new Date()

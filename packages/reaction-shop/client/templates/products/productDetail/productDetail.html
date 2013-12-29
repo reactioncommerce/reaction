@@ -1,91 +1,87 @@
-<template name="productsEdit">
-    {{!-- Edit Product --}}
-    <form action="#" class="form-inline">
-      {{#if userHasRole "admin"}}
-        <div class="row">
-          <div class="col-md-12">
-            {{#if isVisible}}
+<template name="productDetail">
+  {{!-- Edit Product --}}
+  <form action="#" class="form-inline">
+    {{#if userHasRole "admin"}}
+    <div class="row">
+      <div class="col-md-12">
+        {{#if isVisible}}
             {{else}}
-              <div class="alert alert-warning">
-                This product is not visible to customers.
-                You can <a href="#" class="toggle-product-isVisible-link">make it visible</a> when you're done editing.
-              </div>
-            {{/if}}
+        <div class="alert alert-warning">
+          This product is not visible to customers.
+                You can
+          <a href="#" class="toggle-product-isVisible-link">make it visible</a>
+          when you're done editing.
+        </div>
+        {{/if}}
             Product management:
-            <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+        <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+      </div>
+    </div>
+    {{/if}}
+    <div class="row">
+      <div class="pdp">
+        <h1 id="title" class="editable" data-type="text" data-placeholder="Enter product name" data-clear="true" data-emptytext="product name goes here" data-pk="{{id}}">{{title}}</h1>
+        <h2 id="pageTitle" class="editable" data-type="text" data-placeholder="Enter page title" data-clear="true" data-emptytext="catchy short page title here" data-pk="{{id}}">{{pageTitle}}</h2>
+      </div>
+    </div>
+    <div class="row pdp">
+      <!-- BEGIN Left Side -->
+      <div class="col-md-5 col-lg-4 col-lg-offset-1 image-block">{{> productImageGallery}}</div>
+      <!-- END Left Side -->
+
+      <!-- BEGIN Right Side -->
+      <div class="col-md-7">
+        <div class="col-md-10 col-offset-md-4">
+          <div>
+            <h1 id="price" class="price-label" data-pk="{{id}}" data-value="{{variants.0.price}}">${{variants.[0].price}}</h1>
+            <div>
+              by
+              <a id="vendor" class="editable vendor-label" data-type="text" data-placeholder="Enter vendor or brand" data-clear="true" data-emptytext="manufacturer,vendor,brand here" data-pk="{{id}}">{{vendor}}</a>
+            </div>
           </div>
-        </div>
-      {{/if}}
-      <div class="row">
-        <!-- BEGIN Left Side -->
-        <div class="col-md-5 col-lg-4 col-lg-offset-1 image-block">
-            {{> productImageGallery}}
-        </div>
-        <!-- END Left Side -->
-
-        <!-- BEGIN Right Side -->
-        <div class="col-md-7">
-          <div class="col-md-10 col-offset-md-4">
-            <div>
-              <h1 id="title" class="editable" data-type="text" data-placeholder="Enter title" data-clear="true" data-emptytext="catchy short title here" data-pk="{{id}}">{{title}}</h1>
-            </div>
-            <div>
-              <h1 id="price" class="price-label" data-pk="{{id}}" data-value="{{variants.0.price}}">${{variants.[0].price}}</h1>
-
-              <div>
-                by
-                <a id="vendor" class="editable vendor-label" data-type="text" data-placeholder="Enter vendor or brand" data-clear="true" data-emptytext="manufacturer,vendor,brand here" data-pk="{{id}}">{{vendor}}</a>
-              </div>
-            </div>
-            <div>
-              <p id="bodyHtml" class="editable editable-click" data-type="textarea" data-placeholder="Enter description" data-clear="true" data-emptytext="add at least a couple of sentences to describe your product. the more you add the better it will look" data-pk="{{id}}">{{bodyHtml}}</p>
-            </div>
-            <div><i class="icon-twitter editable" id="twitter-msg"></i>
-              <i class="icon-pinterest editable" id="pinterest-msg"></i>
-              <i class="icon-facebook editable" id="facebook-msg"></i>
-              <i class="icon-instagram editable" id="instagram-msg"></i>
-              #
-              <p id="handle" class="editable" data-type="text" data-placeholder="Enter url/social handle" data-clear="true" data-emptytext="add-short-social-hashtag" data-pk="{{id}}">
-                {{handle}}</p>
-            </div>
-            <div>
-              {{#if userHasRole "admin"}}
-                <a href="#" id="tags" data-type="select2" data-pk="{{id}}" data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
-              {{else}}
+          <div>
+            <p id="bodyHtml" class="editable" data-type="textarea" data-placeholder="Enter description" data-clear="true" data-emptytext="add at least a couple of sentences to describe your product. the more you add the better it will look" data-pk="{{id}}">{{bodyHtml}}</p>
+          </div>
+          <div> <i class="icon-twitter editable" id="twitter-msg"></i> <i class="icon-pinterest editable" id="pinterest-msg"></i>
+            <i class="icon-facebook editable" id="facebook-msg"></i>
+            <i class="icon-instagram editable" id="instagram-msg"></i>
+            #
+            <p id="handle" class="editable" data-type="text" data-placeholder="Enter url/social handle" data-clear="true" data-emptytext="add-short-social-hashtag" data-pk="{{id}}">{{handle}}</p>
+          </div>
+          <div>
+            {{#if userHasRole "admin"}}
+            <a href="#" id="tags" data-type="select2" data-pk="{{id}}" data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
+            {{else}}
                 {{#each tags}}
-                  <a href="{{pathFor "shop/tag"}}">{{name}}</a>
-                {{/each}}
+            <a href="{{pathFor "shop/tag"}}">{{name}}</a>
+            {{/each}}
               {{/if}}
-            </div>
-            <div class="product-variants">
-              <ul class="list-unstyled">
+          </div>
+          <div class="product-variants">
+            <ul class="list-unstyled">
               {{#unless userHasRole "admin"}}
               {{#if variants}}
-                <h3>Choose your option.</h3>
+              <h3>Choose your option.</h3>
               {{/if}}
               {{else}}
-                <h3>Edit options.</h3>
+              <h3>Edit options.</h3>
               {{/unless}}
               {{#each variants}}
                 {{> variant}}
               {{/each}}
+              <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to Cart</div>
 
-              <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">
-               Add to Cart
-              </div>
-
-              </ul>
-              {{#if userHasRole "admin"}}
-                <a href="#" id="add-variant">+ Clone last variant</a>
-                |
-                <a href="#" id="edit-options">Edit variant options</a>
-              {{/if}}
-            </div>
+            </ul>
+            {{#if userHasRole "admin"}}
+            <a href="#" id="add-variant">+ Clone last variant</a>
+            |
+            <a href="#" id="edit-options">Edit variant options</a>
+            {{/if}}
           </div>
         </div>
-        <!-- END Right Side -->
       </div>
-    </form>
-    {{> variantFormModal}}
+      <!-- END Right Side --> </div>
+  </form>
+  {{> variantFormModal}}
     {{> optionsModal}}
 </template>

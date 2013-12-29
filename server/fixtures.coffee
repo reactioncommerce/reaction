@@ -245,6 +245,7 @@ share.loadFixtures = ->
       'publishedScope': 'global',
       'templateSuffix': null,
       'title': 'Damien Hirst HiTops',
+      'pageTitle': 'Out of stock! It would be awesome, though!',
       'updatedAt': now,
       'vendor': 'Converse',
       'tagIds': [clothingTagId, shoesTagId, accessoriesTagId],

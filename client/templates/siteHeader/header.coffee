@@ -15,3 +15,6 @@ Template.siteHeader.events "click #login-dropdown-list a.dropdown-toggle": (e) -
     $("#login-email").focus()
   ), 100
 
+Template.siteHeader.events
+  'click .btn-slidenav': () ->
+    $("#shop-cart-slide").fadeToggle "slow", "linear"

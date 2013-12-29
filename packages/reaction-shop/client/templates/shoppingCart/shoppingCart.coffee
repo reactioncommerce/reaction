@@ -34,8 +34,15 @@ Template.shopCartSlide.rendered = ->
   $(".owl-carousel").owlCarousel
     items: 5
     lazyLoad : true
-    itemsDesktop: [1199, 3]
-    itemsDesktopSmall: [979, 3]
+    responsive: true
+    itemsCustom : false
+    itemsDesktop : [1199,4]
+    itemsDesktopSmall : [980,3]
+    itemsTablet: [768,2]
+    itemsTabletSmall: false
+    itemsMobile : [479,1]
+    singleItem : false
+    itemsScaleUp : false
 
 Template.shopCartSlide.events
   'click #btn-checkout': () ->

@@ -1,9 +1,8 @@
 <template name="shopCartIcon">
-      <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="btn-slidenav">Cart <span class="badge">{{cartCount}}</span><b class="caret"></b></a>
-      </li>
-    </ul>
+  <button type="button" class="btn-slidenav">
+    <span class="fa fa-shopping-cart fa-3x"></span>
+    <span class="cart-badge">{{cartCount}}</span>
+  </button>
 </template>
 
 <template name="shopCartIconList">
@@ -24,13 +23,13 @@
     <div class="owl-carousel">
     {{#each cartItems}}
       <div class="cartItems">
-        <img src="{{image variants._id}}" alt="{{variants.title}}" class="img-responsive">
+        <img src="{{image variants._id}}" alt="{{variants.title}}" class="img-thumbnail">
        <span class="badge">{{quantity}}</span> {{variants.title}}
       </div>
     {{/each}}
     </div>
     {{#unless cartItems}}
-      <div class="cartItems">
+      <div class="cart-items">
         <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong></h1>
       </div>
     {{else}}
