@@ -278,7 +278,7 @@ Shops = @Shops # package exports
       type: String
     title:
       type: String
-    title2:
+    pageTitle:
       type: String
       optional: true
     bodyHtml:
@@ -299,9 +299,6 @@ Shops = @Shops # package exports
       type: [ProductVariantSchema]
     tagIds:
       type: [String]
-      optional: true
-    pageTitle:
-      type: String
       optional: true
     metaDescription:
       type: String

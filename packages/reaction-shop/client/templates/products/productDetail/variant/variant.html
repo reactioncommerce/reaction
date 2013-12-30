@@ -10,7 +10,7 @@
       {{#if userHasRole "admin"}}
         <span class="variant-edit pull-right">
           <a class="edit-link"><i class="fa fa-pencil" data-id="{{_id}}"></i></a>
-          <a href="#" class="remove-link" data-confirm="Are you sure you want to delete this variant?">
+          <a href="#" class="remove-link" data-id="{{_id}}" data-confirm="Are you sure you want to delete this variant?">
           <i class="fa fa-times"></i>
           </a>
         </span>

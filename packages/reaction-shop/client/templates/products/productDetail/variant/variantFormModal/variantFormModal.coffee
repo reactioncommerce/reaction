@@ -10,7 +10,7 @@ Template.variantFormModal.currentVariantIndex = ->
 
 Template.variantFormModal.variant = ->
   currentProduct = Products.findOne(Session.get("currentProductId"))
-  currentVariantIndex = Session.get("currentVariantIndex")
+  currentVariantIndex = Session.get("selectedVariantIndex")
   (if _.isNumber(currentVariantIndex) then currentProduct.variants[currentVariantIndex] else getDefaultVariantData())
 
 Template.variantFormModal.rendered = ->

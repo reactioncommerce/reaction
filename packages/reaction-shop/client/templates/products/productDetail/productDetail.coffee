@@ -275,13 +275,6 @@ Template.productDetail.events
       Products.remove currentProductId
       Router.go "/shop/products"
 
-  "click .variant-list": (e) ->
-    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
-    Session.set("selectedVariant",this)#for cart
-    Session.set "selectedVariantIndex", $(e.target).closest("li").prevAll().length
-    $('.variant-list #'+this._id).addClass("variant-detail-selected")
-    e.stopPropagation()
-
   "click #add-variant": (e) ->
     currentProduct = Products.findOne(Session.get("currentProductId"))
     lastVariant = _.last(currentProduct.variants)

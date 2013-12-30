@@ -8,9 +8,16 @@ Template.variant.events =
     e.stopPropagation()
 
   "click .edit-link": (e, template) ->
-    Session.set "currentVariantIndex", $(e.target).closest("li").prevAll().length
     $("#variants-modal").modal()
-    e.preventDefault()
+
+  "click .variant-list > *": (e) ->
+    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
+    Session.set("selectedVariant",this)#for cart
+
+    index = $(e.target).closest("li").prevAll().length
+    Session.set "selectedVariantIndex", (index - 1)
+
+    $('.variant-list #'+this._id).addClass("variant-detail-selected")
     e.stopPropagation()
 
 Template.variant.helpers
