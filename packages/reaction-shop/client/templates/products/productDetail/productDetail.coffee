@@ -276,7 +276,7 @@ Template.productDetail.events
   "click #add-to-cart": (e, template) ->
     e.preventDefault()
     now = new Date()
-    return throwError("Oops,select an option before adding to cart") unless Session.get("selectedVariant")
+    return throwError("Oops, select an option before adding to cart") unless Session.get("selectedVariant")
     sessionId = Session.get("serverSession")._id
     variantData = Session.get("selectedVariant")
     productId = Session.get("currentProductId")

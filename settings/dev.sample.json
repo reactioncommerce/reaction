@@ -2,7 +2,13 @@
   "baseUrl": "http://localhost:3000",
   "filepickerApiKey": "__KEY__",
   "googleAnalyticsProperty": "__KEY__",
+  "facebook": {
+    "secret": "__SECRET__"
+  },
   "public": {
-    "isDebug": true
+    "isDebug": true,
+    "facebook": {
+      "appId": "__APP_ID__"
+    }
   }
 }

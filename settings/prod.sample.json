@@ -2,8 +2,14 @@
   "baseUrl": "http://host.domain.com",
   "filepickerApiKey": "__KEY__",
   "googleAnalyticsProperty": "__KEY__",
+  "facebook": {
+    "secret": "__SECRET__"
+  },
   "public": {
     "version": "__VERSION__",
-    "isDebug": false
+    "isDebug": false,
+    "facebook": {
+      "appId": "__APP_ID__"
+    }
   }
 }

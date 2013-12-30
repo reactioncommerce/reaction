@@ -713,6 +713,12 @@ share.loadFixtures = ->
         name: "reaction-google-analytics"
         property: Meteor.settings.googleAnalyticsProperty
 
+  unless Accounts.loginServiceConfiguration.find().count()
+    Accounts.loginServiceConfiguration.insert
+      service: "facebook",
+      appId: Meteor.settings.public.facebook.appId,
+      secret: Meteor.settings.facebook.secret
+
 Meteor.startup ->
   share.loadFixtures()
   if Meteor.settings.public.isDebug
