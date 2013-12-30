@@ -49,9 +49,6 @@ Template.variantFormModal.events
             ], (attr) ->
               $input.attr attr, $input.attr(attr).replace(/(metafields[^\d]+)\d+/, "$1" + formGroupIndex)
 
-
-
-
     e.preventDefault()
     e.stopPropagation()
 
@@ -127,7 +124,7 @@ updateInventoryManagementFieldsVisibility = ->
   $select = $(".variant-inventory-management")
   $(".variant-inventory-quantity, .variant-inventory-policy").closest(".form-group").toggle $select.val() is "reaction"
 
-@getDefaultVariantData = ->
+getDefaultVariantData = ->
   taxable: true
   requiresShipping: true
   createdAt: new Date()

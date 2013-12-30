@@ -20,43 +20,86 @@
     {{/if}}
     <div class="row">
       <div class="pdp">
-        <h1 id="title" class="editable" data-type="text" data-placeholder="Enter product name" data-clear="true" data-emptytext="product name goes here" data-pk="{{id}}">{{title}}</h1>
-        <h2 id="pageTitle" class="editable" data-type="text" data-placeholder="Enter page title" data-clear="true" data-emptytext="catchy short page title here" data-pk="{{id}}">{{pageTitle}}</h2>
+        <h1 id="title" class="editable" data-pk="{{id}}">{{title}}</h1>
+        <h2 id="pageTitle" class="editable" data-pk="{{id}}">{{pageTitle}}</h2>
       </div>
     </div>
-    <div class="row pdp">
+    <div class="row">
       <!-- BEGIN Left Side -->
-      <div class="col-md-5 col-lg-4 col-lg-offset-1 image-block">{{> productImageGallery}}</div>
+      <div class="col-md-5 col-lg-4 col-lg-offset-1">{{> productImageGallery}}</div>
       <!-- END Left Side -->
-
       <!-- BEGIN Right Side -->
       <div class="col-md-7">
         <div class="col-md-10 col-offset-md-4">
           <div>
-            <h1 id="price" class="price-label" data-pk="{{id}}" data-value="{{variants.0.price}}">${{variants.[0].price}}</h1>
-            <div>
-              by
-              <a id="vendor" class="editable vendor-label" data-type="text" data-placeholder="Enter vendor or brand" data-clear="true" data-emptytext="manufacturer,vendor,brand here" data-pk="{{id}}">{{vendor}}</a>
+            <!-- Price Fixation -->
+            <div class="row">
+              <div class="pull-left">
+                <h1 id="price" class="price-label" data-pk="{{id}}" data-value="{{variants.0.price}}">${{variants.[0].price}}</h1>
+              </div>
+              <div class="pull-right">
+                <div>
+              <!-- Social Commentary -->
+                  {{#if userHasRole "admin"}}
+
+                      <div>
+                        <i id="handle" class="editable" data-pk="{{id}}">#{{handle}}</i>
+                      </div>
+                      <span class="twitter-msg">
+                        <a href="#" class="twitter-msg-edit editable-empty editable-click" rel='tooltip' data-value="{{twitterMsg}}">
+                          <i class="fa fa-twitter fa-lg"></i>
+                        </a>
+                      </span>
+
+                      <span class="pinterest-msg">
+                        <a href="#" class="pinterest-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{pinterestMsg}}">
+                          <i class="fa fa-pinterest fa-lg"></i>
+                        </a>
+                      </span>
+
+                      <span class="facebook-msg">
+                        <a href="#" class="facebook-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{facebookMsg}}">
+                          <i class="fa fa-facebook fa-lg"></i>
+                        </a>
+                      </span>
+
+                      <span class="instagram-msg">
+                        <a href="#" class="instagram-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{instagramMsg}}">
+                          <i class="fa fa-instagram fa-lg"></i>
+                        </a>
+                      </span>
+
+                    {{else }}
+
+                      <i class="fa fa-twitter fa-lg"></i>
+                      <i class="fa fa-pinterest fa-lg"> </i>
+                      <i class="fa fa-facebook fa-lg"></i>
+                      <i class="fa fa-instagram fa-lg"></i>
+
+                  {{/if}}
+                </div>
+              </div>
             </div>
+            <span>
+              by
+              <i id="vendor" class="editable" data-pk="{{id}}">{{vendor}}</i>
+            </span>
+            <!-- Tag it -->
+            <p>
+              {{#if userHasRole "admin"}}
+              <a href="#" id="tags" data-type="select2" data-pk="{{id}}" data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
+              {{else}}
+                  {{#each tags}}
+              <a href="{{pathFor "shop/tag"}}">{{name}}</a>
+              {{/each}}
+                {{/if}}
+            </p>
+          <!-- Body Body -->
           </div>
           <div>
-            <p id="bodyHtml" class="editable" data-type="textarea" data-placeholder="Enter description" data-clear="true" data-emptytext="add at least a couple of sentences to describe your product. the more you add the better it will look" data-pk="{{id}}">{{bodyHtml}}</p>
+            <p id="bodyHtml" class="editable" data-clear="true" data-pk="{{id}}">{{bodyHtml}}</p>
           </div>
-          <div> <i class="icon-twitter editable" id="twitter-msg"></i> <i class="icon-pinterest editable" id="pinterest-msg"></i>
-            <i class="icon-facebook editable" id="facebook-msg"></i>
-            <i class="icon-instagram editable" id="instagram-msg"></i>
-            #
-            <p id="handle" class="editable" data-type="text" data-placeholder="Enter url/social handle" data-clear="true" data-emptytext="add-short-social-hashtag" data-pk="{{id}}">{{handle}}</p>
-          </div>
-          <div>
-            {{#if userHasRole "admin"}}
-            <a href="#" id="tags" data-type="select2" data-pk="{{id}}" data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
-            {{else}}
-                {{#each tags}}
-            <a href="{{pathFor "shop/tag"}}">{{name}}</a>
-            {{/each}}
-              {{/if}}
-          </div>
+          <!-- Variants -->
           <div class="product-variants">
             <ul class="list-unstyled">
               {{#unless userHasRole "admin"}}

@@ -38,6 +38,9 @@ Template.productDetail.rendered = ->
     # *****************************************************
     $("#title").editable
       inputclass: "xeditable-input"
+      type: "text"
+      title: "Product name"
+      emptytext: "product name goes here"
       success: (response, newValue) ->
         updateProduct title: newValue
 
@@ -51,6 +54,9 @@ Template.productDetail.rendered = ->
     # *****************************************************
     $("#pageTitle").editable
       inputclass: "xeditable-input"
+      type: "text"
+      title: "Short page title"
+      emptytext: "catchy short page title here"
       success: (response, newValue) ->
         updateProduct pageTitle: newValue
 
@@ -59,15 +65,21 @@ Template.productDetail.rendered = ->
     # *****************************************************
     $("#vendor").editable
       inputclass: "xeditable-input"
+      type: "text"
+      emptytext: "vendor"
+      title: "Vendor, Brand, Manufacturer"
       success: (response, newValue) ->
         updateProduct vendor: newValue
-
 
     # *****************************************************
     # Editable price - really first variant entry
     # *****************************************************
-    $("#price").editable success: (response, newValue) ->
-      updateProduct({"variants.0.price": newValue})
+    $("#price").editable
+      type: "text"
+      emptytext: "0.00"
+      title: "Default variant price"
+      success: (response, newValue) ->
+        updateProduct({"variants.0.price": newValue})
 
 
     # *****************************************************
@@ -77,6 +89,9 @@ Template.productDetail.rendered = ->
     $("#bodyHtml").editable
       showbuttons: true
       inputclass: "xeditable-input"
+      type: "textarea"
+      title: "Describe this product"
+      emptytext: "add a few lines describing this product"
       success: (response, newValue) ->
         updateProduct bodyHtml: newValue
 
@@ -87,6 +102,9 @@ Template.productDetail.rendered = ->
     #
     $("#handle").editable
       inputclass: "xeditable-input"
+      type: "text"
+      emptytext: "add-short-social-hashtag"
+      title: "Social handle for sharing and navigation"
       success: (response, newValue) ->
         updateProduct handle: newValue
 
@@ -94,15 +112,45 @@ Template.productDetail.rendered = ->
     # *****************************************************
     # Editable twitter, social messages entry
     # *****************************************************
-    $("#twitter-msg").editable
+    $(".twitter-msg").editable
+      selector: '.twitter-msg-edit'
       inputclass: "xeditable-input"
-      value: "tweet this!"
-      type: "text"
+      type: "textarea"
+      showbuttons: 'bottom'
+      emptytext: '<i class="fa fa-twitter fa-lg"></i>'
       title: "Default Twitter message ~100 characters!"
       success: (response, newValue) ->
-        updateProduct twitter_msg: newValue
+        updateProduct twitterMsg: newValue
 
+    $(".pinterest-msg").editable
+      selector: '.pinterest-msg-edit'
+      inputclass: "xeditable-input"
+      type: "textarea"
+      showbuttons: 'bottom'
+      emptytext: '<i class="fa fa-pinterest fa-lg"></i>'
+      title: "Default Pinterest message ~200 characters!"
+      success: (response, newValue) ->
+        updateProduct pinterestMsg: newValue
 
+    $(".facebook-msg").editable
+      selector: '.facebook-msg-edit'
+      inputclass: "xeditable-input"
+      type: "textarea"
+      showbuttons: 'bottom'
+      emptytext: '<i class="fa fa-facebook fa-lg"></i>'
+      title: "Default Facebook message ~200 characters!"
+      success: (response, newValue) ->
+        updateProduct facebookMsg: newValue
+
+    $(".instagram-msg").editable
+      selector: '.instagram-msg-edit'
+      inputclass: "xeditable-input"
+      type: "textarea"
+      showbuttons: 'bottom'
+      emptytext: '<i class="fa fa-instagram fa-lg"></i>'
+      title: "Default Instagram message ~100 characters!"
+      success: (response, newValue) ->
+        updateProduct instagramMsg: newValue
     # *****************************************************
     # Editable tag field
     # *****************************************************
@@ -115,6 +163,8 @@ Template.productDetail.rendered = ->
     $("#tags").editable
       showbuttons: true
       inputclass: "xeditable-input"
+      title: "Add tags to categorize"
+      emptytext: "add tags to categorize"
       select2:
         tags: data
         tokenSeparators: [
@@ -216,10 +266,6 @@ Template.productDetail.rendered = ->
           false
         else
           true
-
-
-    # $(".variant-table input[name=\"variant\"]").get(getSelectedVariantIndex()).checked = true
-
 
 # **********************************************************************************************************
 # events for main product detail page

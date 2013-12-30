@@ -300,6 +300,22 @@ Shops = @Shops # package exports
     tagIds:
       type: [String]
       optional: true
+    twitterMsg:
+      type: String
+      optional: true
+      max: 140
+    facebookMsg:
+      type: String
+      optional: true
+      max: 255
+    instagramMsg:
+      type: String
+      optional: true
+      max: 255
+    pinterestMsg:
+      type: String
+      optional: true
+      max: 255
     metaDescription:
       type: String
       optional: true
