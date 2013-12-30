@@ -58,7 +58,7 @@ Template.variantFormModal.events
   "submit form": (e, template) ->
     e.preventDefault()
     currentProduct = Products.findOne(Session.get("currentProductId"))
-    currentVariantIndex = window.getDynamicCurrentVariantIndex()
+    currentVariantIndex = Session.get("selectedVariantIndex")
     oldVariant = currentProduct.variants[currentVariantIndex] or getDefaultVariantData()
     variant =
       _id: Random.id()
@@ -83,10 +83,11 @@ Template.variantFormModal.events
     variant.requiresShipping = !!variant.requiresShipping
     variant.updatedAt = new Date()
     variant = ProductVariantSchema.clean(variant)
+    # TODO: server side method, or positional mongo statement to update only specific index
     currentProduct.variants[currentVariantIndex] = variant
-    validationContext = "variant"
 
     # TODO: simple-schema embedded document invalid key name message bug ("variants.$.metafields.0.value"), send him a PR
+    validationContext = "variant"
     localValidationCallback = _.partial(validationCallback, $form, Products, validationContext, ->
       $(template.find(".modal")).modal "hide" # manual hide fix for Meteor reactivity
     , (name) ->
@@ -126,11 +127,11 @@ updateInventoryManagementFieldsVisibility = ->
   $select = $(".variant-inventory-management")
   $(".variant-inventory-quantity, .variant-inventory-policy").closest(".form-group").toggle $select.val() is "reaction"
 
-getDefaultVariantData = ->
+@getDefaultVariantData = ->
   taxable: true
   requiresShipping: true
   createdAt: new Date()
 
 window.getDynamicCurrentVariantIndex = ->
-  currentVariantIndex = Session.get("currentVariantIndex")
+  currentVariantIndex = Session.get("selectedVariantIndex")
   (if _.isNumber(currentVariantIndex) then currentVariantIndex else Products.findOne(Session.get("currentProductId")).variants.length)
