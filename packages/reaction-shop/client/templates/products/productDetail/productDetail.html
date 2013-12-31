@@ -24,7 +24,7 @@
         <h2 id="pageTitle" class="editable" data-pk="{{id}}">{{pageTitle}}</h2>
       </div>
     </div>
-    <div class="row">
+    <div class="row pdp">
       <!-- BEGIN Left Side -->
       <div class="col-md-5 col-lg-4 col-lg-offset-1">{{> productImageGallery}}</div>
       <!-- END Left Side -->
@@ -45,11 +45,6 @@
                       <div>
                         <i id="handle" class="editable" data-pk="{{id}}">#{{handle}}</i>
                       </div>
-                      <span class="twitter-msg">
-                        <a href="#" class="twitter-msg-edit editable-empty editable-click" rel='tooltip' data-value="{{twitterMsg}}">
-                          <i class="fa fa-twitter fa-lg"></i>
-                        </a>
-                      </span>
 
                       <span class="pinterest-msg">
                         <a href="#" class="pinterest-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{pinterestMsg}}">
@@ -69,12 +64,18 @@
                         </a>
                       </span>
 
+                      <span class="twitter-msg">
+                        <a href="#" class="twitter-msg-edit editable-empty editable-click" rel='tooltip' data-value="{{twitterMsg}}">
+                          <i class="fa fa-twitter fa-lg"></i>
+                        </a>
+                      </span>
+
                     {{else }}
 
-                      <i class="fa fa-twitter fa-lg"></i>
-                      <i class="fa fa-pinterest fa-lg"> </i>
-                      <i class="fa fa-facebook fa-lg"></i>
-                      <i class="fa fa-instagram fa-lg"></i>
+                      <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                      <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+                      <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
+                      <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
 
                   {{/if}}
                 </div>

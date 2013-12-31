@@ -43,6 +43,7 @@ Package.on_use(function (api, where) {
     "lib/vendor/owl.carousel/owl-carousel/owl.carousel.css",
     "lib/vendor/owl.carousel/owl-carousel/owl.theme.css",
     "lib/vendor/owl.carousel/owl-carousel/owl.carousel.js",
+    "lib/vendor/imagesLoaded/imagesloaded.pkgd.js",
 
     "client/register.coffee",
     "client/app.coffee",

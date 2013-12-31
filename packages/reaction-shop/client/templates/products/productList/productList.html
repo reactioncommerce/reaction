@@ -18,7 +18,7 @@
 </template>
 
 <template name="productList">
-  <div class="productList">
+  <div class="product-list">
     <table class="table table-hover">
       <tbody>
         {{#each products}}
@@ -38,27 +38,29 @@
 </template>
 
 <template name="productGrid">
-  <div class="productGrid" data-event-category="grid" data-event-action="generic-click" data-event-label="Just some grid click">
+  <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
     {{#each products}}
-      <a href="{{pathFor 'shop/product'}}" class="product" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" dava-event-value="{{_id}}">
-        <div class="productImage">
-            <img src="{{variants.[0].medias.[0].src}}" class="img-responsive">
-        </div>
-        <div class="productTitle">
-          {{#if isVisible}}
-          {{else}}
-            <i class="fa fa-eye-slash"></i>
-          {{/if}}
-          {{title}}
-        </div>
-      </a>
+      {{> productGridItems}}
     {{/each}}
   </div>
 </template>
 
 
+<template name="productGridItems">
+<div id="{{_id}}" class="thumbnail">
+  <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+    <img src="{{variants.[0].medias.[0].src}}">
+    {{#unless isVisible}}
+      <i class="fa fa-eye-slash"></i>
+    {{/unless}}
+    <h2>{{title}} ${{variants.[0].price}}</h2>
+  </a>
+</div>
+</template>
+
+
 <template name="productListAdd">
-  <div class="tile tile-gallery">
+  <div>
     <i class="fa fa-plus fa-5x"></i>
     <div class="content">
       <p class="big">Add</p>

@@ -6,6 +6,9 @@
 # general helper to return products data
 # returns object
 # *****************************************************
+
+
+# Respond to added, moved, removed callbacks on products
 Template.productListGrid.helpers
   currentTag: ->
     @tag
@@ -18,16 +21,13 @@ Template.productList.helpers
   products: ->
     getProductsByTag(@tag)
 
-Template.productGrid.rendered = ->
-  new Packery(document.querySelector(".productGrid"), {gutter: 2})
-
 Template.productListGrid.events
   "click #productListView": ->
-    $(".productGrid").hide()
-    $(".productList").show()
+    $(".product-grid").hide()
+    $(".product-list").show()
   "click #productGridView": ->
-    $(".productList").hide()
-    $(".productGrid").show()
+    $(".product-list").hide()
+    $(".product-grid").show()
   "click .add-product-link": (e, t) ->
     e.preventDefault()
     e.stopPropagation()
@@ -44,6 +44,18 @@ Template.productListGrid.events
       _id: productId
     )
 
+# Initialize packery on the first render of the productGrid
+Template.productGrid.rendered = ->
+  imagesLoaded @firstNode, ->
+    container = document.querySelector(".product-grid")
+    new Packery(document.querySelector(".product-grid"),
+      gutter: 2
+      columnWidth: 20
+    )
+
+# *****************************************************
+# method to return tag specific product
+# *****************************************************
 getProductsByTag = (tag) ->
   selector = {}
   if tag
@@ -58,4 +70,4 @@ getProductsByTag = (tag) ->
             newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
       relatedTags = newRelatedTags
     selector.tagIds = {$in: tagIds}
-  Products.find(selector)
+  cursor = Products.find(selector)
