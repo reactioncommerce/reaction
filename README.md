@@ -51,7 +51,34 @@ Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) c
     git clone https://github.com/ongoworks/reaction.git
     cd reaction
     mrt update
-   
+## Configuration
+Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
+
+	cp settings/dev.sample.json settings/dev.json
+
+Example configuration file
+
+	{
+	  "baseUrl": "http://localhost:3000",
+	  "facebook": {
+	    "secret": ""
+	  },
+	  "vkontakte": {
+	    "secret": ""
+	  },
+	  "public": {
+	    "isDebug": true,
+	    "facebook": {
+	      "appId": ""
+	    },
+	    "vkontakte": {
+	      "clientId": "",
+	      "scope": ""
+	    }
+	  }
+	}
+
+
 ##Startup
 	./bin/reset & ./bin/run
 
