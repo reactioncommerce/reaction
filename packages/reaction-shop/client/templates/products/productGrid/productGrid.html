@@ -1,0 +1,20 @@
+<template name="productGrid">
+  <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
+    {{#each products}}
+      {{> productGridItems}}
+    {{/each}}
+  </div>
+</template>
+
+
+<template name="productGridItems">
+<div id="{{_id}}" class="thumbnail">
+  <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+    <img src="{{image}}">
+    {{#unless isVisible}}
+      <i class="fa fa-eye-slash"></i>
+    {{/unless}}
+    <h2>{{title}} ${{variants.[0].price}}</h2>
+  </a>
+</div>
+</template>

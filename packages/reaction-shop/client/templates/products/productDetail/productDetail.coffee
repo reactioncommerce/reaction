@@ -10,7 +10,6 @@ Template.productDetail.helpers
     _.pluck(tags, "name").join(", ")
 
 Template.productDetail.rendered = ->
-
   # *****************************************************
   # function that stores images that have successfully
   # uploaded to filepicker.io
@@ -316,13 +315,14 @@ Template.productDetail.events
   # *****************************************************
   "click .delete": (e) ->
     e.preventDefault()
-    if confirm("Delete this products?")
+    if confirm("Delete this product?")
       currentProductId = Session.get("currentProductId")
       Products.remove currentProductId
       Router.go "/shop/products"
 
   "click #add-variant": (e) ->
     currentProduct = Products.findOne(Session.get("currentProductId"))
+
     #clone last variant
     if _.last(currentProduct.variants)
       lastVariant = _.last(currentProduct.variants)
@@ -349,6 +349,17 @@ Template.productDetail.events
   "click .toggle-product-isVisible-link": (e, t) ->
     Products.update(t.data._id, {$set: {isVisible: !t.data.isVisible}})
 
+# *****************************************************
+# helper methods for productDetail
+# *****************************************************
+Template.productDetail.helpers
+  actualPrice: () ->
+     this.variants[getSelectedVariantIndex()].price if this.variants?
+
+
+# *****************************************************
+# methods for variant selection
+# *****************************************************
 window.getSelectedVariantIndex = ->
   Session.get("selectedVariantIndex") or 0
 

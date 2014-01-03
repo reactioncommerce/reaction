@@ -64,7 +64,8 @@ Router.map ->
           @render('unauthorized')
           @stop()
     data: ->
-      Session.set('currentProductId', @params._id)
+      Session.set "selectedVariantIndex", 0  unless Session.get("currentProductId") is @params._id
+      Session.set 'currentProductId', @params._id
       Products.findOne(@params._id)
     template: 'productDetail'
   #checkout

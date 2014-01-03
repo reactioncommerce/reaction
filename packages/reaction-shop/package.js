@@ -103,6 +103,10 @@ Package.on_use(function (api, where) {
     "client/templates/products/productList/productList.coffee",
     "client/templates/products/productList/productList.less",
 
+    "client/templates/products/productGrid/productGrid.html",
+    "client/templates/products/productGrid/productGrid.coffee",
+    "client/templates/products/productGrid/productGrid.less",
+
     "client/templates/products/productDetail/productDetail.html",
     "client/templates/products/productDetail/productDetail.coffee",
     "client/templates/products/productDetail/productDetail.less",

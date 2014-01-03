@@ -7,7 +7,10 @@ Template.variant.events =
     e.preventDefault()
     e.stopPropagation()
 
-  "click .edit-link": (e, template) ->
+  "click .edit-link": (e) ->
+    $("#variants-modal").modal()
+
+  "dblclick .variant-list": (e) ->
     $("#variants-modal").modal()
 
   "click .variant-list > *": (e) ->
@@ -27,7 +30,7 @@ Template.variant.helpers
     _.map variants, (value,key) ->
       qty += variants[key].inventoryQuantity
     qty
-  maxLength: (qty,max) ->
-    length = (qty / max) * 100
-    length = 75 if (length > 75)
-    length
+  maxLength: (max) ->
+    inventoryPercentage = (this.inventoryQuantity / max) * 100
+    inventoryPercentage  = (100 - (this.title.length * 2)) if (inventoryPercentage  + this.title.length > 100)
+    inventoryPercentage

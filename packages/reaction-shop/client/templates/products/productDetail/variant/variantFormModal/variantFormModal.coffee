@@ -10,8 +10,7 @@ Template.variantFormModal.currentVariantIndex = ->
 
 Template.variantFormModal.variant = ->
   currentProduct = Products.findOne(Session.get("currentProductId"))
-  currentVariantIndex = Session.get("selectedVariantIndex")
-  (if _.isNumber(currentVariantIndex) then currentProduct.variants[currentVariantIndex] else getDefaultVariantData())
+  (if _.isNumber(getSelectedVariantIndex()) then currentProduct.variants[getSelectedVariantIndex()] else getDefaultVariantData())
 
 Template.variantFormModal.rendered = ->
   updateInventoryManagementFieldsVisibility()
@@ -55,7 +54,7 @@ Template.variantFormModal.events
   "submit form": (e, template) ->
     e.preventDefault()
     currentProduct = Products.findOne(Session.get("currentProductId"))
-    currentVariantIndex = Session.get("selectedVariantIndex")
+    currentVariantIndex = getSelectedVariantIndex()
     oldVariant = currentProduct.variants[currentVariantIndex] or getDefaultVariantData()
     variant =
       _id: Random.id()
@@ -130,5 +129,4 @@ getDefaultVariantData = ->
   createdAt: new Date()
 
 window.getDynamicCurrentVariantIndex = ->
-  currentVariantIndex = Session.get("selectedVariantIndex")
-  (if _.isNumber(currentVariantIndex) then currentVariantIndex else Products.findOne(Session.get("currentProductId")).variants.length)
+  (if _.isNumber(getSelectedVariantIndex()) then getSelectedVariantIndex() else Products.findOne(Session.get("currentProductId")).variants.length)
