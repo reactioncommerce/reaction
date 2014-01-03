@@ -60,23 +60,19 @@ Example configuration file
 
 	{
 	  "baseUrl": "http://localhost:3000",
+	  "filepickerApiKey": "__KEY__",
+	  "googleAnalyticsProperty": "__KEY__",
 	  "facebook": {
-	    "secret": ""
-	  },
-	  "vkontakte": {
-	    "secret": ""
+	    "secret": "__SECRET__"
 	  },
 	  "public": {
 	    "isDebug": true,
 	    "facebook": {
-	      "appId": ""
-	    },
-	    "vkontakte": {
-	      "clientId": "",
-	      "scope": ""
+	      "appId": "__APP_ID__"
 	    }
 	  }
 	}
+	
 
 
 ##Startup
