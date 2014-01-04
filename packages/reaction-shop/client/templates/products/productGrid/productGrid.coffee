@@ -26,6 +26,6 @@ Template.productGrid.rendered = ->
   imagesLoaded @firstNode, ->
     container = document.querySelector(".product-grid")
     new Packery(document.querySelector(".product-grid"),
-      gutter: 2
-      columnWidth: 20
+      gutter: 10
+      transitionDuration: "0.2s"
     )

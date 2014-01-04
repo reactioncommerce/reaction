@@ -5,10 +5,7 @@ Template.addAddress.helpers
   addAddressForm: ->
     addressForm
   addressList: ->
-    profile = Meteor.user().profile
-    if profile
-      if profile.addressList
-        profile.addressList
+    Meteor.user().profile?.addressList
   countryOptions: ->
     SystemConfig.findOne().countries
   defaultCountry: ->
@@ -29,10 +26,7 @@ Template.addAddress.events
 
 Template.userAddress.helpers
   addressList: ->
-    profile = Meteor.user().profile
-    if profile
-      if profile.addressList
-        profile.addressList
+    Meteor.user().profile?.addressList
   selectBillAddress: (id) ->
     if (id is Session.get("billingUserAddressId"))
       return "active fa fa-check-circle fa-lg"
@@ -61,23 +55,22 @@ Template.userAddress.events
       $("ul li[data-bill-id='"+Session.get("billingUserAddressId")+"']").removeClass("active fa fa-check-circle fa-lg")
     Session.set("billingUserAddressId", this._id)
     $(event.currentTarget).addClass("active fa fa-check-circle fa-lg")
+
   'click .fa-pencil': (event,template) ->
     console.log "edit here"
 
 Template.userAddress.rendered = ->
-  profile = Meteor.user().profile
-  if profile
-    if profile.addressList
-      addressListDep #update addresses when user login
-      unless Session.get("shippingUserAddressId")?
-        _.each profile.addressList, ((address) ->
-          if address.isDefault? and address.isDefault is true
-            $("ul li[data-ship-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
-            Session.set("shippingUserAddressId", address._id)
-        )
-      unless Session.get("billingUserAddressId")?
-        _.each profile.addressList, ((address) ->
-          if address.isDefault? and address.isDefault is true
-            $("ul li[data-bill-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
-            Session.set("billingUserAddressId", address._id)
-        )
+  if Meteor.user().profile?.addressList
+    addressListDep #update addresses when user login
+    unless Session.get("shippingUserAddressId")?
+      _.each Meteor.user().profile.addressList, ((address) ->
+        if address.isDefault? and address.isDefault is true
+          $("ul li[data-ship-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
+          Session.set("shippingUserAddressId", address._id)
+      )
+    unless Session.get("billingUserAddressId")?
+      _.each Meteor.user().profile.addressList, ((address) ->
+        if address.isDefault? and address.isDefault is true
+          $("ul li[data-bill-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
+          Session.set("billingUserAddressId", address._id)
+      )
