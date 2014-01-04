@@ -1,0 +1,35 @@
+<template name="social">
+  <div>
+  <!-- Social Commentary -->
+    {{#if userHasRole "admin"}}
+        <div>
+          <i id="handle" class="editable" data-pk="{{id}}">#{{handle}}</i>
+        </div>
+        <span class="facebook-msg">
+          <a href="#" class="facebook-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{facebookMsg}}">
+            <i class="fa fa-facebook fa-lg"></i>
+          </a>
+        </span>
+        <span class="twitter-msg">
+          <a href="#" class="twitter-msg-edit editable-empty editable-click" rel='tooltip' data-value="{{twitterMsg}}">
+            <i class="fa fa-twitter fa-lg"></i>
+          </a>
+        </span>
+        <span class="pinterest-msg">
+          <a href="#" class="pinterest-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{pinterestMsg}}">
+            <i class="fa fa-pinterest fa-lg"></i>
+          </a>
+        </span>
+        <span class="instagram-msg">
+          <a href="#" class="instagram-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{instagramMsg}}">
+            <i class="fa fa-instagram fa-lg"></i>
+          </a>
+        </span>
+      {{else }}
+        <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+        <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+        <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
+        <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
+    {{/if}}
+  </div>
+</template>

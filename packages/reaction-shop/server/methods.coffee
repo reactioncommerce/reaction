@@ -32,6 +32,9 @@ Meteor.methods
           invitedUserName: name
           url: Accounts.urls.enrollAccount(token)
 
+  cloneVariant: (id,clone) ->
+    Products._collection.update(id, {$push: {variants: clone}})
+
   addToCart: (cartId,productId,variantData,quantity) ->
     now = new Date()
     currentCart = Cart.find({_id: cartId, "items.variants._id": variantData._id})

@@ -1,0 +1,22 @@
+<template name="attributes">
+<!-- Attributes -->
+{{#if options}}
+<div>
+  <table class="table table-condensed">
+    <thead>Information</thead>
+    {{#each options}}
+      <tr><td>{{name}}</td><td>{{defaultValue}}</td></tr>
+    {{/each}}
+    {{#if userHasRole "admin"}}
+        <tfoot><tr><a href="#" id="edit-options"> Edit product attributes</a></tr></tfoot>
+    {{/if}}
+  </table>
+</div>
+{{else}}
+  {{#if userHasRole "admin"}}
+     <p>
+      <button type="button" class="btn btn-warning btn-lg btn-block" id="edit-options">Add attributes</button>
+    </p>
+  {{/if}}
+{{/if}}
+</template>

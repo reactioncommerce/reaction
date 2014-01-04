@@ -55,10 +55,9 @@ ProductVariantSchema = new SimpleSchema
     label: "Fulfillment service"
     type: String
     optional: true
-  grams:
+  weight:
     label: "Weight"
     type: Number
-    optional: true
     min: 0
   inventoryManagement:
     label: "Inventory policy" # really so
@@ -71,8 +70,8 @@ ProductVariantSchema = new SimpleSchema
   inventoryQuantity:
     label: "Quantity"
     type: Number
-    optional: true
     min: 0
+    optional: true
   price:
     label: "Price"
     type: Number

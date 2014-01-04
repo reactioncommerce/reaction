@@ -1,6 +1,5 @@
 <template name="productDetail">
   {{!-- Edit Product --}}
-  <form action="#" class="form-inline">
     {{#if userHasRole "admin"}}
     <div class="row">
       <div class="col-md-12">
@@ -26,7 +25,10 @@
     </div>
     <div class="row pdp">
       <!-- BEGIN Left Side -->
-      <div class="col-md-5 col-lg-4 col-lg-offset-1">{{> productImageGallery}}</div>
+      <div class="col-md-5 col-lg-4 col-lg-offset-1">
+        {{> productImageGallery}}
+        {{> attributes}}
+      </div>
       <!-- END Left Side -->
       <!-- BEGIN Right Side -->
       <div class="col-md-7">
@@ -35,50 +37,12 @@
             <!-- Price Fixation -->
             <div class="row">
               <div class="pull-left">
+                {{#isolate}}
                 <h1 id="price" class="price-label" data-pk="{{id}}" data-value="{{actualPrice}}">${{actualPrice}}</h1>
+                {{/isolate}}
               </div>
               <div class="pull-right">
-                <div>
-              <!-- Social Commentary -->
-                  {{#if userHasRole "admin"}}
-
-                      <div>
-                        <i id="handle" class="editable" data-pk="{{id}}">#{{handle}}</i>
-                      </div>
-
-                      <span class="pinterest-msg">
-                        <a href="#" class="pinterest-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{pinterestMsg}}">
-                          <i class="fa fa-pinterest fa-lg"></i>
-                        </a>
-                      </span>
-
-                      <span class="facebook-msg">
-                        <a href="#" class="facebook-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{facebookMsg}}">
-                          <i class="fa fa-facebook fa-lg"></i>
-                        </a>
-                      </span>
-
-                      <span class="instagram-msg">
-                        <a href="#" class="instagram-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{instagramMsg}}">
-                          <i class="fa fa-instagram fa-lg"></i>
-                        </a>
-                      </span>
-
-                      <span class="twitter-msg">
-                        <a href="#" class="twitter-msg-edit editable-empty editable-click" rel='tooltip' data-value="{{twitterMsg}}">
-                          <i class="fa fa-twitter fa-lg"></i>
-                        </a>
-                      </span>
-
-                    {{else }}
-
-                      <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                      <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                      <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
-                      <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
-
-                  {{/if}}
-                </div>
+              {{>social}}
               </div>
             </div>
             <span>
@@ -101,31 +65,11 @@
             <p id="bodyHtml" class="editable" data-clear="true" data-pk="{{id}}">{{bodyHtml}}</p>
           </div>
           <!-- Variants -->
-          <div class="product-variants">
-            <ul class="list-unstyled">
-              {{#unless userHasRole "admin"}}
-              {{#if variants}}
-              <h3>Choose your option.</h3>
-              {{/if}}
-              {{else}}
-              <h3>Edit options.</h3>
-              {{/unless}}
-              {{#each variants}}
-                {{> variant}}
-              {{/each}}
-              <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to Cart</div>
-
-            </ul>
-            {{#if userHasRole "admin"}}
-            <a href="#" id="add-variant">+ Clone last variant</a>
-            |
-            <a href="#" id="edit-options">Edit variant options</a>
-            {{/if}}
-          </div>
+          {{>variantList}}
+          <!--  Add to cart -->
+          <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to Cart</div>
         </div>
       </div>
-      <!-- END Right Side --> </div>
-  </form>
-  {{> variantFormModal}}
-    {{> optionsModal}}
+
+  {{> optionsModal}}
 </template>

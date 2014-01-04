@@ -192,64 +192,6 @@ Template.productDetail.rendered = ->
           tagIds: tagIds
         )
 
-
-    # *****************************************************
-    # Editable variants entry
-    # Format
-    #    :description => 'Author of book',
-    #    :namespace => 'book',
-    #    :key => 'author',
-    #    :value => 'Kurt Vonnegut',
-    #    :value_type => 'string'
-    # *****************************************************
-    $("#variants").editable
-      inputclass: "input-large"
-      select2:
-        width: "250px"
-        initSelection: (element, callback) ->
-          data = []
-          data =
-            id: "1"
-            text: "text"
-
-          callback data
-
-        data: (element, callback) ->
-          data = []
-          data =
-            id: "2"
-            text: "text2"
-
-          callback data
-
-      success: (response, newValue) ->
-        updateProduct variants: newValue
-
-
-    # *****************************************************
-    # Function to return variant data
-    # param: property:value
-    # returns true or err
-    # *****************************************************
-    variants = (options) ->
-      currentProductId = Session.get("currentProductId")
-      product = Products.findOne(
-        _id: currentProductId
-      ,
-        fields:
-          variants: true
-      ).variants.valueOf()
-      variant = []
-      i = 0
-
-      while i < product.length
-        variant[i] =
-          value: i
-          text: product[i].sku
-        i++
-      variant
-
-
     # *****************************************************
     # Function to update product
     # param: property:value
@@ -320,29 +262,6 @@ Template.productDetail.events
       Products.remove currentProductId
       Router.go "/shop/products"
 
-  "click #add-variant": (e) ->
-    currentProduct = Products.findOne(Session.get("currentProductId"))
-
-    #clone last variant
-    if _.last(currentProduct.variants)
-      lastVariant = _.last(currentProduct.variants)
-      delete lastVariant._id
-      delete lastVariant.updatedAt
-      delete lastVariant.createdAt
-      clonedLastVariant = _.clone(lastVariant)
-    #If no existing variants, add new
-    else
-      clonedLastVariant =
-        _id: Random.id()
-        title: "New product variant"
-        price: 0
-
-    newVariantIndex = currentProduct.variants.length
-    Products.update(currentProduct._id, {$push: {variants: clonedLastVariant}})
-    Session.set "selectedVariantIndex", newVariantIndex
-    $("#variants-modal").modal()
-    e.preventDefault()
-
   "click #edit-options": (e) ->
     $("#options-modal").modal()
     e.preventDefault()
@@ -354,15 +273,4 @@ Template.productDetail.events
 # *****************************************************
 Template.productDetail.helpers
   actualPrice: () ->
-     this.variants[getSelectedVariantIndex()].price if this.variants?
-
-
-# *****************************************************
-# methods for variant selection
-# *****************************************************
-window.getSelectedVariantIndex = ->
-  Session.get("selectedVariantIndex") or 0
-
-window.getSelectedVariant = ->
-  product = Products.findOne(Session.get("currentProductId"))
-  product.variants[getSelectedVariantIndex()]
+     this.variants[getSelectedVariantIndex()].price if this.variants[getSelectedVariantIndex()]

@@ -45,8 +45,10 @@
 <div id="galleryDropPane" class="galleryDropPane">
   <img src="../../resources/placeholder.jpeg">
 </div>
-    {{#if userHasRole "admin"}}
-      <button type="button" class="btn btn-default btn-lg btn-block imageAddButton">Add media</button>
-    {{/if}}
+  {{#if userHasRole "admin"}}
+  <p>
+    <button type="button" class="btn btn-danger btn-lg btn-block imageAddButton">Add media</button>
+  </p>
+  {{/if}}
 {{/with}}
 </template>

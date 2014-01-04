@@ -6,7 +6,7 @@ Template.variantFormModal.defaultMetafield = ->
   currentVariantIndex: window.getDynamicCurrentVariantIndex()
 
 Template.variantFormModal.currentVariantIndex = ->
-  window.getDynamicCurrentVariantIndex()
+  return getSelectedVariantIndex()
 
 Template.variantFormModal.variant = ->
   currentProduct = Products.findOne(Session.get("currentProductId"))
@@ -71,7 +71,7 @@ Template.variantFormModal.events
 
     # TODO: simple-schema optional decimal validation bug, send him a PR
     delete variant.compareAtPrice  unless variant.compareAtPrice
-    delete variant.grams  unless variant.grams
+    delete variant.weight unless variant.weight
     delete variant.inventoryQuantity  unless variant.inventoryQuantity
 
     # TODO: simple-schema Boolean cleaning bug, send him a PR
@@ -112,7 +112,7 @@ validationCallback = ($form, collection, validationContext, successCallback, inv
         $errorBlock = $("<ul class=\"error-block\"></ul>").insertAfter($control)  unless $errorBlock.length
       else
         $errorBlock = $form.find(".error-block")
-        debugger
+        # debugger
         $errorBlock = $("<ul class=\"error-block\"></ul>").prepend($form)  unless $errorBlock.length
       $errorBlock.first().append "<li>" + invalidKey.message + "</li>"
 

@@ -115,22 +115,30 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/productImageGallery/productImageGallery.coffee",
     "client/templates/products/productDetail/productImageGallery/productImageGallery.less",
 
-    "client/templates/products/productDetail/variant/variant.html",
-    "client/templates/products/productDetail/variant/variant.coffee",
-    "client/templates/products/productDetail/variant/variant.less",
+    "client/templates/products/productDetail/social/social.html",
+    "client/templates/products/productDetail/social/social.coffee",
+    "client/templates/products/productDetail/social/social.less",
 
-    "client/templates/products/productDetail/variant/variantFormModal/variantFormModal.html",
-    "client/templates/products/productDetail/variant/variantFormModal/variantFormModal.coffee",
-    "client/templates/products/productDetail/variant/variantFormModal/variantFormModal.less",
+    "client/templates/products/productDetail/variants/variant.html",
+    "client/templates/products/productDetail/variants/variant.coffee",
+    "client/templates/products/productDetail/variants/variant.less",
 
-    "client/templates/products/productDetail/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
-    "client/templates/products/productDetail/variant/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
+    "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.html",
+    "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.coffee",
+    "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.less",
 
-    "client/templates/products/productDetail/optionsModal/optionsModal.html",
-    "client/templates/products/productDetail/optionsModal/optionsModal.coffee",
-    "client/templates/products/productDetail/optionsModal/optionsModal.less",
+    "client/templates/products/productDetail/variants/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
+    "client/templates/products/productDetail/variants/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
 
-    "client/templates/products/productDetail/optionsModal/optionFormGroup/optionFormGroup.html",
+    "client/templates/products/productDetail/options/options.html",
+    "client/templates/products/productDetail/options/options.coffee",
+    "client/templates/products/productDetail/options/options.less",
+
+    "client/templates/products/productDetail/options/optionsModal/optionsModal.html",
+    "client/templates/products/productDetail/options/optionsModal/optionsModal.coffee",
+    "client/templates/products/productDetail/options/optionsModal/optionsModal.less",
+
+    "client/templates/products/productDetail/options/optionFormGroup/optionFormGroup.html",
 
     "client/templates/notice/unauthorized.html",
 
