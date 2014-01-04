@@ -79,8 +79,7 @@ Products.allow
     true
     #return doc.owner === userId;
   remove: (userId, doc) ->
-    # can only remove your own documents
-    doc.owner is userId
+    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
   #fetch: ['owner']
 
 # *****************************************************
@@ -110,8 +109,7 @@ Orders.allow
     true
     #return doc.owner === userId;
   remove: (userId, doc) ->
-    # can only remove your own documents
-    doc.owner is userId
+    true if Roles.userIsInRole(Meteor.userId(), ['owner'])
   #fetch: ['owner']
 
 
@@ -142,8 +140,7 @@ Customers.allow
     true
     #return doc.owner === userId;
   remove: (userId, doc) ->
-    # can only remove your own documents
-    doc.owner is userId
+    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
   #fetch: ['owner']
 
 

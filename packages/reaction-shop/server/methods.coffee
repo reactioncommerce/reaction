@@ -36,10 +36,12 @@ Meteor.methods
     Products._collection.update(id, {$push: {variants: clone}})
 
   cloneProduct: (product) ->
+    #TODO: Really should be a recursive update of all _id
     i = 0
     delete product._id
     delete product.updatedAt
     delete product.createdAt
+    delete product.publishedAt
     product.isVisible = false
     while i < product.variants.length
       product.variants[i]._id = Random.id()
