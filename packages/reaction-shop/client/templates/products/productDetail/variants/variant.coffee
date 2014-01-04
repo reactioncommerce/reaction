@@ -28,10 +28,10 @@ Template.variant.helpers
     qty = 0
     variants = Products.findOne(Session.get("currentProductId"),{fields:{variants:true}}).variants
     _.map variants, (value,key) ->
-      qty += variants[key].inventoryQuantity
+      qty += variants[key].inventoryQuantity if variants[key].inventoryQuantity?
     qty
   maxLength: (max) ->
-    if this.title
+    unless !this.inventoryQuantity? and !this.title?
       inventoryPercentage = (this.inventoryQuantity / max) * 100
       inventoryPercentage  = (100 - (this.title.length * 2)) if (inventoryPercentage  + this.title.length > 100)
       inventoryPercentage
