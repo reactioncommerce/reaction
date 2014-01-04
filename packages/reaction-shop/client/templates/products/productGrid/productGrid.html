@@ -11,10 +11,14 @@
 <div id="{{_id}}" class="thumbnail">
   <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
     <img src="{{image}}">
-    {{#unless isVisible}}
-      <i class="fa fa-eye-slash"></i>
-    {{/unless}}
     <h2>{{title}} ${{variants.[0].price}}</h2>
+    {{#unless isVisible}}
+      <i class="fa fa-eye-slash" title="Publish"></i>
+    {{/unless}}
+    {{#if userHasRole "admin"}}
+      <i class="fa fa-code-fork" title="Clone product"></i>
+    {{/if}}
+
   </a>
 </div>
 </template>

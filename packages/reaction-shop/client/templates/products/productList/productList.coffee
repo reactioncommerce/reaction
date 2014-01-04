@@ -27,15 +27,7 @@ Template.productListGrid.events
   "click .add-product-link": (e, t) ->
     e.preventDefault()
     e.stopPropagation()
-    productId = Products.insert({
-      title: "New product"
-      variants: [
-        {
-          title: "New product variant"
-          price: 0
-        }
-      ]
-    })
-    Router.go("shop/product",
-      _id: productId
-    )
+    Meteor.call "createProduct", (err, productId) ->
+      console.log err  if err
+      Router.go "shop/product",
+        _id: productId

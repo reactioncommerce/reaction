@@ -72,7 +72,7 @@ Example configuration file
 	    }
 	  }
 	}
-	
+
 
 
 ##Startup
@@ -87,7 +87,7 @@ Browse to [http://localhost:3000](http://localhost:3000) and you should see Reac
 ##Deploying
 To deploy to a [meteor.com hosted site ](http://docs.meteor.com/#deploying)
 
-	./bin/deploy hostname.meteor.com settings.json
+	./bin/deploy -P demo.json demo.meteor.com
 
 
 ---

@@ -35,6 +35,28 @@ Meteor.methods
   cloneVariant: (id,clone) ->
     Products._collection.update(id, {$push: {variants: clone}})
 
+  cloneProduct: (product) ->
+    i = 0
+    delete product._id
+    delete product.updatedAt
+    delete product.createdAt
+    product.isVisible = false
+    while i < product.variants.length
+      product.variants[i]._id = Random.id()
+      i++
+    newProduct = Products._collection.insert(product)
+
+  createProduct: () ->
+    productId = Products._collection.insert({
+      title: ""
+      variants: [
+        {
+          title: ""
+          price: 0.00
+        }
+      ]
+    })
+
   addToCart: (cartId,productId,variantData,quantity) ->
     now = new Date()
     currentCart = Cart.find({_id: cartId, "items.variants._id": variantData._id})
