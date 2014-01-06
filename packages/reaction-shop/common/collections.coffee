@@ -417,7 +417,7 @@ CartItemSchema = new SimpleSchema
     type: Number
     min: 0
   variants:
-    type: [ProductVariantSchema]
+    type: ProductVariantSchema
 
 @Cart = new Meteor.Collection2 'Cart',
   schema:
