@@ -85,6 +85,8 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/orders/orders.coffee",
 
     "client/templates/settings/settingsGeneral/settingsGeneral.html",
+    "client/templates/settings/settingsGeneral/settingsGeneral.coffee",
+    "client/templates/settings/settingsGeneral/settingsGeneral.less",
 
     "client/templates/settings/settingsAccount/settingsAccount.html",
     "client/templates/settings/settingsAccount/settingsAccount.coffee",

@@ -77,8 +77,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.2.16",
-        "commit": "9647881e7cde07a6548dfdd214c67dfdd7424408"
+        "tag": "v0.2.17",
+        "commit": "186cc58040764b816392e19178ba373bda7a91c6"
       },
       "collection-hooks": {
         "git": "https://github.com/wsoul/meteor-collection-hooks.git",
@@ -117,8 +117,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.24",
-        "commit": "353f74f10d0586e6a416c081ded68e8e7fcde4a7"
+        "tag": "v0.2.25",
+        "commit": "277917a78e8a86123a2d99ec0f9d4bb14b7815f5"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
