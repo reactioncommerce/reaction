@@ -32,7 +32,7 @@ Meteor.methods
           invitedUserName: name
           url: Accounts.urls.enrollAccount(token)
 
-  cloneVariant: (id,clone) ->
+  cloneVariant: (id, clone) ->
     Products._collection.update(id, {$push: {variants: clone}})
 
   cloneProduct: (product) ->
@@ -59,26 +59,26 @@ Meteor.methods
       ]
     })
 
-  addToCart: (cartId,productId,variantData,quantity) ->
+  addToCart: (cartId, productId, variantData, quantity) ->
     now = new Date()
     currentCart = Cart.find({_id: cartId, "items.variants._id": variantData._id})
 
     if currentCart.count() > 0
-      Cart.update {_id: cartId, "items.variants._id": variantData._id},{ $set: {updatedAt: now}, $inc: {"items.$.quantity": quantity}}
+      Cart.update {_id: cartId, "items.variants._id": variantData._id}, { $set: {updatedAt: now}, $inc: {"items.$.quantity": quantity}}
     else
-      Cart.update {_id: cartId},{ $addToSet:{items:{productId: productId, quantity: quantity, variants: variantData}}}
+      Cart.update {_id: cartId}, { $addToSet: {items: {productId: productId, quantity: quantity, variants: variantData}}}
 
-  createCart: (sessionId,userId) ->
+  createCart: (sessionId, userId) ->
     unless userId
       userId = Meteor.userId()
     now = new Date()
     validationContext = "cart"
-    if Cart.findOne({sessionId:sessionId,userId:userId})
-      currentCart = Cart.findOne({sessionId:sessionId,userId:userId})
+    if Cart.findOne({sessionId: sessionId, userId: userId})
+      currentCart = Cart.findOne({sessionId: sessionId, userId: userId})
     else
-      currentCart = Cart.findOne({sessionId:sessionId})
+      currentCart = Cart.findOne({sessionId: sessionId})
       if userId
-        Cart.update({sessionId:sessionId},{$set:{userId:userId}})
+        Cart.update({sessionId: sessionId}, {$set: {userId: userId}})
     # If user doesn't have a cart, create one
     if currentCart is `undefined`
       currentCart = Cart.insert(
@@ -89,46 +89,45 @@ Meteor.methods
         updatedAt: now,
         validationContext: validationContext,
         (error, result) ->
-        console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
+          console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
       )
     return currentCart
 
-  removeFromCart: (cartId,variantData) ->
-     Cart.update({_id: cartId},{$pull: {"items": {"variants": variantData} } })
+  removeFromCart: (cartId, variantData) ->
+    Cart.update({_id: cartId}, {$pull: {"items": {"variants": variantData} } })
 
   addAddress: (doc) ->
     doc._id = Random.id()
-    Meteor.users.update({_id: Meteor.userId()}, {$addToSet:{"profile.addressList":doc}})
+    Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {"profile.addressList": doc}})
 
-  locateAddress: (latitude,longitude) ->
-    Future = Npm.require('fibers/future')
-    geocoder = Npm.require('node-geocoder')
-    fut = new Future()
-    locateCoord = geocoder.getGeocoder('google', 'http')
-    locateIP = geocoder.getGeocoder('freegeoip', 'http')
-    # default location if nothing found is US
-    address = [{
-      latitude: null,
-      longitude: null,
-      country: 'United States',
-      city: null,
-      state: null,
-      stateCode: null,
-      zipcode: null,
-      streetName: null,
-      streetNumber: null,
-      countryCode: 'US'
-    }]
-
+  locateAddress: (latitude, longitude) ->
+    Future = Npm.require("fibers/future")
+    geocoder = Npm.require("node-geocoder")
+    future = new Future()
     if latitude
+      locateCoord = geocoder.getGeocoder("google", "http")
       locateCoord.reverse latitude, longitude, (err, address) ->
-        fut['return'](address)
+        future.return(address)
     else
-      ip = headers.methodClientIP(this)
+      ip = headers.methodClientIP(@)
+      locateIP = geocoder.getGeocoder("freegeoip", "http")
       #ip = "76.168.14.229"
       locateIP.geocode ip, (err, address) ->
-        fut['return'](address)
+        future.return(address)
 
-    address = fut.wait() if fut.wait()
-    address = address[0]
-    return address
+    address = future.wait()
+    if address.length
+      address[0]
+    else # default location if nothing found is US
+      {
+        latitude: null
+        longitude: null
+        country: "United States"
+        city: null
+        state: null
+        stateCode: null
+        zipcode: null
+        streetName: null
+        streetNumber: null
+        countryCode: "US"
+      }

@@ -37,7 +37,6 @@ Meteor.startup ->
   successFunction = (position) ->
     lat = position.coords.latitude
     lng = position.coords.longitude
-
     Meteor.call "locateAddress", lat, lng, (error, address) ->
       Session.set("address",address)
   errorFunction = ->
