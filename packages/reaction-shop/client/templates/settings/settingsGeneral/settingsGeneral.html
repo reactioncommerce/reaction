@@ -1,7 +1,7 @@
 <template name="settingsGeneral">
   <div class="container">
-    <h1>General Settings</h1>
-    {{#autoForm schema="Shops" doc=shop id="shopEditForm" class="form-horizontal"}}
+    <h1>Shop General Settings</h1>
+    {{#autoForm schema=shopEditForm doc=shop id="shopEditForm" class="form-horizontal"}}
       <fieldset>
         <div class="form-group {{#if afFieldIsInvalid "name"}}has-error{{/if}}">
           {{afFieldLabel 'name' class="col-sm-2 col-lg-1 control-label"}}
@@ -100,6 +100,58 @@
             {{#if afFieldIsInvalid "country"}}
               <span class="help-block">{{afFieldMessage "country"}}</span>
             {{/if}}
+          </div>
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid "useCustomEmailSettings"}}has-error{{/if}}">
+          <div class="col-sm-6 col-sm-offset-2">
+            {{afFieldInput 'useCustomEmailSettings' id="useCustomEmailSettings"}}
+            {{#if afFieldIsInvalid "useCustomEmailSettings"}}
+              <span class="help-block">{{afFieldMessage "useCustomEmailSettings"}}</span>
+            {{/if}}
+
+            <div class="useCustomEmailSettings"{{#unless _doc.useCustomEmailSettings}} style="display:
+            none"{{/unless}}>
+              <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.username"}}has-error{{/if}}">
+                {{afFieldLabel 'customEmailSettings.username' class="col-sm-2 col-lg-1 control-label"}}
+                <div class="col-sm-10 controls">
+                  {{afFieldInput 'customEmailSettings.username'}}
+                  {{#if afFieldIsInvalid "customEmailSettings.username"}}
+                    <span class="help-block">{{afFieldMessage "customEmailSettings.username"}}</span>
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.password"}}has-error{{/if}}">
+                {{afFieldLabel 'customEmailSettings.password' class="col-sm-2 col-lg-1 control-label"}}
+                <div class="col-sm-10 controls">
+                  {{afFieldInput 'customEmailSettings.password'}}
+                  {{#if afFieldIsInvalid "customEmailSettings.password"}}
+                    <span class="help-block">{{afFieldMessage "customEmailSettings.password"}}</span>
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.host"}}has-error{{/if}}">
+                {{afFieldLabel 'customEmailSettings.host' class="col-sm-2 col-lg-1 control-label"}}
+                <div class="col-sm-10 controls">
+                  {{afFieldInput 'customEmailSettings.host'}}
+                  {{#if afFieldIsInvalid "customEmailSettings.host"}}
+                    <span class="help-block">{{afFieldMessage "customEmailSettings.host"}}</span>
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.port"}}has-error{{/if}}">
+                {{afFieldLabel 'customEmailSettings.port' class="col-sm-2 col-lg-1 control-label"}}
+                <div class="col-sm-10 controls">
+                  {{afFieldInput 'customEmailSettings.port' options=portOptions}}
+                  {{#if afFieldIsInvalid "customEmailSettings.port"}}
+                    <span class="help-block">{{afFieldMessage "customEmailSettings.port"}}</span>
+                  {{/if}}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

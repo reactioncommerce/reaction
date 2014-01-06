@@ -1,20 +1,6 @@
 <template name="shopNavElements">
   <ul class="nav navbar-nav">
-    {{#if hasShopPermission "/shop/settings/general"}}
-      <li class="{{active '/shop/settings/general'}}">
-        <a href="{{pathFor 'shop/settings/general'}}">
-          General Settings
-        </a>
-      </li>
-    {{/if}}
-    {{#if hasOwnerAccess}}
-      <li class="{{active '/shop/settings/account'}}">
-        <a href="{{pathFor 'shop/settings/account'}}">
-          Account Settings
-        </a>
-      </li>
-    {{/if}}
-    {{#if hasShopPermission "/shop/orders"}}
+    {{#if hasShopPermission "shop/orders"}}
       <li class="{{active '/shop/orders'}}">
         <a href="{{pathFor 'shop/orders'}}">
           Orders
@@ -22,7 +8,7 @@
         </a>
       </li>
     {{/if}}
-    {{#if hasShopPermission "/shop/products"}}
+    {{#if hasShopPermission "shop/products"}}
       <li class="{{active '/shop/products'}}">
         <a href="{{pathFor 'shop/products'}}">
           Products
@@ -30,7 +16,7 @@
         </a>
       </li>
     {{/if}}
-    {{#if hasShopPermission "/shop/customers"}}
+    {{#if hasShopPermission "shop/customers"}}
       <li class="{{active '/shop/customers'}}">
         <a href="{{pathFor 'shop/customers'}}">
           Customers

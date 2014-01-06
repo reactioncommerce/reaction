@@ -8,6 +8,21 @@ ShopMemberSchema = new SimpleSchema
     type: [String]
     optional: true
 
+CustomEmailSettings = new SimpleSchema
+  username:
+    type: String
+    optional: true
+  password:
+    type: String
+    optional: true
+  host:
+    type: String
+    optional: true
+  port:
+    type: Number
+    allowedValues: [25, 587, 465, 475, 2525]
+    optional: true
+
 MetafieldSchema = new SimpleSchema
   key:
     type: String
@@ -255,6 +270,11 @@ CountrySchema = new SimpleSchema
       type: String
     members:
       type: [ShopMemberSchema]
+    useCustomEmailSettings:
+      type: Boolean
+      optional: true
+    customEmailSettings:
+      type: CustomEmailSettings
     createdAt:
       type: Date
     updatedAt:

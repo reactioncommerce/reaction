@@ -18,5 +18,25 @@ Meteor.app = _.extend(Meteor.app || {},
           }
     if !client then throw "Could not find current session"
     share.get_http_header(client, 'host').split(':')[0]
+  findMember: (shop, userId) ->
+    shop = @.getCurrentShop() unless shop
+    userId = Meteor.userId() unless userId
+    _.find shop.members, (member) ->
+      userId is member.userId
+  hasPermission: (permissions, shop, userId) ->
+    return false unless permissions
+    shop = @.getCurrentShop() unless shop
+    userId = Meteor.userId() unless userId
+    permissions = [permissions] unless _.isArray(permissions)
+    has = @.hasOwnerAccess(shop, userId)
+    unless has
+      member = @.findMember(shop, userId)
+      if member
+        has = member.isAdmin or _.intersection(permissions, member.permissions).length
+    has
+  hasOwnerAccess: (shop, userId) ->
+    shop = @.getCurrentShop() unless shop
+    userId = Meteor.userId() unless userId
+    Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
 )
 

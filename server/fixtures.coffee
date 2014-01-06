@@ -184,6 +184,12 @@ share.loadFixtures = ->
           permissions: ["/shop/products"]
         }
       ]
+      useCustomEmailSettings: true
+      customEmailSettings:
+        username: "postmaster@sandbox13219.mailgun.org"
+        password: "7m4zc65nb993"
+        host: "smtp.mailgun.org"
+        port: 465
 
   unless Tags.find().count()
     console.log 'Adding tags fixture data'
@@ -694,6 +700,10 @@ share.loadFixtures = ->
       PackageConfigs.insert
         shopId: shop._id
         name: "reaction-shop"
+
+      PackageConfigs.insert
+        shopId: shop._id
+        name: "reaction-shop-staff-accounts"
 
       PackageConfigs.insert
         shopId: shop._id

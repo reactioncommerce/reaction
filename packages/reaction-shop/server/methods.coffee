@@ -3,34 +3,38 @@ Meteor.methods
   inviteShopMember: (shopId, email, name) ->
     shop = Shops.findOne shopId
     if shop and email and name
-      userId = Accounts.createUser
-        email: email
-        profile:
-          name: name
-      Shops.update shopId, {$addToSet: {members: {userId: userId, isAdmin: true}}}
+      if Meteor.app.hasOwnerAccess(shop)
+        userId = Accounts.createUser
+          email: email
+          profile:
+            name: name
+        Shops.update shopId, {$addToSet: {members: {userId: userId, isAdmin: true}}}
 
-      user = Meteor.users.findOne(userId)
-      unless user
-        throw new Error("Can't find user")
-      token = Random.id()
-      Meteor.users.update userId,
-        $set:
-          "services.password.reset":
-            token: token
-            email: email
-            when: new Date()
+        user = Meteor.users.findOne(userId)
+        unless user
+          throw new Error("Can't find user")
+        token = Random.id()
+        Meteor.users.update userId,
+          $set:
+            "services.password.reset":
+              token: token
+              email: email
+              when: new Date()
 
-      currentUserName = Meteor.user().profile.name
-      Email.send
-        to: email
-        from: currentUserName + " <robot@reaction.com>"
-        subject: "[Shopify] You have been invited to join the " + shop.name + " staff"
-        html: Handlebars.templates['shopMemberInvite']
-          homepage: Meteor.absoluteUrl()
-          shop: shop
-          currentUserName: currentUserName
-          invitedUserName: name
-          url: Accounts.urls.enrollAccount(token)
+        currentUserName = Meteor.user().profile.name
+        if shop.useCustomEmailSettings
+          sCES = shop.customEmailSettings
+          process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
+        Email.send
+          to: email
+          from: currentUserName + " <robot@reaction.com>"
+          subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
+          html: Handlebars.templates['shopMemberInvite']
+            homepage: Meteor.absoluteUrl()
+            shop: shop
+            currentUserName: currentUserName
+            invitedUserName: name
+            url: Accounts.urls.enrollAccount(token)
 
   cloneVariant: (id, clone) ->
     Products._collection.update(id, {$push: {variants: clone}})

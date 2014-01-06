@@ -2,7 +2,8 @@ Meteor.app = _.extend(Meteor.app || {},
   shopId: null
   isOwner: null
   isAdmin: null
-  permissions: []
+  userPermissions: []
+  shopPermissions: []
   shopPermissionGroups: []
   init: (shop) ->
     @shopId = shop._id
@@ -13,6 +14,7 @@ Meteor.app = _.extend(Meteor.app || {},
     _.each usedPackages, (usedPackage) ->
       _.each usedPackage?.shopPermissions, (shopPermission) ->
         permissions.push shopPermission
+    @shopPermissions = _.pluck(permissions, "permission")
     @shopPermissionGroups = for groupName, groupPermissions of _.groupBy(permissions, "group")
       group: groupName
       permissions: groupPermissions
@@ -23,10 +25,11 @@ Meteor.app = _.extend(Meteor.app || {},
       member.userId is Meteor.userId()
     if member
       @isAdmin = member.isAdmin
-      @permissions = member.permissions
+      @userPermissions = member.permissions
   hasPermission: (permissions) ->
+    return false unless permissions
     permissions = [permissions] unless _.isArray(permissions)
-    Roles.userIsInRole(Meteor.user(), "admin") or @isOwner or @isAdmin or _.intersection(permissions, @permissions).length
+    @.hasOwnerAccess() or @isAdmin or _.intersection(permissions, @userPermissions).length
   hasOwnerAccess: ->
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
 )
