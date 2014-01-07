@@ -150,7 +150,8 @@ Package.on_use(function (api, where) {
     "server/app.coffee",
     "server/methods.coffee",
     "server/publications.coffee",
-    "server/emailTemplates/shopMemberInvite.handlebars"
+    "server/emailTemplates/shopMemberInvite.handlebars",
+    "server/emailTemplates/shopMemberNotification.handlebars"
   ], ["server"]);
 
   api.export([
