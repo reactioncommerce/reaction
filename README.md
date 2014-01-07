@@ -144,21 +144,26 @@ To check if user has owner access:
 ``` coffeescript
 # on Client: for current user
 Meteor.app.hasOwnerAccess()
-# handlebars
-{{#if hasOwnerAccess}}{{/if}}
 
 # on Server: for some shop (current if not defined) and some userId (current if not defined)
 Meteor.app.hasOwnerAccess(shop, userId)
 ```
+
+``` handlebars
+{{#if hasOwnerAccess}}{{/if}}
+```
+
 Shop has members, which can be admin and have permissions
 To check if user has some permissions:
 ``` coffeescript
 # on Client: for current user, where "permissions" is string or [string]
 Meteor.app.hasPermission(permissions)
-# handlebars
-{{#if hasShopPermission permissions}}{{/if}}
 
 # on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or [string]
 Meteor.app.hasPermission(permissions, shop, userId)
+```
+
+``` handlebars
+{{#if hasShopPermission permissions}}{{/if}}
 ```
 
