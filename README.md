@@ -167,3 +167,20 @@ Meteor.app.hasPermission(permissions, shop, userId)
 {{#if hasShopPermission permissions}}{{/if}}
 ```
 
+For using shop permissions into some packages you must add it into register directive.
+If we add this package then permissions will be available in Shop Accounts Settings.
+``` coffeescript
+Meteor.app.packages.register
+  name: 'reaction-shop-orders'
+  provides: ['orderManager']
+  label: 'Orders'
+  overviewRoute: 'shop/orders'
+  hasWidget: false
+  shopPermissions: [
+    {
+      label: "Orders"
+      permission: "shop/orders"
+      group: "Shop Management"
+    }
+  ]
+```

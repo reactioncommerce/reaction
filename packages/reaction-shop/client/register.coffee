@@ -15,11 +15,6 @@ Meteor.app.packages.register
       group: "Shop Management"
     }
     {
-      label: "Orders"
-      permission: "shop/orders"
-      group: "Shop Management"
-    }
-    {
       label: "Promotions"
       permission: "shop/promotions"
       group: "Shop Management"
@@ -47,6 +42,13 @@ Meteor.app.packages.register
   label: 'Orders'
   overviewRoute: 'shop/orders'
   hasWidget: false
+  shopPermissions: [
+    {
+      label: "Orders"
+      permission: "shop/orders"
+      group: "Shop Management"
+    }
+  ]
 
 
 Meteor.app.packages.register
