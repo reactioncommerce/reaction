@@ -1,5 +1,5 @@
 <template name="productDetail">
-  {{!-- Edit Product --}}
+  {{!-- Product Visibility Admin Block --}}
     {{#if userHasRole "admin"}}
     <div class="row">
       <div class="col-md-12">
@@ -17,59 +17,70 @@
       </div>
     </div>
     {{/if}}
-    <div class="row">
-      <div class="pdp">
-        <h1 id="title" class="editable" data-pk="{{id}}">{{title}}</h1>
-        <h2 id="pageTitle" class="editable" data-pk="{{id}}">{{pageTitle}}</h2>
-      </div>
+    {{!-- END Product Visibility Admin Block --}}
+    <div class="row col-md-12">
+        <div class="pdp-title">
+          <h1 id="title" class="editable" tabindex="1">{{title}}</h1>
+        </div>
+        <div class="pdp-page-title">
+          <h2 id="pageTitle" class="editable" tabindex="2">{{pageTitle}}</h2>
+        </div>
     </div>
-    <div class="row pdp">
+
+    <div class="row">
       <!-- BEGIN Left Side -->
       <div class="col-md-5 col-lg-4 col-lg-offset-1">
         {{> productImageGallery}}
         {{> attributes}}
+        {{> optionsModal}}
       </div>
       <!-- END Left Side -->
       <!-- BEGIN Right Side -->
       <div class="col-md-7">
-        <div class="col-md-10 col-offset-md-4">
+        <!-- main product information -->
+        <div class="col-md-10 col-offset-md-4 pdp-editable">
           <div>
             <!-- Price Fixation -->
             <div class="row">
-              <div class="pull-left">
+              <div class="pull-left price">
                 {{#isolate}}
-                <h1 id="price" class="price-label" data-pk="{{id}}" data-value="{{actualPrice}}">${{actualPrice}}</h1>
+                <h1 id="price" class="price-label" tabindex="3" data-value="{{actualPrice}}">${{actualPrice}}</h1>
                 {{/isolate}}
               </div>
-              <div class="pull-right">
+              <div class="pull-right social" tabindex="4">
               {{>social}}
               </div>
             </div>
-            <span>
-              by
-              <i id="vendor" class="editable" data-pk="{{id}}">{{vendor}}</i>
-            </span>
+            <!-- Vendor -->
+            <div class="vendor">
+              <span>by</span>
+              <i id="vendor" class="editable" tabindex="5">{{vendor}}</i>
+            </div>
+
             <!-- Tag it -->
-            <p>
+            <div class="tags">
               {{#if userHasRole "admin"}}
-              <a href="#" id="tags" data-type="select2" data-pk="{{id}}" data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
+              <a href="#" id="tags" data-type="select2"  data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
               {{else}}
                   {{#each tags}}
               <a href="{{pathFor "shop/tag"}}">{{name}}</a>
               {{/each}}
                 {{/if}}
-            </p>
+            </div>
           <!-- Body Body -->
           </div>
           <div>
-            <p id="bodyHtml" class="editable" data-clear="true" data-pk="{{id}}">{{bodyHtml}}</p>
+            <p id="description" class="editable description" data-clear="true" >{{description}}</p>
           </div>
-          <!-- Variants -->
-          {{>variantList}}
-          <!--  Add to cart -->
-          <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to Cart</div>
+        <!-- end main product information -->
+        <!-- END Right Side -->
         </div>
+        <div class="col-md-10 col-offset-md-4">
+        <!-- Variants -->
+        {{>variantList}}
+        <!--  Add to cart -->
+        <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to Cart</div>
       </div>
+    </div>
 
-  {{> optionsModal}}
 </template>

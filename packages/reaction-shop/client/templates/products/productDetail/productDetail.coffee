@@ -23,8 +23,8 @@ Template.productDetail.rendered = ->
   # but we want to maintain reactivity etc.
   # *****************************************************
   #
-  if Meteor.app.hasPermission(@path)
-    $.fn.editable.defaults.mode = "popover"
+  if Meteor.app.hasOwnerAccess()
+    $.fn.editable.defaults.mode = "inline"
     $.fn.editable.defaults.showbuttons = false
 
     # *****************************************************
@@ -35,11 +35,14 @@ Template.productDetail.rendered = ->
     # *****************************************************
     # Editable product title entry
     # *****************************************************
+
     $("#title").editable
-      inputclass: "xeditable-input"
       type: "text"
       title: "Product name"
+      clear: true
+      onblur: "submit"
       emptytext: "product name goes here"
+      inputclass: "pdp-title"
       success: (response, newValue) ->
         updateProduct title: newValue
 
@@ -47,13 +50,13 @@ Template.productDetail.rendered = ->
         if $.trim(value) is ""
           throwError "This field is required"
           false
-
     # *****************************************************
     # Editable page title entry
     # *****************************************************
     $("#pageTitle").editable
-      inputclass: "xeditable-input"
+      inputclass: "pdp-page-title"
       type: "text"
+      onblur: "submit"
       title: "Short page title"
       emptytext: "catchy short page title here"
       success: (response, newValue) ->
@@ -63,10 +66,11 @@ Template.productDetail.rendered = ->
     # Editable vendor entry - dropdown
     # *****************************************************
     $("#vendor").editable
-      inputclass: "xeditable-input"
       type: "text"
-      emptytext: "vendor"
+      inputclass: "vendor"
+      onblur: 'submit'
       title: "Vendor, Brand, Manufacturer"
+      emptytext: "vendor, brand, manufacturer"
       success: (response, newValue) ->
         updateProduct vendor: newValue
 
@@ -76,6 +80,7 @@ Template.productDetail.rendered = ->
     $("#price").editable
       type: "text"
       emptytext: "0.00"
+      inputclass: "price"
       title: "Default variant price"
       success: (response, newValue) ->
         updateProduct({"variants.0.price": newValue})
@@ -85,14 +90,14 @@ Template.productDetail.rendered = ->
     # Editable product html
     # *****************************************************
     #
-    $("#bodyHtml").editable
-      showbuttons: true
-      inputclass: "xeditable-input"
+    $("#description").editable
       type: "textarea"
+      inputclass: "description"
+      onblur: 'submit'
       title: "Describe this product"
       emptytext: "add a few lines describing this product"
       success: (response, newValue) ->
-        updateProduct bodyHtml: newValue
+        updateProduct description: newValue
 
 
     # *****************************************************
@@ -100,8 +105,9 @@ Template.productDetail.rendered = ->
     # *****************************************************
     #
     $("#handle").editable
-      inputclass: "xeditable-input"
       type: "text"
+      inputclass: "handle"
+      onblur: 'submit'
       emptytext: "add-short-social-hashtag"
       title: "Social handle for sharing and navigation"
       success: (response, newValue) ->
@@ -115,7 +121,8 @@ Template.productDetail.rendered = ->
       selector: '.twitter-msg-edit'
       inputclass: "xeditable-input"
       type: "textarea"
-      showbuttons: 'bottom'
+      mode: "popup"
+      onblur: 'submit'
       emptytext: '<i class="fa fa-twitter fa-lg"></i>'
       title: "Default Twitter message ~100 characters!"
       success: (response, newValue) ->
@@ -125,7 +132,8 @@ Template.productDetail.rendered = ->
       selector: '.pinterest-msg-edit'
       inputclass: "xeditable-input"
       type: "textarea"
-      showbuttons: 'bottom'
+      mode: "popup"
+      onblur: 'submit'
       emptytext: '<i class="fa fa-pinterest fa-lg"></i>'
       title: "Default Pinterest message ~200 characters!"
       success: (response, newValue) ->
@@ -135,7 +143,8 @@ Template.productDetail.rendered = ->
       selector: '.facebook-msg-edit'
       inputclass: "xeditable-input"
       type: "textarea"
-      showbuttons: 'bottom'
+      mode: "popup"
+      onblur: 'submit'
       emptytext: '<i class="fa fa-facebook fa-lg"></i>'
       title: "Default Facebook message ~200 characters!"
       success: (response, newValue) ->
@@ -145,7 +154,8 @@ Template.productDetail.rendered = ->
       selector: '.instagram-msg-edit'
       inputclass: "xeditable-input"
       type: "textarea"
-      showbuttons: 'bottom'
+      mode: "popup"
+      onblur: 'submit'
       emptytext: '<i class="fa fa-instagram fa-lg"></i>'
       title: "Default Instagram message ~100 characters!"
       success: (response, newValue) ->
@@ -160,8 +170,8 @@ Template.productDetail.rendered = ->
         text: tag.name
       )
     $("#tags").editable
-      showbuttons: true
-      inputclass: "xeditable-input"
+      onblur: 'submit'
+      inputclass: "tags"
       title: "Add tags to categorize"
       emptytext: "add tags to categorize"
       select2:
@@ -236,7 +246,7 @@ Template.productDetail.events
     productsProperties =
       title: $(e.target).find("[name=title]").val()
       vendor: $(e.target).find("[name=vendor]").val()
-      bodyHtml: $(e.target).find("[name=bodyHtml]").val()
+      description: $(e.target).find("[name=description]").val()
       tags: $(e.target).find("[name=tags]").val()
       handle: $(e.target).find("[name=handle]").val()
 

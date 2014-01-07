@@ -300,7 +300,7 @@ Shops = @Shops # package exports
     pageTitle:
       type: String
       optional: true
-    bodyHtml:
+    description:
       type: String
       optional: true
     productType:
@@ -314,6 +314,7 @@ Shops = @Shops # package exports
     'options.$.defaultValue':
       type: String
       max: 255
+      optional: true
     variants:
       type: [ProductVariantSchema]
     tagIds:

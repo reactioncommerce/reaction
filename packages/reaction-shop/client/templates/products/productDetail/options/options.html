@@ -3,13 +3,14 @@
 {{#if options}}
 <div>
   <table class="table table-condensed">
-    <thead>Information</thead>
+    {{#if userHasRole "admin"}}
+      <thead><a href="#" id="edit-options">+ Edit details</a></thead>
+    {{else}}
+      <thead>More details</thead>
+    {{/if}}
     {{#each options}}
       <tr><td>{{name}}</td><td>{{defaultValue}}</td></tr>
     {{/each}}
-    {{#if userHasRole "admin"}}
-        <tfoot><tr><a href="#" id="edit-options"> Edit product attributes</a></tr></tfoot>
-    {{/if}}
   </table>
 </div>
 {{else}}

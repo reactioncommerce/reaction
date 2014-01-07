@@ -8,41 +8,76 @@
 // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
 .img-responsive{width:100%;}
 
-.pdp {
-  height: 30%;
-  #title {
+// Have to override all editable form elements to change styles
+.pdp-title .form-group,
+.pdp-title .form-control,
+.pdp-title .editable-input,
+.pdp-title .editable-inline,
+.pdp-page-title .form-group,
+.pdp-page-title .form-control,
+.pdp-page-title .editable-input,
+.pdp-page-title .editable-inline {
+    width:100% !important;
+    font-size: inherit !important;
+    font-color: inherit !important;
+    font-weight: inherit !important;
     text-align: center;
-    font-size: 60px;
+    padding: 1px 0 1px 0;
+    margin: 0;
+    height: 100%;
+}
+
+.pdp-title, .pdp-title h1{
+  text-align: center;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.pdp-page-title, .pdp-page-title h2{
+  text-align: center;
+  font-size: 38px;
+  font-weight: bold;
+  color: #428BC9;
+}
+
+
+// Have to override all pdp form elements to change styles
+.pdp-editable .form-group,
+.pdp-editable .form-control,
+.pdp-editable .editable-input,
+.pdp-editable .editable-inline {
+    width: 100% !important;
+    font-size: inherit !important;
+    font-color: inherit !important;
+    font-weight: inherit !important;
+    padding: 1px 0 1px 0;
+    margin: 0;
+    height: 100%;
+}
+.pdp-editable {
+  .price {
     font-weight: bold;
-  }
-  #pageTitle {
-    text-align: center;
-    margin-top: -10px;
     font-size: xx-large;
-    color: #428bca;
-    font-weight: bold;
+    width: 120px;
   }
-  #price {
-    font-weight: bold;
-    font-size: xx-large;
+
+  .handle {
+    width: 100% !important;
   }
-  #bodyHtml {
+
+  .vendor {
+    width: 250px;
+    display: inline-block;
+  }
+
+  .tags {
+    width: 100% !important;
+  }
+
+  .description {
     font-size:16px;
     margin-top:5px;
     line-height: 1.7;
-  }
-}
-
-.xeditable-input {
-  text-align: center;
-  width: auto !important;
-  min-width: 320px;
-  font-size: large;
-}
-
-@media (min-width: 768px) {
-  .xeditable-input {
-    width: 500px !important;
-    padding: 5px;
+    width: 100% !important;
   }
 }

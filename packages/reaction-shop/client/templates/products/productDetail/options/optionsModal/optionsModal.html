@@ -5,7 +5,7 @@
         <form class="form-horizontal" role="form" novalidate="novalidate">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Edit product attributes</h4>
+            <h4 class="modal-title">Edit product details</h4>
           </div>
           <div class="modal-body">
             <ul class="error-block"></ul>
@@ -14,14 +14,14 @@
             {{else}}
               <div class="form-group">
                 <div class="col-sm-12">
-                  <span class="no-options">This product has no attributes</span>
+                  <span class="no-options">This product has no details</span>
                 </div>
               </div>
             {{/each}}
             {{> optionFormGroup default}}
             <div class="row">
               <div class="col-sm-3">
-                <a href="#" class="add-option-link">+ Add attribute</a>
+                <a href="#" class="add-option-link">+ Add details</a>
               </div>
             </div>
           </div>
