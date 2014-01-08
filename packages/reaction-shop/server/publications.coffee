@@ -71,16 +71,12 @@ Meteor.publish 'product', (id) ->
 # *****************************************************
 Products.allow
   insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    #return (userId && doc.owner === userId);
-    true
+    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
   update: (userId, doc, fields, modifier) ->
-    # can only change your own documents
-    true
-    #return doc.owner === userId;
+    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
   remove: (userId, doc) ->
     true if Roles.userIsInRole(Meteor.userId(), ['admin'])
-  #fetch: ['owner']
+
 
 # *****************************************************
 # orders collection
@@ -110,8 +106,6 @@ Orders.allow
     #return doc.owner === userId;
   remove: (userId, doc) ->
     true if Roles.userIsInRole(Meteor.userId(), ['owner'])
-  #fetch: ['owner']
-
 
 # *****************************************************
 # customers collection

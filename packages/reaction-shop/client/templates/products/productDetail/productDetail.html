@@ -1,86 +1,96 @@
 <template name="productDetail">
-  {{!-- Product Visibility Admin Block --}}
-    {{#if userHasRole "admin"}}
-    <div class="row">
-      <div class="col-md-12">
-        {{#if isVisible}}
-            {{else}}
-        <div class="alert alert-warning">
-          This product is not visible to customers.
-                You can
-          <a href="#" class="toggle-product-isVisible-link">make it visible</a>
-          when you're done editing.
-        </div>
-        {{/if}}
-            Product management:
-        <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
-      </div>
+{{!-- Product Visibility Admin Block --}}
+{{#if userHasRole "admin"}}
+<div class="row">
+  {{#if isVisible}}
+  {{else}}
+    <div class="alert alert-warning">
+      This product is not visible to customers.
+            You can
+      <a href="#" class="toggle-product-isVisible-link">make it visible</a>
+      when you're done editing.
     </div>
-    {{/if}}
-    {{!-- END Product Visibility Admin Block --}}
-    <div class="row col-md-12">
-        <div class="pdp-title">
-          <h1 id="title" class="editable" tabindex="1">{{title}}</h1>
-        </div>
-        <div class="pdp-page-title">
-          <h2 id="pageTitle" class="editable" tabindex="2">{{pageTitle}}</h2>
-        </div>
-    </div>
-
-    <div class="row">
-      <!-- BEGIN Left Side -->
-      <div class="col-md-5 col-lg-4 col-lg-offset-1">
-        {{> productImageGallery}}
-        {{> attributes}}
-        {{> optionsModal}}
+  {{/if}}
+  Product management:
+  <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+</div>
+{{/if}}
+{{!-- END Product Visibility Admin Block --}}
+ <!-- Product Detail Page -->
+<div class="row" itemscope itemtype="http://schema.org/Product">
+  <!-- Titles -->
+  <div class="row">
+      <div class="pdp-title">
+        <h1 id="title" itemprop="name">{{title}}</h1>
       </div>
-      <!-- END Left Side -->
-      <!-- BEGIN Right Side -->
-      <div class="col-md-7">
-        <!-- main product information -->
-        <div class="col-md-10 col-offset-md-4 pdp-editable">
-          <div>
-            <!-- Price Fixation -->
-            <div class="row">
-              <div class="pull-left price">
-                {{#isolate}}
-                <h1 id="price" class="price-label" tabindex="3" data-value="{{actualPrice}}">${{actualPrice}}</h1>
-                {{/isolate}}
-              </div>
-              <div class="pull-right social" tabindex="4">
-              {{>social}}
-              </div>
-            </div>
-            <!-- Vendor -->
+      <div class="pdp-page-title">
+        <h2 id="pageTitle">{{pageTitle}}</h2>
+      </div>
+  </div>
+  <!-- Product Details -->
+  <div class="row">
+    <!-- BEGIN Left Side -->
+    <div class="col-md-5 col-lg-4 col-lg-offset-1">
+      {{> productImageGallery}}
+      {{> attributes}}
+      {{> optionsModal}}
+    </div>
+    <!-- END Left Side -->
+    <!-- BEGIN Right Side -->
+    <div class="col-md-7">
+      <!-- main product information -->
+      <div class="row col-md-10 col-offset-md-4 pdp-editable">
+          <!-- Price Fixation -->
+          <div class="row">
+                <i class="fa fa-usd fa-2x"> </i>
+                <span class="price">
+                  {{#isolate}}
+                  <span id="price" itemprop="price">{{actualPrice}}</span>
+                  {{/isolate}}
+                </span>
+            {{>social}}
+          </div>
+          {{!-- Vendor --}}
+          <div class="clearfix">
+            <span>by</span>
             <div class="vendor">
-              <span>by</span>
-              <i id="vendor" class="editable" tabindex="5">{{vendor}}</i>
+              <i id="vendor" itemprop="brand">{{vendor}}</i>
             </div>
+          </div>
 
-            <!-- Tag it -->
+          <!-- Tag it -->
+          <div class="row">
+
             <div class="tags">
               {{#if userHasRole "admin"}}
-              <a href="#" id="tags" data-type="select2"  data-original-title="use tags to build nav & search" data-value="{{stringify tags}}"></a>
+                <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
               {{else}}
-                  {{#each tags}}
-              <a href="{{pathFor "shop/tag"}}">{{name}}</a>
-              {{/each}}
-                {{/if}}
+                {{#each tags}}
+                  <a href="{{pathFor "shop/tag"}}">{{name}}</a>
+                {{/each}}
+              {{/if}}
             </div>
-          <!-- Body Body -->
           </div>
-          <div>
-            <p id="description" class="editable description" data-clear="true" >{{description}}</p>
+
+          <!-- Description -->
+          <div class="row">
+            <div id="description" class="description" itemprop="description">
+            {{#if userHasRole "admin"}}
+            {{description}}
+            {{else}}
+            {{!-- Render as html on client view --}}
+            {{{description}}}
+            {{/if}}</div>
           </div>
-        <!-- end main product information -->
-        <!-- END Right Side -->
-        </div>
-        <div class="col-md-10 col-offset-md-4">
-        <!-- Variants -->
+
+      </div>
+      <!-- Variants -->
+      <div class="row col-md-10 col-offset-md-4">
         {{>variantList}}
         <!--  Add to cart -->
         <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to Cart</div>
       </div>
-    </div>
-
+      <!-- END Right Side -->
+  </div>
+</div>
 </template>

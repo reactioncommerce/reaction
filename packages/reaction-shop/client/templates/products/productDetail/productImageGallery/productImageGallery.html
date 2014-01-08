@@ -38,7 +38,7 @@
     {{/foreach}}
     </ul>
     {{#if userHasRole "admin"}}
-      <button type="button" class="btn btn-default btn-lg btn-block imageAddButton">Add media</button>
+      <button type="button" class="btn btn-default btn-lg btn-block imageAddButton" tabindex="-1">Add media</button>
     {{/if}}
 </div>
 {{else}}
@@ -47,7 +47,7 @@
 </div>
   {{#if userHasRole "admin"}}
   <p>
-    <button type="button" class="btn btn-danger btn-lg btn-block imageAddButton">Add media</button>
+    <button type="button" class="btn btn-danger btn-lg btn-block imageAddButton" tabindex="-1">Add media</button>
   </p>
   {{/if}}
 {{/with}}

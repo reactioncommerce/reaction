@@ -1,14 +1,10 @@
-#frm select {
-  width: auto;
-}
-
 #add-to-cart {
   margin-top: 25px;
 }
 // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
 .img-responsive{width:100%;}
 
-// Have to override all editable form elements to change styles
+// Override of xeditable form group elements to change styles
 .pdp-title .form-group,
 .pdp-title .form-control,
 .pdp-title .editable-input,
@@ -39,9 +35,7 @@
   font-weight: bold;
   color: #428BC9;
 }
-
-
-// Have to override all pdp form elements to change styles
+// Override of xeditable form group elements to change styles
 .pdp-editable .form-group,
 .pdp-editable .form-control,
 .pdp-editable .editable-input,
@@ -50,34 +44,35 @@
     font-size: inherit !important;
     font-color: inherit !important;
     font-weight: inherit !important;
-    padding: 1px 0 1px 0;
-    margin: 0;
+    padding: 2px 0 1px 0;
     height: 100%;
 }
+
+.pdp-editable .editable-pre-wrapped {
+  white-space: normal !important;
+}
+
 .pdp-editable {
   .price {
     font-weight: bold;
     font-size: xx-large;
-    width: 120px;
+    width: 200px !important;
+    padding: 0 0 0 5px;
+    overflow: visible;
+    display:inline-block;
   }
-
-  .handle {
-    width: 100% !important;
-  }
-
   .vendor {
     width: 250px;
     display: inline-block;
   }
-
   .tags {
     width: 100% !important;
   }
-
   .description {
-    font-size:16px;
-    margin-top:5px;
-    line-height: 1.7;
+    margin: 15px 0 15px 0;
+    font-size: 16px;
+    line-height: 1.6;
+    height: :100%;
     width: 100% !important;
   }
 }

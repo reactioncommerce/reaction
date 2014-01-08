@@ -1,3 +1,7 @@
+# *****************************************************
+# Methods for the reaction permissions
+# https://github.com/ongoworks/reaction#rolespermissions-system
+# *****************************************************
 Handlebars.registerHelper "hasShopPermission", (permissions) ->
   Meteor.app.hasPermission(permissions)
 
@@ -23,6 +27,10 @@ Handlebars.registerHelper "hasOwnerAccess", ->
     selector.tagIds = {$in: tagIds}
   cursor = Products.find(selector)
 
+# *****************************************************
+# method to alway return an image,
+# or a placeholder for a product variant
+# *****************************************************
 @getVariantImage = (variantId) ->
   if variantId
     variantProduct = Products.findOne({"variants._id":variantId},{fields:{"variants":true}})

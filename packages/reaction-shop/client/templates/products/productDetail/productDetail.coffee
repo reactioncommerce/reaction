@@ -11,26 +11,17 @@ Template.productDetail.helpers
 
 Template.productDetail.rendered = ->
   # *****************************************************
-  # function that stores images that have successfully
-  # uploaded to filepicker.io
-  # *****************************************************
-
-  # *****************************************************
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html
   #
-  # You could just do:  $('#username').editable();
-  # but we want to maintain reactivity etc.
+  # $.fn.editable.defaults.disabled = true
   # *****************************************************
-  #
   if Meteor.app.hasOwnerAccess()
+    $.fn.editable.defaults.disabled = false
     $.fn.editable.defaults.mode = "inline"
     $.fn.editable.defaults.showbuttons = false
-
-    # *****************************************************
-    # TODO: Tabbing
-    # SEE: https://github.com/vitalets/x-editable/issues/324
-    # *****************************************************
+    $.fn.editable.defaults.onblur = 'submit'
+    $.fn.editable.defaults.highlight = '#eff6db'
 
     # *****************************************************
     # Editable product title entry
@@ -40,15 +31,15 @@ Template.productDetail.rendered = ->
       type: "text"
       title: "Product name"
       clear: true
-      onblur: "submit"
       emptytext: "product name goes here"
       inputclass: "pdp-title"
       success: (response, newValue) ->
         updateProduct title: newValue
+        $('#pageTitle').editable "show"
 
       validate: (value) ->
         if $.trim(value) is ""
-          throwError "This field is required"
+          throwError "A product name is required"
           false
     # *****************************************************
     # Editable page title entry
@@ -56,7 +47,6 @@ Template.productDetail.rendered = ->
     $("#pageTitle").editable
       inputclass: "pdp-page-title"
       type: "text"
-      onblur: "submit"
       title: "Short page title"
       emptytext: "catchy short page title here"
       success: (response, newValue) ->
@@ -68,7 +58,6 @@ Template.productDetail.rendered = ->
     $("#vendor").editable
       type: "text"
       inputclass: "vendor"
-      onblur: 'submit'
       title: "Vendor, Brand, Manufacturer"
       emptytext: "vendor, brand, manufacturer"
       success: (response, newValue) ->
@@ -93,7 +82,7 @@ Template.productDetail.rendered = ->
     $("#description").editable
       type: "textarea"
       inputclass: "description"
-      onblur: 'submit'
+      escape: false
       title: "Describe this product"
       emptytext: "add a few lines describing this product"
       success: (response, newValue) ->
@@ -107,7 +96,6 @@ Template.productDetail.rendered = ->
     $("#handle").editable
       type: "text"
       inputclass: "handle"
-      onblur: 'submit'
       emptytext: "add-short-social-hashtag"
       title: "Social handle for sharing and navigation"
       success: (response, newValue) ->
@@ -119,10 +107,8 @@ Template.productDetail.rendered = ->
     # *****************************************************
     $(".twitter-msg").editable
       selector: '.twitter-msg-edit'
-      inputclass: "xeditable-input"
       type: "textarea"
       mode: "popup"
-      onblur: 'submit'
       emptytext: '<i class="fa fa-twitter fa-lg"></i>'
       title: "Default Twitter message ~100 characters!"
       success: (response, newValue) ->
@@ -130,10 +116,8 @@ Template.productDetail.rendered = ->
 
     $(".pinterest-msg").editable
       selector: '.pinterest-msg-edit'
-      inputclass: "xeditable-input"
       type: "textarea"
       mode: "popup"
-      onblur: 'submit'
       emptytext: '<i class="fa fa-pinterest fa-lg"></i>'
       title: "Default Pinterest message ~200 characters!"
       success: (response, newValue) ->
@@ -141,10 +125,8 @@ Template.productDetail.rendered = ->
 
     $(".facebook-msg").editable
       selector: '.facebook-msg-edit'
-      inputclass: "xeditable-input"
       type: "textarea"
       mode: "popup"
-      onblur: 'submit'
       emptytext: '<i class="fa fa-facebook fa-lg"></i>'
       title: "Default Facebook message ~200 characters!"
       success: (response, newValue) ->
@@ -152,10 +134,8 @@ Template.productDetail.rendered = ->
 
     $(".instagram-msg").editable
       selector: '.instagram-msg-edit'
-      inputclass: "xeditable-input"
       type: "textarea"
       mode: "popup"
-      onblur: 'submit'
       emptytext: '<i class="fa fa-instagram fa-lg"></i>'
       title: "Default Instagram message ~100 characters!"
       success: (response, newValue) ->
@@ -170,7 +150,6 @@ Template.productDetail.rendered = ->
         text: tag.name
       )
     $("#tags").editable
-      onblur: 'submit'
       inputclass: "tags"
       title: "Add tags to categorize"
       emptytext: "add tags to categorize"
@@ -224,6 +203,20 @@ Template.productDetail.rendered = ->
 # **********************************************************************************************************
 
 Template.productDetail.events
+  # *****************************************************
+  # TODO: Tabbing
+  # SEE: https://github.com/vitalets/x-editable/issues/324
+  # *****************************************************
+  # "keydown input": (e) ->
+  #   if e.which is 9 # when tab key is pressed
+  #     e.preventDefault()
+  #     if e.shiftKey # shift + tab
+  #       # find the parent of the editable before this one in the markup
+  #       $(e.target).blur().parents().prevAll(":has(.editable):first").find(".editable:last").editable "show"
+  #     else # just tab
+  #       # find the parent of the editable after this one in the markup
+  #       $(e.target).blur().parents().nextAll(":has(.editable):first").find(".editable:first").editable "show"
+
   "click #add-to-cart": (e, template) ->
     e.preventDefault()
     now = new Date()
@@ -232,13 +225,12 @@ Template.productDetail.events
     variantData = Session.get("selectedVariant")
     productId = Session.get("currentProductId")
     quantity = 1
-
+    # TODO - shopping cart id should probably just be session id, and make sure it's always availble here
     Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
     $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
     Session.set("selectedVariant","")
     $("html, body").animate({ scrollTop: 0 }, "fast")
     $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
-
 
   "submit form": (e) ->
     e.preventDefault()
