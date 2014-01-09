@@ -132,15 +132,9 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/variants/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
     "client/templates/products/productDetail/variants/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
 
-    "client/templates/products/productDetail/options/options.html",
-    "client/templates/products/productDetail/options/options.coffee",
-    "client/templates/products/productDetail/options/options.less",
-
-    "client/templates/products/productDetail/options/optionsModal/optionsModal.html",
-    "client/templates/products/productDetail/options/optionsModal/optionsModal.coffee",
-    "client/templates/products/productDetail/options/optionsModal/optionsModal.less",
-
-    "client/templates/products/productDetail/options/optionFormGroup/optionFormGroup.html",
+    "client/templates/products/productDetail/attributes/attributes.html",
+    "client/templates/products/productDetail/attributes/attributes.less",
+    "client/templates/products/productDetail/attributes/attributes.coffee",
 
     "client/templates/notice/unauthorized.html",
 

@@ -35,7 +35,6 @@ Template.productDetail.rendered = ->
       inputclass: "pdp-title"
       success: (response, newValue) ->
         updateProduct title: newValue
-        $('#pageTitle').editable "show"
 
       validate: (value) ->
         if $.trim(value) is ""

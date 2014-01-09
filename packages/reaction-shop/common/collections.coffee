@@ -120,6 +120,15 @@ ProductVariantSchema = new SimpleSchema
     label: "Updated at"
     type: Date
 
+ProductAttributeSchema = new SimpleSchema
+  name:
+    type: String
+    max: 255
+  value:
+    type: String
+    max: 255
+    optional: true
+
 CustomerAddressSchema = new SimpleSchema
   _id:
     type: String
@@ -308,12 +317,8 @@ Shops = @Shops # package exports
     vendor:
       type: String
       optional: true
-    'options.$.name':
-      type: String
-      max: 255
-    'options.$.defaultValue':
-      type: String
-      max: 255
+    attributes:
+      type: [ProductAttributeSchema]
       optional: true
     variants:
       type: [ProductVariantSchema]

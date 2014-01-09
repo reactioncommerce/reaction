@@ -36,9 +36,12 @@ Template.optionsModal.events
     e.stopPropagation()
 
   "submit form": (e, template) ->
+    e.preventDefault()
+    e.stopPropagation()
     form = template.find("form")
     $form = $(form)
     data = $form.serializeHash()
+    console.log data
     Products.update Session.get("currentProductId"),
       $set: data
     ,
@@ -48,6 +51,7 @@ Template.optionsModal.events
       $form.find(".error-block li").remove()
       if error
         invalidKeys = Products.namedContext("options").invalidKeys()
+        console.log Products.namedContext("options").invalidKeys()
         _.each invalidKeys, (invalidKey) ->
           id = invalidKey.name.replace(/\./g, "-")
           $formGroup = $form.find("#" + id).closest(".form-group")

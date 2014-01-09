@@ -379,11 +379,14 @@ share.loadFixtures = ->
           'updatedAt': now
         }
       ],
-      'options': [
+      'attributes': [
         {
-          'id': 594680422,
-          'name': 'Title',
-          'defaultValue': 'Default Title'
+          'name': 'Material',
+          'value': 'Cotton and Rubber'
+        },
+        {
+          'name': 'Sizing',
+          'value': 'Runs 1/2 size larger'
         }
       ],
       isVisible: true
