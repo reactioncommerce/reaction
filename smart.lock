@@ -5,7 +5,10 @@
       "spin": {},
       "highcharts": {},
       "roles": {},
-      "x-editable-bootstrap3": {},
+      "x-editable-bootstrap3": {
+        "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git",
+        "branch": "master"
+      },
       "iron-router": {
         "git": "https://github.com/wsoul/iron-router.git",
         "branch": "master"
@@ -46,9 +49,9 @@
         "commit": "f2a9058281f8f2fe028767841d7445aadd6893cf"
       },
       "x-editable-bootstrap3": {
-        "git": "https://github.com/JustinSGray/meteor-x-editable-bootstrap.git",
-        "tag": "v1.5.1",
-        "commit": "33eeb067df8e68f2db0c66dabc4ae9de2bdd5906"
+        "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git",
+        "branch": "master",
+        "commit": "310ae13f4f542c3078ce5a3311e12787ca999745"
       },
       "iron-router": {
         "git": "https://github.com/wsoul/iron-router.git",
@@ -72,8 +75,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.4.7",
-        "commit": "66c2fdbe40dcd3f75a9c93b5916d1595ee9cf394"
+        "tag": "v0.4.8",
+        "commit": "975de44b1398534792f28a475660d455f02aba2c"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
