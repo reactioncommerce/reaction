@@ -31,11 +31,19 @@ MetafieldSchema = new SimpleSchema
     type: String
     max: 20
     optional: true
+  scope:
+    type: String
+    optional: true
   value:
     type: String
+    optional: true
+  valueType:
+    type: String
+    optional: true
   description:
     type: String
     optional: true
+
 
 VariantMediaSchema = new SimpleSchema
   src:
@@ -120,16 +128,8 @@ ProductVariantSchema = new SimpleSchema
     label: "Updated at"
     type: Date
 
-ProductAttributeSchema = new SimpleSchema
-  name:
-    type: String
-    max: 255
-  value:
-    type: String
-    max: 255
-    optional: true
 
-CustomerAddressSchema = new SimpleSchema
+AddressSchema = new SimpleSchema
   _id:
     type: String
     optional: true
@@ -165,6 +165,9 @@ CustomerAddressSchema = new SimpleSchema
     label: "Is this your default address?"
     type: Boolean
     optional: true
+  metafields:
+    type: [MetafieldSchema]
+    optional: true
 
 CountrySchema = new SimpleSchema
   name:
@@ -172,46 +175,35 @@ CountrySchema = new SimpleSchema
   code:
     type: String
 
+TaxSchema = new SimpleSchema
+  taxShipping:
+    type: String
+    optional: true
+  taxesIncluded:
+    type: Boolean
+    optional: true
+  countyTaxes:
+    type: Boolean
+    optional: true
+  metafields:
+    type: [MetafieldSchema]
+    optional: true
+
 @Shops = new Meteor.Collection2 'Shops',
   schema:
     _id:
       type: String
       optional: true
-    address1:
+    name:
       type: String
-      optional: true
-    city:
-      type: String
-      optional: true
-    country:
-      type: String
-    countryCode:
-      type: String
-    countryName:
-      type: String
-    customerEmail:
-      type: String
-    currency:
-      type: String
+    addressBook:
+      type: [AddressSchema]
     domains:
       type: [String]
+    currency:
+      type: String
     email:
       type: String
-    googleAppsDomain:
-      type: String
-      optional: true
-    googleAppsLoginEnabled:
-      type: String
-      optional: true
-    id:
-      type: Number
-      optional: true
-    latitude:
-      type: Number
-      decimal: true
-    longitude:
-      type: Number
-      decimal: true
     moneyFormat:
       type: String
     moneyWithCurrencyFormat:
@@ -220,61 +212,14 @@ CountrySchema = new SimpleSchema
       type: String
     moneyWithCurrencyInEmailsFormat:
       type: String
-    myShopDomain:
-      type: String
-      optional: true
-    name:
-      type: String
-    planName:
-      type: String
-      optional: true
-    planDisplayName:
-      type: String
-      optional: true
-    phone:
-      type: String
-      optional: true
-    province:
-      type: String
-      optional: true
-    provinceCode:
-      type: String
+    taxes:
+      type: [TaxSchema]
       optional: true
     public:
       type: String
       optional: true
-    shopOwner:
-      type: String
-      optional: true
-    source:
-      type: String
-      optional: true
-    taxShipping:
-      type: String
-      optional: true
-    taxesIncluded:
-      type: Boolean
-      optional: true
-    countyTaxes:
-      type: Boolean
-      optional: true
     timezone:
       type: String
-    zip:
-      type: String
-      optional: true
-    eligibleForPayments:
-      type: Boolean
-      optional: true
-    requiresExtraPaymentsAgreement:
-      type: Boolean
-      optional: true
-    metaTitle:
-      type: String
-      optional: true
-    metaDescription:
-      type: String
-      optional: true
     ownerId:
       type: String
     members:
@@ -297,6 +242,7 @@ CountrySchema = new SimpleSchema
 
 Shops = @Shops # package exports
 
+
 @Products = new Meteor.Collection2 'Products',
   schema:
     _id:
@@ -317,8 +263,8 @@ Shops = @Shops # package exports
     vendor:
       type: String
       optional: true
-    attributes:
-      type: [ProductAttributeSchema]
+    metafields:
+      type: [MetafieldSchema]
       optional: true
     variants:
       type: [ProductVariantSchema]

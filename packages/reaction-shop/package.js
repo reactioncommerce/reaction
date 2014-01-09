@@ -156,7 +156,7 @@ Package.on_use(function (api, where) {
     "Customers",
     "ShopMemberSchema",
     "ProductVariantSchema",
-    "CustomerAddressSchema",
+    "AddressSchema",
     "VariantMediaSchema",
     "MetafieldSchema",
     "CartItemSchema",

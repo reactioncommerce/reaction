@@ -1,11 +1,11 @@
-addressForm = new AutoForm(CustomerAddressSchema)
-addressListDep = new Deps.Dependency()
+addressForm = new AutoForm(AddressSchema)
+addressBookDep = new Deps.Dependency()
 
 Template.addAddress.helpers
   addAddressForm: ->
     addressForm
-  addressList: ->
-    Meteor.user().profile?.addressList
+  addressBook: ->
+    Meteor.user().profile?.addressBook
   countryOptions: ->
     SystemConfig.findOne().countries
   defaultCountry: ->
@@ -20,13 +20,13 @@ Template.addAddress.helpers
 Template.addAddress.events
   'click #cancel-new': () ->
     $('#newAddress').show()
-    $('#addressList').show()
+    $('#addressBook').show()
     $('.addressForm').hide()
 
 
 Template.userAddress.helpers
-  addressList: ->
-    Meteor.user().profile?.addressList
+  addressBook: ->
+    Meteor.user().profile?.addressBook
   selectBillAddress: (id) ->
     if (id is Session.get("billingUserAddressId"))
       return "active fa fa-check-circle fa-lg"
@@ -37,7 +37,7 @@ Template.userAddress.helpers
 Template.userAddress.events
   'click #newAddress': () ->
     $('#newAddress').hide()
-    $('#addressList').hide()
+    $('#addressBook').hide()
     if $('.addressForm').text()
       $('.addressForm').show()
     else
@@ -60,16 +60,16 @@ Template.userAddress.events
     console.log "edit here"
 
 Template.userAddress.rendered = ->
-  if Meteor.user().profile?.addressList
-    addressListDep #update addresses when user login
+  if Meteor.user().profile?.addressBook
+    addressBookDep #update addresses when user login
     unless Session.get("shippingUserAddressId")?
-      _.each Meteor.user().profile.addressList, ((address) ->
+      _.each Meteor.user().profile.addressBook, ((address) ->
         if address.isDefault? and address.isDefault is true
           $("ul li[data-ship-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
           Session.set("shippingUserAddressId", address._id)
       )
     unless Session.get("billingUserAddressId")?
-      _.each Meteor.user().profile.addressList, ((address) ->
+      _.each Meteor.user().profile.addressBook, ((address) ->
         if address.isDefault? and address.isDefault is true
           $("ul li[data-bill-id='"+address._id+"']").addClass("active fa fa-check-circle fa-lg")
           Session.set("billingUserAddressId", address._id)

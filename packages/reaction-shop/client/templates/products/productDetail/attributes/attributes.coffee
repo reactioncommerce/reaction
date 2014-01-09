@@ -1,7 +1,7 @@
 Template.attributes.helpers
   attributes: () ->
     currentProductId = Session.get("currentProductId")
-    attributes = Products.findOne(currentProductId).attributes
+    attributes = Products.findOne(currentProductId).metafields
 
 Template.attributes.events
   'click .attribute-delete': (e) ->
@@ -10,7 +10,7 @@ Template.attributes.events
     if confirm("Delete this detail?")
       currentProductId = Session.get("currentProductId")
       Products.update currentProductId,
-        $pull: attributes: this
+        $pull: metafields: this
 
 
 Template.attributes.rendered = ->
@@ -26,13 +26,16 @@ Template.attributes.rendered = ->
     $.fn.editable.defaults.onblur = 'submit'
     $.fn.editable.defaults.highlight = '#eff6db'
 
-    $(".attribute-name").editable
+    $(".attribute-key").editable
       type: "text"
-      title: "Detail name"
+      title: "Detail label"
       emptytext: "+ new label"
       success: (response, newValue) ->
         data = Spark.getDataContext(this)
-        updateAttributes data,name: newValue
+        updateAttributes data,
+          key: newValue
+          value: data.value
+          namespace: 'attributes'
 
     $(".attribute-value").editable
       type: "text"
@@ -40,9 +43,12 @@ Template.attributes.rendered = ->
       emptytext: "+ new details"
       success: (response, newValue) ->
         data = Spark.getDataContext(this)
-        updateAttributes data,value: newValue
+        updateAttributes data,
+          key: data.key
+          value: newValue
+          namespace: 'attributes'
       validate: (value) ->
-        if $.trim(Spark.getDataContext(this).name) is ""
+        if $.trim(Spark.getDataContext(this).key) is ""
           throwError "A detail label is required"
           false
 
@@ -54,12 +60,11 @@ Template.attributes.rendered = ->
 # *****************************************************
     updateAttributes = (data, newValue) ->
       currentProductId = Session.get("currentProductId")
-
-      attributes = Products.findOne(currentProductId)?.attributes
+      attributes = Products.findOne(currentProductId)?.metafields
       if attributes
         for item in attributes
-          if newValue.name and _.isEqual(item, data)
-            item.name = newValue.name
+          if newValue.key and _.isEqual(item, data)
+            item.key = newValue.key
             update = true
           if newValue.value and _.isEqual(item, data)
             item.value = newValue.value
@@ -67,7 +72,7 @@ Template.attributes.rendered = ->
 
       if update
         Products.update currentProductId,
-          $set: attributes: attributes, (error) ->
+          $set: metafields: attributes, (error) ->
             if error
               throwError error
               false
@@ -75,7 +80,7 @@ Template.attributes.rendered = ->
               true
       else
         Products.update currentProductId,
-          $push: attributes: newValue, (error) ->
+          $push: metafields: newValue, (error) ->
             if error
               throwError error
               false

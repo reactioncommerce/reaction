@@ -7,18 +7,18 @@
         {{#if userHasRole "admin"}}
           {{#each attributes}}
           <tr>
-            <td><a href="#" class="attribute-name">{{name}}</a></td>
+            <td><a href="#" class="attribute-key">{{key}}</a></td>
             <td><a href="#" class="attribute-value">{{value}}</a></td>
             <td><a href="#" class="attribute-delete"><i class="fa fa-trash-o pull-right"></i></a></td>
           </tr>
           {{/each}}
           <tr class="active">
-            <td colspan="3"><a href="#" class="attribute-name"></a></td>
+            <td colspan="3"><a href="#" class="attribute-key"></a></td>
           </tr>
         {{else}}
           {{#each attributes}}
           <tr>
-            <td>{{name}}</td>
+            <td>{{key}}</td>
             <td>{{value}}</td>
           </tr>
           {{/each}}
@@ -32,7 +32,7 @@
       <div class="panel-heading">Details</div>
         <table class="table table-condensed">
           <tr class="active">
-            <td colspan="3"><a href="#" class="attribute-name"></a></td>
+            <td colspan="3"><a href="#" class="attribute-key"></a></td>
           </tr>
         </table>
       </div>

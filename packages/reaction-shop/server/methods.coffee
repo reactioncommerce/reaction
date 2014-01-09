@@ -119,7 +119,7 @@ Meteor.methods
 
   addAddress: (doc) ->
     doc._id = Random.id()
-    Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {"profile.addressList": doc}})
+    Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {"profile.addressBook": doc}})
 
   locateAddress: (latitude, longitude) ->
     Future = Npm.require("fibers/future")

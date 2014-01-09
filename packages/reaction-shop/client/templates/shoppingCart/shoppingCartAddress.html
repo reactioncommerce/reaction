@@ -1,6 +1,6 @@
 <template name="userAddress">
   <div class="panel panel-default">
-    {{#if addressList}}
+    {{#if addressBook}}
     <div class="panel-heading">
       <h3 class="panel-title">
         Address Information <i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
@@ -8,12 +8,12 @@
     </div>
     {{/if}}
     <div class="panel-body">
-      {{#if addressList}}
-      <div class="row" id="addressList">
+      {{#if addressBook}}
+      <div class="row" id="addressBook">
         <div class="col-md-6">
           <ul class="list-group">
             <strong>Bill To:</strong>
-             {{#each addressList shipping}}
+             {{#each addressBook shipping}}
             <li class="list-group-item address-bill-to {{selectBillAddress _id}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong><i class="fa fa-pencil pull-right"></i>
               <address>
                 {{address1}}
@@ -28,7 +28,7 @@
         <div class="col-md-6">
           <ul class="list-group">
             <strong>Ship To:</strong>
-            {{#each addressList shipping}}
+            {{#each addressBook shipping}}
             <li class="list-group-item address-ship-to {{selectShipAddress _id}}" data-ship-id="{{_id}}">
               <strong>{{fullName}}</strong>
               <address>
@@ -139,7 +139,7 @@
       <div class="row">
         <div class="col-md-12 col-md-offset-8">
             <button type="submit" data-meteor-method="addAddress" class="btn btn-primary">Save and Continue</button>
-            {{#if addressList}}
+            {{#if addressBook}}
             <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
             {{/if}}
         </div>
