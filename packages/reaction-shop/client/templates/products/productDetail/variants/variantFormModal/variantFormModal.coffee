@@ -65,10 +65,11 @@ Template.variantFormModal.events
     form = template.find("form")
     $form = $(form)
     hash = $form.serializeHash()
-
     # TODO: simple-schema lacks default values, send him a PR
     _.extend variant, oldVariant, hash.variants[currentVariantIndex]
-
+    # Map object created by serializeHash to required array
+    for item,value of variant.metafields
+      variant.metafields[value] = item
     # TODO: simple-schema optional decimal validation bug, send him a PR
     delete variant.compareAtPrice  unless variant.compareAtPrice
     delete variant.weight unless variant.weight
@@ -95,6 +96,8 @@ Template.variantFormModal.events
     ,
       validationContext: validationContext
     , localValidationCallback
+    e.preventDefault()
+    e.stopPropagation()
 
 validationCallback = ($form, collection, validationContext, successCallback, invalidKeyNameFixFunction, error, result) ->
   $form.find(".has-error").removeClass "has-error"
