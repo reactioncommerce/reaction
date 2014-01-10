@@ -5,7 +5,6 @@
 # can be imported using loadData(collection)
 # *****************************************************
 share.loadFixtures = ->
-
   loadData = (collection) ->
     console.log "Loading fixture data for "+collection._name
     json = EJSON.parse Assets.getText("data/"+collection._name+".json")
@@ -13,7 +12,7 @@ share.loadFixtures = ->
       collection._collection.insert item
     console.log "Successfully added "+value+" items to "+ collection._name
 
-
+  # Load data from json files
   loadData Products unless Products.find().count()
   loadData Customers unless Customers.find().count()
   loadData Meteor.users unless Meteor.users.find().count()
@@ -21,9 +20,8 @@ share.loadFixtures = ->
   loadData Tags unless Tags.find().count()
   loadData Cart unless Cart.find().count()
   loadData SystemConfig unless SystemConfig.find().count()
-  #loadData PackageConfigs unless PackageConfigs.find().count()
-  #loadData Accounts.loginServiceConfiguration unless Accounts.loginServiceConfiguration.find().count()
 
+  # Load data from settings/json files + base packages.
   unless PackageConfigs.find().count()
       console.log "Adding packages fixture data"
       Shops.find().forEach (shop) ->
