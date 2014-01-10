@@ -35,8 +35,8 @@
     "packages": {
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
-        "tag": "v0.2.0",
-        "commit": "fd3a2871a69442848b4b4e74f5e1ae28fa4a95a4"
+        "tag": "v0.2.2",
+        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
       },
       "highcharts": {
         "git": "https://github.com/mikeschaekermann/meteor-highcharts.git",
@@ -75,8 +75,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.4.8",
-        "commit": "975de44b1398534792f28a475660d455f02aba2c"
+        "tag": "v0.4.9",
+        "commit": "9e96537372c8bb8078257e0b81f1f5828e4f3194"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
@@ -120,8 +120,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.26",
-        "commit": "2984003f0edf686023f5fafdce9abffb3cdc6a21"
+        "tag": "v0.2.27",
+        "commit": "af0ad4079ae5b798c3089502dd24c3e1839ce8e6"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
