@@ -1,6 +1,6 @@
 #!/bin/bash
 
-METEOR_DOMAIN="reaction.meteor.com"
+METEOR_DOMAIN="demo.reactioncommerce.com"
 
 if [[ "$METEOR_DOMAIN" == "" ]]
 then
@@ -27,7 +27,7 @@ then
 	rm "${TMP_FILE}"
 fi
 
-if [[ $MONGO_URL =~ $MONGO_URL_REGEX ]] 
+if [[ $MONGO_URL =~ $MONGO_URL_REGEX ]]
 then
 	MONGO_USER="${BASH_REMATCH[1]}"
 	MONGO_PASSWORD="${BASH_REMATCH[2]}"

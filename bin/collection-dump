@@ -1,0 +1,21 @@
+#!/bin/bash
+OIFS=$IFS;
+IFS=",";
+
+# meteor local mongo (must be running)
+dbname='meteor'
+host='127.0.0.1:3002'
+
+# first get all collections in the database
+collections=`mongo "$host/$dbname" --eval "rs.slaveOk();db.getCollectionNames();"`;
+collectionArray=($collections);
+
+# for each collection
+for ((i=0; i<${#collectionArray[@]}; ++i));
+do
+    echo 'exporting collection' ${collectionArray[$i]}
+    mongoexport --host $host --db $dbname -c ${collectionArray[$i]} --jsonArray --out private/data/${collectionArray[$i]}.json;
+    sleep 1
+done
+
+IFS=$OIFS;
