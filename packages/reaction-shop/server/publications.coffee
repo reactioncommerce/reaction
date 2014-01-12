@@ -70,12 +70,23 @@ Meteor.publish 'product', (id) ->
 # Client access rights for products
 # *****************************************************
 Products.allow
-  insert: (userId, doc) ->
-    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
-  update: (userId, doc, fields, modifier) ->
-    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
-  remove: (userId, doc) ->
-    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
+  insert: (userId, product) ->
+    product.shopId = Meteor.app.getCurrentShop()._id;
+    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    true
+  update: (userId, product, fields, modifier) ->
+    if modifier.$set && modifier.$set.shopId
+      return false
+    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    true
+  remove: (userId, product) ->
+    if product.shopId != Meteor.app.getCurrentShop()._id
+      return false
+    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    true
 
 
 # *****************************************************
@@ -96,16 +107,19 @@ Meteor.publish 'order', (id) ->
 # Client access rights for orders
 # *****************************************************
 Orders.allow
-  insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    #return (userId && doc.owner === userId);
+  insert: (userId, order) ->
+    order.shopId = Meteor.app.getCurrentShop()._id;
     true
-  update: (userId, doc, fields, modifier) ->
-    # can only change your own documents
+  update: (userId, order, fields, modifier) ->
+    if modifier.$set && modifier.$set.shopId
+      return false
     true
-    #return doc.owner === userId;
-  remove: (userId, doc) ->
-    true if Roles.userIsInRole(Meteor.userId(), ['owner'])
+  remove: (userId, order) ->
+    if order.shopId != Meteor.app.getCurrentShop()._id
+      return false
+    if !Roles.userIsInRole(Meteor.userId(), ['owner'])
+      return false
+    true
 
 # *****************************************************
 # customers collection
@@ -125,17 +139,19 @@ Meteor.publish 'customer', (id) ->
 # Client access rights for customers
 # *****************************************************
 Customers.allow
-  insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    #return (userId && doc.owner === userId);
+  insert: (userId, customer) ->
+    customer.shopId = Meteor.app.getCurrentShop()._id;
     true
-  update: (userId, doc, fields, modifier) ->
-    # can only change your own documents
+  update: (userId, customer, fields, modifier) ->
+    if modifier.$set && modifier.$set.shopId
+      return false
     true
-    #return doc.owner === userId;
-  remove: (userId, doc) ->
-    true if Roles.userIsInRole(Meteor.userId(), ['admin'])
-  #fetch: ['owner']
+  remove: (userId, customer) ->
+    if customer.shopId != Meteor.app.getCurrentShop()._id
+      return false
+    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    true
 
 
 # *****************************************************
@@ -151,18 +167,19 @@ Meteor.publish 'cart', (sessionId) ->
 # Client access rights for cart
 # *****************************************************
 Cart.allow
-  insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    #return (userId && doc.owner === userId);
+  insert: (userId, cart) ->
+    cart.shopId = Meteor.app.getCurrentShop()._id;
     true
-  update: (userId, doc, fields, modifier) ->
-    # can only change your own documents
+  update: (userId, cart, fields, modifier) ->
+    if modifier.$set && modifier.$set.shopId
+      return false
     true
-    #return doc.owner === userId;
-  remove: (userId, doc) ->
-    # can only remove your own documents
-    doc.owner is userId
-  #fetch: ['owner']
+  remove: (userId, cart) ->
+    if cart.shopId != Meteor.app.getCurrentShop()._id
+      return false
+    if cart.owner != userId
+      return false
+    true
 
 Meteor.publish "tags", ->
   shop = Meteor.app.getCurrentShop(@)
@@ -170,12 +187,13 @@ Meteor.publish "tags", ->
     Tags.find shopId: shop._id
 
 Tags.allow
-  insert: (userId, doc) ->
-    doc.shopId = Meteor.app.getCurrentShop()._id
+  insert: (userId, tag) ->
+    tag.shopId = Meteor.app.getCurrentShop()._id
     true
-  update: (userId, doc, fields, modifier) ->
+  update: (userId, tag, fields, modifier) ->
     if modifier.$set and modifier.$set.shopId
       false
     true
-  remove: (userId, doc) ->
-    doc.shopId is Meteor.app.getCurrentShop()._id
+  remove: (userId, tag) ->
+    if tag.shopId != Meteor.app.getCurrentShop()._id
+      return false

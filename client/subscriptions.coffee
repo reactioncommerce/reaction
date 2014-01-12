@@ -3,7 +3,6 @@
 #
 # *****************************************************
 Meteor.subscribe "ReactionPackages"
-Meteor.subscribe "SystemConfig"
 ReactionConfigHandle = Meteor.subscribe("ReactionConfig")
 Meteor.subscribe "UserConfig", Meteor.userId()
 # Read from local storage / cookies
