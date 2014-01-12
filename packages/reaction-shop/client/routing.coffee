@@ -72,3 +72,5 @@ Router.map ->
   @route 'shoppingCartCheckout',
     path: 'checkout',
     template: 'shoppingCartCheckout'
+    waitOn: ->
+      [share.SystemConfigHandle]

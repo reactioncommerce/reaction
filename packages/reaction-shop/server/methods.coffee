@@ -128,12 +128,14 @@ Meteor.methods
     if latitude
       locateCoord = geocoder.getGeocoder("google", "http")
       locateCoord.reverse latitude, longitude, (err, address) ->
+        if err then Meteor._debug(err)
         future.return(address)
     else
       ip = headers.methodClientIP(@)
       locateIP = geocoder.getGeocoder("freegeoip", "http")
       #ip = "76.168.14.229"
       locateIP.geocode ip, (err, address) ->
+        if err then Meteor._debug(err)
         future.return(address)
 
     address = future.wait()
