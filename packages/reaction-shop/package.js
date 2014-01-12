@@ -113,9 +113,9 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/productDetail.coffee",
     "client/templates/products/productDetail/productDetail.less",
 
-    "client/templates/products/productDetail/productImageGallery/productImageGallery.html",
-    "client/templates/products/productDetail/productImageGallery/productImageGallery.coffee",
-    "client/templates/products/productDetail/productImageGallery/productImageGallery.less",
+    "client/templates/products/productDetail/images/productImageGallery.html",
+    "client/templates/products/productDetail/images/productImageGallery.coffee",
+    "client/templates/products/productDetail/images/productImageGallery.less",
 
     "client/templates/products/productDetail/social/social.html",
     "client/templates/products/productDetail/social/social.coffee",
