@@ -18,7 +18,7 @@ Package.on_use(function (api, where) {
   ], ["client", "server"]);
 
   api.add_files([
-    "lib/vendor/packery/packery.pkgd.js",
+    "lib/vendor/masonry/masonry.pkgd.js",
     "lib/vendor/sparkline/jquery.sparkline.js",
 
     "lib/app.coffee",

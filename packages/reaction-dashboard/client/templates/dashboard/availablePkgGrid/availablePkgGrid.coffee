@@ -7,14 +7,9 @@ Template.availablePkgGrid.helpers
     availablePkgs
 
 Template.availablePkgGrid.rendered = ->
-  window.availablePkgGridPackery = new Packery(document.querySelector(".apps-container"),
+  window.availablePkgGridPackery = new Masonry(document.querySelector(".apps-container"),
     gutter: 2
   )
   template = @
   _.defer ->
     $(template.find(".app-gallery")).hide()
-
-#Template.availablePkgGrid.events
-#  "click .toggle-app-gallery-link": (event, template) ->
-#    $(template.find(".well")).toggle()
-

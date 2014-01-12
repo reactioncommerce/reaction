@@ -1,44 +1,39 @@
-Template.productImageGallery.variant = ->
-  getSelectedVariant()
+# *****************************************************
+# Template.productImageGallery.helpers
+# *****************************************************
+Template.productImageGallery.helpers
+  variant: ->
+    getSelectedVariant()
 
-Template.productImageGallery.firstImage = ->
-  imageUrl = Session.get("media-url")
-  if imageUrl
-    _.find this, (media) ->
-      media.src == imageUrl
-  else
-    _.find this, (media) ->
-      mimetype = (if typeof media.mimeType != "undefined" then media.mimeType else "image")
-      mimetype.match "image.*"
+  isimage: (mimetype, options) ->
+    mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
+    if mimetype.match("image.*")
+      options.inverse this
+    else
+      options.fn this
 
+  isvideo: (mimetype, options) ->
+    mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
+    if mimetype.match("video.*")
+      options.fn this
+    else
+      options.inverse this
 
-Template.productImageGallery.isimage = (mimetype, options) ->
-  mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
-  if mimetype.match("image.*")
-    options.inverse this
-  else
-    options.fn this
+Template.primaryImage.helpers
+  primaryImage: ->
+    getVariantImage()
 
-Template.productImageGallery.isvideo = (mimetype, options) ->
-  mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
-  if mimetype.match("video.*")
-    options.fn this
-  else
-    options.inverse this
-
+# *****************************************************
+# Template.productImageGallery.rendered
+# *****************************************************
 Template.productImageGallery.rendered = ->
   product = @data
   variant = getSelectedVariant()
-
   # *****************************************************
   # Filepicker.io image upload
   # https://developers.inkfilepicker.com/docs/
   # requires apikey
   # *****************************************************
-
-  # unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-  #   new Packery(document.querySelector(".gallery"), {gutter: 2,"itemSelector": "li", "stamp": ".product-image"})
-
   if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
     $('#galleryDropPane').css "border", "1px dashed #ccc"
     cb = ->
@@ -86,18 +81,17 @@ Template.productImageGallery.rendered = ->
 
 
 # *****************************************************
-# set session media-url whenever a secondary image == clicked
+# set primaryImage whenever a secondary image == clicked
 # returns image url
 # *****************************************************
 Template.productImageGallery.events
   "click .view-image": (event, template) ->
-    Session.set "media-url", @src
+    #Template.productImageGallery._tmpl_data.helpers.primaryImage @src
+    $('#main-image').attr('src', @src )
 
 
 # *****************************************************
-# get session media-url and deletes from images,
-# or deletes from image if no session data
-# TODO: Consider path {path: '/myfiles/1234.png'};
+# manual image upload
 # *****************************************************
   "click .imageAddButton": (event) ->
     filepicker.pickAndStore
@@ -110,13 +104,12 @@ Template.productImageGallery.events
 
 
 # *****************************************************
-# get session media-url and deletes from images,
-# or deletes from image if no session data
+# delete image based on selected src of primary image
 # *****************************************************
   "click .image-remove-link": (event, template) ->
     event.preventDefault()
     currentProductId = Session.get("currentProductId")
-    mediaUrl = Session.get("media-url") || $(event.target).closest(".gallery-tools").prevAll(".product-image").find("img").attr("src")
+    mediaUrl = $('#main-image').attr("src")
     media = _.find getSelectedVariant().medias, (media) ->
       media.src == mediaUrl
     $pull = {}
@@ -124,8 +117,6 @@ Template.productImageGallery.events
     Products.update currentProductId, {$pull: $pull}, (error) ->
       if error
         throwError error.reason
-      else
-        Session.set "media-url", `undefined`
 
 # *****************************************************
 # save changed image data

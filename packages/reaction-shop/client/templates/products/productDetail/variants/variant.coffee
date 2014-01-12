@@ -11,14 +11,13 @@ Template.variant.events
     $("#variants-modal").modal()
 
   "dblclick .variant-list": (e) ->
-    $("#variants-modal").modal()
+    $("#variants-modal").modal() if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
 
   "click .variant-list > *": (e) ->
     $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
-    Session.set("selectedVariant",this)#for cart
+    Session.set("selectedVariant",this)#for cart and images
     index = $(e.target).closest("li").prevAll().length
     Session.set "selectedVariantIndex", index
-
     $('.variant-list #'+this._id).addClass("variant-detail-selected")
     e.stopPropagation()
 

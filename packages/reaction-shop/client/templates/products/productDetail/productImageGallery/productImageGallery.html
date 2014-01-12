@@ -1,20 +1,6 @@
 <template name="productImageGallery">
 {{#with variant.medias}}
-  <div class="product-image">
-    {{#if firstImage}}
-        <div class="product-image-main">
-          <img class="img-responsive" name="main-image" src="{{firstImage.src}}">
-        </div>
-      {{#if userHasRole "admin"}}
-        <div class="gallery-tools">
-          <a><i class="fa fa-link"></i></a>
-          <a><i class="fa fa-paperclip"></i></a>
-          <a><i class="fa fa-pencil"></i></a>
-          <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
-        </div>
-      {{/if}}
-    {{/if}}
-  </div>
+  {{>primaryImage}}
   <div id="galleryDropPane" class="galleryDropPane">
     <ul class="gallery">
     {{#foreach .}}
@@ -42,13 +28,29 @@
     {{/if}}
 </div>
 {{else}}
-<div id="galleryDropPane" class="galleryDropPane">
-  <img src="../../resources/placeholder.jpeg">
-</div>
   {{#if userHasRole "admin"}}
-  <p>
-    <button type="button" class="btn btn-danger btn-lg btn-block imageAddButton" tabindex="-1">Add media</button>
-  </p>
+    <div id="galleryDropPane" class="galleryDropPane"><img src="../../resources/placeholder.jpeg"></div>
+    <p><button type="button" class="btn btn-danger btn-lg btn-block imageAddButton" tabindex="-1">Add media</button></p>
+  {{else}}
+    {{>primaryImage}}
   {{/if}}
 {{/with}}
+</template>
+
+<template name="primaryImage">
+  <div class="product-image">
+    {{#if primaryImage}}
+        <div class="product-image-main">
+          <img id="main-image" class="img-responsive" name="main-image" src="{{primaryImage}}">
+        </div>
+      {{#if userHasRole "admin"}}
+        <div class="gallery-tools">
+          <a><i class="fa fa-link"></i></a>
+          <a><i class="fa fa-paperclip"></i></a>
+          <a><i class="fa fa-pencil"></i></a>
+          <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
 </template>

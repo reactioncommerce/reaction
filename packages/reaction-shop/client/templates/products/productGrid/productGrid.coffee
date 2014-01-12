@@ -22,10 +22,12 @@ Template.productGridItems.events
       Router.go "/shop/products"
 
 # Initialize packery on the first render of the productGrid
-Template.productGrid.rendered = ->
-  imagesLoaded @firstNode, ->
-    container = document.querySelector(".product-grid")
-    new Packery(document.querySelector(".product-grid"),
-      gutter: 10
-      transitionDuration: "0.2s"
-    )
+# Template.productGrid.rendered = ->
+#   imagesLoaded @firstNode, ->
+#     container = document.querySelector(".product-grid")
+#     new Masonry(document.querySelector(".product-grid"),
+#       # gutter: 10
+#       # columnWidth: ".img-responsive"
+#       # transitionDuration: 0
+#       itemSelector: '.item'
+#     )

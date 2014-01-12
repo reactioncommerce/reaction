@@ -11,7 +11,7 @@ Template.activePkgGrid.helpers
     PackageConfigs.find().count()
 
 Template.activePkgGrid.rendered = ->
-  pkgGrid = new Packery(document.querySelector(".pkg-container"),
+  pkgGrid = new Masonry(document.querySelector(".pkg-container"),
     gutter: 2
     columnWidth: 310
   )

@@ -1,17 +1,20 @@
 <template name="productGrid">
   <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
+    <div id="list">
     {{#each products}}
       {{> productGridItems}}
     {{/each}}
+    </div>
   </div>
 </template>
 
 
 <template name="productGridItems">
-<div id="{{_id}}" class="thumbnail">
+<div id="{{_id}}" class="thumbnail item">
+
   <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
-    <img src="{{image}}">
-    <h2>{{title}} ${{variants.[0].price}}</h2>
+    <img src="{{image}}" class="img-responsive">
+
     {{#unless isVisible}}
       <i class="fa fa-eye-slash" title="Publish"></i>
     {{/unless}}
@@ -21,5 +24,6 @@
     {{/if}}
 
   </a>
+  <div class="overlay">{{title}} ${{variants.[0].price}}</div>
 </div>
 </template>

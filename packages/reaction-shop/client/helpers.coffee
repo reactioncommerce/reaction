@@ -32,16 +32,19 @@ Handlebars.registerHelper "hasOwnerAccess", ->
 # or a placeholder for a product variant
 # *****************************************************
 @getVariantImage = (variantId) ->
+  variantId = getSelectedVariant()._id unless variantId
   if variantId
     variantProduct = Products.findOne({"variants._id":variantId},{fields:{"variants":true}})
     if variantProduct
       try
         media = _.filter(variantProduct.variants, (item)-> item._id is variantId)[0].medias[0].src
       catch err
-        return "../../resources/placeholder.jpeg"
-      media
+        console.log "No media found! Returning default."
+        media = variantProduct.variants[0].medias[0].src
+      finally
+        media
     else
       console.log "Error with variant product"
       return "../../resources/placeholder.jpeg"
   else
-    console.log "Error retrieving variant image"
+    console.log "Error retrieving variant image - no id"
