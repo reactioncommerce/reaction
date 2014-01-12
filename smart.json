@@ -6,9 +6,7 @@
     "x-editable-bootstrap3": {
       "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git"
     },
-    "iron-router": {
-      "git": "https://github.com/wsoul/iron-router.git"
-    },
+    "iron-router": {},
     "videojs": {},
     "font-awesome-4": {},
     "bootstrap3-less": {},

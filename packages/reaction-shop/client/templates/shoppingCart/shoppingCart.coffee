@@ -1,44 +1,51 @@
 Template.shopCartIcon.helpers
   cartCount: ->
+    currentCart = Cart.findOne()
     count = 0
-    if Session.get('serverSession')
-      currentCart = Cart.findOne()
-    if currentCart and currentCart.items
-      for items in currentCart.items
-        count += items.quantity
-    return count
+    ((count += items.quantity) for items in currentCart.items) if currentCart?.items
+    count
 
 Template.shopCartIconList.helpers
   cartList: ->
     currentCart = Cart.findOne()
-    if currentCart
-      return currentCart.items
-
+    currentCart.items if currentCart?.items
 
 Template.shopCartSlide.helpers
   cartItems: ->
     currentCart = Cart.findOne()
-    if currentCart
-      return currentCart.items
+    items = (cart for cart in currentCart.items by -1) if currentCart?.items
 
+Template.cartItems.helpers
   image:(variantId)->
     getVariantImage(variantId)
-
 
 Template.shopCartSlide.rendered = ->
   $(".owl-carousel").owlCarousel
     items: 5
-    lazyLoad : true
     responsive: true
-    itemsCustom : false
-    itemsDesktop : [1199,4]
-    itemsDesktopSmall : [980,3]
-    itemsTablet: [768,2]
-    itemsTabletSmall: false
-    itemsMobile : [479,1]
-    singleItem : false
-    itemsScaleUp : false
 
 Template.shopCartSlide.events
   'click #btn-checkout': () ->
     $("#shop-cart-slide").fadeOut( 100 )
+
+  'click .remove-cart-item': (e,template) ->
+    Meteor.call('removeFromCart',Cart.findOne()._id,this.variants)
+    throwError this.variants.title+" removed","Cart updated","info"
+
+Template.cartSubTotals.helpers
+  cartCount: ->
+    currentCart = Cart.findOne()
+    count = 0
+    ((count += items.quantity) for items in currentCart.items) if currentCart?.items
+    count
+  subTotal: ->
+    currentCart = Cart.findOne()
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in currentCart.items) if currentCart?.items
+    subtotal.toFixed(2)
+
+  cartTotal: ->
+    currentCart = Cart.findOne()
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in currentCart.items) if currentCart?.items
+    subtotal.toFixed(2)

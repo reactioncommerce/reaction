@@ -9,10 +9,7 @@
         "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git",
         "branch": "master"
       },
-      "iron-router": {
-        "git": "https://github.com/wsoul/iron-router.git",
-        "branch": "master"
-      },
+      "iron-router": {},
       "videojs": {},
       "font-awesome-4": {},
       "bootstrap3-less": {},
@@ -54,9 +51,9 @@
         "commit": "310ae13f4f542c3078ce5a3311e12787ca999745"
       },
       "iron-router": {
-        "git": "https://github.com/wsoul/iron-router.git",
-        "branch": "master",
-        "commit": "a34ce92ff1ece98e2ec9416b8490c8f9ef3334c0"
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.6.2",
+        "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
       },
       "videojs": {
         "git": "https://github.com/nate-strauser/meteor-video-js.git",

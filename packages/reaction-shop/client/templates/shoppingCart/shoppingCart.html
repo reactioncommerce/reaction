@@ -18,15 +18,15 @@
 </template>
 
 <template name="shopCartSlide">
+{{#isolate}}
   <div class="shop-cart-slide" id="shop-cart-slide">
-    {{#isolate}}
     <div class="owl-carousel">
-    {{#each cartItems}}
-      <div class="cartItems">
-        <img src="{{image variants._id}}" alt="{{variants.title}}" class="img-thumbnail">
-       <span class="badge">{{quantity}}</span> {{variants.title}}
-      </div>
-    {{/each}}
+        {{#if cartItems}}
+          {{>cartSubTotals}}
+        {{/if}}
+        {{#each cartItems}}
+          {{>cartItems}}
+        {{/each}}
     </div>
     {{#unless cartItems}}
       <div class="cart-items">
@@ -38,5 +38,37 @@
     </a>
     {{/unless}}
   </div>
-  {{/isolate}}
+{{/isolate}}
+</template>
+
+<template name="cartItems">
+<div class="cart-items">
+  <div class="img-thumbnail">
+    <a href="#"><span class="fa fa-times fa-lg pull-right remove-cart-item" id="{{_id}}"></span></a>
+      <a href="{{pathFor 'shop/product'}}" data-event-category="cart" data-event-action="product-click" data-event-label="Cart product click" data-event-value="{{productId}}">
+        <img src="{{image variants._id}}" alt="{{variants.title}}" class="cart-image">
+      </a>
+  </div>
+  <div>
+  <div class="cart-labels">
+    <span class="badge">{{quantity}}</span>
+    <span>{{variants.title}}</span>
+  </div>
+  </div>
+</div>
+</template>
+
+<template name="cartSubTotals">
+<div class="thumbnail">
+  <div class="cart-totals">
+    <table class="table table-condensed">
+      <thead>Your cart</thead>
+      <tr><td>Items in cart</td><td>{{cartCount}}</td></tr>
+      <tr><td>Sub total</td><td>{{subTotal}}</td></tr>
+      <tr><td>Est. Shipping</td><td>{{estShipping}}</td></tr>
+      <tr><td>Est. Taxes</td><td>{{estTaxes}}</td></tr>
+      <tr><td>Est. Total</td><td>{{cartTotal}}</td></tr>
+    </table>
+  </div>
+</div>
 </template>

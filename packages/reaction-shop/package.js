@@ -66,6 +66,7 @@ Package.on_use(function (api, where) {
     "client/templates/shoppingCart/shoppingCart.less",
 
     "client/templates/shoppingCart/shoppingCartCheckout.html",
+    "client/templates/shoppingCart/shoppingCartCheckout.less",
     "client/templates/shoppingCart/shoppingCartCheckout.coffee",
 
     "client/templates/shoppingCart/shoppingCartAddress.html",

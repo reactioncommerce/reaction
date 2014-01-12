@@ -382,7 +382,7 @@ Customers = @Customers # package exports
 Orders = @Orders # package exports
 
 CartItemSchema = new SimpleSchema
-  productId:
+  _id:
     type: String
   quantity:
     label: "Quantity"

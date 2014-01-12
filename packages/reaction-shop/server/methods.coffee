@@ -87,7 +87,7 @@ Meteor.methods
     if currentCart.count() > 0
       Cart.update {_id: cartId, "items.variants._id": variantData._id}, { $set: {updatedAt: now}, $inc: {"items.$.quantity": quantity}}
     else
-      Cart.update {_id: cartId}, { $addToSet: {items: {productId: productId, quantity: quantity, variants: variantData}}},validationContext: validationContext, (error, result) -> console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
+      Cart.update {_id: cartId}, { $addToSet: {items: {_id: productId, quantity: quantity, variants: variantData}}},validationContext: validationContext, (error, result) -> console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
 
   createCart: (sessionId, userId) ->
     unless userId

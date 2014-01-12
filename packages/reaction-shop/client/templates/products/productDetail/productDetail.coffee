@@ -211,13 +211,14 @@ Template.productDetail.events
   #     e.preventDefault()
   #     if e.shiftKey # shift + tab
   #       # find the parent of the editable before this one in the markup
-  #       $(e.target).blur().parents().prevAll(":has(.editable):first").find(".editable:last").editable "show"
+  #       $(event.target).blur().parents().prevAll(":has(.editable):first").find(".editable:last").editable "show"
   #     else # just tab
   #       # find the parent of the editable after this one in the markup
-  #       $(e.target).blur().parents().nextAll(":has(.editable):first").find(".editable:first").editable "show"
+  #       $(event.target).blur().parents().nextAll(":has(.editable):first").find(".editable:first").editable "show"
 
-  "click #add-to-cart": (e, template) ->
-    e.preventDefault()
+  "click #add-to-cart": (event, template) ->
+    event.preventDefault()
+    event.stopPropagation()
     now = new Date()
     return throwError("Oops, select an option before adding to cart") unless Session.get("selectedVariant")
     sessionId = Session.get("serverSession")._id
@@ -225,21 +226,27 @@ Template.productDetail.events
     productId = Session.get("currentProductId")
     quantity = 1
     # TODO - shopping cart id should probably just be session id, and make sure it's always availble here
-    Meteor.call "addToCart", Session.get('shoppingCart')._id, productId, variantData, quantity
-    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
-    Session.set("selectedVariant","")
-    $("html, body").animate({ scrollTop: 0 }, "fast")
-    $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
+    Meteor.call "addToCart", Session?.get('shoppingCart')._id, productId, variantData, quantity
 
-  "submit form": (e) ->
-    e.preventDefault()
+    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
+    Session.set("selectedVariant","")#TODO - review/keep and just reset when viewing new
+    setTimeout (->
+      $("html, body").animate({ scrollTop: 0 }, "fast")
+      $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
+    ), 500
+
+
+
+  "submit form": (event) ->
+    event.preventDefault()
+    event.stopPropagation()
     currentProductId = Session.get("currentProductId")
     productsProperties =
-      title: $(e.target).find("[name=title]").val()
-      vendor: $(e.target).find("[name=vendor]").val()
-      description: $(e.target).find("[name=description]").val()
-      tags: $(e.target).find("[name=tags]").val()
-      handle: $(e.target).find("[name=handle]").val()
+      title: $(event.target).find("[name=title]").val()
+      vendor: $(event.target).find("[name=vendor]").val()
+      description: $(event.target).find("[name=description]").val()
+      tags: $(event.target).find("[name=tags]").val()
+      handle: $(event.target).find("[name=handle]").val()
 
     Products.update currentProductId,
       $set: productsProperties
@@ -256,17 +263,18 @@ Template.productDetail.events
   # this function is a full delete
   # TODO: delete from archived list
   # *****************************************************
-  "click .delete": (e) ->
-    e.preventDefault()
+  "click .delete": (event) ->
+    event.preventDefault()
     if confirm("Delete this product?")
       currentProductId = Session.get("currentProductId")
       Products.remove currentProductId
       Router.go "/shop/products"
 
-  "click #edit-options": (e) ->
+  "click #edit-options": (event) ->
     $("#options-modal").modal()
-    e.preventDefault()
-  "click .toggle-product-isVisible-link": (e, t) ->
+    event.preventDefault()
+
+  "click .toggle-product-isVisible-link": (event, template) ->
     Products.update(t.data._id, {$set: {isVisible: !t.data.isVisible}})
 
 # *****************************************************

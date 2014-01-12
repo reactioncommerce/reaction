@@ -59,7 +59,7 @@ Router.map ->
     path: '/shop/products/:_id'
     before: ->
       product = Products.findOne(@params._id)
-      unless product.isVisible
+      unless product?.isVisible
         unless Meteor.app.hasPermission(@path)
           @render('unauthorized')
           @stop()

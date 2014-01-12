@@ -1,10 +1,7 @@
 <template name="shoppingCartCheckout">
-  <div class="container">
+  <div class="container cart-checkout">
     <h1>Checkout</h1>
     <div class="row">
-      <div class="well checkout-cart col-md-4">
-        {{>shoppingCartCheckoutList}}
-      </div>
       <div class="col-md-8">
         {{#if currentUser}}
         <div class="row">
@@ -27,23 +24,6 @@
       </div>
     </div>
   </div>
-</template>
-
-<template name="shoppingCartCheckoutList">
-<div class="list-group">
-  {{#each cartList}}
-    <p class="list-group-item">
-          <span class="fa fa-times-circle-o fa-lg pull-right remove" id="{{_id}}"></span>
-          <img class="img-responsive" src="{{image variants._id}}">
-          <span class="badge">{{quantity}}</span>
-          <a href="{{pathFor 'shop/products'}}/{{productId}}">{{variants.barcode}}</a>
-    </p>
-  {{else}}
-    <p class="list-group-item text-center">
-      <i class="fa fa-frown-o fa-4x"></i><br/><strong>Empty Cart. <br/>Looks like you need to add something!</strong>
-    </p>
-  {{/each}}
-</div>
 </template>
 
 <template name="shoppingCartCheckoutAccount">
