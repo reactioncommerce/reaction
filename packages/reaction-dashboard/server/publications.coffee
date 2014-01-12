@@ -22,7 +22,8 @@ PackageConfigs.allow
     true
 
   update: (userId, doc, fields, modifier) ->
-    return false  if modifier.$set and modifier.$set.shopId
+    if modifier.$set and modifier.$set.shopId
+      return false
     true
 
   remove: (userId, doc) ->
