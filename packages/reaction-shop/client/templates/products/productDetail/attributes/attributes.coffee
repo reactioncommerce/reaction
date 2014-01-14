@@ -1,15 +1,13 @@
 Template.attributes.helpers
   attributes: () ->
-    currentProductId = Session.get("currentProductId")
-    attributes = Products.findOne(currentProductId).metafields
+    (currentProduct.get "product").metafields
 
 Template.attributes.events
   'click .attribute-delete': (e) ->
     # TODO: validate indexes when deleting? (duplicates, both get deleted)
     e.preventDefault()
     if confirm("Delete this detail?")
-      currentProductId = Session.get("currentProductId")
-      Products.update currentProductId,
+      Products.update (currentProduct.get "product")._id,
         $pull: metafields: this
 
 
@@ -59,8 +57,7 @@ Template.attributes.rendered = ->
 # returns true or err
 # *****************************************************
     updateAttributes = (data, newValue) ->
-      currentProductId = Session.get("currentProductId")
-      attributes = Products.findOne(currentProductId)?.metafields
+      attributes = (currentProduct.get "product").metafields
       if attributes
         for item in attributes
           if newValue.key and _.isEqual(item, data)
@@ -71,7 +68,7 @@ Template.attributes.rendered = ->
             update = true
 
       if update
-        Products.update currentProductId,
+        Products.update (currentProduct.get "product")._id,
           $set: metafields: attributes, (error) ->
             if error
               throwError error
@@ -79,7 +76,7 @@ Template.attributes.rendered = ->
             else
               true
       else
-        Products.update currentProductId,
+        Products.update (currentProduct.get "product")._id,
           $push: metafields: newValue, (error) ->
             if error
               throwError error

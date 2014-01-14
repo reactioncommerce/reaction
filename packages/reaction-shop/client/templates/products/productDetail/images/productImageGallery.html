@@ -39,9 +39,9 @@
 
 <template name="primaryImage">
   <div class="product-image">
-    {{#if primaryImage}}
+
         <div class="product-image-main">
-          <img id="main-image" class="img-responsive" name="main-image" src="{{primaryImage}}">
+          <img id="main-image" class="img-responsive" name="main-image" src="{{getVariantImage}}">
         </div>
       {{#if userHasRole "admin"}}
         <div class="gallery-tools">
@@ -51,6 +51,6 @@
           <a class="image-remove-link"><i class="fa fa-trash-o"></i></a>
         </div>
       {{/if}}
-    {{/if}}
+
   </div>
 </template>

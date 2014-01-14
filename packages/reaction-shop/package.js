@@ -150,6 +150,7 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.export([
+    "currentProduct",
     "install_spy",
     "ShopController",
     "Products",

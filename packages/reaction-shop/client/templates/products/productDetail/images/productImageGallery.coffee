@@ -3,7 +3,7 @@
 # *****************************************************
 Template.productImageGallery.helpers
   variant: ->
-    getSelectedVariant()
+    (currentProduct.get "variant")
 
   isimage: (mimetype, options) ->
     mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
@@ -19,16 +19,10 @@ Template.productImageGallery.helpers
     else
       options.inverse this
 
-Template.primaryImage.helpers
-  primaryImage: ->
-    getVariantImage()
-
 # *****************************************************
 # Template.productImageGallery.rendered
 # *****************************************************
 Template.productImageGallery.rendered = ->
-  product = @data
-  variant = getSelectedVariant()
   # *****************************************************
   # Filepicker.io image upload
   # https://developers.inkfilepicker.com/docs/
@@ -70,8 +64,8 @@ Template.productImageGallery.rendered = ->
           variant.medias[index]
         )
         $set = {}
-        $set["variants."+getSelectedVariantIndex()+".medias"] = sortedMedias
-        Products.update(product._id, {$set: $set})
+        $set["variants."+(currentProduct.get "index")+".medias"] = sortedMedias
+        Products.update((currentProduct.get "product")._id, {$set: $set})
       start: (event, $ui) ->
         $ui.placeholder.height $ui.helper.height()
         $ui.placeholder.html "Drop image to reorder"
@@ -108,13 +102,13 @@ Template.productImageGallery.events
 # *****************************************************
   "click .image-remove-link": (event, template) ->
     event.preventDefault()
-    currentProductId = Session.get("currentProductId")
     mediaUrl = $('#main-image').attr("src")
-    media = _.find getSelectedVariant().medias, (media) ->
+    media = _.find (currentProduct.get "variant").medias, (media) ->
       media.src == mediaUrl
     $pull = {}
-    $pull["variants."+getSelectedVariantIndex()+".medias"] = media
-    Products.update currentProductId, {$pull: $pull}, (error) ->
+    console.log (currentProduct.get "index")
+    $pull["variants."+(currentProduct.get "index")+".medias"] = media
+    Products.update (currentProduct.get "product")._id, {$pull: $pull}, (error) ->
       if error
         throwError error.reason
 
@@ -122,7 +116,6 @@ Template.productImageGallery.events
 # save changed image data
 # *****************************************************
 uploadMedias = (upload) ->
-  currentProductId = Session.get("currentProductId")
   newMedias = []
   i = upload.length - 1
   while i >= 0
@@ -133,8 +126,8 @@ uploadMedias = (upload) ->
       createdAt: new Date()
     i--
   $addToSet = {}
-  $addToSet["variants."+getSelectedVariantIndex()+".medias"] =
+  $addToSet["variants."+(currentProduct.get "index")+".medias"] =
     $each: newMedias
-  Products.update currentProductId, {$addToSet: $addToSet}, (error) ->
+  Products.update (currentProduct.get "product")._id, {$addToSet: $addToSet}, (error) ->
     throwError error if error
 

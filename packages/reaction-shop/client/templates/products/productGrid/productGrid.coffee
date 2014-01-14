@@ -2,12 +2,6 @@ Template.productGrid.helpers
   products: ->
     getProductsByTag(@tag)
 
-
-Template.productGridItems.helpers
-  #placeholder for future image handling
-  image: ->
-    getVariantImage(this.variants[0]._id)
-
 Template.productGridItems.events
   'click .clone-product': () ->
     Meteor.call "cloneProduct", this, (err, productId) ->

@@ -4,7 +4,49 @@ Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
 
+####################################################
+#  Reactive current product
+#  This ensures singleton reactive products, without session
+#
+#  set usage: currentProduct.set "product",object
+#  get usage: currentProduct.get "product"
+####################################################
+currentProduct =
+  keys: {}
+  deps: {}
+  get: (key) ->
+    @ensureDeps key
+    @deps[key].depend()
+    @keys[key]
+  set: (key, value) ->
+    @ensureDeps key
+    @keys[key] = value
+    @deps[key].changed()
+  ensureDeps: (key) ->
+    @deps[key] = new Deps.Dependency  unless @deps[key]
 
+####################################################
+#  Method to set default variant
+#  @params variant id
+####################################################
+@setVariant = (variant) ->
+  index = 0
+  isDefault = true
+  for item,value in (currentProduct.get "product").variants
+    index += 1
+    if item._id is variant #process variant param
+      currentProduct.set "variant", item
+      #currentProduct.set "index", index
+      isDefault = false
+  if isDefault
+    currentProduct.set "variant", (currentProduct.get "product").variants[0]
+    currentProduct.set "index", 0
+
+
+####################################################
+#  Autorun dependencies
+#  ensure user cart is created, and address located
+####################################################
 Deps.autorun ->
   if Session.get('serverSession')
     Meteor.subscribe 'cart', Session.get('serverSession')._id
@@ -31,6 +73,10 @@ Deps.autorun ->
     }
     Session.set("address",address)
 
+####################################################
+#  Geolocate Methods
+#  look up user location at startup
+####################################################
 
 Meteor.startup ->
   #Pass the lat/long to google geolocate

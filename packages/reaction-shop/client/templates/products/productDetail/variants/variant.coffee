@@ -1,47 +1,44 @@
 Template.variant.events
-  "click .remove-link": (e, template) ->
-    if confirm($(e.target).closest("a").data("confirm"))
-      Products.update Session.get("currentProductId"),
+  "click .remove-link": (event, template) ->
+    if confirm($(event.target).closest("a").data("confirm"))
+      Products.update (currentProduct.get "product")._id,
         $pull:
           variants: template.data
-    e.preventDefault()
-    e.stopPropagation()
 
-  "click .edit-link": (e) ->
+  "click .edit-link": (event) ->
     $("#variants-modal").modal()
 
-  "dblclick .variant-list": (e) ->
+  "dblclick .variant-list": (event) ->
     $("#variants-modal").modal() if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
 
-  "click .variant-list > *": (e) ->
-    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
-    Session.set("selectedVariant",this)#for cart and images
-    index = $(e.target).closest("li").prevAll().length
-    Session.set "selectedVariantIndex", index
+  "click .variant-list > *": (event) ->
+    $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
+    this.index = $(event.target).closest("li").prevAll().length
+    currentProduct.set "variant", this
+    currentProduct.set "index", this.index
     $('.variant-list #'+this._id).addClass("variant-detail-selected")
-    e.stopPropagation()
 
 
 Template.variant.helpers
   maxQty: () ->
     qty = 0
-    variants = Products.findOne(Session.get("currentProductId"),{fields:{variants:true}}).variants
+    variants = (currentProduct.get "product").variants
     _.map variants, (value,key) ->
       qty += variants[key].inventoryQuantity if variants[key].inventoryQuantity?
     qty
+
   maxLength: (max) ->
     unless !this.inventoryQuantity? and !this.title?
       inventoryPercentage = (this.inventoryQuantity / max) * 100
       inventoryPercentage  = (100 - (this.title.length * 2)) if (inventoryPercentage  + this.title.length > 100)
       inventoryPercentage
 
-Template.variantList.events
-  "click #add-variant": (e) ->
-    currentProduct = Products.findOne(Session.get("currentProductId"))
 
+Template.variantList.events
+  "click #add-variant": (event) ->
     #clone last variant
-    if _.last(currentProduct.variants)
-      lastVariant = _.last(currentProduct.variants)
+    if _.last((currentProduct.get "product").variants)
+      lastVariant = _.last((currentProduct.get "product").variants)
       delete lastVariant._id
       delete lastVariant.updatedAt
       delete lastVariant.createdAt
@@ -54,13 +51,19 @@ Template.variantList.events
         _id: Random.id()
         title: "New product variant"
         price: 0
+    index = ((currentProduct.get "product").variants.length)
+    Meteor.call "cloneVariant", (currentProduct.get "product")._id, clonedLastVariant, (error, result) ->
+      Deps.flush()
+      @setVariant result
+      currentProduct.set "index",index
 
-    newVariantIndex = currentProduct.variants.length
-    #Products._collection.update(currentProduct._id, {$push: {variants: clonedLastVariant}})
-    Meteor.call "cloneVariant", currentProduct._id, clonedLastVariant
-    Session.set "selectedVariantIndex", newVariantIndex
-    $("#variants-modal").modal()
-    e.preventDefault()
+    #wait for the variant to succeed.
+    setTimeout (->
+      $("#variants-modal").modal()
+    ), 500
+    # DOM manipulation defer
+    event.preventDefault()
+
 
 Template.variantList.rendered = ->
   # *****************************************************
@@ -94,37 +97,3 @@ Template.variantList.rendered = ->
 
     success: (response, newValue) ->
       updateProduct variants: newValue
-
-
-  # *****************************************************
-  # Function to return variant data
-  # param: property:value
-  # returns true or err
-  # *****************************************************
-  variants = (options) ->
-    currentProductId = Session.get("currentProductId")
-    product = Products.findOne(
-      _id: currentProductId
-    ,
-      fields:
-        variants: true
-    ).variants.valueOf()
-    variant = []
-    i = 0
-
-    while i < product.length
-      variant[i] =
-        value: i
-        text: product[i].sku
-      i++
-    variant
-
-# *****************************************************
-# methods for variant selection
-# *****************************************************
-window.getSelectedVariantIndex = ->
-  Session.get("selectedVariantIndex") or 0
-
-window.getSelectedVariant = ->
-  product = Products.findOne(Session.get("currentProductId"))
-  product.variants[getSelectedVariantIndex()]

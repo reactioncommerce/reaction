@@ -58,15 +58,15 @@ Router.map ->
     controller: ShopController
     path: '/shop/products/:_id'
     before: ->
-      product = Products.findOne(@params._id)
-      unless product?.isVisible
+      # set current variant and products
+      currentProduct.set "product", Products.findOne(@params._id)
+      setVariant(@params.variant)
+      unless Products.findOne(@params._id)?.isVisible
         unless Meteor.app.hasPermission(@path)
           @render('unauthorized')
           @stop()
     data: ->
-      Session.set "selectedVariantIndex", 0  unless Session.get("currentProductId") is @params._id
-      Session.set 'currentProductId', @params._id
-      Products.findOne(@params._id)
+      currentProduct.get "product"
     template: 'productDetail'
   #checkout
   @route 'shoppingCartCheckout',

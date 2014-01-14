@@ -15,10 +15,6 @@ Template.shopCartSlide.helpers
     currentCart = Cart.findOne()
     items = (cart for cart in currentCart.items by -1) if currentCart?.items
 
-Template.cartItems.helpers
-  image:(variantId)->
-    getVariantImage(variantId)
-
 Template.shopCartSlide.rendered = ->
   $(".owl-carousel").owlCarousel
     items: 5

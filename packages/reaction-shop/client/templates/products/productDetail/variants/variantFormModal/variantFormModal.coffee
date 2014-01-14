@@ -1,39 +1,36 @@
-Template.variantFormModal.defaultMetafield = ->
-  isTemplate: true
-  keyFieldAttributes: "disabled=\"disabled\""
-  defaultValueFieldAttributes: "disabled=\"disabled\""
-  key: "__KEY__"
-  currentVariantIndex: window.getDynamicCurrentVariantIndex()
-
-Template.variantFormModal.currentVariantIndex = ->
-  return getSelectedVariantIndex()
-
-Template.variantFormModal.variant = ->
-  currentProduct = Products.findOne(Session.get("currentProductId"))
-  (if _.isNumber(getSelectedVariantIndex()) then currentProduct.variants[getSelectedVariantIndex()] else getDefaultVariantData())
-
-Template.variantFormModal.rendered = ->
-  updateInventoryManagementFieldsVisibility()
+Template.variantFormModal.helpers
+  defaultMetafield: ->
+    isTemplate: true
+    keyFieldAttributes: "disabled=\"disabled\""
+    defaultValueFieldAttributes: "disabled=\"disabled\""
+    key: "__KEY__"
+    currentVariantIndex: (currentProduct.get "index")
+  currentVariantIndex: ->
+    return (currentProduct.get "index")
+  variant: ->
+    (currentProduct.get "variant")
+  rendered: ->
+    updateInventoryManagementFieldsVisibility()
 
 Template.variantFormModal.events
   "change .variant-inventory-management": ->
     updateInventoryManagementFieldsVisibility()
 
-  "click .add-embedded-document-link": (e, template) ->
-    $template = $(e.target).closest(".form-group").prev(".form-group-template")
+  "click .add-embedded-document-link": (event, template) ->
+    $template = $(event.target).closest(".form-group").prev(".form-group-template")
     html = $("<div />").append($template.clone()).html()
-    html = html.replace(/__KEY__/g, template.findAll("." + $template.data("form-group-cls")).length - 1).replace("form-group-template", "")
+    html = html.replace(/__KEY__/g, $template.findAll("." + $template.data("form-group-cls")).length - 1).replace("form-group-template", "")
     $template.before html
     _.defer ->
-      $formGroup = $template.prev()
+      $formGroup = template.prev()
       $formGroup.find("input").prop "disabled", false
       $formGroup.find(".label-form-control").focus()
 
     # DOM manipulation defer
-    e.preventDefault()
+    event.preventDefault()
 
-  "click .metafield-form-group .remove-embedded-document-button": (e, template) ->
-    $formGroup = $(e.target).closest(".form-group")
+  "click .metafield-form-group .remove-embedded-document-button": (event, template) ->
+    $formGroup = $(event.target).closest(".form-group")
     cls = $formGroup.data("form-group-cls")
     $formGroup.remove()
     _.defer ->
@@ -48,28 +45,33 @@ Template.variantFormModal.events
             ], (attr) ->
               $input.attr attr, $input.attr(attr).replace(/(metafields[^\d]+)\d+/, "$1" + formGroupIndex)
 
-    e.preventDefault()
-    e.stopPropagation()
+    event.preventDefault()
+    event.stopPropagation()
 
-  "submit form": (e, template) ->
-    e.preventDefault()
-    currentProduct = Products.findOne(Session.get("currentProductId"))
-    currentVariantIndex = getSelectedVariantIndex()
-    oldVariant = currentProduct.variants[currentVariantIndex] or getDefaultVariantData()
+  "submit form": (event, template) ->
+    thisProduct = this
+    currentVariantIndex = (currentProduct.get "index")
+    # don't set currentVariantIndex for new/cloned variants
+    oldVariant = (currentProduct.get "product").variants[currentVariantIndex] or getDefaultVariantData()
+
     variant =
       _id: Random.id()
       inventoryPolicy: "deny"
       taxable: false
       requiresShipping: false
 
+    #process metafields
     form = template.find("form")
     $form = $(form)
     hash = $form.serializeHash()
-    # TODO: simple-schema lacks default values, send him a PR
+    # merge original, delete some fields that
+    # we don't want in clone, and merge metafield
+    # target,original, form fields
     _.extend variant, oldVariant, hash.variants[currentVariantIndex]
-    # Map object created by serializeHash to required array
+    # Map object created by serializeHash to schema required array
     for item,value of variant.metafields
       variant.metafields[value] = item
+
     # TODO: simple-schema optional decimal validation bug, send him a PR
     delete variant.compareAtPrice  unless variant.compareAtPrice
     delete variant.weight unless variant.weight
@@ -79,25 +81,26 @@ Template.variantFormModal.events
     variant.taxable = !!variant.taxable
     variant.requiresShipping = !!variant.requiresShipping
     variant.updatedAt = new Date()
+
     variant = ProductVariantSchema.clean(variant)
     # TODO: server side method, or positional mongo statement to update only specific index
-    currentProduct.variants[currentVariantIndex] = variant
+    thisProduct.variants[currentVariantIndex] = variant
 
     # TODO: simple-schema embedded document invalid key name message bug ("variants.$.metafields.0.value"), send him a PR
+    # This uses scheme validation and returns any errors
     validationContext = "variant"
     localValidationCallback = _.partial(validationCallback, $form, Products, validationContext, ->
       $(template.find(".modal")).modal "hide" # manual hide fix for Meteor reactivity
     , (name) ->
       name.replace /\$/, currentVariantIndex
     )
-    Products.update currentProduct._id,
+    # Updating this new merge variants
+    Products.update this._id,
       $set:
-        variants: currentProduct.variants
-    ,
-      validationContext: validationContext
-    , localValidationCallback
-    e.preventDefault()
-    e.stopPropagation()
+        variants:  thisProduct.variants
+      ,
+        validationContext: validationContext
+      , localValidationCallback
 
 validationCallback = ($form, collection, validationContext, successCallback, invalidKeyNameFixFunction, error, result) ->
   $form.find(".has-error").removeClass "has-error"
@@ -130,6 +133,3 @@ getDefaultVariantData = ->
   taxable: true
   requiresShipping: true
   createdAt: new Date()
-
-window.getDynamicCurrentVariantIndex = ->
-  (if _.isNumber(getSelectedVariantIndex()) then getSelectedVariantIndex() else Products.findOne(Session.get("currentProductId")).variants.length)

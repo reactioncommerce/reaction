@@ -54,7 +54,9 @@ Meteor.methods
         Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
 
   cloneVariant: (id, clone) ->
+    clone._id = Random.id()
     Products._collection.update(id, {$push: {variants: clone}})
+    clone._id
 
   cloneProduct: (product) ->
     #TODO: Really should be a recursive update of all _id

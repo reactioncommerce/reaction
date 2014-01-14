@@ -1,5 +1,5 @@
 Template.variantMetafieldFormGroup.currentVariantIndex = ->
-  window.getDynamicCurrentVariantIndex()
+  (currentProduct.get "index")
 
 Template.variantMetafieldFormGroup.defaultValueFieldName = ->
-  return "variants." + this.currentVariantIndex + ".metafields." + this.key + ".value";
+  return "variants." + (currentProduct.get "index") + ".metafields." + this.key + ".value";

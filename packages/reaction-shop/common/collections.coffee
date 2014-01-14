@@ -64,6 +64,9 @@ VariantMediaSchema = new SimpleSchema
 ProductVariantSchema = new SimpleSchema
   _id:
     type: String
+  index:
+    type: String
+    optional: true
   barcode:
     label: "Barcode"
     type: String

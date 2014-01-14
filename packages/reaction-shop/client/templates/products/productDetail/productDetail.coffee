@@ -1,13 +1,20 @@
+# *****************************************************
+# helper methods for productDetail
+# *****************************************************
 Template.productDetail.helpers
   tags: ->
-    currentProductId = Session.get("currentProductId")
-    product = Products.findOne(currentProductId)
+    product = (currentProduct.get "product")
     if product.tagIds
       Tags.find({_id: {$in: product.tagIds}}).fetch()
     else
       []
   stringify: (tags) ->
     _.pluck(tags, "name").join(", ")
+
+  actualPrice: () ->
+    (currentProduct.get "variant")?.price
+
+
 
 Template.productDetail.rendered = ->
   # *****************************************************
@@ -186,8 +193,7 @@ Template.productDetail.rendered = ->
     # returns true or err
     # *****************************************************
     updateProduct = (productsProperties) ->
-      currentProductId = Session.get("currentProductId")
-      Products.update currentProductId,
+      Products.update (currentProduct.get "product")._id,
         $set: productsProperties
       , (error) ->
         if error
@@ -220,27 +226,23 @@ Template.productDetail.events
     event.preventDefault()
     event.stopPropagation()
     now = new Date()
-    return throwError("Oops, select an option before adding to cart") unless Session.get("selectedVariant")
-    sessionId = Session.get("serverSession")._id
-    variantData = Session.get("selectedVariant")
-    productId = Session.get("currentProductId")
-    quantity = 1
-    # TODO - shopping cart id should probably just be session id, and make sure it's always availble here
-    Meteor.call "addToCart", Session?.get('shoppingCart')._id, productId, variantData, quantity
-
-    $('.variant-list #'+Session.get("selectedVariant")._id).removeClass("variant-detail-selected") if Session.get("selectedVariant")
-    Session.set("selectedVariant","")#TODO - review/keep and just reset when viewing new
-    setTimeout (->
-      $("html, body").animate({ scrollTop: 0 }, "fast")
-      $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
-    ), 500
+    if (currentProduct.get "variant")
+        sessionId = Session.get("serverSession")._id
+        quantity = 1
+        Meteor.call "addToCart", Session?.get('shoppingCart')._id, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
+        $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
+        setTimeout (->
+          $("html, body").animate({ scrollTop: 0 }, "fast")
+          $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
+        ), 500
+    else
+      throwError("Select an option before adding to cart")
 
 
 
   "submit form": (event) ->
     event.preventDefault()
     event.stopPropagation()
-    currentProductId = Session.get("currentProductId")
     productsProperties =
       title: $(event.target).find("[name=title]").val()
       vendor: $(event.target).find("[name=vendor]").val()
@@ -248,7 +250,7 @@ Template.productDetail.events
       tags: $(event.target).find("[name=tags]").val()
       handle: $(event.target).find("[name=handle]").val()
 
-    Products.update currentProductId,
+    Products.update (currentProduct.get "product")._id,
       $set: productsProperties
     , (error) ->
       if error
@@ -266,8 +268,7 @@ Template.productDetail.events
   "click .delete": (event) ->
     event.preventDefault()
     if confirm("Delete this product?")
-      currentProductId = Session.get("currentProductId")
-      Products.remove currentProductId
+      Products.remove (currentProduct.get "product")._id
       Router.go "/shop/products"
 
   "click #edit-options": (event) ->
@@ -275,11 +276,4 @@ Template.productDetail.events
     event.preventDefault()
 
   "click .toggle-product-isVisible-link": (event, template) ->
-    Products.update(t.data._id, {$set: {isVisible: !t.data.isVisible}})
-
-# *****************************************************
-# helper methods for productDetail
-# *****************************************************
-Template.productDetail.helpers
-  actualPrice: () ->
-     this.variants[getSelectedVariantIndex()].price if this.variants[getSelectedVariantIndex()]
+    Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
