@@ -8,7 +8,7 @@ describe("Product variant", ->
     @client
       .url("http://localhost:3000/")
       .execute("Meteor.loginWithPassword('admin1@ongoworks.com', 'ongo1')")
-      .waitFor(".all-subscriptions-loaded", 3000)
+      .waitFor(".all-subscriptions-ready", 3000)
       .call(done)
 
   it "should display errors when price is not set", (done) ->

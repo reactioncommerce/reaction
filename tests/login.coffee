@@ -7,7 +7,7 @@ describe("Login test suite", ->
   beforeEach (done) ->
     @client
       .url("http://localhost:3000/")
-      .waitFor(".all-subscriptions-loaded", 3000)
+      .waitFor(".all-subscriptions-ready", 3000)
       .call(done)
 
   it "Login test", (done) ->
