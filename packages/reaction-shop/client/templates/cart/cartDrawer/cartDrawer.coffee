@@ -1,28 +1,16 @@
-Template.shopCartIcon.helpers
-  cartCount: ->
-    currentCart = Cart.findOne()
-    count = 0
-    ((count += items.quantity) for items in currentCart.items) if currentCart?.items
-    count
-
-Template.shopCartIconList.helpers
-  cartList: ->
-    currentCart = Cart.findOne()
-    currentCart.items if currentCart?.items
-
-Template.shopCartSlide.helpers
+Template.cartDrawer.helpers
   cartItems: ->
     currentCart = Cart.findOne()
     items = (cart for cart in currentCart.items by -1) if currentCart?.items
 
-Template.shopCartSlide.rendered = ->
+Template.cartDrawer.rendered = ->
   $(".owl-carousel").owlCarousel
     items: 5
     responsive: true
 
-Template.shopCartSlide.events
+Template.cartDrawer.events
   'click #btn-checkout': () ->
-    $("#shop-cart-slide").fadeOut( 100 )
+    $("#cart-drawer").fadeOut( 100 )
 
   'click .remove-cart-item': (e,template) ->
     Meteor.call('removeFromCart',Cart.findOne()._id,this.variants)

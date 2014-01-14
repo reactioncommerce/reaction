@@ -61,17 +61,22 @@ Package.on_use(function (api, where) {
     "client/templates/shopHeader/shopNavElements/shopNavElements.html",
     "client/templates/shopHeader/shopNavElements/shopNavElements.coffee",
 
-    "client/templates/shoppingCart/shoppingCart.html",
-    "client/templates/shoppingCart/shoppingCart.coffee",
-    "client/templates/shoppingCart/shoppingCart.less",
 
-    "client/templates/shoppingCart/shoppingCartCheckout.html",
-    "client/templates/shoppingCart/shoppingCartCheckout.less",
-    "client/templates/shoppingCart/shoppingCartCheckout.coffee",
+    "client/templates/cart/cartDrawer/cartDrawer.html",
+    "client/templates/cart/cartDrawer/cartDrawer.coffee",
+    "client/templates/cart/cartDrawer/cartDrawer.less",
 
-    "client/templates/shoppingCart/shoppingCartAddress.html",
-    "client/templates/shoppingCart/shoppingCartAddress.coffee",
-    "client/templates/shoppingCart/shoppingCartAddress.less",
+    "client/templates/cart/cartIcon/cartIcon.html",
+    "client/templates/cart/cartIcon/cartIcon.coffee",
+    "client/templates/cart/cartIcon/cartIcon.less",
+
+    "client/templates/cart/checkout/checkout.html",
+    "client/templates/cart/checkout/checkout.less",
+    "client/templates/cart/checkout/checkout.coffee",
+
+    "client/templates/cart/checkout/addressBook.html",
+    "client/templates/cart/checkout/addressBook.coffee",
+    "client/templates/cart/checkout/addressBook.less",
 
     "client/templates/dashboard/widget/widget.html",
     "client/templates/dashboard/widget/widget.coffee",

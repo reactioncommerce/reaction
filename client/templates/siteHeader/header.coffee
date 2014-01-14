@@ -16,5 +16,5 @@ Template.siteHeader.events "click #login-dropdown-list a.dropdown-toggle": (e) -
   ), 100
 
 Template.siteHeader.events
-  'click .btn-slidenav': () ->
-    $("#shop-cart-slide").fadeToggle "slow", "linear"
+  'click .cart-icon': () ->
+    $("#cart-drawer").fadeToggle "slow", "linear"

@@ -233,7 +233,7 @@ Template.productDetail.events
         $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         setTimeout (->
           $("html, body").animate({ scrollTop: 0 }, "fast")
-          $("#shop-cart-slide").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
+          $("#cart-drawer").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
         ), 500
     else
       throwError("Select an option before adding to cart")
