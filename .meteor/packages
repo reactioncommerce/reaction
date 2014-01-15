@@ -29,9 +29,7 @@ autoform
 simple-schema
 moment
 pnotify-bootstrap-3-less
-collection-hooks
 
-collection-behaviours
 jquery-ui
 reaction-google-analytics
 amplify
@@ -44,3 +42,5 @@ handlebars-server
 email
 
 headers
+
+collection-hooks

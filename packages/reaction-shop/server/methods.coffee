@@ -83,19 +83,28 @@ Meteor.methods
     })
 
   addToCart: (cartId, productId, variantData, quantity) ->
-    now = new Date()
-    currentCart = Cart.find({_id: cartId, "items.variants._id": variantData._id})
-    validationContext = "cart"
+    currentCart = Cart.find _id: cartId, "items.variants._id": variantData._id
+    #If updating existing item, increment quantity
     if currentCart.count() > 0
-      Cart.update {_id: cartId, "items.variants._id": variantData._id}, { $set: {updatedAt: now}, $inc: {"items.$.quantity": quantity}}
+      Cart.update {_id: cartId, "items.variants._id": variantData._id},
+        { $set: {updatedAt: new Date()}, $inc: {"items.$.quantity": quantity}},
+      (error, result) ->
+        console.log Cart.namedContext().invalidKeys() if error?
+    # add new cart items
     else
-      Cart.update {_id: cartId}, { $addToSet: {items: {_id: productId, quantity: quantity, variants: variantData}}},validationContext: validationContext, (error, result) -> console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
+      Cart.update _id: cartId,
+        $addToSet:
+          items:
+            _id: productId
+            quantity: quantity
+            variants: variantData
+      , (error, result) ->
+        console.log Cart.namedContext().invalidKeys() if error?
 
   createCart: (sessionId, userId) ->
     unless userId
       userId = Meteor.userId()
     now = new Date()
-    validationContext = "cart"
     if Cart.findOne({sessionId: sessionId, userId: userId})
       currentCart = Cart.findOne({sessionId: sessionId, userId: userId})
     else
@@ -110,9 +119,8 @@ Meteor.methods
         userId: userId
         createdAt: now
         updatedAt: now,
-        validationContext: validationContext,
         (error, result) ->
-          console.log Cart.namedContext("cart").invalidKeys()  if Cart.namedContext("cart").invalidKeys().length > 0
+          console.log Cart.namedContext().invalidKeys() if error
       )
     return currentCart
 

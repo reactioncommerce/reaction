@@ -15,19 +15,12 @@
       "bootstrap3-less": {},
       "autoform": {},
       "collection2": {},
-      "collection-hooks": {
-        "git": "https://github.com/wsoul/meteor-collection-hooks.git",
-        "branch": "master"
-      },
-      "collection-behaviours": {
-        "git": "https://github.com/wsoul/meteor-collection-behaviours.git",
-        "branch": "master"
-      },
       "jquery-ui": {},
       "underscore-string-latest": {},
       "jquery-cookie": {},
       "handlebars-server": {},
-      "headers": {}
+      "headers": {},
+      "collection-hooks": {}
     },
     "packages": {
       "spin": {
@@ -77,18 +70,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.2",
-        "commit": "06ba03240788a10b3dbca7ec479c68aca5e9c549"
-      },
-      "collection-hooks": {
-        "git": "https://github.com/wsoul/meteor-collection-hooks.git",
-        "branch": "master",
-        "commit": "a08fb521230b4bf596daf134ab465dbe96a5974b"
-      },
-      "collection-behaviours": {
-        "git": "https://github.com/wsoul/meteor-collection-behaviours.git",
-        "branch": "master",
-        "commit": "2c8296962e2cdb4ef1bf8e95127cf8b6b007d48e"
+        "tag": "v0.3.3",
+        "commit": "d5c99b1c0fe30778e683175ecb0dd36529e6271e"
       },
       "jquery-ui": {
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
@@ -114,6 +97,11 @@
         "git": "https://github.com/gadicohen/meteor-headers.git",
         "tag": "v0.0.12",
         "commit": "33fff7cfc874140cf5d51f93de8b7c20acad4fe8"
+      },
+      "collection-hooks": {
+        "git": "https://github.com/matb33/meteor-collection-hooks.git",
+        "tag": "v0.6.2",
+        "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",

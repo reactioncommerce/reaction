@@ -192,7 +192,7 @@ TaxSchema = new SimpleSchema
     type: [MetafieldSchema]
     optional: true
 
-@Shops = new Meteor.Collection2 'Shops',
+@Shops = new Meteor.Collection 'Shops',
   schema:
     _id:
       type: String
@@ -246,7 +246,7 @@ TaxSchema = new SimpleSchema
 Shops = @Shops # package exports
 
 
-@Products = new Meteor.Collection2 'Products',
+@Products = new Meteor.Collection 'Products',
   schema:
     _id:
       type: String
@@ -324,7 +324,7 @@ Shops = @Shops # package exports
 
 Products = @Products # package exports
 
-@Customers = new Meteor.Collection2 'Customers',
+@Customers = new Meteor.Collection 'Customers',
   schema:
     shopId:
       type: String
@@ -377,7 +377,7 @@ Products = @Products # package exports
 
 Customers = @Customers # package exports
 
-@Orders = new Meteor.Collection2 'Orders',
+@Orders = new Meteor.Collection 'Orders',
   schema:
     shopId:
       type: String
@@ -394,7 +394,7 @@ CartItemSchema = new SimpleSchema
   variants:
     type: ProductVariantSchema
 
-@Cart = new Meteor.Collection2 'Cart',
+@Cart = new Meteor.Collection 'Cart',
   schema:
     shopId:
       type: String
@@ -423,7 +423,7 @@ CartItemSchema = new SimpleSchema
 
 Cart = @Cart # package exports
 
-@Tags = new Meteor.Collection2 'Tags',
+@Tags = new Meteor.Collection 'Tags',
   schema:
     name:
       type: String

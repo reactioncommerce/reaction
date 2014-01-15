@@ -11,8 +11,8 @@ Package.on_use(function (api, where) {
     "standard-app-packages",
     "coffeescript",
     "simple-schema",
+    "collection-hooks",
     "collection2",
-    "collection-behaviours",
     "roles",
     "underscore-string-latest",
     "handlebars-server"

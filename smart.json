@@ -12,16 +12,11 @@
     "bootstrap3-less": {},
     "autoform": {},
     "collection2": {},
-    "collection-hooks": {
-      "git": "https://github.com/wsoul/meteor-collection-hooks.git"
-    },
-    "collection-behaviours": {
-      "git": "https://github.com/wsoul/meteor-collection-behaviours.git"
-    },
     "jquery-ui": {},
     "underscore-string-latest": {},
     "jquery-cookie": {},
     "handlebars-server": {},
-    "headers": {}
+    "headers": {},
+    "collection-hooks": {}
   }
 }
