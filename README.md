@@ -1,7 +1,7 @@
 #Reaction
 A commerce platform developed with Meteor and following a reactive design pattern.
 
-Reaction is an open source endeavor of [Ongo Works](http://ongoworks.com). We welcome (and need) contributors, issues, comments!
+Reaction is a project of [Ongo Works](http://ongoworks.com). We welcome (and need) contributors, issues, comments!
 
 ###Core ideas:
 
@@ -76,18 +76,20 @@ Example configuration file
 
 
 ##Startup
-	./bin/reset & ./bin/run
+	./bin/run
 
-./bin/reset will restart server, and give you a fresh test dataset from settings/dev.json
+To reset data and give you a fresh test dataset from private/data
+
+	./bin/reset
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running.
 
-
+*Note: Optionally you can run and reset with "meteor" and "meteor reset", but you will not load settings data from configuration files. You would need to save them in your data, or create your own private/data*
 
 ##Deploying
-To deploy to a [meteor.com hosted site ](http://docs.meteor.com/#deploying)
+An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
 
-	./bin/deploy -P demo.json demo.meteor.com
+	meteor deploy -P --settings settings/prod.json yourdemosite.meteor.com
 
 
 ---
@@ -136,51 +138,56 @@ Add widgets to dashboard elements by including a template named packagename-widg
 
 ##Roles
 We use https://github.com/alanning/meteor-roles for providing roles.
-Now only "admin" role using for providing user do everything in system.
+Users with "admin" role are full-permission, site-wide users. Package specific roles can be defined in register.coffee
 
 ##Permissions
 Shop has owner, which determine by "ownerId" field in Shop collection.
-To check if user has owner access:
-``` coffeescript
-# on Client: for current user
-Meteor.app.hasOwnerAccess()
 
-# on Server: for some shop (current if not defined) and some userId (current if not defined)
-Meteor.app.hasOwnerAccess(shop, userId)
-```
+**To check if user has owner access:**
 
-``` handlebars
-{{#if hasOwnerAccess}}{{/if}}
-```
+on client: for current user
 
-Shop has members, which can be admin and have permissions
-To check if user has some permissions:
-``` coffeescript
-# on Client: for current user, where "permissions" is string or [string]
-Meteor.app.hasPermission(permissions)
+	Meteor.app.hasOwnerAccess()
 
-# on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or [string]
-Meteor.app.hasPermission(permissions, shop, userId)
-```
+on server: for some shop (current if not defined) and some userId (current if not defined)
 
-``` handlebars
-{{#if hasShopPermission permissions}}{{/if}}
-```
+	Meteor.app.hasOwnerAccess(shop, userId)
+
+in templates: for current user
+
+	{{#if hasOwnerAccess}}{{/if}}
+
+**Shop has members, which can be admin and have permissions**
+
+To check if user has some specific permissions:
+
+on Client: for current user, where "permissions" is string or [string]
+
+	Meteor.app.hasPermission(permissions)
+
+on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or [string]
+
+	Meteor.app.hasPermission(permissions, shop, userId)
+
+in templates: 
+
+	{{#if hasShopPermission permissions}}{{/if}}
+
 
 For using shop permissions into some packages you must add it into register directive.
 If we add this package then permissions will be available in Shop Accounts Settings.
-``` coffeescript
-Meteor.app.packages.register
-  name: 'reaction-shop-orders'
-  provides: ['orderManager']
-  label: 'Orders'
-  overviewRoute: 'shop/orders'
-  hasWidget: false
-  shopPermissions: [
-    {
-      label: "Orders"
-      permission: "shop/orders"
-      group: "Shop Management"
-    }
-  ]
-```
+
+	Meteor.app.packages.register
+	 name: 'reaction-shop-orders'
+	 provides: ['orderManager']
+	 label: 'Orders'
+	 overviewRoute: 'shop/orders'
+	 hasWidget: false
+	 shopPermissions: [
+	   {
+	     label: "Orders"
+	     permission: "shop/orders"
+	     group: "Shop Management"
+	   }
+	 ]
+
