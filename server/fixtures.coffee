@@ -41,21 +41,22 @@ share.loadFixtures = ->
         PackageConfigs.insert
           shopId: shop._id
           name: "reaction-filepicker"
-          apikey: Meteor.settings.filepickerApiKey
+          apikey: Meteor.settings?.filepickerApiKey
 
         PackageConfigs.insert
           shopId: shop._id
           name: "reaction-google-analytics"
-          property: Meteor.settings.googleAnalyticsProperty
+          property: Meteor.settings?.googleAnalyticsProperty
 
     unless Accounts.loginServiceConfiguration.find().count()
-      Accounts.loginServiceConfiguration.insert
-        service: "facebook",
-        appId: Meteor.settings.public.facebook.appId,
-        secret: Meteor.settings.facebook.secret
+      if Meteor.settings.public?.facebook?.appId
+        Accounts.loginServiceConfiguration.insert
+          service: "facebook",
+          appId: Meteor.settings.public.facebook.appId,
+          secret: Meteor.settings.facebook.secret
 
 
 Meteor.startup ->
   share.loadFixtures()
-  if Meteor.settings.public.isDebug
+  if Meteor.settings.public?.isDebug
     Meteor.setInterval(share.loadFixtures, 300)
