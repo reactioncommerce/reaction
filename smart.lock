@@ -72,13 +72,13 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.4.9",
-        "commit": "9e96537372c8bb8078257e0b81f1f5828e4f3194"
+        "tag": "v0.4.10",
+        "commit": "6f02c8f8f97ae82b7b4d1e2a529edfa3700b6e9b"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.2.17",
-        "commit": "186cc58040764b816392e19178ba373bda7a91c6"
+        "tag": "v0.3.2",
+        "commit": "06ba03240788a10b3dbca7ec479c68aca5e9c549"
       },
       "collection-hooks": {
         "git": "https://github.com/wsoul/meteor-collection-hooks.git",
@@ -117,8 +117,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.27",
-        "commit": "af0ad4079ae5b798c3089502dd24c3e1839ce8e6"
+        "tag": "v0.2.28",
+        "commit": "29f3a54be67e9b988ad59994ffa152d9559e4695"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

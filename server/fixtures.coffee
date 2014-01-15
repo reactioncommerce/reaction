@@ -9,7 +9,8 @@ share.loadFixtures = ->
     console.log "Loading fixture data for "+collection._name
     json = EJSON.parse Assets.getText("data/"+collection._name+".json")
     for item,value in json
-      collection._collection.insert item
+      collection._collection.insert item, (error, result) ->
+        console.log error if error?
     console.log "Successfully added "+value+" items to "+ collection._name
 
   # Load data from json files
