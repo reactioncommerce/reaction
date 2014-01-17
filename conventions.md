@@ -40,7 +40,10 @@
 		functionalTriad.coffee
 			Template.functionalTriad.helpers
 			Template.functionalTriad.events
-			
+###Code Style
+When using event, template parameters in methods, use full names
+
+	'click': (event,template) ->
 
 #Server layer
 	
