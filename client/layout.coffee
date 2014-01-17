@@ -1,1 +1,0 @@
-$('.cart-drawer').show()

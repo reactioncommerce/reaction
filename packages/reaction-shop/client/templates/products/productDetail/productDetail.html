@@ -28,7 +28,7 @@
       </div>
   </div>
   <!-- Product Details -->
-  <div class="row">
+  <div class="row product-details">
     <!-- BEGIN Left Side -->
     <div class="col-md-5 col-lg-4 col-lg-offset-1">
       {{> productImageGallery}}
@@ -41,7 +41,7 @@
       <div class="row col-md-10 col-offset-md-4 pdp-editable">
           <!-- Price Fixation -->
           <div class="row">
-                <i class="fa fa-usd fa-2x"> </i>
+                <i class="fa fa-usd currency-symbol"> </i>
                 <span class="price">
                   {{#isolate}}
                   <span id="price" itemprop="price">{{actualPrice}}</span>
