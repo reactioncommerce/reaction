@@ -10,7 +10,7 @@ Template.siteHeader.helpers activeRouteClass: ->
   )
   active and "active"
 
-Template.siteHeader.events "click #login-dropdown-list a.dropdown-toggle": (e) ->
+Template.siteHeader.events "click #login-dropdown-list a.dropdown-toggle": () ->
   setTimeout (->
     $("#login-email").focus()
   ), 100

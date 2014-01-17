@@ -17,30 +17,32 @@
     "click .login-close": ->
       loginInlineSession.closeDropdown()
 
+  Template._loginInline.rendered = ->
+    document.getElementById("inline-login-email").focus();
 
   #
   # loginInlineLoggedInDropdown template and related
   #
-  Template._loginInlineLoggedInDropdown.events "click #login-buttons-open-change-password": (event) ->
+  Template._loginInlineLoggedInPanel.events "click #login-buttons-open-change-password": (event) ->
     event.stopPropagation()
     loginInlineSession.resetMessages()
     loginInlineSession.set "inChangePasswordFlow", true
     Meteor.flush()
     toggleDropdown()
 
-  Template._loginInlineLoggedInDropdown.displayName = ->
+  Template._loginInlineLoggedInPanel.displayName = ->
     Accounts._loginInline.displayName()
 
-  Template._loginInlineLoggedInDropdown.inChangePasswordFlow = ->
+  Template._loginInlineLoggedInPanel.inChangePasswordFlow = ->
     loginInlineSession.get "inChangePasswordFlow"
 
-  Template._loginInlineLoggedInDropdown.inMessageOnlyFlow = ->
+  Template._loginInlineLoggedInPanel.inMessageOnlyFlow = ->
     loginInlineSession.get "inMessageOnlyFlow"
 
-  Template._loginInlineLoggedInDropdown.dropdownVisible = ->
+  Template._loginInlineLoggedInPanel.dropdownVisible = ->
     loginInlineSession.get "dropdownVisible"
 
-  Template._loginInlineLoggedInDropdownActions.allowChangingPassword = ->
+  Template._loginInlineLoggedInPanelActions.allowChangingPassword = ->
 
     # it would be more correct to check whether the user has a password set,
     # but in order to do that we'd have to send more data down to the client,
@@ -54,6 +56,9 @@
   #
   # loginInlineLoggedOutForm template and related
   #
+  Template._loginInlineLoggedOutForm.firstRun = ->
+     loginInlineSession.set "inSignupFlow", true
+
   Template._loginInlineLoggedOutForm.events
     "click #login-buttons-password": ->
       loginOrSignup()
@@ -128,7 +133,7 @@
       # "inline-login-password" is preserved thanks to the preserve-inputs package
       document.getElementById("inline-login-username-or-email").value = email or username  if document.getElementById("inline-login-username-or-email")
 
-    "keypress #login-username, keypress #login-email, keypress #login-username-or-email, keypress #login-password, keypress #login-password-again": (event) ->
+    "keypress #inline-login-username, keypress #inline-login-email, keypress #inline-login-username-or-email, keypress #inline-login-password, keypress #inline-login-password-again": (event) ->
       loginOrSignup()  if event.keyCode is 13
 
 

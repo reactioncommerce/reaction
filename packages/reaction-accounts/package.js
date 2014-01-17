@@ -37,7 +37,6 @@ Package.on_use(function (api) {
     "client/templates/loginButtons/login_buttons_dialogs.coffee",
 
     "client/templates/loginInline/login_inline_images.css",
-    "client/templates/loginInline/login_inline_form.styl",
 
     "client/templates/loginInline/login_inline.html",
     "client/templates/loginInline/login_inline_single.html",

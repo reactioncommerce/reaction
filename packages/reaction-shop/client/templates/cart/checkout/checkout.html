@@ -13,7 +13,11 @@
       <div class="row">Cart + Tax + Shipping Totals</div>
       <div class="row">Payment</div>
       {{else}}
-      <div class="row">{{>cartCheckoutAccount}}</div>
+      <div class="row">
+        <div class="col-md-8 col-md-offset-4">
+          {{>cartCheckoutAccount}}
+        </div>
+      </div>
       {{/if}}
     </div>
   </div>
@@ -21,14 +25,24 @@
 </template>
 
 <template name="cartCheckoutAccount">
-  <div class="panel panel-default">
+  <div class="panel panel-default col-md-6">
     <div class="panel-heading">
       <h3 class="panel-title">Registration</h3>
     </div>
     <div class="panel-body">
-      <div class="col-md-6">
+      <div>
         {{>_loginInline}}
       </div>
     </div>
   </div>
+</template>
+
+<template name="cartCheckoutProgress">
+<ul class="cart-checkout-progress">
+<li>Sign in</li>
+<li>Address</li>
+<li>Shipping</li>
+<li>Payment</li>
+<<li>Submit</li>
+</ul>
 </template>

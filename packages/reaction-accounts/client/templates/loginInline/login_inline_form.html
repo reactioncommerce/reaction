@@ -1,7 +1,7 @@
 <!--           -->
 <!-- LOGGED IN -->
 <!--           -->
-<template name="_loginInlineLoggedInDropdown">
+<template name="_loginInlineLoggedInPanel">
   <li id="login-dropdown-list" class="dropdown">
     <a class="dropdown-toggle"  data-toggle="dropdown">
       {{displayName}}
@@ -14,14 +14,14 @@
         {{#if inChangePasswordFlow}}
           {{> _loginInlineChangePassword}}
         {{else}}
-          {{> _loginInlineLoggedInDropdownActions}}
+          {{> _loginInlineLoggedInPanelActions}}
         {{/if}}
       {{/if}}
     </div>
   </li>
 </template>
 
-<template name="_loginInlineLoggedInDropdownActions">
+<template name="_loginInlineLoggedInPanelActions">
   {{#if allowChangingPassword}}
     <button class="btn btn-default btn-block" id="login-buttons-open-change-password">Change password</button>
   {{/if}}
@@ -32,9 +32,11 @@
 <!-- LOGGED OUT -->
 <!--            -->
 <template name="_loginInlineLoggedOutForm">
+<div id="login-dropdown-list">
   {{#unless forbidClientAccountCreation}}
       {{> _loginInlineLoggedOutAllServices}}
   {{/unless}}
+</div>
 </template>
 
 <template name="_loginInlineLoggedOutAllServices">
@@ -55,9 +57,7 @@
 
 <template name="_loginInlineLoggedOutPasswordServiceSeparator">
   <div class="or">
-    <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span class="or-text">or</span>
-    <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    -or-
   </div>
 </template>
 
@@ -104,7 +104,9 @@
 </template>
 
 <template name="_loginInlineBackToLoginLink">
-    <button id="back-to-login-link" class="btn btn-default col-sm-12">Cancel</button>
+  <div id="login-other-options">
+    <a id="back-to-login-link" class="pull-right" >Already have an account? Sign in</a>
+  </div>
 </template>
 
 <template name="_loginInlineFormField">
