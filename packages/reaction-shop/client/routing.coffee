@@ -57,10 +57,11 @@ Router.map ->
   @route 'shop/product',
     controller: ShopController
     path: '/shop/products/:_id'
-    before: ->
+    waitOn: ->
       # set current variant and products
       currentProduct.set "product", Products.findOne(@params._id)
       setVariant(@params.variant)
+    before: ->
       unless Products.findOne(@params._id)?.isVisible
         unless Meteor.app.hasPermission(@path)
           @render('unauthorized')
