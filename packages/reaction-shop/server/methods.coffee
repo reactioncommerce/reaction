@@ -127,7 +127,7 @@ Meteor.methods
   removeFromCart: (cartId, variantData) ->
     Cart.update({_id: cartId}, {$pull: {"items": {"variants": variantData} } })
 
-  addAddress: (doc) ->
+  addressBookAdd: (doc) ->
     doc._id = Random.id()
     Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {"profile.addressBook": doc}})
 

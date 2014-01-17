@@ -69,8 +69,8 @@ Router.map ->
       currentProduct.get "product"
     template: 'productDetail'
   #checkout
-  @route 'shoppingCartCheckout',
+  @route 'cartCheckout',
     path: 'checkout',
-    template: 'shoppingCartCheckout'
+    template: 'cartCheckout'
     waitOn: ->
-      [share.SystemConfigHandle]
+      [share.ConfigDataHandle]

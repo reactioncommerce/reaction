@@ -1,32 +1,26 @@
-<template name="shoppingCartCheckout">
-  <div class="container cart-checkout">
-    <h1>Checkout</h1>
+<template name="cartCheckout">
+  <div class="cart-checkout">
     <div class="row">
-      <div class="col-md-8">
         {{#if currentUser}}
         <div class="row">
-          {{>userAddress}}
+          <div class="col-md-6">
+          {{>checkoutAddressBook}}
+          </div>
+          <div class="col-md-3">{{>checkoutShipping}}</div>
         </div>
-        <div class="row">
-          Shipping
-        </div>
-        <div class="row">
-          Cart + Tax + Shipping Totals
-        </div>
-        <div class="row">
-          Payment
-        </div>
-        {{else}}
-        <div class="row">
-          {{>shoppingCartCheckoutAccount}}
-        </div>
-        {{/if}}
       </div>
+
+      <div class="row">Cart + Tax + Shipping Totals</div>
+      <div class="row">Payment</div>
+      {{else}}
+      <div class="row">{{>cartCheckoutAccount}}</div>
+      {{/if}}
     </div>
+  </div>
   </div>
 </template>
 
-<template name="shoppingCartCheckoutAccount">
+<template name="cartCheckoutAccount">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Registration</h3>

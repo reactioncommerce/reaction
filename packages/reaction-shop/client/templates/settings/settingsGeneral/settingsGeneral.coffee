@@ -1,9 +1,9 @@
 Template.settingsGeneral.helpers
   countryOptions: ->
-    SystemConfig.findOne().countries
+    ConfigData.findOne().countries
 
   timezoneOptions: ->
-    zoneData = SystemConfig.findOne().timezones
+    zoneData = ConfigData.findOne().timezones
     zonelist = []
     for zone in zoneData
       zonelist.push {label:zone,value:zone}

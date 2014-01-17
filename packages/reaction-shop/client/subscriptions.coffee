@@ -1,4 +1,4 @@
-share.SystemConfigHandle = Meteor.subscribe 'SystemConfig'
+share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
 Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'

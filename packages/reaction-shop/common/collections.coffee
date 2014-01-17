@@ -394,6 +394,18 @@ CartItemSchema = new SimpleSchema
   variants:
     type: ProductVariantSchema
 
+ShipQuoteSchema = new SimpleSchema
+  carrier:
+    type: Number
+  method:
+    type: Number
+  label:
+    type: String
+    optional: true
+  value:
+    type: String
+    optional: true
+
 @Cart = new Meteor.Collection 'Cart',
   schema:
     shopId:
@@ -410,6 +422,9 @@ CartItemSchema = new SimpleSchema
       label: "Require a shipping address"
       type: Boolean
       optional: true
+    shipping:
+      type: ShipQuoteSchema
+      optional:true
     totalPrice:
       label: "Total Price"
       type: Number

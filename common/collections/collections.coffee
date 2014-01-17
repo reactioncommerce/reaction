@@ -1,3 +1,3 @@
 share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
 
-share.SystemConfig = @SystemConfig = new Meteor.Collection("SystemConfig")
+share.ConfigData = @ConfigData = new Meteor.Collection("ConfigData")

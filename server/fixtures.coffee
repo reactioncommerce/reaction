@@ -4,15 +4,16 @@
 # json, wrapped as an array
 # can be imported using loadData(collection)
 # *****************************************************
-share.loadFixtures = ->
-  loadData = (collection) ->
-    console.log "Loading fixture data for "+collection._name
-    json = EJSON.parse Assets.getText("data/"+collection._name+".json")
-    for item,value in json
-      collection._collection.insert item, (error, result) ->
-        console.log error if error?
-    console.log "Successfully added "+value+" items to "+ collection._name
 
+loadData = (collection) ->
+  console.log "Loading fixture data for "+collection._name
+  json = EJSON.parse Assets.getText("data/"+collection._name+".json")
+  for item,value in json
+    collection._collection.insert item, (error, result) ->
+      console.log error if error?
+  console.log "Successfully added "+value+" items to "+ collection._name
+
+share.loadFixtures = ->
   # Load data from json files
   loadData Products unless Products.find().count()
   loadData Customers unless Customers.find().count()
@@ -20,7 +21,7 @@ share.loadFixtures = ->
   loadData Shops unless Shops.find().count()
   loadData Tags unless Tags.find().count()
   loadData Cart unless Cart.find().count()
-  loadData SystemConfig unless SystemConfig.find().count()
+  loadData ConfigData unless ConfigData.find().count()
 
   # Load data from settings/json files + base packages.
   unless PackageConfigs.find().count()

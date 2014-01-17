@@ -1,6 +1,6 @@
 <template name="cartDrawer">
 {{#isolate}}
-  <div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer" id="cart-drawer" {{#if checkoutView}}style="display:block"{{/if}}>
     <div class="owl-carousel">
         {{#if cartItems}}
           {{>cartSubTotals}}
@@ -14,9 +14,11 @@
         <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong></h1>
       </div>
     {{else}}
-     <a href="{{pathFor "shoppingCartCheckout"}}" class="btn btn-success btn-lg btn-block" id="btn-checkout">
-      Checkout now
-    </a>
+      {{#unless checkoutView}}
+       <a href="{{pathFor "cartCheckout"}}" class="btn btn-success btn-lg btn-block" id="btn-checkout">
+        Checkout now
+      </a>
+      {{/unless}}
     {{/unless}}
   </div>
 {{/isolate}}

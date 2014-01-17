@@ -74,9 +74,13 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/checkout.less",
     "client/templates/cart/checkout/checkout.coffee",
 
-    "client/templates/cart/checkout/addressBook.html",
-    "client/templates/cart/checkout/addressBook.coffee",
-    "client/templates/cart/checkout/addressBook.less",
+    "client/templates/cart/checkout/addressBook/addressBook.html",
+    "client/templates/cart/checkout/addressBook/addressBook.coffee",
+    "client/templates/cart/checkout/addressBook/addressBook.less",
+
+    "client/templates/cart/checkout/shipping/shipping.html",
+    "client/templates/cart/checkout/shipping/shipping.less",
+    "client/templates/cart/checkout/shipping/shipping.coffee",
 
     "client/templates/dashboard/widget/widget.html",
     "client/templates/dashboard/widget/widget.coffee",

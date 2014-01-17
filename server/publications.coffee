@@ -1,10 +1,10 @@
-Meteor.publish 'SystemConfig', ->
-  SystemConfig.find({})
+Meteor.publish 'ConfigData', ->
+  ConfigData.find({})
 
 # *****************************************************
-# Client access rights for SystemConfig
+# Client access rights for ConfigData
 # *****************************************************
-SystemConfig.allow
+ConfigData.allow
   insert: (userId, doc) ->
     # the user must be logged in, and the document must be owned by the user
     #return (userId && doc.owner === userId);

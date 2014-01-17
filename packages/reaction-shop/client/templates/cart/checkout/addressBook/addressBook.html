@@ -1,4 +1,4 @@
-<template name="userAddress">
+<template name="checkoutAddressBook">
   <div class="panel panel-default address-book">
     {{#if addressBook}}
     <div class="panel-heading">
@@ -11,25 +11,25 @@
       {{#if addressBook}}
       <div class="row" id="addressBook">
         <div class="col-md-6">
-          <ul class="list-group">
+          <div class="list-group">
             <strong>Bill To:</strong>
              {{#each addressBook shipping}}
-            <li class="list-group-item address-bill-to {{selectBillAddress _id}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong><i class="fa fa-pencil pull-right"></i>
+            <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong><i class="fa fa-pencil pull-right"></i>
               <address>
                 {{address1}}
                 {{address2}},<br>
                 {{city}}, {{region}} {{postal}} {{country}}<br>
                 {{phone}}
               </address>
-            </li>
+            </a>
             {{/each}}
-          </ul>
+          </div>
         </div>
         <div class="col-md-6">
-          <ul class="list-group">
+          <div class="list-group">
             <strong>Ship To:</strong>
             {{#each addressBook shipping}}
-            <li class="list-group-item address-ship-to {{selectShipAddress _id}}" data-ship-id="{{_id}}">
+            <a href="#" class="address-ship-to list-group-item {{selectedShipping}}" data-ship-id="{{_id}}">
               <strong>{{fullName}}</strong>
               <address>
                 {{address1}}
@@ -37,23 +37,23 @@
                 {{city}}, {{region}} {{postal}} {{country}}<br>
                 {{phone}}
               </address>
-            </li>
+            </a>
             {{/each}}
-          </ul>
+          </div>
         </div>
       </div>
-      <div class="col-md-12" id="addAddress">
+      <div class="col-md-12" id="checkoutAddressBookAdd">
         <div class="addressForm"></div>
       </div>
       {{else}}
-      <div class="col-md-12">{{>addAddress}}</div>
+      <div class="col-md-12">{{>checkoutAddressBookAdd}}</div>
       {{/if}}
     </div>
   </div>
 </template>
 
-<template name="addAddress">
-{{#autoForm schema=addAddressForm id="addAddressForm"}}
+<template name="checkoutAddressBookAdd">
+{{#autoForm schema=checkoutAddressBookAddForm id="checkoutAddressBookAddForm"}}
   <fieldset>
       <legend>Add address</legend>
       <div class="row">
@@ -138,7 +138,7 @@
       </div>
       <div class="row">
         <div class="col-md-12 col-md-offset-8">
-            <button type="submit" data-meteor-method="addAddress" class="btn btn-primary">Save and Continue</button>
+            <button type="submit" data-meteor-method="addressBookAdd" class="btn btn-primary">Save and Continue</button>
             {{#if addressBook}}
             <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
             {{/if}}
