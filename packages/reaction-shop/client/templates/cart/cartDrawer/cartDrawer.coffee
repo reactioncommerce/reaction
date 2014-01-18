@@ -7,11 +7,22 @@ Template.cartDrawer.helpers
 
 Template.cartDrawer.rendered = ->
   $(".owl-carousel").owlCarousel
-    items: 5
-    responsive: true
+      itemsCustom : [
+        [0, 1],
+        [450, 2]
+        [675, 3]
+        [1000, 4]
+        [1200, 5]
+        [1440, 6]
+        [1650, 7]
+        [1900, 8]
+        [2200, 9]
+        [2400, 10]
+      ]
+
 
 Template.cartDrawer.events
-  'click .remove-cart-item': (e,template) ->
+  'click .remove-cart-item': ->
     Meteor.call('removeFromCart',Cart.findOne()._id,this.variants)
     throwError this.variants.title+" removed","Cart updated","info"
 

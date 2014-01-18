@@ -27,10 +27,14 @@
 <template name="cartItems">
 <div class="cart-items">
   <div class="img-thumbnail">
-    <a href="#"><span class="fa fa-times fa-lg pull-right remove-cart-item" id="{{_id}}"></span></a>
-      <a href="{{pathFor 'shop/product' variant=variants._id}}" data-event-category="cart" data-event-action="product-click" data-event-label="Cart product click" data-event-value="{{productId}}">
-        <img src="{{getVariantImage variants}}" alt="{{variants.title}}" class="cart-image">
-      </a>
+    <a href="#">
+      <span class="fa fa-times fa-lg pull-right remove-cart-item" id="{{_id}}"></span>
+    </a>
+    <a href="{{pathFor 'shop/product' variant=variants._id}}" data-event-category="cart" data-event-action="product-click" data-event-label="Cart product click" data-event-value="{{productId}}">
+      <div class="center-cropped" style="background-image: url('{{getVariantImage variants}}');">
+        <img src="{{getVariantImage variants}}" />
+      </div>
+    </a>
   </div>
   <div>
   <div class="cart-labels">

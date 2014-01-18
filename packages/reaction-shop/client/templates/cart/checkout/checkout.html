@@ -9,13 +9,10 @@
           <div class="col-md-3">{{>checkoutShipping}}</div>
         </div>
       </div>
-
-      <div class="row">Cart + Tax + Shipping Totals</div>
-      <div class="row">Payment</div>
       {{else}}
       <div class="row">
-        <div class="col-md-8 col-md-offset-4">
-          {{>cartCheckoutAccount}}
+        <div class="col-md-4 col-md-offset-4">
+          {{>checkoutAccount}}
         </div>
       </div>
       {{/if}}
@@ -24,10 +21,10 @@
   </div>
 </template>
 
-<template name="cartCheckoutAccount">
-  <div class="panel panel-default col-md-6">
+<template name="checkoutAccount">
+  <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Registration</h3>
+      <h3 class="panel-title">Create an account or sign in to continue</h3>
     </div>
     <div class="panel-body">
       <div>
@@ -37,12 +34,19 @@
   </div>
 </template>
 
-<template name="cartCheckoutProgress">
-<ul class="cart-checkout-progress">
-<li>Sign in</li>
-<li>Address</li>
-<li>Shipping</li>
-<li>Payment</li>
-<<li>Submit</li>
-</ul>
+<template name="cartCheckoutHeader">
+  <div class="navbar navbar-fixed navbar-static-top" role="navigation">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{pathFor 'index'}}">{{{siteName}}}</a>
+      <div class="visible-xs hidden-sm hidden-lg hidden-md pull-right">{{>shopCartIcon}}</div>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse">
+        {{>checkoutProgressBar}}
+    </div>
+  </div>
 </template>

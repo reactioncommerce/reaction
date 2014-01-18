@@ -75,3 +75,6 @@ Router.map ->
     template: 'cartCheckout'
     waitOn: ->
       [share.ConfigDataHandle]
+    yieldTemplates:
+      cartCheckoutHeader:
+        to: "header"

@@ -1,3 +1,4 @@
-Template.cartCheckout.rendered = ->
-  $('.cart-drawer').show()
-  $('#btn-checkout').hide()
+Template.cartCheckoutHeader.helpers
+  siteName: ->
+    siteName = Shops.findOne().name
+    siteName

@@ -17,6 +17,7 @@ Template.checkoutShipping.events
     $(event.currentTarget).addClass('active')
     currentCart = Cart.findOne()._id
     Cart.update currentCart,{$set:{shipping:this}}
+    Session.set "shippingMethod",this
 
   # 'click a': (event) ->
   #   event.stopPropagation()

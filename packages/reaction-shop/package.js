@@ -74,6 +74,10 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/checkout.less",
     "client/templates/cart/checkout/checkout.coffee",
 
+    "client/templates/cart/checkout/progressBar/progressBar.html",
+    "client/templates/cart/checkout/progressBar/progressBar.less",
+    "client/templates/cart/checkout/progressBar/progressBar.coffee",
+
     "client/templates/cart/checkout/addressBook/addressBook.html",
     "client/templates/cart/checkout/addressBook/addressBook.coffee",
     "client/templates/cart/checkout/addressBook/addressBook.less",

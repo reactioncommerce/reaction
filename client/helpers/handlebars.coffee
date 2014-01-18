@@ -29,12 +29,9 @@ Handlebars.registerHelper "key_value", (context, options) ->
     result.push
       key: key
       value: value
-
-
   result
 
-
-###
+### *****************************************************
 Convert new line (\n\r) to <br>
 from http://phpjs.org/functions/nl2br:480
 ###
@@ -45,7 +42,7 @@ Handlebars.registerHelper "nl2br", (text) ->
   new Handlebars.SafeString(nl2br)
 
 
-###
+### *****************************************************
 format an ISO date using Moment.js
 http://momentjs.com/
 moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
