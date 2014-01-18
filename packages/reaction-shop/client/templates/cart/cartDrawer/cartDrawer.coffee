@@ -23,6 +23,7 @@ Template.cartDrawer.rendered = ->
 
 Template.cartDrawer.events
   'click .remove-cart-item': ->
+    console.log "removing"
     Meteor.call('removeFromCart',Cart.findOne()._id,this.variants)
     throwError this.variants.title+" removed","Cart updated","info"
 

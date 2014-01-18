@@ -9,7 +9,7 @@
   -moz-box-shadow:    inset 0 0 10px #000000;
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow:         inset 0 0 10px #000000;
-  z-index: 9999;
+
 
 
   .cart-totals {
@@ -20,20 +20,26 @@
     height: 225px;
   }
   .cart-labels {
-    padding-top: 5px 0 5px 0;
+    margin: 5px 0 10px 0;
     text-align: center;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
   }
   .remove-cart-item {
-    position: relative;
-    margin-bottom: -30px;
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    top: 0;
+    margin: 5px 10px;
     color: #626262;
+    background-color: rgba(205, 186, 20, 0.54);
     border: 2px solid rgba(129, 122, 122, 0.62);
     padding: 5px;
-    border-radius:50%;
+    border-radius: 50%;
+    z-index: 99;
   }
+
 
 
   .center-cropped {
