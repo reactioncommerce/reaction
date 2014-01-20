@@ -61,10 +61,17 @@ Package.on_use(function (api, where) {
     "client/templates/shopHeader/shopNavElements/shopNavElements.html",
     "client/templates/shopHeader/shopNavElements/shopNavElements.coffee",
 
-
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
     "client/templates/cart/cartDrawer/cartDrawer.less",
+
+    "client/templates/cart/cartDrawer/cartItems/cartItems.html",
+    "client/templates/cart/cartDrawer/cartItems/cartItems.coffee",
+    "client/templates/cart/cartDrawer/cartItems/cartItems.less",
+
+    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.html",
+    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.coffee",
+    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.less",
 
     "client/templates/cart/cartIcon/cartIcon.html",
     "client/templates/cart/cartIcon/cartIcon.coffee",

@@ -2,6 +2,8 @@ Template.productGrid.helpers
   products: ->
     getProductsByTag(@tag)
 
+Template.cartItems.preserve([".product-grid-item-images"])
+
 Template.productGridItems.events
   'click .clone-product': () ->
     Meteor.call "cloneProduct", this, (err, productId) ->
@@ -15,13 +17,3 @@ Template.productGridItems.events
       Products.remove this._id
       Router.go "/shop/products"
 
-# Initialize packery on the first render of the productGrid
-# Template.productGrid.rendered = ->
-#   imagesLoaded @firstNode, ->
-#     container = document.querySelector(".product-grid")
-#     new Masonry(document.querySelector(".product-grid"),
-#       # gutter: 10
-#       # columnWidth: ".img-responsive"
-#       # transitionDuration: 0
-#       itemSelector: '.item'
-#     )

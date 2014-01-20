@@ -7,13 +7,17 @@
 
 .product-grid .overlay {
   position: relative;
+  margin: -40px 0 0 0;
+  height: 40px;
+  color: #fff;
+  padding: 10px;
+  font-size: 1.2em;
+  letter-spacing: 1.2;
+  background-color: rgba(100, 89, 89, 0.56);
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
   text-align: center;
-  font-size: (26);
-  font-color: black !important;
-  background-color: rgba(100, 89, 89, 0.15);
-  margin-top: -50px;
-  height: 50px;
-  padding: 10px 0 10px 0;
 }
 
 .product-grid {
@@ -46,9 +50,9 @@
 
 @media only screen and (max-width: 40em )
 {
-  // .product-grid .overlay {
-  //     font-size: 16px;
-  // }
+  .product-grid .overlay {
+      font-size: 1.0em;
+  }
 
   #list
   {
@@ -67,9 +71,9 @@
 
 @media only screen and ( max-width: 20em )
 {
-  // .product-grid .overlay {
-  //     font-size: 10px;
-  // }
+  .product-grid .overlay {
+      font-size: 0.9em;
+  }
 
   #list
   {

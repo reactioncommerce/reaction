@@ -1,53 +1,69 @@
+Session.setDefault "displayCartDrawer",false
+
+
+### **************************************************************
+# true = cartDrawer should be open (persistent, until closed)
+# false = cartDrawer is closed and not rendered
+# usage:
+#  toggleCartDrawer(true) to display, on next invocation
+#  toggleCartDrawer() to open if closed, keep open if already open
+# ************************************************************ ###
+@toggleCartDrawer = (toggle) ->
+  cartVisibility = Session.get "displayCartDrawer"
+  if cartVisibility is false
+    Session.set "displayCartDrawer", true
+    $("#cart-drawer").fadeIn "slow"
+  else if cartVisibility is true and delayId? is true and toggle? isnt true
+    Session.set "displayCartDrawer", true
+  else
+    Session.set "displayCartDrawer", false
+  # delay then close automatically, but reset if changes are made
+  autoClose = () ->
+    $("#cart-drawer").fadeOut "slow", () ->
+      Session.set "displayCartDrawer", false
+  Meteor.clearTimeout(delayId) if delayId?
+  @delayId = Meteor.setTimeout autoClose,9000
+
+### **************************************************************
+# Template Cart Drawer
+# ************************************************************ ###
 Template.cartDrawer.helpers
   cartItems: ->
     currentCart = Cart.findOne()
     items = (cart for cart in currentCart.items by -1) if currentCart?.items
   checkoutView: ->
     true if Router.current().route.name is 'cartCheckout'
+  displayCartDrawer: ->
+    Session.get "displayCartDrawer"
 
 Template.cartDrawer.rendered = ->
+  # $('html,body').animate({scrollTop: $("#cart-drawer").offset().top})
   $(".owl-carousel").owlCarousel
-      itemsCustom : [
-        [0, 1],
-        [450, 2]
-        [675, 3]
-        [1000, 4]
-        [1200, 5]
-        [1440, 6]
-        [1650, 7]
-        [1900, 8]
-        [2200, 9]
-        [2400, 10]
-      ]
-
+    lazyload: true
+    itemsCustom : [
+      [0, 1],
+      [450, 2]
+      [675, 3]
+      [1000, 4]
+      [1200, 5]
+      [1440, 6]
+      [1650, 7]
+      [1900, 8]
+      [2200, 9]
+      [2400, 10]
+    ]
 
 Template.cartDrawer.events
-  'click .remove-cart-item': ->
-    console.log "removing"
-    Meteor.call('removeFromCart',Cart.findOne()._id,this.variants)
-    throwError this.variants.title+" removed","Cart updated","info"
+  'click .remove-cart-item': (event,template) ->
+    event.stopPropagation()
+    event.preventDefault()
+    currentCartId = Cart.findOne()._id
+    currentVariant = this.variants
+    item = '#'+$(event.currentTarget).attr('data-target')
+    $(item).fadeOut(1500).delay 1500, ()->
+      Meteor.call('removeFromCart',currentCartId,currentVariant)
 
-Template.cartSubTotals.helpers
-  cartCount: ->
-    currentCart = Cart.findOne()
-    count = 0
-    ((count += items.quantity) for items in currentCart.items) if currentCart?.items
-    count
-
-  estShipping: ->
-    estShipping = Cart.findOne().shipping?.value
-    estShipping
-
-  subTotal: ->
-    currentCart = Cart.findOne()
-    subtotal = 0
-    ((subtotal += (items.quantity * items.variants.price)) for items in currentCart.items) if currentCart?.items
-    subtotal.toFixed(2)
-
-  cartTotal: ->
-    currentCart = Cart.findOne()
-    subtotal = 0
-    ((subtotal += (items.quantity * items.variants.price)) for items in currentCart.items) if currentCart?.items
-    shipping = parseFloat currentCart.shipping?.value
-    subtotal = (subtotal + shipping) unless isNaN(shipping)
-    subtotal.toFixed(2)
+  'click #btn-keep-shopping': (event,tempate) ->
+    event.stopPropagation()
+    event.preventDefault()
+    toggleCartDrawer(true)

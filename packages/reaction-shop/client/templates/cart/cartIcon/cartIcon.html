@@ -1,18 +1,8 @@
-<template name="shopCartIcon">
-  <button type="button" class="cart-icon">
-    <span class="fa fa-shopping-cart fa-3x"></span>
-    <span class="cart-badge">{{cartCount}}</span>
-  </button>
-</template>
-
-<template name="shopCartIconList">
-  <ul class="dropdown-menu" id="nav-cart">
-  {{#each cartList}}
-  <li><span class="badge">{{quantity}}</span>{{variants.barcode}}</li>
-  {{else}}
-  <li class="text-center"><i class="fa fa-frown-o fa-lg"></i><strong>  Empty Cart.</strong></li>
-  {{/each}}
-  <li class="divider"></li>
-  <li><a href="{{pathFor "cartCheckout"}}"><button class="btn btn-primary pull-right">Checkout</button></a></li>
-   </ul>
+<template name="cartIcon">
+  <div class="cart-icon">
+    <a href="#cart-drawer">
+    <img src="../../shopping-bag.svg" height="25" width="25">
+    <span class="badge">{{cartCount}}</span>
+  </a>
+  </div>
 </template>

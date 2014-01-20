@@ -13,7 +13,7 @@
 <div class="panel-body">
   <div class="checkout-shipping list-group">
   {{#each rates}}
-    <a href="#" class="list-group-item" data-carrier="{{carrier}}" data-method="{{method}}">
+    <a href="#" class="list-group-item {{isSelected}}" data-carrier="{{carrier}}" data-method="{{method}}">
       <div class="col-md-6">{{label}}</div>
       <div>{{value}}</div>
     </a>

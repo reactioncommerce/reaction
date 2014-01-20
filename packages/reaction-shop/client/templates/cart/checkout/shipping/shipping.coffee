@@ -11,6 +11,11 @@ Template.checkoutShipping.helpers
           console.log "Fetching"
     rates
 
+   isSelected: (carrier,method)->
+    currentShipping = Cart.findOne()?.shipping
+    if (currentShipping?.carrier is this.carrier) and (currentShipping?.method is this.method)
+      return "active"
+
 Template.checkoutShipping.events
   'click .list-group-item': (event) ->
     $('.checkout-shipping .active').removeClass('active')
@@ -18,7 +23,3 @@ Template.checkoutShipping.events
     currentCart = Cart.findOne()._id
     Cart.update currentCart,{$set:{shipping:this}}
     Session.set "shippingMethod",this
-
-  # 'click a': (event) ->
-  #   event.stopPropagation()
-  #   event.preventDefault()

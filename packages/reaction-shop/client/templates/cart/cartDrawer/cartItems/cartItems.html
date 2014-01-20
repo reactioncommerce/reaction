@@ -1,0 +1,18 @@
+<template name="cartItems">
+<div class="cart-items" id="{{_id}}{{variants._id}}">
+  <div class="img-thumbnail">
+    <a href="#">
+      <div class="remove-cart-item fa fa-times fa-lg" data-target="{{_id}}{{variants._id}}"></div>
+    </a>
+    <a href="{{pathFor 'shop/product' variant=variants._id}}" data-event-category="cart" data-event-action="product-click" data-event-label="Cart product click" data-event-value="{{productId}}">
+      <div class="center-cropped" style="background-image: url('{{getVariantImage variants}}');">
+        <img class="cart-item-image" src="{{getVariantImage variants}}" />
+      </div>
+    </a>
+    <div class="cart-labels">
+      <span class="badge">{{quantity}}</span>
+      <span>{{variants.title}}</span>
+    </div>
+  </div>
+</div>
+</template>

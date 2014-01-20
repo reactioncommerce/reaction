@@ -13,7 +13,7 @@
 <div id="{{_id}}" class="thumbnail item">
 
   <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
-    <img src="{{getVariantImage this.variants.[0]}}" class="img-responsive">
+    <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
 
     {{#unless isVisible}}
       <i class="fa fa-eye-slash" title="Publish"></i>

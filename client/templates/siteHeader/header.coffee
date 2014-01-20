@@ -21,6 +21,3 @@ Template.siteHeader.events
     setTimeout (->
       $("#login-email").focus()
     ), 100
-
-  'click .cart-icon': () ->
-    $("#cart-drawer").fadeToggle "slow", "linear"

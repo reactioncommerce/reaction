@@ -1,61 +1,35 @@
 <template name="cartDrawer">
-{{#isolate}}
-  <div class="cart-drawer" id="cart-drawer" {{#if checkoutView}}style="display:block"{{/if}}>
-    <div class="owl-carousel">
-        {{#if cartItems}}
-          {{>cartSubTotals}}
-        {{/if}}
-        {{#each cartItems}}
-          {{>cartItems}}
-        {{/each}}
-    </div>
-    {{#unless cartItems}}
-      <div class="cart-items">
-        <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong></h1>
+<div id="cart-drawer-container">
+{{#if displayCartDrawer true}}
+    <div class="cart-drawer" id="cart-drawer" {{#if checkoutView}}style="display:block"{{/if}}>
+      <div class="owl-carousel">
+          {{#if cartItems}}
+            {{>cartSubTotals}}
+          {{/if}}
+          {{#each cartItems}}
+            {{>cartItems}}
+          {{/each}}
       </div>
-    {{else}}
-      {{#unless checkoutView}}
-       <a href="{{pathFor "cartCheckout"}}" class="btn btn-success btn-lg btn-block" id="btn-checkout">
-        Checkout now
-      </a>
+      {{#unless cartItems}}
+        <div class="cart-drawer-empty">
+          <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong></h1>
+        </div>
+        <div class="row">
+             <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping">
+              Keep on shopping
+            </a>
+        </div>
+
+      {{else}}
+        {{#unless checkoutView}}
+        <div class="row">
+             <a href="{{pathFor "cartCheckout"}}" class="btn btn-success btn-lg btn-block" id="btn-checkout">
+              Checkout now
+            </a>
+        </div>
+        {{/unless}}
       {{/unless}}
-    {{/unless}}
-  </div>
-{{/isolate}}
-</template>
-
-<template name="cartItems">
-<div class="cart-items">
-  <div class="img-thumbnail">
-    <a href="#">
-      <span class="fa fa-times fa-lg pull-right remove-cart-item" id="{{_id}}"></span>
-    </a>
-    <a href="{{pathFor 'shop/product' variant=variants._id}}" data-event-category="cart" data-event-action="product-click" data-event-label="Cart product click" data-event-value="{{productId}}">
-      <div class="center-cropped" style="background-image: url('{{getVariantImage variants}}');">
-        <img src="{{getVariantImage variants}}" />
-      </div>
-    </a>
-  </div>
-  <div>
-  <div class="cart-labels">
-    <span class="badge">{{quantity}}</span>
-    <span>{{variants.title}}</span>
-  </div>
-  </div>
-</div>
-</template>
-
-<template name="cartSubTotals">
-<div class="thumbnail">
-  <div class="cart-totals">
-    <table class="table table-condensed">
-      <thead>Your cart</thead>
-      <tr><td>Items in cart</td><td>{{cartCount}}</td></tr>
-      <tr><td>Sub total</td><td>{{subTotal}}</td></tr>
-      <tr><td>Est. Shipping</td><td>{{estShipping}}</td></tr>
-      <tr><td>Est. Taxes</td><td>{{estTaxes}}</td></tr>
-      <tr><td>Est. Total</td><td>{{cartTotal}}</td></tr>
-    </table>
-  </div>
+    </div>
+{{/if}}
 </div>
 </template>

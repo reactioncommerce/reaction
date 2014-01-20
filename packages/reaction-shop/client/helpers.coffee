@@ -9,25 +9,6 @@ Handlebars.registerHelper "hasOwnerAccess", ->
   Meteor.app.hasOwnerAccess()
 
 # *****************************************************
-# method to return tag specific product
-# *****************************************************
-@getProductsByTag = (tag) ->
-  selector = {}
-  if tag
-    tagIds = []
-    relatedTags = [tag]
-    while relatedTags.length
-      newRelatedTags = []
-      for relatedTag in relatedTags
-        if tagIds.indexOf(relatedTag._id) == -1
-          tagIds.push(relatedTag._id)
-          if relatedTag.relatedTagIds?.length
-            newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
-      relatedTags = newRelatedTags
-    selector.tagIds = {$in: tagIds}
-  cursor = Products.find(selector)
-
-# *****************************************************
 # method to alway return an image,
 # or a placeholder for a product variant
 # *****************************************************
@@ -46,3 +27,24 @@ Handlebars.registerHelper "getVariantImage", (variant) ->
       media
   else
     console.log "Variant image error: No object passed"
+
+
+# *****************************************************
+# method to return tag specific product
+# *****************************************************
+@getProductsByTag = (tag) ->
+  selector = {}
+  if tag
+    tagIds = []
+    relatedTags = [tag]
+    while relatedTags.length
+      newRelatedTags = []
+      for relatedTag in relatedTags
+        if tagIds.indexOf(relatedTag._id) == -1
+          tagIds.push(relatedTag._id)
+          if relatedTag.relatedTagIds?.length
+            newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
+      relatedTags = newRelatedTags
+    selector.tagIds = {$in: tagIds}
+  cursor = Products.find(selector)
+

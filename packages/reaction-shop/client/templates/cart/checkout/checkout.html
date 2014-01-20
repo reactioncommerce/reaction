@@ -6,7 +6,9 @@
           <div class="col-md-6">
           {{>checkoutAddressBook}}
           </div>
+          {{#if shippingOptionStatus}}
           <div class="col-md-3">{{>checkoutShipping}}</div>
+          {{/if}}
         </div>
       </div>
       {{else}}
@@ -38,7 +40,7 @@
   <div class="navbar navbar-fixed navbar-static-top" role="navigation">
     <div class="navbar-header">
       <a class="navbar-brand" href="{{pathFor 'index'}}">{{{siteName}}}</a>
-      <div class="visible-xs hidden-sm hidden-lg hidden-md pull-right">{{>shopCartIcon}}</div>
+      <div class="visible-xs hidden-sm hidden-lg hidden-md pull-right">{{>cartIcon}}</div>
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>

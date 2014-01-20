@@ -232,8 +232,7 @@ Template.productDetail.events
         Meteor.call "addToCart", Session?.get('shoppingCart')._id, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
         $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         setTimeout (->
-          $("html, body").animate({ scrollTop: 0 }, "fast")
-          $("#cart-drawer").fadeIn(400 ).delay( 10000 ).fadeOut( 500 )
+          toggleCartDrawer()
         ), 500
     else
       throwError("Select an option before adding to cart")
