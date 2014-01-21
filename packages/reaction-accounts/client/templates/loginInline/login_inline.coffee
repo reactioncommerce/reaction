@@ -3,6 +3,8 @@
 
   # for convenience
   loginInlineSession = Accounts._loginInlineSession
+  loginInlineSession.set "inSignupFlow",true
+
   Handlebars.registerHelper "loginInline", (options) ->
     if options.hash.align is "left"
       new Handlebars.SafeString(Template._loginInline(align: "left"))

@@ -17,6 +17,7 @@
     "jquery-cookie": {},
     "handlebars-server": {},
     "headers": {},
-    "collection-hooks": {}
+    "collection-hooks": {},
+    "paypal": {}
   }
 }

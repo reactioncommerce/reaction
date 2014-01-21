@@ -1,0 +1,47 @@
+<template name="paypalPaymentForm">
+  <form class='form' id='paypal-payment-form' action='#'>
+    <div class='form-group'>
+      <label for='name'>Name</label>
+      <input type='text' class='form-control' name='name' id='name' placeholder='Name on card'/>
+    </div>
+    <div class='form-group'>
+      <label for='credit_card'>Card Number</label>
+      <input type='text' class='form-control' name='card_number' id='card-number' placeholder='XXXX XXXX XXXX XXXX'/>
+    </div>
+    <div class='form-group'>
+      <label for='expire_month'>Expiration Month</label>
+      <select name='expire_month' id='expire-month'>
+        <option selected="selected">Expiration Month</option>
+        <option value='01'> 1 - Jan </option>
+        <option value='02'> 2 - Feb </option>
+        <option value='03'> 3 - Mar </option>
+        <option value='04'> 4 - Apr </option>
+        <option value='05'> 5 - May </option>
+        <option value='06'> 6 - Jun </option>
+        <option value='07'> 7 - Jul </option>
+        <option value='08'> 8 - Aug </option>
+        <option value='09'> 9 - Sep </option>
+        <option value='10'> 10 - Oct </option>
+        <option value='11'> 11 - Nov </option>
+        <option value='12'> 12 - Dec </option>
+      </select>
+    </div>
+    <div class='form-group'>
+      <label for='expire_year'>Expiration Year</label>
+      <select name='expire_year' id='expire-year'>
+        <option selected="selected">Expiration Year</option>
+        <option value='2014'>2014</option>
+        <option value='2015'>2015</option>
+        <option value='2016'>2016</option>
+        <option value='2017'>2017</option>
+        <option value='2018'>2018</option>
+        <option value='2019'>2019</option>
+      </select>
+    </div>
+    <div class='form-group'>
+      <label for='cvv2'>CVV</label>
+      <input type='text' class='form-control' name='cvv' id='cvv' placeholder='123'/>
+    </div>
+    <button type="submit" class='btn btn-lg btn-success btn-block'>Complete your order</button>
+  </form>
+</template>

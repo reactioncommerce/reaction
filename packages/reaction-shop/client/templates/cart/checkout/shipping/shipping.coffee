@@ -14,6 +14,7 @@ Template.checkoutShipping.helpers
    isSelected: (carrier,method)->
     currentShipping = Cart.findOne()?.shipping
     if (currentShipping?.carrier is this.carrier) and (currentShipping?.method is this.method)
+      Session.set "shippingMethod",this
       return "active"
 
 Template.checkoutShipping.events

@@ -200,3 +200,10 @@ Handlebars.registerHelper "foreach", (arr, options) ->
     options.fn item
   ).join ""
 
+#
+# https://github.com/meteor/meteor/issues/281
+#
+Handlebars.registerHelper "labelBranch", (label, options) ->
+  data = this
+  Spark.labelBranch Spark.UNIQUE_LABEL, ->
+    options.fn data

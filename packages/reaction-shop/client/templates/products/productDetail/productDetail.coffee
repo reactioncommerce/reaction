@@ -227,9 +227,10 @@ Template.productDetail.events
     event.stopPropagation()
     now = new Date()
     if (currentProduct.get "variant")
-        sessionId = Session.get("serverSession")._id
+        shoppingCart = Deps.nonreactive ->
+          Session.get "shoppingCart"
         quantity = 1
-        Meteor.call "addToCart", Session?.get('shoppingCart')._id, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
+        Meteor.call "addToCart", shoppingCart._id, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
         $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         setTimeout (->
           toggleCartDrawer()

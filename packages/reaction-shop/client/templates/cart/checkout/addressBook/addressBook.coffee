@@ -33,13 +33,14 @@ Template.checkoutAddressBook.helpers
     if this._id is Session.get "billingUserAddressId"
       return "active fa fa-check-circle "
     unless Session.get("billingUserAddressId")?
-      return "active fa fa-check-circle " if this.isDefault
+      Session.set "billingUserAddressId",this._id
 
   selectedShipping: ->
     if this._id is Session.get "shippingUserAddressId"
       return "active fa fa-check-circle "
     unless Session.get("shippingUserAddressId")?
-      return "active fa fa-check-circle " if this.isDefault
+      if this.isDefault
+        Session.set "shippingUserAddressId",this._id
 
 
 Template.checkoutAddressBook.events

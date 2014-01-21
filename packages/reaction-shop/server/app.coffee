@@ -39,4 +39,3 @@ Meteor.app = _.extend(Meteor.app || {},
     userId = Meteor.userId() unless userId
     Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
 )
-

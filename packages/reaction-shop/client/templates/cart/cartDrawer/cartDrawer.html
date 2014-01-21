@@ -1,14 +1,16 @@
 <template name="cartDrawer">
 <div id="cart-drawer-container">
-{{#if displayCartDrawer true}}
+{{#if displayCartDrawer}}
     <div class="cart-drawer" id="cart-drawer" {{#if checkoutView}}style="display:block"{{/if}}>
       <div class="owl-carousel">
           {{#if cartItems}}
             {{>cartSubTotals}}
           {{/if}}
-          {{#each cartItems}}
-            {{>cartItems}}
-          {{/each}}
+            {{#each cartItems}}
+            {{#labelBranch _id}}
+              {{>cartItems}}
+            {{/labelBranch}}
+            {{/each}}
       </div>
       {{#unless cartItems}}
         <div class="cart-drawer-empty">

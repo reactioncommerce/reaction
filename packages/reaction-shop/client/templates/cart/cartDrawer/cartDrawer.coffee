@@ -12,8 +12,10 @@ Session.setDefault "displayCartDrawer",false
   cartVisibility = Session.get "displayCartDrawer"
   if cartVisibility is false
     Session.set "displayCartDrawer", true
+    $("html").animate({ scrollTop: "0" })
     $("#cart-drawer").fadeIn "slow"
   else if cartVisibility is true and delayId? is true and toggle? isnt true
+    $("html").animate({ scrollTop: "0" })
     Session.set "displayCartDrawer", true
   else
     Session.set "displayCartDrawer", false
@@ -37,7 +39,6 @@ Template.cartDrawer.helpers
     Session.get "displayCartDrawer"
 
 Template.cartDrawer.rendered = ->
-  # $('html,body').animate({scrollTop: $("#cart-drawer").offset().top})
   $(".owl-carousel").owlCarousel
     lazyload: true
     itemsCustom : [

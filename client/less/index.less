@@ -1,11 +1,11 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 @import "/packages/bootstrap3-less/bootstrap.lessimport";
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300italic,300,100,500,700italic,400italic);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,700,600,300|Open+Sans+Condensed:300);
+
+@import url(http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700|Open+Sans:400,300,600,700,800|Open+Sans+Condensed:300);
 
 @input-border-radius: 0px;
-@font-family-sans-serif:  "Roboto","Open Sans","sans-serif";
+@font-family:  "PT Sans Caption', 'Open Sans', sans-serif";
 @font-size-base:  14px;
 @grid-gutter-width: 10px;
 
@@ -66,4 +66,13 @@ footer {
 @media (min-width: 768px) {
   .row { margin-right: 0; margin-left: 0; }
   .jumbotron {font-size: 60px;}
+}
+
+@media screen and (max-width: 767px) {
+    h1 {
+    font-size:30px;
+    }
+    .navbar-toggle {
+      float: left;
+    }
 }

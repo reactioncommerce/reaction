@@ -1,34 +1,37 @@
-Template.cartCheckoutHeader.helpers
-  siteName: ->
-    siteName = Shops.findOne().name
-    siteName
-
 Template.cartCheckout.helpers
   loginStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-        status = "visited first"
+    unless Meteor.userId()?
+      status = "checkout-step-badge"
     else if Meteor.user()
-      status = "active"
+      status = "checkout-step-badge-completed"
     status
 
-  shippingStatus: () ->
+  addressStatus: () ->
     if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-      status = "previous visited"
+      status = "checkout-step-badge-completed"
     else if Meteor.user()
-      status = ""
+      status =  "checkout-step-badge"
+    else
+      status = false
     status
 
   shippingOptionStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-      status = true
+    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
+      status = "checkout-step-badge-completed"
+    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
+      status = "checkout-step-badge"
+    else
+      status = false
     status
 
-  paymentStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod") and Session.get("paymentMethod"))
-      status = "previous visited"
-    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
-      status = "active"
+  checkoutReviewStatus: () ->
+    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
+      status = true
     status
 
 Template.cartCheckout.rendered = ->
   Session.set "displayCartDrawer", false
+
+Template.cartCheckout.events
+  'click #checkout-step-payment-methods': () ->
+    # Set review to complete

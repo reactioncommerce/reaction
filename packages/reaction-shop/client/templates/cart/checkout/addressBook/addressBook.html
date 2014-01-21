@@ -1,61 +1,64 @@
 <template name="checkoutAddressBook">
   <div class="panel panel-default address-book">
-    {{#if addressBook}}
-    <div class="panel-heading">
-      <h3 class="panel-title">
-        Address Information <i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
-      </h3>
-    </div>
-    {{/if}}
-    <div class="panel-body">
-      {{#if addressBook}}
-      <div class="row" id="addressBook">
-        <div class="col-md-6">
-          <div class="list-group">
-            <strong>Bill To:</strong>
-             {{#each addressBook shipping}}
-            <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong><i class="fa fa-pencil pull-right"></i>
-              <address>
-                {{address1}}
-                {{address2}},<br>
-                {{city}}, {{region}} {{postal}} {{country}}<br>
-                {{phone}}
-              </address>
-            </a>
-            {{/each}}
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="list-group">
-            <strong>Ship To:</strong>
-            {{#each addressBook shipping}}
-            <a href="#" class="address-ship-to list-group-item {{selectedShipping}}" data-ship-id="{{_id}}">
-              <strong>{{fullName}}</strong>
-              <address>
-                {{address1}}
-                {{address2}},<br>
-                {{city}}, {{region}} {{postal}} {{country}}<br>
-                {{phone}}
-              </address>
-            </a>
-            {{/each}}
-          </div>
-        </div>
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          {{#if addressBook}}
+          Choose shipping & billing address<i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
+          {{else}}
+          Create your default address</i>
+          {{/if}}
+        </h3>
       </div>
-      <div class="col-md-12" id="checkoutAddressBookAdd">
-        <div class="addressForm"></div>
+
+      {{#if addressBook}}
+      <div class="panel-body">
+        <div class="row" id="addressBook">
+          <div class="col-md-6">
+            <div class="list-group">
+              <strong>Select a shipping address</strong>
+              {{#each addressBook shipping}}
+              <a href="#" class="address-ship-to list-group-item {{selectedShipping}}" data-ship-id="{{_id}}">
+                <strong>{{fullName}}</strong>
+                <address>
+                  {{address1}}
+                  {{address2}},<br>
+                  {{city}}, {{region}} {{postal}} {{country}}<br>
+                  {{phone}}
+                </address>
+              </a>
+              {{/each}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="list-group">
+              <strong>Select a billing address</strong>
+               {{#each addressBook shipping}}
+              <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" data-bill-id="{{_id}}"> <strong>{{fullName}}</strong><i class="fa fa-pencil pull-right"></i>
+                <address>
+                  {{address1}}
+                  {{address2}},<br>
+                  {{city}}, {{region}} {{postal}} {{country}}<br>
+                  {{phone}}
+                </address>
+              </a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" id="checkoutAddressBookAdd">
+          <div class="addressForm"></div>
+        </div>
       </div>
       {{else}}
-      <div class="col-md-12">{{>checkoutAddressBookAdd}}</div>
+        {{>checkoutAddressBookAdd}}
       {{/if}}
-    </div>
   </div>
 </template>
 
 <template name="checkoutAddressBookAdd">
+<div class="panel-body">
 {{#autoForm schema=checkoutAddressBookAddForm id="checkoutAddressBookAddForm"}}
   <fieldset>
-      <legend>Add address</legend>
       <div class="row">
         <div class="col-md-6 form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
             {{afFieldLabel "country" class="control-label"}}
@@ -130,14 +133,14 @@
         </div>
         <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid 'isDefault'}} has-error{{/if}}">
             <label class="control-label"></label>
-            {{afFieldInput "isDefault"}}
+            {{afFieldInput "isDefault" checked=true}}
             {{#if afFieldIsInvalid "isDefault"}}
             <span class="help-block">{{afFieldMessage "isDefault"}}</span>
             {{/if}}
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 col-md-offset-8">
+        <div class="col-md-12 col-md-offset-7">
             <button type="submit" data-meteor-method="addressBookAdd" class="btn btn-primary">Save and Continue</button>
             {{#if addressBook}}
             <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>

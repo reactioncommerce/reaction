@@ -20,7 +20,8 @@
       "jquery-cookie": {},
       "handlebars-server": {},
       "headers": {},
-      "collection-hooks": {}
+      "collection-hooks": {},
+      "paypal": {}
     },
     "packages": {
       "spin": {
@@ -103,15 +104,25 @@
         "tag": "v0.6.2",
         "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
       },
+      "paypal": {
+        "git": "https://github.com/DavidBrear/meteor-paypal.git",
+        "tag": "v1.1.1",
+        "commit": "eeff60449511f6caa0d0aaf433ea8a06b426858e"
+      },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.28",
-        "commit": "29f3a54be67e9b988ad59994ffa152d9559e4695"
+        "tag": "v0.2.30",
+        "commit": "40f983129da6e82b3ab2fa1f9e73111d818ee71e"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.2.1",
         "commit": "9ee12e714afe56b189f53076447b7b54f3012065"
+      },
+      "npm": {
+        "git": "https://github.com/arunoda/meteor-npm.git",
+        "tag": "v0.2.6",
+        "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
       }
     }
   }
