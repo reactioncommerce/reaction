@@ -49,6 +49,7 @@ currentProduct =
 #  ensure user cart is created, and address located
 ####################################################
 Deps.autorun ->
+  cart = Session.get "shoppingCart"
   if Session.get('serverSession')
     Meteor.subscribe 'cart', Session.get('serverSession')._id
     userId = Meteor.userId()

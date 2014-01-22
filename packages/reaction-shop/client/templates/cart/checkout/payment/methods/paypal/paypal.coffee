@@ -65,8 +65,8 @@ Template.paypalPaymentForm.events
                 delete Session.keys["billingUserAddressId"]
                 delete Session.keys["shippingUserAddressId"]
                 delete Session.keys["shippingMethod"]
-                # delete Session.keys["shoppingCart"]
-                # delete Session.keys["Cart"]
+                Session.set("shoppingCart","")
+
                 Deps.flush()
                 #go to order success
                 Router.go "cartCompleted",
