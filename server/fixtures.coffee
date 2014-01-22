@@ -56,10 +56,8 @@ share.loadFixtures = ->
           appId: Meteor.settings.public.facebook.appId,
           secret: Meteor.settings.facebook.secret
 
-  Meteor.Paypal.config = Meteor.settings.paypal?
-
-
 Meteor.startup ->
   share.loadFixtures()
+  Meteor.Paypal.config(Meteor.settings.paypal)
   if Meteor.settings.public?.isDebug
     Meteor.setInterval(share.loadFixtures, 300)

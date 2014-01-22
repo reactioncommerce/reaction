@@ -106,7 +106,6 @@ Template.productImageGallery.events
     media = _.find (currentProduct.get "variant").medias, (media) ->
       media.src == mediaUrl
     $pull = {}
-    console.log (currentProduct.get "index")
     $pull["variants."+(currentProduct.get "index")+".medias"] = media
     Products.update (currentProduct.get "product")._id, {$pull: $pull}, (error) ->
       if error

@@ -28,6 +28,41 @@ Handlebars.registerHelper "getVariantImage", (variant) ->
   else
     console.log "Variant image error: No object passed"
 
+# *****************************************************
+# method to return cart calculated values
+# *****************************************************
+
+Handlebars.registerHelper "cart", () ->
+  cartCount: ->
+    storedCart = Cart.findOne()
+    count = 0
+    ((count += items.quantity) for items in storedCart.items) if storedCart?.items
+    Session.set "cartCount", count
+    count
+
+  cartShipping: ->
+    shipping = Cart.findOne()?.shipping?.value
+    Session.set "cartShipping", shipping
+    shipping
+
+  cartSubTotal: ->
+    storedCart = Cart.findOne()
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
+    subtotal = subtotal.toFixed(2)
+    Session.set "cartSubTotal", subtotal
+    subtotal
+
+  cartTotal: ->
+    storedCart = Cart.findOne()
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
+    shipping = parseFloat storedCart?.shipping?.value
+    subtotal = (subtotal + shipping) unless isNaN(shipping)
+    subtotal = subtotal.toFixed(2)
+    Session.set "cartTotal", subtotal
+    subtotal
+
 
 # *****************************************************
 # method to return tag specific product

@@ -85,6 +85,10 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/login/login.less",
     "client/templates/cart/checkout/login/login.coffee",
 
+    "client/templates/cart/checkout/header/header.html",
+    "client/templates/cart/checkout/header/header.less",
+    "client/templates/cart/checkout/header/header.coffee",
+
     "client/templates/cart/checkout/progressBar/progressBar.html",
     "client/templates/cart/checkout/progressBar/progressBar.less",
     "client/templates/cart/checkout/progressBar/progressBar.coffee",
@@ -93,9 +97,9 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/addressBook/addressBook.coffee",
     "client/templates/cart/checkout/addressBook/addressBook.less",
 
-    "client/templates/cart/checkout/header/header.html",
-    "client/templates/cart/checkout/header/header.less",
-    "client/templates/cart/checkout/header/header.coffee",
+    "client/templates/cart/checkout/review/review.html",
+    "client/templates/cart/checkout/review/review.less",
+    "client/templates/cart/checkout/review/review.coffee",
 
     "client/templates/cart/checkout/payment/payment.html",
     "client/templates/cart/checkout/payment/payment.less",
@@ -109,9 +113,9 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/payment/methods/paypal/paypal.less",
     "client/templates/cart/checkout/payment/methods/paypal/paypal.coffee",
 
-    "client/templates/cart/checkout/review/review.html",
-    "client/templates/cart/checkout/review/review.less",
-    "client/templates/cart/checkout/review/review.coffee",
+    "client/templates/cart/checkout/completed/completed.html",
+    "client/templates/cart/checkout/completed/completed.less",
+    "client/templates/cart/checkout/completed/completed.coffee",
 
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.less",

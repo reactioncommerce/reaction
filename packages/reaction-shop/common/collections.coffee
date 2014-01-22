@@ -377,10 +377,14 @@ Products = @Products # package exports
 
 Customers = @Customers # package exports
 
-@Orders = new Meteor.Collection 'Orders',
-  schema:
-    shopId:
+@Orders = new Meteor.Collection "Orders",
+  schema = new SimpleSchema([Cart,
+    additionalField:
       type: String
+      optional: true
+    status:
+      type: String
+  ])
 
 Orders = @Orders # package exports
 
@@ -406,6 +410,28 @@ ShipQuoteSchema = new SimpleSchema
     type: String
     optional: true
 
+PaymentSchema = new SimpleSchema
+  processor:
+    type: String
+  paymentMethod:
+    type: String
+    optional: true
+  transactionId:
+    type: String
+  status:
+    type: String
+  mode:
+    type: String
+  createdAt:
+    type: Date
+    optional: true
+  updatedAt:
+    type: Date
+    optional :true
+  authorization:
+    type: String
+    optional: true
+
 @Cart = new Meteor.Collection 'Cart',
   schema:
     shopId:
@@ -424,6 +450,9 @@ ShipQuoteSchema = new SimpleSchema
       optional: true
     shipping:
       type: ShipQuoteSchema
+      optional:true
+    payment:
+      type: [PaymentSchema]
       optional:true
     totalPrice:
       label: "Total Price"

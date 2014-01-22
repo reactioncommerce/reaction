@@ -78,3 +78,9 @@ Router.map ->
     yieldTemplates:
       checkoutHeader:
         to: "header"
+  #completed orders
+  @route 'cartCompleted',
+    path: 'completed/:_id',
+    template: 'cartCompleted'
+    waitOn: ->
+      [share.ConfigDataHandle]

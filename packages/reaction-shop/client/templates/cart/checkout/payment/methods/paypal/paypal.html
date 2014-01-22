@@ -6,7 +6,7 @@
     </div>
     <div class='form-group'>
       <label for='credit_card'>Card Number</label>
-      <input type='text' class='form-control' name='card_number' id='card-number' placeholder='XXXX XXXX XXXX XXXX'/>
+      <input type='text' class='form-control' name='number' id='number' placeholder='XXXX XXXX XXXX XXXX'/>
     </div>
     <div class='form-group'>
       <label for='expire_month'>Expiration Month</label>
@@ -42,6 +42,9 @@
       <label for='cvv2'>CVV</label>
       <input type='text' class='form-control' name='cvv' id='cvv' placeholder='123'/>
     </div>
-    <button type="submit" class='btn btn-lg btn-success btn-block'>Complete your order</button>
+    <button type="submit" class="btn btn-lg btn-success btn-block">
+      <span id="btn-complete-order">Complete your order</span>
+      <i class="fa fa-spinner fa-spin hidden" id="btn-processing"></i>
+      </button>
   </form>
 </template>

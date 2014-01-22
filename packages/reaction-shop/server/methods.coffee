@@ -127,6 +127,26 @@ Meteor.methods
   removeFromCart: (cartId, variantData) ->
     Cart.update({_id: cartId}, {$pull: {"items": {"variants": variantData} } })
 
+  copyCartToOrder: (cart) ->
+    #Retrieving cart twice (once on call)to ensure accurate clone from db
+    currentCartId = cart._id
+    # cart = Cart.findOne(cartId)
+    now = new Date()
+    # TODO: Check userId & sessionId against current
+    cart.shopId = Meteor.app.getCurrentShop()._id
+    cart.userId = Meteor.userId()
+    cart.createdAt = now
+    cart.updatedAt = now
+    cart._id = Random.id()
+    cart.status = "new"
+    #TODO Investigate why this doesn't work with simpleschema collection
+    order = Orders._collection.insert(cart,
+        (error, result) ->
+          console.log Orders.namedContext().invalidKeys() if error
+      )
+    Cart.remove(currentCartId)
+    return cart._id #new order id
+
   addressBookAdd: (doc) ->
     doc._id = Random.id()
     Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {"profile.addressBook": doc}})
