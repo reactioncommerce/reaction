@@ -1,8 +1,8 @@
 (->
-  
+
   # for convenience
   loginButtonsSession = Accounts._loginButtonsSession
-  
+
   # events shared between loginButtonsLoggedOutDropdown and
   # loginButtonsLoggedInDropdown
   Template._loginButtons.events
@@ -17,7 +17,7 @@
     "click .login-close": ->
       loginButtonsSession.closeDropdown()
 
-  
+
   #
   # loginButtonsLoggedInDropdown template and related
   #
@@ -27,6 +27,9 @@
     loginButtonsSession.set "inChangePasswordFlow", true
     Meteor.flush()
     toggleDropdown()
+
+  Template._loginButtonsLoggedInDropdown.socialImage = ->
+    Meteor.user().profile.picture
 
   Template._loginButtonsLoggedInDropdown.displayName = ->
     Accounts._loginButtons.displayName()
@@ -41,7 +44,7 @@
     loginButtonsSession.get "dropdownVisible"
 
   Template._loginButtonsLoggedInDropdownActions.allowChangingPassword = ->
-    
+
     # it would be more correct to check whether the user has a password set,
     # but in order to do that we'd have to send more data down to the client,
     # and it'd be preferable not to send down the entire service.password document.
@@ -50,7 +53,7 @@
     user = Meteor.user()
     user.username or (user.emails and user.emails[0] and user.emails[0].address)
 
-  
+
   #
   # loginButtonsLoggedOutDropdown template and related
   #
@@ -68,20 +71,20 @@
     "click #signup-link": (event) ->
       event.stopPropagation()
       loginButtonsSession.resetMessages()
-      
+
       # store values of fields before swtiching to the signup form
       username = trimmedElementValueById("login-username")
       email = trimmedElementValueById("login-email")
       usernameOrEmail = trimmedElementValueById("login-username-or-email")
-      
+
       # notably not trimmed. a password could (?) start or end with a space
       password = elementValueById("login-password")
       loginButtonsSession.set "inSignupFlow", true
       loginButtonsSession.set "inForgotPasswordFlow", false
-      
+
       # force the ui to update so that we have the approprate fields to fill in
       Meteor.flush()
-      
+
       # update new fields with appropriate defaults
       if username isnt null
         document.getElementById("login-username").value = username
@@ -96,18 +99,18 @@
     "click #forgot-password-link": (event) ->
       event.stopPropagation()
       loginButtonsSession.resetMessages()
-      
+
       # store values of fields before swtiching to the signup form
       email = trimmedElementValueById("login-email")
       usernameOrEmail = trimmedElementValueById("login-username-or-email")
       loginButtonsSession.set "inSignupFlow", false
       loginButtonsSession.set "inForgotPasswordFlow", true
-      
+
       # force the ui to update so that we have the approprate fields to fill in
       Meteor.flush()
-      
+
       #toggleDropdown();
-      
+
       # update new fields with appropriate defaults
       if email isnt null
         document.getElementById("forgot-password-email").value = email
@@ -119,19 +122,19 @@
       email = trimmedElementValueById("login-email") or trimmedElementValueById("forgot-password-email") # Ughh. Standardize on names?
       loginButtonsSession.set "inSignupFlow", false
       loginButtonsSession.set "inForgotPasswordFlow", false
-      
+
       # force the ui to update so that we have the approprate fields to fill in
       Meteor.flush()
       document.getElementById("login-username").value = username  if document.getElementById("login-username")
       document.getElementById("login-email").value = email  if document.getElementById("login-email")
-      
+
       # "login-password" is preserved thanks to the preserve-inputs package
       document.getElementById("login-username-or-email").value = email or username  if document.getElementById("login-username-or-email")
 
     "keypress #login-username, keypress #login-email, keypress #login-username-or-email, keypress #login-password, keypress #login-password-again": (event) ->
       loginOrSignup()  if event.keyCode is 13
 
-  
+
   # additional classes that can be helpful in styling the dropdown
   Template._loginButtonsLoggedOutDropdown.additionalClasses = ->
     unless Accounts.password
@@ -240,7 +243,7 @@
         fieldLabel: "Password (again)"
         inputType: "password"
         visible: ->
-          
+
           # No need to make users double-enter their password if
           # they'll necessarily have an email set, since they can use
           # the "forgot password" flow.
@@ -276,7 +279,7 @@
   Template._loginButtonsFormField.inputType = ->
     @inputType or "text"
 
-  
+
   #
   # loginButtonsChangePassword template
   #
@@ -309,7 +312,7 @@
         fieldLabel: "New Password (again)"
         inputType: "password"
         visible: ->
-          
+
           # No need to make users double-enter their password if
           # they'll necessarily have an email set, since they can use
           # the "forgot password" flow.
@@ -320,7 +323,7 @@
       }
     ]
 
-  
+
   #
   # helpers
   #
@@ -349,7 +352,7 @@
     username = trimmedElementValueById("login-username")
     email = trimmedElementValueById("login-email")
     usernameOrEmail = trimmedElementValueById("login-username-or-email")
-    
+
     # notably not trimmed. a password could (?) start or end with a space
     password = elementValueById("login-password")
     loginSelector = undefined
@@ -364,7 +367,7 @@
       else
         loginSelector = email: email
     else if usernameOrEmail isnt null
-      
+
       # XXX not sure how we should validate this. but this seems good enough (for now),
       # since an email must have at least 3 characters anyways
       unless Accounts._loginButtons.validateUsername(usernameOrEmail)
@@ -398,7 +401,7 @@
         return
       else
         options.email = email
-    
+
     # notably not trimmed. a password could (?) start or end with a space
     password = elementValueById("login-password")
     unless Accounts._loginButtons.validatePassword(password)
@@ -430,10 +433,10 @@
 
   changePassword = ->
     loginButtonsSession.resetMessages()
-    
+
     # notably not trimmed. a password could (?) start or end with a space
     oldPassword = elementValueById("login-old-password")
-    
+
     # notably not trimmed. a password could (?) start or end with a space
     password = elementValueById("login-password")
     return  unless Accounts._loginButtons.validatePassword(password)
@@ -443,7 +446,7 @@
         loginButtonsSession.errorMessage error.reason or "Unknown error"
       else
         loginButtonsSession.infoMessage "Password changed"
-        
+
         # wait 3 seconds, then expire the msg
         Meteor.setTimeout (->
           loginButtonsSession.resetMessages()
@@ -451,11 +454,11 @@
 
 
   matchPasswordAgainIfPresent = ->
-    
+
     # notably not trimmed. a password could (?) start or end with a space
     passwordAgain = elementValueById("login-password-again")
     if passwordAgain isnt null
-      
+
       # notably not trimmed. a password could (?) start or end with a space
       password = elementValueById("login-password")
       if password isnt passwordAgain

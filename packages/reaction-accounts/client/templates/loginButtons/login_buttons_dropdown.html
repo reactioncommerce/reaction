@@ -3,10 +3,13 @@
 <!--           -->
 <template name="_loginButtonsLoggedInDropdown">
   <li id="login-dropdown-list" class="dropdown">
-    <a class="dropdown-toggle"  data-toggle="dropdown">
+      <a class="dropdown-toggle"  data-toggle="dropdown">
+      {{#if socialImage}}
+      <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
+      {{/if}}
       {{displayName}}
       <b class="caret"></b>
-    </a>
+      </a>
     <div class="dropdown-menu col-sm-3">
       {{#if inMessageOnlyFlow}}
         {{> _loginButtonsMessages}}
