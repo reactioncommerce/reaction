@@ -377,14 +377,14 @@ Products = @Products # package exports
 
 Customers = @Customers # package exports
 
-@Orders = new Meteor.Collection "Orders",
-  schema = new SimpleSchema([Cart,
+@Orders = new Meteor.Collection("Orders",[Cart,OrderItemsSchema])
+
+OrderItemsSchema = new SimpleSchema
     additionalField:
       type: String
       optional: true
     status:
       type: String
-  ])
 
 Orders = @Orders # package exports
 

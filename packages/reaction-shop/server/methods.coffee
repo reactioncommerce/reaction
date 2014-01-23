@@ -140,7 +140,7 @@ Meteor.methods
     cart._id = Random.id()
     cart.status = "new"
     #TODO Investigate why this doesn't work with simpleschema collection
-    order = Orders._collection.insert(cart,
+    order = Orders.insert(cart,
         (error, result) ->
           console.log Orders.namedContext().invalidKeys() if error
       )
