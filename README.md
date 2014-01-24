@@ -165,6 +165,8 @@ in templates: for current user
 
 **Shop has members, which can be admin and have permissions**
 
+If member is admin next methods will always return `true`
+
 To check if user has some specific permissions:
 
 on Client: for current user, where "permissions" is string or [string]
@@ -175,7 +177,7 @@ on Server: for some shop (current if not defined) and some userId (current if no
 
 	Meteor.app.hasPermission(permissions, shop, userId)
 
-in templates: 
+in templates:
 
 	{{#if hasShopPermission permissions}}{{/if}}
 
