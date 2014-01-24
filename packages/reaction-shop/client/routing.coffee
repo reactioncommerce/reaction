@@ -84,3 +84,5 @@ Router.map ->
     template: 'cartCompleted'
     waitOn: ->
       [share.ConfigDataHandle]
+    data: ->
+      Orders.findOne(@params._id)

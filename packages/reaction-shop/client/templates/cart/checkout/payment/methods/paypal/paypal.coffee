@@ -28,7 +28,7 @@ Template.paypalPaymentForm.events
       return "discover"  if number.match(re)?
       ""
     form["type"] = getCardType form.number
-
+    storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1)+ " "+ form.number.slice(-4)
     # Submit for processing
     Meteor.Paypal.authorize form,
       total: Session.get "cartTotal"
@@ -38,36 +38,34 @@ Template.paypalPaymentForm.events
         console.log error.response.details[0].field
       else
         # Update Cart and clone to an order
-        currentCartId = Cart.findOne()._id
-        Cart.update currentCartId,
-          $set:
-            payment:[
-              processor: "paypal"
-              paymentMethod: transaction.payment.payer.payment_method
-              transactionId: transaction.payment.id
-              status: transaction.payment.state
-              mode: transaction.payment.intent
-              createdAt: new Date(transaction.payment.create_time)
-              updatedAt: new Date(transaction.payment.update_time)
-            ]
-        ,
-          validationContext: "Cart"
-        , (error, result) ->
-          if error
-            console.log "error update payment method to cart"+error
-          else
-            Meteor.call "copyCartToOrder",Cart.findOne(), (error, result) ->
-              if error
-                console.log "copyCart "+error
-              else
-                $("#paypal-payment-form .btn").removeClass("spin").addClass("btn-info").text("Success! Order Completed")
-                #clear cart related sessions
-                delete Session.keys["billingUserAddressId"]
-                delete Session.keys["shippingUserAddressId"]
-                delete Session.keys["shippingMethod"]
-                Session.set("shoppingCart","")
+       paymentMethod =
+            processor: "Paypal"
+            storedCard: storedCard
+            method: transaction.payment.payer.payment_method
+            transactionId: transaction.payment.id
+            status: transaction.payment.state
+            mode: transaction.payment.intent
+            createdAt: new Date(transaction.payment.create_time)
+            updatedAt: new Date(transaction.payment.update_time)
 
-                Deps.flush()
-                #go to order success
-                Router.go "cartCompleted",
-                  _id: result
+        Cart.update Cart.findOne()._id,
+          {$set:{"payment.paymentMethod":[paymentMethod]}}
+          , (error, result) ->
+            if error
+              console.log "error update payment method to cart"+error
+              console.log Cart.simpleSchema().namedContext().invalidKeys()
+            else
+              Meteor.call "copyCartToOrder",Cart.findOne(), (error, result) ->
+                if error
+                  console.log "An error occurred saving the order. : "+error
+                else
+                  $("#paypal-payment-form .btn").removeClass("spin").addClass("btn-info").text("Success! Order Completed")
+                  #go to order success
+                  Router.go "cartCompleted",
+                    _id: result
+                  #clear cart related sessions
+                  delete Session.keys["billingUserAddressId"]
+                  delete Session.keys["shippingUserAddressId"]
+                  delete Session.keys["shippingMethod"]
+                  Session.set("shoppingCart","")
+                  Deps.flush()

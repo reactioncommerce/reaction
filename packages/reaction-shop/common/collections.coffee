@@ -398,6 +398,7 @@ CartItemSchema = new SimpleSchema
   variants:
     type: ProductVariantSchema
 
+
 ShipQuoteSchema = new SimpleSchema
   carrier:
     type: Number
@@ -410,10 +411,21 @@ ShipQuoteSchema = new SimpleSchema
     type: String
     optional: true
 
-PaymentSchema = new SimpleSchema
+ShippingSchema = new SimpleSchema
+  address:
+    type: AddressSchema
+    optional: true
+  shippingMethod:
+    type: ShipQuoteSchema
+    optional: true
+
+PaymentMethodSchema = new SimpleSchema
   processor:
     type: String
-  paymentMethod:
+  storedCard:
+    type: String
+    optional: true
+  method:
     type: String
     optional: true
   transactionId:
@@ -430,6 +442,14 @@ PaymentSchema = new SimpleSchema
     optional :true
   authorization:
     type: String
+    optional: true
+
+PaymentSchema = new SimpleSchema
+  address:
+    type: AddressSchema
+    optional: true
+  paymentMethod:
+    type: [PaymentMethodSchema]
     optional: true
 
 @Cart = new Meteor.Collection 'Cart',
@@ -449,10 +469,10 @@ PaymentSchema = new SimpleSchema
       type: Boolean
       optional: true
     shipping:
-      type: ShipQuoteSchema
+      type: ShippingSchema
       optional:true
     payment:
-      type: [PaymentSchema]
+      type: PaymentSchema
       optional:true
     totalPrice:
       label: "Total Price"
