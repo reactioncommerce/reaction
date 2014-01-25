@@ -11,7 +11,7 @@ Template.googleAnalytics.events
     ,
       $set:
         property: property
-    throwError "Google Analytics is now configured.","Saved \"" + property + "\"", "success"
+    throwAlert "Google Analytics is now configured.","Saved \"" + property + "\"", "success"
     Router.go "dashboard"
 
   "click .cancel": (event) ->

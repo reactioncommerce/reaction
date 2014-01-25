@@ -45,7 +45,7 @@ Template.productDetail.rendered = ->
 
       validate: (value) ->
         if $.trim(value) is ""
-          throwError "A product name is required"
+          throwAlert "A product name is required"
           false
     # *****************************************************
     # Editable page title entry
@@ -197,7 +197,7 @@ Template.productDetail.rendered = ->
         $set: productsProperties
       , (error) ->
         if error
-          throwError error
+          throwAlert error
           false
         else
           true
@@ -236,7 +236,7 @@ Template.productDetail.events
           toggleCartDrawer()
         ), 500
     else
-      throwError("Select an option before adding to cart")
+      throwAlert("Select an option before adding to cart")
 
 
 

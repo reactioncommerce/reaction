@@ -44,7 +44,7 @@ Template.productImageGallery.rendered = ->
         onSuccess: (InkBlobs) ->
           uploadMedias InkBlobs
         onError: (FPError) ->
-          throwError(FPError.toString(),"Filepicker.io Error","error")
+          throwAlert(FPError.toString(),"Filepicker.io Error","error")
         onProgress: (percentage) ->
           $("#galleryDropPane").text "Uploading (" + percentage + "%)"
     window.loadPicker cb
@@ -94,7 +94,7 @@ Template.productImageGallery.events
       uploadMedias InkBlob
     ), (FPError) ->
       return  if FPError.code == 101 # The user closed the picker without choosing a file
-      throwError FPError.toString(),"Filepicker.io Error"
+      throwAlert FPError.toString(),"Filepicker.io Error"
 
 
 # *****************************************************
@@ -109,7 +109,7 @@ Template.productImageGallery.events
     $pull["variants."+(currentProduct.get "index")+".medias"] = media
     Products.update (currentProduct.get "product")._id, {$pull: $pull}, (error) ->
       if error
-        throwError error.reason
+        throwAlert error.reason
 
 # *****************************************************
 # save changed image data
@@ -128,5 +128,5 @@ uploadMedias = (upload) ->
   $addToSet["variants."+(currentProduct.get "index")+".medias"] =
     $each: newMedias
   Products.update (currentProduct.get "product")._id, {$addToSet: $addToSet}, (error) ->
-    throwError error if error
+    throwAlert error if error
 

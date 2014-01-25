@@ -1,11 +1,11 @@
 # *****************************************************
 # general helper for handling of error messages
 # inserts views/includes/errors.html
-# usage:  throwError("message");  (to display)
+# usage:  throwAlert("message");  (to display)
 #         clearsErrors();         (to clear)
 # *****************************************************
 share.Errors = @Errors = new Meteor.Collection(null)
-@throwError = (message,title,type) ->
+@throwAlert = (message,title,type) ->
   message = "An error has occurred" unless message
   title = "Error Notice" unless title
   type = "error" unless type

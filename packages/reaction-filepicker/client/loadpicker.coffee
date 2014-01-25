@@ -5,7 +5,7 @@
 # *****************************************************
 loadPicker = (callback) ->
   if (not window.filepicker.keyIsSet) and Roles.userIsInRole(Meteor.user(), "admin")
-    throwError "You can do that on the <a href=\"/filepicker-io\">package dashboard</a>.","Filepicker.io is not configured"
+    throwAlert "You can do that on the <a href=\"/filepicker-io\">package dashboard</a>.","Filepicker.io is not configured"
     return false
   callback and callback()
 

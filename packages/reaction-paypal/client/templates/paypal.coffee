@@ -6,7 +6,7 @@ Template.paypal.helpers
     paypalSettingsForm.hooks
       onSubmit: (insertDoc,updateDoc,currentDoc) ->
         if updatePackage(updateDoc)
-          throwError "Paypal","Settings saved ", "success"
+          throwAlert "Paypal","Settings saved ", "success"
     paypalSettingsForm
 
 updatePackage = (updateDoc) ->

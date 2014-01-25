@@ -10,7 +10,7 @@ Meteor.startup ->
       return
     if Roles.userIsInRole(Meteor.user(), "admin")
       _.defer ->
-        throwError "Google Analytics Property is not configured.","Google Analytics"
+        throwAlert "Google Analytics Property is not configured.","Google Analytics"
 
   $(document.body).click (e) ->
     $targets = $(e.target).closest("*[data-event-action]")

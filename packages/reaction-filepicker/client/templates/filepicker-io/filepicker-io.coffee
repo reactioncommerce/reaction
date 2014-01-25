@@ -14,7 +14,7 @@ Template["filepicker-io"].events
 
 
     # TODO: Validate key with filepicker before adding
-    # throwError("Success");
+    # throwAlert("Success");
     $.pnotify
       title: "Saved \"" + apikey + "\""
       text: "Filepicker.io is now configured."
