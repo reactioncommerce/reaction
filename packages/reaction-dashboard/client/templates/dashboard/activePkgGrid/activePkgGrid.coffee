@@ -1,14 +1,14 @@
 Template.activePkgGrid.helpers
-  PackageConfigs: ->
+  Packages: ->
     packageConfigs = []
-    existingPackageConfigs = PackageConfigs.find().fetch()
-    for packageConfig in existingPackageConfigs
+    existingPackages = Packages.find().fetch()
+    for packageConfig in existingPackages
       packageInfo = Meteor.app.packages[packageConfig.name]
       if packageInfo.hasWidget
         packageConfigs.push(_.extend(packageConfig, packageInfo))
     packageConfigs
-  hasPackageConfigs: ->
-    PackageConfigs.find().count()
+  hasPackages: ->
+    Packages.find().count()
 
 Template.activePkgGrid.rendered = ->
   pkgGrid = new Masonry(document.querySelector(".pkg-container"),

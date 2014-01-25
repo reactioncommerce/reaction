@@ -2,7 +2,7 @@ Template.widget.helpers
   dependencies: ->
     currentPackageDepends = @depends
     dependencies = []
-    PackageConfigs.find().forEach (packageConfig) ->
+    Packages.find().forEach (packageConfig) ->
       packageInfo = Meteor.app.packages[packageConfig.name]
       if _.intersection(currentPackageDepends, packageInfo.provides).length
         dependencies.push(_.extend(packageConfig, packageInfo))
@@ -11,7 +11,3 @@ Template.widget.helpers
 Template.widget.rendered = ->
 
 Template.widget.events {}
-
-#  "click .selector": function(e, template) {
-#
-#  }

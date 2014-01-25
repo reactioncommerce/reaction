@@ -24,30 +24,35 @@ share.loadFixtures = ->
   loadData ConfigData unless ConfigData.find().count()
 
   # Load data from settings/json files + base packages.
-  unless PackageConfigs.find().count()
+  unless Packages.find().count()
       console.log "Adding packages fixture data"
       Shops.find().forEach (shop) ->
-        PackageConfigs.insert
+        Packages.insert
           shopId: shop._id
           name: "reaction-shop"
 
-        PackageConfigs.insert
+        Packages.insert
           shopId: shop._id
           name: "reaction-shop-staff-accounts"
 
-        PackageConfigs.insert
+        Packages.insert
           shopId: shop._id
           name: "reaction-shop-orders"
 
-        PackageConfigs.insert
+        Packages.insert
           shopId: shop._id
           name: "reaction-filepicker"
           apikey: Meteor.settings?.filepickerApiKey
 
-        PackageConfigs.insert
+        Packages.insert
           shopId: shop._id
           name: "reaction-google-analytics"
           property: Meteor.settings?.googleAnalyticsProperty
+
+        Packages.insert
+          shopId: shop._id
+          name: "reaction-paypal"
+          settings: Meteor.settings.paypal
 
     unless Accounts.loginServiceConfiguration.find().count()
       if Meteor.settings.public?.facebook?.appId
@@ -58,6 +63,6 @@ share.loadFixtures = ->
 
 Meteor.startup ->
   share.loadFixtures()
-  Meteor.Paypal.config(Meteor.settings.paypal)
+
   if Meteor.settings.public?.isDebug
     Meteor.setInterval(share.loadFixtures, 300)

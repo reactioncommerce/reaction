@@ -13,7 +13,7 @@ ShopController = RouteController.extend
     else
       Meteor.app.init shop
 
-ShopAdminController = ShopController.extend
+@ShopAdminController = ShopController.extend
   before: ->
     unless Meteor.app.hasPermission(@route.name)
       @render('unauthorized')

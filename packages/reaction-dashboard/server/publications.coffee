@@ -1,11 +1,11 @@
 # *****************************************************
-#  PackageConfigs contains user specific configuration
+#  Packages contains user specific configuration
 #  settings, package access rights
 # *****************************************************
-Meteor.publish "PackageConfigs", ->
+Meteor.publish "Packages", ->
   shop = Meteor.app.getCurrentShop(this)
   if shop
-    PackageConfigs.find
+    Packages.find
       shopId: Meteor.app.getCurrentShop(this)._id
     ,
       sort:
@@ -16,7 +16,7 @@ Meteor.publish "PackageConfigs", ->
 # *****************************************************
 # Client access rights for reaction_packages
 # *****************************************************
-PackageConfigs.allow
+Packages.allow
   insert: (userId, doc) ->
     doc.shopId = Meteor.app.getCurrentShop()._id
     true

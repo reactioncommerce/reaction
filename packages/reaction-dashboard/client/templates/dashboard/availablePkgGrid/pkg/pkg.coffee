@@ -6,14 +6,14 @@
 
 # returns enabled status for this user for specific package
 Template.pkg.helpers isEnabled: (name) ->
-  PackageConfigs.find(name: name).count() > 0
+  Packages.find(name: name).count() > 0
 
 Template.pkg.events
   "click .enablePkg": (event, template) ->
     event.preventDefault()
-    pkg = PackageConfigs.findOne(name: @name)
+    pkg = Packages.findOne(name: @name)
     unless pkg
-      PackageConfigs.insert name: @name
+      Packages.insert name: @name
       $.pnotify
         title: "Enabled package"
         text: @label + " is now enabled."
@@ -23,8 +23,8 @@ Template.pkg.events
 
   "click .disablePkg": (event, template) ->
     event.preventDefault()
-    pkg = PackageConfigs.findOne(name: @name)
-    PackageConfigs.remove pkg._id
+    pkg = Packages.findOne(name: @name)
+    Packages.remove pkg._id
     $.pnotify
       title: "Disabled Package"
       text: @label + " is now disabled."

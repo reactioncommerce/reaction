@@ -12,7 +12,7 @@ loadPicker = (callback) ->
 filepickerLoadCallback = ->
   Meteor.startup ->
     Deps.autorun ->
-      packageConfig = PackageConfigs.findOne(name: "reaction-filepicker")
+      packageConfig = Packages.findOne(name: "reaction-filepicker")
       if packageConfig and packageConfig.apikey
         window.filepicker.setKey packageConfig.apikey
         window.filepicker.keyIsSet = true

@@ -109,10 +109,6 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/payment/methods/cards.less",
     "client/templates/cart/checkout/payment/methods/cards.coffee",
 
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.html",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.less",
-    "client/templates/cart/checkout/payment/methods/paypal/paypal.coffee",
-
     "client/templates/cart/checkout/completed/completed.html",
     "client/templates/cart/checkout/completed/completed.less",
     "client/templates/cart/checkout/completed/completed.coffee",

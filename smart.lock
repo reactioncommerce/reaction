@@ -71,8 +71,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.3",
-        "commit": "d5c99b1c0fe30778e683175ecb0dd36529e6271e"
+        "tag": "v0.3.4",
+        "commit": "23ab6f56f9d65eb46c152480a8d8097867a8bb38"
       },
       "jquery-ui": {
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
@@ -96,8 +96,8 @@
       },
       "headers": {
         "git": "https://github.com/gadicohen/meteor-headers.git",
-        "tag": "v0.0.12",
-        "commit": "33fff7cfc874140cf5d51f93de8b7c20acad4fe8"
+        "tag": "v0.0.13",
+        "commit": "1b259f3af3df7a297584b1e2e5e89de8ad1a963a"
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
@@ -111,8 +111,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.31",
-        "commit": "61a690523b0371cd35492df2fd1c85bfa59393ac"
+        "tag": "v0.2.32",
+        "commit": "c67bf1d25b847ff4330f95bbda891c5fad3fb15f"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

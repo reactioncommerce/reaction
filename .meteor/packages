@@ -45,5 +45,5 @@ headers
 
 collection-hooks
 
-paypal
 npm
+reaction-paypal

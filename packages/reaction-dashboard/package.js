@@ -9,12 +9,14 @@ Package.on_use(function (api, where) {
     "standard-app-packages",
     "underscore",
     "iron-router",
+    "simple-schema",
+    "collection2",
     "less",
-    "coffeescript"
+    "coffeescript",
   ], ["client", "server"]);
 
   api.add_files([
-    "lib/collections.coffee"
+    "common/collections.coffee"
   ], ["client", "server"]);
 
   api.add_files([
@@ -24,6 +26,7 @@ Package.on_use(function (api, where) {
     "lib/app.coffee",
     "client/routing.coffee",
     "client/subscriptions.coffee",
+    "client/register.coffee",
 
     "client/templates/dashboardSidebar/dashboardSidebar.html",
     "client/templates/dashboardSidebar/dashboardSidebar.less",
@@ -57,9 +60,10 @@ Package.on_use(function (api, where) {
     ], ["server"]);
 
   api.export([
-    "PackageConfigs"
+    "Packages",
+    "PackageConfigSchema"
   ], ["client", "server"]);
   api.export([
-    "PackageConfigsHandle"
+    "PackagesHandle"
   ], ["client"]);
 });

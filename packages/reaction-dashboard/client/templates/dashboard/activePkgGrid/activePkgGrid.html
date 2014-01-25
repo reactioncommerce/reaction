@@ -1,6 +1,6 @@
 <template name="activePkgGrid">
   <div class="pkg-container">
-      {{#each PackageConfigs}}
+      {{#each Packages}}
           {{> widget}}
       {{/each}}
     <div class="tile tile-gallery">
@@ -10,7 +10,7 @@
         <p class="big">Apps</p>
 
         <p class="title">
-            {{#if hasPackageConfigs}}
+            {{#if hasPackages}}
               Find more apps in the app gallery
             {{else}}
               Start here and add some apps!

@@ -1,6 +1,6 @@
 Meteor.startup ->
   Deps.autorun ->
-    config = PackageConfigs.findOne(
+    config = Packages.findOne(
       name: "reaction-google-analytics"
     )
     if !config

@@ -1,12 +1,12 @@
 Template.googleAnalytics.packageConfig = ->
-  PackageConfigs.findOne({name: "reaction-google-analytics"})
+  Packages.findOne({name: "reaction-google-analytics"})
 
 Template.googleAnalytics.events
   "submit form": (event) ->
     event.preventDefault()
     property = $(event.target).find("[name=input-property]").val()
-    config = PackageConfigs.findOne({name: "reaction-google-analytics"})
-    PackageConfigs.update
+    config = Packages.findOne({name: "reaction-google-analytics"})
+    Packages.update
       _id: config._id
     ,
       $set:
