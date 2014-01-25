@@ -16,6 +16,8 @@ Template.checkoutAddressBookAdd.helpers
     Session.get("address").zipcode
   defaultRegion: ->
     Session.get("address").state
+  defaultName: ->
+    Meteor.user().profile?.name
 
 
 Template.checkoutAddressBookAdd.events

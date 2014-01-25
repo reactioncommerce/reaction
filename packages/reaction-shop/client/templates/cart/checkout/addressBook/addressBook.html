@@ -71,7 +71,7 @@
       <div class="row">
         <div class="col-md-6 form-group{{#if afFieldIsInvalid 'fullName'}} has-error{{/if}}">
             {{afFieldLabel "fullName" class="control-label"}}
-            {{afFieldInput "fullName"}}
+            {{afFieldInput "fullName" value=defaultName}}
             {{#if afFieldIsInvalid "fullName"}}
             <span class="help-block">{{afFieldMessage "fullName"}}</span>
             {{/if}}
