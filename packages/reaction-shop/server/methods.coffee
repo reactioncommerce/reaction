@@ -55,13 +55,13 @@ Meteor.methods
 
   cloneVariant: (id, clone) ->
     clone._id = Random.id()
-    Products._collection.update(id, {$push: {variants: clone}})
+    Products._collection.update({_id:id}, {$push: {variants: clone}})
     clone._id
 
   cloneProduct: (product) ->
     #TODO: Really should be a recursive update of all _id
     i = 0
-    delete product._id
+    product._id = Random.id()
     delete product.updatedAt
     delete product.createdAt
     delete product.publishedAt
@@ -73,9 +73,11 @@ Meteor.methods
 
   createProduct: () ->
     productId = Products._collection.insert({
+      _id: Random.id()
       title: ""
       variants: [
         {
+          _id: Random.id()
           title: ""
           price: 0.00
         }

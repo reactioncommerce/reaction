@@ -1,29 +1,28 @@
 <template name="productGrid">
   <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
     <div id="list">
-    {{#each products}}
+      {{#each products}}
       {{> productGridItems}}
     {{/each}}
     </div>
   </div>
 </template>
 
-
 <template name="productGridItems">
-<div id="{{_id}}" class="thumbnail item">
+  <div id="{{_id}}" class="thumbnail item">
 
-  <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
-    <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
-
+    <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+      <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive"></a>
+    <div class="overlay">
+      {{title}} ${{variants.[0].price}}
     {{#unless isVisible}}
-      <i class="fa fa-eye-slash" title="Publish"></i>
+      <i class="fa fa-eye-slash pull-left" title="Publish"></i>
     {{/unless}}
     {{#if userHasRole "admin"}}
-      <i class="fa fa-code-fork clone-product" title="Clone product"></i>
+      <i class="fa fa-code-fork clone-product pull-left" title="Clone product"></i>
       <i class="fa fa-trash-o delete-product pull-right" title="Delete product"></i>
     {{/if}}
 
-  </a>
-  <div class="overlay">{{title}} ${{variants.[0].price}}</div>
-</div>
+    </div>
+  </div>
 </template>

@@ -33,7 +33,7 @@ currentProduct =
 @setVariant = (variant) ->
   index = 0
   isDefault = true
-  for item,value in (currentProduct.get "product")?.variants
+  for item,value in (currentProduct.get "product")?.variants?
     index += 1
     if item._id is variant #process variant param
       currentProduct.set "variant", item
