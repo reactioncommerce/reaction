@@ -29,7 +29,7 @@
     toggleDropdown()
 
   Template._loginButtonsLoggedInDropdown.socialImage = ->
-    Meteor.user().profile.picture
+    Meteor.user().profile?.picture
 
   Template._loginButtonsLoggedInDropdown.displayName = ->
     Accounts._loginButtons.displayName()
