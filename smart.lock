@@ -20,8 +20,7 @@
       "jquery-cookie": {},
       "handlebars-server": {},
       "headers": {},
-      "collection-hooks": {},
-      "paypal": {}
+      "collection-hooks": {}
     },
     "packages": {
       "spin": {
@@ -103,11 +102,6 @@
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
         "tag": "v0.6.2",
         "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
-      },
-      "paypal": {
-        "git": "https://github.com/DavidBrear/meteor-paypal.git",
-        "tag": "v1.1.1",
-        "commit": "eeff60449511f6caa0d0aaf433ea8a06b426858e"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
