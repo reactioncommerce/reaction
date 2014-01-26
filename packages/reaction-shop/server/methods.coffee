@@ -149,10 +149,46 @@ Meteor.methods
     Cart.remove(currentCartId)
     return cart._id #new order id
 
+  # method to add new addresses to a user's profile
   addressBookAdd: (doc) ->
+    check(doc, AddressSchema)
+    if doc.isDefault
+      Meteor.users.update
+        _id: Meteor.userId()
+        "profile.addressBook.isDefault": true
+      ,
+        $set:
+          "profile.addressBook.$.isDefault": false
+    # Add new address
     doc._id = Random.id()
-    Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {"profile.addressBook": doc}})
+    Meteor.users.update
+      _id: Meteor.userId()
+    ,
+      $addToSet:
+        "profile.addressBook": doc
+    this.unblock()
 
+  #method to update existing address in user's profile
+  addressBookUpdate: (doc) ->
+    check(doc, AddressSchema)
+    #reset existing default
+    if doc.isDefault
+      Meteor.users.update
+        _id: Meteor.userId()
+        "profile.addressBook.isDefault": true
+      ,
+        $set:
+          "profile.addressBook.$.isDefault": false
+    # update existing address
+    Meteor.users.update
+      _id: Meteor.userId()
+      "profile.addressBook._id": doc._id
+    ,
+      $set:
+        "profile.addressBook.$": doc
+    this.unblock()
+
+  #method to determine user's location for autopopulating addresses
   locateAddress: (latitude, longitude) ->
     Future = Npm.require("fibers/future")
     geocoder = Npm.require("node-geocoder")

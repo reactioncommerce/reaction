@@ -1,77 +1,67 @@
-addressForm = new AutoForm(AddressSchema)
-addressBookDep = new Deps.Dependency()
-
-Template.checkoutAddressBookAdd.helpers
-  checkoutAddressBookAddForm: ->
-    addressForm
-  addressBook: ->
-    Meteor.user().profile?.addressBook
-  countryOptions: ->
-    ConfigData.findOne().countries
-  defaultCountry: ->
-    Session.get("address").countryCode
-  defaultCity: ->
-    Session.get("address").city
-  defaultPostal: ->
-    Session.get("address").zipcode
-  defaultRegion: ->
-    Session.get("address").state
-  defaultName: ->
-    Meteor.user().profile?.name
-
-
-Template.checkoutAddressBookAdd.events
-  'click #cancel-new': () ->
-    $('#newAddress').show()
-    $('#addressBook').show()
-    $('.addressForm').hide()
-
-
 Template.checkoutAddressBook.helpers
   addressBook: ->
     Meteor.user().profile?.addressBook
 
   selectedBilling: ->
-    if this._id is Session.get "billingUserAddressId"
+    if @._id is Session.get "billingUserAddressId"
       return "active fa fa-check-circle "
     unless Session.get("billingUserAddressId")?
-      currentCart = Cart.findOne()
-      Cart.update currentCart._id,
+      currentCartId = Cart.findOne()?._id
+      Cart.update currentCartId,
         $set:
-          "payment.address":this
+          "payment.address":@
 
-      Session.set "billingUserAddressId",this._id
+      Session.set "billingUserAddressId",@._id
 
   selectedShipping: ->
-    if this._id is Session.get "shippingUserAddressId"
+    if @._id is Session.get "shippingUserAddressId"
       return "active fa fa-check-circle "
     unless Session.get("shippingUserAddressId")?
-      if this.isDefault
-        currentCart = Cart.findOne()
-        Cart.update(currentCart._id,{$set:{"shipping.address":this}})
-        Session.set "shippingUserAddressId",this._id
-
+      if @.isDefault
+        currentCartId = Cart.findOne()?._id
+        Cart.update(currentCartId,{$set:{"shipping.address":@}})
+        Session.set "shippingUserAddressId",@._id
 
 Template.checkoutAddressBook.events
   'click #newAddress': () ->
-    $('#newAddress').hide()
-    $('#addressBook').hide()
-    if $('.addressForm').text()
-      $('.addressForm').show()
-    else
-      $('.addressForm').html(Meteor.render(->
-        Template['checkoutAddressBookAdd']() # this calls the template and returns the HTML.
-      ));
+    toggleAddressForm()
+    template = Meteor.render Template.addressBookAdd
+    $('#addressForm').html(template)
 
   'click .address-ship-to': (event,template) ->
     currentCart = Cart.findOne()._id
-    Cart.update(currentCart,{$set:{"shipping.address":this}})
-    Session.set("shippingUserAddressId", this._id)
+    Cart.update(currentCart,{$set:{"shipping.address":@}})
+    Session.set("shippingUserAddressId", @._id)
 
   'click .address-bill-to': (event,template) ->
     currentCart = Cart.findOne()._id
-    Cart.update(currentCart,{$set:{"payment.address":this}})
-    Session.set("billingUserAddressId", this._id)
+    Cart.update(currentCart,{$set:{"payment.address":@}})
+    Session.set("billingUserAddressId", @._id)
 
   'click .fa-pencil': (event,template) ->
-    console.log "edit here"
+    toggleAddressForm()
+    template = Meteor.render Template.addressBookEdit @
+    $('#addressForm').html(template)
+
+
+  'click #cancel-new': () ->
+    toggleAddressForm()
+
+  'submit #addressBookEditForm': (event,template) ->
+    # TODO: This should be handled by autoform, but something
+    # is not triggering js on the rendered template
+    # this approach works for now, but not optimal
+    event.preventDefault()
+    event.stopPropagation()
+    form = {}
+    $.each $("#addressBookEditForm").serializeArray(), ->
+      form[@name] = @value
+    form.isDefault = true if form.isDefault = "true"
+    form.isCommercial = true if form.isCommercial = "true"
+    Meteor.call("addressBookUpdate",form)
+    toggleAddressForm()
+
+toggleAddressForm = () ->
+  $('#newAddress').toggle()
+  $('#addressBook').toggle()
+  $('.addressForm').toggle()

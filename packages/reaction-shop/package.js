@@ -97,6 +97,12 @@ Package.on_use(function (api, where) {
     "client/templates/cart/checkout/addressBook/addressBook.coffee",
     "client/templates/cart/checkout/addressBook/addressBook.less",
 
+    "client/templates/cart/checkout/addressBook/addressForm/add.html",
+    "client/templates/cart/checkout/addressBook/addressForm/add.coffee",
+    "client/templates/cart/checkout/addressBook/addressForm/add.less",
+    "client/templates/cart/checkout/addressBook/addressForm/edit.html",
+    "client/templates/cart/checkout/addressBook/addressForm/edit.coffee",
+
     "client/templates/cart/checkout/review/review.html",
     "client/templates/cart/checkout/review/review.less",
     "client/templates/cart/checkout/review/review.coffee",

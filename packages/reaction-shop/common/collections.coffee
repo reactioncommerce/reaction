@@ -131,7 +131,6 @@ ProductVariantSchema = new SimpleSchema
     label: "Updated at"
     type: Date
 
-
 AddressSchema = new SimpleSchema
   _id:
     type: String
@@ -152,6 +151,10 @@ AddressSchema = new SimpleSchema
     optional: true
   phone:
     type: String
+    label: "Phone"
+    min: 7
+    max: 22
+    regEx: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
   region:
     label: "State/Province/Region"
     type: String
@@ -163,11 +166,9 @@ AddressSchema = new SimpleSchema
   isCommercial:
     label: "Is this a commercial address?"
     type: Boolean
-    optional: true
   isDefault:
     label: "Is this your default address?"
     type: Boolean
-    optional: true
   metafields:
     type: [MetafieldSchema]
     optional: true
