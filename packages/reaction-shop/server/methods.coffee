@@ -31,7 +31,7 @@ Meteor.methods
           setMailUrlForShop(shop)
           Email.send
             to: email
-            from: currentUserName + " <robot@reaction.com>"
+            from: currentUserName + " <" + shop.email + ">"
             subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
             html: Handlebars.templates['shopMemberInvite']
               homepage: Meteor.absoluteUrl()
@@ -43,7 +43,7 @@ Meteor.methods
           setMailUrlForShop(shop)
           Email.send
             to: email
-            from: currentUserName + " <robot@reaction.com>"
+            from: currentUserName + " <" + shop.email + ">"
             subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
             html: Handlebars.templates['shopMemberNotification']
               homepage: Meteor.absoluteUrl()
