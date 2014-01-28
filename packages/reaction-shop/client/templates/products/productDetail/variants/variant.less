@@ -1,37 +1,60 @@
 .variant-list {
-  margin: 5px;
+  margin: 5px 0 10px 0;
+    line-height: 28px;
+  .progress {
+    height: 28px;
+  }
+  .progress-bar-success {
+    opacity: 0.8;
+  }
 }
 
 
 .variant-detail{
-  background-color: #b4bac0;
   padding: 2px;
-  height: 24px;
+  height: 30px;
   margin-bottom: 7px;
-  border-radius: 10px;
+  border-radius: 6px;
   font-size: 12px;
 }
 
 .variant-detail-selected{
-  background-color: red;
+  background-color: gray;
   padding: 2px;
-  height: 24px;
-  border-radius: 10px;
+  height: 32px;
+  border-radius: 6px;
   font-size: 12px;
 }
 
-
+.variant-progress-item {
+  position: absolute;
+  margin: 0 10px 0 10px;
+  width: 95%;
+}
+.variant-qty {
+  line-height: 28px;
+}
 .variant-title {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin-left: 5px;
+  line-height: 28px;
+  font-weight: 500;
+  color: rgba(33, 28, 28, 0.8);
 }
 
 .variant-price {
-  margin-right: 4px;
-  margin-left: 4px;
+  margin-right: 10px;
+  font-size: medium;
+  font-weight: 500;
+  line-height: 30px;
 }
 
-.variant-detail .progress {
-  border-radius: 8px;
+.variant-edit-tools {
+  background-color: rgba(155, 152, 152, 0.1);
+  position: absolute;
+  right: -45px;
+  a {
+    padding: 5px;
+  }
 }

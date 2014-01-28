@@ -28,10 +28,16 @@ Template.variant.helpers
     qty
 
   maxLength: (max) ->
-    unless !this.inventoryQuantity? and !this.title?
+    if this.inventoryQuantity? and this.title?
+      titleWidth = this.title.length
       inventoryPercentage = (this.inventoryQuantity / max) * 100
-      inventoryPercentage  = (100 - (this.title.length * 2)) if (inventoryPercentage  + this.title.length > 100)
-      inventoryPercentage
+      console.log inventoryPercentage
+      inventoryWidth = (inventoryPercentage - titleWidth)
+      console.log inventoryWidth
+      # inventoryWidth  = (100 - (this.title.length * 2)) if (inventoryPercentage  + this.title.length > 100)
+      inventoryWidth
+    else
+      return "90"
 
 
 Template.variantList.events
