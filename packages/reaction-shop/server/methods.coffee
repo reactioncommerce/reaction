@@ -181,9 +181,8 @@ Meteor.methods
       # TODO: move this to after upsert, and use add to cart functional, to increment qty
       if userCarts and defaultCart
         userCartItems = new Array
-        for cart,value in userCarts
-          for items in cart.items
-            userCartItems.push items #Cart.remove cart._id
+        for cart in userCarts
+          userCartItems.push items for items in cart.items if cart?.items
         (defaultCart.items = userCartItems) if userCartItems?.length > 0
       #only create if we're not in an session cart
       unless sessionCart?
