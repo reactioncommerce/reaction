@@ -158,7 +158,7 @@ Customers.allow
 # cart collection
 # *****************************************************
 
-Meteor.publish 'cart', (sessionId) ->
+Meteor.publish 'cart', (sessionId,userId) ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
     Cart.find shopId: shop._id, sessionId: sessionId

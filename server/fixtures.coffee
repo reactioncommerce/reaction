@@ -20,7 +20,6 @@ share.loadFixtures = ->
   loadData Meteor.users unless Meteor.users.find().count()
   loadData Shops unless Shops.find().count()
   loadData Tags unless Tags.find().count()
-  loadData Cart unless Cart.find().count()
   loadData ConfigData unless ConfigData.find().count()
 
   # Load data from settings/json files + base packages.

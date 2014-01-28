@@ -67,5 +67,4 @@ Template.paypalPaymentForm.events
                   delete Session.keys["billingUserAddressId"]
                   delete Session.keys["shippingUserAddressId"]
                   delete Session.keys["shippingMethod"]
-                  Session.set("shoppingCart","")
                   Deps.flush()

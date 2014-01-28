@@ -164,10 +164,10 @@ AddressSchema = new SimpleSchema
   country:
     type: String
   isCommercial:
-    label: "Is this a commercial address?"
+    label: "This is a commercial address"
     type: Boolean
   isDefault:
-    label: "Is this your default address?"
+    label: "This is my default address"
     type: Boolean
   metafields:
     type: [MetafieldSchema]

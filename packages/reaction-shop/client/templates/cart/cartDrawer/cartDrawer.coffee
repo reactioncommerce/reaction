@@ -33,6 +33,7 @@ Template.cartDrawer.helpers
   cartItems: ->
     currentCart = Cart.findOne()
     items = (cart for cart in currentCart.items by -1) if currentCart?.items
+    items
   checkoutView: ->
     true if Router.current().route.name is 'cartCheckout'
   displayCartDrawer: ->

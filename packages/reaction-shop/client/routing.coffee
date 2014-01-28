@@ -6,6 +6,7 @@ ShopController = RouteController.extend
   before: ->
 # should we make it a default as Router.before?
     @subscribe('shops').wait()
+    @subscribe('cart', Session.get "sessionId", Meteor.userId()).wait()
     shop = Shops.findOne()
     unless shop
       @render('loading')
@@ -74,6 +75,7 @@ Router.map ->
     path: 'checkout',
     template: 'cartCheckout'
     waitOn: ->
+      @subscribe('cart', Session.get "sessionId", Meteor.userId()).wait()
       [share.ConfigDataHandle]
     yieldTemplates:
       checkoutHeader:

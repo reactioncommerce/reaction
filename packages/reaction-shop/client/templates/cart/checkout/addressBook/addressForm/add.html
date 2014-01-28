@@ -18,7 +18,7 @@
 <div class="row">
   <div class="col-md-6 form-group{{#if afFieldIsInvalid 'country'}} has-error{{/if}}">
       {{afFieldLabel "country" class="control-label"}}
-      {{afFieldInput "country" options=countryOptions value=defaultCountry autofocus=''}}
+      {{afFieldInput "country" options=countryOptions value=defaultCountry}}
       {{#if afFieldIsInvalid "country"}}
       <span class="help-block">{{afFieldMessage "country"}}</span>
       {{/if}}
@@ -27,7 +27,7 @@
 <div class="row">
   <div class="col-md-6 form-group{{#if afFieldIsInvalid 'fullName'}} has-error{{/if}}">
       {{afFieldLabel "fullName" class="control-label"}}
-      {{afFieldInput "fullName" value=defaultName}}
+      {{afFieldInput "fullName" value=defaultName autofocus=''}}
       {{#if afFieldIsInvalid "fullName"}}
       <span class="help-block">{{afFieldMessage "fullName"}}</span>
       {{/if}}

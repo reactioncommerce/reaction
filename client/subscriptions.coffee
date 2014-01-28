@@ -12,5 +12,6 @@ Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
   # Stores into client session all data contained in server session;
   # supports reactivity when server changes the serverSession
   Session.set "serverSession", serverSession
+  Session.set "sessionId", serverSession._id
   # Stores the server session id into local storage / cookies
   amplify.store "reaction.session", serverSession._id

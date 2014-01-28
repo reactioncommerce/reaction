@@ -3,7 +3,10 @@ Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
+Meteor.subscribe 'cart'
 Meteor.subscribe 'shops'
+#shops and cart are subscribed in router
+
 
 ####################################################
 #  Reactive current product
@@ -49,15 +52,13 @@ currentProduct =
 #  ensure user cart is created, and address located
 ####################################################
 Deps.autorun ->
-  cart = Session.get "shoppingCart"
-  if Session.get('serverSession')
-    Meteor.subscribe 'cart', Session.get('serverSession')._id
-    userId = Meteor.userId()
-    sessionId = Session.get("serverSession")._id
-    # Check for, create cart
-    Meteor.call "createCart", sessionId, userId, (err, cart) ->
-      # Insert new item, update quantity for existing
-      Session.set('shoppingCart', Cart.findOne())
+  cartSession =
+    sessionId: Session.get "sessionId"
+    userId: Meteor.userId()
+
+  cart = Cart.findOne Session.get "sessionId", Meteor.userId()
+  unless cart? and Session.get "sessionId"
+    Meteor.call "createCart", cartSession
 
   unless Session.get('address')
     #Setting Default because we get here before location calc

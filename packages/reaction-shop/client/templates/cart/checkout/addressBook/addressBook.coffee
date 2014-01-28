@@ -4,23 +4,30 @@ Template.checkoutAddressBook.helpers
 
   selectedBilling: ->
     if @._id is Session.get "billingUserAddressId"
-      return "active fa fa-check-circle "
+      return "active"
     unless Session.get("billingUserAddressId")?
-      currentCartId = Cart.findOne()?._id
-      Cart.update currentCartId,
-        $set:
-          "payment.address":@
-
-      Session.set "billingUserAddressId",@._id
+      if @.isDefault
+        currentCartId = Cart.findOne()?._id
+        Cart.update currentCartId,
+          $set:
+            "payment.address":@
+        Session.set "billingUserAddressId",@._id
+        return "active"
 
   selectedShipping: ->
     if @._id is Session.get "shippingUserAddressId"
-      return "active fa fa-check-circle "
+      return "active"
     unless Session.get("shippingUserAddressId")?
       if @.isDefault
         currentCartId = Cart.findOne()?._id
         Cart.update(currentCartId,{$set:{"shipping.address":@}})
         Session.set "shippingUserAddressId",@._id
+        return "active"
+
+# Template.checkoutAddressBook.rendered = ->
+#     if @._id is Session.get "billingUserAddressId"
+#       console.log @._id
+#       $('#billing-'+@.id).addClass("active")
 
 Template.checkoutAddressBook.events
   'click #newAddress': () ->
@@ -38,7 +45,7 @@ Template.checkoutAddressBook.events
     Cart.update(currentCart,{$set:{"payment.address":@}})
     Session.set("billingUserAddressId", @._id)
 
-  'click .fa-pencil': (event,template) ->
+  'click .address-edit-icon': (event,template) ->
     toggleAddressForm()
     template = Meteor.render Template.addressBookEdit @
     $('#addressForm').html(template)
