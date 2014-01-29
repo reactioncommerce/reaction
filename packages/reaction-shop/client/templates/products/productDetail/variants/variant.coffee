@@ -1,15 +1,26 @@
+Template.variant.helpers
+  progressBar: () ->
+    if @.inventoryPercentage <= 10 then "progress-bar-danger"
+    else if @.inventoryPercentage <= 30 then "progress-bar-warning"
+    else "progress-bar-success"
+
 Template.variant.events
-  "click .remove-link": (event, template) ->
+  "click .remove-variant": (event, template) ->
     if confirm($(event.target).closest("a").data("confirm"))
       Products.update (currentProduct.get "product")._id,
         $pull:
-          variants: template.data
+          variants:
+            _id: @._id
+# {$pull:{"_permissions.view": {"profile_id": NumberLong("153579099841888257")}}})
 
-  "click .edit-link": (event) ->
-    $("#variants-modal").modal()
+  "click .edit-variant": (event) ->
+    event.preventDefault()
+    $('#variant-edit-form-'+@._id).toggle()
 
   "dblclick .variant-list": (event) ->
-    $("#variants-modal").modal() if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    event.preventDefault()
+    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      $('#variant-edit-form-'+@._id).toggle()
 
   "click .variant-list > *": (event) ->
     $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
@@ -18,58 +29,49 @@ Template.variant.events
     currentProduct.set "index", this.index
     $('.variant-list #'+this._id).addClass("variant-detail-selected")
 
+  "click #create-variant": (event) ->
+    newVariant =
+      _id: Random.id()
+      title: "New product variant"
+      price: 0
 
-Template.variant.helpers
-  maxQty: () ->
-    qty = 0
-    variants = (currentProduct.get "product").variants
-    _.map variants, (value,key) ->
-      qty += variants[key].inventoryQuantity if variants[key].inventoryQuantity?
-    qty
-
-  maxLength: (max) ->
-    if this.inventoryQuantity? and this.title?
-      titleWidth = this.title.length
-      inventoryPercentage = (this.inventoryQuantity / max) * 100
-      console.log inventoryPercentage
-      inventoryWidth = (inventoryPercentage - titleWidth)
-      console.log inventoryWidth
-      # inventoryWidth  = (100 - (this.title.length * 2)) if (inventoryPercentage  + this.title.length > 100)
-      inventoryWidth
-    else
-      return "90"
-
-
-Template.variantList.events
-  "click #add-variant": (event) ->
+  "click .clone-variant": (event,template) ->
     #clone last variant
-    if _.last((currentProduct.get "product").variants)
-      lastVariant = _.last((currentProduct.get "product").variants)
-      delete lastVariant._id
-      delete lastVariant.updatedAt
-      delete lastVariant.createdAt
-      delete lastVariant.inventoryQuantity
-      delete lastVariant.title
-      clonedLastVariant = _.clone(lastVariant)
-    #If no existing variants, add new
-    else
-      clonedLastVariant =
-        _id: Random.id()
-        title: "New product variant"
-        price: 0
+    newVariant = _.clone @
+    delete newVariant._id
+    delete newVariant.updatedAt
+    delete newVariant.createdAt
+    delete newVariant.inventoryQuantity
+    delete newVariant.inventoryTotal
+    delete newVariant.inventoryPercentage
+    delete newVariant.inventoryWidth
+    delete newVariant.title
+
     index = ((currentProduct.get "product").variants.length)
-    Meteor.call "cloneVariant", (currentProduct.get "product")._id, clonedLastVariant, (error, result) ->
+    Meteor.call "cloneVariant", (currentProduct.get "product")._id, newVariant, (error, result) ->
       Deps.flush()
       @setVariant result
       currentProduct.set "index",index
 
+    template = Meteor.render Template.variantFormModal @
+    $('#variant-'+@._id).html(template)
     #wait for the variant to succeed.
-    setTimeout (->
-      $("#variants-modal").modal()
-    ), 500
+    # setTimeout (->
+    #   $("#variants-modal").modal()
+    # ), 500
     # DOM manipulation defer
     event.preventDefault()
 
+Template.variantList.helpers
+  variants: () ->
+    inventoryTotal = 0
+    (inventoryTotal +=  variant.inventoryQuantity) for variant in @.variants
+    for variant in @.variants
+      @variant
+      variant.inventoryTotal = inventoryTotal
+      variant.inventoryPercentage = parseInt((variant.inventoryQuantity / inventoryTotal) * 100)
+      variant.inventoryWidth = parseInt((variant.inventoryPercentage - variant.title?.length ))
+    @.variants
 
 Template.variantList.rendered = ->
   # *****************************************************

@@ -1,0 +1,75 @@
+<template name="variantForm">
+<div class="variant-form" >
+{{#autoForm schema=variantFormSchema doc=data}}
+ <fieldset>
+    <div class="row">
+      <div class="form-group{{#if afFieldIsInvalid 'title'}} has-error{{/if}}">
+          {{afFieldLabel 'title'}}
+          {{afFieldInput 'title'}}
+          {{#if afFieldIsInvalid 'title'}}
+          <span class="help-block">{{afFieldMessage 'title'}}</span>
+          {{/if}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'weight'}} has-error{{/if}}">
+          {{afFieldLabel 'weight'}}
+          {{afFieldInput 'weight'}}
+          {{#if afFieldIsInvalid 'weight'}}
+          <span class="help-block">{{afFieldMessage 'weight'}}</span>
+          {{/if}}
+      </div>
+      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'inventoryQuantity'}} has-error{{/if}}">
+          {{afFieldLabel 'inventoryQuantity'}}
+          {{afFieldInput 'inventoryQuantity'}}
+          {{#if afFieldIsInvalid 'inventoryQuantity'}}
+          <span class="help-block">{{afFieldMessage 'inventoryQuantity'}}</span>
+          {{/if}}
+      </div>
+
+      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'compareAtPrice'}} has-error{{/if}}">
+          {{afFieldLabel 'compareAtPrice'}}
+          {{afFieldInput 'compareAtPrice'}}
+          {{#if afFieldIsInvalid 'compareAtPrice'}}
+          <span class="help-block">{{afFieldMessage 'compareAtPrice'}}</span>
+          {{/if}}
+      </div>
+
+      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'price'}} has-error{{/if}}">
+          {{afFieldLabel 'price'}}
+          {{afFieldInput 'price'}}
+          {{#if afFieldIsInvalid 'price'}}
+          <span class="help-block">{{afFieldMessage 'price'}}</span>
+          {{/if}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 well well-sm pull-right">
+        <div class="{{#if afFieldIsInvalid 'inventoryManagement'}} has-error{{/if}}">
+            {{afFieldInput 'inventoryManagement'}}
+            {{#if afFieldIsInvalid 'inventoryManagement' default=true}}
+            <span class="help-block">{{afFieldMessage 'inventoryManagement'}}</span>
+            {{/if}}
+        </div>
+        <div class="{{#if afFieldIsInvalid 'inventoryPolicy'}} has-error{{/if}}">
+            {{afFieldInput 'inventoryPolicy'}}
+            {{#if afFieldIsInvalid 'inventoryPolicy' default=true}}
+            <span class="help-block">{{afFieldMessage 'inventoryPolicy'}}</span>
+            {{/if}}
+        </div>
+        <div class="{{#if afFieldIsInvalid 'taxable'}} has-error{{/if}}">
+            {{afFieldInput 'taxable'}}
+            {{#if afFieldIsInvalid 'taxable' default=true}}
+            <span class="help-block">{{afFieldMessage 'taxable'}}</span>
+            {{/if}}
+        </div>
+      </div>
+    </div>
+
+    {{afFieldInput "_id" type="hidden"}}
+  </fieldset>
+  <button type="submit" data-meteor-method="updateVariant" class="btn btn-primary update">Update</button>
+{{/autoForm}}
+</div>
+</template>

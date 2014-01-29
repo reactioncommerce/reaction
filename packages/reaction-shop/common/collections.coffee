@@ -82,17 +82,15 @@ ProductVariantSchema = new SimpleSchema
     type: String
     optional: true
   weight:
-    label: "Weight"
+    label: "Weight (.oz)"
     type: Number
     min: 0
   inventoryManagement:
-    label: "Inventory policy" # really so
-    type: String
-    allowedValues: ["manual", "reaction"]
+    label: "Inventory Tracking" # really so
+    type: Boolean
   inventoryPolicy:
-    label: "Allow users to purchase this item, even if it is no longer in stock"
-    type: String
-    allowedValues: ["deny", "continue"]
+    label: "Deny when out of stock"
+    type: Boolean
   inventoryQuantity:
     label: "Quantity"
     type: Number
@@ -112,11 +110,11 @@ ProductVariantSchema = new SimpleSchema
     type: String
     optional: true
   taxable:
-    label: "Charge taxes on this product"
+    label: "Taxable"
     type: Boolean
     optional: true
   title:
-    label: "Title"
+    label: "Variant title"
     type: String
   metafields:
     type: [MetafieldSchema]
@@ -127,9 +125,11 @@ ProductVariantSchema = new SimpleSchema
   createdAt:
     label: "Created at"
     type: Date
+    optional: true
   updatedAt:
     label: "Updated at"
     type: Date
+    optional: true
 
 AddressSchema = new SimpleSchema
   _id:

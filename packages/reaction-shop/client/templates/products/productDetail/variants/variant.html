@@ -6,10 +6,7 @@
   {{/if}}
     {{else}}
   <h3>
-    Edit options.
-    <small class="pull-right">
-      <a href="#" id="add-variant">+ Clone last variant</a>
-    </small>
+    Options <small>double click to edit</small>
   </h3>
   {{/unless}}
   <ul class="list-unstyled">
@@ -25,7 +22,7 @@
 <li class="variant-list">
   <div class="variant-detail" id="{{_id}}">
     <div class="progress">
-      <span class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{maxQty}}" style="width: {{maxLength maxQty}}%">
+      <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
       </span>
       <div class="variant-progress-item">
         <span class="variant-qty badge">{{inventoryQuantity}}</span>
@@ -35,8 +32,9 @@
       {{#if userHasRole "admin"}}
       <div class="variant-edit-tools">
         <span class="variant-edit pull-right">
-          <a class="edit-link"><i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i></a>
-          <a href="#" class="remove-link" data-id="{{_id}}" data-confirm="Are you sure you want to delete this variant?">
+          <a href="#" class="edit-variant"><i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i></a>
+          <a href="#" class="clone-variant"><i class="fa fa-code-fork fa-lg" data-id="{{_id}}"></i></a>
+          <a href="#" class="remove-variant" data-id="{{_id}}" data-confirm="Are you sure you want to delete this variant?">
           <i class="fa fa-times fa-lg"></i>
           </a>
         </span>
@@ -46,4 +44,9 @@
     </div>
   </div>
 </li>
+{{#if userHasRole "admin"}}
+  <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
+  {{>variantForm}}
+  </div>
+{{/if}}
 </template>

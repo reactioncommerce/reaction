@@ -67,7 +67,17 @@ Meteor.methods
   cloneVariant: (id, clone) ->
     clone._id = Random.id()
     Products._collection.update({_id:id}, {$push: {variants: clone}})
-    clone._id
+  #
+  # update variant with new values, merges into original
+  # only need to supply updated information
+  #
+  updateVariant: (variant) ->
+    product = Products.findOne "variants._id":variant._id
+    for variants,value in product.variants
+      if variants._id is variant._id
+        newVariant = _.extend variants,variant
+
+    Products._collection.update({_id:product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}})
   #
   # clone a whole product, defaulting visibility,etc
   # in the future we are going to do an inheritance product
@@ -139,7 +149,7 @@ Meteor.methods
               quantity: quantity
               variants: variantData
         , (error, result) ->
-          console.log Cart.namedContext().invalidKeys() if error?
+          console.log error if error?
 
   #
   # create a new cart

@@ -176,6 +176,10 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/variants/variant.coffee",
     "client/templates/products/productDetail/variants/variant.less",
 
+    "client/templates/products/productDetail/variants/variantForm/variantForm.html",
+    "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
+    "client/templates/products/productDetail/variants/variantForm/variantForm.less",
+
     "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.html",
     "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.coffee",
     "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.less",
