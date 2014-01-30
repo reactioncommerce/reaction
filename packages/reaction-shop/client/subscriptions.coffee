@@ -15,7 +15,7 @@ Meteor.subscribe 'shops'
 #  set usage: currentProduct.set "product",object
 #  get usage: currentProduct.get "product"
 ####################################################
-currentProduct =
+@currentProduct =
   keys: {}
   deps: {}
   get: (key) ->
@@ -26,8 +26,13 @@ currentProduct =
     @ensureDeps key
     @keys[key] = value
     @deps[key].changed()
+  changed: (key) ->
+    @ensureDeps key
+    @deps[key].changed()
   ensureDeps: (key) ->
     @deps[key] = new Deps.Dependency  unless @deps[key]
+
+currentProduct = @currentProduct
 
 ####################################################
 #  Method to set default variant

@@ -77,7 +77,9 @@ Meteor.methods
       if variants._id is variant._id
         newVariant = _.extend variants,variant
 
+    check newVariant, ProductVariantSchema
     Products._collection.update({_id:product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}})
+    this.unblock()
   #
   # clone a whole product, defaulting visibility,etc
   # in the future we are going to do an inheritance product

@@ -27,6 +27,7 @@ MetafieldSchema = new SimpleSchema
   key:
     type: String
     max: 30
+    optional: true
   namespace:
     type: String
     max: 20
@@ -61,7 +62,7 @@ VariantMediaSchema = new SimpleSchema
     type: Date
 
 
-ProductVariantSchema = new SimpleSchema
+@ProductVariantSchema = new SimpleSchema
   _id:
     type: String
   index:
@@ -72,7 +73,7 @@ ProductVariantSchema = new SimpleSchema
     type: String
     optional: true
   compareAtPrice:
-    label: "Compare at price"
+    label: "MSRP"
     type: Number
     optional: true
     decimal: true
@@ -86,14 +87,14 @@ ProductVariantSchema = new SimpleSchema
     type: Number
     min: 0
   inventoryManagement:
-    label: "Inventory Tracking" # really so
     type: Boolean
+    label: "Inventory Tracking"
   inventoryPolicy:
-    label: "Deny when out of stock"
     type: Boolean
+    label: "Deny when out of stock"
   inventoryQuantity:
-    label: "Quantity"
     type: Number
+    label: "Quantity"
     min: 0
     optional: true
   price:
@@ -130,6 +131,8 @@ ProductVariantSchema = new SimpleSchema
     label: "Updated at"
     type: Date
     optional: true
+
+ProductVariantSchema = @ProductVariantSchema
 
 AddressSchema = new SimpleSchema
   _id:
