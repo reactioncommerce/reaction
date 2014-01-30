@@ -1,20 +1,26 @@
 <template name="variantList">
-<div class="product-variants">
-  {{#unless userHasRole "admin"}}
-    {{#if variants}}
-  <h3>Options <small>view and add to cart</small></h3>
-  {{/if}}
+  <div class="product-variants">
+    {{#unless userHasRole "admin"}}
+      {{#if variants}}
+      <h3>
+        Options
+        <small>view and add to cart</small>
+      </h3>
+      {{/if}}
     {{else}}
-  <h3>
-    Options <small>double click to edit</small>
-  </h3>
-  {{/unless}}
-  <ul class="list-unstyled">
+    <h3>
+      Options
+      <small>double click to edit</small>
+    </h3>
+    {{/unless}}
+    <ul class="list-unstyled">
     {{#each variants}}
-    {{> variant}}
-  {{/each}}
-  </ul>
-</div>
+      {{> variant}}
+    {{else}}
+      <a href="#" id="create-variant">+ Create Variant</a>
+    {{/each}}
+    </ul>
+  </div>
   {{> variantFormModal}}
 </template>
 

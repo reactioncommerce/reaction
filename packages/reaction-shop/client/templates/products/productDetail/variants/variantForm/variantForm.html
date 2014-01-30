@@ -45,23 +45,33 @@
     </div>
     <div class="row well well-sm">
       <div class="col-sm-7">
-          <div>
+          <div class="row">
             {{afFieldLabel 'metafields'}}
           </div>
-          <div class="col-md-12 pull-left">
+          <div class="row">
             {{#isolate}}
               {{#each metafieldsIndexed}}
-              <div class="pull-left"><a href="#" class="variant-remove-metafield"><i class="fa fa-times"></i></a></div>
-                <div class="col-md-5">{{afFieldInput metafieldKeyIndex autoform=../this placeholder="schemaLabel"}}</div>
-                <div class="col-md-6"> {{afFieldInput metafieldValueIndex autoform=../this placeholder="schemaLabel"}}</div>
-
+                <span class="col-md-1">
+                  <a href="#" class="variant-remove-metafield"> <i class="fa fa-times"></i>
+                  </a>
+                </span>
+                <div class="col-md-5">
+                  {{afFieldInput metafieldKeyIndex autoform=../this placeholder="schemaLabel"}}
+                </div>
+                <div class="col-md-6">
+                  {{afFieldInput metafieldValueIndex autoform=../this placeholder="schemaLabel"}}
+                </div>
               {{else}}
-              <div class="col-md-5">{{afFieldInput "metafields.0.key" autoform=../this placeholder="schemaLabel" validation="none"}}</div>
-               <div class="col-md-7"> {{afFieldInput  "metafields.0.value" autoform=../this placeholder="schemaLabel"}}</div>
+              <div class="col-md-5">
+                {{afFieldInput "metafields.0.key" autoform=../this placeholder="schemaLabel" validation="none"}}
+              </div>
+              <div class="col-md-7">
+                {{afFieldInput  "metafields.0.value" autoform=../this placeholder="schemaLabel"}}
+              </div>
               {{/each}}
               {{/isolate}}
           </div>
-          <div class="col-md-12"><a href="#" class="variant-new-metafield"> <i class="fa fa-plus"></i> Add new metafield</a></div>
+          <div class="row"><a href="#" class="variant-new-metafield"> <i class="fa fa-plus"></i> Add new metafield</a></div>
       </div>
       <div class="col-md-5 pull-right">
         <div class="row">

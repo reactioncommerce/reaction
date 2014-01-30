@@ -11,7 +11,6 @@ Template.variant.events
         $pull:
           variants:
             _id: @._id
-# {$pull:{"_permissions.view": {"profile_id": NumberLong("153579099841888257")}}})
 
   "click .edit-variant": (event) ->
     event.preventDefault()
@@ -28,12 +27,6 @@ Template.variant.events
     currentProduct.set "variant", this
     currentProduct.set "index", this.index
     $('.variant-list #'+this._id).addClass("variant-detail-selected")
-
-  "click #create-variant": (event) ->
-    newVariant =
-      _id: Random.id()
-      title: "New product variant"
-      price: 0
 
   "click .clone-variant": (event,template) ->
     #clone last variant
@@ -105,3 +98,15 @@ Template.variantList.rendered = ->
 
     success: (response, newValue) ->
       updateProduct variants: newValue
+
+
+Template.variantList.events
+  "click #create-variant": (event) ->
+    newVariant= [
+            {
+              _id: Random.id()
+              title: ""
+              price: 0.00
+            }
+          ]
+    Products._collection.update(@._id,{$set:{variants:newVariant}})
