@@ -52,7 +52,9 @@ Template.variant.events
 Template.variantList.helpers
   variants: () ->
     inventoryTotal = 0
-    (inventoryTotal +=  variant.inventoryQuantity) for variant in @.variants
+    for variant in @.variants
+      unless isNaN(variant.inventoryQuantity)
+        inventoryTotal +=  variant.inventoryQuantity
     for variant in @.variants
       @variant
       variant.inventoryTotal = inventoryTotal
