@@ -121,6 +121,7 @@ Template.productImageGallery.events
 # *****************************************************
 uploadMedias = (upload) ->
   variant = (currentProduct.get "variant") unless variant?._id
+  variant.medias = new Array unless variant.medias
   i = upload.length - 1
   while i >= 0
     variant.medias.push
