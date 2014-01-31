@@ -3,6 +3,9 @@ Template.variant.helpers
     if @.inventoryPercentage <= 10 then "progress-bar-danger"
     else if @.inventoryPercentage <= 30 then "progress-bar-warning"
     else "progress-bar-success"
+  selectedVariant: () ->
+    if @._id is (currentProduct.get "variant")?._id
+      return "variant-detail-selected"
 
 Template.variant.events
   "click .remove-variant": (event, template) ->
@@ -14,22 +17,21 @@ Template.variant.events
 
   "click .edit-variant": (event) ->
     event.preventDefault()
+    event.stopPropagation()
     $('#variant-edit-form-'+@._id).toggle()
 
   "dblclick .variant-list": (event) ->
-    event.preventDefault()
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      event.preventDefault()
+      event.stopPropagation()
+      Deps.flush()
       $('#variant-edit-form-'+@._id).toggle()
 
   "click .variant-list > *": (event) ->
-    $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
-    this.index = $(event.target).closest("li").prevAll().length
-    currentProduct.set "variant", this
-    currentProduct.set "index", this.index
-    $('.variant-list #'+this._id).addClass("variant-detail-selected")
+    currentProduct.set "variant", @
 
   "click .clone-variant": (event,template) ->
-    #clone last variant
+    #clean selected variant
     newVariant = _.clone @
     delete newVariant._id
     delete newVariant.updatedAt
@@ -39,21 +41,13 @@ Template.variant.events
     delete newVariant.inventoryPercentage
     delete newVariant.inventoryWidth
     delete newVariant.title
-
-    index = ((currentProduct.get "product").variants.length)
+    # clone the variant
     Meteor.call "cloneVariant", (currentProduct.get "product")._id, newVariant, (error, result) ->
-      Deps.flush()
-      @setVariant result
-      currentProduct.set "index",index
-
-    template = Meteor.render Template.variantFormModal @
-    $('#variant-'+@._id).html(template)
-    #wait for the variant to succeed.
-    # setTimeout (->
-    #   $("#variants-modal").modal()
-    # ), 500
-    # DOM manipulation defer
-    event.preventDefault()
+      if result
+        Deps.flush()
+        $('#variant-edit-form-'+result).toggle()
+        event.preventDefault()
+        event.stopPropagation()
 
 Template.variantList.helpers
   variants: () ->

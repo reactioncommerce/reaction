@@ -1,30 +1,8 @@
-
-
 Template.variantForm.helpers
   variantFormSchema: ->
     variantSchema = new AutoForm ProductVariantSchema
     variantSchema
   data: ->
-    # # giant f'ing kludge to workaround autoform embedded schema array updating
-    # metafieldArray = new Array
-    # value = 0
-    # if @.metafields
-    #   for item,value in @.metafields
-    #     metafieldArray.push {
-    #       index: value
-    #       key: "metafields."+value+".key"
-    #       value: "metafields."+value+".value"
-    #     }
-
-    # value = value + 1
-    # metafieldArray.push {
-    #   index: value
-    #   key: "metafields."+value+".key"
-    #   value: "metafields."+value+".value"
-    # }
-    # #metafieldArray.push {index: value} if metafieldArray?
-    # @.metafieldsIndexed = metafieldArray
-    # console.log @
     @
   nowDate: ->
     new Date()

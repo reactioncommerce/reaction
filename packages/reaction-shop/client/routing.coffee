@@ -54,14 +54,20 @@ Router.map ->
     data: ->
       tag: Tags.findOne(@params._id)
     template: "productListGrid"
-  # edit product page
+  # product view / edit page
   @route 'shop/product',
     controller: ShopController
     path: '/shop/products/:_id'
     waitOn: ->
       # set current variant and products
-      currentProduct.set "product", Products.findOne(@params._id)
-      setVariant(@params.variant)
+      product = Products.findOne(@params._id)
+      currentProduct.set "product", product
+      if @params.variant
+        for variant in product.variants
+          if variant._id is @params.variant
+            currentProduct.set "variant",variant
+      else
+        currentProduct.set "variant", product.variants[0]
     before: ->
       unless Products.findOne(@params._id)?.isVisible
         unless Meteor.app.hasPermission(@path)

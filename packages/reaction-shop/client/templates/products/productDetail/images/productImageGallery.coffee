@@ -58,14 +58,16 @@ Template.productImageGallery.rendered = ->
       placeholder: "sortable"
       forcePlaceholderSize: true
       update: (event, ui) ->
+        variant = (currentProduct.get "variant") unless variant?._id
+        #get changed order
         sortedMedias = _.map($gallery.sortable("toArray",
           attribute: "data-index"
         ), (index) ->
           variant.medias[index]
         )
-        $set = {}
-        $set["variants."+(currentProduct.get "index")+".medias"] = sortedMedias
-        Products.update((currentProduct.get "product")._id, {$set: $set})
+        variant.medias = sortedMedias
+        Meteor.call "updateVariant",variant
+
       start: (event, $ui) ->
         $ui.placeholder.height $ui.helper.height()
         $ui.placeholder.html "Drop image to reorder"
@@ -101,32 +103,31 @@ Template.productImageGallery.events
 # delete image based on selected src of primary image
 # *****************************************************
   "click .image-remove-link": (event, template) ->
-    event.preventDefault()
     mediaUrl = $('#main-image').attr("src")
-    media = _.find (currentProduct.get "variant").medias, (media) ->
-      media.src == mediaUrl
-    $pull = {}
-    $pull["variants."+(currentProduct.get "index")+".medias"] = media
-    Products.update (currentProduct.get "product")._id, {$pull: $pull}, (error) ->
-      if error
-        throwAlert error.reason
+    # get and remove from template data
+    variant = (currentProduct.get "variant")
+    for media,index in variant
+      if media.src is mediaUrl
+        removeIndex = index
+    variant.medias.splice(removeIndex,1)
+    Meteor.call "updateVariant",variant
+
+    event.preventDefault()
+    event.stopPropagation()
+
 
 # *****************************************************
 # save changed image data
 # *****************************************************
 uploadMedias = (upload) ->
-  newMedias = []
+  variant = (currentProduct.get "variant") unless variant?._id
   i = upload.length - 1
   while i >= 0
-    newMedias.push
+    variant.medias.push
       src: upload[i].url
       mimeType: upload[i].mimetype
       updatedAt: new Date()
       createdAt: new Date()
     i--
-  $addToSet = {}
-  $addToSet["variants."+(currentProduct.get "index")+".medias"] =
-    $each: newMedias
-  Products.update (currentProduct.get "product")._id, {$addToSet: $addToSet}, (error) ->
-    throwAlert error if error
+  Meteor.call "updateVariant", variant
 

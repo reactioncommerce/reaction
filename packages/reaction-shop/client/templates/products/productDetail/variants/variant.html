@@ -25,7 +25,7 @@
 
 <template name="variant">
 <li class="variant-list">
-  <div class="variant-detail" id="{{_id}}">
+  <div class="variant-detail {{selectedVariant}}" id="{{_id}}">
     <div class="progress">
       <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
       </span>
