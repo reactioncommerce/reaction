@@ -180,13 +180,6 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
     "client/templates/products/productDetail/variants/variantForm/variantForm.less",
 
-    "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.html",
-    "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.coffee",
-    "client/templates/products/productDetail/variants/variantFormModal/variantFormModal.less",
-
-    "client/templates/products/productDetail/variants/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.html",
-    "client/templates/products/productDetail/variants/variantFormModal/variantMetafieldFormGroup/variantMetafieldFormGroup.coffee",
-
     "client/templates/products/productDetail/attributes/attributes.html",
     "client/templates/products/productDetail/attributes/attributes.less",
     "client/templates/products/productDetail/attributes/attributes.coffee",

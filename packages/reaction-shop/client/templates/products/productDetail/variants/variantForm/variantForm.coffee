@@ -61,7 +61,6 @@ Template.variantForm.helpers
 
 Template.variantForm.events
   "submit form": (event,template) ->
-    console.log "dependancy changed"
     currentProduct.changed "product"
   # "change input": (event, template) ->
   #   $("#"+this._formID+" button").trigger("click")

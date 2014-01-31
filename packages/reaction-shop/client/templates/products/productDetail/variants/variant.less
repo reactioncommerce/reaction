@@ -1,32 +1,34 @@
 .variant-list {
-  margin: 5px 0 10px 0;
-    line-height: 28px;
+  margin: 5px 0 5px 0;
+  line-height: 28px;
   .progress {
     height: 28px;
   }
   .progress-bar-success {
     opacity: 0.8;
   }
+  .well{
+    margin-bottom: 5px;
+  }
 }
 
-
 .variant-detail{
-  padding: 2px;
-  height: 30px;
-  margin-bottom: 7px;
+  height: 34px;
   border-radius: 6px;
   font-size: 12px;
+  border: 3px solid transparent;
+}
+
+.variant-detail:hover {
+  .variant-detail-selected;
 }
 
 .variant-detail-selected{
-  background-color: gray;
-  padding: 2px;
-  height: 32px;
-  border-radius: 6px;
-  font-size: 12px;
+  border: 3px solid gray;
 }
 
 .variant-progress-item {
+  border: 0px;
   position: absolute;
   margin: 0 10px 0 10px;
   width: 95%;
@@ -53,7 +55,8 @@
 .variant-edit-tools {
   background-color: rgba(155, 152, 152, 0.1);
   position: absolute;
-  right: -66px;
+  border-radius: 6px;
+  right: -70px;
   a {
     padding: 5px;
   }
