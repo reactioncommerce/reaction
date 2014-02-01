@@ -69,7 +69,7 @@ Meteor.methods
     Products._collection.update({_id:id}, {$push: {variants: clone}})
     clone._id
   #
-  # update variant with new values, merges into original
+  # update individual variant with new values, merges into original
   # only need to supply updated information
   #
   updateVariant: (variant) ->
@@ -77,9 +77,17 @@ Meteor.methods
     for variants,value in product.variants
       if variants._id is variant._id
         newVariant = _.extend variants,variant
-    #check newVariant, ProductVariantSchema
+    #TODO: check newVariant, ProductVariantSchema
     Products._collection.update({_id:product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}})
-    #this.unblock()
+
+  #
+  # update whole variants array
+  #
+  updateVariants: (variants) ->
+    product = Products.findOne "variants._id":variants[0]._id
+    Products.update product._id, $set: variants: variants,(error,results) ->
+      console.log error if error?
+
   #
   # clone a whole product, defaulting visibility,etc
   # in the future we are going to do an inheritance product
