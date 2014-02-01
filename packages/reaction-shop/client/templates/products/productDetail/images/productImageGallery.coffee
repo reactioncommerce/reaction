@@ -68,12 +68,12 @@ Template.productImageGallery.rendered = ->
         variant.medias = sortedMedias
         Meteor.call "updateVariant",variant
 
-      start: (event, $ui) ->
-        $ui.placeholder.height $ui.helper.height()
-        $ui.placeholder.html "Drop image to reorder"
-        $ui.placeholder.css "padding-top", $ui.helper.height() / 3
-        $ui.placeholder.css "border", "1px dashed #ccc"
-        $ui.placeholder.css "border-radius","6px"
+      start: (event, ui) ->
+        ui.placeholder.height ui.helper.height()
+        ui.placeholder.html "Drop image to reorder"
+        ui.placeholder.css "padding-top", ui.helper.height() / 3
+        ui.placeholder.css "border", "1px dashed #ccc"
+        ui.placeholder.css "border-radius","6px"
 
 
 # *****************************************************

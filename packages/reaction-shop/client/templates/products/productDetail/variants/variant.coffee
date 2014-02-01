@@ -62,7 +62,7 @@ Template.variantList.helpers
       variant.inventoryWidth = parseInt((variant.inventoryPercentage - variant.title?.length ))
     @.variants
 
-Template.variantList.rendered = ->
+Template.variant.rendered = ->
   # *****************************************************
   # Editable variants entry
   # Format
@@ -80,7 +80,7 @@ Template.variantList.rendered = ->
         cursor: "move"
         opacity: 0.3
         helper: "clone"
-        placeholder: "sortable"
+        placeholder: "variant-sortable"
         forcePlaceholderSize: true
         axis: "y"
         update: (event, ui) ->
@@ -92,18 +92,15 @@ Template.variantList.rendered = ->
             for variant in productVariants
               if variant._id is id
                 newVariants.push variant
-          Meteor.call "updateVariants", newVariants
-          currentProduct.set "variant", (currentProduct.get "product").variants[0]
+          Meteor.defer ->
+            Meteor.call "updateVariants", newVariants
 
-        start: (event, $ui) ->
-          $ui.placeholder.height $ui.helper.height()
-          $ui.placeholder.html "Drop variant to reorder"
-          $ui.placeholder.css "padding-top", $ui.helper.height() / 3
-          $ui.placeholder.css "border", "1px dashed #ccc"
-          $ui.placeholder.css "border-radius","6px"
-
-
-
+        start: (event, ui) ->
+          ui.placeholder.height ui.helper.height()
+          ui.placeholder.html "Drop variant to reorder"
+          ui.placeholder.css "padding-top", ui.helper.height() / 3
+          ui.placeholder.css "border", "1px dashed #ccc"
+          ui.placeholder.css "border-radius","6px"
 
 Template.variantList.events
   "click #create-variant": (event) ->
