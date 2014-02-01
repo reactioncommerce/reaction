@@ -67,7 +67,11 @@ Router.map ->
           if variant._id is @params.variant
             currentProduct.set "variant",variant
       else
-        currentProduct.set "variant", product.variants[0]
+        # TODO: better way of doing this. Check if this
+        # current variant set for this product, otherwise first
+        # variant is defaulted.
+        result = (variant._id for variant in product.variants when variant._id is (currentProduct.get "variant")?._id)
+        currentProduct.set "variant", product.variants[0] unless result[0]
     before: ->
       unless Products.findOne(@params._id)?.isVisible
         unless Meteor.app.hasPermission(@path)
