@@ -1,5 +1,6 @@
 Meteor.app = _.extend(Meteor.app || {},
   shopId: null
+  isMember: false
   isOwner: null
   isAdmin: null
   userPermissions: []
@@ -24,12 +25,15 @@ Meteor.app = _.extend(Meteor.app || {},
     member = _.find shop.members, (member) ->
       member.userId is Meteor.userId()
     if member
+      @isMember = true
       @isAdmin = member.isAdmin
       @userPermissions = member.permissions
+  hasDashboardAccess: ->
+    @isMember or @.hasOwnerAccess()
   hasPermission: (permissions) ->
     return false unless permissions
     permissions = [permissions] unless _.isArray(permissions)
-    @.hasOwnerAccess() or @isAdmin or _.intersection(permissions, @userPermissions).length
+    @.hasOwnerAccess() or _.intersection(permissions, @userPermissions).length or (@isAdmin and _.intersection(permissions, @shopPermissions).length)
   hasOwnerAccess: ->
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
 )
