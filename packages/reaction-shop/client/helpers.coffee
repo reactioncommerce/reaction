@@ -8,6 +8,9 @@ Handlebars.registerHelper "hasShopPermission", (permissions) ->
 Handlebars.registerHelper "hasOwnerAccess", ->
   Meteor.app.hasOwnerAccess()
 
+Handlebars.registerHelper "hasDashboardAccess", ->
+  Meteor.app.hasDashboardAccess()
+
 # *****************************************************
 # method to alway return an image,
 # or a placeholder for a product variant
