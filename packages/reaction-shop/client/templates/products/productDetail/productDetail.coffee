@@ -232,7 +232,7 @@ Template.productDetail.events
           userId: Meteor.userId()
         quantity = 1
         Meteor.call "addToCart", cartSession, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
-        $('.variant-list #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
+        $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         setTimeout (->
           toggleCartDrawer()
         ), 500

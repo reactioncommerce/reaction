@@ -51,7 +51,7 @@ Template.productImageGallery.rendered = ->
     # Drag and drop image index update
     $gallery = $(".gallery")
     $gallery.sortable
-      items: "> li.sortable"
+      items: "> li.gallery-sortable"
       cursor: "move"
       opacity: 0.3
       helper: "clone"

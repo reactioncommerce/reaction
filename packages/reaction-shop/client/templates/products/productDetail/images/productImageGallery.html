@@ -7,14 +7,14 @@
       {{#isimage mimeType}}
         <!-- No more images -->
       {{else}}
-      <li data-index="{{index}}" class="sortable">
+      <li data-index="{{index}}" class="gallery-sortable">
         <div class="view-image">
           <img src="{{src}}" class="img-thumbnail" alt="{{title}}">
         </div>
       </li>
       {{/isimage}}
       {{#isvideo mimeType}}
-        <li data-index="{{index}}" class="sortable video">
+        <li data-index="{{index}}" class="gallery-sortable video">
           <video class="video-js vjs-default-skin" width="250px" preload="auto" data-setup='{"example_option":true}' controls>
             <source src="{{src}}" type="{{mimeType}}">
             Your browser does not support the video tag.

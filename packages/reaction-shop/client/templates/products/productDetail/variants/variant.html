@@ -13,7 +13,7 @@
       <small>double click to edit</small>
     </h3>
     {{/unless}}
-    <ul class="list-unstyled">
+    <ul class="variant-list list-unstyled" id="variant-list">
     {{#each variants}}
       {{> variant}}
     {{else}}
@@ -24,8 +24,9 @@
 </template>
 
 <template name="variant">
-<li class="variant-list">
-  <div class="variant-detail {{selectedVariant}}" id="{{_id}}">
+{{#isolate}}
+<li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
+  <div class="variant-detail {{selectedVariant}}">
     <div class="progress">
       <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
       </span>
@@ -48,10 +49,13 @@
 
     </div>
   </div>
-</li>
-{{#if userHasRole "admin"}}
+  {{#if userHasRole "admin"}}
   <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
-  {{>variantForm}}
+    {{>variantForm}}
   </div>
-{{/if}}
+  {{/if}}
+</li>
+
+
+{{/isolate}}
 </template>

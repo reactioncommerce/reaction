@@ -20,14 +20,14 @@ Template.variant.events
     event.stopPropagation()
     $('#variant-edit-form-'+@._id).toggle()
 
-  "dblclick .variant-list": (event) ->
+  "dblclick .variant-list-item": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       event.preventDefault()
       event.stopPropagation()
       Deps.flush()
       $('#variant-edit-form-'+@._id).toggle()
 
-  "click .variant-list > *": (event) ->
+  "click .variant-detail > *": (event) ->
     currentProduct.set "variant", @
 
   "click .clone-variant": (event,template) ->
@@ -72,28 +72,37 @@ Template.variantList.rendered = ->
   #    :value => 'Kurt Vonnegut',
   #    :value_type => 'string'
   # *****************************************************
-  $("#variants").editable
-    inputclass: "input-large"
-    select2:
-      width: "250px"
-      initSelection: (element, callback) ->
-        data = []
-        data =
-          id: "1"
-          text: "text"
+  if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    variantSort = $(".variant-list")
+    # $( "#sortable" ).disableSelection()
+    variantSort.sortable
+        items: "> li.variant-list-item"
+        cursor: "move"
+        opacity: 0.3
+        helper: "clone"
+        placeholder: "sortable"
+        forcePlaceholderSize: true
+        axis: "y"
+        update: (event, ui) ->
+          productVariants = (currentProduct.get "product").variants
+          uiPositions = $(this).sortable("toArray",attribute:"data-id")
+          newVariants = []
+          # first just go through the new index
+          for id in uiPositions
+            for variant in productVariants
+              if variant._id is id
+                newVariants.push variant
+          Meteor.call "updateVariants", newVariants
+          currentProduct.set "variant", (currentProduct.get "product").variants[0]
 
-        callback data
+        start: (event, $ui) ->
+          $ui.placeholder.height $ui.helper.height()
+          $ui.placeholder.html "Drop variant to reorder"
+          $ui.placeholder.css "padding-top", $ui.helper.height() / 3
+          $ui.placeholder.css "border", "1px dashed #ccc"
+          $ui.placeholder.css "border-radius","6px"
 
-      data: (element, callback) ->
-        data = []
-        data =
-          id: "2"
-          text: "text2"
 
-        callback data
-
-    success: (response, newValue) ->
-      updateProduct variants: newValue
 
 
 Template.variantList.events
