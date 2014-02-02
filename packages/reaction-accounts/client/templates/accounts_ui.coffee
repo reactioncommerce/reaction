@@ -1,16 +1,15 @@
 Accounts.ui = {}  unless Accounts.ui
 Accounts.ui._options = requestPermissions: {}  unless Accounts.ui._options
 Accounts.ui.config = (options) ->
-  
+
   # validate options keys
   VALID_KEYS = [
     "passwordSignupFields"
     "requestPermissions"
   ]
-  _.each _.keys(options), (key) ->
+  for v, keys of options
     throw new Error("Accounts.ui.config: Invalid key: " + key)  unless _.contains(VALID_KEYS, key)
 
-  
   # deal with `passwordSignupFields`
   if options.passwordSignupFields
     if _.contains([
@@ -26,10 +25,10 @@ Accounts.ui.config = (options) ->
         Accounts.ui._options.passwordSignupFields = options.passwordSignupFields
     else
       throw new Error("Accounts.ui.config: Invalid option for `passwordSignupFields`: " + options.passwordSignupFields)
-  
+
   # deal with `requestPermissions`
   if options.requestPermissions
-    _.each options.requestPermissions, (scope, service) ->
+    for scope, service of options.requestPermissions
       if Accounts.ui._options.requestPermissions[service]
         throw new Error("Accounts.ui.config: Can't set `requestPermissions` more than once for " + service)
       else unless scope instanceof Array

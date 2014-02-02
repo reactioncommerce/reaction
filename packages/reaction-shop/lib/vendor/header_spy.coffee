@@ -1,6 +1,6 @@
 # Install a ghost listener so we can spy on the client headers.
 install_spy = ->
-  
+
   # Surplant the current request and upgrade listeners.
   server = WebApp.httpServer
   _.each [
@@ -12,7 +12,7 @@ install_spy = ->
     listener = (req) ->
       args = arguments
       request_url = req.url.split("/")
-      
+
       # If url is a sockjs (non-info) url, get the sockjs server/client id and save the headers.
       if request_url[1] is "sockjs" and request_url[2] isnt "info"
         sockjs_id = request_url.slice(2, 4).join("/")
@@ -22,13 +22,14 @@ install_spy = ->
           time: +(new Date)
 
         clean()
-      
+
       # Call the old listeners (meteor).
-      _.each old_listeners, (old) ->
-        old.apply server, args
+      for old in old_listeners
+        if old.apply
+            old.apply server, args
 
 
-    
+
     # Hook us up.
     server.addListener event, listener
 
@@ -59,10 +60,10 @@ clean = ->
   n = +(new Date)
   keep = []
   last_clean = n  if last_clean is 0
-  
+
   # only clean once every 5 minutes
   return  if n - last_clean < 300000
-  _.each storage, (v, k) ->
+  for v, k of storage
     delta = n - v.time
     keep.push k  if delta < 5000
 

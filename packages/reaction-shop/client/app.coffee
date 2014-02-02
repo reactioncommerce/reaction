@@ -12,8 +12,8 @@ Meteor.app = _.extend(Meteor.app || {},
     permissions = []
     usedPackages = _.map Packages.find({shopId: @shopId}).fetch(), (packageConfig) ->
       _.find(Meteor.app.packages, (appPackage) -> packageConfig.name is appPackage.name)
-    _.each usedPackages, (usedPackage) ->
-      _.each usedPackage?.shopPermissions, (shopPermission) ->
+    for usedPackage in usedPackages
+      for shopPermission of usedPackage?.shopPermissions
         permissions.push shopPermission
     @shopPermissions = _.pluck(permissions, "permission")
     @shopPermissionGroups = for groupName, groupPermissions of _.groupBy(permissions, "group")
