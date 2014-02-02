@@ -61,6 +61,16 @@ VariantMediaSchema = new SimpleSchema
   createdAt:
     type: Date
 
+ProductPositionSchema = new SimpleSchema
+  tag:
+    type: String
+    optional: true
+  position:
+    type: Number
+    optional: true
+  sizing:
+    type: String
+    optional: true
 
 @ProductVariantSchema = new SimpleSchema
   _id:
@@ -122,6 +132,9 @@ VariantMediaSchema = new SimpleSchema
     optional: true
   medias:
     type: [VariantMediaSchema]
+    optional: true
+  positions:
+    type: [ProductPositionSchema]
     optional: true
   createdAt:
     label: "Created at"
@@ -240,6 +253,8 @@ TaxSchema = new SimpleSchema
       type: Date
     updatedAt:
       type: Date
+      autoValue : ->
+        new Date()  if @isUpdate
       optional: true
   transform: (shop) ->
     _.each shop.members, (member, index) ->
@@ -314,6 +329,9 @@ Shops = @Shops # package exports
       type: Date
     updatedAt:
       type: Date
+      autoValue : ->
+        new Date()  if @isUpdate
+      optional: true
 
 @Products.before.update (userId, doc, fieldNames, modifier, options) ->
   unless _.indexOf(fieldNames, 'medias') is -1
@@ -325,6 +343,7 @@ Shops = @Shops # package exports
           image.createdAt = createdAt
       else
         addToSet.createdAt = createdAt
+   if modifier.$set then modifier.$set.updatedAt = new Date()
 
 Products = @Products # package exports
 
@@ -380,6 +399,9 @@ Products = @Products # package exports
       type: Date
 
 Customers = @Customers # package exports
+
+# @Customers.before.update (userId, doc, fieldNames, modifier, options) ->
+#    modifier.$set.updatedAt = new Date()
 
 @Orders = new Meteor.Collection("Orders",[Cart,OrderItemsSchema])
 
@@ -488,6 +510,9 @@ PaymentSchema = new SimpleSchema
       type: Date
     updatedAt:
       type: Date
+
+# @Cart.before.update (userId, doc, fieldNames, modifier, options) ->
+#    modifier.$set.updatedAt = new Date()
 
 Cart = @Cart # package exports
 

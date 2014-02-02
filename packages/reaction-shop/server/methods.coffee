@@ -124,8 +124,28 @@ Meteor.methods
         }
       ]
     })
-
   #
+  # update product grid positions
+  # position is an object with tag,position,dimensions
+  #
+  updateProductPosition: (productId,positionData) ->
+    unless Products.findOne({'_id' :productId,"positions.tag":positionData.tag})
+      Products._collection.update {_id: productId},
+        {$addToSet:{ positions:positionData } },
+      , (error,results) ->
+        console.log error if error
+    else
+      #Collection2 doesn't support elemMatch, use core collection
+      Products._collection.update
+        "_id": productId
+        "positions.tag": positionData.tag
+        ,
+          $set:
+            "positions.$.position": positionData.position
+        ,
+          (error,results) ->
+            console.log error if error?
+
   # when we add an item to the cart, we want to break all relationships
   # with the existing item. We want to fix price, qty, etc into history
   # however, we could check reactively for price /qty etc, adjustments on

@@ -63,18 +63,8 @@ Template.variantList.helpers
     @.variants
 
 Template.variant.rendered = ->
-  # *****************************************************
-  # Editable variants entry
-  # Format
-  #    :description => 'Author of book',
-  #    :namespace => 'book',
-  #    :key => 'author',
-  #    :value => 'Kurt Vonnegut',
-  #    :value_type => 'string'
-  # *****************************************************
   if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
     variantSort = $(".variant-list")
-    # $( "#sortable" ).disableSelection()
     variantSort.sortable
         items: "> li.variant-list-item"
         cursor: "move"
