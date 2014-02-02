@@ -136,7 +136,7 @@
         # Prepare the configuration document for this login service
         serviceName = loginButtonsSession.get("configureLoginServiceDialogServiceName")
         configuration = service: serviceName
-        _.each configurationFields(), (field) ->
+        for field of configurationFields()
           configuration[field.property] = document.getElementById("configure-login-service-dialog-" + field.property).value.replace(/^\s*|\s*$/g, "") # trim;
 
 

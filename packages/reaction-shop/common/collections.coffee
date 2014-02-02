@@ -242,7 +242,7 @@ TaxSchema = new SimpleSchema
       type: Date
       optional: true
   transform: (shop) ->
-    _.each shop.members, (member, index) ->
+    for index, member of shop.members
       member.index = index
       member.user = Meteor.users.findOne member.userId
     shop
@@ -321,7 +321,7 @@ Shops = @Shops # package exports
     if addToSet
       createdAt = new Date()
       if addToSet.$each
-        _.each addToSet.$each, (image) ->
+        for image of addToSet.$each
           image.createdAt = createdAt
       else
         addToSet.createdAt = createdAt
