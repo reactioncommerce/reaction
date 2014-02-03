@@ -23,8 +23,8 @@ Template.productGrid.helpers
       else
         gridProducts[index].sortOrder = index
     ## helpful debug
-    # for i,v in gridProducts.sort(compare)
-    #   console.log v,i.sortOrder,i.title,i.updatedAt
+    for i,v in gridProducts.sort(compare)
+      console.log v,i.sortOrder,i.title,i.updatedAt
     gridProducts.sort(compare)
 
 Template.cartItems.preserve([".product-grid-item-images"])
@@ -40,7 +40,7 @@ Template.productGridItems.events
     e.preventDefault()
     if confirm("Delete this product?")
       Products.remove this._id
-      Router.go "/shop/products"
+      Router.go "/"
 
 Template.productGridItems.rendered = () ->
   # *****************************************************

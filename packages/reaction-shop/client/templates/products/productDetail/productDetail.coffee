@@ -270,7 +270,7 @@ Template.productDetail.events
     event.preventDefault()
     if confirm("Delete this product?")
       Products.remove (currentProduct.get "product")._id
-      Router.go "/shop/products"
+      Router.go "/"
 
   "click #edit-options": (event) ->
     $("#options-modal").modal()
