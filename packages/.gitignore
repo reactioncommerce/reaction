@@ -33,3 +33,5 @@ headers
 /paypal
 /npm
 /paypal
+/jqueryui
+/build-fetcher

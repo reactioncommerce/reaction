@@ -15,12 +15,12 @@
       "bootstrap3-less": {},
       "autoform": {},
       "collection2": {},
-      "jquery-ui": {},
       "underscore-string-latest": {},
       "jquery-cookie": {},
       "handlebars-server": {},
       "headers": {},
-      "collection-hooks": {}
+      "collection-hooks": {},
+      "jqueryui": {}
     },
     "packages": {
       "spin": {
@@ -73,11 +73,6 @@
         "tag": "v0.3.7",
         "commit": "4c6c2dfd87af8cda321c80e1baea72842ad5c542"
       },
-      "jquery-ui": {
-        "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
-        "tag": "v1.9.2",
-        "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
-      },
       "underscore-string-latest": {
         "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
         "tag": "v2.3.3",
@@ -95,13 +90,18 @@
       },
       "headers": {
         "git": "https://github.com/gadicohen/meteor-headers.git",
-        "tag": "v0.0.13",
-        "commit": "1b259f3af3df7a297584b1e2e5e89de8ad1a963a"
+        "tag": "v0.0.14",
+        "commit": "0a8475da5915e0c70969284e5d92fe5fbffb66d5"
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
         "tag": "v0.6.2",
         "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
+      },
+      "jqueryui": {
+        "git": "https://github.com/mizzao/meteor-jqueryui.git",
+        "tag": "v1.10.3r2",
+        "commit": "d54f75cfad37ff8ce6ef9ad49de55738ba921af7"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
@@ -112,6 +112,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.5.1",
         "commit": "8c9bc5d3fc96705057737cb9743d555417f6e551"
+      },
+      "build-fetcher": {
+        "git": "https://github.com/mizzao/meteor-build-fetcher.git",
+        "tag": "v0.1.0",
+        "commit": "e3813b1fc7f5c576e8e1fa4c51ae6f4687780a35"
       }
     }
   }

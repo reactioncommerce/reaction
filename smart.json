@@ -12,11 +12,11 @@
     "bootstrap3-less": {},
     "autoform": {},
     "collection2": {},
-    "jquery-ui": {},
     "underscore-string-latest": {},
     "jquery-cookie": {},
     "handlebars-server": {},
     "headers": {},
-    "collection-hooks": {}
+    "collection-hooks": {},
+    "jqueryui": {}
   }
 }

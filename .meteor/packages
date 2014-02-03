@@ -5,13 +5,10 @@
 
 standard-app-packages
 preserve-inputs
-jquery
 less
 bootstrap3-less
-
 accounts-base
 accounts-password
-
 iron-router
 spin
 videojs
@@ -24,13 +21,10 @@ reaction-helloworld
 reaction-shop
 coffeescript
 collection2
-
 autoform
 simple-schema
 moment
 pnotify-bootstrap-3-less
-
-jquery-ui
 reaction-google-analytics
 amplify
 reaction-accounts
@@ -40,9 +34,9 @@ roles
 jquery-cookie
 handlebars-server
 email
-
 headers
-
 collection-hooks
-
 reaction-paypal
+jquery
+jqueryui
+build-fetcher
