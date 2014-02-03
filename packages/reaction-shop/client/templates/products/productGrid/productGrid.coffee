@@ -23,8 +23,8 @@ Template.productGrid.helpers
       else
         gridProducts[index].sortOrder = index
     ## helpful debug
-    for i,v in gridProducts.sort(compare)
-      console.log v,i.sortOrder,i.title,i.updatedAt
+    # for i,v in gridProducts.sort(compare)
+    #   console.log v,i.sortOrder,i.title,i.updatedAt
     gridProducts.sort(compare)
 
 Template.cartItems.preserve([".product-grid-item-images"])
