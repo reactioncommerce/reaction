@@ -1,20 +1,18 @@
-
 Template.productGrid.helpers
   products: ->
-    share.tag = @tag?._id ? ""
-
-    gridProducts = getProductsByTag(@tag).fetch()
     # take natual sort, sorting by updatedAt
-    # then move place in natural sort based on position
-    # retaining natural sort or untouched items
-    # newIndex = []
+    # then resort using positions.position for this tag
+    # retaining natural sort of untouched items
+    share.tag = @tag?._id ? ""
+    gridProducts = getProductsByTag(@tag).fetch()
+    #sort method
     compare = (a, b) ->
       if a.sortOrder is b.sortOrder
         x = a.updatedAt
         y = b.updatedAt
         return (if x > y then -1 else (if x < y then 1 else 0))
       a.sortOrder - b.sortOrder
-
+    # get /create sortOrder positions
     for gridProduct,index in gridProducts
       if gridProduct.positions?
         for position in gridProduct.positions
@@ -27,9 +25,7 @@ Template.productGrid.helpers
     ## helpful debug
     # for i,v in gridProducts.sort(compare)
     #   console.log v,i.sortOrder,i.title,i.updatedAt
-
     gridProducts.sort(compare)
-
 
 Template.cartItems.preserve([".product-grid-item-images"])
 
