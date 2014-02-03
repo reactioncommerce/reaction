@@ -60,6 +60,7 @@ Meteor.publish 'products', ->
     if !Roles.userIsInRole(this.userId, ['admin'])
       selector.isVisible = true
     Products.find selector
+    # , {sort:{updatedAt: -1}}
 
 Meteor.publish 'product', (id) ->
   shop = Meteor.app.getCurrentShop(@)

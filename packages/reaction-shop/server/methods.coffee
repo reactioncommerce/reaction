@@ -131,7 +131,7 @@ Meteor.methods
   updateProductPosition: (productId,positionData) ->
     unless Products.findOne({'_id' :productId,"positions.tag":positionData.tag})
       Products._collection.update {_id: productId},
-        {$addToSet:{ positions:positionData } },
+        {$addToSet:{ positions:positionData },$set:{updatedAt:new Date() } },
       , (error,results) ->
         console.log error if error
     else
@@ -142,6 +142,7 @@ Meteor.methods
         ,
           $set:
             "positions.$.position": positionData.position
+            "updatedAt": new Date()
         ,
           (error,results) ->
             console.log error if error?

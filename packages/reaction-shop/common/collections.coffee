@@ -330,20 +330,12 @@ Shops = @Shops # package exports
     updatedAt:
       type: Date
       autoValue : ->
-        new Date()  if @isUpdate
+        new Date() if @isUpdate
       optional: true
-
-@Products.before.update (userId, doc, fieldNames, modifier, options) ->
-  unless _.indexOf(fieldNames, 'medias') is -1
-    addToSet = modifier.$addToSet?.medias
-    if addToSet
-      createdAt = new Date()
-      if addToSet.$each
-        for image of addToSet.$each
-          image.createdAt = createdAt
-      else
-        addToSet.createdAt = createdAt
-   if modifier.$set then modifier.$set.updatedAt = new Date()
+  # transform: (product) ->
+  #   product.price = (product.price).toFixed(2)
+  #   updatedAt = new Date()
+  #   product
 
 Products = @Products # package exports
 
@@ -510,9 +502,6 @@ PaymentSchema = new SimpleSchema
       type: Date
     updatedAt:
       type: Date
-
-# @Cart.before.update (userId, doc, fieldNames, modifier, options) ->
-#    modifier.$set.updatedAt = new Date()
 
 Cart = @Cart # package exports
 

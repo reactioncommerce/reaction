@@ -1,20 +1,35 @@
+
 Template.productGrid.helpers
   products: ->
     share.tag = @tag?._id ? ""
 
-    products = getProductsByTag(@tag).fetch()
+    gridProducts = getProductsByTag(@tag).fetch()
+    # take natual sort, sorting by updatedAt
+    # then move place in natural sort based on position
+    # retaining natural sort or untouched items
+    # newIndex = []
+    compare = (a, b) ->
+      if a.sortOrder is b.sortOrder
+        x = a.updatedAt
+        y = b.updatedAt
+        return (if x > y then -1 else (if x < y then 1 else 0))
+      a.sortOrder - b.sortOrder
 
-    for product,index in products
-      if product.positions?
-        for position in product.positions
+    for gridProduct,index in gridProducts
+      if gridProduct.positions?
+        for position in gridProduct.positions
           if position.tag is share.tag
-            products[index].sortOrder = position.position
-            console.log position.tag,products.sortOrder
+            gridProducts[index].sortOrder = position.position
+          else
+            gridProducts[index].sortOrder = index
+      else
+        gridProducts[index].sortOrder = index
+    ## helpful debug
+    # for i,v in gridProducts.sort(compare)
+    #   console.log v,i.sortOrder,i.title,i.updatedAt
 
-    sortedArray = _.sortBy(products, (obj) ->
-      obj.sortOrder
-    )
-    sortedArray
+    gridProducts.sort(compare)
+
 
 Template.cartItems.preserve([".product-grid-item-images"])
 
@@ -59,6 +74,9 @@ Template.productGridItems.rendered = () ->
         start: (event, ui) ->
           ui.placeholder.height ui.helper.height()
           ui.placeholder.html "<h2>Drop product to reorder</h2>"
-          ui.placeholder.css "padding-top", ui.helper.height() / 3
+          ui.placeholder.css "padding-top", ui.helper.height() / 2
           ui.placeholder.css "border", "1px dashed #ccc"
           ui.placeholder.css "border-radius","6px"
+          ui.placeholder.css "background-color","aliceblue"
+          ui.placeholder.css "text-align","center"
+

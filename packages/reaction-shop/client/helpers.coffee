@@ -85,5 +85,3 @@ Handlebars.registerHelper "cart", () ->
       relatedTags = newRelatedTags
     selector.tagIds = {$in: tagIds}
   cursor = Products.find(selector)
-  #,{sort:{updatedAt: -1,"positions.0.position": -1}}
-
