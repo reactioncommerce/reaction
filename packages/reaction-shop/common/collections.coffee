@@ -437,7 +437,7 @@ ShippingSchema = new SimpleSchema
     type: ShipQuoteSchema
     optional: true
 
-PaymentMethodSchema = new SimpleSchema
+@PaymentMethodSchema = new SimpleSchema
   processor:
     type: String
   storedCard:
@@ -461,6 +461,8 @@ PaymentMethodSchema = new SimpleSchema
   authorization:
     type: String
     optional: true
+
+PaymentMethodSchema = @PaymentMethodSchema
 
 PaymentSchema = new SimpleSchema
   address:
