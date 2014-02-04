@@ -10,9 +10,9 @@ Package.on_use(function (api) {
     "templating",
     "jquery",
     "iron-router",
-    "reaction-dashboard"
+    "reaction-shop",
   ], ["client"]);
-  
+
   api.add_files([
     "client/register.coffee",
     "client/routing.coffee",

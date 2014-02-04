@@ -14,6 +14,7 @@ Package.on_use(function (api, where) {
     "collection-hooks",
     "collection2",
     "roles",
+    "less",
     "underscore-string-latest",
     "handlebars-server"
   ], ["client", "server"]);
@@ -22,9 +23,6 @@ Package.on_use(function (api, where) {
     "bootstrap3-less",
     "accounts-base",
     "iron-router",
-    "less",
-    "reaction-dashboard",
-    "reaction-filepicker"
   ], ["client"]);
   api.use([
     "underscore"
@@ -33,9 +31,15 @@ Package.on_use(function (api, where) {
   api.add_files([
     "lib/vendor/header_spy.coffee",
     "common/collections.coffee",
-    "common/hooks.coffee"
+    "common/hooks.coffee",
   ], ["client", "server"]);
+
+
   api.add_files([
+
+    "lib/vendor/masonry/masonry.pkgd.js",
+    "lib/vendor/sparkline/jquery.sparkline.js",
+
     "lib/vendor/select2/select2.js",
     "lib/vendor/select2/select2.css",
     "lib/vendor/select2-bootstrap-css/select2-bootstrap.css",
@@ -45,8 +49,8 @@ Package.on_use(function (api, where) {
     "lib/vendor/owl.carousel/owl-carousel/owl.carousel.js",
     "lib/vendor/imagesLoaded/imagesloaded.pkgd.js",
 
-    "client/register.coffee",
     "client/app.coffee",
+    "client/register.coffee",
     "client/helpers.coffee",
     "client/subscriptions.coffee",
     "client/routing.coffee",
@@ -135,6 +139,33 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
 
+    "client/templates/dashboard/navigation/dashboardSidebar.html",
+    "client/templates/dashboard/navigation/dashboardSidebar.less",
+    "client/templates/dashboard/navigation/dashboardSidebar.coffee",
+
+    "client/templates/dashboard/packages/activePkgGrid/widget/widget.html",
+    "client/templates/dashboard/packages/activePkgGrid/widget/widget.less",
+    "client/templates/dashboard/packages/activePkgGrid/widget/widget.coffee",
+
+    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.html",
+    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.less",
+    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.coffee",
+
+    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.html",
+    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.less",
+    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.coffee",
+
+    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.html",
+    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.less",
+    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.coffee",
+
+    "client/templates/dashboard/packages/dashboard.html",
+    "client/templates/dashboard/packages/dashboard.less",
+    "client/templates/dashboard/packages/dashboard.coffee",
+
+    "client/templates/dashboard/introduction/introduction.html",
+    "client/templates/dashboard/introduction/introduction.coffee",
+
     "client/templates/settings/settingsGeneral/settingsGeneral.html",
     "client/templates/settings/settingsGeneral/settingsGeneral.coffee",
     "client/templates/settings/settingsGeneral/settingsGeneral.less",
@@ -197,6 +228,12 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.export([
+    "PackagesHandle"
+  ], ["client"]);
+
+  api.export([
+    "Packages",
+    "PackageConfigSchema",
     "currentProduct",
     "install_spy",
     "ShopController",

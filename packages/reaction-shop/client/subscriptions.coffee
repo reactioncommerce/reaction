@@ -1,3 +1,4 @@
+PackagesHandle = Meteor.subscribe("Packages")
 share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
 Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
@@ -6,6 +7,7 @@ Meteor.subscribe 'tags'
 Meteor.subscribe 'cart'
 Meteor.subscribe 'shops'
 #shops and cart are subscribed in router
+
 
 
 ####################################################

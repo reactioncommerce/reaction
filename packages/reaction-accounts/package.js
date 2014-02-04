@@ -13,7 +13,7 @@ Package.on_use(function (api) {
     "accounts-base",
     "underscore",
     "templating",
-    "reaction-dashboard"
+    "reaction-shop"
   ], ["client"]);
 
   api.add_files([

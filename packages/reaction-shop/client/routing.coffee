@@ -13,6 +13,15 @@ ShopController = RouteController.extend
     'shopHeader': to: 'header'
     'dashboardSidebar': to: 'sidebar'
     'siteFooter': to: 'footer'
+  before: ->
+# should we make it a default as Router.before?
+    @subscribe('shops').wait()
+    shop = Shops.findOne()
+    unless shop
+      @render('loading')
+      @stop()
+    else
+      Meteor.app.init shop
 
 @ShopAdminController = ShopController.extend
   before: ->
@@ -22,6 +31,9 @@ ShopController = RouteController.extend
 
 Router.map ->
   # home page intro screen for reaction-shop
+  @route 'dashboard',
+    controller: ShopAdminController
+    template: 'dashboard'
   @route 'shop',
     controller: ShopAdminController
     template: 'shopwelcome'
@@ -43,8 +55,14 @@ Router.map ->
   @route 'shop/customers',
     controller: ShopAdminController
   # list page of shop orders
-  @route 'shop/orders',
+  @route 'dashboard/orders',
     controller: ShopAdminController
+    path: 'dashboard/orders/',
+    template: 'orders'
+    waitOn: ->
+      [share.ConfigDataHandle]
+    data: ->
+      Orders.find(@params._id)
   # list page of products
   @route 'shop/products',
     controller: ShopAdminController

@@ -1,3 +1,16 @@
+PackageConfigSchema = new SimpleSchema
+  shopId:
+    type: String
+  name:
+    type: String
+    optional: true
+  settings:
+    type: Object
+    optional: true
+
+@Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
+Packages = @Packages
+
 ShopMemberSchema = new SimpleSchema
   userId:
     type: String

@@ -40,12 +40,12 @@ Meteor.app.packages.register
   name: 'reaction-shop-orders'
   provides: ['orderManager']
   label: 'Orders'
-  overviewRoute: 'shop/orders'
+  overviewRoute: 'dashboard/orders'
   hasWidget: false
   shopPermissions: [
     {
       label: "Orders"
-      permission: "shop/orders"
+      permission: "dashboard/orders"
       group: "Shop Management"
     }
   ]

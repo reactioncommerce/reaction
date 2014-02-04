@@ -18,7 +18,6 @@ Package.on_use(function (api, where) {
     "autoform",
     "bootstrap3-less",
     "less",
-    "reaction-dashboard",
     "reaction-shop"
   ], ["client"]);
 

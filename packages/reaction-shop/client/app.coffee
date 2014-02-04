@@ -1,4 +1,10 @@
 Meteor.app = _.extend(Meteor.app || {},
+  packages:
+    register: (packageInfo) ->
+      @[packageInfo.name] = packageInfo
+)
+
+Meteor.app = _.extend(Meteor.app || {},
   shopId: null
   isMember: false
   isOwner: null

@@ -10,13 +10,13 @@ Package.on_use(function (api, where) {
   api.use([
     "iron-router",
     "less",
-    "reaction-dashboard"
+    "reaction-shop"
   ], ["client"]);
 
   api.add_files([
     "client/register.coffee",
     "client/routing.coffee",
-    
+
     "client/templates/helloworld/helloworld.html",
     "client/templates/helloworld/helloworld.coffee",
     "client/templates/helloworld/helloworld.less",
