@@ -1,4 +1,4 @@
-Template["reaction-shop-widget"].helpers
+Template["reaction-commerce-widget"].helpers
   pcount: ->
     Products.find().count()
 

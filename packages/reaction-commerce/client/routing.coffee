@@ -30,7 +30,7 @@ ShopController = RouteController.extend
       @stop()
 
 Router.map ->
-  # home page intro screen for reaction-shop
+  # home page intro screen for reaction-commerce
   @route 'dashboard',
     controller: ShopAdminController
     template: 'dashboard'

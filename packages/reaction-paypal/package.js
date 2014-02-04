@@ -18,7 +18,7 @@ Package.on_use(function (api, where) {
     "autoform",
     "bootstrap3-less",
     "less",
-    "reaction-shop"
+    "reaction-commerce"
   ], ["client"]);
 
   api.add_files("common/collections.coffee",["client","server"]);

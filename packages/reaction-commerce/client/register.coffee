@@ -1,5 +1,5 @@
 Meteor.app.packages.register
-  name: 'reaction-shop'
+  name: 'reaction-commerce'
   depends: ['orderManager', 'fileUploader', 'staffAccountsManager']
   label: 'Shop'
   description: 'Reaction Shop'
@@ -37,7 +37,7 @@ Meteor.app.packages.register
   ]
 
 Meteor.app.packages.register
-  name: 'reaction-shop-orders'
+  name: 'reaction-commerce-orders'
   provides: ['orderManager']
   label: 'Orders'
   overviewRoute: 'dashboard/orders'
@@ -52,7 +52,7 @@ Meteor.app.packages.register
 
 
 Meteor.app.packages.register
-  name: 'reaction-shop-staff-accounts'
+  name: 'reaction-commerce-staff-accounts'
   provides: ['staffAccountsManager']
   label: 'Staff Accounts'
   settingsRoute: 'shop/settings/account'

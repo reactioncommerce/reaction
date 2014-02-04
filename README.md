@@ -108,7 +108,7 @@ Our core is being built with a preference for Coffeescript + LESS.
 
 We are always using latest full release of all packages.
 
-Packages should be able to run independently, whenever possible but many of the core packages will have dependancies on the reaction-shop package.
+Packages should be able to run independently, whenever possible but many of the core packages will have dependancies on the reaction-commerce package.
 
 At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach an Alpha release, these will be moved to individual package repos and published on the Meteor package manager. Tests will be added when they are moved to their own repos.
 
@@ -186,7 +186,7 @@ For using shop permissions into some packages you must add it into register dire
 If we add this package then permissions will be available in Shop Accounts Settings.
 
 	Meteor.app.packages.register
-	 name: 'reaction-shop-orders'
+	 name: 'reaction-commerce-orders'
 	 provides: ['orderManager']
 	 label: 'Orders'
 	 overviewRoute: 'shop/orders'

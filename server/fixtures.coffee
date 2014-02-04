@@ -28,15 +28,15 @@ share.loadFixtures = ->
       Shops.find().forEach (shop) ->
         Packages.insert
           shopId: shop._id
-          name: "reaction-shop"
+          name: "reaction-commerce"
 
         Packages.insert
           shopId: shop._id
-          name: "reaction-shop-staff-accounts"
+          name: "reaction-commerce-staff-accounts"
 
         Packages.insert
           shopId: shop._id
-          name: "reaction-shop-orders"
+          name: "reaction-commerce-orders"
 
         Packages.insert
           shopId: shop._id

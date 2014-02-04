@@ -10,7 +10,7 @@ Package.on_use(function (api) {
     "templating",
     "jquery",
     "iron-router",
-    "reaction-shop",
+    "reaction-commerce",
   ], ["client"]);
 
   api.add_files([
