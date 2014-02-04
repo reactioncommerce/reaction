@@ -1,0 +1,410 @@
+/**
+ * Select2 Bootstrap CSS
+ * Compatible with Select2 3.3.2, 3.4.1, 3.4.2 and Twitter Bootstrap 3.0.0
+ * MIT License
+ */
+
+/**
+ * Reset Bootstrap 3 .form-control styles which - if applied to the
+ * original <select>-element the Select2-plugin may be run against -
+ * are copied to the .select2-container.
+ */
+
+.select2-container.form-control {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Adjust Select2 inputs to fit Bootstrap 3 default .form-control appearance.
+ */
+
+@mixin bootstrap-input-defaults {
+  border-color: $input-border;
+  border-radius: $input-border-radius;
+  color: $input-color;
+  font-family: $font-family-base;
+  background-color: $input-bg;
+  @include reset-filter;
+  @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+}
+
+.select2-container .select2-choices .select2-search-field input,
+.select2-container .select2-choice,
+.select2-container .select2-choices {
+  background: none;
+  padding: 0;
+  @include bootstrap-input-defaults;
+}
+
+.select2-search input {
+  @include bootstrap-input-defaults;
+}
+
+.select2-container .select2-choices .select2-search-field input {
+  @include box-shadow(none);
+
+}
+
+/**
+ * Adjust Select2 input heights to match the Bootstrap default.
+ */
+
+.select2-container .select2-choice {
+  height: $input-height-base;
+  line-height: $line-height-base;
+}
+
+/**
+ * Address Multi Select2's height which - depending on how many elements have been selected -
+ * may grown higher than their initial size.
+ */
+
+.select2-container.select2-container-multi.form-control {
+  height: auto;
+}
+
+/**
+ * Address Bootstrap 3 control sizing classes
+ * @see http://getbootstrap.com/css/#forms-control-sizes
+ */
+
+.select2-container.input-sm .select2-choice,
+.input-group-sm .select2-container .select2-choice {
+  height: $input-height-small;
+  line-height: $line-height-small;
+  border-radius: $border-radius-small;
+}
+
+.select2-container.input-lg .select2-choice,
+.input-group-lg .select2-container .select2-choice {
+  height: $input-height-large;
+  line-height: $line-height-large;
+  border-radius: $border-radius-large;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+  height: $input-height-base - 2px;
+}
+
+.select2-container-multi.input-sm .select2-choices .select2-search-field input,
+.input-group-sm .select2-container-multi .select2-choices .select2-search-field input {
+  height: $input-height-small - 2px;
+}
+
+.select2-container-multi.input-lg .select2-choices .select2-search-field input,
+.input-group-lg .select2-container-multi .select2-choices .select2-search-field input {
+  height: $input-height-large - 2px;
+}
+
+/**
+ * Adjust height and line-height for .select2-search-field amd multi-select Select2 widgets.
+ *
+ * 1. Class repetition to address missing .select2-chosen in Select2 < 3.3.2.
+ */
+
+.select2-container-multi .select2-choices .select2-search-field input {
+  margin: 0;
+}
+
+.select2-chosen,
+.select2-choice > span:first-child, /* 1 */
+.select2-container .select2-choices .select2-search-field input {
+  padding: $padding-base-vertical $padding-base-horizontal;
+}
+
+.input-sm .select2-chosen,
+.input-group-sm .select2-chosen,
+.input-sm .select2-choice > span:first-child, /* 1 */
+.input-group-sm .select2-choice > span:first-child, /* 1 */
+.input-sm .select2-choices .select2-search-field input,
+.input-group-sm .select2-choices .select2-search-field input {
+  padding: $padding-small-vertical $padding-small-horizontal;
+}
+
+.input-lg .select2-chosen,
+.input-group-lg .select2-chosen,
+.input-lg .select2-choice > span:first-child, /* 1 */
+.input-group-lg .select2-choice > span:first-child, /* 1 */
+.input-lg .select2-choices .select2-search-field input,
+.input-group-lg .select2-choices .select2-search-field input {
+  padding: $padding-large-vertical $padding-large-horizontal;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+
+.select2-container-multi.input-sm .select2-choices .select2-search-choice,
+.input-group-sm .select2-container-multi .select2-choices .select2-search-choice {
+  margin-top: 3px;
+  margin-bottom: 2px;
+}
+
+.select2-container-multi.input-lg .select2-choices .select2-search-choice,
+.input-group-lg .select2-container-multi .select2-choices .select2-search-choice {
+  line-height: 24px;
+}
+
+/**
+ * Adjust the single Select2's dropdown arrow button appearance.
+ *
+ * 1. For Select2 v.3.3.2.
+ */
+
+.select2-container .select2-choice .select2-arrow,
+.select2-container .select2-choice div /* 1 */  {
+  border-left: 1px solid $input-border;
+  background: none;
+  @include reset-filter;
+}
+
+.select2-dropdown-open .select2-choice .select2-arrow,
+.select2-dropdown-open .select2-choice div /* 1 */  {
+  border-left-color: transparent;
+  background: none;
+  @include reset-filter;
+}
+
+/**
+ * Adjust the dropdown arrow button icon position for the single-select Select2 elements
+ * to make it line up vertically now that we increased the height of .select2-container.
+ *
+ * 1. Class repetition to address missing .select2-chosen in Select2 v.3.3.2.
+ */
+
+.select2-container .select2-choice .select2-arrow b,
+.select2-container .select2-choice div b /* 1 */  {
+  background-position: 0 3px;
+}
+
+.select2-dropdown-open .select2-choice .select2-arrow b,
+.select2-dropdown-open .select2-choice div b /* 1 */  {
+  background-position: -18px 3px;
+}
+
+.select2-container.input-sm .select2-choice .select2-arrow b,
+.input-group-sm .select2-container .select2-choice .select2-arrow b,
+.select2-container.input-sm .select2-choice div b, /* 1 */
+.input-group-sm .select2-container .select2-choice div b /* 1 */  {
+  background-position: 0 1px;
+}
+
+.select2-dropdown-open.input-sm .select2-choice .select2-arrow b,
+.input-group-sm .select2-dropdown-open .select2-choice .select2-arrow b,
+.select2-dropdown-open.input-sm .select2-choice div b, /* 1 */
+.input-group-sm .select2-dropdown-open .select2-choice div b /* 1 */  {
+  background-position: -18px 1px;
+}
+
+.select2-container.input-lg .select2-choice .select2-arrow b,
+.input-group-lg .select2-container .select2-choice .select2-arrow b,
+.select2-container.input-lg .select2-choice div b, /* 1 */
+.input-group-lg .select2-container .select2-choice div b /* 1 */  {
+  background-position: 0 9px;
+}
+
+.select2-dropdown-open.input-lg .select2-choice .select2-arrow b,
+.input-group-lg .select2-dropdown-open .select2-choice .select2-arrow b,
+.select2-dropdown-open.input-lg .select2-choice div b, /* 1 */
+.input-group-lg .select2-dropdown-open .select2-choice div b /* 1 */  {
+  background-position: -18px 9px;
+}
+
+/**
+ * Address Bootstrap's validation states and change Select2's border colors and focus states.
+ * Apply .has-warning, .has-danger or .has-succes to #select2-drop to match Bootstraps' colors.
+ */
+
+@mixin validation-state-focus($color) {
+  .select2-choice,
+  .select2-choices {
+    border-color: $color;
+  }
+  .select2-container-active .select2-choice,
+  .select2-container-multi.select2-container-active .select2-choices {
+    border-color: darken($color, 10%);
+    $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($color, 20%);
+    @include box-shadow($shadow);
+  }
+  &.select2-drop-active {
+    border-color: darken($color, 10%);
+    &.select2-drop.select2-drop-above {
+      border-top-color: darken($color, 10%);
+    }
+  }
+}
+
+.has-warning {
+  @include validation-state-focus($state-warning-text);
+}
+
+.has-error {
+  @include validation-state-focus($state-danger-text);
+}
+
+.has-success {
+  @include validation-state-focus($state-success-text);
+}
+
+/**
+ * Make Select2's active-styles - applied to .select2-container when the widget receives focus -
+ * fit Bootstrap 3's .form-element:focus appearance.
+ */
+
+.select2-container-active .select2-choice,
+.select2-container-multi.select2-container-active .select2-choices {
+  border-color: $input-border-focus;
+  outline: none;
+  $shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+  @include box-shadow($shadow);
+  $transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  @include transition($transition);
+}
+
+.select2-drop-active {
+  border-color: $input-border-focus;
+}
+
+.select2-drop-auto-width,
+.select2-drop.select2-drop-above.select2-drop-active {
+  border-top-color: $input-border-focus;
+}
+
+/**
+ * Select2 widgets in Bootstrap Input Groups
+ *
+ * When Select2 widgets are combined with other elements using Bootstrap 3's
+ * "Input Group" component, we don't want specific edges of the Select2 container
+ * to have a border-radius.
+ *
+ * In Bootstrap 2, input groups required a markup where these style adjustments
+ * could be bound to a CSS-class identifying if the additional elements are appended,
+ * prepended or both.
+ *
+ * Bootstrap 3 doesn't rely on these classes anymore, so we have to use our own.
+ * Use .select2-bootstrap-prepend and .select2-bootstrap-append on a Bootstrap 3 .input-group
+ * to let the contained Select2 widget know which edges should not be rounded as they are
+ * directly followed by another element.
+ *
+ * @see http://getbootstrap.com/components/#input-groups
+ */
+
+.input-group.select2-bootstrap-prepend [class^="select2-choice"] {
+  @include border-left-radius(0 !important);
+}
+
+.input-group.select2-bootstrap-append [class^="select2-choice"] {
+  @include border-right-radius(0 !important);
+}
+
+.select2-dropdown-open [class^="select2-choice"] {
+  @include border-bottom-radius(0 !important);
+}
+
+.select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
+  @include border-top-radius(0 !important);
+}
+
+/**
+ * Adjust Select2's choices hover and selected styles to match Bootstrap 3's default dropdown styles.
+ */
+
+.select2-results .select2-highlighted {
+  color: $dropdown-link-active-color;
+  background-color: $dropdown-link-active-bg;
+}
+
+/**
+ * Adjust alignment of Bootstrap 3 buttons in Bootstrap 3 Input Groups to address
+ * Multi Select2's height which - depending on how many elements have been selected -
+ * may grown higher than their initial size.
+ */
+
+.select2-bootstrap-append,
+.select2-bootstrap-prepend {
+  .select2-container-multiple,
+  .input-group-btn,
+  .input-group-btn .btn {
+    vertical-align: top;
+  }
+}
+
+/**
+ * Make Multi Select2's choices match Bootstrap 3's default button styles.
+ */
+
+.select2-container-multi .select2-choices .select2-search-choice {
+  color: $input-color;
+  background: $btn-default-bg;
+  border-color: $btn-default-border;
+  @include reset-filter;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice-focus {
+  background: darken($btn-default-bg, 8%);
+  border-color: darken($btn-default-border, 12%);
+  color: $btn-default-color;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/**
+ * Address Multi Select2's choice close-button vertical alignment.
+ */
+
+.select2-search-choice-close {
+  margin-top: -7px;
+  top: 50%;
+}
+
+/**
+ * Adjust the single Select2's clear button position (used to reset the select box
+ * back to the placeholder value and visible once a selection is made
+ * activated by Select2's "allowClear" option).
+ */
+
+.select2-container .select2-choice abbr {
+  top: 50%;
+}
+
+/**
+ * Adjust "no results" and "selection limit" messages to make use
+ * of Bootstrap 3's default "Alert" style.
+ *
+ * @see http://getbootstrap.com/components/#alerts-default
+ */
+
+.select2-results .select2-no-results,
+.select2-results .select2-searching,
+.select2-results .select2-selection-limit {
+  background-color: $state-warning-bg;
+  color: $state-warning-text;
+}
+
+/**
+ * Address disabled Select2 styles.
+ *
+ * 1. For Select2 v.3.3.2.
+ * 2. Revert border-left:0 inherited from Select2's CSS to prevent the arrow
+ *    from jumping when switching from disabled to enabled state and vice versa.
+ */
+
+.select2-container.select2-container-disabled {
+  .select2-choice,
+  .select2-choices {
+    cursor: not-allowed;
+    background-color: $input-bg-disabled;
+    border-color: $input-border;
+    .select2-arrow,
+    div /* 1 */  {
+      background-color: transparent;
+      border-left: 1px solid transparent; /* 2 */
+    }
+  }
+}

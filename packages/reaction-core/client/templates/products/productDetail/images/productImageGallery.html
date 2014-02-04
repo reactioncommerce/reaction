@@ -1,0 +1,56 @@
+<template name="productImageGallery">
+{{#with variant.medias}}
+  {{>primaryImage}}
+  <div id="galleryDropPane" class="galleryDropPane">
+    <ul class="gallery">
+    {{#foreach .}}
+      {{#isimage mimeType}}
+        <!-- No more images -->
+      {{else}}
+      <li data-index="{{index}}" class="gallery-sortable">
+        <div class="view-image">
+          <img src="{{src}}" class="img-thumbnail" alt="{{title}}">
+        </div>
+      </li>
+      {{/isimage}}
+      {{#isvideo mimeType}}
+        <li data-index="{{index}}" class="gallery-sortable video">
+          <video class="video-js vjs-default-skin" width="250px" preload="auto" data-setup='{"example_option":true}' controls>
+            <source src="{{src}}" type="{{mimeType}}">
+            Your browser does not support the video tag.
+          </video>
+        </li>
+      {{/isvideo}}
+    {{/foreach}}
+    </ul>
+    {{#if userHasRole "admin"}}
+      <button type="button" class="btn btn-default btn-lg btn-block imageAddButton" tabindex="-1">Add media</button>
+    {{/if}}
+</div>
+{{else}}
+  {{#if userHasRole "admin"}}
+    <div id="galleryDropPane" class="galleryDropPane"><img src="../../resources/placeholder.jpeg"></div>
+    <p><button type="button" class="btn btn-danger btn-lg btn-block imageAddButton" tabindex="-1">Add media</button></p>
+  {{else}}
+    {{>primaryImage}}
+  {{/if}}
+{{/with}}
+</template>
+
+<template name="primaryImage">
+  <div class="product-image">
+
+        <div class="product-image-main">
+          <img id="main-image" class="img-responsive" name="main-image" src="{{getVariantImage}}">
+        </div>
+      {{#if userHasRole "admin"}}
+        <div class="gallery-tools">
+          <a><i class="fa fa-link"></i></a>
+          <a><i class="fa fa-paperclip"></i></a>
+          <a><i class="fa fa-pencil"></i></a>
+          <a class="image-remove-link" id="{{getVariantImage}}"><i class="fa fa-trash-o"></i></a>
+        </div>
+      {{/if}}
+
+  </div>
+</template>

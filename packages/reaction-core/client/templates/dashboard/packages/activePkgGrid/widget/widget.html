@@ -1,0 +1,51 @@
+<template name="widget">
+  <div class="tile tile-{{tileColors _id}}" id="{{_id}}"><i class="{{icon}}"></i>
+
+    <div class="content">
+      {{#if hasShopPermission overviewRoute}}
+        <a class="big" href="{{pathFor overviewRoute}}">{{label}}</a>
+      {{else}}
+        {{#if hasShopPermission settingsRoute}}
+          <a class="big" href="{{pathFor settingsRoute}}">{{label}}</a>
+        {{else}}
+          <p class="big">{{label}}</p>
+        {{/if}}
+      {{/if}}
+      <ul class="list-unstyled">
+        {{#each dependencies}}
+          <li>
+            {{label}}:
+            {{#if hasShopPermission settingsRoute }}
+              <a href="{{pathFor settingsRoute}}"><i class="fa fa-cog"></i></a>
+            {{/if}}
+            {{#if hasShopPermission overviewRoute}}
+              <a href="{{pathFor overviewRoute}}"><i class="fa fa-bar-chart-o"></i></a>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="status">
+      {{#if hasShopPermission settingsRoute}}
+        <a href="{{pathFor settingsRoute}}" class="pull-right">
+            <span class="fa-stack fa-2x">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-cog fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+      {{/if}}
+      {{#if hasShopPermission overviewRoute}}
+        <a href="{{pathFor overviewRoute}}" class="pull-right">
+            <span class="fa-stack fa-2x">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+      {{/if}}
+    </div>
+    <div class="widget">
+      {{{getTemplate name "widget"}}}
+      {{widget}}
+    </div>
+  </div>
+</template>

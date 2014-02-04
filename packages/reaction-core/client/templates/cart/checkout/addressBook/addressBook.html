@@ -1,0 +1,80 @@
+<template name="checkoutAddressBook">
+  <div class="panel panel-default address-book">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          {{#if addressBook}}
+          Choose shipping & billing address<i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
+          {{else}}
+          Create your default address</i>
+          {{/if}}
+        </h3>
+      </div>
+
+      {{#if addressBook}}
+      <div class="panel-body">
+        <div class="row" id="addressBook">
+          <div class="col-md-6">
+            <div class="list-group">
+              <strong>Select a shipping address</strong>
+               {{#each addressBook shipping}}
+                <a href="#" class="address-ship-to list-group-item {{selectedShipping}}" id="shipping-{{_id}}">
+                  <div class="col-sm-1 pull-right address-icons">
+                  <span class="fa-stack fa-lg address-edit-icon">
+                    <i class="fa fa-pencil fa-stack-1x"></i>
+                  </span>
+                  {{#if selectedShipping}}
+                  <span class="fa-stack fa-lg selected-icon">
+                    <i class="fa fa-circle-o fa-stack-2x"></i>
+                    <i class="fa fa-check fa-stack-1x"></i>
+                  </span>
+                  {{/if}}
+                </div>
+                <strong>{{fullName}}</strong>
+                <address>
+                  {{address1}}
+                  {{address2}},<br>
+                  {{city}}, {{region}} {{postal}} {{country}}<br>
+                  {{phone}}
+                </address>
+                </a>
+              {{/each}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="list-group">
+              <strong>Select a billing address</strong>
+               {{#each addressBook shipping}}
+                <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" id="billing-{{_id}}">
+                  <div class="col-sm-1 pull-right address-icons">
+                  <span class="fa-stack fa-lg address-edit-icon">
+                    <i class="fa fa-pencil fa-stack-1x"></i>
+                  </span>
+                  {{#if selectedBilling}}
+                  <span class="fa-stack fa-lg selected-icon">
+                    <i class="fa fa-circle-o fa-stack-2x"></i>
+                    <i class="fa fa-check fa-stack-1x"></i>
+                  </span>
+                  {{/if}}
+                </div>
+                <strong>{{fullName}}</strong>
+                <address>
+                  {{address1}}
+                  {{address2}},<br>
+                  {{city}}, {{region}} {{postal}} {{country}}<br>
+                  {{phone}}
+                </address>
+                </a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" id="addressBookAdd">
+          <div class="addressForm" id="addressForm"></div>
+        </div>
+      </div>
+      {{else}}
+        {{>addressBookAdd}}
+      {{/if}}
+  </div>
+</template>
+

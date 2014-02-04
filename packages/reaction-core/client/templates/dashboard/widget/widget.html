@@ -1,0 +1,23 @@
+<template name="reaction-commerce-widget">
+  <ul class="reaction-commerce-widget list-unstyled">
+    <li>
+      <span class="badge">{{ocount}}</span>
+      <a href="{{pathFor 'dashboard/orders'}}">
+        Orders
+      </a>
+    </li>
+    <li>
+      <span class="badge">{{pcount}}</span>
+      <a href="{{pathFor 'shop/products'}}">
+        Products
+      </a>
+    </li>
+    <li>
+      <span class="badge">{{ccount}}</span>
+      <a href="{{pathFor 'shop/customers'}}">
+        Customers
+      </a>
+    </li>
+  </ul>
+
+</template>

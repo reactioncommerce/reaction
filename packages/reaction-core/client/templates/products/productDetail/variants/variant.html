@@ -1,0 +1,57 @@
+<template name="variantList">
+  <div class="product-variants">
+    {{#unless userHasRole "admin"}}
+      {{#if variants}}
+      <h3>
+        Options
+        <small>view and add to cart</small>
+      </h3>
+      {{/if}}
+    {{else}}
+    <h3>
+      Options
+      <small>double click to edit</small>
+    </h3>
+    {{/unless}}
+    <ul class="variant-list list-unstyled" id="variant-list">
+    {{#each variants}}
+      {{> variant}}
+    {{else}}
+      <a href="#" id="create-variant">+ Create Variant</a>
+    {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="variant">
+<li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
+  <div class="variant-detail {{selectedVariant}}">
+    <div class="progress">
+      <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
+      </span>
+      <div class="variant-progress-item">
+        <span class="variant-qty badge">{{inventoryQuantity}}</span>
+        <span class="variant-title">{{title}}</span>
+        <span class="variant-price pull-right">${{price}}</span>
+       </div>
+      {{#if userHasRole "admin"}}
+      <div class="variant-edit-tools">
+        <span class="variant-edit pull-right">
+          <a href="#" class="edit-variant"><i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i></a>
+          <a href="#" class="clone-variant"><i class="fa fa-code-fork fa-lg" data-id="{{_id}}"></i></a>
+          <a href="#" class="remove-variant" data-id="{{_id}}" data-confirm="Are you sure you want to delete this variant?">
+          <i class="fa fa-times fa-lg"></i>
+          </a>
+        </span>
+      </div>
+      {{/if}}
+
+    </div>
+  </div>
+  {{#if userHasRole "admin"}}
+  <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
+    {{>variantForm}}
+  </div>
+  {{/if}}
+</li>
+</template>

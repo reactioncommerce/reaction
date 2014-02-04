@@ -1,0 +1,26 @@
+<template name="productGrid">
+  <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
+    <ul class="product-grid-list list-unstyled" id="product-grid-list">
+    {{#each products}}
+      {{> productGridItems}}
+    {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="productGridItems">
+  <li class="thumbnail product-grid-item" data-id="{{_id}}" id="{{_id}}">
+    <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+      <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
+    </a>
+    <div class="overlay">
+      {{#if userHasRole "admin"}}
+        <span class="positioning pull-left" title="Positioning">{{sortOrder}}</span>
+        {{#unless isVisible}}<span class="fa fa-eye-slash overlay-icon pull-left" title="Publish"></span>{{/unless}}
+        <span class="fa fa-code-fork clone-product overlay-icon pull-left" title="Clone product"></span>
+        <span class="fa fa-trash-o delete-product overlay-icon pull-right" title="Delete product"></span>
+      {{/if}}
+        <div class="overlay-content">{{title}} ${{variants.[0].price}}</div>
+    </div>
+  </li>
+</template>

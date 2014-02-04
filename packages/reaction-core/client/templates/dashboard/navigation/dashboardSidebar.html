@@ -1,0 +1,21 @@
+<template name="dashboardSidebar">
+  {{#if hasDashboardAccess}}
+  <ul class="list-unstyled" id="dashboard-sidebar">
+    <li>
+      <a class="fa fa-angle-double-left dashboard-back">
+        <span>Back</span>
+      </a>
+    </li>
+    <li>
+      <a href="/dashboard" class="fa fa-th dashboard-home">
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a class="fa fa-power-off dashboard-logout">
+        <span>Logout</span>
+      </a>
+    </li>
+  </ul>
+  {{/if}}
+</template>

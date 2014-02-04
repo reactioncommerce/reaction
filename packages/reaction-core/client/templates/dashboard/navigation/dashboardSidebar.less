@@ -1,0 +1,69 @@
+#dashboard-sidebar {
+  left: 0;
+  position: fixed;
+  top: 30%;
+  z-index: 9999;
+}
+
+#dashboard-sidebar li:first-child a { border-top-right-radius: 5px; }
+#dashboard-sidebar li:last-child a { border-bottom-right-radius: 5px; }
+
+#dashboard-sidebar a {
+  background: rgba(0, 0, 0, .7);
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  height: 50px;
+  width: 50px;
+  font-size: 24px;
+  line-height: 50px;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+}
+
+#dashboard-sidebar a:hover span {
+  left: 120%;
+  opacity: 1;
+  position: absolute;
+  z-index: 99999;
+}
+
+#dashboard-sidebar a span {
+  font: 12px "Open Sans", sans-serif;
+  text-transform: uppercase;
+  border-radius: 3px;
+  line-height: 24px;
+  left: -100%;
+  margin-top: -16px;
+  opacity: 0;
+  padding: 4px 8px;
+  position: absolute;
+  transition: opacity .3s, left .4s;
+  top: 50%;
+  z-index: -1;
+}
+
+#dashboard-sidebar a span:before {
+  content: "";
+  display: block;
+  height: 8px;
+  width: 8px;
+  left: -4px;
+  margin-top: -4px;
+  position: absolute;
+  top: 50%;
+  transform: rotate(45deg);
+}
+
+#dashboard-sidebar a[class*="dashboard-back"]:hover,
+#dashboard-sidebar a[class*="dashboard-back"] span,
+#dashboard-sidebar a[class*="dashboard-back"] span:before {background: #00aced;}
+
+#dashboard-sidebar a[class*="dashboard-home"]:hover,
+#dashboard-sidebar a[class*="dashboard-home"] span,
+#dashboard-sidebar a[class*="dashboard-home"] span:before {background: #3B5998;}
+
+#dashboard-sidebar a[class*="dashboard-logout"]:hover,
+#dashboard-sidebar a[class*="dashboard-logout"] span,
+#dashboard-sidebar a[class*="dashboard-logout"] span:before {background: #E34429;}

@@ -1,0 +1,24 @@
+<template name="settingsAccount">
+  <div class="container">
+    <h1>Shop Staff Accounts Settings</h1>
+
+    <h3>Staff members</h3>
+    <table class="table staff-table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Admin Access</th>
+        <th></th>
+      </tr>
+      </thead>
+      {{#each shop.members}}
+        {{> shopMember}}
+      {{/each}}
+    </table>
+    {{#if hasOwnerAccess}}
+      <button type="button" class="btn btn-default button-add-member">Add a staff member</button>
+    {{/if}}
+    {{> memberForm}}
+  </div>
+</template>

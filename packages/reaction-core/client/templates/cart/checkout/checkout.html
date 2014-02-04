@@ -1,0 +1,64 @@
+<template name="cartCheckout">
+<div class="row">
+{{>checkoutProgressBar}}
+</div>
+<div class="cart-checkout">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-8">
+        <div class="row">
+          {{#if currentUser}}
+            <div class="col-md-12"><i class="{{loginStatus}}">1</i>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Login completed</h3>
+                </div>
+              </div>
+            </div>
+          {{else}}
+            <div class="col-md-12"><i class="checkout-step-badge">1</i>{{>checkoutLogin}}</div>
+          {{/if}}
+        </div>
+
+        <div class="row">
+          {{#if addressStatus}}
+            <div class="col-md-12"><i class="{{addressStatus}}">2</i>{{>checkoutAddressBook}}</div>
+          {{else}}
+            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">2</i></div>
+          {{/if}}
+        </div>
+
+        <div class="row">
+          {{#if shippingOptionStatus}}
+            <div class="col-md-12"><i class="{{shippingOptionStatus}}">3</i>{{>checkoutShipping}}</div>
+          {{else}}
+          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">3</i></div>
+         {{/if}}
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        {{#if checkoutReviewStatus}}
+          <div class="col-md-12">
+            <i class="checkout-step-badge">4</i>
+            {{>checkoutReview}}
+          </div>
+        {{else}}
+          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">4</i></div>
+        {{/if}}
+      </div>
+
+      <div class="col-md-4" id="checkout-step-payment-methods">
+        {{#if checkoutReviewStatus}}
+          <div class="col-md-12">
+            <i class="checkout-step-badge">4</i>
+            {{>checkoutPayment}}
+          </div>
+        {{else}}
+          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">5</i></div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
+</template>

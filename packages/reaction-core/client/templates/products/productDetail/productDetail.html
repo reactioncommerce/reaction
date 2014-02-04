@@ -1,0 +1,95 @@
+<template name="productDetail">
+{{!-- Product Visibility Admin Block --}}
+{{#if userHasRole "admin"}}
+<div class="row">
+  {{#if isVisible}}
+  {{else}}
+    <div class="alert alert-warning">
+      This product is not visible to customers.
+            You can
+      <a href="#" class="toggle-product-isVisible-link">make it visible</a>
+      when you're done editing.
+    </div>
+  {{/if}}
+  Product management:
+  <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+</div>
+{{/if}}
+{{!-- END Product Visibility Admin Block --}}
+ <!-- Product Detail Page -->
+<div class="row" itemscope itemtype="http://schema.org/Product">
+  <!-- Titles -->
+  <div class="row">
+      <div class="pdp-title">
+        <h1 id="title" itemprop="name">{{title}}</h1>
+      </div>
+      <div class="pdp-page-title">
+        <h2 id="pageTitle">{{pageTitle}}</h2>
+      </div>
+  </div>
+  <!-- Product Details -->
+  <div class="row product-details">
+    <!-- BEGIN Left Side -->
+    <div class="col-md-5 col-lg-4 col-lg-offset-1">
+      {{> productImageGallery}}
+      {{> attributes}}
+    </div>
+    <!-- END Left Side -->
+    <!-- BEGIN Right Side -->
+    <div class="col-md-7">
+      <!-- main product information -->
+      <div class="row col-md-10 col-offset-md-4 pdp-editable">
+          <!-- Price Fixation -->
+          <div class="row">
+                <i class="fa fa-usd currency-symbol"> </i>
+                <span class="price">
+                  {{#isolate}}
+                  <span id="price" itemprop="price">{{actualPrice}}</span>
+                  {{/isolate}}
+                </span>
+            {{>social}}
+          </div>
+          {{!-- Vendor --}}
+          <div class="clearfix">
+            <span>by</span>
+            <div class="vendor">
+              <i id="vendor" itemprop="brand">{{vendor}}</i>
+            </div>
+          </div>
+
+          <!-- Tag it -->
+          <div class="row">
+
+            <div class="tags">
+              {{#if userHasRole "admin"}}
+                <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
+              {{else}}
+                {{#each tags}}
+                  <a href="{{pathFor "shop/tag"}}">{{name}}</a>
+                {{/each}}
+              {{/if}}
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="row">
+            <div id="description" class="description" itemprop="description">
+            {{#if userHasRole "admin"}}
+            {{description}}
+            {{else}}
+            {{!-- Render as html on client view --}}
+            {{{description}}}
+            {{/if}}</div>
+          </div>
+
+      </div>
+      <!-- Variants -->
+      <div class="row col-md-10 col-offset-md-4 options-add-to-cart">
+        {{>variantList}}
+        <!--  Add to cart -->
+        <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to cart</div>
+      </div>
+      <!-- END Right Side -->
+  </div>
+</div>
+</template>

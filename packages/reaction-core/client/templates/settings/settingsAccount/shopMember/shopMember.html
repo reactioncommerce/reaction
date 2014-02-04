@@ -1,0 +1,66 @@
+<template name="shopMember">
+  <tbody id="shop_member_{{userId}}"{{#if hasOwnerAccess}} class="toggle-shop-member-permissions"{{/if}}>
+  <tr>
+    <td>{{user.profile.name}}</td>
+    <td>{{userEmail}}</td>
+    <td>
+      {{#if isAdmin}}
+        Full access
+      {{else}}
+        Limited access
+      {{/if}}
+    </td>
+    {{#if hasOwnerAccess}}
+      <td>
+        <a href="#" class="link-shop-member-remove" data-confirm="Are you sure you want to delete shop member?">
+          <i class="fa fa-times"></i>
+        </a>
+      </td>
+    {{/if}}
+  </tr>
+  </tbody>
+  {{#if hasOwnerAccess}}
+    <tbody class="shop-member-permissions">
+    <tr>
+      <td>
+        Permissions:
+      </td>
+      <td colspan="3">
+        <label>
+          <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="yes"{{#if isAdmin}}
+                 checked{{/if}}/>
+          {{user.profile.name}} has access to everything in shop
+        </label>
+        <br/>
+        <label>
+          <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="no"{{#unless isAdmin}}
+                 checked{{/unless}}/>
+          Let me choose what {{user.profile.name}} has access to
+        </label>
+      </td>
+    </tr>
+    {{#unless isAdmin}}
+      <tr>
+        <td></td>
+        <td colspan="3">
+          {{#each permissionGroups}}
+            <ul>
+              <li class="shop-permissions-group">{{group}}</li>
+              {{#each permissions}}
+                <li>
+                  <label>
+                    <input type="checkbox"{{#if isChecked ../../permissions}} checked{{/if}}
+                           class="toggle-shop-member-permission"
+                           data-userId="{{../../userId}}" data-permission="{{permission}}"/>
+                    {{label}}
+                  </label>
+                </li>
+              {{/each}}
+            </ul>
+          {{/each}}
+        </td>
+      </tr>
+    {{/unless}}
+    </tbody>
+  {{/if}}
+</template>

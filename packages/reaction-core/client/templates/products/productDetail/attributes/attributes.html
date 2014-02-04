@@ -1,0 +1,42 @@
+<template name="attributes">
+<!-- Attributes -->
+{{#if attributes}}
+  <div class="panel panel-default">
+    <div class="panel-heading">More details</div>
+      <table class="table table-condensed">
+        {{#if userHasRole "admin"}}
+          {{#each attributes}}
+          <tr>
+            <td><a href="#" class="attribute-key">{{key}}</a></td>
+            <td><a href="#" class="attribute-value">{{value}}</a></td>
+            <td><a href="#" class="attribute-delete"><i class="fa fa-trash-o pull-right"></i></a></td>
+          </tr>
+          {{/each}}
+          <tr class="active">
+            <td colspan="3"><a href="#" class="attribute-key"></a></td>
+          </tr>
+        {{else}}
+          {{#each attributes}}
+          <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+          </tr>
+          {{/each}}
+        {{/if}}
+      </table>
+    </div>
+  </div>
+{{else}}
+  {{#if userHasRole "admin"}}
+    <div class="panel panel-default">
+      <div class="panel-heading">Details</div>
+        <table class="table table-condensed">
+          <tr class="active">
+            <td colspan="3"><a href="#" class="attribute-key"></a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
+</template>

@@ -1,0 +1,99 @@
+#add-to-cart {
+  margin-top: 25px;
+}
+// For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
+.img-responsive{width:100%;}
+
+// Override of xeditable form group elements to change styles
+.pdp-title .form-group,
+.pdp-title .form-control,
+.pdp-title .editable-input,
+.pdp-title .editable-inline,
+.pdp-page-title .form-group,
+.pdp-page-title .form-control,
+.pdp-page-title .editable-input,
+.pdp-page-title .editable-inline {
+    width:100% !important;
+    font-size: inherit !important;
+    font-color: inherit !important;
+    font-weight: inherit !important;
+    text-align: center;
+    padding: 1px 0 1px 0;
+    margin: 0;
+    height: 100%;
+}
+
+.pdp-title, .pdp-title h1{
+  text-align: center;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.pdp-page-title, .pdp-page-title h2{
+  text-align: center;
+  font-size: 38px;
+  font-weight: bold;
+  color: #428BC9;
+}
+
+.options-add-to-cart {
+  //placeholder
+}
+.product-details {
+  padding-top: 25px;
+}
+// Override of xeditable form group elements to change styles
+.pdp-editable .form-group,
+.pdp-editable .form-control,
+.pdp-editable .editable-input,
+.pdp-editable .editable-inline {
+    width: 100% !important;
+    font-size: inherit !important;
+    font-color: inherit !important;
+    font-weight: inherit !important;
+    padding: 2px 0 1px 0;
+    height: 100%;
+}
+
+.pdp-editable .editable-pre-wrapped {
+  white-space: normal !important;
+}
+
+.pdp-editable {
+  .price {
+    font-weight: bold;
+    font-size: 50px;
+    width: 200px !important;
+    padding: 0 0 0 5px;
+    overflow: visible;
+    display:inline-block;
+  }
+  .currency-symbol {
+    font-weight: bold;
+    font-size: 48px;
+    letter-spacing: -0.1em;
+  }
+  .vendor {
+    width: 250px;
+    display: inline-block;
+  }
+  .tags {
+    width: 100% !important;
+  }
+  .description {
+    margin: 15px 0 15px 0;
+    font-size: 16px;
+    line-height: 1.6;
+    height: :100%;
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+    .pdp-title, .pdp-title h1{
+      font-size: 30px;
+    }
+    .pdp-page-title, .pdp-page-title h2{
+      font-size: 20px;
+    }
+}

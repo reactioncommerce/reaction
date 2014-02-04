@@ -1,0 +1,28 @@
+<template name="shopNavElements">
+  <ul class="nav navbar-nav">
+    {{#if hasShopPermission "dashboard/orders"}}
+      <li class="{{active "/dashboard/orders"}}">
+        <a href="{{pathFor "dashboard/orders"}}">
+          Orders
+          <span class="badge">{{ocount}}</span>
+        </a>
+      </li>
+    {{/if}}
+    {{#if hasShopPermission "shop/products"}}
+      <li class="{{active "/shop/products"}}">
+        <a href="{{pathFor "shop/products"}}">
+          Products
+          <span class="badge">{{pcount}}</span>
+        </a>
+      </li>
+    {{/if}}
+    {{#if hasShopPermission "shop/customers"}}
+      <li class="{{active "/shop/customers"}}">
+        <a href="{{pathFor "shop/customers"}}">
+          Customers
+          <span class="badge">{{ccount}}</span>
+        </a>
+      </li>
+    {{/if}}
+  </ul>
+</template>

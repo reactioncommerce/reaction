@@ -1,0 +1,14 @@
+<template name="addressBookEdit">
+<div class="panel-body">
+{{#autoForm schema=addressBookEditForm doc=thisAddress id="addressBookEditForm"}}
+  <fieldset>
+      {{>addressBookForm}}
+      <div class="row text-right">
+          {{afFieldInput "_id" value=_id type="hidden"}}
+          <button type="submit" class="btn btn-primary update" data-meteor-method="addressBookUpdate">Save and Continue</button>
+          <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
+      </div>
+  </fieldset>
+{{/autoForm}}
+</div>
+</template>
