@@ -44,7 +44,7 @@ Handlebars.registerHelper "cart", () ->
     count
 
   cartShipping: ->
-    shipping = Cart.findOne()?.shipping?.value
+    shipping = Cart.findOne()?.shipping?.shippingMethod.value
     Session.set "cartShipping", shipping
     shipping
 
