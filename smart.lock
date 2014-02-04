@@ -3,7 +3,6 @@
   "dependencies": {
     "basePackages": {
       "spin": {},
-      "highcharts": {},
       "roles": {},
       "x-editable-bootstrap3": {
         "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git",
@@ -27,11 +26,6 @@
         "git": "https://github.com/SachaG/meteor-spin.git",
         "tag": "v0.2.2",
         "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
-      },
-      "highcharts": {
-        "git": "https://github.com/mikeschaekermann/meteor-highcharts.git",
-        "tag": "v0.1.0",
-        "commit": "eca115ee55e1cc083e389171717760dbaa727534"
       },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",

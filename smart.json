@@ -1,7 +1,6 @@
 {
   "packages": {
     "spin": {},
-    "highcharts": {},
     "roles": {},
     "x-editable-bootstrap3": {
       "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git"
