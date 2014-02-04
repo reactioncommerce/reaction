@@ -1,3 +1,7 @@
+Router.configure
+  notFoundTemplate: "notFound"
+  loadingTemplate: "loading"
+
 Router.before ->
   @subscribe('shops').wait()
   @subscribe('cart', Session.get "sessionId", Meteor.userId()).wait()
@@ -10,9 +14,14 @@ Router.before ->
 
 ShopController = RouteController.extend
   yieldTemplates:
-    'shopHeader': to: 'header'
-    'dashboardSidebar': to: 'sidebar'
-    'siteFooter': to: 'footer'
+    templateHeader:
+      to: "templateHeader"
+
+    templateFooter:
+      to: "templateFooter"
+
+    dashboardSidebar:
+      to: "sidebar"
   before: ->
 # should we make it a default as Router.before?
     @subscribe('shops').wait()
@@ -108,7 +117,7 @@ Router.map ->
       [share.ConfigDataHandle]
     yieldTemplates:
       checkoutHeader:
-        to: "header"
+        to: "templateHeader"
   #completed orders
   @route 'cartCompleted',
     path: 'completed/:_id',

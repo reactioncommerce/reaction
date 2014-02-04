@@ -1,4 +1,19 @@
-PackagesHandle = Meteor.subscribe("Packages")
+Meteor.subscribe "ReactionPackages"
+ReactionConfigHandle = Meteor.subscribe("ReactionConfig")
+Meteor.subscribe "UserConfig", Meteor.userId()
+# Read from local storage / cookies
+Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
+  # The server returns only one record, so findOne will return that record
+  serverSession = new Meteor.Collection("ReactionSessions").findOne()
+  # Stores into client session all data contained in server session;
+  # supports reactivity when server changes the serverSession
+
+  Session.set "serverSession", serverSession
+  Session.set "sessionId", serverSession._id
+  # Stores the server session id into local storage / cookies
+  amplify.store "reaction.session", serverSession._id
+
+PackagesHandle = @PackagesHandle = Meteor.subscribe("Packages")
 share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
 Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
@@ -6,8 +21,6 @@ Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
 Meteor.subscribe 'cart'
 Meteor.subscribe 'shops'
-#shops and cart are subscribed in router
-
 
 
 ####################################################

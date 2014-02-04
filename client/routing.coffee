@@ -7,30 +7,18 @@
 # *****************************************************
 Router.configure
   layoutTemplate: "layout"
-  notFoundTemplate: "notFound"
-  loadingTemplate: "loading"
-  yieldTemplates:
-    siteHeader:
-      to: "header"
-
-    siteFooter:
-      to: "footer"
-
-    dashboardSidebar:
-      to: "sidebar"
-
-
+  # yieldTemplates:
+  #   footer:
+  #     to: "footer"
 # *****************************************************
-# generic routes for reaction marketing site layout
-# default layout is dashboardLayout template, these
-# are all exceptions
+# generic routes for reaction layout
 # *****************************************************
 pages = [
-  
+
   #Header
   "pricing"
   "contactus"
-  
+
   #Footer
   "about"
   "team"

@@ -11,6 +11,17 @@ Handlebars.registerHelper "hasOwnerAccess", ->
 Handlebars.registerHelper "hasDashboardAccess", ->
   Meteor.app.hasDashboardAccess()
 
+Handlebars.registerHelper "activeRouteClass", ->
+  args = Array::slice.call(arguments, 0)
+  args.pop()
+  active = _.any(args, (name) ->
+    location.pathname is Router.path(name)
+  )
+  active and "active"
+
+Handlebars.registerHelper "siteName", ->
+  siteName = Shops.findOne().name
+  siteName
 # *****************************************************
 # method to alway return an image,
 # or a placeholder for a product variant

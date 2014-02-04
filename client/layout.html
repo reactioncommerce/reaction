@@ -3,12 +3,12 @@
   <title>Reaction Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
   <main role="main" id="main">
-    <header>{{yield "header"}}</header>
+    <header>{{yield "templateHeader"}}</header>
     <nav>{{yield "sidebar"}}</nav>
     <nav>{{>cartDrawer}}</nav>
     <section>
       <div class="container">{{yield}}</div>
     </section>
   </main>
-  <footer>{{yield "footer"}}</footer>
+  <footer>{{yield "templateFooter"}}</footer>
 </template>

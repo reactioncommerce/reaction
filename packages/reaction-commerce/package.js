@@ -16,24 +16,24 @@ Package.on_use(function (api, where) {
     "roles",
     "less",
     "underscore-string-latest",
-    "handlebars-server"
+    "handlebars-server",
+    "amplify",
+    "underscore",
+    "accounts-base"
   ], ["client", "server"]);
+
   api.use([
     "autoform",
     "bootstrap3-less",
-    "accounts-base",
     "iron-router",
+    "pnotify-bootstrap-3-less"
   ], ["client"]);
-  api.use([
-    "underscore"
-  ], ["server"]);
 
   api.add_files([
     "lib/vendor/header_spy.coffee",
     "common/collections.coffee",
     "common/hooks.coffee",
   ], ["client", "server"]);
-
 
   api.add_files([
 
@@ -51,19 +51,34 @@ Package.on_use(function (api, where) {
 
     "client/app.coffee",
     "client/register.coffee",
-    "client/helpers.coffee",
     "client/subscriptions.coffee",
     "client/routing.coffee",
 
-    "client/templates/shopHeader/shopHeader.html",
-    "client/templates/shopHeader/shopHeader.coffee",
+    "client/helpers/helpers.coffee",
+    "client/helpers/config.coffee",
+    "client/helpers/errors.coffee",
+    "client/helpers/fonts.coffee",
+    "client/helpers/handlebars.coffee",
 
-    "client/templates/shopHeader/tags/tags.html",
-    "client/templates/shopHeader/tags/tags.coffee",
-    "client/templates/shopHeader/tags/tags.less",
+    "client/less/index.less",
 
-    "client/templates/shopHeader/shopNavElements/shopNavElements.html",
-    "client/templates/shopHeader/shopNavElements/shopNavElements.coffee",
+    "client/templates/layout/header/header.html",
+    "client/templates/layout/header/header.coffee",
+
+    "client/templates/layout/footer/footer.html",
+    "client/templates/layout/footer/footer.coffee",
+
+    "client/templates/layout/loading/loading.html",
+
+    "client/templates/layout/shopHeader/tags/tags.html",
+    "client/templates/layout/shopHeader/tags/tags.coffee",
+    "client/templates/layout/shopHeader/tags/tags.less",
+
+    "client/templates/layout/shopHeader/shopNavElements/shopNavElements.html",
+    "client/templates/layout/shopHeader/shopNavElements/shopNavElements.coffee",
+
+    "client/templates/layout/notice/unauthorized.html",
+    "client/templates/layout/notice/shopNotFound.html",
 
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
@@ -213,16 +228,14 @@ Package.on_use(function (api, where) {
 
     "client/templates/products/productDetail/attributes/attributes.html",
     "client/templates/products/productDetail/attributes/attributes.less",
-    "client/templates/products/productDetail/attributes/attributes.coffee",
-
-    "client/templates/notice/unauthorized.html",
-
-    "client/templates/notice/shopNotFound.html"
+    "client/templates/products/productDetail/attributes/attributes.coffee"
   ], ["client"]);
+
   api.add_files([
     "server/app.coffee",
     "server/methods.coffee",
     "server/publications.coffee",
+    "server/accounts.coffee",
     "server/emailTemplates/shopMemberInvite.handlebars",
     "server/emailTemplates/shopMemberNotification.handlebars"
   ], ["server"]);
