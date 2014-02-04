@@ -1,4 +1,12 @@
 Meteor.app = _.extend(Meteor.app || {},
+  getCurrentShopCursor: () ->
+    Shops.find({}, {limit: 1});
+  getCurrentShop: () ->
+    cursor = Meteor.app.getCurrentShopCursor()
+    cursor.fetch()[0]
+)
+
+Meteor.app = _.extend(Meteor.app || {},
   packages:
     register: (packageInfo) ->
       @[packageInfo.name] = packageInfo
