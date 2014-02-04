@@ -1,6 +1,5 @@
 <template name="paypalPaymentForm">
   {{#autoForm schema=PaypalPaymentSchema id="paypal-payment-form"}}
-  <div id="skeuocard"></div>
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid 'payerName'}} has-error{{/if}}">
         {{afFieldLabel "payerName" }}

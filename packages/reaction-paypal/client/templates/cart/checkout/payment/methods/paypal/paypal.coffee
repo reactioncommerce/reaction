@@ -64,11 +64,9 @@ Template.paypalPaymentForm.events
     form.expire_year = form.expireYear
     form.cvv2 = form.cvv
     form.type = getCardType(form.cardNumber)
-
     # Order Layout
     $(".list-group a").css("text-decoration", "none")
     $(".list-group-item").removeClass("list-group-item")
-
     #Processing
     $("#paypal-payment-form :input").attr("disabled", true)
     $("#paypal-payment-form #btn-complete-order").text("Submitting ")
