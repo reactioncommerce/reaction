@@ -54,13 +54,14 @@ currentProduct = @currentProduct
 #  ensure user cart is created, and address located
 ####################################################
 Deps.autorun ->
+  sessionId = Session.get "sessionId"
   cartSession =
-    sessionId: Session.get "sessionId"
+    sessionId: sessionId
     userId: Meteor.userId()
-
   cart = Cart.findOne Session.get "sessionId", Meteor.userId()
-  unless cart? and Session.get "sessionId"
-    Meteor.call "createCart", cartSession
+  unless cart?
+    if sessionId?
+      Meteor.call "createCart", cartSession
 
   unless Session.get('address')
     #Setting Default because we get here before location calc
