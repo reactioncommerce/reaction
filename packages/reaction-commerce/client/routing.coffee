@@ -120,6 +120,7 @@ Router.map ->
         to: "templateHeader"
   #completed orders
   @route 'cartCompleted',
+    controller: ShopController
     path: 'completed/:_id',
     template: 'cartCompleted'
     waitOn: ->

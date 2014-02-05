@@ -26,7 +26,8 @@ Package.on_use(function (api, where) {
     "autoform",
     "bootstrap3-less",
     "iron-router",
-    "pnotify-bootstrap-3-less"
+    "pnotify-bootstrap-3-less",
+    "spin"
   ], ["client"]);
 
   api.add_files([
@@ -236,6 +237,7 @@ Package.on_use(function (api, where) {
     "server/methods.coffee",
     "server/publications.coffee",
     "server/accounts.coffee",
+    "server/installHeaderSpy.coffee",
     "server/emailTemplates/shopMemberInvite.handlebars",
     "server/emailTemplates/shopMemberNotification.handlebars"
   ], ["server"]);
