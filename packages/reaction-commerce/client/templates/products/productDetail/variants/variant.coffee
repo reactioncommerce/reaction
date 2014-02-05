@@ -28,7 +28,11 @@ Template.variant.events
       $('#variant-edit-form-'+@._id).toggle()
 
   "click .variant-detail > *": (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    y = ((if document.pageYOffset then document.pageYOffset else document.body.scrollTop))
     currentProduct.set "variant", @
+    $("html").scrollTop(y) or $("body").scrollTop(y)
 
   "click .clone-variant": (event,template) ->
     #clean selected variant

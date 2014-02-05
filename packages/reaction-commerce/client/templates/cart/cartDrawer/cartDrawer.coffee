@@ -1,6 +1,4 @@
 Session.setDefault "displayCartDrawer",false
-
-
 ### **************************************************************
 # true = cartDrawer should be open (persistent, until closed)
 # false = cartDrawer is closed and not rendered
@@ -12,19 +10,20 @@ Session.setDefault "displayCartDrawer",false
   cartVisibility = Session.get "displayCartDrawer"
   if cartVisibility is false
     Session.set "displayCartDrawer", true
-    $("html").animate({ scrollTop: "0" })
-    $("#cart-drawer").fadeIn "slow"
   else if cartVisibility is true and delayId? is true and toggle? isnt true
-    $("html").animate({ scrollTop: "0" })
     Session.set "displayCartDrawer", true
   else
     Session.set "displayCartDrawer", false
+
+  $("html, body").animate
+    scrollTop: $("#cart-drawer-container").offset().top
+  , 300
   # delay then close automatically, but reset if changes are made
   autoClose = () ->
     $("#cart-drawer").fadeOut "slow", () ->
       Session.set "displayCartDrawer", false
   Meteor.clearTimeout(delayId) if delayId?
-  @delayId = Meteor.setTimeout autoClose,9000
+  @delayId = Meteor.setTimeout autoClose,7000
 
 ### **************************************************************
 # Template Cart Drawer
@@ -65,7 +64,10 @@ Template.cartDrawer.events
     $(item).fadeOut(1500).delay 1500, ()->
       Meteor.call('removeFromCart',currentCartId,currentVariant)
 
-  'click #btn-keep-shopping': (event,tempate) ->
+  'click #btn-keep-shopping': (event,template) ->
     event.stopPropagation()
     event.preventDefault()
     toggleCartDrawer(true)
+
+  'click #cart-drawer-container': (event, template) ->
+    Meteor.clearTimeout(delayId) if delayId?

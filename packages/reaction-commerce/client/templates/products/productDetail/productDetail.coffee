@@ -239,8 +239,6 @@ Template.productDetail.events
     else
       throwAlert("Select an option before adding to cart")
 
-
-
   "submit form": (event) ->
     event.preventDefault()
     event.stopPropagation()
