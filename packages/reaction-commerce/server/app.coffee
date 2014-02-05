@@ -9,7 +9,7 @@ Meteor.app = _.extend(Meteor.app || {},
         name: "localhost"
         createdAt: new Date()
         domains: ["localhost"]
-        ownerId: Meteor.userId()
+        ownerId: this.userId
         #TODO:  We should route user to a screen to assign/create show owner
       Shops._collection.insert shop
       cursor = Shops.find({}, {sort: {$natural: 1}, limit: 1});
