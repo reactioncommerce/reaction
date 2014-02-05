@@ -4,34 +4,29 @@ Meteor.app.packages.register
   label: 'Shop'
   description: 'Reaction Shop'
   icon: 'fa fa-shopping-cart fa-5x'
-  settingsRoute: 'shop/settings/general'
-  overviewRoute: 'shop'
+  settingsRoute: 'dashboard/settings/shop'
+  overviewRoute: 'dashboard/welcome'
   priority: '3'
   hasWidget: true
   shopPermissions: [
     {
       label: "Customers"
-      permission: "shop/customers"
+      permission: "dashboard/customers"
       group: "Shop Management"
     }
     {
       label: "Promotions"
-      permission: "shop/promotions"
+      permission: "dashboard/promotions"
       group: "Shop Management"
     }
     {
       label: "Products"
-      permission: "shop/products"
+      permission: "dashboard/products"
       group: "Shop Content"
     }
     {
-      label: "Collections"
-      permission: "shop/collections"
-      group: "Shop Content"
-    }
-    {
-      label: "Settings"
-      permission: "shop/settings/general"
+      label: "General Shop"
+      permission: "dashboard/settings"
       group: "Shop Settings"
     }
   ]
@@ -50,10 +45,16 @@ Meteor.app.packages.register
     }
   ]
 
-
 Meteor.app.packages.register
   name: 'reaction-commerce-staff-accounts'
   provides: ['staffAccountsManager']
-  label: 'Staff Accounts'
-  settingsRoute: 'shop/settings/account'
+  label: 'Dashboard Access'
+  settingsRoute: 'dashboard/settings/account'
   hasWidget: false
+  shopPermissions: [
+    {
+      label: "Dashboard Access"
+      permission: "dashboard/settings/account"
+      group: "Shop Settings"
+    }
+  ]

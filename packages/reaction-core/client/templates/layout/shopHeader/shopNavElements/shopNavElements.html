@@ -8,17 +8,17 @@
         </a>
       </li>
     {{/if}}
-    {{#if hasShopPermission "shop/products"}}
-      <li class="{{active "/shop/products"}}">
-        <a href="{{pathFor "shop/products"}}">
+    {{#if hasShopPermission "dashboard/products"}}
+      <li class="{{active "/dashboard/products"}}">
+        <a href="{{pathFor "dashboard/products"}}">
           Products
           <span class="badge">{{pcount}}</span>
         </a>
       </li>
     {{/if}}
-    {{#if hasShopPermission "shop/customers"}}
+    {{#if hasShopPermission "dashboard/customers"}}
       <li class="{{active "/shop/customers"}}">
-        <a href="{{pathFor "shop/customers"}}">
+        <a href="{{pathFor "dashboard/customers"}}">
           Customers
           <span class="badge">{{ccount}}</span>
         </a>

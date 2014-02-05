@@ -18,5 +18,5 @@ Template.productListGrid.events
     e.stopPropagation()
     Meteor.call "createProduct", (err, productId) ->
       console.log err  if err
-      Router.go "shop/product",
+      Router.go "dashboard/product",
         _id: productId

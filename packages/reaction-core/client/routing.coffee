@@ -43,26 +43,31 @@ Router.map ->
   @route 'dashboard',
     controller: ShopAdminController
     template: 'dashboard'
-  @route 'shop',
+
+  @route 'dashboard/welcome',
     controller: ShopAdminController
     template: 'shopwelcome'
-  @route 'shop/settings/general',
+
+  @route 'dashboard/settings/shop',
     controller: ShopAdminController
-    path: '/shop/settings/general'
+    path: '/dashboard/settings/shop'
     data: ->
       shop: Shops.findOne Meteor.app.shopId
     template: 'settingsGeneral'
-  @route 'shop/settings/account',
+
+  @route 'dashboard/settings/account',
     controller: ShopAdminController
-    path: '/shop/settings/account'
+    path: '/dashboard/settings/account'
     waitOn: ->
       Meteor.subscribe 'shopMembers'
     data: ->
       shop: Shops.findOne Meteor.app.shopId
     template: 'settingsAccount'
+
   # list page of customer records
-  @route 'shop/customers',
+  @route 'dashboard/customers',
     controller: ShopAdminController
+
   # list page of shop orders
   @route 'dashboard/orders',
     controller: ShopAdminController
@@ -72,19 +77,19 @@ Router.map ->
       [share.ConfigDataHandle]
     data: ->
       Orders.find(@params._id)
-  # list page of products
-  @route 'shop/products',
-    controller: ShopAdminController
-  @route 'shop/tag',
+
+  # display products by tag
+  @route 'product/tag',
     controller: ShopController
-    path: 'shop/tag/:_id',
+    path: 'product/tag/:_id',
     data: ->
       tag: Tags.findOne(@params._id)
     template: "productListGrid"
+
   # product view / edit page
-  @route 'shop/product',
+  @route 'product',
     controller: ShopController
-    path: '/shop/products/:_id'
+    path: 'product/:_id'
     waitOn: ->
       # set current variant and products
       product = Products.findOne(@params._id)
@@ -108,6 +113,7 @@ Router.map ->
     data: ->
       currentProduct.get "product"
     template: 'productDetail'
+
   #checkout
   @route 'cartCheckout',
     path: 'checkout',
@@ -118,6 +124,7 @@ Router.map ->
     yieldTemplates:
       checkoutHeader:
         to: "templateHeader"
+
   #completed orders
   @route 'cartCompleted',
     controller: ShopController

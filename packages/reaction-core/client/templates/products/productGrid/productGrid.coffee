@@ -33,7 +33,7 @@ Template.productGridItems.events
   'click .clone-product': () ->
     Meteor.call "cloneProduct", this, (err, productId) ->
       console.log err  if err
-      Router.go "shop/product",
+      Router.go "dashboard/product",
         _id: productId
 
   'click .delete-product': (e) ->
