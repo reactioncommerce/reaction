@@ -1,7 +1,9 @@
 #Reaction
-A commerce platform developed with Meteor and following a reactive design pattern.
+A commerce platform developed with Meteor and following a reactive design pattern that puts usability and conversions first.
 
-Reaction is a project of [Ongo Works](http://ongoworks.com). We welcome (and need) contributors, issues, comments!
+Reaction is a project of [Ongo Works](http://ongoworks.com). We welcome contributors, issues, comments.
+
+**If you are interested in joining our alpha+ testing rounds - [please contact us](mailto:contact@ongoworks.com) - we'll make it easy!**
 
 ###Core ideas:
 
@@ -20,27 +22,29 @@ Reaction is a project of [Ongo Works](http://ongoworks.com). We welcome (and nee
 * Cross platform, responsive focus - should work well natively, without native apps.
 * Upgrade paths from existing commerce platforms (Magento, Shopify, BigCommerce)
 * Developer friendly. Commercial package and theme development encouraged. Contributors should be rewarded.
+* **reaction-commerce package can used as a package in any meteor environment**
+
 
 ###Roadmap:
-**Current status: Unstable, with HEAVY ongoing development!**
+**Current status: Unstable, with HEAVY ongoing development! We're now within 4 weeks of a point release for testing.**
 
 Only good for contributing/observing progress right now. Our estimated timeline:
 
 * Catalog/Product Management - functional now (but ongoing refactoring)
 * Cart - functional now (but ongoing refactoring)
 * Checkout (with shipping/payment methods):
-	* Alpha: Late January 2014  (search, shipping calc, payments)
-	* Beta: Late February 2014 (promotions, hero, cms)
-	* Release Candidate 1: Q1 2014 (social tracking, seo, mixed rate shipping)
-	* Release Candidate 2: Late Q1 2014 (migration tools, multiple themes, theme editor, PaaS)
-	* Prime time.. PaaS Solution Early Q2 2014
+	* *Milestone 1: Late January 2014  (~~search,~~ shipping calc, payments)*
+	* Milestone 2: Late February 2014 (promotions, hero, cms, search)
+	* Milestone 3: Q1 2014 (social tracking, seo, mixed rate shipping)
+	* Milestone 4: Late Q1 2014 (migration tools, multiple themes, theme editor, PaaS)
+	* Goal: PaaS Solution Q2 2014
 
 
 Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
 
-Usually, we have playground here: [Demo/test site](http://demo.reactioncommerce.com)
+Demo, playground at: [Demo/test site](http://demo.reactioncommerce.com)
 
-* Use admin1@ongoworks.com / ongo1 to test dashboard/admin/editing.
+* Use **admin1@ongoworks.com / ongo1 **to test dashboard/admin/editing.
 
 ---
 ##Prerequisites
@@ -61,7 +65,7 @@ To reset data and give you a fresh test dataset from private/data
 
 	./bin/reset
 
-Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running.
+Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
 *Note: Optionally you can run and reset with "meteor" and "meteor reset", but you will not load settings data from configuration files. You would need to save them in your data, or create your own private/data*
 
@@ -70,7 +74,9 @@ An example of a deployment with password to a [meteor.com hosted site](http://do
 
 	meteor deploy -P --settings settings/prod.json yourdemosite.meteor.com
 
-## Configuration
+## Optional
+If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time..
+
 Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
 
 	cp settings/dev.sample.json settings/dev.json
@@ -92,110 +98,8 @@ Example configuration file
 	  }
 	}
 
+##Developer Docs
+Developer docs for new packages at [packages/reaction-commerce/README.md](https://github.com/ongoworks/reaction/tree/master/packages/reaction-commerce)
 
 
 ---
-#Development
----
-
-See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com).
-
-Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for format and style of contributions.
-
-Please read [conventions.md](conventions.md) for our naming and directory conventions
-
-Our core is being built with a preference for Coffeescript + LESS.
-
-We are always using latest full release of all packages.
-
-Packages should be able to run independently, whenever possible but many of the core packages will have dependancies on the reaction-commerce package.
-
-At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach an Alpha release, these will be moved to individual package repos and published on the Meteor package manager. Tests will be added when they are moved to their own repos.
-
-
-
-#Dashboard
-Add packages to the reaction dashboard by adding **register.coffee**
-
-	Meteor.app.packages.register(
-	  name: "reaction-helloworld"
-	  depends: [] #reaction packages
-	  label: "HelloWorld"
-	  description: "Example Reaction Package"
-	  icon: "fa fa-globe fa-5x"
-	  priority: "2"
-	  overviewRoute: 'helloworld'
-	  hasWidget: true
-	  shopPermissions: [
-	    {
-	      label: "HelloWorld"
-	      permission: "/helloworld"
-	      group: "Hello World"
-	    }
-	)
-
-Add widgets to dashboard elements by including a template named packagename-widget
-
-	<template name="reaction-helloworld-widget">
-		<div> this is a widget that will appear on dashboard</div
-	</template>
-
-#Roles/Permissions System
-
-##Roles
-We use https://github.com/alanning/meteor-roles for providing roles.
-Users with "admin" role are full-permission, site-wide users. Package specific roles can be defined in register.coffee
-
-##Permissions
-Shop has owner, which determine by "ownerId" field in Shop collection.
-
-**To check if user has owner access:**
-
-on client: for current user
-
-	Meteor.app.hasOwnerAccess()
-
-on server: for some shop (current if not defined) and some userId (current if not defined)
-
-	Meteor.app.hasOwnerAccess(shop, userId)
-
-in templates: for current user
-
-	{{#if hasOwnerAccess}}{{/if}}
-
-**Shop has members, which can be admin and have permissions**
-
-If member is admin next methods will always return `true`
-
-To check if user has some specific permissions:
-
-on Client: for current user, where "permissions" is string or [string]
-
-	Meteor.app.hasPermission(permissions)
-
-on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or [string]
-
-	Meteor.app.hasPermission(permissions, shop, userId)
-
-in templates:
-
-	{{#if hasShopPermission permissions}}{{/if}}
-
-
-For using shop permissions into some packages you must add it into register directive.
-If we add this package then permissions will be available in Shop Accounts Settings.
-
-	Meteor.app.packages.register
-	 name: 'reaction-commerce-orders'
-	 provides: ['orderManager']
-	 label: 'Orders'
-	 overviewRoute: 'shop/orders'
-	 hasWidget: false
-	 shopPermissions: [
-	   {
-	     label: "Orders"
-	     permission: "dashboard/orders"
-	     group: "Shop Management"
-	   }
-	 ]
-
