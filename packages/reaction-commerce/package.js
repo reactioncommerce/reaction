@@ -10,15 +10,15 @@ Package.on_use(function (api, where) {
   api.use([
     "standard-app-packages",
     "coffeescript",
+    "underscore",
+    "underscore-string-latest",
     "simple-schema",
     "collection-hooks",
     "collection2",
     "roles",
     "less",
-    "underscore-string-latest",
     "handlebars-server",
     "amplify",
-    "underscore",
     "accounts-base"
   ], ["client", "server"]);
 
@@ -63,6 +63,10 @@ Package.on_use(function (api, where) {
 
     "client/less/index.less",
 
+    "client/lib/jquery-ui-1.10.3.custom.css",
+    "client/lib/jquery.collapsible.js",
+    "client/lib/jquery.serialize-hash.coffee",
+
     "client/templates/layout/header/header.html",
     "client/templates/layout/header/header.coffee",
 
@@ -80,6 +84,9 @@ Package.on_use(function (api, where) {
 
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
+
+    "client/templates/layout/errors/errors.html",
+    "client/templates/layout/errors/errors.coffee",
 
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",

@@ -1,4 +1,4 @@
-Meteor.app.packages.register(
+Meteor.app.packages.register
   name: "reaction-google-analytics"
   label: "Google Analytics"
   description: ""
@@ -6,5 +6,10 @@ Meteor.app.packages.register(
   settingsRoute: "googleAnalytics"
   hasWidget: true
   priority: "4"
-)
-
+  shopPermissions: [
+    {
+      label: "Google Analytics"
+      permission: "dashboard/settings"
+      group: "Shop Settings"
+    }
+  ]

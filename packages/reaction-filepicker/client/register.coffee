@@ -7,4 +7,10 @@ Meteor.app.packages.register
   settingsRoute: "filepicker-io"
   hasWidget: false
   priority: "9"
-
+  shopPermissions: [
+    {
+      label: "Ink Filepicker"
+      permission: "dashboard/settings"
+      group: "Shop Settings"
+    }
+  ]

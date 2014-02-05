@@ -10,7 +10,7 @@
 
 <template name="productGridItems">
   <li class="thumbnail product-grid-item" data-id="{{_id}}" id="{{_id}}">
-    <a href="{{pathFor 'shop/product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+    <a href="{{pathFor 'product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
       <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
     </a>
     <div class="overlay">

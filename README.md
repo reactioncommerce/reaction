@@ -194,7 +194,7 @@ If we add this package then permissions will be available in Shop Accounts Setti
 	 shopPermissions: [
 	   {
 	     label: "Orders"
-	     permission: "shop/orders"
+	     permission: "dashboard/orders"
 	     group: "Shop Management"
 	   }
 	 ]

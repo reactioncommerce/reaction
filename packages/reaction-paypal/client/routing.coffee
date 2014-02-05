@@ -1,5 +1,7 @@
 Router.map ->
-  # home page intro screen for reaction-commerce
-  @route 'shop/settings/general/paypal',
+  @route 'paypal',
     controller: ShopAdminController
+    path: 'dashboard/settings/paypal',
     template: 'paypal'
+    waitOn: ->
+      PackagesHandle
