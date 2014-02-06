@@ -1,3 +1,3 @@
-Template.templatesFooter.helpers
+Template.templateFooter.helpers
   allSubscriptionsReady: ->
     DDP._allSubscriptionsReady()
