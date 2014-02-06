@@ -1,12 +1,12 @@
 Meteor.app.packages.register
   name: 'reaction-paypal'
-  depends: []
+  provides: ['paymentMethod']
   label: 'PayPal'
   description: 'Accept PayPal'
   icon: 'fa fa-shopping-cart fa-5x'
   settingsRoute: 'paypal'
-  priority: '3'
-  hasWidget: true
+  priority: '2'
+  hasWidget: false
   shopPermissions: [
     {
       label: "Pay Pal"

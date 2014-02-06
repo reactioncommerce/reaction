@@ -1,20 +1,25 @@
-Meteor.subscribe "ReactionPackages"
-ReactionConfigHandle = Meteor.subscribe("ReactionConfig")
-Meteor.subscribe "UserConfig", Meteor.userId()
-# Read from local storage / cookies
+###
+# Create persistent sessions for users
+# The server returns only one record, so findOne will return that record
+# Stores into client session all data contained in server session
+# supports reactivity when server changes the serverSession
+# Stores the server session id into local storage / cookies
+###
 Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
-  # The server returns only one record, so findOne will return that record
   serverSession = new Meteor.Collection("ReactionSessions").findOne()
-  # Stores into client session all data contained in server session;
-  # supports reactivity when server changes the serverSession
-
   Session.set "serverSession", serverSession
   Session.set "sessionId", serverSession._id
-  # Stores the server session id into local storage / cookies
   amplify.store "reaction.session", serverSession._id
 
+###
+# General Subscriptions
+###
+Meteor.subscribe "ReactionPackages"
 PackagesHandle = @PackagesHandle = Meteor.subscribe("Packages")
+ReactionConfigHandle = Meteor.subscribe "ReactionConfig"
 share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
+
+Meteor.subscribe "UserConfig", Meteor.userId()
 Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
@@ -22,14 +27,12 @@ Meteor.subscribe 'tags'
 Meteor.subscribe 'cart'
 Meteor.subscribe 'shops'
 
-
-####################################################
+###
 #  Reactive current product
 #  This ensures singleton reactive products, without session
-#
 #  set usage: currentProduct.set "product",object
 #  get usage: currentProduct.get "product"
-####################################################
+###
 @currentProduct =
   keys: {}
   deps: {}
@@ -49,10 +52,10 @@ Meteor.subscribe 'shops'
 
 currentProduct = @currentProduct
 
-####################################################
+###
 #  Autorun dependencies
 #  ensure user cart is created, and address located
-####################################################
+###
 Deps.autorun ->
   sessionId = Session.get "sessionId"
   cartSession =
@@ -79,11 +82,10 @@ Deps.autorun ->
     }
     Session.set("address",address)
 
-####################################################
+###
 #  Geolocate Methods
 #  look up user location at startup
-####################################################
-
+###
 Meteor.startup ->
   #Pass the lat/long to google geolocate
   successFunction = (position) ->

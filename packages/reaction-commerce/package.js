@@ -156,11 +156,15 @@ Package.on_use(function (api, where) {
 
     "client/templates/dashboard/shopwelcome/shopwelcome.html",
 
+    "client/templates/dashboard/header/links.html",
+    "client/templates/dashboard/header/links.coffee",
+
     "client/templates/dashboard/customers/customers.html",
     "client/templates/dashboard/customers/customers.coffee",
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
+    "client/templates/dashboard/orders/orders.less",
 
     "client/templates/dashboard/navigation/dashboardSidebar.html",
     "client/templates/dashboard/navigation/dashboardSidebar.less",

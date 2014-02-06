@@ -1,21 +1,6 @@
-# Reaction Shop
+# reaction-commerce
 
-## Products
-
-
-## Orders
-
-
-## Customers
-
-
-## Shipping Methods
-
-
-## Payment Methods
-
-
-## API
+## e-commerce package for reaction and meteor
 
 ---
 
@@ -31,8 +16,20 @@ We are always using latest full release of all packages.
 
 Packages should be able to run independently, whenever possible but many of the core packages will have dependancies on the reaction-commerce package.
 
-At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach an Alpha release, these will be moved to individual package repos and published on the Meteor package manager. Tests will be added when they are moved to their own repos.
+At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach a first point release, these will be moved to individual package repos and published on the Meteor package manager. Tests will be added when they are moved to their own repos.
 
+## Trello 
+For core development team progress tracking please use our [Development Trello board](https://trello.com/b/aGpcYS5e/development)
+
+The board is used as the next task, in any stage, is highest on the list. The workflow moves left to right from planning to release.
+
+*	Planning are tasks we're actively planning and will be worked on
+*	Todo are next in queue, just waiting for someone to grab
+*	In code review means it's been committed but needs some tuning
+*	Doing - active development
+*	Release review - acceptance testing and if all is good, moves to done
+*	Done is archived on every version release
+	
 
 
 ##Dashboard
@@ -120,3 +117,8 @@ If we add this package then permissions will be available in Shop Accounts Setti
 	   }
 	 ]
 
+
+##Helpful templates and helpers
+
+
+	{{>dashboardHeaderLinks}} <!--Unordered list with links to user dashboard links-->

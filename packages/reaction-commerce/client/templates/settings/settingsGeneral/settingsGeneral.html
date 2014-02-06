@@ -166,7 +166,7 @@
               <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.password"}}has-error{{/if}}">
                 {{afFieldLabel 'customEmailSettings.password' class="col-sm-2 col-lg-2 control-label"}}
                 <div class="col-sm-10 controls">
-                  {{afFieldInput 'customEmailSettings.password'}}
+                  {{afFieldInput 'customEmailSettings.password' type="password"}}
                   {{#if afFieldIsInvalid "customEmailSettings.password"}}
                     <span class="help-block">{{afFieldMessage "customEmailSettings.password"}}</span>
                   {{/if}}
