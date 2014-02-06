@@ -1,3 +1,7 @@
+###
+# Conditional template helpers
+# example:  {{#if condition status "eq" ../value}}
+###
 Handlebars.registerHelper "condition", (v1, operator, v2, options) ->
   switch operator
     when "==", "eq"
@@ -50,17 +54,14 @@ usage: {{dateFormat creation_date format="MMMM YYYY"}}
 ###
 Handlebars.registerHelper "dateFormat", (context, block) ->
   if window.moment
-    f = block.hash.format or i18n.t("dateFormat")
-    lang = Meteor.user().profile.settings.locale or i18n.lng()
-    indexOf = lang.indexOf("_")
-    moment.lang (if indexOf is -1 then lang else lang.substr(0, indexOf))
-    moment(new Date(context)).format f
+    f = block.hash.format or "MMM DD, YYYY hh:mm:ss A"
+    return moment(context).format(f) #had to remove Date(context)
   else
-    context #  moment plugin not available. return data as is.
+    return context #  moment plugin not available. return data as is.
+  return
 
 Handlebars.registerHelper "uc", (str) ->
   encodeURIComponent str
-
 
 # *****************************************************
 # general helper for plurization of strings
