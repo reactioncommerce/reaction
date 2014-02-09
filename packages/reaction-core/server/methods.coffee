@@ -327,7 +327,7 @@ Meteor.methods
         future.return(address)
 
     address = future.wait()
-    if address.length
+    if address?.length
       address[0]
     else # default location if nothing found is US
       {

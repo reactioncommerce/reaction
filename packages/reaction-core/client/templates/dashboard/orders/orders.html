@@ -2,43 +2,48 @@
   <div class="container">
     {{!-- Orders List --}}
     <div class="row">
-        <span class="orders-page-title">Orders</span>
+        <span class="orders-page-title h3">Orders</span>
         {{#if isInRole 'admin'}}
         <a id="ordersGridView"> <i class="fa fa-th-large fa-2x pull-right"></i></a>
         <a id="ordersListView"> <i class="fa fa-th-list fa-2x pull-right"></i></a>
         <a href="#" class="add-order-link fa fa-plus fa-2x pull-right"></a>
         {{/if}}
     </div>
-    {{#each fulfillmentWorkflow}}
-    <div class="col-md-3">
-      <div class="panel panel-default">
-        <div class="panel-heading uppercase">{{uc value}}</div>
-        <div class="panel-body">
-          <ul class="list-group orders-list">
-          {{#each orders}}
-            {{#if condition status "eq" ../value}}
-              {{>orderDetail}}
-            {{/if}}
-          {{/each}}
-          </ul>
-        </div>
-        {{/each}}
-      </div>
+    <div class="row">
+      {{#each fulfillmentWorkflow}}
+        {{#if count}}
+          <div class= "col-md-4">
+            <div class="panel panel-default panel-order">
+              <div class="panel-heading h3">{{value}}<span class="badge">{{count}}</span></div>
+                <div class="panel-body">
+                  <ul class="list-group orders-list">
+                  {{#each orders}}
+                    {{#if condition status "eq" ../value}}
+                      {{>orderDetail}}
+                    {{/if}}
+                  {{/each}}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/each}}
     </div>
-
   </div>
 </template>
 
 <template name="orderDetail">
       <li class="list-group-item">
         <div class="row order-profile">
-          {{#with userProfile.profile}}
-          {{#if picture}}
-          <span class="circular-icon" style="background: url({{picture}}) no-repeat center;"></span>
-          {{/if}}
-          <strong>{{name}}</strong>
+          {{#with userProfile.profile userId}}
+            {{#if picture}}
+            <span class="circular-icon" style="background: url({{picture}}) no-repeat center;"></span>
+            {{/if}}
+            <strong>{{name}}</strong>
           {{/with}}
-          placed on {{dateFormat createdAt format="MM-d-YY"}}
+          placed {{orderAge}} on {{dateFormat createdAt format="MMM D"}}
+
         </div>
         <div class="row order-shipping-address">
           {{#with shipping.address}}
@@ -53,17 +58,20 @@
           </div>
           {{/with}}
         </div>
+        <div class="order-items">
           <ul class="list-group">
-          {{#each items}}
-          <li class="list-group-item" data-id="{{variants._id}}">
-            {{#with variants}}
-             <span class="badge badge-danger">{{../quantity}}</span>
-             {{title}}
-            {{/with}}
-          </li>
-          {{/each}}
-        </ul>
+            {{#each items}}
+            <li class="list-group-item" data-id="{{variants._id}}">
+              {{#with variants}}
+               <span class="badge badge-{{badge}}">{{../quantity}}</span>
+               {{title}}
+              {{/with}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
       </li>
+    <br>
 </template>
 
 
