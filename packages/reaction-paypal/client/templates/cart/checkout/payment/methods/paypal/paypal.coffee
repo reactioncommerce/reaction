@@ -4,7 +4,7 @@ getCardType = (number) ->
   re = new RegExp("^(34|37)")
   return "amex"  if number.match(re)?
   re = new RegExp("^5[1-5]")
-  return "masterCard"  if number.match(re)?
+  return "mastercard"  if number.match(re)?
   re = new RegExp("^6011")
   return "discover"  if number.match(re)?
   ""

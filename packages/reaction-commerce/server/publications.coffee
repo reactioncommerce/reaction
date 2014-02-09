@@ -30,12 +30,14 @@ Meteor.publish 'ConfigData', ->
   # should be limited, secure information
   ###
 Meteor.publish "UserProfile", (profileId) ->
-  cursor = Users.find
-    _id: profileId
-  ,
-    fields:
-      profile: 1
-
+  if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
+    cursor = Users.find
+      _id: profileId
+    ,
+      fields:
+        profile: 1
+  else
+    return false
 
 ###
 # Client access rights for ConfigData
