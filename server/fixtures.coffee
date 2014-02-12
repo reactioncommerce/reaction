@@ -53,6 +53,11 @@ share.loadFixtures = ->
           name: "reaction-paypal"
           settings: Meteor.settings.paypal
 
+        Packages.insert
+          shopId: shop._id
+          name: "reaction-mailgun"
+          settings: Meteor.settings.mailgun
+
     unless Accounts.loginServiceConfiguration.find().count()
       if Meteor.settings.public?.facebook?.appId
         Accounts.loginServiceConfiguration.insert
