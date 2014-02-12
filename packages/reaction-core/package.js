@@ -32,12 +32,25 @@ Package.on_use(function (api, where) {
 
   api.add_files([
     "lib/vendor/header_spy.coffee",
+    "lib/vendor/statemachine/state-machine.js",
     "common/collections.coffee",
     "common/hooks.coffee",
   ], ["client", "server"]);
 
   api.add_files([
+    "server/app.coffee",
+    "server/publications.coffee",
+    "server/methods/methods.coffee",
+    "server/methods/cart/methods.coffee",
+    "server/methods/products/methods.coffee",
+    "server/methods/accounts/accounts.coffee",
+    "server/installHeaderSpy.coffee",
+    "server/emailTemplates/shopMemberInvite.handlebars",
+    "server/emailTemplates/shopMemberNotification.handlebars"
+  ], ["server"]);
 
+  api.add_files([
+    "common/workflows/cart/workflow.coffee",
     "lib/vendor/masonry/masonry.pkgd.js",
     "lib/vendor/sparkline/jquery.sparkline.js",
 
@@ -243,21 +256,13 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/attributes/attributes.coffee"
   ], ["client"]);
 
-  api.add_files([
-    "server/app.coffee",
-    "server/methods.coffee",
-    "server/publications.coffee",
-    "server/accounts.coffee",
-    "server/installHeaderSpy.coffee",
-    "server/emailTemplates/shopMemberInvite.handlebars",
-    "server/emailTemplates/shopMemberNotification.handlebars"
-  ], ["server"]);
 
   api.export([
     "PackagesHandle"
   ], ["client"]);
 
   api.export([
+    "CartWorkflow",
     "Packages",
     "PackageConfigSchema",
     "currentProduct",

@@ -7,11 +7,7 @@ Template.checkoutAddressBook.helpers
       return "active"
     unless Session.get("billingUserAddressId")?
       if @.isDefault
-        currentCartId = Cart.findOne()?._id
-        Cart.update currentCartId,
-          $set:
-            "payment.address":@
-        Session.set "billingUserAddressId",@._id
+        # CartWorkflow.paymentAddress(@)
         return "active"
 
   selectedShipping: ->
@@ -19,8 +15,7 @@ Template.checkoutAddressBook.helpers
       return "active"
     unless Session.get("shippingUserAddressId")?
       if @.isDefault
-        currentCartId = Cart.findOne()?._id
-        Cart.update(currentCartId,{$set:{"shipping.address":@}})
+        # CartWorkflow.shipmentAddress(@)
         Session.set "shippingUserAddressId",@._id
         return "active"
 
@@ -36,13 +31,11 @@ Template.checkoutAddressBook.events
     $('#addressForm').html(template)
 
   'click .address-ship-to': (event,template) ->
-    currentCart = Cart.findOne()._id
-    Cart.update(currentCart,{$set:{"shipping.address":@}})
+    CartWorkflow.shipmentAddress(@)
     Session.set("shippingUserAddressId", @._id)
 
   'click .address-bill-to': (event,template) ->
-    currentCart = Cart.findOne()._id
-    Cart.update(currentCart,{$set:{"payment.address":@}})
+    CartWorkflow.paymentAddress(@)
     Session.set("billingUserAddressId", @._id)
 
   'click .address-edit-icon': (event,template) ->

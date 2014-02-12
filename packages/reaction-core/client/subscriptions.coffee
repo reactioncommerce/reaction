@@ -19,12 +19,12 @@ PackagesHandle = @PackagesHandle = Meteor.subscribe("Packages")
 ReactionConfigHandle = Meteor.subscribe "ReactionConfig"
 share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
 
+Meteor.subscribe 'cart'
 Meteor.subscribe "UserConfig", Meteor.userId()
 Meteor.subscribe 'products'
 Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
-Meteor.subscribe 'cart'
 Meteor.subscribe 'shops'
 
 ###
@@ -57,14 +57,14 @@ currentProduct = @currentProduct
 #  ensure user cart is created, and address located
 ###
 Deps.autorun ->
-  sessionId = Session.get "sessionId"
-  cartSession =
-    sessionId: sessionId
-    userId: Meteor.userId()
-  cart = Cart.findOne Session.get "sessionId", Meteor.userId()
-  unless cart?
-    if sessionId?
-      Meteor.call "createCart", cartSession
+  # sessionId = Session.get "sessionId"
+  # cartSession =
+  #   sessionId: sessionId
+  #   userId: Meteor.userId()
+  # cart = Cart.findOne Session.get "sessionId", Meteor.userId()
+  # unless cart?
+  #   if sessionId?
+  #     CartWorkflow.create sessionId, Meteor.userId()
 
   unless Session.get('address')
     #Setting Default because we get here before location calc

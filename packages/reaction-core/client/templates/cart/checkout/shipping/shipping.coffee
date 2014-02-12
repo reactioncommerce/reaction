@@ -21,6 +21,5 @@ Template.checkoutShipping.events
   'click .list-group-item': (event) ->
     $('.checkout-shipping .active').removeClass('active')
     $(event.currentTarget).addClass('active')
-    currentCart = Cart.findOne()._id
-    Cart.update currentCart,{$set:{"shipping.shippingMethod":this}}
-    Session.set "shippingMethod",this
+    CartWorkflow.shipmentMethod(@)
+    Session.set "shippingMethod",@
