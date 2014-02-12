@@ -1,19 +1,27 @@
 Future = Npm.require('fibers/future')
 
-###
+#
 # setting defaults of mail from shop configuration
-###
+#
 setMailUrlForShop = (shop) ->
-  if shop.useCustomEmailSettings
-    sCES = shop.customEmailSettings
-    process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
+  mailgun = Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
+  sCES = null
+  if mailgun and mailgun.settings
+    sCES = mailgun.settings
+  else
+    if shop.useCustomEmailSettings
+      sCES = shop.customEmailSettings
+
+  if sCES
+      process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
 
 Meteor.methods
-  ###
+
+  #
   # this method is to invite new admin users
   # (not consumers) to secure access in the dashboard
   # to permissions as specified in packages/roles
-  ###
+  #
   inviteShopMember: (shopId, email, name) ->
     shop = Shops.findOne shopId
     if shop and email and name
@@ -60,6 +68,21 @@ Meteor.methods
               invitedUserName: name
 
         Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
+
+  #
+  # this method sends an email to consumers on sign up
+  #
+  sendWelcomeEmail: (shop) ->
+    email = Meteor.user().emails[0].address
+    setMailUrlForShop(shop)
+    Email.send
+      to: email
+      from: shop.email
+      subject: "[Reaction] Welcome to " + shop.name + "!"
+      html: Handlebars.templates['memberWelcomeNotification']
+        homepage: Meteor.absoluteUrl()
+        shop: shop
+
 
 
 
