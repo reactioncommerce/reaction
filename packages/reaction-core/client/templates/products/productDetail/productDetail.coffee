@@ -227,6 +227,10 @@ Template.productDetail.events
     event.stopPropagation()
     now = new Date()
     if (currentProduct.get "variant")
+        variant = currentProduct.get "variant"
+        if (variant.inventoryPolicy and variant.inventoryQuantity < 1)
+          throwAlert("Sorry, this item is out of stock")
+          return
         cartSession =
           sessionId: Session.get "sessionId"
           userId: Meteor.userId()
