@@ -6,7 +6,7 @@ Future = Npm.require('fibers/future')
 setMailUrlForShop = (shop) ->
   mailgun = Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
   sCES = null
-  if mailgun
+  if mailgun and mailgun.settings
     sCES = mailgun.settings
   else
     if shop.useCustomEmailSettings
