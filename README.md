@@ -22,7 +22,7 @@ Reaction is a project of [Ongo Works](http://ongoworks.com). We welcome contribu
 * Cross platform, responsive focus - should work well natively, without native apps.
 * Upgrade paths from existing commerce platforms (Magento, Shopify, BigCommerce)
 * Developer friendly. Commercial package and theme development encouraged. Contributors should be rewarded.
-* **reaction-commerce package can used as a package in any meteor environment**
+* reaction-commerce package can be used as a package in any meteor application
 
 
 ###Roadmap:

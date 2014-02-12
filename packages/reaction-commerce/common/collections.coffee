@@ -518,10 +518,14 @@ PaymentSchema = new SimpleSchema
       optional: true
       decimal: true
       min: 0
+    state:
+      type: String
+      optional: true
     createdAt:
       type: Date
     updatedAt:
       type: Date
+
 
 Cart = @Cart # package exports
 

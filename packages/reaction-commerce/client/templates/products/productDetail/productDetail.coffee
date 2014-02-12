@@ -231,7 +231,7 @@ Template.productDetail.events
           sessionId: Session.get "sessionId"
           userId: Meteor.userId()
         quantity = 1
-        Meteor.call "addToCart", cartSession, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
+        CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
         $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         setTimeout (->
           toggleCartDrawer()

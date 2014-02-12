@@ -55,6 +55,9 @@ Template.cartDrawer.rendered = ->
     ]
 
 Template.cartDrawer.events
+  'click #btn-checkout': (event,template) ->
+    CartWorkflow.checkout()
+
   'click .remove-cart-item': (event,template) ->
     event.stopPropagation()
     event.preventDefault()
