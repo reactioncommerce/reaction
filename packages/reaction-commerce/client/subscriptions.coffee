@@ -57,16 +57,7 @@ currentProduct = @currentProduct
 #  ensure user cart is created, and address located
 ###
 Deps.autorun ->
-  # sessionId = Session.get "sessionId"
-  # cartSession =
-  #   sessionId: sessionId
-  #   userId: Meteor.userId()
-  # cart = Cart.findOne Session.get "sessionId", Meteor.userId()
-  # unless cart?
-  #   if sessionId?
-  #     CartWorkflow.create sessionId, Meteor.userId()
-
-  unless Session.get('address')
+  unless (Session.get('address') or Meteor.user()?.profile.addressBook)
     #Setting Default because we get here before location calc
     address = {
       latitude: null,
