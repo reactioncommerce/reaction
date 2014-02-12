@@ -30,14 +30,16 @@
       <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
       </span>
       <div class="variant-progress-item">
+      {{#if inventoryManagement}}
         {{#if inventoryQuantity}}
         <span class="variant-qty badge">{{inventoryQuantity}}</span>
         {{else}}
         <span class="variant-qty-sold-out badge">Sold Out!</span>
         {{/if}}
+      {{/if}}
         <span class="variant-title">{{title}}</span>
         <span class="variant-price pull-right">${{price}}</span>
-       </div>
+      </div>
       {{#if userHasRole "admin"}}
       <div class="variant-edit-tools">
         <span class="variant-edit pull-right">
