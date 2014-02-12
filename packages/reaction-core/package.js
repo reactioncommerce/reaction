@@ -245,6 +245,7 @@ Package.on_use(function (api, where) {
     "server/publications.coffee",
     "server/accounts.coffee",
     "server/installHeaderSpy.coffee",
+    "server/emailTemplates/memberWelcomeNotification.handlebars",
     "server/emailTemplates/shopMemberInvite.handlebars",
     "server/emailTemplates/shopMemberNotification.handlebars"
   ], ["server"]);
