@@ -4,11 +4,19 @@ Future = Npm.require('fibers/future')
 # setting defaults of mail from shop configuration
 #
 setMailUrlForShop = (shop) ->
-  if shop.useCustomEmailSettings
-    sCES = shop.customEmailSettings
-    process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
+  mailgun = Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
+  sCES = null
+  if mailgun
+    sCES = mailgun.settings
+  else
+    if shop.useCustomEmailSettings
+      sCES = shop.customEmailSettings
+
+  if sCES
+      process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
 
 Meteor.methods
+
   #
   # this method is to invite new admin users
   # (not consumers) to secure access in the dashboard
@@ -62,12 +70,27 @@ Meteor.methods
         Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
 
   #
+  # this method sends an email to consumers on sign up
+  #
+  sendWelcomeEmail: (shop) ->
+    email = Meteor.user().emails[0].address
+    setMailUrlForShop(shop)
+    Email.send
+      to: email
+      from: shop.email
+      subject: "[Reaction] Welcome to " + shop.name + "!"
+      html: Handlebars.templates['memberWelcomeNotification']
+        homepage: Meteor.absoluteUrl()
+        shop: shop
+
+  #
   # when we add a new variant, we clone the last one
   #
   cloneVariant: (id, clone) ->
     clone._id = Random.id()
     Products._collection.update({_id:id}, {$push: {variants: clone}})
     clone._id
+
   #
   # update individual variant with new values, merges into original
   # only need to supply updated information
@@ -124,6 +147,7 @@ Meteor.methods
         }
       ]
     })
+
   #
   # update product grid positions
   # position is an object with tag,position,dimensions
@@ -341,3 +365,4 @@ Meteor.methods
         streetNumber: null
         countryCode: "US"
       }
+
