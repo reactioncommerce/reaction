@@ -258,11 +258,11 @@ Package.on_use(function (api, where) {
 
 
   api.export([
-    "PackagesHandle"
+    "PackagesHandle",
+    "CartWorkflow"
   ], ["client"]);
 
   api.export([
-    "CartWorkflow",
     "Packages",
     "PackageConfigSchema",
     "currentProduct",
