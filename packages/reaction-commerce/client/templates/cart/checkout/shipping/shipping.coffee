@@ -9,6 +9,7 @@ Template.checkoutShipping.helpers
           rates.push carrier: value, method: index, label:method.label, value:method.rate
         else #fetch rates
           console.log "Fetching"
+    CartWorkflow.shipmentMethod()
     rates
 
    isSelected: (carrier,method)->
