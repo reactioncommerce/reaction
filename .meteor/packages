@@ -12,7 +12,6 @@ accounts-password
 iron-router
 spin
 videojs
-font-awesome-4
 x-editable-bootstrap3
 reaction-commerce
 reaction-filepicker
@@ -38,3 +37,5 @@ reaction-paypal
 jquery
 jqueryui
 build-fetcher
+
+font-awesome-4-less

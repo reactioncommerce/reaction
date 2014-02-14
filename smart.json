@@ -2,12 +2,8 @@
   "packages": {
     "spin": {},
     "roles": {},
-    "x-editable-bootstrap3": {
-      "git": "https://github.com/ongoworks/meteor-x-editable-bootstrap.git"
-    },
     "iron-router": {},
     "videojs": {},
-    "font-awesome-4": {},
     "bootstrap3-less": {},
     "autoform": {},
     "collection2": {},
@@ -16,6 +12,7 @@
     "handlebars-server": {},
     "headers": {},
     "collection-hooks": {},
-    "jqueryui": {}
+    "jqueryui": {},
+    "font-awesome-4-less": {}
   }
 }
