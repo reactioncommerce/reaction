@@ -20,7 +20,12 @@
         <span class="fa fa-code-fork clone-product overlay-icon pull-left" title="Clone product"></span>
         <span class="fa fa-trash-o delete-product overlay-icon pull-right" title="Delete product"></span>
       {{/if}}
-        <div class="overlay-content">{{title}} ${{variants.[0].price}}</div>
+      <div class="overlay-content">
+          {{#if cart.showItemLowInventoryWarning variants.[0]}}
+          <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
+          {{/if}}
+          {{title}} ${{variants.[0].price}}
+      </div>
     </div>
   </li>
 </template>

@@ -28,7 +28,7 @@ Meteor.app = _.extend(Meteor.app || {},
     usedPackages = _.map Packages.find({shopId: @shopId}).fetch(), (packageConfig) ->
       _.find(Meteor.app.packages, (appPackage) -> packageConfig.name is appPackage.name)
     for usedPackage in usedPackages
-      if usedPackage.shopPermissions
+      if usedPackage?.shopPermissions
         for shopPermission in usedPackage.shopPermissions
           permissions.push shopPermission
 

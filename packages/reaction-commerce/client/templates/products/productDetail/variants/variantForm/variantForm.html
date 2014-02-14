@@ -103,7 +103,8 @@
               <span class="help-block">{{afFieldMessage 'inventoryPolicy'}}</span>
               {{/if}}
           </div>
-          <div class="form-group{{#if afFieldIsInvalid 'lowInventoryWarning'}} has-error{{/if}}">
+
+          <div class="form-group{{#if afFieldIsInvalid 'lowInventoryWarning'}} has-error{{/if}} lowInventoryWarning"{{#unless _doc.inventoryManagement}} style="display:none;"{{/unless}}>
               {{afFieldInput 'lowInventoryWarning'}}
               {{#if afFieldIsInvalid 'lowInventoryWarning'}}
               <span class="help-block">{{afFieldMessage 'lowInventoryWarning'}}</span>
