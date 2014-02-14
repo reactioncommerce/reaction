@@ -126,6 +126,7 @@ ProductPositionSchema = new SimpleSchema
   lowInventoryWarningThreshold:
     type: Number
     label: "Quantity at which to show the warning"
+    min: 0
     optional: true
   inventoryQuantity:
     type: Number
