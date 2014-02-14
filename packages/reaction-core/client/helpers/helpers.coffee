@@ -86,6 +86,11 @@ Handlebars.registerHelper "cart", () ->
             return true
     return false
 
+  showItemLowInventoryWarning: (variant) ->
+    if variant?.lowInventoryWarning and variant?.lowInventoryWarningThreshold
+      if (variant?.inventoryQuantity < variant.lowInventoryWarningThreshold)
+        return true
+    return false
 
 # *****************************************************
 # method to return tag specific product
