@@ -86,10 +86,19 @@ Meteor.methods
             Deps.flush() if result?.insertedId
       else
         return sessionCart
-
+  ###
+  # removes a variant from the cart
+  ###
   removeFromCart: (cartId, variantData) ->
     Cart.update({_id: cartId}, {$pull: {"items": {"variants": variantData} } })
 
+  ###
+  # adjust inventory when an order is placed
+  ###
+  inventoryAdjust: (orderId) ->
+    order = Orders.findOne( {_id: orderId} )
+    for product in order.items
+      Products.update {_id: product._id,"variants._id": product.variants._id}, {$inc: {"variants.$.inventoryQuantity": -product.quantity }}
   ###
   # when a payment is processed we want to copy the cart
   # over to an order object, and give the user a new empty
