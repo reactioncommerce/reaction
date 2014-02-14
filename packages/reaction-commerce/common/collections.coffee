@@ -120,6 +120,13 @@ ProductPositionSchema = new SimpleSchema
   inventoryPolicy:
     type: Boolean
     label: "Deny when out of stock"
+  lowInventoryWarning:
+    type: Boolean
+    label: "Show Low Inventory Warning"
+  lowInventoryWarningThreshold:
+    type: Number
+    label: "Quantity at which to show the warning"
+    optional: true
   inventoryQuantity:
     type: Number
     label: "Quantity"

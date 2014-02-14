@@ -40,5 +40,8 @@ Template.variantForm.helpers
 Template.variantForm.events
   "submit form": (event,template) ->
     currentProduct.changed "product"
-  # "change input": (event, template) ->
-  #   $("#"+this._formID+" button").trigger("click")
+  "change input[name='lowInventoryWarning']": (event,template) ->
+    event.stopPropagation()
+    if !$( event.currentTarget ).is(':checked')
+        $( '#' + @._formID ).find( 'input[name="lowInventoryWarningThreshold"]' ).val(0)
+    $( '#' + @._formID ).find( '.lowInventoryWarningThreshold' ).slideToggle()

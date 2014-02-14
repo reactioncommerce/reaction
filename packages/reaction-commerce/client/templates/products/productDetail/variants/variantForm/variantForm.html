@@ -103,6 +103,21 @@
               <span class="help-block">{{afFieldMessage 'inventoryPolicy'}}</span>
               {{/if}}
           </div>
+          <div class="form-group{{#if afFieldIsInvalid 'lowInventoryWarning'}} has-error{{/if}}">
+              {{afFieldInput 'lowInventoryWarning'}}
+              {{#if afFieldIsInvalid 'lowInventoryWarning'}}
+              <span class="help-block">{{afFieldMessage 'lowInventoryWarning'}}</span>
+              {{/if}}
+          </div>
+
+          <div class="form-group{{#if afFieldIsInvalid 'lowInventoryWarningThreshold'}} has-error{{/if}} lowInventoryWarningThreshold"{{#unless _doc.lowInventoryWarning}} style="display:none;"{{/unless}}>
+            {{afFieldLabel 'lowInventoryWarningThreshold'}}
+            {{afFieldInput 'lowInventoryWarningThreshold'}}
+            {{#if afFieldIsInvalid 'lowInventoryWarningThreshold' placeholder=0}}
+            <span class="help-block">{{afFieldMessage 'lowInventoryWarningThreshold'}}</span>
+            {{/if}}
+          </div>
+
           <div class="form-group{{#if afFieldIsInvalid 'taxable'}} has-error{{/if}}">
               {{afFieldInput 'taxable'  default="true"}}
               {{#if afFieldIsInvalid 'taxable'}}
