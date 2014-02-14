@@ -77,15 +77,28 @@ Handlebars.registerHelper "cart", () ->
     Session.set "cartTotal", subtotal
     subtotal
 
+  # return true if there is an issue with the user's cart and we should display the warning icon
+  showCartIconWarning: ->
+    if @.showLowInventoryWarning()
+        return true
+    return false
+
+  # return true if any item in the user's cart has a low inventory warning
   showLowInventoryWarning: ->
     storedCart = Cart.findOne()
     if storedCart?.items
       for item in storedCart?.items
-        if item.variants?.lowInventoryWarning and item.variants?.lowInventoryWarningThreshold
+        if item.variants?.inventoryPolicy and item.variants?.lowInventoryWarning and item.variants?.lowInventoryWarningThreshold
           if (item.variants?.inventoryQuantity < item.variants.lowInventoryWarningThreshold)
             return true
     return false
 
+  # return true if item variant has a low inventory warning
+  showItemLowInventoryWarning: (variant) ->
+    if variant?.inventoryPolicy and variant?.lowInventoryWarning and variant?.lowInventoryWarningThreshold
+      if (variant?.inventoryQuantity < variant.lowInventoryWarningThreshold)
+        return true
+    return false
 
 # *****************************************************
 # method to return tag specific product
