@@ -1,8 +1,11 @@
 <template name="cartIcon">
   <div class="cart-icon">
     <a href="#">
-    <img src="../../../shopping-bag.svg" height="25" width="25">
-  </a>
-  <div class="badge">{{cart.cartCount}}</div>
+      <img src="../../../shopping-bag.svg" height="25" width="25">
+    </a>
+    {{#if cart.showLowInventoryWarning}}
+    <div class="badge warning">!</div>
+    {{/if}}
+    <div class="badge">{{cart.cartCount}}</div>
   </div>
 </template>
