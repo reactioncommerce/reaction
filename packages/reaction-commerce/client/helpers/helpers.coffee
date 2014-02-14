@@ -82,7 +82,7 @@ Handlebars.registerHelper "cart", () ->
     if storedCart?.items
       for item in storedCart?.items
         if item.variants?.lowInventoryWarning and item.variants?.lowInventoryWarningThreshold
-          if (item.variants.inventoryQuantity < item.variants.lowInventoryWarningThreshold)
+          if (item.variants?.inventoryQuantity < item.variants.lowInventoryWarningThreshold)
             return true
     return false
 
