@@ -10,7 +10,7 @@
       </div>
     </a>
     <div class="cart-labels">
-      {{#if cartItem.showLowInventoryWarning variants}}
+      {{#if cart.showItemLowInventoryWarning variants}}
       <div class="badge warning" title="This item is almost out of stock!">!</div>
       {{/if}}
       <span class="badge">{{quantity}}</span>
