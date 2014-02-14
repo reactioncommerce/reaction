@@ -7,7 +7,7 @@ Template.checkoutAddressBook.helpers
       return "active"
     unless Session.get("billingUserAddressId")?
       if @.isDefault
-        # CartWorkflow.paymentAddress(@)
+        CartWorkflow.paymentAddress(@)
         return "active"
 
   selectedShipping: ->
@@ -15,7 +15,7 @@ Template.checkoutAddressBook.helpers
       return "active"
     unless Session.get("shippingUserAddressId")?
       if @.isDefault
-        # CartWorkflow.shipmentAddress(@)
+        CartWorkflow.shipmentAddress(@)
         Session.set "shippingUserAddressId",@._id
         return "active"
 
