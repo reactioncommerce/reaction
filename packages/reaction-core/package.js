@@ -19,14 +19,20 @@ Package.on_use(function (api, where) {
     "less",
     "handlebars-server",
     "amplify",
+    "headers",
     "accounts-base"
   ], ["client", "server"]);
 
   api.use([
     "autoform",
     "bootstrap3-less",
+    "font-awesome-4-less",
     "iron-router",
     "pnotify-bootstrap-3-less",
+    "jqueryui",
+    "jquery-cookie",
+    "videojs",
+    "moment",
     "spin"
   ], ["client"]);
 
