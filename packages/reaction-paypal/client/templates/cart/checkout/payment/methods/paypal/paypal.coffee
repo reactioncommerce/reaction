@@ -84,9 +84,8 @@ Template.paypalPaymentForm.events
           formattedError = "Oops! " + errors.issue + ": " + errors.field.split(/[. ]+/).pop().replace(/_/g,' ')
           paymentAlert(formattedError)
       else
-        # card errors are returned in transaction
-        if transaction.saved is true
-          # Update Cart and clone to an order
+        if transaction.saved is true #successful transaction
+          # Format the transaction to store with order and submit to CartWorkflow
           paymentMethod =
               processor: "Paypal"
               storedCard: storedCard
@@ -96,27 +95,13 @@ Template.paypalPaymentForm.events
               mode: transaction.payment.intent
               createdAt: new Date(transaction.payment.create_time)
               updatedAt: new Date(transaction.payment.update_time)
-          Cart.update Cart.findOne()._id,
-            {$set:{"payment.paymentMethod":[paymentMethod]}}
-            , (error, result) ->
-              if error
-                console.log "error update payment method to cart"+error
-                console.log Cart.simpleSchema().namedContext().invalidKeys()
-              else
-                Meteor.call "copyCartToOrder",Cart.findOne(), (error, result) ->
-                  if error
-                    console.log "An error occurred saving the order. : "+error
-                  else
-                    $("#paypal-payment-form .btn").removeClass("spin").addClass("btn-info").text("Success! Order Completed")
-                    #go to order success
-                    Router.go "cartCompleted",
-                      _id: result
-                    #clear cart related sessions
-                    delete Session.keys["billingUserAddressId"]
-                    delete Session.keys["shippingUserAddressId"]
-                    delete Session.keys["shippingMethod"]
-                    Deps.flush()
-        else
+          #update UI while we store the payment and order
+          $("#paypal-payment-form .btn").removeClass("spin").addClass("btn-info").text("Success! Order Completed")
+          # Store transaction information with order
+          CartWorkflow.paymentMethod(paymentMethod)
+          # CartWorkflow.paymentAuth() will create order, clear the cart, and update inventory, goto order confirmation page
+
+        else # card errors are returned in transaction
           for errors in transaction.error.response.details
             formattedError = "Oops! " + errors.issue + ": " + errors.field.split(/[. ]+/).pop().replace(/_/g,' ')
             paymentAlert(formattedError)

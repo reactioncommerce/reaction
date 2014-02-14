@@ -32,9 +32,10 @@ CartWorkflow = StateMachine.create(
     { name: "fetchShipmentMethods", from: "shipmentAddress", to: "shipmentMethods" }
     { name: "shipmentMethod", from: ["fetchShipmentMethods","payment"], to: "payment" }
     { name: "payment", from :["shipmentAddress","billingAddress","shipmentMethod"], to: "paymentAuth" }
-    { name: "paymentAuth", from: "payment", to: "inventoryAdjust"}
-    { name: "inventoryAdjust", from: "paymentAuth", to: "orderCreate"}
-    { name: "orderCreate", from: "inventoryAdjust"  }
+    { name: "paymentMethod", from: "payment", to: "paymentAuth"}
+    { name: "paymentAuth", from: "paymentMethod", to: "inventoryAdjust"}
+    { name: "inventoryAdjust", from: "paymentAuth", to: "orderCreated"}
+    { name: "orderCreated", from: "inventoryAdjust"  }
   ],
   callbacks: {
     onenterstate: (event, from, to) ->
@@ -69,5 +70,26 @@ CartWorkflow = StateMachine.create(
 
     onshipmentMethod: (event, from, to, method) ->
       Cart.update Cart.findOne()._id, {$set:{"shipping.shippingMethod":method}} if method
+
+    onpaymentMethod: (event, from, to, paymentMethod) ->
+      Cart.update Cart.findOne()._id, {$set:{"payment.paymentMethod":[paymentMethod]}}
+
+    onpaymentAuth: (event, from, to) ->
+      Meteor.call "copyCartToOrder", Cart.findOne(), (error, result) ->
+        if error
+          console.log "An error occurred saving the order. : " +error
+        else #go to order success
+          CartWorkflow.inventoryAdjust(result)
+
+    oninventoryAdjust: (event, from, to, orderId) ->
+      Meteor.call "inventoryAdjust", orderId
+      # @.orderCreated(orderId)
+
+    onorderCreated: (event,from,to, orderId) ->
+      #clear cart related sessions
+      delete Session.keys["billingUserAddressId"]
+      delete Session.keys["shippingUserAddressId"]
+      delete Session.keys["shippingMethod"]
+      Router.go "cartCompleted", _id: orderId
   }
 )
