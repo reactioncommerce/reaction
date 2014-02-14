@@ -77,6 +77,15 @@ Handlebars.registerHelper "cart", () ->
     Session.set "cartTotal", subtotal
     subtotal
 
+  showLowInventoryWarning: ->
+    storedCart = Cart.findOne()
+    if storedCart?.items
+      for item in storedCart?.items
+        if item.variants?.lowInventoryWarning and item.variants?.lowInventoryWarningThreshold
+          if (item.variants.inventoryQuantity < item.variants.lowInventoryWarningThreshold)
+            return true
+    return false
+
 
 # *****************************************************
 # method to return tag specific product
