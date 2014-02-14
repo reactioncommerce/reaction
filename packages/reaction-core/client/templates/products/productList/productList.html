@@ -28,6 +28,9 @@
           </td>
           <td>
             <a href="{{pathFor 'product'}}">{{title}}</a>
+            {{#if cart.showItemLowInventoryWarning variants.[0]}}
+            <div class="badge badge-low-inv-warning">{{variants.[0].inventoryQuantity}} Left!</div?
+            {{/if}}
           </td>
           <td>{{{description}}}</td>
         </tr>

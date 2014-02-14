@@ -11,7 +11,7 @@
     </a>
     <div class="cart-labels">
       {{#if cart.showItemLowInventoryWarning variants}}
-      <div class="badge warning" title="This item is almost out of stock!">!</div>
+      <div class="badge badge-low-inv-warning" title="{{variants.inventoryQuantity}} Left!">!</div>
       {{/if}}
       <span class="badge">{{quantity}}</span>
       <span>{{variants.title}}</span>
