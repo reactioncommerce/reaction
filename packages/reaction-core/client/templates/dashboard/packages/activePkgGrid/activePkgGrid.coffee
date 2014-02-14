@@ -4,7 +4,7 @@ Template.activePkgGrid.helpers
     existingPackages = Packages.find().fetch()
     for packageConfig in existingPackages
       packageInfo = Meteor.app.packages[packageConfig.name]
-      if packageInfo.hasWidget
+      if packageInfo?.hasWidget
         packageConfigs.push(_.extend(packageConfig, packageInfo))
     packageConfigs
   hasPackages: ->
