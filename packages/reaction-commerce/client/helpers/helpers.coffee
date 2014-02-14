@@ -71,7 +71,7 @@ Handlebars.registerHelper "cart", () ->
     storedCart = Cart.findOne()
     subtotal = 0
     ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
-    shipping = parseFloat storedCart?.shipping?.value
+    shipping = parseFloat storedCart?.shipping?.shippingMethod?.value
     subtotal = (subtotal + shipping) unless isNaN(shipping)
     subtotal = subtotal.toFixed(2)
     Session.set "cartTotal", subtotal
