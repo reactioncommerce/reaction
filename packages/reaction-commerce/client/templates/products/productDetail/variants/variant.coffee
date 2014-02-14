@@ -1,11 +1,18 @@
 Template.variant.helpers
+
   progressBar: () ->
     if @.inventoryPercentage <= 10 then "progress-bar-danger"
     else if @.inventoryPercentage <= 30 then "progress-bar-warning"
     else "progress-bar-success"
+
   selectedVariant: () ->
     if @._id is (currentProduct.get "variant")?._id
       return "variant-detail-selected"
+
+  isSoldOut: () ->
+      if @.inventoryQuantity < 1
+          return true
+      return false
 
 Template.variant.events
   "click .remove-variant": (event, template) ->
