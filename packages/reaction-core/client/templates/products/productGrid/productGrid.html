@@ -10,6 +10,9 @@
 
 <template name="productGridItems">
   <li class="thumbnail product-grid-item" data-id="{{_id}}" id="{{_id}}">
+    {{#if cart.showItemLowInventoryWarning variants.[0]}}
+    <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
+    {{/if}}
     <a href="{{pathFor 'product'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
       <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
     </a>
@@ -21,9 +24,6 @@
         <span class="fa fa-trash-o delete-product overlay-icon pull-right" title="Delete product"></span>
       {{/if}}
       <div class="overlay-content">
-          {{#if cart.showItemLowInventoryWarning variants.[0]}}
-          <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
-          {{/if}}
           {{title}} ${{variants.[0].price}}
       </div>
     </div>

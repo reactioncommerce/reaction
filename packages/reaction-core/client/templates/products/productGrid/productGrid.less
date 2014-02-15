@@ -52,12 +52,19 @@
   column-gap: 1.875em; /* 30px */
   column-fill: auto;
 }
-.product-grid-item
-{
+
+.product-grid-item {
+  position:relative;
   margin-bottom: 1.875em; /* 15px 30px */
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
   column-break-inside: avoid;
+
+  .badge {
+    position:absolute;
+    top:10px;
+    right:10px;
+  }
 }
 
 @media only screen and (max-width: 40em )
