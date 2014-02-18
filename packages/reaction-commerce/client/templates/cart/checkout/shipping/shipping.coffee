@@ -13,9 +13,9 @@ Template.checkoutShipping.helpers
     rates
 
    isSelected: (carrier,method)->
-    currentShipping = Cart.findOne()?.shipping?.shippingMethod
+    currentShipping = Cart.findOne()?.shipping?.shipmentMethod
     if (currentShipping?.carrier is this.carrier) and (currentShipping?.method is this.method)
-      Session.set "shippingMethod",this
+      Session.set "shipmentMethod",this
       return "active"
 
 Template.checkoutShipping.events
@@ -23,4 +23,4 @@ Template.checkoutShipping.events
     $('.checkout-shipping .active').removeClass('active')
     $(event.currentTarget).addClass('active')
     CartWorkflow.shipmentMethod(@)
-    Session.set "shippingMethod",@
+    Session.set "shipmentMethod",@

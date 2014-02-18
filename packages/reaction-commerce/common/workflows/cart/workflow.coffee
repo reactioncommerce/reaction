@@ -69,7 +69,7 @@ CartWorkflow = StateMachine.create(
       #we could get rates here
 
     onshipmentMethod: (event, from, to, method) ->
-      Cart.update Cart.findOne()._id, {$set:{"shipping.shippingMethod":method}} if method
+      Cart.update Cart.findOne()._id, {$set:{"shipping.shipmentMethod":method}} if method
 
     onpaymentMethod: (event, from, to, paymentMethod) ->
       Cart.update Cart.findOne()._id, {$set:{"payment.paymentMethod":[paymentMethod]}}
@@ -89,7 +89,7 @@ CartWorkflow = StateMachine.create(
       #clear cart related sessions
       delete Session.keys["billingUserAddressId"]
       delete Session.keys["shippingUserAddressId"]
-      delete Session.keys["shippingMethod"]
+      delete Session.keys["shipmentMethod"]
       Router.go "cartCompleted", _id: orderId
   }
 )

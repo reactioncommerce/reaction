@@ -116,6 +116,7 @@ Meteor.methods
     cart.createdAt = now
     cart.updatedAt = now
     cart._id = Random.id()
+    cart.state = "orderCreated"
     cart.status = "new"
 
     order = Orders.insert(cart,

@@ -40,7 +40,7 @@ Package.on_use(function (api, where) {
     "lib/vendor/header_spy.coffee",
     "lib/vendor/statemachine/state-machine.js",
     "common/collections.coffee",
-    "common/hooks.coffee",
+    "common/hooks.coffee"
   ], ["client", "server"]);
 
   api.add_files([
@@ -48,6 +48,7 @@ Package.on_use(function (api, where) {
     "server/publications.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
+    "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
     "server/methods/accounts/accounts.coffee",
     "server/installHeaderSpy.coffee",
@@ -57,6 +58,8 @@ Package.on_use(function (api, where) {
 
   api.add_files([
     "common/workflows/cart/workflow.coffee",
+    "common/workflows/orders/workflow.coffee",
+
     "lib/vendor/masonry/masonry.pkgd.js",
     "lib/vendor/sparkline/jquery.sparkline.js",
 
@@ -265,7 +268,9 @@ Package.on_use(function (api, where) {
 
   api.export([
     "PackagesHandle",
-    "CartWorkflow"
+    "CartWorkflow",
+    "OrderWorkflow",
+    "OrderWorkflowEvents"
   ], ["client"]);
 
   api.export([
