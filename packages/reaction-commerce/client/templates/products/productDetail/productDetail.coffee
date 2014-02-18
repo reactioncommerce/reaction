@@ -237,9 +237,6 @@ Template.productDetail.events
     event.stopPropagation()
     now = new Date()
 
-    #console.log currentProduct.get "variant"
-    #return
-
     if (currentProduct.get "variant")
         variant = currentProduct.get "variant"
 
@@ -265,6 +262,7 @@ Template.productDetail.events
 
         CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
         $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
+        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
         setTimeout (->
           toggleCartDrawer()
         ), 500
