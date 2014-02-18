@@ -443,11 +443,14 @@ CartItemSchema = new SimpleSchema
     type: ProductVariantSchema
 
 
-ShipQuoteSchema = new SimpleSchema
+ShipmentQuoteSchema = new SimpleSchema
   carrier:
     type: Number
   method:
     type: Number
+  tracking:
+    type: String
+    optional: true
   label:
     type: String
     optional: true
@@ -455,12 +458,13 @@ ShipQuoteSchema = new SimpleSchema
     type: String
     optional: true
 
-ShippingSchema = new SimpleSchema
+
+ShipmentSchema = new SimpleSchema
   address:
     type: AddressSchema
     optional: true
-  shippingMethod:
-    type: ShipQuoteSchema
+  shipmentMethod:
+    type: ShipmentQuoteSchema
     optional: true
 
 @PaymentMethodSchema = new SimpleSchema
@@ -515,7 +519,7 @@ PaymentSchema = new SimpleSchema
       type: Boolean
       optional: true
     shipping:
-      type: ShippingSchema
+      type: ShipmentSchema
       optional:true
     payment:
       type: PaymentSchema

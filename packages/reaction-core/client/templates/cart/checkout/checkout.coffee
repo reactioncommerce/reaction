@@ -16,7 +16,7 @@ Template.cartCheckout.helpers
     status
 
   shippingOptionStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
+    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
       status = "checkout-step-badge-completed"
     else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
       status = "checkout-step-badge"
@@ -25,7 +25,7 @@ Template.cartCheckout.helpers
     status
 
   checkoutReviewStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
+    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
       status = true
     status
 

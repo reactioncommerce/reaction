@@ -17,15 +17,15 @@ Template.checkoutProgressBar.helpers
     status
 
   shippingOptionStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
+    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
       status = "previous visited"
     else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
       status = "active"
     status
 
   paymentStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod") and Session.get("paymentMethod"))
+    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod") and Session.get("paymentMethod"))
       status = "previous visited"
-    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shippingMethod"))
+    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
       status = "active"
     status

@@ -11,14 +11,13 @@
     </div>
     <div class="row">
       {{#each fulfillmentWorkflow}}
-        {{#if count}}
           <div class= "col-md-4">
             <div class="panel panel-default panel-order">
-              <div class="panel-heading h3">{{value}}<span class="badge">{{count}}</span></div>
+              <div class="panel-heading h3">{{label}}<span class="badge">{{count}}</span></div>
                 <div class="panel-body">
                   <ul class="list-group orders-list">
                   {{#each orders}}
-                    {{#if condition status "eq" ../value}}
+                    {{#if condition state "eq" ../value}}
                       {{>orderDetail}}
                     {{/if}}
                   {{/each}}
@@ -27,14 +26,13 @@
               </div>
             </div>
           </div>
-        {{/if}}
       {{/each}}
     </div>
   </div>
 </template>
 
 <template name="orderDetail">
-      <li class="list-group-item">
+      <li class="list-group-item order-detail">
         <div class="row order-profile">
           {{#with userProfile.profile userId}}
             {{#if picture}}
@@ -70,10 +68,45 @@
             {{/each}}
           </ul>
         </div>
+        {{#unless shipmentTracking}}
+          {{>orderTracking}}
+        {{else}}
+          Tracking: <a href="#">{{shipmentTracking}}</a>
+          {{>shipmentLabel}}
+          {{>packingSlip}}
+        {{/unless}}
+
       </li>
     <br>
 </template>
 
+<template name="orderTracking">
+  <form class="form-inline text-right" role="form">
+    <div class="form-group">
+      <label class="sr-only" for="input-tracking-code">Tracking Code</label>
+      <input type="text" class="form-control" name="input-tracking-code">
+    </div>
+    <button type="submit" class="btn btn-info add-order-tracking">Add Tracking</button>
+  </form>
+
+</template>
+
+<template name="shipmentLabel">
+<div class="pull-right">
+  {{#if isInRole 'admin'}}
+    <a href="#" class="order-print-shipment-label">Print Label</a>
+  {{/if}}
+</div>
+</template>
+
+<template name="packingSlip">
+<div class="pull-right">
+  {{#if isInRole 'admin'}}
+    <a href="#" class="order-print-packing-invoice">Print Packing</a>
+  {{/if}}
+</div>
+
+</template>
 
 <template name ="orderSocial">
   <div class="social pull-right">

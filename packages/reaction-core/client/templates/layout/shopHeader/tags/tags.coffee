@@ -24,13 +24,13 @@ Template.tags.rendered = ->
   )
 
 Template.tags.events
-  "click .shop-tag-add-form-toggle-link": (e, template) ->
+  "click .shop-tag-add-form-toggle-link": (event, template) ->
     $(".shop-tag-add-form-toggle-link").hide()
     $(".shop-tag-add-form").show().find("input").first().focus()
-  "submit .shop-tag-add-form": (e, template) ->
-    e.preventDefault()
+  "submit .shop-tag-add-form": (event, template) ->
+    event.preventDefault()
     currentTagId = @_id
-    $form = $(e.target)
+    $form = $(event.target)
     newTag = $form.serializeHash()
     newTag.slug = _.slugify(newTag.name)
     existingTag = Tags.findOne({slug: newTag.slug})
@@ -54,9 +54,9 @@ Template.tags.events
               Tags.update(currentTagId, {$addToSet: {relatedTagIds: newTagId}})
       )
     $form.get(0).reset()
-  "submit .current-shop-tag-edit-form": (e, template) ->
-      e.preventDefault()
-      $form = $(e.target)
+  "submit .current-shop-tag-edit-form": (event, template) ->
+      event.preventDefault()
+      $form = $(event.target)
       $set = $form.serializeHash()
       $set.slug = _.slugify($set.name)
       $set.updatedAt = new Date()
@@ -66,25 +66,25 @@ Template.tags.events
       ,
         (error, newTagId) ->
       )
-  "click .shop-tag-add-form .cancel-button": (e, template) ->
-    e.preventDefault()
-    $form = $(e.target).closest("form")
+  "click .shop-tag-add-form .cancel-button": (event, template) ->
+    event.preventDefault()
+    $form = $(event.target).closest("form")
     $form.hide().get(0).reset()
     $(".shop-tag-add-form-toggle-link").show()
-  "click .current-shop-tag-edit-form .cancel-button": (e, template) ->
-    e.preventDefault()
-    $form = $(e.target).closest("form")
+  "click .current-shop-tag-edit-form .cancel-button": (event, template) ->
+    event.preventDefault()
+    $form = $(event.target).closest("form")
     $form.hide().find("input[name='name']").val(@name)
     $(".current-shop-tag-content").show()
-  "click .current-shop-tag .edit-link": (e, template) ->
+  "click .current-shop-tag .edit-link": (event, template) ->
     $(".current-shop-tag-content").hide()
     $(".current-shop-tag-edit-form").show().find("input").first().focus()
-  "click .current-shop-tag .remove-link": (e, template) ->
-    $link = $(e.target)
+  "click .current-shop-tag .remove-link": (event, template) ->
+    $link = $(event.target)
     if confirm($link.data("confirm"))
       Tags.remove(@_id)
       Router.go("index")
-  "click .shop-tag-reorder-start-link": (e, template) ->
+  "click .shop-tag-reorder-start-link": (event, template) ->
     $(template.find(".shop-tags")).sortable(
       axis: "x"
       containment: "parent"
@@ -93,7 +93,7 @@ Template.tags.events
     )
     $(template.find(".shop-tag-reorder-start-link")).hide()
     $(template.find(".shop-tag-reorder-stop-link")).show()
-  "click .shop-tag-reorder-stop-link": (e, template) ->
+  "click .shop-tag-reorder-stop-link": (event, template) ->
     relatedTagIds = []
     $shopTags = $(template.find(".shop-tags"))
     $shopTags.find("li").each (index, element) ->
