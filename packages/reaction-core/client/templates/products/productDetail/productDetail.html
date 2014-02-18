@@ -86,8 +86,24 @@
       <!-- Variants -->
       <div class="row col-md-10 col-offset-md-4 options-add-to-cart">
         {{>variantList}}
+
         <!--  Add to cart -->
-        <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to cart</div>
+        {{#autoForm schema=quantityFormSchema doc=data name='addToCart'}}
+        <div class="col-xs-4 col-offset-xs-4 col-sm-4 col-offset-sm-4 col-md-4 col-offset-md-4">
+          <fieldset class="addToCartQty">
+            <div class="form-group{{#if afFieldIsInvalid 'addToCartQty'}} has-error{{/if}}">
+              {{afFieldLabel "addToCartQty"}}
+              {{afFieldInput "addToCartQty" value=1}}
+              {{#if afFieldIsInvalid "addToCartQty"}}
+              <span class="help-block">{{afFieldMessage "addToCartQty"}}</span>
+              {{/if}}
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-xs-8 col-offset-xs-1 col-sm-8 col-offset-sm-1 col-md-8 col-offset-md-1">
+          <div class="btn btn-primary btn-lg btn-block col-md-8" id="add-to-cart">Add to cart</div>
+        </div>
+        {{/autoForm}}
       </div>
       <!-- END Right Side -->
   </div>
