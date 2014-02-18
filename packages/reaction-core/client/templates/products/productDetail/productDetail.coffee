@@ -2,6 +2,16 @@
 # helper methods for productDetail
 # *****************************************************
 Template.productDetail.helpers
+  quantityFormSchema: ->
+    QuantitySchema = new SimpleSchema
+      addToCartQty:
+        label: "Quantity:"
+        type: Number
+        min: 1
+    qtySchema = new AutoForm QuantitySchema
+    qtySchema
+  data: ->
+    @
   tags: ->
     product = (currentProduct.get "product")
     if product.tagIds
@@ -226,17 +236,33 @@ Template.productDetail.events
     event.preventDefault()
     event.stopPropagation()
     now = new Date()
+
     if (currentProduct.get "variant")
         variant = currentProduct.get "variant"
+
+        # If variant has inv policy and is out of stock, show warning and deny add to cart
         if (variant.inventoryPolicy and variant.inventoryQuantity < 1)
-          throwAlert("Sorry, this item is out of stock")
+          throwAlert("Sorry, this item is out of stock!")
           return
+
         cartSession =
           sessionId: Session.get "sessionId"
           userId: Meteor.userId()
-        quantity = 1
-        CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, (currentProduct.get "variant"), quantity
+
+        # Get desired variant qty from form
+        quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
+        if quantity < 1
+            quantity = 1
+
+        # If variant has inventory policy and desired qty is greater than inv, show warning and set qty to max inv
+        if variant.inventoryPolicy and quantity > variant.inventoryQuantity
+          $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
+          throwAlert("Sorry, we only have " + variant.inventoryQuantity + " left in stock!")
+          return
+
+        CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
         $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
+        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
         setTimeout (->
           toggleCartDrawer()
         ), 500

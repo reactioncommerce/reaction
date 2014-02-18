@@ -42,7 +42,9 @@ Template.variantForm.events
     currentProduct.changed "product"
   "change input[name='inventoryManagement']": (event,template) ->
     event.stopPropagation()
-    $( '#' + @._formID ).find( '.lowInventoryWarning' ).slideToggle()
+    if !$( event.currentTarget ).is(':checked')
+        $( '#' + @._formID ).find( 'input[name=inventoryPolicy]' ).attr("checked",false)
+    $( '#' + @._formID ).find( '.inventoryPolicy, .lowInventoryWarning' ).slideToggle()
   "change input[name='lowInventoryWarning']": (event,template) ->
     event.stopPropagation()
     if !$( event.currentTarget ).is(':checked')
