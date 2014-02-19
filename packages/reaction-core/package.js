@@ -188,6 +188,22 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/orders/orders.coffee",
     "client/templates/dashboard/orders/orders.less",
 
+    "client/templates/dashboard/orders/details/detail.html",
+    "client/templates/dashboard/orders/details/detail.coffee",
+    "client/templates/dashboard/orders/details/detail.less",
+
+    "client/templates/dashboard/orders/tracking/tracking.html",
+    "client/templates/dashboard/orders/tracking/tracking.coffee",
+    "client/templates/dashboard/orders/tracking/tracking.less",
+
+    "client/templates/dashboard/orders/social/orderSocial.html",
+    "client/templates/dashboard/orders/social/orderSocial.coffee",
+    "client/templates/dashboard/orders/social/orderSocial.less",
+
+    "client/templates/dashboard/orders/labels/orderLabels.html",
+    "client/templates/dashboard/orders/labels/orderLabels.coffee",
+    "client/templates/dashboard/orders/labels/orderLabels.less",
+
     "client/templates/dashboard/navigation/dashboardSidebar.html",
     "client/templates/dashboard/navigation/dashboardSidebar.less",
     "client/templates/dashboard/navigation/dashboardSidebar.coffee",

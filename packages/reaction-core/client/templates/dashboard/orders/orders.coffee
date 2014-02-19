@@ -15,27 +15,3 @@ Template.orders.helpers
             if count is 0 then displayNext = false
             fulfillmentWorkflow.push {index: index, count:count,value:value,label: events.label}
     fulfillmentWorkflow
-
-Template.orderDetail.helpers
-  userProfile: () ->
-    userId =  @.userId
-    Meteor.subscribe "UserProfile",userId
-    Users.findOne userId
-
-  orderAge: () ->
-    moment(@.createdAt).fromNow()
-
-  shipmentTracking: ->
-    @.shipping.shipmentMethod.tracking
-
-
-Template.orderTracking.events
-  "submit": (event,template) ->
-    event.preventDefault()
-    tracking =  $(event.target).find("[name=input-tracking-code]").val()
-    #transition order to next workflow
-    currentState = Orders.findOne(@._id).state
-    OrderWorkflow.current = currentState
-    OrderWorkflow[currentState](@,tracking)
-    #save tracking
-    OrderWorkflow.shipmentTracking @, tracking
