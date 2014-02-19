@@ -1,0 +1,16 @@
+<template name="shipmentLabel">
+<div class="pull-right">
+  {{#if isInRole 'admin'}}
+    <a href="#" class="order-print-shipment-label">Print Label</a>
+  {{/if}}
+</div>
+</template>
+
+<template name="packingSlip">
+<div class="pull-right">
+  {{#if isInRole 'admin'}}
+    <a href="#" class="order-print-packing-invoice">Print Packing</a>
+  {{/if}}
+</div>
+
+</template>
