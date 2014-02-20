@@ -1,14 +1,5 @@
-# phantom = require("phantom")
-# phantom.create (ph) ->
-#   ph.createPage (page) ->
-#     page.open "http://www.google.com", (status) ->
-#       page.render "google.pdf", ->
-#         console.log "Page Rendered"
-#         ph.exit()
-#         return
-
-#       return
-
-#     return
-
-#   return
+Template.packingSlip.events
+  'click .order-print-packing-invoice': (event, template) ->
+    path = Router.routes['cartCompleted'].path({_id: @._id})
+    Meteor.call "createPDF", path, (err,result) ->
+      console.log result

@@ -3,7 +3,9 @@ Package.describe({
 });
 
 Npm.depends({
-  "node-geocoder": "0.6.0"
+    "node-geocoder": "0.6.0",
+    "phantomjs": '1.9.7-1',
+    "node-phantom": '0.2.5'
 });
 
 Package.on_use(function (api, where) {

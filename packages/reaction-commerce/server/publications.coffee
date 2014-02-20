@@ -7,6 +7,7 @@ Cart  = @Cart
 Tags = @Tags
 Packages = @Packages
 ConfigData = @ConfigData
+FileStorage = @FileStorage
 Users = @Users = Meteor.users
 
 ###
@@ -25,10 +26,26 @@ Meteor.publish "Packages", ->
 Meteor.publish 'ConfigData', ->
   ConfigData.find({})
 
-  ###
-  # get any user name,social profile image
-  # should be limited, secure information
-  ###
+Meteor.publish "FileStorage", (id) ->
+  FileStorage.find _id: id
+
+FileStorage.allow
+  insert: (userId, doc) ->
+    doc.shopId = Meteor.app.getCurrentShop()._id
+    true
+
+  update: (userId, doc, fields, modifier) ->
+    if modifier.$set and modifier.$set.shopId
+      return false
+    true
+
+  remove: (userId, doc) ->
+    doc.shopId is Meteor.app.getCurrentShop()._id
+
+###
+# get any user name,social profile image
+# should be limited, secure information
+###
 Meteor.publish "UserProfile", (profileId) ->
   if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
     cursor = Users.find

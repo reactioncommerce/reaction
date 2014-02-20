@@ -23,3 +23,5 @@ npm-debug.log
 /private/data/system.indexes.json
 
 /private/data/meteor_accounts_loginServiceConfiguration.json
+
+/.fileStorage/
