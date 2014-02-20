@@ -26,6 +26,7 @@ Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
 Meteor.subscribe 'shops'
+Meteor.subscribe 'FileStorage'
 
 ###
 #  Reactive current product
