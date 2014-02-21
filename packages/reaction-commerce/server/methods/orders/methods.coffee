@@ -5,6 +5,15 @@ Meteor.methods
   updateWorkflow: (orderId,currentState) ->
     Orders.update(orderId, {$set: {"state":currentState}})
 
+  updateHistory: (orderId, event, value) ->
+    Orders.update orderId,
+      $addToSet:
+        "history":
+          event: event
+          value: value
+          userId: Meteor.userId()
+          updatedAt: new Date()
+
   createPDF: (url) ->
     Future = Npm.require("fibers/future")
     fs = Npm.require('fs')
@@ -14,7 +23,7 @@ Meteor.methods
     future = new Future()
 
     process.env.PATH += ":" + path.dirname(phantomServer.path)
-    fileName = process.env.PWD+"/.fileStorage/reaction-orders-" +Date.now()+ ".pdf"
+    fileName = process.env.PWD + "/.fileStorage/reaction-orders-" + Date.now() + ".pdf"
     url = "http://localhost:3000" +url
 
     # updateStorage = Meteor._wrapAsync(FileStorage.insert(file:data))
@@ -39,18 +48,18 @@ Meteor.methods
             setTimeout (->
               page.evaluate ((s) ->
                 clipRect = document.getElementById('print-area').getBoundingClientRect()
-                # page.set "clipRect", clipRect
+                page.set "clipRect", clipRect
               ), ((err, clipRect) ->
                 # this should work, but doesn't but leaving in case someday it does
-                page.set "clipRect", clipRect
+                #page.set "clipRect", clipRect
               ), "clipRect"
 
               page.render fileName
               ph.exit()
-              setTimeout (->
-                future.return("rendered")
-              ), 1000
-            ), 1000
+            ), 500
+            setTimeout (->
+              future.return("rendered")
+            ), 1500
       return
     )
 

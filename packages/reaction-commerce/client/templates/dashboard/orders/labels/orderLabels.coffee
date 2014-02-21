@@ -1,5 +1,6 @@
 Template.packingSlip.events
   'click .order-print-packing-invoice': (event, template) ->
-    path = Router.routes['cartCompleted'].path({_id: @._id})
+    orderId = @._id
+    path = Router.routes['cartCompleted'].path({_id: orderId})
     Meteor.call "createPDF", path, (err,result) ->
-      console.log result
+      Meteor.call "updateHistory",  orderId, "Packing Slip Generated", result
