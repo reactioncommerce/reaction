@@ -89,7 +89,7 @@
 
         <!--  Add to cart -->
         {{#autoForm schema=quantityFormSchema doc=data name='addToCart'}}
-        <div class="col-xs-4 col-offset-xs-4 col-sm-4 col-offset-sm-4 col-md-4 col-offset-md-4">
+        <div class="col-xs-12 col-sm-2 col-md-2 ">
           <fieldset class="addToCartQty">
             <div class="form-group{{#if afFieldIsInvalid 'addToCartQty'}} has-error{{/if}}">
               {{afFieldLabel "addToCartQty"}}
@@ -100,8 +100,8 @@
             </div>
           </fieldset>
         </div>
-        <div class="col-xs-8 col-offset-xs-1 col-sm-8 col-offset-sm-1 col-md-8 col-offset-md-1">
-          <div class="btn btn-primary btn-lg btn-block col-md-8" id="add-to-cart">Add to cart</div>
+        <div class="col-xs-12 col-sm-10 col-md-10">
+          <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to cart</div>
         </div>
         {{/autoForm}}
       </div>
