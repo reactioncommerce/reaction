@@ -432,6 +432,18 @@ OrderItemsSchema = new SimpleSchema
       optional: true
     status:
       type: String
+    history:
+      type: [HistorySchema]
+      optional: true
+
+HistorySchema = new SimpleSchema
+    event:
+      type: String
+    userId:
+      type: String
+    updatedAt:
+      type: Date
+
 
 Orders = @Orders # package exports
 
