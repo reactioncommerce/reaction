@@ -93,7 +93,7 @@
           <fieldset class="addToCartQty">
             <div class="form-group{{#if afFieldIsInvalid 'addToCartQty'}} has-error{{/if}}">
               {{afFieldLabel "addToCartQty"}}
-              {{afFieldInput "addToCartQty" value=1}}
+              {{afFieldInput "addToCartQty" value=1 maxlength=2}}
               {{#if afFieldIsInvalid "addToCartQty"}}
               <span class="help-block">{{afFieldMessage "addToCartQty"}}</span>
               {{/if}}
