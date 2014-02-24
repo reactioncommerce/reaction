@@ -39,7 +39,7 @@ Currently good for contributing/observing progress, testing. It goes without say
 
 As with all development, some items are ahead of schedule, and some are not.
 
-Our **estimated **timeline:
+Our **estimated** timeline:
 
 * Catalog/Product Management - functional
 * Cart - functional
