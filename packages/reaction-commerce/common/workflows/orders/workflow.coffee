@@ -4,9 +4,9 @@
 ###
 OrderWorkflowEvents = [
     { name: "orderCreated", label: "New", from: "orderCreated", to: "shipmentTracking" }
-    { name: "shipmentTracking", label: "Tracking Created", from: "orderCreated", to: "shipmentLabel" }
-    { name: "shipmentLabel", label: "Printed", from: "shipmentTracking", to: "shipmentPacked"  }
-    { name: "shipmentPacked", label: "Packed", from: "shipmentLabel", to: "paymentCompleted"}
+    { name: "shipmentTracking", label: "Tracking Created", from: "orderCreated", to: "shipmentPrepare" }
+    { name: "shipmentPrepare", label: "Ready", from: "shipmentTracking", to: "shipmentPacked"  }
+    { name: "shipmentPacked", label: "Packed", from: "shipmentPrepare", to: "paymentCompleted"}
     { name: "paymentCompleted", label: "Payment Completed", from: "shipmentPacked", to: "shipmentShipped"}
     { name: "shipmentShipped", label: "Shipped", from: "shipmentShipped", to: "orderCompleted" }
     { name: "orderCompleted",label: "Completed", from: "shipmentShipped"}
@@ -37,6 +37,34 @@ OrderWorkflow = new StateMachine.create(
         # Session.set("OrderWorkflow",to) if Session?
 
       shipmentTracking: (order, tracking) ->
-        Meteor.call "addTracking", order._id, tracking
+        orderId = order._id
+        # manual add tracking (call these from shipment method to auto add)
+        Meteor.call "addTracking", orderId, tracking
+        Meteor.call "updateHistory",  orderId, "Tracking Added", tracking
+        # create packing slips
+        path = Router.routes['cartCompleted'].path({_id: orderId})
+        Meteor.call "createPDF", path, (err,result) ->
+          Meteor.call "updateDocuments", orderId, result, "packing"
+          Meteor.call "updateHistory",  orderId, "Packing Slip Generated", result
+          # move to preparation stage
+          Meteor.call "updateWorkflow",orderId, "shipmentPrepare" if order?
+
+      shipmentPrepare: (order) ->
+        #completed when order documents printed and packed
+
+      shipmentPacked: (order) ->
+        # item is packed and ready to ship
+
+      paymentCompleted: (order) ->
+        # we have authorized order in cart flow, now complete payment transaction
+
+      shipmentShipped: (order) ->
+        #payment processed and order has shipped
+
+      orderCompleted: (order) ->
+        # mark order completed
+
+
+
       }
   )

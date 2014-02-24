@@ -202,9 +202,9 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/orders/social/orderSocial.coffee",
     "client/templates/dashboard/orders/social/orderSocial.less",
 
-    "client/templates/dashboard/orders/labels/orderLabels.html",
-    "client/templates/dashboard/orders/labels/orderLabels.coffee",
-    "client/templates/dashboard/orders/labels/orderLabels.less",
+    "client/templates/dashboard/orders/documents/documents.html",
+    "client/templates/dashboard/orders/documents/documents.coffee",
+    "client/templates/dashboard/orders/documents/documents.less",
 
     "client/templates/dashboard/navigation/dashboardSidebar.html",
     "client/templates/dashboard/navigation/dashboardSidebar.less",

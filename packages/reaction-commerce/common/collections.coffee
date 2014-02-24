@@ -435,6 +435,16 @@ OrderItemsSchema = new SimpleSchema
     history:
       type: [HistorySchema]
       optional: true
+    documents:
+      type: [DocumentSchema]
+      optional: true
+
+DocumentSchema = new SimpleSchema
+  docId:
+    type: String
+  docType:
+    type: String
+    optional: true
 
 HistorySchema = new SimpleSchema
     event:
@@ -443,7 +453,6 @@ HistorySchema = new SimpleSchema
       type: String
     updatedAt:
       type: Date
-
 
 Orders = @Orders # package exports
 

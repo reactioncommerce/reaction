@@ -1,9 +1,16 @@
 Meteor.methods
-  addTracking: (orderId,tracking,variantId) ->
+  addTracking: (orderId, tracking, variantId) ->
     Orders.update(orderId, {$set: {"shipping.shipmentMethod.tracking":tracking}})
 
-  updateWorkflow: (orderId,currentState) ->
+  updateWorkflow: (orderId, currentState) ->
     Orders.update(orderId, {$set: {"state":currentState}})
+
+  updateDocuments: (orderId, docId, docType) ->
+    Orders.update orderId,
+      $addToSet:
+        "documents":
+          docId: docId
+          docType: docType
 
   updateHistory: (orderId, event, value) ->
     Orders.update orderId,
@@ -56,7 +63,7 @@ Meteor.methods
 
               page.render fileName
               ph.exit()
-            ), 500
+            ), 1000
             setTimeout (->
               future.return("rendered")
             ), 1500
