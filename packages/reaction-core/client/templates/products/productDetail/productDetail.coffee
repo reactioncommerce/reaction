@@ -8,6 +8,7 @@ Template.productDetail.helpers
         label: "Quantity:"
         type: Number
         min: 1
+        max: 99
     qtySchema = new AutoForm QuantitySchema
     qtySchema
   data: ->
