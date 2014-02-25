@@ -1,4 +1,4 @@
-Future = Npm.require('fibers/future')
+# Future = Npm.require('fibers/future')
 
 #
 # setting defaults of mail from shop configuration

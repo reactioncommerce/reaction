@@ -59,8 +59,8 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.add_files([
-    "common/workflows/cart/workflow.coffee",
-    "common/workflows/orders/workflow.coffee",
+    "client/workflows/cart/workflow.coffee",
+    "client/workflows/orders/workflow.coffee",
 
     "lib/vendor/masonry/masonry.pkgd.js",
     "lib/vendor/sparkline/jquery.sparkline.js",
