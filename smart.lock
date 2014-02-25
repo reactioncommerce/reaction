@@ -30,8 +30,8 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.2",
-        "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
+        "tag": "v0.6.4",
+        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
       },
       "videojs": {
         "git": "https://github.com/nate-strauser/meteor-video-js.git",
@@ -45,8 +45,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.4.15",
-        "commit": "ba904b7aaf9bd5ee473016cec3c5518d7f77cc1b"
+        "tag": "v0.4.17",
+        "commit": "8e2da64cbc682ad5111a3bdcf70af07878a51ab2"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
