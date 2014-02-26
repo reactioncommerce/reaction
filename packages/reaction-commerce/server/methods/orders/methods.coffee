@@ -30,7 +30,8 @@ Meteor.methods
     future = new Future()
 
     process.env.PATH += ":" + path.dirname(phantomServer.path)
-    fileName = process.env.PWD + "/.fileStorage/reaction-orders-" + Date.now() + ".pdf"
+    fileName = "reaction-orders-" + Date.now() + ".pdf"
+    filePath = process.env.PWD + "/.fileStorage/" + fileName
     url = "http://localhost:3000" +url
 
     # updateStorage = Meteor._wrapAsync(FileStorage.insert(file:data))
@@ -61,7 +62,7 @@ Meteor.methods
                 #page.set "clipRect", clipRect
               ), "clipRect"
 
-              page.render fileName
+              page.render filePath
               ph.exit()
             ), 1000
             setTimeout (->
@@ -71,5 +72,8 @@ Meteor.methods
     )
 
     if future.wait()
-      fileData = fs.readFileSync fileName, "base64"
-      FileStorage.insert(file:fileData)
+      fileData = fs.readFileSync filePath
+      FileStorage.storeBuffer fileName, fileData,
+        contentType: "application/pdf"
+        owner: Meteor.userId()
+        encoding: 'binary'

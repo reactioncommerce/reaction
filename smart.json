@@ -13,6 +13,7 @@
     "headers": {},
     "collection-hooks": {},
     "jqueryui": {},
-    "font-awesome-4-less": {}
+    "font-awesome-4-less": {},
+    "collectionFS": {}
   }
 }
