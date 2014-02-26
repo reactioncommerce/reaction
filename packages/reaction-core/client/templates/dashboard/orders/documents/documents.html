@@ -1,13 +1,9 @@
 <template name="orderDocuments">
-<div class="pull-right">
+<div class="dowload-documents text-right">
   {{#if isInRole 'admin'}}
-    <a href="#" class="order-print-shipping-documents">Print Documents </a>
+    {{#each documents}}
+      {{cfsDownloadButton "FileStorage" fileId=docId class="btn btn-default uppercase" content="Download"}}
+    {{/each}}
   {{/if}}
 </div>
-
-</template>
-
-<template name="printOrderDocuments">
-
-
 </template>

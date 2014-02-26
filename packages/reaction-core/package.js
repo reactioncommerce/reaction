@@ -22,7 +22,8 @@ Package.on_use(function (api, where) {
     "handlebars-server",
     "amplify",
     "headers",
-    "accounts-base"
+    "accounts-base",
+    "collectionFS"
   ], ["client", "server"]);
 
   api.use([

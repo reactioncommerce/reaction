@@ -16,7 +16,7 @@ PackageConfigSchema = new SimpleSchema
 @Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
 Packages = @Packages
 
-@FileStorage = new Meteor.Collection("FileStorage")
+@FileStorage = new CollectionFS("FileStorage")
 FileStorage = @FileStorage
 
 ShopMemberSchema = new SimpleSchema
