@@ -3,11 +3,11 @@
 # override to change order processing workorder
 ###
 OrderWorkflowEvents = [
-    { name: "orderCreated", label: "New", from: "orderCreated", to: "shipmentTracking" }
-    { name: "shipmentTracking", label: "Tracking Created", from: "orderCreated", to: "shipmentPrepare" }
-    { name: "shipmentPrepare", label: "Ready", from: "shipmentTracking", to: "shipmentPacked"  }
-    { name: "shipmentPacked", label: "Packed", from: "shipmentPrepare", to: "paymentCompleted"}
-    { name: "paymentCompleted", label: "Payment Completed", from: "shipmentPacked", to: "shipmentShipped"}
+    { name: "orderCreated", label: "Ready", from: "orderCreated", to: "shipmentTracking" }
+    { name: "shipmentTracking", label: "Documents", from: "orderCreated", to: "shipmentPrepare" }
+    { name: "shipmentPrepare", label: "Preparing", from: "shipmentTracking", to: "shipmentPacking"  }
+    { name: "shipmentPacking", label: "Packing", from: "shipmentPrepare", to: "processPayment"}
+    { name: "processPayment", label: "Payment Processing", from: "shipmentPacked", to: "shipmentShipped"}
     { name: "shipmentShipped", label: "Shipped", from: "shipmentShipped", to: "orderCompleted" }
     { name: "orderCompleted",label: "Completed", from: "shipmentShipped"}
   ]
@@ -51,15 +51,19 @@ OrderWorkflow = new StateMachine.create(
 
       shipmentPrepare: (order) ->
         #completed when order documents printed and packed
+        Meteor.call "updateWorkflow",order._id, "shipmentPacking" if order?
 
-      shipmentPacked: (order) ->
+      shipmentPacking: (order) ->
         # item is packed and ready to ship
+        Meteor.call "updateWorkflow",order._id, "processPayment" if order?
 
-      paymentCompleted: (order) ->
+      processPayment: (order) ->
         # we have authorized order in cart flow, now complete payment transaction
+        Meteor.call "updateWorkflow",order._id, "shipmentShipped" if order?
 
       shipmentShipped: (order) ->
         #payment processed and order has shipped
+        Meteor.call "updateWorkflow",order._id, "orderCompleted" if order?
 
       orderCompleted: (order) ->
         # mark order completed

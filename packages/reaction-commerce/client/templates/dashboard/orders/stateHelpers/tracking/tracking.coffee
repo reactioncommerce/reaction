@@ -1,4 +1,4 @@
-Template.orderTracking.events
+Template.stateHelperTracking.events
   "submit": (event,template) ->
     event.preventDefault()
     tracking =  $(event.target).find("[name=input-tracking-code]").val()

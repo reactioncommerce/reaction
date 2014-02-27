@@ -9,3 +9,13 @@ Template.orderDetail.helpers
 
   shipmentTracking: ->
     @.shipping.shipmentMethod.tracking
+
+  orderStateHelper: ->
+    switch @.state
+      when 'orderCreated' then Template['stateHelperTracking'](@)
+      when 'shipmentTracking' then Template['stateHelperTracking'](@)
+      when 'shipmentPrepare' then Template['stateHelperDocuments'](@)
+      when 'shipmentPacking' then Template['stateHelperPacking'](@)
+      when 'processPayment' then Template['stateHelperPayment'](@)
+      when 'shipmentShipped' then Template['stateHelperShipped'](@)
+      when 'orderCompleted' then Template['stateHelperCompleted'](@)

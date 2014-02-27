@@ -11,8 +11,8 @@
 
         </div>
         <div class="row order-shipping-address">
-          {{#with shipping.address}}
           <div class="well well-sm">
+            {{#with shipping.address}}
             <address>
               <strong>{{fullName}}</strong><br>
               {{address1}}<br>
@@ -20,8 +20,11 @@
               {{city}}, {{region}}, {{country}} {{postal}}<br>
               <abbr title="Phone">P:</abbr> {{phone}}
             </address>
+            {{/with}}
+            {{#if shipmentTracking}}
+              Tracking: <a href="#">{{shipmentTracking}}</a>
+            {{/if}}
           </div>
-          {{/with}}
         </div>
         <div class="order-items">
           <ul class="list-group">
@@ -35,13 +38,9 @@
             {{/each}}
           </ul>
         </div>
-        {{#unless shipmentTracking}}
-          {{>orderTracking}}
-        {{else}}
-          Tracking: <a href="#">{{shipmentTracking}}</a>
-          {{>orderDocuments}}
-        {{/unless}}
-
+        <div class="order-state-helpers">
+        {{{orderStateHelper}}}
+        </div>
       </li>
     <br>
 </template>
