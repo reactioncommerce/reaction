@@ -195,17 +195,34 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/orders/details/detail.coffee",
     "client/templates/dashboard/orders/details/detail.less",
 
-    "client/templates/dashboard/orders/tracking/tracking.html",
-    "client/templates/dashboard/orders/tracking/tracking.coffee",
-    "client/templates/dashboard/orders/tracking/tracking.less",
-
     "client/templates/dashboard/orders/social/orderSocial.html",
     "client/templates/dashboard/orders/social/orderSocial.coffee",
     "client/templates/dashboard/orders/social/orderSocial.less",
 
-    "client/templates/dashboard/orders/documents/documents.html",
-    "client/templates/dashboard/orders/documents/documents.coffee",
-    "client/templates/dashboard/orders/documents/documents.less",
+    "client/templates/dashboard/orders/stateHelpers/completed/completed.html",
+    "client/templates/dashboard/orders/stateHelpers/completed/completed.coffee",
+    "client/templates/dashboard/orders/stateHelpers/completed/completed.less",
+
+    "client/templates/dashboard/orders/stateHelpers/documents/documents.html",
+    "client/templates/dashboard/orders/stateHelpers/documents/documents.coffee",
+    "client/templates/dashboard/orders/stateHelpers/documents/documents.less",
+
+    "client/templates/dashboard/orders/stateHelpers/packing/packing.html",
+    "client/templates/dashboard/orders/stateHelpers/packing/packing.coffee",
+    "client/templates/dashboard/orders/stateHelpers/packing/packing.less",
+
+    "client/templates/dashboard/orders/stateHelpers/payment/payment.html",
+    "client/templates/dashboard/orders/stateHelpers/payment/payment.coffee",
+    "client/templates/dashboard/orders/stateHelpers/payment/payment.less",
+
+    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.html",
+    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.coffee",
+    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.less",
+
+    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
+    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.coffee",
+    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.less",
+
 
     "client/templates/dashboard/navigation/dashboardSidebar.html",
     "client/templates/dashboard/navigation/dashboardSidebar.less",

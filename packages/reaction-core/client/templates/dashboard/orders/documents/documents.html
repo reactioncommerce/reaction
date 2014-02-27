@@ -1,9 +1,0 @@
-<template name="orderDocuments">
-<div class="dowload-documents text-right">
-  {{#if isInRole 'admin'}}
-    {{#each documents}}
-      {{cfsDownloadButton "FileStorage" fileId=docId class="btn btn-default uppercase" content="Download"}}
-    {{/each}}
-  {{/if}}
-</div>
-</template>

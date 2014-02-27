@@ -1,5 +1,5 @@
 <template name="orders">
-  <div class="container orders">
+  <div class="container orders-grid">
     {{!-- Orders List --}}
     <div class="row">
         <span class="orders-page-title h3">Orders</span>
@@ -9,9 +9,9 @@
         <a href="#" class="add-order-link fa fa-plus fa-2x pull-right"></a>
         {{/if}}
     </div>
-    <div class="row">
+    <div class="row" id="order-carousel">
       {{#each fulfillmentWorkflow}}
-          <div class= "col-md-4">
+          <div class= "col-md-12">
             <div class="panel panel-default panel-order">
               <div class="panel-heading h3">{{label}}<span class="badge">{{count}}</span></div>
                 <div class="panel-body">
