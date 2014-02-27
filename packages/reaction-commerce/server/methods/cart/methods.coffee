@@ -83,7 +83,7 @@ Meteor.methods
       unless sessionCart?
         Cart.upsert {sessionId: sessionId, shopId:shopId}, {$set:defaultCart}, (error, result) ->
             console.log error if error
-            Deps.flush() if result?.insertedId
+            # Deps.flush() if result?.insertedId
       else
         return sessionCart
   ###
@@ -91,6 +91,13 @@ Meteor.methods
   ###
   removeFromCart: (cartId, variantData) ->
     Cart.update({_id: cartId}, {$pull: {"items": {"variants": variantData} } })
+
+  ###
+  # add payment method
+  ###
+  paymentMethod: (cartId, paymentMethod) ->
+    Cart.update cartId, {$addToSet:{"payment.paymentMethod":paymentMethod}}, (error,result) ->
+      result
 
   ###
   # adjust inventory when an order is placed

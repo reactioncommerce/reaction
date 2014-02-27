@@ -95,11 +95,12 @@ Template.paypalPaymentForm.events
               mode: transaction.payment.intent
               createdAt: new Date(transaction.payment.create_time)
               updatedAt: new Date(transaction.payment.update_time)
-          #update UI while we store the payment and order
-          $("#paypal-payment-form .btn").removeClass("spin").addClass("btn-info").text("Success! Order Completed")
           # Store transaction information with order
+          # paymentMethod will auto transition to
+          # CartWorkflow.paymentAuth() which
+          # will create order, clear the cart, and update inventory,
+          # and goto order confirmation page
           CartWorkflow.paymentMethod(paymentMethod)
-          # CartWorkflow.paymentAuth() will create order, clear the cart, and update inventory, goto order confirmation page
 
         else # card errors are returned in transaction
           for errors in transaction.error.response.details

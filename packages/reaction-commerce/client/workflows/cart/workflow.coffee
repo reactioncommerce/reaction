@@ -71,25 +71,30 @@ CartWorkflow = StateMachine.create(
     onshipmentMethod: (event, from, to, method) ->
       Cart.update Cart.findOne()._id, {$set:{"shipping.shipmentMethod":method}} if method
 
-    onpaymentMethod: (event, from, to, paymentMethod) ->
-      Cart.update Cart.findOne()._id, {$set:{"payment.paymentMethod":[paymentMethod]}}
+    onbeforepaymentMethod: (event, from, to, paymentMethod) ->
+      Meteor.call "paymentMethod", Cart.findOne()._id, paymentMethod
 
-    onpaymentAuth: (event, from, to) ->
-      Meteor.call "copyCartToOrder", Cart.findOne(), (error, result) ->
-        if error
-          console.log "An error occurred saving the order. : " +error
-        else #go to order success
-          CartWorkflow.inventoryAdjust(result)
+    onpaymentAuth: (event, from, to, paymentMethod) ->
+      #before payment really should be async
+      Meteor.setTimeout (->
+        Meteor.call "copyCartToOrder", Cart.findOne(), (error, result) ->
+          if error
+            console.log "move this"
+            console.log "An error occurred saving the order. : " +error
+          else #go to order success
+            CartWorkflow.inventoryAdjust(result)
+      ), 100
 
     oninventoryAdjust: (event, from, to, orderId) ->
       Meteor.call "inventoryAdjust", orderId
-      # @.orderCreated(orderId)
+      # automatically transitions to @.orderCreated(orderId)
 
     onorderCreated: (event,from,to, orderId) ->
       #clear cart related sessions
+      Router.go "cartCompleted", _id: orderId
       delete Session.keys["billingUserAddressId"]
       delete Session.keys["shippingUserAddressId"]
       delete Session.keys["shipmentMethod"]
-      Router.go "cartCompleted", _id: orderId
+      Deps.flush()
   }
 )
