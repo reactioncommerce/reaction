@@ -26,3 +26,4 @@ Template.orders.rendered = ->
   $("#order-carousel").owlCarousel
     lazyload: true
     items: 4
+    itemsScaleUp: true
