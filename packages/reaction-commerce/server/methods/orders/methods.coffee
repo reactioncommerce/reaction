@@ -1,17 +1,30 @@
 Meteor.methods
+  ###
+  # Adds tracking information to order
+  # Call after any tracking code is generated
+  ###
   addTracking: (orderId, tracking, variantId) ->
     Orders.update(orderId, {$set: {"shipping.shipmentMethod.tracking":tracking}})
 
+  ###
+  # Save supplied order workflow state
+  ###
   updateWorkflow: (orderId, currentState) ->
     Orders.update(orderId, {$set: {"state":currentState}})
-
+    Meteor.call "updateHistory", orderId, currentState
+  ###
+  # Add files/documents to order
+  # use for packing slips, labels, customs docs, etc
+  ###
   updateDocuments: (orderId, docId, docType) ->
     Orders.update orderId,
       $addToSet:
         "documents":
           docId: docId
           docType: docType
-
+  ###
+  # Add to order event history
+  ###
   updateHistory: (orderId, event, value) ->
     Orders.update orderId,
       $addToSet:
@@ -20,7 +33,29 @@ Meteor.methods
           value: value
           userId: Meteor.userId()
           updatedAt: new Date()
+  ###
+  # Finalize any payment where mode is "authorize"
+  # and status is "approved", reprocess as "sale"
+  ###
+  processPayments: (orderId) ->
+    order = Orders.findOne(orderId)
+    for paymentMethod,index in order.payment.paymentMethod
+      if paymentMethod.mode is 'authorize' and paymentMethod.status is 'approved'
+        Meteor[paymentMethod.processor].capture paymentMethod.transactionId, paymentMethod.amount, (error,result) ->
+          if result.capture?
+            transactionId = paymentMethod.transactionId
+            Orders.update { "_id": orderId, "payment.paymentMethod.transactionId": transactionId},
+              $set: {
+                "payment.paymentMethod.$.transactionId": result.capture.id
+                "payment.paymentMethod.$.mode": "capture"
+                "payment.paymentMethod.$.status": "completed"
+              }
+          result
 
+  ###
+  # Creates a pdf doc and attaches to order
+  # for any existing site url (completed orders)
+  ###
   createPDF: (url) ->
     Future = Npm.require("fibers/future")
     fs = Npm.require('fs')
@@ -64,7 +99,7 @@ Meteor.methods
 
               page.render filePath
               ph.exit()
-            ), 1000
+            ), 300
             setTimeout (->
               future.return("rendered")
             ), 1500

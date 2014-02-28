@@ -515,6 +515,9 @@ ShipmentSchema = new SimpleSchema
   authorization:
     type: String
     optional: true
+  amount:
+    type: Number
+    decimal: true
 
 PaymentMethodSchema = @PaymentMethodSchema
 

@@ -7,8 +7,8 @@ OrderWorkflowEvents = [
     { name: "shipmentTracking", label: "Documents", from: "orderCreated", to: "shipmentPrepare" }
     { name: "shipmentPrepare", label: "Preparing", from: "shipmentTracking", to: "shipmentPacking"  }
     { name: "shipmentPacking", label: "Packing", from: "shipmentPrepare", to: "processPayment"}
-    { name: "processPayment", label: "Payment Processing", from: "shipmentPacked", to: "shipmentShipped"}
-    { name: "shipmentShipped", label: "Shipped", from: "shipmentShipped", to: "orderCompleted" }
+    { name: "processPayment", label: "Payment Processing", from: "shipmentPacking", to: "shipmentShipped"}
+    { name: "shipmentShipped", label: "Shipped", from: "processPayment", to: "orderCompleted" }
     { name: "orderCompleted",label: "Completed", from: "shipmentShipped"}
   ]
 
@@ -45,35 +45,32 @@ OrderWorkflow = new StateMachine.create(
         path = Router.routes['cartCompleted'].path({_id: orderId})
         Meteor.call "createPDF", path, (err,result) ->
           Meteor.call "updateDocuments", orderId, result, "packing"
-          Meteor.call "updateHistory",  orderId, "Packing Slip Generated", result
           # move to preparation stage
           Meteor.call "updateWorkflow",orderId, "shipmentPrepare" if order?
 
       shipmentPrepare: (order) ->
         #completed when order documents printed and packed
-        Meteor.call "updateHistory", order._id, "Shipment Prepare"
         Meteor.call "updateWorkflow",order._id, "shipmentPacking" if order?
 
       shipmentPacking: (order) ->
         # item is packed and ready to ship
-        Meteor.call "updateHistory", order._id, "Shipment Packing"
         Meteor.call "updateWorkflow",order._id, "processPayment" if order?
+        @.processPayment(order)
 
       processPayment: (order) ->
         # we have authorized order in cart flow, now complete payment transaction
-        Meteor.call "updateHistory", order._id, "Process Payment"
-        Meteor.call "updateWorkflow",order._id, "shipmentShipped" if order?
+        Meteor.call "processPayments", order._id, (error,result) ->
+          if result
+            Meteor.call "updateWorkflow",order._id, "shipmentShipped"
+            OrderWorkflow.shipmentShipped(order)
 
       shipmentShipped: (order) ->
         #payment processed and order has shipped
-        Meteor.call "updateHistory", order._id, "Shipment Shipped"
         Meteor.call "updateWorkflow",order._id, "orderCompleted" if order?
+        @.orderCompleted(order)
 
       orderCompleted: (order) ->
-        Meteor.call "updateHistory", order._id, "Order Completed"
         # mark order completed
-
-
-
+        Meteor.call "updateWorkflow",order._id, "orderCompleted" if order?
       }
   )

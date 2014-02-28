@@ -13,7 +13,7 @@ Template.orderDetail.helpers
   orderStateHelper: ->
     switch @.state
       when 'orderCreated' then Template['stateHelperTracking'](@)
-      when 'shipmentTracking' then Template['stateHelperTracking'](@)
+      when 'shipmentTracking' then Template['spinner'](@)
       when 'shipmentPrepare' then Template['stateHelperDocuments'](@)
       when 'shipmentPacking' then Template['stateHelperPacking'](@)
       when 'processPayment' then Template['stateHelperPayment'](@)

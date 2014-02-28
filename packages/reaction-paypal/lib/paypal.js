@@ -7,8 +7,17 @@ Meteor.Paypal = {
   authorize: function(card_info, payment_info, callback){
     Meteor.call('paypalSubmit', 'authorize', card_info, payment_info, callback);
   },
-  purchase: function(card_info, payment_info, callback){
-    Meteor.call('paypalSubmit', 'sale', card_info, payment_info, callback);
+  // purchase: function(card_info, payment_info, callback){
+  //   Meteor.call('paypalSubmit', 'sale', card_info, payment_info, callback);
+  // },
+  capture: function(transactionId, amount, callback) {
+    var capture_details = {
+    "amount": {
+        "currency": "USD",
+        "total": amount },
+    "is_final_capture": true };
+
+    Meteor.call("paypalCapture", transactionId, capture_details, callback);
   },
   //config is for the paypal configuration settings.
   config: function(options){
@@ -48,6 +57,7 @@ if(Meteor.isServer){
     var Fiber = Npm.require('fibers');
     var Future = Npm.require('fibers/future');
     Meteor.methods({
+      //submit (sale, authorize)
       paypalSubmit: function(transaction_type, cardData, paymentData){
         paypal_sdk.configure(Meteor.Paypal.account_options());
         var payment_json = Meteor.Paypal.payment_json();
@@ -67,7 +77,24 @@ if(Meteor.isServer){
           console.error(e);
         }));
         return fut.wait();
-    }});
+      },
+      // capture (existing authorization)
+      paypalCapture: function(transactionId, capture_details) {
+        paypal_sdk.configure(Meteor.Paypal.account_options());
+
+        var fut = new Future();
+        this.unblock();
+
+        paypal_sdk.authorization.capture(transactionId, capture_details, function (error, capture) {
+            if (error) {
+              fut.return({saved: false, error: error});
+            } else {
+              fut.return({saved: true, capture: capture});
+            }
+        });
+        return fut.wait();
+      }
+    });
   });
 }
 

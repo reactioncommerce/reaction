@@ -96,8 +96,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.38",
-        "commit": "2deec0041fc6cb2666df8cd6a51914e499e95683"
+        "tag": "v0.2.39",
+        "commit": "02afc77cba60ce5829e453567ebac76e4b69bc81"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

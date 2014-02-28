@@ -1,11 +1,15 @@
 <template name="stateHelperTracking">
-<span class="text-right">
   <form class="form-inline" role="form">
-    <div class="form-group">
-      <label class="sr-only" for="input-tracking-code">Tracking Code</label>
-      <input type="text" class="form-control" name="input-tracking-code">
+    <div class="row">
+      <div class="form-group">
+        <div class="col-xs-12 col-sm-8">
+          <label class="sr-only" for="input-tracking-code">Tracking Code</label>
+          <input type="text" class="form-control" name="input-tracking-code">
+        </div>
+        <div class="col-xs-12 col-sm-4">
+          <button type="submit" class="form-control btn btn-info add-order-tracking">Add Tracking</button>
+        </div>
+      </div>
     </div>
-    <button type="submit" class="btn btn-info add-order-tracking">Add Tracking</button>
   </form>
-</span>
 </template>
