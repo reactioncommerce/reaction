@@ -1,5 +1,5 @@
 Template.stateHelperTracking.events
-  "submit": (event,template) ->
+  "click #add-tracking-code": (event,template) ->
     event.preventDefault()
     tracking =  $(event.target).find("[name=input-tracking-code]").val()
     #transition order to next workflow
