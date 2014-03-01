@@ -20,7 +20,6 @@ Package.on_use(function (api, where) {
     "roles",
     "less",
     "amplify",
-    "headers",
     "accounts-base",
     "collectionFS"
   ], ["client", "server"]);

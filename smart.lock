@@ -11,7 +11,6 @@
       "collection2": {},
       "underscore-string-latest": {},
       "jquery-cookie": {},
-      "headers": {},
       "collection-hooks": {},
       "jqueryui": {},
       "font-awesome-4-less": {},
@@ -63,11 +62,6 @@
         "git": "https://github.com/BenjaminRH/meteor-jquery-cookie.git",
         "tag": "v0.1.0",
         "commit": "084bc5bf612639008efe03f3948e816df44c0f36"
-      },
-      "headers": {
-        "git": "https://github.com/gadicohen/meteor-headers.git",
-        "tag": "v0.0.15",
-        "commit": "0852ea4df6b1314914c4355160d0b0fd61675aea"
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",

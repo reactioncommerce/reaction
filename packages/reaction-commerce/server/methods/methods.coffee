@@ -1,8 +1,6 @@
-# Future = Npm.require('fibers/future')
-
-#
+###
 # setting defaults of mail from shop configuration
-#
+###
 setMailUrlForShop = (shop) ->
   mailgun = Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
   sCES = null
@@ -16,12 +14,11 @@ setMailUrlForShop = (shop) ->
       process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
 
 Meteor.methods
-
-  #
+  ###
   # this method is to invite new admin users
   # (not consumers) to secure access in the dashboard
   # to permissions as specified in packages/roles
-  #
+  ###
   inviteShopMember: (shopId, email, name) ->
     shop = Shops.findOne shopId
     if shop and email and name
@@ -69,9 +66,9 @@ Meteor.methods
 
         Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
 
-  #
+  ###
   # this method sends an email to consumers on sign up
-  #
+  ###
   sendWelcomeEmail: (shop) ->
     email = Meteor.user().emails[0].address
     setMailUrlForShop(shop)
@@ -83,9 +80,6 @@ Meteor.methods
         homepage: Meteor.absoluteUrl()
         shop: shop
 
-
-
-
   ###
   # method to determine user's location for autopopulating addresses
   ###
@@ -93,15 +87,16 @@ Meteor.methods
     Future = Npm.require("fibers/future")
     geocoder = Npm.require("node-geocoder")
     future = new Future()
+
     if latitude
       locateCoord = geocoder.getGeocoder("google", "http")
       locateCoord.reverse latitude, longitude, (err, address) ->
         if err then Meteor._debug(err)
         future.return(address)
     else
-      ip = headers.methodClientIP(@)
+      ip = this.connection.httpHeaders['x-forwarded-for']
       locateIP = geocoder.getGeocoder("freegeoip", "http")
-      #ip = "76.168.14.229"
+
       locateIP.geocode ip, (err, address) ->
         if err then Meteor._debug(err)
         future.return(address)
