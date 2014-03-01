@@ -44,6 +44,7 @@ Meteor.methods
       product.variants[i]._id = Random.id()
       i++
     newProduct = Products._collection.insert(product)
+    newProduct
 
   ###
   # when we create a new product, we create it with

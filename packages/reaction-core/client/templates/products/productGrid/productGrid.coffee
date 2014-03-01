@@ -31,13 +31,13 @@ Template.cartItems.preserve([".product-grid-item-images"])
 
 Template.productGridItems.events
   'click .clone-product': () ->
-    Meteor.call "cloneProduct", this, (err, productId) ->
-      console.log err  if err
-      Router.go "dashboard/product",
+    Meteor.call "cloneProduct", this, (error, productId) ->
+      console.log error if error
+      Router.go "product",
         _id: productId
 
-  'click .delete-product': (e) ->
-    e.preventDefault()
+  'click .delete-product': (event, template) ->
+    event.preventDefault()
     if confirm("Delete this product?")
       Products.remove this._id
       Router.go "/"
