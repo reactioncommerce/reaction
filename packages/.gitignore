@@ -40,3 +40,4 @@ headers
 /collectionFS
 /cfs-public-folder
 /simple-schema
+/handlebars-server

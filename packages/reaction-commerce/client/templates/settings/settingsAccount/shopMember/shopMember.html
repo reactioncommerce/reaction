@@ -1,5 +1,5 @@
 <template name="shopMember">
-  <tbody id="shop_member_{{userId}}"{{#if hasOwnerAccess}} class="toggle-shop-member-permissions"{{/if}}>
+  <tbody id="shop_member_{{userId}}" class="{{hasOwnerAccessToggle}}">
   <tr>
     <td>{{user.profile.name}}</td>
     <td>{{userEmail}}</td>
@@ -27,14 +27,12 @@
       </td>
       <td colspan="3">
         <label>
-          <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="yes"{{#if isAdmin}}
-                 checked{{/if}}/>
+          <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="yes" checked="{{isAdmin}}"/>
           {{user.profile.name}} has access to everything in shop
         </label>
         <br/>
         <label>
-          <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="no"{{#unless isAdmin}}
-                 checked{{/unless}}/>
+          <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="no" checked="{{isAdmin}}"/>
           Let me choose what {{user.profile.name}} has access to
         </label>
       </td>
@@ -49,7 +47,7 @@
               {{#each permissions}}
                 <li>
                   <label>
-                    <input type="checkbox"{{#if isChecked ../../permissions}} checked{{/if}}
+                    <input type="checkbox" {{isChecked permission ../../userId}}
                            class="toggle-shop-member-permission"
                            data-userId="{{../../userId}}" data-permission="{{permission}}"/>
                     {{label}}

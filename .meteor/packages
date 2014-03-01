@@ -29,7 +29,6 @@ accounts-facebook
 underscore-string-latest
 roles
 jquery-cookie
-handlebars-server
 email
 headers
 collection-hooks
@@ -39,3 +38,4 @@ jqueryui
 build-fetcher
 
 font-awesome-4-less
+handlebars-server

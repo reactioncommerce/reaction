@@ -19,7 +19,6 @@ Package.on_use(function (api, where) {
     "collection2",
     "roles",
     "less",
-    "handlebars-server",
     "amplify",
     "headers",
     "accounts-base",

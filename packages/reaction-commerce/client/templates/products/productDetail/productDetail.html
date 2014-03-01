@@ -41,12 +41,12 @@
       <div class="row col-md-10 col-offset-md-4 pdp-editable">
           <!-- Price Fixation -->
           <div class="row">
-                <i class="fa fa-usd currency-symbol"> </i>
-                <span class="price">
-                  {{#isolate}}
-                  <span id="price" itemprop="price">{{actualPrice}}</span>
-                  {{/isolate}}
-                </span>
+            <i class="fa fa-usd currency-symbol"> </i>
+            <span class="price">
+              {{#isolate}}
+              <span id="price" itemprop="price">{{actualPrice}}</span>
+              {{/isolate}}
+            </span>
             {{>productSocial}}
           </div>
           {{!-- Vendor --}}
@@ -59,7 +59,6 @@
 
           <!-- Tag it -->
           <div class="row">
-
             <div class="tags">
               {{#if userHasRole "admin"}}
                 <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
@@ -74,15 +73,16 @@
           <!-- Description -->
           <div class="row">
             <div id="description" class="description" itemprop="description">
-            {{#if userHasRole "admin"}}
-            {{description}}
-            {{else}}
-            {{!-- Render as html on client view --}}
-            {{{description}}}
-            {{/if}}</div>
+              {{#if userHasRole "admin"}}
+                {{description}}
+              {{else}}
+                {{!-- Render as html on client view --}}
+                {{{description}}}
+              {{/if}}
+            </div>
           </div>
-
       </div>
+
       <!-- Variants -->
       <div class="row col-md-10 col-offset-md-4 options-add-to-cart">
         {{>variantList}}
@@ -106,6 +106,7 @@
         {{/autoForm}}
       </div>
       <!-- END Right Side -->
+    </div>
   </div>
 </div>
 </template>
