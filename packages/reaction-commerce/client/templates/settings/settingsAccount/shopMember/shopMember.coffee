@@ -6,9 +6,9 @@ Template.shopMember.helpers
     Meteor.app.shopPermissionGroups
 
   isChecked: (permission, userId) ->
-    currentPermissions = Shops.findOne({"members.userId":userId},{fields: {"members.permissions": 1}}).members
+    currentPermissions = Shops.findOne().members
     for member in currentPermissions
-      if member?.permissions
+      if member.userId is userId and member?.permissions
         for ischecked in member?.permissions
           if ischecked is permission
             return "checked"
