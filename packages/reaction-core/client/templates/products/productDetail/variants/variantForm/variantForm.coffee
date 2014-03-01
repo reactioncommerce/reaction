@@ -2,16 +2,22 @@ Template.variantForm.helpers
   variantFormSchema: ->
     variantSchema = new AutoForm ProductVariantSchema
     variantSchema
+
   data: ->
     @
+
   nowDate: ->
     new Date()
+
   formId: ->
     "variant-form-"+@._id
+
   metafieldKeyIndex: ->
     return "metafields."+@.index+".key"
+
   metafieldValueIndex: ->
     return "metafields."+@.index+".value"
+
   metafieldsIndexed: ->
     metafieldArray = new Array
     value = 0
@@ -30,6 +36,7 @@ Template.variantForm.helpers
       {label: "Reaction",value: "reaction"}
     ]
     options
+
   inventoryPolicyOptions: ->
     options = [
       {label: "Continue",value: "continue"},
@@ -48,11 +55,13 @@ Template.variantForm.helpers
 Template.variantForm.events
   "submit form": (event,template) ->
     currentProduct.changed "product"
+
   "change input[name='inventoryManagement']": (event,template) ->
     event.stopPropagation()
     if !$( event.currentTarget ).is(':checked')
         $( '#' + @._formID ).find( 'input[name=inventoryPolicy]' ).attr("checked",false)
     $( '#' + @._formID ).find( '.inventoryPolicy, .lowInventoryWarning' ).slideToggle()
+
   "change input[name='lowInventoryWarning']": (event,template) ->
     event.stopPropagation()
     if !$( event.currentTarget ).is(':checked')

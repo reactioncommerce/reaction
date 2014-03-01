@@ -53,7 +53,6 @@ Template.productDetail.rendered = ->
       inputclass: "pdp-title"
       success: (response, newValue) ->
         updateProduct title: newValue
-
       validate: (value) ->
         if $.trim(value) is ""
           throwAlert "A product name is required"
@@ -269,23 +268,6 @@ Template.productDetail.events
         ), 500
     else
       throwAlert("Select an option before adding to cart")
-
-  "submit form": (event) ->
-    event.preventDefault()
-    event.stopPropagation()
-    productsProperties =
-      title: $(event.target).find("[name=title]").val()
-      vendor: $(event.target).find("[name=vendor]").val()
-      description: $(event.target).find("[name=description]").val()
-      tags: $(event.target).find("[name=tags]").val()
-      handle: $(event.target).find("[name=handle]").val()
-
-    Products.update (currentProduct.get "product")._id,
-      $set: productsProperties
-    , (error) ->
-      if error
-        # display the error to the user
-        alert error.reason
 
   # *****************************************************
   # deletes entire product
