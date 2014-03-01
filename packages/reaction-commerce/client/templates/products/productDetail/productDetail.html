@@ -3,6 +3,8 @@
 {{#if userHasRole "admin"}}
 <div class="row">
   {{#if isVisible}}
+    Product management:
+    <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
   {{else}}
     <div class="alert alert-warning">
       This product is not visible to customers.
@@ -11,8 +13,6 @@
       when you're done editing.
     </div>
   {{/if}}
-  Product management:
-  <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
 </div>
 {{/if}}
 {{!-- END Product Visibility Admin Block --}}
