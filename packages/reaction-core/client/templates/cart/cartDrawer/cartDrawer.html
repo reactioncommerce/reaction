@@ -1,20 +1,22 @@
 <template name="cartDrawer">
 <div id="cart-drawer-container">
-{{#if displayCartDrawer}}
-    <div class="cart-drawer" id="cart-drawer" {{#if checkoutView}}style="display:block"{{/if}}>
+  {{#if displayCartDrawer}}
+    <div class="cart-drawer" id="cart-drawer" style="{{checkoutView}}">
       <div class="owl-carousel">
-          {{#if cartItems}}
-            {{>cartSubTotals}}
-          {{/if}}
-            {{#each cartItems}}
-            {{#labelBranch _id}}
-              {{>cartItems}}
-            {{/labelBranch}}
-            {{/each}}
+        {{#if cartItems}}
+          {{>cartSubTotals}}
+        {{/if}}
+        {{#each cartItems}}
+          {{#labelBranch _id}}
+            {{>cartItems}}
+          {{/labelBranch}}
+        {{/each}}
       </div>
       {{#unless cartItems}}
         <div class="cart-drawer-empty">
-          <h1><i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong></h1>
+          <h1>
+            <i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong>
+          </h1>
         </div>
         <div class="row">
              <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping">
@@ -32,6 +34,6 @@
         {{/unless}}
       {{/unless}}
     </div>
-{{/if}}
+  {{/if}}
 </div>
 </template>

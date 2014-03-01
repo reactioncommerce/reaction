@@ -34,7 +34,8 @@ Template.cartDrawer.helpers
     items = (cart for cart in currentCart.items by -1) if currentCart?.items
     items
   checkoutView: ->
-    true if Router.current().route.name is 'cartCheckout'
+    checkoutView = "display:block"
+    if Router.current().route.name is 'cartCheckout' then checkoutView
   displayCartDrawer: ->
     Session.get "displayCartDrawer"
 

@@ -151,8 +151,7 @@
               <span class="help-block">{{afFieldMessage "useCustomEmailSettings"}}</span>
             {{/if}}
 
-            <div class="useCustomEmailSettings"{{#unless _doc.useCustomEmailSettings}} style="display:
-            none"{{/unless}}>
+            <div class="useCustomEmailSettings" style="{{displayCustomEmailSettings}}">
               <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.username"}}has-error{{/if}}">
                 {{afFieldLabel 'customEmailSettings.username' class="col-sm-2 col-lg-2 control-label"}}
                 <div class="col-sm-10 controls">

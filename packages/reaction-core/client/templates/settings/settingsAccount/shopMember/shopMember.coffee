@@ -5,13 +5,25 @@ Template.shopMember.helpers
   permissionGroups: ->
     Meteor.app.shopPermissionGroups
 
-  isChecked: (permissions) ->
-    @permission in (permissions || [])
+  isChecked: (permission, userId) ->
+    currentPermissions = Shops.findOne({"members.userId":userId},{fields: {"members.permissions": 1}}).members
+    for member in currentPermissions
+      if member?.permissions
+        for ischecked in member?.permissions
+          if ischecked is permission
+            return "checked"
 
-Template.shopMember.rendered = ->
-  $(@find(".toggle-shop-member-permissions")).collapsible
-    cookieName: "toggle-shop-member-permissions-" + @data.userId
-    speed: 200
+  hasOwnerAccessToggle: ->
+    if Meteor.app.hasOwnerAccess()
+      return "toggle-shop-member-permissions"
+
+  userIdIsAdmin: (userId) ->
+    return userId + "_is_admin"
+
+# Template.shopMember.rendered = ->
+#   $(@find(".toggle-shop-member-permissions")).collapsible
+#     cookieName: "toggle-shop-member-permissions-" + @data.userId
+#     speed: 200
 
 Template.shopMember.events
   "change .shop-member-is-admin": (event) ->

@@ -30,6 +30,11 @@ Template.settingsGeneral.helpers
           type: "success"
     shopEditForm
 
+  displayCustomEmailSettings: (doc) ->
+    if doc.useCustomEmailSettings
+      style = "display:none"
+      style
+
 Template.settingsGeneral.events
   "change #useCustomEmailSettings": (event) ->
     $('.useCustomEmailSettings').slideToggle()

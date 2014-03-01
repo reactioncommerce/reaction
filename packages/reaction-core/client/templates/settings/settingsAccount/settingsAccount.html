@@ -1,4 +1,5 @@
 <template name="settingsAccount">
+  {{>memberForm}}
   <div class="container">
     <h1>Accounts<small>Settings</small></h1>
     <table class="table staff-table">
@@ -17,6 +18,6 @@
     {{#if hasOwnerAccess}}
       <button type="button" class="btn btn-default button-add-member">Add a staff member</button>
     {{/if}}
-    {{> memberForm}}
   </div>
+
 </template>

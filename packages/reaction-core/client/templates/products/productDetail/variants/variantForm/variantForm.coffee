@@ -37,6 +37,14 @@ Template.variantForm.helpers
     ]
     options
 
+  displayInventoryManagement: (doc) ->
+    unless doc.inventoryManagement
+      return "display:none;"
+
+  displayLowInventoryWarning: (doc) ->
+    unless doc.inventoryManagement
+      return "display:none;"
+
 Template.variantForm.events
   "submit form": (event,template) ->
     currentProduct.changed "product"
