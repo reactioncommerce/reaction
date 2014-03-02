@@ -267,6 +267,14 @@ Template.productDetail.events
           sessionId: Session.get "sessionId"
           userId: Meteor.userId()
 
+        # Get desired variant qty from form
+        quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
+        if quantity < 1
+            quantity = 1
+
+        CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
+        $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
+        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
         setTimeout (->
           toggleCartDrawer()
         ), 500
