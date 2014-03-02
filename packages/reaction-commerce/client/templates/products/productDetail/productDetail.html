@@ -39,71 +39,63 @@
     <div class="col-md-7">
       <!-- main product information -->
       <div class="row col-md-10 col-offset-md-4 pdp-editable">
-          <!-- Price Fixation -->
-          <div class="row">
-            <i class="fa fa-usd currency-symbol"> </i>
-            <span class="price">
-              {{#isolate}}
-              <span id="price" itemprop="price">{{actualPrice}}</span>
-              {{/isolate}}
-            </span>
-            {{>productSocial}}
-          </div>
-          {{!-- Vendor --}}
-          <div class="clearfix">
-            <span>by</span>
-            <div class="vendor">
-              <i id="vendor" itemprop="brand">{{vendor}}</i>
-            </div>
-          </div>
-
-          <!-- Tag it -->
-          <div class="row">
-            <div class="tags">
-              {{#if userHasRole "admin"}}
-                <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
-              {{else}}
-                {{#each tags}}
-                  <a href="{{pathFor "product/tag"}}">{{name}}</a>
-                {{/each}}
-              {{/if}}
-            </div>
-          </div>
-
-          <!-- Description -->
-          <div class="row">
-            <div id="description" class="description" itemprop="description">
-              {{#if userHasRole "admin"}}
-                {{description}}
-              {{else}}
-                {{!-- Render as html on client view --}}
-                {{{description}}}
-              {{/if}}
-            </div>
-          </div>
-      </div>
-
-      <!-- Variants -->
-      <div class="row col-md-10 col-offset-md-4 options-add-to-cart">
-        {{>variantList}}
-
-        <!--  Add to cart -->
-        {{#autoForm schema=quantityFormSchema doc=data name='addToCart'}}
-        <div class="col-xs-12 col-sm-2 col-md-2 ">
-          <fieldset class="addToCartQty">
-            <div class="form-group{{#if afFieldIsInvalid 'addToCartQty'}} has-error{{/if}}">
-              {{afFieldLabel "addToCartQty"}}
-              {{afFieldInput "addToCartQty" value=1 maxlength=2}}
-              {{#if afFieldIsInvalid "addToCartQty"}}
-              <span class="help-block">{{afFieldMessage "addToCartQty"}}</span>
-              {{/if}}
-            </div>
-          </fieldset>
+        {{!-- Price Fixation --}}
+        <div class="row">
+          <i class="fa fa-usd currency-symbol"> </i>
+          <span class="price">
+            {{#isolate}}
+            <span id="price" itemprop="price">{{actualPrice}}</span>
+            {{/isolate}}
+          </span>
+          {{>productSocial}}
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-10">
-          <div class="btn btn-primary btn-lg btn-block" id="add-to-cart">Add to cart</div>
+
+        {{!-- Vendor --}}
+        <div class="clearfix">
+          <div class="vendor">
+            <i id="vendor" itemprop="brand">{{vendor}}</i>
+          </div>
         </div>
-        {{/autoForm}}
+
+        {{!-- Tags --}}
+        <div class="row">
+          <div class="tags">
+            {{#if userHasRole "admin"}}
+              <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
+            {{else}}
+              {{#each tags}}
+                <a href="{{pathFor "product/tag"}}">{{name}}</a>
+              {{/each}}
+            {{/if}}
+          </div>
+        </div>
+
+        {{!-- Description --}}
+        <div class="row">
+          <div id="description" class="description" itemprop="description">
+            {{#if userHasRole "admin"}}
+              {{description}}
+            {{else}}
+              {{!-- Render as html on client view --}}
+              {{{description}}}
+            {{/if}}
+          </div>
+        </div>
+
+        {{!-- Variants --}}
+        <div class="row options-add-to-cart">
+          {{>variantList}}
+        </div>
+
+        {{!-- Cart Add Block --}}
+        <div class="alert alert-info hidden"></div>
+        <div class="btn btn-primary add-to-cart-block" id="add-to-cart">
+          <div class="col-xs-1 add-to-cart-quantity pull-left">
+            <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1"/>
+          </div>
+          <div class="add-to-cart-text">Add to cart</div>
+        </div>
+
       </div>
       <!-- END Right Side -->
     </div>

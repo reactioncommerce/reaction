@@ -231,6 +231,24 @@ Template.productDetail.events
   #     else # just tab
   #       # find the parent of the editable after this one in the markup
   #       $(event.target).blur().parents().nextAll(":has(.editable):first").find(".editable:first").editable "show"
+  "click #add-to-cart-quantity": (event,template) ->
+    event.preventDefault()
+    event.stopPropagation()
+
+  "change #add-to-cart-quantity": (event,template) ->
+    event.preventDefault()
+    event.stopPropagation()
+    console.log "here"
+    if (currentProduct.get "variant")
+        variant = currentProduct.get "variant"
+        quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
+        if quantity < 1
+            quantity = 1
+        # If variant has inventory policy and desired qty is greater than inv, show warning and set qty to max inv
+        # TODO: Should check the amount in the cart as well and deduct from available.
+        if variant.inventoryPolicy and quantity > variant.inventoryQuantity
+          $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
+          return
 
   "click #add-to-cart": (event, template) ->
     event.preventDefault()
@@ -249,20 +267,6 @@ Template.productDetail.events
           sessionId: Session.get "sessionId"
           userId: Meteor.userId()
 
-        # Get desired variant qty from form
-        quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
-        if quantity < 1
-            quantity = 1
-
-        # If variant has inventory policy and desired qty is greater than inv, show warning and set qty to max inv
-        if variant.inventoryPolicy and quantity > variant.inventoryQuantity
-          $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
-          throwAlert("Sorry, we only have " + variant.inventoryQuantity + " left in stock!")
-          return
-
-        CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
-        $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
-        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
         setTimeout (->
           toggleCartDrawer()
         ), 500
