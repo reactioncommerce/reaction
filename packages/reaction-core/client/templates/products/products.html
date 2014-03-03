@@ -1,6 +1,23 @@
-<template name="dashboard/products">
-  <div class="container">
-    {{!-- Product Templates --}}
-    {{> productListGrid}}
+<template name="products">
+{{!-- Product Templates --}}
+{{> productListGrid}}
+</template>
+
+<template name="productListGrid">
+{{#if userHasRole "admin"}}
+  <div class="row">
+    <a id="productGridView"> <i class="fa fa-th-large fa-lg pull-right"></i></a>
+    <a id="productListView"> <i class="fa fa-th-list fa-lg pull-right"></i></a>
+    {{#if isInRole 'admin'}}
+      <a href="#" class="add-product-link fa fa-plus fa-lg pull-right"></a>
+    {{/if}}
   </div>
+{{/if}}
+  <div class="row">
+    {{>productGrid}}
+    {{#if userHasRole "admin"}}
+      {{>productList}}
+    {{/if}}
+  </div>
+
 </template>

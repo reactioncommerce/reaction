@@ -1,25 +1,35 @@
 <template name="tags">
-    {{#if _id}}
-      <div class="current-shop-tag">
-        <div class="current-shop-tag-content">
-          {{#if userHasRole "admin"}}
-            <a href="#" class="edit-link fa fa-pencil"></a>
-            <a href="#" class="remove-link fa fa-trash-o" data-confirm="Are you sure you want to remove this tag?"></a>
-          {{/if}}
-          {{name}}:
+    {{#if userHasRole "admin"}}
+      {{#if _id}}
+        <div class="current-shop-tag">
+          <div class="current-shop-tag-content">
+              <a href="#" class="edit-link fa fa-pencil"></a>
+              <a href="#" class="remove-link fa fa-trash-o" data-confirm="Are you sure you want to remove this tag?"></a>
+          </div>
+          <form class="current-shop-tag-edit-form">
+            <label for="current-shop-tag-edit-name" class="sr-only">Name</label>
+            <input class="form-control current-shop-tag-edit-name" id="current-shop-tag-edit-name" name="name" placeholder="Name" value="{{name}}"/>
+            <button class="save-button btn btn-primary btn-sm">Save</button>
+            <button class="cancel-button btn btn-sm">Cancel</button>
+          </form>
         </div>
-        <form class="current-shop-tag-edit-form">
-          <label for="current-shop-tag-edit-name" class="sr-only">Name</label>
-          <input class="form-control current-shop-tag-edit-name" id="current-shop-tag-edit-name" name="name" placeholder="Name" value="{{name}}"/>
-          <button class="save-button btn btn-primary btn-sm">Save</button>
-          <button class="cancel-button btn btn-sm">Cancel</button>
-        </form>
-      </div>
+      {{/if}}
     {{/if}}
     {{#isolate}}
       <ul class="shop-tags">
+        <!-- <li><a href="{{pathFor "index"}}">Home</a></li> -->
         {{#each tags}}
-          <li data-id="{{_id}}"><a href="{{pathFor "product/tag"}}">{{name}}</a></li>
+          {{#if activeTag ../_id}}
+            <li>
+              <div class="active-tag">
+              {{name}}
+              </div>
+            </li>
+          {{else}}
+            <li>
+              <a href="{{pathFor "product/tag"}}" data-id="{{_id}}">{{name}}</a>
+            </li>
+          {{/if}}
         {{/each}}
       </ul>
     {{/isolate}}

@@ -84,7 +84,7 @@ Router.map ->
     path: 'product/tag/:_id',
     data: ->
       tag: Tags.findOne(@params._id)
-    template: "productListGrid"
+    template: "products"
 
   # product view / edit page
   @route 'product',

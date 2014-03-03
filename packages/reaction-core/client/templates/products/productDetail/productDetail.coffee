@@ -238,13 +238,11 @@ Template.productDetail.events
   "change #add-to-cart-quantity": (event,template) ->
     event.preventDefault()
     event.stopPropagation()
-    console.log "here"
     if (currentProduct.get "variant")
         variant = currentProduct.get "variant"
         quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
         if quantity < 1
             quantity = 1
-        # If variant has inventory policy and desired qty is greater than inv, show warning and set qty to max inv
         # TODO: Should check the amount in the cart as well and deduct from available.
         if variant.inventoryPolicy and quantity > variant.inventoryQuantity
           $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
