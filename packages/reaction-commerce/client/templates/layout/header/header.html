@@ -2,7 +2,7 @@
   <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="navbar-header">
       <a class="navbar-brand" href="{{pathFor 'index'}}">{{{siteName}}}</a>
-      <div class="visible-xs hidden-sm hidden-lg hidden-md pull-right">{{>cartIcon}}</div>
+      <div class="visible-xs hidden-sm hidden-lg hidden-md">{{>cartIcon}}</div>
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -12,10 +12,18 @@
 
     <div class="collapse navbar-collapse">
       <div class="nav navbar-nav login-buttons">{{loginButtons}}</div>
+      <div class="nav navbar-text">
+        {{#if currentTag}}
+          {{>tags currentTag}}
+        {{else}}
+          {{>tags}}
+        {{/if}}
+      </div>
       <div class="nav navbar-nav hidden-xs nav-cart-icon">
         {{>cartIcon}}
       </div>
 
     </div>
   </div>
+
 </template>

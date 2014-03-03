@@ -62,10 +62,6 @@
           <div class="tags">
             {{#if userHasRole "admin"}}
               <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
-            {{else}}
-              {{#each tags}}
-                <a href="{{pathFor "product/tag"}}">{{name}}</a>
-              {{/each}}
             {{/if}}
           </div>
         </div>

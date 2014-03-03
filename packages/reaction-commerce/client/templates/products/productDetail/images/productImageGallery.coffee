@@ -81,10 +81,20 @@ Template.productImageGallery.rendered = ->
 # returns image url
 # *****************************************************
 Template.productImageGallery.events
-  "click .view-image": (event, template) ->
-    #Template.productImageGallery._tmpl_data.helpers.primaryImage @src
-    $('#main-image').attr('src', @src )
+  "mouseover .view-image": (event, template) ->
+    unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      source = @src
+      unless source is $("#main-image").attr("src")
+        $(".view-image").removeClass("product-image-selected")
+        $(event.currentTarget).addClass("product-image-selected")
+        $("#main-image").fadeOut 400, ->
+          $(this).attr("src", source).bind "onreadystatechange load", ->
+            $(this).fadeIn 300 if @complete
+            return
+          return
 
+  "click .view-image": (event, template) ->
+    $('#main-image').attr('src', @src )
 
 # *****************************************************
 # manual image upload

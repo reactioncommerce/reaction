@@ -92,6 +92,7 @@ Package.on_use(function (api, where) {
 
     "client/templates/layout/header/header.html",
     "client/templates/layout/header/header.coffee",
+    "client/templates/layout/header/header.less",
 
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",

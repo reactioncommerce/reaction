@@ -75,6 +75,12 @@ Handlebars.registerHelper "pluralize", (n, thing) ->
   else
     n + " " + thing + "s"
 
+# *****************************************************
+# general helper for formatting price
+# returns string float currency format
+# *****************************************************
+Handlebars.registerHelper "formatPrice", (price) ->
+  price.toFixed(2)
 
 # *****************************************************
 # general helper user name handling
