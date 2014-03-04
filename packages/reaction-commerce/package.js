@@ -94,14 +94,14 @@ Package.on_use(function (api, where) {
     "client/templates/layout/header/header.coffee",
     "client/templates/layout/header/header.less",
 
+    "client/templates/layout/header/tags/tags.html",
+    "client/templates/layout/header/tags/tags.coffee",
+    "client/templates/layout/header/tags/tags.less",
+
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",
 
     "client/templates/layout/loading/loading.html",
-
-    "client/templates/layout/shopHeader/tags/tags.html",
-    "client/templates/layout/shopHeader/tags/tags.coffee",
-    "client/templates/layout/shopHeader/tags/tags.less",
 
     "client/templates/layout/shopHeader/shopNavElements/shopNavElements.html",
     "client/templates/layout/shopHeader/shopNavElements/shopNavElements.coffee",

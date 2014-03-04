@@ -1,0 +1,22 @@
+<template name="headerTags">
+<div class="header-tags">
+  <div>
+    <ul class="header-tags-list" data-id="{{_id}}">
+      {{#each tags}}
+        <li>
+        {{#if activeTag ../tag._id}}
+          <span class="header-active-tag" data-id="{{_id}}">{{name}}</span>
+        {{else}}
+          <a href="{{pathFor "product/tag"}}" data-id="{{_id}}">{{name}}</a>
+        {{/if}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div>
+    {{#if userHasRole "admin"}}
+        <span id="header-add-tag" class="header-add-tag" data-current-id="{{tag._id}}"><i class="fa fa-plus"></i></span>
+    {{/if}}
+  </div>
+</div>
+</template>
