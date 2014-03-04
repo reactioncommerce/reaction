@@ -12,12 +12,8 @@
 
     <div class="collapse navbar-collapse">
       <div class="nav navbar-nav login-buttons">{{loginButtons}}</div>
-      <div class="nav navbar-text">
-        {{#if currentTag}}
-          {{>tags currentTag}}
-        {{else}}
-          {{>tags}}
-        {{/if}}
+      <div class="nav">
+      {{>headerTags}}
       </div>
       <div class="nav navbar-nav hidden-xs nav-cart-icon">
         {{>cartIcon}}
