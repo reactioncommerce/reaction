@@ -137,32 +137,10 @@ Meteor.methods
       newTag.shopId = Meteor.app.getCurrentShop()._id
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
-      console.log newTag
       newTag._id = Tags.insert(newTag, (error, newTagId) ->
           if !error
             if currentTagId
               Tags.update(currentTagId, {$addToSet: {relatedTagIds: newTagId}})
       )
-
-    # existingTag = Tags.findOne({slug: newTag.slug})
-
-    # console.log newTag
-    # if existingTag
-    #   if currentTagId # don't merge conditions
-    #     Tags.update(currentTagId, {$addToSet: {relatedTagIds: existingTag._id}})
-    #   else
-    #     Tags.update(existingTag._id, {$set: {isTopLevel: true, position: $(".shop-tags li").length + 1}})
-    # else
-    #   newTag.isTopLevel = !currentTagId
-    #   newTag.shopId = Meteor.app.shopId
-    #   newTag.updatedAt = new Date()
-    #   newTag.createdAt = new Date()
-    #   newTag._id = Tags.insert(newTag
-    #   ,
-    #     validationContext: "insert"
-    #   ,
-    #     (error, newTagId) ->
-    #       if !error
-    #         if currentTagId
-    #           Tags.update(currentTagId, {$addToSet: {relatedTagIds: newTagId}})
-    #   )
+  removeHeaderTag: (tagId) ->
+    Tags.remove(tagId)
