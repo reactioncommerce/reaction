@@ -16,6 +16,8 @@ Template.headerTags.helpers
         for relatedTagId in @.tagIds
           unless (_.findWhere tags, _id: relatedTagId)
             tags.push(Tags.findOne(relatedTagId))
+    tags.sort (a, b) ->
+      a.position - b.position
     tags
 
   activeTag: (currentTag)->
@@ -48,6 +50,7 @@ Template.headerTags.rendered = ->
     $.fn.editable.defaults.highlight = '#eff6db'
     $.fn.editable.defaults.clear = true
 
+    #TODO: Implement Typeahead
     $("#header-add-tag").editable
       type: "text"
       emptytext: "add tag"
@@ -61,10 +64,20 @@ Template.headerTags.rendered = ->
     $(".header-active-tag").editable
       type: "text"
       success: (response, newValue) ->
-        Meteor.call "updateHeaderTags", newValue, $(@).attr('data-id')
-      validate: (value) ->
-        if $.trim(value) is ""
-          throwAlert "A name is required"
-          false
+        console.log newValue
+        if newValue
+          Meteor.call "updateHeaderTags", newValue, $(@).attr('data-id')
+        else
+          Meteor.call "removeHeaderTag", $(@).attr('data-id')
+          Router.go("index")
 
+
+    $(".header-tags-list").sortable
+      items: "> li.header-tags-item"
+      axis: "x"
+      update: (event, ui) ->
+        tagId = ui.item[0].id
+        uiPositions = $(this).sortable("toArray",attribute:"data-id")
+        for tag,index in uiPositions
+          Tags.update(tag, {$set: {position: index}})
 

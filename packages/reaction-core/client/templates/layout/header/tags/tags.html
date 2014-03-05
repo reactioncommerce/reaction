@@ -1,9 +1,9 @@
 <template name="headerTags">
 <div class="header-tags">
   <div>
-    <ul class="header-tags-list" data-id="{{_id}}">
+    <ul class="header-tags-list">
       {{#each tags}}
-        <li>
+        <li class="header-tags-item" id="tag-{{_id}}" data-id="{{_id}}">
         {{#if activeTag ../tag._id}}
           <span class="header-active-tag" data-id="{{_id}}">{{name}}</span>
         {{else}}
