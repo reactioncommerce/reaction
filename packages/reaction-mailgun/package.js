@@ -14,7 +14,6 @@ Package.on_use(function (api, where) {
 
   api.use([
     "autoform",
-    "bootstrap3-less",
     "less",
     "reaction-commerce"
   ], ["client"]);

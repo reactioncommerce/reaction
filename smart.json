@@ -4,14 +4,12 @@
     "roles": {},
     "iron-router": {},
     "videojs": {},
-    "bootstrap3-less": {},
     "autoform": {},
     "collection2": {},
     "underscore-string-latest": {},
     "jquery-cookie": {},
     "collection-hooks": {},
     "jqueryui": {},
-    "font-awesome-4-less": {},
     "collectionFS": {},
     "handlebars-server": {}
   }

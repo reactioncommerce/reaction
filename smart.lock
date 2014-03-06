@@ -6,14 +6,12 @@
       "roles": {},
       "iron-router": {},
       "videojs": {},
-      "bootstrap3-less": {},
       "autoform": {},
       "collection2": {},
       "underscore-string-latest": {},
       "jquery-cookie": {},
       "collection-hooks": {},
       "jqueryui": {},
-      "font-awesome-4-less": {},
       "collectionFS": {},
       "handlebars-server": {}
     },
@@ -37,11 +35,6 @@
         "git": "https://github.com/nate-strauser/meteor-video-js.git",
         "tag": "v4.1.2",
         "commit": "26b85c5c75d456556bf1a1c5f00264a834813e73"
-      },
-      "bootstrap3-less": {
-        "git": "https://github.com/eprochasson/bootstrap3-less",
-        "tag": "v0.1.9",
-        "commit": "5c812c4d7ce72917a065f0424c3cf54e5ff2d16a"
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
@@ -72,11 +65,6 @@
         "git": "https://github.com/mizzao/meteor-jqueryui.git",
         "tag": "v1.10.3r2",
         "commit": "d54f75cfad37ff8ce6ef9ad49de55738ba921af7"
-      },
-      "font-awesome-4-less": {
-        "git": "https://github.com/svub/fontawesome4-less.git",
-        "tag": "v4.0.3.2",
-        "commit": "f269e4e2cfa03b292452b658fdf50afb02a9f14c"
       },
       "collectionFS": {
         "git": "https://github.com/raix/Meteor-CollectionFS.git",

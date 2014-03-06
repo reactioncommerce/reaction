@@ -134,7 +134,6 @@ ProductPositionSchema = new SimpleSchema
   inventoryQuantity:
     type: Number
     label: "Quantity"
-    min: 0
     optional: true
   price:
     label: "Price"

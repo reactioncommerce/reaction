@@ -8,6 +8,7 @@ Npm.depends({
     "node-phantom": '0.2.5'
 });
 
+
 Package.on_use(function (api, where) {
   api.use([
     "standard-app-packages",
@@ -26,10 +27,7 @@ Package.on_use(function (api, where) {
 
   api.use([
     "autoform",
-    "bootstrap3-less",
-    "font-awesome-4-less",
     "iron-router",
-    "pnotify-bootstrap-3-less",
     "jqueryui",
     "jquery-cookie",
     "videojs",
@@ -37,9 +35,32 @@ Package.on_use(function (api, where) {
     "spin"
   ], ["client"]);
 
+api.add_files([
+    //bootstrap
+    "lib/bootstrap/lib/js/transition.js",
+    "lib/bootstrap/lib/js/alert.js",
+    "lib/bootstrap/lib/js/button.js",
+    "lib/bootstrap/lib/js/carousel.js",
+    "lib/bootstrap/lib/js/collapse.js",
+    "lib/bootstrap/lib/js/dropdown.js",
+    "lib/bootstrap/lib/js/modal.js",
+    "lib/bootstrap/lib/js/tooltip.js",
+    "lib/bootstrap/lib/js/popover.js",
+    "lib/bootstrap/lib/js/scrollspy.js",
+    "lib/bootstrap/lib/js/tab.js",
+    "lib/bootstrap/lib/js/affix.js",
+
+    // x-editable
+    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/css/bootstrap-editable.css",
+    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.js",
+    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/clear.png",
+    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/loading.gif"
+ ], ["client"]);
+
+  // Core Reaction
   api.add_files([
-    "lib/vendor/header_spy.coffee",
-    "lib/vendor/statemachine/state-machine.js",
+    "lib/header_spy.coffee",
+    "lib/statemachine/state-machine.js",
     "common/collections.coffee",
     "common/hooks.coffee"
   ], ["client", "server"]);
@@ -58,20 +79,21 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.add_files([
-    "client/workflows/cart/workflow.coffee",
-    "client/workflows/orders/workflow.coffee",
+    "lib/masonry/masonry.pkgd.js",
+    "lib/sparkline/jquery.sparkline.js",
 
-    "lib/vendor/masonry/masonry.pkgd.js",
-    "lib/vendor/sparkline/jquery.sparkline.js",
+    "lib/select2/select2.js",
+    "lib/select2/select2.css",
+    "lib/select2-bootstrap-css/select2-bootstrap.css",
 
-    "lib/vendor/select2/select2.js",
-    "lib/vendor/select2/select2.css",
-    "lib/vendor/select2-bootstrap-css/select2-bootstrap.css",
+    "lib/owl.carousel/owl-carousel/owl.carousel.css",
+    "lib/owl.carousel/owl-carousel/owl.theme.css",
+    "lib/owl.carousel/owl-carousel/owl.carousel.js",
+    "lib/imagesLoaded/imagesloaded.pkgd.js",
 
-    "lib/vendor/owl.carousel/owl-carousel/owl.carousel.css",
-    "lib/vendor/owl.carousel/owl-carousel/owl.theme.css",
-    "lib/vendor/owl.carousel/owl-carousel/owl.carousel.js",
-    "lib/vendor/imagesLoaded/imagesloaded.pkgd.js",
+    "lib/jquery-ui-1.10.3.custom.css",
+    "lib/jquery.collapsible.js",
+    "lib/jquery.serialize-hash.coffee",
 
     "client/app.coffee",
     "client/register.coffee",
@@ -81,22 +103,16 @@ Package.on_use(function (api, where) {
     "client/helpers/helpers.coffee",
     "client/helpers/config.coffee",
     "client/helpers/errors.coffee",
-    "client/helpers/fonts.coffee",
     "client/helpers/handlebars.coffee",
 
-    "client/less/index.less",
-
-    "client/lib/jquery-ui-1.10.3.custom.css",
-    "client/lib/jquery.collapsible.js",
-    "client/lib/jquery.serialize-hash.coffee",
+    "client/workflows/cart/workflow.coffee",
+    "client/workflows/orders/workflow.coffee",
 
     "client/templates/layout/header/header.html",
     "client/templates/layout/header/header.coffee",
-    "client/templates/layout/header/header.less",
 
     "client/templates/layout/header/tags/tags.html",
     "client/templates/layout/header/tags/tags.coffee",
-    "client/templates/layout/header/tags/tags.less",
 
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",
@@ -114,69 +130,54 @@ Package.on_use(function (api, where) {
 
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
-    "client/templates/cart/cartDrawer/cartDrawer.less",
 
     "client/templates/cart/cartDrawer/cartItems/cartItems.html",
     "client/templates/cart/cartDrawer/cartItems/cartItems.coffee",
-    "client/templates/cart/cartDrawer/cartItems/cartItems.less",
 
     "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.html",
     "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.coffee",
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.less",
 
     "client/templates/cart/cartIcon/cartIcon.html",
     "client/templates/cart/cartIcon/cartIcon.coffee",
-    "client/templates/cart/cartIcon/cartIcon.less",
 
     "client/templates/cart/checkout/checkout.html",
-    "client/templates/cart/checkout/checkout.less",
     "client/templates/cart/checkout/checkout.coffee",
 
     "client/templates/cart/checkout/login/login.html",
-    "client/templates/cart/checkout/login/login.less",
     "client/templates/cart/checkout/login/login.coffee",
 
     "client/templates/cart/checkout/header/header.html",
-    "client/templates/cart/checkout/header/header.less",
     "client/templates/cart/checkout/header/header.coffee",
 
     "client/templates/cart/checkout/progressBar/progressBar.html",
-    "client/templates/cart/checkout/progressBar/progressBar.less",
     "client/templates/cart/checkout/progressBar/progressBar.coffee",
 
     "client/templates/cart/checkout/addressBook/addressBook.html",
     "client/templates/cart/checkout/addressBook/addressBook.coffee",
-    "client/templates/cart/checkout/addressBook/addressBook.less",
 
     "client/templates/cart/checkout/addressBook/addressForm/add.html",
     "client/templates/cart/checkout/addressBook/addressForm/add.coffee",
-    "client/templates/cart/checkout/addressBook/addressForm/add.less",
+
     "client/templates/cart/checkout/addressBook/addressForm/edit.html",
     "client/templates/cart/checkout/addressBook/addressForm/edit.coffee",
 
     "client/templates/cart/checkout/review/review.html",
-    "client/templates/cart/checkout/review/review.less",
     "client/templates/cart/checkout/review/review.coffee",
 
     "client/templates/cart/checkout/payment/payment.html",
-    "client/templates/cart/checkout/payment/payment.less",
     "client/templates/cart/checkout/payment/payment.coffee",
 
     "client/templates/cart/checkout/payment/methods/cards.html",
-    "client/templates/cart/checkout/payment/methods/cards.less",
     "client/templates/cart/checkout/payment/methods/cards.coffee",
 
     "client/templates/cart/checkout/completed/completed.html",
-    "client/templates/cart/checkout/completed/completed.less",
     "client/templates/cart/checkout/completed/completed.coffee",
 
     "client/templates/cart/checkout/shipping/shipping.html",
-    "client/templates/cart/checkout/shipping/shipping.less",
     "client/templates/cart/checkout/shipping/shipping.coffee",
 
     "client/templates/dashboard/widget/widget.html",
     "client/templates/dashboard/widget/widget.coffee",
-    "client/templates/dashboard/widget/widget.less",
 
     "client/templates/dashboard/shopwelcome/shopwelcome.html",
 
@@ -188,63 +189,47 @@ Package.on_use(function (api, where) {
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
-    "client/templates/dashboard/orders/orders.less",
 
     "client/templates/dashboard/orders/details/detail.html",
     "client/templates/dashboard/orders/details/detail.coffee",
-    "client/templates/dashboard/orders/details/detail.less",
 
     "client/templates/dashboard/orders/social/orderSocial.html",
     "client/templates/dashboard/orders/social/orderSocial.coffee",
-    "client/templates/dashboard/orders/social/orderSocial.less",
 
     "client/templates/dashboard/orders/stateHelpers/completed/completed.html",
     "client/templates/dashboard/orders/stateHelpers/completed/completed.coffee",
-    "client/templates/dashboard/orders/stateHelpers/completed/completed.less",
 
     "client/templates/dashboard/orders/stateHelpers/documents/documents.html",
     "client/templates/dashboard/orders/stateHelpers/documents/documents.coffee",
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.less",
 
     "client/templates/dashboard/orders/stateHelpers/packing/packing.html",
     "client/templates/dashboard/orders/stateHelpers/packing/packing.coffee",
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.less",
 
     "client/templates/dashboard/orders/stateHelpers/payment/payment.html",
     "client/templates/dashboard/orders/stateHelpers/payment/payment.coffee",
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.less",
 
     "client/templates/dashboard/orders/stateHelpers/shipped/shipped.html",
     "client/templates/dashboard/orders/stateHelpers/shipped/shipped.coffee",
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.less",
 
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.coffee",
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.less",
-
 
     "client/templates/dashboard/navigation/dashboardSidebar.html",
-    "client/templates/dashboard/navigation/dashboardSidebar.less",
     "client/templates/dashboard/navigation/dashboardSidebar.coffee",
 
     "client/templates/dashboard/packages/activePkgGrid/widget/widget.html",
-    "client/templates/dashboard/packages/activePkgGrid/widget/widget.less",
     "client/templates/dashboard/packages/activePkgGrid/widget/widget.coffee",
 
     "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.html",
-    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.less",
     "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.coffee",
 
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.html",
-    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.less",
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.coffee",
 
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.html",
-    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.less",
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.coffee",
 
     "client/templates/dashboard/packages/dashboard.html",
-    "client/templates/dashboard/packages/dashboard.less",
     "client/templates/dashboard/packages/dashboard.coffee",
 
     "client/templates/dashboard/introduction/introduction.html",
@@ -252,54 +237,94 @@ Package.on_use(function (api, where) {
 
     "client/templates/settings/settingsGeneral/settingsGeneral.html",
     "client/templates/settings/settingsGeneral/settingsGeneral.coffee",
-    "client/templates/settings/settingsGeneral/settingsGeneral.less",
 
     "client/templates/settings/settingsAccount/settingsAccount.html",
     "client/templates/settings/settingsAccount/settingsAccount.coffee",
 
     "client/templates/settings/settingsAccount/shopMember/shopMember.html",
     "client/templates/settings/settingsAccount/shopMember/shopMember.coffee",
-    "client/templates/settings/settingsAccount/shopMember/shopMember.less",
 
     "client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.html",
     "client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
-    "client/templates/products/products.less",
-
     "client/templates/products/productList/productList.html",
     "client/templates/products/productList/productList.coffee",
-    "client/templates/products/productList/productList.less",
 
     "client/templates/products/productGrid/productGrid.html",
     "client/templates/products/productGrid/productGrid.coffee",
-    "client/templates/products/productGrid/productGrid.less",
 
     "client/templates/products/productDetail/productDetail.html",
     "client/templates/products/productDetail/productDetail.coffee",
-    "client/templates/products/productDetail/productDetail.less",
 
     "client/templates/products/productDetail/images/productImageGallery.html",
     "client/templates/products/productDetail/images/productImageGallery.coffee",
-    "client/templates/products/productDetail/images/productImageGallery.less",
 
     "client/templates/products/productDetail/social/social.html",
     "client/templates/products/productDetail/social/social.coffee",
-    "client/templates/products/productDetail/social/social.less",
 
     "client/templates/products/productDetail/variants/variant.html",
     "client/templates/products/productDetail/variants/variant.coffee",
-    "client/templates/products/productDetail/variants/variant.less",
 
     "client/templates/products/productDetail/variants/variantForm/variantForm.html",
     "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
-    "client/templates/products/productDetail/variants/variantForm/variantForm.less",
 
     "client/templates/products/productDetail/attributes/attributes.html",
-    "client/templates/products/productDetail/attributes/attributes.less",
-    "client/templates/products/productDetail/attributes/attributes.coffee"
-  ], ["client"]);
+    "client/templates/products/productDetail/attributes/attributes.coffee",
 
+    // LESS IMPORT FILES
+    // All less is imported in themes/import.less, only add here for dev hot reload
+    "client/themes/imports.less",
+    "client/themes/default/theme.import.less",
+    "client/themes/default/variables.import.less",
+
+    // Monitor these LESS import files for changes
+    "client/templates/cart/cartDrawer/cartDrawer.import.less",
+    "client/templates/cart/cartDrawer/cartItems/cartItems.import.less",
+    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.import.less",
+    "client/templates/cart/cartIcon/cartIcon.import.less",
+    "client/templates/cart/checkout/addressBook/addressBook.import.less",
+    "client/templates/cart/checkout/addressBook/addressForm/add.import.less",
+    "client/templates/cart/checkout/checkout.import.less",
+    "client/templates/cart/checkout/completed/completed.import.less",
+    "client/templates/cart/checkout/header/header.import.less",
+    "client/templates/cart/checkout/login/login.import.less",
+    "client/templates/cart/checkout/payment/methods/cards.import.less",
+    "client/templates/cart/checkout/payment/payment.import.less",
+    "client/templates/cart/checkout/progressBar/progressBar.import.less",
+    "client/templates/cart/checkout/review/review.import.less",
+    "client/templates/cart/checkout/shipping/shipping.import.less",
+    "client/templates/dashboard/navigation/dashboardSidebar.import.less",
+    "client/templates/dashboard/orders/details/detail.import.less",
+    "client/templates/dashboard/orders/orders.import.less",
+    "client/templates/dashboard/orders/social/orderSocial.import.less",
+    "client/templates/dashboard/orders/stateHelpers/completed/completed.import.less",
+    "client/templates/dashboard/orders/stateHelpers/documents/documents.import.less",
+    "client/templates/dashboard/orders/stateHelpers/packing/packing.import.less",
+    "client/templates/dashboard/orders/stateHelpers/payment/payment.import.less",
+    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
+    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
+    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.import.less",
+    "client/templates/dashboard/packages/activePkgGrid/widget/widget.import.less",
+    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.import.less",
+    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.import.less",
+    "client/templates/dashboard/packages/dashboard.import.less",
+    "client/templates/dashboard/widget/widget.import.less",
+    "client/templates/layout/header/header.import.less",
+    "client/templates/layout/header/tags/tags.import.less",
+    "client/templates/products/productDetail/attributes/attributes.import.less",
+    "client/templates/products/productDetail/images/productImageGallery.import.less",
+    "client/templates/products/productDetail/productDetail.import.less",
+    "client/templates/products/productDetail/social/social.import.less",
+    "client/templates/products/productDetail/variants/variant.import.less",
+    "client/templates/products/productDetail/variants/variantForm/variantForm.import.less",
+    "client/templates/products/productGrid/productGrid.import.less",
+    "client/templates/products/productList/productList.import.less",
+    "client/templates/products/products.import.less",
+    "client/templates/settings/settingsAccount/shopMember/shopMember.import.less",
+    "client/templates/settings/settingsGeneral/settingsGeneral.import.less"
+
+  ], ["client"]);
 
   api.export([
     "PackagesHandle",
@@ -315,15 +340,12 @@ Package.on_use(function (api, where) {
     "install_spy",
     "ShopController",
     "Products",
-    "Orders",
-    "Customers",
     "ShopMemberSchema",
     "ProductVariantSchema",
     "AddressSchema",
     "VariantMediaSchema",
     "MetafieldSchema",
     "CartItemSchema",
-    "variant",
     "Shop",
     "Cart",
     "Tags"
