@@ -2,40 +2,17 @@
 -------------------------------------------------- */
 @import "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css";
 @import "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css";
-
-// Example bootswatch theme
-// @import "http://bootswatch.com/amelia/bootswatch.less";
-// @import "http://bootswatch.com/amelia/variables.less";
-
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,500,400italic,700,900,300,300italic,500italic|Open+Sans:300italic,400italic,600italic,400,300,600,700|PT+Sans+Caption:400,700);
 
-
-.editableform-loading {
-    background-image: url('/packages/reaction-commerce/lib/bootstrap3-editable-1.5.1/img/loading.gif');
-}
-
-.editable-clear-x {
-   background-image: url('/packages/reaction-commerce/lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/clear.png');
-}
+// Example bootswatch theme
+@import "http://bootswatch.com/slate/bootswatch.less";
+@import "http://bootswatch.com/slate/variables.less";
 
 html, body {
   position:relative;
   height: 100%;
+  letter-spacing: @letter-spacing;
   z-index:0;
-
-  font-style: normal;
-  letter-spacing: .4px;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */
-body.modal-open {
-  margin-right: 0px !important;
-}
-
-h1,h2 {
-  margin-top: 0px;
-  margin-bottom: 5px;
 }
 
 main {
@@ -48,26 +25,7 @@ main {
   padding: 0px 0px 100px 0px;
   z-index:1;
   background-color: @body-bg;
-
 }
-
-/* Set the fixed height of the footer here */
-footer {
-  position:relative;
-  height: 100px;
-  background-color: #f5f5f5;
-  padding-top: 10px;
-  z-index:-2;
-
-  .navbar-bottom {
-    position:fixed;
-    bottom:0px;
-    z-index:-1;
-    width:100%;
-  }
-}
-
-.container { width: 95%; }
 
 /* Inline error block */
 .error-block {
@@ -75,13 +33,6 @@ footer {
   padding-left: 30px;
   color: #b94a48;
 }
-
-/* Loading indicator */
-#spinner {
-  height: 300px
-}
-
-
 
 
 /* RESPONSIVE CSS
@@ -92,18 +43,15 @@ footer {
 }
 
 @media screen and (max-width: 767px) {
-    h1 {
-    font-size:30px;
-    }
+    // h1 {
+    // font-size:30px;
+    // }
     .navbar-toggle {
       float: left;
     }
-
-
     main {
       padding: 0px 0px 115px 0px;
     }
-
     /* Set the fixed height of the footer here */
     footer {
       height: 115px;

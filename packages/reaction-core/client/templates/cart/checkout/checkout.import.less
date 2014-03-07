@@ -1,21 +1,19 @@
-.cart-checkout {
+.cart-checkout-steps {
   padding: 0;
   .panel-title {
-      font-family: 'PT Sans Caption', sans-serif;
-    margin-left: 20px;
+    margin-left: 25px;
   }
 }
 
 .checkout-step-badge {
-  font-family: 'PT Sans Caption', sans-serif;
   -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
   box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-  background: #8bc53f;
+  background: @cart-progress-active;
   border: 2px solid #fff;
   border-radius: 50%;
   font-size: 16px;
   left: 21px;
-  top: -5px;
+  top: -3px;
   width: 45px;
   color: #fff;
   line-height: 45px;
@@ -29,21 +27,21 @@
 
 .checkout-step-badge-completed {
   .checkout-step-badge;
-   background: #57add1;
+   background: @cart-progress-visited;
 }
 .checkout-pending {
   display: block;
   margin-bottom: 10px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #f3f3f3;
+  background-color:  contrast(@body-bg,darken(@body-bg, 10%),lighten(@body-bg, 20%));
   width: 100%;
   height: 250px;
 
   background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
 
   .checkout-step-badge {
-    background-color: #ddd;
+    background-color: @cart-progress-next;
   }
 }
 
@@ -55,3 +53,17 @@
       margin-left: -60px;
   }
 }
+
+// @media (max-width: 768px) {
+//   .checkout-step-badge {
+//     margin: 0 0 2px 0px;
+//     display: none;
+//    }
+//   .checkout-step-badge-completed {
+//     .checkout-step-badge;
+//      background: #57add1;
+//   }
+//   .checkout-pending {
+//     display: none;
+//   }
+// }

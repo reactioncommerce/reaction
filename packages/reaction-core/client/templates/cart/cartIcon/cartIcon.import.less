@@ -8,14 +8,14 @@
 }
 
 .cart-icon {
-  color: #fff;
+  color: @cart-icon-text;
   margin: 2px 15px 0 0;
-  border: 4px solid rgba(129, 122, 122, 0.62);
+  border: @cart-icon-border;
   padding: 15px;
-  border-radius: 50%;
+  border-radius: @cart-icon-border-radius;
   display: block;
   position: fixed;
-  background-color: aliceblue;
+  background-color: @cart-icon-bg;
   top: 0;
   right: 0;
 
@@ -24,7 +24,7 @@
     position: absolute;
     top: 43px;
     right: 0px;
-    background-color: #25B315;
+    background-color: @cart-icon-badge;
   }
 
   .badge-warning {
@@ -32,6 +32,6 @@
     font-weight:bold;
     font-size:inherit;
     padding:2px 8px 2px 8px;
-    background-color:#FF0000;
+    background-color:@cart-icon-badge-warning;
   }
 }

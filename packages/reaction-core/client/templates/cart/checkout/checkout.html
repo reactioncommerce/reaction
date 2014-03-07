@@ -1,10 +1,9 @@
 <template name="cartCheckout">
-<div class="row">
-{{>checkoutProgressBar}}
-</div>
-<div class="cart-checkout">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container">
+  <div class="row cart-checkout-progress">
+    {{>checkoutProgressBar}}
+  </div>
+  <div class="row cart-checkout-steps">
       <div class="col-md-8">
         <div class="row">
           {{#if currentUser}}
@@ -58,7 +57,6 @@
           <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">5</i></div>
         {{/if}}
       </div>
-    </div>
   </div>
 </div>
 </template>
