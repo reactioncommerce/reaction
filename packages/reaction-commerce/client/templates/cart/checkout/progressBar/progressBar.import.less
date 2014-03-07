@@ -1,21 +1,21 @@
 //Thanks to Michael McQueen http://codepen.io/michaelmcqueen/pen/GdroF
-.gray-stripe {
+.next-stripe {
 background-size: 35px 35px;
-background-color: #EcEcEc;
+background-color: @cart-progress-next;
 background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
 background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
 }
 
-.blue-stripe {
+.visited-stripe {
 background-size: 35px 35px;
-background-color: #57aed1;
+background-color: @cart-progress-visited;
 background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
 background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
 }
 
-.green-stripe {
+.active-stripe {
 background-size: 35px 35px;
-background-color: #8bc53f;
+background-color: @cart-progress-active;
 background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
 background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
 }
@@ -32,12 +32,10 @@ background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, tran
   }
 }
 
-.checkout-wrap {
+.checkout-progress-wrap {
   color: #444;
-  font-family: 'PT Sans Caption', sans-serif;
   margin: 0 auto 100px auto;
-  min-width: 800px;
-  max-width: 70%;
+  min-width: auto;
   position: relative;
 }
 ul.checkout-bar {
@@ -67,19 +65,19 @@ ul.checkout-bar {
       z-index: 999;
     }
      &.active {
-      color: #8bc53f;
+      color: @cart-progress-active;
       font-weight: bold;
       &:before {
-        background: #8bc53f;
+        background: @cart-progress-active;
         z-index: 99999;
       }
     }
     &.visited {
-      background: #ECECEC;
-      color: #57aed1;
+      background: @cart-progress-next;
+      color: @cart-progress-visited;
       z-index: 99999;
       &:before {
-       background: #57aed1;
+       background: @cart-progress-visited;
         z-index: 99999;
       }
     }
@@ -122,7 +120,7 @@ ul.checkout-bar {
   }
 }
 @media screen and (max-width: 979px) {
-    .checkout-wrap {
+    .checkout-progress-wrap {
         display: none;
     }
 }
@@ -131,7 +129,7 @@ ul.checkout-bar {
 @media all and (min-width: 980px) {
  .checkout-bar li.active:after {
     -webkit-animation: myanimation 3s 0;
-    .green-stripe;
+    .active-stripe;
     .inner-shadow;
     content:"";
     height: 15px;
@@ -143,7 +141,7 @@ ul.checkout-bar {
   }
   ul.checkout-bar {
   .inner-shadow;
-  .gray-stripe;
+  .next-stripe;
   border-radius: 15px;
   height: 15px;
   margin: 0 auto;
@@ -151,7 +149,7 @@ ul.checkout-bar {
   position: absolute;
   width: 100%;
   &:before {
-    .blue-stripe;
+    .visited-stripe;
     .inner-shadow;
     border-radius: 15px;
     content: " ";
@@ -178,7 +176,7 @@ ul.checkout-bar {
       &.visited {
         background: none;
         &:after {
-          .blue-stripe;
+          .visited-stripe;
           .inner-shadow;
           content: "";
           height: 15px;

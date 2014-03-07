@@ -277,6 +277,7 @@ api.add_files([
     "client/themes/imports.less",
     "client/themes/default/theme.import.less",
     "client/themes/default/variables.import.less",
+    "client/themes/default/mixin.import.less",
 
     // Monitor these LESS import files for changes
     "client/templates/cart/cartDrawer/cartDrawer.import.less",
@@ -284,7 +285,6 @@ api.add_files([
     "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.import.less",
     "client/templates/cart/cartIcon/cartIcon.import.less",
     "client/templates/cart/checkout/addressBook/addressBook.import.less",
-    "client/templates/cart/checkout/addressBook/addressForm/add.import.less",
     "client/templates/cart/checkout/checkout.import.less",
     "client/templates/cart/checkout/completed/completed.import.less",
     "client/templates/cart/checkout/header/header.import.less",
@@ -311,6 +311,7 @@ api.add_files([
     "client/templates/dashboard/packages/dashboard.import.less",
     "client/templates/dashboard/widget/widget.import.less",
     "client/templates/layout/header/header.import.less",
+    "client/templates/layout/footer/footer.import.less",
     "client/templates/layout/header/tags/tags.import.less",
     "client/templates/products/productDetail/attributes/attributes.import.less",
     "client/templates/products/productDetail/images/productImageGallery.import.less",

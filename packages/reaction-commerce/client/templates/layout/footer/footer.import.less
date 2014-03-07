@@ -1,0 +1,17 @@
+/* Set the fixed height of the footer here */
+footer {
+  position:relative;
+  height: 100px;
+  background-color: @navbar-inverse-bg;
+  padding-top: 10px;
+  z-index:-2;
+  a {
+    color:  contrast(@navbar-inverse-bg,darken(@text-color, 10%),lighten(@text-color, 20%));
+  }
+  .navbar-bottom {
+    position:fixed;
+    bottom:0px;
+    z-index:-1;
+    width:100%;
+  }
+}

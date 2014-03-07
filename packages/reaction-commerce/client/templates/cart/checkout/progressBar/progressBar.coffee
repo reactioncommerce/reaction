@@ -3,9 +3,9 @@ progressbar status: "visited first","previous visited","active","next"
 ###
 Template.checkoutProgressBar.helpers
   loginStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-        status = "visited first"
-    else if Meteor.user()
+    if Meteor.user()
+      status = "previous visited"
+    else
       status = "active"
     status
 
@@ -13,7 +13,7 @@ Template.checkoutProgressBar.helpers
     if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
       status = "previous visited"
     else if Meteor.user()
-      status = ""
+      status = "active"
     status
 
   shippingOptionStatus: () ->
