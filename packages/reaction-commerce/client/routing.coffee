@@ -66,6 +66,16 @@ Router.map ->
       shop: Shops.findOne Meteor.app.shopId
     template: 'settingsAccount'
 
+  @route 'dashboard/settings/shop',
+    controller: ShopAdminController
+    path: '/shop/settings/general'
+    path: '/dashboard/settings/shop'
+    data: ->
+      shop: Shops.findOne Meteor.app.shopId
+    template: 'settingsGeneral'
+  @route 'shop/settings/account',
+
+
   # list page of customer records
   @route 'dashboard/customers',
     controller: ShopAdminController

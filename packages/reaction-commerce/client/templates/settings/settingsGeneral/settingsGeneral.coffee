@@ -21,10 +21,15 @@ Template.settingsGeneral.helpers
     shopEditForm = new AutoForm Shops
     shopEditForm.hooks
       formToDoc: (doc) ->
+        if doc.domains?.search /localhost,/
+          doc.domains = "localhost," + doc.domains
         doc.domains = doc.domains.split(",")  if typeof doc.domains is "string"
         doc
       onSuccess: (operation, result, template) ->
         Alerts.add "Shop settings are saved.", "success"
+      onError: (operation, error, template) ->
+        Alerts.add "Shop setings update failed." + error, "danger"
+
     shopEditForm
 
   displayCustomEmailSettings: (doc) ->
