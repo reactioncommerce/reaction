@@ -3,7 +3,9 @@ Router.configure
   loadingTemplate: "loading"
 
 Router.before ->
+  Alerts.removeSeen()
   @subscribe('shops').wait()
+  @subscribe('Packages').wait()
   @subscribe('cart', Session.get "sessionId", Meteor.userId()).wait()
   shop = Shops.findOne()
   unless shop
@@ -14,8 +16,8 @@ Router.before ->
 
 ShopController = RouteController.extend
   yieldTemplates:
-    templateHeader:
-      to: "templateHeader"
+    layoutHeader:
+      to: "layoutHeader"
 
     templateFooter:
       to: "templateFooter"
@@ -23,7 +25,7 @@ ShopController = RouteController.extend
     dashboardSidebar:
       to: "sidebar"
   before: ->
-# should we make it a default as Router.before?
+    # should we make it a default as Router.before?
     @subscribe('shops').wait()
     shop = Shops.findOne()
     unless shop
@@ -123,7 +125,7 @@ Router.map ->
       [share.ConfigDataHandle]
     yieldTemplates:
       checkoutHeader:
-        to: "templateHeader"
+        to: "layoutHeader"
 
   #completed orders
   @route 'cartCompleted',

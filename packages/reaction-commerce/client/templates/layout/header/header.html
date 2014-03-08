@@ -1,4 +1,4 @@
-<template name="templateHeader">
+<template name="layoutHeader">
   <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="navbar-header">
       <a class="navbar-brand" href="{{pathFor 'index'}}">{{{siteName}}}</a>
@@ -21,5 +21,7 @@
 
     </div>
   </div>
-
+  <div class="container">
+    {{> bootstrapAlerts}}
+  </div>
 </template>

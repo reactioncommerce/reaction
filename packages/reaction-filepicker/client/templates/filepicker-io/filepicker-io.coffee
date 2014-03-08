@@ -11,15 +11,9 @@ Template["filepicker-io"].events
     ,
       $set:
         apikey: apikey
-
-
     # TODO: Validate key with filepicker before adding
     # throwAlert("Success");
-    $.pnotify
-      title: "Saved \"" + apikey + "\""
-      text: "Filepicker.io is now configured."
-      type: "success"
-
+    Alerts.add "Saved \"" + apikey + "\"", "success"
     Router.go "dashboard"
 
   "click .cancel": (event) ->

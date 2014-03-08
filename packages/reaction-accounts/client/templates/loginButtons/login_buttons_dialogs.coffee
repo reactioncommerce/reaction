@@ -136,9 +136,8 @@
         # Prepare the configuration document for this login service
         serviceName = loginButtonsSession.get("configureLoginServiceDialogServiceName")
         configuration = service: serviceName
-        for field of configurationFields()
+        for field in configurationFields()
           configuration[field.property] = document.getElementById("configure-login-service-dialog-" + field.property).value.replace(/^\s*|\s*$/g, "") # trim;
-
 
         # Configure this login service
         Meteor.call "configureLoginService", configuration, (error, result) ->
@@ -146,8 +145,6 @@
             Meteor._debug "Error configuring login service " + serviceName, error
           else
             loginButtonsSession.set "configureLoginServiceDialogVisible", false
-
-
 
     # IE8 doesn't support the 'input' event, so we'll run this on the keyup as
     # well. (Keeping the 'input' event means that this also fires when you use
@@ -159,42 +156,42 @@
       updateSaveDisabled()  if event.target.id.indexOf("configure-login-service-dialog") is 0
 
 
-  # check whether the 'save configuration' button should be enabled.
-  # this is a really strange way to implement this and a Forms
-  # Abstraction would make all of this reactive, and simpler.
-  updateSaveDisabled = ->
-    anyFieldEmpty = _.any(configurationFields(), (field) ->
-      document.getElementById("configure-login-service-dialog-" + field.property).value is ""
-    )
-    loginButtonsSession.set "configureLoginServiceDialogSaveDisabled", anyFieldEmpty
+    # check whether the 'save configuration' button should be enabled.
+    # this is a really strange way to implement this and a Forms
+    # Abstraction would make all of this reactive, and simpler.
+    updateSaveDisabled = ->
+      anyFieldEmpty = _.any(configurationFields(), (field) ->
+        document.getElementById("configure-login-service-dialog-" + field.property).value is ""
+      )
+      loginButtonsSession.set "configureLoginServiceDialogSaveDisabled", anyFieldEmpty
 
 
-  # Returns the appropriate template for this login service.  This
-  # template should be defined in the service's package
-  configureLoginServiceDialogTemplateForService = ->
-    serviceName = loginButtonsSession.get("configureLoginServiceDialogServiceName")
-    Template["configureLoginServiceDialogFor" + capitalize(serviceName)]
+    # Returns the appropriate template for this login service.  This
+    # template should be defined in the service's package
+    configureLoginServiceDialogTemplateForService = ->
+      serviceName = loginButtonsSession.get("configureLoginServiceDialogServiceName")
+      Template["configureLoginServiceDialogFor" + capitalize(serviceName)]
 
-  configurationFields = ->
-    template = configureLoginServiceDialogTemplateForService()
-    template.fields()
+    configurationFields = ->
+      template = configureLoginServiceDialogTemplateForService()
+      return template.fields()
 
-  Template._configureLoginServiceDialog.configurationFields = ->
-    configurationFields()
+    Template._configureLoginServiceDialog.configurationFields = ->
+      configurationFields()
 
-  Template._configureLoginServiceDialog.visible = ->
-    loginButtonsSession.get "configureLoginServiceDialogVisible"
+    Template._configureLoginServiceDialog.visible = ->
+      loginButtonsSession.get "configureLoginServiceDialogVisible"
 
-  Template._configureLoginServiceDialog.configurationSteps = ->
-    # renders the appropriate template
-    configureLoginServiceDialogTemplateForService()()
+    Template._configureLoginServiceDialog.configurationSteps = ->
+      # renders the appropriate template
+      configureLoginServiceDialogTemplateForService()()
 
-  Template._configureLoginServiceDialog.saveDisabled = ->
-    loginButtonsSession.get "configureLoginServiceDialogSaveDisabled"
+    Template._configureLoginServiceDialog.saveDisabled = ->
+      loginButtonsSession.get "configureLoginServiceDialogSaveDisabled"
 
 
-  # XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
-  capitalize = (str) ->
-    str = (if not str? then "" else String(str))
-    str.charAt(0).toUpperCase() + str.slice(1)
+    # XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
+    capitalize = (str) ->
+      str = (if not str? then "" else String(str))
+      str.charAt(0).toUpperCase() + str.slice(1)
 )()

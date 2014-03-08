@@ -11,6 +11,7 @@
     "collection-hooks": {},
     "jqueryui": {},
     "collectionFS": {},
-    "handlebars-server": {}
+    "handlebars-server": {},
+    "bootstrap-alerts": {}
   }
 }

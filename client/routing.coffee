@@ -26,6 +26,7 @@ pages = [
   "terms"
   "privacy"
 ]
+
 Router.map ->
   @route "index",
     controller: ShopController

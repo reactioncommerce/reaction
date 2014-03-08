@@ -13,7 +13,8 @@
       "collection-hooks": {},
       "jqueryui": {},
       "collectionFS": {},
-      "handlebars-server": {}
+      "handlebars-server": {},
+      "bootstrap-alerts": {}
     },
     "packages": {
       "spin": {
@@ -63,8 +64,8 @@
       },
       "jqueryui": {
         "git": "https://github.com/mizzao/meteor-jqueryui.git",
-        "tag": "v1.10.3r2",
-        "commit": "d54f75cfad37ff8ce6ef9ad49de55738ba921af7"
+        "tag": "v1.10.4",
+        "commit": "c75906fc9e1e19abf1ad5b2963925122ff8a0336"
       },
       "collectionFS": {
         "git": "https://github.com/raix/Meteor-CollectionFS.git",
@@ -75,6 +76,11 @@
         "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
         "tag": "v1.1.0",
         "commit": "ed99c8e9280894519f44a5b4c84f66ff596c5450"
+      },
+      "bootstrap-alerts": {
+        "git": "https://github.com/asktomsk/bootstrap-alerts.git",
+        "tag": "v0.0.5",
+        "commit": "6ddd650208a77677ab86af9dfccc3a69b1ba8d32"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",

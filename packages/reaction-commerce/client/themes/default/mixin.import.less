@@ -2,7 +2,7 @@
 body.modal-open {
   margin-right: 0px !important;
 }
-
+/* Meteor Path Fix for x-editable */
 .editableform-loading {
     background-image: url('/packages/reaction-commerce/lib/bootstrap3-editable-1.5.1/img/loading.gif');
 }
@@ -14,4 +14,36 @@ body.modal-open {
 /* Loading indicator */
 #spinner {
   height: 300px
+}
+
+/* Badge Colors
+// Contextual variations of badges
+// Bootstrap 3.0 removed contexts for badges, we re-introduce them, based on what is done for labels
+*/
+.badge-default {
+  .label-variant(@label-default-bg);
+}
+
+.badge-primary {
+  .label-variant(@label-primary-bg);
+}
+
+.badge-success {
+  .label-variant(@label-success-bg);
+}
+
+.badge-info {
+  .label-variant(@label-info-bg);
+}
+
+.badge-warning {
+  .label-variant(@label-warning-bg);
+}
+
+.badge-danger {
+  .label-variant(@label-danger-bg);
+}
+
+.badge-low-inv-warning {
+  .label-variant(@label-warning-bg);
 }

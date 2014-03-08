@@ -14,10 +14,7 @@ Template.pkg.events
     pkg = Packages.findOne(name: @name)
     unless pkg
       Packages.insert name: @name
-      $.pnotify
-        title: "Enabled package"
-        text: @label + " is now enabled."
-        type: "success"
+      Alerts.add @label + " is now enabled.", "success"
 
     Router.go @route  if @route
 
@@ -25,9 +22,4 @@ Template.pkg.events
     event.preventDefault()
     pkg = Packages.findOne(name: @name)
     Packages.remove pkg._id
-    $.pnotify
-      title: "Disabled Package"
-      text: @label + " is now disabled."
-      type: "success"
-
-
+    Alerts.add @label + " is now disabled.", "success"

@@ -15,7 +15,7 @@ Template.mailgun.helpers
     mailgunSettingsForm.hooks
       onSubmit: (insertDoc,updateDoc,currentDoc) ->
         if updatePackage(updateDoc)
-          throwAlert "Mailgun","Settings saved ", "success"
+          Alerts.add "Mailgun settings saved.", "success"
     mailgunSettingsForm
 
 updatePackage = (updateDoc) ->
