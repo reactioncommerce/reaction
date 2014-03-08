@@ -44,7 +44,7 @@ Template.productImageGallery.rendered = ->
         onSuccess: (InkBlobs) ->
           uploadMedias InkBlobs
         onError: (FPError) ->
-          throwAlert(FPError.toString(),"Filepicker.io Error","error")
+          Alerts.add "Filepicker.io Error" +FPError.toString(), "danger"
         onProgress: (percentage) ->
           $("#galleryDropPane").text "Uploading (" + percentage + "%)"
     window.loadPicker cb
@@ -106,7 +106,7 @@ Template.productImageGallery.events
       uploadMedias InkBlob
     ), (FPError) ->
       return  if FPError.code == 101 # The user closed the picker without choosing a file
-      throwAlert FPError.toString(),"Filepicker.io Error"
+      Alerts.add "Filepicker.io Error" +FPError.toString(), "danger"
 
 
 # *****************************************************

@@ -1,102 +1,102 @@
 <template name="productDetail">
 <div class="container">
-{{!-- Product Visibility Admin Block --}}
-{{#if userHasRole "admin"}}
-<div class="row">
-  {{#if isVisible}}
-    Product management:
-    <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
-  {{else}}
-    <div class="alert alert-warning">
-      This product is not visible to customers.
-            You can
-      <a href="#" class="toggle-product-isVisible-link">make it visible</a>
-      when you're done editing.
-    </div>
-  {{/if}}
-</div>
-{{/if}}
-{{!-- END Product Visibility Admin Block --}}
- <!-- Product Detail Page -->
-<div class="row" itemscope itemtype="http://schema.org/Product">
-  <!-- Titles -->
+  {{!-- Product Visibility Admin Block --}}
+  {{#if userHasRole "admin"}}
   <div class="row">
-      <div class="pdp-title">
-        <h1 id="title" itemprop="name">{{title}}</h1>
+    {{#if isVisible}}
+      Product management:
+      <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+    {{else}}
+      <div class="alert alert-warning">
+        This product is not visible to customers.
+              You can
+        <a href="#" class="toggle-product-isVisible-link">make it visible</a>
+        when you're done editing.
       </div>
-      <div class="pdp-page-title">
-        <h2 id="pageTitle">{{pageTitle}}</h2>
-      </div>
+    {{/if}}
   </div>
-  <!-- Product Details -->
-  <div class="row product-details">
-    <!-- BEGIN Left Side -->
-    <div class="col-md-5 col-lg-4 col-lg-offset-1">
-      {{> productImageGallery}}
-      {{> attributes}}
+  {{/if}}
+  {{!-- END Product Visibility Admin Block --}}
+   <!-- Product Detail Page -->
+  <div class="row" itemscope itemtype="http://schema.org/Product">
+    <!-- Titles -->
+    <div class="row">
+        <div class="pdp-title">
+          <h1 id="title" itemprop="name">{{title}}</h1>
+        </div>
+        <div class="pdp-page-title">
+          <h2 id="pageTitle">{{pageTitle}}</h2>
+        </div>
     </div>
-    <!-- END Left Side -->
-    <!-- BEGIN Right Side -->
-    <div class="col-md-7">
-      <!-- main product information -->
-      <div class="row col-md-10 col-offset-md-4 pdp-editable">
-        {{!-- Price Fixation --}}
-        <div class="row">
-          <i class="fa fa-usd currency-symbol"> </i>
-          <span class="price">
-            {{#isolate}}
-            <span id="price" itemprop="price">{{actualPrice}}</span>
-            {{/isolate}}
-          </span>
-          {{>productSocial}}
-        </div>
-
-        {{!-- Vendor --}}
-        <div class="clearfix">
-          <div class="vendor">
-            <i id="vendor" itemprop="brand">{{vendor}}</i>
-          </div>
-        </div>
-
-        {{!-- Tags --}}
-        <div class="row">
-          <div class="tags">
-            {{#if userHasRole "admin"}}
-              <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
-            {{/if}}
-          </div>
-        </div>
-
-        {{!-- Description --}}
-        <div class="row">
-          <div id="description" class="description" itemprop="description">
-            {{#if userHasRole "admin"}}
-              {{description}}
-            {{else}}
-              {{!-- Render as html on client view --}}
-              {{{description}}}
-            {{/if}}
-          </div>
-        </div>
-
-        {{!-- Variants --}}
-        <div class="row options-add-to-cart">
-          {{>variantList}}
-        </div>
-
-        {{!-- Cart Add Block --}}
-        <div class="alert alert-info hidden"></div>
-        <div class="btn btn-primary add-to-cart-block" id="add-to-cart">
-          <div class="col-xs-1 add-to-cart-quantity pull-left">
-            <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1"/>
-          </div>
-          <div class="add-to-cart-text">Add to cart</div>
-        </div>
-
+    <!-- Product Details -->
+    <div class="row product-details">
+      <!-- BEGIN Left Side -->
+      <div class="col-md-5 col-lg-4 col-lg-offset-1">
+        {{> productImageGallery}}
+        {{> attributes}}
       </div>
-      <!-- END Right Side -->
+      <!-- END Left Side -->
+      <!-- BEGIN Right Side -->
+      <div class="col-md-7">
+        <!-- main product information -->
+        <div class="row col-md-10 col-offset-md-4 pdp-editable">
+          {{!-- Price Fixation --}}
+          <div class="row">
+            <i class="fa fa-usd currency-symbol"> </i>
+            <span class="price">
+              {{#isolate}}
+              <span id="price" itemprop="price">{{actualPrice}}</span>
+              {{/isolate}}
+            </span>
+            {{>productSocial}}
+          </div>
+
+          {{!-- Vendor --}}
+          <div class="clearfix">
+            <div class="vendor">
+              <i id="vendor" itemprop="brand">{{vendor}}</i>
+            </div>
+          </div>
+
+          {{!-- Tags --}}
+          <div class="row">
+            <div class="tags">
+              {{#if userHasRole "admin"}}
+                <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
+              {{/if}}
+            </div>
+          </div>
+
+          {{!-- Description --}}
+          <div class="row">
+            <div id="description" class="description" itemprop="description">
+              {{#if userHasRole "admin"}}
+                {{description}}
+              {{else}}
+                {{!-- Render as html on client view --}}
+                {{{description}}}
+              {{/if}}
+            </div>
+          </div>
+
+          {{!-- Variants --}}
+          <div class="row options-add-to-cart">
+            {{>variantList}}
+          </div>
+
+          {{!-- Cart Add Block --}}
+          <div class="alert alert-info hidden"></div>
+          <div class="btn btn-primary add-to-cart-block" id="add-to-cart">
+            <div class="col-xs-1 add-to-cart-quantity pull-left">
+              <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1"/>
+            </div>
+            <div class="add-to-cart-text">Add to cart</div>
+          </div>
+
+        </div>
+        <!-- END Right Side -->
+      </div>
     </div>
   </div>
-</div>
 </div>
 </template>

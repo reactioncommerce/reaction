@@ -58,7 +58,7 @@ Template.headerTags.rendered = ->
         Meteor.call "updateHeaderTags", newValue, "",$(@).attr('data-current-id')
       validate: (value) ->
         if $.trim(value) is ""
-          throwAlert "A name is required"
+          Alerts.add "A name is required"
           false
 
     $(".header-active-tag").editable

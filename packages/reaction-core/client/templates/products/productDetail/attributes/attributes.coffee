@@ -47,7 +47,7 @@ Template.attributes.rendered = ->
           namespace: 'attributes'
       validate: (value) ->
         if $.trim(Spark.getDataContext(this).key) is ""
-          throwAlert "A detail label is required"
+          Alerts.add "A detail label is required"
           false
 
 
@@ -71,7 +71,7 @@ Template.attributes.rendered = ->
         Products.update (currentProduct.get "product")._id,
           $set: metafields: attributes, (error) ->
             if error
-              throwAlert error
+              Alerts.add error
               false
             else
               true
@@ -79,7 +79,7 @@ Template.attributes.rendered = ->
         Products.update (currentProduct.get "product")._id,
           $push: metafields: newValue, (error) ->
             if error
-              throwAlert error
+              Alerts.add error
               false
             else
               true

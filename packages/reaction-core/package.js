@@ -102,7 +102,6 @@ api.add_files([
 
     "client/helpers/helpers.coffee",
     "client/helpers/config.coffee",
-    "client/helpers/errors.coffee",
     "client/helpers/handlebars.coffee",
 
     "client/workflows/cart/workflow.coffee",

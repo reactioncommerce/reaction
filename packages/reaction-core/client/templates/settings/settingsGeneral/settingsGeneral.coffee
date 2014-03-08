@@ -24,10 +24,7 @@ Template.settingsGeneral.helpers
         doc.domains = doc.domains.split(",")  if typeof doc.domains is "string"
         doc
       onSuccess: (operation, result, template) ->
-        $.pnotify
-          title: "Shop settings"
-          text: "Shop settings are saved."
-          type: "success"
+        Alerts.add "Shop settings are saved.", "success"
     shopEditForm
 
   displayCustomEmailSettings: (doc) ->

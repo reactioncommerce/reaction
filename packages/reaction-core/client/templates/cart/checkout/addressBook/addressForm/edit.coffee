@@ -9,5 +9,5 @@ Template.addressBookEdit.helpers
       onSubmit: (insertDoc,updateDoc,currentDoc) ->
         console.log "This should be working, but is not!!!"
         if updatePackage(updateDoc)
-          throwAlert "Paypal","Settings saved ", "success"
+          Alerts.add "Paypal Settings saved ", "success"
     addressBookEditForm

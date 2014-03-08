@@ -5,8 +5,8 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,500,400italic,700,900,300,300italic,500italic|Open+Sans:300italic,400italic,600italic,400,300,600,700|PT+Sans+Caption:400,700);
 
 // Example bootswatch theme
-@import "http://bootswatch.com/slate/bootswatch.less";
-@import "http://bootswatch.com/slate/variables.less";
+// @import "http://bootswatch.com/superhero/bootswatch.less";
+// @import "http://bootswatch.com/superhero/variables.less";
 
 html, body {
   position:relative;
@@ -34,6 +34,10 @@ main {
   color: #b94a48;
 }
 
+/* Fix for hidden modals */
+.modal-dialog {
+  z-index: 9999;
+}
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */
@@ -43,9 +47,9 @@ main {
 }
 
 @media screen and (max-width: 767px) {
-    // h1 {
-    // font-size:30px;
-    // }
+    h1 {
+    font-size:30px;
+    }
     .navbar-toggle {
       float: left;
     }

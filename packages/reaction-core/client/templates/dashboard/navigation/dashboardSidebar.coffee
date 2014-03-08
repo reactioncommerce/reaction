@@ -9,7 +9,7 @@ Template.dashboardSidebar.events
     event.preventDefault()
     Meteor.logout (err) ->
       if err
-        throwAlert err.reason
+        Alerts.add err.reason, "warning"
       else
         Router.go "/"
 

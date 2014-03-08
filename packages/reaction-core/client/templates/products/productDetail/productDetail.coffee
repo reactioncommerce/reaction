@@ -55,8 +55,9 @@ Template.productDetail.rendered = ->
         updateProduct title: newValue
       validate: (value) ->
         if $.trim(value) is ""
-          throwAlert "A product name is required"
-          false
+          Alerts.add "A product name is required"
+          return "A product name is required"
+
     # *****************************************************
     # Editable page title entry
     # *****************************************************
@@ -207,7 +208,7 @@ Template.productDetail.rendered = ->
         $set: productsProperties
       , (error) ->
         if error
-          throwAlert error
+          Alerts.add error.message
           false
         else
           true
@@ -258,7 +259,7 @@ Template.productDetail.events
 
         # If variant has inv policy and is out of stock, show warning and deny add to cart
         if (variant.inventoryPolicy and variant.inventoryQuantity < 1)
-          throwAlert("Sorry, this item is out of stock!")
+          Alerts.add "Sorry, this item is out of stock!"
           return
 
         cartSession =
@@ -277,7 +278,7 @@ Template.productDetail.events
           toggleCartDrawer()
         ), 500
     else
-      throwAlert("Select an option before adding to cart")
+      Alerts.add "Select an option before adding to cart"
 
   # *****************************************************
   # deletes entire product

@@ -56,7 +56,7 @@ CartWorkflow = StateMachine.create(
       #Deps handles change of login
 
     onaddAddress: (event,from, to) ->
-      if Meteor.user().profile.addressBook
+      if Meteor.user()?.profile.addressBook
         @.shipmentAddress()
 
     onshipmentAddress: (event, from, to, address) ->
