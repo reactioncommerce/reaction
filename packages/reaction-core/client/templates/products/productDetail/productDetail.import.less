@@ -1,6 +1,7 @@
 .add-to-cart-block {
     width: 100%;
     height: 45px;
+    padding: 8px 12px;
 }
 
 .add-to-cart-text {
@@ -8,17 +9,12 @@
   margin-right: 30px;
 }
 
-.add-to-cart-quantity  {
-  height: 100%;
-  padding: 4px;
-  width: 45px;
-}
-
-.add-to-cart-quantity input {
+#add-to-cart-quantity {
   text-align: center;
   background-color: aliceblue;
+  height: 28px;
+  width: 42px !important;
 }
-
 
 // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
 .img-responsive{width:100%;}
@@ -33,19 +29,16 @@
 .pdp-page-title .editable-input,
 .pdp-page-title .editable-inline {
     width:100% !important;
-    font-size: inherit !important;
-    font-color: inherit !important;
-    font-weight: inherit !important;
-    text-align: center;
-    padding: 1px 0 1px 0;
     margin: 0;
     height: 100%;
 }
 
 .pdp-title, .pdp-title h1{
   text-align: center;
-  font-size: 60px;
-  font-weight: bold;
+  font-family: @headings-font-family-h1;
+  font-size: @font-size-h1;
+  font-weight: @headings-font-weight-h1;
+  color: @headings-color-h1;
 }
 
 .pdp-page-title, .pdp-page-title h1,h2 {
@@ -55,9 +48,10 @@
 
 .pdp-page-title, .pdp-page-title h2{
   text-align: center;
-  font-size: 38px;
-  font-weight: bold;
-  color: @text-color;
+  font-family: @headings-font-family-h2;
+  font-size: @font-size-h2;
+  font-weight: @headings-font-weight-h2;
+  color: @headings-color-h2;
 }
 
 .options-add-to-cart {
@@ -78,11 +72,7 @@
 .pdp-editable .editable-input,
 .pdp-editable .editable-inline {
     width: 100% !important;
-    font-size: inherit !important;
-    font-color: inherit !important;
-    font-weight: inherit !important;
     padding: 2px 0 1px 0;
-    height: 100%;
 }
 
 .pdp-editable .editable-pre-wrapped {
@@ -110,14 +100,22 @@
   .tags {
     width: 100% !important;
   }
-  .description {
+//   .description,.form-control .description {
+//     margin: 15px 0 15px 0;
+//     font-size: 16px;
+//     line-height: 1.6;
+//     height: :101% !important;
+//     width: 100% !important;
+//   }
+}
+  .description,.form-control .description {
     margin: 15px 0 15px 0;
     font-size: 16px;
     line-height: 1.6;
-    height: :100%;
+    height: :101% !important;
     width: 100% !important;
   }
-}
+
 
 @media screen and (max-width: 800px) {
     .pdp-title, .pdp-title h1{

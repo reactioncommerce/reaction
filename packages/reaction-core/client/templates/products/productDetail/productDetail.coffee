@@ -34,6 +34,7 @@ Template.productDetail.rendered = ->
   #
   # $.fn.editable.defaults.disabled = true
   # *****************************************************
+
   if Meteor.app.hasOwnerAccess()
     $.fn.editable.defaults.disabled = false
     $.fn.editable.defaults.mode = "inline"
@@ -55,7 +56,6 @@ Template.productDetail.rendered = ->
         updateProduct title: newValue
       validate: (value) ->
         if $.trim(value) is ""
-          Alerts.add "A product name is required"
           return "A product name is required"
 
     # *****************************************************
@@ -117,7 +117,9 @@ Template.productDetail.rendered = ->
       title: "Social handle for sharing and navigation"
       success: (response, newValue) ->
         updateProduct handle: newValue
-
+      validate: (value) ->
+        if $.trim(value) is ""
+          return "A product hashtag is required"
 
     # *****************************************************
     # Editable twitter, social messages entry
@@ -212,7 +214,6 @@ Template.productDetail.rendered = ->
           false
         else
           true
-
 # **********************************************************************************************************
 # events for main product detail page
 #
@@ -232,6 +233,9 @@ Template.productDetail.events
   #     else # just tab
   #       # find the parent of the editable after this one in the markup
   #       $(event.target).blur().parents().nextAll(":has(.editable):first").find(".editable:first").editable "show"
+  "click .description": (event,template) ->
+    $('.description').autosize()
+
   "click #add-to-cart-quantity": (event,template) ->
     event.preventDefault()
     event.stopPropagation()
