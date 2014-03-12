@@ -3,13 +3,7 @@ Template.availablePkgGrid.helpers
     availablePkgs = []
     for packageName, packageInfo of Meteor.app.packages
       if !_.isFunction(packageInfo)
-        availablePkgs.push(packageInfo)
+        unless packageInfo.hidden is true
+          availablePkgs.push(packageInfo)
+    console.log availablePkgs
     availablePkgs
-
-Template.availablePkgGrid.rendered = ->
-  window.availablePkgGridPackery = new Masonry(document.querySelector(".apps-container"),
-    gutter: 2
-  )
-  template = @
-  _.defer ->
-    $(template.find(".app-gallery")).hide()

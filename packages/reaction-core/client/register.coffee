@@ -3,10 +3,11 @@ Meteor.app.packages.register
   depends: ['orderManager', 'fileUploader', 'staffAccountsManager','paymentMethod']
   label: 'Shop'
   description: 'Reaction Shop'
-  icon: 'fa fa-shopping-cart fa-5x'
+  icon: 'fa fa-shopping-cart'
   settingsRoute: 'dashboard/settings/shop'
   overviewRoute: 'dashboard/welcome'
   priority: '3'
+  hidden: true
   hasWidget: true
   shopPermissions: [
     {
@@ -36,6 +37,7 @@ Meteor.app.packages.register
   provides: ['orderManager']
   label: 'Orders'
   overviewRoute: 'dashboard/orders'
+  hidden: true
   hasWidget: false
   shopPermissions: [
     {
@@ -50,6 +52,7 @@ Meteor.app.packages.register
   provides: ['staffAccountsManager']
   label: 'Access'
   settingsRoute: 'dashboard/settings/account'
+  hidden: true
   hasWidget: false
   shopPermissions: [
     {

@@ -1,0 +1,37 @@
+<template name="dashboard">
+
+{{#each Packages}}
+  <div class="dashboard hidden" id="{{name}}">
+    <!-- BEGIN Main Content -->
+    <div class="row">
+      <!-- shop settings -->
+
+      <div class="col-md-2 shop-config">
+        {{>widget}}
+      </div>
+      <!-- shop widgets -->
+      <div class="col-md-10 shop-stats">
+        {{{getTemplate name "widget"}}}
+      </div>
+
+    </div>
+
+    <div class="row shop-nav">
+      <div class="col-md-12">
+      <ul class="nav nav-pills">
+        {{#each Packages}}
+          <li><a href="#" class="nav-packages" data-id="{{name}}">{{label}}</a></li>
+        {{/each}}
+      </ul>
+      </div>
+    </div>
+  </div>
+
+{{/each}}
+
+
+
+<div class="dashboard-apps">
+{{> availablePkgGrid}}
+</div>
+</template>

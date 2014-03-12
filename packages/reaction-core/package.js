@@ -79,7 +79,6 @@ api.add_files([
   ], ["server"]);
 
   api.add_files([
-    "lib/masonry/masonry.pkgd.js",
     "lib/sparkline/jquery.sparkline.js",
 
     "lib/select2/select2.js",
@@ -90,6 +89,8 @@ api.add_files([
     "lib/owl.carousel/owl-carousel/owl.theme.css",
     "lib/owl.carousel/owl-carousel/owl.carousel.js",
     "lib/jquery.autosize/jquery.autosize.js",
+    "lib/jquery-plugin-circliful-master/js/jquery.circliful.js",
+    "lib/jquery-plugin-circliful-master/css/jquery.circliful.css",
     "lib/imagesLoaded/imagesloaded.pkgd.js",
 
     "lib/jquery-ui-1.10.3.custom.css",
@@ -179,10 +180,8 @@ api.add_files([
     "client/templates/dashboard/widget/widget.html",
     "client/templates/dashboard/widget/widget.coffee",
 
-    "client/templates/dashboard/shopwelcome/shopwelcome.html",
-
-    "client/templates/dashboard/header/links.html",
-    "client/templates/dashboard/header/links.coffee",
+    "client/templates/dashboard/layout/header/links.html",
+    "client/templates/dashboard/layout/header/links.coffee",
 
     "client/templates/dashboard/customers/customers.html",
     "client/templates/dashboard/customers/customers.coffee",
@@ -214,14 +213,11 @@ api.add_files([
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.coffee",
 
-    "client/templates/dashboard/navigation/dashboardSidebar.html",
-    "client/templates/dashboard/navigation/dashboardSidebar.coffee",
+    "client/templates/dashboard/layout/navigation/dashboardSidebar.html",
+    "client/templates/dashboard/layout/navigation/dashboardSidebar.coffee",
 
-    "client/templates/dashboard/packages/activePkgGrid/widget/widget.html",
-    "client/templates/dashboard/packages/activePkgGrid/widget/widget.coffee",
-
-    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.html",
-    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.coffee",
+    "client/templates/dashboard/packages/widget/widget.html",
+    "client/templates/dashboard/packages/widget/widget.coffee",
 
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.html",
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.coffee",
@@ -229,23 +225,20 @@ api.add_files([
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.html",
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.coffee",
 
-    "client/templates/dashboard/packages/dashboard.html",
-    "client/templates/dashboard/packages/dashboard.coffee",
+    "client/templates/dashboard/dashboard.html",
+    "client/templates/dashboard/dashboard.coffee",
 
-    "client/templates/dashboard/introduction/introduction.html",
-    "client/templates/dashboard/introduction/introduction.coffee",
+    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.html",
+    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.coffee",
 
-    "client/templates/settings/settingsGeneral/settingsGeneral.html",
-    "client/templates/settings/settingsGeneral/settingsGeneral.coffee",
+    "client/templates/dashboard/settings/settingsAccount/settingsAccount.html",
+    "client/templates/dashboard/settings/settingsAccount/settingsAccount.coffee",
 
-    "client/templates/settings/settingsAccount/settingsAccount.html",
-    "client/templates/settings/settingsAccount/settingsAccount.coffee",
+    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.html",
+    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.coffee",
 
-    "client/templates/settings/settingsAccount/shopMember/shopMember.html",
-    "client/templates/settings/settingsAccount/shopMember/shopMember.coffee",
-
-    "client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.html",
-    "client/templates/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
+    "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.html",
+    "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
     "client/templates/products/productList/productList.html",
@@ -294,7 +287,7 @@ api.add_files([
     "client/templates/cart/checkout/progressBar/progressBar.import.less",
     "client/templates/cart/checkout/review/review.import.less",
     "client/templates/cart/checkout/shipping/shipping.import.less",
-    "client/templates/dashboard/navigation/dashboardSidebar.import.less",
+    "client/templates/dashboard/layout/navigation/dashboardSidebar.import.less",
     "client/templates/dashboard/orders/details/detail.import.less",
     "client/templates/dashboard/orders/orders.import.less",
     "client/templates/dashboard/orders/social/orderSocial.import.less",
@@ -304,11 +297,10 @@ api.add_files([
     "client/templates/dashboard/orders/stateHelpers/payment/payment.import.less",
     "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
-    "client/templates/dashboard/packages/activePkgGrid/activePkgGrid.import.less",
-    "client/templates/dashboard/packages/activePkgGrid/widget/widget.import.less",
+    "client/templates/dashboard/packages/widget/widget.import.less",
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.import.less",
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.import.less",
-    "client/templates/dashboard/packages/dashboard.import.less",
+    "client/templates/dashboard/dashboard.import.less",
     "client/templates/dashboard/widget/widget.import.less",
     "client/templates/layout/header/header.import.less",
     "client/templates/layout/footer/footer.import.less",
@@ -322,8 +314,8 @@ api.add_files([
     "client/templates/products/productGrid/productGrid.import.less",
     "client/templates/products/productList/productList.import.less",
     "client/templates/products/products.import.less",
-    "client/templates/settings/settingsAccount/shopMember/shopMember.import.less",
-    "client/templates/settings/settingsGeneral/settingsGeneral.import.less"
+    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
+    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
 
   ], ["client"]);
 

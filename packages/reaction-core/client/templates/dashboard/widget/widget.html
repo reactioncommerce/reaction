@@ -1,23 +1,24 @@
 <template name="reaction-commerce-widget">
-  <ul class="reaction-commerce-widget list-unstyled">
-    <li>
-      <span class="badge">{{ocount}}</span>
-      <a href="{{pathFor 'dashboard/orders'}}">
-        Orders
-      </a>
-    </li>
-    <li>
-      <span class="badge">{{pcount}}</span>
-      <a href="/">
-        Products
-      </a>
-    </li>
-    <li>
-      <span class="badge">{{ccount}}</span>
-      <a href="{{pathFor 'dashboard/customers'}}">
-        Customers
-      </a>
-    </li>
-  </ul>
-
+<div class="row">
+  <div class="col-xs-4 col-md-2 col-lg-2">
+    <a href='{{pathFor 'dashboard/orders'}}'>
+      <div id="shop-orders-circle" data-dimension="150" data-text="{{ocount}}" data-info="Pending" data-width="10" data-fontsize="36" data-percent="{{ocount}}" data-fgcolor="#61a9dc" data-bgcolor="#eee" ></div>
+    </a>
+  </div>
+  <div class="col-xs-4 col-md-2 col-lg-2">
+    <a href='{{pathFor 'index'}}'>
+      <div id="shop-products-circle" data-dimension="150" data-text="{{pcount}}" data-info="Product Sold" data-width="10" data-fontsize="36" data-percent="{{pcount}}" data-fgcolor="#61a9dc" data-bgcolor="#eee" ></div>
+    </a>
+  </div>
+  <div class="col-xs-4 col-md-2 col-lg-2">
+    <a href='{{pathFor 'dashboard/orders'}}'>
+      <div id="shop-avg-orders-circle" data-dimension="150" data-text="{{avgOrder.text}}" data-info="Avg.Order" data-width="10" data-fontsize="28" data-percent="{{avgOrder.percent}}" data-fgcolor="#61a9dc" data-bgcolor="#eee" ></div>
+    </a>
+  </div>
+  <div class="col-xs-4 col-md-2 col-lg-2">
+    <a href='{{pathFor 'dashboard/orders'}}'>
+      <div id="shop-day-orders-totals-circle" data-dimension="150" data-text="{{dayOrderTotal.text}}" data-info="24hr Orders" data-width="10" data-fontsize="36" data-percent="{{dayOrderTotal.percent}}" data-fgcolor="#61a9dc" data-bgcolor="#eee" ></div>
+    </a>
+  </div>
+</div>
 </template>
