@@ -1,12 +1,9 @@
 <template name="availablePkgGrid">
-  <div class="app-gallery">
-    <h2>App Gallery</h2>
-    <div class="well well-sm">
-      <div class="apps-container">
-        {{#each availablePkgs}}
-          {{> pkg}}
-        {{/each}}
-      </div>
-    </div>
-  </div>
+<div class="app-gallery">
+      {{#each availablePkgs}}
+        <div class="col-md-3">
+        {{> pkg}}
+        </div>
+      {{/each}}
+</div>
 </template>

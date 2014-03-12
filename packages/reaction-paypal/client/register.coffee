@@ -3,7 +3,7 @@ Meteor.app.packages.register
   provides: ['paymentMethod']
   label: 'PayPal'
   description: 'Accept PayPal'
-  icon: 'fa fa-shopping-cart fa-5x'
+  icon: 'fa fa-shopping-cart'
   settingsRoute: 'paypal'
   priority: '2'
   hasWidget: false

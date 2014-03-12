@@ -1,9 +1,8 @@
 <template name="widget">
-  <div class="tile tile-{{tileColors _id}}" id="{{_id}}"><i class="{{icon}}"></i>
-
+  <div class="package-widget" id="{{_id}}">
     <div class="content">
       {{#if hasShopPermission overviewRoute}}
-        <a class="big" href="{{pathFor overviewRoute}}">{{label}}</a>
+        <h2>{{label}}</h2>
       {{else}}
         {{#if hasShopPermission settingsRoute}}
           <a class="big" href="{{pathFor settingsRoute}}">{{label}}</a>
@@ -44,7 +43,6 @@
       {{/if}}
     </div>
     <div class="widget">
-      {{{getTemplate name "widget"}}}
       {{widget}}
     </div>
   </div>

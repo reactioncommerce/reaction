@@ -19,8 +19,8 @@ ShopController = RouteController.extend
     layoutHeader:
       to: "layoutHeader"
 
-    templateFooter:
-      to: "templateFooter"
+    layoutFooter:
+      to: "layoutFooter"
 
     dashboardSidebar:
       to: "sidebar"

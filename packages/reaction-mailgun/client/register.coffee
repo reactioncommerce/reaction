@@ -3,7 +3,7 @@ Meteor.app.packages.register
   depends: []
   label: 'Mailgun Settings'
   description: 'Configure Mailgun'
-  icon: 'fa fa-envelope fa-5x'
+  icon: 'fa fa-envelope'
   settingsRoute: 'mailgun'
   priority: '3'
   hasWidget: true

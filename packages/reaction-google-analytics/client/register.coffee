@@ -1,10 +1,11 @@
 Meteor.app.packages.register
   name: "reaction-google-analytics"
+  provides: ['analytics']
   label: "Google Analytics"
-  description: ""
-  icon: "fa fa-bar-chart-o fa-5x"
+  description: "Event tracking with Google Analytics"
+  icon: "fa fa-bar-chart-o"
   settingsRoute: "googleAnalytics"
-  hasWidget: true
+  hasWidget: false
   priority: "4"
   shopPermissions: [
     {

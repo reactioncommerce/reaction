@@ -1,22 +1,22 @@
 <template name="pkg">
-  <div class="tile tile-{{tileColors name}}">
-    <div class="tile-icon">
-      <i class="{{icon}}"></i>
+  <div class="pkg-card {{pkgTypeClass}}">
+    <div class="row pkg-content">
+      <h3>{{label}}</h3>
+      <small>{{{description}}}</small>
     </div>
-    <div class="content">
-      <p class="big">{{label}}</p>
-      <p class="title">{{{description}}}</p>
+
+    <div class="row pkg-status">
+        <i class="{{icon}} fa-3x pull-left"></i>
+        {{#unless type}}
+          {{#if isEnabled name}}
+          <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i>
+          </a>
+          {{else}}
+          <a class="pull-right enablePkg"> <i class="fa fa-plus-square fa-2x fa-fw"></i>
+          </a>
+          {{/if}}
+        {{/unless}}
     </div>
-    <div class="status">
-      {{#unless type}}
-        {{#if isEnabled name}}
-        <a class="pull-right disablePkg"> <i class="fa fa-minus-circle fa-4x"></i>
-        </a>
-        {{else}}
-        <a class="pull-right enablePkg"> <i class="fa fa-plus-circle fa-4x"></i>
-        </a>
-        {{/if}}
-      {{/unless}}
-    </div>
+
   </div>
 </template>

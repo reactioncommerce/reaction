@@ -5,8 +5,16 @@
 # *****************************************************
 
 # returns enabled status for this user for specific package
-Template.pkg.helpers isEnabled: (name) ->
-  Packages.find(name: name).count() > 0
+Template.pkg.helpers
+  isEnabled: (name) ->
+    Packages.find(name: name).count() > 0
+
+  pkgTypeClass: ->
+    if @.hasWidget
+      return "pkg-app-class"
+    else
+      return "pkg-feature-class"
+
 
 Template.pkg.events
   "click .enablePkg": (event, template) ->

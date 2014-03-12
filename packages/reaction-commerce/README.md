@@ -18,7 +18,7 @@ Packages should be able to run independently, whenever possible but many of the 
 
 At this time, for development ease, we are committing all reaction-* packages in this main repo but as we approach a first point release, these will be moved to individual package repos and published on the Meteor package manager. Tests will be added when they are moved to their own repos.
 
-## Trello 
+## Trello
 For core development team progress tracking please use our [Development Trello board](https://trello.com/b/aGpcYS5e/development)
 
 The board is used as the next task, in any stage, is highest on the list. The workflow moves left to right from planning to release.
@@ -29,7 +29,7 @@ The board is used as the next task, in any stage, is highest on the list. The wo
 *	Doing - active development
 *	Release review - acceptance testing and if all is good, moves to done
 *	Done is archived on every version release
-	
+
 
 
 ##Dashboard
@@ -40,7 +40,7 @@ Add packages to the reaction dashboard by adding **register.coffee**
 	  depends: [] #reaction packages
 	  label: "HelloWorld"
 	  description: "Example Reaction Package"
-	  icon: "fa fa-globe fa-5x"
+	  icon: "fa fa-globe"
 	  priority: "2"
 	  overviewRoute: 'helloworld'
 	  hasWidget: true

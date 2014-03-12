@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>Circliful</title>
+
+<link href="css/jquery.circliful.css" rel="stylesheet" type="text/css" />
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="js/jquery.circliful.min.js"></script>
+
+<style>
+body {
+    font-family: arial,verdana, sans-serif;
+    font-size: 12px;
+}
+
+
+</style>
+</head>
+<body>
+<div id="myStathalf" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#7ea568" data-bgcolor="#eee" data-type="half" data-fill="#ddd"></div>
+
+<div id="myStat" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee" data-fill="#ddd"></div>
+
+<div id="myStathalf2" data-dimension="250" data-text="35" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#7ea568" data-bgcolor="#eee" data-type="half" data-icon="fa-task"></div>
+
+<div id="myStat2" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee"></div>
+
+<script>
+$( document ).ready(function() {
+        $('#myStathalf').circliful();
+		$('#myStat').circliful();
+		$('#myStathalf2').circliful();
+		$('#myStat2').circliful();
+    });
+</script>
+</body>
+</html>
