@@ -5,4 +5,10 @@ Template.memberForm.events
     hash = $form.serializeHash()
     Meteor.call "inviteShopMember", Meteor.app.shopId, hash.email, hash.name, (error) ->
       if error?
-        Alerts.add error
+        Alerts.add "Error sending email, possible configuration issue." +error
+      else
+        Alerts.add "Invitation sent."
+
+  "click .close-button": (event, template) ->
+    $('.member-form').addClass('hidden')
+    $('.settings-account-list').show()

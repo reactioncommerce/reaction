@@ -1,8 +1,8 @@
 <template name="shopMember">
   <tbody id="shop_member_{{userId}}" class="{{hasOwnerAccessToggle}}">
   <tr>
-    <td>{{user.profile.name}}</td>
-    <td>{{userEmail}}</td>
+    <td>{{user.name}}</td>
+    <td>{{user.email}}</td>
     <td>
       {{#if isAdmin}}
         Full access
@@ -28,12 +28,12 @@
       <td colspan="3">
         <label>
           <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="yes" checked="{{isAdmin}}"/>
-          {{user.profile.name}} has access to everything in shop
+          {{user.name}} has access to everything in shop
         </label>
         <br/>
         <label>
           <input type="radio" name="{{user._id}}_is_admin" class="shop-member-is-admin" value="no" checked="{{isAdmin}}"/>
-          Let me choose what {{user.profile.name}} has access to
+          Let me choose what {{user.name}} has access to
         </label>
       </td>
     </tr>

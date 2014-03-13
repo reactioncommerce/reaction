@@ -59,8 +59,8 @@
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
-        "tag": "v0.6.2",
-        "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
+        "tag": "v0.6.3",
+        "commit": "70f2598bf991cb36effd72aea2555cba96f88355"
       },
       "jqueryui": {
         "git": "https://github.com/mizzao/meteor-jqueryui.git",

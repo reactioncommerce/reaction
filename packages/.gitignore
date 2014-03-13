@@ -43,3 +43,4 @@ headers
 /handlebars-server
 /autoform
 /bootstrap-alerts
+/collection-hooks

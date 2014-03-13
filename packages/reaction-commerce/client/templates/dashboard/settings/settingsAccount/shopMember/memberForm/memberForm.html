@@ -1,7 +1,5 @@
 <template name="memberForm">
-  <div id="member-modal" class="modal fade" tabindex="-1"  role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
+<div class="member-form hidden" id="member-form">
         <form class="form-horizontal" role="form" novalidate="novalidate">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -24,12 +22,10 @@
             </div>
 
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+          <div>
+            <button type="button" class="btn btn-default close-button">Cancel</button>
             <button type="submit" class="btn btn-primary save-button">Send invite</button>
           </div>
         </form>
-      </div>
-    </div>
-  </div>
+</div>
 </template>

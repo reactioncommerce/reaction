@@ -11,9 +11,14 @@ Template.pkg.helpers
 
   pkgTypeClass: ->
     if @.hasWidget
-      return "pkg-app-class"
+      pkg =
+        class: "pkg-app-class"
+        text: "Application"
     else
-      return "pkg-feature-class"
+      pkg =
+        class: "pkg-feature-class"
+        text: "Feature"
+    pkg
 
 
 Template.pkg.events

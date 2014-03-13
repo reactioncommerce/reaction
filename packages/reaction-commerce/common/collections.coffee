@@ -248,7 +248,7 @@ TaxSchema = new SimpleSchema
       type: [AddressSchema]
     domains:
       type: [String]
-      defaultValue: "localhost"
+      #defaultValue: ["localhost"] #see simple schema issue #73
     currency:
       type: String
     email:
