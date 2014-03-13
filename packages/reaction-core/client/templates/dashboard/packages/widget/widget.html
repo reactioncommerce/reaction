@@ -15,7 +15,13 @@
           <li>
             {{label}}:
             {{#if hasShopPermission settingsRoute }}
-              <a href="{{pathFor settingsRoute}}"><i class="fa fa-cog"></i></a>
+              {{#if template}}
+                {{{widgetTemplateRender template}}}
+                <a href="#" class="package-settings"><i class="fa fa-cog"></i></a>
+              {{else}}
+                <a href="{{pathFor settingsRoute}}"><i class="fa fa-cog"></i></a>
+              {{/if}}
+
             {{/if}}
             {{#if hasShopPermission overviewRoute}}
               <a href="{{pathFor overviewRoute}}"><i class="fa fa-bar-chart-o"></i></a>

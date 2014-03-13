@@ -8,6 +8,10 @@ Template.widget.helpers
         dependencies.push(_.extend(packageConfig, packageInfo))
     dependencies
 
-Template.widget.rendered = ->
+  widgetTemplateRender: (template)->
+    data = Shops.findOne Meteor.app.shopId
+    Template[template](data)
 
-Template.widget.events {}
+Template.widget.events
+  "click .package-settings": (event, template) ->
+    $('#' +@.template).modal()

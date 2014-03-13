@@ -1,6 +1,12 @@
 Template.shopMember.helpers
-  userEmail: ->
-    @user.emails[0].address
+  user: ->
+    if Meteor.app.hasOwnerAccess()
+      shopMembers = Meteor.subscribe 'shopMembers'
+      if shopMembers.ready()
+        user =
+          email: Users.findOne(@userId).emails[0].address
+          name: Users.findOne(@userId).profile.name
+        return user
 
   permissionGroups: ->
     Meteor.app.shopPermissionGroups
@@ -20,13 +26,13 @@ Template.shopMember.helpers
   userIdIsAdmin: (userId) ->
     return userId + "_is_admin"
 
-# Template.shopMember.rendered = ->
-#   $(@find(".toggle-shop-member-permissions")).collapsible
-#     cookieName: "toggle-shop-member-permissions-" + @data.userId
-#     speed: 200
+Template.shopMember.rendered = ->
+  $(@find(".toggle-shop-member-permissions")).collapsible
+    cookieName: "toggle-shop-member-permissions-" + @data.userId
+    speed: 200
 
 Template.shopMember.events
-  "change .shop-member-is-admin": (event) ->
+  "change .shop-member-is-admin": (event, template) ->
     modifier = {$set: {}}
     modifier.$set["members." + @index + ".isAdmin"] = $(event.currentTarget).val() is "yes"
     Shops.update Meteor.app.shopId, modifier
@@ -39,8 +45,7 @@ Template.shopMember.events
     modifier[operator]["members." + member.index + ".permissions"] = @permission
     Shops.update Meteor.app.shopId, modifier
 
-  "click .link-shop-member-remove": (event) ->
-    event.stopPropagation()
+  "click .link-shop-member-remove": (event, template) ->
     $icon = $(event.currentTarget)
     if (confirm($icon.data("confirm")))
       Shops.update Meteor.app.shopId, {$pull: {members: {userId: @userId}}}

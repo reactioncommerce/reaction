@@ -5,5 +5,4 @@ Template.availablePkgGrid.helpers
       if !_.isFunction(packageInfo)
         unless packageInfo.hidden is true
           availablePkgs.push(packageInfo)
-    console.log availablePkgs
     availablePkgs

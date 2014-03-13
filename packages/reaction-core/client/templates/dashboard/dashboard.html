@@ -1,11 +1,9 @@
 <template name="dashboard">
-
 {{#each Packages}}
   <div class="dashboard hidden" id="{{name}}">
     <!-- BEGIN Main Content -->
     <div class="row">
       <!-- shop settings -->
-
       <div class="col-md-2 shop-config">
         {{>widget}}
       </div>
@@ -13,7 +11,6 @@
       <div class="col-md-10 shop-stats">
         {{{getTemplate name "widget"}}}
       </div>
-
     </div>
 
     <div class="row shop-nav">
@@ -26,12 +23,8 @@
       </div>
     </div>
   </div>
-
 {{/each}}
-
-
-
 <div class="dashboard-apps">
-{{> availablePkgGrid}}
+  {{> availablePkgGrid}}
 </div>
 </template>

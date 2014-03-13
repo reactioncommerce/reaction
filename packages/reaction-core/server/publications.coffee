@@ -53,6 +53,7 @@ Meteor.publish "UserProfile", (profileId) ->
     ,
       fields:
         profile: 1
+        emails: 1
   else
     return false
 
