@@ -28,7 +28,6 @@ Package.on_use(function (api, where) {
   api.use([
     "autoform",
     "iron-router",
-    "jqueryui",
     "jquery-cookie",
     "videojs",
     "moment",
