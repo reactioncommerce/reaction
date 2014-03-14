@@ -25,7 +25,6 @@ accounts-ui-bootstrap-3
 collection-hooks
 collection-behaviours
 underscore-string-latest
-jquery-cookie
 handlebars-server
 /headers
 headers

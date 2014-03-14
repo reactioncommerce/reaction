@@ -9,7 +9,6 @@
       "autoform": {},
       "collection2": {},
       "underscore-string-latest": {},
-      "jquery-cookie": {},
       "collection-hooks": {},
       "collectionFS": {},
       "handlebars-server": {},
@@ -50,11 +49,6 @@
         "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
         "tag": "v2.3.3",
         "commit": "4a5d70eee48fbd90a6e6fc78747250d704a0b3bb"
-      },
-      "jquery-cookie": {
-        "git": "https://github.com/BenjaminRH/meteor-jquery-cookie.git",
-        "tag": "v0.1.0",
-        "commit": "084bc5bf612639008efe03f3948e816df44c0f36"
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",

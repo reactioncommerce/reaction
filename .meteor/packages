@@ -21,7 +21,6 @@ videojs
 spin
 underscore-string-latest
 roles
-jquery-cookie
 email
 collection-hooks
 handlebars-server
