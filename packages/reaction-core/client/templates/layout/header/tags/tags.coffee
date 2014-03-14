@@ -48,6 +48,7 @@ Template.headerTags.rendered = ->
   # http://vitalets.github.io/x-editable/docs.html
   # *****************************************************
   if Meteor.app.hasOwnerAccess()
+    $.fn.editable.defaults.disabled = false
     $.fn.editable.defaults.mode = "inline"
     $.fn.editable.defaults.showbuttons = false
     $.fn.editable.defaults.highlight = '#eff6db'

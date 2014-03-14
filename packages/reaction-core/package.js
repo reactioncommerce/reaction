@@ -93,7 +93,8 @@ api.add_files([
     "lib/jquery-plugin-circliful-master/css/jquery.circliful.css",
     "lib/imagesLoaded/imagesloaded.pkgd.js",
 
-    "lib/jquery-ui-1.10.3.custom.css",
+    "lib/jquery-ui/jquery-ui-1.10.4.custom.js",
+    "lib/jquery-ui/jquery-ui-1.10.3.custom.css",
     "lib/jquery.collapsible.js",
     "lib/jquery.serialize-hash.coffee",
 
@@ -125,9 +126,6 @@ api.add_files([
 
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
-
-    "client/templates/layout/errors/errors.html",
-    "client/templates/layout/errors/errors.coffee",
 
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
