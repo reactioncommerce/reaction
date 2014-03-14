@@ -11,7 +11,6 @@
       "underscore-string-latest": {},
       "jquery-cookie": {},
       "collection-hooks": {},
-      "jqueryui": {},
       "collectionFS": {},
       "handlebars-server": {},
       "bootstrap-alerts": {}
@@ -62,11 +61,6 @@
         "tag": "v0.6.3",
         "commit": "70f2598bf991cb36effd72aea2555cba96f88355"
       },
-      "jqueryui": {
-        "git": "https://github.com/mizzao/meteor-jqueryui.git",
-        "tag": "v1.10.4",
-        "commit": "c75906fc9e1e19abf1ad5b2963925122ff8a0336"
-      },
       "collectionFS": {
         "git": "https://github.com/raix/Meteor-CollectionFS.git",
         "tag": "v0.3.7",
@@ -91,11 +85,6 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.5.1",
         "commit": "8c9bc5d3fc96705057737cb9743d555417f6e551"
-      },
-      "build-fetcher": {
-        "git": "https://github.com/mizzao/meteor-build-fetcher.git",
-        "tag": "v0.1.0",
-        "commit": "e3813b1fc7f5c576e8e1fa4c51ae6f4687780a35"
       },
       "cfs-public-folder": {
         "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",

@@ -24,9 +24,6 @@ roles
 jquery-cookie
 email
 collection-hooks
-
-jqueryui
-build-fetcher
 handlebars-server
 
 reaction-commerce
