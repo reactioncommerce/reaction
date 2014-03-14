@@ -1,8 +1,3 @@
-.login-buttons {
-  float: right !important;
-  margin-right: 100px !important;
-}
-
 #login-dropdown-list
   .circular-icon
     width: 40px;
@@ -16,7 +11,7 @@
 
 #login-dropdown-list
   .dropdown-menu
-    width:  300px
+    width:  auto;
     padding: 15px
 
 #login-dropdown-list
@@ -67,7 +62,8 @@
 .login-buttons-dropdown-align-right
   &#login-buttons + li
     .dropdown-menu
-      float: right
+      min-width: 300px;
+      // float: right
       right: 0
       left: auto
 

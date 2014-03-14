@@ -13,11 +13,11 @@ Template.pkg.helpers
     if @.hasWidget
       pkg =
         class: "pkg-app-class"
-        text: "Application"
+        text: "Package"
     else
       pkg =
         class: "pkg-feature-class"
-        text: "Feature"
+        text: "Function"
     pkg
 
 

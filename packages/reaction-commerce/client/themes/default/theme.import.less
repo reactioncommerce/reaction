@@ -30,6 +30,11 @@ main {
 .modal-dialog {
   z-index: 9999;
 }
+/* leave room for floating cart */
+.navbar-static-top {
+  padding-right: 100px;
+}
+
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */
@@ -38,18 +43,29 @@ main {
   .jumbotron {font-size: 60px;}
 }
 
+/* mobile nav fixed */
 @media screen and (max-width: 767px) {
-    h1 {
-    font-size:30px;
-    }
-    .navbar-toggle {
-      float: left;
-    }
-    main {
-      padding: 0px 0px 115px 0px;
-    }
-    /* Set the fixed height of the footer here */
-    footer {
-      height: 115px;
-    }
+  body {
+    margin: 0;
+  }
+
+  main {
+    padding: 100px 0px 125px 0px;
+  }
+
+  h1 {
+    font-size:24px;
+  }
+
+  .navbar-static-top {
+    .navbar-fixed-top();
+    padding-right: 0px;
+    margin-bottom: 70px;
+  }
+
+
+  /* Set the fixed height of the footer here */
+  footer {
+    height: 125px;
+  }
 }

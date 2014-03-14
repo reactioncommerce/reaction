@@ -5,7 +5,7 @@ Meteor.app.packages.register
   description: 'Reaction Shop'
   icon: 'fa fa-shopping-cart'
   settingsRoute: 'dashboard/settings/shop'
-  overviewRoute: 'dashboard/welcome'
+  overviewRoute: 'dashboard'
   priority: '3'
   hidden: true
   hasWidget: true
