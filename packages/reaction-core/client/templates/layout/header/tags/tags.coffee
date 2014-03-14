@@ -21,8 +21,13 @@ Template.headerTags.helpers
     tags
 
   activeTag: (currentTag)->
-    if @_id is currentTag then return "active-tag"
+    if Router.current().params._id is @._id then return "active"
 
+Template.headerTags.events
+  'click .active': (event,template) ->
+    # event.stopPropogation()
+    event.preventDefault()
+    return
 
 Template.headerTags.rendered = ->
   # $(@findAll("input")).autocomplete(
@@ -43,10 +48,8 @@ Template.headerTags.rendered = ->
   # http://vitalets.github.io/x-editable/docs.html
   # *****************************************************
   if Meteor.app.hasOwnerAccess()
-    $.fn.editable.defaults.disabled = false
     $.fn.editable.defaults.mode = "inline"
-    $.fn.editable.defaults.showbuttons = true
-    # $.fn.editable.defaults.onblur = 'submit'
+    $.fn.editable.defaults.showbuttons = false
     $.fn.editable.defaults.highlight = '#eff6db'
     $.fn.editable.defaults.clear = true
 
@@ -54,6 +57,7 @@ Template.headerTags.rendered = ->
     $("#header-add-tag").editable
       type: "text"
       emptytext: "add tag"
+      inputclass: "navbar-form"
       success: (response, newValue) ->
         Meteor.call "updateHeaderTags", newValue, "",$(@).attr('data-current-id')
       validate: (value) ->
@@ -61,23 +65,21 @@ Template.headerTags.rendered = ->
           Alerts.add "A name is required"
           false
 
-    $(".header-active-tag").editable
+    $(".active").editable
       type: "text"
+      inputclass: "navbar-form"
       success: (response, newValue) ->
-        console.log newValue
         if newValue
-          Meteor.call "updateHeaderTags", newValue, $(@).attr('data-id')
+          Meteor.call "updateHeaderTags", newValue, $(@).attr('data-tag-id')
         else
-          Meteor.call "removeHeaderTag", $(@).attr('data-id')
+          Meteor.call "removeHeaderTag", $(@).attr('data-tag-id')
           Router.go("index")
 
-
-    $(".header-tags-list").sortable
-      items: "> li.header-tags-item"
+    $("#header-tags-list").sortable
+      items: "> li .header-tag"
       axis: "x"
       update: (event, ui) ->
-        tagId = ui.item[0].id
-        uiPositions = $(this).sortable("toArray",attribute:"data-id")
+        uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
         for tag,index in uiPositions
           Tags.update(tag, {$set: {position: index}})
 

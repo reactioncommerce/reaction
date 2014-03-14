@@ -1,13 +1,12 @@
 <template name="dashboardSidebar">
-  {{#if hasDashboardAccess}}
-  <ul class="list-unstyled" id="dashboard-sidebar">
+  <ul class="list-unstyled clearfix" id="dashboard-sidebar">
     <li>
-      <a class="fa fa-angle-double-left dashboard-back">
-        <span>Back</span>
+      <a class="{{toggleStateClass}} dashboard-toggle" data-toggle="collapse" data-target="dashboard-container">
+        <span>Toggle</span>
       </a>
     </li>
     <li>
-      <a href="/dashboard" class="fa fa-th dashboard-home">
+      <a href="#" class="fa fa-th dashboard-display">
         <span>Dashboard</span>
       </a>
     </li>
@@ -17,5 +16,4 @@
       </a>
     </li>
   </ul>
-  {{/if}}
 </template>

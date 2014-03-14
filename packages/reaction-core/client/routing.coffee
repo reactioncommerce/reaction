@@ -22,8 +22,9 @@ ShopController = RouteController.extend
     layoutFooter:
       to: "layoutFooter"
 
-    dashboardSidebar:
-      to: "sidebar"
+    dashboard:
+      to: "dashboard"
+
   before: ->
     # should we make it a default as Router.before?
     @subscribe('shops').wait()
@@ -44,11 +45,9 @@ Router.map ->
   # home page intro screen for reaction-commerce
   @route 'dashboard',
     controller: ShopAdminController
-    template: 'dashboard'
-
-  @route 'dashboard/welcome',
-    controller: ShopAdminController
-    template: 'shopwelcome'
+    before: ->
+      Session.set "dashboard", true
+    template: 'dashboardPackages'
 
   @route 'dashboard/settings/shop',
     controller: ShopAdminController

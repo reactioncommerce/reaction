@@ -1,4 +1,10 @@
 Template.dashboard.helpers
+  isVisible: ->
+    Session.get("dashboard")
+
+  isDashboard: ->
+    if Router.current().path is "/dashboard" then return true
+
   Package: ->
     packageInfo = Meteor.app.packages["reaction-commerce"]
     packageInfo

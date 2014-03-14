@@ -1,5 +1,116 @@
 ###
-# Conditional template helpers
+# Reaction Handlebars helpers
+###
+
+###
+# Methods for the reaction permissions
+# https://github.com/ongoworks/reaction#rolespermissions-system
+###
+Handlebars.registerHelper "hasShopPermission", (permissions) ->
+  Meteor.app.hasPermission(permissions)
+
+Handlebars.registerHelper "hasOwnerAccess", ->
+  Meteor.app.hasOwnerAccess()
+
+Handlebars.registerHelper "hasDashboardAccess", ->
+  Meteor.app.hasDashboardAccess()
+
+Handlebars.registerHelper "activeRouteClass", ->
+  args = Array::slice.call(arguments, 0)
+  args.pop()
+  active = _.any(args, (name) ->
+    location.pathname is Router.path(name)
+  )
+  active and "active"
+
+Handlebars.registerHelper "siteName", ->
+  siteName = Shops.findOne().name
+  siteName
+###
+# method to alway return an image,
+# or a placeholder for a product variant
+###
+Handlebars.registerHelper "getVariantImage", (variant) ->
+  variant = (currentProduct.get "variant") unless variant?._id
+  if variant?._id
+    try
+      media = variant.medias[0].src
+    catch err
+      console.log "No media found! Returning default."
+      if this.variants[0]?.medias?.src
+        media = this.variants[0].medias[0].src
+      else
+        media = "../../resources/placeholder.jpeg"
+    finally
+      media
+  else
+    console.log "Variant image error: No object passed"
+
+###
+# method to return cart calculated values
+###
+
+Handlebars.registerHelper "cart", () ->
+  cartCount: ->
+    storedCart = Cart.findOne()
+    count = 0
+    ((count += items.quantity) for items in storedCart.items) if storedCart?.items
+    Session.set "cartCount", count
+    count
+
+  cartShipping: ->
+    shipping = Cart.findOne()?.shipping?.shipmentMethod?.value
+    Session.set "cartShipping", shipping
+    shipping
+
+  cartSubTotal: ->
+    storedCart = Cart.findOne()
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
+    subtotal = subtotal.toFixed(2)
+    Session.set "cartSubTotal", subtotal
+    subtotal
+
+  cartTotal: ->
+    storedCart = Cart.findOne()
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
+    shipping = parseFloat storedCart?.shipping?.shipmentMethod?.value
+    subtotal = (subtotal + shipping) unless isNaN(shipping)
+    subtotal = subtotal.toFixed(2)
+    Session.set "cartTotal", subtotal
+    subtotal
+
+  # return true if there is an issue with the user's cart and we should display the warning icon
+  showCartIconWarning: ->
+    if @.showLowInventoryWarning()
+        return true
+    return false
+
+  # return true if any item in the user's cart has a low inventory warning
+  showLowInventoryWarning: ->
+    storedCart = Cart.findOne()
+    if storedCart?.items
+      for item in storedCart?.items
+        if item.variants?.inventoryPolicy and item.variants?.lowInventoryWarning and item.variants?.lowInventoryWarningThreshold
+          if (item.variants?.inventoryQuantity < item.variants.lowInventoryWarningThreshold)
+            return true
+    return false
+
+  # return true if item variant has a low inventory warning
+  showItemLowInventoryWarning: (variant) ->
+    if variant?.inventoryPolicy and variant?.lowInventoryWarning and variant?.lowInventoryWarningThreshold
+      if (variant?.inventoryQuantity < variant.lowInventoryWarningThreshold)
+        return true
+    return false
+
+
+###
+#  General helpers for template functionality
+###
+
+###
+# conditional template helpers
 # example:  {{#if condition status "eq" ../value}}
 ###
 Handlebars.registerHelper "condition", (v1, operator, v2, options) ->
@@ -35,9 +146,9 @@ Handlebars.registerHelper "key_value", (context, options) ->
       value: value
   result
 
-### *****************************************************
-Convert new line (\n\r) to <br>
-from http://phpjs.org/functions/nl2br:480
+###
+# Convert new line (\n\r) to <br>
+# from http://phpjs.org/functions/nl2br:480
 ###
 Handlebars.registerHelper "nl2br", (text) ->
 
@@ -46,11 +157,11 @@ Handlebars.registerHelper "nl2br", (text) ->
   new Handlebars.SafeString(nl2br)
 
 
-### *****************************************************
-format an ISO date using Moment.js
-http://momentjs.com/
-moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
-usage: {{dateFormat creation_date format="MMMM YYYY"}}
+###
+# format an ISO date using Moment.js
+# http://momentjs.com/
+# moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
+# usage: {{dateFormat creation_date format="MMMM YYYY"}}
 ###
 Handlebars.registerHelper "dateFormat", (context, block) ->
   if window.moment
@@ -63,10 +174,10 @@ Handlebars.registerHelper "dateFormat", (context, block) ->
 Handlebars.registerHelper "uc", (str) ->
   encodeURIComponent str
 
-# *****************************************************
+###
 # general helper for plurization of strings
 # returns string with 's' concatenated if n = 1
-# *****************************************************
+###
 Handlebars.registerHelper "pluralize", (n, thing) ->
 
   # fairly stupid pluralizer
@@ -75,18 +186,18 @@ Handlebars.registerHelper "pluralize", (n, thing) ->
   else
     n + " " + thing + "s"
 
-# *****************************************************
+###
 # general helper for formatting price
 # returns string float currency format
-# *****************************************************
+###
 Handlebars.registerHelper "formatPrice", (price) ->
   price.toFixed(2)
 
-# *****************************************************
+###
 # general helper user name handling
 # todo: needs additional validation all use cases
 # returns first word in profile name
-# *****************************************************
+###
 Handlebars.registerHelper "fname", ->
   if Meteor.user()
     name = Meteor.user().profile.name.split(" ")
@@ -94,10 +205,10 @@ Handlebars.registerHelper "fname", ->
     fname
 
 
-# *****************************************************
+###
 # general helper for determine if user has a store
 # returns boolean
-# *****************************************************
+###
 Handlebars.registerHelper "userHasProfile", ->
   user = Meteor.user()
   user and !!user.profile.store
@@ -107,11 +218,11 @@ Handlebars.registerHelper "userHasRole", (role) ->
   user and user.roles.indexOf(role) isnt -1  if user and user.roles
 
 
-# *****************************************************
+###
 # general helper to return 'active' when on current path
 # returns string
 # handlebars: {{active 'route'}}
-# *****************************************************
+###
 
 #Determine if current link should be active
 Handlebars.registerHelper "active", (path) ->
@@ -123,11 +234,11 @@ Handlebars.registerHelper "active", (path) ->
   else
     ""
 
-# *****************************************************
+###
 # general helper to return 'active' when on current path
 # returns string
 # handlebars: {{navLink 'projectsList' 'icon-edit'}}
-# *****************************************************
+###
 Handlebars.registerHelper "navLink", (page, icon) ->
   ret = "<li "
   ret += "class='active'"  if Meteor.Router.page() is page
@@ -135,69 +246,25 @@ Handlebars.registerHelper "navLink", (page, icon) ->
   new Handlebars.SafeString(ret)
 
 
-# *****************************************************
-# Handler Helper that randomly picks colors for package tiles
-# returns random color
-# TODO: assignedColors aren't populated until after this runs!
-# TODO: generate colors for infinite palette, currently will run out of colors
-# *****************************************************
-Handlebars.registerHelper "tileColors", (app) ->
-  colors = [
-    "blue"
-    "light-blue"
-    "dark-blue"
-    "red"
-    "orange"
-    "brown"
-    "lime"
-    "yellow"
-    "pink"
-    "aqua"
-    "fuchsia"
-    "gray"
-    "maroon"
-    "olive"
-    "purple"
-    "teal"
-    "green"
-  ]
-  assignedColor = ReactionPalette.findOne(appId: app)
-
-  #console.log("tileColor exists:" +tileColor);
-  unless assignedColor
-    palette = ReactionPalette.find({}).fetch()
-    palette.forEach (palette) ->
-      colors = _.without(colors, palette.color) # Remove color duplicates
-
-    tileColor = colors[Math.floor(Math.random() * colors.length)] # pick random color from unused palette
-  else
-    tileColor = assignedColor.color
-    return tileColor
-  if tileColor
-    ReactionPalette.insert
-      appId: app
-      color: tileColor
-
-    tileColor
 
 
-# *****************************************************
+###
 # Handler Helper allows you to load templates dynamically
 # format: {{{getTemplate package context}}}
 # example: {{{getTemplate widget }}}
-# *****************************************************
+###
 Handlebars.registerHelper "getTemplate", (pkg, context) ->
   templateName = pkg + "-widget"
   Template[templateName] context  if Template[templateName]
 
 
-# *****************************************************
+###
 # Handler Helper foreach loop with positional information
 # example:
 # {{#foreach foo}}
 #     <div class='{{#if first}}first{{/if}}{{#if last}} last{{/if}}'>{{index}}</div>
 # {{/foreach}}
-# *****************************************************
+###
 Handlebars.registerHelper "foreach", (arr, options) ->
   return options.inverse(this)  if options.inverse and not arr.length
   arr.map((item, index) ->
@@ -207,9 +274,9 @@ Handlebars.registerHelper "foreach", (arr, options) ->
     options.fn item
   ).join ""
 
-#
+###
 # https://github.com/meteor/meteor/issues/281
-#
+###
 Handlebars.registerHelper "labelBranch", (label, options) ->
   data = this
   Spark.labelBranch Spark.UNIQUE_LABEL, ->

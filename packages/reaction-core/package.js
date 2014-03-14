@@ -216,6 +216,9 @@ api.add_files([
     "client/templates/dashboard/layout/navigation/dashboardSidebar.html",
     "client/templates/dashboard/layout/navigation/dashboardSidebar.coffee",
 
+    "client/templates/dashboard/packages/packages.html",
+    "client/templates/dashboard/packages/packages.coffee",
+
     "client/templates/dashboard/packages/widget/widget.html",
     "client/templates/dashboard/packages/widget/widget.coffee",
 
@@ -297,6 +300,7 @@ api.add_files([
     "client/templates/dashboard/orders/stateHelpers/payment/payment.import.less",
     "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
+    "client/templates/dashboard/packages/packages.import.less",
     "client/templates/dashboard/packages/widget/widget.import.less",
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.import.less",
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.import.less",

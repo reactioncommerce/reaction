@@ -1,30 +1,36 @@
 <template name="dashboard">
-{{#each Packages}}
-  <div class="dashboard hidden" id="{{name}}">
-    <!-- BEGIN Main Content -->
-    <div class="row">
-      <!-- shop settings -->
-      <div class="col-md-2 shop-config">
-        {{>widget}}
-      </div>
-      <!-- shop widgets -->
-      <div class="col-md-10 shop-stats">
-        {{{getTemplate name "widget"}}}
-      </div>
-    </div>
+{{#if hasDashboardAccess}}
+  {{>dashboardSidebar}}
+  {{#if isVisible}}
+    <div class="dashboard-container container">
+    {{#each Packages}}
+      <div class="dashboard hidden" id="{{name}}">
+        <!-- BEGIN Main Content -->
+        <div class="row">
+          <!-- shop settings -->
+          <div class="col-xs-2 col-sm-10 col-md-2 shop-config">
+            {{>widget}}
+          </div>
+          <!-- shop widgets -->
+          <div class="col-xs-10 col-sm-10 col-md-10 shop-stats">
+            {{{getTemplate name "widget"}}}
+          </div>
+        </div>
 
-    <div class="row shop-nav">
-      <div class="col-md-12">
-      <ul class="nav nav-pills">
-        {{#each Packages}}
-          <li><a href="#" class="nav-packages" data-id="{{name}}">{{label}}</a></li>
-        {{/each}}
-      </ul>
+        <div class="row shop-nav">
+          <div class="col-md-12">
+          <ul class="nav nav-pills">
+            {{#each Packages}}
+              <li><a href="#" class="nav-packages" data-id="{{name}}">{{label}}</a></li>
+            {{/each}}
+          </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    {{/each}}
+  {{/if}}
   </div>
-{{/each}}
-<div class="dashboard-apps">
-  {{> availablePkgGrid}}
-</div>
+{{/if}}
 </template>
+
+
