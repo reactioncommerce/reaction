@@ -28,7 +28,6 @@ Package.on_use(function (api, where) {
   api.use([
     "autoform",
     "iron-router",
-    "jquery-cookie",
     "videojs",
     "moment",
     "spin"
@@ -94,8 +93,9 @@ api.add_files([
 
     "lib/jquery-ui/jquery-ui-1.10.4.custom.js",
     "lib/jquery-ui/jquery-ui-1.10.3.custom.css",
-    "lib/jquery.collapsible.js",
-    "lib/jquery.serialize-hash.coffee",
+    "lib/jquery-collapsible/jquery.collapsible.js",
+    "lib/jquery-serialize/jquery.serialize-hash.coffee",
+    "lib/jquery-cookie/jquery.cookie.js",
 
     "client/app.coffee",
     "client/register.coffee",
