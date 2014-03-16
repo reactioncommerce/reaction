@@ -4,6 +4,7 @@ Meteor.app.packages.register(
   description: "Example Reaction Package"
   icon: "fa fa-globe"
   overviewRoute: "helloworld"
+  template: "helloworld"
   hasWidget: true
   priority: "2"
 )

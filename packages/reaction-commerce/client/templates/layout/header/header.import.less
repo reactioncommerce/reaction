@@ -1,5 +1,45 @@
-.navbar-brand {
-  padding: ((@navbar-height - @navbar-brand-height) / 2 - 2) 20px ((@navbar-height - @navbar-brand-height) / 2 + 2);
-  font-size: 20px;
-  line-height: 1;
+.navbar-static-top {
+  /* leave room for floating cart */
+  padding-right: 100px;
+  .navbar-brand {
+    padding: @navbar-padding-vertical 20px 0 10px;
+    font-size: @navbar-brand-font-size;
+    line-height: 1;
+  }
+  .navbar-nav > li > a {padding-top:16px !important; padding-bottom:12px !important;}
+  .navbar-text {
+    margin-bottom: 0;
+  }
+}
+
+/* mobile nav fixed */
+@media (max-width: @screen-xs-max) {
+  .navbar-static-top {
+    .navbar-fixed-top();
+      padding-right: (@navbar-padding-horizontal /2);
+      padding-left: (@navbar-padding-horizontal /2);
+      height: @navbar-height;
+
+    .navbar-brand {
+      padding: 10px 10px 0 10px;
+      font-size: @navbar-brand-font-size;
+      line-height: 1;
+    }
+    /* todo: clean this up */
+    .dashboard-icon {
+      float: right;
+      margin-right: 80px;
+      margin-top: -70px;
+    }
+    .dashboard-icon:before {
+      clear: none;
+    }
+    .navbar-collapse{
+      background-color: darken(@navbar-default-bg, 5%);
+      margin-top: -36px;
+      padding-bottom: 35px;
+      border: 1px solid darken(@navbar-default-bg, 40%);
+      z-index: 1;
+    }
+  }
 }

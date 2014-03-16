@@ -1,15 +1,19 @@
 .dashboard-container {
-  height: 100%;
-  margin-bottom: 40px;
-  // padding: 0 0 40px 0;
+  background-color: @cart-drawer-bg;
+  -moz-box-shadow:    inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow:         inset 0 0 10px #000000;
+}
+
+.dashboard-container > div {
+  border-radius: 0px;
 }
 .dashboard {
-  border-radius: @border-radius-base;
+  border-radius: 0;
   border: 1px solid @table-border-color;
 }
 
 .shop-config {
-  height: 320px;
   background-color: @dashboard-widget-bg;
 }
 

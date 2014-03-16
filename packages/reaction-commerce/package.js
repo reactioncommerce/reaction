@@ -77,8 +77,6 @@ api.add_files([
   ], ["server"]);
 
   api.add_files([
-    "lib/sparkline/jquery.sparkline.js",
-
     "lib/select2/select2.js",
     "lib/select2/select2.css",
     "lib/select2-bootstrap-css/select2-bootstrap.css",
@@ -210,8 +208,8 @@ api.add_files([
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.coffee",
 
-    "client/templates/dashboard/layout/navigation/dashboardSidebar.html",
-    "client/templates/dashboard/layout/navigation/dashboardSidebar.coffee",
+    "client/templates/dashboard/sidebar/dashboardSidebar.html",
+    "client/templates/dashboard/sidebar/dashboardSidebar.coffee",
 
     "client/templates/dashboard/packages/packages.html",
     "client/templates/dashboard/packages/packages.coffee",
@@ -227,6 +225,9 @@ api.add_files([
 
     "client/templates/dashboard/dashboard.html",
     "client/templates/dashboard/dashboard.coffee",
+
+    "client/templates/dashboard/dashboardIcon/dashboardIcon.html",
+    "client/templates/dashboard/dashboardIcon/dashboardIcon.coffee",
 
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.html",
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.coffee",
@@ -287,7 +288,7 @@ api.add_files([
     "client/templates/cart/checkout/progressBar/progressBar.import.less",
     "client/templates/cart/checkout/review/review.import.less",
     "client/templates/cart/checkout/shipping/shipping.import.less",
-    "client/templates/dashboard/layout/navigation/dashboardSidebar.import.less",
+    "client/templates/dashboard/sidebar/dashboardSidebar.import.less",
     "client/templates/dashboard/orders/details/detail.import.less",
     "client/templates/dashboard/orders/orders.import.less",
     "client/templates/dashboard/orders/social/orderSocial.import.less",
@@ -302,6 +303,7 @@ api.add_files([
     "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.import.less",
     "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.import.less",
     "client/templates/dashboard/dashboard.import.less",
+    "client/templates/dashboard/dashboardIcon/dashboardIcon.import.less",
     "client/templates/dashboard/widget/widget.import.less",
     "client/templates/layout/header/header.import.less",
     "client/templates/layout/footer/footer.import.less",

@@ -1,17 +1,6 @@
-// @font-family: 'Roboto', 'Open Sans', sans-serif;
-// @font-size-base:  15px;
-// @letter-spacing: .5px;
-// @headings-font-weight: 300;
-
-
 //== Typography
-//
-//## Font, line-height, and color for body text, headings, and more.
-
 @font-family-sans-serif:  'Roboto', 'Open Sans', sans-serif;
 @font-family-serif:       'Roboto', 'Open Sans', sans-serif;
-//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-// @font-family-monospace:   Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        @font-family-sans-serif;
 
 @font-size-base:          14px;
@@ -25,14 +14,11 @@
 @font-size-h5:            @font-size-base;
 @font-size-h6:            ceil((@font-size-base * 0.85)); // ~12px
 
-//** Unit-less `line-height` for use in components like buttons.
 @line-height-base:        1.428571429; // 20/14
-//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
-
-//** By default, this inherits from the `<body>`.
 @letter-spacing: .5px;
 
+//== Headings
 @headings-font-family:    'Roboto';
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
@@ -46,17 +32,28 @@
 @headings-color-h2:       #1999dd;
 @headings-font-weight-h2:    500;
 
+//== Navbar
+@navbar-margin-bottom: 0;
 @navbar-brand-height: 20px;
+@navbar-brand-font-size: 20px;
+@navbar-height: 50px;
+@navbar-padding-vertical: 14px;
 
 //== Products
-//
-//## overlay and some admin
 @product-overlay-bg: rgba(100, 89, 89, 0.56);
 @product-overlay-text: contrast(@product-overlay-bg, #fff,#CCC);
 @grid-gutter-width: 10px; //inline forms will get messed up with larger values
 @drag-drop-zone-bg: #F0F8FF;
 
+//== Product Grid
+@product-grid-columns-sm: 2;
+@product-grid-columns-md: 3;
+@product-grid-columns-lg: 4;
+
+
+//== Cart Drawer
 @cart-drawer-bg: #626262;
+@cart-drawer-height: 275px;
 @cart-icon-bg: #F0F8FF;
 @cart-icon-badge:  #25B315;
 @cart-icon-badge-warning: #FF0000;
@@ -69,6 +66,6 @@
 @cart-progress-next:  #EcEcEc;
 
 //== Dashboard
-//
-//##
-@dashboard-widget-bg: #f0f0f0;
+@dashboard-widget-bg: #FF6700;
+@dashboard-sidebar-bg:  #ff7517;
+@dashboard-drawer-height: @cart-drawer-height;

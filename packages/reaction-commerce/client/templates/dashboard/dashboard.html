@@ -1,8 +1,7 @@
 <template name="dashboard">
 {{#if hasDashboardAccess}}
-  {{>dashboardSidebar}}
   {{#if isVisible}}
-    <div class="dashboard-container container">
+    <div class="dashboard-container">
     {{#each Packages}}
       <div class="dashboard hidden" id="{{name}}">
         <!-- BEGIN Main Content -->
@@ -23,6 +22,7 @@
             {{#each Packages}}
               <li><a href="#" class="nav-packages" data-id="{{name}}">{{label}}</a></li>
             {{/each}}
+            <li><a href="{{pathFor "dashboard"}}" class="nav-packages navbar-right">App Gallery</a></li>
           </ul>
           </div>
         </div>

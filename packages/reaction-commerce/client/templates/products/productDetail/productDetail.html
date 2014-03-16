@@ -1,5 +1,5 @@
 <template name="productDetail">
-<div class="container">
+<div class="container-fluid pdp-container">
   {{!-- Product Visibility Admin Block --}}
   {{#if userHasRole "admin"}}
   <div class="row">
@@ -31,13 +31,13 @@
     <!-- Product Details -->
     <div class="row product-details">
       <!-- BEGIN Left Side -->
-      <div class="col-md-5 col-lg-4 col-lg-offset-1">
+      <div class="col-sm-5 pdp-left-column">
         {{> productImageGallery}}
         {{> attributes}}
       </div>
       <!-- END Left Side -->
       <!-- BEGIN Right Side -->
-      <div class="col-md-7">
+      <div class="col-sm-7 pdp-right-column">
         <!-- main product information -->
         <div class="row col-md-10 col-offset-md-4 pdp-editable">
           {{!-- Price Fixation --}}
