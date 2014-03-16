@@ -1,7 +1,3 @@
-.nav-cart-icon {
-  width: 200px;
-}
-
 .cart-icon {
   color: @cart-icon-text;
   margin: 2px 15px 0 0;
@@ -9,10 +5,11 @@
   padding: 15px;
   border-radius: @cart-icon-border-radius;
   display: block;
-  position: fixed;
+  position: absolute;
   background-color: @cart-icon-bg;
   top: 0;
   right: 0;
+  z-index: 10;
 
 
   .badge {

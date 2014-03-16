@@ -17,8 +17,9 @@
 }
 
 // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
-.img-responsive{width:100%;}
+.img-responsive {width: 100%;}
 
+.pdp-container {padding: 5px 5px 75px 5px; }
 // Override of xeditable form group elements to change styles
 .pdp-title .form-group,
 .pdp-title .form-control,
@@ -65,6 +66,14 @@
 
 .product-details {
   padding-top: 25px;
+}
+
+.pdp-left-column {
+  padding-right: 10px;
+}
+
+.pdp-right-column {
+  padding-left: 10px;
 }
 // Override of xeditable form group elements to change styles
 .pdp-editable .form-group,
@@ -117,7 +126,7 @@
   }
 
 
-@media screen and (max-width: 800px) {
+@media (max-width: @screen-xs-max) {
     .pdp-title, .pdp-title h1{
       font-size: 30px;
     }

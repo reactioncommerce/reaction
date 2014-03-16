@@ -19,10 +19,7 @@ main {
   min-height: 100%;
   height: auto;
   /* Negative indent footer by its height */
-  margin: -20px  auto;
-  /* Pad bottom by footer height */
-  padding: 20px 75px 100px 75px;
-  // z-index:1;
+  padding: 20px 75px 135px 75px;
   background-color: @body-bg;
 }
 
@@ -30,42 +27,14 @@ main {
 .modal-dialog {
   z-index: 9999;
 }
-/* leave room for floating cart */
-.navbar-static-top {
-  padding-right: 100px;
-}
-
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */
-@media (min-width: 768px) {
-  .row { margin-right: 0; margin-left: 0; }
-  .jumbotron {font-size: 60px;}
-}
-
-/* mobile nav fixed */
 @media screen and (max-width: 767px) {
-  body {
-    margin: 0;
-  }
-
   main {
-    padding: 100px 0px 125px 0px;
+    padding: 75px 5px 135px 5px;
   }
-
   h1 {
     font-size:24px;
-  }
-
-  .navbar-static-top {
-    .navbar-fixed-top();
-    padding-right: 0px;
-    margin-bottom: 70px;
-  }
-
-
-  /* Set the fixed height of the footer here */
-  footer {
-    height: 125px;
   }
 }

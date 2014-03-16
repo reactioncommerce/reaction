@@ -51,7 +51,7 @@ Template.headerTags.rendered = ->
     $.fn.editable.defaults.disabled = false
     $.fn.editable.defaults.mode = "inline"
     $.fn.editable.defaults.showbuttons = false
-    $.fn.editable.defaults.highlight = '#eff6db'
+    $.fn.editable.defaults.highlight = "#eff6db"
     $.fn.editable.defaults.clear = true
 
     #TODO: Implement Typeahead
@@ -66,7 +66,7 @@ Template.headerTags.rendered = ->
           Alerts.add "A name is required"
           false
 
-    $(".active").editable
+    $("#header-tags-list .active").editable
       type: "text"
       inputclass: "navbar-form"
       success: (response, newValue) ->

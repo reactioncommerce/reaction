@@ -1,22 +1,25 @@
 <template name="layoutHeader">
-  <div class="navbar navbar-default navbar-static-top" role="navigation">
+<div class="navbar navbar-default navbar-static-top layout-header" role="navigation">
+  <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="fa fa-bars fa-2x"></span>
+      <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target="#reaction-navbar-collapse">
+        <span class="fa fa-bars fa-lg"></span>
       </button>
       <a class="navbar-brand navbar-nav" href="{{pathFor 'index'}}">{{{siteName}}}</a>
-      <div class="visible-xs hidden-sm hidden-lg hidden-md">{{>cartIcon}}</div>
     </div>
 
-    <div class="collapse navbar-collapse">
+    <div class="nav navbar-nav navbar-right">{{>cartIcon}}</div>
+    <div class="nav navbar-nav navbar-right navbar-text">{{>dashboardIcon}}</div>
+
+    <div class="collapse navbar-collapse" id="reaction-navbar-collapse">
       <div class="nav navbar-nav navbar-right">{{loginButtons}}</div>
-      {{>headerTags}}
-      <div class="nav navbar-nav hidden-xs nav-cart-icon">
-        {{>cartIcon}}
-      </div>
+      <div class="nav navbar-nav navbar-left">{{>headerTags}}</div>
     </div>
   </div>
-  <div class="container">
-    {{> bootstrapAlerts}}
-  </div>
+</div>
+
+<div class="container-fluid">
+  {{>bootstrapAlerts}}
+</div>
+
 </template>
