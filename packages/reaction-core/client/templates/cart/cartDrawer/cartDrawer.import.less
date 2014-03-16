@@ -1,4 +1,8 @@
+.cart-drawer-container {
+  min-height: @cart-drawer-height;
+}
 .cart-drawer {
+  height: 100%;
   background-color: @cart-drawer-bg;
   color: @text-color;
   padding: 10px;
@@ -7,8 +11,9 @@
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow:         inset 0 0 10px #000000;
 
-  .cart-drawer-empty {
-    min-height: @cart-drawer-height;
+  .cart-drawer-empty-msg {
+    height: (@cart-drawer-height - 10);
+    color: contrast(@cart-drawer-bg, black, white);
+    padding-top: (@cart-drawer-height / 5);
   }
 }
-

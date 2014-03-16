@@ -14,16 +14,17 @@
       </div>
       {{#unless cartItems}}
         <div class="cart-drawer-empty">
-          <h1>
-            <i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong>
-          </h1>
-        </div>
-        <div class="row">
-             <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping">
-              Keep on shopping
+          <div class="row cart-drawer-empty-msg">
+            <h1>
+              <i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong>
+            </h1>
+          </div>
+          <div class="row">
+            <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping">
+            Keep on shopping
             </a>
+          </div>
         </div>
-
       {{else}}
         {{#unless checkoutView}}
         <div class="row">
