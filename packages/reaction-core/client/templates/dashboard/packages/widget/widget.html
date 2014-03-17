@@ -5,9 +5,9 @@
         <h2>{{label}}</h2>
       {{else}}
         {{#if hasShopPermission settingsRoute}}
-          <a class="big" href="{{pathFor settingsRoute}}">{{label}}</a>
+          <a href="{{pathFor settingsRoute}}"><h2>{{label}}</h2></a>
         {{else}}
-          <p class="big">{{label}}</p>
+          <h2>{{label}}</h2>
         {{/if}}
       {{/if}}
       <ul class="list-unstyled">
@@ -47,9 +47,6 @@
             </span>
         </a>
       {{/if}}
-    </div>
-    <div class="widget">
-      {{widget}}
     </div>
   </div>
 </template>

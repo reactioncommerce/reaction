@@ -208,9 +208,6 @@ api.add_files([
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.coffee",
 
-    "client/templates/dashboard/sidebar/dashboardSidebar.html",
-    "client/templates/dashboard/sidebar/dashboardSidebar.coffee",
-
     "client/templates/dashboard/packages/packages.html",
     "client/templates/dashboard/packages/packages.coffee",
 
@@ -288,7 +285,6 @@ api.add_files([
     "client/templates/cart/checkout/progressBar/progressBar.import.less",
     "client/templates/cart/checkout/review/review.import.less",
     "client/templates/cart/checkout/shipping/shipping.import.less",
-    "client/templates/dashboard/sidebar/dashboardSidebar.import.less",
     "client/templates/dashboard/orders/details/detail.import.less",
     "client/templates/dashboard/orders/orders.import.less",
     "client/templates/dashboard/orders/social/orderSocial.import.less",

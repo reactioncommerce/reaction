@@ -1,36 +1,30 @@
 <template name="dashboard">
 {{#if hasDashboardAccess}}
   {{#if isVisible}}
-    <div class="dashboard-container">
-    {{#each Packages}}
-      <div class="dashboard hidden" id="{{name}}">
-        <!-- BEGIN Main Content -->
-        <div class="row">
-          <!-- shop settings -->
-          <div class="col-xs-2 col-sm-10 col-md-2 shop-config">
+    <div class="dashboard-drawer">
+
+      <div class="dashboard">
+        <!-- BEGIN Package Content -->
+        {{#with Package}}
+          <!-- package control panel -->
+          <div class="dashboard-control-panel">
             {{>widget}}
           </div>
-          <!-- shop widgets -->
-          <div class="col-xs-10 col-sm-10 col-md-10 shop-stats">
-            {{{getTemplate name "widget"}}}
-          </div>
-        </div>
-
-        <div class="row shop-nav">
-          <div class="col-md-12">
-          <ul class="nav nav-pills">
-            {{#each Packages}}
-              <li><a href="#" class="nav-packages" data-id="{{name}}">{{label}}</a></li>
-            {{/each}}
-            <li><a href="{{pathFor "dashboard"}}" class="nav-packages navbar-right">App Gallery</a></li>
-          </ul>
-          </div>
-        </div>
+          <!-- package widgets -->
+          {{{getTemplate name "widget"}}}
+        {{/with}}
       </div>
-    {{/each}}
+
+      <div class="dashboard-navbar-packages">
+        <ul class="nav nav-pills">
+          {{#each packages}}
+            <li><a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">{{label}}</a></li>
+          {{/each}}
+          <li><a href="{{pathFor "dashboard"}}" class="dashboard-navbar-package navbar-right {{isCurrent}}">App Gallery</a></li>
+        </ul>
+      </div>
+    </div>
+
   {{/if}}
-  </div>
 {{/if}}
 </template>
-
-

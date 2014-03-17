@@ -1,5 +1,4 @@
 <template name="settingsAccount">
-    {{>memberForm}}
     <div class="settings-account-list">
       <table class="table staff-table">
         <thead>
@@ -18,21 +17,5 @@
         <button type="button" class="btn btn-default button-add-member">Add a staff member</button>
       {{/if}}
       </div>
-</template>
-
-
-<template name="settingsAccountModal">
-<div class="modal fade" id="settingsAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Account Permissions</h4>
-      </div>
-      <div class="modal-body">
-        {{>settingsAccount}}
-      </div>
-    </div>
-  </div>
-</div>
+     {{>memberForm}}
 </template>

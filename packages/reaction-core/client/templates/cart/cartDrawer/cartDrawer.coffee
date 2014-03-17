@@ -15,15 +15,13 @@ Session.setDefault "displayCartDrawer",false
   else
     Session.set "displayCartDrawer", false
 
-  $("html, body").animate
-    scrollTop: $("#cart-drawer-container").offset().top
-  , 300
-  # delay then close automatically, but reset if changes are made
+  $('html, body').animate({ scrollTop: 0 }, 0)
+
   autoClose = () ->
     $("#cart-drawer").fadeOut "slow", () ->
       Session.set "displayCartDrawer", false
   Meteor.clearTimeout(delayId) if delayId?
-  @delayId = Meteor.setTimeout autoClose,7000
+  @delayId = Meteor.setTimeout autoClose, 8000
 
 ### **************************************************************
 # Template Cart Drawer

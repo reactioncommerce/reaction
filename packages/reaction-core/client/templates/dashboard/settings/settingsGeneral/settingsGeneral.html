@@ -7,7 +7,7 @@
         <div class="form-group {{#if afFieldIsInvalid "name"}}has-error{{/if}}">
           {{afFieldLabel 'name' class="col-sm-2 col-lg-1 control-label"}}
           <div class="col-sm-5 controls">
-            {{afFieldInput 'name'}}
+            {{afFieldInput 'name' autofocus=''}}
             {{#if afFieldIsInvalid "name"}}
               <span class="help-block">{{afFieldMessage "name"}}</span>
             {{/if}}
@@ -97,7 +97,7 @@
         <div class="form-group {{#if afFieldIsInvalid "addressBook.0.country"}}has-error{{/if}}">
           {{afFieldLabel 'addressBook.0.country' class="col-sm-2 col-lg-1 control-label"}}
           <div class="col-sm-5 controls">
-            {{afFieldInput 'addressBook.0.country' options=countryOptions value=defaultCountry autofocus=''}}
+            {{afFieldInput 'addressBook.0.country' options=countryOptions value=defaultCountry}}
             {{#if afFieldIsInvalid "addressBook.0.country"}}
               <span class="help-block">{{afFieldMessage "addressBook.0.country"}}</span>
             {{/if}}
