@@ -1,7 +1,7 @@
 Router.map ->
-  @route 'filepicker-io',
+  @route 'dashboard/settings/filepicker',
     controller: ShopAdminController
     path: 'dashboard/settings/filepicker',
-    template: 'filepicker-io'
+    template: 'filepicker'
     waitOn: ->
       PackagesHandle

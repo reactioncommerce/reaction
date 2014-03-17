@@ -4,7 +4,7 @@ Meteor.app.packages.register
   label: "Filepicker.io"
   description: "<a href='http://filepicker.io' target='_blank' class='dashlink'>Filepicker.io</a> for Reaction"
   icon: "fa fa-cloud-upload"
-  settingsRoute: "filepicker-io"
+  settingsRoute: "dashboard/settings/filepicker"
   hasWidget: false
   priority: "9"
   shopPermissions: [

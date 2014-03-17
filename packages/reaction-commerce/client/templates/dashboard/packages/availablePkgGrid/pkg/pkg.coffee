@@ -29,7 +29,7 @@ Template.pkg.events
       Packages.insert name: @name
       Alerts.add @label + " is now enabled.", "success"
 
-    Router.go @route  if @route
+    Router.go @settingsRoute  if @settingsRoute
 
   "click .disablePkg": (event, template) ->
     event.preventDefault()

@@ -13,7 +13,10 @@
 }
 
 /* mobile nav fixed */
-@media (max-width: @screen-xs-max) {
+@media only screen and (max-width: @screen-xs-max) {
+  body {
+    padding-top: @navbar-height;
+  }
   .navbar-static-top {
     .navbar-fixed-top();
       padding-right: (@navbar-padding-horizontal /2);

@@ -1,2 +1,3 @@
 Router.map ->
-  @route "helloworld"
+  @route "helloworld",
+      controller: ShopController

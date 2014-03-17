@@ -8,6 +8,15 @@ Template.shopMember.helpers
           name: Users.findOne(@userId).profile.name
         return user
 
+  isAdmin: ->
+    if @.isAdmin is "yes"
+      return true
+    else
+      return false
+
+  userIdIsAdmin: ->
+    return @.userId + "_is_admin"
+
   permissionGroups: ->
     Meteor.app.shopPermissionGroups
 
@@ -23,8 +32,6 @@ Template.shopMember.helpers
     if Meteor.app.hasOwnerAccess()
       return "toggle-shop-member-permissions"
 
-  userIdIsAdmin: (userId) ->
-    return userId + "_is_admin"
 
 Template.shopMember.rendered = ->
   $(@find(".toggle-shop-member-permissions")).collapsible
@@ -36,6 +43,7 @@ Template.shopMember.events
     modifier = {$set: {}}
     modifier.$set["members." + @index + ".isAdmin"] = $(event.currentTarget).val() is "yes"
     Shops.update Meteor.app.shopId, modifier
+    return
 
   "change .toggle-shop-member-permission": (event, template) ->
     member = template.data

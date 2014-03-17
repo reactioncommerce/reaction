@@ -1,24 +1,24 @@
 Package.describe({
-  summary: "Reaction package of filepicker.io"
+  summary: "Reaction package of Ink Filepicker"
 });
 
 Package.on_use(function (api) {
   api.use([
-    "coffeescript"
+    "coffeescript",
+    "iron-router",
   ], ["client", "server"]);
   api.use([
     "templating",
     "jquery",
-    "iron-router",
     "reaction-commerce",
   ], ["client"]);
 
   api.add_files([
-    "client/register.coffee",
     "client/routing.coffee",
+    "client/register.coffee",
     "client/loadpicker.coffee",
-    "client/templates/filepicker-io/filepicker-io.html",
-    "client/templates/filepicker-io/filepicker-io.coffee"
+    "client/templates/filepicker/filepicker.html",
+    "client/templates/filepicker/filepicker.coffee"
   ], ["client"]);
 
   api.export([

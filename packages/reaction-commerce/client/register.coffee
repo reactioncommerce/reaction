@@ -38,7 +38,6 @@ Meteor.app.packages.register
   label: 'Orders'
   overviewRoute: 'dashboard/orders'
   hidden: true
-  hasWidget: false
   shopPermissions: [
     {
       label: "Orders"
@@ -53,8 +52,6 @@ Meteor.app.packages.register
   label: 'Access'
   settingsRoute: 'dashboard/settings/account'
   hidden: true
-  hasWidget: false
-  template: 'settingsAccountModal'
   shopPermissions: [
     {
       label: "Dashboard Access"

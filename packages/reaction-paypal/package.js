@@ -23,8 +23,8 @@ Package.on_use(function (api, where) {
   api.add_files("common/collections.coffee",["client","server"]);
   api.add_files("lib/paypal.js",["client","server"]);
   api.add_files([
-    "client/register.coffee",
     "client/routing.coffee",
+    "client/register.coffee",
     "client/templates/paypal.html",
     "client/templates/paypal.less",
     "client/templates/paypal.coffee",

@@ -24,12 +24,12 @@ roles
 email
 collection-hooks
 handlebars-server
+bootstrap-alerts
+accounts-facebook
 
 reaction-commerce
-reaction-filepicker
+reaction-accounts
 reaction-helloworld
 reaction-google-analytics
-reaction-accounts
-accounts-facebook
 reaction-paypal
-bootstrap-alerts
+reaction-filepicker

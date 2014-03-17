@@ -1,7 +1,7 @@
-Template["filepicker-io"].helpers pickerData: ->
+Template["filepicker"].helpers pickerData: ->
   Packages.findOne name: "reaction-filepicker"
 
-Template["filepicker-io"].events
+Template["filepicker"].events
   "submit form": (event) ->
     event.preventDefault()
     apikey = $(event.target).find("[name=input-apikey]").val()

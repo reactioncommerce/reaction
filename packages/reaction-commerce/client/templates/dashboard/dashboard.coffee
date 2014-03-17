@@ -2,14 +2,19 @@ Template.dashboard.helpers
   isVisible: ->
     Session.get("dashboard")
 
-  isDashboard: ->
-    if Router.current().path is "/dashboard" then return true
+  isCurrent: ->
+
 
   Package: ->
-    packageInfo = Meteor.app.packages["reaction-commerce"]
+    # package view is aware of Package / Context / Route / Permissions
+    #
+    # currentContext = Session.get('currentDashboard')
+    currentPackage = Session.get 'currentPackage'
+    unless currentPackage? then Session.set 'currentPackage', "reaction-commerce"
+    packageInfo = Meteor.app.packages[currentPackage]
     packageInfo
 
-  Packages: ->
+  packages: ->
     packageConfigs = []
     existingPackages = Packages.find().fetch()
     for packageConfig in existingPackages
@@ -27,10 +32,22 @@ Template.dashboard.helpers
         dependencies.push(_.extend(packageConfig, packageInfo))
     dependencies
 
-Template.dashboard.rendered = ->
-  $("#reaction-commerce").removeClass("hidden").addClass("active")
-
 Template.dashboard.events
-  'click .nav-packages': (event, template) ->
-    $(".dashboard").removeClass("active").addClass("hidden")
-    $("#" +@.name).removeClass("hidden")
+  'click .dashboard-navbar-package': (event, template) ->
+    Session.set "currentPackage", @.name
+    if @.overviewRoute? then Router.go(@.overviewRoute)
+    event.preventDefault()
+
+  'click .next': (event, template) ->
+      owl.trigger('owl.next')
+
+  'click .prev': (event, template) ->
+      owl.trigger('owl.prev')
+
+Template.dashboard.rendered = ->
+  $(".dashboard").owlCarousel
+    lazyload: true
+    # items: 6;
+    # itemsScaleUp: true;
+    navigation: false;
+    pagination: false;
