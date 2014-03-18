@@ -1,0 +1,38 @@
+<template name="packagePanel">
+  <div class="package-panel" id="{{_id}}">
+    <div class="content">
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            {{label}}
+          </div>
+          <div class="col-xs-2">
+            {{#if hasShopPermission settingsRoute}}
+              <a href="{{pathFor settingsRoute}}"><i class="fa fa-cog"></i></a>
+            {{/if}}
+          </div>
+        </div>
+
+        {{#each dependencies}}
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            {{label}}
+          </div>
+          <div class="col-xs-2">
+            {{#if hasShopPermission settingsRoute }}
+              {{#if template}}
+                {{{widgetTemplateRender template}}}
+                <a href="#" class="package-settings"><i class="fa fa-cog"></i></a>
+              {{else}}
+                <a href="{{pathFor settingsRoute}}"><i class="fa fa-cog"></i></a>
+              {{/if}}
+
+            {{/if}}
+            {{#if hasShopPermission overviewRoute}}
+              <a href="{{pathFor overviewRoute}}"><i class="fa fa-bar-chart-o"></i></a>
+            {{/if}}
+          </div>
+        </div>
+        {{/each}}
+    </div>
+  </div>
+</template>

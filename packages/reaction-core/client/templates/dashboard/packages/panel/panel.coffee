@@ -1,4 +1,4 @@
-Template.widget.helpers
+Template.packagePanel.helpers
   dependencies: ->
     currentPackageDepends = @depends
     dependencies = []
@@ -12,6 +12,6 @@ Template.widget.helpers
     data = Shops.findOne Meteor.app.shopId
     Template[template](data)
 
-Template.widget.events
+Template.packagePanel.events
   "click .package-settings": (event, template) ->
     $('#' +@.template).modal()

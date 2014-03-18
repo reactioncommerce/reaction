@@ -1,4 +1,4 @@
-Template.availablePkgGrid.helpers
+Template.packagesGrid.helpers
   availablePkgs: ->
     availablePkgs = []
     for packageName, packageInfo of Meteor.app.packages

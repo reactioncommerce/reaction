@@ -211,14 +211,14 @@ api.add_files([
     "client/templates/dashboard/packages/packages.html",
     "client/templates/dashboard/packages/packages.coffee",
 
-    "client/templates/dashboard/packages/widget/widget.html",
-    "client/templates/dashboard/packages/widget/widget.coffee",
+    "client/templates/dashboard/packages/panel/panel.html",
+    "client/templates/dashboard/packages/panel/panel.coffee",
 
-    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.html",
-    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.coffee",
+    "client/templates/dashboard/packages/grid/package/package.html",
+    "client/templates/dashboard/packages/grid/package/package.coffee",
 
-    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.html",
-    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.coffee",
+    "client/templates/dashboard/packages/grid/grid.html",
+    "client/templates/dashboard/packages/grid/grid.coffee",
 
     "client/templates/dashboard/dashboard.html",
     "client/templates/dashboard/dashboard.coffee",
@@ -295,9 +295,9 @@ api.add_files([
     "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
     "client/templates/dashboard/packages/packages.import.less",
-    "client/templates/dashboard/packages/widget/widget.import.less",
-    "client/templates/dashboard/packages/availablePkgGrid/availablePkgGrid.import.less",
-    "client/templates/dashboard/packages/availablePkgGrid/pkg/pkg.import.less",
+    "client/templates/dashboard/packages/panel/panel.import.less",
+    "client/templates/dashboard/packages/grid/grid.import.less",
+    "client/templates/dashboard/packages/grid/package/package.import.less",
     "client/templates/dashboard/dashboard.import.less",
     "client/templates/dashboard/dashboardIcon/dashboardIcon.import.less",
     "client/templates/dashboard/widget/widget.import.less",

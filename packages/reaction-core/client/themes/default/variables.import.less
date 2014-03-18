@@ -19,18 +19,22 @@
 @letter-spacing: .5px;
 
 //== Headings
-@headings-font-family:    'Roboto';
+// @headings-font-family:    @font-family-base;
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
 @headings-color:          inherit;
 
 @headings-font-family-h1:   @headings-font-family;
-@headings-color-h1:       #000;
-@headings-font-weight-h1:    700;
+@headings-color-h1:         @headings-color;
+@headings-font-weight-h1:   700;
 
 @headings-font-family-h2:   @headings-font-family;
-@headings-color-h2:       #1999dd;
-@headings-font-weight-h2:    500;
+@headings-color-h2:         #1999dd;
+@headings-font-weight-h2:   400;
+
+@headings-font-family-h3:   @headings-font-family;
+@headings-color-h3:         @headings-color;
+@headings-font-weight-h3:   200;
 
 //== Navbar
 @navbar-margin-bottom: 0;
@@ -66,6 +70,7 @@
 @cart-progress-next:  #EcEcEc;
 
 //== Dashboard
-@dashboard-widget-bg: #FF6700;
-@dashboard-sidebar-bg:  #ff7517;
+@dashboard-widget-bg: contrast(@body-bg,darken(@body-bg, 10%),lighten(@body-bg, 20%));
+@dashboard-sidebar-bg:  contrast(@body-bg,darken(@body-bg, 10%),lighten(@body-bg, 20%));
 @dashboard-drawer-height: @cart-drawer-height;
+@dashboard-font-color: #000;

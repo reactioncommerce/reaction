@@ -21,3 +21,8 @@ settingsRoute = path to setting page,will use this for Route.go() and render to 
 
 overviewRoute = route to some functional page / first page
 
+
+
+Development:
+
+use <div class="dashboard-widget">  for widget cards.
