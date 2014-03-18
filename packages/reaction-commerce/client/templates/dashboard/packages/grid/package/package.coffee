@@ -5,7 +5,7 @@
 # *****************************************************
 
 # returns enabled status for this user for specific package
-Template.pkg.helpers
+Template.gridPackage.helpers
   isEnabled: (name) ->
     Packages.find(name: name).count() > 0
 
@@ -21,7 +21,7 @@ Template.pkg.helpers
     pkg
 
 
-Template.pkg.events
+Template.gridPackage.events
   "click .enablePkg": (event, template) ->
     event.preventDefault()
     pkg = Packages.findOne(name: @name)

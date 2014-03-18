@@ -1,8 +1,8 @@
 <template name="headerTags">
-    <ul class="nav navbar-nav navbar-left header-tags-list" id="header-tags-list">
+    <ul class="nav navbar-nav navbar-left header-tags-list clearfix" id="header-tags-list">
       {{#each tags}}
-       <li>
-        <a href="{{pathFor "product/tag"}}" class="header-tag {{activeTag tag._id}}" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
+       <li class="{{activeTag tag._id}}">
+        <a href="{{pathFor "product/tag"}}" class="header-tag {{editableTag tag._id}}" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
        </li>
       {{/each}}
       {{#if userHasRole "admin"}}

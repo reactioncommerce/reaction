@@ -23,6 +23,9 @@ Template.headerTags.helpers
   activeTag: (currentTag)->
     if Router.current().params._id is @._id then return "active"
 
+  editableTag: (currentTag)->
+    if Router.current().params._id is @._id then return "editable-tag"
+
 Template.headerTags.events
   'click .active': (event,template) ->
     # event.stopPropogation()
@@ -66,7 +69,7 @@ Template.headerTags.rendered = ->
           Alerts.add "A name is required"
           false
 
-    $("#header-tags-list .active").editable
+    $("#header-tags-list .editable-tag").editable
       type: "text"
       inputclass: "navbar-form"
       success: (response, newValue) ->
