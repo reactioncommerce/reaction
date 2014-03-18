@@ -13,11 +13,11 @@ Template.gridPackage.helpers
     if @.hasWidget
       pkg =
         class: "pkg-app-class"
-        text: "Package"
+        text: "App"
     else
       pkg =
         class: "pkg-feature-class"
-        text: "Function"
+        text: "Core"
     pkg
 
 
