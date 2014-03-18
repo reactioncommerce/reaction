@@ -4,7 +4,7 @@ Meteor.app.packages.register
   label: "Google Analytics"
   description: "Event tracking with Google Analytics"
   icon: "fa fa-bar-chart-o"
-  settingsRoute: "googleAnalytics"
+  settingsRoute: "dashboard/settings/google"
   hasWidget: false
   priority: "4"
   shopPermissions: [
