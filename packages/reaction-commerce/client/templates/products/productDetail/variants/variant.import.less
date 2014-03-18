@@ -1,3 +1,8 @@
+// .variant-form .form-control {
+//     width: 100% !important;
+//     padding: 0;
+// }
+
 .variant-list-item {
   margin: 5px 0 5px 0;
   line-height: 28px;
@@ -17,6 +22,7 @@
   border-radius: @input-border-radius;
   font-size: 12px;
   border: 3px solid transparent;
+  margin-top: 8px;
 }
 
 .variant-detail:hover {
@@ -25,13 +31,15 @@
 
 .variant-detail-selected{
   border: 3px solid gray;
+  background-color: gray;
 }
 
 .variant-progress-item {
   border: 0px;
   position: absolute;
-  margin: 0 10px 0 10px;
-  width: 95%;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
 }
 .variant-qty {
   //placeholder
@@ -47,13 +55,14 @@ border-radius:1px;
   text-transform: uppercase;
   margin-left: 5px;
   line-height: 28px;
-  font-weight: 500;
+  font-weight: 400;
   color: @btn-default-color;
+
 }
 
 .variant-price {
-  margin-right: 10px;
-  padding-right: 15px;
+  margin-right: 2px;
+  padding-right: 2px;
   font-size: medium;
   font-weight: 500;
   line-height: 30px;
@@ -68,4 +77,17 @@ border-radius:1px;
   a {
     padding: 5px;
   }
+}
+
+@media only screen and (max-width: @screen-sm-max) {
+.variant-title {
+  letter-spacing: 0em;
+  text-transform: uppercase;
+  margin-left: 5px;
+  line-height: 28px;
+  font-weight: 400;
+  color: @btn-default-color;
+
+}
+
 }
