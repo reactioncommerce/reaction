@@ -12,35 +12,43 @@
       </div>
     </div>
     <div class="row well well-sm">
-      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'weight'}} has-error{{/if}}">
+      <div class="col-md-3">
+        <div class="form-group{{#if afFieldIsInvalid 'weight'}} has-error{{/if}}">
           {{afFieldLabel 'weight'}}
           {{afFieldInput 'weight'}}
           {{#if afFieldIsInvalid 'weight'}}
           <span class="help-block">{{afFieldMessage 'weight'}}</span>
           {{/if}}
+        </div>
       </div>
-      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'inventoryQuantity'}} has-error{{/if}}">
+      <div class="col-md-3">
+        <div class="form-group{{#if afFieldIsInvalid 'inventoryQuantity'}} has-error{{/if}}">
           {{afFieldLabel 'inventoryQuantity'}}
           {{afFieldInput 'inventoryQuantity'}}
           {{#if afFieldIsInvalid 'inventoryQuantity'}}
           <span class="help-block">{{afFieldMessage 'inventoryQuantity'}}</span>
           {{/if}}
+        </div>
       </div>
 
-      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'compareAtPrice'}} has-error{{/if}}">
+      <div class="col-md-3">
+        <div class="form-group{{#if afFieldIsInvalid 'compareAtPrice'}} has-error{{/if}}">
           {{afFieldLabel 'compareAtPrice'}}
           {{afFieldInput 'compareAtPrice'}}
           {{#if afFieldIsInvalid 'compareAtPrice'}}
           <span class="help-block">{{afFieldMessage 'compareAtPrice'}}</span>
           {{/if}}
+        </div>
       </div>
 
-      <div class="col-md-3 form-group{{#if afFieldIsInvalid 'price'}} has-error{{/if}}">
+      <div class="col-md-3">
+        <div class="form-group{{#if afFieldIsInvalid 'price'}} has-error{{/if}}">
           {{afFieldLabel 'price'}}
           {{afFieldInput 'price'}}
           {{#if afFieldIsInvalid 'price'}}
           <span class="help-block">{{afFieldMessage 'price'}}</span>
           {{/if}}
+        </div>
       </div>
     </div>
     <div class="row well well-sm">
@@ -71,7 +79,7 @@
               {{/each}}
               {{/isolate}}
           </div>
-          <div class="row"><a href="#" class="variant-new-metafield"> <i class="fa fa-plus"></i> Add new metafield</a></div>
+        <!-- TODO:  <div class="row"><a href="#" class="variant-new-metafield"> <i class="fa fa-plus"></i> Add new metafield</a></div> -->
       </div>
       <div class="col-md-5 pull-right">
         <div class="row">
