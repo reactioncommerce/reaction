@@ -1,21 +1,26 @@
 <template name="settingsAccount">
-    <div class="settings-account-list">
-      <table class="table staff-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Admin Access</th>
-          <th></th>
-        </tr>
-        </thead>
-        {{#each members}}
-          {{> shopMember}}
-        {{/each}}
-      </table>
-      {{#if hasOwnerAccess}}
-        <button type="button" class="btn btn-default button-add-member">Add a staff member</button>
-      {{/if}}
-      </div>
-     {{>memberForm}}
+<div class="row">
+<h2>Access<small> Permissions</small></h2>
+</div>
+<div class="well">
+  <div class="settings-account-list">
+    <table class="table staff-table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Admin Access</th>
+        <th></th>
+      </tr>
+      </thead>
+      {{#each members}}
+        {{> shopMember}}
+      {{/each}}
+    </table>
+  {{#if hasOwnerAccess}}
+    <button type="button" class="btn btn-default button-add-member">Add a staff member</button>
+  {{/if}}
+  </div>
+ {{>memberForm}}
+</div>
 </template>

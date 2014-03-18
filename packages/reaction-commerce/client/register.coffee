@@ -38,6 +38,7 @@ Meteor.app.packages.register
   label: 'Orders'
   overviewRoute: 'dashboard/orders'
   hidden: true
+
   shopPermissions: [
     {
       label: "Orders"
