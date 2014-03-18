@@ -67,7 +67,7 @@ Meteor.methods
     process.env.PATH += ":" + path.dirname(phantomServer.path)
     fileName = "reaction-orders-" + Date.now() + ".pdf"
     filePath = process.env.PWD + "/.fileStorage/" + fileName
-    url = "http://localhost:3000" +url
+    url = "http://" + this.connection.httpHeaders.host + "/" +
 
     # updateStorage = Meteor._wrapAsync(FileStorage.insert(file:data))
     #PDF Formatting
@@ -99,7 +99,7 @@ Meteor.methods
 
               page.render filePath
               ph.exit()
-            ), 300
+            ), 800
             setTimeout (->
               future.return("rendered")
             ), 1500

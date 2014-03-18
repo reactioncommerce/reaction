@@ -15,6 +15,7 @@ Template.checkoutShipping.helpers
    isSelected: (carrier,method)->
     currentShipping = Cart.findOne()?.shipping?.shipmentMethod
     if (currentShipping?.carrier is this.carrier) and (currentShipping?.method is this.method)
+      console.log "here"
       Session.set "shipmentMethod",this
       return "active"
 
