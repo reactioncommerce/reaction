@@ -42,8 +42,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.8",
-        "commit": "69aff2a21ba3c382f915e1f9dbcca2ad38edb6d5"
+        "tag": "v0.3.9",
+        "commit": "fdda9b5c87e9dcb5cb67087ecb6c9f21352d0cc2"
       },
       "underscore-string-latest": {
         "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
@@ -62,8 +62,8 @@
       },
       "handlebars-server": {
         "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
-        "tag": "v1.1.0",
-        "commit": "ed99c8e9280894519f44a5b4c84f66ff596c5450"
+        "tag": "v1.2.0",
+        "commit": "1b72c4e9d82af66293e50be4516c487d15d97464"
       },
       "bootstrap-alerts": {
         "git": "https://github.com/asktomsk/bootstrap-alerts.git",
@@ -72,8 +72,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.40",
-        "commit": "d22892daa943e3567916effeaafd794ca6af5cd2"
+        "tag": "v0.2.41",
+        "commit": "c269b4e9ddb642cdc733c1f4190bcb7b28099e01"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
