@@ -26,7 +26,7 @@ Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some l
 * reaction-commerce package can be used as a package in any meteor application
 * Designer and developer friendly!
 	*  HTML/CSS/Javascript or CoffeeScript knowledge should be sufficient for customization.
-	*  Commercial package and theme development encouraged. 
+	*  Commercial package and theme development encouraged.
 	* All contributors should be rewarded. [please contact us](mailto:hello@ongoworks.com)
 
 
@@ -51,7 +51,7 @@ Our **estimated** timeline:
 	* Goal: PaaS Solution Q2/Q3 2014
 
 
-Please check our [Trello board for current progress](https://trello.com/b/aGpcYS5e/development)
+Please check our [Trello board for current progress](https://trello.com/b/ffwTH3tc/reaction-commerce)
 
 Demo, playground at: [Demo/test site](http://demo.reactioncommerce.com)
 
