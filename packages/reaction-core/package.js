@@ -85,8 +85,6 @@ api.add_files([
     "lib/owl.carousel/owl-carousel/owl.theme.css",
     "lib/owl.carousel/owl-carousel/owl.carousel.js",
     "lib/jquery.autosize/jquery.autosize.js",
-    "lib/jquery-plugin-circliful-master/js/jquery.circliful.js",
-    "lib/jquery-plugin-circliful-master/css/jquery.circliful.css",
     "lib/imagesLoaded/imagesloaded.pkgd.js",
 
     "lib/jquery-ui/jquery-ui-1.10.4.custom.js",

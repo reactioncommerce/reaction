@@ -1,30 +1,12 @@
 <template name="reaction-commerce-widget">
   <div class="dashboard-widget">
-    <div class="dashboard-widget-circle-center">
-      <a href='{{pathFor 'dashboard/orders'}}' class="text-center">
-        <div class="" id="shop-orders-circle" data-dimension="150" data-text="{{ocount}}" data-info="Pending" data-width="10" data-fontsize="36" data-percent="{{ocount}}" data-fgcolor="#43ba0a" data-bgcolor="#da380b" ></div>
-      </a>
+    <div class="dashboard-widget-center">
+      <span id="dashboard-order-graph"></span>
     </div>
   </div>
-  <div class="dashboard-widget">
-    <div class="dashboard-widget-circle-center">
-      <a href='{{pathFor 'index'}}'>
-        <div id="shop-products-circle" data-dimension="150" data-text="{{pcount}}" data-info="Product Sold" data-width="10" data-fontsize="36" data-percent="{{pcount}}" data-fgcolor="#43ba0a" data-bgcolor="#eee" ></div>
-      </a>
+    <div class="dashboard-widget">
+    <div class="dashboard-widget-center">
+      <span id="dashboard-order-multi-graph"></span>
     </div>
-  </div>
-  <div class="dashboard-widget">
-    <div class="dashboard-widget-circle-center">
-    <a href='{{pathFor 'dashboard/orders'}}'>
-      <div id="shop-avg-orders-circle" data-dimension="150" data-text="{{avgOrder.text}}" data-info="Avg.Order" data-width="10" data-fontsize="28" data-percent="{{avgOrder.percent}}" data-fgcolor="#61a9dc" data-bgcolor="#eee" ></div>
-    </a>
-    </div>
-  </div>
-  <div class="dashboard-widget">
-    <div class="dashboard-widget-circle-center">
-      <a href='{{pathFor 'dashboard/orders'}}'>
-        <div id="shop-day-orders-totals-circle" data-dimension="150" data-text="{{dayOrderTotal.text}}" data-info="24hr Orders" data-width="10" data-fontsize="36" data-percent="{{dayOrderTotal.percent}}" data-fgcolor="#61a9dc" data-bgcolor="#eee" ></div>
-      </a>
-      </div>
   </div>
 </template>
