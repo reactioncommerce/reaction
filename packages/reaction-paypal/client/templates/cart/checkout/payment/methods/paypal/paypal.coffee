@@ -16,9 +16,6 @@ paymentAlert = (errorMessage) ->
   $("#paypal-payment-form #btn-processing").addClass("hidden")
 
 Template.paypalPaymentForm.helpers
-  PaypalPaymentSchema : () ->
-    new AutoForm(PaypalPaymentSchema)
-
   cartPayerName: ->
     Cart.findOne()?.payment?.address?.fullName
 

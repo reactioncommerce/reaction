@@ -27,8 +27,6 @@ Template.productGrid.helpers
     #   console.log v,i.sortOrder,i.title,i.updatedAt
     gridProducts.sort(compare)
 
-Template.cartItems.preserve([".product-grid-item-images"])
-
 Template.productGridItems.events
   'click .clone-product': () ->
     Meteor.call "cloneProduct", this, (error, productId) ->

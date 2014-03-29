@@ -4,8 +4,8 @@
  <fieldset>
     <div class="row well well-sm">
       <div class="form-group{{#if afFieldIsInvalid 'title'}} has-error{{/if}}">
-          {{afFieldLabel 'title'}}
-          {{afFieldInput 'title'  autofocus=""}}
+          {{>afFieldLabel name='title'}}
+          {{>afFieldInput name='title'  autofocus=""}}
           {{#if afFieldIsInvalid 'title'}}
           <span class="help-block">{{afFieldMessage 'title'}}</span>
           {{/if}}
@@ -14,8 +14,8 @@
     <div class="row well well-sm">
       <div class="col-md-3">
         <div class="form-group{{#if afFieldIsInvalid 'weight'}} has-error{{/if}}">
-          {{afFieldLabel 'weight'}}
-          {{afFieldInput 'weight'}}
+          {{>afFieldLabel name='weight'}}
+          {{>afFieldInput name='weight'}}
           {{#if afFieldIsInvalid 'weight'}}
           <span class="help-block">{{afFieldMessage 'weight'}}</span>
           {{/if}}
@@ -23,8 +23,8 @@
       </div>
       <div class="col-md-3">
         <div class="form-group{{#if afFieldIsInvalid 'inventoryQuantity'}} has-error{{/if}}">
-          {{afFieldLabel 'inventoryQuantity'}}
-          {{afFieldInput 'inventoryQuantity'}}
+          {{>afFieldLabel name='inventoryQuantity'}}
+          {{>afFieldInput name='inventoryQuantity'}}
           {{#if afFieldIsInvalid 'inventoryQuantity'}}
           <span class="help-block">{{afFieldMessage 'inventoryQuantity'}}</span>
           {{/if}}
@@ -33,8 +33,8 @@
 
       <div class="col-md-3">
         <div class="form-group{{#if afFieldIsInvalid 'compareAtPrice'}} has-error{{/if}}">
-          {{afFieldLabel 'compareAtPrice'}}
-          {{afFieldInput 'compareAtPrice'}}
+          {{>afFieldLabel name='compareAtPrice'}}
+          {{>afFieldInput name='compareAtPrice'}}
           {{#if afFieldIsInvalid 'compareAtPrice'}}
           <span class="help-block">{{afFieldMessage 'compareAtPrice'}}</span>
           {{/if}}
@@ -43,8 +43,8 @@
 
       <div class="col-md-3">
         <div class="form-group{{#if afFieldIsInvalid 'price'}} has-error{{/if}}">
-          {{afFieldLabel 'price'}}
-          {{afFieldInput 'price'}}
+          {{>afFieldLabel name='price'}}
+          {{>afFieldInput name='price'}}
           {{#if afFieldIsInvalid 'price'}}
           <span class="help-block">{{afFieldMessage 'price'}}</span>
           {{/if}}
@@ -54,45 +54,43 @@
     <div class="row well well-sm">
       <div class="col-sm-7">
           <div class="row">
-            {{afFieldLabel 'metafields'}}
+            {{>afFieldLabel name='metafields'}}
           </div>
           <div class="row">
-            {{#isolate}}
               {{#each metafieldsIndexed}}
                 <span class="col-md-1">
                   <a href="#" class="variant-remove-metafield"> <i class="fa fa-times"></i>
                   </a>
                 </span>
                 <div class="col-md-5">
-                  {{afFieldInput metafieldKeyIndex autoform=../this placeholder="schemaLabel"}}
+                  {{>afFieldInput name=metafieldKeyIndex autoform=variantFormSchema placeholder="schemaLabel"}}
                 </div>
                 <div class="col-md-6">
-                  {{afFieldInput metafieldValueIndex autoform=../this placeholder="schemaLabel"}}
+                  {{>afFieldInput name=metafieldValueIndex autoform=variantFormSchema placeholder="schemaLabel"}}
                 </div>
               {{else}}
               <div class="col-md-5">
-                {{afFieldInput "metafields.0.key" autoform=../this placeholder="schemaLabel" validation="none"}}
+                {{>afFieldInput name="metafields.0.key" autoform=variantFormSchema placeholder="schemaLabel" validation="none"}}
               </div>
               <div class="col-md-7">
-                {{afFieldInput  "metafields.0.value" autoform=../this placeholder="schemaLabel"}}
+                {{>afFieldInput name= "metafields.0.value" autoform=variantFormSchema placeholder="schemaLabel"}}
               </div>
               {{/each}}
-              {{/isolate}}
           </div>
         <!-- TODO:  <div class="row"><a href="#" class="variant-new-metafield"> <i class="fa fa-plus"></i> Add new metafield</a></div> -->
       </div>
       <div class="col-md-5 pull-right">
         <div class="row">
           <div class="col-md-6 form-group{{#if afFieldIsInvalid 'sku'}} has-error{{/if}}">
-          {{afFieldLabel 'sku'}}
-          {{afFieldInput 'sku'}}
+          {{>afFieldLabel name='sku'}}
+          {{>afFieldInput name='sku'}}
           {{#if afFieldIsInvalid 'sku'}}
           <span class="help-block">{{afFieldMessage 'sku'}}</span>
           {{/if}}
           </div>
           <div class="col-md-6 form-group{{#if afFieldIsInvalid 'barcode'}} has-error{{/if}}">
-              {{afFieldLabel 'barcode'}}
-              {{afFieldInput 'barcode'}}
+              {{>afFieldLabel name='barcode'}}
+              {{>afFieldInput name='barcode'}}
               {{#if afFieldIsInvalid 'barcode'}}
               <span class="help-block">{{afFieldMessage 'barcode'}}</span>
               {{/if}}
@@ -100,35 +98,35 @@
         </div>
         <div class="row">
           <div class="form-group{{#if afFieldIsInvalid 'inventoryManagement'}} has-error{{/if}}">
-              {{afFieldInput 'inventoryManagement'}}
+              {{>afFieldInput name='inventoryManagement'}}
               {{#if afFieldIsInvalid 'inventoryManagement'}}
               <span class="help-block">{{afFieldMessage 'inventoryManagement'}}</span>
               {{/if}}
           </div>
           <div class="form-group{{#if afFieldIsInvalid 'inventoryPolicy'}} has-error{{/if}} inventoryPolicy" style="{{displayInventoryManagement _doc}}">
-              {{afFieldInput 'inventoryPolicy'}}
+              {{>afFieldInput name='inventoryPolicy'}}
               {{#if afFieldIsInvalid 'inventoryPolicy'}}
               <span class="help-block">{{afFieldMessage 'inventoryPolicy'}}</span>
               {{/if}}
           </div>
 
           <div class="form-group{{#if afFieldIsInvalid 'lowInventoryWarning'}} has-error{{/if}} lowInventoryWarning" style="{{displayLowInventoryWarning _doc}}">
-              {{afFieldInput 'lowInventoryWarning'}}
+              {{>afFieldInput name='lowInventoryWarning'}}
               {{#if afFieldIsInvalid 'lowInventoryWarning'}}
               <span class="help-block">{{afFieldMessage 'lowInventoryWarning'}}</span>
               {{/if}}
           </div>
 
           <div class="form-group{{#if afFieldIsInvalid 'lowInventoryWarningThreshold'}} has-error{{/if}} lowInventoryWarningThreshold" style="{{displayLowInventoryWarning _doc}}">
-            {{afFieldLabel 'lowInventoryWarningThreshold'}}
-            {{afFieldInput 'lowInventoryWarningThreshold'}}
+            {{>afFieldLabel name='lowInventoryWarningThreshold'}}
+            {{>afFieldInput name='lowInventoryWarningThreshold'}}
             {{#if afFieldIsInvalid 'lowInventoryWarningThreshold' placeholder=0}}
             <span class="help-block">{{afFieldMessage 'lowInventoryWarningThreshold'}}</span>
             {{/if}}
           </div>
 
           <div class="form-group{{#if afFieldIsInvalid 'taxable'}} has-error{{/if}}">
-              {{afFieldInput 'taxable'  default="true"}}
+              {{>afFieldInput name='taxable'  default="true"}}
               {{#if afFieldIsInvalid 'taxable'}}
               <span class="help-block">{{afFieldMessage 'taxable'}}</span>
               {{/if}}
@@ -137,7 +135,7 @@
       </div>
     </div>
 
-    {{afFieldInput "_id" type="hidden"}}
+    {{>afFieldInput name="_id" type="hidden"}}
   </fieldset>
   <div class="text-right">
     <button type="submit" data-meteor-method="updateVariant" class="btn btn-primary update">Update</button>

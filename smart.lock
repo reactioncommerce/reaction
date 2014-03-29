@@ -3,16 +3,25 @@
   "dependencies": {
     "basePackages": {
       "spin": {},
-      "roles": {},
+      "roles": {
+        "git": "https://github.com/danieljonce/meteor-roles.git",
+        "branch": "master"
+      },
       "iron-router": {},
       "videojs": {},
-      "autoform": {},
+      "autoform": {
+        "git": "https://github.com/aldeed/meteor-autoform.git",
+        "branch": "ui"
+      },
       "collection2": {},
       "underscore-string-latest": {},
       "collection-hooks": {},
-      "collectionFS": {},
-      "handlebars-server": {},
-      "bootstrap-alerts": {}
+      "handlebars-server": {
+        "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
+        "branch": "master"
+      },
+      "bootstrap-alerts": {},
+      "cfs-filesystem": {}
     },
     "packages": {
       "spin": {
@@ -21,14 +30,14 @@
         "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
       },
       "roles": {
-        "git": "https://github.com/alanning/meteor-roles.git",
-        "tag": "v1.2.6",
-        "commit": "f2a9058281f8f2fe028767841d7445aadd6893cf"
+        "git": "https://github.com/danieljonce/meteor-roles.git",
+        "branch": "master",
+        "commit": "17dab2827583149b51a484ba6ff07f60b9ace7a5"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.4",
-        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
+        "tag": "v0.7.0",
+        "commit": "05f34bc48c4cad9fdaa366c1ddcabe6980232ece"
       },
       "videojs": {
         "git": "https://github.com/nate-strauser/meteor-video-js.git",
@@ -37,13 +46,13 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.4.20",
-        "commit": "d4d40a5356f9577a7d95d3526045035f3f1135af"
+        "branch": "ui",
+        "commit": "6b7313a6de807d7adbafc6acf3b4bf273df4b693"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.9",
-        "commit": "fdda9b5c87e9dcb5cb67087ecb6c9f21352d0cc2"
+        "tag": "v0.3.11",
+        "commit": "7e970671305657678e8508d8107d5e6c5e158559"
       },
       "underscore-string-latest": {
         "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
@@ -55,14 +64,9 @@
         "tag": "v0.6.3",
         "commit": "70f2598bf991cb36effd72aea2555cba96f88355"
       },
-      "collectionFS": {
-        "git": "https://github.com/raix/Meteor-CollectionFS.git",
-        "tag": "v0.3.7",
-        "commit": "34d9fb363472e44c6dba4a1473a9e106e107f5a9"
-      },
       "handlebars-server": {
         "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
-        "tag": "v1.2.0",
+        "branch": "master",
         "commit": "1b72c4e9d82af66293e50be4516c487d15d97464"
       },
       "bootstrap-alerts": {
@@ -70,20 +74,35 @@
         "tag": "v0.0.5",
         "commit": "6ddd650208a77677ab86af9dfccc3a69b1ba8d32"
       },
+      "cfs-filesystem": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
+        "tag": "v0.0.15",
+        "commit": "75b31e706bb661ad5a2607178600e9fdc8060824"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.2",
+        "commit": "8bc53798fe5965669ae67c72f91829fcfdceabfd"
+      },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.41",
-        "commit": "c269b4e9ddb642cdc733c1f4190bcb7b28099e01"
+        "tag": "v0.2.45",
+        "commit": "27a5a943a70a7376c90f18d2e2a4a122c6fc73fb"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.5.1",
         "commit": "8c9bc5d3fc96705057737cb9743d555417f6e551"
       },
-      "cfs-public-folder": {
-        "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",
-        "tag": "v0.0.3",
-        "commit": "581c716424b374efb6f611110002621f9cc9212b"
+      "cfs-storage-adapter": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-storage-adapter.git",
+        "branch": "master",
+        "commit": "ca064c69e76d27cb9a7214ce0437db87c492172d"
+      },
+      "cfs-base-package": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
+        "branch": "master",
+        "commit": "d807914d3ed739a30fd8481da7d66ee96148aa61"
       }
     }
   }

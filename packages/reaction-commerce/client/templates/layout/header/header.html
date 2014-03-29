@@ -5,15 +5,15 @@
       <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target="#reaction-navbar-collapse">
         <span class="fa fa-bars fa-lg"></span>
       </button>
-      <a class="navbar-brand navbar-nav" href="{{pathFor 'index'}}">{{{siteName}}}</a>
+      <a class="navbar-brand navbar-nav" href="{{pathFor 'index'}}">{{siteName}}</a>
     </div>
 
-    <div class="nav navbar-nav navbar-right">{{>cartIcon}}</div>
-    <div class="nav navbar-nav navbar-right navbar-text">{{>dashboardIcon}}</div>
+    <div class="nav navbar-nav navbar-right">{{> cartIcon}}</div>
+    <div class="nav navbar-nav navbar-right navbar-text">{{> dashboardIcon}}</div>
 
     <div class="collapse navbar-collapse" id="reaction-navbar-collapse">
-      <div class="nav navbar-nav navbar-right">{{loginButtons}}</div>
-      <div class="nav navbar-nav navbar-left">{{>headerTags}}</div>
+      <div class="nav navbar-nav navbar-right navbar-text">{{> accounts tpl="loginDropdown"}}</div>
+      <div class="nav navbar-nav navbar-left">{{> headerTags}}</div>
     </div>
   </div>
 </div>

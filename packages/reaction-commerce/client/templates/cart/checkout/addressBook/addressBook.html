@@ -1,16 +1,19 @@
 <template name="checkoutAddressBook">
   <div class="panel panel-default address-book">
+      {{> addressBookView mode=addressMode}}
+  </div>
+</template>
+
+<template name="addressBookGrid">
       <div class="panel-heading">
         <h3 class="panel-title">
           {{#if addressBook}}
-          Choose shipping & billing address<i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
+          <span id="address-selection-help">Choose shipping & billing address</span><i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
           {{else}}
             <span>Create your default address</span>
           {{/if}}
         </h3>
       </div>
-
-      {{#if addressBook}}
       <div class="panel-body">
         <div class="row" id="addressBook">
           <div class="col-md-6">
@@ -44,6 +47,7 @@
             <div class="list-group">
               <strong>Select a billing address</strong>
                {{#each addressBook shipping}}
+               {{selectedBilling}}
                 <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" id="billing-{{_id}}">
                   <div class="col-sm-1 pull-right address-icons">
                   <span class="fa-stack fa-lg address-edit-icon">
@@ -69,12 +73,7 @@
           </div>
         </div>
         <div class="col-md-12" id="addressBookAdd">
-          <div class="addressForm" id="addressForm"></div>
+          <div class="addressForm" id="addressForm"><span id="addressFormRender"></span></div>
         </div>
       </div>
-      {{else}}
-        {{>addressBookAdd}}
-      {{/if}}
-  </div>
 </template>
-

@@ -4,5 +4,5 @@ Router.map ->
     path: 'dashboard/settings/google',
     template: 'googleAnalytics'
 
-Router.after ->
+Router.onAfterAction ->
   ga("send", "pageview", IronLocation.get().pathname)

@@ -3,13 +3,13 @@
     <title>Reaction Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
-  <nav class="reaction-navigation-header">{{yield "layoutHeader"}}</nav>
+  <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
   <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-  <div class="reaction-dashboard-drawer">{{yield "dashboard"}}</div>
+  <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
   <main role="main" id="main">
     <div class="container-fluid">
-      {{yield}}
+      {{> yield}}
     </div>
   </main>
-  <footer class="reaction-navigation-footer">{{yield "layoutFooter"}}</footer>
+  <footer class="reaction-navigation-footer">{{>yield region="layoutFooter"}}</footer>
 </template>

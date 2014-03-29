@@ -42,8 +42,8 @@ CartWorkflow = StateMachine.create(
       Session.set("CartWorkflow",to)
 
     oncreate: (event, from, to, sessionId, userId) ->
-      (sessionId = Session.get "sessionId") unless sessionId
-      Meteor.call "createCart", cartSession: { sessionId:sessionId, userId:userId }
+      Cart.findOne()
+      # Meteor.call "createCart", cartSession: { sessionId:sessionId, userId:userId }
 
     onaddToCart: (event, from, to, cartSession, productId, variantData, quantity) ->
       if (cartSession? and productId?)

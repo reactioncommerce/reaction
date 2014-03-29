@@ -4,10 +4,11 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-preserve-inputs
 less
 accounts-base
 accounts-password
+accounts-facebook
+accounts-ui-unstyled
 coffeescript
 amplify
 jquery
@@ -23,14 +24,14 @@ underscore-string-latest
 roles
 email
 collection-hooks
+cfs-filesystem
 handlebars-server
 bootstrap-alerts
-accounts-facebook
+d3
 
+ui
 reaction-commerce
-reaction-accounts
 reaction-helloworld
 reaction-google-analytics
 reaction-paypal
-reaction-filepicker
-d3
+collectionFS

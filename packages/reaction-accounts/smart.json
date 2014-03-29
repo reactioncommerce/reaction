@@ -1,8 +1,0 @@
-{
-  "name": "reaction-accounts",
-  "description": "Meteor's accounts templates styled for bootstrap-3 less with coffeescript",
-  "homepage": "https://github.com/ongoworks.com/reaction-accounts",
-  "author": "Ongoworks Reaction Team (http://reactioncommerce.com",
-  "version": "0.1.0",
-  "git": "https://github.com/ongoworks.com/reaction-accounts.git"
-}

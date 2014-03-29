@@ -28,7 +28,6 @@ Template.headerTags.helpers
 
 Template.headerTags.events
   'click .active': (event,template) ->
-    # event.stopPropogation()
     event.preventDefault()
     return
 

@@ -1,43 +1,43 @@
 <template name="paypalPaymentForm">
-  {{#autoForm schema=PaypalPaymentSchema id="paypal-payment-form"}}
+  {{#autoForm schema="PaypalPaymentSchema" id="paypal-payment-form"}}
   <div class="row">
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid 'payerName'}} has-error{{/if}}">
-        {{afFieldLabel "payerName" }}
-        {{afFieldInput "payerName" value=cartPayerName}}
-        {{#if afFieldIsInvalid "payerName"}}
+    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
+        {{>afFieldLabel name="payerName" }}
+        {{>afFieldInput name="payerName" value=cartPayerName}}
+        {{#if afFieldIsInvalid name="payerName"}}
         <span class="help-block">{{afFieldMessage "payerName"}}</span>
         {{/if}}
     </div>
 
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid 'cardNumber'}} has-error{{/if}}">
-        {{afFieldLabel "cardNumber" }}
-        {{afFieldInput "cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
-        {{#if afFieldIsInvalid "cardNumber"}}
+    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='cardNumber'}} has-error{{/if}}">
+        {{>afFieldLabel name="cardNumber" }}
+        {{>afFieldInput name="cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
+        {{#if afFieldIsInvalid name="cardNumber"}}
         <span class="help-block">{{afFieldMessage "cardNumber"}}</span>
         {{/if}}
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid 'expireMonth'}} has-error{{/if}}">
-        {{afFieldLabel "expireMonth" }}
-        {{afFieldInput "expireMonth" options=monthOptions placeholder="Exp. Month"}}
-        {{#if afFieldIsInvalid "expireMonth"}}
+    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireMonth'}} has-error{{/if}}">
+        {{>afFieldLabel name="expireMonth" }}
+        {{>afFieldInput name="expireMonth" options=monthOptions placeholder="Exp. Month"}}
+        {{#if afFieldIsInvalid name="expireMonth"}}
         <span class="help-block">{{afFieldMessage "expireMonth"}}</span>
         {{/if}}
     </div>
 
-    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid 'expireYear'}} has-error{{/if}}">
-        {{afFieldLabel "expireYear" }}
-        {{afFieldInput "expireYear" options=yearOptions placeholder="Exp. Year"}}
-        {{#if afFieldIsInvalid "expireYear"}}
+    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireYear'}} has-error{{/if}}">
+        {{>afFieldLabel name="expireYear" }}
+        {{>afFieldInput name="expireYear" options=yearOptions placeholder="Exp. Year"}}
+        {{#if afFieldIsInvalid name="expireYear"}}
         <span class="help-block">{{afFieldMessage "expireYear"}}</span>
         {{/if}}
     </div>
 
-    <div class="col-sm-12 col-lg-3 form-group{{#if afFieldIsInvalid 'cvv'}} has-error{{/if}}">
-        {{afFieldLabel "cvv" }}
-        {{afFieldInput "cvv" placeholder="CVV"}}
-        {{#if afFieldIsInvalid "cvv"}}
+    <div class="col-sm-12 col-lg-3 form-group{{#if afFieldIsInvalid name='cvv'}} has-error{{/if}}">
+        {{>afFieldLabel name="cvv" }}
+        {{>afFieldInput name="cvv" placeholder="CVV"}}
+        {{#if afFieldIsInvalid name="cvv"}}
         <span class="help-block">{{afFieldMessage "cvv"}}</span>
         {{/if}}
     </div>

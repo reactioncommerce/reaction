@@ -16,8 +16,8 @@ PackageConfigSchema = new SimpleSchema
 @Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
 Packages = @Packages
 
-@FileStorage = new CollectionFS("FileStorage")
-FileStorage = @FileStorage
+# @FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: "~/.fileStorage") ])
+# FileStorage = @FileStorage
 
 ShopMemberSchema = new SimpleSchema
   userId:
@@ -175,7 +175,7 @@ ProductPositionSchema = new SimpleSchema
 
 ProductVariantSchema = @ProductVariantSchema
 
-AddressSchema = new SimpleSchema
+@AddressSchema = new SimpleSchema
   _id:
     type: String
     optional: true
@@ -216,6 +216,8 @@ AddressSchema = new SimpleSchema
   metafields:
     type: [MetafieldSchema]
     optional: true
+
+AddressSchema = @AddressSchema
 
 CountrySchema = new SimpleSchema
   name:
