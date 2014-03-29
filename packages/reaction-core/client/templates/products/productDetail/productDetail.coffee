@@ -11,8 +11,7 @@ Template.productDetail.helpers
         max: 99
     qtySchema = new AutoForm QuantitySchema
     qtySchema
-  data: ->
-    @
+
   tags: ->
     product = (currentProduct.get "product")
     if product.tagIds
@@ -254,8 +253,8 @@ Template.productDetail.events
           return
 
   "click #add-to-cart": (event, template) ->
-    event.preventDefault()
-    event.stopPropagation()
+    # event.preventDefault()
+    # event.stopPropagation()
     now = new Date()
 
     if (currentProduct.get "variant")
@@ -278,9 +277,11 @@ Template.productDetail.events
         CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
         $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
-        setTimeout (->
-          toggleCartDrawer()
-        ), 500
+
+
+        unless Session.get "displayCart" then toggleSession "displayCart"
+
+
     else
       Alerts.add "Select an option before adding to cart"
 

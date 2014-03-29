@@ -1,12 +1,17 @@
 <template name="addressBookEdit">
+<div class="panel-heading">
+  <h3 class="panel-title">
+      <span>Editing this address entry</span>
+  </h3>
+</div>
 <div class="panel-body">
-{{#autoForm schema=addressBookEditForm doc=thisAddress id="addressBookEditForm"}}
+{{#autoForm schema="AddressSchema" id="addressBookEditForm" doc=thisAddress type="method" meteormethod="addressBookUpdate"}}
   <fieldset>
       {{>addressBookForm}}
       <div class="row text-right">
-          {{afFieldInput "_id" value=_id type="hidden"}}
-          <button type="submit" class="btn btn-primary update" data-meteor-method="addressBookUpdate">Save and Continue</button>
-          <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
+          {{>afFieldInput name="_id" value=_id type="hidden"}}
+          <button type="submit" class="btn btn-primary update">Save and Continue</button>
+          <button type="reset" class="btn btn-default" id="cancel-address-edit">Cancel</button>
       </div>
   </fieldset>
 {{/autoForm}}

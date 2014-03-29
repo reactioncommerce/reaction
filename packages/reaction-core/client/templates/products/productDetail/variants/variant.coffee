@@ -60,18 +60,19 @@ Template.variant.events
         event.preventDefault()
         event.stopPropagation()
 
-Template.variantList.helpers
-  variants: () ->
-    inventoryTotal = 0
-    for variant in @.variants
-      unless isNaN(variant.inventoryQuantity)
-        inventoryTotal +=  variant.inventoryQuantity
-    for variant in @.variants
-      @variant
-      variant.inventoryTotal = inventoryTotal
-      variant.inventoryPercentage = parseInt((variant.inventoryQuantity / inventoryTotal) * 100)
-      variant.inventoryWidth = parseInt((variant.inventoryPercentage - variant.title?.length ))
-    @.variants
+# Template.variantList.helpers
+#   variants: () ->
+#     inventoryTotal = 0
+#     console.log @
+#     for variant in @.variants
+#       unless isNaN(variant.inventoryQuantity)
+#         inventoryTotal +=  variant.inventoryQuantity
+#     for variant in @.variants
+#       @variant
+#       variant.inventoryTotal = inventoryTotal
+#       variant.inventoryPercentage = parseInt((variant.inventoryQuantity / inventoryTotal) * 100)
+#       variant.inventoryWidth = parseInt((variant.inventoryPercentage - variant.title?.length ))
+#     @.variants
 
 Template.variant.rendered = ->
   if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner

@@ -7,7 +7,7 @@ Cart  = @Cart
 Tags = @Tags
 Packages = @Packages
 ConfigData = @ConfigData
-FileStorage = @FileStorage
+# FileStorage = @FileStorage
 Users = @Users = Meteor.users
 
 ###
@@ -26,21 +26,22 @@ Meteor.publish "Packages", ->
 Meteor.publish 'ConfigData', ->
   ConfigData.find({})
 
-Meteor.publish "FileStorage", (id) ->
-  FileStorage.find _id: id
+# Meteor.publish "FileStorage", (id) ->
+#   FileStorage.find _id: id
 
-FileStorage.allow
-  insert: (userId, doc) ->
-    doc.shopId = Meteor.app.getCurrentShop()._id
-    true
+#OLD
+# FileStorage.allow
+#   insert: (userId, doc) ->
+#     doc.shopId = Meteor.app.getCurrentShop()._id
+#     true
 
-  update: (userId, doc, fields, modifier) ->
-    if modifier.$set and modifier.$set.shopId
-      return false
-    true
+#   update: (userId, doc, fields, modifier) ->
+#     if modifier.$set and modifier.$set.shopId
+#       return false
+#     true
 
-  remove: (userId, doc) ->
-    doc.shopId is Meteor.app.getCurrentShop()._id
+#   remove: (userId, doc) ->
+#     doc.shopId is Meteor.app.getCurrentShop()._id
 
 ###
 # get any user name,social profile image
@@ -124,9 +125,7 @@ Meteor.publish 'shopMembers', ->
       memberIds = _.pluck shop.members, "userId"
       Meteor.users.find({_id: {$in: memberIds}}, {fields: {emails: 1, 'profile': 1}}).forEach (user) ->
         self.added("users", user._id, user)
-
   self.ready()
-
   self.onStop ->
     handle.stop()
 
@@ -254,14 +253,22 @@ Customers.allow
 Meteor.publish 'cart', (sessionId,userId) ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
-    Cart.find shopId: shop._id, sessionId: sessionId
+    cart = Cart.find(shopId: shop._id, sessionId: sessionId, userId: this.userId)
+    cartCount = cart.count()
+    if cartCount > 0
+      return Cart.find(shopId: shop._id, sessionId: sessionId,userId: this.userId)
+    else
+      Meteor.call "createCart", { sessionId:sessionId, userId: this.userId }
+      return Cart.find(shopId: shop._id, sessionId: sessionId,userId: this.userId)
+
+
 
 ###
 # Client access rights for cart
 ###
 Cart.allow
   insert: (userId, cart) ->
-    cart.shopId = Meteor.app.getCurrentShop()._id;
+    cart.shopId = Meteor.app.getCurrentShop()._id
     true
   update: (userId, cart, fields, modifier) ->
     if modifier.$set && modifier.$set.shopId

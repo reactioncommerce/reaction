@@ -6,9 +6,9 @@
 
         <fieldset>
           <div class="form-group {{#if afFieldIsInvalid "name"}}has-error{{/if}}">
-            {{afFieldLabel 'name' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='name' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'name' autofocus=''}}
+              {{>afFieldInput name='name' autofocus=''}}
               {{#if afFieldIsInvalid "name"}}
                 <span class="help-block">{{afFieldMessage "name"}}</span>
               {{/if}}
@@ -16,9 +16,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "email"}}has-error{{/if}}">
-            {{afFieldLabel 'email' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='email' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'email'}}
+              {{>afFieldInput name='email'}}
               {{#if afFieldIsInvalid "email"}}
                 <span class="help-block">{{afFieldMessage "email"}}</span>
               {{/if}}
@@ -26,9 +26,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.fullName"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.fullName' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.fullName' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.fullName'}}
+              {{>afFieldInput name='addressBook.0.fullName'}}
               {{#if afFieldIsInvalid "addressBook.0.fullName"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.fullName"}}</span>
               {{/if}}
@@ -36,9 +36,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.company"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.company' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.company' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.company'}}
+              {{>afFieldInput name='addressBook.0.company'}}
               {{#if afFieldIsInvalid "addressBook.0.company"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.company"}}</span>
               {{/if}}
@@ -46,9 +46,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.address1"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.address1' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.address1' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.address1'}}
+              {{>afFieldInput name='addressBook.0.address1'}}
               {{#if afFieldIsInvalid "addressBook.0.address1"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.address1"}}</span>
               {{/if}}
@@ -56,9 +56,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.address2"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.address2' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.address2' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.address2'}}
+              {{>afFieldInput name='addressBook.0.address2'}}
               {{#if afFieldIsInvalid "addressBook.0.address2"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.address2"}}</span>
               {{/if}}
@@ -66,9 +66,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.city"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.city' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.city' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.city'}}
+              {{>afFieldInput name='addressBook.0.city'}}
               {{#if afFieldIsInvalid "addressBook.0.city"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.city"}}</span>
               {{/if}}
@@ -76,9 +76,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.region"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.region' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.region' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.region'}}
+              {{>afFieldInput name='addressBook.0.region'}}
               {{#if afFieldIsInvalid "addressBook.0.region"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.region"}}</span>
               {{/if}}
@@ -86,9 +86,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.postal"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.postal' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.postal' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.postal'}}
+              {{>afFieldInput name='addressBook.0.postal'}}
               {{#if afFieldIsInvalid "addressBook.0.postal"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.postal"}}</span>
               {{/if}}
@@ -96,9 +96,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "addressBook.0.country"}}has-error{{/if}}">
-            {{afFieldLabel 'addressBook.0.country' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='addressBook.0.country' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'addressBook.0.country' options=countryOptions value=defaultCountry}}
+              {{>afFieldInput name='addressBook.0.country' options=countryOptions value=defaultCountry}}
               {{#if afFieldIsInvalid "addressBook.0.country"}}
                 <span class="help-block">{{afFieldMessage "addressBook.0.country"}}</span>
               {{/if}}
@@ -106,9 +106,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "domains"}}has-error{{/if}}">
-            {{afFieldLabel 'domains' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='domains' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'domains'}}
+              {{>afFieldInput name='domains'}}
               {{#if afFieldIsInvalid "domains"}}
                 <span class="help-block">{{afFieldMessage "domains"}}</span>
               {{/if}}
@@ -116,9 +116,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "timezone"}}has-error{{/if}}">
-            {{afFieldLabel 'timezone' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='timezone' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-5 controls">
-              {{afFieldInput 'timezone' options=timezoneOptions}}
+              {{>afFieldInput name='timezone' options=timezoneOptions}}
               {{#if afFieldIsInvalid "timezone"}}
                 <span class="help-block">{{afFieldMessage "timezone"}}</span>
               {{/if}}
@@ -126,9 +126,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "currency"}}has-error{{/if}}">
-            {{afFieldLabel 'currency' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='currency' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-1 controls">
-              {{afFieldInput 'currency'}}
+              {{>afFieldInput name='currency'}}
               {{#if afFieldIsInvalid "currency"}}
                 <span class="help-block">{{afFieldMessage "currency"}}</span>
               {{/if}}
@@ -136,9 +136,9 @@
           </div>
 
           <div class="form-group {{#if afFieldIsInvalid "moneyFormat"}}has-error{{/if}}">
-            {{afFieldLabel 'moneyFormat' class="col-sm-2 col-lg-1 control-label"}}
+            {{>afFieldLabel name='moneyFormat' class="col-sm-2 col-lg-1 control-label"}}
             <div class="col-sm-1 controls">
-              {{afFieldInput 'moneyFormat'}}
+              {{>afFieldInput name='moneyFormat'}}
               {{#if afFieldIsInvalid "moneyFormat"}}
                 <span class="help-block">{{afFieldMessage "moneyFormat"}}</span>
               {{/if}}
@@ -147,16 +147,16 @@
 
           <div class="form-group {{#if afFieldIsInvalid "useCustomEmailSettings"}}has-error{{/if}}">
             <div class="col-sm-5 col-sm-offset-1">
-              {{afFieldInput 'useCustomEmailSettings' id="useCustomEmailSettings"}}
+              {{>afFieldInput name='useCustomEmailSettings' id="useCustomEmailSettings"}}
               {{#if afFieldIsInvalid "useCustomEmailSettings"}}
                 <span class="help-block">{{afFieldMessage "useCustomEmailSettings"}}</span>
               {{/if}}
 
               <div class="useCustomEmailSettings" style="{{displayCustomEmailSettings}}">
                 <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.username"}}has-error{{/if}}">
-                  {{afFieldLabel 'customEmailSettings.username' class="col-sm-2 col-lg-2 control-label"}}
+                  {{>afFieldLabel name='customEmailSettings.username' class="col-sm-2 col-lg-2 control-label"}}
                   <div class="col-sm-10 controls">
-                    {{afFieldInput 'customEmailSettings.username'}}
+                    {{>afFieldInput name='customEmailSettings.username'}}
                     {{#if afFieldIsInvalid "customEmailSettings.username"}}
                       <span class="help-block">{{afFieldMessage "customEmailSettings.username"}}</span>
                     {{/if}}
@@ -164,9 +164,9 @@
                 </div>
 
                 <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.password"}}has-error{{/if}}">
-                  {{afFieldLabel 'customEmailSettings.password' class="col-sm-2 col-lg-2 control-label"}}
+                  {{>afFieldLabel name='customEmailSettings.password' class="col-sm-2 col-lg-2 control-label"}}
                   <div class="col-sm-10 controls">
-                    {{afFieldInput 'customEmailSettings.password' type="password"}}
+                    {{>afFieldInput name='customEmailSettings.password' type="password"}}
                     {{#if afFieldIsInvalid "customEmailSettings.password"}}
                       <span class="help-block">{{afFieldMessage "customEmailSettings.password"}}</span>
                     {{/if}}
@@ -174,9 +174,9 @@
                 </div>
 
                 <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.host"}}has-error{{/if}}">
-                  {{afFieldLabel 'customEmailSettings.host' class="col-sm-2 col-lg-2 control-label"}}
+                  {{>afFieldLabel name='customEmailSettings.host' class="col-sm-2 col-lg-2 control-label"}}
                   <div class="col-sm-10 controls">
-                    {{afFieldInput 'customEmailSettings.host'}}
+                    {{>afFieldInput name='customEmailSettings.host'}}
                     {{#if afFieldIsInvalid "customEmailSettings.host"}}
                       <span class="help-block">{{afFieldMessage "customEmailSettings.host"}}</span>
                     {{/if}}
@@ -184,9 +184,9 @@
                 </div>
 
                 <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.port"}}has-error{{/if}}">
-                  {{afFieldLabel 'customEmailSettings.port' class="col-sm-2 col-lg-2 control-label"}}
+                  {{>afFieldLabel name='customEmailSettings.port' class="col-sm-2 col-lg-2 control-label"}}
                   <div class="col-sm-10 controls">
-                    {{afFieldInput 'customEmailSettings.port' options=portOptions}}
+                    {{>afFieldInput name='customEmailSettings.port' options=portOptions}}
                     {{#if afFieldIsInvalid "customEmailSettings.port"}}
                       <span class="help-block">{{afFieldMessage "customEmailSettings.port"}}</span>
                     {{/if}}

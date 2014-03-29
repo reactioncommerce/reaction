@@ -1,4 +1,45 @@
 <template name="productImageGallery">
+  <div id="galleryDropPane" class="galleryDropPane">
+    <ul class="gallery">
+    {{#each variant.medias}}
+
+    {{#isPrimary}}
+
+    {{/isPrimary}}
+
+    {{/each}}
+  </ul>
+</div>
+</template>
+
+
+<template name="alternateImage">
+  <li data-index="{{index}}" class="gallery-sortable">
+    <div class="view-image">
+      <img src="{{src}}" class="img-thumbnail" alt="{{title}}">
+    </div>
+  </li>
+</template>
+
+<template name="primaryImage">
+  <div class="product-image">
+    <div class="product-image-main">
+      <img id="main-image" class="img-responsive" name="main-image" src="{{getVariantImage}}">
+    </div>
+    {{#if userHasRole "admin"}}
+    <div class="gallery-tools">
+      <a class="image-remove-link" id="{{getVariantImage}}"><i class="fa fa-trash-o"></i></a>
+    </div>
+    {{/if}}
+  </div>
+</template>
+
+
+
+
+
+
+<template name="OLD_productImageGallery">
 {{#with variant.medias}}
   {{>primaryImage}}
   <div id="galleryDropPane" class="galleryDropPane">
@@ -37,20 +78,3 @@
 {{/with}}
 </template>
 
-<template name="primaryImage">
-  <div class="product-image">
-
-        <div class="product-image-main">
-          <img id="main-image" class="img-responsive" name="main-image" src="{{getVariantImage}}">
-        </div>
-      {{#if userHasRole "admin"}}
-        <div class="gallery-tools">
-<!--           <a><i class="fa fa-link"></i></a>
-          <a><i class="fa fa-paperclip"></i></a>
-          <a><i class="fa fa-pencil"></i></a> -->
-          <a class="image-remove-link" id="{{getVariantImage}}"><i class="fa fa-trash-o"></i></a>
-        </div>
-      {{/if}}
-
-  </div>
-</template>

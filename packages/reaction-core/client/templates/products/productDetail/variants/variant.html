@@ -1,7 +1,7 @@
 <template name="variantList">
   <div class="product-variants">
     {{#unless userHasRole "admin"}}
-      {{#if variants}}
+      {{#if ../variants}}
       <h3>
         Options
         <small>view and add to cart</small>
@@ -14,7 +14,7 @@
     </h3>
     {{/unless}}
     <ul class="variant-list list-unstyled" id="variant-list">
-    {{#each variants}}
+    {{#each ../variants}}
       {{> variant}}
     {{else}}
       <a href="#" id="create-variant">+ Create Variant</a>

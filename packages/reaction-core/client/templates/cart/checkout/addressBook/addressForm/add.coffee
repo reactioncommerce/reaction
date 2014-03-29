@@ -1,12 +1,4 @@
-addressAddForm = new AutoForm(AddressSchema)
-# addressBookDep = new Deps.Dependency()
-
 Template.addressBookAdd.helpers
-  addressBookAddForm: ->
-    # addressAddForm.hooks before:
-    #   addressBookAdd: (doc) ->
-    #     #potential server method to reset existing default
-    addressAddForm
   addressBook: ->
     Meteor.user().profile?.addressBook
 
@@ -26,3 +18,10 @@ Template.addressBookForm.helpers
   defaultName: ->
     Meteor.user().profile?.name
   isDefault: ->
+
+Template.addressBookAdd.events
+  'click #cancel-new, form submit': () ->
+    Session.set "addressBookView", "view"
+
+  'submit form': () ->
+    Session.set "addressBookView", "view"

@@ -8,32 +8,19 @@ Npm.depends({
     "node-phantom": '0.2.5'
 });
 
-
 Package.on_use(function (api, where) {
-  api.use([
-    "standard-app-packages",
+   api.use([
+    "ui",
+    "accounts-ui-unstyled",
     "coffeescript",
     "underscore",
-    "underscore-string-latest",
-    "simple-schema",
-    "collection-hooks",
-    "collection2",
-    "roles",
-    "less",
-    "amplify",
-    "accounts-base",
-    "collectionFS"
+    "autoform"
   ], ["client", "server"]);
 
-  api.use([
-    "autoform",
-    "iron-router",
-    "videojs",
-    "moment",
-    "spin"
-  ], ["client"]);
+  api.use(["reaction-app-packages"]);
 
-api.add_files([
+
+  api.add_files([
     //bootstrap
     "lib/bootstrap/lib/js/transition.js",
     "lib/bootstrap/lib/js/alert.js",
@@ -53,7 +40,7 @@ api.add_files([
     "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.js",
     "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/clear.png",
     "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/loading.gif"
- ], ["client"]);
+   ], ["client"]);
 
   // Core Reaction
   api.add_files([
@@ -100,7 +87,7 @@ api.add_files([
 
     "client/helpers/helpers.coffee",
     "client/helpers/config.coffee",
-    "client/helpers/handlebars.coffee",
+    "client/helpers/spacebars.coffee",
 
     "client/workflows/cart/workflow.coffee",
     "client/workflows/orders/workflow.coffee",
@@ -121,6 +108,15 @@ api.add_files([
 
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
+
+    "client/templates/accounts/accounts.html",
+    "client/templates/accounts/accounts.coffee",
+
+    "client/templates/accounts/inline/inline.html",
+    "client/templates/accounts/inline/inline.coffee",
+
+    "client/templates/accounts/dropdown/dropdown.html",
+    "client/templates/accounts/dropdown/dropdown.coffee",
 
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
@@ -302,6 +298,9 @@ api.add_files([
     "client/templates/layout/header/header.import.less",
     "client/templates/layout/footer/footer.import.less",
     "client/templates/layout/header/tags/tags.import.less",
+    "client/templates/accounts/accounts.import.less",
+    "client/templates/accounts/dropdown/dropdown.import.less",
+    "client/templates/accounts/inline/inline.import.less",
     "client/templates/products/productDetail/attributes/attributes.import.less",
     "client/templates/products/productDetail/images/productImageGallery.import.less",
     "client/templates/products/productDetail/productDetail.import.less",

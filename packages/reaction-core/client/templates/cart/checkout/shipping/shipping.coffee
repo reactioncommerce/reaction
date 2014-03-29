@@ -7,16 +7,15 @@ Template.checkoutShipping.helpers
         if method?.rate?
           method.rate = "Free" if method.rate is '0'
           rates.push carrier: value, method: index, label:method.label, value:method.rate
-        else #fetch rates
-          console.log "Fetching"
-    CartWorkflow.shipmentMethod()
+        # else #fetch rates
+
     rates
 
    isSelected: (carrier,method)->
     currentShipping = Cart.findOne()?.shipping?.shipmentMethod
     if (currentShipping?.carrier is this.carrier) and (currentShipping?.method is this.method)
-      console.log "here"
       Session.set "shipmentMethod",this
+      CartWorkflow.shipmentMethod()
       return "active"
 
 Template.checkoutShipping.events

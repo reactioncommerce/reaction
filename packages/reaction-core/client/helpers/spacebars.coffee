@@ -2,20 +2,31 @@
 # Reaction Handlebars helpers
 ###
 
+UI.registerHelper "displayName", () ->
+  user = Meteor.user()
+  return ""  unless user
+  return user.profile.name  if user.profile and user.profile.name
+  return user.username  if user.username
+  return user.emails[0].address  if user.emails and user.emails[0] and user.emails[0].address
+  ""
+
+UI.registerHelper "socialImage", () ->
+  Meteor.user().profile?.picture
+
 ###
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system
 ###
-Handlebars.registerHelper "hasShopPermission", (permissions) ->
+UI.registerHelper "hasShopPermission", (permissions) ->
   Meteor.app.hasPermission(permissions)
 
-Handlebars.registerHelper "hasOwnerAccess", ->
+UI.registerHelper "hasOwnerAccess", ->
   Meteor.app.hasOwnerAccess()
 
-Handlebars.registerHelper "hasDashboardAccess", ->
+UI.registerHelper "hasDashboardAccess", ->
   Meteor.app.hasDashboardAccess()
 
-Handlebars.registerHelper "activeRouteClass", ->
+UI.registerHelper "activeRouteClass", ->
   args = Array::slice.call(arguments, 0)
   args.pop()
   active = _.any(args, (name) ->
@@ -23,14 +34,14 @@ Handlebars.registerHelper "activeRouteClass", ->
   )
   active and "active"
 
-Handlebars.registerHelper "siteName", ->
-  siteName = Shops.findOne().name
+UI.registerHelper "siteName", ->
+  siteName = Shops.findOne()?.name
   siteName
 ###
 # method to alway return an image,
 # or a placeholder for a product variant
 ###
-Handlebars.registerHelper "getVariantImage", (variant) ->
+UI.registerHelper "getVariantImage", (variant) ->
   variant = (currentProduct.get "variant") unless variant?._id
   if variant?._id
     try
@@ -50,7 +61,7 @@ Handlebars.registerHelper "getVariantImage", (variant) ->
 # method to return cart calculated values
 ###
 
-Handlebars.registerHelper "cart", () ->
+UI.registerHelper "cart", () ->
   cartCount: ->
     storedCart = Cart.findOne()
     count = 0
@@ -113,7 +124,7 @@ Handlebars.registerHelper "cart", () ->
 # conditional template helpers
 # example:  {{#if condition status "eq" ../value}}
 ###
-Handlebars.registerHelper "condition", (v1, operator, v2, options) ->
+UI.registerHelper "condition", (v1, operator, v2, options) ->
   switch operator
     when "==", "eq"
       v1 is v2
@@ -138,7 +149,7 @@ Handlebars.registerHelper "condition", (v1, operator, v2, options) ->
     else
       throw "Undefined operator \"" + operator + "\""
 
-Handlebars.registerHelper "key_value", (context, options) ->
+UI.registerHelper "key_value", (context, options) ->
   result = []
   _.each context, (value, key, list) ->
     result.push
@@ -150,7 +161,7 @@ Handlebars.registerHelper "key_value", (context, options) ->
 # Convert new line (\n\r) to <br>
 # from http://phpjs.org/functions/nl2br:480
 ###
-Handlebars.registerHelper "nl2br", (text) ->
+UI.registerHelper "nl2br", (text) ->
 
   #        text = Handlebars.Utils.escapeExpression(text);
   nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + "<br>" + "$2")
@@ -163,7 +174,7 @@ Handlebars.registerHelper "nl2br", (text) ->
 # moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
 # usage: {{dateFormat creation_date format="MMMM YYYY"}}
 ###
-Handlebars.registerHelper "dateFormat", (context, block) ->
+UI.registerHelper "dateFormat", (context, block) ->
   if window.moment
     f = block.hash.format or "MMM DD, YYYY hh:mm:ss A"
     return moment(context).format(f) #had to remove Date(context)
@@ -171,14 +182,14 @@ Handlebars.registerHelper "dateFormat", (context, block) ->
     return context #  moment plugin not available. return data as is.
   return
 
-Handlebars.registerHelper "uc", (str) ->
+UI.registerHelper "uc", (str) ->
   encodeURIComponent str
 
 ###
 # general helper for plurization of strings
 # returns string with 's' concatenated if n = 1
 ###
-Handlebars.registerHelper "pluralize", (n, thing) ->
+UI.registerHelper "pluralize", (n, thing) ->
 
   # fairly stupid pluralizer
   if n is 1
@@ -190,7 +201,7 @@ Handlebars.registerHelper "pluralize", (n, thing) ->
 # general helper for formatting price
 # returns string float currency format
 ###
-Handlebars.registerHelper "formatPrice", (price) ->
+UI.registerHelper "formatPrice", (price) ->
   price.toFixed(2)
 
 ###
@@ -198,7 +209,7 @@ Handlebars.registerHelper "formatPrice", (price) ->
 # todo: needs additional validation all use cases
 # returns first word in profile name
 ###
-Handlebars.registerHelper "fname", ->
+UI.registerHelper "fname", ->
   if Meteor.user()
     name = Meteor.user().profile.name.split(" ")
     fname = name[0]
@@ -209,11 +220,11 @@ Handlebars.registerHelper "fname", ->
 # general helper for determine if user has a store
 # returns boolean
 ###
-Handlebars.registerHelper "userHasProfile", ->
+UI.registerHelper "userHasProfile", ->
   user = Meteor.user()
   user and !!user.profile.store
 
-Handlebars.registerHelper "userHasRole", (role) ->
+UI.registerHelper "userHasRole", (role) ->
   user = Meteor.user()
   user and user.roles.indexOf(role) isnt -1  if user and user.roles
 
@@ -225,7 +236,7 @@ Handlebars.registerHelper "userHasRole", (role) ->
 ###
 
 #Determine if current link should be active
-Handlebars.registerHelper "active", (path) ->
+UI.registerHelper "active", (path) ->
   # Get the current path for URL
   current = Router.current()
   routeName = current and current.route.name
@@ -239,7 +250,7 @@ Handlebars.registerHelper "active", (path) ->
 # returns string
 # handlebars: {{navLink 'projectsList' 'icon-edit'}}
 ###
-Handlebars.registerHelper "navLink", (page, icon) ->
+UI.registerHelper "navLink", (page, icon) ->
   ret = "<li "
   ret += "class='active'"  if Meteor.Router.page() is page
   ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>"
@@ -253,7 +264,7 @@ Handlebars.registerHelper "navLink", (page, icon) ->
 # format: {{{getTemplate package context}}}
 # example: {{{getTemplate widget }}}
 ###
-Handlebars.registerHelper "getTemplate", (pkg, context) ->
+UI.registerHelper "getTemplate", (pkg, context) ->
   templateName = pkg + "-widget"
   Template[templateName] context  if Template[templateName]
 
@@ -265,7 +276,9 @@ Handlebars.registerHelper "getTemplate", (pkg, context) ->
 #     <div class='{{#if first}}first{{/if}}{{#if last}} last{{/if}}'>{{index}}</div>
 # {{/foreach}}
 ###
-Handlebars.registerHelper "foreach", (arr, options) ->
+UI.registerHelper "foreach", (arr, options) ->
+  console.log arr
+  console.log options
   return options.inverse(this)  if options.inverse and not arr.length
   arr.map((item, index) ->
     item.index = index
@@ -273,11 +286,3 @@ Handlebars.registerHelper "foreach", (arr, options) ->
     item.last = index is arr.length - 1
     options.fn item
   ).join ""
-
-###
-# https://github.com/meteor/meteor/issues/281
-###
-Handlebars.registerHelper "labelBranch", (label, options) ->
-  data = this
-  Spark.labelBranch Spark.UNIQUE_LABEL, ->
-    options.fn data

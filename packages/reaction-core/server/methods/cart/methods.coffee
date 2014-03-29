@@ -7,8 +7,8 @@ Meteor.methods
   ###
   addToCart: (cartSession, productId, variantData, quantity) ->
     # make sure a cart has been created
-    unless Cart.findOne(cartSession)?
-      cart = Meteor.call "createCart", cartSession
+    # unless Cart.findOne(cartSession)?
+    #   cart = Meteor.call "createCart", cartSession
 
     if cartSession
       cartVariantExists = Cart.findOne
@@ -83,7 +83,6 @@ Meteor.methods
       unless sessionCart?
         Cart.upsert {sessionId: sessionId, shopId:shopId}, {$set:defaultCart}, (error, result) ->
             console.log error if error
-            # Deps.flush() if result?.insertedId
       else
         return sessionCart
   ###

@@ -5,19 +5,24 @@ Template.productImageGallery.helpers
   variant: ->
     (currentProduct.get "variant")
 
-  isimage: (mimetype, options) ->
+  isPrimary: ->
+    variant = currentProduct.get "variant"
+    if variant.medias[0].src is this.src
+      return Template.primaryImage
+    else
+      return Template.alternateImage
+
+  isimage: (mimetype) ->
+    console.log mimetype
     mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
     if mimetype.match("image.*")
-      options.inverse this
-    else
-      options.fn this
+      return true
 
-  isvideo: (mimetype, options) ->
+  isvideo: (mimetype) ->
     mimetype = (if typeof mimetype != "undefined" then mimetype else "image")
     if mimetype.match("video.*")
-      options.fn this
-    else
-      options.inverse this
+      return true
+
 
 # *****************************************************
 # Template.productImageGallery.rendered

@@ -1,0 +1,30 @@
+<template name="loginDropdown">
+<div class="dropdown" role="menu">
+{{#if currentUser}}
+  {{#if socialImage}}
+    <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
+  {{/if}}
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{displayName}} <b class="caret"></b></a>
+  <div class="dropdown-menu" role="menu">
+  {{>userDropdown}}
+  </div>
+{{else}}
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
+    <div class="accounts-dialog accounts-inline dropdown-menu">
+    {{>_loginButtonsLoggedOutAllServices}}
+    </div>
+{{/if}}
+</div>
+</template>
+
+<template name="userDropdown">
+<div class="user-accounts-dropdown">
+  {{#if socialImage}}
+  <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
+  {{/if}}
+  <div class="user-accounts-dropdown-content">
+  </div>
+  <div class="btn btn-primary btn-block" id="logout">Logout</div>
+</div>
+
+</template>

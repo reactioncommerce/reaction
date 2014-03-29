@@ -1,45 +1,33 @@
-Session.setDefault "displayCartDrawer",false
-### **************************************************************
-# true = cartDrawer should be open (persistent, until closed)
-# false = cartDrawer is closed and not rendered
-# usage:
-#  toggleCartDrawer(true) to display, on next invocation
-#  toggleCartDrawer() to open if closed, keep open if already open
-# ************************************************************ ###
-@toggleCartDrawer = (toggle) ->
-  cartVisibility = Session.get "displayCartDrawer"
-  if cartVisibility is false
-    Session.set "displayCartDrawer", true
-  else if cartVisibility is true and delayId? is true and toggle? isnt true
-    Session.set "displayCartDrawer", true
-  else
-    Session.set "displayCartDrawer", false
-
-  $('html, body').animate({ scrollTop: 0 }, 0)
-
-  autoClose = () ->
-    $("#cart-drawer").fadeOut "slow", () ->
-      Session.set "displayCartDrawer", false
-  Meteor.clearTimeout(delayId) if delayId?
-  @delayId = Meteor.setTimeout autoClose, 8000
-
 ### **************************************************************
 # Template Cart Drawer
 # ************************************************************ ###
 Template.cartDrawer.helpers
+  cartCount: ->
+    Session.get "cartCount"
+  displayCartDrawer: (cartCount)->
+    cartCount = this.cartCount
+    if Session.get "displayCart"
+      if cartCount > 0
+        return Template.openCartDrawer
+      else
+        return Template.emptyCartDrawer
+    else
+      return null
+
+
+Template.openCartDrawer.helpers
   cartItems: ->
     currentCart = Cart.findOne()
     items = (cart for cart in currentCart.items by -1) if currentCart?.items
     items
+
   checkoutView: ->
     checkoutView = "display:block"
     if Router.current().route.name is 'cartCheckout' then checkoutView
-  displayCartDrawer: ->
-    Session.get "displayCartDrawer"
 
-Template.cartDrawer.rendered = ->
-  $(".owl-carousel").owlCarousel
-    lazyload: true
+Template.openCartDrawer.rendered = ->
+  console.log "rendering cart drawer"
+  this.$(".cart-drawer-carousel").owlCarousel
     itemsCustom : [
       [0, 1],
       [450, 2]
@@ -53,8 +41,13 @@ Template.cartDrawer.rendered = ->
       [2400, 10]
     ]
 
-Template.cartDrawer.events
+Template.openCartDrawer.reinit = () ->
+  this.$(".cart-drawer-carousel").data('owlCarousel').reinit()
+
+
+Template.openCartDrawer.events
   'click #btn-checkout': (event,template) ->
+    Session.set "displayCart", false
     CartWorkflow.checkout()
 
   'click .remove-cart-item': (event,template) ->
@@ -69,7 +62,7 @@ Template.cartDrawer.events
   'click #btn-keep-shopping': (event,template) ->
     event.stopPropagation()
     event.preventDefault()
-    toggleCartDrawer(true)
+    toggleSession "displayCart"
 
   'click #cart-drawer-container': (event, template) ->
     Meteor.clearTimeout(delayId) if delayId?

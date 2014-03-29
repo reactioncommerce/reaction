@@ -55,7 +55,7 @@ Meteor.methods
             to: email
             from: currentUserName + " <" + shop.email + ">"
             subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
-            html: Handlebars.templates['shopMemberInvite']
+            html: #Handlebars.templates['shopMemberInvite']
               homepage: Meteor.absoluteUrl()
               shop: shop
               currentUserName: currentUserName
@@ -67,7 +67,7 @@ Meteor.methods
             to: email
             from: currentUserName + " <" + shop.email + ">"
             subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
-            html: Handlebars.templates['shopMemberNotification']
+            html: #Handlebars.templates['shopMemberNotification']
               homepage: Meteor.absoluteUrl()
               shop: shop
               currentUserName: currentUserName
@@ -85,6 +85,6 @@ Meteor.methods
       to: email
       from: shop.email
       subject: "[Reaction] Welcome to " + shop.name + "!"
-      html: Handlebars.templates['memberWelcomeNotification']
+      html: #Handlebars.templates['memberWelcomeNotification']
         homepage: Meteor.absoluteUrl()
         shop: shop

@@ -1,40 +1,41 @@
 <template name="cartDrawer">
 <div id="cart-drawer-container">
-  {{#if displayCartDrawer}}
-    <div class="cart-drawer" id="cart-drawer" style="{{checkoutView}}">
-      <div class="owl-carousel">
-        {{#if cartItems}}
-          {{>cartSubTotals}}
-        {{/if}}
+{{> displayCartDrawer cartCount=cartCount}}
+</div>
+</template>
+
+
+<template name="emptyCartDrawer">
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-empty">
+      <div class="row cart-drawer-empty-msg">
+        <h1 class="text-align">
+          <i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong>
+        </h1>
+      </div>
+      <div class="row">
+        <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping">
+        Keep on shopping
+        </a>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+
+<template name="openCartDrawer">
+    <div class="cart-drawer" id="cart-drawer">
+      <div class="cart-drawer-carousel">
+        {{>cartSubTotals}}
         {{#each cartItems}}
-          {{#labelBranch _id}}
-            {{>cartItems}}
-          {{/labelBranch}}
+          {{>cartDrawerItems}}
         {{/each}}
       </div>
-      {{#unless cartItems}}
-        <div class="cart-drawer-empty">
-          <div class="row cart-drawer-empty-msg">
-            <h1 class="text-align">
-              <i class="fa fa-frown-o fa-lg"></i><strong><p>We're sad. Your cart is empty.</p></strong>
-            </h1>
-          </div>
-          <div class="row">
-            <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping">
-            Keep on shopping
-            </a>
-          </div>
-        </div>
-      {{else}}
-        {{#unless checkoutView}}
-        <div class="row">
-             <a href="#" class="btn btn-success btn-lg btn-block" id="btn-checkout">
-              Checkout now
-            </a>
-        </div>
-        {{/unless}}
-      {{/unless}}
+      <div class="row">
+        <a href="#" class="btn btn-success btn-lg btn-block" id="btn-checkout">
+        Checkout now
+        </a>
+      </div>
     </div>
-  {{/if}}
-</div>
 </template>
