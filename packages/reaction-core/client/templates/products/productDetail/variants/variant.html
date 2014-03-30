@@ -16,6 +16,11 @@
     <ul class="variant-list list-unstyled" id="variant-list">
     {{#each ../variants}}
       {{> variant}}
+      {{#if userHasRole "admin"}}
+      <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
+        {{>variantForm}}
+      </div>
+      {{/if}}
     {{else}}
       <a href="#" id="create-variant">+ Create Variant</a>
     {{/each}}
@@ -60,10 +65,6 @@
 
     </div>
   </div>
-  {{#if userHasRole "admin"}}
-  <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
-    {{>variantForm}}
-  </div>
-  {{/if}}
+
 </li>
 </template>

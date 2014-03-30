@@ -25,9 +25,12 @@ Template.openCartDrawer.helpers
     checkoutView = "display:block"
     if Router.current().route.name is 'cartCheckout' then checkoutView
 
+  cartItemDetails: ->
+    #TODO future item updating
+    UI.insert(UI.renderWithData(Template.cartDrawerItems,this), $('.cart-drawer-carousel'))
+
 Template.openCartDrawer.rendered = ->
-  console.log "rendering cart drawer"
-  this.$(".cart-drawer-carousel").owlCarousel
+  this.$("#cart-drawer-carousel").owlCarousel
     itemsCustom : [
       [0, 1],
       [450, 2]
@@ -37,13 +40,8 @@ Template.openCartDrawer.rendered = ->
       [1440, 6]
       [1650, 7]
       [1900, 8]
-      [2200, 9]
-      [2400, 10]
+      [2200, 8]
     ]
-
-Template.openCartDrawer.reinit = () ->
-  this.$(".cart-drawer-carousel").data('owlCarousel').reinit()
-
 
 Template.openCartDrawer.events
   'click #btn-checkout': (event,template) ->
@@ -55,8 +53,8 @@ Template.openCartDrawer.events
     event.preventDefault()
     currentCartId = Cart.findOne()._id
     currentVariant = this.variants
-    item = '#'+$(event.currentTarget).attr('data-target')
-    $(item).fadeOut(1500).delay 1500, ()->
+
+    $(event.currentTarget).fadeOut(500).delay 500, ()->
       Meteor.call('removeFromCart',currentCartId,currentVariant)
 
   'click #btn-keep-shopping': (event,template) ->

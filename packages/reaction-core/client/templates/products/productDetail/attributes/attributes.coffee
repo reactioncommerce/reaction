@@ -1,6 +1,6 @@
 Template.attributes.helpers
-  attributes: () ->
-    (currentProduct.get "product").metafields
+  # attributes: () ->
+  #   if (currentProduct.get "product")?.metafields? then return (currentProduct.get "product").metafields
 
 Template.attributes.events
   'click .attribute-delete': (e) ->

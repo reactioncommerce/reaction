@@ -29,7 +29,8 @@ Meteor.methods
         Cart.update cartSession,
           $addToSet:
             items:
-              _id: productId
+              _id: Random.id()
+              productId: productId
               quantity: quantity
               variants: variantData
         , (error, result) ->
@@ -104,7 +105,7 @@ Meteor.methods
   inventoryAdjust: (orderId) ->
     order = Orders.findOne( {_id: orderId} )
     for product in order.items
-      Products.update {_id: product._id,"variants._id": product.variants._id}, {$inc: {"variants.$.inventoryQuantity": -product.quantity }}
+      Products.update {_id: product.productId, "variants._id": product.variants._id}, {$inc: {"variants.$.inventoryQuantity": -product.quantity }}
   ###
   # when a payment is processed we want to copy the cart
   # over to an order object, and give the user a new empty

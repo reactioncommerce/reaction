@@ -278,9 +278,7 @@ Template.productDetail.events
         $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
 
-
         unless Session.get "displayCart" then toggleSession "displayCart"
-
 
     else
       Alerts.add "Select an option before adding to cart"
