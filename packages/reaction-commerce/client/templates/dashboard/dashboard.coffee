@@ -11,6 +11,10 @@ Template.dashboard.helpers
     packageInfo = Meteor.app.packages[currentPackage]
     packageInfo
 
+  widget: (name) ->
+    widget = this.name + "-widget"
+    return Template[widget]
+
   dependencies: ->
     currentPackageDepends  = Meteor.app.packages["reaction-commerce"].depends
     dependencies = []

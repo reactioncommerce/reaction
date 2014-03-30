@@ -1,10 +1,11 @@
 Template.variantForm.helpers
-  variantFormSchema: ->
-    variantSchema = new AutoForm ProductVariantSchema
-    variantSchema
+  # variantFormSchema: ->
+  #   variantSchema = new AutoForm ProductVariantSchema
+  #   variantSchema
 
-  data: ->
-    @
+  # data: ->
+  #   console.log this
+  #   return this.data
 
   nowDate: ->
     new Date()
@@ -21,8 +22,8 @@ Template.variantForm.helpers
   metafieldsIndexed: ->
     metafieldArray = new Array
     value = 0
-    if @._doc.metafields
-      for item,value in @._doc.metafields
+    if @.metafields
+      for item,value in @.metafields
         metafieldArray[value] =
           index: value
           key: item.key
@@ -45,11 +46,11 @@ Template.variantForm.helpers
     options
 
   displayInventoryManagement: (doc) ->
-    unless doc.inventoryManagement
+    unless @.inventoryManagement
       return "display:none;"
 
   displayLowInventoryWarning: (doc) ->
-    unless doc.inventoryManagement
+    unless @.inventoryManagement
       return "display:none;"
 
 Template.variantForm.events

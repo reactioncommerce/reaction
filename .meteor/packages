@@ -5,14 +5,16 @@
 
 standard-app-packages
 less
+coffeescript
+jquery
 accounts-base
 accounts-password
 accounts-facebook
 accounts-ui-unstyled
-coffeescript
 amplify
-jquery
 
+underscore-string-latest
+email
 iron-router
 collection2
 autoform
@@ -20,18 +22,16 @@ simple-schema
 moment
 videojs
 spin
-underscore-string-latest
 roles
-email
+
 collection-hooks
+collectionFS
 cfs-filesystem
 handlebars-server
 bootstrap-alerts
 d3
 
-ui
 reaction-commerce
 reaction-helloworld
 reaction-google-analytics
 reaction-paypal
-collectionFS

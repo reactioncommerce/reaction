@@ -257,18 +257,6 @@ UI.registerHelper "navLink", (page, icon) ->
   new Handlebars.SafeString(ret)
 
 
-
-
-###
-# Handler Helper allows you to load templates dynamically
-# format: {{{getTemplate package context}}}
-# example: {{{getTemplate widget }}}
-###
-UI.registerHelper "getTemplate", (pkg, context) ->
-  templateName = pkg + "-widget"
-  Template[templateName] context  if Template[templateName]
-
-
 ###
 # Handler Helper foreach loop with positional information
 # example:

@@ -7,8 +7,8 @@ Template.checkoutShipping.helpers
         if method?.rate?
           method.rate = "Free" if method.rate is '0'
           rates.push carrier: value, method: index, label:method.label, value:method.rate
-        # else #fetch rates
-
+          CartWorkflow.shipmentMethod()
+        #else #fetch rates
     rates
 
    isSelected: (carrier,method)->

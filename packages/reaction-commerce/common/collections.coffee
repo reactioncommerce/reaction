@@ -16,8 +16,8 @@ PackageConfigSchema = new SimpleSchema
 @Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
 Packages = @Packages
 
-# @FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: "~/.fileStorage") ])
-# FileStorage = @FileStorage
+@FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: "~/.fileStorage") ])
+FileStorage = @FileStorage
 
 ShopMemberSchema = new SimpleSchema
   userId:
@@ -460,6 +460,8 @@ Orders = @Orders # package exports
 
 CartItemSchema = new SimpleSchema
   _id:
+    type: String
+  productId:
     type: String
   quantity:
     label: "Quantity"

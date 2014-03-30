@@ -1,24 +1,16 @@
 {
   "packages": {
     "spin": {},
-    "roles": {
-      "git": "https://github.com/danieljonce/meteor-roles.git",
-      "branch": "master"
-    },
+    "roles": {},
     "iron-router": {},
     "videojs": {},
-    "autoform": {
-      "git": "https://github.com/aldeed/meteor-autoform.git",
-      "branch": "ui"
-    },
+    "autoform": {},
     "collection2": {},
     "underscore-string-latest": {},
     "collection-hooks": {},
-    "handlebars-server": {
-      "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
-      "branch": "master"
-    },
+    "handlebars-server": {},
     "bootstrap-alerts": {},
+    "collectionFS": {},
     "cfs-filesystem": {}
   }
 }
