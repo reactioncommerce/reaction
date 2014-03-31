@@ -1,19 +1,29 @@
-# Deps.autorun () ->
-#   console.log "deps autorun " + Session.get "currentPackage"
-#   if $("#dashboard")?
-#     if $("#dashboard").data('owlCarousel')?
-#       $("#dashboard").data('owlCarousel').reinit()
-#       console.log "re-initing"
-#     else
-#       console.log "initilizing owl"
-#       $("#dashboard").owlCarousel
-#         lazyload: false
-#         navigation: false
-#         pagination: false
-#         # reactive: Session.get "currentPackage"
+Deps.autorun () ->
+  Session.get "currentPackage"
+  if $(".dashboard")?
+    if $(".dashboard").data('owlCarousel')?
+      # console.log "reinit dashboard"
+      setTimeout (->
+        $(".dashboard").data('owlCarousel').reinit()
+      ), 1
+    else
+      setTimeout (->
+        # console.log "recreating owl dashboard"
+        $(".dashboard").owlCarousel
+          navigation: false
+          pagination: false
+          autoHeight: true
+      ), 1
 
-
-
+Deps.autorun () ->
+  Session.get("dashboard")
+  #console.log "ensure newly visible dashboard has carousel"
+  setTimeout (->
+    $(".dashboard").owlCarousel
+      navigation: false
+      pagination: false
+      autoHeight: true
+    ), 1
 
 Template.dashboard.helpers
   isVisible: ->
@@ -47,7 +57,6 @@ Template.dashboard.events
     if @.overviewRoute?
       event.preventDefault()
       Router.go(@.overviewRoute)
-    setTimeout
 
   'click .next': (event, template) ->
       owl.trigger('owl.next')
@@ -55,8 +64,12 @@ Template.dashboard.events
   'click .prev': (event, template) ->
       owl.trigger('owl.prev')
 
-
-
+Template.dashboard.rendered = ->
+  console.log "dashboard.rendered"
+  $(".dashboard").owlCarousel
+    navigation: false
+    pagination: false
+    autoHeight: true
 
 
 ###
