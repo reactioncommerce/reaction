@@ -1,3 +1,20 @@
+# Deps.autorun () ->
+#   console.log "deps autorun " + Session.get "currentPackage"
+#   if $("#dashboard")?
+#     if $("#dashboard").data('owlCarousel')?
+#       $("#dashboard").data('owlCarousel').reinit()
+#       console.log "re-initing"
+#     else
+#       console.log "initilizing owl"
+#       $("#dashboard").owlCarousel
+#         lazyload: false
+#         navigation: false
+#         pagination: false
+#         # reactive: Session.get "currentPackage"
+
+
+
+
 Template.dashboard.helpers
   isVisible: ->
     Session.get("dashboard")
@@ -30,7 +47,7 @@ Template.dashboard.events
     if @.overviewRoute?
       event.preventDefault()
       Router.go(@.overviewRoute)
-
+    setTimeout
 
   'click .next': (event, template) ->
       owl.trigger('owl.next')
@@ -38,23 +55,9 @@ Template.dashboard.events
   'click .prev': (event, template) ->
       owl.trigger('owl.prev')
 
-Template.dashboard.rendered = ->
-  $(".dashboard").owlCarousel
-    lazyload: true
-    # items: 6;
-    # itemsScaleUp: true;
-    navigation: false;
-    pagination: false;
-    # itemsCustom : [
-    #     [0, 2],
-    #     [450, 4],
-    #     [600, 7],
-    #     [700, 9],
-    #     [1000, 10],
-    #     [1200, 12],
-    #     [1400, 13],
-    #     [1600, 15]
-    #   ]
+
+
+
 
 ###
 # dashboard nav bar

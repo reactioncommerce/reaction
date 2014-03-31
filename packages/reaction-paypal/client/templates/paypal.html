@@ -7,13 +7,27 @@
     </div>
     <div class="row well">
       <div class="col-md-6">
-      {{#autoForm schema=paypalSettingsForm doc=packageData}}
+      {{> paypalForm}}
+      </div>
+    </div>
+</template>
+
+<template name="paypalUpdateForm">
+      {{#autoForm schema=paypalConfigSchema doc=packageData type="method" meteormethod="updatePackage" id="paypal-update-form"}}
         {{>afQuickField name='settings.host' autofocus='' placeholder="api.sandbox.paypal.com"}}
         {{>afQuickField name='settings.port'}}
         {{>afQuickField name='settings.client_id'}}
         {{>afQuickField name='settings.client_secret'}}
-        <button type="submit" class="btn btn-default pull-right update">Update</button>
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
-      </div>
-    </div>
-</template>
+ </template>
+
+<template name="paypalInsertForm">
+      {{#autoForm schema=paypalConfigSchema type="method" meteormethod="updatePackage" id="paypal-insert-form"}}
+        {{>afQuickField name='settings.host' autofocus='' placeholder="api.sandbox.paypal.com"}}
+        {{>afQuickField name='settings.port'}}
+        {{>afQuickField name='settings.client_id'}}
+        {{>afQuickField name='settings.client_secret'}}
+        <button type="submit" class="btn btn-default pull-right">Update</button>
+      {{/autoForm}}
+ </template>

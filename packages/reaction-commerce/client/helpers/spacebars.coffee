@@ -162,11 +162,9 @@ UI.registerHelper "key_value", (context, options) ->
 # from http://phpjs.org/functions/nl2br:480
 ###
 UI.registerHelper "nl2br", (text) ->
-
   #        text = Handlebars.Utils.escapeExpression(text);
   nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + "<br>" + "$2")
-  new Handlebars.SafeString(nl2br)
-
+  new Spacebars.SafeString(nl2br)
 
 ###
 # format an ISO date using Moment.js
@@ -190,7 +188,6 @@ UI.registerHelper "uc", (str) ->
 # returns string with 's' concatenated if n = 1
 ###
 UI.registerHelper "pluralize", (n, thing) ->
-
   # fairly stupid pluralizer
   if n is 1
     "1 " + thing
@@ -215,7 +212,6 @@ UI.registerHelper "fname", ->
     fname = name[0]
     fname
 
-
 ###
 # general helper for determine if user has a store
 # returns boolean
@@ -227,7 +223,6 @@ UI.registerHelper "userHasProfile", ->
 UI.registerHelper "userHasRole", (role) ->
   user = Meteor.user()
   user and user.roles.indexOf(role) isnt -1  if user and user.roles
-
 
 ###
 # general helper to return 'active' when on current path
@@ -254,23 +249,4 @@ UI.registerHelper "navLink", (page, icon) ->
   ret = "<li "
   ret += "class='active'"  if Meteor.Router.page() is page
   ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>"
-  new Handlebars.SafeString(ret)
-
-
-###
-# Handler Helper foreach loop with positional information
-# example:
-# {{#foreach foo}}
-#     <div class='{{#if first}}first{{/if}}{{#if last}} last{{/if}}'>{{index}}</div>
-# {{/foreach}}
-###
-UI.registerHelper "foreach", (arr, options) ->
-  console.log arr
-  console.log options
-  return options.inverse(this)  if options.inverse and not arr.length
-  arr.map((item, index) ->
-    item.index = index
-    item.first = index is 0
-    item.last = index is arr.length - 1
-    options.fn item
-  ).join ""
+  new Spacebars.SafeString(ret)
