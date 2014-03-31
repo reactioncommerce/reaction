@@ -65,7 +65,7 @@ Template.dashboard.events
       owl.trigger('owl.prev')
 
 Template.dashboard.rendered = ->
-  console.log "dashboard.rendered"
+  # console.log "dashboard.initial template rendered"
   $(".dashboard").owlCarousel
     navigation: false
     pagination: false
