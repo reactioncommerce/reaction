@@ -3,18 +3,16 @@
   {{#if isVisible}}
     <div class="dashboard-drawer">
 
-      <div class="dashboard">
-        <!-- BEGIN Package Content -->
+      <div class="dashboard row" id="dashboard">
+        <!-- package control panel -->
         {{#with Package}}
-          <!-- package control panel -->
-          <div class="dashboard-widget">
+          <div class="dashboard-widget col-md-3">
             {{>packagePanel}}
           </div>
           <!-- package widgets -->
           {{>widget name=name}}
         {{/with}}
       </div>
-
       {{>dashboardNavBar}}
     </div>
   {{/if}}

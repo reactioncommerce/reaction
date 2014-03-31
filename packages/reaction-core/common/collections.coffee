@@ -3,7 +3,7 @@ share.ConfigData = @ConfigData = new Meteor.Collection("ConfigData")
 
 Users = @Users = Meteor.users
 
-PackageConfigSchema = new SimpleSchema
+@PackageConfigSchema = new SimpleSchema
   shopId:
     type: String
   name:
@@ -12,6 +12,9 @@ PackageConfigSchema = new SimpleSchema
   settings:
     type: Object
     optional: true
+    blackbox: true
+
+PackageConfigSchema = @PackageConfigSchema
 
 @Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
 Packages = @Packages

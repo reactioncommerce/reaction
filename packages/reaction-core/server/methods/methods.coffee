@@ -63,3 +63,14 @@ Meteor.methods
       )
   removeHeaderTag: (tagId) ->
     Tags.remove(tagId)
+
+
+  updatePackage: (updateDoc, packageName) ->
+    console.log updateDoc
+    # check(updateDoc, PackageConfigSchema)
+    packageId = Packages.findOne({ name: packageName })._id
+
+    Packages.update {_id: packageId}, updateDoc, (error,results) ->
+      return false if error
+      return true if results
+
