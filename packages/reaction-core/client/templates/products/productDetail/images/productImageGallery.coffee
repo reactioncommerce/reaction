@@ -52,7 +52,8 @@ Template.productImageGallery.rendered = ->
           Alerts.add "Filepicker.io Error" +FPError.toString(), "danger"
         onProgress: (percentage) ->
           $("#galleryDropPane").text "Uploading (" + percentage + "%)"
-    window.loadPicker cb
+
+    loadPicker cb
     # Drag and drop image index update
     $gallery = $(".gallery")
     $gallery.sortable
