@@ -277,8 +277,7 @@ Template.productDetail.events
         CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
         $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
         $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
-
-        unless Session.get "displayCart" then toggleSession "displayCart"
+        # unless Session.get "displayCart" then toggleSession "displayCart"
 
     else
       Alerts.add "Select an option before adding to cart"
