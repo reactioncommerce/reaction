@@ -249,6 +249,7 @@ TaxSchema = new SimpleSchema
       optional: true
     name:
       type: String
+      index: 1
     addressBook:
       type: [AddressSchema]
     domains:
@@ -278,6 +279,7 @@ TaxSchema = new SimpleSchema
       type: String
     members:
       type: [ShopMemberSchema]
+      index: 1
     useCustomEmailSettings:
       type: Boolean
       optional: true
@@ -327,6 +329,7 @@ Shops = @Shops # package exports
     tagIds:
       type: [String]
       optional: true
+      index: 1
     twitterMsg:
       type: String
       optional: true
@@ -348,8 +351,10 @@ Shops = @Shops # package exports
       optional: true
     handle:
       type: String
+      index: 1
     isVisible:
       type: Boolean
+      index: 1
     publishedAt:
       type: Date
       optional: true
@@ -579,6 +584,7 @@ Cart = @Cart # package exports
   schema:
     name:
       type: String
+      index: 1
     slug:
       type: String
     position:
@@ -587,10 +593,12 @@ Cart = @Cart # package exports
     relatedTagIds:
       type: [String]
       optional: true
+      index: 1
     isTopLevel:
       type: Boolean
     shopId:
       type: String
+      index: 1
     createdAt:
       type: Date
     updatedAt:

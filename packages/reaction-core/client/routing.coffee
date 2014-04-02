@@ -72,7 +72,11 @@ Router.map ->
     path: 'product/tag/:_id'
     template: "products"
     data: ->
-      tag: Tags.findOne(@params._id)
+      if @params._id.match  /^[A-Za-z0-9]{17}$/
+        return tag: Tags.findOne(@params._id)
+      else
+        text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+        return tag: Tags.findOne({name: { $regex : text, $options:"i" } })
 
   # product view / edit page
   @route 'product',
@@ -80,8 +84,13 @@ Router.map ->
     path: 'product/:_id'
     template: 'productDetail'
     waitOn: ->
+      if @params._id.match  /^[A-Za-z0-9]{17}$/
+        product = Products.findOne(@params._id)
+      else
+        text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+        product = Products.findOne({handle: { $regex : text, $options:"i" } })
       # set current variant and products
-      product = Products.findOne(@params._id)
+
       currentProduct.set "product", product
       if product?.variants
         if @params.variant
@@ -95,7 +104,12 @@ Router.map ->
           result = (variant._id for variant in product.variants when variant._id is (currentProduct.get "variant")?._id)
           currentProduct.set "variant", product.variants[0] unless result[0]
     onBeforeAction: (pause) ->
-      unless Products.findOne(@params._id)?.isVisible
+      if @params._id.match  /^[A-Za-z0-9]{17}$/
+        product = Products.findOne(@params._id)
+      else
+        text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+        product = Products.findOne({handle: { $regex : text, $options:"i" } })
+      unless product?.isVisible
         unless Meteor.app.hasPermission(@path)
           @render('unauthorized')
           pause()

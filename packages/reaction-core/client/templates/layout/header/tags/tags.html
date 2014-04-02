@@ -2,7 +2,7 @@
     <ul class="nav navbar-nav navbar-left header-tags-list clearfix" id="header-tags-list">
       {{#each tags}}
        <li class="{{activeTag tag._id}}">
-        <a href="{{pathFor "product/tag" params=this}}" class="header-tag {{editableTag tag._id}}" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
+        <a href="{{pathForSEO "product/tag" "name"}}" class="header-tag {{editableTag tag._id}}" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
        </li>
       {{/each}}
       {{#if userHasRole "admin"}}

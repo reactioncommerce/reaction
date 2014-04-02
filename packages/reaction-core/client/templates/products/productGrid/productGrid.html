@@ -16,7 +16,7 @@
     <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
     {{/if}}
     <div>
-      <a href="{{pathFor 'product' params=this}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+      <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
         <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
       </a>
     </div>
