@@ -2,6 +2,13 @@
 # Reaction Handlebars helpers
 ###
 
+
+UI.registerHelper "pathForSEO", (path, params) ->
+  if this[params]
+    return "/"+ path + "/" + this[params]
+  else
+    return Router.path path,this
+
 UI.registerHelper "displayName", () ->
   user = Meteor.user()
   return ""  unless user
