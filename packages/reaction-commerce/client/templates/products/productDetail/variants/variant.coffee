@@ -106,11 +106,4 @@ Template.variant.rendered = ->
 
 Template.variantList.events
   "click #create-variant": (event) ->
-    newVariant= [
-            {
-              _id: Random.id()
-              title: ""
-              price: 0.00
-            }
-          ]
-    Products._collection.update(@._id,{$set:{variants:newVariant}})
+    Meteor.call "createVariant", @._id

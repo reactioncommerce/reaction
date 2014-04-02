@@ -6,6 +6,16 @@ Meteor.methods
     clone._id = Random.id()
     Products._collection.update({_id:id}, {$push: {variants: clone}})
     clone._id
+
+  createVariant: (productId) ->
+    newVariant= [
+            {
+              _id: Random.id()
+              title: ""
+              price: 0.00
+            }
+          ]
+    Products._collection.update(productId,{$set:{variants:newVariant}})
   ###
   # update individual variant with new values, merges into original
   # only need to supply updated information
