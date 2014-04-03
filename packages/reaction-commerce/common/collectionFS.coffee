@@ -1,5 +1,5 @@
 
-@FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: "~/.fileStorage") ])
+@FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: ".fileStorage") ])
 FileStorage = @FileStorage
 
 gridfs = new FS.Store.GridFS("gridfsmedia",
@@ -13,7 +13,7 @@ gridfs = new FS.Store.GridFS("gridfsmedia",
 # To pass through stream:
 #readStream.pipe(writeStream);
 thumbnails = new FS.Store.FileSystem("thumbnails",
-  path: "~/.thumbnails"
+  path: ".thumbnails"
   # transformWrite: (fileObj, readStream, writeStream) ->
 
   #   # Store 10x10 px images

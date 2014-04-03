@@ -105,8 +105,8 @@
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
-        "tag": "v0.0.15",
-        "commit": "83f31eb7286292978eb3b572d8f7f51616fdc600"
+        "tag": "v0.0.16",
+        "commit": "f80a0290c5c57d4daa68a7f00c8e76a1f9701214"
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
@@ -125,8 +125,8 @@
       },
       "cfs-access-point": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-access-point.git",
-        "tag": "v0.0.24",
-        "commit": "28d870d708a1a5b5d38548a9e5f2ccdfd60772d6"
+        "tag": "v0.0.25",
+        "commit": "fab1f16709276c90fe2558afec12dd04d4c72147"
       },
       "cfs-worker": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-worker.git",
