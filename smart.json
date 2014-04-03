@@ -11,6 +11,8 @@
     "handlebars-server": {},
     "bootstrap-alerts": {},
     "collectionFS": {},
-    "cfs-filesystem": {}
+    "cfs-filesystem": {},
+    "cfs-s3": {},
+    "ui-dropped-event": {}
   }
 }

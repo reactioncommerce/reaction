@@ -17,7 +17,11 @@
     {{/if}}
     <div>
       <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
-        <img src="{{getVariantImage this.variants.[0]}}" class="product-grid-item-images img-responsive">
+      {{#with media}}
+        <img src="{{url}}" class="product-grid-item-images img-responsive">
+      {{else}}
+        <img src="../../resources/placeholder.jpeg" class="product-grid-item-images img-responsive">
+      {{/with}}
       </a>
     </div>
     <div class="overlay">
@@ -32,4 +36,12 @@
       </div>
     </div>
   </li>
+</template>
+
+<template name="gridImage">
+  <img src="{{url}}" class="product-grid-item-images img-responsive">
+</template>
+
+<template name="noImage">
+  <img src="../../resources/placeholder.jpeg" class="product-grid-item-images img-responsive">
 </template>

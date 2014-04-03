@@ -25,8 +25,8 @@ Meteor.subscribe 'orders'
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tags'
 Meteor.subscribe 'shops'
+Meteor.subscribe "media"
 Meteor.subscribe 'FileStorage'
-
 ###
 #  Reactive current product
 #  This ensures singleton reactive products, without session

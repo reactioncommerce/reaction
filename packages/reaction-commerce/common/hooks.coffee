@@ -27,15 +27,15 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     if modifier.$push.variants
       applyVariantDefaults(modifier.$push.variants)
   #default createdAt for media
-  unless _.indexOf(fieldNames, 'medias') is -1
-    addToSet = modifier.$addToSet?.medias
-    if addToSet
-      createdAt = new Date()
-      if addToSet.$each
-        for image of addToSet.$each
-          image.createdAt = createdAt
-      else
-        addToSet.createdAt = createdAt
+  # unless _.indexOf(fieldNames, 'medias') is -1
+  #   addToSet = modifier.$addToSet?.medias
+  #   if addToSet
+  #     createdAt = new Date()
+  #     if addToSet.$each
+  #       for image of addToSet.$each
+  #         image.createdAt = createdAt
+  #     else
+  #       addToSet.createdAt = createdAt
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
     if addToSet

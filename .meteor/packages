@@ -13,6 +13,7 @@ accounts-facebook
 accounts-ui-unstyled
 amplify
 
+underscore
 underscore-string-latest
 email
 iron-router
@@ -41,3 +42,6 @@ reaction-paypal
 reaction-filepicker
 reaction-flatrates
 reaction-mailgun
+cfs-gridfs
+cfs-s3
+ui-dropped-event

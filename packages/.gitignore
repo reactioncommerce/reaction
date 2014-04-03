@@ -66,3 +66,6 @@ headers
 /cfs-handlebars
 /jquery-cookie
 /collection2
+/cfs-s3
+/ui-dropped-event
+/data-man

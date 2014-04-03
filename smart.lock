@@ -13,7 +13,9 @@
       "handlebars-server": {},
       "bootstrap-alerts": {},
       "collectionFS": {},
-      "cfs-filesystem": {}
+      "cfs-filesystem": {},
+      "cfs-s3": {},
+      "ui-dropped-event": {}
     },
     "packages": {
       "spin": {
@@ -68,13 +70,23 @@
       },
       "collectionFS": {
         "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
-        "tag": "v0.4.5",
-        "commit": "29de048b54e7a3667bbe6e6f2e15c7ce982224bc"
+        "tag": "v0.4.6",
+        "commit": "206195cc3af82c9c2242064e7ff575ba68d90697"
       },
       "cfs-filesystem": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
-        "tag": "v0.0.18",
-        "commit": "b8d4997e6c08bab33b971c75209a8a049b8e4322"
+        "tag": "v0.0.21",
+        "commit": "59cb2b28353767d7886a3af1e327f1bb19450949"
+      },
+      "cfs-s3": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-s3.git",
+        "tag": "v0.0.24",
+        "commit": "8db294ab28729e9dd8d49daaa7d8fdf144abda1a"
+      },
+      "ui-dropped-event": {
+        "git": "https://github.com/CollectionFS/Meteor-ui-dropped-event.git",
+        "tag": "v0.0.3",
+        "commit": "df3a46293da7dd3b45664a239bd9ccf4d23eb514"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -93,13 +105,13 @@
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
-        "tag": "v0.0.14",
-        "commit": "ca3b540db2efaa27c66f70057bb575336cca5cfb"
+        "tag": "v0.0.15",
+        "commit": "83f31eb7286292978eb3b572d8f7f51616fdc600"
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
-        "tag": "v0.0.22",
-        "commit": "54d0b0091b5edfc9752b2f9ef32c102a1b4a903e"
+        "tag": "v0.0.25",
+        "commit": "f2c4d32a1fe670c639548441c75c7aeb74ba1c97"
       },
       "cfs-ejson-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-ejson-file.git",
@@ -113,8 +125,8 @@
       },
       "cfs-access-point": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-access-point.git",
-        "tag": "v0.0.23",
-        "commit": "3f50fb8118212b9c80c9964f2b05433857edd92a"
+        "tag": "v0.0.24",
+        "commit": "28d870d708a1a5b5d38548a9e5f2ccdfd60772d6"
       },
       "cfs-worker": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-worker.git",
@@ -128,8 +140,8 @@
       },
       "cfs-storage-adapter": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-storage-adapter.git",
-        "tag": "v0.0.18",
-        "commit": "a6dd87623186c760f4808869b545730ad5b6100d"
+        "tag": "v0.0.21",
+        "commit": "4457bc235e73884a31e6a10fa7b0b57943a5babb"
       },
       "cfs-filesaver": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-filesaver.git",
@@ -140,6 +152,11 @@
         "git": "https://github.com/CollectionFS/Meteor-http-methods.git",
         "tag": "v0.0.22",
         "commit": "5b0f7723f49436b8a0a930f284ed05f0b26021fe"
+      },
+      "data-man": {
+        "git": "https://github.com/CollectionFS/Meteor-data-man.git",
+        "branch": "master",
+        "commit": "a30bec02d15f8cf2ef879712634c48c1b1c1fb56"
       },
       "cfs-upload-ddp": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-upload-ddp.git",
@@ -153,13 +170,13 @@
       },
       "cfs-gridfs": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-gridfs.git",
-        "tag": "v0.0.14",
-        "commit": "7da36ad68ef6c30d3186cd690f53a3e6e76c7402"
+        "tag": "v0.0.17",
+        "commit": "7cbb8769b255b215214e730091042886fe5cc86b"
       },
       "cfs-tempstore": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-tempstore.git",
-        "tag": "v0.0.14",
-        "commit": "bc5abdc5483475109a62e0a996f8e8361a154e8c"
+        "tag": "v0.0.15",
+        "commit": "935821b733bc88431d412705be27f024fd8fb670"
       },
       "power-queue": {
         "git": "https://github.com/CollectionFS/Meteor-power-queue.git",
