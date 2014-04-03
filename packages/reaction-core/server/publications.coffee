@@ -11,37 +11,69 @@ ConfigData = @ConfigData
 Users = @Users = Meteor.users
 
 ###
-#  Packages contains user specific configuration
-#  settings, package access rights
+# Reaction Server / amplify permanent sessions
+# If no id is passed we create a new session
+# Load the session
+# If no session is loaded, creates a new one
 ###
-Meteor.publish "Packages", ->
-  shop = Meteor.app.getCurrentShop(this)
-  if shop
-    Packages.find
-      shopId: Meteor.app.getCurrentShop(this)._id
-    ,
-      sort:
-        priority: 1
+ServerSessions = new Meteor.Collection("ReactionSessions")
+Meteor.publish 'ReactionSessions', (id) ->
+  created = new Date().getTime()
+  id = ServerSessions.insert(created: created) unless id
+  serverSession = ServerSessions.find(id)
+  if serverSession.count() is 0
+    id = ServerSessions.insert(created: created)
+    serverSession = ServerSessions.find(id)
+  serverSession
 
-Meteor.publish 'ConfigData', ->
-  ConfigData.find({})
 
-# Meteor.publish "FileStorage", (id) ->
-#   FileStorage.find _id: id
+#
+# CollectionFS - File Storage permissions
+#
+Meteor.publish "media", (variantId) ->
+  return Media.find({ 'metadata.shopId': Meteor.app.getCurrentShop(this)._id },  {sort: {"metadata.priority": 1}})
 
-#OLD
-# FileStorage.allow
-#   insert: (userId, doc) ->
-#     doc.shopId = Meteor.app.getCurrentShop()._id
-#     true
+# Meteor.publish "variantMedia", (variantId) ->
+#   return Media.find({ 'metadata.shopId': Meteor.app.getCurrentShop(this)._id },  {sort: {"metadata.priority": 1}})
 
-#   update: (userId, doc, fields, modifier) ->
-#     if modifier.$set and modifier.$set.shopId
-#       return false
-#     true
+Media.allow
+  insert: (userId, fileObj) ->
+    # fileObj.metadata.shopId = Meteor.app.getCurrentShop()._id
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true
+  update: (userId, fileObj) ->
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true
+  remove: (userId, fileObj) ->
+    if fileObj.shopId != Meteor.app.getCurrentShop()._id
+      return false
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true
+  download: (userId, fileObj) ->
+    true
+  fetch: []
 
-#   remove: (userId, doc) ->
-#     doc.shopId is Meteor.app.getCurrentShop()._id
+#
+# filestorage for generate docs (invoices)
+#
+Meteor.publish "FileStorage", (id) ->
+  FileStorage.find _id: id
+
+FileStorage.allow
+  insert: (userId, doc) ->
+    doc.shopId = Meteor.app.getCurrentShop()._id
+    true
+
+  update: (userId, doc, fields, modifier) ->
+    if modifier.$set and modifier.$set.shopId
+      return false
+    true
+
+  remove: (userId, doc) ->
+    doc.shopId is Meteor.app.getCurrentShop()._id
 
 ###
 # get any user name,social profile image
@@ -58,53 +90,62 @@ Meteor.publish "UserProfile", (profileId) ->
   else
     return false
 
+
 ###
 # Client access rights for ConfigData
 ###
+Meteor.publish 'ConfigData', ->
+  ConfigData.find({})
+
 ConfigData.allow
   insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    #return (userId && doc.owner === userId);
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
   update: (userId, doc, fields, modifier) ->
-    # can only change your own documents
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
     #return doc.owner === userId;
   remove: (userId, doc) ->
-    # can only remove your own documents
-    doc.owner is userId
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true
 
 ###
-# Reaction Server / amplify permanent sessions
-# If no id is passed we create a new session
-# Load the session
-# If no session is loaded, creates a new one
+#  Packages contains user specific configuration
+#  settings, package access rights
 ###
-ServerSessions = new Meteor.Collection("ReactionSessions")
-Meteor.publish 'ReactionSessions', (id) ->
-  created = new Date().getTime()
-  id = ServerSessions.insert(created: created) unless id
-  serverSession = ServerSessions.find(id)
-  if serverSession.count() is 0
-    id = ServerSessions.insert(created: created)
-    serverSession = ServerSessions.find(id)
-  serverSession
-
+Meteor.publish "Packages", ->
+  shop = Meteor.app.getCurrentShop(this)
+  if shop
+    Packages.find
+      shopId: Meteor.app.getCurrentShop(this)._id
+    ,
+      sort:
+        priority: 1
 ###
 # Client access rights for reaction_packages
 ###
 Packages.allow
   insert: (userId, doc) ->
     doc.shopId = Meteor.app.getCurrentShop()._id
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
 
   update: (userId, doc, fields, modifier) ->
     if modifier.$set and modifier.$set.shopId
       return false
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
 
   remove: (userId, doc) ->
     doc.shopId is Meteor.app.getCurrentShop()._id
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true
 
 ###
 # shop collection
@@ -137,25 +178,26 @@ Shops.allow
     # the user must be logged in, and the document must be owned by the user
     true
   update: (userId, doc, fields, modifier) ->
-    # can only change your own documents
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
     #return doc.owner === userId;
   remove: (userId, doc) ->
-    # can only remove your own documents
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     doc.owner is userId
 
 ###
 # product collection
 ###
-Meteor.publish 'products', ->
+Meteor.publish 'products', (userId) ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
     selector =
       shopId: shop._id
-    if !Roles.userIsInRole(this.userId, ['admin'])
+    unless Roles.userIsInRole(this.userId, ['admin'])
       selector.isVisible = true
     Products.find selector
-    # , {sort:{updatedAt: -1}}
 
 Meteor.publish 'product', (id) ->
   shop = Meteor.app.getCurrentShop(@)
@@ -167,20 +209,20 @@ Meteor.publish 'product', (id) ->
 ###
 Products.allow
   insert: (userId, product) ->
-    product.shopId = Meteor.app.getCurrentShop()._id;
-    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+    product.shopId = Meteor.app.getCurrentShop()._id
+    unless Roles.userIsInRole(userId, ['admin'])
       return false
     true
   update: (userId, product, fields, modifier) ->
     if modifier.$set && modifier.$set.shopId
       return false
-    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+    unless Roles.userIsInRole(userId, ['admin'])
       return false
     true
   remove: (userId, product) ->
     if product.shopId != Meteor.app.getCurrentShop()._id
       return false
-    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
+    unless Roles.userIsInRole(userId, ['admin'])
       return false
     true
 
@@ -211,46 +253,15 @@ Orders.allow
   remove: (userId, order) ->
     if order.shopId != Meteor.app.getCurrentShop()._id
       return false
-    if !Roles.userIsInRole(Meteor.userId(), ['owner'])
+    if !Roles.userIsInRole(userId, ['owner'])
       return false
     true
 
-###
-# customers collection
-###
-
-Meteor.publish 'customers', ->
-  shop = Meteor.app.getCurrentShop(@)
-  if shop
-    Customers.find shopId: shop._id
-
-Meteor.publish 'customer', (id) ->
-  shop = Meteor.app.getCurrentShop(@)
-  if shop
-    Customers.findOne _id: id, shopId: shop._id
-
-###
-# Client access rights for customers
-###
-Customers.allow
-  insert: (userId, customer) ->
-    customer.shopId = Meteor.app.getCurrentShop()._id;
-    true
-  update: (userId, customer, fields, modifier) ->
-    if modifier.$set && modifier.$set.shopId
-      return false
-    true
-  remove: (userId, customer) ->
-    if customer.shopId != Meteor.app.getCurrentShop()._id
-      return false
-    if !Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
-    true
 
 ###
 # cart collection
 ###
-Meteor.publish 'cart', (sessionId,userId) ->
+Meteor.publish 'cart', (sessionId, userId) ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
     cart = Cart.find(shopId: shop._id, sessionId: sessionId, userId: this.userId)
@@ -260,8 +271,6 @@ Meteor.publish 'cart', (sessionId,userId) ->
     else
       Meteor.call "createCart", { sessionId:sessionId, userId: this.userId }
       return Cart.find(shopId: shop._id, sessionId: sessionId,userId: this.userId)
-
-
 
 ###
 # Client access rights for cart
@@ -292,11 +301,18 @@ Meteor.publish "tags", ->
 Tags.allow
   insert: (userId, tag) ->
     tag.shopId = Meteor.app.getCurrentShop()._id
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
   update: (userId, tag, fields, modifier) ->
     if modifier.$set and modifier.$set.shopId
       false
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
   remove: (userId, tag) ->
     if tag.shopId != Meteor.app.getCurrentShop()._id
       return false
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true

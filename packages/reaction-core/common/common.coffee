@@ -1,0 +1,1 @@
+# FS.HTTP.setBaseUrl('/media')

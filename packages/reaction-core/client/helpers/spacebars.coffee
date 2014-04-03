@@ -48,21 +48,17 @@ UI.registerHelper "siteName", ->
 # method to alway return an image,
 # or a placeholder for a product variant
 ###
-UI.registerHelper "getVariantImage", (variant) ->
-  variant = (currentProduct.get "variant") unless variant?._id
-  if variant?._id
-    try
-      media = variant.medias[0].src
-    catch err
-      console.log "No media found! Returning default."
-      if this.variants[0]?.medias?.src
-        media = this.variants[0].medias[0].src
-      else
-        media = "../../resources/placeholder.jpeg"
-    finally
-      media
-  else
-    console.log "Variant image error: No object passed"
+# UI.registerHelper "getVariantImage", (variant) ->
+#   variant = (currentProduct.get "variant") unless variant?._id
+#   console.log variant
+#   if variant?._id
+#       image = Media.find({'metadata.variantId':variant._id})
+#       image = image.url({store: "gridfsimages"})
+#   else
+#       console.log "No media found! Returning default."
+#       image = "../../resources/placeholder.jpeg"
+
+
 
 ###
 # method to return cart calculated values

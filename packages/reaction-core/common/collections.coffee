@@ -19,9 +19,6 @@ PackageConfigSchema = @PackageConfigSchema
 @Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
 Packages = @Packages
 
-@FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: ".fileStorage") ])
-FileStorage = @FileStorage
-
 ShopMemberSchema = new SimpleSchema
   userId:
     type: String
@@ -71,10 +68,11 @@ MetafieldSchema = new SimpleSchema
 
 
 VariantMediaSchema = new SimpleSchema
-  src:
+  mediaId:
     type: String
-  mimeType:
-    type: String
+    optional: true
+  priority:
+    type: Number
     optional: true
   metafields:
     type: [MetafieldSchema]

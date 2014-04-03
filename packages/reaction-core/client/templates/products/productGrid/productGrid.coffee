@@ -27,6 +27,15 @@ Template.productGrid.helpers
     #   console.log v,i.sortOrder,i.title,i.updatedAt
     gridProducts.sort(compare)
 
+Template.productGridItems.helpers
+  media: (variant) ->
+    variantId = this.variants[0]._id
+    defaultImage = Media.findOne({'metadata.variantId':variantId})
+    if defaultImage
+      return defaultImage
+    else
+      return false
+
 Template.productGridItems.events
   'click .clone-product': () ->
     Meteor.call "cloneProduct", this, (error, productId) ->
