@@ -21,6 +21,9 @@ share.loadFixtures = ->
   loadData Shops unless Shops.find().count()
   loadData Tags unless Tags.find().count()
   loadData ConfigData unless ConfigData.find().count()
+  # loadData Roles unless Roles.find().count()
+  # loadImageData "Images" unless Images.find().count()
+
 
   # Load data from settings/json files + base packages.
   unless Packages.find().count()
@@ -37,11 +40,6 @@ share.loadFixtures = ->
         Packages.insert
           shopId: shop._id
           name: "reaction-commerce-orders"
-
-        Packages.insert
-          shopId: shop._id
-          name: "reaction-filepicker"
-          apikey: Meteor.settings?.filepickerApiKey
 
         Packages.insert
           shopId: shop._id
