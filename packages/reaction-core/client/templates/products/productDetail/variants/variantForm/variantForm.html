@@ -137,7 +137,7 @@
 <template name="childVariantForm">
 <ul class="list-group child-variant-form" >
   <li class="list-group-item" id="{{_id}}">
-    {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=childVariantFormId}}
+    {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=childVariantFormId validation="none"}}
     <fieldset>
       <div class="col-sm-2 col-md-3">
         <div class="form-group{{#if afFieldIsInvalid name='optionTitle'}} has-error{{/if}}">
@@ -173,8 +173,9 @@
       </div>
       <div class="col-sm-3 col-md-3">
         <div class="form-button pull-right">
+          {{>afFieldInput name="_id" type="hidden"}}
           <button class="btn btn-default" id="remove-child-variant"><i class="fa fa-trash-o fa-lg"></i></button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-primary btn-variant-save">Save</button>
         </div>
       </div>
     </fieldset>
