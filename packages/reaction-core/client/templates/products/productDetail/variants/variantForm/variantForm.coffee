@@ -1,56 +1,28 @@
 Template.variantForm.helpers
-  # variantFormSchema: ->
-  #   variantSchema = new AutoForm ProductVariantSchema
-  #   variantSchema
+  variantDetails: ->
+    product  = currentProduct.get "product"
+    unless @.parentId?
+      Template.parentVariantForm
+    else
+      Template.childVariantForm
 
-  # data: ->
-  #   console.log this
-  #   return this.data
+  childVariants: () ->
+    product  = currentProduct.get "product"
+    variants = (variant for variant in product.variants when variant.parentId is this._id)
+    if variants then return variants
 
-  nowDate: ->
+  nowDate: () ->
     new Date()
 
-  formId: ->
+  variantFormId: () ->
     "variant-form-"+@._id
 
-  metafieldKeyIndex: ->
-    return "metafields."+@.index+".key"
-
-  metafieldValueIndex: ->
-    return "metafields."+@.index+".value"
-
-  metafieldsIndexed: ->
-    metafieldArray = new Array
-    value = 0
-    if @.metafields
-      for item,value in @.metafields
-        metafieldArray[value] =
-          index: value
-          key: item.key
-          value: item.value
-    metafieldArray.push {index: value} if metafieldArray?
-    metafieldArray
-
-  inventoryManagementOptions: ->
-    options = [
-      {label: "Manual",value: "manual"},
-      {label: "Reaction",value: "reaction"}
-    ]
-    options
-
-  inventoryPolicyOptions: ->
-    options = [
-      {label: "Continue",value: "continue"},
-      {label: "Deny",value: "deny"}
-    ]
-    options
-
-  displayInventoryManagement: (doc) ->
-    unless @.inventoryManagement
+  displayInventoryManagement: () ->
+    unless @inventoryManagement is true
       return "display:none;"
 
-  displayLowInventoryWarning: (doc) ->
-    unless @.inventoryManagement
+  displayLowInventoryWarning: () ->
+    unless @inventoryManagement is true
       return "display:none;"
 
 Template.variantForm.events
@@ -58,13 +30,54 @@ Template.variantForm.events
     currentProduct.changed "product"
 
   "change input[name='inventoryManagement']": (event,template) ->
-    event.stopPropagation()
+    formId = "variant-form-"+template.data._id
     if !$( event.currentTarget ).is(':checked')
-        $( '#' + @._formID ).find( 'input[name=inventoryPolicy]' ).attr("checked",false)
-    $( '#' + @._formID ).find( '.inventoryPolicy, .lowInventoryWarning' ).slideToggle()
+        $( '#' + formId ).find( 'input[name=inventoryPolicy]' ).attr("checked",false)
+    $( '#' + formId ).find( '.inventoryPolicy, .lowInventoryWarningThreshold' ).fadeToggle()
 
-  "change input[name='lowInventoryWarning']": (event,template) ->
+  "click .btn-child-variant-form": (event,template) ->
     event.stopPropagation()
-    if !$( event.currentTarget ).is(':checked')
-        $( '#' + @._formID ).find( 'input[name="lowInventoryWarningThreshold"]' ).val(0)
-    $( '#' + @._formID ).find( '.lowInventoryWarningThreshold' ).slideToggle()
+    event.preventDefault()
+    product  = currentProduct.get "product"
+    Meteor.call("cloneVariant",product._id, template.data._id, @._id)
+
+  "click .btn-remove-variant": (event, template) ->
+    if confirm("Are you sure you want to delete "+ @.title)
+      Products.update (currentProduct.get "product")._id,
+        $pull:
+          variants:
+            _id: @._id
+
+  "click .btn-clone-variant": (event,template) ->
+    event.stopPropagation()
+    event.preventDefault()
+    productId = (currentProduct.get "product")._id
+    Meteor.call "cloneVariant", productId, template.data._id, (error, result) ->
+      if result
+        Deps.flush()
+        $('#variant-edit-form-'+result).toggle()
+        event.preventDefault()
+        event.stopPropagation()
+
+
+Template.childVariantForm.helpers
+  "submit form": (event,template) ->
+    currentProduct.changed "product"
+
+  childVariantFormId: () ->
+    "child-variant-form-"+@._id
+
+Template.childVariantForm.events
+  "click li": (event,template) ->
+    currentProduct.set "variant", template.data
+    $("#" + template.data._id).addClass("list-group-item-success")
+
+  "click #remove-child-variant": (event, template) ->
+    console.log "remove child"
+    event.stopPropagation()
+    event.preventDefault()
+    if confirm("Are you sure you want to delete "+ @.optionTitle)
+      Products.update (currentProduct.get "product")._id,
+        $pull:
+          variants:
+            _id: @._id

@@ -97,6 +97,12 @@ ProductPositionSchema = new SimpleSchema
 @ProductVariantSchema = new SimpleSchema
   _id:
     type: String
+  parentId:
+    type: String
+    optional: true
+  cloneId:
+    type: String
+    optional: true
   index:
     type: String
     optional: true
@@ -124,12 +130,9 @@ ProductPositionSchema = new SimpleSchema
   inventoryPolicy:
     type: Boolean
     label: "Deny when out of stock"
-  lowInventoryWarning:
-    type: Boolean
-    label: "Show Low Inventory Warning"
   lowInventoryWarningThreshold:
     type: Number
-    label: "Quantity at which to show the warning"
+    label: "Warn @"
     min: 0
     optional: true
   inventoryQuantity:
@@ -154,8 +157,12 @@ ProductPositionSchema = new SimpleSchema
     type: Boolean
     optional: true
   title:
-    label: "Variant title"
+    label: "Label"
     type: String
+  optionTitle:
+    label: "Option"
+    type: String
+    optional: true
   metafields:
     type: [MetafieldSchema]
     optional: true
@@ -302,6 +309,9 @@ Shops = @Shops # package exports
 @Products = new Meteor.Collection 'Products',
   schema:
     _id:
+      type: String
+      optional: true
+    cloneId:
       type: String
       optional: true
     shopId:

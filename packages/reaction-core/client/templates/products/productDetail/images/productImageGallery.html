@@ -3,6 +3,10 @@
     <ul class="gallery">
     {{#each media}}
       {{> imageDetail}}
+    {{else}}
+     <li>
+        <img src="../../resources/placeholder.jpeg" height="300" width="300">
+     </li>
     {{/each}}
   </ul>
   {{>imageUploader}}

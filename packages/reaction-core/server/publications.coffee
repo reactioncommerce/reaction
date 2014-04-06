@@ -38,7 +38,6 @@ Meteor.publish "media", (variantId) ->
 
 Media.allow
   insert: (userId, fileObj) ->
-    # fileObj.metadata.shopId = Meteor.app.getCurrentShop()._id
     unless Roles.userIsInRole(userId, ['admin'])
       return false
     true
@@ -47,7 +46,7 @@ Media.allow
       return false
     true
   remove: (userId, fileObj) ->
-    if fileObj.shopId != Meteor.app.getCurrentShop()._id
+    if fileObj.metadata.shopId != Meteor.app.getCurrentShop()._id
       return false
     unless Roles.userIsInRole(userId, ['admin'])
       return false
