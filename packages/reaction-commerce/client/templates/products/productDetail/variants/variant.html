@@ -1,20 +1,8 @@
 <template name="variantList">
   <div class="product-variants">
-    {{#unless userHasRole "admin"}}
-      {{#if ../variants}}
-      <h3>
-        Options
-        <small>view and add to cart</small>
-      </h3>
-      {{/if}}
-    {{else}}
-    <h3>
-      Options
-      <small>double click to edit</small>
-    </h3>
-    {{/unless}}
+    <h3>Options</h3>
     <ul class="variant-list list-unstyled" id="variant-list">
-    {{#each ../variants}}
+    {{#each variants}}
       {{> variant}}
       {{#if userHasRole "admin"}}
       <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
@@ -55,10 +43,6 @@
       <div class="variant-edit-tools xs-hidden">
         <span class="variant-edit pull-right">
           <a href="#" class="edit-variant"><i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i></a>
-          <a href="#" class="clone-variant"><i class="fa fa-code-fork fa-lg" data-id="{{_id}}"></i></a>
-          <a href="#" class="remove-variant" data-id="{{_id}}" data-confirm="Are you sure you want to delete this variant?">
-          <i class="fa fa-trash-o fa-lg"></i>
-          </a>
         </span>
       </div>
       {{/if}}

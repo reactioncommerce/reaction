@@ -27,7 +27,7 @@ Our **estimated** timeline:
 * Order Management Workflow - functional *Milestone 2*
 * In progress:
 	* Milestone 2: Late March 2014 (alpha/point release w/order mgmt workflow, multiple shipping/payment methods,transactional emails)
-		**Note 1: this is now more likely mid-late April, blaze updates have been distracting from core features.** 
+		**Note 1: this is now more likely mid-late April, blaze updates have been distracting from core features.**
 		**Note 2: there are a number of security issues are on the list to get done before alpha. Be aware!**
 	* Milestone 3: Early Q2 (promotions, hero, cms, search, test cases, stable beta)
 	* Milestone 4: Late Q2 2014 (migration tools, multiple themes, theme editor, PaaS)
@@ -38,7 +38,7 @@ Please check our [Trello board for current progress](https://trello.com/b/ffwTH3
 
 **Demonstration & Playground **
 
-	http://demo.reactioncommerce.com	
+	http://demo.reactioncommerce.com
 	Admin User: admin1@ongoworks.com
 	Password: ongo1
 
@@ -107,7 +107,6 @@ Example configuration file
 
 	{
 	  "baseUrl": "http://localhost:3000",
-	  "filepickerApiKey": "__KEY__",
 	  "googleAnalyticsProperty": "__KEY__",
 	  "facebook": {
 	    "secret": "__SECRET__"

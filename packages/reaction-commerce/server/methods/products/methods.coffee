@@ -1,32 +1,58 @@
 Meteor.methods
   ###
-  # when we add a new variant, we clone the last one
+  # the cloneVariant method copies variants, but will also create and clone child variants (options)
+  # productId,variantId to clone
+  # add parentId to create children
   ###
-  cloneVariant: (id, clone) ->
-    clone._id = Random.id()
-    Products._collection.update({_id:id}, {$push: {variants: clone}})
-    clone._id
+  cloneVariant: (productId, variantId, parentId) ->
+    product = Products.findOne(productId)
+    variant = (variant for variant in product.variants when variant._id is variantId)
+    clone = variant[0]
+
+    #clean clone
+    unless parentId
+      clone.cloneId = productId
+      clone._id = Random.id()
+      delete clone.updatedAt
+      delete clone.createdAt
+      delete clone.inventoryQuantity
+      delete clone.title
+      Products._collection.update({_id:productId}, {$push: {variants: clone}})
+
+    #make child clones
+    children = (variant for variant in product.variants when variant.parentId is variantId)
+    if children.length > 0 and !parentId
+      # console.log "clone children"
+      for childClone in children
+        childClone._id = Random.id()
+        childClone.parentId = clone._id
+        Products._collection.update({_id:productId}, {$push: {variants: childClone}})
+    else if parentId
+      # console.log "create child clone"
+      clone._id = Random.id()
+      clone.parentId = variantId
+      Products._collection.update({_id:productId}, {$push: {variants: clone}})
+
+    return clone._id
 
   createVariant: (productId) ->
-    newVariant= [
-            {
-              _id: Random.id()
-              title: ""
-              price: 0.00
-            }
-          ]
-    Products._collection.update(productId,{$set:{variants:newVariant}})
+    newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
+    Products._collection.update({"_id": productId},{$addToSet:{"variants": newVariant}})
   ###
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
+    console.log "updating variant"
+    console.log variant
     product = Products.findOne "variants._id":variant._id
     for variants,value in product.variants
       if variants._id is variant._id
         newVariant = _.extend variants,variant
     #TODO: check newVariant, ProductVariantSchema
-    Products._collection.update({_id:product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}})
+    Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
+      console.log error if error
+    )
 
   ###
   # update whole variants array
@@ -45,6 +71,7 @@ Meteor.methods
   cloneProduct: (product) ->
     #TODO: Really should be a recursive update of all _id
     i = 0
+    product.cloneId = product._id
     product._id = Random.id()
     delete product.updatedAt
     delete product.createdAt

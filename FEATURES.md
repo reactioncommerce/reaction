@@ -11,7 +11,7 @@
 * Drag and drop variant order
 * Quantity per variant
 * Published or hidden status
-* Additional product details in key/value list 
+* Additional product details in key/value list
 * Uses social media handles for product urls for best SEO+social media
 * Integrated custom product social media messaging (FB,Twitter,Pinterest,Instagram)
 
@@ -19,25 +19,23 @@
 ## Images / Video
 * Drag and drop image and video gallery
 
-#### Using the integrated [Ink file picker](https://www.inkfilepicker.com/)
+#### Integrated file management
 * Drag and drop image and video uploader
 	* Drag and drop image upload from desktop
 	* Search web for images and add directly
+
+	Coming in the future:
+
 	* Import and add images direct from
 		* Facebook
 		* Google Drive
 		* Dropbox
-		* Box
-		* SkyDrive
-		* Picassa
-		* Instagram
-		* Flickr
 		* Image URL
-		* and many more...
+		* and more...
 	* Take photos or video directly from app
-	
+
 ## Accounts
-* Social authentication and account creation methods built in
+* Social authentication and account creation methods built in, using Meteor packages
 	* Facebook
 	* Twitter
 	* Google
@@ -66,4 +64,3 @@
 
 ## Mail
 * Send transactional emails through any provider, configurable settings
- 

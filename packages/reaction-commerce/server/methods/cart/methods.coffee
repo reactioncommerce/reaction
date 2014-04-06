@@ -6,10 +6,7 @@ Meteor.methods
   # the original and notify them
   ###
   addToCart: (cartSession, productId, variantData, quantity) ->
-    # make sure a cart has been created
-    # unless Cart.findOne(cartSession)?
-    #   cart = Meteor.call "createCart", cartSession
-
+    console.log cartSession, productId, variantData, quantity
     if cartSession
       cartVariantExists = Cart.findOne
         sessionId: cartSession.sessionId,
