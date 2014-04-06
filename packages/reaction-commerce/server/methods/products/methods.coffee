@@ -35,16 +35,19 @@ Meteor.methods
 
     return clone._id
 
+  ###
+  # initializes empty variant template (all others are clones)
+  # should only be seen when all variants have been deleted from a product.
+  ###
   createVariant: (productId) ->
     newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
     Products._collection.update({"_id": productId},{$addToSet:{"variants": newVariant}})
+
   ###
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
-    console.log "updating variant"
-    console.log variant
     product = Products.findOne "variants._id":variant._id
     for variants,value in product.variants
       if variants._id is variant._id
@@ -52,6 +55,7 @@ Meteor.methods
     #TODO: check newVariant, ProductVariantSchema
     Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
       console.log error if error
+      return results if results
     )
 
   ###

@@ -166,9 +166,6 @@ ProductPositionSchema = new SimpleSchema
   metafields:
     type: [MetafieldSchema]
     optional: true
-  medias:
-    type: [VariantMediaSchema]
-    optional: true
   positions:
     type: [ProductPositionSchema]
     optional: true

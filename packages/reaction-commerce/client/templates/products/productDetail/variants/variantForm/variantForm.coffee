@@ -61,19 +61,22 @@ Template.variantForm.events
 
 
 Template.childVariantForm.helpers
-  "submit form": (event,template) ->
-    currentProduct.changed "product"
-
   childVariantFormId: () ->
     "child-variant-form-"+@._id
 
 Template.childVariantForm.events
   "click li": (event,template) ->
-    currentProduct.set "variant", template.data
+    $(".list-group-item").removeClass("list-group-item-success")
+
+    $("#" + template.data._id + " .btn-variant-save").show()
     $("#" + template.data._id).addClass("list-group-item-success")
+    currentProduct.set "variant", template.data
+
+  "submit form": (event,template) ->
+    currentProduct.changed "product"
+    $("#" + template.data._id + " .btn-variant-save").hide()
 
   "click #remove-child-variant": (event, template) ->
-    console.log "remove child"
     event.stopPropagation()
     event.preventDefault()
     if confirm("Are you sure you want to delete "+ @.optionTitle)
