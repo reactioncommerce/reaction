@@ -19,7 +19,7 @@
 @letter-spacing: .5px;
 
 //== Headings
-// @headings-font-family:    @font-family-base;
+@headings-font-family:    inherit;
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
 @headings-color:          inherit;
@@ -43,16 +43,21 @@
 @navbar-height: 50px;
 @navbar-padding-vertical: 14px;
 
-//== Products
+
+//== Product Grid
 @product-overlay-bg: rgba(100, 89, 89, 0.56);
 @product-overlay-text: contrast(@product-overlay-bg, #fff,#CCC);
 @grid-gutter-width: 10px; //inline forms will get messed up with larger values
 @drag-drop-zone-bg: #F0F8FF;
-
-//== Product Grid
 @product-grid-columns-sm: 2;
 @product-grid-columns-md: 3;
 @product-grid-columns-lg: 4;
+
+//== Product Detail
+@product-title-font-size: @font-size-h1;
+@product-page-title-font-size: @font-size-h2;
+@product-price-font-size: 50px;
+@product-description-font-size: 16px;
 
 
 //== Cart Drawer

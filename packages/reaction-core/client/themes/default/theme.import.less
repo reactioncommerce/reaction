@@ -31,10 +31,14 @@ main {
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media only screen and (max-width: @screen-sm-max) {
-  main {
-    padding: 10px 5px 135px 5px;
+  main {padding: 10px 5px 135px 5px;}
+  body {
+    font-size: @font-size-small;
   }
   h1 {
-    font-size:24px;
+    font-size: floor((@font-size-base * 2.15));
+  }
+  h2 {
+    font-size: floor((@font-size-base * 1.7));
   }
 }

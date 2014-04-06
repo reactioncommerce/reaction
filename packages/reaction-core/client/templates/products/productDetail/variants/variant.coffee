@@ -29,10 +29,7 @@ Template.variant.events
   "click .variant-detail > *": (event) ->
     event.preventDefault()
     event.stopPropagation()
-    # y = ((if document.pageYOffset then document.pageYOffset else document.body.scrollTop))
     currentProduct.set "variant", @
-    # $("html").scrollTop(y) or $("body").scrollTop(y)
-
 
 
 Template.variantList.helpers

@@ -1,5 +1,6 @@
+// == main variant edit form
 .variant-edit-form {
-  display: none;
+  // display: none;
   margin: -5px 10px 0 10px;
   background-color: @well-border;
   padding: 2px 8px 1px 8px;
@@ -14,17 +15,22 @@
       padding: 0 2px 0 5px;
     }
   }
+  .variant-form-buttons {
+    padding-top: 10px;
+  }
 }
-
+// == inventory threshold
 .lowInventoryWarningThreshold {
   label {
       vertical-align: middle;
       font-weight:normal;
       margin-top: 10px;
-      float: right;
+  }
+  input {
+    margin-top: 5px;
   }
 }
-
+// == child variant form
 .child-variant-form{
   margin-bottom: 4px !important;
   li {
@@ -32,5 +38,13 @@
   }
   .btn-variant-save {
     display: none;
+  }
+}
+
+.child-variant-form-headers {
+  margin: 0;
+  label {
+    padding: 0 5px 0 5px;
+    margin: 0;
   }
 }

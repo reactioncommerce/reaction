@@ -27,9 +27,9 @@
     <div class="overlay">
       {{#if userHasRole "admin"}}
         <span class="positioning pull-left" title="Positioning">{{sortOrder}}</span>
-        {{#unless isVisible}}<span class="fa fa-eye-slash overlay-icon pull-left" title="Publish"></span>{{/unless}}
-        <span class="fa fa-code-fork clone-product overlay-icon pull-left" title="Clone product"></span>
-        <span class="fa fa-trash-o delete-product overlay-icon pull-right" title="Delete product"></span>
+        {{#unless isVisible}}<span class="fa fa-eye-slash fa-lg overlay-icon pull-left" title="Publish"></span>{{/unless}}
+        <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product overlay-icon pull-left" title="Clone product"></span>
+        <span class="fa fa-trash-o delete-product fa-lg overlay-icon pull-right" title="Delete product"></span>
       {{/if}}
       <div class="overlay-content">
           {{title}} ${{variants.[0].price}}
