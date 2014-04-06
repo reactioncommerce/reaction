@@ -75,12 +75,16 @@ Meteor.methods
   cloneProduct: (product) ->
     #TODO: Really should be a recursive update of all _id
     i = 0
+    handleCount = Products.find({"cloneId": product._id}).count() + 1
     product.cloneId = product._id
     product._id = Random.id()
     delete product.updatedAt
     delete product.createdAt
     delete product.publishedAt
     product.isVisible = false
+    product.handle = product.handle + handleCount
+    product.title = product.title + handleCount
+
     while i < product.variants.length
       product.variants[i]._id = Random.id()
       i++

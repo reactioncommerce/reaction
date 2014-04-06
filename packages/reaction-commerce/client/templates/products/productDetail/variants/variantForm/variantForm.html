@@ -76,12 +76,12 @@
               {{/if}}
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}} lowInventoryWarningThreshold" style="{{displayLowInventoryWarning doc}}">
-            <div class="col-xs-6 col-sm-8">
+        <div class="col-sm-3 lowInventoryWarningThreshold">
+          <div class="form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
+            <div class="col-xs-4 col-sm-6">
               {{>afFieldLabel name='lowInventoryWarningThreshold'}}
             </div>
-            <div class="col-xs-4 col-xs-offset-2 col-sm-3 col-sm-offset-1">
+            <div class="col-xs-6 col-sm-5 col-sm-offset-1">
               {{>afFieldInput name='lowInventoryWarningThreshold'}}
             </div>
             {{#if afFieldIsInvalid name='lowInventoryWarningThreshold' placeholder=0}}
@@ -92,14 +92,14 @@
 
       </div>
     </fieldset>
-    <div class="row">
+    <div class="row variant-form-buttons">
       {{>afFieldInput name="_id" type="hidden"}}
       <div class="col-xs-5 col-sm-4 col-md-4">
         <button class="btn btn-default btn-child-variant-form" data-toggle="tooltip" title="Variant options"><i class="fa fa-sitemap fa-lg"></i></button>
         <button class="btn btn-default btn-clone-variant" data-toggle="tooltip" title="Clone variant"><i class="fa fa-code-fork fa-rotate-180 fa-lg"></i></button>
         <button class="btn btn-default btn-remove-variant" data-toggle="tooltip" title="Remove variant"><i class="fa fa-trash-o fa-lg"></i></button>
       </div>
-      <div class="col-xs-6 col-xs-offset-1 col-sm-6 col-md-4 col-md-offset-3">
+      <div class="col-xs-6 col-xs-offset-1 col-sm-6 col-md-4 col-md-offset-4">
         <button type="submit" class="btn btn-primary btn-block">Save</button>
       </div>
     </div>
@@ -119,7 +119,7 @@
 
 <template name="childVariantFormHeader">
   <div class="row child-variant-form-headers hidden-xs">
-    <div class="col-sm-2 col-md-2 col-xs-offset-1">
+    <div class="col-sm-2 col-md-3">
       <label class="control-label" for="optionTitle">Option</label>
     </div>
     <div class="col-sm-2 col-md-2">
@@ -141,6 +141,7 @@
     <fieldset>
       <div class="col-sm-2 col-md-3">
         <div class="form-group{{#if afFieldIsInvalid name='optionTitle'}} has-error{{/if}}">
+            {{>afFieldLabel name='optionTitle' class="visible-xs"}}
             {{>afFieldInput name='optionTitle' autofocus="" required=true}}
             {{#if afFieldIsInvalid name='optionTitle'}}
             <span class="help-block">{{afFieldMessage name='optionTitle'}}</span>
@@ -149,6 +150,7 @@
       </div>
       <div class="col-sm-2 col-md-2">
       <div class="form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
+          {{>afFieldLabel name='title' class="visible-xs"}}
           {{>afFieldInput name='title'  autofocus=""}}
           {{#if afFieldIsInvalid name='title'}}
           <span class="help-block">{{afFieldMessage name='title'}}</span>
@@ -157,6 +159,7 @@
       </div>
       <div class="col-sm-2 col-md-2">
         <div class="form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
+          {{>afFieldLabel name='inventoryQuantity' class="visible-xs"}}
           {{>afFieldInput name='inventoryQuantity'}}
           {{#if afFieldIsInvalid name='inventoryQuantity'}}
           <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
@@ -165,6 +168,7 @@
       </div>
       <div class="col-sm-2 col-md-2">
         <div class="form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
+          {{>afFieldLabel name='price' class="visible-xs"}}
           {{>afFieldInput name='price'}}
           {{#if afFieldIsInvalid name='price'}}
           <span class="help-block">{{afFieldMessage name='price'}}</span>
