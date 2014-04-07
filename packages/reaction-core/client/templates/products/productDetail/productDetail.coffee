@@ -1,6 +1,3 @@
-# *****************************************************
-# helper methods for productDetail
-# *****************************************************
 Template.productDetail.helpers
   quantityFormSchema: ->
     QuantitySchema = new SimpleSchema
@@ -24,6 +21,86 @@ Template.productDetail.helpers
   actualPrice: () ->
     (currentProduct.get "variant")?.price
 
+Template.productDetail.events
+  "click .description": (event,template) ->
+    $('.description').autosize()
+
+  "click #add-to-cart-quantity": (event,template) ->
+    event.preventDefault()
+    event.stopPropagation()
+
+  "change #add-to-cart-quantity": (event,template) ->
+    event.preventDefault()
+    event.stopPropagation()
+    if (currentProduct.get "variant")
+      variant = currentProduct.get "variant"
+      quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
+      if quantity < 1
+          quantity = 1
+      # TODO: Should check the amount in the cart as well and deduct from available.
+      if variant.inventoryPolicy and quantity > variant.inventoryQuantity
+        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
+        return
+
+  "click #add-to-cart": (event,template) ->
+    # event.preventDefault()
+    # event.stopPropagation()
+    now = new Date()
+    # questionable scope issue, pull from global scope
+    currentVariant = window.currentProduct.get "variant"
+    currentProduct  = window.currentProduct.get "product"
+
+    if (currentVariant)
+      # if variant has children user must choose a childVariant(option)
+      unless currentVariant.parentId?
+        options = (variant for variant in currentProduct.variants when variant.parentId is currentVariant._id)
+        if options.length > 0
+          Alerts.add "Please choose options before adding to cart"
+          return
+
+      # If variant has inv policy and is out of stock, show warning and deny add to cart
+      if (currentVariant.inventoryPolicy and currentVariant.inventoryQuantity < 1)
+        Alerts.add "Sorry, this item is out of stock!"
+        return
+
+      cartSession =
+        sessionId: Session.get "sessionId"
+        userId: Meteor.userId()
+
+      # Get desired variant qty from form
+      quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
+      if quantity < 1
+          quantity = 1
+
+      CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
+      $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
+      $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
+      # unless Session.get "displayCart" then toggleSession "displayCart"
+
+    else
+      Alerts.add "Select an option before adding to cart"
+
+
+  # *****************************************************
+  # deletes entire product
+  # TODO: implement revision control by using
+  # suspended = boolean // not visible on site
+  # archived = boolean // not visible in admin
+  # this function is a full delete
+  # TODO: delete from archived list
+  # *****************************************************
+  "click .delete": (event) ->
+    event.preventDefault()
+    if confirm("Delete this product?")
+      Products.remove (currentProduct.get "product")._id
+      Router.go "/"
+
+  "click #edit-options": (event) ->
+    $("#options-modal").modal()
+    event.preventDefault()
+
+  "click .toggle-product-isVisible-link": (event, template) ->
+    Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
 
 
 Template.productDetail.rendered = ->
@@ -218,87 +295,3 @@ Template.productDetail.rendered = ->
 #
 # **********************************************************************************************************
 
-Template.productDetail.events
-  # *****************************************************
-  # TODO: Tabbing
-  # SEE: https://github.com/vitalets/x-editable/issues/324
-  # *****************************************************
-  # "keydown input": (e) ->
-  #   if e.which is 9 # when tab key is pressed
-  #     e.preventDefault()
-  #     if e.shiftKey # shift + tab
-  #       # find the parent of the editable before this one in the markup
-  #       $(event.target).blur().parents().prevAll(":has(.editable):first").find(".editable:last").editable "show"
-  #     else # just tab
-  #       # find the parent of the editable after this one in the markup
-  #       $(event.target).blur().parents().nextAll(":has(.editable):first").find(".editable:first").editable "show"
-  "click .description": (event,template) ->
-    $('.description').autosize()
-
-  "click #add-to-cart-quantity": (event,template) ->
-    event.preventDefault()
-    event.stopPropagation()
-
-  "change #add-to-cart-quantity": (event,template) ->
-    event.preventDefault()
-    event.stopPropagation()
-    if (currentProduct.get "variant")
-        variant = currentProduct.get "variant"
-        quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
-        if quantity < 1
-            quantity = 1
-        # TODO: Should check the amount in the cart as well and deduct from available.
-        if variant.inventoryPolicy and quantity > variant.inventoryQuantity
-          $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
-          return
-
-  "click #add-to-cart": (event, template) ->
-    # event.preventDefault()
-    # event.stopPropagation()
-    now = new Date()
-
-    if (currentProduct.get "variant")
-        variant = currentProduct.get "variant"
-
-        # If variant has inv policy and is out of stock, show warning and deny add to cart
-        if (variant.inventoryPolicy and variant.inventoryQuantity < 1)
-          Alerts.add "Sorry, this item is out of stock!"
-          return
-
-        cartSession =
-          sessionId: Session.get "sessionId"
-          userId: Meteor.userId()
-
-        # Get desired variant qty from form
-        quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
-        if quantity < 1
-            quantity = 1
-
-        CartWorkflow.addToCart cartSession, (currentProduct.get "product")._id, variant, quantity
-        $('.variant-list-item #'+(currentProduct.get "variant")._id).removeClass("variant-detail-selected")
-        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
-        # unless Session.get "displayCart" then toggleSession "displayCart"
-
-    else
-      Alerts.add "Select an option before adding to cart"
-
-  # *****************************************************
-  # deletes entire product
-  # TODO: implement revision control by using
-  # suspended = boolean // not visible on site
-  # archived = boolean // not visible in admin
-  # this function is a full delete
-  # TODO: delete from archived list
-  # *****************************************************
-  "click .delete": (event) ->
-    event.preventDefault()
-    if confirm("Delete this product?")
-      Products.remove (currentProduct.get "product")._id
-      Router.go "/"
-
-  "click #edit-options": (event) ->
-    $("#options-modal").modal()
-    event.preventDefault()
-
-  "click .toggle-product-isVisible-link": (event, template) ->
-    Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
