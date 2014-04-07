@@ -30,6 +30,7 @@ Template.variant.events
   "click .variant-detail > *": (event) ->
     event.preventDefault()
     event.stopPropagation()
+    Alerts.removeSeen()
     currentProduct.set "variant", @
 
 
@@ -96,5 +97,5 @@ Template.variantList.events
     Meteor.call "createVariant", @._id
 
   "click .variant-select-option": (event,template) ->
+    Alerts.removeSeen()
     currentProduct.set "variant", @
-    console.log @
