@@ -5,7 +5,8 @@ Template.variant.helpers
     else "progress-bar-success"
 
   selectedVariant: () ->
-    if @._id is (currentProduct.get "variant")?._id
+    current = (currentProduct.get "variant")
+    if (@._id is current?._id ) or  (@._id is current?.parentId)
       return "variant-detail-selected"
 
   isSoldOut: () ->
@@ -35,17 +36,30 @@ Template.variant.events
 Template.variantList.helpers
   variants: () ->
     product  = currentProduct.get "product"
-    variants = (variant for variant in product.variants when !variant.parentId?)
-    inventoryTotal = 0
-    for variant in variants
-      unless isNaN(variant.inventoryQuantity)
-        inventoryTotal +=  variant.inventoryQuantity
-    for variant in variants
-      @variant
-      variant.inventoryTotal = inventoryTotal
-      variant.inventoryPercentage = parseInt((variant.inventoryQuantity / inventoryTotal) * 100)
-      variant.inventoryWidth = parseInt((variant.inventoryPercentage - variant.title?.length ))
-    variants
+    if product
+      variants = (variant for variant in product.variants when !variant.parentId?)
+      inventoryTotal = 0
+      for variant in variants
+        unless isNaN(variant.inventoryQuantity)
+          inventoryTotal +=  variant.inventoryQuantity
+      for variant in variants
+        @variant
+        variant.inventoryTotal = inventoryTotal
+        variant.inventoryPercentage = parseInt((variant.inventoryQuantity / inventoryTotal) * 100)
+        variant.inventoryWidth = parseInt((variant.inventoryPercentage - variant.title?.length ))
+      variants
+
+  childVariants: () ->
+    product  = currentProduct.get "product"
+    if product
+      current = (currentProduct.get "variant")
+      if current.parentId?
+        variants = (variant for variant in product.variants when variant.parentId is current.parentId)
+      else
+        variants = (variant for variant in product.variants when variant.parentId is current._id)
+      return variants
+
+
 
 Template.variant.rendered = ->
   if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
@@ -80,3 +94,7 @@ Template.variant.rendered = ->
 Template.variantList.events
   "click #create-variant": (event) ->
     Meteor.call "createVariant", @._id
+
+  "click .variant-select-option": (event,template) ->
+    currentProduct.set "variant", @
+    console.log @

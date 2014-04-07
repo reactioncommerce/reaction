@@ -14,7 +14,7 @@ Template.productDetail.helpers
 
   tags: ->
     product = (currentProduct.get "product")
-    if product.tagIds
+    if product?.tagIds
       Tags.find({_id: {$in: product.tagIds}}).fetch()
     else
       []
