@@ -13,6 +13,7 @@ Template.loginDropdown.helpers
   socialImage: ->
     Meteor.user().profile?.picture
 
-
-
-
+Template.userDropdown.rendered =  ->
+  setTimeout (->
+    $(".dropdown-menu").fadeOut()
+  ),1500
