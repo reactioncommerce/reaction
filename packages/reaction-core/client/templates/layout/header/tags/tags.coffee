@@ -1,8 +1,23 @@
+isEditing = (id) ->
+  return Session.equals "isEditing-"+id, true
+
+setEditing = (id, isEditing) ->
+  Session.set "isEditing-"+id, isEditing
+
+
 Template.headerTags.helpers
+  tagsComponent: ->
+    currentTag = Session.get "currentTag"
+    if Session.equals "isEditing-"+currentTag, true
+      return Template.tagInputForm
+    else
+      return Template.headerLinks
+
   tags: ->
     if @tag
       tags = []
       if Tags.findOne(@tag._id)
+        Session.set "currentTag", @tag._id
         tags.push(Tags.findOne(@tag._id))
 
         relatedTagIds = Tags.findOne(@tag._id).relatedTagIds
@@ -12,6 +27,7 @@ Template.headerTags.helpers
 
     else
       tags = Tags.find({isTopLevel: true}, {sort: {position: 1}}).fetch()
+      Session.set "currentTag", ""
       if @.tagIds
         for relatedTagId in @.tagIds
           unless (_.findWhere tags, _id: relatedTagId)
@@ -21,63 +37,69 @@ Template.headerTags.helpers
     tags
 
   activeTag: (currentTag)->
-    if Router.current().params._id is @._id then return "active"
+    if (Session.get "currentTag") is @._id then return "active"
 
   editableTag: (currentTag)->
-    if Router.current().params._id is @._id then return "editable-tag"
+    if (Session.get "currentTag") is @._id then return "true"
 
-Template.headerTags.events
-  'click .active': (event,template) ->
-    event.preventDefault()
-    return
+Template.tagInputForm.helpers
+  tags: ()->
+    tagList = []
+    for tag in @.tags
+      tagList.push tag._id
+    return tagList.toString()
+
+
+Template.headerLinks.events
+  'click #header-edit-tag': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Session.set "isEditing-"+currentTag, true
+    Deps.flush()
+
+
+Template.tagInputForm.events
+  'click #btn-tags-cancel, click body': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Session.set "isEditing-"+currentTag, false
+  'click .btn-tags-remove': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Meteor.call "removeHeaderTag", @._id, currentTag
+
+  'click .tags-input-select': (event,template) ->
+    $(event.currentTarget).autocomplete(
+      delay: 0
+      autoFocus: true
+      source: (request, response) ->
+        datums = []
+        slug = _.slugify(request.term)
+        Tags.find({slug: new RegExp(slug, "i")}).forEach (tag) ->
+          datums.push(
+            label: tag.name
+          )
+        response(datums)
+    )
+    Deps.flush()
+
+  'change .tags-input-select': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Meteor.call "updateHeaderTags", $(event.currentTarget).val(), @._id, currentTag
+    $('#tags-submit-new').val('')
+    # Deps.flush()
+
+  'blur.autocomplete': (event,template) ->
+    if $(event.currentTarget).val()
+      currentTag = Session.get "currentTag"
+      console.log currentTag
+      Meteor.call "updateHeaderTags", $(event.currentTarget).val(), @._id, currentTag
+      $('#tags-submit-new').val('')
+      Deps.flush()
 
 Template.headerTags.rendered = ->
-  # $(@findAll("input")).autocomplete(
-  #   delay: 0
-  #   autoFocus: true
-  #   source: (request, response) ->
-  #     datums = []
-  #     slug = _.slugify(request.term)
-  #     Tags.find({slug: new RegExp(slug, "i")}).forEach (tag) ->
-  #       datums.push(
-  #         label: tag.name
-  #       )
-  #     response(datums)
-  # )
-
   # *****************************************************
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html
   # *****************************************************
   if Meteor.app.hasOwnerAccess()
-    $.fn.editable.defaults.disabled = false
-    $.fn.editable.defaults.mode = "inline"
-    $.fn.editable.defaults.showbuttons = false
-    $.fn.editable.defaults.highlight = "#eff6db"
-    $.fn.editable.defaults.clear = true
-
-    #TODO: Implement Typeahead
-    $("#header-add-tag").editable
-      type: "text"
-      emptytext: "add tag"
-      inputclass: "navbar-form"
-      success: (response, newValue) ->
-        Meteor.call "updateHeaderTags", newValue, "",$(@).attr('data-current-id')
-      validate: (value) ->
-        if $.trim(value) is ""
-          Alerts.add "A name is required"
-          false
-
-    $("#header-tags-list .editable-tag").editable
-      type: "text"
-      inputclass: "navbar-form"
-      success: (response, newValue) ->
-        if newValue
-          Meteor.call "updateHeaderTags", newValue, $(@).attr('data-tag-id')
-        else
-          Meteor.call "removeHeaderTag", $(@).attr('data-tag-id')
-          Router.go("index")
-
     $("#header-tags-list").sortable
       items: "> li .header-tag"
       axis: "x"

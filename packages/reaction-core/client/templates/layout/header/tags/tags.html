@@ -1,12 +1,44 @@
 <template name="headerTags">
-    <ul class="nav navbar-nav navbar-left header-tags-list clearfix" id="header-tags-list">
-      {{#each tags}}
-       <li class="{{activeTag tag._id}}">
-        <a href="{{pathForSEO "product/tag" "name"}}" class="header-tag {{editableTag tag._id}}" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
-       </li>
-      {{/each}}
-      {{#if userHasRole "admin"}}
-        <li><a href="#" id="header-add-tag" class="header-add-tag" data-current-id="{{tag._id}}"><i class="fa fa-plus"></i></a></li>
-      {{/if}}
-    </ul>
+    {{>tagsComponent tags=tags}}
+</template>
+
+<template name="headerLinks">
+<ul class="nav navbar-nav tag-link-list" id="tag-link-list">
+  {{#each ./tags}}
+   <li class="{{activeTag tag._id}}">
+    <a href="{{pathForSEO "product/tag" "name"}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
+  </li>
+  {{/each}}
+  {{#if userHasRole "admin"}}
+    <li><a href="#" id="header-edit-tag" class="header-edit-tag" data-current-id="{{tag._id}}"><i class="fa fa-edit fa-lg"></i></a></li>
+  {{/if}}
+   </ul>
+</template>
+
+
+<template name="tagInputForm">
+<ul class="nav navbar-nav tag-edit-list" id="tag-edit-list">
+{{#each ./tags}}
+  <li class="col-sm-4 col-md-2">
+    <span class="input-group input-group-sm">
+      <input type="text" class="form-control tags-input-select" value="{{name}}" placeholder="Edit tags"/>
+        <div class="input-group-btn">
+          <button type="submit" class="btn btn-tags-remove"><i class="fa fa-times"></i></button>
+        </div>
+    </span>
+  </li>
+{{/each}}
+  <li class="col-sm-4 col-md-2">
+    <span class="input-group input-group-sm">
+      <input type="text" class="form-control tags-input-select" id="tags-submit-new" placeholder="Add tags"/>
+        <div class="input-group-btn">
+          <button type="submit" class="btn"><i class="fa fa-check"></i></button>
+        </div>
+    </span>
+  </li>
+  <div class="btn-tags-cancel">
+    <button type="submit" class="btn" id="btn-tags-cancel"><i class="fa fa-caret-square-o-up fa-lg"></i></button>
+  </div>
+</ul>
+
 </template>

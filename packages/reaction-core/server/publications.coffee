@@ -310,8 +310,8 @@ Tags.allow
       return false
     true
   remove: (userId, tag) ->
-    if tag.shopId != Meteor.app.getCurrentShop()._id
-      return false
+    # if tag.shopId != Meteor.app.getCurrentShop()._id
+    #   return false
     unless Roles.userIsInRole(userId, ['admin'])
       return false
     true

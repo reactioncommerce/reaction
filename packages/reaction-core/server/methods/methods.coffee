@@ -44,14 +44,24 @@ Meteor.methods
   # currentTagId will update related/hierachy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
+    console.log tagName,tagId,currentTagId
     newTag =
       slug: _.slugify(tagName)
       name: tagName
 
-    if tagId
+    #existing tags
+    unless tagId #prevent duplicate tags by checking for existing
+      existingTag = Tags.findOne({"name":tagName})
+      if currentTagId and existingTag
+        Tags.update(currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}})
+        return
+      else if existingTag and !currentTagId?
+        Tags.update(existingTag._id, {$set:{"isTopLevel":true}})
+        return
+    #new tags
+    if tagId #just an update
       Tags.update(tagId,{$set:newTag})
-
-    else
+    else # create a new tag
       newTag.isTopLevel = !currentTagId
       newTag.shopId = Meteor.app.getCurrentShop()._id
       newTag.updatedAt = new Date()
@@ -59,14 +69,21 @@ Meteor.methods
       newTag._id = Tags.insert(newTag, (error, newTagId) ->
           if !error
             if currentTagId
-              Tags.update(currentTagId, {$addToSet: {relatedTagIds: newTagId}})
+              Tags.update(currentTagId, {$addToSet: {"relatedTagIds": newTagId}})
       )
-  removeHeaderTag: (tagId) ->
-    Tags.remove(tagId)
+
+  removeHeaderTag: (tagId, currentTagId) ->
+    if currentTagId
+      Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
+    # if not in use delete from system
+    productCount = Products.find({"tagIds":{$in:[tagId]}}).count()
+    relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()
+
+    if (productCount is 0) and (relatedTagsCount is 0)
+      Tags.remove(tagId)
 
 
   updatePackage: (updateDoc, packageName) ->
-    console.log updateDoc
     # check(updateDoc, PackageConfigSchema)
     packageId = Packages.findOne({ name: packageName })._id
 
