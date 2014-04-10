@@ -44,7 +44,6 @@ Meteor.methods
   # currentTagId will update related/hierachy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
-    console.log tagName,tagId,currentTagId
     newTag =
       slug: _.slugify(tagName)
       name: tagName
