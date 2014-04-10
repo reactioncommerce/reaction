@@ -1,14 +1,55 @@
+// Slide the tag edit icon over a bit
+.header-edit-tag {
+  margin-left: -15px;
+}
+// size the navigation and when editing override navbar settings
 .nav.navbar-nav.tag-edit-list {
   padding-top: 9px;
   float:none !important;
-  border: 1px solid @panel-default-border;
-  border-radius: @panel-border-radius;
   margin: 2px 200px 0 200px;
   input {
     min-width: 40px;
   }
-  .btn-tags-cancel {
-    float: right;
-    margin: -1px 5px 0px 0px;
+}
+// Kludge fix for autocomplete hiding behind navbar
+.ui-autocomplete {
+  z-index: 9999;
+}
+// Tag edit elements
+.tag-input-group {
+  float:none;
+  padding-right: 3px;
+  .tag-input-group-handle {
+    position: absolute;
+    cursor: move;
+    color: @input-color-placeholder;
+    left: 4px;
+    top: 5px;
+  }
+  input {
+    padding-left: 25px;
+    padding-right: 20px;
+    border-radius: @border-radius-base;
+    border: 1px dotted @input-border;
+    background-color: @input-bg;
+    height: @input-height-small;
+    width: 130px;
+    color: @input-color;
+
+  }
+  input:focus {
+    outline: none;
+    border-color: @input-border-focus;
+    box-shadow: 0 0 10px @input-border-focus;
+  }
+  .tag-input-group-remove {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    color: @input-color-placeholder;
+  }
+  #tags-submit-new {
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }

@@ -10,7 +10,7 @@
   </li>
   {{/each}}
   {{#if userHasRole "admin"}}
-    <li><a href="#" id="header-edit-tag" class="header-edit-tag" data-current-id="{{tag._id}}"><i class="fa fa-edit fa-lg"></i></a></li>
+    <li><a href="#" id="header-edit-tag" class="header-edit-tag" data-current-id="{{tag._id}}"><i class="fa fa-tags fa-lg"></i></a></li>
   {{/if}}
    </ul>
 </template>
@@ -19,26 +19,26 @@
 <template name="tagInputForm">
 <ul class="nav navbar-nav tag-edit-list" id="tag-edit-list">
 {{#each ./tags}}
-  <li class="col-sm-4 col-md-2">
-    <span class="input-group input-group-sm">
-      <input type="text" class="form-control tags-input-select" value="{{name}}" placeholder="Edit tags"/>
-        <div class="input-group-btn">
-          <button type="submit" class="btn btn-tags-remove"><i class="fa fa-times"></i></button>
-        </div>
-    </span>
+  <li data-tag-id="{{_id}}">
+    <div class="tag-input-group">
+      <span class="tag-input-group-handle">
+        <i class="fa fa-bars"></i>
+      </span>
+      <span class="tag-input">
+        <input type="text" class="tags-input-select" value="{{name}}" placeholder="Edit tags"/>
+      </span>
+      <span class="tag-input-group-remove">
+         <i class="fa fa-times-circle"></i>
+      </span>
+    </div>
   </li>
 {{/each}}
-  <li class="col-sm-4 col-md-2">
-    <span class="input-group input-group-sm">
-      <input type="text" class="form-control tags-input-select" id="tags-submit-new" placeholder="Add tags"/>
-        <div class="input-group-btn">
-          <button type="submit" class="btn"><i class="fa fa-check"></i></button>
-        </div>
-    </span>
+  <li data-tag-id="{{_id}}">
+    <div class="tag-input-group">
+      <span class="tag-input">
+        <input type="text" class="tags-input-select" value="{{name}}" placeholder="Add tags" id="tags-submit-new" autofocus/>
+      </span>
+    </div>
   </li>
-  <div class="btn-tags-cancel">
-    <button type="submit" class="btn" id="btn-tags-cancel"><i class="fa fa-caret-square-o-up fa-lg"></i></button>
-  </div>
 </ul>
-
 </template>

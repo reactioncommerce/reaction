@@ -1,3 +1,11 @@
+$(document).mouseup (e) ->
+  container = $(".tag-edit-list")
+  if not container.is(e.target) and container.has(e.target).length is 0
+    currentTag = Session.get "currentTag"
+    Session.set "isEditing-"+currentTag, false
+  return
+
+
 isEditing = (id) ->
   return Session.equals "isEditing-"+id, true
 
@@ -61,7 +69,8 @@ Template.tagInputForm.events
   'click #btn-tags-cancel, click body': (event,template) ->
     currentTag = Session.get "currentTag"
     Session.set "isEditing-"+currentTag, false
-  'click .btn-tags-remove': (event,template) ->
+
+  'click .tag-input-group-remove': (event,template) ->
     currentTag = Session.get "currentTag"
     Meteor.call "removeHeaderTag", @._id, currentTag
 
@@ -84,27 +93,38 @@ Template.tagInputForm.events
     currentTag = Session.get "currentTag"
     Meteor.call "updateHeaderTags", $(event.currentTarget).val(), @._id, currentTag
     $('#tags-submit-new').val('')
+    $('#tags-submit-new').focus()
     # Deps.flush()
 
   'blur.autocomplete': (event,template) ->
     if $(event.currentTarget).val()
       currentTag = Session.get "currentTag"
-      console.log currentTag
       Meteor.call "updateHeaderTags", $(event.currentTarget).val(), @._id, currentTag
-      $('#tags-submit-new').val('')
       Deps.flush()
+      $('#tags-submit-new').val('')
+      $('#tags-submit-new').focus()
 
-Template.headerTags.rendered = ->
-  # *****************************************************
-  # Inline field editing, handling
-  # http://vitalets.github.io/x-editable/docs.html
-  # *****************************************************
-  if Meteor.app.hasOwnerAccess()
-    $("#header-tags-list").sortable
-      items: "> li .header-tag"
+  'mousedown .tag-input-group-handle': (event,template) ->
+    #Freaking meteor 0.8 kludge, this should be destroyed
+    $(".tag-edit-list").sortable
+      items: "> li"
       axis: "x"
       update: (event, ui) ->
         uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
         for tag,index in uiPositions
           Tags.update(tag, {$set: {position: index}})
+
+#Template.headerTags.rendered = ->
+  # *****************************************************
+  # Inline field editing, handling
+  # http://vitalets.github.io/x-editable/docs.html
+  # *****************************************************
+  # if Meteor.app.hasOwnerAccess()
+  #   $(".tag-edit-list").sortable
+  #     items: "> li"
+  #     axis: "x"
+  #     update: (event, ui) ->
+  #       uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
+  #       for tag,index in uiPositions
+  #         Tags.update(tag, {$set: {position: index}})
 
