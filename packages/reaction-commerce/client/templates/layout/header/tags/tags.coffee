@@ -17,7 +17,10 @@ Template.headerTags.helpers
   tagsComponent: ->
     currentTag = Session.get "currentTag"
     if Session.equals "isEditing-"+currentTag, true
-      return Template.tagInputForm
+      if Meteor.app.hasOwnerAccess()
+        return Template.tagInputForm
+      else
+        return Template.headerLinks
     else
       return Template.headerLinks
 
@@ -113,7 +116,6 @@ Template.tagInputForm.rendered = ->
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html
   # *****************************************************
-  if Meteor.app.hasOwnerAccess()
     $(".tag-edit-list").sortable
       items: "> li"
       axis: "x"
