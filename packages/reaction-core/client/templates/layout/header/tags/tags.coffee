@@ -105,26 +105,21 @@ Template.tagInputForm.events
       $('#tags-submit-new').focus()
 
   'mousedown .tag-input-group-handle': (event,template) ->
-    #Freaking meteor 0.8 kludge, this should be destroyed
-    $(".tag-edit-list").sortable
-      items: "> li"
-      axis: "x"
-      update: (event, ui) ->
-        uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
-        for tag,index in uiPositions
-          Tags.update(tag, {$set: {position: index}})
+    Deps.flush()
+    $(".tag-edit-list").sortable("refresh")
 
-#Template.headerTags.rendered = ->
+Template.tagInputForm.rendered = ->
   # *****************************************************
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html
   # *****************************************************
-  # if Meteor.app.hasOwnerAccess()
-  #   $(".tag-edit-list").sortable
-  #     items: "> li"
-  #     axis: "x"
-  #     update: (event, ui) ->
-  #       uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
-  #       for tag,index in uiPositions
-  #         Tags.update(tag, {$set: {position: index}})
+  if Meteor.app.hasOwnerAccess()
+    $(".tag-edit-list").sortable
+      items: "> li"
+      axis: "x"
+      handle: '.tag-input-group-handle'
+      update: (event, ui) ->
+        uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
+        for tag,index in uiPositions
+          Tags.update(tag, {$set: {position: index}})
 
