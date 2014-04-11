@@ -21,10 +21,14 @@ Template.productDetail.helpers
   actualPrice: () ->
     (currentProduct.get "variant")?.price
 
-Template.productDetail.events
-  "click .description": (event,template) ->
-    $('.description').autosize()
+  component: (field) ->
+    if Meteor.app.hasOwnerAccess()
+      return Template.productDetailEdit
+    else
+      return Template.productDetailField
 
+
+Template.productDetail.events
   "click #add-to-cart-quantity": (event,template) ->
     event.preventDefault()
     event.stopPropagation()
@@ -75,7 +79,7 @@ Template.productDetail.events
       CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
       $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
       $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
-      # unless Session.get "displayCart" then toggleSession "displayCart"
+      unless Session.get "displayCart" then toggleSession "displayCart"
 
     else
       Alerts.add "Select an option before adding to cart"
@@ -104,137 +108,7 @@ Template.productDetail.events
 
 
 Template.productDetail.rendered = ->
-  # *****************************************************
-  # Inline field editing, handling
-  # http://vitalets.github.io/x-editable/docs.html
-  #
-  # $.fn.editable.defaults.disabled = true
-  # *****************************************************
-
   if Meteor.app.hasOwnerAccess()
-    $.fn.editable.defaults.disabled = false
-    $.fn.editable.defaults.mode = "inline"
-    $.fn.editable.defaults.showbuttons = false
-    $.fn.editable.defaults.onblur = 'submit'
-    $.fn.editable.defaults.highlight = '#eff6db'
-
-    # *****************************************************
-    # Editable product title entry
-    # *****************************************************
-
-    $("#title").editable
-      type: "text"
-      title: "Product name"
-      clear: true
-      emptytext: "product name goes here"
-      inputclass: "pdp-title"
-      success: (response, newValue) ->
-        updateProduct title: newValue
-      validate: (value) ->
-        if $.trim(value) is ""
-          return "A product name is required"
-
-    # *****************************************************
-    # Editable page title entry
-    # *****************************************************
-    $("#pageTitle").editable
-      inputclass: "pdp-page-title"
-      type: "text"
-      title: "Short page title"
-      emptytext: "catchy short page title here"
-      success: (response, newValue) ->
-        updateProduct pageTitle: newValue
-
-    # *****************************************************
-    # Editable vendor entry - dropdown
-    # *****************************************************
-    $("#vendor").editable
-      type: "text"
-      inputclass: "vendor"
-      title: "Vendor, Brand, Manufacturer"
-      emptytext: "vendor, brand, manufacturer"
-      success: (response, newValue) ->
-        updateProduct vendor: newValue
-
-    # *****************************************************
-    # Editable price - really first variant entry
-    # *****************************************************
-    $("#price").editable
-      type: "text"
-      emptytext: "0.00"
-      inputclass: "price"
-      title: "Default variant price"
-      success: (response, newValue) ->
-        updateProduct({"variants.0.price": newValue})
-
-
-    # *****************************************************
-    # Editable product html
-    # *****************************************************
-    #
-    $("#description").editable
-      type: "textarea"
-      inputclass: "description"
-      escape: false
-      title: "Describe this product"
-      emptytext: "add a few lines describing this product"
-      success: (response, newValue) ->
-        updateProduct description: newValue
-
-
-    # *****************************************************
-    # Editable social handle (hashtag, url)
-    # *****************************************************
-    #
-    $("#handle").editable
-      type: "text"
-      inputclass: "handle"
-      emptytext: "add-short-social-hashtag"
-      title: "Social handle for sharing and navigation"
-      success: (response, newValue) ->
-        updateProduct handle: newValue
-      validate: (value) ->
-        if $.trim(value) is ""
-          return "A product hashtag is required"
-
-    # *****************************************************
-    # Editable twitter, social messages entry
-    # *****************************************************
-    $(".twitter-msg").editable
-      selector: '.twitter-msg-edit'
-      type: "textarea"
-      mode: "popup"
-      emptytext: '<i class="fa fa-twitter fa-lg"></i>'
-      title: "Default Twitter message ~100 characters!"
-      success: (response, newValue) ->
-        updateProduct twitterMsg: newValue
-
-    $(".pinterest-msg").editable
-      selector: '.pinterest-msg-edit'
-      type: "textarea"
-      mode: "popup"
-      emptytext: '<i class="fa fa-pinterest fa-lg"></i>'
-      title: "Default Pinterest message ~200 characters!"
-      success: (response, newValue) ->
-        updateProduct pinterestMsg: newValue
-
-    $(".facebook-msg").editable
-      selector: '.facebook-msg-edit'
-      type: "textarea"
-      mode: "popup"
-      emptytext: '<i class="fa fa-facebook fa-lg"></i>'
-      title: "Default Facebook message ~200 characters!"
-      success: (response, newValue) ->
-        updateProduct facebookMsg: newValue
-
-    $(".instagram-msg").editable
-      selector: '.instagram-msg-edit'
-      type: "textarea"
-      mode: "popup"
-      emptytext: '<i class="fa fa-instagram fa-lg"></i>'
-      title: "Default Instagram message ~100 characters!"
-      success: (response, newValue) ->
-        updateProduct instagramMsg: newValue
     # *****************************************************
     # Editable tag field
     # *****************************************************
@@ -290,8 +164,25 @@ Template.productDetail.rendered = ->
           false
         else
           true
-# **********************************************************************************************************
-# events for main product detail page
-#
-# **********************************************************************************************************
 
+
+Template.productDetailEdit.events
+  "change input,textarea": (event,template) ->
+    Meteor.call "updateProductField", (currentProduct.get "product")._id,  this.field, $(event.currentTarget).val(), (error,results) ->
+      if results
+        # $(event.currentTarget) + " .product-detail-message").text("Saved")
+        $(event.currentTarget).animate({backgroundColor: "#e2f2e2" }).animate({backgroundColor: "#fff"})
+    if this.type is "textarea" then $(event.currentTarget).trigger('autosize.resize')
+    Session.set "editing-"+this.field, false
+
+
+Template.productDetailField.events
+  "click .product-detail-field": (event,template) ->
+    if Meteor.app.hasOwnerAccess()
+      fieldClass = "editing-" + this.field
+      Session.set fieldClass, true
+      Deps.flush()
+      $('.' + this.field + '-edit-input').focus()
+
+Template.productDetailEdit.rendered = () ->
+  $('textarea').autosize()

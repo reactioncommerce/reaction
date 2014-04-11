@@ -78,6 +78,9 @@ Router.map ->
         text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
         return tag: Tags.findOne({name: { $regex : text, $options:"i" } })
 
+    onAfterAction: ->
+      document.title = this.data()?.tag.name || Shops.findOne()?.name
+
   # product view / edit page
   @route 'product',
     controller: ShopController
@@ -116,6 +119,9 @@ Router.map ->
     data: ->
       currentProduct.get "product"
 
+    onAfterAction: ->
+       document.title = this.data()?.title || Shops.findOne()?.name
+
   #checkout
   @route 'cartCheckout',
     path: 'checkout',
@@ -125,7 +131,8 @@ Router.map ->
         to: "layoutHeader"
     data: ->
       Cart.findOne()
-
+    onAfterAction: ->
+      document.title = Shops.findOne()?.name + " Checkout"
   #completed orders
   @route 'cartCompleted',
     controller: ShopController
@@ -133,3 +140,5 @@ Router.map ->
     template: 'cartCompleted'
     data: ->
       Orders.findOne(@params._id)
+    onAfterAction: ->
+      document.title = Shops.findOne()?.name + " Success"

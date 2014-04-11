@@ -39,7 +39,8 @@ Package.on_use(function (api, where) {
     "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/css/bootstrap-editable.css",
     "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.js",
     "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/clear.png",
-    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/loading.gif"
+    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/loading.gif",
+    "lib/jquery-autosize/jquery.autosize.js"
    ], ["client"]);
 
   // Core Reaction
