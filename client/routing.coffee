@@ -31,6 +31,8 @@ Router.map ->
   @route "index",
     controller: ShopController
     path: "/"
+    onAfterAction: ->
+      document.title = Shops.findOne()?.name
   for page in pages
     @route page
   # 404 Page for reaction

@@ -20,6 +20,9 @@ UI.registerHelper "displayName", () ->
 UI.registerHelper "socialImage", () ->
   Meteor.user().profile?.picture
 
+UI.registerHelper "camelToSpace", (str) ->
+  downCamel = str.replace(/\W+/g, "-").replace /([a-z\d])([A-Z])/g, "$1 $2"
+  downCamel.toLowerCase()
 ###
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system

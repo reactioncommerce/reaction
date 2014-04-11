@@ -2,34 +2,34 @@
 <div class="container-fluid pdp-container">
   {{!-- Product Visibility Admin Block --}}
   {{#if userHasRole "admin"}}
-  <div class="row">
-    {{#if isVisible}}
-      Product management:
-      <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
-    {{else}}
-      <div class="alert alert-warning">
-        This product is not visible to customers.
-              You can
-        <a href="#" class="toggle-product-isVisible-link">make it visible</a>
-        when you're done editing.
-      </div>
-    {{/if}}
-  </div>
+    <div class="row">
+      {{#if isVisible}}
+        Product management:
+        <a href="#" class="toggle-product-isVisible-link">Make {{#if isVisible}}in{{/if}}visible</a>
+      {{else}}
+        <div class="alert alert-warning">
+          This product is not visible to customers.
+                You can
+          <a href="#" class="toggle-product-isVisible-link">make it visible</a>
+          when you're done editing.
+        </div>
+      {{/if}}
+    </div>
   {{/if}}
   {{!-- END Product Visibility Admin Block --}}
    <!-- Product Detail Page -->
   <div class="row" itemscope itemtype="http://schema.org/Product">
     <!-- Titles -->
     <div class="row">
-        <div class="pdp-title">
-          <h1 id="title" itemprop="name">{{title}}</h1>
+        <div class="title">
+          <h1 id="title" itemprop="name">{{>component field="title" value=title}}</h1>
         </div>
-        <div class="pdp-page-title">
-          <h2 id="pageTitle">{{pageTitle}}</h2>
+        <div class="pageTitle">
+          <h2 id="pageTitle">{{>component field="pageTitle" value=pageTitle}}</h2>
         </div>
     </div>
     <!-- Product Details -->
-    <div class="row product-details">
+    <div class="row">
       <!-- BEGIN Left Side -->
       <div class="col-sm-5 pdp-left-column">
         {{> productImageGallery}}
@@ -39,7 +39,7 @@
       <!-- BEGIN Right Side -->
       <div class="col-sm-7 pdp-right-column">
         <!-- main product information -->
-        <div class="row col-md-11 pdp-editable">
+        <div class="row col-md-11">
           {{!-- Price Fixation --}}
           <div class="row">
             <i class="fa fa-usd currency-symbol"> </i>
@@ -50,10 +50,8 @@
           </div>
 
           {{!-- Vendor --}}
-          <div class="clearfix">
-            <div class="vendor">
-              <i id="vendor" itemprop="brand">{{vendor}}</i>
-            </div>
+          <div class="row">
+          {{>component field="vendor" value=vendor}}
           </div>
 
           {{!-- Tags --}}
@@ -67,14 +65,7 @@
 
           {{!-- Description --}}
           <div class="row">
-            <div id="description" class="description" itemprop="description">
-              {{#if userHasRole "admin"}}
-                {{description}}
-              {{else}}
-                {{!-- Render as html on client view --}}
-                {{{description}}}
-              {{/if}}
-            </div>
+            {{>component field="description" value=description type="textarea"}}
           </div>
 
           {{!-- Variants --}}
@@ -99,4 +90,23 @@
     </div>
   </div>
 </div>
+</template>
+
+<template name="productDetailEdit">
+{{#if condition type "eq" "textarea"}}
+<div class="product-detail-edit {{field}}-edit">
+  <textarea class="{{field}}-edit-input" placeholder="add a product {{camelToSpace field}}">{{value}}</textarea>
+</div>
+{{else}}
+<div class="product-detail-edit {{field}}-edit">
+  <input type="text" value="{{value}}" class="{{field}}-edit-input" placeholder="product {{camelToSpace field}}"/>
+</div>
+{{/if}}
+<span class="product-detail-message" id="{{field}}-message"></span>
+</template>
+
+<template name="productDetailField">
+<span class="product-detail-field {{field}}">
+{{value}}
+</span>
 </template>

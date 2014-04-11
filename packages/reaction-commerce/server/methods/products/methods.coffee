@@ -108,6 +108,17 @@ Meteor.methods
         }
       ]
     })
+
+  ###
+  # update single product field
+  ###
+  updateProductField: (productId, field,value) ->
+    # value = Spacebars.SafeString(value)
+    value  = EJSON.stringify value
+    update = EJSON.parse "{\"" + field + "\":" + value + "}"
+    return Products.update productId, $set: update
+
+
   ###
   # update product grid positions
   # position is an object with tag,position,dimensions
