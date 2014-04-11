@@ -18,31 +18,6 @@ Package.on_use(function (api, where) {
   ], ["client", "server"]);
 
   api.use(["reaction-app-packages"]);
-
-
-  api.add_files([
-    //bootstrap
-    "lib/bootstrap/lib/js/transition.js",
-    "lib/bootstrap/lib/js/alert.js",
-    "lib/bootstrap/lib/js/button.js",
-    "lib/bootstrap/lib/js/carousel.js",
-    "lib/bootstrap/lib/js/collapse.js",
-    "lib/bootstrap/lib/js/dropdown.js",
-    "lib/bootstrap/lib/js/modal.js",
-    "lib/bootstrap/lib/js/tooltip.js",
-    "lib/bootstrap/lib/js/popover.js",
-    "lib/bootstrap/lib/js/scrollspy.js",
-    "lib/bootstrap/lib/js/tab.js",
-    "lib/bootstrap/lib/js/affix.js",
-
-    // x-editable
-    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/css/bootstrap-editable.css",
-    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.js",
-    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/clear.png",
-    "lib/bootstrap3-editable-1.5.1/bootstrap3-editable/img/loading.gif",
-    "lib/jquery-autosize/jquery.autosize.js"
-   ], ["client"]);
-
   // Core Reaction
   api.add_files([
     "lib/header_spy.coffee",
@@ -68,10 +43,20 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.add_files([
-    "lib/select2/select2.js",
-    "lib/select2/select2.css",
-    "lib/select2-bootstrap-css/select2-bootstrap.css",
+    "lib/bootstrap/lib/js/transition.js",
+    "lib/bootstrap/lib/js/alert.js",
+    "lib/bootstrap/lib/js/button.js",
+    "lib/bootstrap/lib/js/carousel.js",
+    "lib/bootstrap/lib/js/collapse.js",
+    "lib/bootstrap/lib/js/dropdown.js",
+    "lib/bootstrap/lib/js/modal.js",
+    "lib/bootstrap/lib/js/tooltip.js",
+    "lib/bootstrap/lib/js/popover.js",
+    "lib/bootstrap/lib/js/scrollspy.js",
+    "lib/bootstrap/lib/js/tab.js",
+    "lib/bootstrap/lib/js/affix.js",
 
+    "lib/jquery-autosize/jquery.autosize.js",
     "lib/owl.carousel/owl-carousel/owl.carousel.css",
     "lib/owl.carousel/owl-carousel/owl.theme.css",
     "lib/owl.carousel/owl-carousel/owl.carousel.js",
