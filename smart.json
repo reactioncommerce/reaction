@@ -13,6 +13,8 @@
     "collectionFS": {},
     "cfs-filesystem": {},
     "cfs-s3": {},
-    "ui-dropped-event": {}
+    "ui-dropped-event": {
+        "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git"
+    }
   }
 }

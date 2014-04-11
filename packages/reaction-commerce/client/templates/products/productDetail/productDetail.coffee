@@ -15,13 +15,17 @@ Template.productDetail.helpers
       Tags.find({_id: {$in: product.tagIds}}).fetch()
     else
       []
-  stringify: (tags) ->
-    _.pluck(tags, "name").join(", ")
+
+  tagsComponent: ->
+    if Meteor.app.hasOwnerAccess()
+      return Template.productTagInputForm
+    else
+      return null
 
   actualPrice: () ->
     (currentProduct.get "variant")?.price
 
-  component: (field) ->
+  fieldComponent: (field) ->
     if Meteor.app.hasOwnerAccess()
       return Template.productDetailEdit
     else
@@ -29,6 +33,10 @@ Template.productDetail.helpers
 
 
 Template.productDetail.events
+  "click #price": ->
+    id = currentProduct.get("variant")._id
+    $('#variant-edit-form-'+id).fadeIn()
+
   "click #add-to-cart-quantity": (event,template) ->
     event.preventDefault()
     event.stopPropagation()
@@ -84,28 +92,32 @@ Template.productDetail.events
     else
       Alerts.add "Select an option before adding to cart"
 
-
-  # *****************************************************
-  # deletes entire product
-  # TODO: implement revision control by using
-  # suspended = boolean // not visible on site
-  # archived = boolean // not visible in admin
-  # this function is a full delete
-  # TODO: delete from archived list
-  # *****************************************************
-  "click .delete": (event) ->
-    event.preventDefault()
-    if confirm("Delete this product?")
-      Products.remove (currentProduct.get "product")._id
-      Router.go "/"
-
-  "click #edit-options": (event) ->
-    $("#options-modal").modal()
-    event.preventDefault()
-
   "click .toggle-product-isVisible-link": (event, template) ->
     Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
 
+  "click .fa-facebook": ->
+    if Meteor.app.hasOwnerAccess()
+      $(".facebookMsg-edit").fadeIn()
+      $(".facebookMsg-edit-input").focus()
+
+  "click .fa-twitter": ->
+    if Meteor.app.hasOwnerAccess()
+      $(".twitterMsg-edit").fadeIn()
+      $(".twitterMsg-edit-input").focus()
+
+  "click .fa-pinterest": ->
+    if Meteor.app.hasOwnerAccess()
+      $(".pinterestMsg-edit").fadeIn()
+      $(".pinterestMsg-edit-input").focus()
+
+  "click .fa-instagram": ->
+    if Meteor.app.hasOwnerAccess()
+      $(".instagramMsg-edit").fadeIn()
+      $(".instagramMsg-edit-input").focus()
+
+  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input": ->
+    Session.set "editing-"+this.field, false
+    $('.social-media-inputs > *').hide()
 
 Template.productDetail.rendered = ->
   if Meteor.app.hasOwnerAccess()
@@ -186,3 +198,60 @@ Template.productDetailField.events
 
 Template.productDetailEdit.rendered = () ->
   $('textarea').autosize()
+
+Template.productTagInputForm.events
+  'click #btn-tags-cancel, click body': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Session.set "isEditing-"+currentTag, false
+
+  'click .tag-input-group-remove': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Meteor.call "removeProductTag", @._id, currentTag
+
+  'click .tags-input-select': (event,template) ->
+    $(event.currentTarget).autocomplete(
+      delay: 0
+      autoFocus: true
+      source: (request, response) ->
+        datums = []
+        slug = _.slugify(request.term)
+        Tags.find({slug: new RegExp(slug, "i")}).forEach (tag) ->
+          datums.push(
+            label: tag.name
+          )
+        response(datums)
+    )
+    Deps.flush()
+
+  'change .tags-input-select': (event,template) ->
+    currentTag = Session.get "currentTag"
+    Meteor.call "updateProductTags", $(event.currentTarget).val(), @._id, currentTag
+    $('#tags-submit-new').val('')
+    $('#tags-submit-new').focus()
+    # Deps.flush()
+
+  'blur.autocomplete': (event,template) ->
+    if $(event.currentTarget).val()
+      currentTag = Session.get "currentTag"
+      Meteor.call "updateProductTags", $(event.currentTarget).val(), @._id, currentTag
+      Deps.flush()
+      $('#tags-submit-new').val('')
+      $('#tags-submit-new').focus()
+
+  'mousedown .tag-input-group-handle': (event,template) ->
+    Deps.flush()
+    $(".tag-edit-list").sortable("refresh")
+
+Template.productTagInputForm.rendered = ->
+  # *****************************************************
+  # Inline field editing, handling
+  # http://vitalets.github.io/x-editable/docs.html
+  # *****************************************************
+    $(".tag-edit-list").sortable
+      items: "> li"
+      axis: "x"
+      handle: '.tag-input-group-handle'
+      update: (event, ui) ->
+        uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
+        for tag,index in uiPositions
+          Tags.update(tag, {$set: {position: index}})

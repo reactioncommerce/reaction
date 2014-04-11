@@ -15,7 +15,10 @@
       "collectionFS": {},
       "cfs-filesystem": {},
       "cfs-s3": {},
-      "ui-dropped-event": {}
+      "ui-dropped-event": {
+        "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git",
+        "branch": "master"
+      }
     },
     "packages": {
       "spin": {
@@ -40,8 +43,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.5.2",
-        "commit": "a02539ad73f519ef23303a62f2833f5397fc2959"
+        "tag": "v0.6.0",
+        "commit": "f840f785d64c76738a8f78633b0c680866af499d"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
@@ -84,9 +87,9 @@
         "commit": "3ac6a7e5e97863a6a56f8d3695471ccecb085510"
       },
       "ui-dropped-event": {
-        "git": "https://github.com/CollectionFS/Meteor-ui-dropped-event.git",
-        "tag": "v0.0.3",
-        "commit": "df3a46293da7dd3b45664a239bd9ccf4d23eb514"
+        "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git",
+        "branch": "master",
+        "commit": "7e9208dd6e638922c62541c1c34c462935d32979"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -95,8 +98,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.45",
-        "commit": "27a5a943a70a7376c90f18d2e2a4a122c6fc73fb"
+        "tag": "v0.2.46",
+        "commit": "30b5d3e08433fbbfe49f09845559bf3ca0ab9101"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
@@ -105,8 +108,8 @@
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
-        "tag": "v0.0.21",
-        "commit": "996812ef50fbf5dd8ca8318811762771d9400aeb"
+        "tag": "v0.0.22",
+        "commit": "e35fdb103abf680c67b79561610c1d5d6c5e9593"
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
