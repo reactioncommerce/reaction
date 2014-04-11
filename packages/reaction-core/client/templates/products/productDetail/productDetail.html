@@ -22,10 +22,10 @@
     <!-- Titles -->
     <div class="row">
         <div class="title">
-          <h1 id="title" itemprop="name">{{>component field="title" value=title}}</h1>
+          <h1 id="title" itemprop="name">{{>fieldComponent field="title" value=title}}</h1>
         </div>
         <div class="pageTitle">
-          <h2 id="pageTitle">{{>component field="pageTitle" value=pageTitle}}</h2>
+          <h2 id="pageTitle">{{>fieldComponent field="pageTitle" value=pageTitle}}</h2>
         </div>
     </div>
     <!-- Product Details -->
@@ -38,37 +38,53 @@
       <!-- END Left Side -->
       <!-- BEGIN Right Side -->
       <div class="col-sm-7 pdp-right-column">
+        <div class="row">
+          <div class="col-xs-8">
+            {{!-- Price Fixation --}}
+            <div>
+              <span class="price">
+                <i class="fa fa-usd currency-symbol"></i>
+                <span id="price" itemprop="price">{{actualPrice}}</span>
+              </span>
+            </div>
+            {{!-- Vendor / subtext --}}
+            <div class="vendor">
+              {{>fieldComponent field="vendor" value=vendor}}
+            </div>
+          </div>
+          <div class="col-xs-3 col-xs-offset-1">
+            {{!-- Social Commentary --}}
+            {{#if userHasRole "admin"}}
+            <div class="social-media">
+              <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+              <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+              <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
+              <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
+              <div class="social-media-inputs">
+                {{>fieldComponent field="facebookMsg" value=facebookMsg}}
+                {{>fieldComponent field="twitterMsg" value=twitterMsg}}
+                {{>fieldComponent field="pinterestMsg" value=pinterestMsg}}
+                {{>fieldComponent field="instagramMsg" value=instagramMsg}}
+              </div>
+            </div>
+            {{else}}
+              {{>productSocial}}
+            {{/if}}
+          </div>
+        </div>
         <!-- main product information -->
         <div class="row col-md-11">
-          {{!-- Price Fixation --}}
+          {{!-- Description --}}
           <div class="row">
-            <i class="fa fa-usd currency-symbol"> </i>
-            <span class="price">
-              <span id="price" itemprop="price">{{actualPrice}}</span>
-            </span>
-            {{>productSocial}}
-          </div>
-
-          {{!-- Vendor --}}
-          <div class="row">
-          {{>component field="vendor" value=vendor}}
+            {{>fieldComponent field="description" value=description type="textarea"}}
           </div>
 
           {{!-- Tags --}}
-          <div class="row">
-            <div class="tags">
-              {{#if userHasRole "admin"}}
-                <a href="#" id="tags" data-type="select2" data-value="{{stringify tags}}"></a>
-              {{/if}}
-            </div>
+          <div class="row tags">
+          {{>tagsComponent tags=tags}}
           </div>
 
-          {{!-- Description --}}
-          <div class="row">
-            {{>component field="description" value=description type="textarea"}}
-          </div>
-
-          {{!-- Variants --}}
+          {{!-- Variants & Options --}}
           <div class="row options-add-to-cart">
             {{>variantList}}
           </div>
@@ -94,9 +110,9 @@
 
 <template name="productDetailEdit">
 {{#if condition type "eq" "textarea"}}
-<div class="product-detail-edit {{field}}-edit">
+<p class="lead product-detail-edit {{field}}-edit">
   <textarea class="{{field}}-edit-input" placeholder="add a product {{camelToSpace field}}">{{value}}</textarea>
-</div>
+</p>
 {{else}}
 <div class="product-detail-edit {{field}}-edit">
   <input type="text" value="{{value}}" class="{{field}}-edit-input" placeholder="product {{camelToSpace field}}"/>
@@ -106,7 +122,40 @@
 </template>
 
 <template name="productDetailField">
-<span class="product-detail-field {{field}}">
-{{value}}
-</span>
+{{#if condition type "eq" "textarea"}}
+  <p class="lead product-detail-field {{field}}">
+  {{value}}
+  </p>
+{{else}}
+  <div class="product-detail-field {{field}}">
+  {{value}}
+  </div>
+{{/if}}
+</template>
+
+<template name="productTagInputForm">
+<ul class="list-inline tag-edit-list" id="tag-edit-list">
+{{#each ./tags}}
+  <li data-tag-id="{{_id}}">
+    <div class="tag-input-group">
+      <span class="tag-input-group-handle">
+        <i class="fa fa-bars"></i>
+      </span>
+      <span class="tag-input">
+        <input type="text" class="tags-input-select" value="{{name}}" placeholder="Edit tags"/>
+      </span>
+      <span class="tag-input-group-remove">
+         <i class="fa fa-times-circle"></i>
+      </span>
+    </div>
+  </li>
+{{/each}}
+  <li data-tag-id="{{_id}}">
+    <div class="tag-input-group">
+      <span class="tag-input">
+        <input type="text" class="tags-input-select" value="{{name}}" placeholder="Add tags" id="tags-submit-new" autofocus/>
+      </span>
+    </div>
+  </li>
+</ul>
 </template>

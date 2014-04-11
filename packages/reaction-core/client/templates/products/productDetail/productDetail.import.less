@@ -1,7 +1,7 @@
 .pdp-container {
   .img-responsive {width: 100%;} // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
-
-//== minor layout adjustment for columns
+  width:100%;
+  //== minor layout adjustment for columns
   .pdp-left-column {
     padding-right: 10px;
   }
@@ -14,36 +14,43 @@
     padding-top: 25px;
   }
 
-//== product detail fields
+  //== product detail fields
   .price {
     font-weight: bold;
     font-size: @product-price-font-size;
-    width: 200px !important;
     padding: 0 0 0 5px;
     overflow: visible;
     display:inline-block;
-  }
+    }
   .currency-symbol {
     font-weight: bold;
     font-size: @product-price-font-size;
-    letter-spacing: -0.1em;
+    margin-right: -10px;
   }
 
+  .vendor {
+    margin-top: -5px;
+  }
   .tags {
-    width: 100% !important;
+    ul,li {
+      position: relative;
+      input {min-width: 50px;}
+      float:none !important;
+
+    }
   }
 
-//== description and textarea
+  //== description and textarea
   .description {
-    margin: 15px 0 15px 0;
+    padding-top: 30px;
     font-size: @product-description-font-size;
-    line-height: 1.6;
+    line-height: @line-height-computed;
   }
 
   .description-edit {
     .description;
   }
-//== main product page title
+  //== main product page title
   .title  {
     h1{
       text-align: center;
@@ -61,10 +68,10 @@
       // height: 60px;
     }
   }
-//== page sub title
+  //== page sub title
   .pageTitle {
     margin-top: -19px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     h2{
       text-align: center;
       font-family: @headings-font-family-h2;
@@ -81,7 +88,16 @@
     }
   }
 
-//== Add to cart block
+  .social-media {
+    line-height: 50px;
+    input {
+      width: 100%;
+    }
+  }
+
+  .facebookMsg-edit, .twitterMsg-edit, .pinterestMsg-edit, .instagramMsg-edit {display:none;}
+
+  //== Add to cart block
   .add-to-cart-block {
       width: 100%;
       height: 45px;
