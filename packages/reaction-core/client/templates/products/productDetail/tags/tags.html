@@ -31,11 +31,11 @@
 <template name="productDetailTags">
 <ul class="list-inline">
 {{#each ./tags}}
-{{#unless currentHashTag}}
-  <li class="list-group-item product-detail-tags-list">
-    <a href="{{pathForSEO "product/tag" "name"}}">{{name}}</a>
-  </li>
-{{/unless}}
+  {{#unless currentHashTag}}
+    <li class="list-group-item product-detail-tags-list">
+      <a href="{{pathForSEO "product/tag" "name"}}">{{name}}</a>
+    </li>
+  {{/unless}}
 {{/each}}
 </ul>
 </template>
