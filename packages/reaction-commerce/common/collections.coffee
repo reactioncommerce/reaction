@@ -302,6 +302,12 @@ TaxSchema = new SimpleSchema
 
 Shops = @Shops # package exports
 
+SocialSchema = new SimpleSchema
+  service:
+    type: String
+  handle:
+    type: String
+
 
 @Products = new Meteor.Collection 'Products',
   schema:
@@ -331,7 +337,7 @@ Shops = @Shops # package exports
       optional: true
     variants:
       type: [ProductVariantSchema]
-    tagIds:
+    hashtags:
       type: [String]
       optional: true
       index: 1
@@ -415,7 +421,7 @@ Products = @Products # package exports
     note:
       type: String
       optional: true
-    tagIds:
+    hashtags:
       type: [String]
       optional: true
 

@@ -75,7 +75,7 @@ Meteor.methods
     if currentTagId
       Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
     # if not in use delete from system
-    productCount = Products.find({"tagIds":{$in:[tagId]}}).count()
+    productCount = Products.find({"hashtags":{$in:[tagId]}}).count()
     relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()
 
     if (productCount is 0) and (relatedTagsCount is 0)

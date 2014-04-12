@@ -11,8 +11,11 @@ Template.productDetail.helpers
 
   tags: ->
     product = (currentProduct.get "product")
-    if product?.tagIds
-      Tags.find({_id: {$in: product.tagIds}}).fetch()
+    tagCollection = []
+    if product?.hashtags
+      for tagId in product.hashtags
+        tagCollection.push Tags.findOne(tagId)
+      return tagCollection
     else
       []
 
@@ -20,7 +23,7 @@ Template.productDetail.helpers
     if Meteor.app.hasOwnerAccess()
       return Template.productTagInputForm
     else
-      return null
+      return Template.productDetailTags
 
   actualPrice: () ->
     (currentProduct.get "variant")?.price
@@ -119,65 +122,6 @@ Template.productDetail.events
     Session.set "editing-"+this.field, false
     $('.social-media-inputs > *').hide()
 
-Template.productDetail.rendered = ->
-  if Meteor.app.hasOwnerAccess()
-    # *****************************************************
-    # Editable tag field
-    # *****************************************************
-    data = []
-    Tags.find().forEach (tag) ->
-      data.push(
-        id: tag.name
-        text: tag.name
-      )
-    $("#tags").editable
-      inputclass: "tags"
-      title: "Add tags to categorize"
-      emptytext: "add tags to categorize"
-      select2:
-        tags: data
-        tokenSeparators: [
-          ","
-          " "
-        ]
-
-      success: (response, names) ->
-        tagIds = []
-        for name in names
-          slug = _.slugify(name)
-          existingTag = Tags.findOne({slug: slug})
-          if existingTag
-            tagIds.push(existingTag._id)
-          else
-            _id = Tags.insert(
-              name: name
-              slug: slug
-              shopId: Meteor.app.shopId
-              isTopLevel: false
-              updatedAt: new Date()
-              createdAt: new Date()
-            )
-            tagIds.push(_id)
-        updateProduct(
-          tagIds: tagIds
-        )
-
-    # *****************************************************
-    # Function to update product
-    # param: property:value
-    # returns true or err
-    # *****************************************************
-    updateProduct = (productsProperties) ->
-      Products.update (currentProduct.get "product")._id,
-        $set: productsProperties
-      , (error) ->
-        if error
-          Alerts.add error.message
-          false
-        else
-          true
-
-
 Template.productDetailEdit.events
   "change input,textarea": (event,template) ->
     Meteor.call "updateProductField", (currentProduct.get "product")._id,  this.field, $(event.currentTarget).val(), (error,results) ->
@@ -198,60 +142,3 @@ Template.productDetailField.events
 
 Template.productDetailEdit.rendered = () ->
   $('textarea').autosize()
-
-Template.productTagInputForm.events
-  'click #btn-tags-cancel, click body': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Session.set "isEditing-"+currentTag, false
-
-  'click .tag-input-group-remove': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Meteor.call "removeProductTag", @._id, currentTag
-
-  'click .tags-input-select': (event,template) ->
-    $(event.currentTarget).autocomplete(
-      delay: 0
-      autoFocus: true
-      source: (request, response) ->
-        datums = []
-        slug = _.slugify(request.term)
-        Tags.find({slug: new RegExp(slug, "i")}).forEach (tag) ->
-          datums.push(
-            label: tag.name
-          )
-        response(datums)
-    )
-    Deps.flush()
-
-  'change .tags-input-select': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Meteor.call "updateProductTags", $(event.currentTarget).val(), @._id, currentTag
-    $('#tags-submit-new').val('')
-    $('#tags-submit-new').focus()
-    # Deps.flush()
-
-  'blur.autocomplete': (event,template) ->
-    if $(event.currentTarget).val()
-      currentTag = Session.get "currentTag"
-      Meteor.call "updateProductTags", $(event.currentTarget).val(), @._id, currentTag
-      Deps.flush()
-      $('#tags-submit-new').val('')
-      $('#tags-submit-new').focus()
-
-  'mousedown .tag-input-group-handle': (event,template) ->
-    Deps.flush()
-    $(".tag-edit-list").sortable("refresh")
-
-Template.productTagInputForm.rendered = ->
-  # *****************************************************
-  # Inline field editing, handling
-  # http://vitalets.github.io/x-editable/docs.html
-  # *****************************************************
-    $(".tag-edit-list").sortable
-      items: "> li"
-      axis: "x"
-      handle: '.tag-input-group-handle'
-      update: (event, ui) ->
-        uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
-        for tag,index in uiPositions
-          Tags.update(tag, {$set: {position: index}})

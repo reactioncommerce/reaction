@@ -14,15 +14,15 @@
 @getProductsByTag = (tag) ->
   selector = {}
   if tag
-    tagIds = []
+    hashtags = []
     relatedTags = [tag]
     while relatedTags.length
       newRelatedTags = []
       for relatedTag in relatedTags
-        if tagIds.indexOf(relatedTag._id) == -1
-          tagIds.push(relatedTag._id)
+        if hashtags.indexOf(relatedTag._id) == -1
+          hashtags.push(relatedTag._id)
           if relatedTag.relatedTagIds?.length
             newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
       relatedTags = newRelatedTags
-    selector.tagIds = {$in: tagIds}
+    selector.hashtags = {$in: hashtags}
   cursor = Products.find(selector)
