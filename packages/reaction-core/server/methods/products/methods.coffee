@@ -118,6 +118,51 @@ Meteor.methods
     update = EJSON.parse "{\"" + field + "\":" + value + "}"
     return Products.update productId, $set: update
 
+  ###
+  # method to insert or update tag with hierachy
+  # tagName will insert
+  # tagName + tagId will update existing
+  ###
+  updateProductTags: (productId, tagName, tagId, currentTagId) ->
+    newTag =
+      slug: _.slugify(tagName)
+      name: tagName
+
+    existingTag = Tags.findOne({"name":tagName})
+
+    if existingTag
+      productCount = Products.find({"hashtags":{$in:[existingTag._id]}}).count()
+      console.log productCount
+
+    if productCount > 0
+      return
+    #Exists
+    if existingTag and productCount is 0
+      Products.update(productId, {$push:{"hashtags":existingTag._id}})
+      return
+    else if tagId
+      Tags.update(tagId,{$set:newTag})
+      return
+    else if !tagId# create a new tag
+      # newTag.isTopLevel = !currentTagId
+      newTag.isTopLevel = false
+      newTag.shopId = Meteor.app.getCurrentShop()._id
+      newTag.updatedAt = new Date()
+      newTag.createdAt = new Date()
+      newTag._id = Tags.insert(newTag)
+      Products.update(productId, {$push:{"hashtags":newTag._id}})
+
+
+  removeProductTag: (productId, tagId) ->
+    console.log productId,tagId
+
+    Products.update(productId, {$pull: {"hashtags": tagId}})
+    # if not in use delete from system
+    productCount = Products.find({"hashtags":{$in:[tagId]}}).count()
+    relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()
+
+    if (productCount is 0) and (relatedTagsCount is 0)
+      Tags.remove(tagId)
 
   ###
   # update product grid positions
