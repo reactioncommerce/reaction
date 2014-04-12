@@ -34,6 +34,12 @@ Template.productDetail.helpers
     else
       return Template.productDetailField
 
+  metaComponent: () ->
+    if Meteor.app.hasOwnerAccess()
+      return Template.productMetaFieldForm
+    else
+      return Template.productMetaField
+
 
 Template.productDetail.events
   "click #price": ->

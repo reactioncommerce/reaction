@@ -132,7 +132,6 @@ Meteor.methods
 
     if existingTag
       productCount = Products.find({"hashtags":{$in:[existingTag._id]}}).count()
-      console.log productCount
 
     if productCount > 0
       return
@@ -186,3 +185,9 @@ Meteor.methods
         ,
           (error,results) ->
             console.log error if error?
+
+  updateMetaFields: (productId, updatedMeta, meta) ->
+    if meta
+      Products.update({"_id": productId, "metafields": meta}, {$set:{"metafields.$": updatedMeta} })
+    else
+      Products.update( "_id": productId, { "$addToSet": { "metafields": updatedMeta } })

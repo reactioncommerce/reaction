@@ -43,8 +43,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.6.0",
-        "commit": "f840f785d64c76738a8f78633b0c680866af499d"
+        "tag": "v0.6.1",
+        "commit": "5c0f36950c7ca91e91d4917a1b4209495151bf1b"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
