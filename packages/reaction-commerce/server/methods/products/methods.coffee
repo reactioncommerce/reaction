@@ -131,7 +131,7 @@ Meteor.methods
     existingTag = Tags.findOne({"name":tagName})
 
     if existingTag
-      productCount = Products.find({"hashtags":{$in:[existingTag._id]}}).count()
+      productCount = Products.find({"_id":productId,"hashtags":{$in:[existingTag._id]}}).count()
 
     if productCount > 0
       return
