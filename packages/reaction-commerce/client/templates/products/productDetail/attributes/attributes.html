@@ -1,6 +1,5 @@
 <template name="productMetaField">
 {{#if ../metafields}}
-  <h3>Details</h3>
   <ul class="list-group metafield-list hidden-xs">
     {{#each ./metafields}}
       <li class="list-group-item metafield-list-item">
@@ -15,7 +14,6 @@
 </template>
 
 <template name="productMetaFieldForm">
-<h3>Details</h3>
 <ul class="list-group product-detail-edit">
   {{#each ./metafields}}
     <li class="list-group-item metafield-list-item">

@@ -1,6 +1,5 @@
 <template name="productTagInputForm">
 <div class="tags">
-  <h3>Tags</h3>
   <ul class="list-inline tag-edit-list" id="tag-edit-list">
   {{#each ./tags}}
     <li data-tag-id="{{_id}}">
@@ -33,7 +32,6 @@
 
 <template name="productDetailTags">
 <div class="tags">
-  <h3>Tags</h3>
   <ul class="list-inline">
   {{#each ./tags}}
     {{#unless currentHashTag}}
