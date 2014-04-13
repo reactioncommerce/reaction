@@ -2,23 +2,14 @@
   .img-responsive {width: 100%;} // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
   width:100%;
   //== minor layout adjustment for columns
-  .pdp-left-column {
-    padding-right: 10px;
-  }
-
-  .pdp-right-column {
-    padding-left: 10px;
-  }
-
-  .product-details {
-    padding-top: 25px;
-  }
+  .pdp-left-column { padding-right: 15px; }
+  .pdp-right-column { padding-left: 15px; }
+  .product-details { padding-top: 25px; }
 
   //== product detail fields
   .price {
     font-weight: bold;
     font-size: @product-price-font-size;
-    padding: 0 0 0 5px;
     overflow: visible;
     display:inline-block;
     }
@@ -27,15 +18,12 @@
     font-size: @product-price-font-size;
     margin-right: -10px;
   }
-
-  .vendor {
-    margin-top: -5px;
-  }
+  .social-pricing { margin-left: -10px; }
+  .vendor { margin-top: -5px; }
 
   //== description and textarea
   .description {
     padding-top: 15px;
-    padding-bottom: 10px;
     font-weight: 300;
     font-size: @product-description-font-size;
     line-height: floor((@font-size-base * @line-height-base) * 1.2); // ~20px
@@ -57,10 +45,7 @@
 
   .title-edit {
     .title();
-    input {
-      min-width: 800px;
-      // height: 60px;
-    }
+    input { min-width: 800px; }
   }
   //== page sub title
   .pageTitle {
@@ -77,16 +62,12 @@
 
   .pageTitle-edit {
     .pageTitle();
-    input {
-      min-width: 800px;
-    }
+    input { min-width: 800px; }
   }
 
   .social-media {
     line-height: 50px;
-    input {
-      width: 100%;
-    }
+    input { width: 100%; }
   }
 
   .facebookMsg-edit, .twitterMsg-edit, .pinterestMsg-edit, .instagramMsg-edit {display:none;}

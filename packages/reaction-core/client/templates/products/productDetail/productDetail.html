@@ -33,28 +33,22 @@
       <!-- BEGIN Left Side -->
       <div class="col-sm-5 pdp-left-column">
         {{> productImageGallery}}
-          {{!-- Tags --}}
-
-          {{>tagsComponent tags=tags}}
-
+        <h3>Tags</h3>
+        {{>tagsComponent tags=tags}}
+        <h3>Details</h3>
         {{> metaComponent }}
       </div>
       <!-- END Left Side -->
       <!-- BEGIN Right Side -->
       <div class="col-sm-7 pdp-right-column">
-        <div class="row">
+        <div class="row social-pricing">
           <div class="col-xs-8">
             {{!-- Price Fixation --}}
-            <div>
-              <span class="price">
-                <i class="fa fa-usd currency-symbol"></i>
-                <span id="price" itemprop="price">{{actualPrice}}</span>
-              </span>
-            </div>
-            {{!-- Vendor / subtext --}}
-            <div class="vendor">
-              {{>fieldComponent field="vendor" value=vendor}}
-            </div>
+            <span class="price">
+              <i class="fa fa-usd currency-symbol"></i>
+              <span id="price" itemprop="price">{{actualPrice}}</span>
+            </span>
+            {{>fieldComponent field="vendor" value=vendor}}
           </div>
           <div class="col-xs-3 col-xs-offset-1">
             {{!-- Social Commentary --}}
@@ -85,6 +79,7 @@
 
           {{!-- Variants & Options --}}
           <div class="row options-add-to-cart">
+          <h3>Options</h3>
             {{>variantList}}
           </div>
 
