@@ -59,7 +59,7 @@ UI.registerHelper "siteName", ->
 #       image = image.url({store: "gridfsimages"})
 #   else
 #       console.log "No media found! Returning default."
-#       image = "../../resources/placeholder.jpeg"
+#       image = "../../resources/placeholder.gif"
 
 
 

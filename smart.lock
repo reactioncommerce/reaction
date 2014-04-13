@@ -178,8 +178,8 @@
       },
       "cfs-tempstore": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-tempstore.git",
-        "tag": "v0.0.20",
-        "commit": "58640921f3b05148dc4ec0a7b8a691585bc4220a"
+        "tag": "v0.0.23",
+        "commit": "5d97f74373f2a08194b1a593f24dfe617e14350f"
       },
       "power-queue": {
         "git": "https://github.com/CollectionFS/Meteor-power-queue.git",
