@@ -1,13 +1,13 @@
 <template name="productMetaField">
 {{#if ../metafields}}
+  <h3>Details</h3>
   <ul class="list-group metafield-list hidden-xs">
-    <li class="list-group-item">
-      <h3>Details</h3>
-    </li>
     {{#each ./metafields}}
       <li class="list-group-item metafield-list-item">
-        <div class="col-sm-4">{{key}}</div>
-        <div class="col-sm-6">{{value}}</div>
+        <div>
+        {{#if key}}<div class="col-sm-4">{{key}}</div>{{/if}}
+        {{#if value}}<div class="col-sm-6">{{value}}</div>{{/if}}
+        </div>
       </li>
     {{/each}}
   </ul>
@@ -15,25 +15,23 @@
 </template>
 
 <template name="productMetaFieldForm">
-
-<ul class="list-group product-detail-edit metafield-edit">
-  <li class="list-group-item">
-    <h3>Details</h3>
-  </li>
+<h3>Details</h3>
+<ul class="list-group product-detail-edit">
   {{#each ./metafields}}
     <li class="list-group-item metafield-list-item">
       {{>metaComponent}}
+      <span class="metafield-remove"><i class="fa fa-times-circle"></i></span>
     </li>
   {{/each}}
-  <li class="list-group-item metafield-list-item">
+  <li class="list-group-item metafield-new-item">
     {{>metaComponent}}
   </li>
 </ul>
 </template>
 
 <template name="metaComponent">
-<div>
-  <input name="metafield-key" class="metafield-key-input col-md-4" id="metafield-key" value="{{key}}" placeholder="Detail name"/>
-  <input name="metafield-value" class="metafield-value-input col-md-8" id="metafield-value" value="{{value}}"  placeholder="Detail information"/>
-</div>
+<form name="metafield-component" class="metafield-component">
+  <input type="text" name="key" class="metafield-key-input col-md-4" value="{{key}}" placeholder="Detail name"/>
+  <input type="text" name="value" class="metafield-value-input col-md-8" value="{{value}}"  placeholder="Detail information"/>
+</form>
 </template>

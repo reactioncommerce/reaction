@@ -1,8 +1,17 @@
 .pdp-container {
-  .metafield-list-item {
-    height: 50px;
+  .metafield-list-item, .metafield-new-item {
+    min-height: 40px;
+    cursor: pointer;
     input {
       padding: 5px;
+      margin-top: -5px;
     }
+  }
+  .metafield-remove {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    color: @input-color-placeholder;
+    cursor: pointer;
   }
 }
