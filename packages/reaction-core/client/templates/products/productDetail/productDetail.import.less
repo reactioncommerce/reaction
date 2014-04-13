@@ -34,9 +34,11 @@
 
   //== description and textarea
   .description {
-    padding-top: 30px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    font-weight: 300;
     font-size: @product-description-font-size;
-    line-height: @line-height-computed;
+    line-height: floor((@font-size-base * @line-height-base) * 1.2); // ~20px
   }
 
   .description-edit {
@@ -62,7 +64,7 @@
   }
   //== page sub title
   .pageTitle {
-    margin-top: -19px;
+    margin-top: -10px;
     margin-bottom: 20px;
     h2{
       text-align: center;

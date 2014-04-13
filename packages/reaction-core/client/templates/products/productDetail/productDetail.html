@@ -33,6 +33,10 @@
       <!-- BEGIN Left Side -->
       <div class="col-sm-5 pdp-left-column">
         {{> productImageGallery}}
+          {{!-- Tags --}}
+
+          {{>tagsComponent tags=tags}}
+
         {{> metaComponent }}
       </div>
       <!-- END Left Side -->
@@ -79,11 +83,6 @@
             {{>fieldComponent field="description" value=description type="textarea"}}
           </div>
 
-          {{!-- Tags --}}
-          <div class="row tags">
-          {{>tagsComponent tags=tags}}
-          </div>
-
           {{!-- Variants & Options --}}
           <div class="row options-add-to-cart">
             {{>variantList}}
@@ -110,7 +109,7 @@
 
 <template name="productDetailEdit">
 {{#if condition type "eq" "textarea"}}
-<p class="lead product-detail-edit {{field}}-edit">
+<p class="product-detail-edit {{field}}-edit">
   <textarea class="{{field}}-edit-input" placeholder="add a product {{camelToSpace field}}">{{value}}</textarea>
 </p>
 {{else}}
@@ -123,7 +122,7 @@
 
 <template name="productDetailField">
 {{#if condition type "eq" "textarea"}}
-  <p class="lead product-detail-field {{field}}">
+  <p class="product-detail-field {{field}}">
   {{value}}
   </p>
 {{else}}
