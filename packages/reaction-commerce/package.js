@@ -94,6 +94,7 @@ Package.on_use(function (api, where) {
     "client/templates/layout/footer/footer.coffee",
 
     "client/templates/layout/loading/loading.html",
+    "client/templates/layout/notFound/notFound.html",
 
     "client/templates/layout/shopHeader/shopNavElements/shopNavElements.html",
     "client/templates/layout/shopHeader/shopNavElements/shopNavElements.coffee",

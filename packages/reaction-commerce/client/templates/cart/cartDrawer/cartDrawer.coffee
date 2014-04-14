@@ -39,9 +39,6 @@ Template.openCartDrawer.events
     $(event.currentTarget).fadeOut(300).delay 300, ()->
       Meteor.call('removeFromCart',currentCartId,currentVariant)
 
-  'click #cart-drawer-container': (event, template) ->
-    Meteor.clearTimeout(delayId) if delayId?
-
 Template.emptyCartDrawer.events
   'click #btn-keep-shopping': (event,template) ->
     event.stopPropagation()
