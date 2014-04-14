@@ -84,7 +84,7 @@ Router.map ->
   # product view / edit page
   @route 'product',
     controller: ShopController
-    path: 'product/:_id'
+    path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
       if @params._id.match  /^[A-Za-z0-9]{17}$/
