@@ -25,17 +25,24 @@
 
 
 <template name="openCartDrawer">
-    <div class="cart-drawer" id="cart-drawer">
-      <div class="cart-drawer-carousel" id="cart-drawer-carousel">
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer-swiper-container">
+    <div class="cart-drawer-swiper-wrapper">
+      <div class="cart-drawer-swiper-slide">
         {{>cartSubTotals}}
-        {{#each cartItems}}
-          {{>cartDrawerItems}}
-        {{/each}}
       </div>
-      <div class="row">
-        <a href="#" class="btn btn-success btn-lg btn-block" id="btn-checkout">
-        Checkout now
-        </a>
+      {{#each cartItems}}
+      <div class="cart-drawer-swiper-slide">
+        {{>cartDrawerItems}}
       </div>
+      {{/each}}
     </div>
+  </div>
+  <div class="cart-drawer-pagination"></div>
+  <div class="row">
+    <a href="#" class="btn btn-success btn-lg btn-block" id="btn-checkout">
+    Checkout now
+    </a>
+  </div>
+</div>
 </template>
