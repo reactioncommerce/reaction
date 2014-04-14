@@ -56,6 +56,9 @@ Package.on_use(function (api, where) {
     "lib/bootstrap/lib/js/tab.js",
     "lib/bootstrap/lib/js/affix.js",
 
+    "lib/swiper/idangerous.swiper.css",
+    "lib/swiper/idangerous.swiper.js",
+
     "lib/jquery-autosize/jquery.autosize.js",
     "lib/owl.carousel/owl-carousel/owl.carousel.css",
     "lib/owl.carousel/owl-carousel/owl.theme.css",

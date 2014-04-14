@@ -1,10 +1,15 @@
 .cart-items {
+  position: relative;
+  border: 3px solid white;
+  margin: 5px;
+  border-radius: 4px;
+
   .cart-labels {
     margin: -30px 0 0 0;
     height: 30px;
     padding: 5px;
     background-color: @product-overlay-bg;
-    width: 225px;
+    width: 235px;
     font-size: 1.1em;
     white-space: nowrap;
     overflow: hidden;
@@ -21,17 +26,18 @@
 
   .remove-cart-item {
     position: absolute;
-    margin: 5px 80px;
-    color: #626262;
-    background-color: rgba(205, 186, 20, 2.04);
-    border: 2px solid rgba(129, 122, 122, 0.62);
+    top: 8px;
+    right: 8px;
+    color: @gray;
+    background-color: @alert-warning-bg;
+    border: 2px solid @gray;
     padding: 5px;
     border-radius: 50%;
     z-index: 99;
   }
 
   .center-cropped {
-      width: 225px;
+      width: 235px;
       height: 225px;
       background-position: center center;
       background-repeat: no-repeat;
