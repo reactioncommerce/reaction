@@ -7,15 +7,19 @@
 
     <div class="row pkg-status">
         <i class="{{icon}} fa-3x pull-left"></i>
-        {{#unless type}}
-          {{#if isEnabled name}}
-          <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i>
-          </a>
-          {{else}}
-          <a class="pull-right enablePkg"> <i class="fa fa-plus-square fa-2x fa-fw"></i>
-          </a>
-          {{/if}}
-        {{/unless}}
+         <div class="pkg-controls">
+          {{#unless type}}
+            {{#if isEnabled name}}
+              <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
+              {{#if hasShopPermission settingsRoute}}
+              <a href="{{pathFor settingsRoute}}" class="pkg-settings"><i class="fa fa-cog fa-2x fa-fw"></i></a>
+              {{/if}}
+
+            {{else}}
+              <a class="pull-right enablePkg"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
+            {{/if}}
+          {{/unless}}
+        </div>
     </div>
 
   </div>
