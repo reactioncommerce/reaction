@@ -58,7 +58,7 @@ Media.allow
 #
 # filestorage for generate docs (invoices)
 #
-Meteor.publish "FileStorage", (docId) ->
+Meteor.publish "FileStorage", () ->
   return FileStorage.find()
 
 FileStorage.allow

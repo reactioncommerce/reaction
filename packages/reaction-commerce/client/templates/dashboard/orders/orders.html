@@ -1,6 +1,7 @@
 <template name="orders">
-  <div class="container orders-grid">
-    {{!-- Orders List --}}
+{{#if orders}}
+  <div class="row orders-grid">
+    {{!-- Orders Page Header --}}
     <div class="row">
         <span class="orders-page-title h3">Orders</span>
         {{#if isInRole 'admin'}}
@@ -11,26 +12,29 @@
     </div>
 
     <div class="row" id="order-carousel">
-      {{#each fulfillmentWorkflow}}
-          <div class= "col-md-12">
-            <div class="panel panel-default panel-order">
-              <div class="panel-heading h3">{{label}}<span class="badge">{{count}}</span></div>
-                <div class="panel-body">
-                  <ul class="list-group orders-list">
-                    {{#each orders}}
-                      {{#if condition state "eq" ../value}}
-                        {{>orderDetail}}
-                      {{/if}}
-                    {{/each}}
-                  </ul>
-                </div>
-              </div>
+    {{!-- Order Details --}}
+        {{#each fulfillmentWorkflow}}
+        <div class="col-sm-4">
+          <div class="panel panel-default panel-order">
+            <div class="panel-heading h3">{{label}}<span class="badge">{{count}}</span></div>
+            <div class="panel-body">
+              <ul class="list-group orders-list">
+                {{#each orders}}
+                  {{#if condition state "eq" ../value}}
+                    {{>orderDetail}}
+                  {{/if}}
+                {{/each}}
+              </ul>
             </div>
-      {{else}}
-      <div class="well well-lg">
-        <h2>There are no orders to display.</h2>
-      </div>
-      {{/each}}
+          </div>
+        </div>
+        {{/each}}
     </div>
   </div>
+{{else}}
+  <div class="row">
+    <h2>There are no orders to display.</h2>
+  </div>
+{{/if}}
+
 </template>
