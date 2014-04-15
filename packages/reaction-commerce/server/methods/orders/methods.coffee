@@ -56,7 +56,7 @@ Meteor.methods
   # Creates a pdf doc and attaches to order
   # for any existing site url (completed orders)
   ###
-  createPDF: (url) ->
+  createPDF: (url, orderId) ->
     Future = Npm.require("fibers/future")
     fs = Npm.require('fs')
     phantomServer = Npm.require "phantomjs"
@@ -99,16 +99,19 @@ Meteor.methods
 
               page.render filePath
               ph.exit()
-            ), 800
+            ), 1200
             setTimeout (->
               future.return("rendered")
-            ), 1500
+            ), 1800
       return
     )
 
     if future.wait()
       fileData = fs.readFileSync filePath
-      FileStorage.storeBuffer fileName, fileData,
-        contentType: "application/pdf"
-        owner: Meteor.userId()
-        encoding: 'binary'
+      console.log fileData
+      if fileData?
+        fileObj = new FS.File(filePath)
+        fileObj.owner = Meteor.userId()
+        fileObj.metadata =
+          orderId: orderId
+        FileStorage.insert fileObj
