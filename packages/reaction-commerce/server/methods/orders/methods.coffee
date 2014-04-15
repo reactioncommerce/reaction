@@ -67,7 +67,9 @@ Meteor.methods
     process.env.PATH += ":" + path.dirname(phantomServer.path)
     fileName = "reaction-orders-" + Date.now() + ".pdf"
     filePath = process.env.PWD + "/.fileStorage/" + fileName
-    url = "http://" + this.connection.httpHeaders.host + "/" +
+    url = "http://" + this.connection.httpHeaders.host + url
+
+    console.log url
 
     # updateStorage = Meteor._wrapAsync(FileStorage.insert(file:data))
     #PDF Formatting
@@ -91,10 +93,9 @@ Meteor.methods
             setTimeout (->
               page.evaluate ((s) ->
                 clipRect = document.getElementById('print-area').getBoundingClientRect()
-                page.set "clipRect", clipRect
               ), ((err, clipRect) ->
                 # this should work, but doesn't but leaving in case someday it does
-                #page.set "clipRect", clipRect
+                page.set "clipRect", clipRect
               ), "clipRect"
 
               page.render filePath
@@ -111,4 +112,5 @@ Meteor.methods
         fileObj.owner = Meteor.userId()
         fileObj.metadata =
           orderId: orderId
-        console.log FileStorage.insert fileObj
+        doc = FileStorage.insert fileObj
+        return doc._id

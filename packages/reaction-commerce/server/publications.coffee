@@ -30,7 +30,7 @@ Meteor.publish 'ReactionSessions', (id) ->
 #
 # CollectionFS - File Storage permissions
 #
-Meteor.publish "media", (variantId) ->
+Meteor.publish "media", () ->
   return Media.find({ 'metadata.shopId': Meteor.app.getCurrentShop(this)._id },  {sort: {"metadata.priority": 1}})
 
 # Meteor.publish "variantMedia", (variantId) ->
@@ -58,21 +58,27 @@ Media.allow
 #
 # filestorage for generate docs (invoices)
 #
-Meteor.publish "FileStorage", (id) ->
-  FileStorage.find _id: id
+Meteor.publish "FileStorage", (docId) ->
+  return FileStorage.find()
 
 FileStorage.allow
-  insert: (userId, doc) ->
-    doc.shopId = Meteor.app.getCurrentShop()._id
+  insert: (userId, fileObj) ->
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
-
-  update: (userId, doc, fields, modifier) ->
-    # if modifier.$set and modifier.$set.shopId
-    #   return false
+  update: (userId, fileObj) ->
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
     true
-
-  remove: (userId, doc) ->
-    doc.shopId is Meteor.app.getCurrentShop()._id
+  remove: (userId, fileObj) ->
+    if fileObj.metadata.shopId != Meteor.app.getCurrentShop()._id
+      return false
+    unless Roles.userIsInRole(userId, ['admin'])
+      return false
+    true
+  download: (userId, fileObj) ->
+    true
+  fetch: []
 
 ###
 # get any user name,social profile image
