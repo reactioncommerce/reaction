@@ -1,7 +1,7 @@
 <template name="stateHelperDocuments">
   <span class="download-documents pull-right">
       {{#each documents}}
-        {{cfsDownloadButton "FileStorage" fileId=docId class="btn btn-default" content="Download"}}
+       <a href="{{url}}" target="_blank" class="btn btn-success">Download</a>
       {{/each}}
   </span>
 </template>
