@@ -98,8 +98,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.46",
-        "commit": "30b5d3e08433fbbfe49f09845559bf3ca0ab9101"
+        "tag": "v0.2.47",
+        "commit": "d97bf419498efb560771e94a8a3e2c92db33d06d"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
@@ -159,7 +159,7 @@
       "data-man": {
         "git": "https://github.com/CollectionFS/Meteor-data-man.git",
         "branch": "master",
-        "commit": "2f53e4fee4246b9552046c1e05ba9ee5b169d900"
+        "commit": "eba0055619be2b5dfd7af6b4e946dc6fe393a040"
       },
       "cfs-upload-ddp": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-upload-ddp.git",

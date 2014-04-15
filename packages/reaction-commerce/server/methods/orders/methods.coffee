@@ -107,11 +107,8 @@ Meteor.methods
     )
 
     if future.wait()
-      fileData = fs.readFileSync filePath
-      console.log fileData
-      if fileData?
         fileObj = new FS.File(filePath)
         fileObj.owner = Meteor.userId()
         fileObj.metadata =
           orderId: orderId
-        FileStorage.insert fileObj
+        console.log FileStorage.insert fileObj
