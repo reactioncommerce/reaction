@@ -43,7 +43,7 @@ OrderWorkflow = new StateMachine.create(
         Meteor.call "updateHistory",  orderId, "Tracking Added", tracking
         # create packing slips
         path = Router.routes['cartCompleted'].path({_id: orderId})
-        Meteor.call "createPDF", path, (err,result) ->
+        Meteor.call "createPDF", path, orderId, (err,result) ->
           Meteor.call "updateDocuments", orderId, result, "packing"
           # move to preparation stage
           Meteor.call "updateWorkflow",orderId, "shipmentPrepare" if order?

@@ -6,7 +6,6 @@ Meteor.methods
   # the original and notify them
   ###
   addToCart: (cartSession, productId, variantData, quantity) ->
-    console.log cartSession, productId, variantData, quantity
     if cartSession
       cartVariantExists = Cart.findOne
         sessionId: cartSession.sessionId,
@@ -20,6 +19,7 @@ Meteor.methods
           "items.variants._id": variantData._id,
           { $set: {updatedAt: new Date()}, $inc: {"items.$.quantity": quantity}},
         (error, result) ->
+          console.log "error adding to cart" if error?
           console.log Cart.namedContext().invalidKeys() if error?
       # add new cart items
       else
@@ -31,6 +31,7 @@ Meteor.methods
               quantity: quantity
               variants: variantData
         , (error, result) ->
+          console.log "error adding to cart" if error?
           console.log error if error?
 
   ###
@@ -125,6 +126,7 @@ Meteor.methods
 
     order = Orders.insert(cart,
         (error, result) ->
+          console.log "error in order insert"
           console.log Orders.namedContext().invalidKeys() if error
       )
     Cart.remove(currentCartId)
