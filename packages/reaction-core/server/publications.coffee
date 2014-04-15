@@ -67,8 +67,8 @@ FileStorage.allow
     true
 
   update: (userId, doc, fields, modifier) ->
-    if modifier.$set and modifier.$set.shopId
-      return false
+    # if modifier.$set and modifier.$set.shopId
+    #   return false
     true
 
   remove: (userId, doc) ->
@@ -79,16 +79,16 @@ FileStorage.allow
 # should be limited, secure information
 ###
 Meteor.publish "UserProfile", (profileId) ->
-  if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
-    cursor = Users.find
-      _id: profileId
-    ,
-      fields:
-        profile: 1
-        emails: 1
+  if profileId?
+    if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
+      return Users.find({"_id": profileId}, {fields: {profile: 1, emails: 1}})
+      # return cursor
+    else
+      console.log "user profile access denied"
+      return false
   else
+    console.log "profileId not defined. access denied"
     return false
-
 
 ###
 # Client access rights for ConfigData

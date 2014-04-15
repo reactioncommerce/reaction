@@ -1,5 +1,5 @@
 
-@FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.FileSystem("files", path: ".fileStorage") ])
+@FileStorage = new FS.Collection("FileStorage",stores: [ new FS.Store.GridFS("docfiles") ])
 FileStorage = @FileStorage
 
 gridfs = new FS.Store.GridFS("gridfsmedia",
