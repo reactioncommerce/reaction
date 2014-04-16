@@ -1,205 +1,61 @@
 <template name="settingsGeneral">
-  <div class="container">
-    <h2>Shop<small> Settings</small></h2>
+<h2>Shop<small> Settings</small></h2>
+<div class="col-md-5">
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#general" data-toggle="tab">General</a></li>
+  <li><a href="#address" data-toggle="tab">Address</a></li>
+  <li><a href="#server" data-toggle="tab">Server</a></li>
+  <li><a href="#settings" data-toggle="tab">Settings</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="general">
     <div class="well">
-      {{#autoForm schema=shopEditForm doc=shop id="shopEditForm" class="form-horizontal"}}
-
+    {{>quickForm collection="Shops" doc=shop id="shopEditForm" type="update" fields="name,email"}}
+    </div>
+  </div>
+  <div class="tab-pane" id="address">
+    <div class="well">
+      {{#autoForm collection="Shops" doc=shop id="shopEditAddressForm" type="update"}}
         <fieldset>
-          <div class="form-group {{#if afFieldIsInvalid "name"}}has-error{{/if}}">
-            {{>afFieldLabel name='name' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='name' autofocus=''}}
-              {{#if afFieldIsInvalid "name"}}
-                <span class="help-block">{{afFieldMessage "name"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "email"}}has-error{{/if}}">
-            {{>afFieldLabel name='email' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='email'}}
-              {{#if afFieldIsInvalid "email"}}
-                <span class="help-block">{{afFieldMessage "email"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.fullName"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.fullName' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.fullName'}}
-              {{#if afFieldIsInvalid "addressBook.0.fullName"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.fullName"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.company"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.company' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.company'}}
-              {{#if afFieldIsInvalid "addressBook.0.company"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.company"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.address1"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.address1' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.address1'}}
-              {{#if afFieldIsInvalid "addressBook.0.address1"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.address1"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.address2"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.address2' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.address2'}}
-              {{#if afFieldIsInvalid "addressBook.0.address2"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.address2"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.city"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.city' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.city'}}
-              {{#if afFieldIsInvalid "addressBook.0.city"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.city"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.region"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.region' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.region'}}
-              {{#if afFieldIsInvalid "addressBook.0.region"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.region"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.postal"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.postal' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.postal'}}
-              {{#if afFieldIsInvalid "addressBook.0.postal"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.postal"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "addressBook.0.country"}}has-error{{/if}}">
-            {{>afFieldLabel name='addressBook.0.country' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='addressBook.0.country' options=countryOptions value=defaultCountry}}
-              {{#if afFieldIsInvalid "addressBook.0.country"}}
-                <span class="help-block">{{afFieldMessage "addressBook.0.country"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "domains"}}has-error{{/if}}">
-            {{>afFieldLabel name='domains' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='domains'}}
-              {{#if afFieldIsInvalid "domains"}}
-                <span class="help-block">{{afFieldMessage "domains"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "timezone"}}has-error{{/if}}">
-            {{>afFieldLabel name='timezone' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-5 controls">
-              {{>afFieldInput name='timezone' options=timezoneOptions}}
-              {{#if afFieldIsInvalid "timezone"}}
-                <span class="help-block">{{afFieldMessage "timezone"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "currency"}}has-error{{/if}}">
-            {{>afFieldLabel name='currency' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-1 controls">
-              {{>afFieldInput name='currency'}}
-              {{#if afFieldIsInvalid "currency"}}
-                <span class="help-block">{{afFieldMessage "currency"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "moneyFormat"}}has-error{{/if}}">
-            {{>afFieldLabel name='moneyFormat' class="col-sm-2 col-lg-1 control-label"}}
-            <div class="col-sm-1 controls">
-              {{>afFieldInput name='moneyFormat'}}
-              {{#if afFieldIsInvalid "moneyFormat"}}
-                <span class="help-block">{{afFieldMessage "moneyFormat"}}</span>
-              {{/if}}
-            </div>
-          </div>
-
-          <div class="form-group {{#if afFieldIsInvalid "useCustomEmailSettings"}}has-error{{/if}}">
-            <div class="col-sm-5 col-sm-offset-1">
-              {{>afFieldInput name='useCustomEmailSettings' id="useCustomEmailSettings"}}
-              {{#if afFieldIsInvalid "useCustomEmailSettings"}}
-                <span class="help-block">{{afFieldMessage "useCustomEmailSettings"}}</span>
-              {{/if}}
-
-              <div class="useCustomEmailSettings" style="{{displayCustomEmailSettings}}">
-                <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.username"}}has-error{{/if}}">
-                  {{>afFieldLabel name='customEmailSettings.username' class="col-sm-2 col-lg-2 control-label"}}
-                  <div class="col-sm-10 controls">
-                    {{>afFieldInput name='customEmailSettings.username'}}
-                    {{#if afFieldIsInvalid "customEmailSettings.username"}}
-                      <span class="help-block">{{afFieldMessage "customEmailSettings.username"}}</span>
-                    {{/if}}
-                  </div>
-                </div>
-
-                <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.password"}}has-error{{/if}}">
-                  {{>afFieldLabel name='customEmailSettings.password' class="col-sm-2 col-lg-2 control-label"}}
-                  <div class="col-sm-10 controls">
-                    {{>afFieldInput name='customEmailSettings.password' type="password"}}
-                    {{#if afFieldIsInvalid "customEmailSettings.password"}}
-                      <span class="help-block">{{afFieldMessage "customEmailSettings.password"}}</span>
-                    {{/if}}
-                  </div>
-                </div>
-
-                <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.host"}}has-error{{/if}}">
-                  {{>afFieldLabel name='customEmailSettings.host' class="col-sm-2 col-lg-2 control-label"}}
-                  <div class="col-sm-10 controls">
-                    {{>afFieldInput name='customEmailSettings.host'}}
-                    {{#if afFieldIsInvalid "customEmailSettings.host"}}
-                      <span class="help-block">{{afFieldMessage "customEmailSettings.host"}}</span>
-                    {{/if}}
-                  </div>
-                </div>
-
-                <div class="form-group {{#if afFieldIsInvalid "customEmailSettings.port"}}has-error{{/if}}">
-                  {{>afFieldLabel name='customEmailSettings.port' class="col-sm-2 col-lg-2 control-label"}}
-                  <div class="col-sm-10 controls">
-                    {{>afFieldInput name='customEmailSettings.port' options=portOptions}}
-                    {{#if afFieldIsInvalid "customEmailSettings.port"}}
-                      <span class="help-block">{{afFieldMessage "customEmailSettings.port"}}</span>
-                    {{/if}}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        <div class="col-sm-6">
-          <button type="submit" class="btn btn-primary update pull-right">Save</button>
-        </div>
+          {{> afQuickField name='addressBook.0.company'}}
+          {{> afQuickField name='addressBook.0.fullName'}}
+          {{> afQuickField name='addressBook.0.address1'}}
+          {{> afQuickField name='addressBook.0.address2'}}
+          {{> afQuickField name='addressBook.0.city'}}
+          {{> afQuickField name='addressBook.0.region'}}
+          {{> afQuickField name='addressBook.0.postal'}}
+          {{> afQuickField name='addressBook.0.country' options=countryOptions value=defaultCountry}}
+          {{> afQuickField name='addressBook.0.phone'}}
+          {{> afQuickField name='addressBook.0.isCommercial'}}
+          {{> afQuickField name='addressBook.0.isDefault' value=true}}
         </fieldset>
+        <div class="row">
+          <button type="submit" class="btn btn-primary pull-right">Submit</button>
+        </div>
       {{/autoForm}}
     </div>
   </div>
+  <div class="tab-pane" id="server">
+    <div class="well">
+    <h5>SMTP Email Server</h5>
+    {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=shop id="shopEditEmailForm" type="update"  type="update"}}
+    </div>
+  </div>
+  <div class="tab-pane" id="settings">
+    <div class="well">
+    {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm"  type="update"}}
+      {{> afQuickField name='domains'}}
+      {{> afQuickField name='timezone' options=timezoneOptions}}
+      {{> afQuickField name='currency'}}
+      {{> afQuickField name='moneyFormat'}}
+      <div class="row">
+        <button type="submit" class="btn btn-primary pull-right">Submit</button>
+      </div>
+    {{/autoForm}}
+    </div>
+  </div>
+</div>
+</div>
 </template>
