@@ -2,16 +2,17 @@
 {{#if hasDashboardAccess}}
   {{#if isVisible}}
     <div class="dashboard-drawer">
-
-      <div class="dashboard" id="dashboard">
-        <!-- package control panel -->
-        {{#with Package}}
-          <div class="dashboard-widget">
-            {{>packagePanel}}
-          </div>
-          <!-- package widgets -->
-          {{>widget name=name}}
-        {{/with}}
+      <div class="dashboard-container">
+        <div class="dashboard-widget-wrapper">
+          {{#with Package}}
+            <div class="dashboard-widget">
+              <div class="dashboard-widget-center">
+              {{>packagePanel}}
+              </div>
+            </div>
+            {{>dashboardWidgets}}
+          {{/with}}
+        </div>
       </div>
       {{>dashboardNavBar}}
     </div>
@@ -27,4 +28,8 @@
       {{/each}}
     </ul>
   </div>
+</template>
+
+<template name="dashboardWidgets">
+  {{>widget name=./name}}
 </template>
