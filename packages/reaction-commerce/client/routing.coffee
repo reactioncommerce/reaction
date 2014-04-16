@@ -43,7 +43,7 @@ Router.map ->
     path: '/dashboard/settings/shop'
     template: 'settingsGeneral'
     data: ->
-      shop: Shops.findOne Meteor.app.shopId
+      shop: Shops.findOne()
 
   @route 'dashboard/settings/account',
     controller: ShopAdminController
@@ -52,7 +52,7 @@ Router.map ->
     waitOn: ->
       Meteor.subscribe 'shopMembers'
     data: ->
-      shop: Shops.findOne Meteor.app.shopId
+      shop: Shops.findOne()
 
   # list page of customer records
   @route 'dashboard/customers',

@@ -1,4 +1,10 @@
 Template.settingsGeneral.helpers
+  shop: ->
+    Shops.findOne()
+  addressBook: ->
+      address = Shops.findOne().addressBook
+      return address[0]
+
   countryOptions: ->
     ConfigData.findOne().countries
 
@@ -17,21 +23,6 @@ Template.settingsGeneral.helpers
     {label: 2525, value: 2525}
   ]
 
-  shopEditForm: ->
-    shopEditForm = new AutoForm Shops
-    shopEditForm.hooks
-      formToDoc: (doc) ->
-        if doc.domains?.search /localhost,/
-          doc.domains = "localhost," + doc.domains
-        doc.domains = doc.domains.split(",")  if typeof doc.domains is "string"
-        doc
-      onSuccess: (operation, result, template) ->
-        Alerts.add "Shop settings are saved.", "success"
-      onError: (operation, error, template) ->
-        Alerts.add "Shop setings update failed." + error, "danger"
-
-    shopEditForm
-
   displayCustomEmailSettings: (doc) ->
     if doc.useCustomEmailSettings
       style = "display:none"
@@ -40,3 +31,43 @@ Template.settingsGeneral.helpers
 Template.settingsGeneral.events
   "change #useCustomEmailSettings": (event) ->
     $('.useCustomEmailSettings').slideToggle()
+
+
+AutoForm.hooks shopEditForm:
+  onSuccess: (operation, result, template) ->
+    Alerts.add "Shop general settings saved.", "success"
+
+  onError: (operation, error, template) ->
+    Alerts.add "Shop general settings update failed. " + error, "danger"
+
+AutoForm.hooks shopEditAddressForm:
+  onSuccess: (operation, result, template) ->
+    Alerts.add "Shop address settings saved.", "success"
+
+  onError: (operation, error, template) ->
+    Alerts.add "Shop address settings update failed. " + error, "danger"
+
+AutoForm.hooks shopEditEmailForm:
+  onSuccess: (operation, result, template) ->
+    Alerts.add "Shop server settings saved.", "success"
+
+  onError: (operation, error, template) ->
+    Alerts.add "Shop server settings update failed. " + error, "danger"
+
+AutoForm.hooks shopEditSettingsForm:
+  onSuccess: (operation, result, template) ->
+    Alerts.add "Shop settings settings saved.", "success"
+
+  onError: (operation, error, template) ->
+    Alerts.add "Shop setting update failed. " + error, "danger"
+
+
+
+
+# AutoForm.hooks shopEditSettingsForm:
+#   formToDoc: (doc) ->
+#     for domain in doc.domains
+#       if domain is "localhost" then localhost = true
+#     if localhost then doc.domains.push "localhost"
+#     return false
+#     doc

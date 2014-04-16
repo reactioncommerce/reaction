@@ -29,7 +29,7 @@ ShopMemberSchema = new SimpleSchema
     type: [String]
     optional: true
 
-CustomEmailSettings = new SimpleSchema
+@CustomEmailSettings = new SimpleSchema
   username:
     type: String
     optional: true
@@ -43,6 +43,7 @@ CustomEmailSettings = new SimpleSchema
     type: Number
     allowedValues: [25, 587, 465, 475, 2525]
     optional: true
+CustomEmailSettings = @CustomEmailSettings
 
 MetafieldSchema = new SimpleSchema
   key:
@@ -215,9 +216,11 @@ ProductVariantSchema = @ProductVariantSchema
   isCommercial:
     label: "This is a commercial address"
     type: Boolean
+    defaultValue: false
   isDefault:
     label: "This is my default address"
     type: Boolean
+    defaultValue: true
   metafields:
     type: [MetafieldSchema]
     optional: true
@@ -256,7 +259,7 @@ TaxSchema = new SimpleSchema
       type: [AddressSchema]
     domains:
       type: [String]
-      #defaultValue: ["localhost"] #see simple schema issue #73
+      defaultValue: ["localhost"] #see simple schema issue #73
     currency:
       type: String
     email:
