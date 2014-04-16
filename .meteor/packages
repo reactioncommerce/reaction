@@ -43,3 +43,4 @@ reaction-mailgun
 cfs-gridfs
 cfs-s3
 ui-dropped-event
+fast-render
