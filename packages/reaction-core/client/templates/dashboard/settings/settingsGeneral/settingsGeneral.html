@@ -40,12 +40,12 @@
   <div class="tab-pane" id="server">
     <div class="well">
     <h5>SMTP Email Server</h5>
-    {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=shop id="shopEditEmailForm" type="update"  type="update"}}
+    {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=shop id="shopEditEmailForm" type="update"}}
     </div>
   </div>
   <div class="tab-pane" id="settings">
     <div class="well">
-    {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm"  type="update"}}
+    {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update"}}
       {{> afQuickField name='domains'}}
       {{> afQuickField name='timezone' options=timezoneOptions}}
       {{> afQuickField name='currency'}}

@@ -9,6 +9,9 @@ Users = @Users = Meteor.users
   name:
     type: String
     optional: true
+  property:
+    type: String
+    optional: true
   settings:
     type: Object
     optional: true
