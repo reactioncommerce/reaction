@@ -11,8 +11,5 @@ Template.packagePanel.helpers
 
   widgetTemplateRender: (template)->
     data = Shops.findOne Meteor.app.shopId
-    Template[template](data)
+    Template[template]
 
-Template.packagePanel.events
-  "click .package-settings": (event, template) ->
-    $('#' +@.template).modal()

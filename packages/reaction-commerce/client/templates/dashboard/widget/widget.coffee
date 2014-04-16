@@ -119,7 +119,7 @@ Template["reaction-commerce-widget"].rendered = ->
       .attr("r", (d) -> d.radius)
       .style("fill", (d) -> "white")
       .style("stroke", (d) -> d.color)
-      .style("stroke-width", (d) -> "2")
+      .style("stroke-width", (d) -> "8")
 
   # Create the text for each block
   elemEnter
@@ -129,8 +129,8 @@ Template["reaction-commerce-widget"].rendered = ->
     .append("text")
       .attr("dy", (d) -> 7 )
       .attr("text-anchor", "middle")
-      .style("font-size", "20px")
-      .style("font-weight", "200")
+      .style("font-size", "22px")
+      .style("font-weight", "400")
       .attr("fill", (d) -> d.color)
       .text (d) -> d.value
   # append the order state labels
@@ -139,8 +139,8 @@ Template["reaction-commerce-widget"].rendered = ->
     .attr("dy", 20 )
     .attr("text-anchor", "middle")
     .style("font-size", "10px")
-    .style("font-weight", "200")
-    .attr("fill", "black")
+    .style("font-weight", "300")
+    .attr("fill", "#696969")
     .text (d) -> d.label
 
 

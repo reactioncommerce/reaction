@@ -1,30 +1,3 @@
-Deps.autorun () ->
-  Session.get "currentPackage"
-  if $(".dashboard")?
-    if $(".dashboard").data('owlCarousel')?
-      # console.log "reinit dashboard"
-      setTimeout (->
-        $(".dashboard").data('owlCarousel').reinit()
-      ), 1
-    else
-      setTimeout (->
-        # console.log "recreating owl dashboard"
-        $(".dashboard").owlCarousel
-          navigation: false
-          pagination: false
-          autoHeight: true
-      ), 1
-
-Deps.autorun () ->
-  Session.get("dashboard")
-  #console.log "ensure newly visible dashboard has carousel"
-  setTimeout (->
-    $(".dashboard").owlCarousel
-      navigation: false
-      pagination: false
-      autoHeight: true
-    ), 1
-
 Template.dashboard.helpers
   isVisible: ->
     Session.get("dashboard")
@@ -58,19 +31,21 @@ Template.dashboard.events
       event.preventDefault()
       Router.go(@.overviewRoute)
 
-  'click .next': (event, template) ->
-      owl.trigger('owl.next')
+Template.dashboardWidgets.helpers
+  widget: (name) ->
+    widget = this.name + "-widget"
+    return Template[widget]
 
-  'click .prev': (event, template) ->
-      owl.trigger('owl.prev')
-
-Template.dashboard.rendered = ->
-  # console.log "dashboard.initial template rendered"
-  $(".dashboard").owlCarousel
-    navigation: false
-    pagination: false
-    autoHeight: true
-
+Template.dashboardWidgets.rendered = ->
+  $ ->
+    dashboardSwiper = $(".dashboard-container").swiper(
+      mode: "horizontal"
+      loop: false
+      slidesPerView: "auto"
+      wrapperClass: "dashboard-widget-wrapper"
+      slideClass: "dashboard-widget"
+    )
+  return
 
 ###
 # dashboard nav bar
