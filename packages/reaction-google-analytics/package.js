@@ -7,7 +7,8 @@ Package.on_use(function (api, where) {
     "standard-app-packages",
     "coffeescript",
     "simple-schema",
-    "collection2"
+    "collection2",
+    "autoform"
   ], ["client", "server"]);
   api.use([
     "less",

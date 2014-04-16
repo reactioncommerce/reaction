@@ -1,19 +1,10 @@
-Template.googleAnalytics.packageConfig = ->
-  Packages.findOne({name: "reaction-google-analytics"})
+Template.googleAnalytics.helpers
+  packageConfig: () ->
+    Packages.findOne({name: "reaction-google-analytics"})
 
-Template.googleAnalytics.events
-  "submit form": (event) ->
-    event.preventDefault()
-    property = $(event.target).find("[name=google-input-property]").val()
-    config = Packages.findOne({name: "reaction-google-analytics"})
-    Packages.update
-      _id: config._id
-    ,
-      $set:
-        property: property
+AutoForm.hooks gaSettingsForm:
+  onSuccess: (operation, result, template) ->
     Alerts.add "Google Analytics settings saved.", "success"
-    Router.go "dashboard"
 
-  "click .cancel": (event) ->
-    history.go -1
-    false
+  onError: (operation, error, template) ->
+    Alerts.add "Google Analytics update failed. " + error, "danger"
