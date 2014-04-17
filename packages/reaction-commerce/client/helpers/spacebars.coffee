@@ -109,14 +109,14 @@ UI.registerHelper "cart", () ->
     storedCart = Cart.findOne()
     if storedCart?.items
       for item in storedCart?.items
-        if item.variants?.inventoryPolicy and item.variants?.lowInventoryWarning and item.variants?.lowInventoryWarningThreshold
+        if item.variants?.inventoryPolicy and item.variants?.lowInventoryWarningThreshold
           if (item.variants?.inventoryQuantity < item.variants.lowInventoryWarningThreshold)
             return true
     return false
 
   # return true if item variant has a low inventory warning
   showItemLowInventoryWarning: (variant) ->
-    if variant?.inventoryPolicy and variant?.lowInventoryWarning and variant?.lowInventoryWarningThreshold
+    if variant?.inventoryPolicy and variant?.lowInventoryWarningThreshold
       if (variant?.inventoryQuantity < variant.lowInventoryWarningThreshold)
         return true
     return false
