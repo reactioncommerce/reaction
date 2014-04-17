@@ -1,50 +1,16 @@
 <template name="mailgun">
-  <div class="container">
-    <h2>Mailgun <small>Settings</small></h2>
-    {{#autoForm schema=mailgunSettingsForm doc=packageData}}
-    <fieldset>
-      <div class="form-group {{#if afFieldIsInvalid "settings.username"}}has-error{{/if}}">
-        {{>afFieldLabel name='settings.username' class="col-sm-2 col-lg-2 control-label"}}
-        <div class="col-sm-10 controls">
-          {{>afFieldInput name='settings.username' autofocus='' placeholder="Mailgun Username"}}
-          {{#if afFieldIsInvalid "settings.username"}}
-            <span class="help-block">{{afFieldMessage "settings.username"}}</span>
-          {{/if}}
-        </div>
-      </div>
-
-      <div class="form-group {{#if afFieldIsInvalid "settings.password"}}has-error{{/if}}">
-        {{>afFieldLabel name='settings.password' class="col-sm-2 col-lg-2 control-label"}}
-        <div class="col-sm-10 controls">
-          {{>afFieldInput name='settings.password' placeholder="Mailgun Password"}}
-          {{#if afFieldIsInvalid "settings.password"}}
-            <span class="help-block">{{afFieldMessage "settings.password"}}</span>
-          {{/if}}
-        </div>
-       </div>
-
-      <div class="form-group {{#if afFieldIsInvalid "settings.host"}}has-error{{/if}}">
-        {{>afFieldLabel name='settings.host' class="col-sm-2 col-lg-2 control-label"}}
-        <div class="col-sm-10 controls">
-          {{>afFieldInput name='settings.host' placeholder="Mailgun Host"}}
-          {{#if afFieldIsInvalid "settings.host"}}
-            <span class="help-block">{{afFieldMessage "settings.host"}}</span>
-          {{/if}}
-        </div>
-      </div>
-
-      <div class="form-group {{#if afFieldIsInvalid "settings.port"}}has-error{{/if}}">
-        {{>afFieldLabel name='settings.port' class="col-sm-2 col-lg-2 control-label"}}
-        <div class="col-sm-10 controls">
-          {{>afFieldInput name='settings.port' options=portOptions}}
-          {{#if afFieldIsInvalid "settings.port"}}
-            <span class="help-block">{{afFieldMessage "settings.port"}}</span>
-          {{/if}}
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-default pull-right save">Save</button>
-    </fieldset>
-    {{/autoForm}}
+<div class="row">
+  <h2>Mailgun<small> Settings</small></h2>
+</div>
+<div class="row">
+  <div class="col-md-6 well">
+  {{#autoForm collection="Packages" schema="MailgunConfigSchema" doc=packageData type="update" id="mailgun-update-form"}}
+    {{>afQuickField name='settings.host' autofocus='' value="smtp.mailgun.org" placeholder="smtp.mailgun.org"}}
+    {{>afQuickField name='settings.port' value="25" placeholder="25"}}
+    {{>afQuickField name='settings.username'}}
+    {{>afQuickField name='settings.password' type="password"}}
+    <button type="submit" class="btn btn-primary pull-right">Update</button>
+  {{/autoForm}}
   </div>
+</div>
 </template>

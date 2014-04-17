@@ -3,6 +3,7 @@
 # loads data from the private/data directory
 # json, wrapped as an array
 # can be imported using loadData(collection)
+# individual packages have their own fixtures
 # *****************************************************
 
 loadData = (collection) ->
@@ -40,21 +41,6 @@ share.loadFixtures = ->
         Packages.insert
           shopId: shop._id
           name: "reaction-commerce-orders"
-
-        Packages.insert
-          shopId: shop._id
-          name: "reaction-google-analytics"
-          property: Meteor.settings?.googleAnalyticsProperty
-
-        Packages.insert
-          shopId: shop._id
-          name: "reaction-paypal"
-          settings: Meteor.settings.paypal
-
-        Packages.insert
-          shopId: shop._id
-          name: "reaction-mailgun"
-          settings: Meteor.settings.mailgun
 
     unless Accounts.loginServiceConfiguration.find().count()
       if Meteor.settings.public?.facebook?.appId

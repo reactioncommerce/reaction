@@ -1,33 +1,16 @@
 <template name="paypal">
-    <div class="row">
-    <h2>
-      PayPal
-      <small> Settings</small>
-    </h2>
-    </div>
-    <div class="row well">
-      <div class="col-md-6">
-      {{> paypalForm}}
-      </div>
-    </div>
+<div class="row">
+  <h2>PayPal<small> Settings</small></h2>
+</div>
+<div class="row">
+  <div class="col-md-6 well">
+  {{#autoForm collection="Packages" schema="PaypalPackageSchema" doc=packageData type="update" id="paypal-update-form"}}
+    {{>afQuickField name='settings.host' placeholder="api.sandbox.paypal.com" autofocus=''}}
+    {{>afQuickField name='settings.port'}}
+    {{>afQuickField name='settings.client_id'}}
+    {{>afQuickField name='settings.client_secret' type="password"}}
+    <button type="submit" class="btn btn-primary pull-right">Update</button>
+  {{/autoForm}}
+  </div>
+</div>
 </template>
-
-<template name="paypalUpdateForm">
-      {{#autoForm schema=paypalConfigSchema doc=packageData type="method" meteormethod="updatePackage" id="paypal-update-form"}}
-        {{>afQuickField name='settings.host' autofocus='' placeholder="api.sandbox.paypal.com"}}
-        {{>afQuickField name='settings.port'}}
-        {{>afQuickField name='settings.client_id'}}
-        {{>afQuickField name='settings.client_secret'}}
-        <button type="submit" class="btn btn-primary pull-right">Update</button>
-      {{/autoForm}}
- </template>
-
-<template name="paypalInsertForm">
-      {{#autoForm schema=paypalConfigSchema type="method" meteormethod="updatePackage" id="paypal-insert-form"}}
-        {{>afQuickField name='settings.host' autofocus='' placeholder="api.sandbox.paypal.com"}}
-        {{>afQuickField name='settings.port'}}
-        {{>afQuickField name='settings.client_id'}}
-        {{>afQuickField name='settings.client_secret'}}
-        <button type="submit" class="btn btn-default pull-right">Update</button>
-      {{/autoForm}}
- </template>

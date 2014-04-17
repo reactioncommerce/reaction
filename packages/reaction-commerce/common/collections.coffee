@@ -12,10 +12,10 @@ Users = @Users = Meteor.users
   property:
     type: String
     optional: true
-  settings:
-    type: Object
-    optional: true
-    blackbox: true
+  # settings:
+  #   type: Object
+  #   optional: true
+  #   # blackbox: true
 
 PackageConfigSchema = @PackageConfigSchema
 
