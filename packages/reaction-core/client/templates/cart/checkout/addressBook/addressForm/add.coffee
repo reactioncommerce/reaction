@@ -1,6 +1,5 @@
 Template.addressBookAdd.helpers
   addressBook: ->
-    console.log Meteor.user().profile?.addressBook
     Meteor.user().profile?.addressBook
 
 Template.addressBookForm.helpers
