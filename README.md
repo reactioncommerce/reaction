@@ -9,10 +9,6 @@ Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some l
 ---
 ###Roadmap & Status:
 
-** BLAZE / Meteor 0.8.0 ***
-Blaze introduced significant changes, and while things are mostly functional in Reaction after some heavy refactoring,  there are a number of remaining issues that are still being cleaned up. Contributions welcome.
-
-
 **Current status: Unstable, with HEAVY ongoing development! We're now within a few weeks of a point release for testing.**
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We will start releasing point versions here when we feel we have reached a reasonable amount of stability for at least the bleeding edge users.
@@ -25,6 +21,7 @@ Our **estimated** timeline:
 * Cart - functional
 * Checkout- functional *Milestone 1: Completed (flat-rate shipping calc, paypal pro )*
 * Order Management Workflow - functional *Milestone 2*
+* Everything converted to run on Meteor 0.8.0+
 * In progress:
 	* Milestone 2: Late March 2014 (alpha/point release w/order mgmt workflow, multiple shipping/payment methods,transactional emails)
 		**Note 1: this is now more likely mid-late April, blaze updates have been distracting from core features.**
