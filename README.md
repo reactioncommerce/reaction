@@ -1,10 +1,6 @@
-#Reaction
+#Reaction Commerce
 A commerce platform developed with Meteor and following a reactive design pattern that puts usability and conversions first.
 
-Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some light reading on our [blog](http://blog.ongoworks.com/), for those curious about who we are. We welcome contributors, issues, comments.
-
-
-**If you are interested in joining our alpha+ testing rounds - [please contact us](mailto:hello@ongoworks.com)**
 
 ---
 ###Roadmap & Status:
@@ -15,23 +11,7 @@ Currently good for contributing/observing progress, testing. It goes without say
 
 As with all development, some items are ahead of schedule, and some are not.
 
-Our **estimated** timeline:
-
-* Catalog/Product Management - functional
-* Cart - functional
-* Checkout- functional *Milestone 1: Completed (flat-rate shipping calc, paypal pro )*
-* Order Management Workflow - functional *Milestone 2*
-* Everything converted to run on Meteor 0.8.0+
-* In progress:
-	* Milestone 2: Late March 2014 (alpha/point release w/order mgmt workflow, multiple shipping/payment methods,transactional emails)
-		**Note 1: this is now more likely mid-late April, blaze updates have been distracting from core features.**
-		**Note 2: there are a number of security issues are on the list to get done before alpha. Be aware!**
-	* Milestone 3: Early Q2 (promotions, hero, cms, search, test cases, stable beta)
-	* Milestone 4: Late Q2 2014 (migration tools, multiple themes, theme editor, PaaS)
-	* Goal: PaaS Solution Q2/Q3 2014
-
-
-Please check our [Trello board for current progress](https://trello.com/b/ffwTH3tc/reaction-commerce)
+You can review our [Trello planning board for current progress](https://trello.com/b/ffwTH3tc/reaction-commerce)
 
 **Demonstration & Playground **
 
@@ -49,7 +29,7 @@ Please check our [Trello board for current progress](https://trello.com/b/ffwTH3
 * A focus on marketing - it's easy to have products, order processing and customer records. Translating that to conversions and traffic are often the difficult component.
 * Leveraging data from social networks, and Reaction itself to present actionable merchandising data
 * Limited separation of administrative functionality and "front end". Same template should be used to edit/create/read views.
-* Statistics / event tracking should be built in from the beginning throughout, and provide actionable information.
+* Realtime data,statistics and event tracking built in from the beginning throughout, and provide actionable information.
 * As modular as possible so that any package can be customized/overwritten - i.e.: need a special order processing process, then override/extend the default
 * Core packages to enable site should be a simple and generic as possible, layering complexity by adding packages through a package store ('app store') approach
 * Common marketing and SEO practices should be fundamental core features
@@ -119,5 +99,8 @@ Example configuration file
 ##Developer Docs
 Developer docs for new packages at [packages/reaction-commerce/README.md](https://github.com/ongoworks/reaction/tree/master/packages/reaction-commerce)
 
+We're working on comprehensive user and developer docs at [reactioncommerce.com](http://reactioncommerce.com). The reaction commerce site is the github pages branch of the repo.
 
 ---
+##Reaction Team
+Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some light reading on our [blog](http://blog.ongoworks.com/), for those curious about who we are.
