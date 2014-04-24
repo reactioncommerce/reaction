@@ -1,20 +1,17 @@
 Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
-  waitOn: ->
-    @subscribe('shops')
-    @subscribe('Packages')
-    @subscribe('cart', Session.get "sessionId", Meteor.userId())
+  fastRender: true
+  onRun: ->
+    @subscribe "shops"
+    @subscribe "cart", Session.get "sessionId", Meteor.userId()
     [share.ConfigDataHandle]
-  onBeforeAction: (pause) ->
-    shop = Shops.findOne()
-    cart = Cart.findOne()
-    unless shop and cart
-      @render('loading')
-    else
-      Meteor.app.init shop
+  waitOn: ->
+    Meteor.app.init()
+
 
 ShopController = RouteController.extend
+  fastRender: true
   yieldTemplates:
     layoutHeader:
       to: "layoutHeader"
@@ -25,7 +22,7 @@ ShopController = RouteController.extend
 
 
 @ShopAdminController = ShopController.extend
-  onBeforeAction: (pause) ->
+  waitOn: (pause) ->
     unless Meteor.app.hasPermission(@route.name)
       @render('unauthorized')
       pause()

@@ -20,7 +20,6 @@ Package.on_use(function (api, where) {
   api.use(["reaction-app-packages"]);
   // Core Reaction
   api.add_files([
-    "lib/header_spy.coffee",
     "lib/statemachine/state-machine.js",
     "common/common.coffee",
     "common/collectionFS.coffee",
@@ -37,7 +36,6 @@ Package.on_use(function (api, where) {
     "server/methods/products/methods.coffee",
     "server/methods/files/methods.coffee",
     "server/methods/accounts/accounts.coffee",
-    "server/installHeaderSpy.coffee",
     "server/emailTemplates/shopMemberInvite.handlebars",
     "server/emailTemplates/shopMemberNotification.handlebars"
   ], ["server"]);
@@ -323,7 +321,6 @@ Package.on_use(function (api, where) {
     "Packages",
     "PackageConfigSchema",
     "currentProduct",
-    "install_spy",
     "ShopController",
     "Products",
     "ShopMemberSchema",

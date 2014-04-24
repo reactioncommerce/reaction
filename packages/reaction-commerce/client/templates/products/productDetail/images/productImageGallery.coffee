@@ -60,7 +60,7 @@ Template.productImageGallery.events
         ownerId: Meteor.userId()
         productId: currentProduct._id
         variantId: (currentProduct.get "variant")._id unless variant?._id
-        shopId: Meteor.app.getCurrentShop(this)._id
+        shopId: Meteor.app.shopId
       Media.insert fileObj
 
 Template.imageUploader.events
@@ -74,7 +74,7 @@ Template.imageUploader.events
         ownerId: Meteor.userId()
         productId: currentProduct._id
         variantId: (currentProduct.get "variant")._id unless variant?._id
-        shopId: Meteor.app.getCurrentShop(this)._id
+        shopId: Meteor.app.shopId
       Media.insert fileObj
       return
     return
@@ -86,7 +86,7 @@ Template.imageUploader.events
         ownerId: Meteor.userId()
         productId: currentProduct._id
         variantId: (currentProduct.get "variant")._id unless variant?._id
-        shopId: Meteor.app.getCurrentShop(this)._id
+        shopId: Meteor.app.shopId
       Media.insert fileObj
       return
     return

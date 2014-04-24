@@ -47,26 +47,12 @@ UI.registerHelper "activeRouteClass", ->
 UI.registerHelper "siteName", ->
   siteName = Shops.findOne()?.name
   siteName
-###
-# method to alway return an image,
-# or a placeholder for a product variant
-###
-# UI.registerHelper "getVariantImage", (variant) ->
-#   variant = (currentProduct.get "variant") unless variant?._id
-#   console.log variant
-#   if variant?._id
-#       image = Media.find({'metadata.variantId':variant._id})
-#       image = image.url({store: "gridfsimages"})
-#   else
-#       console.log "No media found! Returning default."
-#       image = "../../resources/placeholder.gif"
-
 
 
 ###
 # method to return cart calculated values
+# TODO: sessions used by payment methods for cart checkout, probably should refactor to calculate in actual checkout
 ###
-
 UI.registerHelper "cart", () ->
   cartCount: ->
     storedCart = Cart.findOne()
@@ -94,9 +80,9 @@ UI.registerHelper "cart", () ->
     ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
     shipping = parseFloat storedCart?.shipping?.shipmentMethod?.value
     subtotal = (subtotal + shipping) unless isNaN(shipping)
-    subtotal = subtotal.toFixed(2)
-    Session.set "cartTotal", subtotal
-    subtotal
+    total = subtotal.toFixed(2)
+    Session.set "cartTotal", total
+    total
 
   # return true if there is an issue with the user's cart and we should display the warning icon
   showCartIconWarning: ->

@@ -562,11 +562,14 @@ PaymentSchema = new SimpleSchema
   schema:
     shopId:
       type: String
+      index: 1
     sessionId:
       type: String
+      index: 1
     userId:
       type: String
       optional: true
+      index: 1
     items:
       type: [CartItemSchema]
       optional: true
@@ -576,10 +579,12 @@ PaymentSchema = new SimpleSchema
       optional: true
     shipping:
       type: ShipmentSchema
-      optional:true
+      optional: true
+      blackbox: true
     payment:
       type: PaymentSchema
-      optional:true
+      optional: true
+      blackbox: true
     totalPrice:
       label: "Total Price"
       type: Number
@@ -588,12 +593,24 @@ PaymentSchema = new SimpleSchema
       min: 0
     state:
       type: String
+      defaultValue: "new"
       optional: true
     createdAt:
       type: Date
+      autoValue: ->
+        if @isInsert
+          return new Date
+        else if @isUpsert
+          return $setOnInsert: new Date
     updatedAt:
       type: Date
-
+      autoValue: ->
+        if @isInsert
+          return new Date
+        else if @isUpsert
+          return $setOnInsert: new Date
+      denyInsert: true
+      optional: true
 
 Cart = @Cart # package exports
 

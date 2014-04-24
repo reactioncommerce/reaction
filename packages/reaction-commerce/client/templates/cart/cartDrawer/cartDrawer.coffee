@@ -2,24 +2,24 @@
 # Template Cart Drawer
 # ************************************************************ ###
 Template.cartDrawer.helpers
-  cartCount: ->
-    Session.get "cartCount"
-  displayCartDrawer: (cartCount)->
-    cartCount = this.cartCount
-    if Session.get "displayCart"
-      if cartCount > 0
-        return Template.openCartDrawer
-      else
-        return Template.emptyCartDrawer
-    else
+  displayCartDrawer: ->
+    unless Session.equals "displayCart", true
       return null
 
+    storedCart = Cart.findOne()
+    count = 0
+    ((count += items.quantity) for items in storedCart.items) if storedCart?.items
+    if count is 0
+      return Template.emptyCartDrawer
+    else
+      return Template.openCartDrawer
+
+Template.openCartDrawer.rendered = ->
+  $('#cart-drawer-container').fadeIn()
 
 Template.openCartDrawer.helpers
   cartItems: ->
-    currentCart = Cart.findOne()
-    items = (cart for cart in currentCart.items by -1) if currentCart?.items
-    items
+    Cart.findOne().items
 
   checkoutView: ->
     checkoutView = "display:block"
@@ -27,6 +27,7 @@ Template.openCartDrawer.helpers
 
 Template.openCartDrawer.events
   'click #btn-checkout': (event,template) ->
+    $('#cart-drawer-container').fadeOut()
     Session.set "displayCart", false
     CartWorkflow.checkout()
 
@@ -36,11 +37,16 @@ Template.openCartDrawer.events
     currentCartId = Cart.findOne()._id
     currentVariant = this.variants
 
-    $(event.currentTarget).fadeOut(300).delay 300, ()->
+    $(event.currentTarget).fadeOut(300, ()->
       Meteor.call('removeFromCart',currentCartId,currentVariant)
+      )
 
 Template.emptyCartDrawer.events
   'click #btn-keep-shopping': (event,template) ->
     event.stopPropagation()
     event.preventDefault()
-    toggleSession "displayCart"
+    $('#cart-drawer-container').fadeOut(300, ()->
+      toggleSession "displayCart")
+
+Template.emptyCartDrawer.rendered = ->
+  $('#cart-drawer-container').fadeIn()

@@ -92,6 +92,7 @@ Package.on_use(function(api) {
     "amplify",
     "accounts-base",
     "accounts-ui-unstyled",
+    "fast-render",
     "ui"
   ], ["client", "server"]);
 

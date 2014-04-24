@@ -46,10 +46,10 @@
   <div class="tab-pane" id="settings">
     <div class="well">
     {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update"}}
-      {{> afQuickField name='domains'}}
+      {{> afQuickField name='domains' placeholder="localhost"}}
       {{> afQuickField name='timezone' options=timezoneOptions}}
-      {{> afQuickField name='currency'}}
-      {{> afQuickField name='moneyFormat'}}
+      {{> afQuickField name='currency' placeholder="USD"}}
+      {{> afQuickField name='moneyFormat' palceholder="$"}}
       <div class="row">
         <button type="submit" class="btn btn-primary pull-right">Submit</button>
       </div>

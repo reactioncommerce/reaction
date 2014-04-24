@@ -44,8 +44,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.6.2",
-        "commit": "032bc8180adca7c40a7d518f994ee07ef54d0100"
+        "tag": "v0.7.2",
+        "commit": "5d3265ab2607949ca776a45411ce11072413546d"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
@@ -94,8 +94,8 @@
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.2.2",
-        "commit": "2a7298d72a84b85e989ec2cc9300bbea7c159eb8"
+        "tag": "v0.2.3",
+        "commit": "d56bd4a4d222bf176241cd6e756aa349cb24c260"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -104,8 +104,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.48",
-        "commit": "1bc4aec5d6189093b8c0efbd32e761946bcd4a5b"
+        "tag": "v0.4.0",
+        "commit": "2cc6aac0d35a4e00b065c1437d540b2aefba5241"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
@@ -119,8 +119,8 @@
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
-        "tag": "v0.0.33",
-        "commit": "c74a4f71ca9356ee509f23094905f3a949f460b8"
+        "tag": "v0.0.34",
+        "commit": "45fa7b56581d43737d513f020eab8e31d0982ba0"
       },
       "cfs-collection": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-collection.git",
@@ -161,6 +161,11 @@
         "git": "https://github.com/CollectionFS/Meteor-http-methods.git",
         "tag": "v0.0.22",
         "commit": "5b0f7723f49436b8a0a930f284ed05f0b26021fe"
+      },
+      "numeral": {
+        "git": "https://github.com/vsivsi/meteor-numeral.git",
+        "tag": "v0.0.1",
+        "commit": "5542b3e87e55f07ae854e8d1b847b3694d66b986"
       },
       "data-man": {
         "git": "https://github.com/CollectionFS/Meteor-data-man.git",

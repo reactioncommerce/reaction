@@ -6,12 +6,18 @@ Meteor.methods
   # the original and notify them
   ###
   addToCart: (cartSession, productId, variantData, quantity) ->
+    #if no cart, create a new one before adding to cart
+    currentCart = Cart.find(sessionId: cartSession.sessionId, userId: cartSession.userId)
+    if currentCart.count() is 0
+      Meteor.call "createCart", cartSession.sessionId, cartSession.userId
+
     if cartSession
       cartVariantExists = Cart.findOne
         sessionId: cartSession.sessionId,
         userId: cartSession.userId,
         "items.variants._id": variantData._id
       #If updating existing item, increment quantity
+
       if cartVariantExists
         Cart.update
           sessionId: cartSession.sessionId
@@ -34,56 +40,47 @@ Meteor.methods
           console.log "error adding to cart" if error?
           console.log error if error?
 
+
   ###
-  # create a new cart
-  # or move an existing sesssion to the current logged in user
-  # make sure that personal data isn't transfered to new user,
-  # but they can keep the cart items
-  #
-  # runs on autorun, as well as at add to cart
-  #
-  # 1. new carts for guest (no user id)
-  # 2. carts owned by guest but different sessions should be merged
-  # 3. browser session that logs out of account and into new account should get
-  #    a) cleansed cart information, but retain items
-  #    b) load any existing carts, but don't increase product qty
+  # creates a cart, or returns
   ###
-  createCart: (cartSession) ->
-    if cartSession.sessionId
-      now = new Date()
-      sessionId = cartSession.sessionId
-      shopId =  Meteor.app.getCurrentShop()._id
-      userId = cartSession.userId
-      #Clean user details if user not logged in
-      unless userId?
-        Cart.update({sessionId: sessionId}, {$unset: {userId: 1, shipping: 1, payment: 1}} )
-      #template for empty cart
-      emptyCart =
-        shopId: shopId
-        sessionId: sessionId
-        userId: userId
-        createdAt: now
-        updatedAt: now,
-        state: "new"
-      # find carts with matching session id
-      sessionCart = Cart.findOne(cartSession)
-      # find cart(s) for current user and not this session
-      userCarts =  Cart.find( {userId: userId, shopId:shopId,sessionId:{$ne:sessionId}}).fetch() if userId
-      defaultCart = _.extend emptyCart,sessionCart unless sessionCart?
-      # merge them
-      # TODO: add session to user data, and reuse session to get synching of logged in accounts
-      # TODO: move this to after upsert, and use add to cart functional, to increment qty
-      if userCarts and defaultCart
-        userCartItems = new Array
-        for cart in userCarts
-          userCartItems.push items for items in cart.items if cart?.items
-        (defaultCart.items = userCartItems) if userCartItems?.length > 0
-      #only create if we're not in an session cart
-      unless sessionCart?
-        Cart.upsert {sessionId: sessionId, shopId:shopId}, {$set:defaultCart}, (error, result) ->
+  createCart: (sessionId, userId) ->
+    console.log "sessionId: ",sessionId
+    console.log "userId:", userId
+    if sessionId? is true
+      shopId = Meteor.app.getCurrentShop(@)._id
+
+      console.log "cart processing"
+      cart = Cart.find shopId: shopId, sessionId: sessionId, userId: userId
+
+      if userId? is true
+        cart = Cart.find userId: userId
+        if cart.count() is 1
+          console.log "returning user cart"
+          return cart
+        else if cart.count() > 1
+          console.log "returning multicart"
+          userCarts = cart.fetch()
+          items = (cart.items for cart in userCarts)
+          console.log items
+          Cart.upsert {sessionId: sessionId, userId: userId}, {$set:{items:items}}
+          return Cart.find sessionId: sessionId, userId: userId
+
+        else
+          Cart.upsert {sessionId: sessionId}, {$set:{shopId: shopId, sessionId: sessionId, userId: userId}}, (error, result) ->
             console.log error if error
+          return Cart.find sessionId: sessionId, userId: userId
+
+      if cart.count() > 0
+        console.log "returning session cart"
+        return cart
       else
-        return sessionCart
+        console.log "upserting session"
+        Cart.upsert {sessionId: sessionId, userId: userId}, {$set:{shopId: shopId, sessionId: sessionId, userId: userId}}, (error, result) ->
+          console.log error if error
+        return Cart.find sessionId: sessionId, userId: userId
+
+
   ###
   # removes a variant from the cart
   ###
