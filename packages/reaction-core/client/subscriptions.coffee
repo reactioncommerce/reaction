@@ -18,15 +18,16 @@ PackagesHandle = @PackagesHandle = Meteor.subscribe("Packages")
 ReactionConfigHandle = Meteor.subscribe "ReactionConfig"
 share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
 
-Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
 Meteor.subscribe "UserConfig", Meteor.userId()
-Meteor.subscribe 'products'
-Meteor.subscribe 'orders'
-Meteor.subscribe 'customers'
-Meteor.subscribe 'tags'
-Meteor.subscribe 'shops'
+Meteor.subscribe "products"
+Meteor.subscribe "orders"
+Meteor.subscribe "customers"
+Meteor.subscribe "tags"
+Meteor.subscribe "shops"
 Meteor.subscribe "media"
-Meteor.subscribe 'FileStorage'
+Meteor.subscribe "FileStorage"
+Meteor.subscribe "Packages"
+
 ###
 #  Reactive current product
 #  This ensures singleton reactive products, without session

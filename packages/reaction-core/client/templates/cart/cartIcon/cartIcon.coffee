@@ -1,3 +1,4 @@
 Template.cartIcon.events
   'click .cart-icon': () ->
-    toggleSession "displayCart"
+    $('#cart-drawer-container').fadeOut(300, ()->
+      toggleSession "displayCart")

@@ -46,7 +46,7 @@ Media.allow
       return false
     true
   remove: (userId, fileObj) ->
-    if fileObj.metadata.shopId != Meteor.app.getCurrentShop()._id
+    if fileObj.metadata.shopId != Meteor.app.getCurrentShop(this)._id
       return false
     unless Roles.userIsInRole(userId, ['admin'])
       return false
@@ -71,7 +71,7 @@ FileStorage.allow
       return false
     true
   remove: (userId, fileObj) ->
-    if fileObj.metadata.shopId != Meteor.app.getCurrentShop()._id
+    if fileObj.metadata.shopId != Meteor.app.getCurrentShop(this)._id
       return false
     unless Roles.userIsInRole(userId, ['admin'])
       return false
@@ -134,7 +134,7 @@ Meteor.publish "Packages", ->
 ###
 Packages.allow
   insert: (userId, doc) ->
-    doc.shopId = Meteor.app.getCurrentShop()._id
+    doc.shopId = Meteor.app.getCurrentShop(this)._id
     unless Roles.userIsInRole(userId, ['admin'])
       return false
     true
@@ -262,20 +262,13 @@ Orders.allow
       return false
     true
 
-
 ###
 # cart collection
 ###
-Meteor.publish 'cart', (sessionId, userId) ->
-  shop = Meteor.app.getCurrentShop(@)
-  if shop
-    cart = Cart.find(shopId: shop._id, sessionId: sessionId, userId: this.userId)
-    cartCount = cart.count()
-    if cartCount > 0
-      return Cart.find(shopId: shop._id, sessionId: sessionId,userId: this.userId)
-    else
-      Meteor.call "createCart", { sessionId:sessionId, userId: this.userId }
-      return Cart.find(shopId: shop._id, sessionId: sessionId,userId: this.userId)
+Meteor.publish 'cart', (sessionId) ->
+  check(sessionId, String)
+  cart = Meteor.call "createCart", sessionId, this.userId
+  return cart
 
 ###
 # Client access rights for cart
@@ -290,8 +283,10 @@ Cart.allow
     true
   remove: (userId, cart) ->
     if cart.shopId != Meteor.app.getCurrentShop()._id
+      console.log "faslse shopid"
       return false
     if cart.owner != userId
+      console.log "falsse cart owner"
       return false
     true
 

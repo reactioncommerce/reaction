@@ -1,34 +1,24 @@
+###
+# Global reaction shop permissions methods
+###
 Meteor.app = _.extend(Meteor.app || {},
   getCurrentShopCursor: (client) ->
     domain = Meteor.app.getDomain(client)
-    cursor = Shops.find({domains: domain}, {limit: 1});
+    cursor = Shops.find({domains: domain}, {limit: 1})
     if !cursor.count()
-      # if no fixture data was used create empty shop
-      shop =
-        _id: Random.id()
-        name: "localhost"
-        createdAt: new Date()
-        domains: ["localhost"]
-        ownerId: this.userId
-        #TODO:  We should route user to a screen to assign/create show owner
-      Shops._collection.insert shop
-      cursor = Shops.find({}, {sort: {$natural: 1}, limit: 1});
-    cursor
+      console.log "Reaction Configuration: Add a domain entry to shops for: ", domain
+    else
+      return cursor
 
   getCurrentShop: (client) ->
     cursor = Meteor.app.getCurrentShopCursor(client)
     cursor.fetch()[0]
 
+  getShopId: (client) ->
+    Meteor.app.getCurrentShopCursor(client)._id
+
   getDomain: (client) ->
-    # Pass client in publish functions as "this"
-    if !client
-      for own sessionId, session of Meteor.default_server.sessions
-        if session.userId == Meteor.userId()
-          client = {
-            _session: session
-          }
-    if !client then throw "Could not find current session"
-    share.get_http_header(client, 'host').split(':')[0]
+    Meteor.absoluteUrl().split('/')[2].split(':')[0]
 
   findMember: (shop, userId) ->
     shop = @.getCurrentShop() unless shop

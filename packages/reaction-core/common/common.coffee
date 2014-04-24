@@ -1,6 +1,6 @@
-#
+###
 # Common settings for CollectionFS
-#
+###
 FS.HTTP.setBaseUrl('/assets')
 
 FS.HTTP.setHeadersForGet([
