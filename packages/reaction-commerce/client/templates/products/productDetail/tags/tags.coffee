@@ -13,7 +13,7 @@ Template.productTagInputForm.helpers
 Template.productTagInputForm.events
   'click .tag-input-hashtag': (event,template) ->
     if currentProduct.get("product").handle is @.name
-      Products.update(currentProduct.get("product")._id, {$unset:{"handle":""}},{validate: false})
+      Products.update(currentProduct.get("product")._id, {$unset:{"handle":""}})
       Router.go "product", "_id": currentProduct.get("product")._id
     else
       Products.update(currentProduct.get("product")._id, {$set:{"handle":@.name}})

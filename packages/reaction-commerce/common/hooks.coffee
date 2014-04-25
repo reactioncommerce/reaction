@@ -40,7 +40,3 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
         addToSet.updatedAt = updatedAt
   if modifier.$set then modifier.$set.updatedAt = new Date()
   # if modifier.$addToSet then modifier.$addToSet.updatedAt = new Date()
-
-Cart.before.insert (doc) ->
-  console.log "autovalue shopid:", Meteor.app.getShopId()
-  modifier.$set.shopId = Meteor.app.getShopId(@)
