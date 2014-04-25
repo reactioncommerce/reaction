@@ -3,9 +3,9 @@
   <ul class="list-group metafield-list hidden-xs">
     {{#each ./metafields}}
       <li class="list-group-item metafield-list-item">
-        <div>
+        <div class="row">
         {{#if key}}<div class="col-sm-4">{{key}}</div>{{/if}}
-        {{#if value}}<div class="col-sm-6">{{value}}</div>{{/if}}
+        {{#if value}}<div class="col-sm-8">{{value}}</div>{{/if}}
         </div>
       </li>
     {{/each}}
@@ -28,8 +28,8 @@
 </template>
 
 <template name="metaComponent">
-<form name="metafield-component" class="metafield-component">
-  <input type="text" name="key" class="metafield-key-input col-md-4" value="{{key}}" placeholder="Detail name"/>
-  <input type="text" name="value" class="metafield-value-input col-md-8" value="{{value}}"  placeholder="Detail information"/>
+<form role="form" name="metafield-component" class="form form-inline metafield-component">
+    <input type="text" name="key" class="form-control metafield-key-input" value="{{key}}" placeholder="Detail name"/>
+    <input type="text" name="value" class="form-control metafield-value-input" value="{{value}}"  placeholder="Detail information"/>
 </form>
 </template>
