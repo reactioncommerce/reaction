@@ -15,5 +15,5 @@ Template.loginDropdown.helpers
 
 Template.userDropdown.rendered =  ->
   setTimeout (->
-    $(".dropdown-menu").fadeOut()
+      $('.dropdown-toggle').dropdown('toggle')
   ),1500
