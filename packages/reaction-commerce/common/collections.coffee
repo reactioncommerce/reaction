@@ -368,6 +368,7 @@ SocialSchema = new SimpleSchema
       optional: true
     handle:
       type: String
+      optional: true
       index: 1
     isVisible:
       type: Boolean
