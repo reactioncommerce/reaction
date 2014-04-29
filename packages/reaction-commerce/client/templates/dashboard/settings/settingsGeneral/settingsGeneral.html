@@ -4,7 +4,7 @@
 <ul class="nav nav-tabs">
   <li class="active"><a href="#general" data-toggle="tab">General</a></li>
   <li><a href="#address" data-toggle="tab">Address</a></li>
-  <li><a href="#server" data-toggle="tab">Server</a></li>
+  <li><a href="#smtp" data-toggle="tab">SMTP</a></li>
   <li><a href="#settings" data-toggle="tab">Settings</a></li>
 </ul>
 
@@ -37,9 +37,8 @@
       {{/autoForm}}
     </div>
   </div>
-  <div class="tab-pane" id="server">
+  <div class="tab-pane" id="smtp">
     <div class="well">
-    <h5>SMTP Email Server</h5>
     {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=shop id="shopEditEmailForm" type="update"}}
     </div>
   </div>
