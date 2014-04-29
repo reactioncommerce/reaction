@@ -8,7 +8,7 @@
 
 loadData = (collection) ->
   console.log "Loading fixture data for "+collection._name
-  json = EJSON.parse Assets.getText("data/"+collection._name+".json")
+  json = EJSON.parse Assets.getText("private/data/"+collection._name+".json")
   for item,value in json
     collection._collection.insert item, (error, result) ->
       console.log error if error?
@@ -17,12 +17,11 @@ loadData = (collection) ->
 share.loadFixtures = ->
   # Load data from json files
   loadData Products unless Products.find().count()
-  loadData Customers unless Customers.find().count()
   loadData Meteor.users unless Meteor.users.find().count()
   loadData Shops unless Shops.find().count()
   loadData Tags unless Tags.find().count()
   loadData ConfigData unless ConfigData.find().count()
-  # loadData Roles unless Roles.find().count()
+  # loadData roles unless roles.find().count()
   # loadImageData "Images" unless Images.find().count()
 
 

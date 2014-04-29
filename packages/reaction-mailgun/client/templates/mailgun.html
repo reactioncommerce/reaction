@@ -6,7 +6,7 @@
   <div class="col-md-6 well">
   {{#autoForm collection="Packages" schema="MailgunConfigSchema" doc=packageData type="update" id="mailgun-update-form"}}
     {{>afQuickField name='settings.host' autofocus='' value="smtp.mailgun.org" placeholder="smtp.mailgun.org"}}
-    {{>afQuickField name='settings.port' value="25" placeholder="25"}}
+    {{>afQuickField name='settings.port' value="25" options="allowed"}}
     {{>afQuickField name='settings.username'}}
     {{>afQuickField name='settings.password' type="password"}}
     <button type="submit" class="btn btn-primary pull-right">Update</button>

@@ -30,6 +30,7 @@ Package.on_use(function (api, where) {
   api.add_files([
     "server/app.coffee",
     "server/publications.coffee",
+    "server/fixtures.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
     "server/methods/orders/methods.coffee",
@@ -309,6 +310,16 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
 
   ], ["client"]);
+
+  // Private fixture data
+  api.add_files('private/data/Products.json', 'server', {isAsset: true});
+  api.add_files('private/data/Shops.json', 'server', {isAsset: true});
+  api.add_files('private/data/Tags.json', 'server', {isAsset: true});
+  api.add_files('private/data/SystemConfig.json', 'server', {isAsset: true});
+  api.add_files('private/data/ConfigData.json', 'server', {isAsset: true});
+  api.add_files('private/data/roles.json', 'server', {isAsset: true});
+  api.add_files('private/data/users.json', 'server', {isAsset: true});
+  api.add_files('private/data/Orders.json', 'server', {isAsset: true});
 
   api.export([
     "PackagesHandle",

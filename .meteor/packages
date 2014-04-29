@@ -31,6 +31,10 @@ cfs-filesystem
 handlebars-server
 bootstrap-alerts
 d3
+cfs-gridfs
+cfs-s3
+ui-dropped-event
+fast-render
 
 #
 #reaction packages
@@ -40,7 +44,4 @@ reaction-helloworld
 reaction-google-analytics
 reaction-paypal
 reaction-mailgun
-cfs-gridfs
-cfs-s3
-ui-dropped-event
-fast-render
+

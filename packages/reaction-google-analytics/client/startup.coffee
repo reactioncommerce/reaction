@@ -24,14 +24,3 @@ Meteor.startup ->
         value: $element.data("event-value")
       ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value)
       share.AnalyticsEvents.insert(analyticsEvent)
-
-###
-# Fixture - we always want a record
-###
-Meteor.startup ->
-  unless Packages.findOne({name:"reaction-google-analytics"})
-    Shops.find().forEach (shop) ->
-      Packages.insert
-        shopId: shop._id
-        name: "reaction-google-analytics"
-        property: Meteor.settings?.googleAnalyticsProperty
