@@ -35,7 +35,6 @@ Package.on_use(function (api, where) {
     "server/methods/cart/methods.coffee",
     "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
-    "server/methods/files/methods.coffee",
     "server/methods/accounts/accounts.coffee",
     "server/emailTemplates/shopMemberInvite.handlebars",
     "server/emailTemplates/shopMemberNotification.handlebars"
