@@ -5,6 +5,8 @@ Meteor.methods
   # add parentId to create children
   ###
   cloneVariant: (productId, variantId, parentId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     product = Products.findOne(productId)
     variant = (variant for variant in product.variants when variant._id is variantId)
     clone = variant[0]
@@ -40,6 +42,8 @@ Meteor.methods
   # should only be seen when all variants have been deleted from a product.
   ###
   createVariant: (productId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
     Products._collection.update({"_id": productId},{$addToSet:{"variants": newVariant}})
 
@@ -48,6 +52,8 @@ Meteor.methods
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     product = Products.findOne "variants._id":variant._id
     for variants,value in product.variants
       if variants._id is variant._id
@@ -62,6 +68,8 @@ Meteor.methods
   # update whole variants array
   ###
   updateVariants: (variants) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     product = Products.findOne "variants._id":variants[0]._id
     Products.update product._id, $set: variants: variants,(error,results) ->
       console.log error if error?
@@ -73,6 +81,8 @@ Meteor.methods
   # product tree
   ###
   cloneProduct: (product) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     #TODO: Really should be a recursive update of all _id
     i = 0
     handleCount = Products.find({"cloneId": product._id}).count() + 1
@@ -113,6 +123,8 @@ Meteor.methods
   # update single product field
   ###
   updateProductField: (productId, field,value) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     # value = Spacebars.SafeString(value)
     value  = EJSON.stringify value
     update = EJSON.parse "{\"" + field + "\":" + value + "}"
@@ -124,6 +136,8 @@ Meteor.methods
   # tagName + tagId will update existing
   ###
   updateProductTags: (productId, tagName, tagId, currentTagId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     newTag =
       slug: _.slugify(tagName)
       name: tagName
@@ -153,7 +167,8 @@ Meteor.methods
 
 
   removeProductTag: (productId, tagId) ->
-    console.log productId,tagId
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
 
     Products.update(productId, {$pull: {"hashtags": tagId}})
     # if not in use delete from system
@@ -168,6 +183,9 @@ Meteor.methods
   # position is an object with tag,position,dimensions
   ###
   updateProductPosition: (productId,positionData) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+
     unless Products.findOne({'_id' :productId,"positions.tag":positionData.tag})
       Products._collection.update {_id: productId},
         {$addToSet:{ positions:positionData },$set:{updatedAt:new Date() } },
@@ -187,6 +205,8 @@ Meteor.methods
             console.log error if error?
 
   updateMetaFields: (productId, updatedMeta, meta) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
     if meta
       Products.update({"_id": productId, "metafields": meta}, {$set:{"metafields.$": updatedMeta} })
     else
