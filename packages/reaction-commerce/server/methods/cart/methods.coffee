@@ -6,81 +6,70 @@ Meteor.methods
   # the original and notify them
   ###
   addToCart: (cartSession, productId, variantData, quantity) ->
+    currentCart = Cart.findOne sessionId: cartSession.sessionId, userId: cartSession.userId
     #if no cart, create a new one before adding to cart
-    currentCart = Cart.find(sessionId: cartSession.sessionId, userId: cartSession.userId)
-    if currentCart.count() is 0
+    unless currentCart?
       Meteor.call "createCart", cartSession.sessionId, cartSession.userId
+      currentCart = Cart.findOne sessionId: cartSession.sessionId, userId: cartSession.userId
 
-    if cartSession
-      cartVariantExists = Cart.findOne
-        sessionId: cartSession.sessionId,
-        userId: cartSession.userId,
-        "items.variants._id": variantData._id
-      #If updating existing item, increment quantity
-
-      if cartVariantExists
-        Cart.update
-          sessionId: cartSession.sessionId
-          userId: cartSession.userId
-          "items.variants._id": variantData._id,
-          { $set: {updatedAt: new Date()}, $inc: {"items.$.quantity": quantity}},
-        (error, result) ->
-          console.log "error adding to cart" if error?
-          console.log Cart.namedContext().invalidKeys() if error?
-      # add new cart items
-      else
-        Cart.update cartSession,
-          $addToSet:
-            items:
-              _id: Random.id()
-              productId: productId
-              quantity: quantity
-              variants: variantData
-        , (error, result) ->
-          console.log "error adding to cart" if error?
-          console.log error if error?
+    cartVariantExists = Cart.findOne _id: currentCart._id, "items.variants._id": variantData._id
+    if cartVariantExists
+      Cart.update
+        _id: currentCart._id,
+        "items.variants._id": variantData._id,
+        { $set: {updatedAt: new Date()}, $inc: {"items.$.quantity": quantity}},
+      (error, result) ->
+        console.log "error adding to cart" if error?
+        console.log Cart.namedContext().invalidKeys() if error?
+    # add new cart items
+    else
+      Cart.update _id: currentCart._id,
+        $addToSet:
+          items:
+            _id: Random.id()
+            productId: productId
+            quantity: quantity
+            variants: variantData
+      , (error, result) ->
+        console.log "error adding to cart" if error?
+        console.log error if error?
 
 
   ###
-  # creates a cart, or returns
+  # create a cart
+  # if there is no carts because the user just logged in check for existing carts and merge them
+  # and update the current session cart with this user id
   ###
   createCart: (sessionId, userId) ->
-    console.log "sessionId: ",sessionId
-    console.log "userId:", userId
     if sessionId? is true
       shopId = Meteor.app.getCurrentShop(@)._id
-
-      console.log "cart processing"
-      cart = Cart.find shopId: shopId, sessionId: sessionId, userId: userId
-
       if userId? is true
-        cart = Cart.find userId: userId
-        if cart.count() is 1
-          console.log "returning user cart"
-          return cart
-        else if cart.count() > 1
-          console.log "returning multicart"
-          userCarts = cart.fetch()
-          items = (cart.items for cart in userCarts)
-          console.log items
-          Cart.upsert {sessionId: sessionId, userId: userId}, {$set:{items:items}}
-          return Cart.find sessionId: sessionId, userId: userId
-
-        else
-          Cart.upsert {sessionId: sessionId}, {$set:{shopId: shopId, sessionId: sessionId, userId: userId}}, (error, result) ->
+        # console.log "update existing cart to userId"
+        currentCart = Cart.findOne(sessionId: sessionId)
+        if currentCart
+          Cart.upsert {sessionId: sessionId}, {$set:{shopId: shopId, userId: userId}}, (error, result) ->
             console.log error if error
-          return Cart.find sessionId: sessionId, userId: userId
+            Meteor.call "synchCarts", userId
+            return Cart.findOne(sessionId: sessionId) if result
 
-      if cart.count() > 0
-        console.log "returning session cart"
-        return cart
-      else
-        console.log "upserting session"
-        Cart.upsert {sessionId: sessionId, userId: userId}, {$set:{shopId: shopId, sessionId: sessionId, userId: userId}}, (error, result) ->
-          console.log error if error
-        return Cart.find sessionId: sessionId, userId: userId
+      # console.log "upserting new session cart"
+      Cart.upsert {sessionId: sessionId, userId: userId}, {$set:{shopId: shopId, sessionId: sessionId, userId: userId}}, (error, result) ->
+        console.log error if error
+    return Cart.findOne(sessionId: sessionId)
 
-
+  ###
+  # synch multiple carts when there is more than user cart
+  ###
+  synchCarts: (userId) ->
+    userId = userId || Meteor.userId()
+    shopId = Meteor.app.getCurrentShop(@)._id
+    # console.log "synch carts for: ", userId
+    userCarts = Cart.find(shopId: shopId, userId: userId)
+    userCarts.observeChanges
+      changed: (_id, items) ->
+        carts = userCarts.fetch()
+        for cart in Cart.find(shopId: shopId, userId: userId).fetch()
+          if cart._id isnt _id then Cart.update(_id: cart._id, {$set: items})
   ###
   # removes a variant from the cart
   ###
@@ -126,7 +115,7 @@ Meteor.methods
           console.log "error in order insert"
           console.log Orders.namedContext().invalidKeys() if error
       )
-    Cart.remove(currentCartId)
+    Cart.remove(userId: Meteor.userId)
     return cart._id #new order id
 
   ###
