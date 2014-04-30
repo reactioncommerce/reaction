@@ -5,9 +5,9 @@ A commerce platform developed with Meteor and following a reactive design patter
 ---
 ###Roadmap & Status:
 
-**Current status: Unstable, with HEAVY ongoing development! We're now within a few weeks of a point release for testing.**
+**Current status: Alpha. Functional but unstable, with HEAVY ongoing development!**
 
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We will start releasing point versions here when we feel we have reached a reasonable amount of stability for at least the bleeding edge users.
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We will start releasing point versions here when we feel we have reached a reasonable amount of stability for at least the bleeding edge test users. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
 
 As with all development, some items are ahead of schedule, and some are not.
 
