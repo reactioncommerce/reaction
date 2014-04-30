@@ -265,10 +265,21 @@ Orders.allow
 ###
 # cart collection
 ###
-Meteor.publish 'cart', (sessionId) ->
+Meteor.publish 'cart', (sessionId, userId) ->
   check(sessionId, String)
-  cart = Meteor.call "createCart", sessionId, this.userId
-  return cart
+  currentCart = Cart.find sessionId: sessionId, userId: this.userId
+  if this.userId
+    userCarts = Cart.find(userId: this.userId)
+    # console.log "cartCount:", userCarts.count()
+    if userCarts.count() >= 1
+      Meteor.call "createCart", sessionId, this.userId
+      Meteor.call "synchCarts", this.userId
+      return Cart.find sessionId: sessionId, userId: this.userId
+    else
+      Meteor.call "createCart", sessionId, this.userId
+      return Cart.find sessionId: sessionId, userId: this.userId
+
+  return currentCart
 
 ###
 # Client access rights for cart
