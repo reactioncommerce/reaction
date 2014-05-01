@@ -47,7 +47,9 @@ You can review our [Trello planning board for current progress](https://trello.c
 ---
 #Development
 ##Prerequisites
-Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
+OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
+
+Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/ongoworks/reaction/UBUNTU-INSTALL.md)
 
 ##Installation
     curl https://install.meteor.com | /bin/sh
@@ -55,14 +57,21 @@ Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) c
     git clone https://github.com/ongoworks/reaction.git
     cd reaction
     mrt update
-
+	
 
 ##Startup
+	meteor
+
+or to run with settings/dev.json
+	
 	./bin/run
 
-To reset data and give you a fresh test dataset from private/data
+or run with specific settings just add --settings settings/yoursettings.json
+
+To reset data and give you a fresh test dataset from the reaction-commerce packages private/data
 
 	./bin/reset
+	
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
