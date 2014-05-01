@@ -49,7 +49,7 @@ You can review our [Trello planning board for current progress](https://trello.c
 ##Prerequisites
 OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
 
-Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/ongoworks/reaction/UBUNTU-INSTALL.md)
+Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/ongoworks/reaction/blob/master/UBUNTU-INSTALL.md)
 
 ##Installation
     curl https://install.meteor.com | /bin/sh
