@@ -1,8 +1,0 @@
-{
-  "baseUrl": "http://demo.reactioncommerce.com",
-  "public": {
-    "googleAnalyticsProperty": "UA-44704216-3",
-    "version": "__VERSION__",
-    "isDebug": false
-  }
-}
