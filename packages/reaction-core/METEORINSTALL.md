@@ -7,10 +7,7 @@ Start with a meteor project
 
 	meteor remove insecure
 	meteor remove autopublish
-	mrt add bootstrap3-less
-  mrt add font-awesome-4-less
-  ln -s ../packages/font-awesome-4-less/lib/fonts public/fontawesome
-  mrt add reaction-commerce
+  mrt add reaction-core
   mrt update
 
 Run meteor:
