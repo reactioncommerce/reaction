@@ -13,15 +13,7 @@ results
 
 settings/dev.json
 settings/prod.json
-
+settings/demo.json
 npm-debug.log
-
-/dev.json
-
-/packages/reaction-commerce/.npm/
-
-/private/data/system.indexes.json
-
-/private/data/meteor_accounts_loginServiceConfiguration.json
 
 /.fileStorage/

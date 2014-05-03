@@ -74,3 +74,7 @@ headers
 /fast-render
 /numeral
 /moment
+/reaction-app-packages
+/reaction-core
+/reaction-paypal
+/reaction-google-analytics
