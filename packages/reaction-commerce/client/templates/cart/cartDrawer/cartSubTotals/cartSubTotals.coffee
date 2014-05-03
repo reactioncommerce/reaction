@@ -1,1 +1,0 @@
-# Cart totals are Handlebars helpers

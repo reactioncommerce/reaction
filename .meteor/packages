@@ -35,13 +35,3 @@ cfs-gridfs
 cfs-s3
 ui-dropped-event
 fast-render
-
-#
-#reaction packages
-#
-reaction-commerce
-reaction-helloworld
-reaction-google-analytics
-reaction-paypal
-reaction-mailgun
-
