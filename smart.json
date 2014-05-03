@@ -28,6 +28,9 @@
     },
     "reaction-google-analytics": {
         "git": "https://github.com/ongoworks/reaction-google-analytics.git"
+    },
+    "reaction-helloworld": {
+        "git": "https://github.com/ongoworks/reaction-helloworld.git"
     }
   }
 }
