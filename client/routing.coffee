@@ -10,6 +10,7 @@ Router.configure
   # yieldTemplates:
   #   footer:
   #     to: "footer"
+
 # *****************************************************
 # generic routes for reaction layout
 # *****************************************************
@@ -33,8 +34,11 @@ Router.map ->
     path: "/"
     onAfterAction: ->
       document.title = Shops.findOne()?.name
+
   for page in pages
-    @route page
+    @route page,
+      controller: ShopController
+
   # 404 Page for reaction
   @route "notFound",
     path: "*"
