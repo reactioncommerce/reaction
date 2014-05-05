@@ -6,7 +6,11 @@ Template.productImageGallery.helpers
     mediaArray = []
     variant = (currentProduct.get "variant")
     if variant?
-      Media.find({'metadata.variantId':variant._id})
+      results = Media.find({'metadata.variantId':variant._id})
+      # If no media is found for this variant, get the first variant's primary image
+      if results.count() < 1
+        results = Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {limit: 1})
+      results
 
   variant: ->
     (currentProduct.get "variant")
