@@ -57,13 +57,16 @@
 }
 
 .product-grid-item {
-  overflow:hidden;
   position:relative;
   margin-bottom: 1.875em; /* 15px 30px */
   margin-right: 1px;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
   column-break-inside: avoid;
+
+  &:last-child {
+    overflow:hidden;
+  }
 
   .badge {
     position:absolute;
@@ -73,12 +76,16 @@
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-
-    /* #26: The column break still occurs on webkit browsers at full size, but not on FF */
     .product-grid-item {
-        display:inline-block;
-    }
+        &:last-child {
 
+            overflow:visible;
+
+            @media (min-width: @screen-md-max){
+                display:inline-block;
+            }
+        }
+    }
 }
 
 @media (min-width:  @screen-md-min) and (max-width: @screen-md-max){
@@ -88,8 +95,6 @@
 
   #product-grid-list
   {
-    display:inline-block;
-    overflow:hidden;
     -webkit-column-count: @product-grid-columns-md;
     -webkit-column-gap: 0.938em; /* 15px */
     -moz-column-count: @product-grid-columns-md;
@@ -99,6 +104,7 @@
   }
   .product-grid-item
   {
+    display:block;
     margin-bottom: 1.1em; /* 15px */
   }
 }
@@ -110,8 +116,6 @@
 
   #product-grid-list
   {
-    display:inline-block;
-    overflow:hidden;
     -webkit-column-count: @product-grid-columns-sm;
     -webkit-column-gap: 0.938em; /* 15px */
     -moz-column-count: @product-grid-columns-sm;
