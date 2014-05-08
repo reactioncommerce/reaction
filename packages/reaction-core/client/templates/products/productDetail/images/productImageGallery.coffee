@@ -44,15 +44,17 @@ Template.productImageGallery.rendered = ->
           ui.placeholder.css "border-radius","6px"
 
 Template.productImageGallery.events
+
   "mouseover .gallery > li:not(:first-child) > img": (event, template) ->
-    unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-      source = this.url()
-      $(".gallery").children("li:first-child").children("img").fadeOut 300, ->
-        $(".gallery").children("li:first-child").children("img").attr("src", source).bind "onreadystatechange load", ->
-          $(".gallery").children("li:first-child").children("img").fadeIn 200 if @complete
-          return
-        return
-      return
+      event.stopImmediatePropagation()
+      unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+        currImg = $("li:nth-child(1) img").attr("src")
+        $("li:nth-child(1) img").fadeOut 400, ->
+          $("li:nth-child(1) img").attr("src", $(event.currentTarget).attr('src')).load ->
+            if $("li:nth-child(1) img").attr("src") isnt currImg
+                $(event.currentTarget).attr "src", currImg
+                $("li:nth-child(1) img").fadeIn 100
+            return
 
   "click .remove-image": (event, template) ->
     @remove()
