@@ -61,7 +61,7 @@ Meteor.methods
     #TODO: check newVariant, ProductVariantSchema
     Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
       console.log error if error
-      return results if results
+      return result if result
     )
 
   ###
