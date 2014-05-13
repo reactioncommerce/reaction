@@ -16,6 +16,7 @@ Template.productImageGallery.helpers
     (currentProduct.get "variant")
 
 Template.productImageGallery.rendered = ->
+
     # Drag and drop image index update
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       $gallery = $(".gallery")
@@ -35,7 +36,6 @@ Template.productImageGallery.rendered = ->
           )
 
           for image,value in sortedMedias
-            console.log image
             Media.update(image.mediaId, {$set: {'metadata.priority': value}})
 
         start: (event, ui) ->
@@ -43,20 +43,19 @@ Template.productImageGallery.rendered = ->
           ui.placeholder.css "padding-top", "30px"
           ui.placeholder.css "border", "1px dashed #ccc"
           ui.placeholder.css "border-radius","6px"
-     else
-       # use the first image as the main image after page load
-       _.defer ->
-         $('.mainImg').attr('src', $("li:nth-child(1) img").attr("src"))
 
 Template.productImageGallery.events
 
-  "mouseover .gallery > li > img": (event, template) ->
+  "mouseover .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
+      # TODO add hoverIntent to prevent swapping image on mouseout
       unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-        main = $('.mainImg')
-        main.fadeOut 400, ->
-          main.attr('src', $(event.currentTarget).attr('src')).load ->
-              main.fadeIn 200
+        if $(event.currentTarget).data('index') != $('.gallery li:nth-child(1)').data('index') and !$(event.currentTarget).data('last')
+          t = $('.gallery li:nth-child(1)')
+          $('.gallery li:nth-child(1)').fadeOut 400, ->
+            $(this).replaceWith($(event.currentTarget))
+            t.css({'display':'inline-block'}).appendTo($('.gallery'))
+            $('.gallery li:last-child').fadeIn 100
 
   "click .remove-image": (event, template) ->
     @remove()
