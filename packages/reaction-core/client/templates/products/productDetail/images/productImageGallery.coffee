@@ -50,7 +50,7 @@ Template.productImageGallery.events
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
       unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-        if $(event.currentTarget).data('index') != $('.gallery li:nth-child(1)').data('index') and !$(event.currentTarget).data('last')
+        if $(event.currentTarget).data('index') != $('.gallery li:nth-child(1)').data('index')
           t = $('.gallery li:nth-child(1)')
           $('.gallery li:nth-child(1)').fadeOut 400, ->
             $(this).replaceWith($(event.currentTarget))
