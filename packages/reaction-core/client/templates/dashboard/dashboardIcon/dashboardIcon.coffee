@@ -2,9 +2,9 @@ Template.dashboardIcon.helpers
   toggleStateClass: () ->
     state = Session.get "dashboard"
     if state is true
-      return "glyphicon glyphicon-th dashboard-state-active"
+      return "fa fa-th dashboard-state-active"
     else
-      return "glyphicon glyphicon-th"
+      return "fa fa-th"
 
 Template.dashboardIcon.events
   "click .dashboard-toggle": (event, template) ->

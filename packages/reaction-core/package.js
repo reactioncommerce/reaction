@@ -224,6 +224,8 @@ Package.on_use(function (api, where) {
     "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
+    "client/templates/products/products.coffee",
+
     "client/templates/products/productList/productList.html",
     "client/templates/products/productList/productList.coffee",
 

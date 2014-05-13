@@ -1,7 +1,10 @@
  <template name="dashboardIcon">
  {{#if hasDashboardAccess}}
-  <div class="dashboard-icon dashboard-toggle">
-    <span class="{{toggleStateClass}}"></span>
+   <div class="dropdown-apps-icon">
+      <span class="dashboard-icon dashboard-toggle">
+        <a id="dashboard-icon" alt="View Dashboard"><i class="{{toggleStateClass}}"></i></a>
+      </span>
+      <span class="icon-text">Dashboard</span>
   </div>
 {{/if}}
 </template>
