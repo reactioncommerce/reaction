@@ -6,9 +6,10 @@ Template.productImageGallery.helpers
     mediaArray = []
     variant = (currentProduct.get "variant")
     if variant?
-      Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
+      mediaArray = Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
       if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
-          Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
+        mediaArray = Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
+    mediaArray
 
   variant: ->
     (currentProduct.get "variant")
