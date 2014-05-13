@@ -9,12 +9,12 @@ Our core is being built with a preference for Coffeescript + LESS.
 
 We are always using latest full release of all community packages.
 
-Reaction packages should be able to run independently, whenever possible but many of the core packages will have dependancies on the reaction-core package.
-
-## Trello
-For active development tasks please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). This is where current and active development
+## Issues and Roadmap
+For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all our packages.
 
 To review our roadmap, check out our[Trello board](https://trello.com/b/ffwTH3tc/reaction-commerce)
+
+## Developer Documentation
 
 [Installation](https://github.com/ongoworks/reaction-core/blob/master/docs/installation.md)
 
