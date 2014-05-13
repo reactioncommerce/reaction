@@ -7,10 +7,8 @@ Template.productImageGallery.helpers
     variant = (currentProduct.get "variant")
     if variant?
       Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
-      # If no media is found for this variant, get the first variant's primary image
-      #if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
-          #mediaArray = Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
-      #mediaArray
+      if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
+          Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
 
   variant: ->
     (currentProduct.get "variant")
@@ -50,7 +48,7 @@ Template.productImageGallery.events
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
       unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-        if $(event.currentTarget).find('img').data('index') != $('.gallery li:nth-child(1) img').data('index')
+        if $(event.currentTarget).data('index') != $('.gallery li:nth-child(1)').data('index')
           t = $('.gallery li:nth-child(1)')
           $('.gallery li:nth-child(1)').fadeOut 400, ->
             $(this).replaceWith($(event.currentTarget))
