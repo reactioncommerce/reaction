@@ -15,8 +15,8 @@
 </template>
 
 <template name="imageDetail">
-  <li class="gallery-sortable">
-    <img src="{{url}}" class="img-thumbnail" alt="{{title}}" data-index="{{_id}}">
+  <li class="gallery-sortable" data-index="{{_id}}">
+    <img src="{{url}}" class="img-thumbnail" alt="{{title}}">
    {{#if userHasRole "admin"}}
     <div class="gallery-tools">
       <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
