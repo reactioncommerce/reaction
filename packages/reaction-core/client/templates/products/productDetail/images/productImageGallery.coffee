@@ -46,7 +46,7 @@ Template.productImageGallery.rendered = ->
 
 Template.productImageGallery.events
 
-  "mouseover .gallery > li": (event, template) ->
+  "mouseenter .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
       unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
