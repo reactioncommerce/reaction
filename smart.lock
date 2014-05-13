@@ -15,7 +15,10 @@
       "collectionFS": {},
       "cfs-filesystem": {},
       "cfs-s3": {},
-      "ui-dropped-event": {},
+      "ui-dropped-event": {
+        "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git",
+        "branch": "master"
+      },
       "fast-render": {},
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
@@ -105,9 +108,9 @@
         "commit": "311dcc6f0d8f64bde3cadfa2831501eb0b000ec9"
       },
       "ui-dropped-event": {
-        "git": "https://github.com/CollectionFS/Meteor-ui-dropped-event.git",
-        "tag": "v0.0.3",
-        "commit": "df3a46293da7dd3b45664a239bd9ccf4d23eb514"
+        "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git",
+        "branch": "master",
+        "commit": "867c3ecfa3a45e8e4d7d6ed933bacea93f408067"
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
@@ -122,7 +125,7 @@
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "2d04b740f7235f9c56ed1db55618f2c87b497cb9"
+        "commit": "e435d1c7abce3ba129d2db9bc1fee37ee1cc68a7"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
