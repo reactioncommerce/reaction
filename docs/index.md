@@ -1,9 +1,12 @@
 #Introduction
 
-Reaction Commerce is an open source ecommerce platform developed on [Node.js](http://nodejs.org) and the [Meteor](http://meteor.com) framework.  Reaction provides a lightweight, reactive commerce platform with a goal of simplifing and aligning the user experience to the admin experience.  
+Reaction Commerce is an open source ecommerce platform developed on [Node.js](http://nodejs.org) and the [Meteor](http://meteor.com) framework.  Reaction provides a lightweight, reactive commerce platform with a goal of simplifing and aligning the user experience to the admin experience. 
+
+
 ``` Adding a product should be a simple as buying a product.```
 
-This documentation provides an overview of the features of Reaction, and will answer questions about how to use Reaction as a shop owner. There is also a section for developers, which can get a developer or designer quickly using the platform where they can easily make modifications.
+
+This documentation provides an overview of the features of Reaction, and will answer questions about how to use Reaction as a shop owner. There is also a section for developers, which help a developer or designer quickly start using the platform locally where they can contribute changes to the project, or fork the project and modify to suit any requirement.
 
 This documentation is part of the project pages, which you can browse at [Github](http://github.com/ongoworks/)
 
