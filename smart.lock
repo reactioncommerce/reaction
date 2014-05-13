@@ -101,8 +101,8 @@
       },
       "cfs-s3": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-s3.git",
-        "tag": "v0.0.27",
-        "commit": "45f61184e1b39a6f3f9fe5f49c5b99d600b23cf0"
+        "tag": "v0.0.28",
+        "commit": "311dcc6f0d8f64bde3cadfa2831501eb0b000ec9"
       },
       "ui-dropped-event": {
         "git": "https://github.com/CollectionFS/Meteor-ui-dropped-event.git",
@@ -117,27 +117,27 @@
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
         "branch": "master",
-        "commit": "aba4c44adf399507eaee6e31a4da5ff808c64dad"
+        "commit": "6cde5fd7d272f63e2d94a3fd86da8bb0ef42f1fb"
       },
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "d19161f81b498388e82ce25705c768efeba4ff91"
+        "commit": "2d04b740f7235f9c56ed1db55618f2c87b497cb9"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
         "branch": "master",
-        "commit": "7ec868142c0435b8eca306c05cb0b73783d62b66"
+        "commit": "0da36585ec113bc5245c0215b211fdea925d97e4"
       },
       "reaction-google-analytics": {
         "git": "https://github.com/ongoworks/reaction-google-analytics.git",
         "branch": "master",
-        "commit": "02d92a2bf06525897a1ca3f755cb47d5b18ce98f"
+        "commit": "d5ca348ddf5fa7b38634edbf606d557ee47d18b0"
       },
       "reaction-helloworld": {
         "git": "https://github.com/ongoworks/reaction-helloworld.git",
         "branch": "master",
-        "commit": "ed321b320255bd240fa62c878c8489433829f9c1"
+        "commit": "744160df9487ff31c72bf5107da41d8a014ff1ec"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
