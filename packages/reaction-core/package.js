@@ -58,10 +58,6 @@ Package.on_use(function (api, where) {
     "lib/swiper/idangerous.swiper.js",
 
     "lib/jquery-autosize/jquery.autosize.js",
-    "lib/owl.carousel/owl-carousel/owl.carousel.css",
-    "lib/owl.carousel/owl-carousel/owl.theme.css",
-    "lib/owl.carousel/owl-carousel/owl.carousel.js",
-    "lib/jquery.autosize/jquery.autosize.js",
     "lib/imagesLoaded/imagesloaded.pkgd.js",
 
     "lib/jquery-ui/jquery-ui-1.10.4.custom.js",
