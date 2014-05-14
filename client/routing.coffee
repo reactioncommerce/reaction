@@ -5,21 +5,16 @@
 # yields based on the logic in this file
 # individual reaction packages have their own router.js
 # *****************************************************
-Router.configure
+
+ReactionController = ShopController.extend
   layoutTemplate: "layout"
-  # yieldTemplates:
-  #   footer:
-  #     to: "footer"
 
 # *****************************************************
-# generic routes for reaction layout
+# generic static pages
+# an array of pages, so we don't have to write each one
 # *****************************************************
-pages = [
 
-  #Header
-  "pricing"
-  "contactus"
-
+staticPages = [
   #Footer
   "about"
   "team"
@@ -28,18 +23,25 @@ pages = [
   "privacy"
 ]
 
+# *****************************************************
+# router path maps
+# *****************************************************
+
 Router.map ->
+  # index page
   @route "index",
-    controller: ShopController
+    controller: ReactionController
     path: "/"
+    template: "products"
     onAfterAction: ->
       document.title = Shops.findOne()?.name
 
-  for page in pages
+  # generic static pages
+  for page in staticPages
     @route page,
-      controller: ShopController
+      controller: ReactionController
 
-  # 404 Page for reaction
+  # custom 404 Page
   @route "notFound",
     path: "*"
 
