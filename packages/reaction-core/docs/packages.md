@@ -37,11 +37,26 @@ Add packages to the reaction dashboard by adding **register.coffee**
         }
     )
 
-Add widgets to dashboard elements by including a template named packagename-widget
+There are three elements to the "dashboard" view for packages.
+
+- Package Panel: the left most box in the dashboard panel
+- Package Widgets: - this is everything to the right of the panel and would be typical a group of graphs,etc
+- Package page: the area below the dashboard navigation bar, which can be used any content
+ 
+
+Add widgets to your package to be included on the dashboard by including a template named packagename-widget
 
     <template name="reaction-helloworld-widget">
-        <div> this is a widget that will appear on dashboard</div
+        <div class="dashboard-widget">
+          <div class="dashboard-widget-center">
+            <div>
+              <h3 class="helloworld-text">Widget Panel</h3><small>See: client/dashboard/widgets</small>
+            </div>
+          </div>
+        </div>
     </template>
+
+'''Tip: the dashboard-widget and dashboard-widget-center classes will creating touch/swipeable widget boxes.
 
 ##Roles/Permissions System
 
