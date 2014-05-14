@@ -16,6 +16,9 @@ Where "path/to/foo" is the path to the local repo of the package you with to wor
 
 See [Meteorite docs](https://github.com/oortcloud/meteorite/) for additional help creating local packages.
 
+Tip:  if you are cloning reaction-helloworld to start working on a new project, don't forget to add to the meteor package list.
+
+    meteor add your-new-package
 
 ##Dashboard
 Add packages to the reaction dashboard by adding **register.coffee**
