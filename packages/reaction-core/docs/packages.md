@@ -41,7 +41,7 @@ There are three elements to the "dashboard" view for packages.
 
 - Package Panel: the left most box in the dashboard panel
 - Package Widgets: - this is everything to the right of the panel and would be typical a group of graphs,etc
-- Package page: the area below the dashboard navigation bar, which can be used any content
+- Package Page: the area below the dashboard navigation bar, which can be used any content
  
 
 Add widgets to your package to be included on the dashboard by including a template named packagename-widget
@@ -56,7 +56,7 @@ Add widgets to your package to be included on the dashboard by including a templ
         </div>
     </template>
 
-'''Tip: the dashboard-widget and dashboard-widget-center classes will creating touch/swipeable widget boxes.
+Tip: the dashboard-widget and dashboard-widget-center classes will create touch/swipeable widget boxes.
 
 ##Roles/Permissions System
 
