@@ -122,6 +122,7 @@ Router.map ->
 
   #checkout
   @route 'cartCheckout',
+    layoutTemplate: "layout"
     path: 'checkout',
     template: 'cartCheckout'
     yieldTemplates:
