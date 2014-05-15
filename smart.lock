@@ -5,7 +5,6 @@
       "spin": {},
       "roles": {},
       "iron-router": {},
-      "videojs": {},
       "autoform": {},
       "collection2": {},
       "underscore-string-latest": {},
@@ -56,11 +55,6 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.7.1",
         "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
-      },
-      "videojs": {
-        "git": "https://github.com/nate-strauser/meteor-video-js.git",
-        "tag": "v4.1.2",
-        "commit": "26b85c5c75d456556bf1a1c5f00264a834813e73"
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
@@ -125,7 +119,7 @@
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "e435d1c7abce3ba129d2db9bc1fee37ee1cc68a7"
+        "commit": "8e19bc3fca525bb3a375de7a440d5e2b8cb90994"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
@@ -140,7 +134,7 @@
       "reaction-helloworld": {
         "git": "https://github.com/ongoworks/reaction-helloworld.git",
         "branch": "master",
-        "commit": "744160df9487ff31c72bf5107da41d8a014ff1ec"
+        "commit": "a82bc07aa80b92299f7d12835e94d72a11ea2811"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -149,8 +143,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.4.0",
-        "commit": "2cc6aac0d35a4e00b065c1437d540b2aefba5241"
+        "tag": "v0.5.0",
+        "commit": "c90127c383ad829747502bf7f6dfb6aabae094b8"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
