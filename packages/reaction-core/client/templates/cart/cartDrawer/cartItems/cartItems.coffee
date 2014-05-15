@@ -14,9 +14,13 @@ Template.cartDrawerItems.rendered = ->
 
 Template.cartDrawerItems.helpers
   media: (variant) ->
-    # console.log "cartDrawerItems media"
-    # defaultImage = Media.findOne({'metadata.variantId': this.variants._id})
-    # if defaultImage
-    #   return defaultImage
-    # else
-    #   return false
+     # return default image for this product variant
+     if defaultImage = Media.findOne({'metadata.variantId': this.variants._id})
+       return defaultImage
+     else
+       # loop through all product variants attempting to find default image
+       for variant in Products.findOne(this.productId).variants
+         if img = Media.findOne({'metadata.variantId': variant._id})
+             return img
+     # no images for this product or 'this is why we cant have nice things'
+     return false
