@@ -12,6 +12,7 @@ Router.configure
 
 ShopController = RouteController.extend
   fastRender: true
+  layoutTemplate: "layout"
   yieldTemplates:
     layoutHeader:
       to: "layoutHeader"
