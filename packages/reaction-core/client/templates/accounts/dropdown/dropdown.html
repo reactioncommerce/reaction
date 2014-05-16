@@ -1,16 +1,16 @@
 <template name="loginDropdown">
 <div class="dropdown" role="menu">
 {{#if currentUser}}
-  {{#if socialImage}}
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
-  {{/if}}
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{displayName}} <b class="caret"></b></a>
-  <div class="dropdown-menu" role="menu">
+  </a>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="logged-in-display-name"> {{displayName}}<b class="caret"></b></a>
+  <div class="dropdown-menu pull-right" role="menu">
   {{>userDropdown}}
   </div>
 {{else}}
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
-    <div class="accounts-dialog accounts-inline dropdown-menu">
+    <div class="accounts-dialog accounts-inline dropdown-menu pull-right">
     {{>_loginButtonsLoggedOutAllServices}}
     </div>
 {{/if}}
@@ -19,9 +19,6 @@
 
 <template name="userDropdown">
 <div class="user-accounts-dropdown">
-  {{#if socialImage}}
-  <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
-  {{/if}}
   <div class="user-accounts-dropdown-content">
     You are logged in.
     <div class="user-accounts-dropdown-apps">

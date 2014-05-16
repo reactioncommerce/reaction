@@ -1,22 +1,18 @@
 <template name="layoutHeader">
-<div class="navbar navbar-default navbar-static-top layout-header" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target="#reaction-navbar-collapse">
-        <span class="fa fa-bars fa-lg"></span>
-      </button>
-      <a class="navbar-brand navbar-nav" href="{{pathFor 'index'}}">{{siteName}}</a>
+<div class="container-fluid">
+  <div class="nav" role="navigation">
+    <div class="row navbar-shop">
+      <div><a class="navbar-brand" href="{{pathFor 'index'}}">{{siteName}}</a></div>
+      <div class="navbar-cart">{{> cartIcon}}</div>
+      <div class="navbar-accounts">{{> accounts tpl="loginDropdown"}}</div>
     </div>
-    <div class="nav navbar-nav navbar-right">{{> cartIcon}}</div>
-    <div class="collapse navbar-collapse" id="reaction-navbar-collapse">
-      <div class="nav navbar-nav navbar-right navbar-text">{{> accounts tpl="loginDropdown"}}</div>
-      <div>{{> headerTags}}</div>
-    </div>
+
+    <div class="row navbar-primary-tags">
+       <div class="navbar-tags">{{> headerTags}}</div>
+     </div>
   </div>
 </div>
-
 <div class="container-fluid">
   {{>bootstrapAlerts}}
 </div>
-
 </template>

@@ -1,48 +1,58 @@
-.navbar-static-top {
-  /* leave room for floating cart */
-  padding-right: 100px;
-  .navbar-brand {
-    padding: @navbar-padding-vertical 20px 0 10px;
-    font-size: @navbar-brand-font-size;
-    line-height: 1;
+.navbar-shop {
+  background-color: @navbar-default-bg;
+  a {
+    color: @navbar-default-link-color;
   }
-  .navbar-nav > li > a {padding-top:16px !important; padding-bottom:12px !important;}
-  .navbar-text {
-    margin-bottom: 0;
+  a:hover, a:focus {
+    color: @navbar-default-brand-hover-color;
+    background-color: @navbar-default-bg !important;
+    text-decoration: none;
+  }
+  .navbar-brand a:hover {
+    color: @navbar-default-link-color;
   }
 }
 
-/* mobile nav fixed */
-@media only screen and (max-width: @screen-xs-max) {
-  body {
-    padding-top: @navbar-height;
-  }
-  .navbar-static-top {
-    .navbar-fixed-top();
-      padding-right: (@navbar-padding-horizontal /2);
-      padding-left: (@navbar-padding-horizontal /2);
-      height: @navbar-height;
+.navbar-accounts{
+  margin-right: 85px;
+  display: inline-block;
+  float: right;
+  padding-top: (@navbar-padding-vertical + 2px);
+}
 
-    .navbar-brand {
-      padding: 10px 10px 0 10px;
-      font-size: @navbar-brand-font-size;
-      line-height: 1;
+.navbar-primary-tags {
+  background-color: @navbar-inverse-bg;
+  text-transform: uppercase;
+  line-height: 25px;
+  font-size: 10px;
+  font-weight: 700;
+  padding-top: 10px;
+}
+
+.navbar-tags  {
+  padding-left: @navbar-padding-horizontal;
+  a {
+    padding: @navbar-padding-vertical 5px;
+    color: @navbar-inverse-link-color;
+  }
+  a:hover {
+    color: @navbar-inverse-link-hover-color;
+    text-decoration: none;
+    background-color: @navbar-inverse-link-hover-bg;
+  }
+  a:active {
+    color: @navbar-inverse-link-active-color;
+    text-decoration: none;
+    background-color: @navbar-inverse-link-active-bg;
+  }
+}
+
+@media only screen and (max-width: @screen-xs-max) {
+  .navbar-accounts {
+    padding-top: (@navbar-padding-vertical + 3px);
+    #logged-in-display-name {
+      display: none;
     }
-    /* todo: clean this up */
-    .dashboard-icon {
-      float: right;
-      margin-right: 80px;
-      margin-top: -70px;
-    }
-    .dashboard-icon:before {
-      clear: none;
-    }
-    .navbar-collapse{
-      background-color: darken(@navbar-default-bg, 5%);
-      margin-top: -36px;
-      padding-bottom: 35px;
-      border: 1px solid darken(@navbar-default-bg, 40%);
-      z-index: 1;
-    }
+    .dropdown-menu { right: -60px;}
   }
 }

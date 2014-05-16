@@ -9,10 +9,6 @@ Template.loginDropdown.events
     event.preventDefault()
     return
 
-Template.loginDropdown.helpers
-  socialImage: ->
-    Meteor.user().profile?.picture
-
 Template.userDropdown.rendered =  ->
   setTimeout (->
       $('.dropdown-toggle').dropdown('toggle')

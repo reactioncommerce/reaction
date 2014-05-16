@@ -18,7 +18,10 @@ UI.registerHelper "displayName", () ->
   ""
 
 UI.registerHelper "socialImage", () ->
-  Meteor.user().profile?.picture
+  if Meteor.user().profile?.picture
+    return Meteor.user().profile?.picture
+  else
+    return "../../resources/avatar.gif"
 
 UI.registerHelper "camelToSpace", (str) ->
   downCamel = str.replace(/\W+/g, "-").replace /([a-z\d])([A-Z])/g, "$1 $2"

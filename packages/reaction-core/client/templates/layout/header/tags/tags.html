@@ -3,7 +3,7 @@
 </template>
 
 <template name="headerLinks">
-<ul class="nav navbar-nav tag-link-list" id="tag-link-list">
+<ul class="list-inline tag-link-list" id="tag-link-list">
   {{#each ./tags}}
    <li class="{{activeTag tag._id}}">
     <a href="{{pathForSEO "product/tag" "name"}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}">{{name}}</a>
