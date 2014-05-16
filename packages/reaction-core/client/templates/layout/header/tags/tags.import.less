@@ -3,12 +3,14 @@
   margin-left: -15px;
 }
 // size the navigation and when editing override navbar settings
-.nav.navbar-nav.tag-edit-list {
-  padding-top: 9px;
-  float:none !important;
-  margin: 2px 200px 0 200px;
+.tag-edit-list {
   input {
     min-width: 40px;
+  }
+  li {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
   }
 }
 // Kludge fix for autocomplete hiding behind navbar
@@ -19,12 +21,13 @@
 .tag-input-group {
   float:none;
   padding-right: 3px;
+  position: relative;
   .tag-input-group-handle {
     position: absolute;
     cursor: move;
     color: @input-color-placeholder;
     left: 4px;
-    top: 5px;
+    top: 2px;
     padding-left: 4px;
   }
   input {
@@ -46,7 +49,7 @@
   .tag-input-group-remove {
     position: absolute;
     right: 6px;
-    top: 5px;
+    top: 2px;
     color: @input-color-placeholder;
     padding-right: 4px;
   }

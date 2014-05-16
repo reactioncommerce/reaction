@@ -5,7 +5,7 @@
   }
   a:hover, a:focus {
     color: @navbar-default-brand-hover-color;
-    background-color: @navbar-default-bg !important;
+    background-color: @navbar-default-bg;
     text-decoration: none;
   }
   .navbar-brand a:hover {
@@ -18,6 +18,9 @@
   display: inline-block;
   float: right;
   padding-top: (@navbar-padding-vertical + 2px);
+  .dropdown.open > a, .dropdown.open > a:hover, .dropdown .open > a:focus {
+    background-color: transparent !important;
+  }
 }
 
 .navbar-primary-tags {
@@ -47,12 +50,4 @@
   }
 }
 
-@media only screen and (max-width: @screen-xs-max) {
-  .navbar-accounts {
-    padding-top: (@navbar-padding-vertical + 3px);
-    #logged-in-display-name {
-      display: none;
-    }
-    .dropdown-menu { right: -60px;}
-  }
-}
+

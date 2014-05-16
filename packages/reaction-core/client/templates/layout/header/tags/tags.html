@@ -17,18 +17,18 @@
 
 
 <template name="tagInputForm">
-<ul class="nav navbar-nav tag-edit-list" id="tag-edit-list">
+<ul class="list-inline tag-edit-list" id="tag-edit-list">
 {{#each ./tags}}
   <li data-tag-id="{{_id}}">
     <div class="tag-input-group">
       <span class="tag-input-group-handle">
-        <i class="fa fa-bars"></i>
+        <i class="fa fa-bars fa-lg"></i>
       </span>
       <span class="tag-input">
         <input type="text" class="tags-input-select" value="{{name}}" placeholder="Edit tags"/>
       </span>
       <span class="tag-input-group-remove">
-         <i class="fa fa-times-circle"></i>
+         <i class="fa fa-times-circle fa-lg"></i>
       </span>
     </div>
   </li>
