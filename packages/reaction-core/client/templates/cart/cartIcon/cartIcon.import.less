@@ -4,15 +4,16 @@
   border: @cart-icon-border;
   padding: @cart-icon-padding;
   border-radius: @cart-icon-border-radius;
-  display: block;
-  position: absolute;
-  background-color: transparent;
-  top: 0;
-  right: 0;
-
+  display: inline-block;
+  position: relative;
+  background-color: @cart-icon-bg;
+  a i {
+    color: @cart-icon-color;
+    background-color: transparent;
+  }
   .badge {
     position: absolute;
-    top: 22px;
+    bottom: 4px;
     right: 1px;
     background-color: @cart-icon-badge;
   }
@@ -24,4 +25,9 @@
     padding:2px 8px 2px 8px;
     background-color:@cart-icon-badge-warning;
   }
+}
+
+.navbar-cart .cart-icon > a:hover {
+  background-color: #fff;
+  text-decoration: none;
 }

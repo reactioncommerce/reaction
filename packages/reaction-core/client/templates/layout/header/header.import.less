@@ -13,8 +13,13 @@
   }
 }
 
+.navbar-cart {
+  float: right;
+  position: relative;
+}
+
 .navbar-accounts{
-  margin-right: 85px;
+  margin-right: 5px;
   display: inline-block;
   float: right;
   padding-top: (@navbar-padding-vertical + 2px);
@@ -33,9 +38,11 @@
 }
 
 .navbar-tags  {
-  padding-left: @navbar-padding-horizontal;
+  padding-left: 5px;
   a {
-    padding: @navbar-padding-vertical 5px;
+    margin-left: -8px;
+    margin-right: -8px;
+    padding: (@navbar-padding-vertical + 2px) 2rem;
     color: @navbar-inverse-link-color;
   }
   a:hover {
@@ -50,4 +57,9 @@
   }
 }
 
+@media only screen and (max-width: @screen-xs-max) {
+  .navbar-tags > a {
+    padding: @navbar-padding-vertical .8rem;
+  }
+}
 

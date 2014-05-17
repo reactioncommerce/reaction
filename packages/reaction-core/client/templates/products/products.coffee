@@ -16,5 +16,6 @@ Template.addProductLinks.events
     event.stopPropagation()
     Meteor.call "createProduct", (error, productId) ->
       console.log error if error
+      $('.dropdown-toggle').dropdown('toggle') #close the menu
       Router.go "product",
         _id: productId

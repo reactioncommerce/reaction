@@ -42,7 +42,7 @@
 @navbar-brand-font-size: 20px;
 @navbar-height: 50px;
 @navbar-padding-vertical: 14px;
-
+@navbar-inverse-bg: @gray-dark;
 
 //== Product Grid
 @product-overlay-bg: rgba(100, 89, 89, 0.56);
@@ -63,13 +63,14 @@
 //== Cart Drawer
 @cart-drawer-bg: #626262;
 @cart-drawer-height: 275px;
-@cart-icon-bg: lighten(@brand-primary, 40%);
+@cart-icon-bg: @body-bg;
 @cart-icon-badge:  #25B315;
 @cart-icon-badge-warning: #FF0000;
 @cart-icon-text: #fff;
+@cart-icon-color: @text-color;
 @cart-icon-border-radius: 0;
-@cart-icon-border: 4px solid @navbar-default-link-color;
-@cart-icon-padding:  7px 24px 7px 18px;
+@cart-icon-border: none;
+@cart-icon-padding:  @navbar-padding-vertical 30px @navbar-padding-vertical 24px;
 
 @cart-progress-active: #57aed1;
 @cart-progress-visited:  #8bc53f;

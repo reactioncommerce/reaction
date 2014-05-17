@@ -9,6 +9,10 @@ Template.loginDropdown.events
     event.preventDefault()
     return
 
+Template.userDropdown.events
+  "click .user-accounts-dropdown > a": (event,template) ->
+    $('.dropdown-toggle').dropdown('toggle')
+
 Template.userDropdown.rendered =  ->
   setTimeout (->
       $('.dropdown-toggle').dropdown('toggle')
