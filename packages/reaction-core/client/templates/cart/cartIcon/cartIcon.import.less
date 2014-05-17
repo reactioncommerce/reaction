@@ -4,7 +4,6 @@
   border: @cart-icon-border;
   padding: @cart-icon-padding;
   border-radius: @cart-icon-border-radius;
-  display: inline-block;
   position: relative;
   background-color: @cart-icon-bg;
   a i {
@@ -26,7 +25,17 @@
     background-color:@cart-icon-badge-warning;
   }
 }
-
+.cart-alert{
+  color: @cart-icon-text;
+  background-color: @cart-icon-bg;
+  margin-right: -2px;
+  display: none;
+  float:right;
+  .cart-alert-text {
+    padding: @navbar-padding-vertical;
+    height: @navbar-height;
+  }
+}
 .navbar-cart .cart-icon > a:hover {
   background-color: #fff;
   text-decoration: none;

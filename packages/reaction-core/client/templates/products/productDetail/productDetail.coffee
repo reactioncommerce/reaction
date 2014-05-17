@@ -96,7 +96,8 @@ Template.productDetail.events
       CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
       $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
       $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
-      unless Session.get "displayCart" then toggleSession "displayCart"
+      $('.cart-alert-text').text(quantity + " " + currentVariant.title + " added")
+      $('.cart-alert').toggle('slide',{direction:'right', 'padding-right': currentVariant.title.length + "px"},800).delay(2000).fadeOut(800)
 
     else
       Alerts.add "Select an option before adding to cart"
