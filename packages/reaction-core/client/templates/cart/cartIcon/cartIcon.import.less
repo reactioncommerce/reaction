@@ -6,6 +6,7 @@
   border-radius: @cart-icon-border-radius;
   position: relative;
   background-color: @cart-icon-bg;
+  min-height: @navbar-height;
   a i {
     color: @cart-icon-color;
     background-color: transparent;
@@ -26,14 +27,21 @@
   }
 }
 .cart-alert{
+  color: #555555;
+  background-color: #ffffff;
+  float: right;
+  position: absolute;
+  top: 0;
+  right: 76px;
   color: @cart-icon-text;
   background-color: @cart-icon-bg;
-  margin-right: -2px;
   display: none;
-  float:right;
+  z-index: 10;
   .cart-alert-text {
     padding: @navbar-padding-vertical;
     height: @navbar-height;
+    min-width: 225px;
+    white-space: nowrap;
   }
 }
 .navbar-cart .cart-icon > a:hover {

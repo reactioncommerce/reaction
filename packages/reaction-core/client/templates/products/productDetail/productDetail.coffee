@@ -96,8 +96,9 @@ Template.productDetail.events
       CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
       $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
       $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
+      $('html,body').animate({scrollTop:0},0)
       $('.cart-alert-text').text(quantity + " " + currentVariant.title + " added")
-      $('.cart-alert').toggle('slide',{direction:'right', 'padding-right': currentVariant.title.length + "px"},800).delay(2000).fadeOut(800)
+      $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
 
     else
       Alerts.add "Select an option before adding to cart"
@@ -133,7 +134,6 @@ Template.productDetailEdit.events
   "change input,textarea": (event,template) ->
     Meteor.call "updateProductField", (currentProduct.get "product")._id,  this.field, $(event.currentTarget).val(), (error,results) ->
       if results
-        # $(event.currentTarget) + " .product-detail-message").text("Saved")
         $(event.currentTarget).animate({backgroundColor: "#e2f2e2" }).animate({backgroundColor: "#fff"})
     if this.type is "textarea" then $(event.currentTarget).trigger('autosize.resize')
     Session.set "editing-"+this.field, false
