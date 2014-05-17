@@ -2,6 +2,10 @@ Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
   fastRender: true
+  onRun: ->
+    @subscribe "shops"
+    @subscribe "cart", Session.get "sessionId", Meteor.userId()
+    [share.ConfigDataHandle]
   waitOn: ->
     Meteor.app.init()
 
