@@ -85,6 +85,16 @@
   }
 }
 
+.additional-link-container {
+  a {
+    color: @link-color;
+  }
+  a:hover {
+    color: @link-hover-color;
+    background-color: transparent;
+  }
+}
+
 @media only screen and (max-width: @screen-xs-max) {
   .navbar-accounts {
     padding-top: (@navbar-padding-vertical + 3px);
