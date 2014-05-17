@@ -47,7 +47,7 @@ To remove a variant, select the Delete icon (![](http://raw.github.com/ongoworks
 
 In Reaction, you can easily add images and video to show off your products. Each [variant](#products-variants) has it's own media gallery. Currently, only image file types are supported.
 
-||Support for more file types coming soon. See [Issue #50](https://github.com/ongoworks/reaction/issues/50).||
+Support for more file types coming soon. See [Issue #50](https://github.com/ongoworks/reaction/issues/50).
 
 To add media to the gallery, just click on a variant and drag files from your hard drive to anywhere on the gallery.
 
