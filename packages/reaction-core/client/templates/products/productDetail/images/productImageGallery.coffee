@@ -56,16 +56,30 @@ Template.productImageGallery.events
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
       unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-        variant = (currentProduct.get "variant")
         first = $('.gallery li:nth-child(1)')
         target = $(event.currentTarget)
-        if variant == false
+
+        # Figure out the variant from the moused over image
+        if false == (currentProduct.get "variant")
           if currentProduct.get("product")?
-            last = null
             for variant in currentProduct.get('product').variants
+              ids = []  # Collect all the Variant media IDs
               for media in Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}}).fetch()
+                ids.push media._id
                 if $(event.currentTarget).data('index') == media._id
                   currentProduct.set "variant", variant
+
+              # we found the selected variant, break out of the loop
+              if (currentProduct.get "variant")
+                break
+
+          ###
+          hide all images not associated with the highlighted variant
+          to prevent the alternate variant images from being displayed.
+          ###
+          if ids.length > 0
+            $('.gallery li').each (k,v) ->
+              $(v).hide() unless $(v).data("index") in ids
 
         if $(target).data('index') != first.data('index')
           $('.gallery li:nth-child(1)').fadeOut 400, ->
