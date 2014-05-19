@@ -5,10 +5,17 @@ Template.productImageGallery.helpers
   media: ->
     mediaArray = []
     variant = (currentProduct.get "variant")
-    if variant?
+    if variant
       mediaArray = Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
       if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
         mediaArray = Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
+    else
+      # If no variant selected, get media for all product variants
+      if currentProduct.get("product")?
+        ids = []
+        for v in currentProduct.get('product').variants
+          ids.push v._id
+        mediaArray = Media.find({'metadata.variantId': { $in: ids}}, {sort: {'metadata.priority': 1}})
     mediaArray
 
   variant: ->
@@ -49,16 +56,27 @@ Template.productImageGallery.events
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
       unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-        if $(event.currentTarget).data('index') != $('.gallery li:nth-child(1)').data('index')
-          t = $('.gallery li:nth-child(1)')
+        variant = (currentProduct.get "variant")
+        first = $('.gallery li:nth-child(1)')
+        target = $(event.currentTarget)
+        if variant == false
+          if currentProduct.get("product")?
+            last = null
+            for variant in currentProduct.get('product').variants
+              for media in Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}}).fetch()
+                if $(event.currentTarget).data('index') == media._id
+                  currentProduct.set "variant", variant
+
+        if $(target).data('index') != first.data('index')
           $('.gallery li:nth-child(1)').fadeOut 400, ->
-            $(this).replaceWith($(event.currentTarget))
-            t.css({'display':'inline-block'}).appendTo($('.gallery'))
+            $(this).replaceWith(target)
+            first.css({'display':'inline-block'}).appendTo($('.gallery'))
             $('.gallery li:last-child').fadeIn 100
 
   "click .remove-image": (event, template) ->
     @remove()
     return
+
   "dropped #galleryDropPane": (event, template) ->
     FS.Utility.eachFile event, (file) ->
       fileObj = new FS.File(file)
