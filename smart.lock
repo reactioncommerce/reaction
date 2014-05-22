@@ -48,8 +48,8 @@
       },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",
-        "tag": "v1.2.8",
-        "commit": "68844ba216c348d332bdb840825850f497f515bb"
+        "tag": "v1.2.9",
+        "commit": "969b17fac5dfec66b6b12bfce4e37471d1a241d4"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
@@ -114,12 +114,12 @@
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
         "branch": "master",
-        "commit": "6cde5fd7d272f63e2d94a3fd86da8bb0ef42f1fb"
+        "commit": "0f68a1c33e0b2d232b20d5c2214c6ad2527e71cb"
       },
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "8e19bc3fca525bb3a375de7a440d5e2b8cb90994"
+        "commit": "512680aaa53d4e7d3d5970fefcea0aa17b67a771"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
@@ -143,8 +143,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.5.0",
-        "commit": "c90127c383ad829747502bf7f6dfb6aabae094b8"
+        "tag": "v0.5.1",
+        "commit": "a29956b34d03a4591dbd0eaed9d37009ef48b8db"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
@@ -158,8 +158,8 @@
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
-        "tag": "v0.1.4",
-        "commit": "118ee62a459f20e48468378d576f0d42e4b15dd7"
+        "tag": "v0.1.5",
+        "commit": "02dbe5f51a9d1067c3891e3658c48d4fadb9dff6"
       },
       "cfs-collection": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-collection.git",
