@@ -26,7 +26,7 @@
 	Coming in the future:
 
 	* Support for more file formats (See: [Issue #50](https://github.com/ongoworks/reaction/issues/50))
-	* Import and add images direct from (See: [Issue #50](https://github.com/ongoworks/reaction/issues/69))
+	* Import and add images direct from (See: [Issue #69](https://github.com/ongoworks/reaction/issues/69))
 		* Facebook
 		* Google Drive
 		* Dropbox
