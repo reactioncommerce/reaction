@@ -45,7 +45,7 @@
 	* Stripe
 	* Salesforce
 	* and more...
-* Administrator role /package based invitation access
+* Administrator role/package based invitation access
 
 ## Cart and Checkout
 * One page checkout
@@ -59,7 +59,7 @@
 
 ## Analytics
 * Integrated tracking framework for easy integration to any analytics system
-* Standard integrated Google Analytics E-commerce event tracking
+* Standard integrated Google Analytics ecommerce event tracking
 
 ## Mail
 * Send transactional emails through any provider, configurable settings
