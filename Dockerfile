@@ -1,39 +1,50 @@
 ############################################################
-# Dockerfile for containers that will run a Meteor app on container port 8080
-# Based on Ubuntu
+# Dockerfile the demeteorizers a Meteor app, and runs
+# as a standard node app.
+# See: http://docs.docker.io/
+# Example usage:
+# cd appdir
+# docker build --tag="ongoworks/reaction:0.1.0" .   #build step
+# docker push ongoworks/reaction:0.1.0  #push to docker repo
+# docker run -p 127.0.0.1:8080:8080 ongoworks/reaction:0.1.0  #run
 ############################################################
+
 FROM cmfatih/nodejs
 MAINTAINER Aaron Judd <aaron@ongoworks.com>
 
-#Install forever
-RUN npm install --silent -g forever
+#Install required packages first
+RUN apt-get install -qq -y curl git gcc make build-essential
+RUN curl https://install.meteor.com | /bin/sh
+RUN npm install --silent -g forever demeteorizer meteorite
 
-# Create /var/www/app directory
-RUN mkdir -p /var/www/app
+# Add current dir+subs to meteorsrc
+ADD . ./meteorsrc
+WORKDIR /meteorsrc
 
-# Copy the bundle from host into the container;
-# name must be bundle.tar.gz;
-# the build process unpacks it into a bundle directory automatically
-
-WORKDIR /var/www
-ADD https://s3-us-west-2.amazonaws.com/reaction-bundles/bundle.tar.gz /var/www/
-RUN tar -xzf bundle.tar.gz
-
-# Reinstall fibers (http://docs.meteor.com/#deploying)
-RUN cd /var/www/bundle/programs/server/node_modules && rm -r fibers && npm install fibers@1.0.1
-
-# Copy the extracted and tweaked node application to the final app directory
-RUN cp -R /var/www/bundle/* /var/www/app
-
-# Remove the bundle directory now that we're done with it
-RUN rm -rf /var/www/bundle
+# Demeteorize meteorsrc to /var/www/app
+RUN mkdir -p /var/www/app && demeteorizer -n v0.10.26 -o /var/www/app
 
 # Set the working directory to be used for commands that are run, including the default CMD below
 WORKDIR /var/www/app
 
+RUN rm -rf /usr/local/meteor /usr/local/bin/meteor ~/.meteor
+RUN cd /var/www/app/ && npm uninstall --silent fibers && npm install fibers@1.0.1 && npm update
+
+
+#
+# Default ENV settings for meteor app
+# Required to run meteor!
+# either change these or pass as --env in the docker run
+#
+ENV PORT 8080
+ENV ROOT_URL "http://127.0.0.1"
+ENV MONGO_URL "mongodb://127.0.0.1:3001/meteor"
+#ENV MAIL_URL "smtp://user:password@mailhost:port/"
+
 # Expose container port 8080 to the host (outside the container)
-EXPOSE 22
 EXPOSE 8080
 
+WORKDIR /var/www/app
+RUN touch .foreverignore
 # Define default command that runs the node app on container port 8080
-CMD PORT=8080 forever -w ./main.js
+CMD forever -w ./main.js
