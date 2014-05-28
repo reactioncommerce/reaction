@@ -103,12 +103,9 @@ Router.map ->
             if variant._id is @params.variant
               currentProduct.set "variant",variant
         else
-          # if only one variant exists, default it
-          if product.variants.length == 1
+          if product.variants
             currentProduct.set "variant", product.variants[0]
-          else
-            # No variant selected
-            currentProduct.set "variant", false
+
 
     onBeforeAction: (pause) ->
       if @params._id.match  /^[A-Za-z0-9]{17}$/
