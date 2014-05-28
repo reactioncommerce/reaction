@@ -94,8 +94,8 @@ Router.map ->
       else
         text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
         product = Products.findOne({handle: { $regex : text, $options:"i" } })
-      # set current variant and products
 
+      # set current variant and products
       currentProduct.set "product", product
       if product?.variants
         if @params.variant
@@ -103,11 +103,13 @@ Router.map ->
             if variant._id is @params.variant
               currentProduct.set "variant",variant
         else
-          # TODO: better way of doing this. Check if this
-          # current variant set for this product, otherwise first
-          # variant is defaulted.
-          result = (variant._id for variant in product.variants when variant._id is (currentProduct.get "variant")?._id)
-          currentProduct.set "variant", product.variants[0] unless result[0]
+          # if only one variant exists, default it
+          if product.variants.length == 1
+            currentProduct.set "variant", product.variants[0]
+          else
+            # No variant selected
+            currentProduct.set "variant", false
+
     onBeforeAction: (pause) ->
       if @params._id.match  /^[A-Za-z0-9]{17}$/
         product = Products.findOne(@params._id)
