@@ -119,7 +119,7 @@
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "930190ecc5151e985eb12d47ff6ff12833448a60"
+        "commit": "9d93e6074a45adea6e02cc56e7c97babb5ce204f"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
