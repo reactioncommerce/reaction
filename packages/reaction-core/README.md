@@ -12,7 +12,7 @@ We are always using latest full release of all community packages.
 ## Issues and Roadmap
 For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all our packages.
 
-To review our roadmap, check out our[Trello board](https://trello.com/b/ffwTH3tc/reaction-commerce)
+To review our roadmap, check out our [Trello board](https://trello.com/b/ffwTH3tc/reaction-commerce)
 
 ## Developer Documentation
 
