@@ -31,6 +31,8 @@ To reset data and give you a fresh test dataset from the reaction-commerce packa
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
+The initial admin user for the site is auto generated, and displayed in your console.
+
 *Note: Optionally you can run and reset with "meteor" and "meteor reset", but you will not load settings data from configuration files. You would need to save them in your data, or create your own private/data*
 
 ##Deploying
