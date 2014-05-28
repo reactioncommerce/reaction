@@ -54,11 +54,12 @@ Template.variantList.helpers
     product  = currentProduct.get "product"
     if product
       current = (currentProduct.get "variant")
-      if current.parentId?
-        variants = (variant for variant in product.variants when variant.parentId is current.parentId)
-      else
-        variants = (variant for variant in product.variants when variant.parentId is current._id)
-      return variants
+      if current._id
+        if current.parentId?
+          variants = (variant for variant in product.variants when variant.parentId is current.parentId)
+        else
+          variants = (variant for variant in product.variants when variant.parentId is current._id)
+        return variants
 
 
 
