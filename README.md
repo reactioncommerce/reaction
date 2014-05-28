@@ -5,7 +5,8 @@ A commerce platform developed with Meteor and following a reactive design patter
 ---
 ###Roadmap & Status:
 
-**Current status: Alpha. Functional but unstable, with HEAVY ongoing development!**
+** Current status: Public Alpha v0.1.0 **
+** Functional but unstable, with HEAVY ongoing development!**
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We will start releasing point versions here when we feel we have reached a reasonable amount of stability for at least the bleeding edge test users. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
 
@@ -15,9 +16,10 @@ You can review our [Trello planning board for current progress](https://trello.c
 
 **Demonstration & Playground **
 
-	http://demo.reactioncommerce.com
-	Admin User: admin1@ongoworks.com
-	Password: ongo1
+http://reactioncommerce.com
+
+Here you can launch a test shop, launched as a Docker container. 
+The Docker image is automatically built at the [Ongoworks public docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
 
 
 ---
@@ -61,4 +63,4 @@ You can review our [Trello planning board for current progress](https://trello.c
 
 ---
 ##Reaction Team
-Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some light reading on our [blog](http://blog.reactioncommerce.com/), for those curious about who we are.
+Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some light reading on our [blog](http://thoughts.reactioncommerce.com/), for those curious about who we are.
