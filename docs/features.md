@@ -20,19 +20,18 @@
 * Drag and drop image and video gallery
 
 #### Integrated file management
-* Drag and drop image and video uploader
+* Drag and drop image uploader
 	* Drag and drop image upload from desktop
-	* Search web for images and add directly
 
 	Coming in the future:
 
-	* Import and add images direct from
+	* Support for more file formats (See: [Issue #50](https://github.com/ongoworks/reaction/issues/50))
+	* Import and add images direct from (See: [Issue #69](https://github.com/ongoworks/reaction/issues/69))
 		* Facebook
 		* Google Drive
 		* Dropbox
 		* Image URL
 		* and more...
-	* Take photos or video directly from app
 
 ## Accounts
 * Social authentication and account creation methods built in, using Meteor packages
@@ -46,7 +45,7 @@
 	* Stripe
 	* Salesforce
 	* and more...
-* Administrator role /package based invitation access
+* Administrator role/package based invitation access
 
 ## Cart and Checkout
 * One page checkout
@@ -60,7 +59,7 @@
 
 ## Analytics
 * Integrated tracking framework for easy integration to any analytics system
-* Standard integrated Google Analytics E-commerce event tracking
+* Standard integrated Google Analytics ecommerce event tracking
 
 ## Mail
 * Send transactional emails through any provider, configurable settings
