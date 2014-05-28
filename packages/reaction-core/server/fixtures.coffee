@@ -62,7 +62,7 @@ createDefaultAdminUser = ->
 
   # options from mixing known set ENV production variables
   unless options.username
-    url = process.env.MONGO_URL.toLowerCase() #pull from default db connect string
+    url = process.env.MONGO_URL #pull from default db connect string
     options.username = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[0]
     unless options.username is "mongodb"
       options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
