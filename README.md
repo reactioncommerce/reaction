@@ -8,7 +8,7 @@ A commerce platform developed with Meteor and following a reactive design patter
 ** Current status: Public Alpha v0.1.0 **
 ** Functional but unstable, with HEAVY ongoing development!**
 
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We will start releasing point versions here when we feel we have reached a reasonable amount of stability for at least the bleeding edge test users. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
 
 As with all development, some items are ahead of schedule, and some are not.
 
@@ -19,7 +19,7 @@ You can review our [Trello planning board for current progress](https://trello.c
 http://reactioncommerce.com
 
 Here you can launch a test shop, launched as a Docker container. 
-The Docker image is automatically built at the [Ongoworks public docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
+The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
 
 
 ---
@@ -42,8 +42,8 @@ The Docker image is automatically built at the [Ongoworks public docker repo](ht
 * Migration paths from existing commerce platforms (Magento, Shopify, BigCommerce)
 * reaction-commerce package can be used as a package in any meteor application
 * Designer and developer friendly!
-	*  HTML/CSS/Javascript or CoffeeScript knowledge should be sufficient for customization.
-	*  Commercial package and theme development encouraged.
+	* HTML/CSS/Javascript or CoffeeScript knowledge should be sufficient for customization.
+	* Commercial package and theme development encouraged.
 	* All contributors should be rewarded. [please contact us](mailto:hello@ongoworks.com)
 
 
