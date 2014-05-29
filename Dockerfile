@@ -28,8 +28,7 @@ RUN mkdir -p /var/www/app && demeteorizer -n v0.10.26 -o /var/www/app
 WORKDIR /var/www/app
 
 RUN rm -rf /usr/local/meteor /usr/local/bin/meteor ~/.meteor
-RUN cd /var/www/app/ && npm install && npm uninstall --silent fibers && npm install fibers@1.0.1
-
+RUN cd /var/www/app/ && npm uninstall --silent fibers && npm update
 
 #
 # Default ENV settings for meteor app
