@@ -119,12 +119,12 @@
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "9d93e6074a45adea6e02cc56e7c97babb5ce204f"
+        "commit": "beb0f2b1e58ef23ff7a516508ab1e1696306f4ae"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
         "branch": "master",
-        "commit": "0da36585ec113bc5245c0215b211fdea925d97e4"
+        "commit": "8314f64e554e66204bba37b69009c885dd0303bb"
       },
       "reaction-google-analytics": {
         "git": "https://github.com/ongoworks/reaction-google-analytics.git",
