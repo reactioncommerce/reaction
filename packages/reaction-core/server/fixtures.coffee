@@ -76,7 +76,6 @@ createDefaultAdminUser = ->
   accountId = Accounts.createUser options
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
   shopId = Shops.findOne()._id
-  console.log options.email
   Shops.update shopId,
     $set:
       ownerId: accountId
