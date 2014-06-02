@@ -1,11 +1,12 @@
 Meteor.app.packages.register
   name: 'reaction-commerce'
   depends: ['fileUploader', 'staffAccountsManager','paymentMethod', 'mailService', 'analytics', 'shipmentMethod']
-  label: 'Shop'
+  label: 'Settings'
   description: 'Reaction Shop'
   icon: 'fa fa-shopping-cart'
   settingsRoute: 'dashboard/settings/shop'
   overviewRoute: 'dashboard'
+  overViewLabel: 'App Gallery'
   priority: '3'
   hidden: true
   hasWidget: true
@@ -51,7 +52,7 @@ Meteor.app.packages.register
 Meteor.app.packages.register
   name: 'reaction-commerce-staff-accounts'
   provides: ['staffAccountsManager']
-  label: 'Access'
+  label: 'Admin Access'
   settingsRoute: 'dashboard/settings/account'
   hidden: true
   shopPermissions: [

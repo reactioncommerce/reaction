@@ -1,0 +1,11 @@
+<template name="coreLayout">
+  <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
+  <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
+  <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
+  <main role="main" id="main">
+    <div class="container-fluid">
+      {{> yield}}
+    </div>
+  </main>
+  <footer class="reaction-navigation-footer">{{>yield region="layoutFooter"}}</footer>
+</template>

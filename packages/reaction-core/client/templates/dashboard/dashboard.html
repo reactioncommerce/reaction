@@ -24,7 +24,15 @@
   <div class="dashboard-navbar-packages">
     <ul class="nav nav-pills">
       {{#each packages}}
-        <li class="{{isActive}}"><a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">{{label}}</a></li>
+        <li class="{{isActive}}">
+          <a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">
+            {{#if overViewLabel}}
+              {{overViewLabel}}
+            {{else}}
+              {{label}}
+            {{/if}}
+          </a>
+        </li>
       {{/each}}
     </ul>
   </div>

@@ -40,6 +40,9 @@ An example of a deployment with password to a [meteor.com hosted site](http://do
 
 	meteor deploy -P --settings settings/prod.json yourdemosite.meteor.com
 
+##Email
+To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send
+
 ## Optional
 If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time..
 

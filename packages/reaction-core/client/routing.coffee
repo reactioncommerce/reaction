@@ -3,16 +3,17 @@ Router.configure
   loadingTemplate: "loading"
   fastRender: true
   onRun: ->
+    Meteor.app.init()
+  waitOn: ->
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
-    [share.ConfigDataHandle]
-  waitOn: ->
-    Meteor.app.init()
+  onBeforeAction: ->
+    Alerts.removeSeen()
+    return
 
-
-ShopController = RouteController.extend
+@ShopController = RouteController.extend
   fastRender: true
-  layoutTemplate: "layout"
+  layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
       to: "layoutHeader"
@@ -20,17 +21,15 @@ ShopController = RouteController.extend
       to: "layoutFooter"
     dashboard:
       to: "dashboard"
-  waitOn: ->
-    @subscribe "shops"
-    @subscribe "cart", Session.get "sessionId", Meteor.userId()
-    [share.ConfigDataHandle]
+ShopController = @ShopController
 
-
-@ShopAdminController = ShopController.extend
-  waitOn: (pause) ->
+@ShopAdminController = @ShopController.extend
+  onBeforeAction: (pause) ->
     unless Meteor.app.hasPermission(@route.name)
       @render('unauthorized')
       pause()
+      return
+ShopAdminController = @ShopAdminController
 
 Router.map ->
   # home page intro screen for reaction-commerce
@@ -44,17 +43,11 @@ Router.map ->
     controller: ShopAdminController
     path: '/dashboard/settings/shop'
     template: 'settingsGeneral'
-    data: ->
-      shop: Shops.findOne()
 
   @route 'dashboard/settings/account',
     controller: ShopAdminController
     path: '/dashboard/settings/account'
     template: 'settingsAccount'
-    waitOn: ->
-      Meteor.subscribe 'shopMembers'
-    data: ->
-      shop: Shops.findOne()
 
   # list page of customer records
   @route 'dashboard/customers',
@@ -119,7 +112,6 @@ Router.map ->
           pause()
     data: ->
       currentProduct.get "product"
-
     onAfterAction: ->
        document.title = this.data()?.title || Shops.findOne()?.name
 
@@ -135,6 +127,7 @@ Router.map ->
       Cart.findOne()
     onAfterAction: ->
       document.title = Shops.findOne()?.name + " Checkout"
+
   #completed orders
   @route 'cartCompleted',
     controller: ShopController

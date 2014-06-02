@@ -37,8 +37,8 @@ Package.on_use(function (api, where) {
     "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
     "server/methods/accounts/accounts.coffee",
-    "server/emailTemplates/shopMemberInvite.handlebars",
-    "server/emailTemplates/shopMemberNotification.handlebars"
+    "server/emailTemplates/shopMemberInvite.html",
+    "server/emailTemplates/shopMemberNotification.html"
   ], ["server"]);
 
   api.add_files([
@@ -79,6 +79,7 @@ Package.on_use(function (api, where) {
     "client/workflows/cart/workflow.coffee",
     "client/workflows/orders/workflow.coffee",
 
+    "client/templates/layout/layout.html",
     "client/templates/layout/header/header.html",
     "client/templates/layout/header/header.coffee",
 

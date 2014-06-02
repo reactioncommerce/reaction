@@ -1,6 +1,6 @@
 Template.settingsAccount.helpers
   members: () ->
-    @.shop.members
+    Shops.findOne().members
 
 Template.settingsAccount.events
   "click .button-add-member": (event,template) ->

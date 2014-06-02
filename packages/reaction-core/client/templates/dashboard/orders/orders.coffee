@@ -1,6 +1,10 @@
 Template.orders.helpers
   orders: () ->
-    Orders.find().fetch()
+    orders = Orders.find().fetch()
+    if orders.length > 0
+      return orders
+    else
+      return false
 
   fulfillmentWorkflow: ->
     # to define fulfillment workflow, alter OrderWorkflowEvents
@@ -21,9 +25,3 @@ Template.orders.helpers
 
     fulfillmentWorkflow.push finalEvent
     fulfillmentWorkflow
-
-# Template.orders.rendered = ->
-#   $("#order-carousel").owlCarousel
-#     lazyload: true
-#     items: 4
-#     itemsScaleUp: true

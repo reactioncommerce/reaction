@@ -18,8 +18,8 @@ loadData = (collection) ->
 share.loadFixtures = ->
   # Load data from json files
   loadData Products unless Products.find().count()
-  createDefaultAdminUser() unless Meteor.users.find().count()
   loadData Shops unless Shops.find().count()
+  createDefaultAdminUser() unless Meteor.users.find().count()
   loadData Tags unless Tags.find().count()
   loadData ConfigData unless ConfigData.find().count()
   # loadImageData "Images" unless Images.find().count()
@@ -61,23 +61,38 @@ createDefaultAdminUser = ->
   domain = domain.substring(0, domain.indexOf(":")).toLowerCase()
 
   # options from mixing known set ENV production variables
-  unless options.username
+  if process.env.METEOR_EMAIL
     url = process.env.MONGO_URL #pull from default db connect string
-    options.username = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[0]
-    unless options.username is "mongodb"
-      options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
-      unless options.email
-        options.email = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[0] + "@" + domain
-      console.log ("IMPORTANT! DEFAULT USER INFO (ENV) --->".red + " USER: " + options.username + " PASSWORD: " + options.password + " EMAIL: " + options.email)
-    else
-      # random options if nothing has been set
-      options.username = Random.secret(6)
-      options.password = Random.secret(8)
-      options.email = options.username + "@" + domain
-      console.log ("IMPORTANT! DEFAULT USER INFO (RANDOM) --->".red + " USER: " + options.username + " PASSWORD: " + options.password + " EMAIL: " + options.email)
+    options.username = "Administrator"
+    unless options.password then options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
+    console.log ("IMPORTANT! DEFAULT USER INFO (ENV) --->".red + " EMAIL/LOGIN: " + options.email + "  PASSWORD: " + options.password)
+  else
+    # random options if nothing has been set
+    options.username = "Administrator"
+    options.password = Random.secret(8)
+    options.email = Random.id(8).toLowerCase() + "@" + domain
+    console.log ("IMPORTANT! DEFAULT USER INFO (RANDOM) --->".red + " EMAIL/LOGIN: " + options.email + "  PASSWORD: " + options.password)
 
   accountId = Accounts.createUser options
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
+  shopId = Shops.findOne()._id
+  console.log options.email
+  Shops.update shopId,
+    $set:
+      ownerId: accountId
+      email: options.email
+    $push:
+      members:
+        isAdmin: true
+        userId: accountId
+        permissions: [
+            "dashboard/customers",
+            "dashboard/products",
+            "dashboard/settings",
+            "dashboard/settings/account",
+            "dashboard/orders"
+            ]
+
 
 
 Meteor.startup ->
