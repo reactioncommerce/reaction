@@ -10,9 +10,9 @@ To assign a tag to a product, login as an admin, and click on a product to go to
 
 To create a new tag, click on the “Add tags” box and type in your tag. Hit Enter on your keyboard to save the tag. For example, if the product is a tshirt you might want to add Tags like: Mens, Short sleeve, Cotton, Crew neck, etc. 
 
-To delete a tag, click the grey “x” icon.
+To delete a tag, click the grey “x” icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-deletetag.png)).
 
-To rearrange tags, click on the 3 horizontal lines icon, and drag and drop the tag where you want it.
+To rearrange tags, click on the 3 horizontal lines icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-movetag.png)), and drag and drop the tag where you want it.
 
 ###Hashtag URLs
 

@@ -32,7 +32,7 @@ To remove an entire product, login as a user with sufficient permissions (see [A
 
 Product variants allow you to create variations of the same base product. You can specify different prices, weights, quantities, and other key information for each variant. An example of variants is carrying multiple sizes and colors of a given shirt.
 
-To create a variant, select the Clone icon (![Clone Icon](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) next to the original variant that appeared when the product was first created.
+To create a variant, select the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) next to the original variant that appeared when the product was first created.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createvariant.png)
 
