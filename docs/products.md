@@ -5,6 +5,7 @@ Products are the individual items that you are selling in your Reaction shop. Wi
 ###Creating Products
 
 To create a product, first login as a user with permissions to manage products (see [Accounts](#dashboard-accounts)), then click the Add Product button (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/icon-add.png)) at the top of any product page.
+
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/manual-products-createproduct.jpg)
 
 You will then be taken to a view of your new product where you can simply click into and [edit the available fields Variants](#products-editing) as well as [Add Variants](#products-variants).
