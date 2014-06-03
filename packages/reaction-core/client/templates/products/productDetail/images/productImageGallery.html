@@ -1,6 +1,6 @@
 <template name="productImageGallery">
 <div id="galleryDropPane" class="galleryDropPane">
-    <ul class="gallery">
+  <ul class="gallery">
     {{#each media}}
       {{> imageDetail}}
     {{else}}
@@ -16,7 +16,7 @@
 
 <template name="imageDetail">
   <li class="gallery-sortable" data-index="{{_id}}">
-    <img src="{{url}}" class="img-thumbnail" alt="{{title}}">
+    <img src="{{url uploading='../../resources/placeholder.gif' storing='../../resources/placeholder.gif'}}" class="img-thumbnail" alt="{{title}}">
    {{#if userHasRole "admin"}}
     <div class="gallery-tools">
       <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
@@ -33,4 +33,3 @@
   </div>
 {{/if}}
 </template>
-
