@@ -4,13 +4,13 @@ Products are the individual items that you are selling in your Reaction shop. Wi
 
 ###Creating Products
 
-To create a product, first login as a user with permissions to manage products (see [Accounts](#dashboard-accounts)), then click the Add Product button (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/icon-add.png)) at the top of any product page.
+To create a product, first login as a user with permissions to manage products (see [Accounts](#dashboard-accounts)), then click the Add Product button (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-add.png)) at the top of any product page.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/manual-products-createproduct.jpg)
 
 You will then be taken to a view of your new product where you can simply click into and [edit the available fields Variants](#products-editing) as well as [Add Variants](#products-variants).
 
-You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/icon-clone.png)) on any product.
+You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) on any product.
 
 Until you choose to make a product visible, it is, by default, hidden from the public. To make a product visible, click the “Make it visible” link in the product detail view.
 
@@ -24,7 +24,7 @@ In Reaction, products are edited from the same view the shopper sees. All you ne
 
 ###Removing Products
 
-To remove an entire product, login as a user with sufficient permissions (see [Accounts](#dashboard-accounts)) and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/icon-delete.png)) in the grid view. To remove an individual variant, see [Variants](#products-variants).
+To remove an entire product, login as a user with sufficient permissions (see [Accounts](#dashboard-accounts)) and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png)) in the grid view. To remove an individual variant, see [Variants](#products-variants).
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/manual-products-removeproduct.jpg)
 
@@ -32,7 +32,7 @@ To remove an entire product, login as a user with sufficient permissions (see [A
 
 Product variants allow you to create variations of the same base product. You can specify different prices, weights, quantities, and other key information for each variant. An example of variants is carrying multiple sizes and colors of a given shirt.
 
-To create a variant, select the Clone icon (![Clone Icon](http://raw.github.com/ongoworks/reaction/master/docs/assets/icon-clone.png)) next to the original variant that appeared when the product was first created.
+To create a variant, select the Clone icon (![Clone Icon](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) next to the original variant that appeared when the product was first created.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/manual-products-createvariant.png)
 
@@ -40,7 +40,7 @@ From there, you can edit the information and [add images and videos](#products-m
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/manual-products-editvariant.png)
 
-To remove a variant, select the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/icon-delete.png)) next to the variant you wish to remove.
+To remove a variant, select the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png)) next to the variant you wish to remove.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/manual-products-removevariant.png)
 
