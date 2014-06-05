@@ -36,19 +36,31 @@ To remove an entire product, login as a user with sufficient permissions and cli
 
 ###Product Variants
 
-Product variants allow you to create variations of the same base product. You can specify different prices, weights, quantities, and other key information for each variant. An example of variants is carrying multiple sizes and colors of a given shirt.
+Product variants allow you to create variations of the same base product. You can specify different prices, weights, quantities, and other key information for each variant. An example of variants is carrying multiple colors of a given shirt.
 
-To create a variant, select the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) next to the original variant that appeared when the product was first created.
+Each newly created product comes preloaded with one variant. To create additional variants, first click the edit icon next to the original variant. This will expose the fields and controls for that variant. (Double clicking anywhere on the variant bar will also open the control panel)
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-openvariant.png)
+
+Then click the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) and a new variant will be created as a clone of the original.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createvariant.png)
 
 From there, you can edit the information and add images and videos for that specific variant.
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-editvariant.png)
-
-To remove a variant, select the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png)) next to the variant you wish to remove.
+To remove a variant, open it and click the delete button.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-removevariant.png)
+
+### Variants Options
+
+Variant Options are a second level of variation within a variant. This enables you to have a shirt in multiple colors and then multiple size options for each color. You can use this flexible structure in whatever way best fits your needs.
+
+To add options to a variant, click the variant options button to the left of the clone button.
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-addvariantoption.png)
+
+Each option can have it's own set of images, just select it by clicking anywhere on the option and add media to the gallery.
 
 ###Product Media
 
