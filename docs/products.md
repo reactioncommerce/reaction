@@ -8,7 +8,7 @@ To create a product, first login as an administrator and click on your avatar in
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createproduct.png)
 
-You will then be taken to a view of your new product where you can simply click into and edit the available fields as well as add variants.
+You will then be taken to a view of your new product where you can simply click into and edit the available fields as well as add variants. See sections below for details on editing 
 
 You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) on any product from the grid view.
 
@@ -32,7 +32,7 @@ In Reaction, products are edited from the same view the shopper sees. All you ne
 
 To remove an entire product, login as a user with sufficient permissions and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png)) in the grid view. To remove an individual variant, see below.
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-removeproduct.jpg)
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-removeproduct.png)
 
 ###Product Variants
 
