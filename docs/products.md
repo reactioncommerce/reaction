@@ -60,7 +60,9 @@ To add options to a variant, click the variant options button to the left of the
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-addvariantoption.png)
 
-Each option can have it's own set of images, just select it by clicking anywhere on the option and add media to the gallery.
+Each option can have it's own price, quantity, name, and even it's own set of images. When an option is selected (you'll know by the highlighted background) you can simply add media to the gallery and it will be associated with that option.
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-editvariantoption.png)
 
 ###Product Media
 
