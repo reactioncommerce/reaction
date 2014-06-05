@@ -4,17 +4,23 @@ Products are the individual items that you are selling in your Reaction shop. Wi
 
 ###Creating Products
 
-To create a product, first login as a user with permissions to manage products (see [Accounts](#dashboard-accounts)), then click the Add Product button (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-plus.png)) at the top of any product page.
+To create a product, first login as an administrator and click on your avatar in the top right corner. Then click the Create button in the window that appears.
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createproduct.jpg)
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createproduct.png)
 
-You will then be taken to a view of your new product where you can simply click into and [edit the available fields Variants](#products-editing) as well as [Add Variants](#products-variants).
+You will then be taken to a view of your new product where you can simply click into and edit the available fields as well as add variants.
 
 You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) on any product.
 
-Until you choose to make a product visible, it is, by default, hidden from the public. To make a product visible, click the “Make it visible” link in the product detail view.
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-cloneproduct.png)
+
+Until you choose to make a product visible, it is, by default, hidden from the public. To make a product visible, click the “make it visible” link in the product detail view.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-makevisible.png)
+
+Once the product is set to be visible, a link appears at the top of the product that you can use change it back to hidden status at any time.
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-makeinvisible.png)
 
 ###Editing Products
 
