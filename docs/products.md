@@ -10,7 +10,7 @@ To create a product, first login as an administrator and click on your avatar in
 
 You will then be taken to a view of your new product where you can simply click into and edit the available fields as well as add variants.
 
-You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) on any product.
+You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) on any product from the grid view.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-cloneproduct.png)
 
@@ -24,13 +24,13 @@ Once the product is set to be visible, a link appears at the top of the product 
 
 ###Editing Products
 
-In Reaction, products are edited from the same view the shopper sees. All you need to do is login as a user with sufficient permissions (see [Accounts](#dashboard-accounts)) and click on the product you wish to edit. From the product detail view, you can click to change any field.
+In Reaction, products are edited from the same view the shopper sees. All you need to do is login as a user with sufficient permissions and click on the product you wish to edit. From the product detail view, you can click to change any field.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-editproduct.png)
 
 ###Removing Products
 
-To remove an entire product, login as a user with sufficient permissions (see [Accounts](#dashboard-accounts)) and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png)) in the grid view. To remove an individual variant, see [Variants](#products-variants).
+To remove an entire product, login as a user with sufficient permissions and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png)) in the grid view. To remove an individual variant, see below.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-removeproduct.jpg)
 
@@ -42,7 +42,7 @@ To create a variant, select the Clone icon (![](http://raw.github.com/ongoworks/
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createvariant.png)
 
-From there, you can edit the information and [add images and videos](#products-media) for that specific variant.
+From there, you can edit the information and add images and videos for that specific variant.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-editvariant.png)
 
@@ -52,7 +52,7 @@ To remove a variant, select the Delete icon (![](http://raw.github.com/ongoworks
 
 ###Product Media
 
-In Reaction, you can easily add images and video to show off your products. Each [variant](#products-variants) has its own media gallery. Currently, only image file types are supported. Support for more file types, as well as integration with google drive, dropbox, and others, is coming soon. See [Issue #50](https://github.com/ongoworks/reaction/issues/50) and [Issue #69](https://github.com/ongoworks/reaction/issues/69).
+In Reaction, you can easily add images and video to show off your products. Each variant has its own media gallery. Currently, only image file types are supported. Support for more file types, as well as integration with google drive, dropbox, and others, is coming soon. See [Issue #50](https://github.com/ongoworks/reaction/issues/50) and [Issue #69](https://github.com/ongoworks/reaction/issues/69).
 
 To add media to the gallery, click on a variant and drag files from your hard drive to anywhere on the gallery.
 
