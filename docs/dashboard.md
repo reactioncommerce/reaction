@@ -8,7 +8,7 @@ The Dashboard is the brain center for your shop: The place where you can access 
 
 "Settings" is located in the first card of your Dashboard drawer. Click the "cog" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog.png)) next to it to access your "Shop Settings" screen. The "General" tab will open, and you can change your Shop Name and Email address. Under the "Address" tab you will need to fill out your company information. The "SMTP" tab and the "Settings" tab allow you to configure email and domains for your shop.
 
-###Admin Access
+###Access
 
 The Access page is found by clicking the "cog" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog.png)) next to "Admin Access" in your Dashboard drawer. This is where you can give your staff members access to administer your Reaction site.
 
