@@ -2,6 +2,20 @@
 # Reaction Handlebars helpers
 ###
 
+#default return $ symbol
+UI.registerHelper "currency", () ->
+  Shops.findOne().currency
+
+UI.registerHelper "currencySymbol", () ->
+  Shops.findOne().moneyFormat
+
+###
+# general helper for formatting price
+# returns string float currency format
+###
+UI.registerHelper "formatPrice", (price) ->
+  price.toFixed(2)
+
 
 UI.registerHelper "pathForSEO", (path, params) ->
   if this[params]
@@ -188,13 +202,6 @@ UI.registerHelper "pluralize", (n, thing) ->
     "1 " + thing
   else
     n + " " + thing + "s"
-
-###
-# general helper for formatting price
-# returns string float currency format
-###
-UI.registerHelper "formatPrice", (price) ->
-  price.toFixed(2)
 
 ###
 # general helper user name handling

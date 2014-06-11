@@ -46,7 +46,7 @@
 
         {{/if}}
         <span class="variant-title">{{title}}</span>
-        <span class="variant-price pull-right">${{price}}</span>
+        <span class="variant-price pull-right">{{currencySymbol}}{{price}}</span>
       </div>
       {{#if userHasRole "admin"}}
       <div class="variant-edit-tools xs-hidden">

@@ -45,7 +45,7 @@
           <div class="col-xs-8">
             {{!-- Price Fixation --}}
             <span class="price">
-              <i class="fa fa-usd currency-symbol"></i>
+              <span class="currency-symbol">{{currencySymbol}}</span>
               <span id="price" itemprop="price">{{actualPrice}}</span>
             </span>
             {{>fieldComponent field="vendor" value=vendor}}
