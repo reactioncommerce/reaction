@@ -38,7 +38,7 @@ The initial admin user for the site is auto generated, and displayed in your con
 ##Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
 
-	meteor deploy -P --settings settings/prod.json yourdemosite.meteor.com
+	meteor deploy --settings settings/prod.json yourdemosite.meteor.com
 
 ##Email
 To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send
