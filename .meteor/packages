@@ -33,10 +33,11 @@ d3
 cfs-gridfs
 cfs-s3
 ui-dropped-event
-fast-render
 
 reaction-app-packages
 reaction-core
 reaction-paypal
 reaction-google-analytics
 reaction-helloworld
+force-ssl
+oauth-encryption

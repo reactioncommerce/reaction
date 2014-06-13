@@ -18,7 +18,6 @@
         "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git",
         "branch": "master"
       },
-      "fast-render": {},
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
         "branch": "master"
@@ -58,13 +57,13 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.10.0",
-        "commit": "4b298a025679a7e51892a884c11301c1d6bf19b3"
+        "tag": "v0.11.0",
+        "commit": "efdffcdf836a45c50c39696ede15399177ccb9fa"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.0",
-        "commit": "5648f7c53ee98f3ac8fbe82a55e6fd78fc67cfbc"
+        "tag": "v0.4.1",
+        "commit": "a9ffc9b285c3af8ad631f9cda4851b0ffc30c5ce"
       },
       "underscore-string-latest": {
         "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
@@ -73,8 +72,8 @@
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
-        "tag": "v0.6.7",
-        "commit": "f1d2ac629864edda09df6c955fa5ff3df26f739c"
+        "tag": "v0.7.0",
+        "commit": "20a6de81f3818f112bccf67b5e1d3db342cf0b18"
       },
       "handlebars-server": {
         "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
@@ -106,11 +105,6 @@
         "branch": "master",
         "commit": "867c3ecfa3a45e8e4d7d6ed933bacea93f408067"
       },
-      "fast-render": {
-        "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.2.5",
-        "commit": "93e2fb334e55fbe9b5ebb2a2e65964018658f43e"
-      },
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
         "branch": "master",
@@ -119,17 +113,17 @@
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "ada352eb58b5488b50b8c9d1a9a921ed2cc206b3"
+        "commit": "698a9aa36424c7d9ca3e4f73c3a847ce2e6775f3"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
         "branch": "master",
-        "commit": "8314f64e554e66204bba37b69009c885dd0303bb"
+        "commit": "f1b7c25c9f41c752e65df678725c479e953e2c1d"
       },
       "reaction-google-analytics": {
         "git": "https://github.com/ongoworks/reaction-google-analytics.git",
         "branch": "master",
-        "commit": "d5ca348ddf5fa7b38634edbf606d557ee47d18b0"
+        "commit": "00a7bb31028e2f57c25bc93b5d049210504408e7"
       },
       "reaction-helloworld": {
         "git": "https://github.com/ongoworks/reaction-helloworld.git",

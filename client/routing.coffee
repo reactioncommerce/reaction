@@ -23,26 +23,17 @@ staticPages = [
   "privacy"
 ]
 
-# *****************************************************
+###
 # router path maps
+###
+
+# *****************************************************
+# to use your own templates, you can do override like this:
+# Router.routes.index.options.template = "myIndex"
 # *****************************************************
 
 Router.map ->
-  # index page
-  @route "index",
-    controller: ReactionController
-    path: "/"
-    template: "products"
-    onAfterAction: ->
-      document.title = Shops.findOne()?.name
-
   # generic static pages
   for page in staticPages
     @route page,
       controller: ReactionController
-
-  # custom 404 Page
-  @route "notFound",
-    path: "*"
-
-
