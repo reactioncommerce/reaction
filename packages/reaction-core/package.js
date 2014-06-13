@@ -3,7 +3,7 @@ Package.describe({
 });
 
 Npm.depends({
-    "node-geocoder": "0.6.0",
+    "node-geocoder": "2.5.0",
     "phantomjs": '1.9.7-8',
     "node-phantom": '0.2.5',
     "colors": "0.6.2"
@@ -232,6 +232,9 @@ Package.on_use(function (api, where) {
 
     "client/templates/products/productDetail/productDetail.html",
     "client/templates/products/productDetail/productDetail.coffee",
+
+    "client/templates/products/productDetail/edit/edit.html",
+    "client/templates/products/productDetail/edit/edit.coffee",
 
     "client/templates/products/productDetail/images/productImageGallery.html",
     "client/templates/products/productDetail/images/productImageGallery.coffee",

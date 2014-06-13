@@ -1,18 +1,41 @@
+###
+# Helper method to set default/parameterized product variant
+###
+setCurrentVariant = (variantId) ->
+  if variantId
+    for variant in currentProduct.get("product").variants
+      if variant._id is variantId
+        currentProduct.set "variant",variant
+  else
+    currentProduct.set "variant", currentProduct.get("product").variants[0]
+
+setCurrentProduct = (productId) ->
+  if productId.match  /^[A-Za-z0-9]{17}$/
+    currentProduct.set "product", Products.findOne(productId)
+    # setCurrentVariant @params.variant
+  else
+    text = productId.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+    currentProduct.set "product", Products.findOne({handle: { $regex : text, $options:"i" } })
+
+###
+#  Global Reaction Routes
+#  Extend/override in reaction/client/routing.coffee
+###
 Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
-  fastRender: true
   onRun: ->
     Meteor.app.init()
-  waitOn: ->
-    @subscribe "shops"
-    @subscribe "cart", Session.get "sessionId", Meteor.userId()
   onBeforeAction: ->
+    @render "loading"
     Alerts.removeSeen()
     return
 
+
 @ShopController = RouteController.extend
-  fastRender: true
+  waitOn: ->
+    @subscribe "shops"
+    @subscribe "cart", Session.get "sessionId", Meteor.userId()
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -32,6 +55,16 @@ ShopController = @ShopController
 ShopAdminController = @ShopAdminController
 
 Router.map ->
+  # default index route, normally overriden parent meteor app
+  @route "index",
+    controller: ShopController
+    path: "/"
+    template: "products"
+    waitOn: ->
+      Meteor.subscribe "products"
+    onAfterAction: ->
+      document.title = Shops.findOne()?.name
+
   # home page intro screen for reaction-commerce
   @route 'dashboard',
     controller: ShopAdminController
@@ -66,12 +99,15 @@ Router.map ->
     controller: ShopController
     path: 'product/tag/:_id'
     template: "products"
+    waitOn: ->
+      @subscribe "products"
     data: ->
-      if @params._id.match  /^[A-Za-z0-9]{17}$/
-        return tag: Tags.findOne(@params._id)
-      else
-        text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
-        return tag: Tags.findOne({name: { $regex : text, $options:"i" } })
+      if @ready()
+        if @params._id.match  /^[A-Za-z0-9]{17}$/
+          return tag: Tags.findOne(@params._id)
+        else
+          text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+          return tag: Tags.findOne({name: { $regex : text, $options:"i" } })
 
     onAfterAction: ->
       document.title = this.data()?.tag.name || Shops.findOne()?.name
@@ -82,38 +118,28 @@ Router.map ->
     path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
-      if @params._id.match  /^[A-Za-z0-9]{17}$/
-        product = Products.findOne(@params._id)
-      else
-        text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
-        product = Products.findOne({handle: { $regex : text, $options:"i" } })
-
-      # set current variant and products
-      currentProduct.set "product", product
-      if product?.variants
-        if @params.variant
-          for variant in product.variants
-            if variant._id is @params.variant
-              currentProduct.set "variant",variant
-        else
-          if product.variants
-            currentProduct.set "variant", product.variants[0]
-
-
+      @subscribe 'product', @params._id
     onBeforeAction: (pause) ->
-      if @params._id.match  /^[A-Za-z0-9]{17}$/
-        product = Products.findOne(@params._id)
+      if @.ready()
+        setCurrentProduct @params._id
+        setCurrentVariant @params.variant
+    action: ->
+      if @ready() and currentProduct.get("product")
+        unless currentProduct.get("product").isVisible
+          unless Meteor.app.hasPermission(@path)
+            @render "unauthorized"
+            return
+          @render()
+        @render()
       else
-        text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
-        product = Products.findOne({handle: { $regex : text, $options:"i" } })
-      unless product?.isVisible
-        unless Meteor.app.hasPermission(@path)
-          @render('unauthorized')
-          pause()
-    data: ->
-      currentProduct.get "product"
+        @render "loading"
+      return
     onAfterAction: ->
        document.title = this.data()?.title || Shops.findOne()?.name
+    data: ->
+      #console.log @.ready()
+      if @.ready()
+        return currentProduct.get "product"
 
   #checkout
   @route 'cartCheckout',
@@ -123,8 +149,14 @@ Router.map ->
     yieldTemplates:
       checkoutHeader:
         to: "layoutHeader"
+    waitOn: ->
+      @subscribe "shops"
+      @subscribe "products"
+      @subscribe "userOrders", Meteor.userId()
+      @subscribe "cart", Session.get "sessionId", Meteor.userId()
     data: ->
-      Cart.findOne()
+      if @.ready()
+        return Cart.findOne()
     onAfterAction: ->
       document.title = Shops.findOne()?.name + " Checkout"
 
@@ -133,7 +165,18 @@ Router.map ->
     controller: ShopController
     path: 'completed/:_id',
     template: 'cartCompleted'
+    waitOn: ->
+      @subscribe "userOrders", Meteor.userId()
     data: ->
-      Orders.findOne(@params._id)
+      if @.ready()
+        if Orders.findOne(@params._id)
+          return Orders.findOne(@params._id)
+        else
+          @render 'unauthorized'
+
     onAfterAction: ->
       document.title = Shops.findOne()?.name + " Success"
+
+  # custom 404 Page
+  @route "notFound",
+    path: "*"

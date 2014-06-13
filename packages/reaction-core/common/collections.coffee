@@ -1,5 +1,7 @@
 share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
 share.ConfigData = @ConfigData = new Meteor.Collection("ConfigData")
+share.Product = @Product = new Meteor.Collection("Product")
+share.Variant = @Variant= new Meteor.Collection("Variant")
 
 Users = @Users = Meteor.users
 

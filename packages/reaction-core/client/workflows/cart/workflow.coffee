@@ -82,7 +82,7 @@ CartWorkflow = StateMachine.create(
             console.log "An error occurred saving the order. : " +error
           else #go to order success
             CartWorkflow.inventoryAdjust(result)
-      ), 100
+      ), 250
 
     oninventoryAdjust: (event, from, to, orderId) ->
       Meteor.call "inventoryAdjust", orderId

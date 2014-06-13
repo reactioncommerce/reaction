@@ -49,7 +49,7 @@ Meteor.methods
         if currentCart
           Cart.upsert {sessionId: sessionId}, {$set:{shopId: shopId, userId: userId}}, (error, result) ->
             console.log error if error
-            Meteor.call "synchCarts", userId
+            Meteor.call "syncCarts", userId
             return Cart.findOne(sessionId: sessionId) if result
 
       # console.log "upserting new session cart"
@@ -60,7 +60,7 @@ Meteor.methods
   ###
   # synch multiple carts when there is more than user cart
   ###
-  synchCarts: (userId) ->
+  syncCarts: (userId) ->
     userId = userId || Meteor.userId()
     shopId = Meteor.app.getCurrentShop(@)._id
     # console.log "synch carts for: ", userId
@@ -112,7 +112,7 @@ Meteor.methods
 
     order = Orders.insert(cart,
         (error, result) ->
-          console.log "error in order insert"
+          console.log "error in order insert" if error
           console.log Orders.namedContext().invalidKeys() if error
       )
     Cart.remove(userId: Meteor.userId)

@@ -19,39 +19,13 @@ ReactionConfigHandle = Meteor.subscribe "ReactionConfig"
 share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
 
 Meteor.subscribe "UserConfig", Meteor.userId()
-Meteor.subscribe "products"
 Meteor.subscribe "orders"
 Meteor.subscribe "customers"
 Meteor.subscribe "tags"
-Meteor.subscribe "shops"
 Meteor.subscribe "media"
 Meteor.subscribe "FileStorage"
 Meteor.subscribe "Packages"
-
-###
-#  Reactive current product
-#  This ensures singleton reactive products, without session
-#  set usage: currentProduct.set "product",object
-#  get usage: currentProduct.get "product"
-###
-@currentProduct =
-  keys: {}
-  deps: {}
-  get: (key) ->
-    @ensureDeps key
-    @deps[key].depend()
-    @keys[key]
-  set: (key, value) ->
-    @ensureDeps key
-    @keys[key] = value
-    @deps[key].changed()
-  changed: (key) ->
-    @ensureDeps key
-    @deps[key].changed()
-  ensureDeps: (key) ->
-    @deps[key] = new Deps.Dependency  unless @deps[key]
-
-currentProduct = @currentProduct
+Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
 
 ###
 #  Autorun dependencies

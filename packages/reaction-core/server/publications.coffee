@@ -204,10 +204,13 @@ Meteor.publish 'products', (userId) ->
       selector.isVisible = true
     Products.find selector
 
-Meteor.publish 'product', (id) ->
-  shop = Meteor.app.getCurrentShop(@)
-  if shop
-    Products.findOne _id: id, shopId: shop._id
+Meteor.publish 'product', (productId) ->
+  shop = Meteor.app.getCurrentShop(@) #todo: wire in shop
+  if productId.match  /^[A-Za-z0-9]{17}$/
+    return Products.find(productId)
+  else
+    text = productId.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+    return Products.find({handle: { $regex : text, $options:"i" } })
 
 ###
 # Client access rights for products
@@ -215,7 +218,7 @@ Meteor.publish 'product', (id) ->
 Products.allow
   insert: (userId, product) ->
     product.shopId = Meteor.app.getCurrentShop()._id
-    unless Roles.userIsInRole(userId, ['admin'])
+    unless Roles.userIsInRole(userId, ['admin']) n
       return false
     true
   update: (userId, product, fields, modifier) ->
@@ -234,15 +237,16 @@ Products.allow
 ###
 # orders collection
 ###
-Meteor.publish 'orders', ->
+Meteor.publish 'orders', (userId) ->
   shop = Meteor.app.getCurrentShop(@)
-  if shop
-    Orders.find shopId: shop._id
+  unless Roles.userIsInRole(this.userId, ['admin','owner'])
+    return false
+  Orders.find shopId: shop._id
 
-Meteor.publish 'order', (id) ->
+Meteor.publish 'userOrders', (userId) ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
-    Orders.findOne _id: id, shopId: shop._id
+    Orders.find shopId: shop._id, userId: this.userId
 
 ###
 # Client access rights for orders
@@ -273,7 +277,7 @@ Meteor.publish 'cart', (sessionId, userId) ->
     # console.log "cartCount:", userCarts.count()
     if userCarts.count() >= 1
       Meteor.call "createCart", sessionId, this.userId
-      Meteor.call "synchCarts", this.userId
+      Meteor.call "syncCarts", this.userId
       return Cart.find sessionId: sessionId, userId: this.userId
     else
       Meteor.call "createCart", sessionId, this.userId

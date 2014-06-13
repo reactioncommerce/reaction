@@ -4,10 +4,12 @@
 
 #default return $ symbol
 UI.registerHelper "currency", () ->
-  Shops.findOne().currency
+  shops = Shops.findOne()
+  if shops then return shops.currency
 
 UI.registerHelper "currencySymbol", () ->
-  Shops.findOne().moneyFormat
+  shops = Shops.findOne()
+  if shops then return shops.moneyFormat
 
 ###
 # general helper for formatting price
