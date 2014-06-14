@@ -74,7 +74,7 @@ export METEOR_AUTH="password"
 export MONGO_URL="<your mongodb connect string>"
 ```
 
-The METEOR_EMAIL, METEOR_USER, METEOR_AUTH will create this user/pass/email as the default first site admin user.
+The METEOR_EMAIL, METEOR_USER, METEOR_AUTH will create this email/user/password as the default first site admin user.
 
 ### Email 
 To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send
