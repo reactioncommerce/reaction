@@ -14,22 +14,13 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
 	
 
 ##Startup
-To just start Reaction, run the `meteor` or `mrt` command:
+To start Reaction, run the `meteor` or `mrt` command:
 
 	meteor
-
-
-If you've created a configuration file add `--settings settings/yoursettings.json`. There are some helper scripts in the *reaction/bin* directory.
-```bash
-#settings from *settings/dev.json*,
-./bin/run  
-```
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
-
-*Note: Optionally you can run and reset with "meteor" and "meteor reset", but you will not load settings data from configuration files. You would need to save them in your data, or create your own private/data*
 
 ## Reset
 To reset data and give you a fresh test dataset from the reaction-commerce packages private/data
@@ -48,7 +39,17 @@ If you will be doing any development or deployment, it's best to configure a con
 
 Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
 
-	cp settings/dev.sample.json settings/dev.json
+```bash
+cp settings/dev.sample.json settings/dev.json
+```
+
+If you've created a configuration file, then add `--settings settings/yoursettings.json` to the `meteor`/`mrt` startup command. There are some helper scripts in the *reaction/bin* directory, that make this a bit easier for development.
+
+```bash
+#settings from *settings/dev.json*,
+./bin/run  
+```
+
 
 Example configuration file
 ```json
