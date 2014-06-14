@@ -48,7 +48,7 @@ Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/set
 	cp settings/dev.sample.json settings/dev.json
 
 Example configuration file
-
+```json
 	{
 	  "baseUrl": "http://localhost:3000",
 	  "googleAnalyticsProperty": "__KEY__",
@@ -62,14 +62,17 @@ Example configuration file
 	    }
 	  }
 	}
+```
 
 ### Env variables (optional)
 
-	export MAIL_URL="<smtp connection string"
-	export METEOR_EMAIL="youradmin@yourdomain.com" 
-	export METEOR_USER="admin"
-	export METEOR_AUTH="password"
-	export MONGO_URL="<your mongodb connect string>"
+```bash
+export MAIL_URL="<smtp connection string"
+export METEOR_EMAIL="youradmin@yourdomain.com" 
+export METEOR_USER="admin"
+export METEOR_AUTH="password"
+export MONGO_URL="<your mongodb connect string>"
+```
 
 The METEOR_EMAIL, METEOR_USER, METEOR_AUTH will create this user/pass/email as the default first site admin user.
 
@@ -85,12 +88,16 @@ The Dockerfile creates a Docker image of a production version of the application
 
 You can pull our latest build from the [Docker Hub](https://registry.hub.docker.com/u/ongoworks/reaction/),  or from the Reaction directory you can just do:
 
-	docker build ongoworks/reaction .
+```bash
+docker build ongoworks/reaction .
+```
 
 
 Typically you would start a Docker/Reaction app container by starting the Docker image like this:
 
+```bash
 docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost" -e PORT="8080" -p ::8080 -d ongoworks/reaction
+```
 
 # Vagrant / Ubuntu
 
