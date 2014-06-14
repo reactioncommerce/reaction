@@ -14,26 +14,29 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
 	
 
 ##Startup
-To just start the app, without any preset configurations run the meteor command:
+To just start Reaction, run the `meteor` or `mrt` command:
 
 	meteor
 
-or to run with settings/dev.json
-	
-	./bin/run
 
-or run with specific settings just add --settings settings/yoursettings.json
-
-To reset data and give you a fresh test dataset from the reaction-commerce packages private/data
-
-	./bin/reset
-	
+If you've created a configuration file add `--settings settings/yoursettings.json`. There are some helper scripts in the *reaction/bin* directory.
+```bash
+#settings from *settings/dev.json*,
+./bin/run  
+```
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
 
 *Note: Optionally you can run and reset with "meteor" and "meteor reset", but you will not load settings data from configuration files. You would need to save them in your data, or create your own private/data*
+
+## Reset
+To reset data and give you a fresh test dataset from the reaction-commerce packages private/data
+
+	./bin/reset
+
+In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data.	
 
 ##Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
@@ -74,7 +77,12 @@ export METEOR_AUTH="password"
 export MONGO_URL="<your mongodb connect string>"
 ```
 
-The METEOR_EMAIL, METEOR_USER, METEOR_AUTH will create this email/user/password as the default first site admin user.
+The `METEOR_EMAIL`, `METEOR_USER`, `METEOR_AUTH` environment variables will create this email/user/password as the default first site admin user.
+
+To use another Mongodb, rather than the automatically instantiated development one:
+```bash
+export MONGO_URL=mongodb://localhost:27017/dbname
+```
 
 ### Email 
 To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send
