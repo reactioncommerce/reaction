@@ -77,11 +77,13 @@ Template.productDetail.events
         options = (variant for variant in currentProduct.variants when variant.parentId is currentVariant._id)
         if options.length > 0
           Alerts.add "Please choose options before adding to cart"
+          $('#layout-alerts').hide()
           return
 
       # If variant has inv policy and is out of stock, show warning and deny add to cart
       if (currentVariant.inventoryPolicy and currentVariant.inventoryQuantity < 1)
         Alerts.add "Sorry, this item is out of stock!"
+        $('#layout-alerts').hide()
         return
 
       cartSession =
@@ -106,6 +108,8 @@ Template.productDetail.events
 
     else
       Alerts.add "Select an option before adding to cart"
+      $('#layout-alerts').hide()
+      return
 
   "click .toggle-product-isVisible-link": (event, template) ->
     unless @.title
