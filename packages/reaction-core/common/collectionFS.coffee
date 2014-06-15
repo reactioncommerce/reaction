@@ -3,10 +3,10 @@
 FileStorage = @FileStorage
 
 gridfs = new FS.Store.GridFS("gridfsmedia",
+  #   # requires installation of imagemagick
   # transformWrite: (fileObj, readStream, writeStream) ->
-
-  #   # Store 10x10 px images
-  #   @gm(readStream, fileObj.name).resize("10", "10").stream().pipe writeStream
+  #   # Store 1000x1000 px images for the products
+  #   @gm(readStream, fileObj.name).resize("1000", "1000").stream().pipe writeStream
   #   return
 )
 
@@ -14,10 +14,10 @@ gridfs = new FS.Store.GridFS("gridfsmedia",
 #readStream.pipe(writeStream);
 thumbnails = new FS.Store.FileSystem("thumbnails",
   path: ".thumbnails"
+  #   # requires installation of imagemagick
   # transformWrite: (fileObj, readStream, writeStream) ->
-
-  #   # Store 10x10 px images
-  #   @gm(readStream, fileObj.name).resize("10", "10").stream().pipe writeStream
+  #   # Store 235x235 px images for the cart
+  #   @gm(readStream, fileObj.name).resize("235", "235").stream().pipe writeStream
   #   return
 )
 

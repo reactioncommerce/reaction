@@ -20,6 +20,8 @@ To review our roadmap, check out our [Trello board](https://trello.com/b/ffwTH3t
 
 [Guidelines](https://github.com/ongoworks/reaction-core/blob/master/docs/conventions.md)
 
+[Methods](https://github.com/ongoworks/reaction-core/blob/master/docs/methods.md)
+
 [Package Development](https://github.com/ongoworks/reaction-core/blob/master/docs/packages.md)
 
 [Theme Development](https://github.com/ongoworks/reaction-core/blob/master/docs/themes.md)
