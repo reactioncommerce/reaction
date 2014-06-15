@@ -5,6 +5,7 @@ Template.loginDropdown.events
       $('.dropdown-toggle').dropdown('toggle')
 
   "click #logout": (event) ->
+    Session.set 'dashboard',false
     Meteor.logout (err) ->
       Meteor._debug err  if err
       return

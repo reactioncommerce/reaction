@@ -1,6 +1,6 @@
 Template.dashboard.helpers
   isVisible: ->
-    Session.get("dashboard")
+    if Session.get("dashboard") and Meteor.app.hasOwnerAccess() then return true
 
   Package: ->
     # package view is aware of Package / Context / Route / Permissions
