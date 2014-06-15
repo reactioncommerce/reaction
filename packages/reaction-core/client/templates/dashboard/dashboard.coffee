@@ -61,6 +61,7 @@ Template.dashboardNavBar.helpers
         packageConfigs.push(_.extend(packageConfig, packageInfo))
     packageConfigs
 
-  isActive: ->
-    if @.name is Session.get 'currentPackage' then return "active"
-
+Template.dashboardNavBar.events
+  'click .dashboard-navbar-package': () ->
+    $('.dashboard-navbar-packages ul li').removeClass('active')
+    $('#'+@._id).parent().addClass('active')

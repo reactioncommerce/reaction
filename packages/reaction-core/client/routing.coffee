@@ -176,7 +176,3 @@ Router.map ->
 
     onAfterAction: ->
       document.title = Shops.findOne()?.name + " Success"
-
-  # custom 404 Page
-  @route "notFound",
-    path: "*"
