@@ -108,12 +108,12 @@
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
         "branch": "master",
-        "commit": "0f68a1c33e0b2d232b20d5c2214c6ad2527e71cb"
+        "commit": "13ac653b1ac26254111e2e370ee72fc4024205e1"
       },
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "698a9aa36424c7d9ca3e4f73c3a847ce2e6775f3"
+        "commit": "6bbdd0b00601c923f2d09d8c8c41b437604e7893"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",

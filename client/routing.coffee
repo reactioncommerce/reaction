@@ -37,3 +37,7 @@ Router.map ->
   for page in staticPages
     @route page,
       controller: ReactionController
+
+  # custom 404 Page
+  @route "notFound",
+    path: "*"
