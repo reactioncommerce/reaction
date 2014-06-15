@@ -32,7 +32,7 @@
         <span class="fa fa-trash-o delete-product fa-lg overlay-icon pull-right" title="Delete product"></span>
       {{/if}}
       <div class="overlay-content">
-          {{title}} ${{variants.[0].price}}
+          {{title}} <span class="currency-symbol">{{currencySymbol}}</span>{{variants.[0].price}}
       </div>
     </div>
   </li>
