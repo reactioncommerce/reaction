@@ -13,7 +13,10 @@ Template.dashboard.helpers
 
   widget: (name) ->
     widget = this.name + "-widget"
-    return Template[widget]
+    if Template[widget]
+      return Template[widget]
+    else
+      return null
 
   dependencies: ->
     currentPackageDepends  = Meteor.app.packages["reaction-commerce"].depends
@@ -34,7 +37,10 @@ Template.dashboard.events
 Template.dashboardWidgets.helpers
   widget: (name) ->
     widget = this.name + "-widget"
-    return Template[widget]
+    if Template[widget]
+      return Template[widget]
+    else
+      return null
 
 Template.dashboardWidgets.rendered = ->
   $ ->
