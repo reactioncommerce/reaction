@@ -93,18 +93,34 @@ Template.productDetail.events
       if quantity < 1
           quantity = 1
 
-      CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
-      $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
-      $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
-      $('html,body').animate({scrollTop:0},0)
-      $('.cart-alert-text').text(quantity + " " + currentVariant.title + " added")
-      $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
+      unless @.isVisible
+        Alerts.add "Publish product before adding to cart."
+        return
+      else
+        CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
+        $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
+        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
+        $('html,body').animate({scrollTop:0},0)
+        $('.cart-alert-text').text(quantity + " " + currentVariant.title + " added")
+        $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
 
     else
       Alerts.add "Select an option before adding to cart"
 
   "click .toggle-product-isVisible-link": (event, template) ->
-    Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
+    unless @.title
+        errorMsg = "Product title is required before publishing. "
+    for variant,index in @.variants
+      unless variant.title
+        errorMsg += "Variant " + index + " label is required. "
+      unless variant.price
+        errorMsg += "Variant " + index + " price is required. "
+
+    if errorMsg
+      Alerts.add errorMsg
+      return
+    else
+      Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
 
   "click .fa-facebook": ->
     if Meteor.app.hasOwnerAccess()
