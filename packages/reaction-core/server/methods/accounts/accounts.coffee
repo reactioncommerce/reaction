@@ -84,7 +84,7 @@ Meteor.methods
     Email.send
       to: email
       from: shop.email
-      subject: "[Reaction] Welcome to " + shop.name + "!"
+      subject: "Welcome to " + shop.name + "!"
       html: Spacebars.templates['memberWelcomeNotification']
         homepage: Meteor.absoluteUrl()
         shop: shop
