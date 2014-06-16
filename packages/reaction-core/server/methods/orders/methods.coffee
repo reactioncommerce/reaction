@@ -56,14 +56,14 @@ Meteor.methods
   # Creates a pdf doc and attaches to order
   # for any existing site url (completed orders)
   ###
-  createPDF: (url, orderId) ->
+  createPDF: (url, orderId, token) ->
     @unblock()
     phantomServer = Npm.require "phantomjs"
     phantom = Npm.require 'node-phantom'
     Future = Npm.require("fibers/future")
     future = new Future()
 
-    currentUser = Meteor.userId()
+    currentUser = @userId
 
     fileName = "reaction-orders-" + Date.now() + ".pdf"
     filePath = process.env.PWD + "/.fileStorage/" + fileName
@@ -100,7 +100,6 @@ Meteor.methods
         # Create function that will be called after
         # we have let the page load and retrieved the clipRect
         finish = (err, clipRect) ->
-          console.log "clipRect", clipRect
           # Set clip area synchronously
           Meteor._wrapAsync(page.set.bind page)("clipRect", clipRect)
           console.log "clipRect is set to", Meteor._wrapAsync(page.get.bind page)("clipRect")
@@ -131,15 +130,25 @@ Meteor.methods
 
             printArea = document.getElementById('print-area')
             result.clipRect = printArea?.getBoundingClientRect()
+            result.userId = Meteor.userId()
             return result
           , (err, result) ->
-            f.return (result.clipRect? and result.subsReady)
+            f.return (result.clipRect? and result.subsReady and result.userId?.length)
           f.wait()
         
         dataIsLoaded = Meteor.bindEnvironment dataIsLoaded
 
         getPrintArea = ->
           document.getElementById('print-area').getBoundingClientRect()
+
+        # Initiate login on phantom page
+        page.evaluate (token) ->
+          Meteor.loginWithToken token
+          return token
+        ,
+        (err, token) ->
+          console.log "logging in to phantom page with hashed resume token",token
+        , token
 
         # Wait for page and async data to be loaded
         start = new Date().getTime()
