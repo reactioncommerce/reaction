@@ -36,7 +36,6 @@ Package.on_use(function (api, where) {
     "server/fixtures.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
-    "server/methods/orders/wait-for.js",
     "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
     "server/methods/accounts/accounts.coffee",

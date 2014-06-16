@@ -7,8 +7,7 @@ Meteor.app = _.extend(Meteor.app || {},
     cursor = Shops.find({domains: domain}, {limit: 1})
     if !cursor.count()
       console.log "Reaction Configuration: Add a domain entry to shops for: ", domain
-    else
-      return cursor
+    return cursor
 
   getCurrentShop: (client) ->
     cursor = Meteor.app.getCurrentShopCursor(client)

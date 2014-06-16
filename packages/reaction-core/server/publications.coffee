@@ -87,14 +87,16 @@ FileStorage.allow
 Meteor.publish "UserProfile", (profileId) ->
   if profileId?
     if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
-      return Users.find({"_id": profileId}, {fields: {profile: 1, emails: 1}})
-      # return cursor
+      return Users.find _id: profileId,
+        fields: 
+          profile: 1
+          emails: 1
     else
       console.log "user profile access denied"
-      return false
+      return []
   else
     console.log "profileId not defined. access denied"
-    return false
+    return []
 
 ###
 # Client access rights for ConfigData
@@ -125,10 +127,13 @@ Meteor.publish "Packages", ->
   shop = Meteor.app.getCurrentShop(this)
   if shop
     Packages.find
-      shopId: Meteor.app.getCurrentShop(this)._id
+      shopId: shop._id
     ,
       sort:
         priority: 1
+  else
+    []
+
 ###
 # Client access rights for reaction_packages
 ###
@@ -203,6 +208,8 @@ Meteor.publish 'products', (userId) ->
     unless Roles.userIsInRole(this.userId, ['admin'])
       selector.isVisible = true
     Products.find selector
+  else
+    return []
 
 Meteor.publish 'product', (productId) ->
   shop = Meteor.app.getCurrentShop(@) #todo: wire in shop
@@ -239,14 +246,19 @@ Products.allow
 ###
 Meteor.publish 'orders', (userId) ->
   shop = Meteor.app.getCurrentShop(@)
-  unless Roles.userIsInRole(this.userId, ['admin','owner'])
-    return false
-  Orders.find shopId: shop._id
+  if Roles.userIsInRole(this.userId, ['admin','owner'])
+    return Orders.find shopId: shop._id
+  else
+    return []
 
 Meteor.publish 'userOrders', (userId) ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
-    Orders.find shopId: shop._id, userId: this.userId
+    return Orders.find
+      shopId: shop._id
+      userId: this.userId
+  else
+    return []
 
 ###
 # Client access rights for orders
@@ -311,7 +323,9 @@ Cart.allow
 Meteor.publish "tags", ->
   shop = Meteor.app.getCurrentShop(@)
   if shop
-    Tags.find shopId: shop._id
+    return Tags.find shopId: shop._id
+  else
+    return []
 
 Tags.allow
   insert: (userId, tag) ->

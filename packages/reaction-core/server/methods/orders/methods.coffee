@@ -122,15 +122,18 @@ Meteor.methods
         dataIsLoaded = ->
           f = new Future()
           page.evaluate (e) ->
+            result = {}
             if Meteor?.status?().connected
               Deps.flush()
-              return DDP._allSubscriptionsReady()
+              result.subsReady = DDP._allSubscriptionsReady()
             else
-              return false
-          , (err, ready) ->
-            # This never returns true because DDP._allSubscriptionsReady() never returns true for some reason
-            if ready then console.log "ready", ready
-            f.return ready
+              result.subsReady = false
+
+            printArea = document.getElementById('print-area')
+            result.clipRect = printArea?.getBoundingClientRect()
+            return result
+          , (err, result) ->
+            f.return (result.clipRect? and result.subsReady)
           f.wait()
         
         dataIsLoaded = Meteor.bindEnvironment dataIsLoaded
@@ -139,14 +142,23 @@ Meteor.methods
           document.getElementById('print-area').getBoundingClientRect()
 
         # Wait for page and async data to be loaded
-        #waitFor ph, dataIsLoaded, ->
-        #  page.evaluate getPrintArea, finish
-        #, 120000
-
-        # After waiting for async loading of data, call evaluate to get the clip region
-        Meteor.setTimeout ->
-          page.evaluate getPrintArea, finish
-        , 5000
+        start = new Date().getTime()
+        condition = false
+        timeout = 20000
+        interval = Meteor.setInterval ->
+          now = new Date().getTime()
+          if now - start < timeout and !condition
+            # If not time-out yet and condition not yet fulfilled, run test again
+            condition = dataIsLoaded()
+          else
+            # Stop this interval
+            Meteor.clearInterval interval
+            # If condition still never true after timeout
+            console.log "createPDF timed out waiting for page subscriptions to be ready" if !condition
+            # If condition fulfilled, we move on to getting the print area.
+            # If we timed out, we'll continue anyway, and hope that it works
+            page.evaluate getPrintArea, finish
+        , 250 # repeat check every 250ms
     ),
     # Tell phantom.create call where to find phantom binary
     phantomPath: phantomServer.path
