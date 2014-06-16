@@ -5,7 +5,9 @@ Package.describe({
 Npm.depends({
     "node-geocoder": "2.5.0",
     "phantomjs": '1.9.7-8',
-    "node-phantom": '0.2.5',
+    // Note: We need to use a tarball URL here until a node-phantom
+    // dependency issue is fixed. See https://github.com/alexscheelmeyer/node-phantom/issues/102
+    "node-phantom": 'https://github.com/apdmatos/node-phantom/tarball/2ccadc1d24efc47ace9ccfee187a0689c78e9009',
     "colors": "0.6.2"
 });
 
@@ -34,6 +36,7 @@ Package.on_use(function (api, where) {
     "server/fixtures.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
+    "server/methods/orders/wait-for.js",
     "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
     "server/methods/accounts/accounts.coffee",
