@@ -23,7 +23,7 @@ Browse to [http://localhost:3000](http://localhost:3000) and you should see Reac
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
 
 ## Reset
-To reset data and give you a fresh test dataset from the reaction-commerce packages private/data
+To reset data and give you a fresh test dataset from packages/reaction-core/private/data/*.json
 
 	./bin/reset
 
