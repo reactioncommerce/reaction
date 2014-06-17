@@ -96,7 +96,7 @@ export MONGO_URL=mongodb://localhost:27017/dbname
 ```
 
 ### Email 
-To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send
+To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send)
 
 Password reset, and a few other items that use email templates won't work unless you configure this.
 
