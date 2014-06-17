@@ -29,6 +29,16 @@ To reset data and give you a fresh test dataset from packages/reaction-core/priv
 
 In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data.	
 
+## Updates
+Getting updates is basically the same as installation:
+
+```bash
+cd reaction
+git pull
+mrt update
+meteor
+```
+
 ##Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
 
