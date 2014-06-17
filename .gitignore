@@ -17,3 +17,4 @@ settings/demo.json
 npm-debug.log
 
 /.fileStorage/
+smart.lock
