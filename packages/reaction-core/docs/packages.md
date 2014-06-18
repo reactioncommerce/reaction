@@ -1,12 +1,13 @@
 #Package Development
 
 #Core packages
+To work on included packages, and see your changes update in your local installation you must *git clone* packages locally, then in your local checkout of the *ongoworks/reaction* repo link the package to your checkout.
 
-Clone packages locally, then in your local checkout of the reaction repo
+```bash
+    mrt link-package /path/to/package
+```
 
-    mrt link-package path/to/foo
-
-Where "path/to/foo" is the path to the local repo of the package you with to work on locally.
+Where "path/to/foo" is full path to your local package checkout.
 
 
 # New packages
@@ -16,7 +17,7 @@ Where "path/to/foo" is the path to the local repo of the package you with to wor
 
 See [Meteorite docs](https://github.com/oortcloud/meteorite/) for additional help creating local packages.
 
-Tip:  if you are cloning reaction-helloworld to start working on a new project, don't forget to add to the meteor package list.
+Tip:  if you are cloning reaction-helloworld to start working on a new package project, don't forget to add to the meteor package list.
 
     meteor add your-new-package
 
