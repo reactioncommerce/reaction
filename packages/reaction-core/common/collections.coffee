@@ -96,9 +96,11 @@ ProductPositionSchema = new SimpleSchema
   position:
     type: Number
     optional: true
-  sizing:
+  weight:
     type: String
     optional: true
+  updatedAt:
+    type: Date
 
 @ProductVariantSchema = new SimpleSchema
   _id:

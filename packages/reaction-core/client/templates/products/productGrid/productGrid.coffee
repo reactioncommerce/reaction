@@ -1,31 +1,47 @@
 Template.productGrid.helpers
   products: ->
-    # take natual sort, sorting by updatedAt
+    ###
+    # take natural sort, sorting by updatedAt
     # then resort using positions.position for this tag
     # retaining natural sort of untouched items
-    share.tag = @tag?._id ? ""
-    gridProducts = getProductsByTag(@tag).fetch()
+    ###
     #sort method
     compare = (a, b) ->
-      if a.sortOrder is b.sortOrder
-        x = a.updatedAt
-        y = b.updatedAt
+      if a.position.position is b.position.position
+        x = a.position.updatedAt
+        y = b.position.updatedAt
         return (if x > y then -1 else (if x < y then 1 else 0))
-      a.sortOrder - b.sortOrder
-    # get /create sortOrder positions
-    for gridProduct,index in gridProducts
-      if gridProduct.positions?
-        for position in gridProduct.positions
-          if position.tag is share.tag
-            gridProducts[index].sortOrder = position.position
-          else
-            gridProducts[index].sortOrder = index
-      else
-        gridProducts[index].sortOrder = index
+      a.position.position - b.position.position
+
+    share.tag = @tag?._id ? ""
+    selector = {}
+    if @tag
+      hashtags = []
+      relatedTags = [@tag]
+      while relatedTags.length
+        newRelatedTags = []
+        for relatedTag in relatedTags
+          if hashtags.indexOf(relatedTag._id) == -1
+            hashtags.push(relatedTag._id)
+            if relatedTag.relatedTagIds?.length
+              newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
+        relatedTags = newRelatedTags
+      selector.hashtags = {$in: hashtags}
+    gridProducts = Products.find(selector).fetch()
+
+    for gridProduct, index in gridProducts
+      if gridProducts[index].positions? then gridProducts[index].position = (position for position in gridProduct.positions when position.tag is share.tag)[0]
+      unless gridProducts[index].position
+        gridProducts[index].position =
+          position: "-"
+          updatedAt: gridProduct.updatedAt
+
     ## helpful debug
-    # for i,v in gridProducts.sort(compare)
-    #   console.log v,i.sortOrder,i.title,i.updatedAt
-    gridProducts.sort(compare)
+    # for i,index in gridProducts.sort(compare)
+    #   console.log index,i.position.position,i._id, i.title,i.position.updatedAt
+    # return gridProducts
+    return gridProducts.sort(compare)
+
 
 Template.productGridItems.helpers
   media: (variant) ->
@@ -63,11 +79,15 @@ Template.productGridItems.rendered = () ->
         update: (event, ui) ->
           productId = ui.item[0].id
           uiPositions = $(this).sortable("toArray",attribute:"data-id")
+          console.log $(this).sortable('serialize')
           index = _.indexOf uiPositions, productId
-          position =
-            tag: share.tag
-            position: index
-          Meteor.defer ->
+          #TODO: loop through and update each product position for this tag, we should do this with client update (vs method)
+          for productId, index in uiPositions
+            position =
+              tag: share.tag
+              position: index
+              weight: 0
+              updatedAt: new Date()
             Meteor.call "updateProductPosition", productId, position
           Deps.flush()
 

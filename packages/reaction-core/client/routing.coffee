@@ -101,6 +101,7 @@ Router.map ->
     template: "products"
     waitOn: ->
       @subscribe "products"
+      @subscribe "tags"
     data: ->
       if @ready()
         if @params._id.match  /^[A-Za-z0-9]{17}$/

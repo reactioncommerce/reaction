@@ -97,6 +97,7 @@ Template.productDetail.events
 
       unless @.isVisible
         Alerts.add "Publish product before adding to cart."
+        $('#layout-alerts').hide()
         return
       else
         CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
@@ -112,6 +113,7 @@ Template.productDetail.events
       return
 
   "click .toggle-product-isVisible-link": (event, template) ->
+    errorMsg = ""
     unless @.title
         errorMsg = "Product title is required before publishing. "
     for variant,index in @.variants

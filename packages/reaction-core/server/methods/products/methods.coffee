@@ -182,7 +182,7 @@ Meteor.methods
   # update product grid positions
   # position is an object with tag,position,dimensions
   ###
-  updateProductPosition: (productId,positionData) ->
+  updateProductPosition: (productId, positionData) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
 
@@ -199,7 +199,7 @@ Meteor.methods
         ,
           $set:
             "positions.$.position": positionData.position
-            "updatedAt": new Date()
+            "positions.$.updatedAt": new Date()
         ,
           (error,results) ->
             console.log error if error?
