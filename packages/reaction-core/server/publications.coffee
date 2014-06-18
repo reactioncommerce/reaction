@@ -33,9 +33,6 @@ Meteor.publish 'ReactionSessions', (id) ->
 Meteor.publish "media", () ->
   return Media.find({ 'metadata.shopId': Meteor.app.getCurrentShop(this)._id },  {sort: {"metadata.priority": 1}})
 
-# Meteor.publish "variantMedia", (variantId) ->
-#   return Media.find({ 'metadata.shopId': Meteor.app.getCurrentShop(this)._id },  {sort: {"metadata.priority": 1}})
-
 Media.allow
   insert: (userId, fileObj) ->
     unless Roles.userIsInRole(userId, ['admin'])
@@ -88,7 +85,7 @@ Meteor.publish "UserProfile", (profileId) ->
   if profileId?
     if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
       return Users.find _id: profileId,
-        fields: 
+        fields:
           profile: 1
           emails: 1
     else
