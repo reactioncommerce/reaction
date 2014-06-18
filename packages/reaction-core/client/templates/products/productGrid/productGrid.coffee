@@ -76,10 +76,10 @@ Template.productGridItems.rendered = () ->
         cursor: "move"
         opacity: 0.5
         revert: true
+        scroll: false
         update: (event, ui) ->
           productId = ui.item[0].id
           uiPositions = $(this).sortable("toArray",attribute:"data-id")
-          console.log $(this).sortable('serialize')
           index = _.indexOf uiPositions, productId
           #TODO: loop through and update each product position for this tag, we should do this with client update (vs method)
           for productId, index in uiPositions
