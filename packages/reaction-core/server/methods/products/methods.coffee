@@ -92,8 +92,8 @@ Meteor.methods
     delete product.createdAt
     delete product.publishedAt
     product.isVisible = false
-    product.handle = product.handle + handleCount
-    product.title = product.title + handleCount
+    if product.handle then product.handle = product.handle + handleCount
+    if product.title then product.title = product.title + handleCount
 
     while i < product.variants.length
       product.variants[i]._id = Random.id()
