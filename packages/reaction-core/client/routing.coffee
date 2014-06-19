@@ -106,8 +106,7 @@ Router.map ->
         if @params._id.match  /^[A-Za-z0-9]{17}$/
           return tag: Tags.findOne(@params._id)
         else
-          text = @params._id.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
-          return tag: Tags.findOne({name: { $regex : text, $options:"i" } })
+          return tag: Tags.findOne({name: { $regex : @params._id, $options:"i" } })
 
     onAfterAction: ->
       document.title = this.data()?.tag.name || Shops.findOne()?.name

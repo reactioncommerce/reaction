@@ -306,10 +306,8 @@ Cart.allow
     true
   remove: (userId, cart) ->
     if cart.shopId != Meteor.app.getCurrentShop()._id
-      console.log "faslse shopid"
       return false
     if cart.owner != userId
-      console.log "falsse cart owner"
       return false
     true
 
