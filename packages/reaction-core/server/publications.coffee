@@ -213,8 +213,7 @@ Meteor.publish 'product', (productId) ->
   if productId.match  /^[A-Za-z0-9]{17}$/
     return Products.find(productId)
   else
-    text = productId.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
-    return Products.find({handle: { $regex : text, $options:"i" } })
+    return Products.find({handle: { $regex : productId, $options:"i" } })
 
 ###
 # Client access rights for products

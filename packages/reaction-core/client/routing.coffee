@@ -14,8 +14,7 @@ setCurrentProduct = (productId) ->
     currentProduct.set "product", Products.findOne(productId)
     # setCurrentVariant @params.variant
   else
-    text = productId.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
-    currentProduct.set "product", Products.findOne({handle: { $regex : text, $options:"i" } })
+    currentProduct.set "product", Products.findOne({handle: { $regex : productId, $options:"i" } })
 
 ###
 #  Global Reaction Routes
