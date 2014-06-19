@@ -80,7 +80,7 @@ Once you have images/videos added to your gallery, simply drag and drop to chang
 
 ###The Product Grid
 
-Products are displayed, by default, in a grid layout. When logged in as an Administrator, you can drag and drop products to reorder them. What you see, is the same as what your shoppers will see.
+Products are displayed, by default, in a grid layout. When logged in as an Administrator, you can drag and drop products to reorder them. What you see is the same as what your shoppers will see.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-gridorder.png)
 
