@@ -92,40 +92,47 @@ Template.productImageGallery.events
     return
 
   "dropped #galleryDropPane": (event, template) ->
-    FS.Utility.eachFile event, (file) ->
+    variantId = (currentProduct.get "variant")._id unless variant?._id
+    count = Media.find({'metadata.variantId': variantId }).count()
+    FS.Utility.eachFile event, (file, count, variantId) ->
       fileObj = new FS.File(file)
       fileObj.metadata =
         ownerId: Meteor.userId()
         productId: currentProduct._id
         variantId: (currentProduct.get "variant")._id unless variant?._id
         shopId: Meteor.app.shopId
+        priority: count
       Media.insert fileObj
+      count++
 
 Template.imageUploader.events
   "click #btn-upload": (event,template) ->
     $("#files").click()
 
   "change #files": (event, template) ->
-    FS.Utility.eachFile event, (file) ->
+    variantId = (currentProduct.get "variant")._id unless variant?._id
+    count = Media.find({'metadata.variantId': variantId }).count()
+    FS.Utility.eachFile event, (file, count, variantId) ->
       fileObj = new FS.File(file)
       fileObj.metadata =
         ownerId: Meteor.userId()
         productId: currentProduct._id
         variantId: (currentProduct.get "variant")._id unless variant?._id
         shopId: Meteor.app.shopId
+        priority: count
       Media.insert fileObj
-      return
-    return
+      count++
 
   "dropped #dropzone": (event, template) ->
-    FS.Utility.eachFile event, (file) ->
+    variantId = (currentProduct.get "variant")._id unless variant?._id
+    count = Media.find({'metadata.variantId': variantId }).count()
+    FS.Utility.eachFile event, (file, count, variantId) ->
       fileObj = new FS.File(file)
       fileObj.metadata =
         ownerId: Meteor.userId()
         productId: currentProduct._id
         variantId: (currentProduct.get "variant")._id unless variant?._id
         shopId: Meteor.app.shopId
+        priority: count
       Media.insert fileObj
-      return
-    return
-
+      count++
