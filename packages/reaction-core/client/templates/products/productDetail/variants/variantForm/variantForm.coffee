@@ -30,10 +30,8 @@ Template.variantForm.helpers
       return "display:none;"
 
 Template.variantForm.events
-  # "submit form": (event,template) ->
-  #   event.preventDefault()
-  #   event.stopPropagation()
-  #   currentProduct.changed "product"
+  "submit form": (event,template) ->
+    currentProduct.changed "product"
 
   "change input[name='inventoryManagement']": (event,template) ->
     formId = "variant-form-"+template.data._id
@@ -61,7 +59,6 @@ Template.variantForm.events
     Meteor.call "cloneVariant", productId, template.data._id, (error, result) ->
       if result
         Deps.flush()
-        $('#variant-edit-form-'+result).toggle()
         event.preventDefault()
         event.stopPropagation()
 
@@ -74,7 +71,6 @@ Template.childVariantForm.helpers
 Template.childVariantForm.events
   "click li": (event,template) ->
     $(".list-group-item").removeClass("list-group-item-success")
-
     $("#" + template.data._id + " .btn-variant-save").show()
     $("#" + template.data._id).addClass("list-group-item-success")
     currentProduct.set "variant", template.data
@@ -82,9 +78,6 @@ Template.childVariantForm.events
   "submit form": (event,template) ->
     currentProduct.changed "product"
     $("#" + template.data._id + " .btn-variant-save").hide()
-    console.log @
-    console.log '#variant-edit-form-'+@.doc._id
-    $('#child-variant-form-'+@.doc._id).toggle()
 
 
   "click #remove-child-variant": (event, template) ->
