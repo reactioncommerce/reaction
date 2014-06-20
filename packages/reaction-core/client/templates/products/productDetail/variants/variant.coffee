@@ -67,7 +67,6 @@ Template.variant.rendered = ->
         items: "> li.variant-list-item"
         cursor: "move"
         opacity: 0.3
-        helper: "clone"
         placeholder: "variant-sortable"
         forcePlaceholderSize: true
         axis: "y"
@@ -75,13 +74,16 @@ Template.variant.rendered = ->
           productVariants = (currentProduct.get "product").variants
           uiPositions = $(this).sortable("toArray",attribute:"data-id")
           newVariants = []
-          # first just go through the new index
-          for id in uiPositions
-            for variant in productVariants
-              if variant._id is id
-                newVariants.push variant
+
+          for id, index in uiPositions
+            for variant, pindex in productVariants
+              if variant?._id is id
+                newVariants[index] = variant
+                delete productVariants[pindex]
+
+          updateVariants = _.union productVariants, newVariants
           Meteor.defer ->
-            Meteor.call "updateVariants", newVariants
+            Meteor.call "updateVariants", updateVariants
 
         start: (event, ui) ->
           ui.placeholder.height ui.helper.height()
