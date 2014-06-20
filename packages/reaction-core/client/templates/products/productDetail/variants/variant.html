@@ -4,9 +4,7 @@
     {{#each variants}}
       {{> variant}}
       {{#if userHasRole "admin"}}
-      <div id="variant-edit-form-{{_id}}" class="variant-edit-form">
         {{>variantForm}}
-      </div>
       {{/if}}
     {{else}}
       <a href="#" id="create-variant">+ Create Variant</a>

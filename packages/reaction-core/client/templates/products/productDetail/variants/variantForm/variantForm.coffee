@@ -17,6 +17,10 @@ Template.variantForm.helpers
   variantFormId: () ->
     "variant-form-"+@._id
 
+  variantFormVisible: () ->
+    unless Session.equals "variant-form-"+@._id, true
+      return "hidden"
+
   displayInventoryManagement: () ->
     unless @inventoryManagement is true
       return "display:none;"
@@ -26,8 +30,10 @@ Template.variantForm.helpers
       return "display:none;"
 
 Template.variantForm.events
-  "submit form": (event,template) ->
-    currentProduct.changed "product"
+  # "submit form": (event,template) ->
+  #   event.preventDefault()
+  #   event.stopPropagation()
+  #   currentProduct.changed "product"
 
   "change input[name='inventoryManagement']": (event,template) ->
     formId = "variant-form-"+template.data._id
@@ -64,6 +70,7 @@ Template.childVariantForm.helpers
   childVariantFormId: () ->
     "child-variant-form-"+@._id
 
+
 Template.childVariantForm.events
   "click li": (event,template) ->
     $(".list-group-item").removeClass("list-group-item-success")
@@ -75,6 +82,10 @@ Template.childVariantForm.events
   "submit form": (event,template) ->
     currentProduct.changed "product"
     $("#" + template.data._id + " .btn-variant-save").hide()
+    console.log @
+    console.log '#variant-edit-form-'+@.doc._id
+    $('#child-variant-form-'+@.doc._id).toggle()
+
 
   "click #remove-child-variant": (event, template) ->
     event.stopPropagation()

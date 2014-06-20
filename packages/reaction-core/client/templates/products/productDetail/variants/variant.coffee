@@ -16,16 +16,13 @@ Template.variant.helpers
 
 Template.variant.events
   "click .edit-variant": (event) ->
-    event.preventDefault()
-    event.stopPropagation()
-    $('#variant-edit-form-'+@._id).toggle()
+    currentProduct.set "variant", @
+    toggleSession "variant-form-"+@._id
 
   "dblclick .variant-list-item": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-      event.preventDefault()
-      event.stopPropagation()
-      Deps.flush()
-      $('#variant-edit-form-'+@._id).toggle()
+      currentProduct.set "variant", @
+      toggleSession "variant-form-"+@._id
 
   "click .variant-detail > *": (event) ->
     event.preventDefault()

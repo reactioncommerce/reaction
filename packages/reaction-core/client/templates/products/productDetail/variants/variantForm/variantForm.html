@@ -1,5 +1,6 @@
 <template name="variantForm">
-   <div class="row well well-sm variant-form" >
+<div id="variant-edit-form-{{_id}}" class="variant-edit-form {{variantFormVisible}}">
+  <div class="row well well-sm variant-form" >
     {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=variantFormId}}
     <fieldset>
       <div class="row">
@@ -114,7 +115,7 @@
       {{/each}}
     </div>
   {{/if}}
-
+</div>
 </template>
 
 <template name="childVariantFormHeader">
@@ -135,9 +136,9 @@
 </template>
 
 <template name="childVariantForm">
-<ul class="list-group child-variant-form" >
+<ul class="list-group child-variant-form">
   <li class="list-group-item" id="{{_id}}">
-    {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=childVariantFormId validation="none"}}
+    {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=childVariantFormId validation="none" resetOnSuccess="false"}}
     <fieldset>
       <div class="col-sm-2 col-md-3">
         <div class="form-group{{#if afFieldIsInvalid name='optionTitle'}} has-error{{/if}}">
