@@ -67,6 +67,7 @@ Template.variant.rendered = ->
         items: "> li.variant-list-item"
         cursor: "move"
         opacity: 0.3
+        helper: "clone"
         placeholder: "variant-sortable"
         forcePlaceholderSize: true
         axis: "y"

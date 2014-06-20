@@ -3,9 +3,6 @@
     <ul class="variant-list list-unstyled" id="variant-list">
     {{#each variants}}
       {{> variant}}
-      {{#if userHasRole "admin"}}
-        {{>variantForm}}
-      {{/if}}
     {{else}}
       <a href="#" id="create-variant">+ Create Variant</a>
     {{/each}}
@@ -55,5 +52,8 @@
       {{/if}}
     </div>
   </div>
+  {{#if userHasRole "admin"}}
+    {{>variantForm}}
+  {{/if}}
 </li>
 </template>

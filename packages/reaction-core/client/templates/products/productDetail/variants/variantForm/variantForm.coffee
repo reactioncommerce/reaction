@@ -8,7 +8,7 @@ Template.variantForm.helpers
 
   childVariants: () ->
     product  = currentProduct.get "product"
-    variants = (variant for variant in product.variants when variant.parentId is this._id)
+    variants = (variant for variant in product.variants when variant?.parentId is this._id)
     if variants then return variants
 
   nowDate: () ->
