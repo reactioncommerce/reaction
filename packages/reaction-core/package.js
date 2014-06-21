@@ -91,6 +91,10 @@ Package.on_use(function (api, where) {
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",
 
+    "client/templates/layout/alerts/bootstrap-alerts.coffee",
+    "client/templates/layout/alerts/alerts.html",
+    "client/templates/layout/alerts/alerts.coffee",
+
     "client/templates/layout/loading/loading.html",
     "client/templates/layout/notFound/notFound.html",
 
@@ -326,6 +330,7 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
 
   api.export([
+    "Alerts",
     "PackagesHandle",
     "CartWorkflow",
     "OrderWorkflow",

@@ -76,14 +76,12 @@ Template.productDetail.events
       unless currentVariant.parentId?
         options = (variant for variant in currentProduct.variants when variant.parentId is currentVariant._id)
         if options.length > 0
-          Alerts.add "Please choose options before adding to cart"
-          $('#layout-alerts').hide()
+          Alerts.add "Please choose options before adding to cart", "danger", placement:"productDetail"
           return
 
       # If variant has inv policy and is out of stock, show warning and deny add to cart
       if (currentVariant.inventoryPolicy and currentVariant.inventoryQuantity < 1)
-        Alerts.add "Sorry, this item is out of stock!"
-        $('#layout-alerts').hide()
+        Alerts.add "Sorry, this item is out of stock!", "danger", placement:"productDetail"
         return
 
       cartSession =
@@ -96,8 +94,7 @@ Template.productDetail.events
           quantity = 1
 
       unless @.isVisible
-        Alerts.add "Publish product before adding to cart."
-        $('#layout-alerts').hide()
+        Alerts.add "Publish product before adding to cart.", "danger", placement:"productDetail"
         return
       else
         CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
@@ -108,8 +105,7 @@ Template.productDetail.events
         $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
 
     else
-      Alerts.add "Select an option before adding to cart"
-      $('#layout-alerts').hide()
+      Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail"
       return
 
   "click .toggle-product-isVisible-link": (event, template) ->
@@ -123,7 +119,7 @@ Template.productDetail.events
         errorMsg += "Variant " + index + " price is required. "
 
     if errorMsg
-      Alerts.add errorMsg
+      Alerts.add errorMsg, "danger", placement:"productDetail"
       return
     else
       Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})

@@ -1,0 +1,20 @@
+<template name="bootstrapAlerts">
+    {{#each alerts placement}}
+    {{> bootstrapAlert}}
+    {{/each}}
+</template>
+
+
+<template name="bootstrapAlert">
+    <div class="alert alert-{{mode}} {{#if options.dismissable}}alert-dismissable{{/if}} hide {{options.classes}}">
+        {{#if options.dismissable}}
+        <!--suppress CheckDtdReferences -->
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{/if}}
+        {{#unless options.html}}
+            {{message}}
+        {{else}}
+            {{{message}}}
+        {{/unless}}
+    </div>
+</template>
