@@ -28,7 +28,6 @@ collection-hooks
 collectionFS
 cfs-filesystem
 handlebars-server
-bootstrap-alerts
 d3
 cfs-gridfs
 cfs-s3

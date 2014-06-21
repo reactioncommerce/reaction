@@ -8,7 +8,6 @@
     "underscore-string-latest": {},
     "collection-hooks": {},
     "handlebars-server": {},
-    "bootstrap-alerts": {},
     "collectionFS": {},
     "cfs-filesystem": {},
     "cfs-s3": {},
