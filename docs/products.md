@@ -78,4 +78,12 @@ Once you have images/videos added to your gallery, simply drag and drop to chang
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-dragmedia.png)
 
+###The Product Grid
 
+Products are displayed, by default, in a grid layout. When logged in as an Administrator, you can drag and drop products to reorder them. What you see is the same as what your shoppers will see.
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-gridorder.png)
+
+Product arrangement is managed on a tag-by-tag basis. This means that you can choose a custom product order for each tag in your navigation and that the same product can be given a different position for each tag that it is associated with.
+
+Note: When new products are added, they are given the top position by default until you decide otherwise.
