@@ -1,21 +1,28 @@
 ###
 # Helper method to set default/parameterized product variant
 ###
-setCurrentVariant = (variantId) ->
-  if variantId
-    for variant in currentProduct.get("product").variants
-      if variant._id is variantId
-        currentProduct.set "variant",variant
-  else
-    currentProduct.set "variant", currentProduct.get("product").variants[0]
+setCurrentVariant = (product, variantId) ->
+  if product
+    if variantId
+      for variant in product.variants
+        if variant._id is variantId
+          currentProduct.set "variant",variant
+    else
+      unless currentProduct.equals("variant") and currentProduct.equals("variant") not in product.variants
+        currentProduct.set "variant", product.variants[0]
 
-setCurrentProduct = (productId) ->
+
+setCurrentProduct = (productId, variant) ->
   if productId.match  /^[A-Za-z0-9]{17}$/
-    currentProduct.set "product", Products.findOne(productId)
-    # setCurrentVariant @params.variant
+    product = Products.findOne(productId)
+    unless currentProduct.get "product" is product
+      currentProduct.set "product", product
+      setCurrentVariant product,variant
   else
-    currentProduct.set "product", Products.findOne({handle: { $regex : productId, $options:"i" } })
-
+    product =  Products.findOne({handle: { $regex : productId, $options:"i" } })
+    unless currentProduct.get "product" is product
+      currentProduct.set "product", product
+      setCurrentVariant product,variant
 ###
 #  Global Reaction Routes
 #  Extend/override in reaction/client/routing.coffee
@@ -35,6 +42,7 @@ Router.configure
   waitOn: ->
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
+  onBeforeAction: 'loading'
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -60,7 +68,7 @@ Router.map ->
     path: "/"
     template: "products"
     waitOn: ->
-      Meteor.subscribe "products"
+      @subscribe "products"
     onAfterAction: ->
       document.title = Shops.findOne()?.name
 
@@ -117,27 +125,17 @@ Router.map ->
     path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
-      @subscribe 'product', @params._id
-    onBeforeAction: (pause) ->
-      if @.ready()
-        setCurrentProduct @params._id
-        setCurrentVariant @params.variant
-    action: ->
+      setCurrentProduct @params._id, @params.variant
+      return Meteor.subscribe 'product', @params._id
+    onBeforeAction: "loading"
+    data: ->
       if @ready() and currentProduct.get("product")
         unless currentProduct.get("product").isVisible
           unless Meteor.app.hasPermission(@path)
-            @render "unauthorized"
-            return
-          @render()
-        @render()
-      else
-        @render "loading"
-      return
-    onAfterAction: ->
-       document.title = this.data()?.title || Shops.findOne()?.name
-    data: ->
-      #console.log @.ready()
-      if @.ready()
+            @render 'unauthorized'
+            Meteor.setTimeout (->
+              Router.go('/')
+            ),0
         return currentProduct.get "product"
 
   #checkout

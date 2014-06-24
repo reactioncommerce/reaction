@@ -34,7 +34,7 @@ Template.variantForm.events
     currentProduct.changed "product"
 
   "change input[name='inventoryManagement']": (event,template) ->
-    formId = "variant-form-"+template.data._id
+    formId = "variant-form-"+template.data
     if !$( event.currentTarget ).is(':checked')
         $( '#' + formId ).find( 'input[name=inventoryPolicy]' ).attr("checked",false)
     $( '#' + formId ).find( '.inventoryPolicy, .lowInventoryWarningThreshold' ).fadeToggle()
@@ -67,23 +67,31 @@ Template.childVariantForm.helpers
   childVariantFormId: () ->
     "child-variant-form-"+@._id
 
-
 Template.childVariantForm.events
+  "click .child-variant-form": (event,template) ->
+    unless (currentProduct.get "variant")._id is template.data._id
+      currentProduct.set "variant", template.data
+
+  "change .child-variant-form :input": (event,template) ->
+    productId = (currentProduct.get "product")._id
+    variant = template.data
+    value = $(event.currentTarget).val()
+    field = $(event.currentTarget).attr('name')
+    variant[field] = value
+    Meteor.call "updateVariant", variant, (error,result) ->
+      if error then console.log error
+    $(event.currentTarget).closest('td').next('td').find('input').focus()
+
+
   "click li": (event,template) ->
-    $(".list-group-item").removeClass("list-group-item-success")
-    $("#" + template.data._id + " .btn-variant-save").show()
-    $("#" + template.data._id).addClass("list-group-item-success")
-    currentProduct.set "variant", template.data
-
-  "submit form": (event,template) ->
-    currentProduct.changed "product"
-    $("#" + template.data._id + " .btn-variant-save").hide()
-
+    unless (currentProduct.get "variant")._id is template.data._id
+      currentProduct.set "variant", template.data
 
   "click #remove-child-variant": (event, template) ->
     event.stopPropagation()
     event.preventDefault()
-    if confirm("Are you sure you want to delete "+ @.optionTitle)
+    optionTitle = @.optionTitle || "this option"
+    if confirm("Are you sure you want to delete "+ optionTitle)
       Products.update (currentProduct.get "product")._id,
         $pull:
           variants:

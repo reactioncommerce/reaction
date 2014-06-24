@@ -109,82 +109,43 @@
 
   {{#if childVariants}}
     <div class="row well well-sm">
-      {{>childVariantFormHeader}}
-      {{#each childVariants}}
-        {{>childVariantForm}}
-      {{/each}}
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Label</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each childVariants}}
+          {{>childVariantForm}}
+        {{/each}}
+      </tbody>
+      </table>
     </div>
   {{/if}}
 </div>
 </template>
 
-<template name="childVariantFormHeader">
-  <div class="row child-variant-form-headers hidden-xs">
-    <div class="col-sm-2 col-md-3">
-      <label class="control-label" for="optionTitle">Option</label>
-    </div>
-    <div class="col-sm-2 col-md-2">
-      <label class="control-label" for="title">Label</label>
-    </div>
-    <div class="col-sm-2 col-md-2">
-      <label class="control-label" for="quantity">Quantity</label>
-    </div>
-    <div class="col-sm-2 col-md-2">
-      <label class="control-label" for="price">Price</label>
-    </div>
-  </div>
-</template>
-
 <template name="childVariantForm">
-<ul class="list-group child-variant-form">
-  <li class="list-group-item" id="{{_id}}">
-    {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=childVariantFormId validation="none" resetOnSuccess="false"}}
-    <fieldset>
-      <div class="col-sm-2 col-md-3">
-        <div class="form-group{{#if afFieldIsInvalid name='optionTitle'}} has-error{{/if}}">
-            {{>afFieldLabel name='optionTitle' class="visible-xs"}}
-            {{>afFieldInput name='optionTitle' autofocus="" required=true}}
-            {{#if afFieldIsInvalid name='optionTitle'}}
-            <span class="help-block">{{afFieldMessage name='optionTitle'}}</span>
-            {{/if}}
-        </div>
-      </div>
-      <div class="col-sm-2 col-md-2">
-      <div class="form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
-          {{>afFieldLabel name='title' class="visible-xs"}}
-          {{>afFieldInput name='title'  autofocus=""}}
-          {{#if afFieldIsInvalid name='title'}}
-          <span class="help-block">{{afFieldMessage name='title'}}</span>
-          {{/if}}
-      </div>
-      </div>
-      <div class="col-sm-2 col-md-2">
-        <div class="form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
-          {{>afFieldLabel name='inventoryQuantity' class="visible-xs"}}
-          {{>afFieldInput name='inventoryQuantity'}}
-          {{#if afFieldIsInvalid name='inventoryQuantity'}}
-          <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
-          {{/if}}
-        </div>
-      </div>
-      <div class="col-sm-2 col-md-2">
-        <div class="form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
-          {{>afFieldLabel name='price' class="visible-xs"}}
-          {{>afFieldInput name='price'}}
-          {{#if afFieldIsInvalid name='price'}}
-          <span class="help-block">{{afFieldMessage name='price'}}</span>
-          {{/if}}
-        </div>
-      </div>
-      <div class="col-sm-3 col-md-3">
-        <div class="form-button pull-right">
-          {{>afFieldInput name="_id" type="hidden"}}
-          <button class="btn btn-default" id="remove-child-variant"><i class="fa fa-trash-o fa-lg"></i></button>
-          <button type="submit" class="btn btn-primary btn-variant-save">Save</button>
-        </div>
-      </div>
-    </fieldset>
-    {{/autoForm}}
-  </li>
-</ul>
+  <tr class="child-variant-form" id="{{childVariantFormId}}">
+      <td>
+        <input type="text" class="form-control input-sm child-variant-input" value="{{optionTitle}}" name="optionTitle" placeholder="Add option name"/>
+      </td>
+      <td>
+        <input type="text" class="form-control input-sm child-variant-input" value="{{title}}" name="title" placeholder="Add option label"/>
+      </td>
+      <td>
+        <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY"/>
+      </td>
+      <td>
+        <input type="number" class="form-control input-sm child-variant-input" value="{{price}}" name="price" placeholder="Add price"/>
+     </td>
+     <td>
+      <i class="fa fa-times-circle" id="remove-child-variant"></i>
+     </td>
+  </tr>
 </template>

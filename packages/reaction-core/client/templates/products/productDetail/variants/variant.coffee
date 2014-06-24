@@ -19,7 +19,7 @@ Template.variant.events
     currentProduct.set "variant", @
     toggleSession "variant-form-"+@._id
 
-  "dblclick .variant-list-item": (event) ->
+  "dblclick .variant-progress-item": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       currentProduct.set "variant", @
       toggleSession "variant-form-"+@._id
@@ -53,9 +53,9 @@ Template.variantList.helpers
       current = (currentProduct.get "variant")
       if current._id
         if current.parentId?
-          variants = (variant for variant in product.variants when variant.parentId is current.parentId)
+          variants = (variant for variant in product.variants when variant.parentId is current.parentId and variant.optionTitle)
         else
-          variants = (variant for variant in product.variants when variant.parentId is current._id)
+          variants = (variant for variant in product.variants when variant.parentId is current._id and variant.optionTitle)
         return variants
 
 
@@ -99,4 +99,5 @@ Template.variantList.events
 
   "click .variant-select-option": (event,template) ->
     Alerts.removeSeen()
-    currentProduct.set "variant", @
+    unless (currentProduct.get "variant")._id is @._id
+      currentProduct.set "variant", @
