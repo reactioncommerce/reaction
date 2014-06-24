@@ -47,10 +47,8 @@ Template.variantForm.events
 
   "click .btn-remove-variant": (event, template) ->
     if confirm("Are you sure you want to delete "+ @.title)
-      Products.update (currentProduct.get "product")._id,
-        $pull:
-          variants:
-            _id: @._id
+      Meteor.call "deleteVariant", @._id
+
 
   "click .btn-clone-variant": (event,template) ->
     event.stopPropagation()

@@ -13,11 +13,10 @@ UI.registerHelper "currencySymbol", () ->
 
 ###
 # general helper for formatting price
-# returns string float currency format
+# returns number float currency format
 ###
 UI.registerHelper "formatPrice", (price) ->
-  price.toFixed(2)
-
+  return Number(price).toFixed(2)
 
 UI.registerHelper "pathForSEO", (path, params) ->
   if this[params]

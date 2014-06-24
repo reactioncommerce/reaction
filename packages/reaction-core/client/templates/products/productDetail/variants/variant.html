@@ -1,25 +1,3 @@
-<template name="variantList">
-  <div class="product-variants">
-    <ul class="variant-list list-unstyled" id="variant-list">
-    {{#each variants}}
-      {{> variant}}
-    {{else}}
-      <a href="#" id="create-variant">+ Create Variant</a>
-    {{/each}}
-    </ul>
-  </div>
-  {{#if childVariants}}
-  <small>There are more options available for this selection.</small>
-    <div class="row variant-product-options">
-      {{#each childVariants}}
-      <button type="button" class="btn btn-default variant-select-option">{{optionTitle}}</button>
-      {{/each}}
-    </div>
-  {{/if}}
-
-
-</template>
-
 <template name="variant">
 <li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
   <div class="variant-detail {{selectedVariant}}">

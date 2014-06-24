@@ -101,6 +101,25 @@ Meteor.methods
     newProduct = Products._collection.insert(product)
     newProduct
 
+
+  ###
+  # delete variant, which should also delete child variants
+  ###
+  deleteVariant: (variantId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    if variantId
+      Products.update {},
+        $pull:
+          variants:
+            _id: variantId
+        , multi: true
+      Products.update {},
+        $pull:
+          variants:
+            parentId: variantId
+        , multi: true
+
   ###
   # when we create a new product, we create it with
   # an empty variant. all products have a variant
