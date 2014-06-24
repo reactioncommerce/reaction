@@ -22,7 +22,4 @@ Template.childVariantForm.events
     event.preventDefault()
     optionTitle = @.optionTitle || "this option"
     if confirm("Are you sure you want to delete "+ optionTitle)
-      Products.update (currentProduct.get "product")._id,
-        $pull:
-          variants:
-            _id: @._id
+      Meteor.call "deleteVariant", @._id
