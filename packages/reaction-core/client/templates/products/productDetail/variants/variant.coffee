@@ -94,6 +94,12 @@ Template.variant.rendered = ->
           ui.placeholder.css "border-radius","6px"
 
 Template.variantList.events
+  "submit form": (event,template) ->
+    console.log @
+    console.log template.data
+    unless (currentProduct.get "variant")._id is template.data._id
+      currentProduct.set "variant", template.data
+
   "click #create-variant": (event) ->
     Meteor.call "createVariant", @._id
 
