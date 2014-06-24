@@ -45,7 +45,9 @@ Template.productGrid.helpers
 
 Template.productGridItems.helpers
   media: (variant) ->
-    variantId = this.variants[0]._id
+    # find first parent variant and default the image
+    variants = (variant for variant in this.variants when not variant.parentId )
+    variantId = variants[0]._id
     defaultImage = Media.findOne({'metadata.variantId':variantId, "metadata.priority": 0})
     if defaultImage
       return defaultImage

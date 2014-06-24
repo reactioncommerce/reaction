@@ -257,6 +257,9 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/variants/variantForm/variantForm.html",
     "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
 
+    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html",
+    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.coffee",
+
     "client/templates/products/productDetail/attributes/attributes.html",
     "client/templates/products/productDetail/attributes/attributes.coffee",
 
@@ -311,6 +314,7 @@ Package.on_use(function (api, where) {
     "client/templates/products/productDetail/variants/variant.import.less",
     "client/templates/products/productDetail/tags/tags.import.less",
     "client/templates/products/productDetail/variants/variantForm/variantForm.import.less",
+    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.import.less",
     "client/templates/products/productGrid/productGrid.import.less",
     "client/templates/products/productList/productList.import.less",
     "client/templates/products/products.import.less",

@@ -3,13 +3,19 @@
 ###
 setCurrentVariant = (product, variantId) ->
   if product
+    #parameter set variant
     if variantId
       for variant in product.variants
         if variant._id is variantId
           currentProduct.set "variant",variant
     else
-      unless currentProduct.equals("variant") and currentProduct.equals("variant") not in product.variants
-        currentProduct.set "variant", product.variants[0]
+      #preserve current variant for current product
+      if currentProduct.equals("variant")
+        current = (variant for variant in product.variants when variant._id is currentProduct.equals("variant")._id)[0]
+        if current then return
+      #default to top variant
+      variants = (variant for variant in product.variants when not variant.parentId )
+      currentProduct.set "variant", variants[0]
 
 
 setCurrentProduct = (productId, variant) ->
