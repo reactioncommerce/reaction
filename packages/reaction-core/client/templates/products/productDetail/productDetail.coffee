@@ -44,7 +44,10 @@ Template.productDetail.helpers
 Template.productDetail.events
   "click #price": ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-      toggleSession  "variant-form-" + currentProduct.get("variant")._id
+      if currentProduct.get("variant").parentId
+        toggleSession  "variant-form-" + currentProduct.get("variant").parentId
+      else
+        toggleSession  "variant-form-" + currentProduct.get("variant")._id
 
   "click #add-to-cart-quantity": (event,template) ->
     event.preventDefault()
