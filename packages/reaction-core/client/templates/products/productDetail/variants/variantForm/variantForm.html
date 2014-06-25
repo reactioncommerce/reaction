@@ -1,115 +1,95 @@
 <template name="variantForm">
-<div id="variant-edit-form-{{_id}}" class="variant-edit-form {{variantFormVisible}}">
-  <div class="row well well-sm variant-form" >
-    {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=variantFormId validation="keyup" resetOnSuccess="false"}}
-    <fieldset>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
-              {{>afFieldLabel name='title'}}
-              {{>afFieldInput name='title'}}
-              {{#if afFieldIsInvalid name='title'}}
-              <span class="help-block">{{afFieldMessage name='title'}}</span>
-              {{/if}}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
-            {{>afFieldLabel name='weight'}}
-            {{>afFieldInput name='weight'}}
-            {{#if afFieldIsInvalid name='weight'}}
-            <span class="help-block">{{afFieldMessage name='weight'}}</span>
-            {{/if}}
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
-            {{>afFieldLabel name='inventoryQuantity'}}
-            {{>afFieldInput name='inventoryQuantity'}}
-            {{#if afFieldIsInvalid name='inventoryQuantity'}}
-            <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
-            {{/if}}
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
-            {{>afFieldLabel name='compareAtPrice'}}
-            {{>afFieldInput name='compareAtPrice'}}
-            {{#if afFieldIsInvalid name='compareAtPrice'}}
-            <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
-            {{/if}}
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
-            {{>afFieldLabel name='price'}}
-            {{>afFieldInput name='price'}}
-            {{#if afFieldIsInvalid name='price'}}
-            <span class="help-block">{{afFieldMessage name='price'}}</span>
-            {{/if}}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
-              {{>afFieldInput name='taxable'  default="true"}}
-              {{#if afFieldIsInvalid name='taxable'}}
-              <span class="help-block">{{afFieldMessage name='taxable'}}</span>
-              {{/if}}
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
-              {{>afFieldInput name='inventoryManagement'}}
-              {{#if afFieldIsInvalid name='inventoryManagement'}}
-              <span class="help-block">{{afFieldMessage name='inventoryManagement'}}</span>
-              {{/if}}
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="form-group{{#if afFieldIsInvalid name='inventoryPolicy'}} has-error{{/if}} inventoryPolicy" style="{{displayInventoryManagement}}">
-              {{>afFieldInput name='inventoryPolicy'}}
-              {{#if afFieldIsInvalid name='inventoryPolicy'}}
-              <span class="help-block">{{afFieldMessage name='inventoryPolicy'}}</span>
-              {{/if}}
-          </div>
-        </div>
-        <div class="col-sm-2 lowInventoryWarningThreshold">
-          <div class="form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
-            <div class="col-xs-4 col-sm-5">
-              {{>afFieldLabel name='lowInventoryWarningThreshold'}}
+  <div id="variant-edit-form-{{_id}}" class="variant-edit-form {{variantFormVisible}}">
+    <div class="row well well-sm variant-form" >
+      {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=variantFormId validation="keyup" resetOnSuccess="false"}}
+      <fieldset>
+        <div class="row">
+          <div class="col-xs-12 col-sm-9 col-md-9">
+            <div class="col-sm-12 form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
+                {{>afFieldLabel name='title'}}
+                {{>afFieldInput name='title'}}
+                {{#if afFieldIsInvalid name='title'}}
+                <span class="help-block">{{afFieldMessage name='title'}}</span>
+                {{/if}}
             </div>
-            <div class="col-xs-6 col-sm-6 col-sm-offset-1">
-              {{>afFieldInput name='lowInventoryWarningThreshold'}}
-            </div>
-            {{#if afFieldIsInvalid name='lowInventoryWarningThreshold' placeholder=0}}
-            <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
-            {{/if}}
-          </div>
-        </div>
 
+              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
+                {{>afFieldLabel name='weight'}}
+                {{>afFieldInput name='weight'}}
+                {{#if afFieldIsInvalid name='weight'}}
+                <span class="help-block">{{afFieldMessage name='weight'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
+                {{>afFieldLabel name='inventoryQuantity'}}
+                {{>afFieldInput name='inventoryQuantity'}}
+                {{#if afFieldIsInvalid name='inventoryQuantity'}}
+                <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
+                {{>afFieldLabel name='compareAtPrice'}}
+                {{>afFieldInput name='compareAtPrice'}}
+                {{#if afFieldIsInvalid name='compareAtPrice'}}
+                <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
+                {{>afFieldLabel name='price'}}
+                {{>afFieldInput name='price'}}
+                {{#if afFieldIsInvalid name='price'}}
+                <span class="help-block">{{afFieldMessage name='price'}}</span>
+                {{/if}}
+              </div>
+
+          </div>
+            <div class="variant-options col-xs-12 col-sm-3 col-md-3">
+              <div class="form-group {{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
+                  {{>afFieldInput name='taxable'  default="true"}}
+                  {{#if afFieldIsInvalid name='taxable'}}
+                  <span class="help-block">{{afFieldMessage name='taxable'}}</span>
+                  {{/if}}
+              </div>
+              <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
+                  {{>afFieldInput name='inventoryManagement'}}
+                  {{#if afFieldIsInvalid name='inventoryManagement'}}
+                  <span class="help-block">{{afFieldMessage name='inventoryManagement'}}</span>
+                  {{/if}}
+              </div>
+              <div class="form-group{{#if afFieldIsInvalid name='inventoryPolicy'}} has-error{{/if}} inventoryPolicy" style="{{displayInventoryManagement}}">
+                  {{>afFieldInput name='inventoryPolicy'}}
+                  {{#if afFieldIsInvalid name='inventoryPolicy'}}
+                  <span class="help-block">{{afFieldMessage name='inventoryPolicy'}}</span>
+                  {{/if}}
+              </div>
+              <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
+                  <span class="col-xs-5 col-sm-8 col-md-8">
+                  {{>afFieldLabel name='lowInventoryWarningThreshold'}}
+                  {{>afFieldInput name='lowInventoryWarningThreshold'}}
+                  </span>
+                  {{#if afFieldIsInvalid name='lowInventoryWarningThreshold' placeholder=0}}
+                <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
+                {{/if}}
+              </div>
+
+           </div>
+        </div>
+      </fieldset>
+      <div class="variant-form-buttons col-sm-12">
+        {{>afFieldInput name="_id" type="hidden"}}
+          <button class="btn btn-default btn-child-variant-form" data-toggle="tooltip" title="Variant options"><i class="fa fa-sitemap fa-lg"></i></button>
+          <button class="btn btn-default btn-clone-variant" data-toggle="tooltip" title="Clone variant"><i class="fa fa-code-fork fa-rotate-180 fa-lg"></i></button>
+          <button class="btn btn-default btn-remove-variant" data-toggle="tooltip" title="Remove variant"><i class="fa fa-trash-o fa-lg"></i></button>
       </div>
-    </fieldset>
-    <div class="row variant-form-buttons">
-      {{>afFieldInput name="_id" type="hidden"}}
-      <div class="col-xs-5 col-sm-4 col-md-4">
-        <button class="btn btn-default btn-child-variant-form" data-toggle="tooltip" title="Variant options"><i class="fa fa-sitemap fa-lg"></i></button>
-        <button class="btn btn-default btn-clone-variant" data-toggle="tooltip" title="Clone variant"><i class="fa fa-code-fork fa-rotate-180 fa-lg"></i></button>
-        <button class="btn btn-default btn-remove-variant" data-toggle="tooltip" title="Remove variant"><i class="fa fa-trash-o fa-lg"></i></button>
-      </div>
-      <div class="col-xs-6 col-xs-offset-1 col-sm-6 col-md-4 col-md-offset-4">
-<!--         <button type="submit" class="btn btn-primary btn-block">Save</button> -->
-      </div>
+      {{/autoForm}}
     </div>
-    {{/autoForm}}
-  </div>
 
   {{#if childVariants}}
     <div class="row well well-sm">
-      <table class="table table-striped">
+      <table class="child-variant-table table table-striped">
       <thead>
         <tr>
           <th>Option</th>
@@ -127,5 +107,5 @@
       </table>
     </div>
   {{/if}}
-</div>
+  </div>
 </template>

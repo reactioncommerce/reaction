@@ -3,33 +3,32 @@
   margin: 0px 10px 0 10px;
   background-color: @well-border;
   cursor: default;
-  // padding: 0px 8px 1px 8px;
+  padding: 0px 8px 1px 8px;
   border-radius: 0 0 6px 6px;
+  white-space:nowrap;
+  overflow: hidden;
+  font-size: 12px;
   .well {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
-  .form-group {
-    margin-bottom: 5px;
-    padding-left: 0px;
-    .form-control {
-      padding: 0 2px 0 5px;
-    }
+
+  label {
+    margin-bottom: 0px;
   }
   .variant-form-buttons {
     padding-top: 10px;
   }
 }
-// == inventory threshold
-.lowInventoryWarningThreshold {
-  label {
-    vertical-align: middle;
-    font-weight: normal;
-    right: -10px;
-    top: 10px;
-    position: absolute;
-  }
 
-  input {
-    margin-top: 5px;
+.variant-options {
+  .form-group {
+    margin-bottom: 0px;
+  }
+  .checkbox,.radio {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .lowInventoryWarningThreshold {
+    margin-top: -7px;
   }
 }
