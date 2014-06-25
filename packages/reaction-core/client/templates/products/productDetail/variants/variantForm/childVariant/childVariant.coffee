@@ -15,7 +15,7 @@ Template.childVariantForm.events
     variant[field] = value
     Meteor.call "updateVariant", variant, (error,result) ->
       if error then console.log error
-    $(event.currentTarget).closest('td').next('td').find('input').focus()
+    currentProduct.set "variant", @
 
   "click #remove-child-variant": (event, template) ->
     event.stopPropagation()

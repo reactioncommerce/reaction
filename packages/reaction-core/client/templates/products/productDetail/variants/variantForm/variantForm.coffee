@@ -33,7 +33,7 @@ Template.variantForm.events
   "change form :input": (event,template) ->
     formId = "#variant-form-"+template.data._id
     template.$(formId).submit()
-    # $(event.currentTarget).closest('input').next('input').find('input').focus()
+    currentProduct.set "variant", @
 
 
 

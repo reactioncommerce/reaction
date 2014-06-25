@@ -43,8 +43,8 @@ Template.productDetail.helpers
 
 Template.productDetail.events
   "click #price": ->
-    id = currentProduct.get("variant")._id
-    $('#variant-edit-form-'+id).fadeIn()
+    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      toggleSession  "variant-form-" + currentProduct.get("variant")._id
 
   "click #add-to-cart-quantity": (event,template) ->
     event.preventDefault()
