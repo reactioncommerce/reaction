@@ -30,14 +30,12 @@ Template.variantForm.helpers
       return "display:none;"
 
 Template.variantForm.events
-  "submit form": (event,template) ->
-    currentProduct.changed "product"
+  "change form :input": (event,template) ->
+    formId = "#variant-form-"+template.data._id
+    template.$(formId).submit()
+    # $(event.currentTarget).closest('input').next('input').find('input').focus()
 
-  "change input[name='inventoryManagement']": (event,template) ->
-    formId = "variant-form-"+template.data
-    if !$( event.currentTarget ).is(':checked')
-        $( '#' + formId ).find( 'input[name=inventoryPolicy]' ).attr("checked",false)
-    $( '#' + formId ).find( '.inventoryPolicy, .lowInventoryWarningThreshold' ).fadeToggle()
+
 
   "click .btn-child-variant-form": (event,template) ->
     event.stopPropagation()
