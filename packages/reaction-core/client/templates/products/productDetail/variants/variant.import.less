@@ -22,42 +22,48 @@
   padding-right: 10px;
   width: 100%;
 }
-.variant-qty {
-  //placeholder
-}
 
 .variant-qty-sold-out {
 text-transform:uppercase;
 border-radius:1px;
 }
+.variant-progress-item{
+  overflow: hidden;
+}
 
 .variant-title {
+  position: absolute;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  display: inline-block;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin-left: 5px;
   line-height: 28px;
   font-weight: 400;
   color: @btn-default-color;
-
+  width: 80%;
 }
 
 .variant-price {
-  margin-right: 2px;
-  padding-right: 2px;
+  display: inline-block;
+  margin-left: 10px;
   font-size: medium;
   font-weight: 500;
   line-height: 30px;
   color: @btn-default-color;
+  position: absolute;
+  right: 10px;
 }
 
-.variant-edit-tools {
+.variant-edit {
   background-color: rgba(155, 152, 152, 0.1);
+  color: @link-color;
   position: absolute;
   border-radius: @input-border-radius;
   right: -25px;
-  a {
-    padding: 5px;
-  }
+  padding: 0 5px 0 5px;
 }
 .variant-product-options {
   padding: 6px;
@@ -67,14 +73,8 @@ border-radius:1px;
 }
 
 @media only screen and (max-width: @screen-sm-max) {
-.variant-title {
-  letter-spacing: 0em;
-  text-transform: uppercase;
-  margin-left: 5px;
-  line-height: 28px;
-  font-weight: 400;
-  color: @btn-default-color;
-
-}
-
+  .variant-title {
+    letter-spacing: 0em;
+    width: 70%;
+  }
 }

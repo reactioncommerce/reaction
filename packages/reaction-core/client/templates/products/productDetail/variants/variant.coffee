@@ -15,7 +15,7 @@ Template.variant.helpers
       return false
 
 Template.variant.events
-  "click .edit-variant": (event) ->
+  "click .variant-edit": (event) ->
     currentProduct.set "variant", @
     toggleSession "variant-form-"+@._id
 
@@ -29,8 +29,6 @@ Template.variant.events
     event.stopPropagation()
     Alerts.removeSeen()
     currentProduct.set "variant", @
-
-
 
 Template.variant.rendered = ->
   if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner

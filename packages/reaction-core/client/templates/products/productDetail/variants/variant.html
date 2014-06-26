@@ -6,7 +6,6 @@
       </span>
       <div class="variant-progress-item">
         {{#if inventoryManagement}}
-
           {{#unless isSoldOut }}
             <span class="variant-qty badge">{{inventoryQuantity}}</span>
           {{else}}
@@ -16,16 +15,13 @@
             <span class="variant-qty-sold-out badge">Backorder</span>
             {{/if}}
           {{/unless}}
-
         {{/if}}
-        <span class="variant-title">{{title}}</span>
-        <span class="variant-price pull-right">{{currencySymbol}}{{price}}</span>
+        <span class="clearfix variant-title">{{title}}</span>
+        <span class="variant-price">{{currencySymbol}}{{price}}</span>
       </div>
       {{#if userHasRole "admin"}}
-      <div class="variant-edit-tools xs-hidden">
-        <span class="variant-edit pull-right">
-          <a href="#" class="edit-variant"><i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i></a>
-        </span>
+      <div class="variant-edit hidden-xs">
+          <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
       </div>
       {{/if}}
     </div>
