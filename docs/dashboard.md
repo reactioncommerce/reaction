@@ -15,7 +15,9 @@ The Access page is found by clicking the "cog" icon (![](http://raw.github.com/o
 
 ###App Gallery
 
-Clicking on the Shop link under the Dashboard drawer opens the App Gallery. You can view and configure apps such as PayPal and Google Analytics. Each individual app card has its own "cog" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog-lg.png)) to view and change your settings. To install an app, click the "plus" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-plus-square.png)); to uninstall an app, click the "checkmark" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-check-square.png)).
+Clicking on the App Gallery link under the Dashboard drawer opens the App Gallery. You can view and configure apps such as PayPal and Google Analytics. Each individual app card has its own "cog" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog-lg.png)) to view and change your settings. To install an app, click the "plus" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-plus-square.png)); to uninstall an app, click the "checkmark" icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-check-square.png)).
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard-appgallery.png)
 
 ###Orders
 
