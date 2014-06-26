@@ -1,7 +1,7 @@
 <template name="productGrid">
 <div class="product-grid-container">
   <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
-    <ul class="product-grid-list list-unstyled" id="product-grid-list">
+    <ul class="product-grid-list" id="product-grid-list">
     {{#each products}}
       {{> productGridItems}}
     {{/each}}
@@ -11,37 +11,54 @@
 </template>
 
 <template name="productGridItems">
-  <li class="thumbnail product-grid-item" data-id="{{_id}}" id="{{_id}}">
-    {{#if cart.showItemLowInventoryWarning variants.[0]}}
-    <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
-    {{/if}}
-    <div>
-      <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
-      {{#with media}}
-        <img src="{{url}}" class="product-grid-item-images img-responsive">
-      {{else}}
-        <img src="../../resources/placeholder.gif" class="product-grid-item-images img-responsive">
-      {{/with}}
-      </a>
-    </div>
-    <div class="overlay">
-      {{#if userHasRole "admin"}}
-
-        {{#unless isVisible}}<span class="fa fa-eye-slash fa-lg overlay-icon pull-left" title="Publish"></span>{{/unless}}
-        <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product overlay-icon pull-left" title="Clone product"></span>
-        <span class="fa fa-trash-o delete-product fa-lg overlay-icon pull-right" title="Delete product"></span>
-      {{/if}}
-      <div class="overlay-content">
-          {{title}} <span class="currency-symbol">{{currencySymbol}}</span>{{variants.[0].price}}
-      </div>
-    </div>
-  </li>
+<li class="product-grid-item" data-id="{{_id}}" id="{{_id}}">
+  <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+  <div class="product-grid-item-images">
+  {{#with media}}
+    <img src="{{url}}" class="img-responsive" alt="{title}}">
+  {{else}}
+    <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
+  {{/with}}
+</div>
+  {{>gridContent}}
+  </a>
+  {{>gridControls}}
+</li>
 </template>
 
 <template name="gridImage">
-  <img src="{{url}}" class="product-grid-item-images img-responsive">
+<div class="product-grid-item-images img-responsive">
+  {{#with media}}
+    <img src="{{url}}" class="img-responsive" alt="{title}}">
+  {{else}}
+    <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
+  {{/with}}
+</div>
 </template>
 
-<template name="noImage">
-  <img src="../../resources/placeholder.gif" class="product-grid-item-images img-responsive">
+<template name="gridNotice">
+    {{#if cart.showItemLowInventoryWarning variants.[0]}}
+    <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
+    {{/if}}
+</template>
+
+
+<template name="gridContent">
+<div class="overlay">
+    <div class="overlay-title">{{title}}</div>
+    <div class="currency-symbol">{{currencySymbol}}{{variants.[0].price}}</div>
+</div>
+</template>
+
+
+<template name="gridControls">
+{{#if userHasRole "admin"}}
+  <div class="product-grid-controls">
+    {{#if isVisible}}<span class="fa fa-eye-slash fa-lg pull-left publish-product" title="Publish"></span>
+    {{else}}<span class="fa fa-eye fa-lg pull-left publish-product" title="Publish"></span>
+    {{/if}}
+    <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product pull-left" title="Clone product"></span>
+    <span class="fa fa-trash-o delete-product fa-lg pull-right" title="Delete product"></span>
+  </div>
+{{/if}}
 </template>

@@ -57,16 +57,29 @@ Template.productGridItems.helpers
 
 Template.productGridItems.events
   'click .clone-product': () ->
+    title = @.title
     Meteor.call "cloneProduct", this, (error, productId) ->
       console.log error if error
       Router.go "product",
         _id: productId
+      Alerts.add "Cloned " + title
 
   'click .delete-product': (event, template) ->
     event.preventDefault()
+    title = @.title
     if confirm("Delete this product?")
       Products.remove this._id
       Router.go "/"
+      Alerts.add "Deleted " + title
+
+  'click .publish-product': () ->
+    Products.update(@._id, {$set: {isVisible: !@.isVisible}})
+    if @.isVisible
+      visible = "visible"
+    else
+      visible = "not visible"
+    Alerts.add @.title + " is now " + visible
+
 
 Template.productGridItems.rendered = () ->
   # *****************************************************

@@ -1,26 +1,47 @@
-.font-size(@sizeValue) {
-  @remValue: @sizeValue;
-  @pxValue: (@sizeValue * 10);
-  font-size: ~"@{pxValue}px";
-  font-size: ~"@{remValue}rem";
+.product-grid-item {
+  a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+  }
+}
+
+.product-grid-item-images {
+  -webkit-box-shadow: 0 0 1px 1px @gray-lighter inset;
+  -moz-box-shadow: 0 0 1px 1px @gray-lighter inset;
+  box-shadow: 0 0 1px 1px @gray-lighter inset;
+  padding: 1px;
 }
 
 .product-grid .overlay {
-  margin: -40px 0 0 0;
-  height: 40px;
   color: @product-overlay-text;
-  padding: 10px;
-  background-color: @product-overlay-bg;
-  width: 100%;
   opacity: 0.7;
-  text-align: center;
+  width: 100%;
+  padding-top: 10px;
+  .currency-symbol {
+    white-space: nowrap;
+    text-decoration: none;
+    text-align: center;
+  }
 }
 
-.overlay .overlay-content {
+.product-grid-controls {
+  position: relative;
+  top: -75px;
+  margin-left: 10px;
+  margin-right: 10px;
+  opacity: 0.7;
+  fa {
+    cursor: pointer;
+  }
+}
+
+.product-grid .overlay-title {
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: clip;
+  text-transform: uppercase;
   font-size: @font-size-base;
-  font-weight: 200;
+  font-weight: 400;
+  text-align: center;
 }
 
 .product-grid .positioning {
@@ -29,7 +50,7 @@
   border: 1px solid aliceblue;
 }
 
-.product-grid .overlay-icon {
+.product-grid .delete-product {
   margin-top: 3px !important;
   cursor: pointer;
 }
@@ -39,10 +60,11 @@
   margin: 0 auto;
 }
 
-#product-grid-list
+.product-grid-list
 {
   width: 100%;
   overflow: hidden;
+  margin-left: -1.875em;
   margin-bottom: -1.875em; /* 30px */
   -webkit-column-count: @product-grid-columns-lg;
   -webkit-column-gap: 1.875em; /* 30px */
@@ -53,10 +75,11 @@
   column-count: @product-grid-columns-lg;
   column-gap: 1.875em; /* 30px */
   column-fill: auto;
+  list-style: none;
 }
 
 .product-grid-item {
-  margin-bottom: 1.875em; /* 15px 30px */
+  padding: 15px;
   margin-right: 1px;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
@@ -73,18 +96,16 @@
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    .product-grid-item {
-        &:last-child {
-
-            overflow:visible;
-
-            @media (min-width: @screen-md-max){
-                display:inline-block;
-            }
-        }
-    }
-}
+// @media screen and (-webkit-min-device-pixel-ratio:0) {
+//     .product-grid-item {
+//         &:last-child {
+//             overflow:visible;
+//             @media (min-width: @screen-md-max){
+//                 display:inline-block;
+//             }
+//         }
+//     }
+// }
 
 @media (min-width:  @screen-md-min) and (max-width: @screen-md-max){
   .product-grid .overlay {

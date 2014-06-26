@@ -1,6 +1,5 @@
 <template name="products">
-{{!-- Product Templates --}}
-  {{> productListGrid}}
+  {{>productGrid}}
 </template>
 
 <template name="productListGrid">
@@ -10,23 +9,13 @@
       {{>productList}}
     {{/if}}
   </div>
-
 </template>
 
 <template name="addProductLinks">
 {{#if userHasRole "admin"}}
   <div class="dropdown-apps-icon">
-    <a id="productGridView" alt="Grid View"> <i class="fa fa-th-large"></i></a>
-    <span class="icon-text">Grid</span>
-  </div>
-  <div class="dropdown-apps-icon">
-    <a id="productListView" alt="List View"> <i class="fa fa-th-list"></i></a>
-    <span class="icon-text">List</span>
-  </div>
-  <div class="dropdown-apps-icon">
     <a id="add-product-link" alt="Add Product"><i class="add-product-link fa fa-plus"></i></a>
     <span class="icon-text">Create</span>
   </div>
-
 {{/if}}
 </template>
