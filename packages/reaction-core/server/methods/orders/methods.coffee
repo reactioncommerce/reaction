@@ -4,20 +4,23 @@ Meteor.methods
   # Call after any tracking code is generated
   ###
   addTracking: (orderId, tracking, variantId) ->
-    Orders.update(orderId, {$set: {"shipping.shipmentMethod.tracking":tracking}})
+    check orderId, String #at least make sure it's an ID and not a sneaky selector
+    return Orders.update(orderId, {$set: {"shipping.shipmentMethod.tracking":tracking}})
 
   ###
   # Save supplied order workflow state
   ###
   updateWorkflow: (orderId, currentState) ->
+    check orderId, String #at least make sure it's an ID and not a sneaky selector
     Orders.update(orderId, {$set: {"state":currentState}})
-    Meteor.call "updateHistory", orderId, currentState
+    return Meteor.call "updateHistory", orderId, currentState
   ###
   # Add files/documents to order
   # use for packing slips, labels, customs docs, etc
   ###
   updateDocuments: (orderId, docId, docType) ->
-    Orders.update orderId,
+    check orderId, String #at least make sure it's an ID and not a sneaky selector
+    return Orders.update orderId,
       $addToSet:
         "documents":
           docId: docId
@@ -26,7 +29,8 @@ Meteor.methods
   # Add to order event history
   ###
   updateHistory: (orderId, event, value) ->
-    Orders.update orderId,
+    check orderId, String #at least make sure it's an ID and not a sneaky selector
+    return Orders.update orderId,
       $addToSet:
         "history":
           event: event
@@ -38,6 +42,7 @@ Meteor.methods
   # and status is "approved", reprocess as "sale"
   ###
   processPayments: (orderId) ->
+    check orderId, String #at least make sure it's an ID and not a sneaky selector
     order = Orders.findOne(orderId)
     for paymentMethod,index in order.payment.paymentMethod
       if paymentMethod.mode is 'authorize' and paymentMethod.status is 'approved'
@@ -50,13 +55,17 @@ Meteor.methods
                 "payment.paymentMethod.$.mode": "capture"
                 "payment.paymentMethod.$.status": "completed"
               }
-          result
+          return
+    return
 
   ###
   # Creates a pdf doc and attaches to order
   # for any existing site url (completed orders)
   ###
   createPDF: (url, orderId, token) ->
+    check url, String
+    check orderId, String
+    check token, String
     @unblock()
     phantomServer = Npm.require "phantomjs"
     phantom = Npm.require 'node-phantom'
@@ -115,6 +124,7 @@ Meteor.methods
           doc = FileStorage.insert fileObj
           # Finally return (from the method) the new document ID
           future.return doc._id
+          return
 
         finish = Meteor.bindEnvironment finish
 
@@ -134,12 +144,13 @@ Meteor.methods
             return result
           , (err, result) ->
             f.return (result.clipRect? and result.subsReady and result.userId?.length)
+            return
           f.wait()
         
         dataIsLoaded = Meteor.bindEnvironment dataIsLoaded
 
         getPrintArea = ->
-          document.getElementById('print-area').getBoundingClientRect()
+          return document.getElementById('print-area').getBoundingClientRect()
 
         # Initiate login on phantom page
         page.evaluate (token) ->
@@ -148,6 +159,7 @@ Meteor.methods
         ,
         (err, token) ->
           console.log "logging in to phantom page with hashed resume token",token
+          return
         , token
 
         # Wait for page and async data to be loaded
@@ -167,9 +179,11 @@ Meteor.methods
             # If condition fulfilled, we move on to getting the print area.
             # If we timed out, we'll continue anyway, and hope that it works
             page.evaluate getPrintArea, finish
+          return
         , 250 # repeat check every 250ms
+        return
     ),
     # Tell phantom.create call where to find phantom binary
     phantomPath: phantomServer.path
 
-    future.wait()
+    return future.wait()
