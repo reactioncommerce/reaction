@@ -76,7 +76,6 @@ Template.productGridItems.events
     if @.variants[0].price and @.variants[0].title and @.title
       Products.update(@._id, {$set: {isVisible: !@.isVisible}})
       isVisible = Products.findOne(@._id).isVisible
-      console.log isVisible
       if isVisible is true
         visible = "visible"
       else
