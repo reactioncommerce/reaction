@@ -11,6 +11,111 @@ ConfigData = @ConfigData
 Users = @Users = Meteor.users
 
 ###
+# Generic Security Rule Manager
+###
+
+addAllowFuncForAll = (collections, types, fetch, func) ->
+  rules = {fetch: fetch}
+  _.each types, (t) ->
+    rules[t] = func
+  _.each collections, (c) ->
+    c.allow rules
+
+addDenyFuncForAll = (collections, types, fetch, func) ->
+  rules = {fetch: fetch}
+  _.each types, (t) ->
+    rules[t] = func
+  _.each collections, (c) ->
+    c.deny rules
+
+Security =
+  # This one should be called for any collections you don't explicitly call allow on because one allow function is required
+  defaultAllow: (collections) ->
+    addAllowFuncForAll collections, ["insert", "update", "remove"], [], (userId) ->
+      return true
+  # For FS.Collections only, allows downloads for any user, even if not logged in
+  allowAnonymousFileDownloads: (collections) ->
+    addAllowFuncForAll collections, ["download"], [], (userId) ->
+      return true
+  # Allow inserts, updates, and removes only if the user is in one of the given roles 
+  allowOnlyRoles: (roles, types, collections) ->
+    addDenyFuncForAll collections, types, [], (userId) ->
+      return !Roles.userIsInRole(userId, roles)
+  # Allow updates and removes only if doc.shopId matches the current shop
+  mustMatchShop: (collections) ->
+    addDenyFuncForAll collections, ["update", "remove"], ["shopId"], (userId, doc) ->
+      return doc.shopId isnt Meteor.app.getShopId()
+  # Allow updates only if doc.shopId is not being changed
+  cantChangeShop: (collections) ->
+    addDenyFuncForAll collections, ["update"], [], (userId, doc, fields, modifier) ->
+      return !!modifier.$set?.shopId
+  # Allow inserts, updates, and removes only if doc.userId matches the current userId
+  mustMatchUser: (collections) ->
+    addDenyFuncForAll collections, ["insert", "update", "remove"], ["userId"], (userId, doc) ->
+      return doc.userId isnt userId
+  # Allow inserts, updates, and removes only if fileObj.metadata.shopId matches the current shop
+  fileMustBelongToShop: (collections) ->
+    addDenyFuncForAll collections, ["insert", "update", "remove"], [], (userId, fileObj) ->
+      return fileObj.metadata.shopId isnt Meteor.app.getShopId(@)
+  
+
+###
+# Method to Auto-Set Props on Insert
+###
+
+AutoSet = (prop, collections, valFunc) ->
+  _.each collections, (c) ->
+    c.deny
+      # Set prop on insert
+      insert: (userId, doc) ->
+        doc[prop] = valFunc()
+        return false
+      fetch: []
+
+AutoSet "shopId", [ Packages, Orders, Cart, Tags ], ->
+  return Meteor.app.getShopId()
+
+###
+# We add some common security rules through simple Security methods
+###
+
+Security.defaultAllow [ Media, FileStorage, ConfigData, Packages, Products, Orders, Cart, Tags ]
+
+Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, ConfigData, Products, Tags ]
+
+Security.allowOnlyRoles ['admin'], ["update", "remove"], [ Shops ]
+
+Security.allowOnlyRoles ['owner'], ["remove"], [ Orders ]
+
+Security.mustMatchShop [ Packages, Products, Orders, Cart, Tags ]
+
+Security.cantChangeShop [ Packages, Products, Orders, Cart, Tags ]
+
+Security.mustMatchUser [ Cart ]
+
+Security.fileMustBelongToShop [ Media, FileStorage ] 
+
+Security.allowAnonymousFileDownloads [ Media, FileStorage ] #todo: allowing anonymous for FileStorage is probably not correct
+
+###
+# Extra client access rights for shops
+# XXX These should be verified and might be able to be folded into Security above
+###
+Shops.allow
+  insert: (userId, doc) ->
+    # the user must be logged in, and the document must be owned by the user
+    return userId and doc.ownerId is userId
+  update: (userId, doc, fields, modifier) ->
+    return doc.ownerId is userId
+  remove: (userId, doc) ->
+    return doc.ownerId is userId
+  fetch: ["ownerId"]
+
+###
+# Beyond this point is publication functions
+###
+
+###
 # Reaction Server / amplify permanent sessions
 # If no id is passed we create a new session
 # Load the session
@@ -26,56 +131,18 @@ Meteor.publish 'ReactionSessions', (id) ->
     serverSession = ServerSessions.find(id)
   return serverSession
 
-
-#
-# CollectionFS - File Storage permissions
-#
+###
+# CollectionFS - Image/Video Publication
+###
 Meteor.publish "media", () ->
-  return Media.find({ 'metadata.shopId': Meteor.app.getCurrentShop(this)._id },  {sort: {"metadata.priority": 1}})
+  return Media.find({ 'metadata.shopId': Meteor.app.getShopId(@) }, {sort: {"metadata.priority": 1}})
 
-Media.allow
-  insert: (userId, fileObj) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  update: (userId, fileObj) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  remove: (userId, fileObj) ->
-    if fileObj.metadata.shopId != Meteor.app.getCurrentShop(this)._id
-      return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  download: (userId, fileObj) ->
-    return true
-  fetch: []
-
-#
-# filestorage for generate docs (invoices)
-#
+###
+# CollectionFS - Generated Docs (invoices) Publication
+###
 Meteor.publish "FileStorage", () ->
+  #todo: this should be more secure and more filtered
   return FileStorage.find()
-
-FileStorage.allow
-  insert: (userId, fileObj) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  update: (userId, fileObj) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  remove: (userId, fileObj) ->
-    if fileObj.metadata.shopId != Meteor.app.getCurrentShop(this)._id
-      return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  download: (userId, fileObj) ->
-    return true
-  fetch: []
 
 ###
 # get any user name,social profile image
@@ -101,21 +168,6 @@ Meteor.publish "UserProfile", (profileId) ->
 Meteor.publish 'ConfigData', ->
   return ConfigData.find()
 
-ConfigData.allow
-  insert: (userId, doc) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  update: (userId, doc, fields, modifier) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-    #return doc.owner === userId;
-  remove: (userId, doc) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-
 ###
 #  Packages contains user specific configuration
 #  settings, package access rights
@@ -130,29 +182,6 @@ Meteor.publish "Packages", ->
         priority: 1
   else
     return []
-
-###
-# Client access rights for reaction_packages
-###
-Packages.allow
-  insert: (userId, doc) ->
-    doc.shopId = Meteor.app.getShopId(@)
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-
-  update: (userId, doc, fields, modifier) ->
-    if modifier.$set and modifier.$set.shopId
-      return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-
-  remove: (userId, doc) ->
-    doc.shopId is Meteor.app.getShopId()
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
 
 ###
 # shop collection
@@ -179,22 +208,6 @@ Meteor.publish 'shopMembers', ->
   return
 
 ###
-# Client access rights for products
-###
-Shops.allow
-  insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    return userId and doc.ownerId is userId
-  update: (userId, doc, fields, modifier) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return doc.ownerId is userId
-  remove: (userId, doc) ->
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return doc.ownerId is userId
-
-###
 # product collection
 ###
 Meteor.publish 'products', (userId) ->
@@ -215,28 +228,6 @@ Meteor.publish 'product', (productId) ->
     return Products.find({handle: { $regex : productId, $options:"i" } })
 
 ###
-# Client access rights for products
-###
-Products.allow
-  insert: (userId, product) ->
-    product.shopId = Meteor.app.getShopId()
-    unless Roles.userIsInRole(userId, ['admin']) n
-      return false
-    return true
-  update: (userId, product, fields, modifier) ->
-    if modifier.$set && modifier.$set.shopId
-      return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  remove: (userId, product) ->
-    if product.shopId != Meteor.app.getShopId()
-      return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-
-###
 # orders collection
 ###
 Meteor.publish 'orders', ->
@@ -249,24 +240,6 @@ Meteor.publish 'userOrders', (userId) ->
   return Orders.find
     shopId: Meteor.app.getShopId(@)
     userId: this.userId
-
-###
-# Client access rights for orders
-###
-Orders.allow
-  insert: (userId, order) ->
-    order.shopId = Meteor.app.getShopId()
-    return true
-  update: (userId, order, fields, modifier) ->
-    if modifier.$set && modifier.$set.shopId
-      return false
-    return true
-  remove: (userId, order) ->
-    if order.shopId isnt Meteor.app.getShopId()
-      return false
-    unless Roles.userIsInRole(userId, ['owner'])
-      return false
-    return true
 
 ###
 # cart collection
@@ -284,42 +257,7 @@ Meteor.publish 'cart', (sessionId) ->
   return Cart.find sessionId: sessionId, userId: userId
 
 ###
-# Client access rights for cart
-###
-Cart.allow
-  insert: (userId, cart) ->
-    cart.shopId = Meteor.app.getShopId()
-    return cart.userId is userId
-  update: (userId, cart, fields, modifier) ->
-    if modifier.$set && modifier.$set.shopId
-      return false
-    return cart.userId is userId
-  remove: (userId, cart) ->
-    if cart.shopId isnt Meteor.app.getShopId()
-      return false
-    return cart.userId is userId
-
-###
 # tags
 ###
 Meteor.publish "tags", ->
   return Tags.find(shopId: Meteor.app.getShopId())
-
-Tags.allow
-  insert: (userId, tag) ->
-    tag.shopId = Meteor.app.getShopId()
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  update: (userId, tag, fields, modifier) ->
-    if modifier.$set and modifier.$set.shopId
-      return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
-  remove: (userId, tag) ->
-    # if tag.shopId != Meteor.app.getCurrentShop()._id
-    #   return false
-    unless Roles.userIsInRole(userId, ['admin'])
-      return false
-    return true
