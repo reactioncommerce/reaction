@@ -18,7 +18,7 @@ Meteor.methods
     if parentId
       # console.log "create child clone"
       clone.parentId = variantId
-      Products._collection.update({_id:productId}, {$push: {variants: clone}})
+      Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
       return clone._id
 
     #clean clone
@@ -27,7 +27,7 @@ Meteor.methods
     delete clone.createdAt
     delete clone.inventoryQuantity
     delete clone.title
-    Products._collection.update({_id:productId}, {$push: {variants: clone}})
+    Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
 
     #make child clones
     children = (variant for variant in product.variants when variant.parentId is variantId)
@@ -36,7 +36,7 @@ Meteor.methods
       for childClone in children
         childClone._id = Random.id()
         childClone.parentId = clone._id
-        Products._collection.update({_id:productId}, {$push: {variants: childClone}})
+        Products.update({_id:productId}, {$push: {variants: childClone}}, {validate: false})
 
     return clone._id
 
@@ -48,7 +48,7 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
-    Products._collection.update({"_id": productId},{$addToSet:{"variants": newVariant}})
+    Products.update({"_id": productId},{$addToSet:{"variants": newVariant}}, {validate: false})
 
   ###
   # update individual variant with new values, merges into original
@@ -63,7 +63,7 @@ Meteor.methods
         if variants._id is variant._id
           newVariant = _.extend variants,variant
       #TODO: check newVariant, ProductVariantSchema
-      Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
+      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
         console.log error if error
         return
       )
@@ -75,7 +75,7 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     product = Products.findOne "variants._id":variants[0]._id
-    Products.update product._id, $set: variants: variants, (error,results) ->
+    Products.update product._id, $set: variants: variants, {validate: false}, (error,results) ->
       console.log error if error
       return
 
@@ -109,7 +109,7 @@ Meteor.methods
       i++
 
     #create the cloned product
-    return Products._collection.insert(product)
+    return Products.insert(product, {validate: false})
 
   ###
   # delete variant, which should also delete child variants
@@ -130,7 +130,7 @@ Meteor.methods
   createProduct: () ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
-    return Products._collection.insert({
+    return Products.insert({
       _id: Random.id()
       title: ""
       variants: [
@@ -140,7 +140,7 @@ Meteor.methods
           price: 0.00
         }
       ]
-    })
+    }, {validate: false})
 
   ###
   # update single product field
@@ -230,13 +230,13 @@ Meteor.methods
       return false
 
     unless Products.findOne({'_id' :productId,"positions.tag":positionData.tag})
-      Products._collection.update {_id: productId},
+      Products.update {_id: productId},
         {$addToSet:{ positions:positionData },$set:{updatedAt:new Date() } },
       , (error,results) ->
         console.log error if error
     else
       #Collection2 doesn't support elemMatch, use core collection
-      Products._collection.update
+      Products.update
         "_id": productId
         "positions.tag": positionData.tag
         ,
