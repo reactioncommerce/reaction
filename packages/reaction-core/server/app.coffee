@@ -17,6 +17,8 @@ Meteor.app = _.extend(Meteor.app || {},
     return Meteor.app.getCurrentShop(client)._id
 
   getDomain: (client) ->
+    #todo: eventually we want to use the host domain to determine
+    #which shop from the shops collection to use here, hence the unused client arg
     return Meteor.absoluteUrl().split('/')[2].split(':')[0]
 
   findMember: (shop, userId) ->
