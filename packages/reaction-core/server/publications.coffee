@@ -246,15 +246,12 @@ Meteor.publish 'userOrders', (userId) ->
 ###
 Meteor.publish 'cart', (sessionId) ->
   check(sessionId, String)
-  userId = @userId
 
-  if userId
-    cartCount = Cart.find(userId: userId).count()
-    # console.log "cartCount:", cartCount
-    Meteor.call("createCart", sessionId, userId)
-    Meteor.call("syncCarts", this.userId) if cartCount > 0
+  # createCart will create for session if necessary, update user if necessary,
+  # and sync all user's carts
+  Meteor.call "createCart", sessionId
 
-  return Cart.find sessionId: sessionId, userId: userId
+  return Cart.find sessionId: sessionId, userId: @userId
 
 ###
 # tags
