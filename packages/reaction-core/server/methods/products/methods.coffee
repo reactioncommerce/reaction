@@ -92,8 +92,8 @@ Meteor.methods
     delete product.updatedAt
     delete product.createdAt
     delete product.publishedAt
+    delete product.handle
     product.isVisible = false
-    if product.handle then product.handle = product.handle + handleCount
     if product.title then product.title = product.title + handleCount
 
     while i < product.variants.length
@@ -179,7 +179,9 @@ Meteor.methods
       newTag._id = Tags.insert(newTag)
       Products.update(productId, {$push:{"hashtags":newTag._id}})
 
-
+  ###
+  # remove product tag
+  ###
   removeProductTag: (productId, tagId) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
@@ -191,6 +193,26 @@ Meteor.methods
 
     if (productCount is 0) and (relatedTagsCount is 0)
       Tags.remove(tagId)
+
+
+  ###
+  # set or toggle product handle
+  ###
+  setHandleTag: (productId, tagId) ->
+    product = Products.findOne(productId)
+    tag = Tags.findOne(tagId)
+    #if is already assigned, unset (toggle off)
+    if productId.handle is tag.slug
+      Products.update(product._id, {$unset:{"handle":""}})
+      return product._id
+    else
+      existingHandles = Products.find({handle: tag.slug}).fetch()
+      #reset any existing handle to product id
+      for currentProduct in existingHandles
+        Products.update(currentProduct._id, {$unset:{"handle":""}})
+      #update handle to tag.slug (lowercase tag)
+      Products.update(product._id, {$set:{"handle":tag.slug}})
+      return tag.slug
 
   ###
   # update product grid positions
