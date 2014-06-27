@@ -1,40 +1,31 @@
 <template name="productGrid">
-<div class="product-grid-container">
-  <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
-    <ul class="product-grid-list" id="product-grid-list">
-    {{#each products}}
-      {{> productGridItems}}
-    {{/each}}
-    </ul>
-  </div>
+<div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
+  <ul class="product-grid-list list-unstyled" id="product-grid-list">
+  {{#each products}}
+    {{> productGridItems}}
+  {{/each}}
+  </ul>
 </div>
 </template>
 
 <template name="productGridItems">
 <li class="product-grid-item" data-id="{{_id}}" id="{{_id}}">
-  <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+  {{> gridNotice}}
   <div class="product-grid-item-images">
-  {{#with media}}
-    <img src="{{url}}" class="img-responsive" alt="{title}}">
-  {{else}}
-    <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
-  {{/with}}
-</div>
-  {{>gridContent}}
-  </a>
-  {{>gridControls}}
+    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+      {{#with media}}
+        <img src="{{url}}" class="img-responsive" alt="{title}}">
+      {{else}}
+        <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
+      {{/with}}
+    </a>
+
+  </div>
+  {{> gridControls}}
+  {{> gridContent}}
 </li>
 </template>
 
-<template name="gridImage">
-<div class="product-grid-item-images img-responsive">
-  {{#with media}}
-    <img src="{{url}}" class="img-responsive" alt="{title}}">
-  {{else}}
-    <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
-  {{/with}}
-</div>
-</template>
 
 <template name="gridNotice">
     {{#if cart.showItemLowInventoryWarning variants.[0]}}
@@ -44,21 +35,23 @@
 
 
 <template name="gridContent">
-<div class="overlay">
+<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+  <div class="overlay">
     <div class="overlay-title">{{title}}</div>
     <div class="currency-symbol">{{currencySymbol}}{{variants.[0].price}}</div>
-</div>
+  </div>
+</a>
 </template>
 
 
 <template name="gridControls">
 {{#if userHasRole "admin"}}
   <div class="product-grid-controls">
-    {{#if isVisible}}<span class="fa fa-eye-slash fa-lg pull-left publish-product" title="Publish"></span>
-    {{else}}<span class="fa fa-eye fa-lg pull-left publish-product" title="Publish"></span>
+    {{#if isVisible}}<span class="fa fa-eye fa-lg publish-product" title="Publish"></span>
+    {{else}}<span class="fa fa-eye-slash  fa-lg pull-left publish-product" title="Publish"></span>
     {{/if}}
-    <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product pull-left" title="Clone product"></span>
-    <span class="fa fa-trash-o delete-product fa-lg pull-right" title="Delete product"></span>
+    <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product"  title="Clone product"></span>
+    <span class="fa fa-trash-o delete-product fa-lg" title="Delete product"></span>
   </div>
 {{/if}}
 </template>
