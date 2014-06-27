@@ -40,13 +40,20 @@
 		functionalTriad.coffee
 			Template.functionalTriad.helpers
 			Template.functionalTriad.events
+
 ###Code Style
+
+#### event,template
 When using event, template parameters in methods, use full names
 
 	'click': (event,template) ->
 
+#### return
+As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not
+be what you expect or want. Using explicit `return` also makes the code more readable for others.
+
 #Server layer
 	
-			functionalMethod *try to follow functional, action*
-			functionalAddItem *example*
+	functionalMethod *try to follow functional, action*
+	functionalAddItem *example*
 		

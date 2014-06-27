@@ -22,9 +22,9 @@ Meteor.methods
 
     address = future.wait()
     if address?.length
-      address[0]
+      return address[0]
     else # default location if nothing found is US
-      {
+      return {
         latitude: null
         longitude: null
         country: "United States"
@@ -62,14 +62,13 @@ Meteor.methods
       Tags.update(tagId,{$set:newTag})
     else # create a new tag
       newTag.isTopLevel = !currentTagId
-      newTag.shopId = Meteor.app.getCurrentShop()._id
+      newTag.shopId = Meteor.app.getShopId()
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
-      newTag._id = Tags.insert(newTag, (error, newTagId) ->
-          if !error
-            if currentTagId
-              Tags.update(currentTagId, {$addToSet: {"relatedTagIds": newTagId}})
-      )
+      newTag._id = Tags.insert newTag, (error, newTagId) ->
+        if !error and newTagId and currentTagId
+          Tags.update(currentTagId, {$addToSet: {"relatedTagIds": newTagId}})
+    return;
 
   removeHeaderTag: (tagId, currentTagId) ->
     if currentTagId
@@ -79,14 +78,17 @@ Meteor.methods
     relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()
 
     if (productCount is 0) and (relatedTagsCount is 0)
-      Tags.remove(tagId)
-
+      return Tags.remove(tagId)
 
   updatePackage: (updateDoc, packageName) ->
     # check(updateDoc, PackageConfigSchema)
     packageId = Packages.findOne({ name: packageName })._id
 
-    Packages.update {_id: packageId}, updateDoc, (error,results) ->
-      return false if error
-      return true if results
+    return false unless packageId
 
+    try
+      result = Packages.update {_id: packageId}, updateDoc
+    catch
+      result = false
+    # returns true if updated, false if package doesn't exist or error
+    return !!result
