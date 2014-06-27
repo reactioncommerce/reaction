@@ -16,9 +16,10 @@
             {{/if}}
           {{/unless}}
         {{/if}}
-        <span class="clearfix variant-title">{{title}}</span>
+        <span class="variant-title">{{title}}</span>
         <span class="variant-price">{{currencySymbol}}{{price}}</span>
       </div>
+
       {{#if userHasRole "admin"}}
       <div class="variant-edit hidden-xs">
           <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>

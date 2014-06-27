@@ -55,14 +55,15 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     product = Products.findOne "variants._id":variant._id
-    for variants,value in product.variants
-      if variants._id is variant._id
-        newVariant = _.extend variants,variant
-    #TODO: check newVariant, ProductVariantSchema
-    Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
-      console.log error if error
-      return result if result
-    )
+    if product?.variants
+      for variants,value in product.variants
+        if variants._id is variant._id
+          newVariant = _.extend variants,variant
+      #TODO: check newVariant, ProductVariantSchema
+      Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
+        console.log error if error
+        return result if result
+      )
 
   ###
   # update whole variants array
@@ -96,6 +97,7 @@ Meteor.methods
     if product.title then product.title = product.title + handleCount
 
     while i < product.variants.length
+      #TODO Clone images with clone variants
       product.variants[i]._id = Random.id()
       i++
     newProduct = Products._collection.insert(product)
@@ -109,16 +111,9 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     if variantId
-      Products.update {},
-        $pull:
-          variants:
-            _id: variantId
-        , multi: true
-      Products.update {},
-        $pull:
-          variants:
-            parentId: variantId
-        , multi: true
+      #delete variants with this variant as parent
+      Products.update {"variants.parentId": variantId},{$pull: 'variants':{'parentId': variantId}}
+      Products.update {"variants._id": variantId},{$pull: 'variants':{'_id': variantId}}
 
   ###
   # when we create a new product, we create it with
