@@ -73,14 +73,15 @@ Template.productGridItems.events
       Alerts.add "Deleted " + title
 
   'click .publish-product': () ->
-    if @.variants[0].price and @.variants[0].title and @.title
-      Products.update(@._id, {$set: {isVisible: !@.isVisible}})
-      isVisible = Products.findOne(@._id).isVisible
-      if isVisible is true
-        visible = "visible"
-      else
-        visible = "not visible"
-      Alerts.add @.title + " is now " + visible
+    self = @
+    if self.variants[0].price and self.variants[0].title and self.title
+      Products.update self._id, {$set: {isVisible: !self.isVisible}}, (error,result) ->
+        isVisible = Products.findOne(self._id).isVisible
+        if isVisible is true
+          visible = "visible"
+        else
+          visible = "not visible"
+        Alerts.add self.title + " is now " + visible
     else
       Alerts.add "This product hasn't been configured yet, and cannot be made visible."
 
