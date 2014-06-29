@@ -36,10 +36,10 @@ Template.openCartDrawer.events
     event.preventDefault()
     currentCartId = Cart.findOne()._id
     currentVariant = this.variants
+    sessionId = Session.get "sessionId"
 
-    $(event.currentTarget).fadeOut(300, ()->
-      Meteor.call('removeFromCart',currentCartId,currentVariant)
-      )
+    $(event.currentTarget).fadeOut 300, ->
+      Meteor.call 'removeFromCart', sessionId, currentCartId, currentVariant
 
 Template.emptyCartDrawer.events
   'click #btn-keep-shopping': (event,template) ->

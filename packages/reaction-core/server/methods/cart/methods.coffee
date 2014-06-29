@@ -45,55 +45,101 @@ Meteor.methods
   # * If they had more than one cart, on more than one device, and login at seperate times it should merge the carts
   ###
   createCart: (sessionId) ->
-    return false unless sessionId
+    check sessionId, String
     userId = Meteor.userId()
     shopId = Meteor.app.getShopId(@)
-    # We set the shopId just so that we have something in $set for sure
-    mod = shopId: Meteor.app.getShopId(@)
-    # If and only if logged in, we also set the userId.
-    # We don't want to do this if userId is null because once a user owns the cart,
-    # we never want to remove that ownership.
-    mod.userId = userId if userId?
+
     try
-      # We upsert. If a cart with this session and shop IDs already exists, this will
-      # either have no effect or will set the userId. If no cart exists, it will be
-      # created with sessionId, shopId, and potentially userId (if logged in)
-      Cart.upsert {sessionId: sessionId, shopId: shopId}, {$set:mod}
-      # We might need to sync multiple carts for the same user, only if logged in
-      Meteor.call "syncCarts", userId if userId?
+
+      # Is there a cart for this session?
+      sessionCart = Cart.findOne(sessionId: sessionId, shopId: shopId)
+
+      # Is there a logged in user?
+      if userId?
+
+        # Do we have an existing user cart?
+        userCart = Cart.findOne(userId: userId, shopId: shopId)
+
+        # If there is a cart for this session because we just logged in
+        if sessionCart?
+          # If we also have a user cart
+          if userCart?
+            # Then merge the session cart into the existing user cart
+            # TODO: Might need to merge other values, figure out proper state, etc?
+            Cart.update userCart._id,
+              $addToSet:
+                items:
+                  $each: sessionCart.items || []
+            # And then remove the session cart
+            Cart.remove(_id: sessionCart._id)
+            # And return the user cart
+            result = Cart.findOne(_id: userCart._id)
+            console.log "Merged session cart", sessionCart._id, "into user cart", userCart._id
+          # But if we don't already have a user cart
+          else
+            # Then we convert the session cart to a user cart
+            Cart.update sessionCart._id, {$set: {userId: userId}, $unset: {sessionId: ""}}
+            # And then return this cart
+            result = Cart.findOne(_id: sessionCart._id)
+            console.log "Converted cart", sessionCart._id, "from session cart to user cart"
+        
+        # If there was not a session cart and we are logged in
+        else
+          # We return the existing user cart if there is one
+          if userCart?
+            result = userCart
+            console.log "Using existing user cart", userCart._id
+          # Or we create a new user cart
+          else
+            newCartId = Cart.insert(userId: userId, shopId: shopId)
+            # And return that
+            result = Cart.findOne(_id: newCartId)
+            console.log "Created new user cart", newCartId
+
+      # If we don't have a logged in user
+      else
+        # Return the session cart if we already have one
+        if sessionCart?
+          result = sessionCart
+          console.log "Using existing session cart", sessionCart._id
+        # Otherwise create one
+        else
+          newCartId = Cart.insert {sessionId: sessionId, shopId: shopId}
+          # And then return that
+          result = Cart.findOne(_id: newCartId)
+          console.log "Created new session cart", newCartId
+
     catch error
       console.log "createCart error: ", error
-    # Finally, we return the cart for convenience
-    return Cart.findOne(sessionId: sessionId, shopId: shopId)
 
-  ###
-  # synch multiple carts when there is more than user cart
-  ###
-  syncCarts: (userId) ->
-    userId = userId || Meteor.userId()
-    shopId = Meteor.app.getShopId(@)
-    # console.log "synch carts for: ", userId
-    userCarts = Cart.find(shopId: shopId, userId: userId)
-    return unless userCarts.count() > 1
-    userCarts.observeChanges
-      changed: (_id, items) ->
-        Cart.find(shopId: shopId, userId: userId).forEach (cart) ->
-          if cart._id isnt _id then Cart.update(_id: cart._id, {$set: items})
-          return
-    return
+    # Finally, we return the correct cart for convenience
+    return result
+
   ###
   # removes a variant from the cart
   ###
-  removeFromCart: (cartId, variantData) ->
-    # We select on userId, too, for security  todo: also select on sessionId?
-    return Cart.update {_id: cartId, userId: @userId}, {$pull: {"items": {"variants": variantData} } }
+  removeFromCart: (sessionId, cartId, variantData) ->
+    # We select on sessionId or userId, too, for security
+    return Cart.update
+      _id: cartId
+      $or: [
+        {userId: @userId}
+        {sessionId: sessionId}
+      ]
+    , {$pull: {"items": {"variants": variantData} } }
 
   ###
   # add payment method
   ###
-  paymentMethod: (cartId, paymentMethod) ->
-    # We select on userId, too, for security  todo: also select on sessionId?
-    return Cart.update {_id: cartId, userId: @userId}, {$addToSet:{"payment.paymentMethod":paymentMethod}}
+  paymentMethod: (sessionId, cartId, paymentMethod) ->
+    # We select on sessionId or userId, too, for security
+    return Cart.update
+      _id: cartId
+      $or: [
+        {userId: @userId}
+        {sessionId: sessionId}
+      ]
+    , {$addToSet:{"payment.paymentMethod":paymentMethod}}
 
   ###
   # adjust inventory when an order is placed
