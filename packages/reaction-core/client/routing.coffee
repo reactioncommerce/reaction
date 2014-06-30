@@ -60,11 +60,14 @@ Router.configure
 ShopController = @ShopController
 
 @ShopAdminController = @ShopController.extend
+  waitOn: ->
+    @subscribe "shops"
   onBeforeAction: (pause) ->
     unless Meteor.app.hasPermission(@route.name)
       @render('unauthorized')
       pause()
       return
+
 ShopAdminController = @ShopAdminController
 
 Router.map ->
@@ -89,11 +92,14 @@ Router.map ->
     controller: ShopAdminController
     path: '/dashboard/settings/shop'
     template: 'settingsGeneral'
+    data: ->
+      Shops.findOne()
 
   @route 'dashboard/settings/account',
     controller: ShopAdminController
     path: '/dashboard/settings/account'
     template: 'settingsAccount'
+
 
   # list page of customer records
   @route 'dashboard/customers',
