@@ -17,7 +17,7 @@
   </div>
   <div class="tab-pane" id="address">
     <div class="well">
-      {{#autoForm collection="Shops" doc=shop id="shopEditAddressForm" type="update"}}
+      {{#autoForm collection="Shops" doc=. id="shopEditAddressForm" type="update"}}
         <fieldset>
           {{> afQuickField name='addressBook.0.company'}}
           {{> afQuickField name='addressBook.0.fullName'}}
