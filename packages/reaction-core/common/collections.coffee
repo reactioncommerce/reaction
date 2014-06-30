@@ -570,6 +570,15 @@ PaymentSchema = new SimpleSchema
       index: 1
     sessionId:
       type: String
+      optional: true
+      custom: -> #required if userId isn't set
+        userIdField = @siblingField "userId"
+        return "required" if @isInsert and !@value and !userIdField.value 
+        #TODO: This update logic as is would not be correct because we also need to
+        #look up the existing doc and see if userId is already set, in which case
+        #it's OK to unset sessionId. Collection2 should provide the doc _id so
+        #that we can do this lookup.
+        #return "required" if @isUpdate and (@operator is "$unset" or @value is null) and !userIdField.value
       index: 1
     userId:
       type: String
@@ -607,11 +616,12 @@ PaymentSchema = new SimpleSchema
           return new Date
         else if @isUpsert
           return $setOnInsert: new Date
+      denyUpdate: true
     updatedAt:
       type: Date
       autoValue: ->
-        if @isInsert
-          return new Date
+        if @isUpdate
+          return $set: new Date
         else if @isUpsert
           return $setOnInsert: new Date
       denyInsert: true

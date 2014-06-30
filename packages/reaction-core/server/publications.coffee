@@ -49,14 +49,18 @@ Security =
   cantChangeShop: (collections) ->
     addDenyFuncForAll collections, ["update"], [], (userId, doc, fields, modifier) ->
       return !!modifier.$set?.shopId
-  # Allow inserts, updates, and removes only if doc.userId matches the current userId
-  mustMatchUser: (collections) ->
-    addDenyFuncForAll collections, ["insert", "update", "remove"], ["userId"], (userId, doc) ->
-      return doc.userId isnt userId
+  # Allow only if doc.userId matches the current userId, which might be null
+  mustMatchUser: (types, collections) ->
+    addDenyFuncForAll collections, types, ["userId"], (userId, doc) ->
+      return userId? and doc.userId? and doc.userId isnt userId
   # Allow inserts, updates, and removes only if fileObj.metadata.shopId matches the current shop
   fileMustBelongToShop: (collections) ->
     addDenyFuncForAll collections, ["insert", "update", "remove"], [], (userId, fileObj) ->
       return fileObj.metadata.shopId isnt Meteor.app.getShopId(@)
+  # Deny all
+  denyAll: (types, collections) ->
+    addDenyFuncForAll collections, types, [], ->
+      return true
   
 
 ###
@@ -91,7 +95,12 @@ Security.mustMatchShop [ Packages, Products, Orders, Cart, Tags ]
 
 Security.cantChangeShop [ Packages, Products, Orders, Cart, Tags ]
 
-Security.mustMatchUser [ Cart ]
+# Must use server methods to create and remove carts
+Security.denyAll ["insert", "remove"], [ Cart ]
+
+# Can update all session carts if not logged in or user cart if logged in as that user
+# TODO: should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
+Security.mustMatchUser ["update"], [ Cart ]
 
 Security.fileMustBelongToShop [ Media, FileStorage ] 
 
@@ -246,15 +255,12 @@ Meteor.publish 'userOrders', (userId) ->
 ###
 Meteor.publish 'cart', (sessionId) ->
   check(sessionId, String)
-  userId = @userId
 
-  if userId
-    cartCount = Cart.find(userId: userId).count()
-    # console.log "cartCount:", cartCount
-    Meteor.call("createCart", sessionId, userId)
-    Meteor.call("syncCarts", this.userId) if cartCount > 0
+  # createCart will create for session if necessary, update user if necessary,
+  # and sync all user's carts
+  cart = Meteor.call "createCart", sessionId
 
-  return Cart.find sessionId: sessionId, userId: userId
+  return Cart.find _id: cart._id
 
 ###
 # tags

@@ -97,5 +97,8 @@ createDefaultAdminUser = ->
 Meteor.startup ->
   share.loadFixtures()
 
+  # data conversion: we now set sessionId or userId, but not both
+  Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true} 
+
   if Meteor.settings.public?.isDebug
     Meteor.setInterval(share.loadFixtures, 300)
