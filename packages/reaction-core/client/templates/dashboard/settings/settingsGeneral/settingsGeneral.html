@@ -12,7 +12,7 @@
 <div class="tab-content">
   <div class="tab-pane active" id="general">
     <div class="well">
-    {{>quickForm collection="Shops" doc=shop id="shopEditForm" type="update" fields="name,email"}}
+    {{>quickForm collection="Shops" doc=. id="shopEditForm" type="update" fields="name,email"}}
     </div>
   </div>
   <div class="tab-pane" id="address">
@@ -39,12 +39,12 @@
   </div>
   <div class="tab-pane" id="smtp">
     <div class="well">
-    {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=shop id="shopEditEmailForm" type="update"}}
+    {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=. id="shopEditEmailForm" type="update"}}
     </div>
   </div>
   <div class="tab-pane" id="settings">
     <div class="well">
-    {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update"}}
+    {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
       {{> afQuickField name='timezone' options=timezoneOptions}}
       {{> afQuickField name='currency' placeholder="USD"}}
       {{> afQuickField name='moneyFormat' palceholder="$"}}

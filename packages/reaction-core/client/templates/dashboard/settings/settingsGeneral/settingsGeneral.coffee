@@ -1,6 +1,4 @@
 Template.settingsGeneral.helpers
-  shop: ->
-    Shops.findOne()
   addressBook: ->
       address = Shops.findOne().addressBook
       return address[0]
