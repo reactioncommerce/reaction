@@ -15,6 +15,5 @@ settings/dev.json
 settings/prod.json
 settings/demo.json
 npm-debug.log
+.fileStorage/
 
-/.fileStorage/
-smart.lock
