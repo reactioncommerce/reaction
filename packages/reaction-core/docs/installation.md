@@ -88,6 +88,7 @@ export METEOR_EMAIL="youradmin@yourdomain.com"
 export METEOR_USER="admin"
 export METEOR_AUTH="password"
 export MONGO_URL="<your mongodb connect string>"
+export ROOT_URL=""
 ```
 
 The `METEOR_EMAIL`, `METEOR_USER`, `METEOR_AUTH` environment variables will create this email/user/password as the default first site admin user.
@@ -96,6 +97,9 @@ To use another Mongodb, rather than the automatically instantiated development o
 ```bash
 export MONGO_URL=mongodb://localhost:27017/dbname
 ```
+
+If you set ```ROOT_URL``` we'll automatically update the domain in the *shops* collection to match the domain from ROOT_URL. This lets you use alternate domains, or enforce SSL on your installation.  An empty ROOT_URL will just default to *localhost*.
+
 
 ### Email 
 To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send)
