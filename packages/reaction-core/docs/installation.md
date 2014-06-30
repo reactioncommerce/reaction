@@ -10,7 +10,7 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
     sudo -H npm install -g meteorite
     git clone https://github.com/ongoworks/reaction.git
     cd reaction
-    mrt update
+    mrt install
 	
 
 ##Startup
@@ -38,6 +38,8 @@ git pull
 mrt update
 meteor
 ```
+
+*Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the udpated file*
 
 ##Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
