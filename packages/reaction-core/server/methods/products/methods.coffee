@@ -9,31 +9,34 @@ Meteor.methods
       return false
     product = Products.findOne(productId)
     variant = (variant for variant in product.variants when variant._id is variantId)
+
+    return false unless variant.length > 0
+
     clone = variant[0]
+    clone._id = Random.id()
+
+    if parentId
+      # console.log "create child clone"
+      clone.parentId = variantId
+      Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
+      return clone._id
 
     #clean clone
-    unless parentId
-      clone.cloneId = productId
-      clone._id = Random.id()
-      delete clone.updatedAt
-      delete clone.createdAt
-      delete clone.inventoryQuantity
-      delete clone.title
-      Products._collection.update({_id:productId}, {$push: {variants: clone}})
+    clone.cloneId = productId
+    delete clone.updatedAt
+    delete clone.createdAt
+    delete clone.inventoryQuantity
+    delete clone.title
+    Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
 
     #make child clones
     children = (variant for variant in product.variants when variant.parentId is variantId)
-    if children.length > 0 and !parentId
+    if children.length > 0
       # console.log "clone children"
       for childClone in children
         childClone._id = Random.id()
         childClone.parentId = clone._id
-        Products._collection.update({_id:productId}, {$push: {variants: childClone}})
-    else if parentId
-      # console.log "create child clone"
-      clone._id = Random.id()
-      clone.parentId = variantId
-      Products._collection.update({_id:productId}, {$push: {variants: clone}})
+        Products.update({_id:productId}, {$push: {variants: childClone}}, {validate: false})
 
     return clone._id
 
@@ -45,7 +48,7 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
-    Products._collection.update({"_id": productId},{$addToSet:{"variants": newVariant}})
+    Products.update({"_id": productId},{$addToSet:{"variants": newVariant}}, {validate: false})
 
   ###
   # update individual variant with new values, merges into original
@@ -55,14 +58,15 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     product = Products.findOne "variants._id":variant._id
-    for variants,value in product.variants
-      if variants._id is variant._id
-        newVariant = _.extend variants,variant
-    #TODO: check newVariant, ProductVariantSchema
-    Products._collection.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, (error,result) ->
-      console.log error if error
-      return result if result
-    )
+    if product?.variants
+      for variants,value in product.variants
+        if variants._id is variant._id
+          newVariant = _.extend variants,variant
+      #TODO: check newVariant, ProductVariantSchema
+      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
+        console.log error if error
+        return
+      )
 
   ###
   # update whole variants array
@@ -71,8 +75,9 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     product = Products.findOne "variants._id":variants[0]._id
-    Products.update product._id, $set: variants: variants,(error,results) ->
-      console.log error if error?
+    Products.update product._id, $set: variants: variants, {validate: false}, (error,results) ->
+      console.log error if error
+      return
 
   ###
   # clone a whole product, defaulting visibility,etc
@@ -86,21 +91,25 @@ Meteor.methods
     #TODO: Really should be a recursive update of all _id
     i = 0
     handleCount = Products.find({"cloneId": product._id}).count() + 1
+
+    #clean the product and give it a new ID and title
     product.cloneId = product._id
     product._id = Random.id()
     delete product.updatedAt
     delete product.createdAt
     delete product.publishedAt
+    delete product.handle
     product.isVisible = false
-    if product.handle then product.handle = product.handle + handleCount
     if product.title then product.title = product.title + handleCount
 
+    #make new random IDs for all variants
     while i < product.variants.length
+      #TODO Clone images with clone variants
       product.variants[i]._id = Random.id()
       i++
-    newProduct = Products._collection.insert(product)
-    newProduct
 
+    #create the cloned product
+    return Products.insert(product, {validate: false})
 
   ###
   # delete variant, which should also delete child variants
@@ -109,16 +118,9 @@ Meteor.methods
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     if variantId
-      Products.update {},
-        $pull:
-          variants:
-            _id: variantId
-        , multi: true
-      Products.update {},
-        $pull:
-          variants:
-            parentId: variantId
-        , multi: true
+      #delete variants with this variant as parent
+      Products.update {"variants.parentId": variantId},{$pull: 'variants':{'parentId': variantId}}
+      Products.update {"variants._id": variantId},{$pull: 'variants':{'_id': variantId}}
 
   ###
   # when we create a new product, we create it with
@@ -126,7 +128,9 @@ Meteor.methods
   # with pricing and details
   ###
   createProduct: () ->
-    productId = Products._collection.insert({
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    return Products.insert({
       _id: Random.id()
       title: ""
       variants: [
@@ -136,7 +140,7 @@ Meteor.methods
           price: 0.00
         }
       ]
-    })
+    }, {validate: false})
 
   ###
   # update single product field
@@ -157,6 +161,7 @@ Meteor.methods
   updateProductTags: (productId, tagName, tagId, currentTagId) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
+
     newTag =
       slug: _.slugify(tagName)
       name: tagName
@@ -165,26 +170,23 @@ Meteor.methods
 
     if existingTag
       productCount = Products.find({"_id":productId,"hashtags":{$in:[existingTag._id]}}).count()
-
-    if productCount > 0
-      return
-    #Exists
-    if existingTag and productCount is 0
+      return false if productCount > 0
       Products.update(productId, {$push:{"hashtags":existingTag._id}})
-      return
     else if tagId
-      Tags.update(tagId,{$set:newTag})
-      return
-    else if !tagId# create a new tag
+      Tags.update tagId, {$set:newTag}
+    else # create a new tag
       # newTag.isTopLevel = !currentTagId
       newTag.isTopLevel = false
-      newTag.shopId = Meteor.app.getCurrentShop()._id
+      newTag.shopId = Meteor.app.getShopId()
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
       newTag._id = Tags.insert(newTag)
       Products.update(productId, {$push:{"hashtags":newTag._id}})
+    return
 
-
+  ###
+  # remove product tag
+  ###
   removeProductTag: (productId, tagId) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
@@ -197,6 +199,28 @@ Meteor.methods
     if (productCount is 0) and (relatedTagsCount is 0)
       Tags.remove(tagId)
 
+
+  ###
+  # set or toggle product handle
+  ###
+  setHandleTag: (productId, tagId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    product = Products.findOne(productId)
+    tag = Tags.findOne(tagId)
+    #if is already assigned, unset (toggle off)
+    if productId.handle is tag.slug
+      Products.update(product._id, {$unset:{"handle":""}})
+      return product._id
+    else
+      existingHandles = Products.find({handle: tag.slug}).fetch()
+      #reset any existing handle to product id
+      for currentProduct in existingHandles
+        Products.update(currentProduct._id, {$unset:{"handle":""}})
+      #update handle to tag.slug (lowercase tag)
+      Products.update(product._id, {$set:{"handle":tag.slug}})
+      return tag.slug
+
   ###
   # update product grid positions
   # position is an object with tag,position,dimensions
@@ -206,13 +230,13 @@ Meteor.methods
       return false
 
     unless Products.findOne({'_id' :productId,"positions.tag":positionData.tag})
-      Products._collection.update {_id: productId},
+      Products.update {_id: productId},
         {$addToSet:{ positions:positionData },$set:{updatedAt:new Date() } },
       , (error,results) ->
         console.log error if error
     else
       #Collection2 doesn't support elemMatch, use core collection
-      Products._collection.update
+      Products.update
         "_id": productId
         "positions.tag": positionData.tag
         ,
@@ -221,7 +245,7 @@ Meteor.methods
             "positions.$.updatedAt": new Date()
         ,
           (error,results) ->
-            console.log error if error?
+            console.log error if error
 
   updateMetaFields: (productId, updatedMeta, meta) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])

@@ -3,15 +3,18 @@
 ###
 Deps.autorun ->
   state = Session.get("CartWorkflow")
-  if Cart.findOne()
-    if state and state isnt "new" then Cart.update(Cart.findOne()._id,{$set:{state:state}})
-    if state is "new"
-      # if user refreshes, restore state
-      Session.set "CartWorkflow", Cart.findOne()?.state
-      CartWorkflow.current = Cart.findOne()?.state
-    if state is "login" and Meteor.userId()
-      # console.log "setting logged in"
-      CartWorkflow.loggedin()
+  if state?
+    cart = Cart.findOne {}, {fields: {state: 1}, reactive: false}
+    if cart?
+      if state is "new"
+        # if user refreshes, restore state
+        Session.set "CartWorkflow", cart.state
+        CartWorkflow.current = cart.state
+      else
+        Cart.update cart._id, {$set:{state:state}}
+        if state is "login" and Meteor.userId()
+          # console.log "setting logged in"
+          CartWorkflow.loggedin()
 
 ###
 # Define cart workflow
@@ -43,7 +46,6 @@ CartWorkflow = StateMachine.create(
 
     oncreate: (event, from, to, sessionId, userId) ->
       Cart.findOne()
-      # Meteor.call "createCart", cartSession: { sessionId:sessionId, userId:userId }
 
     onaddToCart: (event, from, to, cartSession, productId, variantData, quantity) ->
       if (cartSession? and productId?)
@@ -72,7 +74,8 @@ CartWorkflow = StateMachine.create(
       Cart.update Cart.findOne()._id, {$set:{"shipping.shipmentMethod":method}} if method
 
     onbeforepaymentMethod: (event, from, to, paymentMethod) ->
-      Meteor.call "paymentMethod", Cart.findOne()._id, paymentMethod
+      sessionId = Session.get "sessionId"
+      Meteor.call "paymentMethod", sessionId, Cart.findOne()._id, paymentMethod
 
     onpaymentAuth: (event, from, to, paymentMethod) ->
       #before payment really should be async

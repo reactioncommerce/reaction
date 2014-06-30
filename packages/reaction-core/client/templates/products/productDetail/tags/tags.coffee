@@ -1,23 +1,20 @@
 Template.productDetailTags.helpers
   currentHashTag: () ->
-    if currentProduct.get("product").handle is @.name
+    if currentProduct.get("product")?.handle is @.name.toLowerCase()
       return true
 
 Template.productTagInputForm.helpers
   hashtagMark: () ->
-    if currentProduct.get("product").handle is @.name
+    if currentProduct.get("product")?.handle is @.name.toLowerCase()
       return "fa-bookmark"
     else
       return "fa-bookmark-o"
 
 Template.productTagInputForm.events
   'click .tag-input-hashtag': (event,template) ->
-    if currentProduct.get("product").handle is @.name
-      Products.update(currentProduct.get("product")._id, {$unset:{"handle":""}})
-      Router.go "product", "_id": currentProduct.get("product")._id
-    else
-      Products.update(currentProduct.get("product")._id, {$set:{"handle":@.name}})
-      Router.go "product", "_id": @.name
+
+    Meteor.call "setHandleTag", currentProduct.get("product")._id, @._id, (error,result) ->
+      if result then Router.go "product", "_id": result
 
   'click .tag-input-group-remove': (event,template) ->
     Meteor.call "removeProductTag",currentProduct.get("product")._id, @._id

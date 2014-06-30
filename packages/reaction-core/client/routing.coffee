@@ -25,7 +25,7 @@ setCurrentProduct = (productId, variant) ->
       currentProduct.set "product", product
       setCurrentVariant product,variant
   else
-    product =  Products.findOne({handle: { $regex : productId, $options:"i" } })
+    product =  Products.findOne({handle: productId.toLowerCase()})
     unless currentProduct.get "product" is product
       currentProduct.set "product", product
       setCurrentVariant product,variant

@@ -36,7 +36,6 @@ Template.variantForm.events
     currentProduct.set "variant", @
 
 
-
   "click .btn-child-variant-form": (event,template) ->
     event.stopPropagation()
     event.preventDefault()
@@ -48,14 +47,9 @@ Template.variantForm.events
     if confirm("Are you sure you want to delete "+ title)
       Meteor.call "deleteVariant", @._id
 
-
   "click .btn-clone-variant": (event,template) ->
     event.stopPropagation()
     event.preventDefault()
     productId = (currentProduct.get "product")._id
-    Meteor.call "cloneVariant", productId, template.data._id, (error, result) ->
-      if result
-        Deps.flush()
-        event.preventDefault()
-        event.stopPropagation()
-
+    Meteor.call "cloneVariant", productId, template.data._id, (error,result) ->
+      toggleSession "variant-form-"+result

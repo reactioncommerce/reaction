@@ -19,7 +19,7 @@ Template.variant.events
     currentProduct.set "variant", @
     toggleSession "variant-form-"+@._id
 
-  "dblclick .variant-progress-item": (event) ->
+  "dblclick .variant-list-item": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       currentProduct.set "variant", @
       toggleSession "variant-form-"+@._id
