@@ -22,8 +22,7 @@
       "git": "https://github.com/ongoworks/reaction-core.git"
     },
     "reaction-paypal": {
-      "git": "https://github.com/ongoworks/reaction-paypal.git",
-      "tag": "v0.1.0"
+      "git": "https://github.com/ongoworks/reaction-paypal.git"
     },
     "reaction-google-analytics": {
       "git": "https://github.com/ongoworks/reaction-google-analytics.git",
