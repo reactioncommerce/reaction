@@ -7,6 +7,11 @@
 # *****************************************************
 colors = Npm.require('colors')
 
+getDomain = (url) ->
+  unless url then url = process.env.ROOT_URL
+  domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1]
+  return domain
+
 loadData = (collection) ->
   console.log "Loading fixture data for "+collection._name
   json = EJSON.parse Assets.getText("private/data/"+collection._name+".json")
@@ -55,10 +60,7 @@ createDefaultAdminUser = ->
   options.email = process.env.METEOR_EMAIL #set in env if we want to supply email
   options.username = process.env.METEOR_USER
   options.password = process.env.METEOR_AUTH
-
-  url = process.env.ROOT_URL
-  domain = url.substring(url.indexOf("//") + 2)
-  domain = domain.substring(0, domain.indexOf(":")).toLowerCase()
+  domain = getDomain()
 
   # options from mixing known set ENV production variables
   if process.env.METEOR_EMAIL
@@ -92,13 +94,20 @@ createDefaultAdminUser = ->
             "dashboard/orders"
             ]
 
-
-
+###
+# Execute start up fixtures
+###
 Meteor.startup ->
   share.loadFixtures()
+  # data conversion:  if ROOT_URL changes update shop domain
+  # for now, we're assuming the first domain is the primary
+  currentDomain = Shops.findOne().domains[0]
+  if currentDomain isnt getDomain()
+    console.log "Updating domain to " + getDomain()
+    Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
 
   # data conversion: we now set sessionId or userId, but not both
-  Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true} 
+  Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
   if Meteor.settings.public?.isDebug
     Meteor.setInterval(share.loadFixtures, 300)
