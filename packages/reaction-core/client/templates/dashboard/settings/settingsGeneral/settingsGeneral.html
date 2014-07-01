@@ -39,7 +39,7 @@
   </div>
   <div class="tab-pane" id="smtp">
     <div class="well">
-    {{>quickForm collection="Shops" schema="CustomEmailSettings" doc=. id="shopEditEmailForm" type="update"}}
+    {{>quickForm collection="Shops" doc=. id="shopEditEmailForm" type="update" fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
     </div>
   </div>
   <div class="tab-pane" id="settings">
