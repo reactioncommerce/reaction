@@ -47,10 +47,10 @@ AutoForm.hooks shopEditAddressForm:
 
 AutoForm.hooks shopEditEmailForm:
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shop server settings saved.", "success"
+    Alerts.add "Shop SMTP settings saved.", "success"
 
   onError: (operation, error, template) ->
-    Alerts.add "Shop server settings update failed. " + error, "danger"
+    Alerts.add "Shop SMTP settings update failed. " + error, "danger"
 
 AutoForm.hooks shopEditSettingsForm:
   onSuccess: (operation, result, template) ->
