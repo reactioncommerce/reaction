@@ -13,9 +13,9 @@ FROM node
 MAINTAINER Aaron Judd <aaron@ongoworks.com>
 
 #Install required packages first
-RUN apt-get install -qq -y curl git
+RUN apt-get install -qq -y curl git gcc make build-essential imagemagick
 RUN curl https://install.meteor.com | /bin/sh
-RUN npm install --silent -g forever meteorite
+RUN npm install --silent -g forever meteorite phantomjs
 
 # Add current dir+subs to meteorsrc
 ADD . ./meteorsrc
