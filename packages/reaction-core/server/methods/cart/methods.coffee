@@ -82,7 +82,7 @@ Meteor.methods
             # And then return this cart
             result = Cart.findOne(_id: sessionCart._id)
             console.log "Converted cart", sessionCart._id, "from session cart to user cart" if Meteor.settings.public?.isDebug
-        
+
         # If there was not a session cart and we are logged in
         else
           # We return the existing user cart if there is one
@@ -196,7 +196,8 @@ Meteor.methods
           "profile.addressBook.$.isDefault": false
     # Add new address
     doc._id = Random.id()
-    return Meteor.users.update _id: currentUserId, $addToSet: {"profile.addressBook": doc}
+
+    return Meteor.users.update _id: currentUserId, {$addToSet: {"profile.addressBook": doc}}
 
   ###
   #method to update existing address in user's profile
@@ -220,3 +221,4 @@ Meteor.methods
     ,
       $set:
         "profile.addressBook.$": doc
+
