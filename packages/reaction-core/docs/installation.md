@@ -127,3 +127,8 @@ docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost
 # Vagrant / Ubuntu
 
 Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/ongoworks/reaction-core/blob/master/doc/vagrant.md)
+
+## Failed to load c++ Json message
+
+You can ignore this error, but if it annoys you can run
+```xcode-select --install``` (on a mac) or ```sudo apt-get install gcc make build-essential``` (on ubuntu)
