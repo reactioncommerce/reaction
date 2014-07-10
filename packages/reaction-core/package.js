@@ -44,6 +44,8 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.add_files([
+    "lib/i18next-1.7.3/i18next-1.7.3.js",
+
     "lib/bootstrap/lib/js/transition.js",
     "lib/bootstrap/lib/js/alert.js",
     "lib/bootstrap/lib/js/button.js",
@@ -336,6 +338,11 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/roles.json', 'server', {isAsset: true});
   api.add_files('private/data/users.json', 'server', {isAsset: true});
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
+
+  // i18n translation files
+  api.add_files('i18n/core.en-US.json','client', {isAsset: true});
+
+
 
   api.export([
     "Alerts",

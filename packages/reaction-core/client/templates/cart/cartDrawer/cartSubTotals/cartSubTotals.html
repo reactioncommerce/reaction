@@ -3,11 +3,11 @@
     <div class="cart-totals">
       <table class="table table-condensed">
         <thead>Your cart</thead>
-        <tr><td>Items in cart</td><td>{{cart.cartCount}}</td></tr>
-        <tr><td>Sub total</td><td>{{cart.cartSubTotal}}</td></tr>
-        <tr><td>Shipping</td><td>{{cart.cartShipping}}</td></tr>
-        <tr><td>Tax</td><td>{{cart.cartTaxes}}</td></tr>
-        <tr><td>Total</td><td>{{currencySymbol}} {{cart.cartTotal}}</td></tr>
+        <tr><td>{{i18n 'cartSubTotals.items'}}</td><td>{{cart.cartCount}}</td></tr>
+        <tr><td>{{i18n 'cartSubTotals.subtotal'}}</td><td>{{cart.cartSubTotal}}</td></tr>
+        <tr><td>{{i18n 'cartSubTotals.shipping'}}</td><td>{{cart.cartShipping}}</td></tr>
+        <tr><td>{{i18n 'cartSubTotals.tax'}}</td><td>{{cart.cartTaxes}}</td></tr>
+        <tr><td>{{i18n 'cartSubTotals.total'}}</td><td>{{currencySymbol}} {{cart.cartTotal}}</td></tr>
       </table>
     </div>
   </div>

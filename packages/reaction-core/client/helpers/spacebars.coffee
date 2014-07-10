@@ -1,6 +1,13 @@
 ###
 # Reaction Handlebars helpers
 ###
+###
+# i18n translate
+# see: http://i18next.com/
+###
+Handlebars.registerHelper "i18n", (i18n_key) ->
+  result = i18n.t(i18n_key)
+  new Handlebars.SafeString(result)
 
 #default return $ symbol
 UI.registerHelper "currency", () ->

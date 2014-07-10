@@ -8,9 +8,9 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           {{#if addressBook}}
-          <span id="address-selection-help">Choose shipping & billing address</span><i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
+          <span id="address-selection-help">{{i18n 'addressBookGrid.choose-address'}}</span><i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
           {{else}}
-            <span>Create your default address</span>
+            <span>{{i18n 'addressBookGrid.create-default'}}</span>
           {{/if}}
         </h3>
       </div>
@@ -18,7 +18,7 @@
         <div class="row" id="addressBook">
           <div class="col-md-6">
             <div class="list-group">
-              <strong>Select a shipping address</strong>
+              <strong>{{i18n 'addressBookGrid.select-shipping-address'}}</strong>
                {{#each addressBook shipping}}
                 <a href="#" class="address-ship-to list-group-item {{selectedShipping}}" id="shipping-{{_id}}">
                   <div class="col-sm-1 pull-right address-icons">
@@ -45,7 +45,7 @@
           </div>
           <div class="col-md-6">
             <div class="list-group">
-              <strong>Select a billing address</strong>
+              <strong>{{i18n 'addressBookGrid.select-billing-address'}}</strong>
                {{#each addressBook shipping}}
                 <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" id="billing-{{_id}}">
                   <div class="col-sm-1 pull-right address-icons">
