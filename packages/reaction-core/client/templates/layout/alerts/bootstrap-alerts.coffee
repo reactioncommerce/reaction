@@ -61,6 +61,22 @@ Alerts =
     mode = mode or "danger"
     options = _.defaults(options or {}, Alerts.defaultOptions)
 
+    # If type is specified, we re-use the existing alert with that type.
+    # Use this when only one of that type should be shown at any one
+    # time, for example, enabled/disabled messages.
+    # This looks better in UI because it prevents in/out animation and
+    # ensures that conflicting messages are not visible at the same time.
+    if options.type
+      a = Alerts.collection_.findOne({'options.type': options.type});
+      if a
+        Alerts.collection_.update a._id,
+          $set:
+            message: message
+            mode: mode
+            options: options
+            seen: false
+        return;
+
     # Handle alertsLimit
     count = Alerts.collection_.find({}).count()
 

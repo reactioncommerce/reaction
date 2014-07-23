@@ -19,7 +19,7 @@ Template.dashboard.helpers
       return null
 
   dependencies: ->
-    currentPackageDepends  = Meteor.app.packages["reaction-commerce"].depends
+    currentPackageDepends = Meteor.app.packages["reaction-commerce"].depends
     dependencies = []
     Packages.find().forEach (packageConfig) ->
       packageInfo = Meteor.app.packages[packageConfig.name]
