@@ -1,23 +1,7 @@
 Template.productDetail.helpers
-  quantityFormSchema: ->
-    QuantitySchema = new SimpleSchema
-      addToCartQty:
-        label: "Quantity:"
-        type: Number
-        min: 1
-        max: 99
-    qtySchema = new AutoForm QuantitySchema
-    qtySchema
-
   tags: ->
-    product = currentProduct.get "product"
-    tagCollection = []
-    if product?.hashtags
-      for tagId in product.hashtags
-        tagCollection.push Tags.findOne(tagId)
-      return tagCollection
-    else
-      []
+    return _.map selectedProduct()?.hashtags, (id) ->
+      return Tags.findOne id
 
   tagsComponent: ->
     if Meteor.app.hasOwnerAccess()
@@ -26,7 +10,7 @@ Template.productDetail.helpers
       return Template.productDetailTags
 
   actualPrice: () ->
-    (currentProduct.get "variant")?.price
+    selectedVariant()?.price
 
   fieldComponent: (field) ->
     if Meteor.app.hasOwnerAccess()
@@ -43,36 +27,46 @@ Template.productDetail.helpers
 
 Template.productDetail.events
   "click #price": ->
+    # When an admin clicks on the main price to edit it, instead
+    # open the relevant variant edit form and focus the correct input
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-      if currentProduct.get("variant").parentId
-        toggleSession  "variant-form-" + currentProduct.get("variant").parentId
+      v = selectedVariant()
+      return unless v
+      if v.parentId
+        formName = v.parentId
       else
-        toggleSession  "variant-form-" + currentProduct.get("variant")._id
+        formName = v._id
+      formName = "variant-form-" + formName
+      Session.set formName, true
+      $('#' + formName + ' [name=price]').focus()
+    return
 
   "click #add-to-cart-quantity": (event,template) ->
+    # Ensure that changing the quantity does not cause a button click
     event.preventDefault()
     event.stopPropagation()
 
   "change #add-to-cart-quantity": (event,template) ->
+    # Ensure that changing the quantity does not cause a button click
     event.preventDefault()
     event.stopPropagation()
-    if (currentProduct.get "variant")
-      variant = currentProduct.get "variant"
-      quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
-      if quantity < 1
-          quantity = 1
+    # If we've increased the qty above the available and we have inventory
+    # limits in place, reset the qty to the max available.
+    currentVariant = selectedVariant()
+    if (currentVariant)
+      qtyField = template.$('input[name="addToCartQty"]')
+      quantity = qtyField.val()
+      quantity = 1 if quantity < 1
       # TODO: Should check the amount in the cart as well and deduct from available.
-      if variant.inventoryPolicy and quantity > variant.inventoryQuantity
-        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(variant.inventoryQuantity)
-        return
+      if currentVariant.inventoryPolicy and quantity > currentVariant.inventoryQuantity
+        qtyField.val(variant.inventoryQuantity)
+    return
 
   "click #add-to-cart": (event,template) ->
-    # event.preventDefault()
-    # event.stopPropagation()
     now = new Date()
     # questionable scope issue, pull from global scope
-    currentVariant = window.currentProduct.get "variant"
-    currentProduct  = window.currentProduct.get "product"
+    currentVariant = selectedVariant()
+    currentProduct = selectedProduct()
 
     if (currentVariant)
       # if variant has children user must choose a childVariant(option)
@@ -91,19 +85,26 @@ Template.productDetail.events
         sessionId: Session.get "sessionId"
         userId: Meteor.userId()
 
+      # Get a reference to the quantity field
+      qtyField = template.$('input[name="addToCartQty"]')
+
       # Get desired variant qty from form
-      quantity = $(event.target).parent().parent().find('input[name="addToCartQty"]').val()
-      if quantity < 1
-          quantity = 1
+      quantity = qtyField.val()
+      quantity = 1 if quantity < 1
 
       unless @.isVisible
         Alerts.add "Publish product before adding to cart.", "danger", placement:"productDetail"
         return
       else
+        # Add to cart
         CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
+        # Deselect the current variant
         $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
-        $(event.target).parent().parent().find('input[name="addToCartQty"]').val(1)
+        # Reset quantity field to 1
+        qtyField.val(1)
+        # Scroll to top
         $('html,body').animate({scrollTop:0},0)
+        # Slide out the cart tip explaining that we added to the cart
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " added")
         $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
 
@@ -126,6 +127,13 @@ Template.productDetail.events
       return
     else
       Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
+
+  "click .delete-product-link": (event, template) ->
+    title = @.title
+    if confirm("Delete this product?")
+      Products.remove this._id
+      Router.go "/"
+      Alerts.add "Deleted " + title
 
   "click .fa-facebook": ->
     if Meteor.app.hasOwnerAccess()
@@ -151,3 +159,8 @@ Template.productDetail.events
     Session.set "editing-"+this.field, false
     $('.social-media-inputs > *').hide()
 
+selectedVariant = ->
+  window.currentProduct?.get "variant"
+
+selectedProduct = ->
+  window.currentProduct?.get "product"
