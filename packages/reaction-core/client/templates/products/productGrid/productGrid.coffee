@@ -68,9 +68,14 @@ Template.productGridItems.events
     event.preventDefault()
     title = @.title
     if confirm("Delete this product?")
-      Products.remove this._id
-      Router.go "/"
-      Alerts.add "Deleted " + title
+      Products.remove @._id, (error, result) ->
+        if error or result < 1
+          Alerts.add "There was an error deleting " + title
+          console.log error
+        else
+          setCurrentProduct null
+          Router.go "/"
+          Alerts.add "Deleted " + title
 
   'click .publish-product': () ->
     self = @

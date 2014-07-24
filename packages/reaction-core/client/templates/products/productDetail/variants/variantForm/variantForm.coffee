@@ -34,16 +34,12 @@ Template.variantForm.events
     # auto-submit the variant form whenever any fields are changed
     formId = "#variant-form-"+template.data._id
     template.$(formId).submit()
-    # Set this variant as the current if it is not
-    # already. We set only if necessary to prevent
-    # unnecessary screen flashing.
-    #if selectedVariant()?._id isnt template.data._id
-    currentProduct.set "variant", template.data
+    setCurrentVariant template.data._id
 
   "click .btn-child-variant-form": (event,template) ->
     event.stopPropagation()
     event.preventDefault()
-    productId = selectedProduct()?._id
+    productId = selectedProductId()
     return unless productId
     Meteor.call "cloneVariant", productId, template.data._id, @._id
 
@@ -51,14 +47,14 @@ Template.variantForm.events
     title = @.title || "this variant"
     if confirm("Are you sure you want to delete "+ title)
       id = @._id
-      Meteor.call "deleteVariant", @._id, (error, result) ->
-        if result and selectedVariant()?._id is id
-          currentProduct.set "variant", null
+      Meteor.call "deleteVariant", id, (error, result) ->
+        if result and selectedVariantId() is id
+          setCurrentVariant null
 
   "click .btn-clone-variant": (event,template) ->
     event.stopPropagation()
     event.preventDefault()
-    productId = selectedProduct()?._id
+    productId = selectedProductId()
     return unless productId
     Meteor.call "cloneVariant", productId, template.data._id, (error,result) ->
       toggleSession "variant-form-"+result

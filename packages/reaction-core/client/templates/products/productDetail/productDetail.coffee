@@ -58,8 +58,9 @@ Template.productDetail.events
       quantity = qtyField.val()
       quantity = 1 if quantity < 1
       # TODO: Should check the amount in the cart as well and deduct from available.
+      # TODO: Should also adjust the quantity field whenever the selectedVariant changes for any reason
       if currentVariant.inventoryPolicy and quantity > currentVariant.inventoryQuantity
-        qtyField.val(variant.inventoryQuantity)
+        qtyField.val(currentVariant.inventoryQuantity)
     return
 
   "click #add-to-cart": (event,template) ->
@@ -98,7 +99,7 @@ Template.productDetail.events
         # Add to cart
         CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
         # Deselect the current variant
-        $('.variant-list-item #'+currentVariant._id).removeClass("variant-detail-selected")
+        setCurrentVariant null
         # Reset quantity field to 1
         qtyField.val(1)
         # Scroll to top
@@ -130,9 +131,14 @@ Template.productDetail.events
   "click .delete-product-link": (event, template) ->
     title = @.title
     if confirm("Delete this product?")
-      Products.remove this._id
-      Router.go "/"
-      Alerts.add "Deleted " + title
+      Products.remove @._id, (error, result) ->
+        if error or result < 1
+          Alerts.add "There was an error deleting " + title
+          console.log error
+        else
+          setCurrentProduct null
+          Router.go "/"
+          Alerts.add "Deleted " + title
 
   "click .fa-facebook": ->
     if Meteor.app.hasOwnerAccess()
