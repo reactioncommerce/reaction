@@ -115,18 +115,18 @@ Template.productDetail.events
   "click .toggle-product-isVisible-link": (event, template) ->
     errorMsg = ""
     unless @.title
-        errorMsg = "Product title is required before publishing. "
+        errorMsg += "Product title is required. "
     for variant,index in @.variants
       unless variant.title
-        errorMsg += "Variant " + index + " label is required. "
+        errorMsg += "Variant " + (index + 1) + " label is required. "
       unless variant.price
-        errorMsg += "Variant " + index + " price is required. "
+        errorMsg += "Variant " + (index + 1) + " price is required. "
 
-    if errorMsg
+    if errorMsg.length
       Alerts.add errorMsg, "danger", placement:"productDetail"
-      return
     else
       Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
+    return
 
   "click .delete-product-link": (event, template) ->
     title = @.title
