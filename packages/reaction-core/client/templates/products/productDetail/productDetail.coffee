@@ -10,7 +10,7 @@ Template.productDetail.helpers
       return Template.productDetailTags
 
   actualPrice: () ->
-    selectedVariant()?.price
+    return selectedVariant()?.price
 
   fieldComponent: (field) ->
     if Meteor.app.hasOwnerAccess()
@@ -64,7 +64,6 @@ Template.productDetail.events
 
   "click #add-to-cart": (event,template) ->
     now = new Date()
-    # questionable scope issue, pull from global scope
     currentVariant = selectedVariant()
     currentProduct = selectedProduct()
 
@@ -158,9 +157,3 @@ Template.productDetail.events
   "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input": ->
     Session.set "editing-"+this.field, false
     $('.social-media-inputs > *').hide()
-
-selectedVariant = ->
-  window.currentProduct?.get "variant"
-
-selectedProduct = ->
-  window.currentProduct?.get "product"

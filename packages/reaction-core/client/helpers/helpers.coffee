@@ -57,3 +57,9 @@
     @deps[key] = new Deps.Dependency unless @deps[key]
 
 currentProduct = @currentProduct
+
+@selectedVariant = ->
+  currentProduct.get "variant"
+
+@selectedProduct = ->
+  currentProduct.get "product"
