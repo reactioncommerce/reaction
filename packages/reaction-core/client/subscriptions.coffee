@@ -25,7 +25,7 @@ Meteor.subscribe "tags"
 Meteor.subscribe "media"
 Meteor.subscribe "FileStorage"
 Meteor.subscribe "Packages"
-Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
+Meteor.subscribe "cart", Session.get "sessionId"
 
 ###
 #  Autorun dependencies

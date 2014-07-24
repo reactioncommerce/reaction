@@ -13,14 +13,16 @@ Template.cartDrawerItems.rendered = ->
     return
 
 Template.cartDrawerItems.helpers
-  media: (variant) ->
-     # return default image for this product variant
-     if defaultImage = Media.findOne({'metadata.variantId': this.variants._id})
-       return defaultImage
-     else
-       # loop through all product variants attempting to find default image
-       for variant in Products.findOne(this.productId).variants
-         if img = Media.findOne({'metadata.variantId': variant._id})
-             return img
-     # no images for this product or 'this is why we cant have nice things'
-     return false
+  media: ->
+    # return default image for this product variant
+    if defaultImage = Media.findOne({'metadata.variantId': @variants._id})
+      return defaultImage
+    else
+      # loop through all product variants attempting to find default image
+      product = Products.findOne @productId
+      return unless product
+      img = null
+      _.any product.variants, (v) ->
+        img = Media.findOne({'metadata.variantId': v._id})
+        return !!img
+      return img
