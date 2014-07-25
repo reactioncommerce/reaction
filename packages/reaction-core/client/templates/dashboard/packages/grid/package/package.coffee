@@ -27,12 +27,14 @@ Template.gridPackage.events
     pkg = Packages.findOne(name: @name)
     unless pkg
       Packages.insert name: @name
-      Alerts.add @label + " is now enabled.", "success"
+      Alerts.add @label + " is now enabled.", "success",
+        type: "pkg-enabled-" + @name
 
-    Router.go @settingsRoute  if @settingsRoute
+    Router.go @settingsRoute if @settingsRoute
 
   "click .disablePkg": (event, template) ->
     event.preventDefault()
     pkg = Packages.findOne(name: @name)
     Packages.remove pkg._id
-    Alerts.add @label + " is now disabled.", "success"
+    Alerts.add @label + " is now disabled.", "success",
+        type: "pkg-enabled-" + @name

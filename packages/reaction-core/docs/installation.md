@@ -9,14 +9,12 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
     curl https://install.meteor.com | /bin/sh
     sudo -H npm install -g meteorite
     git clone https://github.com/ongoworks/reaction.git
-    cd reaction
-    mrt update
-	
+    cd reaction	
 
 ##Startup
-To start Reaction, run the `meteor` or `mrt` command:
+To start Reaction, run the `mrt` command:
 
-	meteor
+	mrt
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
@@ -36,7 +34,7 @@ Getting updates is basically the same as installation:
 cd reaction
 git pull
 mrt update
-meteor
+mrt
 ```
 
 ##Deploying

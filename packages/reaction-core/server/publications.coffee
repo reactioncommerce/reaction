@@ -255,10 +255,11 @@ Meteor.publish 'userOrders', (userId) ->
 ###
 Meteor.publish 'cart', (sessionId) ->
   check(sessionId, String)
+  shopId = Meteor.app.getShopId(@)
 
   # createCart will create for session if necessary, update user if necessary,
-  # and sync all user's carts
-  cart = Meteor.call "createCart", sessionId
+  # sync all user's carts, and return the cart
+  cart = createCart sessionId, @userId, shopId
 
   return Cart.find _id: cart._id
 

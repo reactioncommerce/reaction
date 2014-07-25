@@ -1,0 +1,39 @@
+{
+  "name": "reaction-core",
+  "description": "Reaction Commerce - Core",
+  "homepage": "http://reactioncommerce.com",
+  "author": "Ongo Works <hello@ongoworks.com> (http://ongoworks.com)",
+  "version": "0.1.3",
+  "git": "https://github.com/ongoworks/reaction-core.git",
+  "packages": {
+    "spin": {},
+    "roles": {},
+    "iron-router": {},
+    "autoform": {},
+    "collection2": {},
+    "underscore-string-latest": {},
+    "collection-hooks": {},
+    "handlebars-server": {},
+    "collectionFS": {},
+    "cfs-filesystem": {},
+    "cfs-s3": {},
+    "ui-dropped-event": {
+      "git": "https://github.com/ongoworks/Meteor-ui-dropped-event.git"
+    },
+    "reaction-app-packages": {
+      "git": "https://github.com/ongoworks/reaction-app-packages.git",
+      "tag": "v0.1.0"
+    },
+    "reaction-paypal": {
+      "git": "https://github.com/ongoworks/reaction-paypal.git",
+      "tag": "v0.1.0"
+    },
+    "reaction-google-analytics": {
+      "git": "https://github.com/ongoworks/reaction-google-analytics.git",
+      "tag": "v0.1.0"
+    },
+    "reaction-helloworld": {
+      "git": "https://github.com/ongoworks/reaction-helloworld.git"
+    }
+  }
+}

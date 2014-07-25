@@ -4,22 +4,23 @@
 Template.productImageGallery.helpers
   media: ->
     mediaArray = []
-    variant = (currentProduct.get "variant")
+    variant = selectedVariant()
     if variant
       mediaArray = Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
       if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
-        mediaArray = Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
+        mediaArray = Media.find({'metadata.variantId':selectedProduct().variants[0]._id}, {sort: {'metadata.priority': 1}})
     else
       # If no variant selected, get media for all product variants
-      if currentProduct.get("product")?
+      prod = selectedProduct()
+      if prod
         ids = []
-        for v in currentProduct.get('product').variants
+        for v in prod.variants
           ids.push v._id
         mediaArray = Media.find({'metadata.variantId': { $in: ids}}, {sort: {'metadata.priority': 1}})
-    mediaArray
+    return mediaArray
 
   variant: ->
-    (currentProduct.get "variant")
+    return selectedVariant()
 
 Template.productImageGallery.rendered = ->
 
@@ -32,7 +33,7 @@ Template.productImageGallery.rendered = ->
         placeholder: "sortable"
         forcePlaceholderSize: true
         update: (event, ui) ->
-          variant = (currentProduct.get "variant") unless variant?._id
+          variant = selectedVariant() unless variant?._id
           variant.medias = new Array
           #get changed order
           sortedMedias = _.map($gallery.sortable("toArray",
@@ -60,17 +61,18 @@ Template.productImageGallery.events
         target = $(event.currentTarget)
 
         # Figure out the variant from the moused over image
-        if false == (currentProduct.get "variant")
-          if currentProduct.get("product")?
-            for variant in currentProduct.get('product').variants
+        if false == selectedVariant()
+          product = selectedProduct()
+          if product
+            for variant in product.variants
               ids = []  # Collect all the Variant media IDs
               for media in Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}}).fetch()
                 ids.push media._id
                 if $(event.currentTarget).data('index') == media._id
-                  currentProduct.set "variant", variant
+                  setCurrentVariant variant._id
 
               # we found the selected variant, break out of the loop
-              if (currentProduct.get "variant")
+              if selectedVariant()
                 break
 
           ###
@@ -92,14 +94,14 @@ Template.productImageGallery.events
     return
 
   "dropped #galleryDropPane": (event, template) ->
-    variantId = (currentProduct.get "variant")._id unless variant?._id
+    variantId = selectedVariantId() unless variant?._id
     count = Media.find({'metadata.variantId': variantId }).count()
     FS.Utility.eachFile event, (file, count, variantId) ->
       fileObj = new FS.File(file)
       fileObj.metadata =
         ownerId: Meteor.userId()
         productId: currentProduct._id
-        variantId: (currentProduct.get "variant")._id unless variant?._id
+        variantId: variantId
         shopId: Meteor.app.shopId
         priority: count
       Media.insert fileObj
@@ -110,28 +112,28 @@ Template.imageUploader.events
     $("#files").click()
 
   "change #files": (event, template) ->
-    variantId = (currentProduct.get "variant")._id unless variant?._id
+    variantId = selectedVariantId() unless variant?._id
     count = Media.find({'metadata.variantId': variantId }).count()
     FS.Utility.eachFile event, (file, count, variantId) ->
       fileObj = new FS.File(file)
       fileObj.metadata =
         ownerId: Meteor.userId()
         productId: currentProduct._id
-        variantId: (currentProduct.get "variant")._id unless variant?._id
+        variantId: variantId
         shopId: Meteor.app.shopId
         priority: count
       Media.insert fileObj
       count++
 
   "dropped #dropzone": (event, template) ->
-    variantId = (currentProduct.get "variant")._id unless variant?._id
+    variantId = selectedVariantId() unless variant?._id
     count = Media.find({'metadata.variantId': variantId }).count()
     FS.Utility.eachFile event, (file, count, variantId) ->
       fileObj = new FS.File(file)
       fileObj.metadata =
         ownerId: Meteor.userId()
         productId: currentProduct._id
-        variantId: (currentProduct.get "variant")._id unless variant?._id
+        variantId: variantId
         shopId: Meteor.app.shopId
         priority: count
       Media.insert fileObj

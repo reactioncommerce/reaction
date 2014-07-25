@@ -115,12 +115,13 @@ Meteor.methods
   # delete variant, which should also delete child variants
   ###
   deleteVariant: (variantId) ->
+    check variantId, String
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
-    if variantId
-      #delete variants with this variant as parent
-      Products.update {"variants.parentId": variantId},{$pull: 'variants':{'parentId': variantId}}
-      Products.update {"variants._id": variantId},{$pull: 'variants':{'_id': variantId}}
+    #delete variants with this variant as parent
+    Products.update {"variants.parentId": variantId},{$pull: 'variants':{'parentId': variantId}}
+    Products.update {"variants._id": variantId},{$pull: 'variants':{'_id': variantId}}
+    return true
 
   ###
   # when we create a new product, we create it with
