@@ -109,6 +109,13 @@ Alerts =
     Alerts.collection_.remove seen: true
     return
 
+  ###
+  If you provide a `type` option when adding an alert, you can call this function
+  to later remove that alert.
+  ###
+  removeType: (type) ->
+    Alerts.collection_.remove 'options.type': type
+    return
 
   # Private members
   collection_: new Meteor.Collection(null)
