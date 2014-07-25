@@ -34,8 +34,8 @@
   title = prod.title || "the product"
   id = prod._id
   if confirm("Delete this product?")
-    Products.remove id, (error, result) ->
-      if error or result < 1
+    Meteor.call "deleteProduct", id, (error, result) ->
+      if error or not result
         Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id
         console.log "Error deleting product " + id, error
       else
