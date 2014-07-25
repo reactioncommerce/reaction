@@ -42,6 +42,9 @@
 			Template.functionalTriad.events
 
 ###Code Style
+Suggest that when building packages you include (.editorconfig)[https://github.com/ongoworks/reaction/blob/master/.editorconfig]
+
+Recommended indentation style is 2 spaces.
 
 #### event,template
 When using event, template parameters in methods, use full names
