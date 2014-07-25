@@ -4,22 +4,24 @@ Template.childVariantForm.helpers
 
 Template.childVariantForm.events
   "click .child-variant-form :input, click li": (event,template) ->
-    unless (currentProduct.get "variant")._id is template.data._id
-      currentProduct.set "variant", template.data
+    setCurrentVariant template.data._id
 
   "change .child-variant-form :input": (event,template) ->
-    productId = (currentProduct.get "product")._id
+    productId = selectedProductId()
     variant = template.data
     value = $(event.currentTarget).val()
     field = $(event.currentTarget).attr('name')
     variant[field] = value
     Meteor.call "updateVariant", variant, (error,result) ->
       if error then console.log error
-    currentProduct.set "variant", @
+    setCurrentVariant template.data._id
 
   "click #remove-child-variant": (event, template) ->
     event.stopPropagation()
     event.preventDefault()
     optionTitle = @.optionTitle || "this option"
     if confirm("Are you sure you want to delete "+ optionTitle)
-      Meteor.call "deleteVariant", @._id
+      id = @._id
+      Meteor.call "deleteVariant", id, (error, result) ->
+        if result and selectedVariantId() is id
+          setCurrentVariant null
