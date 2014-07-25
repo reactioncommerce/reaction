@@ -74,7 +74,6 @@ Alerts =
             message: message
             mode: mode
             options: options
-            seen: false
         return;
 
     # Handle alertsLimit
