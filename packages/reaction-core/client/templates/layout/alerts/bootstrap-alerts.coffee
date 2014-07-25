@@ -106,7 +106,10 @@ Alerts =
   Best way is using Router filtering feature to call this function
   ###
   removeSeen: ->
-    Alerts.collection_.remove seen: true
+    Alerts.collection_.remove
+      seen: true
+      'options.sticky':
+        $ne: true
     return
 
   ###
