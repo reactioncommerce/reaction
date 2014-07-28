@@ -44,33 +44,45 @@ Meteor.methods
   # currentTagId will update related/hierachy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+
     newTag =
-      slug: _.slugify(tagName)
+      slug: _.slugify tagName
       name: tagName
 
-    #existing tags
-    unless tagId #prevent duplicate tags by checking for existing
-      existingTag = Tags.findOne({"name":tagName})
-      if currentTagId and existingTag
-        Tags.update(currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}})
-        return
-      else if existingTag and !currentTagId?
-        Tags.update(existingTag._id, {$set:{"isTopLevel":true}})
-        return
     #new tags
     if tagId #just an update
-      Tags.update(tagId,{$set:newTag})
+      Tags.update tagId, {$set:newTag}
+      console.log "Changed name of tag " + tagId + " to " + tagName if Meteor.settings.public?.isDebug
     else # create a new tag
-      newTag.isTopLevel = !currentTagId
-      newTag.shopId = Meteor.app.getShopId()
-      newTag.updatedAt = new Date()
-      newTag.createdAt = new Date()
-      newTag._id = Tags.insert newTag, (error, newTagId) ->
-        if !error and newTagId and currentTagId
-          Tags.update(currentTagId, {$addToSet: {"relatedTagIds": newTagId}})
+      #prevent duplicate tags by checking for existing
+      existingTag = Tags.findOne "name":tagName
+      #if a tag already exists with that name
+      if existingTag
+        if currentTagId
+          Tags.update currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}}
+          console.log 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
+        else
+          Tags.update existingTag._id, {$set:{"isTopLevel":true}}
+          console.log 'Marked tag "' + existingTag.name + '" as a top level tag' if Meteor.settings.public?.isDebug
+      #if a tag with that name does not exist yet
+      else
+        newTag.isTopLevel = !currentTagId
+        newTag.shopId = Meteor.app.getShopId()
+        newTag.updatedAt = new Date()
+        newTag.createdAt = new Date()
+        newTagId = Tags.insert newTag
+        console.log 'Created tag "' + newTag.name + '"' if Meteor.settings.public?.isDebug
+        if currentTagId
+          Tags.update currentTagId, {$addToSet: {"relatedTagIds": newTagId}}
+          console.log 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+
     if currentTagId
       Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
     # if not in use delete from system
