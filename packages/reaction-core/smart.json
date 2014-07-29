@@ -23,6 +23,7 @@
     "reaction-app-packages": {
       "git": "https://github.com/ongoworks/reaction-app-packages.git",
       "tag": "v0.1.0"
-    }
+    },
+    "geocoder": {}
   }
 }

@@ -3,24 +3,26 @@ Meteor.methods
   # method to determine user's location for autopopulating addresses
   ###
   locateAddress: (latitude, longitude) ->
-    Future = Npm.require("fibers/future")
-    geocoder = Npm.require("node-geocoder")
-    future = new Future()
+    check latitude, Match.Optional(Number)
+    check longitude, Match.Optional(Number)
 
-    if latitude
-      locateCoord = geocoder.getGeocoder("google", "http")
-      locateCoord.reverse latitude, longitude, (err, address) ->
-        if err then Meteor._debug(err)
-        future.return(address)
-    else
-      ip = this.connection.httpHeaders['x-forwarded-for']
-      locateIP = geocoder.getGeocoder("freegeoip", "http")
+    try
+      if latitude? and longitude?
+        geo = new GeoCoder()
+        address = geo.reverse latitude, longitude
+      else
+        ip = this.connection.httpHeaders['x-forwarded-for']
+        if ip
+          geo = new GeoCoder(geocoderProvider: "freegeoip")
+          address = geo.geocode ip
+    catch error 
+      # something went wrong; we'll use the default location and
+      # log the error on the server
+      if latitude? and longitude?
+        console.log "Error in locateAddress for latitude/longitude lookup (" + latitude + "," + longitude + "):" + error.message
+      else
+        console.log "Error in locateAddress for IP lookup (" + ip + "):" + error.message
 
-      locateIP.geocode ip, (err, address) ->
-        if err then Meteor._debug(err)
-        future.return(address)
-
-    address = future.wait()
     if address?.length
       return address[0]
     else # default location if nothing found is US
