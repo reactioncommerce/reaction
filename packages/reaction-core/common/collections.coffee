@@ -1,16 +1,25 @@
 share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
 share.ConfigData = @ConfigData = new Meteor.Collection("ConfigData")
 share.Product = @Product = new Meteor.Collection("Product")
-share.Variant = @Variant= new Meteor.Collection("Variant")
+share.Variant = @Variant = new Meteor.Collection("Variant")
 
 Users = @Users = Meteor.users
 
 @PackageConfigSchema = new SimpleSchema
   shopId:
     type: String
+    index: 1
+    autoValue: ->
+      if this.isInsert
+        return Meteor.app.shopId or "1" if Meteor.isClient
+        # force the correct value upon insert
+        return Meteor.app.getShopId()
+      else
+        # don't allow updates
+        this.unset();
   name:
     type: String
-    optional: true
+    index: 1
   property:
     type: String
     optional: true
@@ -21,8 +30,9 @@ Users = @Users = Meteor.users
 
 PackageConfigSchema = @PackageConfigSchema
 
-@Packages = new Meteor.Collection("Packages",[PackageConfigSchema])
+@Packages = new Meteor.Collection("Packages")
 Packages = @Packages
+Packages.attachSchema PackageConfigSchema
 
 ShopMemberSchema = new SimpleSchema
   userId:

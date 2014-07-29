@@ -129,16 +129,8 @@ Template.productDetail.events
     return
 
   "click .delete-product-link": (event, template) ->
-    title = @.title
-    if confirm("Delete this product?")
-      Products.remove @._id, (error, result) ->
-        if error or result < 1
-          Alerts.add "There was an error deleting " + title
-          console.log error
-        else
-          setCurrentProduct null
-          Router.go "/"
-          Alerts.add "Deleted " + title
+    maybeDeleteProduct @
+    return
 
   "click .fa-facebook": ->
     if Meteor.app.hasOwnerAccess()

@@ -19,7 +19,7 @@ Template.variant.events
     setCurrentVariant @._id
     toggleSession "variant-form-"+@._id
 
-  "dblclick .variant-list-item": (event) ->
+  "dblclick .variant-detail": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       setCurrentVariant @._id
       toggleSession "variant-form-"+@._id

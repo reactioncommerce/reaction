@@ -28,6 +28,22 @@
   cursor = Products.find(selector)
 
 ###
+# confirm product deletion, delete, and alert
+###
+@maybeDeleteProduct = (prod) ->
+  title = prod.title || "the product"
+  id = prod._id
+  if confirm("Delete this product?")
+    Meteor.call "deleteProduct", id, (error, result) ->
+      if error or not result
+        Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id
+        console.log "Error deleting product " + id, error
+      else
+        setCurrentProduct null
+        Router.go "/"
+        Alerts.add "Deleted " + title, "info", type: "prod-delete-" + id
+
+###
 #  Reactive current product
 #  This ensures reactive products, without session
 #  products:

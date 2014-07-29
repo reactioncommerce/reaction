@@ -74,7 +74,6 @@ Alerts =
             message: message
             mode: mode
             options: options
-            seen: false
         return;
 
     # Handle alertsLimit
@@ -106,7 +105,10 @@ Alerts =
   Best way is using Router filtering feature to call this function
   ###
   removeSeen: ->
-    Alerts.collection_.remove seen: true
+    Alerts.collection_.remove
+      seen: true
+      'options.sticky':
+        $ne: true
     return
 
   ###

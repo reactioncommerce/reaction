@@ -22,7 +22,7 @@
     <li data-tag-id="{{_id}}">
       <div class="tag-input-group">
         <span class="tag-input">
-          <input type="text" class="tags-input-select" value="{{name}}" placeholder="Add tags" id="tags-submit-new"/>
+          <input type="text" class="tags-input-select tags-submit-new" value="{{name}}" placeholder="Add tags" />
         </span>
       </div>
     </li>
@@ -36,7 +36,7 @@
   {{#each ./tags}}
     {{#unless currentHashTag}}
       <li class="list-group-item product-detail-tags-list">
-        <a href="{{pathForSEO "product/tag" "name"}}">{{name}}</a>
+        <a href="{{pathForSEO "product/tag" "slug"}}">{{name}}</a>
       </li>
     {{/unless}}
   {{/each}}
