@@ -71,7 +71,7 @@ Meteor.methods
       #if a tag with that name does not exist yet
       else
         newTag.isTopLevel = !currentTagId
-        newTag.shopId = Meteor.app.getShopId()
+        newTag.shopId = ReactionCore.getShopId()
         newTag.updatedAt = new Date()
         newTag.createdAt = new Date()
         newTagId = Tags.insert newTag
@@ -95,7 +95,6 @@ Meteor.methods
       return Tags.remove(tagId)
 
   updatePackage: (updateDoc, packageName) ->
-    # check(updateDoc, PackageConfigSchema)
     packageId = Packages.findOne({ name: packageName })._id
 
     return false unless packageId

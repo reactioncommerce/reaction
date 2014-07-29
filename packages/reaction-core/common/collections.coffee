@@ -1,19 +1,22 @@
+# TODO see if these are needed/used and whether they should have schemas
 share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
 share.ConfigData = @ConfigData = new Meteor.Collection("ConfigData")
 share.Product = @Product = new Meteor.Collection("Product")
 share.Variant = @Variant = new Meteor.Collection("Variant")
 
-Users = @Users = Meteor.users
-
-@PackageConfigSchema = new SimpleSchema
+###
+# Packages
+###
+#TODO Don't have to set and export PackageConfigSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.PackageConfig = PackageConfigSchema = new SimpleSchema
   shopId:
     type: String
     index: 1
     autoValue: ->
       if this.isInsert
-        return Meteor.app.shopId or "1" if Meteor.isClient
+        return ReactionCore.getShopId() or "1" if Meteor.isClient
         # force the correct value upon insert
-        return Meteor.app.getShopId()
+        return ReactionCore.getShopId()
       else
         # don't allow updates
         this.unset();
@@ -23,18 +26,19 @@ Users = @Users = Meteor.users
   property:
     type: String
     optional: true
-  # settings:
-  #   type: Object
-  #   optional: true
-  #   # blackbox: true
+  settings:
+    type: Object
+    optional: true
+    blackbox: true
 
-PackageConfigSchema = @PackageConfigSchema
+ReactionCore.Collections.Packages = Packages = @Packages = new Meteor.Collection "Packages"
+ReactionCore.Collections.Packages.attachSchema PackageConfigSchema
 
-@Packages = new Meteor.Collection("Packages")
-Packages = @Packages
-Packages.attachSchema PackageConfigSchema
-
-ShopMemberSchema = new SimpleSchema
+###
+# Shops
+###
+#TODO Don't have to set and export ShopMemberSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.ShopMember = ShopMemberSchema = new SimpleSchema
   userId:
     type: String
   isAdmin:
@@ -44,7 +48,7 @@ ShopMemberSchema = new SimpleSchema
     type: [String]
     optional: true
 
-@CustomEmailSettings = new SimpleSchema
+ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema
   username:
     type: String
     optional: true
@@ -58,9 +62,9 @@ ShopMemberSchema = new SimpleSchema
     type: Number
     allowedValues: [25, 587, 465, 475, 2525]
     optional: true
-CustomEmailSettings = @CustomEmailSettings
 
-MetafieldSchema = new SimpleSchema
+#TODO Don't have to set and export MetafieldSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.Metafield = MetafieldSchema = new SimpleSchema
   key:
     type: String
     max: 30
@@ -82,8 +86,8 @@ MetafieldSchema = new SimpleSchema
     type: String
     optional: true
 
-
-VariantMediaSchema = new SimpleSchema
+#TODO Don't have to set and export VariantMediaSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.VariantMedia = VariantMediaSchema = new SimpleSchema
   mediaId:
     type: String
     optional: true
@@ -91,7 +95,7 @@ VariantMediaSchema = new SimpleSchema
     type: Number
     optional: true
   metafields:
-    type: [MetafieldSchema]
+    type: [ReactionCore.Schemas.Metafield]
     optional: true
   updatedAt:
     type: Date
@@ -99,7 +103,7 @@ VariantMediaSchema = new SimpleSchema
   createdAt:
     type: Date
 
-ProductPositionSchema = new SimpleSchema
+ReactionCore.Schemas.ProductPosition = new SimpleSchema
   tag:
     type: String
     optional: true
@@ -112,7 +116,142 @@ ProductPositionSchema = new SimpleSchema
   updatedAt:
     type: Date
 
-@ProductVariantSchema = new SimpleSchema
+#TODO Don't have to set and export AddressSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
+  _id:
+    type: String
+    optional: true
+  fullName:
+    type: String
+  address1:
+    label: "Address 1"
+    type: String
+  address2:
+    label: "Address 2"
+    type: String
+    optional: true
+  city:
+    type: String
+  company:
+    type: String
+    optional: true
+  phone:
+    type: String
+    label: "Phone"
+    min: 7
+    max: 22
+    regEx: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+  region:
+    label: "State/Province/Region"
+    type: String
+  postal:
+    label: "ZIP/Postal Code"
+    type: String
+  country:
+    type: String
+  isCommercial:
+    label: "This is a commercial address"
+    type: Boolean
+    defaultValue: false
+  isDefault:
+    label: "This is my default address"
+    type: Boolean
+    defaultValue: true
+  metafields:
+    type: [ReactionCore.Schemas.Metafield]
+    optional: true
+
+ReactionCore.Schemas.Country = new SimpleSchema
+  name:
+    type: String
+  code:
+    type: String
+
+ReactionCore.Schemas.Tax = new SimpleSchema
+  taxShipping:
+    type: String
+    optional: true
+  taxesIncluded:
+    type: Boolean
+    optional: true
+  countyTaxes:
+    type: Boolean
+    optional: true
+  metafields:
+    type: [ReactionCore.Schemas.Metafield]
+    optional: true
+
+ReactionCore.Schemas.Shop = new SimpleSchema
+  _id:
+    type: String
+    optional: true
+  name:
+    type: String
+    index: 1
+  addressBook:
+    type: [ReactionCore.Schemas.Address]
+  domains:
+    type: [String]
+    defaultValue: ["localhost"] #see simple schema issue #73
+  currency:
+    type: String
+  email:
+    type: String
+  moneyFormat:
+    type: String
+  moneyWithCurrencyFormat:
+    type: String
+  moneyInEmailsFormat:
+    type: String
+  moneyWithCurrencyInEmailsFormat:
+    type: String
+  taxes:
+    type: [ReactionCore.Schemas.Tax]
+    optional: true
+  public:
+    type: String
+    optional: true
+  timezone:
+    type: String
+  ownerId:
+    type: String
+  members:
+    type: [ReactionCore.Schemas.ShopMember]
+    index: 1
+  useCustomEmailSettings:
+    type: Boolean
+    optional: true
+  customEmailSettings:
+    type: ReactionCore.Schemas.CustomEmailSettings
+  createdAt:
+    type: Date
+  updatedAt:
+    type: Date
+    autoValue : ->
+      new Date()  if @isUpdate
+    optional: true
+
+ReactionCore.Collections.Shops = Shops = @Shops = new Meteor.Collection "Shops",
+  transform: (shop) ->
+    for index, member of shop.members
+      member.index = index
+      member.user = Meteor.users.findOne member.userId
+    return shop
+
+ReactionCore.Collections.Shops.attachSchema ReactionCore.Schemas.Shop
+
+# XXX Unused?
+ReactionCore.Schemas.Social = new SimpleSchema
+  service:
+    type: String
+  handle:
+    type: String
+
+###
+# Products
+###
+#TODO Don't have to set and export ProductVariantSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.ProductVariant = ProductVariantSchema = new SimpleSchema
   _id:
     type: String
   parentId:
@@ -182,10 +321,10 @@ ProductPositionSchema = new SimpleSchema
     type: String
     optional: true
   metafields:
-    type: [MetafieldSchema]
+    type: [ReactionCore.Schemas.Metafield]
     optional: true
   positions:
-    type: [ProductPositionSchema]
+    type: [ReactionCore.Schemas.ProductPosition]
     optional: true
   createdAt:
     label: "Created at"
@@ -196,309 +335,137 @@ ProductPositionSchema = new SimpleSchema
     type: Date
     optional: true
 
-ProductVariantSchema = @ProductVariantSchema
-
-@AddressSchema = new SimpleSchema
+ReactionCore.Schemas.Product = new SimpleSchema
   _id:
     type: String
     optional: true
-  fullName:
-    type: String
-  address1:
-    label: "Address 1"
-    type: String
-  address2:
-    label: "Address 2"
+  cloneId:
     type: String
     optional: true
-  city:
+  shopId:
     type: String
-  company:
+  title:
     type: String
-    optional: true
-  phone:
-    type: String
-    label: "Phone"
-    min: 7
-    max: 22
-    regEx: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
-  region:
-    label: "State/Province/Region"
-    type: String
-  postal:
-    label: "ZIP/Postal Code"
-    type: String
-  country:
-    type: String
-  isCommercial:
-    label: "This is a commercial address"
-    type: Boolean
-    defaultValue: false
-  isDefault:
-    label: "This is my default address"
-    type: Boolean
-    defaultValue: true
-  metafields:
-    type: [MetafieldSchema]
-    optional: true
-
-AddressSchema = @AddressSchema
-
-CountrySchema = new SimpleSchema
-  name:
-    type: String
-  code:
-    type: String
-
-TaxSchema = new SimpleSchema
-  taxShipping:
+  pageTitle:
     type: String
     optional: true
-  taxesIncluded:
-    type: Boolean
+  description:
+    type: String
     optional: true
-  countyTaxes:
-    type: Boolean
+  productType:
+    type: String
+  vendor:
+    type: String
     optional: true
   metafields:
-    type: [MetafieldSchema]
+    type: [ReactionCore.Schemas.Metafield]
     optional: true
-
-@Shops = new Meteor.Collection 'Shops',
-  schema:
-    _id:
-      type: String
-      optional: true
-    name:
-      type: String
-      index: 1
-    addressBook:
-      type: [AddressSchema]
-    domains:
-      type: [String]
-      defaultValue: ["localhost"] #see simple schema issue #73
-    currency:
-      type: String
-    email:
-      type: String
-    moneyFormat:
-      type: String
-    moneyWithCurrencyFormat:
-      type: String
-    moneyInEmailsFormat:
-      type: String
-    moneyWithCurrencyInEmailsFormat:
-      type: String
-    taxes:
-      type: [TaxSchema]
-      optional: true
-    public:
-      type: String
-      optional: true
-    timezone:
-      type: String
-    ownerId:
-      type: String
-    members:
-      type: [ShopMemberSchema]
-      index: 1
-    useCustomEmailSettings:
-      type: Boolean
-      optional: true
-    customEmailSettings:
-      type: CustomEmailSettings
-    createdAt:
-      type: Date
-    updatedAt:
-      type: Date
-      autoValue : ->
-        new Date()  if @isUpdate
-      optional: true
-  transform: (shop) ->
-    for index, member of shop.members
-      member.index = index
-      member.user = Meteor.users.findOne member.userId
-    shop
-
-Shops = @Shops # package exports
-
-SocialSchema = new SimpleSchema
-  service:
+  variants:
+    type: [ReactionCore.Schemas.ProductVariant]
+  hashtags:
+    type: [String]
+    optional: true
+    index: 1
+  twitterMsg:
     type: String
+    optional: true
+    max: 140
+  facebookMsg:
+    type: String
+    optional: true
+    max: 255
+  instagramMsg:
+    type: String
+    optional: true
+    max: 255
+  pinterestMsg:
+    type: String
+    optional: true
+    max: 255
+  metaDescription:
+    type: String
+    optional: true
   handle:
     type: String
-
-
-@Products = new Meteor.Collection 'Products',
-  schema:
-    _id:
-      type: String
-      optional: true
-    cloneId:
-      type: String
-      optional: true
-    shopId:
-      type: String
-    title:
-      type: String
-    pageTitle:
-      type: String
-      optional: true
-    description:
-      type: String
-      optional: true
-    productType:
-      type: String
-    vendor:
-      type: String
-      optional: true
-    metafields:
-      type: [MetafieldSchema]
-      optional: true
-    variants:
-      type: [ProductVariantSchema]
-    hashtags:
-      type: [String]
-      optional: true
-      index: 1
-    twitterMsg:
-      type: String
-      optional: true
-      max: 140
-    facebookMsg:
-      type: String
-      optional: true
-      max: 255
-    instagramMsg:
-      type: String
-      optional: true
-      max: 255
-    pinterestMsg:
-      type: String
-      optional: true
-      max: 255
-    metaDescription:
-      type: String
-      optional: true
-    handle:
-      type: String
-      optional: true
-      index: 1
-    isVisible:
-      type: Boolean
-      index: 1
-    publishedAt:
-      type: Date
-      optional: true
-    publishedScope:
-      type: String
-      optional: true
-    templateSuffix:
-      type: String
-      optional: true
-    createdAt:
-      type: Date
-    updatedAt:
-      type: Date
-      autoValue : ->
-        new Date() if @isUpdate
-      optional: true
-  # transform: (product) ->
-  #   product.price = (product.price).toFixed(2)
-  #   updatedAt = new Date()
-  #   product
-
-Products = @Products # package exports
-
-@Customers = new Meteor.Collection 'Customers',
-  schema:
-    shopId:
-      type: String
-    email:
-      type: String
-    fullName:
-      type: String
-    imageUrl:
-      type: String
-
-    acceptsMarketing:
-      type: Boolean
-
-    ordersCount:
-      type: Number
-    totalSpent:
-      type: Number
-      decimal: true
-    state:
-      type: String
-
-    lastOrderId:
-      type: String
-      optional: true
-    lastOrderName:
-      type: String
-      optional: true
-
-    note:
-      type: String
-      optional: true
-    hashtags:
-      type: [String]
-      optional: true
-
-    multipassIdentifier:
-      type: String
-      optional: true
-    verifiedEmail:
-      type: Boolean
-
-    metafields:
-      type: [MetafieldSchema]
-      optional: true
-
-    createdAt:
-      type: Date
-    updatedAt:
-      type: Date
-
-Customers = @Customers # package exports
-
-# @Customers.before.update (userId, doc, fieldNames, modifier, options) ->
-#    modifier.$set.updatedAt = new Date()
-
-@Orders = new Meteor.Collection("Orders",[Cart,OrderItemsSchema])
-
-OrderItemsSchema = new SimpleSchema
-    additionalField:
-      type: String
-      optional: true
-    status:
-      type: String
-    history:
-      type: [HistorySchema]
-      optional: true
-    documents:
-      type: [DocumentSchema]
-      optional: true
-
-DocumentSchema = new SimpleSchema
-  docId:
-    type: String
-  docType:
+    optional: true
+    index: 1
+  isVisible:
+    type: Boolean
+    index: 1
+  publishedAt:
+    type: Date
+    optional: true
+  publishedScope:
     type: String
     optional: true
+  templateSuffix:
+    type: String
+    optional: true
+  createdAt:
+    type: Date
+  updatedAt:
+    type: Date
+    autoValue : ->
+      new Date() if @isUpdate
+    optional: true
 
-HistorySchema = new SimpleSchema
-    event:
-      type: String
-    userId:
-      type: String
-    updatedAt:
-      type: Date
+ReactionCore.Collections.Products = Products = @Products = new Meteor.Collection "Products"
+ReactionCore.Collections.Products.attachSchema ReactionCore.Schemas.Product
 
-Orders = @Orders # package exports
+###
+# Customers
+###
+ReactionCore.Schemas.Customer = new SimpleSchema
+  shopId:
+    type: String
+  email:
+    type: String
+  fullName:
+    type: String
+  imageUrl:
+    type: String
+  acceptsMarketing:
+    type: Boolean
+  ordersCount:
+    type: Number
+  totalSpent:
+    type: Number
+    decimal: true
+  state:
+    type: String
+  lastOrderId:
+    type: String
+    optional: true
+  lastOrderName:
+    type: String
+    optional: true
+  note:
+    type: String
+    optional: true
+  hashtags:
+    type: [String]
+    optional: true
+  multipassIdentifier:
+    type: String
+    optional: true
+  verifiedEmail:
+    type: Boolean
+  metafields:
+    type: [ReactionCore.Schemas.Metafield]
+    optional: true
+  createdAt:
+    type: Date
+  updatedAt:
+    type: Date
 
-CartItemSchema = new SimpleSchema
+ReactionCore.Collections.Customers = Customers = @Customers = new Meteor.Collection "Customers"
+ReactionCore.Collections.Customers.attachSchema ReactionCore.Schemas.Customer
+
+###
+# Carts
+###
+#TODO Don't have to set and export CartItemSchema if we confirm that no pkgs use it
+ReactionCore.Schemas.CartItem = CartItemSchema = new SimpleSchema
   _id:
     type: String
   productId:
@@ -508,10 +475,9 @@ CartItemSchema = new SimpleSchema
     type: Number
     min: 0
   variants:
-    type: ProductVariantSchema
+    type: ReactionCore.Schemas.ProductVariant
 
-
-ShipmentQuoteSchema = new SimpleSchema
+ReactionCore.Schemas.ShipmentQuote = new SimpleSchema
   carrier:
     type: Number
   method:
@@ -526,16 +492,15 @@ ShipmentQuoteSchema = new SimpleSchema
     type: String
     optional: true
 
-
-ShipmentSchema = new SimpleSchema
+ReactionCore.Schemas.Shipment = new SimpleSchema
   address:
-    type: AddressSchema
+    type: ReactionCore.Schemas.Address
     optional: true
   shipmentMethod:
-    type: ShipmentQuoteSchema
+    type: ReactionCore.Schemas.ShipmentQuote
     optional: true
 
-@PaymentMethodSchema = new SimpleSchema
+ReactionCore.Schemas.PaymentMethod = new SimpleSchema
   processor:
     type: String
   storedCard:
@@ -563,83 +528,118 @@ ShipmentSchema = new SimpleSchema
     type: Number
     decimal: true
 
-PaymentMethodSchema = @PaymentMethodSchema
-
-PaymentSchema = new SimpleSchema
+ReactionCore.Schemas.Payment = new SimpleSchema
   address:
-    type: AddressSchema
+    type: ReactionCore.Schemas.Address
     optional: true
   paymentMethod:
-    type: [PaymentMethodSchema]
+    type: [ReactionCore.Schemas.PaymentMethod]
     optional: true
 
-@Cart = new Meteor.Collection 'Cart',
-  schema:
-    shopId:
+ReactionCore.Schemas.Cart = new SimpleSchema
+  shopId:
+    type: String
+    index: 1
+  sessionId:
+    type: String
+    optional: true
+    custom: -> #required if userId isn't set
+      userIdField = @siblingField "userId"
+      return "required" if @isInsert and !@value and !userIdField.value 
+      #TODO: This update logic as is would not be correct because we also need to
+      #look up the existing doc and see if userId is already set, in which case
+      #it's OK to unset sessionId. Collection2 should provide the doc _id so
+      #that we can do this lookup.
+      #return "required" if @isUpdate and (@operator is "$unset" or @value is null) and !userIdField.value
+    index: 1
+  userId:
+    type: String
+    optional: true
+    index: 1
+  items:
+    type: [ReactionCore.Schemas.CartItem]
+    optional: true
+  requiresShipping:
+    label: "Require a shipping address"
+    type: Boolean
+    optional: true
+  shipping:
+    type: ReactionCore.Schemas.Shipment
+    optional: true
+    blackbox: true
+  payment:
+    type: ReactionCore.Schemas.Payment
+    optional: true
+    blackbox: true
+  totalPrice:
+    label: "Total Price"
+    type: Number
+    optional: true
+    decimal: true
+    min: 0
+  state:
+    type: String
+    defaultValue: "new"
+    optional: true
+  createdAt:
+    type: Date
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyUpdate: true
+  updatedAt:
+    type: Date
+    autoValue: ->
+      if @isUpdate
+        return $set: new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyInsert: true
+    optional: true
+
+ReactionCore.Collections.Cart = Cart = @Cart = new Meteor.Collection "Cart"
+ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
+
+###
+# Orders
+###
+ReactionCore.Schemas.Document = new SimpleSchema
+  docId:
+    type: String
+  docType:
+    type: String
+    optional: true
+
+ReactionCore.Schemas.History = new SimpleSchema
+    event:
       type: String
-      index: 1
-    sessionId:
-      type: String
-      optional: true
-      custom: -> #required if userId isn't set
-        userIdField = @siblingField "userId"
-        return "required" if @isInsert and !@value and !userIdField.value 
-        #TODO: This update logic as is would not be correct because we also need to
-        #look up the existing doc and see if userId is already set, in which case
-        #it's OK to unset sessionId. Collection2 should provide the doc _id so
-        #that we can do this lookup.
-        #return "required" if @isUpdate and (@operator is "$unset" or @value is null) and !userIdField.value
-      index: 1
     userId:
       type: String
-      optional: true
-      index: 1
-    items:
-      type: [CartItemSchema]
-      optional: true
-    requiresShipping:
-      label: "Require a shipping address"
-      type: Boolean
-      optional: true
-    shipping:
-      type: ShipmentSchema
-      optional: true
-      blackbox: true
-    payment:
-      type: PaymentSchema
-      optional: true
-      blackbox: true
-    totalPrice:
-      label: "Total Price"
-      type: Number
-      optional: true
-      decimal: true
-      min: 0
-    state:
-      type: String
-      defaultValue: "new"
-      optional: true
-    createdAt:
-      type: Date
-      autoValue: ->
-        if @isInsert
-          return new Date
-        else if @isUpsert
-          return $setOnInsert: new Date
-      denyUpdate: true
     updatedAt:
       type: Date
-      autoValue: ->
-        if @isUpdate
-          return $set: new Date
-        else if @isUpsert
-          return $setOnInsert: new Date
-      denyInsert: true
-      optional: true
 
-Cart = @Cart # package exports
+ReactionCore.Schemas.OrderItems = new SimpleSchema
+  additionalField:
+    type: String
+    optional: true
+  status:
+    type: String
+  history:
+    type: [ReactionCore.Schemas.History]
+    optional: true
+  documents:
+    type: [ReactionCore.Schemas.Document]
+    optional: true
 
-@TagsSchema = new SimpleSchema
+ReactionCore.Collections.Orders = Orders = @Orders = new Meteor.Collection "Orders"
+ReactionCore.Collections.Orders.attachSchema [ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
+
+###
+# Tags
+###
+ReactionCore.Schemas.Tag = new SimpleSchema
   name:
     type: String
     index: 1
@@ -662,7 +662,5 @@ Cart = @Cart # package exports
   updatedAt:
     type: Date
 
-TagsSchema = @TagsSchema
-
-@Tags = new Meteor.Collection('Tags', [TagsSchema])
-Tags = @Tags
+ReactionCore.Collections.Tags = Tags = @Tags = new Meteor.Collection "Tags"
+ReactionCore.Collections.Tags.attachSchema ReactionCore.Schemas.Tag

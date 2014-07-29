@@ -3,13 +3,13 @@ Template.packagePanel.helpers
     currentPackageDepends = @depends
     dependencies = []
     Packages.find().forEach (packageConfig) ->
-      packageInfo = Meteor.app.packages[packageConfig.name]
+      packageInfo = ReactionCore.Packages[packageConfig.name]
       if _.intersection(currentPackageDepends, packageInfo?.provides).length
         if packageInfo.hidden is true
           dependencies.push(_.extend(packageConfig, packageInfo))
     dependencies
 
   widgetTemplateRender: (template)->
-    data = Shops.findOne Meteor.app.shopId
+    data = Shops.findOne ReactionCore.getShopId()
     Template[template]
 

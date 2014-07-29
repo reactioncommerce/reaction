@@ -8,7 +8,7 @@ Meteor.methods
   addToCart: (cartSession, productId, variantData, quantity) ->
     # createCart will create for session if necessary, update user if necessary,
     # sync all user's carts, and return the cart
-    shopId = Meteor.app.getShopId(@)
+    shopId = ReactionCore.getShopId(@)
     currentCart = createCart cartSession.sessionId, @userId, shopId
 
     return false unless currentCart
@@ -80,7 +80,7 @@ Meteor.methods
   copyCartToOrder: (cart) ->
     currentUserId = Meteor.userId()
     # Check userId & sessionId against current
-    return false if cart.shopId isnt Meteor.app.getShopId(@) or cart.userId isnt currentUserId
+    return false if cart.shopId isnt ReactionCore.getShopId(@) or cart.userId isnt currentUserId
     #Retrieving cart twice (once on call)to ensure accurate clone from db
     currentCartId = cart._id
     # cart = Cart.findOne(cartId)
@@ -104,7 +104,7 @@ Meteor.methods
   # method to add new addresses to a user's profile
   ###
   addressBookAdd: (doc) ->
-    check(doc, AddressSchema)
+    check(doc, ReactionCore.Schemas.Address)
     @unblock()
     currentUserId = Meteor.userId()
     if doc.isDefault
@@ -123,7 +123,7 @@ Meteor.methods
   #method to update existing address in user's profile
   ###
   addressBookUpdate: (doc) ->
-    check(doc, AddressSchema)
+    check(doc, ReactionCore.Schemas.Address)
     @unblock()
     currentUserId = Meteor.userId()
     #reset existing default

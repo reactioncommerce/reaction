@@ -1,10 +1,7 @@
-Meteor.app = _.extend(Meteor.app || {},
-  packages:
-    register: (packageInfo) ->
-      @[packageInfo.name] = packageInfo
-)
+ReactionCore.Packages.register = (packageInfo) ->
+  ReactionCore.Packages[packageInfo.name] = packageInfo
 
-Meteor.app = _.extend(Meteor.app || {},
+_.extend ReactionCore,
   shopId: null
   isMember: false
   isOwner: null
@@ -12,7 +9,7 @@ Meteor.app = _.extend(Meteor.app || {},
   userPermissions: []
   shopPermissions: []
   shopPermissionGroups: []
-  init: () ->
+  init: ->
     domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
     shop = Shops.find({domains: domain}, {limit: 1}).fetch()
     if shop[0]?._id then shop = shop[0]
@@ -20,7 +17,7 @@ Meteor.app = _.extend(Meteor.app || {},
 
     permissions = []
     usedPackages = _.map Packages.find({shopId: @shopId}).fetch(), (packageConfig) ->
-      _.find(Meteor.app.packages, (appPackage) -> packageConfig.name is appPackage.name)
+      _.find(ReactionCore.Packages, (appPackage) -> packageConfig.name is appPackage.name)
     for usedPackage in usedPackages
       if usedPackage?.shopPermissions
         for shopPermission in usedPackage.shopPermissions
@@ -47,4 +44,5 @@ Meteor.app = _.extend(Meteor.app || {},
     @.hasOwnerAccess() or _.intersection(permissions, @userPermissions).length or (@isAdmin and _.intersection(permissions, @shopPermissions).length)
   hasOwnerAccess: ->
     Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-)
+  getShopId: ->
+    return @shopId

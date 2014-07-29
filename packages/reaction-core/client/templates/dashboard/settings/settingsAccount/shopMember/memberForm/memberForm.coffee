@@ -3,7 +3,7 @@ Template.memberForm.events
     event.preventDefault()
     $form = $(template.find("form"))
     hash = $form.serializeHash()
-    Meteor.call "inviteShopMember", Meteor.app.shopId, hash.email, hash.name, (error) ->
+    Meteor.call "inviteShopMember", ReactionCore.getShopId(), hash.email, hash.name, (error) ->
       if error?
         Alerts.add "Error sending email, possible configuration issue." +error
       else

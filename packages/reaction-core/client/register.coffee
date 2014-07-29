@@ -1,4 +1,4 @@
-Meteor.app.packages.register
+ReactionCore.Packages.register
   name: 'reaction-commerce'
   depends: ['fileUploader', 'staffAccountsManager','paymentMethod', 'mailService', 'analytics', 'shipmentMethod']
   label: 'Settings'
@@ -33,7 +33,7 @@ Meteor.app.packages.register
     }
   ]
 
-Meteor.app.packages.register
+ReactionCore.Packages.register
   name: 'reaction-commerce-orders'
   provides: ['orderManager']
   label: 'Orders'
@@ -49,7 +49,7 @@ Meteor.app.packages.register
     }
   ]
 
-Meteor.app.packages.register
+ReactionCore.Packages.register
   name: 'reaction-commerce-staff-accounts'
   provides: ['staffAccountsManager']
   label: 'Admin Access'

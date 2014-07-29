@@ -20,7 +20,7 @@ loadData = (collection) ->
       console.log error if error?
   console.log ("Successfully added "+value+" items to "+ collection._name).green
 
-share.loadFixtures = ->
+loadFixtures = ->
   # Load data from json files
   loadData Products unless Products.find().count()
   loadData Shops unless Shops.find().count()
@@ -98,7 +98,7 @@ createDefaultAdminUser = ->
 # Execute start up fixtures
 ###
 Meteor.startup ->
-  share.loadFixtures()
+  loadFixtures()
   # data conversion:  if ROOT_URL changes update shop domain
   # for now, we're assuming the first domain is the primary
   currentDomain = Shops.findOne().domains[0]
@@ -110,4 +110,4 @@ Meteor.startup ->
   Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
   if Meteor.settings.public?.isDebug
-    Meteor.setInterval(share.loadFixtures, 300)
+    Meteor.setInterval(loadFixtures, 300)

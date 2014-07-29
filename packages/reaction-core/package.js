@@ -25,6 +25,7 @@ Package.on_use(function (api, where) {
   // Core Reaction
   api.add_files([
     "lib/statemachine/state-machine.js",
+    "common/packageGlobals.js",
     "common/common.coffee",
     "common/collectionFS.coffee",
     "common/collections.coffee",
@@ -337,6 +338,11 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/roles.json', 'server', {isAsset: true});
   api.add_files('private/data/users.json', 'server', {isAsset: true});
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
+
+  // We are now grouping all exported app variables and methods under
+  // "ReactionCore". The other exported variables should be moved to
+  // somewhere within this scope.
+  api.export(["ReactionCore"]);
 
   api.export([
     "Alerts",

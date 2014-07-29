@@ -18,7 +18,7 @@ Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
   onRun: ->
-    Meteor.app.init()
+    ReactionCore.init()
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()
@@ -44,7 +44,7 @@ ShopController = @ShopController
   waitOn: ->
     @subscribe "shops"
   onBeforeAction: (pause) ->
-    unless Meteor.app.hasPermission(@route.name)
+    unless ReactionCore.hasPermission(@route.name)
       @render('unauthorized')
       pause()
       return
@@ -127,7 +127,7 @@ Router.map ->
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
-          unless Meteor.app.hasPermission(@path)
+          unless ReactionCore.hasPermission(@path)
             @render 'unauthorized'
             Meteor.setTimeout (->
               Router.go('/')

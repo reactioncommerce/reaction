@@ -9,7 +9,7 @@ Template.productDetailEdit.events
 
 Template.productDetailField.events
   "click .product-detail-field": (event,template) ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       fieldClass = "editing-" + this.field
       Session.set fieldClass, true
       Deps.flush()

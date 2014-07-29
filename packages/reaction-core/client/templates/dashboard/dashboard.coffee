@@ -1,6 +1,6 @@
 Template.dashboard.helpers
   isVisible: ->
-    if Session.get("dashboard") and Meteor.app.hasOwnerAccess() then return true
+    if Session.get("dashboard") and ReactionCore.hasOwnerAccess() then return true
 
   Package: ->
     # package view is aware of Package / Context / Route / Permissions
@@ -8,8 +8,8 @@ Template.dashboard.helpers
     # currentContext = Session.get('currentDashboard')
     currentPackage = Session.get 'currentPackage'
     unless currentPackage? then Session.set 'currentPackage', "reaction-commerce"
-    packageInfo = Meteor.app.packages[currentPackage]
-    packageInfo
+    packageInfo = ReactionCore.Packages[currentPackage]
+    return packageInfo
 
   widget: (name) ->
     widget = this.name + "-widget"
@@ -19,10 +19,10 @@ Template.dashboard.helpers
       return null
 
   dependencies: ->
-    currentPackageDepends = Meteor.app.packages["reaction-commerce"].depends
+    currentPackageDepends = ReactionCore.Packages["reaction-commerce"].depends
     dependencies = []
     Packages.find().forEach (packageConfig) ->
-      packageInfo = Meteor.app.packages[packageConfig.name]
+      packageInfo = ReactionCore.Packages[packageConfig.name]
       if _.intersection(currentPackageDepends, packageInfo?.provides).length
         dependencies.push(_.extend(packageConfig, packageInfo))
     dependencies
@@ -62,7 +62,7 @@ Template.dashboardNavBar.helpers
     packageConfigs = []
     existingPackages = Packages.find().fetch()
     for packageConfig in existingPackages
-      packageInfo = Meteor.app.packages[packageConfig.name]
+      packageInfo = ReactionCore.Packages[packageConfig.name]
       if packageInfo?.hasWidget
         packageConfigs.push(_.extend(packageConfig, packageInfo))
     packageConfigs

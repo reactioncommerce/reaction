@@ -62,7 +62,6 @@ Meteor.methods
       for variants,value in product.variants
         if variants._id is variant._id
           newVariant = _.extend variants,variant
-      #TODO: check newVariant, ProductVariantSchema
       Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
         console.log error if error
         return
@@ -210,7 +209,7 @@ Meteor.methods
     else # create a new tag
       # newTag.isTopLevel = !currentTagId
       newTag.isTopLevel = false
-      newTag.shopId = Meteor.app.getShopId()
+      newTag.shopId = ReactionCore.getShopId()
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
       newTag._id = Tags.insert(newTag)

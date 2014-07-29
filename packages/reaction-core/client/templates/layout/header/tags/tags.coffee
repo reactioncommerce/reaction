@@ -20,7 +20,7 @@ Template.headerTags.helpers
   tagsComponent: ->
     # If we're an admin with the header in edit mode, we display
     # the tag edit form, else the normal header tag links
-    if isEditing(currentTag()) and Meteor.app.hasOwnerAccess()
+    if isEditing(currentTag()) and ReactionCore.hasOwnerAccess()
       return Template.tagInputForm
     else
       return Template.headerLinks

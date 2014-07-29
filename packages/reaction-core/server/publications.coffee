@@ -44,7 +44,7 @@ Security =
   # Allow updates and removes only if doc.shopId matches the current shop
   mustMatchShop: (collections) ->
     addDenyFuncForAll collections, ["update", "remove"], ["shopId"], (userId, doc) ->
-      return doc.shopId isnt Meteor.app.getShopId()
+      return doc.shopId isnt ReactionCore.getShopId()
   # Allow updates only if doc.shopId is not being changed
   cantChangeShop: (collections) ->
     addDenyFuncForAll collections, ["update"], [], (userId, doc, fields, modifier) ->
@@ -56,7 +56,7 @@ Security =
   # Allow inserts, updates, and removes only if fileObj.metadata.shopId matches the current shop
   fileMustBelongToShop: (collections) ->
     addDenyFuncForAll collections, ["insert", "update", "remove"], [], (userId, fileObj) ->
-      return fileObj.metadata.shopId isnt Meteor.app.getShopId(@)
+      return fileObj.metadata.shopId isnt ReactionCore.getShopId(@)
   # Deny all
   denyAll: (types, collections) ->
     addDenyFuncForAll collections, types, [], ->
@@ -77,7 +77,7 @@ AutoSet = (prop, collections, valFunc) ->
       fetch: []
 
 AutoSet "shopId", [ Packages, Orders, Cart, Tags ], ->
-  return Meteor.app.getShopId()
+  return ReactionCore.getShopId()
 
 ###
 # We add some common security rules through simple Security methods
@@ -144,7 +144,7 @@ Meteor.publish 'ReactionSessions', (id) ->
 # CollectionFS - Image/Video Publication
 ###
 Meteor.publish "media", () ->
-  return Media.find({ 'metadata.shopId': Meteor.app.getShopId(@) }, {sort: {"metadata.priority": 1}})
+  return Media.find({ 'metadata.shopId': ReactionCore.getShopId(@) }, {sort: {"metadata.priority": 1}})
 
 ###
 # CollectionFS - Generated Docs (invoices) Publication
@@ -160,7 +160,7 @@ Meteor.publish "FileStorage", () ->
 Meteor.publish "UserProfile", (profileId) ->
   if profileId?
     if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
-      return Users.find _id: profileId,
+      return Meteor.users.find _id: profileId,
         fields:
           profile: 1
           emails: 1
@@ -182,7 +182,7 @@ Meteor.publish 'ConfigData', ->
 #  settings, package access rights
 ###
 Meteor.publish "Packages", ->
-  shop = Meteor.app.getCurrentShop(this)
+  shop = ReactionCore.getCurrentShop(this)
   if shop
     return Packages.find
       shopId: shop._id
@@ -196,11 +196,11 @@ Meteor.publish "Packages", ->
 # shop collection
 ###
 Meteor.publish 'shops', ->
-  Meteor.app.getCurrentShopCursor(@)
+  ReactionCore.getCurrentShopCursor(@)
 
 Meteor.publish 'shopMembers', ->
   self = @
-  handle = Meteor.app.getCurrentShopCursor(self).observeChanges
+  handle = ReactionCore.getCurrentShopCursor(self).observeChanges
     added: (id) ->
       shop = Shops.findOne id
       memberIds = _.pluck shop.members, "userId"
@@ -220,7 +220,7 @@ Meteor.publish 'shopMembers', ->
 # product collection
 ###
 Meteor.publish 'products', (userId) ->
-  shop = Meteor.app.getCurrentShop(@)
+  shop = ReactionCore.getCurrentShop(@)
   if shop
     selector = {shopId: shop._id}
     unless Roles.userIsInRole(this.userId, ['admin'])
@@ -230,7 +230,7 @@ Meteor.publish 'products', (userId) ->
     return []
 
 Meteor.publish 'product', (productId) ->
-  shop = Meteor.app.getCurrentShop(@) #todo: wire in shop
+  shop = ReactionCore.getCurrentShop(@) #todo: wire in shop
   if productId.match /^[A-Za-z0-9]{17}$/
     return Products.find(productId)
   else
@@ -241,13 +241,13 @@ Meteor.publish 'product', (productId) ->
 ###
 Meteor.publish 'orders', ->
   if Roles.userIsInRole(this.userId, ['admin','owner'])
-    return Orders.find( shopId: Meteor.app.getShopId(@) )
+    return Orders.find( shopId: ReactionCore.getShopId(@) )
   else
     return []
 
 Meteor.publish 'userOrders', (userId) ->
   return Orders.find
-    shopId: Meteor.app.getShopId(@)
+    shopId: ReactionCore.getShopId(@)
     userId: this.userId
 
 ###
@@ -255,7 +255,7 @@ Meteor.publish 'userOrders', (userId) ->
 ###
 Meteor.publish 'cart', (sessionId) ->
   check(sessionId, String)
-  shopId = Meteor.app.getShopId(@)
+  shopId = ReactionCore.getShopId(@)
 
   # createCart will create for session if necessary, update user if necessary,
   # sync all user's carts, and return the cart
@@ -267,4 +267,4 @@ Meteor.publish 'cart', (sessionId) ->
 # tags
 ###
 Meteor.publish "tags", ->
-  return Tags.find(shopId: Meteor.app.getShopId())
+  return Tags.find(shopId: ReactionCore.getShopId())

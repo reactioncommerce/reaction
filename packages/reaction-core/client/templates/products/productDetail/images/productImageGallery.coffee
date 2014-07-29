@@ -62,7 +62,7 @@ uploadHandler = (event, template) ->
       ownerId: userId
       productId: productId
       variantId: variantId
-      shopId: Meteor.app.shopId
+      shopId: ReactionCore.getShopId()
       priority: count
     Media.insert fileObj
     count++
