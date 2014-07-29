@@ -49,7 +49,13 @@ CartWorkflow = StateMachine.create(
 
     onaddToCart: (event, from, to, cartSession, productId, variantData, quantity) ->
       if (cartSession? and productId?)
-        Meteor.call "addToCart", cartSession, productId, variantData, quantity
+        count = getCartCount()
+        Meteor.call "addToCart", cartSession, productId, variantData, quantity, (error, result) ->
+          # When we add the first item to the cart, we geolocate the session/user
+          if not error and count is 0
+            # If address.city is set, we've already geolocated, so we skip it
+            address = Session.get "address"
+            locateUser() unless address?.city
 
     oncheckout: (event, from, to) ->
       Router.go "cartCheckout"

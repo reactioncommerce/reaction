@@ -47,20 +47,3 @@ Deps.autorun ->
       countryCode: 'US'
     }
     Session.set("address",address)
-
-###
-#  Geolocate Methods
-#  look up user location at startup
-###
-Meteor.startup ->
-  #Pass the lat/long to google geolocate
-  successFunction = (position) ->
-    lat = position.coords.latitude
-    lng = position.coords.longitude
-    Meteor.call "locateAddress", lat, lng, (error, address) ->
-      Session.set("address",address)
-  errorFunction = ->
-    Meteor.call "locateAddress", (error, address) ->
-      Session.set("address",address)
-
-  navigator.geolocation.getCurrentPosition successFunction, errorFunction  if navigator.geolocation

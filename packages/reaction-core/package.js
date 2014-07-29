@@ -17,7 +17,8 @@ Package.on_use(function (api, where) {
     "accounts-ui-unstyled",
     "coffeescript",
     "underscore",
-    "autoform"
+    "autoform",
+    "geocoder"
   ], ["client", "server"]);
 
   api.use(["reaction-app-packages"]);

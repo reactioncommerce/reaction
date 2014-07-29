@@ -73,11 +73,9 @@ UI.registerHelper "siteName", ->
 ###
 UI.registerHelper "cart", () ->
   cartCount: ->
-    storedCart = Cart.findOne()
-    count = 0
-    ((count += items.quantity) for items in storedCart.items) if storedCart?.items
+    count = getCartCount()
     Session.set "cartCount", count
-    count
+    return count
 
   cartShipping: ->
     shipping = Cart.findOne()?.shipping?.shipmentMethod?.value

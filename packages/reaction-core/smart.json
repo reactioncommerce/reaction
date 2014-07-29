@@ -34,6 +34,7 @@
     },
     "reaction-helloworld": {
       "git": "https://github.com/ongoworks/reaction-helloworld.git"
-    }
+    },
+    "geocoder": {}
   }
 }
