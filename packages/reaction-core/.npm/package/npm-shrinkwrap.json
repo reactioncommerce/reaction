@@ -157,7 +157,7 @@
       }
     },
     "phantomjs": {
-      "version": "1.9.7-8",
+      "version": "1.9.7-15",
       "dependencies": {
         "adm-zip": {
           "version": "0.2.1"
@@ -207,6 +207,9 @@
         "mkdirp": {
           "version": "0.3.5"
         },
+        "progress": {
+          "version": "1.1.7"
+        },
         "request": {
           "version": "2.36.0",
           "dependencies": {
@@ -229,15 +232,15 @@
               "version": "0.12.1",
               "dependencies": {
                 "punycode": {
-                  "version": "1.2.4"
+                  "version": "1.3.0"
                 }
               }
             },
             "form-data": {
-              "version": "0.1.3",
+              "version": "0.1.4",
               "dependencies": {
                 "combined-stream": {
-                  "version": "0.0.4",
+                  "version": "0.0.5",
                   "dependencies": {
                     "delayed-stream": {
                       "version": "0.0.5"
@@ -288,6 +291,14 @@
             },
             "aws-sign2": {
               "version": "0.5.0"
+            }
+          }
+        },
+        "request-progress": {
+          "version": "0.3.1",
+          "dependencies": {
+            "throttleit": {
+              "version": "0.0.2"
             }
           }
         },
