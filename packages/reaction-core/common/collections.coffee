@@ -1,8 +1,9 @@
 # TODO see if these are needed/used and whether they should have schemas
 share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
-share.ConfigData = @ConfigData = new Meteor.Collection("ConfigData")
 share.Product = @Product = new Meteor.Collection("Product")
 share.Variant = @Variant = new Meteor.Collection("Variant")
+
+ReactionCore.Collections.ConfigData = new Meteor.Collection "ConfigData"
 
 ###
 # Packages
@@ -23,6 +24,9 @@ ReactionCore.Schemas.PackageConfig = PackageConfigSchema = new SimpleSchema
   name:
     type: String
     index: 1
+  enabled:
+    type: Boolean
+    defaultValue: true
   property:
     type: String
     optional: true
@@ -31,7 +35,7 @@ ReactionCore.Schemas.PackageConfig = PackageConfigSchema = new SimpleSchema
     optional: true
     blackbox: true
 
-ReactionCore.Collections.Packages = Packages = @Packages = new Meteor.Collection "Packages"
+ReactionCore.Collections.Packages = new Meteor.Collection "Packages"
 ReactionCore.Collections.Packages.attachSchema PackageConfigSchema
 
 ###

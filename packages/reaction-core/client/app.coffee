@@ -1,6 +1,3 @@
-ReactionCore.Packages.register = (packageInfo) ->
-  ReactionCore.Packages[packageInfo.name] = packageInfo
-
 _.extend ReactionCore,
   shopId: null
   isMember: false
@@ -10,39 +7,63 @@ _.extend ReactionCore,
   shopPermissions: []
   shopPermissionGroups: []
   init: ->
-    domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
-    shop = Shops.find({domains: domain}, {limit: 1}).fetch()
-    if shop[0]?._id then shop = shop[0]
-    @shopId = shop._id
+    self = @
+    # We want this to auto-update whenever shops or packages change, login/logout, etc.
+    Deps.autorun ->
+      domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
+      shop = Shops.findOne domains: domain
+      
+      if shop
+        self.shopId = shop._id
 
-    permissions = []
-    usedPackages = _.map Packages.find({shopId: @shopId}).fetch(), (packageConfig) ->
-      _.find(ReactionCore.Packages, (appPackage) -> packageConfig.name is appPackage.name)
-    for usedPackage in usedPackages
-      if usedPackage?.shopPermissions
-        for shopPermission in usedPackage.shopPermissions
-          permissions.push shopPermission
+        permissions = []
+        usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
+          return p.info()
 
-    @shopPermissions = _.pluck(permissions, "permission")
-    @shopPermissionGroups = for groupName, groupPermissions of _.groupBy(permissions, "group")
-      group: groupName
-      permissions: groupPermissions
+        for usedPackage in usedPackages
+          if usedPackage?.shopPermissions
+            for shopPermission in usedPackage.shopPermissions
+              permissions.push shopPermission
 
-    @isOwner = Meteor.userId() is shop.ownerId
+        self.shopPermissions = _.pluck(permissions, "permission")
+        self.shopPermissionGroups = for groupName, groupPermissions of _.groupBy(permissions, "group")
+          group: groupName
+          permissions: groupPermissions
 
-    member = _.find shop.members, (member) ->
-      member.userId is Meteor.userId()
-    if member
-      @isMember = true
-      @isAdmin = member.isAdmin
-      @userPermissions = member.permissions
+        #XXX probably should use deps to recheck this whenever login/logout?
+        self.isOwner = Meteor.userId() is shop.ownerId
+
+        member = _.find shop.members, (member) ->
+          member.userId is Meteor.userId()
+        if member
+          self.isMember = true
+          self.isAdmin = member.isAdmin
+          self.userPermissions = member.permissions
+        else
+          self.isMember = false
+          self.isAdmin = false
+          self.userPermissions = []
+
+      # no shop found
+      else
+        self.shopId = null
+        self.isMember = false
+        self.isOwner = null
+        self.isAdmin = null
+        self.userPermissions = []
+        self.shopPermissions = []
+        self.shopPermissionGroups = []
+
   hasDashboardAccess: ->
-    @isMember or @.hasOwnerAccess()
+    return @isMember or @.hasOwnerAccess()
   hasPermission: (permissions) ->
     return false unless permissions
     permissions = [permissions] unless _.isArray(permissions)
-    @.hasOwnerAccess() or _.intersection(permissions, @userPermissions).length or (@isAdmin and _.intersection(permissions, @shopPermissions).length)
+    return @.hasOwnerAccess() or _.intersection(permissions, @userPermissions).length or (@isAdmin and _.intersection(permissions, @shopPermissions).length)
   hasOwnerAccess: ->
-    Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    return Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
   getShopId: ->
     return @shopId
+
+Meteor.startup ->
+  ReactionCore.init()

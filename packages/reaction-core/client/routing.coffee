@@ -17,8 +17,6 @@ setProduct = (productId, variantId) ->
 Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
-  onRun: ->
-    ReactionCore.init()
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()

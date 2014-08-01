@@ -11,7 +11,7 @@ Accounts.onCreateUser (options, user) ->
 # setting defaults of mail from shop configuration
 ###
 setMailUrlForShop = (shop) ->
-  mailgun = Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
+  mailgun = ReactionCore.Collections.Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
   sCES = null
   if mailgun and mailgun.settings
     sCES = mailgun.settings

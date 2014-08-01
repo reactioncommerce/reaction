@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 Template.productList.helpers
   products: ->
     getProductsByTag(@tag)

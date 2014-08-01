@@ -80,7 +80,7 @@ Meteor.methods
 
     console.log "Creating PDF for #{url}"
 
-    # updateStorage = Meteor._wrapAsync(FileStorage.insert(file:data))
+    # updateStorage = Meteor._wrapAsync(ReactionCore.Collections.FileStorage.insert(file:data))
     #PDF Formatting
     paperSize =
       format: "Letter"
@@ -121,7 +121,7 @@ Meteor.methods
           fileObj.owner = currentUser
           fileObj.metadata =
             orderId: orderId
-          doc = FileStorage.insert fileObj
+          doc = ReactionCore.Collections.FileStorage.insert fileObj
           # Finally return (from the method) the new document ID
           future.return doc._id
           return

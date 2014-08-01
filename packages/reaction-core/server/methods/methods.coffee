@@ -1,3 +1,5 @@
+Packages = ReactionCore.Collections.Packages
+
 Meteor.methods
   ###
   # method to determine user's location for autopopulating addresses

@@ -250,3 +250,22 @@ UI.registerHelper "navLink", (page, icon) ->
   ret += "class='active'"  if Meteor.Router.page() is page
   ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>"
   return new Spacebars.SafeString(ret)
+
+###
+# Returns all packages, both enabled and disabled.
+# Combined the info stored in the Packages collection
+# with the info provided by the package itself through
+# registration.
+###
+UI.registerHelper "allPackages", ->
+  return ReactionCore.Collections.Packages.find({}, {sort: {priority: -1}}).map (pkg) ->
+    pkgInfo = pkg.info()
+    _.extend pkg, pkgInfo if pkgInfo
+    return pkg
+
+###
+# For debugging: {{console.log this}}
+###
+UI.registerHelper "console", 
+  log: (a) ->
+    console.log a

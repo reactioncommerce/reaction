@@ -14,8 +14,7 @@ ReactionCore.Subscriptions.ReactionSessions = Meteor.subscribe "ReactionSessions
 ###
 # General Subscriptions
 ###
-# TODO remove PackagesHandle after paypal pkg is updated to use ReactionCore.Subscriptions.Packages
-ReactionCore.Subscriptions.Packages = PackagesHandle = Meteor.subscribe "Packages"
+ReactionCore.Subscriptions.Packages = Meteor.subscribe "Packages"
 ReactionCore.Subscriptions.ReactionConfig = Meteor.subscribe "ReactionConfig"
 ReactionCore.Subscriptions.ConfigData = Meteor.subscribe "ConfigData"
 ReactionCore.Subscriptions.UserConfig = Meteor.subscribe "UserConfig", Meteor.userId()

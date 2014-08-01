@@ -1,21 +1,20 @@
 Template.variantForm.helpers
   variantDetails: ->
-    product = selectedProduct()
     unless @.parentId?
-      Template.parentVariantForm
+      return Template.parentVariantForm
     else
-      Template.childVariantForm
+      return Template.childVariantForm
 
   childVariants: () ->
     product = selectedProduct()
-    variants = (variant for variant in product.variants when variant?.parentId is this._id)
-    if variants then return variants
+    return unless product
+    return (variant for variant in product.variants when variant?.parentId is @_id)
 
   nowDate: () ->
-    new Date()
+    return new Date()
 
   variantFormId: () ->
-    "variant-form-"+@._id
+    return "variant-form-"+@._id
 
   variantFormVisible: () ->
     unless Session.equals "variant-form-"+@._id, true
@@ -35,6 +34,7 @@ Template.variantForm.events
     formId = "#variant-form-"+template.data._id
     template.$(formId).submit()
     setCurrentVariant template.data._id
+    return
 
   "click .btn-child-variant-form": (event,template) ->
     event.stopPropagation()
@@ -42,6 +42,7 @@ Template.variantForm.events
     productId = selectedProductId()
     return unless productId
     Meteor.call "cloneVariant", productId, template.data._id, @._id
+    return
 
   "click .btn-remove-variant": (event, template) ->
     title = @.title || "this variant"
@@ -50,6 +51,7 @@ Template.variantForm.events
       Meteor.call "deleteVariant", id, (error, result) ->
         if result and selectedVariantId() is id
           setCurrentVariant null
+    return
 
   "click .btn-clone-variant": (event,template) ->
     event.stopPropagation()
@@ -58,3 +60,4 @@ Template.variantForm.events
     return unless productId
     Meteor.call "cloneVariant", productId, template.data._id, (error,result) ->
       toggleSession "variant-form-"+result
+    return

@@ -13,14 +13,12 @@
     "collection2": {},
     "underscore-string-latest": {},
     "collection-hooks": {},
+    "collection-helpers": {},
     "handlebars-server": {},
     "collectionFS": {},
     "cfs-filesystem": {},
     "cfs-s3": {},
-    "ui-dropped-event": {
-      "git": "https://github.com/CollectionFS/Meteor-ui-dropped-event",
-      "branch": "master"
-    },
+    "ui-dropped-event": {},
     "reaction-app-packages": {
       "git": "https://github.com/ongoworks/reaction-app-packages.git",
       "tag": "v0.1.0"

@@ -16,4 +16,3 @@ Schemas = ReactionCore.Schemas;
 
 // for backwards-compatibility; remove these once no reaction packages depend on them
 Meteor.app = ReactionCore;
-Meteor.app.packages = ReactionCore.Packages;

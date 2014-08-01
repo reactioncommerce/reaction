@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 Template.productGrid.helpers
   products: ->
     ###

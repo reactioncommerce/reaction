@@ -1,4 +1,13 @@
-ReactionCore.Packages.register
+# Define register method
+ReactionCore.registerPackage = (packageInfo) ->
+  ReactionCore.Packages[packageInfo.name] = packageInfo
+
+# for backwards-compatibility; remove once no reaction packages depend on it
+Meteor.app.packages = {}
+Meteor.app.packages.register = ReactionCore.registerPackage
+
+# Register core packages
+ReactionCore.registerPackage
   name: 'reaction-commerce'
   depends: ['fileUploader', 'staffAccountsManager','paymentMethod', 'mailService', 'analytics', 'shipmentMethod']
   label: 'Settings'
@@ -9,6 +18,7 @@ ReactionCore.Packages.register
   overViewLabel: 'App Gallery'
   priority: '3'
   hidden: true
+  autoEnable: true
   hasWidget: true
   shopPermissions: [
     {
@@ -33,14 +43,14 @@ ReactionCore.Packages.register
     }
   ]
 
-ReactionCore.Packages.register
+ReactionCore.registerPackage
   name: 'reaction-commerce-orders'
   provides: ['orderManager']
   label: 'Orders'
   overviewRoute: 'dashboard/orders'
   hasWidget: true
   hidden: true
-
+  autoEnable: true
   shopPermissions: [
     {
       label: "Orders"
@@ -49,12 +59,13 @@ ReactionCore.Packages.register
     }
   ]
 
-ReactionCore.Packages.register
+ReactionCore.registerPackage
   name: 'reaction-commerce-staff-accounts'
   provides: ['staffAccountsManager']
   label: 'Admin Access'
   settingsRoute: 'dashboard/settings/account'
   hidden: true
+  autoEnable: true
   shopPermissions: [
     {
       label: "Dashboard Access"
@@ -62,3 +73,16 @@ ReactionCore.Packages.register
       group: "Shop Settings"
     }
   ]
+
+# On the server, we upsert all packages on startup
+if Meteor.isServer
+  Packages = ReactionCore.Collections.Packages
+  Meteor.startup ->
+    # Loop through ReactionCore.Packages object, which now has all packages added by
+    # calls to register
+    _.each ReactionCore.Packages, (config, pkgName) ->
+      Shops.find().forEach (shop) ->
+        Packages.upsert {shopId: shop._id, name: pkgName},
+          $setOnInsert:
+            enabled: !!config.autoEnable
+            settings: config.defaultSettings

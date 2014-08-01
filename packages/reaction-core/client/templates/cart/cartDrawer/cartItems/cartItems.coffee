@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 Template.cartDrawerItems.rendered = ->
   $ ->
     mySwiper = $(".cart-drawer-swiper-container").swiper(

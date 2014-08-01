@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 Meteor.methods
   ###
   # the cloneVariant method copies variants, but will also create and clone child variants (options)

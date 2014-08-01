@@ -1,14 +1,13 @@
-# Scope variable import
-Shops = @Shops
-Products = @Products
-Customers = @Customers
-Orders = @Orders
-Cart  = @Cart
-Tags = @Tags
-Packages = @Packages
-ConfigData = @ConfigData
-# FileStorage = @FileStorage
-Users = @Users = Meteor.users
+Shops = ReactionCore.Collections.Shops
+Products = ReactionCore.Collections.Products
+Customers = ReactionCore.Collections.Customers
+Orders = ReactionCore.Collections.Orders
+Cart  = ReactionCore.Collections.Cart
+Tags = ReactionCore.Collections.Tags
+Packages = ReactionCore.Collections.Packages
+ConfigData = ReactionCore.Collections.ConfigData
+FileStorage = ReactionCore.Collections.FileStorage
+Media = ReactionCore.Collections.Media
 
 ###
 # Generic Security Rule Manager
