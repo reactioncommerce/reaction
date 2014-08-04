@@ -14,6 +14,11 @@ MAINTAINER Aaron Judd <aaron@ongoworks.com>
 
 #Install required packages first
 RUN apt-get install -qq -y curl git gcc make build-essential imagemagick
+
+# Update to latest node
+RUN npm cache clean -f && npm install -g n && sudo n stable
+
+# Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
 RUN npm install --silent -g forever meteorite phantomjs
 
