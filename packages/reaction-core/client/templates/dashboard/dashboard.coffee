@@ -1,15 +1,19 @@
+Packages = ReactionCore.Collections.Packages
+
 Template.dashboard.helpers
   isVisible: ->
-    if Session.get("dashboard") and Meteor.app.hasOwnerAccess() then return true
+    if Session.get("dashboard") and ReactionCore.hasOwnerAccess() then return true
 
   Package: ->
     # package view is aware of Package / Context / Route / Permissions
     #
     # currentContext = Session.get('currentDashboard')
     currentPackage = Session.get 'currentPackage'
-    unless currentPackage? then Session.set 'currentPackage', "reaction-commerce"
-    packageInfo = Meteor.app.packages[currentPackage]
-    packageInfo
+    if currentPackage
+      return ReactionCore.Packages[currentPackage]
+    else
+      Session.set 'currentPackage', "reaction-commerce"
+      return "reaction-commerce"
 
   widget: (name) ->
     widget = this.name + "-widget"
@@ -19,13 +23,13 @@ Template.dashboard.helpers
       return null
 
   dependencies: ->
-    currentPackageDepends  = Meteor.app.packages["reaction-commerce"].depends
+    currentPackageDepends = ReactionCore.Packages["reaction-commerce"].depends
     dependencies = []
-    Packages.find().forEach (packageConfig) ->
-      packageInfo = Meteor.app.packages[packageConfig.name]
+    Packages.find(enabled: true).forEach (p) ->
+      packageInfo = p.info()
       if _.intersection(currentPackageDepends, packageInfo?.provides).length
-        dependencies.push(_.extend(packageConfig, packageInfo))
-    dependencies
+        dependencies.push _.extend(p, packageInfo)
+    return dependencies
 
 Template.dashboard.events
   'click .dashboard-navbar-package': (event, template) ->
@@ -56,16 +60,6 @@ Template.dashboardWidgets.rendered = ->
 ###
 # dashboard nav bar
 ###
-
-Template.dashboardNavBar.helpers
-  packages: ->
-    packageConfigs = []
-    existingPackages = Packages.find().fetch()
-    for packageConfig in existingPackages
-      packageInfo = Meteor.app.packages[packageConfig.name]
-      if packageInfo?.hasWidget
-        packageConfigs.push(_.extend(packageConfig, packageInfo))
-    packageConfigs
 
 Template.dashboardNavBar.events
   'click .dashboard-navbar-package': () ->

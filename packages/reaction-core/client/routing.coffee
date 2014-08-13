@@ -1,34 +1,15 @@
 ###
 # Helper method to set default/parameterized product variant
 ###
-setCurrentVariant = (product, variantId) ->
-  if product
-    #parameter set variant
-    if variantId
-      for variant in product.variants
-        if variant._id is variantId
-          currentProduct.set "variant",variant
-    else
-      #preserve current variant for current product
-      if currentProduct.equals("variant")
-        current = (variant for variant in product.variants when variant._id is currentProduct.equals("variant")._id)[0]
-        if current then return
-      #default to top variant
-      variants = (variant for variant in product.variants when not variant.parentId )
-      currentProduct.set "variant", variants[0]
+setProduct = (productId, variantId) ->
+  unless productId.match /^[A-Za-z0-9]{17}$/
+    product = Products.findOne({handle: productId.toLowerCase()})
+    productId = product?._id
+  
+  setCurrentProduct productId
+  setCurrentVariant variantId
+  return
 
-
-setCurrentProduct = (productId, variant) ->
-  if productId.match  /^[A-Za-z0-9]{17}$/
-    product = Products.findOne(productId)
-    unless currentProduct.get "product" is product
-      currentProduct.set "product", product
-      setCurrentVariant product,variant
-  else
-    product =  Products.findOne({handle: productId.toLowerCase()})
-    unless currentProduct.get "product" is product
-      currentProduct.set "product", product
-      setCurrentVariant product,variant
 ###
 #  Global Reaction Routes
 #  Extend/override in reaction/client/routing.coffee
@@ -36,8 +17,6 @@ setCurrentProduct = (productId, variant) ->
 Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
-  onRun: ->
-    Meteor.app.init()
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()
@@ -63,7 +42,7 @@ ShopController = @ShopController
   waitOn: ->
     @subscribe "shops"
   onBeforeAction: (pause) ->
-    unless Meteor.app.hasPermission(@route.name)
+    unless ReactionCore.hasPermission(@route.name)
       @render('unauthorized')
       pause()
       return
@@ -123,13 +102,14 @@ Router.map ->
       @subscribe "tags"
     data: ->
       if @ready()
-        if @params._id.match  /^[A-Za-z0-9]{17}$/
-          return tag: Tags.findOne(@params._id)
+        id = @params._id
+        if id.match  /^[A-Za-z0-9]{17}$/
+          return tag: Tags.findOne(id)
         else
-          return tag: Tags.findOne({slug: @params._id.toLowerCase() })
+          return tag: Tags.findOne(slug: id.toLowerCase())
 
     onAfterAction: ->
-      document.title = this.data()?.tag.name || Shops.findOne()?.name
+      document.title = this.data()?.tag?.name || Shops.findOne()?.name
 
   # product view / edit page
   @route 'product',
@@ -137,18 +117,20 @@ Router.map ->
     path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
-      setCurrentProduct @params._id, @params.variant
       return Meteor.subscribe 'product', @params._id
-    onBeforeAction: "loading"
+    onBeforeAction: ->
+      setProduct @params._id, @params.variant
+      return
     data: ->
-      if @ready() and currentProduct.get("product")
-        unless currentProduct.get("product").isVisible
-          unless Meteor.app.hasPermission(@path)
+      product = selectedProduct()
+      if @ready() and product
+        unless product.isVisible
+          unless ReactionCore.hasPermission(@path)
             @render 'unauthorized'
             Meteor.setTimeout (->
               Router.go('/')
             ),0
-        return currentProduct.get "product"
+        return product
 
   #checkout
   @route 'cartCheckout',

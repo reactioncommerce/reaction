@@ -5,7 +5,7 @@ Template.variant.helpers
     else "progress-bar-success"
 
   selectedVariant: () ->
-    current = (currentProduct.get "variant")
+    current = selectedVariant()
     if (@._id is current?._id ) or  (@._id is current?.parentId)
       return "variant-detail-selected"
 
@@ -16,19 +16,19 @@ Template.variant.helpers
 
 Template.variant.events
   "click .variant-edit": (event) ->
-    currentProduct.set "variant", @
+    setCurrentVariant @._id
     toggleSession "variant-form-"+@._id
 
-  "dblclick .variant-list-item": (event) ->
+  "dblclick .variant-detail": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-      currentProduct.set "variant", @
+      setCurrentVariant @._id
       toggleSession "variant-form-"+@._id
 
   "click .variant-detail > *": (event) ->
     event.preventDefault()
     event.stopPropagation()
     Alerts.removeSeen()
-    currentProduct.set "variant", @
+    setCurrentVariant @._id
 
 Template.variant.rendered = ->
   if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
@@ -42,7 +42,7 @@ Template.variant.rendered = ->
         forcePlaceholderSize: true
         axis: "y"
         update: (event, ui) ->
-          productVariants = (currentProduct.get "product").variants
+          productVariants = selectedProduct()?.variants
           uiPositions = $(this).sortable("toArray",attribute:"data-id")
           newVariants = []
 

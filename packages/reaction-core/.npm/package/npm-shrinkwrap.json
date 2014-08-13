@@ -3,104 +3,6 @@
     "colors": {
       "version": "0.6.2"
     },
-    "node-geocoder": {
-      "version": "2.5.0",
-      "dependencies": {
-        "q": {
-          "version": "1.0.1"
-        },
-        "commander": {
-          "version": "2.2.0"
-        },
-        "chai": {
-          "version": "1.8.1",
-          "dependencies": {
-            "assertion-error": {
-              "version": "1.0.0"
-            },
-            "deep-eql": {
-              "version": "0.1.3",
-              "dependencies": {
-                "type-detect": {
-                  "version": "0.1.1"
-                }
-              }
-            }
-          }
-        },
-        "mocha": {
-          "version": "1.14.0",
-          "dependencies": {
-            "commander": {
-              "version": "2.0.0"
-            },
-            "growl": {
-              "version": "1.7.0"
-            },
-            "jade": {
-              "version": "0.26.3",
-              "dependencies": {
-                "commander": {
-                  "version": "0.6.1"
-                },
-                "mkdirp": {
-                  "version": "0.3.0"
-                }
-              }
-            },
-            "diff": {
-              "version": "1.0.7"
-            },
-            "debug": {
-              "version": "1.0.2",
-              "dependencies": {
-                "ms": {
-                  "version": "0.6.2"
-                }
-              }
-            },
-            "mkdirp": {
-              "version": "0.3.5"
-            },
-            "glob": {
-              "version": "3.2.3",
-              "dependencies": {
-                "minimatch": {
-                  "version": "0.2.14",
-                  "dependencies": {
-                    "lru-cache": {
-                      "version": "2.5.0"
-                    },
-                    "sigmund": {
-                      "version": "1.0.0"
-                    }
-                  }
-                },
-                "graceful-fs": {
-                  "version": "2.0.3"
-                },
-                "inherits": {
-                  "version": "2.0.1"
-                }
-              }
-            }
-          }
-        },
-        "sinon": {
-          "version": "1.7.3",
-          "dependencies": {
-            "buster-format": {
-              "version": "0.5.6",
-              "dependencies": {
-                "buster-core": {
-                  "version": "0.6.4"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "node-phantom": {
       "version": "https://github.com/apdmatos/node-phantom/tarball/2ccadc1d24efc47ace9ccfee187a0689c78e9009",
       "dependencies": {
@@ -157,7 +59,7 @@
       }
     },
     "phantomjs": {
-      "version": "1.9.7-8",
+      "version": "1.9.7-15",
       "dependencies": {
         "adm-zip": {
           "version": "0.2.1"
@@ -207,6 +109,9 @@
         "mkdirp": {
           "version": "0.3.5"
         },
+        "progress": {
+          "version": "1.1.7"
+        },
         "request": {
           "version": "2.36.0",
           "dependencies": {
@@ -229,15 +134,15 @@
               "version": "0.12.1",
               "dependencies": {
                 "punycode": {
-                  "version": "1.2.4"
+                  "version": "1.3.0"
                 }
               }
             },
             "form-data": {
-              "version": "0.1.3",
+              "version": "0.1.4",
               "dependencies": {
                 "combined-stream": {
-                  "version": "0.0.4",
+                  "version": "0.0.5",
                   "dependencies": {
                     "delayed-stream": {
                       "version": "0.0.5"
@@ -288,6 +193,14 @@
             },
             "aws-sign2": {
               "version": "0.5.0"
+            }
+          }
+        },
+        "request-progress": {
+          "version": "0.3.1",
+          "dependencies": {
+            "throttleit": {
+              "version": "0.0.2"
             }
           }
         },

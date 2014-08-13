@@ -1,25 +1,28 @@
+Media = ReactionCore.Collections.Media
+
 # *****************************************************
 # Template.productImageGallery.helpers
 # *****************************************************
 Template.productImageGallery.helpers
   media: ->
     mediaArray = []
-    variant = (currentProduct.get "variant")
+    variant = selectedVariant()
     if variant
       mediaArray = Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
       if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
-        mediaArray = Media.find({'metadata.variantId':currentProduct.get("product").variants[0]._id}, {sort: {'metadata.priority': 1}})
+        mediaArray = Media.find({'metadata.variantId':selectedProduct().variants[0]._id}, {sort: {'metadata.priority': 1}})
     else
       # If no variant selected, get media for all product variants
-      if currentProduct.get("product")?
+      prod = selectedProduct()
+      if prod
         ids = []
-        for v in currentProduct.get('product').variants
+        for v in prod.variants
           ids.push v._id
         mediaArray = Media.find({'metadata.variantId': { $in: ids}}, {sort: {'metadata.priority': 1}})
-    mediaArray
+    return mediaArray
 
   variant: ->
-    (currentProduct.get "variant")
+    return selectedVariant()
 
 Template.productImageGallery.rendered = ->
 
@@ -32,7 +35,7 @@ Template.productImageGallery.rendered = ->
         placeholder: "sortable"
         forcePlaceholderSize: true
         update: (event, ui) ->
-          variant = (currentProduct.get "variant") unless variant?._id
+          variant = selectedVariant() unless variant?._id
           variant.medias = new Array
           #get changed order
           sortedMedias = _.map($gallery.sortable("toArray",
@@ -50,8 +53,23 @@ Template.productImageGallery.rendered = ->
           ui.placeholder.css "border", "1px dashed #ccc"
           ui.placeholder.css "border-radius","6px"
 
-Template.productImageGallery.events
+uploadHandler = (event, template) ->
+  productId = selectedProductId()
+  variantId = selectedVariantId()
+  userId = Meteor.userId()
+  count = Media.find({'metadata.variantId': variantId }).count()
+  FS.Utility.eachFile event, (file) ->
+    fileObj = new FS.File(file)
+    fileObj.metadata =
+      ownerId: userId
+      productId: productId
+      variantId: variantId
+      shopId: ReactionCore.getShopId()
+      priority: count
+    Media.insert fileObj
+    count++
 
+Template.productImageGallery.events
   "mouseenter .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
@@ -60,17 +78,18 @@ Template.productImageGallery.events
         target = $(event.currentTarget)
 
         # Figure out the variant from the moused over image
-        if false == (currentProduct.get "variant")
-          if currentProduct.get("product")?
-            for variant in currentProduct.get('product').variants
+        if false == selectedVariant()
+          product = selectedProduct()
+          if product
+            for variant in product.variants
               ids = []  # Collect all the Variant media IDs
               for media in Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}}).fetch()
                 ids.push media._id
                 if $(event.currentTarget).data('index') == media._id
-                  currentProduct.set "variant", variant
+                  setCurrentVariant variant._id
 
               # we found the selected variant, break out of the loop
-              if (currentProduct.get "variant")
+              if selectedVariant()
                 break
 
           ###
@@ -91,48 +110,12 @@ Template.productImageGallery.events
     @remove()
     return
 
-  "dropped #galleryDropPane": (event, template) ->
-    variantId = (currentProduct.get "variant")._id unless variant?._id
-    count = Media.find({'metadata.variantId': variantId }).count()
-    FS.Utility.eachFile event, (file, count, variantId) ->
-      fileObj = new FS.File(file)
-      fileObj.metadata =
-        ownerId: Meteor.userId()
-        productId: currentProduct._id
-        variantId: (currentProduct.get "variant")._id unless variant?._id
-        shopId: Meteor.app.shopId
-        priority: count
-      Media.insert fileObj
-      count++
+  "dropped #galleryDropPane": uploadHandler
 
 Template.imageUploader.events
   "click #btn-upload": (event,template) ->
     $("#files").click()
 
-  "change #files": (event, template) ->
-    variantId = (currentProduct.get "variant")._id unless variant?._id
-    count = Media.find({'metadata.variantId': variantId }).count()
-    FS.Utility.eachFile event, (file, count, variantId) ->
-      fileObj = new FS.File(file)
-      fileObj.metadata =
-        ownerId: Meteor.userId()
-        productId: currentProduct._id
-        variantId: (currentProduct.get "variant")._id unless variant?._id
-        shopId: Meteor.app.shopId
-        priority: count
-      Media.insert fileObj
-      count++
+  "change #files": uploadHandler
 
-  "dropped #dropzone": (event, template) ->
-    variantId = (currentProduct.get "variant")._id unless variant?._id
-    count = Media.find({'metadata.variantId': variantId }).count()
-    FS.Utility.eachFile event, (file, count, variantId) ->
-      fileObj = new FS.File(file)
-      fileObj.metadata =
-        ownerId: Meteor.userId()
-        productId: currentProduct._id
-        variantId: (currentProduct.get "variant")._id unless variant?._id
-        shopId: Meteor.app.shopId
-        priority: count
-      Media.insert fileObj
-      count++
+  "dropped #dropzone": uploadHandler

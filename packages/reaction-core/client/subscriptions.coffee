@@ -5,7 +5,7 @@
 # supports reactivity when server changes the serverSession
 # Stores the server session id into local storage / cookies
 ###
-Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
+ReactionCore.Subscriptions.ReactionSessions = Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
   serverSession = new Meteor.Collection("ReactionSessions").findOne()
   Session.set "serverSession", serverSession
   Session.set "sessionId", serverSession._id
@@ -14,18 +14,17 @@ Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
 ###
 # General Subscriptions
 ###
-PackagesHandle = @PackagesHandle = Meteor.subscribe("Packages")
-ReactionConfigHandle = Meteor.subscribe "ReactionConfig"
-share.ConfigDataHandle = Meteor.subscribe 'ConfigData'
-
-Meteor.subscribe "UserConfig", Meteor.userId()
-Meteor.subscribe "orders"
-Meteor.subscribe "customers"
-Meteor.subscribe "tags"
-Meteor.subscribe "media"
-Meteor.subscribe "FileStorage"
-Meteor.subscribe "Packages"
-Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
+ReactionCore.Subscriptions.Packages = Meteor.subscribe "Packages"
+ReactionCore.Subscriptions.ReactionConfig = Meteor.subscribe "ReactionConfig"
+ReactionCore.Subscriptions.ConfigData = Meteor.subscribe "ConfigData"
+ReactionCore.Subscriptions.UserConfig = Meteor.subscribe "UserConfig", Meteor.userId()
+ReactionCore.Subscriptions.orders = Meteor.subscribe "orders"
+ReactionCore.Subscriptions.customers = Meteor.subscribe "customers"
+ReactionCore.Subscriptions.tags = Meteor.subscribe "tags"
+ReactionCore.Subscriptions.media = Meteor.subscribe "media"
+ReactionCore.Subscriptions.FileStorage = Meteor.subscribe "FileStorage"
+ReactionCore.Subscriptions.Packages = Meteor.subscribe "Packages"
+ReactionCore.Subscriptions.cart = Meteor.subscribe "cart", Session.get "sessionId"
 
 ###
 #  Autorun dependencies
@@ -47,20 +46,3 @@ Deps.autorun ->
       countryCode: 'US'
     }
     Session.set("address",address)
-
-###
-#  Geolocate Methods
-#  look up user location at startup
-###
-Meteor.startup ->
-  #Pass the lat/long to google geolocate
-  successFunction = (position) ->
-    lat = position.coords.latitude
-    lng = position.coords.longitude
-    Meteor.call "locateAddress", lat, lng, (error, address) ->
-      Session.set("address",address)
-  errorFunction = ->
-    Meteor.call "locateAddress", (error, address) ->
-      Session.set("address",address)
-
-  navigator.geolocation.getCurrentPosition successFunction, errorFunction  if navigator.geolocation

@@ -1,23 +1,22 @@
 Template.productDetailTags.helpers
   currentHashTag: () ->
-    if currentProduct.get("product")?.handle is @.name.toLowerCase()
+    if selectedProduct()?.handle is @.name.toLowerCase()
       return true
 
 Template.productTagInputForm.helpers
   hashtagMark: () ->
-    if currentProduct.get("product")?.handle is @.name.toLowerCase()
+    if selectedProduct()?.handle is @.name.toLowerCase()
       return "fa-bookmark"
     else
       return "fa-bookmark-o"
 
 Template.productTagInputForm.events
   'click .tag-input-hashtag': (event,template) ->
-
-    Meteor.call "setHandleTag", currentProduct.get("product")._id, @._id, (error,result) ->
+    Meteor.call "setHandleTag", selectedProductId(), @._id, (error,result) ->
       if result then Router.go "product", "_id": result
 
   'click .tag-input-group-remove': (event,template) ->
-    Meteor.call "removeProductTag",currentProduct.get("product")._id, @._id
+    Meteor.call "removeProductTag", selectedProductId(), @._id
 
   'click .tags-input-select': (event,template) ->
     $(event.currentTarget).autocomplete(
@@ -34,24 +33,19 @@ Template.productTagInputForm.events
     )
     Deps.flush()
 
-  'change .tags-input-select': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Meteor.call "updateProductTags", currentProduct.get("product")._id, $(event.currentTarget).val(), @._id, currentTag
-    $('#tags-submit-new').val('')
-    $('#tags-submit-new').focus()
-    # Deps.flush()
-
-  'blur.autocomplete': (event,template) ->
-    if $(event.currentTarget).val()
+  'blur.autocomplete, change .tags-input-select': (event,template) ->
+    val = $(event.currentTarget).val()
+    if val
       currentTag = Session.get "currentTag"
-      Meteor.call "updateProductTags", currentProduct.get("product")._id, $(event.currentTarget).val(), @._id, currentTag
-      Deps.flush()
-      $('#tags-submit-new').val('')
-      $('#tags-submit-new').focus()
+      Meteor.call "updateProductTags", selectedProductId(), val, @._id, currentTag, (error, result) ->
+        if error
+          console.log "Error updating header tags", error
+        Deps.flush()
+        template.$('.tags-submit-new').val('').focus();
 
   'mousedown .tag-input-group-handle': (event,template) ->
     Deps.flush()
-    $(".tag-edit-list").sortable("refresh")
+    template.$(".tag-edit-list").sortable("refresh")
 
 Template.productTagInputForm.rendered = ->
   # *****************************************************
@@ -67,4 +61,4 @@ Template.productTagInputForm.rendered = ->
       for tag,index in uiPositions
         if tag then hashtagsList.push tag
 
-      Products.update(currentProduct.get("product")._id, {$set: {hashtags: hashtagsList}})
+      Products.update(selectedProductId(), {$set: {hashtags: hashtagsList}})

@@ -4,7 +4,7 @@ Template.orderDetail.helpers
     if profileId?
       userProfile = Meteor.subscribe "UserProfile", profileId
       if userProfile.ready()
-        return Users.findOne profileId
+        return Meteor.users.findOne profileId
 
   orderAge: () ->
     moment(@.createdAt).fromNow()

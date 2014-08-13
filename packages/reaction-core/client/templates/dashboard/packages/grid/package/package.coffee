@@ -1,14 +1,7 @@
-# *****************************************************
-# Enable or disable packages
-# Enable adds to reaction_config, sets enabled = true
-# disable just sets enabled flag to false
-# *****************************************************
+Packages = ReactionCore.Collections.Packages
 
 # returns enabled status for this user for specific package
 Template.gridPackage.helpers
-  isEnabled: (name) ->
-    Packages.find(name: name).count() > 0
-
   pkgTypeClass: ->
     if @.hasWidget
       pkg =
@@ -18,21 +11,26 @@ Template.gridPackage.helpers
       pkg =
         class: "pkg-feature-class"
         text: "Core"
-    pkg
-
+    return pkg
 
 Template.gridPackage.events
   "click .enablePkg": (event, template) ->
+    self = @
     event.preventDefault()
-    pkg = Packages.findOne(name: @name)
-    unless pkg
-      Packages.insert name: @name
-      Alerts.add @label + " is now enabled.", "success"
-
-    Router.go @settingsRoute  if @settingsRoute
+    Packages.update template.data._id, {$set: {enabled: true}}, (error, result) ->
+      if result is 1
+        Alerts.add self.label + " is now enabled.", "success",
+          type: "pkg-enabled-" + self.name
+        Router.go self.settingsRoute if self.settingsRoute
+      else if error 
+        console.log error
 
   "click .disablePkg": (event, template) ->
+    self = @
     event.preventDefault()
-    pkg = Packages.findOne(name: @name)
-    Packages.remove pkg._id
-    Alerts.add @label + " is now disabled.", "success"
+    Packages.update template.data._id, {$set: {enabled: false}}, (error, result) ->
+      if result is 1
+        Alerts.add self.label + " is now disabled.", "success",
+          type: "pkg-enabled-" + self.name
+      else if error 
+        console.log error

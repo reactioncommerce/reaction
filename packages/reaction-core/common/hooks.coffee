@@ -8,7 +8,7 @@ applyVariantDefaults = (variant) ->
   )
 
 Products.before.insert (userId, product) ->
-  product.shopId = product.shopId || Meteor.app.getCurrentShop()._id # avoid calling if present
+  product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
   _.defaults(product,
     productType: "Simple"
     handle: _.slugify(product.title)

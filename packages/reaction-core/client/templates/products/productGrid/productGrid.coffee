@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 Template.productGrid.helpers
   products: ->
     ###
@@ -66,11 +68,8 @@ Template.productGridItems.events
 
   'click .delete-product': (event, template) ->
     event.preventDefault()
-    title = @.title
-    if confirm("Delete this product?")
-      Products.remove this._id
-      Router.go "/"
-      Alerts.add "Deleted " + title
+    maybeDeleteProduct @
+    return
 
   'click .publish-product': () ->
     self = @
@@ -80,10 +79,10 @@ Template.productGridItems.events
         if isVisible is true
           visible = "visible"
         else
-          visible = "not visible"
-        Alerts.add self.title + " is now " + visible
+          visible = "hidden"
+        Alerts.add self.title + " is now " + visible, "info", type: "prod-visible-" + self._id
     else
-      Alerts.add "This product hasn't been configured yet, and cannot be made visible."
+      Alerts.add "This product hasn't been configured yet, and cannot be made visible.", "danger", type: "prod-visible-" + self._id
 
 
 Template.productGridItems.rendered = () ->

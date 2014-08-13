@@ -42,6 +42,9 @@
 			Template.functionalTriad.events
 
 ###Code Style
+Suggest that when building packages you include (.editorconfig)[https://github.com/ongoworks/reaction/blob/master/.editorconfig]
+
+Recommended indentation style is 2 spaces.
 
 #### event,template
 When using event, template parameters in methods, use full names
@@ -51,6 +54,14 @@ When using event, template parameters in methods, use full names
 #### return
 As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not
 be what you expect or want. Using explicit `return` also makes the code more readable for others.
+
+### console.log
+Feel free to have verbose console.logs in the code, but use the following format to not clutter production logging:
+
+```
+console.log "Something we want to see during development" if Meteor.settings.public?.isDebug
+```
+
 
 #Server layer
 	

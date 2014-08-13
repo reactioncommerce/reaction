@@ -1,20 +1,20 @@
 ###
 # Global reaction shop permissions methods
 ###
-Meteor.app = _.extend(Meteor.app || {},
+_.extend ReactionCore,
   getCurrentShopCursor: (client) ->
-    domain = Meteor.app.getDomain(client)
+    domain = @getDomain(client)
     cursor = Shops.find({domains: domain}, {limit: 1})
     if !cursor.count()
       console.log "Reaction Configuration: Add a domain entry to shops for: ", domain
     return cursor
 
   getCurrentShop: (client) ->
-    cursor = Meteor.app.getCurrentShopCursor(client)
+    cursor = @getCurrentShopCursor(client)
     return cursor.fetch()[0]
 
   getShopId: (client) ->
-    return Meteor.app.getCurrentShop(client)._id
+    return @getCurrentShop(client)._id
 
   getDomain: (client) ->
     #todo: eventually we want to use the host domain to determine
@@ -43,4 +43,3 @@ Meteor.app = _.extend(Meteor.app || {},
     shop = @getCurrentShop() unless shop
     userId = Meteor.userId() unless userId
     return Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
-)

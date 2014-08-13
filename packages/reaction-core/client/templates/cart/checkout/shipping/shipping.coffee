@@ -1,7 +1,7 @@
 Template.checkoutShipping.helpers
   rates: () ->
     rates = []
-    config = ConfigData.findOne().shipping
+    config = ReactionCore.Collections.ConfigData.findOne().shipping
     for carrier,value in config
       for method,index in carrier.methods
         if method?.rate?

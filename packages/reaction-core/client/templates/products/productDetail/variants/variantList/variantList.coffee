@@ -1,6 +1,6 @@
 Template.variantList.helpers
   variants: () ->
-    product  = currentProduct.get "product"
+    product = selectedProduct()
     if product
       variants = (variant for variant in product.variants when !variant.parentId?)
       inventoryTotal = 0
@@ -15,9 +15,9 @@ Template.variantList.helpers
       variants
 
   childVariants: () ->
-    product  = currentProduct.get "product"
+    product = selectedProduct()
     if product
-      current = (currentProduct.get "variant")
+      current = selectedVariant()
       if current?._id
         if current.parentId?
           variants = (variant for variant in product.variants when variant.parentId is current.parentId and variant.optionTitle)
@@ -27,13 +27,12 @@ Template.variantList.helpers
 
 Template.variantList.events
   # "submit form": (event,template) ->
-  #   unless (currentProduct.get "variant")._id is template.data._id
-  #     currentProduct.set "variant", template.data
+  #   unless selectedVariantId() is template.data._id
+  #     setCurrentVariant template.data._id
 
   "click #create-variant": (event) ->
     Meteor.call "createVariant", @._id
 
   "click .variant-select-option": (event,template) ->
     Alerts.removeSeen()
-    unless (currentProduct.get "variant")._id is @._id
-      currentProduct.set "variant", @
+    setCurrentVariant @._id

@@ -5,8 +5,8 @@
 <template name="headerLinks">
 <ul class="list-inline tag-link-list" id="tag-link-list">
   {{#each ./tags}}
-   <li class="{{activeTag tag._id}}">
-    <a href="{{pathForSEO "product/tag" "name"}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}" data-event-category="tag" data-event-action="tag-click" data-event-label="Navigation Tag Click" data-event-value="{{name}}">{{name}}</a>
+   <li class="{{activeTag}}">
+    <a href="{{pathForSEO "product/tag" "slug"}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}" data-event-category="tag" data-event-action="tag-click" data-event-label="Navigation Tag Click" data-event-value="{{name}}">{{name}}</a>
   </li>
   {{/each}}
   {{#if userHasRole "admin"}}
@@ -36,7 +36,7 @@
   <li data-tag-id="{{_id}}">
     <div class="tag-input-group">
       <span class="tag-input">
-        <input type="text" class="tags-input-select" value="{{name}}" placeholder="Add tags" id="tags-submit-new" autofocus/>
+        <input type="text" class="tags-input-select tags-submit-new" value="{{name}}" placeholder="Add tags" autofocus/>
       </span>
     </div>
   </li>

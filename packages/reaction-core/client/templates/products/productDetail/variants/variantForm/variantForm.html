@@ -1,7 +1,7 @@
 <template name="variantForm">
   <div id="variant-edit-form-{{_id}}" class="variant-edit-form {{variantFormVisible}}">
     <div class="row well well-sm variant-form" >
-      {{#autoForm schema="ProductVariantSchema" doc=. type="method" meteormethod="updateVariant" id=variantFormId validation="keyup" resetOnSuccess="false"}}
+      {{#autoForm schema="ReactionCore.Schemas.ProductVariant" doc=. type="method" meteormethod="updateVariant" id=variantFormId validation="keyup" resetOnSuccess=false}}
       <fieldset>
         <div class="row">
           <div class="col-xs-12 col-sm-9 col-md-9">
@@ -13,42 +13,42 @@
                 {{/if}}
             </div>
 
-              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
-                {{>afFieldLabel name='weight'}}
-                {{>afFieldInput name='weight'}}
-                {{#if afFieldIsInvalid name='weight'}}
-                <span class="help-block">{{afFieldMessage name='weight'}}</span>
-                {{/if}}
-              </div>
+            <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
+              {{>afFieldLabel name='weight'}}
+              {{>afFieldInput name='weight'}}
+              {{#if afFieldIsInvalid name='weight'}}
+              <span class="help-block">{{afFieldMessage name='weight'}}</span>
+              {{/if}}
+            </div>
 
-              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
-                {{>afFieldLabel name='inventoryQuantity'}}
-                {{>afFieldInput name='inventoryQuantity'}}
-                {{#if afFieldIsInvalid name='inventoryQuantity'}}
-                <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
-                {{/if}}
-              </div>
+            <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
+              {{>afFieldLabel name='inventoryQuantity'}}
+              {{>afFieldInput name='inventoryQuantity'}}
+              {{#if afFieldIsInvalid name='inventoryQuantity'}}
+              <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
+              {{/if}}
+            </div>
 
-              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
-                {{>afFieldLabel name='compareAtPrice'}}
-                {{>afFieldInput name='compareAtPrice'}}
-                {{#if afFieldIsInvalid name='compareAtPrice'}}
-                <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
-                {{/if}}
-              </div>
+            <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
+              {{>afFieldLabel name='compareAtPrice'}}
+              {{>afFieldInput name='compareAtPrice'}}
+              {{#if afFieldIsInvalid name='compareAtPrice'}}
+              <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
+              {{/if}}
+            </div>
 
-              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
-                {{>afFieldLabel name='price'}}
-                {{>afFieldInput name='price'}}
-                {{#if afFieldIsInvalid name='price'}}
-                <span class="help-block">{{afFieldMessage name='price'}}</span>
-                {{/if}}
-              </div>
+            <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
+              {{>afFieldLabel name='price'}}
+              {{>afFieldInput name='price'}}
+              {{#if afFieldIsInvalid name='price'}}
+              <span class="help-block">{{afFieldMessage name='price'}}</span>
+              {{/if}}
+            </div>
 
           </div>
             <div class="variant-options col-xs-12 col-sm-3 col-md-3">
               <div class="form-group {{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
-                  {{>afFieldInput name='taxable'  default="true"}}
+                  {{>afFieldInput name='taxable' value=true}}
                   {{#if afFieldIsInvalid name='taxable'}}
                   <span class="help-block">{{afFieldMessage name='taxable'}}</span>
                   {{/if}}
@@ -68,11 +68,11 @@
               <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
                   <span class="col-xs-5 col-sm-8 col-md-8">
                   {{>afFieldLabel name='lowInventoryWarningThreshold'}}
-                  {{>afFieldInput name='lowInventoryWarningThreshold'}}
+                  {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
                   </span>
-                  {{#if afFieldIsInvalid name='lowInventoryWarningThreshold' placeholder=0}}
-                <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
-                {{/if}}
+                  {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}
+                  <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
+                  {{/if}}
               </div>
 
            </div>
@@ -80,9 +80,9 @@
       </fieldset>
       <div class="variant-form-buttons col-sm-12">
         {{>afFieldInput name="_id" type="hidden"}}
-          <button class="btn btn-default btn-child-variant-form" data-toggle="tooltip" title="Variant options"><i class="fa fa-sitemap fa-lg"></i></button>
-          <button class="btn btn-default btn-clone-variant" data-toggle="tooltip" title="Clone variant"><i class="fa fa-code-fork fa-rotate-180 fa-lg"></i></button>
-          <button class="btn btn-default btn-remove-variant" data-toggle="tooltip" title="Remove variant"><i class="fa fa-trash-o fa-lg"></i></button>
+        <button class="btn btn-default btn-child-variant-form" data-toggle="tooltip" title="Variant options"><i class="fa fa-sitemap fa-lg"></i></button>
+        <button class="btn btn-default btn-clone-variant" data-toggle="tooltip" title="Clone variant"><i class="fa fa-code-fork fa-rotate-180 fa-lg"></i></button>
+        <button class="btn btn-default btn-remove-variant" data-toggle="tooltip" title="Remove variant"><i class="fa fa-trash-o fa-lg"></i></button>
       </div>
       {{/autoForm}}
     </div>
