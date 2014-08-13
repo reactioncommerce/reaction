@@ -5,14 +5,12 @@ A commerce platform developed with Meteor and following a reactive design patter
 ---
 ###Roadmap & Status:
 
-** Current status: Public Alpha v0.1.2 **
+** Current status: Public Alpha v0.1.3 **
 ** Functional but unstable, with HEAVY ongoing development!**
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
 
 As with all development, some items are ahead of schedule, and some are not.
-
-You can review our [Trello planning board for current progress](https://trello.com/b/ffwTH3tc/reaction-commerce)
 
 **Demonstration & Playground **
 
