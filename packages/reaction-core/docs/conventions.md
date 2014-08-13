@@ -67,4 +67,40 @@ console.log "Something we want to see during development" if Meteor.settings.pub
 	
 	functionalMethod *try to follow functional, action*
 	functionalAddItem *example*
-		
+
+#Variable Scope & Namespaces
+
+*common/packageGlobals.js:*
+
+```js
+// exported
+ReactionCore = {};
+ReactionCore.Collections = {};
+ReactionCore.Helpers = {};
+ReactionCore.Packages = {};
+```
+
+*common/collections.coffee:*
+
+```coffee
+Product = ReactionCore.Collections.Product = new Meteor.Collection("Product")
+# etc...
+```
+
+*anyfile.coffee:*
+
+```coffee
+# If we're going to use Product collection in this file, which could be in core or in an add-on pkg,
+# we can optionally assign to a file-scope variable at the top of the file to keep our code short.
+Product = ReactionCore.Collections.Product
+# etc...
+# At some point, in some file, we eventually define all the variables from packageGlobals.js
+helperOne = ->
+  return true
+```
+
+And the core pkg exports only `ReactionCore`, on both client and server:
+
+```js
+api.export(["ReactionCore"]);
+```
