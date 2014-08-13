@@ -24,7 +24,8 @@ Tip:  if you are cloning reaction-helloworld to start working on a new package p
 ##Dashboard
 Add packages to the reaction dashboard by adding **register.coffee**
 
-    ReactionCore.Packages.register(
+    ```coffeescript
+    ReactionCore.registerPackage
       name: "reaction-helloworld"
       depends: [] #reaction packages
       label: "HelloWorld"
@@ -39,7 +40,7 @@ Add packages to the reaction dashboard by adding **register.coffee**
           permission: "/helloworld"
           group: "Hello World"
         }
-    )
+    ```
 
 There are three elements to the "dashboard" view for packages.
 
