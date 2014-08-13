@@ -84,3 +84,5 @@ headers
 /iron-layout
 /iron-core
 /iron-dynamic-template
+/geocoder
+/collection-helpers
