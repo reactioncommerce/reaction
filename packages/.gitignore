@@ -81,3 +81,6 @@ headers
 /underscore-string-latest
 /emitter
 /kadira
+/iron-layout
+/iron-core
+/iron-dynamic-template
