@@ -22,7 +22,7 @@ Tip:  if you are cloning reaction-helloworld to start working on a new package p
     meteor add your-new-package
 
 ##Dashboard
-Add packages to the reaction dashboard by adding **register.coffee**
+Add packages to the reaction dashboard by adding **common/register.coffee**
 
     ReactionCore.registerPackage
       name: "reaction-helloworld"
