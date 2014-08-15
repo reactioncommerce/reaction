@@ -2,38 +2,58 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "spin": {},
-      "iron-router": {},
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
+        "branch": "master"
+      },
+      "reaction-paypal": {
+        "git": "https://github.com/ongoworks/reaction-paypal.git",
+        "branch": "master"
+      },
+      "reaction-google-analytics": {
+        "git": "https://github.com/ongoworks/reaction-google-analytics.git",
+        "branch": "master"
+      },
+      "reaction-helloworld": {
+        "git": "https://github.com/ongoworks/reaction-helloworld.git",
         "branch": "master"
       }
     },
     "packages": {
+      "reaction-core": {
+        "git": "https://github.com/ongoworks/reaction-core.git",
+        "branch": "master",
+        "commit": "a9a594d06a9d1db535936a2cfcd1b4c0ad6d2f79"
+      },
+      "reaction-paypal": {
+        "git": "https://github.com/ongoworks/reaction-paypal.git",
+        "branch": "master",
+        "commit": "8bd5eee493126fcab9b3e4ecc4e765f5c9b5e040"
+      },
+      "reaction-google-analytics": {
+        "git": "https://github.com/ongoworks/reaction-google-analytics.git",
+        "branch": "master",
+        "commit": "150be64438bd0dadca0df0d72d47e50f9330f1d3"
+      },
+      "reaction-helloworld": {
+        "git": "https://github.com/ongoworks/reaction-helloworld.git",
+        "branch": "master",
+        "commit": "e5b7093fc7b58f3e168ec9b6d2b3a77b032bcad7"
+      },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
         "tag": "v2.0.4",
         "commit": "f7b1e12a7caff1283cdb3671a393c182d0ae9862"
       },
-      "iron-router": {
-        "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.8.2",
-        "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
-      },
-      "reaction-core": {
-        "git": "https://github.com/ongoworks/reaction-core.git",
-        "branch": "master",
-        "commit": "86919711eceaa5a72066ade0ccecc04ec207adc5"
-      },
-      "iron-layout": {
-        "git": "https://github.com/EventedMind/iron-layout.git",
-        "tag": "v0.2.0",
-        "commit": "4a2d53e35ba036b0c189c7ceca34be494d4c6c97"
-      },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",
         "tag": "v1.2.11",
         "commit": "2d7dc91848ec874d3a0852c77f462d0fae749de5"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.8.2",
+        "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
@@ -95,20 +115,10 @@
         "tag": "v0.3.0",
         "commit": "237ced1ba81cce27daf0fc1438b93c03ee58b7f5"
       },
-      "blaze-layout": {
-        "git": "https://github.com/EventedMind/blaze-layout.git",
-        "tag": "v0.2.5",
-        "commit": "273e3ab7d005d91a1a59c71bd224533b4dae2fbd"
-      },
-      "iron-core": {
-        "git": "https://github.com/EventedMind/iron-core.git",
+      "iron-layout": {
+        "git": "https://github.com/EventedMind/iron-layout.git",
         "tag": "v0.2.0",
-        "commit": "0e48b5dc50d03f01025b7b900fb5ce2f13d52cad"
-      },
-      "iron-dynamic-template": {
-        "git": "https://github.com/EventedMind/iron-dynamic-template.git",
-        "tag": "v0.2.1",
-        "commit": "4dd1185c4d9d616c9abdb3f33e4a7d5a88db7e18"
+        "commit": "4a2d53e35ba036b0c189c7ceca34be494d4c6c97"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
@@ -117,8 +127,8 @@
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
-        "tag": "v2.6.0",
-        "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+        "tag": "v2.8.1",
+        "commit": "722ea63783d594341023836b7d418ab2567dab8c"
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
@@ -159,6 +169,21 @@
         "git": "https://github.com/CollectionFS/Meteor-cfs-storage-adapter.git",
         "tag": "v0.0.30",
         "commit": "ea710e8f407ed44ca7e153d4119fe043504260c9"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.5",
+        "commit": "273e3ab7d005d91a1a59c71bd224533b4dae2fbd"
+      },
+      "iron-core": {
+        "git": "https://github.com/EventedMind/iron-core.git",
+        "tag": "v0.2.0",
+        "commit": "0e48b5dc50d03f01025b7b900fb5ce2f13d52cad"
+      },
+      "iron-dynamic-template": {
+        "git": "https://github.com/EventedMind/iron-dynamic-template.git",
+        "tag": "v0.2.1",
+        "commit": "4dd1185c4d9d616c9abdb3f33e4a7d5a88db7e18"
       },
       "cfs-filesaver": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-filesaver.git",
