@@ -28,12 +28,12 @@
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
         "branch": "master",
-        "commit": "8bd5eee493126fcab9b3e4ecc4e765f5c9b5e040"
+        "commit": "1ff81adb855784a916dce88467d05d89c610a13b"
       },
       "reaction-google-analytics": {
         "git": "https://github.com/ongoworks/reaction-google-analytics.git",
         "branch": "master",
-        "commit": "150be64438bd0dadca0df0d72d47e50f9330f1d3"
+        "commit": "d7efa8f4114c4eb527c4d90191d59c84fca154f9"
       },
       "reaction-helloworld": {
         "git": "https://github.com/ongoworks/reaction-helloworld.git",
