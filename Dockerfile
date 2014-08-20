@@ -20,7 +20,7 @@ RUN npm cache clean -f && npm install -g n && n 0.10.29
 
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
-RUN npm install --silent -g forever meteorite phantomjs
+RUN npm install --silent -g nodemon meteorite phantomjs
 
 # Add current dir+subs to meteorsrc
 ADD . ./meteorsrc
@@ -48,4 +48,4 @@ EXPOSE 8080
 
 RUN touch .foreverignore
 # Define default command that runs the node app on container port 8080
-CMD forever -w ./main.js
+CMD nodemon ./main.js

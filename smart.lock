@@ -23,7 +23,7 @@
       "reaction-core": {
         "git": "https://github.com/ongoworks/reaction-core.git",
         "branch": "master",
-        "commit": "a9a594d06a9d1db535936a2cfcd1b4c0ad6d2f79"
+        "commit": "d928ec5c67765c6eeadf2aa7ded83ccfc7cf2d47"
       },
       "reaction-paypal": {
         "git": "https://github.com/ongoworks/reaction-paypal.git",
@@ -57,8 +57,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.16.1",
-        "commit": "34a447fd3a1b3164c78f865aabbac3ddc2d033fb"
+        "tag": "v0.17.0",
+        "commit": "c6e49dc0563a827eede2861745d7e42ee094f044"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
@@ -105,15 +105,20 @@
         "tag": "v0.0.7",
         "commit": "cea1b4dff66044398586dbc43861e6c491672f53"
       },
+      "geocoder": {
+        "git": "https://github.com/aldeed/meteor-geocoder.git",
+        "tag": "v0.3.0",
+        "commit": "237ced1ba81cce27daf0fc1438b93c03ee58b7f5"
+      },
       "reaction-app-packages": {
         "git": "https://github.com/ongoworks/reaction-app-packages.git",
         "tag": "v0.1.0",
         "commit": "13ac653b1ac26254111e2e370ee72fc4024205e1"
       },
-      "geocoder": {
-        "git": "https://github.com/aldeed/meteor-geocoder.git",
-        "tag": "v0.3.0",
-        "commit": "237ced1ba81cce27daf0fc1438b93c03ee58b7f5"
+      "reaction-search": {
+        "git": "https://github.com/reactioncommerce/reaction-search",
+        "branch": "master",
+        "commit": "7a76f5f220c242e9a36f8d68cfc2c5f4317feb6f"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
