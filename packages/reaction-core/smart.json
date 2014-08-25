@@ -18,6 +18,7 @@
     "collection-helpers": {},
     "handlebars-server": {},
     "collectionFS": {},
+    "cfs-graphicsmagick": {},
     "cfs-filesystem": {},
     "cfs-s3": {},
     "ui-dropped-event": {},
