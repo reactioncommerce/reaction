@@ -116,7 +116,6 @@ Meteor.methods
           i++
       i++
 
-    console.log(product)
     #create the cloned product
     return Products.insert(product, {validate: false})
 
