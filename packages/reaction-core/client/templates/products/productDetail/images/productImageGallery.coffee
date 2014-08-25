@@ -25,7 +25,7 @@ Template.productImageGallery.helpers
     return selectedVariant()
 
 Template.productImageGallery.rendered = ->
-
+  @autorun ->
     # Drag and drop image index update
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       $gallery = $(".gallery")
