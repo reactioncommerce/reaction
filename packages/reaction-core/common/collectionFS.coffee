@@ -10,7 +10,8 @@ gridfs = new FS.Store.GridFS "gridfsmedia",
 
 # To pass through stream:
 #readStream.pipe(writeStream);
-thumbnails = new FS.Store.GridFS "thumbnails",
+thumbnails = new FS.Store.FileSystem "thumbnails",
+  path: ".thumbnails"
   #   # requires installation of imagemagick
   # transformWrite: (fileObj, readStream, writeStream) ->
   #   # Store 235x235 px images for the cart

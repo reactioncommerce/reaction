@@ -106,9 +106,17 @@ Meteor.methods
     #make new random IDs for all variants
     while i < product.variants.length
       #TODO Clone images with clone variants
-      product.variants[i]._id = Random.id()
+      newId = Random.id()
+      oldId = product.variants[i]._id
+      product.variants[i]._id = newId
+      unless product.variants[i].parentId
+        while i < product.variants.length
+          if product.variants[i].parentId == oldId
+            product.variants[i].parentId = newId
+          i++
       i++
 
+    console.log(product)
     #create the cloned product
     return Products.insert(product, {validate: false})
 
