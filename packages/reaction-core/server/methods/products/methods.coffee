@@ -106,13 +106,18 @@ Meteor.methods
     #make new random IDs for all variants
     while i < product.variants.length
       #TODO Clone images with clone variants
-      newId = Random.id()
-      oldId = product.variants[i]._id
-      product.variants[i]._id = newId
+      newVariantId = Random.id()
+      oldVariantId = product.variants[i]._id
+      product.variants[i]._id = newVariantId
+      Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
+        newFile = fileObj.copy()
+        newFile.metadata.productId = product._id
+        newFile.metadata.variantId = newVariantId
+        Media.insert newFile
       unless product.variants[i].parentId
         while i < product.variants.length
-          if product.variants[i].parentId == oldId
-            product.variants[i].parentId = newId
+          if product.variants[i].parentId == oldVariantId
+            product.variants[i].parentId = newVariantId
           i++
       i++
 
