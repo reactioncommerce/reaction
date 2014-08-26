@@ -23,7 +23,9 @@
 <template name="dashboardNavBar">
   <div class="dashboard-navbar-packages">
     <ul class="nav nav-pills">
-      {{#each packages}}
+      {{#each allPackages}}
+        {{#if enabled}}
+        {{#if overviewRoute}}
         <li>
           <a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">
             {{#if overViewLabel}}
@@ -33,6 +35,8 @@
             {{/if}}
           </a>
         </li>
+        {{/if}}
+        {{/if}}
       {{/each}}
     </ul>
   </div>

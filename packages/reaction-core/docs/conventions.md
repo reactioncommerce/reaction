@@ -42,6 +42,9 @@
 			Template.functionalTriad.events
 
 ###Code Style
+Suggest that when building packages you include (.editorconfig)[https://github.com/ongoworks/reaction/blob/master/.editorconfig]
+
+Recommended indentation style is 2 spaces.
 
 #### event,template
 When using event, template parameters in methods, use full names
@@ -52,8 +55,52 @@ When using event, template parameters in methods, use full names
 As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not
 be what you expect or want. Using explicit `return` also makes the code more readable for others.
 
+### console.log
+Feel free to have verbose console.logs in the code, but use the following format to not clutter production logging:
+
+```
+console.log "Something we want to see during development" if Meteor.settings.public?.isDebug
+```
+
+
 #Server layer
 	
 	functionalMethod *try to follow functional, action*
 	functionalAddItem *example*
-		
+
+#Variable Scope & Namespaces
+
+*common/packageGlobals.js:*
+
+```js
+// exported
+ReactionCore = {};
+ReactionCore.Collections = {};
+ReactionCore.Helpers = {};
+ReactionCore.Packages = {};
+```
+
+*common/collections.coffee:*
+
+```coffee
+Product = ReactionCore.Collections.Product = new Meteor.Collection("Product")
+# etc...
+```
+
+*anyfile.coffee:*
+
+```coffee
+# If we're going to use Product collection in this file, which could be in core or in an add-on pkg,
+# we can optionally assign to a file-scope variable at the top of the file to keep our code short.
+Product = ReactionCore.Collections.Product
+# etc...
+# At some point, in some file, we eventually define all the variables from packageGlobals.js
+helperOne = ->
+  return true
+```
+
+And the core pkg exports only `ReactionCore`, on both client and server:
+
+```js
+api.export(["ReactionCore"]);
+```

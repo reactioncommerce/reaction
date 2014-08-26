@@ -17,8 +17,6 @@ setProduct = (productId, variantId) ->
 Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
-  onRun: ->
-    Meteor.app.init()
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()
@@ -44,7 +42,7 @@ ShopController = @ShopController
   waitOn: ->
     @subscribe "shops"
   onBeforeAction: (pause) ->
-    unless Meteor.app.hasPermission(@route.name)
+    unless ReactionCore.hasPermission(@route.name)
       @render('unauthorized')
       pause()
       return
@@ -104,13 +102,14 @@ Router.map ->
       @subscribe "tags"
     data: ->
       if @ready()
-        if @params._id.match  /^[A-Za-z0-9]{17}$/
-          return tag: Tags.findOne(@params._id)
+        id = @params._id
+        if id.match  /^[A-Za-z0-9]{17}$/
+          return tag: Tags.findOne(id)
         else
-          return tag: Tags.findOne({slug: @params._id.toLowerCase() })
+          return tag: Tags.findOne(slug: id.toLowerCase())
 
     onAfterAction: ->
-      document.title = this.data()?.tag.name || Shops.findOne()?.name
+      document.title = this.data()?.tag?.name || Shops.findOne()?.name
 
   # product view / edit page
   @route 'product',
@@ -126,7 +125,7 @@ Router.map ->
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
-          unless Meteor.app.hasPermission(@path)
+          unless ReactionCore.hasPermission(@path)
             @render 'unauthorized'
             Meteor.setTimeout (->
               Router.go('/')

@@ -1,26 +1,30 @@
+Packages = ReactionCore.Collections.Packages
+
 Meteor.methods
   ###
   # method to determine user's location for autopopulating addresses
   ###
   locateAddress: (latitude, longitude) ->
-    Future = Npm.require("fibers/future")
-    geocoder = Npm.require("node-geocoder")
-    future = new Future()
+    check latitude, Match.Optional(Number)
+    check longitude, Match.Optional(Number)
 
-    if latitude
-      locateCoord = geocoder.getGeocoder("google", "http")
-      locateCoord.reverse latitude, longitude, (err, address) ->
-        if err then Meteor._debug(err)
-        future.return(address)
-    else
-      ip = this.connection.httpHeaders['x-forwarded-for']
-      locateIP = geocoder.getGeocoder("freegeoip", "http")
+    try
+      if latitude? and longitude?
+        geo = new GeoCoder()
+        address = geo.reverse latitude, longitude
+      else
+        ip = this.connection.httpHeaders['x-forwarded-for']
+        if ip
+          geo = new GeoCoder(geocoderProvider: "freegeoip")
+          address = geo.geocode ip
+    catch error 
+      # something went wrong; we'll use the default location and
+      # log the error on the server
+      if latitude? and longitude?
+        console.log "Error in locateAddress for latitude/longitude lookup (" + latitude + "," + longitude + "):" + error.message
+      else
+        console.log "Error in locateAddress for IP lookup (" + ip + "):" + error.message
 
-      locateIP.geocode ip, (err, address) ->
-        if err then Meteor._debug(err)
-        future.return(address)
-
-    address = future.wait()
     if address?.length
       return address[0]
     else # default location if nothing found is US
@@ -44,33 +48,45 @@ Meteor.methods
   # currentTagId will update related/hierachy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+
     newTag =
-      slug: _.slugify(tagName)
+      slug: _.slugify tagName
       name: tagName
 
-    #existing tags
-    unless tagId #prevent duplicate tags by checking for existing
-      existingTag = Tags.findOne({"name":tagName})
-      if currentTagId and existingTag
-        Tags.update(currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}})
-        return
-      else if existingTag and !currentTagId?
-        Tags.update(existingTag._id, {$set:{"isTopLevel":true}})
-        return
     #new tags
     if tagId #just an update
-      Tags.update(tagId,{$set:newTag})
+      Tags.update tagId, {$set:newTag}
+      console.log "Changed name of tag " + tagId + " to " + tagName if Meteor.settings.public?.isDebug
     else # create a new tag
-      newTag.isTopLevel = !currentTagId
-      newTag.shopId = Meteor.app.getShopId()
-      newTag.updatedAt = new Date()
-      newTag.createdAt = new Date()
-      newTag._id = Tags.insert newTag, (error, newTagId) ->
-        if !error and newTagId and currentTagId
-          Tags.update(currentTagId, {$addToSet: {"relatedTagIds": newTagId}})
+      #prevent duplicate tags by checking for existing
+      existingTag = Tags.findOne "name":tagName
+      #if a tag already exists with that name
+      if existingTag
+        if currentTagId
+          Tags.update currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}}
+          console.log 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
+        else
+          Tags.update existingTag._id, {$set:{"isTopLevel":true}}
+          console.log 'Marked tag "' + existingTag.name + '" as a top level tag' if Meteor.settings.public?.isDebug
+      #if a tag with that name does not exist yet
+      else
+        newTag.isTopLevel = !currentTagId
+        newTag.shopId = ReactionCore.getShopId()
+        newTag.updatedAt = new Date()
+        newTag.createdAt = new Date()
+        newTagId = Tags.insert newTag
+        console.log 'Created tag "' + newTag.name + '"' if Meteor.settings.public?.isDebug
+        if currentTagId
+          Tags.update currentTagId, {$addToSet: {"relatedTagIds": newTagId}}
+          console.log 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+
     if currentTagId
       Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
     # if not in use delete from system
@@ -81,7 +97,6 @@ Meteor.methods
       return Tags.remove(tagId)
 
   updatePackage: (updateDoc, packageName) ->
-    # check(updateDoc, PackageConfigSchema)
     packageId = Packages.findOne({ name: packageName })._id
 
     return false unless packageId

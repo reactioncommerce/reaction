@@ -74,7 +74,6 @@ Alerts =
             message: message
             mode: mode
             options: options
-            seen: false
         return;
 
     # Handle alertsLimit
@@ -106,9 +105,19 @@ Alerts =
   Best way is using Router filtering feature to call this function
   ###
   removeSeen: ->
-    Alerts.collection_.remove seen: true
+    Alerts.collection_.remove
+      seen: true
+      'options.sticky':
+        $ne: true
     return
 
+  ###
+  If you provide a `type` option when adding an alert, you can call this function
+  to later remove that alert.
+  ###
+  removeType: (type) ->
+    Alerts.collection_.remove 'options.type': type
+    return
 
   # Private members
   collection_: new Meteor.Collection(null)

@@ -28,6 +28,41 @@
   cursor = Products.find(selector)
 
 ###
+# confirm product deletion, delete, and alert
+###
+@maybeDeleteProduct = (prod) ->
+  title = prod.title || "the product"
+  id = prod._id
+  if confirm("Delete this product?")
+    Meteor.call "deleteProduct", id, (error, result) ->
+      if error or not result
+        Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id
+        console.log "Error deleting product " + id, error
+      else
+        setCurrentProduct null
+        Router.go "/"
+        Alerts.add "Deleted " + title, "info", type: "prod-delete-" + id
+
+@getCartCount = ->
+  storedCart = Cart.findOne()
+  count = 0
+  ((count += items.quantity) for items in storedCart.items) if storedCart?.items
+  return count
+
+@locateUser = ->
+  #Pass the lat/long to google geolocate
+  successFunction = (position) ->
+    lat = position.coords.latitude
+    lng = position.coords.longitude
+    Meteor.call "locateAddress", lat, lng, (error, address) ->
+      Session.set "address", address if address
+  errorFunction = ->
+    Meteor.call "locateAddress", (error, address) ->
+      Session.set "address", address if address
+
+  navigator.geolocation.getCurrentPosition successFunction, errorFunction if navigator.geolocation
+
+###
 #  Reactive current product
 #  This ensures reactive products, without session
 #  products:

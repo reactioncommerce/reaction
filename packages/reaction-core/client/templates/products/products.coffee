@@ -14,8 +14,10 @@ Template.addProductLinks.events
   "click #add-product-link": (event, template) ->
     event.preventDefault()
     event.stopPropagation()
+    $('.dropdown-toggle').dropdown('toggle') #close the menu
     Meteor.call "createProduct", (error, productId) ->
-      console.log error if error
-      $('.dropdown-toggle').dropdown('toggle') #close the menu
-      Router.go "product",
-        _id: productId
+      if error
+        console.log error
+      else if productId
+        Router.go "product",
+          _id: productId

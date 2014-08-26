@@ -4,7 +4,7 @@ Template.addressBookAdd.helpers
 
 Template.addressBookForm.helpers
   countryOptions: ->
-    ConfigData.findOne().countries
+    ReactionCore.Collections.ConfigData.findOne().countries
   regionOptions: ->
     #return list of regions for current country
   defaultCountry: ->

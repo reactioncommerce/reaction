@@ -1,10 +1,12 @@
 Package.describe({
-  summary: "Reaction Shop - commerce package for Reaction platform"
+  summary: "Reaction Core - Reaction Commerce package for Meteor",
+  name: "ongoworks:reaction-core",
+  version: "0.1.5",
+  git: "https://github.com/ongoworks/reaction-core.git"
 });
 
 Npm.depends({
-    "node-geocoder": "2.5.0",
-    "phantomjs": '1.9.7-8',
+    "phantomjs": '1.9.7-15',
     // Note: We need to use a tarball URL here until a node-phantom
     // dependency issue is fixed. See https://github.com/alexscheelmeyer/node-phantom/issues/102
     "node-phantom": 'https://github.com/apdmatos/node-phantom/tarball/2ccadc1d24efc47ace9ccfee187a0689c78e9009',
@@ -17,17 +19,22 @@ Package.on_use(function (api, where) {
     "accounts-ui-unstyled",
     "coffeescript",
     "underscore",
-    "autoform"
+    "autoform",
+    "geocoder",
+    "collection-helpers"
   ], ["client", "server"]);
 
   api.use(["reaction-app-packages"]);
   // Core Reaction
   api.add_files([
     "lib/statemachine/state-machine.js",
+    "common/packageGlobals.js",
     "common/common.coffee",
     "common/collectionFS.coffee",
     "common/collections.coffee",
-    "common/hooks.coffee"
+    "common/collection-helpers.coffee",
+    "common/hooks.coffee",
+    "common/register.coffee"
   ], ["client", "server"]);
 
   api.add_files([
@@ -72,7 +79,6 @@ Package.on_use(function (api, where) {
     "lib/jquery-cookie/jquery.cookie.js",
 
     "client/app.coffee",
-    "client/register.coffee",
     "client/subscriptions.coffee",
     "client/routing.coffee",
 
@@ -342,19 +348,20 @@ Package.on_use(function (api, where) {
   // i18n translation files
   api.add_files('i18n/core.en-US.json','client', {isAsset: true});
 
+  // We are now grouping all exported app variables and methods under
+  // "ReactionCore". The other exported variables should be moved to
+  // somewhere within this scope.
+  api.export(["ReactionCore"]);
 
 
   api.export([
     "Alerts",
-    "PackagesHandle",
     "CartWorkflow",
     "OrderWorkflow",
     "OrderWorkflowEvents"
   ], ["client"]);
 
   api.export([
-    "Packages",
-    "PackageConfigSchema",
     "currentProduct",
     "ShopController",
     "Products",

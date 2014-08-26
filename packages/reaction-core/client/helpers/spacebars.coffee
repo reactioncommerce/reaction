@@ -47,19 +47,20 @@ UI.registerHelper "socialImage", () ->
 
 UI.registerHelper "camelToSpace", (str) ->
   downCamel = str.replace(/\W+/g, "-").replace /([a-z\d])([A-Z])/g, "$1 $2"
-  downCamel.toLowerCase()
+  return downCamel.toLowerCase()
+
 ###
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system
 ###
 UI.registerHelper "hasShopPermission", (permissions) ->
-  Meteor.app.hasPermission(permissions)
+  return ReactionCore.hasPermission(permissions)
 
 UI.registerHelper "hasOwnerAccess", ->
-  Meteor.app.hasOwnerAccess()
+  return ReactionCore.hasOwnerAccess()
 
 UI.registerHelper "hasDashboardAccess", ->
-  Meteor.app.hasDashboardAccess()
+  return ReactionCore.hasDashboardAccess()
 
 UI.registerHelper "activeRouteClass", ->
   args = Array::slice.call(arguments, 0)
@@ -67,12 +68,10 @@ UI.registerHelper "activeRouteClass", ->
   active = _.any(args, (name) ->
     location.pathname is Router.path(name)
   )
-  active and "active"
+  return active and "active"
 
 UI.registerHelper "siteName", ->
-  siteName = Shops.findOne()?.name
-  siteName
-
+  return Shops.findOne()?.name
 
 ###
 # method to return cart calculated values
@@ -80,16 +79,14 @@ UI.registerHelper "siteName", ->
 ###
 UI.registerHelper "cart", () ->
   cartCount: ->
-    storedCart = Cart.findOne()
-    count = 0
-    ((count += items.quantity) for items in storedCart.items) if storedCart?.items
+    count = getCartCount()
     Session.set "cartCount", count
-    count
+    return count
 
   cartShipping: ->
     shipping = Cart.findOne()?.shipping?.shipmentMethod?.value
     Session.set "cartShipping", shipping
-    shipping
+    return shipping
 
   cartSubTotal: ->
     storedCart = Cart.findOne()
@@ -97,7 +94,7 @@ UI.registerHelper "cart", () ->
     ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
     subtotal = subtotal.toFixed(2)
     Session.set "cartSubTotal", subtotal
-    subtotal
+    return subtotal
 
   cartTotal: ->
     storedCart = Cart.findOne()
@@ -107,7 +104,7 @@ UI.registerHelper "cart", () ->
     subtotal = (subtotal + shipping) unless isNaN(shipping)
     total = subtotal.toFixed(2)
     Session.set "cartTotal", total
-    total
+    return total
 
   # return true if there is an issue with the user's cart and we should display the warning icon
   showCartIconWarning: ->
@@ -172,7 +169,7 @@ UI.registerHelper "key_value", (context, options) ->
     result.push
       key: key
       value: value
-  result
+  return result
 
 ###
 # Convert new line (\n\r) to <br>
@@ -220,7 +217,7 @@ UI.registerHelper "fname", ->
   if Meteor.user()
     name = Meteor.user().profile.name.split(" ")
     fname = name[0]
-    fname
+  return fname
 
 ###
 # general helper for determine if user has a store
@@ -228,11 +225,11 @@ UI.registerHelper "fname", ->
 ###
 UI.registerHelper "userHasProfile", ->
   user = Meteor.user()
-  user and !!user.profile.store
+  return user and !!user.profile.store
 
 UI.registerHelper "userHasRole", (role) ->
   user = Meteor.user()
-  user and user.roles.indexOf(role) isnt -1  if user and user.roles
+  return user and user.roles.indexOf(role) isnt -1  if user and user.roles
 
 ###
 # general helper to return 'active' when on current path
@@ -246,9 +243,9 @@ UI.registerHelper "active", (path) ->
   current = Router.current()
   routeName = current and current.route.name
   if routeName is path
-    "active"
+    return "active"
   else
-    ""
+    return ""
 
 ###
 # general helper to return 'active' when on current path
@@ -259,4 +256,23 @@ UI.registerHelper "navLink", (page, icon) ->
   ret = "<li "
   ret += "class='active'"  if Meteor.Router.page() is page
   ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>"
-  new Spacebars.SafeString(ret)
+  return new Spacebars.SafeString(ret)
+
+###
+# Returns all packages, both enabled and disabled.
+# Combined the info stored in the Packages collection
+# with the info provided by the package itself through
+# registration.
+###
+UI.registerHelper "allPackages", ->
+  return ReactionCore.Collections.Packages.find({}, {sort: {priority: -1}}).map (pkg) ->
+    pkgInfo = pkg.info()
+    _.extend pkg, pkgInfo if pkgInfo
+    return pkg
+
+###
+# For debugging: {{console.log this}}
+###
+UI.registerHelper "console", 
+  log: (a) ->
+    console.log a

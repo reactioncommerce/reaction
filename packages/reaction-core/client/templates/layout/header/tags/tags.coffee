@@ -1,60 +1,71 @@
-$(document).mouseup (e) ->
-  container = $(".tag-edit-list")
-  if not container.is(e.target) and container.has(e.target).length is 0
-    currentTag = Session.get "currentTag"
-    Session.set "isEditing-"+currentTag, false
-  return
-
+isMovingTag = false
 
 isEditing = (id) ->
   return Session.equals "isEditing-"+id, true
 
 setEditing = (id, isEditing) ->
   Session.set "isEditing-"+id, isEditing
+  return
 
+currentTag = ->
+  return Session.get "currentTag"
+
+$(document).mouseup (e) ->
+  container = $(".tag-edit-list")
+  if not isMovingTag and not container.is(e.target) and container.has(e.target).length is 0
+    setEditing currentTag(), false
+  return
 
 Template.headerTags.helpers
   tagsComponent: ->
-    currentTag = Session.get "currentTag"
-    if Session.equals "isEditing-"+currentTag, true
-      if Meteor.app.hasOwnerAccess()
-        return Template.tagInputForm
-      else
-        return Template.headerLinks
+    # If we're an admin with the header in edit mode, we display
+    # the tag edit form, else the normal header tag links
+    if isEditing(currentTag()) and ReactionCore.hasOwnerAccess()
+      return Template.tagInputForm
     else
       return Template.headerLinks
 
   tags: ->
+    # If we're on a product/tag page
     if @tag
       tags = []
-      if Tags.findOne(@tag._id)
-        Session.set "currentTag", @tag._id
-        tags.push(Tags.findOne(@tag._id))
-
-        relatedTagIds = Tags.findOne(@tag._id).relatedTagIds
-        if relatedTagIds
-          for relatedTagId in relatedTagIds
-            tags.push(Tags.findOne(relatedTagId))
-
+      tagDoc = Tags.findOne @tag._id
+      unless tagDoc
+        Session.set "currentTag", ""
+        return tags
+      # Note the current product/tag page we're on
+      Session.set "currentTag", @tag._id
+      # Display that tag first in the header
+      tags.push(tagDoc)
+      # Display all related tags next in the header
+      relatedTagIds = tagDoc.relatedTagIds
+      if relatedTagIds
+        for relatedTagId in relatedTagIds
+          tags.push(Tags.findOne(relatedTagId))
+    # All other pages
     else
+      # Display all top level tags
       tags = Tags.find({isTopLevel: true}, {sort: {position: 1}}).fetch()
+      # Note that we're not on a product/tag page
       Session.set "currentTag", ""
+      # If we've passed a specific list of tag IDs,
+      # also display all those tags
+      # XXX Seems to be unused?
       if @.tagIds
         for relatedTagId in @.tagIds
           unless (_.findWhere tags, _id: relatedTagId)
             tags.push(Tags.findOne(relatedTagId))
+    # Sort the tag list by tag.position before we return it
     tags.sort (a, b) ->
       a.position - b.position
-    tags
+    return tags
 
-  activeTag: (currentTag)->
-    if (Session.get "currentTag") is @._id then return "active"
-
-  editableTag: (currentTag)->
-    if (Session.get "currentTag") is @._id then return "true"
+Template.headerLinks.helpers
+  activeTag: ->
+    return "active" if Session.equals "currentTag", @._id
 
 Template.tagInputForm.helpers
-  tags: ()->
+  tags: ->
     tagList = []
     for tag in @.tags
       tagList.push tag._id
@@ -63,19 +74,15 @@ Template.tagInputForm.helpers
 
 Template.headerLinks.events
   'click #header-edit-tag': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Session.set "isEditing-"+currentTag, true
+    setEditing currentTag(), true
     Deps.flush()
 
-
 Template.tagInputForm.events
-  'click #btn-tags-cancel, click body': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Session.set "isEditing-"+currentTag, false
-
   'click .tag-input-group-remove': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Meteor.call "removeHeaderTag", @._id, currentTag
+    Meteor.call "removeHeaderTag", @._id, currentTag(), (error, result) ->
+      if error
+        console.log "Error removing header tag", error
+      template.$('.tags-submit-new').focus()
 
   'click .tags-input-select': (event,template) ->
     $(event.currentTarget).autocomplete(
@@ -92,24 +99,19 @@ Template.tagInputForm.events
     )
     Deps.flush()
 
-  'change .tags-input-select': (event,template) ->
-    currentTag = Session.get "currentTag"
-    Meteor.call "updateHeaderTags", $(event.currentTarget).val(), @._id, currentTag
-    $('#tags-submit-new').val('')
-    $('#tags-submit-new').focus()
-    # Deps.flush()
-
-  'blur.autocomplete': (event,template) ->
-    if $(event.currentTarget).val()
-      currentTag = Session.get "currentTag"
-      Meteor.call "updateHeaderTags", $(event.currentTarget).val(), @._id, currentTag
-      Deps.flush()
-      $('#tags-submit-new').val('')
-      $('#tags-submit-new').focus()
+  'blur.autocomplete, change .tags-input-select': (event,template) ->
+    val = $(event.currentTarget).val()
+    if val
+      Meteor.call "updateHeaderTags", val, @._id, currentTag(), (error, result) ->
+        if error
+          console.log "Error updating header tags", error
+        Deps.flush()
+        template.$('.tags-submit-new').val('').focus()
 
   'mousedown .tag-input-group-handle': (event,template) ->
+    isMovingTag = true
     Deps.flush()
-    $(".tag-edit-list").sortable("refresh")
+    template.$(".tag-edit-list").sortable("refresh")
 
 Template.tagInputForm.rendered = ->
   # *****************************************************
@@ -123,5 +125,6 @@ Template.tagInputForm.rendered = ->
       update: (event, ui) ->
         uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
         for tag,index in uiPositions
-          Tags.update(tag, {$set: {position: index}})
-
+          Tags.update tag, {$set: {position: index}}
+      stop: (event, ui) ->
+        isMovingTag = false

@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 # *****************************************************
 # Template.productImageGallery.helpers
 # *****************************************************
@@ -23,7 +25,7 @@ Template.productImageGallery.helpers
     return selectedVariant()
 
 Template.productImageGallery.rendered = ->
-
+  @autorun ->
     # Drag and drop image index update
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       $gallery = $(".gallery")
@@ -51,8 +53,23 @@ Template.productImageGallery.rendered = ->
           ui.placeholder.css "border", "1px dashed #ccc"
           ui.placeholder.css "border-radius","6px"
 
-Template.productImageGallery.events
+uploadHandler = (event, template) ->
+  productId = selectedProductId()
+  variantId = selectedVariantId()
+  userId = Meteor.userId()
+  count = Media.find({'metadata.variantId': variantId }).count()
+  FS.Utility.eachFile event, (file) ->
+    fileObj = new FS.File(file)
+    fileObj.metadata =
+      ownerId: userId
+      productId: productId
+      variantId: variantId
+      shopId: ReactionCore.getShopId()
+      priority: count
+    Media.insert fileObj
+    count++
 
+Template.productImageGallery.events
   "mouseenter .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
@@ -93,48 +110,12 @@ Template.productImageGallery.events
     @remove()
     return
 
-  "dropped #galleryDropPane": (event, template) ->
-    variantId = selectedVariantId() unless variant?._id
-    count = Media.find({'metadata.variantId': variantId }).count()
-    FS.Utility.eachFile event, (file, count, variantId) ->
-      fileObj = new FS.File(file)
-      fileObj.metadata =
-        ownerId: Meteor.userId()
-        productId: currentProduct._id
-        variantId: variantId
-        shopId: Meteor.app.shopId
-        priority: count
-      Media.insert fileObj
-      count++
+  "dropped #galleryDropPane": uploadHandler
 
 Template.imageUploader.events
   "click #btn-upload": (event,template) ->
     $("#files").click()
 
-  "change #files": (event, template) ->
-    variantId = selectedVariantId() unless variant?._id
-    count = Media.find({'metadata.variantId': variantId }).count()
-    FS.Utility.eachFile event, (file, count, variantId) ->
-      fileObj = new FS.File(file)
-      fileObj.metadata =
-        ownerId: Meteor.userId()
-        productId: currentProduct._id
-        variantId: variantId
-        shopId: Meteor.app.shopId
-        priority: count
-      Media.insert fileObj
-      count++
+  "change #files": uploadHandler
 
-  "dropped #dropzone": (event, template) ->
-    variantId = selectedVariantId() unless variant?._id
-    count = Media.find({'metadata.variantId': variantId }).count()
-    FS.Utility.eachFile event, (file, count, variantId) ->
-      fileObj = new FS.File(file)
-      fileObj.metadata =
-        ownerId: Meteor.userId()
-        productId: currentProduct._id
-        variantId: variantId
-        shopId: Meteor.app.shopId
-        priority: count
-      Media.insert fileObj
-      count++
+  "dropped #dropzone": uploadHandler

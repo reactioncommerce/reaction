@@ -4,7 +4,7 @@ Template.productDetail.helpers
       return Tags.findOne id
 
   tagsComponent: ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       return Template.productTagInputForm
     else
       return Template.productDetailTags
@@ -13,13 +13,13 @@ Template.productDetail.helpers
     return selectedVariant()?.price
 
   fieldComponent: (field) ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       return Template.productDetailEdit
     else
       return Template.productDetailField
 
   metaComponent: () ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       return Template.productMetaFieldForm
     else
       return Template.productMetaField
@@ -129,34 +129,26 @@ Template.productDetail.events
     return
 
   "click .delete-product-link": (event, template) ->
-    title = @.title
-    if confirm("Delete this product?")
-      Products.remove @._id, (error, result) ->
-        if error or result < 1
-          Alerts.add "There was an error deleting " + title
-          console.log error
-        else
-          setCurrentProduct null
-          Router.go "/"
-          Alerts.add "Deleted " + title
+    maybeDeleteProduct @
+    return
 
   "click .fa-facebook": ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       $(".facebookMsg-edit").fadeIn()
       $(".facebookMsg-edit-input").focus()
 
   "click .fa-twitter": ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       $(".twitterMsg-edit").fadeIn()
       $(".twitterMsg-edit-input").focus()
 
   "click .fa-pinterest": ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       $(".pinterestMsg-edit").fadeIn()
       $(".pinterestMsg-edit-input").focus()
 
   "click .fa-instagram": ->
-    if Meteor.app.hasOwnerAccess()
+    if ReactionCore.hasOwnerAccess()
       $(".instagramMsg-edit").fadeIn()
       $(".instagramMsg-edit-input").focus()
 

@@ -22,9 +22,9 @@ Tip:  if you are cloning reaction-helloworld to start working on a new package p
     meteor add your-new-package
 
 ##Dashboard
-Add packages to the reaction dashboard by adding **register.coffee**
+Add packages to the reaction dashboard by adding **common/register.coffee**
 
-    Meteor.app.packages.register(
+    ReactionCore.registerPackage
       name: "reaction-helloworld"
       depends: [] #reaction packages
       label: "HelloWorld"
@@ -39,7 +39,6 @@ Add packages to the reaction dashboard by adding **register.coffee**
           permission: "/helloworld"
           group: "Hello World"
         }
-    )
 
 There are three elements to the "dashboard" view for packages.
 
@@ -75,11 +74,11 @@ Shop has owner, which determine by "ownerId" field in Shop collection.
 
 on client: for current user
 
-    Meteor.app.hasOwnerAccess()
+    ReactionCore.hasOwnerAccess()
 
 on server: for some shop (current if not defined) and some userId (current if not defined)
 
-    Meteor.app.hasOwnerAccess(shop, userId)
+    ReactionCore.hasOwnerAccess(shop, userId)
 
 in templates: for current user
 
@@ -93,11 +92,11 @@ To check if user has some specific permissions:
 
 on Client: for current user, where "permissions" is string or [string]
 
-    Meteor.app.hasPermission(permissions)
+    ReactionCore.hasPermission(permissions)
 
 on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or [string]
 
-    Meteor.app.hasPermission(permissions, shop, userId)
+    ReactionCore.hasPermission(permissions, shop, userId)
 
 in templates:
 
@@ -107,7 +106,7 @@ in templates:
 For using shop permissions into some packages you must add it into register directive.
 If we add this package then permissions will be available in Shop Accounts Settings.
 
-    Meteor.app.packages.register
+    ReactionCore.Packages.register
      name: 'reaction-commerce-orders'
      provides: ['orderManager']
      label: 'Orders'

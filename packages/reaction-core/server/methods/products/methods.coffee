@@ -1,3 +1,5 @@
+Media = ReactionCore.Collections.Media
+
 Meteor.methods
   ###
   # the cloneVariant method copies variants, but will also create and clone child variants (options)
@@ -62,7 +64,6 @@ Meteor.methods
       for variants,value in product.variants
         if variants._id is variant._id
           newVariant = _.extend variants,variant
-      #TODO: check newVariant, ProductVariantSchema
       Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
         console.log error if error
         return
@@ -118,9 +119,22 @@ Meteor.methods
     check variantId, String
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
+    #what will we be deleteing?
+    deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
     #delete variants with this variant as parent
     Products.update {"variants.parentId": variantId},{$pull: 'variants':{'parentId': variantId}}
+    #delete this variant
     Products.update {"variants._id": variantId},{$pull: 'variants':{'_id': variantId}}
+    # unlink media
+    _.each deleted, (product) ->
+      _.each product.variants, (variant) ->
+        if variant.parentId is variantId or variant._id is variantId
+          Media.update 'metadata.variantId': variant._id,
+            $unset:
+              'metadata.productId': ""
+              'metadata.variantId': ""
+              'metadata.priority': ""
+          , multi: true
     return true
 
   ###
@@ -142,6 +156,25 @@ Meteor.methods
         }
       ]
     }, {validate: false})
+
+  ###
+  # delete a product and unlink it from all media
+  ###
+  deleteProduct: (id) ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    numRemoved = Products.remove id
+    if numRemoved > 0
+      # unlink media
+      Media.update 'metadata.productId': id,
+        $unset:
+          'metadata.productId': ""
+          'metadata.variantId': ""
+          'metadata.priority': ""
+      , multi: true
+      return true
+    else
+      return false
 
   ###
   # update single product field
@@ -178,7 +211,7 @@ Meteor.methods
     else # create a new tag
       # newTag.isTopLevel = !currentTagId
       newTag.isTopLevel = false
-      newTag.shopId = Meteor.app.getShopId()
+      newTag.shopId = ReactionCore.getShopId()
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
       newTag._id = Tags.insert(newTag)

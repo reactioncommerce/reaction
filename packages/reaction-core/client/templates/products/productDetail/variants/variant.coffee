@@ -19,7 +19,7 @@ Template.variant.events
     setCurrentVariant @._id
     toggleSession "variant-form-"+@._id
 
-  "dblclick .variant-list-item": (event) ->
+  "dblclick .variant-detail": (event) ->
     if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
       setCurrentVariant @._id
       toggleSession "variant-form-"+@._id
@@ -31,34 +31,35 @@ Template.variant.events
     setCurrentVariant @._id
 
 Template.variant.rendered = ->
-  if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
-    variantSort = $(".variant-list")
-    variantSort.sortable
-        items: "> li.variant-list-item"
-        cursor: "move"
-        opacity: 0.3
-        helper: "clone"
-        placeholder: "variant-sortable"
-        forcePlaceholderSize: true
-        axis: "y"
-        update: (event, ui) ->
-          productVariants = selectedProduct()?.variants
-          uiPositions = $(this).sortable("toArray",attribute:"data-id")
-          newVariants = []
+  @autorun ->
+    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      variantSort = $(".variant-list")
+      variantSort.sortable
+          items: "> li.variant-list-item"
+          cursor: "move"
+          opacity: 0.3
+          helper: "clone"
+          placeholder: "variant-sortable"
+          forcePlaceholderSize: true
+          axis: "y"
+          update: (event, ui) ->
+            productVariants = selectedProduct()?.variants
+            uiPositions = $(this).sortable("toArray",attribute:"data-id")
+            newVariants = []
 
-          for id, index in uiPositions
-            for variant, pindex in productVariants
-              if variant?._id is id
-                newVariants[index] = variant
-                delete productVariants[pindex]
+            for id, index in uiPositions
+              for variant, pindex in productVariants
+                if variant?._id is id
+                  newVariants[index] = variant
+                  delete productVariants[pindex]
 
-          updateVariants = _.union productVariants, newVariants
-          Meteor.defer ->
-            Meteor.call "updateVariants", updateVariants
+            updateVariants = _.union productVariants, newVariants
+            Meteor.defer ->
+              Meteor.call "updateVariants", updateVariants
 
-        start: (event, ui) ->
-          ui.placeholder.height ui.helper.height()
-          ui.placeholder.html "Drop variant to reorder"
-          ui.placeholder.css "padding-top", ui.helper.height() / 3
-          ui.placeholder.css "border", "1px dashed #ccc"
-          ui.placeholder.css "border-radius","6px"
+          start: (event, ui) ->
+            ui.placeholder.height ui.helper.height()
+            ui.placeholder.html "Drop variant to reorder"
+            ui.placeholder.css "padding-top", ui.helper.height() / 3
+            ui.placeholder.css "border", "1px dashed #ccc"
+            ui.placeholder.css "border-radius","6px"

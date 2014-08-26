@@ -1,9 +1,11 @@
 <template name="packagesGrid">
-<div class="available-pkg-grid">
-      {{#each availablePkgs}}
-        <div class="col-sm-3">
+  <div class="available-pkg-grid">
+    {{#each allPackages}}
+      {{#unless hidden}}
+      <div class="col-sm-3">
         {{> gridPackage}}
-        </div>
-      {{/each}}
-</div>
+      </div>
+      {{/unless}}
+    {{/each}}
+  </div>
 </template>
