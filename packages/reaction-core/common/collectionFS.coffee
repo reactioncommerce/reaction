@@ -17,7 +17,7 @@ ReactionCore.Collections.Media = new FS.Collection "media",
     new FS.Store.GridFS("600x600", #large PDP image
       transformWrite: (fileObj, readStream, writeStream) ->
         if gm.isAvailable  # requires installation of imagemagick
-          # Store 1000x1000 px images for the products
+          # Store 600x600 px images for the product grids (optional)
           gm(readStream, fileObj.name).resize("600", "600").stream().pipe writeStream
         else
           readStream.pipe(writeStream);
