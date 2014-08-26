@@ -1,5 +1,8 @@
 Package.describe({
-  summary: "Reaction Shop - commerce package for Reaction platform"
+  summary: "Reaction Core - Reaction Commerce package for Meteor",
+  name: "ongoworks:reaction-core",
+  version: "0.1.5",
+  git: "https://github.com/ongoworks/reaction-core.git"
 });
 
 Npm.depends({

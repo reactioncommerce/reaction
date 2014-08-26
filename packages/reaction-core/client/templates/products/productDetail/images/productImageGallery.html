@@ -16,7 +16,7 @@
 
 <template name="imageDetail">
   <li class="gallery-sortable" data-index="{{_id}}">
-    <img src="{{url uploading='../../resources/placeholder.gif' storing='../../resources/placeholder.gif' store='1000x1000'}}" class="img-responsive" alt="{{title}}">
+    <img src="{{url uploading='../../resources/placeholder.gif' storing='../../resources/placeholder.gif' store='large'}}" class="img-responsive" alt="{{title}}">
    {{#if userHasRole "admin"}}
     <div class="gallery-tools">
       <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
