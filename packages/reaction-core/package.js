@@ -83,7 +83,7 @@ Package.on_use(function (api, where) {
     "client/routing.coffee",
 
     "client/helpers/helpers.coffee",
-    "client/helpers/config.coffee",
+    "client/helpers/i18n/i18n.coffee",
     "client/helpers/spacebars.coffee",
 
     "client/workflows/cart/workflow.coffee",
@@ -95,6 +95,9 @@ Package.on_use(function (api, where) {
 
     "client/templates/layout/header/tags/tags.html",
     "client/templates/layout/header/tags/tags.coffee",
+
+    "client/templates/layout/header/i18n/i18n.html",
+    "client/templates/layout/header/i18n/i18n.coffee",
 
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",
@@ -346,7 +349,9 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
 
   // i18n translation files
-  api.add_files('i18n/core.en-US.json','client', {isAsset: true});
+  api.add_files('i18n/core-dev.json','client', {isAsset: true});
+  api.add_files('i18n/core-en.json','client', {isAsset: true});
+  api.add_files('i18n/core-es.json','client', {isAsset: true});
 
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to

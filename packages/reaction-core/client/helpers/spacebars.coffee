@@ -273,6 +273,6 @@ UI.registerHelper "allPackages", ->
 ###
 # For debugging: {{console.log this}}
 ###
-UI.registerHelper "console", 
+UI.registerHelper "console",
   log: (a) ->
     console.log a

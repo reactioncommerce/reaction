@@ -5,11 +5,12 @@
     "submit": "Submit"
   },
   "cartDrawer": {
-    "empty": "Estamos tristes. Su carro está vacío.",
-    "keep-shopping": "Mantener en sus compras",
-    "checkout": "Pedido ahora"
+    "empty": "We're sad. Your cart is empty.",
+    "keep-shopping": "Keep on shopping",
+    "checkout": "Checkout now"
   },
   "cartSubTotals": {
+    "head": "Your cart",
     "items": "Items in cart",
     "subtotal": "Sub total",
     "shipping": "Shipping",

@@ -1,16 +1,11 @@
 {
-  "app": {
-    "save-and-continue": "Save and continue",
-    "cancel": "Cancel",
-    "submit": "Submit"
-  },
   "cartDrawer": {
-    "empty": "We're sad. Your cart is empty.",
-    "keep-shopping": "Keep on shopping",
-    "checkout": "Checkout now"
+    "empty": "Estamos tristes. Su carro está vacío.",
+    "keep-shopping": "Mantener en sus compras",
+    "checkout": "Pedido ahora"
   },
   "cartSubTotals": {
-    "items": "Items in cart",
+    "items": "Artículos en la cesta",
     "subtotal": "Sub total",
     "shipping": "Shipping",
     "tax": "Tax",
