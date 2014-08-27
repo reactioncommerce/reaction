@@ -81,7 +81,7 @@ Meteor.methods
       return
 
   ###
-  # clone a whole product, defaulting visibility,etc
+  # clone a whole product, defaulting visibility, etc
   # in the future we are going to do an inheritance product
   # that maintains relationships with the cloned
   # product tree
@@ -112,7 +112,7 @@ Meteor.methods
       Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
         newFile = fileObj.copy()
         newFile.update({$set: {'metadata.productId': product._id, 'metadata.variantId': newVariantId}})
-      #if parent update any child variants with the newly assigned ID
+      #update any child variants with the newly assigned ID
       unless product.variants[i].parentId
         while i < product.variants.length
           if product.variants[i].parentId == oldVariantId
