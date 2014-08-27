@@ -16,13 +16,13 @@
                   "version": "1.2.5"
                 },
                 "ws": {
-                  "version": "0.4.31",
+                  "version": "0.4.32",
                   "dependencies": {
                     "commander": {
-                      "version": "0.6.1"
+                      "version": "2.1.0"
                     },
                     "nan": {
-                      "version": "0.3.2"
+                      "version": "1.0.0"
                     },
                     "tinycolor": {
                       "version": "0.0.1"

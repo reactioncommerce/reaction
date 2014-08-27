@@ -1,4 +1,9 @@
 {
+  "languages": {
+    "select": "Select Language",
+    "english": "English",
+    "spanish": "Español"
+  },
   "app": {
     "save-and-continue": "Save and continue",
     "cancel": "Cancel",

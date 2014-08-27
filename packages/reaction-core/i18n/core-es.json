@@ -1,4 +1,14 @@
 {
+  "languages": {
+    "select": "Selecciona Idioma",
+    "english": "English",
+    "spanish": "Español"
+  },
+    "app": {
+    "save-and-continue": "Save and continue",
+    "cancel": "Cancelar",
+    "submit": "Guardar"
+  },
   "cartDrawer": {
     "empty": "Estamos tristes. Su carro está vacío.",
     "keep-shopping": "Mantener en sus compras",

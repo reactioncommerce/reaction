@@ -2,23 +2,6 @@
 # Reaction Handlebars helpers
 ###
 ###
-# i18n translate
-# see: http://i18next.com/
-###
-Handlebars.registerHelper "i18n", (i18n_key) ->
-  result = i18n.t(i18n_key)
-  new Handlebars.SafeString(result)
-
-#default return $ symbol
-UI.registerHelper "currency", () ->
-  shops = Shops.findOne()
-  if shops then return shops.currency
-
-UI.registerHelper "currencySymbol", () ->
-  shops = Shops.findOne()
-  if shops then return shops.moneyFormat
-
-###
 # general helper for formatting price
 # returns number float currency format
 ###
