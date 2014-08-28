@@ -10,34 +10,34 @@
 #  all translations should go in en-dev.json, and will cascade to other language files
 #
 ###################################################################################
-
 Meteor.startup ->
-  Deps.autorun () ->
-    sessionLanguage = Session.get "language"
-    unless sessionLanguage
-      Session.set "language", i18n.detectLanguage()
-      console.log "setting"
-    i18n.init {
-      useDataAttrOptions: true
-      # useLocalStorage: true,
-      # localStorageExpirationTime: 3000, #86400000 // in ms, default 1 week
+  Session.set "language", i18n.detectLanguage()
+
+Deps.autorun () ->
+  sessionLanguage = Session.get "language"
+  Meteor.subscribe "Translations", sessionLanguage, () ->
+    resources =  ReactionCore.Collections.Translations.findOne({},{fields:{_id: 0},reactive:false})
+    $.i18n.init {
       lng: sessionLanguage
+      fallbackLang: 'en'
       ns: "core"
-      resGetPath: "/packages/reaction-core/i18n/__ns__-__lng__.json"
+      resStore: resources
       # debug: true
       },(t)->
-        $("[data-i18n]").i18n()
-    # else
-    #   console.log "Else", sessionLanguage
-    #   i18n.setLng(sessionLanguage)
-    #   $("[data-i18n]").i18n()
+        $("[data-i18n]").i18n() #init everything, then add i18n to each template
+        _.each Template, (template, name) ->
+          originalRender = template.rendered
+          template.rendered = ->
+            $("[data-i18n]").i18n()
+            originalRender and originalRender.apply(this, arguments)
+
 
 ###
 # i18n translate
 # see: http://i18next.com/
 ###
-Handlebars.registerHelper "i18n", (i18n_key) ->
 
+Handlebars.registerHelper "i18n", (i18n_key) ->
   result = i18n.t(i18n_key)
   return new Handlebars.SafeString(result)
 

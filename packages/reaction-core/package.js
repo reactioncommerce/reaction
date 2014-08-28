@@ -347,6 +347,7 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/roles.json', 'server', {isAsset: true});
   api.add_files('private/data/users.json', 'server', {isAsset: true});
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
+  api.add_files('private/data/Translations.json', 'server', {isAsset: true});
 
   // i18n translation files
   api.add_files('i18n/core-dev.json','client', {isAsset: true});

@@ -24,9 +24,10 @@ loadFixtures = ->
   # Load data from json files
   loadData ReactionCore.Collections.Products unless Products.find().count()
   loadData ReactionCore.Collections.Shops unless Shops.find().count()
-  createDefaultAdminUser() unless Meteor.users.find().count()
   loadData ReactionCore.Collections.Tags unless Tags.find().count()
   loadData ReactionCore.Collections.ConfigData unless ReactionCore.Collections.ConfigData.find().count()
+  loadData ReactionCore.Collections.Translations unless ReactionCore.Collections.Translations.find().count()
+  createDefaultAdminUser() unless Meteor.users.find().count()
   # loadImageData "Images" unless Images.find().count()
 
   # Load data from settings/json files

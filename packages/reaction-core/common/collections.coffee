@@ -4,6 +4,7 @@ share.Product = @Product = new Meteor.Collection("Product")
 share.Variant = @Variant = new Meteor.Collection("Variant")
 
 ReactionCore.Collections.ConfigData = new Meteor.Collection "ConfigData"
+ReactionCore.Collections.Translations = new Meteor.Collection "Translations"
 
 ###
 # Packages
@@ -549,7 +550,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema
     optional: true
     custom: -> #required if userId isn't set
       userIdField = @siblingField "userId"
-      return "required" if @isInsert and !@value and !userIdField.value 
+      return "required" if @isInsert and !@value and !userIdField.value
       #TODO: This update logic as is would not be correct because we also need to
       #look up the existing doc and see if userId is already set, in which case
       #it's OK to unset sessionId. Collection2 should provide the doc _id so
