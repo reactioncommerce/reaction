@@ -22,3 +22,24 @@ Example use in Template:
       </div>
       {{/with}}
 
+## Product Methods
+
+All product related server methods can be found in */reaction-core/server/methods/products/methods.coffee*
+
+### cloneProduct
+
+The cloneProduct method clones a whole product, including all variants and images. This method can only be triggered by users with an admin role.
+
+Usage: 
+
+			Template.productGridItems.events
+			  'click .clone-product': () ->
+			    Meteor.call "cloneProduct", this, (error, productId) ->
+			      console.log error if error
+			      Router.go "product",
+			        _id: productId
+
+cloneProduct takes a product object (the one you want to clone) and returns the *collection*.insert callback from the newly created clone. As with all meteor inserts, this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
+
+*Note: In the future we are going to implement an inheritance product that maintains relationships with the cloned product tree*
+
