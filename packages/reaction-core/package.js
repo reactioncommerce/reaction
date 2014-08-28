@@ -349,11 +349,6 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
   api.add_files('private/data/Translations.json', 'server', {isAsset: true});
 
-  // i18n translation files
-  api.add_files('i18n/core-dev.json','client', {isAsset: true});
-  api.add_files('i18n/core-en.json','client', {isAsset: true});
-  api.add_files('i18n/core-es.json','client', {isAsset: true});
-
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.

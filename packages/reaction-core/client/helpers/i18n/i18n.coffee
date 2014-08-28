@@ -5,9 +5,10 @@
 #  usage - inline tag: <td data-i18n='cartSubTotals.items'>
 #  usage - reference:  <thead data-i18n>cartSubTotals.head</thead>
 #
-#  see - reaction-core/i18n/en-dev.json for example definition/translation
+#  see - reaction-core/private/data/Translations.json for example definition/translation
 #
-#  all translations should go in en-dev.json, and will cascade to other language files
+#  all translations should go in private/data/Translations.json, where they get imported
+#  to the Translations collection.
 #
 ###################################################################################
 Meteor.startup ->
@@ -28,8 +29,9 @@ Deps.autorun () ->
         _.each Template, (template, name) ->
           originalRender = template.rendered
           template.rendered = ->
-            $("[data-i18n]").i18n()
-            originalRender and originalRender.apply(this, arguments)
+            unless name is "prototype"
+              $("[data-i18n]").i18n()
+              originalRender and originalRender.apply(this, arguments)
 
 
 ###
