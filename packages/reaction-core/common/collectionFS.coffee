@@ -4,8 +4,8 @@ ReactionCore.Collections.FileStorage = new FS.Collection "FileStorage",
 
 ReactionCore.Collections.Media = new FS.Collection "media",
   stores: [
-    new FS.Store.GridFS("gridfsmedia"), #default unaltered image
-    new FS.Store.GridFS("1000x1000", #large PDP image
+    new FS.Store.GridFS("image"), #default unaltered image
+    new FS.Store.GridFS("large", #large PDP image
       transformWrite: (fileObj, readStream, writeStream) ->
         if gm.isAvailable  # requires installation of imagemagick
           # Store 1000x1000 px images for the products
@@ -14,16 +14,16 @@ ReactionCore.Collections.Media = new FS.Collection "media",
           readStream.pipe(writeStream);
         return
     ),
-    new FS.Store.GridFS("600x600", #large PDP image
+    new FS.Store.GridFS("medium", #large PDP image
       transformWrite: (fileObj, readStream, writeStream) ->
         if gm.isAvailable  # requires installation of imagemagick
-          # Store 1000x1000 px images for the products
+          # Store 600x600 px images for the product grids (optional)
           gm(readStream, fileObj.name).resize("600", "600").stream().pipe writeStream
         else
           readStream.pipe(writeStream);
         return
     ),
-    new FS.Store.GridFS("235x235", #cart image
+    new FS.Store.GridFS("small", #cart image
       transformWrite: (fileObj, readStream, writeStream) ->
         if gm.isAvailable # requires installation of imagemagick
           # Store 235x235 px images for the cart
@@ -32,10 +32,10 @@ ReactionCore.Collections.Media = new FS.Collection "media",
           readStream.pipe(writeStream);
         return
     ),
-    new FS.Store.GridFS("100x100", #checkout & admin image
+    new FS.Store.GridFS("thumbnail", #checkout & admin image
       transformWrite: (fileObj, readStream, writeStream) ->
         if gm.isAvailable # requires installation of imagemagick
-          # Store 235x235 px images for the cart
+          # Store 100x100 px images for the cart
           gm(readStream).resize("100", "100" + '^').gravity('Center').extent("100", "100").stream('PNG').pipe(writeStream);
         else
           readStream.pipe(writeStream);
