@@ -26,6 +26,24 @@ Example use in Template:
 
 All product related server methods can be found in */reaction-core/server/methods/products/methods.coffee*
 
+### createProduct
+
+The createProduct method creates a new product with an empty variant. All products have at least one variant with pricing and details.
+
+Usage:
+
+```
+"click #add-product-link": (event, template) ->
+  Meteor.call "createProduct", (error, productId) ->
+    if error
+      console.log error
+    else if productId
+      Router.go "product",
+        _id: productId
+```
+
+createProduct returns the insert callback from the newly created product. As with all [meteor inserts](http://docs.meteor.com/#insert), this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
+
 ### cloneProduct
 
 The cloneProduct method clones a whole product, including all variants and images. This method can only be triggered by users with an admin role.
@@ -39,7 +57,7 @@ Usage:
 			      Router.go "product",
 			        _id: productId
 
-cloneProduct takes a product object (the one you want to clone) and returns the *collection*.insert callback from the newly created clone. As with all meteor inserts, this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
+cloneProduct takes a product object (the one you want to clone) and returns the insert callback from the newly created clone. As with all [meteor inserts](http://docs.meteor.com/#insert), this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
 
 *Note: In the future we are going to implement an inheritance product that maintains relationships with the cloned product tree*
 
