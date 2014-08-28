@@ -81,7 +81,7 @@ Meteor.methods
       return
 
   ###
-  # clone a whole product, defaulting visibility,etc
+  # clone a whole product, defaulting visibility, etc
   # in the future we are going to do an inheritance product
   # that maintains relationships with the cloned
   # product tree
@@ -103,10 +103,21 @@ Meteor.methods
     product.isVisible = false
     if product.title then product.title = product.title + handleCount
 
-    #make new random IDs for all variants
+    #make new random IDs for all variants and maintain parent/child relationship
     while i < product.variants.length
-      #TODO Clone images with clone variants
-      product.variants[i]._id = Random.id()
+      newVariantId = Random.id()
+      oldVariantId = product.variants[i]._id
+      product.variants[i]._id = newVariantId
+      #clone images for each variant
+      Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
+        newFile = fileObj.copy()
+        newFile.update({$set: {'metadata.productId': product._id, 'metadata.variantId': newVariantId}})
+      #update any child variants with the newly assigned ID
+      unless product.variants[i].parentId
+        while i < product.variants.length
+          if product.variants[i].parentId == oldVariantId
+            product.variants[i].parentId = newVariantId
+          i++
       i++
 
     #create the cloned product
