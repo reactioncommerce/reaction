@@ -28,7 +28,7 @@ All product related server methods can be found in */reaction-core/server/method
 
 ### createProduct
 
-The createProduct method creates a new product with an empty variant. All products have at least one variant with pricing and details.
+The createProduct method creates a new product with an empty variant. All products have at least one variant with pricing and details. This method can only be triggered by users with an admin role.
 
 Usage:
 
@@ -61,3 +61,22 @@ cloneProduct takes a product object (the one you want to clone) and returns the 
 
 *Note: In the future we are going to implement an inheritance product that maintains relationships with the cloned product tree*
 
+### deleteProduct
+
+The deleteProduct method removes a product and unlinks it from all media. This method can only be triggered by users with an admin role. While you can use it directly, it is worth noting that we provide a maybeDeleteProduct helper, which adds a layer of confirmation and alerts around the deletion process.
+
+Usage:
+
+```
+'click .delete-product': (event, template) ->
+  Meteor.call "deleteProduct", this._id, (error, result) ->
+    if error or not result
+      Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id
+      console.log "Error deleting product " + id, error
+	  else
+	    setCurrentProduct null
+	    Router.go "/"
+	    Alerts.add "Deleted " + title, "info", type: "prod-delete-" + id
+```
+
+deleteProduct takes a product _id and returns an error object as well as a result, which is true if the removal was successful or false if not.
