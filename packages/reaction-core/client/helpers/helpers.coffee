@@ -57,7 +57,7 @@
   if confirm("Delete this product?")
     Meteor.call "deleteProduct", id, (error, result) ->
       if error or not result
-        Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id
+        Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id,  i18n_key: "productDetail.productDeleteError"
         console.log "Error deleting product " + id, error
       else
         setCurrentProduct null

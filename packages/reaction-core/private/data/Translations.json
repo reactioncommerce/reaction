@@ -25,7 +25,19 @@
                     "options": "Options",
                     "addToCart": "Add to cart",
                     "chooseOptions": "Please choose options before adding to cart",
-                    "outOfStock": "Sorry, this item is out of stock!"
+                    "outOfStock": "Sorry, this item is out of stock!",
+                    "productDeleteError": "There was an error deleting ",
+                    "publishFirst": "Publish product before adding to cart.",
+                    "selectOption": "Select an option before adding to cart",
+                    "addedToCart": "added"
+                },
+                "variantList": {
+                    "moreOptions": "There are more options available for this selection.",
+                    "createVariant": "Create Variant"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " is now enabled.",
+                    "pkgDisabled": " is now disabled."
                 },
                 "cartDrawer": {
                     "empty": "We're sad. Your cart is empty.",
@@ -64,7 +76,7 @@
                 },
                 "userDropdown": {
                     "signedIn": "You are signed in.",
-                    "signOut" : "Sign Out"
+                    "signOut": "Sign Out"
                 },
                 "checkoutProgressBar": {
                     "login": "Login",
@@ -85,7 +97,8 @@
                 "app": {
                     "save-and-continue": "Guardar y continuar",
                     "cancel": "Cancelar",
-                    "submit": "Enviar"
+                    "submit": "Enviar",
+                    "delete": "Eliminar"
                 },
                 "productDetail": {
                     "productManagement": "Gestión de productos",
@@ -98,7 +111,19 @@
                     "options": "Opciones",
                     "addToCart": "Añadir al carro",
                     "chooseOptions": "Por favor, elija opciones antes de añadir al carro",
-                    "outOfStock": "Lo sentimos, este producto está fuera de stock!"
+                    "outOfStock": "Lo sentimos, este producto está fuera de stock!",
+                    "productDeleteError": "Se ha producido un error de borrado",
+                    "publishFirst": "Publicar producto antes de añadir al carro.",
+                    "selectOption": "Seleccione una opción antes de añadir al carro.",
+                    "addedToCart": "añadido"
+                },
+                "variantList": {
+                    "moreOptions": "Hay más opciones disponibles para esta selección.",
+                    "createVariant": "Crear Variant"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " ahora está habilitado.",
+                    "pkgDisabled": " ahora está deshabilitado."
                 },
                 "cartDrawer": {
                     "empty": "Estamos tristes Su cesta está vacía.",
@@ -137,10 +162,10 @@
                 },
                 "userDropdown": {
                     "signedIn": "Usted está en el sistema.",
-                    "signOut" : "Salir"
+                    "signOut": "Salir"
                 },
                 "checkoutProgressBar": {
-                    "login": "Iniciar sesión",
+                    "login": "Entrada",
                     "shippingBilling": "Gastos de envío y facturación",
                     "shippingOptions": "Opciones de Envío",
                     "reviewPayment": "Opina y Pago",

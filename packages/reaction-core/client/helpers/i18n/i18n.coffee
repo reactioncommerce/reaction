@@ -4,7 +4,7 @@
 #  usage - in template: {{i18n 'cartDrawer.empty'}}
 #  usage - inline tag: <td data-i18n='cartSubTotals.items'>
 #  usage - reference:  <thead data-i18n>cartSubTotals.head</thead>
-#
+#  usage - alerts Alerts.add "Message!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock"
 #  see - reaction-core/private/data/Translations.json for example definition/translation
 #
 #  all translations should go in private/data/Translations.json, where they get imported

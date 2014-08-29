@@ -93,7 +93,7 @@ Template.productDetail.events
       quantity = 1 if quantity < 1
 
       unless @.isVisible
-        Alerts.add "Publish product before adding to cart.", "danger", placement:"productDetail"
+        Alerts.add "Publish product before adding to cart.", "danger", placement:"productDetail", i18n_key: "productDetail.publishFirst"
         return
       else
         # Add to cart
@@ -105,11 +105,11 @@ Template.productDetail.events
         # Scroll to top
         $('html,body').animate({scrollTop:0},0)
         # Slide out the cart tip explaining that we added to the cart
-        $('.cart-alert-text').text(quantity + " " + currentVariant.title + " added")
+        $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart') )
         $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
 
     else
-      Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail"
+      Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail", i18n_key: "productDetail.selectOption"
       return
 
   "click .toggle-product-isVisible-link": (event, template) ->
