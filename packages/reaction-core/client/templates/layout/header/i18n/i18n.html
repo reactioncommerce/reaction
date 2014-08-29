@@ -7,8 +7,9 @@
     <ul class="dropdown-menu text-center" role="menu">
       <li role="presentation" class="dropdown-header" data-i18n="languages.select">Select Language</li>
       <li class="divider"></li>
-      <li class="{{active 'en'}}"><a href="#" role="menuitem" id="i18n-en" data-i18n="languages.english">English</a></li>
-      <li class="{{active 'es'}}"><a href="#" role="menuitem" id="i18n-es" data-i18n="languages.spanish">Spanish</a></li>
+      {{#each languages}}
+      <li class="{{active}}"><a href="#" role="menuitem" class="i18n-language" data-i18n="languages.{{language}}">{{language}}</a></li>
+      {{/each}}
     </ul>
   </li>
 </ul>

@@ -347,9 +347,24 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/roles.json', 'server', {isAsset: true});
   api.add_files('private/data/users.json', 'server', {isAsset: true});
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
-  api.add_files('private/data/Translations.json', 'server', {isAsset: true});
+  //i18n translations
+  api.add_files('private/data/i18n/ar.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/cs.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/de.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/en.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/es.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/fr.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/he.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/it.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/pl.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/pt.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/ru.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/sl.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/sv.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/vi.json', 'server', {isAsset: true});
 
-  // We are now grouping all exported app variables and methods under
+
+    // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.
   api.export(["ReactionCore"]);

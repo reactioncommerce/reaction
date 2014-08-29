@@ -17,7 +17,7 @@ Meteor.startup ->
 Deps.autorun () ->
   sessionLanguage = Session.get "language"
   Meteor.subscribe "Translations", sessionLanguage, () ->
-    resources =  ReactionCore.Collections.Translations.findOne({},{fields:{_id: 0},reactive:false})
+    resources =  ReactionCore.Collections.Translations.findOne({'i18n':sessionLanguage},{fields:{_id: 0},reactive:false})
     $.i18n.init {
       lng: sessionLanguage
       fallbackLang: 'en'

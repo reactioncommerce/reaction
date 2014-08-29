@@ -1,15 +1,13 @@
 Template.i18nChooser.helpers
-  active: (lng) ->
-    if Session.equals "language",lng
+  languages: ->
+    return ReactionCore.Collections.Translations.find({},{fields:{'language':1, 'i18n': 1}})
+
+  active: () ->
+    if Session.equals "language", @.i18n
       return "active"
 
 Template.i18nChooser.events
-  'click #i18n-en': (e)->
-    e.preventDefault()
-    Session.set('language','en')
-    $("[data-i18n]").i18n()
-
-  'click #i18n-es': (e) ->
-    e.preventDefault()
-    Session.set('language','es')
+  'click .i18n-language': (event,template)->
+    event.preventDefault()
+    Session.set('language',@.i18n)
     $("[data-i18n]").i18n()

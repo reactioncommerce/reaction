@@ -17,8 +17,28 @@ loadData = (collection) ->
   json = EJSON.parse Assets.getText("private/data/"+collection._name+".json")
   for item,value in json
     collection._collection.insert item, (error, result) ->
-      console.log error if error?
-  console.log ("Successfully added "+value+" items to "+ collection._name).green
+      if error
+        console.log (error + "Error adding " + value + " items to " + collection._name).red
+        return false
+  if value > 0
+    console.log ("Success adding " + value + " items to " + collection._name).green
+    return
+  else
+    console.log ("No data imported to " + collection._name).yellow
+
+loadI18n = (collection) ->
+  languages = ["ar","cs","de","en","es","fr","he","it","pl","pt","ru","sl","sv","vi"]
+  console.log "Loading fixture data for languages to " + collection._name
+  for language in languages
+    json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")
+    for item,value in json
+      collection._collection.insert item, (error, result) ->
+        if error
+          console.log (error + "Error adding " + language + " items to " + collection._name).red
+          return
+      console.log ("Success adding "+ language + " to " + collection._name).green
+
+
 
 loadFixtures = ->
   # Load data from json files
@@ -26,7 +46,7 @@ loadFixtures = ->
   loadData ReactionCore.Collections.Shops unless Shops.find().count()
   loadData ReactionCore.Collections.Tags unless Tags.find().count()
   loadData ReactionCore.Collections.ConfigData unless ReactionCore.Collections.ConfigData.find().count()
-  loadData ReactionCore.Collections.Translations unless ReactionCore.Collections.Translations.find().count()
+  loadI18n ReactionCore.Collections.Translations unless ReactionCore.Collections.Translations.find().count()
   createDefaultAdminUser() unless Meteor.users.find().count()
   # loadImageData "Images" unless Images.find().count()
 
