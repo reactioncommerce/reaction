@@ -25,13 +25,14 @@ Deps.autorun () ->
       resStore: resources
       # debug: true
       },(t)->
-        $("[data-i18n]").i18n() #init everything, then add i18n to each template
+         #initiliaze
         _.each Template, (template, name) ->
           originalRender = template.rendered
           template.rendered = ->
             unless name is "prototype"
               $("[data-i18n]").i18n()
               originalRender and originalRender.apply(this, arguments)
+        $("[data-i18n]").i18n()
 
 
 ###
