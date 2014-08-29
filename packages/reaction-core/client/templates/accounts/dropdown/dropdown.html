@@ -9,7 +9,7 @@
   {{>userDropdown}}
   </div>
 {{else}}
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-i18n="loginDropdown.signIn">Sign In</span><b class="caret"></b></a>
     <div class="accounts-dialog accounts-inline dropdown-menu pull-right">
     {{>_loginButtonsLoggedOutAllServices}}
     </div>
@@ -19,14 +19,14 @@
 
 <template name="userDropdown">
 <div class="user-accounts-dropdown">
-  <div class="user-accounts-dropdown-content">
-    You are logged in.
+  <div class="user-accounts-dropdown-content" data-i18n="userDropdown.signedIn">
+    You are signed in.
     <div class="user-accounts-dropdown-apps">
       {{> dashboardIcon}}
       {{> addProductLinks}}
     </div>
   </div>
-  <div class="btn btn-primary btn-block" id="logout">Logout</div>
+  <div class="btn btn-primary btn-block" id="logout" data-i18n="userDropdown.signOut">Sign Out</div>
 </div>
 
 </template>

@@ -11,11 +11,23 @@
                 "app": {
                     "save-and-continue": "Save and continue",
                     "cancel": "Cancel",
-                    "submit": "Submit"
+                    "submit": "Submit",
+                    "delete": "Delete"
+                },
+                "productDetail": {
+                    "productManagement": "Product management",
+                    "makeInvisible": "Make invisible",
+                    "isNotVisible": "This product is not visible to customers.",
+                    "makeItVisible": "You can make it visible",
+                    "whenYouAreDone": "when you're done editing.",
+                    "tags": "Tags",
+                    "details": "Details",
+                    "options": "Options",
+                    "addToCart": "Add to cart"
                 },
                 "cartDrawer": {
                     "empty": "We're sad. Your cart is empty.",
-                    "keep-shopping": "Keep on shopping",
+                    "keepShopping": "Keep on shopping",
                     "checkout": "Checkout now"
                 },
                 "cartSubTotals": {
@@ -30,24 +42,107 @@
                     "left": "left"
                 },
                 "cartCheckout": {
-                    "login-completed": "Login completed"
+                    "loginCompleted": "Login completed"
                 },
                 "checkoutLogin": {
                     "create-or-login": "Create an account or sign in to continue"
                 },
                 "addressBookGrid": {
-                    "choose-address": "Choose shipping & billing address",
-                    "create-default": "Create your default address",
-                    "select-shipping-address": "Select a shipping address",
-                    "select-billing-address": "Select a billing address"
+                    "chooseAddress": "Choose shipping & billing address",
+                    "createDefault": "Create your default address",
+                    "selectShipping-address": "Select a shipping address",
+                    "selectBilling-address": "Select a billing address"
                 },
                 "addressBookAdd": {
-                    "add-address": "Add a new address entry",
-                    "create-address": "Create your default address"
+                    "addAddress": "Add a new address entry",
+                    "createAddress": "Create your default address"
+                },
+                "loginDropdown": {
+                    "signIn": "Sign In"
+                },
+                "userDropdown": {
+                    "signedIn": "You are signed in.",
+                    "signOut" : "Sign Out"
+                },
+                "checkoutProgressBar": {
+                    "login": "Login",
+                    "shippingBilling": "Shipping & Billing",
+                    "shippingOptions": "Shipping Options",
+                    "reviewPayment": "Review & Payment",
+                    "complete": "Complete"
                 }
             }
         },
         "es": {
+            "core": {
+                "languages": {
+                    "select": "Elegir idioma",
+                    "english": "English",
+                    "spanish": "Español"
+                },
+                "app": {
+                    "save-and-continue": "Guardar y continuar",
+                    "cancel": "Cancelar",
+                    "submit": "Enviar"
+                },
+                "productDetail": {
+                    "productManagement": "Gestión de productos",
+                    "makeInvisible": "Hacer invisible",
+                    "isNotVisible": "Esto no es visible para los clientes.",
+                    "makeItVisible": "Usted puede hacer que sea visible",
+                    "whenYouAreDone": "cuando haya terminado de editar.",
+                    "tags": "Tags",
+                    "details": "Detalles",
+                    "options": "Opciones",
+                    "addToCart": "Añadir al carro"
+                },
+                "cartDrawer": {
+                    "empty": "Estamos tristes Su cesta está vacía.",
+                    "keepShopping": "Mantener a las compras",
+                    "checkout": "Comprar ahora"
+                },
+                "cartSubTotals": {
+                    "head": "Su carrito",
+                    "items": "Articulos de compra",
+                    "subtotal": "Subtotal",
+                    "shipping": "Envío",
+                    "tax": "Impuestos",
+                    "total": "Total"
+                },
+                "cartDrawerItems": {
+                    "left": "la izquierda"
+                },
+                "cartCheckout": {
+                    "loginCompleted": "Entrar completó"
+                },
+                "checkoutLogin": {
+                    "createOrLogin": "Crear una cuenta o inicia sesión para continuar"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Elegir el envío y la dirección de facturación",
+                    "createDefault": "Cree su dirección por defecto",
+                    "selectShippingAddress": "Selecciona una dirección de envío",
+                    "selectBillingAddress": "Selecciona una dirección de facturación"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Añadir una nueva entrada de dirección",
+                    "createAddress": "Cree su dirección por defecto"
+                },
+                "loginDropdown": {
+                    "signIn": "Iniciar sesión"
+                },
+                "userDropdown": {
+                    "signedIn": "Usted está en el sistema.",
+                    "signOut" : "Salir"
+                },
+                "checkoutProgressBar": {
+                    "login": "Iniciar sesión",
+                    "shippingBilling": "Gastos de envío y facturación",
+                    "shippingOptions": "Opciones de Envío",
+                    "reviewPayment": "Opina y Pago",
+                    "complete": "Completo"
+                }
+            }
         }
     }
 ]
