@@ -73,12 +73,12 @@ Template.productDetail.events
       unless currentVariant.parentId?
         options = (variant for variant in currentProduct.variants when variant.parentId is currentVariant._id)
         if options.length > 0
-          Alerts.add "Please choose options before adding to cart", "danger", placement:"productDetail"
+          Alerts.add "Please choose options before adding to cart", "danger", placement:"productDetail", i18n_key:"productDetail.chooseOptions"
           return
 
       # If variant has inv policy and is out of stock, show warning and deny add to cart
       if (currentVariant.inventoryPolicy and currentVariant.inventoryQuantity < 1)
-        Alerts.add "Sorry, this item is out of stock!", "danger", placement:"productDetail"
+        Alerts.add "Sorry, this item is out of stock!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock"
         return
 
       cartSession =

@@ -23,7 +23,9 @@
                     "tags": "Tags",
                     "details": "Details",
                     "options": "Options",
-                    "addToCart": "Add to cart"
+                    "addToCart": "Add to cart",
+                    "chooseOptions": "Please choose options before adding to cart",
+                    "outOfStock": "Sorry, this item is out of stock!"
                 },
                 "cartDrawer": {
                     "empty": "We're sad. Your cart is empty.",
@@ -94,7 +96,9 @@
                     "tags": "Tags",
                     "details": "Detalles",
                     "options": "Opciones",
-                    "addToCart": "Añadir al carro"
+                    "addToCart": "Añadir al carro",
+                    "chooseOptions": "Por favor, elija opciones antes de añadir al carro",
+                    "outOfStock": "Lo sentimos, este producto está fuera de stock!"
                 },
                 "cartDrawer": {
                     "empty": "Estamos tristes Su cesta está vacía.",

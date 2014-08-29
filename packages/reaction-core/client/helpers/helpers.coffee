@@ -1,4 +1,25 @@
 ###
+# convert a string to camelCase
+###
+@toCamelCase = (s) ->
+
+  # remove all characters that should not be in a variable name
+  # as well underscores an numbers from the beginning of the string
+  s = s.replace(/([^a-zA-Z0-9_\- ])|^[_0-9]+/g, "").trim().toLowerCase()
+
+  # uppercase letters preceeded by a hyphen or a space
+  s = s.replace(/([ -]+)([a-zA-Z0-9])/g, (a, b, c) ->
+    c.toUpperCase()
+  )
+
+  # uppercase letters following numbers
+  s = s.replace(/([0-9]+)([a-zA-Z])/g, (a, b, c) ->
+    b + c.toUpperCase()
+  )
+  return s
+
+
+###
 # quick and easy snippet for toggling sessions
 ###
 @toggleSession = (session_variable) ->
