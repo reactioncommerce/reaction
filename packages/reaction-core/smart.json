@@ -23,6 +23,9 @@
     "cfs-s3": {},
     "ui-dropped-event": {},
     "geocoder": {},
+    "template-extension": {
+      "git": "https://github.com/aldeed/meteor-template-extension.git"
+    },
     "reaction-app-packages": {
       "git": "https://github.com/ongoworks/reaction-app-packages.git",
       "tag": "v0.1.0"

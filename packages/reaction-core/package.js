@@ -21,7 +21,8 @@ Package.on_use(function (api, where) {
     "underscore",
     "autoform",
     "geocoder",
-    "collection-helpers"
+    "collection-helpers",
+    "template-extension"
   ], ["client", "server"]);
 
   api.use(["reaction-app-packages"]);
@@ -114,6 +115,12 @@ Package.on_use(function (api, where) {
 
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
+
+    "client/templates/accounts/accounts-ui/login_buttons.html",
+    "client/templates/accounts/accounts-ui/login_buttons_dialogs.html",
+    "client/templates/accounts/accounts-ui/login_buttons_dropdown.html",
+    "client/templates/accounts/accounts-ui/login_buttons_single.html",
+    "client/templates/accounts/accounts-ui/accounts-ui.coffee",
 
     "client/templates/accounts/accounts.html",
     "client/templates/accounts/accounts.coffee",

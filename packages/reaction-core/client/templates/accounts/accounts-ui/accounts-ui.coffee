@@ -1,0 +1,32 @@
+# extend login_buttons.html to use Reaction specific templates
+Template.coreLoginButtons.replaces("loginButtons")
+Template.coreLoginButtonsLoggedIn.replaces("_loginButtonsLoggedIn")
+Template.coreLoginButtonsLoggedOut.replaces("_loginButtonsLoggedOut")
+Template.coreLoginButtonsMessages.replaces("_loginButtonsMessages")
+Template.coreLoginButtonsLoggingIn.replaces("_loginButtonsLoggingIn")
+Template.coreLoginButtonsLoggingInPadding.replaces("_loginButtonsLoggingInPadding")
+
+# extend login_buttons_dialogs.html to use Reaction specific templates
+Template.coreResetPasswordDialog.replaces("_resetPasswordDialog")
+Template.coreJustResetPasswordDialog.replaces("_justResetPasswordDialog")
+Template.coreEnrollAccountDialog.replaces("_enrollAccountDialog")
+Template.coreJustVerifiedEmailDialog.replaces("_justVerifiedEmailDialog")
+Template.coreConfigureLoginServiceDialog.replaces("_configureLoginServiceDialog")
+Template.coreLoginButtonsMessagesDialog.replaces("_loginButtonsMessagesDialog")
+
+# extend login_buttons_dropdown.html to use Reaction specific templates
+Template.coreLoginButtonsLoggedInDropdown.replaces("_loginButtonsLoggedInDropdown")
+Template.coreLoginButtonsLoggedInDropdownActions.replaces("_loginButtonsLoggedInDropdownActions")
+Template.coreLoginButtonsLoggedOutDropdown.replaces("_loginButtonsLoggedOutDropdown")
+Template.coreLoginButtonsLoggedOutAllServices.replaces("_loginButtonsLoggedOutAllServices")
+Template.coreLoginButtonsLoggedOutPasswordServiceSeparator.replaces("_loginButtonsLoggedOutPasswordServiceSeparator")
+Template.coreLoginButtonsLoggedOutPasswordService.replaces("_loginButtonsLoggedOutPasswordService")
+Template.coreForgotPasswordForm.replaces("_forgotPasswordForm")
+Template.coreLoginButtonsBackToLoginLink.replaces("_loginButtonsBackToLoginLink")
+Template.coreLoginButtonsFormField.replaces("_loginButtonsFormField")
+Template.coreLoginButtonsChangePassword.replaces("_loginButtonsChangePassword")
+
+# extend login_buttons_single.html to use Reaction specific templates
+Template.coreLoginButtonsLoggedOutSingleLoginButton.replaces("_loginButtonsLoggedOutSingleLoginButton")
+Template.coreLoginButtonsLoggingInSingleLoginButton.replaces("_loginButtonsLoggingInSingleLoginButton")
+Template.coreLoginButtonsLoggedInSingleLogoutButton.replaces("_loginButtonsLoggedInSingleLogoutButton")
