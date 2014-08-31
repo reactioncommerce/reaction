@@ -2,7 +2,7 @@
     {
         "language": "Czech",
         "i18n": "cs",
-        "cs": {
+        "translation": {
             "core": {
                 "accountsUI": {
                     "add": "přidat",
@@ -23,7 +23,7 @@
                     "newPassword": "Nové heslo",
                     "newPasswordAgain": "Nové heslo (zopakovat)",
                     "optional": "Volitelný",
-                    "OR": "nebo",
+                    "or": "nebo",
                     "password": "Heslo",
                     "passwordAgain": "Heslo (zopakovat)",
                     "privacyPolicy": "Nastavení soukromí",
@@ -58,10 +58,8 @@
                         "signupCodeIncorrect": "Registrační kód je chybný.",
                         "signupCodeRequired": "Registrační kód je povinný.",
                         "usernameIsEmail": "Uživatelské jméno nemůže být emailová adresa.",
-                        "usernameRequired": "Uživatelské jméno je povinné."
-                    },
-                    "accounts": {
-                        "A login handler should return a result or undefined": "Přihlašovací rutina musí vracet výsledek nebo undefined",
+                        "usernameRequired": "Uživatelské jméno je povinné.",
+                        "aLoginHandlerShouldReturnAResultOrUndefined": "Přihlašovací rutina musí vracet výsledek nebo undefined",
                         "emailAlreadyExists": "Email již existuje.",
                         "emailDoesntMatchTheCriteria": "Email nesplňuje požadavky.",
                         "invalidLoginToken": "Neplatný přihlašovací token",

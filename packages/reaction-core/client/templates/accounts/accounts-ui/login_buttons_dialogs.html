@@ -14,7 +14,7 @@
     <div class="hide-background"></div>
 
     <div class="accounts-dialog accounts-centered-dialog">
-      <label id="reset-password-new-password-label" for="reset-password-new-password">
+      <label id="reset-password-new-password-label" for="reset-password-new-password" data-i18n="accountsUI.newPassword">
         New password
       </label>
 
@@ -24,7 +24,7 @@
 
       {{> _loginButtonsMessages}}
 
-      <div class="login-button login-button-form-submit" id="login-buttons-reset-password-button">
+      <div class="login-button login-button-form-submit" id="login-buttons-reset-password-button" data-i18n="accountsUI.setPassword">
         Set password
       </div>
 
@@ -38,7 +38,7 @@
     <div class="accounts-dialog accounts-centered-dialog">
       Password reset.
       You are now logged in as {{displayName}}.
-      <div class="login-button" id="just-verified-dismiss-button">Dismiss</div>
+      <div class="login-button" id="just-verified-dismiss-button" data-i18n="accountsUI.dismiss">Dismiss</div>
     </div>
   {{/if}}
 </template>
@@ -72,7 +72,7 @@
     <div class="accounts-dialog accounts-centered-dialog">
       Email verified.
       You are now logged in as {{displayName}}.
-      <div class="login-button" id="just-verified-dismiss-button">Dismiss</div>
+      <div class="login-button" id="just-verified-dismiss-button" data-i18n="accountsUI.dismiss">Dismiss</div>
     </div>
   {{/if}}
 </template>
@@ -82,7 +82,7 @@
     <div id="configure-login-service-dialog" class="accounts-dialog accounts-centered-dialog">
       {{> configurationSteps}}
 
-      <p>
+      <p data-i18n="accountsUI.nowCopyOverSomeDetails">
         Now, copy over some details.
       </p>
       <p>
@@ -104,13 +104,13 @@
         </table>
       </p>
       <div class="new-section">
-        <div class="login-button configure-login-service-dismiss-button">
+        <div class="login-button configure-login-service-dismiss-button" data-i18n="accountsUI.illDoThisLater">
           I'll do this later
         </div>
         <a class="accounts-close configure-login-service-dismiss-button">&times;</a>
 
         <div class="login-button login-button-configure {{#if saveDisabled}}login-button-disabled{{/if}}"
-             id="configure-login-service-dialog-save-configuration">
+             id="configure-login-service-dialog-save-configuration" data-i18n="accountsUI.saveConfiguration">
           Save Configuration
         </div>
       </div>
@@ -122,7 +122,7 @@
   {{#if visible}}
     <div class="accounts-dialog accounts-centered-dialog" id="login-buttons-message-dialog">
       {{> _loginButtonsMessages}}
-      <div class="login-button" id="messages-dialog-dismiss-button">Dismiss</div>
+      <div class="login-button" id="messages-dialog-dismiss-button" data-i18n="accountsUI.dismiss">Dismiss</div>
     </div>
   {{/if}}
 </template>

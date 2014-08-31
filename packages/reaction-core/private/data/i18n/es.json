@@ -2,7 +2,7 @@
     {
         "language": "Spanish",
         "i18n": "es",
-        "es": {
+        "translation": {
             "core": {
                 "languages": {
                     "select": "Elegir idioma",
@@ -91,7 +91,7 @@
                     "forgotPassword": "Contraseña olvidada?",
                     "ifYouAlreadyHaveAnAccount": "Si ya tenés una cuenta",
                     "optional": "Opcional",
-                    "OR": "O",
+                    "or": "o",
                     "password": "Contraseña",
                     "privacyPolicy": "Póliza de Privacidad",
                     "resetYourPassword": "Resetear tu contraseña",
@@ -117,27 +117,25 @@
                         "signupCodeRequired": "Código para suscribir es necesario.",
                         "usernameIsEmail": "Usuario no puede ser Email.",
                         "usernameRequired": "Usuario es necesario.",
-                        "accounts": {
-                            "emailAlreadyExists": "Email ya existe.",
-                            "emailDoesntMatchTheCriteria": "Email no coincide con los criterios.",
-                            "userValidationFailed": "No se ha podido validar el usuario",
-                            "usernameAlreadyExists": "Usuario ya existe.",
-                            "youveBeenLoggedOutByTheServer": "Has sido desconectado por el servidor. Por favor ingresa otra vez.",
-                            "yourSessionHasExpired": "Tu session ha expirado. Por favor ingresa otra vez.",
-                            "incorrectPassword": "Contraseña no válida",
-                            "mustBeLoggedIn": "Hay que ingresar",
-                            "needToSetUsernameOrEmail": "Tienes que especificar un usuario o un email",
-                            "signupsForbidden": "Registro prohibido",
-                            "tokenExpired": "Token expirado",
-                            "tokenHasInvalidEmailAddress": "Token contiene un Email inválido",
-                            "userHasNoPasswordSet": "Usuario no tiene contraseña",
-                            "userNotFound": "Usuario no encontrado",
-                            "verifyEmailLinkExpired": "Enlace para verificar el Email ha expirado",
-                            "verifyEmailLinkIsForUnknownAddress": "Enlace para verificar el Email contiene una dirección desconocida"
-                        }
-                    }
+                        "emailAlreadyExists": "Email ya existe.",
+                        "emailDoesntMatchTheCriteria": "Email no coincide con los criterios.",
+                        "userValidationFailed": "No se ha podido validar el usuario",
+                        "usernameAlreadyExists": "Usuario ya existe.",
+                        "youveBeenLoggedOutByTheServer": "Has sido desconectado por el servidor. Por favor ingresa otra vez.",
+                        "yourSessionHasExpired": "Tu session ha expirado. Por favor ingresa otra vez.",
+                        "incorrectPassword": "Contraseña no válida",
+                        "mustBeLoggedIn": "Hay que ingresar",
+                        "needToSetUsernameOrEmail": "Tienes que especificar un usuario o un email",
+                        "signupsForbidden": "Registro prohibido",
+                        "tokenExpired": "Token expirado",
+                        "tokenHasInvalidEmailAddress": "Token contiene un Email inválido",
+                        "userHasNoPasswordSet": "Usuario no tiene contraseña",
+                        "userNotFound": "Usuario no encontrado",
+                        "verifyEmailLinkExpired": "Enlace para verificar el Email ha expirado",
+                        "verifyEmailLinkIsForUnknownAddress": "Enlace para verificar el Email contiene una dirección desconocida"
+                }
                 }
             }
-        }
+    }
     }
 ]

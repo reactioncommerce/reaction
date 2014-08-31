@@ -17,10 +17,16 @@ Meteor.startup ->
 Deps.autorun () ->
   sessionLanguage = Session.get "language"
   Meteor.subscribe "Translations", sessionLanguage, () ->
-    resources =  ReactionCore.Collections.Translations.findOne({'i18n':sessionLanguage},{fields:{_id: 0},reactive:false})
+    resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()
+    # map multiple translations into i18next format
+    resources = resources.reduce (x, y) ->
+        x[y.i18n]= y.translation
+        x
+    , {}
+
     $.i18n.init {
       lng: sessionLanguage
-      fallbackLang: 'en'
+      fallbackLng: 'en'
       ns: "core"
       resStore: resources
       # debug: true
@@ -38,11 +44,18 @@ Deps.autorun () ->
 ###
 # i18n translate
 # see: http://i18next.com/
+# pass this the translation key as the first argument.
+# optionally you can pass a string like "Invalid email", and we'll look for "invalidEmail"
+# in the translations data.
+#
+# ex: {{i18n "accountsUI.error" "Invalid Email"}}
 ###
 
-Handlebars.registerHelper "i18n", (i18n_key) ->
-  result = i18n.t(i18n_key)
-  return new Handlebars.SafeString(result)
+Handlebars.registerHelper "i18n", (i18n_key, camelCaseString) ->
+  unless i18n_key then Meteor.throw("i18n key string required to translate")
+  if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + toCamelCase(camelCaseString)
+  result = new Handlebars.SafeString(i18n.t(i18n_key))
+  return result
 
 #default return $ symbol
 UI.registerHelper "currency", () ->

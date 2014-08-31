@@ -2,7 +2,7 @@
     {
         "language": "Portuguese",
         "i18n": "pt",
-        "pt": {
+        "translation": {
             "core": {
                 "accountsUI": {
                     "and": "e",
@@ -16,7 +16,7 @@
                     "forgotPassword": "Esqueceu sua senha?",
                     "ifYouAlreadyHaveAnAccount": "Se você já tem uma conta",
                     "optional": "Opcional",
-                    "OR": "OU",
+                    "or": "ou",
                     "password": "Senha",
                     "privacyPolicy": "Política de Privacidade",
                     "resetYourPassword": "Gerar nova senha",

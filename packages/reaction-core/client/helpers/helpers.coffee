@@ -2,7 +2,6 @@
 # convert a string to camelCase
 ###
 @toCamelCase = (s) ->
-
   # remove all characters that should not be in a variable name
   # as well underscores an numbers from the beginning of the string
   s = s.replace(/([^a-zA-Z0-9_\- ])|^[_0-9]+/g, "").trim().toLowerCase()

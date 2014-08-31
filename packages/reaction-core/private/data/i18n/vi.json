@@ -2,7 +2,7 @@
     {
         "language": "Vietnamese",
         "i18n": "vi",
-        "vi": {
+        "translation": {
             "core": {
                 "accountsUI": {
                     "add": "thêm",
@@ -18,7 +18,7 @@
                     "forgotPassword": "Quên mật khẩu?",
                     "ifYouAlreadyHaveAnAccount": "Nếu bạn đã có tài khoản",
                     "optional": "Tùy chọn",
-                    "OR": "Hoặc",
+                    "or": "Hoặc",
                     "password": "Mật khẩu",
                     "privacyPolicy": "Chính sách bảo mật",
                     "remove": "xóa",
@@ -48,34 +48,32 @@
                         "signupCodeRequired": "Phải có mã số đăng ký.",
                         "usernameIsEmail": "Tên đăng nhập không thể là địa chỉ email.",
                         "usernameRequired": "Phải có tên đăng nhập.",
-                        "accounts": {
-                            "emailAlreadyExists": "Email đã tồn tại.",
-                            "emailDoesntMatchTheCriteria": "Email không phù hợp.",
-                            "invalidLoginToken": "Mã đăng nhập không đúng",
-                            "loginForbidden": "Đăng nhập bị cấm",
-                            "serviceUnknown": "Chưa biết Dịch vụ",
-                            "unrecognizedOptionsForLoginRequest": "Tùy chọn không được công nhận đối với yêu cầu đăng nhập",
-                            "userValidationFailed": "Xác nhận người dùng thất bại",
-                            "usernameAlreadyExists": "Tên đăng nhập đã tồn tại.",
-                            "youAreNotLoggedIn": "Bạn chưa đăng nhập.",
-                            "youveBeenLoggedOutByTheServer": "Bạn đã bị đăng xuất bởi máy chủ. Vui lòng đăng nhập lại.",
-                            "yourSessionHasExpired": "Thời gian đăng nhập đã hết. Vui lòng đăng nhập lại.",
-                            "noMatchingLoginAttemptFound": "Không tìm thấy đăng nhập phù hợp",
-                            "passwordIsOld": "Mật khẩu đã cũ. Vui lòng lấy lại mật khẩu.",
-                            "incorrectPassword": "Mật khẩu sai",
-                            "invalidEmail": "Email sai",
-                            "mustBeLoggedIn": "Phải đăng nhập",
-                            "needToSetUsernameOrEmail": "Phải điền tên đăng nhập hoặc email",
-                            "oldPasswordFormat": "định dạng mật khẩu cũ",
-                            "signupsForbidden": "Đăng ký đã bị cấm",
-                            "tokenExpired": "Hết phiên đăng nhập",
-                            "tokenHasInvalidEmailAddress": "Phiên đăng nhập chứa địa chỉ email sai",
-                            "userHasNoPasswordSet": "Người dùng chưa có mật khẩu",
-                            "userNotFound": "Không tìm thấy người dùng",
-                            "verifyEmailLinkExpired": "Đường dẫn xác nhận email đã hết hạn",
-                            "verifyEmailLinkIsForUnknownAddress": "Đường dẫn xác nhận email là cho địa chỉ chưa xác định",
-                            "matchFailed": "Không đúng"
-                        }
+                        "emailAlreadyExists": "Email đã tồn tại.",
+                        "emailDoesntMatchTheCriteria": "Email không phù hợp.",
+                        "invalidLoginToken": "Mã đăng nhập không đúng",
+                        "loginForbidden": "Đăng nhập bị cấm",
+                        "serviceUnknown": "Chưa biết Dịch vụ",
+                        "unrecognizedOptionsForLoginRequest": "Tùy chọn không được công nhận đối với yêu cầu đăng nhập",
+                        "userValidationFailed": "Xác nhận người dùng thất bại",
+                        "usernameAlreadyExists": "Tên đăng nhập đã tồn tại.",
+                        "youAreNotLoggedIn": "Bạn chưa đăng nhập.",
+                        "youveBeenLoggedOutByTheServer": "Bạn đã bị đăng xuất bởi máy chủ. Vui lòng đăng nhập lại.",
+                        "yourSessionHasExpired": "Thời gian đăng nhập đã hết. Vui lòng đăng nhập lại.",
+                        "noMatchingLoginAttemptFound": "Không tìm thấy đăng nhập phù hợp",
+                        "passwordIsOld": "Mật khẩu đã cũ. Vui lòng lấy lại mật khẩu.",
+                        "incorrectPassword": "Mật khẩu sai",
+                        "invalidEmail": "Email sai",
+                        "mustBeLoggedIn": "Phải đăng nhập",
+                        "needToSetUsernameOrEmail": "Phải điền tên đăng nhập hoặc email",
+                        "oldPasswordFormat": "định dạng mật khẩu cũ",
+                        "signupsForbidden": "Đăng ký đã bị cấm",
+                        "tokenExpired": "Hết phiên đăng nhập",
+                        "tokenHasInvalidEmailAddress": "Phiên đăng nhập chứa địa chỉ email sai",
+                        "userHasNoPasswordSet": "Người dùng chưa có mật khẩu",
+                        "userNotFound": "Không tìm thấy người dùng",
+                        "verifyEmailLinkExpired": "Đường dẫn xác nhận email đã hết hạn",
+                        "verifyEmailLinkIsForUnknownAddress": "Đường dẫn xác nhận email là cho địa chỉ chưa xác định",
+                        "matchFailed": "Không đúng"
                     }
                 }
             }

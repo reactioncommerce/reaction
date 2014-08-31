@@ -9,7 +9,7 @@
 
     {{#if dropdownVisible}}
       <div id="login-dropdown-list" class="accounts-dialog">
-        <a class="login-close-text">Close</a>
+        <a class="login-close-text" data-i18n="accountsUI.close">Close</a>
         <div class="login-close-text-clear"></div>
 
         {{#if inMessageOnlyFlow}}
@@ -33,7 +33,7 @@
     </div>
   {{/if}}
 
-  <div class="login-button" id="login-buttons-logout">
+  <div class="login-button" id="login-buttons-logout" data-i18n="accountsUI.signOut">
     Sign out
   </div>
 
@@ -48,7 +48,7 @@
     {{#if dropdownVisible}}
       {{! This text is covered by the dropdown, but duplicating it here
           makes the position of "Close" match the position of this text. }}
-      <a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
+      <a class="login-link-text" id="login-sign-in-link"><span data-i18n="accountsUI.signIn">Sign in</span> ▾</a>
       <div id="login-dropdown-list" class="accounts-dialog">
         <a class="login-close-text">Close</a>
         {{#if loggingIn}}
@@ -62,7 +62,7 @@
         {{! Not normally visible, but if the user closes the dropdown during login.}}
         {{> _loginButtonsLoggingIn}}
       {{else}}
-        <a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
+        <a class="login-link-text" id="login-sign-in-link"><span data-i18n="accountsUI.signIn">Sign in</span> ▾</a>
       {{/if}}
     {{/if}}
   </div>
@@ -88,7 +88,7 @@
 <template name="coreLoginButtonsLoggedOutPasswordServiceSeparator">
   <div class="or">
     <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span class="or-text">or</span>
+    <span class="or-text" data-i18n="accountsUI.or">or</span>
     <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
   </div>
 </template>
@@ -106,22 +106,22 @@
 
       <div class="login-button login-button-form-submit" id="login-buttons-password">
         {{#if inSignupFlow}}
-          <span data-i18n="accountsUI.createAccount">Create account</span>
+          <span data-i18n="accountsUI.createAccount">{{i18n "accountsUI.createAccount"}}</span>
         {{else}}
-          <span data-i18n="accountsUI.signIn">Sign in</span>
+          <span data-i18n="accountsUI.signIn">{{i18n "accountsUI.signIn"}}</span>
         {{/if}}
       </div>
 
       {{#if inLoginFlow}}
         {{#if showCreateAccountLink}}
           <div class="additional-link-container">
-            <a id="signup-link" class="additional-link" data-i18n="accountsUI.createAccount">Create account</a>
+            <a id="signup-link" class="additional-link" data-i18n="accountsUI.createAccount">{{i18n "accountsUI.createAccount"}}</a>
           </div>
         {{/if}}
 
         {{#if showForgotPasswordLink}}
           <div class="additional-link-container">
-            <a id="forgot-password-link" class="additional-link" data-i18n="accountsUI.forgotPassword">Forgot password</a>
+            <a id="forgot-password-link" class="additional-link" data-i18n="accountsUI.forgotPassword">{{i18n "accountsUI.forgotPassword"}}</a>
           </div>
         {{/if}}
       {{/if}}
@@ -136,14 +136,14 @@
 <template name="coreForgotPasswordForm">
   <div class="login-form">
     <div id="forgot-password-email-label-and-input"> {{! XXX we should probably use loginButtonsFormField }}
-      <label id="forgot-password-email-label" for="forgot-password-email">Email</label>
+      <label id="forgot-password-email-label" for="forgot-password-email" data-i18n="accountsUI.email">{{i18n "accountsUI.email"}}</label>
       <input id="forgot-password-email" type="email"/>
     </div>
 
     {{> _loginButtonsMessages}}
 
-    <div class="login-button login-button-form-submit" id="login-buttons-forgot-password">
-      Reset password
+    <div class="login-button login-button-form-submit" id="login-buttons-forgot-password" data-i18n="accountsUI.resetYourPassword">
+      {{i18n "accountsUI.resetYourPassword"}}
     </div>
 
     {{> _loginButtonsBackToLoginLink}}
@@ -152,7 +152,7 @@
 
 <template name="coreLoginButtonsBackToLoginLink">
   <div class="additional-link-container">
-    <a id="back-to-login-link" class="additional-link" data-i18n="accountsUI.signIn">Sign in</a>
+    <a id="back-to-login-link" class="additional-link" data-i18n="accountsUI.signIn">{{i18n "accountsUI.signIn"}}</a>
   </div>
 </template>
 
@@ -179,7 +179,7 @@ https://gist.github.com/968927
 <template name="coreLoginButtonsFormField">
   {{#if visible}}
     <div id="login-{{fieldName}}-label-and-input">
-      <label id="login-{{fieldName}}-label" for="login-{{fieldName}}">
+      <label id="login-{{fieldName}}-label" for="login-{{fieldName}}" data-i18n="accountsUI.{{fieldName}}">
         {{fieldLabel}}
       </label>
       <input id="login-{{fieldName}}" type="{{inputType}}" />
@@ -194,7 +194,7 @@ https://gist.github.com/968927
 
   {{> _loginButtonsMessages}}
 
-  <div class="login-button login-button-form-submit" id="login-buttons-do-change-password">
+  <div class="login-button login-button-form-submit" id="login-buttons-do-change-password" data-i18n="accountsUI.changePassword">
     Change password
   </div>
 </template>
