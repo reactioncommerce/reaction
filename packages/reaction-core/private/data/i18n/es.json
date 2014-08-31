@@ -9,7 +9,7 @@
                     "spanish": "Español"
                 },
                 "app": {
-                    "save-and-continue": "Guardar y continuar",
+                    "saveAndContinue": "Guardar y continuar",
                     "cancel": "Cancelar",
                     "submit": "Enviar",
                     "delete": "Eliminar"

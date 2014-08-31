@@ -10,7 +10,7 @@
                         "spanish": "Español"
                     },
                     "app": {
-                        "save-and-continue": "Save and continue",
+                        "saveAndContinue": "Save and continue",
                         "cancel": "Cancel",
                         "submit": "Submit",
                         "delete": "Delete"
@@ -72,12 +72,34 @@
                         "addAddress": "Add a new address entry",
                         "createAddress": "Create your default address"
                     },
+                    "addressBookEdit": {
+                        "editAddress": "Editing this address entry"
+                    },
+                    "addressBookForm": {
+                        "country": "Country",
+                        "fullName": "Full name",
+                        "address1": "Address",
+                        "address2": "Address",
+                        "postal": "Postal",
+                        "city": "City",
+                        "region": "Region",
+                        "phone": "Phone"
+                    },
                     "checkoutProgressBar": {
                         "login": "Login",
                         "shippingBilling": "Shipping & Billing",
                         "shippingOptions": "Shipping Options",
                         "reviewPayment": "Review & Payment",
                         "complete": "Complete"
+                    },
+                    "checkoutPayment": {
+                        "addPaymentToCompleteOrder": "Add payment to complete order"
+                    },
+                    "checkoutReview": {
+                        "review": "Review"
+                    },
+                    "checkoutShipping": {
+                        "selectShippingOption": "Select shipping option"
                     },
                     "accountsUI": {
                         "add": "add",
