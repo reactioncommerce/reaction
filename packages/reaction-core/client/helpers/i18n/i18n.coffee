@@ -51,17 +51,50 @@ Deps.autorun () ->
 # ex: {{i18n "accountsUI.error" "Invalid Email"}}
 ###
 
-Handlebars.registerHelper "i18n", (i18n_key, camelCaseString) ->
+# autoform  utility functions replicated here for "i18nFieldLabelText"
+getDefs = (ss, name) ->
+  throw new Error("Invalid field name: (not a string)")  if typeof name isnt "string"
+  defs = ss.schema(name)
+  throw new Error("Invalid field name: " + name)  unless defs
+  defs
+
+parseOptions = (options, helperName) ->
+  hash = (options or {}).hash or {}
+  # Find the autoform context
+  afContext = AutoForm.find(helperName)
+  # Call getDefs for side effect of throwing errors when name is not in schema
+  hash.name and getDefs(afContext.ss, hash.name)
+  _.extend {}, afContext, hash
+
+# common helper method
+UI.registerHelper "i18n", (i18n_key, camelCaseString) ->
   unless i18n_key then Meteor.throw("i18n key string required to translate")
-  if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + toCamelCase(camelCaseString)
+  if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + camelCaseString.toCamelCase()
   result = new Handlebars.SafeString(i18n.t(i18n_key))
   return result
+
+
+# autoform helper method for labels
+UI.registerHelper "i18nFieldLabelText",  autoFormFieldLabelText = (options) ->
+  options = parseOptions(options, "afFieldLabelText")
+  #parent key is the autoform camelcased
+  form = options.formId.toCamelCase()
+  #label key is the label name camelcased
+  label = options.ss.label(options.name).toCamelCase()
+  i18n_key = form + "." + label
+
+  translation =  i18n.t(i18n_key)
+  if translation is i18n_key
+    return options.ss.label(options.name)
+  else
+    return translation
 
 #default return $ symbol
 UI.registerHelper "currency", () ->
   shops = Shops.findOne()
   if shops then return shops.currency
 
+# return shop specific currency format
 UI.registerHelper "currencySymbol", () ->
   shops = Shops.findOne()
   if shops then return shops.moneyFormat

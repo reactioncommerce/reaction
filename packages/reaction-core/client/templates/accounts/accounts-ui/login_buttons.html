@@ -1,4 +1,4 @@
-<template name="coreLoginButtons">
+<template name="core_loginButtons">
   <div id="login-buttons" class="login-buttons-dropdown-align-{{align}}">
     {{#if currentUser}}
       {{#if loggingIn}}
@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<template name="coreLoginButtonsLoggedIn">
+<template name="core_loginButtonsLoggedIn">
   {{#if dropdown}}
     {{> _loginButtonsLoggedInDropdown}}
   {{else}}
@@ -32,7 +32,7 @@
   {{/if}}
 </template>
 
-<template name="coreLoginButtonsLoggedOut">
+<template name="core_loginButtonsLoggedOut">
   {{#if services}} {{! if at least one service is configured }}
     {{#if configurationLoaded}}
       {{#if dropdown}} {{! if more than one service configured, or password is configured}}
@@ -55,7 +55,7 @@
 </template>
 
 <!-- used in various places to display messages to user -->
-<template name="coreLoginButtonsMessages">
+<template name="core_loginButtonsMessages">
   {{#if errorMessage}}
     <div class="message error-message">{{i18n "accountsUI.error" errorMessage}}</div>
   {{/if}}
@@ -64,13 +64,13 @@
   {{/if}}
 </template>
 
-<template name="coreLoginButtonsLoggingIn">
+<template name="core_loginButtonsLoggingIn">
   {{> _loginButtonsLoggingInPadding}}
   <div class="loading">&nbsp;</div>
   {{> _loginButtonsLoggingInPadding}}
 </template>
 
-<template name="coreLoginButtonsLoggingInPadding">
+<template name="core_loginButtonsLoggingInPadding">
   {{#unless dropdown}}
     {{! invisible div used for correct height of surrounding div. this ensures
         that the _loginButtons template is always the same height

@@ -9,7 +9,7 @@
   {{> _loginButtonsMessagesDialog}}
 </body>
 
-<template name="coreResetPasswordDialog">
+<template name="core_resetPasswordDialog">
   {{#if inResetPasswordFlow}}
     <div class="hide-background"></div>
 
@@ -33,7 +33,7 @@
   {{/if}}
 </template>
 
-<template name="coreJustResetPasswordDialog">
+<template name="core_justResetPasswordDialog">
   {{#if visible}}
     <div class="accounts-dialog accounts-centered-dialog">
       Password reset.
@@ -43,7 +43,7 @@
   {{/if}}
 </template>
 
-<template name="coreEnrollAccountDialog">
+<template name="core_enrollAccountDialog">
   {{#if inEnrollAccountFlow}}
     <div class="hide-background"></div>
 
@@ -67,7 +67,7 @@
   {{/if}}
 </template>
 
-<template name="coreJustVerifiedEmailDialog">
+<template name="core_justVerifiedEmailDialog">
   {{#if visible}}
     <div class="accounts-dialog accounts-centered-dialog">
       Email verified.
@@ -77,7 +77,7 @@
   {{/if}}
 </template>
 
-<template name="coreConfigureLoginServiceDialog">
+<template name="core_configureLoginServiceDialog">
   {{#if visible}}
     <div id="configure-login-service-dialog" class="accounts-dialog accounts-centered-dialog">
       {{> configurationSteps}}
@@ -118,7 +118,7 @@
   {{/if}}
 </template>
 
-<template name="coreLoginButtonsMessagesDialog">
+<template name="core_loginButtonsMessagesDialog">
   {{#if visible}}
     <div class="accounts-dialog accounts-centered-dialog" id="login-buttons-message-dialog">
       {{> _loginButtonsMessages}}
