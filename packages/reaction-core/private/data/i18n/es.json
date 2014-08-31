@@ -6,7 +6,6 @@
             "core": {
                 "languages": {
                     "select": "Elegir idioma",
-                    "english": "English",
                     "spanish": "Español"
                 },
                 "app": {

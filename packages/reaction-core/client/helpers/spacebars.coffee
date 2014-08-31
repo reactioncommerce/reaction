@@ -27,10 +27,18 @@ UI.registerHelper "socialImage", () ->
     return Meteor.user().profile?.picture
   else
     return "../../resources/avatar.gif"
-
+#
+# decamelSpace
+#
 UI.registerHelper "camelToSpace", (str) ->
   downCamel = str.replace(/\W+/g, "-").replace /([a-z\d])([A-Z])/g, "$1 $2"
   return downCamel.toLowerCase()
+
+#
+# lowerCase string
+#
+UI.registerHelper "toLowerCase", (str) ->
+  return str.toLowerCase()
 
 ###
 # Methods for the reaction permissions
