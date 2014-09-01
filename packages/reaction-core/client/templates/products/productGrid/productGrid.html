@@ -28,9 +28,18 @@
 
 
 <template name="gridNotice">
-    {{#if cart.showItemLowInventoryWarning variants.[0]}}
-    <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
+  {{#if isSoldOut}}
+    {{#if isBackorder}}
+      <span class="variant-qty-sold-out badge">Backorder</span>
+    {{else}}
+      <span class="variant-qty-sold-out badge">Sold Out!</span>
     {{/if}}
+  {{else}}
+    {{#if isLowQuantity}}
+      <div class="badge badge-low-inv-warning" title="">Limited Supply</div>
+    {{/if}}  
+  {{/if}}
+   
 </template>
 
 
