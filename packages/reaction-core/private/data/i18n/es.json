@@ -67,6 +67,30 @@
                     "selectShippingAddress": "Selecciona una dirección de envío",
                     "selectBillingAddress": "Selecciona una dirección de facturación"
                 },
+                "shop": {
+                    "addressBook": {
+                        "country": "País",
+                        "fullName": "Nombre completo",
+                        "address1": "dirección 1",
+                        "address2": "dirección 2",
+                        "postal": "Postal",
+                        "city": "Ciudad",
+                        "region": "Región",
+                        "phone": "Teléfono",
+                        "isDefault": "Esta es mi dirección predeterminada",
+                        "isCommercial": "Esta es una dirección comercial"
+                    }
+                },
+                "address": {
+                    "country": "País",
+                    "fullName": "Nombre completo",
+                    "address1": "dirección 1",
+                    "address2": "dirección 2",
+                    "postal": "Postal",
+                    "city": "Ciudad",
+                    "region": "Región",
+                    "phone": "Teléfono"
+                },
                 "addressBookAdd": {
                     "addAddress": "Añadir una nueva entrada de dirección",
                     "createAddress": "Cree su dirección por defecto"

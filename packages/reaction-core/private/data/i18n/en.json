@@ -75,7 +75,21 @@
                 "addressBookEdit": {
                     "editAddress": "Editing this address entry"
                 },
-                "addressBookForm": {
+                "shop": {
+                    "addressBook": {
+                        "country": "Country",
+                        "fullName": "Full name",
+                        "address1": "Address 1",
+                        "address2": "Address 2",
+                        "postal": "Postal",
+                        "city": "City",
+                        "region": "Region",
+                        "phone": "Phone",
+                        "isDefault": "Is this your default address?",
+                        "isCommercial": "Is this a commercial address?"
+                    }
+                },
+                "address": {
                     "country": "Country",
                     "fullName": "Full name",
                     "address1": "Address",
@@ -100,6 +114,15 @@
                 },
                 "checkoutShipping": {
                     "selectShippingOption": "Select shipping option"
+                },
+                "shopEditForm": {
+                    "name": "Name",
+                    "email": "Email"
+                },
+                "shopEditAdressForm": {
+                    "company": "Company",
+                    "fullname": "Full name",
+                    "address1": "Address 1"
                 },
                 "accountsUI": {
                     "add": "add",

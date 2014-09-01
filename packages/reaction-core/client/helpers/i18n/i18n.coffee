@@ -11,6 +11,40 @@
 #  to the Translations collection.
 #
 ###################################################################################
+#
+getLabelsFor = (schema, name, sessionLanguage) ->
+  labels = {}
+  for fieldName in schema._schemaKeys
+    i18n_key = name.toCamelCase() + "." + fieldName.split(".$").join("")
+    #console.log "schema:  " + name + "  fieldName:  " + fieldName + " i18nkey: " + i18n_key
+    translation = i18n.t(i18n_key)
+    if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
+      #schema._schema[fieldName].label =  i18n.t(i18n_key)
+      labels[fieldName] = translation
+
+  unless Object.keys(labels).length is 0
+    # console.log labels
+    return labels
+  else
+    return null
+
+
+getMessagesFor = (schema, name, sessionLanguage) ->
+  messages = {}
+  for message of SimpleSchema._globalMessages
+    i18n_key = "globalMessages" + "." + message
+    translation = i18n.t(i18n_key)
+
+    if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
+      messages[message] = translation
+
+  unless Object.keys(messages).length is 0
+    # console.log labels
+    return messages
+  else
+    return null
+
+
 Meteor.startup ->
   Session.set "language", i18n.detectLanguage()
 
@@ -31,14 +65,22 @@ Deps.autorun () ->
       resStore: resources
       # debug: true
       },(t)->
-         #initiliaze
+        # initialize autoform,schemas
+        for schema, ss of ReactionCore.Schemas
+          ss.labels getLabelsFor(ss, schema, sessionLanguage)
+          ss.messages getMessagesFor(ss, schema, sessionLanguage)
+
+        #initiliaze templates
         _.each Template, (template, name) ->
+        # for template,name of Template
           originalRender = template.rendered
           template.rendered = ->
             unless name is "prototype"
               $("[data-i18n]").i18n()
               originalRender and originalRender.apply(this, arguments)
+        #re-init i18n
         $("[data-i18n]").i18n()
+
 
 
 ###
@@ -51,20 +93,6 @@ Deps.autorun () ->
 # ex: {{i18n "accountsUI.error" "Invalid Email"}}
 ###
 
-# autoform  utility functions replicated here for "i18nFieldLabelText"
-getDefs = (ss, name) ->
-  throw new Error("Invalid field name: (not a string)")  if typeof name isnt "string"
-  defs = ss.schema(name)
-  throw new Error("Invalid field name: " + name)  unless defs
-  defs
-
-parseOptions = (options, helperName) ->
-  hash = (options or {}).hash or {}
-  # Find the autoform context
-  afContext = AutoForm.find(helperName)
-  # Call getDefs for side effect of throwing errors when name is not in schema
-  hash.name and getDefs(afContext.ss, hash.name)
-  _.extend {}, afContext, hash
 
 # common helper method
 UI.registerHelper "i18n", (i18n_key, camelCaseString) ->
@@ -73,21 +101,6 @@ UI.registerHelper "i18n", (i18n_key, camelCaseString) ->
   result = new Handlebars.SafeString(i18n.t(i18n_key))
   return result
 
-
-# autoform helper method for labels
-UI.registerHelper "i18nFieldLabelText",  autoFormFieldLabelText = (options) ->
-  options = parseOptions(options, "afFieldLabelText")
-  #parent key is the autoform camelcased
-  form = options.formId.toCamelCase()
-  #label key is the label name camelcased
-  label = options.ss.label(options.name).toCamelCase()
-  i18n_key = form + "." + label
-
-  translation =  i18n.t(i18n_key)
-  if translation is i18n_key
-    return options.ss.label(options.name)
-  else
-    return translation
 
 #default return $ symbol
 UI.registerHelper "currency", () ->

@@ -166,6 +166,13 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     type: [ReactionCore.Schemas.Metafield]
     optional: true
 
+#if i18n.t('addressSchema.fullName') isnt 'addressSchema.fullName' then return i18n.t('addressSchema.fullName')
+# MySchema.labels password: "Enter your password"
+# AddressSchema.labels
+#   password: "Enter your password"
+#   test: "test"
+
+
 ReactionCore.Schemas.Country = new SimpleSchema
   name:
     type: String

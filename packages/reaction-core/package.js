@@ -103,9 +103,6 @@ Package.on_use(function (api, where) {
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",
 
-    "client/templates/layout/forms/bootstrap3/bootstrap3.html",
-    "client/templates/layout/forms/bootstrap3/bootstrap3.coffee",
-
     "client/templates/layout/alerts/bootstrap-alerts.coffee",
     "client/templates/layout/alerts/alerts.html",
     "client/templates/layout/alerts/alerts.coffee",
