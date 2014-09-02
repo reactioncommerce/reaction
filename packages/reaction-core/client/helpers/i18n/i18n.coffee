@@ -1,17 +1,21 @@
 ###################################################################################
-#  initialize i18next http://i18next.com/
+#  i18next http://i18next.com/  Implementation for Reaction Commerce
 #
 #  usage - in template: {{i18n 'cartDrawer.empty'}}
 #  usage - inline tag: <td data-i18n='cartSubTotals.items'>
 #  usage - reference:  <thead data-i18n>cartSubTotals.head</thead>
 #  usage - alerts Alerts.add "Message!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock"
-#  see - reaction-core/private/data/Translations.json for example definition/translation
 #
-#  all translations should go in private/data/Translations.json, where they get imported
-#  to the Translations collection.
+#  all translations should go in private/data/i18n/*.json, where they get imported into `Translations`
+#  language keys fallback to English, and then template text.
 #
 ###################################################################################
+
+###
 #
+# get i18n messages for  updating autoform labels from simple schema
+#
+###
 getLabelsFor = (schema, name, sessionLanguage) ->
   labels = {}
   for fieldName in schema._schemaKeys
@@ -19,16 +23,25 @@ getLabelsFor = (schema, name, sessionLanguage) ->
     #console.log "schema:  " + name + "  fieldName:  " + fieldName + " i18nkey: " + i18n_key
     translation = i18n.t(i18n_key)
     if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
-      #schema._schema[fieldName].label =  i18n.t(i18n_key)
+      # schema._schema[fieldName].label =  i18n.t(i18n_key)
       labels[fieldName] = translation
 
   unless Object.keys(labels).length is 0
-    # console.log labels
     return labels
   else
     return null
 
-
+###
+# get i18n messages for autoform messages
+# currently using a globalMessage namespace only
+#
+# TODO: implement messaging hierarchy from simple-schema
+#
+# (1) Use schema-specific message for specific key
+# (2) Use schema-specific message for generic key
+# (3) Use schema-specific message for type
+#
+###
 getMessagesFor = (schema, name, sessionLanguage) ->
   messages = {}
   for message of SimpleSchema._globalMessages
@@ -39,11 +52,14 @@ getMessagesFor = (schema, name, sessionLanguage) ->
       messages[message] = translation
 
   unless Object.keys(messages).length is 0
-    # console.log labels
     return messages
   else
     return null
-
+###
+#  set language and autorun on change of language
+#  initialize i18n and load data resources for the current language and fallback 'EN'
+#
+###
 
 Meteor.startup ->
   Session.set "language", i18n.detectLanguage()
@@ -70,7 +86,7 @@ Deps.autorun () ->
           ss.labels getLabelsFor(ss, schema, sessionLanguage)
           ss.messages getMessagesFor(ss, schema, sessionLanguage)
 
-        #initiliaze templates
+        # initialize  templates
         _.each Template, (template, name) ->
         # for template,name of Template
           originalRender = template.rendered
