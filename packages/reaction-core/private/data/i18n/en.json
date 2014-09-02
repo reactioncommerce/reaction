@@ -97,7 +97,9 @@
                     "postal": "Postal",
                     "city": "City",
                     "region": "Region",
-                    "phone": "Phone"
+                    "phone": "Phone",
+                    "isDefault": "Is this your default address?",
+                    "isCommercial": "Is this a commercial address?"
                 },
                 "checkoutProgressBar": {
                     "login": "Login",

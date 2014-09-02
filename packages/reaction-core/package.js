@@ -1,6 +1,6 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
-  name: "ongoworks:reaction-core",
+  name: "reactioncommerce:core",
   version: "0.1.5",
   git: "https://github.com/ongoworks/reaction-core.git"
 });
@@ -13,20 +13,71 @@ Npm.depends({
     "colors": "0.6.2"
 });
 
-Package.on_use(function (api, where) {
-   api.use([
-    "ui",
-    "accounts-ui-unstyled",
-    "coffeescript",
-    "underscore",
-    "autoform",
-    "geocoder",
-    "collection-helpers",
-    "template-extension"
-  ], ["client", "server"]);
+Package.onUse(function (api, where) {
 
-  api.use(["reaction-app-packages"]);
-  // Core Reaction
+  if (api.versionsFrom) {
+    // api.versionsFrom('METEOR-CORE@0.9.0.1');
+    // 0.9.0+
+    //core meteor packages
+    api.use("less", ["client", "server"]);
+    api.use("amplify", ["client", "server"]);
+    api.use("accounts-base", ["client", "server"]);
+    api.use("accounts-ui-unstyled", ["client", "server"]);
+    api.use("coffeescript", ["client", "server"]);
+    api.use("underscore", ["client", "server"]);
+    // ui/blaze needed (?)
+    api.use("ui", ["client", "server"]);
+    api.use('blaze', 'client');
+
+    //community packages
+    api.use("aldeed:geocoder@0.3.1", ["client", "server"]);
+    api.use("aldeed:template-extension@0.1.0", ["client", "server"]);
+    api.use("aldeed:collection2@1.0.0", ["client", "server"]);
+    api.use("aldeed:simple-schema@1.0.2", ["client", "server"]);
+    api.use("aldeed:autoform@0.17.1", ["client", "server"]);
+    api.use("iron:router@0.9.1", ["client", "server"]);
+    api.use("raix:collection-fs@0.4.8", ["client", "server"]);
+    api.use("raix:cfs-filesystem@0.0.27", ["client", "server"]);
+    api.use("raix:cfs-gridfs@0.0.24", ["client", "server"]);
+    api.use("raix:cfs-graphicsmagick@0.0.14", ["client", "server"]);
+    api.use("raix:cfs-s3@0.0.29", ["client", "server"]);
+    api.use("raix:ui-dropped-event@0.0.7", ["client", "server"]);
+    api.use("dburles:collection-helpers@0.3.2", ["client", "server"]);
+    api.use("matb33:collection-hooks@0.7.3", ["client", "server"]);
+    api.use("alanning:roles@1.2.12", ["client", "server"]);
+    api.use("mrt:moment@2.8.1", ["client", "server"]);
+    api.use("sacha:spin@2.0.4" ["client", "server"]);
+
+    //implying these are reused in reaction packages
+    api.imply("collection2", ["client", "server"]);
+    api.imply("simple-schema", ["client", "server"]);
+    api.imply("autoform", ["client", "server"]);
+    api.imply("iron-router", ["client", "server"]);
+    api.imply("collection-fs", ["client", "server"]);
+    api.imply("cfs-filesystem", ["client", "server"]);
+    api.imply("cfs-gridfs", ["client", "server"]);
+    api.imply("cfs-graphicsmagick", ["client", "server"]);
+    api.imply("cfs-s3", ["client", "server"]);
+    api.imply("ui-dropped-event", ["client", "server"]);
+    api.imply("collection-hooks", ["client", "server"]);
+    api.imply("roles", ["client", "server"]);
+    api.imply("less", ["client", "server"]);
+    api.imply("amplify", ["client", "server"]);
+    api.imply("accounts-base", ["client", "server"]);
+    api.imply("accounts-ui-unstyled", ["client", "server"]);
+    api.imply("ui" ["client", "server"]);
+
+    api.imply("autoform", ["client"]);
+    api.imply("iron-router", ["client"]);
+    api.imply("moment", ["client"]);
+    api.imply("spin" ["client"]);
+
+  // Pre-0.9.0
+  } else {
+    throw new Error("Meteor upgrade required.")
+  }
+
+  // Core Reaction files
   api.add_files([
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
@@ -371,12 +422,12 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/i18n/vi.json', 'server', {isAsset: true});
 
 
-    // We are now grouping all exported app variables and methods under
+  // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.
   api.export(["ReactionCore"]);
 
-
+  // legacy Exports (TODO: move to ReactionCore)
   api.export([
     "Alerts",
     "CartWorkflow",
