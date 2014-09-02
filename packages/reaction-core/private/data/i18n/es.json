@@ -61,6 +61,15 @@
                 "checkoutLogin": {
                     "createOrLogin": "Crear una cuenta o inicia sesión para continuar"
                 },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Añadir el pago a la orden completa"
+                },
+                "checkoutReview": {
+                    "review": "Revisión"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "Seleccione la opción de envío"
+                },
                 "addressBookGrid": {
                     "chooseAddress": "Elegir el envío y la dirección de facturación",
                     "createDefault": "Cree su dirección por defecto",
@@ -89,7 +98,9 @@
                     "postal": "Postal",
                     "city": "Ciudad",
                     "region": "Región",
-                    "phone": "Teléfono"
+                    "phone": "Teléfono",
+                    "isDefault": "Esta es mi dirección predeterminada",
+                    "isCommercial": "Esta es una dirección comercial"
                 },
                 "addressBookAdd": {
                     "addAddress": "Añadir una nueva entrada de dirección",
