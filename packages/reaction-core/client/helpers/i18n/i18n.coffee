@@ -64,6 +64,15 @@ getMessagesFor = (schema, name, sessionLanguage) ->
 Meteor.startup ->
   Session.set "language", i18n.detectLanguage()
 
+  # initialize  templates
+  _.each Template, (template, name) ->
+  # for template,name of Template
+    return if name is "prototype" or name.slice(0, 2) is "__"
+    originalRender = template.rendered
+    template.rendered = ->
+      @.$("[data-i18n]").i18n()
+      originalRender and originalRender.apply(this, arguments)
+
 Deps.autorun () ->
   sessionLanguage = Session.get "language"
   Meteor.subscribe "Translations", sessionLanguage, () ->
@@ -81,19 +90,11 @@ Deps.autorun () ->
       resStore: resources
       # debug: true
       },(t)->
-        # initialize autoform,schemas
+        # update labels and messages for autoform,schemas
         for schema, ss of ReactionCore.Schemas
           ss.labels getLabelsFor(ss, schema, sessionLanguage)
           ss.messages getMessagesFor(ss, schema, sessionLanguage)
-
-        # initialize  templates
-        _.each Template, (template, name) ->
-        # for template,name of Template
-          originalRender = template.rendered
-          template.rendered = ->
-            unless name is "prototype"
-              $("[data-i18n]").i18n()
-              originalRender and originalRender.apply(this, arguments)
+        
         #re-init i18n
         $("[data-i18n]").i18n()
 
