@@ -93,7 +93,7 @@ Deps.autorun () ->
 
 
 ###
-# i18n translate
+# i18n helper
 # see: http://i18next.com/
 # pass this the translation key as the first argument.
 # optionally you can pass a string like "Invalid email", and we'll look for "invalidEmail"
@@ -101,9 +101,6 @@ Deps.autorun () ->
 #
 # ex: {{i18n "accountsUI.error" "Invalid Email"}}
 ###
-
-
-# common helper method
 UI.registerHelper "i18n", (i18n_key, camelCaseString) ->
   unless i18n_key then Meteor.throw("i18n key string required to translate")
   if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + camelCaseString.toCamelCase()
