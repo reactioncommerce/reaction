@@ -19,8 +19,8 @@
 getLabelsFor = (schema, name, sessionLanguage) ->
   labels = {}
   for fieldName in schema._schemaKeys
-    i18n_key = name.toCamelCase() + "." + fieldName.split(".$").join("")
-    #console.log "schema:  " + name + "  fieldName:  " + fieldName + " i18nkey: " + i18n_key
+    i18n_key = name.charAt(0).toLowerCase() + name.slice(1) + "." + fieldName.split(".$").join("")
+    # console.log "schema:  " + name + "  fieldName:  " + fieldName + " i18nkey: " + i18n_key
     translation = i18n.t(i18n_key)
     if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
       # schema._schema[fieldName].label =  i18n.t(i18n_key)
