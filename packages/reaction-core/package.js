@@ -19,6 +19,7 @@ Package.onUse(function (api, where) {
     // api.versionsFrom('METEOR-CORE@0.9.0.1');
     // 0.9.0+
     //core meteor packages
+    api.use("standard-app-packages", ["client", "server"]);
     api.use("less", ["client", "server"]);
     api.use("amplify", ["client", "server"]);
     api.use("accounts-base", ["client", "server"]);
@@ -32,15 +33,17 @@ Package.onUse(function (api, where) {
     //community packages
     api.use("aldeed:geocoder@0.3.1", ["client", "server"]);
     api.use("aldeed:template-extension@0.1.0", ["client", "server"]);
-    api.use("aldeed:collection2@1.0.0", ["client", "server"]);
+    api.use("aldeed:collection2", ["client", "server"]);
     api.use("aldeed:simple-schema@1.0.2", ["client", "server"]);
-    api.use("aldeed:autoform@0.17.1", ["client", "server"]);
+    api.use("aldeed:autoform@1.0.0", ["client", "server"]);
     api.use("iron:router@0.9.1", ["client", "server"]);
     api.use("raix:collection-fs@0.4.8", ["client", "server"]);
     api.use("raix:cfs-filesystem@0.0.27", ["client", "server"]);
     api.use("raix:cfs-gridfs@0.0.24", ["client", "server"]);
     api.use("raix:cfs-graphicsmagick@0.0.14", ["client", "server"]);
     api.use("raix:cfs-s3@0.0.29", ["client", "server"]);
+    api.use("raix:micro-queue", ["client", "server"]);
+    api.use("raix:reactive-list", ["client", "server"]);
     api.use("raix:ui-dropped-event@0.0.7", ["client", "server"]);
     api.use("dburles:collection-helpers@0.3.2", ["client", "server"]);
     api.use("matb33:collection-hooks@0.7.3", ["client", "server"]);
@@ -49,28 +52,27 @@ Package.onUse(function (api, where) {
     api.use("sacha:spin@2.0.4" ["client", "server"]);
 
     //implying these are reused in reaction packages
-    api.imply("collection2", ["client", "server"]);
-    api.imply("simple-schema", ["client", "server"]);
-    api.imply("autoform", ["client", "server"]);
-    api.imply("iron-router", ["client", "server"]);
-    api.imply("collection-fs", ["client", "server"]);
-    api.imply("cfs-filesystem", ["client", "server"]);
-    api.imply("cfs-gridfs", ["client", "server"]);
-    api.imply("cfs-graphicsmagick", ["client", "server"]);
-    api.imply("cfs-s3", ["client", "server"]);
-    api.imply("ui-dropped-event", ["client", "server"]);
-    api.imply("collection-hooks", ["client", "server"]);
-    api.imply("roles", ["client", "server"]);
     api.imply("less", ["client", "server"]);
     api.imply("amplify", ["client", "server"]);
     api.imply("accounts-base", ["client", "server"]);
     api.imply("accounts-ui-unstyled", ["client", "server"]);
     api.imply("ui" ["client", "server"]);
 
-    api.imply("autoform", ["client"]);
-    api.imply("iron-router", ["client"]);
-    api.imply("moment", ["client"]);
-    api.imply("spin" ["client"]);
+    api.imply("aldeed:collection2", ["client", "server"]);
+    api.imply("aldeed:simple-schema", ["client", "server"]);
+    api.imply("aldeed:autoform", ["client", "server"]);
+    api.imply("iron:router", ["client", "server"]);
+    api.imply("raix:collection-fs", ["client", "server"]);
+    api.imply("raix:cfs-filesystem", ["client", "server"]);
+    api.imply("raix:cfs-gridfs", ["client", "server"]);
+    api.imply("raix:cfs-graphicsmagick", ["client", "server"]);
+    api.imply("raix:cfs-s3", ["client", "server"]);
+    api.imply("raix:ui-dropped-event", ["client", "server"]);
+    api.imply("matb33:collection-hooks", ["client", "server"]);
+    api.imply("alanning:roles", ["client", "server"]);
+
+    api.imply("mrt:moment", ["client"]);
+    api.imply("sacha:spin" ["client"]);
 
   // Pre-0.9.0
   } else {
