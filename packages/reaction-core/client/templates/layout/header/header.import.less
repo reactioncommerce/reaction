@@ -25,9 +25,16 @@
   margin-right: 5px;
   display: inline-block;
   float: right;
-  padding-top: (@navbar-padding-vertical + 2px);
+  padding-top: @navbar-padding-vertical;
   .dropdown.open > a, .dropdown.open > a:hover, .dropdown .open > a:focus {
     background-color: transparent !important;
+  }
+}
+.navbar-languages {
+  float: right;
+  position: relative;
+  .dropdown.open > a, .dropdown > a:hover, .dropdown .open > a:focus {
+    background-color: @navbar-default-toggle-icon-bar-bg;
   }
 }
 

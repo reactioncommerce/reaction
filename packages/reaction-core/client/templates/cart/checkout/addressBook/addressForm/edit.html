@@ -1,7 +1,7 @@
 <template name="addressBookEdit">
 <div class="panel-heading">
   <h3 class="panel-title">
-      <span>Editing this address entry</span>
+      <span  data-i18n="addressBookEdit.addAddress">Editing this address entry</span>
   </h3>
 </div>
 <div class="panel-body">
@@ -10,8 +10,8 @@
       {{>addressBookForm}}
       <div class="row text-right">
           {{>afFieldInput name="_id" value=_id type="hidden"}}
-          <button type="submit" class="btn btn-primary update">Save and Continue</button>
-          <button type="reset" class="btn btn-default" id="cancel-address-edit">Cancel</button>
+          <button type="submit" class="btn btn-primary update" data-i18n="app.saveAndContinue">Save and Continue</button>
+          <button type="reset" class="btn btn-default" id="cancel-address-edit" data-i18n="app.cancel">Cancel</button>
       </div>
   </fieldset>
 {{/autoForm}}

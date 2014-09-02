@@ -21,7 +21,8 @@ Package.on_use(function (api, where) {
     "underscore",
     "autoform",
     "geocoder",
-    "collection-helpers"
+    "collection-helpers",
+    "template-extension"
   ], ["client", "server"]);
 
   api.use(["reaction-app-packages"]);
@@ -51,6 +52,8 @@ Package.on_use(function (api, where) {
   ], ["server"]);
 
   api.add_files([
+    "lib/i18next-1.7.3/i18next-1.7.3.js",
+
     "lib/bootstrap/lib/js/transition.js",
     "lib/bootstrap/lib/js/alert.js",
     "lib/bootstrap/lib/js/button.js",
@@ -81,7 +84,7 @@ Package.on_use(function (api, where) {
     "client/routing.coffee",
 
     "client/helpers/helpers.coffee",
-    "client/helpers/config.coffee",
+    "client/helpers/i18n/i18n.coffee",
     "client/helpers/spacebars.coffee",
 
     "client/workflows/cart/workflow.coffee",
@@ -93,6 +96,9 @@ Package.on_use(function (api, where) {
 
     "client/templates/layout/header/tags/tags.html",
     "client/templates/layout/header/tags/tags.coffee",
+
+    "client/templates/layout/header/i18n/i18n.html",
+    "client/templates/layout/header/i18n/i18n.coffee",
 
     "client/templates/layout/footer/footer.html",
     "client/templates/layout/footer/footer.coffee",
@@ -109,6 +115,12 @@ Package.on_use(function (api, where) {
 
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
+
+    "client/templates/accounts/accounts-ui/login_buttons.html",
+    "client/templates/accounts/accounts-ui/login_buttons_dialogs.html",
+    "client/templates/accounts/accounts-ui/login_buttons_dropdown.html",
+    "client/templates/accounts/accounts-ui/login_buttons_single.html",
+    "client/templates/accounts/accounts-ui/accounts-ui.coffee",
 
     "client/templates/accounts/accounts.html",
     "client/templates/accounts/accounts.coffee",
@@ -342,11 +354,28 @@ Package.on_use(function (api, where) {
   api.add_files('private/data/roles.json', 'server', {isAsset: true});
   api.add_files('private/data/users.json', 'server', {isAsset: true});
   api.add_files('private/data/Orders.json', 'server', {isAsset: true});
+  //i18n translations
+  api.add_files('private/data/i18n/ar.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/cs.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/de.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/en.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/es.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/fr.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/he.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/it.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/pl.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/pt.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/ru.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/sl.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/sv.json', 'server', {isAsset: true});
+  api.add_files('private/data/i18n/vi.json', 'server', {isAsset: true});
 
-  // We are now grouping all exported app variables and methods under
+
+    // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.
   api.export(["ReactionCore"]);
+
 
   api.export([
     "Alerts",

@@ -19,10 +19,10 @@ Template.gridPackage.events
     event.preventDefault()
     Packages.update template.data._id, {$set: {enabled: true}}, (error, result) ->
       if result is 1
-        Alerts.add self.label + " is now enabled.", "success",
+        Alerts.add self.label + i18n.t(gridPackage.pkgEnabled), "success",
           type: "pkg-enabled-" + self.name
         Router.go self.settingsRoute if self.settingsRoute
-      else if error 
+      else if error
         console.log error
 
   "click .disablePkg": (event, template) ->
@@ -30,7 +30,7 @@ Template.gridPackage.events
     event.preventDefault()
     Packages.update template.data._id, {$set: {enabled: false}}, (error, result) ->
       if result is 1
-        Alerts.add self.label + " is now disabled.", "success",
+        Alerts.add self.label + i18n.t(gridPackage.pkgDisabled), "success",
           type: "pkg-enabled-" + self.name
-      else if error 
+      else if error
         console.log error

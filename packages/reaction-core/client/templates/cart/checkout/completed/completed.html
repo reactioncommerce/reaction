@@ -1,11 +1,11 @@
 <template name="cartCompleted">
-<h1>Thank you. <small>Your order has been {{orderStatus}}.</small></h1>
+<h1 data-i18n="cartCompleted.thankYou">Thank you. <small data-i18n>Your order has been {{orderStatus}}.</small></h1>
 <div class="print-area" id="print-area">
   <div class="row">
      <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Shipment</h3>
+          <h3 class="panel-title" data-i18n="cartCompleted.shipment">Shipment</h3>
         </div>
         <div class="panel-body">
           {{#with shipping.address}}
@@ -26,7 +26,7 @@
       <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Payment</h3>
+          <h3 class="panel-title" data-i18n="cartCompleted.payment">Payment</h3>
         </div>
         <div class="panel-body">
           <div class="list-group">
@@ -44,7 +44,7 @@
       <div class="col-md-8">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Order Items</h3>
+          <h3 class="panel-title" data-i18n="cartCompleted.orderItems">Order Items</h3>
         </div>
         <div class="panel-body">
           <div class="list-group">

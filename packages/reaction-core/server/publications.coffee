@@ -8,6 +8,7 @@ Packages = ReactionCore.Collections.Packages
 ConfigData = ReactionCore.Collections.ConfigData
 FileStorage = ReactionCore.Collections.FileStorage
 Media = ReactionCore.Collections.Media
+Translations = ReactionCore.Collections.Translations
 
 ###
 # Generic Security Rule Manager
@@ -36,7 +37,7 @@ Security =
   allowAnonymousFileDownloads: (collections) ->
     addAllowFuncForAll collections, ["download"], [], (userId) ->
       return true
-  # Allow inserts, updates, and removes only if the user is in one of the given roles 
+  # Allow inserts, updates, and removes only if the user is in one of the given roles
   allowOnlyRoles: (roles, types, collections) ->
     addDenyFuncForAll collections, types, [], (userId) ->
       return !Roles.userIsInRole(userId, roles)
@@ -60,7 +61,7 @@ Security =
   denyAll: (types, collections) ->
     addDenyFuncForAll collections, types, [], ->
       return true
-  
+
 
 ###
 # Method to Auto-Set Props on Insert
@@ -82,9 +83,9 @@ AutoSet "shopId", [ Packages, Orders, Cart, Tags ], ->
 # We add some common security rules through simple Security methods
 ###
 
-Security.defaultAllow [ Media, FileStorage, ConfigData, Packages, Products, Orders, Cart, Tags ]
+Security.defaultAllow [ Media, FileStorage, ConfigData, Packages, Products, Orders, Cart, Tags, Translations ]
 
-Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, ConfigData, Products, Tags ]
+Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, ConfigData, Products, Tags, Translations ]
 
 Security.allowOnlyRoles ['admin'], ["update", "remove"], [ Shops ]
 
@@ -101,7 +102,7 @@ Security.denyAll ["insert", "remove"], [ Cart ]
 # TODO: should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
 Security.mustMatchUser ["update"], [ Cart ]
 
-Security.fileMustBelongToShop [ Media, FileStorage ] 
+Security.fileMustBelongToShop [ Media, FileStorage ]
 
 Security.allowAnonymousFileDownloads [ Media, FileStorage ] #todo: allowing anonymous for FileStorage is probably not correct
 
@@ -151,6 +152,13 @@ Meteor.publish "media", () ->
 Meteor.publish "FileStorage", () ->
   #todo: this should be more secure and more filtered
   return FileStorage.find()
+
+###
+# i18n - translations
+###
+Meteor.publish "Translations", () ->
+  #todo: this should be more secure and more filtered
+  return Translations.find()
 
 ###
 # get any user name,social profile image
