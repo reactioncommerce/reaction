@@ -25,11 +25,7 @@ getLabelsFor = (schema, name, sessionLanguage) ->
     if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
       # schema._schema[fieldName].label =  i18n.t(i18n_key)
       labels[fieldName] = translation
-
-  unless Object.keys(labels).length is 0
-    return labels
-  else
-    return null
+  return labels
 
 ###
 # get i18n messages for autoform messages
@@ -50,11 +46,8 @@ getMessagesFor = (schema, name, sessionLanguage) ->
 
     if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
       messages[message] = translation
+  return messages
 
-  unless Object.keys(messages).length is 0
-    return messages
-  else
-    return null
 ###
 #  set language and autorun on change of language
 #  initialize i18n and load data resources for the current language and fallback 'EN'
@@ -63,14 +56,13 @@ getMessagesFor = (schema, name, sessionLanguage) ->
 
 Meteor.startup ->
   Session.set "language", i18n.detectLanguage()
-
   # initialize  templates
   _.each Template, (template, name) ->
   # for template,name of Template
     return if name is "prototype" or name.slice(0, 2) is "__"
     originalRender = template.rendered
     template.rendered = ->
-      @.$("[data-i18n]").i18n()
+      try @.$("[data-i18n]").i18n()
       originalRender and originalRender.apply(this, arguments)
 
 Deps.autorun () ->
@@ -94,7 +86,7 @@ Deps.autorun () ->
         for schema, ss of ReactionCore.Schemas
           ss.labels getLabelsFor(ss, schema, sessionLanguage)
           ss.messages getMessagesFor(ss, schema, sessionLanguage)
-        
+
         #re-init i18n
         $("[data-i18n]").i18n()
 
