@@ -3,40 +3,16 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+# Core Meteor Packages
 standard-app-packages
 less
 coffeescript
 jquery
-accounts-base
-accounts-password
-accounts-facebook
-accounts-ui-unstyled
-amplify
-
-underscore
-underscore-string-latest
-email
-iron-router
-collection2
-autoform
-simple-schema
-moment
-spin
-roles
-
-collection-hooks
-collectionFS
-cfs-filesystem
-handlebars-server
-d3
-cfs-gridfs
-cfs-s3
-ui-dropped-event
-
-reaction-app-packages
-reaction-core
-reaction-paypal
-reaction-google-analytics
-reaction-helloworld
 force-ssl
 oauth-encryption
+
+# Reaction Commerce Packages
+reactioncommerce:core@0.1.5
+reactioncommerce:reaction-paypal
+reactioncommerce:reaction-google-analytics
+reactioncommerce:helloworld

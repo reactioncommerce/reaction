@@ -1,3 +1,4 @@
+node_modules
 lib-cov
 *.seed
 *.log
@@ -17,3 +18,5 @@ settings/demo.json
 npm-debug.log
 .fileStorage/
 
+
+reaction-dev.sh
