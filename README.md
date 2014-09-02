@@ -5,7 +5,7 @@ A commerce platform developed with Meteor and following a reactive design patter
 ---
 ###Roadmap & Status:
 
-** Current status: Public Alpha v0.1.3 **
+** Current status: Public Alpha v0.1.5 **
 ** Functional but unstable, with HEAVY ongoing development!**
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
@@ -16,8 +16,11 @@ As with all development, some items are ahead of schedule, and some are not.
 
 http://reactioncommerce.com
 
-Here you can launch a test shop, launched as a Docker container. 
+At http://reactioncommerce.com you can launch a test shop, launched as a Docker container. *note: these are test shops, and not for production.*
+
 The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
+
+Your test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
 
 
 ---
@@ -38,7 +41,7 @@ The Docker image is automatically built at the [Ongo Works public Docker repo](h
 * Realtime synchronization across platforms/browsers
 * Cross platform, responsive focus - should work well natively, without native apps.
 * Migration paths from existing commerce platforms (Magento, Shopify, BigCommerce)
-* reaction-commerce package can be used as a package in any meteor application
+* reactioncommerce:core package can be used as a package in any meteor application
 * Designer and developer friendly!
 	* HTML/CSS/Javascript or CoffeeScript knowledge should be sufficient for customization.
 	* Commercial package and theme development encouraged.
@@ -54,6 +57,8 @@ The Docker image is automatically built at the [Ongo Works public Docker repo](h
 [Package Development](https://github.com/ongoworks/reaction-core/blob/master/docs/packages.md)
 
 [Theme Development](https://github.com/ongoworks/reaction-core/blob/master/docs/themes.md)
+
+[i18n Translations](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md)
 
 [Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
 
