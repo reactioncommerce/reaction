@@ -87,3 +87,5 @@ headers
 /geocoder
 /collection-helpers
 /reaction-search
+/template-extension
+/collectionfs
