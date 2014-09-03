@@ -40,3 +40,10 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
         addToSet.updatedAt = updatedAt
   if modifier.$set then modifier.$set.updatedAt = new Date()
   # if modifier.$addToSet then modifier.$addToSet.updatedAt = new Date()
+
+# Products.after.update (userId, product, fieldNames, modifier, options) ->
+#   parentVariants = (variant for variant in product.variants when variant?.parentId is null )
+#   for parentVariant in parentVariants
+#     childVariants = (variant for variant in product.variants when variant?.parentId is parentVariant._id )
+#     if childVariants
+#       for childVariant in childVariants
