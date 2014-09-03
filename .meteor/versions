@@ -35,6 +35,7 @@ coffeescript@1.0.2
 collectionfs@0.0.0
 ctl-helper@1.0.2
 ctl@1.0.0
+d3@1.0.0
 data-man@0.0.0
 dburles:collection-helpers@0.3.2
 deps@1.0.1
@@ -81,7 +82,7 @@ raix:ui-dropped-event@0.0.7
 random@1.0.0
 reactioncommerce:core@0.1.5
 reactioncommerce:reaction-google-analytics@0.1.1
-reactioncommerce:reaction-helloworld@0.1.1
+reactioncommerce:reaction-helloworld@0.1.2
 reactioncommerce:reaction-paypal@0.1.2
 reactive-dict@1.0.0
 reactive-list@0.0.0
