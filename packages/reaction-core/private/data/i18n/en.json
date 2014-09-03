@@ -60,7 +60,7 @@
                     "loginCompleted": "Login completed"
                 },
                 "checkoutLogin": {
-                    "create-or-login": "Create an account or sign in to continue"
+                    "createOrLogin": "Create an account or sign in to continue"
                 },
                 "addressBookGrid": {
                     "chooseAddress": "Choose shipping & billing address",
