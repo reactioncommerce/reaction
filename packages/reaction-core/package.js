@@ -27,6 +27,7 @@ Package.onUse(function (api, where) {
     api.use("amplify");
     api.use("coffeescript");
     api.use("underscore");
+    api.use("d3");
     // ui/blaze needed (?)
     api.use("ui@1.0.0",'client');
     // api.use('blaze', 'client');
