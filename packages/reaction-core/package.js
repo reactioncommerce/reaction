@@ -16,60 +16,65 @@ Npm.depends({
 Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
-    // api.versionsFrom('METEOR-CORE@0.9.0.1');
+    api.versionsFrom('METEOR@0.9.0.1');
     // 0.9.0+
     //core meteor packages
-    api.use("standard-app-packages", ["client", "server"]);
-    api.use("less", ["client", "server"]);
-    api.use("amplify", ["client", "server"]);
-    api.use("accounts-base", ["client", "server"]);
-    api.use("accounts-ui-unstyled", ["client", "server"]);
-    api.use("coffeescript", ["client", "server"]);
-    api.use("underscore", ["client", "server"]);
+    api.use("standard-app-packages");
+    api.use("accounts-base");
+    api.use("accounts-password");
+    api.use("accounts-ui-unstyled");
+    api.use("less");
+    api.use("amplify");
+    api.use("coffeescript");
+    api.use("underscore");
     // ui/blaze needed (?)
-    api.use("ui", ["client", "server"]);
-    api.use('blaze', 'client');
+    api.use("ui@1.0.0",'client');
+    // api.use('blaze', 'client');
 
     //community packages
-    api.use("aldeed:geocoder@0.3.1", ["client", "server"]);
-    api.use("aldeed:template-extension@0.1.0", ["client", "server"]);
-    api.use("aldeed:collection2", ["client", "server"]);
-    api.use("aldeed:simple-schema@1.0.2", ["client", "server"]);
-    api.use("aldeed:autoform@1.0.0", ["client", "server"]);
-    api.use("iron:router@0.9.1", ["client", "server"]);
-    api.use("raix:collection-fs@0.4.8", ["client", "server"]);
-    api.use("raix:cfs-filesystem@0.0.27", ["client", "server"]);
-    api.use("raix:cfs-gridfs@0.0.24", ["client", "server"]);
-    api.use("raix:cfs-graphicsmagick@0.0.14", ["client", "server"]);
-    api.use("raix:cfs-s3@0.0.29", ["client", "server"]);
-    api.use("raix:micro-queue", ["client", "server"]);
-    api.use("raix:reactive-list", ["client", "server"]);
-    api.use("raix:ui-dropped-event@0.0.7", ["client", "server"]);
-    api.use("dburles:collection-helpers@0.3.2", ["client", "server"]);
-    api.use("matb33:collection-hooks@0.7.3", ["client", "server"]);
-    api.use("alanning:roles@1.2.12", ["client", "server"]);
-    api.use("mrt:moment@2.8.1", ["client", "server"]);
-    api.use("sacha:spin@2.0.4" ["client", "server"]);
+    api.use("aldeed:geocoder@0.3.1");
+    api.use("aldeed:template-extension@0.1.0");
+    api.use("aldeed:collection2");
+    api.use("aldeed:simple-schema@1.0.2");
+    api.use("aldeed:autoform@1.0.0");
+    api.use("iron:router@0.9.1");
+
+    api.use("raix:cfs-collection");
+    api.use("raix:cfs-filesystem@0.0.27");
+    api.use("raix:cfs-gridfs@0.0.24");
+    api.use("raix:cfs-graphicsmagick@0.0.14");
+    // api.use("raix:power-queue");
+    // api.use("raix:micro-queue", {weak: true});
+    // api.use("raix:reactive-list", {weak: true});
+    // api.use("raix:cfs-s3@0.0.29");
+    api.use("raix:ui-dropped-event@0.0.7");
+    api.use("dburles:collection-helpers@0.3.2");
+    api.use("matb33:collection-hooks@0.7.3");
+    api.use("alanning:roles@1.2.12");
+    api.use("mrt:moment@2.8.1",'client');
+    api.use("sacha:spin@2.0.4", 'client');
 
     //implying these are reused in reaction packages
-    api.imply("less", ["client", "server"]);
-    api.imply("amplify", ["client", "server"]);
-    api.imply("accounts-base", ["client", "server"]);
-    api.imply("accounts-ui-unstyled", ["client", "server"]);
-    api.imply("ui" ["client", "server"]);
+    api.imply("less");
+    api.imply("amplify");
+    api.imply("accounts-base");
+    api.imply("ui");
 
-    api.imply("aldeed:collection2", ["client", "server"]);
-    api.imply("aldeed:simple-schema", ["client", "server"]);
-    api.imply("aldeed:autoform", ["client", "server"]);
-    api.imply("iron:router", ["client", "server"]);
-    api.imply("raix:collection-fs", ["client", "server"]);
-    api.imply("raix:cfs-filesystem", ["client", "server"]);
-    api.imply("raix:cfs-gridfs", ["client", "server"]);
-    api.imply("raix:cfs-graphicsmagick", ["client", "server"]);
-    api.imply("raix:cfs-s3", ["client", "server"]);
-    api.imply("raix:ui-dropped-event", ["client", "server"]);
-    api.imply("matb33:collection-hooks", ["client", "server"]);
-    api.imply("alanning:roles", ["client", "server"]);
+    api.imply("aldeed:collection2");
+    api.imply("aldeed:simple-schema");
+    api.imply("aldeed:autoform");
+    api.imply("iron:router");
+    api.imply("raix:collection-fs");
+    api.imply("raix:cfs-filesystem");
+    api.imply("raix:cfs-gridfs");
+    api.imply("raix:cfs-graphicsmagick");
+    api.imply("raix:cfs-s3");
+    api.imply("raix:ui-dropped-event");
+    api.imply("matb33:collection-hooks");
+    api.imply("alanning:roles");
+    // api.imply("raix:power-queue");
+    // api.imply("raix:micro-queue");
+    // api.imply("raix:reactive-list");
 
     api.imply("mrt:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);

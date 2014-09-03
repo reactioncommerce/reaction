@@ -82,7 +82,7 @@ createDefaultAdminUser = ->
     options.email = Random.id(8).toLowerCase() + "@" + domain
     console.log ("IMPORTANT! DEFAULT USER INFO (RANDOM) --->".red + " EMAIL/LOGIN: " + options.email + "  PASSWORD: " + options.password)
 
-  accountId = Accounts.createUser options
+  accountId = @Accounts.createUser options
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
   shopId = Shops.findOne()._id
   Shops.update shopId,

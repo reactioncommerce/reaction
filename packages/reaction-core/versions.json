@@ -5,6 +5,10 @@
       "1.0.0"
     ],
     [
+      "accounts-password",
+      "1.0.0"
+    ],
+    [
       "accounts-ui-unstyled",
       "1.0.0"
     ],
@@ -87,6 +91,10 @@
     [
       "ejson",
       "1.0.0"
+    ],
+    [
+      "email",
+      "1.0.2"
     ],
     [
       "follower-livedata",
@@ -185,6 +193,10 @@
       "2.8.1"
     ],
     [
+      "npm-bcrypt",
+      "0.7.7"
+    ],
+    [
       "observe-sequence",
       "1.0.1"
     ],
@@ -253,10 +265,6 @@
       "0.0.10"
     ],
     [
-      "raix:micro-queue",
-      "0.0.3"
-    ],
-    [
       "raix:power-queue",
       "0.9.9"
     ],
@@ -293,11 +301,19 @@
       "1.0.0"
     ],
     [
+      "sacha:spin",
+      "2.0.4"
+    ],
+    [
       "service-configuration",
       "1.0.0"
     ],
     [
       "session",
+      "1.0.0"
+    ],
+    [
+      "sha",
       "1.0.0"
     ],
     [
@@ -307,6 +323,10 @@
     [
       "spacebars-compiler",
       "1.0.1"
+    ],
+    [
+      "srp",
+      "1.0.0"
     ],
     [
       "standard-app-packages",
