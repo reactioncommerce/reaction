@@ -31,26 +31,33 @@ Package.onUse(function (api, where) {
     api.use("ui@1.0.0",'client');
     // api.use('blaze', 'client');
 
+    //remaining atmosphere packages
+    api.use("collectionfs");
+    api.use("cfs-graphicsmagick");
+    api.use("cfs-filesystem");
+    api.use("cfs-gridfs");
+    api.use("cfs-s3");
+    api.use("ui-dropped-event");
+
     //community packages
     api.use("aldeed:geocoder@0.3.1");
     api.use("aldeed:template-extension@0.1.0");
     api.use("aldeed:collection2");
     api.use("aldeed:simple-schema@1.0.2");
     api.use("aldeed:autoform@1.0.0");
+    api.use("aldeed:template-extension","client");
     api.use("iron:router@0.9.1");
-
-    api.use("raix:cfs-collection");
-    api.use("raix:cfs-filesystem@0.0.27");
-    api.use("raix:cfs-gridfs@0.0.24");
-    api.use("raix:cfs-graphicsmagick@0.0.14");
-    // api.use("raix:power-queue");
-    // api.use("raix:micro-queue", {weak: true});
-    // api.use("raix:reactive-list", {weak: true});
+    // api.use("raix:collection-fs");
+    // api.use("raix:cfs-filesystem@0.0.27");
+    // api.use("raix:cfs-gridfs@0.0.24");
+    // api.use("raix:cfs-s3");
+    // api.use("raix:cfs-graphicsmagick@0.0.14");
     // api.use("raix:cfs-s3@0.0.29");
-    api.use("raix:ui-dropped-event@0.0.7");
+    // api.use("raix:ui-dropped-event@0.0.7");
     api.use("dburles:collection-helpers@0.3.2");
     api.use("matb33:collection-hooks@0.7.3");
     api.use("alanning:roles@1.2.12");
+    api.use("cmather:handlebars-server","server");
     api.use("mrt:moment@2.8.1",'client');
     api.use("sacha:spin@2.0.4", 'client');
 
@@ -63,21 +70,19 @@ Package.onUse(function (api, where) {
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
     api.imply("aldeed:autoform");
+    api.imply("aldeed:template-extension");
     api.imply("iron:router");
-    api.imply("raix:collection-fs");
-    api.imply("raix:cfs-filesystem");
-    api.imply("raix:cfs-gridfs");
-    api.imply("raix:cfs-graphicsmagick");
-    api.imply("raix:cfs-s3");
+    // api.imply("raix:collection-fs");
+    // api.imply("raix:cfs-filesystem");
+    // api.imply("raix:cfs-gridfs");
+    // api.imply("raix:cfs-graphicsmagick");
+    // api.imply("raix:cfs-s3");
     api.imply("raix:ui-dropped-event");
     api.imply("matb33:collection-hooks");
     api.imply("alanning:roles");
-    // api.imply("raix:power-queue");
-    // api.imply("raix:micro-queue");
-    // api.imply("raix:reactive-list");
-
     api.imply("mrt:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);
+
 
   // Pre-0.9.0
   } else {

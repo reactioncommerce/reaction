@@ -21,14 +21,6 @@
       "1.0.0"
     ],
     [
-      "aldeed:cfs-collection-filters",
-      "0.1.1"
-    ],
-    [
-      "aldeed:cfs-upload-http",
-      "0.0.13"
-    ],
-    [
       "aldeed:collection2",
       "1.0.0"
     ],
@@ -73,12 +65,76 @@
       "1.0.0"
     ],
     [
+      "cfs-access-point",
+      "0.0.0"
+    ],
+    [
+      "cfs-base-package",
+      "0.0.0"
+    ],
+    [
+      "cfs-collection",
+      "0.0.0"
+    ],
+    [
+      "cfs-collection-filters",
+      "0.0.0"
+    ],
+    [
+      "cfs-file",
+      "0.0.0"
+    ],
+    [
+      "cfs-filesystem",
+      "0.0.0"
+    ],
+    [
+      "cfs-graphicsmagick",
+      "0.0.0"
+    ],
+    [
+      "cfs-gridfs",
+      "0.0.0"
+    ],
+    [
+      "cfs-s3",
+      "0.0.0"
+    ],
+    [
+      "cfs-storage-adapter",
+      "0.0.0"
+    ],
+    [
+      "cfs-tempstore",
+      "0.0.0"
+    ],
+    [
+      "cfs-upload-http",
+      "0.0.0"
+    ],
+    [
+      "cfs-worker",
+      "0.0.0"
+    ],
+    [
       "check",
       "1.0.0"
     ],
     [
+      "cmather:handlebars-server",
+      "0.2.0"
+    ],
+    [
       "coffeescript",
       "1.0.2"
+    ],
+    [
+      "collectionfs",
+      "0.0.0"
+    ],
+    [
+      "data-man",
+      "0.0.0"
     ],
     [
       "dburles:collection-helpers",
@@ -95,6 +151,10 @@
     [
       "email",
       "1.0.2"
+    ],
+    [
+      "emitter",
+      "0.0.0"
     ],
     [
       "follower-livedata",
@@ -119,6 +179,14 @@
     [
       "http",
       "1.0.3"
+    ],
+    [
+      "http-methods",
+      "0.0.23"
+    ],
+    [
+      "http-publish",
+      "0.0.0"
     ],
     [
       "id-map",
@@ -147,10 +215,6 @@
     [
       "json",
       "1.0.0"
-    ],
-    [
-      "kestanous:emitter",
-      "0.1.0"
     ],
     [
       "less",
@@ -205,76 +269,8 @@
       "1.0.0"
     ],
     [
-      "raix:cfs-access-point",
-      "0.0.33"
-    ],
-    [
-      "raix:cfs-base-package",
-      "0.0.24"
-    ],
-    [
-      "raix:cfs-collection",
-      "0.4.11"
-    ],
-    [
-      "raix:cfs-file",
-      "0.1.10"
-    ],
-    [
-      "raix:cfs-filesystem",
-      "0.0.27"
-    ],
-    [
-      "raix:cfs-graphicsmagick",
-      "0.0.14"
-    ],
-    [
-      "raix:cfs-gridfs",
-      "0.0.24"
-    ],
-    [
-      "raix:cfs-s3",
-      "0.0.29"
-    ],
-    [
-      "raix:cfs-storage-adapter",
-      "0.0.30"
-    ],
-    [
-      "raix:cfs-tempstore",
-      "0.0.27"
-    ],
-    [
-      "raix:cfs-worker",
-      "0.0.16"
-    ],
-    [
-      "raix:collection-fs",
-      "0.4.8"
-    ],
-    [
-      "raix:data-man",
+      "power-queue",
       "0.0.0"
-    ],
-    [
-      "raix:http-methods",
-      "0.0.22"
-    ],
-    [
-      "raix:http-publish",
-      "0.0.10"
-    ],
-    [
-      "raix:power-queue",
-      "0.9.9"
-    ],
-    [
-      "raix:reactive-list",
-      "0.0.7"
-    ],
-    [
-      "raix:reactive-property",
-      "0.0.1"
     ],
     [
       "raix:ui-dropped-event",
@@ -287,6 +283,14 @@
     [
       "reactive-dict",
       "1.0.0"
+    ],
+    [
+      "reactive-list",
+      "0.0.0"
+    ],
+    [
+      "reactive-property",
+      "0.0.0"
     ],
     [
       "reload",
@@ -339,6 +343,10 @@
     [
       "ui",
       "1.0.0"
+    ],
+    [
+      "ui-dropped-event",
+      "0.0.7"
     ],
     [
       "underscore",

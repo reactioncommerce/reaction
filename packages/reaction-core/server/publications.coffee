@@ -261,6 +261,7 @@ Meteor.publish 'userOrders', (userId) ->
 # cart collection
 ###
 Meteor.publish 'cart', (sessionId) ->
+  console.log sessionId
   check(sessionId, String)
   shopId = ReactionCore.getShopId(@)
 
