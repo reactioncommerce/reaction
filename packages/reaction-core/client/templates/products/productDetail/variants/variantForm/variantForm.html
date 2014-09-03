@@ -23,7 +23,7 @@
 
             <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
               {{>afFieldLabel name='inventoryQuantity'}}
-              {{>afFieldInput name='inventoryQuantity'}}
+              {{>afFieldInput name='inventoryQuantity' disabled=hasChildVariants}}
               {{#if afFieldIsInvalid name='inventoryQuantity'}}
               <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
               {{/if}}
