@@ -20,7 +20,7 @@ RUN npm cache clean -f && npm install -g n && n 0.10.29
 
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
-RUN npm install --silent -g forever meteorite phantomjs fibers
+RUN npm install --silent -g forever meteorite phantomjs
 
 # Add current dir+subs to meteorsrc
 ADD . ./meteorsrc
@@ -31,6 +31,7 @@ RUN mrt install && meteor bundle --directory /var/www/app
 
 # Set the working directory to be used for commands that are run, including the default CMD below
 WORKDIR /var/www/app
+RUN npm install fibers@1.0.1
 
 #
 # Default ENV settings for meteor app
