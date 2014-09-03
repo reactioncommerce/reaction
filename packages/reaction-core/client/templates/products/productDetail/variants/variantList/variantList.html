@@ -4,12 +4,12 @@
     {{#each variants}}
       {{> variant}}
     {{else}}
-      <a href="#" id="create-variant">+ Create Variant</a>
+      <a href="#" id="create-variant">+ <span data-i18n="variantList.createVariant">Create Variant</span></a>
     {{/each}}
     </ul>
   </div>
   {{#if childVariants}}
-  <small>There are more options available for this selection.</small>
+  <small data-i18n="variantList.moreOptions">There are more options available for this selection.</small>
     <div class="row variant-product-options">
       {{#each childVariants}}
       <button type="button" class="btn btn-default variant-select-option">{{optionTitle}}</button>

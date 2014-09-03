@@ -15,11 +15,3 @@ Template.loginDropdown.events
 Template.userDropdown.events
   "click .user-accounts-dropdown > a": (event,template) ->
     $('.dropdown-toggle').dropdown('toggle')
-
-# Template.userDropdown.rendered =  ->
-#   setTimeout (->
-#       $('.dropdown-toggle').dropdown('toggle')
-#   ),1500
-
-$(".dropdown-toggle").on "show.bs.dropdown", ->
-  console.log "here"

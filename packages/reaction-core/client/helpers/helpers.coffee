@@ -1,4 +1,20 @@
 ###
+# convert a string to camelCase
+###
+String::toCamelCase = ->
+  # remove all characters that should not be in a variable name
+  # as well underscores an numbers from the beginning of the string
+  s = @replace(/([^a-zA-Z0-9_\- ])|^[_0-9]+/g, "").trim().toLowerCase()
+  # uppercase letters preceeded by a hyphen or a space
+  s = s.replace(/([ -]+)([a-zA-Z0-9])/g, (a, b, c) ->
+    c.toUpperCase()
+  )
+  # uppercase letters following numbers
+  s = s.replace(/([0-9]+)([a-zA-Z])/g, (a, b, c) ->
+    b + c.toUpperCase()
+  )
+  s
+###
 # quick and easy snippet for toggling sessions
 ###
 @toggleSession = (session_variable) ->
@@ -36,7 +52,7 @@
   if confirm("Delete this product?")
     Meteor.call "deleteProduct", id, (error, result) ->
       if error or not result
-        Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id
+        Alerts.add "There was an error deleting " + title, "danger", type: "prod-delete-" + id,  i18n_key: "productDetail.productDeleteError"
         console.log "Error deleting product " + id, error
       else
         setCurrentProduct null
