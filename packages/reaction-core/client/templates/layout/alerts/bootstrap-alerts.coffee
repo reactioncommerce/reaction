@@ -48,6 +48,10 @@ Alerts =
     # Alerts.add "message","danger", placement:"cart"
     ###
     placement: ""
+    ###
+    Translation key for i18n (translations collection)
+    ###
+    i18n_key: ""
 
   ###
   Add an alert
@@ -58,7 +62,8 @@ Alerts =
   See Alerts.defaultOptions for all values.
   ###
   add: (message, mode, options) ->
-    mode = mode or "danger"
+    if options?.i18n_key then message = i18n.t(options.i18n_key)
+
     options = _.defaults(options or {}, Alerts.defaultOptions)
 
     # If type is specified, we re-use the existing alert with that type.

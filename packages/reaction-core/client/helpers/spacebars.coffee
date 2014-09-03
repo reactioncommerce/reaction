@@ -1,16 +1,6 @@
 ###
 # Reaction Handlebars helpers
 ###
-
-#default return $ symbol
-UI.registerHelper "currency", () ->
-  shops = Shops.findOne()
-  if shops then return shops.currency
-
-UI.registerHelper "currencySymbol", () ->
-  shops = Shops.findOne()
-  if shops then return shops.moneyFormat
-
 ###
 # general helper for formatting price
 # returns number float currency format
@@ -37,10 +27,18 @@ UI.registerHelper "socialImage", () ->
     return Meteor.user().profile?.picture
   else
     return "../../resources/avatar.gif"
-
+#
+# decamelSpace
+#
 UI.registerHelper "camelToSpace", (str) ->
   downCamel = str.replace(/\W+/g, "-").replace /([a-z\d])([A-Z])/g, "$1 $2"
   return downCamel.toLowerCase()
+
+#
+# lowerCase string
+#
+UI.registerHelper "toLowerCase", (str) ->
+  return str.toLowerCase()
 
 ###
 # Methods for the reaction permissions
@@ -266,6 +264,6 @@ UI.registerHelper "allPackages", ->
 ###
 # For debugging: {{console.log this}}
 ###
-UI.registerHelper "console", 
+UI.registerHelper "console",
   log: (a) ->
     console.log a

@@ -2,9 +2,9 @@
 <div class="panel-heading">
   <h3 class="panel-title">
     {{#if addressBook}}
-    Add a new address entry
+      <span data-i18n="addressBookAdd.addAddress">Add address</span>
     {{else}}
-      <span>Create your default address</span>
+      <span data-i18n="addressBookAdd.createAddress">Create address</span>
     {{/if}}
   </h3>
 </div>
@@ -13,9 +13,9 @@
   <fieldset>
       {{>addressBookForm}}
       <div class="row text-right">
-            <button type="submit" class="btn btn-primary">Save and Continue</button>
+            <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
             {{#if addressBook}}
-            <button type="reset" class="btn btn-default" id="cancel-new">Cancel</button>
+            <button type="reset" class="btn btn-default" id="cancel-new" data-i18n="app.cancel">Cancel</button>
             {{/if}}
       </div>
   </fieldset>
