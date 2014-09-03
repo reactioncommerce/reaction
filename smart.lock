@@ -2,6 +2,22 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
+      "reaction-core": {
+        "git": "https://github.com/ongoworks/reaction-core.git",
+        "branch": "master"
+      },
+      "reaction-paypal": {
+        "git": "https://github.com/ongoworks/reaction-paypal.git",
+        "branch": "master"
+      },
+      "reaction-google-analytics": {
+        "git": "https://github.com/ongoworks/reaction-google-analytics.git",
+        "branch": "master"
+      },
+      "reaction-helloworld": {
+        "git": "https://github.com/ongoworks/reaction-helloworld.git",
+        "branch": "master"
+      },
       "collectionfs": {},
       "cfs-graphicsmagick": {},
       "cfs-filesystem": {},
@@ -10,6 +26,26 @@
       "ui-dropped-event": {}
     },
     "packages": {
+      "reaction-core": {
+        "git": "https://github.com/ongoworks/reaction-core.git",
+        "branch": "master",
+        "commit": "bf360e60d5c97898f3c6628f5359e605c7bca2d0"
+      },
+      "reaction-paypal": {
+        "git": "https://github.com/ongoworks/reaction-paypal.git",
+        "branch": "master",
+        "commit": "c6fd2c2398afb12320b3ea249b8aad54c383969f"
+      },
+      "reaction-google-analytics": {
+        "git": "https://github.com/ongoworks/reaction-google-analytics.git",
+        "branch": "master",
+        "commit": "7e456dbe1cabdd3e45315ac6d15f63cd14279646"
+      },
+      "reaction-helloworld": {
+        "git": "https://github.com/ongoworks/reaction-helloworld.git",
+        "branch": "master",
+        "commit": "217f346df79485e46cb0b94109c59766e087878b"
+      },
       "collectionfs": {
         "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
         "tag": "v0.4.9",
