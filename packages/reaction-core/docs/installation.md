@@ -11,6 +11,17 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
     git clone https://github.com/ongoworks/reaction.git
     cd reaction	
 
+*Temporary for v0.1.5 - Meteor 0.9.0.1 release*
+
+```bash
+cd packages
+git clone https://github.com/ongoworks/reaction-core.git
+git clone https://github.com/ongoworks/reaction-paypal.git
+git clone https://github.com/ongoworks/reaction-helloworld.git
+git clone https://github.com/ongoworks/reaction-google-analytics.git
+```
+These packages will be deployed to the new Meteor package registry once 0.9.1 is released (and after that the `meteor` command will work instead of `mrt`)
+
 
 ##Startup
 To start Reaction, run the `mrt` command:
