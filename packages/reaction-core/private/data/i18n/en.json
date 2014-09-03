@@ -60,13 +60,13 @@
                     "loginCompleted": "Login completed"
                 },
                 "checkoutLogin": {
-                    "create-or-login": "Create an account or sign in to continue"
+                    "createOrLogin": "Create an account or sign in to continue"
                 },
                 "addressBookGrid": {
                     "chooseAddress": "Choose shipping & billing address",
                     "createDefault": "Create your default address",
-                    "selectShipping-address": "Select a shipping address",
-                    "selectBilling-address": "Select a billing address"
+                    "selectShippingAddress": "Select a shipping address",
+                    "selectBillingAddress": "Select a billing address"
                 },
                 "addressBookAdd": {
                     "addAddress": "Add a new address entry",
@@ -97,7 +97,9 @@
                     "postal": "Postal",
                     "city": "City",
                     "region": "Region",
-                    "phone": "Phone"
+                    "phone": "Phone",
+                    "isDefault": "Is this your default address?",
+                    "isCommercial": "Is this a commercial address?"
                 },
                 "checkoutProgressBar": {
                     "login": "Login",
