@@ -20,7 +20,7 @@ RUN npm cache clean -f && npm install -g n && n 0.10.29
 
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
-RUN npm install --silent -g forever meteorite phantomjs
+RUN npm install --silent -g forever meteorite phantomjs fibers
 
 # Add current dir+subs to meteorsrc
 ADD . ./meteorsrc
