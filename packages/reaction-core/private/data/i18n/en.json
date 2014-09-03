@@ -65,8 +65,8 @@
                 "addressBookGrid": {
                     "chooseAddress": "Choose shipping & billing address",
                     "createDefault": "Create your default address",
-                    "selectShipping-address": "Select a shipping address",
-                    "selectBilling-address": "Select a billing address"
+                    "selectShippingAddress": "Select a shipping address",
+                    "selectBillingAddress": "Select a billing address"
                 },
                 "addressBookAdd": {
                     "addAddress": "Add a new address entry",
