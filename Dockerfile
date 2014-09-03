@@ -31,7 +31,6 @@ RUN mrt install && meteor bundle --directory /var/www/app
 
 # Set the working directory to be used for commands that are run, including the default CMD below
 WORKDIR /var/www/app
-RUN rm -r programs/server/node_modules/fibers && npm install fibers@1.0.1
 
 #
 # Default ENV settings for meteor app
