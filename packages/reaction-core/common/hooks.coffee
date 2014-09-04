@@ -28,10 +28,9 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       applyVariantDefaults(modifier.$push.variants)
 
   if modifier.$set['variants.$']
-    qty = 0;
+    qty = modifier.$set['variants.$'].inventoryQuantity
     for variant in product.variants when variant._id isnt modifier.$set['variants.$']._id and variant.parentId is modifier.$set['variants.$'].parentId
       qty += variant.inventoryQuantity
-    qty += modifier.$set['variants.$'].inventoryQuantity
     Products.direct.update({'_id': product._id, 'variants._id':modifier.$set['variants.$'].parentId }, {$set: {'variants.$.inventoryQuantity':qty } })
 
   unless _.indexOf(fieldNames, 'positions') is -1
