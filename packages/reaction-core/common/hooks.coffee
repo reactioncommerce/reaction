@@ -7,9 +7,6 @@ applyVariantDefaults = (variant) ->
     createdAt: new Date()
   )
 
-updateParent = (variant) ->
-  console.log variant
-
 Products.before.insert (userId, product) ->
   product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
   _.defaults(product,
