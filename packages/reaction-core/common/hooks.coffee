@@ -27,7 +27,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     if modifier.$push.variants
       applyVariantDefaults(modifier.$push.variants)
 
-  if modifier.$set['variants.$'].inventoryQuantity
+  if modifier.$set['variants.$']?.inventoryQuantity
     qty = modifier.$set['variants.$'].inventoryQuantity || 0
     for variant in product.variants when variant._id isnt modifier.$set['variants.$']._id and variant.parentId is modifier.$set['variants.$'].parentId
       qty += variant.inventoryQuantity
