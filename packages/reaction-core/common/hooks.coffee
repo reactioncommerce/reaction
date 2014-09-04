@@ -41,9 +41,21 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
   if modifier.$set then modifier.$set.updatedAt = new Date()
   # if modifier.$addToSet then modifier.$addToSet.updatedAt = new Date()
 
-# Products.after.update (userId, product, fieldNames, modifier, options) ->
-#   parentVariants = (variant for variant in product.variants when variant?.parentId is null )
-#   for parentVariant in parentVariants
-#     childVariants = (variant for variant in product.variants when variant?.parentId is parentVariant._id )
-#     if childVariants
-#       for childVariant in childVariants
+Products.after.update (userId, product, fieldNames, modifier, options) ->
+  thisProduct = Products.findOne(product._id)
+  parentVariants = (variant for variant in thisProduct.variants when not variant.parentId)
+  if parentVariants
+    for parentVariant in parentVariants
+      childVariants = (variant for variant in product.variants when variant?.parentId is parentVariant._id )
+      if childVariants.length > 0
+        aggregateQuantity = 0
+        for childVariant in childVariants
+          aggregateQuantity = aggregateQuantity + childVariant.inventoryQuantity
+        if aggregateQuantity
+          sel = {"_id":product._id,"variants._id":parentVariant._id}
+          console.log '1'
+          Products.update(sel, {$set: {"variants.$": {_id: parentVariant._id, inventoryQuantity: aggregateQuantity}}}, {validate: false}, (error,result) ->
+            console.log error if error
+            return
+          )
+
