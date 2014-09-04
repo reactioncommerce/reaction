@@ -7,6 +7,9 @@ applyVariantDefaults = (variant) ->
     createdAt: new Date()
   )
 
+updateParent = (variant) ->
+  console.log variant
+
 Products.before.insert (userId, product) ->
   product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
   _.defaults(product,
@@ -27,6 +30,13 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     if modifier.$push.variants
       applyVariantDefaults(modifier.$push.variants)
 
+  if modifier.$set['variants.$']
+    qty = 0;
+    for variant in product.variants when variant._id isnt modifier.$set['variants.$']._id and variant.parentId is modifier.$set['variants.$'].parentId
+      qty += variant.inventoryQuantity
+    qty += modifier.$set['variants.$'].inventoryQuantity
+    Products.direct.update({'_id': product._id, 'variants._id':modifier.$set['variants.$'].parentId }, {$set: {'variants.$.inventoryQuantity':qty } })
+
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
     if addToSet
@@ -40,22 +50,3 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
         addToSet.updatedAt = updatedAt
   if modifier.$set then modifier.$set.updatedAt = new Date()
   # if modifier.$addToSet then modifier.$addToSet.updatedAt = new Date()
-
-Products.after.update (userId, product, fieldNames, modifier, options) ->
-  thisProduct = Products.findOne(product._id)
-  parentVariants = (variant for variant in thisProduct.variants when not variant.parentId)
-  if parentVariants
-    for parentVariant in parentVariants
-      childVariants = (variant for variant in product.variants when variant?.parentId is parentVariant._id )
-      if childVariants.length > 0
-        aggregateQuantity = 0
-        for childVariant in childVariants
-          aggregateQuantity = aggregateQuantity + childVariant.inventoryQuantity
-        if aggregateQuantity
-          sel = {"_id":product._id,"variants._id":parentVariant._id}
-          console.log '1'
-          Products.update(sel, {$set: {"variants.$": {_id: parentVariant._id, inventoryQuantity: aggregateQuantity}}}, {validate: false}, (error,result) ->
-            console.log error if error
-            return
-          )
-
