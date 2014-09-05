@@ -16,7 +16,7 @@ Npm.depends({
 Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
-    api.versionsFrom('METEOR@0.9.0.1');
+    api.versionsFrom('METEOR@0.9.0');
     // 0.9.0+
     //core meteor packages
     api.use("standard-app-packages");
@@ -30,31 +30,19 @@ Package.onUse(function (api, where) {
     api.use("d3");
     // ui/blaze needed (?)
     api.use("ui@1.0.0",'client');
-    // api.use('blaze', 'client');
-
-    //remaining atmosphere packages
-    api.use("collectionfs");
-    api.use("cfs-graphicsmagick");
-    api.use("cfs-filesystem");
-    api.use("cfs-gridfs");
-    api.use("cfs-s3");
-    api.use("ui-dropped-event");
+    api.use('blaze@2.0.0', 'client');
 
     //community packages
     api.use("aldeed:geocoder@0.3.1");
-    api.use("aldeed:template-extension@0.1.0");
-    api.use("aldeed:collection2");
-    api.use("aldeed:simple-schema@1.0.2");
+    api.use("aldeed:template-extension@1.0.0");
+    api.use("aldeed:collection2@1.0.0");
+    api.use("aldeed:simple-schema@1.0.0");
     api.use("aldeed:autoform@1.0.0");
-    api.use("aldeed:template-extension","client");
     api.use("iron:router@0.9.1");
-    // api.use("raix:collection-fs");
-    // api.use("raix:cfs-filesystem@0.0.27");
-    // api.use("raix:cfs-gridfs@0.0.24");
-    // api.use("raix:cfs-s3");
-    // api.use("raix:cfs-graphicsmagick@0.0.14");
-    // api.use("raix:cfs-s3@0.0.29");
-    // api.use("raix:ui-dropped-event@0.0.7");
+    api.use("cfs:standard-packages");
+    api.use("cfs:graphicsmagick");
+    api.use("cfs:gridfs");
+    api.use("raix:ui-dropped-event@0.0.7");
     api.use("dburles:collection-helpers@0.3.2");
     api.use("matb33:collection-hooks@0.7.3");
     api.use("alanning:roles@1.2.12");
@@ -73,19 +61,15 @@ Package.onUse(function (api, where) {
     api.imply("aldeed:autoform");
     api.imply("aldeed:template-extension");
     api.imply("iron:router");
-    // api.imply("raix:collection-fs");
-    // api.imply("raix:cfs-filesystem");
-    // api.imply("raix:cfs-gridfs");
-    // api.imply("raix:cfs-graphicsmagick");
-    // api.imply("raix:cfs-s3");
+    api.imply("cfs:standard-packages");
+    api.imply("cfs:graphicsmagick");
+    api.imply("cfs:gridfs");
     api.imply("raix:ui-dropped-event");
     api.imply("matb33:collection-hooks");
     api.imply("alanning:roles");
     api.imply("mrt:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);
 
-
-  // Pre-0.9.0
   } else {
     throw new Error("Meteor upgrade required.")
   }
