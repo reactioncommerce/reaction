@@ -1,7 +1,8 @@
 {
   "packages": {
     "reaction-core": {
-      "git": "https://github.com/ongoworks/reaction-core.git"
+      "git": "https://github.com/ongoworks/reaction-core.git",
+      "branch": "meteor091"
     },
     "reaction-paypal": {
       "git": "https://github.com/ongoworks/reaction-paypal.git"
@@ -11,12 +12,6 @@
     },
     "reaction-helloworld": {
       "git": "https://github.com/ongoworks/reaction-helloworld.git"
-    },
-    "collectionfs": {},
-    "cfs-graphicsmagick": {},
-    "cfs-filesystem": {},
-    "cfs-s3": {},
-    "cfs-gridfs": {},
-    "ui-dropped-event": {}
+    }
   }
 }
