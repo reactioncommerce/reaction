@@ -6,8 +6,30 @@ Template.variant.helpers
 
   selectedVariant: () ->
     current = selectedVariant()
-    if (@._id is current?._id ) or  (@._id is current?.parentId)
+    if (@._id is current?._id) or  (@._id is current?.parentId)
       return "variant-detail-selected"
+
+  displayPrice: () ->
+    # if a variant or option is selected, show its price
+    current = selectedVariant()
+    if (current._id is @_id) or (current.parentId is @_id)
+      return current.price
+    else
+      productId = selectedProductId()
+      product = Products.findOne(productId)
+      children = (variant for variant in product.variants when variant.parentId is @_id)
+      if children.length is 0
+        return @price
+      if children.length is 1
+        return children[0].price
+      priceMin = Number.POSITIVE_INFINITY
+      priceMax = Number.NEGATIVE_INFINITY
+      for child in children
+        priceMin = child.price if child.price < priceMin
+        priceMax = child.price if child.price > priceMax
+      if priceMin is priceMax
+        return priceMin
+      return priceMin + ' - ' + priceMax
 
   isSoldOut: () ->
       if @.inventoryQuantity < 1
