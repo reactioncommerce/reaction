@@ -92,6 +92,10 @@ Template.gridNotice.helpers
           return true
       return false
 
+Template.gridContent.helpers
+  displayPrice: () ->
+    getProductPriceRange(@_id)
+
 Template.productGridItems.events
   'click .clone-product': () ->
     title = @.title

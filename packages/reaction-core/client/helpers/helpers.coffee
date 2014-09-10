@@ -169,9 +169,10 @@ currentProduct = @currentProduct
 # get price range of a variant if it has child options.
 # if no child options, return main price value
 ###
-@getVariantPriceRange = (variantId) ->
+@getVariantPriceRange = (variantId, productId) ->
 
-  productId = selectedProductId()
+  unless productId
+    productId = selectedProductId()
   product = Products.findOne(productId)
   # if no variantId provided, use currently selected
   unless variantId
@@ -205,7 +206,7 @@ currentProduct = @currentProduct
   if variants.length > 0
     variantPrices = []
     for variant in variants
-      range = getVariantPriceRange(variant._id)
+      range = getVariantPriceRange(variant._id, productId)
       if Match.test range, String
         firstPrice = parseFloat range.substr 0, range.indexOf(" ")
         lastPrice = parseFloat range.substr range.lastIndexOf(" ") + 1
