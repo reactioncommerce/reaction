@@ -43,9 +43,9 @@
                 {{>afFieldInput name='price' value="N/A" disabled=hasChildVariants}}
               {{else}}
                 {{>afFieldInput name='price'}}
-              {{/if}}
-              {{#if afFieldIsInvalid name='price'}}
-              <span class="help-block">{{afFieldMessage name='price'}}</span>
+                {{#if afFieldIsInvalid name='price'}}
+                <span class="help-block">{{afFieldMessage name='price'}}</span>
+                {{/if}}
               {{/if}}
             </div>
 
