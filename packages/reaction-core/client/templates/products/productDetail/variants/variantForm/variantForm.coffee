@@ -16,8 +16,7 @@ Template.variantForm.helpers
     childVariants = (variant for variant in product.variants when variant?.parentId is @_id)
     if childVariants.length > 0
       for childVariant in childVariants
-        if childVariant.inventoryQuantity
-          return true
+        return true
 
   nowDate: () ->
     return new Date()
