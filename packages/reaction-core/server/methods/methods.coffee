@@ -42,10 +42,10 @@ Meteor.methods
       }
 
   ###
-  # method to insert or update tag with hierachy
+  # method to insert or update tag with hierarchy
   # tagName will insert
   # tagName + tagId will update existing
-  # currentTagId will update related/hierachy
+  # currentTagId will update related/hierarchy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
