@@ -223,7 +223,7 @@ Meteor.call "locateAddress", latitude, longitude, (address) ->
   # do something on callback
 ```
 
-locateAddress takes latitude and longitude in [degree format](https://developers.google.com/maps/documentation/business/geolocation/#responses) and uses a reverse geolocation lookup to determine street address. If coordinates are not provided, the method attempts to use the users ip address to determine general location. An address is returned in this format:
+locateAddress takes latitude and longitude in [decimal degree format](http://en.wikipedia.org/wiki/Decimal_degrees) and uses a reverse geolocation lookup to determine street address. If coordinates are not provided, the method attempts to use the users ip address to determine general location. An address is returned in this format:
 
 ```
 [{
