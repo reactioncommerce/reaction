@@ -173,7 +173,7 @@ Meteor.call "updateMetaFields", productId
 
 ### cloneVariant
 
-The cloneVariant method copies variants, but will alos create and clone child variants (options)
+The cloneVariant method copies variants, but will also create and clone child variants (options)
 
 Usage:
 
@@ -210,3 +210,49 @@ Meteor.call "updateVariants", variants
 ```
 
 updateVaraints takes a whole variant array object and updates the included fields.
+
+## Other Methods
+
+### locateAddress
+
+The locateAddress method determines a user's street address based on latitude and longitude coordinates or by ip address.
+
+Usage:
+```
+Meteor.call "locateAddress", latitude, longitude, (address) ->
+  # do something on callback
+```
+
+locateAddress takes latitude and longitude in [degree format](https://developers.google.com/maps/documentation/business/geolocation/#responses) and uses a reverse geolocation lookup to determine street address. If coordinates are not provided, the method attempts to use the users ip address to determine general location. An address is returned in this format:
+
+```
+[{
+  latitude: Number
+  longitude: Number
+  country: String
+  city: String
+  state: String
+  stateCode: String
+  zipcode: String
+  streetName: String
+  streetNumber: String
+  countryCode: String
+}]
+```
+
+If no address can be found, then the following address object is returned:
+
+```
+[{
+  latitude: null
+  longitude: null
+  country: "United States"
+  city: null
+  state: null
+  stateCode: null
+  zipcode: null
+  streetName: null
+  streetNumber: null
+  countryCode: "US"
+}]
+```
