@@ -258,3 +258,17 @@ If no address can be found, then the following address object is returned:
 ```
 
 For more information on how geocoding works in Reaction, check out the [meteor-geocoder package](https://github.com/aldeed/meteor-geocoder)
+
+### updateHeaderTags
+
+The updateHeaderTags method inserts or updates navigation tags taking into account hierarchy.
+
+Usage:
+
+```
+Meteor.call "updateHeaderTags", tagName, tagId, currentTagId
+```
+
+If given only `tagName`, updateHeaderTags will insert a new top level tag.
+If given `tagName` and `tagId`, updateHeaderTags will update an existing tag.
+Adding `currentTagId` will give parental hierarchy.
