@@ -96,14 +96,17 @@ Meteor.methods
     if (productCount is 0) and (relatedTagsCount is 0)
       return Tags.remove(tagId)
 
-  updatePackage: (updateDoc, packageName) ->
-    packageId = Packages.findOne({ name: packageName })._id
+  ###
+  # possible dead method, commenting out pending further review
+  ###
+  # updatePackage: (updateDoc, packageName) ->
+  #   packageId = Packages.findOne({ name: packageName })._id
 
-    return false unless packageId
+  #   return false unless packageId
 
-    try
-      result = Packages.update {_id: packageId}, updateDoc
-    catch
-      result = false
-    # returns true if updated, false if package doesn't exist or error
-    return !!result
+  #   try
+  #     result = Packages.update {_id: packageId}, updateDoc
+  #   catch
+  #     result = false
+  #   # returns true if updated, false if package doesn't exist or error
+  #   return !!result
