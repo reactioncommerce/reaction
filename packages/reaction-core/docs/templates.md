@@ -2,7 +2,7 @@
 
 To add or change features, or make non CSS layout updates you can create your own templates.  [Iron Router](https://github.com/EventedMind/iron-router) manages paths, layouts, and which templates load where.
 
-Review the Iron Router docs for background information, then reference the file [*packages/reaction-core/client/routing.coffee*](https://github.com/ongoworks/reaction-core/blob/master/client/routing.coffee).  Here you will be able so see how all the default routes, paths, and template layouts are configured.
+Review the [Iron Router docs](https://github.com/EventedMind/iron-router/blob/devel/DOCS.md) for background information, then reference the file [*packages/reaction-core/client/routing.coffee*](https://github.com/ongoworks/reaction-core/blob/master/client/routing.coffee). Here you will be able to see how all the default routes, paths, and template layouts are configured.
 
 # Extending and customizing templates
 
@@ -18,11 +18,11 @@ then create a template (probably a copy of the one you are extending)
 
 ```
 <template name="my_custom_template">
-    <h1>This will be used instead of the core template!</
+    <h1>This will be used instead of the core template!</h1>
 </template>
 ```
 
-*The template helpers,events, etc from the original are still accessible and used in the new extended template.*
+*The template helpers, events, etc. from the original are still accessible and used in the new extended template.*
 
 ### Routing
 
