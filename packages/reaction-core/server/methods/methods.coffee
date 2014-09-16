@@ -96,9 +96,9 @@ Meteor.methods
     if (productCount is 0) and (relatedTagsCount is 0)
       return Tags.remove(tagId)
 
-  ###
-  # possible dead method, commenting out pending further review
-  ###
+
+  ## possible dead method, commenting out pending further review
+
   # updatePackage: (updateDoc, packageName) ->
   #   packageId = Packages.findOne({ name: packageName })._id
 
@@ -108,5 +108,4 @@ Meteor.methods
   #     result = Packages.update {_id: packageId}, updateDoc
   #   catch
   #     result = false
-  #   # returns true if updated, false if package doesn't exist or error
-  #   return !!result
+  #   return !!result # returns true if updated, false if package doesn't exist or error
