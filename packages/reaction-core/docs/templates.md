@@ -30,7 +30,7 @@ While you can always organize your templates however you wish, [we suggest](http
 
 [*client/routing.coffee](https://github.com/ongoworks/reaction/blob/master/client/routing.coffee) can be customized to change layouts.
 
-If you are adding reaction-core to an existing site, you should *mrt add iron-router* and add to your router file:
+If you are adding reaction-core to an existing site, you should `meteor add iron:router` and add to your router file:
 
 ```coffeescript
 ReactionController = ShopController.extend
