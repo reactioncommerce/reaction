@@ -21,7 +21,7 @@
               {{/if}}
             </div>
 
-            <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}">
+            <div class="col-xs-3 col-sm-3 form-group {{#unless hasChildVariants}}{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}{{/unless}}">
               {{>afFieldLabel name='inventoryQuantity'}}
               {{>afFieldInput name='inventoryQuantity' disabled=hasChildVariants}}
               {{#if afFieldIsInvalid name='inventoryQuantity'}}
@@ -37,7 +37,7 @@
               {{/if}}
             </div>
 
-            <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
+            <div class="col-xs-3 col-sm-3 form-group {{#unless hasChildVariants}}{{#if afFieldIsInvalid name='price'}} has-error{{/if}}{{/unless}}">
               {{>afFieldLabel name='price'}}
               {{#if hasChildVariants}}
                 {{>afFieldInput name='price' value="N/A" disabled=hasChildVariants}}
