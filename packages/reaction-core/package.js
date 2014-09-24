@@ -30,6 +30,7 @@ Package.onUse(function (api, where) {
     api.use("d3");
     // ui/blaze needed (?)
     api.use("ui@1.0.0",'client');
+    api.use('blaze@2.0.0', 'client');
     // api.use('blaze', 'client');
 
     //community packages

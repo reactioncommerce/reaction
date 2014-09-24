@@ -1,8 +1,0 @@
-
-{
-  "packages": {
-    "roles": {
-      "git": "https://github.com/aldeed/meteor-roles.git"
-    }
-  }
-}
