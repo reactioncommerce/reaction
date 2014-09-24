@@ -14,7 +14,7 @@ Yes, when you create a shop on our platform at [reactioncommerce.com](https://re
 
 ### Is it possible for me to host a Reaction shop anywhere I want?
 
-Yes, you can host a Reaction shop on any host / virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at: [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction).
+Yes, you can host a Reaction shop on any host / virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction).
 
 ### Do you support multiple languages?
 
@@ -40,7 +40,7 @@ We've done general performace testing and will be doing thorough testing as part
 
 We’re building everything to be ‘ephermal’ in nature, so ‘cloud’ scaling is the idea from the get go. We believe scaling won’t be the same set of issues as with legacy platforms where you have to jump through a ton of hoops to get rid of the dependancies on the server (file system, sessions, etc).
 
-Regardless if it's Docker or other Virtual Machine (VM) containers, the idea is that the storefront itself should scale without issues. The bottleneck does become the database, but with sharding and lots of other solutions, we think that it’s an easier problem to solve. We created Launch Dock (launchdock.io and open source at: https://github.com/ongoworks/launchdock) as our project for the server-side / Docker launching. In fact, the primary purpose of the “Create a Shop” on the home page of reactioncommerce.com is to test deploying shops at scale, and to work out database scaling issues early. We have a MongoDB cluster running on Amazon EC2, and our newest shops are using MongoHQ’s elastic deployments.
+Regardless if it's Docker or other Virtual Machine (VM) containers, the idea is that the storefront itself should scale without issues. The bottleneck does become the database, but with sharding and lots of other solutions, we think that it’s an easier problem to solve. We created Launch Dock (launchdock.io and open source at [github.com/ongoworks/launchdock](https://github.com/ongoworks/launchdock)) as our project for the server-side / Docker launching. In fact, the primary purpose of the “Create a Shop” on the home page of reactioncommerce.com is to test deploying shops at scale, and to work out database scaling issues early. We have a MongoDB cluster running on Amazon EC2, and our newest shops are using MongoHQ’s elastic deployments.
 
 ### If Reaction is an open source project, how can I get involved?
 
