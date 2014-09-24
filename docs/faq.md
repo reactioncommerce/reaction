@@ -23,3 +23,25 @@ Yes. We recently launched [internationaltization support](https://github.com/ong
 ### What is the pricing/licensing model?
 
 Reaction Commerce is currently free and there will always be a free, open source version available. Eventually, we will offer premium plans with tiered pricing structures on the reactioncommerce.com platform. Our code is licensed under the GPL v3 license. The Terms & Conditions for shops hosted on our reactioncommerce.com platform can be found at [https://reactioncommerce.com/terms](https://reactioncommerce.com/terms).
+
+### Is MongoDB/NoSQL best suited for ecommerce?
+
+We think so! We believe that the common SQL schema for legacy ecommerce platforms is overkill and not necessary. By rethinking the way the database is architected, there are numerous benefits of Mongo/NoSQL -- from speed to simplified code.
+
+We enforce all of the typical joins, cascades, shemas, validation etc., with functionality that we have included (collections, schemas, hooks, helpers). But instead of trying to join a bunch of stuff together, we simply have an object that is a product. There are huge advantages to this approach, such as speed + easy code + the schema can be easily modified to accomodate any data requirements. This is unlike legacy platforms and their use of the entity - attribute - value lookup that is so complex and slow. In fact, legacy platforms have tried to architectect their way around these very real limitations of SQL that NoSQL easily handles (using EAV). By using NoSQL, we remove the very complex layer of looking up and joining attributes, and also the complexity of adding new field/values. (You just do it to the main object, and that’s going to persist throughout the life of the object).  We also don’t have to deal with the continious translation of database structure to a code object. 
+
+In reality, in our use the DB is just the persistent storage of the JavaScript objects. For example, a product is a collection of variants (objects). For instance, blue, green, etc. are each their own object, contained within a “product” object.   
+
+In localization (l10n), this can also mean different pricing, taxes, etc. for different regions, so pricing is at the variant level, not at the product level.  This is even true with just one language, when you have “Blue XXL” being more expensive than “Green XL."
+
+### Have you tested Reaction on large shops with "1,000s" of products?
+
+We've done general performace testing and will be doing thorough testing as part of our Beta release. 
+
+We’re building everything to be ‘ephermal’ in nature, so ‘cloud’ scaling is the idea from the get go. We believe scaling won’t be the same set of issues as with legacy platforms where you have to jump through a ton of hoops to get rid of the dependancies on the server (file system, sessions, etc).
+
+Regardless if it's Docker or other Virtual Machine (VM) containers, the idea is that the storefront itself should scale without issues. The bottleneck does become the database, but with sharding and lots of other solutions, we think that it’s an easier problem to solve. We created Launch Dock (launchdock.io and open source at: https://github.com/ongoworks/launchdock) as our project for the server-side / Docker launching. In fact, the primary purpose of the “Create a Shop” on the home page of reactioncommerce.com is to test deploying shops at scale, and to work out database scaling issues early. We have a MongoDB cluster running on Amazon EC2, and our newest shops are using MongoHQ’s elastic deployments.
+
+### If Reaction is an open source project, how can I get involved?
+
+You can find step-by-step instructions for becoming a contributor [here](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/).
