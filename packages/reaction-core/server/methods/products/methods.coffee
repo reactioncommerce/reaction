@@ -57,6 +57,7 @@ Meteor.methods
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     product = Products.findOne "variants._id":variant._id

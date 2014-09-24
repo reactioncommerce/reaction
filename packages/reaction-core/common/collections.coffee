@@ -313,6 +313,10 @@ ReactionCore.Schemas.ProductVariant = ProductVariantSchema = new SimpleSchema
     type: Number
     decimal: true
     min: 0
+    optional: true
+    # custom: -> #required if no child variants (options) present
+      # When we switch to the newer version of Collections2, we should use @.docId
+      # to check if the variant has children and only return "required" if no children.
   requiresShipping:
     label: "Require a shipping address"
     type: Boolean
