@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
   name: "reactioncommerce:core",
-  version: "0.1.5",
+  version: "0.1.6",
   git: "https://github.com/ongoworks/reaction-core.git"
 });
 
@@ -16,7 +16,7 @@ Npm.depends({
 Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
-    api.versionsFrom('METEOR@0.9.0.1');
+    api.versionsFrom('METEOR@0.9.0');
     // 0.9.0+
     //core meteor packages
     api.use("standard-app-packages");
@@ -30,37 +30,33 @@ Package.onUse(function (api, where) {
     api.use("d3");
     // ui/blaze needed (?)
     api.use("ui@1.0.0",'client');
+    api.use('blaze@2.0.0', 'client');
     // api.use('blaze', 'client');
 
-    //remaining atmosphere packages
-    api.use("collectionfs");
-    api.use("cfs-graphicsmagick");
-    api.use("cfs-filesystem");
-    api.use("cfs-gridfs");
-    api.use("cfs-s3");
-    api.use("ui-dropped-event");
-
     //community packages
+    api.use('mrt:underscore-string-latest');
     api.use("aldeed:geocoder@0.3.1");
-    api.use("aldeed:template-extension@0.1.0");
+    api.use("aldeed:template-extension@2.0.0");
     api.use("aldeed:collection2");
-    api.use("aldeed:simple-schema@1.0.2");
-    api.use("aldeed:autoform@1.0.0");
+    api.use("aldeed:simple-schema");
+    api.use("aldeed:autoform");
     api.use("aldeed:template-extension","client");
-    api.use("iron:router@0.9.1");
-    // api.use("raix:collection-fs");
-    // api.use("raix:cfs-filesystem@0.0.27");
-    // api.use("raix:cfs-gridfs@0.0.24");
-    // api.use("raix:cfs-s3");
-    // api.use("raix:cfs-graphicsmagick@0.0.14");
-    // api.use("raix:cfs-s3@0.0.29");
-    // api.use("raix:ui-dropped-event@0.0.7");
-    api.use("dburles:collection-helpers@0.3.2");
-    api.use("matb33:collection-hooks@0.7.3");
-    api.use("alanning:roles@1.2.12");
+    api.use("iron:router@0.9.3");
+
+    api.use("dburles:collection-helpers@1.0.0");
+    api.use("matb33:collection-hooks@0.7.6");
+    api.use("alanning:roles");
     api.use("cmather:handlebars-server","server");
     api.use("mrt:moment@2.8.1",'client');
     api.use("sacha:spin@2.0.4", 'client');
+
+    api.use("cfs:standard-packages");
+    api.use("cfs:graphicsmagick");
+    api.use("cfs:filesystem");
+    api.use("cfs:gridfs");
+    api.use("cfs:s3");
+    api.use("raix:ui-dropped-event");
+
 
     //implying these are reused in reaction packages
     api.imply("less");
@@ -73,11 +69,10 @@ Package.onUse(function (api, where) {
     api.imply("aldeed:autoform");
     api.imply("aldeed:template-extension");
     api.imply("iron:router");
-    // api.imply("raix:collection-fs");
-    // api.imply("raix:cfs-filesystem");
-    // api.imply("raix:cfs-gridfs");
-    // api.imply("raix:cfs-graphicsmagick");
-    // api.imply("raix:cfs-s3");
+    api.imply("cfs:graphicsmagick");
+    api.imply("cfs:filesystem");
+    api.imply("cfs:gridfs");
+    api.imply("cfs:s3");
     api.imply("raix:ui-dropped-event");
     api.imply("matb33:collection-hooks");
     api.imply("alanning:roles");

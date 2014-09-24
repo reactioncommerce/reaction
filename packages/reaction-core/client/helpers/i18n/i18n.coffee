@@ -59,6 +59,7 @@ Meteor.startup ->
   # initialize  templates
   _.each Template, (template, name) ->
   # for template,name of Template
+    return if name?
     return if name is "prototype" or name.slice(0, 2) is "__"
     originalRender = template.rendered
     template.rendered = ->
