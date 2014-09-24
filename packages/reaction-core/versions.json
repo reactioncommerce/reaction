@@ -2,7 +2,7 @@
   "dependencies": [
     [
       "accounts-base",
-      "1.0.1"
+      "1.1.0"
     ],
     [
       "accounts-password",
@@ -10,7 +10,7 @@
     ],
     [
       "accounts-ui-unstyled",
-      "1.0.1"
+      "1.1.1"
     ],
     [
       "alanning:roles",
@@ -18,11 +18,11 @@
     ],
     [
       "aldeed:autoform",
-      "1.0.0"
+      "0.17.1"
     ],
     [
       "aldeed:collection2",
-      "1.0.0"
+      "0.4.6"
     ],
     [
       "aldeed:geocoder",
@@ -30,11 +30,11 @@
     ],
     [
       "aldeed:simple-schema",
-      "1.0.1"
+      "0.7.0"
     ],
     [
       "aldeed:template-extension",
-      "1.0.0"
+      "2.0.0"
     ],
     [
       "amplify",
@@ -42,11 +42,15 @@
     ],
     [
       "application-configuration",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "autoupdate",
-      "1.0.6"
+      "1.1.0"
+    ],
+    [
+      "base64",
+      "1.0.0"
     ],
     [
       "binary-heap",
@@ -58,6 +62,10 @@
     ],
     [
       "blaze-tools",
+      "1.0.0"
+    ],
+    [
+      "boilerplate-generator",
       "1.0.0"
     ],
     [
@@ -89,6 +97,10 @@
       "0.0.0"
     ],
     [
+      "cfs:filesystem",
+      "0.0.0"
+    ],
+    [
       "cfs:graphicsmagick",
       "0.0.0"
     ],
@@ -106,7 +118,7 @@
     ],
     [
       "cfs:power-queue",
-      "0.0.0"
+      "0.0.1"
     ],
     [
       "cfs:reactive-list",
@@ -117,8 +129,12 @@
       "0.0.0"
     ],
     [
-      "cfs:standard-packages",
+      "cfs:s3",
       "0.0.0"
+    ],
+    [
+      "cfs:standard-packages",
+      "0.0.2"
     ],
     [
       "cfs:storage-adapter",
@@ -126,11 +142,11 @@
     ],
     [
       "cfs:tempstore",
-      "0.0.0"
+      "0.0.2"
     ],
     [
       "cfs:upload-http",
-      "0.0.0"
+      "0.0.2"
     ],
     [
       "cfs:worker",
@@ -146,7 +162,7 @@
     ],
     [
       "coffeescript",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "d3",
@@ -154,7 +170,7 @@
     ],
     [
       "dburles:collection-helpers",
-      "0.3.2"
+      "1.0.0"
     ],
     [
       "ddp",
@@ -162,15 +178,19 @@
     ],
     [
       "deps",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "ejson",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "email",
       "1.0.2"
+    ],
+    [
+      "fastclick",
+      "1.0.0"
     ],
     [
       "follower-livedata",
@@ -190,11 +210,11 @@
     ],
     [
       "htmljs",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "http",
-      "1.0.4"
+      "1.0.5"
     ],
     [
       "id-map",
@@ -226,11 +246,11 @@
     ],
     [
       "less",
-      "1.0.7"
+      "1.0.8"
     ],
     [
       "livedata",
-      "1.0.8"
+      "1.0.9"
     ],
     [
       "localstorage",
@@ -238,31 +258,35 @@
     ],
     [
       "logging",
-      "1.0.2"
-    ],
-    [
-      "matb33:collection-hooks",
-      "0.7.3"
-    ],
-    [
-      "meteor",
       "1.0.3"
     ],
     [
+      "matb33:collection-hooks",
+      "0.7.6"
+    ],
+    [
+      "meteor",
+      "1.1.0"
+    ],
+    [
       "meteor-platform",
-      "1.0.1"
+      "1.1.0"
     ],
     [
       "minifiers",
-      "1.0.2"
+      "1.1.0"
     ],
     [
       "minimongo",
-      "1.0.2"
+      "1.0.3"
+    ],
+    [
+      "mobile-status-bar",
+      "1.0.0"
     ],
     [
       "mongo",
-      "1.0.4"
+      "1.0.5"
     ],
     [
       "mongo-livedata",
@@ -271,6 +295,10 @@
     [
       "mrt:moment",
       "2.8.1"
+    ],
+    [
+      "mrt:underscore-string-latest",
+      "2.3.3"
     ],
     [
       "npm-bcrypt",
@@ -298,7 +326,7 @@
     ],
     [
       "reactive-dict",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "reactive-var",
@@ -306,7 +334,7 @@
     ],
     [
       "reload",
-      "1.0.1"
+      "1.1.0"
     ],
     [
       "retry",
@@ -314,7 +342,7 @@
     ],
     [
       "routepolicy",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "sacha:spin",
@@ -350,7 +378,7 @@
     ],
     [
       "templating",
-      "1.0.5"
+      "1.0.6"
     ],
     [
       "tracker",
@@ -358,18 +386,26 @@
     ],
     [
       "ui",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "underscore",
       "1.0.0"
     ],
     [
+      "url",
+      "1.0.0"
+    ],
+    [
       "webapp",
-      "1.0.3"
+      "1.1.1"
+    ],
+    [
+      "webapp-hashing",
+      "1.0.0"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.27",
+  "toolVersion": "meteor-tool@1.0.31",
   "format": "1.0"
 }
