@@ -63,6 +63,9 @@ Your test shops help us in developing [Launchdock](https://github.com/ongoworks/
 [Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
 
 
+## Code Repositories
+Hey! Where's all the code!? Most of it is in the [reaction-core](https://github.com/ongoworks/reaction-core/) package...
+
 
 ---
 ##Reaction Team
