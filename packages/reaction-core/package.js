@@ -34,28 +34,27 @@ Package.onUse(function (api, where) {
     // api.use('blaze', 'client');
 
     //community packages
-    api.use('mrt:underscore-string-latest');
+    api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.1");
-    api.use("aldeed:template-extension@2.0.0");
-    api.use("aldeed:collection2");
-    api.use("aldeed:simple-schema");
-    api.use("aldeed:autoform");
-    api.use("aldeed:template-extension","client");
+    api.use("aldeed:collection2@2.1.0");
+    api.use("aldeed:simple-schema@1.0.3");
+    api.use("aldeed:autoform@2.0.2");
+    api.use("aldeed:template-extension@2.0.0","client");
     api.use("iron:router@0.9.3");
 
     api.use("dburles:collection-helpers@1.0.0");
     api.use("matb33:collection-hooks@0.7.6");
-    api.use("alanning:roles");
-    api.use("cmather:handlebars-server","server");
+    api.use("alanning:roles@1.2.13");
+    api.use("cmather:handlebars-server@2.0.0","server");
     api.use("mrt:moment@2.8.1",'client');
     api.use("sacha:spin@2.0.4", 'client');
 
-    api.use("cfs:standard-packages");
-    api.use("cfs:graphicsmagick");
-    api.use("cfs:filesystem");
-    api.use("cfs:gridfs");
-    api.use("cfs:s3");
-    api.use("raix:ui-dropped-event");
+    api.use("cfs:standard-packages@0.0.2");
+    api.use("cfs:graphicsmagick@0.0.1");
+    api.use("cfs:filesystem@0.0.0");
+    api.use("cfs:gridfs@0.0.0");
+    api.use("cfs:s3@0.0.0");
+    api.use("raix:ui-dropped-event@0.0.7");
 
 
     //implying these are reused in reaction packages
@@ -401,8 +400,10 @@ Package.onUse(function (api, where) {
     "client/templates/products/products.import.less",
     "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
-
   ], ["client"]);
+
+  //bootstrap assets
+  api.add_files('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
 
   // Private fixture data
   api.add_files('private/data/Products.json', 'server', {isAsset: true});

@@ -14,15 +14,15 @@
     ],
     [
       "alanning:roles",
-      "1.2.12"
+      "1.2.13"
     ],
     [
       "aldeed:autoform",
-      "0.17.1"
+      "2.0.2"
     ],
     [
       "aldeed:collection2",
-      "0.4.6"
+      "2.1.0"
     ],
     [
       "aldeed:geocoder",
@@ -30,7 +30,7 @@
     ],
     [
       "aldeed:simple-schema",
-      "0.7.0"
+      "1.0.3"
     ],
     [
       "aldeed:template-extension",
@@ -102,7 +102,7 @@
     ],
     [
       "cfs:graphicsmagick",
-      "0.0.0"
+      "0.0.1"
     ],
     [
       "cfs:gridfs",
@@ -158,7 +158,7 @@
     ],
     [
       "cmather:handlebars-server",
-      "0.2.0"
+      "2.0.0"
     ],
     [
       "coffeescript",
