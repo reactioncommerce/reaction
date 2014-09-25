@@ -32,7 +32,4 @@ To review our roadmap, take a look at the vision page [Reaction Vision](http://r
 
 [Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
 
-## Code Repositories
-Hey! Where's all the code!? Most of it is in the [reaction-core](https://github.com/ongoworks/reaction-core/) package...
-
 
