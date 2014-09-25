@@ -11,17 +11,11 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
     git clone https://github.com/ongoworks/reaction.git
     cd reaction	
 
-*Temporary for v0.1.5 - Meteor 0.9.0.1 release*
-
-There are still some packages located in smart.json, running `mrt` should download and run everything. 
-
-These packages will be deployed to the new Meteor package registry once 0.9.1 is released (and after that the `meteor` command will work instead of `mrt`)
-
 
 ##Startup
-To start Reaction, run the `mrt` command:
+To start Reaction, run the `meteor` command:
 
-	mrt
+	meteor
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
@@ -30,7 +24,7 @@ The initial admin user for the site is auto generated, and displayed in your con
 ## Reset
 To reset data and give you a fresh test dataset from packages/reaction-core/private/data/*.json
 
-	./bin/reset
+	meteor reset
 
 In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data.	
 
