@@ -173,7 +173,7 @@ Meteor.call "updateMetaFields", productId
 
 ### cloneVariant
 
-The cloneVariant method copies variants, but will alos create and clone child variants (options)
+The cloneVariant method copies variants, but will also create and clone child variants (options)
 
 Usage:
 
@@ -210,3 +210,78 @@ Meteor.call "updateVariants", variants
 ```
 
 updateVaraints takes a whole variant array object and updates the included fields.
+
+## Other Methods
+
+### locateAddress
+
+The locateAddress method determines a user's street address based on latitude and longitude coordinates or by ip address.
+
+Usage:
+```
+Meteor.call "locateAddress", latitude, longitude, (address) ->
+  # do something on callback
+```
+
+locateAddress takes latitude and longitude in [decimal degree format](http://en.wikipedia.org/wiki/Decimal_degrees) and uses a reverse geolocation lookup to determine street address. If coordinates are not provided, the method attempts to use the user's ip address to determine general location. An address is returned in this format:
+
+```
+[{
+  latitude: Number
+  longitude: Number
+  country: String
+  city: String
+  state: String
+  stateCode: String
+  zipcode: String
+  streetName: String
+  streetNumber: String
+  countryCode: String
+}]
+```
+
+If no address can be found, then the following address object is returned:
+
+```
+[{
+  latitude: null
+  longitude: null
+  country: "United States"
+  city: null
+  state: null
+  stateCode: null
+  zipcode: null
+  streetName: null
+  streetNumber: null
+  countryCode: "US"
+}]
+```
+
+For more information on how geocoding works in Reaction, check out the [meteor-geocoder package](https://github.com/aldeed/meteor-geocoder)
+
+### updateHeaderTags
+
+The updateHeaderTags method inserts or updates navigation tags taking into account hierarchy.
+
+Usage:
+
+```
+Meteor.call "updateHeaderTags", tagName, tagId, currentTagId
+```
+
+If given only `tagName`, updateHeaderTags will insert a new top level tag.
+If given `tagName` and `tagId`, updateHeaderTags will update an existing tag.
+Adding `currentTagId` will give parental hierarchy.
+
+### removeHeaderTag
+
+The removeHeaderTag method removes a tag from the navigation. It also checks to make sure the tag isn't in use elsewhere before removing it completely from the system.
+
+Usage:
+```
+Meteor.call "updateHeaderTags", tagId, currentTagId (error) ->
+  if error
+    # do something if error
+```
+
+removeHeaderTag takes a tag id (`tagId`) and optionally the id of the parent tag (`currentTagId`) and returns an error object if something goes wrong. If `currentTagId` is present, then `tagId` is removed as a related tag. Either way the method checks to see if `tagId` is in use elsewhere in the system, and if not the tag is removed completely.

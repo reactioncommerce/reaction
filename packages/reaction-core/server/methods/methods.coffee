@@ -42,10 +42,10 @@ Meteor.methods
       }
 
   ###
-  # method to insert or update tag with hierachy
+  # method to insert or update tag with hierarchy
   # tagName will insert
   # tagName + tagId will update existing
-  # currentTagId will update related/hierachy
+  # currentTagId will update related/hierarchy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
@@ -96,14 +96,16 @@ Meteor.methods
     if (productCount is 0) and (relatedTagsCount is 0)
       return Tags.remove(tagId)
 
-  updatePackage: (updateDoc, packageName) ->
-    packageId = Packages.findOne({ name: packageName })._id
 
-    return false unless packageId
+  ## possible dead method, commenting out pending further review
 
-    try
-      result = Packages.update {_id: packageId}, updateDoc
-    catch
-      result = false
-    # returns true if updated, false if package doesn't exist or error
-    return !!result
+  # updatePackage: (updateDoc, packageName) ->
+  #   packageId = Packages.findOne({ name: packageName })._id
+
+  #   return false unless packageId
+
+  #   try
+  #     result = Packages.update {_id: packageId}, updateDoc
+  #   catch
+  #     result = false
+  #   return !!result # returns true if updated, false if package doesn't exist or error

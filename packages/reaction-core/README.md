@@ -1,4 +1,6 @@
 # reaction-core
+
+`meteor add reactioncommerce:core`
 ---
 
 See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com).
@@ -29,3 +31,5 @@ To review our roadmap, take a look at the vision page [Reaction Vision](http://r
 [i18n Translations](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md)
 
 [Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
+
+
