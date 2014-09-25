@@ -34,8 +34,7 @@ Getting updates is basically the same as installation:
 ```bash
 cd reaction
 git pull
-mrt update
-mrt
+meteor
 ```
 
 *Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the udpated file*
