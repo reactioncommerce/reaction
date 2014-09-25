@@ -1,4 +1,6 @@
 # reaction-core
+
+`meteor add reactioncommerce:core`
 ---
 
 See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com).
