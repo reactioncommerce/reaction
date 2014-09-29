@@ -45,3 +45,9 @@ Regardless, if it's Docker or other Virtual Machine (VM) containers, the idea is
 ### If Reaction is an open source project, how can I get involved?
 
 You can find step-by-step instructions for becoming a contributor here: [http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/).
+
+### The Reaction platform is reliant on JavaScript to run. Does that have a negative impact on SEO?
+
+[Google now indexes JavaScript when crawling websites](http://googlewebmastercentral.blogspot.com.es/2014/05/understanding-web-pages-better.html).
+
+Additionally, Reaction uses the Meteor spiderable package, which uses Phantomjs to render the static page version for search engines. You can read more about the Meteor spiderable package [here](http://docs.meteor.com/#spiderable), [here](http://www.meteorpedia.com/read/spiderable/), and [here](https://www.eventedmind.com/feed/meteor-the-spiderable-package). We currently have this disabled by default, as we are still heavily in development, but if a site needed spiderable, all that you need to do to enable is 'meteor add spiderable'.
