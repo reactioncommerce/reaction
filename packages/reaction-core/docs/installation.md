@@ -7,7 +7,6 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
 
 ##Installation
     curl https://install.meteor.com | /bin/sh
-    sudo -H npm install -g meteorite
     git clone https://github.com/ongoworks/reaction.git
     cd reaction	
 
@@ -53,7 +52,7 @@ Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/set
 cp settings/dev.sample.json settings/dev.json
 ```
 
-If you've created a configuration file, then add `--settings settings/yoursettings.json` to the `meteor`/`mrt` startup command. There are some helper scripts in the *reaction/bin* directory, that make this a bit easier for development.
+If you've created a configuration file, then add `--settings settings/yoursettings.json` to the `meteor` startup command. There are some helper scripts in the *reaction/bin* directory, that make this a bit easier for development.
 
 ```bash
 #settings from *settings/dev.json*,
