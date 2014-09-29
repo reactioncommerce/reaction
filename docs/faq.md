@@ -14,11 +14,11 @@ Yes. When you create a shop on our platform at [reactioncommerce.com](https://re
 
 ### Is it possible for me to host a Reaction shop anywhere I want?
 
-Yes, you can host a Reaction shop on any host / virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction).
+Yes. You can host a Reaction shop on any host/virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction). 
 
 ### Do you support multiple languages?
 
-Yes. We recently launched [internationaltization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 15 languages and we will be adding in additional coverage and localization soon.
+Yes. We recently launched [internationaltization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 15 languages, and we will be adding in additional coverage and localization soon.
 
 ### What is the pricing/licensing model?
 
