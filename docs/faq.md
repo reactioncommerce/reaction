@@ -10,7 +10,7 @@ Our [Vision page](https://reactioncommerce.com/vision) outlines our roadmap and 
 
 ### Do you offer hosted shops?
 
-Yes, when you create a shop on our platform at [reactioncommerce.com](https://reactioncommerce.com), this launches a shop running the most current version of Reaction and runs it on Docker, via Amazon EC2, with its own MongoHQ-powered database. Keep in mind that shops that are created during our Alpha release aren't guaranteed to always be up and running. If your shop becomes inactive, you can visit your Control Panel and click the Restart button to get it going again.
+Yes. When you create a shop on our platform at [reactioncommerce.com](https://reactioncommerce.com), this launches a shop running the most current version of Reaction, and runs it on Docker, via Amazon EC2, with its own MongoHQ-powered database. Keep in mind that shops that are created during our Alpha release aren't guaranteed to always be up and running. If your shop becomes inactive, you can visit your Control Panel and click the Restart button to get it going again.
 
 ### Is it possible for me to host a Reaction shop anywhere I want?
 
