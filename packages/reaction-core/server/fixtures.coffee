@@ -47,7 +47,6 @@ loadFixtures = ->
   loadData ReactionCore.Collections.Tags unless Tags.find().count()
   loadData ReactionCore.Collections.ConfigData unless ReactionCore.Collections.ConfigData.find().count()
   loadI18n ReactionCore.Collections.Translations unless ReactionCore.Collections.Translations.find().count()
-  createDefaultAdminUser() unless Meteor.users.find().count()
   # loadImageData "Images" unless Images.find().count()
 
   # Load data from settings/json files
@@ -57,6 +56,21 @@ loadFixtures = ->
         service: "facebook",
         appId: Meteor.settings.public.facebook.appId,
         secret: Meteor.settings.facebook.secret
+
+  # Loop through ReactionCore.Packages object, which now has all packages added by
+  # calls to register
+  # todo: add function to retrigger this
+  unless ReactionCore.Collections.Packages.find().count()
+    _.each ReactionCore.Packages, (config, pkgName) ->
+      Shops.find().forEach (shop) ->
+        console.log ("Initializing "+ pkgName).cyan
+        ReactionCore.Collections.Packages.upsert {shopId: shop._id, name: pkgName},
+          $setOnInsert:
+            enabled: !!config.autoEnable
+            settings: config.defaultSettings
+
+  # create default admin user account
+  createDefaultAdminUser() unless Meteor.users.find().count()
 
 ###
 # Three methods to create users default (empty db) admin user
@@ -108,6 +122,7 @@ Meteor.startup ->
   loadFixtures()
   if Meteor.settings.public?.isDebug
     Meteor.setInterval(loadFixtures, 300)
+
 
   # data conversion:  if ROOT_URL changes update shop domain
   # for now, we're assuming the first domain is the primary
