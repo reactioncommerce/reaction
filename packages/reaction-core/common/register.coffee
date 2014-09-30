@@ -73,16 +73,3 @@ ReactionCore.registerPackage
       group: "Shop Settings"
     }
   ]
-
-# On the server, we upsert all packages on startup
-if Meteor.isServer
-  Packages = ReactionCore.Collections.Packages
-  Meteor.startup ->
-    # Loop through ReactionCore.Packages object, which now has all packages added by
-    # calls to register
-    _.each ReactionCore.Packages, (config, pkgName) ->
-      Shops.find().forEach (shop) ->
-        Packages.upsert {shopId: shop._id, name: pkgName},
-          $setOnInsert:
-            enabled: !!config.autoEnable
-            settings: config.defaultSettings

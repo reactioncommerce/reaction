@@ -80,7 +80,7 @@ Meteor.methods
 
     console.log "Creating PDF for #{url}"
 
-    # updateStorage = Meteor._wrapAsync(ReactionCore.Collections.FileStorage.insert(file:data))
+    # updateStorage = Meteor.wrapAsync(ReactionCore.Collections.FileStorage.insert(file:data))
     #PDF Formatting
     paperSize =
       format: "Letter"
@@ -92,28 +92,28 @@ Meteor.methods
         bottom: "1cm"
 
     phantom.create (Meteor.bindEnvironment (err, ph) ->
-      if err 
+      if err
         throw err
       else
         # Create a new page synchronously
-        page = Meteor._wrapAsync(ph.createPage.bind ph)();
+        page = Meteor.wrapAsync(ph.createPage.bind ph)();
         # Set paper size synchronously
-        Meteor._wrapAsync(page.set.bind page)("paperSize", paperSize)
+        Meteor.wrapAsync(page.set.bind page)("paperSize", paperSize)
         # page.zoomFactor = 1.5
         # Check status
-        status = Meteor._wrapAsync(page.open.bind page)(url)
+        status = Meteor.wrapAsync(page.open.bind page)(url)
         if status isnt "success"
           ph.exit()
           throw new Error "Unable to access network"
-        
+
         # Create function that will be called after
         # we have let the page load and retrieved the clipRect
         finish = (err, clipRect) ->
           # Set clip area synchronously
-          Meteor._wrapAsync(page.set.bind page)("clipRect", clipRect)
-          console.log "clipRect is set to", Meteor._wrapAsync(page.get.bind page)("clipRect")
+          Meteor.wrapAsync(page.set.bind page)("clipRect", clipRect)
+          console.log "clipRect is set to", Meteor.wrapAsync(page.get.bind page)("clipRect")
           # Render the page synchronously
-          Meteor._wrapAsync(page.render.bind page)(filePath)
+          Meteor.wrapAsync(page.render.bind page)(filePath)
           # We're done with phantom now
           ph.exit()
           # Save the generated PDF file with metadata using CollectionFS
@@ -146,7 +146,7 @@ Meteor.methods
             f.return (result.clipRect? and result.subsReady and result.userId?.length)
             return
           f.wait()
-        
+
         dataIsLoaded = Meteor.bindEnvironment dataIsLoaded
 
         getPrintArea = ->
