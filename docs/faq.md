@@ -18,7 +18,7 @@ Yes. You can host a Reaction shop on any host/virtual machine container that sup
 
 ### Do you support multiple languages?
 
-Yes. We recently launched [internationaltization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 15 languages, and we will be adding in additional coverage and localization soon.
+Yes. We recently launched [internationaltization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 14 languages, and we will be adding in additional coverage and localization soon.
 
 ### What is the pricing/licensing model?
 
@@ -34,7 +34,7 @@ In reality, in our use, the DB is just the persistent storage of the JavaScript 
 
 In localization (l10n), this can also mean different pricing, taxes, etc., for different regions, so pricing is at the variant level not at the product level.  This is even true with just one language when you have “Blue XXL” being more expensive than “Green XL."
 
-### Have you tested Reaction on large shops with "1,000s" of products?
+### Have you tested Reaction on large shops with thousands of products?
 
 We've done general performace testing and will be doing thorough testing as part of our Beta release. 
 
@@ -42,7 +42,7 @@ We’re building everything to be "ephermal" in nature, so "cloud" scaling is th
 
 Regardless, if it's Docker or other Virtual Machine (VM) containers, the idea is that the storefront itself should scale without issues. The bottleneck does become the database, but with sharding and lots of other solutions, we think that it’s an easier problem to solve. We created Launch Dock ([launchdock.io](http://launchdock.io) and open source at [github.com/ongoworks/launchdock](https://github.com/ongoworks/launchdock)) as our project for the server-side/Docker launching. In fact, the primary purpose of “Create a Shop” on the home page of reactioncommerce.com is to test deploying shops at scale and to work out database scaling issues early. We have a MongoDB cluster running on Amazon EC2, and our newest shops are using MongoHQ’s elastic deployments.
 
-### If Reaction is an open source project, how can I get involved?
+### Reaction is an open source project, how can I get involved?
 
 You can find step-by-step instructions for becoming a contributor here: [http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/).
 
