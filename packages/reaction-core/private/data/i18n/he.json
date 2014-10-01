@@ -4,6 +4,129 @@
         "i18n": "he",
         "translation": {
             "core": {
+                "languages": {
+                    "select": "בחר שפה",
+                    "english": "English",
+                    "spanish": "Español",
+                    "hebrew": "עברית"
+                },
+                "app": {
+                    "saveAndContinue": "שמור והמשך",
+                    "cancel": "בטל",
+                    "submit": "שלח",
+                    "delete": "מחק"
+                },
+                "productDetail": {
+                    "productManagement": "ניהול מוצר",
+                    "makeInvisible": "הפוך ללא נראה",
+                    "isNotVisible": "מוצר זה אינו נראה ללקוחות.",
+                    "makeItVisible": "באפשרותך להפוך לנראה",
+                    "whenYouAreDone": "כאשר תסיים/י לערוך אותו.",
+                    "tags": "תגיות",
+                    "details": "פרטים",
+                    "options": "אפשרויות",
+                    "addToCart": "הוסף לסל",
+                    "chooseOptions": "נא לבחור אפשרויות לפני ההוספה לסל",
+                    "outOfStock": "מצטערים, אך פריט זה אינו במלאי!",
+                    "productDeleteError": "אירעה שגיאה בנסיון למחוק את ",
+                    "publishFirst": "יש לפרסם את המוצר לפני ההוספה לסל.",
+                    "selectOption": "יש לבחור אפשרות לפני ההוספה לסל",
+                    "addedToCart": "התווסף"
+                },
+                "variantList": {
+                    "moreOptions": "יש עוד אפשרויות זמינות עבור בחירה זו.",
+                    "createVariant": "צור גרסא"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " עכשיו הינו מאופשר.",
+                    "pkgDisabled": " עכשיו הינו מנוטרל."
+                },
+                "cartDrawer": {
+                    "empty": "כמה חבל... הסל שלך ריק.",
+                    "keepShopping": "המשך בקניות",
+                    "checkout": "לך לקופה עכשיו"
+                },
+                "cartSubTotals": {
+                    "head": "הסך שלך",
+                    "items": "פריטים בסל",
+                    "subtotal": "סיכום ביניים",
+                    "shipping": "משלוח",
+                    "tax": "מע\"מ",
+                    "total": "סך הכל"
+                },
+                "cartDrawerItems": {
+                    "left": "נשארו"
+                },
+                "cartCheckout": {
+                    "loginCompleted": "תהליך ההתחברות הושלם"
+                },
+                "checkoutLogin": {
+                    "createOrLogin": "צור חשבון או התחבר על מנת להמשיך"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "בחר כתובת למשלוח ולחשבונית",
+                    "createDefault": "צור את כתובת ברירת המחדל שלך",
+                    "selectShippingAddress": "בחר כתובת למשלוח",
+                    "selectBillingAddress": "בחר כתובת לחשבונית"
+                },
+                "addressBookAdd": {
+                    "addAddress": "הוסף כתובת נוספת",
+                    "createAddress": "צור את כתובת ברירת המחדל שלך"
+                },
+                "addressBookEdit": {
+                    "editAddress": "עריכת כתובת זו"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "ארץ",
+                        "fullName": "שם פרטי ומשפחה",
+                        "address1": "כתובת 1",
+                        "address2": "כתובת 2",
+                        "postal": "מיקוד",
+                        "city": "יישוב",
+                        "region": "אזור",
+                        "phone": "טלפון",
+                        "isDefault": "האם זו כתובת ברירת המחדל שלך?",
+                        "isCommercial": "האם זו כתובת מסחרית?"
+                    }
+                },
+                "address": {
+                    "country": "ארץ",
+                    "fullName": "שם פרטי ומשפחה",
+                    "address1": "כתובת",
+                    "address2": "כתובת",
+                    "postal": "מיקוד",
+                    "city": "יישוב",
+                    "region": "אזור",
+                    "phone": "טלפון",
+                    "isDefault": "האם זו כתובת ברירת המחדל שלך?",
+                    "isCommercial": "האם זו כתובת מסחרית?"
+                },
+                "checkoutProgressBar": {
+                    "login": "התחבר",
+                    "shippingBilling": "משלוח וחשבונית",
+                    "shippingOptions": "אפשרויות משלוח",
+                    "reviewPayment": "סקירה ותשלום",
+                    "complete": "הושלם"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "הוסף תשלום על מנת להשלים את ההזמנה"
+                },
+                "checkoutReview": {
+                    "review": "סקירה"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "בחר אפשרות משלוח"
+                },
+                "shopEditForm": {
+                    "name": "שם",
+                    "email": "דוא\"ל"
+                },
+                "shopEditAdressForm": {
+                    "company": "חברה",
+                    "fullname": "שם פרטי ומשפחה",
+                    "address1": "כתובת 1"
+                },
                 "accountsUI": {
                     "add": "הוסף",
                     "and": "ו",
@@ -30,11 +153,13 @@
                     "remove": "הסרה",
                     "resetYourPassword": "איפוס סיסמא",
                     "setPassword": "עדכון סיסמא",
+                    "sign": "כניסה",
                     "signIn": "כניסה",
                     "signin": "כניסה",
                     "signOut": "יציאה",
                     "signUp": "הרשמה לחשבון",
                     "signupCode": "קוד הרשמה",
+                    "signedIn": "הינך מחובר/ת.",
                     "signUpWithYourEmailAddress": "הירשם באמצעות הדוא\"ל",
                     "terms": "לתנאי השימוש",
                     "updateYourPassword": "עדכון סיסמא",
@@ -49,6 +174,7 @@
                     },
                     "error": {
                         "emailRequired": "חובה להזין כתובת דוא\"ל",
+                        "passwordMustBeAtLeast6CharactersLong": "הסיסמא חייבת להיות באורך של לפחות 6 סימנים.",
                         "minChar": "חובה להזין סיסמא בעלת 7 תווים לפחות.",
                         "pwdsDontMatch": "הסיסמאות אינן זהות.",
                         "pwOneDigit": "הסיסמא חייבת לכלול ספרה אחת לפחות.",
