@@ -38,7 +38,7 @@ To use in the local application, the final step is add to your local app:
 
 *Tip* You can also just edit `.meteor/packages`
 
-For a more thorough review of Meteor packages, (the meteor hackpad unipackage doc)[https://meteor.hackpad.com/Unipackage-tvas8pXYMOW#:h=Using-Packages-in-Your-App] has a lot of useful information.
+For a more thorough review of Meteor packages, [the meteor hackpad unipackage doc](https://meteor.hackpad.com/Unipackage-tvas8pXYMOW#:h=Using-Packages-in-Your-App) has a lot of useful information.
 
 ##Dashboard
 Once you have a working package, you'll want to integrate it into the rest of Reaction Commerce.  
