@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
   name: "reactioncommerce:core",
-  version: "0.1.7",
+  version: "0.1.8",
   git: "https://github.com/ongoworks/reaction-core.git"
 });
 
@@ -85,7 +85,7 @@ Package.onUse(function (api, where) {
   }
 
   // Core Reaction files
-  api.add_files([
+  api.addFiles([
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
@@ -96,7 +96,7 @@ Package.onUse(function (api, where) {
     "common/register.coffee"
   ], ["client", "server"]);
 
-  api.add_files([
+  api.addFiles([
     "server/app.coffee",
     "server/publications.coffee",
     "server/fixtures.coffee",
@@ -109,7 +109,7 @@ Package.onUse(function (api, where) {
     "server/emailTemplates/shopMemberNotification.html"
   ], ["server"]);
 
-  api.add_files([
+  api.addFiles([
     "lib/i18next-1.7.3/i18next-1.7.3.js",
 
     "lib/bootstrap/lib/js/transition.js",
@@ -403,32 +403,32 @@ Package.onUse(function (api, where) {
   ], ["client"]);
 
   //bootstrap assets
-  api.add_files('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
+  api.addFiles('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
 
   // Private fixture data
-  api.add_files('private/data/Products.json', 'server', {isAsset: true});
-  api.add_files('private/data/Shops.json', 'server', {isAsset: true});
-  api.add_files('private/data/Tags.json', 'server', {isAsset: true});
-  api.add_files('private/data/SystemConfig.json', 'server', {isAsset: true});
-  api.add_files('private/data/ConfigData.json', 'server', {isAsset: true});
-  api.add_files('private/data/roles.json', 'server', {isAsset: true});
-  api.add_files('private/data/users.json', 'server', {isAsset: true});
-  api.add_files('private/data/Orders.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Products.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
+  api.addFiles('private/data/SystemConfig.json', 'server', {isAsset: true});
+  api.addFiles('private/data/ConfigData.json', 'server', {isAsset: true});
+  api.addFiles('private/data/roles.json', 'server', {isAsset: true});
+  api.addFiles('private/data/users.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
   //i18n translations
-  api.add_files('private/data/i18n/ar.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/cs.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/de.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/en.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/es.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/fr.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/he.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/it.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/pl.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/pt.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/ru.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/sl.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/sv.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/vi.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/cs.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/de.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/es.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/sl.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
 
 
   // We are now grouping all exported app variables and methods under
