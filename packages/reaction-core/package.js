@@ -38,7 +38,7 @@ Package.onUse(function (api, where) {
     api.use("aldeed:geocoder@0.3.1");
     api.use("aldeed:collection2@2.1.0");
     api.use("aldeed:simple-schema@1.0.3");
-    api.use("aldeed:autoform@2.0.2");
+    api.use("aldeed:autoform@3.1.0");
     api.use("aldeed:template-extension@2.0.0","client");
     api.use("iron:router@0.9.3");
 
