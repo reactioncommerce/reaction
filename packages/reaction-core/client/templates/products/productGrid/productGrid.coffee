@@ -57,6 +57,45 @@ Template.productGridItems.helpers
     else
       return false
 
+Template.gridNotice.helpers
+  
+  isLowQuantity: () ->
+    # product is low quantity if any parent variant is below its set threshold
+    variants = (variant for variant in this.variants when not variant.parentId)
+    if variants.length > 0
+      for variant in variants
+        if variant.inventoryQuantity <= variant.lowInventoryWarningThreshold
+          return true
+    else
+      return false
+
+  isSoldOut: () ->
+    # product is only sold out if all parent variants are qty 0
+    # and have inventory management turned on
+    variants = (variant for variant in this.variants when not variant.parentId)
+    if variants.length > 0
+      for variant in variants
+        if not variant.inventoryManagement or (variant.inventoryQuantity > 0)
+          return false
+      return true
+
+  isBackorder: () ->
+    # product is on backorder if all variants are sold out
+    # and at least one does not deny when out of stock
+    variants = (variant for variant in this.variants when not variant.parentId)
+    if variants.length > 0
+      for variant in variants
+        if not variant.inventoryManagement or (variant.inventoryQuantity > 0)
+          return false
+      for variant in variants
+        if not variant.inventoryPolicy
+          return true
+      return false
+
+Template.gridContent.helpers
+  displayPrice: () ->
+    getProductPriceRange(@_id)
+
 Template.productGridItems.events
   'click .clone-product': () ->
     title = @.title

@@ -27,6 +27,16 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     if modifier.$push.variants
       applyVariantDefaults(modifier.$push.variants)
 
+  # keep quantity of parent variants in sync with the aggregate quantity of
+  # of their children
+  if modifier.$set['variants.$']?.inventoryQuantity >= 0
+    qty = modifier.$set['variants.$'].inventoryQuantity || 0
+    for variant in product.variants when variant._id isnt modifier.$set['variants.$']._id and variant.parentId is modifier.$set['variants.$'].parentId
+      qty += variant.inventoryQuantity || 0
+    parentVariant = (variant for variant in product.variants when variant._id is modifier.$set['variants.$'].parentId)[0]
+    if parentVariant?.inventoryQuantity isnt qty
+      Products.direct.update({'_id': product._id, 'variants._id':modifier.$set['variants.$'].parentId }, {$set: {'variants.$.inventoryQuantity':qty } })
+
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
     if addToSet

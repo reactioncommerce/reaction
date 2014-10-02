@@ -164,3 +164,58 @@ currentProduct = @currentProduct
   id = variants[0]._id
   currentProduct.set "variantId", id
   return id
+
+###
+# get price range of a variant if it has child options.
+# if no child options, return main price value
+###
+@getVariantPriceRange = (variantId, productId) ->
+
+  unless productId
+    productId = selectedProductId()
+  product = Products.findOne(productId)
+  # if no variantId provided, use currently selected
+  unless variantId
+    variantId = selectedVariant()._id
+  variant = _.findWhere product.variants, _id: variantId
+
+  children = (variant for variant in product.variants when variant.parentId is variantId)
+  if children.length is 0
+    return variant.price
+  if children.length is 1
+    return children[0].price
+  priceMin = Number.POSITIVE_INFINITY
+  priceMax = Number.NEGATIVE_INFINITY
+  for child in children
+    priceMin = child.price if child.price < priceMin
+    priceMax = child.price if child.price > priceMax
+  if priceMin is priceMax
+    return priceMin
+  return priceMin + ' - ' + priceMax
+
+###
+# get price range of a product
+# if no only one price available, return it
+###
+@getProductPriceRange = (productId) ->
+  # if no productId provided, use currently selected
+  unless productId
+    productId = selectedProduct()._id
+  product = Products.findOne(productId)
+  variants = (variant for variant in product.variants when not variant.parentId)
+  if variants.length > 0
+    variantPrices = []
+    for variant in variants
+      range = getVariantPriceRange(variant._id, productId)
+      if Match.test range, String
+        firstPrice = parseFloat range.substr 0, range.indexOf(" ")
+        lastPrice = parseFloat range.substr range.lastIndexOf(" ") + 1
+        variantPrices.push firstPrice, lastPrice
+      else
+        variantPrices.push range
+  priceMin = _.min variantPrices
+  priceMax = _.max variantPrices
+  if priceMin is priceMax
+    return priceMin
+  return priceMin + ' - ' + priceMax
+  

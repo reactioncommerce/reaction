@@ -11,7 +11,6 @@ Meteor.methods
       return false
     product = Products.findOne(productId)
     variant = (variant for variant in product.variants when variant._id is variantId)
-
     return false unless variant.length > 0
 
     clone = variant[0]
@@ -20,6 +19,7 @@ Meteor.methods
     if parentId
       # console.log "create child clone"
       clone.parentId = variantId
+      delete clone.inventoryQuantity
       Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
       return clone._id
 
@@ -57,6 +57,7 @@ Meteor.methods
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
     product = Products.findOne "variants._id":variant._id

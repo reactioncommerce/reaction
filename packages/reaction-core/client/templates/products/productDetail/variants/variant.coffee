@@ -6,8 +6,11 @@ Template.variant.helpers
 
   selectedVariant: () ->
     current = selectedVariant()
-    if (@._id is current?._id ) or  (@._id is current?.parentId)
+    if (@._id is current?._id) or  (@._id is current?.parentId)
       return "variant-detail-selected"
+
+  displayPrice: () ->
+    return getVariantPriceRange(@_id)
 
   isSoldOut: () ->
       if @.inventoryQuantity < 1
