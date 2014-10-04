@@ -4,6 +4,80 @@
         "i18n": "ru",
         "translation": {
             "core": {
+                "languages": {
+                    "select": "Выбрать язык",
+                    "russian": "Русский"
+                },
+                "app": {
+                    "save-and-continue": "Сохранить и продолжить",
+                    "cancel": "Отменить",
+                    "submit": "Подтвердить",
+                    "delete": "Удалить"
+                },
+                "productDetail": {
+                    "productManagement": "Управление товарами",
+                    "makeInvisible": "Сделать невидимым",
+                    "isNotVisible": "Этот товар невидим для покупателей.",
+                    "makeItVisible": "Вы можете сделать его видимым",
+                    "whenYouAreDone": "когда закончите редактирование.",
+                    "tags": "Метки",
+                    "details": "Детали",
+                    "options": "Варианты",
+                    "addToCart": "Добавить в корзину",
+                    "chooseOptions": "Пожалуйста выберите вариант прежде чем добавить товар в корзину",
+                    "outOfStock": "Извините, этого товара нет в наличии",
+                    "productDeleteError": "Произошла ошибка во время удаления товара ",
+                    "publishFirst": "Опубликуйте товар прежде чем добавить в корзину.",
+                    "selectOption": "Выберите вариант прежде чем добавить в корзину",
+                    "addedToCart": "добавлено"
+                },
+                "variantList": {
+                    "moreOptions": "Есть еще варианты доступные для этого выбора.",
+                    "createVariant": "Создать вариант"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " подключен.",
+                    "pkgDisabled": " отключен."
+                },
+                "cartDrawer": {
+                    "empty": "Очень жаль, Ваша корзина пуста :(",
+                    "keepShopping": "Продолжить покупки",
+                    "checkout": "Оформить заказ"
+                },
+                "cartSubTotals": {
+                    "head": "Ваша корзина",
+                    "items": "Товаров в корзине",
+                    "subtotal": "Всего",
+                    "shipping": "Доставка",
+                    "tax": "Налог",
+                    "total": "Сумма"
+                },
+                "cartDrawerItems": {
+                    "left": "слева"
+                },
+                "cartCheckout": {
+                    "loginCompleted": "Вход выполнен"
+                },
+                "checkoutLogin": {
+                    "create-or-login": "Создайте личный кабинет или авторизируйтесь чтобы продолжить"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Выбрать адрес доставки и адрес плательщика",
+                    "createDefault": "Создать адрес по умолчанию",
+                    "selectShipping-address": "Выбрать адрес доставки",
+                    "selectBilling-address": "Выбрать адрес плательщика"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Добавить адрес",
+                    "createAddress": "Создать адрес по умолчанию"
+                },
+                "checkoutProgressBar": {
+                    "login": "Авторизация",
+                    "shippingBilling": "Доставки и Оплата",
+                    "shippingOptions": "Варианты доставки",
+                    "reviewPayment": "Подтверждение и Оплата",
+                    "complete": "Готово"
+                },                
                 "accountsUI": {
                     "add": "добавить",
                     "and": "и",
