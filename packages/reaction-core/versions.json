@@ -245,6 +245,10 @@
       "1.0.0"
     ],
     [
+      "lepozepo:accounting",
+      "1.0.0"
+    ],
+    [
       "less",
       "1.0.9"
     ],
@@ -295,10 +299,6 @@
     [
       "mrt:moment",
       "2.8.1"
-    ],
-    [
-      "mrt:numeral",
-      "0.0.1"
     ],
     [
       "mrt:underscore-string-latest",

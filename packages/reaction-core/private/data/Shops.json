@@ -23,18 +23,12 @@
     "useCustomEmailSettings":false,
     "currencies": {
       "USD": {
-        "format": "$0,0.00",
-        "moneyFormat":"$",
-        "moneyInEmailsFormat":"$",
-        "moneyWithCurrencyFormat":"$ USD",
-        "moneyWithCurrencyInEmailsFormat":"$ USD"
+        "format": "%s%v",
+        "symbol": "$"
       },
       "EUR": {
-        "format": "0.0,00 €",
-        "moneyFormat":"€",
-        "moneyInEmailsFormat":"$",
-        "moneyWithCurrencyFormat":"$ USD",
-        "moneyWithCurrencyInEmailsFormat":"$ USD"
+        "format" : "%v %s",
+        "symbol": "€"
       }
     },
     "locales":{

@@ -47,7 +47,7 @@ Package.onUse(function (api, where) {
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
     api.use("mrt:moment@2.8.1",'client');
-    api.use("mrt:numeral");
+    api.use("lepozepo:accounting@1.0.0");
     api.use("sacha:spin@2.0.4", 'client');
 
     api.use("cfs:standard-packages@0.0.2");

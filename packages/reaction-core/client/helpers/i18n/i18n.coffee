@@ -68,7 +68,8 @@ Meteor.startup ->
   # set locale
   Meteor.call 'getLocale', (error,result) ->
     ReactionCore.locale = result
-    ReactionCore.locale.language = i18n.detectLanguage()
+    ReactionCore.locale.language = Session.get "language"
+    return ReactionCore
 
 Deps.autorun () ->
   sessionLanguage = Session.get "language"
@@ -115,7 +116,7 @@ Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
 #  return shop /locale specific currency format (ie: $)
 ###
 Template.registerHelper "currencySymbol", () ->
-  return ReactionCore.locale.currency.moneyFormat
+  return ReactionCore.locale.currency.symbol
 
 ###
 # return shop /locale specific formatted price
@@ -125,10 +126,10 @@ Template.registerHelper "formatPrice", (price) ->
   try
     prices = price.split(' - ')
     for actualPrice in prices
-      formattedPrice = numeral(actualPrice).format(ReactionCore.locale.currency.format)
+      formattedPrice = accounting.formatMoney actualPrice, ReactionCore.locale.currency
       price = price.replace(actualPrice, formattedPrice)
   catch
-    price = numeral(price).format(ReactionCore.locale.currency.format)
+    price = accounting.formatMoney price, ReactionCore.locale.currency
 
   return price
 
