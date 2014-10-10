@@ -2,7 +2,39 @@ Packages = ReactionCore.Collections.Packages
 
 Meteor.methods
   ###
-  # method to determine user's location for autopopulating addresses
+  # determine user's countryCode and return locale object
+  ###
+  getLocale: ->
+    this.unblock()
+    result = {}
+
+    ip = this.connection.httpHeaders['x-forwarded-for']
+
+    if ip
+      geo = new GeoCoder(geocoderProvider: "freegeoip")
+      countryCode = geo.geocode(ip)[0].countryCode.toUpperCase()
+
+      if !countryCode or countryCode is 'RD' then countryCode = 'US'
+
+      shop = ReactionCore.Collections.Shops.findOne '_id': ReactionCore.getShopId()
+
+      result.locale = shop.locales.countries[countryCode]
+      result.currency = {}
+      # get currency formats for locale, default if none
+      # comma string/list can be used, but for now we're only using one result
+      localeCurrency = shop.locales.countries[countryCode].currency.split(',')
+      for currency in localeCurrency
+        if shop.currencies[currency]
+          result.currency = shop.currencies[currency]
+          return result #returning first match.
+
+      #TODO Select default language from shop.
+      unless result.currency
+        result.currency = shop.currencies['US']
+      return result
+
+  ###
+  # determine user's full location for autopopulating addresses
   ###
   locateAddress: (latitude, longitude) ->
     check latitude, Match.Optional(Number)
@@ -17,7 +49,7 @@ Meteor.methods
         if ip
           geo = new GeoCoder(geocoderProvider: "freegeoip")
           address = geo.geocode ip
-    catch error 
+    catch error
       # something went wrong; we'll use the default location and
       # log the error on the server
       if latitude? and longitude?

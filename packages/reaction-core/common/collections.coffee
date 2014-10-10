@@ -3,7 +3,6 @@ share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
 share.Product = @Product = new Meteor.Collection("Product")
 share.Variant = @Variant = new Meteor.Collection("Variant")
 
-ReactionCore.Collections.ConfigData = new Meteor.Collection "ConfigData"
 ReactionCore.Collections.Translations = new Meteor.Collection "Translations"
 
 ###

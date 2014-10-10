@@ -4,10 +4,10 @@ Template.settingsGeneral.helpers
       return address[0]
 
   countryOptions: ->
-    ReactionCore.Collections.ConfigData.findOne().countries
+    ReactionCore.Collections.Shops.findOne().countries
 
   timezoneOptions: ->
-    zoneData = ReactionCore.Collections.ConfigData.findOne().timezones
+    zoneData = ReactionCore.Collections.Shops.findOne().timezones
     zonelist = []
     for zone in zoneData
       zonelist.push {label:zone,value:zone}

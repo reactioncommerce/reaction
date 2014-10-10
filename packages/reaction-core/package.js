@@ -47,6 +47,7 @@ Package.onUse(function (api, where) {
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
     api.use("mrt:moment@2.8.1",'client');
+    api.use("mrt:numeral");
     api.use("sacha:spin@2.0.4", 'client');
 
     api.use("cfs:standard-packages@0.0.2");
@@ -137,8 +138,9 @@ Package.onUse(function (api, where) {
     "lib/jquery-serialize/jquery.serialize-hash.coffee",
     "lib/jquery-cookie/jquery.cookie.js",
 
-    "client/app.coffee",
+
     "client/subscriptions.coffee",
+    "client/app.coffee",
     "client/routing.coffee",
 
     "client/helpers/helpers.coffee",
@@ -409,8 +411,6 @@ Package.onUse(function (api, where) {
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
   api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
-  api.addFiles('private/data/SystemConfig.json', 'server', {isAsset: true});
-  api.addFiles('private/data/ConfigData.json', 'server', {isAsset: true});
   api.addFiles('private/data/roles.json', 'server', {isAsset: true});
   api.addFiles('private/data/users.json', 'server', {isAsset: true});
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});

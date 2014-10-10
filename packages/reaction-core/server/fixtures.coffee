@@ -5,7 +5,7 @@
 # can be imported using loadData(collection)
 # individual packages have their own fixtures
 # *****************************************************
-colors = Npm.require('colors')
+colors = Npm.require 'colors'
 
 getDomain = (url) ->
   unless url then url = process.env.ROOT_URL
@@ -45,7 +45,6 @@ loadFixtures = ->
   loadData ReactionCore.Collections.Products unless Products.find().count()
   loadData ReactionCore.Collections.Shops unless Shops.find().count()
   loadData ReactionCore.Collections.Tags unless Tags.find().count()
-  loadData ReactionCore.Collections.ConfigData unless ReactionCore.Collections.ConfigData.find().count()
   loadI18n ReactionCore.Collections.Translations unless ReactionCore.Collections.Translations.find().count()
   # loadImageData "Images" unless Images.find().count()
 

@@ -65,6 +65,10 @@ Meteor.startup ->
     template.rendered = ->
       try @.$("[data-i18n]").i18n()
       originalRender and originalRender.apply(this, arguments)
+  # set locale
+  Meteor.call 'getLocale', (error,result) ->
+    ReactionCore.locale = result
+    ReactionCore.locale.language = i18n.detectLanguage()
 
 Deps.autorun () ->
   sessionLanguage = Session.get "language"
@@ -91,8 +95,6 @@ Deps.autorun () ->
         #re-init i18n
         $("[data-i18n]").i18n()
 
-
-
 ###
 # i18n helper
 # see: http://i18next.com/
@@ -100,21 +102,33 @@ Deps.autorun () ->
 # optionally you can pass a string like "Invalid email", and we'll look for "invalidEmail"
 # in the translations data.
 #
-# ex: {{i18n "accountsUI.error" "Invalid Email"}}
+# ex: {{i18n "accountsTemplate.error" "Invalid Email"}}
 ###
-UI.registerHelper "i18n", (i18n_key, camelCaseString) ->
+Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
   unless i18n_key then Meteor.throw("i18n key string required to translate")
   if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + camelCaseString.toCamelCase()
   result = new Handlebars.SafeString(i18n.t(i18n_key))
   return result
 
 
-#default return $ symbol
-UI.registerHelper "currency", () ->
-  shops = Shops.findOne()
-  if shops then return shops.currency
+###
+#  return shop /locale specific currency format (ie: $)
+###
+Template.registerHelper "currencySymbol", () ->
+  return ReactionCore.locale.currency.moneyFormat
 
-# return shop specific currency format
-UI.registerHelper "currencySymbol", () ->
-  shops = Shops.findOne()
-  if shops then return shops.moneyFormat
+###
+# return shop /locale specific formatted price
+# also accepts a range formatted with " - "
+###
+Template.registerHelper "formatPrice", (price) ->
+  try
+    prices = price.split(' - ')
+    for actualPrice in prices
+      formattedPrice = numeral(actualPrice).format(ReactionCore.locale.currency.format)
+      price = price.replace(actualPrice, formattedPrice)
+  catch
+    price = numeral(price).format(ReactionCore.locale.currency.format)
+
+  return price
+

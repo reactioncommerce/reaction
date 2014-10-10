@@ -16,7 +16,6 @@ ReactionCore.Subscriptions.ReactionSessions = Meteor.subscribe "ReactionSessions
 ###
 ReactionCore.Subscriptions.Packages = Meteor.subscribe "Packages"
 ReactionCore.Subscriptions.ReactionConfig = Meteor.subscribe "ReactionConfig"
-ReactionCore.Subscriptions.ConfigData = Meteor.subscribe "ConfigData"
 ReactionCore.Subscriptions.UserConfig = Meteor.subscribe "UserConfig", Meteor.userId()
 ReactionCore.Subscriptions.orders = Meteor.subscribe "orders"
 ReactionCore.Subscriptions.customers = Meteor.subscribe "customers"

@@ -18,7 +18,7 @@
             <div>{{{description}}}</div>
           </td>
           <td>
-            <div><h3><span class="currency-symbol">{{currencySymbol}}</span>{{formatPrice variants.[0].price}}</h3></div>
+            <div><h3>{{formatPrice variants.[0].price}}</h3></div>
             {{#if cart.showItemLowInventoryWarning variants.[0]}}
             <div class="badge badge-low-inv-warning">{{variants.[0].inventoryQuantity}} Left!</div>
             {{/if}}

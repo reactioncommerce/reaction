@@ -17,7 +17,7 @@
           {{/unless}}
         {{/if}}
         <span class="variant-title">{{title}}</span>
-        <span class="variant-price">{{currencySymbol}}{{displayPrice}}</span>
+        <span class="variant-price">{{formatPrice displayPrice}}</span>
       </div>
 
       {{#if userHasRole "admin"}}

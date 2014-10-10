@@ -1,20 +1,13 @@
 ###
 # Reaction Handlebars helpers
 ###
-###
-# general helper for formatting price
-# returns number float currency format
-###
-UI.registerHelper "formatPrice", (price) ->
-  return Number(price).toFixed(2)
-
-UI.registerHelper "pathForSEO", (path, params) ->
+Template.registerHelper "pathForSEO", (path, params) ->
   if this[params]
     return "/"+ path + "/" + this[params]
   else
     return Router.path path,this
 
-UI.registerHelper "displayName", () ->
+Template.registerHelper "displayName", () ->
   user = Meteor.user()
   return ""  unless user
   return user.profile.name  if user.profile and user.profile.name
@@ -22,7 +15,7 @@ UI.registerHelper "displayName", () ->
   return user.emails[0].address  if user.emails and user.emails[0] and user.emails[0].address
   ""
 
-UI.registerHelper "socialImage", () ->
+Template.registerHelper "socialImage", () ->
   if Meteor.user().profile?.picture
     return Meteor.user().profile?.picture
   else
@@ -30,30 +23,30 @@ UI.registerHelper "socialImage", () ->
 #
 # decamelSpace
 #
-UI.registerHelper "camelToSpace", (str) ->
+Template.registerHelper "camelToSpace", (str) ->
   downCamel = str.replace(/\W+/g, "-").replace /([a-z\d])([A-Z])/g, "$1 $2"
   return downCamel.toLowerCase()
 
 #
 # lowerCase string
 #
-UI.registerHelper "toLowerCase", (str) ->
+Template.registerHelper "toLowerCase", (str) ->
   return str.toLowerCase()
 
 ###
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system
 ###
-UI.registerHelper "hasShopPermission", (permissions) ->
+Template.registerHelper "hasShopPermission", (permissions) ->
   return ReactionCore.hasPermission(permissions)
 
-UI.registerHelper "hasOwnerAccess", ->
+Template.registerHelper "hasOwnerAccess", ->
   return ReactionCore.hasOwnerAccess()
 
-UI.registerHelper "hasDashboardAccess", ->
+Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
-UI.registerHelper "activeRouteClass", ->
+Template.registerHelper "activeRouteClass", ->
   args = Array::slice.call(arguments, 0)
   args.pop()
   active = _.any(args, (name) ->
@@ -61,14 +54,14 @@ UI.registerHelper "activeRouteClass", ->
   )
   return active and "active"
 
-UI.registerHelper "siteName", ->
+Template.registerHelper "siteName", ->
   return Shops.findOne()?.name
 
 ###
 # method to return cart calculated values
 # TODO: sessions used by payment methods for cart checkout, probably should refactor to calculate in actual checkout
 ###
-UI.registerHelper "cart", () ->
+Template.registerHelper "cart", () ->
   cartCount: ->
     count = getCartCount()
     Session.set "cartCount", count
@@ -129,7 +122,7 @@ UI.registerHelper "cart", () ->
 # conditional template helpers
 # example:  {{#if condition status "eq" ../value}}
 ###
-UI.registerHelper "condition", (v1, operator, v2, options) ->
+Template.registerHelper "condition", (v1, operator, v2, options) ->
   switch operator
     when "==", "eq"
       v1 is v2
@@ -154,7 +147,7 @@ UI.registerHelper "condition", (v1, operator, v2, options) ->
     else
       throw "Undefined operator \"" + operator + "\""
 
-UI.registerHelper "key_value", (context, options) ->
+Template.registerHelper "key_value", (context, options) ->
   result = []
   _.each context, (value, key, list) ->
     result.push
@@ -166,7 +159,7 @@ UI.registerHelper "key_value", (context, options) ->
 # Convert new line (\n\r) to <br>
 # from http://phpjs.org/functions/nl2br:480
 ###
-UI.registerHelper "nl2br", (text) ->
+Template.registerHelper "nl2br", (text) ->
   #        text = Handlebars.Utils.escapeExpression(text);
   nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + "<br>" + "$2")
   new Spacebars.SafeString(nl2br)
@@ -177,7 +170,7 @@ UI.registerHelper "nl2br", (text) ->
 # moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
 # usage: {{dateFormat creation_date format="MMMM YYYY"}}
 ###
-UI.registerHelper "dateFormat", (context, block) ->
+Template.registerHelper "dateFormat", (context, block) ->
   if window.moment
     f = block.hash.format or "MMM DD, YYYY hh:mm:ss A"
     return moment(context).format(f) #had to remove Date(context)
@@ -185,14 +178,14 @@ UI.registerHelper "dateFormat", (context, block) ->
     return context #  moment plugin not available. return data as is.
   return
 
-UI.registerHelper "uc", (str) ->
+Template.registerHelper "uc", (str) ->
   encodeURIComponent str
 
 ###
 # general helper for plurization of strings
 # returns string with 's' concatenated if n = 1
 ###
-UI.registerHelper "pluralize", (n, thing) ->
+Template.registerHelper "pluralize", (n, thing) ->
   # fairly stupid pluralizer
   if n is 1
     "1 " + thing
@@ -204,7 +197,7 @@ UI.registerHelper "pluralize", (n, thing) ->
 # todo: needs additional validation all use cases
 # returns first word in profile name
 ###
-UI.registerHelper "fname", ->
+Template.registerHelper "fname", ->
   if Meteor.user()
     name = Meteor.user().profile.name.split(" ")
     fname = name[0]
@@ -214,11 +207,11 @@ UI.registerHelper "fname", ->
 # general helper for determine if user has a store
 # returns boolean
 ###
-UI.registerHelper "userHasProfile", ->
+Template.registerHelper "userHasProfile", ->
   user = Meteor.user()
   return user and !!user.profile.store
 
-UI.registerHelper "userHasRole", (role) ->
+Template.registerHelper "userHasRole", (role) ->
   user = Meteor.user()
   return user and user.roles.indexOf(role) isnt -1  if user and user.roles
 
@@ -229,7 +222,7 @@ UI.registerHelper "userHasRole", (role) ->
 ###
 
 #Determine if current link should be active
-UI.registerHelper "active", (path) ->
+Template.registerHelper "active", (path) ->
   # Get the current path for URL
   current = Router.current()
   routeName = current and current.route.name
@@ -243,7 +236,7 @@ UI.registerHelper "active", (path) ->
 # returns string
 # handlebars: {{navLink 'projectsList' 'icon-edit'}}
 ###
-UI.registerHelper "navLink", (page, icon) ->
+Template.registerHelper "navLink", (page, icon) ->
   ret = "<li "
   ret += "class='active'"  if Meteor.Router.page() is page
   ret += "><a href='" + Meteor.Router.namedRoutes[page].path + "'><i class='" + icon + " icon-fixed-width'></i></a></li>"
@@ -255,7 +248,7 @@ UI.registerHelper "navLink", (page, icon) ->
 # with the info provided by the package itself through
 # registration.
 ###
-UI.registerHelper "allPackages", ->
+Template.registerHelper "allPackages", ->
   return ReactionCore.Collections.Packages.find({}, {sort: {priority: -1}}).map (pkg) ->
     pkgInfo = pkg.info()
     _.extend pkg, pkgInfo if pkgInfo
@@ -264,6 +257,6 @@ UI.registerHelper "allPackages", ->
 ###
 # For debugging: {{console.log this}}
 ###
-UI.registerHelper "console",
+Template.registerHelper "console",
   log: (a) ->
     console.log a

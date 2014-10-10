@@ -170,7 +170,6 @@ currentProduct = @currentProduct
 # if no child options, return main price value
 ###
 @getVariantPriceRange = (variantId, productId) ->
-
   unless productId
     productId = selectedProductId()
   product = Products.findOne(productId)
@@ -218,4 +217,4 @@ currentProduct = @currentProduct
   if priceMin is priceMax
     return priceMin
   return priceMin + ' - ' + priceMax
-  
+

@@ -297,6 +297,10 @@
       "2.8.1"
     ],
     [
+      "mrt:numeral",
+      "0.0.1"
+    ],
+    [
       "mrt:underscore-string-latest",
       "2.3.3"
     ],
