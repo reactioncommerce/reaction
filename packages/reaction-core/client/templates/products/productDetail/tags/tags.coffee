@@ -31,7 +31,7 @@ Template.productTagInputForm.events
           )
         response(datums)
     )
-    Deps.flush()
+    Tracker.flush()
 
   'blur.autocomplete, change .tags-input-select': (event,template) ->
     val = $(event.currentTarget).val()
@@ -40,11 +40,11 @@ Template.productTagInputForm.events
       Meteor.call "updateProductTags", selectedProductId(), val, @._id, currentTag, (error, result) ->
         if error
           console.log "Error updating header tags", error
-        Deps.flush()
+        Tracker.flush()
         template.$('.tags-submit-new').val('').focus();
 
   'mousedown .tag-input-group-handle': (event,template) ->
-    Deps.flush()
+    Tracker.flush()
     template.$(".tag-edit-list").sortable("refresh")
 
 Template.productTagInputForm.rendered = ->

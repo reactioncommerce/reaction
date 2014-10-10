@@ -105,7 +105,7 @@ String::toCamelCase = ->
     @ensureDeps key
     @deps[key].changed()
   ensureDeps: (key) ->
-    @deps[key] = new Deps.Dependency unless @deps[key]
+    @deps[key] = new Tracker.Dependency unless @deps[key]
 
 currentProduct = @currentProduct
 

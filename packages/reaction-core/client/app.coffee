@@ -9,7 +9,7 @@ _.extend ReactionCore,
   init: ->
     self = @
     # We want this to auto-update whenever shops or packages change, login/logout, etc.
-    Deps.autorun ->
+    Tracker.autorun ->
       domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
       Meteor.subscribe
       shop = Shops.findOne domains: domain

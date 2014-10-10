@@ -29,7 +29,7 @@ ReactionCore.Subscriptions.cart = Meteor.subscribe "cart", Session.get "sessionI
 #  Autorun dependencies
 #  ensure user cart is created, and address located
 ###
-Deps.autorun ->
+Tracker.autorun ->
   unless (Session.get('address') or Meteor.user()?.profile.addressBook)
     #Setting Default because we get here before location calc
     address = {

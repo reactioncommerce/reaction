@@ -71,7 +71,7 @@ Meteor.startup ->
     ReactionCore.locale.language = Session.get "language"
     return ReactionCore
 
-Deps.autorun () ->
+Tracker.autorun () ->
   sessionLanguage = Session.get "language"
   Meteor.subscribe "Translations", sessionLanguage, () ->
     resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()

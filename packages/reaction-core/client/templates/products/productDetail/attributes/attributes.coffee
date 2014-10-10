@@ -12,11 +12,11 @@ Template.metaComponent.events
       productId = selectedProductId()
       Meteor.call "updateMetaFields", productId, updateMeta, @
       $(event.currentTarget).animate({backgroundColor: "#e2f2e2" }).animate({backgroundColor: "#fff"})
-      Deps.flush()
+      Tracker.flush()
     else
       if (updateMeta.key and updateMeta.value) or updateMeta.value
         Meteor.call "updateMetaFields", @._id, updateMeta
-        Deps.flush()
+        Tracker.flush()
         $(event.currentTarget).parent().children('.metafield-key-input').val('').focus()
         $(event.currentTarget).parent().children('.metafield-value-input').val('')
       else
