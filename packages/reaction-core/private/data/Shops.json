@@ -43,7 +43,9 @@
       },
       "EUR": {
         "format" : "%v %s",
-        "symbol": "€"
+        "symbol": "€",
+        "decimal": ",",
+        "thousand": "."
       }
     },
     "currency" : "USD",

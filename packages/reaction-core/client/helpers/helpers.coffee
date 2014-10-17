@@ -166,6 +166,15 @@ currentProduct = @currentProduct
   return id
 
 ###
+# return number of child variants for a parent
+###
+@checkChildVariants = (parentVariantId) ->
+  product = selectedProduct()
+  return unless product
+  childVariants = (variant for variant in product.variants when variant?.parentId is parentVariantId)
+  return childVariants.length
+
+###
 # get price range of a variant if it has child options.
 # if no child options, return main price value
 ###
