@@ -15,7 +15,7 @@ Meteor.methods
       countryCode = geo.geocode(ip)[0].countryCode.toUpperCase()
 
       # local development always returns 'RD'
-      if !countryCode or countryCode is 'RD' then countryCode = 'AD'
+      if !countryCode or countryCode is 'RD' then countryCode = 'US'
 
       shop = ReactionCore.Collections.Shops.findOne '_id': ReactionCore.getShopId()
 
