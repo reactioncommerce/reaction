@@ -14,7 +14,8 @@ Meteor.methods
       geo = new GeoCoder(geocoderProvider: "freegeoip")
       countryCode = geo.geocode(ip)[0].countryCode.toUpperCase()
 
-      if !countryCode or countryCode is 'RD' then countryCode = 'US'
+      # local development always returns 'RD'
+      if !countryCode or countryCode is 'RD' then countryCode = 'AD'
 
       shop = ReactionCore.Collections.Shops.findOne '_id': ReactionCore.getShopId()
 
@@ -26,6 +27,11 @@ Meteor.methods
       for currency in localeCurrency
         if shop.currencies[currency]
           result.currency = shop.currencies[currency]
+          if shop.currency isnt currency
+            #TODO Add some alternate configurable services like Open Exchange Rate
+            rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency
+            exchangeRate = HTTP.get rateUrl
+            result.currency.exchangeRate = exchangeRate.data
           return result #returning first match.
 
       #TODO Select default language from shop.

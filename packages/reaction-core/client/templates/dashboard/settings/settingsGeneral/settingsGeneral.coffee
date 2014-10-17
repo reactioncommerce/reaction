@@ -4,14 +4,32 @@ Template.settingsGeneral.helpers
       return address[0]
 
   countryOptions: ->
-    ReactionCore.Collections.Shops.findOne().countries
+    countries = ReactionCore.Collections.Shops.findOne().locales.countries
+    countryOptions = []
+    for locale, country of countries
+      countryOptions.push {label: country.name, value: locale}
+    return countryOptions
+
+  currencyOptions: ->
+    currencies = ReactionCore.Collections.Shops.findOne().currencies
+    currencyOptions = []
+    for currency, structure of currencies
+      currencyOptions.push {label: currency + "  |  " + structure.symbol + "  |  " + structure.format, value: currency}
+    return currencyOptions
 
   timezoneOptions: ->
     zoneData = ReactionCore.Collections.Shops.findOne().timezones
-    zonelist = []
+    timezoneOptions = []
     for zone in zoneData
-      zonelist.push {label:zone,value:zone}
-    zonelist
+      timezoneOptions.push {label: zone, value: zone}
+    return timezoneOptions
+
+  uomOptions: ->
+    unitsOfMeasure = ReactionCore.Collections.Shops.findOne().unitsOfMeasure
+    uomOptions = []
+    for measure, uom of unitsOfMeasure
+      uomOptions.push {label: uom.name, value: measure}
+    return uomOptions
 
   portOptions: [
     {label: 25, value: 25}
@@ -52,12 +70,12 @@ AutoForm.hooks shopEditEmailForm:
   onError: (operation, error, template) ->
     Alerts.add "Shop SMTP settings update failed. " + error, "danger"
 
-AutoForm.hooks shopEditSettingsForm:
-  onSuccess: (operation, result, template) ->
-    Alerts.add "Shop settings saved.", "success"
+# AutoForm.hooks shopEditSettingsForm:
+#   onSuccess: (operation, result, template) ->
+#     Alerts.add "Shop settings saved.", "success"
 
-  onError: (operation, error, template) ->
-    Alerts.add "Shop setting update failed. " + error, "danger"
+#   onError: (operation, error, template) ->
+#     Alerts.add "Shop setting update failed. " + error, "danger"
 
 
 

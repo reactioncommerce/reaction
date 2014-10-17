@@ -16,11 +16,26 @@
         "countyTaxes":true
       }
     ],
-    "timezone":"(GMT-08:00) Pacific Time (US &amp; Canada)",
+    "timezone":"(GMT-08:00) Pacific Time (US & Canada)",
     "updatedAt":{
       "$date":"2014-05-31T19:44:11.446-0700"
     },
     "useCustomEmailSettings":false,
+    "baseUOM": "OZ",
+    "unitsOfMeasure": {
+      "OZ": {
+        "name": "Ounces"
+      },
+      "LB": {
+        "name": "Pounds"
+      },
+      "GR": {
+        "name": "Grams"
+      },
+      "KG": {
+        "name": "Kilograms"
+      }
+    },
     "currencies": {
       "USD": {
         "format": "%s%v",
@@ -30,6 +45,11 @@
         "format" : "%v %s",
         "symbol": "€"
       }
+    },
+    "currency" : "USD",
+    "currencyEngine": {
+      "provider": "OXR",
+      "apiKey": ""
     },
     "locales":{
       "continents":{
@@ -2376,17 +2396,17 @@
       "(GMT-04:00) Santiago",
       "(GMT-04:30) Caracas",
       "(GMT-05:00) Bogota, Lima, Quito",
-      "(GMT-05:00) Eastern Time (US &amp; Canada)",
+      "(GMT-05:00) Eastern Time (US & Canada)",
       "(GMT-05:00) Indiana (East)",
       "(GMT-06:00) Central America",
-      "(GMT-06:00) Central Time (US &amp; Canada)",
+      "(GMT-06:00) Central Time (US & Canada)",
       "(GMT-06:00) Guadalajara, Mexico City, Monterrey",
       "(GMT-06:00) Saskatchewan",
       "(GMT-07:00) Arizona",
       "(GMT-07:00) Chihuahua, La Paz, Mazatlan",
-      "(GMT-07:00) Mountain Time (US &amp; Canada)",
+      "(GMT-07:00) Mountain Time (US & Canada)",
       "(GMT-08:00) Baja California",
-      "(GMT-08:00) Pacific Time (US &amp; Canada)",
+      "(GMT-08:00) Pacific Time (US & Canada)",
       "(GMT-09:00) Alaska",
       "(GMT-10:00) Hawaii",
       "(GMT-11:00) Coordinated Universal Time-11",

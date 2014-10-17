@@ -118,6 +118,7 @@ Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
 Template.registerHelper "currencySymbol", () ->
   return ReactionCore.locale.currency.symbol
 
+
 ###
 # return shop /locale specific formatted price
 # also accepts a range formatted with " - "
@@ -126,10 +127,14 @@ Template.registerHelper "formatPrice", (price) ->
   try
     prices = price.split(' - ')
     for actualPrice in prices
+      originalPrice = actualPrice
+      #TODO Add user services for conversions
+      if ReactionCore.locale?.currency.exchangeRate then actualPrice = actualPrice * ReactionCore.locale.currency.exchangeRate.Rate
       formattedPrice = accounting.formatMoney actualPrice, ReactionCore.locale.currency
-      price = price.replace(actualPrice, formattedPrice)
+      price = price.replace(originalPrice, formattedPrice)
   catch
-    price = accounting.formatMoney price, ReactionCore.locale.currency
+    if ReactionCore.locale?.currency.exchangeRate then price = price * ReactionCore.locale.currency.exchangeRate.Rate
+    price = accounting.formatMoney price, ReactionCore.locale?.currency
 
   return price
 

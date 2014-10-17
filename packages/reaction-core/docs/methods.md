@@ -18,7 +18,7 @@ Example use in Template:
       </div>
       {{else}}
       <div class="center-cropped" style="background-image: url('../../resources/placeholder.gif');">
-        <img src="../../resources/placeholder.gif" class="product-grid-item-images img-responsive">
+        <img src= "/resources/placeholder.gif" class="product-grid-item-images img-responsive">
       </div>
       {{/with}}
 
