@@ -2,10 +2,6 @@
 ReactionCore.registerPackage = (packageInfo) ->
   ReactionCore.Packages[packageInfo.name] = packageInfo
 
-# for backwards-compatibility; remove once no reaction packages depend on it
-Meteor.app.packages = {}
-Meteor.app.packages.register = ReactionCore.registerPackage
-
 # Register core packages
 ReactionCore.registerPackage
   name: 'reaction-commerce'

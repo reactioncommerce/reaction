@@ -11,12 +11,7 @@ Template.variantForm.helpers
     return (variant for variant in product.variants when variant?.parentId is @_id)
 
   hasChildVariants: () ->
-    product = selectedProduct()
-    return unless product
-    childVariants = (variant for variant in product.variants when variant?.parentId is @_id)
-    if childVariants.length > 0
-      for childVariant in childVariants
-        return true
+    if checkChildVariants(@_id) > 0 then return true
 
   nowDate: () ->
     return new Date()

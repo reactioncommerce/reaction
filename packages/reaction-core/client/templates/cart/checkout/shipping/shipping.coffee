@@ -1,15 +1,15 @@
 Template.checkoutShipping.helpers
   rates: () ->
     rates = []
-    config = ReactionCore.Collections.ConfigData.findOne().shipping
-    for carrier,value in config
+    shop = Shops.findOne()
+    for carrier,value in shop?.shipping
       for method,index in carrier.methods
         if method?.rate?
           method.rate = "Free" if method.rate is '0'
           rates.push carrier: value, method: index, label:method.label, value:method.rate
           CartWorkflow.shipmentMethod()
         #else #fetch rates
-    rates
+    return rates
 
    isSelected: (carrier,method)->
     currentShipping = Cart.findOne()?.shipping?.shipmentMethod

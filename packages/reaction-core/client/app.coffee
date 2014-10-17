@@ -9,13 +9,14 @@ _.extend ReactionCore,
   init: ->
     self = @
     # We want this to auto-update whenever shops or packages change, login/logout, etc.
-    Deps.autorun ->
+    Tracker.autorun ->
       domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
+      Meteor.subscribe
       shop = Shops.findOne domains: domain
-      
+
       if shop
         self.shopId = shop._id
-
+        #permissions and packages
         permissions = []
         usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
           return p.info()
@@ -43,7 +44,6 @@ _.extend ReactionCore,
           self.isMember = false
           self.isAdmin = false
           self.userPermissions = []
-
       # no shop found
       else
         self.shopId = null
@@ -64,6 +64,7 @@ _.extend ReactionCore,
     return Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
   getShopId: ->
     return @shopId
+
 
 Meteor.startup ->
   ReactionCore.init()

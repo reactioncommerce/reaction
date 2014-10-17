@@ -105,7 +105,7 @@ String::toCamelCase = ->
     @ensureDeps key
     @deps[key].changed()
   ensureDeps: (key) ->
-    @deps[key] = new Deps.Dependency unless @deps[key]
+    @deps[key] = new Tracker.Dependency unless @deps[key]
 
 currentProduct = @currentProduct
 
@@ -166,11 +166,19 @@ currentProduct = @currentProduct
   return id
 
 ###
+# return number of child variants for a parent
+###
+@checkChildVariants = (parentVariantId) ->
+  product = selectedProduct()
+  return unless product
+  childVariants = (variant for variant in product.variants when variant?.parentId is parentVariantId)
+  return childVariants.length
+
+###
 # get price range of a variant if it has child options.
 # if no child options, return main price value
 ###
 @getVariantPriceRange = (variantId, productId) ->
-
   unless productId
     productId = selectedProductId()
   product = Products.findOne(productId)
@@ -218,4 +226,4 @@ currentProduct = @currentProduct
   if priceMin is priceMax
     return priceMin
   return priceMin + ' - ' + priceMax
-  
+

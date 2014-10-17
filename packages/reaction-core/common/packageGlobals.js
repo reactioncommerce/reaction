@@ -13,6 +13,3 @@ if (Meteor.isClient) {
 // convenience
 Alerts = ReactionCore.Alerts;
 Schemas = ReactionCore.Schemas;
-
-// for backwards-compatibility; remove these once no reaction packages depend on them
-Meteor.app = ReactionCore;

@@ -10,14 +10,13 @@ Template.productDetail.helpers
       return Template.productDetailTags
 
   actualPrice: () ->
-
     current = selectedVariant()
     # determine if selected variant is purchasable
     product = selectedProduct()
     if product and current
       childVariants = (variant for variant in product.variants when variant?.parentId is current._id)
       purchasable = if childVariants.length > 0 then false else true
-    # if a purchasable variant or option is selected, show its price      
+    # if a purchasable variant or option is selected, show its price
     if purchasable
       return current.price
     # otherwise show price range of full variant set

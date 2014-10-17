@@ -65,8 +65,13 @@ Meteor.startup ->
     template.rendered = ->
       try @.$("[data-i18n]").i18n()
       originalRender and originalRender.apply(this, arguments)
+  # set locale
+  Meteor.call 'getLocale', (error,result) ->
+    ReactionCore.locale = result
+    ReactionCore.locale.language = Session.get "language"
+    return ReactionCore
 
-Deps.autorun () ->
+Tracker.autorun () ->
   sessionLanguage = Session.get "language"
   Meteor.subscribe "Translations", sessionLanguage, () ->
     resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()
@@ -91,8 +96,6 @@ Deps.autorun () ->
         #re-init i18n
         $("[data-i18n]").i18n()
 
-
-
 ###
 # i18n helper
 # see: http://i18next.com/
@@ -100,21 +103,38 @@ Deps.autorun () ->
 # optionally you can pass a string like "Invalid email", and we'll look for "invalidEmail"
 # in the translations data.
 #
-# ex: {{i18n "accountsUI.error" "Invalid Email"}}
+# ex: {{i18n "accountsTemplate.error" "Invalid Email"}}
 ###
-UI.registerHelper "i18n", (i18n_key, camelCaseString) ->
+Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
   unless i18n_key then Meteor.throw("i18n key string required to translate")
   if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + camelCaseString.toCamelCase()
   result = new Handlebars.SafeString(i18n.t(i18n_key))
   return result
 
 
-#default return $ symbol
-UI.registerHelper "currency", () ->
-  shops = Shops.findOne()
-  if shops then return shops.currency
+###
+#  return shop /locale specific currency format (ie: $)
+###
+Template.registerHelper "currencySymbol", () ->
+  return ReactionCore.locale.currency.symbol
 
-# return shop specific currency format
-UI.registerHelper "currencySymbol", () ->
-  shops = Shops.findOne()
-  if shops then return shops.moneyFormat
+
+###
+# return shop /locale specific formatted price
+# also accepts a range formatted with " - "
+###
+Template.registerHelper "formatPrice", (price) ->
+  try
+    prices = price.split(' - ')
+    for actualPrice in prices
+      originalPrice = actualPrice
+      #TODO Add user services for conversions
+      if ReactionCore.locale?.currency.exchangeRate then actualPrice = actualPrice * ReactionCore.locale.currency.exchangeRate.Rate
+      formattedPrice = accounting.formatMoney actualPrice, ReactionCore.locale.currency
+      price = price.replace(originalPrice, formattedPrice)
+  catch
+    if ReactionCore.locale?.currency.exchangeRate then price = price * ReactionCore.locale.currency.exchangeRate.Rate
+    price = accounting.formatMoney price, ReactionCore.locale?.currency
+
+  return price
+

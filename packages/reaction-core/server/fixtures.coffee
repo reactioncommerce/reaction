@@ -5,7 +5,7 @@
 # can be imported using loadData(collection)
 # individual packages have their own fixtures
 # *****************************************************
-colors = Npm.require('colors')
+colors = Npm.require 'colors'
 
 getDomain = (url) ->
   unless url then url = process.env.ROOT_URL
@@ -45,7 +45,6 @@ loadFixtures = ->
   loadData ReactionCore.Collections.Products unless Products.find().count()
   loadData ReactionCore.Collections.Shops unless Shops.find().count()
   loadData ReactionCore.Collections.Tags unless Tags.find().count()
-  loadData ReactionCore.Collections.ConfigData unless ReactionCore.Collections.ConfigData.find().count()
   loadI18n ReactionCore.Collections.Translations unless ReactionCore.Collections.Translations.find().count()
   # loadImageData "Images" unless Images.find().count()
 
@@ -71,6 +70,7 @@ loadFixtures = ->
 
   # create default admin user account
   createDefaultAdminUser() unless Meteor.users.find().count()
+  console.log("=> Reaction Commerce ready at: ".bold.yellow + " " + Meteor.absoluteUrl());
 
 ###
 # Three methods to create users default (empty db) admin user
@@ -88,13 +88,13 @@ createDefaultAdminUser = ->
     url = process.env.MONGO_URL #pull from default db connect string
     options.username = "Administrator"
     unless options.password then options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
-    console.log ("IMPORTANT! DEFAULT USER INFO (ENV) --->".red + " EMAIL/LOGIN: " + options.email + "  PASSWORD: " + options.password)
+    console.log ("\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
   else
     # random options if nothing has been set
     options.username = "Administrator"
     options.password = Random.secret(8)
     options.email = Random.id(8).toLowerCase() + "@" + domain
-    console.log ("IMPORTANT! DEFAULT USER INFO (RANDOM) --->".red + " EMAIL/LOGIN: " + options.email + "  PASSWORD: " + options.password)
+    console.log ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
 
   accountId = Accounts.createUser options
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']

@@ -16,31 +16,30 @@ Npm.depends({
 Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
-    api.versionsFrom('METEOR@0.9.0');
-    // 0.9.0+
+    api.versionsFrom('METEOR@0.9.3');
+    // 0.9.3+
     //core meteor packages
-    api.use("standard-app-packages");
+    api.use("meteor-platform");
     api.use("accounts-base");
     api.use("accounts-password");
     api.use("accounts-ui-unstyled");
     api.use("less");
-    api.use("amplify");
+    api.use("http");
     api.use("coffeescript");
     api.use("underscore");
-    api.use("d3");
-    // ui/blaze needed (?)
-    api.use("ui@1.0.0",'client');
-    api.use('blaze@2.0.0', 'client');
-    // api.use('blaze', 'client');
+    api.use('blaze')
+
+    api.use("d3@1.0.0");
+    api.use("amplify@1.0.0");
 
     //community packages
     api.use('mrt:underscore-string-latest@2.3.3');
-    api.use("aldeed:geocoder@0.3.1");
-    api.use("aldeed:collection2@2.1.0");
+    api.use("aldeed:geocoder@0.3.2");
+    api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.0.3");
-    api.use("aldeed:autoform@3.1.0");
+    api.use("aldeed:autoform@3.2.0");
     api.use("aldeed:template-extension@2.0.0","client");
-    api.use("iron:router@0.9.3");
+    api.use("iron:router@0.9.4");
 
     api.use("dburles:collection-helpers@1.0.0");
     api.use("matb33:collection-hooks@0.7.6");
@@ -137,8 +136,11 @@ Package.onUse(function (api, where) {
     "lib/jquery-serialize/jquery.serialize-hash.coffee",
     "lib/jquery-cookie/jquery.cookie.js",
 
-    "client/app.coffee",
+    "lib/openexchangerates/money.js",
+    "lib/openexchangerates/accounting.js",
+
     "client/subscriptions.coffee",
+    "client/app.coffee",
     "client/routing.coffee",
 
     "client/helpers/helpers.coffee",
@@ -409,8 +411,6 @@ Package.onUse(function (api, where) {
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
   api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
-  api.addFiles('private/data/SystemConfig.json', 'server', {isAsset: true});
-  api.addFiles('private/data/ConfigData.json', 'server', {isAsset: true});
   api.addFiles('private/data/roles.json', 'server', {isAsset: true});
   api.addFiles('private/data/users.json', 'server', {isAsset: true});
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});

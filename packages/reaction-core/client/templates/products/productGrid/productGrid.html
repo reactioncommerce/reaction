@@ -16,7 +16,7 @@
       {{#with media}}
         <img src="{{url store='large'}}" class="img-responsive" alt="{{title}}">
       {{else}}
-        <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
+        <img src= "/resources/placeholder.gif" class="img-responsive" alt="">
       {{/with}}
     </a>
 
@@ -37,9 +37,9 @@
   {{else}}
     {{#if isLowQuantity}}
       <div class="badge badge-low-inv-warning" title="">Limited Supply</div>
-    {{/if}}  
+    {{/if}}
   {{/if}}
-   
+
 </template>
 
 
@@ -47,7 +47,7 @@
 <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
   <div class="overlay">
     <div class="overlay-title">{{title}}</div>
-    <div class="currency-symbol">{{currencySymbol}}{{displayPrice}}</div>
+    <div class="currency-symbol">{{formatPrice displayPrice}}</div>
   </div>
 </a>
 </template>

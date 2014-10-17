@@ -1,7 +1,7 @@
 ###
 # Enable reactivity on workflow
 ###
-Deps.autorun ->
+Tracker.autorun ->
   state = Session.get("CartWorkflow")
   if state?
     cart = Cart.findOne {}, {fields: {state: 1}, reactive: false}
@@ -103,6 +103,6 @@ CartWorkflow = StateMachine.create(
       delete Session.keys["billingUserAddressId"]
       delete Session.keys["shippingUserAddressId"]
       delete Session.keys["shipmentMethod"]
-      Deps.flush()
+      Tracker.flush()
   }
 )

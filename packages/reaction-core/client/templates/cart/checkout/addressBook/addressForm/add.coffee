@@ -4,7 +4,12 @@ Template.addressBookAdd.helpers
 
 Template.addressBookForm.helpers
   countryOptions: ->
-    ReactionCore.Collections.ConfigData.findOne().countries
+    options = []
+    shop = ReactionCore.Collections.Shops.findOne()
+    for country, locale of shop?.locales.countries
+      options.push {'label': locale.name, 'value': country}
+    return options
+
   regionOptions: ->
     #return list of regions for current country
   defaultCountry: ->

@@ -58,7 +58,7 @@ Template.productGridItems.helpers
       return false
 
 Template.gridNotice.helpers
-  
+
   isLowQuantity: () ->
     # product is low quantity if any parent variant is below its set threshold
     variants = (variant for variant in this.variants when not variant.parentId)
@@ -148,5 +148,5 @@ Template.productGridItems.rendered = () ->
               weight: 0
               updatedAt: new Date()
             Meteor.call "updateProductPosition", productId, position
-          Deps.flush()
+          Tracker.flush()
 
