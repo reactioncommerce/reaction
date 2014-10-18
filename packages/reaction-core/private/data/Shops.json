@@ -111,7 +111,7 @@
         },
         "AL":{
           "name":"Albania",
-          "native":"Shqip&euml;ria",
+          "native":"Shqipëria",
           "phone":"355",
           "continent":"EU",
           "capital":"Tirana",
@@ -165,7 +165,7 @@
         },
         "AT":{
           "name":"Austria",
-          "native":"&Ouml;sterreich",
+          "native":"Österreich",
           "phone":"43",
           "continent":"EU",
           "capital":"Vienna",
@@ -191,8 +191,8 @@
           "languages":"nl,pa"
         },
         "AX":{
-          "name":"&Aring;land",
-          "native":"&Aring;land",
+          "name":"Åland",
+          "native":"Åland",
           "phone":"358",
           "continent":"EU",
           "capital":"Mariehamn",
@@ -237,7 +237,7 @@
         },
         "BE":{
           "name":"Belgium",
-          "native":"Belgi&euml;",
+          "native":"België",
           "phone":"32",
           "continent":"EU",
           "capital":"Brussels",
@@ -282,7 +282,7 @@
         },
         "BJ":{
           "name":"Benin",
-          "native":"B&eacute;nin",
+          "native":"Bénin",
           "phone":"229",
           "continent":"AF",
           "capital":"Porto-Novo",
@@ -290,8 +290,8 @@
           "languages":"fr"
         },
         "BL":{
-          "name":"Saint Barth&eacute;lemy",
-          "native":"Saint-Barth&eacute;lemy",
+          "name":"Saint Barthélemy",
+          "native":"Saint-Barthélemy",
           "phone":"590",
           "continent":"NA",
           "capital":"Gustavia",
@@ -339,7 +339,7 @@
           "native":"Brasil",
           "phone":"55",
           "continent":"SA",
-          "capital":"Bras&iacute;lia",
+          "capital":"Brasília",
           "currency":"BRL",
           "languages":"pt"
         },
@@ -363,7 +363,7 @@
         },
         "BV":{
           "name":"Bouvet Island",
-          "native":"Bouvet&oslash;ya",
+          "native":"Bouvetøya",
           "phone":"",
           "continent":"AN",
           "capital":"",
@@ -417,7 +417,7 @@
         },
         "CD":{
           "name":"Democratic Republic of the Congo",
-          "native":"R&eacute;publique d&eacute;mocratique du Congo",
+          "native":"République démocratique du Congo",
           "phone":"243",
           "continent":"AF",
           "capital":"Kinshasa",
@@ -426,7 +426,7 @@
         },
         "CF":{
           "name":"Central African Republic",
-          "native":"K&ouml;d&ouml;r&ouml;s&ecirc;se t&icirc; B&ecirc;afr&icirc;ka",
+          "native":"Ködörösêse tî Bêafrîka",
           "phone":"236",
           "continent":"AF",
           "capital":"Bangui",
@@ -435,7 +435,7 @@
         },
         "CG":{
           "name":"Republic of the Congo",
-          "native":"R&eacute;publique du Congo",
+          "native":"République du Congo",
           "phone":"242",
           "continent":"AF",
           "capital":"Brazzaville",
@@ -453,7 +453,7 @@
         },
         "CI":{
           "name":"Ivory Coast",
-          "native":"C&ocirc;te d'Ivoire",
+          "native":"Côte d'Ivoire",
           "phone":"225",
           "continent":"AF",
           "capital":"Yamoussoukro",
@@ -483,7 +483,7 @@
           "native":"Cameroon",
           "phone":"237",
           "continent":"AF",
-          "capital":"Yaound&eacute;",
+          "capital":"Yaoundé",
           "currency":"XAF",
           "languages":"en,fr"
         },
@@ -501,7 +501,7 @@
           "native":"Colombia",
           "phone":"57",
           "continent":"SA",
-          "capital":"Bogot&aacute;",
+          "capital":"Bogotá",
           "currency":"COP",
           "languages":"es"
         },
@@ -510,7 +510,7 @@
           "native":"Costa Rica",
           "phone":"506",
           "continent":"NA",
-          "capital":"San Jos&eacute;",
+          "capital":"San José",
           "currency":"CRC",
           "languages":"es"
         },
@@ -534,7 +534,7 @@
         },
         "CW":{
           "name":"Curacao",
-          "native":"Cura&ccedil;ao",
+          "native":"Curaçao",
           "phone":"5999",
           "continent":"NA",
           "capital":"Willemstad",
@@ -552,7 +552,7 @@
         },
         "CY":{
           "name":"Cyprus",
-          "native":"&Kappa;ύ&pi;&rho;&omicron;&sigmaf;",
+          "native":"Κύπρος",
           "phone":"357",
           "continent":"EU",
           "capital":"Nicosia",
@@ -561,7 +561,7 @@
         },
         "CZ":{
           "name":"Czechia",
-          "native":"Česk&aacute; republika",
+          "native":"Česká republika",
           "phone":"420",
           "continent":"EU",
           "capital":"Prague",
@@ -606,7 +606,7 @@
         },
         "DO":{
           "name":"Dominican Republic",
-          "native":"Rep&uacute;blica Dominicana",
+          "native":"República Dominicana",
           "phone":"1809,1829,1849",
           "continent":"NA",
           "capital":"Santo Domingo",
@@ -654,7 +654,7 @@
           "native":"الصحراء الغربية",
           "phone":"212",
           "continent":"AF",
-          "capital":"El Aai&uacute;n",
+          "capital":"El Aaiún",
           "currency":"MAD,DZD,MRO",
           "languages":"es"
         },
@@ -669,7 +669,7 @@
         },
         "ES":{
           "name":"Spain",
-          "native":"Espa&ntilde;a",
+          "native":"España",
           "phone":"34",
           "continent":"EU",
           "capital":"Madrid",
@@ -723,10 +723,10 @@
         },
         "FO":{
           "name":"Faroe Islands",
-          "native":"F&oslash;royar",
+          "native":"Føroyar",
           "phone":"298",
           "continent":"EU",
-          "capital":"T&oacute;rshavn",
+          "capital":"Tórshavn",
           "currency":"DKK",
           "languages":"fo"
         },
@@ -777,7 +777,7 @@
         },
         "GF":{
           "name":"French Guiana",
-          "native":"Guyane fran&ccedil;aise",
+          "native":"Guyane française",
           "phone":"594",
           "continent":"SA",
           "capital":"Cayenne",
@@ -831,7 +831,7 @@
         },
         "GN":{
           "name":"Guinea",
-          "native":"Guin&eacute;e",
+          "native":"Guinée",
           "phone":"224",
           "continent":"AF",
           "capital":"Conakry",
@@ -858,7 +858,7 @@
         },
         "GR":{
           "name":"Greece",
-          "native":"&Epsilon;&lambda;&lambda;ά&delta;&alpha;",
+          "native":"Ελλάδα",
           "phone":"30",
           "continent":"EU",
           "capital":"Athens",
@@ -888,13 +888,13 @@
           "native":"Guam",
           "phone":"1671",
           "continent":"OC",
-          "capital":"Hag&aring;t&ntilde;a",
+          "capital":"Hagåtña",
           "currency":"USD",
           "languages":"en,ch,es"
         },
         "GW":{
           "name":"Guinea-Bissau",
-          "native":"Guin&eacute;-Bissau",
+          "native":"Guiné-Bissau",
           "phone":"245",
           "continent":"AF",
           "capital":"Bissau",
@@ -948,7 +948,7 @@
         },
         "HT":{
           "name":"Haiti",
-          "native":"Ha&iuml;ti",
+          "native":"Haïti",
           "phone":"509",
           "continent":"NA",
           "capital":"Port-au-Prince",
@@ -957,7 +957,7 @@
         },
         "HU":{
           "name":"Hungary",
-          "native":"Magyarorsz&aacute;g",
+          "native":"Magyarország",
           "phone":"36",
           "continent":"EU",
           "capital":"Budapest",
@@ -975,7 +975,7 @@
         },
         "IE":{
           "name":"Ireland",
-          "native":"&Eacute;ire",
+          "native":"éire",
           "phone":"353",
           "continent":"EU",
           "capital":"Dublin",
@@ -1038,7 +1038,7 @@
         },
         "IS":{
           "name":"Iceland",
-          "native":"&Iacute;sland",
+          "native":"ísland",
           "phone":"354",
           "continent":"EU",
           "capital":"Reykjavik",
@@ -1110,7 +1110,7 @@
         },
         "KH":{
           "name":"Cambodia",
-          "native":"K&acirc;mpŭch&eacute;a",
+          "native":"Kâmpŭchéa",
           "phone":"855",
           "continent":"AS",
           "capital":"Phnom Penh",
@@ -1455,7 +1455,7 @@
           "native":"Maldives",
           "phone":"960",
           "continent":"AS",
-          "capital":"Mal&eacute;",
+          "capital":"Malé",
           "currency":"MVR",
           "languages":"dv"
         },
@@ -1470,7 +1470,7 @@
         },
         "MX":{
           "name":"Mexico",
-          "native":"M&eacute;xico",
+          "native":"México",
           "phone":"52",
           "continent":"NA",
           "capital":"Mexico City",
@@ -1488,7 +1488,7 @@
         },
         "MZ":{
           "name":"Mozambique",
-          "native":"Mo&ccedil;ambique",
+          "native":"Moçambique",
           "phone":"258",
           "continent":"AF",
           "capital":"Maputo",
@@ -1506,10 +1506,10 @@
         },
         "NC":{
           "name":"New Caledonia",
-          "native":"Nouvelle-Cal&eacute;donie",
+          "native":"Nouvelle-Calédonie",
           "phone":"687",
           "continent":"OC",
-          "capital":"Noum&eacute;a",
+          "capital":"Nouméa",
           "currency":"XPF",
           "languages":"fr"
         },
@@ -1614,7 +1614,7 @@
         },
         "PA":{
           "name":"Panama",
-          "native":"Panam&aacute;",
+          "native":"Panamá",
           "phone":"507",
           "continent":"NA",
           "capital":"Panama City",
@@ -1623,7 +1623,7 @@
         },
         "PE":{
           "name":"Peru",
-          "native":"Per&uacute;",
+          "native":"Perú",
           "phone":"51",
           "continent":"SA",
           "capital":"Lima",
@@ -1632,7 +1632,7 @@
         },
         "PF":{
           "name":"French Polynesia",
-          "native":"Polyn&eacute;sie fran&ccedil;aise",
+          "native":"Polynésie française",
           "phone":"689",
           "continent":"OC",
           "capital":"Papeetē",
@@ -1734,7 +1734,7 @@
           "native":"Paraguay",
           "phone":"595",
           "continent":"SA",
-          "capital":"Asunci&oacute;n",
+          "capital":"Asunción",
           "currency":"PYG",
           "languages":"es,gn"
         },
@@ -1748,8 +1748,8 @@
           "languages":"ar"
         },
         "RE":{
-          "name":"R&eacute;union",
-          "native":"La R&eacute;union",
+          "name":"Réunion",
+          "native":"La Réunion",
           "phone":"262",
           "continent":"AF",
           "capital":"Saint-Denis",
@@ -1758,7 +1758,7 @@
         },
         "RO":{
           "name":"Romania",
-          "native":"Rom&acirc;nia",
+          "native":"România",
           "phone":"40",
           "continent":"EU",
           "capital":"Bucharest",
@@ -1902,7 +1902,7 @@
         },
         "SN":{
           "name":"Senegal",
-          "native":"S&eacute;n&eacute;gal",
+          "native":"Sénégal",
           "phone":"221",
           "continent":"AF",
           "capital":"Dakar",
@@ -1937,11 +1937,11 @@
           "languages":"en"
         },
         "ST":{
-          "name":"S&atilde;o Tom&eacute; and Pr&iacute;ncipe",
-          "native":"S&atilde;o Tom&eacute; e Pr&iacute;ncipe",
+          "name":"São Tomé and Príncipe",
+          "native":"São Tomé e Príncipe",
           "phone":"239",
           "continent":"AF",
-          "capital":"S&atilde;o Tom&eacute;",
+          "capital":"São Tomé",
           "currency":"STD",
           "languages":"pt"
         },
@@ -2004,7 +2004,7 @@
           "native":"Territoire des Terres australes et antarctiques fr",
           "phone":"",
           "continent":"AN",
-          "capital":"Port-aux-Fran&ccedil;ais",
+          "capital":"Port-aux-Français",
           "currency":"EUR",
           "languages":"fr"
         },
@@ -2013,7 +2013,7 @@
           "native":"Togo",
           "phone":"228",
           "continent":"AF",
-          "capital":"Lom&eacute;",
+          "capital":"Lomé",
           "currency":"XOF",
           "languages":"fr"
         },
@@ -2055,7 +2055,7 @@
         },
         "TM":{
           "name":"Turkmenistan",
-          "native":"T&uuml;rkmenistan",
+          "native":"Türkmenistan",
           "phone":"993",
           "continent":"AS",
           "capital":"Ashgabat",
@@ -2082,7 +2082,7 @@
         },
         "TR":{
           "name":"Turkey",
-          "native":"T&uuml;rkiye",
+          "native":"Türkiye",
           "phone":"90",
           "continent":"AS",
           "capital":"Ankara",
@@ -2172,7 +2172,7 @@
         },
         "UZ":{
           "name":"Uzbekistan",
-          "native":"O&lsquo;zbekiston",
+          "native":"O‘zbekiston",
           "phone":"998",
           "continent":"AS",
           "capital":"Tashkent",
@@ -2262,7 +2262,7 @@
         },
         "XK":{
           "name":"Kosovo",
-          "native":"Republika e Kosov&euml;s",
+          "native":"Republika e Kosovës",
           "phone":"377,381,386",
           "continent":"EU",
           "capital":"Pristina",
