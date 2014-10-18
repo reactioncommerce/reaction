@@ -264,7 +264,7 @@
         },
         "BH":{
           "name":"Bahrain",
-          "native":"&rlm;البحرين",
+          "native":"البحرين",
           "phone":"973",
           "continent":"AS",
           "capital":"Manama",
@@ -642,7 +642,7 @@
         },
         "EG":{
           "name":"Egypt",
-          "native":"مصر&lrm;",
+          "native":"مصر",
           "phone":"20",
           "continent":"AF",
           "capital":"Cairo",
@@ -1281,7 +1281,7 @@
         },
         "LY":{
           "name":"Libya",
-          "native":"&rlm;ليبيا",
+          "native":"ليبيا",
           "phone":"218",
           "continent":"AF",
           "capital":"Tripoli",
