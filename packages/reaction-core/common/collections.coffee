@@ -338,7 +338,8 @@ ReactionCore.Schemas.ProductVariant = ProductVariantSchema = new SimpleSchema
     label: "Quantity"
     optional: true
     custom: ->
-      if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+      if Meteor.isClient
+        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
   price:
     label: "Price"
     type: Number
@@ -346,7 +347,8 @@ ReactionCore.Schemas.ProductVariant = ProductVariantSchema = new SimpleSchema
     min: 0
     optional: true
     custom: -> #required if no child variants (options) present
-      if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+      if Meteor.isClient
+        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
 
   requiresShipping:
     label: "Require a shipping address"
