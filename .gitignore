@@ -18,5 +18,7 @@ settings/demo.json
 npm-debug.log
 .fileStorage/
 
+*.sublime-project
+*.sublime-workspace
 
 reaction-dev.sh

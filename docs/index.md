@@ -1,6 +1,6 @@
 #Introduction
 
-Reaction Commerce is built by  [Ongo Works](http://ongoworks.com). It is an open source ecommerce platform developed on [Node.js](http://nodejs.org) and the [Meteor](http://meteor.com) framework.  Reaction provides a lightweight, reactive commerce platform with a goal of simplifying and aligning the user experience to the admin experience. 
+Reaction Commerce development is being led by [Ongo Works](http://ongoworks.com). It is an open source ecommerce platform developed on [Node.js](http://nodejs.org) and the [Meteor](http://meteor.com) framework.  Reaction provides a lightweight, reactive commerce platform with a goal of simplifying and aligning the user experience to the admin experience. 
 
 
 ``` Selling online should be as easy as shopping online.```
