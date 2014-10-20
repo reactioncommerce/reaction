@@ -37,6 +37,80 @@
       }
     },
     "currencies": {
+      "AED": {
+        "format" : "%v %s",
+        "symbol": "د.إ."
+      },
+      "AFN": {
+        "format" : "%v%s",
+        "symbol": "؋"
+      },
+      "ALL": {
+        "format" : "%s%v",
+        "symbol": "Lek",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "AMD": {
+        "format" : "%v %s",
+        "symbol": "AMD",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "AOA": {
+        "format" : "%s%v",
+        "symbol": "Kz"
+      },
+      "ARS": {
+        "format" : "%s%v",
+        "symbol": "$",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "AUD": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "AWG": {
+        "format" : "%s%v",
+        "symbol": "ƒ"
+      },
+      "AZN": {
+        "format" : "%s%v",
+        "symbol": "₼",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "BAM": {
+        "format" : "%s%v",
+        "symbol": "KM",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "BBD": {
+        "format" : "%s%v",
+        "symbol": "Bds$"
+      },
+      "BDT": {
+        "format" : "%s%v",
+        "symbol": "৳"
+      },
+      "BGN": {
+        "format" : "%s%v",
+        "symbol": "лв"
+      },
+      "BHD": {
+        "format" : "%v %s",
+        "symbol": ".د.ب"
+      },
+      "BIF": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "BMD": {
+        "format" : "%v %s",
+        "symbol": "FBu"
+      },
       "USD": {
         "format": "%s%v",
         "symbol": "$"
@@ -46,6 +120,14 @@
         "symbol": "€",
         "decimal": ",",
         "thousand": "."
+      },
+      "XCD": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "XOF": {
+        "format" : "%v %s",
+        "symbol": "CFA"
       }
     },
     "currency" : "USD",
