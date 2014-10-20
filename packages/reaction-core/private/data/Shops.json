@@ -157,6 +157,48 @@
         "format" : "%v %s",
         "symbol": "CDF"
       },
+      "CHF": {
+        "format" : "%s%v",
+        "symbol": "CHF"
+      },
+      "CLP": {
+        "format" : "%s%v",
+        "symbol": "$",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "CNY": {
+        "format" : "%s%v",
+        "symbol": "¥"
+      },
+      "COP": {
+        "format" : "%s%v",
+        "symbol": "$",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "CRC": {
+        "format" : "%s%v",
+        "symbol": "₡",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "CUC": {
+        "format" : "%s%v",
+        "symbol": "CUC$",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "CUP": {
+        "format" : "%s%v",
+        "symbol": "₱",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "CVE": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
       "INR": {
         "format" : "%s%v",
         "symbol": "₹"
@@ -174,6 +216,14 @@
         "symbol": "€",
         "decimal": ",",
         "thousand": "."
+      },
+      "NZD": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "XAF": {
+        "format" : "%v %s",
+        "symbol": "CFA"
       },
       "XCD": {
         "format" : "%s%v",
