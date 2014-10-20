@@ -97,7 +97,9 @@
       },
       "BGN": {
         "format" : "%s%v",
-        "symbol": "лв"
+        "symbol": "лв",
+        "decimal": ",",
+        "thousand": "."
       },
       "BHD": {
         "format" : "%v %s",
@@ -110,6 +112,58 @@
       "BMD": {
         "format" : "%v %s",
         "symbol": "FBu"
+      },
+      "BND": {
+        "format" : "%s%v",
+        "symbol": "B$"
+      },
+      "BOB": {
+        "format" : "%s%v",
+        "symbol": "$b"
+      },
+      "BRL": {
+        "format" : "%s%v",
+        "symbol": "R$",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "BSD": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "BTN": {
+        "format" : "%s%v",
+        "symbol": "Nu."
+      },
+      "BWP": {
+        "format" : "%s%v",
+        "symbol": "P"
+      },
+      "BYR": {
+        "format" : "%s%v",
+        "symbol": "p.",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "BZD": {
+        "format" : "%s%v",
+        "symbol": "BZ$"
+      },
+      "CAD": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "CDF": {
+        "format" : "%v %s",
+        "symbol": "CDF"
+      },
+      "INR": {
+        "format" : "%s%v",
+        "symbol": "₹"
+      },
+      "NOK": {
+        "format" : "%s%v",
+        "symbol": "kr"
       },
       "USD": {
         "format": "%s%v",
@@ -404,7 +458,7 @@
           "phone":"591",
           "continent":"SA",
           "capital":"Sucre",
-          "currency":"BOB,BOV",
+          "currency":"BOB",
           "languages":"es,ay,qu"
         },
         "BQ":{
