@@ -8,6 +8,11 @@ Template.settingsGeneral.helpers
     countryOptions = []
     for locale, country of countries
       countryOptions.push {label: country.name, value: locale}
+    #sort alphabetically by label
+    countryOptions.sort (a, b) ->
+      return -1  if a.label < b.label
+      return 1  if a.label > b.label
+      0
     return countryOptions
 
   currencyOptions: ->
