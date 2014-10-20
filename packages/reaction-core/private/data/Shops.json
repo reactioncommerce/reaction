@@ -287,6 +287,53 @@
         "format" : "%s%v",
         "symbol": "£"
       },
+      "GTQ": {
+        "format" : "%s%v",
+        "symbol": "Q"
+      },
+      "HKD": {
+        "format" : "%s%v",
+        "symbol": "HK$",
+        "decimal": ","
+      },
+      "HRK": {
+        "format" : "%s%v",
+        "symbol": "kn"
+      },
+      "HUF": {
+        "format" : "%s%v",
+        "symbol": "Ft"
+      },
+      "IDR": {
+        "format" : "%s%v",
+        "symbol": "Rp",
+        "decimal": ",",
+        "thousand": "."
+      },
+      "ILS": {
+        "format" : "%s%v",
+        "symbol": "₪"
+      },
+      "INR": {
+        "format" : "%s%v",
+        "symbol": "₹"
+      },
+      "ISK": {
+        "format" : "%s%v",
+        "symbol": "kr"
+      },
+      "JPY": {
+        "format" : "%s%v",
+        "symbol": "¥"
+      },
+      "KRW": {
+        "format" : "%s%v",
+        "symbol": "₩"
+      },
+      "KZT": {
+        "format" : "%v %s",
+        "symbol": "KZT"
+      },
       "MAD": {
         "format" : "%v %s",
         "symbol": "د.م.",
@@ -297,9 +344,48 @@
         "format" : "%v %s",
         "symbol": "UM"
       },
+      "MXN": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "MYR": {
+        "format" : "%s%v",
+        "symbol": "RM"
+      },
       "NZD": {
         "format" : "%s%v",
         "symbol": "$"
+      },
+      "PLN": {
+        "format" : "%s%v",
+        "symbol": "zł",
+        "decimal": ","
+      },
+      "RUB": {
+        "format" : "%s%v",
+        "symbol": "руб",
+        "decimal": ","
+      },
+      "SEK": {
+        "format" : "%s%v",
+        "symbol": "kr"
+      },
+      "SGD": {
+        "format" : "%s%v",
+        "symbol": "$"
+      },
+      "TBD": {
+        "format" : "%s%v",
+        "symbol": "฿"
+      },
+      "TWD": {
+        "format" : "%s%v",
+        "symbol": "NT$"
+      },
+      "UAH": {
+        "format" : "%s%v",
+        "symbol": "₴",
+        "decimal": ","
       },
       "XAF": {
         "format" : "%v %s",
