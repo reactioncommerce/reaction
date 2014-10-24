@@ -65,6 +65,23 @@ A user clicks on an item in their cart.
 }
 ```
 
+### Checkout Click
+
+A user clicks on the checkout button in their cart.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "cart",
+    "action" : "checkout-click",
+    "label" : "Checkout button click",
+    "value" : "BCTMZ6HTxFSppJESk",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "TLd5xQE9dDinzModW"
+}
+```
+
 ### Tag Click
 
 A user clicks on a navigation tag
