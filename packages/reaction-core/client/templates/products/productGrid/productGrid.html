@@ -12,7 +12,7 @@
 <li class="product-grid-item" data-id="{{_id}}" id="{{_id}}">
   {{> gridNotice}}
   <div class="product-grid-item-images">
-    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
       {{#with media}}
         <img src="{{url store='large'}}" class="img-responsive" alt="{{title}}">
       {{else}}
@@ -44,7 +44,7 @@
 
 
 <template name="gridContent">
-<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
   <div class="overlay">
     <div class="overlay-title">{{title}}</div>
     <div class="currency-symbol">{{formatPrice displayPrice}}</div>

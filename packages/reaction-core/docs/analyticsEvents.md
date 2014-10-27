@@ -25,7 +25,7 @@ A user clicks an individual product from the product grid view.
 {
     "category" : "grid",
     "action" : "product-click",
-    "label" : "Grid product click",
+    "label" : "grid product click",
     "value" : "BCTMZ6HTxFSppJESk",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "NgM5n3yjeHTMv2rnK"
@@ -48,6 +48,23 @@ A user clicks on the product grid view anywhere other than an individual product
 }
 ```
 
+### Cart Toggle Click
+
+A user clicks on the cart icon which toggles the drawer open/closed.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "cart",
+    "action" : "cart-click",
+    "label" : "cart toggle click",
+    "value" : "BCTMZ6HTxFSppJESk",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "W33j7f6KDyzLpMCac"
+}
+```
+
 ### Cart Item Click
 
 A user clicks on an item in their cart.
@@ -58,7 +75,7 @@ A user clicks on an item in their cart.
 {
     "category" : "cart",
     "action" : "product-click",
-    "label" : "Cart product click",
+    "label" : "cart product click",
     "value" : "BCTMZ6HTxFSppJESk",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "wzWuz2YrvwamLF6Nh"
@@ -75,7 +92,7 @@ A user clicks on the checkout button in their cart.
 {
     "category" : "cart",
     "action" : "checkout-click",
-    "label" : "Checkout button click",
+    "label" : "checkout button click",
     "value" : "BCTMZ6HTxFSppJESk",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "TLd5xQE9dDinzModW"
@@ -92,7 +109,7 @@ A user clicks on a navigation tag
 {
     "category" : "tag",
     "action" : "tag-click",
-    "label" : "Navigation Tag Click",
+    "label" : "navigation Tag Click",
     "value" : "Products",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "CTpcCM3d3hJtaP3An"
