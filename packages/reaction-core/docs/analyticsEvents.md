@@ -99,9 +99,9 @@ A user clicks on the checkout button in their cart.
 }
 ```
 
-### Tag Click
+### Navigation Tag Click
 
-A user clicks on a navigation tag
+A user clicks on a tag in the navigation bar.
 
 **Example of data captured:**
 
@@ -109,9 +109,26 @@ A user clicks on a navigation tag
 {
     "category" : "tag",
     "action" : "tag-click",
-    "label" : "navigation Tag Click",
+    "label" : "navigation tag click",
     "value" : "Products",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "CTpcCM3d3hJtaP3An"
+}
+```
+
+### Product Tag Click
+
+A user clicks on a tag from the product detail view.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "tag",
+    "action" : "tag-click",
+    "label" : "product detail tag click",
+    "value" : "Products",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
 }
 ```
