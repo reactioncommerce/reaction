@@ -132,3 +132,173 @@ A user clicks on a tag from the product detail view.
     "_id" : "zhPxLcBehiJEFd2JA"
 }
 ```
+
+### About Page Link Click
+
+A user clicks on the footer link to the About page.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "page link click",
+    "value" : "/about",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Team Page Link Click
+
+A user clicks on the footer link to the Team page.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "page link click",
+    "value" : "/team",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Terms Page Link Click
+
+A user clicks on the footer link to the Terms page.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "page link click",
+    "value" : "/terms",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Privacy Page Link Click
+
+A user clicks on the footer link to the Privacy page.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "page link click",
+    "value" : "/privacy",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### FAQs Page Link Click
+
+A user clicks on the footer link to the FAQs page.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "page link click",
+    "value" : "/faqs",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Meteor External Link Click
+
+A user clicks on the "Made with Meteor" footer link.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "external link click",
+    "value" : "meteor.com",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Twitter External Link Click
+
+A user clicks on the Twitter icon footer link.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "external link click",
+    "value" : "twitter",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Facebook External Link Click
+
+A user clicks on the Facebook icon footer link.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "external link click",
+    "value" : "facebook",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Instagram External Link Click
+
+A user clicks on the Instagram icon footer link.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "external link click",
+    "value" : "instagram",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
+
+### Pinterest External Link Click
+
+A user clicks on the Pinterest icon footer link.
+
+**Example of data captured:**
+
+```
+{
+    "category" : "link",
+    "action" : "link-click",
+    "label" : "external link click",
+    "value" : "pinterest",
+    "shopId" : "WvrKDomkYth3THbDD",
+    "_id" : "zhPxLcBehiJEFd2JA"
+}
+```
