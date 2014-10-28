@@ -67,8 +67,8 @@ Meteor.startup ->
       originalRender and originalRender.apply(this, arguments)
   # set locale
   Meteor.call 'getLocale', (error,result) ->
-    ReactionCore.locale = result
-    ReactionCore.locale.language = Session.get "language"
+    ReactionCore.Locale = result
+    ReactionCore.Locale.language = Session.get "language"
     return ReactionCore
 
 Tracker.autorun () ->
@@ -116,7 +116,7 @@ Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
 #  return shop /locale specific currency format (ie: $)
 ###
 Template.registerHelper "currencySymbol", () ->
-  return ReactionCore.locale.currency.symbol
+  return ReactionCore.Locale.currency.symbol
 
 
 ###
@@ -129,12 +129,12 @@ Template.registerHelper "formatPrice", (price) ->
     for actualPrice in prices
       originalPrice = actualPrice
       #TODO Add user services for conversions
-      if ReactionCore.locale?.currency.exchangeRate then actualPrice = actualPrice * ReactionCore.locale.currency.exchangeRate.Rate
-      formattedPrice = accounting.formatMoney actualPrice, ReactionCore.locale.currency
+      if ReactionCore.Locale?.currency.exchangeRate then actualPrice = actualPrice * ReactionCore.Locale.currency.exchangeRate.Rate
+      formattedPrice = accounting.formatMoney actualPrice, ReactionCore.Locale.currency
       price = price.replace(originalPrice, formattedPrice)
   catch
-    if ReactionCore.locale?.currency.exchangeRate then price = price * ReactionCore.locale.currency.exchangeRate.Rate
-    price = accounting.formatMoney price, ReactionCore.locale?.currency
+    if ReactionCore.Locale?.currency.exchangeRate then price = price * ReactionCore.Locale.currency.exchangeRate.Rate
+    price = accounting.formatMoney price, ReactionCore.Locale?.currency
 
   return price
 

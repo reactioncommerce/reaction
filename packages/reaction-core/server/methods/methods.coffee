@@ -7,33 +7,34 @@ Meteor.methods
   getLocale: ->
     result = {}
     ip = this.connection.httpHeaders['x-forwarded-for']
-    geo = new GeoCoder(geocoderProvider: "freegeoip")
-    countryCode = geo.geocode(ip)[0].countryCode.toUpperCase()
-    shop = ReactionCore.Collections.Shops.findOne '_id': ReactionCore.getShopId()
+    try
+      geo = new GeoCoder(geocoderProvider: "freegeoip")
+      countryCode = geo.geocode(ip)[0].countryCode.toUpperCase()
+      shop = ReactionCore.Collections.Shops.findOne '_id': ReactionCore.getShopId()
 
-    # local development always returns 'RD' so we default to 'US'
-    # unless shop address has been defined
-    if !countryCode or countryCode is 'RD'
-      if shop.addressBook
-        countryCode = shop.addressBook[0].country
-      else
-        countryCode = 'US'
+      # local development always returns 'RD' so we default to 'US'
+      # unless shop address has been defined
+      if !countryCode or countryCode is 'RD'
+        if shop.addressBook
+          countryCode = shop.addressBook[0].country
+        else
+          countryCode = 'US'
 
-    result.locale = shop.locales.countries[countryCode]
-    result.currency = {}
-    # get currency formats for locale, default if none
-    # comma string/list can be used, but for now we're only using one result
-    localeCurrency = shop.locales.countries[countryCode].currency.split(',')
-    for currency in localeCurrency
-      if shop.currencies[currency]
-        result.currency = shop.currencies[currency]
-        if shop.currency isnt currency
-          #TODO Add some alternate configurable services like Open Exchange Rate
-          rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency
-          exchangeRate = HTTP.get rateUrl
-          result.currency.exchangeRate = exchangeRate.data
-        return result #returning first match.
-    return result
+      result.locale = shop.locales.countries[countryCode]
+      result.currency = {}
+      # get currency formats for locale, default if none
+      # comma string/list can be used, but for now we're only using one result
+      localeCurrency = shop.locales.countries[countryCode].currency.split(',')
+      for currency in localeCurrency
+        if shop.currencies[currency]
+          result.currency = shop.currencies[currency]
+          if shop.currency isnt currency
+            #TODO Add some alternate configurable services like Open Exchange Rate
+            rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency
+            exchangeRate = HTTP.get rateUrl
+            result.currency.exchangeRate = exchangeRate.data
+          return result #returning first match.
+      return result
 
   ###
   # determine user's full location for autopopulating addresses

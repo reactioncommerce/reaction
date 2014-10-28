@@ -19,7 +19,7 @@ Template.registerHelper "socialImage", () ->
   if Meteor.user().profile?.picture
     return Meteor.user().profile?.picture
   else
-    return "../../resources/avatar.gif"
+    return "/resources/avatar.gif"
 #
 # decamelSpace
 #

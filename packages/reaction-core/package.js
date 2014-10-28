@@ -38,7 +38,7 @@ Package.onUse(function (api, where) {
     api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.0.3");
     api.use("aldeed:autoform@3.2.0");
-    api.use("aldeed:template-extension@2.0.0","client");
+    api.use("aldeed:template-extension@3.0.0","client");
     api.use("iron:router@0.9.4");
 
     api.use("dburles:collection-helpers@1.0.0");
@@ -145,12 +145,15 @@ Package.onUse(function (api, where) {
 
     "client/helpers/helpers.coffee",
     "client/helpers/i18n/i18n.coffee",
+    "client/helpers/metadata.coffee",
     "client/helpers/spacebars.coffee",
 
     "client/workflows/cart/workflow.coffee",
     "client/workflows/orders/workflow.coffee",
 
     "client/templates/layout/layout.html",
+    "client/templates/layout/layout.coffee",
+
     "client/templates/layout/header/header.html",
     "client/templates/layout/header/header.coffee",
 

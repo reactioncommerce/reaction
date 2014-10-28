@@ -5,7 +5,7 @@ setProduct = (productId, variantId) ->
   unless productId.match /^[A-Za-z0-9]{17}$/
     product = Products.findOne({handle: productId.toLowerCase()})
     productId = product?._id
-  
+
   setCurrentProduct productId
   setCurrentVariant variantId
   return
@@ -28,6 +28,10 @@ Router.configure
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
   onBeforeAction: 'loading'
+  onRun: ->
+    ReactionCore.MetaData.clear(@route)
+    ReactionCore.MetaData.update(@route)
+    ReactionCore.MetaData.render(@route)
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -57,8 +61,6 @@ Router.map ->
     template: "products"
     waitOn: ->
       @subscribe "products"
-    onAfterAction: ->
-      document.title = Shops.findOne()?.name
 
   # home page intro screen for reaction-commerce
   @route 'dashboard',
@@ -108,9 +110,6 @@ Router.map ->
         else
           return tag: Tags.findOne(slug: id.toLowerCase())
 
-    onAfterAction: ->
-      document.title = this.data()?.tag?.name || Shops.findOne()?.name
-
   # product view / edit page
   @route 'product',
     controller: ShopController
@@ -148,8 +147,6 @@ Router.map ->
     data: ->
       if @.ready()
         return Cart.findOne()
-    onAfterAction: ->
-      document.title = Shops.findOne()?.name + " Checkout"
 
   #completed orders
   @route 'cartCompleted',
@@ -164,6 +161,3 @@ Router.map ->
           return Orders.findOne(@params._id)
         else
           @render 'unauthorized'
-
-    onAfterAction: ->
-      document.title = Shops.findOne()?.name + " Success"
