@@ -11,6 +11,9 @@ Site wide descriptions and keywords can be set in Dashboard->Settings.
 
 You can customize templates using the `Template.replaces` method if you need a more advanced meta data implementation.
 
+*A note on testing:*
+Use `$("meta")` in the client console to view and test changes to the head meta elements. This is the head data that will be rendered in conjunction with the Meteor package `spiderable`.
+
 # Analytics Event Tracking
 
 Example use:
