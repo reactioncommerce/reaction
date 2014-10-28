@@ -227,6 +227,12 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   name:
     type: String
     index: 1
+  description:
+    type: String
+    optional: true
+  keywords:
+    type: String
+    optional: true
   addressBook:
     type: [ReactionCore.Schemas.Address]
   domains:
@@ -259,6 +265,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   members:
     type: [ReactionCore.Schemas.ShopMember]
     index: 1
+  metafields:
+    type: [ReactionCore.Schemas.Metafield]
+    optional: true
   useCustomEmailSettings:
     type: Boolean
     optional: true

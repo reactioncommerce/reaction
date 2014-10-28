@@ -25,18 +25,29 @@ ReactionCore.MetaData =
         $m.remove()
 
   # update meta data
-  update: (route, meta) ->
+  update: (route, params, meta) ->
     return false unless route
+
     product = selectedProduct()
+    shop = Shops.findOne(ReactionCore.shopId)
     meta = []
+    title = ""
     # set meta data
-    ReactionCore.MetaData.title = route.name.charAt(0).toUpperCase() + route.name.substring(1)
-    if product
+    ReactionCore.MetaData.name = shop.name
+    # tag/category titles
+    if params._id
+      title = params._id.charAt(0).toUpperCase() + params._id.substring(1)
+    else
+      title = route.name.charAt(0).toUpperCase() + route.name.substring(1)
+    # product specific
+    if product and product.handle is params._id
       meta.push 'name': 'description', 'content': product.description
       keywords = (key.value for key in product.metafields)
       meta.push 'name': 'keywords',  'content': keywords.toString()
-      ReactionCore.MetaData.title = product.title
+      title = product.title
     else
-      meta.push 'description': "This description"
+      meta.push 'description': shop.description
+      meta.push 'keywords': shop.keywords
     #export meta to ReactionCore.MetaData
+    ReactionCore.MetaData.title = title
     ReactionCore.MetaData.meta = meta

@@ -5,6 +5,7 @@
   <li class="active"><a href="#general" data-toggle="tab">General</a></li>
   <li><a href="#address" data-toggle="tab">Address</a></li>
   <li><a href="#smtp" data-toggle="tab">SMTP</a></li>
+  <li><a href="#settings" data-toggle="tab">Settings</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -14,10 +15,10 @@
     {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
       <fieldset>
         {{> afQuickField name='name' placeholder="Shop Name"}}
+        {{> afQuickField name='name' placeholder="Shop Name"}}
         {{> afQuickField name='email' placeholder="Primary Contact Email"}}
-        {{> afQuickField name='timezone' options=timezoneOptions}}
-        {{> afQuickField name='currency' options=currencyOptions}}
-        {{> afQuickField name='baseUOM' options=uomOptions}}
+        {{> afQuickField name='description' placeholder="Description"}}
+        {{> afQuickField name='keywords' placeholder="Keywords"}}
       </fieldset>
       <div class="row">
         <button type="submit" class="btn btn-primary pull-right">Submit</button>
@@ -50,6 +51,20 @@
   <div class="tab-pane" id="smtp">
     <div class="well">
     {{>quickForm collection="Shops" doc=. id="shopEditEmailForm" type="update" fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
+    </div>
+  </div>
+  <div class="tab-pane active" id="settings">
+    <div class="well">
+    {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
+      <fieldset>
+        {{> afQuickField name='timezone' options=timezoneOptions}}
+        {{> afQuickField name='currency' options=currencyOptions}}
+        {{> afQuickField name='baseUOM' options=uomOptions}}
+      </fieldset>
+      <div class="row">
+        <button type="submit" class="btn btn-primary pull-right">Submit</button>
+      </div>
+    {{/autoForm}}
     </div>
   </div>
 </div>

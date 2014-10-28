@@ -29,9 +29,9 @@ Router.configure
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
   onBeforeAction: 'loading'
   onRun: ->
-    ReactionCore.MetaData.clear(@route)
-    ReactionCore.MetaData.update(@route)
-    ReactionCore.MetaData.render(@route)
+    ReactionCore.MetaData.clear(@route, @params)
+    ReactionCore.MetaData.update(@route, @params)
+    ReactionCore.MetaData.render(@route, @params)
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:

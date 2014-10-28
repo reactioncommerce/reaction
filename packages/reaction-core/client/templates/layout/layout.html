@@ -1,6 +1,6 @@
 <template name="coreHead">
   <head>
-    <title>{{metaData.title}}</title>
+    <title>{{metaData.name}} | {{metaData.title}}</title>
     {{#each metaData.meta}}
       <meta name="{{name}}" content="{{content}}">
     {{/each}}
