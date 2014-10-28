@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
   name: "reactioncommerce:core",
-  version: "0.1.8",
+  version: "0.2.0",
   git: "https://github.com/ongoworks/reaction-core.git"
 });
 
@@ -16,7 +16,7 @@ Npm.depends({
 Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
-    api.versionsFrom('METEOR@0.9.3');
+    api.versionsFrom('METEOR@1.0');
     // 0.9.3+
     //core meteor packages
     api.use("meteor-platform");
