@@ -1,3 +1,16 @@
+# SEO and meta data
+
+Basic meta tag data is inserted by the `ReactionCore.MetaData.update` method. 
+
+You can add code to add additional meta objects to the `ReactionCore.MetaData.meta` array, and they will be added to the `<head>`.
+
+Example:
+`ReactionCore.MetaData.meta.push 'name': 'og:title', 'content': product.title`
+
+Site wide descriptions and keywords can be set in Dashboard->Settings.
+
+You can customize templates using the `Template.replaces` method if you need a more advanced meta data implementation.
+
 # Analytics Event Tracking
 
 Example use:
@@ -6,7 +19,7 @@ Example use:
 <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
 ```
 
-Send event tracking to GA by adding the following data attribute to any anchor in Reaction:
+Send event tracking to Google Analytics by adding the following data attribute to any anchor in Reaction:
 
 * data-event-category
 * data-event-action
