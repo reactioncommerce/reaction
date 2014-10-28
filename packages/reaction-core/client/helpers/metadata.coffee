@@ -33,7 +33,7 @@ ReactionCore.MetaData =
     meta = []
     title = ""
     # set meta data
-    ReactionCore.MetaData.name = shop.name
+    ReactionCore.MetaData.name = shop.name if shop?.name
     # tag/category titles
     if params._id
       title = params._id.charAt(0).toUpperCase() + params._id.substring(1)
@@ -46,8 +46,8 @@ ReactionCore.MetaData =
       meta.push 'name': 'keywords',  'content': keywords.toString()
       title = product.title
     else
-      meta.push 'description': shop.description
-      meta.push 'keywords': shop.keywords
+      meta.push 'description': shop.description if shop?.description
+      meta.push 'keywords': shop.keywords if shop?.keywords
     #export meta to ReactionCore.MetaData
     ReactionCore.MetaData.title = title
     ReactionCore.MetaData.meta = meta

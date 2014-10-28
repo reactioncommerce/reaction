@@ -28,7 +28,7 @@ Router.configure
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
   onBeforeAction: 'loading'
-  onRun: ->
+  onAfterAction: ->
     ReactionCore.MetaData.clear(@route, @params)
     ReactionCore.MetaData.update(@route, @params)
     ReactionCore.MetaData.render(@route, @params)
@@ -58,6 +58,7 @@ Router.map ->
   @route "index",
     controller: ShopController
     path: "/"
+    name: "Welcome"
     template: "products"
     waitOn: ->
       @subscribe "products"

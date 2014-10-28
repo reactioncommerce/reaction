@@ -17,7 +17,7 @@ Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
     api.versionsFrom('METEOR@1.0');
-    // 0.9.3+
+    // Meteor Version 1.0 +
     //core meteor packages
     api.use("meteor-platform");
     api.use("accounts-base");
