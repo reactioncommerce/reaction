@@ -21,7 +21,7 @@ Meteor.methods
         { $set: {updatedAt: new Date()}, $inc: {"items.$.quantity": quantity}},
       (error, result) ->
         console.log "error adding to cart" if error
-        console.log Cart.namedContext().invalidKeys() if error
+        console.log Cart.simpleSchema().namedContext().invalidKeys() if error
     # add new cart items
     else
       Cart.update _id: currentCart._id,
@@ -95,7 +95,7 @@ Meteor.methods
       Orders.insert cart
     catch error
       console.log "error in order insert"
-      console.log error, Orders.namedContext().invalidKeys()
+      console.log error, Orders.simpleSchema().namedContext().invalidKeys()
 
     Cart.remove userId: currentUserId
     return cart._id #new order id
