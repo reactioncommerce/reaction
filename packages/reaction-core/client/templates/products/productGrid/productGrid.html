@@ -12,11 +12,11 @@
 <li class="product-grid-item" data-id="{{_id}}" id="{{_id}}">
   {{> gridNotice}}
   <div class="product-grid-item-images">
-    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
       {{#with media}}
         <img src="{{url store='large'}}" class="img-responsive" alt="{{title}}">
       {{else}}
-        <img src="../../resources/placeholder.gif" class="img-responsive" alt="">
+        <img src= "/resources/placeholder.gif" class="img-responsive" alt="">
       {{/with}}
     </a>
 
@@ -28,17 +28,26 @@
 
 
 <template name="gridNotice">
-    {{#if cart.showItemLowInventoryWarning variants.[0]}}
-    <div class="badge badge-low-inv-warning" title="">{{variants.[0].inventoryQuantity}} Left!</div>
+  {{#if isSoldOut}}
+    {{#if isBackorder}}
+      <span class="variant-qty-sold-out badge">Backorder</span>
+    {{else}}
+      <span class="variant-qty-sold-out badge">Sold Out!</span>
     {{/if}}
+  {{else}}
+    {{#if isLowQuantity}}
+      <div class="badge badge-low-inv-warning" title="">Limited Supply</div>
+    {{/if}}
+  {{/if}}
+
 </template>
 
 
 <template name="gridContent">
-<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
   <div class="overlay">
     <div class="overlay-title">{{title}}</div>
-    <div class="currency-symbol">{{currencySymbol}}{{variants.[0].price}}</div>
+    <div class="currency-symbol">{{formatPrice displayPrice}}</div>
   </div>
 </a>
 </template>

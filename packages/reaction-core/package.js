@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
   name: "reactioncommerce:core",
-  version: "0.1.7",
+  version: "0.2.0",
   git: "https://github.com/ongoworks/reaction-core.git"
 });
 
@@ -16,31 +16,31 @@ Npm.depends({
 Package.onUse(function (api, where) {
 
   if (api.versionsFrom) {
-    api.versionsFrom('METEOR@0.9.0');
-    // 0.9.0+
+    api.versionsFrom('METEOR@1.0');
+    // Meteor Version 1.0 +
     //core meteor packages
-    api.use("standard-app-packages");
+    api.use("meteor-platform");
     api.use("accounts-base");
     api.use("accounts-password");
     api.use("accounts-ui-unstyled");
     api.use("less");
-    api.use("amplify");
+    api.use("http");
     api.use("coffeescript");
     api.use("underscore");
-    api.use("d3");
-    // ui/blaze needed (?)
-    api.use("ui@1.0.0",'client');
-    api.use('blaze@2.0.0', 'client');
-    // api.use('blaze', 'client');
+    api.use('blaze');
+    api.use('jquery');
+
+    api.use("d3@1.0.0");
+    api.use("amplify@1.0.0");
 
     //community packages
     api.use('mrt:underscore-string-latest@2.3.3');
-    api.use("aldeed:geocoder@0.3.1");
-    api.use("aldeed:collection2@2.1.0");
+    api.use("aldeed:geocoder@0.3.2");
+    api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.0.3");
-    api.use("aldeed:autoform@2.0.2");
-    api.use("aldeed:template-extension@2.0.0","client");
-    api.use("iron:router@0.9.3");
+    api.use("aldeed:autoform@3.2.0");
+    api.use("aldeed:template-extension@3.1.1","client");
+    api.use("iron:router@0.9.4");
 
     api.use("dburles:collection-helpers@1.0.0");
     api.use("matb33:collection-hooks@0.7.6");
@@ -85,7 +85,7 @@ Package.onUse(function (api, where) {
   }
 
   // Core Reaction files
-  api.add_files([
+  api.addFiles([
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
@@ -96,7 +96,7 @@ Package.onUse(function (api, where) {
     "common/register.coffee"
   ], ["client", "server"]);
 
-  api.add_files([
+  api.addFiles([
     "server/app.coffee",
     "server/publications.coffee",
     "server/fixtures.coffee",
@@ -109,7 +109,7 @@ Package.onUse(function (api, where) {
     "server/emailTemplates/shopMemberNotification.html"
   ], ["server"]);
 
-  api.add_files([
+  api.addFiles([
     "lib/i18next-1.7.3/i18next-1.7.3.js",
 
     "lib/bootstrap/lib/js/transition.js",
@@ -137,18 +137,24 @@ Package.onUse(function (api, where) {
     "lib/jquery-serialize/jquery.serialize-hash.coffee",
     "lib/jquery-cookie/jquery.cookie.js",
 
-    "client/app.coffee",
+    "lib/openexchangerates/money.js",
+    "lib/openexchangerates/accounting.js",
+
     "client/subscriptions.coffee",
+    "client/app.coffee",
     "client/routing.coffee",
 
     "client/helpers/helpers.coffee",
     "client/helpers/i18n/i18n.coffee",
+    "client/helpers/metadata.coffee",
     "client/helpers/spacebars.coffee",
 
     "client/workflows/cart/workflow.coffee",
     "client/workflows/orders/workflow.coffee",
 
     "client/templates/layout/layout.html",
+    "client/templates/layout/layout.coffee",
+
     "client/templates/layout/header/header.html",
     "client/templates/layout/header/header.coffee",
 
@@ -403,32 +409,30 @@ Package.onUse(function (api, where) {
   ], ["client"]);
 
   //bootstrap assets
-  api.add_files('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
+  api.addFiles('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
 
   // Private fixture data
-  api.add_files('private/data/Products.json', 'server', {isAsset: true});
-  api.add_files('private/data/Shops.json', 'server', {isAsset: true});
-  api.add_files('private/data/Tags.json', 'server', {isAsset: true});
-  api.add_files('private/data/SystemConfig.json', 'server', {isAsset: true});
-  api.add_files('private/data/ConfigData.json', 'server', {isAsset: true});
-  api.add_files('private/data/roles.json', 'server', {isAsset: true});
-  api.add_files('private/data/users.json', 'server', {isAsset: true});
-  api.add_files('private/data/Orders.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Products.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
+  api.addFiles('private/data/roles.json', 'server', {isAsset: true});
+  api.addFiles('private/data/users.json', 'server', {isAsset: true});
+  api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
   //i18n translations
-  api.add_files('private/data/i18n/ar.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/cs.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/de.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/en.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/es.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/fr.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/he.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/it.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/pl.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/pt.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/ru.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/sl.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/sv.json', 'server', {isAsset: true});
-  api.add_files('private/data/i18n/vi.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/cs.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/de.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/es.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/sl.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
 
 
   // We are now grouping all exported app variables and methods under

@@ -32,7 +32,7 @@ Template.accounts.events
     loginButtonsSession.set "inForgotPasswordFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
-    Deps.flush()
+    Tracker.flush()
 
     # update new fields with appropriate defaults
     if username isnt null
@@ -70,7 +70,7 @@ Template.accounts.events
     loginButtonsSession.set "inForgotPasswordFlow", true
 
     # force the ui to update so that we have the approprate fields to fill in
-    Deps.flush()
+    Tracker.flush()
 
     # update new fields with appropriate defaults
     if email isnt null
@@ -88,7 +88,7 @@ Template.accounts.events
     loginButtonsSession.set "inForgotPasswordFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
-    Deps.flush()
+    Tracker.flush()
     document.getElementById("login-username").value = username  if document.getElementById("login-username")
     document.getElementById("login-email").value = email  if document.getElementById("login-email")
     document.getElementById("login-username-or-email").value = email or username  if document.getElementById("login-username-or-email")

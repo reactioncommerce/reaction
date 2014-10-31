@@ -1,3 +1,12 @@
+<template name="coreHead">
+  <head>
+    <title>{{metaData.name}} | {{metaData.title}}</title>
+    {{#each metaData.meta}}
+      <meta name="{{name}}" content="{{content}}">
+    {{/each}}
+  </head>
+</template>
+
 <template name="coreLayout">
   <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
   <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>

@@ -4,24 +4,45 @@
 To work on included packages, and see your changes update in your local installation you must *git clone* packages locally, then in your local checkout of the *ongoworks/reaction* repo link the package to your checkout.
 
 ```bash
-    mrt link-package /path/to/package
+    ln -s <full path to package>  packages/<org_pkgname>
 ```
 
-Where "path/to/foo" is full path to your local package checkout.
+For example:
+`ln -s ~/ongoworks/reaction-core packages/reactioncommerce_core`
 
+
+*Tip* Pull requests are happily accepted, please make your GitHub pull request a merge to the next development release branch, and not master.
 
 # New packages
 
-    mrt create-package [path/to/]foo
+    meteor create --package
 
+See [Meteor docs](http://docs.meteor.com/#meteorcreate) for additional help creating local packages.
 
-See [Meteorite docs](https://github.com/oortcloud/meteorite/) for additional help creating local packages.
+Once you have created your packages directory, you'll continue creating a standard Meteor package by defining `package.js`, starting with a describe block:
 
-Tip:  if you are cloning reaction-helloworld to start working on a new package project, don't forget to add to the meteor package list.
+```
+  Package.describe({
+    summary: "Reaction Hello World - example package for Reaction",
+    name: "reactioncommerce:reaction-helloworld",
+    version: "0.1.3",
+    git: "https://github.com/ongoworks/reaction-helloworld.git"
+  });
+```
+
+Where name is the `org-user/packagename` that you can use to publish this to the Meteor package registry using [meteor publish](http://docs.meteor.com/#meteorpublish)
+
+To use in the local application, the final step is add to your local app:
 
     meteor add your-new-package
 
+*Tip* You can also just edit `.meteor/packages`
+
+For a more thorough review of Meteor packages, [the meteor hackpad unipackage doc](https://meteor.hackpad.com/Unipackage-tvas8pXYMOW#:h=Using-Packages-in-Your-App) has a lot of useful information.
+
 ##Dashboard
+Once you have a working package, you'll want to integrate it into the rest of Reaction Commerce.  
+
 Add packages to the reaction dashboard by adding **common/register.coffee**
 
     ReactionCore.registerPackage

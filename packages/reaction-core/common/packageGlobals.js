@@ -4,6 +4,8 @@ ReactionCore.Schemas = {};
 ReactionCore.Collections = {};
 ReactionCore.Helpers = {};
 ReactionCore.Packages = {};
+ReactionCore.MetaData = {};
+ReactionCore.Locale = {};
 
 if (Meteor.isClient) {
   ReactionCore.Alerts = {};
@@ -13,6 +15,3 @@ if (Meteor.isClient) {
 // convenience
 Alerts = ReactionCore.Alerts;
 Schemas = ReactionCore.Schemas;
-
-// for backwards-compatibility; remove these once no reaction packages depend on them
-Meteor.app = ReactionCore;

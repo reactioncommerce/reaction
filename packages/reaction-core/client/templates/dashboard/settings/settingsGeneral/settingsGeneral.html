@@ -12,7 +12,18 @@
 <div class="tab-content">
   <div class="tab-pane active" id="general">
     <div class="well">
-    {{>quickForm collection="Shops" doc=. id="shopEditForm" type="update" fields="name,email"}}
+    {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
+      <fieldset>
+        {{> afQuickField name='name' placeholder="Shop Name"}}
+        {{> afQuickField name='name' placeholder="Shop Name"}}
+        {{> afQuickField name='email' placeholder="Primary Contact Email"}}
+        {{> afQuickField name='description' placeholder="Description"}}
+        {{> afQuickField name='keywords' placeholder="Keywords"}}
+      </fieldset>
+      <div class="row">
+        <button type="submit" class="btn btn-primary pull-right">Submit</button>
+      </div>
+    {{/autoForm}}
     </div>
   </div>
   <div class="tab-pane" id="address">
@@ -26,7 +37,7 @@
           {{> afQuickField name='addressBook.0.city'}}
           {{> afQuickField name='addressBook.0.region'}}
           {{> afQuickField name='addressBook.0.postal'}}
-          {{> afQuickField name='addressBook.0.country' options=countryOptions value=defaultCountry}}
+          {{> afQuickField name='addressBook.0.country' options=countryOptions}}
           {{> afQuickField name='addressBook.0.phone'}}
           {{> afQuickField name='addressBook.0.isCommercial'}}
           {{> afQuickField name='addressBook.0.isDefault' value=true}}
@@ -42,12 +53,14 @@
     {{>quickForm collection="Shops" doc=. id="shopEditEmailForm" type="update" fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
     </div>
   </div>
-  <div class="tab-pane" id="settings">
+  <div class="tab-pane active" id="settings">
     <div class="well">
     {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
-      {{> afQuickField name='timezone' options=timezoneOptions}}
-      {{> afQuickField name='currency' placeholder="USD"}}
-      {{> afQuickField name='moneyFormat' placeholder="$"}}
+      <fieldset>
+        {{> afQuickField name='timezone' options=timezoneOptions}}
+        {{> afQuickField name='currency' options=currencyOptions}}
+        {{> afQuickField name='baseUOM' options=uomOptions}}
+      </fieldset>
       <div class="row">
         <button type="submit" class="btn btn-primary pull-right">Submit</button>
       </div>

@@ -133,7 +133,7 @@ Meteor.methods
           page.evaluate (e) ->
             result = {}
             if Meteor?.status?().connected
-              Deps.flush()
+              Tracker.flush()
               result.subsReady = DDP._allSubscriptionsReady()
             else
               result.subsReady = false

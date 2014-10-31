@@ -5,7 +5,6 @@ Orders = ReactionCore.Collections.Orders
 Cart  = ReactionCore.Collections.Cart
 Tags = ReactionCore.Collections.Tags
 Packages = ReactionCore.Collections.Packages
-ConfigData = ReactionCore.Collections.ConfigData
 FileStorage = ReactionCore.Collections.FileStorage
 Media = ReactionCore.Collections.Media
 Translations = ReactionCore.Collections.Translations
@@ -83,9 +82,9 @@ AutoSet "shopId", [ Packages, Orders, Cart, Tags ], ->
 # We add some common security rules through simple Security methods
 ###
 
-Security.defaultAllow [ Media, FileStorage, ConfigData, Packages, Products, Orders, Cart, Tags, Translations ]
+Security.defaultAllow [ Media, FileStorage, Packages, Products, Orders, Cart, Tags, Translations ]
 
-Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, ConfigData, Products, Tags, Translations ]
+Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, Products, Tags, Translations ]
 
 Security.allowOnlyRoles ['admin'], ["update", "remove"], [ Shops ]
 
@@ -177,12 +176,6 @@ Meteor.publish "UserProfile", (profileId) ->
   else
     console.log "profileId not defined. access denied"
     return []
-
-###
-# Client access rights for ConfigData
-###
-Meteor.publish 'ConfigData', ->
-  return ConfigData.find()
 
 ###
 #  Packages contains user specific configuration

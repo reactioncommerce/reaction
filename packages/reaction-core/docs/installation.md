@@ -103,6 +103,9 @@ To send email you need configure the [env MAIL_URL variable](http://docs.meteor.
 
 Password reset, and a few other items that use email templates won't work unless you configure this.
 
+### HTTPS
+You can use `meteor remove https` to remove production redirection to `https` protocol.  To add back, `meteor add https`.  When developing locally, you should not have to remove https as Meteor internally redirects all `localhost` requests to the `http` protocol.
+
 
 #Dockerfile
 

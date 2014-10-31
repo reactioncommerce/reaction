@@ -31,7 +31,7 @@ Meteor.methods
   inviteShopMember: (shopId, email, name) ->
     shop = Shops.findOne shopId
     if shop and email and name
-      if Meteor.app.hasOwnerAccess(shop)
+      if ReactionCore.hasOwnerAccess(shop)
         currentUserName = Meteor.user().profile.name
         user = Meteor.users.findOne {"emails.address": email}
         unless user # user does not exist, invite him

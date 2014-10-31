@@ -3,7 +3,6 @@ share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
 share.Product = @Product = new Meteor.Collection("Product")
 share.Variant = @Variant = new Meteor.Collection("Variant")
 
-ReactionCore.Collections.ConfigData = new Meteor.Collection "ConfigData"
 ReactionCore.Collections.Translations = new Meteor.Collection "Translations"
 
 ###
@@ -172,6 +171,25 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
 #   password: "Enter your password"
 #   test: "test"
 
+ReactionCore.Schemas.Currency = new SimpleSchema
+  symbol:
+    type: String
+    defaultValue: "$"
+  format:
+    type: String
+    defaultValue: "%s%v"
+  precision:
+    type: String
+    defaultValue: "0"
+    optional: true
+  decimal:
+    type: String
+    defaultValue: "."
+    optional: true
+  thousand:
+    type: String
+    defaultValue: ","
+    optional: true
 
 ReactionCore.Schemas.Country = new SimpleSchema
   name:
@@ -193,6 +211,15 @@ ReactionCore.Schemas.Tax = new SimpleSchema
     type: [ReactionCore.Schemas.Metafield]
     optional: true
 
+ReactionCore.Schemas.currencyEngine = new SimpleSchema
+  provider:
+    type: String
+    defaultValue: "OXR"
+  apiKey:
+    type: String
+    optional: true
+    label: "Open Exchange Rates App ID"
+
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
@@ -200,23 +227,26 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   name:
     type: String
     index: 1
+  description:
+    type: String
+    optional: true
+  keywords:
+    type: String
+    optional: true
   addressBook:
     type: [ReactionCore.Schemas.Address]
   domains:
     type: [String]
     defaultValue: ["localhost"] #see simple schema issue #73
-  currency:
-    type: String
   email:
     type: String
-  moneyFormat:
+  currency:
     type: String
-  moneyWithCurrencyFormat:
-    type: String
-  moneyInEmailsFormat:
-    type: String
-  moneyWithCurrencyInEmailsFormat:
-    type: String
+    defaultValue: "USD"
+  currencyEngine:
+    type: ReactionCore.Schemas.currencyEngine
+  currencies:
+    type: [ReactionCore.Schemas.Currency]
   taxes:
     type: [ReactionCore.Schemas.Tax]
     optional: true
@@ -225,11 +255,19 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
   timezone:
     type: String
+  baseUOM:
+    type: String
+    optional: true
+    defaultValue: "OZ"
+    label: "Base Unit of Measure"
   ownerId:
     type: String
   members:
     type: [ReactionCore.Schemas.ShopMember]
     index: 1
+  metafields:
+    type: [ReactionCore.Schemas.Metafield]
+    optional: true
   useCustomEmailSettings:
     type: Boolean
     optional: true
@@ -290,7 +328,7 @@ ReactionCore.Schemas.ProductVariant = ProductVariantSchema = new SimpleSchema
     type: String
     optional: true
   weight:
-    label: "Weight (.oz)"
+    label: "Weight"
     type: Number
     min: 0
   inventoryManagement:
@@ -308,11 +346,19 @@ ReactionCore.Schemas.ProductVariant = ProductVariantSchema = new SimpleSchema
     type: Number
     label: "Quantity"
     optional: true
+    custom: ->
+      if Meteor.isClient
+        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
   price:
     label: "Price"
     type: Number
     decimal: true
     min: 0
+    optional: true
+    custom: -> #required if no child variants (options) present
+      if Meteor.isClient
+        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+
   requiresShipping:
     label: "Require a shipping address"
     type: Boolean

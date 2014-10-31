@@ -10,6 +10,9 @@ Template.variantForm.helpers
     return unless product
     return (variant for variant in product.variants when variant?.parentId is @_id)
 
+  hasChildVariants: () ->
+    if checkChildVariants(@_id) > 0 then return true
+
   nowDate: () ->
     return new Date()
 
@@ -27,6 +30,7 @@ Template.variantForm.helpers
   displayLowInventoryWarning: () ->
     unless @inventoryManagement is true
       return "display:none;"
+
 
 Template.variantForm.events
   "change form :input": (event,template) ->

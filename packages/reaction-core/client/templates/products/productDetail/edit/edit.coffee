@@ -12,7 +12,7 @@ Template.productDetailField.events
     if ReactionCore.hasOwnerAccess()
       fieldClass = "editing-" + this.field
       Session.set fieldClass, true
-      Deps.flush()
+      Tracker.flush()
       $('.' + this.field + '-edit-input').focus()
 
 Template.productDetailEdit.rendered = () ->

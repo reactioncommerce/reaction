@@ -1,1 +1,14 @@
-[{ "name" : "manage-users", "_id" : "rxmFnaaod75whEZ6E" },{ "name" : "view-campaigns", "_id" : "sW4Eurcoq64u7Wqwa" },{ "name" : "admin", "_id" : "z22xGFK4a3WvdbWNC" }]
+[
+  {
+    "name":"manage-users",
+    "_id":"rxmFnaaod75whEZ6E"
+  },
+  {
+    "name":"view-campaigns",
+    "_id":"sW4Eurcoq64u7Wqwa"
+  },
+  {
+    "name":"admin",
+    "_id":"z22xGFK4a3WvdbWNC"
+  }
+]

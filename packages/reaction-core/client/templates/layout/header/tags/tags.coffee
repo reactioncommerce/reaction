@@ -75,7 +75,7 @@ Template.tagInputForm.helpers
 Template.headerLinks.events
   'click #header-edit-tag': (event,template) ->
     setEditing currentTag(), true
-    Deps.flush()
+    Tracker.flush()
 
 Template.tagInputForm.events
   'click .tag-input-group-remove': (event,template) ->
@@ -97,7 +97,7 @@ Template.tagInputForm.events
           )
         response(datums)
     )
-    Deps.flush()
+    Tracker.flush()
 
   'blur.autocomplete, change .tags-input-select': (event,template) ->
     val = $(event.currentTarget).val()
@@ -105,12 +105,12 @@ Template.tagInputForm.events
       Meteor.call "updateHeaderTags", val, @._id, currentTag(), (error, result) ->
         if error
           console.log "Error updating header tags", error
-        Deps.flush()
+        Tracker.flush()
         template.$('.tags-submit-new').val('').focus()
 
   'mousedown .tag-input-group-handle': (event,template) ->
     isMovingTag = true
-    Deps.flush()
+    Tracker.flush()
     template.$(".tag-edit-list").sortable("refresh")
 
 Template.tagInputForm.rendered = ->
