@@ -3,8 +3,6 @@
   {{> _justResetPasswordDialog}}
   {{> _enrollAccountDialog}}
   {{> _justVerifiedEmailDialog}}
-  {{> _configureLoginServiceDialog}}
-
   <!-- if we're not showing a dropdown, we need some other place to show messages -->
   {{> _loginButtonsMessagesDialog}}
 </body>
@@ -108,7 +106,6 @@
           I'll do this later
         </div>
         <a class="accounts-close configure-login-service-dismiss-button">&times;</a>
-
         <div class="login-button login-button-configure {{#if saveDisabled}}login-button-disabled{{/if}}"
              id="configure-login-service-dialog-save-configuration" data-i18n="accountsUI.saveConfiguration">
           Save Configuration
