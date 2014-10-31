@@ -8,9 +8,12 @@ standard-app-packages
 less
 coffeescript
 jquery
-force-ssl
 oauth-encryption
+
+# Optional Meteor Packages
 accounts-facebook
+spiderable
+force-ssl
 
 # Reaction Commerce Packages
 reactioncommerce:core
