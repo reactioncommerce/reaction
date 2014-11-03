@@ -142,9 +142,6 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
   phone:
     type: String
     label: "Phone"
-    min: 7
-    max: 22
-    regEx: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
   region:
     label: "State/Province/Region"
     type: String
