@@ -651,7 +651,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema
         return $set: new Date
       else if @isUpsert
         return $setOnInsert: new Date
-    denyInsert: true
+    # denyInsert: true
     optional: true
 
 ReactionCore.Collections.Cart = Cart = @Cart = new Meteor.Collection "Cart"
