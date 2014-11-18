@@ -6,7 +6,7 @@
 # Stores the server session id into local storage / cookies
 ###
 ReactionCore.Subscriptions.ReactionSessions = Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
-  serverSession = new Meteor.Collection("ReactionSessions").findOne()
+  serverSession = new Mongo.Collection("ReactionSessions").findOne()
   Session.set "serverSession", serverSession
   Session.set "sessionId", serverSession._id
   amplify.store "reaction.session", serverSession._id

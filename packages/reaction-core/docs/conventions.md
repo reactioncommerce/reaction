@@ -80,7 +80,7 @@ ReactionCore.Packages = {};
 *common/collections.coffee:*
 
 ```coffee
-Product = ReactionCore.Collections.Product = new Meteor.Collection("Product")
+Product = ReactionCore.Collections.Product = new Mongo.Collection("Product")
 # etc...
 ```
 
