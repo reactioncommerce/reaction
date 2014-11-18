@@ -1,6 +1,6 @@
 #Themes
 
-Reaction uses [Bootstrap 3](http://getbootstrap.com/css/#less) and the [Less](http://lesscss.org) preprocessor to create it's theme. 
+Reaction uses [Bootstrap 3](http://getbootstrap.com/css/#less) and the [Less](http://lesscss.org) preprocessor to create its theme. 
 
 To extend and create your own themes, you can edit the the example file:
 

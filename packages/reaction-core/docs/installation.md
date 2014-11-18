@@ -36,7 +36,7 @@ git pull
 meteor
 ```
 
-*Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the udpated file*
+*Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the updated file*
 
 ##Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
