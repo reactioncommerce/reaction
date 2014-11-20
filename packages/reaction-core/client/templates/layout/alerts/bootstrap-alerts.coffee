@@ -125,4 +125,4 @@ Alerts =
     return
 
   # Private members
-  collection_: new Meteor.Collection(null)
+  collection_: new Mongo.Collection(null)
