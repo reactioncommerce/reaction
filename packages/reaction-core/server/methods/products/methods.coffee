@@ -209,7 +209,7 @@ Meteor.methods
       return false
 
     newTag =
-      slug: _.slugify(tagName)
+      slug: getSlug tagName
       name: tagName
 
     existingTag = Tags.findOne({"name":tagName})

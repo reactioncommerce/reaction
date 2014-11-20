@@ -11,7 +11,7 @@ Products.before.insert (userId, product) ->
   product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
   _.defaults(product,
     productType: "Simple"
-    handle: _.slugify(product.title)
+    handle: getSlug product.title
     isVisible: false
     updatedAt: new Date()
     createdAt: new Date()
