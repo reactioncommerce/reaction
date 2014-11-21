@@ -43,6 +43,8 @@ An example of a deployment with password to a [meteor.com hosted site](http://do
 
 	meteor deploy --settings settings/prod.json yourdemosite.meteor.com
 
+*Important note:* Currently if you are trying to run Reaction as a Node app (not in developement mode) and are encountering issues, you may want to try running `meteor remove force-ssl`. We are working toward a solution for this in the near future.
+
 ## Configuration Files (optional)
 If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time you do "meteor reset"
 
