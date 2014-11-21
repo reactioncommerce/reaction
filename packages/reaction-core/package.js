@@ -50,7 +50,6 @@ Package.onUse(function (api, where) {
     api.use("cmather:handlebars-server@2.0.0","server");
     api.use("mrt:moment@2.8.1",'client');
     api.use("sacha:spin@2.0.4", 'client');
-    api.use("ongoworks:speakingurl@1.0.1");
 
     api.use("cfs:standard-packages@0.0.2");
     api.use("cfs:graphicsmagick@0.0.1");
