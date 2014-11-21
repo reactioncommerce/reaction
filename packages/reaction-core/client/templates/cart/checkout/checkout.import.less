@@ -1,7 +1,24 @@
 .cart-checkout-steps {
-  padding: 0;
+  padding-left: 5px;
+  margin-top: 20px;
+
   .panel-title {
     margin-left: 25px;
+  }
+}
+
+@media screen and (min-width: @screen-sm-min) {
+  .cart-checkout-steps {
+    .col-md-8 {
+      padding-right: 15px;
+    }
+  }
+}
+
+@media screen and (min-width: @screen-lg-min) {
+  .cart-checkout-steps {
+    max-width: 1200px;
+    margin: 0 auto;
   }
 }
 
@@ -16,8 +33,9 @@
   top: -3px;
   width: 45px;
   color: #fff;
-  line-height: 45px;
+  line-height: 16px;
   height: 45px;
+  padding: 13px 11px 13px 12px;
   position: absolute;
   text-align: center;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.2);

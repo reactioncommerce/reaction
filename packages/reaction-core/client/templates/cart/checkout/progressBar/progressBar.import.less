@@ -46,6 +46,7 @@ ul.checkout-bar {
     font-weight: 600;
     padding: 14px 20px 14px 80px;
     position: relative;
+    vertical-align: top;
     &:before {
       .inner-shadow;
       background: #ddd;
@@ -55,7 +56,8 @@ ul.checkout-bar {
       font-size: 16px;
       font-weight: 700;
       left: 20px;
-      line-height: 37px;
+      line-height: 16px;
+      padding: 13px 11px 13px 12px;
       height: 35px;
       position: absolute;
       text-align: center;
@@ -119,7 +121,7 @@ ul.checkout-bar {
     text-decoration: none;
   }
 }
-@media screen and (max-width: 979px) {
+@media screen and (max-width: @screen-sm-max) {
     .checkout-progress-wrap {
         display: none;
     }
@@ -127,6 +129,9 @@ ul.checkout-bar {
 
 
 @media all and (min-width: 980px) {
+  .cart-checkout-progress {
+    margin-top: 20px;
+  }
  .checkout-bar li.active:after {
     -webkit-animation: myanimation 3s 0;
     .active-stripe;
@@ -161,13 +166,14 @@ ul.checkout-bar {
    li {
       display: inline-block;
       margin: 50px 0 0;
-      padding: 0;
+      padding: 0 5px;
       text-align: center;
       width: 19%;
       &:before {
         height: 45px;
         left: 40%;
-        line-height: 45px;
+        line-height: 16px;
+        padding: 13px 11px 13px 12px;
         position: absolute;
         top: -65px;
         width: 45px;
@@ -188,5 +194,12 @@ ul.checkout-bar {
         }
       }
     }
+  }
+}
+
+@media screen and (min-width: @screen-lg-min) {
+  .cart-checkout-progress {
+    max-width: 1200px;
+    margin: 20px auto 0 auto;
   }
 }

@@ -33,16 +33,18 @@ Package.onUse(function (api, where) {
     api.use("d3@1.0.0");
     api.use("amplify@1.0.0");
 
+
     //community packages
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.2");
     api.use("aldeed:collection2@2.2.0");
-    api.use("aldeed:simple-schema@1.0.3");
-    api.use("aldeed:autoform@3.2.0");
+    api.use("aldeed:simple-schema@1.1.0");
+    api.use("aldeed:autoform@4.0.7");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
+    api.use("ongoworks:speakingurl@1.0.2");
 
-    api.use("dburles:collection-helpers@1.0.0");
+    api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
@@ -56,7 +58,6 @@ Package.onUse(function (api, where) {
     api.use("cfs:gridfs@0.0.0");
     api.use("cfs:s3@0.0.0");
     api.use("raix:ui-dropped-event@0.0.7");
-
 
     //implying these are reused in reaction packages
     api.imply("less");
