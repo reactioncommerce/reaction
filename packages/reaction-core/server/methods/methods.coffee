@@ -7,19 +7,25 @@ Meteor.methods
   getLocale: ->
     result = {}
     ip = this.connection.httpHeaders['x-forwarded-for']
+
     try
       geo = new GeoCoder(geocoderProvider: "freegeoip")
       countryCode = geo.geocode(ip)[0].countryCode.toUpperCase()
-      shop = ReactionCore.Collections.Shops.findOne '_id': ReactionCore.getShopId()
 
-      # local development always returns 'RD' so we default to 'US'
-      # unless shop address has been defined
-      if !countryCode or countryCode is 'RD'
-        if shop.addressBook
-          countryCode = shop.addressBook[0].country
-        else
-          countryCode = 'US'
+    shop = ReactionCore.Collections.Shops.findOne ReactionCore.getShopId()
 
+    unless shop
+      return result
+
+    # local development always returns 'RD' so we default to 'US'
+    # unless shop address has been defined
+    if !countryCode or countryCode is 'RD'
+      if shop.addressBook
+        countryCode = shop.addressBook[0].country
+      else
+        countryCode = 'US'
+
+    try
       result.locale = shop.locales.countries[countryCode]
       result.currency = {}
       # get currency formats for locale, default if none
@@ -34,7 +40,8 @@ Meteor.methods
             exchangeRate = HTTP.get rateUrl
             result.currency.exchangeRate = exchangeRate.data
           return result #returning first match.
-      return result
+
+    return result
 
   ###
   # determine user's full location for autopopulating addresses

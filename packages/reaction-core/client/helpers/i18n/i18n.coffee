@@ -54,47 +54,53 @@ getMessagesFor = (schema, name, sessionLanguage) ->
 #
 ###
 
+i18nextDep = new Tracker.Dependency()
+
 Meteor.startup ->
+  # set language
   Session.set "language", i18n.detectLanguage()
-  # initialize  templates
-  _.each Template, (template, name) ->
-  # for template,name of Template
-    return if name?
-    return if name is "prototype" or name.slice(0, 2) is "__"
-    originalRender = template.rendered
-    template.rendered = ->
-      try @.$("[data-i18n]").i18n()
-      originalRender and originalRender.apply(this, arguments)
+
   # set locale
   Meteor.call 'getLocale', (error,result) ->
     ReactionCore.Locale = result
     ReactionCore.Locale.language = Session.get "language"
-    return ReactionCore
+    return
 
-Tracker.autorun () ->
-  sessionLanguage = Session.get "language"
-  Meteor.subscribe "Translations", sessionLanguage, () ->
-    resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()
-    # map multiple translations into i18next format
-    resources = resources.reduce (x, y) ->
+  # start the autorun after startup, so that "language" session var is already set
+  Tracker.autorun () ->
+    sessionLanguage = Session.get "language"
+    Meteor.subscribe "Translations", sessionLanguage, () ->
+      resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()
+      # map multiple translations into i18next format
+      resources = resources.reduce (x, y) ->
         x[y.i18n]= y.translation
-        x
-    , {}
+        return x
+      , {}
 
-    $.i18n.init {
-      lng: sessionLanguage
-      fallbackLng: 'en'
-      ns: "core"
-      resStore: resources
-      # debug: true
-      },(t)->
-        # update labels and messages for autoform,schemas
-        for schema, ss of ReactionCore.Schemas
-          ss.labels getLabelsFor(ss, schema, sessionLanguage)
-          ss.messages getMessagesFor(ss, schema, sessionLanguage)
+      $.i18n.init {
+        lng: sessionLanguage
+        fallbackLng: 'en'
+        ns: "core"
+        resStore: resources
+        # debug: true
+        },(t)->
+          # update labels and messages for autoform,schemas
+          for schema, ss of ReactionCore.Schemas
+            ss.labels getLabelsFor(ss, schema, sessionLanguage)
+            ss.messages getMessagesFor(ss, schema, sessionLanguage)
 
-        #re-init i18n
-        $("[data-i18n]").i18n()
+          #re-init all i18n
+          i18nextDep.changed()
+
+  # reactive translations in all templates
+  Template.onRendered () ->
+    t = @
+    t.autorun () ->
+      i18nextDep.depend() #rerun whenever language changes and we re-init $.i18n
+      $elements = t.$("[data-i18n]")
+      $elements.i18n() if typeof $elements.i18n is "function"
+      return
+    return
 
 ###
 # i18n helper

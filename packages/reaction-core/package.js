@@ -36,7 +36,7 @@ Package.onUse(function (api, where) {
 
     //community packages
     api.use('mrt:underscore-string-latest@2.3.3');
-    api.use("aldeed:geocoder@0.3.2");
+    api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.1.0");
     api.use("aldeed:autoform@4.0.7");
