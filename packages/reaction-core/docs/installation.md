@@ -82,13 +82,25 @@ Example configuration file
 ### Env variables (optional)
 
 ```bash
-export MAIL_URL="<smtp connection string"
+export MAIL_URL="<smtp connection string>"
 export METEOR_EMAIL="youradmin@yourdomain.com" 
 export METEOR_USER="admin"
 export METEOR_AUTH="password"
 export MONGO_URL="<your mongodb connect string>"
 export ROOT_URL=""
 ```
+
+Alternatively can also set environment variables by adding them to a settings.json file, like so:
+
+```
+"reaction": {
+   "METEOR_USER": "Administrator",
+   "METEOR_AUTH": "password",
+   "METEOR_EMAIL": "root@localhost"
+ }
+```
+
+This can be useful (or even necessary) when deploying to a remote server that doesn't offer SSH access. *Note: Global environment variables will take precendence over variables set via settings.json*
 
 The `METEOR_EMAIL`, `METEOR_USER`, `METEOR_AUTH` environment variables will create this email/user/password as the default first site admin user.
 
