@@ -9,7 +9,7 @@
   </h3>
 </div>
 <div class="panel-body">
-{{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookForm" type="method" meteormethod="addressBookAdd"}}
+{{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookForm" type="method" meteormethod="addressBookAdd" resetOnSuccess=false}}
   <fieldset>
       {{>addressBookForm}}
       <div class="row text-right">
