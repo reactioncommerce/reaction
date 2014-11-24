@@ -4,6 +4,11 @@
   "facebook": {
     "secret": "__SECRET__"
   },
+  "reaction": {
+    "METEOR_USER": "Administrator",
+    "METEOR_AUTH": "password",
+    "METEOR_EMAIL": "root@localhost"
+  },
   "public": {
     "isDebug": true,
     "facebook": {
