@@ -127,6 +127,7 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     optional: true
   fullName:
     type: String
+    label: 'Full name'
   address1:
     label: "Address 1"
     type: String
@@ -136,9 +137,11 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     optional: true
   city:
     type: String
+    label: "City"
   company:
     type: String
     optional: true
+    label: "Company"
   phone:
     type: String
     label: "Phone"
@@ -150,6 +153,7 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     type: String
   country:
     type: String
+    label: "Country"
   isCommercial:
     label: "This is a commercial address"
     type: Boolean

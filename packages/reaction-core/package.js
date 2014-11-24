@@ -95,7 +95,8 @@ Package.onUse(function (api, where) {
     "common/collections.coffee",
     "common/collection-helpers.coffee",
     "common/hooks.coffee",
-    "common/register.coffee"
+    "common/register.coffee",
+    "common/routing.coffee"
   ], ["client", "server"]);
 
   api.addFiles([
@@ -144,7 +145,6 @@ Package.onUse(function (api, where) {
 
     "client/subscriptions.coffee",
     "client/app.coffee",
-    "client/routing.coffee",
 
     "client/helpers/helpers.coffee",
     "client/helpers/i18n/i18n.coffee",
