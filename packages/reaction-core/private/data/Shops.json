@@ -362,9 +362,11 @@
         "decimal": ","
       },
       "RUB": {
-        "format" : "%s%v",
-        "symbol": "руб",
-        "decimal": ","
+        "format" : "%v %s",
+        "symbol": "руб.",
+        "decimal": ",",
+        "thousand": " ",
+        "precision": 0
       },
       "SEK": {
         "format" : "%s%v",
