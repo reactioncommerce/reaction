@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-xs-12 col-sm-9 col-md-9">
             <div class="col-sm-12 form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
-                {{>afFieldLabel name='title'}}
+                <label class="control-label">{{afFieldLabelText name='title'}}</label>
                 {{>afFieldInput name='title'}}
                 {{#if afFieldIsInvalid name='title'}}
                 <span class="help-block">{{afFieldMessage name='title'}}</span>
@@ -14,7 +14,7 @@
             </div>
 
             <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
-              {{>afFieldLabel name='weight'}}
+              <label class="control-label">{{afFieldLabelText name='weight'}}</label>
               {{>afFieldInput name='weight'}}
               {{#if afFieldIsInvalid name='weight'}}
               <span class="help-block">{{afFieldMessage name='weight'}}</span>
@@ -22,7 +22,7 @@
             </div>
 
             <div class="col-xs-3 col-sm-3 form-group {{#unless hasChildVariants}}{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}{{/unless}}">
-              {{>afFieldLabel name='inventoryQuantity'}}
+              <label class="control-label">{{afFieldLabelText name='inventoryQuantity'}}</label>
               {{>afFieldInput name='inventoryQuantity' disabled=hasChildVariants}}
               {{#if afFieldIsInvalid name='inventoryQuantity'}}
               <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
@@ -30,7 +30,7 @@
             </div>
 
             <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
-              {{>afFieldLabel name='compareAtPrice'}}
+              <label class="control-label">{{afFieldLabelText name='compareAtPrice'}}</label>
               {{>afFieldInput name='compareAtPrice'}}
               {{#if afFieldIsInvalid name='compareAtPrice'}}
               <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="col-xs-3 col-sm-3 form-group {{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
-              {{>afFieldLabel name='price'}}
+              <label class="control-label">{{afFieldLabelText name='price'}}</label>
               {{#if hasChildVariants}}
                 {{>afFieldInput name='price' value="N/A" disabled=hasChildVariants}}
               {{else}}
@@ -71,7 +71,7 @@
               </div>
               <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
                   <span class="col-xs-5 col-sm-8 col-md-8">
-                  {{>afFieldLabel name='lowInventoryWarningThreshold'}}
+                  <label class="control-label">{{afFieldLabelText name='lowInventoryWarningThreshold'}}</label>
                   {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
                   </span>
                   {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}
