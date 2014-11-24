@@ -24,7 +24,7 @@ Template.productTagInputForm.events
       autoFocus: true
       source: (request, response) ->
         datums = []
-        slug = _.slugify(request.term)
+        slug = getSlug request.term
         Tags.find({slug: new RegExp(slug, "i")}).forEach (tag) ->
           datums.push(
             label: tag.name
