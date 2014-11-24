@@ -1,9 +1,9 @@
 # TODO see if these are needed/used and whether they should have schemas
-share.ReactionPalette = @ReactionPalette = new Meteor.Collection(null)
-share.Product = @Product = new Meteor.Collection("Product")
-share.Variant = @Variant = new Meteor.Collection("Variant")
+ReactionCore.Product = @Product = new Mongo.Collection("Product")
+ReactionCore.Variant = @Variant = new Mongo.Collection("Variant")
 
-ReactionCore.Collections.Translations = new Meteor.Collection "Translations"
+# Translations
+ReactionCore.Collections.Translations = new Mongo.Collection "Translations"
 
 ###
 # Packages
@@ -35,7 +35,7 @@ ReactionCore.Schemas.PackageConfig = PackageConfigSchema = new SimpleSchema
     optional: true
     blackbox: true
 
-ReactionCore.Collections.Packages = new Meteor.Collection "Packages"
+ReactionCore.Collections.Packages = new Mongo.Collection "Packages"
 ReactionCore.Collections.Packages.attachSchema PackageConfigSchema
 
 ###
@@ -127,6 +127,7 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     optional: true
   fullName:
     type: String
+    label: 'Full name'
   address1:
     label: "Address 1"
     type: String
@@ -136,15 +137,14 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     optional: true
   city:
     type: String
+    label: "City"
   company:
     type: String
     optional: true
+    label: "Company"
   phone:
     type: String
     label: "Phone"
-    min: 7
-    max: 22
-    regEx: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
   region:
     label: "State/Province/Region"
     type: String
@@ -153,6 +153,7 @@ ReactionCore.Schemas.Address = AddressSchema = new SimpleSchema
     type: String
   country:
     type: String
+    label: "Country"
   isCommercial:
     label: "This is a commercial address"
     type: Boolean
@@ -281,7 +282,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema
       new Date()  if @isUpdate
     optional: true
 
-ReactionCore.Collections.Shops = Shops = @Shops = new Meteor.Collection "Shops",
+ReactionCore.Collections.Shops = Shops = @Shops = new Mongo.Collection "Shops",
   transform: (shop) ->
     for index, member of shop.members
       member.index = index
@@ -467,7 +468,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
       new Date() if @isUpdate
     optional: true
 
-ReactionCore.Collections.Products = Products = @Products = new Meteor.Collection "Products"
+ReactionCore.Collections.Products = Products = @Products = new Mongo.Collection "Products"
 ReactionCore.Collections.Products.attachSchema ReactionCore.Schemas.Product
 
 ###
@@ -516,7 +517,7 @@ ReactionCore.Schemas.Customer = new SimpleSchema
   updatedAt:
     type: Date
 
-ReactionCore.Collections.Customers = Customers = @Customers = new Meteor.Collection "Customers"
+ReactionCore.Collections.Customers = Customers = @Customers = new Mongo.Collection "Customers"
 ReactionCore.Collections.Customers.attachSchema ReactionCore.Schemas.Customer
 
 ###
@@ -654,10 +655,9 @@ ReactionCore.Schemas.Cart = new SimpleSchema
         return $set: new Date
       else if @isUpsert
         return $setOnInsert: new Date
-    denyInsert: true
     optional: true
 
-ReactionCore.Collections.Cart = Cart = @Cart = new Meteor.Collection "Cart"
+ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart"
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
 ###
@@ -691,7 +691,7 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema
     type: [ReactionCore.Schemas.Document]
     optional: true
 
-ReactionCore.Collections.Orders = Orders = @Orders = new Meteor.Collection "Orders"
+ReactionCore.Collections.Orders = Orders = @Orders = new Mongo.Collection "Orders"
 ReactionCore.Collections.Orders.attachSchema [ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
 
 ###
@@ -720,5 +720,5 @@ ReactionCore.Schemas.Tag = new SimpleSchema
   updatedAt:
     type: Date
 
-ReactionCore.Collections.Tags = Tags = @Tags = new Meteor.Collection "Tags"
+ReactionCore.Collections.Tags = Tags = @Tags = new Mongo.Collection "Tags"
 ReactionCore.Collections.Tags.attachSchema ReactionCore.Schemas.Tag

@@ -14,7 +14,9 @@ Template.metaComponent.events
       $(event.currentTarget).animate({backgroundColor: "#e2f2e2" }).animate({backgroundColor: "#fff"})
       Tracker.flush()
     else
-      if (updateMeta.key and updateMeta.value) or updateMeta.value
+      if updateMeta.value and not updateMeta.key
+        $(event.currentTarget).parent().children('.metafield-key-input').val('').focus()
+      if updateMeta.key and updateMeta.value
         Meteor.call "updateMetaFields", @._id, updateMeta
         Tracker.flush()
         $(event.currentTarget).parent().children('.metafield-key-input').val('').focus()

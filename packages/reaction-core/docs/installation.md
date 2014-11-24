@@ -36,12 +36,14 @@ git pull
 meteor
 ```
 
-*Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the udpated file*
+*Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the updated file*
 
 ##Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
 
 	meteor deploy --settings settings/prod.json yourdemosite.meteor.com
+
+*Important note:* Currently if you are trying to run Reaction as a Node app (not in developement mode) and are encountering issues, you may want to try running `meteor remove force-ssl`. We are working toward a solution for this in the near future.
 
 ## Configuration Files (optional)
 If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time you do "meteor reset"
@@ -80,13 +82,25 @@ Example configuration file
 ### Env variables (optional)
 
 ```bash
-export MAIL_URL="<smtp connection string"
+export MAIL_URL="<smtp connection string>"
 export METEOR_EMAIL="youradmin@yourdomain.com" 
 export METEOR_USER="admin"
 export METEOR_AUTH="password"
 export MONGO_URL="<your mongodb connect string>"
 export ROOT_URL=""
 ```
+
+Alternatively can also set environment variables by adding them to a settings.json file, like so:
+
+```
+"reaction": {
+   "METEOR_USER": "Administrator",
+   "METEOR_AUTH": "password",
+   "METEOR_EMAIL": "root@localhost"
+ }
+```
+
+This can be useful (or even necessary) when deploying to a remote server that doesn't offer SSH access. *Note: Global environment variables will take precendence over variables set via settings.json*
 
 The `METEOR_EMAIL`, `METEOR_USER`, `METEOR_AUTH` environment variables will create this email/user/password as the default first site admin user.
 

@@ -18,7 +18,7 @@
     ],
     [
       "aldeed:autoform",
-      "3.2.0"
+      "4.0.7"
     ],
     [
       "aldeed:collection2",
@@ -26,11 +26,11 @@
     ],
     [
       "aldeed:geocoder",
-      "0.3.2"
+      "0.3.3"
     ],
     [
       "aldeed:simple-schema",
-      "1.0.3"
+      "1.1.0"
     ],
     [
       "aldeed:template-extension",
@@ -170,7 +170,7 @@
     ],
     [
       "dburles:collection-helpers",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "ddp",
@@ -310,6 +310,10 @@
     ],
     [
       "observe-sequence",
+      "1.0.3"
+    ],
+    [
+      "ongoworks:speakingurl",
       "1.0.3"
     ],
     [

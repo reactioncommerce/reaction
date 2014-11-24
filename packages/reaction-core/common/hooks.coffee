@@ -11,7 +11,7 @@ Products.before.insert (userId, product) ->
   product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
   _.defaults(product,
     productType: "Simple"
-    handle: _.slugify(product.title)
+    handle: getSlug product.title
     isVisible: false
     updatedAt: new Date()
     createdAt: new Date()
@@ -29,7 +29,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
 
   # keep quantity of parent variants in sync with the aggregate quantity of
   # of their children
-  if modifier.$set['variants.$']?.inventoryQuantity >= 0
+  if modifier.$set?['variants.$']?.inventoryQuantity >= 0
     qty = modifier.$set['variants.$'].inventoryQuantity || 0
     for variant in product.variants when variant._id isnt modifier.$set['variants.$']._id and variant.parentId is modifier.$set['variants.$'].parentId
       qty += variant.inventoryQuantity || 0

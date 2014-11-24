@@ -187,16 +187,21 @@ currentProduct = @currentProduct
     variantId = selectedVariant()._id
   variant = _.findWhere product.variants, _id: variantId
 
-  children = (variant for variant in product.variants when variant.parentId is variantId)
+  children = (thisVariant for thisVariant in product.variants when thisVariant.parentId is variantId)
+
   if children.length is 0
     return variant.price
+
   if children.length is 1
     return children[0].price
+
   priceMin = Number.POSITIVE_INFINITY
   priceMax = Number.NEGATIVE_INFINITY
+
   for child in children
     priceMin = child.price if child.price < priceMin
     priceMax = child.price if child.price > priceMax
+
   if priceMin is priceMax
     return priceMin
   return priceMin + ' - ' + priceMax
@@ -211,6 +216,7 @@ currentProduct = @currentProduct
     productId = selectedProduct()._id
   product = Products.findOne(productId)
   variants = (variant for variant in product.variants when not variant.parentId)
+
   if variants.length > 0
     variantPrices = []
     for variant in variants
@@ -221,9 +227,9 @@ currentProduct = @currentProduct
         variantPrices.push firstPrice, lastPrice
       else
         variantPrices.push range
+
   priceMin = _.min variantPrices
   priceMax = _.max variantPrices
   if priceMin is priceMax
     return priceMin
   return priceMin + ' - ' + priceMax
-

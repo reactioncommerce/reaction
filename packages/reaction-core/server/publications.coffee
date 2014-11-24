@@ -129,7 +129,7 @@ Shops.allow
 # Load the session
 # If no session is loaded, creates a new one
 ###
-ServerSessions = new Meteor.Collection("ReactionSessions")
+ServerSessions = new Mongo.Collection("ReactionSessions")
 Meteor.publish 'ReactionSessions', (id) ->
   created = new Date().getTime()
   id = ServerSessions.insert(created: created) unless id
