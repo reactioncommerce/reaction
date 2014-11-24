@@ -42,7 +42,7 @@ Package.onUse(function (api, where) {
     api.use("aldeed:autoform@4.0.7");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
-    api.use("ongoworks:speakingurl@1.0.2");
+    api.use("ongoworks:speakingurl@1.0.3");
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
@@ -78,6 +78,7 @@ Package.onUse(function (api, where) {
     api.imply("alanning:roles");
     api.imply("mrt:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);
+    api.imply("ongoworks:speakingurl");
 
 
   // Pre-0.9.0
