@@ -120,9 +120,6 @@ createDefaultAdminUser = ->
 ###
 Meteor.startup ->
   loadFixtures()
-  if Meteor.settings.public?.isDebug
-    Meteor.setInterval(loadFixtures, 300)
-
 
   # data conversion:  if ROOT_URL changes update shop domain
   # for now, we're assuming the first domain is the primary

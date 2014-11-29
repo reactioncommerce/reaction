@@ -1,15 +1,11 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
   name: "reactioncommerce:core",
-  version: "0.2.1",
-  git: "https://github.com/ongoworks/reaction-core.git"
+  version: "0.2.2",
+  git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
 Npm.depends({
-    "phantomjs": '1.9.7-15',
-    // Note: We need to use a tarball URL here until a node-phantom
-    // dependency issue is fixed. See https://github.com/alexscheelmeyer/node-phantom/issues/102
-    "node-phantom": 'https://github.com/apdmatos/node-phantom/tarball/2ccadc1d24efc47ace9ccfee187a0689c78e9009',
     "colors": "0.6.2"
 });
 
@@ -105,6 +101,7 @@ Package.onUse(function (api, where) {
     "server/fixtures.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
+    "server/methods/cart/checkout/methods.coffee",
     "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
     "server/methods/accounts/accounts.coffee",

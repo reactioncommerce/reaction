@@ -4,16 +4,13 @@
 <div class="panel-heading">
   <h3 class="panel-title">
     <span data-i18n="checkoutShipping.selectShippingOption">Select shipping option</span>
-    {{#if userHasRole "admin"}}
-    <i class="fa fa-plus fa-lg pull-right" id="editShippingMethods"></i>
-    {{/if}}
   </h3>
 </div>
 
 <div class="panel-body">
   <div class="checkout-shipping list-group">
   {{#each rates}}
-    <a href="#" class="list-group-item {{isSelected}}" data-carrier="{{carrier}}" data-method="{{method}}">
+    <a href="#" class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
       <div class="col-md-6">{{label}}</div>
       <div>{{value}}</div>
     </a>
