@@ -20,6 +20,8 @@ Browse to [http://localhost:3000](http://localhost:3000) and you should see Reac
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
 
+*Note: if you are running in a VM on localhost, you might want to remove the SSL redirect with the command `meteor remove force-ssl`. This will prevent the redirect to the https port.*
+
 ## Reset
 To reset data and give you a fresh test dataset from packages/reaction-core/private/data/*.json
 
@@ -118,7 +120,7 @@ To send email you need configure the [env MAIL_URL variable](http://docs.meteor.
 Password reset, and a few other items that use email templates won't work unless you configure this.
 
 ### HTTPS
-You can use `meteor remove https` to remove production redirection to `https` protocol.  To add back, `meteor add https`.  When developing locally, you should not have to remove https as Meteor internally redirects all `localhost` requests to the `http` protocol.
+You can use `meteor remove force-ssl` to remove production redirection to `https` protocol.  To add back, `meteor add force-ssl`.  When developing locally, you should not have to remove https as Meteor internally redirects all `localhost` requests to the `http` protocol. However, if you are running on a VM, or using Vagrant, you should run `meteor remove force-ssl` and remove this package locally.
 
 
 #Dockerfile
