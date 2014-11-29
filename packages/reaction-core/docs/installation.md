@@ -7,7 +7,7 @@ OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-
 
 ##Installation
     curl https://install.meteor.com | /bin/sh
-    git clone https://github.com/ongoworks/reaction.git
+    git clone https://github.com/reactioncommerce/reaction.git
     cd reaction	
 
 
@@ -50,7 +50,7 @@ An example of a deployment with password to a [meteor.com hosted site](http://do
 ## Configuration Files (optional)
 If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time you do "meteor reset"
 
-Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
+Create [settings/dev.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
 
 ```bash
 cp settings/dev.sample.json settings/dev.json
@@ -142,7 +142,7 @@ docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost
 
 # Vagrant / Ubuntu
 
-Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/ongoworks/reaction-core/blob/master/doc/vagrant.md)
+Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/reactioncommerce/reaction-core/blob/master/docs/vagrant.md)
 
 ## Failed to load c++ Json message
 
