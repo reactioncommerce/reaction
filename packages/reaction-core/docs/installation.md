@@ -64,39 +64,39 @@ After you've created a configuration file, add `--settings settings/<yoursetting
 
 Example configuration file
 
-	```json
-		{
-		  "baseUrl": "http://localhost:3000",
-		  "googleAnalyticsProperty": "__KEY__",
-		  "facebook": {
-		    "secret": "__SECRET__"
-		  },
-		  "reaction": {
-		    "METEOR_USER": "Administrator",
-		    "METEOR_AUTH": "password",
-		    "METEOR_EMAIL": "root@localhost"
-		  },
-		  "public": {
-		    "isDebug": true,
-		    "facebook": {
-		      "appId": "__APP_ID__"
-		    }
-		  }
-		}
-	```
+```json
+	{
+	  "baseUrl": "http://localhost:3000",
+	  "googleAnalyticsProperty": "__KEY__",
+	  "facebook": {
+	    "secret": "__SECRET__"
+	  },
+	  "reaction": {
+	    "METEOR_USER": "Administrator",
+	    "METEOR_AUTH": "password",
+	    "METEOR_EMAIL": "root@localhost"
+	  },
+	  "public": {
+	    "isDebug": true,
+	    "facebook": {
+	      "appId": "__APP_ID__"
+	    }
+	  }
+	}
+```
 
 ### ENV variables (optional)
 
 You can also use many of the settings as environment variables, useful for headless and automated vm configuration.
 
-	```bash
-	export MAIL_URL="<smtp connection string>"
-	export METEOR_EMAIL="youradmin@yourdomain.com" 
-	export METEOR_USER="admin"
-	export METEOR_AUTH="password"
-	export MONGO_URL="<your mongodb connect string>"
-	export ROOT_URL=""
-	```
+```bash
+export MAIL_URL="<smtp connection string>"
+export METEOR_EMAIL="youradmin@yourdomain.com" 
+export METEOR_USER="admin"
+export METEOR_AUTH="password"
+export MONGO_URL="<your mongodb connect string>"
+export ROOT_URL=""
+```
 
 Alternatively can also set environment variables by adding them to a settings.json file, like so:
 
