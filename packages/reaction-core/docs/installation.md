@@ -136,10 +136,11 @@ You can ignore this error, but if it annoys you can run
 ```xcode-select --install``` (on a mac) or ```sudo apt-get install gcc make build-essential``` (on ubuntu)
 
 ##Docker
+Requires installation of Docker. On OS X or Windows install [boot2docker](http://boot2docker.io/).
 
-There is a Dockerfile in the project root that creates a Docker image of Reaction Commerce, that has been demeteorized and is starts the reaction meteor bundle as `forever -w ./main.js` . It does not include a database, but the container accepts environment variables for configuration. (hint: compose.io is a great place to get a free test db, or a mongo container)
+There is a Dockerfile in the project root that creates a Docker image of Reaction Commerce, that has been demeteorized and starts the reaction meteor bundle as `forever -w ./main.js` . It does not include a database, but the container accepts environment variables for configuration. (hint: compose.io is a great place to get a free test db, or a mongo container)
 
-We provide images built up to date from the master branch. These are the same images running on reactioncommerce.com. You can pull our latest build from the [Docker Hub](https://registry.hub.docker.com/u/ongoworks/reaction/),  or from the Reaction directory you can just do:
+We provide up to date images built from the master branch. These are the same images running on reactioncommerce.com. You can pull our latest build from the [Docker Hub](https://registry.hub.docker.com/u/ongoworks/reaction/), or from the Reaction directory you can build your own image:
 
 ```bash
 docker build -t ongoworks/reaction .
@@ -151,7 +152,7 @@ Typically you would start a Docker/Reaction app container by starting the Docker
 docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost" -e PORT="8080" -p ::8080 -d ongoworks/reaction
 ```
 
-*Note: you cannot yet deploy your local docker build to reactioncommerce.com, but this functionality is being developed in the Launchdock project at [Launchdock.io](http://launchdock.io/)* 
+*Note: you cannot yet deploy your local docker build to reactioncommerce.com, but this functionality is being developed in the Launchdock project at [launchdock.io](http://launchdock.io/)* 
 
 
 ##Vagrant / Ubuntu
