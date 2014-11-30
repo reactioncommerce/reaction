@@ -50,14 +50,14 @@ An example of a deployment with password to a [meteor.com hosted site](http://do
 
 
 ## settings.json configuration
-If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time you do "meteor reset"
+A configuration file can be loaded using the `meteor --settings` option. 
 
-Create [settings/dev.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
+Copy [settings/dev.sample.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.sample.json) and create a new configuration file, for example:
 
-	cp settings/dev.sample.json settings/dev.json
+	cd reaction
+	cp settings/dev.sample.json settings/settings.json
 
-After you've created a configuration file, add `--settings settings/<yoursettings>.json` to the `meteor` startup command. There are some helper scripts in the *reaction/bin* directory, that make this a bit easier for development.
-
+After you've created and edited a configuration file, add `--settings settings/settings.json` to the `meteor` startup command. 
 
 	meteor --settings settings/settings.json  --port 3000
 
