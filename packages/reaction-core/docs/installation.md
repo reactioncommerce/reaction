@@ -1,9 +1,6 @@
 #Installation
-
-Developers can easily install, and modify Reaction locally.
-
-##Prerequisites
-OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
+*Prerequisites
+OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)*
 
 ##Installation
     curl https://install.meteor.com | /bin/sh
