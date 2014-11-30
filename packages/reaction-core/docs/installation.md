@@ -2,7 +2,8 @@
 *Prerequisites
 OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)*
 
-##Installation
+Install meteor, clone the repo, and then start the application from the Terminal commmand line:
+
     curl https://install.meteor.com | /bin/sh
     git clone https://github.com/reactioncommerce/reaction.git
     cd reaction	
@@ -38,7 +39,7 @@ meteor
 
 *Note: currently we're not testing data schema compatibility between versions, which is why we use `meteor reset` in this example. It's not necessary if you want to preserve your data, but there may be compatibility issues.*
 
-##Deploying
+#Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
 
 	meteor deploy --settings settings/prod.json yourdemosite.meteor.com
@@ -82,7 +83,7 @@ Example configuration file
 	}
 ```
 
-### ENV variables (optional)
+### Environment variables
 
 You can also use many of the settings as environment variables, useful for headless and automated vm configuration.
 
@@ -129,9 +130,12 @@ You can use `meteor remove force-ssl` to remove redirection to the `https` proto
 ### Fixture data
 The initial shop data is loaded from the reactioncommerce:reaction-core package /private/data directory. See [the packages development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) to modify this and other core packages locally.
 
+### Failed to load c++ Json message
 
+You can ignore this error, but if it annoys you can run
+```xcode-select --install``` (on a mac) or ```sudo apt-get install gcc make build-essential``` (on ubuntu)
 
-#Docker
+##Docker
 
 There is a Dockerfile in the project root that creates a Docker image of Reaction Commerce, that has been demeteorized and is starts the reaction meteor bundle as `forever -w ./main.js` . It does not include a database, but the container accepts environment variables for configuration. (hint: compose.io is a great place to get a free test db, or a mongo container)
 
@@ -150,11 +154,6 @@ docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost
 *Note: you cannot yet deploy your local docker build to reactioncommerce.com, but this functionality is being developed in the Launchdock project at [Launchdock.io](http://launchdock.io/)* 
 
 
-# Vagrant / Ubuntu
+##Vagrant / Ubuntu
 
 Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/reactioncommerce/reaction-core/blob/master/docs/vagrant.md)
-
-## Failed to load c++ Json message
-
-You can ignore this error, but if it annoys you can run
-```xcode-select --install``` (on a mac) or ```sudo apt-get install gcc make build-essential``` (on ubuntu)
