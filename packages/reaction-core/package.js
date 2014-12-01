@@ -25,6 +25,7 @@ Package.onUse(function (api, where) {
     api.use("underscore");
     api.use('blaze');
     api.use('jquery');
+    api.use('email');
 
     api.use("d3@1.0.0");
     api.use("amplify@1.0.0");
@@ -451,12 +452,6 @@ Package.onUse(function (api, where) {
     "currentProduct",
     "ShopController",
     "Products",
-    "ShopMemberSchema",
-    "ProductVariantSchema",
-    "AddressSchema",
-    "VariantMediaSchema",
-    "MetafieldSchema",
-    "CartItemSchema",
     "Shop",
     "Cart",
     "Tags"
