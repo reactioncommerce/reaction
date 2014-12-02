@@ -88,12 +88,21 @@ Package.onUse(function (api, where) {
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
-    "common/collectionFS.coffee",
-    "common/collections.coffee",
-    "common/collection-helpers.coffee",
-    "common/hooks.coffee",
     "common/register.coffee",
-    "common/routing.coffee"
+    "common/routing.coffee",
+    "common/schemas/cart.coffee",
+    "common/schemas/orders.coffee",
+    "common/schemas/packages.coffee",
+    "common/schemas/products.coffee",
+    "common/schemas/sessions.coffee",
+    "common/schemas/shipping.coffee",
+    "common/schemas/shops.coffee",
+    "common/schemas/tags.coffee",
+    "common/schemas/translations.coffee",
+    "common/collections/collections.coffee",
+    "common/collections/collectionFS.coffee",
+    "common/helpers/helpers.coffee",
+    "common/hooks/hooks.coffee"
   ], ["client", "server"]);
 
   api.addFiles([
