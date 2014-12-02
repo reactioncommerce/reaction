@@ -40,6 +40,7 @@ Package.onUse(function (api, where) {
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
     api.use("ongoworks:speakingurl@1.0.3");
+    api.use("reactioncommerce:bs3-less@0.1.0",["client","server"]);
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
@@ -60,6 +61,7 @@ Package.onUse(function (api, where) {
     api.imply("amplify");
     api.imply("accounts-base");
     api.imply("ui");
+    api.imply("reactioncommerce:bs3-less");
 
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
@@ -120,19 +122,6 @@ Package.onUse(function (api, where) {
 
   api.addFiles([
     "lib/i18next-1.7.3/i18next-1.7.3.js",
-
-    "lib/bootstrap/lib/js/transition.js",
-    "lib/bootstrap/lib/js/alert.js",
-    "lib/bootstrap/lib/js/button.js",
-    "lib/bootstrap/lib/js/carousel.js",
-    "lib/bootstrap/lib/js/collapse.js",
-    "lib/bootstrap/lib/js/dropdown.js",
-    "lib/bootstrap/lib/js/modal.js",
-    "lib/bootstrap/lib/js/tooltip.js",
-    "lib/bootstrap/lib/js/popover.js",
-    "lib/bootstrap/lib/js/scrollspy.js",
-    "lib/bootstrap/lib/js/tab.js",
-    "lib/bootstrap/lib/js/affix.js",
 
     "lib/swiper/idangerous.swiper.css",
     "lib/swiper/idangerous.swiper.js",
@@ -415,9 +404,6 @@ Package.onUse(function (api, where) {
     "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
   ], ["client"]);
-
-  //bootstrap assets
-  api.addFiles('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
 
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});

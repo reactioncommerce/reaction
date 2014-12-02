@@ -333,6 +333,10 @@
       "1.0.1"
     ],
     [
+      "reactioncommerce:bs3-less",
+      "0.1.0"
+    ],
+    [
       "reactive-dict",
       "1.0.4"
     ],
