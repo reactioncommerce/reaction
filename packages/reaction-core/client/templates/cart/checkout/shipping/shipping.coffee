@@ -1,3 +1,7 @@
+###
+# These helpers can be used in general shipping packages
+# or replaced, but are meant to be generalized in nature.
+###
 Template.checkoutShipping.helpers
   # updates shipping rates in the cart collection
   rates: () ->
@@ -20,8 +24,3 @@ Template.checkoutShipping.events
     $(event.currentTarget).addClass('active')
     unless @.shipping?.shipmentMethod then CartWorkflow.shipmentMethod(@)
     Session.set "shipmentMethod",@
-
-# NEXT TODO:
-#  Uncaught event shipmentMethod inappropriate in current state new
-
-#  check why cart is new state, and not saved state when reloading.

@@ -460,7 +460,6 @@ Package.onUse(function (api, where) {
     "currentProduct",
     "ShopController",
     "Products",
-    "Shop",
     "Cart",
     "Tags"
   ], ["client", "server"]);
