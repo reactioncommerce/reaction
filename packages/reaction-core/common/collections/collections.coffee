@@ -2,7 +2,7 @@
 ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart"
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
-# Customers (not currently used)
+# Customers (not currently actively used)
 ReactionCore.Collections.Customers = Customers = @Customers = new Mongo.Collection "Customers"
 ReactionCore.Collections.Customers.attachSchema ReactionCore.Schemas.Customer
 
@@ -31,8 +31,3 @@ ReactionCore.Collections.Shops.attachSchema ReactionCore.Schemas.Shop
 # Tags
 ReactionCore.Collections.Tags = Tags = @Tags = new Mongo.Collection "Tags"
 ReactionCore.Collections.Tags.attachSchema ReactionCore.Schemas.Tag
-
-
-# TODO see if these are needed/used and whether they should have schemas
-ReactionCore.Product = @Product = new Mongo.Collection("Product")
-ReactionCore.Variant = @Variant = new Mongo.Collection("Variant")
