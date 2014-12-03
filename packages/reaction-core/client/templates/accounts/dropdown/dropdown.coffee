@@ -1,17 +1,14 @@
 Template.loginDropdown.events
-  "click .dropdown-menu": (event,template) ->
+  "click .dropdown-menu": (event) ->
     event.stopPropagation()
-    if Meteor.userId()
-      $('.dropdown-toggle').dropdown('toggle')
 
-  "click #logout": (event) ->
-    Session.set 'dashboard',false
+  "click #logout": (event, template) ->
+    Session.set 'dashboard', false
     Meteor.logout (err) ->
-      Meteor._debug err  if err
-      return
+      Meteor._debug err if err
     event.preventDefault()
-    return
+    template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
 
-Template.userDropdown.events
-  "click .user-accounts-dropdown > a": (event,template) ->
-    $('.dropdown-toggle').dropdown('toggle')
+  "click .user-accounts-dropdown a": (event, template) ->
+    event.preventDefault()
+    template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
