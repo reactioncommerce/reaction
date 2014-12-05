@@ -4,7 +4,7 @@
 # but you can also edit it by hand.
 
 # Core Meteor Packages
-standard-app-packages
+meteor-platform
 less
 coffeescript
 jquery
@@ -14,6 +14,9 @@ oauth-encryption
 accounts-facebook
 spiderable
 force-ssl
+
+# Community Packages
+nemo64:bootstrap
 
 # Reaction Commerce Packages
 reactioncommerce:core

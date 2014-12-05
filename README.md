@@ -5,7 +5,7 @@ A commerce platform developed with Meteor and following a reactive design patter
 ---
 ###Roadmap & Status:
 
-** Current status: Alpha Preview v0.2.1 **
+** Current status: Alpha Preview v0.2.2 **
 ** Functional but unstable, with HEAVY ongoing development!**
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. Would not recommend for production usage yet, unless you are very comfortable with the code, and aren't risk averse.
@@ -21,7 +21,6 @@ At http://reactioncommerce.com you can launch a test shop, launched as a Docker 
 The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
 
 Your test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
-
 
 ---
 ###Core ideas:
@@ -47,8 +46,22 @@ Your test shops help us in developing [Launchdock](https://github.com/ongoworks/
     * Commercial package and theme development encouraged.
     * All contributors should be rewarded. [please contact us](mailto:hello@ongoworks.com)
 
+## Feedback
+### GitHub Issues
+Our preferred method for Reaction feedback it that you use GitHub issues on the https://github.com/reactioncommerce/reaction project. 
+
+### Google Group
+Google group at https://groups.google.com/forum/#!forum/reaction-talk 
+
+### IRC
+Server: `chat.freenode.net`
+
+Channel: `#reactioncommerce`
+
 
 ##Developer Documentation
+
+[Getting started guide](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
 [Installation](https://github.com/ongoworks/reaction-core/blob/master/docs/installation.md)
 

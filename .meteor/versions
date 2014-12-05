@@ -43,7 +43,7 @@ cmather:handlebars-server@2.0.0
 coffeescript@1.0.4
 ctl-helper@1.0.4
 ctl@1.0.2
-d3@1.0.0
+d3js:d3@3.4.13
 dburles:collection-helpers@1.0.1
 ddp@1.0.11
 deps@1.0.5
@@ -53,6 +53,7 @@ facebook@1.1.2
 fastclick@1.0.1
 follower-livedata@1.0.2
 force-ssl@1.0.2
+fortawesome:fontawesome@4.2.0_2
 geojson-utils@1.0.1
 handlebars@1.0.1
 html-tools@1.0.2
@@ -80,6 +81,8 @@ mongo-livedata@1.0.6
 mongo@1.0.8
 mrt:moment@2.8.1
 mrt:underscore-string-latest@2.3.3
+nemo64:bootstrap-data@3.3.0_1
+nemo64:bootstrap@3.3.0_1
 npm-bcrypt@0.7.7
 npm-node-aes-gcm@0.1.3
 oauth-encryption@1.0.1
@@ -91,10 +94,10 @@ ordered-dict@1.0.1
 raix:eventemitter@0.0.1
 raix:ui-dropped-event@0.0.7
 random@1.0.1
-reactioncommerce:core@0.2.1
-reactioncommerce:reaction-google-analytics@0.1.1
+reactioncommerce:core@0.2.2
+reactioncommerce:reaction-google-analytics@0.1.2
 reactioncommerce:reaction-helloworld@0.1.3
-reactioncommerce:reaction-paypal@0.1.3
+reactioncommerce:reaction-paypal@0.1.4
 reactive-dict@1.0.4
 reactive-var@1.0.3
 reload@1.1.1
@@ -108,7 +111,6 @@ spacebars-compiler@1.0.3
 spacebars@1.0.3
 spiderable@1.0.5
 srp@1.0.1
-standard-app-packages@1.0.3
 templating@1.0.9
 tracker@1.0.3
 ui@1.0.4
