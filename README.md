@@ -1,4 +1,5 @@
 #Reaction Commerce
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A commerce platform developed with Meteor and following a reactive design pattern that puts usability and conversions first.
 
 
