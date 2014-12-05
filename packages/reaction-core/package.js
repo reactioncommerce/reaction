@@ -26,12 +26,12 @@ Package.onUse(function (api, where) {
     api.use('blaze');
     api.use('jquery');
     api.use('email');
-
-    api.use("d3@1.0.0");
     api.use("amplify@1.0.0");
 
-
     //community packages
+    api.use("nemo64:bootstrap@3.3.0_1","client");
+    api.use("d3js:d3@3.4.13");
+    api.use("fortawesome:fontawesome@4.2.0_2");
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
@@ -40,14 +40,14 @@ Package.onUse(function (api, where) {
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
     api.use("ongoworks:speakingurl@1.0.3");
-    api.use("reactioncommerce:bs3-less@0.1.0",["client","server"]);
+    api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
-    api.use("mrt:moment@2.8.1",'client');
-    api.use("sacha:spin@2.0.4", 'client');
+    api.use("mrt:moment@2.8.1","client");
+    api.use("sacha:spin@2.0.4", "client");
 
     api.use("cfs:standard-packages@0.0.2");
     api.use("cfs:graphicsmagick@0.0.1");
@@ -61,7 +61,6 @@ Package.onUse(function (api, where) {
     api.imply("amplify");
     api.imply("accounts-base");
     api.imply("ui");
-    api.imply("reactioncommerce:bs3-less");
 
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
@@ -347,11 +346,13 @@ Package.onUse(function (api, where) {
 
     // LESS IMPORT FILES
     // All less is imported in themes/import.less, only add here for dev hot reload
-    "client/themes/imports.less",
-    "client/themes/default/theme.import.less",
+    "client/themes/default/core-imports.less",
     "client/themes/default/variables.import.less",
     "client/themes/default/mixin.import.less",
+    "client/themes/default/theme.import.less"
+  ], ["client"]);
 
+  api.addFiles([
     // Monitor these LESS import files for changes
     "client/templates/cart/cartDrawer/cartDrawer.import.less",
     "client/templates/cart/cartDrawer/cartItems/cartItems.import.less",
@@ -403,7 +404,7 @@ Package.onUse(function (api, where) {
     "client/templates/products/products.import.less",
     "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
-  ], ["client"]);
+  ], ["client","server"],{isAsset: true});
 
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
