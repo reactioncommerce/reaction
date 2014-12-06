@@ -15,7 +15,7 @@ For example:
   git clone https://github.com/reactioncommerce/reaction.git
   git clone https://github.com/reactioncommerce/reaction-core.git
   git clone https://github.com/reactioncommerce/reaction-core-theme.git
-  ln -s ~/reactioncommerec/reaction-core reaction/packages/reaction-core
+  ln -s ~/reactioncommerce/reaction-core reaction/packages/reaction-core
   ln -s ~/reactioncommerce/reaction-core reaction/packages/reaction-core-theme
 ```
 
