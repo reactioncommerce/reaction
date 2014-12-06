@@ -1,14 +1,22 @@
 {
-  "baseUrl": "http://host.domain.com",
-  "googleAnalyticsProperty": "__KEY__",
+  "isDebug": false,
+  "baseUrl": "http://yourdomain.com",
+  "googleAnalyticsProperty": "",
   "facebook": {
-    "secret": "__SECRET__"
+    "secret": ""
+  },
+  "reaction": {
+    "METEOR_USER": "Administrator",
+    "METEOR_AUTH": "admin",
+    "METEOR_EMAIL": "admin@yourdomain.com"
+  },
+  "paypal": {
+    "client_id": "",
+    "client_secret": ""
   },
   "public": {
-    "version": "__VERSION__",
-    "isDebug": false,
     "facebook": {
-      "appId": "__APP_ID__"
+      "appId": ""
     }
   }
 }
