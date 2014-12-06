@@ -5,9 +5,6 @@
 
 # Core Meteor Packages
 meteor-platform
-less
-coffeescript
-jquery
 oauth-encryption
 
 # Optional Meteor Packages
@@ -20,6 +17,7 @@ nemo64:bootstrap
 
 # Reaction Commerce Packages
 reactioncommerce:core
+reactioncommerce:core-theme
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-helloworld
