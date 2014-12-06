@@ -9,7 +9,21 @@ Npm.depends({
     "colors": "0.6.2"
 });
 
-Package.onUse(function (api, where) {
+Package._transitional_registerBuildPlugin({
+  name: 'theme-configurator',
+  use: [
+    'underscore',
+    'reactioncommerce:core-theme@1.0.0'
+  ],
+  sources: [
+    'module-definitions.js',
+    'distributed-configuration.js',
+    'theme-configurator.js'
+  ],
+  npmDependencies: {}
+});
+
+Package.onUse(function (api) {
 
   if (api.versionsFrom) {
     api.versionsFrom('METEOR@1.0');
@@ -343,68 +357,7 @@ Package.onUse(function (api, where) {
 
     "client/templates/products/productDetail/attributes/attributes.html",
     "client/templates/products/productDetail/attributes/attributes.coffee",
-
-    // LESS IMPORT FILES
-    // All less is imported in themes/import.less, only add here for dev hot reload
-    "client/themes/default/core-imports.less",
-    "client/themes/default/variables.import.less",
-    "client/themes/default/mixin.import.less",
-    "client/themes/default/theme.import.less"
   ], ["client"]);
-
-  api.addFiles([
-    // Monitor these LESS import files for changes
-    "client/templates/cart/cartDrawer/cartDrawer.import.less",
-    "client/templates/cart/cartDrawer/cartItems/cartItems.import.less",
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.import.less",
-    "client/templates/cart/cartIcon/cartIcon.import.less",
-    "client/templates/cart/checkout/addressBook/addressBook.import.less",
-    "client/templates/cart/checkout/checkout.import.less",
-    "client/templates/cart/checkout/completed/completed.import.less",
-    "client/templates/cart/checkout/header/header.import.less",
-    "client/templates/cart/checkout/login/login.import.less",
-    "client/templates/cart/checkout/payment/methods/cards.import.less",
-    "client/templates/cart/checkout/payment/payment.import.less",
-    "client/templates/cart/checkout/progressBar/progressBar.import.less",
-    "client/templates/cart/checkout/review/review.import.less",
-    "client/templates/cart/checkout/shipping/shipping.import.less",
-    "client/templates/dashboard/orders/details/detail.import.less",
-    "client/templates/dashboard/orders/orders.import.less",
-    "client/templates/dashboard/orders/social/orderSocial.import.less",
-    "client/templates/dashboard/orders/stateHelpers/completed/completed.import.less",
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.import.less",
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.import.less",
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.import.less",
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
-    "client/templates/dashboard/packages/packages.import.less",
-    "client/templates/dashboard/packages/panel/panel.import.less",
-    "client/templates/dashboard/packages/grid/grid.import.less",
-    "client/templates/dashboard/packages/grid/package/package.import.less",
-    "client/templates/dashboard/dashboard.import.less",
-    "client/templates/dashboard/dashboardIcon/dashboardIcon.import.less",
-    "client/templates/dashboard/widget/widget.import.less",
-    "client/templates/layout/header/header.import.less",
-    "client/templates/layout/footer/footer.import.less",
-    "client/templates/layout/header/tags/tags.import.less",
-    "client/templates/accounts/accounts.import.less",
-    "client/templates/accounts/dropdown/dropdown.import.less",
-    "client/templates/accounts/inline/inline.import.less",
-    "client/templates/products/productDetail/attributes/attributes.import.less",
-    "client/templates/products/productDetail/images/productImageGallery.import.less",
-    "client/templates/products/productDetail/productDetail.import.less",
-    "client/templates/products/productDetail/social/social.import.less",
-    "client/templates/products/productDetail/variants/variant.import.less",
-    "client/templates/products/productDetail/tags/tags.import.less",
-    "client/templates/products/productDetail/variants/variantForm/variantForm.import.less",
-    "client/templates/products/productDetail/variants/variantList/variantList.import.less",
-    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.import.less",
-    "client/templates/products/productGrid/productGrid.import.less",
-    "client/templates/products/productList/productList.import.less",
-    "client/templates/products/products.import.less",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
-  ], ["client","server"],{isAsset: true});
 
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
