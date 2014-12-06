@@ -1,5 +1,4 @@
 #Reaction Commerce
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A commerce platform developed with Meteor and following a reactive design pattern that puts usability and conversions first.
 
 
@@ -54,10 +53,10 @@ Our preferred method for Reaction feedback it that you use GitHub issues on the 
 ### Google Group
 Google group at https://groups.google.com/forum/#!forum/reaction-talk 
 
-### IRC
-Server: `chat.freenode.net`
-
-Channel: `#reactioncommerce`
+### Developer Chat Rooom
+Join us on our Gitter chat room, discuss, get help.
+ 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ##Developer Documentation
