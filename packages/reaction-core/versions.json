@@ -427,7 +427,7 @@
       {
         "underscore": "1.0.1",
         "meteor": "1.1.3",
-        "reactioncommerce:core-theme": "1.0.0"
+        "reactioncommerce:core-theme": "1.0.1"
       }
     ]
   ],
