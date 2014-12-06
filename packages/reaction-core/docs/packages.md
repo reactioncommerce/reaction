@@ -21,7 +21,7 @@ For example:
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the next development release branch (as indicated on `reactioncommerce/reaction`, and not master.*
 
-*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain settins between `meteor reset`. Start with `meteor --settings settings/settings.json`*
+*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain configuration settings such as admin user credentials and paypal authentication between `meteor reset`. Start with `meteor --settings settings/settings.json`*
 
 # New packages
 
