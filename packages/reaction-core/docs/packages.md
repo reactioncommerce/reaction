@@ -15,8 +15,8 @@ For example:
   git clone https://github.com/reactioncommerce/reaction.git
   git clone https://github.com/reactioncommerce/reaction-core.git
   git clone https://github.com/reactioncommerce/reaction-core-theme.git
-  ln -s ~/ongoworks/reaction-core reaction/packages/reaction-core`
-  ln -s ~/ongoworks/reaction-core reaction/packages/reaction-core-theme`
+  ln -s ~/ongoworks/reaction-core reaction/packages/reaction-core
+  ln -s ~/ongoworks/reaction-core reaction/packages/reaction-core-theme
 ```
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the next development release branch (as indicated on `reactioncommerce/reaction`, and not master.*
