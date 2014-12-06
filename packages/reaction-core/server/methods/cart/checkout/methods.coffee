@@ -28,7 +28,7 @@ Meteor.methods
         if method?.rate?
           method.rate = "Free" if method.rate is '0'
           rates.push carrier: value, method: index, label:method.label, value:method.rate
-      console.log "returning rates" if Meteor.settings.public?.isDebug
+      console.log "returning rates" if Meteor.settings.isDebug
 
     # TODO:
     # wire in external shipping methods here, add to rates

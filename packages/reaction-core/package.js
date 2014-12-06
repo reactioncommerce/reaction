@@ -13,12 +13,12 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.0.0'
+    'reactioncommerce:core-theme'
   ],
   sources: [
-    'module-definitions.js',
-    'distributed-configuration.js',
-    'theme-configurator.js'
+    'server/buildtools/module-definitions.js',
+    'server/buildtools/distributed-configuration.js',
+    'server/buildtools/theme-configurator.js'
   ],
   npmDependencies: {}
 });
