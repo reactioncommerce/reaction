@@ -9,7 +9,21 @@ Npm.depends({
     "colors": "0.6.2"
 });
 
-Package.onUse(function (api, where) {
+Package._transitional_registerBuildPlugin({
+  name: 'theme-configurator',
+  use: [
+    'underscore',
+    'reactioncommerce:core-theme@1.0.0'
+  ],
+  sources: [
+    'module-definitions.js',
+    'distributed-configuration.js',
+    'theme-configurator.js'
+  ],
+  npmDependencies: {}
+});
+
+Package.onUse(function (api) {
 
   if (api.versionsFrom) {
     api.versionsFrom('METEOR@1.0');
@@ -26,12 +40,12 @@ Package.onUse(function (api, where) {
     api.use('blaze');
     api.use('jquery');
     api.use('email');
-
-    api.use("d3@1.0.0");
     api.use("amplify@1.0.0");
 
-
     //community packages
+    api.use("nemo64:bootstrap@3.3.0_1","client");
+    api.use("d3js:d3@3.4.13");
+    api.use("fortawesome:fontawesome@4.2.0_2");
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
@@ -40,14 +54,14 @@ Package.onUse(function (api, where) {
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
     api.use("ongoworks:speakingurl@1.0.3");
-    api.use("reactioncommerce:bs3-less@0.1.0",["client","server"]);
+    api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
-    api.use("mrt:moment@2.8.1",'client');
-    api.use("sacha:spin@2.0.4", 'client');
+    api.use("mrt:moment@2.8.1","client");
+    api.use("sacha:spin@2.0.4", "client");
 
     api.use("cfs:standard-packages@0.0.2");
     api.use("cfs:graphicsmagick@0.0.1");
@@ -61,7 +75,6 @@ Package.onUse(function (api, where) {
     api.imply("amplify");
     api.imply("accounts-base");
     api.imply("ui");
-    api.imply("reactioncommerce:bs3-less");
 
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
@@ -344,65 +357,6 @@ Package.onUse(function (api, where) {
 
     "client/templates/products/productDetail/attributes/attributes.html",
     "client/templates/products/productDetail/attributes/attributes.coffee",
-
-    // LESS IMPORT FILES
-    // All less is imported in themes/import.less, only add here for dev hot reload
-    "client/themes/imports.less",
-    "client/themes/default/theme.import.less",
-    "client/themes/default/variables.import.less",
-    "client/themes/default/mixin.import.less",
-
-    // Monitor these LESS import files for changes
-    "client/templates/cart/cartDrawer/cartDrawer.import.less",
-    "client/templates/cart/cartDrawer/cartItems/cartItems.import.less",
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.import.less",
-    "client/templates/cart/cartIcon/cartIcon.import.less",
-    "client/templates/cart/checkout/addressBook/addressBook.import.less",
-    "client/templates/cart/checkout/checkout.import.less",
-    "client/templates/cart/checkout/completed/completed.import.less",
-    "client/templates/cart/checkout/header/header.import.less",
-    "client/templates/cart/checkout/login/login.import.less",
-    "client/templates/cart/checkout/payment/methods/cards.import.less",
-    "client/templates/cart/checkout/payment/payment.import.less",
-    "client/templates/cart/checkout/progressBar/progressBar.import.less",
-    "client/templates/cart/checkout/review/review.import.less",
-    "client/templates/cart/checkout/shipping/shipping.import.less",
-    "client/templates/dashboard/orders/details/detail.import.less",
-    "client/templates/dashboard/orders/orders.import.less",
-    "client/templates/dashboard/orders/social/orderSocial.import.less",
-    "client/templates/dashboard/orders/stateHelpers/completed/completed.import.less",
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.import.less",
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.import.less",
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.import.less",
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
-    "client/templates/dashboard/packages/packages.import.less",
-    "client/templates/dashboard/packages/panel/panel.import.less",
-    "client/templates/dashboard/packages/grid/grid.import.less",
-    "client/templates/dashboard/packages/grid/package/package.import.less",
-    "client/templates/dashboard/dashboard.import.less",
-    "client/templates/dashboard/dashboardIcon/dashboardIcon.import.less",
-    "client/templates/dashboard/widget/widget.import.less",
-    "client/templates/layout/header/header.import.less",
-    "client/templates/layout/footer/footer.import.less",
-    "client/templates/layout/header/tags/tags.import.less",
-    "client/templates/accounts/accounts.import.less",
-    "client/templates/accounts/dropdown/dropdown.import.less",
-    "client/templates/accounts/inline/inline.import.less",
-    "client/templates/products/productDetail/attributes/attributes.import.less",
-    "client/templates/products/productDetail/images/productImageGallery.import.less",
-    "client/templates/products/productDetail/productDetail.import.less",
-    "client/templates/products/productDetail/social/social.import.less",
-    "client/templates/products/productDetail/variants/variant.import.less",
-    "client/templates/products/productDetail/tags/tags.import.less",
-    "client/templates/products/productDetail/variants/variantForm/variantForm.import.less",
-    "client/templates/products/productDetail/variants/variantList/variantList.import.less",
-    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.import.less",
-    "client/templates/products/productGrid/productGrid.import.less",
-    "client/templates/products/productList/productList.import.less",
-    "client/templates/products/products.import.less",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
   ], ["client"]);
 
   // Private fixture data
