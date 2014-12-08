@@ -5,7 +5,6 @@
 # yields based on the logic in this file
 # individual reaction packages have their own routing
 # *****************************************************
-
 ReactionController = ShopController.extend
   layoutTemplate: "layout"
 
@@ -40,7 +39,6 @@ staticPages = [
 Router.map ->
   # generic static pages
   for page in staticPages
-    console.log page
     @route page,
       controller: ReactionController
 
