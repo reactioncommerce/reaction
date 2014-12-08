@@ -113,6 +113,9 @@ Package.onUse(function (api) {
     "common/schemas/cart.coffee",
     "common/schemas/orders.coffee",
     "common/schemas/translations.coffee",
+    "common/schemas/taxes.coffee",
+    "common/schemas/shipping.coffee",
+    "common/schemas/discounts.coffee",
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
     "common/helpers/helpers.coffee",
@@ -175,7 +178,6 @@ Package.onUse(function (api) {
     "client/templates/layout/header/i18n/i18n.coffee",
 
     "client/templates/layout/footer/footer.html",
-    "client/templates/layout/footer/footer.coffee",
 
     "client/templates/layout/alerts/bootstrap-alerts.coffee",
     "client/templates/layout/alerts/alerts.html",

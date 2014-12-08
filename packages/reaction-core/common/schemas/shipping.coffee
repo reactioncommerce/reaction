@@ -1,3 +1,11 @@
+ReactionCore.Schemas.Shipping = new SimpleSchema
+  shopId:
+    type: String
+  provider:
+    type: ReactionCore.Schemas.ShippingProvider
+  methods:
+    type: [ReactionCore.Schemas.ShippingMethod]
+
 ReactionCore.Schemas.ShipmentQuote = new SimpleSchema
   carrier:
     type: Number
@@ -38,9 +46,6 @@ ReactionCore.Schemas.ShippingProvider = new SimpleSchema
   serviceUrl:
     type: String
     label: "Service URL"
-    optional: true
-  methods:
-    type: [ReactionCore.Schemas.ShippingMethod]
     optional: true
   containers:
     type: [Object]
