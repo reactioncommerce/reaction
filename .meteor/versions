@@ -94,7 +94,7 @@ ordered-dict@1.0.1
 raix:eventemitter@0.0.1
 raix:ui-dropped-event@0.0.7
 random@1.0.1
-reactioncommerce:core-theme@1.0.1
+reactioncommerce:core-theme@1.0.3
 reactioncommerce:core@0.2.2
 reactioncommerce:reaction-google-analytics@0.1.2
 reactioncommerce:reaction-helloworld@0.1.3

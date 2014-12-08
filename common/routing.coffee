@@ -3,7 +3,7 @@
 # see: https://github.com/EventedMind/iron-router
 # iron router handles url path, and renders templates into
 # yields based on the logic in this file
-# individual reaction packages have their own router.js
+# individual reaction packages have their own routing
 # *****************************************************
 
 ReactionController = ShopController.extend
@@ -29,12 +29,18 @@ staticPages = [
 
 # *****************************************************
 # to use your own templates, you can do override like this:
+#
 # Router.routes.index.options.template = "myIndex"
+#
+# or to change core controllers (and layouts) on a route:
+#
+# Router.routes.index.controller = ReactionController
 # *****************************************************
 
 Router.map ->
   # generic static pages
   for page in staticPages
+    console.log page
     @route page,
       controller: ReactionController
 
