@@ -165,8 +165,8 @@
       "1.0.4"
     ],
     [
-      "d3js:d3",
-      "3.4.13"
+      "d3",
+      "1.0.0"
     ],
     [
       "dburles:collection-helpers",
@@ -195,10 +195,6 @@
     [
       "follower-livedata",
       "1.0.2"
-    ],
-    [
-      "fortawesome:fontawesome",
-      "4.2.0_2"
     ],
     [
       "geojson-utils",
@@ -307,14 +303,6 @@
     [
       "mrt:underscore-string-latest",
       "2.3.3"
-    ],
-    [
-      "nemo64:bootstrap",
-      "3.3.0_1"
-    ],
-    [
-      "nemo64:bootstrap-data",
-      "3.3.0_1"
     ],
     [
       "npm-bcrypt",

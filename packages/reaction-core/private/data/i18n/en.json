@@ -15,6 +15,10 @@
                     "submit": "Submit",
                     "delete": "Delete"
                 },
+                "header": {
+                    "tagsAdd": "Add tag",
+                    "search": "Search products..."
+                },
                 "productDetail": {
                     "productManagement": "Product management",
                     "makeInvisible": "Make invisible",
@@ -22,7 +26,10 @@
                     "makeItVisible": "You can make it visible",
                     "whenYouAreDone": "when you're done editing.",
                     "tags": "Tags",
+                    "tagsAdd": "Add tag",
                     "details": "Details",
+                    "detailsName": "Detail name",
+                    "detailsInfo": "Detail information",
                     "options": "Options",
                     "addToCart": "Add to cart",
                     "chooseOptions": "Please choose options before adding to cart",
@@ -126,6 +133,14 @@
                     "fullname": "Full name",
                     "address1": "Address 1"
                 },
+                "dashboardIcon": {
+                    "iconTitle": "View Dashboard",
+                    "text": "Dashboard"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Create product",
+                    "text": "Create"
+                },
                 "accountsUI": {
                     "add": "add",
                     "and": "and",
@@ -155,6 +170,7 @@
                     "sign": "Sign",
                     "signIn": "Sign In",
                     "signin": "sign in",
+                    "signedIn": "You are signed in.",
                     "signOut": "Sign Out",
                     "signUp": "Register",
                     "signupCode": "Registration Code",

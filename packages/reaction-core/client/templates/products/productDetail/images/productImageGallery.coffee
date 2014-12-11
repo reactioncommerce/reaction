@@ -119,3 +119,7 @@ Template.imageUploader.events
   "change #files": uploadHandler
 
   "dropped #dropzone": uploadHandler
+
+Template.productImageGallery.events
+  "click #img-upload": (event,template) ->
+    $("#files").click()
