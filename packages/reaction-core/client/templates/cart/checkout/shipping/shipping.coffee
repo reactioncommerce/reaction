@@ -9,6 +9,10 @@ Template.checkoutShipping.helpers
     Meteor.call "updateCartShippingRates", @
     return @.shipping?.shipmentMethods
 
+  # helper to make sure there are some shipping providers
+  shippingConfigured: () ->
+    ReactionCore.Collections.Shipping.find({'methods.enabled': true}).count()
+
   # helper to display currently selected shipmentMethod
   isSelected: (cart)->
     shipmentMethod  = cart.shipping.shipmentMethod

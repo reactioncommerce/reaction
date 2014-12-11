@@ -63,19 +63,31 @@ ReactionCore.Schemas.ShippingProvider = new SimpleSchema
     label: "Service URL"
     optional: true
 
-ReactionCore.Schemas.ShippingContainers = new SimpleSchema
+ReactionCore.Schemas.ShippingParcel = new SimpleSchema
   containers:
-    type: [Object]
-    blackbox: true
+    type: String
+    optional: true
+  length:
+    type: Number
+    optional: true
+  width:
+    type: Number
+    optional: true
+  height:
+    type: Number
+    optional: true
+  weight:
+    type: Number
+    optional: true
 
 
 ReactionCore.Schemas.ShippingMethod = new SimpleSchema
   name:
     type: String
-    label: "Name"
+    label: "Method Code"
   label:
     type: String
-    label: "Label"
+    label: "Public Label"
   group:
     type: String
     label: "Group"
@@ -87,12 +99,10 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Number
     label: "Handling"
     defaultValue: 0
-    optional: true
   rate:
     type: Number
     label: "Rate"
     defaultValue: 0
-    optional: true
   enabled:
     type: Boolean
     label: "Enabled"
@@ -106,10 +116,10 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     optional: true
   'deliveryRange.$.begin':
     type: Number
-    label: "Will ship in"
+    label: "Days to ship"
   'deliveryRange.$.end':
     type: Number
-    label: "Will arrive in"
+    label: "Days until delivery"
   validRanges:
     type: Array
     optional: true
