@@ -225,7 +225,7 @@ Template.registerHelper "userHasRole", (role) ->
 Template.registerHelper "active", (path) ->
   # Get the current path for URL
   current = Router.current()
-  routeName = current and current.route.getName()
+  routeName = current and current.route.name
   if routeName is path
     return "active"
   else

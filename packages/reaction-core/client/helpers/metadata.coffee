@@ -10,7 +10,7 @@ ReactionCore.MetaData =
   }
   #render and append new metadata
   render:(route) ->
-    metaContent =  Blaze.toHTMLWithData(Template.coreHead, Router.current().getName )
+    metaContent =  Blaze.toHTMLWithData(Template.coreHead, route)
     $('head').append(metaContent)
     return  metaContent
 
@@ -26,7 +26,7 @@ ReactionCore.MetaData =
 
   # update meta data
   update: (route, params, meta) ->
-    return false unless Router.current()
+    return false unless route
 
     product = selectedProduct()
     shop = Shops.findOne(ReactionCore.shopId)
@@ -38,8 +38,7 @@ ReactionCore.MetaData =
     if params._id
       title = params._id.charAt(0).toUpperCase() + params._id.substring(1)
     else
-      routeName = Router.current().route.getName() #route name
-      title = routeName.charAt(0).toUpperCase() + routeName.substring(1) # Uppercase
+      title = route.name.charAt(0).toUpperCase() + route.name.substring(1)
     # product specific
     if product and product.handle is params._id
       meta.push 'name': 'description', 'content': product.description
@@ -52,9 +51,3 @@ ReactionCore.MetaData =
     #export meta to ReactionCore.MetaData
     ReactionCore.MetaData.title = title
     ReactionCore.MetaData.meta = meta
-
-  #wrap clear,update,render into single method
-  refresh: (route, params, meta) ->
-    ReactionCore.MetaData.clear(route)
-    ReactionCore.MetaData.update(route, params, meta)
-    ReactionCore.MetaData.render(route)

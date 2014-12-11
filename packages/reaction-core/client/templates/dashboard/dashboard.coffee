@@ -65,5 +65,3 @@ Template.dashboardNavBar.events
   'click .dashboard-navbar-package': () ->
     $('.dashboard-navbar-packages ul li').removeClass('active')
     $('#'+@._id).parent().addClass('active')
-  'click .dashboard-drawer-close-btn': () ->
-    toggleSession "dashboard"

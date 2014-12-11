@@ -1,27 +1,17 @@
 #Package Development
 
 #Core packages
-To work on included packages, and see your changes update in your local installation you must *git clone* packages locally, then in your local checkout of the *reactioncommerce/reaction* repo link the package to your checkout.
+To work on included packages, and see your changes update in your local installation you must *git clone* packages locally, then in your local checkout of the *ongoworks/reaction* repo link the package to your checkout.
 
 ```bash
     ln -s <full path to package>  packages/<org_pkgname>
 ```
 
 For example:
+`ln -s ~/ongoworks/reaction-core packages/reactioncommerce_core`
 
-```bash
-  mkdir ~/reactioncommerce
-  cd ~/reactioncommerce
-  git clone https://github.com/reactioncommerce/reaction.git
-  git clone https://github.com/reactioncommerce/reaction-core.git
-  git clone https://github.com/reactioncommerce/reaction-core-theme.git
-  ln -s ~/reactioncommerce/reaction-core reaction/packages/reaction-core
-  ln -s ~/reactioncommerce/reaction-core-theme reaction/packages/reaction-core-theme
-```
 
-*Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the next development release branch (as indicated on `reactioncommerce/reaction`, and not master.*
-
-*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain configuration settings such as admin user credentials and paypal authentication between `meteor reset`. Start with `meteor --settings settings/settings.json`*
+*Tip* Pull requests are happily accepted, please make your GitHub pull request a merge to the next development release branch, and not master.
 
 # New packages
 
@@ -36,7 +26,7 @@ Once you have created your packages directory, you'll continue creating a standa
     summary: "Reaction Hello World - example package for Reaction",
     name: "reactioncommerce:reaction-helloworld",
     version: "0.1.3",
-    git: "https://github.com/reactioncommerce/reaction-helloworld.git"
+    git: "https://github.com/ongoworks/reaction-helloworld.git"
   });
 ```
 

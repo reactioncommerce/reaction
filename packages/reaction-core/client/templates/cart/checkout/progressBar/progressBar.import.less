@@ -1,0 +1,205 @@
+//Thanks to Michael McQueen http://codepen.io/michaelmcqueen/pen/GdroF
+.next-stripe {
+background-size: 35px 35px;
+background-color: @cart-progress-next;
+background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
+background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
+}
+
+.visited-stripe {
+background-size: 35px 35px;
+background-color: @cart-progress-visited;
+background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+}
+
+.active-stripe {
+background-size: 35px 35px;
+background-color: @cart-progress-active;
+background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+}
+
+.inner-shadow {
+-webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, .2); box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, .2);
+}
+@-webkit-keyframes myanimation {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 50%;
+  }
+}
+
+.checkout-progress-wrap {
+  color: #444;
+  margin: 0 auto 100px auto;
+  min-width: auto;
+  position: relative;
+}
+ul.checkout-bar {
+  li {
+    color: #ccc;
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 20px 14px 80px;
+    position: relative;
+    vertical-align: top;
+    &:before {
+      .inner-shadow;
+      background: #ddd;
+      border: 2px solid #FFF;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      left: 20px;
+      line-height: 16px;
+      padding: 13px 11px 13px 12px;
+      height: 35px;
+      position: absolute;
+      text-align: center;
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+      top: 4px;
+      width: 35px;
+      z-index: 999;
+    }
+     &.active {
+      color: @cart-progress-active;
+      font-weight: bold;
+      &:before {
+        background: @cart-progress-active;
+        z-index: 99999;
+      }
+    }
+    &.visited {
+      background: @cart-progress-next;
+      color: @cart-progress-visited;
+      z-index: 99999;
+      &:before {
+       background: @cart-progress-visited;
+        z-index: 99999;
+      }
+    }
+    &:nth-child(1) {
+      &:before {
+        content: "1";
+      }
+    }
+     &:nth-child(2) {
+      &:before {
+        content: "2";
+      }
+    }
+    &:nth-child(3) {
+      &:before {
+        content: "3";
+      }
+    }
+     &:nth-child(4) {
+      &:before {
+        content: "4";
+      }
+    }
+    &:nth-child(5) {
+      &:before {
+        content: "5";
+      }
+    }
+    &:nth-child(6) {
+      &:before {
+        content: "6";
+      }
+    }
+  }
+  a {
+    color: #57aed1;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+}
+@media screen and (max-width: @screen-sm-max) {
+    .checkout-progress-wrap {
+        display: none;
+    }
+}
+
+
+@media all and (min-width: 980px) {
+  .cart-checkout-progress {
+    margin-top: 20px;
+  }
+ .checkout-bar li.active:after {
+    -webkit-animation: myanimation 3s 0;
+    .active-stripe;
+    .inner-shadow;
+    content:"";
+    height: 15px;
+    width: 100%;
+    left: 50%;
+    position: absolute;
+    top: -50px;
+    z-index: 0;
+  }
+  ul.checkout-bar {
+  .inner-shadow;
+  .next-stripe;
+  border-radius: 15px;
+  height: 15px;
+  margin: 0 auto;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  &:before {
+    .visited-stripe;
+    .inner-shadow;
+    border-radius: 15px;
+    content: " ";
+    height: 15px;
+    left: 0;
+    position: absolute;
+    width: 10%;
+  }
+   li {
+      display: inline-block;
+      margin: 50px 0 0;
+      padding: 0 5px;
+      text-align: center;
+      width: 19%;
+      &:before {
+        height: 45px;
+        left: 40%;
+        line-height: 16px;
+        padding: 13px 11px 13px 12px;
+        position: absolute;
+        top: -65px;
+        width: 45px;
+        z-index: 99;
+      }
+      &.visited {
+        background: none;
+        &:after {
+          .visited-stripe;
+          .inner-shadow;
+          content: "";
+          height: 15px;
+          left: 50%;
+          position: absolute;
+          top: -50px;
+          width: 100%;
+          z-index: 99;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: @screen-lg-min) {
+  .cart-checkout-progress {
+    max-width: 1200px;
+    margin: 20px auto 0 auto;
+  }
+}

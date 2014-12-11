@@ -23,7 +23,7 @@ Template.openCartDrawer.helpers
 
   checkoutView: ->
     checkoutView = "display:block"
-    if Router.current().route.getName() is 'cartCheckout' then checkoutView
+    if Router.current().route.name is 'cartCheckout' then checkoutView
 
 Template.openCartDrawer.events
   'click #btn-checkout': (event,template) ->

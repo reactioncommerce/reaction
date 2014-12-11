@@ -100,7 +100,7 @@ Meteor.methods
     #new tags
     if tagId #just an update
       Tags.update tagId, {$set:newTag}
-      console.log "Changed name of tag " + tagId + " to " + tagName if Meteor.settings.isDebug
+      console.log "Changed name of tag " + tagId + " to " + tagName if Meteor.settings.public?.isDebug
     else # create a new tag
       #prevent duplicate tags by checking for existing
       existingTag = Tags.findOne "name":tagName
@@ -108,10 +108,10 @@ Meteor.methods
       if existingTag
         if currentTagId
           Tags.update currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}}
-          console.log 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.isDebug
+          console.log 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
         else
           Tags.update existingTag._id, {$set:{"isTopLevel":true}}
-          console.log 'Marked tag "' + existingTag.name + '" as a top level tag' if Meteor.settings.isDebug
+          console.log 'Marked tag "' + existingTag.name + '" as a top level tag' if Meteor.settings.public?.isDebug
       #if a tag with that name does not exist yet
       else
         newTag.isTopLevel = !currentTagId
@@ -119,10 +119,10 @@ Meteor.methods
         newTag.updatedAt = new Date()
         newTag.createdAt = new Date()
         newTagId = Tags.insert newTag
-        console.log 'Created tag "' + newTag.name + '"' if Meteor.settings.isDebug
+        console.log 'Created tag "' + newTag.name + '"' if Meteor.settings.public?.isDebug
         if currentTagId
           Tags.update currentTagId, {$addToSet: {"relatedTagIds": newTagId}}
-          console.log 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.isDebug
+          console.log 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
