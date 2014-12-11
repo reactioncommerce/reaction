@@ -1,19 +1,29 @@
 Package.describe({
   summary: "Reaction Core - Reaction Commerce package for Meteor",
   name: "reactioncommerce:core",
-  version: "0.2.1",
-  git: "https://github.com/ongoworks/reaction-core.git"
+  version: "0.2.2",
+  git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
 Npm.depends({
-    "phantomjs": '1.9.7-15',
-    // Note: We need to use a tarball URL here until a node-phantom
-    // dependency issue is fixed. See https://github.com/alexscheelmeyer/node-phantom/issues/102
-    "node-phantom": 'https://github.com/apdmatos/node-phantom/tarball/2ccadc1d24efc47ace9ccfee187a0689c78e9009',
     "colors": "0.6.2"
 });
 
-Package.onUse(function (api, where) {
+Package._transitional_registerBuildPlugin({
+  name: 'theme-configurator',
+  use: [
+    'underscore',
+    'reactioncommerce:core-theme'
+  ],
+  sources: [
+    'server/buildtools/module-definitions.js',
+    'server/buildtools/distributed-configuration.js',
+    'server/buildtools/theme-configurator.js'
+  ],
+  npmDependencies: {}
+});
+
+Package.onUse(function (api) {
 
   if (api.versionsFrom) {
     api.versionsFrom('METEOR@1.0');
@@ -29,27 +39,29 @@ Package.onUse(function (api, where) {
     api.use("underscore");
     api.use('blaze');
     api.use('jquery');
-
-    api.use("d3@1.0.0");
+    api.use('email');
     api.use("amplify@1.0.0");
 
-
     //community packages
+    api.use("nemo64:bootstrap@3.3.0_1","client");
+    api.use("d3js:d3@3.4.13");
+    api.use("fortawesome:fontawesome@4.2.0_2");
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.1.0");
     api.use("aldeed:autoform@4.0.7");
     api.use("aldeed:template-extension@3.1.1","client");
-    api.use("iron:router@0.9.4");
+    api.use("iron:router@1.0.3");
     api.use("ongoworks:speakingurl@1.0.3");
+    api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
-    api.use("mrt:moment@2.8.1",'client');
-    api.use("sacha:spin@2.0.4", 'client');
+    api.use("mrt:moment@2.8.1","client");
+    api.use("sacha:spin@2.0.4", "client");
 
     api.use("cfs:standard-packages@0.0.2");
     api.use("cfs:graphicsmagick@0.0.1");
@@ -91,12 +103,20 @@ Package.onUse(function (api, where) {
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
-    "common/collectionFS.coffee",
-    "common/collections.coffee",
-    "common/collection-helpers.coffee",
-    "common/hooks.coffee",
     "common/register.coffee",
-    "common/routing.coffee"
+    "common/routing.coffee",
+    "common/schemas/packages.coffee",
+    "common/schemas/shops.coffee",
+    "common/schemas/shipping.coffee",
+    "common/schemas/products.coffee",
+    "common/schemas/tags.coffee",
+    "common/schemas/cart.coffee",
+    "common/schemas/orders.coffee",
+    "common/schemas/translations.coffee",
+    "common/collections/collections.coffee",
+    "common/collections/collectionFS.coffee",
+    "common/helpers/helpers.coffee",
+    "common/hooks/hooks.coffee"
   ], ["client", "server"]);
 
   api.addFiles([
@@ -105,6 +125,7 @@ Package.onUse(function (api, where) {
     "server/fixtures.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
+    "server/methods/cart/checkout/methods.coffee",
     "server/methods/orders/methods.coffee",
     "server/methods/products/methods.coffee",
     "server/methods/accounts/accounts.coffee",
@@ -114,19 +135,6 @@ Package.onUse(function (api, where) {
 
   api.addFiles([
     "lib/i18next-1.7.3/i18next-1.7.3.js",
-
-    "lib/bootstrap/lib/js/transition.js",
-    "lib/bootstrap/lib/js/alert.js",
-    "lib/bootstrap/lib/js/button.js",
-    "lib/bootstrap/lib/js/carousel.js",
-    "lib/bootstrap/lib/js/collapse.js",
-    "lib/bootstrap/lib/js/dropdown.js",
-    "lib/bootstrap/lib/js/modal.js",
-    "lib/bootstrap/lib/js/tooltip.js",
-    "lib/bootstrap/lib/js/popover.js",
-    "lib/bootstrap/lib/js/scrollspy.js",
-    "lib/bootstrap/lib/js/tab.js",
-    "lib/bootstrap/lib/js/affix.js",
 
     "lib/swiper/idangerous.swiper.css",
     "lib/swiper/idangerous.swiper.js",
@@ -349,69 +357,7 @@ Package.onUse(function (api, where) {
 
     "client/templates/products/productDetail/attributes/attributes.html",
     "client/templates/products/productDetail/attributes/attributes.coffee",
-
-    // LESS IMPORT FILES
-    // All less is imported in themes/import.less, only add here for dev hot reload
-    "client/themes/imports.less",
-    "client/themes/default/theme.import.less",
-    "client/themes/default/variables.import.less",
-    "client/themes/default/mixin.import.less",
-
-    // Monitor these LESS import files for changes
-    "client/templates/cart/cartDrawer/cartDrawer.import.less",
-    "client/templates/cart/cartDrawer/cartItems/cartItems.import.less",
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.import.less",
-    "client/templates/cart/cartIcon/cartIcon.import.less",
-    "client/templates/cart/checkout/addressBook/addressBook.import.less",
-    "client/templates/cart/checkout/checkout.import.less",
-    "client/templates/cart/checkout/completed/completed.import.less",
-    "client/templates/cart/checkout/header/header.import.less",
-    "client/templates/cart/checkout/login/login.import.less",
-    "client/templates/cart/checkout/payment/methods/cards.import.less",
-    "client/templates/cart/checkout/payment/payment.import.less",
-    "client/templates/cart/checkout/progressBar/progressBar.import.less",
-    "client/templates/cart/checkout/review/review.import.less",
-    "client/templates/cart/checkout/shipping/shipping.import.less",
-    "client/templates/dashboard/orders/details/detail.import.less",
-    "client/templates/dashboard/orders/orders.import.less",
-    "client/templates/dashboard/orders/social/orderSocial.import.less",
-    "client/templates/dashboard/orders/stateHelpers/completed/completed.import.less",
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.import.less",
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.import.less",
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.import.less",
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.import.less",
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.import.less",
-    "client/templates/dashboard/packages/packages.import.less",
-    "client/templates/dashboard/packages/panel/panel.import.less",
-    "client/templates/dashboard/packages/grid/grid.import.less",
-    "client/templates/dashboard/packages/grid/package/package.import.less",
-    "client/templates/dashboard/dashboard.import.less",
-    "client/templates/dashboard/dashboardIcon/dashboardIcon.import.less",
-    "client/templates/dashboard/widget/widget.import.less",
-    "client/templates/layout/header/header.import.less",
-    "client/templates/layout/footer/footer.import.less",
-    "client/templates/layout/header/tags/tags.import.less",
-    "client/templates/accounts/accounts.import.less",
-    "client/templates/accounts/dropdown/dropdown.import.less",
-    "client/templates/accounts/inline/inline.import.less",
-    "client/templates/products/productDetail/attributes/attributes.import.less",
-    "client/templates/products/productDetail/images/productImageGallery.import.less",
-    "client/templates/products/productDetail/productDetail.import.less",
-    "client/templates/products/productDetail/social/social.import.less",
-    "client/templates/products/productDetail/variants/variant.import.less",
-    "client/templates/products/productDetail/tags/tags.import.less",
-    "client/templates/products/productDetail/variants/variantForm/variantForm.import.less",
-    "client/templates/products/productDetail/variants/variantList/variantList.import.less",
-    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.import.less",
-    "client/templates/products/productGrid/productGrid.import.less",
-    "client/templates/products/productList/productList.import.less",
-    "client/templates/products/products.import.less",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.import.less",
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.import.less"
   ], ["client"]);
-
-  //bootstrap assets
-  api.addFiles('lib/bootstrap/bootstrap.import.less', 'server', {isAsset: true});
 
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
@@ -429,6 +375,7 @@ Package.onUse(function (api, where) {
   api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/my.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});
@@ -454,13 +401,6 @@ Package.onUse(function (api, where) {
     "currentProduct",
     "ShopController",
     "Products",
-    "ShopMemberSchema",
-    "ProductVariantSchema",
-    "AddressSchema",
-    "VariantMediaSchema",
-    "MetafieldSchema",
-    "CartItemSchema",
-    "Shop",
     "Cart",
     "Tags"
   ], ["client", "server"]);

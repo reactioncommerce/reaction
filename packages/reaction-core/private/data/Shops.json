@@ -340,6 +340,10 @@
         "decimal": ",",
         "thousand": "."
       },
+      "MMK": {
+	"format": "%s%v",
+	"symbol": "K"
+      },
       "MRO": {
         "format" : "%v %s",
         "symbol": "UM"

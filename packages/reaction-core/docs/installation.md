@@ -1,13 +1,11 @@
 #Installation
+*Prerequisites
+OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)*
 
-Developers can easily install, and modify Reaction locally.
+Install meteor, clone the repo, and then start the application from the Terminal commmand line:
 
-##Prerequisites
-OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)
-
-##Installation
     curl https://install.meteor.com | /bin/sh
-    git clone https://github.com/ongoworks/reaction.git
+    git clone https://github.com/reactioncommerce/reaction.git
     cd reaction	
 
 
@@ -20,12 +18,14 @@ Browse to [http://localhost:3000](http://localhost:3000) and you should see Reac
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
 
+*Note: If you are running Reaction remotely (not localhost, ie: vm, aws, docker, etc) and don't want https forwarding, you may remove the [Meteor force-ssl](https://atmospherejs.com/meteor/force-ssl) package using `meteor remove force-ssl`. See [section in docs regarding https](https://github.com/reactioncommerce/reaction-core/blob/master/docs/installation.md#https).*
+
 ## Reset
 To reset data and give you a fresh test dataset from packages/reaction-core/private/data/*.json
 
 	meteor reset
 
-In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data.	
+In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data. See [the package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) for detailed instructions on modifying this data.	
 
 ## Updates
 Getting updates is basically the same as installation:
@@ -33,42 +33,46 @@ Getting updates is basically the same as installation:
 ```bash
 cd reaction
 git pull
+meteor reset
 meteor
 ```
 
-*Note: you may need to delete the smart.lock file the next time you pull the repo if you get conflicts from the updated file*
+*Note: currently we're not testing data schema compatibility between versions, which is why we use `meteor reset` in this example. It's not necessary if you want to preserve your data, but there may be compatibility issues.*
 
-##Deploying
+#Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying) using config from settings/prod.json
 
 	meteor deploy --settings settings/prod.json yourdemosite.meteor.com
 
-*Important note:* Currently if you are trying to run Reaction as a Node app (not in developement mode) and are encountering issues, you may want to try running `meteor remove force-ssl`. We are working toward a solution for this in the near future.
+*Note: If you are running Reaction remotely (not localhost, ie: vm, aws, docker, etc) and don't want https forwarding, you may remove the [Meteor force-ssl](https://atmospherejs.com/meteor/force-ssl) package using `meteor remove force-ssl`. See [section in docs regarding https](https://github.com/reactioncommerce/reaction-core/blob/master/docs/installation.md#https).*
 
-## Configuration Files (optional)
-If you will be doing any development or deployment, it's best to configure a configuration file so you aren't typing all your account information in every time you do "meteor reset"
 
-Create [settings/dev.json](https://github.com/ongoworks/reaction/blob/master/settings/dev.sample.json) and populate, or copy dev.sample.json (will work with empty configuration values)
+## settings.json configuration
+A configuration file can be loaded using the `meteor --settings` option. 
 
-```bash
-cp settings/dev.sample.json settings/dev.json
-```
+Copy [settings/dev.sample.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.sample.json) and create a new configuration file, for example:
 
-If you've created a configuration file, then add `--settings settings/yoursettings.json` to the `meteor` startup command. There are some helper scripts in the *reaction/bin* directory, that make this a bit easier for development.
+	cd reaction
+	cp settings/dev.sample.json settings/settings.json
 
-```bash
-#settings from *settings/dev.json*,
-./bin/run  
-```
+After you've created and edited a configuration file, add `--settings settings/settings.json` to the `meteor` startup command. 
+
+	meteor --settings settings/settings.json  --port 3000
 
 
 Example configuration file
+
 ```json
 	{
 	  "baseUrl": "http://localhost:3000",
 	  "googleAnalyticsProperty": "__KEY__",
 	  "facebook": {
 	    "secret": "__SECRET__"
+	  },
+	  "reaction": {
+	    "METEOR_USER": "Administrator",
+	    "METEOR_AUTH": "password",
+	    "METEOR_EMAIL": "root@localhost"
 	  },
 	  "public": {
 	    "isDebug": true,
@@ -79,7 +83,9 @@ Example configuration file
 	}
 ```
 
-### Env variables (optional)
+### Environment variables
+
+You can also use many of the settings as environment variables, useful for headless and automated vm configuration.
 
 ```bash
 export MAIL_URL="<smtp connection string>"
@@ -105,6 +111,7 @@ This can be useful (or even necessary) when deploying to a remote server that do
 The `METEOR_EMAIL`, `METEOR_USER`, `METEOR_AUTH` environment variables will create this email/user/password as the default first site admin user.
 
 To use another Mongodb, rather than the automatically instantiated development one:
+
 ```bash
 export MONGO_URL=mongodb://localhost:27017/dbname
 ```
@@ -112,37 +119,42 @@ export MONGO_URL=mongodb://localhost:27017/dbname
 If you set ```ROOT_URL``` we'll automatically update the domain in the *shops* collection to match the domain from ROOT_URL. This lets you use alternate domains, or enforce SSL on your installation.  An empty ROOT_URL will just default to *localhost*.
 
 
-### Email 
-To send email you need configure the [env MAIL_URL variable](http://docs.meteor.com/#email_send)
+### System Email
+To send email you should configure the administrative SMTP email server. [env MAIL_URL variable](http://docs.meteor.com/#email_send)
 
-Password reset, and a few other items that use email templates won't work unless you configure this.
+*Note: This is not required, but password reset, and a few other items that use email templates won't work unless you configure this.*
 
-### HTTPS
-You can use `meteor remove https` to remove production redirection to `https` protocol.  To add back, `meteor add https`.  When developing locally, you should not have to remove https as Meteor internally redirects all `localhost` requests to the `http` protocol.
+### HTTPS Redirect
+You can use `meteor remove force-ssl` to remove redirection to the `https` protocol.  To add back, `meteor add force-ssl`.  When developing locally, you should not have to remove https as Meteor internally redirects all `localhost` requests to the `http` protocol. However, if you are running on a VM, or using Vagrant, you should run `meteor remove force-ssl` and remove this package locally.
 
+### Fixture data
+The initial shop data is loaded from the reactioncommerce:reaction-core package /private/data directory. See [the packages development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) to modify this and other core packages locally.
 
-#Dockerfile
+### Failed to load c++ Json message
 
-The Dockerfile creates a Docker image of a production version of the application, that has been demeteorized and is ready to run Reaction in a Node.js production environment app container. It does not include a database (hint: mongohq.com is a great place to get a free test db)
+You can ignore this error, but if it annoys you can run
+```xcode-select --install``` (on a mac) or ```sudo apt-get install gcc make build-essential``` (on ubuntu)
 
-You can pull our latest build from the [Docker Hub](https://registry.hub.docker.com/u/ongoworks/reaction/),  or from the Reaction directory you can just do:
+##Docker
+Requires installation of Docker. On OS X or Windows install [boot2docker](http://boot2docker.io/).
+
+There is a Dockerfile in the project root that creates a Docker image of Reaction Commerce, that has been demeteorized and starts the reaction meteor bundle as `forever -w ./main.js` . It does not include a database, but the container accepts environment variables for configuration. (hint: compose.io is a great place to get a free test db, or a mongo container)
+
+We provide up to date images built from the master branch. These are the same images running on reactioncommerce.com. You can pull our latest build from the [Docker Hub](https://registry.hub.docker.com/u/ongoworks/reaction/), or from the Reaction directory you can build your own image:
 
 ```bash
-docker build ongoworks/reaction .
+docker build -t ongoworks/reaction .
 ```
 
-
-Typically you would start a Docker/Reaction app container by starting the Docker image like this:
+Typically you would start a Docker/Reaction app container by starting the Docker image with the [docker command line `run`](https://docs.docker.com/reference/commandline/cli/#run):
 
 ```bash
 docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost" -e PORT="8080" -p ::8080 -d ongoworks/reaction
 ```
 
-# Vagrant / Ubuntu
+*Note: you cannot yet deploy your local docker build to reactioncommerce.com, but this functionality is being developed in the Launchdock project at [launchdock.io](http://launchdock.io/)* 
 
-Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/ongoworks/reaction-core/blob/master/doc/vagrant.md)
 
-## Failed to load c++ Json message
+##Vagrant / Ubuntu
 
-You can ignore this error, but if it annoys you can run
-```xcode-select --install``` (on a mac) or ```sudo apt-get install gcc make build-essential``` (on ubuntu)
+Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/reactioncommerce/reaction-core/blob/master/docs/vagrant.md)

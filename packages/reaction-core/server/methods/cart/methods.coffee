@@ -177,40 +177,40 @@ Meteor.methods
           Cart.remove(_id: sessionCart._id)
           # And return the user cart
           result = Cart.findOne(_id: userCart._id)
-          console.log "Merged session cart", sessionCart._id, "into user cart", userCart._id if Meteor.settings.public?.isDebug
+          console.log "Merged session cart", sessionCart._id, "into user cart", userCart._id if Meteor.settings.isDebug
         # But if we don't already have a user cart
         else
           # Then we convert the session cart to a user cart
           Cart.update sessionCart._id, {$set: {userId: userId}, $unset: {sessionId: ""}}
           # And then return this cart
           result = Cart.findOne(_id: sessionCart._id)
-          console.log "Converted cart", sessionCart._id, "from session cart to user cart" if Meteor.settings.public?.isDebug
+          console.log "Converted cart", sessionCart._id, "from session cart to user cart" if Meteor.settings.isDebug
 
       # If there was not a session cart and we are logged in
       else
         # We return the existing user cart if there is one
         if userCart?
           result = userCart
-          console.log "Using existing user cart", userCart._id if Meteor.settings.public?.isDebug
+          console.log "Using existing user cart", userCart._id if Meteor.settings.isDebug
         # Or we create a new user cart
         else
           newCartId = Cart.insert(userId: userId, shopId: shopId)
           # And return that
           result = Cart.findOne(_id: newCartId)
-          console.log "Created new user cart", newCartId if Meteor.settings.public?.isDebug
+          console.log "Created new user cart", newCartId if Meteor.settings.isDebug
 
     # If we don't have a logged in user
     else
       # Return the session cart if we already have one
       if sessionCart?
         result = sessionCart
-        console.log "Using existing session cart", sessionCart._id if Meteor.settings.public?.isDebug
+        console.log "Using existing session cart", sessionCart._id if Meteor.settings.isDebug
       # Otherwise create one
       else
         newCartId = Cart.insert {sessionId: sessionId, shopId: shopId}
         # And then return that
         result = Cart.findOne(_id: newCartId)
-        console.log "Created new session cart", newCartId if Meteor.settings.public?.isDebug
+        console.log "Created new session cart", newCartId if Meteor.settings.isDebug
 
   catch error
     console.log "createCart error: ", error

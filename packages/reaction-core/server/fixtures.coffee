@@ -27,7 +27,7 @@ loadData = (collection) ->
     console.log ("No data imported to " + collection._name).yellow
 
 loadI18n = (collection) ->
-  languages = ["ar","cs","de","en","es","fr","he","it","pl","pt","ru","sl","sv","vi"]
+  languages = ["ar","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
   console.log "Loading fixture data for languages to " + collection._name
   for language in languages
     json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")
@@ -120,9 +120,6 @@ createDefaultAdminUser = ->
 ###
 Meteor.startup ->
   loadFixtures()
-  if Meteor.settings.public?.isDebug
-    Meteor.setInterval(loadFixtures, 300)
-
 
   # data conversion:  if ROOT_URL changes update shop domain
   # for now, we're assuming the first domain is the primary

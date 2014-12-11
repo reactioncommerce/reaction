@@ -2,19 +2,18 @@
 # Enable reactivity on workflow
 ###
 Tracker.autorun ->
-  state = Session.get("CartWorkflow")
-  if state?
-    cart = Cart.findOne {}, {fields: {state: 1}, reactive: false}
-    if cart?
-      if state is "new"
-        # if user refreshes, restore state
-        Session.set "CartWorkflow", cart.state
-        CartWorkflow.current = cart.state
-      else
-        Cart.update cart._id, {$set:{state:state}}
-        if state is "login" and Meteor.userId()
-          # console.log "setting logged in"
-          CartWorkflow.loggedin()
+  cart = Cart.findOne {}, {fields: {state: 1}}
+  state = Session.get("CartWorkflow") || cart?.state
+  if state and cart
+    if state is "new"
+      # if user refreshes, restore state
+      Session.set "CartWorkflow", cart.state
+      CartWorkflow.current = cart.state
+    else
+      Cart.update cart._id, {$set:{state:state}}
+      if state is "login" and Meteor.userId()
+        # console.log "setting logged in"
+        CartWorkflow.loggedin()
 
 ###
 # Define cart workflow
@@ -33,7 +32,7 @@ CartWorkflow = StateMachine.create(
     { name: "shipmentAddress", from: ["addAddress","paymentAddress","shipmentMethod","fetchShipmentMethods","payment"], to: "fetchShipmentMethods" }
     { name: "paymentAddress", from: ["addAddress","shipmentAddress","shipmentMethod","fetchShipmentMethods","payment"], to: "fetchShipmentMethods" }
     { name: "fetchShipmentMethods", from: "shipmentAddress", to: "shipmentMethods" }
-    { name: "shipmentMethod", from: ["fetchShipmentMethods","payment"], to: "payment" }
+    { name: "shipmentMethod", from: ["fetchShipmentMethods","shipmentMethod","payment"], to: "payment" }
     { name: "payment", from :["shipmentAddress","billingAddress","shipmentMethod"], to: "paymentAuth" }
     { name: "paymentMethod", from: "payment", to: "paymentAuth"}
     { name: "paymentAuth", from: "paymentMethod", to: "inventoryAdjust"}
