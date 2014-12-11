@@ -107,40 +107,38 @@ Template["reaction-commerce-widget"].rendered = ->
   #Create and place the "blocks" containing the circle and the text
   elemEnter = elem.enter()
     .append("g")
-    .attr("class","order-multi-graph-circle")
-    .attr("transform", (d) -> "translate(" + d.x_axis + "," + d.y_axis + ")")
+      .attr("class","order-multi-graph-circle")
+      .attr("transform", (d) -> "translate(" + d.x_axis + "," + d.y_axis + ")")
+      .append("svg:a")
+        .attr("xlink:href", (d) -> d.url)
+        .attr("class", "order-multi-graph-link")
+
 
   #Create the circle for each block
-  circle = elemEnter
-    .append("svg:a")
-      .attr("xlink:href", (d) -> d.url)
-      .attr("class", "order-multi-graph-link")
-    .append("circle")
-      .attr("r", (d) -> d.radius)
-      .style("fill", (d) -> "white")
-      .style("stroke", (d) -> d.color)
-      .style("stroke-width", (d) -> "8")
+  elemEnter.append("circle")
+    .attr("r", (d) -> d.radius)
+    .style("fill", (d) -> "white")
+    .style("stroke", (d) -> d.color)
+    .style("stroke-width", (d) -> "8")
 
   # Create the text for each block
-  elemEnter
-    .append("svg:a")
-      .attr("xlink:href", (d) -> d.url)
-      .attr("class", "order-multi-graph-link")
-    .append("text")
-      .attr("dy", (d) -> 7 )
-      .attr("text-anchor", "middle")
-      .style("font-size", "22px")
-      .style("font-weight", "400")
-      .attr("fill", (d) -> d.color)
-      .text (d) -> d.value
+  elemEnter.append("text")
+#    .attr("class", "order-multi-graph-value")
+    .attr("dy", (d) -> 7 )
+    .attr("text-anchor", "middle")
+    .attr("fill", (d) -> d.color)
+    .style("font-size", "22px")
+    .style("font-weight", "400")
+    .text (d) -> d.value
+
   # append the order state labels
-  elem
-    .append("text")
+  elemEnter.append("text")
+#    .attr("class", "order-multi-graph-legend")
     .attr("dy", 20 )
     .attr("text-anchor", "middle")
+    .attr("fill", "#696969")
     .style("font-size", "10px")
     .style("font-weight", "300")
-    .attr("fill", "#696969")
     .text (d) -> d.label
 
 
