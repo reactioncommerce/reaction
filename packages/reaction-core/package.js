@@ -52,7 +52,7 @@ Package.onUse(function (api) {
     api.use("aldeed:simple-schema@1.1.0");
     api.use("aldeed:autoform@4.0.7");
     api.use("aldeed:template-extension@3.1.1","client");
-    api.use("iron:router@0.9.4");
+    api.use("iron:router@1.0.3");
     api.use("ongoworks:speakingurl@1.0.3");
     api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
 
