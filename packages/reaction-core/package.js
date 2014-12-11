@@ -49,8 +49,8 @@ Package.onUse(function (api) {
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
-    api.use("aldeed:simple-schema@1.1.0");
-    api.use("aldeed:autoform@4.0.7");
+    api.use("aldeed:simple-schema@1.2.0");
+    api.use("aldeed:autoform@4.2.0");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
     api.use("ongoworks:speakingurl@1.0.3");
