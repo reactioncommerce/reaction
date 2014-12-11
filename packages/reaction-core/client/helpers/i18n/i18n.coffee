@@ -135,11 +135,11 @@ Template.registerHelper "formatPrice", (price) ->
     for actualPrice in prices
       originalPrice = actualPrice
       #TODO Add user services for conversions
-      if ReactionCore.Locale.currency.exchangeRate then actualPrice = actualPrice * ReactionCore.Locale.currency.exchangeRate.Rate
+      if ReactionCore.Locale?.currency?.exchangeRate then actualPrice = actualPrice * ReactionCore.Locale?.currency?.exchangeRate.Rate
       formattedPrice = accounting.formatMoney actualPrice, ReactionCore.Locale.currency
       price = price.replace(originalPrice, formattedPrice)
   catch
-    if ReactionCore.Locale?.currency.exchangeRate then price = price * ReactionCore.Locale.currency.exchangeRate.Rate
+    if ReactionCore.Locale?.currency?.exchangeRate then price = price * ReactionCore.Locale?.currency?.exchangeRate.Rate
     price = accounting.formatMoney price, ReactionCore.Locale?.currency
 
   return price

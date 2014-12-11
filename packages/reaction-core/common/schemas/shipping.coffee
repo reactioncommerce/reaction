@@ -1,10 +1,20 @@
 ReactionCore.Schemas.Shipping = new SimpleSchema
   shopId:
     type: String
+    index: 1
+    autoValue: ->
+      if this.isInsert
+        return ReactionCore.getShopId() or "1" if Meteor.isClient
+        # force the correct value upon insert
+        return ReactionCore.getShopId()
+      else
+        # don't allow updates
+        this.unset();
   provider:
     type: ReactionCore.Schemas.ShippingProvider
   methods:
     type: [ReactionCore.Schemas.ShippingMethod]
+    optional: true
 
 ReactionCore.Schemas.ShipmentQuote = new SimpleSchema
   carrier:
@@ -33,8 +43,13 @@ ReactionCore.Schemas.Shipment = new SimpleSchema
 ReactionCore.Schemas.ShippingProvider = new SimpleSchema
   name:
     type: String
-    label: "Name",
-    regEx: /^\w+\s\w+$/
+    label: "Service Name"
+  label:
+    type: String
+    label: "Public Label"
+  enabled:
+    type: Boolean
+    defaultValue: true
   serviceAuth:
     type: String
     label: "Auth"
@@ -47,9 +62,12 @@ ReactionCore.Schemas.ShippingProvider = new SimpleSchema
     type: String
     label: "Service URL"
     optional: true
+
+ReactionCore.Schemas.ShippingContainers = new SimpleSchema
   containers:
     type: [Object]
     blackbox: true
+
 
 ReactionCore.Schemas.ShippingMethod = new SimpleSchema
   name:
@@ -79,6 +97,19 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Boolean
     label: "Enabled"
     defaultValue: true
+  deliveryRange:
+    type: Array
+    optional: true
+    label: "Estimated Delivery"
+  'deliveryRange.$':
+    type: Object
+    optional: true
+  'deliveryRange.$.begin':
+    type: Number
+    label: "Will ship in"
+  'deliveryRange.$.end':
+    type: Number
+    label: "Will arrive in"
   validRanges:
     type: Array
     optional: true
@@ -94,13 +125,13 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Number
     label: "End"
     optional: true
-  # validDestinations:
-  #   type: [Object]
-  #   blackbox: true
-  #   optional: true
-  #   label: "Valid destinations"
-  # validOrigination:
-  #   type: [Object]
-  #   blackbox: true
-  #   optional: true
-  #   label: "Valid originations"
+  validDestinations:
+    type: [Object]
+    blackbox: true
+    optional: true
+    label: "Valid destinations"
+  validOrigination:
+    type: [Object]
+    blackbox: true
+    optional: true
+    label: "Valid originations"
