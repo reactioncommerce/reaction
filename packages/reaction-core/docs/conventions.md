@@ -1,9 +1,3 @@
-# Pull Requests
-Please make sure your pull requests are to the active development branch, and not the `master` branch. This would be the branch with a version number that would follow the current tagged release version of `reactioncommerce/reaction` repo.
-
-When you create a pull request, you can click the 'edit' button to change the "to" branch. 
-
-
 #Directory structure
 
 	public *public file assets*
@@ -62,7 +56,7 @@ As much as possible, include the `return` keyword in all functions. Include it a
 Feel free to have verbose console.logs in the code, but use the following format to not clutter production logging:
 
 ```
-console.log "Something we want to see during development" if Meteor.settings.isDebug
+console.log "Something we want to see during development" if Meteor.settings.public?.isDebug
 ```
 
 
