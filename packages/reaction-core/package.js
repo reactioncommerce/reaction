@@ -52,7 +52,7 @@ Package.onUse(function (api) {
     api.use("aldeed:simple-schema@1.2.0");
     api.use("aldeed:autoform@4.2.0");
     api.use("aldeed:template-extension@3.1.1","client");
-    api.use("iron:router@0.9.4");
+    api.use("iron:router@1.0.3");
     api.use("ongoworks:speakingurl@1.0.3");
     api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
 
@@ -377,6 +377,7 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/my.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});

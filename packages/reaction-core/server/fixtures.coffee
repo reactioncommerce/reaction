@@ -27,7 +27,7 @@ loadData = (collection) ->
     console.log ("No data imported to " + collection._name).yellow
 
 loadI18n = (collection) ->
-  languages = ["ar","cs","de","en","es","fr","he","it","pl","pt","ru","sl","sv","vi"]
+  languages = ["ar","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
   console.log "Loading fixture data for languages to " + collection._name
   for language in languages
     json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")
