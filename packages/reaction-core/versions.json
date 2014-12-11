@@ -18,7 +18,7 @@
     ],
     [
       "aldeed:autoform",
-      "4.0.7"
+      "4.2.0"
     ],
     [
       "aldeed:collection2",
@@ -30,7 +30,7 @@
     ],
     [
       "aldeed:simple-schema",
-      "1.1.0"
+      "1.2.0"
     ],
     [
       "aldeed:template-extension",
@@ -174,7 +174,7 @@
     ],
     [
       "ddp",
-      "1.0.11"
+      "1.0.12"
     ],
     [
       "deps",
@@ -294,7 +294,7 @@
     ],
     [
       "mongo",
-      "1.0.8"
+      "1.0.9"
     ],
     [
       "mongo-livedata",
@@ -431,6 +431,6 @@
       }
     ]
   ],
-  "toolVersion": "meteor-tool@1.0.35",
+  "toolVersion": "meteor-tool@1.0.36",
   "format": "1.0"
 }
