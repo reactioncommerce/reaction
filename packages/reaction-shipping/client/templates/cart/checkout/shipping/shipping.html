@@ -1,0 +1,28 @@
+<template name="flatRateCheckoutShipping">
+<div class="panel panel-default address-book">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span data-i18n="checkoutShipping.selectShippingOption">Select shipping option</span>
+    </h3>
+  </div>
+
+  <div class="panel-body">
+    <ul class="checkout-shipping list-group">
+    {{#each shipmentMethods}}
+      <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
+        <span class="text-left">{{method.label}}</span>
+        <span class="pull-right">{{formatPrice rate}}</span>
+      </li>
+    {{else}}
+      {{#if shippingConfigured}}
+        {{> loading}}
+      {{else}}
+        <div class="alert alert-danger">No shipping methods are configured. <a href="/dashboard/settings/shipping"> Configure now.</a></div>
+      {{/if}}
+    {{/each}}
+    </ul>
+  </div>
+</div>
+
+</template>

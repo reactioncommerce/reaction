@@ -1,0 +1,150 @@
+<template name="shipping">
+<div class="row">
+  <h2>Shipping<small> Settings</small></h2>
+</div>
+<div class="shipping-rate-tables">
+  {{> shippingFlatRateTable}}
+</div>
+</template>
+
+
+<template name="shippingFlatRateTable">
+{{#each shipping}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="text-left">{{provider.name}}</span>
+        <span class="pull-right">
+          <i class="fa fa-cog"></i>
+        </span>
+      </div>
+      <div class="panel-body">
+      {{#if methods}}
+        <table class="table table-striped">
+          <thead>
+            <tr class="info">
+              <th>Name</th>
+              <th>Label</th>
+              <th>Group</th>
+              <th>Cost</th>
+              <th>Handling</th>
+              <th>Rate</th>
+              <th>Enabled</th>
+              <th><i class="fa fa-plus pull-right" id="add-shipping-method"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+          {{#each methods}}
+            <tr class="edit-shipping-method">
+              <td>{{name}}</td>
+              <td>{{label}}</td>
+              <td>{{group}}</td>
+              <td>{{cost}}</td>
+              <td>{{handling}}</td>
+              <td>{{rate}}</td>
+              <td>
+                {{#if enabled}}
+                  <i class="fa fa-check text-success"></i>
+                {{else}}
+                  <i class="fa fa-ban text-danger"></i>
+                {{/if}}
+              </td>
+              <td class="text-right">
+                <i class="fa fa-cog" id="edit-shipping-method"></i>
+                <i class="fa fa-trash" id="delete-shipping-method" data-provider-id="{{../_id}}"></i>
+              </td>
+            </tr>
+            {{#if selectedMethod}}
+            <tr class="active">
+            <td colspan="8">
+            {{> editShippingFlatRate}}
+            </td>
+            </tr>
+            {{/if}}
+          {{/each}}
+          </tbody>
+        </table>
+      {{else}}
+         {{> addShippingFlatRate}}
+      {{/if}}
+      </div>
+    </div>
+
+{{else}}
+  <div class="alert alert-info">No shipping providers defined.</div>
+  {{>addProvider}}
+{{/each}}
+</template>
+
+<template name="editShippingFlatRate">
+    {{#autoForm
+      collection="ReactionCore.Collections.Shipping"
+      schema="ReactionCore.Schemas.ShippingMethod"
+      doc=.
+      id="shipping-method-form"
+      template="bootstrap3-inline"
+      }}
+    <fieldset>
+      <legend>Edit {{name}} rate</legend>
+      <div class="col-md-2">
+        {{>afQuickField name='name' autofocus=''}}
+        {{>afQuickField name='label'}}
+        {{>afQuickField name='group'}}
+        {{>afQuickField name='enabled'}}
+      </div>
+      <div class="col-md-2">
+        {{>afQuickField name='cost'}}
+        {{>afQuickField name='handling'}}
+        {{>afQuickField name='rate'}}
+      </div>
+    </fieldset>
+     <button type="submit" class="btn btn-primary">Submit</button>
+    {{/autoForm}}
+</template>
+
+<template name="addProvider">
+    {{#autoForm
+      collection="ReactionCore.Collections.Shipping"
+      doc=.
+      id="shipping-provider-insert-form"
+      template="bootstrap3-inline"
+      type="method"
+      meteormethod="addShippingProvider"
+      resetOnSuccess=false
+      }}
+    <fieldset>
+    <legend>Add Provider</legend>
+    <div class="col-md-2">
+      {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
+      {{>afQuickField name='provider.label'}}
+      {{>afQuickField name='provider.enabled'}}
+    </div>
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    {{/autoForm}}
+</template>
+
+<template name="addShippingFlatRate">
+    {{#autoForm
+      collection="ReactionCore.Collections.Shipping"
+      schema="ReactionCore.Schemas.ShippingMethod"
+      doc=.
+      id="shipping-method-form"
+      template="bootstrap3-inline"
+      }}
+    <fieldset>
+      <legend>Add Rate</legend>
+      <div class="col-md-2">
+        {{>afQuickField name='name' autofocus=''}}
+        {{>afQuickField name='label'}}
+        {{>afQuickField name='group'}}
+        {{>afQuickField name='enabled'}}
+      </div>
+      <div class="col-md-2">
+        {{>afQuickField name='cost'}}
+        {{>afQuickField name='handling'}}
+        {{>afQuickField name='rate'}}
+      </div>
+    </fieldset>
+     <button type="submit" class="btn btn-primary">Submit</button>
+    {{/autoForm}}
+</template>

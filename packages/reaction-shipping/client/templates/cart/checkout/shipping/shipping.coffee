@@ -1,0 +1,1 @@
+Template.flatRateCheckoutShipping.replaces("checkoutShipping");
