@@ -119,7 +119,9 @@ Router.map ->
     waitOn: ->
       return Meteor.subscribe 'product', @params._id
     onBeforeAction: ->
-      setProduct @params._id, @params.variant
+      variant = @params.variant || @params.query.variant
+      setProduct @params._id, variant
+      @next()
       return
     data: ->
       product = selectedProduct()
