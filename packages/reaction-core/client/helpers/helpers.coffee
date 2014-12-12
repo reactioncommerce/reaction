@@ -233,3 +233,14 @@ currentProduct = @currentProduct
   if priceMin is priceMax
     return priceMin
   return priceMin + ' - ' + priceMax
+
+###
+# save an order as PDF
+###
+@saveOrderAsPDF = (order) ->
+  Blaze.saveAsPDF Template.orderDetails,
+    data: order
+    filename: "order-" + order._id + ".pdf" #TODO should be configurable by admin
+    orientation: "portrait" #TODO should be configurable by admin
+    format: "letter" #TODO should be configurable by admin
+  return
