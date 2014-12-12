@@ -43,6 +43,8 @@ Package.onUse(function (api, where) {
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@0.9.4");
     api.use("ongoworks:speakingurl@1.0.3");
+    api.use("ongoworks:pdf@1.0.0");
+    api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
