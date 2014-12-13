@@ -1,6 +1,6 @@
 Template.i18nChooser.helpers
   languages: ->
-    return ReactionCore.Collections.Translations.find({},{fields:{'language':1, 'i18n': 1}})
+    return ReactionCore.Collections.Translations.find({},{fields:{'language':1, 'i18n': 1, 'entryText': 1}})
 
   active: () ->
     if Session.equals "language", @.i18n
