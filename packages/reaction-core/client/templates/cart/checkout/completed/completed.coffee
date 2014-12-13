@@ -1,4 +1,8 @@
 Template.cartCompleted.helpers
   orderStatus: () ->
     status = "placed" if this.status is "new"
-  status
+
+Template.cartCompleted.events
+  'click .save-order-details': (event, template) ->
+    saveOrderAsPDF template.data
+    return
