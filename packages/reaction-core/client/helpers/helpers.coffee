@@ -243,4 +243,11 @@ currentProduct = @currentProduct
     filename: "order-" + order._id + ".pdf" #TODO should be configurable by admin
     orientation: "portrait" #TODO should be configurable by admin
     format: "letter" #TODO should be configurable by admin
+    unit: "cm"
+    # NOTE specifying margins seem to make formatting wonky, likely jsPDF issue
+    #margins:
+    #  left: 2.5
+    #  right: 2.5
+    #  top: 1
+    #  bottom: 1
   return

@@ -5,3 +5,7 @@ Template.stateHelperDocuments.helpers
 Template.stateHelperDocuments.events
   'click .download-documents': () ->
     OrderWorkflow.shipmentPrepare @
+    return
+  'click .save-order-pdf': () ->
+    saveOrderAsPDF Orders.findOne(this._id)
+    return
