@@ -40,13 +40,8 @@ OrderWorkflow = new StateMachine.create(
         orderId = order._id
         # manual add tracking (call these from shipment method to auto add)
         Meteor.call "addTracking", orderId, tracking
-        Meteor.call "updateHistory",  orderId, "Tracking Added", tracking
-        # create packing slips
-        path = Router.routes['cartCompleted'].path({_id: orderId})
-        Meteor.call "createPDF", path, orderId, (err,result) ->
-          Meteor.call "updateDocuments", orderId, result, "packing"
-          # move to preparation stage
-          Meteor.call "updateWorkflow",orderId, "shipmentPrepare" if order?
+        Meteor.call "updateHistory", orderId, "Tracking Added", tracking
+        Meteor.call "updateWorkflow", orderId, "shipmentPrepare"
 
       shipmentPrepare: (order) ->
         #completed when order documents printed and packed
