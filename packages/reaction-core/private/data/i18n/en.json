@@ -2,12 +2,14 @@
     {
         "language": "English",
         "i18n": "en",
+        "entryText": "English",
         "translation": {
             "core": {
                 "languages": {
                     "select": "Select Language",
                     "english": "English",
-                    "spanish": "Español"
+                    "spanish": "Español",
+                    "burmese": "Burmese"
                 },
                 "app": {
                     "saveAndContinue": "Save and continue",
