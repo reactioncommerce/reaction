@@ -1,6 +1,6 @@
 Template.orderDetail.helpers
   userProfile: () ->
-    profileId =  @.userId
+    profileId = @.userId
     if profileId?
       userProfile = Meteor.subscribe "UserProfile", profileId
       if userProfile.ready()
