@@ -34,5 +34,7 @@ Template.variantList.events
     Meteor.call "createVariant", @._id
 
   "click .variant-select-option": (event,template) ->
+    template.$(".variant-select-option").removeClass("active")
+    $(event.target).addClass("active")
     Alerts.removeSeen()
     setCurrentVariant @._id
