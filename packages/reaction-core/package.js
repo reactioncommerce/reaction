@@ -39,9 +39,9 @@ Package.onUse(function (api, where) {
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.2.0");
-    api.use("aldeed:autoform@4.2.0");
+    api.use("aldeed:autoform@4.2.1");
     api.use("aldeed:template-extension@3.1.1","client");
-    api.use("iron:router@0.9.4");
+    api.use("iron:router@1.0.5");
     api.use("ongoworks:speakingurl@1.0.3");
 
     api.use("dburles:collection-helpers@1.0.1");
@@ -51,11 +51,11 @@ Package.onUse(function (api, where) {
     api.use("mrt:moment@2.8.1",'client');
     api.use("sacha:spin@2.0.4", 'client');
 
-    api.use("cfs:standard-packages@0.0.2");
-    api.use("cfs:graphicsmagick@0.0.1");
-    api.use("cfs:filesystem@0.0.0");
-    api.use("cfs:gridfs@0.0.0");
-    api.use("cfs:s3@0.0.0");
+    api.use("cfs:standard-packages@0.5.2");
+    api.use("cfs:graphicsmagick@0.0.17");
+    api.use("cfs:filesystem@0.1.1");
+    api.use("cfs:gridfs@0.0.27");
+    api.use("cfs:s3@0.1.1");
     api.use("raix:ui-dropped-event@0.0.7");
 
     //implying these are reused in reaction packages
