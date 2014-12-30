@@ -94,15 +94,18 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
   cost:
     type: Number
     label: "Cost"
+    decimal: true
     optional: true
   handling:
     type: Number
     label: "Handling"
     defaultValue: 0
     optional: true
+    decimal: true
   rate:
     type: Number
     label: "Rate"
+    decimal: true
   enabled:
     type: Boolean
     label: "Enabled"
