@@ -33,14 +33,21 @@
             </tr>
           </thead>
           <tbody>
+          {{#if addShippingMethodMode}}
+            <tr class="active">
+            <td colspan="8">
+            {{> addShippingMethod}}
+            </td>
+            </tr>
+          {{/if}}
           {{#each methods}}
             <tr class="edit-shipping-method">
               <td>{{name}}</td>
               <td>{{label}}</td>
               <td>{{group}}</td>
-              <td>{{cost}}</td>
-              <td>{{handling}}</td>
-              <td>{{rate}}</td>
+              <td>{{formatPrice cost}}</td>
+              <td>{{formatPrice handling}}</td>
+              <td>{{formatPrice rate}}</td>
               <td>
                 {{#if enabled}}
                   <i class="fa fa-check text-success"></i>
@@ -56,7 +63,7 @@
             {{#if selectedMethod}}
             <tr class="active">
             <td colspan="8">
-            {{> editShippingFlatRate}}
+            {{> editShippingMethod}}
             </td>
             </tr>
             {{/if}}
@@ -64,7 +71,7 @@
           </tbody>
         </table>
       {{else}}
-         {{> addShippingFlatRate}}
+         {{> addShippingMethod}}
       {{/if}}
       </div>
     </div>
@@ -75,13 +82,15 @@
 {{/each}}
 </template>
 
-<template name="editShippingFlatRate">
+
+<template name="addShippingMethod">
     {{#autoForm
-      collection="ReactionCore.Collections.Shipping"
       schema="ReactionCore.Schemas.ShippingMethod"
       doc=.
-      id="shipping-method-form"
+      id="shipping-method-edit-form"
       template="bootstrap3-inline"
+      type="method"
+      meteormethod="addShippingMethod"
       }}
     <fieldset>
       <legend>Edit {{name}} rate</legend>
@@ -100,6 +109,33 @@
      <button type="submit" class="btn btn-primary">Submit</button>
     {{/autoForm}}
 </template>
+
+<template name="editShippingMethod">
+    {{#autoForm
+      schema="ReactionCore.Schemas.ShippingMethod"
+      id="shipping-method-edit-form"
+      template="bootstrap3-inline"
+      doc=..
+      }}
+    <fieldset>
+      <legend>Edit {{name}} rate</legend>
+      <div class="col-md-2">
+        {{>afQuickField name='name' autofocus='' value=./name}}
+        {{>afQuickField name='label' value=./label}}
+        {{>afQuickField name='group' value=./group}}
+        {{>afQuickField name='enabled' value=./enabled}}
+      </div>
+      <div class="col-md-2">
+        {{>afQuickField name='cost' value=./cost}}
+        {{>afQuickField name='handling' value=./handling}}
+        {{>afQuickField name='rate' value=./rate}}
+      </div>
+    </fieldset>
+     <button type="submit" class="btn btn-primary">Submit</button>
+    {{/autoForm}}
+</template>
+
+
 
 <template name="addProvider">
     {{#autoForm
@@ -120,31 +156,5 @@
     </div>
     </fieldset>
     <button type="submit" class="btn btn-primary">Submit</button>
-    {{/autoForm}}
-</template>
-
-<template name="addShippingFlatRate">
-    {{#autoForm
-      collection="ReactionCore.Collections.Shipping"
-      schema="ReactionCore.Schemas.ShippingMethod"
-      doc=.
-      id="shipping-method-form"
-      template="bootstrap3-inline"
-      }}
-    <fieldset>
-      <legend>Add Rate</legend>
-      <div class="col-md-2">
-        {{>afQuickField name='name' autofocus=''}}
-        {{>afQuickField name='label'}}
-        {{>afQuickField name='group'}}
-        {{>afQuickField name='enabled'}}
-      </div>
-      <div class="col-md-2">
-        {{>afQuickField name='cost'}}
-        {{>afQuickField name='handling'}}
-        {{>afQuickField name='rate'}}
-      </div>
-    </fieldset>
-     <button type="submit" class="btn btn-primary">Submit</button>
     {{/autoForm}}
 </template>

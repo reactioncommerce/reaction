@@ -20,12 +20,13 @@ Package.on_use(function (api, where) {
     "common/routing.coffee" // add routing for administration templates
   ],["client","server"]);
 
-  api.add_files("server/shipping.coffee",["server"]); // server methods
+  api.add_files("server/methods.coffee",["server"]); // server methods
 
   api.add_files([
     // admin screens
     "client/templates/shipping.html",
     "client/templates/shipping.coffee",
+    "client/templates/shipping.less",
     // checkout templates
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee"
