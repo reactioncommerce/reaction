@@ -28,7 +28,6 @@ Router.configure
   waitOn: ->
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
-  onBeforeAction: 'loading'
   onAfterAction: ->
     ReactionCore.MetaData.refresh(@route, @params)
     return
