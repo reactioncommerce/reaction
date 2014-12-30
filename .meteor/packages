@@ -17,10 +17,10 @@ force-ssl
 # Community Packages
 nemo64:bootstrap
 
-
 # Reaction Commerce Packages
 reactioncommerce:core-theme
 reactioncommerce:core
 reactioncommerce:reaction-paypal
-reactioncommerce:reaction-google-analytics
+#reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-helloworld
+reactioncommerce:reaction-shipping
