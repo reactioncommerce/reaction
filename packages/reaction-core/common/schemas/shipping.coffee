@@ -99,10 +99,10 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Number
     label: "Handling"
     defaultValue: 0
+    optional: true
   rate:
     type: Number
     label: "Rate"
-    defaultValue: 0
   enabled:
     type: Boolean
     label: "Enabled"
@@ -135,13 +135,13 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Number
     label: "End"
     optional: true
-  validDestinations:
-    type: [Object]
-    blackbox: true
-    optional: true
-    label: "Valid destinations"
-  validOrigination:
-    type: [Object]
-    blackbox: true
-    optional: true
-    label: "Valid originations"
+  # validDestinations:
+  #   type: [Object]
+  #   blackbox: true
+  #   optional: true
+  #   label: "Valid destinations"
+  # validOrigination:
+  #   type: [Object]
+  #   blackbox: true
+  #   optional: true
+  #   label: "Valid originations"
