@@ -125,21 +125,6 @@ ReactionCore.Schemas.Country = new SimpleSchema
   code:
     type: String
 
-
-ReactionCore.Schemas.Tax = new SimpleSchema
-  taxShipping:
-    type: String
-    optional: true
-  taxesIncluded:
-    type: Boolean
-    optional: true
-  countyTaxes:
-    type: Boolean
-    optional: true
-  metafields:
-    type: [ReactionCore.Schemas.Metafield]
-    optional: true
-
 ReactionCore.Schemas.currencyEngine = new SimpleSchema
   provider:
     type: String
@@ -148,6 +133,7 @@ ReactionCore.Schemas.currencyEngine = new SimpleSchema
     type: String
     optional: true
     label: "Open Exchange Rates App ID"
+
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
@@ -175,11 +161,6 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     type: ReactionCore.Schemas.currencyEngine
   currencies:
     type: [ReactionCore.Schemas.Currency]
-  shipping:
-    type: [ReactionCore.Schemas.ShippingProvider]
-  taxes:
-    type: [ReactionCore.Schemas.Tax]
-    optional: true
   public:
     type: String
     optional: true

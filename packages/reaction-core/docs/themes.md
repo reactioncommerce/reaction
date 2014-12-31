@@ -8,13 +8,13 @@ To extend and create your own themes, you can edit the the example files:
     client/themes/custom.bootstrap.import.less
     client/themes/custom.reaction.import.less
 
-`client/themes/custom.bootstrap.import.less` is the default bootstrap settings. Here you can configure things like background, fonts,etc.
+`client/themes/custom.bootstrap.import.less` is the default bootstrap settings. Here you can configure things like background, fonts, etc.
 
 `client/themes/custom.reaction.import.less` contains all the Reaction Commerce styles. 
 
-The `custom.reaction.less` file imports the `custom.bootstrap.less`, which in turn is created from automatically from `client/themes/custom.bootstrap.import.less`, so there is an order of precedence, and any change you make in `custom.bootstrap.import.less` will cascade down to `custom.reaction.less`, but changes made in `custom.reaction.import.less` will override changes made in any other file.
+The `custom.reaction.less` file imports the `custom.bootstrap.less`, which in turn is created automatically from `client/themes/custom.bootstrap.import.less`, so there is an order of precedence, and any change you make in `custom.bootstrap.import.less` will cascade down to `custom.reaction.less`, but changes made in `custom.reaction.import.less` will override changes made in any other file.
 
-You can modify either the `custom.bootstrap.json` or `custom.reaction.json` files to complete exclude (or include) particular Bootstrap or Reaction style elements.
+You can modify either the `custom.bootstrap.json` or `custom.reaction.json` files to completely exclude (or include) particular Bootstrap or Reaction style elements.
 
 You should not modify `custom.bootstrap.mixins.import.less`, `custom.reaction.mixins.import.less`, `custom.bootstrap.less`, `custom.reaction.less`, as these files are generated whenever you edit one of the user configurable files.
 
@@ -27,7 +27,7 @@ For a quick example, edit `client/themes/customer.reaction.import.less`, and aft
 @import "http://bootswatch.com/slate/variables.less";
 ```
 
-This will load a typical Bootstrap theme from Bootswatch.com, but you of course are free to load any theme or build your own.  Any prebuilt theme should get you quite far, but there will be customization needed. 
+This will load a typical Bootstrap theme from Bootswatch.com, but you of course are free to load any theme or build your own. Any prebuilt theme should get you quite far, but there will be customization needed. 
 
 For reference when customizing, review the `import` files in the `client/themes` directory for an idea of mixins and variables that are available.
 
@@ -51,9 +51,8 @@ The default configuration file for Reaction build is:
 
 If you are installing into your own application, you should save this in your project as `custom.reaction.json`. We automatically insert an import to `client/themes/custom.bootstrap.less`, so if you are not using the nemo64:bootstrap package, or choose a different location for your themes, you will need to edit the import statement in `client/themes/custom.reaction.import.less`.
 
-
 ## Alternate HTML/CSS Frameworks
-We've developed with Bootstrap, as it's the most common UI framework, however there are other great frameworks such as Zurb's Foundation, and other pre-processors like `Sass` or `Stylus`.  It should be possible to abstract out the reaction-core classes, and use these other tools in combination with a custom theme package. Let us know if you want to get your hands dirty on this, and we'll be excited to help.
+We've developed with Bootstrap, as it's the most common UI framework, however there are other great frameworks such as Zurb's Foundation, and other pre-processors like `Sass` or `Stylus`. It should be possible to abstract out the reaction-core classes, and use these other tools in combination with a custom theme package. Let us know if you want to get your hands dirty on this, and we'll be excited to help.
 
 
 

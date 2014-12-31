@@ -68,7 +68,7 @@ Template.registerHelper "cart", () ->
     return count
 
   cartShipping: ->
-    shipping = Cart.findOne()?.shipping?.shipmentMethod?.value
+    shipping = Cart.findOne()?.shipping?.shipmentMethod?.rate
     Session.set "cartShipping", shipping
     return shipping
 
@@ -84,7 +84,7 @@ Template.registerHelper "cart", () ->
     storedCart = Cart.findOne()
     subtotal = 0
     ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
-    shipping = parseFloat storedCart?.shipping?.shipmentMethod?.value
+    shipping = parseFloat storedCart?.shipping?.shipmentMethod?.rate
     subtotal = (subtotal + shipping) unless isNaN(shipping)
     total = subtotal.toFixed(2)
     Session.set "cartTotal", total

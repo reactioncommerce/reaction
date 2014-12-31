@@ -18,6 +18,18 @@ ReactionCore.Collections.Packages.attachSchema ReactionCore.Schemas.PackageConfi
 ReactionCore.Collections.Products = Products = @Products = new Mongo.Collection "Products"
 ReactionCore.Collections.Products.attachSchema ReactionCore.Schemas.Product
 
+# Shipping
+ReactionCore.Collections.Shipping = new Mongo.Collection "Shipping"
+ReactionCore.Collections.Shipping.attachSchema ReactionCore.Schemas.Shipping
+
+# Taxes
+ReactionCore.Collections.Taxes = new Mongo.Collection "Taxes"
+ReactionCore.Collections.Taxes.attachSchema ReactionCore.Schemas.Taxes
+
+# Discounts
+ReactionCore.Collections.Discounts = new Mongo.Collection "Discounts"
+ReactionCore.Collections.Discounts.attachSchema ReactionCore.Schemas.Discounts
+
 # Shops
 ReactionCore.Collections.Shops = Shops = @Shops = new Mongo.Collection "Shops",
   transform: (shop) ->

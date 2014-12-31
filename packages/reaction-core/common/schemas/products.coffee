@@ -94,11 +94,6 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     custom: -> #required if no child variants (options) present
       if Meteor.isClient
         if checkChildVariants(@.docId) is 0 and !@.value then return "required"
-
-  requiresShipping:
-    label: "Require a shipping address"
-    type: Boolean
-    optional: true
   sku:
     label: "SKU"
     type: String
@@ -156,6 +151,14 @@ ReactionCore.Schemas.Product = new SimpleSchema
     optional: true
   variants:
     type: [ReactionCore.Schemas.ProductVariant]
+  requiresShipping:
+    label: "Require a shipping address"
+    type: Boolean
+    defaultValue: true
+    optional: true
+  parcel:
+    type: ReactionCore.Schemas.ShippingParcel
+    optional: true
   hashtags:
     type: [String]
     optional: true

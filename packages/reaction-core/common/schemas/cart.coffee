@@ -39,6 +39,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema
   requiresShipping:
     label: "Require a shipping address"
     type: Boolean
+    defaultValue: true
     optional: true
   shipping:
     type: ReactionCore.Schemas.Shipment
