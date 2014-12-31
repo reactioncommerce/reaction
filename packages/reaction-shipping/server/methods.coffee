@@ -3,9 +3,6 @@ Meteor.methods
   # add new shipping methods
   ###
   addShippingMethod: (insertDoc, updateDoc, currentDoc) ->
-    console.log "insert: ", insertDoc
-    console.log "update: ", updateDoc
-    console.log "current: ", currentDoc
     # check providerId, String
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # updates

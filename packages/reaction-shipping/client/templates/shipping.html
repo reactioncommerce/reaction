@@ -5,6 +5,9 @@
 <div class="shipping-rate-tables">
   {{> shippingFlatRateTable}}
 </div>
+<span id="shipping-alerts">
+  {{>bootstrapAlerts placement="shippingPackage"}}
+</span>
 </template>
 
 
@@ -14,7 +17,7 @@
       <div class="panel-heading">
         <span class="text-left">{{provider.name}}</span>
         <span class="pull-right">
-          <i class="fa fa-cog"></i>
+          <i class="fa fa-cog" id="edit-shipping-provider"></i>
         </span>
       </div>
       <div class="panel-body">
@@ -87,54 +90,78 @@
     {{#autoForm
       schema="ReactionCore.Schemas.ShippingMethod"
       doc=.
-      id="shipping-method-edit-form"
+      id="shipping-method-add-form"
       template="bootstrap3-inline"
       type="method"
       meteormethod="addShippingMethod"
       }}
     <fieldset>
-      <legend>Edit {{name}} rate</legend>
-      <div class="col-md-2">
-        {{>afQuickField name='name' autofocus=''}}
-        {{>afQuickField name='label'}}
-        {{>afQuickField name='group'}}
-        {{>afQuickField name='enabled'}}
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">Add rate</div>
+          <div class="panel-body">
+            <div class="col-md-6">
+              {{>afQuickField name='name' autofocus=''}}
+              {{>afQuickField name='label'}}
+              {{>afQuickField name='group'}}
+              {{>afQuickField name='enabled' value=true}}
+            </div>
+            <div class="col-md-6">
+              {{>afQuickField name='cost'}}
+              {{>afQuickField name='handling'}}
+              {{>afQuickField name='rate'}}
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+          </div>
+          </div>
       </div>
-      <div class="col-md-2">
-        {{>afQuickField name='cost'}}
-        {{>afQuickField name='handling'}}
-        {{>afQuickField name='rate'}}
+      <div class="col-md-5">
+        {{>afArrayField name='validLocales' template="inlineRange"}}
+      </div>
+      <div class="col-md-3">
+        {{>afArrayField name='validRanges' template="inlineRange"}}
       </div>
     </fieldset>
-     <button type="submit" class="btn btn-primary">Submit</button>
     {{/autoForm}}
 </template>
+
 
 <template name="editShippingMethod">
     {{#autoForm
       schema="ReactionCore.Schemas.ShippingMethod"
       id="shipping-method-edit-form"
       template="bootstrap3-inline"
-      doc=..
+      doc=.
       }}
     <fieldset>
-      <legend>Edit {{name}} rate</legend>
-      <div class="col-md-2">
-        {{>afQuickField name='name' autofocus='' value=./name}}
-        {{>afQuickField name='label' value=./label}}
-        {{>afQuickField name='group' value=./group}}
-        {{>afQuickField name='enabled' value=./enabled}}
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">Edit {{name}} rate</div>
+          <div class="panel-body">
+            <div class="col-md-6">
+              {{>afQuickField name='name' autofocus=''}}
+              {{>afQuickField name='label'}}
+              {{>afQuickField name='group'}}
+              {{>afQuickField name='enabled'}}
+            </div>
+            <div class="col-md-6">
+              {{>afQuickField name='cost'}}
+              {{>afQuickField name='handling'}}
+              {{>afQuickField name='rate'}}
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+          </div>
+          </div>
       </div>
-      <div class="col-md-2">
-        {{>afQuickField name='cost' value=./cost}}
-        {{>afQuickField name='handling' value=./handling}}
-        {{>afQuickField name='rate' value=./rate}}
+      <div class="col-md-5">
+        {{>afArrayField name='validLocales' template="inlineRange"}}
+      </div>
+      <div class="col-md-3">
+        {{>afArrayField name='validRanges' template="inlineRange"}}
       </div>
     </fieldset>
-     <button type="submit" class="btn btn-primary">Submit</button>
     {{/autoForm}}
 </template>
-
 
 
 <template name="addProvider">
@@ -157,4 +184,77 @@
     </fieldset>
     <button type="submit" class="btn btn-primary">Submit</button>
     {{/autoForm}}
+</template>
+
+
+<template name="afArrayField_inlineRange">
+  <div class="panel panel-default">
+    <div class="panel-heading">{{afFieldLabelText name=this.atts.name}}
+    <span class="autoform-add-item pull-right" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="fa fa-plus-square-o fa-lg"></span></span>
+    </div>
+    {{#if afFieldIsInvalid name=this.atts.name}}
+    <div class="panel-body has-error">
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+    </div>
+    {{/if}}
+    <ul class="list-group">
+      {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+      <li class="list-group-item autoform-array-item">
+        <div class="row">
+          <div class="col-sm-11">
+            {{> afQuickField name=this.name label=false options="auto" template=../atts.name}}
+          </div>
+          <div class="col-sm-1">
+            {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+              <span class="pull-right autoform-remove-item"><span class="fa fa-minus-square-o fa-lg"></span></span>
+            {{/if}}
+          </div>
+        </div>
+      </li>
+      {{/afEachArrayItem}}
+      {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+      {{/if}}
+    </ul>
+  </div>
+</template>
+
+<template name="afObjectField_validRanges">
+      {{#if afFieldIsInvalid name=this.atts.name}}
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      {{/if}}
+      {{> afQuickFields name=this.atts.name}}
+</template>
+
+
+<template name="afObjectField_validLocales">
+      {{#if afFieldIsInvalid name=this.atts.name}}
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      {{/if}}
+      {{> afQuickFields name=this.atts.name}}
+</template>
+
+
+<template name="afFormGroup_validRanges">
+  <div class="col-sm-5">
+    <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+      {{#unless skipLabel}}
+      <label {{bsFieldLabelAtts}}>{{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.atts.name}}{{/if}}</label>
+      {{/unless}}
+      {{> afFieldInput this.afFieldInputAtts}}
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+    </div>
+  </div>
+</template>
+
+
+<template name="afFormGroup_validLocales">
+  <div class="col-sm-3">
+    <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+      {{#unless skipLabel}}
+      <label {{bsFieldLabelAtts}}>{{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.atts.name}}{{/if}}</label>
+      {{/unless}}
+      {{> afFieldInput this.afFieldInputAtts}}
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+    </div>
+  </div>
 </template>

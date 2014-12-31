@@ -22,7 +22,6 @@ Template.shippingFlatRateTable.helpers
     session = Session.get "selectedShippingMethod"
     if _.isEqual @, session
       return @
-
   #toggle addShippingMethodForm
   addShippingMethodMode: ->
     if Session.equals "addShippingMethod", true
@@ -44,21 +43,28 @@ Template.shippingFlatRateTable.events
   # call method to delete shipping method
   'click #delete-shipping-method': (event, template) ->
     Meteor.call "removeShippingMethod", $(event.currentTarget).data('provider-id'), @
-    Alerts.add "Shipping method deleted.", "success", autoHide: true
+    Alerts.add "Shipping method deleted.", "success", autoHide: true, placement:"shippingPackage"
 
   # add new shipping method
   'click #add-shipping-method': (event, template) ->
     toggleSession "addShippingMethod"
 
 
+AutoForm.hooks "shipping-method-add-form":
+  onSuccess: (operation, result, template) ->
+    Alerts.add "Shipping method rate added.", "success", autoHide: true, placement:"shippingPackage"
+  endSubmit: (formId, template) ->
+    #just here to prevent the default hook from running
+
 AutoForm.hooks "shipping-provider-insert-form":
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shipping provider saved.", "success", autoHide: true
+    Alerts.add "Shipping provider saved.", "success", autoHide: true, placement:"shippingPackage"
 
 AutoForm.hooks "shipping-method-edit-form":
   onSubmit: (insertDoc, updateDoc, currentDoc) ->
     try
-      Meteor.call "updateShippingMethods", currentDoc._id, Template.parentData(1), insertDoc
+      Meteor.call "updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), insertDoc
+      Alerts.add "Shipping method rate updated.", "success", autoHide: true, placement:"shippingPackage"
       @done()
     catch error
       @done new Error("Submission failed")
