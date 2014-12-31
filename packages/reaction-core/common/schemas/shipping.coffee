@@ -99,34 +99,33 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
   handling:
     type: Number
     label: "Handling"
-    defaultValue: 0
     optional: true
     decimal: true
+    defaultValue: 0
+    min: 0
   rate:
     type: Number
     label: "Rate"
     decimal: true
+    min: 0
   enabled:
     type: Boolean
     label: "Enabled"
     defaultValue: true
   deliveryRange:
-    type: Array
-    optional: true
-    label: "Estimated Delivery"
-  'deliveryRange.$':
     type: Object
     optional: true
-  'deliveryRange.$.begin':
+    label: "Estimated Delivery"
+  'deliveryRange.begin':
     type: Number
     label: "Days to ship"
-  'deliveryRange.$.end':
+  'deliveryRange.end':
     type: Number
     label: "Days until delivery"
   validRanges:
     type: Array
     optional: true
-    label: "Valid Cart SubTotal Range"
+    label: "Matching Cart Ranges"
   'validRanges.$':
     type: Object
     optional: true
@@ -138,13 +137,18 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Number
     label: "End"
     optional: true
-  # validDestinations:
-  #   type: [Object]
-  #   blackbox: true
-  #   optional: true
-  #   label: "Valid destinations"
-  # validOrigination:
-  #   type: [Object]
-  #   blackbox: true
-  #   optional: true
-  #   label: "Valid originations"
+  validLocale:
+    type: Array
+    optional: true
+    label: "Matching Locales"
+  'validLocale.$':
+    type: Object
+    optional: true
+  'validLocale.$.origination':
+    type: String
+    label: "From"
+    optional: true
+  'validLocale.$.destination':
+    type: String
+    label: "To"
+    optional: true
