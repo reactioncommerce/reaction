@@ -112,16 +112,6 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Boolean
     label: "Enabled"
     defaultValue: true
-  deliveryRange:
-    type: Object
-    optional: true
-    label: "Estimated Delivery"
-  'deliveryRange.begin':
-    type: Number
-    label: "Days to ship"
-  'deliveryRange.end':
-    type: Number
-    label: "Days until delivery"
   validRanges:
     type: Array
     optional: true
@@ -137,18 +127,26 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     type: Number
     label: "End"
     optional: true
-  validLocale:
+  validLocales:
     type: Array
     optional: true
     label: "Matching Locales"
-  'validLocale.$':
+  'validLocales.$':
     type: Object
     optional: true
-  'validLocale.$.origination':
+  'validLocales.$.origination':
     type: String
     label: "From"
     optional: true
-  'validLocale.$.destination':
+  'validLocales.$.destination':
     type: String
     label: "To"
+    optional: true
+  'validLocales.$.deliveryBegin':
+    type: Number
+    label: "Shipping Est."
+    optional: true
+  'validLocales.$.deliveryEnd':
+    type: Number
+    label: "Delivery Est."
     optional: true
