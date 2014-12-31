@@ -1,26 +1,46 @@
-Template.checkoutShipping.helpers
-  rates: () ->
-    rates = []
-    shop = Shops.findOne()
-    for carrier,value in shop?.shipping
-      for method,index in carrier.methods
-        if method?.rate?
-          method.rate = "Free" if method.rate is '0'
-          rates.push carrier: value, method: index, label:method.label, value:method.rate
-          CartWorkflow.shipmentMethod()
-        #else #fetch rates
-    return rates
+###
+# These helpers can be used in general shipping packages
+# or replaced, but are meant to be generalized in nature.
+###
+Template.coreCheckoutShipping.helpers
+  # retrieves enabled shipping package templates and returns as array
+  shippingTemplates: ->
+    return ReactionCore.Collections.Packages.find({
+      'enabled':true,
+      'registry.shippingTemplate': {$exists: true},
+      'registry.provides': {$in: ["shippingMethod"]}
+      })
 
-   isSelected: (carrier,method)->
-    currentShipping = Cart.findOne()?.shipping?.shipmentMethod
-    if (currentShipping?.carrier is this.carrier) and (currentShipping?.method is this.method)
+  # retrieves current rates and updates shipping rates
+  # in the users cart collection (historical, and prevents repeated rate lookup)
+  shipmentMethods: () ->
+    cart = ReactionCore.Collections.Cart.findOne()
+    if cart
+      Meteor.call "updateCartShippingRates", cart
+      return cart.shipping?.shipmentMethods
+
+  # helper to make sure there are some shipping providers
+  shippingConfigured: () ->
+    exists = ReactionCore.Collections.Shipping.find({'methods.enabled': true}).count()
+    return exists
+  # helper to display currently selected shipmentMethod
+  isSelected: (cart)->
+    shipmentMethod  = ReactionCore.Collections.Cart.findOne().shipping.shipmentMethod
+    unless shipmentMethod then return
+    # if there is already a selected method, set active
+    if _.isEqual @.method, shipmentMethod?.method
       Session.set "shipmentMethod",this
       CartWorkflow.shipmentMethod()
       return "active"
 
-Template.checkoutShipping.events
+###
+# Set and store cart shipmentMethod
+# this copies from shipmentMethods (retrieved rates)
+# to shipmentMethod (selected rate)
+###
+Template.coreCheckoutShipping.events
   'click .list-group-item': (event) ->
     $('.checkout-shipping .active').removeClass('active')
     $(event.currentTarget).addClass('active')
-    CartWorkflow.shipmentMethod(@)
-    Session.set "shipmentMethod",@
+    unless @.shipping?.shipmentMethod then CartWorkflow.shipmentMethod(@)
+    Session.set "shipmentMethod", @

@@ -46,11 +46,17 @@ Meteor.methods
   # initializes empty variant template (all others are clones)
   # should only be seen when all variants have been deleted from a product.
   ###
-  createVariant: (productId) ->
+  createVariant: (productId, newVariant) ->
     unless Roles.userIsInRole(Meteor.userId(), ['admin'])
       return false
-    newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
+    newVariantId = Random.id()
+    if newVariant
+      newVariant._id = newVariantId
+      check(newVariant, ReactionCore.Schemas.ProductVariant)
+    else
+      newVariant = { "_id": newVariantId, "title": "", "price": "0.00" }
     Products.update({"_id": productId},{$addToSet:{"variants": newVariant}}, {validate: false})
+    return newVariantId
 
   ###
   # update individual variant with new values, merges into original

@@ -139,7 +139,7 @@ Template.registerHelper "formatPrice", (price) ->
       formattedPrice = accounting.formatMoney actualPrice, ReactionCore.Locale.currency
       price = price.replace(originalPrice, formattedPrice)
   catch
-    if ReactionCore.Locale?.currency.exchangeRate then price = price * ReactionCore.Locale.currency.exchangeRate.Rate
+    if ReactionCore.Locale?.currency?.exchangeRate then price = price * ReactionCore.Locale?.currency?.exchangeRate.Rate
     price = accounting.formatMoney price, ReactionCore.Locale?.currency
 
   return price

@@ -31,7 +31,7 @@ Alerts =
     ###
     If autoHide enabled then fadeOut is time in ms before alert disappears
     ###
-    fadeOut: 600
+    fadeOut: 3000
 
     ###
     Amount of alerts to be displayed

@@ -38,10 +38,10 @@ Package.onUse(function (api, where) {
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
-    api.use("aldeed:simple-schema@1.1.0");
-    api.use("aldeed:autoform@4.0.7");
+    api.use("aldeed:simple-schema@1.2.0");
+    api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
-    api.use("iron:router@0.9.4");
+    api.use("iron:router@1.0.5");
     api.use("ongoworks:speakingurl@1.0.3");
     api.use("ongoworks:pdf@1.0.0");
     api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
@@ -50,14 +50,14 @@ Package.onUse(function (api, where) {
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
-    api.use("mrt:moment@2.8.1",'client');
-    api.use("sacha:spin@2.0.4", 'client');
+    api.use('momentjs:moment@2.8.4', 'client');
+    api.use("sacha:spin@2.0.4", "client");
 
-    api.use("cfs:standard-packages@0.0.2");
-    api.use("cfs:graphicsmagick@0.0.1");
-    api.use("cfs:filesystem@0.0.0");
-    api.use("cfs:gridfs@0.0.0");
-    api.use("cfs:s3@0.0.0");
+    api.use("cfs:standard-packages@0.5.2");
+    api.use("cfs:graphicsmagick@0.0.17");
+    api.use("cfs:filesystem@0.1.1");
+    api.use("cfs:gridfs@0.0.27");
+    api.use("cfs:s3@0.1.1");
     api.use("raix:ui-dropped-event@0.0.7");
 
     //implying these are reused in reaction packages
@@ -93,12 +93,23 @@ Package.onUse(function (api, where) {
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
-    "common/collectionFS.coffee",
-    "common/collections.coffee",
-    "common/collection-helpers.coffee",
-    "common/hooks.coffee",
     "common/register.coffee",
-    "common/routing.coffee"
+    "common/routing.coffee",
+    "common/schemas/packages.coffee",
+    "common/schemas/shops.coffee",
+    "common/schemas/shipping.coffee",
+    "common/schemas/products.coffee",
+    "common/schemas/tags.coffee",
+    "common/schemas/cart.coffee",
+    "common/schemas/orders.coffee",
+    "common/schemas/translations.coffee",
+    "common/schemas/taxes.coffee",
+    "common/schemas/shipping.coffee",
+    "common/schemas/discounts.coffee",
+    "common/collections/collections.coffee",
+    "common/collections/collectionFS.coffee",
+    "common/helpers/helpers.coffee",
+    "common/hooks/hooks.coffee"
   ], ["client", "server"]);
 
   api.addFiles([
@@ -169,7 +180,6 @@ Package.onUse(function (api, where) {
     "client/templates/layout/header/i18n/i18n.coffee",
 
     "client/templates/layout/footer/footer.html",
-    "client/templates/layout/footer/footer.coffee",
 
     "client/templates/layout/alerts/bootstrap-alerts.coffee",
     "client/templates/layout/alerts/alerts.html",
