@@ -8,7 +8,7 @@
       <li role="presentation" class="dropdown-header" data-i18n="languages.select">Select Language</li>
       <li class="divider"></li>
       {{#each languages}}
-      <li class="{{active}}"><a href="#" role="menuitem" class="i18n-language" data-i18n="languages.{{toLowerCase language}}">{{language}}</a></li>
+      <li class="{{active}}"><a href="#" role="menuitem" class="i18n-language">{{#if entryText }} {{entryText}} {{else}} {{language}} {{/if}}</a></li>
       {{/each}}
     </ul>
   </li>

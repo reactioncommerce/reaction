@@ -2,6 +2,7 @@
     {
         "language": "Hebrew",
         "i18n": "he",
+        "entryText": "עברית",
         "translation": {
             "core": {
                 "languages": {
