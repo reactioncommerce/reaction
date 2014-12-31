@@ -121,10 +121,12 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
     optional: true
   'validRanges.$.begin':
     type: Number
+    decimal: true
     label: "Begin"
     optional: true
   'validRanges.$.end':
     type: Number
+    decimal: true
     label: "End"
     optional: true
   validLocales:
