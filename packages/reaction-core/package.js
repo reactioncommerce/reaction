@@ -35,16 +35,19 @@ Package.onUse(function (api, where) {
 
 
     //community packages
+    api.use("nemo64:bootstrap@3.3.1_1","client");
+    api.use("nemo64:bootstrap@3.3.1_1","server", {'weak': 1});
+    api.use("d3js:d3@3.4.13");
+    api.use("fortawesome:fontawesome@4.2.0_2");
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.2.0");
     api.use("aldeed:simple-schema@1.2.0");
     api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
-    api.use("iron:router@1.0.5");
-    api.use("ongoworks:speakingurl@1.0.3");
-    api.use("ongoworks:pdf@1.0.0");
-    api.use("nemo64:bootstrap@3.3.0_1","server", {'weak': 1});
+    api.use("iron:router@1.0.6");
+    api.use("ongoworks:speakingurl@1.0.4");
+    api.use("ongoworks:pdf@1.1.0");
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("matb33:collection-hooks@0.7.6");
