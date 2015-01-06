@@ -14,6 +14,10 @@
                     "submit": "Подтвердить",
                     "delete": "Удалить"
                 },
+                "header": {
+                    "tagsAdd": "Добавить метку",
+                    "search": "Искать товары..."
+                },
                 "productDetail": {
                     "productManagement": "Управление товарами",
                     "makeInvisible": "Сделать невидимым",
@@ -21,7 +25,10 @@
                     "makeItVisible": "Вы можете сделать его видимым",
                     "whenYouAreDone": "когда закончите редактирование.",
                     "tags": "Метки",
+                    "tagsAdd": "Новая метка",
                     "details": "Детали",
+                    "detailsName": "Название характеристики",
+                    "detailsInfo": "Значение характеристики",
                     "options": "Варианты",
                     "addToCart": "Добавить в корзину",
                     "chooseOptions": "Пожалуйста выберите вариант прежде чем добавить товар в корзину",
@@ -73,11 +80,19 @@
                 },
                 "checkoutProgressBar": {
                     "login": "Авторизация",
-                    "shippingBilling": "Доставки и Оплата",
+                    "shippingBilling": "Доставки и оплата",
                     "shippingOptions": "Варианты доставки",
                     "reviewPayment": "Подтверждение и Оплата",
                     "complete": "Готово"
-                },                
+                },
+                "dashboardIcon": {
+                    "iconTitle": "Показать дэшборд",
+                    "text": "Дэшборд"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Добавить товар",
+                    "text": "Добавить"
+                },
                 "accountsUI": {
                     "add": "добавить",
                     "and": "и",
@@ -106,7 +121,8 @@
                     "setPassword": "Установить пароль",
                     "sign": "Подпись",
                     "signIn": "Войти",
-                    "signin": "bойти",
+                    "signedIn": "Вы уже вошли",
+                    "signin": "войти",
                     "signOut": "Выйти",
                     "signUp": "Регистрация",
                     "signupCode": "Регистрационный код",
