@@ -15,7 +15,6 @@
     {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
       <fieldset>
         {{> afQuickField name='name' placeholder="Shop Name"}}
-        {{> afQuickField name='name' placeholder="Shop Name"}}
         {{> afQuickField name='email' placeholder="Primary Contact Email"}}
         {{> afQuickField name='description' placeholder="Description"}}
         {{> afQuickField name='keywords' placeholder="Keywords"}}
@@ -53,7 +52,7 @@
     {{>quickForm collection="Shops" doc=. id="shopEditEmailForm" type="update" fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
     </div>
   </div>
-  <div class="tab-pane active" id="settings">
+  <div class="tab-pane" id="settings">
     <div class="well">
     {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
       <fieldset>
