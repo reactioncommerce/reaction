@@ -58,8 +58,8 @@ loadFixtures = ->
 
   # Loop through ReactionCore.Packages object, which now has all packages added by
   # calls to register
-  # todo: add function to retrigger this
-  unless ReactionCore.Collections.Packages.find().count()
+  # removes package when removed from meteor, retriggers when package added
+  unless ReactionCore.Collections.Packages.find().count() is Object.keys(ReactionCore.Packages).length
     _.each ReactionCore.Packages, (config, pkgName) ->
       Shops.find().forEach (shop) ->
         console.log ("Initializing "+ pkgName).cyan
@@ -67,6 +67,12 @@ loadFixtures = ->
           $setOnInsert:
             enabled: !!config.autoEnable
             settings: config.defaultSettings
+    # remove unused packages
+    Shops.find().forEach (shop) ->
+      ReactionCore.Collections.Packages.find().forEach (pkg) ->
+        unless _.has(ReactionCore.Packages, pkg.name)
+          console.log ("Removing "+ pkg.name).red
+          ReactionCore.Collections.Packages.remove {shopId: shop._id, name: pkg.name}
 
   # create default admin user account
   createDefaultAdminUser() unless Meteor.users.find().count()
