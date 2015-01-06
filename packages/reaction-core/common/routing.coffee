@@ -126,11 +126,8 @@ Router.map ->
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
-          unless ReactionCore.hasPermission(@path)
+          unless ReactionCore.hasPermission(@url)
             @render 'unauthorized'
-            Meteor.setTimeout (->
-              Router.go('/')
-            ),0
         return product
 
   #checkout
