@@ -94,7 +94,6 @@ Router.map ->
     path: 'dashboard/orders/'
     template: 'orders'
     data: ->
-      console.log @params
       Orders.find(@params._id)
 
   # display products by tag
