@@ -10,4 +10,3 @@ Template.i18nChooser.events
   'click .i18n-language': (event,template)->
     event.preventDefault()
     Session.set('language',@.i18n)
-    $("[data-i18n]").i18n()
