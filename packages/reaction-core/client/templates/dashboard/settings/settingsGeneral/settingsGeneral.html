@@ -14,7 +14,6 @@
     <div class="well">
     {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
       {{> afQuickField name='name' placeholder="Shop Name"}}
-      {{> afQuickField name='name' placeholder="Shop Name"}}
       {{> afQuickField name='email' placeholder="Primary Contact Email"}}
       {{> afQuickField name='description' placeholder="Description"}}
       {{> afQuickField name='keywords' placeholder="Keywords"}}
@@ -48,7 +47,7 @@
       {{/autoForm}}
     </div>
   </div>
-  <div class="tab-pane active" id="settings">
+  <div class="tab-pane" id="settings">
     <div class="well">
       {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
         {{> afQuickField name='timezone' options=timezoneOptions}}
