@@ -43,7 +43,7 @@
                 "productDetailEdit": {
                     "title": "Название",
                     "pagetitle": "Другое название",
-                    "vendor": "Производителя",
+                    "vendor": "Производитель",
                     "description": "Добавьте описание товара"
                 },
                 "productVariant": {
