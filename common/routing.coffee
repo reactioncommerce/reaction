@@ -4,6 +4,9 @@
 # iron router handles url path, and renders templates into
 # yields based on the logic in this file
 # individual reaction packages have their own routing
+#
+# The reaction-core controller is extended here so you can
+# modify here if needed.
 # *****************************************************
 ReactionController = ShopController.extend
 
@@ -28,11 +31,16 @@ staticPages = [
 # *****************************************************
 # to use your own templates, you can do override like this:
 #
-# Router.routes.index.options.template = "myIndex"
+#   Router.routes.index.options.template = "myIndex"
 #
 # or to change core controllers (and layouts) on a route:
 #
-# Router.routes.index.controller = ReactionController
+#   Router.routes.index.controller = ReactionController
+#
+# You can also use the Template extensions to extend / alter core templates (see footer and layout as examples)
+#
+#   Template.layout.replaces "coreLayout"
+#
 # *****************************************************
 
 Router.map ->
