@@ -102,6 +102,11 @@ Meteor.startup ->
       return
     return
 
+  # trigger translations when template are removed
+  Template.onDestroyed () ->
+    i18nextDep.changed()
+    return
+
 ###
 # i18n helper
 # see: http://i18next.com/
