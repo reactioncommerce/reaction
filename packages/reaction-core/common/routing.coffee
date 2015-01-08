@@ -101,6 +101,7 @@ Router.map ->
     template: "products"
     waitOn: ->
       @subscribe "products"
+    subscriptions: ->
       @subscribe "tags"
     data: ->
       if @ready()
@@ -139,10 +140,12 @@ Router.map ->
       checkoutHeader:
         to: "layoutHeader"
     waitOn: ->
+      @subscribe "cart", Session.get "sessionId", Meteor.userId()
+    subscriptions: ->
       @subscribe "shops"
       @subscribe "products"
+      @subscribe "shipping"
       @subscribe "userOrders", Meteor.userId()
-      @subscribe "cart", Session.get "sessionId", Meteor.userId()
     data: ->
       if @.ready()
         return Cart.findOne()
