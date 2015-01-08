@@ -16,12 +16,12 @@
 # get i18n messages for  updating autoform labels from simple schema
 #
 ###
-getLabelsFor = (schema, name, sessionLanguage) ->
+getLabelsFor = (schema, name) ->
   labels = {}
   for fieldName in schema._schemaKeys
     i18n_key = name.charAt(0).toLowerCase() + name.slice(1) + "." + fieldName.split(".$").join("")
-    # console.log "schema:  " + name + "  fieldName:  " + fieldName + " i18nkey: " + i18n_key
     translation = i18n.t(i18n_key)
+#    console.debug "schema: #{name} fieldName: #{fieldName} i18n_key: #{i18n_key} translation: #{translation}"
     if new RegExp('string').test(translation) isnt true and translation isnt i18n_key
       # schema._schema[fieldName].label =  i18n.t(i18n_key)
       labels[fieldName] = translation
@@ -38,7 +38,7 @@ getLabelsFor = (schema, name, sessionLanguage) ->
 # (3) Use schema-specific message for type
 #
 ###
-getMessagesFor = (schema, name, sessionLanguage) ->
+getMessagesFor = (schema, name) ->
   messages = {}
   for message of SimpleSchema._globalMessages
     i18n_key = "globalMessages" + "." + message
@@ -78,26 +78,25 @@ Meteor.startup ->
       , {}
 
       $.i18n.init {
-        lng: sessionLanguage
-        fallbackLng: 'en'
-        ns: "core"
-        resStore: resources
-        # debug: true
+          lng: sessionLanguage
+          fallbackLng: 'en'
+          ns: "core"
+          resStore: resources
+          # debug: true
         },(t)->
           # update labels and messages for autoform,schemas
           for schema, ss of ReactionCore.Schemas
-            ss.labels getLabelsFor(ss, schema, sessionLanguage)
-            ss.messages getMessagesFor(ss, schema, sessionLanguage)
+            ss.labels getLabelsFor(ss, schema)
+            ss.messages getMessagesFor(ss, schema)
 
           #re-init all i18n
           i18nextDep.changed()
 
   # reactive translations in all templates
   Template.onRendered () ->
-    t = @
-    t.autorun () ->
+    @autorun () =>
       i18nextDep.depend() #rerun whenever language changes and we re-init $.i18n
-      $elements = t.$("[data-i18n]")
+      $elements = @$("[data-i18n]")
       $elements.i18n() if typeof $elements.i18n is "function"
       return
     return
@@ -116,7 +115,6 @@ Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
   if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + camelCaseString.toCamelCase()
   result = new Handlebars.SafeString(i18n.t(i18n_key))
   return result
-
 
 ###
 #  return shop /locale specific currency format (ie: $)
