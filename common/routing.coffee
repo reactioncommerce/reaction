@@ -6,7 +6,6 @@
 # individual reaction packages have their own routing
 # *****************************************************
 ReactionController = ShopController.extend
-  layoutTemplate: "layout"
 
 # *****************************************************
 # generic static pages

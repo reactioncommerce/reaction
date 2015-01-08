@@ -1,0 +1,1 @@
+Template.layout.replaces "coreLayout"
