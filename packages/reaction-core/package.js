@@ -61,6 +61,7 @@ Package.onUse(function (api, where) {
     api.use("cfs:filesystem@0.1.1");
     api.use("cfs:gridfs@0.0.27");
     api.use("cfs:s3@0.1.1");
+    api.use("cfs:ui@0.1.3");
     api.use("raix:ui-dropped-event@0.0.7");
 
     //implying these are reused in reaction packages
