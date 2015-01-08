@@ -15,7 +15,8 @@
                     "saveAndContinue": "Save and continue",
                     "cancel": "Cancel",
                     "submit": "Submit",
-                    "delete": "Delete"
+                    "delete": "Delete",
+                    "create": "Create"
                 },
                 "productDetail": {
                     "productManagement": "Product management",
@@ -117,7 +118,9 @@
                     "review": "Review"
                 },
                 "checkoutShipping": {
-                    "selectShippingOption": "Select shipping option"
+                    "selectShippingOption": "Select shipping option",
+                    "noShippingMethods": "No shipping methods are configured.",
+                    "configureNow": "Configure now."
                 },
                 "shopEditForm": {
                     "name": "Name",
