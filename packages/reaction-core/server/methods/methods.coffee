@@ -5,6 +5,7 @@ Meteor.methods
   # determine user's countryCode and return locale object
   ###
   getLocale: ->
+    @unblock() #prevent waiting for locale
     result = {}
     ip = this.connection.httpHeaders['x-forwarded-for']
 
