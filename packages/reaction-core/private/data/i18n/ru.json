@@ -37,7 +37,27 @@
                     "productDeleteError": "Произошла ошибка во время удаления товара ",
                     "publishFirst": "Опубликуйте товар прежде чем добавить в корзину.",
                     "selectOption": "Выберите вариант прежде чем добавить в корзину",
-                    "addedToCart": "добавлено"
+                    "addedToCart": "добавлено",
+                    "dropFile": "Перетащите фото для загрузки"
+                },
+                "productDetailEdit": {
+                    "title": "Название",
+                    "pagetitle": "Другое название",
+                    "vendor": "Производитель",
+                    "description": "Добавьте описание товара"
+                },
+                "productVariant": {
+                    "inventoryQuantity": "Количество",
+                    "title": "Название",
+                    "price": "Цена",
+                    "optionTitle": "Опция",
+                    "barcode": "Штрих-код",
+                    "compareAtPrice": "Рекомендованная цена",
+                    "fulfillmentService": "Fulfillment service",
+                    "weight": "Вес",
+                    "inventoryManagement": "Inventory Tracking",
+                    "inventoryPolicy": "Не продавать, если кончается",
+                    "lowInventoryWarningThreshold": "Предупреждать когда меньше, чем"
                 },
                 "variantList": {
                     "moreOptions": "Есть еще варианты доступные для этого выбора.",
