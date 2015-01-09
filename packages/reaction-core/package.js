@@ -54,7 +54,7 @@ Package.onUse(function (api) {
     api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@1.0.6");
-    api.use("ongoworks:speakingurl@1.0.4");
+    api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
 
     api.use("dburles:collection-helpers@1.0.1");
@@ -64,7 +64,7 @@ Package.onUse(function (api) {
     api.use('momentjs:moment@2.8.4', 'client');
     api.use("sacha:spin@2.0.4", "client");
 
-    api.use("cfs:standard-packages@0.5.2");
+    api.use("cfs:standard-packages@0.5.3");
     api.use("cfs:graphicsmagick@0.0.17");
     api.use("cfs:filesystem@0.1.1");
     api.use("cfs:gridfs@0.0.27");
