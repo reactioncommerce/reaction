@@ -42,6 +42,12 @@
                     "selectOption": "Select an option before adding to cart",
                     "addedToCart": "added"
                 },
+                "productDetailEdit": {
+                    "title": "Product title",
+                    "pagetitle": "Product page title",
+                    "vendor": "Product vendor",
+                    "description": "Add a product description"
+                },
                 "variantList": {
                     "moreOptions": "There are more options available for this selection.",
                     "createVariant": "Create Variant"
