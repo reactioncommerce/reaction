@@ -452,7 +452,6 @@ Package.onUse(function (api, where) {
   api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
 
-
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.
