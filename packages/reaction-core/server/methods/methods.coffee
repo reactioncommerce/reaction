@@ -139,6 +139,16 @@ Meteor.methods
     if (productCount is 0) and (relatedTagsCount is 0)
       return Tags.remove(tagId)
 
+  ###
+  # Helper method to remove all translations, and reload from jsonFiles
+  ###
+  flushTranslations: ->
+    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return false
+    ReactionCore.Collections.Translations.remove({})
+    Fixtures.loadI18n ReactionCore.Collections.Translations
+    console.log Meteor.userId() + " Flushed Translations."
+
 
   ## possible dead method, commenting out pending further review
 
