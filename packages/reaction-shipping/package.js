@@ -1,12 +1,12 @@
 Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
-  version: "0.1.0",
+  version: "0.1.1",
   git: "https://github.com/reactioncommerce/reaction-shipping.git"
 });
 
 
-Package.on_use(function (api, where) {
+Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.0');
   api.use("meteor-platform");
   api.use("templating");
@@ -14,15 +14,17 @@ Package.on_use(function (api, where) {
   api.use("less");
   api.use("reactioncommerce:core@0.2.2");
 
-  api.add_files([
+  api.addFiles([
     "common/register.coffee", // register as a reaction package
     "common/collections.coffee", // any unique collections
     "common/routing.coffee" // add routing for administration templates
   ],["client","server"]);
 
-  api.add_files("server/methods.coffee",["server"]); // server methods
+  api.addFiles("server/methods.coffee",["server"]); // server methods
+  api.addFiles("server/fixtures.coffee",["server"]); // fixtures
+  api.addFiles('private/data/Shipping.json', 'server', {isAsset: true});// fixture data
 
-  api.add_files([
+  api.addFiles([
     // admin screens
     "client/templates/shipping.html",
     "client/templates/shipping.coffee",

@@ -4,6 +4,6 @@ Router.map ->
     path: 'dashboard/settings/shipping',
     template: 'shipping'
     waitOn: ->
+      return ReactionCore.Subscriptions.Packages
+    subscriptions: ->
       return Meteor.subscribe "shipping"
-    # data: ->
-    #   return ReactionCore.Collections.Shipping.find()
