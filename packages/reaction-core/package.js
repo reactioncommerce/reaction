@@ -50,6 +50,8 @@ Package.onUse(function (api, where) {
     api.use("ongoworks:pdf@1.1.0");
 
     api.use("dburles:collection-helpers@1.0.1");
+    api.use("dburles:factory@0.3.7");
+    api.use("anti:fake@0.4.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
@@ -113,7 +115,8 @@ Package.onUse(function (api, where) {
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
     "common/helpers/helpers.coffee",
-    "common/hooks/hooks.coffee"
+    "common/hooks/hooks.coffee",
+    "common/factories.coffee"
   ], ["client", "server"]);
 
   api.addFiles([
