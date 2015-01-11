@@ -22,3 +22,6 @@ npm-debug.log
 *.sublime-workspace
 
 reaction-dev.sh
+
+packages/reactioncommerce:*
+packages/tests-proxy/
