@@ -91,8 +91,8 @@ Meteor.methods
   # currentTagId will update related/hierarchy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
     newTag =
       slug: getSlug tagName
@@ -127,8 +127,8 @@ Meteor.methods
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
     if currentTagId
       Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
@@ -143,8 +143,9 @@ Meteor.methods
   # Helper method to remove all translations, and reload from jsonFiles
   ###
   flushTranslations: ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+
     ReactionCore.Collections.Translations.remove({})
     Fixtures.loadI18n ReactionCore.Collections.Translations
     console.log Meteor.userId() + " Flushed Translations."
