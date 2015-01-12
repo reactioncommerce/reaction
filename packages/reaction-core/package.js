@@ -115,14 +115,14 @@ Package.onUse(function (api, where) {
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
     "common/helpers/helpers.coffee",
-    "common/hooks/hooks.coffee",
-    "common/factories.coffee"
+    "common/hooks/hooks.coffee"
   ], ["client", "server"]);
 
   api.addFiles([
     "server/app.coffee",
     "server/publications.coffee",
     "server/fixtures.coffee",
+    "server/factories.coffee",
     "server/methods/methods.coffee",
     "server/methods/cart/methods.coffee",
     "server/methods/orders/methods.coffee",
