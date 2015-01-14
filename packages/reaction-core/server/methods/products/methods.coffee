@@ -70,10 +70,7 @@ Meteor.methods
       for variants,value in product.variants
         if variants._id is variant._id
           newVariant = _.extend variants,variant
-      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
-        console.log error if error
-        return
-      )
+      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false})
 
   ###
   # update whole variants array
@@ -82,9 +79,7 @@ Meteor.methods
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variants[0]._id
-    Products.update product._id, $set: variants: variants, {validate: false}, (error,results) ->
-      console.log error if error
-      return
+    Products.update product._id, $set: variants: variants, {validate: false}
 
   ###
   # clone a whole product, defaulting visibility, etc
