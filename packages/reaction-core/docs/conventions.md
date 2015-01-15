@@ -108,11 +108,15 @@ ReactionCore.Events.info "Something we want to see during development"
 *common/packageGlobals.js:*
 
 ```js
-// exported
+// exported, global/window scope
 ReactionCore = {};
-ReactionCore.Collections = {};
-ReactionCore.Helpers = {};
-ReactionCore.Packages = {};
+ReactionCore.Schemas = {}; // Schemas defined in common/schemas
+ReactionCore.Collections = {}; //Collections defined in common/collections
+ReactionCore.Helpers = {}; //Misc.helpers defined in common/helpers
+ReactionCore.Packages = {}; // Package methods
+ReactionCore.MetaData = {}; // SEO, Metadata object
+ReactionCore.Locale = {}; //i18n translation object
+ReactionCore.Events = {}; // Logger instantiation (server)
 ```
 
 *common/collections/collections.coffee:*
