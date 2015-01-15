@@ -1,10 +1,3 @@
-# Hacky issue https://github.com/meteor/meteor/issues/2536
-#
-process.argv = _.without(process.argv, "--keepalive")
-Meteor.startup ->
-  console.log "LISTENING"
-  return
-
 ###
 # Global reaction shop permissions methods
 ###
@@ -13,7 +6,7 @@ _.extend ReactionCore,
     domain = @getDomain(client)
     cursor = Shops.find({domains: domain}, {limit: 1})
     if !cursor.count()
-      console.log "Reaction Configuration: Add a domain entry to shops for: ", domain
+      ReactionCore.Events.info "Reaction Configuration: Add a domain entry to shops for: ", domain
     return cursor
 
   getCurrentShop: (client) ->

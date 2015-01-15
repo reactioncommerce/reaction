@@ -7,7 +7,7 @@ Meteor.methods
   ###
   updateCartShippingRates: (cartSession) ->
     unless cartSession
-      console.log "no cart passed to update rates, return null." if Meteor.settings.isDebug
+      ReactionCore.Events.info "no cart passed to update rates, return null."
       return null
     if cartSession.shipping?.address and cartSession.shipping?.shipmentMethods then return
 
@@ -38,8 +38,8 @@ Meteor.methods
         rates.push carrier: shipping.provider.label, method: method, rate: rate
 
 
-      console.log rates if Meteor.settings.isDebug
-      console.log "returning rates" if Meteor.settings.isDebug
+      ReactionCore.Events.info rates
+      ReactionCore.Events.info "returning rates"
 
     # TODO:
     # wire in external shipping methods here, add to rates

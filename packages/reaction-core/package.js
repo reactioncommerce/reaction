@@ -1,12 +1,8 @@
 Package.describe({
-  summary: "Reaction Core - Reaction Commerce package for Meteor",
+  summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
   version: "0.2.2",
   git: "https://github.com/reactioncommerce/reaction-core.git"
-});
-
-Npm.depends({
-    "colors": "0.6.2"
 });
 
 Package._transitional_registerBuildPlugin({
@@ -56,6 +52,7 @@ Package.onUse(function (api) {
     api.use("iron:router@1.0.6");
     api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
+    api.use("ongoworks:bunyan-logger@1.0.0");
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("dburles:factory@0.3.7");
@@ -94,6 +91,7 @@ Package.onUse(function (api) {
     api.imply("alanning:roles");
     api.imply("mrt:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);
+    api.imply("dburles:factory");
     api.imply("ongoworks:speakingurl");
 
 

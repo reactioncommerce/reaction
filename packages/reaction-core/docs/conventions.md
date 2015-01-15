@@ -26,7 +26,10 @@ When you create a pull request, you can click the 'edit' button to change the "t
 				routing.coffee
 				subscriptions.coffee
 			-> common *code common to client and server*
-				collections.coffee
+				-> collections
+				-> schemas
+				-> helpers
+				-> hooks
 			-> lib 		*libraries for server side*
 			-> server	*server side code*
 				methods.coffee
@@ -35,8 +38,10 @@ When you create a pull request, you can click the 'edit' button to change the "t
 			
 
 #Presentation layer
-	-> functionalTriad
-		functionalTriad.less
+
+See [themes.md](themes.md) for details on the themes and LESS implementation.
+
+	-> functionalTriad.less
 			class="functional-triad-class" *hyphenated class names, replace camel casing*
 			id="functional-triad-id"
 
@@ -58,11 +63,37 @@ When using event, template parameters in methods, use full names
 #### return
 As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not be what you expect or want. Using explicit `return` also makes the code more readable for others.
 
-### console.log
-Feel free to have verbose console.logs in the code, but use the following format to not clutter production logging:
+#Logging
+We use Bunyan for server logging https://github.com/trentm/node-bunyan. Client logging is standard Meteor client handling of `console.log`.
+
+The ongoworks:bunyan package exports `loggers`, and is instianted by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
+
+To enable logging enable `isDebug: true`, or value can be any valid bunyan level in settings.json.
+
+Setting a level of *debug*  `isDebug:  "debug"` or higher will display verbose logs as JSON. 
+
+Note: *Recommend running meteor with `--raw-log` to remove most Meteor native console formatting. This is the default when you use `./bin/run` to start Meteor.*
+
+Feel free to have verbose logging in the code, but use the following format [Bunyan recommendations on Levels](https://github.com/trentm/node-bunyan#levels)
+
 
 ```
-console.log "Something we want to see during development" if Meteor.settings.isDebug
+The log levels in bunyan are as follows. The level descriptions are best practice opinions.
+
+"fatal" (60): The service/app is going to stop or become unusable now. An operator should definitely look into this soon.
+"error" (50): Fatal for a particular request, but the service/app continues servicing other requests. An operator should look at this soon(ish).
+"warn" (40): A note on something that should probably be looked at by an operator eventually.
+"info" (30): Detail on regular operation.
+"debug" (20): Anything else, i.e. too verbose to be included in "info" level.
+"trace" (10): Logging from external libraries used by your app or very detailed application logging.
+Suggestions: Use "debug" sparingly. Information that will be useful to debug errors post mortem should usually be included in "info" messages if it's generally relevant or else with the corresponding "error" event. Don't rely on spewing mostly irrelevant debug messages all the time and sifting through them when an error occurs.
+```
+
+Example:
+```
+
+ReactionCore.Events.info "Something we want to see during development"
+
 ```
 
 
@@ -83,7 +114,7 @@ ReactionCore.Helpers = {};
 ReactionCore.Packages = {};
 ```
 
-*common/collections.coffee:*
+*common/collections/collections.coffee:*
 
 ```coffee
 Product = ReactionCore.Collections.Product = new Mongo.Collection("Product")
@@ -107,3 +138,4 @@ And the core pkg exports only `ReactionCore`, on both client and server:
 ```js
 api.export(["ReactionCore"]);
 ```
+
