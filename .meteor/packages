@@ -16,10 +16,9 @@ force-ssl
 
 # Community Packages
 nemo64:bootstrap
-mike:mocha
-dburles:factory
-anti:fake
-sanjo:jasmine
+#mike:mocha
+#anti:fake
+#sanjo:jasmine
 
 # Reaction Commerce Packages
 reactioncommerce:core-theme
