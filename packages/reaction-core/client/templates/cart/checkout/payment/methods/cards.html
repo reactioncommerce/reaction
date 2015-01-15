@@ -1,11 +1,14 @@
-<template name="paymentMethodsCards">
-<p>No credit card payment package enabled.</p>
-</template>
-
-<template name="paymentMethodsBitCoin">
-<p>No Bitcoin payment package enabled.</p>
-</template>
-
-<template name="paymentMethodsCOD">
-<p>No COD payment package enabled.</p>
+<template name="corePaymentMethods">
+  {{#each paymentTemplates}}
+    <div class="thumbnail">
+      {{> Template.dynamic template=this}}
+    </div>
+  {{else}}
+    <div class="alert alert-danger">
+      <span data-i18n="checkoutPayment.noPaymentMethods">No payment methods are configured. </span>
+      <a href="/dashboard">
+        <span data-i18n="checkoutPayment.configureNow">Configure now.</span>
+      </a>
+    </div>
+  {{/each}}
 </template>

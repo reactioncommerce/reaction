@@ -121,6 +121,7 @@ loadFixtures = ->
           $setOnInsert:
             enabled: !!config.autoEnable
             settings: config.defaultSettings
+            registry: config
     # remove unused packages
     Shops.find().forEach (shop) ->
       ReactionCore.Collections.Packages.find().forEach (pkg) ->

@@ -1,7 +1,6 @@
 ###
 # Packages
 ###
-#TODO Don't have to set and export PackageConfigSchema if we confirm that no pkgs use it
 ReactionCore.Schemas.PackageConfig = new SimpleSchema
   shopId:
     type: String
@@ -24,6 +23,10 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
     type: String
     optional: true
   settings:
+    type: Object
+    optional: true
+    blackbox: true
+  registry:
     type: Object
     optional: true
     blackbox: true

@@ -147,6 +147,7 @@ Router.map ->
       @subscribe "shops"
       @subscribe "products"
       @subscribe "shipping"
+      @subscribe "packages"
       @subscribe "userOrders", Meteor.userId()
     data: ->
       if @.ready()
