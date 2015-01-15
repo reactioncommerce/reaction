@@ -20,10 +20,14 @@ _.extend ReactionCore,
         self.shopId = shop._id
         #permissions and packages
         permissions = []
-        usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
+        # package registry update
+        # use this when you want current packages, not the initial configuration
+        # exposes package details
+        #
+        self.usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
           return p.info()
 
-        for usedPackage in usedPackages
+        for usedPackage in self.usedPackages
           if usedPackage?.shopPermissions
             for shopPermission in usedPackage.shopPermissions
               permissions.push shopPermission

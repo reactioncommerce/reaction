@@ -1,4 +1,10 @@
-Template.paymentMethodsCards.helpers
+Template.corePaymentMethods.helpers
+  paymentTemplates: ->
+    paymentTemplates = []
+    ReactionCore.Collections.Packages.find({'enabled':true, 'registry.provides': {$in: ["paymentMethod"]} }).forEach (pkg) ->
+      paymentTemplates.push pkg.registry.paymentTemplate
+    return paymentTemplates
+
   cartPayerName: ->
     Cart.findOne()?.payment?.address?.fullName
 
