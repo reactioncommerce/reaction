@@ -1,5 +1,3 @@
-Packages = ReactionCore.Collections.Packages
-
 # returns enabled status for this user for specific package
 Template.gridPackage.helpers
   pkgTypeClass: ->
@@ -17,7 +15,7 @@ Template.gridPackage.events
   "click .enablePkg": (event, template) ->
     self = @
     event.preventDefault()
-    Packages.update template.data._id, {$set: {enabled: true}}, (error, result) ->
+    ReactionCore.Collections.Packages.update template.data._id, {$set: {enabled: true}}, (error, result) ->
       if result is 1
         Alerts.add self.label + i18n.t("gridPackage.pkgEnabled"), "success",
           type: "pkg-enabled-" + self.name
@@ -28,7 +26,7 @@ Template.gridPackage.events
   "click .disablePkg": (event, template) ->
     self = @
     event.preventDefault()
-    Packages.update template.data._id, {$set: {enabled: false}}, (error, result) ->
+    ReactionCore.Collections.Packages.update template.data._id, {$set: {enabled: false}}, (error, result) ->
       if result is 1
         Alerts.add self.label + i18n.t("gridPackage.pkgDisabled"), "success",
           type: "pkg-enabled-" + self.name
