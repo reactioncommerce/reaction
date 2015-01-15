@@ -1,4 +1,3 @@
-colors = Npm.require 'colors'
 ###
 # Fixtures is a global object that it can be reused in packages
 # assumes collection data in reaction-core/private/data, optionally jsonFile
@@ -10,7 +9,7 @@ colors = Npm.require 'colors'
 PackageFixture = ->
   loadData: (collection, jsonFile) ->
     return if collection.find().count() > 0
-    console.log "Loading fixture data for "+collection._name if Meteor.settings.isDebug
+    ReactionCore.Events.info "Loading fixture data for "+collection._name
     unless jsonFile
       json = EJSON.parse Assets.getText("private/data/"+collection._name+".json")
     else
@@ -19,27 +18,27 @@ PackageFixture = ->
     for item,value in json
       collection._collection.insert item, (error, result) ->
         if error
-          console.log (error + "Error adding " + value + " items to " + collection._name).red
+          ReactionCore.Events.info (error + "Error adding " + value + " items to " + collection._name)
           return false
     if value > 0
-      console.log ("Success adding " + value + " items to " + collection._name).green if Meteor.settings.isDebug
+      ReactionCore.Events.info ("Success adding " + value + " items to " + collection._name)
       return
     else
-      console.log ("No data imported to " + collection._name).yellow if Meteor.settings.isDebug
+      ReactionCore.Events.info ("No data imported to " + collection._name)
       return
 
   loadI18n: (collection) ->
     return if collection.find().count() > 0
     languages = ["ar","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
-    console.log "Loading fixture data for languages to " + collection._name if Meteor.settings.isDebug
+    ReactionCore.Events.info "Loading fixture data for languages to " + collection._name
     for language in languages
       json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")
       for item,value in json
         collection._collection.insert item, (error, result) ->
           if error
-            console.log (error + "Error adding " + language + " items to " + collection._name).red
+            ReactionCore.Events.info (error + "Error adding " + language + " items to " + collection._name)
             return
-        console.log ("Success adding "+ language + " to " + collection._name).green if Meteor.settings.isDebug
+        ReactionCore.Events.info ("Success adding "+ language + " to " + collection._name)
 
 # instantiate fixtures
 @Fixtures = new PackageFixture
@@ -66,13 +65,13 @@ createDefaultAdminUser = ->
     url = process.env.MONGO_URL #pull from default db connect string
     options.username = "Administrator"
     unless options.password then options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
-    console.log ("\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
+    ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
   else
     # random options if nothing has been set
     options.username = Meteor.settings?.reaction?.METEOR_USER || "Administrator"
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
-    console.log ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
+    ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
 
   accountId = Accounts.createUser options
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
@@ -117,7 +116,7 @@ loadFixtures = ->
   unless ReactionCore.Collections.Packages.find().count() is Object.keys(ReactionCore.Packages).length
     _.each ReactionCore.Packages, (config, pkgName) ->
       Shops.find().forEach (shop) ->
-        console.log ("Initializing "+ pkgName).cyan if Meteor.settings.isDebug
+        ReactionCore.Events.info "Initializing "+ pkgName
         ReactionCore.Collections.Packages.upsert {shopId: shop._id, name: pkgName},
           $setOnInsert:
             enabled: !!config.autoEnable
@@ -126,28 +125,27 @@ loadFixtures = ->
     Shops.find().forEach (shop) ->
       ReactionCore.Collections.Packages.find().forEach (pkg) ->
         unless _.has(ReactionCore.Packages, pkg.name)
-          console.log ("Removing "+ pkg.name).red
+          ReactionCore.Events.info ("Removing "+ pkg.name)
           ReactionCore.Collections.Packages.remove {shopId: shop._id, name: pkg.name}
 
   # create default admin user account
   createDefaultAdminUser() unless Meteor.users.find().count()
-  console.log("=> Reaction Commerce ready at: ".bold.yellow + " " + Meteor.absoluteUrl());
 
 ###
 # Execute start up fixtures
 ###
 Meteor.startup ->
   loadFixtures()
-  if Meteor.settings.public?.isDebug
-    Meteor.setInterval(loadFixtures, 300)
-
 
   # data conversion:  if ROOT_URL changes update shop domain
   # for now, we're assuming the first domain is the primary
   currentDomain = Shops.findOne().domains[0]
   if currentDomain isnt getDomain()
-    console.log "Updating domain to " + getDomain()
+    ReactionCore.Events.info "Updating domain to " + getDomain()
     Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
 
   # data conversion: we now set sessionId or userId, but not both
   Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
+
+  # notify that we're done with initialization
+  ReactionCore.Events.info "Reaction Commerce initialization finished. "

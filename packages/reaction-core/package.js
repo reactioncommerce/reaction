@@ -1,20 +1,25 @@
 Package.describe({
-  summary: "Reaction Core - Reaction Commerce package for Meteor",
+  summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.2.1",
+  version: "0.2.2",
   git: "https://github.com/ongoworks/reaction-core.git"
 });
 
-Npm.depends({
-    "phantomjs": '1.9.7-15',
-    // Note: We need to use a tarball URL here until a node-phantom
-    // dependency issue is fixed. See https://github.com/alexscheelmeyer/node-phantom/issues/102
-    "node-phantom": 'https://github.com/apdmatos/node-phantom/tarball/2ccadc1d24efc47ace9ccfee187a0689c78e9009',
-    "colors": "0.6.2"
+Package._transitional_registerBuildPlugin({
+  name: 'theme-configurator',
+  use: [
+    'underscore',
+    'reactioncommerce:core-theme'
+  ],
+  sources: [
+    'server/buildtools/module-definitions.js',
+    'server/buildtools/distributed-configuration.js',
+    'server/buildtools/theme-configurator.js'
+  ],
+  npmDependencies: {}
 });
 
-Package.onUse(function (api, where) {
-
+Package.onUse(function (api) {
   if (api.versionsFrom) {
     api.versionsFrom('METEOR@1.0');
     // Meteor Version 1.0 +
@@ -48,6 +53,7 @@ Package.onUse(function (api, where) {
     api.use("iron:router@1.0.6");
     api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
+    api.use("ongoworks:bunyan-logger@1.0.0");
 
     api.use("dburles:collection-helpers@1.0.1");
     api.use("dburles:factory@0.3.7");
@@ -86,6 +92,7 @@ Package.onUse(function (api, where) {
     api.imply("alanning:roles");
     api.imply("mrt:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);
+    api.imply("dburles:factory");
     api.imply("ongoworks:speakingurl");
 
 

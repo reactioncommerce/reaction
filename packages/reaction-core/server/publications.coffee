@@ -174,10 +174,10 @@ Meteor.publish "UserProfile", (profileId) ->
           profile: 1
           emails: 1
     else
-      console.log "user profile access denied"
+      ReactionCore.Events.info "user profile access denied"
       return []
   else
-    console.log "profileId not defined. access denied"
+    ReactionCore.Events.info "profileId not defined. access denied"
     return []
 
 ###

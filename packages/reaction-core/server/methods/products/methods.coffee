@@ -17,7 +17,7 @@ Meteor.methods
     clone._id = Random.id()
 
     if parentId
-      # console.log "create child clone"
+      ReactionCore.Events.debug "create child clone"
       clone.parentId = variantId
       delete clone.inventoryQuantity
       Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
@@ -34,7 +34,7 @@ Meteor.methods
     #make child clones
     children = (variant for variant in product.variants when variant.parentId is variantId)
     if children.length > 0
-      # console.log "clone children"
+      ReactionCore.Events.debug "clone children"
       for childClone in children
         childClone._id = Random.id()
         childClone.parentId = clone._id
@@ -71,7 +71,7 @@ Meteor.methods
         if variants._id is variant._id
           newVariant = _.extend variants,variant
       Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
-        console.log error if error
+        ReactionCore.Events.warn error if error
         return
       )
 
@@ -83,7 +83,7 @@ Meteor.methods
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variants[0]._id
     Products.update product._id, $set: variants: variants, {validate: false}, (error,results) ->
-      console.log error if error
+      ReactionCore.Events.warn error if error
       return
 
   ###
@@ -282,7 +282,7 @@ Meteor.methods
       Products.update {_id: productId},
         {$addToSet: { positions: positionData },$set: {updatedAt: new Date() } },
       , (error,results) ->
-        console.log error if error
+        ReactionCore.Events.warn error if error
     else
       #Collection2 doesn't support elemMatch, use core collection
       Products.update
@@ -294,7 +294,7 @@ Meteor.methods
             "positions.$.updatedAt": new Date()
         ,
           (error,results) ->
-            console.log error if error
+            ReactionCore.Events.warn error if error
 
   updateMetaFields: (productId, updatedMeta, meta) ->
     unless Roles.userIsInRole Meteor.userId(), ['admin']
