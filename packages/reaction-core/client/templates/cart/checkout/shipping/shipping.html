@@ -1,17 +1,21 @@
-<template name="checkoutShipping">
-<div class="panel panel-default address-book">
+<template name="coreCheckoutShipping">
+<div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
       <span data-i18n="checkoutShipping.selectShippingOption">Select shipping option</span>
     </h3>
   </div>
-  <div class="panel-body">
-    <div class="alert alert-danger">
-      <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured. </span>
-      <a href="/dashboard/settings/shipping">
-        <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
-      </a>
+  {{#each shippingTemplates}}
+    {{> Template.dynamic template=this.registry.shippingTemplate}}
+  {{else}}
+    <div class="panel-body">
+      <div class="alert alert-danger">
+        <span data-i18n="checkoutShipping.noShippingPackages">No shipping packages are configured. </span>
+        <a href="/dashboard/settings">
+          <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
+        </a>
+      </div>
     </div>
-  </div>
+  {{/each}}
 </div>
 </template>

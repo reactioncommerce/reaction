@@ -1,7 +1,7 @@
 <template name="corePaymentMethods">
   {{#each paymentTemplates}}
     <div class="thumbnail">
-      {{> Template.dynamic template=this}}
+      {{> Template.dynamic template=this.registry.paymentTemplate}}
     </div>
   {{else}}
     <div class="alert alert-danger">
