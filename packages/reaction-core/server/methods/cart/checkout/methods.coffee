@@ -6,6 +6,7 @@ Meteor.methods
   # gets shipping rates and updates the users cart methods
   ###
   updateCartShippingRates: (cartSession) ->
+    # unless check cartSession, ReactionCore.Schemas.Cart
     unless cartSession
       ReactionCore.Events.info "no cart passed to update rates, return null."
       return null
@@ -13,16 +14,22 @@ Meteor.methods
 
     cart = Cart.findOne(cartSession._id)
     rates = Meteor.call "getShippingRates"
+    #TODO:
+    # Apply rate filters here
+
     # update users cart
     if rates.length > 0
       Cart.update(cartSession._id, { $set: {'shipping.shipmentMethods': rates}})
+
     # return in the rates object
+    ReactionCore.Events.debug rates
     return rates
 
   ###
   #  just gets rates, without updating anything
   ###
-  getShippingRates: () ->
+  getShippingRates: (cartSession) ->
+    # check cartSession, ReactionCore.Schemas.Cart
     rates = []
     shipping = ReactionCore.Collections.Shipping.find({'shopId': ReactionCore.getShopId()})
     # flat rate / table shipping rates
@@ -37,12 +44,9 @@ Meteor.methods
         rate = method.rate+method.handling
         rates.push carrier: shipping.provider.label, method: method, rate: rate
 
-
-      ReactionCore.Events.info rates
-      ReactionCore.Events.info "returning rates"
-
     # TODO:
     # wire in external shipping methods here, add to rates
 
     # return in the rates object
+    ReactionCore.Events.info "getShippingrates returning rates"
     return rates
