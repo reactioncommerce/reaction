@@ -1,1 +1,2 @@
-Template.flatRateCheckoutShipping.replaces("checkoutShipping");
+Template.flatRateCheckoutShipping.inheritsHelpersFrom "coreCheckoutShipping"
+Template.flatRateCheckoutShipping.inheritsEventsFrom "coreCheckoutShipping"

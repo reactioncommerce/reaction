@@ -1,6 +1,7 @@
 ReactionCore.registerPackage
   name: 'reaction-shipping'
   provides: ['shippingMethod']
+  shippingTemplate: "flatRateCheckoutShipping"
   label: 'Basic Shipping'
   description: 'Use flat rates for shipping calculations'
   icon: 'fa fa-truck'
