@@ -175,45 +175,42 @@ Meteor.methods
                 $each: sessionCart.items || []
           # And then remove the session cart
           Cart.remove(_id: sessionCart._id)
-          ReactionCore.Events.info "Merged session cart", sessionCart._id, "into user cart", userCart._id
           # And return the user cart
           result = Cart.findOne(_id: userCart._id)
-
+          ReactionCore.Events.info "Merged session cart", sessionCart._id, "into user cart", userCart._id
         # But if we don't already have a user cart
         else
           # Then we convert the session cart to a user cart
           Cart.update sessionCart._id, {$set: {userId: userId}, $unset: {sessionId: ""}}
-          ReactionCore.Events.info "Converted cart", sessionCart._id, "from session cart to user cart"
           # And then return this cart
           result = Cart.findOne(_id: sessionCart._id)
-
+          ReactionCore.Events.info "Converted cart", sessionCart._id, "from session cart to user cart"
 
       # If there was not a session cart and we are logged in
       else
         # We return the existing user cart if there is one
         if userCart?
-          ReactionCore.Events.info "Using existing user cart", userCart._id
           result = userCart
+          ReactionCore.Events.info "Using existing user cart", userCart._id
         # Or we create a new user cart
         else
           newCartId = Cart.insert(userId: userId, shopId: shopId)
-          ReactionCore.Events.info "Created new user cart", newCartId
           # And return that
           result = Cart.findOne(_id: newCartId)
-
+          ReactionCore.Events.info "Created new user cart", newCartId
 
     # If we don't have a logged in user
     else
       # Return the session cart if we already have one
       if sessionCart?
-        ReactionCore.Events.info "Using existing session cart", sessionCart._id
         result = sessionCart
+        ReactionCore.Events.info "Using existing session cart", sessionCart._id
       # Otherwise create one
       else
         newCartId = Cart.insert {sessionId: sessionId, shopId: shopId}
         # And then return that
-        ReactionCore.Events.info "Created new session cart", newCartId
         result = Cart.findOne(_id: newCartId)
+        ReactionCore.Events.info "Created new session cart", newCartId
 
   catch error
     ReactionCore.Events.info "createCart error: ", error

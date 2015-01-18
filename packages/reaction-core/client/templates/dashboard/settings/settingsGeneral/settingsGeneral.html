@@ -13,15 +13,11 @@
   <div class="tab-pane active" id="general">
     <div class="well">
     {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
-      <fieldset>
-        {{> afQuickField name='name' placeholder="Shop Name"}}
-        {{> afQuickField name='email' placeholder="Primary Contact Email"}}
-        {{> afQuickField name='description' placeholder="Description"}}
-        {{> afQuickField name='keywords' placeholder="Keywords"}}
-      </fieldset>
-      <div class="row">
-        <button type="submit" class="btn btn-primary pull-right">Submit</button>
-      </div>
+      {{> afQuickField name='name' placeholder="Shop Name"}}
+      {{> afQuickField name='email' placeholder="Primary Contact Email"}}
+      {{> afQuickField name='description' placeholder="Description"}}
+      {{> afQuickField name='keywords' placeholder="Keywords"}}
+      {{> settingsGeneralSubmitButton}}
     {{/autoForm}}
     </div>
   </div>

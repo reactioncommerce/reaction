@@ -137,7 +137,6 @@ loadFixtures = ->
 ###
 Meteor.startup ->
   loadFixtures()
-
   # data conversion:  if ROOT_URL changes update shop domain
   # for now, we're assuming the first domain is the primary
   currentDomain = Shops.findOne().domains[0]
@@ -148,5 +147,5 @@ Meteor.startup ->
   # data conversion: we now set sessionId or userId, but not both
   Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
-  # notify that we're done with initialization
+  # notifiy that we're done with initialization
   ReactionCore.Events.info "Reaction Commerce initialization finished. "

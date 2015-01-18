@@ -82,6 +82,7 @@ Meteor.methods
     product = Products.findOne "variants._id":variants[0]._id
     Products.update product._id, $set: variants: variants, {validate: false}
 
+
   ###
   # clone a whole product, defaulting visibility, etc
   # in the future we are going to do an inheritance product

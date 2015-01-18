@@ -102,7 +102,6 @@ Meteor.methods
     if tagId #just an update
       Tags.update tagId, {$set:newTag}
       ReactionCore.Events.info "Changed name of tag " + tagId + " to " + tagName
-
     else # create a new tag
       #prevent duplicate tags by checking for existing
       existingTag = Tags.findOne "name":tagName
