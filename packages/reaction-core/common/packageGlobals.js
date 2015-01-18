@@ -6,6 +6,7 @@ ReactionCore.Helpers = {};
 ReactionCore.Packages = {};
 ReactionCore.MetaData = {};
 ReactionCore.Locale = {};
+ReactionCore.Events = {};
 
 if (Meteor.isClient) {
   ReactionCore.Alerts = {};

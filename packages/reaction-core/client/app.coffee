@@ -1,3 +1,6 @@
+###
+# Global reaction shop permissions methods and shop initialization
+###
 _.extend ReactionCore,
   shopId: null
   isMember: false
@@ -11,17 +14,20 @@ _.extend ReactionCore,
     # We want this to auto-update whenever shops or packages change, login/logout, etc.
     Tracker.autorun ->
       domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
-      Meteor.subscribe
       shop = Shops.findOne domains: domain
 
       if shop
         self.shopId = shop._id
         #permissions and packages
         permissions = []
-        usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
+        # package registry update
+        # use this when you want current packages, not the initial configuration
+        # exposes package details
+        #
+        self.usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
           return p.info()
 
-        for usedPackage in usedPackages
+        for usedPackage in self.usedPackages
           if usedPackage?.shopPermissions
             for shopPermission in usedPackage.shopPermissions
               permissions.push shopPermission

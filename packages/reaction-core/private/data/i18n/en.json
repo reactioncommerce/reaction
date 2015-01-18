@@ -2,18 +2,21 @@
     {
         "language": "English",
         "i18n": "en",
+        "entryText": "English",
         "translation": {
             "core": {
                 "languages": {
                     "select": "Select Language",
                     "english": "English",
-                    "spanish": "Español"
+                    "spanish": "Español",
+                    "burmese": "Burmese"
                 },
                 "app": {
                     "saveAndContinue": "Save and continue",
                     "cancel": "Cancel",
                     "submit": "Submit",
-                    "delete": "Delete"
+                    "delete": "Delete",
+                    "create": "Create"
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -38,6 +41,12 @@
                     "publishFirst": "Publish product before adding to cart.",
                     "selectOption": "Select an option before adding to cart",
                     "addedToCart": "added"
+                },
+                "productDetailEdit": {
+                    "title": "Product title",
+                    "pagetitle": "Product page title",
+                    "vendor": "Product vendor",
+                    "description": "Add a product description"
                 },
                 "variantList": {
                     "moreOptions": "There are more options available for this selection.",
@@ -122,7 +131,9 @@
                     "review": "Review"
                 },
                 "checkoutShipping": {
-                    "selectShippingOption": "Select shipping option"
+                    "selectShippingOption": "Select shipping option",
+                    "noShippingMethods": "No shipping methods are configured.",
+                    "configureNow": "Configure now."
                 },
                 "shopEditForm": {
                     "name": "Name",

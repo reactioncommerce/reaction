@@ -1,6 +1,12 @@
 <template name="cartCompleted">
-<h1 data-i18n="cartCompleted.thankYou">Thank you. <small data-i18n>Your order has been {{orderStatus}}.</small></h1>
-<div class="print-area" id="print-area">
+  <h1 data-i18n="cartCompleted.thankYou">Thank you. <small data-i18n>Your order has been {{orderStatus}}.</small></h1>
+  <div class="form-group">
+    <button type="button" class="btn btn-lg btn-primary save-order-details">Save as PDF</button>
+  </div>
+  {{> orderDetails}}
+</template>
+
+<template name="orderDetails">
   <div class="row">
      <div class="col-md-4">
       <div class="panel panel-default">
@@ -41,7 +47,7 @@
     </div>
   </div>
   <div class="row">
-      <div class="col-md-8">
+    <div class="col-md-8">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title" data-i18n="cartCompleted.orderItems">Order Items</h3>
@@ -61,8 +67,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
-  <small>Reference: {{_id}}</small>
+  <div>
+    <small>Reference: {{_id}}</small>
   </div>
-</div>
 </template>

@@ -20,6 +20,7 @@ Router.configure
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()
+    @next()
     return
 
 
@@ -27,11 +28,9 @@ Router.configure
   waitOn: ->
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
-  onBeforeAction: 'loading'
   onAfterAction: ->
-    ReactionCore.MetaData.clear(@route, @params)
-    ReactionCore.MetaData.update(@route, @params)
-    ReactionCore.MetaData.render(@route, @params)
+    ReactionCore.MetaData.refresh(@route, @params)
+    return
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -45,11 +44,12 @@ ShopController = @ShopController
 @ShopAdminController = @ShopController.extend
   waitOn: ->
     @subscribe "shops"
-  onBeforeAction: (pause) ->
-    unless ReactionCore.hasPermission(@route.name)
+  onBeforeAction: () ->
+    unless ReactionCore.hasPermission(@route.getName())
       @render('unauthorized')
-      pause()
-      return
+    else
+      @next()
+    return
 
 ShopAdminController = @ShopAdminController
 
@@ -58,7 +58,7 @@ Router.map ->
   @route "index",
     controller: ShopController
     path: "/"
-    name: "Welcome"
+    name: "index"
     template: "products"
     waitOn: ->
       @subscribe "products"
@@ -69,6 +69,7 @@ Router.map ->
     template: 'dashboardPackages'
     onBeforeAction: ->
       Session.set "dashboard", true
+      @next()
 
   @route 'dashboard/settings/shop',
     controller: ShopAdminController
@@ -102,6 +103,7 @@ Router.map ->
     template: "products"
     waitOn: ->
       @subscribe "products"
+    subscriptions: ->
       @subscribe "tags"
     data: ->
       if @ready()
@@ -119,17 +121,16 @@ Router.map ->
     waitOn: ->
       return Meteor.subscribe 'product', @params._id
     onBeforeAction: ->
-      setProduct @params._id, @params.variant
+      variant = @params.variant || @params.query.variant
+      setProduct @params._id, variant
+      @next()
       return
     data: ->
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
-          unless ReactionCore.hasPermission(@path)
+          unless ReactionCore.hasPermission(@url)
             @render 'unauthorized'
-            Meteor.setTimeout (->
-              Router.go('/')
-            ),0
         return product
 
   #checkout
@@ -141,10 +142,13 @@ Router.map ->
       checkoutHeader:
         to: "layoutHeader"
     waitOn: ->
+      @subscribe "cart", Session.get "sessionId", Meteor.userId()
+    subscriptions: ->
       @subscribe "shops"
       @subscribe "products"
+      @subscribe "shipping"
+      @subscribe "packages"
       @subscribe "userOrders", Meteor.userId()
-      @subscribe "cart", Session.get "sessionId", Meteor.userId()
     data: ->
       if @.ready()
         return Cart.findOne()

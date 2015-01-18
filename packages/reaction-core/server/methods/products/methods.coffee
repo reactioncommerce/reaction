@@ -7,8 +7,8 @@ Meteor.methods
   # add parentId to create children
   ###
   cloneVariant: (productId, variantId, parentId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne(productId)
     variant = (variant for variant in product.variants when variant._id is variantId)
     return false unless variant.length > 0
@@ -17,7 +17,7 @@ Meteor.methods
     clone._id = Random.id()
 
     if parentId
-      # console.log "create child clone"
+      ReactionCore.Events.debug "create child clone"
       clone.parentId = variantId
       delete clone.inventoryQuantity
       Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
@@ -34,7 +34,7 @@ Meteor.methods
     #make child clones
     children = (variant for variant in product.variants when variant.parentId is variantId)
     if children.length > 0
-      # console.log "clone children"
+      ReactionCore.Events.debug "clone children"
       for childClone in children
         childClone._id = Random.id()
         childClone.parentId = clone._id
@@ -46,40 +46,42 @@ Meteor.methods
   # initializes empty variant template (all others are clones)
   # should only be seen when all variants have been deleted from a product.
   ###
-  createVariant: (productId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
-    newVariant = { "_id": Random.id(), "title": "", "price": "0.00" }
-    Products.update({"_id": productId},{$addToSet:{"variants": newVariant}}, {validate: false})
+  createVariant: (productId, newVariant) ->
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+    newVariantId = Random.id()
+    if newVariant
+      newVariant._id = newVariantId
+      check(newVariant, ReactionCore.Schemas.ProductVariant)
+    else
+      newVariant = { "_id": newVariantId, "title": "", "price": "0.00" }
+    Products.update({"_id": productId}, {$addToSet: {"variants": newVariant}}, {validate: false})
+    return newVariantId
 
   ###
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
-
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variant._id
     if product?.variants
       for variants,value in product.variants
         if variants._id is variant._id
           newVariant = _.extend variants,variant
-      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false}, (error,result) ->
-        console.log error if error
-        return
-      )
+      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false})
+
 
   ###
   # update whole variants array
   ###
   updateVariants: (variants) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variants[0]._id
-    Products.update product._id, $set: variants: variants, {validate: false}, (error,results) ->
-      console.log error if error
-      return
+    Products.update product._id, $set: variants: variants, {validate: false}
+
 
   ###
   # clone a whole product, defaulting visibility, etc
@@ -88,8 +90,8 @@ Meteor.methods
   # product tree
   ###
   cloneProduct: (product) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     #TODO: Really should be a recursive update of all _id
     i = 0
     handleCount = Products.find({"cloneId": product._id}).count() + 1
@@ -129,14 +131,14 @@ Meteor.methods
   ###
   deleteVariant: (variantId) ->
     check variantId, String
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     #what will we be deleteing?
     deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
     #delete variants with this variant as parent
-    Products.update {"variants.parentId": variantId},{$pull: 'variants':{'parentId': variantId}}
+    Products.update {"variants.parentId": variantId}, {$pull: 'variants': {'parentId': variantId}}
     #delete this variant
-    Products.update {"variants._id": variantId},{$pull: 'variants':{'_id': variantId}}
+    Products.update {"variants._id": variantId}, {$pull: 'variants': {'_id': variantId}}
     # unlink media
     _.each deleted, (product) ->
       _.each product.variants, (variant) ->
@@ -155,26 +157,24 @@ Meteor.methods
   # with pricing and details
   ###
   createProduct: () ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
-    return Products.insert({
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+    Products.insert
       _id: Random.id()
       title: ""
       variants: [
-        {
-          _id: Random.id()
-          title: ""
-          price: 0.00
-        }
+        _id: Random.id()
+        title: ""
+        price: 0.00
       ]
-    }, {validate: false})
+    , validate: false
 
   ###
   # delete a product and unlink it from all media
   ###
   deleteProduct: (id) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     numRemoved = Products.remove id
     if numRemoved > 0
       # unlink media
@@ -191,9 +191,9 @@ Meteor.methods
   ###
   # update single product field
   ###
-  updateProductField: (productId, field,value) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+  updateProductField: (productId, field, value) ->
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     # value = Spacebars.SafeString(value)
     value  = EJSON.stringify value
     update = EJSON.parse "{\"" + field + "\":" + value + "}"
@@ -205,21 +205,21 @@ Meteor.methods
   # tagName + tagId will update existing
   ###
   updateProductTags: (productId, tagName, tagId, currentTagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
     newTag =
       slug: getSlug tagName
       name: tagName
 
-    existingTag = Tags.findOne({"name":tagName})
+    existingTag = Tags.findOne({"name": tagName})
 
     if existingTag
-      productCount = Products.find({"_id":productId,"hashtags":{$in:[existingTag._id]}}).count()
+      productCount = Products.find({"_id": productId, "hashtags": {$in:[existingTag._id]}}).count()
       return false if productCount > 0
-      Products.update(productId, {$push:{"hashtags":existingTag._id}})
+      Products.update(productId, {$push: {"hashtags": existingTag._id}})
     else if tagId
-      Tags.update tagId, {$set:newTag}
+      Tags.update tagId, {$set: newTag}
     else # create a new tag
       # newTag.isTopLevel = !currentTagId
       newTag.isTopLevel = false
@@ -227,20 +227,20 @@ Meteor.methods
       newTag.updatedAt = new Date()
       newTag.createdAt = new Date()
       newTag._id = Tags.insert(newTag)
-      Products.update(productId, {$push:{"hashtags":newTag._id}})
+      Products.update(productId, {$push: {"hashtags": newTag._id}})
     return
 
   ###
   # remove product tag
   ###
   removeProductTag: (productId, tagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
     Products.update(productId, {$pull: {"hashtags": tagId}})
     # if not in use delete from system
-    productCount = Products.find({"hashtags":{$in:[tagId]}}).count()
-    relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()
+    productCount = Products.find({"hashtags": {$in: [tagId]}}).count()
+    relatedTagsCount = Tags.find({"relatedTagIds": {$in: [tagId]}}).count()
 
     if (productCount is 0) and (relatedTagsCount is 0)
       Tags.remove(tagId)
@@ -250,21 +250,21 @@ Meteor.methods
   # set or toggle product handle
   ###
   setHandleTag: (productId, tagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne(productId)
     tag = Tags.findOne(tagId)
     #if is already assigned, unset (toggle off)
     if productId.handle is tag.slug
-      Products.update(product._id, {$unset:{"handle":""}})
+      Products.update(product._id, {$unset: {"handle": ""}})
       return product._id
     else
       existingHandles = Products.find({handle: tag.slug}).fetch()
       #reset any existing handle to product id
       for currentProduct in existingHandles
-        Products.update(currentProduct._id, {$unset:{"handle":""}})
+        Products.update(currentProduct._id, {$unset: {"handle": ""}})
       #update handle to tag.slug (lowercase tag)
-      Products.update(product._id, {$set:{"handle":tag.slug}})
+      Products.update(product._id, {$set: {"handle": tag.slug}})
       return tag.slug
 
   ###
@@ -272,14 +272,14 @@ Meteor.methods
   # position is an object with tag,position,dimensions
   ###
   updateProductPosition: (productId, positionData) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
-    unless Products.findOne({'_id' :productId,"positions.tag":positionData.tag})
+    unless Products.findOne({'_id' : productId,"positions.tag": positionData.tag})
       Products.update {_id: productId},
-        {$addToSet:{ positions:positionData },$set:{updatedAt:new Date() } },
+        {$addToSet: { positions: positionData },$set: {updatedAt: new Date() } },
       , (error,results) ->
-        console.log error if error
+        ReactionCore.Events.warn error if error
     else
       #Collection2 doesn't support elemMatch, use core collection
       Products.update
@@ -291,12 +291,12 @@ Meteor.methods
             "positions.$.updatedAt": new Date()
         ,
           (error,results) ->
-            console.log error if error
+            ReactionCore.Events.warn error if error
 
   updateMetaFields: (productId, updatedMeta, meta) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
     if meta
-      Products.update({"_id": productId, "metafields": meta}, {$set:{"metafields.$": updatedMeta} })
+      Products.update({"_id": productId, "metafields": meta}, {$set: {"metafields.$": updatedMeta} })
     else
       Products.update( "_id": productId, { "$addToSet": { "metafields": updatedMeta } })

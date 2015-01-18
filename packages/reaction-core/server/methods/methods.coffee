@@ -5,6 +5,7 @@ Meteor.methods
   # determine user's countryCode and return locale object
   ###
   getLocale: ->
+    @unblock() #prevent waiting for locale
     result = {}
     ip = this.connection.httpHeaders['x-forwarded-for']
 
@@ -63,9 +64,9 @@ Meteor.methods
       # something went wrong; we'll use the default location and
       # log the error on the server
       if latitude? and longitude?
-        console.log "Error in locateAddress for latitude/longitude lookup (" + latitude + "," + longitude + "):" + error.message
+        ReactionCore.Events.info "Error in locateAddress for latitude/longitude lookup (" + latitude + "," + longitude + "):" + error.message
       else
-        console.log "Error in locateAddress for IP lookup (" + ip + "):" + error.message
+        ReactionCore.Events.info "Error in locateAddress for IP lookup (" + ip + "):" + error.message
 
     if address?.length
       return address[0]
@@ -90,8 +91,8 @@ Meteor.methods
   # currentTagId will update related/hierarchy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
     newTag =
       slug: getSlug tagName
@@ -100,7 +101,7 @@ Meteor.methods
     #new tags
     if tagId #just an update
       Tags.update tagId, {$set:newTag}
-      console.log "Changed name of tag " + tagId + " to " + tagName if Meteor.settings.public?.isDebug
+      ReactionCore.Events.info "Changed name of tag " + tagId + " to " + tagName
     else # create a new tag
       #prevent duplicate tags by checking for existing
       existingTag = Tags.findOne "name":tagName
@@ -108,10 +109,10 @@ Meteor.methods
       if existingTag
         if currentTagId
           Tags.update currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}}
-          console.log 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
+          ReactionCore.Events.info 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId
         else
           Tags.update existingTag._id, {$set:{"isTopLevel":true}}
-          console.log 'Marked tag "' + existingTag.name + '" as a top level tag' if Meteor.settings.public?.isDebug
+          ReactionCore.Events.info 'Marked tag "' + existingTag.name + '" as a top level tag'
       #if a tag with that name does not exist yet
       else
         newTag.isTopLevel = !currentTagId
@@ -119,15 +120,15 @@ Meteor.methods
         newTag.updatedAt = new Date()
         newTag.createdAt = new Date()
         newTagId = Tags.insert newTag
-        console.log 'Created tag "' + newTag.name + '"' if Meteor.settings.public?.isDebug
+        ReactionCore.Events.info 'Created tag "' + newTag.name + '"'
         if currentTagId
           Tags.update currentTagId, {$addToSet: {"relatedTagIds": newTagId}}
-          console.log 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId if Meteor.settings.public?.isDebug
+          ReactionCore.Events.info 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
-    unless Roles.userIsInRole(Meteor.userId(), ['admin'])
-      return false
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
 
     if currentTagId
       Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
@@ -137,6 +138,17 @@ Meteor.methods
 
     if (productCount is 0) and (relatedTagsCount is 0)
       return Tags.remove(tagId)
+
+  ###
+  # Helper method to remove all translations, and reload from jsonFiles
+  ###
+  flushTranslations: ->
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+
+    ReactionCore.Collections.Translations.remove({})
+    Fixtures.loadI18n ReactionCore.Collections.Translations
+    ReactionCore.Events.info Meteor.userId() + " Flushed Translations."
 
 
   ## possible dead method, commenting out pending further review

@@ -1,12 +1,15 @@
-Shops = ReactionCore.Collections.Shops
-Products = ReactionCore.Collections.Products
-Customers = ReactionCore.Collections.Customers
-Orders = ReactionCore.Collections.Orders
 Cart  = ReactionCore.Collections.Cart
-Tags = ReactionCore.Collections.Tags
-Packages = ReactionCore.Collections.Packages
+Customers = ReactionCore.Collections.Customers
+Discounts = ReactionCore.Collections.Discounts
 FileStorage = ReactionCore.Collections.FileStorage
 Media = ReactionCore.Collections.Media
+Orders = ReactionCore.Collections.Orders
+Packages = ReactionCore.Collections.Packages
+Products = ReactionCore.Collections.Products
+Shipping =  ReactionCore.Collections.Shipping
+Shops = ReactionCore.Collections.Shops
+Tags = ReactionCore.Collections.Tags
+Taxes = ReactionCore.Collections.Taxes
 Translations = ReactionCore.Collections.Translations
 
 ###
@@ -75,24 +78,24 @@ AutoSet = (prop, collections, valFunc) ->
         return false
       fetch: []
 
-AutoSet "shopId", [ Packages, Orders, Cart, Tags ], ->
+AutoSet "shopId", [ Packages, Orders, Cart, Tags, Shipping, Taxes, Discounts ], ->
   return ReactionCore.getShopId()
 
 ###
 # We add some common security rules through simple Security methods
 ###
 
-Security.defaultAllow [ Media, FileStorage, Packages, Products, Orders, Cart, Tags, Translations ]
+Security.defaultAllow [ Media, FileStorage, Packages, Products, Orders, Cart, Tags, Translations, Discounts, Taxes, Shipping ]
 
-Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, Products, Tags, Translations ]
+Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, Products, Tags, Translations, Discounts, Taxes, Shipping ]
 
 Security.allowOnlyRoles ['admin'], ["update", "remove"], [ Shops ]
 
 Security.allowOnlyRoles ['owner'], ["remove"], [ Orders ]
 
-Security.mustMatchShop [ Packages, Products, Orders, Cart, Tags ]
+Security.mustMatchShop [ Packages, Products, Orders, Cart, Tags, Discounts, Taxes, Shipping ]
 
-Security.cantChangeShop [ Packages, Products, Orders, Cart, Tags ]
+Security.cantChangeShop [ Packages, Products, Orders, Cart, Tags, Discounts, Taxes, Shipping ]
 
 # Must use server methods to create and remove carts
 Security.denyAll ["insert", "remove"], [ Cart ]
@@ -171,10 +174,10 @@ Meteor.publish "UserProfile", (profileId) ->
           profile: 1
           emails: 1
     else
-      console.log "user profile access denied"
+      ReactionCore.Events.info "user profile access denied"
       return []
   else
-    console.log "profileId not defined. access denied"
+    ReactionCore.Events.info "profileId not defined. access denied"
     return []
 
 ###
@@ -269,3 +272,22 @@ Meteor.publish 'cart', (sessionId) ->
 ###
 Meteor.publish "tags", ->
   return Tags.find(shopId: ReactionCore.getShopId())
+
+###
+# shipping
+###
+Meteor.publish "shipping", ->
+  return Shipping.find(shopId: ReactionCore.getShopId())
+
+###
+# taxes
+###
+Meteor.publish "taxes", ->
+  return Taxes.find(shopId: ReactionCore.getShopId())
+
+###
+# discounts
+###
+Meteor.publish "discounts", ->
+  return Discounts.find(shopId: ReactionCore.getShopId())
+

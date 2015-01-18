@@ -17,11 +17,14 @@
 <template name="imageDetail">
   <li class="gallery-sortable" data-index="{{_id}}">
     <img src="{{url uploading='/resources/placeholder.gif' storing='/resources/placeholder.gif' store='large'}}" class="img-responsive" alt="{{title}}">
-   {{#if userHasRole "admin"}}
-    <div class="gallery-tools">
-      <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
-    </div>
-  {{/if}}
+    {{#unless this.isUploaded}}
+      {{> FS.UploadProgressBar bootstrap=true}}
+    {{/unless}}
+    {{#if userHasRole "admin"}}
+      <div class="gallery-tools">
+        <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
+      </div>
+    {{/if}}
   </li>
 </template>
 
@@ -29,7 +32,7 @@
 {{#if userHasRole "admin"}}
   <div id="dropzone" class="dropzone">
    <input name="files" id="files" class="hidden" type="file" multiple/>
-    <div class="btn btn-default btn-block" id="btn-upload">Drop file to upload</div>
+    <div class="btn btn-default btn-block" id="btn-upload" data-i18n="productDetail.dropFile">Drop file to upload</div>
   </div>
 {{/if}}
 </template>
