@@ -53,3 +53,7 @@ If you are installing into your own application, you should save this in your pr
 
 ## Alternate HTML/CSS Frameworks
 We've developed with Bootstrap, as it's the most common UI framework, however there are other great frameworks such as Zurb's Foundation, and other pre-processors like `Sass` or `Stylus`. It should be possible to abstract out the reaction-core classes, and use these other tools in combination with a custom theme package. Let us know if you want to get your hands dirty on this, and we'll be excited to help.
+
+
+
+

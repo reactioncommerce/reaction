@@ -24,44 +24,45 @@
   <div class="tab-pane" id="address">
     <div class="well">
       {{#autoForm collection="Shops" doc=. id="shopEditAddressForm" type="update"}}
-        <fieldset>
-          {{> afQuickField name='addressBook.0.company'}}
-          {{> afQuickField name='addressBook.0.fullName'}}
-          {{> afQuickField name='addressBook.0.address1'}}
-          {{> afQuickField name='addressBook.0.address2'}}
-          {{> afQuickField name='addressBook.0.city'}}
-          {{> afQuickField name='addressBook.0.region'}}
-          {{> afQuickField name='addressBook.0.postal'}}
-          {{> afQuickField name='addressBook.0.country' options=countryOptions}}
-          {{> afQuickField name='addressBook.0.phone'}}
-          {{> afQuickField name='addressBook.0.isCommercial'}}
-          {{> afQuickField name='addressBook.0.isDefault' value=true}}
-        </fieldset>
-        <div class="row">
-          <button type="submit" class="btn btn-primary pull-right">Submit</button>
-        </div>
+        {{> afQuickField name='addressBook.0.company'}}
+        {{> afQuickField name='addressBook.0.fullName'}}
+        {{> afQuickField name='addressBook.0.address1'}}
+        {{> afQuickField name='addressBook.0.address2'}}
+        {{> afQuickField name='addressBook.0.city'}}
+        {{> afQuickField name='addressBook.0.region'}}
+        {{> afQuickField name='addressBook.0.postal'}}
+        {{> afQuickField name='addressBook.0.country' options=countryOptions}}
+        {{> afQuickField name='addressBook.0.phone'}}
+        {{> afQuickField name='addressBook.0.isCommercial'}}
+        {{> afQuickField name='addressBook.0.isDefault' value=true}}
+        {{> settingsGeneralSubmitButton}}
       {{/autoForm}}
     </div>
   </div>
   <div class="tab-pane" id="smtp">
     <div class="well">
-    {{>quickForm collection="Shops" doc=. id="shopEditEmailForm" type="update" fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
+      {{#autoForm collection="Shops" doc=. id="shopEditEmailForm" type="update"}}
+        {{> afQuickFields fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
+        {{> settingsGeneralSubmitButton}}
+      {{/autoForm}}
     </div>
   </div>
   <div class="tab-pane" id="settings">
     <div class="well">
-    {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
-      <fieldset>
+      {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
         {{> afQuickField name='timezone' options=timezoneOptions}}
         {{> afQuickField name='currency' options=currencyOptions}}
         {{> afQuickField name='baseUOM' options=uomOptions}}
-      </fieldset>
-      <div class="row">
-        <button type="submit" class="btn btn-primary pull-right">Submit</button>
-      </div>
-    {{/autoForm}}
+        {{> settingsGeneralSubmitButton}}
+      {{/autoForm}}
     </div>
   </div>
 </div>
 </div>
+</template>
+
+<template name="settingsGeneralSubmitButton">
+  <div class="clearfix">
+    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+  </div>
 </template>

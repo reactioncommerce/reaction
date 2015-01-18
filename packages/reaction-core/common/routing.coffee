@@ -20,6 +20,7 @@ Router.configure
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()
+    @next()
     return
 
 
@@ -28,9 +29,8 @@ Router.configure
     @subscribe "shops"
     @subscribe "cart", Session.get "sessionId", Meteor.userId()
   onAfterAction: ->
-    ReactionCore.MetaData.clear(@route, @params)
-    ReactionCore.MetaData.update(@route, @params)
-    ReactionCore.MetaData.render(@route, @params)
+    ReactionCore.MetaData.refresh(@route, @params)
+    return
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -44,11 +44,12 @@ ShopController = @ShopController
 @ShopAdminController = @ShopController.extend
   waitOn: ->
     @subscribe "shops"
-  onBeforeAction: (pause) ->
-    unless ReactionCore.hasPermission(@route.name)
+  onBeforeAction: () ->
+    unless ReactionCore.hasPermission(@route.getName())
       @render('unauthorized')
-      pause()
-      return
+    else
+      @next()
+    return
 
 ShopAdminController = @ShopAdminController
 
@@ -57,7 +58,7 @@ Router.map ->
   @route "index",
     controller: ShopController
     path: "/"
-    name: "Welcome"
+    name: "index"
     template: "products"
     waitOn: ->
       @subscribe "products"
@@ -68,6 +69,7 @@ Router.map ->
     template: 'dashboardPackages'
     onBeforeAction: ->
       Session.set "dashboard", true
+      @next()
 
   @route 'dashboard/settings/shop',
     controller: ShopAdminController

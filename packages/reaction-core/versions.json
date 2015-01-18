@@ -165,8 +165,8 @@
       "1.0.4"
     ],
     [
-      "d3",
-      "1.0.0"
+      "d3js:d3",
+      "3.4.13"
     ],
     [
       "dburles:collection-helpers",
@@ -197,6 +197,10 @@
       "1.0.2"
     ],
     [
+      "fortawesome:fontawesome",
+      "4.2.0_2"
+    ],
+    [
       "geojson-utils",
       "1.0.1"
     ],
@@ -221,20 +225,36 @@
       "1.0.1"
     ],
     [
+      "iron:controller",
+      "1.0.3"
+    ],
+    [
       "iron:core",
-      "0.3.4"
+      "1.0.3"
     ],
     [
       "iron:dynamic-template",
-      "0.4.1"
+      "1.0.3"
     ],
     [
       "iron:layout",
-      "0.4.1"
+      "1.0.3"
+    ],
+    [
+      "iron:location",
+      "1.0.3"
+    ],
+    [
+      "iron:middleware-stack",
+      "1.0.3"
     ],
     [
       "iron:router",
-      "0.9.4"
+      "1.0.3"
+    ],
+    [
+      "iron:url",
+      "1.0.3"
     ],
     [
       "jquery",
@@ -303,6 +323,14 @@
     [
       "mrt:underscore-string-latest",
       "2.3.3"
+    ],
+    [
+      "nemo64:bootstrap",
+      "3.3.0_1"
+    ],
+    [
+      "nemo64:bootstrap-data",
+      "3.3.0_1"
     ],
     [
       "npm-bcrypt",
