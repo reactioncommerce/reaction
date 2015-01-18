@@ -4,19 +4,28 @@
 # but you can also edit it by hand.
 
 # Core Meteor Packages
-standard-app-packages
-less
-coffeescript
-jquery
+meteor-platform
 oauth-encryption
+coffeescript
+less
 
 # Optional Meteor Packages
 accounts-facebook
 spiderable
 force-ssl
 
+# Community Packages
+nemo64:bootstrap
+#mike:mocha
+#anti:fake
+#sanjo:jasmine
+
 # Reaction Commerce Packages
+reactioncommerce:core-theme
 reactioncommerce:core
-reactioncommerce:reaction-paypal
 reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-helloworld
+reactioncommerce:reaction-shipping
+reactioncommerce:reaction-paypal
+reactioncommerce:reaction-braintree
+reactioncommerce:reaction-stripe

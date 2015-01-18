@@ -1,18 +1,22 @@
 {
+ "isDebug": "info",
   "baseUrl": "http://localhost:3000",
-  "googleAnalyticsProperty": "__KEY__",
+  "googleAnalyticsProperty": "",
   "facebook": {
-    "secret": "__SECRET__"
+    "secret": ""
   },
   "reaction": {
     "METEOR_USER": "Administrator",
-    "METEOR_AUTH": "password",
+    "METEOR_AUTH": "admin",
     "METEOR_EMAIL": "root@localhost"
   },
+  "paypal": {
+    "client_id": "",
+    "client_secret": ""
+  },
   "public": {
-    "isDebug": true,
     "facebook": {
-      "appId": "__APP_ID__"
+      "appId": ""
     }
   }
 }
