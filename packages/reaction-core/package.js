@@ -9,7 +9,7 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme'
+    'reactioncommerce:core-theme@1.0.4'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
@@ -89,7 +89,7 @@ Package.onUse(function (api) {
     api.imply("raix:ui-dropped-event");
     api.imply("matb33:collection-hooks");
     api.imply("alanning:roles");
-    api.imply("mrt:moment", ["client"]);
+    api.imply("momentjs:moment", ["client"]);
     api.imply("sacha:spin" ["client"]);
     api.imply("dburles:factory");
     api.imply("ongoworks:speakingurl");
