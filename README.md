@@ -54,7 +54,7 @@ And finally for the kanban-esque, hardcore real time progress view, take a look 
 ###GitHub Issues
 Our preferred method for Reaction feedback it that you use GitHub issues on the https://github.com/reactioncommerce/reaction project. 
 
-###Chat Rooom
+### Chat Room
 Join us on our Gitter chat room, discuss, get help.
  
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
