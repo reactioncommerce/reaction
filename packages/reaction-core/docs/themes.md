@@ -55,5 +55,22 @@ If you are installing into your own application, you should save this in your pr
 We've developed with Bootstrap, as it's the most common UI framework, however there are other great frameworks such as Zurb's Foundation, and other pre-processors like `Sass` or `Stylus`. It should be possible to abstract out the reaction-core classes, and use these other tools in combination with a custom theme package. Let us know if you want to get your hands dirty on this, and we'll be excited to help.
 
 
+#Questions
 
+Asked: 
+    What's the correlation between reaction-core-theme/theme/accounts/inline/inline.less and reaction-core/client/templates/inline/inline.import.less ?
+
+Where do changes go?
+
+Replied: 
+    See https://github.com/reactioncommerce/reaction-core/blob/12c8a495a20b0ebc699bd31d7023500e3fbc85e0/server/buildtools/module-definitions.js for the mapping logic.
+
+You can make an update in reaction-core-theme if you think it’s something worth contributing back, just create a Pull Request to the `development` branch, and we'll review the update and merge. Alternatively, you could clone the repo and use as your own theme.  *Let us know if it's great and we'll add it to the app gallery.* 
+
+Lastly, but most common, to just generally customize your instance, edit the `custom.` files in `client/themes`.
+
+`To extend and create your own themes, you can edit the the example files`:
+
+    client/themes/custom.bootstrap.import.less
+    client/themes/custom.reaction.import.less.
 
