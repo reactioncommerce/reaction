@@ -1,27 +1,33 @@
 #Reaction Commerce
 A commerce platform developed with Meteor, Node.js, MongoDB, CoffeeScript following a reactive design pattern that puts usability and conversions first.
 
-##Roadmap & Status:
-
-** Current status: Alpha Preview v0.2.2 **
-** Functional but unstable, with HEAVY ongoing development!**
-
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
-
-As with all development, some items are ahead of schedule, and some are not.
-
 **Demonstration & Playground **
 
 http://reactioncommerce.com
 
 At http://reactioncommerce.com you can launch a test shop, launched as a Docker container. *note: these are test shops, and not for production.*
 
+Test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
+
+##Status
+**Current status: Alpha Preview v0.2.2**
+
+**Functional but unstable, with HEAVY ongoing development!**
+
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
+
 The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
 
-Your test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
+##Roadmap
+As with all development, some items are ahead of schedule, and some are not. Here's how to get the details:
 
----
-##Core ideas:
+For a high level review our roadmap, take a look at the vision page [Reaction Vision](http://reactioncommerce.com/vision)
+
+For grouping of development channels by feature see project milestones: https://github.com/reactioncommerce/reaction/milestones *note: progress indicators highly volatile indicators at the moment*
+
+And finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
+
+##Core Vision
 
 * Fast, clean, and easy to use for end users as well as store owners.
 * Full functionality / matching feature sets that you would expect from Magento, Shopify, Spree, etc.
@@ -43,39 +49,42 @@ Your test shops help us in developing [Launchdock](https://github.com/ongoworks/
     * Commercial package and theme development encouraged.
     * All contributors should be rewarded. [please contact us](mailto:hello@ongoworks.com)
 
-## Feedback
-### GitHub Issues
+
+#Feedback
+###GitHub Issues
 Our preferred method for Reaction feedback it that you use GitHub issues on the https://github.com/reactioncommerce/reaction project. 
 
-### Chat Rooom
+###Chat Rooom
 Join us on our Gitter chat room, discuss, get help.
  
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-### Google Group
+###Google Group
 Google group at https://groups.google.com/forum/#!forum/reaction-talk 
 
-##Developer Documentation
+#Developer Documentation
 
 [Getting started guide](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
-[Installation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/installation.md)
+[Installation](https://github.com/ongoworks/reaction-core/blob/master/docs/installation.md)
 
-[Guidelines](https://github.com/reactioncommerce/reaction-core/blob/master/docs/conventions.md)
+[Guidelines](https://github.com/ongoworks/reaction-core/blob/master/docs/conventions.md)
 
-[Package Development](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md)
+[Methods](https://github.com/ongoworks/reaction-core/blob/master/docs/methods.md)
 
-[Theme Development](https://github.com/reactioncommerce/reaction-core/blob/master/docs/themes.md)
+[Package Development](https://github.com/ongoworks/reaction-core/blob/master/docs/packages.md)
 
-[i18n Translations](https://github.com/reactioncommerce/reaction-core/blob/master/docs/i18n.md)
+[Theme Development](https://github.com/ongoworks/reaction-core/blob/master/docs/themes.md)
 
-[Template Development](https://github.com/reactioncommerce/reaction-core/blob/master/docs/templates.md)
+[i18n Translations](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md)
+
+[Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
 
 
-### Code Repositories
+##Code Repositories
 Hey! Where's all the code!? Most of it is in the [reaction-core](https://github.com/reactioncommerce/reaction-core/) package...
 
-We welcome pull requests to the latest development version branch.
+We welcome pull requests to the latest `development` version branch.
 
 ##Reaction Team
 Reaction is a project of [Ongo Works](http://ongoworks.com). We also have some light reading on our [blog](http://thoughts.reactioncommerce.com/), for those curious about who we are.
