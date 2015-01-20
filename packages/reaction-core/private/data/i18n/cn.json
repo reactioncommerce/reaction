@@ -8,77 +8,77 @@
                     "languages": {
                         "select": "选择语言",
                         "english": "English",
-                        "chinese": "中文"
+                        "chinese": "中文(简体)"
                     },
                     "app": {
                         "save-and-continue": "保存并继续",
                         "cancel": "取消",
-                        "submit": "Submit",
-                        "delete": "Delete"
+                        "submit": "提交",
+                        "delete": "删除"
                     },
                     "productDetail": {
-                        "productManagement": "Product management",
-                        "makeInvisible": "Make invisible",
-                        "isNotVisible": "This product is not visible to customers.",
-                        "makeItVisible": "You can make it visible",
-                        "whenYouAreDone": "when you're done editing.",
-                        "tags": "Tags",
-                        "details": "Details",
-                        "options": "Options",
-                        "addToCart": "Add to cart",
-                        "chooseOptions": "Please choose options before adding to cart",
-                        "outOfStock": "Sorry, this item is out of stock!",
-                        "productDeleteError": "There was an error deleting ",
-                        "publishFirst": "Publish product before adding to cart.",
-                        "selectOption": "Select an option before adding to cart",
-                        "addedToCart": "added"
+                        "productManagement": "产品管理",
+                        "makeInvisible": "使不可见",
+                        "isNotVisible": "这个产品对用户是不可见的",
+                        "makeItVisible": "你能使之可见",
+                        "whenYouAreDone": "当你完成编辑",
+                        "tags": "标签",
+                        "details": "详细信息",
+                        "options": "选项",
+                        "addToCart": "加入购物车",
+                        "chooseOptions": "加入购物车之前请选择",
+                        "outOfStock": "遗憾哦，这个物品断货了",
+                        "productDeleteError": "删除操作出现错误",
+                        "publishFirst": "加入购物车之前请发布产品",
+                        "selectOption": "加入购物车之前请选择一个选项",
+                        "addedToCart": "加入了"
                     },
                     "variantList": {
-                        "moreOptions": "There are more options available for this selection.",
+                        "moreOptions": "这个选择还有更多的选项",
                         "createVariant": "Create Variant"
                     },
                     "gridPackage": {
-                        "pkgEnabled": " is now enabled.",
-                        "pkgDisabled": " is now disabled."
+                        "pkgEnabled": " 现在已经启用了",
+                        "pkgDisabled": " 现在已经停用了"
                     },
                     "cartDrawer": {
-                        "empty": "We're sad. Your cart is empty.",
-                        "keepShopping": "Keep on shopping",
-                        "checkout": "Checkout now"
+                        "empty": "遗憾哦，你的购物车还是空的",
+                        "keepShopping": "继续购物",
+                        "checkout": "现在去结帐"
                     },
                     "cartSubTotals": {
-                        "head": "Your cart",
-                        "items": "Items in cart",
-                        "subtotal": "Sub total",
-                        "shipping": "Shipping",
-                        "tax": "Tax",
-                        "total": "Total"
+                        "head": "购物车",
+                        "items": "购物车中的物品",
+                        "subtotal": "小计",
+                        "shipping": "送货",
+                        "tax": "税",
+                        "total": "总计"
                     },
                     "cartDrawerItems": {
                         "left": "left"
                     },
                     "cartCheckout": {
-                        "loginCompleted": "Login completed"
+                        "loginCompleted": "登入完成"
                     },
                     "checkoutLogin": {
-                        "create-or-login": "Create an account or sign in to continue"
+                        "create-or-login": "创建一个账户或登入以继续"
                     },
                     "addressBookGrid": {
-                        "chooseAddress": "Choose shipping & billing address",
-                        "createDefault": "Create your default address",
-                        "selectShipping-address": "Select a shipping address",
-                        "selectBilling-address": "Select a billing address"
+                        "chooseAddress": "选择送货地址和账单接收地址",
+                        "createDefault": "创建默认地址",
+                        "selectShipping-address": "选择送货地址",
+                        "selectBilling-address": "选择账单接收地址"
                     },
                     "addressBookAdd": {
-                        "addAddress": "Add a new address entry",
-                        "createAddress": "Create your default address"
+                        "addAddress": "增加一条新地址",
+                        "createAddress": "创建默认地址"
                     },
                     "checkoutProgressBar": {
-                        "login": "Login",
-                        "shippingBilling": "Shipping & Billing",
-                        "shippingOptions": "Shipping Options",
-                        "reviewPayment": "Review & Payment",
-                        "complete": "Complete"
+                        "login": "登入",
+                        "shippingBilling": "送货和账单",
+                        "shippingOptions": "送货选项",
+                        "reviewPayment": "核对并付款",
+                        "complete": "完成"
                     },
                     "accountsUI": {
                         "add": "add",
