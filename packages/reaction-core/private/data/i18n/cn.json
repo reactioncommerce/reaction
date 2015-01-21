@@ -2,7 +2,7 @@
     {
         "language": "Chinese",
         "i18n": "cn",
-        "entryText": "中文",
+        "entryText": "中文(简体)",
         "translation": {
                 "core": {
                     "languages": {
@@ -35,7 +35,7 @@
                     },
                     "variantList": {
                         "moreOptions": "这个选择还有更多的选项",
-                        "createVariant": "Create Variant"
+                        "createVariant": "创建不同版本"
                     },
                     "gridPackage": {
                         "pkgEnabled": " 现在已经启用了",
@@ -55,7 +55,7 @@
                         "total": "总计"
                     },
                     "cartDrawerItems": {
-                        "left": "left"
+                        "left": "剩余"
                     },
                     "cartCheckout": {
                         "loginCompleted": "登入完成"
@@ -127,7 +127,7 @@
                         "error": {
                             "emailRequired": "电子邮件是必须要的",
                             "passwordMustBeAtLeast6CharactersLong": "密码长度至少6位",
-                            "minChar": "7 character minimum password.",
+                            "minChar": "7字符最小密码",
                             "pwdsDontMatch": "密码不匹配",
                             "pwOneDigit": "密码至少要有一位数字",
                             "pwOneLetter": "密码至少要有一位字母",
@@ -163,7 +163,7 @@
                             "verifyEmailLinkExpired": "电子邮件验证链接已过期",
                             "verifyEmailLinkIsForUnknownAddress": "未知地址的电子邮件验证链接",
                             "matchFailed": "匹配失败",
-                            "unknownError": "位置错误"
+                            "unknownError": "未知错误"
                         }
                     }
                 }
