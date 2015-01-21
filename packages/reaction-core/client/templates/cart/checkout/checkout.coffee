@@ -1,7 +1,7 @@
 Template.cartCheckout.helpers
   loginStatus: () ->
     unless Meteor.userId()?
-      status = "checkout-step-badge"
+      status = false 
     else if Meteor.user()
       status = "checkout-step-badge-completed"
     status

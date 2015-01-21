@@ -50,6 +50,7 @@ Package.onUse(function (api) {
     api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@1.0.7");
+    api.use("prinzdezibel:accounts-guest@0.1.3");
     api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
     api.use("ongoworks:bunyan-logger@1.0.0");
@@ -105,6 +106,7 @@ Package.onUse(function (api) {
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
+    "common/reaction-core.coffee",
     "common/register.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
@@ -198,6 +200,7 @@ Package.onUse(function (api) {
     "client/templates/accounts/accounts-ui/login_buttons.html",
     "client/templates/accounts/accounts-ui/login_buttons_dialogs.html",
     "client/templates/accounts/accounts-ui/login_buttons_dropdown.html",
+    "client/templates/accounts/accounts-ui/login_buttons_dropdown.coffee",
     "client/templates/accounts/accounts-ui/login_buttons_single.html",
     "client/templates/accounts/accounts-ui/accounts-ui.coffee",
 

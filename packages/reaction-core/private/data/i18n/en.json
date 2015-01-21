@@ -192,6 +192,7 @@
                     "username": "Username",
                     "usernameOrEmail": "Username or email",
                     "with": "with",
+                    "checkoutAsGuest": "Checkout without user account",
                     "info": {
                         "emailSent": "Email Sent",
                         "emailVerified": "Email verified",

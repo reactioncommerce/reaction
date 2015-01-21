@@ -42,6 +42,7 @@
                     "username": "Benutzername",
                     "usernameOrEmail": "Benutzername oder E-Mail",
                     "with": "mit",
+                    "checkoutAsGuest": "Ohne Benutzerkonto bestellen",
                     "info": {
                         "emailSent": "E-Mail gesendet",
                         "emailVerified": "E-Mail verifiziert",
@@ -78,7 +79,7 @@
                         "userHasNoPasswordSet": "Kein Passwort für den Benutzer angegeben",
                         "userNotFound": "Benutzer nicht gefunden",
                         "verifyEmailLinkExpired": "Das Token zur Verifizierung der E-Mail ist abgelaufen",
-                        "verifyEmailLinkIsForUnknownAddress": "Verifizierung des Tokens fehlgeschlagen. (Das Token gehört zu einer unbekannten E-Mail-Adresse."
+                        "verifyEmailLinkIsForUnknownAddress": "Verifizierung des Tokens fehlgeschlagen. (Das Token gehört zu einer unbekannten E-Mail-Adresse.)"
                     }
                 }
             }
