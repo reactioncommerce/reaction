@@ -1,5 +1,6 @@
 loginButtonsSession = Accounts._loginButtonsSession
 
+
 Template.accounts.helpers
   chooseTemplate: (name) ->
     name = this.valueOf()
@@ -30,6 +31,7 @@ Template.accounts.events
     password = elementValueById("login-password")
     loginButtonsSession.set "inSignupFlow", true
     loginButtonsSession.set "inForgotPasswordFlow", false
+    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -68,6 +70,7 @@ Template.accounts.events
     usernameOrEmail = trimmedElementValueById("login-username-or-email")
     loginButtonsSession.set "inSignupFlow", false
     loginButtonsSession.set "inForgotPasswordFlow", true
+    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -78,6 +81,21 @@ Template.accounts.events
     else document.getElementById("forgot-password-email").value = usernameOrEmail  if usernameOrEmail.indexOf("@") isnt -1  if usernameOrEmail isnt null
     return
 
+  "click #back-to-guest-login-link": ->
+    loginButtonsSession.resetMessages()
+
+    email = trimmedElementValueById("login-email") or trimmedElementValueById("forgot-password-email") # Ughh. Standardize on names?
+
+    loginButtonsSession.set 'inSignupFlow', false
+    loginButtonsSession.set 'inForgotPasswordFlow', false
+    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", true
+
+    # force the ui to update so that we have the approprate fields to fill in
+    Tracker.flush()
+
+    document.getElementById("login-email").value = email  if document.getElementById("login-email")
+    document.getElementById("login-username-or-email").value = email or username  if document.getElementById("login-username-or-email")
+
   "click #back-to-login-link": ->
     loginButtonsSession.resetMessages()
     username = trimmedElementValueById("login-username")
@@ -86,6 +104,7 @@ Template.accounts.events
     password = elementValueById("login-password")
     loginButtonsSession.set "inSignupFlow", false
     loginButtonsSession.set "inForgotPasswordFlow", false
+    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -148,8 +167,11 @@ trimmedElementValueById = (id) ->
     element.value.replace /^\s*|\s*$/g, ""
 
 loginOrSignup = ->
+
   if loginButtonsSession.get("inSignupFlow")
     signup()
+  else if Session.get('Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow')
+    loginAsGuest()
   else
     login()
   return
@@ -189,7 +211,18 @@ login = ->
     else
       loginButtonsSession.closeDropdown()
     return
+  return
 
+loginAsGuest = ->
+  email = trimmedElementValueById("login-email")
+  if email isnt null
+    unless validateEmail(email)
+      return
+  Meteor.loginAsGuest email, (error, result) ->
+    if error
+      loginButtonsSession.errorMessage error
+    else
+      loginButtonsSession.closeDropdown()
   return
 
 signup = ->

@@ -71,6 +71,5 @@ _.extend ReactionCore,
   getShopId: ->
     return @shopId
 
-
 Meteor.startup ->
-  ReactionCore.init()
+    ReactionCore.init()

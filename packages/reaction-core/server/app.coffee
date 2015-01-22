@@ -35,7 +35,6 @@ ReactionCore.Events = logger.bunyan.createLogger(
 # set bunyan logging level
 ReactionCore.Events.level(isDebug)
 
-
 ###
 # Global reaction shop permissions methods
 ###
