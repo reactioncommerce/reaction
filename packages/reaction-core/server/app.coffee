@@ -80,3 +80,6 @@ _.extend ReactionCore,
     shop = @getCurrentShop() unless shop
     userId = Meteor.userId() unless userId
     return Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
+
+  canCheckoutAsGuest = (client) ->
+    return @getCurrentShop(client).canCheckoutAsGuest || false
