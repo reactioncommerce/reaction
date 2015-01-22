@@ -376,6 +376,7 @@ Package.onUse(function (api) {
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
   //i18n translations
   api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/cn.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/cs.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/de.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});
