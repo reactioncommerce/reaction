@@ -19,7 +19,7 @@ _.extend ReactionCore,
 
       if shop
         self.shopId = shop._id
-          # check to see if guest checkout is enabled
+        # check to see if guest checkout is enabled
         self.canCheckoutAsGuest = shop.canCheckoutAsGuest || false
         #permissions and packages
         permissions = []
