@@ -14,8 +14,10 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
     type: String
   status:
     type: String
+    allowedValues: ["created", "approved", "failed", "canceled", "expired", "pending", "voided", "settled"]
   mode:
     type: String
+    allowedValues: ["authorize", 'capture','refund','void']
   createdAt:
     type: Date
     optional: true
@@ -28,6 +30,10 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
   amount:
     type: Number
     decimal: true
+  transactions:
+    type: [Object]
+    optional: true
+    blackbox: true
 
 ReactionCore.Schemas.Payment = new SimpleSchema
   address:
