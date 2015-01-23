@@ -6,6 +6,7 @@ _.extend ReactionCore,
   isMember: false
   isOwner: null
   isAdmin: null
+  canCheckoutAsGuest: false
   userPermissions: []
   shopPermissions: []
   shopPermissionGroups: []
@@ -18,6 +19,8 @@ _.extend ReactionCore,
 
       if shop
         self.shopId = shop._id
+        # check to see if guest checkout is enabled
+        self.canCheckoutAsGuest = shop.canCheckoutAsGuest || false
         #permissions and packages
         permissions = []
         # package registry update
@@ -59,15 +62,18 @@ _.extend ReactionCore,
         self.userPermissions = []
         self.shopPermissions = []
         self.shopPermissionGroups = []
-
+  # dashboard access
   hasDashboardAccess: ->
     return @isMember or @.hasOwnerAccess()
+  # permission check
   hasPermission: (permissions) ->
     return false unless permissions
     permissions = [permissions] unless _.isArray(permissions)
     return @.hasOwnerAccess() or _.intersection(permissions, @userPermissions).length or (@isAdmin and _.intersection(permissions, @shopPermissions).length)
+  # role checkout
   hasOwnerAccess: ->
     return Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+  # returns shop id
   getShopId: ->
     return @shopId
 

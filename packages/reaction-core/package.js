@@ -9,7 +9,7 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.0.4'
+    'reactioncommerce:core-theme@1.0.5'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
@@ -106,7 +106,6 @@ Package.onUse(function (api) {
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
-    "common/reaction-core.coffee",
     "common/register.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
@@ -224,6 +223,9 @@ Package.onUse(function (api) {
 
     "client/templates/cart/cartIcon/cartIcon.html",
     "client/templates/cart/cartIcon/cartIcon.coffee",
+
+    "client/templates/cart/cartPanel/cartPanel.html",
+    "client/templates/cart/cartPanel/cartPanel.coffee",
 
     "client/templates/cart/checkout/checkout.html",
     "client/templates/cart/checkout/checkout.coffee",

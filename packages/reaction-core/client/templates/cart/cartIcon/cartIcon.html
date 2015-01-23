@@ -1,8 +1,8 @@
 <template name="cartIcon">
   <div class="cart-icon">
-    <a href="#" data-event-category="cart" data-event-action="cart-click" data-event-label="cart toggle click" data-event-value="{{_id}}">
+    <span data-event-category="cart" data-event-action="cart-click" data-event-label="cart toggle click" data-event-value="{{_id}}">
       <i class="fa fa-shopping-cart fa-2x"></i>
-    </a>
+    </span>
     {{#if cart.showCartIconWarning}}
     <div class="badge badge-warning">!</div>
     {{/if}}

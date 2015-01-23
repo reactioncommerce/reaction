@@ -29,4 +29,4 @@ Template._loginButtonsLoggedOutPasswordService.helpers
     loginButtonsSession.set 'inForgotPasswordFlow', false
 
   canCheckoutAsGuest: ->
-    !!ReactionCore.canCheckoutAsGuest()
+    !!ReactionCore.canCheckoutAsGuest

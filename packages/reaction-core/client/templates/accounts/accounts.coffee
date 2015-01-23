@@ -1,11 +1,5 @@
 loginButtonsSession = Accounts._loginButtonsSession
 
-
-Template.accounts.helpers
-  chooseTemplate: (name) ->
-    name = this.valueOf()
-    return Template[name]
-
 Template.accounts.events
  "click #login-buttons-password": ->
     loginOrSignup()

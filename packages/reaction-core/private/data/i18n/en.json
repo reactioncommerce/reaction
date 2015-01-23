@@ -16,7 +16,8 @@
                     "cancel": "Cancel",
                     "submit": "Submit",
                     "delete": "Delete",
-                    "create": "Create"
+                    "create": "Create",
+                    "close": "Close"
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -119,9 +120,9 @@
                 },
                 "checkoutProgressBar": {
                     "login": "Login",
-                    "shippingBilling": "Shipping & Billing",
+                    "shippingBilling": "Address Details",
                     "shippingOptions": "Shipping Options",
-                    "reviewPayment": "Review & Payment",
+                    "reviewPayment": "Review",
                     "complete": "Complete"
                 },
                 "checkoutPayment": {
@@ -152,6 +153,14 @@
                     "iconTitle": "Create product",
                     "text": "Create"
                 },
+                "social": {
+                    "facebook": "Facebook",
+                    "google": "Google",
+                    "github": "GitHub",
+                    "meetup": "Meetup",
+                    "twitter": "Twitter",
+                    "weibo": "Weibo"
+                },
                 "accountsUI": {
                     "add": "add",
                     "and": "and",
@@ -181,6 +190,7 @@
                     "sign": "Sign",
                     "signIn": "Sign In",
                     "signin": "sign in",
+                    "signInWith": "Sign in with",
                     "signedIn": "You are signed in.",
                     "signOut": "Sign Out",
                     "signUp": "Register",

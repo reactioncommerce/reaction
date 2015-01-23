@@ -41,7 +41,7 @@ Meteor.methods
 
   ###
   # Finalize any payment where mode is "authorize"
-  # and status is "approved", reprocess as "sale"
+  # and status is "approved", reprocess as "capture"
   ###
   processPayments: (orderId) ->
     check orderId, String #at least make sure it's an ID and not a sneaky selector
