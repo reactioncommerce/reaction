@@ -120,9 +120,9 @@
                 },
                 "checkoutProgressBar": {
                     "login": "Login",
-                    "shippingBilling": "Shipping & Billing",
+                    "shippingBilling": "Address Details",
                     "shippingOptions": "Shipping Options",
-                    "reviewPayment": "Review & Payment",
+                    "reviewPayment": "Review",
                     "complete": "Complete"
                 },
                 "checkoutPayment": {
