@@ -1,12 +1,54 @@
 ###
 # Reaction Handlebars helpers
 ###
+
+#
+# array of months, used by checkout payment methods
+# todo:  implement i18n
+#
+Template.registerHelper "monthOptions", () ->
+  monthOptions =
+    [
+      { value: "", label: "Choose month"}
+      { value: "01", label: "1 - January"}
+      { value: "02", label: "2 - February" }
+      { value: "03", label: "3 - March" }
+      { value: "04", label: "4 - April" }
+      { value: "05", label: "5 - May" }
+      { value: "06", label: "6 - June" }
+      { value: "07", label: "7 - July" }
+      { value: "08", label: "8 - August" }
+      { value: "09", label: "9 - September" }
+      { value: "10", label: "10 - October" }
+      { value: "11", label: "11 - November" }
+      { value: "12", label: "12 - December" }
+    ]
+  return monthOptions
+
+#
+# array of years, used by checkout payment methods
+# todo:  implement i18n
+#
+Template.registerHelper "yearOptions",  () ->
+  yearOptions = [{ value: "", label: "Choose year" }]
+  year = new Date().getFullYear()
+  for x in [1...9] by 1
+    yearOptions.push { value: year , label: year}
+    year++
+  return yearOptions
+
+#
+# return path for route
+#
 Template.registerHelper "pathForSEO", (path, params) ->
   if this[params]
     return "/"+ path + "/" + this[params]
   else
     return Router.path path,this
 
+#
+# return user name
+#
 Template.registerHelper "displayName", () ->
   user = Meteor.user()
   return ""  unless user
@@ -15,6 +57,9 @@ Template.registerHelper "displayName", () ->
   return user.emails[0].address  if user.emails and user.emails[0] and user.emails[0].address
   ""
 
+#
+# return social images, defaults to avatar.gif
+#
 Template.registerHelper "socialImage", () ->
   if Meteor.user().profile?.picture
     return Meteor.user().profile?.picture
