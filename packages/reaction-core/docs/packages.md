@@ -74,8 +74,8 @@ Add packages to the reaction dashboard by adding **common/register.coffee**
 There are three elements to the "dashboard" view for packages.
 
 - Package Panel: the left most box in the dashboard panel
-- Package Widgets: - this is everything to the right of the panel and would be typical a group of graphs,etc
-- Package Page: the area below the dashboard navigation bar, which can be used any content
+- Package Widgets: - this is everything to the right of the panel and would typically be a group of graphs, etc
+- Package Page: the area below the dashboard navigation bar, which can be used for any content
  
 
 Add widgets to your package to be included on the dashboard by including a template named packagename-widget
@@ -99,7 +99,7 @@ We use https://github.com/alanning/meteor-roles for providing roles.
 Users with "admin" role are full-permission, site-wide users. Package specific roles can be defined in register.coffee
 
 ###Permissions
-Shop has owner, which determine by "ownerId" field in Shop collection.
+Shop has owner, which is determined by the "ownerId" field in the Shop collection.
 
 **To check if user has owner access:**
 
@@ -134,7 +134,7 @@ in templates:
     {{#if hasShopPermission permissions}}{{/if}}
 
 
-For using shop permissions into some packages you must add it into register directive.
+For using shop permissions in some packages you must add it into register directive.
 If we add this package then permissions will be available in Shop Accounts Settings.
 
     ReactionCore.Packages.register
