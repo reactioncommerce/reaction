@@ -17,7 +17,7 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
     allowedValues: ["created", "approved", "failed", "canceled", "expired", "pending", "voided", "settled"]
   mode:
     type: String
-    allowedValues: ["sale", "authorization", "order"]
+    allowedValues: ["authorize", 'capture','refund','void']
   createdAt:
     type: Date
     optional: true
