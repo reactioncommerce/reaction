@@ -117,7 +117,7 @@ Template.productDetail.events
         $('html,body').animate({scrollTop:0},0)
         # Slide out the cart tip explaining that we added to the cart
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart') )
-        $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},800).delay(2000).fadeOut(800)
+        $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},600).delay(8000).toggle('slide',{direction:'right'})
 
     else
       Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail", i18n_key: "productDetail.selectOption"

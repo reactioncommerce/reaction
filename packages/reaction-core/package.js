@@ -224,6 +224,9 @@ Package.onUse(function (api) {
     "client/templates/cart/cartIcon/cartIcon.html",
     "client/templates/cart/cartIcon/cartIcon.coffee",
 
+    "client/templates/cart/cartPanel/cartPanel.html",
+    "client/templates/cart/cartPanel/cartPanel.coffee",
+
     "client/templates/cart/checkout/checkout.html",
     "client/templates/cart/checkout/checkout.coffee",
 
