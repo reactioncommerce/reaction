@@ -109,12 +109,18 @@ Template.productDetail.events
       else
         # Add to cart
         CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
+
         # Deselect the current variant
+        # todo: make this variant reset an option
+        template.$(".variant-select-option").removeClass("active")
         setCurrentVariant null
+
         # Reset quantity field to 1
         qtyField.val(1)
+
         # Scroll to top
         $('html,body').animate({scrollTop:0},0)
+
         # Slide out the cart tip explaining that we added to the cart
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart') )
         $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},600).delay(8000).toggle('slide',{direction:'right'})
