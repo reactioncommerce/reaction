@@ -35,4 +35,13 @@ Meteor.methods
     # validation, permissions
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # insert provider
-    ReactionCore.Collections.Shipping.insert(insertDoc)
+    return ReactionCore.Collections.Shipping.insert(insertDoc)
+
+  ###
+  # update shipping provider
+  ###
+  updateShippingProvider: (insertDoc, updateDoc, currentDoc) ->
+    # validation, permissions
+    unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
+    # insert provider
+    return ReactionCore.Collections.Shipping.update('_id': currentDoc, updateDoc)

@@ -1,25 +1,44 @@
 <template name="shipping">
-<div class="row">
-  <h2>Shipping<small> Settings</small></h2>
-</div>
-<div class="shipping-rate-tables">
-  {{> shippingFlatRateTable}}
-</div>
-<span id="shipping-alerts">
-  {{>bootstrapAlerts placement="shippingPackage"}}
-</span>
+  <div class="row">
+    <div class="col-sm-11">
+      <h2><span data-i18n="checkoutShipping.shipping">Shipping</span> <small data-18n="app.settings">Settings</small></h2>
+    </div>
+    <div class="col-sm-1">
+      <div class="add-shipping-provider pull-right"><i class="fa fa-plus fa-lg" title="Add shipping provider"></i></div>
+    </div>
+  </div>
+  {{#if selectedShippingProvider}}
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+        {{> addShippingProvider}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+  <div class="shipping-rate-tables">
+    {{> shippingProviderTable}}
+  </div>
+  <span id="shipping-alerts">
+    {{>bootstrapAlerts placement="shippingPackage"}}
+  </span>
 </template>
 
 
-<template name="shippingFlatRateTable">
+<template name="shippingProviderTable">
 {{#each shipping}}
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading edit-shipping-provider">
         <span class="text-left">{{provider.name}}</span>
         <span class="pull-right">
-          <i class="fa fa-cog" id="edit-shipping-provider"></i>
+          <i class="fa fa-cog" id="edit-shipping-provider" title="Edit shipping provider"></i>
         </span>
       </div>
+      {{#if selectedShippingProvider}}
+        <div class="panel-body">
+        {{> editShippingProvider}}
+        </div>
+      {{/if}}
       <div class="panel-body">
       {{#if methods}}
         <table class="table table-striped">
@@ -32,11 +51,11 @@
               <th>Handling</th>
               <th>Rate</th>
               <th>Enabled</th>
-              <th><i class="fa fa-plus pull-right" id="add-shipping-method"></i></th>
+              <th><i class="fa fa-plus pull-right" id="add-shipping-method" title="Add shipping method"></i></th>
             </tr>
           </thead>
           <tbody>
-          {{#if addShippingMethodMode}}
+          {{#if selectedAddShippingMethod}}
             <tr class="active">
             <td colspan="8">
             {{> addShippingMethod}}
@@ -53,21 +72,21 @@
               <td>{{formatPrice rate}}</td>
               <td>
                 {{#if enabled}}
-                  <i class="fa fa-check text-success"></i>
+                  <i class="fa fa-check text-success" title="Enabled"></i>
                 {{else}}
-                  <i class="fa fa-ban text-danger"></i>
+                  <i class="fa fa-ban text-danger" title="Disabled"></i>
                 {{/if}}
               </td>
               <td class="text-right">
-                <i class="fa fa-cog" id="edit-shipping-method"></i>
-                <i class="fa fa-trash" id="delete-shipping-method" data-provider-id="{{../_id}}"></i>
+                <i class="fa fa-cog" id="edit-shipping-method" title="Edit shipping method"></i>
+                <i class="fa fa-trash" id="delete-shipping-method" data-provider-id="{{../_id}}" title="Delete shipping method"></i>
               </td>
             </tr>
-            {{#if selectedMethod}}
+            {{#if selectedShippingMethod}}
             <tr class="active">
-            <td colspan="8">
-            {{> editShippingMethod}}
-            </td>
+              <td colspan="8">
+                {{> editShippingMethod}}
+              </td>
             </tr>
             {{/if}}
           {{/each}}
@@ -80,8 +99,8 @@
     </div>
 
 {{else}}
-  <div class="alert alert-info">No shipping providers defined.</div>
-  {{>addProvider}}
+  <div class="alert alert-info" data-i18n="shipping.noShippingMethods">No shipping methods are configured.</div>
+  {{>addShippingProvider}}
 {{/each}}
 </template>
 
@@ -94,6 +113,7 @@
       template="bootstrap3-inline"
       type="method"
       meteormethod="addShippingMethod"
+      resetOnSuccess=false
       }}
     <fieldset>
       <div class="col-md-4">
@@ -111,7 +131,10 @@
               {{>afQuickField name='handling'}}
               {{>afQuickField name='rate'}}
             </div>
-            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+            <div class="pull-right">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+            </div>
           </div>
           </div>
       </div>
@@ -136,7 +159,7 @@
     <fieldset>
       <div class="col-md-4">
         <div class="panel panel-default">
-          <div class="panel-heading">Edit {{name}} rate</div>
+          <div class="panel-heading">Update {{name}} rate</div>
           <div class="panel-body">
             <div class="col-md-6">
               {{>afQuickField name='name' autofocus=''}}
@@ -149,7 +172,10 @@
               {{>afQuickField name='handling'}}
               {{>afQuickField name='rate'}}
             </div>
-            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+            <div class="pull-right">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+            </div>
           </div>
           </div>
       </div>
@@ -164,11 +190,11 @@
 </template>
 
 
-<template name="addProvider">
+<template name="addShippingProvider">
     {{#autoForm
       collection="ReactionCore.Collections.Shipping"
       doc=.
-      id="shipping-provider-insert-form"
+      id="shipping-provider-add-form"
       template="bootstrap3-inline"
       type="method"
       meteormethod="addShippingProvider"
@@ -177,13 +203,42 @@
     <fieldset>
     <legend>Add Provider</legend>
     <div class="col-md-2">
-      {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
-      {{>afQuickField name='provider.label'}}
+      {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
+      {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
       {{>afQuickField name='provider.enabled'}}
     </div>
     </fieldset>
     <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="cancel" class="btn btn-primary cancel">Cancel</button>
     {{/autoForm}}
+</template>
+
+
+<template name="editShippingProvider">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{#autoForm
+        schema="ReactionCore.Schemas.Shipping"
+        doc=.
+        template="bootstrap3-inline"
+        id="shipping-provider-edit-form"
+        type="method"
+        meteormethod="updateShippingProvider"
+        resetOnSuccess=false
+        }}
+      <fieldset>
+      <legend>Update Provider</legend>
+      <div class="col-md-2">
+        {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
+        {{>afQuickField name='provider.label'}}
+        {{>afQuickField name='provider.enabled'}}
+      </div>
+      </fieldset>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+      {{/autoForm}}
+    </div>
+  </div>
 </template>
 
 

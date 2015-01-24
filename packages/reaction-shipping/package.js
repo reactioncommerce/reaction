@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
-  version: "0.1.1",
+  version: "0.1.2",
   git: "https://github.com/reactioncommerce/reaction-shipping.git"
 });
 
