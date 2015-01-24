@@ -13,16 +13,24 @@ String::toCamelCase = ->
   s = s.replace(/([0-9]+)([a-zA-Z])/g, (a, b, c) ->
     b + c.toUpperCase()
   )
-  s
+  return s
+
 ###
 # quick and easy snippet for toggling sessions
+# accepts string name, see http://docs.meteor.com/#/basic/session
+# optional pass positive param match
 ###
-@toggleSession = (session_variable) ->
-  if Session.get(session_variable)
-    Session.set session_variable, false
+@toggleSession = (sessionVariable, positive) ->
+  check sessionVariable, String
+  session = Session.get sessionVariable
+  positive = positive || true
+
+  if _.isEqual positive, session
+    Session.set sessionVariable, false
   else
-    Session.set session_variable, true
-  return
+    Session.set sessionVariable, positive
+
+  return Session.get sessionVariable
 
 ###
 # method to return tag specific product

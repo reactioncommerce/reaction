@@ -43,7 +43,7 @@ ReactionCore.Schemas.Shipment = new SimpleSchema
 ReactionCore.Schemas.ShippingProvider = new SimpleSchema
   name:
     type: String
-    label: "Service Name"
+    label: "Service Code"
   label:
     type: String
     label: "Public Label"
