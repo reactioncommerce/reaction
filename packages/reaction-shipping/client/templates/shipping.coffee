@@ -21,7 +21,6 @@ Template.shipping.events
 
   # add new shipping provider
   'click .add-shipping-provider': (event, template) ->
-    console.log "click add-shipping-provider"
     toggleSession "selectedShippingProvider"
 
 ###
@@ -38,7 +37,6 @@ Template.addShippingMethod.helpers
 Template.editShippingMethod.events
   # add new shipping provider
   'click .cancel': (event, template) ->
-    console.log "cancel editShippingMethod"
     toggleSession "selectedShippingMethod"
     event.preventDefault()
 
@@ -48,7 +46,6 @@ Template.editShippingMethod.events
 Template.editShippingProvider.events
   # add new shipping provider
   'click .cancel': (event, template) ->
-    console.log "cancel editShippingProvider"
     toggleSession "selectedShippingProvider"
     event.preventDefault()
 
@@ -58,7 +55,6 @@ Template.editShippingProvider.events
 Template.addShippingProvider.events
   # add new shipping provider
   'click .cancel': (event, template) ->
-    console.log "cancel addShippingProvider"
     toggleSession "selectedShippingProvider"
     event.preventDefault()
 
@@ -68,7 +64,6 @@ Template.addShippingProvider.events
 Template.addShippingMethod.events
   # add new shipping provider
   'click .cancel': (event, template) ->
-    console.log "cancel addShippingMethod"
     toggleSession "selectedAddShippingMethod"
     event.preventDefault()
 
@@ -112,7 +107,6 @@ Template.shippingProviderTable.events
   # toggle selected provider
   'click .edit-shipping-provider': (event, template) ->
     # session = Session.get "selectedShippingProvider"
-    console.log "click edit-shipping-provider"
     return toggleSession "selectedShippingProvider", @
 
     # if _.isEqual @, session
@@ -132,7 +126,6 @@ Template.shippingProviderTable.events
 
   # add new shipping method
   'click #add-shipping-method': (event, template) ->
-    console.log "click add-shipping-method"
     session = Session.get "selectedAddShippingMethod"
     if _.isEqual @, session
       Session.set "selectedAddShippingMethod", false
