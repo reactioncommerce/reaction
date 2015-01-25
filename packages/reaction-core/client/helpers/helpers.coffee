@@ -68,6 +68,7 @@ String::toCamelCase = ->
         Alerts.add "Deleted " + title, "info", type: "prod-delete-" + id
 
 @getCartCount = ->
+  Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
   storedCart = Cart.findOne()
   count = 0
   ((count += items.quantity) for items in storedCart.items) if storedCart?.items

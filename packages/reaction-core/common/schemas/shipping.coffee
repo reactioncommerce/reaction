@@ -18,25 +18,28 @@ ReactionCore.Schemas.Shipping = new SimpleSchema
 
 ReactionCore.Schemas.ShipmentQuote = new SimpleSchema
   carrier:
-    type: Number
+    type: String
   method:
+    type: ReactionCore.Schemas.ShippingMethod
+  rate:
     type: Number
+    decimal: true
   tracking:
-    type: String
-    optional: true
-  label:
-    type: String
-    optional: true
-  value:
     type: String
     optional: true
 
 ReactionCore.Schemas.Shipment = new SimpleSchema
   address:
     type: ReactionCore.Schemas.Address
+    label: "Destination"
     optional: true
   shipmentMethod:
     type: ReactionCore.Schemas.ShipmentQuote
+    label:"Selected Rate"
+    optional: true
+  shipmentQuotes:
+    type: [ReactionCore.Schemas.ShipmentQuote]
+    label: "Rate Quotes"
     optional: true
 
 

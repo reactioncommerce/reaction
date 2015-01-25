@@ -40,6 +40,11 @@ Template.addressBookGrid.helpers
         Session.setDefault "billingUserAddressId", @._id
         CartWorkflow.paymentAddress(@)
     if Session.equals "billingUserAddressId", @._id
+      # find current address, and if none
+      cart = Cart.findOne({'payment.address._id': @._id})
+      # allow last used address to default
+      unless cart
+        CartWorkflow.paymentAddress(@)
       return "active"
 
   selectedShipping: ->
@@ -50,6 +55,11 @@ Template.addressBookGrid.helpers
         Session.setDefault "shippingUserAddressId",@._id
         CartWorkflow.shipmentAddress(@)
     if Session.equals "shippingUserAddressId", @._id
+      # find current address, and if none
+      cart = Cart.findOne({'shipping.address._id': @._id})
+      # allow last used address to default
+      unless cart
+        CartWorkflow.shipmentAddress(@)
       return "active"
 
 Template.addressBookGrid.events

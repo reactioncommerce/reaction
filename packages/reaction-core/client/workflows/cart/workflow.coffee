@@ -97,11 +97,16 @@ CartWorkflow = StateMachine.create(
       # automatically transitions to @.orderCreated(orderId)
 
     onorderCreated: (event,from,to, orderId) ->
-      #clear cart related sessions
+      #fixes timing issue on hot-reload of completed
+      return unless orderId
       Router.go "cartCompleted", _id: orderId
-      delete Session.keys["billingUserAddressId"]
-      delete Session.keys["shippingUserAddressId"]
-      delete Session.keys["shipmentMethod"]
-      Tracker.flush()
+      ###
+      # clear cart variables
+      # todo: move these to cartID specific
+      # commented, these should now get reused by a new cart
+      ###
+      # delete Session.keys["billingUserAddressId"]
+      # delete Session.keys["shippingUserAddressId"]
+      # delete Session.keys["shipmentMethod"]
   }
 )

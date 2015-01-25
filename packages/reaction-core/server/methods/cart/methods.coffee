@@ -93,11 +93,11 @@ Meteor.methods
 
     try
       Orders.insert cart
+      Cart.remove _id: currentCartId
     catch error
       ReactionCore.Events.info "error in order insert"
       ReactionCore.Events.warn error, Orders.simpleSchema().namedContext().invalidKeys()
 
-    Cart.remove userId: currentUserId
     return cart._id #new order id
 
   ###

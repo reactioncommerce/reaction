@@ -22,8 +22,7 @@ ReactionCore.Subscriptions.customers = Meteor.subscribe "customers"
 ReactionCore.Subscriptions.tags = Meteor.subscribe "tags"
 ReactionCore.Subscriptions.media = Meteor.subscribe "media"
 ReactionCore.Subscriptions.FileStorage = Meteor.subscribe "FileStorage"
-ReactionCore.Subscriptions.cart = Meteor.subscribe "cart", Session.get "sessionId"
-
+ReactionCore.Subscriptions.cart = Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
 
 ###
 #  Autorun dependencies

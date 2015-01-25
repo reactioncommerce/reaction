@@ -62,6 +62,11 @@ ReactionCore.Schemas.History = new SimpleSchema
     updatedAt:
       type: Date
 
+###
+# ReactionCore.Schemas.OrderItems
+# merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
+# to create Orders collection
+###
 ReactionCore.Schemas.OrderItems = new SimpleSchema
   additionalField:
     type: String

@@ -1,62 +1,75 @@
 <template name="cartCheckout">
-<div class="col-sm-12">
-  <div class="row cart-checkout-progress">
-    {{>checkoutProgressBar}}
-  </div>
-  <div class="row cart-checkout-steps">
-      <div class="col-md-8">
-        <div class="row">
-          {{#if loginStatus}}
-            <div class="col-md-12"><i class="{{loginStatus}}">1</i>
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h3 class="panel-title">{{i18n 'cartCheckout.loginCompleted'}}</h3>
+{{#if cart.items}}
+  <div class="col-sm-12">
+    <div class="row cart-checkout-progress">
+      {{>checkoutProgressBar}}
+    </div>
+    <div class="row cart-checkout-steps">
+        <div class="col-md-8">
+          <div class="row">
+            {{#if loginStatus}}
+              <div class="col-md-12"><i class="{{loginStatus}}">1</i>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">{{i18n 'cartCheckout.loginCompleted'}}</h3>
+                  </div>
                 </div>
               </div>
+            {{else}}
+              <div class="col-md-12"><i class="checkout-step-badge">1</i>{{>checkoutLogin}}</div>
+            {{/if}}
+          </div>
+
+          <div class="row">
+            {{#if addressStatus}}
+              <div class="col-md-12"><i class="{{addressStatus}}">2</i>{{>checkoutAddressBook}}</div>
+            {{else}}
+              <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">2</i></div>
+            {{/if}}
+          </div>
+
+          <div class="row">
+            {{#if shippingOptionStatus}}
+              <div class="col-md-12"><i class="{{shippingOptionStatus}}">3</i>{{>coreCheckoutShipping}}</div>
+            {{else}}
+            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">3</i></div>
+           {{/if}}
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          {{#if checkoutReviewStatus}}
+            <div class="col-md-12">
+              <i class="checkout-step-badge">4</i>
+              {{>checkoutReview}}
             </div>
           {{else}}
-            <div class="col-md-12"><i class="checkout-step-badge">1</i>{{>checkoutLogin}}</div>
+            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">4</i></div>
           {{/if}}
         </div>
 
-        <div class="row">
-          {{#if addressStatus}}
-            <div class="col-md-12"><i class="{{addressStatus}}">2</i>{{>checkoutAddressBook}}</div>
+        <div class="col-md-4" id="checkout-step-payment-methods">
+          {{#if checkoutReviewStatus}}
+            <div class="col-md-12">
+              <i class="checkout-step-badge">4</i>
+              {{>checkoutPayment}}
+            </div>
           {{else}}
-            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">2</i></div>
+            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">5</i></div>
           {{/if}}
         </div>
-
-        <div class="row">
-          {{#if shippingOptionStatus}}
-            <div class="col-md-12"><i class="{{shippingOptionStatus}}">3</i>{{>coreCheckoutShipping}}</div>
-          {{else}}
-          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">3</i></div>
-         {{/if}}
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        {{#if checkoutReviewStatus}}
-          <div class="col-md-12">
-            <i class="checkout-step-badge">4</i>
-            {{>checkoutReview}}
-          </div>
-        {{else}}
-          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">4</i></div>
-        {{/if}}
-      </div>
-
-      <div class="col-md-4" id="checkout-step-payment-methods">
-        {{#if checkoutReviewStatus}}
-          <div class="col-md-12">
-            <i class="checkout-step-badge">4</i>
-            {{>checkoutPayment}}
-          </div>
-        {{else}}
-          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">5</i></div>
-        {{/if}}
-      </div>
+    </div>
   </div>
-</div>
+{{else}}
+  {{> emptyCheckoutCart}}
+{{/if}}
+</template>
+
+<template name="emptyCheckoutCart">
+  <h2>
+  <span data-i18n="cartCheckout.suprise">Woah!</span>&nbsp;
+  <small>
+    <span data-i18n="cartCheckout.emptyCheckoutCart">looks like your cart is empty!</span>
+  </small>
+  </h2>
 </template>

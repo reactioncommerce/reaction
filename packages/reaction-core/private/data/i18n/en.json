@@ -18,7 +18,8 @@
                     "delete": "Delete",
                     "create": "Create",
                     "close": "Close",
-                    "settings": "Settings"
+                    "settings": "Settings",
+                    "loading": "Loading"
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -76,6 +77,10 @@
                 },
                 "cartCheckout": {
                     "loginCompleted": "Login completed"
+                },
+                "cartCompleted": {
+                    "thankYou": "Thank you.",
+                    "yourOrderHasBeen": "Your order has been"
                 },
                 "checkoutLogin": {
                     "createOrLogin": "Create an account or sign in to continue"
