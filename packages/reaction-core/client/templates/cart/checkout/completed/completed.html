@@ -1,8 +1,8 @@
 <template name="cartCompleted">
-  <h1 data-i18n="cartCompleted.thankYou">Thank you. <small data-i18n>Your order has been {{orderStatus}}.</small></h1>
-  <div class="form-group">
-    <button type="button" class="btn btn-lg btn-primary save-order-details">Save as PDF</button>
-  </div>
+  <h1>
+    <span data-i18n="cartCompleted.thankYou">Thank you.</span>
+    <small><span data-i18n="cartCompleted.yourOrderHasBeen">Your order has been</span> {{orderStatus}}.</small>
+  </h1>
   {{> orderDetails}}
 </template>
 
@@ -24,7 +24,7 @@
             </address>
           {{/with}}
           <div class="well well-sm">
-          {{shipping.shipmentMethod.label}}
+          {{shipping.shipmentMethod.method.label}}
           </div>
         </div>
       </div>

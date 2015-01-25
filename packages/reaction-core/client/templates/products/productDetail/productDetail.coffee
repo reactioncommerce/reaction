@@ -84,12 +84,12 @@ Template.productDetail.events
       unless currentVariant.parentId?
         options = (variant for variant in currentProduct.variants when variant.parentId is currentVariant._id)
         if options.length > 0
-          Alerts.add "Please choose options before adding to cart", "danger", placement:"productDetail", i18n_key:"productDetail.chooseOptions"
+          Alerts.add "Please choose options before adding to cart", "danger", placement:"productDetail", i18n_key:"productDetail.chooseOptions", autoHide: 10000
           return
 
       # If variant has inv policy and is out of stock, show warning and deny add to cart
       if (currentVariant.inventoryPolicy and currentVariant.inventoryQuantity < 1)
-        Alerts.add "Sorry, this item is out of stock!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock"
+        Alerts.add "Sorry, this item is out of stock!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock", autoHide: 10000
         return
 
       cartSession =
@@ -104,23 +104,28 @@ Template.productDetail.events
       quantity = 1 if quantity < 1
 
       unless @.isVisible
-        Alerts.add "Publish product before adding to cart.", "danger", placement:"productDetail", i18n_key: "productDetail.publishFirst"
+        Alerts.add "Publish product before adding to cart.", "danger", placement:"productDetail", i18n_key: "productDetail.publishFirst", autoHide: 10000
         return
       else
         # Add to cart
         CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
         # Deselect the current variant
+        # todo: make this variant reset an option
+        template.$(".variant-select-option").removeClass("active")
         setCurrentVariant null
+
         # Reset quantity field to 1
         qtyField.val(1)
+
         # Scroll to top
         $('html,body').animate({scrollTop:0},0)
+
         # Slide out the cart tip explaining that we added to the cart
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart') )
         $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},600).delay(8000).toggle('slide',{direction:'right'})
 
     else
-      Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail", i18n_key: "productDetail.selectOption"
+      Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail", i18n_key: "productDetail.selectOption", autoHide: 8000
       return
 
   "click .toggle-product-isVisible-link": (event, template) ->
