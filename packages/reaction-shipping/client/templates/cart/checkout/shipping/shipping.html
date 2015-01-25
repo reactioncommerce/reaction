@@ -2,7 +2,7 @@
   <div class="panel-body">
     <ul class="checkout-shipping list-group">
     {{#if shippingConfigured}}
-      {{#each shipmentMethods}}
+      {{#each shipmentQuotes}}
         <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
           <span class="text-left">{{method.label}}</span>
           <span class="pull-right">{{formatPrice rate}}</span>
