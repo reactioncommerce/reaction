@@ -35,7 +35,3 @@ Template.cartCheckout.helpers
 
 Template.cartCheckout.rendered = ->
   Session.set "displayCartDrawer", false
-
-Template.cartCheckout.events
-  'click #checkout-step-payment-methods': () ->
-    # Set review to complete
