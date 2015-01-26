@@ -1,24 +1,26 @@
 <template name="dashboard">
 {{#if hasDashboardAccess}}
+
   {{#if displayDashboardNavBar}}
     <div class="dashboard-drawer">
-      {{#if displayDashboardDrawer}}
-        <div class="dashboard-container">
-          <div class="dashboard-widget-wrapper">
-            {{#with Package}}
-              <div class="dashboard-widget">
-                <div class="dashboard-widget-center">
-                {{>packagePanel}}
-                </div>
+    {{#if displayDashboardDrawer}}
+      <div class="dashboard-container">
+        <div class="dashboard-widget-wrapper">
+          {{#with Package}}
+            <div class="dashboard-widget">
+              <div class="dashboard-widget-center">
+              {{>packagePanel}}
               </div>
-              {{>dashboardWidgets}}
-            {{/with}}
-          </div>
+            </div>
+            {{>dashboardWidgets}}
+          {{/with}}
         </div>
-      {{/if}}
-      {{>dashboardNavBar}}
+      </div>
+    {{/if}}
     </div>
+    {{>dashboardNavBar}}
   {{/if}}
+
 {{/if}}
 </template>
 
@@ -44,20 +46,19 @@
       </ul>
     </div>
     <div class="col-sm-2 col-md-3">
-      <div class="dashboard-drawer-controls">
-        <!-- Dashboard close button -->
-        <button type="button" class="dashboard-navbar-close-button">
-          <span aria-hidden="true" title="{{i18n 'app.close'}}"><i class="fa fa-times fa-lg"></i></span>
-          <span class="sr-only">Close</span>
-        </button>
+      <div class="dashboard-drawer-controls pull-right">
         <!-- Dashboard drawer (widgets)-->
-        <button type="button" class="dashboard-drawer-close-button">
+        <button type="button" class="btn btn-default" id="dashboard-drawer-close-button">
          <span aria-hidden="true" title="{{i18n 'app.toggle'}}"><i class="fa fa-angle-double-up fa-lg"></i></span>
           <span class="sr-only">Toggle Widgets</span>
         </button>
+        <!-- Dashboard close button -->
+        <button type="button" class="btn btn-default" id="dashboard-navbar-close-button">
+          <span aria-hidden="true" title="{{i18n 'app.close'}}"><i class="fa fa-times fa-lg"></i></span>
+          <span class="sr-only">Close</span>
+        </button>
       </div>
     </div>
-
   </div>
 </template>
 
