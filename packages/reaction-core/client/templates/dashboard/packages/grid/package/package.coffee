@@ -25,6 +25,9 @@ Template.gridPackage.events
 
   "click .disablePkg": (event, template) ->
     self = @
+    # we don't want to disable autoenabled (core) packages
+    if self.autoEnable is true then return
+    # update package info
     event.preventDefault()
     ReactionCore.Collections.Packages.update template.data._id, {$set: {enabled: false}}, (error, result) ->
       if result is 1

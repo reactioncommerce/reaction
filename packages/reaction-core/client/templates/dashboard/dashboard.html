@@ -1,19 +1,21 @@
 <template name="dashboard">
 {{#if hasDashboardAccess}}
-  {{#if isVisible}}
+  {{#if displayDashboardNavBar}}
     <div class="dashboard-drawer">
-      <div class="dashboard-container">
-        <div class="dashboard-widget-wrapper">
-          {{#with Package}}
-            <div class="dashboard-widget">
-              <div class="dashboard-widget-center">
-              {{>packagePanel}}
+      {{#if displayDashboardDrawer}}
+        <div class="dashboard-container">
+          <div class="dashboard-widget-wrapper">
+            {{#with Package}}
+              <div class="dashboard-widget">
+                <div class="dashboard-widget-center">
+                {{>packagePanel}}
+                </div>
               </div>
-            </div>
-            {{>dashboardWidgets}}
-          {{/with}}
+              {{>dashboardWidgets}}
+            {{/with}}
+          </div>
         </div>
-      </div>
+      {{/if}}
       {{>dashboardNavBar}}
     </div>
   {{/if}}
@@ -22,32 +24,39 @@
 
 <template name="dashboardNavBar">
   <div class="dashboard-navbar-packages">
-    <ul class="nav nav-pills">
-      {{#each allPackages}}
-        {{#if enabled}}
-        {{#if overviewRoute}}
-        <li>
-          <a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">
-            {{#if overViewLabel}}
-              {{overViewLabel}}
-            {{else}}
-              {{label}}
-            {{/if}}
-          </a>
-        </li>
-        {{/if}}
-        {{/if}}
-      {{/each}}
-
+    <div class="col-sm-10 col-md-9">
+      <ul class="nav nav-pills">
+        {{#each allPackages}}
+          {{#if enabled}}
+          {{#if overviewRoute}}
+          <li>
+            <a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">
+              {{#if overViewLabel}}
+                {{overViewLabel}}
+              {{else}}
+                {{label}}
+              {{/if}}
+            </a>
+          </li>
+          {{/if}}
+          {{/if}}
+        {{/each}}
+      </ul>
+    </div>
+    <div class="col-sm-2 col-md-3">
+      <div class="dashboard-drawer-controls">
         <!-- Dashboard close button -->
-        <li class="pull-right dashboard-drawer-controls">
-          <button type="button" class="dashboard-drawer-close-button">
-            <span aria-hidden="true"><i class="fa fa-angle-double-up fa-lg"></i></span>
-            <span class="sr-only">Close</span>
-          </button>
-        </li>
-
-    </ul>
+        <button type="button" class="dashboard-navbar-close-button">
+          <span aria-hidden="true" title="{{i18n 'app.close'}}"><i class="fa fa-times fa-lg"></i></span>
+          <span class="sr-only">Close</span>
+        </button>
+        <!-- Dashboard drawer (widgets)-->
+        <button type="button" class="dashboard-drawer-close-button">
+         <span aria-hidden="true" title="{{i18n 'app.toggle'}}"><i class="fa fa-angle-double-up fa-lg"></i></span>
+          <span class="sr-only">Toggle Widgets</span>
+        </button>
+      </div>
+    </div>
 
   </div>
 </template>

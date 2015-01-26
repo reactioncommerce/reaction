@@ -3,7 +3,7 @@ Template.loginDropdown.events
     event.stopPropagation()
 
   "click #logout": (event, template) ->
-    Session.set 'dashboard', false
+    Session.set 'displayDashboardNavBar', false
     Meteor.logout (err) ->
       Meteor._debug err if err
     event.preventDefault()
