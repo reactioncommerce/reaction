@@ -7,7 +7,7 @@ ReactionCore.registerPackage
   name: 'reaction-commerce'
   depends: ['fileUploader', 'staffAccountsManager','paymentMethod', 'mailService', 'analytics', 'shipmentMethod']
   label: 'Core'
-  description: 'Reaction Shop'
+  description: 'Reaction Commerce Core'
   icon: 'fa fa-sun-o'
   settingsRoute: 'dashboard/settings/shop'
   overviewRoute: 'dashboard'
@@ -43,7 +43,7 @@ ReactionCore.registerPackage
   name: 'reaction-commerce-orders'
   provides: ['orderManager']
   label: 'Orders'
-  description: 'Fulfill your orders.'
+  description: 'Fulfill your orders'
   icon: 'fa fa-sun-o'
   overviewRoute: 'dashboard/orders'
   settingsRoute: 'dashboard/orders'

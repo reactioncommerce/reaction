@@ -181,6 +181,8 @@ Package.onUse(function (api) {
     "client/templates/layout/header/i18n/i18n.html",
     "client/templates/layout/header/i18n/i18n.coffee",
 
+    "client/templates/layout/header/brand/brand.html",
+
     "client/templates/layout/footer/footer.html",
 
     "client/templates/layout/alerts/bootstrap-alerts.coffee",

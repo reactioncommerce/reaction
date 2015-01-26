@@ -1,5 +1,5 @@
 Template.layoutHeader.events
-  'click .navbar-accounts a.dropdown-toggle': () ->
+  'click .navbar-accounts .dropdown-toggle': () ->
     setTimeout (->
       $("#login-email").focus()
     ), 100
