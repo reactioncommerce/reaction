@@ -19,7 +19,8 @@ Template.loginDropdown.events
           Router.go "product",
             _id: productId
           return
-    if @.overviewRoute
+      return
+    else if @.overviewRoute
       event.preventDefault()
       template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
       Router.go(@.overviewRoute)

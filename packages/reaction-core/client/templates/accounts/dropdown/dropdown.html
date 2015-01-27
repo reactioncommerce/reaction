@@ -37,7 +37,7 @@
           <li class="dropdown-apps-icon">
             <!--administrative shortcut icons -->
 
-            <a href="{{pathFor overviewRoute}}" id="{{overviewRoute}}">
+            <a id="{{overviewRoute}}" title="{{name}}">
 
               {{#if overviewIcon}}
                 <i class="add-product-link {{overviewIcon}}"></i>
@@ -56,6 +56,7 @@
           </li>
         {{/if}}
       {{/each}}
+      {{> dashboardIcon}}
     {{else}}
       <!--user account shortcut icons -->
       <span data-i18n="accountsUI.signedIn">You are signed in.</span>
