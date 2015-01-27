@@ -8,7 +8,7 @@ ReactionCore.registerPackage
   depends: ['fileUploader', 'staffAccountsManager','paymentMethod', 'mailService', 'analytics', 'shipmentMethod']
   label: 'Core'
   description: 'Reaction Commerce Core'
-  icon: 'fa fa-sun-o'
+  icon: 'fa fa-th'
   settingsRoute: 'dashboard/settings/shop'
   overviewRoute: 'dashboard'
   overViewLabel: 'Dashboard'
