@@ -154,8 +154,8 @@
                     "address1": "Address 1"
                 },
                 "dashboardIcon": {
-                    "iconTitle": "View Dashboard",
-                    "text": "Dashboard"
+                    "iconTitle": "View Console",
+                    "text": "Console"
                 },
                 "createProductIcon": {
                     "iconTitle": "Create product",
