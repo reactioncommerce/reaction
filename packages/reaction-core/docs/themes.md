@@ -19,7 +19,7 @@ You can modify either the `custom.bootstrap.json` or `custom.reaction.json` file
 You should not modify `custom.bootstrap.mixins.import.less`, `custom.reaction.mixins.import.less`, `custom.bootstrap.less`, `custom.reaction.less`, as these files are generated whenever you edit one of the user configurable files.
 
 ## Importing Themes   
-For a quick example, edit `client/themes/customer.reaction.import.less`, and after the first import statement, add:
+For a quick example, edit `client/themes/customer.reaction.import.less`, and the end of the file, add:
 
 ```less  
 //--> Import example Bootstrap 3 theme using generic theme from bootswatch

@@ -19,7 +19,8 @@
                     "create": "Create",
                     "close": "Close",
                     "settings": "Settings",
-                    "loading": "Loading"
+                    "loading": "Loading",
+                    "toggle": "Toggle"
                 },
                 "header": {
                     "tagsAdd": "Add tag",

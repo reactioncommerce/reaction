@@ -6,16 +6,17 @@ ReactionCore.registerPackage = (packageInfo) ->
 ReactionCore.registerPackage
   name: 'reaction-commerce'
   depends: ['fileUploader', 'staffAccountsManager','paymentMethod', 'mailService', 'analytics', 'shipmentMethod']
-  label: 'Settings'
-  description: 'Reaction Shop'
-  icon: 'fa fa-shopping-cart'
+  label: 'Core'
+  description: 'Reaction Commerce Core'
+  icon: 'fa fa-sun-o'
   settingsRoute: 'dashboard/settings/shop'
   overviewRoute: 'dashboard'
-  overViewLabel: 'App Gallery'
+  overViewLabel: 'Dashboard'
+  overviewIcon: 'fa fa-th'
   priority: '3'
-  hidden: true
+  hidden: false
   autoEnable: true
-  hasWidget: true
+  hasWidget: false
   shopPermissions: [
     {
       label: "Customers"
@@ -43,9 +44,11 @@ ReactionCore.registerPackage
   name: 'reaction-commerce-orders'
   provides: ['orderManager']
   label: 'Orders'
+  description: 'Fulfill your orders'
+  icon: 'fa fa-sun-o'
   overviewRoute: 'dashboard/orders'
-  hasWidget: true
-  hidden: true
+  settingsRoute: 'dashboard/orders'
+  hidden: false
   autoEnable: true
   shopPermissions: [
     {
@@ -58,9 +61,10 @@ ReactionCore.registerPackage
 ReactionCore.registerPackage
   name: 'reaction-commerce-staff-accounts'
   provides: ['staffAccountsManager']
-  label: 'Admin Access'
+  label: 'Administrative Users'
+  description: 'Administrative user management'
+  icon: 'fa fa-users'
   settingsRoute: 'dashboard/settings/account'
-  hidden: true
   autoEnable: true
   shopPermissions: [
     {
@@ -69,3 +73,10 @@ ReactionCore.registerPackage
       group: "Shop Settings"
     }
   ]
+
+  ReactionCore.registerPackage
+    name: 'reaction-commerce-create-products'
+    hidden: true
+    overviewRoute: 'createProduct'
+    overViewLabel: 'Create'
+    overviewIcon: 'fa fa-plus'

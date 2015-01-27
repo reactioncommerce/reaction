@@ -9,7 +9,7 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.0.5'
+    'reactioncommerce:core-theme@1.0.6'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
@@ -180,6 +180,8 @@ Package.onUse(function (api) {
 
     "client/templates/layout/header/i18n/i18n.html",
     "client/templates/layout/header/i18n/i18n.coffee",
+
+    "client/templates/layout/header/brand/brand.html",
 
     "client/templates/layout/footer/footer.html",
 
