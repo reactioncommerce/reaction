@@ -1,6 +1,6 @@
 ##Dashboard
 
-The Dashboard is the brain center for your shop: The place where you can access Settings, manage Orders, view and install Apps, manage Admin Access, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, and a window will open where you can choose to view the Dashboard.
+The Dashboard is the brain center for your shop: The place where you can access Settings, manage Orders, view and install Reaction Apps, manage Admin Access, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, and a window will open where you can choose to view the Dashboard.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard.png)
 
@@ -13,9 +13,9 @@ Settings are located in the first card of your Dashboard drawer. Click the cog i
 The Access page is found by clicking the cog icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog.png)) next to Admin Access in your Dashboard drawer. This is where you can give your staff members access to administer your Reaction site.
 
 
-###App Gallery
+###Reaction Apps
 
-Clicking on the App Gallery link under the Dashboard drawer opens the App Gallery. You can view and configure apps such as PayPal and Google Analytics. Each individual app card has its own cog icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog-lg.png)) to view and change your settings. To install an app, click the plus icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-plus-square.png)); to uninstall an app, click the checkmark icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-check-square.png)).
+Clicking on the Reaction Apps link under the Dashboard drawer opens the Reaction Apps. You can view and configure apps such as PayPal and Google Analytics. Each individual app card has its own cog icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog-lg.png)) to view and change your settings. To install an app, click the plus icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-plus-square.png)); to uninstall an app, click the checkmark icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-check-square.png)).
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard-appgallery.png)
 
