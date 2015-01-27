@@ -9,7 +9,7 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.0.5'
+    'reactioncommerce:core-theme@1.0.6'
   ],
   sources: [
     'server/buildtools/module-definitions.js',

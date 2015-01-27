@@ -11,7 +11,8 @@ ReactionCore.registerPackage
   icon: 'fa fa-sun-o'
   settingsRoute: 'dashboard/settings/shop'
   overviewRoute: 'dashboard'
-  overViewLabel: 'Reaction Apps'
+  overViewLabel: 'Dashboard'
+  overviewIcon: 'fa fa-th'
   priority: '3'
   hidden: false
   autoEnable: true
@@ -72,3 +73,10 @@ ReactionCore.registerPackage
       group: "Shop Settings"
     }
   ]
+
+  ReactionCore.registerPackage
+    name: 'reaction-commerce-create-products'
+    hidden: true
+    overviewRoute: 'createProduct'
+    overViewLabel: 'Create'
+    overviewIcon: 'fa fa-plus'

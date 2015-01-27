@@ -66,13 +66,13 @@ Template.dashboardWidgets.rendered = ->
 # dashboard nav bar
 ###
 
-Template.dashboardNavBar.events
-  'click .dashboard-navbar-package': () ->
-    $('.dashboard-navbar-packages ul li').removeClass('active')
-    $('#'+@._id).parent().addClass('active')
+# Template.dashboardNavBar.events
+#   'click .dashboard-navbar-package': () ->
+#     $('.dashboard-navbar-packages ul li').removeClass('active')
+#     $('#'+@._id).parent().addClass('active')
 
-  'click #dashboard-navbar-close-button': () ->
-    toggleSession "displayDashboardNavBar"
+#   'click #dashboard-navbar-close-button': () ->
+#     toggleSession "displayDashboardNavBar"
 
-  'click #dashboard-drawer-close-button': () ->
-    toggleSession "displayDashboardDrawer"
+#   'click #dashboard-drawer-close-button': () ->
+#     toggleSession "displayDashboardDrawer"

@@ -10,5 +10,16 @@ Template.loginDropdown.events
     template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
 
   "click .user-accounts-dropdown a": (event, template) ->
-    event.preventDefault()
-    template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
+    if @.overviewRoute is "createProduct"
+      event.preventDefault()
+      Meteor.call "createProduct", (error, productId) ->
+        if error
+          console.log error
+        else if productId
+          Router.go "product",
+            _id: productId
+          return
+    if @.overviewRoute
+      event.preventDefault()
+      template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
+      Router.go(@.overviewRoute)

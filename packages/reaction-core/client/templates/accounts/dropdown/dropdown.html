@@ -22,13 +22,43 @@
 <template name="userDropdown">
 <div class="user-accounts-dropdown">
   <div class="user-accounts-dropdown-content">
-    <span data-i18n="accountsUI.signedIn">You are signed in.</span>
-    <div class="user-accounts-dropdown-apps">
-      {{> dashboardIcon}}
-      {{> addProductLinks}}
-    </div>
+      {{> accountsDropdownApps}}
   </div>
   <div class="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut">Sign Out</div>
 </div>
 
+</template>
+
+<template name="accountsDropdownApps">
+  <ul class="user-accounts-dropdown-apps">
+    {{#if hasDashboardAccess}}
+      {{#each allPackages}}
+        {{#if overviewRoute}}
+          <li class="dropdown-apps-icon">
+            <!--administrative shortcut icons -->
+
+            <a href="{{pathFor overviewRoute}}" id="{{overviewRoute}}">
+
+              {{#if overviewIcon}}
+                <i class="add-product-link {{overviewIcon}}"></i>
+                {{else}}
+                <i class="add-product-link {{icon}}"></i>
+              {{/if}}
+
+              <span class="icon-text">
+                {{#if overViewLabel}}
+                    {{overViewLabel}}
+                  {{else}}
+                    {{label}}
+                {{/if}}
+              </span>
+            </a>
+          </li>
+        {{/if}}
+      {{/each}}
+    {{else}}
+      <!--user account shortcut icons -->
+      <span data-i18n="accountsUI.signedIn">You are signed in.</span>
+    {{/if}}
+  </ul>
 </template>
