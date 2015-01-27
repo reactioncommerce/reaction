@@ -10,7 +10,7 @@ At http://reactioncommerce.com you can launch a test shop, launched as a Docker 
 Test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
 
 ##Status
-**Current status: Alpha Preview v0.2.2**
+**Current status: Alpha Preview v0.2.3**
 
 **Functional but unstable, with HEAVY ongoing development!**
 
