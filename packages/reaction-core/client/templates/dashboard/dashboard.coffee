@@ -76,3 +76,8 @@ Template.dashboardNavBar.events
 
   'click #dashboard-drawer-close-button': () ->
     toggleSession "displayDashboardDrawer"
+
+Template.dashboardNavBar.helpers
+  displayDashboardDrawer: ->
+    if ReactionCore.hasOwnerAccess() and Session.get 'displayDashboardDrawer'
+      return true

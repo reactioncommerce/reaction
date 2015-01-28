@@ -49,7 +49,15 @@
       <div class="dashboard-drawer-controls pull-right">
         <!-- Dashboard drawer (widgets)-->
         <button type="button" class="btn btn-default" id="dashboard-drawer-close-button">
-         <span aria-hidden="true" title="{{i18n 'app.toggle'}}"><i class="fa fa-angle-double-up fa-lg"></i></span>
+         <span aria-hidden="true" title="{{i18n 'app.toggle'}}">
+             <i class="fa
+             {{#if displayDashboardDrawer}}
+                 fa-angle-double-up
+             {{else}}
+                 fa-angle-double-down
+             {{/if}}
+              fa-lg"></i>
+         </span>
           <span class="sr-only">Toggle Console</span>
         </button>
         <!-- Dashboard close button -->
