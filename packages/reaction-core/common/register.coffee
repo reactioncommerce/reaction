@@ -47,7 +47,6 @@ ReactionCore.registerPackage
   description: 'Fulfill your orders'
   icon: 'fa fa-sun-o'
   overviewRoute: 'dashboard/orders'
-  settingsRoute: 'dashboard/orders'
   hidden: false
   autoEnable: true
   shopPermissions: [

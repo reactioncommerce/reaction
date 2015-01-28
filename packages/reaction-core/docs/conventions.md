@@ -86,18 +86,21 @@ When using event, template parameters in methods, use full names
 #### return
 As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not be what you expect or want. Using explicit `return` also makes the code more readable for others.
 
+### template comments
+Use of `{{!-- comment --}}` rather than `<!-- comment -->` is suggested, this isn't outputed in production.
+
 #Logging
 We use Bunyan for server logging https://github.com/trentm/node-bunyan. Client logging is standard Meteor client handling of `console.log`.
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
 
-To enable logging set/add `isDebug: true` in `settings.json`.  Value can be any valid bunyan level in settings.json, or true/false.
+To enable logging set/add `isDebug: true` in `settings.json`.  Value can be any valid `bunyan level` in settings.json, or true/false.
 
 Setting a level of *debug*  `isDebug:  "debug"` or higher will display verbose logs as JSON. The JSON format is also the storage / display format for production.
 
 *Recommend running meteor with `--raw-log` to remove most Meteor native console formatting. This is the default when you use `./bin/run` to start Meteor.*
 
-Feel free to include verbose logging, but use the following format [Bunyan recommendations on Levels](https://github.com/trentm/node-bunyan#levels) and appropriate levels for your messages.
+Feel free to include verbose logging, but follow [Bunyan recommendations on Levels](https://github.com/trentm/node-bunyan#levels) and use appropriate levels for your messages.
 
 
 ```
@@ -122,11 +125,8 @@ ReactionCore.Events.info "Something we want to see during development"
 
 
 #Server layer
-	
-	functionalMethod *try to follow functional, action*
-	functionalAddItem *example*
 
-#Variable Scope & Namespaces
+##Variable Scope & Namespaces
 
 *common/packageGlobals.js:*
 
