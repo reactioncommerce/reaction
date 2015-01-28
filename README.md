@@ -6,7 +6,7 @@ A commerce platform developed with Meteor, Node.js, MongoDB, CoffeeScript follow
 To install Meteor + Reaction, and start the latest release:
 
 ```bash
-curl getrxn.io/installreaction | /bin/sh
+curl -L http://getrxn.io/installreaction | /bin/sh
 ```
 
 More [installation information in the Developer documentation](https://github.com/reactioncommerce/reaction-core/installation.md)
