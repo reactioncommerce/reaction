@@ -1,13 +1,25 @@
 #Reaction Commerce
 A commerce platform developed with Meteor, Node.js, MongoDB, CoffeeScript following a reactive design pattern that puts usability and conversions first.
 
-**Demonstration & Playground **
+##Installation
+
+To install Meteor + Reaction, and start the latest release:
+
+```bash
+curl getrxn.io/installreaction | /bin/sh
+```
+
+More [installation information in the Developer documentation](https://github.com/reactioncommerce/reaction-core/installation.md)
+
+##Demonstration & Playground
 
 http://reactioncommerce.com
 
 At http://reactioncommerce.com you can launch a test shop, launched as a Docker container. *note: these are test shops, and not for production.*
 
 Test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
+
+
 
 ##Status
 **Current status: Alpha Preview v0.2.3**
