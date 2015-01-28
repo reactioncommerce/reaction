@@ -56,28 +56,28 @@ Template.settingsGeneral.events
 
 AutoForm.hooks shopEditForm:
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shop general settings saved.", "success"
+    Alerts.add "Shop general settings saved.", "success", autoHide: true
 
   onError: (operation, error, template) ->
     Alerts.add "Shop general settings update failed. " + error, "danger"
 
 AutoForm.hooks shopEditAddressForm:
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shop address settings saved.", "success"
+    Alerts.add "Shop address settings saved.", "success", autoHide: true
 
   onError: (operation, error, template) ->
     Alerts.add "Shop address settings update failed. " + error, "danger"
 
 AutoForm.hooks shopEditEmailForm:
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shop SMTP settings saved.", "success"
+    Alerts.add "Shop SMTP settings saved.", "success", autoHide: true
 
   onError: (operation, error, template) ->
     Alerts.add "Shop SMTP settings update failed. " + error, "danger"
 
 AutoForm.hooks shopEditSettingsForm:
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shop settings saved.", "success"
+    Alerts.add "Shop settings saved.", "success", autoHide: true
 
   onError: (operation, error, template) ->
     Alerts.add "Shop setting update failed. " + error, "danger"
