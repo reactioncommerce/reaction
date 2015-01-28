@@ -156,8 +156,7 @@ currentProduct = @currentProduct
 
 @selectedProduct = ->
   id = selectedProductId()
-  product = Products.findOne id
-  return product
+  return Products.findOne id
 
 @selectedProductId = ->
   return currentProduct.get "productId"
