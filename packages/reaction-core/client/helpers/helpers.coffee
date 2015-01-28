@@ -226,11 +226,12 @@ currentProduct = @currentProduct
 ###
 @getProductPriceRange = (productId) ->
   # if no productId provided, use currently selected
-  unless productId
-    productId = selectedProduct()?._id
-    return unless productId
-  #
-  product = Products.findOne(productId)
+  product = Products.findOne(productId || selectedProduct()._id )
+  productId = product?._id
+
+  # let's leave if nothing can be used
+  return unless productId
+
   variants = (variant for variant in product.variants when not variant.parentId)
 
   if variants.length > 0
