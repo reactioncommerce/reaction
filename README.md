@@ -9,9 +9,9 @@ To install Meteor + Reaction, and start the latest release:
 curl -L http://getrxn.io/installreaction | /bin/sh
 ```
 
-More [installation information in the Developer documentation](https://github.com/reactioncommerce/reaction-core/installation.md)
+More [installation information in the development documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md)
 
-##Demonstration & Playground
+##Demonstration
 
 http://reactioncommerce.com
 
