@@ -122,6 +122,7 @@ currentProduct = @currentProduct
   # If we are unsetting, just do it
   if variantId is null
     currentProduct.set "variantId", null
+    currentProduct.set "variantId", selectedVariantId()
   return unless variantId
   # If not unsetting, get the current variant ID
   currentId = selectedVariantId()
@@ -187,18 +188,23 @@ currentProduct = @currentProduct
 # if no child options, return main price value
 ###
 @getVariantPriceRange = (variantId, productId) ->
-  unless productId
-    productId = selectedProductId()
-  product = Products.findOne(productId)
-  # if no variantId provided, use currently selected
-  unless variantId
-    variantId = selectedVariant()._id
+  productId = productId || selectedProductId()
+  variantId = variantId || selectedVariant()._id
+
+  product = Products.findOne(productId, )
+
+  # we want to prevent this from running without valid params
+  unless variantId and productId and product then return
+
   variant = _.findWhere product.variants, _id: variantId
 
   children = (thisVariant for thisVariant in product.variants when thisVariant.parentId is variantId)
 
   if children.length is 0
-    return variant.price
+    if variant?.price
+      return variant.price
+    else
+      return
 
   if children.length is 1
     return children[0].price
@@ -221,7 +227,9 @@ currentProduct = @currentProduct
 @getProductPriceRange = (productId) ->
   # if no productId provided, use currently selected
   unless productId
-    productId = selectedProduct()._id
+    productId = selectedProduct()?._id
+    return unless productId
+  #
   product = Products.findOne(productId)
   variants = (variant for variant in product.variants when not variant.parentId)
 
@@ -236,11 +244,11 @@ currentProduct = @currentProduct
       else
         variantPrices.push range
 
-  priceMin = _.min variantPrices
-  priceMax = _.max variantPrices
-  if priceMin is priceMax
-    return priceMin
-  return priceMin + ' - ' + priceMax
+    priceMin = _.min variantPrices
+    priceMax = _.max variantPrices
+    if priceMin is priceMax
+      return priceMin
+    return priceMin + ' - ' + priceMax
 
 ###
 # save an order as PDF
