@@ -3,49 +3,78 @@
 # This is the Reaction Commerce install script!
 #
 # Are you looking at this in your web browser, and would like to install Reaction?
-# Just open up your terminal and type:
+# To install the latest Reaction version open up your terminal and type:
 #
-#    curl https://github.com/reactioncommerce/reaction/blob/master/bin/install | sh
+#   curl -L http://getrxn.io/installreaction | /bin/sh
+#
+# You can pass also use specific Reaction version to install
+# example:
+#    curl -L http://getrxn.io/installreaction v0.2.0 | /bin/sh
 #
 
-# check that this is osx or linux
+#
+#  Let's display everything on stderr.
+#
+set -eu
+exec 1>&2
+#
+#  check that this is osx or linux
+#
 UNAME=$(uname)
 if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
     echo "Sorry, this OS is not supported yet."
     exit 1
 fi
 
-# check if meteor installed otherwise install.
-if meteor --version 2>/dev/null; then
+#
+# check if meteor is already installed otherwise install.
+#
+if meteor --version >/dev/null 2>&1; then
+  echo>&2
   echo "Meteor already installed, skipping installation."
 else
   curl https://install.meteor.com/ | sh
 fi
 
+#
 # begin Reaction Commerce installation
-REACTION_RELEASE="v0.2.2"
+#
 
-set -e
-set -u
-# Let's display everything on stderr.
-exec 1>&2
+# get the latest version from github
+GITHUB_RELEASE=$(curl -s https://api.github.com/repos/reactioncommerce/reaction/releases | grep tag_name | head -n 1 | cut -d '"' -f 4)
 
-# Running a version of Meteor older than 0.6.0 (April 2013)?
+# user parameter if passed, otherwise github version
+RELEASE=${1:-$GITHUB_RELEASE}
+
+#
+# download latest reaction release from github
+#
 cd $HOME
-echo "Downloading Reaction Commerce application"
-curl -LOk -O https://github.com/reactioncommerce/reaction/archive/${REACTION_RELEASE}.zip
+if [ ! -f /tmp/${RELEASE}.zip ]; then
+  echo "Downloading Reaction Commerce application ${RELEASE}"
+  cd /tmp/ && curl -Lko ${RELEASE}.zip https://api.github.com/repos/reactioncommerce/reaction/zipball/${RELEASE}
+else
+  echo "Found existing downloaded Reaction version, skipping download."
+fi
 
+
+#
+# extract and delete downloaded archive
+#
 echo "Extracting to ${HOME}/reactioncommerce/"
 mkdir -p ${HOME}/reactioncommerce
-tar -xf ${REACTION_RELEASE}.zip -C ${HOME}/reactioncommerce
-rm ${REACTION_RELEASE}.zip
+tar -xf /tmp/${RELEASE}.zip -C ${HOME}/reactioncommerce
 
-echo "Reaction ${REACTION_RELEASE} has been installed."
-echo "It is in your home directory (~/reactioncommerce/reaction-${REACTION_RELEASE})."
-
-echo "Starting the Reaction Commerce server with meteor"
-
-cd ${HOME}/reactioncommerce/reaction-${REACTION_RELEASE:1}/
+#
+#  ok we're done here, let's fire it up.
+#
+BOLD='\033[1;36m' #aqua
+NC='\033[0m' #no color
+echo "${BOLD}Reaction ${RELEASE} has been installed."
+echo "Reaction is located in ~/reactioncommerce/reaction-${RELEASE}/"
+echo "Starting the Reaction Commerce Meteor server...${NC}"
+#  starting meteor
+cd ${HOME}/reactioncommerce/reaction-${RELEASE:1}/
 meteor  --raw-logs
 
 EOF

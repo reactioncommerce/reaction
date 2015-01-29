@@ -9,16 +9,15 @@ To install Meteor + Reaction, and start the latest release:
 curl -L http://getrxn.io/installreaction | /bin/sh
 ```
 
-More [installation information in the development documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md)
+This terminal command executes [this file](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
 
 ##Demonstration
 
-http://reactioncommerce.com
+At [reactioncommerce.com](https://reactioncommerce.com) you can launch a test shop, launched as a Docker container.
 
-At http://reactioncommerce.com you can launch a test shop, launched as a Docker container. *note: these are test shops, and not for production.*
+*Note: These are test shops, and not for production.*
 
-Test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
-
+Test shops help us gather feedback for Reaction development, as well as testing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
 
 
 ##Status
