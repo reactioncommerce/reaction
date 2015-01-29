@@ -7,17 +7,6 @@
 #
 #    curl https://github.com/reactioncommerce/reaction/blob/master/bin/install | sh
 #
-REACTION_RELEASE="0.2.2"
-set -e
-set -u
-# Let's display everything on stderr.
-exec 1>&2
-# check if meteor installed otherwise install.
-if meteor --version 2>/dev/null; then
-  echo "Meteor already installed, skipping installation."
-else
-  curl https://install.meteor.com/ | sh
-fi
 
 # check that this is osx or linux
 UNAME=$(uname)
@@ -26,19 +15,37 @@ if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
     exit 1
 fi
 
-# Running a version of Meteor older than 0.6.0 (April 2013)?
+# check if meteor installed otherwise install.
+if meteor --version 2>/dev/null; then
+  echo "Meteor already installed, skipping installation."
+else
+  curl https://install.meteor.com/ | sh
+fi
+
+# begin Reaction Commerce installation
+REACTION_RELEASE="v0.2.2"
+
+set -e
+set -u
+# Let's display everything on stderr.
+exec 1>&2
+
+# downloading reaction commerce from release zip
 cd $HOME
 echo "Downloading Reaction Commerce application"
-curl -LOk -o /tmp/${REACTION_RELEASE}.zip https://github.com/reactioncommerce/reaction/archive/v${REACTION_RELEASE}.zip
+curl -LOk -O https://github.com/reactioncommerce/reaction/archive/${REACTION_RELEASE}.zip
 
 echo "Extracting to ${HOME}/reactioncommerce/"
 mkdir -p ${HOME}/reactioncommerce
-tar -xf /tmp/v${REACTION_RELEASE}.zip -C ${HOME}/reactioncommerce
+tar -xf ${REACTION_RELEASE}.zip -C ${HOME}/reactioncommerce
+rm ${REACTION_RELEASE}.zip
 
 echo "Reaction ${REACTION_RELEASE} has been installed."
 echo "It is in your home directory (~/reactioncommerce/reaction-${REACTION_RELEASE})."
+
 echo "Starting the Reaction Commerce server with meteor"
-cd ${HOME}/reactioncommerce/reaction-${REACTION_RELEASE}
-meteor --settings settings/settings.json  --raw-logs
+
+cd ${HOME}/reactioncommerce/reaction-${REACTION_RELEASE:1}/
+meteor  --raw-logs
 
 EOF
