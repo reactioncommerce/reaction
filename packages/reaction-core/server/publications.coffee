@@ -132,8 +132,8 @@ Shops.allow
 # Load the session
 # If no session is loaded, creates a new one
 ###
-ServerSessions = new Mongo.Collection("ReactionSessions")
-Meteor.publish 'ReactionSessions', (id) ->
+ServerSessions = new Mongo.Collection("Sessions")
+Meteor.publish 'Sessions', (id) ->
   created = new Date().getTime()
   id = ServerSessions.insert(created: created) unless id
   serverSession = ServerSessions.find(id)
