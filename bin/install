@@ -30,7 +30,6 @@ fi
 # check if meteor is already installed otherwise install.
 #
 if meteor --version >/dev/null 2>&1; then
-  echo>&2
   echo "Meteor already installed, skipping installation."
 else
   curl https://install.meteor.com/ | sh
