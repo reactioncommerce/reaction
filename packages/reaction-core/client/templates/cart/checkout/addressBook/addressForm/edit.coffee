@@ -19,7 +19,8 @@ Template.addressBookEdit.events
     form = {}
     $.each $("#addressBookEditForm").serializeArray(), ->
       form[@name] = @value
-    form.isDefault = true if form.isDefault = "true"
-    form.isCommercial = true if form.isCommercial = "true"
+    
+    form.isDefault = if form.isDefault then true else false
+    form.isCommercial = if form.isCommercial then true else false
     Meteor.call("addressBookUpdate",form)
     Session.set "addressBookView", "view"
