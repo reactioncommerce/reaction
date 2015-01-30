@@ -248,7 +248,7 @@ currentProduct = @currentProduct
 # save an order as PDF
 ###
 @saveOrderAsPDF = (order) ->
-  Blaze.saveAsPDF Template.orderDetails,
+  Blaze.saveAsPDF Template.completedOrderDetails,
     data: order
     filename: "order-" + order._id + ".pdf" #TODO should be configurable by admin
     orientation: "portrait" #TODO should be configurable by admin
