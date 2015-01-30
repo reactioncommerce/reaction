@@ -81,7 +81,8 @@
                 },
                 "cartCompleted": {
                     "thankYou": "Thank you.",
-                    "yourOrderHasBeen": "Your order has been"
+                    "yourOrderHasBeen": "Your order has been",
+                    "summaryMessage": "Thank you for your order."
                 },
                 "checkoutLogin": {
                     "createOrLogin": "Create an account or sign in to continue"

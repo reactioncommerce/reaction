@@ -35,12 +35,39 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
     optional: true
     blackbox: true
 
+ReactionCore.Schemas.Invoice = new SimpleSchema
+  transaction:
+    type: String
+    optional: true
+  shipping:
+    type: Number
+    decimal: true
+    optional: true
+  taxes:
+    type: Number
+    decimal: true
+    optional: true
+  subtotal:
+    type: Number
+    decimal: true
+  discounts:
+    type: Number
+    decimal: true
+    optional: true
+  total:
+    type: Number
+    decimal: true
+
+
 ReactionCore.Schemas.Payment = new SimpleSchema
   address:
     type: ReactionCore.Schemas.Address
     optional: true
   paymentMethod:
     type: [ReactionCore.Schemas.PaymentMethod]
+    optional: true
+  invoices:
+    type: [ReactionCore.Schemas.Invoice]
     optional: true
 
 

@@ -67,13 +67,6 @@ String::toCamelCase = ->
         Router.go "/"
         Alerts.add "Deleted " + title, "info", type: "prod-delete-" + id
 
-@getCartCount = ->
-  Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
-  storedCart = Cart.findOne()
-  count = 0
-  ((count += items.quantity) for items in storedCart.items) if storedCart?.items
-  return count
-
 @locateUser = ->
   #Pass the lat/long to google geolocate
   successFunction = (position) ->
@@ -268,3 +261,17 @@ currentProduct = @currentProduct
     #  top: 1
     #  bottom: 1
   return
+
+###
+# getCardTypes
+###
+@getCardType = (number) ->
+  re = new RegExp("^4")
+  return "visa"  if number.match(re)?
+  re = new RegExp("^(34|37)")
+  return "amex"  if number.match(re)?
+  re = new RegExp("^5[1-5]")
+  return "mastercard"  if number.match(re)?
+  re = new RegExp("^6011")
+  return "discover"  if number.match(re)?
+  ""
