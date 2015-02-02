@@ -248,18 +248,15 @@ currentProduct = @currentProduct
 # save an order as PDF
 ###
 @saveOrderAsPDF = (order) ->
-  Blaze.saveAsPDF Template.completedOrderDetails,
+  Blaze.saveAsPDF Template.completedPDFLayout,
     data: order
     filename: "order-" + order._id + ".pdf" #TODO should be configurable by admin
-    orientation: "portrait" #TODO should be configurable by admin
-    format: "letter" #TODO should be configurable by admin
-    unit: "cm"
-    # NOTE specifying margins seem to make formatting wonky, likely jsPDF issue
-    #margins:
-    #  left: 2.5
-    #  right: 2.5
-    #  top: 1
-    #  bottom: 1
+    margins:
+      top: 80,
+      bottom: 60,
+      left: 40,
+      width: 522
+
   return
 
 ###

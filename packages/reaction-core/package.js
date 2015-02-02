@@ -153,9 +153,6 @@ Package.onUse(function (api) {
     "lib/jquery-serialize/jquery.serialize-hash.coffee",
     "lib/jquery-cookie/jquery.cookie.js",
 
-    "lib/openexchangerates/money.js",
-    "lib/openexchangerates/accounting.js",
-
     "client/subscriptions.coffee",
     "client/app.coffee",
 
@@ -260,14 +257,17 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/completed/completed.html",
     "client/templates/cart/checkout/completed/completed.coffee",
 
-    "client/templates/cart/checkout/completed/orderDetails/orderDetails.html",
-    "client/templates/cart/checkout/completed/orderDetails/orderDetails.coffee",
+    "client/templates/cart/checkout/completed/orderLayout/orderLayout.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderLayout.coffee",
 
-    "client/templates/cart/checkout/completed/orderItems/orderItems.html",
-    "client/templates/cart/checkout/completed/orderItems/orderItems.coffee",
+    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.coffee",
 
-    "client/templates/cart/checkout/completed/orderSummary/orderSummary.html",
-    "client/templates/cart/checkout/completed/orderSummary/orderSummary.coffee",
+    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.coffee",
+
+    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.html",
+    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.coffee",
 
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",

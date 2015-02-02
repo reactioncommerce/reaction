@@ -1,0 +1,53 @@
+<template name="completedPDFLayout">
+<header>
+    <div style="font-family:monospace; font-size: 1.5em">{{> headerBrand}}</div>
+    <div style="font-family:monospace; margin-top: 1em">ORDER: {{_id}}</div>
+    <div style="margin-left: 10em; font-family:monospace; text-align: right;">
+      DATE: {{dateFormat createdAt format="MM/D/YY"}}
+    </div>
+</header>
+<h2 style='margin-top:2em'>SHIP VIA {{shipping.shipmentMethod.method.label}} TO</h2>
+{{#with shipping.address}}
+  <div style='margin-left:10em'>{{fullName}}</div>
+  <div style='margin-left:10em'>{{address1}}</div>
+  <div style='margin-left:10em'>{{#if address2}}{{address2}},{{/if}}</div>
+  <div style='margin-left:10em'>{{city}}, {{region}} {{postal}} {{country}}</div>
+  <div style='margin-left:10em'>{{phone}}</div>
+{{/with}}
+
+
+<h2 style='margin-top:2em'>BILL TO</h2>
+{{#with payment.address}}
+  <div style='margin-left:10em'>{{fullName}}</div>
+  <div style='margin-left:10em'>{{address1}}</div>
+  <div style='margin-left:10em'>{{#if address2}}{{address2}},{{/if}}</div>
+  <div style='margin-left:10em'>{{city}}, {{region}} {{postal}} {{country}}</div>
+  <div style='margin-left:10em'>{{phone}}</div>
+  <div></div>
+{{/with}}
+{{#each payment.paymentMethod}}
+  <div style='margin-left:10em; margin-top:1em'>{{storedCard}}</div>
+  <div style='margin-left:10em'>Ref: {{transactionId}}</div>
+{{/each}}
+
+<h2 style='margin-top:2em'>ORDER ITEMS</h2>
+<ul>
+{{#each items}}
+  <li><h3>{{quantity}} {{variants.title}} {{variants.price}}</h3></li>
+{{/each}}
+</ul>
+
+
+<h2 style='margin-top:2em'>ORDER SUMMARY</h2>
+{{#with invoice}}
+<div style='margin-left:10em' data-i18n='cartSubTotals.subtotal'>Sub total <span style='margin-left:10em'> {{subtotal}}</span></div>
+<div style='margin-left:10em' data-i18n='cartSubTotals.shipping'>Shipping <span style='margin-left:10em'> {{shipping}}</span></div>
+<div style='margin-left:10em' data-i18n='cartSubTotals.tax'>Tax <span>{{taxes}}</span></div>
+<div style='margin-left:10em' data-i18n='cartSubTotals.discount'>Discount  <span>{{discounts}}</span></div>
+<div style='margin-left:10em' data-i18n='cartSubTotals.total'>Total <span style="margin-left:5em">{{total}}</span></div>
+{{/with}}
+
+
+<div style='margin-top: 2em' data-i18n="cartCompleted.summaryMessage">Thank you for your order.</div>
+
+</template>
