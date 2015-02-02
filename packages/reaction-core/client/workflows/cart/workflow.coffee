@@ -48,7 +48,7 @@ CartWorkflow = StateMachine.create(
 
     onaddToCart: (event, from, to, cartSession, productId, variantData, quantity) ->
       if (cartSession? and productId?)
-        count = getCartCount()
+        count = Cart.findOne().cartCount() || 0
         Meteor.call "addToCart", cartSession, productId, variantData, quantity, (error, result) ->
           # When we add the first item to the cart, we geolocate the session/user
           if not error and count is 0
@@ -100,13 +100,5 @@ CartWorkflow = StateMachine.create(
       #fixes timing issue on hot-reload of completed
       return unless orderId
       Router.go "cartCompleted", _id: orderId
-      ###
-      # clear cart variables
-      # todo: move these to cartID specific
-      # commented, these should now get reused by a new cart
-      ###
-      # delete Session.keys["billingUserAddressId"]
-      # delete Session.keys["shippingUserAddressId"]
-      # delete Session.keys["shipmentMethod"]
   }
 )

@@ -5,11 +5,11 @@
 # supports reactivity when server changes the serverSession
 # Stores the server session id into local storage / cookies
 ###
-ReactionCore.Subscriptions.ReactionSessions = Meteor.subscribe "ReactionSessions", amplify.store("reaction.session"), ->
-  serverSession = new Mongo.Collection("ReactionSessions").findOne()
+ReactionCore.Subscriptions.Sessions = Meteor.subscribe "Sessions", amplify.store("ReactionCore.session"), ->
+  serverSession = new Mongo.Collection("Sessions").findOne()
   Session.set "serverSession", serverSession
   Session.set "sessionId", serverSession._id
-  amplify.store "reaction.session", serverSession._id
+  amplify.store "ReactionCore.session", serverSession._id
 
 ###
 # General Subscriptions

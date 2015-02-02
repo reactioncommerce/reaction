@@ -1,9 +1,19 @@
 <template name="gridPackage">
 <div class="pkg-card {{pkgTypeClass.class}}" data-ribbon="{{pkgTypeClass.text}}">
-  <div class="row pkg-content">
-    <h3>{{label}}</h3>
-    <small>{{{description}}}</small>
-  </div>
+  {{!-- display overview route --}}
+   {{#if hasOverviewRoute}}
+    <a href="{{pathFor overviewRoute}}" class="pkg-app-card">
+      <div class="row pkg-content">
+        <h3>{{label}}</h3>
+        <small>{{{description}}}</small>
+      </div>
+    </a>
+   {{else}}
+    <div class="row pkg-content">
+      <h3>{{label}}</h3>
+      <small>{{{description}}}</small>
+    </div>
+   {{/if}}
   <div class="row pkg-status">
       <i class="{{icon}} fa-3x pull-left"></i>
        <div class="pkg-controls">

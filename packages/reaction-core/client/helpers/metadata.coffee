@@ -34,18 +34,20 @@ ReactionCore.MetaData =
     title = ""
     # set meta data
     ReactionCore.MetaData.name = shop.name if shop?.name
+
     # tag/category titles
     if params._id
       title = params._id.charAt(0).toUpperCase() + params._id.substring(1)
     else
       routeName = Router.current().route.getName() #route name
       title = routeName.charAt(0).toUpperCase() + routeName.substring(1) # Uppercase
+
     # product specific
     if product and product.handle is params._id
-      meta.push 'name': 'description', 'content': product.description
-      keywords = (key.value for key in product.metafields)
-      meta.push 'name': 'keywords',  'content': keywords.toString()
-      title = product.title
+      meta.push 'name': 'description', 'content': product.description if product?.description
+      keywords = (key.value for key in product.metafields) if product?.metafields
+      meta.push 'name': 'keywords',  'content': keywords.toString() if keywords
+      title = product.title if product?.title
     else
       meta.push 'description': shop.description if shop?.description
       meta.push 'keywords': shop.keywords if shop?.keywords

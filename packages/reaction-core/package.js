@@ -55,7 +55,6 @@ Package.onUse(function (api) {
     api.use("ongoworks:pdf@1.1.0");
     api.use("ongoworks:bunyan-logger@1.0.0");
 
-    api.use("dburles:collection-helpers@1.0.1");
     api.use("dburles:factory@0.3.7");
     api.use("anti:fake@0.4.1");
     api.use("matb33:collection-hooks@0.7.6");
@@ -121,7 +120,6 @@ Package.onUse(function (api) {
     "common/schemas/discounts.coffee",
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
-    "common/helpers/helpers.coffee",
     "common/hooks/hooks.coffee"
   ], ["client", "server"]);
 
@@ -261,6 +259,18 @@ Package.onUse(function (api) {
 
     "client/templates/cart/checkout/completed/completed.html",
     "client/templates/cart/checkout/completed/completed.coffee",
+
+    "client/templates/cart/checkout/completed/orderLayout/orderLayout.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderLayout.coffee",
+
+    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.coffee",
+
+    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.coffee",
+
+    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.html",
+    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.coffee",
 
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",

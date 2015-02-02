@@ -103,38 +103,14 @@ Template.registerHelper "siteName", ->
   return Shops.findOne()?.name
 
 ###
-# method to return cart calculated values
-# TODO: sessions used by payment methods for cart checkout, probably should refactor to calculate in actual checkout
+# methods to return cart calculated values
+# cartCount, cartSubTotal, cartShipping, cartTaxes, cartTotal
+# are calculated by a transformation on the collection
+# and are available to use in template as cart.xxx
+# in template: {{cart.cartCount}}
+# in code: ReactionCore.Collections.Cart.findOne().cartTotal()
 ###
 Template.registerHelper "cart", () ->
-  cartCount: ->
-    count = getCartCount()
-    Session.set "cartCount", count
-    return count
-
-  cartShipping: ->
-    shipping = Cart.findOne()?.shipping?.shipmentMethod?.rate
-    Session.set "cartShipping", shipping
-    return shipping
-
-  cartSubTotal: ->
-    storedCart = Cart.findOne()
-    subtotal = 0
-    ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
-    subtotal = subtotal.toFixed(2)
-    Session.set "cartSubTotal", subtotal
-    return subtotal
-
-  cartTotal: ->
-    storedCart = Cart.findOne()
-    subtotal = 0
-    ((subtotal += (items.quantity * items.variants.price)) for items in storedCart.items) if storedCart?.items
-    shipping = parseFloat storedCart?.shipping?.shipmentMethod?.rate
-    subtotal = (subtotal + shipping) unless isNaN(shipping)
-    total = subtotal.toFixed(2)
-    Session.set "cartTotal", total
-    return total
-
   # return true if there is an issue with the user's cart and we should display the warning icon
   showCartIconWarning: ->
     if @.showLowInventoryWarning()

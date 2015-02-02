@@ -11,6 +11,10 @@ Template.gridPackage.helpers
         text: "Core"
     return pkg
 
+  hasOverviewRoute: ->
+    unless @.overviewRoute is "dashboard"
+      if ReactionCore.hasPermission(@.overviewRoute) and @.enabled then return true
+
 Template.gridPackage.events
   "click .enablePkg": (event, template) ->
     self = @
@@ -19,6 +23,7 @@ Template.gridPackage.events
       if result is 1
         Alerts.add self.label + i18n.t("gridPackage.pkgEnabled"), "success",
           type: "pkg-enabled-" + self.name
+          autoHide: true
         Router.go self.settingsRoute if self.settingsRoute
       else if error
         console.log error
@@ -33,5 +38,6 @@ Template.gridPackage.events
       if result is 1
         Alerts.add self.label + i18n.t("gridPackage.pkgDisabled"), "success",
           type: "pkg-enabled-" + self.name
+          autoHide: true
       else if error
         console.log error

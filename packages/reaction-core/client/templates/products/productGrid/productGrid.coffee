@@ -94,7 +94,7 @@ Template.gridNotice.helpers
 
 Template.gridContent.helpers
   displayPrice: () ->
-    getProductPriceRange(@_id)
+    getProductPriceRange(@_id) if @_id
 
 Template.productGridItems.events
   'click .clone-product': () ->

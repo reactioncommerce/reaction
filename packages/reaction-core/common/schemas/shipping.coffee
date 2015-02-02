@@ -24,6 +24,7 @@ ReactionCore.Schemas.ShipmentQuote = new SimpleSchema
   rate:
     type: Number
     decimal: true
+    defaultValue: "0.00"
   tracking:
     type: String
     optional: true
