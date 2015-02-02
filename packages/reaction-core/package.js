@@ -153,6 +153,9 @@ Package.onUse(function (api) {
     "lib/jquery-serialize/jquery.serialize-hash.coffee",
     "lib/jquery-cookie/jquery.cookie.js",
 
+    "lib/openexchangerates/money.js",
+    "lib/openexchangerates/accounting.js",
+
     "client/subscriptions.coffee",
     "client/app.coffee",
 

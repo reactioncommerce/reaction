@@ -30,7 +30,7 @@
   <div style='margin-left:10em'>Ref: {{transactionId}}</div>
 {{/each}}
 
-<h2 style='margin-top:2em'>ORDER ITEMS</h2>
+<h2 style='margin-top:2em'>ITEMS</h2>
 <ul>
 {{#each items}}
   <li><h3>{{quantity}} {{variants.title}} {{variants.price}}</h3></li>
@@ -38,7 +38,7 @@
 </ul>
 
 
-<h2 style='margin-top:2em'>ORDER SUMMARY</h2>
+<h2 style='margin-top:1em'>SUMMARY</h2>
 {{#with invoice}}
 <div style='margin-left:10em' data-i18n='cartSubTotals.subtotal'>Sub total <span style='margin-left:10em'> {{subtotal}}</span></div>
 <div style='margin-left:10em' data-i18n='cartSubTotals.shipping'>Shipping <span style='margin-left:10em'> {{shipping}}</span></div>
@@ -47,7 +47,6 @@
 <div style='margin-left:10em' data-i18n='cartSubTotals.total'>Total <span style="margin-left:5em">{{total}}</span></div>
 {{/with}}
 
-
-<div style='margin-top: 2em' data-i18n="cartCompleted.summaryMessage">Thank you for your order.</div>
+<div style='margin-top: 1em' data-i18n="cartCompleted.summaryMessage">Thank you for your order.</div>
 
 </template>
