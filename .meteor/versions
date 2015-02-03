@@ -44,7 +44,6 @@ check@1.0.4
 cmather:handlebars-server@2.0.0
 coffeescript@1.0.5
 d3js:d3@3.4.13
-dburles:collection-helpers@1.0.1
 dburles:factory@0.3.7
 ddp@1.0.14
 deps@1.0.6
