@@ -1,16 +1,27 @@
 #Reaction Commerce
 A commerce platform developed with Meteor, Node.js, MongoDB, CoffeeScript following a reactive design pattern that puts usability and conversions first.
 
-**Demonstration & Playground **
+##Installation
 
-http://reactioncommerce.com
+To install Meteor + Reaction, and start the latest release:
 
-At http://reactioncommerce.com you can launch a test shop, launched as a Docker container. *note: these are test shops, and not for production.*
+```bash
+curl -L http://getrxn.io/installreaction | /bin/sh
+```
 
-Test shops help us in developing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
+This terminal command executes [this file](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
+
+##Demonstration
+
+At [reactioncommerce.com](https://reactioncommerce.com) you can launch a test shop, launched as a Docker container.
+
+*Note: These are test shops, and not for production.*
+
+Test shops help us gather feedback for Reaction development, as well as testing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
+
 
 ##Status
-**Current status: Alpha Preview v0.2.2**
+**Current status: Alpha Preview v0.2.3**
 
 **Functional but unstable, with HEAVY ongoing development!**
 
@@ -52,15 +63,15 @@ And finally for the kanban-esque, hardcore real time progress view, take a look 
 
 #Feedback
 ###GitHub Issues
-Our preferred method for Reaction feedback it that you use GitHub issues on the https://github.com/reactioncommerce/reaction project. 
+Our preferred method for Reaction feedback it that you use GitHub issues on the https://github.com/reactioncommerce/reaction project.
 
-###Chat Rooom
+### Chat Room
 Join us on our Gitter chat room, discuss, get help.
- 
+
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ###Google Group
-Google group at https://groups.google.com/forum/#!forum/reaction-talk 
+Google group at https://groups.google.com/forum/#!forum/reaction-talk
 
 #Developer Documentation
 
