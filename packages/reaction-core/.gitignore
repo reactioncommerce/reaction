@@ -1,3 +1,4 @@
 .build*
 .DS_Store
 *.log
+versions.json
