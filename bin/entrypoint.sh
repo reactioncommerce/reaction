@@ -18,6 +18,7 @@ set -e
 : ${APP_DIR:="/var/www"}
 : ${PORT:="8080"}
 : ${ROOT_URL:="http://127.0.0.1"}
+: ${MONGO_URL:="mongodb://127.0.0.1:27017/meteor"}
 
 # If we were given arguments, run them instead
 if [ $? -gt 1 ]; then
@@ -25,10 +26,10 @@ if [ $? -gt 1 ]; then
 fi
 
 # start mongodb (optional)
-if [ -z "${MONGO_URL}" ]; then
+if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
   echo "Starting local MongoDB..."
   /usr/local/bin/mongod --fork --logpath /var/log/mongodb.log
-  : ${MONGO_URL:="mongodb://127.0.0.1:27017/meteor"}
+
 fi
 
 # export for meteor
