@@ -1,59 +1,94 @@
 ############################################################
-# Builds a Meteor 0.9.x+ application Docker image
-#
-# See: http://docs.docker.io/
+#  Builds a Meteor + Reaction + MongoDB Docker Image
 #
 #  Important:  Best to run from a clean directory that hasn't had meteor run in it.
 #  Important:  packages/<pkg>/.npm and .build* should not exist
 #
-# Example usage:
-#  cd appdir                                                 #in app dir
-#  docker build --tag="<org>/<app>" .                        #build step
-#  docker push <org>/<app>                                   #push to docker repo
-#  docker run -p 127.0.0.1:8080:8080 <org>/<app>             #run
+#   Build:
+#
+#     docker build -t ongoworks/reaction .
+#
+#   Run Reaction, Meteor + local mongo:
+#
+#     docker run -it --rm -p :49000:8080 --name reactioncommerce ongoworks/reaction
+#
+#   Optional Meteor parameters (-e):
+#
+#     ROOT_URL="< hostname>"
+#     MONGO_URL="<your mongodb connect string>"
+#     OPLOG_URL="<mongo oplog url>"
+#     PORT="<meteor port>"
+#     METEOR_SETTINGS="{json}"
+#     DISABLE_WEBSOCKETS="1"
+#
+#   Reaction Specific parameter (-e):
+#
+#     MAIL_URL="<smtp connection string>"
+#     METEOR_EMAIL="youradmin@yourdomain.com"
+#     METEOR_USER="admin"
+#     METEOR_AUTH="password"
+#
+#   Build parameters:
+#
+#     REPO="https://github.com/reactioncommerce/reaction.git"
+#     BRANCH="master"
+#
+#   Example use:
+#
+#   docker run --rm -e ROOT_URL="http://testsite.com" \
+#     -e REPO="https://github.com/reactioncommerce/reaction.git" \
+#     -e BRANCH="master" \
+#     -e METEOR_EMAIL="youradmin@yourdomain.com" \
+#     -e METEOR_USER="admin" \
+#     -e METEOR_AUTH="password" \
+#     -t ongoworks/reaction
+#
+#
 ##############################################################
 
-FROM google/debian:wheezy
+FROM mongo
 MAINTAINER Aaron Judd <aaron@ongoworks.com>
 
-# install node + (optional imagemagick for cfs:graphicsmagick)
-RUN apt-get update -y && apt-get install --no-install-recommends -y -q curl python gcc make build-essential git ca-certificates nano
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install git, curl, python, etc
+# Install imagemagick (optional for cfs:graphicsmagick)
+RUN apt-get -qq update && apt-get install -qq -y curl python gcc make \
+  build-essential git ca-certificates nano chrpath libfreetype6  \
+  libfreetype6-dev libssl-dev libfontconfig1 imagemagick
+
+# install node
 RUN mkdir /nodejs && curl http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
 ENV PATH $PATH:/nodejs/bin
 
-# install imagemagick (optional for cfs:graphicsmagick)
-RUN apt-get install --no-install-recommends -y -q chrpath libfreetype6 libfreetype6-dev libssl-dev libfontconfig1 imagemagick
-
-#install forever and phantomjs (optional for spiderable)
+# Install forever & phantomjs
 RUN npm install --silent -g forever phantomjs
 
-# Install Meteor
+# Install Meteor to /usr/src
 RUN curl https://install.meteor.com | /bin/sh
-ADD . /meteor/src
-WORKDIR /meteor/src/
+ADD . /usr/src/meteor
+WORKDIR /usr/src/meteor/
 
-# Bundle meteorsrc to /var/www/app
-RUN meteor build --directory /meteor
-RUN cd /meteor/bundle/programs/server/ && npm install
-WORKDIR /meteor/bundle
+# Make sure we have a directory for the application
+RUN mkdir -p /var/www
+RUN chown -R www-data:www-data /var/www
 
-#
-# Default Meteor ENV settings for meteor app
-# either change these or pass as --env in the docker run
-#
-ENV PORT 8080
-ENV ROOT_URL "http://127.0.0.1"
-ENV MONGO_URL "mongodb://127.0.0.1:3001/meteor"
-ENV DISABLE_WEBSOCKETS "1"
+# Bundle from /usr/src/meteor to /var/www
+RUN meteor build --directory /var/www
+RUN cd /var/www/bundle/programs/server/ && npm install
+WORKDIR /var/www/bundle
+
+# Install entrypoint
+ADD bin/entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
 
 # Expose container port 8080 to the host (outside the container)
 EXPOSE 8080
 
-RUN touch .foreverignore
-
-# Define default command that runs the node app on container port 8080
-CMD forever -w ./main.js
-
-
-# Clean up APT when done.
+# Some housekeeping
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /meteor/src
+
+# Start Meteor, Reaction and MongoDB
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+
+CMD []
