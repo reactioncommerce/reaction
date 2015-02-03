@@ -21,7 +21,7 @@ nemo64:bootstrap
 
 # Reaction Commerce Packages
 reactioncommerce:core-theme
-reactioncommerce:core
+reactioncommerce:core@=0.3.0
 reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-paypal
