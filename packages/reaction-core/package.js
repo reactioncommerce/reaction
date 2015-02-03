@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.2.3",
+  version: "0.3.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -9,7 +9,7 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.0.6'
+    'reactioncommerce:core-theme@1.1.0'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
