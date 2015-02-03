@@ -61,8 +61,8 @@ fi
 # extract and delete downloaded archive
 #
 echo "Extracting to ${HOME}/reactioncommerce/"
-mkdir -p ${HOME}/reactioncommerce
-tar -xf /tmp/${RELEASE}.zip -C ${HOME}/reactioncommerce
+mkdir -p ${HOME}/reactioncommerce/reaction-${RELEASE:1}/
+tar -xf /tmp/${RELEASE}.zip -C ${HOME}/reactioncommerce/reaction-${RELEASE:1}/ --strip-components=1
 
 #
 #  ok we're done here, let's fire it up.
