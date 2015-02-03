@@ -1,4 +1,11 @@
+loginButtonsSession = Accounts._loginButtonsSession
+
 Template.checkoutLogin.rendered = ->
   # initial screen in checkout should be to create an account
-  loginButtonsSession = Accounts._loginButtonsSession
-  loginButtonsSession.set "inSignupFlow", true
+  if !!ReactionCore.canCheckoutAsGuest
+    Session.set 'Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow', true
+    loginButtonsSession.set "inSignupFlow", false
+  else
+    loginButtonsSession.set "inSignupFlow", true
+    Session.set 'Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow', false
+

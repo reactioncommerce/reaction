@@ -14,8 +14,10 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
     type: String
   status:
     type: String
+    allowedValues: ["created", "approved", "failed", "canceled", "expired", "pending", "voided", "settled"]
   mode:
     type: String
+    allowedValues: ["authorize", 'capture','refund','void']
   createdAt:
     type: Date
     optional: true
@@ -28,6 +30,34 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
   amount:
     type: Number
     decimal: true
+  transactions:
+    type: [Object]
+    optional: true
+    blackbox: true
+
+ReactionCore.Schemas.Invoice = new SimpleSchema
+  transaction:
+    type: String
+    optional: true
+  shipping:
+    type: Number
+    decimal: true
+    optional: true
+  taxes:
+    type: Number
+    decimal: true
+    optional: true
+  subtotal:
+    type: Number
+    decimal: true
+  discounts:
+    type: Number
+    decimal: true
+    optional: true
+  total:
+    type: Number
+    decimal: true
+
 
 ReactionCore.Schemas.Payment = new SimpleSchema
   address:
@@ -35,6 +65,9 @@ ReactionCore.Schemas.Payment = new SimpleSchema
     optional: true
   paymentMethod:
     type: [ReactionCore.Schemas.PaymentMethod]
+    optional: true
+  invoices:
+    type: [ReactionCore.Schemas.Invoice]
     optional: true
 
 
@@ -56,6 +89,11 @@ ReactionCore.Schemas.History = new SimpleSchema
     updatedAt:
       type: Date
 
+###
+# ReactionCore.Schemas.OrderItems
+# merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
+# to create Orders collection
+###
 ReactionCore.Schemas.OrderItems = new SimpleSchema
   additionalField:
     type: String

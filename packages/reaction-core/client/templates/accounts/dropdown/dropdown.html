@@ -1,18 +1,20 @@
 <template name="loginDropdown">
 <div class="dropdown" role="menu">
 {{#if currentUser}}
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
     <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
     <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
-  </a>
+  </div>
   <div class="dropdown-menu pull-right" role="menu">
   {{>userDropdown}}
   </div>
 {{else}}
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-i18n="accountsUI.signIn">Sign In</span><b class="caret"></b></a>
-    <div class="accounts-dialog accounts-inline dropdown-menu pull-right">
-    {{>_loginButtonsLoggedOutAllServices}}
+  <div class="accounts-dropdown">
+    <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000"><span data-i18n="accountsUI.signIn">Sign In</span><b class="caret"></b></div>
+    <div class="accounts-dialog accounts-layout dropdown-menu pull-right">
+    {{> _loginButtonsLoggedOutAllServices}}
     </div>
+  </div>
 {{/if}}
 </div>
 </template>
@@ -20,13 +22,44 @@
 <template name="userDropdown">
 <div class="user-accounts-dropdown">
   <div class="user-accounts-dropdown-content">
-    <span data-i18n="accountsUI.signedIn">You are signed in.</span>
-    <div class="user-accounts-dropdown-apps">
-      {{> dashboardIcon}}
-      {{> addProductLinks}}
-    </div>
+      {{> accountsDropdownApps}}
   </div>
   <div class="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut">Sign Out</div>
 </div>
 
+</template>
+
+<template name="accountsDropdownApps">
+  <ul class="user-accounts-dropdown-apps">
+    {{#if hasDashboardAccess}}
+      {{#each allPackages}}
+        {{#if overviewRoute}}
+          <li class="dropdown-apps-icon">
+            <!--administrative shortcut icons -->
+
+            <a id="{{overviewRoute}}" title="{{name}}">
+
+              {{#if overviewIcon}}
+                <i class="add-product-link {{overviewIcon}}"></i>
+                {{else}}
+                <i class="add-product-link {{icon}}"></i>
+              {{/if}}
+
+              <span class="icon-text">
+                {{#if overViewLabel}}
+                    {{overViewLabel}}
+                  {{else}}
+                    {{label}}
+                {{/if}}
+              </span>
+            </a>
+          </li>
+        {{/if}}
+      {{/each}}
+      {{> dashboardIcon}}
+    {{else}}
+      <!--user account shortcut icons -->
+      <span data-i18n="accountsUI.signedIn">You are signed in.</span>
+    {{/if}}
+  </ul>
 </template>

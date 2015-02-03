@@ -1,1 +1,3 @@
-# Cart totals are Handlebars helpers
+Template.cartSubTotals.helpers
+  cart: ->
+    return Cart.findOne()

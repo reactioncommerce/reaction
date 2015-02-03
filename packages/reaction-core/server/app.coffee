@@ -35,7 +35,6 @@ ReactionCore.Events = logger.bunyan.createLogger(
 # set bunyan logging level
 ReactionCore.Events.level(isDebug)
 
-
 ###
 # Global reaction shop permissions methods
 ###
@@ -81,3 +80,6 @@ _.extend ReactionCore,
     shop = @getCurrentShop() unless shop
     userId = Meteor.userId() unless userId
     return Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
+
+  canCheckoutAsGuest = (client) ->
+    return @getCurrentShop(client).canCheckoutAsGuest || false

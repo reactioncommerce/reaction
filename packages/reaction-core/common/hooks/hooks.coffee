@@ -50,3 +50,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
         addToSet.updatedAt = updatedAt
   if modifier.$set then modifier.$set.updatedAt = new Date()
   # if modifier.$addToSet then modifier.$addToSet.updatedAt = new Date()
+
+  if modifier.$addToSet?.variants
+    modifier.$addToSet.variants.createdAt = new Date()  unless modifier.$addToSet.variants.createdAt
+    modifier.$addToSet.variants.updatedAt = new Date()  unless modifier.$addToSet.variants.updatedAt

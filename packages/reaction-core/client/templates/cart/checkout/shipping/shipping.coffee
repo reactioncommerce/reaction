@@ -13,11 +13,12 @@ Template.coreCheckoutShipping.helpers
 
   # retrieves current rates and updates shipping rates
   # in the users cart collection (historical, and prevents repeated rate lookup)
-  shipmentMethods: () ->
+  shipmentQuotes: () ->
     cart = ReactionCore.Collections.Cart.findOne()
-    if cart
-      Meteor.call "updateCartShippingRates", cart
-      return cart.shipping?.shipmentMethods
+    unless cart.shipping?.shipmentQuotes
+      Meteor.call "updateShipmentQuotes", cart
+
+    return cart.shipping?.shipmentQuotes
 
   # helper to make sure there are some shipping providers
   shippingConfigured: () ->
@@ -25,7 +26,7 @@ Template.coreCheckoutShipping.helpers
     return exists
   # helper to display currently selected shipmentMethod
   isSelected: (cart)->
-    shipmentMethod  = ReactionCore.Collections.Cart.findOne().shipping.shipmentMethod
+    shipmentMethod  = ReactionCore.Collections.Cart.findOne()?.shipping?.shipmentMethod
     unless shipmentMethod then return
     # if there is already a selected method, set active
     if _.isEqual @.method, shipmentMethod?.method

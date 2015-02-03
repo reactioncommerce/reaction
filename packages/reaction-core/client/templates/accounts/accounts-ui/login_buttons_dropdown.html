@@ -9,7 +9,7 @@
 
     {{#if dropdownVisible}}
       <div id="login-dropdown-list" class="accounts-dialog">
-        <a class="login-close-text" data-i18n="accountsUI.close">Close</a>
+        <a class="login-close-text" data-i18n="app.close">Close</a>
         <div class="login-close-text-clear"></div>
 
         {{#if inMessageOnlyFlow}}
@@ -28,7 +28,7 @@
 
 <template name="core_loginButtonsLoggedInDropdownActions">
   {{#if allowChangingPassword}}
-    <div class="login-button" id="login-buttons-open-change-password">
+    <div class="login-button" id="login-buttons-open-change-password" data-18n="accountUI.changePassword">
       Change password
     </div>
   {{/if}}
@@ -50,7 +50,7 @@
           makes the position of "Close" match the position of this text. }}
       <a class="login-link-text" id="login-sign-in-link"><span data-i18n="accountsUI.signIn">Sign in</span> ▾</a>
       <div id="login-dropdown-list" class="accounts-dialog">
-        <a class="login-close-text">Close</a>
+        <a class="login-close-text" data-i18n="app.close">Close</a>
         {{#if loggingIn}}
           {{> _loginButtonsLoggingIn}}
         {{/if}}
@@ -74,7 +74,7 @@
       {{#if hasOtherServices}} {{! the password service will always come last }}
         {{> _loginButtonsLoggedOutPasswordServiceSeparator}}
       {{/if}}
-      {{> _loginButtonsLoggedOutPasswordService}}
+      {{> _loginButtonsLoggedOutPasswordService inline=../inline }}
     {{else}}
       {{> _loginButtonsLoggedOutSingleLoginButton}}
     {{/if}}
@@ -94,6 +94,9 @@
 </template>
 
 <template name="core_loginButtonsLoggedOutPasswordService">
+  {{#unless inline }}
+    {{resetLoginFlow}}
+  {{/unless}}
   {{#if inForgotPasswordFlow}}
     {{> _forgotPasswordForm}}
   {{else}}
@@ -106,32 +109,51 @@
 
       <div class="login-button login-button-form-submit" id="login-buttons-password">
         {{#if inSignupFlow}}
-          <span data-i18n="accountsUI.createAccount">{{i18n "accountsUI.createAccount"}}</span>
-        {{else}}
-          <span data-i18n="accountsUI.signIn">{{i18n "accountsUI.signIn"}}</span>
+          <span data-i18n="accountsUI.createAccount">Create an Account</span>
+        {{/if}}
+        {{#if inLoginFlow}}
+          <span data-i18n="accountsUI.signIn">Sign In</span>
+        {{/if}}
+        {{#if inline }}
+        {{#if canCheckoutAsGuest}}
+          {{#if inLoginAsGuestFlow}}
+            <span data-i18n="accountsUI.checkoutAsGuest">Checkout without user account</span>
+          {{/if}}
+        {{/if}}
         {{/if}}
       </div>
 
       {{#if inLoginFlow}}
         {{#if showCreateAccountLink}}
-          <div class="additional-link-container">
-            <a id="signup-link" class="additional-link">
-              <span data-i18n="accountsUI.createAccount">{{i18n "accountsUI.createAccount"}}</span>
-            </a>
-          </div>
+          {{> _loginButtonsBackToSignUpLink}}
         {{/if}}
 
         {{#if showForgotPasswordLink}}
           <div class="additional-link-container">
             <a id="forgot-password-link" class="additional-link">
-              <span data-i18n="accountsUI.forgotPassword">{{i18n "accountsUI.forgotPassword"}}</span>
+              <span data-i18n="accountsUI.forgotPassword">Reset password</span>
             </a>
           </div>
         {{/if}}
+        {{#if inline }}
+        {{#if canCheckoutAsGuest }}
+          {{> core_loginButtonsBackToGuestLoginLink}}
+        {{/if}}
+        {{/if}}
       {{/if}}
-
       {{#if inSignupFlow}}
         {{> _loginButtonsBackToLoginLink}}
+        {{#if canCheckoutAsGuest }}
+        {{#if inline }}
+          {{> core_loginButtonsBackToGuestLoginLink}}
+        {{/if}}
+        {{/if}}
+      {{/if}}
+      {{#if canCheckoutAsGuest }}
+        {{#if inLoginAsGuestFlow}}
+          {{> _loginButtonsBackToLoginLink}}
+          {{> _loginButtonsBackToSignUpLink}}
+        {{/if}}
       {{/if}}
     </div>
   {{/if}}
@@ -140,7 +162,7 @@
 <template name="core_forgotPasswordForm">
   <div class="login-form">
     <div id="forgot-password-email-label-and-input"> {{! XXX we should probably use loginButtonsFormField }}
-      <label id="forgot-password-email-label" for="forgot-password-email" data-i18n="accountsUI.email">{{i18n "accountsUI.email"}}</label>
+      <label id="forgot-password-email-label" for="forgot-password-email" data-i18n="accountsUI.email">Email</label>
       <input id="forgot-password-email" type="email"/>
     </div>
 
@@ -154,12 +176,25 @@
   </div>
 </template>
 
-<template name="core_loginButtonsBackToLoginLink">
+<template name="_loginButtonsBackToSignUpLink">
   <div class="additional-link-container">
-    <a id="back-to-login-link" class="additional-link" data-i18n="accountsUI.signIn">{{i18n "accountsUI.signIn"}}</a>
+    <a id="signup-link" class="additional-link">
+      <span data-i18n="accountsUI.createAccount">Create an Account</span>
+    </a>
   </div>
 </template>
 
+<template name="core_loginButtonsBackToLoginLink">
+  <div class="additional-link-container">
+    <a id="back-to-login-link" class="additional-link" data-i18n="accountsUI.signIn">Sign In</a>
+  </div>
+</template>
+
+<template name="core_loginButtonsBackToGuestLoginLink">
+  <div class="additional-link-container">
+    <a id="back-to-guest-login-link" class="additional-link" data-i18n="accountsUI.checkoutAsGuest">Checkout without user account</a>
+  </div>
+</template>
 
 <!--
 This strategy for login forms means that browsers' "Remember password"

@@ -1,14 +1,14 @@
 Template.dashboardIcon.helpers
   toggleStateClass: () ->
-    state = Session.get "dashboard"
+    state = Session.get "displayDashboardNavBar"
     if state is true
-      return "fa fa-th fa-x3 dashboard-state-active"
+      return "fa fa-dashboard dashboard-state-active"
     else
-      return "fa fa-th fa-x3"
+      return "fa fa-dashboard"
 
 Template.dashboardIcon.events
-  "click .dashboard-toggle": (event, template) ->
-    toggleSession "dashboard"
-
-  "click .dashboard-display": (event, template) ->
-    Router.go "dashboard"
+  "click #dashboard-drawer-icon": (event, template) ->
+    event.preventDefault()
+    # if Session.equals "displayDashboardNavBar", false
+    #   Router.go "dashboard"
+    toggleSession "displayDashboardNavBar"

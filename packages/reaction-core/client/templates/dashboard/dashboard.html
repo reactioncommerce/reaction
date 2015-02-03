@@ -1,7 +1,9 @@
 <template name="dashboard">
 {{#if hasDashboardAccess}}
-  {{#if isVisible}}
+
+  {{#if displayDashboardNavBar}}
     <div class="dashboard-drawer">
+    {{#if displayDashboardDrawer}}
       <div class="dashboard-container">
         <div class="dashboard-widget-wrapper">
           {{#with Package}}
@@ -14,41 +16,57 @@
           {{/with}}
         </div>
       </div>
-      {{>dashboardNavBar}}
+    {{/if}}
     </div>
+    {{>dashboardNavBar}}
   {{/if}}
+
 {{/if}}
 </template>
 
 <template name="dashboardNavBar">
   <div class="dashboard-navbar-packages">
-    <ul class="nav nav-pills">
-      {{#each allPackages}}
-        {{#if enabled}}
-        {{#if overviewRoute}}
-        <li>
-          <a href="{{pathFor overviewRoute}}" class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}">
-            {{#if overViewLabel}}
-              {{overViewLabel}}
-            {{else}}
-              {{label}}
-            {{/if}}
-          </a>
-        </li>
-        {{/if}}
-        {{/if}}
-      {{/each}}
-
+    <div class="col-xs-12 col-sm-10 col-md-9">
+      <ul class="nav nav-pills">
+        {{#each allPackages}}
+          {{#if enabled}}
+          {{#if overviewRoute}}
+          <li>
+            <a class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}" title="{{name}}">
+              {{#if overViewLabel}}
+                {{overViewLabel}}
+              {{else}}
+                {{label}}
+              {{/if}}
+            </a>
+          </li>
+          {{/if}}
+          {{/if}}
+        {{/each}}
+      </ul>
+    </div>
+    <div class="col-xs-12 col-sm-2 col-md-3">
+      <div class="dashboard-drawer-controls pull-right">
+        <!-- Dashboard drawer (widgets)-->
+        <button type="button" class="btn btn-default" id="dashboard-drawer-close-button">
+         <span aria-hidden="true" title="{{i18n 'app.toggle'}}">
+             <i class="fa
+             {{#if displayDashboardDrawer}}
+                 fa-angle-double-up
+             {{else}}
+                 fa-angle-double-down
+             {{/if}}
+              fa-lg"></i>
+         </span>
+          <span class="sr-only">Toggle Console</span>
+        </button>
         <!-- Dashboard close button -->
-        <li class="pull-right dashboard-drawer-controls">
-          <button type="button" class="dashboard-drawer-close-button">
-            <span aria-hidden="true"><i class="fa fa-angle-double-up fa-lg"></i></span>
-            <span class="sr-only">Close</span>
-          </button>
-        </li>
-
-    </ul>
-
+        <button type="button" class="btn btn-default" id="dashboard-navbar-close-button">
+          <span aria-hidden="true" title="{{i18n 'app.close'}}"><i class="fa fa-times fa-lg"></i></span>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.2.2",
+  version: "0.2.3",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -9,7 +9,7 @@ Package._transitional_registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.0.4'
+    'reactioncommerce:core-theme@1.0.6'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
@@ -50,11 +50,11 @@ Package.onUse(function (api) {
     api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@1.0.7");
+    api.use("prinzdezibel:accounts-guest@0.1.3");
     api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
     api.use("ongoworks:bunyan-logger@1.0.0");
 
-    api.use("dburles:collection-helpers@1.0.1");
     api.use("dburles:factory@0.3.7");
     api.use("anti:fake@0.4.1");
     api.use("matb33:collection-hooks@0.7.6");
@@ -120,7 +120,6 @@ Package.onUse(function (api) {
     "common/schemas/discounts.coffee",
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
-    "common/helpers/helpers.coffee",
     "common/hooks/hooks.coffee"
   ], ["client", "server"]);
 
@@ -180,6 +179,8 @@ Package.onUse(function (api) {
     "client/templates/layout/header/i18n/i18n.html",
     "client/templates/layout/header/i18n/i18n.coffee",
 
+    "client/templates/layout/header/brand/brand.html",
+
     "client/templates/layout/footer/footer.html",
 
     "client/templates/layout/alerts/bootstrap-alerts.coffee",
@@ -198,6 +199,7 @@ Package.onUse(function (api) {
     "client/templates/accounts/accounts-ui/login_buttons.html",
     "client/templates/accounts/accounts-ui/login_buttons_dialogs.html",
     "client/templates/accounts/accounts-ui/login_buttons_dropdown.html",
+    "client/templates/accounts/accounts-ui/login_buttons_dropdown.coffee",
     "client/templates/accounts/accounts-ui/login_buttons_single.html",
     "client/templates/accounts/accounts-ui/accounts-ui.coffee",
 
@@ -221,6 +223,9 @@ Package.onUse(function (api) {
 
     "client/templates/cart/cartIcon/cartIcon.html",
     "client/templates/cart/cartIcon/cartIcon.coffee",
+
+    "client/templates/cart/cartPanel/cartPanel.html",
+    "client/templates/cart/cartPanel/cartPanel.coffee",
 
     "client/templates/cart/checkout/checkout.html",
     "client/templates/cart/checkout/checkout.coffee",
@@ -254,6 +259,18 @@ Package.onUse(function (api) {
 
     "client/templates/cart/checkout/completed/completed.html",
     "client/templates/cart/checkout/completed/completed.coffee",
+
+    "client/templates/cart/checkout/completed/orderLayout/orderLayout.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderLayout.coffee",
+
+    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.coffee",
+
+    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.html",
+    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.coffee",
+
+    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.html",
+    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.coffee",
 
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",
@@ -373,6 +390,7 @@ Package.onUse(function (api) {
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
   //i18n translations
   api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/cn.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/cs.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/de.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});

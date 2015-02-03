@@ -37,6 +37,8 @@ OrderWorkflow = new StateMachine.create(
         # Session.set("OrderWorkflow",to) if Session?
 
       shipmentTracking: (order, tracking) ->
+        check order, Object
+        check tracking, String
         orderId = order._id
         # manual add tracking (call these from shipment method to auto add)
         Meteor.call "addTracking", orderId, tracking

@@ -84,20 +84,15 @@ ReactionCore.Schemas.Address = new SimpleSchema
   isCommercial:
     label: "This is a commercial address"
     type: Boolean
-    defaultValue: false
+    # defaultValue: false
   isDefault:
     label: "This is my default address"
     type: Boolean
-    defaultValue: true
+    # defaultValue: true
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
 
-#if i18n.t('addressSchema.fullName') isnt 'addressSchema.fullName' then return i18n.t('addressSchema.fullName')
-# MySchema.labels password: "Enter your password"
-# AddressSchema.labels
-#   password: "Enter your password"
-#   test: "test"
 
 ReactionCore.Schemas.Currency = new SimpleSchema
   symbol:
@@ -171,6 +166,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
     defaultValue: "OZ"
     label: "Base Unit of Measure"
+  canCheckoutAsGuest:
+    type: Boolean
+    defaultValue: false
   ownerId:
     type: String
   members:

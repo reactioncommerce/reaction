@@ -1,8 +1,13 @@
 Packages = ReactionCore.Collections.Packages
 
 Template.dashboard.helpers
-  isVisible: ->
-    if Session.get("dashboard") and ReactionCore.hasOwnerAccess() then return true
+  displayDashboardNavBar: ->
+    if ReactionCore.hasOwnerAccess() and Session.get "displayDashboardNavBar"
+      return true
+
+  displayDashboardDrawer: ->
+    if ReactionCore.hasOwnerAccess() and Session.get "displayDashboardDrawer"
+      return true
 
   Package: ->
     # package view is aware of Package / Context / Route / Permissions
@@ -66,5 +71,13 @@ Template.dashboardNavBar.events
     $('.dashboard-navbar-packages ul li').removeClass('active')
     $('#'+@._id).parent().addClass('active')
 
-  'click .dashboard-drawer-close-button': () ->
-    toggleSession "dashboard"
+  'click #dashboard-navbar-close-button': () ->
+    toggleSession "displayDashboardNavBar"
+
+  'click #dashboard-drawer-close-button': () ->
+    toggleSession "displayDashboardDrawer"
+
+Template.dashboardNavBar.helpers
+  displayDashboardDrawer: ->
+    if ReactionCore.hasOwnerAccess() and Session.get 'displayDashboardDrawer'
+      return true

@@ -3,8 +3,9 @@ Meteor.methods
   # Adds tracking information to order
   # Call after any tracking code is generated
   ###
-  addTracking: (orderId, tracking, variantId) ->
+  addTracking: (orderId, tracking) ->
     check orderId, String #at least make sure it's an ID and not a sneaky selector
+    check tracking, String
     return Orders.update(orderId, {$set: {"shipping.shipmentMethod.tracking":tracking}})
 
   ###
@@ -41,7 +42,7 @@ Meteor.methods
 
   ###
   # Finalize any payment where mode is "authorize"
-  # and status is "approved", reprocess as "sale"
+  # and status is "approved", reprocess as "capture"
   ###
   processPayments: (orderId) ->
     check orderId, String #at least make sure it's an ID and not a sneaky selector

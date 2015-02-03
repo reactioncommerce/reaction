@@ -29,7 +29,7 @@ PackageFixture = ->
 
   loadI18n: (collection) ->
     return if collection.find().count() > 0
-    languages = ["ar","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
+    languages = ["ar","cn","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
     ReactionCore.Events.info "Loading fixture data for languages to " + collection._name
     for language in languages
       json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")

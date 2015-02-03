@@ -1,10 +1,14 @@
 Template.cartCheckout.helpers
+  cart: ->
+    Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
+    return Cart.findOne()
+
   loginStatus: () ->
     unless Meteor.userId()?
-      status = "checkout-step-badge"
+      status = false
     else if Meteor.user()
       status = "checkout-step-badge-completed"
-    status
+    return status
 
   addressStatus: () ->
     if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
@@ -13,7 +17,7 @@ Template.cartCheckout.helpers
       status =  "checkout-step-badge"
     else
       status = false
-    status
+    return status
 
   shippingOptionStatus: () ->
     if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
@@ -22,16 +26,12 @@ Template.cartCheckout.helpers
       status = "checkout-step-badge"
     else
       status = false
-    status
+    return status
 
   checkoutReviewStatus: () ->
     if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
       status = true
-    status
+    return status
 
 Template.cartCheckout.rendered = ->
   Session.set "displayCartDrawer", false
-
-Template.cartCheckout.events
-  'click #checkout-step-payment-methods': () ->
-    # Set review to complete

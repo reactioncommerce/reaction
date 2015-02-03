@@ -1,73 +1,7 @@
 <template name="cartCompleted">
-  <h1 data-i18n="cartCompleted.thankYou">Thank you. <small data-i18n>Your order has been {{orderStatus}}.</small></h1>
-  <div class="form-group">
-    <button type="button" class="btn btn-lg btn-primary save-order-details">Save as PDF</button>
-  </div>
-  {{> orderDetails}}
-</template>
-
-<template name="orderDetails">
-  <div class="row">
-     <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title" data-i18n="cartCompleted.shipment">Shipment</h3>
-        </div>
-        <div class="panel-body">
-          {{#with shipping.address}}
-            <strong>{{fullName}}</strong>
-            <address>
-              {{address1}}
-              {{address2}},<br>
-              {{city}}, {{region}} {{postal}} {{country}}<br>
-              {{phone}}
-            </address>
-          {{/with}}
-          <div class="well well-sm">
-          {{shipping.shipmentMethod.label}}
-          </div>
-        </div>
-      </div>
-    </div>
-      <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title" data-i18n="cartCompleted.payment">Payment</h3>
-        </div>
-        <div class="panel-body">
-          <div class="list-group">
-            {{payment.address.fullName}}<br>
-            {{#each payment.paymentMethod}}
-              <strong>{{storedCard}}</strong><br>
-              Ref: {{transactionId}}
-            {{/each}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-8">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title" data-i18n="cartCompleted.orderItems">Order Items</h3>
-        </div>
-        <div class="panel-body">
-          <div class="list-group">
-            {{#each items}}
-            <div class="list-group-item">
-            <i class="badge">{{quantity}}</i>
-              {{#with variants}}
-               {{title}}
-              {{/with}}
-            </div>
-            {{/each}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <small>Reference: {{_id}}</small>
-  </div>
+  <h1>
+    <span data-i18n="cartCompleted.thankYou">Thank you.</span>
+    <small><span data-i18n="cartCompleted.yourOrderHasBeen">Your order has been</span> {{orderStatus}}.</small>
+  </h1>
+  {{> completedOrderLayout}}
 </template>

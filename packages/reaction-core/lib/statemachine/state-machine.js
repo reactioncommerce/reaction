@@ -2,18 +2,18 @@
 
   Javascript State Machine Library - https://github.com/jakesgordon/javascript-state-machine
 
-  Copyright (c) 2012, 2013 Jake Gordon and contributors
+  Copyright (c) 2012, 2013, 2014, 2015, Jake Gordon and contributors
   Released under the MIT license - https://github.com/jakesgordon/javascript-state-machine/blob/master/LICENSE
 
 */
 
-(function (window) {
+(function () {
 
   var StateMachine = {
 
     //---------------------------------------------------------------------------
 
-    VERSION: "2.2.0",
+    VERSION: "2.3.5",
 
     //---------------------------------------------------------------------------
 
@@ -37,18 +37,23 @@
 
     create: function(cfg, target) {
 
-      var initial   = (typeof cfg.initial == 'string') ? { state: cfg.initial } : cfg.initial; // allow for a simple string, or an object with { state: 'foo', event: 'setup', defer: true|false }
-      var terminal  = cfg.terminal || cfg['final'];
-      var fsm       = target || cfg.target  || {};
-      var events    = cfg.events || [];
-      var callbacks = cfg.callbacks || {};
-      var map       = {};
+      var initial      = (typeof cfg.initial == 'string') ? { state: cfg.initial } : cfg.initial; // allow for a simple string, or an object with { state: 'foo', event: 'setup', defer: true|false }
+      var terminal     = cfg.terminal || cfg['final'];
+      var fsm          = target || cfg.target  || {};
+      var events       = cfg.events || [];
+      var callbacks    = cfg.callbacks || {};
+      var map          = {}; // track state transitions allowed for an event { event: { from: [ to ] } }
+      var transitions  = {}; // track events allowed from a state            { state: [ event ] }
 
       var add = function(e) {
         var from = (e.from instanceof Array) ? e.from : (e.from ? [e.from] : [StateMachine.WILDCARD]); // allow 'wildcard' transition if 'from' is not specified
         map[e.name] = map[e.name] || {};
-        for (var n = 0 ; n < from.length ; n++)
+        for (var n = 0 ; n < from.length ; n++) {
+          transitions[from[n]] = transitions[from[n]] || [];
+          transitions[from[n]].push(e.name);
+
           map[e.name][from[n]] = e.to || from[n]; // allow no-op transition if 'to' is not specified
+        }
       };
 
       if (initial) {
@@ -69,13 +74,13 @@
           fsm[name] = callbacks[name]
       }
 
-      fsm.current = 'none';
-      fsm.is      = function(state) { return (state instanceof Array) ? (state.indexOf(this.current) >= 0) : (this.current === state); };
-      fsm.can     = function(event) { return !this.transition && (map[event].hasOwnProperty(this.current) || map[event].hasOwnProperty(StateMachine.WILDCARD)); }
-      fsm.cannot  = function(event) { return !this.can(event); };
-      fsm.error   = cfg.error || function(name, from, to, args, error, msg, e) { throw e || msg; }; // default behavior when something unexpected happens is to throw an exception, but caller can override this behavior if desired (see github issue #3 and #17)
-
-      fsm.isFinished = function() { return this.is(terminal); };
+      fsm.current     = 'none';
+      fsm.is          = function(state) { return (state instanceof Array) ? (state.indexOf(this.current) >= 0) : (this.current === state); };
+      fsm.can         = function(event) { return !this.transition && (map[event].hasOwnProperty(this.current) || map[event].hasOwnProperty(StateMachine.WILDCARD)); }
+      fsm.cannot      = function(event) { return !this.can(event); };
+      fsm.transitions = function()      { return transitions[this.current]; };
+      fsm.isFinished  = function()      { return this.is(terminal); };
+      fsm.error       = cfg.error || function(name, from, to, args, error, msg, e) { throw e || msg; }; // default behavior when something unexpected happens is to throw an exception, but caller can override this behavior if desired (see github issue #3 and #17)
 
       if (initial && !initial.defer)
         fsm[initial.event]();
@@ -191,12 +196,32 @@
 
   //===========================================================================
 
-  if ("function" === typeof define) {
+  //======
+  // NODE
+  //======
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = StateMachine;
+    }
+    exports.StateMachine = StateMachine;
+  }
+  //============
+  // AMD/REQUIRE
+  //============
+  else if (typeof define === 'function' && define.amd) {
     define(function(require) { return StateMachine; });
   }
-  else {
+  //========
+  // BROWSER
+  //========
+  else if (typeof window !== 'undefined') {
     window.StateMachine = StateMachine;
   }
+  //===========
+  // WEB WORKER
+  //===========
+  else if (typeof self !== 'undefined') {
+    self.StateMachine = StateMachine;
+  }
 
-}(this));
-
+}());

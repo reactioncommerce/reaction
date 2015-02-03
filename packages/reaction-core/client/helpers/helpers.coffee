@@ -13,16 +13,24 @@ String::toCamelCase = ->
   s = s.replace(/([0-9]+)([a-zA-Z])/g, (a, b, c) ->
     b + c.toUpperCase()
   )
-  s
+  return s
+
 ###
 # quick and easy snippet for toggling sessions
+# accepts string name, see http://docs.meteor.com/#/basic/session
+# optional pass positive param match
 ###
-@toggleSession = (session_variable) ->
-  if Session.get(session_variable)
-    Session.set session_variable, false
+@toggleSession = (sessionVariable, positive) ->
+  check sessionVariable, String
+  session = Session.get sessionVariable
+  positive = positive || true
+
+  if _.isEqual positive, session
+    Session.set sessionVariable, false
   else
-    Session.set session_variable, true
-  return
+    Session.set sessionVariable, positive
+
+  return Session.get sessionVariable
 
 ###
 # method to return tag specific product
@@ -58,12 +66,6 @@ String::toCamelCase = ->
         setCurrentProduct null
         Router.go "/"
         Alerts.add "Deleted " + title, "info", type: "prod-delete-" + id
-
-@getCartCount = ->
-  storedCart = Cart.findOne()
-  count = 0
-  ((count += items.quantity) for items in storedCart.items) if storedCart?.items
-  return count
 
 @locateUser = ->
   #Pass the lat/long to google geolocate
@@ -113,6 +115,7 @@ currentProduct = @currentProduct
   # If we are unsetting, just do it
   if variantId is null
     currentProduct.set "variantId", null
+    currentProduct.set "variantId", selectedVariantId()
   return unless variantId
   # If not unsetting, get the current variant ID
   currentId = selectedVariantId()
@@ -147,8 +150,7 @@ currentProduct = @currentProduct
 
 @selectedProduct = ->
   id = selectedProductId()
-  product = Products.findOne id
-  return product
+  return Products.findOne id
 
 @selectedProductId = ->
   return currentProduct.get "productId"
@@ -179,18 +181,23 @@ currentProduct = @currentProduct
 # if no child options, return main price value
 ###
 @getVariantPriceRange = (variantId, productId) ->
-  unless productId
-    productId = selectedProductId()
-  product = Products.findOne(productId)
-  # if no variantId provided, use currently selected
-  unless variantId
-    variantId = selectedVariant()._id
+  productId = productId || selectedProductId()
+  variantId = variantId || selectedVariant()._id
+
+  product = Products.findOne(productId, )
+
+  # we want to prevent this from running without valid params
+  unless variantId and productId and product then return
+
   variant = _.findWhere product.variants, _id: variantId
 
   children = (thisVariant for thisVariant in product.variants when thisVariant.parentId is variantId)
 
   if children.length is 0
-    return variant.price
+    if variant?.price
+      return variant.price
+    else
+      return
 
   if children.length is 1
     return children[0].price
@@ -212,9 +219,12 @@ currentProduct = @currentProduct
 ###
 @getProductPriceRange = (productId) ->
   # if no productId provided, use currently selected
-  unless productId
-    productId = selectedProduct()._id
-  product = Products.findOne(productId)
+  product = Products.findOne(productId || selectedProduct()._id )
+  productId = product?._id
+
+  # let's leave if nothing can be used
+  return unless productId
+
   variants = (variant for variant in product.variants when not variant.parentId)
 
   if variants.length > 0
@@ -228,26 +238,37 @@ currentProduct = @currentProduct
       else
         variantPrices.push range
 
-  priceMin = _.min variantPrices
-  priceMax = _.max variantPrices
-  if priceMin is priceMax
-    return priceMin
-  return priceMin + ' - ' + priceMax
+    priceMin = _.min variantPrices
+    priceMax = _.max variantPrices
+    if priceMin is priceMax
+      return priceMin
+    return priceMin + ' - ' + priceMax
 
 ###
 # save an order as PDF
 ###
 @saveOrderAsPDF = (order) ->
-  Blaze.saveAsPDF Template.orderDetails,
+  Blaze.saveAsPDF Template.completedPDFLayout,
     data: order
     filename: "order-" + order._id + ".pdf" #TODO should be configurable by admin
-    orientation: "portrait" #TODO should be configurable by admin
-    format: "letter" #TODO should be configurable by admin
-    unit: "cm"
-    # NOTE specifying margins seem to make formatting wonky, likely jsPDF issue
-    #margins:
-    #  left: 2.5
-    #  right: 2.5
-    #  top: 1
-    #  bottom: 1
+    margins:
+      top: 80,
+      bottom: 60,
+      left: 40,
+      width: 522
+
   return
+
+###
+# getCardTypes
+###
+@getCardType = (number) ->
+  re = new RegExp("^4")
+  return "visa"  if number.match(re)?
+  re = new RegExp("^(34|37)")
+  return "amex"  if number.match(re)?
+  re = new RegExp("^5[1-5]")
+  return "mastercard"  if number.match(re)?
+  re = new RegExp("^6011")
+  return "discover"  if number.match(re)?
+  ""

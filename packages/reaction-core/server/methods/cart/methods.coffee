@@ -78,27 +78,53 @@ Meteor.methods
   # the order, we don't want to just make another cart item
   ###
   copyCartToOrder: (cart) ->
-    currentUserId = Meteor.userId()
-    # Check userId & sessionId against current
-    return false if cart.shopId isnt ReactionCore.getShopId(@) or cart.userId isnt currentUserId
-    #Retrieving cart twice (once on call)to ensure accurate clone from db
-    currentCartId = cart._id
-    # cart = Cart.findOne(cartId)
+    # extra validation + transform methods
+    cart = ReactionCore.Collections.Cart.findOne(cart._id)
+    invoice = {}
+
+    ###
+    # todo: implement guest checkout here.
+    # save sessionId to cart collection
+    # if this guest sessionId becomes a user
+    # or if an email sent to the user confirms sessionId belongs to this email
+    # it can be reconnected to any user account where the email is registered.
+    # we won't validate user account here further
+    ###
+
+    # transform cart pricing into order invoice
+    invoice.shipping = cart.cartShipping()
+    invoice.subtotal = cart.cartSubTotal()
+    invoice.taxes = cart.cartTaxes()
+    invoice.discounts = cart.cartDiscounts()
+    invoice.total =  cart.cartTotal()
+    cart.payment.invoices = [invoice]
+
+    # todo: these defaults should be done in schema
     now = new Date()
     cart.createdAt = now
     cart.updatedAt = now
-    cart._id = Random.id()
+
+    # set workflow status
     cart.state = "orderCreated"
     cart.status = "new"
 
+    ###
+    # final sanity check
+    # todo add `check cart, ReactionCore.Schemas.Order`
+    # and add some additional validation that all is good
+    # and no tampering has occurred
+    ###
+
     try
-      Orders.insert cart
+      orderId = Orders.insert cart
+      Cart.remove _id: cart._id
     catch error
       ReactionCore.Events.info "error in order insert"
       ReactionCore.Events.warn error, Orders.simpleSchema().namedContext().invalidKeys()
+      return error
 
-    Cart.remove userId: currentUserId
-    return cart._id #new order id
+    # return new orderId
+    return orderId
 
   ###
   # method to add new addresses to a user's profile

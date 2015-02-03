@@ -1,53 +1,53 @@
 <template name="packagePanel">
-    <div class="package-panel" id="{{ _id }}">
-        <div class="content">
+  <div class="package-panel" id="{{ _id }}">
+    <div class="content">
+      <div class="row">
+
+       {{# if hasShopPermission settingsRoute }}
+        <div class="col-xs-10 col-xs-offset-1">
+          <a href="{{ pathFor settingsRoute }}">
             <div class="row">
-
-              {{# if hasShopPermission settingsRoute }}
-                <div class="col-xs-10 col-xs-offset-1">
-                    <a href="{{ pathFor settingsRoute }}">
-                        <div class="row">
-                            <div class="col-xs-10">{{ label }}</div>
-                            <div class="col-xs-2 text-center"><i class="fa fa-cog"></i></div>
-                        </div>
-                    </a>
-                </div>
-              {{/ if}}
-
-              {{# each dependencies }}
-                <div class="col-xs-10 col-xs-offset-1">
-
-                  {{# if hasShopPermission settingsRoute }}
-                    {{# if template }}
-                    <a href="#" class="package-settings">
-                        <div class="row">
-                            <div class="col-xs-10">{{> widgetTemplateRender template }}</div>
-                            <div class="col-xs-2 text-center"><i class="fa fa-cog"></i></div>
-                        </div>
-                    </a>
-                    {{ else }}
-                    <a href="{{ pathFor settingsRoute }}">
-                        <div class="row">
-                            <div class="col-xs-10">{{ label }}</div>
-                            <div class="col-xs-2 text-center"><i class="fa fa-cog"></i></div>
-                        </div>
-                    </a>
-                    {{/ if }}
-                  {{/ if }}
-
-                  {{# if hasShopPermission overviewRoute }}
-                    <a href="{{ pathFor overviewRoute }}">
-                        <div class="row">
-                            <div class="col-xs-10">{{ label }}</div>
-                            <div class="col-xs-2 text-center"><i class="fa fa-bar-chart-o"></i></div>
-                        </div>
-                    </a>
-                  {{/ if }}
-
-                </div>
-              {{/ each }}
-
+              <div class="col-xs-10">{{ label }}</div>
+              <div class="col-xs-2 text-center"><i class="fa fa-cog"></i></div>
             </div>
+          </a>
         </div>
+       {{/ if}}
+
+       {{# each dependencies }}
+        <div class="col-xs-10 col-xs-offset-1">
+
+         {{# if hasShopPermission settingsRoute }}
+          {{# if template }}
+          <a href="#" class="package-settings">
+            <div class="row">
+              <div class="col-xs-10">{{> widgetTemplateRender template }}</div>
+              <div class="col-xs-2 text-center"><i class="fa fa-cog"></i></div>
+            </div>
+          </a>
+          {{ else }}
+          <a href="{{ pathFor settingsRoute }}">
+            <div class="row">
+              <div class="col-xs-10">{{ label }}</div>
+              <div class="col-xs-2 text-center"><i class="fa fa-cog"></i></div>
+            </div>
+          </a>
+          {{/ if }}
+         {{/ if }}
+
+         {{# if hasShopPermission overviewRoute }}
+          <a href="{{ pathFor overviewRoute }}">
+            <div class="row">
+              <div class="col-xs-10">{{ label }}</div>
+              <div class="col-xs-2 text-center"><i class="fa fa-bar-chart-o"></i></div>
+            </div>
+          </a>
+         {{/ if }}
+
+        </div>
+       {{/ each }}
+
+      </div>
     </div>
+  </div>
 </template>
