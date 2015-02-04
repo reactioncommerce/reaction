@@ -23,6 +23,7 @@
     "private": {
       "facebook": {
         "secret": ""
+      }
     }
   }
 }
