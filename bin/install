@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This is the Reaction Commerce install script!
 #
@@ -44,8 +44,8 @@ GITHUB_RELEASE=$(curl -s https://api.github.com/repos/reactioncommerce/reaction/
 
 # user parameter if passed, otherwise github version
 RELEASE=${1:-$GITHUB_RELEASE}
+VERSION=$(echo $RELEASE | awk  '{ VERSION=substr($0, 2); print VERSION; }' )
 
-#
 # download latest reaction release from github
 #
 cd $HOME
@@ -60,20 +60,20 @@ fi
 #
 # extract and delete downloaded archive
 #
-echo "Extracting to ${HOME}/reactioncommerce/reaction-${RELEASE:1}/"
-mkdir -p ${HOME}/reactioncommerce/reaction-${RELEASE:1}/
-tar -xf /tmp/${RELEASE}.tgz -C ${HOME}/reactioncommerce/reaction-${RELEASE:1}/ --strip-components=1
+echo "Extracting to ${HOME}/reactioncommerce/reaction-${VERSION}/"
+mkdir -p ${HOME}/reactioncommerce/reaction-${VERSION}/
+tar -xf /tmp/${RELEASE}.tgz -C ${HOME}/reactioncommerce/reaction-${VERSION}/ --strip-components=1
 
 #
 #  ok we're done here, let's fire it up.
 #
 BOLD='\033[1;36m' #aqua
 NC='\033[0m' #no color
-echo -e "${BOLD}Reaction ${RELEASE} has been installed."
-echo -e "Reaction is located in ~/reactioncommerce/reaction-${RELEASE}/"
-echo -e "Starting the Reaction Commerce Meteor server...${NC}"
+echo "${BOLD}Reaction ${RELEASE} has been installed."
+echo "Reaction is located in ~/reactioncommerce/reaction-${VERSION}/"
+echo "Using 'meteor' to start the Reaction Commerce Meteor server...${NC}"
 #  starting meteor
-cd ${HOME}/reactioncommerce/reaction-${RELEASE:1}/
+cd ${HOME}/reactioncommerce/reaction-${VERSION}/
 meteor  --raw-logs
 
 EOF
