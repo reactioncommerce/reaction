@@ -28,7 +28,7 @@ ReactionCore.Events = logger.bunyan.createLogger(
     }
     {
       level: "error"
-      path: "reaction.log" # log ERROR and above to a file
+      path: "process.stderr" # log ERROR and above to a file
     }
   ]
 )
