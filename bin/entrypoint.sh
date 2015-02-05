@@ -125,5 +125,5 @@ fi
 
 # Run meteor
 cd ${APP_DIR}
-touch .foreverignore
+echo "*.log" >> .foreverignore
 exec forever -w ./main.js
