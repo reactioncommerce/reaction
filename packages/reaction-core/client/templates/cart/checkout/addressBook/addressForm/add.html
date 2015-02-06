@@ -96,11 +96,18 @@
       <span class="help-block">{{afFieldMessage name="isCommercial"}}</span>
       {{/if}}
   </div>
-  <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='isDefault'}} has-error{{/if}}">
+   <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='isShippingDefault'}} has-error{{/if}}">
       <label class="control-label"></label>
-      {{>afFieldInput name="isDefault"}}
-      {{#if afFieldIsInvalid name="isDefault"}}
-      <span class="help-block">{{afFieldMessage name="isDefault"}}</span>
+      {{>afFieldInput name="isShippingDefault"}}
+      {{#if afFieldIsInvalid name="isShippingDefault"}}
+      <span class="help-block">{{afFieldMessage name="isShippingDefault"}}</span>
+      {{/if}}
+  </div>
+   <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='isBillingDefault'}} has-error{{/if}}">
+      <label class="control-label"></label>
+      {{>afFieldInput name="isBillingDefault"}}
+      {{#if afFieldIsInvalid name="isBillingDefault"}}
+      <span class="help-block">{{afFieldMessage name="isBillingDefault"}}</span>
       {{/if}}
   </div>
 </div>

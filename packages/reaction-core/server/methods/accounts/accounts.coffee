@@ -2,6 +2,28 @@
 # add social image to user profile upon registration
 ###
 Accounts.onCreateUser (options, user) ->
+
+  if options.profile and options.profile.addressBook and options.profile.addressBook.length > 0
+    hasShippingDefaultSet = false
+    hasBillingDefaultSet = false
+    _.each options.profile.addressBook, (address) ->
+      if address.isBillingDefault
+        hasBillingDefaultSet = true
+      if address.isShippingDefault
+        hasShippingDefaultSet = true
+      if !address._id
+        address._id = Random.id()
+      return
+    if !hasShippingDefaultSet
+      options.profile.addressBook[0].isShippingDefault = true
+    if !hasBillingDefaultSet
+      options.profile.addressBook[0].isBillinggDefault = true
+
+  user.profile = options.profile || {}    
+  if options.emails
+    if user.emails
+      user.emails = options.emails.concat user.emails    
+    else user.emails = options.emails
   user.profile = options.profile || {}
   if user.services.facebook
     options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=small"
