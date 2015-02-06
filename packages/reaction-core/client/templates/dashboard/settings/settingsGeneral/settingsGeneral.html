@@ -35,7 +35,8 @@
         {{> afQuickField name='addressBook.0.country' options=countryOptions}}
         {{> afQuickField name='addressBook.0.phone'}}
         {{> afQuickField name='addressBook.0.isCommercial'}}
-        {{> afQuickField name='addressBook.0.isDefault' value=true}}
+        {{> afQuickField name='addressBook.0.isShippingDefault' value=true}}
+        {{> afQuickField name='addressBook.0.isBillingDefault' value=true}}
         {{> settingsGeneralSubmitButton}}
       {{/autoForm}}
     </div>

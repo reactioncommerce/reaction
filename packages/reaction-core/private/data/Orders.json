@@ -451,7 +451,8 @@
         "region":"California",
         "phone":"1231231234",
         "isCommercial":false,
-        "isDefault":true,
+        "isShippingDefault":true,
+        "isBillingDefault":true,
         "_id":"hw3XsToBgFAaXLZjJ"
       },
       "shipmentMethod":{
@@ -471,7 +472,8 @@
         "region":"California",
         "phone":"1231231234",
         "isCommercial":false,
-        "isDefault":true,
+        "isShippingDefault":true,
+        "isBillingDefault":true,
         "_id":"hw3XsToBgFAaXLZjJ"
       },
       "paymentMethod":[

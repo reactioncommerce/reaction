@@ -13,7 +13,8 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
     postal: _.random 10000, 100000
     country: "USA"
     isCommercial: false
-    isDefault: true
+    isShippingDefault: true
+    isBillingDefault: true
     metafields: undefined
   ]
   domains: ["localhost"]

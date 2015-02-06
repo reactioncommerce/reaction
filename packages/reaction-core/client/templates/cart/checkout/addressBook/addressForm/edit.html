@@ -6,6 +6,7 @@
 </div>
 <div class="panel-body">
 {{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookEditForm" doc=thisAddress type="method" meteormethod="addressBookUpdate" resetOnSuccess=false}}
+{{thisAddress.country}}
   <fieldset>
       {{>addressBookForm}}
       <div class="row text-right">
