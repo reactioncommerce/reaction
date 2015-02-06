@@ -14,11 +14,11 @@ Yes. When you create a shop on our platform at [reactioncommerce.com](https://re
 
 ### Is it possible for me to host a Reaction shop anywhere I want?
 
-Yes. You can host a Reaction shop on any host/virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction). 
+Yes. You can host a Reaction shop on any host/virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction).
 
 ### Do you support multiple languages?
 
-Yes. We recently launched [internationaltization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 14 languages, and we will be adding in additional coverage and localization soon.
+Yes. We recently launched [internationalization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 14 languages, and we will be adding in additional coverage and localization soon.
 
 ### What is the pricing/licensing model?
 
@@ -28,15 +28,15 @@ Reaction Commerce is currently free, and there will always be a free, open sourc
 
 We think so! We believe that the common SQL schema for legacy ecommerce platforms isn't just unnecessary; it's overkill. By rethinking the way the database is architected, there are numerous benefits of Mongo/NoSQL -- from speed to simplified code.
 
-We enforce all of the typical joins, cascades, shemas, validation etc., with functionality that we have included (collections, schemas, hooks, helpers). But instead of trying to join a bunch of stuff together, we simply have an object that is a product. There are huge advantages to this approach, such as speed + easy code + the schema can be easily modified to accomodate any data requirements. This is unlike legacy platforms and their use of the entity - attribute - value lookup that is so complex and slow. In fact, legacy platforms have tried to architectect their way around these very real limitations of SQL that NoSQL easily handles (using EAV). By using NoSQL, we remove the very complex layer of looking up and joining attributes, and also the complexity of adding new field/values. (You just do it to the main object, and that’s going to persist throughout the life of the object.)  We also don’t have to deal with the continuous translation of database structure to a code object. 
+We enforce all of the typical joins, cascades, shemas, validation etc., with functionality that we have included (collections, schemas, hooks, helpers). But instead of trying to join a bunch of stuff together, we simply have an object that is a product. There are huge advantages to this approach, such as speed + easy code + the schema can be easily modified to accomodate any data requirements. This is unlike legacy platforms and their use of the entity - attribute - value lookup that is so complex and slow. In fact, legacy platforms have tried to architectect their way around these very real limitations of SQL that NoSQL easily handles (using EAV). By using NoSQL, we remove the very complex layer of looking up and joining attributes, and also the complexity of adding new field/values. (You just do it to the main object, and that’s going to persist throughout the life of the object.)  We also don’t have to deal with the continuous translation of database structure to a code object.
 
-In reality, in our use, the DB is just the persistent storage of the JavaScript objects. For example, a product is a collection of variants (objects) like blue, green, etc., and are each their own object contained within a “product” object.   
+In reality, in our use, the DB is just the persistent storage of the JavaScript objects. For example, a product is a collection of variants (objects) like blue, green, etc., and are each their own object contained within a “product” object.
 
 In localization (l10n), this can also mean different pricing, taxes, etc., for different regions, so pricing is at the variant level not at the product level.  This is even true with just one language when you have “Blue XXL” being more expensive than “Green XL."
 
 ### Have you tested Reaction on large shops with thousands of products?
 
-We've done general performace testing and will be doing thorough testing as part of our Beta release. 
+We've done general performace testing and will be doing thorough testing as part of our Beta release.
 
 We’re building everything to be "ephermal" in nature, so "cloud" scaling is the idea from the get-go. We believe scaling won’t be the same set of issues as with legacy platforms where you have to jump through a ton of hoops to get rid of the dependancies on the server (file system, sessions, etc).
 
