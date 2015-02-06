@@ -17,7 +17,7 @@ Accounts.onCreateUser (options, user) ->
     if !hasShippingDefaultSet
       options.profile.addressBook[0].isShippingDefault = true
     if !hasBillingDefaultSet
-      options.profile.addressBook[0].isBillinggDefault = true
+      options.profile.addressBook[0].isBillingDefault = true
 
   user.profile = options.profile || {}    
   if options.emails
