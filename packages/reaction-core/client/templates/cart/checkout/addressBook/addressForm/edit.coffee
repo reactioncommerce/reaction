@@ -4,7 +4,6 @@ Template.addressBookEdit.helpers
     for address in Meteor.user().profile.addressBook
       if address._id is addressId
         thisAddress = address
-    console.log thisAddress    
     thisAddress
 
 
