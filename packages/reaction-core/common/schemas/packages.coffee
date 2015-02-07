@@ -5,14 +5,7 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
   shopId:
     type: String
     index: 1
-    autoValue: ->
-      if this.isInsert
-        return ReactionCore.getShopId() or "1" if Meteor.isClient
-        # force the correct value upon insert
-        return ReactionCore.getShopId()
-      else
-        # don't allow updates
-        this.unset();
+    autoValue: ReactionCore.shopIdAutoValue
   name:
     type: String
     index: 1

@@ -64,23 +64,6 @@ Security =
     addDenyFuncForAll collections, types, [], ->
       return true
 
-
-###
-# Method to Auto-Set Props on Insert
-###
-
-AutoSet = (prop, collections, valFunc) ->
-  _.each collections, (c) ->
-    c.deny
-      # Set prop on insert
-      insert: (userId, doc) ->
-        doc[prop] = valFunc()
-        return false
-      fetch: []
-
-AutoSet "shopId", [ Packages, Orders, Cart, Tags, Shipping, Taxes, Discounts ], ->
-  return ReactionCore.getShopId()
-
 ###
 # We add some common security rules through simple Security methods
 ###

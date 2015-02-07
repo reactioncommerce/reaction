@@ -17,6 +17,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema
   shopId:
     type: String
     index: 1
+    autoValue: ReactionCore.shopIdAutoValue
   sessionId:
     type: String
     optional: true
