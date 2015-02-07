@@ -1,4 +1,21 @@
-Cart  = ReactionCore.Collections.Cart
+###
+# The following security definitions use the ongoworks:security package.
+# Rules within a single chain stack with AND relationship. Multiple
+# chains for the same collection stack with OR relationship.
+# See https://github.com/ongoworks/meteor-security
+#
+# It's important to note that these security rules are for inserts,
+# updates, and removes initiated from untrusted (client) code.
+# Thus there may be other actions that certain roles are allowed to
+# take, but they do not necessarily need to be listed here if the
+# database operation is executed in a server method.
+###
+
+###
+# Assign to some local variables to keep code
+# short and sweet
+###
+Cart = ReactionCore.Collections.Cart
 Customers = ReactionCore.Collections.Customers
 Discounts = ReactionCore.Collections.Discounts
 FileStorage = ReactionCore.Collections.FileStorage
@@ -13,94 +30,101 @@ Taxes = ReactionCore.Collections.Taxes
 Translations = ReactionCore.Collections.Translations
 
 ###
-# Generic Security Rule Manager
+# Define some additional rule chain methods
 ###
 
-addAllowFuncForAll = (collections, types, fetch, func) ->
-  rules = {fetch: fetch}
-  _.each types, (t) ->
-    rules[t] = func
-  _.each collections, (c) ->
-    c.allow rules
+Security.defineMethod 'ifShopIdMatches',
+  fetch: []
+  deny: (type, arg, userId, doc) ->
+    return doc.shopId isnt ReactionCore.getShopId()
 
-addDenyFuncForAll = (collections, types, fetch, func) ->
-  rules = {fetch: fetch}
-  _.each types, (t) ->
-    rules[t] = func
-  _.each collections, (c) ->
-    c.deny rules
+Security.defineMethod 'ifShopIdMatchesThisId',
+  fetch: []
+  deny: (type, arg, userId, doc) ->
+    return doc._id isnt ReactionCore.getShopId()
 
-Security =
-  # This one should be called for any collections you don't explicitly call allow on because one allow function is required
-  defaultAllow: (collections) ->
-    addAllowFuncForAll collections, ["insert", "update", "remove"], [], (userId) ->
-      return true
-  # For FS.Collections only, allows downloads for any user, even if not logged in
-  allowAnonymousFileDownloads: (collections) ->
-    addAllowFuncForAll collections, ["download"], [], (userId) ->
-      return true
-  # Allow inserts, updates, and removes only if the user is in one of the given roles
-  allowOnlyRoles: (roles, types, collections) ->
-    addDenyFuncForAll collections, types, [], (userId) ->
-      return !Roles.userIsInRole(userId, roles)
-  # Allow updates and removes only if doc.shopId matches the current shop
-  mustMatchShop: (collections) ->
-    addDenyFuncForAll collections, ["update", "remove"], ["shopId"], (userId, doc) ->
-      return doc.shopId isnt ReactionCore.getShopId()
-  # Allow updates only if doc.shopId is not being changed
-  cantChangeShop: (collections) ->
-    addDenyFuncForAll collections, ["update"], [], (userId, doc, fields, modifier) ->
-      return !!modifier.$set?.shopId
-  # Allow only if doc.userId matches the current userId, which might be null
-  mustMatchUser: (types, collections) ->
-    addDenyFuncForAll collections, types, ["userId"], (userId, doc) ->
-      return userId? and doc.userId? and doc.userId isnt userId
-  # Allow inserts, updates, and removes only if fileObj.metadata.shopId matches the current shop
-  fileMustBelongToShop: (collections) ->
-    addDenyFuncForAll collections, ["insert", "update", "remove"], [], (userId, fileObj) ->
-      return fileObj.metadata.shopId isnt ReactionCore.getShopId(@)
-  # Deny all
-  denyAll: (types, collections) ->
-    addDenyFuncForAll collections, types, [], ->
-      return true
+Security.defineMethod 'ifFileBelongsToShop',
+  fetch: []
+  deny: (type, arg, userId, doc) ->
+    return doc.metadata.shopId isnt ReactionCore.getShopId()
+
+# If userId prop matches userId or both are not set
+Security.defineMethod 'ifUserIdMatches',
+  fetch: []
+  deny: (type, arg, userId, doc) ->
+    return (userId and doc.userId and doc.userId isnt userId) or (doc.userId and !userId)
+
+# Generic check for userId against any prop
+# TODO might be good to have this in the
+# ongoworks:security pkg as a built-in rule
+Security.defineMethod 'ifUserIdMatchesProp',
+  fetch: []
+  deny: (type, arg, userId, doc) ->
+    return doc[arg] isnt userId
 
 ###
-# We add some common security rules through simple Security methods
+# Define all security rules
 ###
 
-Security.defaultAllow [ Media, FileStorage, Packages, Products, Orders, Cart, Tags, Translations, Discounts, Taxes, Shipping ]
+###
+# Permissive security for users with the 'admin' role
+###
+Security.permit(['insert', 'update', 'remove'])
+  .collections([
+    Products,
+    Tags,
+    Translations,
+    Discounts,
+    Taxes,
+    Shipping,
+    Orders
+  ])
+  .ifHasRole('admin')
+  .ifShopIdMatches()
+  .exceptProps(['shopId'])
+  .apply()
 
-Security.allowOnlyRoles ['admin'], ["insert", "update", "remove"], [ Media, FileStorage, Products, Tags, Translations, Discounts, Taxes, Shipping ]
+###
+# Permissive security for users with the 'admin' role for FS.Collections
+###
+Security.permit(['insert', 'update', 'remove'])
+  .collections([Media, FileStorage])
+  .ifHasRole('admin')
+  .ifFileBelongsToShop()
+  # TODO should be a check here or elsewhere to
+  # make sure we don't allow editing metadata.shopId
+  .apply()
 
-Security.allowOnlyRoles ['admin'], ["update", "remove"], [ Shops ]
+###
+# Users with the 'admin' or 'owner' role may update and
+# remove their shop but may not insert one.
+###
+Shops.permit(['update', 'remove'])
+  .ifHasRole(['admin', 'owner'])
+  .ifShopIdMatchesThisId()
+  .ifUserIdMatchesProp('ownerId')
+  .apply()
 
-Security.allowOnlyRoles ['owner'], ["remove"], [ Orders ]
+###
+# Users with the 'owner' role may remove orders for their shop
+###
+Orders.permit('remove')
+  .ifHasRole('owner')
+  .ifUserIdMatchesProp('ownerId')
+  .ifShopIdMatches()
+  .exceptProps(['shopId'])
+  .apply()
 
-Security.mustMatchShop [ Packages, Products, Orders, Cart, Tags, Discounts, Taxes, Shipping ]
-
-Security.cantChangeShop [ Packages, Products, Orders, Cart, Tags, Discounts, Taxes, Shipping ]
-
-# Must use server methods to create and remove carts
-Security.denyAll ["insert", "remove"], [ Cart ]
-
+###
+# Can update cart from client. Must insert/remove carts using
+# server methods.
 # Can update all session carts if not logged in or user cart if logged in as that user
-# TODO: should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
-Security.mustMatchUser ["update"], [ Cart ]
-
-Security.fileMustBelongToShop [ Media, FileStorage ]
-
-Security.allowAnonymousFileDownloads [ Media, FileStorage ] #todo: allowing anonymous for FileStorage is probably not correct
-
+# XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
 ###
-# Extra client access rights for shops
-# XXX These should be verified and might be able to be folded into Security above
-###
-Shops.allow
-  insert: (userId, doc) ->
-    # the user must be logged in, and the document must be owned by the user
-    return userId and doc.ownerId is userId
-  update: (userId, doc, fields, modifier) ->
-    return doc.ownerId is userId
-  remove: (userId, doc) ->
-    return doc.ownerId is userId
-  fetch: ["ownerId"]
+Cart.permit('update').ifUserIdMatches().exceptProps(['shopId']).apply()
+
+# Allow anonymous file downloads
+# XXX This is probably not actually how we want to handle file download security.
+_.each [ Media, FileStorage ], (fsCollection) ->
+  fsCollection.allow
+    download: -> return true
