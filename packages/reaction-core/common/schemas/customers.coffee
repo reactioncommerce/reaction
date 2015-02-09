@@ -4,6 +4,7 @@
 ReactionCore.Schemas.Customer = new SimpleSchema
   shopId:
     type: String
+    autoValue: ReactionCore.shopIdAutoValue
   email:
     type: String
   fullName:

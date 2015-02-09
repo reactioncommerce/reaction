@@ -78,4 +78,4 @@ _.extend ReactionCore,
     return @shopId
 
 Meteor.startup ->
-    ReactionCore.init()
+  ReactionCore.init()

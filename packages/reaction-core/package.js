@@ -54,6 +54,7 @@ Package.onUse(function (api) {
     api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
     api.use("ongoworks:bunyan-logger@1.0.0");
+    api.use("ongoworks:security@1.0.1");
 
     api.use("dburles:factory@0.3.7");
     api.use("anti:fake@0.4.1");
@@ -93,7 +94,7 @@ Package.onUse(function (api) {
     api.imply("sacha:spin" ["client"]);
     api.imply("dburles:factory");
     api.imply("ongoworks:speakingurl");
-
+    api.imply("ongoworks:security");
 
   // Pre-0.9.0
   } else {
@@ -105,6 +106,7 @@ Package.onUse(function (api) {
     "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
+    "common/helpers.coffee",
     "common/register.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
@@ -125,6 +127,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     "server/app.coffee",
+    "server/security.coffee",
     "server/publications.coffee",
     "server/fixtures.coffee",
     "server/factories.coffee",
