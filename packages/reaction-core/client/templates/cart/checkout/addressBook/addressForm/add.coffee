@@ -22,7 +22,8 @@ Template.addressBookForm.helpers
     Session.get("address").state
   defaultName: ->
     Meteor.user().profile?.name
-  isDefault: ->
+  isShippingDefault: ->
+  isBillingDefault: ->
 
 Template.addressBookAdd.events
   'click #cancel-new, form submit': () ->

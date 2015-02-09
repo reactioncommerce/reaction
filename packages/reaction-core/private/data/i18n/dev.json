@@ -102,7 +102,8 @@
                         "city": "City",
                         "region": "Region",
                         "phone": "Phone",
-                        "isDefault": "Is this your default address?",
+                        "isShippingDefault": "Is this your default shipping address?",
+                        "isBillingDefault": "Is this your default billing address?",
                         "isCommercial": "Is this a commercial address?"
                     }
                 },

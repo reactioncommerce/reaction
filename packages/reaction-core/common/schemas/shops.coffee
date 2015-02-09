@@ -85,8 +85,11 @@ ReactionCore.Schemas.Address = new SimpleSchema
     label: "This is a commercial address"
     type: Boolean
     # defaultValue: false
-  isDefault:
-    label: "This is my default address"
+  isBillingDefault:
+    label: "This is my default billing address"
+    type: Boolean
+  isShippingDefault:
+    label: "This is my default shipping address"
     type: Boolean
     # defaultValue: true
   metafields:

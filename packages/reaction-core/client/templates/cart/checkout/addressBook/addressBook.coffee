@@ -33,7 +33,7 @@ Template.addressBookGrid.helpers
     Meteor.user().profile?.addressBook
 
   selectedBilling: ->
-    if @.isDefault
+    if @.isBillingDefault
       # console.log "billingDefault", @._id
       unless Session.get "billingUserAddressId"
         # console.log "set default billing: ", @._id
@@ -48,7 +48,7 @@ Template.addressBookGrid.helpers
       return "active"
 
   selectedShipping: ->
-    if @.isDefault
+    if @.isShippingDefault
       # console.log "shippingDefault",@._id
       unless Session.get "shippingUserAddressId"
         # console.log "set default shipping: ",@._id

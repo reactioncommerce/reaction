@@ -20,7 +20,8 @@ Template.addressBookEdit.events
     $.each $("#addressBookEditForm").serializeArray(), ->
       form[@name] = @value
     
-    form.isDefault = if form.isDefault then true else false
+    form.isBillingDefault = if form.isBillingDefault then true else false
+    form.isShippingDefault = if form.isShippingDefault then true else false
     form.isCommercial = if form.isCommercial then true else false
     Meteor.call("addressBookUpdate",form)
     Session.set "addressBookView", "view"
