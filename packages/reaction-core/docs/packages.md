@@ -19,7 +19,7 @@ For example:
   ln -s ~/reactioncommerce/reaction-core-theme reaction/packages/reaction-core-theme
 ```
 
-*Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the next development release branch (as indicated on `reactioncommerce/reaction`, and not master.*
+*Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
 
 *Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain configuration settings such as admin user credentials and paypal authentication between `meteor reset`. Start with `meteor --settings settings/settings.json`*
 
@@ -27,58 +27,129 @@ For example:
 
     meteor create --package
 
-See [Meteor docs](http://docs.meteor.com/#meteorcreate) for additional help creating local packages.
+See [Meteor docs](http://docs.meteor.com/#/full/writingpackages) for additional help creating packages.
 
-Once you have created your packages directory, you'll continue creating a standard Meteor package by defining `package.js`, starting with a describe block:
+###package.js
+Once you have created your added, cloned, or symlinked your package development folder to the `reaction/packages` directory, you'll continue creating a standard Meteor package by defining `package.js`, starting with a describe block:
 
+```javascript
+
+Package.describe({
+  summary: "Reaction Hello World - example package for Reaction",
+  name: "reactioncommerce:reaction-helloworld",
+  version: "0.1.0",
+  git: "https://github.com/reactioncommerce/reaction-helloworld.git"
+});
+
+Package.onUse(function (api, where) {
+  api.use("reactioncommerce:core@0.3.0");
+  api.add_files("common/register.coffee");
+});
 ```
-  Package.describe({
-    summary: "Reaction Hello World - example package for Reaction",
-    name: "reactioncommerce:reaction-helloworld",
-    version: "0.1.3",
-    git: "https://github.com/reactioncommerce/reaction-helloworld.git"
-  });
-```
 
-Where name is the `org-user/packagename` that you can use to publish this to the Meteor package registry using [meteor publish](http://docs.meteor.com/#meteorpublish)
+Where name is the `org-user:packagename` that you will use to publish this package to the Meteor registry. See: [Meteor package.js docs](http://docs.meteor.com/#/full/packagejs).
 
-To use in the local application, the final step is add to your local app:
+To test your package, add it to your application :
 
     meteor add your-new-package
 
-*Tip* You can also just edit `.meteor/packages`
+*Tip: You can also add and remove packages by editing `.meteor/packages`*
 
-For a more thorough review of Meteor packages, [the meteor hackpad unipackage doc](https://meteor.hackpad.com/Unipackage-tvas8pXYMOW#:h=Using-Packages-in-Your-App) has a lot of useful information.
+###Development
 
-##Dashboard
-Once you have a working package, you'll want to integrate it into the rest of Reaction Commerce.  
+You can develop and even privately deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
 
-Add packages to the reaction dashboard by adding **common/register.coffee**
+###Publishing
+See [meteor publish](http://docs.meteor.com/#/full/meteorpublish).
 
-    ReactionCore.registerPackage
-      name: "reaction-helloworld"
-      depends: [] #reaction packages
-      label: "HelloWorld"
-      description: "Example Reaction Package"
-      icon: "fa fa-globe"
-      priority: "2"
-      overviewRoute: 'helloworld'
-      hasWidget: true
-      shopPermissions: [
-        {
-          label: "HelloWorld"
-          permission: "/helloworld"
-          group: "Hello World"
-        }
+*We will fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
 
-There are three elements to the "dashboard" view for packages.
+To have your package included in a release, please create a GitHub issue.
 
-- Package Panel: the left most box in the dashboard panel
-- Package Widgets: - this is everything to the right of the panel and would typically be a group of graphs, etc
-- Package Page: the area below the dashboard navigation bar, which can be used for any content
- 
+##ReactionCore.registerPackage
+You'll likely want to integrate it into the rest of Reaction Commerce.
+`ReactionCore.registerPackage` describes package details
+and provides some common integration hooks.
 
-Add widgets to your package to be included on the dashboard by including a template named packagename-widget
+Integrate packages with reaction-core by adding **common/register.coffee**
+
+```coffeescript
+ReactionCore.registerPackage
+  name: 'reactioncommerce:reaction-paypal'
+  provides: [ 'paymentMethod' ]
+  settings:
+    mode: false
+    client_id: ''
+    client_secret: ''
+  dashboard:
+    label: 'PayPal'
+    description: 'Accept PayPal payments'
+    icon: 'fa fa-paypal'
+    priority: '2'
+    autoEnable: false
+  templates: [
+    {
+      template: 'paypalPaymentForm'
+      provides: 'paymentMethod'
+    }
+    {
+      template: 'paypal'
+      provides: 'settings'
+      route: 'paypal'
+    }
+    {
+      template: 'super-cool-widget'
+      provides: 'widget'
+    }
+  ]
+  permissions: [
+    {
+      label: 'Pay Pal'
+      permission: 'dashboard/payments'
+      group: 'Shop Settings'
+    }
+  ]
+```
+
+* Note: any files you create in your package you will need to add in your [package.js](http://docs.meteor.com/#/full/packagejs) file.
+
+`api.addFiles('common/register.coffee')`
+
+###Package
+ ```
+ name: '<typically same as package name>'
+ provides: '<an array of methods this package provides>'
+ ```
+
+###Settings
+  Object with default properties for service configuration.
+
+###Dashboard
+Control the default `Reaction Apps` dashboard content.
+
+```
+  label: '<one-two word title>'
+  description: '<short summary>''
+  icon: '<font awesome or glyphicon class>'
+  autoEnable: <true if we want this to be enabled by default when added>
+```
+
+###Templates
+Define template(s) that will be loaded by a [dynamic template](http://docs.meteor.com/#/full/template_dynamic) that matches value of `provides`.
+
+**Current dynamic template types:**
+
+ * widget
+ * paymentMethod
+ * shippingMethod
+ * settings
+
+You can have as many of each template type as you need.
+
+You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
+
+**Widgets**
+Add widgets to your package to be included on the `dashboard console` by including a template that provides 'widget'.
 
     <template name="reaction-helloworld-widget">
         <div class="dashboard-widget">
@@ -90,15 +161,26 @@ Add widgets to your package to be included on the dashboard by including a templ
         </div>
     </template>
 
-Tip: the dashboard-widget and dashboard-widget-center classes will create touch/swipeable widget boxes.
 
-##Roles/Permissions System
-
-###Roles
-We use https://github.com/alanning/meteor-roles for providing roles.
-Users with "admin" role are full-permission, site-wide users. Package specific roles can be defined in register.coffee
+*Tip: the dashboard-widget and dashboard-widget-center classes will create touch/swipeable widget boxes.*
 
 ###Permissions
+
+We use [alanning:roles](https://github.com/alanning/meteor-roles) for providing roles support.
+
+Users with "admin" role are full-permission, site-wide users. Package specific roles can be defined in `register.coffee`.
+
+Adding permissions to routes with:
+
+```  {
+      label: '<permission label, ie: "Pay Pal Admin">''
+      permission: '<route granted permission>'
+      group: '<grouping in user admin panel, usually "Shop Settings">'
+    }
+```
+
+** Using Permissions **
+
 Shop has owner, which is determined by the "ownerId" field in the Shop collection.
 
 **To check if user has owner access:**
@@ -137,13 +219,15 @@ in templates:
 For using shop permissions in some packages you must add it into register directive.
 If we add this package then permissions will be available in Shop Accounts Settings.
 
+Another example:
+
     ReactionCore.Packages.register
      name: 'reaction-commerce-orders'
      provides: ['orderManager']
      label: 'Orders'
      overviewRoute: 'shop/orders'
      hasWidget: false
-     shopPermissions: [
+     permissions: [
        {
          label: "Orders"
          permission: "dashboard/orders"
