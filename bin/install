@@ -27,6 +27,23 @@ if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
 fi
 
 #
+# check if node + npm is already installed otherwise warn.
+#
+if npm -v >/dev/null 2>&1; then
+  echo "Node install verified. Checking Meteor installation."
+else
+  echo "***************************************************"
+  echo "*                                                 *"
+  echo "* Please install Node.js & Npm before continuing. *"
+  echo "* http://nodejs.org/download/                     *"
+  echo "* After installation, rerun this install script.  *"
+  echo "*                                                 *"
+  echo "***************************************************"
+  exit
+fi
+
+
+#
 # check if meteor is already installed otherwise install.
 #
 if meteor --version >/dev/null 2>&1; then
@@ -34,6 +51,8 @@ if meteor --version >/dev/null 2>&1; then
 else
   curl https://install.meteor.com/ | sh
 fi
+
+
 
 #
 # begin Reaction Commerce installation
