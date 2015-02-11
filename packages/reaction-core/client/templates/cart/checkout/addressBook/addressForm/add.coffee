@@ -2,6 +2,15 @@ Template.addressBookAdd.helpers
   addressBook: ->
     Meteor.user().profile?.addressBook
 
+  thisAddress: ->
+    thisAddress = {'fullName': Meteor.user().profile?.name}
+    if Session.get("address")
+      thisAddress.postal = Session.get("address").zipcode
+      thisAddress.country = Session.get("address").countryCode
+      thisAddress.city = Session.get("address").city
+      thisAddress.region = Session.get("address").state
+    thisAddress
+
 Template.addressBookForm.helpers
   countryOptions: ->
     options = []
@@ -9,21 +18,6 @@ Template.addressBookForm.helpers
     for country, locale of shop?.locales.countries
       options.push {'label': locale.name, 'value': country}
     return options
-
-  regionOptions: ->
-    #return list of regions for current country
-  defaultCountry: ->
-    Session.get("address").countryCode
-  defaultCity: ->
-    Session.get("address").city
-  defaultPostal: ->
-    Session.get("address").zipcode
-  defaultRegion: ->
-    Session.get("address").state
-  defaultName: ->
-    Meteor.user().profile?.name
-  isShippingDefault: ->
-  isBillingDefault: ->
 
 Template.addressBookAdd.events
   'click #cancel-new, form submit': () ->
