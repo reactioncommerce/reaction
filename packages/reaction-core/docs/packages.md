@@ -105,7 +105,7 @@ ReactionCore.registerPackage
   permissions: [
     {
       label: 'Pay Pal'
-      permission: 'dashboard/payments'
+      route: 'dashboard/payments'
       group: 'Shop Settings'
     }
   ]
@@ -183,7 +183,8 @@ Adding permissions to routes with:
 }
 ```
 
-** Using Permissions **
+
+**Using Permissions**
 
 Shop has owner, which is determined by the "ownerId" field in the Shop collection.
 
@@ -228,9 +229,6 @@ Another example:
     ReactionCore.Packages.register
      name: 'reaction-commerce-orders'
      provides: ['orderManager']
-     label: 'Orders'
-     overviewRoute: 'shop/orders'
-     hasWidget: false
      permissions: [
        {
          label: "Orders"
