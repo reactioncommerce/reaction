@@ -14,9 +14,16 @@
     "client_id": "",
     "client_secret": ""
   },
-  "public": {
-    "facebook": {
-      "appId": ""
+  "socials": {
+    "public": {
+      "facebook": {
+        "appId": ""
+      }
+    },
+    "private": {
+      "facebook": {
+        "secret": ""
+      }
     }
   }
 }

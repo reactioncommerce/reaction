@@ -2,9 +2,6 @@
  "isDebug": "info",
   "baseUrl": "http://localhost:3000",
   "googleAnalyticsProperty": "",
-  "facebook": {
-    "secret": ""
-  },
   "reaction": {
     "METEOR_USER": "Administrator",
     "METEOR_AUTH": "admin",
@@ -14,9 +11,16 @@
     "client_id": "",
     "client_secret": ""
   },
-  "public": {
-    "facebook": {
-      "appId": ""
+  "socials": {
+    "public": {
+      "facebook": {
+        "appId": ""
+      }
+    },
+    "private": {
+      "facebook": {
+        "secret": ""
+      }
     }
   }
 }
