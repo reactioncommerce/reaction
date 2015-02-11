@@ -60,15 +60,15 @@ To test your package, add it to your application :
 You can develop and even privately deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
 
 ###Publishing
-See [meteor publish](http://docs.meteor.com/#/full/meteorpublish).
+To have your package included in a release, please create a GitHub issue.
+
+See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
 
 *We will fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
 
-To have your package included in a release, please create a GitHub issue.
-
 ##ReactionCore.registerPackage
-You'll likely want to integrate it into the rest of Reaction Commerce.
-`ReactionCore.registerPackage` describes package details
+To integrate a package into the rest of Reaction Commerce use
+`ReactionCore.registerPackage` which describes package details
 and provides some common integration hooks.
 
 Integrate packages with reaction-core by adding **common/register.coffee**
@@ -111,9 +111,11 @@ ReactionCore.registerPackage
   ]
 ```
 
-* Note: any files you create in your package you will need to add in your [package.js](http://docs.meteor.com/#/full/packagejs) file.
+*Note: any files you create in your package you will need to add in your [package.js](http://docs.meteor.com/#/full/packagejs) file.*
 
-`api.addFiles('common/register.coffee')`
+```javascript
+api.addFiles('common/register.coffee');
+```
 
 ###Package
  ```
@@ -149,6 +151,7 @@ You can have as many of each template type as you need.
 You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
 **Widgets**
+
 Add widgets to your package to be included on the `dashboard console` by including a template that provides 'widget'.
 
     <template name="reaction-helloworld-widget">
@@ -174,7 +177,7 @@ Adding permissions to routes with:
 
 ```coffeescript
 {
-  label: '<permission label, ie: "Pay Pal Admin">''
+  label: '<permission label, ie: "Pay Pal Admin">'
   permission: '<route granted permission>'
   group: '<grouping in user admin panel, usually "Shop Settings">'
 }
