@@ -172,11 +172,12 @@ Users with "admin" role are full-permission, site-wide users. Package specific r
 
 Adding permissions to routes with:
 
-```  {
-      label: '<permission label, ie: "Pay Pal Admin">''
-      permission: '<route granted permission>'
-      group: '<grouping in user admin panel, usually "Shop Settings">'
-    }
+```coffeescript
+{
+  label: '<permission label, ie: "Pay Pal Admin">''
+  permission: '<route granted permission>'
+  group: '<grouping in user admin panel, usually "Shop Settings">'
+}
 ```
 
 ** Using Permissions **
