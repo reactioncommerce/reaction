@@ -1,18 +1,19 @@
 #Installation
-*Prerequisites
-OS X: Install [git](https://github.com/blog/1510-installing-git-from-github-for-mac) command line and [node.js](http://nodejs.org/)*
+**Prerequisites: Install npm and [node.js](http://nodejs.org/)**
 
-Install meteor, clone the repo, and then start the application from the Terminal commmand line:
+Once node (with `npm`) is installed, install meteor, clone the repo, and then start the application from the Terminal commmand line:
 
-    curl https://install.meteor.com | /bin/sh
-    git clone https://github.com/reactioncommerce/reaction.git
-    cd reaction	
+```bash
+curl https://install.meteor.com | /bin/sh
+git clone https://github.com/reactioncommerce/reaction.git
+cd reaction
+meteor
+```
 
+*Optional, but suggested: install `graphicsmagick`*
 
 ##Startup
 To start Reaction, run the `meteor` command:
-
-	meteor
 
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
@@ -21,11 +22,11 @@ The initial admin user for the site is auto generated, and displayed in your con
 *Note: If you are running Reaction remotely (not localhost, ie: vm, aws, docker, etc) and don't want https forwarding, you may remove the [Meteor force-ssl](https://atmospherejs.com/meteor/force-ssl) package using `meteor remove force-ssl`. See [section in docs regarding https](https://github.com/reactioncommerce/reaction-core/blob/master/docs/installation.md#https).*
 
 ## Reset
-To reset data and give you a fresh test dataset from packages/reaction-core/private/data/*.json
+To reset project data and give you a fresh test dataset from `packages/reaction-core/private/data/*.json`:
 
-	meteor reset
+    meteor reset
 
-In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data. See [the package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) for detailed instructions on modifying this data.	
+In *packages/reaction-core/private/data* there is fixture data that you can modify if want to alter the default initial data. See [the package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) for detailed instructions on modifying this data.
 
 ## Updates
 Getting updates is basically the same as installation:
@@ -48,14 +49,14 @@ An example of a deployment with password to a [meteor.com hosted site](http://do
 
 
 ## settings.json configuration
-A configuration file can be loaded using the `meteor --settings` option. 
+A configuration file can be loaded using the `meteor --settings` option.
 
 Copy [settings/dev.sample.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.sample.json) and create a new configuration file, for example:
 
 	cd reaction
 	cp settings/dev.sample.json settings/settings.json
 
-After you've created and edited a configuration file, add `--settings settings/settings.json` to the `meteor` startup command. 
+After you've created and edited a configuration file, add `--settings settings/settings.json` to the `meteor` startup command.
 
 	meteor --settings settings/settings.json  --port 3000
 
@@ -89,7 +90,7 @@ You can also use many of the settings as environment variables, useful for headl
 
 ```bash
 export MAIL_URL="<smtp connection string>"
-export METEOR_EMAIL="youradmin@yourdomain.com" 
+export METEOR_EMAIL="youradmin@yourdomain.com"
 export METEOR_USER="admin"
 export METEOR_AUTH="password"
 export MONGO_URL="<your mongodb connect string>"
@@ -152,7 +153,7 @@ Typically you would start a Docker/Reaction app container by starting the Docker
 docker run -i -t -e MONGO_URL="<your mongodb url>" -e ROOT_URL="http://localhost" -e PORT="8080" -p ::8080 -d ongoworks/reaction
 ```
 
-*Note: you cannot yet deploy your local docker build to reactioncommerce.com, but this functionality is being developed in the Launchdock project at [launchdock.io](http://launchdock.io/)* 
+*Note: you cannot yet deploy your local docker build to reactioncommerce.com, but this functionality is being developed in the Launchdock project at [launchdock.io](http://launchdock.io/)*
 
 
 ##Vagrant / Ubuntu
