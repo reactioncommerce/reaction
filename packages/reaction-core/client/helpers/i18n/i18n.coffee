@@ -92,6 +92,12 @@ Meteor.startup ->
           #re-init all i18n
           i18nextDep.changed()
 
+          # set document direction class
+          if (t('languageDirection') == 'rtl')
+            $('html').addClass 'rtl'
+          else
+            $('html').removeClass 'rtl'
+
   # reactive translations in all templates
   Template.onRendered () ->
     @autorun () =>
