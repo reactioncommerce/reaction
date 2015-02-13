@@ -1,19 +1,20 @@
 # returns enabled status for this user for specific package
 Template.gridPackage.helpers
+  #
+  # TODO: get rid of this will some more meaningful
+  #  and predictable indicator
+  # .. verion .. testing .. community
+  #
   pkgTypeClass: ->
-    if @.hasWidget
-      pkg =
-        class: "pkg-app-class"
-        text: "App"
-    else
+    if @.priority is 1
       pkg =
         class: "pkg-feature-class"
         text: "Core"
+    else
+      pkg =
+        class: "pkg-app-class"
+        text: "App"
     return pkg
-
-  hasOverviewRoute: ->
-    unless @.overviewRoute is "dashboard"
-      if ReactionCore.hasPermission(@.overviewRoute) and @.enabled then return true
 
 Template.gridPackage.events
   "click .enablePkg": (event, template) ->
@@ -24,7 +25,7 @@ Template.gridPackage.events
         Alerts.add self.label + i18n.t("gridPackage.pkgEnabled"), "success",
           type: "pkg-enabled-" + self.name
           autoHide: true
-        Router.go self.settingsRoute if self.settingsRoute
+        Router.go self.route if self.route
       else if error
         console.log error
 
@@ -41,3 +42,6 @@ Template.gridPackage.events
           autoHide: true
       else if error
         console.log error
+
+  "click .pkg-app-card": (event, template) ->
+    Router.go @.route if @.route

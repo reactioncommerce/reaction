@@ -12,14 +12,38 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
   enabled:
     type: Boolean
     defaultValue: true
-  property:
-    type: String
-    optional: true
+    #configured in fixtures with autoEnable:true
   settings:
     type: Object
     optional: true
     blackbox: true
-  registry:
-    type: Object
+  shopPermissions:
+    type: [Object]
     optional: true
     blackbox: true
+  registry:
+    type: [Object]
+    optional: true
+  'registry.$.provides':
+    type: String
+  'registry.$.route':
+    type: String
+    optional: true
+  'registry.$.template':
+    type: String
+    optional: true
+  'registry.$.description':
+    type: String
+    optional: true
+  'registry.$.icon':
+    type: String
+    optional: true
+  'registry.$.label':
+    type: String
+    optional: true
+  'registry.$.group':
+    type: String
+    optional: true
+  'registry.$.priority':
+    type: Number
+    optional: true

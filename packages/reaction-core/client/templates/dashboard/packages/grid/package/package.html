@@ -1,33 +1,26 @@
 <template name="gridPackage">
-<div class="pkg-card {{pkgTypeClass.class}}" data-ribbon="{{pkgTypeClass.text}}">
-  {{!-- display overview route --}}
-   {{#if hasOverviewRoute}}
-    <a href="{{pathFor overviewRoute}}" class="pkg-app-card">
+  <div class="pkg-card {{pkgTypeClass.class}}" data-ribbon="{{pkgTypeClass.text}}">
+    {{!-- display overview route --}}
+    <a class="pkg-app-card">
       <div class="row pkg-content">
         <h3>{{label}}</h3>
         <small>{{{description}}}</small>
       </div>
     </a>
-   {{else}}
-    <div class="row pkg-content">
-      <h3>{{label}}</h3>
-      <small>{{{description}}}</small>
-    </div>
-   {{/if}}
-  <div class="row pkg-status">
-      <i class="{{icon}} fa-3x pull-left"></i>
-       <div class="pkg-controls">
-        {{#unless type}}
-          {{#if enabled}}
-            <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
-            {{#if hasShopPermission settingsRoute}}
-            <a href="{{pathFor settingsRoute}}" class="pkg-settings" title="{{i18n 'app.settings'}}"><i class="fa fa-cog fa-2x fa-fw"></i></a>
+    <div class="row pkg-status">
+        <i class="{{icon}} fa-3x pull-left"></i>
+         <div class="pkg-controls">
+            {{#if enabled}}
+              <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
+              {{#if hasShopPermission route}}
+                {{#each reactionApps provides="settings" name=name group=group}}
+                <a href="{{pathFor route}}" class="pkg-settings" title="{{i18n 'app.settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
+                {{/each}}
+              {{/if}}
+            {{else}}
+              <a class="pull-right enablePkg" title="{{i18n 'app.toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
             {{/if}}
-          {{else}}
-            <a class="pull-right enablePkg" title="{{i18n 'app.toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
-          {{/if}}
-        {{/unless}}
-      </div>
+        </div>
+    </div>
   </div>
-</div>
 </template>

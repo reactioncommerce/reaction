@@ -1,10 +1,12 @@
 #Package Development
 
 #Core packages
-To work on included packages, and see your changes update in your local installation you must *git clone* packages locally, then in your local checkout of the *reactioncommerce/reaction* repo link the package to your checkout.
+To develop packages, and see your changes update in your local installation you must *git clone* packages locally, either into reaction/packages, or with
+a symbolic link to the package checkout.
 
 ```bash
-    ln -s <full path to package>  packages/<org_pkgname>
+    cd reaction
+    ln -s <full path to package>  packages/
 ```
 
 For example:
@@ -18,6 +20,8 @@ For example:
   ln -s ~/reactioncommerce/reaction-core reaction/packages/reaction-core
   ln -s ~/reactioncommerce/reaction-core-theme reaction/packages/reaction-core-theme
 ```
+
+It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone (installed) Reaction packages to ensure you're working with a complete development enviroment.
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
 
@@ -43,11 +47,18 @@ Package.describe({
 
 Package.onUse(function (api, where) {
   api.use("reactioncommerce:core@0.3.0");
-  api.add_files("common/register.coffee");
+  api.add_files("server/register.coffee",'server');
 });
 ```
 
 Where name is the `org-user:packagename` that you will use to publish this package to the Meteor registry. See: [Meteor package.js docs](http://docs.meteor.com/#/full/packagejs).
+
+Any files you create in your package you will need to add in your [package.js](http://docs.meteor.com/#/full/packagejs) file.
+
+```javascript
+api.addFiles('myfile');
+```
+
 
 To test your package, add it to your application :
 
@@ -68,54 +79,56 @@ See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on
 
 ##ReactionCore.registerPackage
 To integrate a package into the rest of Reaction Commerce use
-`ReactionCore.registerPackage` which describes package details
-and provides some common integration hooks.
+`ReactionCore.registerPackage` to describes package details
+and provide some common integration hooks.
 
-Integrate packages with reaction-core by adding **common/register.coffee**
+Integrate packages with reaction-core by adding **server/register.coffee**
 
 ```coffeescript
 ReactionCore.registerPackage
-  name: 'reactioncommerce:reaction-paypal'
-  provides: [ 'paymentMethod' ]
-  settings:
+  name: 'reaction-paypal' # usually same as meteor package
+  autoEnable: false # auto-enable in dashboard,transforms to enabled
+  settings: # private package settings config (blackbox)
     mode: false
     client_id: ''
     client_secret: ''
-  dashboard:
-    label: 'PayPal'
-    description: 'Accept PayPal payments'
-    icon: 'fa fa-paypal'
-    priority: '2'
-    autoEnable: false
-  templates: [
+  registry: [
+    # all options except route and template
+    # are used to describe the
+    # dashboard 'app card'.
+    {
+      provides: 'dashboard'
+      label: 'PayPal'
+      description: 'Accept PayPal payments'
+      icon: 'fa fa-paypal'
+      priority: '2'
+      group: 'paypal'
+    }
+    # configures settings link for app card
+    # use 'group' to link to dashboard card
+    {
+      route: 'paypal'
+      provides: 'settings'
+      group: 'paypal'
+    }
+    # configures template for checkout
+    # paymentMethod dynamic template
     {
       template: 'paypalPaymentForm'
       provides: 'paymentMethod'
     }
-    {
-      template: 'paypal'
-      provides: 'settings'
-      route: 'paypal'
-    }
-    {
-      template: 'super-cool-widget'
-      provides: 'widget'
-    }
   ]
+  # array of permission objects
   permissions: [
     {
       label: 'Pay Pal'
-      route: 'dashboard/payments'
+      permission: 'dashboard/payments'
       group: 'Shop Settings'
     }
   ]
+
 ```
 
-*Note: any files you create in your package you will need to add in your [package.js](http://docs.meteor.com/#/full/packagejs) file.*
-
-```javascript
-api.addFiles('common/register.coffee');
-```
 
 ###Package
  ```
@@ -126,18 +139,10 @@ api.addFiles('common/register.coffee');
 ###Settings
   Object with default properties for service configuration.
 
-###Dashboard
-Control the default `Reaction Apps` dashboard content.
+###Registry
+The registry is used to define routes, dynamic templates, and some package UI handling.
 
-```
-  label: '<one-two word title>'
-  description: '<short summary>''
-  icon: '<font awesome or glyphicon class>'
-  autoEnable: <true if we want this to be enabled by default when added>
-```
-
-###Templates
-Define template(s) that will be loaded by a [dynamic template](http://docs.meteor.com/#/full/template_dynamic) that matches value of `provides`.
+A registry object can be any combination of properties, with `provides` being the only required property.
 
 **Current dynamic template types:**
 
@@ -145,14 +150,41 @@ Define template(s) that will be loaded by a [dynamic template](http://docs.meteo
  * paymentMethod
  * shippingMethod
  * settings
+ * shortcut
+ * dashboard
+ * console
 
-You can have as many of each template type as you need.
+From template you can use the `reactionApps` helper to load registry objects.
+
+```html
+  {{#each reactionApps provides="settings" name=name group=group}}
+    <a href="{{pathFor route}}" class="pkg-settings" title="{{i18n 'app.settings'}}">
+      <i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i>
+    </a>
+  {{/each}}
+```
+
+You may filter, or define using any of the optional registry properties:
+
+ - name
+ - enabled
+ - provides
+ - route
+ - template
+ - icon
+ - label
+ - group
+ - priority
+
+***Special Usage***
+ - `priority` is an app flag, general use `2` to designate a "App".
+ - `group` group alike for presentation *example: used to connect settings on dashboard app card registry object*
 
 You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
 **Widgets**
 
-Add widgets to your package to be included on the `dashboard console` by including a template that provides 'widget'.
+Add widgets to your package to be included on the `dashboard console` by including a registry entry and a template that provides 'widget'.
 
     <template name="reaction-helloworld-widget">
         <div class="dashboard-widget">

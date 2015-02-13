@@ -1,7 +1,7 @@
 <template name="corePaymentMethods">
-  {{#each paymentTemplates}}
+  {{#each reactionApps provides='paymentMethod'}}
     <div class="thumbnail">
-      {{> Template.dynamic template=this.registry.paymentTemplate}}
+      {{> Template.dynamic template=template}}
     </div>
   {{else}}
     <div class="alert alert-danger">

@@ -73,11 +73,19 @@ Meteor.publish "UserProfile", (profileId) ->
 Meteor.publish "Packages", ->
   shop = ReactionCore.getCurrentShop(this)
   if shop
-    return Packages.find
-      shopId: shop._id
-    ,
-      sort:
-        priority: 1
+    if Roles.userIsInRole(this.userId, ['dashboard','owner','admin'])
+      return Packages.find shopId: shop._id
+    else
+      # all read access to settings,etc is blocked
+      # for non administrative views
+      return Packages.find { shopId: shop._id},
+        fields:
+          name: true
+          enabled: true
+          registry: true,
+        sort:
+          priority: 1
+      # TODO Filter roles/security here for package routes/template access.
   else
     return []
 

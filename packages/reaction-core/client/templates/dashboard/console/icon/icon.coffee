@@ -1,14 +1,14 @@
-Template.dashboardIcon.helpers
+Template.consoleIcon.helpers
   toggleStateClass: () ->
-    state = Session.get "displayDashboardNavBar"
+    state = Session.get "displayConsoleNavBar"
     if state is true
       return "fa fa-dashboard dashboard-state-active"
     else
       return "fa fa-dashboard"
 
-Template.dashboardIcon.events
+Template.consoleIcon.events
   "click #dashboard-drawer-icon": (event, template) ->
     event.preventDefault()
-    # if Session.equals "displayDashboardNavBar", false
+    # if Session.equals "displayConsoleNavBar", false
     #   Router.go "dashboard"
-    toggleSession "displayDashboardNavBar"
+    toggleSession "displayConsoleNavBar"

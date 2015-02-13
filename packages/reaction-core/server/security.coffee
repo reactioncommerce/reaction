@@ -77,7 +77,8 @@ Security.permit(['insert', 'update', 'remove'])
     Discounts,
     Taxes,
     Shipping,
-    Orders
+    Orders,
+    Packages
   ])
   .ifHasRole('admin')
   .ifShopIdMatches()

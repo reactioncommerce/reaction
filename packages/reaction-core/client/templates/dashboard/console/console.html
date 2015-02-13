@@ -1,47 +1,13 @@
-<template name="dashboard">
-{{#if hasDashboardAccess}}
-
-  {{#if displayDashboardNavBar}}
-    <div class="dashboard-drawer">
-    {{#if displayDashboardDrawer}}
-      <div class="dashboard-container">
-        <div class="dashboard-widget-wrapper">
-          {{#with Package}}
-            <div class="dashboard-widget">
-              <div class="dashboard-widget-center">
-              {{>packagePanel}}
-              </div>
-            </div>
-            {{>dashboardWidgets}}
-          {{/with}}
-        </div>
-      </div>
-    {{/if}}
-    </div>
-    {{>dashboardNavBar}}
-  {{/if}}
-
-{{/if}}
-</template>
-
-<template name="dashboardNavBar">
+<template name="consoleNavBar">
   <div class="dashboard-navbar-packages">
     <div class="col-xs-12 col-sm-10 col-md-9">
       <ul class="nav nav-pills">
-        {{#each allPackages}}
-          {{#if enabled}}
-          {{#if overviewRoute}}
-          <li>
+        {{#each reactionApps provides='console'}}
+          <li class="{{active route}}">
             <a class="dashboard-navbar-package" id="{{_id}}" data-package="{{name}}" title="{{name}}">
-              {{#if overViewLabel}}
-                {{overViewLabel}}
-              {{else}}
-                {{label}}
-              {{/if}}
+              {{label}}
             </a>
           </li>
-          {{/if}}
-          {{/if}}
         {{/each}}
       </ul>
     </div>
@@ -51,7 +17,7 @@
         <button type="button" class="btn btn-default" id="dashboard-drawer-close-button">
          <span aria-hidden="true" title="{{i18n 'app.toggle'}}">
              <i class="fa
-             {{#if displayDashboardDrawer}}
+             {{#if displayConsoleDrawer}}
                  fa-angle-double-up
              {{else}}
                  fa-angle-double-down
@@ -70,6 +36,8 @@
   </div>
 </template>
 
-<template name="dashboardWidgets">
-  {{>widget name=./name}}
+<template name="consoleWidgets">
+{{#each reactionApps provides='widget'}}
+  {{> Template.dynamic template=template}}
+{{/each}}
 </template>
