@@ -99,15 +99,15 @@ ReactionCore.registerPackage
       label: 'PayPal'
       description: 'Accept PayPal payments'
       icon: 'fa fa-paypal'
-      priority: '2'
-      group: 'paypal'
+      cycle: 3
+      container: 'paypal'
     }
     # configures settings link for app card
     # use 'group' to link to dashboard card
     {
       route: 'paypal'
       provides: 'settings'
-      group: 'paypal'
+      container: 'paypal'
     }
     # configures template for checkout
     # paymentMethod dynamic template

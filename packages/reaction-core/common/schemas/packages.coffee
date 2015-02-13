@@ -41,9 +41,9 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
   'registry.$.label':
     type: String
     optional: true
-  'registry.$.group':
+  'registry.$.container':
     type: String
     optional: true
-  'registry.$.priority':
+  'registry.$.cycle':
     type: Number
     optional: true

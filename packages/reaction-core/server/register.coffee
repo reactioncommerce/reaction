@@ -15,15 +15,15 @@ ReactionCore.registerPackage
       label: 'Core'
       description: 'Reaction Commerce Core'
       icon: 'fa fa-th'
-      priority: '1'
-      group: "dashboard"
+      cycle: 1
+      container: "dashboard"
     }
     {
       route: "dashboard"
       provides: 'shortcut'
       label: 'Dashboard'
       icon: 'fa fa-th'
-      priority: '1'
+      cycle: 1
     }
     {
       route: "dashboard"
@@ -34,7 +34,7 @@ ReactionCore.registerPackage
       route: "dashboard/settings/shop"
       provides: 'settings'
       icon: "fa fa-cog fa-2x fa-fw"
-      group: 'dashboard'
+      container: 'dashboard'
     }
     # orders
     {
@@ -43,8 +43,8 @@ ReactionCore.registerPackage
       label: 'Orders'
       description: 'Fulfill your orders'
       icon: 'fa fa-sun-o'
-      priority: '1'
-      group: "orders"
+      cycle: 3
+      container: "orders"
     }
     {
       route: "dashboard/orders"
@@ -52,7 +52,7 @@ ReactionCore.registerPackage
       label: 'Orders'
       description: 'Fulfill your orders'
       icon: 'fa fa-sun-o'
-      priority: '1'
+      cycle: 3
     }
     {
       route: "dashboard/orders"
@@ -78,7 +78,7 @@ ReactionCore.registerPackage
       description: 'Manage administrative access to shop.'
       icon: 'fa fa-users'
       provides: 'dashboard'
-      priority: 1
+      cycle: 3
     }
   ]
   # permissions map to shopPermissions

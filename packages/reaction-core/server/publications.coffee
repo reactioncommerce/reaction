@@ -82,9 +82,7 @@ Meteor.publish "Packages", ->
         fields:
           name: true
           enabled: true
-          registry: true,
-        sort:
-          priority: 1
+          registry: true
       # TODO Filter roles/security here for package routes/template access.
   else
     return []

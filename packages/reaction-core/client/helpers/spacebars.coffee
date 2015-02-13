@@ -334,6 +334,13 @@ Template.registerHelper "reactionApps", (options) ->
           registry.enabled = app.enabled
           reactionApps.push registry
 
+  #
+  # TODO:
+  # add group by provides, sort by cycle, enabled
+  #
+
+  # make sure they are unique
+  reactionApps = _.uniq(reactionApps)
   return reactionApps
 
 ###
