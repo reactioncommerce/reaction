@@ -1,6 +1,5 @@
 #Package Development
 
-#Core packages
 To develop packages, and see your changes update in your local installation you must *git clone* packages locally, either into reaction/packages, or with
 a symbolic link to the package checkout.
 
@@ -27,7 +26,7 @@ It's a little more work, but it's a good idea to make sure you are in the `devel
 
 *Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain configuration settings such as admin user credentials and paypal authentication between `meteor reset`. Start with `meteor --settings settings/settings.json`*
 
-# New packages
+# Create packages
 
     meteor create --package
 
@@ -66,16 +65,15 @@ To test your package, add it to your application :
 
 *Tip: You can also add and remove packages by editing `.meteor/packages`*
 
-###Development
+###Publishing
 
 You can develop and even privately deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
 
-###Publishing
 To have your package included in a release, please create a GitHub issue.
 
 See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
 
-*We will fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
+*We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
 
 ##ReactionCore.registerPackage
 To integrate a package into the rest of Reaction Commerce use
@@ -133,11 +131,10 @@ ReactionCore.registerPackage
 ###Package
  ```
  name: '<typically same as package name>'
- provides: '<an array of methods this package provides>'
+ autoEnable: '<true/false automatically enable in dashboard>'
+ settings:
+      <Object:blackbox default properties for service configuration.>
  ```
-
-###Settings
-  Object with default properties for service configuration.
 
 ###Registry
 The registry is used to define routes, dynamic templates, and some package UI handling.
@@ -186,18 +183,29 @@ You can also extend or replace any core template using [template extensions](htt
 
 Add widgets to your package to be included on the `dashboard console` by including a registry entry and a template that provides 'widget'.
 
-    <template name="reaction-helloworld-widget">
+    <template name="reactionHelloworldWidget">
         <div class="dashboard-widget">
           <div class="dashboard-widget-center">
             <div>
-              <h3 class="helloworld-text">Widget Panel</h3><small>See: client/dashboard/widgets</small>
+              <h3 class="helloworld-text">Widget Panel</h3><small>your widget</small>
             </div>
           </div>
         </div>
     </template>
 
+*See example: packages/reaction-core/client/templates/dashboard/orders/widget/widget.html*
 
-*Tip: the dashboard-widget and dashboard-widget-center classes will create touch/swipeable widget boxes.*
+*Tip: the `dashboard-widget` and `dashboard-widget-center` classes will create touch/swipeable widget boxes.*
+
+Include in **server/register.coffee** registry:
+
+```
+    # order widgets
+    {
+      template: "reactionHelloworldWidget"
+      provides: 'widget'
+    }
+```
 
 ###Permissions
 
@@ -268,3 +276,51 @@ Another example:
          group: "Shop Management"
        }
      ]
+
+
+##Routes
+We use the [iron:router](https://github.com/iron-meteor/iron-router) package for managing routes.
+Routes are created in `common/routing.coffee`
+
+```
+Router.map ->
+  @route 'paypal',
+    controller: ShopAdminController
+    path: 'dashboard/settings/paypal',
+    template: 'paypal'
+    waitOn: ->
+      return ReactionCore.Subscriptions.Packages
+```
+
+Use the controller `ShopController` for public/shop routes, and `ShopAdminController` for admin roles.
+
+Define this route and template in the `ReactionCore.registerPackage` to export this route to ReactionCore.
+
+##Collections
+We use the [AutoForm, collection2, simple-schema](https://github.com/aldeed/meteor-autoform) package for defining forms, collections and schemas.
+
+You can extend core collections, schemas in your package. You can also create your own collections.
+
+Example of extending a core schema:
+
+```
+ReactionCore.Schemas.BraintreePackageConfig = new SimpleSchema([
+  ReactionCore.Schemas.PackageConfig
+  {
+    "settings.mode":
+      type: Boolean
+      defaultValue: false
+    "settings.merchant_id":
+      type: String
+      label: "Merchant ID"
+    "settings.public_key":
+      type: String
+      label: "Public Key"
+    "settings.private_key":
+      type: String
+      label: "Private Key"
+  }
+])
+```
+
+
