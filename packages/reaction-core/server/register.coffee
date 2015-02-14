@@ -6,7 +6,7 @@ ReactionCore.registerPackage = (packageInfo) ->
 
 # Register core packages
 ReactionCore.registerPackage
-  name: 'reaction-commerce'
+  name: 'core'
   autoEnable: true
   registry: [
     {

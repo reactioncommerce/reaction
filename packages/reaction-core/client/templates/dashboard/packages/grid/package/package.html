@@ -11,7 +11,9 @@
         <i class="{{icon}} fa-3x pull-left"></i>
          <div class="pkg-controls">
             {{#if enabled}}
-              <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
+              {{#if condition name 'neq' 'core'}}
+                <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
+              {{/if}}
               {{#each reactionApps provides="settings" name=name container=container}}
                 {{#if hasShopPermission route}}
                 <a class="pkg-settings" title="{{i18n 'app.settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>

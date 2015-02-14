@@ -174,8 +174,11 @@ From template you can use the `reactionApps` helper to load registry objects.
 
 You may filter, or define using any of the optional registry properties:
 
+**package**
  - name
  - enabled
+
+ **registry*
  - provides
  - route
  - template

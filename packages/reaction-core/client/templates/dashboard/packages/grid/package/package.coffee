@@ -26,19 +26,24 @@ Template.gridPackage.events
 
   "click .disablePkg": (event, template) ->
     self = @
+
     # we don't want to disable autoenabled (core) packages
-    if self.autoEnable is true then return
-    # update package info
-    event.preventDefault()
-    ReactionCore.Collections.Packages.update template.data.packageId,
-      {$set: {enabled: false}}
-      , (error, result) ->
-        if result is 1
-          Alerts.add self.label + i18n.t("gridPackage.pkgDisabled"), "success",
-            type: "pkg-enabled-" + self.name
-            autoHide: true
-        else if error
-          console.log error
+    if self.name is 'core' then return
+
+    # confirm disable
+    if confirm("Are you sure you want to disable "+ self.label)
+      # update package info
+      event.preventDefault()
+      ReactionCore.Collections.Packages.update template.data.packageId,
+        {$set: {enabled: false}}
+        , (error, result) ->
+          if result is 1
+            Alerts.add self.label + i18n.t("gridPackage.pkgDisabled"), "success",
+              type: "pkg-enabled-" + self.name
+              autoHide: true
+          else if error
+            console.log error
+    return
 
   "click .pkg-app-card": (event, template) ->
     Router.go @.route if @.route
