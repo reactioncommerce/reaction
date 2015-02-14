@@ -1,6 +1,6 @@
 Template.addressBookAdd.helpers
-  addressBook: ->
-    Meteor.user().profile?.addressBook
+  addressBookExists: ->
+    return Meteor.user().profile.addressBook
 
   thisAddress: ->
     thisAddress = {'fullName': Meteor.user().profile?.name}

@@ -1,24 +1,24 @@
 <template name="addressBookAdd">
 <div class="panel-heading">
   <h3 class="panel-title">
-    {{#if addressBook}}
+    {{#if addressBookExists}}
       <span data-i18n="addressBookAdd.addAddress">Add address</span>
     {{else}}
-      <span data-i18n="addressBookAdd.createAddress">Create address</span>
+      <span data-i18n="addressBookAdd.createAddress">Create your default address</span>
     {{/if}}
   </h3>
 </div>
 <div class="panel-body">
-{{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookForm" doc=thisAddress type="method" meteormethod="addressBookAdd" resetOnSuccess=false}}
-  <fieldset>
-      {{>addressBookForm}}
-      <div class="row text-right">
-            <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
-            {{#if addressBook}}
-            <button type="reset" class="btn btn-default" id="cancel-new" data-i18n="app.cancel">Cancel</button>
-            {{/if}}
-      </div>
-  </fieldset>
-{{/autoForm}}
+  {{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookAddForm" doc=thisAddress type="method" meteormethod="addressBookAdd" resetOnSuccess=false}}
+    <fieldset>
+        {{>addressBookForm}}
+        <div class="row text-right">
+          <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
+          {{#if addressBookExists}}
+          <button type="reset" class="btn btn-default" id="cancel-new" data-i18n="app.cancel">Cancel</button>
+          {{/if}}
+        </div>
+    </fieldset>
+  {{/autoForm}}
 </div>
 </template>

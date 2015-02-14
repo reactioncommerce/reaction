@@ -1,6 +1,19 @@
+###
+# Template.checkoutAddressBook
+# template determines which view should be used:
+# addAddress (edit or add)
+# addressBookView (view)
+###
 Template.checkoutAddressBook.helpers
   addressMode: ->
-      Session.get "addressBookView"
+    # TODO this will need updating with new customers collection
+    # users without addressbook always must add
+    # this could be made optional for digital purchases
+    unless Meteor.user().profile.addressBook
+      Session.set "addressBookView", "addAddress"
+      return "addAddress"
+    else
+      return Session.get "addressBookView"
 
   addressBookView: (mode)->
     mode = this.mode

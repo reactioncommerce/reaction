@@ -8,7 +8,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           {{#if addressBook}}
-          <span id="address-selection-help" data-i18n="addressBookGrid.chooseAddress">Choose shipping & billing address</span><i class="fa fa-plus fa-lg pull-right" id="newAddress"></i>
+          <span id="address-selection-help" data-i18n="addressBookGrid.chooseAddress">Choose shipping & billing address</span><i class="fa fa-plus fa-lg pull-right address-icons" id="newAddress"></i>
           {{else}}
             <span data-i18n="addressBookGrid.createDefault">Create your default address</span>
           {{/if}}
@@ -18,43 +18,48 @@
         <div class="row" id="addressBook">
           <div class="col-md-6">
             <div class="list-group">
-              <strong><span data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</span></strong>
+
+              <span id="shipping-address-label" data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</span>
                {{#each addressBook shipping}}
-                <a href="#" class="address-ship-to list-group-item {{selectedShipping}}" id="shipping-{{_id}}">
-                  <div class="col-sm-1 pull-right address-icons">
-                  <span class="fa-stack fa-lg address-edit-icon">
-                    <i class="fa fa-pencil fa-stack-1x"></i>
-                  </span>
+                <div class="address-ship-to list-group-item {{selectedShipping}}">
+                    <a id="shipping-{{_id}}">
+                      <div class="col-sm-1 pull-right address-icons">
+                        <span class="fa-stack fa-lg address-edit-icon">
+                          <i class="fa fa-pencil fa-stack-1x"></i>
+                        </span>
+                      </div>
+                    </a>
+                    <strong>{{fullName}}</strong>
+                    <address>
+                      {{address1}}
+                      {{address2}},<br>
+                      {{city}}, {{region}} {{postal}} {{country}}<br>
+                      {{phone}}
+                    </address>
                 </div>
-                <strong>{{fullName}}</strong>
-                <address>
-                  {{address1}}
-                  {{address2}},<br>
-                  {{city}}, {{region}} {{postal}} {{country}}<br>
-                  {{phone}}
-                </address>
-                </a>
               {{/each}}
             </div>
           </div>
           <div class="col-md-6">
             <div class="list-group">
-              <strong><span data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</span></strong>
-               {{#each addressBook shipping}}
-                <a href="#" class="address-bill-to list-group-item {{selectedBilling}}" id="billing-{{_id}}">
-                  <div class="col-sm-1 pull-right address-icons">
-                  <span class="fa-stack fa-lg address-edit-icon">
-                    <i class="fa fa-pencil fa-stack-1x"></i>
-                  </span>
+              <span id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</span>
+              {{#each addressBook billing}}
+                <div class="address-bill-to list-group-item {{selectedBilling}}">
+                  <a id="billing-{{_id}}">
+                    <div class="col-sm-1 pull-right address-icons">
+                      <span class="fa-stack fa-lg address-edit-icon">
+                        <i class="fa fa-pencil fa-stack-1x"></i>
+                      </span>
+                    </div>
+                  </a>
+                  <strong>{{fullName}}</strong>
+                  <address>
+                    {{address1}}
+                    {{address2}},<br>
+                    {{city}}, {{region}} {{postal}} {{country}}<br>
+                    {{phone}}
+                  </address>
                 </div>
-                <strong>{{fullName}}</strong>
-                <address>
-                  {{address1}}
-                  {{address2}},<br>
-                  {{city}}, {{region}} {{postal}} {{country}}<br>
-                  {{phone}}
-                </address>
-                </a>
               {{/each}}
             </div>
           </div>
