@@ -332,6 +332,7 @@ Template.registerHelper "reactionApps", (options) ->
         if match is Object.keys(registryFilter).length
           registry.name = app.name
           registry.enabled = app.enabled
+          registry.packageId = app._id
           reactionApps.push registry
 
   #

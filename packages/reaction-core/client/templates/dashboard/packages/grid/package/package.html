@@ -12,13 +12,13 @@
          <div class="pkg-controls">
             {{#if enabled}}
               <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
-              {{#if hasShopPermission route}}
-                {{#each reactionApps provides="settings" name=name group=group}}
-                <a href="{{pathFor route}}" class="pkg-settings" title="{{i18n 'app.settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
-                {{/each}}
-              {{/if}}
+              {{#each reactionApps provides="settings" name=name container=container}}
+                {{#if hasShopPermission route}}
+                <a class="pkg-settings" title="{{i18n 'app.settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
+                {{/if}}
+              {{/each}}
             {{else}}
-              <a class="pull-right enablePkg" id="{{_id}}" title="{{i18n 'app.toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
+              <a class="pull-right enablePkg" title="{{i18n 'app.toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
             {{/if}}
         </div>
     </div>

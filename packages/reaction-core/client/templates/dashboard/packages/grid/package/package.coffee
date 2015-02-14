@@ -11,10 +11,9 @@ Template.gridPackage.helpers
 
 Template.gridPackage.events
   "click .enablePkg": (event, template) ->
-    console.log "click enable"
     self = @
     event.preventDefault()
-    ReactionCore.Collections.Packages.update template.data._id,
+    ReactionCore.Collections.Packages.update template.data.packageId,
       {$set: {enabled: true}}
       , (error, result) ->
         if result is 1
@@ -31,7 +30,7 @@ Template.gridPackage.events
     if self.autoEnable is true then return
     # update package info
     event.preventDefault()
-    ReactionCore.Collections.Packages.update template.data._id,
+    ReactionCore.Collections.Packages.update template.data.packageId,
       {$set: {enabled: false}}
       , (error, result) ->
         if result is 1
@@ -42,4 +41,7 @@ Template.gridPackage.events
           console.log error
 
   "click .pkg-app-card": (event, template) ->
+    Router.go @.route if @.route
+
+  "click .pkg-settings": (event, template) ->
     Router.go @.route if @.route

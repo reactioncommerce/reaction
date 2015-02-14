@@ -281,9 +281,6 @@ Package.onUse(function (api) {
     "client/templates/dashboard/console/icon/icon.html",
     "client/templates/dashboard/console/icon/icon.coffee",
 
-    "client/templates/dashboard/layout/header/links.html",
-    "client/templates/dashboard/layout/header/links.coffee",
-
     "client/templates/dashboard/customers/customers.html",
     "client/templates/dashboard/customers/customers.coffee",
 
