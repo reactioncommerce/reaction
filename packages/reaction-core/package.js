@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.4.0",
+  version: "0.4.1",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -242,11 +242,14 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/addressBook/addressBook.html",
     "client/templates/cart/checkout/addressBook/addressBook.coffee",
 
-    "client/templates/cart/checkout/addressBook/addressForm/add.html",
-    "client/templates/cart/checkout/addressBook/addressForm/add.coffee",
+    "client/templates/cart/checkout/addressBook/add/add.html",
+    "client/templates/cart/checkout/addressBook/add/add.coffee",
 
-    "client/templates/cart/checkout/addressBook/addressForm/edit.html",
-    "client/templates/cart/checkout/addressBook/addressForm/edit.coffee",
+    "client/templates/cart/checkout/addressBook/edit/edit.html",
+    "client/templates/cart/checkout/addressBook/edit/edit.coffee",
+
+    "client/templates/cart/checkout/addressBook/form/form.html",
+    "client/templates/cart/checkout/addressBook/form/form.coffee",
 
     "client/templates/cart/checkout/review/review.html",
     "client/templates/cart/checkout/review/review.coffee",
