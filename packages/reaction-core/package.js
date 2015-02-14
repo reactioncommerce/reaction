@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.3.0",
+  version: "0.4.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -45,8 +45,8 @@ Package.onUse(function (api) {
     api.use("fortawesome:fontawesome@4.2.0_2");
     api.use('mrt:underscore-string-latest@2.3.3');
     api.use("aldeed:geocoder@0.3.3");
-    api.use("aldeed:collection2@2.2.0");
-    api.use("aldeed:simple-schema@1.2.0");
+    api.use("aldeed:collection2@2.3.2");
+    api.use("aldeed:simple-schema@1.3.0");
     api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@1.0.7");
@@ -107,7 +107,6 @@ Package.onUse(function (api) {
     "common/packageGlobals.js",
     "common/common.coffee",
     "common/helpers.coffee",
-    "common/register.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
     "common/schemas/shops.coffee",
@@ -127,6 +126,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     "server/app.coffee",
+    "server/register.coffee",
     "server/security.coffee",
     "server/publications.coffee",
     "server/fixtures.coffee",
@@ -192,9 +192,6 @@ Package.onUse(function (api) {
 
     "client/templates/layout/loading/loading.html",
     "client/templates/layout/notFound/notFound.html",
-
-    "client/templates/layout/shopHeader/shopNavElements/shopNavElements.html",
-    "client/templates/layout/shopHeader/shopNavElements/shopNavElements.coffee",
 
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
@@ -278,17 +275,20 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",
 
-    "client/templates/dashboard/widget/widget.html",
-    "client/templates/dashboard/widget/widget.coffee",
+    "client/templates/dashboard/console/console.html",
+    "client/templates/dashboard/console/console.coffee",
 
-    "client/templates/dashboard/layout/header/links.html",
-    "client/templates/dashboard/layout/header/links.coffee",
+    "client/templates/dashboard/console/icon/icon.html",
+    "client/templates/dashboard/console/icon/icon.coffee",
 
     "client/templates/dashboard/customers/customers.html",
     "client/templates/dashboard/customers/customers.coffee",
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
+
+    "client/templates/dashboard/orders/widget/widget.html",
+    "client/templates/dashboard/orders/widget/widget.coffee",
 
     "client/templates/dashboard/orders/details/detail.html",
     "client/templates/dashboard/orders/details/detail.coffee",
@@ -317,9 +317,6 @@ Package.onUse(function (api) {
     "client/templates/dashboard/packages/packages.html",
     "client/templates/dashboard/packages/packages.coffee",
 
-    "client/templates/dashboard/packages/panel/panel.html",
-    "client/templates/dashboard/packages/panel/panel.coffee",
-
     "client/templates/dashboard/packages/grid/package/package.html",
     "client/templates/dashboard/packages/grid/package/package.coffee",
 
@@ -328,9 +325,6 @@ Package.onUse(function (api) {
 
     "client/templates/dashboard/dashboard.html",
     "client/templates/dashboard/dashboard.coffee",
-
-    "client/templates/dashboard/dashboardIcon/dashboardIcon.html",
-    "client/templates/dashboard/dashboardIcon/dashboardIcon.coffee",
 
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.html",
     "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.coffee",
@@ -413,6 +407,7 @@ Package.onUse(function (api) {
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.
   api.export(["ReactionCore"]);
+  api.export("ReactionRegistry","server");
 
   // legacy Exports (TODO: move to ReactionCore)
   api.export([

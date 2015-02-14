@@ -1,9 +1,9 @@
 # Issues
 For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
 
-The default branch for reaction, reaction-core, reaction-core-theme is *development*. Pull requests made into the *development* branch, will be reviewed and accepted into development for a quick release, while we work on specific feature branches separately, to be merged into *development*. 
+The default branch for reaction, reaction-core, reaction-core-theme is *development*. Pull requests made into the *development* branch, will be reviewed and accepted into development for a quick release, while we work on specific feature branches separately, to be merged into *development*.
 
-We're trying to practice the art of liberally creating issues for every development task, rather than just 'community' bugs. This can be much noisier but we're trying to ensure we're publicly capturing and sharing all the tasks so everyone can have detailed insight into the project progress. 
+We're trying to practice the art of liberally creating issues for every development task, rather than just 'community' bugs. This can be much noisier but we're trying to ensure we're publicly capturing and sharing all the tasks so everyone can have detailed insight into the project progress.
 
 The [help wanted](https://github.com/reactioncommerce/reaction/labels/help%20wanted) label calls out issues that prioritize where community member contributions would be relatively easy. Of course, all contributions are welcome.
 
@@ -12,7 +12,7 @@ The [ready](https://github.com/reactioncommerce/reaction/labels/ready) label gro
 Of course, [in progress](https://github.com/reactioncommerce/reaction/labels/in%20progress) labels are actively being worked on.
 
 ## Testing
-We're testing a couple of [Velocity packages](http://velocity.meteor.com/). 
+We're testing a couple of [Velocity packages](http://velocity.meteor.com/).
 
 See: https://github.com/reactioncommerce/reaction/issues/241
 
@@ -25,7 +25,7 @@ We will merge `development` into `master` whenever an issue is marked done, and 
 `master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](https://github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
 
 ## Pull Requests
-Please make sure your pull requests are to the active `development` branch, no pull requests to `master` will be accepted. When you create a pull request, you can click the 'edit' button to change the "to" branch. 
+Please make sure your pull requests are to the active `development` branch, no pull requests to `master` will be accepted. When you create a pull request, you can click the 'edit' button to change the "to" branch.
 
 #Directory structure
 
@@ -43,7 +43,7 @@ Please make sure your pull requests are to the active `development` branch, no p
 								subFunctionalTriad.less
 								subFunctionalTriad.html
 								subFunctionalTriad.coffee
-						
+
 				-> lib  *client specific shared libraries*
 				register.coffee 	*files common to all client side* *register adds to reaction dashboard*
 				routing.coffee
@@ -58,7 +58,7 @@ Please make sure your pull requests are to the active `development` branch, no p
 				methods.coffee
 				publications.coffee
 			package.js *package declarations for meteor*
-			
+
 
 #Presentation layer
 
@@ -136,7 +136,6 @@ ReactionCore = {};
 ReactionCore.Schemas = {}; // Schemas defined in common/schemas
 ReactionCore.Collections = {}; //Collections defined in common/collections
 ReactionCore.Helpers = {}; //Misc.helpers defined in common/helpers
-ReactionCore.Packages = {}; // Package methods
 ReactionCore.MetaData = {}; // SEO, Metadata object
 ReactionCore.Locale = {}; //i18n translation object
 ReactionCore.Events = {}; // Logger instantiation (server)

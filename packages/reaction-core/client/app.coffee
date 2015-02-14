@@ -21,15 +21,12 @@ _.extend ReactionCore,
         self.shopId = shop._id
         # check to see if guest checkout is enabled
         self.canCheckoutAsGuest = shop.canCheckoutAsGuest || false
-        #permissions and packages
+        # permissions and packages
         permissions = []
-        # package registry update
-        # use this when you want current packages, not the initial configuration
-        # exposes package details
-        #
-        self.usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).map (p) ->
-          return p.info()
 
+        # get current enabled packages
+        self.usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).fetch()
+        # extract package registry permissions
         for usedPackage in self.usedPackages
           if usedPackage?.shopPermissions
             for shopPermission in usedPackage.shopPermissions

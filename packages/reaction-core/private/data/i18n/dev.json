@@ -146,7 +146,7 @@
                     "fullname": "Full name",
                     "address1": "Address 1"
                 },
-                "dashboardIcon": {
+                "consoleIcon": {
                     "iconTitle": "View Dashboard",
                     "text": "Dashboard"
                 },

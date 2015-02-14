@@ -3,7 +3,6 @@ ReactionCore = {};
 ReactionCore.Schemas = {};
 ReactionCore.Collections = {};
 ReactionCore.Helpers = {};
-ReactionCore.Packages = {};
 ReactionCore.MetaData = {};
 ReactionCore.Locale = {};
 ReactionCore.Events = {};
@@ -16,3 +15,7 @@ if (Meteor.isClient) {
 // convenience
 Alerts = ReactionCore.Alerts;
 Schemas = ReactionCore.Schemas;
+
+// not exported to client (private)
+ReactionRegistry = {};
+ReactionRegistry.Packages = {};

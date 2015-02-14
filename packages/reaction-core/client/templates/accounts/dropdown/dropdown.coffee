@@ -3,14 +3,14 @@ Template.loginDropdown.events
     event.stopPropagation()
 
   "click #logout": (event, template) ->
-    Session.set 'displayDashboardNavBar', false
+    Session.set 'displayConsoleNavBar', false
     Meteor.logout (err) ->
       Meteor._debug err if err
     event.preventDefault()
     template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
 
   "click .user-accounts-dropdown a": (event, template) ->
-    if @.overviewRoute is "createProduct"
+    if @.route is "createProduct"
       event.preventDefault()
       Meteor.call "createProduct", (error, productId) ->
         if error
@@ -20,7 +20,7 @@ Template.loginDropdown.events
             _id: productId
           return
       return
-    else if @.overviewRoute
+    else if @.route
       event.preventDefault()
       template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
-      Router.go(@.overviewRoute)
+      Router.go(@.route)

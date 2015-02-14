@@ -168,6 +168,9 @@ Template.registerHelper "condition", (v1, operator, v2, options) ->
     else
       throw "Undefined operator \"" + operator + "\""
 
+Template.registerHelper "orElse", (v1, v2) ->
+  return v1 || v2
+
 Template.registerHelper "key_value", (context, options) ->
   result = []
   _.each context, (value, key, list) ->
@@ -238,7 +241,7 @@ Template.registerHelper "userHasRole", (role) ->
 
 ###
 # general helper to return 'active' when on current path
-# returns string
+# returns string\
 # handlebars: {{active 'route'}}
 ###
 
@@ -264,16 +267,82 @@ Template.registerHelper "navLink", (page, icon) ->
   return new Spacebars.SafeString(ret)
 
 ###
-# Returns all packages, both enabled and disabled.
-# Combined the info stored in the Packages collection
-# with the info provided by the package itself through
-# registration.
+# Returns all enabled+dashboard package registry objects
+# *optional* options for filtering are:
+#   provides="<where matching registry provides is this >"
+#   enabled=true <false for disabled packages>
+#   context= true filter templates to current route
+#
+#  TODO:
+#   - reintroduce a dependency context
+#   - introduce position,zones #148
+#   - is it better to get all packages once and filter in code
+#     and possibly have some cache benefits down the road,
+#     or to retrieve what is requested and gain the advantage of priviledged,
+#     unnecessary data not retrieved with the cost of additional requests.
+#   - context filter should be considered experimental
+#
 ###
-Template.registerHelper "allPackages", ->
-  return ReactionCore.Collections.Packages.find({}, {sort: {priority: -1}}).map (pkg) ->
-    pkgInfo = pkg.info()
-    _.extend pkg, pkgInfo if pkgInfo
-    return pkg
+Template.registerHelper "reactionApps", (options) ->
+  reactionApps = []
+  filter = {}
+  registryFilter = {}
+  # any registry property, name, enabled can be used as filter
+  for key, value of options.hash
+    unless key is 'enabled' or key is 'name'
+      filter['registry.' + key] = value #for query
+      registryFilter[key] = value #for registry filter
+    else
+      filter[key] = value #handle top level filters
+
+  # we only need these fields (filtered for user, all available to admin)
+  fields =
+    'enabled': 1
+    'registry': 1
+    'name': 1
+
+  # fetch filtered package
+  reactionPackages = ReactionCore.Collections.Packages.find(filter, fields).fetch()
+
+  # really, this shouldn't ever happen
+  unless reactionPackages then throw new Error("Packages not loaded.")
+
+  # filter packages
+  # this isn't as elegant as one could wish, review, refactor?
+
+  #  filter name and enabled as the package level filter
+  if filter.name and filter.enabled
+    packages = (pkg for pkg in reactionPackages when pkg.name is filter.name and pkg.enabled is filter.enabled)
+  else if filter.name
+    packages = (pkg for pkg in reactionPackages when pkg.name is filter.name)
+  else if filter.enabled
+    packages = (pkg for pkg in reactionPackages when pkg.enabled is filter.enabled)
+  else
+    packages = (pkg for pkg in reactionPackages)
+
+  # filter and reduce, format registry objects
+  # checks to see that all registry filters are applied to the registry objects
+  # and pushes to reactionApps
+  for app in packages
+    for registry in app.registry
+      match = 0
+      for key, value of registryFilter
+        if registry[key] is value
+          match += 1
+        if match is Object.keys(registryFilter).length
+          registry.name = app.name
+          registry.enabled = app.enabled
+          registry.packageId = app._id
+          reactionApps.push registry
+
+  #
+  # TODO:
+  # add group by provides, sort by cycle, enabled
+  #
+
+  # make sure they are unique
+  reactionApps = _.uniq(reactionApps)
+  return reactionApps
 
 ###
 # For debugging: {{console.log this}}
