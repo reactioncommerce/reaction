@@ -251,6 +251,9 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/addressBook/form/form.html",
     "client/templates/cart/checkout/addressBook/form/form.coffee",
 
+    "client/templates/cart/checkout/addressBook/grid/grid.html",
+    "client/templates/cart/checkout/addressBook/grid/grid.coffee",
+
     "client/templates/cart/checkout/review/review.html",
     "client/templates/cart/checkout/review/review.coffee",
 
