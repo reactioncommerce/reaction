@@ -33,7 +33,7 @@
   <ul class="user-accounts-dropdown-apps">
     {{#if hasDashboardAccess}}
       <!--administrative shortcut icons -->
-      {{#each reactionApps provides='shortcut'}}
+      {{#each reactionApps provides='shortcut' enabled=true}}
         <li class="dropdown-apps-icon">
           <a id="{{route}}" title="{{label}}">
           <i class="add-product-link {{icon}}"></i>
@@ -53,4 +53,5 @@
 <template name="userAccountsDropdown">
   <!--user account shortcut icons -->
   <span data-i18n="accountsUI.signedIn">You are signed in.</span>
+
 </template>

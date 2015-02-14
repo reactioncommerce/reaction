@@ -1,5 +1,5 @@
 <template name="corePaymentMethods">
-  {{#each reactionApps provides='paymentMethod'}}
+  {{#each reactionApps provides='paymentMethod' enabled=true}}
     <div class="thumbnail">
       {{> Template.dynamic template=template}}
     </div>
