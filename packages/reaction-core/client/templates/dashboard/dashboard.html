@@ -5,7 +5,9 @@
     {{#if displayConsoleDrawer}}
       <div class="dashboard-container">
         <div class="dashboard-widget-wrapper">
-          {{> consoleWidgets}}
+          {{#each reactionApps provides='widget' route=route}}
+            {{> consoleWidgets}}
+          {{/each}}
         </div>
       </div>
     {{/if}}

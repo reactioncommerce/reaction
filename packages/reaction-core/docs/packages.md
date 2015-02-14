@@ -151,6 +151,17 @@ A registry object can be any combination of properties, with `provides` being th
  * dashboard
  * console
 
+For example, to add a new dashboard widget:
+
+```
+    # order widgets
+    {
+      template: "coreOrderWidgets"
+      provides: 'widget'
+    }
+```
+
+
 From template you can use the `reactionApps` helper to load registry objects.
 
 ```html
@@ -170,12 +181,12 @@ You may filter, or define using any of the optional registry properties:
  - template
  - icon
  - label
- - group
- - priority
+ - cycle
+ - container
 
 ***Special Usage***
- - `priority` is an app flag, general use `2` to designate a "App".
- - `group` group alike for presentation *example: used to connect settings on dashboard app card registry object*
+ - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
+ - `container` group alike for presentation *example: used to connect settings on dashboard app card registry object*
 
 You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
