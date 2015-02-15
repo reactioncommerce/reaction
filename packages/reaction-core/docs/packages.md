@@ -175,17 +175,17 @@ From template you can use the `reactionApps` helper to load registry objects.
 You may filter, or define using any of the optional registry properties:
 
 **package**
- - name
- - enabled
-
- **registry**
- - provides
- - route
- - template
- - icon
- - label
- - cycle
- - container
+  * name
+  * enabled
+ 
+**registry**
+  - provides
+  - route
+  - template
+  - icon
+  - label
+  - cycle
+  - container
 
 ***Special Usage***
  - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
