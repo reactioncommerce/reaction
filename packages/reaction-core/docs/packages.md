@@ -45,8 +45,8 @@ Package.describe({
 });
 
 Package.onUse(function (api, where) {
-  api.use("reactioncommerce:core@0.3.0");
-  api.add_files("server/register.coffee",'server');
+  api.use("reactioncommerce:core@0.4.1"); //current release
+  api.addFiles("server/register.coffee",'server');
 });
 ```
 
