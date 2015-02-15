@@ -21,7 +21,7 @@ Test shops help us gather feedback for Reaction development, as well as testing 
 
 
 ##Status
-**Current status: Alpha Preview v0.3.0**
+**Current status: Alpha Preview v0.4.1**
 
 **Functional but unstable, with HEAVY ongoing development!**
 
