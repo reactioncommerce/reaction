@@ -4,6 +4,7 @@
 # but you can also edit it by hand.
 
 # Core Meteor Packages
+package-stats-opt-out
 meteor-platform
 oauth-encryption
 coffeescript
@@ -20,11 +21,10 @@ nemo64:bootstrap
 #sanjo:jasmine
 
 # Reaction Commerce Packages
+reactioncommerce:core
 reactioncommerce:core-theme
-reactioncommerce:core@=0.3.0
-reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-shipping
+reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-braintree
 reactioncommerce:reaction-stripe
-#reactioncommerce:reaction-auth-net

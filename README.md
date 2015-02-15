@@ -11,6 +11,8 @@ curl -L http://getrxn.io/installreaction | /bin/sh
 
 This terminal command executes [this file](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
 
+Installed Node.js + NPM is required. Install from http://nodejs.org/
+
 ##Demonstration
 
 At [reactioncommerce.com](https://reactioncommerce.com) you can launch a test shop, launched as a Docker container.
@@ -21,7 +23,7 @@ Test shops help us gather feedback for Reaction development, as well as testing 
 
 
 ##Status
-**Current status: Alpha Preview v0.3.0**
+**Current status: Alpha Preview v0.4.1**
 
 **Functional but unstable, with HEAVY ongoing development!**
 
@@ -34,7 +36,9 @@ As with all development, some items are ahead of schedule, and some are not. Her
 
 For a high level review our roadmap, take a look at the vision page [Reaction Vision](http://reactioncommerce.com/vision)
 
-For grouping of development channels by feature see project milestones: https://github.com/reactioncommerce/reaction/milestones *note: progress indicators highly volatile indicators at the moment*
+For grouping of development channels by feature see project milestones: https://github.com/reactioncommerce/reaction/milestones
+
+*note: progress indicators highly volatile indicators at the moment*
 
 And finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
 
