@@ -1,6 +1,19 @@
+###
+# Template.checkoutAddressBook
+# template determines which view should be used:
+# addAddress (edit or add)
+# addressBookView (view)
+###
 Template.checkoutAddressBook.helpers
   addressMode: ->
-      Session.get "addressBookView"
+    # TODO this will need updating with new customers collection
+    # users without addressbook always must add
+    # this could be made optional for digital purchases
+    unless Meteor.user().profile.addressBook
+      Session.set "addressBookView", "addAddress"
+      return "addAddress"
+    else
+      return Session.get "addressBookView"
 
   addressBookView: (mode)->
     mode = this.mode
@@ -27,48 +40,3 @@ Template.checkoutAddressBook.events
       Session.set "addressBookView", "view"
     else
       Session.set "addressBookView", "addAddress"
-
-Template.addressBookGrid.helpers
-  addressBook: ->
-    Meteor.user().profile?.addressBook
-
-  selectedBilling: ->
-    if @.isBillingDefault
-      # console.log "billingDefault", @._id
-      unless Session.get "billingUserAddressId"
-        # console.log "set default billing: ", @._id
-        Session.setDefault "billingUserAddressId", @._id
-        CartWorkflow.paymentAddress(@)
-    if Session.equals "billingUserAddressId", @._id
-      # find current address, and if none
-      cart = Cart.findOne({'payment.address._id': @._id})
-      # allow last used address to default
-      unless cart
-        CartWorkflow.paymentAddress(@)
-      return "active"
-
-  selectedShipping: ->
-    if @.isShippingDefault
-      # console.log "shippingDefault",@._id
-      unless Session.get "shippingUserAddressId"
-        # console.log "set default shipping: ",@._id
-        Session.setDefault "shippingUserAddressId",@._id
-        CartWorkflow.shipmentAddress(@)
-    if Session.equals "shippingUserAddressId", @._id
-      # find current address, and if none
-      cart = Cart.findOne({'shipping.address._id': @._id})
-      # allow last used address to default
-      unless cart
-        CartWorkflow.shipmentAddress(@)
-      return "active"
-
-Template.addressBookGrid.events
-  'click .address-ship-to': (event,template) ->
-    CartWorkflow.shipmentAddress(@)
-    Session.set("shippingUserAddressId", @._id)
-
-  'click .address-bill-to': (event,template) ->
-    CartWorkflow.paymentAddress(@)
-    Session.set("billingUserAddressId", @._id)
-
-

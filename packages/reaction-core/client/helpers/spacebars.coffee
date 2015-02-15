@@ -38,6 +38,12 @@ Template.registerHelper "yearOptions",  () ->
   return yearOptions
 
 #
+# gets current cart billing address / payment name
+#
+Template.registerHelper "cartPayerName",  ->
+    Cart.findOne()?.payment?.address?.fullName
+
+#
 # return path for route
 #
 Template.registerHelper "pathForSEO", (path, params) ->

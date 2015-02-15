@@ -11,3 +11,5 @@ Template.addressBookEdit.events
   'click #cancel-address-edit': () ->
     Session.set "addressBookView", "view"
 
+  'submit form': () ->
+    Session.set "addressBookView", "view"

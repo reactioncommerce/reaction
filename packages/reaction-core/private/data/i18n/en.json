@@ -110,9 +110,9 @@
                         "city": "City",
                         "region": "Region",
                         "phone": "Phone",
-                        "isShippingDefault": "Is this your default shipping address?",
-                        "isBillingDefault": "Is this your default billing address?",
-                        "isCommercial": "Is this a commercial address?"
+                        "isShippingDefault": "Make this your default shipping address?",
+                        "isBillingDefault": "Make this your default billing address?",
+                        "isCommercial": "This is a commercial address."
                     }
                 },
                 "address": {
@@ -124,9 +124,9 @@
                     "city": "City",
                     "region": "Region",
                     "phone": "Phone",
-                    "isShippingDefault": "Is this your default shipping address?",
-                    "isBillingDefault": "Is this your default billing address?",
-                    "isCommercial": "Is this a commercial address?"
+                    "isShippingDefault": "Make this your default shipping address?",
+                    "isBillingDefault": "Make this your default billing address?",
+                    "isCommercial": "This is a commercial address."
                 },
                 "checkoutProgressBar": {
                     "login": "Login",

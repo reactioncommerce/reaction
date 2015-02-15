@@ -1,28 +1,3 @@
-<template name="addressBookAdd">
-<div class="panel-heading">
-  <h3 class="panel-title">
-    {{#if addressBook}}
-      <span data-i18n="addressBookAdd.addAddress">Add address</span>
-    {{else}}
-      <span data-i18n="addressBookAdd.createAddress">Create address</span>
-    {{/if}}
-  </h3>
-</div>
-<div class="panel-body">
-{{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookForm" doc=thisAddress type="method" meteormethod="addressBookAdd" resetOnSuccess=false}}
-  <fieldset>
-      {{>addressBookForm}}
-      <div class="row text-right">
-            <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
-            {{#if addressBook}}
-            <button type="reset" class="btn btn-default" id="cancel-new" data-i18n="app.cancel">Cancel</button>
-            {{/if}}
-      </div>
-  </fieldset>
-{{/autoForm}}
-</div>
-</template>
-
 <template name="addressBookForm">
 <div class="row">
   <div class="col-md-6 form-group{{#if afFieldIsInvalid name='country'}} has-error{{/if}}">
@@ -80,35 +55,35 @@
       <span class="help-block">{{afFieldMessage name="region"}}</span>
       {{/if}}
   </div>
+  <div class="col-md-4 form-group{{#if afFieldIsInvalid name='phone'}} has-error{{/if}}">
+    <label class="control-label">{{afFieldLabelText name='phone'}}</label>
+    {{>afFieldInput name="phone"}}
+    {{#if afFieldIsInvalid name="phone"}}
+    <span class="help-block">{{afFieldMessage name="phone"}}</span>
+    {{/if}}
+  </div>
 </div>
-<div class="row">
-  <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='phone'}} has-error{{/if}}">
-      <label class="control-label">{{afFieldLabelText name='phone'}}</label>
-      {{>afFieldInput name="phone"}}
-      {{#if afFieldIsInvalid name="phone"}}
-      <span class="help-block">{{afFieldMessage name="phone"}}</span>
-      {{/if}}
+<div class="row address-options">
+  <div class="form-group{{#if afFieldIsInvalid name='isShippingDefault'}} has-error{{/if}}">
+    <label class="control-label"></label>
+    {{>afFieldInput name="isShippingDefault" value=isShippingDefault}}
+    {{#if afFieldIsInvalid name="isShippingDefault"}}
+    <span class="help-block">{{afFieldMessage name="isShippingDefault"}}</span>
+    {{/if}}
   </div>
-  <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='isCommercial'}} has-error{{/if}}">
-      <label class="control-label"></label>
-      {{>afFieldInput name="isCommercial" value=isCommercial}}
-      {{#if afFieldIsInvalid name="isCommercial"}}
-      <span class="help-block">{{afFieldMessage name="isCommercial"}}</span>
-      {{/if}}
+  <div class="form-group{{#if afFieldIsInvalid name='isBillingDefault'}} has-error{{/if}}">
+    <label class="control-label"></label>
+    {{>afFieldInput name="isBillingDefault" value=isBillingDefault}}
+    {{#if afFieldIsInvalid name="isBillingDefault"}}
+    <span class="help-block">{{afFieldMessage name="isBillingDefault"}}</span>
+    {{/if}}
   </div>
-  <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='isShippingDefault'}} has-error{{/if}}">
-      <label class="control-label"></label>
-      {{>afFieldInput name="isShippingDefault" value=isShippingDefault}}
-      {{#if afFieldIsInvalid name="isShippingDefault"}}
-      <span class="help-block">{{afFieldMessage name="isShippingDefault"}}</span>
-      {{/if}}
-  </div>
-   <div class="col-sm-4 col-md-4 form-group{{#if afFieldIsInvalid name='isBillingDefault'}} has-error{{/if}}">
-      <label class="control-label"></label>
-      {{>afFieldInput name="isBillingDefault" value=isBillingDefault}}
-      {{#if afFieldIsInvalid name="isBillingDefault"}}
-      <span class="help-block">{{afFieldMessage name="isBillingDefault"}}</span>
-      {{/if}}
+  <div class="form-group{{#if afFieldIsInvalid name='isCommercial'}} has-error{{/if}}">
+    <label class="control-label"></label>
+    {{>afFieldInput name="isCommercial" value=isCommercial}}
+    {{#if afFieldIsInvalid name="isCommercial"}}
+    <span class="help-block">{{afFieldMessage name="isCommercial"}}</span>
+    {{/if}}
   </div>
 </div>
 </template>

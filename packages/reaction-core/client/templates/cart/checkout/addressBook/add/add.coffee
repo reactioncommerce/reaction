@@ -1,6 +1,6 @@
 Template.addressBookAdd.helpers
-  addressBook: ->
-    Meteor.user().profile?.addressBook
+  addressBookExists: ->
+    return Meteor.user().profile.addressBook
 
   thisAddress: ->
     thisAddress = {'fullName': Meteor.user().profile?.name}
@@ -10,14 +10,6 @@ Template.addressBookAdd.helpers
       thisAddress.city = Session.get("address").city
       thisAddress.region = Session.get("address").state
     thisAddress
-
-Template.addressBookForm.helpers
-  countryOptions: ->
-    options = []
-    shop = ReactionCore.Collections.Shops.findOne()
-    for country, locale of shop?.locales.countries
-      options.push {'label': locale.name, 'value': country}
-    return options
 
 Template.addressBookAdd.events
   'click #cancel-new, form submit': () ->
