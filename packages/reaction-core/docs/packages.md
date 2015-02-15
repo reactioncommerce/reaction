@@ -178,7 +178,7 @@ You may filter, or define using any of the optional registry properties:
  - name
  - enabled
 
- **registry*
+ **registry**
  - provides
  - route
  - template
