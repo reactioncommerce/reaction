@@ -12,14 +12,14 @@ Package.onUse(function (api) {
   api.use("templating");
   api.use("coffeescript");
   api.use("less");
-  api.use("reactioncommerce:core@0.4.0");
+  api.use("reactioncommerce:core@0.4.1",["client","server"]);
 
   api.addFiles([
     "common/collections.coffee", // any unique collections
     "common/routing.coffee" // add routing for administration templates
   ],["client","server"]);
 
-  api.add_files("server/register.coffee",["server"]); // register as a reaction package
+  api.addFiles("server/register.coffee",["server"]); // register as a reaction package
   api.addFiles("server/methods.coffee",["server"]); // server methods
   api.addFiles("server/fixtures.coffee",["server"]); // fixtures
   api.addFiles('private/data/Shipping.json', 'server', {isAsset: true});// fixture data
