@@ -749,15 +749,35 @@ Pagination Styles
 
 // @import "theme/cart/checkout/addressBook/addressBook.less"
 .address-book {
-  .active > * {
-      padding-left:1px;
-      font-size: 14px;
+  .list-group-item {
+    cursor: pointer;
+    font-size: @font-size-small;
+    a {
+      text-decoration: none;
+      color: @text-color;
+    }
+    a .active {color: @body-bg;}
+  }
+
+  .address-icons {
+    opacity:0.6;
+  }
+  .address-icons:hover {
+    opacity:0.9;
+    cursor: pointer;
+  }
+
+  .address-options {
+    padding-left: 10px;
+    margin-top: -25px;
+    padding-bottom: 15px;
+    .form-group {
+      height: 15px;
+      font-size: @font-size-small;
+    }
   }
 }
 
-.address-icons {
-  opacity:0.6;
-}
 
 
 // @import "theme/cart/checkout/checkout.less"
@@ -1220,7 +1240,7 @@ Dashboard Swiper Pagination Styles
 }
 
 
-// @import "theme/dashboard/dashboardIcon/dashboardIcon.less"
+// @import "theme/dashboard/console/console.less"
 .dashboard-state-active {
    color: @brand-success;
 }
@@ -1319,12 +1339,20 @@ Dashboard Swiper Pagination Styles
   }
 }
 
-.pkg-app-class {
+.pkg-core-class {
   .ribbon(50px,@brand-primary, #fff);
 }
 
-.pkg-feature-class {
+.pkg-stable-class {
   .ribbon(50px,@brand-success, #fff);
+}
+
+.pkg-prerelease-class {
+  .ribbon(50px,@brand-info, #fff);
+}
+
+.pkg-unstable-class {
+  .ribbon(50px,@brand-warning, #fff);
 }
 
 .pkg-app-card, .pkg-app-card:hover {
@@ -1336,23 +1364,6 @@ Dashboard Swiper Pagination Styles
 
 
 // @import "theme/dashboard/packages/packages.less"
-
-
-
-// @import "theme/dashboard/packages/panel/panel.less"
-.package-panel {
-  padding-top: 20px;
-  background-color: @dashboard-sidebar-bg;
-  height: 100%;
-  line-height: 30px;
-  font-size: @font-size-large;
-  font-weight: 300;
-
-  a:hover > .row {
-    background-color: @dashboard-row-bg;
-  }
-
-}
 
 
 
