@@ -106,7 +106,7 @@
                     "reviewPayment": "Подтверждение и Оплата",
                     "complete": "Готово"
                 },
-                "dashboardIcon": {
+                "consoleIcon": {
                     "iconTitle": "Показать дэшборд",
                     "text": "Дэшборд"
                 },

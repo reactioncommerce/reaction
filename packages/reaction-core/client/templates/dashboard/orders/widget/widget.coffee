@@ -1,10 +1,10 @@
-Template["reaction-commerce-widget"].helpers
+Template.coreOrderWidgets.helpers
 
 
-Template["reaction-commerce-widget"].events
+Template.coreOrderWidgets.events
 
 
-Template["reaction-commerce-widget"].rendered = ->
+Template.coreOrderWidgets.rendered = ->
   # get data
   now = new Date()
   age = 5
@@ -143,5 +143,5 @@ Template["reaction-commerce-widget"].rendered = ->
 
 
 
-Template["reaction-commerce-widget"].destroyed = ->
+Template.coreOrderWidgets.destroyed = ->
   # destroy graphs

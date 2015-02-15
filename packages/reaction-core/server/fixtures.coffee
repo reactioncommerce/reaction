@@ -110,22 +110,25 @@ loadFixtures = ->
         appId: Meteor.settings.public.facebook.appId,
         secret: Meteor.settings.facebook.secret
 
-  # Loop through ReactionCore.Packages object, which now has all packages added by
+  # Loop through ReactionRegistry.Packages object, which now has all packages added by
   # calls to register
   # removes package when removed from meteor, retriggers when package added
-  unless ReactionCore.Collections.Packages.find().count() is Object.keys(ReactionCore.Packages).length
-    _.each ReactionCore.Packages, (config, pkgName) ->
+  unless ReactionCore.Collections.Packages.find().count() is Object.keys(ReactionRegistry.Packages).length
+    _.each ReactionRegistry.Packages, (config, pkgName) ->
       Shops.find().forEach (shop) ->
         ReactionCore.Events.info "Initializing "+ pkgName
         ReactionCore.Collections.Packages.upsert {shopId: shop._id, name: pkgName},
           $setOnInsert:
             enabled: !!config.autoEnable
-            settings: config.defaultSettings
-            registry: config
+            settings: config.settings
+            registry: config.registry
+            shopPermissions: config.permissions
+            services: config.services
+
     # remove unused packages
     Shops.find().forEach (shop) ->
       ReactionCore.Collections.Packages.find().forEach (pkg) ->
-        unless _.has(ReactionCore.Packages, pkg.name)
+        unless _.has(ReactionRegistry.Packages, pkg.name)
           ReactionCore.Events.info ("Removing "+ pkg.name)
           ReactionCore.Collections.Packages.remove {shopId: shop._id, name: pkg.name}
 

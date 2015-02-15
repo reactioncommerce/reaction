@@ -133,13 +133,20 @@ Meteor.methods
     check(doc, ReactionCore.Schemas.Address)
     @unblock()
     currentUserId = Meteor.userId()
-    if doc.isDefault
+    if doc.isShippingDefault
       Meteor.users.update
         _id: currentUserId
-        "profile.addressBook.isDefault": true
+        "profile.addressBook.isShippingDefault": true
       ,
         $set:
-          "profile.addressBook.$.isDefault": false
+          "profile.addressBook.$.isShippingDefault": false
+    if doc.isBillingDefault
+      Meteor.users.update
+        _id: currentUserId
+        "profile.addressBook.isBillingDefault": true
+      ,
+        $set:
+          "profile.addressBook.$.isBillingDefault": false      
     # Add new address
     doc._id = Random.id()
 
@@ -153,13 +160,20 @@ Meteor.methods
     @unblock()
     currentUserId = Meteor.userId()
     #reset existing default
-    if doc.isDefault
+    if doc.isShippingDefault
       Meteor.users.update
         _id: currentUserId
-        "profile.addressBook.isDefault": true
+        "profile.addressBook.isShippingDefault": true
       ,
         $set:
-          "profile.addressBook.$.isDefault": false
+          "profile.addressBook.$.isShippingDefault": false
+    if doc.isBillingDefault
+      Meteor.users.update
+        _id: currentUserId
+        "profile.addressBook.isBillingDefault": true
+      ,
+        $set:
+          "profile.addressBook.$.isBillingDefault": false      
     # update existing address
     Meteor.users.update
       _id: currentUserId

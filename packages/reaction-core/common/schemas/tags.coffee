@@ -19,6 +19,7 @@ ReactionCore.Schemas.Tag = new SimpleSchema
   shopId:
     type: String
     index: 1
+    autoValue: ReactionCore.shopIdAutoValue
   createdAt:
     type: Date
   updatedAt:

@@ -3,14 +3,6 @@
 # or replaced, but are meant to be generalized in nature.
 ###
 Template.coreCheckoutShipping.helpers
-  # retrieves enabled shipping package templates and returns as array
-  shippingTemplates: ->
-    return ReactionCore.Collections.Packages.find({
-      'enabled':true,
-      'registry.shippingTemplate': {$exists: true},
-      'registry.provides': {$in: ["shippingMethod"]}
-      })
-
   # retrieves current rates and updates shipping rates
   # in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: () ->

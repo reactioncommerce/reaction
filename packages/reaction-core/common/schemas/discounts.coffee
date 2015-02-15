@@ -38,6 +38,7 @@ ReactionCore.Schemas.DiscountRules = new SimpleSchema
 ReactionCore.Schemas.Discounts = new SimpleSchema
   shopId:
     type: String
+    autoValue: ReactionCore.shopIdAutoValue
   beginDate:
     type: Date
     optional: true

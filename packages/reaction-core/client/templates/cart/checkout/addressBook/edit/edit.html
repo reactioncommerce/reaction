@@ -7,12 +7,12 @@
 <div class="panel-body">
 {{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookEditForm" doc=thisAddress type="method" meteormethod="addressBookUpdate" resetOnSuccess=false}}
   <fieldset>
-      {{>addressBookForm}}
-      <div class="row text-right">
-          {{>afFieldInput name="_id" value=_id type="hidden"}}
-          <button type="submit" class="btn btn-primary update" data-i18n="app.saveAndContinue">Save and Continue</button>
-          <button type="reset" class="btn btn-default" id="cancel-address-edit" data-i18n="app.cancel">Cancel</button>
-      </div>
+    {{>addressBookForm}}
+    <div class="row text-right">
+        {{>afFieldInput name="_id" value=_id type="hidden"}}
+        <button type="submit" class="btn btn-primary update" data-i18n="app.saveAndContinue">Save and Continue</button>
+        <button type="reset" class="btn btn-default" id="cancel-address-edit" data-i18n="app.cancel">Cancel</button>
+    </div>
   </fieldset>
 {{/autoForm}}
 </div>

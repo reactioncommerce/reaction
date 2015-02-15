@@ -1,39 +1,9 @@
-Template.checkoutAddressBook.helpers
-  addressMode: ->
-      Session.get "addressBookView"
-
-  addressBookView: (mode)->
-    mode = this.mode
-    if mode?
-      switch mode
-        when "view" then return Template.addressBookGrid
-        when "addAddress" then return Template.addressBookAdd
-        else return Template.addressBookEdit
-    else
-      if Meteor.user().profile?.addressBook
-        Session.setDefault "addressBookView", "view"
-        return Template.addressBookGrid
-      else
-        Session.setDefault "addressBookView", "addAddress"
-        return Template.addressBookAdd
-
-
-Template.checkoutAddressBook.events
-  'click .address-edit-icon': (event,template) ->
-    Session.set "addressBookView", this._id
-
-  'click #newAddress': () ->
-    if Session.equals "addressBookView", "addAddress"
-      Session.set "addressBookView", "view"
-    else
-      Session.set "addressBookView", "addAddress"
-
 Template.addressBookGrid.helpers
   addressBook: ->
     Meteor.user().profile?.addressBook
 
   selectedBilling: ->
-    if @.isDefault
+    if @.isBillingDefault
       # console.log "billingDefault", @._id
       unless Session.get "billingUserAddressId"
         # console.log "set default billing: ", @._id
@@ -48,7 +18,7 @@ Template.addressBookGrid.helpers
       return "active"
 
   selectedShipping: ->
-    if @.isDefault
+    if @.isShippingDefault
       # console.log "shippingDefault",@._id
       unless Session.get "shippingUserAddressId"
         # console.log "set default shipping: ",@._id
@@ -62,6 +32,7 @@ Template.addressBookGrid.helpers
         CartWorkflow.shipmentAddress(@)
       return "active"
 
+
 Template.addressBookGrid.events
   'click .address-ship-to': (event,template) ->
     CartWorkflow.shipmentAddress(@)
@@ -70,5 +41,3 @@ Template.addressBookGrid.events
   'click .address-bill-to': (event,template) ->
     CartWorkflow.paymentAddress(@)
     Session.set("billingUserAddressId", @._id)
-
-

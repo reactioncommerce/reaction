@@ -5,28 +5,45 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
   shopId:
     type: String
     index: 1
-    autoValue: ->
-      if this.isInsert
-        return ReactionCore.getShopId() or "1" if Meteor.isClient
-        # force the correct value upon insert
-        return ReactionCore.getShopId()
-      else
-        # don't allow updates
-        this.unset();
+    autoValue: ReactionCore.shopIdAutoValue
   name:
     type: String
     index: 1
   enabled:
     type: Boolean
     defaultValue: true
-  property:
-    type: String
-    optional: true
+    #configured in fixtures with autoEnable:true
   settings:
     type: Object
     optional: true
     blackbox: true
-  registry:
-    type: Object
+  shopPermissions:
+    type: [Object]
     optional: true
     blackbox: true
+  registry:
+    type: [Object]
+    optional: true
+  'registry.$.provides':
+    type: String
+  'registry.$.route':
+    type: String
+    optional: true
+  'registry.$.template':
+    type: String
+    optional: true
+  'registry.$.description':
+    type: String
+    optional: true
+  'registry.$.icon':
+    type: String
+    optional: true
+  'registry.$.label':
+    type: String
+    optional: true
+  'registry.$.container':
+    type: String
+    optional: true
+  'registry.$.cycle':
+    type: Number
+    optional: true

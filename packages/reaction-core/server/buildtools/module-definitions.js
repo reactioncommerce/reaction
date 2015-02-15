@@ -21,7 +21,7 @@ moduleDefinitions = {
     ]},
     "dashboard":{less:[
     'theme/dashboard/dashboard.less',
-    'theme/dashboard/dashboardIcon/dashboardIcon.less',
+    'theme/dashboard/console/console.less',
     'theme/dashboard/orders/details/detail.less',
     'theme/dashboard/orders/orders.less',
     'theme/dashboard/orders/social/orderSocial.less',
@@ -34,7 +34,6 @@ moduleDefinitions = {
     'theme/dashboard/packages/grid/grid.less',
     'theme/dashboard/packages/grid/package/package.less',
     'theme/dashboard/packages/packages.less',
-    'theme/dashboard/packages/panel/panel.less',
     'theme/dashboard/settings/settingsAccount/shopMember/shopMember.less',
     'theme/dashboard/settings/settingsGeneral/settingsGeneral.less',
     'theme/dashboard/widget/widget.less'

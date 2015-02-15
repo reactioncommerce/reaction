@@ -1,0 +1,10 @@
+ <template name="consoleIcon">
+ {{#if hasDashboardAccess}}
+      <li class="dropdown-apps-icon">
+        <a id="dashboard-drawer-icon" title="{{i18n 'consoleIcon.iconTitle'}}">
+          <i class="{{toggleStateClass}}"></i>
+          <span class="icon-text" data-i18n="consoleIcon.text">Metrics</span>
+        </a>
+      </li>
+{{/if}}
+</template>

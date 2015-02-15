@@ -1,11 +1,9 @@
 <template name="packagesGrid">
   <div class="available-pkg-grid">
-    {{#each allPackages}}
-      {{#unless hidden}}
+    {{#each reactionApps provides='dashboard'}}
       <div class="col-sm-3">
         {{> gridPackage}}
       </div>
-      {{/unless}}
     {{/each}}
   </div>
 </template>

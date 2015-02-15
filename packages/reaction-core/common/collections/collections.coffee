@@ -57,12 +57,7 @@ ReactionCore.Collections.Orders = Orders = @Orders = new Mongo.Collection "Order
 ReactionCore.Collections.Orders.attachSchema [ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
 
 # Packages
-ReactionCore.Collections.Packages = new Mongo.Collection "Packages",
-  transform: (pkg) ->
-    pkg.info = ->
-      return ReactionCore.Packages[@name]
-    return pkg
-
+ReactionCore.Collections.Packages = new Mongo.Collection "Packages"
 ReactionCore.Collections.Packages.attachSchema ReactionCore.Schemas.PackageConfig
 
 # Products

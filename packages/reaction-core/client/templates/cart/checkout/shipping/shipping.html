@@ -5,8 +5,8 @@
       <span data-i18n="checkoutShipping.selectShippingOption">Select shipping option</span>
     </h3>
   </div>
-  {{#each shippingTemplates}}
-    {{> Template.dynamic template=this.registry.shippingTemplate}}
+  {{#each reactionApps provides='shippingMethod' enabled=true}}
+    {{> Template.dynamic template=template}}
   {{else}}
     <div class="panel-body">
       <div class="alert alert-danger">
