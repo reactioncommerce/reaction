@@ -85,6 +85,9 @@ RUN chmod +x /usr/bin/entrypoint.sh
 # Expose container port 8080 to the host (outside the container)
 EXPOSE 8080
 
+# Expose mongodb port
+EXPOSE 27017
+
 # Some housekeeping
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /meteor/src
 
