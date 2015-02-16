@@ -1,22 +1,11 @@
 {
- "isDebug": "info",
-  "baseUrl": "http://localhost:3000",
-  "googleAnalyticsProperty": "",
-  "facebook": {
-    "secret": ""
-  },
+  "ROOT_URL": "",
+  "MONGO_URL": "",
+  "MAIL_URL": "",
   "reaction": {
-    "METEOR_USER": "Administrator",
-    "METEOR_AUTH": "admin",
-    "METEOR_EMAIL": "root@localhost"
+    "METEOR_USER": "",
+    "METEOR_AUTH": "",
+    "METEOR_EMAIL": ""
   },
-  "paypal": {
-    "client_id": "",
-    "client_secret": ""
-  },
-  "public": {
-    "facebook": {
-      "appId": ""
-    }
-  }
+  "isDebug": "info"
 }
