@@ -34,7 +34,7 @@
                     "with": "com",
                     "error": {
                         "emailRequired": "E-mail é obrigatório.",
-                        "minChar": "Senha requer um mínimo de 7 caracteres.",
+                        "minChar": "Senha requer um mínimo de 6 caracteres.",
                         "pwOneDigit": "Senha deve conter pelo menos um digito.",
                         "pwOneLetter": "Senha deve conter pelo menos uma letra.",
                         "signInRequired": "Você precisa estar logado para fazer isso.",

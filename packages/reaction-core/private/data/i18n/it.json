@@ -50,7 +50,7 @@
                     },
                     "error": {
                         "emailRequired": "L'Email è obbligatoria.",
-                        "minChar": "La Password deve essere di almeno 7 caratteri.",
+                        "minChar": "La Password deve essere di almeno 6 caratteri.",
                         "pwdsDontMatch": "Le Password non corrispondono",
                         "pwOneDigit": "La Password deve contenere almeno un numero.",
                         "pwOneLetter": "La Password deve contenere 1 lettera.",
@@ -77,7 +77,7 @@
                         "mustBeLoggedIn": "Devi aver eseguito l'accesso",
                         "needToSetUsernameOrEmail": "È necessario specificare un nome utente o un indirizzo email",
                         "oldPasswordFormat": "vecchio formato password",
-                        "Password may not be empty": "La password non può essere vuota",
+                        "passwordMayNotBeEmpty": "La password non può essere vuota",
                         "signupsForbidden": "Registrazioni non consentite",
                         "tokenExpired": "Codice scaduto",
                         "tokenHasInvalidEmailAddress": "Il codice ha un indirizzo email non valido",

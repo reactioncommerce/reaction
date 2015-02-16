@@ -51,7 +51,7 @@
                     },
                     "error": {
                         "emailRequired": "Es muss eine E-Mail-Adressen angegeben werden.",
-                        "minChar": "Das Passwort muss mindesten 7 Zeichen lang sein.",
+                        "minChar": "Das Passwort muss mindesten 6 Zeichen lang sein.",
                         "pwdsDontMatch": "Die Passwörter stimmen nicht überein.",
                         "pwOneDigit": "Das Passwort muss mindestens eine Ziffer enthalten.",
                         "pwOneLetter": "Das Passwort muss mindestens einen Buchstaben enthalten.",

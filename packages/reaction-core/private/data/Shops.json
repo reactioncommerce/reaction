@@ -381,6 +381,88 @@
             "localhost"
         ],
         "email": "admin@ongoworks.com",
+        "languages": [
+            {
+              "label": "العربية",
+              "i18n": "ar",
+              "enabled": true
+            },
+            {
+              "label": "中文(简体)",
+              "i18n": "cn",
+              "enabled": true
+            },
+            {
+              "label": "České",
+              "i18n": "cs",
+              "enabled": true
+            },
+            {
+              "label": "Deutsche",
+              "i18n": "de",
+              "enabled": true
+            },
+            {
+              "label": "English",
+              "i18n": "en",
+              "enabled": true
+            },
+            {
+              "label": "Español",
+              "i18n": "es",
+              "enabled": true
+            },
+            {
+              "label": "Français",
+              "i18n": "fr",
+              "enabled": true
+            },
+            {
+              "label": "עברית",
+              "i18n": "he",
+              "enabled": true
+            },
+            {
+              "label": "မြန်မာဘာသာ",
+              "i18n": "my",
+              "enabled": true
+            },
+            {
+              "label": "Italiano",
+              "i18n": "it",
+              "enabled": true
+            },
+            {
+              "label": "Polski",
+              "i18n": "pl",
+              "enabled": true
+            },
+            {
+              "label": "Português",
+              "i18n": "pt",
+              "enabled": true
+            },
+            {
+              "label": "Русский",
+              "i18n": "ru",
+              "enabled": true
+            },
+            {
+              "label": "Slovenščina",
+              "i18n": "sl",
+              "enabled": true
+            },
+            {
+              "label": "Svenska",
+              "i18n": "sv",
+              "enabled": true
+            },
+            {
+              "label": "tiếng Việt",
+              "i18n": "vi",
+              "enabled": true
+            }
+        ],
         "locales": {
             "continents": {
                 "AF": "Africa",

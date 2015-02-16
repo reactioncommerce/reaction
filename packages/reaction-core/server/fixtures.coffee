@@ -28,17 +28,22 @@ PackageFixture = ->
       return
 
   loadI18n: (collection) ->
+    languages = []
     return if collection.find().count() > 0
-    languages = ["ar","cn","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
+    # load languages from shops array
+    shop = ReactionCore.Collections.Shops.findOne()
+    # find every file in private/data/i18n where <i18n>.json
     ReactionCore.Events.info "Loading fixture data for languages to " + collection._name
-    for language in languages
-      json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")
+    for language in shop.languages
+      json = EJSON.parse Assets.getText("private/data/i18n/" + language.i18n + ".json")
       for item,value in json
         collection._collection.insert item, (error, result) ->
           if error
-            ReactionCore.Events.info (error + "Error adding " + language + " items to " + collection._name)
+            ReactionCore.Events.info (error + "Error adding " + language.i18n + " items to " + collection._name)
             return
-        ReactionCore.Events.info ("Success adding "+ language + " to " + collection._name)
+        ReactionCore.Events.info ("Success adding "+ language.i18n + " to " + collection._name)
+    return
+
 
 # instantiate fixtures
 @Fixtures = new PackageFixture

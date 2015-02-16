@@ -2,7 +2,6 @@
     {
         "language": "English",
         "i18n": "en",
-        "entryText": "English",
         "translation": {
             "core": {
                 "languages": {
@@ -223,7 +222,7 @@
                     "error": {
                         "emailRequired": "Email is required.",
                         "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
-                        "minChar": "7 character minimum password.",
+                        "minChar": "6 character minimum password.",
                         "pwdsDontMatch": "Passwords don't match",
                         "pwOneDigit": "Password must have at least one digit.",
                         "pwOneLetter": "Password requires 1 letter.",
@@ -250,7 +249,7 @@
                         "mustBeLoggedIn": "Must be logged in",
                         "needToSetUsernameOrEmail": "Need to set a username or email",
                         "oldPasswordFormat": "old password format",
-                        "Password may not be empty": "Password may not be empty",
+                        "passwordMayNotBeEmpty": "Password may not be empty",
                         "signupsForbidden": "Signups forbidden",
                         "tokenExpired": "Token expired",
                         "tokenHasInvalidEmailAddress": "Token has invalid email address",

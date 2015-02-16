@@ -77,7 +77,7 @@
                         "mustBeLoggedIn": "يجب ان تسجل دخولك",
                         "needToSetUsernameOrEmail": "يجب تعيين اسم مستخدم او بريد الكترونى",
                         "oldPasswordFormat": "صيغة كلمة السر القديمة",
-                        "Password may not be empty": "كلمة السر لا يمكن ان تترك فارغة",
+                        "passwordMayNotBeEmpty": "كلمة السر لا يمكن ان تترك فارغة",
                         "signupsForbidden": "فتح الحسابات غير مسموح",
                         "tokenExpired": "انتهى زمن الرمز",
                         "tokenHasInvalidEmailAddress": "الرمز يحتوى على بريد الكترونى غير صالح",

@@ -40,7 +40,7 @@
                     },
                     "error": {
                         "emailRequired": "Email phải có.",
-                        "minChar": "Mật khẩu phải có ít nhất 7 ký tự.",
+                        "minChar": "Mật khẩu phải có ít nhất 6 ký tự.",
                         "pwOneDigit": "Mật khẩu phải có ít nhất 1 chữ số.",
                         "pwOneLetter": "Mật khẩu phải có 1 ký tự chữ.",
                         "signInRequired": "Phải đăng nhập.",
