@@ -70,7 +70,7 @@ Meteor.startup ->
   Tracker.autorun () ->
     sessionLanguage = Session.get "language"
     Meteor.subscribe "Translations", sessionLanguage, () ->
-      resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()
+      resources =  ReactionCore.Collections.Translations.find({},{fields:{_id: 0},reactive:false}).fetch()
       # map multiple translations into i18next format
       resources = resources.reduce (x, y) ->
         x[y.i18n]= y.translation
