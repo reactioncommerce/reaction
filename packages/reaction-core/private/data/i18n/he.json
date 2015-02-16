@@ -2,14 +2,10 @@
     {
         "language": "Hebrew",
         "i18n": "he",
-        "entryText": "עברית",
         "translation": {
             "core": {
                 "languages": {
-                    "select": "בחר שפה",
-                    "english": "English",
-                    "spanish": "Español",
-                    "hebrew": "עברית"
+                    "select": "בחר שפה"
                 },
                 "app": {
                     "saveAndContinue": "שמור והמשך",
@@ -176,7 +172,7 @@
                     "error": {
                         "emailRequired": "חובה להזין כתובת דוא\"ל",
                         "passwordMustBeAtLeast6CharactersLong": "הסיסמא חייבת להיות באורך של לפחות 6 סימנים.",
-                        "minChar": "חובה להזין סיסמא בעלת 7 תווים לפחות.",
+                        "minChar": "חובה להזין סיסמא בעלת 6 תווים לפחות.",
                         "pwdsDontMatch": "הסיסמאות אינן זהות.",
                         "pwOneDigit": "הסיסמא חייבת לכלול ספרה אחת לפחות.",
                         "pwOneLetter": "הסיסמא חייבת לכלול אות אחת לפחות.",
@@ -203,7 +199,7 @@
                         "mustBeLoggedIn": "חובה להיכנס למערכת כדי לבצע פעולה זו.",
                         "needToSetUsernameOrEmail": "חובה להגדיר שם משתמש או דוא\"ל",
                         "oldPasswordFormat": "פורמט סיסמא ישן",
-                        "Password may not be empty": "הסיסמא לא יכולה להיות ריקה",
+                        "passwordMayNotBeEmpty": "הסיסמא לא יכולה להיות ריקה",
                         "signupsForbidden": "אסור להירשם",
                         "tokenExpired": "ה-token פג תוקף",
                         "tokenHasInvalidEmailAddress": "ה-token מכיל כתובת דוא\"ל שגוייה",

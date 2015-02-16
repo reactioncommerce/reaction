@@ -77,7 +77,7 @@
                         "mustBeLoggedIn": "Vous devez être connecté",
                         "needToSetUsernameOrEmail": "Vous devez renseigner un nom d'utilisateur ou une adresse email",
                         "oldPasswordFormat": "Ancien format de mot de passe",
-                        "Password may not be empty": "Le mot de passe ne peut être vide",
+                        "passwordMayNotBeEmpty": "Le mot de passe ne peut être vide",
                         "signupsForbidden": "La création de compte est interdite",
                         "tokenExpired": "Jeton expiré",
                         "tokenHasInvalidEmailAddress": "Le jeton contient une adresse email invalide",

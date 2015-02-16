@@ -50,7 +50,7 @@
                     },
                     "error": {
                         "emailRequired": "Email je povinný.",
-                        "minChar": "minimální délka hesla je 7 znaků.",
+                        "minChar": "minimální délka hesla je 6 znaků.",
                         "pwdsDontMatch": "Hesla nesouhlasí",
                         "pwOneDigit": "Heslo musí obsahovat alespoň jednu číslici.",
                         "pwOneLetter": "Heslo musí obsahovat alespoň 1 slovo.",
@@ -78,7 +78,7 @@
                         "mustBeLoggedIn": "Uživatel musí být přihlášen",
                         "needToSetUsernameOrEmail": "Je třeba zadat uživatelské jméno nebo email",
                         "oldPasswordFormat": "starý formát hesla",
-                        "Password may not be empty": "Heslo nemůže být prázdné",
+                        "passwordMayNotBeEmpty": "Heslo nemůže být prázdné",
                         "signupsForbidden": "Registrace je zakázaná",
                         "tokenExpired": "Token vypršel",
                         "tokenHasInvalidEmailAddress": "Token má neplatnou emailovou adresu",

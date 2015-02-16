@@ -50,7 +50,7 @@
                     },
                     "error": {
                         "emailRequired": "Wymagany jest adres email.",
-                        "minChar": "7 znaków to minimalna długość hasła.",
+                        "minChar": "6 znaków to minimalna długość hasła.",
                         "pwdsDontMatch": "Hasła są różne",
                         "pwOneDigit": "Hasło musi zawierać przynajmniej jedną cyfrę.",
                         "pwOneLetter": "Hasło musi zawierać 1 literę.",
@@ -77,7 +77,7 @@
                         "mustBeLoggedIn": "Musisz być zalogowany",
                         "needToSetUsernameOrEmail": "Wymagane ustawienie nazwy użytkownika lub adresu email",
                         "oldPasswordFormat": "stary format hasła",
-                        "Password may not be empty": "Hasło nie może być puste",
+                        "passwordMayNotBeEmpty": "Hasło nie może być puste",
                         "signupsForbidden": "Rejestracja zabroniona",
                         "tokenExpired": "Token wygasł",
                         "tokenHasInvalidEmailAddress": "Token ma niewłaściwy adres email",
