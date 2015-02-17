@@ -144,13 +144,14 @@ A registry object can be any combination of properties, with `provides` being th
 *Note: The registry is currently refreshed only on update/deleting the package record in the database, or on delete/addition of the package.*
 
 **Registry properties**
+
 You may filter, or define using any of the optional registry properties:
 
-**package**
+**package:**
   * name
   * enabled
 
-**registry**
+**registry:**
   - provides
   - route
   - template
@@ -165,7 +166,10 @@ You may filter, or define using any of the optional registry properties:
 
 
 **Dynamic Templates**
-The `provides` property accepts a template name as value, loading it as `dynamic template` where the other conditions match a request from the `reactionApps` helper.
+
+The `provides` property is a "placement" value, loading it as `dynamic template` where the other conditions match a request from the `reactionApps` helper.
+
+The following `provides` values are defined in reaction-core:
 
  * widget
  * paymentMethod
@@ -196,7 +200,7 @@ To add a new link to the `console navbar`:
     }
 ```
 
-From templates, you can use the `reactionApps` helper to load registry objects.
+From templates, you can create additional dynamic template `provides` using the `reactionApps` helper to load registry objects.
 
 ```html
   {{#each reactionApps provides="settings" name=name group=group}}
