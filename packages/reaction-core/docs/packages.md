@@ -14,17 +14,17 @@ For example:
   mkdir ~/reactioncommerce
   cd ~/reactioncommerce
   git clone https://github.com/reactioncommerce/reaction.git
+
+  cd reaction/packages
   git clone https://github.com/reactioncommerce/reaction-core.git
   git clone https://github.com/reactioncommerce/reaction-core-theme.git
-  ln -s ~/reactioncommerce/reaction-core reaction/packages/reaction-core
-  ln -s ~/reactioncommerce/reaction-core-theme reaction/packages/reaction-core-theme
 ```
 
-It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone (installed) Reaction packages to ensure you're working with a complete development enviroment.
+It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone all used Reaction packages to ensure you're working with a complete development enviroment.
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
 
-*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain configuration settings such as admin user credentials and paypal authentication between `meteor reset`. Start with `meteor --settings settings/settings.json`*
+*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain authentication and meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`*
 
 # Create packages
 
@@ -77,7 +77,7 @@ See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on
 
 ##ReactionCore.registerPackage
 To integrate a package into the rest of Reaction Commerce use
-`ReactionCore.registerPackage` to describes package details
+`ReactionCore.registerPackage` to describe package details
 and provide some common integration hooks.
 
 Integrate packages with reaction-core by adding **server/register.coffee**
@@ -141,43 +141,15 @@ The registry is used to define routes, dynamic templates, and some package UI ha
 
 A registry object can be any combination of properties, with `provides` being the only required property.
 
-**Current dynamic template types:**
+*Note: The registry is currently refreshed only on update/deleting the package record in the database, or on delete/addition of the package.*
 
- * widget
- * paymentMethod
- * shippingMethod
- * settings
- * shortcut
- * dashboard
- * console
-
-For example, to add a new dashboard widget:
-
-```
-    # order widgets
-    {
-      template: "coreOrderWidgets"
-      provides: 'widget'
-    }
-```
-
-
-From template you can use the `reactionApps` helper to load registry objects.
-
-```html
-  {{#each reactionApps provides="settings" name=name group=group}}
-    <a href="{{pathFor route}}" class="pkg-settings" title="{{i18n 'app.settings'}}">
-      <i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i>
-    </a>
-  {{/each}}
-```
-
+**Registry properties**
 You may filter, or define using any of the optional registry properties:
 
 **package**
   * name
   * enabled
- 
+
 **registry**
   - provides
   - route
@@ -191,11 +163,52 @@ You may filter, or define using any of the optional registry properties:
  - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
  - `container` group alike for presentation *example: used to connect settings on dashboard app card registry object*
 
-You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
+
+**Dynamic Templates**
+The `provides` property accepts a template name as value, loading it as `dynamic template` where the other conditions match a request from the `reactionApps` helper.
+
+ * widget
+ * paymentMethod
+ * shippingMethod
+ * settings
+ * shortcut
+ * dashboard
+ * console
+
+To add a new `settings` link to the app card:
+
+```
+    # settings
+    {
+      route: "dashboard/package/settings"
+      provides: 'settings'
+      icon: "fa fa-user-plus"
+    }
+```
+
+To add a new link to the `console navbar`:
+
+```
+    {
+      route: "<custom-route>"
+      label: '<My Link>'
+      provides: 'console'
+    }
+```
+
+From templates, you can use the `reactionApps` helper to load registry objects.
+
+```html
+  {{#each reactionApps provides="settings" name=name group=group}}
+    <a href="{{pathFor route}}" class="pkg-settings" title="{{i18n 'app.settings'}}">
+      <i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i>
+    </a>
+  {{/each}}
+```
 
 **Widgets**
 
-Add widgets to your package to be included on the `dashboard console` by including a registry entry and a template that provides 'widget'.
+Add widgets to your package to be included on the `console dashboard` by including a registry entry and a template that provides 'widget'.
 
     <template name="reactionHelloworldWidget">
         <div class="dashboard-widget">
@@ -220,6 +233,8 @@ Include in **server/register.coffee** registry:
       provides: 'widget'
     }
 ```
+
+You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
 ###Permissions
 
