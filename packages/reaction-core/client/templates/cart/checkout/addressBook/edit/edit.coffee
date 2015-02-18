@@ -4,7 +4,7 @@ Template.addressBookEdit.helpers
     for address in Meteor.user().profile.addressBook
       if address._id is addressId
         thisAddress = address
-    thisAddress
+    return thisAddress
 
 
 Template.addressBookEdit.events
