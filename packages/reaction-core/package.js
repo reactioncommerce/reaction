@@ -402,6 +402,7 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/es.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/hr.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/my.json', 'server', {isAsset: true});

@@ -423,6 +423,11 @@
               "enabled": true
             },
             {
+              "label": "Hrvatski",
+              "i18n": "hr",
+              "enabled": true
+            },
+            {
               "label": "မြန်မာဘာသာ",
               "i18n": "my",
               "enabled": true
