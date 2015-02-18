@@ -7,6 +7,10 @@ Meteor.methods
   # add parentId to create children
   ###
   cloneVariant: (productId, variantId, parentId) ->
+    check productId, String
+    check variantId, String
+    check parentId, Match.Optional(String)
+    # clone variant
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne(productId)
@@ -47,6 +51,9 @@ Meteor.methods
   # should only be seen when all variants have been deleted from a product.
   ###
   createVariant: (productId, newVariant) ->
+    check productId, String
+    check newVariant, Match.OneOf(String, null)
+    #create variant
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     newVariantId = Random.id()
@@ -63,6 +70,8 @@ Meteor.methods
   # only need to supply updated information
   ###
   updateVariant: (variant) ->
+    check variant, ReactionCore.Schemas.ProductVariant
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variant._id
@@ -77,6 +86,8 @@ Meteor.methods
   # update whole variants array
   ###
   updateVariants: (variants) ->
+    check variants, [ReactionCore.Schemas.ProductVariant]
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variants[0]._id
@@ -90,6 +101,9 @@ Meteor.methods
   # product tree
   ###
   cloneProduct: (product) ->
+    check product, Object
+    #check product, ReactionCore.Schemas.Product
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     #TODO: Really should be a recursive update of all _id
@@ -131,6 +145,7 @@ Meteor.methods
   ###
   deleteVariant: (variantId) ->
     check variantId, String
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     #what will we be deleteing?
@@ -172,13 +187,16 @@ Meteor.methods
   ###
   # delete a product and unlink it from all media
   ###
-  deleteProduct: (id) ->
+  deleteProduct: (productId) ->
+    check productId, String
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
-    numRemoved = Products.remove id
+
+    # delete product
+    numRemoved = Products.remove productId
     if numRemoved > 0
       # unlink media
-      Media.update 'metadata.productId': id,
+      Media.update 'metadata.productId': productId,
         $unset:
           'metadata.productId': ""
           'metadata.variantId': ""
@@ -192,6 +210,10 @@ Meteor.methods
   # update single product field
   ###
   updateProductField: (productId, field, value) ->
+    check productId, String
+    check field, String
+    check value, String
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     # value = Spacebars.SafeString(value)
@@ -205,6 +227,11 @@ Meteor.methods
   # tagName + tagId will update existing
   ###
   updateProductTags: (productId, tagName, tagId, currentTagId) ->
+    check productId, String
+    check tagName, String
+    check tagId, Match.OneOf(String, null)
+    check currentTagId, Match.Optional(String)
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
@@ -234,6 +261,9 @@ Meteor.methods
   # remove product tag
   ###
   removeProductTag: (productId, tagId) ->
+    check productId, String
+    check tagId, String
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
@@ -250,8 +280,12 @@ Meteor.methods
   # set or toggle product handle
   ###
   setHandleTag: (productId, tagId) ->
+    check productId, String
+    check tagId, String
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
+
     product = Products.findOne(productId)
     tag = Tags.findOne(tagId)
     #if is already assigned, unset (toggle off)
@@ -272,6 +306,9 @@ Meteor.methods
   # position is an object with tag,position,dimensions
   ###
   updateProductPosition: (productId, positionData) ->
+    check productId, String
+    check positionData, Object
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
@@ -294,6 +331,10 @@ Meteor.methods
             ReactionCore.Events.warn error if error
 
   updateMetaFields: (productId, updatedMeta, meta) ->
+    check productId, String
+    check updatedMeta, Object
+    check meta, Match.Optional(String)
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
     if meta

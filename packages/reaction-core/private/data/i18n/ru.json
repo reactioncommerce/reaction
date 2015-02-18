@@ -5,7 +5,7 @@
         "translation": {
             "core": {
                 "languages": {
-                    "select": "Выбрать язык",
+                    "select": "Выбрать язык"
                 },
                 "app": {
                     "save-and-continue": "Сохранить и продолжить",

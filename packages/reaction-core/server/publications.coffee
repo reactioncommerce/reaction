@@ -140,13 +140,18 @@ Meteor.publish 'product', (productId) ->
 ###
 # orders collection
 ###
-Meteor.publish 'orders', ->
+Meteor.publish 'orders', (userId) ->
+  check userId, Match.Optional(String)
+  # only admin can get all orders
   if Roles.userIsInRole(this.userId, ['admin','owner'])
     return Orders.find( shopId: ReactionCore.getShopId(@) )
   else
     return []
 
 Meteor.publish 'userOrders', (userId) ->
+  check userId, Match.OneOf(String, null)
+  unless userId then return []
+  # return user orders
   return Orders.find
     shopId: ReactionCore.getShopId(@)
     userId: this.userId

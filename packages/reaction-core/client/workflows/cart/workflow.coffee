@@ -34,7 +34,7 @@ CartWorkflow = StateMachine.create(
     { name: "fetchShipmentMethods", from: "shipmentAddress", to: "shipmentMethods" }
     { name: "shipmentMethod", from: ["fetchShipmentMethods","shipmentMethod","payment"], to: "payment" }
     { name: "payment", from :["shipmentAddress","billingAddress","shipmentMethod"], to: "paymentAuth" }
-    { name: "paymentMethod", from: "payment", to: "paymentAuth"}
+    { name: "paymentMethod", from: ["payment","paymentAuth","fetchShipmentMethods"], to: "paymentAuth"}
     { name: "paymentAuth", from: "paymentMethod", to: "inventoryAdjust"}
     { name: "inventoryAdjust", from: "paymentAuth", to: "orderCreated"}
     { name: "orderCreated", from: "inventoryAdjust"  }
@@ -67,13 +67,17 @@ CartWorkflow = StateMachine.create(
         @.shipmentAddress()
 
     onshipmentAddress: (event, from, to, address) ->
-      Cart.update Cart.findOne()._id, {$set:{"shipping.address":address}} if address
+      cartId = Cart.findOne()._id
+      Meteor.call "updateShipmentQuotes", cartId #refresh rates with new address
+      Cart.update cartId, {$set:{"shipping.address":address}} if address
 
     onpaymentAddress: (event, from, to, address) ->
       Cart.update Cart.findOne()._id, {$set:{"payment.address":address}} if address
 
     onfetchshipmentMethods: (event, from, to) ->
-      #we could get rates here
+      #we could get additional rates here
+      # cartId = Cart.findOne()._id
+      # Meteor.call "updateShipmentQuotes", cartId #refresh rates with new address
 
     onshipmentMethod: (event, from, to, method) ->
       Cart.update Cart.findOne()._id, {$set:{"shipping.shipmentMethod":method}} if method
@@ -85,7 +89,7 @@ CartWorkflow = StateMachine.create(
     onpaymentAuth: (event, from, to, paymentMethod) ->
       #before payment really should be async
       Meteor.setTimeout (->
-        Meteor.call "copyCartToOrder", Cart.findOne(), (error, result) ->
+        Meteor.call "copyCartToOrder", Cart.findOne()._id, (error, result) ->
           if error
             console.log "An error occurred saving the order. : " +error
           else #go to order success
