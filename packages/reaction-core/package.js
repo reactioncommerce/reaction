@@ -33,9 +33,12 @@ Package.onUse(function (api) {
     api.use("http");
     api.use("coffeescript");
     api.use("underscore");
-    api.use('blaze');
-    api.use('jquery');
-    api.use('email');
+    api.use("blaze");
+    api.use("jquery");
+    api.use("email");
+    api.use("check");
+    api.use("browser-policy");
+    api.use("audit-argument-checks");
     api.use("amplify@1.0.0");
 
     //community packages
@@ -43,7 +46,7 @@ Package.onUse(function (api) {
     api.use("nemo64:bootstrap@3.3.1_1","server", {'weak': 1});
     api.use("d3js:d3@3.4.13");
     api.use("fortawesome:fontawesome@4.2.0_2");
-    api.use('mrt:underscore-string-latest@2.3.3');
+    api.use("mrt:underscore-string-latest@2.3.3");
     api.use("aldeed:geocoder@0.3.3");
     api.use("aldeed:collection2@2.3.2");
     api.use("aldeed:simple-schema@1.3.0");
@@ -61,7 +64,7 @@ Package.onUse(function (api) {
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
     api.use("cmather:handlebars-server@2.0.0","server");
-    api.use('momentjs:moment@2.8.4', 'client');
+    api.use("momentjs:moment@2.8.4", 'client');
     api.use("sacha:spin@2.0.4", "client");
 
     api.use("cfs:standard-packages@0.5.3");
@@ -77,6 +80,7 @@ Package.onUse(function (api) {
     api.imply("amplify");
     api.imply("accounts-base");
     api.imply("ui");
+    api.imply("browser-policy");
 
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
@@ -109,6 +113,7 @@ Package.onUse(function (api) {
     "common/helpers.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
+    "common/schemas/users.coffee",
     "common/schemas/shops.coffee",
     "common/schemas/shipping.coffee",
     "common/schemas/products.coffee",
@@ -117,7 +122,6 @@ Package.onUse(function (api) {
     "common/schemas/orders.coffee",
     "common/schemas/translations.coffee",
     "common/schemas/taxes.coffee",
-    "common/schemas/shipping.coffee",
     "common/schemas/discounts.coffee",
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
@@ -132,10 +136,10 @@ Package.onUse(function (api) {
     "server/fixtures.coffee",
     "server/factories.coffee",
     "server/methods/methods.coffee",
-    "server/methods/cart/methods.coffee",
-    "server/methods/cart/checkout/methods.coffee",
-    "server/methods/orders/methods.coffee",
-    "server/methods/products/methods.coffee",
+    "server/methods/cart/cart.coffee",
+    "server/methods/cart/checkout/checkout.coffee",
+    "server/methods/orders/orders.coffee",
+    "server/methods/products/products.coffee",
     "server/methods/accounts/accounts.coffee",
     "server/emailTemplates/shopMemberInvite.html",
     "server/emailTemplates/shopMemberNotification.html"

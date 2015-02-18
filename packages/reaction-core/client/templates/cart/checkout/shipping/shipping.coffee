@@ -7,9 +7,6 @@ Template.coreCheckoutShipping.helpers
   # in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: () ->
     cart = ReactionCore.Collections.Cart.findOne()
-    unless cart.shipping?.shipmentQuotes
-      Meteor.call "updateShipmentQuotes", cart
-
     return cart.shipping?.shipmentQuotes
 
   # helper to make sure there are some shipping providers
@@ -22,8 +19,7 @@ Template.coreCheckoutShipping.helpers
     unless shipmentMethod then return
     # if there is already a selected method, set active
     if _.isEqual @.method, shipmentMethod?.method
-      Session.set "shipmentMethod",this
-      CartWorkflow.shipmentMethod()
+      Session.set "shipmentMethod", this
       return "active"
 
 ###
@@ -32,8 +28,11 @@ Template.coreCheckoutShipping.helpers
 # to shipmentMethod (selected rate)
 ###
 Template.coreCheckoutShipping.events
-  'click .list-group-item': (event) ->
-    $('.checkout-shipping .active').removeClass('active')
-    $(event.currentTarget).addClass('active')
-    unless @.shipping?.shipmentMethod then CartWorkflow.shipmentMethod(@)
-    Session.set "shipmentMethod", @
+  'click .list-group-item': (event, template) ->
+    try
+      CartWorkflow.shipmentMethod(@)
+      Session.set "shipmentMethod", @
+    catch
+      console.log "Cannot change methods while processing."
+      event.preventDefault()
+      event.stopPropagation()
