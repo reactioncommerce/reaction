@@ -69,7 +69,7 @@ To test your package, add it to your application :
 
 You can develop and even privately deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
 
-To have your package included in a release, please create a GitHub issue.
+To have your package included in a Reaction release, please create a GitHub issue.
 
 See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
 
@@ -355,5 +355,18 @@ ReactionCore.Schemas.BraintreePackageConfig = new SimpleSchema([
   }
 ])
 ```
+
+##Security
+The meteor packages `audit-argument-checks` and `browser-policy` are installed by default.
+
+**audit-argument-checks**
+
+Use [`check`](http://docs.meteor.com/#/full/check) for all `Meteor.methods` arguments. You can remove with `meteor remove audit-argument-checks` if necessary, but packages will be required to pass `check` to be accepted as Reaction packages.
+
+**browser-policy**
+
+The [browser-policy](https://atmospherejs.com/meteor/browser-policy) package lets you set security-related policies that will be enforced by newer browsers. These policies help you prevent and mitigate common attacks like cross-site scripting and clickjacking.
+
+`browser-policy` is installed by reaction-core and is not optional.
 
 
