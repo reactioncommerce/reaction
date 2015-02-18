@@ -38,7 +38,6 @@ Package.onUse(function (api) {
     api.use("email");
     api.use("check");
     api.use("browser-policy");
-    api.use("audit-argument-checks");
     api.use("amplify@1.0.0");
 
     //community packages
