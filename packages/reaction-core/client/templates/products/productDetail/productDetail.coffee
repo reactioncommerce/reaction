@@ -122,7 +122,12 @@ Template.productDetail.events
 
         # Slide out the cart tip explaining that we added to the cart
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart') )
-        $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},600).delay(8000).toggle('slide',{direction:'right'})
+        $('.cart-alert').toggle('slide',{
+          direction: if i18n.t('languageDirection') == 'rtl' then 'left' else 'right',
+          'width': currentVariant.title.length+50 + "px"
+        },600).delay(8000).toggle('slide',{
+          direction: if i18n.t('languageDirection') == 'rtl' then 'left' else 'right'
+        })
 
     else
       Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail", i18n_key: "productDetail.selectOption", autoHide: 8000
