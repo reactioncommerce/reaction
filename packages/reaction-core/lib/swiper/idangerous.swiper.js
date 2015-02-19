@@ -248,9 +248,15 @@ var Swiper = function (selector, params) {
     }
 
     _this.wrapper = wrapper;
-    /*=========================
-      Slide API
-      ===========================*/
+
+    // RTL
+    var isRTL = isH && (_this.container.dir.toLowerCase() === 'rtl' || window.getComputedStyle(_this.container).getPropertyValue('direction') === 'rtl');
+    if (isRTL) _this.container.className += ' swiper-container-rtl';
+  _this.isRTL = true;
+
+  /*=========================
+    Slide API
+    ===========================*/
     _this._extendSwiperSlide = function  (el) {
         el.append = function () {
             if (params.loop) {
@@ -564,7 +570,7 @@ var Swiper = function (selector, params) {
         var _width = _this.h.getWidth(_this.container, false, params.roundLengths);
         var _height = _this.h.getHeight(_this.container, false, params.roundLengths);
         if (_width === _this.width && _height === _this.height && !force) return;
-        
+
         _this.width = _width;
         _this.height = _height;
 
@@ -671,7 +677,7 @@ var Swiper = function (selector, params) {
                                 _this.snapGrid.push(slideLeft);
                             }
                         }
-                            
+
                     }
                     else {
                         _this.snapGrid.push(slideLeft);
@@ -1309,6 +1315,10 @@ var Swiper = function (selector, params) {
             var pageX = isTouchEvent ? event.targetTouches[0].pageX : (event.pageX || event.clientX);
             var pageY = isTouchEvent ? event.targetTouches[0].pageY : (event.pageY || event.clientY);
 
+            if (_this.isRTL) {
+              pageX *= -1;
+            }
+
             //Start Touches to check the scrolling
             _this.touches.startX = _this.touches.currentX = pageX;
             _this.touches.startY = _this.touches.currentY = pageY;
@@ -1349,6 +1359,10 @@ var Swiper = function (selector, params) {
 
         var pageX = isTouchEvent ? event.targetTouches[0].pageX : (event.pageX || event.clientX);
         var pageY = isTouchEvent ? event.targetTouches[0].pageY : (event.pageY || event.clientY);
+
+        if (_this.isRTL) {
+          pageX *= -1;
+        }
 
         //check for scrolling
         if (typeof isScrolling === 'undefined' && isH) {
@@ -1826,7 +1840,7 @@ var Swiper = function (selector, params) {
         index = parseInt(index, 10);
         _this.callPlugins('onSwipeTo', {index: index, speed: speed});
         if (params.loop) index = index + _this.loopedSlides;
-        var currentPosition = _this.getWrapperTranslate();
+        var currentPosition =  _this.getWrapperTranslate();
         if (index > (_this.slides.length - 1) || index < 0) return;
         var newPosition;
         if (params.slidesPerView === 'auto') {
@@ -1870,7 +1884,7 @@ var Swiper = function (selector, params) {
                     else {
                         _this.fireCallback(params.onSlideChangeEnd, _this);
                     }
-                    
+
                 }
                 _this.setWrapperTranslate(newPosition);
                 _this._DOMAnimating = false;
@@ -2531,10 +2545,10 @@ Swiper.prototype = {
             }
         }
         else {
-            if (axis === 'x') curTransform = parseFloat(el.style.left, 10) || 0;
+            if (axis === 'x') curTransform = parseFloat(el.style[this.isRTL ? 'right' : 'left'], 10) || 0;
             if (axis === 'y') curTransform = parseFloat(el.style.top, 10) || 0;
         }
-        return curTransform || 0;
+        return (curTransform || 0) * (this.isRTL ? -1 : 1);
     },
 
     setWrapperTranslate : function (x, y, z) {
@@ -2542,6 +2556,8 @@ Swiper.prototype = {
         var es = this.wrapper.style,
             coords = {x: 0, y: 0, z: 0},
             translate;
+
+        x *= (this.isRTL ? -1 : 1);
 
         // passed all coordinates
         if (arguments.length === 3) {
@@ -2563,7 +2579,7 @@ Swiper.prototype = {
             es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = translate;
         }
         else {
-            es.left = coords.x + 'px';
+            es[this.isRTL ? 'right' : 'left'] = coords.x + 'px';
             es.top  = coords.y + 'px';
         }
         this.callPlugins('onSetWrapperTransform', coords);
@@ -2697,7 +2713,7 @@ Swiper.prototype = {
         var transformString = this.support.transforms3d ? 'translate3d(' + (pos.x) + 'px,' + (pos.y) + 'px,' + (pos.z) + 'px)' : 'translate(' + (pos.x) + 'px,' + (pos.y) + 'px)';
         es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = transformString;
         if (!this.support.transforms) {
-            es.left = pos.x + 'px';
+            es[this.isRTL ? 'right' : 'left'] = pos.x + 'px';
             es.top = pos.y + 'px';
         }
     },
