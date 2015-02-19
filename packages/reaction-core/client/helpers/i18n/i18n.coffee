@@ -152,4 +152,3 @@ Template.registerHelper "formatPrice", (price) ->
     price = accounting.formatMoney price, ReactionCore.Locale?.currency
 
   return price
-
