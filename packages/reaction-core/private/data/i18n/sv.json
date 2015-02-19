@@ -50,7 +50,7 @@
                     },
                     "error": {
                         "emailRequired": "Det krävs ett lösenord.",
-                        "minChar": "Det krävs minst 7 tecken i ditt lösenord.",
+                        "minChar": "Det krävs minst 6 tecken i ditt lösenord.",
                         "pwdsDontMatch": "Lösenorden matchar inte.",
                         "pwOneDigit": "Lösenordet måste ha minst 1 siffra.",
                         "pwOneLetter": "Lösenordet måste ha minst 1 bokstav.",
@@ -77,7 +77,7 @@
                         "mustBeLoggedIn": "Måste vara inloggad",
                         "needToSetUsernameOrEmail": "Ett användarnamn eller en e-postadress krävs.",
                         "oldPasswordFormat": "gammalt lösenordsformat",
-                        "Password may not be empty": "Lösenordet får inte vara tomt",
+                        "passwordMayNotBeEmpty": "Lösenordet får inte vara tomt",
                         "signupsForbidden": "Registrering förbjuden",
                         "tokenExpired": "Token har gått ut",
                         "tokenHasInvalidEmailAddress": "Token har ogiltig e-postadress",

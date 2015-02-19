@@ -68,9 +68,9 @@ Meteor.startup ->
 
   # start the autorun after startup, so that "language" session var is already set
   Tracker.autorun () ->
-    sessionLanguage = Session.get "language"
-    Meteor.subscribe "Translations", sessionLanguage, () ->
-      resources =  ReactionCore.Collections.Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] },{fields:{_id: 0},reactive:false}).fetch()
+    ReactionCore.Locale.language = Session.get "language"
+    Meteor.subscribe "Translations", ReactionCore.Locale.language, () ->
+      resources =  ReactionCore.Collections.Translations.find({},{fields:{_id: 0},reactive:false}).fetch()
       # map multiple translations into i18next format
       resources = resources.reduce (x, y) ->
         x[y.i18n]= y.translation
@@ -78,7 +78,7 @@ Meteor.startup ->
       , {}
 
       $.i18n.init {
-          lng: sessionLanguage
+          lng: ReactionCore.Locale.language
           fallbackLng: 'en'
           ns: "core"
           resStore: resources
@@ -152,4 +152,3 @@ Template.registerHelper "formatPrice", (price) ->
     price = accounting.formatMoney price, ReactionCore.Locale?.currency
 
   return price
-

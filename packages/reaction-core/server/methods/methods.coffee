@@ -91,6 +91,10 @@ Meteor.methods
   # currentTagId will update related/hierarchy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
+    check tagName, String
+    check tagId, Match.OneOf(String, null)
+    check currentTagId, Match.Optional(String)
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
@@ -127,6 +131,9 @@ Meteor.methods
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
+    check tagId, String
+    check currentTagId, String
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 

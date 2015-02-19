@@ -77,7 +77,7 @@
                         "mustBeLoggedIn": "Moraš biti prijavljane(a)",
                         "needToSetUsernameOrEmail": "Prijava ali email sta obvezna",
                         "oldPasswordFormat": "stara oblika gesla",
-                        "Password may not be empty": "Geslo ne sme biti prazno",
+                        "passwordMayNotBeEmpty": "Geslo ne sme biti prazno",
                         "signupsForbidden": "Prijave onemogočene",
                         "tokenExpired": "Žeton je potekel",
                         "tokenHasInvalidEmailAddress": "Žeton vsebuje napačen email",

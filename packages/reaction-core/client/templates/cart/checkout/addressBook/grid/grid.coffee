@@ -4,9 +4,7 @@ Template.addressBookGrid.helpers
 
   selectedBilling: ->
     if @.isBillingDefault
-      # console.log "billingDefault", @._id
       unless Session.get "billingUserAddressId"
-        # console.log "set default billing: ", @._id
         Session.setDefault "billingUserAddressId", @._id
         CartWorkflow.paymentAddress(@)
     if Session.equals "billingUserAddressId", @._id
@@ -19,9 +17,7 @@ Template.addressBookGrid.helpers
 
   selectedShipping: ->
     if @.isShippingDefault
-      # console.log "shippingDefault",@._id
       unless Session.get "shippingUserAddressId"
-        # console.log "set default shipping: ",@._id
         Session.setDefault "shippingUserAddressId",@._id
         CartWorkflow.shipmentAddress(@)
     if Session.equals "shippingUserAddressId", @._id

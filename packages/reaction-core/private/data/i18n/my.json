@@ -2,12 +2,10 @@
     {
         "language": "Burmese",
         "i18n": "my",
-        "entryText": "မြန်မာဘာသာ",
         "translation": {
             "core": {
                 "languages": {
-                    "select": "ဘာသာစကား ရွေးချယ်ရန်",
-                    "burmese": "မြန်မာဘာသာ"
+                    "select": "ဘာသာစကား ရွေးချယ်ရန်"
                 },
                 "app": {
                     "save-and-continue": "ပြင်ဆင်မှုများကို မှတ်သားပြီးဆက်လုပ်ပါ",
@@ -78,7 +76,7 @@
                     "shippingOptions": "ပစ္စည်းပို့ရန် နည်းလမ်းများ",
                     "reviewPayment": "ငွေစာရင်းကို စစ်ဆေးပါ",
                     "complete": "ပြီးစီးကြောင်း အသိအမှတ်ပြုပါ"
-                },                
+                },
                 "accountsUI": {
                     "add": "ထည့်ရန်",
                     "and": "နှင့်",
@@ -152,7 +150,7 @@
                         "mustBeLoggedIn": "အကောင့်ထဲ ဝင်ရန်လိုအပ်သည်",
                         "needToSetUsernameOrEmail": "အကောင့်နာမည် သို့ အီးမေးလ် သုံးဖို့လိုပါသည်",
                         "oldPasswordFormat": "စကားဝှက် ပုံစံဟောင်း",
-                        "Password may not be empty": "စကားဝှက်ကို ချန်လျှပ်ထားခဲ့၍ မရပါ",
+                        "passwordMayNotBeEmpty": "စကားဝှက်ကို ချန်လျှပ်ထားခဲ့၍ မရပါ",
                         "signupsForbidden": "မှတ်ပုံတင်ခွင့် ပိတ်ထားပါသည်",
                         "tokenExpired": "တိုကင် သက်တမ်းကုန်နေပါသည်",
                         "tokenHasInvalidEmailAddress": "တိုကင်ရှိ အီးမေးလ်လိပ်စာမှာ မှားယွင်းနေပါသည်",

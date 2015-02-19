@@ -93,7 +93,6 @@ var handler = function (compileStep, isLiterate) {
   var mixinsLessFile = jsonPath.replace(/json$/i, 'mixins.import.less')
   var importLessFile = jsonPath.replace(/json$/i, 'import.less');
   var bootStrapLessFile = jsonPath.replace(/json$/i, 'bootstrap.less');
-  var bootStrapRtlLessFile = jsonPath.replace(/reaction.json$/i, 'bootstrap.rtl.less');
   var outputLessFile = jsonPath.replace(/json$/i, 'less');
 
   createLessFile(mixinsLessFile, [
@@ -115,7 +114,6 @@ var handler = function (compileStep, isLiterate) {
       "// the boostrap import to your bootstrap.less path",
       '',
       '@import "' + path.basename("custom.bootstrap.less") + '";',
-      '@import "' + path.basename("custom.bootstrap.rtl.less") + '";',
       '@import "' + path.basename(mixinsLessFile) + '";',
       getLessContent('default/variables.less')
     ]);
@@ -136,20 +134,6 @@ var handler = function (compileStep, isLiterate) {
     bootstrapContent.push(getLessContent('' + lessPath));
   });
   createLessFile(outputLessFile, bootstrapContent);
-
-  // Create the rtl adjustments for bootstrap
-  if (! fs.existsSync(bootStrapRtlLessFile)) {
-    createLessFile(bootStrapRtlLessFile, [
-      "// THIS FILE IS FOR YOU TO MODIFY REACTION THEMING!",
-      "// It won't be overwritten as long as it exists.",
-      "// You may include this file into your less files to benefit from",
-      "// mixins and variables that Reaction provides.",
-      "// If you are not using nemo64:bootstrap, you'll need to change",
-      "// the boostrap import to your bootstrap.less path",
-      '',
-      getLessContent('default/bootstrap.rtl.less')
-    ]);
-  }
 };
 
 Plugin.registerSourceHandler('reaction.json', {archMatching: 'web'}, handler);

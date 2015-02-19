@@ -2,12 +2,10 @@
     {
         "language": "Russian",
         "i18n": "ru",
-        "entryText": "Русский",
         "translation": {
             "core": {
                 "languages": {
-                    "select": "Выбрать язык",
-                    "russian": "Русский"
+                    "select": "Выбрать язык"
                 },
                 "app": {
                     "save-and-continue": "Сохранить и продолжить",
@@ -188,7 +186,7 @@
                         "mustBeLoggedIn": "Необходимо войти",
                         "needToSetUsernameOrEmail": "Необходимо имя пользователя или email",
                         "oldPasswordFormat": "старый формат пароля",
-                        "Password may not be empty": "Пароль не может быть пустым",
+                        "passwordMayNotBeEmpty": "Пароль не может быть пустым",
                         "signupsForbidden": "Регистрация отключена",
                         "tokenExpired": "Время действия токена истекло",
                         "tokenHasInvalidEmailAddress": "У токена неправильный email адрес",

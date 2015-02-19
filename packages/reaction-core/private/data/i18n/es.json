@@ -145,7 +145,7 @@
                     "with": "con",
                     "error": {
                         "emailRequired": "Email es necesario.",
-                        "minChar": "7 carácteres mínimo.",
+                        "minChar": "6 carácteres mínimo.",
                         "pwOneDigit": "mínimo un dígito.",
                         "pwOneLetter": "mínimo una letra.",
                         "signInRequired": "Debes iniciar sesión para hacer eso.",

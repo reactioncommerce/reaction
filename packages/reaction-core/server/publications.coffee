@@ -20,6 +20,8 @@ Translations = ReactionCore.Collections.Translations
 ###
 ServerSessions = new Mongo.Collection("Sessions")
 Meteor.publish 'Sessions', (id) ->
+  check id, Match.OneOf(String, null)
+
   created = new Date().getTime()
   id = ServerSessions.insert(created: created) unless id
   serverSession = ServerSessions.find(id)
@@ -31,28 +33,30 @@ Meteor.publish 'Sessions', (id) ->
 ###
 # CollectionFS - Image/Video Publication
 ###
-Meteor.publish "media", () ->
+Meteor.publish "media", ->
   return Media.find({ 'metadata.shopId': ReactionCore.getShopId(@) }, {sort: {"metadata.priority": 1}})
 
 ###
 # CollectionFS - Generated Docs (invoices) Publication
 ###
-Meteor.publish "FileStorage", () ->
+Meteor.publish "FileStorage", ->
   #todo: this should be more secure and more filtered
   return FileStorage.find()
 
 ###
 # i18n - translations
 ###
-Meteor.publish "Translations", () ->
-  #todo: this should be more secure and more filtered
-  return Translations.find()
+Meteor.publish "Translations", (sessionLanguage) ->
+  check sessionLanguage, String
+  return Translations.find({ $or: [{'i18n':'en'},{'i18n': sessionLanguage}] })
 
 ###
 # get any user name,social profile image
 # should be limited, secure information
 ###
 Meteor.publish "UserProfile", (profileId) ->
+  check profileId, Match.OneOf(String, null)
+
   if profileId?
     if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
       return Meteor.users.find _id: profileId,
@@ -125,6 +129,8 @@ Meteor.publish 'products', (userId) ->
     return []
 
 Meteor.publish 'product', (productId) ->
+  check productId, String
+
   shop = ReactionCore.getCurrentShop(@) #todo: wire in shop
   if productId.match /^[A-Za-z0-9]{17}$/
     return Products.find(productId)
@@ -134,13 +140,18 @@ Meteor.publish 'product', (productId) ->
 ###
 # orders collection
 ###
-Meteor.publish 'orders', ->
+Meteor.publish 'orders', (userId) ->
+  check userId, Match.Optional(String)
+  # only admin can get all orders
   if Roles.userIsInRole(this.userId, ['admin','owner'])
     return Orders.find( shopId: ReactionCore.getShopId(@) )
   else
     return []
 
 Meteor.publish 'userOrders', (userId) ->
+  check userId, Match.OneOf(String, null)
+  unless userId then return []
+  # return user orders
   return Orders.find
     shopId: ReactionCore.getShopId(@)
     userId: this.userId
@@ -149,8 +160,9 @@ Meteor.publish 'userOrders', (userId) ->
 # cart collection
 ###
 Meteor.publish 'cart', (sessionId) ->
+  check sessionId, Match.OneOf(String, null)
   return unless sessionId
-  check(sessionId, String)
+
   shopId = ReactionCore.getShopId(@)
 
   # createCart will create for session if necessary, update user if necessary,

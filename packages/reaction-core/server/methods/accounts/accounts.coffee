@@ -19,10 +19,10 @@ Accounts.onCreateUser (options, user) ->
     if !hasBillingDefaultSet
       options.profile.addressBook[0].isBillingDefault = true
 
-  user.profile = options.profile || {}    
+  user.profile = options.profile || {}
   if options.emails
     if user.emails
-      user.emails = options.emails.concat user.emails    
+      user.emails = options.emails.concat user.emails
     else user.emails = options.emails
   user.profile = options.profile || {}
   if user.services.facebook
@@ -31,6 +31,8 @@ Accounts.onCreateUser (options, user) ->
 
 ###
 # setting defaults of mail from shop configuration
+# TODO: refactor for multiple email providers, not even sure this is used
+# anymore!
 ###
 setMailUrlForShop = (shop) ->
   mailgun = ReactionCore.Collections.Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
@@ -51,6 +53,10 @@ Meteor.methods
   # to permissions as specified in packages/roles
   ###
   inviteShopMember: (shopId, email, name) ->
+    check shopId, String
+    check email, String
+    check name, String
+
     shop = Shops.findOne shopId
     if shop and email and name
       if ReactionCore.hasOwnerAccess(shop)
@@ -101,6 +107,8 @@ Meteor.methods
   # this method sends an email to consumers on sign up
   ###
   sendWelcomeEmail: (shop) ->
+    check shop, Object
+
     email = Meteor.user().emails[0].address
     setMailUrlForShop(shop)
     Email.send

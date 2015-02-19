@@ -75,4 +75,9 @@ _.extend ReactionCore,
     return @shopId
 
 Meteor.startup ->
+  # todo: this could grow.. and grow...
+  # quick little client safety check
+  if (PackageRegistry?) then console.error "Bravely warning you that PackageRegistry should not be exported to client."
+  
+  # Ignition.....
   ReactionCore.init()

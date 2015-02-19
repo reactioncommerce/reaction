@@ -1,8 +1,7 @@
 [
     {
-        "language": "Chinese",
+        "language": "中文(简体)",
         "i18n": "cn",
-        "entryText": "中文(简体)",
         "translation": {
                 "core": {
                     "languages": {
@@ -154,7 +153,7 @@
                             "mustBeLoggedIn": "必须先登入",
                             "needToSetUsernameOrEmail": "需要设置用户名或电子邮件",
                             "oldPasswordFormat": "旧的密码格式",
-                            "Password may not be empty": "密码不能为空",
+                            "passwordMayNotBeEmpty": "密码不能为空",
                             "signupsForbidden": "注册已被禁止",
                             "tokenExpired": "令牌已过期",
                             "tokenHasInvalidEmailAddress": "令牌含有无效电子邮件地址",

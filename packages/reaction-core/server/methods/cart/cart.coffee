@@ -6,8 +6,14 @@ Meteor.methods
   # the original and notify them
   ###
   addToCart: (cartSession, productId, variantData, quantity) ->
+    check cartSession, {sessionId: String, userId: Match.OneOf(String, null)}
+    check productId, String
+    check variantData, Object
+    check quantity, String
+    #
     # createCart will create for session if necessary, update user if necessary,
     # sync all user's carts, and return the cart
+    #
     shopId = ReactionCore.getShopId(@)
     currentCart = createCart cartSession.sessionId, @userId, shopId
 
@@ -39,6 +45,10 @@ Meteor.methods
   # removes a variant from the cart
   ###
   removeFromCart: (sessionId, cartId, variantData) ->
+    check sessionId, String
+    check cartId, String
+    check variantData, Object
+
     # We select on sessionId or userId, too, for security
     return Cart.update
       _id: cartId
@@ -48,23 +58,13 @@ Meteor.methods
       ]
     , {$pull: {"items": {"variants": variantData} } }
 
-  ###
-  # add payment method
-  ###
-  paymentMethod: (sessionId, cartId, paymentMethod) ->
-    # We select on sessionId or userId, too, for security
-    return Cart.update
-      _id: cartId
-      $or: [
-        {userId: @userId}
-        {sessionId: sessionId}
-      ]
-    , {$addToSet:{"payment.paymentMethod":paymentMethod}}
 
   ###
   # adjust inventory when an order is placed
   ###
   inventoryAdjust: (orderId) ->
+    check orderId, String
+
     order = Orders.findOne orderId
     return false unless order
     for product in order.items
@@ -77,9 +77,10 @@ Meteor.methods
   # cart. reusing the cart schema makes sense, but integrity of
   # the order, we don't want to just make another cart item
   ###
-  copyCartToOrder: (cart) ->
+  copyCartToOrder: (cartId) ->
+    check cartId, String
     # extra validation + transform methods
-    cart = ReactionCore.Collections.Cart.findOne(cart._id)
+    cart = ReactionCore.Collections.Cart.findOne(cartId)
     invoice = {}
 
     ###
@@ -126,61 +127,6 @@ Meteor.methods
     # return new orderId
     return orderId
 
-  ###
-  # method to add new addresses to a user's profile
-  ###
-  addressBookAdd: (doc) ->
-    check(doc, ReactionCore.Schemas.Address)
-    @unblock()
-    currentUserId = Meteor.userId()
-    if doc.isShippingDefault
-      Meteor.users.update
-        _id: currentUserId
-        "profile.addressBook.isShippingDefault": true
-      ,
-        $set:
-          "profile.addressBook.$.isShippingDefault": false
-    if doc.isBillingDefault
-      Meteor.users.update
-        _id: currentUserId
-        "profile.addressBook.isBillingDefault": true
-      ,
-        $set:
-          "profile.addressBook.$.isBillingDefault": false      
-    # Add new address
-    doc._id = Random.id()
-
-    return Meteor.users.update _id: currentUserId, {$addToSet: {"profile.addressBook": doc}}
-
-  ###
-  #method to update existing address in user's profile
-  ###
-  addressBookUpdate: (doc) ->
-    check(doc, ReactionCore.Schemas.Address)
-    @unblock()
-    currentUserId = Meteor.userId()
-    #reset existing default
-    if doc.isShippingDefault
-      Meteor.users.update
-        _id: currentUserId
-        "profile.addressBook.isShippingDefault": true
-      ,
-        $set:
-          "profile.addressBook.$.isShippingDefault": false
-    if doc.isBillingDefault
-      Meteor.users.update
-        _id: currentUserId
-        "profile.addressBook.isBillingDefault": true
-      ,
-        $set:
-          "profile.addressBook.$.isBillingDefault": false      
-    # update existing address
-    Meteor.users.update
-      _id: currentUserId
-      "profile.addressBook._id": doc._id
-    ,
-      $set:
-        "profile.addressBook.$": doc
 
 ###
 # create a cart
@@ -193,6 +139,10 @@ Meteor.methods
 # * If they had more than one cart, on more than one device, and login at seperate times it should merge the carts
 ###
 @createCart = (sessionId, userId, shopId) ->
+  check sessionId, String
+  check userId, Match.OneOf(String, null)
+  check shopId, String
+  # try to create cart
   try
     # Is there a cart for this session?
     sessionCart = Cart.findOne(sessionId: sessionId, shopId: shopId)
