@@ -90,6 +90,9 @@ if [ -n "${REPO}" ]; then
    cd ${METEOR_DIR}/..
 
    # Bundle the Meteor app
+   if [ -z "${METEOR_SSL}" ]; then
+     meteor remove force-ssl
+   fi
    mkdir -p ${APP_DIR}
    set +e # Allow the next command to fail
    meteor build --directory ${APP_DIR}
