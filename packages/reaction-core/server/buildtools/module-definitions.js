@@ -1,6 +1,6 @@
 moduleDefinitions = {
   "variables":{less:["default/variables.less"]},
-  "mixins":{less:["default/mixins.less"]},
+  "mixins":{less:["default/mixins.less", "default/bootstrap.rtl.less"]},
   "accounts":{less:["theme/accounts/accounts.less","theme/accounts/inline/inline.less"]},
   "cart":{less:[
     'theme/cart/cart.less',
@@ -57,4 +57,5 @@ moduleDefinitions = {
       'theme/products/productList/productList.less',
       'theme/products/products.less'
     ]}
+
 };

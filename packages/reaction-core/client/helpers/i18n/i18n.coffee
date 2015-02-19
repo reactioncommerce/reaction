@@ -68,8 +68,8 @@ Meteor.startup ->
 
   # start the autorun after startup, so that "language" session var is already set
   Tracker.autorun () ->
-    sessionLanguage = Session.get "language"
-    Meteor.subscribe "Translations", sessionLanguage, () ->
+    ReactionCore.Locale.language = Session.get "language"
+    Meteor.subscribe "Translations", ReactionCore.Locale.language, () ->
       resources =  ReactionCore.Collections.Translations.find({},{fields:{_id: 0},reactive:false}).fetch()
       # map multiple translations into i18next format
       resources = resources.reduce (x, y) ->
@@ -78,7 +78,7 @@ Meteor.startup ->
       , {}
 
       $.i18n.init {
-          lng: sessionLanguage
+          lng: ReactionCore.Locale.language
           fallbackLng: 'en'
           ns: "core"
           resStore: resources

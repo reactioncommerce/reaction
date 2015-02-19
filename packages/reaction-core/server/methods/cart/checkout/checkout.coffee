@@ -23,7 +23,8 @@ Meteor.methods
 
       # return in the rates object
       ReactionCore.Events.debug rates
-      return rates
+      return
+
 
   ###
   #  just gets rates, without updating anything
