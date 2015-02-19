@@ -5,6 +5,7 @@
         "entryText": "עברית",
         "translation": {
             "core": {
+                "languageDirection": "rtl",
                 "languages": {
                     "select": "בחר שפה",
                     "english": "English",

@@ -4,6 +4,7 @@
         "i18n": "ar",
         "translation": {
             "core": {
+                "languageDirection": "rtl",
                 "accountsUI": {
                     "add": "اضف",
                     "and": "و",
