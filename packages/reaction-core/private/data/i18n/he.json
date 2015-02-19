@@ -15,7 +15,16 @@
                     "saveAndContinue": "שמור והמשך",
                     "cancel": "בטל",
                     "submit": "שלח",
-                    "delete": "מחק"
+                    "delete": "מחק",
+                    "create": "יצירה",
+                    "close": "סגירה",
+                    "settings": "הגדרות",
+                    "loading": "טוען",
+                    "toggle": "החלף"
+                },
+                "header": {
+                  "tagsAdd": "הוספת תגית",
+                  "search": "חיפוש מוצרים..."
                 },
                 "productDetail": {
                     "productManagement": "ניהול מוצר",
@@ -24,7 +33,10 @@
                     "makeItVisible": "באפשרותך להפוך לנראה",
                     "whenYouAreDone": "כאשר תסיים/י לערוך אותו.",
                     "tags": "תגיות",
+                    "tagsAdd": "הוספת תגית",
                     "details": "פרטים",
+                    "detailsName": "שם",
+                    "detailsInfo": "תוכן",
                     "options": "אפשרויות",
                     "addToCart": "הוסף לסל",
                     "chooseOptions": "נא לבחור אפשרויות לפני ההוספה לסל",
@@ -33,6 +45,12 @@
                     "publishFirst": "יש לפרסם את המוצר לפני ההוספה לסל.",
                     "selectOption": "יש לבחור אפשרות לפני ההוספה לסל",
                     "addedToCart": "התווסף"
+                },
+                "productDetailEdit": {
+                  "title": "כותרת המוצר",
+                  "pagetitle": "כותרת לעמוד המוצר",
+                  "vendor": "ספר המוצר",
+                  "description": "הוספת תיאור מוצר"
                 },
                 "variantList": {
                     "moreOptions": "יש עוד אפשרויות זמינות עבור בחירה זו.",
@@ -61,6 +79,11 @@
                 "cartCheckout": {
                     "loginCompleted": "תהליך ההתחברות הושלם"
                 },
+                "cartCompleted": {
+                  "thankYou": "תודה רבה.",
+                  "yourOrderHasBeen": "הזמנתך",
+                  "summaryMessage": "תודה על הזמנתך."
+                },
                 "checkoutLogin": {
                     "createOrLogin": "צור חשבון או התחבר על מנת להמשיך"
                 },
@@ -87,7 +110,8 @@
                         "city": "יישוב",
                         "region": "אזור",
                         "phone": "טלפון",
-                        "isDefault": "האם זו כתובת ברירת המחדל שלך?",
+                        "isShippingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור משלוח?",
+                        "isBillingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור חשבונית?",
                         "isCommercial": "האם זו כתובת מסחרית?"
                     }
                 },
@@ -100,7 +124,8 @@
                     "city": "יישוב",
                     "region": "אזור",
                     "phone": "טלפון",
-                    "isDefault": "האם זו כתובת ברירת המחדל שלך?",
+                    "isShippingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור משלוח?",
+                    "isBillingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור חשבונית?",
                     "isCommercial": "האם זו כתובת מסחרית?"
                 },
                 "checkoutProgressBar": {
@@ -117,7 +142,10 @@
                     "review": "סקירה"
                 },
                 "checkoutShipping": {
-                    "selectShippingOption": "בחר אפשרות משלוח"
+                    "selectShippingOption": "בחר אפשרות משלוח",
+                    "noShippingMethods": "לא מוגדרות אפשרויות משלוח.",
+                    "configureNow": "הגדר עכשיו.",
+                    "shipping": "משלוח"
                 },
                 "shopEditForm": {
                     "name": "שם",
@@ -127,6 +155,22 @@
                     "company": "חברה",
                     "fullname": "שם פרטי ומשפחה",
                     "address1": "כתובת 1"
+                },
+                "consoleIcon": {
+                  "iconTitle": "צפייה במסוף",
+                  "text": "מסוף"
+                },
+                "createProductIcon": {
+                  "iconTitle": "יצירת מוצר",
+                  "text": "יצירה"
+                },
+                "social": {
+                  "facebook": "Facebook",
+                  "google": "Google",
+                  "github": "GitHub",
+                  "meetup": "Meetup",
+                  "twitter": "Twitter",
+                  "weibo": "Weibo"
                 },
                 "accountsUI": {
                     "add": "הוסף",
@@ -157,6 +201,7 @@
                     "sign": "כניסה",
                     "signIn": "כניסה",
                     "signin": "כניסה",
+                    "signInWith": "כניסה עם",
                     "signOut": "יציאה",
                     "signUp": "הרשמה לחשבון",
                     "signupCode": "קוד הרשמה",
@@ -167,6 +212,7 @@
                     "username": "שם משתמש",
                     "usernameOrEmail": "שם משמש או דוא\"ל",
                     "with": "עם",
+                    "checkoutAsGuest": "השלם את ההזמנה ללא חשבון משתמש",
                     "info": {
                         "emailSent": "נשלחה הודעה לדוא\"ל",
                         "emailVerified": "כתובת הדוא\"ל וודאה בהצלחה",
