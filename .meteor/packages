@@ -13,7 +13,7 @@ less
 # Optional Meteor Packages
 accounts-facebook
 spiderable
-force-ssl
+audit-argument-checks
 
 # Community Packages
 nemo64:bootstrap
