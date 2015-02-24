@@ -1,17 +1,13 @@
-# reaction-core
+#Reaction Core
+
+Reaction Core provides a core set of methods and templates for creating, connecting, and managing user carts, sessions, products, checkout and orders for Reaction Commerce.
 
 `meteor add reactioncommerce:core`
----
 
-See [Meteor Docs](http://docs.meteor.com) for introduction to [Meteor](http://meteor.com).
 
-Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for format and style of contributions.
+## Developer Documentation
 
-Our core is being built with a preference for Coffeescript + LESS, but JavaScript is welcome in packages.
-
-We try to always be using latest full release of all community packages.
-
-# Developer Documentation
+[Meteor Documentation](http://docs.meteor.com)
 
 [Getting started guide](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
@@ -29,15 +25,17 @@ We try to always be using latest full release of all community packages.
 
 [Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
 
+[Deploying](https://github.com/ongoworks/reaction-core/blob/master/docs/deploying.md)
 
-# Roadmap
+
+## Roadmap
 For a high level review our roadmap, take a look at the vision page [Reaction Vision](http://reactioncommerce.com/vision)
 
-For grouping of development channels by feature see project milestones: https://github.com/reactioncommerce/reaction/milestones *note: progress indicators highly volatile indicators at the moment*
+For grouping of development channels by feature see project milestones: https://github.com/reactioncommerce/reaction/milestones
 
 And finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
 
 
-# Issues
+## Issues
 For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
 
