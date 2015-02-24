@@ -1,12 +1,6 @@
-#Package Development
+#Package development
 
-To develop packages, and see your changes update in your local installation you must *git clone* packages locally, either into reaction/packages, or with
-a symbolic link to the package checkout.
-
-```bash
-    cd reaction
-    ln -s <full path to package>  packages/
-```
+For local package development you must *git clone* packages locally, either into `reaction/packages`, or by creating a symbolic link to the package checkout.
 
 For example:
 
@@ -20,19 +14,27 @@ For example:
   git clone https://github.com/reactioncommerce/reaction-core-theme.git
 ```
 
+or
+
+```bash
+    cd reaction
+    ln -s <full path to package>  packages/
+```
+
 It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone all used Reaction packages to ensure you're working with a complete development enviroment.
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
 
 *Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain authentication and meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`*
 
-# Create packages
+**Create packages**
 
     meteor create --package
 
 See [Meteor docs](http://docs.meteor.com/#/full/writingpackages) for additional help creating packages.
 
-###package.js
+**Update package.js**
+
 Once you have created your added, cloned, or symlinked your package development folder to the `reaction/packages` directory, you'll continue creating a standard Meteor package by defining `package.js`, starting with a describe block:
 
 ```javascript
@@ -64,16 +66,6 @@ To test your package, add it to your application :
     meteor add your-new-package
 
 *Tip: You can also add and remove packages by editing `.meteor/packages`*
-
-###Publishing
-
-You can develop and even privately deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
-
-To have your package included in a Reaction release, please create a GitHub issue.
-
-See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
-
-*We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
 
 ##ReactionCore.registerPackage
 To integrate a package into the rest of Reaction Commerce use
@@ -128,7 +120,7 @@ ReactionCore.registerPackage
 ```
 
 
-###Package
+###Settings
  ```
  name: '<typically same as package name>'
  autoEnable: '<true/false automatically enable in dashboard>'
@@ -136,22 +128,26 @@ ReactionCore.registerPackage
       <Object:blackbox default properties for service configuration.>
  ```
 
+`settings` is a blackbox object for private package settings.
+
+`autoEnable` transforms into the `enabled` key to a boolean value on insert.
+
+See [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md)
+
 ###Registry
 The registry is used to define routes, dynamic templates, and some package UI handling.
 
-A registry object can be any combination of properties, with `provides` being the only required property.
+A `registry` object can be any combination of properties, with `provides` being the only required element.
 
 *Note: The registry is currently refreshed only on update/deleting the package record in the database, or on delete/addition of the package.*
 
-**Registry properties**
-
 You may filter, or define using any of the optional registry properties:
 
-**package:**
+**package**
   * name
   * enabled
 
-**registry:**
+**registry**
   - provides
   - route
   - template
@@ -178,6 +174,7 @@ The following `provides` values are defined in reaction-core:
  * shortcut
  * dashboard
  * console
+ * userAccountDropdown
 
 To add a new `settings` link to the app card:
 
@@ -369,4 +366,13 @@ The [browser-policy](https://atmospherejs.com/meteor/browser-policy) package let
 
 `browser-policy` is installed by reaction-core and is not optional.
 
+##Publishing
+
+You can develop, or even deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
+
+To have your package included in a Reaction release, please create a GitHub issue.
+
+See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
+
+*We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
 

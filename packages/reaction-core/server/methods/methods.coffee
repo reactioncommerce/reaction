@@ -154,7 +154,7 @@ Meteor.methods
       throw new Meteor.Error 403, "Access Denied"
 
     ReactionCore.Collections.Translations.remove({})
-    Fixtures.loadI18n ReactionCore.Collections.Translations
+    Fixtures.loadI18n()
     ReactionCore.Events.info Meteor.userId() + " Flushed Translations."
 
 
