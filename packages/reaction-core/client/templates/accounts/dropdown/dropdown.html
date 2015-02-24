@@ -36,7 +36,7 @@
       {{#each reactionApps provides='shortcut' enabled=true}}
         <li class="dropdown-apps-icon">
           <a id="{{route}}" title="{{label}}">
-          <i class="add-product-link {{icon}}"></i>
+            <i class="{{icon}}"></i>
             <span class="icon-text">
               {{label}}
             </span>
@@ -52,6 +52,16 @@
 
 <template name="userAccountsDropdown">
   <!--user account shortcut icons -->
-  <span data-i18n="accountsUI.signedIn">You are signed in.</span>
-
+  {{#each reactionApps provides='userAccountDropdown' enabled=true}}
+    <li class="dropdown-apps-icon">
+      <a id="{{route}}" title="{{label}}">
+        <i class="{{icon}}"></i>
+        <span class="icon-text">
+          {{label}}
+        </span>
+      </a>
+    </li>
+  {{else}}
+    <span data-i18n="accountsUI.signedIn">You are signed in.</span>
+  {{/each}}
 </template>
