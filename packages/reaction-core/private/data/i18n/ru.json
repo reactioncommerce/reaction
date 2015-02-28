@@ -72,8 +72,8 @@
                 },
                 "cartSubTotals": {
                     "head": "Ваша корзина",
-                    "items": "Товаров:",
-                    "subtotal": "Цена:",
+                    "items": "Товаров",
+                    "subtotal": "Цена",
                     "shipping": "Доставка",
                     "tax": "Налог",
                     "total": "Сумма"
