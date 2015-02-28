@@ -50,12 +50,12 @@
                     "price": "Цена",
                     "optionTitle": "Опция",
                     "barcode": "Штрих-код",
-                    "compareAtPrice": "Рекомендованная цена",
-                    "fulfillmentService": "Fulfillment service",
+                    "compareAtPrice": "Цена(MSRP)",
+                    "fulfillmentService": "Обслуживание услуги",
                     "weight": "Вес",
-                    "inventoryManagement": "Inventory Tracking",
-                    "inventoryPolicy": "Не продавать, если кончается",
-                    "lowInventoryWarningThreshold": "Предупреждать когда меньше, чем"
+                    "inventoryManagement": "Следить за кол-вом",
+                    "inventoryPolicy": "Откл. при нуле",
+                    "lowInventoryWarningThreshold": "Сообщить если меньше "
                 },
                 "variantList": {
                     "moreOptions": "Есть еще варианты доступные для этого выбора.",
@@ -72,8 +72,8 @@
                 },
                 "cartSubTotals": {
                     "head": "Ваша корзина",
-                    "items": "Товаров в корзине",
-                    "subtotal": "Всего",
+                    "items": "Товаров",
+                    "subtotal": "Цена",
                     "shipping": "Доставка",
                     "tax": "Налог",
                     "total": "Сумма"
@@ -95,7 +95,7 @@
                 },
                 "addressBookAdd": {
                     "addAddress": "Добавить адрес",
-                    "createAddress": "Создать адрес по умолчанию"
+                    "createAddress": "Добавить адрес по умолчанию"
                 },
                 "checkoutProgressBar": {
                     "login": "Авторизация",
@@ -105,8 +105,8 @@
                     "complete": "Готово"
                 },
                 "consoleIcon": {
-                    "iconTitle": "Показать дэшборд",
-                    "text": "Дэшборд"
+                    "iconTitle": "Показать панель",
+                    "text": "Настройки"
                 },
                 "createProductIcon": {
                     "iconTitle": "Добавить товар",
