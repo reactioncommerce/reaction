@@ -50,7 +50,7 @@
                     "price": "Цена",
                     "optionTitle": "Опция",
                     "barcode": "Штрих-код",
-                    "compareAtPrice": "Цена рекомен. произв.",
+                    "compareAtPrice": "Цена(MSRP)",
                     "fulfillmentService": "Обслуживание услуги",
                     "weight": "Вес",
                     "inventoryManagement": "Следить за кол-вом",
