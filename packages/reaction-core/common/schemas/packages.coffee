@@ -47,3 +47,34 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
   'registry.$.cycle':
     type: Number
     optional: true
+
+###
+# Core Reaction Settings
+###
+ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
+  ReactionCore.Schemas.PackageConfig
+  {
+    "settings.mail":
+      type: Object
+      optional:true
+      label: "Mail Settings"
+    "settings.mail.user":
+      type: String
+      label: "Username"
+    "settings.mail.password":
+      type: String
+      label: "Password"
+    "settings.mail.host":
+      type: String
+      label: "Host"
+    "settings.mail.port":
+      type: String
+      label: "Port"
+    "settings.public":
+      type: Object
+      optional: true
+    "settings.public.allowGuestCheckout":
+      type: Boolean
+      label: "Allow Guest Checkout"
+  }
+])

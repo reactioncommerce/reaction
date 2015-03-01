@@ -6,7 +6,7 @@ Template.shopMember.helpers
         user = Meteor.users.findOne @userId
         user =
           email: user.emails[0].address
-          name: user.profile.name
+          name: user.username
         return user
 
   isAdmin: ->

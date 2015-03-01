@@ -2,7 +2,6 @@
     {
         "_id": "WvrKDomkYth3THbDD",
         "baseUOM": "OZ",
-        "canCheckoutAsGuest": false,
         "currencies": {
             "AED": {
                 "format": "%v %s",
@@ -370,13 +369,6 @@
             }
         },
         "currency": "USD",
-        "currencyEngine": {
-            "provider": "OXR",
-            "apiKey": ""
-        },
-        "customEmailSettings": {
-            "port": 25
-        },
         "domains": [
             "localhost"
         ],
@@ -2736,21 +2728,7 @@
                 }
             }
         },
-        "members": [
-            {
-                "isAdmin": true,
-                "userId": "ofc2S7hWucTzrzC2u",
-                "permissions": [
-                    "dashboard/customers",
-                    "dashboard/products",
-                    "dashboard/settings",
-                    "dashboard/settings/account",
-                    "dashboard/orders"
-                ]
-            }
-        ],
         "name": "REACTION",
-        "ownerId": "ofc2S7hWucTzrzC2u",
         "taxes": [
             {
                 "taxesIncluded": null,
@@ -2871,10 +2849,6 @@
             "KG": {
                 "name": "Kilograms"
             }
-        },
-        "updatedAt": {
-            "$date": "2015-01-22T12:23:34.362-0800"
-        },
-        "useCustomEmailSettings": false
+        }
     }
 ]

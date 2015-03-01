@@ -78,10 +78,14 @@ Integrate packages with reaction-core by adding **server/register.coffee**
 ReactionCore.registerPackage
   name: 'reaction-paypal' # usually same as meteor package
   autoEnable: false # auto-enable in dashboard,transforms to enabled
-  settings: # private package settings config (blackbox)
+  settings:
+    # private package settings config (blackbox)
     mode: false
     client_id: ''
     client_secret: ''
+    # public package settings
+    public:
+      notSoSecret: true
   registry: [
     # all options except route and template
     # are used to describe the
@@ -128,7 +132,9 @@ ReactionCore.registerPackage
       <Object:blackbox default properties for service configuration.>
  ```
 
-`settings` is a blackbox object for private package settings.
+`settings` is a blackbox object for package settings.
+
+`settings.public` is available to the client.
 
 `autoEnable` transforms into the `enabled` key to a boolean value on insert.
 

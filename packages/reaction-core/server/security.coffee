@@ -18,7 +18,6 @@
 Cart = ReactionCore.Collections.Cart
 Customers = ReactionCore.Collections.Customers
 Discounts = ReactionCore.Collections.Discounts
-FileStorage = ReactionCore.Collections.FileStorage
 Media = ReactionCore.Collections.Media
 Orders = ReactionCore.Collections.Orders
 Packages = ReactionCore.Collections.Packages
@@ -89,7 +88,7 @@ Security.permit(['insert', 'update', 'remove'])
 # Permissive security for users with the 'admin' role for FS.Collections
 ###
 Security.permit(['insert', 'update', 'remove'])
-  .collections([Media, FileStorage])
+  .collections([Media])
   .ifHasRole('admin')
   .ifFileBelongsToShop()
   # TODO should be a check here or elsewhere to
@@ -126,6 +125,6 @@ Cart.permit('update').ifUserIdMatches().exceptProps(['shopId']).apply()
 
 # Allow anonymous file downloads
 # XXX This is probably not actually how we want to handle file download security.
-_.each [ Media, FileStorage ], (fsCollection) ->
+_.each [ Media ], (fsCollection) ->
   fsCollection.allow
     download: -> return true

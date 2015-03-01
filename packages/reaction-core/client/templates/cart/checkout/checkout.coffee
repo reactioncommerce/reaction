@@ -1,37 +1,39 @@
 Template.cartCheckout.helpers
   cart: ->
-    Meteor.subscribe "cart", Session.get "sessionId", Meteor.userId()
     return Cart.findOne()
 
   loginStatus: () ->
-    unless Meteor.userId()?
+    if !getGuestLoginState()
       status = false
-    else if Meteor.user()
+    else
       status = "checkout-step-badge-completed"
     return status
 
   addressStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
+    cart = Cart.findOne()
+    if (getGuestLoginState() and cart?.shipping?.address and cart?.payment?.address)
       status = "checkout-step-badge-completed"
-    else if Meteor.user()
+    else if getGuestLoginState()
       status =  "checkout-step-badge"
     else
       status = false
     return status
 
   shippingOptionStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
-      status = "checkout-step-badge-completed"
-    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-      status = "checkout-step-badge"
+    cart = Cart.findOne()
+    if cart?.shipping?.address and cart?.payment?.address
+      if (getGuestLoginState() and Session.get("shipmentMethod"))
+        status = "checkout-step-badge-completed"
+      else if (getGuestLoginState())
+        status = "checkout-step-badge"
     else
       status = false
     return status
 
   checkoutReviewStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
-      status = true
-    return status
+    cart = Cart.findOne()
+    if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
+      return true
 
 Template.cartCheckout.rendered = ->
   Session.set "displayCartDrawer", false

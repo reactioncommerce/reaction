@@ -37,7 +37,7 @@ PackageFixture = ->
   #
   # updates package settings, accepts json string
   # example:
-  #  Fixtures.loadSettings Assets.getText("settings/Packages.json")
+  #  Fixtures.loadSettings Assets.getText("settings/reaction.json")
   #
   # This basically "hardcodes" all the settings. You can change them
   # via admin etc for the session, but when the server restarts they'll
@@ -46,23 +46,27 @@ PackageFixture = ->
   loadSettings: (json) ->
     check json, String
     validatedJson = EJSON.parse json
-    # loop through and import
-    for item, index in validatedJson
-      exists = ReactionCore.Collections.Packages.findOne('name': item.name)
-      if exists
-        result = ReactionCore.Collections.Packages.upsert(
-          { 'name': item.name }, {
-            $set:
-              'settings': item.settings
-              'enabled': item.enabled
-          },
-          multi: true
-          upsert: true
-          validate: false)
-
-        ReactionCore.Events.info "loaded local package data: " + item.name
+    # warn if this isn't an array of packages
+    unless _.isArray(validatedJson[0])
+      ReactionCore.Events.warn "Load Settings is not an array. Failed to load settings."
       return
-    return
+    # loop through and import
+    for pkg in validatedJson
+      for item in pkg
+        exists = ReactionCore.Collections.Packages.findOne('name': item.name)
+        if exists
+          result = ReactionCore.Collections.Packages.upsert(
+            { 'name': item.name }, {
+              $set:
+                'settings': item.settings
+                'enabled': item.enabled
+            },
+            multi: true
+            upsert: true
+            validate: false)
+          ReactionCore.Events.info "loaded local package data: " + item.name
+      #   return
+      # return
 
   #
   # loadI18n for defined shops language source json
@@ -195,7 +199,7 @@ Meteor.startup ->
     Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
 
   # data conversion: we now set sessionId or userId, but not both
-  Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
+  # Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
   # notifiy that we're done with initialization
   ReactionCore.Events.info "Reaction Commerce initialization finished. "

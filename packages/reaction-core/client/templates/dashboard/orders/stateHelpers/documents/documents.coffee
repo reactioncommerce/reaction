@@ -1,6 +1,7 @@
 Template.stateHelperDocuments.helpers
   documents: () ->
-    ReactionCore.Collections.FileStorage.find "metadata.orderId": @._id
+    # TODO: documents no longer stored in metadata
+    # ReactionCore.Collections.FileStorage.find "metadata.orderId": @._id
 
 Template.stateHelperDocuments.events
   'click .download-documents': () ->

@@ -71,10 +71,8 @@ Meteor.methods
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###
-  updateVariant: (variant, formDoc, currentDoc) ->
+  updateVariant: (variant) ->
     check variant, Object
-    check formDoc, Match.Optional(Object)
-    check currentDoc, Match.OneOf(String, Object, undefined)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"

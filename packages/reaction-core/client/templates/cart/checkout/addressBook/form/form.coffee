@@ -1,4 +1,7 @@
 Template.addressBookForm.helpers
+  ###
+  # TODO: update for i18n
+  ###
   countryOptions: ->
     options = []
     shop = ReactionCore.Collections.Shops.findOne()
@@ -7,17 +10,18 @@ Template.addressBookForm.helpers
     return options
 
   ###
-  # TODO: update when we add customers collection
   # TODO: consider adding default on edit,where no default exists
   ###
   isBillingDefault: ->
+    account = ReactionCore.Collections.Accounts.findOne()
     unless @_af.doc.isBillingDefault is true
-      unless Meteor.user().profile.addressBook then return true
+      unless account?.profile?.addressBook then return true
     else
       return @_af.doc.isBillingDefault
 
   isShippingDefault: ->
+    account = ReactionCore.Collections.Accounts.findOne()
     unless @_af.doc.isShippingDefault is true
-      unless Meteor.user().profile.addressBook then return true
+      unless account?.profile?.addressBook then return true
     else
       return @_af.doc.isShippingDefault

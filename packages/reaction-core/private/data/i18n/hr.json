@@ -7,7 +7,7 @@
                 "languages": {
                     "select": "Odaberite jezik"
                 },
-                               "app": {
+                "app": {
                     "saveAndContinue": "Spremi i nastavi",
                     "cancel": "Prekini",
                     "submit": "Pohrani",
@@ -72,15 +72,13 @@
                 "cartDrawerItems": {
                     "left": "lijevo"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "Prijava završena"
-                },
                 "cartCompleted": {
                     "thankYou": "Hvala Vam.",
                     "yourOrderHasBeen": "Vaša naradžba je",
                     "summaryMessage": "Hvala Vam za narudžbu."
                 },
                 "checkoutLogin": {
+                    "loginCompleted": "Prijava završena",
                     "createOrLogin": "Kreiraj račun ili se prijavi za nastavak"
                 },
                 "addressBookGrid": {

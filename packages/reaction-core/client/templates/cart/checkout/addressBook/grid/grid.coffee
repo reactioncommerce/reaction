@@ -1,13 +1,14 @@
 Template.addressBookGrid.helpers
   addressBook: ->
-    Meteor.user().profile?.addressBook
+    account = ReactionCore.Collections.Accounts.findOne()
+    return account.profile?.addressBook
 
   selectedBilling: ->
+    cart = Cart.findOne()
     if @.isBillingDefault
-      unless Session.get "billingUserAddressId"
-        Session.setDefault "billingUserAddressId", @._id
+      unless cart?.payment?.address
         CartWorkflow.paymentAddress(@)
-    if Session.equals "billingUserAddressId", @._id
+    if @._id is cart?.payment?.address._id
       # find current address, and if none
       cart = Cart.findOne({'payment.address._id': @._id})
       # allow last used address to default
@@ -16,24 +17,17 @@ Template.addressBookGrid.helpers
       return "active"
 
   selectedShipping: ->
+    cart = Cart.findOne()
     if @.isShippingDefault
-      unless Session.get "shippingUserAddressId"
-        Session.setDefault "shippingUserAddressId",@._id
+      unless cart?.shipping?.address
         CartWorkflow.shipmentAddress(@)
-    if Session.equals "shippingUserAddressId", @._id
-      # find current address, and if none
-      cart = Cart.findOne({'shipping.address._id': @._id})
-      # allow last used address to default
-      unless cart
-        CartWorkflow.shipmentAddress(@)
+    # return active selection
+    if @._id is cart?.shipping?.address?._id
       return "active"
-
 
 Template.addressBookGrid.events
   'click .address-ship-to': (event,template) ->
     CartWorkflow.shipmentAddress(@)
-    Session.set("shippingUserAddressId", @._id)
 
   'click .address-bill-to': (event,template) ->
     CartWorkflow.paymentAddress(@)
-    Session.set("billingUserAddressId", @._id)
