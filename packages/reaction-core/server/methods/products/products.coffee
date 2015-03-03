@@ -52,10 +52,12 @@ Meteor.methods
   ###
   createVariant: (productId, newVariant) ->
     check productId, String
-    check newVariant, Match.OneOf(String, null)
-    #create variant
+    check newVariant, Match.OneOf(Object, null)
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
+
+    #create variant
     newVariantId = Random.id()
     if newVariant
       newVariant._id = newVariantId
@@ -69,8 +71,10 @@ Meteor.methods
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###
-  updateVariant: (variant) ->
-    check variant, ReactionCore.Schemas.ProductVariant
+  updateVariant: (variant, formDoc, currentDoc) ->
+    check variant, Object
+    check formDoc, Match.Optional(Object)
+    check currentDoc, Match.OneOf(String, Object)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -86,7 +90,7 @@ Meteor.methods
   # update whole variants array
   ###
   updateVariants: (variants) ->
-    check variants, [ReactionCore.Schemas.ProductVariant]
+    check variants, [Object]
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
