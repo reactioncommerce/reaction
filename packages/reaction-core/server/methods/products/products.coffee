@@ -52,7 +52,7 @@ Meteor.methods
   ###
   createVariant: (productId, newVariant) ->
     check productId, String
-    check newVariant, Match.OneOf(Object, null)
+    check newVariant, Match.OneOf(Object, undefined)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
