@@ -39,6 +39,10 @@ PackageFixture = ->
   # example:
   #  Fixtures.loadSettings Assets.getText("settings/Packages.json")
   #
+  # This basically "hardcodes" all the settings. You can change them
+  # via admin etc for the session, but when the server restarts they'll
+  # be restored back to the supplied json
+  #
   loadSettings: (json) ->
     check json, String
     validatedJson = EJSON.parse json
@@ -47,7 +51,11 @@ PackageFixture = ->
       exists = ReactionCore.Collections.Packages.findOne('name': item.name)
       if exists
         result = ReactionCore.Collections.Packages.upsert(
-          { 'name': item.name }, { $set: 'settings': item.settings },
+          { 'name': item.name }, {
+            $set:
+              'settings': item.settings
+              'enabled': item.enabled
+          },
           multi: true
           upsert: true
           validate: false)
