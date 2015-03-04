@@ -21,7 +21,7 @@ nemo64:bootstrap
 #sanjo:jasmine
 
 # Reaction Commerce Packages
-reactioncommerce:core
+reactioncommerce:core@=0.4.2
 reactioncommerce:core-theme
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-google-analytics

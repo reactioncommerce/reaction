@@ -28,8 +28,7 @@ fi
 # start mongodb (optional)
 if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
   echo "Starting local MongoDB..."
-  /usr/local/bin/mongod --fork --logpath /var/log/mongodb.log
-
+  /usr/local/bin/mongod --smallfiles --fork --logpath /var/log/mongodb.log
 fi
 
 # export for meteor
