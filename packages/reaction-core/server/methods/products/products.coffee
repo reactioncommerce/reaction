@@ -74,7 +74,7 @@ Meteor.methods
   updateVariant: (variant, formDoc, currentDoc) ->
     check variant, Object
     check formDoc, Match.Optional(Object)
-    check currentDoc, Match.OneOf(String, Object)
+    check currentDoc, Match.OneOf(String, Object, undefined)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
