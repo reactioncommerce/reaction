@@ -137,8 +137,7 @@ Meteor.methods
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
-    if currentTagId
-      Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
+    Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
     # if not in use delete from system
     productCount = Products.find({"hashtags":{$in:[tagId]}}).count()
     relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()

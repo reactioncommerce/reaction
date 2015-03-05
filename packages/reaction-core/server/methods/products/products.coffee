@@ -337,7 +337,7 @@ Meteor.methods
   updateMetaFields: (productId, updatedMeta, meta) ->
     check productId, String
     check updatedMeta, Object
-    check meta, Match.Optional(String)
+    check meta, Match.OneOf(String, Object)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
