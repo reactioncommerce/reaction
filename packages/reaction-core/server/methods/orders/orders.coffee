@@ -13,7 +13,7 @@ Meteor.methods
   # Save supplied order workflow state
   ###
   updateWorkflow: (orderId, currentState) ->
-    check orderId,
+    check orderId, String
     check currentState, String
     # update order status
     Orders.update(orderId, {$set: {"state":currentState}})
