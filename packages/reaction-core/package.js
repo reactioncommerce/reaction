@@ -73,6 +73,8 @@ Package.onUse(function (api) {
     api.use("cfs:s3@0.1.1");
     api.use("cfs:ui@0.1.3");
     api.use("raix:ui-dropped-event@0.0.7");
+    
+    api.use("meteorhacks:ssr@2.1.2");
 
     //implying these are reused in reaction packages
     api.imply("less");
