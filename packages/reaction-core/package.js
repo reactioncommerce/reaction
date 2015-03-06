@@ -139,9 +139,7 @@ Package.onUse(function (api) {
     "server/methods/cart/checkout/checkout.coffee",
     "server/methods/orders/orders.coffee",
     "server/methods/products/products.coffee",
-    "server/methods/accounts/accounts.coffee",
-    "server/emailTemplates/shopMemberInvite.html",
-    "server/emailTemplates/shopMemberNotification.html"
+    "server/methods/accounts/accounts.coffee"
   ], ["server"]);
 
   api.addFiles([
@@ -387,6 +385,10 @@ Package.onUse(function (api) {
     "client/templates/products/productDetail/attributes/attributes.coffee",
   ], ["client"]);
 
+  // Email Templates
+  api.addFiles('server/emailTemplates/memberWelcomeNotification.html', 'server', {isAsset: true});
+  api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
+  api.addFiles('server/emailTemplates/shopMemberNotification.html', 'server', {isAsset: true});
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
@@ -412,6 +414,7 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/sl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
+
 
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
