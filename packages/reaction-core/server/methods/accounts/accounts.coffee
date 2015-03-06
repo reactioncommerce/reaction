@@ -61,6 +61,7 @@ Meteor.methods
     if shop and email and name
       if ReactionCore.hasOwnerAccess(shop)
         currentUserName = Meteor.user().profile.name
+        currentUserName = if currentUserName then currentUserName else 'Admin'
         user = Meteor.users.findOne {"emails.address": email}
         unless user # user does not exist, invite him
           userId = Accounts.createUser
