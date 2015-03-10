@@ -33,7 +33,17 @@ Meteor.methods
     check options, Match.Optional(Object)
     # get shipping rates for each provider
     rates = []
-    shipping = ReactionCore.Collections.Shipping.find({'shopId': ReactionCore.getShopId()})
+    selector = {shopId:  ReactionCore.getShopId()}
+    # if we have products from multiple shops in the cart.items we have to select the shippign options from those shops
+    shops = []
+    for product in options.items
+      productShop = ReactionCore.Collections.Products.findOne(product.productId);
+      if productShop.shopId not in shops
+        shops.push productShop.shopId if productShop.shopId not in shops
+    # not sure if this is the correct condition since it will most certainly always be positive, if there are any products in the cart    
+    if shops.length > 0
+      selector = {shopId: {$in: shops}}    
+    shipping = ReactionCore.Collections.Shipping.find(selector);
     # flat rate / table shipping rates
     shipping.forEach (shipping) ->
       ## get all enabled rates
@@ -44,7 +54,7 @@ Meteor.methods
 
         # rate is shipping and handling
         rate = method.rate+method.handling
-        rates.push carrier: shipping.provider.label, method: method, rate: rate
+        rates.push carrier: shipping.provider.label, method: method, rate: rate, shopId: shipping.shopId
 
     # TODO:
     # wire in external shipping methods here, add to rates
