@@ -41,6 +41,7 @@ Meteor.methods
       if productShop.shopId not in shops
         shops.push productShop.shopId if productShop.shopId not in shops
     # not sure if this is the correct condition since it will most certainly always be positive, if there are any products in the cart    
+    shops.push ReactionCore.getShopId() if ReactionCore.getShopId() not in shops
     if shops.length > 0
       selector = {shopId: {$in: shops}}    
     shipping = ReactionCore.Collections.Shipping.find(selector);
