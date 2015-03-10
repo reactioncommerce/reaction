@@ -61,6 +61,7 @@ Meteor.methods
     if shop and email and name
       if ReactionCore.hasOwnerAccess(shop)
         currentUserName = Meteor.user().profile.name
+        currentUserName = if currentUserName then currentUserName else 'Admin'
         user = Meteor.users.findOne {"emails.address": email}
         unless user # user does not exist, invite him
           userId = Accounts.createUser
@@ -79,11 +80,12 @@ Meteor.methods
                 when: new Date()
 
           setMailUrlForShop(shop)
+          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'));
           Email.send
             to: email
             from: currentUserName + " <" + shop.email + ">"
-            subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
-            html: Spacebars.templates['shopMemberInvite']
+            subject: "You have been invited to join the " + shop.name + " staff"
+            html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
               shop: shop
               currentUserName: currentUserName
@@ -91,11 +93,12 @@ Meteor.methods
               url: Accounts.urls.enrollAccount(token)
         else # user exist, send notification
           setMailUrlForShop(shop)
+          SSR.compileTemplate('shopMemberNotification', Assets.getText('server/emailTemplates/shopMemberNotification.html'));
           Email.send
             to: email
             from: currentUserName + " <" + shop.email + ">"
-            subject: "[Reaction] You have been invited to join the " + shop.name + " staff"
-            html: Spacebars.templates['shopMemberNotification']
+            subject: "You have been invited to join the " + shop.name + " staff"
+            html: SSR.render 'shopMemberNotification',
               homepage: Meteor.absoluteUrl()
               shop: shop
               currentUserName: currentUserName
@@ -111,10 +114,11 @@ Meteor.methods
 
     email = Meteor.user().emails[0].address
     setMailUrlForShop(shop)
+    SSR.compileTemplate('memberWelcomeNotification', Assets.getText('server/emailTemplates/memberWelcomeNotification.html'));
     Email.send
       to: email
       from: shop.email
       subject: "Welcome to " + shop.name + "!"
-      html: Spacebars.templates['memberWelcomeNotification']
+      html: SSR.render 'memberWelcomeNotification',
         homepage: Meteor.absoluteUrl()
         shop: shop
