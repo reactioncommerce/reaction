@@ -118,10 +118,13 @@ Meteor.publish 'shopMembers', ->
 ###
 # product collection
 ###
-Meteor.publish 'products', (userId) ->
+Meteor.publish 'products', (userId, shops) ->
   shop = ReactionCore.getCurrentShop(@)
   if shop
     selector = {shopId: shop._id}
+    ## add additional shops
+    if shops
+      selector = {shopId: {$in: shops}}
     unless Roles.userIsInRole(this.userId, ['admin'])
       selector.isVisible = true
     return Products.find(selector)
