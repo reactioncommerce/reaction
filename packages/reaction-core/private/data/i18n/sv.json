@@ -69,7 +69,7 @@
                         "usernameAlreadyExists": "Användarnamn finns redan.",
                         "youAreNotLoggedIn": "Du är inte inloggad.",
                         "youveBeenLoggedOutByTheServer": "Du har loggats ut av servern. Vänligen logga in igen.",
-                        "yourSessionHasExpired": "Din session har gått ut. Vänligen ligga in igen.",
+                        "yourSessionHasExpired": "Din session har gått ut. Vänligen logga in igen.",
                         "noMatchingLoginAttemptFound": "Inget matchande loginförsök kunde hittas",
                         "passwordIsOld": "Ditt lösenord är gammalt. Vänligen återställ ditt lösenord.",
                         "incorrectPassword": "Felaktigt lösenord",
