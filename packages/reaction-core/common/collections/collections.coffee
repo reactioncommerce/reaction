@@ -16,7 +16,10 @@ ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
       return count
 
     cart.cartShipping = ->
-      shipping = cart?.shipping?.shipmentMethod?.rate
+      shipping = 0
+      if cart?.shipping?.shipmentMethod?.rate
+        shipping = cart?.shipping?.shipmentMethod?.rate
+      else ((shipping += shippingMethod.rate) for shippingMethod in cart.shipping.shipmentMethod) if cart?.shipping?.shipmentMethod.length > 0
       return shipping
 
     cart.cartSubTotal = ->
@@ -40,7 +43,11 @@ ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
     cart.cartTotal = ->
       subtotal = 0
       ((subtotal += (items.quantity * items.variants.price)) for items in cart.items) if cart?.items
-      shipping = parseFloat cart?.shipping?.shipmentMethod?.rate
+      shipping = 0
+      if cart?.shipping?.shipmentMethod?.rate
+        shipping = cart?.shipping?.shipmentMethod?.rate
+      else ((shipping += shippingMethod.rate) for shippingMethod in cart.shipping.shipmentMethod) if cart?.shipping?.shipmentMethod.length > 0
+      shipping = parseFloat shipping
       subtotal = (subtotal + shipping) unless isNaN(shipping)
       total = subtotal.toFixed(2)
       return total
