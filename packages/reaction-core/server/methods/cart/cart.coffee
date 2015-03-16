@@ -1,3 +1,88 @@
+# Additional match method Optional or null, undefined
+Match.OptionalOrNull = (pattern) -> Match.OneOf undefined, null, pattern
+
+###
+#  getCurrentCart(sessionId)
+#  create, merge the session and user carts and return cart cursor
+#
+# There should be one cart for each independent, non logged in user session
+# When a user logs in that cart now belongs to that user and we use the a single user cart.
+# If they are logged in on more than one devices, regardless of session, the user cart will be used
+# If they had more than one cart, on more than one device,logged in at seperate times then merge the carts
+#
+###
+@getCurrentCart = (sessionId, shopId, userId) ->
+  check sessionId, String
+  check shopId, Match.OptionalOrNull(String)
+  check userId, Match.OptionalOrNull(String)
+
+  shopid = shopId || ReactionCore.getShopId(@)
+  userId = userId || "" # no null
+
+  Cart = ReactionCore.Collections.Cart
+  currentCarts = Cart.find 'shopId': shopId, 'sessions': $in: [ sessionId ]
+  #
+  # if sessionCart just logged out, remove sessionId and create new sessionCart
+  #
+  if currentCarts.count() is 0
+    newCartId = Cart.insert  sessions: [sessionId], shopId: shopId, userId: userId
+    ReactionCore.Events.debug "Created new session cart", newCartId
+    currentCart = Cart.find newCartId
+    return currentCart
+
+  # check for user carts and merge if necessary
+  currentCarts.forEach (cart) ->
+    #
+    # if user just logged out, remove sessionId and create new sessionCart
+    # leave the userId so we can merge with this cart when user logs back in
+    #
+    if cart.userId and !userId
+      Cart.update cart._id, $pull: 'sessions': sessionId
+      ReactionCore.Events.debug "Logging out. Removed session from cart."
+    #
+    # if sessionCart is first time authenticated add user to cart
+    # add sessionId to any existing userCart
+    # and then merge session cart into userCart
+    # and remove sessionCart so that the user has clean cart on logout
+    #
+    if userId
+      userCart = Cart.findOne
+        'userId': userId
+        'shopId': shopId
+        'sessions': $nin: [ sessionId ]
+
+      # merge session cart into usercart
+      if userCart and !cart.userId
+        Cart.update userCart._id,
+            $set:
+              userId: userId
+            $addToSet:
+              items: $each: cart.items
+              sessions: $each: cart.sessions
+        Cart.remove cart._id
+        ReactionCore.Events.debug "Updated user cart", cart._id, "with sessionId: " + sessionId
+        return Cart.find userCart._id
+      # neither a user existing user cart, just add userId
+      else if !userCart and !cart.userId
+        Cart.update cart._id,
+          $set:
+            userId: userId
+        return Cart.find cart._id
+
+  # if no user cart actions, just return current cart
+  if currentCarts.count() is 1
+    cart = currentCarts.fetch()
+    ReactionCore.Events.debug "getCurrentCart returned sessionId:" + sessionId + " cartId: " + cart[0]._id
+    currentCarts = Cart.find cart[0]._id
+    return currentCarts
+
+  # if all patterns failed.
+  ReactionCore.Events.debug "getCurrentCart error:", currentCarts
+  return currentCarts
+
+###
+#  Cart Methods
+###
 Meteor.methods
   ###
   # when we add an item to the cart, we want to break all relationships
@@ -5,20 +90,16 @@ Meteor.methods
   # however, we could check reactively for price /qty etc, adjustments on
   # the original and notify them
   ###
-  addToCart: (cartSession, productId, variantData, quantity) ->
-    check cartSession, {sessionId: String, userId: Match.OneOf(String, null)}
+  addToCart: (cartId, productId, variantData, quantity) ->
+    check cartId, String
     check productId, String
     check variantData, Object
     check quantity, String
-    #
-    # createCart will create for session if necessary, update user if necessary,
-    # sync all user's carts, and return the cart
-    #
+
     shopId = ReactionCore.getShopId(@)
-    currentCart = createCart cartSession.sessionId, @userId, shopId
+    currentCart = Cart.findOne cartId
 
-    return false unless currentCart
-
+    # TODO: refactor to check currentCart instead of another findOne
     cartVariantExists = Cart.findOne _id: currentCart._id, "items.variants._id": variantData._id
     if cartVariantExists
       Cart.update
@@ -30,10 +111,12 @@ Meteor.methods
         ReactionCore.Events.info Cart.simpleSchema().namedContext().invalidKeys() if error
     # add new cart items
     else
+      product = ReactionCore.Collections.Products.findOne productId
       Cart.update _id: currentCart._id,
         $addToSet:
           items:
             _id: Random.id()
+            shopId: product.shopId
             productId: productId
             quantity: quantity
             variants: variantData
@@ -48,7 +131,7 @@ Meteor.methods
     check sessionId, String
     check cartId, String
     check variantData, Object
-
+    console.log @userId
     # We select on sessionId or userId, too, for security
     return Cart.update
       _id: cartId
@@ -76,21 +159,15 @@ Meteor.methods
   # over to an order object, and give the user a new empty
   # cart. reusing the cart schema makes sense, but integrity of
   # the order, we don't want to just make another cart item
+  #
+  # TODO:  Partial order processing, shopId processing
+  #
   ###
   copyCartToOrder: (cartId) ->
     check cartId, String
     # extra validation + transform methods
     cart = ReactionCore.Collections.Cart.findOne(cartId)
     invoice = {}
-
-    ###
-    # todo: implement guest checkout here.
-    # save sessionId to cart collection
-    # if this guest sessionId becomes a user
-    # or if an email sent to the user confirms sessionId belongs to this email
-    # it can be reconnected to any user account where the email is registered.
-    # we won't validate user account here further
-    ###
 
     # transform cart pricing into order invoice
     invoice.shipping = cart.cartShipping()
@@ -99,6 +176,10 @@ Meteor.methods
     invoice.discounts = cart.cartDiscounts()
     invoice.total =  cart.cartTotal()
     cart.payment.invoices = [invoice]
+
+    # attach an email if user cart
+    if cart.userId and !cart.email
+      cart.email = Meteor.user(cart.userId).emails[0].address
 
     # todo: these defaults should be done in schema
     now = new Date()
@@ -109,6 +190,10 @@ Meteor.methods
     cart.state = "orderCreated"
     cart.status = "new"
 
+    # update orderId
+    cart._id = Random.id()
+    cart.cartId = cartId
+
     ###
     # final sanity check
     # todo add `check cart, ReactionCore.Schemas.Order`
@@ -118,7 +203,10 @@ Meteor.methods
 
     try
       orderId = Orders.insert cart
-      Cart.remove _id: cart._id
+      if orderId
+        Cart.remove _id: cartId
+        ReactionCore.Events.info "Completed cart for " + cartId
+
     catch error
       ReactionCore.Events.info "error in order insert"
       ReactionCore.Events.warn error, Orders.simpleSchema().namedContext().invalidKeys()
@@ -126,84 +214,3 @@ Meteor.methods
 
     # return new orderId
     return orderId
-
-
-###
-# create a cart
-# create for session if necessary, update user if necessary,
-# sync all user's carts, and return the cart
-#
-# * There should be one cart for each independent, non logged in user session
-# * When a user logs in that cart now belongs to that user
-# * If they are logged in on more than one devices, regardless of session, that cart will be used
-# * If they had more than one cart, on more than one device, and login at seperate times it should merge the carts
-###
-@createCart = (sessionId, userId, shopId) ->
-  check sessionId, String
-  check userId, Match.OneOf(String, null)
-  check shopId, String
-  # try to create cart
-  try
-    # Is there a cart for this session?
-    sessionCart = Cart.findOne(sessionId: sessionId, shopId: shopId)
-
-    # Is there a logged in user?
-    if userId?
-
-      # Do we have an existing user cart?
-      userCart = Cart.findOne(userId: userId, shopId: shopId)
-
-      # If there is a cart for this session because we just logged in
-      if sessionCart?
-        # If we also have a user cart
-        if userCart?
-          # Then merge the session cart into the existing user cart
-          # TODO: Might need to merge other values, figure out proper state, etc?
-          Cart.update userCart._id,
-            $addToSet:
-              items:
-                $each: sessionCart.items || []
-          # And then remove the session cart
-          Cart.remove(_id: sessionCart._id)
-          # And return the user cart
-          result = Cart.findOne(_id: userCart._id)
-          ReactionCore.Events.info "Merged session cart", sessionCart._id, "into user cart", userCart._id
-        # But if we don't already have a user cart
-        else
-          # Then we convert the session cart to a user cart
-          Cart.update sessionCart._id, {$set: {userId: userId}, $unset: {sessionId: ""}}
-          # And then return this cart
-          result = Cart.findOne(_id: sessionCart._id)
-          ReactionCore.Events.info "Converted cart", sessionCart._id, "from session cart to user cart"
-
-      # If there was not a session cart and we are logged in
-      else
-        # We return the existing user cart if there is one
-        if userCart?
-          result = userCart
-          ReactionCore.Events.info "Using existing user cart", userCart._id
-        # Or we create a new user cart
-        else
-          newCartId = Cart.insert(userId: userId, shopId: shopId)
-          # And return that
-          result = Cart.findOne(_id: newCartId)
-          ReactionCore.Events.info "Created new user cart", newCartId
-
-    # If we don't have a logged in user
-    else
-      # Return the session cart if we already have one
-      if sessionCart?
-        result = sessionCart
-        ReactionCore.Events.info "Using existing session cart", sessionCart._id
-      # Otherwise create one
-      else
-        newCartId = Cart.insert {sessionId: sessionId, shopId: shopId}
-        # And then return that
-        result = Cart.findOne(_id: newCartId)
-        ReactionCore.Events.info "Created new session cart", newCartId
-
-  catch error
-    ReactionCore.Events.info "createCart error: ", error
-
-  # Finally, we return the correct cart for convenience
-  return result

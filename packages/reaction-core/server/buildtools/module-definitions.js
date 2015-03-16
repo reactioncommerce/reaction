@@ -34,8 +34,8 @@ moduleDefinitions = {
     'theme/dashboard/packages/grid/grid.less',
     'theme/dashboard/packages/grid/package/package.less',
     'theme/dashboard/packages/packages.less',
-    'theme/dashboard/settings/settingsAccount/shopMember/shopMember.less',
-    'theme/dashboard/settings/settingsGeneral/settingsGeneral.less',
+    'theme/dashboard/shop/accounts.less',
+    'theme/dashboard/shop/settings.less',
     'theme/dashboard/widget/widget.less'
     ]},
     "layout":{less:[

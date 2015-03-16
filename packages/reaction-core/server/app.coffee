@@ -19,16 +19,12 @@ if isDebug is true or ( process.env.NODE_ENV is "development" and isDebug isnt f
 
 # Define bunyan levels and output to Meteor console
 ReactionCore.Events = logger.bunyan.createLogger(
-  name: "reactioncommerce:core"
+  name: "core"
   serializers: logger.bunyan.stdSerializers
   streams: [
     {
       level: "debug"
       stream: (unless isDebug is "DEBUG" then logger.bunyanPretty() else process.stdout )
-    }
-    {
-      level: "error"
-      path: "process.stderr" # log ERROR and above to a file
     }
   ]
 )
@@ -80,6 +76,3 @@ _.extend ReactionCore,
     shop = @getCurrentShop() unless shop
     userId = Meteor.userId() unless userId
     return Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
-
-  canCheckoutAsGuest = (client) ->
-    return @getCurrentShop(client).canCheckoutAsGuest || false

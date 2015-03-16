@@ -56,10 +56,8 @@
                 "cartDrawerItems": {
                     "left": "dejado/s"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "Entrar completó"
-                },
                 "checkoutLogin": {
+                    "loginCompleted": "Entrar completó",
                     "createOrLogin": "Crear una cuenta o inicia sesión para continuar"
                 },
                 "checkoutPayment": {

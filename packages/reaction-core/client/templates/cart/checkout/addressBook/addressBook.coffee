@@ -1,3 +1,4 @@
+loginStatus = Session.equals "guest-checkout", true || Meteor.userId()
 ###
 # Template.checkoutAddressBook
 # template determines which view should be used:
@@ -6,16 +7,17 @@
 ###
 Template.checkoutAddressBook.helpers
   addressMode: ->
-    # TODO this will need updating with new customers collection
     # users without addressbook always must add
     # this could be made optional for digital purchases
-    unless Meteor.user().profile.addressBook
+    account = ReactionCore.Collections.Accounts.findOne()
+    unless account?.profile?.addressBook
       Session.set "addressBookView", "addAddress"
       return "addAddress"
     else
       return Session.get "addressBookView"
 
   addressBookView: (mode)->
+    account = ReactionCore.Collections.Accounts.findOne()
     mode = this.mode
     if mode?
       switch mode
@@ -23,7 +25,7 @@ Template.checkoutAddressBook.helpers
         when "addAddress" then return Template.addressBookAdd
         else return Template.addressBookEdit
     else
-      if Meteor.user().profile?.addressBook
+      if account?.profile?.addressBook
         Session.setDefault "addressBookView", "view"
         return Template.addressBookGrid
       else

@@ -1,11 +1,12 @@
-<template name="settingsGeneral">
+<template name="shopSettings">
 <h2>Shop <small data-18n="app.settings">Settings</small></h2>
 <div class="col-md-5">
 <ul class="nav nav-tabs">
   <li class="active"><a href="#general" data-toggle="tab">General</a></li>
   <li><a href="#address" data-toggle="tab">Address</a></li>
-  <li><a href="#smtp" data-toggle="tab">SMTP</a></li>
-  <li><a href="#settings" data-toggle="tab">Settings</a></li>
+  <li><a href="#mail" data-toggle="tab">Mail</a></li>
+  <li><a href="#localization" data-toggle="tab">Localization</a></li>
+  <li><a href="#options" data-toggle="tab">Options</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -17,8 +18,7 @@
       {{> afQuickField name='email' placeholder="Primary Contact Email"}}
       {{> afQuickField name='description' placeholder="Description"}}
       {{> afQuickField name='keywords' placeholder="Keywords"}}
-      {{> afQuickField name='canCheckoutAsGuest'}}
-      {{> settingsGeneralSubmitButton}}
+      {{> shopSettingsSubmitButton}}
     {{/autoForm}}
     </div>
   </div>
@@ -37,33 +37,46 @@
         {{> afQuickField name='addressBook.0.isCommercial'}}
         {{> afQuickField name='addressBook.0.isShippingDefault' value=true}}
         {{> afQuickField name='addressBook.0.isBillingDefault' value=true}}
-        {{> settingsGeneralSubmitButton}}
+        {{> shopSettingsSubmitButton}}
       {{/autoForm}}
     </div>
   </div>
-  <div class="tab-pane" id="smtp">
+  <div class="tab-pane" id="mail">
     <div class="well">
-      {{#autoForm collection="Shops" doc=. id="shopEditEmailForm" type="update"}}
-        {{> afQuickFields fields="customEmailSettings.username,customEmailSettings.password,customEmailSettings.host,customEmailSettings.port"}}
-        {{> settingsGeneralSubmitButton}}
+      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditEmailForm" type="update"}}
+        {{> afQuickField name='settings.mail.user'}}
+        {{> afQuickField name='settings.mail.password'}}
+        {{> afQuickField name='settings.mail.host'}}
+        {{> afQuickField name='settings.mail.port'}}
+        {{> shopSettingsSubmitButton}}
       {{/autoForm}}
     </div>
   </div>
-  <div class="tab-pane" id="settings">
+  <div class="tab-pane" id="localization">
     <div class="well">
       {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
         {{> afQuickField name='timezone' options=timezoneOptions}}
         {{> afQuickField name='currency' options=currencyOptions}}
         {{> afQuickField name='baseUOM' options=uomOptions}}
-        {{> settingsGeneralSubmitButton}}
+        {{> shopSettingsSubmitButton}}
       {{/autoForm}}
     </div>
   </div>
+  <div class="tab-pane" id="options">
+    <div class="well">
+      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOptionsForm" type="update"}}
+        {{> afFieldInput name='settings.public.allowGuestCheckout'}}
+        {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
+    </div>
+  </div>
+
+
 </div>
 </div>
 </template>
 
-<template name="settingsGeneralSubmitButton">
+<template name="shopSettingsSubmitButton">
   <div class="clearfix">
     <button type="submit" class="btn btn-primary pull-right">Submit</button>
   </div>

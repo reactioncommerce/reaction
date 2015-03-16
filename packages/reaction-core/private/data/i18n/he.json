@@ -73,15 +73,13 @@
                 "cartDrawerItems": {
                     "left": "נשארו"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "תהליך ההתחברות הושלם"
-                },
                 "cartCompleted": {
                   "thankYou": "תודה רבה.",
                   "yourOrderHasBeen": "הזמנתך",
                   "summaryMessage": "תודה על הזמנתך."
                 },
                 "checkoutLogin": {
+                    "loginCompleted": "תהליך ההתחברות הושלם",
                     "createOrLogin": "צור חשבון או התחבר על מנת להמשיך"
                 },
                 "addressBookGrid": {

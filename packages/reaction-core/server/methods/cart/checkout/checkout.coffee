@@ -7,6 +7,7 @@ Meteor.methods
   # TODO: add orderId argument/fallback
   ###
   updateShipmentQuotes: (cartId) ->
+    return unless cartId
     check cartId, String
     @unblock
     cart = ReactionCore.Collections.Cart.findOne(cartId)
@@ -30,20 +31,21 @@ Meteor.methods
   #  just gets rates, without updating anything
   ###
   getShippingRates: (options) ->
-    check options, Match.Optional(Object)
+    check options, Object
     # get shipping rates for each provider
     rates = []
     selector = {shopId:  ReactionCore.getShopId()}
-    # if we have products from multiple shops in the cart.items we have to select the shippign options from those shops
+    # if we have products from multiple shops in the cart.items we have to select the shipping options from those shops
     shops = []
     for product in options.items
       productShop = ReactionCore.Collections.Products.findOne(product.productId);
       if productShop.shopId not in shops
         shops.push productShop.shopId if productShop.shopId not in shops
-    # not sure if this is the correct condition since it will most certainly always be positive, if there are any products in the cart    
+
+    # not sure if this is the correct condition since it will most certainly always be positive, if there are any products in the cart
     shops.push ReactionCore.getShopId() if ReactionCore.getShopId() not in shops
-    if shops.length > 0
-      selector = {shopId: {$in: shops}}    
+    if shops?.length > 0
+      selector = {shopId: {$in: shops}}
     shipping = ReactionCore.Collections.Shipping.find(selector);
     # flat rate / table shipping rates
     shipping.forEach (shipping) ->
@@ -62,6 +64,7 @@ Meteor.methods
 
     # return in the rates object
     ReactionCore.Events.info "getShippingrates returning rates"
+    ReactionCore.Events.debug "rates", rates
     return rates
 
   ###
@@ -87,21 +90,24 @@ Meteor.methods
   addressBookAdd: (doc, updateDoc, currentDoc) ->
     check doc, ReactionCore.Schemas.Address
     check updateDoc, Object
-    check currentDoc, null
+    check currentDoc, Match.OneOf(String, null)
     @unblock()
+    sessionId = currentDoc
+    currentUserId = Meteor.userId() || ""
 
     # add address
-    currentUserId = Meteor.userId()
     if doc.isShippingDefault
-      Meteor.users.update
-        _id: currentUserId
+      ReactionCore.Collections.Accounts.update
+        userId: currentUserId
+        sessionId: sessionId
         "profile.addressBook.isShippingDefault": true
       ,
         $set:
           "profile.addressBook.$.isShippingDefault": false
     if doc.isBillingDefault
-      Meteor.users.update
-        _id: currentUserId
+      ReactionCore.Collections.Accounts.update
+        userId: currentUserId
+        sessionId: sessionId
         "profile.addressBook.isBillingDefault": true
       ,
         $set:
@@ -109,7 +115,7 @@ Meteor.methods
     # Add new address
     doc._id = Random.id()
 
-    return Meteor.users.update _id: currentUserId, {$addToSet: {"profile.addressBook": doc}}
+    return ReactionCore.Collections.Accounts.upsert userId: currentUserId, sessionId: sessionId, {$addToSet: {"profile.addressBook": doc}}
 
   ###
   # method to update existing address in user's profile
@@ -119,26 +125,30 @@ Meteor.methods
     check updateDoc, Object
     check currentDoc, String
     @unblock()
+    sessionId = currentDoc
+    currentUserId = Meteor.userId() || ""
 
     #reset existing default
-    currentUserId = Meteor.userId()
     if doc.isShippingDefault
-      Meteor.users.update
-        _id: currentUserId
+      ReactionCore.Collections.Accounts.update
+        userId: currentUserId
+        sessionId: sessionId
         "profile.addressBook.isShippingDefault": true
       ,
         $set:
           "profile.addressBook.$.isShippingDefault": false
     if doc.isBillingDefault
-      Meteor.users.update
-        _id: currentUserId
+      ReactionCore.Collections.Accounts.update
+        userId: currentUserId
+        sessionId: sessionId
         "profile.addressBook.isBillingDefault": true
       ,
         $set:
           "profile.addressBook.$.isBillingDefault": false
     # update existing address
-    Meteor.users.update
-      _id: currentUserId
+    ReactionCore.Collections.Accounts.update
+      userId: currentUserId
+      sessionId: sessionId
       "profile.addressBook._id": doc._id
     ,
       $set:

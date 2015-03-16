@@ -1,9 +1,11 @@
 Template.addressBookAdd.helpers
   addressBookExists: ->
-    return Meteor.user().profile.addressBook
+    account = ReactionCore.Collections.Accounts.findOne()
+    if account?.profile?.addressBook then return true
 
   thisAddress: ->
-    thisAddress = {'fullName': Meteor.user().profile?.name}
+    account = ReactionCore.Collections.Accounts.findOne()
+    thisAddress = {'fullName': account?.profile?.name}
     if Session.get("address")
       thisAddress.postal = Session.get("address").zipcode
       thisAddress.country = Session.get("address").countryCode
@@ -17,3 +19,9 @@ Template.addressBookAdd.events
 
   'submit form': () ->
     Session.set "addressBookView", "view"
+
+AutoForm.hooks addressBookAddForm:
+  before:
+    'addressBookAdd': (doc, template) ->
+      Meteor.call "addressBookAdd", doc,{}, Session.get "sessionId"
+      return doc

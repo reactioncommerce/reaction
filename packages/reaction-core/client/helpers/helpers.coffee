@@ -272,3 +272,11 @@ currentProduct = @currentProduct
   re = new RegExp("^6011")
   return "discover"  if number.match(re)?
   ""
+
+###
+# getGuestLoginState
+# return true if guest checkout
+# return userId if authenticated checkout
+###
+@getGuestLoginState = ->
+  Meteor.userId() || Session.equals "guestCheckoutFlow", true

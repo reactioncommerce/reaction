@@ -9,7 +9,7 @@ Template.loginDropdown.events
     event.preventDefault()
     template.$('.dropdown-toggle').dropdown('toggle') # close dropdown
 
-  "click .user-accounts-dropdown a": (event, template) ->
+  "click .user-accounts-dropdown-apps a": (event, template) ->
     if @.route is "createProduct"
       event.preventDefault()
       Meteor.call "createProduct", (error, productId) ->

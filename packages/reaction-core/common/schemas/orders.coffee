@@ -1,3 +1,4 @@
+
 ###
 # Payments Schema
 ###
@@ -100,6 +101,17 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema
     optional: true
   status:
     type: String
+  history:
+    type: [ReactionCore.Schemas.History]
+    optional: true
+  documents:
+    type: [ReactionCore.Schemas.Document]
+    optional: true
+
+ReactionCore.Schemas.Order = new SimpleSchema
+  cartId:
+    type: String
+    optional: true
   history:
     type: [ReactionCore.Schemas.History]
     optional: true

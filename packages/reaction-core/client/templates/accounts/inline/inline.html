@@ -1,5 +1,22 @@
 <template name="loginInline">
 <div class="accounts-dialog accounts-inline">
-  {{>_loginButtonsLoggedOutAllServices inline="inline"}}
+  {{#if allowGuestCheckout}}
+    <div class="col-md-6 pull-left checkout-guest">
+      <div class="guest-checkout">
+        <p class="text-justify" data-i18n="checkoutLogin.guestMessage">Continue as a guest, and you can create an account later.
+        </p>
+        <div class="login-button single-login-button continue-guest">
+          <span data-i18n="checkoutLogin.continueAsGuest">Continue as Guest</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 pull-right checkout-login">
+      {{>_loginButtonsLoggedOutAllServices inline="inline"}}
+    </div>
+  {{else}}
+    <div class="checkout-login">
+      {{>_loginButtonsLoggedOutAllServices inline="inline"}}
+    </div>
+  {{/if}}
 </div>
 </template>

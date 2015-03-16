@@ -92,10 +92,6 @@ Template.productDetail.events
         Alerts.add "Sorry, this item is out of stock!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock", autoHide: 10000
         return
 
-      cartSession =
-        sessionId: Session.get "sessionId"
-        userId: Meteor.userId()
-
       # Get a reference to the quantity field
       qtyField = template.$('input[name="addToCartQty"]')
 
@@ -108,7 +104,7 @@ Template.productDetail.events
         return
       else
         # Add to cart
-        CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
+        CartWorkflow.addToCart ReactionCore.Collections.Cart.findOne()._id, currentProduct._id, currentVariant, quantity
         # Deselect the current variant
         # todo: make this variant reset an option
         template.$(".variant-select-option").removeClass("active")
@@ -125,7 +121,7 @@ Template.productDetail.events
         $('.cart-alert').toggle('slide',{
           direction: if i18n.t('languageDirection') == 'rtl' then 'left' else 'right',
           'width': currentVariant.title.length+50 + "px"
-        },600).delay(8000).toggle('slide',{
+        },600).delay(5000).toggle('slide',{
           direction: if i18n.t('languageDirection') == 'rtl' then 'left' else 'right'
         })
 

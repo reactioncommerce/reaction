@@ -52,7 +52,6 @@ Package.onUse(function (api) {
     api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:template-extension@3.1.1","client");
     api.use("iron:router@1.0.7");
-    api.use("prinzdezibel:accounts-guest@0.1.3");
     api.use("ongoworks:speakingurl@1.0.5");
     api.use("ongoworks:pdf@1.1.0");
     api.use("ongoworks:bunyan-logger@1.0.0");
@@ -66,14 +65,12 @@ Package.onUse(function (api) {
     api.use("momentjs:moment@2.8.4", 'client');
     api.use("sacha:spin@2.0.4", "client");
 
-    api.use("cfs:standard-packages@0.5.3");
-    api.use("cfs:graphicsmagick@0.0.17");
+    api.use("cfs:standard-packages@0.5.4");
+    api.use("cfs:graphicsmagick@0.0.18");
+    api.use("cfs:gridfs@0.0.31");
     api.use("cfs:filesystem@0.1.1");
-    api.use("cfs:gridfs@0.0.27");
-    api.use("cfs:s3@0.1.1");
     api.use("cfs:ui@0.1.3");
     api.use("raix:ui-dropped-event@0.0.7");
-    
     api.use("meteorhacks:ssr@2.1.2");
 
     //implying these are reused in reaction packages
@@ -91,7 +88,6 @@ Package.onUse(function (api) {
     api.imply("cfs:graphicsmagick");
     api.imply("cfs:filesystem");
     api.imply("cfs:gridfs");
-    api.imply("cfs:s3");
     api.imply("raix:ui-dropped-event");
     api.imply("matb33:collection-hooks");
     api.imply("alanning:roles");
@@ -114,7 +110,7 @@ Package.onUse(function (api) {
     "common/helpers.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
-    "common/schemas/users.coffee",
+    "common/schemas/accounts.coffee",
     "common/schemas/shops.coffee",
     "common/schemas/shipping.coffee",
     "common/schemas/products.coffee",
@@ -215,6 +211,9 @@ Package.onUse(function (api) {
     "client/templates/accounts/dropdown/dropdown.html",
     "client/templates/accounts/dropdown/dropdown.coffee",
 
+    "client/templates/accounts/profile/profile.html",
+    "client/templates/accounts/profile/profile.coffee",
+
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
 
@@ -269,18 +268,6 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/completed/completed.html",
     "client/templates/cart/checkout/completed/completed.coffee",
 
-    "client/templates/cart/checkout/completed/orderLayout/orderLayout.html",
-    "client/templates/cart/checkout/completed/orderLayout/orderLayout.coffee",
-
-    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.html",
-    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.coffee",
-
-    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.html",
-    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.coffee",
-
-    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.html",
-    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.coffee",
-
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",
 
@@ -295,6 +282,18 @@ Package.onUse(function (api) {
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
+
+    "client/templates/dashboard/orders/list/ordersList.html",
+    "client/templates/dashboard/orders/list/ordersList.coffee",
+
+    "client/templates/dashboard/orders/list/items/items.html",
+    "client/templates/dashboard/orders/list/items/items.coffee",
+
+    "client/templates/dashboard/orders/list/summary/summary.html",
+    "client/templates/dashboard/orders/list/summary/summary.coffee",
+
+    "client/templates/dashboard/orders/list/pdf/pdf.html",
+    "client/templates/dashboard/orders/list/pdf/pdf.coffee",
 
     "client/templates/dashboard/orders/widget/widget.html",
     "client/templates/dashboard/orders/widget/widget.coffee",
@@ -335,17 +334,17 @@ Package.onUse(function (api) {
     "client/templates/dashboard/dashboard.html",
     "client/templates/dashboard/dashboard.coffee",
 
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.html",
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.coffee",
+    "client/templates/dashboard/shop/settings/settings.html",
+    "client/templates/dashboard/shop/settings/settings.coffee",
 
-    "client/templates/dashboard/settings/settingsAccount/settingsAccount.html",
-    "client/templates/dashboard/settings/settingsAccount/settingsAccount.coffee",
+    "client/templates/dashboard/shop/accounts/accounts.html",
+    "client/templates/dashboard/shop/accounts/accounts.coffee",
 
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.html",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.coffee",
+    "client/templates/dashboard/shop/accounts/shopMember/shopMember.html",
+    "client/templates/dashboard/shop/accounts/shopMember/shopMember.coffee",
 
-    "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.html",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
+    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.html",
+    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
     "client/templates/products/products.coffee",
@@ -388,9 +387,9 @@ Package.onUse(function (api) {
   ], ["client"]);
 
   // Email Templates
-  api.addFiles('server/emailTemplates/memberWelcomeNotification.html', 'server', {isAsset: true});
+  api.addFiles('server/emailTemplates/welcomeNotification.html', 'server', {isAsset: true});
   api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
-  api.addFiles('server/emailTemplates/shopMemberNotification.html', 'server', {isAsset: true});
+
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
@@ -410,6 +409,7 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/my.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/nl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});
@@ -434,9 +434,5 @@ Package.onUse(function (api) {
 
   api.export([
     "currentProduct",
-    "ShopController",
-    "Products",
-    "Cart",
-    "Tags"
   ], ["client", "server"]);
 });

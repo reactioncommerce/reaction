@@ -31,20 +31,12 @@ Accounts.onCreateUser (options, user) ->
 
 ###
 # setting defaults of mail from shop configuration
-# TODO: refactor for multiple email providers, not even sure this is used
-# anymore!
+# TODO: refactor for multiple email providers
 ###
 setMailUrlForShop = (shop) ->
-  mailgun = ReactionCore.Collections.Packages.findOne({shopId:shop._id, name:'reaction-mailgun'})
-  sCES = null
-  if mailgun and mailgun.settings
-    sCES = mailgun.settings
-  else
-    if shop.useCustomEmailSettings
-      sCES = shop.customEmailSettings
-
-  if sCES
-      process.env.MAIL_URL = "smtp://" + sCES.username + ":" + sCES.password + "@" + sCES.host + ":" + sCES.port + "/"
+  coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
+  mailUrl = "smtp://" + coreMail.user + ":" + coreMail.password + "@" + coreMail.host + ":" + coreMail.port + "/"
+  process.env.MAIL_URL = process.env.MAIL_URL || mailUrl
 
 Meteor.methods
   ###
@@ -60,10 +52,9 @@ Meteor.methods
     shop = Shops.findOne shopId
     if shop and email and name
       if ReactionCore.hasOwnerAccess(shop)
-        currentUserName = Meteor.user().profile.name
-        currentUserName = if currentUserName then currentUserName else 'Admin'
+        currentUserName = Meteor.user().profile.name || Meteor.user().username || "Admin"
         user = Meteor.users.findOne {"emails.address": email}
-        unless user # user does not exist, invite him
+        unless user # user does not exist, invite user
           userId = Accounts.createUser
             email: email
             profile:
@@ -80,11 +71,11 @@ Meteor.methods
                 when: new Date()
 
           setMailUrlForShop(shop)
-          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'));
+          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
           Email.send
             to: email
             from: currentUserName + " <" + shop.email + ">"
-            subject: "You have been invited to join the " + shop.name + " staff"
+            subject: "You have been invited to join " + shop.name
             html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
               shop: shop
@@ -93,16 +84,17 @@ Meteor.methods
               url: Accounts.urls.enrollAccount(token)
         else # user exist, send notification
           setMailUrlForShop(shop)
-          SSR.compileTemplate('shopMemberNotification', Assets.getText('server/emailTemplates/shopMemberNotification.html'));
+          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
           Email.send
             to: email
             from: currentUserName + " <" + shop.email + ">"
-            subject: "You have been invited to join the " + shop.name + " staff"
-            html: SSR.render 'shopMemberNotification',
+            subject: "You have been invited to join the " + shop.name
+            html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
               shop: shop
               currentUserName: currentUserName
               invitedUserName: name
+              url: Meteor.absoluteUrl()
 
         Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
 
@@ -114,11 +106,12 @@ Meteor.methods
 
     email = Meteor.user().emails[0].address
     setMailUrlForShop(shop)
-    SSR.compileTemplate('memberWelcomeNotification', Assets.getText('server/emailTemplates/memberWelcomeNotification.html'));
+    SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'))
     Email.send
       to: email
       from: shop.email
       subject: "Welcome to " + shop.name + "!"
-      html: SSR.render 'memberWelcomeNotification',
+      html: SSR.render 'welcomeNotification',
         homepage: Meteor.absoluteUrl()
         shop: shop
+        user: Meteor.user()
