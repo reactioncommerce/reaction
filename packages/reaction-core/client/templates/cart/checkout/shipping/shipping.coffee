@@ -7,7 +7,7 @@ Template.coreCheckoutShipping.helpers
   # in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: () ->
     cart = ReactionCore.Collections.Cart.findOne()
-    return cart.shipping?.shipmentQuotes
+    return cart?.shipping?.shipmentQuotes
 
   # helper to make sure there are some shipping providers
   shippingConfigured: () ->
