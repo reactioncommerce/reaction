@@ -38,9 +38,9 @@ Meteor.methods
     # if we have products from multiple shops in the cart.items we have to select the shipping options from those shops
     shops = []
     for product in options.items
-      productShop = ReactionCore.Collections.Products.findOne(product.productId);
-      if productShop.shopId not in shops
-        shops.push productShop.shopId if productShop.shopId not in shops
+      console.log product.shopId
+      if product.shopId not in shops
+        shops.push product.shopId
 
     # not sure if this is the correct condition since it will most certainly always be positive, if there are any products in the cart
     shops.push ReactionCore.getShopId() if ReactionCore.getShopId() not in shops
