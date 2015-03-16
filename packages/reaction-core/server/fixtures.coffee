@@ -79,6 +79,9 @@ PackageFixture = ->
     shop = ReactionCore.Collections.Shops.findOne()
     # find every file in private/data/i18n where <i18n>.json
     ReactionCore.Events.info "Loading fixture data for " + collection._name
+    # ensures that a language file is loaded if all translations are missing
+    unless shop?.languages then shop.languages = [{'i18n':'en'}]
+
     for language in shop.languages
       json = EJSON.parse Assets.getText("private/data/i18n/" + language.i18n + ".json")
 
