@@ -14,7 +14,7 @@ Template.loginDropdown.events
       event.preventDefault()
       Meteor.call "createProduct", (error, productId) ->
         if error
-          console.log error
+          console.log "createProduct error", error
         else if productId
           Router.go "product",
             _id: productId

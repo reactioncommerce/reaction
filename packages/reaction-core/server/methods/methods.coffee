@@ -155,17 +155,3 @@ Meteor.methods
     ReactionCore.Collections.Translations.remove({})
     Fixtures.loadI18n()
     ReactionCore.Events.info Meteor.userId() + " Flushed Translations."
-
-
-  ## possible dead method, commenting out pending further review
-
-  # updatePackage: (updateDoc, packageName) ->
-  #   packageId = Packages.findOne({ name: packageName })._id
-
-  #   return false unless packageId
-
-  #   try
-  #     result = Packages.update {_id: packageId}, updateDoc
-  #   catch
-  #     result = false
-  #   return !!result # returns true if updated, false if package doesn't exist or error
