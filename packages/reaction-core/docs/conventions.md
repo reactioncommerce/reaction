@@ -1,9 +1,9 @@
-# Conventions
-Our core is being built with a preference for Coffeescript + LESS, but JavaScript is welcome in packages.
+##Conventions
+This entire doc is really just a bunch of stuff you'll probably need to know, or at least reference to contribute successfully to Reaction development.
 
-Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for format and style of contributions.
+Our core is being built with a preference for Coffeescript + LESS, but JavaScript is welcome in packages. [There has been some discussion about moving to ES6.](https://github.com/reactioncommerce/reaction/issues/320)
 
-## Issues
+##Issues
 For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
 
 The default branch for reaction, reaction-core, reaction-core-theme is *development*. Pull requests made into the *development* branch, will be reviewed and accepted into development for a quick release, while we work on specific feature branches separately, to be merged into *development*.
@@ -16,23 +16,75 @@ The [ready](https://github.com/reactioncommerce/reaction/labels/ready) label gro
 
 Of course, [in progress](https://github.com/reactioncommerce/reaction/labels/in%20progress) labels are actively being worked on.
 
-### Testing
+##Releases
+We will publish packages, and merge `development` into `master`, whenever a major feature set becomes test-able.
+
+No pull requests to `master` will be accepted.
+
+`master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](https://github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
+
+###Testing
 We're testing a couple of [Velocity packages](http://velocity.meteor.com/).
 
 See: https://github.com/reactioncommerce/reaction/issues/241
 
 * Feature branches can be merged and released when they are feature incomplete, but soon we're planning on enforcing a passing test written for every pull request.*
 
+##Pull Requests
 
-### Releases
-We will merge `development` into `master` whenever an issue is marked done, and a PR has been submitted and accepted to development. No pull requests to `master` will be accepted.
+**Caution: your own research may be needed here, feedback is appreciated!**
 
-`master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](https://github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
-
-### Pull Requests
 Please make sure your pull requests are to the active `development` branch, no pull requests to `master` will be accepted. When you create a pull request, you can click the 'edit' button to change the "to" branch.
 
-##Directory structure
+Please cleanup your PR into as few commits as possible (single is good).
+
+In your branch:
+
+```bash
+git rebase -i origin/development
+```
+
+
+In the editor that opens, replace the words "pick" with "squash" next to the commits you want to squash into the commit before it(so all but the first one, for a single commit). Save and close the editor, and another editor instance will open the combined commit messages, tidy them up and save and close the editor.
+
+If you need to edit the commit message later you can use
+
+ ```bash
+ git commit --amend
+ ```
+
+You can now `push` your branch to GitHub. If you've already published this branch, you should create a new branch, or use `--force` (rewrites history)
+
+```bash
+git push --force
+```
+
+Finally, [create a pull request](https://help.github.com/articles/creating-a-pull-request/) into the `development` branch of the appropriate reaction package.
+
+##Style Guide
+
+*A work in progress, but these are good guides.*
+
+Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for ideas on format and style of contributions.
+
+Generally, follow the [CoffeeScript Style Guide](https://github.com/polarmobile/coffeescript-style-guide) as well.
+
+
+**event,template**
+
+When using event, template parameters in methods, use full names
+
+  'click': (event, template) ->
+
+**return**
+
+As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not be what you expect or want. Using explicit `return` also makes the code more readable for others.
+
+**comments**
+Use of `{{!-- comment --}}` rather than `<!-- comment -->` is suggested, this isn't outputed in production.
+
+
+###Folder structure
 
 	public *public file assets*
 	private *private files*
@@ -65,7 +117,7 @@ Please make sure your pull requests are to the active `development` branch, no p
 			package.js *package declarations for meteor*
 
 
-##Presentation layer
+###Presentation layer
 
 See [themes.md](themes.md) for details on the themes and LESS implementation.
 
@@ -80,27 +132,11 @@ See [themes.md](themes.md) for details on the themes and LESS implementation.
 			Template.functionalTriad.helpers
 			Template.functionalTriad.events
 
-**Style Guide**
-
-In general we try to align with the [Meteor style guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide).
-
-**event,template**
-
-When using event, template parameters in methods, use full names
-
-	'click': (event, template) ->
-
-**return**
-
-As much as possible, include the `return` keyword in all functions. Include it alone if you want to return `undefined` since coffeescript will otherwise try to return some other value, and it may not be what you expect or want. Using explicit `return` also makes the code more readable for others.
-
-**comments**
-Use of `{{!-- comment --}}` rather than `<!-- comment -->` is suggested, this isn't outputed in production.
 
 
 ##Server Methods
 
-**Variable Scope & Namespaces**
+###Variable Scope & Namespaces
 
 *common/packageGlobals.js:*
 
@@ -140,7 +176,7 @@ The `reaction-core` package exports `ReactionCore`, on both client and server:
 api.export(["ReactionCore"]);
 ```
 
-##Logging
+###Logging
 We use Bunyan for server logging https://github.com/trentm/node-bunyan. Client logging is standard Meteor client handling of `console.log`.
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
