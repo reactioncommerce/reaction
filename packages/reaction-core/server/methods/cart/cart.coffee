@@ -131,7 +131,7 @@ Meteor.methods
     check sessionId, String
     check cartId, String
     check variantData, Object
-    console.log @userId
+
     # We select on sessionId or userId, too, for security
     return Cart.update
       _id: cartId
