@@ -90,7 +90,7 @@ CartWorkflow = StateMachine.create(
       sessionId = Session.get "sessionId"
       cartId = Cart.findOne()._id
       # call payment method
-      Meteor.call "paymentMethod", sessionId, cartId, paymentMethod
+      Meteor.call "paymentMethod", cartId, paymentMethod
 
     onpaymentAuth: (event, from, to, paymentMethod) ->
       # before payment really should be async

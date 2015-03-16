@@ -38,7 +38,6 @@ Meteor.methods
     # if we have products from multiple shops in the cart.items we have to select the shipping options from those shops
     shops = []
     for product in options.items
-      console.log product.shopId
       if product.shopId not in shops
         shops.push product.shopId
 
@@ -70,19 +69,10 @@ Meteor.methods
   ###
   # add payment method
   ###
-  paymentMethod: (sessionId, cartId, paymentMethod) ->
-    check sessionId, String
+  paymentMethod: (cartId, paymentMethod) ->
     check cartId, String
     check paymentMethod, Object
-    # We select on sessionId or userId, too, for security
-    return Cart.update
-      _id: cartId
-      $or: [
-        {userId: @userId}
-        {sessionId: sessionId}
-      ]
-    , {$addToSet:{"payment.paymentMethod":paymentMethod}}
-
+    return Cart.update _id: cartId, {$addToSet:{"payment.paymentMethod":paymentMethod}}
 
   ###
   # method to add new addresses to a user's profile
