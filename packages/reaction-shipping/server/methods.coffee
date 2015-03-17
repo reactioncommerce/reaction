@@ -1,9 +1,14 @@
+Match.OptionalOrNull = (pattern) -> Match.OneOf undefined, null, pattern
+
 Meteor.methods
   ###
   # add new shipping methods
   ###
   addShippingMethod: (insertDoc, updateDoc, currentDoc) ->
-    # check providerId, String
+    check insertDoc, Object
+    check currentDoc, String
+    check updateDoc, Object
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # updates
     return ReactionCore.Collections.Shipping.update({'_id': currentDoc}, {$addToSet:{'methods': insertDoc}})
@@ -12,18 +17,22 @@ Meteor.methods
   # Update Shipping methods for a provider
   ###
   updateShippingMethods: (docId, currentDoc, updateDoc) ->
-    # validation, permissions
     check docId, String
+    check currentDoc, Object
+    check updateDoc, Object
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # updates
-    return ReactionCore.Collections.Shipping.update({'_id': docId, 'methods': currentDoc}, {$set: {'methods.$': updateDoc}})
+    updateDoc = ReactionCore.Collections.Shipping.update({'_id': docId, 'methods': currentDoc}, {$set: {'methods.$': updateDoc}})
+    return updateDoc
 
   ###
   # remove shipping method
   ###
   removeShippingMethod: (providerId, removeDoc) ->
-    # validation, permissions
     check providerId, String
+    check removeDoc, Object
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # pull shippingMethod
     ReactionCore.Collections.Shipping.update({'_id': providerId, 'methods': removeDoc}, {$pull: {'methods': removeDoc}})
@@ -32,7 +41,10 @@ Meteor.methods
   # add / insert shipping provider
   ###
   addShippingProvider: (insertDoc, updateDoc, currentDoc) ->
-    # validation, permissions
+    check insertDoc, Object
+    check updateDoc, Object
+    check currentDoc, Match.OptionalOrNull(String)
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # insert provider
     return ReactionCore.Collections.Shipping.insert(insertDoc)
@@ -41,7 +53,10 @@ Meteor.methods
   # update shipping provider
   ###
   updateShippingProvider: (insertDoc, updateDoc, currentDoc) ->
-    # validation, permissions
+    check insertDoc, Object
+    check updateDoc, Object
+    check currentDoc, String
+
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # insert provider
     return ReactionCore.Collections.Shipping.update('_id': currentDoc, updateDoc)

@@ -2,21 +2,18 @@
 
 `meteor add reactioncommerce:reaction-shipping`
 
-Description:
+##Description
 
-Shipping package template for Reaction Commerce.
+Flat Shipping Rate Provider for Reaction Commerce.
 
-Provides:
+##Provides
 
 Flat rate shipping package, example for shipping packages.
 Add admin screen for flat rates in shipping package
 Extends core shipping templates
 
-TODO:
-Needs to have same format as payment packages
+##TODO
 
-1. Extends, adds to functionality
-2. Is registered by "provides" in register.coffee
-3. can use a meteor package version information
-4. Examples extending for aftership, postmaster.io,etc
+- Extend to additional rate sources
+- Examples extending for aftership, postmaster.io,etc
 
