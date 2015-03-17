@@ -5,10 +5,10 @@
 # yields based on the logic in this file
 # individual reaction packages have their own routing
 #
-# The reaction-core controller is extended here so you can
+# The reaction-core controller can be extended here so you can
 # modify here if needed.
 # *****************************************************
-ReactionController = ShopController.extend
+# ReactionController = ShopController.extend
 
 # *****************************************************
 # generic static pages
@@ -47,7 +47,7 @@ Router.map ->
   # generic static pages
   for page in staticPages
     @route page,
-      controller: ReactionController
+      controller: ShopController
       name: page
 
   # custom 404 Page
