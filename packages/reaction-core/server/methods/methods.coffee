@@ -92,7 +92,7 @@ Meteor.methods
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
     check tagName, String
-    check tagId, Match.OneOf(String, null)
+    check tagId, Match.OneOf(String, null, undefined)
     check currentTagId, Match.Optional(String)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
