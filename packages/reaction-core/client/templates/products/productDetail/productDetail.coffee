@@ -133,6 +133,7 @@ Template.productDetail.events
     errorMsg = ""
     unless @.title
         errorMsg += "Product title is required. "
+        template.$(".title-edit-input").focus()
     for variant,index in @.variants
       unless variant.title
         errorMsg += "Variant " + (index + 1) + " label is required. "
@@ -140,7 +141,7 @@ Template.productDetail.events
         errorMsg += "Variant " + (index + 1) + " price is required. "
 
     if errorMsg.length
-      Alerts.add errorMsg, "danger", placement:"productDetail"
+      Alerts.add errorMsg, "danger", placement: "productManagement", i18n_key: "productDetail.errorMsg"
     else
       Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
     return
