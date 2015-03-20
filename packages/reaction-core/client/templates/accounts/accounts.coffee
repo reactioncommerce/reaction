@@ -200,19 +200,6 @@ login = ->
     return
   return
 
-loginAsGuest = ->
-  email = trimmedElementValueById("login-email")
-  if email isnt null
-    unless validateEmail(email)
-      return
-    CartWorkflow.loggedin()
-  # Meteor.loginAsGuest email, (error, result) ->
-  #   if error
-  #     loginButtonsSession.errorMessage error
-  #   else
-  #     loginButtonsSession.closeDropdown()
-  return
-
 signup = ->
   loginButtonsSession.resetMessages()
   options = {} # to be passed to Accounts.createUser

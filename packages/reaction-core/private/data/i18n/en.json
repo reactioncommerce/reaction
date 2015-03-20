@@ -254,6 +254,7 @@
                         "passwordIsOld": "Password is old. Please reset your password.",
                         "incorrectPassword": "Incorrect password",
                         "invalidEmail": "Invalid email",
+                        "addressMustBeAValidEMailAddress": "Invalid Email",
                         "mustBeLoggedIn": "Must be logged in",
                         "needToSetUsernameOrEmail": "Need to set a username or email",
                         "oldPasswordFormat": "old password format",

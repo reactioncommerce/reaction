@@ -1,46 +1,83 @@
-###
-# add social image to user profile upon registration
-###
 Accounts.onCreateUser (options, user) ->
-
-  if options.profile and options.profile.addressBook and options.profile.addressBook.length > 0
-    hasShippingDefaultSet = false
-    hasBillingDefaultSet = false
-    _.each options.profile.addressBook, (address) ->
-      if address.isBillingDefault
-        hasBillingDefaultSet = true
-      if address.isShippingDefault
-        hasShippingDefaultSet = true
-      if !address._id
-        address._id = Random.id()
-      return
-    if !hasShippingDefaultSet
-      options.profile.addressBook[0].isShippingDefault = true
-    if !hasBillingDefaultSet
-      options.profile.addressBook[0].isBillingDefault = true
-
-  user.profile = options.profile || {}
-  if options.emails
-    if user.emails
-      user.emails = options.emails.concat user.emails
-    else user.emails = options.emails
-  user.profile = options.profile || {}
-  if user.services.facebook
-    options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=small"
-  user
-
-###
-# setting defaults of mail from shop configuration
-# TODO: refactor for multiple email providers
-###
-setMailUrlForShop = (shop) ->
-  coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
-  mailUrl = "smtp://" + coreMail.user + ":" + coreMail.password + "@" + coreMail.host + ":" + coreMail.port + "/"
-  process.env.MAIL_URL = process.env.MAIL_URL || mailUrl
+  # create or clone profile,email to Accounts
+  userAccount  = ReactionCore.Collections.Accounts.findOne('userId': user._id)
+  unless userAccount
+    account = _.clone(user)
+    account.userId = user._id
+    accountId = ReactionCore.Collections.Accounts.insert(account)
+    ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
+  # return to meteor accounts
+  return user
 
 Meteor.methods
   ###
-  # this method is to invite new admin users
+  # add new addresses to an account
+  ###
+  addressBookAdd: (doc, accountId) ->
+    @unblock()
+    check doc, ReactionCore.Schemas.Address
+    check accountId, String
+    ReactionCore.Schemas.Address.clean(doc)
+
+    if doc.isShippingDefault or doc.isBillingDefault
+      # set shipping default & clear existing
+      if doc.isShippingDefault
+        ReactionCore.Collections.Accounts.update
+          "_id": accountId
+          "profile.addressBook.isShippingDefault": true
+        ,
+          $set:
+            "profile.addressBook.$.isShippingDefault": false
+
+      # set billing default & clear existing
+      if doc.isBillingDefault
+        ReactionCore.Collections.Accounts.update
+          '_id': accountId
+          "profile.addressBook.isBillingDefault": true
+        ,
+          $set:
+            "profile.addressBook.$.isBillingDefault": false
+
+    # add address book entry
+    ReactionCore.Collections.Accounts.upsert accountId, {$addToSet: {"profile.addressBook": doc}}
+    return doc
+
+  ###
+  # update existing address in user's profile
+  ###
+  addressBookUpdate: (doc, accountId) ->
+    @unblock()
+    check doc, ReactionCore.Schemas.Address
+    check accountId, String
+
+    # reset existing address defaults
+    if doc.isShippingDefault or doc.isBillingDefault
+      if doc.isShippingDefault
+        ReactionCore.Collections.Accounts.update
+          "_id": accountId
+          "profile.addressBook.isShippingDefault": true
+        ,
+          $set:
+            "profile.addressBook.$.isShippingDefault": false
+      if doc.isBillingDefault
+        ReactionCore.Collections.Accounts.update
+          "_id": accountId
+          "profile.addressBook.isBillingDefault": true
+        ,
+          $set:
+            "profile.addressBook.$.isBillingDefault": false
+
+    # update existing address
+    ReactionCore.Collections.Accounts.update
+      "_id": accountId
+      "profile.addressBook._id": doc._id
+    ,
+      $set:
+        "profile.addressBook.$": doc
+    return doc
+
+  ###
+  # invite new admin users
   # (not consumers) to secure access in the dashboard
   # to permissions as specified in packages/roles
   ###
@@ -48,6 +85,7 @@ Meteor.methods
     check shopId, String
     check email, String
     check name, String
+    @unblock()
 
     shop = Shops.findOne shopId
     if shop and email and name
@@ -99,10 +137,11 @@ Meteor.methods
         Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
 
   ###
-  # this method sends an email to consumers on sign up
+  # send an email to consumers on sign up
   ###
   sendWelcomeEmail: (shop) ->
     check shop, Object
+    @unblock()
 
     email = Meteor.user().emails[0].address
     setMailUrlForShop(shop)

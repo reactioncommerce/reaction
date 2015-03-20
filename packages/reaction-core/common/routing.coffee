@@ -11,7 +11,7 @@ setProduct = (productId, variantId) ->
   return
 
 ###
-#  Global Reaction Routes
+#  Global Route Configuration
 #  Extend/override in reaction/client/routing.coffee
 ###
 Router.configure
@@ -23,10 +23,13 @@ Router.configure
     @next()
     return
 
+# we always need to wait on these publications
+Router.waitOn ->
+  @subscribe "shops"
+  @subscribe "Packages"
 
+# general reaction controller
 @ShopController = RouteController.extend
-  waitOn: ->
-    @subscribe "shops"
   onAfterAction: ->
     ReactionCore.MetaData.refresh(@route, @params)
     return
@@ -38,21 +41,24 @@ Router.configure
       to: "layoutFooter"
     dashboard:
       to: "dashboard"
+# local ShopController
 ShopController = @ShopController
 
+# admin specific shop controller
 @ShopAdminController = @ShopController.extend
-  waitOn: ->
-    @subscribe "shops"
   onBeforeAction: () ->
     # could check for roles here for dashboard access
     unless ReactionCore.hasPermission(@route.getName()) and Meteor.userId()
       @render('unauthorized')
     else
       @next()
-    return
-
+      return
+# local ShopAdminController
 ShopAdminController = @ShopAdminController
 
+###
+# General Route Declarations
+###
 Router.map ->
   # default index route, normally overriden parent meteor app
   @route "index",

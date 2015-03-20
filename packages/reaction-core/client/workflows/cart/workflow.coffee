@@ -65,19 +65,21 @@ CartWorkflow = StateMachine.create(
     onaddAddress: (event,from, to) ->
       account = ReactionCore.Collections.Accounts.findOne()
       if account?.profile?.addressBook
-        @.shipmentAddress()
+        @.shipmentAddress() #goto shipment
 
     onshipmentAddress: (event, from, to, address) ->
       cartId = Cart.findOne()._id
-      if cartId and address
-        # refresh rates with new address
-        Meteor.call "updateShipmentQuotes", cartId
-        Cart.update cartId, {$set:{"shipping.address":address}}
-      else
-        return false
+      unless cartId and address then return
+      # update shipping address
+      Cart.update cartId, {$set: {"shipping.address": address} }
+      # refresh rates with new address
+      Meteor.call "updateShipmentQuotes", cartId
 
     onpaymentAddress: (event, from, to, address) ->
-      Cart.update Cart.findOne()._id, {$set:{"payment.address":address}} if address
+      cartId = Cart.findOne()._id
+      unless cartId and address then return
+      # update payment address
+      Cart.update cartId, {$set:{"payment.address":address}} if address
 
     onfetchshipmentMethods: (event, from, to) ->
       # we could get additional rates here
