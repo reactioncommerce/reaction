@@ -48,9 +48,9 @@ Package.onUse(function (api) {
     api.use("fortawesome:fontawesome@4.2.0_2");
     api.use("mrt:underscore-string-latest@2.3.3");
     api.use("aldeed:geocoder@0.3.3");
-    api.use("aldeed:autoform@5.0.2");
+    api.use("aldeed:autoform@4.2.2");
     api.use("aldeed:collection2@2.3.2");
-    api.use("aldeed:simple-schema@1.3.1", {'weak': 1});
+    api.use("aldeed:simple-schema@1.3.0", {'weak': 1});
     api.use("aldeed:template-extension@3.4.3","client");
     api.use("iron:router@1.0.7");
     api.use("ongoworks:speakingurl@1.0.5");
@@ -62,7 +62,6 @@ Package.onUse(function (api) {
     api.use("anti:fake@0.4.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
-    // api.use("cmather:handlebars-server@2.0.0","server");
     api.use("momentjs:moment@2.8.4", 'client');
     api.use("sacha:spin@2.0.4", "client");
 

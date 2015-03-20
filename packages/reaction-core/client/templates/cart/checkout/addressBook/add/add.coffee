@@ -28,8 +28,12 @@ AutoForm.hooks addressBookAddForm: onSubmit: (insertDoc, updateDoc, currentDoc) 
   # try addressBookAdd method
   try
     Meteor.call "addressBookAdd", insertDoc, accountId
-    @done()
   catch error
     @done new Error('Failed to add address', error)
     return false
+
+  # done and reset sessions
+  @done()
+  Session.set "addressBookView", "addressBookGrid"
+  addressBookEditId.set()
   return
