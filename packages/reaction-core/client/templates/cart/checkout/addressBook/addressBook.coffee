@@ -7,20 +7,11 @@
 Template.checkoutAddressBook.helpers
   account: ->
     account = ReactionCore.Collections.Accounts.findOne()
-    addressBookView = Session.get "addressBookView"
-    # configure addressBookView
-    # TODO: use reactiveVar?
-    unless account?.profile?.addressBook
-      Session.setDefault "addressBookView", "addressBookAdd"
-    else
-      Session.setDefault "addressBookView", "addressBookGrid"
-    # regardless of view, set account context
     return account
 
   addressBookView: ->
     return Session.get "addressBookView"
 
-@addressBookEditId = new ReactiveVar()
 Template.checkoutAddressBook.events
   'click .address-edit-icon': (event,template) ->
     addressBookEditId.set(@._id)

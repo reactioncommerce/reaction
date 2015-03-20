@@ -1,6 +1,14 @@
+@addressBookEditId = new ReactiveVar()
+
+###
+# the cart helpers mostly control what cart block display and when.
+###
 Template.cartCheckout.helpers
   cart: ->
     return Cart.findOne()
+
+  account: ->
+    account = ReactionCore.Collections.Accounts.findOne()
 
   loginStatus: () ->
     if !getGuestLoginState()
@@ -10,14 +18,31 @@ Template.cartCheckout.helpers
     return status
 
   addressStatus: () ->
-    cart = Cart.findOne()
-    if (getGuestLoginState() and cart?.shipping?.address and cart?.payment?.address)
-      status = "checkout-step-badge-completed"
+    cart = ReactionCore.Collections.Cart.findOne()
+    account = ReactionCore.Collections.Accounts.findOne()
+    shippingExists = cart?.shipping?.address.fullName || false
+    addressExists = account?.profile?.addressBook || false
+    paymentExists = cart?.payment?.address || false
+    editingAddress = addressBookEditId.get() || false
+    Session.setDefault "addressBookView", "addressBookAdd" # configure addressBookView
+    #
+    # determine addressBook views
+    #
+    # editing address
+    if getGuestLoginState() and editingAddress and Session.equals("addressBookView","addressBookEdit")
+      Session.set "addressBookView", "addressBookEdit"
+      return "checkout-step-badge"
+    # default view
+    if getGuestLoginState() and addressExists
+      Session.set "addressBookView", "addressBookGrid"
+      return "checkout-step-badge-completed"
+    # ready to add address
     else if getGuestLoginState()
-      status =  "checkout-step-badge"
+      Session.set "addressBookView", "addressBookAdd"
+      return "checkout-step-badge"
+    # disabled
     else
-      status = false
-    return status
+      return false
 
   shippingOptionStatus: () ->
     cart = Cart.findOne()
