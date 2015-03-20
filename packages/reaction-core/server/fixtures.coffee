@@ -79,6 +79,9 @@ PackageFixture = ->
     shop = ReactionCore.Collections.Shops.findOne()
     # find every file in private/data/i18n where <i18n>.json
     ReactionCore.Events.info "Loading fixture data for " + collection._name
+    # ensures that a language file is loaded if all translations are missing
+    unless shop?.languages then shop.languages = [{'i18n':'en'}]
+
     for language in shop.languages
       json = EJSON.parse Assets.getText("private/data/i18n/" + language.i18n + ".json")
 
@@ -123,14 +126,16 @@ createDefaultAdminUser = ->
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
-
+  # newly created admin user
   accountId = Accounts.createUser options
+  # add default roles and update shop with admin user
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
   shopId = Shops.findOne()._id
   Shops.update shopId,
     $set:
       ownerId: accountId
-      email: options.email
+    $addToSet:
+      emails: {'address': options.email, 'verified': true}
     $push:
       members:
         isAdmin: true

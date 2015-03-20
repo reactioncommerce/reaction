@@ -1,30 +1,33 @@
+###
+# handles display of addressBook grid
+###
 Template.addressBookGrid.helpers
-  addressBook: ->
-    account = ReactionCore.Collections.Accounts.findOne()
-    return account.profile?.addressBook
-
+  # selectedBilling sets default and returns the active class
   selectedBilling: ->
-    cart = Cart.findOne()
-    if @.isBillingDefault
-      unless cart?.payment?.address
-        CartWorkflow.paymentAddress(@)
-    if @._id is cart?.payment?.address._id
-      # find current address, and if none
-      cart = Cart.findOne({'payment.address._id': @._id})
-      # allow last used address to default
-      unless cart
-        CartWorkflow.paymentAddress(@)
-      return "active"
+    cart = ReactionCore.Collections.Cart.findOne()
+    if cart
+      # return active selection
+      if @._id is cart?.payment?.address?._id
+        return "active"
+      # add default payment address if none
+      if @.isBillingDefault and !cart?.payment?.address?.fullName
+          CartWorkflow.paymentAddress(@)
 
+
+  # selectedShipping sets default and returns the active class
   selectedShipping: ->
-    cart = Cart.findOne()
-    if @.isShippingDefault
-      unless cart?.shipping?.address
+    cart = ReactionCore.Collections.Cart.findOne()
+    # automatically apply default address
+    if cart
+      # return active selection
+      if @._id is cart.shipping.address?._id
+        return "active"
+      # add default shipping address if none
+      if @.isShippingDefault and !cart?.shipping?.address?.fullName
         CartWorkflow.shipmentAddress(@)
-    # return active selection
-    if @._id is cart?.shipping?.address?._id
-      return "active"
-
+###
+# events
+###
 Template.addressBookGrid.events
   'click .address-ship-to': (event,template) ->
     CartWorkflow.shipmentAddress(@)

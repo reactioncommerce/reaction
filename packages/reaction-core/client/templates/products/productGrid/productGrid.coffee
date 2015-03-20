@@ -100,7 +100,7 @@ Template.productGridItems.events
   'click .clone-product': () ->
     title = @.title
     Meteor.call "cloneProduct", this, (error, productId) ->
-      console.log error if error
+      console.log "error cloning product", error if error
       Router.go "product",
         _id: productId
       Alerts.add "Cloned " + title

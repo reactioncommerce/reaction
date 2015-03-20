@@ -92,8 +92,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   domains:
     type: [String]
     defaultValue: ["localhost"] #see simple schema issue #73
-  email:
-    type: String
+  emails:
+    type: [ReactionCore.Schemas.Email]
+    optional: true
   currency:
     type: String
     defaultValue: "USD"

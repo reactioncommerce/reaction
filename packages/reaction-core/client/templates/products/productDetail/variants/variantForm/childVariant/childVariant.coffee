@@ -13,7 +13,7 @@ Template.childVariantForm.events
     field = $(event.currentTarget).attr('name')
     variant[field] = value
     Meteor.call "updateVariant", variant, (error,result) ->
-      if error then console.log error
+      if error then console.log "error updating variant", error
     setCurrentVariant template.data._id
 
   "click #remove-child-variant": (event, template) ->

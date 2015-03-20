@@ -53,6 +53,9 @@ Match.OptionalOrNull = (pattern) -> Match.OneOf undefined, null, pattern
 
       # merge session cart into usercart
       if userCart and !cart.userId
+        # catch undefined items
+        unless cart.items then cart.items = []
+        # update userCart and remove sessionCart
         Cart.update userCart._id,
             $set:
               userId: userId

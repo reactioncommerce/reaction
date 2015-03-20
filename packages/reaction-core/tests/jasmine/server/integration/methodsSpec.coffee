@@ -35,7 +35,9 @@ Jasmine.onTest ->
         spyOn(Tags, "update")
         spyOn(Tags, "remove")
 
-        expect(-> Meteor.call "removeHeaderTag").toThrow(new Meteor.Error 403, "Access Denied")
+        tag = Factory.create "tag"
+        currentTag = Factory.create "tag"
+        expect(-> Meteor.call "removeHeaderTag", tag._id, currentTag._id).toThrow(new Meteor.Error 403, "Access Denied")
         expect(Tags.update).not.toHaveBeenCalled()
         expect(Tags.remove).not.toHaveBeenCalled()
         done()
@@ -44,9 +46,10 @@ Jasmine.onTest ->
         spyOn(Roles, "userIsInRole").and.returnValue true
 
         tag = Factory.create "tag"
+        currentTag = Factory.create "tag"
+        expect(Tags.find().count()).toEqual 2
+        Meteor.call "removeHeaderTag", tag._id, currentTag._id
         expect(Tags.find().count()).toEqual 1
-        Meteor.call "removeHeaderTag", tag._id
-        expect(Tags.find().count()).toEqual 0
         done()
 
     describe "updateHeaderTags", ->
@@ -57,8 +60,9 @@ Jasmine.onTest ->
       it "should throw 403 error by non admin", (done) ->
         spyOn(Roles, "userIsInRole").and.returnValue false
         spyOn(Tags, "update")
-
-        expect(-> Meteor.call "updateHeaderTags").toThrow(new Meteor.Error 403, "Access Denied")
+        
+        tag = Factory.create "tag"
+        expect(-> Meteor.call "updateHeaderTags", tag._id).toThrow(new Meteor.Error 403, "Access Denied")
         expect(Tags.update).not.toHaveBeenCalled()
         done()
 
@@ -116,7 +120,8 @@ Jasmine.onTest ->
         spyOn(Roles, "userIsInRole").and.returnValue false
         spyOn(Products, "remove")
 
-        expect(-> Meteor.call "deleteProduct").toThrow(new Meteor.Error 403, "Access Denied")
+        product = Factory.create "product"
+        expect(-> Meteor.call "deleteProduct", product._id).toThrow(new Meteor.Error 403, "Access Denied")
         expect(Products.remove).not.toHaveBeenCalled()
         done()
 
@@ -136,9 +141,10 @@ Jasmine.onTest ->
 
       it "should throw 403 error by non admin", (done) ->
         spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
         spyOn(Products, "insert")
-
-        expect(-> Meteor.call "cloneProduct").toThrow(new Meteor.Error 403, "Access Denied")
+        
+        expect(-> Meteor.call "cloneProduct", product).toThrow(new Meteor.Error 403, "Access Denied")
         expect(Products.insert).not.toHaveBeenCalled()
         done()
 
@@ -156,3 +162,75 @@ Jasmine.onTest ->
         expect(productCloned.description).toEqual product.description
 
         done()
+        
+    describe "createVariant", ->
+      
+      beforeEach ->
+        Products.remove {}
+      
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        spyOn(Products, "update")
+        expect(-> Meteor.call "createVariant", product._id).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        done()
+        
+      it "should create variant by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        expect(_.size(product.variants)).toEqual 1
+        Meteor.call "createVariant", product._id
+        product = Products.findOne(product._id)
+        variant = product.variants[1]
+        expect(_.size(product.variants)).toEqual 2
+        
+        expect(variant.title).toEqual ""
+        expect(variant.price).toEqual 0
+        done()
+
+
+    describe "cloneVariant", ->
+      
+      beforeEach ->
+        Products.remove {}
+      
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        spyOn(Products, "insert")
+        expect(-> Meteor.call "cloneVariant", product._id, product.variants[0]._id).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.insert).not.toHaveBeenCalled()
+        done()
+      
+      it "should clone variant by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        expect(_.size(product.variants)).toEqual 1
+        Meteor.call "cloneVariant", product._id, product.variants[0]._id
+        product = Products.findOne(product._id)
+        expect(_.size(product.variants)).toEqual 2
+        done()
+        
+    describe "deleteVariant", ->
+      
+      beforeEach ->
+        Products.remove {}
+      
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        spyOn(Products, "update")
+        expect(-> Meteor.call "deleteVariant", product.variants[0]._id).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        done()
+      
+      it "should delete variant by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        expect(_.size(product.variants)).toEqual 1
+        Meteor.call "deleteVariant", product.variants[0]._id
+        product = Products.findOne(product._id)
+        expect(_.size(product.variants)).toEqual 0
+        done()
+      

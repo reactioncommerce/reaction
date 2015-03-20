@@ -1,8 +1,4 @@
 Template.addressBookAdd.helpers
-  addressBookExists: ->
-    account = ReactionCore.Collections.Accounts.findOne()
-    if account?.profile?.addressBook then return true
-
   thisAddress: ->
     account = ReactionCore.Collections.Accounts.findOne()
     thisAddress = {'fullName': account?.profile?.name}
@@ -15,13 +11,29 @@ Template.addressBookAdd.helpers
 
 Template.addressBookAdd.events
   'click #cancel-new, form submit': () ->
-    Session.set "addressBookView", "view"
+    Session.set "addressBookView", "addressBookGrid"
 
   'submit form': () ->
-    Session.set "addressBookView", "view"
+    Session.set "addressBookView", "addressBookGrid"
 
-AutoForm.hooks addressBookAddForm:
-  before:
-    'addressBookAdd': (doc, template) ->
-      Meteor.call "addressBookAdd", doc,{}, Session.get "sessionId"
-      return doc
+###
+# addressBookAddForm form handling
+# gets accountId and calls addressBookAdd method
+###
+AutoForm.hooks addressBookAddForm: onSubmit: (insertDoc, updateDoc, currentDoc) ->
+  this.event.preventDefault()
+  accountId = ReactionCore.Collections.Accounts.findOne()._id
+  # this should be handled by schema
+  unless insertDoc._id then insertDoc._id = Random.id()
+  # try addressBookAdd method
+  try
+    Meteor.call "addressBookAdd", insertDoc, accountId
+  catch error
+    @done new Error('Failed to add address', error)
+    return false
+
+  # done and reset sessions
+  @done()
+  Session.set "addressBookView", "addressBookGrid"
+  addressBookEditId.set()
+  return

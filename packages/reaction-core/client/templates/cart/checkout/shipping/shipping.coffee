@@ -7,7 +7,7 @@ Template.coreCheckoutShipping.helpers
   # in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: () ->
     cart = ReactionCore.Collections.Cart.findOne()
-    return cart.shipping?.shipmentQuotes
+    return cart?.shipping?.shipmentQuotes
 
   # helper to make sure there are some shipping providers
   shippingConfigured: () ->
@@ -33,6 +33,8 @@ Template.coreCheckoutShipping.events
       CartWorkflow.shipmentMethod(@)
       Session.set "shipmentMethod", @
     catch
-      console.log "Cannot change methods while processing."
+      console.info "Cannot change methods while processing."
       event.preventDefault()
       event.stopPropagation()
+      return
+
