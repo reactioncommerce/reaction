@@ -9,19 +9,17 @@ Template.addressBookForm.helpers
       options.push {'label': locale.name, 'value': country}
     return options
 
+  #
+  # TODO: state/regions dropdown / auto populate
+  #
+
   ###
-  # TODO: consider adding default on edit,where no default exists
+  #  Defaults billing/shipping when 1st new address.
   ###
   isBillingDefault: ->
-    account = ReactionCore.Collections.Accounts.findOne()
-    unless @_af.doc.isBillingDefault is true
-      unless account?.profile?.addressBook then return true
-    else
-      return @_af.doc.isBillingDefault
+    unless @.profile?.addressBook and !addressBookEditId.get()
+      return true
 
   isShippingDefault: ->
-    account = ReactionCore.Collections.Accounts.findOne()
-    unless @_af.doc.isShippingDefault is true
-      unless account?.profile?.addressBook then return true
-    else
-      return @_af.doc.isShippingDefault
+    unless @.profile?.addressBook and !addressBookEditId.get()
+      return true

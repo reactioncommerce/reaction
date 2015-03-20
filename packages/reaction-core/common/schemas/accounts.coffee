@@ -1,9 +1,21 @@
 ###
+# Emails
+###
+ReactionCore.Schemas.Email = new SimpleSchema
+  address:
+    type: String
+    regEx: SimpleSchema.RegEx.Email
+  verified:
+    type: Boolean
+    defaultValue: false
+
+###
 # AddressBook
 ###
 ReactionCore.Schemas.Address = new SimpleSchema
   _id:
     type: String
+    defaultValue: Random.id()
     optional: true
   fullName:
     type: String
@@ -57,23 +69,19 @@ ReactionCore.Schemas.Accounts = new SimpleSchema
   userId:
     type: String
     optional: true
-  sessionId:
-    type: String
-    optional: true
     regEx: SimpleSchema.RegEx.Id
+  sessions:
+    type: [String]
+    optional: true
+    index: 1
   shopId:
     type: String
     autoValue: ReactionCore.shopIdAutoValue
     regEx: SimpleSchema.RegEx.Id
-  email:
-    type: String
+  emails:
+    type: [ReactionCore.Schemas.Email]
     optional: true
-    regEx: SimpleSchema.RegEx.Email
   acceptsMarketing:
-    type: Boolean
-    defaultValue: false
-    optional: true
-  verifiedEmail:
     type: Boolean
     defaultValue: false
     optional: true
@@ -89,6 +97,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema
     optional: true
   'profile.addressBook':
     type: [ReactionCore.Schemas.Address]
+    optional: true
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true

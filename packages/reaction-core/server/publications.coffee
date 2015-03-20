@@ -183,15 +183,24 @@ Meteor.publish 'accounts', (sessionId, userId) ->
   check sessionId, Match.OneOf(String, null)
   check userId, Match.OneOf(String, null)
   shopId = ReactionCore.getShopId(@)
+
   # admin gets it all
   if Roles.userIsInRole(this.userId, ['admin','owner'])
     return Accounts.find shopId: shopId
   # returns userId (authenticated account)
-  else if @userId
-    return Accounts.find userId: @userId, shopId: shopId
-  # return session account (guest)
   else
-    return Accounts.find sessionId: sessionId
+    ReactionCore.Events.debug "subscribe account", sessionId, this.userId
+    # get current account
+    if @userId # userAccount
+      accountId = ReactionCore.Collections.Accounts.findOne('userId': this.userId)?._id
+    else # sessionAccount
+      accountId = ReactionCore.Collections.Accounts.findOne('sessions': sessionId)?._id
+    unless accountId
+      accountId = ReactionCore.Collections.Accounts.insert 'sessions': [sessionId], 'userId': userId
+
+    #return accountId
+    ReactionCore.Events.info "publishing account", accountId
+    return ReactionCore.Collections.Accounts.find accountId
 
 ###
 # tags
