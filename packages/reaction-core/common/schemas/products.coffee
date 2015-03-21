@@ -150,6 +150,9 @@ ReactionCore.Schemas.Product = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
+  positions:
+    type: [ReactionCore.Schemas.ProductPosition]
+    optional: true    
   variants:
     type: [ReactionCore.Schemas.ProductVariant]
   requiresShipping:
