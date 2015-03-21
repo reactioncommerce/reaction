@@ -99,6 +99,33 @@ Meteor.methods
 
 
   ###
+  # delete variant, which should also delete child variants
+  ###
+  deleteVariant: (variantId) ->
+    check variantId, String
+
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+    #what will we be deleteing?
+    deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
+    #delete variants with this variant as parent
+    Products.update {"variants.parentId": variantId}, {$pull: 'variants': {'parentId': variantId}}
+    #delete this variant
+    Products.update {"variants._id": variantId}, {$pull: 'variants': {'_id': variantId}}
+    # unlink media
+    _.each deleted, (product) ->
+      _.each product.variants, (variant) ->
+        if variant.parentId is variantId or variant._id is variantId
+          Media.update 'metadata.variantId': variant._id,
+            $unset:
+              'metadata.productId': ""
+              'metadata.variantId': ""
+              'metadata.priority': ""
+          , multi: true
+    return true
+
+
+  ###
   # clone a whole product, defaulting visibility, etc
   # in the future we are going to do an inheritance product
   # that maintains relationships with the cloned
@@ -143,32 +170,6 @@ Meteor.methods
 
     #create the cloned product
     return Products.insert(product, {validate: false})
-
-  ###
-  # delete variant, which should also delete child variants
-  ###
-  deleteVariant: (variantId) ->
-    check variantId, String
-
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
-      throw new Meteor.Error 403, "Access Denied"
-    #what will we be deleteing?
-    deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
-    #delete variants with this variant as parent
-    Products.update {"variants.parentId": variantId}, {$pull: 'variants': {'parentId': variantId}}
-    #delete this variant
-    Products.update {"variants._id": variantId}, {$pull: 'variants': {'_id': variantId}}
-    # unlink media
-    _.each deleted, (product) ->
-      _.each product.variants, (variant) ->
-        if variant.parentId is variantId or variant._id is variantId
-          Media.update 'metadata.variantId': variant._id,
-            $unset:
-              'metadata.productId': ""
-              'metadata.variantId': ""
-              'metadata.priority': ""
-          , multi: true
-    return true
 
   ###
   # when we create a new product, we create it with

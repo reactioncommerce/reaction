@@ -144,6 +144,9 @@ ReactionCore.Schemas.Product = new SimpleSchema
   vendor:
     type: String
     optional: true
+  positions:
+    type: [ReactionCore.Schemas.ProductPosition]
+    optional: true
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
