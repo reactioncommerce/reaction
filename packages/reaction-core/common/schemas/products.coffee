@@ -32,7 +32,7 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema
     type: Number
     optional: true
   weight:
-    type: String
+    type: Number
     optional: true
   updatedAt:
     type: Date
@@ -112,9 +112,6 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
-  positions:
-    type: [ReactionCore.Schemas.ProductPosition]
-    optional: true
   createdAt:
     label: "Created at"
     type: Date
@@ -146,6 +143,9 @@ ReactionCore.Schemas.Product = new SimpleSchema
     type: String
   vendor:
     type: String
+    optional: true
+  positions:
+    type: [ReactionCore.Schemas.ProductPosition]
     optional: true
   metafields:
     type: [ReactionCore.Schemas.Metafield]

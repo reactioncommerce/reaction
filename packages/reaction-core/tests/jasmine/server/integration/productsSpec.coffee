@@ -154,6 +154,17 @@ Jasmine.onTest ->
         product = Products.findOne(product._id)
         expect(_.size(product.variants)).toEqual 0
         done()
+        
+      it "should delete all child variants (options) by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        Meteor.call "cloneVariant", product._id, product.variants[0]._id, product.variants[0]._id
+        product = Products.findOne(product._id)
+        expect(_.size(product.variants)).toEqual 2
+        Meteor.call "deleteVariant", product.variants[0]._id
+        product = Products.findOne(product._id)
+        expect(_.size(product.variants)).toEqual 0
+        done()
             
     describe "createProduct", ->
 
@@ -226,5 +237,31 @@ Jasmine.onTest ->
         expect(productCloned.title).toEqual product.title + '1'
         expect(productCloned.pageTitle).toEqual product.pageTitle
         expect(productCloned.description).toEqual product.description
+
+        done()
+
+
+    describe "updateProductField", ->
+
+      beforeEach ->
+        Products.remove {}
+
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        spyOn(Products, "update")
+        
+        expect(-> Meteor.call "updateProductField", product._id, "title", "Updated Title").toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        done()
+
+      it "should update product field by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+
+        product = Factory.create "product"
+        Meteor.call "updateProductField", product._id, "title", "Updated Title"
+
+        product = Products.findOne({_id: product._id})
+        expect(product.title).toEqual 'Updated Title'
 
         done()
