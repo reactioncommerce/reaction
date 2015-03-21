@@ -25,8 +25,3 @@ Template.pinterest.events
   'click a': (event, template) ->
     event.preventDefault()
     window.open Template.instance().$('.pinterest-share').attr('href'), 'pinterest_window', 'width=750, height=650'
-
-Template.pinterest.helpers
-  enabled: ->
-    apps = Template.currentData().apps
-    return 'pinterest' of apps and apps.pinterest.enabled

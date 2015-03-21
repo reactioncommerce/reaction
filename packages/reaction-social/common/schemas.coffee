@@ -26,9 +26,10 @@ ReactionCore.Schemas.SocialPackageConfig = new SimpleSchema([
     "settings.public.apps.facebook":
       type: ReactionCore.Schemas.SocialProvider
       optional: true
-    "settings.public.apps.facebook.appid":
+    "settings.public.apps.facebook.appId":
       type: String
       regEx: /\d+/
+      label: 'App Id'
       optional: true
     "settings.public.apps.facebook.appSecrect":
       type: String

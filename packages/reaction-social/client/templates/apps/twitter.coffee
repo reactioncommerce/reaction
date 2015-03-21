@@ -36,8 +36,3 @@ Template.twitter.events
   'click a': (event, template) ->
     event.preventDefault()
     window.open Template.instance().$('.twitter-share').attr('href'), 'twitter_window', 'width=750, height=650'
-
-Template.twitter.helpers
-  enabled: ->
-    apps = Template.currentData().apps
-    return 'twitter' of apps and apps.twitter.enabled

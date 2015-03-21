@@ -11,9 +11,7 @@ Package.onUse(function (api, where) {
   api.use("templating");
   api.use("coffeescript");
   api.use("less");
-  api.use("reactioncommerce:core@0.4.1");
-  // api.use(['fortawesome:fontawesome@4.2.0'], 'client');
-  // api.use("joshowens:shareit", "client");
+  api.use("reactioncommerce:core@0.5.0");
 
   api.addFiles("server/register.coffee",["server"]); // register as a reaction package
 
@@ -29,10 +27,6 @@ Package.onUse(function (api, where) {
 
     "client/templates/dashboard/social.html",
     "client/templates/dashboard/social.coffee",
-
-    "client/templates/productDetail/widget.html",
-    "client/templates/productDetail/widget.coffee",
-    "client/templates/productDetail/widget.less",
 
     "client/templates/apps/facebook.html",
     "client/templates/apps/facebook.coffee",

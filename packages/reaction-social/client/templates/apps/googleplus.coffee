@@ -31,8 +31,3 @@ Template.googleplus.events
   'click a': (event, template) ->
     event.preventDefault()
     window.open Template.instance().$('.googleplus-share').attr('href'), 'googleplus_window', 'width=750, height=650'
-
-Template.googleplus.helpers
-  enabled: ->
-    apps = Template.currentData().apps
-    return 'googleplus' of apps and apps.googleplus.enabled
