@@ -265,3 +265,150 @@ Jasmine.onTest ->
         expect(product.title).toEqual 'Updated Title'
 
         done()
+
+    describe "updateProductTags", ->
+      
+      beforeEach ->
+        Products.remove {}
+        Tags.remove {}
+      
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        spyOn(Products, "update")
+        spyOn(Tags, "insert")
+        
+        expect(-> Meteor.call "updateProductTags", product._id, "productTag", null).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        expect(Tags.insert).not.toHaveBeenCalled()
+        done()
+        
+      it "should add new tag when passed tag name and null ID by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        
+        product = Factory.create "product"
+        tagName = "Product Tag"
+        newTag =
+          slug: getSlug tagName
+          name: tagName
+        
+        expect(Tags.findOne({"name": tagName})).toEqual undefined
+        
+        Meteor.call "updateProductTags", product._id, tagName, null
+        
+        tag = Tags.findOne({name: tagName})
+        expect(tag.slug).toEqual getSlug tagName
+        product = Products.findOne({_id: product._id})
+        expect(product.hashtags).toContain tag._id
+        done()
+        
+      it "should add existing tag when passed existing tag and tag._id by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        
+        product = Factory.create "product"
+        tag = Factory.create "tag"
+        expect(Tags.find().count()).toEqual 1
+        expect(product.hashtags).not.toContain tag._id
+        
+        Meteor.call "updateProductTags", product._id, tag.name, tag._id
+        
+        expect(Tags.find().count()).toEqual 1
+        product = Products.findOne({_id: product._id})
+        expect(product.hashtags).toContain tag._id
+        done()
+        
+    describe "removeProductTag", ->
+      
+      beforeEach ->
+        Products.remove {}
+        Tags.remove {}
+        
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        tag = Factory.create "tag"
+        spyOn(Products, "update")
+        spyOn(Tags, "remove")
+        
+        expect(-> Meteor.call "removeProductTag", product._id, tag._id).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        expect(Tags.remove).not.toHaveBeenCalled()
+        done()
+      
+      it "should remove product tag by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        tag = Factory.create "tag"
+        Meteor.call "updateProductTags", product._id, tag.name, tag._id
+        
+        product = Products.findOne({_id: product._id})
+        expect(product.hashtags).toContain tag._id
+        expect(Tags.find().count()).toEqual 1
+        
+        Meteor.call "removeProductTag", product._id, tag._id
+        product = Products.findOne({_id: product._id})
+        expect(product.hashtags).not.toContain tag._id
+        expect(Tags.find().count()).toEqual 0
+        done()
+
+      # Test that tag is removed if and only if there are no more products
+      # or related tags associated with it
+    
+    describe "setHandleTag", ->
+      
+      beforeEach ->
+        Products.remove {}
+        Tags.remove {}
+      
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        tag = Factory.create "tag"
+        spyOn(Products, "update")
+        
+        expect(-> Meteor.call "setHandleTag", product._id, tag._id).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        done()
+      
+      it "should set handle tag for product by admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        tag = Factory.create "tag"
+        Meteor.call "setHandleTag", product._id, tag._id
+        
+        product = Products.findOne({_id: product._id})
+        expect(product.handle).toEqual tag.slug
+        done()
+        
+    describe "updateProductPosition", ->
+      
+      beforeEach ->
+        Products.remove {}
+        Tags.remove {}
+      
+      it "should throw 403 error by non admin", (done) ->
+        spyOn(Roles, "userIsInRole").and.returnValue false
+        product = Factory.create "product"
+        spyOn(Products, "update")
+        
+        expect(-> Meteor.call "updateProductPosition", product._id, {}).toThrow(new Meteor.Error 403, "Access Denied")
+        expect(Products.update).not.toHaveBeenCalled()
+        done()
+      
+      it "should update product position by admin", (done) ->
+        # Something wrong with updateProductPosition currently.
+        spyOn(Roles, "userIsInRole").and.returnValue true
+        product = Factory.create "product"
+        tag = Factory.create "tag"
+        
+        position =
+          tag: tag._id
+          position: 0
+          weight: '0'
+          updatedAt: new Date()
+        
+        Meteor.call "updateProductPosition", product._id, position
+        
+        product = Products.findOne(product._id)
+        expect(product.positions[0].tag).toEqual tag._id
+        done()
