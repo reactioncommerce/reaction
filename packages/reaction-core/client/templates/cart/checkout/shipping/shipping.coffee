@@ -33,6 +33,8 @@ Template.coreCheckoutShipping.events
       CartWorkflow.shipmentMethod(@)
       Session.set "shipmentMethod", @
     catch
-      console.log "Cannot change methods while processing."
+      console.info "Cannot change methods while processing."
       event.preventDefault()
       event.stopPropagation()
+      return
+
