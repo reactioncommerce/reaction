@@ -23,7 +23,6 @@ Package.onUse(function (api, where) {
   api.addFiles([
     "client/templates/social.html",
     "client/templates/social.coffee",
-    "client/templates/social.less",
 
     "client/templates/dashboard/social.html",
     "client/templates/dashboard/social.coffee",

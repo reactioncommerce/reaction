@@ -2,7 +2,7 @@
 
 Social Sharing package for Reaction Commerce
 
-Got basic inspiration from joshowens:shareit package.	
+Got basic inspiration from joshowens:shareit package.
 
 ## Installation:
 ```
@@ -20,11 +20,10 @@ Got basic inspiration from joshowens:shareit package.
 ```
 ```coffee
   # footer.coffee
-  Template.layoutFooter.helpers
+  Template.footer.helpers
     customSocialSettings: ->
       placement: 'footer'
       faClass: 'square'
       faSize: 'fa-3x'
       appsOrder: ['facebook', 'twitter', 'googleplus', 'pinterest']
 ```  
-  
