@@ -1,0 +1,16 @@
+<template name="socialDashboard">
+<div class="social">
+  <div class="row">
+    <h2>Social Apps <small data-18n="app.settings">Configuration</small></h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6 well">
+      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.SocialPackageConfig" doc=packageData type="update" id="social-update-form"}}
+        {{>afObjectField name='settings.public.apps'}}
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
+    </div>
+  </div>
+
+</div>
+</template>
