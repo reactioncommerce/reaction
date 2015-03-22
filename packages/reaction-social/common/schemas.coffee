@@ -31,7 +31,7 @@ ReactionCore.Schemas.SocialPackageConfig = new SimpleSchema([
       regEx: /\d+/
       label: 'App Id'
       optional: true
-    "settings.public.apps.facebook.appSecrect":
+    "settings.public.apps.facebook.appSecret":
       type: String
       regEx: /[\da-z]+/
       label: 'App Secret'
