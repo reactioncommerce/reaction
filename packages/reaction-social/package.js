@@ -11,7 +11,7 @@ Package.onUse(function (api, where) {
   api.use("templating");
   api.use("coffeescript");
   api.use("less");
-  api.use("reactioncommerce:core@0.5.0");
+  api.use("reactioncommerce:core@0.5.2");
 
   api.addFiles("server/register.coffee",["server"]); // register as a reaction package
 
