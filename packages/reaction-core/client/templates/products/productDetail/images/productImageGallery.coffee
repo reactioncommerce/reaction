@@ -123,3 +123,5 @@ Template.imageUploader.events
 Template.productImageGallery.events
   "click #img-upload": (event,template) ->
     $("#files").click()
+  'load .img-responsive': (event, template) ->
+    Session.set('variantImgSrc', template.$('.img-responsive').attr 'src')

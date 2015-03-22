@@ -165,10 +165,10 @@ Template.productDetail.events
       $(".pinterestMsg-edit").fadeIn()
       $(".pinterestMsg-edit-input").focus()
 
-  "click .fa-instagram": ->
+  "click .fa-google-plus": ->
     if ReactionCore.hasOwnerAccess()
-      $(".instagramMsg-edit").fadeIn()
-      $(".instagramMsg-edit-input").focus()
+      $(".googleplusMsg-edit").fadeIn()
+      $(".googleplusMsg-edit-input").focus()
 
   "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input": ->
     Session.set "editing-"+this.field, false
