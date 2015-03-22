@@ -1,10 +1,3 @@
-# XXX Unused?
-ReactionCore.Schemas.Social = new SimpleSchema
-  service:
-    type: String
-  handle:
-    type: String
-
 ###
 # Products
 ###
@@ -175,7 +168,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
     type: String
     optional: true
     max: 255
-  instagramMsg:
+  googleplusMsg:
     type: String
     optional: true
     max: 255

@@ -285,9 +285,9 @@ A user clicks on the Facebook icon footer link.
 }
 ```
 
-### Instagram External Link Click
+### googleplus External Link Click
 
-A user clicks on the Instagram icon footer link.
+A user clicks on the googleplus icon footer link.
 
 **Example of data captured:**
 
@@ -296,7 +296,7 @@ A user clicks on the Instagram icon footer link.
     "category" : "link",
     "action" : "link-click",
     "label" : "external link click",
-    "value" : "instagram",
+    "value" : "googleplus",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "zhPxLcBehiJEFd2JA"
 }

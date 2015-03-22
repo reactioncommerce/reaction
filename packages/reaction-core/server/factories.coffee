@@ -58,7 +58,7 @@ Factory.define 'product', ReactionCore.Collections.Products,
   hashtags: []
 #   twitterMsg:
 #   facebookMsg:
-#   instagramMsg:
+#   googleplusMsg:
 #   pinterestMsg:
 #   metaDescription:
 #   handle:
