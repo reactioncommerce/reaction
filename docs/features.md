@@ -13,7 +13,7 @@
 * Published or hidden status
 * Additional product details in key/value list
 * Uses social media handles for product urls for best SEO+social media
-* Integrated custom product social media messaging (FB,Twitter,Pinterest,Instagram)
+* Integrated custom product social media messaging (FB,Twitter,Pinterest,Google+)
 
 
 ## Images / Video
@@ -38,7 +38,7 @@
 	* Facebook
 	* Twitter
 	* Google
-	* Instagram
+	* Google+
 	* LinkedIn
 	* Vkontakte
 	* Yahoo

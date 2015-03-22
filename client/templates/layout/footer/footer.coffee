@@ -3,4 +3,11 @@
 # This footer replaces the "layoutFooter" template defined in the reactioncommerce:core package.
 # https://github.com/reactioncommerce/reaction-core/blob/master/client/templates/layout/footer/footer.html
 ###
+Template.layoutFooter.helpers
+  customSocialSettings: ->
+    placement: 'footer'
+    faClass: 'square'
+    faSize: 'fa-3x'
+    appsOrder: ['facebook', 'twitter', 'googleplus', 'pinterest']
+
 Template.footer.replaces "layoutFooter"

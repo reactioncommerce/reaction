@@ -32,10 +32,9 @@
 
       <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
       <ul class="list-unstyled">
-          <li><a href="" class="fa fa-twitter-square fa-2x pull-right" data-event-category="link" data-event-action="link-click" data-event-label="external link click" data-event-value="twitter"></a></li>
-          <li><a href="" class="fa fa-facebook-square fa-2x pull-right" data-event-category="link" data-event-action="link-click" data-event-label="external link click" data-event-value="facebook"></a></li>
-          <li><a href="" class="fa fa-instagram fa-2x pull-right" data-event-category="link" data-event-action="link-click" data-event-label="external link click" data-event-value="instagram"></a></li>
-          <li><a href="" class="fa fa-pinterest-square fa-2x pull-right" data-event-category="link" data-event-action="link-click" data-event-label="external link click" data-event-value="pinterest"></a></li>
+        {{#each reactionApps provides="social" name="reaction-social"}}
+          {{> Template.dynamic template=template data=customSocialSettings }}
+        {{/each}}
       </ul>
       </div>
     </div>
