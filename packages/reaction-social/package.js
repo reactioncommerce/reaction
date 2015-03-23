@@ -1,8 +1,8 @@
 Package.describe({
   summary: "Reaction Social - Social Sharing Package for Reaction",
-  name: "lovetostrike:reaction-social",
-  version: "0.1.1",
-  git: "https://github.com/lovetostrike/reaction-social.git"
+  name: "reactioncommerce:reaction-social",
+  version: "0.1.2",
+  git: "https://github.com/reactioncommerce/reaction-social.git"
 });
 
 Package.onUse(function (api, where) {
@@ -11,7 +11,7 @@ Package.onUse(function (api, where) {
   api.use("templating");
   api.use("coffeescript");
   api.use("less");
-  api.use("reactioncommerce:core@0.5.2");
+  api.use("reactioncommerce:core@0.5.3");
 
   api.addFiles("server/register.coffee",["server"]); // register as a reaction package
   api.addFiles("server/policy.coffee",["server"]); // browser-policies

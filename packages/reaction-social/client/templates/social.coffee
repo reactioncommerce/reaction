@@ -12,7 +12,8 @@ Template.reactionSocial.helpers
     # currentData is customSocialSettings coming from reactionApps loop
     Template.instance().socialSettings = $.extend(true, {}, Template.instance().socialSettings, Template.currentData())
     socialSettings = Template.instance().socialSettings
-    for app in socialSettings.appsOrder
+    if socialSettings.apps # apps not always ready
+      for app in socialSettings.appsOrder
         if socialSettings.apps[app]? and socialSettings.apps[app].enabled
-            templates.push app
+          templates.push app
     return templates
