@@ -47,7 +47,7 @@
                 },
                 "productDetailEdit": {
                     "title": "Producttitel",
-                    "pagetitle": "Titel productpagina",
+                    "pageTitle": "Titel productpagina",
                     "vendor": "Merk",
                     "description": "Voeg een productomschrijving toe"
                 },

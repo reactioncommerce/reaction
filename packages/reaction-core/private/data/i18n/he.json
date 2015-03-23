@@ -45,7 +45,7 @@
                 },
                 "productDetailEdit": {
                   "title": "כותרת המוצר",
-                  "pagetitle": "כותרת לעמוד המוצר",
+                  "pageTitle": "כותרת לעמוד המוצר",
                   "vendor": "ספר המוצר",
                   "description": "הוספת תיאור מוצר"
                 },

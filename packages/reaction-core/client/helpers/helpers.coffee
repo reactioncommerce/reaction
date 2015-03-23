@@ -1,5 +1,5 @@
 ###
-# convert a string to camelCase
+# convert a string to camelCase for use with i18n keys
 ###
 String::toCamelCase = ->
   # remove all characters that should not be in a variable name

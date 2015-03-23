@@ -5,10 +5,7 @@
         "translation": {
             "core": {
                 "languages": {
-                    "select": "Select Language",
-                    "english": "English",
-                    "spanish": "Español",
-                    "burmese": "Burmese"
+                    "select": "Select Language"
                 },
                 "app": {
                     "saveAndContinue": "Save and continue",
@@ -49,9 +46,13 @@
                 },
                 "productDetailEdit": {
                     "title": "Product title",
-                    "pagetitle": "Product page title",
+                    "pageTitle": "Product page title",
                     "vendor": "Product vendor",
-                    "description": "Add a product description"
+                    "description": "Add a product description",
+                    "facebookMsg": "Facebook Message",
+                    "twitterMsg": "Twitter Message",
+                    "pinterestMsg": "Pinterest Message",
+                    "googleplusMsg": "Google+ Message"
                 },
                 "variantList": {
                     "moreOptions": "There are more options available for this selection.",

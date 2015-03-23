@@ -54,7 +54,7 @@ getMessagesFor = (schema, name) ->
 #
 ###
 
-i18nextDep = new Tracker.Dependency()
+@i18nextDep = new Tracker.Dependency()
 
 Meteor.startup ->
   # set language
@@ -115,24 +115,26 @@ Meteor.startup ->
 ###
 # i18n helper
 # see: http://i18next.com/
-# pass this the translation key as the first argument.
-# optionally you can pass a string like "Invalid email", and we'll look for "invalidEmail"
-# in the translations data.
+# pass the translation key as the first argument
+# and the default message as the second argument
 #
 # ex: {{i18n "accountsTemplate.error" "Invalid Email"}}
 ###
-Template.registerHelper "i18n", (i18n_key, camelCaseString) ->
+Template.registerHelper "i18n", (i18n_key, message) ->
+  i18nextDep.depend()
   unless i18n_key then Meteor.throw("i18n key string required to translate")
-  if (typeof camelCaseString) is "string" then i18n_key = i18n_key + "." + camelCaseString.toCamelCase()
-  result = new Handlebars.SafeString(i18n.t(i18n_key))
-  return result
+  message = new Handlebars.SafeString(message)
+  if i18n.t(i18n_key) is i18n_key # return raw message if no translation found
+    console.info "no translation found. returning raw message for:" + i18n_key
+    return message
+  else # returning translated message, i18n key found.
+    return i18n.t(i18n_key)
 
 ###
 #  return shop /locale specific currency format (ie: $)
 ###
 Template.registerHelper "currencySymbol", () ->
   return ReactionCore.Locale.currency.symbol
-
 
 ###
 # return shop /locale specific formatted price

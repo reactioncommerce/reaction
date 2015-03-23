@@ -83,6 +83,11 @@ Template.registerHelper "camelToSpace", (str) ->
 #
 Template.registerHelper "toLowerCase", (str) ->
   return str.toLowerCase()
+#
+# camelCase string
+#
+Template.registerHelper "toCamelCase", (str) ->
+  return str.toCamelCase()
 
 ###
 # Methods for the reaction permissions

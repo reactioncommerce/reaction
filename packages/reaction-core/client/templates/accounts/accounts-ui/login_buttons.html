@@ -57,10 +57,10 @@
 <!-- used in various places to display messages to user -->
 <template name="core_loginButtonsMessages">
   {{#if errorMessage}}
-    <div class="message error-message">{{i18n "accountsUI.error" errorMessage}}</div>
+    <div class="message error-message" data-i18n="accountUI.error.{{toCamelCase errorMessage}}">{{errorMessage}}</div>
   {{/if}}
   {{#if infoMessage}}
-    <div class="message info-message">{{i18n "accountsUI.info" infoMessage}}</div>
+    <div class="message info-message" data-i18n="accountUI.error.{{toCamelCase infoMessage}}">{{infoMessage}}</div>
   {{/if}}
 </template>
 
