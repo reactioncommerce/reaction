@@ -170,6 +170,6 @@ Template.productDetail.events
       $(".googleplusMsg-edit").fadeIn()
       $(".googleplusMsg-edit-input").focus()
 
-  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input": ->
+  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": ->
     Session.set "editing-"+this.field, false
     $('.social-media-inputs > *').hide()
