@@ -46,7 +46,7 @@
 #
 ##############################################################
 
-FROM mongo
+FROM mongo:2.6.8
 MAINTAINER Aaron Judd <aaron@ongoworks.com>
 
 ENV DEBIAN_FRONTEND noninteractive
