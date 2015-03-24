@@ -1,12 +1,6 @@
-#Package Development
+#Package development
 
-To develop packages, and see your changes update in your local installation you must *git clone* packages locally, either into reaction/packages, or with
-a symbolic link to the package checkout.
-
-```bash
-    cd reaction
-    ln -s <full path to package>  packages/
-```
+For local package development you must *git clone* packages locally, either into `reaction/packages`, or by creating a symbolic link to the package checkout.
 
 For example:
 
@@ -14,25 +8,33 @@ For example:
   mkdir ~/reactioncommerce
   cd ~/reactioncommerce
   git clone https://github.com/reactioncommerce/reaction.git
+
+  cd reaction/packages
   git clone https://github.com/reactioncommerce/reaction-core.git
   git clone https://github.com/reactioncommerce/reaction-core-theme.git
-  ln -s ~/reactioncommerce/reaction-core reaction/packages/reaction-core
-  ln -s ~/reactioncommerce/reaction-core-theme reaction/packages/reaction-core-theme
 ```
 
-It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone (installed) Reaction packages to ensure you're working with a complete development enviroment.
+or
+
+```bash
+    cd reaction
+    ln -s <full path to package>  packages/
+```
+
+It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone all used Reaction packages to ensure you're working with a complete development enviroment.
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
 
-*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain configuration settings such as admin user credentials and paypal authentication between `meteor reset`. Start with `meteor --settings settings/settings.json`*
+*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain authentication and meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`*
 
-# Create packages
+**Create packages**
 
     meteor create --package
 
 See [Meteor docs](http://docs.meteor.com/#/full/writingpackages) for additional help creating packages.
 
-###package.js
+**Update package.js**
+
 Once you have created your added, cloned, or symlinked your package development folder to the `reaction/packages` directory, you'll continue creating a standard Meteor package by defining `package.js`, starting with a describe block:
 
 ```javascript
@@ -65,19 +67,9 @@ To test your package, add it to your application :
 
 *Tip: You can also add and remove packages by editing `.meteor/packages`*
 
-###Publishing
-
-You can develop and even privately deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
-
-To have your package included in a release, please create a GitHub issue.
-
-See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
-
-*We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
-
 ##ReactionCore.registerPackage
 To integrate a package into the rest of Reaction Commerce use
-`ReactionCore.registerPackage` to describes package details
+`ReactionCore.registerPackage` to describe package details
 and provide some common integration hooks.
 
 Integrate packages with reaction-core by adding **server/register.coffee**
@@ -86,10 +78,14 @@ Integrate packages with reaction-core by adding **server/register.coffee**
 ReactionCore.registerPackage
   name: 'reaction-paypal' # usually same as meteor package
   autoEnable: false # auto-enable in dashboard,transforms to enabled
-  settings: # private package settings config (blackbox)
+  settings:
+    # private package settings config (blackbox)
     mode: false
     client_id: ''
     client_secret: ''
+    # public package settings
+    public:
+      notSoSecret: true
   registry: [
     # all options except route and template
     # are used to describe the
@@ -128,7 +124,7 @@ ReactionCore.registerPackage
 ```
 
 
-###Package
+###Settings
  ```
  name: '<typically same as package name>'
  autoEnable: '<true/false automatically enable in dashboard>'
@@ -136,12 +132,46 @@ ReactionCore.registerPackage
       <Object:blackbox default properties for service configuration.>
  ```
 
+`settings` is a blackbox object for package settings.
+
+`settings.public` is available to the client.
+
+`autoEnable` transforms into the `enabled` key to a boolean value on insert.
+
+See [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md)
+
 ###Registry
 The registry is used to define routes, dynamic templates, and some package UI handling.
 
-A registry object can be any combination of properties, with `provides` being the only required property.
+A `registry` object can be any combination of properties, with `provides` being the only required element.
 
-**Current dynamic template types:**
+*Note: The registry is currently refreshed only on update/deleting the package record in the database, or on delete/addition of the package.*
+
+You may filter, or define using any of the optional registry properties:
+
+**package**
+  * name
+  * enabled
+
+**registry**
+  - provides
+  - route
+  - template
+  - icon
+  - label
+  - cycle
+  - container
+
+***Special Usage***
+ - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
+ - `container` group alike for presentation *example: used to connect settings on dashboard app card registry object*
+
+
+**Dynamic Templates**
+
+The `provides` property is a "placement" value, loading it as `dynamic template` where the other conditions match a request from the `reactionApps` helper.
+
+The following `provides` values are defined in reaction-core:
 
  * widget
  * paymentMethod
@@ -150,19 +180,30 @@ A registry object can be any combination of properties, with `provides` being th
  * shortcut
  * dashboard
  * console
+ * userAccountDropdown
 
-For example, to add a new dashboard widget:
+To add a new `settings` link to the app card:
 
 ```
-    # order widgets
+    # settings
     {
-      template: "coreOrderWidgets"
-      provides: 'widget'
+      route: "dashboard/package/settings"
+      provides: 'settings'
+      icon: "fa fa-user-plus"
     }
 ```
 
+To add a new link to the `console navbar`:
 
-From template you can use the `reactionApps` helper to load registry objects.
+```
+    {
+      route: "<custom-route>"
+      label: '<My Link>'
+      provides: 'console'
+    }
+```
+
+From templates, you can create additional dynamic template `provides` using the `reactionApps` helper to load registry objects.
 
 ```html
   {{#each reactionApps provides="settings" name=name group=group}}
@@ -172,30 +213,9 @@ From template you can use the `reactionApps` helper to load registry objects.
   {{/each}}
 ```
 
-You may filter, or define using any of the optional registry properties:
-
-**package**
- - name
- - enabled
-
- **registry*
- - provides
- - route
- - template
- - icon
- - label
- - cycle
- - container
-
-***Special Usage***
- - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
- - `container` group alike for presentation *example: used to connect settings on dashboard app card registry object*
-
-You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
-
 **Widgets**
 
-Add widgets to your package to be included on the `dashboard console` by including a registry entry and a template that provides 'widget'.
+Add widgets to your package to be included on the `console dashboard` by including a registry entry and a template that provides 'widget'.
 
     <template name="reactionHelloworldWidget">
         <div class="dashboard-widget">
@@ -220,6 +240,8 @@ Include in **server/register.coffee** registry:
       provides: 'widget'
     }
 ```
+
+You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
 ###Permissions
 
@@ -337,4 +359,26 @@ ReactionCore.Schemas.BraintreePackageConfig = new SimpleSchema([
 ])
 ```
 
+##Security
+The meteor packages `audit-argument-checks` and `browser-policy` are installed by default.
+
+**audit-argument-checks**
+
+Use [`check`](http://docs.meteor.com/#/full/check) for all `Meteor.methods` arguments. You can remove with `meteor remove audit-argument-checks` if necessary, but packages will be required to pass `check` to be accepted as Reaction packages.
+
+**browser-policy**
+
+The [browser-policy](https://atmospherejs.com/meteor/browser-policy) package lets you set security-related policies that will be enforced by newer browsers. These policies help you prevent and mitigate common attacks like cross-site scripting and clickjacking.
+
+`browser-policy` is installed by reaction-core and is not optional.
+
+##Publishing
+
+You can develop, or even deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
+
+To have your package included in a Reaction release, please create a GitHub issue.
+
+See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
+
+*We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
 

@@ -2,14 +2,10 @@
     {
         "language": "English",
         "i18n": "en",
-        "entryText": "English",
         "translation": {
             "core": {
                 "languages": {
-                    "select": "Select Language",
-                    "english": "English",
-                    "spanish": "Español",
-                    "burmese": "Burmese"
+                    "select": "Select Language"
                 },
                 "app": {
                     "saveAndContinue": "Save and continue",
@@ -20,7 +16,9 @@
                     "close": "Close",
                     "settings": "Settings",
                     "loading": "Loading",
-                    "toggle": "Toggle"
+                    "toggle": "Toggle",
+                    "warning": "Oops!",
+                    "unauthorizedMessage": "You don't have permission to view this content."
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -48,9 +46,13 @@
                 },
                 "productDetailEdit": {
                     "title": "Product title",
-                    "pagetitle": "Product page title",
+                    "pageTitle": "Product page title",
                     "vendor": "Product vendor",
-                    "description": "Add a product description"
+                    "description": "Add a product description",
+                    "facebookMsg": "Facebook Message",
+                    "twitterMsg": "Twitter Message",
+                    "pinterestMsg": "Pinterest Message",
+                    "googleplusMsg": "Google+ Message"
                 },
                 "variantList": {
                     "moreOptions": "There are more options available for this selection.",
@@ -76,16 +78,22 @@
                 "cartDrawerItems": {
                     "left": "left"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "Login completed"
-                },
                 "cartCompleted": {
-                    "thankYou": "Thank you.",
-                    "yourOrderHasBeen": "Your order has been",
-                    "summaryMessage": "Thank you for your order."
+                    "thankYou": "Thank you!",
+                    "itemsFrom": "item(s) from",
+                    "yourOrderIsNow": "Your order is now",
+                    "summaryMessage": "Thank you for your order.",
+                    "submitted": "submitted",
+                    "registerGuest": "Hello! Add an email and receive order updates.",
+                    "trackYourDelivery": "Order updates will be sent to",
+                    "noOrdersFound": "No orders found."
                 },
                 "checkoutLogin": {
-                    "createOrLogin": "Create an account or sign in to continue"
+                    "loginCompleted": "Account completed",
+                    "createOrLogin": "Create an acccount, or sign in",
+                    "guestOrLogin": "Sign in, or checkout as a guest",
+                    "continueAsGuest": "Continue as Guest",
+                    "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later."
                 },
                 "addressBookGrid": {
                     "chooseAddress": "Choose shipping & billing address",
@@ -129,7 +137,7 @@
                     "isCommercial": "This is a commercial address."
                 },
                 "checkoutProgressBar": {
-                    "login": "Login",
+                    "login": "Account",
                     "shippingBilling": "Address Details",
                     "shippingOptions": "Shipping Options",
                     "reviewPayment": "Review",
@@ -223,7 +231,7 @@
                     "error": {
                         "emailRequired": "Email is required.",
                         "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
-                        "minChar": "7 character minimum password.",
+                        "minChar": "6 character minimum password.",
                         "pwdsDontMatch": "Passwords don't match",
                         "pwOneDigit": "Password must have at least one digit.",
                         "pwOneLetter": "Password requires 1 letter.",
@@ -247,10 +255,11 @@
                         "passwordIsOld": "Password is old. Please reset your password.",
                         "incorrectPassword": "Incorrect password",
                         "invalidEmail": "Invalid email",
+                        "addressMustBeAValidEMailAddress": "Invalid Email",
                         "mustBeLoggedIn": "Must be logged in",
                         "needToSetUsernameOrEmail": "Need to set a username or email",
                         "oldPasswordFormat": "old password format",
-                        "Password may not be empty": "Password may not be empty",
+                        "passwordMayNotBeEmpty": "Password may not be empty",
                         "signupsForbidden": "Signups forbidden",
                         "tokenExpired": "Token expired",
                         "tokenHasInvalidEmailAddress": "Token has invalid email address",

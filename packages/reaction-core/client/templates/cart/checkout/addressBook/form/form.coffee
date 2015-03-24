@@ -1,4 +1,7 @@
 Template.addressBookForm.helpers
+  ###
+  # TODO: update for i18n
+  ###
   countryOptions: ->
     options = []
     shop = ReactionCore.Collections.Shops.findOne()
@@ -6,18 +9,17 @@ Template.addressBookForm.helpers
       options.push {'label': locale.name, 'value': country}
     return options
 
+  #
+  # TODO: state/regions dropdown / auto populate
+  #
+
   ###
-  # TODO: update when we add customers collection
-  # TODO: consider adding default on edit,where no default exists
+  #  Defaults billing/shipping when 1st new address.
   ###
   isBillingDefault: ->
-    unless @_af.doc.isBillingDefault is true
-      unless Meteor.user().profile.addressBook then return true
-    else
-      return @_af.doc.isBillingDefault
+    unless @.profile?.addressBook and !addressBookEditId.get()
+      return true
 
   isShippingDefault: ->
-    unless @_af.doc.isShippingDefault is true
-      unless Meteor.user().profile.addressBook then return true
-    else
-      return @_af.doc.isShippingDefault
+    unless @.profile?.addressBook and !addressBookEditId.get()
+      return true

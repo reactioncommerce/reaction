@@ -1,14 +1,3 @@
-ReactionCore.Schemas.Shipping = new SimpleSchema
-  shopId:
-    type: String
-    index: 1
-    autoValue: ReactionCore.shopIdAutoValue
-  provider:
-    type: ReactionCore.Schemas.ShippingProvider
-  methods:
-    type: [ReactionCore.Schemas.ShippingMethod]
-    optional: true
-
 ReactionCore.Schemas.ShipmentQuote = new SimpleSchema
   carrier:
     type: String
@@ -148,4 +137,16 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema
   'validLocales.$.deliveryEnd':
     type: Number
     label: "Delivery Est."
+    optional: true
+
+# load the complete schema last as order matters.
+ReactionCore.Schemas.Shipping = new SimpleSchema
+  shopId:
+    type: String
+    index: 1
+    autoValue: ReactionCore.shopIdAutoValue
+  provider:
+    type: ReactionCore.Schemas.ShippingProvider
+  methods:
+    type: [ReactionCore.Schemas.ShippingMethod]
     optional: true

@@ -1,0 +1,26 @@
+<template name="ordersListItems">
+{{#each items}}
+  <div class="row order-list-items">
+      <div class="col-xs-3 col-sm-1">
+        <div class="thumbnail order-item-img">
+          {{#with media}}
+            <img src="{{url store='thumbnail'}}">
+          {{else}}
+            <img src= "/resources/placeholder.gif">
+          {{/with}}
+        </div>
+      </div>
+      <div class="col-xs-8 col-sm-11 order-list-item-details">
+        <span class="completed-order-item-price">
+          <i class="badge">{{quantity}}</i>
+        </span>
+        <span class="completed-order-item-title">
+          <span>{{variants.title}}</span>
+          <span>@</span>
+          <span>{{formatPrice variants.price}}</span>
+        </span>
+      </div>
+
+  </div>
+{{/each}}
+</template>

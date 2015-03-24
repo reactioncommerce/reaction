@@ -43,7 +43,7 @@ ReactionCore.MetaData =
       title = routeName.charAt(0).toUpperCase() + routeName.substring(1) # Uppercase
 
     # product specific
-    if product and product.handle is params._id
+    if product and product.handle is params._id and product.handle
       meta.push 'name': 'description', 'content': product.description if product?.description
       keywords = (key.value for key in product.metafields) if product?.metafields
       meta.push 'name': 'keywords',  'content': keywords.toString() if keywords

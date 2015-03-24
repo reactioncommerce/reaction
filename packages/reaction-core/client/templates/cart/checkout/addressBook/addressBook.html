@@ -1,5 +1,5 @@
 <template name="checkoutAddressBook">
   <div class="panel panel-default address-book">
-      {{> addressBookView mode=addressMode}}
+    {{> Template.dynamic template=addressBookView data=account}}
   </div>
 </template>

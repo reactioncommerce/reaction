@@ -92,10 +92,6 @@ Template.productDetail.events
         Alerts.add "Sorry, this item is out of stock!", "danger", placement: "productDetail", i18n_key: "productDetail.outOfStock", autoHide: 10000
         return
 
-      cartSession =
-        sessionId: Session.get "sessionId"
-        userId: Meteor.userId()
-
       # Get a reference to the quantity field
       qtyField = template.$('input[name="addToCartQty"]')
 
@@ -108,7 +104,7 @@ Template.productDetail.events
         return
       else
         # Add to cart
-        CartWorkflow.addToCart cartSession, currentProduct._id, currentVariant, quantity
+        CartWorkflow.addToCart ReactionCore.Collections.Cart.findOne()._id, currentProduct._id, currentVariant, quantity
         # Deselect the current variant
         # todo: make this variant reset an option
         template.$(".variant-select-option").removeClass("active")
@@ -122,7 +118,12 @@ Template.productDetail.events
 
         # Slide out the cart tip explaining that we added to the cart
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart') )
-        $('.cart-alert').toggle('slide',{direction:'right', 'width': currentVariant.title.length+50 + "px"},600).delay(8000).toggle('slide',{direction:'right'})
+        $('.cart-alert').toggle('slide',{
+          direction: if i18n.t('languageDirection') == 'rtl' then 'left' else 'right',
+          'width': currentVariant.title.length+50 + "px"
+        },600).delay(5000).toggle('slide',{
+          direction: if i18n.t('languageDirection') == 'rtl' then 'left' else 'right'
+        })
 
     else
       Alerts.add "Select an option before adding to cart", "danger", placement:"productDetail", i18n_key: "productDetail.selectOption", autoHide: 8000
@@ -132,6 +133,7 @@ Template.productDetail.events
     errorMsg = ""
     unless @.title
         errorMsg += "Product title is required. "
+        template.$(".title-edit-input").focus()
     for variant,index in @.variants
       unless variant.title
         errorMsg += "Variant " + (index + 1) + " label is required. "
@@ -139,7 +141,7 @@ Template.productDetail.events
         errorMsg += "Variant " + (index + 1) + " price is required. "
 
     if errorMsg.length
-      Alerts.add errorMsg, "danger", placement:"productDetail"
+      Alerts.add errorMsg, "danger", placement: "productManagement", i18n_key: "productDetail.errorMsg"
     else
       Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
     return
@@ -163,11 +165,11 @@ Template.productDetail.events
       $(".pinterestMsg-edit").fadeIn()
       $(".pinterestMsg-edit-input").focus()
 
-  "click .fa-instagram": ->
+  "click .fa-google-plus": ->
     if ReactionCore.hasOwnerAccess()
-      $(".instagramMsg-edit").fadeIn()
-      $(".instagramMsg-edit-input").focus()
+      $(".googleplusMsg-edit").fadeIn()
+      $(".googleplusMsg-edit-input").focus()
 
-  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input": ->
+  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": ->
     Session.set "editing-"+this.field, false
     $('.social-media-inputs > *').hide()

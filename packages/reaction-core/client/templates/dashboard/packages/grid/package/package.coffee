@@ -22,7 +22,7 @@ Template.gridPackage.events
             autoHide: true
           Router.go self.route if self.route
         else if error
-          console.log error
+          console.log "error enabling package", error
 
   "click .disablePkg": (event, template) ->
     self = @
@@ -42,7 +42,7 @@ Template.gridPackage.events
               type: "pkg-enabled-" + self.name
               autoHide: true
           else if error
-            console.log error
+            console.log "error disabling package",error
     return
 
   "click .pkg-app-card": (event, template) ->

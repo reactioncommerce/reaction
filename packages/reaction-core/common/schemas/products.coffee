@@ -1,10 +1,3 @@
-# XXX Unused?
-ReactionCore.Schemas.Social = new SimpleSchema
-  service:
-    type: String
-  handle:
-    type: String
-
 ###
 # Products
 ###
@@ -32,7 +25,7 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema
     type: Number
     optional: true
   weight:
-    type: String
+    type: Number
     optional: true
   updatedAt:
     type: Date
@@ -112,9 +105,6 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
-  positions:
-    type: [ReactionCore.Schemas.ProductPosition]
-    optional: true
   createdAt:
     label: "Created at"
     type: Date
@@ -147,9 +137,15 @@ ReactionCore.Schemas.Product = new SimpleSchema
   vendor:
     type: String
     optional: true
+  positions:
+    type: [ReactionCore.Schemas.ProductPosition]
+    optional: true
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
+  positions:
+    type: [ReactionCore.Schemas.ProductPosition]
+    optional: true    
   variants:
     type: [ReactionCore.Schemas.ProductVariant]
   requiresShipping:
@@ -172,7 +168,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
     type: String
     optional: true
     max: 255
-  instagramMsg:
+  googleplusMsg:
     type: String
     optional: true
     max: 255

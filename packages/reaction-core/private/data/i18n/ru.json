@@ -2,12 +2,10 @@
     {
         "language": "Russian",
         "i18n": "ru",
-        "entryText": "Русский",
         "translation": {
             "core": {
                 "languages": {
-                    "select": "Выбрать язык",
-                    "russian": "Русский"
+                    "select": "Выбрать язык"
                 },
                 "app": {
                     "save-and-continue": "Сохранить и продолжить",
@@ -42,7 +40,7 @@
                 },
                 "productDetailEdit": {
                     "title": "Название",
-                    "pagetitle": "Другое название",
+                    "pageTitle": "Другое название",
                     "vendor": "Производитель",
                     "description": "Добавьте описание товара"
                 },
@@ -52,12 +50,12 @@
                     "price": "Цена",
                     "optionTitle": "Опция",
                     "barcode": "Штрих-код",
-                    "compareAtPrice": "Рекомендованная цена",
-                    "fulfillmentService": "Fulfillment service",
+                    "compareAtPrice": "Цена(MSRP)",
+                    "fulfillmentService": "Обслуживание услуги",
                     "weight": "Вес",
-                    "inventoryManagement": "Inventory Tracking",
-                    "inventoryPolicy": "Не продавать, если кончается",
-                    "lowInventoryWarningThreshold": "Предупреждать когда меньше, чем"
+                    "inventoryManagement": "Следить за кол-вом",
+                    "inventoryPolicy": "Откл. при нуле",
+                    "lowInventoryWarningThreshold": "Сообщить если меньше "
                 },
                 "variantList": {
                     "moreOptions": "Есть еще варианты доступные для этого выбора.",
@@ -74,8 +72,8 @@
                 },
                 "cartSubTotals": {
                     "head": "Ваша корзина",
-                    "items": "Товаров в корзине",
-                    "subtotal": "Всего",
+                    "items": "Товаров",
+                    "subtotal": "Цена",
                     "shipping": "Доставка",
                     "tax": "Налог",
                     "total": "Сумма"
@@ -83,10 +81,8 @@
                 "cartDrawerItems": {
                     "left": "слева"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "Вход выполнен"
-                },
                 "checkoutLogin": {
+                    "loginCompleted": "Вход выполнен",
                     "create-or-login": "Создайте личный кабинет или авторизируйтесь чтобы продолжить"
                 },
                 "addressBookGrid": {
@@ -97,7 +93,7 @@
                 },
                 "addressBookAdd": {
                     "addAddress": "Добавить адрес",
-                    "createAddress": "Создать адрес по умолчанию"
+                    "createAddress": "Добавить адрес по умолчанию"
                 },
                 "checkoutProgressBar": {
                     "login": "Авторизация",
@@ -107,8 +103,8 @@
                     "complete": "Готово"
                 },
                 "consoleIcon": {
-                    "iconTitle": "Показать дэшборд",
-                    "text": "Дэшборд"
+                    "iconTitle": "Показать панель",
+                    "text": "Настройки"
                 },
                 "createProductIcon": {
                     "iconTitle": "Добавить товар",
@@ -188,7 +184,7 @@
                         "mustBeLoggedIn": "Необходимо войти",
                         "needToSetUsernameOrEmail": "Необходимо имя пользователя или email",
                         "oldPasswordFormat": "старый формат пароля",
-                        "Password may not be empty": "Пароль не может быть пустым",
+                        "passwordMayNotBeEmpty": "Пароль не может быть пустым",
                         "signupsForbidden": "Регистрация отключена",
                         "tokenExpired": "Время действия токена истекло",
                         "tokenHasInvalidEmailAddress": "У токена неправильный email адрес",

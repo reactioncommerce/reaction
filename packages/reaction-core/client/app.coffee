@@ -6,7 +6,6 @@ _.extend ReactionCore,
   isMember: false
   isOwner: null
   isAdmin: null
-  canCheckoutAsGuest: false
   userPermissions: []
   shopPermissions: []
   shopPermissionGroups: []
@@ -19,23 +18,28 @@ _.extend ReactionCore,
 
       if shop
         self.shopId = shop._id
-        # check to see if guest checkout is enabled
-        self.canCheckoutAsGuest = shop.canCheckoutAsGuest || false
         # permissions and packages
         permissions = []
 
         # get current enabled packages
-        self.usedPackages = ReactionCore.Collections.Packages.find({shopId: self.shopId, enabled: true}).fetch()
+        enabledPackages = ReactionCore.Collections.Packages.find(shopId: self.shopId, enabled: true).fetch()
+
         # extract package registry permissions
-        for usedPackage in self.usedPackages
-          if usedPackage?.shopPermissions
-            for shopPermission in usedPackage.shopPermissions
+        for pkg in enabledPackages
+          if pkg?.shopPermissions
+            for shopPermission in pkg.shopPermissions
               permissions.push shopPermission
 
         self.shopPermissions = _.pluck(permissions, "permission")
         self.shopPermissionGroups = for groupName, groupPermissions of _.groupBy(permissions, "group")
           group: groupName
           permissions: groupPermissions
+
+        # exposes public settings for packages
+        for pkg in enabledPackages
+          if pkg?.settings?.public
+            for setting, value of pkg.settings.public
+              ReactionCore[setting] = value
 
         #XXX probably should use deps to recheck this whenever login/logout?
         self.isOwner = Meteor.userId() is shop.ownerId
@@ -59,20 +63,27 @@ _.extend ReactionCore,
         self.userPermissions = []
         self.shopPermissions = []
         self.shopPermissionGroups = []
+  # role checkout
+  hasOwnerAccess: ->
+    return Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
   # dashboard access
   hasDashboardAccess: ->
     return @isMember or @.hasOwnerAccess()
+
   # permission check
   hasPermission: (permissions) ->
     return false unless permissions
     permissions = [permissions] unless _.isArray(permissions)
     return @.hasOwnerAccess() or _.intersection(permissions, @userPermissions).length or (@isAdmin and _.intersection(permissions, @shopPermissions).length)
-  # role checkout
-  hasOwnerAccess: ->
-    return Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
   # returns shop id
   getShopId: ->
     return @shopId
 
+
 Meteor.startup ->
+  # todo: this could grow.. and grow...
+  # quick little client safety check
+  if (PackageRegistry?) then console.error "Bravely warning you that PackageRegistry should not be exported to client."
+
+  # Ignition.....
   ReactionCore.init()

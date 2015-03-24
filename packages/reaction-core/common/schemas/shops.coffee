@@ -48,55 +48,6 @@ ReactionCore.Schemas.Metafield = new SimpleSchema
     type: String
     optional: true
 
-ReactionCore.Schemas.Address = new SimpleSchema
-  _id:
-    type: String
-    optional: true
-  fullName:
-    type: String
-    label: 'Full name'
-  address1:
-    label: "Address 1"
-    type: String
-  address2:
-    label: "Address 2"
-    type: String
-    optional: true
-  city:
-    type: String
-    label: "City"
-  company:
-    type: String
-    optional: true
-    label: "Company"
-  phone:
-    type: String
-    label: "Phone"
-  region:
-    label: "State/Province/Region"
-    type: String
-  postal:
-    label: "ZIP/Postal Code"
-    type: String
-  country:
-    type: String
-    label: "Country"
-  isCommercial:
-    label: "This is a commercial address."
-    type: Boolean
-    # defaultValue: false
-  isBillingDefault:
-    label: "Make this your default billing address?"
-    type: Boolean
-  isShippingDefault:
-    label: "Make this your default shipping address?"
-    type: Boolean
-    # defaultValue: true
-  metafields:
-    type: [ReactionCore.Schemas.Metafield]
-    optional: true
-
-
 ReactionCore.Schemas.Currency = new SimpleSchema
   symbol:
     type: String
@@ -123,15 +74,6 @@ ReactionCore.Schemas.Country = new SimpleSchema
   code:
     type: String
 
-ReactionCore.Schemas.currencyEngine = new SimpleSchema
-  provider:
-    type: String
-    defaultValue: "OXR"
-  apiKey:
-    type: String
-    optional: true
-    label: "Open Exchange Rates App ID"
-
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
@@ -150,13 +92,12 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   domains:
     type: [String]
     defaultValue: ["localhost"] #see simple schema issue #73
-  email:
-    type: String
+  emails:
+    type: [ReactionCore.Schemas.Email]
+    optional: true
   currency:
     type: String
     defaultValue: "USD"
-  currencyEngine:
-    type: ReactionCore.Schemas.currencyEngine
   currencies:
     type: [ReactionCore.Schemas.Currency]
   public:
@@ -169,7 +110,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
     defaultValue: "OZ"
     label: "Base Unit of Measure"
-  canCheckoutAsGuest:
+  allowGuestCheckout:
     type: Boolean
     defaultValue: false
   ownerId:
@@ -180,11 +121,6 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
-  useCustomEmailSettings:
-    type: Boolean
-    optional: true
-  customEmailSettings:
-    type: ReactionCore.Schemas.CustomEmailSettings
   createdAt:
     type: Date
   updatedAt:

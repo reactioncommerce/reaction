@@ -91,6 +91,10 @@ Meteor.methods
   # currentTagId will update related/hierarchy
   ###
   updateHeaderTags: (tagName, tagId, currentTagId) ->
+    check tagName, String
+    check tagId, Match.OneOf(String, null, undefined)
+    check currentTagId, Match.Optional(String)
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
@@ -127,11 +131,13 @@ Meteor.methods
     return;
 
   removeHeaderTag: (tagId, currentTagId) ->
+    check tagId, String
+    check currentTagId, String
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
 
-    if currentTagId
-      Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
+    Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
     # if not in use delete from system
     productCount = Products.find({"hashtags":{$in:[tagId]}}).count()
     relatedTagsCount = Tags.find({"relatedTagIds":{$in:[tagId]}}).count()
@@ -147,19 +153,5 @@ Meteor.methods
       throw new Meteor.Error 403, "Access Denied"
 
     ReactionCore.Collections.Translations.remove({})
-    Fixtures.loadI18n ReactionCore.Collections.Translations
+    Fixtures.loadI18n()
     ReactionCore.Events.info Meteor.userId() + " Flushed Translations."
-
-
-  ## possible dead method, commenting out pending further review
-
-  # updatePackage: (updateDoc, packageName) ->
-  #   packageId = Packages.findOne({ name: packageName })._id
-
-  #   return false unless packageId
-
-  #   try
-  #     result = Packages.update {_id: packageId}, updateDoc
-  #   catch
-  #     result = false
-  #   return !!result # returns true if updated, false if package doesn't exist or error

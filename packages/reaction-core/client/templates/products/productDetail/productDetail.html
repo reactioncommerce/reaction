@@ -16,6 +16,7 @@
         <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeItVisible">You can make it visible</a>
         <span data-i18n="productDetail.whenYouAreDone">when you're done editing.</span>
       </div>
+      <span id="product-management">{{>bootstrapAlerts placement="productManagement"}}</span>
     </div>
     {{/unless}}
   {{/if}}
@@ -59,16 +60,16 @@
               <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
               <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
               <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
-              <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
+              <a href="#"><i class="fa fa-google-plus fa-lg"></i></a>
               <div class="social-media-inputs">
                 {{>fieldComponent field="facebookMsg" value=facebookMsg}}
                 {{>fieldComponent field="twitterMsg" value=twitterMsg}}
                 {{>fieldComponent field="pinterestMsg" value=pinterestMsg}}
-                {{>fieldComponent field="instagramMsg" value=instagramMsg}}
+                {{>fieldComponent field="googleplusMsg" value=googleplusMsg}}
               </div>
             </div>
             {{else}}
-              {{>productSocial}}
+              {{> productSocial }}
             {{/if}}
           </div>
         </div>

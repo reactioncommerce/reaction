@@ -5,38 +5,20 @@
 # addressBookView (view)
 ###
 Template.checkoutAddressBook.helpers
-  addressMode: ->
-    # TODO this will need updating with new customers collection
-    # users without addressbook always must add
-    # this could be made optional for digital purchases
-    unless Meteor.user().profile.addressBook
-      Session.set "addressBookView", "addAddress"
-      return "addAddress"
-    else
-      return Session.get "addressBookView"
+  account: ->
+    account = ReactionCore.Collections.Accounts.findOne()
+    return account
 
-  addressBookView: (mode)->
-    mode = this.mode
-    if mode?
-      switch mode
-        when "view" then return Template.addressBookGrid
-        when "addAddress" then return Template.addressBookAdd
-        else return Template.addressBookEdit
-    else
-      if Meteor.user().profile?.addressBook
-        Session.setDefault "addressBookView", "view"
-        return Template.addressBookGrid
-      else
-        Session.setDefault "addressBookView", "addAddress"
-        return Template.addressBookAdd
-
+  addressBookView: ->
+    return Session.get "addressBookView"
 
 Template.checkoutAddressBook.events
   'click .address-edit-icon': (event,template) ->
-    Session.set "addressBookView", this._id
+    addressBookEditId.set(@._id)
+    Session.set "addressBookView", "addressBookEdit"
 
   'click #newAddress': () ->
-    if Session.equals "addressBookView", "addAddress"
-      Session.set "addressBookView", "view"
+    if Session.equals "addressBookView", "addressBookAdd"
+      Session.set "addressBookView", "addressBookGrid"
     else
-      Session.set "addressBookView", "addAddress"
+      Session.set "addressBookView", "addressBookAdd"

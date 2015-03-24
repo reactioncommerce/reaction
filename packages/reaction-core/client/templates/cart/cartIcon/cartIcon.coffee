@@ -1,6 +1,6 @@
 Template.cartIcon.helpers
   cart: ->
-    return Cart.findOne()
+    return ReactionCore.Collections.Cart.findOne()
 
 Template.cartIcon.events
   'click .cart-icon': () ->

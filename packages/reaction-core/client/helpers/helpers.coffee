@@ -1,5 +1,5 @@
 ###
-# convert a string to camelCase
+# convert a string to camelCase for use with i18n keys
 ###
 String::toCamelCase = ->
   # remove all characters that should not be in a variable name
@@ -272,3 +272,11 @@ currentProduct = @currentProduct
   re = new RegExp("^6011")
   return "discover"  if number.match(re)?
   ""
+
+###
+# getGuestLoginState
+# return true if guest checkout
+# return userId if authenticated checkout
+###
+@getGuestLoginState = ->
+  Meteor.userId() || Session.equals "guestCheckoutFlow", true

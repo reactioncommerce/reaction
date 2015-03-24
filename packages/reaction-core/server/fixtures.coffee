@@ -1,44 +1,98 @@
 ###
-# Fixtures is a global object that it can be reused in packages
+# Fixtures is a global server object that it can be reused in packages
 # assumes collection data in reaction-core/private/data, optionally jsonFile
 # use jsonFile when calling from another package, as we can't read the assets from here
-# ex:
-#   jsonFile =  Assets.getText("private/data/Shipping.json")
-#   Fixtures.loadData ReactionCore.Collections.Shipping, jsonFile
 ###
 PackageFixture = ->
+  # loadData inserts json into collections on app initilization
+  # ex:
+  #   jsonFile =  Assets.getText("private/data/Shipping.json")
+  #   Fixtures.loadData ReactionCore.Collections.Shipping, jsonFile
+  #
   loadData: (collection, jsonFile) ->
-    return if collection.find().count() > 0
+    #check collection, ReactionCore.Schemas[collection._name]
+    check jsonFile, Match.Optional(String)
+    if collection.find().count() > 0 then return
+
+   # load fixture data
     ReactionCore.Events.info "Loading fixture data for "+collection._name
     unless jsonFile
       json = EJSON.parse Assets.getText("private/data/"+collection._name+".json")
     else
       json = EJSON.parse jsonFile
 
-    for item,value in json
+    # loop through and import
+    for item, index in json
       collection._collection.insert item, (error, result) ->
         if error
-          ReactionCore.Events.info (error + "Error adding " + value + " items to " + collection._name)
+          ReactionCore.Events.info (error + "Error adding " + index + " items to " + collection._name)
           return false
-    if value > 0
-      ReactionCore.Events.info ("Success adding " + value + " items to " + collection._name)
+    if index > 0
+      ReactionCore.Events.info ("Success adding " + index + " items to " + collection._name)
       return
     else
       ReactionCore.Events.info ("No data imported to " + collection._name)
       return
 
-  loadI18n: (collection) ->
+  #
+  # updates package settings, accepts json string
+  # example:
+  #  Fixtures.loadSettings Assets.getText("settings/reaction.json")
+  #
+  # This basically "hardcodes" all the settings. You can change them
+  # via admin etc for the session, but when the server restarts they'll
+  # be restored back to the supplied json
+  #
+  loadSettings: (json) ->
+    check json, String
+    validatedJson = EJSON.parse json
+    # warn if this isn't an array of packages
+    unless _.isArray(validatedJson[0])
+      ReactionCore.Events.warn "Load Settings is not an array. Failed to load settings."
+      return
+    # loop through and import
+    for pkg in validatedJson
+      for item in pkg
+        exists = ReactionCore.Collections.Packages.findOne('name': item.name)
+        if exists
+          result = ReactionCore.Collections.Packages.upsert(
+            { 'name': item.name }, {
+              $set:
+                'settings': item.settings
+                'enabled': item.enabled
+            },
+            multi: true
+            upsert: true
+            validate: false)
+          ReactionCore.Events.info "loaded local package data: " + item.name
+      #   return
+      # return
+
+  #
+  # loadI18n for defined shops language source json
+  # ex: Fixtures.loadI18n()
+  #
+  loadI18n: (collection = ReactionCore.Collections.Translations) ->
+    languages = []
     return if collection.find().count() > 0
-    languages = ["ar","cn","cs","de","en","es","fr","he","it","my","pl","pt","ru","sl","sv","vi"]
-    ReactionCore.Events.info "Loading fixture data for languages to " + collection._name
-    for language in languages
-      json = EJSON.parse Assets.getText("private/data/i18n/"+language+".json")
-      for item,value in json
+    # load languages from shops array
+    shop = ReactionCore.Collections.Shops.findOne()
+    # find every file in private/data/i18n where <i18n>.json
+    ReactionCore.Events.info "Loading fixture data for " + collection._name
+    # ensures that a language file is loaded if all translations are missing
+    unless shop?.languages then shop.languages = [{'i18n':'en'}]
+
+    for language in shop.languages
+      json = EJSON.parse Assets.getText("private/data/i18n/" + language.i18n + ".json")
+
+      for item in json
         collection._collection.insert item, (error, result) ->
           if error
-            ReactionCore.Events.info (error + "Error adding " + language + " items to " + collection._name)
+            ReactionCore.Events.info (error + "Error adding " + language.i18n + " items to " + collection._name)
             return
-        ReactionCore.Events.info ("Success adding "+ language + " to " + collection._name)
+        ReactionCore.Events.info ("Success adding "+ language.i18n + " to " + collection._name)
+    return
+
 
 # instantiate fixtures
 @Fixtures = new PackageFixture
@@ -72,14 +126,16 @@ createDefaultAdminUser = ->
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
-
+  # newly created admin user
   accountId = Accounts.createUser options
+  # add default roles and update shop with admin user
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
   shopId = Shops.findOne()._id
   Shops.update shopId,
     $set:
       ownerId: accountId
-      email: options.email
+    $addToSet:
+      emails: {'address': options.email, 'verified': true}
     $push:
       members:
         isAdmin: true
@@ -148,7 +204,7 @@ Meteor.startup ->
     Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
 
   # data conversion: we now set sessionId or userId, but not both
-  Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
+  # Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
   # notifiy that we're done with initialization
   ReactionCore.Events.info "Reaction Commerce initialization finished. "

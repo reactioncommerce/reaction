@@ -1,15 +1,15 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.4.1",
+  version: "0.5.3",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
-Package._transitional_registerBuildPlugin({
+Package.registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.1.0'
+    'reactioncommerce:core-theme@1.3.1'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
@@ -33,25 +33,27 @@ Package.onUse(function (api) {
     api.use("http");
     api.use("coffeescript");
     api.use("underscore");
-    api.use('blaze');
-    api.use('jquery');
-    api.use('email');
+    api.use("blaze");
+    api.use("jquery");
+    api.use("email");
+    api.use("check");
+    api.use("browser-policy");
     api.use("amplify@1.0.0");
+    api.use("reactive-var");
 
     //community packages
     api.use("nemo64:bootstrap@3.3.1_1","client");
     api.use("nemo64:bootstrap@3.3.1_1","server", {'weak': 1});
     api.use("d3js:d3@3.4.13");
     api.use("fortawesome:fontawesome@4.2.0_2");
-    api.use('mrt:underscore-string-latest@2.3.3');
+    api.use("mrt:underscore-string-latest@2.3.3");
     api.use("aldeed:geocoder@0.3.3");
-    api.use("aldeed:collection2@2.3.2");
-    api.use("aldeed:simple-schema@1.3.0");
     api.use("aldeed:autoform@4.2.2");
-    api.use("aldeed:template-extension@3.1.1","client");
+    api.use("aldeed:collection2@2.3.2");
+    api.use("aldeed:simple-schema@1.3.0", {'weak': 1});
+    api.use("aldeed:template-extension@3.4.3","client");
     api.use("iron:router@1.0.7");
-    api.use("prinzdezibel:accounts-guest@0.1.3");
-    api.use("ongoworks:speakingurl@1.0.5");
+    api.use("ongoworks:speakingurl@1.1.0");
     api.use("ongoworks:pdf@1.1.0");
     api.use("ongoworks:bunyan-logger@1.0.0");
     api.use("ongoworks:security@1.0.1");
@@ -60,23 +62,23 @@ Package.onUse(function (api) {
     api.use("anti:fake@0.4.1");
     api.use("matb33:collection-hooks@0.7.6");
     api.use("alanning:roles@1.2.13");
-    api.use("cmather:handlebars-server@2.0.0","server");
-    api.use('momentjs:moment@2.8.4', 'client');
+    api.use("momentjs:moment@2.8.4", 'client');
     api.use("sacha:spin@2.0.4", "client");
 
-    api.use("cfs:standard-packages@0.5.3");
-    api.use("cfs:graphicsmagick@0.0.17");
+    api.use("cfs:standard-packages@0.5.5");
+    api.use("cfs:graphicsmagick@0.0.18");
+    api.use("cfs:gridfs@0.0.31");
     api.use("cfs:filesystem@0.1.1");
-    api.use("cfs:gridfs@0.0.27");
-    api.use("cfs:s3@0.1.1");
     api.use("cfs:ui@0.1.3");
     api.use("raix:ui-dropped-event@0.0.7");
+    api.use("meteorhacks:ssr@2.1.2");
 
     //implying these are reused in reaction packages
     api.imply("less");
     api.imply("amplify");
     api.imply("accounts-base");
     api.imply("ui");
+    api.imply("browser-policy");
 
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
@@ -86,7 +88,6 @@ Package.onUse(function (api) {
     api.imply("cfs:graphicsmagick");
     api.imply("cfs:filesystem");
     api.imply("cfs:gridfs");
-    api.imply("cfs:s3");
     api.imply("raix:ui-dropped-event");
     api.imply("matb33:collection-hooks");
     api.imply("alanning:roles");
@@ -109,6 +110,7 @@ Package.onUse(function (api) {
     "common/helpers.coffee",
     "common/routing.coffee",
     "common/schemas/packages.coffee",
+    "common/schemas/accounts.coffee",
     "common/schemas/shops.coffee",
     "common/schemas/shipping.coffee",
     "common/schemas/products.coffee",
@@ -117,7 +119,6 @@ Package.onUse(function (api) {
     "common/schemas/orders.coffee",
     "common/schemas/translations.coffee",
     "common/schemas/taxes.coffee",
-    "common/schemas/shipping.coffee",
     "common/schemas/discounts.coffee",
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
@@ -132,13 +133,11 @@ Package.onUse(function (api) {
     "server/fixtures.coffee",
     "server/factories.coffee",
     "server/methods/methods.coffee",
-    "server/methods/cart/methods.coffee",
-    "server/methods/cart/checkout/methods.coffee",
-    "server/methods/orders/methods.coffee",
-    "server/methods/products/methods.coffee",
-    "server/methods/accounts/accounts.coffee",
-    "server/emailTemplates/shopMemberInvite.html",
-    "server/emailTemplates/shopMemberNotification.html"
+    "server/methods/cart/cart.coffee",
+    "server/methods/cart/shipping.coffee",
+    "server/methods/orders/orders.coffee",
+    "server/methods/products/products.coffee",
+    "server/methods/accounts/accounts.coffee"
   ], ["server"]);
 
   api.addFiles([
@@ -212,6 +211,9 @@ Package.onUse(function (api) {
     "client/templates/accounts/dropdown/dropdown.html",
     "client/templates/accounts/dropdown/dropdown.coffee",
 
+    "client/templates/accounts/profile/profile.html",
+    "client/templates/accounts/profile/profile.coffee",
+
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
 
@@ -266,18 +268,6 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/completed/completed.html",
     "client/templates/cart/checkout/completed/completed.coffee",
 
-    "client/templates/cart/checkout/completed/orderLayout/orderLayout.html",
-    "client/templates/cart/checkout/completed/orderLayout/orderLayout.coffee",
-
-    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.html",
-    "client/templates/cart/checkout/completed/orderLayout/orderItems/orderItems.coffee",
-
-    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.html",
-    "client/templates/cart/checkout/completed/orderLayout/orderSummary/orderSummary.coffee",
-
-    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.html",
-    "client/templates/cart/checkout/completed/pdfLayout/pdfLayout.coffee",
-
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",
 
@@ -292,6 +282,18 @@ Package.onUse(function (api) {
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
+
+    "client/templates/dashboard/orders/list/ordersList.html",
+    "client/templates/dashboard/orders/list/ordersList.coffee",
+
+    "client/templates/dashboard/orders/list/items/items.html",
+    "client/templates/dashboard/orders/list/items/items.coffee",
+
+    "client/templates/dashboard/orders/list/summary/summary.html",
+    "client/templates/dashboard/orders/list/summary/summary.coffee",
+
+    "client/templates/dashboard/orders/list/pdf/pdf.html",
+    "client/templates/dashboard/orders/list/pdf/pdf.coffee",
 
     "client/templates/dashboard/orders/widget/widget.html",
     "client/templates/dashboard/orders/widget/widget.coffee",
@@ -332,17 +334,17 @@ Package.onUse(function (api) {
     "client/templates/dashboard/dashboard.html",
     "client/templates/dashboard/dashboard.coffee",
 
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.html",
-    "client/templates/dashboard/settings/settingsGeneral/settingsGeneral.coffee",
+    "client/templates/dashboard/shop/settings/settings.html",
+    "client/templates/dashboard/shop/settings/settings.coffee",
 
-    "client/templates/dashboard/settings/settingsAccount/settingsAccount.html",
-    "client/templates/dashboard/settings/settingsAccount/settingsAccount.coffee",
+    "client/templates/dashboard/shop/accounts/accounts.html",
+    "client/templates/dashboard/shop/accounts/accounts.coffee",
 
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.html",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/shopMember.coffee",
+    "client/templates/dashboard/shop/accounts/shopMember/shopMember.html",
+    "client/templates/dashboard/shop/accounts/shopMember/shopMember.coffee",
 
-    "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.html",
-    "client/templates/dashboard/settings/settingsAccount/shopMember/memberForm/memberForm.coffee",
+    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.html",
+    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
     "client/templates/products/products.coffee",
@@ -384,6 +386,10 @@ Package.onUse(function (api) {
     "client/templates/products/productDetail/attributes/attributes.coffee",
   ], ["client"]);
 
+  // Email Templates
+  api.addFiles('server/emailTemplates/welcomeNotification.html', 'server', {isAsset: true});
+  api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
+
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
@@ -399,15 +405,18 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/es.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/hr.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/my.json', 'server', {isAsset: true});
+  api.addFiles('private/data/i18n/nl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/sl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
+
 
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
@@ -425,9 +434,5 @@ Package.onUse(function (api) {
 
   api.export([
     "currentProduct",
-    "ShopController",
-    "Products",
-    "Cart",
-    "Tags"
   ], ["client", "server"]);
 });

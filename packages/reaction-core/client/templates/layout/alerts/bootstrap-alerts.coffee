@@ -62,7 +62,9 @@ Alerts =
   See Alerts.defaultOptions for all values.
   ###
   add: (message, mode, options) ->
-    if options?.i18n_key then message = i18n.t(options.i18n_key)
+    if options?.i18n_key
+      unless options.i18n_key = i18n.t(options.i18n_key)
+        message = i18n.t(options.i18n_key)
 
     options = _.defaults(options or {}, Alerts.defaultOptions)
 

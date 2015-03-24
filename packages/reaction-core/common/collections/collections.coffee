@@ -16,7 +16,10 @@ ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
       return count
 
     cart.cartShipping = ->
-      shipping = cart?.shipping?.shipmentMethod?.rate
+      shipping = 0
+      if cart?.shipping?.shipmentMethod?.rate
+        shipping = cart?.shipping?.shipmentMethod?.rate
+      else ((shipping += shippingMethod.rate) for shippingMethod in cart.shipping.shipmentMethod) if cart?.shipping?.shipmentMethod.length > 0
       return shipping
 
     cart.cartSubTotal = ->
@@ -40,7 +43,11 @@ ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
     cart.cartTotal = ->
       subtotal = 0
       ((subtotal += (items.quantity * items.variants.price)) for items in cart.items) if cart?.items
-      shipping = parseFloat cart?.shipping?.shipmentMethod?.rate
+      shipping = 0
+      if cart?.shipping?.shipmentMethod?.rate
+        shipping = cart?.shipping?.shipmentMethod?.rate
+      else ((shipping += shippingMethod.rate) for shippingMethod in cart.shipping.shipmentMethod) if cart?.shipping?.shipmentMethod.length > 0
+      shipping = parseFloat shipping
       subtotal = (subtotal + shipping) unless isNaN(shipping)
       total = subtotal.toFixed(2)
       return total
@@ -48,13 +55,20 @@ ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
 
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
-# Customers (not currently actively used)
-ReactionCore.Collections.Customers = Customers = @Customers = new Mongo.Collection "Customers"
-ReactionCore.Collections.Customers.attachSchema ReactionCore.Schemas.Customer
+# Accounts
+ReactionCore.Collections.Accounts = Accounts = @Accounts = new Mongo.Collection "Accounts"
+ReactionCore.Collections.Accounts.attachSchema ReactionCore.Schemas.Accounts
 
 # Orders
-ReactionCore.Collections.Orders = Orders = @Orders = new Mongo.Collection "Orders"
-ReactionCore.Collections.Orders.attachSchema [ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
+ReactionCore.Collections.Orders = Orders = @Orders = new Mongo.Collection "Orders",
+  transform: (order) ->
+    order.itemCount = ->
+      count = 0
+      ((count += items.quantity) for items in order.items) if order?.items
+      return count
+    return order
+
+ReactionCore.Collections.Orders.attachSchema [ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order, ReactionCore.Schemas.OrderItems]
 
 # Packages
 ReactionCore.Collections.Packages = new Mongo.Collection "Packages"

@@ -11,8 +11,7 @@ Tracker.autorun ->
       CartWorkflow.current = cart.state
     else
       Cart.update cart._id, {$set:{state:state}}
-      if state is "login" and Meteor.userId()
-        # console.log "setting logged in"
+      if state is "login" and getGuestLoginState()
         CartWorkflow.loggedin()
 
 ###
@@ -34,7 +33,7 @@ CartWorkflow = StateMachine.create(
     { name: "fetchShipmentMethods", from: "shipmentAddress", to: "shipmentMethods" }
     { name: "shipmentMethod", from: ["fetchShipmentMethods","shipmentMethod","payment"], to: "payment" }
     { name: "payment", from :["shipmentAddress","billingAddress","shipmentMethod"], to: "paymentAuth" }
-    { name: "paymentMethod", from: "payment", to: "paymentAuth"}
+    { name: "paymentMethod", from: ["payment","paymentAuth","fetchShipmentMethods"], to: "paymentAuth"}
     { name: "paymentAuth", from: "paymentMethod", to: "inventoryAdjust"}
     { name: "inventoryAdjust", from: "paymentAuth", to: "orderCreated"}
     { name: "orderCreated", from: "inventoryAdjust"  }
@@ -44,12 +43,12 @@ CartWorkflow = StateMachine.create(
       Session.set("CartWorkflow",to)
 
     oncreate: (event, from, to, sessionId, userId) ->
-      Cart.findOne()
+      # we just return and move on from here for now
 
-    onaddToCart: (event, from, to, cartSession, productId, variantData, quantity) ->
-      if (cartSession? and productId?)
-        count = Cart.findOne().cartCount() || 0
-        Meteor.call "addToCart", cartSession, productId, variantData, quantity, (error, result) ->
+    onaddToCart: (event, from, to, cartId, productId, variantData, quantity) ->
+      if (cartId and productId)
+        count = Cart.findOne(cartId).cartCount() || 0
+        Meteor.call "addToCart", cartId, productId, variantData, quantity, (error, result) ->
           # When we add the first item to the cart, we geolocate the session/user
           if not error and count is 0
             # If address.city is set, we've already geolocated, so we skip it
@@ -60,32 +59,45 @@ CartWorkflow = StateMachine.create(
       Router.go "cartCheckout"
 
     onlogin: (event, from, to) ->
-      #Deps handles change of login
+      # Tracker.autorun handles change of login
+      return
 
     onaddAddress: (event,from, to) ->
-      if Meteor.user()?.profile.addressBook
-        @.shipmentAddress()
+      account = ReactionCore.Collections.Accounts.findOne()
+      if account?.profile?.addressBook
+        @.shipmentAddress() #goto shipment
 
     onshipmentAddress: (event, from, to, address) ->
-      Cart.update Cart.findOne()._id, {$set:{"shipping.address":address}} if address
+      cartId = Cart.findOne()._id
+      unless cartId and address then return
+      # update shipping address
+      Cart.update cartId, {$set: {"shipping.address": address} }
+      # refresh rates with new address
+      Meteor.call "updateShipmentQuotes", cartId
 
     onpaymentAddress: (event, from, to, address) ->
-      Cart.update Cart.findOne()._id, {$set:{"payment.address":address}} if address
+      cartId = Cart.findOne()._id
+      unless cartId and address then return
+      # update payment address
+      Cart.update cartId, {$set:{"payment.address":address}} if address
 
     onfetchshipmentMethods: (event, from, to) ->
-      #we could get rates here
+      # we could get additional rates here
+      return
 
     onshipmentMethod: (event, from, to, method) ->
       Cart.update Cart.findOne()._id, {$set:{"shipping.shipmentMethod":method}} if method
 
     onbeforepaymentMethod: (event, from, to, paymentMethod) ->
       sessionId = Session.get "sessionId"
-      Meteor.call "paymentMethod", sessionId, Cart.findOne()._id, paymentMethod
+      cartId = Cart.findOne()._id
+      # call payment method
+      Meteor.call "paymentMethod", cartId, paymentMethod
 
     onpaymentAuth: (event, from, to, paymentMethod) ->
-      #before payment really should be async
+      # before payment really should be async
       Meteor.setTimeout (->
-        Meteor.call "copyCartToOrder", Cart.findOne(), (error, result) ->
+        Meteor.call "copyCartToOrder", Cart.findOne()._id, (error, result) ->
           if error
             console.log "An error occurred saving the order. : " +error
           else #go to order success
@@ -97,8 +109,10 @@ CartWorkflow = StateMachine.create(
       # automatically transitions to @.orderCreated(orderId)
 
     onorderCreated: (event,from,to, orderId) ->
-      #fixes timing issue on hot-reload of completed
+      # fixes timing issue on hot-reload of completed
       return unless orderId
+      # clear the existing login preference
+      Session.set "guestCheckoutFlow", ''
       Router.go "cartCompleted", _id: orderId
   }
 )

@@ -8,6 +8,15 @@ ReactionCore.registerPackage = (packageInfo) ->
 ReactionCore.registerPackage
   name: 'core'
   autoEnable: true
+  settings:
+    public:
+      allowGuestCheckout: true
+    mail:
+      user: ""
+      password: ""
+      host: "localhost"
+      port: "25"
+  # app registry
   registry: [
     {
       route: "dashboard"
@@ -79,6 +88,13 @@ ReactionCore.registerPackage
       icon: 'fa fa-users'
       provides: 'dashboard'
       cycle: 3
+    }
+    # account profiles
+    {
+      route: 'account/profile'
+      label: 'Profile'
+      icon: 'fa fa-info-circle'
+      provides: 'userAccountDropdown'
     }
   ]
   # permissions map to shopPermissions

@@ -35,7 +35,9 @@ Jasmine.onTest ->
         spyOn(Tags, "update")
         spyOn(Tags, "remove")
 
-        expect(-> Meteor.call "removeHeaderTag").toThrow(new Meteor.Error 403, "Access Denied")
+        tag = Factory.create "tag"
+        currentTag = Factory.create "tag"
+        expect(-> Meteor.call "removeHeaderTag", tag._id, currentTag._id).toThrow(new Meteor.Error 403, "Access Denied")
         expect(Tags.update).not.toHaveBeenCalled()
         expect(Tags.remove).not.toHaveBeenCalled()
         done()
@@ -44,9 +46,10 @@ Jasmine.onTest ->
         spyOn(Roles, "userIsInRole").and.returnValue true
 
         tag = Factory.create "tag"
+        currentTag = Factory.create "tag"
+        expect(Tags.find().count()).toEqual 2
+        Meteor.call "removeHeaderTag", tag._id, currentTag._id
         expect(Tags.find().count()).toEqual 1
-        Meteor.call "removeHeaderTag", tag._id
-        expect(Tags.find().count()).toEqual 0
         done()
 
     describe "updateHeaderTags", ->
@@ -57,8 +60,9 @@ Jasmine.onTest ->
       it "should throw 403 error by non admin", (done) ->
         spyOn(Roles, "userIsInRole").and.returnValue false
         spyOn(Tags, "update")
-
-        expect(-> Meteor.call "updateHeaderTags").toThrow(new Meteor.Error 403, "Access Denied")
+        
+        tag = Factory.create "tag"
+        expect(-> Meteor.call "updateHeaderTags", tag._id).toThrow(new Meteor.Error 403, "Access Denied")
         expect(Tags.update).not.toHaveBeenCalled()
         done()
 
@@ -84,75 +88,59 @@ Jasmine.onTest ->
         expect(tag.name).toEqual "updated tag"
         expect(tag.slug).toEqual "updated-tag"
         done()
-
-    describe "createProduct", ->
-
-      beforeEach ->
-        Products.remove {}
-
-      it "should throw 403 error by non admin", (done) ->
-        spyOn(Roles, "userIsInRole").and.returnValue false
-        spyOn(Products, "insert")
-
-        expect(-> Meteor.call "createProduct").toThrow(new Meteor.Error 403, "Access Denied")
-        expect(Products.insert).not.toHaveBeenCalled()
+        
+    describe "locateAddress", ->
+      
+      it "should locate an address based on known US coordinates", (done) ->
+        address = {}
+        Meteor.call "locateAddress", 34.043125, -118.267118, (error, addr) ->
+          address = addr if addr
+        expect(address).toEqual({
+          latitude: 34.043125
+          longitude: -118.267118
+          country: 'United States'
+          city: 'Los Angeles'
+          state: 'California'
+          stateCode: 'CA'
+          zipcode: '90015'
+          streetName: 'South Figueroa Street'
+          streetNumber: '1111'
+          countryCode: 'US'
+          })
         done()
-
-      it "should create new product by admin", (done) ->
-        spyOn(Roles, "userIsInRole").and.returnValue true
-        spyOn(Products, "insert").and.returnValue 1
-
-        expect(Meteor.call "createProduct").toEqual 1
-
-        expect(Products.insert).toHaveBeenCalled()
+        
+      it "should locate an address with known international coordinates", (done) ->
+        address = {}
+        Meteor.call "locateAddress", 53.414619, -2.947065, (error, addr) ->
+          address = addr if addr
+        expect(address).toEqual({
+          latitude: 53.4146191
+          longitude: -2.9470654
+          country: 'United Kingdom'
+          city: 'Liverpool'
+          state: null
+          stateCode: null
+          zipcode: 'L6 6AW'
+          streetName: 'Molyneux Road'
+          streetNumber: '188'
+          countryCode: 'GB'
+          })
         done()
-
-    describe "deleteProduct", ->
-
-      beforeEach ->
-        Products.remove {}
-
-      it "should throw 403 error by non admin", (done) ->
-        spyOn(Roles, "userIsInRole").and.returnValue false
-        spyOn(Products, "remove")
-
-        expect(-> Meteor.call "deleteProduct").toThrow(new Meteor.Error 403, "Access Denied")
-        expect(Products.remove).not.toHaveBeenCalled()
-        done()
-
-      it "should delete product by admin", (done) ->
-        spyOn(Roles, "userIsInRole").and.returnValue true
-
-        product = Factory.create "product"
-        expect(Products.find().count()).toEqual 1
-        expect(Meteor.call "deleteProduct", product._id).toBe true
-        expect(Products.find().count()).toEqual 0
-        done()
-
-    describe "cloneProduct", ->
-
-      beforeEach ->
-        Products.remove {}
-
-      it "should throw 403 error by non admin", (done) ->
-        spyOn(Roles, "userIsInRole").and.returnValue false
-        spyOn(Products, "insert")
-
-        expect(-> Meteor.call "cloneProduct").toThrow(new Meteor.Error 403, "Access Denied")
-        expect(Products.insert).not.toHaveBeenCalled()
-        done()
-
-      it "should clone product by admin", (done) ->
-        spyOn(Roles, "userIsInRole").and.returnValue true
-
-        product = Factory.create "product"
-        expect(Products.find().count()).toEqual 1
-        Meteor.call "cloneProduct", product
-        expect(Products.find().count()).toEqual 2
-
-        productCloned = Products.find({_id: {$ne: product._id}}).fetch()[0]
-        expect(productCloned.title).toEqual product.title + '1'
-        expect(productCloned.pageTitle).toEqual product.pageTitle
-        expect(productCloned.description).toEqual product.description
-
+        
+      it "should provide default empty address", (done) ->
+        address = {}
+        Meteor.call "locateAddress", 26.352498, -89.25293, (error, addr) ->
+          address = addr if addr
+        expect(address).toEqual({
+          latitude: null
+          longitude: null
+          country: 'United States'
+          city: null
+          state: null
+          stateCode: null
+          zipcode: null
+          streetName: null
+          streetNumber: null
+          countryCode: 'US'
+          })
         done()
