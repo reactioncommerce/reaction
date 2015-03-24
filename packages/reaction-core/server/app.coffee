@@ -47,7 +47,7 @@ _.extend ReactionCore,
     return cursor.fetch()[0]
 
   getShopId: (client) ->
-    return @getCurrentShop(client)._id
+    return @getCurrentShop(client)?._id
 
   getDomain: (client) ->
     #todo: eventually we want to use the host domain to determine
