@@ -11,11 +11,12 @@ Accounts.onCreateUser (options, user) ->
 
 @setMailUrlForShop = (shop) ->
   coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
-  if coreMail
+  if coreMail.user and coreMail.password
     mailUrl = "smtp://" + coreMail.user + ":" + coreMail.password + "@" + coreMail.host + ":" + coreMail.port + "/"
     process.env.MAIL_URL = process.env.MAIL_URL || mailUrl
   else
-    ReactionCore.Events.warn "Core Mail Settings not set. Unable to send email"
+    ReactionCore.Events.warn 'Core Mail Settings not set. Unable to send email.'
+    throw new Meteor.Error( 403, '<a href="/dashboard/settings/shop#mail">Core Mail Settings</a> not set. Unable to send email.')
     return
 
 Meteor.methods
