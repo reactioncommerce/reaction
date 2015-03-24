@@ -8,6 +8,6 @@ Template.layoutFooter.helpers
     placement: 'footer'
     faClass: 'square'
     faSize: 'fa-3x'
-    appsOrder: ['facebook', 'twitter', 'googleplus', 'pinterest']
+    appsOrder: ['facebook', 'twitter', 'pinterest', 'googleplus']
 
 Template.footer.replaces "layoutFooter"
