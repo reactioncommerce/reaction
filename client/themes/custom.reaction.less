@@ -73,7 +73,7 @@
 #login-buttons {
 
   display: inline-block;
-  margin-right: (@navbar-padding-horizontal * 2);
+  .margin-right((@navbar-padding-horizontal * 2));
   padding-top: @navbar-padding-vertical;
   // This seems to keep the height of the line from
   // being sensitive to the presence of the unicode down arrow,
@@ -152,8 +152,6 @@
   // Add more declarations here if they help the dialogs look good
   // out-of-the-box in more apps.
 
-  padding: 0;
-  margin: 0;
   line-height: inherit;
   color: inherit;
   font: inherit;
@@ -194,7 +192,7 @@
   }
 
   .text-besides-image {
-    margin-left: 18px;
+    .margin-left(18px);
   }
 
   .no-services { color: red; }
@@ -203,7 +201,7 @@
     position: relative;
   }
   .login-close-text {
-    float: left;
+    .float(left);
     position: relative;
     padding-bottom: 8px;
   }
@@ -375,7 +373,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
 
-    li { margin-left: 30px; }
+    li {
+      .margin-left(30px);
+    }
   }
   .configuration_labels { width: 30%; }
   .configuration_inputs { width: 70%; }
@@ -385,11 +385,11 @@
 }
 
 #configure-login-service-dialog-save-configuration {
-  float: right;
+  .float(right);
 }
 
 .configure-login-service-dismiss-button {
-  float: left;
+  .float(left);
 }
 
 #just-verified-dismiss-button, #messages-dialog-dismiss-button {
@@ -423,7 +423,7 @@
 .accounts-dialog .login-button {
   .btn;
   .btn-primary;
-  width: 100%;
+  .btn-block;
 }
 
 .login-image {
@@ -433,17 +433,20 @@
 .sign-in-text-facebook:before  {
   content: "\f09a";
   font-family: FontAwesome;
-  padding-right: 10px;
+  .padding-right(10px);
   font-size: 17px;
 }
+
 
 
 
 // @import "theme/accounts/inline/inline.less"
 .accounts-inline {
   min-width: 280px;
+  display: inline-block;
+  padding-top: 10px;
   width: 100%;
-  margin: 0;
+  margin-top: 0;
   border: 0;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -453,14 +456,50 @@
 
 .accounts-layout {
   .or { text-align: center; padding-top: 5px;}
-  .hline { text-decoration: line-through; color: lightgrey; }
+  .hline { text-decoration: line-through; color: @gray-lighter; }
   .or-text { font-weight: bold; }
   .additional-link {
-    float: right;
-    margin-left: 15px;
+    .float(right);
+    .margin-left(15px);
   }
-  #forgot-password-link { margin-left:0; float: left; }
+  #forgot-password-link {
+    .margin-left(0);
+    .float(left);
+  }
 }
+
+
+.checkout-guest {
+  border-right: 1px solid @gray-light;
+  font-size: @font-size-base;
+  position:absolute;
+  top:50%;
+  width: 45%;
+  margin-top:-5em;
+  padding: 20px;
+
+}
+.checkout-login {
+  padding: 10px;
+}
+
+@media screen and (max-width: @screen-xs-max) {
+  .checkout-guest {
+    border-bottom: 1px solid @gray-light;
+    margin-bottom: 40px;
+    padding: 10px 50px 30px;
+    position: initial;
+    top: initial;
+    width: initial;
+    margin-top: initial;
+    border-right: initial;
+  }
+  .checkout-login {
+    border-left: none;
+    padding-left: none;
+  }
+}
+
 
 
 // @import "theme/cart/cart.less"
@@ -477,7 +516,7 @@
   background-color: @cart-drawer-bg;
   color: @text-color;
   padding: 10px;
-  text-align: left;
+  .text-align(left);
   -moz-box-shadow:    inset 0 0 10px #000000;
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow:         inset 0 0 10px #000000;
@@ -513,6 +552,7 @@ Basic Swiper Styles
 .cart-drawer-swiper-wrapper {
   position:relative;
   width:100%;
+
   -webkit-transition-property:-webkit-transform, left, top;
   -webkit-transition-duration:0s;
   -webkit-transform:translate3d(0px,0,0);
@@ -542,6 +582,14 @@ Basic Swiper Styles
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
+
+  .rtl({
+    -webkit-transition-property:-webkit-transform, right, top;
+    -moz-transition-property:-moz-transform, right, top;
+    -o-transition-property:-o-transform, right, top;
+    -ms-transition-property:-ms-transform, right, top;
+    transition-property:transform, right, top;
+  });
 }
 .swiper-free-mode > .swiper-wrapper {
   -webkit-transition-timing-function: ease-out;
@@ -554,7 +602,7 @@ Basic Swiper Styles
 .cart-drawer-swiper-slide {
   width: 250px;
   height: 250px;
-  float: left;
+  .float(left);
 }
 
 /* IE10 Windows Phone 8 Fixes */
@@ -581,7 +629,7 @@ Pagination Styles
 .cart-drawer-pagination {
   position: relative;
   z-index: 20;
-  left: 10px;
+  .left(10px);
   bottom: 10px;
 }
 .swiper-pagination-switch {
@@ -590,7 +638,7 @@ Pagination Styles
   height: 8px;
   border-radius: 8px;
   background: #222;
-  margin-right: 5px;
+  .margin-right(5px);
   opacity: 0.8;
   border: 1px solid #fff;
   cursor: pointer;
@@ -632,7 +680,7 @@ Pagination Styles
   .remove-cart-item {
     position: absolute;
     top: 8px;
-    right: 8px;
+    .right(8px);
     color: @gray;
     background-color: @alert-warning-bg;
     border: 2px solid @gray;
@@ -667,7 +715,7 @@ Pagination Styles
     background-color: transparent;
   }
   .cart-totals {
-    text-align: left;
+    .text-align(left);
     padding: 15px;
     font-size: 16px;
     height: 100%;
@@ -685,7 +733,7 @@ Pagination Styles
 
 // @import "theme/cart/cartIcon/cartIcon.less"
 .cart-icon {
-  margin-left: 2px;
+  .margin-left(2px);
   color: @cart-icon-text;
   border: @cart-icon-border;
   padding: @cart-icon-padding;
@@ -700,12 +748,12 @@ Pagination Styles
   .badge {
     position: absolute;
     bottom: 4px;
-    right: 1px;
+    .right(1px);
     background-color: @cart-icon-badge;
   }
 
   .badge-warning {
-    right: 33px;
+    .right(33px);
     font-weight:bold;
     font-size:inherit;
     padding:2px 8px 2px 8px;
@@ -713,10 +761,10 @@ Pagination Styles
   }
 }
 .cart-alert{
-  float: right;
+  .float(right);
   position: absolute;
   top: 0;
-  right: 76px;
+  .right(76px);
   color: @cart-icon-text;
   background-color: @cart-icon-bg;
   display: none;
@@ -768,7 +816,7 @@ Pagination Styles
   }
 
   .address-options {
-    padding-left: 10px;
+    .padding-left(10px);
     margin-top: -25px;
     padding-bottom: 15px;
     .form-group {
@@ -782,18 +830,18 @@ Pagination Styles
 
 // @import "theme/cart/checkout/checkout.less"
 .cart-checkout-steps {
-  padding-left: 5px;
+  .padding-left(5px);
   margin-top: 20px;
 
   .panel-title {
-    margin-left: 25px;
+    .margin-left(25px);
   }
 }
 
 @media screen and (min-width: @screen-sm-min) {
   .cart-checkout-steps {
     .col-md-8 {
-      padding-right: 15px;
+      .padding-right(15px);
     }
   }
 }
@@ -812,17 +860,21 @@ Pagination Styles
   border: 2px solid #fff;
   border-radius: 50%;
   font-size: 16px;
-  left: 21px;
+  .left(21px);
   top: -3px;
   width: 45px;
   color: #fff;
   line-height: 16px;
   height: 45px;
-  padding: 13px 11px 13px 12px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  .padding-left(12px);
+  .padding-right(11px);
   position: absolute;
   text-align: center;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-  margin: 0 0 2px -30px;
+  margin: 0 0 2px 0;
+  .margin-left(-30px);
   font-weight: bold;
 }
 
@@ -851,7 +903,7 @@ Pagination Styles
      background-color: #ddd;
       position: absolute;
       top:inherit;
-      margin-left: -60px;
+      .margin-left(-60px);
   }
 }
 
@@ -903,12 +955,20 @@ background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, tran
 .inner-shadow {
 -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, .2); box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, .2);
 }
-@-webkit-keyframes myanimation {
+@-webkit-keyframes checkout-progress-animation-ltr {
   from {
     left: 0%;
   }
   to {
     left: 50%;
+  }
+}
+@-webkit-keyframes checkout-progress-animation-rtl {
+  from {
+    right: 0%;
+  }
+  to {
+    right: 50%;
   }
 }
 
@@ -924,7 +984,10 @@ ul.checkout-bar {
     display: block;
     font-size: 16px;
     font-weight: 600;
-    padding: 14px 20px 14px 80px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    // .padding-left(80px);
+    .padding-right(20px);
     position: relative;
     vertical-align: top;
     &:before {
@@ -935,9 +998,12 @@ ul.checkout-bar {
       color: #fff;
       font-size: 16px;
       font-weight: 700;
-      left: 20px;
+      .left(20px);
       line-height: 16px;
-      padding: 13px 11px 13px 12px;
+      padding-top: 13px;
+      padding-bottom: 13px;
+      .padding-left(12px);
+      .padding-right(11px);
       height: 35px;
       position: absolute;
       text-align: center;
@@ -1013,13 +1079,16 @@ ul.checkout-bar {
     margin-top: 20px;
   }
  .checkout-bar li.active:after {
-    -webkit-animation: myanimation 3s 0;
+   -webkit-animation: checkout-progress-animation-ltr 3s 0;
+   .rtl({
+     -webkit-animation: checkout-progress-animation-rtl 3s 0;
+   });
     .active-stripe;
     .inner-shadow;
     content:"";
     height: 15px;
     width: 100%;
-    left: 50%;
+    .left(50%);
     position: absolute;
     top: -50px;
     z-index: 0;
@@ -1039,7 +1108,7 @@ ul.checkout-bar {
     border-radius: 15px;
     content: " ";
     height: 15px;
-    left: 0;
+    .left(0);
     position: absolute;
     width: 10%;
   }
@@ -1051,9 +1120,12 @@ ul.checkout-bar {
       width: 19%;
       &:before {
         height: 45px;
-        left: 40%;
+        .left(40%);
         line-height: 16px;
-        padding: 13px 11px 13px 12px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+        .padding-left(12px);
+        .padding-right(11px);
         position: absolute;
         top: -65px;
         width: 45px;
@@ -1066,7 +1138,7 @@ ul.checkout-bar {
           .inner-shadow;
           content: "";
           height: 15px;
-          left: 50%;
+          .left(50%);
           position: absolute;
           top: -50px;
           width: 100%;
@@ -1173,16 +1245,24 @@ Dashboard Swiper Styles
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
+
+  .rtl({
+    -webkit-transition-property:-webkit-transform, right, top;
+    -moz-transition-property:-moz-transform, right, top;
+    -o-transition-property:-o-transform, right, top;
+    -ms-transition-property:-ms-transform, right, top;
+    transition-property:transform, right, top;
+  });
 }
 
 .dashboard-widget {
   width: 260px;
   height: 250px;
-  float: left;
+  .float(left);
   position: relative;
   .dashboard-widget-center {
-    margin-right: 10px;
-    margin-left: 10px;
+    .margin-right(10px);
+    .margin-left(10px);
     background-color: @list-group-bg;
     border: 1px solid @list-group-border;
     border-radius: @list-group-border-radius;
@@ -1213,7 +1293,7 @@ Dashboard Swiper Pagination Styles
 .dashboard-pagination {
   position: relative;
   z-index: 20;
-  left: 10px;
+  .left(10px);
   bottom: 10px;
 }
 .swiper-pagination-switch {
@@ -1222,7 +1302,7 @@ Dashboard Swiper Pagination Styles
   height: 8px;
   border-radius: 8px;
   background: #222;
-  margin-right: 5px;
+  .margin-right(5px);
   opacity: 0.8;
   border: 1px solid #fff;
   cursor: pointer;
@@ -1275,6 +1355,29 @@ Dashboard Swiper Pagination Styles
 .orders-grid .h3 {
     margin-top: 0px;
 }
+
+.order-list-detail {
+  address {
+    margin-bottom: 0;
+  }
+  .order-group-title {
+    margin-top: 20px;
+    margin-bottom: 5px;
+  }
+
+}
+
+.order-item-img {
+  height: 75px;
+  width: 75px;
+}
+
+.order-list-item-details {
+  margin-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid @gray-lighter;
+}
+
 
 
 // @import "theme/dashboard/orders/social/orderSocial.less"
@@ -1331,7 +1434,7 @@ Dashboard Swiper Pagination Styles
 
   .pkg-controls {
     position: absolute;
-    right: 10px;
+    .right(10px);
     bottom: 16px;
   }
   .status {
@@ -1367,7 +1470,7 @@ Dashboard Swiper Pagination Styles
 
 
 
-// @import "theme/dashboard/settings/settingsAccount/shopMember/shopMember.less"
+// @import "theme/dashboard/shop/accounts.less"
 .table {
   tbody.toggle-shop-member-permissions {
     cursor: pointer;
@@ -1381,8 +1484,8 @@ Dashboard Swiper Pagination Styles
       ul {
         padding: 0;
         list-style-type: none;
-        float: left;
-        margin-right: 30px;
+        .float(left);
+        .margin-right(30px);
       }
       label {
         font-weight: normal;
@@ -1396,16 +1499,14 @@ Dashboard Swiper Pagination Styles
 
 
 
-// @import "theme/dashboard/settings/settingsGeneral/settingsGeneral.less"
-.useCustomEmailSettings {
-  margin-top: 5px;
-}
+// @import "theme/dashboard/shop/settings.less"
 .autoform-remove-item {
   height: 25px;
   width: 25px;
   margin: 29px 10px;
   padding: 0px;
 }
+
 
 
 // @import "theme/dashboard/widget/widget.less"
@@ -1452,19 +1553,29 @@ footer {
   }
 }
 
+.ltr({ 
+  // This is for making sure WebKit knows the "default" direction when switching back from RTL.
+  // It solves a bug where some of the elements stayed RTL because the Computed Style on Document still says direction: rtl
+  direction: ltr;
+});
+
+.rtl({
+  direction: rtl;
+  text-align: right;
+});
+
 .navbar-brand {
-  margin-left: 10px;
+  .margin-left(10px);
 }
 
 .navbar-cart {
-  float: right;
+  .float(right);
   position: relative;
 }
 
 .navbar-languages {
-  float: right;
-  padding-top: @navbar-padding-vertical;
-  padding-left: @navbar-padding-vertical;
+  .float(right);
+  padding: @navbar-padding-vertical (@navbar-padding-horizontal * 2);
   height: @navbar-height;
   &:hover {
     background-color: @navbar-default-toggle-icon-bar-bg;
@@ -1476,10 +1587,11 @@ footer {
 }
 
 .navbar-accounts {
-  float: right;
+  .float(right);
   height: @navbar-height;
   padding: @navbar-padding-vertical;
-  padding-left: @navbar-padding-vertical;
+  .padding-left(@navbar-padding-vertical);
+
   &:hover {
     background-color: @navbar-default-toggle-icon-bar-bg;
     border-color: @navbar-default-toggle-border-color;
@@ -1520,9 +1632,10 @@ footer {
       cursor: pointer;
       display: inline-block;
       width: 50px;
-      margin-right: 15px;
+      .margin-right(15px);
       text-align: center;
       padding: 5px;
+
       a {
         color: @gray;
         text-decoration: none;
@@ -1569,7 +1682,8 @@ footer {
 }
 
 .navbar-tags  {
-  padding-left: 5px;
+  .padding-left(5px);
+
   a {
     margin-left: -8px;
     margin-right: -8px;
@@ -1597,7 +1711,9 @@ footer {
     #logged-in-display-name {
       display: none;
     }
-    .dropdown-menu { right: -60px;}
+    .dropdown-menu {
+      .right(-60px);
+    }
   }
 }
 
@@ -1611,8 +1727,9 @@ footer {
 
 // Slide the tag edit icon over a bit
 .header-edit-tag {
-  margin-left: -15px;
+  .margin-left(-15px);
 }
+
 // size the navigation and when editing override navbar settings
 .tag-edit-list {
   input {
@@ -1631,26 +1748,26 @@ footer {
 // Tag edit elements
 .tag-input-group {
   float:none;
-  padding-right: 3px;
+  .padding-right(3px);
   position: relative;
+
   .tag-input-group-handle {
     position: absolute;
     cursor: move;
     color: @input-color-placeholder;
-    left: 4px;
+    .left(4px);
     top: 4px;
-    padding-left: 4px;
+    .padding-left(4px);
   }
   input {
-    padding-left: 25px;
-    padding-right: 20px;
+    .padding-left(25px);
+    .padding-right(20px);
     border-radius: @border-radius-base;
     border: 1px dotted @input-border;
     background-color: @input-bg;
     height: @input-height-small;
     width: 130px;
     color: @input-color;
-
   }
   input:focus {
     outline: none;
@@ -1659,10 +1776,10 @@ footer {
   }
   .tag-input-group-remove {
     position: absolute;
-    right: 6px;
+    .right(6px);
     top: 4px;
     color: @input-color-placeholder;
-    padding-right: 4px;
+    .padding-right(4px);
   }
   .tags-submit-new {
     padding-left: 5px;
@@ -1784,8 +1901,8 @@ footer {
   .img-responsive {width: 100%;} // For Firefox: http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3
   width:100%;
   //== minor layout adjustment for columns
-  .pdp-left-column { padding-right: 15px; }
-  .pdp-right-column { padding-left: 15px; }
+  .pdp-left-column { .padding-right(15px); }
+  .pdp-right-column { .padding-left(15px); }
   .product-details { padding-top: 25px; }
 
   //== product detail fields
@@ -1798,9 +1915,9 @@ footer {
   .currency-symbol {
     font-weight: bold;
     font-size: @product-price-font-size;
-    margin-right: -10px;
+    .margin-right(-10px);
   }
-  .social-pricing { margin-left: -10px; }
+  .social-pricing { .margin-left(-10px); }
   .vendor { margin-top: -5px; }
 
   //== description and textarea
@@ -1868,7 +1985,7 @@ footer {
 
   .add-to-cart-text {
     font-size: 20px;
-    margin-right: 30px;
+    .margin-right(30px);
   }
 
   #add-to-cart-quantity {
@@ -1915,7 +2032,7 @@ footer {
   .product-detail-message {
     position: absolute;
     top: 0;
-    right: 0;
+    .right(0);
   }
 }
 
@@ -1952,24 +2069,24 @@ footer {
   .tags {
     ul,li {
       position: relative;
-      padding-left: 5px;
+      .padding-left(5px);
       input {
-        padding-left: 22px;
-        padding-right: 40px;
+        .padding-left(22px);
+        .padding-right(40px);
         min-width: 175px;
       }
       float:none !important;
 
     }
     .tag-input-group {
-      padding-left: 0px;
+      .padding-left(0px);
     }
     .tag-input-hashtag {
       position: absolute;
-      right: 16px;
+      .right(16px);
       top: 5px;
       color: @brand-success;
-      padding-right: 14px;
+      .padding-right(14px);
     }
   }
 }
@@ -2008,7 +2125,7 @@ footer {
 
 .variant-table {
   .edit, .buy {
-    text-align: right;
+    .text-align(right);
   }
 }
 
@@ -2020,7 +2137,7 @@ footer {
   display: inline-block;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-left: 5px;
+  .margin-left(5px);
   line-height: 28px;
   font-weight: 400;
   color: @btn-default-color;
@@ -2029,13 +2146,13 @@ footer {
 
 .variant-price {
   display: inline-block;
-  margin-left: 10px;
+  .margin-left(10px);
   font-size: medium;
   font-weight: 500;
   line-height: 30px;
   color: @btn-default-color;
   position: absolute;
-  right: 10px;
+  .right(10px);
 }
 
 .variant-edit {
@@ -2043,7 +2160,7 @@ footer {
   color: @link-color;
   position: absolute;
   border-radius: @input-border-radius;
-  right: -25px;
+  .right(-25px);
   padding: 0 5px 0 5px;
 }
 .variant-product-options {
@@ -2160,7 +2277,7 @@ footer {
     .badge {
       position: absolute;
       top: 20px;
-      left: 19px;
+      .left(19px);
     }
   }
 
@@ -2191,8 +2308,8 @@ footer {
     padding-left: 5px;
     padding-right: 5px;
     // background-color: black;
-    .delete-product {float:right;}
-    .clone-product {margin-left: 10px;}
+    .delete-product {.float(right);}
+    .clone-product {.margin-left(10px);}
     .fa {
       cursor: pointer;
       padding: 5px

@@ -14,6 +14,7 @@ less
 accounts-facebook
 spiderable
 audit-argument-checks
+browser-policy
 
 # Community Packages
 nemo64:bootstrap
@@ -21,7 +22,7 @@ nemo64:bootstrap
 #sanjo:jasmine
 
 # Reaction Commerce Packages
-reactioncommerce:core@=0.4.2
+reactioncommerce:core
 reactioncommerce:core-theme
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-google-analytics
