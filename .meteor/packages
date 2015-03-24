@@ -28,3 +28,5 @@ reactioncommerce:reaction-google-analytics
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-braintree
 reactioncommerce:reaction-stripe
+reactioncommerce:reaction-auth-net
+reactioncommerce:reaction-social
