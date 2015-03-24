@@ -15,7 +15,7 @@
     <div class="well">
     {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
       {{> afQuickField name='name' placeholder="Shop Name"}}
-      {{> afQuickField name='email' placeholder="Primary Contact Email"}}
+      {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
       {{> afQuickField name='description' placeholder="Description"}}
       {{> afQuickField name='keywords' placeholder="Keywords"}}
       {{> shopSettingsSubmitButton}}
