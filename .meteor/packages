@@ -15,6 +15,7 @@ accounts-facebook
 spiderable
 audit-argument-checks
 browser-policy
+force-ssl
 
 # Community Packages
 nemo64:bootstrap
