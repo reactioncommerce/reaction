@@ -136,6 +136,7 @@ createDefaultAdminUser = ->
       ownerId: accountId
     $addToSet:
       emails: {'address': options.email, 'verified': true}
+      domains: Meteor.settings.ROOT_URL
     $push:
       members:
         isAdmin: true
@@ -153,10 +154,18 @@ createDefaultAdminUser = ->
 ###
 loadFixtures = ->
   # Load data from json files
-  Fixtures.loadData ReactionCore.Collections.Products
   Fixtures.loadData ReactionCore.Collections.Shops
+  Fixtures.loadData ReactionCore.Collections.Products
   Fixtures.loadData ReactionCore.Collections.Tags
   Fixtures.loadI18n ReactionCore.Collections.Translations
+
+  # if ROOT_URL update shop domain
+  # for now, we're assuming the first domain is the primary
+  currentDomain = Shops.findOne().domains[0]
+  if currentDomain isnt getDomain()
+    ReactionCore.Events.info "Updating domain to " + getDomain()
+    Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
+
 
   # Load data from settings/json files
   unless Accounts.loginServiceConfiguration.find().count()
@@ -196,15 +205,6 @@ loadFixtures = ->
 ###
 Meteor.startup ->
   loadFixtures()
-  # data conversion:  if ROOT_URL changes update shop domain
-  # for now, we're assuming the first domain is the primary
-  currentDomain = Shops.findOne().domains[0]
-  if currentDomain isnt getDomain()
-    ReactionCore.Events.info "Updating domain to " + getDomain()
-    Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
-
-  # data conversion: we now set sessionId or userId, but not both
-  # Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
   # notifiy that we're done with initialization
   ReactionCore.Events.info "Reaction Commerce initialization finished. "

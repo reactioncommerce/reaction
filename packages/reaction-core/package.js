@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.5.3",
+  version: "0.5.4",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
