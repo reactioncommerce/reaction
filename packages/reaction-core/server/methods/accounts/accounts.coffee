@@ -9,6 +9,15 @@ Accounts.onCreateUser (options, user) ->
   # return to meteor accounts
   return user
 
+@setMailUrlForShop = (shop) ->
+  coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
+  if coreMail
+    mailUrl = "smtp://" + coreMail.user + ":" + coreMail.password + "@" + coreMail.host + ":" + coreMail.port + "/"
+    process.env.MAIL_URL = process.env.MAIL_URL || mailUrl
+  else
+    ReactionCore.Events.warn "Core Mail Settings not set. Unable to send email"
+    return
+
 Meteor.methods
   ###
   # add new addresses to an account
@@ -90,7 +99,7 @@ Meteor.methods
     shop = Shops.findOne shopId
     if shop and email and name
       if ReactionCore.hasOwnerAccess(shop)
-        currentUserName = Meteor.user().profile.name || Meteor.user().username || "Admin"
+        currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
         user = Meteor.users.findOne {"emails.address": email}
         unless user # user does not exist, invite user
           userId = Accounts.createUser
