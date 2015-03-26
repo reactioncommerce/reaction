@@ -26,7 +26,7 @@ nemo64:bootstrap
 reactioncommerce:core
 reactioncommerce:core-theme
 reactioncommerce:reaction-shipping
-reactioncommerce:reaction-google-analytics
+reactioncommerce:reaction-google-analytics@0.4.4
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-braintree
 reactioncommerce:reaction-stripe
