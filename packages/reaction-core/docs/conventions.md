@@ -34,6 +34,7 @@ In the meantime we are testing reaction-core and other core packages with Veloci
 
 A few things you should know:
 * First you'll need to uncomment `mike:mocha` and `sanjo:jasmine` in the `/.meteor/packages` file in the main meteor app.
+* You should set your `NODE_ENV` enviornment variable to 'development' to open up ports that velocity uses. The easiest way to do this is to run `export NODE_ENV="development"` before you start `meteor`
 * After doing that, your Velocity tests should run when you run `meteor run`
 * If you change or update the file structure in your `/tests` folder you may need to delete your `/packages/tests-proxy` directory. [This is a known issue with sanjo:jasmine](https://github.com/meteor-velocity/node-soft-mirror/issues/9#issuecomment-74386394)
 * If you run `meteor --test` your tests will only run once and will not re-run when you update files.

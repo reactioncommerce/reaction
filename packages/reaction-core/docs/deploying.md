@@ -15,6 +15,7 @@ We provide release images built from the master branch. These are the same image
 ```bash
 docker build -t reactioncommerce/reaction-test .
 ```
+Note: if building your own, comment out test packages before building (`mike:mocha` and `sanjo:jasmine`)
 
 Start a Docker/Reaction container using [`docker run`](https://docs.docker.com/reference/commandline/cli/#run):
 
