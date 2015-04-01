@@ -11,5 +11,7 @@ BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com")
 if process.env.NODE_ENV is 'development'
   BrowserPolicy.content.allowOriginForAll 'localhost:*'
   BrowserPolicy.content.allowConnectOrigin 'ws://localhost:5000'
+  BrowserPolicy.content.allowConnectOrigin 'ws://localhost:63580'
   BrowserPolicy.content.allowConnectOrigin 'http://localhost:5000'
+  BrowserPolicy.content.allowConnectOrigin 'http://localhost:63580'
   BrowserPolicy.framing.allowAll()
