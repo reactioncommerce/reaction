@@ -21,7 +21,7 @@ Router.configure
     @render "loading"
     Alerts.removeSeen()
     @next()
-    return
+
 
 # we always need to wait on these publications
 Router.waitOn ->
@@ -32,7 +32,6 @@ Router.waitOn ->
 @ShopController = RouteController.extend
   onAfterAction: ->
     ReactionCore.MetaData.refresh(@route, @params)
-    return
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -52,7 +51,7 @@ ShopController = @ShopController
       @render('unauthorized')
     else
       @next()
-      return
+    return
 # local ShopAdminController
 ShopAdminController = @ShopAdminController
 
@@ -89,7 +88,6 @@ Router.map ->
     path: '/dashboard/settings/account'
     template: 'shopAccounts'
 
-
   # list page of customer records
   @route 'dashboard/customers',
     controller: ShopAdminController
@@ -125,12 +123,11 @@ Router.map ->
     path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
-      return Meteor.subscribe 'product', @params._id
+      @subscribe 'product', @params._id
     onBeforeAction: ->
       variant = @params.variant || @params.query.variant
       setProduct @params._id, variant
       @next()
-      return
     data: ->
       product = selectedProduct()
       if @ready() and product
@@ -149,11 +146,11 @@ Router.map ->
     yieldTemplates:
       checkoutHeader:
         to: "layoutHeader"
+    waitOn: ->
+      @subscribe "Packages"
     subscriptions: ->
-      @subscribe "shops"
       @subscribe "products"
       @subscribe "shipping"
-      @subscribe "Packages"
       @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
 
   #completed orders
