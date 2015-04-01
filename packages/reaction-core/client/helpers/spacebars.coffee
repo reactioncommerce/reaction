@@ -340,13 +340,14 @@ Template.registerHelper "reactionApps", (options) ->
           match += 1
         if match is Object.keys(registryFilter).length
           registry.name = app.name
-          registry.enabled = app.enabled
-          registry.packageId = app._id
-          reactionApps.push registry
+          # skip false registry entries, even if pkg is enabled
+          unless registry.enabled is false
+            registry.enabled = registry.enabled || app.enabled
+            registry.packageId = app._id
+            reactionApps.push registry
 
   #
-  # TODO:
-  # add group by provides, sort by cycle, enabled
+  # TODO: add group by provides, sort by cycle, enabled
   #
 
   # make sure they are unique

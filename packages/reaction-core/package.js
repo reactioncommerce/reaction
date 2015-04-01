@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.5.5",
+  version: "0.5.6",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -42,32 +42,32 @@ Package.onUse(function (api) {
     api.use("reactive-var");
 
     //community packages
-    api.use("nemo64:bootstrap@3.3.1_1","client");
-    api.use("nemo64:bootstrap@3.3.1_1","server", {'weak': 1});
+    api.use("nemo64:bootstrap@3.3.4_1","client");
+    api.use("nemo64:bootstrap@3.3.4_1","server", {'weak': 1});
     api.use("d3js:d3@3.4.13");
     api.use("fortawesome:fontawesome@4.2.0_2");
     api.use("mrt:underscore-string-latest@2.3.3");
-    api.use("aldeed:geocoder@0.3.3");
+    api.use("aldeed:geocoder@0.3.5");
     api.use("aldeed:autoform@4.2.2");
-    api.use("aldeed:collection2@2.3.2");
-    api.use("aldeed:simple-schema@1.3.0", {'weak': 1});
+    api.use("aldeed:collection2@2.3.3");
+    api.use("aldeed:simple-schema@1.3.2", {'weak': 1});
     api.use("aldeed:template-extension@3.4.3","client");
     api.use("iron:router@1.0.7");
     api.use("ongoworks:speakingurl@1.1.0");
-    api.use("ongoworks:pdf@1.1.0");
+    api.use("ongoworks:pdf@1.1.1");
     api.use("ongoworks:bunyan-logger@1.0.0");
     api.use("ongoworks:security@1.0.1");
 
     api.use("dburles:factory@0.3.7");
     api.use("anti:fake@0.4.1");
-    api.use("matb33:collection-hooks@0.7.6");
+    api.use("matb33:collection-hooks@0.7.11");
     api.use("alanning:roles@1.2.13");
     api.use("momentjs:moment@2.8.4", 'client');
     api.use("sacha:spin@2.0.4", "client");
 
-    api.use("cfs:standard-packages@0.5.5");
+    api.use("cfs:standard-packages@0.5.7");
     api.use("cfs:graphicsmagick@0.0.18");
-    api.use("cfs:gridfs@0.0.31");
+    api.use("cfs:gridfs@0.0.33");
     api.use("cfs:filesystem@0.1.1");
     api.use("cfs:ui@0.1.3");
     api.use("raix:ui-dropped-event@0.0.7");
