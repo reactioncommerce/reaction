@@ -47,6 +47,9 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
   'registry.$.cycle':
     type: Number
     optional: true
+  'registry.$.enabled':
+    type: Boolean
+    optional: true
 
 ###
 # Core Reaction Settings
