@@ -5,6 +5,19 @@ Package.describe({
   git: "https://github.com/spencern/reaction-analytics.git"
 });
 
+Package.registerBuildPlugin({
+  name: 'analytics-configurator',
+  use: [
+    'underscore'
+  ],
+  sources: [
+    'server/buildtools/analytics-sources.js',
+    'server/buildtools/defaultConfiguration.js',
+    'server/buildtools/analytics-configurator.js'
+  ],
+  npmDependencies: {}
+});
+
 Package.on_use(function (api, where) {
   api.versionsFrom('METEOR@1.0.3.1');
   api.use("meteor-platform@1.2.1");
@@ -31,4 +44,10 @@ Package.on_use(function (api, where) {
     "server/publications.coffee",
     "server/register.coffee"
   ], ["server"]);
+  
+  api.addFiles([
+    'sources/analytics/google-analytics.js',
+    'sources/analytics/mixpanel.js',
+    'sources/analytics/segmentio.js'
+  ], 'server', {isAsset: true});
 });

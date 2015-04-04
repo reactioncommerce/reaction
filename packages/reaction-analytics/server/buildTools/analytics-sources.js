@@ -1,6 +1,5 @@
 analyticsLibs = {
-  'googleAnalytics': 'server/sources/ga.js',
-  'mixpanel': 'server/sources/mixpanel.js',
-  'kissmetrics': 'server/sources/kissmetrics.js',
-  'segment': 'server/sources/segment.js'
+  'google-analytics': 'sources/analytics/googleanalytics.js',
+  'mixpanel': 'sources/analytics/mixpanel.js',
+  'segment': 'sources/analytics/segmentio.js'
 };
