@@ -1,16 +1,18 @@
 Package.describe({
-  summary: "Reaction Analytics - Capture and Store Analytics",
+  summary: "Reaction Analytics - Base analytics package with support for Google Analytics, Segment, Mixpanel, and Kissmetrics for ReactionCommerce",
   name: "spencern:reaction-analytics",
-  version: "0.0.1",
+  version: "0.0.2",
   git: "https://github.com/spencern/reaction-analytics.git"
 });
 
 Package.on_use(function (api, where) {
-  api.versionsFrom('METEOR@1.0');
+  api.versionsFrom('METEOR@1.0.3.1');
   api.use("meteor-platform@1.2.1");
   api.use("coffeescript");
   api.use("less");
   api.use("reactioncommerce:core@0.4.1");
+  api.use('browser-policy-content', 'server');
+  api.use('iron:router@1.0.7', 'client', {weak: true});
 
   api.addFiles([
     "common/routing.coffee",
@@ -24,6 +26,7 @@ Package.on_use(function (api, where) {
   ], ["client"]);
 
   api.addFiles([
+    "server/security/browserPolicy.coffee",
     "server/security/AnalyticsEvents.coffee",
     "server/publications.coffee",
     "server/register.coffee"
