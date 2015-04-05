@@ -4,8 +4,21 @@
   </div>
   <div class="row">
     <div class="well col-md-4">
-      <p>Reaction Analytics is Active. <br />
-      Please configure a compatible analytics service package</p>
+      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form"}}
+        <fieldset>
+          {{>afQuickField name="settings.public.segmentio.enabled"}}
+          {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
+        </fieldset>
+        <fieldset>
+          {{>afQuickField name="settings.public.google-analytics.enabled"}}
+          {{>afQuickField name="settings.public.google-analytics.api_key" placeholder="UA-XXXXX-X"}}
+        </fieldset>
+        <fieldset>
+          {{>afQuickField name="settings.public.mixpanel.enabled"}}
+          {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
     </div>
   </div>
 </template>
