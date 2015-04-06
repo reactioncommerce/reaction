@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "path": {
+      "version": "0.11.14"
+    },
+    "underscore": {
+      "version": "1.8.3"
+    }
+  }
+}

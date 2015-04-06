@@ -12,6 +12,9 @@ var handler = function (compileStep) {
     fs.writeFileSync(jsonPath, analyticsConfiguration)
   }
   
+  compileStep.error(" in Handler Loop loop" + analyticsConfiguration);
+  debugger;
+  
   try {
     analyticsConfiguration = JSON.parse(analyticsConfiguration);
   } catch (e) {
@@ -51,8 +54,13 @@ var handler = function (compileStep) {
   
   _.each(analyticsLibs, function(libSrc) {
     var lib = Asset.getText(libSrc);
+    var libNameRegexp = /([a-zA-Z]*\.js)$/;
+    var libName = libNameRegexp.exec(libSrc);
+    compileStep.error("Error in analyticsLib loop" + libSrc);
+    console.log(libSrc);
+
     compileStep.addJavaScript({
-      path: libSrc,
+      path: 'client/compatability/' + libName,
       data: lib,
       sourcePath: libSrc,
       bare: true
@@ -60,4 +68,4 @@ var handler = function (compileStep) {
   });
 };
 
-Plugin.registerSourceHandler('analyticsSettings.json', {archMatching: 'web'}, handler);
+Plugin.registerSourceHandler('.analyticsconfig', {archMatching: 'web'}, handler);

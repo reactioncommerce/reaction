@@ -15,7 +15,7 @@ Package.registerBuildPlugin({
     'server/buildtools/defaultConfiguration.js',
     'server/buildtools/analyticsConfigurator.js'
   ],
-  npmDependencies: {}
+  npmDependencies: {path: '0.11.14', underscore: '1.8.3'}
 });
 
 Package.on_use(function (api, where) {
@@ -33,9 +33,6 @@ Package.on_use(function (api, where) {
   ], ["client", "server"]);
 
   api.addFiles([
-    'client/compatability/analytics/googleAnalytics.js',
-    'client/compatability/analytics/mixpanel.js',
-    'client/compatability/analytics/segmentio.js',
     "client/startup.coffee",
     "client/templates/reactionAnalytics/reactionAnalytics.html",
     "client/templates/reactionAnalytics/reactionAnalytics.coffee"
