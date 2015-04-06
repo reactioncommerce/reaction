@@ -8,7 +8,7 @@ Package.describe({
 Package.registerBuildPlugin({
   name: 'analyticsConfigurator',
   use: [
-    'underscore@1.8.3',
+    'underscore@1.0.3',
     'spencern:reaction-analytics-libs@0.0.1'
   ],
   sources: [
