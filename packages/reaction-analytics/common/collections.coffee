@@ -17,18 +17,23 @@ ReactionCore.Schemas.ReactionAnalyticsPackageConfig = new SimpleSchema([
       label: "Enabled"
     "settings.public.segmentio.api_key":
       type: String
-      label: "Tracking ID"
-    "settings.public.google-analytics.enabled":
+      label: "Segment Write Key"
+      optional: true
+      
+    "settings.public.googleAnalytics.enabled":
       type: Boolean
       label: "Enabled"
-    "settings.public.google-analytics.api_key":
+    "settings.public.googleAnalytics.api_key":
       type: String
-      label: "Tracking ID"
+      label: "Google Analytics Tracking ID"
+      optional: true
+      
     "settings.public.mixpanel.enabled":
       type: Boolean
       label: "Enabled"
     "settings.public.mixpanel.api_key":
       type: String
-      label: "Token"
+      label: "Mixpanel Token"
+      optional: true
   }
 ])

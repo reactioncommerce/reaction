@@ -6,14 +6,17 @@
     <div class="well col-md-4">
       {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form"}}
         <fieldset>
+          <h4>Segment</h4>
           {{>afQuickField name="settings.public.segmentio.enabled"}}
           {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
         </fieldset>
         <fieldset>
-          {{>afQuickField name="settings.public.google-analytics.enabled"}}
-          {{>afQuickField name="settings.public.google-analytics.api_key" placeholder="UA-XXXXX-X"}}
+          <h4>Google Analytics</h4>
+          {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
+          {{>afQuickField name="settings.public.googleAnalytics.api_key" placeholder="UA-XXXXX-X"}}
         </fieldset>
         <fieldset>
+          <h4>Mixpanel</h4>
           {{>afQuickField name="settings.public.mixpanel.enabled"}}
           {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
         </fieldset>

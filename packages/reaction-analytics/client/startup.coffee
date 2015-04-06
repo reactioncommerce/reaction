@@ -1,14 +1,15 @@
 Meteor.startup ->
   Deps.autorun ->
     coreAnalytics = ReactionCore.Collections.Packages.findOne name: "reaction-analytics"
-    googleAnalytics = coreAnalytics.settings.public.google-analytics
-    mixpanel = coreAnalytics.settings.public.mixpanel
-    segmentio = coreAnalytics.settings.public.segmentio
     
     if !coreAnalytics or !coreAnalytics.enabled
       # data not loaded yet or package is disabled
       Alerts.removeType "analytics-not-configured"
       return
+    
+    googleAnalytics = coreAnalytics.settings.public.googleAnalytics
+    mixpanel = coreAnalytics.settings.public.mixpanel
+    segmentio = coreAnalytics.settings.public.segmentio
     
     #TODO: DRY this up and make it easier to add additional integrations
     if segmentio.enabled
@@ -40,6 +41,7 @@ Meteor.startup ->
       # If admin logged out, hide the alert
       Alerts.removeType "analytics-not-configured"
 
+  # TODO: This should probably not exist here, move to template helper?
   # Need to make this more specific. Currently it triggers for any click on any page.
   $(document.body).click (e) ->
     $targets = $(e.target).closest('*[data-event-action]')
@@ -53,14 +55,14 @@ Meteor.startup ->
         label: $element.data('event-label')
         value: $element.data('event-value')
       
-      if(typeof ga === 'function')
+      if(typeof ga == 'function')
         ga('send', 'event', analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value)
-      if(typeof mixpanel === 'object')
+      if(typeof mixpanel == 'object' && mixpanel.length > 0)
         mixpanel.track analyticsEvent.action,
           'Category': analyticsEvent.category
           'Label': analyticsEvent.label
           'Value': analyticsEvent.value
-      if(typeof analytics === 'object')
+      if(typeof analytics == 'object' && analytics.length > 0)
         analytics.track analyticsEvent.action,
           'Category': analyticsEvent.category
           'Label': analyticsEvent.label

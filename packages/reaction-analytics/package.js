@@ -1,5 +1,5 @@
 Package.describe({
-  summary: "Reaction Analytics - Base analytics package with support for Google Analytics, Segment, Mixpanel, and Kissmetrics for ReactionCommerce",
+  summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "spencern:reaction-analytics",
   version: "0.0.2",
   git: "https://github.com/spencern/reaction-analytics.git"
@@ -11,9 +11,9 @@ Package.registerBuildPlugin({
     'underscore'
   ],
   sources: [
-    'server/buildtools/analytics-sources.js',
+    'server/buildtools/analyticsSources.js',
     'server/buildtools/defaultConfiguration.js',
-    'server/buildtools/analytics-configurator.js'
+    'server/buildtools/analyticsConfigurator.js'
   ],
   npmDependencies: {}
 });
@@ -33,6 +33,9 @@ Package.on_use(function (api, where) {
   ], ["client", "server"]);
 
   api.addFiles([
+    'client/compatability/analytics/googleAnalytics.js',
+    'client/compatability/analytics/mixpanel.js',
+    'client/compatability/analytics/segmentio.js',
     "client/startup.coffee",
     "client/templates/reactionAnalytics/reactionAnalytics.html",
     "client/templates/reactionAnalytics/reactionAnalytics.coffee"
@@ -44,10 +47,4 @@ Package.on_use(function (api, where) {
     "server/publications.coffee",
     "server/register.coffee"
   ], ["server"]);
-  
-  api.addFiles([
-    'sources/analytics/google-analytics.js',
-    'sources/analytics/mixpanel.js',
-    'sources/analytics/segmentio.js'
-  ], 'server', {isAsset: true});
 });

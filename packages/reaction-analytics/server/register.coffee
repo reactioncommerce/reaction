@@ -2,7 +2,16 @@ ReactionCore.registerPackage
   name: 'reaction-analytics'
   autoEnable: false
   settings: # private package settings config (blackbox)
-    api_key: "" # Tracking ID - using api_key to maintain compatability
+    public:
+      segmentio:
+        enabled: false
+        api_key: ""
+      googleAnalytics:
+        enabled: false
+        api_key: "" # Tracking ID - using api_key to maintain compatability
+      mixpanel:
+        enabled: false
+        api_key: ""
   registry: [
     # all options except route and template
     # are used to describe the
@@ -18,11 +27,11 @@ ReactionCore.registerPackage
     # configures settings link for app card
     # use 'group' to link to dashboard card
     # No Settings Yet
-    # {
-    #   route: 'reactionAnalytics'
-    #   provides: 'settings'
-    #   container: 'dashboard'
-    # }
+    {
+      route: 'reactionAnalytics'
+      provides: 'settings'
+      container: 'dashboard'
+    }
   ]
   # array of permission objects
   permissions: [

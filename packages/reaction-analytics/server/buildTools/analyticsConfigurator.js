@@ -7,7 +7,6 @@ var handler = function (compileStep) {
   
   var analyticsConfiguration = compileStep.read().toString('utf8');
   
-  
   if (analyticsConfiguration === '') {
     analyticsConfiguration = defaultConfiguration;
     fs.writeFileSync(jsonPath, analyticsConfiguration)
@@ -26,7 +25,7 @@ var handler = function (compileStep) {
   var analyticsLibs = [];
   
   // Read through config file to see which analytics libs are enabled
-  var analyticsLibsSetup = _.every(analyticsConfiguration, function(enabled, analyticsProvider)) {
+  var analyticsLibsSetup = _.every(analyticsConfiguration, function(enabled, analyticsProvider) {
     
     var filesrc = analyticsLibs[analyticsProvider];
     if (!filesrc) {
@@ -44,7 +43,7 @@ var handler = function (compileStep) {
     analyticsLibs << fileSrc;
     
     return true;
-  }
+  });
   
   if (!analyticsLibsSetup) {
     return false;
