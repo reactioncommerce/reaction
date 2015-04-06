@@ -8,8 +8,8 @@ Package.describe({
 Package.registerBuildPlugin({
   name: 'analyticsConfigurator',
   use: [
-    'underscore',
-    'spencern:reaction-analytics-libs'
+    'underscore@1.8.3',
+    'spencern:reaction-analytics-libs@0.0.1'
   ],
   sources: [
     'server/buildtools/analyticsSources.js',
@@ -28,7 +28,7 @@ Package.on_use(function (api, where) {
   api.use('browser-policy-content', 'server');
   api.use('iron:router@1.0.7', 'client');
   api.use("reactioncommerce:core@0.4.1");
-  api.use("spencern:reaction-analytics-libs", 'client');
+  api.use("spencern:reaction-analytics-libs@0.0.1", 'client');
 
   api.addFiles([
     "common/routing.coffee",
