@@ -6,16 +6,17 @@ Package.describe({
 });
 
 Package.registerBuildPlugin({
-  name: 'analytics-configurator',
+  name: 'analyticsConfigurator',
   use: [
-    'underscore'
+    'underscore',
+    'spencern:reaction-analytics-libs'
   ],
   sources: [
     'server/buildtools/analyticsSources.js',
     'server/buildtools/defaultConfiguration.js',
     'server/buildtools/analyticsConfigurator.js'
   ],
-  npmDependencies: {path: '0.11.14', underscore: '1.8.3'}
+  npmDependencies: {}
 });
 
 Package.on_use(function (api, where) {
@@ -24,6 +25,7 @@ Package.on_use(function (api, where) {
   api.use("coffeescript");
   api.use("less");
   api.use("reactioncommerce:core@0.4.1");
+  api.use("spencern:reaction-analytics-libs", 'client');
   api.use('browser-policy-content', 'server');
   api.use('iron:router@1.0.7', 'client', {weak: true});
 
