@@ -46,12 +46,6 @@ var handler = function (compileStep) {
     }
     
     analyticsLibs[src] = src;
-    // compileStep.error({
-    //   message: "First lib: " + analyticsLibs[src],
-    //   sourcePath: "analytics loop"
-    // });
-    // return false;
-    //
     
     return true;
   });
@@ -59,7 +53,6 @@ var handler = function (compileStep) {
   if (!analyticsLibsSetup) {
     return false;
   }
-  
   
   for (var jsPath in analyticsLibs) {
     var file = getAsset(jsPath);
@@ -70,25 +63,6 @@ var handler = function (compileStep) {
       bare: true
     });
   }
-  
-  
-  // _.each(analyticsLibs, function(libSrc) {
-  //   var lib = Asset.getText(libSrc);
-  //   var libNameRegexp = /([a-zA-Z]*\.js)$/;
-  //   var libName = libNameRegexp.exec(libSrc);
-  //   compileStep.error({
-  //     message: "in Analytics loop",
-  //     sourcePath: "analytics loop"
-  //   });
-  //   return false;
-  //
-  //   compileStep.addJavaScript({
-  //     path: 'client/compatability/' + libName,
-  //     data: lib,
-  //     sourcePath: libSrc,
-  //     bare: true
-  //   });
-  // });
 };
 
 Plugin.registerSourceHandler('analytics.json', {archMatching: 'web'}, handler);

@@ -24,10 +24,11 @@ Package.on_use(function (api, where) {
   api.use("meteor-platform@1.2.1");
   api.use("coffeescript");
   api.use("less");
+  api.use("jquery");
+  api.use('browser-policy-content', 'server');
+  api.use('iron:router@1.0.7', 'client');
   api.use("reactioncommerce:core@0.4.1");
   api.use("spencern:reaction-analytics-libs", 'client');
-  api.use('browser-policy-content', 'server');
-  api.use('iron:router@1.0.7', 'client', {weak: true});
 
   api.addFiles([
     "common/routing.coffee",
