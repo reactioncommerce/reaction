@@ -19,7 +19,7 @@ Package.registerBuildPlugin({
 });
 
 Package.on_use(function (api, where) {
-  api.versionsFrom('METEOR@1.0.3.1');
+  api.versionsFrom('METEOR@1.0');
   api.use("meteor-platform@1.2.1");
   api.use("coffeescript");
   api.use("less");

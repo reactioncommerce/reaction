@@ -1,6 +1,6 @@
 defaultConfiguration = [
   '{"modules": {',
-    '  "google-analytics":    true,',
+    '  "googleAnalytics":     true,',
     '  "mixpanel":            true,',
     '  "segmentio":           true,',
   '}}'
