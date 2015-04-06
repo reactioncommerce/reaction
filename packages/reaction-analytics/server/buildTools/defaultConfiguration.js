@@ -1,7 +1,7 @@
 defaultConfiguration = [
   '{"libs": {',
-    '  "googleAnalytics":     true,',
-    '  "mixpanel":            true,',
     '  "segmentio":           true,',
+    '  "googleAnalytics":     false,',
+    '  "mixpanel":            false,',
   '}}'
 ].join('\n');
