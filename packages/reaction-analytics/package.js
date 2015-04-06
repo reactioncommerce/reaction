@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "spencern:reaction-analytics",
-  version: "0.0.2",
+  version: "0.0.3",
   git: "https://github.com/spencern/reaction-analytics.git"
 });
 
