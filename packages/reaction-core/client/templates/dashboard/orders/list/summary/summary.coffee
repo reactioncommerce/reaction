@@ -1,4 +1,4 @@
-Template.completedOrderSummary.helpers
+Template.ordersListSummary.helpers
   # retrieve the first (original) invoice for order
   invoice: () ->
     # todo we'll want to make sure this is the original invoice

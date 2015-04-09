@@ -13,8 +13,9 @@ The `Dockerfile` in the project root creates a Docker image of Reaction Commerce
 We provide release images built from the master branch. These are the same images running on reactioncommerce.com. You can pull our latest build from the [Docker Hub](https://registry.hub.docker.com/u/ongoworks/reaction/), or from the Reaction directory you can build your own Docker image:
 
 ```bash
-docker build -t reactioncommerce/reaction-test.
+docker build -t reactioncommerce/reaction-test .
 ```
+Note: if building your own, comment out test packages before building (`mike:mocha` and `sanjo:jasmine`)
 
 Start a Docker/Reaction container using [`docker run`](https://docs.docker.com/reference/commandline/cli/#run):
 

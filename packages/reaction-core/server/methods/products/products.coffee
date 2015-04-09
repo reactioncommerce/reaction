@@ -71,10 +71,10 @@ Meteor.methods
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###
-  updateVariant: (variant, formDoc, currentDoc) ->
+  updateVariant: (variant, updateDoc, currentDoc) ->
     check variant, Object
-    check formDoc, Match.Optional(Object)
-    check currentDoc, Match.OneOf(String, Object, undefined)
+    check updateDoc, Match.OptionalOrNull(Object)
+    check currentDoc, Match.OptionalOrNull(String)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -96,6 +96,33 @@ Meteor.methods
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variants[0]._id
     Products.update product._id, $set: variants: variants, {validate: false}
+
+
+  ###
+  # delete variant, which should also delete child variants
+  ###
+  deleteVariant: (variantId) ->
+    check variantId, String
+
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+    #what will we be deleteing?
+    deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
+    #delete variants with this variant as parent
+    Products.update {"variants.parentId": variantId}, {$pull: 'variants': {'parentId': variantId}}
+    #delete this variant
+    Products.update {"variants._id": variantId}, {$pull: 'variants': {'_id': variantId}}
+    # unlink media
+    _.each deleted, (product) ->
+      _.each product.variants, (variant) ->
+        if variant.parentId is variantId or variant._id is variantId
+          Media.update 'metadata.variantId': variant._id,
+            $unset:
+              'metadata.productId': ""
+              'metadata.variantId': ""
+              'metadata.priority': ""
+          , multi: true
+    return true
 
 
   ###
@@ -143,32 +170,6 @@ Meteor.methods
 
     #create the cloned product
     return Products.insert(product, {validate: false})
-
-  ###
-  # delete variant, which should also delete child variants
-  ###
-  deleteVariant: (variantId) ->
-    check variantId, String
-
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
-      throw new Meteor.Error 403, "Access Denied"
-    #what will we be deleteing?
-    deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
-    #delete variants with this variant as parent
-    Products.update {"variants.parentId": variantId}, {$pull: 'variants': {'parentId': variantId}}
-    #delete this variant
-    Products.update {"variants._id": variantId}, {$pull: 'variants': {'_id': variantId}}
-    # unlink media
-    _.each deleted, (product) ->
-      _.each product.variants, (variant) ->
-        if variant.parentId is variantId or variant._id is variantId
-          Media.update 'metadata.variantId': variant._id,
-            $unset:
-              'metadata.productId': ""
-              'metadata.variantId': ""
-              'metadata.priority': ""
-          , multi: true
-    return true
 
   ###
   # when we create a new product, we create it with
@@ -337,7 +338,7 @@ Meteor.methods
   updateMetaFields: (productId, updatedMeta, meta) ->
     check productId, String
     check updatedMeta, Object
-    check meta, Match.OneOf(String, Object)
+    check meta, Match.OptionalOrNull(Object)
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"

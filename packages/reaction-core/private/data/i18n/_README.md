@@ -18,3 +18,4 @@ alesvaupotic - Slovenian Translation
 timbrandin - Swedish Translation
 olragon - Vietnamese Translation
 noamyoungerm - Hebrew Translation
+firstred - Dutch Translation

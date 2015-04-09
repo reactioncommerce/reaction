@@ -54,10 +54,8 @@
                 "cartDrawerItems": {
                     "left": "ဘယ်ဘက်"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "အကောင့်ထဲသို့ရောက်ပါပြီ"
-                },
                 "checkoutLogin": {
+                    "loginCompleted": "အကောင့်ထဲသို့ရောက်ပါပြီ",
                     "create-or-login": "ရှေ့ဆက်ရန် အကောင့်အသစ် ဖွင့်ပါ (သို့) အကောင့်ရှိပြီးပါက ထိုအကောင့်ကို အသုံးပြုပါ"
                 },
                 "addressBookGrid": {

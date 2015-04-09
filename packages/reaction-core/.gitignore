@@ -2,3 +2,6 @@
 .DS_Store
 *.log
 versions.json
+.versions
+
+.versions

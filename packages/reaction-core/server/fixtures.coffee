@@ -37,7 +37,7 @@ PackageFixture = ->
   #
   # updates package settings, accepts json string
   # example:
-  #  Fixtures.loadSettings Assets.getText("settings/Packages.json")
+  #  Fixtures.loadSettings Assets.getText("settings/reaction.json")
   #
   # This basically "hardcodes" all the settings. You can change them
   # via admin etc for the session, but when the server restarts they'll
@@ -46,23 +46,27 @@ PackageFixture = ->
   loadSettings: (json) ->
     check json, String
     validatedJson = EJSON.parse json
-    # loop through and import
-    for item, index in validatedJson
-      exists = ReactionCore.Collections.Packages.findOne('name': item.name)
-      if exists
-        result = ReactionCore.Collections.Packages.upsert(
-          { 'name': item.name }, {
-            $set:
-              'settings': item.settings
-              'enabled': item.enabled
-          },
-          multi: true
-          upsert: true
-          validate: false)
-
-        ReactionCore.Events.info "loaded local package data: " + item.name
+    # warn if this isn't an array of packages
+    unless _.isArray(validatedJson[0])
+      ReactionCore.Events.warn "Load Settings is not an array. Failed to load settings."
       return
-    return
+    # loop through and import
+    for pkg in validatedJson
+      for item in pkg
+        exists = ReactionCore.Collections.Packages.findOne('name': item.name)
+        if exists
+          result = ReactionCore.Collections.Packages.upsert(
+            { 'name': item.name }, {
+              $set:
+                'settings': item.settings
+                'enabled': item.enabled
+            },
+            multi: true
+            upsert: true
+            validate: false)
+          ReactionCore.Events.info "loaded local package data: " + item.name
+      #   return
+      # return
 
   #
   # loadI18n for defined shops language source json
@@ -75,6 +79,9 @@ PackageFixture = ->
     shop = ReactionCore.Collections.Shops.findOne()
     # find every file in private/data/i18n where <i18n>.json
     ReactionCore.Events.info "Loading fixture data for " + collection._name
+    # ensures that a language file is loaded if all translations are missing
+    unless shop?.languages then shop.languages = [{'i18n':'en'}]
+
     for language in shop.languages
       json = EJSON.parse Assets.getText("private/data/i18n/" + language.i18n + ".json")
 
@@ -119,14 +126,17 @@ createDefaultAdminUser = ->
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
-
+  # newly created admin user
   accountId = Accounts.createUser options
+  # add default roles and update shop with admin user
   Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
   shopId = Shops.findOne()._id
   Shops.update shopId,
     $set:
       ownerId: accountId
-      email: options.email
+    $addToSet:
+      emails: {'address': options.email, 'verified': true}
+      domains: Meteor.settings.ROOT_URL
     $push:
       members:
         isAdmin: true
@@ -144,10 +154,18 @@ createDefaultAdminUser = ->
 ###
 loadFixtures = ->
   # Load data from json files
-  Fixtures.loadData ReactionCore.Collections.Products
   Fixtures.loadData ReactionCore.Collections.Shops
+  Fixtures.loadData ReactionCore.Collections.Products
   Fixtures.loadData ReactionCore.Collections.Tags
   Fixtures.loadI18n ReactionCore.Collections.Translations
+
+  # if ROOT_URL update shop domain
+  # for now, we're assuming the first domain is the primary
+  currentDomain = Shops.findOne().domains[0]
+  if currentDomain isnt getDomain()
+    ReactionCore.Events.info "Updating domain to " + getDomain()
+    Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
+
 
   # Load data from settings/json files
   unless Accounts.loginServiceConfiguration.find().count()
@@ -187,15 +205,6 @@ loadFixtures = ->
 ###
 Meteor.startup ->
   loadFixtures()
-  # data conversion:  if ROOT_URL changes update shop domain
-  # for now, we're assuming the first domain is the primary
-  currentDomain = Shops.findOne().domains[0]
-  if currentDomain isnt getDomain()
-    ReactionCore.Events.info "Updating domain to " + getDomain()
-    Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
-
-  # data conversion: we now set sessionId or userId, but not both
-  Cart.update {userId: { $exists : true, $ne : null }, sessionId: { $exists : true }}, {$unset: {sessionId: ""}}, {multi: true}
 
   # notifiy that we're done with initialization
   ReactionCore.Events.info "Reaction Commerce initialization finished. "

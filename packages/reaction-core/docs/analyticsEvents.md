@@ -1,6 +1,6 @@
 # SEO and meta data
 
-Basic meta tag data is inserted by the `ReactionCore.MetaData.update` method. 
+Basic meta tag data is inserted by the `ReactionCore.MetaData.update` method.
 
 You can add code to add additional meta objects to the `ReactionCore.MetaData.meta` array, and they will be added to the `<head>`.
 
@@ -285,9 +285,9 @@ A user clicks on the Facebook icon footer link.
 }
 ```
 
-### Instagram External Link Click
+### Google+ External Link Click
 
-A user clicks on the Instagram icon footer link.
+A user clicks on the Google+ icon footer link.
 
 **Example of data captured:**
 
@@ -296,7 +296,7 @@ A user clicks on the Instagram icon footer link.
     "category" : "link",
     "action" : "link-click",
     "label" : "external link click",
-    "value" : "instagram",
+    "value" : "googleplus",
     "shopId" : "WvrKDomkYth3THbDD",
     "_id" : "zhPxLcBehiJEFd2JA"
 }

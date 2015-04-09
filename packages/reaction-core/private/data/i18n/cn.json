@@ -56,10 +56,8 @@
                     "cartDrawerItems": {
                         "left": "剩余"
                     },
-                    "cartCheckout": {
-                        "loginCompleted": "登入完成"
-                    },
                     "checkoutLogin": {
+                        "loginCompleted": "登入完成",
                         "create-or-login": "创建一个账户或登入以继续"
                     },
                     "addressBookGrid": {

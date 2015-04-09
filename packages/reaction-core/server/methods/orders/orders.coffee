@@ -10,6 +10,15 @@ Meteor.methods
     return Orders.update(orderId, {$set: {"shipping.shipmentMethod.tracking":tracking}})
 
   ###
+  # adds email to existing order
+  ###
+  addOrderEmail: (orderId, email) ->
+    check orderId, String #at least make sure it's an ID and not a sneaky selector
+    check email, String
+    #todo: regex email, update Accounts email with matching sessionId
+    return Orders.update(orderId, {$set: {"email":email}})
+
+  ###
   # Save supplied order workflow state
   ###
   updateWorkflow: (orderId, currentState) ->

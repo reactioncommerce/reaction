@@ -3,29 +3,35 @@ progressbar status: "visited first","previous visited","active","next"
 ###
 Template.checkoutProgressBar.helpers
   loginStatus: () ->
-    if Meteor.user()
-      status = "previous visited"
+    if getGuestLoginState()
+      return "previous visited"
     else
-      status = "active"
-    status
+      return "active"
+    return
 
   shippingStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-      status = "previous visited"
-    else if Meteor.user()
-      status = "active"
-    status
+    cart = Cart.findOne()
+    if (getGuestLoginState() and cart?.shipping?.address and cart?.payment?.address)
+      return "previous visited"
+    else if getGuestLoginState()
+      return "active"
+    return
 
   shippingOptionStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
-      status = "previous visited"
-    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId"))
-      status = "active"
-    status
+    cart = Cart.findOne()
+    if cart?.shipping?.address and cart?.payment?.address
+      if (getGuestLoginState() and Session.get("shipmentMethod"))
+        return "previous visited"
+      else if (getGuestLoginState() and cart?.shipping?.address and cart?.payment?.address)
+        return "active"
+    return
 
-  paymentStatus: () ->
-    if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod") and Session.get("paymentMethod"))
-      status = "previous visited"
-    else if (Meteor.user() and Session.get("billingUserAddressId") and Session.get("shippingUserAddressId") and Session.get("shipmentMethod"))
-      status = "active"
-    status
+  reviewStatus: () ->
+    cart = Cart.findOne()
+
+    if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
+      return "active"
+    else if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
+      return "next"
+    return
+

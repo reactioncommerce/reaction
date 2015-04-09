@@ -1,4 +1,7 @@
-Template.settingsGeneral.helpers
+Template.shopSettings.helpers
+  packageData: ->
+    return ReactionCore.Collections.Packages.findOne({name:"core"})
+
   addressBook: ->
       address = Shops.findOne().addressBook
       return address[0]
@@ -36,24 +39,9 @@ Template.settingsGeneral.helpers
       uomOptions.push {label: uom.name, value: measure}
     return uomOptions
 
-  portOptions: [
-    {label: 25, value: 25}
-    {label: 587, value: 587}
-    {label: 465, value: 465}
-    {label: 475, value: 475}
-    {label: 2525, value: 2525}
-  ]
-
-  displayCustomEmailSettings: (doc) ->
-    if doc.useCustomEmailSettings
-      style = "display:none"
-      style
-
-Template.settingsGeneral.events
-  "change #useCustomEmailSettings": (event) ->
-    $('.useCustomEmailSettings').slideToggle()
-
-
+###
+# autoform alerts
+###
 AutoForm.hooks shopEditForm:
   onSuccess: (operation, result, template) ->
     Alerts.add "Shop general settings saved.", "success", autoHide: true
@@ -70,10 +58,10 @@ AutoForm.hooks shopEditAddressForm:
 
 AutoForm.hooks shopEditEmailForm:
   onSuccess: (operation, result, template) ->
-    Alerts.add "Shop SMTP settings saved.", "success", autoHide: true
+    Alerts.add "Shop mail settings saved.", "success", autoHide: true
 
   onError: (operation, error, template) ->
-    Alerts.add "Shop SMTP settings update failed. " + error, "danger"
+    Alerts.add "Shop mail settings update failed. " + error, "danger"
 
 AutoForm.hooks shopEditSettingsForm:
   onSuccess: (operation, result, template) ->
@@ -82,13 +70,9 @@ AutoForm.hooks shopEditSettingsForm:
   onError: (operation, error, template) ->
     Alerts.add "Shop setting update failed. " + error, "danger"
 
+AutoForm.hooks shopEditOptionsForm:
+  onSuccess: (operation, result, template) ->
+    Alerts.add "Shop options saved.", "success", autoHide: true
 
-
-
-# AutoForm.hooks shopEditSettingsForm:
-#   formToDoc: (doc) ->
-#     for domain in doc.domains
-#       if domain is "localhost" then localhost = true
-#     if localhost then doc.domains.push "localhost"
-#     return false
-#     doc
+  onError: (operation, error, template) ->
+    Alerts.add "Shop options update failed. " + error, "danger"

@@ -16,11 +16,11 @@
               {{/if}}
               {{#each reactionApps provides="settings" name=name container=container}}
                 {{#if hasShopPermission route}}
-                <a class="pkg-settings" title="{{i18n 'app.settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
+                <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
                 {{/if}}
               {{/each}}
             {{else}}
-              <a class="pull-right enablePkg" title="{{i18n 'app.toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
+              <a class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
             {{/if}}
         </div>
     </div>

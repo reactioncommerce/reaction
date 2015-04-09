@@ -25,7 +25,6 @@ Template.accounts.events
     password = elementValueById("login-password")
     loginButtonsSession.set "inSignupFlow", true
     loginButtonsSession.set "inForgotPasswordFlow", false
-    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -64,7 +63,6 @@ Template.accounts.events
     usernameOrEmail = trimmedElementValueById("login-username-or-email")
     loginButtonsSession.set "inSignupFlow", false
     loginButtonsSession.set "inForgotPasswordFlow", true
-    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -82,7 +80,6 @@ Template.accounts.events
 
     loginButtonsSession.set 'inSignupFlow', false
     loginButtonsSession.set 'inForgotPasswordFlow', false
-    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", true
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -98,7 +95,6 @@ Template.accounts.events
     password = elementValueById("login-password")
     loginButtonsSession.set "inSignupFlow", false
     loginButtonsSession.set "inForgotPasswordFlow", false
-    Session.set "Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow", false
 
     # force the ui to update so that we have the approprate fields to fill in
     Tracker.flush()
@@ -161,11 +157,8 @@ trimmedElementValueById = (id) ->
     element.value.replace /^\s*|\s*$/g, ""
 
 loginOrSignup = ->
-
   if loginButtonsSession.get("inSignupFlow")
     signup()
-  else if Session.get('Reactioncommerce.Core.loginButtons.inLoginAsGuestFlow')
-    loginAsGuest()
   else
     login()
   return
@@ -205,18 +198,6 @@ login = ->
     else
       loginButtonsSession.closeDropdown()
     return
-  return
-
-loginAsGuest = ->
-  email = trimmedElementValueById("login-email")
-  if email isnt null
-    unless validateEmail(email)
-      return
-  Meteor.loginAsGuest email, (error, result) ->
-    if error
-      loginButtonsSession.errorMessage error
-    else
-      loginButtonsSession.closeDropdown()
   return
 
 signup = ->
@@ -319,3 +300,10 @@ correctDropdownZIndexes = ->
     n.style.zIndex = 1  if n.style.zIndex is 0
     n = n.parentNode
   return
+
+###
+# use all this with the unauthorized login as well
+###
+
+Template.unauthorized.inheritsHelpersFrom "accounts"
+Template.unauthorized.inheritsEventsFrom "accounts"

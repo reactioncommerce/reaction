@@ -1,7 +1,7 @@
-
-ReactionCore.Collections.FileStorage = new FS.Collection "FileStorage",
-  stores: [ new FS.Store.GridFS("docfiles") ]
-
+###
+# Define CollectionFS collection
+# See: https://github.com/CollectionFS/Meteor-CollectionFS
+###
 ReactionCore.Collections.Media = new FS.Collection "media",
   stores: [
     new FS.Store.GridFS("image"), #default unaltered image

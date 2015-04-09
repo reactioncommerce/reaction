@@ -6,6 +6,9 @@ ReactionCore.Schemas.CartItem = new SimpleSchema
     type: String
   productId:
     type: String
+  shopId:
+    type: String
+    autoValue: ReactionCore.shopIdAutoValue
   quantity:
     label: "Quantity"
     type: Number
@@ -18,22 +21,20 @@ ReactionCore.Schemas.Cart = new SimpleSchema
     type: String
     index: 1
     autoValue: ReactionCore.shopIdAutoValue
-  sessionId:
-    type: String
-    optional: true
-    custom: -> #required if userId isn't set
-      userIdField = @siblingField "userId"
-      return "required" if @isInsert and !@value and !userIdField.value
-      #TODO: This update logic as is would not be correct because we also need to
-      #look up the existing doc and see if userId is already set, in which case
-      #it's OK to unset sessionId. Collection2 should provide the doc _id so
-      #that we can do this lookup.
-      #return "required" if @isUpdate and (@operator is "$unset" or @value is null) and !userIdField.value
     index: 1
   userId:
     type: String
     optional: true
     index: 1
+  sessions:
+    type: [String]
+    optional: true
+    index: 1
+  email:
+    type: String
+    optional: true
+    index: 1
+    regEx: SimpleSchema.RegEx.Email
   items:
     type: [ReactionCore.Schemas.CartItem]
     optional: true

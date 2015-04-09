@@ -5,7 +5,7 @@ _.extend ReactionCore,
     if Meteor.isClient and @isInsert
       # will be set correctly on the server
       return ReactionCore.getShopId() or "1"
-    else if Meteor.isServer and @isInsert
+    else if Meteor.isServer and (@isInsert or @isUpsert)
       # forced value for client-initiated inserts
       # or for server-initiated inserts where shopId isn't set
       return ReactionCore.getShopId()

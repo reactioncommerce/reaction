@@ -11,7 +11,7 @@ setProduct = (productId, variantId) ->
   return
 
 ###
-#  Global Reaction Routes
+#  Global Route Configuration
 #  Extend/override in reaction/client/routing.coffee
 ###
 Router.configure
@@ -21,16 +21,17 @@ Router.configure
     @render "loading"
     Alerts.removeSeen()
     @next()
-    return
 
 
+# we always need to wait on these publications
+Router.waitOn ->
+  @subscribe "shops"
+  @subscribe "Packages"
+
+# general reaction controller
 @ShopController = RouteController.extend
-  waitOn: ->
-    @subscribe "shops"
-    @subscribe "cart", Session.get "sessionId", Meteor.userId()
   onAfterAction: ->
     ReactionCore.MetaData.refresh(@route, @params)
-    return
   layoutTemplate: "coreLayout"
   yieldTemplates:
     layoutHeader:
@@ -39,20 +40,24 @@ Router.configure
       to: "layoutFooter"
     dashboard:
       to: "dashboard"
+# local ShopController
 ShopController = @ShopController
 
+# admin specific shop controller
 @ShopAdminController = @ShopController.extend
-  waitOn: ->
-    @subscribe "shops"
   onBeforeAction: () ->
-    unless ReactionCore.hasPermission(@route.getName())
+    # could check for roles here for dashboard access
+    unless ReactionCore.hasPermission(@route.getName()) and Meteor.userId()
       @render('unauthorized')
     else
       @next()
     return
-
+# local ShopAdminController
 ShopAdminController = @ShopAdminController
 
+###
+# General Route Declarations
+###
 Router.map ->
   # default index route, normally overriden parent meteor app
   @route "index",
@@ -74,15 +79,14 @@ Router.map ->
   @route 'dashboard/settings/shop',
     controller: ShopAdminController
     path: '/dashboard/settings/shop'
-    template: 'settingsGeneral'
+    template: 'shopSettings'
     data: ->
       Shops.findOne()
 
   @route 'dashboard/settings/account',
     controller: ShopAdminController
     path: '/dashboard/settings/account'
-    template: 'settingsAccount'
-
+    template: 'shopAccounts'
 
   # list page of customer records
   @route 'dashboard/customers',
@@ -119,12 +123,11 @@ Router.map ->
     path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
-      return Meteor.subscribe 'product', @params._id
+      @subscribe 'product', @params._id
     onBeforeAction: ->
       variant = @params.variant || @params.query.variant
       setProduct @params._id, variant
       @next()
-      return
     data: ->
       product = selectedProduct()
       if @ready() and product
@@ -132,6 +135,8 @@ Router.map ->
           unless ReactionCore.hasPermission(@url)
             @render 'unauthorized'
         return product
+      if @ready() and !product
+        @render 'notFound'
 
   #checkout
   @route 'cartCheckout',
@@ -141,13 +146,12 @@ Router.map ->
     yieldTemplates:
       checkoutHeader:
         to: "layoutHeader"
+    waitOn: ->
+      @subscribe "Packages"
     subscriptions: ->
-      @subscribe "shops"
       @subscribe "products"
       @subscribe "shipping"
-      @subscribe "Packages"
-      @subscribe "userOrders", Meteor.userId()
-      @subscribe "cart", Session.get "sessionId", Meteor.userId()
+      @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
 
   #completed orders
   @route 'cartCompleted',
@@ -155,11 +159,28 @@ Router.map ->
     path: 'completed/:_id'
     template: 'cartCompleted'
     subscriptions: ->
-      @subscribe "userOrders", Meteor.userId()
+      @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
     data: ->
       if @ready()
         if Orders.findOne(@params._id)
-          return Orders.findOne(@params._id)
+          return ReactionCore.Collections.Orders.findOne({'_id': @params._id})
+        else
+          @render 'unauthorized'
+      else
+        @render "loading"
+
+  #account profile
+  @route 'account/profile',
+    controller: ShopController
+    path: 'account/profile'
+    template: 'accountProfile'
+    subscriptions: ->
+      @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
+    data: ->
+      if @ready()
+        if Orders.findOne() or Meteor.userId()
+          # if subscription has results or Meteor userId
+          return ReactionCore.Collections.Orders.find({}, {sort: { createdAt: -1 }})
         else
           @render 'unauthorized'
       else

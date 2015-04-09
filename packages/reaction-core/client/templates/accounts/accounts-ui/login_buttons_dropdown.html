@@ -115,11 +115,6 @@
           <span data-i18n="accountsUI.signIn">Sign In</span>
         {{/if}}
         {{#if inline }}
-        {{#if canCheckoutAsGuest}}
-          {{#if inLoginAsGuestFlow}}
-            <span data-i18n="accountsUI.checkoutAsGuest">Checkout without user account</span>
-          {{/if}}
-        {{/if}}
         {{/if}}
       </div>
 
@@ -143,17 +138,6 @@
       {{/if}}
       {{#if inSignupFlow}}
         {{> _loginButtonsBackToLoginLink}}
-        {{#if canCheckoutAsGuest }}
-        {{#if inline }}
-          {{> core_loginButtonsBackToGuestLoginLink}}
-        {{/if}}
-        {{/if}}
-      {{/if}}
-      {{#if canCheckoutAsGuest }}
-        {{#if inLoginAsGuestFlow}}
-          {{> _loginButtonsBackToLoginLink}}
-          {{> _loginButtonsBackToSignUpLink}}
-        {{/if}}
       {{/if}}
     </div>
   {{/if}}
@@ -168,8 +152,7 @@
 
     {{> _loginButtonsMessages}}
 
-    <div class="login-button login-button-form-submit" id="login-buttons-forgot-password" data-i18n="accountsUI.resetYourPassword">
-      {{i18n "accountsUI.resetYourPassword"}}
+    <div class="login-button login-button-form-submit" id="login-buttons-forgot-password" data-i18n="accountsUI.resetYourPassword">Reset your password
     </div>
 
     {{> _loginButtonsBackToLoginLink}}

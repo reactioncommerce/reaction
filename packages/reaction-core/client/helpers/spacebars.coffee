@@ -83,6 +83,11 @@ Template.registerHelper "camelToSpace", (str) ->
 #
 Template.registerHelper "toLowerCase", (str) ->
   return str.toLowerCase()
+#
+# camelCase string
+#
+Template.registerHelper "toCamelCase", (str) ->
+  return str.toCamelCase()
 
 ###
 # Methods for the reaction permissions
@@ -208,12 +213,10 @@ Template.registerHelper "dateFormat", (context, block) ->
     return context #  moment plugin not available. return data as is.
   return
 
-Template.registerHelper "uc", (str) ->
-  encodeURIComponent str
-
 ###
 # general helper for plurization of strings
 # returns string with 's' concatenated if n = 1
+# TODO: adapt to, and use i18n
 ###
 Template.registerHelper "pluralize", (n, thing) ->
   # fairly stupid pluralizer
@@ -224,7 +227,7 @@ Template.registerHelper "pluralize", (n, thing) ->
 
 ###
 # general helper user name handling
-# todo: needs additional validation all use cases
+# TODO: needs additional validation all use cases
 # returns first word in profile name
 ###
 Template.registerHelper "fname", ->
@@ -337,13 +340,14 @@ Template.registerHelper "reactionApps", (options) ->
           match += 1
         if match is Object.keys(registryFilter).length
           registry.name = app.name
-          registry.enabled = app.enabled
-          registry.packageId = app._id
-          reactionApps.push registry
+          # skip false registry entries, even if pkg is enabled
+          unless registry.enabled is false
+            registry.enabled = registry.enabled || app.enabled
+            registry.packageId = app._id
+            reactionApps.push registry
 
   #
-  # TODO:
-  # add group by provides, sort by cycle, enabled
+  # TODO: add group by provides, sort by cycle, enabled
   #
 
   # make sure they are unique

@@ -1,8 +1,8 @@
-Template.settingsAccount.helpers
+Template.shopAccounts.helpers
   members: () ->
-    Shops.findOne().members
+    return Shops.findOne()?.members
 
-Template.settingsAccount.events
+Template.shopAccounts.events
   "click .button-add-member": (event,template) ->
     $('.settings-account-list').hide()
     $('.member-form').removeClass('hidden')

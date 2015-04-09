@@ -74,15 +74,6 @@ ReactionCore.Schemas.Country = new SimpleSchema
   code:
     type: String
 
-ReactionCore.Schemas.currencyEngine = new SimpleSchema
-  provider:
-    type: String
-    defaultValue: "OXR"
-  apiKey:
-    type: String
-    optional: true
-    label: "Open Exchange Rates App ID"
-
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
@@ -101,13 +92,12 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   domains:
     type: [String]
     defaultValue: ["localhost"] #see simple schema issue #73
-  email:
-    type: String
+  emails:
+    type: [ReactionCore.Schemas.Email]
+    optional: true
   currency:
     type: String
     defaultValue: "USD"
-  currencyEngine:
-    type: ReactionCore.Schemas.currencyEngine
   currencies:
     type: [ReactionCore.Schemas.Currency]
   public:
@@ -120,7 +110,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
     defaultValue: "OZ"
     label: "Base Unit of Measure"
-  canCheckoutAsGuest:
+  allowGuestCheckout:
     type: Boolean
     defaultValue: false
   ownerId:
@@ -131,11 +121,6 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
-  useCustomEmailSettings:
-    type: Boolean
-    optional: true
-  customEmailSettings:
-    type: ReactionCore.Schemas.CustomEmailSettings
   createdAt:
     type: Date
   updatedAt:

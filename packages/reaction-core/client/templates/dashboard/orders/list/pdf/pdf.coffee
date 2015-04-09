@@ -5,8 +5,8 @@
 #   see: http://mrrio.github.io/jsPDF/examples/basic.html
 ###
 
-Template.completedPDFLayout.inheritsHelpersFrom "completedOrderLayout"
-Template.completedPDFLayout.inheritsEventsFrom "completedOrderLayout"
+Template.completedPDFLayout.inheritsHelpersFrom "dashboardOrdersList"
+Template.completedPDFLayout.inheritsEventsFrom "dashboardOrdersList"
 Template.completedPDFLayout.helpers
   invoice: () ->
     return @.payment.invoices[0]

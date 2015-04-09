@@ -40,7 +40,7 @@
                 },
                 "productDetailEdit": {
                     "title": "Название",
-                    "pagetitle": "Другое название",
+                    "pageTitle": "Другое название",
                     "vendor": "Производитель",
                     "description": "Добавьте описание товара"
                 },
@@ -81,10 +81,8 @@
                 "cartDrawerItems": {
                     "left": "слева"
                 },
-                "cartCheckout": {
-                    "loginCompleted": "Вход выполнен"
-                },
                 "checkoutLogin": {
+                    "loginCompleted": "Вход выполнен",
                     "create-or-login": "Создайте личный кабинет или авторизируйтесь чтобы продолжить"
                 },
                 "addressBookGrid": {
