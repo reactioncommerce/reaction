@@ -1,7 +1,11 @@
 # Meteor packages used by this project, one per line.
 #
-# 'meteor add' and 'meteor remove' will edit this file for you,
-# but you can also edit it by hand.
+# copy this file to a file name "packages"
+#
+# cp packages.example packages
+#
+# and we'll use these packages when building a docker image
+#
 
 # Core Meteor Packages
 package-stats-opt-out
@@ -15,8 +19,10 @@ accounts-facebook
 spiderable
 audit-argument-checks
 fastclick
+force-ssl
 
 # Community Packages
+#okgrow:iron-router-autoscroll
 nemo64:bootstrap
 #mike:mocha
 #sanjo:jasmine

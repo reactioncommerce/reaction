@@ -4,13 +4,23 @@
 #  Important:  Best to run from a clean directory that hasn't had meteor run in it.
 #  Important:  packages/<pkg>/.npm and .build* should not exist
 #
-#   Build:
+#  NOTE: this script has some reaction specific scripts,
+#        you probably don't want to use this a generic dockerfile
 #
-#     docker build -t ongoworks/reaction .
+#  Usage:
+#   Build:
+#     cd reaction
+#     docker build -t <your org>/reaction .
 #
 #   Run Reaction, Meteor + local mongo:
 #
-#     docker run -it --rm -p :49000:8080 --name reactioncommerce ongoworks/reaction
+#   docker run --rm  -p ::3000
+#     -e ROOT_URL="http://localhost" \
+#     -e METEOR_EMAIL="youradmin@yourdomain.com" \
+#     -e METEOR_USER="admin" \
+#     -e METEOR_AUTH="password" \
+#     -t ongoworks/reaction
+#
 #
 #   Optional Meteor parameters (-e):
 #
@@ -28,70 +38,70 @@
 #     METEOR_USER="admin"
 #     METEOR_AUTH="password"
 #
-#   Build parameters:
-#
-#     REPO="https://github.com/reactioncommerce/reaction.git"
-#     BRANCH="master"
-#
-#   Example use:
-#
-#   docker run --rm -e ROOT_URL="http://testsite.com" \
-#     -e REPO="https://github.com/reactioncommerce/reaction.git" \
-#     -e BRANCH="master" \
-#     -e METEOR_EMAIL="youradmin@yourdomain.com" \
-#     -e METEOR_USER="admin" \
-#     -e METEOR_AUTH="password" \
-#     -t ongoworks/reaction
-#
-#
 ##############################################################
 
-FROM mongo:2.6.8
-MAINTAINER Aaron Judd <aaron@ongoworks.com>
+FROM mongo:latest
+MAINTAINER Aaron Judd <hello@reactioncomerce.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install git, curl, python, etc
 # Install imagemagick (optional for cfs:graphicsmagick)
-RUN apt-get -qq update && apt-get install -qq -y curl python gcc make \
-  build-essential git ca-certificates nano chrpath libfreetype6  \
-  libfreetype6-dev libssl-dev libfontconfig1 imagemagick
+RUN apt-get -qq update && apt-get install -qq -y \
+  build-essential \
+  ca-certificates \
+  chrpath \
+  curl \
+  gcc \
+  git \
+  imagemagick \
+  libfreetype6 \
+  libfreetype6-dev \
+  libssl-dev \
+  libfontconfig1 \
+  make \
+  procps \
+  python
 
 # install node
 RUN mkdir /nodejs && curl http://nodejs.org/dist/v0.10.36/node-v0.10.36-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
+
+# Default (required) Meteor env variables
 ENV PATH $PATH:/nodejs/bin
+ENV PORT 3000
+ENV ROOT_URL http://localhost
+ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
+ENV MAIL_URL smtp://localhost:25
+
+# Expose container port 3000 to the host (outside the container)
+EXPOSE 3000
 
 # Install forever & phantomjs
 RUN npm install --silent -g forever phantomjs
 
-# Install Meteor to /usr/src
+# Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
-ADD . /usr/src/meteor
-WORKDIR /usr/src/meteor/
+
+# Install entrypoint
+COPY bin/docker/entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
+
+COPY bin/docker/build-meteor.sh /usr/bin/build-meteor.sh
+RUN chmod +x /usr/bin/build-meteor.sh
 
 # Make sure we have a directory for the application
 RUN mkdir -p /var/www
 RUN chown -R www-data:www-data /var/www
 
-# Bundle from /usr/src/meteor to /var/www
-RUN meteor build --directory /var/www
-RUN cd /var/www/bundle/programs/server/ && npm install
+# add app to /usr/src
+VOLUME ["/usr/src/meteor"]
+COPY . /usr/src/meteor
+WORKDIR /usr/src/meteor/
+
+# Build meteor
+RUN bash /usr/bin/build-meteor.sh
+
+# Rebuild Meteor and start Meteor, Reaction and MongoDB
 WORKDIR /var/www/bundle
-
-# Install entrypoint
-ADD bin/entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
-
-# Expose container port 8080 to the host (outside the container)
-EXPOSE 8080
-
-# Expose mongodb port
-EXPOSE 27017
-
-# Some housekeeping
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /meteor/src
-
-# Start Meteor, Reaction and MongoDB
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
-
 CMD []
