@@ -23,7 +23,9 @@ Test shops help us gather feedback for Reaction development, as well as testing 
 
 
 ##Status
-**Current status: Alpha Preview v0.5.0**
+![](https://circleci.com/gh/reactioncommerce/reaction.svg?style=badge&circle-token=:circle-token)
+
+**Current status: Alpha Preview v0.5.7**
 
 **Functional but unstable, with HEAVY ongoing development!**
 
