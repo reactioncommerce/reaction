@@ -4,7 +4,7 @@ accounts-ui-unstyled@1.1.7
 alanning:roles@1.2.13
 aldeed:autoform@4.2.2
 aldeed:collection2@2.3.3
-aldeed:geocoder@0.3.5
+aldeed:geocoder@0.3.6
 aldeed:simple-schema@1.3.2
 aldeed:template-extension@3.4.3
 amplify@1.0.0
@@ -12,7 +12,7 @@ anti:fake@0.4.1
 autoupdate@1.2.1
 base64@1.0.3
 binary-heap@1.0.3
-blaze@2.1.1
+blaze@2.1.2
 blaze-tools@1.0.3
 boilerplate-generator@1.0.3
 browser-policy@1.0.4
@@ -20,7 +20,7 @@ browser-policy-common@1.0.3
 browser-policy-content@1.0.4
 browser-policy-framing@1.0.4
 callback-hook@1.0.3
-cfs:access-point@0.1.46
+cfs:access-point@0.1.47
 cfs:base-package@0.0.29
 cfs:collection@0.5.5
 cfs:collection-filters@0.2.4
@@ -29,12 +29,12 @@ cfs:file@0.1.17
 cfs:filesystem@0.1.2
 cfs:graphicsmagick@0.0.18
 cfs:gridfs@0.0.33
-cfs:http-methods@0.0.27
+cfs:http-methods@0.0.28
 cfs:http-publish@0.0.13
 cfs:power-queue@0.9.11
 cfs:reactive-list@0.0.9
 cfs:reactive-property@0.0.4
-cfs:standard-packages@0.5.7
+cfs:standard-packages@0.5.8
 cfs:storage-adapter@0.2.2
 cfs:tempstore@0.1.5
 cfs:ui@0.1.3
@@ -42,7 +42,7 @@ cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.0.5
 coffeescript@1.0.6
-d3js:d3@3.4.13
+d3js:d3@3.5.5
 dburles:factory@0.3.9
 ddp@1.1.0
 deps@1.0.7
@@ -77,7 +77,7 @@ meteorhacks:ssr@2.1.2
 minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
-momentjs:moment@2.8.4
+momentjs:moment@2.10.2
 mongo@1.1.0
 mongo-livedata@1.0.8
 mrt:underscore-string-latest@2.3.3
@@ -87,13 +87,13 @@ npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
 ongoworks:bunyan-logger@1.0.0
 ongoworks:pdf@1.1.1
-ongoworks:security@1.0.1
+ongoworks:security@1.1.0
 ongoworks:speakingurl@1.1.0
 ordered-dict@1.0.3
 raix:eventemitter@0.1.2
 raix:ui-dropped-event@0.0.7
 random@1.0.3
-reactioncommerce:core@0.5.6
+reactioncommerce:core@0.5.7
 reactioncommerce:core-theme@1.3.2
 reactive-dict@1.1.0
 reactive-var@1.0.5
