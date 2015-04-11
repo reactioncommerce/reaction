@@ -78,7 +78,13 @@ _.extend ReactionCore,
   # returns shop id
   getShopId: ->
     return @shopId
-
+  # return the logged in user's shop if he owns any or if he is an admin -> used in multivendor
+  getSellerShopId: (client) ->
+    if Roles.userIsInRole(Meteor.userId(), ['owner'])
+      return ReactionCore.Collections.Shops.findOne({ownerId: Meteor.userId()})?._id;
+    else if Roles.userIsInRole(Meteor.userId(), ['admin'])
+      return ReactionCore.Collections.Shops.findOne({'members.isAdmin': true, 'members.userId': Meteor.userId()})?._id;
+    return null;
 
 Meteor.startup ->
   # todo: this could grow.. and grow...
