@@ -1,0 +1,7 @@
+{
+    "libs": {
+        "segmentio": false,
+        "googleAnalytics": true,
+        "mixpanel": true
+    }
+}
