@@ -48,7 +48,7 @@ Meteor.methods
   updateHistory: (orderId, event, value) ->
     check orderId, String
     check event, String
-    check value, String
+    check value, Match.Optional(String)
     # update history
     return Orders.update orderId,
       $addToSet:
