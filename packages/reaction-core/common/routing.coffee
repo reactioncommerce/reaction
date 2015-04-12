@@ -95,10 +95,11 @@ Router.map ->
   # list page of shop orders
   @route 'dashboard/orders',
     controller: ShopAdminController
-    path: 'dashboard/orders/'
+    path: 'dashboard/orders/:_id?'
     template: 'orders'
     data: ->
-      Orders.find(@params._id)
+      if Orders.findOne(@params._id)
+          return ReactionCore.Collections.Orders.findOne({'_id': @params._id})
 
   # display products by tag
   @route 'product/tag',
