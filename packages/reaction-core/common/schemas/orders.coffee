@@ -118,3 +118,6 @@ ReactionCore.Schemas.Order = new SimpleSchema
   documents:
     type: [ReactionCore.Schemas.Document]
     optional: true
+  notes:
+    type: String
+    optional: true

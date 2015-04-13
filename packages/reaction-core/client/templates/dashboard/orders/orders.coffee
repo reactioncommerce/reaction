@@ -1,7 +1,11 @@
 Template.orders.helpers
   orders: ->
     return Orders.find()
-
+  isOrder: ->
+    if @._id
+      return true
+    else
+      return false
   fulfillmentWorkflow: ->
     # to define fulfillment workflow, alter OrderWorkflowEvents
     fulfillmentWorkflow = []

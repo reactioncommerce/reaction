@@ -1,0 +1,14 @@
+<template name="order">
+	<div class="col-md-6 col-lg-6 col-sm-12">
+		{{>orderDetail}}
+	</div>
+	<div class="col-md-6 col-lg-6 col-sm-12">
+		{{#autoForm collection="Orders" doc=this id="AddNotes" type="update"}}
+			<fieldset>
+				<legend>Order Note</legend>
+				{{> afQuickField name='notes' rows=6}}
+			</fieldset>
+			<button type="submit" class="btn btn-primary">Add Note</button>
+		{{/autoForm}}
+	</div>
+</template>

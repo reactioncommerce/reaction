@@ -282,6 +282,8 @@ Package.onUse(function (api) {
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
+    "client/templates/dashboard/orders/order.html",
+    "client/templates/dashboard/orders/order.coffee",
 
     "client/templates/dashboard/orders/list/ordersList.html",
     "client/templates/dashboard/orders/list/ordersList.coffee",
