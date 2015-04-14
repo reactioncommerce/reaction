@@ -1,5 +1,5 @@
 Template.order.events
-	'click .save-order-pdf': () ->
+  'click .save-order-pdf': () ->
     saveOrderAsPDF Orders.findOne(this._id)
     return
   'click .save-label-pdf': () ->

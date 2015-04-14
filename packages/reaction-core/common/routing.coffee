@@ -99,7 +99,7 @@ Router.map ->
     template: 'orders'
     data: ->
       if Orders.findOne(@params._id)
-          return ReactionCore.Collections.Orders.findOne({'_id': @params._id})
+        return ReactionCore.Collections.Orders.findOne({'_id': @params._id})
 
   # display products by tag
   @route 'product/tag',
