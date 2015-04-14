@@ -96,13 +96,13 @@ CartWorkflow = StateMachine.create(
 
     onpaymentAuth: (event, from, to, paymentMethod) ->
       # before payment really should be async
-      Meteor.setTimeout (->
-        Meteor.call "copyCartToOrder", Cart.findOne()._id, (error, result) ->
-          if error
-            console.log "An error occurred saving the order. : " +error
-          else #go to order success
-            CartWorkflow.inventoryAdjust(result)
-      ), 250
+      cartId = Cart.findOne()._id
+      Meteor.call "copyCartToOrder", cartId, (error, result) ->
+        if error
+          console.log "An error occurred saving the order. : " +error
+        else #go to order success
+          CartWorkflow.inventoryAdjust(result)
+
 
     oninventoryAdjust: (event, from, to, orderId) ->
       Meteor.call "inventoryAdjust", orderId

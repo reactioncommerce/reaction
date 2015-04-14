@@ -144,7 +144,8 @@
                     "complete": "Complete"
                 },
                 "checkoutPayment": {
-                    "addPaymentToCompleteOrder": "Add payment to complete order"
+                    "addPaymentToCompleteOrder": "Add payment to complete order",
+                    "processingError": "There was a problem with your payment."
                 },
                 "checkoutReview": {
                     "review": "Review"

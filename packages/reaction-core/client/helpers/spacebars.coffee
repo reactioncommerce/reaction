@@ -54,6 +54,7 @@ Template.registerHelper "pathForSEO", (path, params) ->
 
 #
 # return user name
+# TODO: Update to use accounts profile
 #
 Template.registerHelper "displayName", () ->
   user = Meteor.user()
@@ -65,6 +66,7 @@ Template.registerHelper "displayName", () ->
 
 #
 # return social images, defaults to avatar.gif
+# TODO: Update to use accounts profile
 #
 Template.registerHelper "socialImage", () ->
   if Meteor.user().profile?.picture
@@ -231,6 +233,7 @@ Template.registerHelper "pluralize", (n, thing) ->
 # returns first word in profile name
 ###
 Template.registerHelper "fname", ->
+  # TODO: use accounts profile
   if Meteor.user()
     name = Meteor.user().profile.name.split(" ")
     fname = name[0]
@@ -350,8 +353,13 @@ Template.registerHelper "reactionApps", (options) ->
   # TODO: add group by provides, sort by cycle, enabled
   #
 
-  # make sure they are unique
+  # make sure they are unique,
+  # add priority for default sort
   reactionApps = _.uniq(reactionApps)
+  for app, index in reactionApps
+    reactionApps[index].priority = index unless app.priority
+    # need to sort after?
+
   return reactionApps
 
 ###
