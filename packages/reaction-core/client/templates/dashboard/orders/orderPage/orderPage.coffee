@@ -1,4 +1,4 @@
-Template.order.events
+Template.orderPage.events
   'click .save-order-pdf': () ->
     saveOrderAsPDF Orders.findOne(this._id)
     return

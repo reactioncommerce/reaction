@@ -1,8 +1,8 @@
-<template name="order">
+<template name="orderPage">
   <button type="button" class="btn btn-success save-order-pdf" data-i18n="app.download">Download Invoice</button>
   <button type="button" class="btn btn-success save-label-pdf" data-i18n="app.download">Download Shipping Label</button>
   <div class="col-md-6 col-lg-6 col-sm-12">
-    {{>orderDetail}}
+    {{>pageOrderDetail}}
   </div>
   <div class="col-md-6 col-lg-6 col-sm-12">
     {{#autoForm collection="Orders" doc=this id="AddNotes" type="update"}}

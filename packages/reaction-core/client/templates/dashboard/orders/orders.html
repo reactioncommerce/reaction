@@ -1,6 +1,6 @@
 <template name="orders">
   {{#if isOrder}}
-    {{>order}}
+    {{>orderPage}}
   {{else}}
     {{#with orders}}
       <div class="row orders-grid">
@@ -19,7 +19,6 @@
                   {{#each ..}}
                     {{#if condition state "eq" ../value}}
                       {{>orderDetail}}
-                      <a href="/dashboard/orders/{{_id}}"><button class="btn btn-primary">View More</button></a>
                     {{/if}}
                   {{/each}}
                 </ul>
