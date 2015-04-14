@@ -83,12 +83,21 @@ ReactionCore.Schemas.Document = new SimpleSchema
     optional: true
 
 ReactionCore.Schemas.History = new SimpleSchema
-    event:
-      type: String
-    userId:
-      type: String
-    updatedAt:
-      type: Date
+  event:
+    type: String
+  userId:
+    type: String
+  updatedAt:
+    type: Date
+
+ReactionCore.Schemas.Notes = new SimpleSchema
+  content:
+    type: String
+  userId:
+    type: String
+  updatedAt:
+    type: Date
+
 
 ###
 # ReactionCore.Schemas.OrderItems
@@ -117,4 +126,7 @@ ReactionCore.Schemas.Order = new SimpleSchema
     optional: true
   documents:
     type: [ReactionCore.Schemas.Document]
+    optional: true
+  notes:
+    type: [ReactionCore.Schemas.Notes]
     optional: true

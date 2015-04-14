@@ -283,6 +283,12 @@ Package.onUse(function (api) {
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
 
+    "client/templates/dashboard/orders/orderPage/orderPage.html",
+    "client/templates/dashboard/orders/orderPage/orderPage.coffee",
+
+    "client/templates/dashboard/orders/orderPage/details/details.html",
+    "client/templates/dashboard/orders/orderPage/details/details.coffee",
+
     "client/templates/dashboard/orders/list/ordersList.html",
     "client/templates/dashboard/orders/list/ordersList.coffee",
 

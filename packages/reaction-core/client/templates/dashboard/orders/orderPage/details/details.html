@@ -1,4 +1,4 @@
-<template name="orderDetail">
+<template name="pageOrderDetail">
   <li class="list-group-item order-detail">
     <div class="row order-profile">
       {{#with userProfile.profile}}
@@ -40,9 +40,8 @@
     <div class="row order-state-helpers">
       {{>orderStateHelper}}
     </div>
-    <br>
     <div class="row">
-      <a href="/dashboard/orders/{{_id}}"><button class="btn btn-primary pull-right">View More</button></a>
+      Payment Method: <strong>{{paymentMethod}}</strong>
     </div>
   </li>
 </template>
