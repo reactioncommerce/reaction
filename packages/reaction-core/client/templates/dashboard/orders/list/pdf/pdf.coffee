@@ -1,8 +1,5 @@
 ###
-# Template for orders pdf layout, uses jsPDF with
-# very limited html support.
-#   jsPDF docs state: "HTML Element, or anything supported by html2canvas"
-#   see: http://mrrio.github.io/jsPDF/examples/basic.html
+Uses the browser print function.
 ###
 
 Template.completedPDFLayout.inheritsHelpersFrom "dashboardOrdersList"

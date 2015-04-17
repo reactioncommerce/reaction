@@ -54,7 +54,6 @@ Package.onUse(function (api) {
     api.use("aldeed:template-extension@3.4.3","client");
     api.use("iron:router@1.0.7");
     api.use("ongoworks:speakingurl@1.1.0");
-    api.use("ongoworks:pdf@1.1.1");
     api.use("ongoworks:bunyan-logger@1.0.0");
     api.use("ongoworks:security@1.1.0");
 
