@@ -1,9 +1,6 @@
 Template.orderPage.events
-  'click .save-order-pdf': () ->
-    saveOrderAsPDF Orders.findOne(this._id)
-    return
   'click .save-label-pdf': () ->
-    #TODO: Add label printing capability
+    #TODO: Add label printing capability. Mostly use the PDF routecontroller.
     return
   'click .btn-add-note': (event, template) ->
     date = new Date()
