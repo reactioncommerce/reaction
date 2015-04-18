@@ -72,6 +72,7 @@ ReactionCore.registerPackage
     {
       template: "coreOrderWidgets"
       provides: 'widget'
+      route: "dashboard/orders"
     }
     # products
     {

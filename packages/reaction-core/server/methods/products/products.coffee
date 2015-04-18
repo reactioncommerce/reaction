@@ -1,5 +1,3 @@
-Media = ReactionCore.Collections.Media
-
 Meteor.methods
   ###
   # the cloneVariant method copies variants, but will also create and clone child variants (options)
@@ -10,6 +8,8 @@ Meteor.methods
     check productId, String
     check variantId, String
     check parentId, Match.Optional(String)
+    @unblock()
+
     # clone variant
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -53,6 +53,7 @@ Meteor.methods
   createVariant: (productId, newVariant) ->
     check productId, String
     check newVariant, Match.OneOf(Object, undefined)
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -75,6 +76,8 @@ Meteor.methods
     check variant, Object
     check updateDoc, Match.OptionalOrNull(Object)
     check currentDoc, Match.OptionalOrNull(String)
+    Products = ReactionCore.Collections.Products
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -91,6 +94,7 @@ Meteor.methods
   ###
   updateVariants: (variants) ->
     check variants, [Object]
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -103,6 +107,7 @@ Meteor.methods
   ###
   deleteVariant: (variantId) ->
     check variantId, String
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -116,7 +121,7 @@ Meteor.methods
     _.each deleted, (product) ->
       _.each product.variants, (variant) ->
         if variant.parentId is variantId or variant._id is variantId
-          Media.update 'metadata.variantId': variant._id,
+          ReactionCore.Collections.Media.update 'metadata.variantId': variant._id,
             $unset:
               'metadata.productId': ""
               'metadata.variantId': ""
@@ -134,6 +139,7 @@ Meteor.methods
   cloneProduct: (product) ->
     check product, Object
     #check product, ReactionCore.Schemas.Product
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -157,7 +163,7 @@ Meteor.methods
       oldVariantId = product.variants[i]._id
       product.variants[i]._id = newVariantId
       #clone images for each variant
-      Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
+      ReactionCore.Collections.Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
         newFile = fileObj.copy()
         newFile.update({$set: {'metadata.productId': product._id, 'metadata.variantId': newVariantId}})
       #update any child variants with the newly assigned ID
@@ -177,8 +183,10 @@ Meteor.methods
   # with pricing and details
   ###
   createProduct: () ->
+    @unblock()
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
+
     Products.insert
       _id: Random.id()
       title: ""
@@ -196,12 +204,13 @@ Meteor.methods
     check productId, String
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     # delete product
     numRemoved = Products.remove productId
     if numRemoved > 0
       # unlink media
-      Media.update 'metadata.productId': productId,
+      ReactionCore.Collections.Media.update 'metadata.productId': productId,
         $unset:
           'metadata.productId': ""
           'metadata.variantId': ""
@@ -218,6 +227,7 @@ Meteor.methods
     check productId, String
     check field, String
     check value, String
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -236,6 +246,7 @@ Meteor.methods
     check tagName, String
     check tagId, Match.OneOf(String, null)
     check currentTagId, Match.Optional(String)
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -268,6 +279,7 @@ Meteor.methods
   removeProductTag: (productId, tagId) ->
     check productId, String
     check tagId, String
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -287,6 +299,7 @@ Meteor.methods
   setHandleTag: (productId, tagId) ->
     check productId, String
     check tagId, String
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -313,6 +326,7 @@ Meteor.methods
   updateProductPosition: (productId, positionData) ->
     check productId, String
     check positionData, Object
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -339,6 +353,7 @@ Meteor.methods
     check productId, String
     check updatedMeta, Object
     check meta, Match.OptionalOrNull(Object)
+    @unblock()
 
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
@@ -346,3 +361,28 @@ Meteor.methods
       Products.update({"_id": productId, "metafields": meta}, {$set: {"metafields.$": updatedMeta} })
     else
       Products.update( "_id": productId, { "$addToSet": { "metafields": updatedMeta } })
+
+  #
+  # toggle isVisible status of product
+  #
+  publishProduct: (productId) ->
+    check productId, String
+    @unblock()
+
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+
+    product = ReactionCore.Collections.Products.findOne(productId)
+    #one variant required to publish product
+    if product?.variants[0].price and product?.variants[0].title and product?.title
+      # log this
+      ReactionCore.Events.info "toggle product visibility ", product._id, !product.isVisible
+      # toggle isVisible
+      result = Products.update product._id, {$set: {isVisible: !product.isVisible}}
+      return Products.findOne(product._id).isVisible
+    else
+      # debug log this
+      ReactionCore.Events.debug "invalid product visibility ", productId
+      # non-informative error
+      throw new Meteor.Error 400, "Bad Request"
+

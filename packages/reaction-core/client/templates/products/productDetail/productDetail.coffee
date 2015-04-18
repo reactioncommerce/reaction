@@ -143,7 +143,7 @@ Template.productDetail.events
     if errorMsg.length
       Alerts.add errorMsg, "danger", placement: "productManagement", i18n_key: "productDetail.errorMsg"
     else
-      Products.update(template.data._id, {$set: {isVisible: !template.data.isVisible}})
+      Meteor.call "publishProduct", @._id # toggle product visibility
     return
 
   "click .delete-product-link": (event, template) ->

@@ -1,5 +1,3 @@
-Media = ReactionCore.Collections.Media
-
 Template.productGrid.helpers
   products: ->
     ###
@@ -51,14 +49,13 @@ Template.productGridItems.helpers
     variants = (variant for variant in this.variants when not variant.parentId )
     if variants.length > 0
       variantId = variants[0]._id
-      defaultImage = Media.findOne({'metadata.variantId':variantId, "metadata.priority": 0})
+      defaultImage = ReactionCore.Collections.Media.findOne({'metadata.variantId':variantId, "metadata.priority": 0})
     if defaultImage
       return defaultImage
     else
       return false
 
 Template.gridNotice.helpers
-
   isLowQuantity: () ->
     # product is low quantity if any parent variant is below its set threshold
     variants = (variant for variant in this.variants when not variant.parentId)
@@ -112,16 +109,28 @@ Template.productGridItems.events
 
   'click .publish-product': () ->
     self = @
-    if self.variants[0].price and self.variants[0].title and self.title
-      Products.update self._id, {$set: {isVisible: !self.isVisible}}, (error,result) ->
-        isVisible = Products.findOne(self._id).isVisible
-        if isVisible is true
-          visible = "visible"
-        else
-          visible = "hidden"
-        Alerts.add self.title + " is now " + visible, "info", type: "prod-visible-" + self._id
-    else
-      Alerts.add "This product hasn't been configured yet, and cannot be made visible.", "danger", type: "prod-visible-" + self._id
+    Meteor.call "publishProduct", @._id, (error, result) ->
+      if error
+        Alerts.add error, "danger", placement: "productGridItem", 'id': self._id
+        return
+      if result is true
+        Alerts.add self.title + " is now visible",
+          "success",
+            'placement': "productGridItem"
+            'type': self._id
+            'id': self._id
+            'i18n_key': "productDetail.publishProductVisible"
+            'autoHide': true
+            'dismissable': false
+      else
+        Alerts.add self.title + " is hidden",
+          "warning",
+            'placement': "productGridItem",
+            'type': self._id
+            'id': self._id
+            'i18n_key': "productDetail.publishProductHidden"
+            'autoHide': true
+            'dismissable': false
 
 
 Template.productGridItems.rendered = () ->

@@ -27,7 +27,7 @@ CartWorkflow = StateMachine.create(
     { name: "checkout", from: "*", to: "login" }
     { name: "login", from: "checkout", to: "loggedin" }
     { name: "loggedin", from: "login", to: "addAddress" }
-    { name: "addAddress", from: "loggedin", to: "shipmentAddress" }
+    { name: "addAddress", from: "loggedin", to: ["shipmentAddress","paymentMethod"]}
     { name: "shipmentAddress", from: ["addAddress","paymentAddress","shipmentMethod","fetchShipmentMethods","payment"], to: "fetchShipmentMethods" }
     { name: "paymentAddress", from: ["addAddress","shipmentAddress","shipmentMethod","fetchShipmentMethods","payment"], to: "fetchShipmentMethods" }
     { name: "fetchShipmentMethods", from: "shipmentAddress", to: "shipmentMethods" }
@@ -36,7 +36,7 @@ CartWorkflow = StateMachine.create(
     { name: "paymentMethod", from: ["payment","paymentAuth","fetchShipmentMethods"], to: "paymentAuth"}
     { name: "paymentAuth", from: "paymentMethod", to: "inventoryAdjust"}
     { name: "inventoryAdjust", from: "paymentAuth", to: "orderCreated"}
-    { name: "orderCreated", from: "inventoryAdjust"  }
+    { name: "orderCreated", from: ["inventoryAdjust","paymentMethod"]  }
   ],
   callbacks: {
     onenterstate: (event, from, to) ->
@@ -75,7 +75,7 @@ CartWorkflow = StateMachine.create(
       # refresh rates with new address
       Meteor.call "updateShipmentQuotes", cartId
 
-    onpaymentAddress: (event, from, to, address) ->
+    onbeforepaymentAddress: (event, from, to, address) ->
       cartId = Cart.findOne()._id
       unless cartId and address then return
       # update payment address
@@ -90,9 +90,11 @@ CartWorkflow = StateMachine.create(
 
     onbeforepaymentMethod: (event, from, to, paymentMethod) ->
       sessionId = Session.get "sessionId"
-      cartId = Cart.findOne()._id
+      cart = Cart.findOne(sessionId: sessionId)
+
       # call payment method
-      Meteor.call "paymentMethod", cartId, paymentMethod
+      result = Meteor.call "paymentMethod", cart._id, paymentMethod
+      return result
 
     onpaymentAuth: (event, from, to, paymentMethod) ->
       # before payment really should be async
@@ -102,6 +104,7 @@ CartWorkflow = StateMachine.create(
           console.log "An error occurred saving the order. : " +error
         else #go to order success
           CartWorkflow.inventoryAdjust(result)
+          return
 
 
     oninventoryAdjust: (event, from, to, orderId) ->
