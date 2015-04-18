@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.5.7",
+  version: "0.5.8",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -42,8 +42,9 @@ Package.onUse(function (api) {
     api.use("reactive-var");
 
     //community packages
-    api.use("nemo64:bootstrap@3.3.4_1","client");
-    api.use("nemo64:bootstrap@3.3.4_1","server", {'weak': 1});
+    api.use("mquandalle:bower@1.3.12_3");
+    api.use("nemo64:bootstrap@3.3.4_2","client");
+    api.use("nemo64:bootstrap@3.3.4_2","server", {'weak': 1});
     api.use("d3js:d3@3.5.5");
     api.use("fortawesome:fontawesome@4.2.0_2");
     api.use("mrt:underscore-string-latest@2.3.3");
@@ -62,7 +63,7 @@ Package.onUse(function (api) {
     api.use("anti:fake@0.4.1");
     api.use("matb33:collection-hooks@0.7.11");
     api.use("alanning:roles@1.2.13");
-    api.use("momentjs:moment@2.10.2", 'client');
+    api.use("momentjs:moment@2.10.3", 'client');
     api.use("sacha:spin@2.0.4", "client");
 
     api.use("cfs:standard-packages@0.5.8");
@@ -80,6 +81,7 @@ Package.onUse(function (api) {
     api.imply("ui");
     api.imply("browser-policy");
 
+    api.imply("mquandalle:bower");
     api.imply("aldeed:collection2");
     api.imply("aldeed:simple-schema");
     api.imply("aldeed:autoform");
@@ -103,8 +105,8 @@ Package.onUse(function (api) {
   }
 
   // Core Reaction files
+  api.addFiles("lib/bower.json","client");
   api.addFiles([
-    "lib/statemachine/state-machine.js",
     "common/packageGlobals.js",
     "common/common.coffee",
     "common/helpers.coffee",
@@ -141,22 +143,20 @@ Package.onUse(function (api) {
   ], ["server"]);
 
   api.addFiles([
-    "lib/i18next-1.7.3/i18next-1.7.3.js",
+    "lib/bower/jquery.ui/ui/core.js",
+    "lib/bower/jquery.ui/ui/widget.js",
+    "lib/bower/jquery.ui/ui/mouse.js",
+    "lib/bower/jquery.ui/ui/position.js",
+    "lib/bower/jquery.ui/ui/autocomplete.js",
+    "lib/bower/jquery.ui/ui/sortable.js",
+    "lib/bower/jquery.ui/ui/draggable.js",
+    "lib/bower/jquery.ui/ui/droppable.js",
+    "lib/bower/jquery.ui/ui/effect.js",
+    "lib/bower/jquery.ui/ui/effect-slide.js",
+    "lib/bower/jquery.ui/ui/menu.js",
+    "lib/bower/autosize/dest/autosize.js",
 
-    "lib/swiper/idangerous.swiper.css",
-    "lib/swiper/idangerous.swiper.js",
-
-    "lib/jquery-autosize/jquery.autosize.js",
-    "lib/imagesLoaded/imagesloaded.pkgd.js",
-
-    "lib/jquery-ui/jquery-ui-1.10.4.custom.js",
-    "lib/jquery-ui/jquery-ui-1.10.3.custom.css",
-    "lib/jquery-collapsible/jquery.collapsible.js",
-    "lib/jquery-serialize/jquery.serialize-hash.coffee",
-    "lib/jquery-cookie/jquery.cookie.js",
-
-    "lib/openexchangerates/money.js",
-    "lib/openexchangerates/accounting.js",
+    "lib/bower/openexchangerates.accounting/accounting.min.js",
 
     "client/subscriptions.coffee",
     "client/app.coffee",
@@ -424,7 +424,6 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/sl.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
-
 
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
