@@ -1,6 +1,9 @@
 Template.dashboardOrdersList.helpers
-  orders: ->
-    return ReactionCore.Collections.Orders.find({}, {sort: { createdAt: -1 }})
+  orders: (data) ->
+    if data.hash.data
+      return data.hash.data
+    else
+      return ReactionCore.Collections.Orders.find({}, {sort: { createdAt: -1 }, limit:25})
   orderAge: ->
     return moment(@.createdAt).fromNow()
 

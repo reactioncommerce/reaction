@@ -77,7 +77,7 @@ Meteor.startup ->
         return x
       , {}
 
-      $.i18n.init {
+      i18n.init {
           lng: ReactionCore.Locale.language
           fallbackLng: 'en'
           ns: "core"
