@@ -301,7 +301,7 @@ Template.registerHelper "reactionApps", (options) ->
   registryFilter = {}
   # any registry property, name, enabled can be used as filter
   for key, value of options.hash
-    unless key is 'enabled' or key is 'name'
+    unless key is 'enabled' or key is 'name' or key is 'shopId'
       filter['registry.' + key] = value #for query
       registryFilter[key] = value #for registry filter
     else
