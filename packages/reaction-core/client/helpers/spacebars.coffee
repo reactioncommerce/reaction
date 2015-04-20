@@ -296,6 +296,7 @@ Template.registerHelper "navLink", (page, icon) ->
 #
 ###
 Template.registerHelper "reactionApps", (options) ->
+  unless options.hash.shopId then options.hash.shopId = ReactionCore.getShopId()
   reactionApps = []
   filter = {}
   registryFilter = {}
