@@ -20,89 +20,83 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse(function (api) {
+  api.versionsFrom('METEOR@1.0');
 
-  if (api.versionsFrom) {
-    api.versionsFrom('METEOR@1.0');
-    // Meteor Version 1.0 +
-    //core meteor packages
-    api.use("meteor-platform");
-    api.use("accounts-base");
-    api.use("accounts-password");
-    api.use("accounts-ui-unstyled");
-    api.use("less");
-    api.use("http");
-    api.use("coffeescript");
-    api.use("underscore");
-    api.use("blaze");
-    api.use("jquery");
-    api.use("email");
-    api.use("check");
-    api.use("browser-policy");
-    api.use("amplify@1.0.0");
-    api.use("reactive-var");
+  //core meteor packages
+  api.use("meteor-platform");
+  api.use("oauth-encryption");
+  api.use("accounts-base");
+  api.use("accounts-password");
+  api.use("accounts-ui-unstyled");
+  api.use("less");
+  api.use("http");
+  api.use("coffeescript");
+  api.use("underscore");
+  api.use("blaze");
+  api.use("jquery");
+  api.use("email");
+  api.use("check");
+  api.use("browser-policy");
+  api.use("amplify@1.0.0");
+  api.use("reactive-var");
 
-    //community packages
-    api.use("mquandalle:bower@1.3.12_3");
-    api.use("nemo64:bootstrap@3.3.4_2","client");
-    api.use("nemo64:bootstrap@3.3.4_2","server", {'weak': 1});
-    api.use("d3js:d3@3.5.5");
-    api.use("fortawesome:fontawesome@4.2.0_2");
-    api.use("mrt:underscore-string-latest@2.3.3");
-    api.use("aldeed:geocoder@0.3.6");
-    api.use("aldeed:autoform@4.2.2");
-    api.use("aldeed:collection2@2.3.3");
-    api.use("aldeed:simple-schema@1.3.2", {'weak': 1});
-    api.use("aldeed:template-extension@3.4.3","client");
-    api.use("iron:router@1.0.7");
-    api.use("ongoworks:speakingurl@1.1.0");
-    api.use("ongoworks:pdf@1.1.1");
-    api.use("ongoworks:bunyan-logger@1.0.0");
-    api.use("ongoworks:security@1.1.0");
+  //community packages
+  api.use("mquandalle:bower@1.3.12_3");
+  api.use("nemo64:bootstrap@3.3.4_2","client");
+  api.use("nemo64:bootstrap@3.3.4_2","server", {'weak': 1});
+  api.use("d3js:d3@3.5.5");
+  api.use("fortawesome:fontawesome@4.2.0_2");
+  api.use("mrt:underscore-string-latest@2.3.3");
+  api.use("aldeed:geocoder@0.3.6");
+  api.use("aldeed:autoform@4.2.2");
+  api.use("aldeed:collection2@2.3.3");
+  api.use("aldeed:simple-schema@1.3.2", {'weak': 1});
+  api.use("aldeed:template-extension@3.4.3","client");
+  api.use("iron:router@1.0.7");
+  api.use("ongoworks:speakingurl@1.1.0");
+  api.use("ongoworks:pdf@1.1.1");
+  api.use("ongoworks:bunyan-logger@1.0.0");
+  api.use("ongoworks:security@1.1.0");
 
-    api.use("dburles:factory@0.3.9");
-    api.use("anti:fake@0.4.1");
-    api.use("matb33:collection-hooks@0.7.11");
-    api.use("alanning:roles@1.2.13");
-    api.use("momentjs:moment@2.10.3", 'client');
-    api.use("sacha:spin@2.0.4", "client");
+  api.use("dburles:factory@0.3.9");
+  api.use("anti:fake@0.4.1");
+  api.use("matb33:collection-hooks@0.7.11");
+  api.use("alanning:roles@1.2.13");
+  api.use("momentjs:moment@2.10.3", 'client');
+  api.use("sacha:spin@2.0.4", "client");
 
-    api.use("cfs:standard-packages@0.5.8");
-    api.use("cfs:graphicsmagick@0.0.18");
-    api.use("cfs:gridfs@0.0.33");
-    api.use("cfs:filesystem@0.1.2");
-    api.use("cfs:ui@0.1.3");
-    api.use("raix:ui-dropped-event@0.0.7");
-    api.use("meteorhacks:ssr@2.1.2");
+  api.use("cfs:standard-packages@0.5.8");
+  api.use("cfs:graphicsmagick@0.0.18");
+  api.use("cfs:gridfs@0.0.33");
+  api.use("cfs:filesystem@0.1.2");
+  api.use("cfs:ui@0.1.3");
+  api.use("raix:ui-dropped-event@0.0.7");
+  api.use("meteorhacks:ssr@2.1.2");
 
-    //implying these are reused in reaction packages
-    api.imply("less");
-    api.imply("amplify");
-    api.imply("accounts-base");
-    api.imply("ui");
-    api.imply("browser-policy");
+  //implying these are reused in reaction packages
+  api.imply("less");
+  api.imply("amplify");
+  api.imply("accounts-base");
+  api.imply("ui");
+  api.imply("browser-policy");
 
-    api.imply("mquandalle:bower");
-    api.imply("aldeed:collection2");
-    api.imply("aldeed:simple-schema");
-    api.imply("aldeed:autoform");
-    api.imply("aldeed:template-extension");
-    api.imply("iron:router");
-    api.imply("cfs:graphicsmagick");
-    api.imply("cfs:filesystem");
-    api.imply("cfs:gridfs");
-    api.imply("raix:ui-dropped-event");
-    api.imply("matb33:collection-hooks");
-    api.imply("alanning:roles");
-    api.imply("momentjs:moment", ["client"]);
-    api.imply("sacha:spin" ["client"]);
-    api.imply("dburles:factory");
-    api.imply("ongoworks:speakingurl");
-    api.imply("ongoworks:security");
-
-  // Pre-0.9.0
-  } else {
-    throw new Error("Meteor upgrade required.")
-  }
+  api.imply("mquandalle:bower");
+  api.imply("aldeed:collection2");
+  api.imply("aldeed:simple-schema");
+  api.imply("aldeed:autoform");
+  api.imply("aldeed:template-extension");
+  api.imply("iron:router");
+  api.imply("cfs:graphicsmagick");
+  api.imply("cfs:filesystem");
+  api.imply("cfs:gridfs");
+  api.imply("raix:ui-dropped-event");
+  api.imply("matb33:collection-hooks");
+  api.imply("alanning:roles");
+  api.imply("momentjs:moment", ["client"]);
+  api.imply("sacha:spin" ["client"]);
+  api.imply("dburles:factory");
+  api.imply("ongoworks:speakingurl");
+  api.imply("ongoworks:security");
 
   // Core Reaction files
   api.addFiles("lib/bower.json","client");
@@ -129,6 +123,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     "server/app.coffee",
+    "server/browserPolicy.coffee",
     "server/register.coffee",
     "server/security.coffee",
     "server/publications.coffee",

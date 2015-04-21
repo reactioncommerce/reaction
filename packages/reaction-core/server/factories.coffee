@@ -62,7 +62,7 @@ Factory.define 'product', ReactionCore.Collections.Products,
 #   pinterestMsg:
 #   metaDescription:
 #   handle:
-  isVisible: true
+  isVisible: false
   publishedAt: -> new Date
 #   publishedScope:
 #   templateSuffix:

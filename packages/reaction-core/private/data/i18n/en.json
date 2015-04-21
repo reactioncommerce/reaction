@@ -42,7 +42,12 @@
                     "productDeleteError": "There was an error deleting ",
                     "publishFirst": "Publish product before adding to cart.",
                     "selectOption": "Select an option before adding to cart",
-                    "addedToCart": "added"
+                    "addedToCart": "added",
+                    "soldOut": "Sold Out!",
+                    "backOrder": "Backorder",
+                    "limitedSupply": "Limited Supply",
+                    "publishProductVisible": "is now visible",
+                    "publishProductHidden": "is now hidden"
                 },
                 "productDetailEdit": {
                     "title": "Product title",

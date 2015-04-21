@@ -435,3 +435,69 @@ describe "Product Meteor method ", ->
       expect(product.metafields[0].key).toEqual "Material"
       expect(product.metafields[0].value).toEqual "Spandex"
       done()
+
+  describe "publishProduct", ->
+
+    beforeEach ->
+      Products.remove {}
+
+    it "should throw 403 error by non admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue false
+      product = Factory.create "product"
+      spyOn(Products, "update")
+
+      expect(-> Meteor.call "publishProduct", product._id).toThrow(new Meteor.Error 403, "Access Denied")
+      expect(Products.update).not.toHaveBeenCalled()
+      done()
+
+    it "should let admin publish product", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      isVisible = product.isVisible
+
+      expect(-> Meteor.call "publishProduct", product._id).not.toThrow(new Meteor.Error 403, "Access Denied")
+      product = Products.findOne(product._id)
+      expect(product.isVisible).toEqual !isVisible
+      done()
+
+    it "should let admin toggle product visibility", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      isVisible = product.isVisible
+
+      # publish
+      expect(-> Meteor.call "publishProduct", product._id).not.toThrow(new Meteor.Error 403, "Access Denied")
+      product = Products.findOne(product._id)
+      expect(product.isVisible).toEqual !isVisible
+
+      # toggle
+      expect(-> Meteor.call "publishProduct", product._id).not.toThrow(new Meteor.Error 400, "Bad Request")
+      product = Products.findOne(product._id)
+      expect(product.isVisible).toEqual isVisible
+      done()
+
+    it "should not publish product when missing title", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      isVisible = product.isVisible
+
+      # simulate missing title
+      Products.update product._id, {$set: {'title': ''}}, {validate: false}
+
+      # publish
+      expect(-> Meteor.call "publishProduct", product._id).not.toThrow(new Meteor.Error 403, "Access Denied")
+      product = Products.findOne(product._id)
+      expect(product.isVisible).toEqual isVisible
+      done()
+
+    it "should not publish product when missing variant", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      isVisible = product.isVisible
+      # simulate missing variant
+      Products.update product._id, {$set: {'variants': []}}, {validate: false}
+      # publish
+      expect(-> Meteor.call "publishProduct", product._id).not.toThrow(new Meteor.Error 403, "Access Denied")
+      product = Products.findOne(product._id)
+      expect(product.isVisible).toEqual isVisible
+      done()
