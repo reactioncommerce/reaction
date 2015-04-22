@@ -120,7 +120,7 @@ Template.productGridItems.events
             'type': self._id
             'id': self._id
             'i18n_key': "productDetail.publishProductVisible"
-            'autoHide': 5000
+            'autoHide': true
             'dismissable': false
       else
         Alerts.add self.title + " is hidden",
@@ -129,7 +129,7 @@ Template.productGridItems.events
             'type': self._id
             'id': self._id
             'i18n_key': "productDetail.publishProductHidden"
-            'autoHide': 5000
+            'autoHide': true
             'dismissable': false
 
 

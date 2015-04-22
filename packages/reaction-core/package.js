@@ -79,7 +79,6 @@ Package.onUse(function (api) {
   api.imply("accounts-base");
   api.imply("ui");
   api.imply("browser-policy");
-
   api.imply("mquandalle:bower");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
@@ -150,8 +149,12 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/effect-slide.js",
     "lib/bower/jquery.ui/ui/menu.js",
     "lib/bower/autosize/dest/autosize.js",
-
+    "lib/bower/collapsible/jquery.collapsible.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
+    "lib/bower/openexchangerates.money/money.js",
+    "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
+    "lib/bower/jquery.cookie/jquery.cookie.js",
+    "lib/css/jquery-ui.css",
 
     "client/subscriptions.coffee",
     "client/app.coffee",

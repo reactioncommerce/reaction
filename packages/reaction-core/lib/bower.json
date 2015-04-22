@@ -1,6 +1,5 @@
 {
   "name": "reactioncommerce-core",
-  "version": "0.5.7",
   "dependencies": {
     "jquery.payment": "1.2.3",
     "autosize": "3.0.0",
@@ -16,7 +15,6 @@
     "openexchangerates.accounting": "git@github.com:openexchangerates/accounting.js.git",
     "openexchangerates.money": "git@github.com:openexchangerates/money.js.git"
   },
-  "private": true,
   "overrides": {
     "jquery": {
       "main": []
@@ -26,6 +24,11 @@
         "accounting.js"
       ],
       "arch": [ "client" ]
+    },
+    "swiper": {
+      "main": [
+        "dist/js/swiper.jquery.min.js"
+      ]
     }
   }
 }
