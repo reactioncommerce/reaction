@@ -296,12 +296,13 @@ Template.registerHelper "navLink", (page, icon) ->
 #
 ###
 Template.registerHelper "reactionApps", (options) ->
+  unless options.hash.shopId then options.hash.shopId = ReactionCore.getShopId()
   reactionApps = []
   filter = {}
   registryFilter = {}
   # any registry property, name, enabled can be used as filter
   for key, value of options.hash
-    unless key is 'enabled' or key is 'name'
+    unless key is 'enabled' or key is 'name' or key is 'shopId'
       filter['registry.' + key] = value #for query
       registryFilter[key] = value #for registry filter
     else

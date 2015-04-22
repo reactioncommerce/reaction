@@ -178,12 +178,13 @@ loadFixtures = ->
   # Loop through ReactionRegistry.Packages object, which now has all packages added by
   # calls to register
   # removes package when removed from meteor, retriggers when package added
-  unless ReactionCore.Collections.Packages.find().count() is Object.keys(ReactionRegistry.Packages).length
+  unless ReactionCore.Collections.Packages.find().count() is Shops.find().count() * Object.keys(ReactionRegistry.Packages).length
     _.each ReactionRegistry.Packages, (config, pkgName) ->
       Shops.find().forEach (shop) ->
         ReactionCore.Events.info "Initializing "+ pkgName
         ReactionCore.Collections.Packages.upsert {shopId: shop._id, name: pkgName},
           $setOnInsert:
+            shopId: shop._id
             enabled: !!config.autoEnable
             settings: config.settings
             registry: config.registry
