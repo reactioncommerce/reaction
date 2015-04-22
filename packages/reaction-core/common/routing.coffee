@@ -55,6 +55,19 @@ ShopController = @ShopController
 # local ShopAdminController
 ShopAdminController = @ShopAdminController
 
+#For Printing. No Layout
+@PrintController = RouteController.extend
+  onBeforeAction: () ->
+    # could check for roles here for dashboard access
+    unless ReactionCore.hasPermission(@route.getName()) and Meteor.userId()
+      @render('unauthorized')
+    else
+      @next()
+    return
+#Local PrintController
+PrintController = @PrintController
+
+
 ###
 # General Route Declarations
 ###
@@ -186,3 +199,11 @@ Router.map ->
           @render 'unauthorized'
       else
         @render "loading"
+  #route for PDF pages. No layout
+  @route 'dashboard/pdf/orders',
+    controller: PrintController
+    path: 'dashboard/pdf/orders/:_id'
+    template: 'completedPDFLayout'
+    data: ->
+      if Orders.findOne(@params._id)
+        return ReactionCore.Collections.Orders.findOne({'_id': @params._id})

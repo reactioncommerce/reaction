@@ -245,21 +245,6 @@ currentProduct = @currentProduct
     return priceMin + ' - ' + priceMax
 
 ###
-# save an order as PDF
-###
-@saveOrderAsPDF = (order) ->
-  Blaze.saveAsPDF Template.completedPDFLayout,
-    data: order
-    filename: "order-" + order._id + ".pdf" #TODO should be configurable by admin
-    margins:
-      top: 80,
-      bottom: 60,
-      left: 40,
-      width: 522
-
-  return
-
-###
 # getCardTypes
 ###
 @getCardType = (number) ->
