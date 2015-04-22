@@ -1,8 +1,10 @@
 Template.cartDrawerItems.rendered = ->
   $ ->
     mySwiper = $(".cart-drawer-swiper-container").swiper(
-      mode: "horizontal"
+      direction: "horizontal"
+      setWrapperSize: true
       loop: false
+      grabCursor: true
       slidesPerView: "auto"
       wrapperClass: "cart-drawer-swiper-wrapper"
       slideClass: "cart-drawer-swiper-slide"

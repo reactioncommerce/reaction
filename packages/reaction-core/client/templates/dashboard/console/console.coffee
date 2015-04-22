@@ -15,15 +15,17 @@ Template.consoleNavBar.helpers
 
 ###
 # console widgets
+# located here rather than dashboard template
+# to rerun whenever a new widget is added
 ###
 Template.consoleWidgets.rendered = ->
-  @autorun ->
-    $ ->
-      dashboardSwiper = $(".dashboard-container").swiper(
-        mode: "horizontal"
-        loop: false
-        slidesPerView: "auto"
-        wrapperClass: "dashboard-widget-wrapper"
-        slideClass: "dashboard-widget"
-      )
-    return
+  $ ->
+    dashboardSwiper = $(".dashboard-container").swiper(
+      direction: "horizontal"
+      setWrapperSize: true
+      loop: false
+      slidesPerView: "auto"
+      wrapperClass: "dashboard-widget-wrapper"
+      slideClass: "dashboard-widget"
+    )
+  return

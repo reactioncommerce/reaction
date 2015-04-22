@@ -1,4 +1,7 @@
 Template.dashboard.helpers
+  route: ->
+    return Router.current().route.getName()
+
   displayConsoleNavBar: ->
     if ReactionCore.hasOwnerAccess() and Session.get "displayConsoleNavBar"
       return true
@@ -13,4 +16,3 @@ Template.dashboard.events
     if @.route?
       event.preventDefault()
       Router.go(@.route)
-

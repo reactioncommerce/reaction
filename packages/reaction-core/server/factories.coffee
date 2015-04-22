@@ -62,7 +62,7 @@ Factory.define 'product', ReactionCore.Collections.Products,
 #   pinterestMsg:
 #   metaDescription:
 #   handle:
-  isVisible: true
+  isVisible: false
   publishedAt: -> new Date
 #   publishedScope:
 #   templateSuffix:
@@ -70,7 +70,7 @@ Factory.define 'product', ReactionCore.Collections.Products,
   updatedAt: -> new Date
 
 
-Factory.define 'productVariants', new Meteor.Collection('ProductVariants'),
+Factory.define 'productVariants', new Mongo.Collection('ProductVariants'),
 #  parentId: 1
 #  cloneId:
 #  index:

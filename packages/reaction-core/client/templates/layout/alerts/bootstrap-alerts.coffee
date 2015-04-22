@@ -52,7 +52,10 @@ Alerts =
     Translation key for i18n (translations collection)
     ###
     i18n_key: ""
-
+    ###
+    unique id (for multiple message placements)
+    ###
+    id: ""
   ###
   Add an alert
 
