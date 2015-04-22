@@ -7,20 +7,12 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.sublime-project
+*.sublime-workspace
+.DS_Store
 
 pids
 logs
 results
-
-settings/dev.json
-settings/prod.json
-settings/demo.json
 npm-debug.log
 .fileStorage/
-
-*.sublime-project
-*.sublime-workspace
-reaction-dev.sh
-packages/*
-
-.meteor/versions

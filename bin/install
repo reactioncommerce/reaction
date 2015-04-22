@@ -22,24 +22,43 @@ exec 1>&2
 #
 UNAME=$(uname)
 if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
-    echo "Sorry, this OS is not supported yet."
+    echo "Sorry, this install script doesn't support your OS."
+    echo "Install Meteor from https://www.meteor.com/install "
+    echo "git clone https://github.com/reactioncommerce/reaction "
+    echo "cd reaction"
+    echo "meteor"
     exit 1
 fi
 
 #
 # check if node + npm is already installed otherwise warn.
 #
+
 if npm -v >/dev/null 2>&1; then
   echo "Node install verified. Checking Meteor installation."
 else
   echo "***************************************************"
-  echo "*                                                 *"
-  echo "* Please install Node.js & Npm before continuing. *"
-  echo "* http://nodejs.org/download/                     *"
-  echo "* After installation, rerun this install script.  *"
-  echo "*                                                 *"
+  echo "* Installing Node.js & Npm http://nodejs.org      *"
   echo "***************************************************"
-  exit
+  #
+  # Check if Homebrew is installed
+  #
+  which -s brew
+  if [[ $? != 0 ]] ; then
+    PREFIX=$(brew --prefix)
+    brew install node
+  else
+    # distribution install, should work on linux, osx
+    echo 'export PATH=$HOME/node-latest-install:$PATH' >> ~/.bashrc
+    . ~/.bashrc
+    mkdir ~/local
+    mkdir ~/node-latest-install
+    cd ~/node-latest-install
+    curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
+    ./configure --prefix=~/local
+    make install # ok, fine, this step probably takes more than 30 seconds...
+    curl https://www.npmjs.org/install.sh | sh
+  fi
 fi
 
 

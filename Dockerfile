@@ -41,7 +41,7 @@
 ##############################################################
 
 FROM mongo:latest
-MAINTAINER Aaron Judd <hello@reactioncomerce.com>
+MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 

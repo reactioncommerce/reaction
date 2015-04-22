@@ -23,7 +23,10 @@ Test shops help us gather feedback for Reaction development, as well as testing 
 
 
 ##Status
-**Current status: Alpha Preview v0.5.0**
+![](https://circleci.com/gh/reactioncommerce/reaction.svg?style=badge&circle-token=:circle-token)
+[![Stories in Ready](https://badge.waffle.io/reactioncommerce/reaction.svg?label=ready&title=Ready)](http://waffle.io/reactioncommerce/reaction)
+
+**Current status: Alpha Preview**
 
 **Functional but unstable, with HEAVY ongoing development!**
 

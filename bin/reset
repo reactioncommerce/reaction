@@ -3,4 +3,7 @@
 DIRNAME=$(cd `dirname $0` && pwd)
 
 meteor reset "$@"
+rm .meteor/versions
+rm client/themes/*.less
+rm -rf packages/reaction-core/lib/bower
 $DIRNAME/run

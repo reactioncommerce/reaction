@@ -19,7 +19,9 @@ fastclick
 # Community Packages
 nemo64:bootstrap
 #mike:mocha
-#sanjo:jasmine
+sanjo:jasmine
+velocity:html-reporter
+
 
 # Reaction Commerce Packages
 reactioncommerce:core

@@ -5,6 +5,6 @@ set -e
 
 DIRNAME=$(cd `dirname $0` && pwd)
 
-CONFIG=$DIRNAME/../settings/dev.json
+CONFIG=$DIRNAME/../settings/settings.json
 . $DIRNAME/check-settings $CONFIG
 meteor run --settings $CONFIG "$@"

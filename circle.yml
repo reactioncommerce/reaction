@@ -1,0 +1,23 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build -t ongoworks/reaction .
+
+test:
+  override:
+    - docker run -d -p 3000:3000 ongoworks/reaction; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:3000
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push ongoworks/reaction
+notify:
+  webhooks:
+    - url: https://webhooks.gitter.im/e/d7372b8add1c57bc8d96
