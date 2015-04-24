@@ -11,9 +11,9 @@
     "jquery.tagsinput": "1.3.2",
     "jquery.ui": "1.11.4",
     "javascript-state-machine": "2.3.5",
-    "jquery.serializeHash": "git@github.com:sdrdis/jquery.serialize-hash.git",
-    "openexchangerates.accounting": "git@github.com:openexchangerates/accounting.js.git",
-    "openexchangerates.money": "git@github.com:openexchangerates/money.js.git"
+    "jquery.serializeHash": "https://github.com/sdrdis/jquery.serialize-hash.git",
+    "openexchangerates.accounting": "https://github.com/openexchangerates/accounting.js.git",
+    "openexchangerates.money": "https://github.com/openexchangerates/money.js.git"
   },
   "overrides": {
     "jquery": {
