@@ -1,0 +1,20 @@
+machine:
+  node:
+    version: 0.10.36
+  services:
+    - mongodb
+
+dependencies:
+  cache_directories:
+    - "~/.meteor"
+    - "/usr/local/bin"
+  pre:
+     # download if meteor isn't already installed in the cache
+    - meteor || curl https://install.meteor.com | /bin/sh
+    - mkdir -p $HOME/packages
+    - mv $HOME/$CIRCLE_PROJECT_REPONAME $HOME/packages/$CIRCLE_PROJECT_REPONAME
+    - git clone https://github.com/reactioncommerce/reaction $HOME/
+
+test:
+  override:
+    - PACKAGE_DIRS="..:$HOME/packages" meteor --test 2>&1
