@@ -8,50 +8,50 @@
 # in template: {{cart.cartCount}}
 # in code: ReactionCore.Collections.Cart.findOne().cartTotal()
 ###
+ReactionCore.Helpers.shippingTransform = 
+  cartCount : ->
+    count = 0
+    ((count += items.quantity) for items in this.items) if this?.items
+    return count
+  cartShipping : ->
+    shipping = 0
+    if this?.shipping?.shipmentMethod?.rate
+      shipping = this?.shipping?.shipmentMethod?.rate
+    else ((shipping += shippingMethod.rate) for shippingMethod in this.shipping.shipmentMethod) if this?.shipping?.shipmentMethod.length > 0
+    return shipping
+  cartSubTotal : ->
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in this.items) if this?.items
+    subtotal = subtotal.toFixed(2)
+    return subtotal
+  cartTaxes : ->
+    ###
+    # TODO: lookup cart taxes, and apply rules here
+    ###
+    return "0.00"
+  cartDiscounts : ->
+    ###
+    # TODO: lookup discounts, and apply rules here
+    ###
+    return "0.00"
+  cartTotal : ->
+    subtotal = 0
+    ((subtotal += (items.quantity * items.variants.price)) for items in this.items) if this?.items
+    shipping = 0
+    if this?.shipping?.shipmentMethod?.rate
+      shipping = this?.shipping?.shipmentMethod?.rate
+    else ((shipping += shippingMethod.rate) for shippingMethod in this.shipping.shipmentMethod) if this?.shipping?.shipmentMethod.length > 0
+    shipping = parseFloat shipping
+    subtotal = (subtotal + shipping) unless isNaN(shipping)
+    total = subtotal.toFixed(2)
+    return total
+
 ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
   transform: (cart) ->
-    cart.cartCount = ->
-      count = 0
-      ((count += items.quantity) for items in cart.items) if cart?.items
-      return count
+    newInstance = Object.create(ReactionCore.Helpers.shippingTransform);
 
-    cart.cartShipping = ->
-      shipping = 0
-      if cart?.shipping?.shipmentMethod?.rate
-        shipping = cart?.shipping?.shipmentMethod?.rate
-      else ((shipping += shippingMethod.rate) for shippingMethod in cart.shipping.shipmentMethod) if cart?.shipping?.shipmentMethod.length > 0
-      return shipping
+    return  _.extend newInstance, cart;
 
-    cart.cartSubTotal = ->
-      subtotal = 0
-      ((subtotal += (items.quantity * items.variants.price)) for items in cart.items) if cart?.items
-      subtotal = subtotal.toFixed(2)
-      return subtotal
-
-    cart.cartTaxes = ->
-      ###
-      # TODO: lookup cart taxes, and apply rules here
-      ###
-      return "0.00"
-
-    cart.cartDiscounts = ->
-      ###
-      # TODO: lookup discounts, and apply rules here
-      ###
-      return "0.00"
-
-    cart.cartTotal = ->
-      subtotal = 0
-      ((subtotal += (items.quantity * items.variants.price)) for items in cart.items) if cart?.items
-      shipping = 0
-      if cart?.shipping?.shipmentMethod?.rate
-        shipping = cart?.shipping?.shipmentMethod?.rate
-      else ((shipping += shippingMethod.rate) for shippingMethod in cart.shipping.shipmentMethod) if cart?.shipping?.shipmentMethod.length > 0
-      shipping = parseFloat shipping
-      subtotal = (subtotal + shipping) unless isNaN(shipping)
-      total = subtotal.toFixed(2)
-      return total
-    return cart
 
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
