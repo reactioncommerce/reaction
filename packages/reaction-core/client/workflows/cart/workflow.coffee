@@ -89,8 +89,7 @@ CartWorkflow = StateMachine.create(
       Cart.update Cart.findOne()._id, {$set:{"shipping.shipmentMethod":method}} if method
 
     onbeforepaymentMethod: (event, from, to, paymentMethod) ->
-      sessionId = Session.get "sessionId"
-      cart = Cart.findOne(sessionId: sessionId)
+      cart = Cart.findOne()
 
       # call payment method
       result = Meteor.call "paymentMethod", cart._id, paymentMethod
