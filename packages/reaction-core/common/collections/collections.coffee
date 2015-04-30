@@ -8,7 +8,7 @@
 # in template: {{cart.cartCount}}
 # in code: ReactionCore.Collections.Cart.findOne().cartTotal()
 ###
-ReactionCore.Helpers.shippingTransform = 
+ReactionCore.Helpers.cartTransform = 
   cartCount : ->
     count = 0
     ((count += items.quantity) for items in this.items) if this?.items
@@ -48,7 +48,7 @@ ReactionCore.Helpers.shippingTransform =
 
 ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
   transform: (cart) ->
-    newInstance = Object.create(ReactionCore.Helpers.shippingTransform);
+    newInstance = Object.create(ReactionCore.Helpers.cartTransform);
 
     return  _.extend newInstance, cart;
 
