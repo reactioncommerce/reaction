@@ -18,7 +18,9 @@
                     "loading": "Loading",
                     "toggle": "Toggle",
                     "warning": "Oops!",
-                    "unauthorizedMessage": "You don't have permission to view this content."
+                    "unauthorizedMessage": "You don't have permission to view this content.",
+                    "invitationSent": "Invitation Sent",
+                    "members": "Members"
                 },
                 "header": {
                     "tagsAdd": "Add tag",

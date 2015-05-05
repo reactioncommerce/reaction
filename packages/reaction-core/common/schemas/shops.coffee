@@ -7,9 +7,10 @@ ReactionCore.Schemas.ShopMember = new SimpleSchema
   isAdmin:
     type: Boolean
     optional: true
-  permissions:
-    type: [String]
+  isMarketplace:
+    type: Boolean
     optional: true
+    unique: true
 
 ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema
   username:

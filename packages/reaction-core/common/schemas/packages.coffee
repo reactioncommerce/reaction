@@ -17,7 +17,7 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
     type: Object
     optional: true
     blackbox: true
-  shopPermissions:
+  permissions:
     type: [Object]
     optional: true
     blackbox: true

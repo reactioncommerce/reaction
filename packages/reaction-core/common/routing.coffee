@@ -47,7 +47,7 @@ ShopController = @ShopController
 @ShopAdminController = @ShopController.extend
   onBeforeAction: () ->
     # could check for roles here for dashboard access
-    unless ReactionCore.hasPermission(@route.getName()) and Meteor.userId()
+    unless ReactionCore.hasPermission @route.getName()
       @render('unauthorized')
     else
       @next()
@@ -59,7 +59,7 @@ ShopAdminController = @ShopAdminController
 @PrintController = RouteController.extend
   onBeforeAction: () ->
     # could check for roles here for dashboard access
-    unless ReactionCore.hasPermission(@route.getName()) and Meteor.userId()
+    unless ReactionCore.hasPermission @route.getName()
       @render('unauthorized')
     else
       @next()
@@ -96,10 +96,10 @@ Router.map ->
     data: ->
       Shops.findOne()
 
-  @route 'dashboard/settings/account',
+  @route 'dashboard/accounts',
     controller: ShopAdminController
-    path: '/dashboard/settings/account'
-    template: 'shopAccounts'
+    path: '/dashboard/accounts'
+    template: 'coreAccounts'
 
   # list page of customer records
   @route 'dashboard/customers',

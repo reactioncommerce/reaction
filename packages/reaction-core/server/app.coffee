@@ -32,7 +32,7 @@ ReactionCore.Events = logger.bunyan.createLogger(
 ReactionCore.Events.level(isDebug)
 
 ###
-# Global reaction shop permissions methods
+# ReactionCore methods (server)
 ###
 _.extend ReactionCore,
   getCurrentShopCursor: (client) ->
@@ -54,25 +54,13 @@ _.extend ReactionCore,
     #which shop from the shops collection to use here, hence the unused client arg
     return Meteor.absoluteUrl().split('/')[2].split(':')[0]
 
-  findMember: (shop, userId) ->
-    shop = @getCurrentShop() unless shop
-    userId = Meteor.userId() unless userId
-    return _.find shop.members, (member) ->
-      userId is member.userId
+  hasOwnerAccess: (client) ->
+    return Roles.userIsInRole Meteor.userId(), 'owner',  @getCurrentShop(client)?._id
 
-  hasPermission: (permissions, shop, userId) ->
-    return false unless permissions
-    shop = @getCurrentShop() unless shop
-    userId = Meteor.userId() unless userId
-    permissions = [permissions] unless _.isArray(permissions)
-    has = @hasOwnerAccess(shop, userId)
-    unless has
-      member = @findMember(shop, userId)
-      if member
-        has = member.isAdmin or _.intersection(permissions, member.permissions).length
-    return has
+  # dashboard access
+  hasDashboardAccess: (client) ->
+    return Roles.userIsInRole Meteor.userId(), 'admin',  @getCurrentShop(client)?._id
 
-  hasOwnerAccess: (shop, userId) ->
-    shop = @getCurrentShop() unless shop
-    userId = Meteor.userId() unless userId
-    return Roles.userIsInRole(userId, "admin") or userId is shop.ownerId
+  # permission check
+  hasPermission: (permissions) ->
+    return Roles.userIsInRole Meteor.userId(), permissions,  @getCurrentShop(client)?._id

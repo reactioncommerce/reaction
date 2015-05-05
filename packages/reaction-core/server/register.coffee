@@ -83,12 +83,18 @@ ReactionCore.registerPackage
     }
     # users
     {
-      route: 'dashboard/settings/account'
-      label: 'Organization Users'
-      description: 'Manage administrative access to shop.'
+      route: 'dashboard/accounts'
+      label: 'Members'
+      description: 'Manage your user accounts'
       icon: 'fa fa-users'
       provides: 'dashboard'
       cycle: 3
+    }
+    # members / users
+    {
+      route: 'dashboard/accounts'
+      label: 'Members'
+      provides: 'console'
     }
     # account profiles
     {
@@ -98,13 +104,8 @@ ReactionCore.registerPackage
       provides: 'userAccountDropdown'
     }
   ]
-  # permissions map to shopPermissions
+  # permissions
   permissions: [
-    {
-      label: "Customers"
-      permission: "dashboard/customers"
-      group: "Shop Management"
-    }
     {
       label: "Promotions"
       permission: "dashboard/promotions"
@@ -121,8 +122,8 @@ ReactionCore.registerPackage
       group: "Shop Settings"
     }
     {
-      label: "Dashboard Access"
-      permission: "dashboard/settings/account"
+      label: "Members"
+      permission: "dashboard/members"
       group: "Shop Settings"
     }
     {

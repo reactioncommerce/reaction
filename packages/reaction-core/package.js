@@ -150,6 +150,7 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/menu.js",
     "lib/bower/autosize/dest/autosize.js",
     "lib/bower/collapsible/jquery.collapsible.js",
+    "lib/bower/jquery.serializeHash/jquery.serialize-hash.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
     "lib/bower/openexchangerates.money/money.js",
     "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
@@ -341,14 +342,14 @@ Package.onUse(function (api) {
     "client/templates/dashboard/shop/settings/settings.html",
     "client/templates/dashboard/shop/settings/settings.coffee",
 
-    "client/templates/dashboard/shop/accounts/accounts.html",
-    "client/templates/dashboard/shop/accounts/accounts.coffee",
+    "client/templates/dashboard/accounts/accounts.html",
+    "client/templates/dashboard/accounts/accounts.coffee",
 
-    "client/templates/dashboard/shop/accounts/shopMember/shopMember.html",
-    "client/templates/dashboard/shop/accounts/shopMember/shopMember.coffee",
+    "client/templates/dashboard/accounts/shopMember/shopMember.html",
+    "client/templates/dashboard/accounts/shopMember/shopMember.coffee",
 
-    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.html",
-    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.coffee",
+    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html",
+    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
     "client/templates/products/products.coffee",
@@ -398,8 +399,6 @@ Package.onUse(function (api) {
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
   api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
-  api.addFiles('private/data/roles.json', 'server', {isAsset: true});
-  api.addFiles('private/data/users.json', 'server', {isAsset: true});
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
   //i18n translations
   api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});

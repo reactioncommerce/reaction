@@ -50,9 +50,10 @@ Meteor.publish "Translations", (sessionLanguage) ->
 ###
 Meteor.publish "UserProfile", (profileId) ->
   check profileId, Match.OneOf(String, null)
+  roles = ['dashboard/orders','owner','admin','dashboard/customers']
 
   if profileId?
-    if Roles.userIsInRole(this.userId, ['dashboard/orders','owner','admin','dashboard/customers'])
+    if Roles.userIsInRole this.userId, roles, ReactionCore.getShopId(@)
       return Meteor.users.find _id: profileId,
         fields:
           profile: 1
@@ -71,7 +72,7 @@ Meteor.publish "UserProfile", (profileId) ->
 Meteor.publish "Packages", ->
   shop = ReactionCore.getCurrentShop(this)
   if shop
-    if Roles.userIsInRole(this.userId, ['dashboard','owner','admin'])
+    if Roles.userIsInRole this.userId, ['dashboard','owner','admin'], ReactionCore.getShopId(@)
       return Packages.find shopId: shop._id
     else
       # settings.public published
@@ -94,23 +95,16 @@ Meteor.publish "Packages", ->
 Meteor.publish 'shops', ->
   ReactionCore.getCurrentShopCursor(@)
 
+###
+# shopMembers
+###
 Meteor.publish 'shopMembers', ->
-  self = @
-  handle = ReactionCore.getCurrentShopCursor(self).observeChanges
-    added: (id) ->
-      shop = Shops.findOne id
-      memberIds = _.pluck shop.members, "userId"
-      Meteor.users.find({_id: {$in: memberIds}}, {fields: {emails: 1, profile: 1 }}).forEach (user) ->
-        self.added("users", user._id, user)
-    changed: (id) ->
-      shop = Shops.findOne id
-      memberIds = _.pluck shop.members, "userId"
-      Meteor.users.find({_id: {$in: memberIds}}, {fields: {emails: 1, profile: 1 }}).forEach (user) ->
-        self.added("users", user._id, user)
-  self.ready()
-  self.onStop ->
-    handle.stop()
-  return
+  shopId = ReactionCore.getShopId(@)
+  if Roles.userIsInRole(this.userId, ['manager','owner','admin'], shopId)
+    return Meteor.users.find()
+  else
+    ReactionCore.Events.info "shopMembers access denied"
+    return []
 
 ###
 # products
@@ -143,8 +137,8 @@ Meteor.publish 'product', (productId) ->
 Meteor.publish 'orders', (userId) ->
   check userId, Match.Optional(String)
   # only admin can get all orders
-  if Roles.userIsInRole(this.userId, ['admin','owner'])
-    return Orders.find( shopId: ReactionCore.getShopId(@) )
+  if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
+    return Orders.find shopId: ReactionCore.getShopId(@)
   else
     return []
 
@@ -185,7 +179,7 @@ Meteor.publish 'accounts', (sessionId, userId) ->
   shopId = ReactionCore.getShopId(@)
 
   # admin gets it all
-  if Roles.userIsInRole(this.userId, ['admin','owner'])
+  if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
     return Accounts.find shopId: shopId
   # returns userId (authenticated account)
   else

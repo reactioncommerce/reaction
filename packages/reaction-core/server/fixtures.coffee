@@ -128,26 +128,25 @@ createDefaultAdminUser = ->
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
   # newly created admin user
   accountId = Accounts.createUser options
-  # add default roles and update shop with admin user
-  Roles.addUsersToRoles accountId, ['manage-users','owner','admin']
   shopId = Shops.findOne()._id
+  # add default roles and update shop with admin user
+  defaultAdminRoles = ['manager','owner','admin']
+  packages = ReactionCore.Collections.Packages.find().fetch()
+
   Shops.update shopId,
     $set:
       ownerId: accountId
     $addToSet:
       emails: {'address': options.email, 'verified': true}
       domains: Meteor.settings.ROOT_URL
-    $push:
-      members:
-        isAdmin: true
-        userId: accountId
-        permissions: [
-            "dashboard/customers",
-            "dashboard/products",
-            "dashboard/settings",
-            "dashboard/settings/account",
-            "dashboard/orders"
-            ]
+  # add all package routes as permissions
+  for pkg in packages
+    defaultAdminGroups.push pkg.name
+    for reg in pkg.registry
+      defaultAdminRoles.push reg.route if reg.route
+  # add all package permissions to default administrator
+  Meteor.call "addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId
+
 
 ###
 # load core fixture data
@@ -188,7 +187,7 @@ loadFixtures = ->
             enabled: !!config.autoEnable
             settings: config.settings
             registry: config.registry
-            shopPermissions: config.permissions
+            permissions: config.permissions
             services: config.services
 
     # remove unused packages

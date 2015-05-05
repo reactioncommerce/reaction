@@ -6,6 +6,9 @@ Accounts.onCreateUser (options, user) ->
     account.userId = user._id
     accountId = ReactionCore.Collections.Accounts.insert(account)
     ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
+    # add default role for all users
+    Roles.addUsersToRoles user._id, "guest", Roles.GLOBAL_GROUP
+
   # return to meteor accounts
   return user
 
@@ -105,8 +108,7 @@ Meteor.methods
         unless user # user does not exist, invite user
           userId = Accounts.createUser
             email: email
-            profile:
-              name: name
+            username: name
           user = Meteor.users.findOne(userId)
           unless user
             throw new Error("Can't find user")
@@ -144,8 +146,6 @@ Meteor.methods
               invitedUserName: name
               url: Meteor.absoluteUrl()
 
-        Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
-
   ###
   # send an email to consumers on sign up
   ###
@@ -164,3 +164,46 @@ Meteor.methods
         homepage: Meteor.absoluteUrl()
         shop: shop
         user: Meteor.user()
+
+  ###
+  # @method addUserPermissions
+  # @param {Array|String} permission
+  #               Name of role/permission.  If array, users
+  #               returned will have at least one of the roles
+  #               specified but need not have _all_ roles.
+  # @param {String} [group] Optional name of group to restrict roles to.
+  #                         User's Roles.GLOBAL_GROUP will also be checked.
+  # @return {Boolean} success/failure
+  ###
+  addUserPermissions: (userId, permissions, group) ->
+    console.log userId, permissions, group
+    check userId, Match.OneOf(String, Array)
+    check permissions, Match.OneOf(String, Array)
+    check group, Match.Optional(String)
+    # for roles
+    try
+      Roles.addUsersToRoles(userId, permissions, group)
+    catch e
+      console.log e
+
+  removeUserPermissions: (userId, permissions, group) ->
+    check userId, String
+    check permissions, Match.OneOf(String, Array)
+    check group, Match.Optional(String)
+
+    # for shop member data
+    try
+      Roles.removeUsersFromRoles(userId, permissions, group)
+    catch e
+      console.log e
+
+  setUserPermissions: (userId, permissions, group) ->
+    check userId, String
+    check permissions, Match.OneOf(String, Array)
+    check group, Match.Optional(String)
+
+    # for shop member data
+    try
+      Roles.removeUsersFromRoles(userId, permissions, group)
+    catch e
+      console.log e

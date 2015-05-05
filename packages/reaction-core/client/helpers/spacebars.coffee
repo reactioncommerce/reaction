@@ -95,15 +95,34 @@ Template.registerHelper "toCamelCase", (str) ->
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system
 ###
+
 Template.registerHelper "hasShopPermission", (permissions) ->
-  return ReactionCore.hasPermission(permissions)
+  # return ReactionCore.hasPermission(permissions)
+  return Roles.userIsInRole Meteor.userId(), permissions, ReactionCore.getShopId()
 
 Template.registerHelper "hasOwnerAccess", ->
-  return ReactionCore.hasOwnerAccess()
+  # ReactionCore.hasOwnerAccess()
+  return Roles.userIsInRole Meteor.userId(), ['owner'], ReactionCore.getShopId()
 
-Template.registerHelper "hasDashboardAccess", ->
-  return ReactionCore.hasDashboardAccess()
+Template.registerHelper "hasDashboardAccess", (shopId) ->
+  #return ReactionCore.hasDashboardAccess()
+  return Roles.userIsInRole Meteor.userId(), ['admin'], ReactionCore.getShopId()
 
+Template.registerHelper "userHasRole", (role) ->
+  unless role then return false
+  return Roles.userIsInRole Meteor.userId(), role, ReactionCore.getShopId()
+
+###
+# general helper for determine if user has a store
+# returns boolean
+###
+Template.registerHelper "userHasProfile", ->
+  user = Meteor.user()
+  return user and !!user.profile.store
+
+
+
+# active router
 Template.registerHelper "activeRouteClass", ->
   args = Array::slice.call(arguments, 0)
   args.pop()
@@ -239,17 +258,6 @@ Template.registerHelper "fname", ->
     fname = name[0]
   return fname
 
-###
-# general helper for determine if user has a store
-# returns boolean
-###
-Template.registerHelper "userHasProfile", ->
-  user = Meteor.user()
-  return user and !!user.profile.store
-
-Template.registerHelper "userHasRole", (role) ->
-  user = Meteor.user()
-  return user and user.roles.indexOf(role) isnt -1  if user and user.roles
 
 ###
 # general helper to return 'active' when on current path
