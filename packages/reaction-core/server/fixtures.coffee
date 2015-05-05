@@ -141,7 +141,6 @@ createDefaultAdminUser = ->
       domains: Meteor.settings.ROOT_URL
   # add all package routes as permissions
   for pkg in packages
-    defaultAdminGroups.push pkg.name
     for reg in pkg.registry
       defaultAdminRoles.push reg.route if reg.route
   # add all package permissions to default administrator
