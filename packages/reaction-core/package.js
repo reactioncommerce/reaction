@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.5.9",
+  version: "0.6.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -37,8 +37,9 @@ Package.onUse(function (api) {
   api.use("email");
   api.use("check");
   api.use("browser-policy");
-  api.use("amplify@1.0.0");
   api.use("reactive-var");
+  api.use("service-configuration");
+  api.use("amplify@1.0.0");
 
   //community packages
   api.use("mquandalle:bower@1.3.12_3");
@@ -63,7 +64,9 @@ Package.onUse(function (api) {
   api.use("matb33:collection-hooks@0.7.11");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.3", 'client');
+  api.use("risul:moment-timezone",'client');
   api.use("sacha:spin@2.0.4", "client");
+  api.use("bengott:avatar@0.7.6");
 
   api.use("cfs:standard-packages@0.5.8");
   api.use("cfs:graphicsmagick@0.0.18");
@@ -79,6 +82,7 @@ Package.onUse(function (api) {
   api.imply("accounts-base");
   api.imply("ui");
   api.imply("browser-policy");
+  api.imply("service-configuration");
   api.imply("mquandalle:bower");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
@@ -93,6 +97,7 @@ Package.onUse(function (api) {
   api.imply("alanning:roles");
   api.imply("momentjs:moment", ["client"]);
   api.imply("sacha:spin" ["client"]);
+  api.imply("bengott:avatar");
   api.imply("dburles:factory");
   api.imply("ongoworks:speakingurl");
   api.imply("ongoworks:security");
@@ -150,7 +155,6 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/menu.js",
     "lib/bower/autosize/dest/autosize.js",
     "lib/bower/collapsible/jquery.collapsible.js",
-    "lib/bower/jquery.serializeHash/jquery.serialize-hash.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
     "lib/bower/openexchangerates.money/money.js",
     "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
@@ -275,9 +279,6 @@ Package.onUse(function (api) {
 
     "client/templates/dashboard/console/icon/icon.html",
     "client/templates/dashboard/console/icon/icon.coffee",
-
-    "client/templates/dashboard/customers/customers.html",
-    "client/templates/dashboard/customers/customers.coffee",
 
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",

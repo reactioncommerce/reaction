@@ -1,65 +1,41 @@
 <template name="shopMember">
-  <tbody id="shop_member_{{userId}}" class="{{hasOwnerAccessToggle}}">
-  <tr>
-    <td>{{orElse username email}}</td>
-    <td>{{email}}</td>
-    <td>
-      <span data-i18n="shopmember.{{role}}">{{role}}</span>
-    </td>
-    {{#if hasOwnerAccess}}
-      <td>
-        <a href="#" class="link-shop-member-remove" data-confirm="Are you sure you want to delete shop member?">
-          <i class="fa fa-times"></i>
-        </a>
-      </td>
-    {{/if}}
-  </tr>
-  </tbody>
+<div class="col-sm-2 shop-member-profile">
+  {{> avatar user=this size="large" shape="circle"}}
+  {{displayName this}}
+  {{email}}
   {{#if hasOwnerAccess}}
-    <tbody class="shop-member-permissions">
-      <tr>
-        <td></td>
-        <td colspan="3">
-          {{#each permissionGroups}}
-            <ul>
-              <li class="shop-permissions-group">{{name}}</li>
-              {{#each permissions}}
-                <li>
-                  <label>
-                    <input type="checkbox" {{isChecked permission ../../userId}}
-                           class="toggle-shop-member-permission"
-                           data-userId="{{../../userId}}" data-permission="{{permission}}"/>
-                    {{label}}
-                  </label>
-                </li>
-              {{/each}}
-            </ul>
-          {{/each}}
-        </td>
-      </tr>
-    </tbody>
+  <a class="link-shop-member-remove" data-confirm="Are you sure you want to remove all permissions?">
+    <i class="fa fa-eraser"></i>
+  </a>
   {{/if}}
-</template>
+</div>
 
-<template name="shopMemberLevels">
+<div class="col-xs-12 col-sm-10 shop-member-permissions">
+  {{#each permissionGroups}}
+    <div class="panel panel-default col-xs-6 col-sm-2">
+      <div class="panel-heading">
+        <label>
+          <input type="checkbox" {{isChecked name ../../userId}}
+                 class="toggle-shop-member-permission"
+                 data-userId="{{../../userId}}" data-permission="{{name}}"/>
+          {{name}}
+        </label>
 
-   <tr>
-      <td>
-        <strong>
-          <span data-i18n="shopmember.permissions">Permissions</span>
-        </strong>
-      </td>
-      <td colspan="3">
-        <label>
-          <input type="radio" name="{{userRoleIsAdmin}}" class="shop-member-is-admin" value="yes" checked="{{hasAdminRole}}"/>
-          {{orElse username email}} <span data-i18n="shopmember.adminAccess"> has full administrative priviledges</span>
-        </label>
-        <br/>
-        <label>
-          <input type="radio" name="{{userRoleIsCustom}}" class="shop-member-is-custom" value="no" checked="{{hasLimitedRole}}"/>
-          <span data-i18n="shopmember.custom">Customize access for</span> {{orElse username email}}
-        </label>
-      </td>
-    </tr>
+      </div>
+      <ul class="list-group">
+          {{#each permissions}}
+            <li>
+              <label>
+                <input type="checkbox" {{isChecked permission ../../userId}}
+                       class="toggle-shop-member-permission"
+                       data-userId="{{../../userId}}" data-permission="{{permission}}"/>
+                {{label}}
+              </label>
+            </li>
+          {{/each}}
+      </ul>
+    </div>
+  {{/each}}
+</div>
 
 </template>

@@ -16,6 +16,12 @@ ReactionCore.Schemas.VariantMedia = new SimpleSchema
     optional: true
   createdAt:
     type: Date
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyUpdate: true
 
 ReactionCore.Schemas.ProductPosition = new SimpleSchema
   tag:
@@ -106,9 +112,13 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     type: [ReactionCore.Schemas.Metafield]
     optional: true
   createdAt:
-    label: "Created at"
     type: Date
-    optional: true
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyUpdate: true
   updatedAt:
     label: "Updated at"
     type: Date
@@ -145,7 +155,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
     optional: true
   positions:
     type: [ReactionCore.Schemas.ProductPosition]
-    optional: true    
+    optional: true
   variants:
     type: [ReactionCore.Schemas.ProductVariant]
   requiresShipping:

@@ -33,8 +33,9 @@ Meteor.publish 'Sessions', (id) ->
 ###
 # CollectionFS - Image/Video Publication
 ###
-Meteor.publish "media", ->
-  return Media.find({ 'metadata.shopId': ReactionCore.getShopId(@) }, {sort: {"metadata.priority": 1}})
+Meteor.publish "Media", ->
+  return Media.find 'metadata.shopId' : ReactionCore.getShopId( @),
+    sort : {"metadata.priority" : 1}
 
 ###
 # i18n - translations
@@ -48,28 +49,41 @@ Meteor.publish "Translations", (sessionLanguage) ->
 # get any user name,social profile image
 # should be limited, secure information
 ###
-Meteor.publish "UserProfile", (profileId) ->
-  check profileId, Match.OneOf(String, null)
+Meteor.publish "UserProfile", (profileUserId) ->
+  check profileUserId, Match.OneOf(String, null)
   roles = ['dashboard/orders','owner','admin','dashboard/customers']
 
-  if profileId?
+  if profileUserId isnt this.userId
+    # admin users can see some additional restricteduser details
     if Roles.userIsInRole this.userId, roles, ReactionCore.getShopId(@)
-      return Meteor.users.find _id: profileId,
+      return Meteor.users.find _id: profileUserId,
         fields:
-          profile: 1
-          emails: 1
+          "emails": true
+          "profile.firstName": true
+          "profile.lastName": true
+          "profile.familyName": true
+          "profile.secondName": true
+          "profile.name": true
+          "services.twitter.profile_image_url_https": true
+          "services.facebook.id": true
+          "services.google.picture": true
+          "services.github.username": true
+          "services.instagram.profile_picture": true
     else
       ReactionCore.Events.info "user profile access denied"
       return []
+  # a user can see their own user data
+  else if this.userId
+    return Meteor.users.find _id: this.userId
+  # prevent other access to users
   else
-    ReactionCore.Events.info "profileId not defined. access denied"
     return []
 
 ###
 #  Packages contains user specific configuration
 #  settings, package access rights
 ###
-Meteor.publish "Packages", ->
+Meteor.publish "Packages", (shop) ->
   shop = ReactionCore.getCurrentShop(this)
   if shop
     if Roles.userIsInRole this.userId, ['dashboard','owner','admin'], ReactionCore.getShopId(@)
@@ -80,36 +94,36 @@ Meteor.publish "Packages", ->
       # for non administrative views
       return Packages.find { shopId: shop._id},
         fields:
+          shopId: true
           name: true
           enabled: true
           registry: true
-          shopId: true
           'settings.public': true
-      # TODO Filter roles/security here for package routes/template access.
+
   else
     return []
 
 ###
 # shops
 ###
-Meteor.publish 'shops', ->
+Meteor.publish 'Shops', ->
   ReactionCore.getCurrentShopCursor(@)
 
 ###
-# shopMembers
+# ShopMembers
 ###
-Meteor.publish 'shopMembers', ->
+Meteor.publish 'ShopMembers', ->
   shopId = ReactionCore.getShopId(@)
   if Roles.userIsInRole(this.userId, ['manager','owner','admin'], shopId)
     return Meteor.users.find()
   else
-    ReactionCore.Events.info "shopMembers access denied"
+    ReactionCore.Events.info "ShopMembers access denied"
     return []
 
 ###
 # products
 ###
-Meteor.publish 'products', (userId, shops) ->
+Meteor.publish 'Products', (shops) ->
   shop = ReactionCore.getCurrentShop(@)
   if shop
     selector = {shopId: shop._id}
@@ -122,7 +136,7 @@ Meteor.publish 'products', (userId, shops) ->
   else
     return []
 
-Meteor.publish 'product', (productId) ->
+Meteor.publish 'Product', (productId) ->
   check productId, String
 
   shop = ReactionCore.getCurrentShop(@) #todo: wire in shop
@@ -134,7 +148,7 @@ Meteor.publish 'product', (productId) ->
 ###
 # orders
 ###
-Meteor.publish 'orders', (userId) ->
+Meteor.publish 'Orders', (userId) ->
   check userId, Match.Optional(String)
   # only admin can get all orders
   if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
@@ -145,7 +159,7 @@ Meteor.publish 'orders', (userId) ->
 ###
 # account orders
 ###
-Meteor.publish 'accountOrders', (sessionId, userId) ->
+Meteor.publish 'AccountOrders', (sessionId, userId) ->
   check sessionId, Match.OptionalOrNull(String)
   check userId, Match.OptionalOrNull(String)
   shopId = ReactionCore.getShopId(@)
@@ -159,7 +173,7 @@ Meteor.publish 'accountOrders', (sessionId, userId) ->
 ###
 # cart
 ###
-Meteor.publish 'cart', (sessionId, userId) ->
+Meteor.publish 'Cart', (sessionId, userId) ->
   check sessionId, Match.OptionalOrNull(String)
   check userId, Match.OptionalOrNull(String)
   if !sessionId then return
@@ -173,7 +187,7 @@ Meteor.publish 'cart', (sessionId, userId) ->
 ###
 # accounts
 ###
-Meteor.publish 'accounts', (sessionId, userId) ->
+Meteor.publish 'Accounts', (sessionId, userId) ->
   check sessionId, Match.OneOf(String, null)
   check userId, Match.OneOf(String, null)
   shopId = ReactionCore.getShopId(@)
@@ -199,23 +213,23 @@ Meteor.publish 'accounts', (sessionId, userId) ->
 ###
 # tags
 ###
-Meteor.publish "tags", ->
+Meteor.publish "Tags", ->
   return Tags.find(shopId: ReactionCore.getShopId())
 
 ###
 # shipping
 ###
-Meteor.publish "shipping", ->
+Meteor.publish "Shipping", ->
   return Shipping.find(shopId: ReactionCore.getShopId())
 
 ###
 # taxes
 ###
-Meteor.publish "taxes", ->
+Meteor.publish "Taxes", ->
   return Taxes.find(shopId: ReactionCore.getShopId())
 
 ###
 # discounts
 ###
-Meteor.publish "discounts", ->
+Meteor.publish "Discounts", ->
   return Discounts.find(shopId: ReactionCore.getShopId())

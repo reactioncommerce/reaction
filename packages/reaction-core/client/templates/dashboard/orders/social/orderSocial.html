@@ -1,7 +1,7 @@
 <template name ="orderSocial">
   <div class="social pull-right">
   {{!-- Social Commentary --}}
-    {{#if userHasRole "admin"}}
+    {{#if hasPermission "admin"}}
       <div class="social-media text-right">
         <span class="facebook-msg">
           <a href="#" class="facebook-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{facebookMsg}}" tabindex="-1">

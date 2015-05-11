@@ -10,6 +10,8 @@ setProduct = (productId, variantId) ->
   setCurrentVariant variantId
   return
 
+  # TODO: Router.setTemplateNameConverter(function (str) { return str; });
+
 ###
 #  Global Route Configuration
 #  Extend/override in reaction/client/routing.coffee
@@ -25,11 +27,11 @@ Router.configure
 
 # we always need to wait on these publications
 Router.waitOn ->
-  @subscribe "shops"
+  @subscribe "Shops"
   @subscribe "Packages"
 
 # general reaction controller
-@ShopController = RouteController.extend
+ShopController = RouteController.extend
   onAfterAction: ->
     ReactionCore.MetaData.refresh(@route, @params)
   layoutTemplate: "coreLayout"
@@ -40,23 +42,24 @@ Router.waitOn ->
       to: "layoutFooter"
     dashboard:
       to: "dashboard"
+
 # local ShopController
-ShopController = @ShopController
+@ShopController = ShopController
 
 # admin specific shop controller
-@ShopAdminController = @ShopController.extend
+ShopAdminController = @ShopController.extend
   onBeforeAction: () ->
     # could check for roles here for dashboard access
     unless ReactionCore.hasPermission @route.getName()
-      @render('unauthorized')
+      @render('unauthorized', {to: 'main'})
     else
       @next()
     return
 # local ShopAdminController
-ShopAdminController = @ShopAdminController
+@ShopAdminController = ShopAdminController
 
-#For Printing. No Layout
-@PrintController = RouteController.extend
+# For Printing. No Layout
+PrintController = RouteController.extend
   onBeforeAction: () ->
     # could check for roles here for dashboard access
     unless ReactionCore.hasPermission @route.getName()
@@ -64,14 +67,22 @@ ShopAdminController = @ShopAdminController
     else
       @next()
     return
-#Local PrintController
-PrintController = @PrintController
+# Local PrintController
+@PrintController = PrintController
+
 
 
 ###
 # General Route Declarations
 ###
 Router.map ->
+  @route "unauthorized",
+    template: "unauthorized"
+    name: "unauthorized"
+    yieldTemplates:
+      checkoutHeader:
+        to: "layoutHeader"
+
   # default index route, normally overriden parent meteor app
   @route "index",
     controller: ShopController
@@ -79,7 +90,7 @@ Router.map ->
     name: "index"
     template: "products"
     waitOn: ->
-      @subscribe "products"
+      @subscribe "Products"
 
   # home page intro screen for reaction-commerce
   @route 'dashboard',
@@ -89,6 +100,7 @@ Router.map ->
       Session.set "dashboard", true
       @next()
 
+  # shop settings
   @route 'dashboard/settings/shop',
     controller: ShopAdminController
     path: '/dashboard/settings/shop'
@@ -96,14 +108,11 @@ Router.map ->
     data: ->
       Shops.findOne()
 
+  # members aka accounts mgmt
   @route 'dashboard/accounts',
     controller: ShopAdminController
     path: '/dashboard/accounts'
     template: 'coreAccounts'
-
-  # list page of customer records
-  @route 'dashboard/customers',
-    controller: ShopAdminController
 
   # list page of shop orders
   @route 'dashboard/orders',
@@ -120,9 +129,9 @@ Router.map ->
     path: 'product/tag/:_id'
     template: "products"
     waitOn: ->
-      @subscribe "products"
+      @subscribe "Products"
     subscriptions: ->
-      @subscribe "tags"
+      @subscribe "Tags"
     data: ->
       if @ready()
         id = @params._id
@@ -137,7 +146,7 @@ Router.map ->
     path: 'product/:_id/:variant?'
     template: 'productDetail'
     waitOn: ->
-      @subscribe 'product', @params._id
+      @subscribe 'Product', @params._id
     onBeforeAction: ->
       variant = @params.variant || @params.query.variant
       setProduct @params._id, variant
@@ -146,13 +155,16 @@ Router.map ->
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
+          # this won't allow just product access
+          # rather can be used to share permission to a
+          # product that isn't published with another account.
           unless ReactionCore.hasPermission(@url)
             @render 'unauthorized'
         return product
       if @ready() and !product
         @render 'notFound'
 
-  #checkout
+  # checkout
   @route 'cartCheckout',
     layoutTemplate: "coreLayout"
     path: 'checkout',
@@ -163,17 +175,17 @@ Router.map ->
     waitOn: ->
       @subscribe "Packages"
     subscriptions: ->
-      @subscribe "products"
-      @subscribe "shipping"
-      @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
+      @subscribe "Products"
+      @subscribe "Shipping"
+      @subscribe "AccountOrders", Session.get("sessionId"), Meteor.userId()
 
-  #completed orders
+  # completed orders
   @route 'cartCompleted',
     controller: ShopController
     path: 'completed/:_id'
     template: 'cartCompleted'
     subscriptions: ->
-      @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
+      @subscribe "AccountOrders", Session.get("sessionId"), Meteor.userId()
     data: ->
       if @ready()
         if Orders.findOne(@params._id)
@@ -183,13 +195,13 @@ Router.map ->
       else
         @render "loading"
 
-  #account profile
+  # account profile
   @route 'account/profile',
     controller: ShopController
     path: 'account/profile'
     template: 'accountProfile'
     subscriptions: ->
-      @subscribe "accountOrders", Session.get("sessionId"), Meteor.userId()
+      @subscribe "AccountOrders", Session.get("sessionId"), Meteor.userId()
     data: ->
       if @ready()
         if Orders.findOne() or Meteor.userId()
@@ -199,7 +211,8 @@ Router.map ->
           @render 'unauthorized'
       else
         @render "loading"
-  #route for PDF pages. No layout
+
+  # route for PDF pages. No layout
   @route 'dashboard/pdf/orders',
     controller: PrintController
     path: 'dashboard/pdf/orders/:_id'

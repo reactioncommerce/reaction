@@ -1,17 +1,29 @@
+###
+# user onCreateUser hook
+# see hooks.coffee for additional collection hooks
+###
 Accounts.onCreateUser (options, user) ->
   # create or clone profile,email to Accounts
   userAccount  = ReactionCore.Collections.Accounts.findOne('userId': user._id)
   unless userAccount
     account = _.clone(user)
     account.userId = user._id
+    # add service names to account
+    for service in account.services
+      account.username = service.name unless account.username
+      account.emails.push {'address': service.email, 'verified': true}
+
     accountId = ReactionCore.Collections.Accounts.insert(account)
-    ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
+
     # add default role for all users
     Roles.addUsersToRoles user._id, "guest", Roles.GLOBAL_GROUP
-
+    ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
   # return to meteor accounts
   return user
 
+###
+# sets the shop mail server auth info
+###
 @setMailUrlForShop = (shop) ->
   coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
   if coreMail.user and coreMail.password
@@ -22,6 +34,9 @@ Accounts.onCreateUser (options, user) ->
     throw new Meteor.Error( 403, '<a href="/dashboard/settings/shop#mail">Core Mail Settings</a> not set. Unable to send email.')
     return
 
+###
+# Account Methods
+###
 Meteor.methods
   ###
   # add new addresses to an account
@@ -124,7 +139,7 @@ Meteor.methods
           SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
           Email.send
             to: email
-            from: currentUserName + " <" + shop.email + ">"
+            from: currentUserName + " <" + shop.emails[0] + ">"
             subject: "You have been invited to join " + shop.name
             html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
@@ -137,7 +152,7 @@ Meteor.methods
           SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
           Email.send
             to: email
-            from: currentUserName + " <" + shop.email + ">"
+            from: currentUserName + " <" + shop.emails[0] + ">"
             subject: "You have been invited to join the " + shop.name
             html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
@@ -158,7 +173,7 @@ Meteor.methods
     SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'))
     Email.send
       to: email
-      from: shop.email
+      from: shop.emails[0]
       subject: "Welcome to " + shop.name + "!"
       html: SSR.render 'welcomeNotification',
         homepage: Meteor.absoluteUrl()
@@ -166,44 +181,53 @@ Meteor.methods
         user: Meteor.user()
 
   ###
-  # @method addUserPermissions
+  # @summary addUserPermissions
   # @param {Array|String} permission
   #               Name of role/permission.  If array, users
   #               returned will have at least one of the roles
   #               specified but need not have _all_ roles.
   # @param {String} [group] Optional name of group to restrict roles to.
   #                         User's Roles.GLOBAL_GROUP will also be checked.
-  # @return {Boolean} success/failure
+  # @returns {Boolean} success/failure
   ###
   addUserPermissions: (userId, permissions, group) ->
-    console.log userId, permissions, group
     check userId, Match.OneOf(String, Array)
     check permissions, Match.OneOf(String, Array)
     check group, Match.Optional(String)
+    @unblock()
+
     # for roles
     try
       Roles.addUsersToRoles(userId, permissions, group)
     catch e
-      console.log e
+      ReactionCore.Events.info e
 
+  ###
+  # removeUserPermissions
+  ###
   removeUserPermissions: (userId, permissions, group) ->
     check userId, String
     check permissions, Match.OneOf(String, Array)
     check group, Match.Optional(String)
+    @unblock()
 
     # for shop member data
     try
       Roles.removeUsersFromRoles(userId, permissions, group)
     catch e
-      console.log e
+      ReactionCore.Events.info e
 
+  ###
+  # setUserPermissions
+  ###
   setUserPermissions: (userId, permissions, group) ->
     check userId, String
     check permissions, Match.OneOf(String, Array)
     check group, Match.Optional(String)
+    @unblock()
 
     # for shop member data
     try
       Roles.removeUsersFromRoles(userId, permissions, group)
     catch e
-      console.log e
+      ReactionCore.Events.info e

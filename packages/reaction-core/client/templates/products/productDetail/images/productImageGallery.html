@@ -20,7 +20,7 @@
     {{#unless this.isUploaded}}
       {{> FS.UploadProgressBar bootstrap=true}}
     {{/unless}}
-    {{#if userHasRole "admin"}}
+    {{#if hasPermission "admin"}}
       <div class="gallery-tools">
         <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
       </div>
@@ -29,7 +29,7 @@
 </template>
 
 <template name="imageUploader">
-{{#if userHasRole "admin"}}
+{{#if hasPermission "admin"}}
   <div id="dropzone" class="dropzone">
    <input name="files" id="files" class="hidden" type="file" multiple/>
     <div class="btn btn-default btn-block" id="btn-upload" data-i18n="productDetail.dropFile">Drop file to upload</div>

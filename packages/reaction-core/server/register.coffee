@@ -26,6 +26,12 @@ ReactionCore.registerPackage
       icon: 'fa fa-th'
       cycle: 1
       container: "dashboard"
+      permissions: [
+        {
+          label: "Dashboard"
+          permission: "dashboard"
+        }
+      ]
     }
     {
       route: "dashboard"
@@ -77,7 +83,7 @@ ReactionCore.registerPackage
     # products
     {
       route: 'createProduct'
-      label: 'Create'
+      label: 'Add Product'
       icon: 'fa fa-plus'
       provides: 'shortcut'
     }
@@ -96,39 +102,19 @@ ReactionCore.registerPackage
       label: 'Members'
       provides: 'console'
     }
+    # shortcut for members / users
+    {
+      route: "dashboard/accounts"
+      provides: 'shortcut'
+      label: 'Members'
+      icon: 'fa fa-users'
+      cycle: 1
+    }
     # account profiles
     {
       route: 'account/profile'
       label: 'Profile'
-      icon: 'fa fa-info-circle'
+      icon: 'fa fa-user'
       provides: 'userAccountDropdown'
-    }
-  ]
-  # permissions
-  permissions: [
-    {
-      label: "Promotions"
-      permission: "dashboard/promotions"
-      group: "Shop Management"
-    }
-    {
-      label: "Products"
-      permission: "dashboard/products"
-      group: "Shop Content"
-    }
-    {
-      label: "Shop Settings"
-      permission: "dashboard/settings"
-      group: "Shop Settings"
-    }
-    {
-      label: "Members"
-      permission: "dashboard/members"
-      group: "Shop Settings"
-    }
-    {
-      label: "Orders"
-      permission: "dashboard/orders"
-      group: "Shop Management"
     }
   ]

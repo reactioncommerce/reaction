@@ -9,6 +9,7 @@ _.extend ReactionCore,
     self = @
     # We want this to auto-update whenever shops or packages change, login/logout, etc.
     Tracker.autorun ->
+      Meteor.subscribe "Shops"
       domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
       shop = ReactionCore.Collections.Shops.findOne domains: domain
 
@@ -18,7 +19,10 @@ _.extend ReactionCore,
         self.isAdmin = Roles.userIsInRole Meteor.userId(), 'admin', shop._id
       else # marketplace
         shop = ReactionCore.Collections.Shops.findOne isMarketplace: true
-        self.shopId = shop._id if shop
+        if shop
+          self.shopId = shop._id if shop
+          self.isOwner = Roles.userIsInRole Meteor.userId(), 'owner', shop._id
+          self.isAdmin = Roles.userIsInRole Meteor.userId(), 'admin', shop._id
         #
         # TODO: implement shopId as  array or string
         #
@@ -28,13 +32,17 @@ _.extend ReactionCore,
   hasOwnerAccess: ->
     return Roles.userIsInRole Meteor.userId(), 'owner', @shopId
 
+  # admin access
+  hasAdminAccess: ->
+    return Roles.userIsInRole Meteor.userId(), 'admin', @shopId if @shopId
+
   # dashboard access
   hasDashboardAccess: ->
-    return Roles.userIsInRole Meteor.userId(), 'admin', @shopId
+    return Roles.userIsInRole Meteor.userId(), 'dashboard', @shopId if @shopId
 
   # permission check
   hasPermission: (permissions) ->
-    return Roles.userIsInRole Meteor.userId(), permissions, @shopId
+    return Roles.userIsInRole Meteor.userId(), permissions, @shopId if @shopId
 
   # returns shop id
   getShopId: ->

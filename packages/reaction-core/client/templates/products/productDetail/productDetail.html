@@ -1,7 +1,7 @@
 <template name="productDetail">
 <div class="container-fluid pdp-container">
   {{!-- Product Visibility Admin Block --}}
-  {{#if userHasRole "admin"}}
+  {{#if hasPermission "admin"}}
     <div class="row">
       <span data-i18n="productDetail.productManagement">Product management:</span>
       {{#if isVisible}}
@@ -55,7 +55,7 @@
           </div>
           <div class="col-xs-3 col-xs-offset-1">
             {{!-- Social Commentary --}}
-            {{#if userHasRole "admin"}}
+            {{#if hasPermission "admin"}}
             <div class="social-media">
               <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
               <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
@@ -90,7 +90,7 @@
           <div class="row">
             <span id="product-alerts">{{>bootstrapAlerts placement="productDetail"}}</span>
             <div class="btn btn-primary add-to-cart-block" id="add-to-cart">
-              <div class="add-to-cart-quantity pull-left">
+              <div class="add-to-cart-quantity .pull-left">
                 <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1" min="1"/>
               </div>
               <div class="add-to-cart-text" data-i18n="productDetail.addToCart">Add to cart</div>

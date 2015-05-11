@@ -23,9 +23,9 @@ PackageFixture = ->
 
     # loop through and import
     for item, index in json
-      collection._collection.insert item, (error, result) ->
+      collection.insert item, (error, result) ->
         if error
-          ReactionCore.Events.info (error + "Error adding " + index + " items to " + collection._name)
+          ReactionCore.Events.warn "Error adding " + index + " to " + collection._name, item, error
           return false
     if index > 0
       ReactionCore.Events.info ("Success adding " + index + " items to " + collection._name)
@@ -34,15 +34,43 @@ PackageFixture = ->
       ReactionCore.Events.info ("No data imported to " + collection._name)
       return
 
-  #
+  ###
   # updates package settings, accepts json string
   # example:
   #  Fixtures.loadSettings Assets.getText("settings/reaction.json")
   #
-  # This basically "hardcodes" all the settings. You can change them
+  # This basically allows you to "hardcode" all the settings. You can change them
   # via admin etc for the session, but when the server restarts they'll
   # be restored back to the supplied json
   #
+  # All settings are private unless added to `settings.public`
+  #
+  # Meteor account services can be added in `settings.services`:
+  #
+  # {
+  #     "name": "core",
+  #     "enabled": true,
+  #     "settings": {
+  #         "public": {
+  #             "allowGuestCheckout": true
+  #         },
+  #         "mail": {
+  #             "user": "postmaster@mailgun.org",
+  #             "password": "xxxxxxxxxxxxxxxx",
+  #             "host": "smtp.mailgun.org",
+  #             "port": 25
+  #         },
+  #         "services": [
+  #             {
+  #                 "facebook": {
+  #                     "appId": "xxxxxxxxxxxxxxxx",
+  #                     "secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  #                 }
+  #             }
+  #         ]
+  #     }
+  # }
+  ###
   loadSettings: (json) ->
     check json, String
     validatedJson = EJSON.parse json
@@ -64,10 +92,17 @@ PackageFixture = ->
             multi: true
             upsert: true
             validate: false)
-          ReactionCore.Events.info "loaded local package data: " + item.name
-      #   return
-      # return
 
+          # add meteor auth services
+          if item.settings.services
+            for services in item.settings.services
+              for service, settings of services
+                ServiceConfiguration.configurations.upsert { service: service }, $set: settings
+                ReactionCore.Events.info "service configuration loaded: " + item.name + " | " + service
+
+          # completed loading settings
+          ReactionCore.Events.info "loaded local package data: " + item.name
+    return
   #
   # loadI18n for defined shops language source json
   # ex: Fixtures.loadI18n()
@@ -86,11 +121,11 @@ PackageFixture = ->
       json = EJSON.parse Assets.getText("private/data/i18n/" + language.i18n + ".json")
 
       for item in json
-        collection._collection.insert item, (error, result) ->
+        collection.insert item, (error, result) ->
           if error
-            ReactionCore.Events.info (error + "Error adding " + language.i18n + " items to " + collection._name)
+            ReactionCore.Events.warn "Error adding " + language.i18n + " to " + collection._name, item, error
             return
-        ReactionCore.Events.info ("Success adding "+ language.i18n + " to " + collection._name)
+        ReactionCore.Events.info "Success adding " + language.i18n + " to " + collection._name
     return
 
 
@@ -126,23 +161,26 @@ createDefaultAdminUser = ->
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
+
   # newly created admin user
   accountId = Accounts.createUser options
   shopId = Shops.findOne()._id
+
   # add default roles and update shop with admin user
   defaultAdminRoles = ['manager','owner','admin']
   packages = ReactionCore.Collections.Packages.find().fetch()
 
+  # we need a contact and a domain
   Shops.update shopId,
-    $set:
-      ownerId: accountId
     $addToSet:
       emails: {'address': options.email, 'verified': true}
       domains: Meteor.settings.ROOT_URL
+
   # add all package routes as permissions
   for pkg in packages
     for reg in pkg.registry
       defaultAdminRoles.push reg.route if reg.route
+      defaultAdminRoles.push reg.name if reg.name
   # add all package permissions to default administrator
   Meteor.call "addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId
 
@@ -164,15 +202,6 @@ loadFixtures = ->
     ReactionCore.Events.info "Updating domain to " + getDomain()
     Shops.update({domains:currentDomain},{$set:{"domains.$":getDomain()}})
 
-
-  # Load data from settings/json files
-  unless Accounts.loginServiceConfiguration.find().count()
-    if Meteor.settings.public?.facebook?.appId
-      Accounts.loginServiceConfiguration.insert
-        service: "facebook",
-        appId: Meteor.settings.public.facebook.appId,
-        secret: Meteor.settings.facebook.secret
-
   # Loop through ReactionRegistry.Packages object, which now has all packages added by
   # calls to register
   # removes package when removed from meteor, retriggers when package added
@@ -186,8 +215,6 @@ loadFixtures = ->
             enabled: !!config.autoEnable
             settings: config.settings
             registry: config.registry
-            permissions: config.permissions
-            services: config.services
 
     # remove unused packages
     Shops.find().forEach (shop) ->

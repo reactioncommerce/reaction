@@ -8,14 +8,14 @@
       </div>
     </a>
     <div class="row pkg-status">
-        <i class="{{icon}} fa-3x pull-left"></i>
+        <i class="{{icon}} fa-3x .pull-left"></i>
          <div class="pkg-controls">
             {{#if enabled}}
               {{#if condition name 'neq' 'core'}}
                 <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
               {{/if}}
               {{#each reactionApps provides="settings" name=name container=container}}
-                {{#if hasShopPermission route}}
+                {{#if hasPermission route}}
                 <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
                 {{/if}}
               {{/each}}

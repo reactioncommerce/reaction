@@ -2,12 +2,17 @@
 # Emails
 ###
 ReactionCore.Schemas.Email = new SimpleSchema
+  provides:
+    type: String
+    defaultValue: "default"
+    optional: true
   address:
     type: String
     regEx: SimpleSchema.RegEx.Email
   verified:
     type: Boolean
     defaultValue: false
+    optional: true
 
 ###
 # AddressBook

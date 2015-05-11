@@ -1,3 +1,8 @@
+
+#
+# helper applied to variant on
+# product update/insert
+#
 applyVariantDefaults = (variant) ->
   _.defaults(variant,
     _id: Random.id()
@@ -7,6 +12,15 @@ applyVariantDefaults = (variant) ->
     createdAt: new Date()
   )
 
+###
+# Collection Hooks
+# See: https://github.com/matb33/meteor-collection-hooks
+###
+
+
+#
+# create unpublished product
+#
 Products.before.insert (userId, product) ->
   product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
   _.defaults(product,
@@ -19,6 +33,9 @@ Products.before.insert (userId, product) ->
   for variant in product.variants
     applyVariantDefaults(variant)
 
+#
+# on product update
+#
 Products.before.update (userId, product, fieldNames, modifier, options) ->
   #set default variants
   updatedAt: new Date()

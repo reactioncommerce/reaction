@@ -2,7 +2,7 @@
 <div class="dropdown" role="menu">
 {{#if currentUser}}
   <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-    <span class="circular-icon" style="background: url({{socialImage}}) no-repeat center;"></span>
+    {{> avatar user=currentUser class="circular-icon" size="small" shape="circle"}}
     <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
   </div>
   <div class="dropdown-menu pull-right" role="menu">
@@ -32,18 +32,20 @@
 <template name="accountsDropdownApps">
   <ul class="user-accounts-dropdown-apps">
     {{> userAccountsDropdown}}
+    <!--administrative shortcut icons -->
+    {{#each reactionApps provides='shortcut' enabled=true}}
+      {{#if hasPermission route}}
+      <li class="dropdown-apps-icon">
+        <a id="{{route}}" title="{{label}}">
+          <i class="{{icon}}"></i>
+          <span class="icon-text">
+            {{label}}
+          </span>
+        </a>
+      </li>
+      {{/if}}
+    {{/each}}
     {{#if hasDashboardAccess}}
-      <!--administrative shortcut icons -->
-      {{#each reactionApps provides='shortcut' enabled=true}}
-        <li class="dropdown-apps-icon">
-          <a id="{{route}}" title="{{label}}">
-            <i class="{{icon}}"></i>
-            <span class="icon-text">
-              {{label}}
-            </span>
-          </a>
-        </li>
-      {{/each}}
       {{> consoleIcon}}
     {{/if}}
   </ul>

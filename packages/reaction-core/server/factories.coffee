@@ -18,14 +18,33 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
     metafields: undefined
   ]
   domains: ["localhost"]
-  email: 'root@localhost'
+  emails: [{'address': 'root@localhost', 'verified': true}]
   currency: "USD"
-  currencies: []
+  currencies:
+    "USD":
+      "format": "%s%v"
+      "symbol": "$"
+    "EUR":
+      "format": "%v %s"
+      "symbol": "€"
+      "decimal": ","
+      "thousand": "."
+  locale: "en"
+  locales:
+    continents:
+      'NA': 'North America'
+    countries:
+      'US':
+        "name": "United States",
+        "native": "United States",
+        "phone": "1",
+        "continent": "NA",
+        "capital": "Washington D.C.",
+        "currency": "USD,USN,USS",
+        "languages": "en"
   public: true
-  timezone: '1'
+  timezone: -> "US/Pacific"
   baseUOM: "OZ"
-  ownerId: '1'
-  members: []
   metafields: []
   createdAt: -> new Date()
   updatedAt: -> new Date()

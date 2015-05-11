@@ -18,9 +18,7 @@
                     "loading": "Loading",
                     "toggle": "Toggle",
                     "warning": "Oops!",
-                    "unauthorizedMessage": "You don't have permission to view this content.",
-                    "invitationSent": "Invitation Sent",
-                    "members": "Members"
+                    "unauthorizedMessage": "You don't have permission to view this content."
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -189,6 +187,8 @@
                     "weibo": "Weibo"
                 },
                 "accountsUI": {
+                    "members": "Members",
+                    "addMember": "Add a member",
                     "add": "add",
                     "and": "and",
                     "back": "back",
@@ -229,11 +229,14 @@
                     "usernameOrEmail": "Username or email",
                     "with": "with",
                     "checkoutAsGuest": "Checkout without user account",
+                    "role": "Role",
                     "info": {
                         "emailSent": "Email Sent",
                         "emailVerified": "Email verified",
-                        "passwordChanged": "Password Changed",
-                        "passwordReset": "Password Reset"
+                        "passwordChanged": "Password changed",
+                        "passwordReset": "Password reset",
+                        "invitationSent": "Invitation Sent",
+                        "sendInvitation": "Send invitation"
                     },
                     "error": {
                         "emailRequired": "Email is required.",

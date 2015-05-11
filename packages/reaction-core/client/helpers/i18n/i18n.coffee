@@ -62,8 +62,10 @@ Meteor.startup ->
 
   # set locale
   Meteor.call 'getLocale', (error,result) ->
-    ReactionCore.Locale = result
-    ReactionCore.Locale.language = Session.get "language"
+    if result
+      ReactionCore.Locale = result
+      ReactionCore.Locale.language = Session.get "language"
+      moment.locale(ReactionCore.Locale.language)
     return
 
   # start the autorun after startup, so that "language" session var is already set

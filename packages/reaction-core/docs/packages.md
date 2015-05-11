@@ -47,7 +47,7 @@ Package.describe({
 });
 
 Package.onUse(function (api, where) {
-  api.use("reactioncommerce:core@0.4.1"); //current release
+  api.use("reactioncommerce:core@x.x.x"); //current release
   api.addFiles("server/register.coffee",'server');
 });
 ```
@@ -97,6 +97,12 @@ ReactionCore.registerPackage
       icon: 'fa fa-paypal'
       cycle: 3
       container: 'paypal'
+      permissions: [
+        {
+          label: "Dashboard"
+          permission: "dashboard"
+        }
+      ]
     }
     # configures settings link for app card
     # use 'group' to link to dashboard card
@@ -112,15 +118,6 @@ ReactionCore.registerPackage
       provides: 'paymentMethod'
     }
   ]
-  # array of permission objects
-  permissions: [
-    {
-      label: 'Pay Pal'
-      permission: 'dashboard/payments'
-      group: 'Shop Settings'
-    }
-  ]
-
 ```
 
 
@@ -262,7 +259,8 @@ Adding permissions to routes with:
 
 **Using Permissions**
 
-Shop has owner, which is determined by the "ownerId" field in the Shop collection.
+#Owner
+The owner was added to the shops 'owner' permission group with the 'owner' permission.
 
 **To check if user has owner access:**
 
@@ -294,7 +292,7 @@ on Server: for some shop (current if not defined) and some userId (current if no
 
 in templates:
 
-    {{#if hasShopPermission permissions}}{{/if}}
+    {{#if hasPermission permissions}}{{/if}}
 
 
 For using shop permissions in some packages you must add it into register directive.

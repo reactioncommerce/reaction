@@ -21,7 +21,12 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema
     allowedValues: ["authorize", 'capture','refund','void']
   createdAt:
     type: Date
-    optional: true
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyUpdate: true
   updatedAt:
     type: Date
     optional :true

@@ -2,14 +2,14 @@ Template.coreAccounts.helpers
   members: () ->
     members = []
     if ReactionCore.hasOwnerAccess()
-      shopMembers = Meteor.subscribe 'shopMembers'
-      if shopMembers.ready()
+      ShopMembers = Meteor.subscribe 'ShopMembers'
+      if ShopMembers.ready()
         shopUsers = Meteor.users.find()
         shopUsers.forEach (user) ->
           member = {}
           member.userId = user._id
-          member.email = user.emails[0].address
-          member.username = user.username
+          member.email = user.emails[0]?.address if user.email
+          member.username = user?.username
           member.isAdmin = Roles.userIsInRole user._id, 'admin', ReactionCore.getShopId()
           member.roles = user.roles
 

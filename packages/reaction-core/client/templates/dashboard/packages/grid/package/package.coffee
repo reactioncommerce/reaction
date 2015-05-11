@@ -22,7 +22,9 @@ Template.gridPackage.events
             autoHide: true
           Router.go self.route if self.route
         else if error
-          console.log "error enabling package", error
+         Alerts.add self.label + i18n.t("gridPackage.pkgDisabled"), "warning",
+            type: "pkg-enabled-" + self.name
+            autoHide: true
 
   "click .disablePkg": (event, template) ->
     self = @

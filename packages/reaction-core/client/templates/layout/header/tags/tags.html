@@ -9,7 +9,7 @@
     <a href="{{pathForSEO "product/tag" "slug"}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}" data-event-category="tag" data-event-action="tag-click" data-event-label="navigation tag click" data-event-value="{{name}}">{{name}}</a>
   </li>
   {{/each}}
-  {{#if userHasRole "admin"}}
+  {{#if hasPermission "admin"}}
     <li><a href="#" id="header-edit-tag" class="header-edit-tag" data-current-id="{{tag._id}}"><i class="fa fa-tags fa-lg"></i></a></li>
   {{/if}}
    </ul>

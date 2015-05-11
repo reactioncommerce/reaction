@@ -20,32 +20,35 @@ Template.shopMember.helpers
 
   permissionGroups: ->
     permissionGroups = []
-    packages = ReactionCore.Collections.Packages.find()
-    packages.forEach (pkg) ->
+    ReactionCore.Collections.Packages.find().forEach (pkg) ->
       permissions = []
-      for registryItem in pkg.registry
-        if registryItem.route
-          # filter out potential duplicates
-          existing = (existing for existing in permissions when existing.permission is registryItem.route)
-          # registry permissions
-          definedPermission = (registry for registry in pkg.permissions when registry.permission is registryItem.route)
-          definedPermission = definedPermission[0] if definedPermission
-          # we'll define all registry routes as permission
-          if existing.length is 0
-            # create package permissions from registry entries
-            permissions.push {
-              permission: (definedPermission?.route || registryItem.route)
-              label: (definedPermission?.label || registryItem?.label || registryItem?.provides).toUpperCase()
-            }
-      permissionGroups.push { 'name': pkg.name, 'permissions': _.uniq(permissions) }
+      permissionMap = {}
 
+      # for each registry item, we'll define permissionGroups
+      for registryItem in pkg.registry when registryItem.route
+        # registry permissions
+        if registryItem.permissions
+          for permission in registryItem
+            permissions.push permission
+
+        # check for potential duplicates
+        for existing in permissions
+          permissionMap[existing.permission] = existing.label
+
+        # we'll define all registry routes as permission
+        unless permissionMap[registryItem.route]
+          # create package permissions from registry entries
+          permissions.push
+            permission: registryItem.route
+            label: registryItem.label || registryItem.provides || registryItem.route
+      # push this packages permissions as a group
+      permissionGroups.push { 'name': pkg.name, 'permissions': _.uniq(permissions) }
     return permissionGroups
 
-
-Template.shopMember.rendered = ->
-  $(@find(".toggle-shop-member-permissions")).collapsible
-    'cookieName': "toggle-shop-member-permissions-" + @data.userId
-    'speed': 200
+# Template.shopMember.rendered = ->
+#   $(@find(".toggle-shop-member-permissions")).collapsible
+#     'cookieName': "toggle-shop-member-permissions-" + @data.userId
+#     'speed': 200
 
 Template.shopMember.events
   # toggle admin permissions
@@ -63,7 +66,6 @@ Template.shopMember.events
 
   # toggle customer permissions
   "change .shop-member-is-custom": (event, template) ->
-    console.log "here"
     current = Roles.userIsInRole @.userId, 'admin', ReactionCore.getShopId()
     # if current and !$(event.currentTarget).is(':checked')
     #   Meteor.call "removeUserPermissions", @.userId, 'admin', ReactionCore.getShopId()
@@ -79,16 +81,29 @@ Template.shopMember.events
 
   # toggle individual permissions
   "change .toggle-shop-member-permission": (event, template) ->
+    self = @
+    permissions = []
     member = template.data
 
+    # package will assign all children permissions
+    # plus itself (name)
+    if self.name
+      permissions.push self.name
+      for pkgPermissions in self.permissions
+        permissions.push pkgPermissions.permission
+
+    # individual permissions
+    else
+      permissions.push self.permission
+
     if $(event.currentTarget).is(':checked')
-      Meteor.call "addUserPermissions", member.userId, @.permission, ReactionCore.getShopId()
+      Meteor.call "addUserPermissions", member.userId, permissions, ReactionCore.getShopId()
       return
     else
-      Meteor.call "removeUserPermissions", member.userId, @.permission, ReactionCore.getShopId()
+      Meteor.call "removeUserPermissions", member.userId, permissions, ReactionCore.getShopId()
       return
 
   "click .link-shop-member-remove": (event, template) ->
     $icon = $(event.currentTarget)
     if (confirm($icon.data("confirm")))
-      Meteor.call "setUserRoles", member.userId, @.permission, Roles.GLOBAL_GROUP
+      Meteor.call "setUserRoles", @.userId, 'guest', Roles.GLOBAL_GROUP

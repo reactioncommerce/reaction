@@ -1,6 +1,13 @@
 ###
 # Packages
 ###
+ReactionCore.Schemas.Permissions = new SimpleSchema
+  permission:
+    type: String
+  label:
+    type: String
+
+
 ReactionCore.Schemas.PackageConfig = new SimpleSchema
   shopId:
     type: String
@@ -15,10 +22,6 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
     #configured in fixtures with autoEnable:true
   settings:
     type: Object
-    optional: true
-    blackbox: true
-  permissions:
-    type: [Object]
     optional: true
     blackbox: true
   registry:
@@ -49,6 +52,9 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema
     optional: true
   'registry.$.enabled':
     type: Boolean
+    optional: true
+  'registry.$.permissions':
+    type: [ReactionCore.Schemas.Permissions]
     optional: true
 
 ###

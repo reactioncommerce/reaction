@@ -1,31 +1,16 @@
 <template name="memberForm">
-<div class="member-form hidden" id="member-form">
-        <form class="form-horizontal" role="form" novalidate="novalidate">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Add A Staff Member</h4>
-          </div>
-          <div class="modal-body">
-            <ul class="error-block"></ul>
-            <div class="form-group">
-              <label for="member-name" class="col-sm-3 control-label">Name</label>
-              <div class="col-sm-9">
-                <input id="member-name" class="form-control" type="text" name="name"/>
-              </div>
-            </div>
+<form class="form-inline">
+  <div class="form-group">
+    <label for="member-form-name"><span data-i18n="shopEditForm.name">Name</span></label>
+    <input type="text" class="form-control" id="member-form-name" name="name" placeholder="Bob Jane">
+  </div>
+  <div class="form-group">
+    <label for="member-form-email"><span data-i18n="shopEditForm.email">Email</span></label>
+    <input type="email" class="form-control" id="member-form-email" name="email" placeholder="bob.jane@example.com">
+  </div>
+  <button type="submit" class="btn btn-default">
+    <span data-i18n="accountsUI.info.sendInvitation">Send invitation</span>
+  </button>
+</form>
 
-            <div class="form-group">
-              <label for="member-email" class="col-sm-3 control-label">Email address</label>
-              <div class="col-sm-9">
-                <input id="member-email" class="form-control" type="text" name="email"/>
-              </div>
-            </div>
-
-          </div>
-          <div>
-            <button type="button" class="btn btn-default close-button">Cancel</button>
-            <button type="submit" class="btn btn-primary save-button">Send invite</button>
-          </div>
-        </form>
-</div>
 </template>

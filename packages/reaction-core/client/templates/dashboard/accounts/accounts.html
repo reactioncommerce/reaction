@@ -1,39 +1,30 @@
 <template name="coreAccounts">
-<div class="core-account-header">
-  <div class="col-xs-11">
-  <h2>
-    <span data-i18n="app.members">Members</span>
-  </h2>
+<div class="row">
+  <div class="col-xs-2">
+     <h3>
+      <span data-i18n="accountsUI.members">Members</span>
+    </h3>
   </div>
-  <div class="core-create-user">
-    {{> createUser}}
+  <div class="col-xs-12 col-sm-10">
+    {{>memberForm}}
   </div>
 </div>
 
-
-    <div class="settings-account-list">
-      <table class="table staff-table">
-        <thead>
-        <tr>
-          <th><span data-i18n="accountsUI.username">Name</span></th>
-          <th><span data-i18n="accountsUI.email">Email</span></th>
-          <th><span data-i18n="coreAccounts.role">Role</span></th>
-          <th></th>
-        </tr>
-        </thead>
-        {{#each members}}
-          {{> shopMember}}
-        {{/each}}
-      </table>
+<div class="list-group">
+  {{#each members}}
+    <div class="row">
+      {{> shopMember}}
     </div>
-   {{>memberForm}}
+  {{/each}}
+</div>
+
 </template>
 
 <template name="createUser">
   {{#if hasOwnerAccess}}
   <div class="floating-action-button">
     <button type="button" class="btn btn-default button-add-member">
-      <span data-i18n="coreAccounts.addMember">Add a member</span>
+      <span data-i18n="accountsUI.addMember">Add a member</span>
     </button>
   </div>
   {{/if}}
