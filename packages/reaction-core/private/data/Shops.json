@@ -369,9 +369,6 @@
             }
         },
         "currency": "USD",
-        "domains": [
-            "localhost"
-        ],
         "languages": [
             {
                 "label": "العربية",

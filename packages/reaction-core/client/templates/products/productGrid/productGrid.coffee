@@ -137,7 +137,7 @@ Template.productGridItems.rendered = () ->
   # *****************************************************
   #  drag grid products and save tag+position
   # *****************************************************
-  if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+  if ReactionCore.hasAdminAccess()
     productSort = $(".product-grid-list")
     productSort.sortable
         items: "> li.product-grid-item"

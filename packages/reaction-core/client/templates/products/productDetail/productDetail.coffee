@@ -24,13 +24,13 @@ Template.productDetail.helpers
       return getProductPriceRange()
 
   fieldComponent: (field) ->
-    if ReactionCore.hasOwnerAccess()
+    if ReactionCore.hasAdminAccess()
       return Template.productDetailEdit
     else
       return Template.productDetailField
 
   metaComponent: () ->
-    if ReactionCore.hasOwnerAccess()
+    if ReactionCore.hasAdminAccess()
       return Template.productMetaFieldForm
     else
       return Template.productMetaField
@@ -40,7 +40,7 @@ Template.productDetail.events
   "click #price": ->
     # When an admin clicks on the main price to edit it, instead
     # open the relevant variant edit form and focus the correct input
-    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    if ReactionCore.hasAdminAccess()
       v = selectedVariant()
       return unless v
       if v.parentId
@@ -106,7 +106,7 @@ Template.productDetail.events
         # Add to cart
         CartWorkflow.addToCart ReactionCore.Collections.Cart.findOne()._id, currentProduct._id, currentVariant, quantity
         # Deselect the current variant
-        # todo: make this variant reset an option
+        # TODO: make this variant reset an option
         template.$(".variant-select-option").removeClass("active")
         setCurrentVariant null
 

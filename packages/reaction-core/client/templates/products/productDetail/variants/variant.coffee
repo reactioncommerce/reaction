@@ -23,7 +23,7 @@ Template.variant.events
     toggleSession "variant-form-"+@._id
 
   "dblclick .variant-detail": (event) ->
-    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    if ReactionCore.hasAdminAccess()
       setCurrentVariant @._id
       toggleSession "variant-form-"+@._id
 
@@ -35,7 +35,7 @@ Template.variant.events
 
 Template.variant.rendered = ->
   @autorun ->
-    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    if ReactionCore.hasAdminAccess()
       variantSort = $(".variant-list")
       variantSort.sortable
           items: "> li.variant-list-item"

@@ -1,4 +1,4 @@
-describe "Meteor method ", ->
+describe "core methods", ->
 
   describe "flushTranslations", ->
 

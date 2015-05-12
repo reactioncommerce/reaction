@@ -1,4 +1,3 @@
-
 #
 # helper applied to variant on
 # product update/insert
@@ -16,7 +15,6 @@ applyVariantDefaults = (variant) ->
 # Collection Hooks
 # See: https://github.com/matb33/meteor-collection-hooks
 ###
-
 
 #
 # create unpublished product

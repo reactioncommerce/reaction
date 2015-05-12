@@ -48,6 +48,7 @@ _.extend ReactionCore,
   getShopId: ->
     return @shopId
 
+
   # TODO: NEEDS REFACTOR
 
   # # return the logged in user's shop if he owns any or if he is an admin -> used in multivendor
@@ -59,9 +60,10 @@ _.extend ReactionCore,
   #   return null;
 
 Meteor.startup ->
-  # todo: this could grow.. and grow...
+  # TODO: this could grow.. and grow...
   # quick little client safety check
-  if (PackageRegistry?) then console.error "Bravely warning you that PackageRegistry should not be exported to client."
+  if (PackageRegistry?)
+    console.error "Bravely warning you that PackageRegistry should not be exported to client."
 
   # Ignition.....
   ReactionCore.init()

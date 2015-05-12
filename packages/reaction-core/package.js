@@ -51,7 +51,7 @@ Package.onUse(function (api) {
   api.use("aldeed:geocoder@0.3.6");
   api.use("aldeed:autoform@4.2.2");
   api.use("aldeed:collection2@2.3.3");
-  api.use("aldeed:simple-schema@1.3.2", {'weak': 1});
+  api.use("aldeed:simple-schema@1.3.3", {'weak': 1});
   api.use("aldeed:template-extension@3.4.3","client");
   api.use("iron:router@1.0.7");
   api.use("ongoworks:speakingurl@1.1.0");
@@ -61,7 +61,7 @@ Package.onUse(function (api) {
 
   api.use("dburles:factory@0.3.9");
   api.use("anti:fake@0.4.1");
-  api.use("matb33:collection-hooks@0.7.11");
+  api.use("matb33:collection-hooks@0.7.13");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.3", 'client');
   api.use("risul:moment-timezone",'client');
@@ -138,7 +138,8 @@ Package.onUse(function (api) {
     "server/methods/cart/shipping.coffee",
     "server/methods/orders/orders.coffee",
     "server/methods/products/products.coffee",
-    "server/methods/accounts/accounts.coffee"
+    "server/methods/accounts/accounts.coffee",
+    "server/methods/shop/shop.coffee"
   ], ["server"]);
 
   api.addFiles([

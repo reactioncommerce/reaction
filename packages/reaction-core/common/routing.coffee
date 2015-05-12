@@ -106,7 +106,7 @@ Router.map ->
     path: '/dashboard/settings/shop'
     template: 'shopSettings'
     data: ->
-      Shops.findOne()
+      ReactionCore.Collections.Shops.findOne()
 
   # members aka accounts mgmt
   @route 'dashboard/accounts',
@@ -152,13 +152,12 @@ Router.map ->
       setProduct @params._id, variant
       @next()
     data: ->
+      #
+      # TODO: ReactionCore.hasAdminAccess(@url)
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
-          # this won't allow just product access
-          # rather can be used to share permission to a
-          # product that isn't published with another account.
-          unless ReactionCore.hasPermission(@url)
+          unless ReactionCore.hasAdminAccess()
             @render 'unauthorized'
         return product
       if @ready() and !product

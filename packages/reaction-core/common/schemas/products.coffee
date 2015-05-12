@@ -170,6 +170,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
     type: [String]
     optional: true
     index: 1
+  # TODO: move social messsages to metafields
   twitterMsg:
     type: String
     optional: true

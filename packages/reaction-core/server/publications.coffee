@@ -139,7 +139,7 @@ Meteor.publish 'Products', (shops) ->
 Meteor.publish 'Product', (productId) ->
   check productId, String
 
-  shop = ReactionCore.getCurrentShop(@) #todo: wire in shop
+  shop = ReactionCore.getCurrentShop(@) #TODO: wire in shop
   if productId.match /^[A-Za-z0-9]{17}$/
     return Products.find(productId)
   else

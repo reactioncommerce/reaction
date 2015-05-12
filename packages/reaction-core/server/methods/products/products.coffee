@@ -11,7 +11,7 @@ Meteor.methods
     @unblock()
 
     # clone variant
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne(productId)
     variant = (variant for variant in product.variants when variant._id is variantId)
@@ -55,7 +55,7 @@ Meteor.methods
     check newVariant, Match.OneOf(Object, undefined)
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     #create variant
@@ -79,7 +79,7 @@ Meteor.methods
     Products = ReactionCore.Collections.Products
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variant._id
     if product?.variants
@@ -96,7 +96,7 @@ Meteor.methods
     check variants, [Object]
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne "variants._id":variants[0]._id
     Products.update product._id, $set: variants: variants, {validate: false}
@@ -109,7 +109,7 @@ Meteor.methods
     check variantId, String
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     #what will we be deleteing?
     deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
@@ -141,7 +141,7 @@ Meteor.methods
     #check product, ReactionCore.Schemas.Product
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     #TODO: Really should be a recursive update of all _id
     i = 0
@@ -182,27 +182,31 @@ Meteor.methods
   # an empty variant. all products have a variant
   # with pricing and details
   ###
-  createProduct: () ->
-    @unblock()
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+  createProduct: (product) ->
+    check product, Match.Optional Object
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
-    Products.insert
-      _id: Random.id()
-      title: ""
-      variants: [
+    if product
+      return Products.insert product
+    else
+      Products.insert
         _id: Random.id()
         title: ""
-        price: 0.00
-      ]
-    , validate: false
+        variants: [
+          _id: Random.id()
+          title: ""
+          price: 0.00
+        ]
+      , validate: false
 
   ###
   # delete a product and unlink it from all media
   ###
   deleteProduct: (productId) ->
     check productId, String
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasOwnerAccess()
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -229,7 +233,7 @@ Meteor.methods
     check value, String
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     # value = Spacebars.SafeString(value)
     value  = EJSON.stringify value
@@ -248,7 +252,7 @@ Meteor.methods
     check currentTagId, Match.Optional(String)
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     newTag =
@@ -281,7 +285,7 @@ Meteor.methods
     check tagId, String
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     Products.update(productId, {$pull: {"hashtags": tagId}})
@@ -301,7 +305,7 @@ Meteor.methods
     check tagId, String
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     product = Products.findOne(productId)
@@ -328,7 +332,7 @@ Meteor.methods
     check positionData, Object
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     unless Products.findOne({'_id' : productId,"positions.tag": positionData.tag})
@@ -355,7 +359,7 @@ Meteor.methods
     check meta, Match.OptionalOrNull(Object)
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     if meta
       Products.update({"_id": productId, "metafields": meta}, {$set: {"metafields.$": updatedMeta} })
@@ -369,7 +373,7 @@ Meteor.methods
     check productId, String
     @unblock()
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     product = ReactionCore.Collections.Products.findOne(productId)

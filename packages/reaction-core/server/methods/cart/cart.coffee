@@ -184,7 +184,7 @@ Meteor.methods
     if cart.userId and !cart.email
       cart.email = Meteor.user(cart.userId).emails[0].address
 
-    # todo: these defaults should be done in schema
+    # TODO: these defaults should be done in schema
     now = new Date()
     cart.createdAt = now
     cart.updatedAt = now
@@ -199,7 +199,7 @@ Meteor.methods
 
     ###
     # final sanity check
-    # todo add `check cart, ReactionCore.Schemas.Order`
+    # TODO add `check cart, ReactionCore.Schemas.Order`
     # and add some additional validation that all is good
     # and no tampering has occurred
     ###

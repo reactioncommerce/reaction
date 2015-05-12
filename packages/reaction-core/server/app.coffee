@@ -50,17 +50,21 @@ _.extend ReactionCore,
     return @getCurrentShop(client)?._id
 
   getDomain: (client) ->
-    #todo: eventually we want to use the host domain to determine
+    #TODO: eventually we want to use the host domain to determine
     #which shop from the shops collection to use here, hence the unused client arg
     return Meteor.absoluteUrl().split('/')[2].split(':')[0]
 
   hasOwnerAccess: (client) ->
     return Roles.userIsInRole Meteor.userId(), 'owner',  @getCurrentShop(client)?._id
 
-  # dashboard access
-  hasDashboardAccess: (client) ->
+  # admin access
+  hasAdminAccess: (client) ->
     return Roles.userIsInRole Meteor.userId(), 'admin',  @getCurrentShop(client)?._id
 
+  # dashboard access
+  hasDashboardAccess: (client) ->
+    return Roles.userIsInRole Meteor.userId(), 'dashboard',  @getCurrentShop(client)?._id
+
   # permission check
-  hasPermission: (permissions) ->
+  hasPermission: (client, permissions) ->
     return Roles.userIsInRole Meteor.userId(), permissions,  @getCurrentShop(client)?._id

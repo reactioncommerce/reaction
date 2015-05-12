@@ -95,7 +95,7 @@ Meteor.methods
     check tagId, Match.OneOf(String, null, undefined)
     check currentTagId, Match.Optional(String)
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     newTag =
@@ -134,7 +134,7 @@ Meteor.methods
     check tagId, String
     check currentTagId, String
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
@@ -149,7 +149,7 @@ Meteor.methods
   # Helper method to remove all translations, and reload from jsonFiles
   ###
   flushTranslations: ->
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     ReactionCore.Collections.Translations.remove({})
