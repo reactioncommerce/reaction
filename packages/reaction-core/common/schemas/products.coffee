@@ -60,12 +60,21 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     label: "Weight"
     type: Number
     min: 0
+    optional: true
+    custom: ->
+      unless @.siblingField("type").value is "inventory" then return "required"
   inventoryManagement:
     type: Boolean
     label: "Inventory Tracking"
+    optional: true
+    custom: ->
+      unless @.siblingField("type").value is "inventory" then return "required"
   inventoryPolicy:
     type: Boolean
     label: "Deny when out of stock"
+    optional: true
+    custom: ->
+      unless @.siblingField("type").value is "inventory" then return "required"
   lowInventoryWarningThreshold:
     type: Number
     label: "Warn @"
@@ -77,7 +86,8 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: ->
       if Meteor.isClient
-        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+        unless @.siblingField("type").value is "inventory"
+          if checkChildVariants(@.docId) is 0 and !@.value then return "required"
   price:
     label: "Price"
     type: Number
@@ -86,11 +96,16 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: -> #required if no child variants (options) present
       if Meteor.isClient
-        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+        unless @.siblingField("type").value is "inventory"
+          if checkChildVariants(@.docId) is 0 and !@.value then return "required"
   sku:
     label: "SKU"
     type: String
     optional: true
+  type:
+    label: "Type"
+    type: String
+    defaultValue: "variant"
   taxable:
     label: "Taxable"
     type: Boolean
@@ -98,6 +113,10 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
   title:
     label: "Label"
     type: String
+    optional: true
+    custom: -> #required unless type=inventory
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" then return "required"
   optionTitle:
     label: "Option"
     type: String
@@ -145,7 +164,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
     optional: true
   positions:
     type: [ReactionCore.Schemas.ProductPosition]
-    optional: true    
+    optional: true
   variants:
     type: [ReactionCore.Schemas.ProductVariant]
   requiresShipping:
