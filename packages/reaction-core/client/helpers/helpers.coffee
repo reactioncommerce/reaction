@@ -173,8 +173,18 @@ currentProduct = @currentProduct
 @checkChildVariants = (parentVariantId) ->
   product = selectedProduct()
   return unless product
-  childVariants = (variant for variant in product.variants when variant?.parentId is parentVariantId)
+  childVariants = (variant for variant in product.variants when variant?.parentId is parentVariantId and variant?.type != 'inventory')
   return childVariants.length
+
+
+###
+# return number of inventory variants for a parent
+###
+@checkInventoryVariants = (parentVariantId) ->
+  product = selectedProduct()
+  return unless product
+  inventoryVariants = (variant for variant in product.variants when variant?.parentId is parentVariantId and variant?.type == 'inventory')
+  return inventoryVariants.length
 
 ###
 # get price range of a variant if it has child options.

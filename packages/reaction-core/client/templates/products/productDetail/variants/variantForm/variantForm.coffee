@@ -12,6 +12,9 @@ Template.variantForm.helpers
 
   hasChildVariants: () ->
     if checkChildVariants(@_id) > 0 then return true
+    
+  hasInventoryVariants: () ->
+    if checkInventoryVariants(@_id) > 0 then return true
 
   nowDate: () ->
     return new Date()
