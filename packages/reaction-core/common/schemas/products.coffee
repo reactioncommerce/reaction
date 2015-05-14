@@ -62,19 +62,22 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     min: 0
     optional: true
     custom: ->
-      unless @.siblingField("type").value is "inventory" then return "required"
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" then return "required"
   inventoryManagement:
     type: Boolean
     label: "Inventory Tracking"
     optional: true
     custom: ->
-      unless @.siblingField("type").value is "inventory" then return "required"
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" then return "required"
   inventoryPolicy:
     type: Boolean
     label: "Deny when out of stock"
     optional: true
     custom: ->
-      unless @.siblingField("type").value is "inventory" then return "required"
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" then return "required"
   lowInventoryWarningThreshold:
     type: Number
     label: "Warn @"
