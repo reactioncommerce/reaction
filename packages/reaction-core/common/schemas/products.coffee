@@ -46,6 +46,9 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     label: "Barcode"
     type: String
     optional: true
+    custom: ->
+      if Meteor.isClient
+        if @.siblingField("type").value is "inventory" then return "required"
   compareAtPrice:
     label: "MSRP"
     type: Number
