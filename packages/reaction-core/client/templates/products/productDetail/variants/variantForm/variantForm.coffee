@@ -14,8 +14,10 @@ Template.variantForm.helpers
     if checkChildVariants(@_id) > 0 then return true
     
   hasInventoryVariants: () ->
-    if checkInventoryVariants(@_id) > 0 then return true
-
+    # Inventory variants should not exist on parents.
+    unless hasChildVariants()
+      if checkInventoryVariants(@_id) > 0 then return true
+    
   nowDate: () ->
     return new Date()
 

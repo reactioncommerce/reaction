@@ -7,13 +7,48 @@
         <input type="text" class="form-control input-sm child-variant-input" value="{{title}}" name="title" placeholder="Add option label"/>
       </td>
       <td>
-        <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY"/>
+        {{#if hasInventoryVariants}}
+          <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY" disabled=disabled/>
+        {{else}}
+          <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY"/>
+        {{/if}}
       </td>
       <td>
         <input type="number" class="form-control input-sm child-variant-input" value="{{price}}" name="price" placeholder="Add price"/>
      </td>
      <td>
+       {{#if hasInventoryVariants}}
+         <button id="edit-inventory-variants-{{_id}}" class="edit-inventory-events btn-small btn-primary btn">{{editInventoryToggleText}}</button>
+       {{else}}
+         <button id="edit-inventory-variants-{{_id}}" class="btn-small btn-primary btn">Start Tracking</button>
+       {{/if}}
+     </td>
+     <td>
         <i class="fa fa-times-circle remove-child-variant" id="remove-child-variant"></i>
      </td>
   </tr>
+  {{#if hasInventoryVariants}}
+    <tr class="{{showInventoryVariants}}">
+      <td colspan="7">
+        <table class="inventory-variant-table table table-striped">
+          <thead>
+            <tr>
+              <!-- <th></th> -->
+              <th>Barcode</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>
+              <button class="btn btn-success btn-sm">Generate Barcodes</button>
+            </td></tr>
+            {{> addInventoryVariantForm}}
+            {{#each inventoryVariants}}
+              {{> inventoryVariantForm}}
+            {{/each}}
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  {{/if}}
 </template>
