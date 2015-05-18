@@ -1,4 +1,17 @@
-#Package development
+# Packages
+
+###### Private packages
+Packages within Reaction are Meteor packages. There are private packages, that a developer can create to customize any of Reaction's functionality. Private packages can be deployed by including them in the `packages` folder.
+
+###### Public packages
+If you create a private package and would like to share it with the Meteor community you can make it publish the package to the Meteor package registry with `meteor publish`.
+
+*Publishing packages is not a requirement to share or deploy packages.*
+
+If you would like to share a package in the registry, but don't want to be responsible for long term ownership of the package, create an issue and let us know. We'll consider forking and maintaining a (reactioncommerce org published version of your package)[https://atmospherejs.com/reactioncommerce].
+
+
+## Package development
 
 For local package development you must *git clone* packages locally, either into `reaction/packages`, or by creating a symbolic link to the package checkout.
 
@@ -67,7 +80,7 @@ To test your package, add it to your application :
 
 *Tip: You can also add and remove packages by editing `.meteor/packages`*
 
-##ReactionCore.registerPackage
+### ReactionCore.registerPackage
 To integrate a package into the rest of Reaction Commerce use
 `ReactionCore.registerPackage` to describe package details
 and provide some common integration hooks.
@@ -121,7 +134,7 @@ ReactionCore.registerPackage
 ```
 
 
-###Settings
+#### Settings
  ```
  name: '<typically same as package name>'
  autoEnable: '<true/false automatically enable in dashboard>'
@@ -137,7 +150,7 @@ ReactionCore.registerPackage
 
 See [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md)
 
-###Registry
+#### Registry
 The registry is used to define routes, dynamic templates, and some package UI handling.
 
 A `registry` object can be any combination of properties, with `provides` being the only required element.
@@ -240,53 +253,69 @@ Include in **server/register.coffee** registry:
 
 You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
-###Permissions
+#### Permissions
 
 We use [alanning:roles](https://github.com/alanning/meteor-roles) for providing roles support.
 
-Users with "admin" role are full-permission, site-wide users. Package specific roles can be defined in `register.coffee`.
+**Permissions are grouped by `shopId`.**
 
-Adding permissions to routes with:
+Package specific roles can be defined in `register.coffee`, by adding custom permissions to registry entries with:
 
 ```coffeescript
-{
-  label: '<permission label, ie: "Pay Pal Admin">'
-  permission: '<route granted permission>'
-  group: '<grouping in user admin panel, usually "Shop Settings">'
-}
+      permissions: [
+        {
+          label: "Custom Permission"
+          permission: "custom/permission"
+        }
+      ]
 ```
 
+Permission of the current route and user are compared against the package route by default, adding specific permissions to the registry entry is optional.
 
-**Using Permissions**
 
-#Owner
-The owner was added to the shops 'owner' permission group with the 'owner' permission.
+##### Owner
+The initial setup user was added to the shops 'owner' permission group with the 'owner' permission.
+
+Users with "owner" role are full-permission, app-wide users.
 
 **To check if user has owner access:**
+```
+	# client / server
+	ReactionCore.hasOwnerAccess()
 
-on client: for current user
+	# template
+	{{#if hasOwnerAccess}}
+```
+##### Admin
+Users with "admin" role are full-permission, site-wide users.
+**To check if user has admin access:**
+```
+  # client / server
+  ReactionCore.hasAdminAccess()
 
-    ReactionCore.hasOwnerAccess()
+  # template
+  {{#if hasAdminAccess}}
+```
 
-on server: for some shop (current if not defined) and some userId (current if not defined)
+##### Dashboard
+Users with "dashboard" role are limited-permission, site-wide users.
 
-    ReactionCore.hasOwnerAccess(shop, userId)
+**To check if user has Dashboard access:**
+```
+  # client / server
+  ReactionCore.hasDashboardAccess()
 
-in templates: for current user
-
-    {{#if hasOwnerAccess}}{{/if}}
-
-**Shop has members, which can be admin and have permissions**
-
-If member is admin next methods will always return `true`
+  # template
+  {{#if hasDashboardAccess}}
+```
 
 To check if user has some specific permissions:
 
-on Client: for current user, where "permissions" is string or [string]
+on Client: for current user, where "permissions" is string or ['string']
 
     ReactionCore.hasPermission(permissions)
 
-on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or [string]
+on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or ['string']
 
     ReactionCore.hasPermission(permissions, shop, userId)
 
@@ -300,19 +329,18 @@ If we add this package then permissions will be available in Shop Accounts Setti
 
 Another example:
 
-    ReactionCore.Packages.register
+    ReactionCore.registerPackage
      name: 'reaction-commerce-orders'
      provides: ['orderManager']
      permissions: [
        {
          label: "Orders"
          permission: "dashboard/orders"
-         group: "Shop Management"
        }
      ]
 
 
-##Routes
+###Routes
 We use the [iron:router](https://github.com/iron-meteor/iron-router) package for managing routes.
 Routes are created in `common/routing.coffee`
 
@@ -328,9 +356,9 @@ Router.map ->
 
 Use the controller `ShopController` for public/shop routes, and `ShopAdminController` for admin roles.
 
-Define this route and template in the `ReactionCore.registerPackage` to export this route to ReactionCore.
+In addition to defining the route in the `Router.map`, you should add the route and template in the `ReactionCore.registerPackage` to export this route to ReactionCore and add permissions.
 
-##Collections
+###Collections
 We use the [AutoForm, collection2, simple-schema](https://github.com/aldeed/meteor-autoform) package for defining forms, collections and schemas.
 
 You can extend core collections, schemas in your package. You can also create your own collections.
@@ -357,9 +385,11 @@ ReactionCore.Schemas.BraintreePackageConfig = new SimpleSchema([
 ])
 ```
 
-##Security
-The meteor packages `audit-argument-checks` and `browser-policy` are installed by default.
+###Security
+These Meteor packages are installed by as dependencies.
 
+**ongoworks/security**
+**alanning:meteor-roles**
 **audit-argument-checks**
 
 Use [`check`](http://docs.meteor.com/#/full/check) for all `Meteor.methods` arguments. You can remove with `meteor remove audit-argument-checks` if necessary, but packages will be required to pass `check` to be accepted as Reaction packages.

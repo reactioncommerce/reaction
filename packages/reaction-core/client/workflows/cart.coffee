@@ -1,4 +1,9 @@
 ###
+See: https://github.com/jakesgordon/javascript-state-machine
+for introduction to the workflow state-machine
+###
+
+###
 # Enable reactivity on workflow
 ###
 Tracker.autorun ->
@@ -54,6 +59,8 @@ CartWorkflow = StateMachine.create(
             # If address.city is set, we've already geolocated, so we skip it
             address = Session.get "address"
             locateUser() unless address?.city
+          else if error
+            return error
 
     oncheckout: (event, from, to) ->
       Router.go "cartCheckout"

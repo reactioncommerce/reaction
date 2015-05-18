@@ -99,6 +99,7 @@ Package.onUse(function (api) {
   api.imply("sacha:spin" ["client"]);
   api.imply("bengott:avatar");
   api.imply("dburles:factory");
+  api.imply("anti:fake");
   api.imply("ongoworks:speakingurl");
   api.imply("ongoworks:security");
 
@@ -133,13 +134,12 @@ Package.onUse(function (api) {
     "server/publications.coffee",
     "server/fixtures.coffee",
     "server/factories.coffee",
-    "server/methods/methods.coffee",
-    "server/methods/cart/cart.coffee",
-    "server/methods/cart/shipping.coffee",
-    "server/methods/orders/orders.coffee",
-    "server/methods/products/products.coffee",
-    "server/methods/accounts/accounts.coffee",
-    "server/methods/shop/shop.coffee"
+    "server/methods/accounts.coffee",
+    "server/methods/cart.coffee",
+    "server/methods/orders.coffee",
+    "server/methods/products.coffee",
+    "server/methods/shop.coffee",
+    "server/methods/shipping.coffee"
   ], ["server"]);
 
   api.addFiles([
@@ -155,11 +155,9 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/effect-slide.js",
     "lib/bower/jquery.ui/ui/menu.js",
     "lib/bower/autosize/dest/autosize.js",
-    "lib/bower/collapsible/jquery.collapsible.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
     "lib/bower/openexchangerates.money/money.js",
     "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
-    "lib/bower/jquery.cookie/jquery.cookie.js",
     "lib/css/jquery-ui.css",
 
     "client/subscriptions.coffee",
@@ -170,8 +168,8 @@ Package.onUse(function (api) {
     "client/helpers/metadata.coffee",
     "client/helpers/spacebars.coffee",
 
-    "client/workflows/cart/workflow.coffee",
-    "client/workflows/orders/workflow.coffee",
+    "client/workflows/cart.coffee",
+    "client/workflows/orders.coffee",
 
     "client/templates/layout/layout.html",
     "client/templates/layout/layout.coffee",
@@ -441,4 +439,15 @@ Package.onUse(function (api) {
   api.export([
     "currentProduct",
   ], ["client", "server"]);
+});
+
+Package.onTest(function(api) {
+  api.use('sanjo:jasmine@0.13.6');
+  api.use('velocity:html-reporter@0.5.3');
+  api.use('reactioncommerce:core');
+  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/shop.coffee', 'server');
 });

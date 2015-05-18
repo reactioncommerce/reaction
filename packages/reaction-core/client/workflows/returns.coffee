@@ -1,5 +1,5 @@
 
-# ReturnWorkflow = new StateMachine.create(
+# TODO: ReturnWorkflow = new StateMachine.create(
 #   initial: "newReturn"
 #   events: [
 #     { name: "returnRequested", from: "newReturn", to: "returnAuthorized"}

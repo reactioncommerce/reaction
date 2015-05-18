@@ -8,11 +8,11 @@ Meteor.methods
     check productId, String
     check variantId, String
     check parentId, Match.Optional(String)
+    unless ReactionCore.hasAdminAccess()
+      throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
     # clone variant
-    unless ReactionCore.hasAdminAccess()
-      throw new Meteor.Error 403, "Access Denied"
     product = Products.findOne(productId)
     variant = (variant for variant in product.variants when variant._id is variantId)
     return false unless variant.length > 0
@@ -53,10 +53,9 @@ Meteor.methods
   createVariant: (productId, newVariant) ->
     check productId, String
     check newVariant, Match.OneOf(Object, undefined)
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     #create variant
     newVariantId = Random.id()
@@ -76,11 +75,12 @@ Meteor.methods
     check variant, Object
     check updateDoc, Match.OptionalOrNull(Object)
     check currentDoc, Match.OptionalOrNull(String)
-    Products = ReactionCore.Collections.Products
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
+
+    Products = ReactionCore.Collections.Products
+
     product = Products.findOne "variants._id":variant._id
     if product?.variants
       for variants,value in product.variants
@@ -94,10 +94,10 @@ Meteor.methods
   ###
   updateVariants: (variants) ->
     check variants, [Object]
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
+
     product = Products.findOne "variants._id":variants[0]._id
     Products.update product._id, $set: variants: variants, {validate: false}
 
@@ -107,10 +107,10 @@ Meteor.methods
   ###
   deleteVariant: (variantId) ->
     check variantId, String
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
+
     #what will we be deleteing?
     deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
     #delete variants with this variant as parent
@@ -139,10 +139,10 @@ Meteor.methods
   cloneProduct: (product) ->
     check product, Object
     #check product, ReactionCore.Schemas.Product
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
+
     #TODO: Really should be a recursive update of all _id
     i = 0
     handleCount = Products.find({"cloneId": product._id}).count() + 1
@@ -189,7 +189,7 @@ Meteor.methods
     @unblock()
 
     if product
-      return Products.insert product
+      return Products.insert product # returns id
     else
       Products.insert
         _id: Random.id()
@@ -231,10 +231,9 @@ Meteor.methods
     check productId, String
     check field, String
     check value, String
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
     # value = Spacebars.SafeString(value)
     value  = EJSON.stringify value
     update = EJSON.parse "{\"" + field + "\":" + value + "}"
@@ -250,10 +249,9 @@ Meteor.methods
     check tagName, String
     check tagId, Match.OneOf(String, null)
     check currentTagId, Match.Optional(String)
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     newTag =
       slug: getSlug tagName
@@ -283,10 +281,9 @@ Meteor.methods
   removeProductTag: (productId, tagId) ->
     check productId, String
     check tagId, String
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     Products.update(productId, {$pull: {"hashtags": tagId}})
     # if not in use delete from system
@@ -303,10 +300,9 @@ Meteor.methods
   setHandleTag: (productId, tagId) ->
     check productId, String
     check tagId, String
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     product = Products.findOne(productId)
     tag = Tags.findOne(tagId)
@@ -330,10 +326,9 @@ Meteor.methods
   updateProductPosition: (productId, positionData) ->
     check productId, String
     check positionData, Object
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     unless Products.findOne({'_id' : productId,"positions.tag": positionData.tag})
       Products.update {_id: productId},
@@ -357,10 +352,10 @@ Meteor.methods
     check productId, String
     check updatedMeta, Object
     check meta, Match.OptionalOrNull(Object)
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
+
     if meta
       Products.update({"_id": productId, "metafields": meta}, {$set: {"metafields.$": updatedMeta} })
     else
@@ -371,10 +366,9 @@ Meteor.methods
   #
   publishProduct: (productId) ->
     check productId, String
-    @unblock()
-
     unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     product = ReactionCore.Collections.Products.findOne(productId)
     #one variant required to publish product
@@ -389,4 +383,3 @@ Meteor.methods
       ReactionCore.Events.debug "invalid product visibility ", productId
       # non-informative error
       throw new Meteor.Error 400, "Bad Request"
-

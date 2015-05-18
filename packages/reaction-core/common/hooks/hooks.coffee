@@ -20,7 +20,7 @@ applyVariantDefaults = (variant) ->
 # create unpublished product
 #
 Products.before.insert (userId, product) ->
-  product.shopId = product.shopId || ReactionCore.getCurrentShop()._id # avoid calling if present
+  product.shopId = product.shopId || ReactionCore.getShopId() # avoid calling if present
   _.defaults(product,
     productType: "Simple"
     handle: getSlug product.title

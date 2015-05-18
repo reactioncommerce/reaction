@@ -10,14 +10,9 @@
   </div>
 </div>
 
-<div class="list-group">
-  {{#each members}}
-    <div class="row">
-      {{> shopMember}}
-    </div>
-  {{/each}}
-</div>
-
+{{#each members}}
+  {{> shopMember}}
+{{/each}}
 </template>
 
 <template name="createUser">

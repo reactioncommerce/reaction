@@ -96,36 +96,41 @@ Meteor.methods
   addToCart: (cartId, productId, variantData, quantity) ->
     check cartId, String
     check productId, String
-    check variantData, Object
+    check variantData, ReactionCore.Schemas.ProductVariant
     check quantity, String
+    # TODO: addToCart quantity should be a number
 
     shopId = ReactionCore.getShopId(@)
     currentCart = Cart.findOne cartId
 
     # TODO: refactor to check currentCart instead of another findOne
     cartVariantExists = Cart.findOne _id: currentCart._id, "items.variants._id": variantData._id
+    # update quantity for existing cart variant
     if cartVariantExists
-      Cart.update
-        _id: currentCart._id,
-        "items.variants._id": variantData._id,
-        { $set: {updatedAt: new Date()}, $inc: {"items.$.quantity": quantity}},
+      Cart.update {
+        _id: currentCart._id
+        'items.variants._id': variantData._id
+      },
+        $set: updatedAt: new Date
+        $inc: 'items.$.quantity': quantity
       (error, result) ->
-        ReactionCore.Events.info "error adding to cart" if error
-        ReactionCore.Events.info Cart.simpleSchema().namedContext().invalidKeys() if error
+        if error
+          ReactionCore.Events.warn "error adding to cart" , Cart.simpleSchema().namedContext().invalidKeys()
+          return error
+        return
     # add new cart items
     else
-      product = ReactionCore.Collections.Products.findOne productId
-      Cart.update _id: currentCart._id,
-        $addToSet:
-          items:
-            _id: Random.id()
-            shopId: product.shopId
-            productId: productId
-            quantity: quantity
-            variants: variantData
-      , (error, result) ->
-        ReactionCore.Events.info "error adding to cart" if error
-        ReactionCore.Events.warn error if error
+      product = ReactionCore.Collections.Products.findOne(productId)
+      Cart.update { _id: currentCart._id }, { $addToSet: items:
+        _id: Random.id()
+        shopId: product.shopId
+        productId: productId
+        quantity: quantity
+        variants: variantData }, (error, result) ->
+        if error
+          ReactionCore.Events.warn "error adding to cart", Cart.simpleSchema().namedContext().invalidKeys()
+          return
+        return
 
   ###
   # removes a variant from the cart

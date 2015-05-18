@@ -1,90 +1,69 @@
+###
+# shopMember
+# permissions / roles controls
+# we use userInRole instead of ReactionCore intentionally
+# to check each users permissions
+###
+
 Template.shopMember.helpers
-  hasAdminRole: ->
-    if Roles.userIsInRole @.userId, 'admin', ReactionCore.getShopId() then return "checked"
+  isOwnerDisabled: (userId) ->
+    if Meteor.userId() is @.userId
+      if Roles.userIsInRole @.userId, 'owner', @.shopId
+        return true
 
-  hasLimitedRole: ->
-    if Roles.userIsInRole @.userId, 'manager', ReactionCore.getShopId() then return "checked"
+  hasPermissionChecked: (permission, userId) ->
+    if userId and (
+      Roles.userIsInRole userId, permission, @.shopId or
+      Roles.userIsInRole userId, permission, Roles.GLOBAL_GROUP
+      )
+      return "checked"
 
-  isChecked: (permission, userId) ->
-    if Roles.userIsInRole userId, permission, ReactionCore.getShopId() then return "checked"
+  groupsForUser: (userId) ->
+    userId = userId  || @.userId || Template.parentData(1).userId
+    return Roles.getGroupsForUser(userId)
 
-  userRoleIsAdmin: ->
-    return @.userId + "_is_admin"
+  shopLabel: (shopId) ->
+    return ReactionCore.Collections.Shops.findOne( {'_id': Template.currentData() })?.name
 
-  userRoleIsCustom: ->
-    return @.userId + "_is_custom"
-
-  hasOwnerAccessToggle: ->
-    if Roles.userIsInRole Meteor.userId(), ['owner','admin','manager'], ReactionCore.getShopId()
-      return "toggle-shop-member-permissions"
-
-  permissionGroups: ->
+  permissionGroups: (shopId) ->
     permissionGroups = []
-    ReactionCore.Collections.Packages.find().forEach (pkg) ->
+    ReactionCore.Collections.Packages.find( { 'shopId': Template.currentData() } ).forEach (pkg) ->
       permissions = []
       permissionMap = {}
+      if pkg.enabled
+        # for each registry item, we'll define permissionGroups
+        for registryItem in pkg.registry when registryItem.route
+          # registry permissions
+          if registryItem.permissions
+            for permission in registryItem
+              permissions.push permission
 
-      # for each registry item, we'll define permissionGroups
-      for registryItem in pkg.registry when registryItem.route
-        # registry permissions
-        if registryItem.permissions
-          for permission in registryItem
-            permissions.push permission
+          # check for potential duplicates
+          for existing in permissions
+            permissionMap[existing.permission] = existing.label
 
-        # check for potential duplicates
-        for existing in permissions
-          permissionMap[existing.permission] = existing.label
+          # we'll define all registry routes as permission
+          unless permissionMap[registryItem.route]
+            # create package permissions from registry entries
+            permissions.push
+              shopId: pkg.shopId
+              permission: registryItem.route
+              label: registryItem.label || registryItem.provides || registryItem.route
+        # push this packages permissions as a group
+        label = pkg.name.replace('reaction','').replace(/(-.)/g, (x) ->
+          " " + x[1].toUpperCase()
+        )
+        permissionGroups.push { 'shopId': pkg.shopId, 'name': pkg.name, label:  label, 'permissions': _.uniq(permissions) }
 
-        # we'll define all registry routes as permission
-        unless permissionMap[registryItem.route]
-          # create package permissions from registry entries
-          permissions.push
-            permission: registryItem.route
-            label: registryItem.label || registryItem.provides || registryItem.route
-      # push this packages permissions as a group
-      permissionGroups.push { 'name': pkg.name, 'permissions': _.uniq(permissions) }
     return permissionGroups
 
-# Template.shopMember.rendered = ->
-#   $(@find(".toggle-shop-member-permissions")).collapsible
-#     'cookieName': "toggle-shop-member-permissions-" + @data.userId
-#     'speed': 200
 
 Template.shopMember.events
-  # toggle admin permissions
-  "change .shop-member-is-admin": (event, template) ->
-    # current = Roles.userIsInRole @.userId, 'admin', ReactionCore.getShopId()
-    # console.log current
-    if $(event.currentTarget).is(':checked')
-      console.log "adding admin permissions"
-      Meteor.call "addUserPermissions", @.userId, 'admin', ReactionCore.getShopId()
-      return
-    else
-      console.log "removing admin"
-      Meteor.call "removeUserPermissions", @.userId, 'admin', ReactionCore.getShopId()
-      return
-
-  # toggle customer permissions
-  "change .shop-member-is-custom": (event, template) ->
-    current = Roles.userIsInRole @.userId, 'admin', ReactionCore.getShopId()
-    # if current and !$(event.currentTarget).is(':checked')
-    #   Meteor.call "removeUserPermissions", @.userId, 'admin', ReactionCore.getShopId()
-
-    if $(event.currentTarget).is(':checked')
-      console.log "adding custom permissions"
-      Meteor.call "addUserPermissions", @.userId, 'manager', ReactionCore.getShopId()
-      return
-    else if current and !$(event.currentTarget).is(':checked')
-      console.log "removing custom"
-      Meteor.call "removeUserPermissions", @.userId, ['admin','manager'], ReactionCore.getShopId()
-      return
-
   # toggle individual permissions
   "change .toggle-shop-member-permission": (event, template) ->
     self = @
     permissions = []
     member = template.data
-
     # package will assign all children permissions
     # plus itself (name)
     if self.name
@@ -97,10 +76,10 @@ Template.shopMember.events
       permissions.push self.permission
 
     if $(event.currentTarget).is(':checked')
-      Meteor.call "addUserPermissions", member.userId, permissions, ReactionCore.getShopId()
+      Meteor.call "addUserPermissions", member.userId, permissions, @.shopId
       return
     else
-      Meteor.call "removeUserPermissions", member.userId, permissions, ReactionCore.getShopId()
+      Meteor.call "removeUserPermissions", member.userId, permissions, @.shopId
       return
 
   "click .link-shop-member-remove": (event, template) ->

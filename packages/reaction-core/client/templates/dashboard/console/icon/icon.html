@@ -1,5 +1,5 @@
  <template name="consoleIcon">
- {{#if hasDashboardAccess}}
+ {{#if hasPermission 'console'}}
       <li class="dropdown-apps-icon">
         <a id="dashboard-drawer-icon" title="{{i18n 'consoleIcon.iconTitle' 'Console'}}">
           <i class="{{toggleStateClass}}"></i>

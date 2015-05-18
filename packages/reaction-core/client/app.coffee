@@ -3,53 +3,52 @@
 ###
 _.extend ReactionCore,
   shopId: null
-  isOwner: null
-  isAdmin: null
   init: ->
     self = @
     # We want this to auto-update whenever shops or packages change, login/logout, etc.
     Tracker.autorun ->
-      Meteor.subscribe "Shops"
-      domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
-      shop = ReactionCore.Collections.Shops.findOne domains: domain
-
-      if shop # domain match shop
+      shopHandle = Meteor.subscribe "Shops"
+      if shopHandle.ready()
+        domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
+        shop = ReactionCore.Collections.Shops.findOne domains: domain
         self.shopId = shop._id
-        self.isOwner = Roles.userIsInRole Meteor.userId(), 'owner', shop._id
-        self.isAdmin = Roles.userIsInRole Meteor.userId(), 'admin', shop._id
-      else # marketplace
-        shop = ReactionCore.Collections.Shops.findOne isMarketplace: true
-        if shop
-          self.shopId = shop._id if shop
-          self.isOwner = Roles.userIsInRole Meteor.userId(), 'owner', shop._id
-          self.isAdmin = Roles.userIsInRole Meteor.userId(), 'admin', shop._id
-        #
-        # TODO: implement shopId as  array or string
-        #
-      return
-
-  # role checkout
-  hasOwnerAccess: ->
-    return Roles.userIsInRole Meteor.userId(), 'owner', @shopId
-
-  # admin access
-  hasAdminAccess: ->
-    return Roles.userIsInRole Meteor.userId(), 'admin', @shopId if @shopId
-
-  # dashboard access
-  hasDashboardAccess: ->
-    return Roles.userIsInRole Meteor.userId(), 'dashboard', @shopId if @shopId
+        return
 
   # permission check
   hasPermission: (permissions) ->
-    return Roles.userIsInRole Meteor.userId(), permissions, @shopId if @shopId
+    # assume admin, owner access
+    unless _.isArray permissions
+      permissions = [permissions]
+      permissions.push "admin", "owner"
+
+    if Meteor.userId() and (
+      Roles.userIsInRole Meteor.userId(), permissions, @shopId or
+      Roles.userIsInRole Meteor.userId(), permissions, Roles.GLOBAL_GROUP
+      )
+      return true
+
+  hasOwnerAccess: ->
+    ownerPermissions = ['owner']
+    return @hasPermission ownerPermissions
+
+  # admin access
+  hasAdminAccess: ->
+    adminPermissions = ['owner','admin']
+    return @hasPermission adminPermissions
+
+  # dashboard access
+  hasDashboardAccess: ->
+    dashboardPermissions = ['owner','admin','dashboard']
+    return @hasPermission dashboardPermissions
 
   # returns shop id
   getShopId: ->
     return @shopId
 
+  # TODO:  setShopId: (shopId) ->
+  #   @.shopId = shopId
 
-  # TODO: NEEDS REFACTOR
+  # TODO: getSellerShopId NEEDS REFACTOR
 
   # # return the logged in user's shop if he owns any or if he is an admin -> used in multivendor
   # getSellerShopId: (client) ->

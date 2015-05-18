@@ -51,11 +51,14 @@ Meteor.publish "Translations", (sessionLanguage) ->
 ###
 Meteor.publish "UserProfile", (profileUserId) ->
   check profileUserId, Match.OneOf(String, null)
-  roles = ['dashboard/orders','owner','admin','dashboard/customers']
+  permissions = ['dashboard/orders','owner','admin','dashboard/customers']
 
-  if profileUserId isnt this.userId
+  if profileUserId isnt @userId
     # admin users can see some additional restricteduser details
-    if Roles.userIsInRole this.userId, roles, ReactionCore.getShopId(@)
+    if @userId and (
+      Roles.userIsInRole @userId, permissions, ReactionCore.getCurrentShop(@)._id or
+      Roles.userIsInRole @userId, permissions, Roles.GLOBAL_GROUP
+      )
       return Meteor.users.find _id: profileUserId,
         fields:
           "emails": true
@@ -83,23 +86,25 @@ Meteor.publish "UserProfile", (profileUserId) ->
 #  Packages contains user specific configuration
 #  settings, package access rights
 ###
-Meteor.publish "Packages", (shop) ->
-  shop = ReactionCore.getCurrentShop(this)
+Meteor.publish 'Packages', (shop) ->
+  shop = ReactionCore.getCurrentShop(@)
   if shop
-    if Roles.userIsInRole this.userId, ['dashboard','owner','admin'], ReactionCore.getShopId(@)
-      return Packages.find shopId: shop._id
+    if Roles.userIsInRole(@userId, [
+        'dashboard'
+        'owner'
+        'admin'
+      ], ReactionCore.getShopId(this) or Roles.userIsInRole(@userId, [
+        'owner'
+        'admin'
+      ], Roles.GLOBAL_GROUP))
+      Packages.find shopId: shop._id
     else
-      # settings.public published
-      # other access to settings,etc is blocked
-      # for non administrative views
-      return Packages.find { shopId: shop._id},
-        fields:
-          shopId: true
-          name: true
-          enabled: true
-          registry: true
-          'settings.public': true
-
+      Packages.find { shopId: shop._id }, fields:
+        shopId: true
+        name: true
+        enabled: true
+        registry: true
+        'settings.public': true
   else
     return []
 
@@ -190,12 +195,16 @@ Meteor.publish 'Cart', (sessionId, userId) ->
 Meteor.publish 'Accounts', (sessionId, userId) ->
   check sessionId, Match.OneOf(String, null)
   check userId, Match.OneOf(String, null)
-  shopId = ReactionCore.getShopId(@)
 
-  # admin gets it all
-  if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
-    return Accounts.find shopId: shopId
-  # returns userId (authenticated account)
+  # global owner gets it all
+  if Roles.userIsInRole this.userId, ['owner'], Roles.GLOBAL_GROUP
+    return Accounts.find()
+
+  # shop owner / admin sees all, in shop
+  else if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
+    return Accounts.find shopId: ReactionCore.getShopId(@)
+
+  # returns userId (authenticated account) details only
   else
     ReactionCore.Events.debug "subscribe account", sessionId, this.userId
     # get current account

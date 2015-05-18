@@ -152,12 +152,12 @@ createDefaultAdminUser = ->
   # options from mixing known set ENV production variables
   if process.env.METEOR_EMAIL
     url = process.env.MONGO_URL #pull from default db connect string
-    options.username = "Administrator"
+    options.username = "Owner"
     unless options.password then options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
   else
     # random options if nothing has been set
-    options.username = Meteor.settings?.reaction?.METEOR_USER || "Administrator"
+    options.username = Meteor.settings?.reaction?.METEOR_USER || "Owner"
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
@@ -167,7 +167,7 @@ createDefaultAdminUser = ->
   shopId = Shops.findOne()._id
 
   # add default roles and update shop with admin user
-  defaultAdminRoles = ['manager','owner','admin']
+  defaultAdminRoles = ['owner','admin']
   packages = ReactionCore.Collections.Packages.find().fetch()
 
   # we need a contact and a domain
@@ -181,8 +181,11 @@ createDefaultAdminUser = ->
     for reg in pkg.registry
       defaultAdminRoles.push reg.route if reg.route
       defaultAdminRoles.push reg.name if reg.name
-  # add all package permissions to default administrator
+    defaultAdminRoles.push pkg.name
+  # add all package permissions to default shop
   Meteor.call "addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId
+  # global owner permissions
+  Meteor.call "addUserPermissions", accountId,['owner','admin','dashboard'], Roles.GLOBAL_GROUP
 
 
 ###

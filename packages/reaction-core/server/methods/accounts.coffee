@@ -1,24 +1,31 @@
 ###
-# user onCreateUser hook
-# see hooks.coffee for additional collection hooks
+# onCreateUser
+# a special meteor hook to default user info on create
+# see: http://docs.meteor.com/#/full/accounts_oncreateuser
+# see: hooks.coffee for additional collection hooks
 ###
 Accounts.onCreateUser (options, user) ->
-  # create or clone profile,email to Accounts
-  userAccount  = ReactionCore.Collections.Accounts.findOne('userId': user._id)
-  unless userAccount
-    account = _.clone(user)
-    account.userId = user._id
-    # add service names to account
-    for service in account.services
-      account.username = service.name unless account.username
-      account.emails.push {'address': service.email, 'verified': true}
+  unless user.emails then user.emails = []
+  # add default role for all users
+  # Roles.addUsersToRoles user, 'guest', ReactionCore.getShopId()
+  # see: https://github.com/alanning/meteor-roles/issues/79
+  unless user.roles
+    shopId = ReactionCore.getShopId()
+    user.roles = {}
+    user.roles[shopId] = [ "guest" ]
 
-    accountId = ReactionCore.Collections.Accounts.insert(account)
+  # TODO: only use accounts for managing profiles
+  for service, profile of user.services
+    if !user.username and profile.name then user.username = profile.name
+    if profile.email then user.emails.push {'address': profile.email}
 
-    # add default role for all users
-    Roles.addUsersToRoles user._id, "guest", Roles.GLOBAL_GROUP
-    ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
-  # return to meteor accounts
+  # clone into and create our user's account
+  account = _.clone(user)
+  account.userId = user._id
+  accountId = ReactionCore.Collections.Accounts.insert(account)
+  ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
+
+  # return user to meteor accounts
   return user
 
 ###

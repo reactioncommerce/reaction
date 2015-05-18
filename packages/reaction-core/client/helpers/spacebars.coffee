@@ -419,4 +419,5 @@ Template.registerHelper "reactionApps", (options) ->
     for app, index in reactionApps
       reactionApps[index].priority = index unless app.priority
       # need to sort after?
+
     return reactionApps

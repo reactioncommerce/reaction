@@ -111,14 +111,11 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
+  # TODO review createdAt, updatedAt move to hooks only?
   createdAt:
+    label: "Created at"
     type: Date
-    autoValue: ->
-      if @isInsert
-        return new Date
-      else if @isUpsert
-        return $setOnInsert: new Date
-    denyUpdate: true
+    optional: true
   updatedAt:
     label: "Updated at"
     type: Date
@@ -208,8 +205,18 @@ ReactionCore.Schemas.Product = new SimpleSchema
     optional: true
   createdAt:
     type: Date
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    # denyUpdate: true
   updatedAt:
     type: Date
-    autoValue : ->
-      new Date() if @isUpdate
+    autoValue: ->
+      if @isUpdate
+        return $set: new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
     optional: true
+

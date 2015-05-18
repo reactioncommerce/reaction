@@ -54,17 +54,26 @@ _.extend ReactionCore,
     #which shop from the shops collection to use here, hence the unused client arg
     return Meteor.absoluteUrl().split('/')[2].split(':')[0]
 
+  # permission check
+  hasPermission: (permissions) ->
+    # shop specific check
+    if Roles.userIsInRole Meteor.userId(), permissions, @getShopId()
+      return true
+    # global roles check
+    if Roles.userIsInRole Meteor.userId(), permissions, Roles.GLOBAL_GROUP
+      return true
+
+  # owner access
   hasOwnerAccess: (client) ->
-    return Roles.userIsInRole Meteor.userId(), 'owner',  @getCurrentShop(client)?._id
+    ownerPermissions = ['owner']
+    return @hasPermission ownerPermissions
 
   # admin access
   hasAdminAccess: (client) ->
-    return Roles.userIsInRole Meteor.userId(), 'admin',  @getCurrentShop(client)?._id
+    adminPermissions = ['owner','admin']
+    return @hasPermission adminPermissions
 
   # dashboard access
   hasDashboardAccess: (client) ->
-    return Roles.userIsInRole Meteor.userId(), 'dashboard',  @getCurrentShop(client)?._id
-
-  # permission check
-  hasPermission: (client, permissions) ->
-    return Roles.userIsInRole Meteor.userId(), permissions,  @getCurrentShop(client)?._id
+    dashboardPermissions = ['owner','admin','dashboard']
+    return @hasPermission dashboardPermissions
