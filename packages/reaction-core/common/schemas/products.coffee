@@ -48,7 +48,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: ->
       if Meteor.isClient
-        if @.siblingField("type").value is "inventory" then return "required"
+        if @.siblingField("type").value is "inventory" and !@.value then return "required"
   compareAtPrice:
     label: "MSRP"
     type: Number
@@ -66,21 +66,21 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: ->
       if Meteor.isClient
-        unless @.siblingField("type").value is "inventory" then return "required"
+        unless @.siblingField("type").value is "inventory" or @.value or @.value == 0 then return "required"
   inventoryManagement:
     type: Boolean
     label: "Inventory Tracking"
     optional: true
     custom: ->
       if Meteor.isClient
-        unless @.siblingField("type").value is "inventory" then return "required"
+        unless @.siblingField("type").value is "inventory" or @.value or @.value == false then return "required"
   inventoryPolicy:
     type: Boolean
     label: "Deny when out of stock"
     optional: true
     custom: ->
       if Meteor.isClient
-        unless @.siblingField("type").value is "inventory" then return "required"
+        unless @.siblingField("type").value is "inventory" or @.value or @.value == false then return "required"
   lowInventoryWarningThreshold:
     type: Number
     label: "Warn @"
@@ -122,7 +122,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: -> #required unless type=inventory
       if Meteor.isClient
-        unless @.siblingField("type").value is "inventory" then return "required"
+        unless @.siblingField("type").value is "inventory" or @.value then return "required"
   optionTitle:
     label: "Option"
     type: String

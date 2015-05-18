@@ -36,6 +36,18 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     parentVariant = (variant for variant in product.variants when variant._id is modifier.$set['variants.$'].parentId)[0]
     if parentVariant?.inventoryQuantity isnt qty
       Products.direct.update({'_id': product._id, 'variants._id':modifier.$set['variants.$'].parentId }, {$set: {'variants.$.inventoryQuantity':qty } })
+      
+  # keep quantity of variants that contain 'inventory' in sync with the aggregate
+  # quantity of their inventory children
+  if modifier.$addToSet?['variants']?.type == 'inventory'
+    parentId = modifier.$addToSet.variants.parentId
+    # Feels like an ugly way to do aggregate, TODO: Review this?
+    inventoryVariants = (variant for variant in product.variants when variant?.parentId is parentId and variant?.type == 'inventory')
+    # The item we are about to add isn't counted yet, so account for that (+1 to count).
+    qty = inventoryVariants.length + 1 || 1
+    parentVariant = (variant for variant in product.variants when variant._id is parentId)[0]
+    if parentVariant?.inventoryQuantity isnt qty
+      Products.direct.update({'_id': product._id, 'variants._id':parentId }, {$set: {'variants.$.inventoryQuantity':qty } })
 
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
