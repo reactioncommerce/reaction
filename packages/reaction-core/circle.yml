@@ -17,4 +17,4 @@ dependencies:
 
 test:
   override:
-    - cd $HOME/reaction && meteor --test 2>&1
+    - cd $HOME/reaction && meteor run --test --once --release velocity:METEOR@1.1.0.2_2
