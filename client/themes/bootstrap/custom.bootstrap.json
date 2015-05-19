@@ -33,8 +33,8 @@
   "component-animations": true,
   "dropdowns":            true,
   "modals":               true,
-  "tooltip":              false,
-  "popovers":             false,
+  "tooltip":              true,
+  "popovers":             true,
   "carousel":             true,
 
   "affix":                true,
@@ -43,7 +43,7 @@
   "collapse":             true,
   "scrollspy":            true,
   "tab":                  true,
-  "transition":           true,
+  "transition":           false,
 
   "utilities":            true,
   "responsive-utilities": true
