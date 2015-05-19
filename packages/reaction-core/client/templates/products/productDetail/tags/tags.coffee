@@ -39,7 +39,7 @@ Template.productTagInputForm.events
       currentTag = Session.get "currentTag"
       Meteor.call "updateProductTags", selectedProductId(), val, @._id, currentTag, (error, result) ->
         if error
-          console.log "Error updating header tags", error
+          throw new Meteor.Error "Error updating header tags", error
         Tracker.flush()
         template.$('.tags-submit-new').val('').focus();
 

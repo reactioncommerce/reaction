@@ -118,8 +118,9 @@ Meteor.publish 'Shops', ->
 # ShopMembers
 ###
 Meteor.publish 'ShopMembers', ->
+  permissions = ['dashboard/orders','owner','admin','dashboard/customers']
   shopId = ReactionCore.getShopId(@)
-  if Roles.userIsInRole(this.userId, ['manager','owner','admin'], shopId)
+  if Roles.userIsInRole(@.userId, permissions, shopId)
     return Meteor.users.find()
   else
     ReactionCore.Events.info "ShopMembers access denied"
@@ -135,7 +136,7 @@ Meteor.publish 'Products', (shops) ->
     ## add additional shops
     if shops
       selector = {shopId: {$in: shops}}
-    unless Roles.userIsInRole(this.userId, ['admin'])
+    unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id)
       selector.isVisible = true
     return Products.find(selector)
   else

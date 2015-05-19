@@ -10,8 +10,18 @@ Template.consoleNavBar.events
 
 Template.consoleNavBar.helpers
   displayConsoleDrawer: ->
-    if ReactionCore.hasOwnerAccess() and Session.get 'displayConsoleDrawer'
+    if Session.get 'displayConsoleDrawer'
       return true
+
+  pkgPermissions: () ->
+    if ReactionCore.hasPermission 'console'
+      if @.route
+        return ReactionCore.hasPermission @.route
+      else
+        return ReactionCore.hasPermission @.name
+    else
+      return false
+
 
 ###
 # console widgets

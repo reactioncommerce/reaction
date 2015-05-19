@@ -5,7 +5,7 @@
 <template name="productListGrid">
   <div class="row">
     {{>productGrid}}
-    {{#if hasPermission "admin"}}
+    {{#if hasPermission "createProduct"}}
       {{>productList}}
     {{/if}}
   </div>

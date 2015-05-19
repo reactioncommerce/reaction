@@ -73,7 +73,7 @@ Template.productImageGallery.events
   "mouseenter .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
-      unless ReactionCore.hasAdminAccess()
+      unless ReactionCore.hasPermission('createProduct')
         first = $('.gallery li:nth-child(1)')
         target = $(event.currentTarget)
 

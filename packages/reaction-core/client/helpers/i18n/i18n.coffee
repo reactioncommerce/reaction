@@ -124,7 +124,7 @@ Meteor.startup ->
 ###
 Template.registerHelper "i18n", (i18n_key, message) ->
   i18nextDep.depend()
-  unless i18n_key then Meteor.throw("i18n key string required to translate")
+  unless i18n_key then throw new Meteor.Error("i18n key string required to translate")
   message = new Handlebars.SafeString(message)
   if i18n.t(i18n_key) is i18n_key # return raw message if no translation found
     console.info "no translation found. returning raw message for:" + i18n_key

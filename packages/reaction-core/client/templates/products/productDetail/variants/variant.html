@@ -20,14 +20,14 @@
         <span class="variant-price">{{formatPrice displayPrice}}</span>
       </div>
 
-      {{#if hasPermission "admin"}}
+      {{#if hasPermission "createProduct"}}
       <div class="variant-edit hidden-xs">
           <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
       </div>
       {{/if}}
     </div>
   </div>
-  {{#if hasPermission "admin"}}
+  {{#if hasPermission "createProduct"}}
     {{>variantForm}}
   {{/if}}
 </li>

@@ -23,7 +23,7 @@ Template.variant.events
     toggleSession "variant-form-"+@._id
 
   "dblclick .variant-detail": (event) ->
-    if ReactionCore.hasAdminAccess()
+    if ReactionCore.hasPermission('createProduct')
       setCurrentVariant @._id
       toggleSession "variant-form-"+@._id
 
@@ -35,7 +35,7 @@ Template.variant.events
 
 Template.variant.rendered = ->
   @autorun ->
-    if ReactionCore.hasAdminAccess()
+    if ReactionCore.hasPermission('createProduct')
       variantSort = $(".variant-list")
       variantSort.sortable
           items: "> li.variant-list-item"

@@ -7,11 +7,15 @@
 
 Template.shopMember.helpers
   isOwnerDisabled: (userId) ->
+    # disable if the this record is this user
+    # expand this to have different scope
     if Meteor.userId() is @.userId
       if Roles.userIsInRole @.userId, 'owner', @.shopId
         return true
 
   hasPermissionChecked: (permission, userId) ->
+    # we will show permission as check if the permissions
+    # has been assigned at either the global or shop level
     if userId and (
       Roles.userIsInRole userId, permission, @.shopId or
       Roles.userIsInRole userId, permission, Roles.GLOBAL_GROUP
@@ -19,10 +23,12 @@ Template.shopMember.helpers
       return "checked"
 
   groupsForUser: (userId) ->
+    # array of shops (no global role)
     userId = userId  || @.userId || Template.parentData(1).userId
     return Roles.getGroupsForUser(userId)
 
   shopLabel: (shopId) ->
+    # xref shop to role group (shopId)
     return ReactionCore.Collections.Shops.findOne( {'_id': Template.currentData() })?.name
 
   permissionGroups: (shopId) ->
@@ -35,7 +41,8 @@ Template.shopMember.helpers
         for registryItem in pkg.registry when registryItem.route
           # registry permissions
           if registryItem.permissions
-            for permission in registryItem
+            for permission in registryItem.permissions
+              permission.shopId = Template.currentData() # injected for ease
               permissions.push permission
 
           # check for potential duplicates
@@ -64,6 +71,8 @@ Template.shopMember.events
     self = @
     permissions = []
     member = template.data
+    unless @.shopId then throw new Meteor.Error("Shop is required")
+
     # package will assign all children permissions
     # plus itself (name)
     if self.name

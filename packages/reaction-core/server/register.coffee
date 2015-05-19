@@ -43,7 +43,13 @@ ReactionCore.registerPackage
     {
       route: "dashboard"
       label: 'Dashboard'
-      provides: 'console'
+      provides: 'console',
+      permissions: [
+        {
+          label: "Console"
+          permission: "console"
+        }
+      ]
     }
     {
       route: "dashboard/settings/shop"

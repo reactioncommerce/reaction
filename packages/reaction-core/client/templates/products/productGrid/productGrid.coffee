@@ -97,7 +97,7 @@ Template.productGridItems.events
   'click .clone-product': () ->
     title = @.title
     Meteor.call "cloneProduct", this, (error, productId) ->
-      console.log "error cloning product", error if error
+      throw new Meteor.Error "error cloning product", error if error
       Router.go "product",
         _id: productId
       Alerts.add "Cloned " + title
@@ -137,7 +137,7 @@ Template.productGridItems.rendered = () ->
   # *****************************************************
   #  drag grid products and save tag+position
   # *****************************************************
-  if ReactionCore.hasAdminAccess()
+  if ReactionCore.hasPermission('createProduct')
     productSort = $(".product-grid-list")
     productSort.sortable
         items: "> li.product-grid-item"

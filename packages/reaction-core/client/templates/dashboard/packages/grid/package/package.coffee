@@ -44,7 +44,7 @@ Template.gridPackage.events
               type: "pkg-enabled-" + self.name
               autoHide: true
           else if error
-            console.log "error disabling package",error
+            throw new Meteor.Error "error disabling package", error
     return
 
   "click .pkg-app-card": (event, template) ->

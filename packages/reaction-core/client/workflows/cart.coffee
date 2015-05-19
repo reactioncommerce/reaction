@@ -107,7 +107,7 @@ CartWorkflow = StateMachine.create(
       cartId = Cart.findOne()._id
       Meteor.call "copyCartToOrder", cartId, (error, result) ->
         if error
-          console.log "An error occurred saving the order. : " +error
+          throw new Meteor.Error "An error occurred saving the order", error
         else #go to order success
           CartWorkflow.inventoryAdjust(result)
           return

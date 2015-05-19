@@ -443,7 +443,7 @@ Package.onUse(function (api) {
 
 Package.onTest(function(api) {
   api.use('sanjo:jasmine@0.13.6');
-  api.use('velocity:html-reporter@0.5.3');
+  api.use('velocity:html-reporter@0.6.1');
   api.use('reactioncommerce:core');
   api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
   api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');

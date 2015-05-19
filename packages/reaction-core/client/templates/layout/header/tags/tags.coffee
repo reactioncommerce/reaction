@@ -81,7 +81,7 @@ Template.tagInputForm.events
   'click .tag-input-group-remove': (event,template) ->
     Meteor.call "removeHeaderTag", @._id, currentTag(), (error, result) ->
       if error
-        console.log "Error removing header tag", error
+        throw new Meteor.Error "Error removing header tag", error
       template.$('.tags-submit-new').focus()
 
   'click .tags-input-select': (event,template) ->
@@ -104,7 +104,7 @@ Template.tagInputForm.events
     if val
       Meteor.call "updateHeaderTags", val, @._id, currentTag(), (error, result) ->
         if error
-          console.log "Error updating header tags", error
+          throw new Meteor.Error "Error updating header tags", error
         Tracker.flush()
         template.$('.tags-submit-new').val('').focus()
 

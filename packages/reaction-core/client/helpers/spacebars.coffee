@@ -136,22 +136,17 @@ Template.registerHelper "toCamelCase", (str) ->
 ###
 
 Template.registerHelper "hasPermission", (permissions) ->
-  unless permissions then return
   check permissions, Match.OneOf(String, Object)
-  return ReactionCore.hasPermission(permissions)
-  # return Roles.userIsInRole Meteor.userId(), permissions, ReactionCore.getShopId()
+  return ReactionCore.hasPermission permissions
 
 Template.registerHelper "hasOwnerAccess", ->
   ReactionCore.hasOwnerAccess()
-  #return Roles.userIsInRole Meteor.userId(), ['owner'], ReactionCore.getShopId()
 
 Template.registerHelper "hasAdminAccess", ->
   ReactionCore.hasOwnerAccess()
-  #return Roles.userIsInRole Meteor.userId(), ['admin','owner'], ReactionCore.getShopId()
 
 Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
-  #return Roles.userIsInRole Meteor.userId(), 'dashboard', ReactionCore.getShopId()
 
 # deprecated in favor of "hasPermission"
 # Template.registerHelper "userHasRole", (role) ->
@@ -325,13 +320,6 @@ Template.registerHelper "navLink", (page, icon) ->
   return new Spacebars.SafeString(ret)
 
 ###
-# For debugging: {{console.log this}}
-###
-Template.registerHelper "console",
-  log: (a) ->
-    console.log a
-
-###
 #
 # reactionApps
 #
@@ -418,6 +406,5 @@ Template.registerHelper "reactionApps", (options) ->
     reactionApps = _.uniq(reactionApps)
     for app, index in reactionApps
       reactionApps[index].priority = index unless app.priority
-      # need to sort after?
-
+    # need to sort after?
     return reactionApps

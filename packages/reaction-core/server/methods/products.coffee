@@ -8,7 +8,7 @@ Meteor.methods
     check productId, String
     check variantId, String
     check parentId, Match.Optional(String)
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -53,7 +53,7 @@ Meteor.methods
   createVariant: (productId, newVariant) ->
     check productId, String
     check newVariant, Match.OneOf(Object, undefined)
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -75,7 +75,7 @@ Meteor.methods
     check variant, Object
     check updateDoc, Match.OptionalOrNull(Object)
     check currentDoc, Match.OptionalOrNull(String)
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -94,7 +94,7 @@ Meteor.methods
   ###
   updateVariants: (variants) ->
     check variants, [Object]
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -107,7 +107,7 @@ Meteor.methods
   ###
   deleteVariant: (variantId) ->
     check variantId, String
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -139,7 +139,7 @@ Meteor.methods
   cloneProduct: (product) ->
     check product, Object
     #check product, ReactionCore.Schemas.Product
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -184,7 +184,7 @@ Meteor.methods
   ###
   createProduct: (product) ->
     check product, Match.Optional Object
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -206,7 +206,7 @@ Meteor.methods
   ###
   deleteProduct: (productId) ->
     check productId, String
-    unless ReactionCore.hasOwnerAccess()
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -231,7 +231,7 @@ Meteor.methods
     check productId, String
     check field, String
     check value, String
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
     # value = Spacebars.SafeString(value)
@@ -249,7 +249,7 @@ Meteor.methods
     check tagName, String
     check tagId, Match.OneOf(String, null)
     check currentTagId, Match.Optional(String)
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -281,7 +281,7 @@ Meteor.methods
   removeProductTag: (productId, tagId) ->
     check productId, String
     check tagId, String
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -300,7 +300,7 @@ Meteor.methods
   setHandleTag: (productId, tagId) ->
     check productId, String
     check tagId, String
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -326,7 +326,7 @@ Meteor.methods
   updateProductPosition: (productId, positionData) ->
     check productId, String
     check positionData, Object
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -352,7 +352,7 @@ Meteor.methods
     check productId, String
     check updatedMeta, Object
     check meta, Match.OptionalOrNull(Object)
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -366,7 +366,7 @@ Meteor.methods
   #
   publishProduct: (productId) ->
     check productId, String
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 

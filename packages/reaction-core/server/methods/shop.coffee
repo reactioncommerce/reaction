@@ -14,7 +14,7 @@ Meteor.methods
     currentUser = Meteor.userId()
     userId = userId || Meteor.userId()
     # not using the core methods here,
-    unless ReactionCore.hasOwnerAccess() or ReactionCore.hasPermission('createShop')
+    unless ReactionCore.hasOwnerAccess()
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
@@ -124,7 +124,7 @@ Meteor.methods
     check tagId, Match.OneOf(String, null, undefined)
     check currentTagId, Match.Optional(String)
 
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('core')
       throw new Meteor.Error 403, "Access Denied"
 
     newTag =
@@ -163,7 +163,7 @@ Meteor.methods
     check tagId, String
     check currentTagId, String
 
-    unless ReactionCore.hasAdminAccess()
+    unless ReactionCore.hasPermission('core')
       throw new Meteor.Error 403, "Access Denied"
 
     Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})

@@ -9,7 +9,7 @@ Template.productSocial.helpers
       media: Session.get('variantImgSrc')
       url: window.location.href
       title: current.title
-      description: product.description.substring(0, 254)
+      description: product.description?.substring(0, 254)
       apps:
         facebook:
           description: product.facebookMsg

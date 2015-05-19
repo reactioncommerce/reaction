@@ -215,7 +215,7 @@ Meteor.methods
   removeUserPermissions: (userId, permissions, group) ->
     check userId, String
     check permissions, Match.OneOf(String, Array)
-    check group, Match.Optional(String)
+    check group, Match.Optional(String, null)
     @unblock()
 
     # for shop member data

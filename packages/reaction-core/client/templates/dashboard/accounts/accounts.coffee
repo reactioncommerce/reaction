@@ -1,8 +1,10 @@
 Template.coreAccounts.helpers
   members: () ->
     members = []
-    if ReactionCore.hasOwnerAccess()
+    if ReactionCore.hasPermission('dashboard/accounts')
       ShopMembers = Meteor.subscribe 'ShopMembers'
+      # get all shop users
+      # TODO: search / pagination
       if ShopMembers.ready()
         shopUsers = Meteor.users.find()
         shopUsers.forEach (user) ->
@@ -13,8 +15,8 @@ Template.coreAccounts.helpers
           member.isAdmin = Roles.userIsInRole user._id, 'admin', ReactionCore.getShopId()
           member.roles = user.roles
 
-          if Roles.userIsInRole member.userId, 'manager', ReactionCore.getShopId()
-            member.role = "Manager"
+          if Roles.userIsInRole member.userId, 'dashboard', ReactionCore.getShopId()
+            member.role = "Dashboard"
 
           if Roles.userIsInRole member.userId, 'admin', ReactionCore.getShopId()
             member.role = "Administrator"
@@ -22,7 +24,7 @@ Template.coreAccounts.helpers
           if Roles.userIsInRole member.userId, 'owner', ReactionCore.getShopId()
             member.role = "Owner"
 
-          else if Roles.userIsInRole member.userId, Roles.GLOBAL_GROUP , ReactionCore.getShopId()
+          else if Roles.userIsInRole member.userId, ReactionCore.getShopId() , ReactionCore.getShopId()
             member.role = "Guest"
 
           members.push member

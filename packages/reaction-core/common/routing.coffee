@@ -152,12 +152,11 @@ Router.map ->
       setProduct @params._id, variant
       @next()
     data: ->
-      #
       # TODO: ReactionCore.hasAdminAccess(@url)
       product = selectedProduct()
       if @ready() and product
         unless product.isVisible
-          unless ReactionCore.hasAdminAccess()
+          unless ReactionCore.hasPermission('createProduct')
             @render 'unauthorized'
         return product
       if @ready() and !product
