@@ -52,6 +52,7 @@
 <template name="userAccountsDropdown">
   <!--user account shortcut icons -->
   {{#each reactionApps provides='userAccountDropdown' enabled=true}}
+    {{#if hasPermission route}}
     <li class="dropdown-apps-icon">
       <a id="{{route}}" title="{{label}}">
         <i class="{{icon}}"></i>
@@ -60,6 +61,7 @@
         </span>
       </a>
     </li>
+    {{/if}}
   {{else}}
     <span data-i18n="accountsUI.signedIn">You are signed in.</span>
   {{/each}}

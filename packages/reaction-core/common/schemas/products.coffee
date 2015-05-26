@@ -131,6 +131,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
   shopId:
     type: String
     autoValue: ReactionCore.shopIdAutoValue
+    index: 1
   title:
     type: String
   pageTitle:

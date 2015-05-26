@@ -10,7 +10,6 @@ If you create a private package and would like to share it with the Meteor commu
 
 If you would like to share a package in the registry, but don't want to be responsible for long term ownership of the package, create an issue and let us know. We'll consider forking and maintaining a (reactioncommerce org published version of your package)[https://atmospherejs.com/reactioncommerce].
 
-
 ## Package development
 
 For local package development you must *git clone* packages locally, either into `reaction/packages`, or by creating a symbolic link to the package checkout.
@@ -38,7 +37,7 @@ It's a little more work, but it's a good idea to make sure you are in the `devel
 
 *Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
 
-*Tip: Copy the settings/dev.sample.json to settings/settings.json and edit the file to retain authentication and meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`*
+*Tip: Copy the `settings/dev.settings.json` to `settings/settings.json` and edit the file to retain authentication and Meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`*
 
 **Create packages**
 
@@ -133,25 +132,8 @@ ReactionCore.registerPackage
   ]
 ```
 
-
-#### Settings
- ```
- name: '<typically same as package name>'
- autoEnable: '<true/false automatically enable in dashboard>'
- settings:
-      <Object:blackbox default properties for service configuration.>
- ```
-
-`settings` is a blackbox object for package settings.
-
-`settings.public` is available to the client.
-
-`autoEnable` transforms into the `enabled` key to a boolean value on insert.
-
-See [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md)
-
 #### Registry
-The registry is used to define routes, dynamic templates, and some package UI handling.
+The registry is used to settings, routes,  and permissions for Reaction specific packages.
 
 A `registry` object can be any combination of properties, with `provides` being the only required element.
 
@@ -409,4 +391,3 @@ To have your package included in a Reaction release, please create a GitHub issu
 See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
 
 *We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
-

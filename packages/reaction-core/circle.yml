@@ -8,8 +8,8 @@ dependencies:
   cache_directories:
     - "~/.meteor"
     - "/usr/local/bin"
+    - "$HOME/reaction/packages"
   pre:
-     # download if meteor isn't already installed in the cache
     - meteor || curl https://install.meteor.com | /bin/sh
     - git clone https://github.com/reactioncommerce/reaction $HOME/reaction
     - mkdir -p $HOME/reaction/packages
@@ -17,4 +17,4 @@ dependencies:
 
 test:
   override:
-    - cd $HOME/reaction && meteor run --test --once --release velocity:METEOR@1.1.0.2_2
+    - cd $HOME/reaction && meteor run --test --release velocity:METEOR@1.1.0.2_3 2>&1

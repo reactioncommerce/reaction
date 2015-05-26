@@ -83,6 +83,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema
     type: String
     autoValue: ReactionCore.shopIdAutoValue
     regEx: SimpleSchema.RegEx.Id
+    index: 1
   emails:
     type: [ReactionCore.Schemas.Email]
     optional: true

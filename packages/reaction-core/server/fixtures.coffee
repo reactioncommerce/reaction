@@ -164,7 +164,7 @@ createDefaultAdminUser = ->
 
   # newly created admin user
   accountId = Accounts.createUser options
-  shopId = Shops.findOne()._id
+  shopId = ReactionCore.getShopId()
 
   # add default roles and update shop with admin user
   defaultAdminRoles = ['owner','admin']

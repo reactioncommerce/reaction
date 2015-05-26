@@ -191,7 +191,7 @@ Meteor.methods
     if product
       return Products.insert product # returns id
     else
-      Products.insert
+      return Products.insert
         _id: Random.id()
         title: ""
         variants: [
