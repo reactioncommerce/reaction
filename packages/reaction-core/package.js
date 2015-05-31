@@ -55,8 +55,7 @@ Package.onUse(function (api) {
   api.use("aldeed:template-extension@3.4.3","client");
   api.use("iron:router@1.0.7");
   api.use("ongoworks:speakingurl@1.1.0");
-  api.use("ongoworks:pdf@1.1.1");
-  api.use("ongoworks:bunyan-logger@1.0.0");
+  api.use("ongoworks:bunyan-logger@1.3.5");
   api.use("ongoworks:security@1.1.0");
 
   api.use("dburles:factory@0.3.9");
@@ -66,9 +65,10 @@ Package.onUse(function (api) {
   api.use("momentjs:moment@2.10.3", 'client');
   api.use("risul:moment-timezone",'client');
   api.use("sacha:spin@2.0.4", "client");
-  api.use("bengott:avatar@0.7.6");
+  api.use("sacha:avatar@0.7.7");
 
-  api.use("cfs:standard-packages@0.5.8");
+  api.use("cfs:standard-packages@0.5.9");
+  api.use("cfs:storage-adapter@0.2.2");
   api.use("cfs:graphicsmagick@0.0.18");
   api.use("cfs:gridfs@0.0.33");
   api.use("cfs:filesystem@0.1.2");
@@ -97,7 +97,7 @@ Package.onUse(function (api) {
   api.imply("alanning:roles");
   api.imply("momentjs:moment", ["client"]);
   api.imply("sacha:spin" ["client"]);
-  api.imply("bengott:avatar");
+  api.imply("sacha:avatar");
   api.imply("dburles:factory");
   api.imply("anti:fake");
   api.imply("ongoworks:speakingurl");
@@ -442,7 +442,7 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function(api) {
-  api.use('sanjo:jasmine@0.13.6');
+  api.use('sanjo:jasmine@0.14.0');
   api.use('velocity:html-reporter@0.6.1');
   api.use('reactioncommerce:core');
   api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');

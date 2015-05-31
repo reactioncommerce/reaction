@@ -47,21 +47,31 @@ _.extend ReactionCore,
   # TODO:  setShopId: (shopId) ->
   #   @.shopId = shopId
 
-  # TODO: getSellerShopId NEEDS REFACTOR
-
-  # # return the logged in user's shop if he owns any or if he is an admin -> used in multivendor
-  # getSellerShopId: (client) ->
-  #   if Roles.userIsInRole(Meteor.userId(), ['owner'])
-  #     return ReactionCore.Collections.Shops.findOne({ownerId: Meteor.userId()})?._id;
-  #   else if Roles.userIsInRole(Meteor.userId(), ['admin'])
-  #     return ReactionCore.Collections.Shops.findOne({'members.isAdmin': true, 'members.userId': Meteor.userId()})?._id;
-  #   return null;
+  # return the logged in user's shop[s] if he owns any or if he is an admin -> used in multivendor
+  getSellerShopId: (client) ->
+    return Roles.getGroupsForUser Meteor.userId(), ['owner','admin']
 
 Meteor.startup ->
-  # TODO: this could grow.. and grow...
+  ###
+  # configure bunyan logging module for reaction client
+  # See: https://github.com/trentm/node-bunyan#levels
+  ###
+  isDebug = Meteor?.settings?.public?.isDebug || "INFO"
+  # acceptable levels
+  levels = ["FATAL","ERROR","WARN", "INFO", "DEBUG", "TRACE"]
+  # set logging levels from settings
+  if typeof isDebug isnt 'boolean' and typeof isDebug isnt 'undefined' then isDebug = isDebug.toUpperCase()
+  # check level validity
+  unless _.contains levels, isDebug
+    isDebug = "INFO"
+  # Define bunyan levels and output to Meteor console
+  ReactionCore.Events = bunyan.createLogger name: 'core-client'
+  # sets bunyan logging level
+  ReactionCore.Events.level(isDebug)
+
   # quick little client safety check
   if (PackageRegistry?)
-    console.error "Bravely warning you that PackageRegistry should not be exported to client."
+    ReactionCore.Events.warn "Bravely warning you that PackageRegistry should not be exported to client.", PackageRegistry
 
   # Ignition.....
   ReactionCore.init()

@@ -12,7 +12,7 @@ Accounts.onCreateUser (options, user) ->
   unless user.roles
     shopId = ReactionCore.getShopId()
     user.roles = {}
-    user.roles[shopId] = [ "guest" ]
+    user.roles[shopId] = [ "guest", "account/profile" ]
 
   # TODO: only use accounts for managing profiles
   for service, profile of user.services
