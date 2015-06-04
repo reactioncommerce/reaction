@@ -13,7 +13,8 @@ dependencies:
     - git clone https://github.com/reactioncommerce/reaction $HOME/reaction
     - mkdir -p $HOME/reaction/packages
     - mv $HOME/$CIRCLE_PROJECT_REPONAME $HOME/reaction/packages/$CIRCLE_PROJECT_REPONAME
+    - meteor update
 
 test:
   override:
-    - cd $HOME/reaction && meteor run --test 2>&1
+    - cd $HOME/reaction && meteor --test 2>&1
