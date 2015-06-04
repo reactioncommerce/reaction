@@ -13,7 +13,7 @@ Template.reactionSocial.helpers
     Template.instance().socialSettings = $.extend(true, {}, Template.instance().socialSettings, Template.currentData())
     socialSettings = Template.instance().socialSettings
     if socialSettings.apps # apps not always ready
-      for app in socialSettings.appsOrder
+      for app in socialSettings?.appsOrder
         if socialSettings.apps[app]? and socialSettings.apps[app].enabled
           templates.push app
     return templates

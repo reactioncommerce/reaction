@@ -4,7 +4,7 @@ DefaultSocialApp =
 
 ReactionCore.registerPackage
   name: 'reaction-social' # usually same as meteor package
-  autoEnable: false # auto-enable in dashboard
+  autoEnable: true # auto-enable in dashboard
   settings: # private package settings config (blackbox)
     public:
       autoInit: true
