@@ -22,10 +22,3 @@ ReactionCore.registerPackage
       provides: 'shippingMethod'
     }
   ]
-  permissions: [
-    {
-      label: "Shipping"
-      permission: "dashboard/shipping"
-      group: "Shop Settings"
-    }
-  ]

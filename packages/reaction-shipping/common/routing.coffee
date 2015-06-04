@@ -6,4 +6,4 @@ Router.map ->
     waitOn: ->
       return ReactionCore.Subscriptions.Packages
     subscriptions: ->
-      return Meteor.subscribe "shipping"
+      return Meteor.subscribe "Shipping"
