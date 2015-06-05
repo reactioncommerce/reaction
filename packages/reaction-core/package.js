@@ -53,7 +53,7 @@ Package.onUse(function (api) {
   api.use("aldeed:collection2@2.3.3");
   api.use("aldeed:simple-schema@1.3.3", {'weak': 1});
   api.use("aldeed:template-extension@3.4.3","client");
-  api.use("iron:router@1.0.7");
+  api.use("iron:router@1.0.9");
   api.use("ongoworks:speakingurl@1.1.0");
   api.use("ongoworks:bunyan-logger@1.3.5");
   api.use("ongoworks:security@1.1.0");
@@ -440,6 +440,7 @@ Package.onUse(function (api) {
     "currentProduct",
   ], ["client", "server"]);
 });
+
 
 Package.onTest(function(api) {
   api.use('sanjo:jasmine@0.14.0');

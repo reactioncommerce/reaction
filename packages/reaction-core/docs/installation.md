@@ -6,6 +6,7 @@
 - Install Meteor
 - Clone the `reactioncommerce/reaction` repo
 - *Optional, suggested: install `graphicsmagick`*
+- *Windows: OpenSSL and bower installation*
 
 **Installation**
 
@@ -27,6 +28,8 @@ To start Reaction, run the `meteor` command:
 Browse to [http://localhost:3000](http://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
+
+*Note: the [velocity](http://velocity.meteor.com/) testing frameworks is installed by default, you can view results by clicking the "pulsing velocity circle-dot"*
 
 **Reset**
 
@@ -72,6 +75,8 @@ Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run
 }
 ```
 
+Reaction also uses private/data/reaction.json for loading additional configuration settings.
+
 See [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md).
 
 #Troubleshooting
@@ -91,3 +96,10 @@ You can ignore this error, but if it annoys you can run
 Caused by a broken node, npm installation.
 Reinstall Node.js with NPM (or when packaged seperately, reinstall them both).
 
+**windows OpenSSL errors prevent startup**
+
+Install OpenSSL per: https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md
+
+**windows bower install errors**
+
+We use bower to install some core dependencies. To use Bower on Windows, you must install msysgit. See: https://github.com/bower/bower/tree/master#windows-users

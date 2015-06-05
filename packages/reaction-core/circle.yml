@@ -17,4 +17,4 @@ dependencies:
 
 test:
   override:
-    - cd $HOME/reaction && meteor --test 2>&1
+    - cd $HOME/reaction && JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test 2>&1
