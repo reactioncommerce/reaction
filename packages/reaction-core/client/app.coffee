@@ -15,15 +15,16 @@ _.extend ReactionCore,
         return
 
   # permission check
-  hasPermission: (permissions) ->
+  hasPermission: (permissions, userId) ->
+    userId = userId || Meteor.userId()
     # assume admin, owner access
     unless _.isArray permissions
       permissions = [permissions]
       permissions.push "admin", "owner"
 
-    if Roles.userIsInRole Meteor.userId(), permissions, @shopId
+    if Roles.userIsInRole userId, permissions, @shopId
       return true
-    if Roles.userIsInRole Meteor.userId(), permissions, Roles.GLOBAL_GROUP
+    if Roles.userIsInRole userId, permissions, Roles.GLOBAL_GROUP
       return true
 
   hasOwnerAccess: ->

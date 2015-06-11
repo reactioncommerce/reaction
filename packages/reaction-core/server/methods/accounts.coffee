@@ -235,6 +235,6 @@ Meteor.methods
 
     # for shop member data
     try
-      Roles.removeUsersFromRoles(userId, permissions, group)
+      Roles.setUserRoles(userId, permissions, group)
     catch e
       ReactionCore.Events.info e

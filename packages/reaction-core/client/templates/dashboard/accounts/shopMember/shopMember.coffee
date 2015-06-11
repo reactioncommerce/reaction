@@ -105,4 +105,5 @@ Template.shopMember.events
   "click .link-shop-member-remove": (event, template) ->
     $icon = $(event.currentTarget)
     if (confirm($icon.data("confirm")))
-      Meteor.call "setUserRoles", @.userId, 'guest', Roles.GLOBAL_GROUP
+      for role, index of template.data.roles
+        Meteor.call "setUserPermissions", @.userId, ['guest', 'account/profile'], role
