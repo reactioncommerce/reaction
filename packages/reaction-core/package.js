@@ -54,8 +54,8 @@ Package.onUse(function (api) {
   api.use("aldeed:simple-schema@1.3.3", {'weak': 1});
   api.use("aldeed:template-extension@3.4.3","client");
   api.use("iron:router@1.0.9");
-  api.use("ongoworks:speakingurl@1.1.0");
-  api.use("ongoworks:bunyan-logger@1.3.5");
+  api.use("ongoworks:speakingurl@5.0.1");
+  api.use("ongoworks:bunyan-logger@1.4.0");
   api.use("ongoworks:security@1.1.0");
 
   api.use("dburles:factory@0.3.9");
