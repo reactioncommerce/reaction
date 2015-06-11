@@ -133,11 +133,12 @@ Template.registerHelper "toCamelCase", (str) ->
 ###
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system
+# use: {{hasPermissions admin userId}}
 ###
-
-Template.registerHelper "hasPermission", (permissions) ->
+Template.registerHelper "hasPermission", (permissions, userId) ->
   check permissions, Match.OneOf(String, Object)
-  return ReactionCore.hasPermission permissions
+  if typeof(userId) is 'object' then userId = Meteor.userId()
+  return ReactionCore.hasPermission permissions, userId
 
 Template.registerHelper "hasOwnerAccess", ->
   ReactionCore.hasOwnerAccess()
@@ -148,10 +149,6 @@ Template.registerHelper "hasAdminAccess", ->
 Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
-# deprecated in favor of "hasPermission"
-# Template.registerHelper "userHasRole", (role) ->
-#   unless role then return false
-#   return Roles.userIsInRole Meteor.userId(), role, ReactionCore.getShopId()
 
 ###
 # general helper for determine if user has a store
