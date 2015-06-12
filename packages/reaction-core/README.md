@@ -20,8 +20,8 @@ Create [client/themes/custom.reaction.json](https://github.com/reactioncommerce/
 
 ```
 mkdir -p client/themes
-curl -o client/themes/custom.bootstrap.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/custom.bootstrap.json
-curl -o client/themes/custom.reaction.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/custom.reaction.json
+curl -o client/themes/bootstrap/custom.bootstrap.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.bootstrap.json
+curl -o client/themes/bootstrap/custom.reaction.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.reaction.json
 ```
 
 ## Developer Documentation
