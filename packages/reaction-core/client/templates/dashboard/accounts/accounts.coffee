@@ -35,3 +35,28 @@ Template.coreAccounts.events
     $('.settings-account-list').hide()
     $('.member-form').removeClass('hidden')
 
+  "click .permission-toggle": (event,template) ->
+
+    $this = $(event.target)
+
+    # Hide all open permission views
+    $('.permissions-view').hide()
+
+    # Show the permission view right next to the clicked button
+    # TODO: This is a little lazy
+
+    # if $this.hasClass('open') == false
+    $this.addClass('open')
+    $this.next('.permissions-view').show()
+    # else
+      # $this.removeClass('open')
+
+  "click .button-permissions-close": (event, template) ->
+    $permissionView = $(event.target).closest('.permissions-view')
+
+    # Find the button that most likely opened this permission view
+    # and remove its active state
+    $permissionView.closest('.permission-toggle').removeClass('open')
+
+    # Then hide this view
+    $permissionView.hide()
