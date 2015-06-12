@@ -23,8 +23,8 @@ Template.productGrid.helpers
         for relatedTag in relatedTags
           if hashtags.indexOf(relatedTag._id) == -1
             hashtags.push(relatedTag._id)
-            if relatedTag.relatedTagIds?.length
-              newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
+            #if relatedTag.relatedTagIds?.length
+            #  newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
         relatedTags = newRelatedTags
       selector.hashtags = {$in: hashtags}
     gridProducts = Products.find(selector).fetch()
