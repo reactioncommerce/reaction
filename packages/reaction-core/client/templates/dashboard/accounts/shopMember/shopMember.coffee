@@ -22,17 +22,6 @@ Template.shopMember.helpers
       )
       return "checked"
 
-  hasPermission: (permission, userId) ->
-    # we will show permission as check if the permissions
-    # has been assigned at either the global or shop level
-    if userId and (
-      Roles.userIsInRole userId, permission, @.shopId or
-      Roles.userIsInRole userId, permission, Roles.GLOBAL_GROUP
-      )
-      return true
-
-    return false
-
   groupsForUser: (userId) ->
     # array of shops (no global role)
     userId = userId  || @.userId || Template.parentData(1).userId
