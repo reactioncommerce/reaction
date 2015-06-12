@@ -16,7 +16,7 @@ meteor remove autopublish
 meteor add nemo64:bootstrap
 ```
 
-Create [client/themes/custom.reaction.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/custom.reaction.json) and [client/themes/custom.bootstrap.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/custom.bootstrap.json). These files configure the default LESS theme.
+Create [client/themes/bootstrap/custom.reaction.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.reaction.json) and [client/themes/bootstrap/custom.bootstrap.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.bootstrap.json). These files configure the default LESS theme.
 
 ```
 mkdir -p client/themes
