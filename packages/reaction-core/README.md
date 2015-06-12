@@ -1,5 +1,7 @@
 #Reaction Core
 
+[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction-core)
+
 Reaction Core provides a core set of methods and templates for creating, connecting, and managing user carts, sessions, products, checkout and orders for Reaction Commerce.
 
 ```
