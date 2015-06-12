@@ -219,7 +219,7 @@ currentProduct = @currentProduct
 ###
 @getProductPriceRange = (productId) ->
   # if no productId provided, use currently selected
-  product = Products.findOne(productId || selectedProduct()._id )
+  product = Products.findOne(productId || selectedProduct()?._id )
   productId = product?._id
 
   # let's leave if nothing can be used

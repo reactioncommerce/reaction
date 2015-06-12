@@ -55,10 +55,10 @@
 
 
 <template name="gridControls">
-{{#if userHasRole "admin"}}
+{{#if hasPermission "createProduct"}}
   <div class="product-grid-controls">
     {{#if isVisible}}<span class="fa fa-eye fa-lg publish-product" title="Publish"></span>
-    {{else}}<span class="fa fa-eye-slash  fa-lg pull-left publish-product" title="Publish"></span>
+    {{else}}<span class="fa fa-eye-slash  fa-lg .pull-left publish-product" title="Publish"></span>
     {{/if}}
     <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product"  title="Clone product"></span>
     <span class="fa fa-trash-o delete-product fa-lg" title="Delete product"></span>

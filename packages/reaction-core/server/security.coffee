@@ -79,7 +79,7 @@ Security.permit(['insert', 'update', 'remove'])
     Orders,
     Packages
   ])
-  .ifHasRole('admin')
+  .ifHasRole({ role: 'admin', group: ReactionCore.getShopId()} )
   .ifShopIdMatches()
   .exceptProps(['shopId'])
   .apply()
@@ -89,7 +89,7 @@ Security.permit(['insert', 'update', 'remove'])
 ###
 Security.permit(['insert', 'update', 'remove'])
   .collections([Media])
-  .ifHasRole('admin')
+  .ifHasRole({ role: ['admin','owner','createProduct'], group: ReactionCore.getShopId()} )
   .ifFileBelongsToShop()
   # TODO should be a check here or elsewhere to
   # make sure we don't allow editing metadata.shopId
@@ -100,17 +100,24 @@ Security.permit(['insert', 'update', 'remove'])
 # remove their shop but may not insert one.
 ###
 Shops.permit(['update', 'remove'])
-  .ifHasRole(['admin', 'owner'])
+  .ifHasRole({ role: ['admin','owner'], group: ReactionCore.getShopId()} )
   .ifShopIdMatchesThisId()
-  .ifUserIdMatchesProp('ownerId')
+  .apply()
+
+###
+# Users with the 'admin' or 'owner' role may update and
+# remove products, but createProduct allows just for just a product editor
+###
+Products.permit(['insert','update', 'remove'])
+  .ifHasRole({ role: ['createProduct'], group: ReactionCore.getShopId()} )
+  .ifShopIdMatchesThisId()
   .apply()
 
 ###
 # Users with the 'owner' role may remove orders for their shop
 ###
 Orders.permit('remove')
-  .ifHasRole('owner')
-  .ifUserIdMatchesProp('ownerId')
+  .ifHasRole({ role: 'owner', group: ReactionCore.getShopId()} )
   .ifShopIdMatches()
   .exceptProps(['shopId'])
   .apply()

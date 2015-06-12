@@ -29,7 +29,7 @@ ReactionCore.MetaData =
     return false unless Router.current()
 
     product = selectedProduct()
-    shop = Shops.findOne(ReactionCore.shopId)
+    shop = Shops.findOne(ReactionCore.getShopId())
     meta = []
     title = ""
     # set meta data

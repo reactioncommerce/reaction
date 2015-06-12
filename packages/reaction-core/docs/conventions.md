@@ -28,19 +28,21 @@ We're testing a couple of [Velocity packages](http://velocity.meteor.com/).
 
 See: https://github.com/reactioncommerce/reaction/issues/241
 
-Velocity doesn't currently make it easy to test packages separately from the app, [but hopefully will soon](https://github.com/meteor-velocity/velocity/pull/231).
+Velocity doesn't always make it easy to test packages separately from the app, [see:](https://github.com/meteor-velocity/velocity/pull/231).
 
-In the meantime we are testing reaction-core and other core packages with Velocity by copying the tests into the main Reaction app's `/tests` directory and running from there.
+Velocity should use packages tests, but it doesn't always work out that way. If the tests don't automatically run, or you don't see any tests in the Velocity panel,  try adding the package's `tests` to Velocity symlinking (or copying) the tests into the main Reaction app's `/tests` directory and running from there.
+
+```
+ln -s packages/reaction-core/tests/* tests/
+```
 
 A few things you should know:
-* First you'll need to uncomment `mike:mocha` and `sanjo:jasmine` in the `/.meteor/packages` file in the main meteor app.
-* You should set your `NODE_ENV` enviornment variable to 'development' to open up ports that velocity uses. The easiest way to do this is to run `export NODE_ENV="development"` before you start `meteor`
+* First you'll need to uncomment `sanjo:jasmine` in the `/.meteor/packages` file in the main meteor app.
+* You should set your `NODE_ENV` environment variable to 'development' to open up ports that velocity uses. The easiest way to do this is to run `export NODE_ENV="development"` before you start `meteor`
 * After doing that, your Velocity tests should run when you run `meteor run`
-* If you change or update the file structure in your `/tests` folder you may need to delete your `/packages/tests-proxy` directory. [This is a known issue with sanjo:jasmine](https://github.com/meteor-velocity/node-soft-mirror/issues/9#issuecomment-74386394)
 * If you run `meteor --test` your tests will only run once and will not re-run when you update files.
-* Tests should be kept in the packages that they are testing, which means that _for now_ you will need to write your tests in the main Reaction app and then copy them to the package before creating a pull-request. Do not submit pull-requests to the main Reaction app with tests that are for packages. Yes, it's a bit arduous right now, but that should be getting cleared up soon.
 
-We'd like for new features to include at least basic test-coverage. If you are unsure about how to do this just ask and, we can point you in the right direction.
+We'd like for new features to include at least basic integration test-coverage. If you are unsure about how to do this just ask and, we can point you in the right direction.
 
 * Feature branches can be merged and released when they are feature incomplete, but soon we're planning on enforcing a passing test written for every pull request.*
 

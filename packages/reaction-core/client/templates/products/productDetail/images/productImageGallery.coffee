@@ -9,7 +9,7 @@ Template.productImageGallery.helpers
     variant = selectedVariant()
     if variant
       mediaArray = Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
-      if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
+      if !ReactionCore.hasAdminAccess() and mediaArray.count() < 1
         mediaArray = Media.find({'metadata.variantId':selectedProduct().variants[0]._id}, {sort: {'metadata.priority': 1}})
     else
       # If no variant selected, get media for all product variants
@@ -27,7 +27,7 @@ Template.productImageGallery.helpers
 Template.productImageGallery.rendered = ->
   @autorun ->
     # Drag and drop image index update
-    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    if ReactionCore.hasAdminAccess()
       $gallery = $(".gallery")
       $gallery.sortable
         cursor: "move"
@@ -73,7 +73,7 @@ Template.productImageGallery.events
   "mouseenter .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
-      unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      unless ReactionCore.hasPermission('createProduct')
         first = $('.gallery li:nth-child(1)')
         target = $(event.currentTarget)
 

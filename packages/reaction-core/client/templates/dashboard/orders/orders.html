@@ -1,19 +1,17 @@
 <template name="orders">
+  <h3>Orders</h3>
   {{#if isOrder}}
     {{>orderPage}}
   {{else}}
     {{#with orders}}
       <div class="row orders-grid">
         {{!-- Orders Page Header --}}
-        <div class="clearfix">
-            <h3 class="orders-page-title h3 pull-left">Orders</h3>
-        </div>
         <div class="row" id="order-carousel">
           {{!-- Order Details --}}
           {{#each fulfillmentWorkflow}}
           <div class="col-sm-4">
             <div class="panel panel-default panel-order">
-              <div class="panel-heading h3">{{label}} <span class="badge">{{count}}</span></div>
+              <div class="panel-heading">{{label}} <span class="badge">{{count}}</span></div>
               <div class="panel-body">
                 <ul class="list-group orders-list">
                   {{#each ..}}

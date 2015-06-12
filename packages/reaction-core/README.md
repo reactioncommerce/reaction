@@ -1,5 +1,7 @@
 #Reaction Core
 
+[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction-core)
+
 Reaction Core provides a core set of methods and templates for creating, connecting, and managing user carts, sessions, products, checkout and orders for Reaction Commerce.
 
 ```
@@ -18,8 +20,8 @@ Create [client/themes/custom.reaction.json](https://github.com/reactioncommerce/
 
 ```
 mkdir -p client/themes
-curl -o client/themes/custom.bootstrap.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/custom.bootstrap.json
-curl -o client/themes/custom.reaction.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/custom.reaction.json
+curl -o client/themes/bootstrap/custom.bootstrap.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.bootstrap.json
+curl -o client/themes/bootstrap/custom.reaction.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.reaction.json
 ```
 
 ## Developer Documentation

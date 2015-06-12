@@ -25,13 +25,6 @@ Template.shopSettings.helpers
       currencyOptions.push {label: currency + "  |  " + structure.symbol + "  |  " + structure.format, value: currency}
     return currencyOptions
 
-  timezoneOptions: ->
-    zoneData = ReactionCore.Collections.Shops.findOne().timezones
-    timezoneOptions = []
-    for zone in zoneData
-      timezoneOptions.push {label: zone, value: zone}
-    return timezoneOptions
-
   uomOptions: ->
     unitsOfMeasure = ReactionCore.Collections.Shops.findOne().unitsOfMeasure
     uomOptions = []

@@ -2,6 +2,35 @@ Packages = ReactionCore.Collections.Packages
 
 Meteor.methods
   ###
+  #
+  # createShop
+  # param String 'userId' optionally create shop for provided userId
+  # param Object 'shop' optionally provide shop object to customize
+  #
+  ###
+  createShop: (userId, shop) ->
+    check userId, Match.Optional String
+    check shop, Match.Optional Object
+    currentUser = Meteor.userId()
+    userId = userId || Meteor.userId()
+    # not using the core methods here,
+    unless ReactionCore.hasOwnerAccess()
+      throw new Meteor.Error 403, "Access Denied"
+    @unblock()
+
+    adminRoles  = Roles.getRolesForUser(currentUser, ReactionCore.getShopId())
+
+    try
+      shop =  Factory.create 'shop', shop
+      Roles.addUsersToRoles [currentUser, userId], adminRoles, shop._id
+      return shop._id
+
+    catch e
+      ReactionCore.Events.warn "Failed to createShop", e
+
+    return
+
+  ###
   # determine user's countryCode and return locale object
   ###
   getLocale: ->
@@ -36,7 +65,7 @@ Meteor.methods
         if shop.currencies[currency]
           result.currency = shop.currencies[currency]
           if shop.currency isnt currency
-            #TODO Add some alternate configurable services like Open Exchange Rate
+            # TODO Add some alternate configurable services like Open Exchange Rate
             rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency
             exchangeRate = HTTP.get rateUrl
             result.currency.exchangeRate = exchangeRate.data
@@ -95,7 +124,7 @@ Meteor.methods
     check tagId, Match.OneOf(String, null, undefined)
     check currentTagId, Match.Optional(String)
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasPermission('core')
       throw new Meteor.Error 403, "Access Denied"
 
     newTag =
@@ -134,7 +163,7 @@ Meteor.methods
     check tagId, String
     check currentTagId, String
 
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasPermission('core')
       throw new Meteor.Error 403, "Access Denied"
 
     Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
@@ -149,7 +178,7 @@ Meteor.methods
   # Helper method to remove all translations, and reload from jsonFiles
   ###
   flushTranslations: ->
-    unless Roles.userIsInRole Meteor.userId(), ['admin']
+    unless ReactionCore.hasAdminAccess()
       throw new Meteor.Error 403, "Access Denied"
 
     ReactionCore.Collections.Translations.remove({})

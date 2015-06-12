@@ -1,8 +1,7 @@
 ##Meteor settings
 A Meteor settings file can be used with the `meteor --settings` option.
 
-Copy [settings/dev.sample.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.sample.json) and create a new `settings.json` file, for example:
-
+Copy [settings/dev.settings.json](https://github.com/reactioncommerce/reaction/blob/master/settings/dev.settings.json) and create a new `settings.json` file, for example:
 
 ```json
 {
@@ -10,11 +9,17 @@ Copy [settings/dev.sample.json](https://github.com/reactioncommerce/reaction/blo
   "MONGO_URL": "",
   "MAIL_URL": "",
   "reaction": {
-    "METEOR_USER": "<username>",
-    "METEOR_AUTH": "<password>",
-    "METEOR_EMAIL": "<login email>"
+    "METEOR_USER": "",
+    "METEOR_AUTH": "",
+    "METEOR_EMAIL": ""
   },
-  "isDebug": "info"
+  "isDebug": "info",
+  "public": {
+    "velocity:html-reporter": {
+      "position": "bottom right",
+      "tab-index" : 1
+    }
+  }
 }
 ```
 

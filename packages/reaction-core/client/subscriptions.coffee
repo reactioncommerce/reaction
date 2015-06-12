@@ -12,15 +12,15 @@ ReactionCore.Subscriptions.Sessions = Meteor.subscribe "Sessions", amplify.store
   amplify.store "ReactionCore.session", serverSession._id
 
   # subscribe to session dependant publications
-  ReactionCore.Subscriptions.cart = Meteor.subscribe "cart", serverSession._id, Meteor.userId()
-  ReactionCore.Subscriptions.account = Meteor.subscribe "accounts", serverSession._id, Meteor.userId()
+  ReactionCore.Subscriptions.Cart = Meteor.subscribe "Cart", serverSession._id, Meteor.userId()
+  ReactionCore.Subscriptions.Account = Meteor.subscribe "Accounts", serverSession._id, Meteor.userId()
 
   # ensure cart resubscribed when removed
   cart = ReactionCore.Collections.Cart.find('sessions': $in: [ serverSession._id ])
   handle = cart.observeChanges(
     removed: ->
       #console.log "detected cart destruction... resetting now."
-      Meteor.subscribe "cart", serverSession._id, Meteor.userId()
+      Meteor.subscribe "Cart", serverSession._id, Meteor.userId()
       return
   )
 
@@ -28,12 +28,9 @@ ReactionCore.Subscriptions.Sessions = Meteor.subscribe "Sessions", amplify.store
 # General Subscriptions
 ###
 ReactionCore.Subscriptions.Packages = Meteor.subscribe "Packages"
-ReactionCore.Subscriptions.ReactionConfig = Meteor.subscribe "ReactionConfig"
-ReactionCore.Subscriptions.UserConfig = Meteor.subscribe "UserConfig", Meteor.userId()
-ReactionCore.Subscriptions.orders = Meteor.subscribe "orders"
-ReactionCore.Subscriptions.customers = Meteor.subscribe "customers"
-ReactionCore.Subscriptions.tags = Meteor.subscribe "tags"
-ReactionCore.Subscriptions.media = Meteor.subscribe "media"
+ReactionCore.Subscriptions.Orders = Meteor.subscribe "Orders"
+ReactionCore.Subscriptions.Tags = Meteor.subscribe "Tags"
+ReactionCore.Subscriptions.Media = Meteor.subscribe "Media"
 
 ###
 # Autorun dependencies
