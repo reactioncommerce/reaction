@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   cache_directories:
-    - "~/.meteor"
+    - "~/reaction"
     - "/usr/local/bin"
   pre:
     - meteor || curl https://install.meteor.com | /bin/sh
@@ -17,4 +17,5 @@ dependencies:
 
 test:
   override:
-    - cd $HOME/reaction && JASMINE_BROWSER=PhantomJS JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test
+    - cd $HOME/reaction && JASMINE_BROWSER=PhantomJS JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --allow-incompatible-update --once
+
