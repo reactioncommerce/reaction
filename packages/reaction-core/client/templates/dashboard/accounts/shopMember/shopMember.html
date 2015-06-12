@@ -1,5 +1,5 @@
 <template name="shopMember">
-<div class="row">
+<div class="row shop-member-row">
   <div class="col-sm-2">
     <div class="shop-member-profile">
       {{> avatar user=this size="large" shape="circle"}}
@@ -20,35 +20,50 @@
       {{#each permissionGroups}}
         <div class="shop-member-group">
 
-          <input type="checkbox" class="toggle-shop-member-permission"
-                 data-userId="{{../../userId}}"
-                 data-permission="{{name}}"
-                 {{hasPermissionChecked name ../../userId}}
-                 {{isOwnerDisabled ../../userId}}
-                 />
-          <span data-toggle="collapse" href="#collapse-{{name}}-{{../../userId}}" aria-expanded="false" aria-controls="collapse-{{name}}-{{../../userId}}">
-            <label>
-              {{label}}
-            </label>
-          </span>
+          <button type="button" class="permission-toggle btn btn-default">
+            {{#if hasPermission name ../../userId}}
+              <i class="fa fa-check"></i>
+            {{else}}
+              <i class="fa fa-square-o"></i>
+            {{/if}}
+            {{label}}
+          </button>
 
-          <div class="collapse shop-member-permissions" id="collapse-{{name}}-{{../../userId}}">
-            <ul class="list-inline shop-member-permissions">
-              {{#each permissions}}
-                <li class="list-group-item shop-member-permission">
-                  <label>
-                    <input class="toggle-shop-member-permission"
-                           type="checkbox"
-                           data-userId="{{../../../userId}}"
-                           data-permission="{{permission}}"
-                           {{hasPermissionChecked permission ../../../userId}}
-                           {{isOwnerDisabled ../../../userId}}
-                            />
-                    {{label}}
-                  </label>
-                </li>
-              {{/each}}
-            </ul>
+          <div class="permissions-view" id="permissions-{{name}}-{{../../userId}}" style="display:none">
+
+            <div class="shop-member-permissions">
+
+              <header class="permission-header">
+                <label>
+                    <input type="checkbox" class="toggle-shop-member-permission"
+                           data-userId="{{../../userId}}"
+                           data-permission="{{name}}"
+                           {{hasPermissionChecked name ../../userId}}
+                           {{isOwnerDisabled ../../userId}}
+                           />
+                      {{name}} Permissions
+                    </label>
+                    <button class="button-permissions-close btn">Done</button>
+              </header>
+
+              <ul class="list-inline">
+
+                {{#each permissions}}
+                  <li class="list-group-item shop-member-permission">
+                    <label>
+                      <input class="toggle-shop-member-permission"
+                             type="checkbox"
+                             data-userId="{{../../../userId}}"
+                             data-permission="{{permission}}"
+                             {{hasPermissionChecked permission ../../../userId}}
+                             {{isOwnerDisabled ../../../userId}}
+                              />
+                      {{label}}
+                    </label>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
           </div>
 
         </div>
