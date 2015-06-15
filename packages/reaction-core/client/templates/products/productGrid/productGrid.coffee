@@ -133,7 +133,7 @@ Template.productGridItems.events
             'dismissable': false
 
 
-Template.productGridItems.rendered = () ->
+Template.productGridItems.onRendered = () ->
   # *****************************************************
   #  drag grid products and save tag+position
   # *****************************************************

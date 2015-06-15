@@ -25,5 +25,5 @@ Template.productDetailField.events
       Tracker.flush()
       $('.' + this.field + '-edit-input').focus()
 
-Template.productDetailEdit.rendered = () ->
+Template.productDetailEdit.onRendered = () ->
   autosize($('textarea'))

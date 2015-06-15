@@ -24,7 +24,7 @@ Template.productImageGallery.helpers
   variant: ->
     return selectedVariant()
 
-Template.productImageGallery.rendered = ->
+Template.productImageGallery.onRendered = ->
   @autorun ->
     # Drag and drop image index update
     if ReactionCore.hasAdminAccess()

@@ -33,7 +33,7 @@ Template.variant.events
     Alerts.removeSeen()
     setCurrentVariant @._id
 
-Template.variant.rendered = ->
+Template.variant.onRendered = ->
   @autorun ->
     if ReactionCore.hasPermission('createProduct')
       variantSort = $(".variant-list")

@@ -19,7 +19,7 @@ meteor add nemo64:bootstrap
 Create [client/themes/bootstrap/custom.reaction.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.reaction.json) and [client/themes/bootstrap/custom.bootstrap.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.bootstrap.json). These files configure the default LESS theme.
 
 ```
-mkdir -p client/themes
+mkdir -p client/themes/bootstrap
 curl -o client/themes/bootstrap/custom.bootstrap.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.bootstrap.json
 curl -o client/themes/bootstrap/custom.reaction.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.reaction.json
 ```

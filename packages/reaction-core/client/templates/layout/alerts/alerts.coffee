@@ -1,7 +1,7 @@
-Template.bootstrapAlert.created = ->
+Template.bootstrapAlert.onCreated = ->
   this.isFirstRender = true
 
-Template.bootstrapAlert.rendered = ->
+Template.bootstrapAlert.onRendered = ->
   alert = @data
   $node = $(@firstNode)
   Meteor.defer ->

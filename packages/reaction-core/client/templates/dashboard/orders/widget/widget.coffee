@@ -4,7 +4,7 @@ Template.coreOrderWidgets.helpers
 Template.coreOrderWidgets.events
 
 
-Template.coreOrderWidgets.rendered = ->
+Template.coreOrderWidgets.onRendered = ->
   # get data
   now = new Date()
   age = 5
@@ -143,5 +143,5 @@ Template.coreOrderWidgets.rendered = ->
 
 
 
-Template.coreOrderWidgets.destroyed = ->
+Template.coreOrderWidgets.onDestroyed = ->
   # destroy graphs
