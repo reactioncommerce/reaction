@@ -149,15 +149,9 @@ Template.registerHelper "hasAdminAccess", ->
 Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
-
-###
-# general helper for determine if user has a store
-# returns boolean
-###
-Template.registerHelper "userHasProfile", ->
-  user = Meteor.user()
-  return user and !!user.profile.store
-
+Template.registerHelper "allowGuestCheckout", ->
+  packageRegistry =  ReactionCore.Collections.Packages.findOne shopId: ReactionCore.getShopId()
+  return packageRegistry.settings.public.allowGuestCheckout || false
 
 ###
 # activeRouteClass

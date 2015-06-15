@@ -46,7 +46,6 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
   timezone: -> "US/Pacific"
   baseUOM: "OZ"
   metafields: []
-  allowGuestCheckout: true
   createdAt: -> new Date()
   updatedAt: -> new Date()
 

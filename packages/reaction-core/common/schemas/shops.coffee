@@ -119,9 +119,6 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
     defaultValue: "OZ"
     label: "Base Unit of Measure"
-  allowGuestCheckout:
-    type: Boolean
-    defaultValue: false
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
