@@ -37,15 +37,7 @@ Template.productImageGallery.onRendered = ->
         update: (event, ui) ->
           variant = selectedVariant() unless variant?._id
           variant.medias = new Array
-          #get changed order
-          sortedMedias = _.map($gallery.sortable("toArray",
-            attribute: "data-index"
-          ), (index) ->
-             {"mediaId":index}
-          )
-
-          for image,value in sortedMedias
-            Media.update(image.mediaId, {$set: {'metadata.priority': value}})
+          updateImagePriorities()
 
         start: (event, ui) ->
           ui.placeholder.html "Drop image to reorder"
@@ -108,9 +100,22 @@ Template.productImageGallery.events
 
   "click .remove-image": (event, template) ->
     @remove()
+    updateImagePriorities()
     return
 
   "dropped #galleryDropPane": uploadHandler
+
+# Function to re-set image priorities. Useful after rearranging or removing images.
+updateImagePriorities = () ->
+  sortedMedias = _.map($('.gallery').sortable("toArray",
+    attribute: "data-index"
+  ), (index) ->
+    {"mediaId":index}
+  )
+
+  for image,value in sortedMedias
+    Media.update(image.mediaId, {$set: {'metadata.priority': value}})
+
 
 Template.imageUploader.events
   "click #btn-upload": (event,template) ->
