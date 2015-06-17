@@ -113,7 +113,7 @@ Template.tagInputForm.events
     Tracker.flush()
     template.$(".tag-edit-list").sortable("refresh")
 
-Template.tagInputForm.onRendered = ->
+Template.tagInputForm.onRendered ->
   # *****************************************************
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html

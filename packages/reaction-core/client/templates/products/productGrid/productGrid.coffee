@@ -95,12 +95,19 @@ Template.gridContent.helpers
 
 Template.productGridItems.events
   'click .clone-product': () ->
+    console.log
     title = @.title
     Meteor.call "cloneProduct", this, (error, productId) ->
       throw new Meteor.Error "error cloning product", error if error
       Router.go "product",
         _id: productId
-      Alerts.add "Cloned " + title
+      Alerts.add "Cloned " + title,
+        "success",
+          'placement': "productManagement"
+          'id': productId
+          'i18n_key': "productDetail.cloneMsg"
+          'autoHide': true
+          'dismissable': false
 
   'click .delete-product': (event, template) ->
     event.preventDefault()
@@ -132,8 +139,10 @@ Template.productGridItems.events
             'autoHide': true
             'dismissable': false
 
+Template.gridControls.onRendered ->
+  this.$('[data-toggle="tooltip"]').tooltip({position: 'top'})
 
-Template.productGridItems.onRendered = () ->
+Template.productGridItems.onRendered  ->
   # *****************************************************
   #  drag grid products and save tag+position
   # *****************************************************

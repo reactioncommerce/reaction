@@ -56,12 +56,26 @@
 
 <template name="gridControls">
 {{#if hasPermission "createProduct"}}
-  <div class="product-grid-controls">
-    {{#if isVisible}}<span class="fa fa-eye fa-lg publish-product" title="Publish"></span>
-    {{else}}<span class="fa fa-eye-slash  fa-lg .pull-left publish-product" title="Publish"></span>
-    {{/if}}
-    <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product"  title="Clone product"></span>
-    <span class="fa fa-trash-o delete-product fa-lg" title="Delete product"></span>
+  <div class="product-grid-controls-wrap">
+    <div class="product-grid-controls">
+
+      <button class="publish-product" data-toggle="tooltip" title="Publish">
+        {{#if isVisible}}
+          <span class="fa fa-eye fa-lg"></span>
+        {{else}}
+          <span class="fa fa-eye-slash fa-lg"></span>
+        {{/if}}
+      </button>
+
+      <button class="clone-product" data-toggle="tooltip" title="Duplicate Product">
+        <span class="fa fa-files-o fa-lg"></span>
+      </button>
+
+      <button class="delete-product" data-toggle="tooltip" title="Delete Product">
+        <span class="fa fa-trash-o fa-lg"></span>
+      </button>
+
+    </div>
   </div>
 {{/if}}
 </template>

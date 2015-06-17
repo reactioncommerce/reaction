@@ -28,7 +28,7 @@ Template.consoleNavBar.helpers
 # located here rather than dashboard template
 # to rerun whenever a new widget is added
 ###
-Template.consoleWidgets.onRendered = ->
+Template.consoleWidgets.onRendered ->
   $ ->
     dashboardSwiper = $(".dashboard-container").swiper(
       direction: "horizontal"
