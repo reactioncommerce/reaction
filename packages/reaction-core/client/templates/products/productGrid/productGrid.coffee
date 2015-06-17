@@ -132,6 +132,8 @@ Template.productGridItems.events
             'autoHide': true
             'dismissable': false
 
+Template.gridControls.onRendered = () ->
+  this.$('[data-toggle="tooltip"]').tooltip({position: 'top'})
 
 Template.productGridItems.onRendered = () ->
   # *****************************************************
