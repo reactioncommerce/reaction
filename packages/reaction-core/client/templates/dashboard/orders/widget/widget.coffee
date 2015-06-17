@@ -4,7 +4,7 @@ Template.coreOrderWidgets.helpers
 Template.coreOrderWidgets.events
 
 
-Template.coreOrderWidgets.onRendered = ->
+Template.coreOrderWidgets.onRendered ->
   # get data
   now = new Date()
   age = 5

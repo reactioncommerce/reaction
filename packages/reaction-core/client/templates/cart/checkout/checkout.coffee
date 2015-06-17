@@ -60,5 +60,5 @@ Template.cartCheckout.helpers
     if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
       return true
 
-Template.cartCheckout.onRendered = ->
+Template.cartCheckout.onRendered ->
   Session.set "displayCartDrawer", false
