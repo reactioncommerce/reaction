@@ -66,7 +66,6 @@ ReactionCore.Schemas.Locale = new SimpleSchema
     type: Object
     blackbox: true
 
-
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
@@ -93,7 +92,8 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     type: String
     defaultValue: "USD"
   currencies:
-    type: ReactionCore.Schemas.Currency
+    type: Object # ReactionCore.Schemas.Currency
+    blackbox: true
   locale:
     type: String
     defaultValue: "en"

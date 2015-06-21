@@ -101,7 +101,7 @@ Meteor.startup ->
             $('html').removeClass 'rtl'
 
   # reactive translations in all templates
-  Template.onRendered () ->
+  Template.onRendered ->
     @autorun () =>
       i18nextDep.depend() #rerun whenever language changes and we re-init $.i18n
       $elements = @$("[data-i18n]")
@@ -110,7 +110,7 @@ Meteor.startup ->
     return
 
   # trigger translations when template are removed
-  Template.onDestroyed () ->
+  Template.onDestroyed ->
     i18nextDep.changed()
     return
 

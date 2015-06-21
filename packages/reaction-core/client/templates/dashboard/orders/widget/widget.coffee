@@ -141,7 +141,5 @@ Template.coreOrderWidgets.onRendered ->
     .style("font-weight", "300")
     .text (d) -> d.label
 
-
-
-Template.coreOrderWidgets.onDestroyed = ->
+Template.coreOrderWidgets.onDestroyed ->
   # destroy graphs

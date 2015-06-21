@@ -24,8 +24,10 @@ _.extend ReactionCore,
 
     if Roles.userIsInRole userId, permissions, @shopId
       return true
-    if Roles.userIsInRole userId, permissions, Roles.GLOBAL_GROUP
+    else if Roles.userIsInRole userId, permissions, Roles.GLOBAL_GROUP
       return true
+    else return false
+
 
   hasOwnerAccess: ->
     ownerPermissions = ['owner']

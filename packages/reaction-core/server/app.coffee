@@ -60,8 +60,9 @@ _.extend ReactionCore,
     if Roles.userIsInRole Meteor.userId(), permissions, @getShopId()
       return true
     # global roles check
-    if Roles.userIsInRole Meteor.userId(), permissions, Roles.GLOBAL_GROUP
+    else if Roles.userIsInRole Meteor.userId(), permissions, Roles.GLOBAL_GROUP
       return true
+    else return false
 
   # owner access
   hasOwnerAccess: (client) ->
