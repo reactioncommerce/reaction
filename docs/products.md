@@ -10,7 +10,7 @@ To create a product, first login as an administrator and click on your avatar in
 
 You will then be taken to a view of your new product where you can simply click into and edit the available fields as well as add variants. See sections below for details on editing 
 
-You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) on any product from the grid view.
+You can also clone an existing product by clicking the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-files.png)) on any product from the grid view.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-cloneproduct.png)
 
@@ -42,7 +42,7 @@ Each newly created product comes preloaded with one variant. To create additiona
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-openvariant.png)
 
-Then click the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-clone.png)) and a new variant will be created as a clone of the original.
+Then click the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-files.png)) and a new variant will be created as a clone of the original.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createvariant.png)
 
