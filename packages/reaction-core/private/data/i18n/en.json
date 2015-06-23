@@ -57,7 +57,10 @@
                     "facebookMsg": "Facebook Message",
                     "twitterMsg": "Twitter Message",
                     "pinterestMsg": "Pinterest Message",
-                    "googleplusMsg": "Google+ Message"
+                    "googleplusMsg": "Google+ Message",
+                    "duplicateVariant": "Duplicate",
+                    "addVariantOption": "Add Option",
+                    "removeVariant": "Remove"
                 },
                 "variantList": {
                     "moreOptions": "There are more options available for this selection.",
