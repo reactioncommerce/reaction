@@ -230,7 +230,7 @@ Meteor.methods
   updateProductField: (productId, field, value) ->
     check productId, String
     check field, String
-    check value, String
+    check value, Match.OneOf(String, Object, Array)
     unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
@@ -261,7 +261,8 @@ Meteor.methods
 
     if existingTag
       productCount = Products.find({"_id": productId, "hashtags": {$in:[existingTag._id]}}).count()
-      return false if productCount > 0
+      if productCount > 0
+        throw new Meteor.Error 403, "Existing Tag, Update Denied"
       Products.update(productId, {$push: {"hashtags": existingTag._id}})
     else if tagId
       Tags.update tagId, {$set: newTag}
@@ -334,7 +335,9 @@ Meteor.methods
       Products.update {_id: productId},
         {$addToSet: { positions: positionData },$set: {updatedAt: new Date() } },
       , (error,results) ->
-        ReactionCore.Events.warn error if error
+        if error
+          ReactionCore.Events.warn error
+          throw new Meteor.Error 403, error
     else
       #Collection2 doesn't support elemMatch, use core collection
       Products.update
@@ -346,7 +349,9 @@ Meteor.methods
             "positions.$.updatedAt": new Date()
         ,
           (error,results) ->
-            ReactionCore.Events.warn error if error
+            if error
+              ReactionCore.Events.warn error
+              throw new Meteor.Error 403, error
 
   updateMetaFields: (productId, updatedMeta, meta) ->
     check productId, String

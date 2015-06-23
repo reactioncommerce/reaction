@@ -31,20 +31,18 @@ Template.productTagInputForm.events
           )
         response(datums)
     )
-    Tracker.flush()
 
-  'blur.autocomplete, change .tags-input-select': (event,template) ->
+  'focusout .tags-input-select': (event,template) ->
     val = $(event.currentTarget).val()
     if val
       currentTag = Session.get "currentTag"
       Meteor.call "updateProductTags", selectedProductId(), val, @._id, currentTag, (error, result) ->
+        template.$('.tags-submit-new').val('').focus()
         if error
-          throw new Meteor.Error "Error updating header tags", error
-        Tracker.flush()
-        template.$('.tags-submit-new').val('').focus();
+          Alerts.add "Tag already exists, duplicate add failed.", "danger", autoHide: true
+          return false
 
   'mousedown .tag-input-group-handle': (event,template) ->
-    Tracker.flush()
     template.$(".tag-edit-list").sortable("refresh")
 
 Template.productTagInputForm.onRendered ->
@@ -60,5 +58,5 @@ Template.productTagInputForm.onRendered ->
       uiPositions = $(@).sortable("toArray", attribute:"data-tag-id")
       for tag,index in uiPositions
         if tag then hashtagsList.push tag
-
-      Products.update(selectedProductId(), {$set: {hashtags: hashtagsList}})
+      # save re-ordered list
+      Meteor.call "updateProductField", selectedProductId(), "hashtags", hashtagsList
