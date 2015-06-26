@@ -18,7 +18,7 @@ Yes. You can host a Reaction shop on any host/virtual machine container that sup
 
 ### Do you support multiple languages?
 
-Yes. We recently launched [internationalization support](https://github.com/reactioncommerce/reaction-core/blob/master/docs/i18n.md) for 14 languages, and we will be adding in additional coverage and localization soon.
+Yes. We have [internationalization support](https://github.com/reactioncommerce/reaction-core/blob/master/docs/i18n.md) for numerous languages, and we support currency conversion and localized currency formats.
 
 ### What is the pricing/licensing model?
 
