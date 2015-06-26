@@ -2,11 +2,11 @@
 
 ### Is Reaction production ready?
 
-No, not yet. We're currently in our Alpha preview release. Our [Vision page](https://reactioncommerce.com/vision) outlines what we have in store for our Beta release, which is when we'll be production ready. We are targeting Beta for early 2015.
+No, not yet. We're currently in our Alpha preview release. Our [Vision page](https://reactioncommerce.com/vision) outlines what we have in store for our Beta release, which is when we'll be production ready. We are targeting Beta for late 2015.
 
 ### What's your roadmap for Reaction?
 
-Our [Vision page](https://reactioncommerce.com/vision) outlines our roadmap and plans for Reaction.
+Our [Vision page](https://reactioncommerce.com/vision) outlines our roadmap and plans for Reaction. And here's our [project board](https://waffle.io/reactioncommerce/reaction).
 
 ### Do you offer hosted shops?
 
@@ -14,11 +14,11 @@ Yes. When you create a shop on our platform at [reactioncommerce.com](https://re
 
 ### Is it possible for me to host a Reaction shop anywhere I want?
 
-Yes. You can host a Reaction shop on any host/virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/ongoworks/reaction](https://github.com/ongoworks/reaction).
+Yes. You can host a Reaction shop on any host/virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/reactioncommerce/reaction](https://github.com/reactioncommerce/reaction).
 
 ### Do you support multiple languages?
 
-Yes. We recently launched [internationalization support](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md) for 14 languages, and we will be adding in additional coverage and localization soon.
+Yes. We recently launched [internationalization support](https://github.com/reactioncommerce/reaction-core/blob/master/docs/i18n.md) for 14 languages, and we will be adding in additional coverage and localization soon.
 
 ### What is the pricing/licensing model?
 
