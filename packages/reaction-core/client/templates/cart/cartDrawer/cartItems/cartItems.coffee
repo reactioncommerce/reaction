@@ -1,4 +1,4 @@
-Template.cartDrawerItems.rendered = ->
+Template.cartDrawerItems.onRendered ->
   $ ->
     mySwiper = $(".cart-drawer-swiper-container").swiper(
       direction: "horizontal"

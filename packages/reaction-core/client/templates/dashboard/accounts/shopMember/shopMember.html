@@ -1,0 +1,75 @@
+<template name="shopMember">
+<div class="row shop-member-row">
+  <div class="col-sm-2">
+    <div class="shop-member-profile">
+      {{> avatar user=this size="large" shape="circle"}}
+      {{displayName this}}
+      {{email}}
+      {{#if hasOwnerAccess}}
+      <a class="link-shop-member-remove" data-confirm="Are you sure you want to remove all permissions?">
+        <i class="fa fa-eraser"></i>
+      </a>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="col-sm-10 shop-member-groups">
+  {{#each groupsForUser}}
+    <div class="row">
+      <label>{{shopLabel}}</label>
+      {{#each permissionGroups}}
+        <div class="shop-member-group">
+
+          <button type="button" class="permission-toggle btn btn-default">
+            {{#if hasPermission name ../../userId}}
+              <i class="fa fa-check"></i>
+            {{else}}
+              <i class="fa fa-square-o"></i>
+            {{/if}}
+            {{label}}
+          </button>
+
+          <div class="permissions-view" id="permissions-{{name}}-{{../../userId}}" style="display:none">
+
+            <div class="shop-member-permissions">
+
+              <header class="permission-header">
+                <label>
+                    <input type="checkbox" class="toggle-shop-member-permission"
+                           data-userId="{{../../userId}}"
+                           data-permission="{{name}}"
+                           {{hasPermissionChecked name ../../userId}}
+                           {{isOwnerDisabled ../../userId}}
+                           />
+                      {{name}} Permissions
+                    </label>
+                    <button class="button-permissions-close btn">Done</button>
+              </header>
+
+              <ul class="list-inline">
+
+                {{#each permissions}}
+                  <li class="list-group-item shop-member-permission">
+                    <label>
+                      <input class="toggle-shop-member-permission"
+                             type="checkbox"
+                             data-userId="{{../../../userId}}"
+                             data-permission="{{permission}}"
+                             {{hasPermissionChecked permission ../../../userId}}
+                             {{isOwnerDisabled ../../../userId}}
+                              />
+                      {{label}}
+                    </label>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+</template>

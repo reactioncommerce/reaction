@@ -62,8 +62,10 @@ Meteor.startup ->
 
   # set locale
   Meteor.call 'getLocale', (error,result) ->
-    ReactionCore.Locale = result
-    ReactionCore.Locale.language = Session.get "language"
+    if result
+      ReactionCore.Locale = result
+      ReactionCore.Locale.language = Session.get "language"
+      moment.locale(ReactionCore.Locale.language)
     return
 
   # start the autorun after startup, so that "language" session var is already set
@@ -99,7 +101,7 @@ Meteor.startup ->
             $('html').removeClass 'rtl'
 
   # reactive translations in all templates
-  Template.onRendered () ->
+  Template.onRendered ->
     @autorun () =>
       i18nextDep.depend() #rerun whenever language changes and we re-init $.i18n
       $elements = @$("[data-i18n]")
@@ -108,7 +110,7 @@ Meteor.startup ->
     return
 
   # trigger translations when template are removed
-  Template.onDestroyed () ->
+  Template.onDestroyed ->
     i18nextDep.changed()
     return
 
@@ -122,7 +124,7 @@ Meteor.startup ->
 ###
 Template.registerHelper "i18n", (i18n_key, message) ->
   i18nextDep.depend()
-  unless i18n_key then Meteor.throw("i18n key string required to translate")
+  unless i18n_key then throw new Meteor.Error("i18n key string required to translate")
   message = new Handlebars.SafeString(message)
   if i18n.t(i18n_key) is i18n_key # return raw message if no translation found
     console.info "no translation found. returning raw message for:" + i18n_key

@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.5.9",
+  version: "0.6.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -9,7 +9,7 @@ Package.registerBuildPlugin({
   name: 'theme-configurator',
   use: [
     'underscore',
-    'reactioncommerce:core-theme@1.3.4'
+    'reactioncommerce:core-theme@1.4.0'
   ],
   sources: [
     'server/buildtools/module-definitions.js',
@@ -37,8 +37,9 @@ Package.onUse(function (api) {
   api.use("email");
   api.use("check");
   api.use("browser-policy");
-  api.use("amplify@1.0.0");
   api.use("reactive-var");
+  api.use("service-configuration");
+  api.use("amplify@1.0.0");
 
   //community packages
   api.use("mquandalle:bower@1.3.12_3");
@@ -50,22 +51,24 @@ Package.onUse(function (api) {
   api.use("aldeed:geocoder@0.3.6");
   api.use("aldeed:autoform@4.2.2");
   api.use("aldeed:collection2@2.3.3");
-  api.use("aldeed:simple-schema@1.3.2", {'weak': 1});
+  api.use("aldeed:simple-schema@1.3.3", {'weak': 1});
   api.use("aldeed:template-extension@3.4.3","client");
-  api.use("iron:router@1.0.7");
-  api.use("ongoworks:speakingurl@1.1.0");
-  api.use("ongoworks:pdf@1.1.1");
-  api.use("ongoworks:bunyan-logger@1.0.0");
+  api.use("iron:router@1.0.9");
+  api.use("ongoworks:speakingurl@5.0.1");
+  api.use("ongoworks:bunyan-logger@1.4.0");
   api.use("ongoworks:security@1.1.0");
 
   api.use("dburles:factory@0.3.9");
   api.use("anti:fake@0.4.1");
-  api.use("matb33:collection-hooks@0.7.11");
+  api.use("matb33:collection-hooks@0.7.13");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.3", 'client');
+  api.use("risul:moment-timezone",'client');
   api.use("sacha:spin@2.0.4", "client");
+  api.use("sacha:avatar@0.7.7");
 
-  api.use("cfs:standard-packages@0.5.8");
+  api.use("cfs:standard-packages@0.5.9");
+  api.use("cfs:storage-adapter@0.2.2");
   api.use("cfs:graphicsmagick@0.0.18");
   api.use("cfs:gridfs@0.0.33");
   api.use("cfs:filesystem@0.1.2");
@@ -79,6 +82,7 @@ Package.onUse(function (api) {
   api.imply("accounts-base");
   api.imply("ui");
   api.imply("browser-policy");
+  api.imply("service-configuration");
   api.imply("mquandalle:bower");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
@@ -93,7 +97,9 @@ Package.onUse(function (api) {
   api.imply("alanning:roles");
   api.imply("momentjs:moment", ["client"]);
   api.imply("sacha:spin" ["client"]);
+  api.imply("sacha:avatar");
   api.imply("dburles:factory");
+  api.imply("anti:fake");
   api.imply("ongoworks:speakingurl");
   api.imply("ongoworks:security");
 
@@ -128,12 +134,12 @@ Package.onUse(function (api) {
     "server/publications.coffee",
     "server/fixtures.coffee",
     "server/factories.coffee",
-    "server/methods/methods.coffee",
-    "server/methods/cart/cart.coffee",
-    "server/methods/cart/shipping.coffee",
-    "server/methods/orders/orders.coffee",
-    "server/methods/products/products.coffee",
-    "server/methods/accounts/accounts.coffee"
+    "server/methods/accounts.coffee",
+    "server/methods/cart.coffee",
+    "server/methods/orders.coffee",
+    "server/methods/products.coffee",
+    "server/methods/shop.coffee",
+    "server/methods/shipping.coffee"
   ], ["server"]);
 
   api.addFiles([
@@ -149,11 +155,9 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/effect-slide.js",
     "lib/bower/jquery.ui/ui/menu.js",
     "lib/bower/autosize/dest/autosize.js",
-    "lib/bower/collapsible/jquery.collapsible.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
     "lib/bower/openexchangerates.money/money.js",
     "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
-    "lib/bower/jquery.cookie/jquery.cookie.js",
     "lib/css/jquery-ui.css",
 
     "client/subscriptions.coffee",
@@ -164,8 +168,8 @@ Package.onUse(function (api) {
     "client/helpers/metadata.coffee",
     "client/helpers/spacebars.coffee",
 
-    "client/workflows/cart/workflow.coffee",
-    "client/workflows/orders/workflow.coffee",
+    "client/workflows/cart.coffee",
+    "client/workflows/orders.coffee",
 
     "client/templates/layout/layout.html",
     "client/templates/layout/layout.coffee",
@@ -275,9 +279,6 @@ Package.onUse(function (api) {
     "client/templates/dashboard/console/icon/icon.html",
     "client/templates/dashboard/console/icon/icon.coffee",
 
-    "client/templates/dashboard/customers/customers.html",
-    "client/templates/dashboard/customers/customers.coffee",
-
     "client/templates/dashboard/orders/orders.html",
     "client/templates/dashboard/orders/orders.coffee",
 
@@ -341,14 +342,14 @@ Package.onUse(function (api) {
     "client/templates/dashboard/shop/settings/settings.html",
     "client/templates/dashboard/shop/settings/settings.coffee",
 
-    "client/templates/dashboard/shop/accounts/accounts.html",
-    "client/templates/dashboard/shop/accounts/accounts.coffee",
+    "client/templates/dashboard/accounts/accounts.html",
+    "client/templates/dashboard/accounts/accounts.coffee",
 
-    "client/templates/dashboard/shop/accounts/shopMember/shopMember.html",
-    "client/templates/dashboard/shop/accounts/shopMember/shopMember.coffee",
+    "client/templates/dashboard/accounts/shopMember/shopMember.html",
+    "client/templates/dashboard/accounts/shopMember/shopMember.coffee",
 
-    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.html",
-    "client/templates/dashboard/shop/accounts/shopMember/memberForm/memberForm.coffee",
+    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html",
+    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.coffee",
 
     "client/templates/products/products.html",
     "client/templates/products/products.coffee",
@@ -401,8 +402,6 @@ Package.onUse(function (api) {
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
   api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
-  api.addFiles('private/data/roles.json', 'server', {isAsset: true});
-  api.addFiles('private/data/users.json', 'server', {isAsset: true});
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
   //i18n translations
   api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
@@ -443,4 +442,17 @@ Package.onUse(function (api) {
   api.export([
     "currentProduct",
   ], ["client", "server"]);
+});
+
+
+Package.onTest(function(api) {
+  api.use('sanjo:jasmine@0.14.0');
+  api.use('velocity:html-reporter@0.6.2');
+  api.use('velocity:console-reporter@0.1.1');
+  api.use('reactioncommerce:core');
+  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/shop.coffee', 'server');
 });

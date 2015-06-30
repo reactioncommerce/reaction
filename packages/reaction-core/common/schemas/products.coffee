@@ -16,6 +16,12 @@ ReactionCore.Schemas.VariantMedia = new SimpleSchema
     optional: true
   createdAt:
     type: Date
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyUpdate: true
 
 ReactionCore.Schemas.ProductPosition = new SimpleSchema
   tag:
@@ -130,6 +136,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
+  # TODO review createdAt, updatedAt move to hooks only?
   createdAt:
     label: "Created at"
     type: Date
@@ -149,6 +156,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
   shopId:
     type: String
     autoValue: ReactionCore.shopIdAutoValue
+    index: 1
   title:
     type: String
   pageTitle:
@@ -185,6 +193,7 @@ ReactionCore.Schemas.Product = new SimpleSchema
     type: [String]
     optional: true
     index: 1
+  # TODO: move social messsages to metafields
   twitterMsg:
     type: String
     optional: true
@@ -222,8 +231,18 @@ ReactionCore.Schemas.Product = new SimpleSchema
     optional: true
   createdAt:
     type: Date
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    # denyUpdate: true
   updatedAt:
     type: Date
-    autoValue : ->
-      new Date() if @isUpdate
+    autoValue: ->
+      if @isUpdate
+        return $set: new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
     optional: true
+

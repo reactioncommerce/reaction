@@ -2,7 +2,7 @@
 # Define CollectionFS collection
 # See: https://github.com/CollectionFS/Meteor-CollectionFS
 ###
-ReactionCore.Collections.Media = new FS.Collection "media",
+ReactionCore.Collections.Media = new FS.Collection "Media",
   stores: [
     new FS.Store.GridFS("image"), #default unaltered image
     new FS.Store.GridFS("large", #large PDP image

@@ -1,13 +1,15 @@
 <template name="productDetail">
 <div class="container-fluid pdp-container">
   {{!-- Product Visibility Admin Block --}}
-  {{#if userHasRole "admin"}}
+  {{#if hasPermission "createProduct"}}
     <div class="row">
       <span data-i18n="productDetail.productManagement">Product management:</span>
       {{#if isVisible}}
         <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">Make invisible</a> |
       {{/if}}
-      <a href="#" class="delete-product-link" data-i18n="app.delete">Delete</a>
+      {{#if hasAdminAccess}}
+        <a href="#" class="delete-product-link" data-i18n="app.delete">Delete</a>
+      {{/if}}
     </div>
     {{#unless isVisible}}
     <div class="row">
@@ -16,7 +18,7 @@
         <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeItVisible">You can make it visible</a>
         <span data-i18n="productDetail.whenYouAreDone">when you're done editing.</span>
       </div>
-      <span id="product-management">{{>bootstrapAlerts placement="productManagement"}}</span>
+      <span id="product-management-alerts">{{>bootstrapAlerts placement="productManagement" id=_id}}</span>
     </div>
     {{/unless}}
   {{/if}}
@@ -55,7 +57,7 @@
           </div>
           <div class="col-xs-3 col-xs-offset-1">
             {{!-- Social Commentary --}}
-            {{#if userHasRole "admin"}}
+            {{#if hasPermission "createProduct"}}
             <div class="social-media">
               <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
               <a href="#"><i class="fa fa-twitter fa-lg"></i></a>

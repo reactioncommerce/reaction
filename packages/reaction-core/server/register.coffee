@@ -26,6 +26,12 @@ ReactionCore.registerPackage
       icon: 'fa fa-th'
       cycle: 1
       container: "dashboard"
+      permissions: [
+        {
+          label: "Dashboard"
+          permission: "dashboard"
+        }
+      ]
     }
     {
       route: "dashboard"
@@ -37,7 +43,13 @@ ReactionCore.registerPackage
     {
       route: "dashboard"
       label: 'Dashboard'
-      provides: 'console'
+      provides: 'console',
+      permissions: [
+        {
+          label: "Console"
+          permission: "console"
+        }
+      ]
     }
     {
       route: "dashboard/settings/shop"
@@ -77,57 +89,38 @@ ReactionCore.registerPackage
     # products
     {
       route: 'createProduct'
-      label: 'Create'
+      label: 'Add Product'
       icon: 'fa fa-plus'
       provides: 'shortcut'
     }
     # users
     {
-      route: 'dashboard/settings/account'
-      label: 'Organization Users'
-      description: 'Manage administrative access to shop.'
+      route: 'dashboard/accounts'
+      label: 'Members'
+      description: 'Manage your user accounts'
       icon: 'fa fa-users'
       provides: 'dashboard'
       cycle: 3
+    }
+    # members / users
+    {
+      route: 'dashboard/accounts'
+      label: 'Members'
+      provides: 'console'
+    }
+    # shortcut for members / users
+    {
+      route: "dashboard/accounts"
+      provides: 'shortcut'
+      label: 'Members'
+      icon: 'fa fa-users'
+      cycle: 1
     }
     # account profiles
     {
       route: 'account/profile'
       label: 'Profile'
-      icon: 'fa fa-info-circle'
+      icon: 'fa fa-user'
       provides: 'userAccountDropdown'
-    }
-  ]
-  # permissions map to shopPermissions
-  permissions: [
-    {
-      label: "Customers"
-      permission: "dashboard/customers"
-      group: "Shop Management"
-    }
-    {
-      label: "Promotions"
-      permission: "dashboard/promotions"
-      group: "Shop Management"
-    }
-    {
-      label: "Products"
-      permission: "dashboard/products"
-      group: "Shop Content"
-    }
-    {
-      label: "Shop Settings"
-      permission: "dashboard/settings"
-      group: "Shop Settings"
-    }
-    {
-      label: "Dashboard Access"
-      permission: "dashboard/settings/account"
-      group: "Shop Settings"
-    }
-    {
-      label: "Orders"
-      permission: "dashboard/orders"
-      group: "Shop Management"
     }
   ]

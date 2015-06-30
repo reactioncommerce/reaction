@@ -369,99 +369,96 @@
             }
         },
         "currency": "USD",
-        "domains": [
-            "localhost"
-        ],
         "languages": [
             {
-              "label": "العربية",
-              "i18n": "ar",
-              "enabled": true
+                "label": "العربية",
+                "i18n": "ar",
+                "enabled": true
             },
             {
-              "label": "中文(简体)",
-              "i18n": "cn",
-              "enabled": true
+                "label": "中文(简体)",
+                "i18n": "cn",
+                "enabled": true
             },
             {
-              "label": "České",
-              "i18n": "cs",
-              "enabled": true
+                "label": "České",
+                "i18n": "cs",
+                "enabled": true
             },
             {
-              "label": "Deutsche",
-              "i18n": "de",
-              "enabled": true
+                "label": "Deutsche",
+                "i18n": "de",
+                "enabled": true
             },
             {
-              "label": "English",
-              "i18n": "en",
-              "enabled": true
+                "label": "English",
+                "i18n": "en",
+                "enabled": true
             },
             {
-              "label": "Español",
-              "i18n": "es",
-              "enabled": true
+                "label": "Español",
+                "i18n": "es",
+                "enabled": true
             },
             {
-              "label": "Français",
-              "i18n": "fr",
-              "enabled": true
+                "label": "Français",
+                "i18n": "fr",
+                "enabled": true
             },
             {
-              "label": "עברית",
-              "i18n": "he",
-              "enabled": true
+                "label": "עברית",
+                "i18n": "he",
+                "enabled": true
             },
             {
-              "label": "Hrvatski",
-              "i18n": "hr",
-              "enabled": true
+                "label": "Hrvatski",
+                "i18n": "hr",
+                "enabled": true
             },
             {
-              "label": "မြန်မာဘာသာ",
-              "i18n": "my",
-              "enabled": true
+                "label": "မြန်မာဘာသာ",
+                "i18n": "my",
+                "enabled": true
             },
             {
-              "label": "Italiano",
-              "i18n": "it",
-              "enabled": true
+                "label": "Italiano",
+                "i18n": "it",
+                "enabled": true
             },
             {
-              "label": "Nederlands",
-              "i18n": "nl",
-              "enabled": true
+                "label": "Nederlands",
+                "i18n": "nl",
+                "enabled": true
             },
             {
-              "label": "Polski",
-              "i18n": "pl",
-              "enabled": true
+                "label": "Polski",
+                "i18n": "pl",
+                "enabled": true
             },
             {
-              "label": "Português",
-              "i18n": "pt",
-              "enabled": true
+                "label": "Português",
+                "i18n": "pt",
+                "enabled": true
             },
             {
-              "label": "Русский",
-              "i18n": "ru",
-              "enabled": true
+                "label": "Русский",
+                "i18n": "ru",
+                "enabled": true
             },
             {
-              "label": "Slovenščina",
-              "i18n": "sl",
-              "enabled": true
+                "label": "Slovenščina",
+                "i18n": "sl",
+                "enabled": true
             },
             {
-              "label": "Svenska",
-              "i18n": "sv",
-              "enabled": true
+                "label": "Svenska",
+                "i18n": "sv",
+                "enabled": true
             },
             {
-              "label": "tiếng Việt",
-              "i18n": "vi",
-              "enabled": true
+                "label": "tiếng Việt",
+                "i18n": "vi",
+                "enabled": true
             }
         ],
         "locales": {
@@ -590,7 +587,33 @@
                     "continent": "OC",
                     "capital": "Canberra",
                     "currency": "AUD",
-                    "languages": "en"
+                    "languages": "en",
+                    "states": {
+                      "ACT": {
+                        "name": "Australian Capital Territory"
+                      },
+                      "NSW": {
+                        "name": "New South Wales"
+                      },
+                      "NT": {
+                        "name": "Northern Territory"
+                      },
+                      "QLD": {
+                        "name": "Queensland"
+                      },
+                      "SA": {
+                        "name": "South Australia"
+                      },
+                      "TAS": {
+                        "name": "Tasmania"
+                      },
+                      "VIC": {
+                        "name": "Victoria"
+                      },
+                      "WA": {
+                        "name": "Western Australia"
+                      }
+                    }
                 },
                 "AW": {
                     "name": "Aruba",
@@ -815,7 +838,48 @@
                     "continent": "NA",
                     "capital": "Ottawa",
                     "currency": "CAD",
-                    "languages": "en,fr"
+                    "languages": "en,fr",
+                    "states": {
+                      "AB": {
+                        "name": "Alberta"
+                      },
+                      "BC": {
+                        "name": "British Columbia"
+                      },
+                      "MB": {
+                        "name": "Manitoba"
+                      },
+                      "NB": {
+                        "name": "New Brunswick"
+                      },
+                      "NL": {
+                        "name": "Newfoundland and Labrador"
+                      },
+                      "NS": {
+                        "name": "Nova Scotia"
+                      },
+                      "ON": {
+                        "name": "Ontario"
+                      },
+                      "PE": {
+                        "name": "Prince Edward Island"
+                      },
+                      "QC": {
+                        "name": "Quebec"
+                      },
+                      "SK": {
+                        "name": "Saskatchewan"
+                      },
+                      "NT": {
+                        "name": "Northwest Territories"
+                      },
+                      "NU": {
+                        "name": "Nunavut"
+                      },
+                      "YT": {
+                        "name": "Yukon"
+                      }
+                    }
                 },
                 "CC": {
                     "name": "Cocos [Keeling] Islands",
@@ -986,7 +1050,57 @@
                     "continent": "EU",
                     "capital": "Berlin",
                     "currency": "EUR",
-                    "languages": "de"
+                    "languages": "de",
+                    "states": {
+                      "BW": {
+                        "name": "Baden-Württemberg"
+                      },
+                      "BY": {
+                        "name": "Bayern"
+                      },
+                      "BE": {
+                        "name": "Berlin"
+                      },
+                      "BB": {
+                        "name": "Brandenburg"
+                      },
+                      "HB": {
+                        "name": "Bremen"
+                      },
+                      "HH": {
+                        "name": "Hamburg"
+                      },
+                      "HE": {
+                        "name": "Hessen"
+                      },
+                      "MV": {
+                        "name": "Mecklenburg-Vorpommern"
+                      },
+                      "NI": {
+                        "name": "Niedersachsen"
+                      },
+                      "NW": {
+                        "name": "Nordrhein-Westfalen"
+                      },
+                      "RP": {
+                        "name": "Rheinland-Pfalz"
+                      },
+                      "SL": {
+                        "name": "Saarland"
+                      },
+                      "SN": {
+                        "name": "Sachsen"
+                      },
+                      "ST": {
+                        "name": "Sachsen-Anhalt"
+                      },
+                      "SH": {
+                        "name": "Schleswig-Holstein"
+                      },
+                      "TH": {
+                        "name": "Thüringen"
+                      }
+                    }
                 },
                 "DJ": {
                     "name": "Djibouti",
@@ -2570,7 +2684,186 @@
                     "continent": "NA",
                     "capital": "Washington D.C.",
                     "currency": "USD,USN,USS",
-                    "languages": "en"
+                    "languages": "en",
+                    "states": {
+                      "AL": {
+                        "name": "Alabama"
+                      },
+                      "AK": {
+                        "name": "Alaska"
+                      },
+                      "AS": {
+                        "name": "American Samoa"
+                      },
+                      "AZ": {
+                        "name": "Arizona"
+                      },
+                      "AR": {
+                        "name": "Arkansas"
+                      },
+                      "CA": {
+                        "name": "California"
+                      },
+                      "CO": {
+                        "name": "Colorado"
+                      },
+                      "CT": {
+                        "name": "Connecticut"
+                      },
+                      "DE": {
+                        "name": "Delaware"
+                      },
+                      "DC": {
+                        "name": "District Of Columbia"
+                      },
+                      "FM": {
+                        "name": "Federated States Of Micronesia"
+                      },
+                      "FL": {
+                        "name": "Florida"
+                      },
+                      "GA": {
+                        "name": "Georgia"
+                      },
+                      "GU": {
+                        "name": "Guam"
+                      },
+                      "HI": {
+                        "name": "Hawaii"
+                      },
+                      "ID": {
+                        "name": "Idaho"
+                      },
+                      "IL": {
+                        "name": "Illinois"
+                      },
+                      "IN": {
+                        "name": "Indiana"
+                      },
+                      "IA": {
+                        "name": "Iowa"
+                      },
+                      "KS": {
+                        "name": "Kansas"
+                      },
+                      "KY": {
+                        "name": "Kentucky"
+                      },
+                      "LA": {
+                        "name": "Louisiana"
+                      },
+                      "ME": {
+                        "name": "Maine"
+                      },
+                      "MH": {
+                        "name": "Marshall Islands"
+                      },
+                      "MD": {
+                        "name": "Maryland"
+                      },
+                      "MA": {
+                        "name": "Massachusetts"
+                      },
+                      "MI": {
+                        "name": "Michigan"
+                      },
+                      "MN": {
+                        "name": "Minnesota"
+                      },
+                      "MS": {
+                        "name": "Mississippi"
+                      },
+                      "MO": {
+                        "name": "Missouri"
+                      },
+                      "MT": {
+                        "name": "Montana"
+                      },
+                      "NE": {
+                        "name": "Nebraska"
+                      },
+                      "NV": {
+                        "name": "Nevada"
+                      },
+                      "NH": {
+                        "name": "New Hampshire"
+                      },
+                      "NJ": {
+                        "name": "New Jersey"
+                      },
+                      "NM": {
+                        "name": "New Mexico"
+                      },
+                      "NY": {
+                        "name": "New York"
+                      },
+                      "NC": {
+                        "name": "North Carolina"
+                      },
+                      "ND": {
+                        "name": "North Dakota"
+                      },
+                      "MP": {
+                        "name": "Northern Mariana Islands"
+                      },
+                      "OH": {
+                        "name": "Ohio"
+                      },
+                      "OK": {
+                        "name": "Oklahoma"
+                      },
+                      "OR": {
+                        "name": "Oregon"
+                      },
+                      "PW": {
+                        "name": "Palau"
+                      },
+                      "PA": {
+                        "name": "Pennsylvania"
+                      },
+                      "PR": {
+                        "name": "Puerto Rico"
+                      },
+                      "RI": {
+                        "name": "Rhode Island"
+                      },
+                      "SC": {
+                        "name": "South Carolina"
+                      },
+                      "SD": {
+                        "name": "South Dakota"
+                      },
+                      "TN": {
+                        "name": "Tennessee"
+                      },
+                      "TX": {
+                        "name": "Texas"
+                      },
+                      "UT": {
+                        "name": "Utah"
+                      },
+                      "VT": {
+                        "name": "Vermont"
+                      },
+                      "VI": {
+                        "name": "Virgin Islands"
+                      },
+                      "VA": {
+                        "name": "Virginia"
+                      },
+                      "WA": {
+                        "name": "Washington"
+                      },
+                      "WV": {
+                        "name": "West Virginia"
+                      },
+                      "WI": {
+                        "name": "Wisconsin"
+                      },
+                      "WY": {
+                        "name": "Wyoming"
+                      }
+                    }
                 },
                 "UY": {
                     "name": "Uruguay",
@@ -2735,106 +3028,7 @@
                 "countyTaxes": true
             }
         ],
-        "timezone": "(GMT-08:00) Pacific Time (US & Canada)",
-        "timezones": [
-            "(GMT) Casablanca",
-            "(GMT) Coordinated Universal Time",
-            "(GMT) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London",
-            "(GMT) Monrovia, Reykjavik",
-            "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
-            "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",
-            "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris",
-            "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb",
-            "(GMT+01:00) West Central Africa",
-            "(GMT+02:00) Amman",
-            "(GMT+02:00) Athens, Bucharest, Istanbul",
-            "(GMT+02:00) Beirut",
-            "(GMT+02:00) Cairo",
-            "(GMT+02:00) Damascus",
-            "(GMT+02:00) Harare, Pretoria",
-            "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
-            "(GMT+02:00) Jerusalem",
-            "(GMT+02:00) Minsk",
-            "(GMT+02:00) Windhoek",
-            "(GMT+03:00) Baghdad",
-            "(GMT+03:00) Kuwait, Riyadh",
-            "(GMT+03:00) Moscow, St. Petersburg, Volgograd",
-            "(GMT+03:00) Nairobi",
-            "(GMT+03:30) Tehran",
-            "(GMT+04:00) Abu Dhabi, Muscat",
-            "(GMT+04:00) Baku",
-            "(GMT+04:00) Port Louis",
-            "(GMT+04:00) Tbilisi",
-            "(GMT+04:00) Yerevan",
-            "(GMT+04:30) Kabul",
-            "(GMT+05:00) Ekaterinburg",
-            "(GMT+05:00) Islamabad, Karachi",
-            "(GMT+05:00) Tashkent",
-            "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi",
-            "(GMT+05:30) Sri Jayawardenepura",
-            "(GMT+05:45) Kathmandu",
-            "(GMT+06:00) Astana",
-            "(GMT+06:00) Dhaka",
-            "(GMT+06:00) Novosibirsk",
-            "(GMT+06:30) Yangon (Rangoon)",
-            "(GMT+07:00) Bangkok, Hanoi, Jakarta",
-            "(GMT+07:00) Krasnoyarsk",
-            "(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi",
-            "(GMT+08:00) Irkutsk",
-            "(GMT+08:00) Kuala Lumpur, Singapore",
-            "(GMT+08:00) Perth",
-            "(GMT+08:00) Taipei",
-            "(GMT+08:00) Ulaanbaatar",
-            "(GMT+09:00) Osaka, Sapporo, Tokyo",
-            "(GMT+09:00) Seoul",
-            "(GMT+09:00) Yakutsk",
-            "(GMT+09:30) Adelaide",
-            "(GMT+09:30) Darwin",
-            "(GMT+10:00) Brisbane",
-            "(GMT+10:00) Canberra, Melbourne, Sydney",
-            "(GMT+10:00) Guam, Port Moresby",
-            "(GMT+10:00) Hobart",
-            "(GMT+10:00) Vladivostok",
-            "(GMT+11:00) Magadan, Solomon Is., New Caledonia",
-            "(GMT+12:00) Auckland, Wellington",
-            "(GMT+12:00) Coordinated Universal Time+12",
-            "(GMT+12:00) Fiji",
-            "(GMT+12:00) Petropavlovsk-Kamchatsky - Old",
-            "(GMT+13:00) Nuku'alofa",
-            "(GMT-01:00) Azores",
-            "(GMT-01:00) Cape Verde Is.",
-            "(GMT-02:00) Coordinated Universal Time-02",
-            "(GMT-02:00) Mid-Atlantic",
-            "(GMT-03:00) Brasilia",
-            "(GMT-03:00) Buenos Aires",
-            "(GMT-03:00) Cayenne, Fortaleza",
-            "(GMT-03:00) Greenland",
-            "(GMT-03:00) Montevideo",
-            "(GMT-03:30) Newfoundland",
-            "(GMT-04:00) Asuncion",
-            "(GMT-04:00) Atlantic Time (Canada)",
-            "(GMT-04:00) Cuiaba",
-            "(GMT-04:00) Georgetown, La Paz, Manaus, San Juan",
-            "(GMT-04:00) Santiago",
-            "(GMT-04:30) Caracas",
-            "(GMT-05:00) Bogota, Lima, Quito",
-            "(GMT-05:00) Eastern Time (US & Canada)",
-            "(GMT-05:00) Indiana (East)",
-            "(GMT-06:00) Central America",
-            "(GMT-06:00) Central Time (US & Canada)",
-            "(GMT-06:00) Guadalajara, Mexico City, Monterrey",
-            "(GMT-06:00) Saskatchewan",
-            "(GMT-07:00) Arizona",
-            "(GMT-07:00) Chihuahua, La Paz, Mazatlan",
-            "(GMT-07:00) Mountain Time (US & Canada)",
-            "(GMT-08:00) Baja California",
-            "(GMT-08:00) Pacific Time (US & Canada)",
-            "(GMT-09:00) Alaska",
-            "(GMT-10:00) Hawaii",
-            "(GMT-11:00) Coordinated Universal Time-11",
-            "(GMT-11:00) Samoa",
-            "(GMT-12:00) International Date Line West"
-        ],
+        "timezone": "US/Pacific",
         "unitsOfMeasure": {
             "OZ": {
                 "name": "Ounces"

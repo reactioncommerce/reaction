@@ -8,7 +8,7 @@
 # in template: {{cart.cartCount}}
 # in code: ReactionCore.Collections.Cart.findOne().cartTotal()
 ###
-ReactionCore.Helpers.cartTransform = 
+ReactionCore.Helpers.cartTransform =
   cartCount : ->
     count = 0
     ((count += items.quantity) for items in this.items) if this?.items
@@ -103,3 +103,7 @@ ReactionCore.Collections.Shops.attachSchema ReactionCore.Schemas.Shop
 # Tags
 ReactionCore.Collections.Tags = Tags = @Tags = new Mongo.Collection "Tags"
 ReactionCore.Collections.Tags.attachSchema ReactionCore.Schemas.Tag
+
+# Tags
+ReactionCore.Collections.Translations = new Mongo.Collection "Translations"
+ReactionCore.Collections.Translations.attachSchema ReactionCore.Schemas.Translation

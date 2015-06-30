@@ -1,4 +1,4 @@
-describe "Product Meteor method ", ->
+describe "core product methods", ->
 
   # Variant Method Tests
 

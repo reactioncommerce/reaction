@@ -18,14 +18,33 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
     metafields: undefined
   ]
   domains: ["localhost"]
-  email: 'root@localhost'
+  emails: [{'address': 'root@localhost', 'verified': true}]
   currency: "USD"
-  currencies: []
+  currencies:
+    "USD":
+      "format": "%s%v"
+      "symbol": "$"
+    "EUR":
+      "format": "%v %s"
+      "symbol": "€"
+      "decimal": ","
+      "thousand": "."
+  locale: "en"
+  locales:
+    continents:
+      'NA': 'North America'
+    countries:
+      'US':
+        "name": "United States",
+        "native": "United States",
+        "phone": "1",
+        "continent": "NA",
+        "capital": "Washington D.C.",
+        "currency": "USD,USN,USS",
+        "languages": "en"
   public: true
-  timezone: '1'
+  timezone: -> "US/Pacific"
   baseUOM: "OZ"
-  ownerId: '1'
-  members: []
   metafields: []
   createdAt: -> new Date()
   updatedAt: -> new Date()
@@ -69,18 +88,29 @@ Factory.define 'product', ReactionCore.Collections.Products,
   vendor: ''
 #   metafields:
   variants: -> [
-    # TODO: can not do Factory.get 'productVariants' due to RangeError: Maximum call stack size exceeded
-    _id: 1
+    _id: Random.id()
     compareAtPrice: _.random 0, 1000
     weight: _.random 0, 10
-    inventoryManagement: false
+    inventoryManagement: true
     inventoryPolicy: false
     lowInventoryWarningThreshold: 1
+    inventoryQuantity: _.random 0, 100
     price: _.random 10, 1000
-    title: Fake.word()
     optionTitle: Fake.word()
-    createdAt: new Date
-    updatedAt: new Date
+    title: Fake.word()
+    sku: _.random 0, 6
+    taxable: true
+    metafields: [
+      key: Fake.word()
+      value: Fake.word()
+      scope: "detail",
+      key: "facebook"
+      value: Fake.paragraph()
+      scope: "socialMessages",
+      key: "twitter"
+      value: Fake.sentence()
+      scope: "socialMessages"
+    ]
   ]
   requiresShipping: true
 #   parcel:
@@ -99,34 +129,11 @@ Factory.define 'product', ReactionCore.Collections.Products,
   updatedAt: -> new Date
 
 
-Factory.define 'productVariants', new Mongo.Collection('ProductVariants'),
-#  parentId: 1
-#  cloneId:
-#  index:
-#  barcode:
-  compareAtPrice: -> _.random 0, 1000
-#  fulfillmentService:
-  weight: -> _.random 0, 1000
-  inventoryManagement: false
-  inventoryPolicy: false
-  lowInventoryWarningThreshold: 1
-  inventoryQuantity: -> _.random 0, 100
-  price: -> _.random 10, 1000
-#  sku:
-#  taxable:
-  title: Fake.word
-  optionTitle: Fake.word
-#  metafields:
-#  positions:
-  createdAt: -> new Date
-  updatedAt: -> new Date
-
-
 Factory.define 'tag', ReactionCore.Collections.Tags,
   name: Fake.word
   slug: Fake.word
   position: -> _.random 0, 100000
-#  relatedTagIds: []
+  #  relatedTagIds: []
   isTopLevel: true
   shopId: Factory.get 'shop'
   createdAt: -> new Date

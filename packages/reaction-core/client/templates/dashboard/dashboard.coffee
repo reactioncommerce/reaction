@@ -3,11 +3,11 @@ Template.dashboard.helpers
     return Router.current().route.getName()
 
   displayConsoleNavBar: ->
-    if ReactionCore.hasOwnerAccess() and Session.get "displayConsoleNavBar"
+    if ReactionCore.hasPermission('console') and Session.get "displayConsoleNavBar"
       return true
 
   displayConsoleDrawer: ->
-    if ReactionCore.hasOwnerAccess() and Session.get "displayConsoleDrawer"
+    if ReactionCore.hasPermission('console') and Session.get "displayConsoleDrawer"
       return true
 
 Template.dashboard.events
