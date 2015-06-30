@@ -22,7 +22,6 @@ Products.before.insert (userId, product) ->
 Products.before.update (userId, product, fieldNames, modifier, options) ->
   #set default variants
   updatedAt: new Date()
-
   if modifier.$push
     if modifier.$push.variants
       applyVariantDefaults(modifier.$push.variants)
@@ -39,8 +38,11 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       
   # keep quantity of variants that contain 'inventory' in sync with the aggregate
   # quantity of their inventory children
-  if modifier.$addToSet?['variants']?.type == 'inventory'
-    parentId = modifier.$addToSet.variants.parentId
+  if modifier.$addToSet?['variants']?.type is 'inventory' or
+  modifier.$addToSet?['variants']?.$each?[0].type is 'inventory'
+    modVariants = modifier.$addToSet?.variants
+    qtyAdded = modVariants.$each?.length || 1
+    parentId = modVariants.parentId || modVariants.$each?[0].parentId
     # Feels like an ugly way to do aggregate, TODO: Review this?
     inventoryVariants = (variant for variant in product.variants when variant?.parentId is parentId and variant?.type == 'inventory')
     # The item we are about to add isn't counted yet, so account for that (+1 to count).

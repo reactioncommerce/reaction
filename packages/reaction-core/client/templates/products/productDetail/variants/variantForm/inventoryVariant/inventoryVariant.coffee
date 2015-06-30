@@ -29,9 +29,22 @@ Template.inventoryVariantForm.events
         if result and selectedVariantId() is id
           setCurrentVariant null
 
+Template.generateInventoryVariantForm.events
+  "submit .generate-inventory-variants-form": (event, template) ->
+    event.stopPropagation()
+    event.preventDefault()
+    productId = selectedProductId()
+    qty = event.target.generateqty.value
+    
+    Meteor.call "createInventoryVariants", productId, @._id, qty
+    event.target.generateqty.value = ""
+    return false
+
 
 Template.addInventoryVariantForm.events
   "submit .add-inventory-variant-form": (event, template) ->
+    event.stopPropagation()
+    event.preventDefault()
     productId = selectedProductId()
     barcode = event.target.barcode.value
   

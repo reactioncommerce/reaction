@@ -93,7 +93,33 @@ Meteor.methods
       newVariant = { "_id": newVariantId, parentId: parentId, barcode: newBarcode, type: "inventory"}
     Products.update({ "_id": productId }, { $addToSet: { "variants": newVariant }}, { validate: false })
     return newVariantId
-
+  
+  ###
+  # Creates default inventory variants for each quantity
+  ###
+  createInventoryVariants: (productId, parentId, quantity) ->
+    check productId, String
+    check parentId, String
+    check quantity, Match.Where () ->
+      check quantity, String
+      return /[0-9]+/.test(quantity)
+    @unblock()
+    
+    unless Roles.userIsInRole Meteor.userId(), ["admin"]
+      throw new Meteor.Error 403, "Access Denied"
+    
+    newVariantIds = []
+    newVariants = []
+    
+    # Push default variant for each quantity
+    _(Number(quantity)).times ->
+      newVariantId = Random.id()
+      newVariants.push { "_id": newVariantId, parentId: parentId, barcode: Random.id(), type: "inventory"}
+      newVariantIds.push newVariantId
+    
+    # Add array of inventory variants to Product's variants array.
+    Products.update({ "_id": productId }, { $addToSet: { "variants": { $each: newVariants }}}, { validate: false })
+    return newVariantIds
   ###
   # update individual variant with new values, merges into original
   # only need to supply updated information

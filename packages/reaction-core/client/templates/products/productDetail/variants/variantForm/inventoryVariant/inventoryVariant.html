@@ -11,16 +11,34 @@
   </tr>
 </template>
 
+<template name="generateInventoryVariantForm">
+  <tr>
+    <td colspan="7">
+      <form class="form-inline generate-inventory-variants-form" id="generateInventoryVariantsForm">
+        <div class="form-group">
+          <h5>Generate Barcodes</h5>
+        </div>
+        <div class="form-group">
+          <label for="generate-qty-{{_id}}" class="sr-only">QTY</label>
+          <input type="number" class="form-control" id="generate-qty-{{_id}}" name="generateqty" placeholder="Quantity">
+        </div>
+        <button type="submit" class="btn btn-success btn-sm generate-barcodes">Generate</button>
+      </form>
+    </td>
+  </tr>
+</template>
+
 <template name="addInventoryVariantForm">
   <tr>
-    <form class="add-inventory-variant-form" id="{{addInventoryVariantFormId}}">
-      <!-- <td></td> -->
-      <td>
-        <input type="text" class="form-control input-sm inventory-variant-input" value="{{barcode}}" name="barcode" placeholder="Add barcode"/>
-      </td>
-      <td>
+    <td colspan="7">
+      <form class="form-inline add-inventory-variant-form" id="{{addInventoryVariantFormId}}">
+        <h5>Add Inventory</h5>
+        <div class="form-group">
+          <label for="add-inventory-variant-barcode-{{_id}}" class="sr-only">Barcode</label>
+          <input type="text" id="add-inventory-variant-barcode-{{_id}}" class="form-control input-sm inventory-variant-input" value="{{barcode}}" name="barcode" placeholder="Add barcode"/>
+        </div>
         <input type="submit" class="add-inventory-variant btn btn-primary btn-sm" id="{{addInventoryVariantId}}" value="Add">
-      </td>
-    </form>
+      </form>
+    </td>
   </tr>
 </template>

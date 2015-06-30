@@ -39,9 +39,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>
-              <button class="btn btn-success btn-sm">Generate Barcodes</button>
-            </td></tr>
+            {{> generateInventoryVariantForm}}
             {{> addInventoryVariantForm}}
             {{#each inventoryVariants}}
               {{> inventoryVariantForm}}
