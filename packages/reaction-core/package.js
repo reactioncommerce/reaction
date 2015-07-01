@@ -49,7 +49,7 @@ Package.onUse(function (api) {
   api.use("fortawesome:fontawesome@4.3.0");
   api.use("mrt:underscore-string-latest@2.3.3");
   api.use("aldeed:geocoder@0.3.6");
-  api.use("aldeed:autoform@4.2.2 || 5.3.0");
+  api.use("aldeed:autoform@5.3.0");
   api.use("aldeed:collection2@2.3.3");
   api.use("aldeed:simple-schema@1.3.3", {'weak': 1});
   api.use("aldeed:template-extension@3.4.3","client");
