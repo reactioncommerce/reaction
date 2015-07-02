@@ -22,7 +22,7 @@ Template.inventoryVariantForm.events
   "click .remove-inventory-variant": (event, template) ->
     event.stopPropagation()
     event.preventDefault()
-    barcode = @.barcode || "this barcode"
+    barcode = @.barcode || "barcode not found"
     if confirm("Are you sure you want to delete barcode: "+ barcode)
       id = @._id
       Meteor.call "deleteVariant", id, (error, result) ->

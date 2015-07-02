@@ -95,13 +95,21 @@ Meteor.methods
   
   ###
   # Creates default inventory variants for each quantity
+  # Optional defaultValue will initialize all variants to some string + index
   ###
-  createInventoryVariants: (productId, parentId, quantity) ->
+  createInventoryVariants: (productId, parentId, quantity, defaultValue) ->
     check productId, String
     check parentId, String
-    check quantity, Match.Where () ->
-      check quantity, String
-      return /[0-9]+/.test(quantity)
+    check defaultValue, Match.Optional(String)
+    check quantity, Match.OneOf(
+      (Match.Where () ->
+        check quantity, String
+        return /[0-9]+/.test(quantity)),
+      (Match.Where () ->
+        check quantity, Number
+        return quantity > 0)
+    )
+      
     @unblock()
     
     unless Roles.userIsInRole Meteor.userId(), ["admin"]
@@ -111,9 +119,15 @@ Meteor.methods
     newVariants = []
     
     # Push default variant for each quantity
-    _(Number(quantity)).times ->
+    _(Number(quantity)).times (index)->
+      if (defaultValue or defaultValue == "")
+        newVariantBarcode = defaultValue + index
+      else
+        newVariantBarcode = Random.id()
+      
       newVariantId = Random.id()
-      newVariants.push { "_id": newVariantId, parentId: parentId, barcode: Random.id(), type: "inventory"}
+        
+      newVariants.push { "_id": newVariantId, parentId: parentId, barcode: newVariantBarcode, type: "inventory"}
       newVariantIds.push newVariantId
     
     # Add array of inventory variants to Product's variants array.
