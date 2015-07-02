@@ -3,11 +3,13 @@
     <div class="col-xs-9">
       <ul class="nav nav-pills">
         {{#each reactionApps provides='console'}}
-          <li class="{{active route}}">
-            <a class="dashboard-navbar-package" data-package="{{name}}" title="{{name}}">
-              {{label}}
-            </a>
-          </li>
+          {{#if pkgPermissions}}
+            <li class="{{active route}}">
+              <a class="dashboard-navbar-package" data-package="{{name}}" title="{{name}}">
+                {{label}}
+              </a>
+            </li>
+          {{/if}}
         {{/each}}
       </ul>
     </div>

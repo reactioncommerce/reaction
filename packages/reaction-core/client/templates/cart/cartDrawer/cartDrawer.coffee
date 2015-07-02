@@ -14,7 +14,7 @@ Template.cartDrawer.helpers
     else
       return Template.openCartDrawer
 
-Template.openCartDrawer.rendered = ->
+Template.openCartDrawer.onRendered ->
   $('#cart-drawer-container').fadeIn()
 
 Template.openCartDrawer.helpers
@@ -48,5 +48,5 @@ Template.emptyCartDrawer.events
     $('#cart-drawer-container').fadeOut(300, ()->
       toggleSession "displayCart")
 
-Template.emptyCartDrawer.rendered = ->
+Template.emptyCartDrawer.onRendered ->
   $('#cart-drawer-container').fadeIn()

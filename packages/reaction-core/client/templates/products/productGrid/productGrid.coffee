@@ -23,8 +23,8 @@ Template.productGrid.helpers
         for relatedTag in relatedTags
           if hashtags.indexOf(relatedTag._id) == -1
             hashtags.push(relatedTag._id)
-            if relatedTag.relatedTagIds?.length
-              newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
+            #if relatedTag.relatedTagIds?.length
+            #  newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
         relatedTags = newRelatedTags
       selector.hashtags = {$in: hashtags}
     gridProducts = Products.find(selector).fetch()
@@ -95,12 +95,19 @@ Template.gridContent.helpers
 
 Template.productGridItems.events
   'click .clone-product': () ->
+    console.log
     title = @.title
     Meteor.call "cloneProduct", this, (error, productId) ->
-      console.log "error cloning product", error if error
+      throw new Meteor.Error "error cloning product", error if error
       Router.go "product",
         _id: productId
-      Alerts.add "Cloned " + title
+      Alerts.add "Cloned " + title,
+        "success",
+          'placement': "productManagement"
+          'id': productId
+          'i18n_key': "productDetail.cloneMsg"
+          'autoHide': true
+          'dismissable': false
 
   'click .delete-product': (event, template) ->
     event.preventDefault()
@@ -132,12 +139,14 @@ Template.productGridItems.events
             'autoHide': true
             'dismissable': false
 
+Template.gridControls.onRendered ->
+  this.$('[data-toggle="tooltip"]').tooltip({position: 'top'})
 
-Template.productGridItems.rendered = () ->
+Template.productGridItems.onRendered  ->
   # *****************************************************
   #  drag grid products and save tag+position
   # *****************************************************
-  if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+  if ReactionCore.hasPermission('createProduct')
     productSort = $(".product-grid-list")
     productSort.sortable
         items: "> li.product-grid-item"

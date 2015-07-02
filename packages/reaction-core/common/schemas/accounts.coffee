@@ -2,12 +2,17 @@
 # Emails
 ###
 ReactionCore.Schemas.Email = new SimpleSchema
+  provides:
+    type: String
+    defaultValue: "default"
+    optional: true
   address:
     type: String
     regEx: SimpleSchema.RegEx.Email
   verified:
     type: Boolean
     defaultValue: false
+    optional: true
 
 ###
 # AddressBook
@@ -78,6 +83,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema
     type: String
     autoValue: ReactionCore.shopIdAutoValue
     regEx: SimpleSchema.RegEx.Id
+    index: 1
   emails:
     type: [ReactionCore.Schemas.Email]
     optional: true

@@ -81,13 +81,13 @@ Template.tagInputForm.events
   'click .tag-input-group-remove': (event,template) ->
     Meteor.call "removeHeaderTag", @._id, currentTag(), (error, result) ->
       if error
-        console.log "Error removing header tag", error
-      template.$('.tags-submit-new').focus()
+        Alerts.add "Tag is in use. It must be deleted from products first.", "warning", autoHide: true
+      else
+        template.$('.tags-submit-new').focus()
 
-  'click .tags-input-select': (event,template) ->
+  'focusin .tags-input-select': (event,template) ->
     $(event.currentTarget).autocomplete(
       delay: 0
-      autoFocus: true
       source: (request, response) ->
         datums = []
         slug = getSlug request.term
@@ -96,24 +96,33 @@ Template.tagInputForm.events
             label: tag.name
           )
         response(datums)
-    )
-    Tracker.flush()
+      # special handling of autocomplete select
+      select:  (event, ui) ->
+        if ui.item.value
+          Meteor.call "updateHeaderTags", ui.item.value, @._id, currentTag(), (error, result) ->
+            if error
+              Alerts.add "Tag already exists, duplicate add failed.", "danger", autoHide: true
+            else
 
-  'blur.autocomplete, change .tags-input-select': (event,template) ->
+    )
+    # Tracker.flush()
+
+  'focusout .tags-input-select': (event,template) ->
     val = $(event.currentTarget).val()
     if val
       Meteor.call "updateHeaderTags", val, @._id, currentTag(), (error, result) ->
         if error
-          console.log "Error updating header tags", error
-        Tracker.flush()
+          Alerts.add "Tag already exists, duplicate add failed.", "danger", autoHide: true
         template.$('.tags-submit-new').val('').focus()
+    else
+      return # not necessarily an error, just nothing to add.
 
   'mousedown .tag-input-group-handle': (event,template) ->
     isMovingTag = true
     Tracker.flush()
     template.$(".tag-edit-list").sortable("refresh")
 
-Template.tagInputForm.rendered = ->
+Template.tagInputForm.onRendered ->
   # *****************************************************
   # Inline field editing, handling
   # http://vitalets.github.io/x-editable/docs.html

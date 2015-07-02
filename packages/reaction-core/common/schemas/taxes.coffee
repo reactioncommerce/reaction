@@ -13,6 +13,7 @@ ReactionCore.Schemas.Taxes = new SimpleSchema
   shopId:
     type: String
     autoValue: ReactionCore.shopIdAutoValue
+    index: 1
   cartMethod:
     label: "Calculation Method"
     type: String

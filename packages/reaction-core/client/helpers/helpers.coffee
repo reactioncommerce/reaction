@@ -45,8 +45,8 @@ String::toCamelCase = ->
       for relatedTag in relatedTags
         if hashtags.indexOf(relatedTag._id) == -1
           hashtags.push(relatedTag._id)
-          if relatedTag.relatedTagIds?.length
-            newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
+          #if relatedTag.relatedTagIds?.length
+          #  newRelatedTags = _.union(newRelatedTags, Tags.find({_id: {$in: relatedTag.relatedTagIds}}).fetch())
       relatedTags = newRelatedTags
     selector.hashtags = {$in: hashtags}
   cursor = Products.find(selector)
@@ -219,7 +219,7 @@ currentProduct = @currentProduct
 ###
 @getProductPriceRange = (productId) ->
   # if no productId provided, use currently selected
-  product = Products.findOne(productId || selectedProduct()._id )
+  product = Products.findOne(productId || selectedProduct()?._id )
   productId = product?._id
 
   # let's leave if nothing can be used

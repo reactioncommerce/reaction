@@ -9,7 +9,7 @@ Template.productImageGallery.helpers
     variant = selectedVariant()
     if variant
       mediaArray = Media.find({'metadata.variantId':variant._id}, {sort: {'metadata.priority': 1}})
-      if !Roles.userIsInRole(Meteor.user(), "admin") and !@isOwner and mediaArray.count() < 1
+      if !ReactionCore.hasAdminAccess() and mediaArray.count() < 1
         mediaArray = Media.find({'metadata.variantId':selectedProduct().variants[0]._id}, {sort: {'metadata.priority': 1}})
     else
       # If no variant selected, get media for all product variants
@@ -24,10 +24,10 @@ Template.productImageGallery.helpers
   variant: ->
     return selectedVariant()
 
-Template.productImageGallery.rendered = ->
+Template.productImageGallery.onRendered ->
   @autorun ->
     # Drag and drop image index update
-    if Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+    if ReactionCore.hasAdminAccess()
       $gallery = $(".gallery")
       $gallery.sortable
         cursor: "move"
@@ -37,15 +37,7 @@ Template.productImageGallery.rendered = ->
         update: (event, ui) ->
           variant = selectedVariant() unless variant?._id
           variant.medias = new Array
-          #get changed order
-          sortedMedias = _.map($gallery.sortable("toArray",
-            attribute: "data-index"
-          ), (index) ->
-             {"mediaId":index}
-          )
-
-          for image,value in sortedMedias
-            Media.update(image.mediaId, {$set: {'metadata.priority': value}})
+          updateImagePriorities()
 
         start: (event, ui) ->
           ui.placeholder.html "Drop image to reorder"
@@ -73,7 +65,7 @@ Template.productImageGallery.events
   "mouseenter .gallery > li": (event, template) ->
       event.stopImmediatePropagation()
       # TODO add hoverIntent to prevent swapping image on mouseout
-      unless Roles.userIsInRole(Meteor.user(), "admin") or @isOwner
+      unless ReactionCore.hasPermission('createProduct')
         first = $('.gallery li:nth-child(1)')
         target = $(event.currentTarget)
 
@@ -108,9 +100,22 @@ Template.productImageGallery.events
 
   "click .remove-image": (event, template) ->
     @remove()
+    updateImagePriorities()
     return
 
   "dropped #galleryDropPane": uploadHandler
+
+# Function to re-set image priorities. Useful after rearranging or removing images.
+updateImagePriorities = () ->
+  sortedMedias = _.map($('.gallery').sortable("toArray",
+    attribute: "data-index"
+  ), (index) ->
+    {"mediaId":index}
+  )
+
+  for image,value in sortedMedias
+    Media.update(image.mediaId, {$set: {'metadata.priority': value}})
+
 
 Template.imageUploader.events
   "click #btn-upload": (event,template) ->

@@ -10,15 +10,25 @@ Template.consoleNavBar.events
 
 Template.consoleNavBar.helpers
   displayConsoleDrawer: ->
-    if ReactionCore.hasOwnerAccess() and Session.get 'displayConsoleDrawer'
+    if Session.get 'displayConsoleDrawer'
       return true
+
+  pkgPermissions: () ->
+    if ReactionCore.hasPermission 'console'
+      if @.route
+        return ReactionCore.hasPermission @.route
+      else
+        return ReactionCore.hasPermission @.name
+    else
+      return false
+
 
 ###
 # console widgets
 # located here rather than dashboard template
 # to rerun whenever a new widget is added
 ###
-Template.consoleWidgets.rendered = ->
+Template.consoleWidgets.onRendered ->
   $ ->
     dashboardSwiper = $(".dashboard-container").swiper(
       direction: "horizontal"

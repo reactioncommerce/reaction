@@ -1,14 +1,36 @@
+###
+# onCreateUser
+# a special meteor hook to default user info on create
+# see: http://docs.meteor.com/#/full/accounts_oncreateuser
+# see: hooks.coffee for additional collection hooks
+###
 Accounts.onCreateUser (options, user) ->
-  # create or clone profile,email to Accounts
-  userAccount  = ReactionCore.Collections.Accounts.findOne('userId': user._id)
-  unless userAccount
-    account = _.clone(user)
-    account.userId = user._id
-    accountId = ReactionCore.Collections.Accounts.insert(account)
-    ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
-  # return to meteor accounts
+  unless user.emails then user.emails = []
+  # add default role for all users
+  # Roles.addUsersToRoles user, 'guest', ReactionCore.getShopId()
+  # see: https://github.com/alanning/meteor-roles/issues/79
+  unless user.roles
+    shopId = ReactionCore.getShopId()
+    user.roles = {}
+    user.roles[shopId] = [ "guest", "account/profile" ]
+
+  # TODO: only use accounts for managing profiles
+  for service, profile of user.services
+    if !user.username and profile.name then user.username = profile.name
+    if profile.email then user.emails.push {'address': profile.email}
+
+  # clone into and create our user's account
+  account = _.clone(user)
+  account.userId = user._id
+  accountId = ReactionCore.Collections.Accounts.insert(account)
+  ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
+
+  # return user to meteor accounts
   return user
 
+###
+# sets the shop mail server auth info
+###
 @setMailUrlForShop = (shop) ->
   coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
   if coreMail.user and coreMail.password
@@ -19,6 +41,9 @@ Accounts.onCreateUser (options, user) ->
     throw new Meteor.Error( 403, '<a href="/dashboard/settings/shop#mail">Core Mail Settings</a> not set. Unable to send email.')
     return
 
+###
+# Account Methods
+###
 Meteor.methods
   ###
   # add new addresses to an account
@@ -105,8 +130,7 @@ Meteor.methods
         unless user # user does not exist, invite user
           userId = Accounts.createUser
             email: email
-            profile:
-              name: name
+            username: name
           user = Meteor.users.findOne(userId)
           unless user
             throw new Error("Can't find user")
@@ -122,7 +146,7 @@ Meteor.methods
           SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
           Email.send
             to: email
-            from: currentUserName + " <" + shop.email + ">"
+            from: currentUserName + " <" + shop.emails[0] + ">"
             subject: "You have been invited to join " + shop.name
             html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
@@ -135,7 +159,7 @@ Meteor.methods
           SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
           Email.send
             to: email
-            from: currentUserName + " <" + shop.email + ">"
+            from: currentUserName + " <" + shop.emails[0] + ">"
             subject: "You have been invited to join the " + shop.name
             html: SSR.render 'shopMemberInvite',
               homepage: Meteor.absoluteUrl()
@@ -143,8 +167,6 @@ Meteor.methods
               currentUserName: currentUserName
               invitedUserName: name
               url: Meteor.absoluteUrl()
-
-        Shops.update shopId, {$addToSet: {members: {userId: user._id, isAdmin: true}}}
 
   ###
   # send an email to consumers on sign up
@@ -158,9 +180,61 @@ Meteor.methods
     SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'))
     Email.send
       to: email
-      from: shop.email
+      from: shop.emails[0]
       subject: "Welcome to " + shop.name + "!"
       html: SSR.render 'welcomeNotification',
         homepage: Meteor.absoluteUrl()
         shop: shop
         user: Meteor.user()
+
+  ###
+  # @summary addUserPermissions
+  # @param {Array|String} permission
+  #               Name of role/permission.  If array, users
+  #               returned will have at least one of the roles
+  #               specified but need not have _all_ roles.
+  # @param {String} [group] Optional name of group to restrict roles to.
+  #                         User's Roles.GLOBAL_GROUP will also be checked.
+  # @returns {Boolean} success/failure
+  ###
+  addUserPermissions: (userId, permissions, group) ->
+    check userId, Match.OneOf(String, Array)
+    check permissions, Match.OneOf(String, Array)
+    check group, Match.Optional(String)
+    @unblock()
+
+    # for roles
+    try
+      Roles.addUsersToRoles(userId, permissions, group)
+    catch e
+      ReactionCore.Events.info e
+
+  ###
+  # removeUserPermissions
+  ###
+  removeUserPermissions: (userId, permissions, group) ->
+    check userId, String
+    check permissions, Match.OneOf(String, Array)
+    check group, Match.Optional(String, null)
+    @unblock()
+
+    # for shop member data
+    try
+      Roles.removeUsersFromRoles(userId, permissions, group)
+    catch e
+      ReactionCore.Events.info e
+
+  ###
+  # setUserPermissions
+  ###
+  setUserPermissions: (userId, permissions, group) ->
+    check userId, String
+    check permissions, Match.OneOf(String, Array)
+    check group, Match.Optional(String)
+    @unblock()
+
+    # for shop member data
+    try
+      Roles.setUserRoles(userId, permissions, group)
+    catch e
+      ReactionCore.Events.info e

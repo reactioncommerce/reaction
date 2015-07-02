@@ -1,16 +1,6 @@
 ###
 # Shops
 ###
-ReactionCore.Schemas.ShopMember = new SimpleSchema
-  userId:
-    type: String
-  isAdmin:
-    type: Boolean
-    optional: true
-  permissions:
-    type: [String]
-    optional: true
-
 ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema
   username:
     type: String
@@ -68,11 +58,13 @@ ReactionCore.Schemas.Currency = new SimpleSchema
     defaultValue: ","
     optional: true
 
-ReactionCore.Schemas.Country = new SimpleSchema
-  name:
-    type: String
-  code:
-    type: String
+ReactionCore.Schemas.Locale = new SimpleSchema
+  continents:
+    type: Object
+    blackbox: true
+  countries:
+    type: Object
+    blackbox: true
 
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
@@ -89,9 +81,10 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
   addressBook:
     type: [ReactionCore.Schemas.Address]
+    optional: true
   domains:
     type: [String]
-    defaultValue: ["localhost"] #see simple schema issue #73
+    defaultValue: ["localhost"]
   emails:
     type: [ReactionCore.Schemas.Email]
     optional: true
@@ -99,7 +92,23 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     type: String
     defaultValue: "USD"
   currencies:
-    type: [ReactionCore.Schemas.Currency]
+    type: Object # ReactionCore.Schemas.Currency
+    blackbox: true
+  locale:
+    type: String
+    defaultValue: "en"
+  locales:
+    type: ReactionCore.Schemas.Locale
+  languages:
+    type: [Object]
+    optional: true
+  'languages.$.label':
+    type: String
+  'languages.$.i18n':
+    type: String
+  'languages.$.enabled':
+    type: Boolean
+    defaultValue: false
   public:
     type: String
     optional: true
@@ -110,19 +119,17 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
     defaultValue: "OZ"
     label: "Base Unit of Measure"
-  allowGuestCheckout:
-    type: Boolean
-    defaultValue: false
-  ownerId:
-    type: String
-  members:
-    type: [ReactionCore.Schemas.ShopMember]
-    index: 1
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
   createdAt:
     type: Date
+    autoValue: ->
+      if @isInsert
+        return new Date
+      else if @isUpsert
+        return $setOnInsert: new Date
+    denyUpdate: true
   updatedAt:
     type: Date
     autoValue : ->

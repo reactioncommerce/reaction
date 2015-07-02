@@ -1,33 +1,24 @@
 ###
-# Reaction Handlebars helpers
+#
+# Reaction Spacebars helpers
+# See: http://docs.meteor.com/#/full/template_registerhelper
+#
 ###
 
 #
-# array of months, used by checkout payment methods
-# todo:  implement i18n
+# monthOptions
+# returns momentjs months formatted for autoform
 #
 Template.registerHelper "monthOptions", () ->
-  monthOptions =
-    [
-      { value: "", label: "Choose month"}
-      { value: "01", label: "1 - January"}
-      { value: "02", label: "2 - February" }
-      { value: "03", label: "3 - March" }
-      { value: "04", label: "4 - April" }
-      { value: "05", label: "5 - May" }
-      { value: "06", label: "6 - June" }
-      { value: "07", label: "7 - July" }
-      { value: "08", label: "8 - August" }
-      { value: "09", label: "9 - September" }
-      { value: "10", label: "10 - October" }
-      { value: "11", label: "11 - November" }
-      { value: "12", label: "12 - December" }
-    ]
+  monthOptions = [{value: "", label: "Choose month"}]
+  months = moment.months()
+  for month, index in months
+    monthOptions.push value: index + 1, label: month
   return monthOptions
 
 #
-# array of years, used by checkout payment methods
-# todo:  implement i18n
+# yearOptions
+# returns array of years, formatted for autoform
 #
 Template.registerHelper "yearOptions",  () ->
   yearOptions = [{ value: "", label: "Choose year" }]
@@ -36,6 +27,17 @@ Template.registerHelper "yearOptions",  () ->
     yearOptions.push { value: year , label: year}
     year++
   return yearOptions
+
+#
+# timezoneOptions
+# returns array of momentjs timezones formatted for autoform
+#
+Template.registerHelper "timezoneOptions", () ->
+  timezoneOptions = [{value: "", label: "Choose timezone"}]
+  timezones = moment.tz.names()
+  for timezone, index in timezones
+    timezoneOptions.push value: timezone, label: timezone
+  return timezoneOptions
 
 #
 # gets current cart billing address / payment name
@@ -53,26 +55,56 @@ Template.registerHelper "pathForSEO", (path, params) ->
     return Router.path path,this
 
 #
-# return user name
-# TODO: Update to use accounts profile
+# displayName
 #
-Template.registerHelper "displayName", () ->
-  user = Meteor.user()
-  return ""  unless user
-  return user.profile.name  if user.profile and user.profile.name
-  return user.username  if user.username
-  return user.emails[0].address  if user.emails and user.emails[0] and user.emails[0].address
-  ""
+# params user - optional a user object defaults to current user
+# returns string user name
+#
+Template.registerHelper "displayName", (user) ->
+  userSub = Meteor.subscribe "UserProfile", user?._id || Meteor.userId()
+  if userSub.ready()
+    user = Meteor.users.findOne() unless user
+    # every social channel is different
+    # legacy profile name
+    if user and user.profile and user.profile.name
+      return user.profile.name
+    # meteor user name
+    else if user and user.username
+      return user.username
+    # service names
+    if user and user.services
+      username = switch
+        when user.services.twitter then user.services.twitter.name
+        when user.services.facebook then user.services.facebook.name
+        when user.services.instagram then user.services.instagram.name
+        when user.services.pinterest then user.services.pinterest.name
+        else "Guest"
 
 #
-# return social images, defaults to avatar.gif
-# TODO: Update to use accounts profile
+# general helper user name handling
+# TODO: needs additional validation all use cases
+# returns first word in profile name
 #
-Template.registerHelper "socialImage", () ->
-  if Meteor.user().profile?.picture
-    return Meteor.user().profile?.picture
-  else
-    return "/resources/avatar.gif"
+Template.registerHelper "fName", (user) ->
+  userSub = Meteor.subscribe "UserProfile", user?._id || Meteor.userId()
+  if userSub.ready()
+    user = Meteor.users.findOne() unless user
+    # every social channel is different
+    # legacy profile name
+    if user and user.profile and user.profile.name
+      return user.profile.name.split(" ")[0]
+    else if user and user.username
+      return user.username.name.split(" ")[0]
+
+    # service names
+    if user and user.services
+      username = switch
+        when user.services.twitter then user.services.twitter.first_name
+        when user.services.facebook then user.services.facebook.first_name
+        when user.services.instagram then user.services.instagram.first_name
+        when user.services.pinterest then user.services.pinterest.first_name
+        else "Guest"
+
 #
 # decamelSpace
 #
@@ -81,10 +113,17 @@ Template.registerHelper "camelToSpace", (str) ->
   return downCamel.toLowerCase()
 
 #
-# lowerCase string
+# upperCase or lowerCase string
 #
 Template.registerHelper "toLowerCase", (str) ->
   return str.toLowerCase()
+
+Template.registerHelper "toUpperCase", (str) ->
+  return str.toUpperCase()
+
+Template.registerHelper "capitalize", (str) ->
+  return str.charAt(0).toUpperCase() + str.slice(1)
+
 #
 # camelCase string
 #
@@ -94,16 +133,30 @@ Template.registerHelper "toCamelCase", (str) ->
 ###
 # Methods for the reaction permissions
 # https://github.com/ongoworks/reaction#rolespermissions-system
+# use: {{hasPermissions admin userId}}
 ###
-Template.registerHelper "hasShopPermission", (permissions) ->
-  return ReactionCore.hasPermission(permissions)
+Template.registerHelper "hasPermission", (permissions, userId) ->
+  check permissions, Match.OneOf(String, Object)
+  if typeof(userId) is 'object' then userId = Meteor.userId()
+  return ReactionCore.hasPermission permissions, userId
 
 Template.registerHelper "hasOwnerAccess", ->
-  return ReactionCore.hasOwnerAccess()
+  ReactionCore.hasOwnerAccess()
+
+Template.registerHelper "hasAdminAccess", ->
+  ReactionCore.hasOwnerAccess()
 
 Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
+Template.registerHelper "allowGuestCheckout", ->
+  packageRegistry =  ReactionCore.Collections.Packages.findOne shopId: ReactionCore.getShopId()
+  return packageRegistry.settings.public.allowGuestCheckout || false
+
+###
+# activeRouteClass
+# return "active" if current path
+###
 Template.registerHelper "activeRouteClass", ->
   args = Array::slice.call(arguments, 0)
   args.pop()
@@ -112,6 +165,10 @@ Template.registerHelper "activeRouteClass", ->
   )
   return active and "active"
 
+###
+# siteName()
+# return site name
+###
 Template.registerHelper "siteName", ->
   return Shops.findOne()?.name
 
@@ -197,7 +254,6 @@ Template.registerHelper "key_value", (context, options) ->
 # from http://phpjs.org/functions/nl2br:480
 ###
 Template.registerHelper "nl2br", (text) ->
-  #        text = Handlebars.Utils.escapeExpression(text);
   nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + "<br>" + "$2")
   new Spacebars.SafeString(nl2br)
 
@@ -228,30 +284,6 @@ Template.registerHelper "pluralize", (n, thing) ->
     n + " " + thing + "s"
 
 ###
-# general helper user name handling
-# TODO: needs additional validation all use cases
-# returns first word in profile name
-###
-Template.registerHelper "fname", ->
-  # TODO: use accounts profile
-  if Meteor.user()
-    name = Meteor.user().profile.name.split(" ")
-    fname = name[0]
-  return fname
-
-###
-# general helper for determine if user has a store
-# returns boolean
-###
-Template.registerHelper "userHasProfile", ->
-  user = Meteor.user()
-  return user and !!user.profile.store
-
-Template.registerHelper "userHasRole", (role) ->
-  user = Meteor.user()
-  return user and user.roles.indexOf(role) isnt -1  if user and user.roles
-
-###
 # general helper to return 'active' when on current path
 # returns string\
 # handlebars: {{active 'route'}}
@@ -279,11 +311,14 @@ Template.registerHelper "navLink", (page, icon) ->
   return new Spacebars.SafeString(ret)
 
 ###
-# Returns all enabled+dashboard package registry objects
-# *optional* options for filtering are:
+#
+# reactionApps
+#
 #   provides="<where matching registry provides is this >"
 #   enabled=true <false for disabled packages>
 #   context= true filter templates to current route
+#
+# returns matching package registry objects
 #
 #  TODO:
 #   - reintroduce a dependency context
@@ -296,76 +331,71 @@ Template.registerHelper "navLink", (page, icon) ->
 #
 ###
 Template.registerHelper "reactionApps", (options) ->
-  unless options.hash.shopId then options.hash.shopId = ReactionCore.getShopId()
-  reactionApps = []
-  filter = {}
-  registryFilter = {}
-  # any registry property, name, enabled can be used as filter
-  for key, value of options.hash
-    unless key is 'enabled' or key is 'name' or key is 'shopId'
-      filter['registry.' + key] = value #for query
-      registryFilter[key] = value #for registry filter
+  packageSubscription = Meteor.subscribe "Packages"
+
+  if packageSubscription.ready()
+    unless options.hash.shopId then options.hash.shopId = ReactionCore.getShopId()
+    reactionApps = []
+    filter = {}
+    registryFilter = {}
+    # any registry property, name, enabled can be used as filter
+    for key, value of options.hash
+      unless key is 'enabled' or key is 'name' or key is 'shopId'
+        filter['registry.' + key] = value #for query
+        registryFilter[key] = value #for registry filter
+      else
+        filter[key] = value #handle top level filters
+
+    # we only need these fields (filtered for user, all available to admin)
+    fields =
+      'enabled': 1
+      'registry': 1
+      'name': 1
+
+    # fetch filtered package
+    reactionPackages = ReactionCore.Collections.Packages.find(filter, fields).fetch()
+
+    # really, this shouldn't ever happen
+    unless reactionPackages then throw new Error("Packages not loaded.")
+
+    # filter packages
+    # this isn't as elegant as one could wish, review, refactor?
+
+    #  filter name and enabled as the package level filter
+    if filter.name and filter.enabled
+      packages = (pkg for pkg in reactionPackages when pkg.name is filter.name and pkg.enabled is filter.enabled)
+    else if filter.name
+      packages = (pkg for pkg in reactionPackages when pkg.name is filter.name)
+    else if filter.enabled
+      packages = (pkg for pkg in reactionPackages when pkg.enabled is filter.enabled)
     else
-      filter[key] = value #handle top level filters
+      packages = (pkg for pkg in reactionPackages)
 
-  # we only need these fields (filtered for user, all available to admin)
-  fields =
-    'enabled': 1
-    'registry': 1
-    'name': 1
+    # filter and reduce, format registry objects
+    # checks to see that all registry filters are applied to the registry objects
+    # and pushes to reactionApps
+    for app in packages
+      for registry in app.registry
+        match = 0
+        for key, value of registryFilter
+          if registry[key] is value
+            match += 1
+          if match is Object.keys(registryFilter).length
+            registry.name = app.name
+            # skip false registry entries, even if pkg is enabled
+            unless registry.enabled is false
+              registry.enabled = registry.enabled || app.enabled
+              registry.packageId = app._id
+              reactionApps.push registry
 
-  # fetch filtered package
-  reactionPackages = ReactionCore.Collections.Packages.find(filter, fields).fetch()
+    #
+    # TODO: add group by provides, sort by cycle, enabled
+    #
 
-  # really, this shouldn't ever happen
-  unless reactionPackages then throw new Error("Packages not loaded.")
-
-  # filter packages
-  # this isn't as elegant as one could wish, review, refactor?
-
-  #  filter name and enabled as the package level filter
-  if filter.name and filter.enabled
-    packages = (pkg for pkg in reactionPackages when pkg.name is filter.name and pkg.enabled is filter.enabled)
-  else if filter.name
-    packages = (pkg for pkg in reactionPackages when pkg.name is filter.name)
-  else if filter.enabled
-    packages = (pkg for pkg in reactionPackages when pkg.enabled is filter.enabled)
-  else
-    packages = (pkg for pkg in reactionPackages)
-
-  # filter and reduce, format registry objects
-  # checks to see that all registry filters are applied to the registry objects
-  # and pushes to reactionApps
-  for app in packages
-    for registry in app.registry
-      match = 0
-      for key, value of registryFilter
-        if registry[key] is value
-          match += 1
-        if match is Object.keys(registryFilter).length
-          registry.name = app.name
-          # skip false registry entries, even if pkg is enabled
-          unless registry.enabled is false
-            registry.enabled = registry.enabled || app.enabled
-            registry.packageId = app._id
-            reactionApps.push registry
-
-  #
-  # TODO: add group by provides, sort by cycle, enabled
-  #
-
-  # make sure they are unique,
-  # add priority for default sort
-  reactionApps = _.uniq(reactionApps)
-  for app, index in reactionApps
-    reactionApps[index].priority = index unless app.priority
+    # make sure they are unique,
+    # add priority for default sort
+    reactionApps = _.uniq(reactionApps)
+    for app, index in reactionApps
+      reactionApps[index].priority = index unless app.priority
     # need to sort after?
-
-  return reactionApps
-
-###
-# For debugging: {{console.log this}}
-###
-Template.registerHelper "console",
-  log: (a) ->
-    console.log a
+    return reactionApps

@@ -1,4 +1,4 @@
-# productWorkflow = StateMachine.create(
+# TODO: productWorkflow = StateMachine.create(
 #   initial: "new"
 #   events: [
 #     { name: "create",  from: "new" , to: "publish" }
