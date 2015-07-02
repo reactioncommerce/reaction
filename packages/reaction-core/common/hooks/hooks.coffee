@@ -60,8 +60,8 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     modVariants = modifier.$addToSet?.variants
     qtyAdded = modVariants.$each?.length || 1
     parentId = modVariants.parentId || modVariants.$each?[0].parentId
-    # Feels like an ugly way to do aggregate, TODO: Review this?
-    inventoryVariants = (variant for variant in product.variants when variant?.parentId is parentId and variant?.type == 'inventory')
+    # Feels like an ugly way to aggregate, TODO: Review this?
+    inventoryVariants = (variant for variant in product.variants when variant.parentId is parentId and variant.type == 'inventory')
     # The item we are about to add isn't counted yet, so account for that (+1 to count).
     qty = inventoryVariants.length + qtyAdded || 1
     parentVariant = (variant for variant in product.variants when variant._id is parentId)[0]
@@ -70,25 +70,27 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
     
     if parentVariant.parentId # Update Grandparent Inventory if it exists
       grandparent = (variant for variant in product.variants when variant._id is parentVariant.parentId)[0]
-      grandparentInventoryQty = grandparent.inventoryQuantity + qtyAdded
-      Products.direct.update({'_id': product._id, 'variants._id': grandparent._id}, {$set: {'variants.$.inventoryQuantity': grandparentInventoryQty }})
+      if grandparent
+        grandparentInventoryQty = grandparent?.inventoryQuantity + qtyAdded
+        Products.direct.update({'_id': product._id, 'variants._id': grandparent._id}, {$set: {'variants.$.inventoryQuantity': grandparentInventoryQty }})
       
   # Update inventory for parent variants when child variants are removed.
   if modifier.$pull?['variants']
     modVariants = modifier.$pull.variants
     productId = modVariants._id
     variant = (variant for variant in product.variants when variant._id is productId)[0]
-    # if variant.type == 'inventory'
-    parentId = variant.parentId || null
+    
+    parentId = variant?.parentId || null
     parentVariant = (variant for variant in product.variants when variant._id is parentId)[0]
     qty = (variant for variant in product.variants when variant.parentId is parentId).length - 1
-    if parentVariant.inventoryQuantity isnt qty
+    if parentVariant?.inventoryQuantity isnt qty
       Products.direct.update({'_id': product._id, 'variants._id': parentId}, {$set: {'variants.$.inventoryQuantity': qty }})
     
-    if parentVariant.parentId # Update Grandparent Inventory if it exists
+    if parentVariant?.parentId # Update Grandparent Inventory if it exists
       grandparent = (variant for variant in product.variants when variant._id is parentVariant.parentId)[0]
-      grandparentInventoryQty = grandparent.inventoryQuantity - 1
-      Products.direct.update({'_id': product._id, 'variants._id': grandparent._id}, {$set: {'variants.$.inventoryQuantity': grandparentInventoryQty }})
+      if grandparent
+        grandparentInventoryQty = grandparent?.inventoryQuantity - 1
+        Products.direct.update({'_id': product._id, 'variants._id': grandparent._id}, {$set: {'variants.$.inventoryQuantity': grandparentInventoryQty }})
     
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
