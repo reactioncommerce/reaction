@@ -68,6 +68,72 @@ Meteor.methods
     return newVariantId
 
   ###
+  # initializes inventory variant template
+  # should only be called to create variants of type=inventory
+  # pass newVariant object to create with options
+  ###
+  createInventoryVariant: (productId, parentId, newVariant) ->
+    check productId, String
+    check parentId, String
+    check newVariant, Match.OneOf(Object, undefined)
+    @unblock()
+    
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+    
+    newVariantId = Random.id()
+    newBarcode = Random.id()
+    if newVariant
+      newVariant._id = newVariantId
+      newVariant.parentId = parentId
+      newVariant.type = "inventory"
+      check(newVariant, ReactionCore.Schemas.ProductVariant)
+    else
+      newVariant = { "_id": newVariantId, parentId: parentId, barcode: newBarcode, type: "inventory"}
+    Products.update({ "_id": productId }, { $addToSet: { "variants": newVariant }}, { validate: false })
+    return newVariantId
+  
+  ###
+  # Creates default inventory variants for each quantity
+  # Optional defaultValue will initialize all variants to some string + index
+  ###
+  createInventoryVariants: (productId, parentId, quantity, defaultValue) ->
+    check productId, String
+    check parentId, String
+    check defaultValue, Match.Optional(String)
+    check quantity, Match.OneOf(
+      (Match.Where () ->
+        check quantity, String
+        return /[0-9]+/.test(quantity)),
+      (Match.Where () ->
+        check quantity, Number
+        return quantity > 0)
+    )
+      
+    @unblock()
+    
+    unless Roles.userIsInRole Meteor.userId(), ["admin"]
+      throw new Meteor.Error 403, "Access Denied"
+    
+    newVariantIds = []
+    newVariants = []
+    
+    # Push default variant for each quantity
+    _(Number(quantity)).times (index)->
+      if (defaultValue or defaultValue == "")
+        newVariantBarcode = defaultValue + index
+      else
+        newVariantBarcode = Random.id()
+      
+      newVariantId = Random.id()
+        
+      newVariants.push { "_id": newVariantId, parentId: parentId, barcode: newVariantBarcode, type: "inventory"}
+      newVariantIds.push newVariantId
+    
+    # Add array of inventory variants to Product's variants array.
+    Products.update({ "_id": productId }, { $addToSet: { "variants": { $each: newVariants }}}, { validate: false })
+    return newVariantIds
+  ###
   # update individual variant with new values, merges into original
   # only need to supply updated information
   ###

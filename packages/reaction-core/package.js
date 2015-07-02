@@ -384,6 +384,9 @@ Package.onUse(function (api) {
     "client/templates/products/productDetail/variants/variantForm/variantForm.html",
     "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
 
+    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.html",
+    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.coffee",
+
     "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html",
     "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.coffee",
 

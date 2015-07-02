@@ -8,11 +8,16 @@ Template.variantForm.helpers
   childVariants: () ->
     product = selectedProduct()
     return unless product
-    return (variant for variant in product.variants when variant?.parentId is @_id)
+    return (variant for variant in product.variants when variant?.parentId is @_id and variant.type != 'inventory')
 
   hasChildVariants: () ->
     if checkChildVariants(@_id) > 0 then return true
-
+    
+  hasInventoryVariants: () ->
+    # Inventory variants should not exist on parents.
+    unless hasChildVariants()
+      if checkInventoryVariants(@_id) > 0 then return true
+    
   nowDate: () ->
     return new Date()
 
