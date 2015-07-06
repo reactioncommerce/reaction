@@ -147,9 +147,9 @@ AutoForm.hooks "shipping-provider-add-form":
     Alerts.add "Shipping provider saved.", "success", autoHide: true, placement:"shippingPackage"
 
 AutoForm.hooks "shipping-method-edit-form":
-  onSubmit: (insertDoc, updateDoc, currentDoc) ->
+  onSubmit: (doc) ->
     try
-      Meteor.call "updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), insertDoc
+      Meteor.call "updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), doc
       Alerts.add "Shipping method rate updated.", "success", autoHide: true, placement:"shippingPackage"
       @done()
     catch error
