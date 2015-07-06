@@ -52,6 +52,9 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     label: "Barcode"
     type: String
     optional: true
+    custom: ->
+      if Meteor.isClient
+        if @.siblingField("type").value is "inventory" and !@.value then return "required"
   compareAtPrice:
     label: "MSRP"
     type: Number
@@ -66,12 +69,24 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     label: "Weight"
     type: Number
     min: 0
+    optional: true
+    custom: ->
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" or @.value or @.value == 0 then return "required"
   inventoryManagement:
     type: Boolean
     label: "Inventory Tracking"
+    optional: true
+    custom: ->
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" or @.value or @.value == false then return "required"
   inventoryPolicy:
     type: Boolean
     label: "Deny when out of stock"
+    optional: true
+    custom: ->
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" or @.value or @.value == false then return "required"
   lowInventoryWarningThreshold:
     type: Number
     label: "Warn @"
@@ -83,7 +98,8 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: ->
       if Meteor.isClient
-        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+        unless @.siblingField("type").value is "inventory"
+          if checkChildVariants(@.docId) is 0 and !@.value then return "required"
   price:
     label: "Price"
     type: Number
@@ -92,11 +108,16 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
     optional: true
     custom: -> #required if no child variants (options) present
       if Meteor.isClient
-        if checkChildVariants(@.docId) is 0 and !@.value then return "required"
+        unless @.siblingField("type").value is "inventory"
+          if checkChildVariants(@.docId) is 0 and !@.value then return "required"
   sku:
     label: "SKU"
     type: String
     optional: true
+  type:
+    label: "Type"
+    type: String
+    defaultValue: "variant"
   taxable:
     label: "Taxable"
     type: Boolean
@@ -104,6 +125,10 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema
   title:
     label: "Label"
     type: String
+    optional: true
+    custom: -> #required unless type=inventory
+      if Meteor.isClient
+        unless @.siblingField("type").value is "inventory" or @.value then return "required"
   optionTitle:
     label: "Option"
     type: String

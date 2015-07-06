@@ -20,9 +20,9 @@ Template.variantList.helpers
       current = selectedVariant()
       if current?._id
         if current.parentId?
-          variants = (variant for variant in product.variants when variant.parentId is current.parentId and variant.optionTitle)
+          variants = (variant for variant in product.variants when variant.parentId is current.parentId and variant.optionTitle and variant.type != 'inventory')
         else
-          variants = (variant for variant in product.variants when variant.parentId is current._id and variant.optionTitle)
+          variants = (variant for variant in product.variants when variant.parentId is current._id and variant.optionTitle and variant.type != 'inventory')
         return variants
 
 Template.variantList.events
