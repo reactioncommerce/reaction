@@ -26,8 +26,10 @@ _.extend ReactionCore,
       return true
     else if Roles.userIsInRole userId, permissions, Roles.GLOBAL_GROUP
       return true
-    else return false
-
+    for shop in @getSellerShopId()
+      if Roles.userIsInRole userId, permissions, shop
+        return true  
+    return false
 
   hasOwnerAccess: ->
     ownerPermissions = ['owner']
@@ -52,7 +54,7 @@ _.extend ReactionCore,
 
   # return the logged in user's shop[s] if he owns any or if he is an admin -> used in multivendor
   getSellerShopId: (client) ->
-    return Roles.getGroupsForUser Meteor.userId(), ['owner','admin']
+    return Roles.getGroupsForUser Meteor.userId(), 'admin'
 
 Meteor.startup ->
   ###

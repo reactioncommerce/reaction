@@ -130,6 +130,7 @@ Meteor.publish 'ShopMembers', ->
 # products
 ###
 Meteor.publish 'Products', (shops) ->
+  check shops, Match.Optional(Array)
   shop = ReactionCore.getCurrentShop(@)
   if shop
     selector = {shopId: shop._id}
