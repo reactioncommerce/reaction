@@ -164,6 +164,92 @@ describe "core product methods", ->
       expect(_.size(product.variants)).toEqual 0
       done()
 
+  # Inventory Variant Tests
+
+  describe "createInventoryVariant", ->
+    beforeEach ->
+      Products.remove {}
+    
+    it "should throw 403 error by non admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue false
+      product = Factory.create "product"
+      variant = product.variants[0]
+      spyOn(Products, "update")
+      expect(-> Meteor.call "createInventoryVariant", product._id, variant._id).toThrow(new Meteor.Error 403, "Access Denied")
+      expect(Products.update).not.toHaveBeenCalled()
+      done()
+
+    it "should create default barcode inventory variant by admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      variant = product.variants[0]
+      expect(_.size(product.variants)).toEqual 1
+      Meteor.call "createInventoryVariant", product._id, variant._id
+      product = Products.findOne(product._id)
+      inventoryVariant = product.variants[1]
+      expect(_.size(product.variants)).toEqual 2
+
+      expect(inventoryVariant.type).toEqual "inventory"
+      expect(inventoryVariant.parentId).toEqual variant._id
+      done()
+      
+    it "should create specific barcode inventory variant by admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      variant = product.variants[0]
+      inventoryVariantOptions = {barcode: 'specificBarcode123'}
+      expect(_.size(product.variants)).toEqual 1
+      Meteor.call "createInventoryVariant", product._id, variant._id, inventoryVariantOptions
+      product = Products.findOne(product._id)
+      inventoryVariant = product.variants[1]
+      expect(_.size(product.variants)).toEqual 2
+
+      expect(inventoryVariant.type).toEqual "inventory"
+      expect(inventoryVariant.parentId).toEqual variant._id
+      expect(inventoryVariant.barcode).toEqual inventoryVariantOptions.barcode
+      done()
+
+  describe "createInventoryVariants", ->
+    
+    beforeEach ->
+      Products.remove {}
+    
+    it "should throw 403 error by non admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue false
+      product = Factory.create "product"
+      variant = product.variants[0]
+      spyOn(Products, "update")
+      expect(-> Meteor.call "createInventoryVariants", product._id, variant._id, 5).toThrow(new Meteor.Error 403, "Access Denied")
+      expect(Products.update).not.toHaveBeenCalled()
+      done()
+    
+    it "should create 5 default inventory variants by admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      variant = product.variants[0]
+      expect(_.size(product.variants)).toEqual 1
+      Meteor.call "createInventoryVariants", product._id, variant._id, 5
+      product = Products.findOne(product._id)
+      inventoryVariant = product.variants[1]
+      expect(_.size(product.variants)).toEqual 6
+      expect(inventoryVariant.type).toEqual "inventory"
+      expect(inventoryVariant.parentId).toEqual variant._id
+      done()
+    
+    it "should create 6 inventory variants with prefix by admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      variant = product.variants[0]
+      expect(_.size(product.variants)).toEqual 1
+      Meteor.call "createInventoryVariants", product._id, variant._id, 6, 'jasmine'
+      product = Products.findOne(product._id)
+      inventoryVariant = product.variants[1]
+      expect(_.size(product.variants)).toEqual 7
+      expect(inventoryVariant.type).toEqual "inventory"
+      expect(inventoryVariant.parentId).toEqual variant._id
+      expect(inventoryVariant.barcode).toContain 'jasmine'
+      done()
+      
   describe "createProduct", ->
 
     beforeEach ->
