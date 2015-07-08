@@ -34,7 +34,7 @@ Meteor.publish 'Sessions', (id) ->
 # CollectionFS - Image/Video Publication
 ###
 Meteor.publish "Media", ->
-  return Media.find 'metadata.shopId' : ReactionCore.getShopId( @),
+  return Media.find 'metadata.shopId' : ReactionCore.getShopId(@),
     sort : {"metadata.priority" : 1}
 
 ###
@@ -76,8 +76,8 @@ Meteor.publish "UserProfile", (profileUserId) ->
       ReactionCore.Events.info "user profile access denied"
       return []
   # a user can see their own user data
-  else if this.userId
-    return Meteor.users.find _id: this.userId
+  else if @userId
+    return Meteor.users.find _id: @userId
   # prevent other access to users
   else
     return []
@@ -120,7 +120,7 @@ Meteor.publish 'Shops', ->
 Meteor.publish 'ShopMembers', ->
   permissions = ['dashboard/orders','owner','admin','dashboard/customers']
   shopId = ReactionCore.getShopId(@)
-  if Roles.userIsInRole(@.userId, permissions, shopId)
+  if Roles.userIsInRole(@userId, permissions, shopId)
     return Meteor.users.find()
   else
     ReactionCore.Events.info "ShopMembers access denied"
@@ -137,7 +137,7 @@ Meteor.publish 'Products', (shops) ->
     ## add additional shops
     if shops
       selector = {shopId: {$in: shops}}
-    unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id)
+    unless Roles.userIsInRole(@userId, ['admin','createProduct'], shop._id)
       selector.isVisible = true
     return Products.find(selector)
   else
@@ -158,7 +158,7 @@ Meteor.publish 'Product', (productId) ->
 Meteor.publish 'Orders', (userId) ->
   check userId, Match.Optional(String)
   # only admin can get all orders
-  if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
+  if Roles.userIsInRole @userId, ['admin','owner'], ReactionCore.getShopId(@)
     return Orders.find shopId: ReactionCore.getShopId(@)
   else
     return []
@@ -171,7 +171,7 @@ Meteor.publish 'AccountOrders', (sessionId, userId) ->
   check userId, Match.OptionalOrNull(String)
   shopId = ReactionCore.getShopId(@)
   # cure for null query match and added check
-  if userId and userId isnt @.userId then return []
+  if userId and userId isnt @userId then return []
   unless userId then userId = ''
   unless sessionId then sessionId = ''
   # publish user / session orders
@@ -199,19 +199,19 @@ Meteor.publish 'Accounts', (sessionId, userId) ->
   check userId, Match.OneOf(String, null)
 
   # global owner gets it all
-  if Roles.userIsInRole this.userId, ['owner'], Roles.GLOBAL_GROUP
+  if Roles.userIsInRole @userId, ['owner'], Roles.GLOBAL_GROUP
     return Accounts.find()
 
   # shop owner / admin sees all, in shop
-  else if Roles.userIsInRole this.userId, ['admin','owner'], ReactionCore.getShopId(@)
+  else if Roles.userIsInRole @userId, ['admin','owner'], ReactionCore.getShopId(@)
     return Accounts.find shopId: ReactionCore.getShopId(@)
 
   # returns userId (authenticated account) details only
   else
-    ReactionCore.Events.debug "subscribe account", sessionId, this.userId
+    ReactionCore.Events.debug "subscribe account", sessionId, @userId
     # get current account
     if @userId # userAccount
-      accountId = ReactionCore.Collections.Accounts.findOne('userId': this.userId)?._id
+      accountId = ReactionCore.Collections.Accounts.findOne('userId': @userId)?._id
     else # sessionAccount
       accountId = ReactionCore.Collections.Accounts.findOne('sessions': sessionId)?._id
     unless accountId

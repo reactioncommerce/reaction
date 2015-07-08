@@ -75,6 +75,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema
     type: String
     optional: true
     regEx: SimpleSchema.RegEx.Id
+    index: 1
   sessions:
     type: [String]
     optional: true
