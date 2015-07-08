@@ -223,33 +223,60 @@ describe "core product methods", ->
       expect(Products.update).not.toHaveBeenCalled()
       done()
     
-    it "should create 5 default inventory variants by admin", (done) ->
+    it "should create default inventory variants by admin", (done) ->
       spyOn(Roles, "userIsInRole").and.returnValue true
       product = Factory.create "product"
       variant = product.variants[0]
+      qty = _.random 1, 100
       expect(_.size(product.variants)).toEqual 1
-      Meteor.call "createInventoryVariants", product._id, variant._id, 5
+      Meteor.call "createInventoryVariants", product._id, variant._id, qty
       product = Products.findOne(product._id)
+      variant = product.variants[0]
       inventoryVariant = product.variants[1]
-      expect(_.size(product.variants)).toEqual 6
+      expect(_.size(product.variants)).toEqual (qty + 1)
       expect(inventoryVariant.type).toEqual "inventory"
       expect(inventoryVariant.parentId).toEqual variant._id
+      expect(variant.inventoryQuantity).toEqual qty
       done()
     
-    it "should create 6 inventory variants with prefix by admin", (done) ->
+    it "should create inventory variants with prefix by admin", (done) ->
       spyOn(Roles, "userIsInRole").and.returnValue true
       product = Factory.create "product"
       variant = product.variants[0]
+      qty = _.random 1, 100
       expect(_.size(product.variants)).toEqual 1
-      Meteor.call "createInventoryVariants", product._id, variant._id, 6, 'jasmine'
+      Meteor.call "createInventoryVariants", product._id, variant._id, qty, 'jasmine'
       product = Products.findOne(product._id)
+      variant = product.variants[0]
       inventoryVariant = product.variants[1]
-      expect(_.size(product.variants)).toEqual 7
+      expect(_.size(product.variants)).toEqual (qty + 1)
       expect(inventoryVariant.type).toEqual "inventory"
       expect(inventoryVariant.parentId).toEqual variant._id
       expect(inventoryVariant.barcode).toContain 'jasmine'
+      expect(variant.inventoryQuantity).toEqual qty # Expect parent quantity updated
       done()
       
+    it "should create inventory variants with prefix by admin", (done) ->
+      spyOn(Roles, "userIsInRole").and.returnValue true
+      product = Factory.create "product"
+      productVariant = product.variants[0]
+      qty = _.random 1, 100
+      initialQty = productVariant.inventoryQuantity
+      expect(_.size(product.variants)).toEqual 1
+      optionVariantId = Meteor.call "cloneVariant", product._id, productVariant._id, productVariant._id
+      Meteor.call "createInventoryVariants", product._id, optionVariantId, qty, 'jasmine'
+      product = Products.findOne(product._id)
+      productVariant = product.variants[0] # Primary variant id for product
+      optionVariant = (variant for variant in product.variants when variant._id is optionVariantId)[0]
+      inventoryVariant = (variant for variant in product.variants when variant.type is "inventory")[0]
+      expect(_.size(product.variants)).toEqual (qty + 2)
+      expect(inventoryVariant.type).toEqual "inventory"
+      expect(inventoryVariant.parentId).toEqual optionVariant._id
+      expect(inventoryVariant.barcode).toContain "jasmine"
+      expect(optionVariant.inventoryQuantity).toEqual qty # Expect parent quantity updated
+      expect(productVariant.inventoryQuantity).toEqual (qty+initialQty) # XXX: This is wrong, it should overwrite existing qty
+      done()
+
   describe "createProduct", ->
 
     beforeEach ->
