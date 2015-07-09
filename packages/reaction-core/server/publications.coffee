@@ -137,7 +137,11 @@ Meteor.publish 'Products', (shops) ->
     ## add additional shops
     if shops
       selector = {shopId: {$in: shops}}
-    unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id)
+      ## check if the user is admin in any of the shops
+      for shop in shops
+        if Roles.userIsInRole this.userId, ['admin','createProduct'], shop
+          shopAdmin = true
+    unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id) or shopAdmin
       selector.isVisible = true
     return Products.find(selector)
   else
