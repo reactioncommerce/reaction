@@ -253,7 +253,7 @@ describe "core product methods", ->
       expect(inventoryVariant.type).toEqual "inventory"
       expect(inventoryVariant.parentId).toEqual variant._id
       expect(inventoryVariant.barcode).toContain 'jasmine'
-      expect(variant.inventoryQuantity).toEqual qty # Expect parent quantity updated
+      expect(variant.inventoryQuantity).toEqual qty
       done()
       
     it "should create inventory variants with prefix by admin", (done) ->
@@ -274,7 +274,7 @@ describe "core product methods", ->
       expect(inventoryVariant.parentId).toEqual optionVariant._id
       expect(inventoryVariant.barcode).toContain "jasmine"
       expect(optionVariant.inventoryQuantity).toEqual qty # Expect parent quantity updated
-      expect(productVariant.inventoryQuantity).toEqual (qty+initialQty) # XXX: This is wrong, it should overwrite existing qty
+      expect(productVariant.inventoryQuantity).toEqual qty # Grandparent qty should equal inventory quantity
       done()
 
   describe "createProduct", ->
