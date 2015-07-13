@@ -57,7 +57,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       updatedVariantId = modifier.$set['variants.$']._id
       updatedVariant = modifier.$set['variants.$']
       updatedInventoryQuantity = modifier.$set['variants.$'].inventoryQuantity
-      originalInventoryQuantity = (variant for variant in product.variants when variant._id is updatedVariantId)[0].inventoryQuantity
+      originalInventoryQuantity = (variant for variant in product.variants when variant._id is updatedVariantId)[0].inventoryQuantity || 0
       differenceInQty = updatedInventoryQuantity - originalInventoryQuantity
       
     else if modifier.$pull?.variants
