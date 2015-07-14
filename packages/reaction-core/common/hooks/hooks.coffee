@@ -139,14 +139,9 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       # Flag to let us know if this is the first inventory variant for this option
       firstInventoryVariant = (variant for variant in product.variants when variant.parentId is updatedVariantId and variant.type == 'inventory').length is 0
       
-      console.log(firstInventoryVariant)
-      console.log(differenceInQty)
       # If this is the first inventory variant, we are replacing old qty with
       # new variant based inventoryQuantity.
       if firstInventoryVariant and updatedVariant.inventoryQuantity
-        console.log("Subtract difference")
-        console.log("FirstInventoryVariant?: " + firstInventoryVariant)
-        console.log("Inv Qty: " + updatedVariant.inventoryQuantity)
         differenceInQty = differenceInQty - updatedVariant.inventoryQuantity
       
       
@@ -162,19 +157,13 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
         
       if organizedChildren.inventoryChildren[updatedVariantId]?.length
         runningQty += organizedChildren.inventoryChildren[updatedVariantId].length
-        console.log("inventoryChildren: " + organizedChildren.inventoryChildren[updatedVariantId].length)
-        console.log(runningQty)
       
       # Account for change in qty to updated variant
       if differenceInQty
         runningQty += differenceInQty
-        console.log("differenceInQty: " + differenceInQty)
-        console.log(runningQty)
       
       unless organizedChildren.children[updatedVariantId]
         runningQty += updatedVariant.inventoryQuantity || 0
-        console.log("updatedVariant: " + updatedVariant.inventoryQuantity)
-        console.log(runningQty)
       
       # if updatedVariant.inventoryQuantity
       #   updatedQty = updatedVariant.inventoryQuantity + differenceInQty
