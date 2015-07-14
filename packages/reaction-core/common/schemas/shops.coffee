@@ -85,6 +85,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   domains:
     type: [String]
     defaultValue: ["localhost"]
+    index: 1
   emails:
     type: [ReactionCore.Schemas.Email]
     optional: true

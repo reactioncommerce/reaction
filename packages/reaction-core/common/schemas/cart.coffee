@@ -6,9 +6,11 @@ ReactionCore.Schemas.CartItem = new SimpleSchema
     type: String
   productId:
     type: String
+    index: 1
   shopId:
     type: String
     autoValue: ReactionCore.shopIdAutoValue
+    index: 1
   quantity:
     label: "Quantity"
     type: Number
@@ -19,7 +21,6 @@ ReactionCore.Schemas.CartItem = new SimpleSchema
 ReactionCore.Schemas.Cart = new SimpleSchema
   shopId:
     type: String
-    index: 1
     autoValue: ReactionCore.shopIdAutoValue
     index: 1
   userId:
