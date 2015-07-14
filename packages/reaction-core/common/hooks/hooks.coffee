@@ -11,6 +11,45 @@ applyVariantDefaults = (variant) ->
     createdAt: new Date()
   )
 
+#
+# helper that gives us a few organized objects of child variants organized
+# by parentId.
+# returns an object that contains the following
+#   children: object with arrays of all children for each parent
+#   variantChildren: object with arrays of all children that are not type 'inventory' for each parent
+#   inventoryChildren: object arrays of all children that are type inventory for each parent
+
+organizedChildVariants = (product) ->
+  children = {}
+  inventoryChildren = {}
+  variantChildren = {}
+  variantCount = product.variants.length
+  currentVariant = product.variants[0]
+  i = 0
+  while i < product.variants.length
+    currentVariant = product.variants[i]
+    # If currentVariant's parentId matches variant._id, it's a child
+    if currentVariant.parentId
+      if !children[currentVariant.parentId]
+        children[currentVariant.parentId] = []
+      children[currentVariant.parentId].push currentVariant
+      # if currentVariant's type is 'inventory' it's an inventory variant
+      # Otherwise it's a standard variant that could have children of it's own.
+      if currentVariant.type == 'inventory'
+        if !inventoryChildren[currentVariant.parentId]
+          inventoryChildren[currentVariant.parentId] = []
+        inventoryChildren[currentVariant.parentId].push currentVariant
+      else
+        if !variantChildren[currentVariant.parentId]
+          variantChildren[currentVariant.parentId] = []
+        variantChildren[currentVariant.parentId].push currentVariant
+    i++
+  {
+    children: children
+    variantChildren: variantChildren
+    inventoryChildren: inventoryChildren
+  }
+  
 ###
 # Collection Hooks
 # See: https://github.com/matb33/meteor-collection-hooks
@@ -53,6 +92,8 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
   modifier.$addToSet?.variants?.type is 'inventory' or
   modifier.$pull?.variants?._id
   
+    organizedChildren = organizedChildVariants(product)
+    
     if modifier.$set?['variants.$']
       updatedVariantId = modifier.$set['variants.$']._id
       updatedVariant = modifier.$set['variants.$']
@@ -84,7 +125,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
       differenceInQty = 1
       # Flag to let us know if this is the first inventory variant for this option
-      firstInventoryVariant = (variant for variant in product.variants when variant._id is updatedVariantId and variant.type == 'inventory').length == 0
+      firstInventoryVariant = (variant for variant in product.variants when variant.parentId is updatedVariantId and variant.type == 'inventory').length is 0
       
       if firstInventoryVariant
         differenceInQty = 1 - updatedVariant.inventoryQuantity
@@ -96,23 +137,52 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       differenceInQty = modifier.$addToSet['variants'].$each.length
       
       # Flag to let us know if this is the first inventory variant for this option
-      firstInventoryVariant = (variant for variant in product.variants when variant._id is updatedVariantId and variant.type == 'inventory').length == 0
+      firstInventoryVariant = (variant for variant in product.variants when variant.parentId is updatedVariantId and variant.type == 'inventory').length is 0
       
+      console.log(firstInventoryVariant)
+      console.log(differenceInQty)
       # If this is the first inventory variant, we are replacing old qty with
       # new variant based inventoryQuantity.
       if firstInventoryVariant and updatedVariant.inventoryQuantity
+        console.log("Subtract difference")
+        console.log("FirstInventoryVariant?: " + firstInventoryVariant)
+        console.log("Inv Qty: " + updatedVariant.inventoryQuantity)
         differenceInQty = differenceInQty - updatedVariant.inventoryQuantity
       
       
   
     loop
       break unless updatedVariantId # Check to make sure we have a variant to update
+      runningQty = 0
       
-      if updatedVariant.inventoryQuantity
-        updatedQty = updatedVariant.inventoryQuantity + differenceInQty
-      else
-        updatedQty = differenceInQty
-      Products.direct.update({'_id': product._id, 'variants._id': updatedVariantId}, {$set: {'variants.$.inventoryQuantity': updatedQty }})
+      if organizedChildren.variantChildren[updatedVariantId]?.constructor is Array
+        runningQty += organizedChildren.variantChildren[updatedVariantId].reduce ((total, child) ->
+          total + (child.inventoryQuantity || 0)
+        ), 0
+        
+      if organizedChildren.inventoryChildren[updatedVariantId]?.length
+        runningQty += organizedChildren.inventoryChildren[updatedVariantId].length
+        console.log("inventoryChildren: " + organizedChildren.inventoryChildren[updatedVariantId].length)
+        console.log(runningQty)
+      
+      # Account for change in qty to updated variant
+      if differenceInQty
+        runningQty += differenceInQty
+        console.log("differenceInQty: " + differenceInQty)
+        console.log(runningQty)
+      
+      unless organizedChildren.children[updatedVariantId]
+        runningQty += updatedVariant.inventoryQuantity || 0
+        console.log("updatedVariant: " + updatedVariant.inventoryQuantity)
+        console.log(runningQty)
+      
+      # if updatedVariant.inventoryQuantity
+      #   updatedQty = updatedVariant.inventoryQuantity + differenceInQty
+      # else
+      #   updatedQty = differenceInQty
+
+
+      Products.direct.update({'_id': product._id, 'variants._id': updatedVariantId}, {$set: {'variants.$.inventoryQuantity': runningQty }})
       break unless updatedVariant.parentId # Break out of loop if top level variant
       updatedVariantId = updatedVariant.parentId
       updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
