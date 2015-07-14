@@ -51,7 +51,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
   if modifier.$set?['variants.$']?.inventoryQuantity >= 0 or
   modifier.$addToSet?.variants?.$each?[0].type is 'inventory' or
   modifier.$addToSet?.variants?.type is 'inventory' or
-  modifier.$pull?.variants
+  modifier.$pull?.variants?._id
   
     if modifier.$set?['variants.$']
       updatedVariantId = modifier.$set['variants.$']._id
@@ -60,7 +60,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       originalInventoryQuantity = (variant for variant in product.variants when variant._id is updatedVariantId)[0].inventoryQuantity || 0
       differenceInQty = updatedInventoryQuantity - originalInventoryQuantity
       
-    else if modifier.$pull?.variants
+    else if modifier.$pull?.variants?._id
       removedVariantId = modifier.$pull['variants']._id
       removedVariant = (variant for variant in product.variants when variant._id is removedVariantId)[0]
       # If variant we pulled has a parent (is not the top level option)
@@ -73,7 +73,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
           differenceInQty = -1
       
       else # variant is top level option, no need to cascade updates
-        updatedVariant = null
+        updatedVariant = {parentId: null}
         updatedVariantId = null
         differenceInQty = null
       
@@ -84,7 +84,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
       differenceInQty = 1
       # Flag to let us know if this is the first inventory variant for this option
-      firstInventoryVariant = (variant for variant in product.variants when variant._id is updatedVariantId and variant.type == 'inventory').length > 0
+      firstInventoryVariant = (variant for variant in product.variants when variant._id is updatedVariantId and variant.type == 'inventory').length == 0
       
       if firstInventoryVariant
         differenceInQty = 1 - updatedVariant.inventoryQuantity
@@ -96,22 +96,43 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       differenceInQty = modifier.$addToSet['variants'].$each.length
       
       # Flag to let us know if this is the first inventory variant for this option
-      firstInventoryVariant = (variant for variant in product.variants when variant._id is updatedVariantId and variant.type == 'inventory').length > 0
+      firstInventoryVariant = (variant for variant in product.variants when variant._id is updatedVariantId and variant.type == 'inventory').length == 0
       
       # If this is the first inventory variant, we are replacing old qty with
       # new variant based inventoryQuantity.
-      if firstInventoryVariant
+      if firstInventoryVariant and updatedVariant.inventoryQuantity
         differenceInQty = differenceInQty - updatedVariant.inventoryQuantity
       
       
   
     loop
       break unless updatedVariantId # Check to make sure we have a variant to update
-      updatedQty = updatedVariant.inventoryQuantity + differenceInQty
+      
+      if updatedVariant.inventoryQuantity
+        updatedQty = updatedVariant.inventoryQuantity + differenceInQty
+      else
+        updatedQty = differenceInQty
       Products.direct.update({'_id': product._id, 'variants._id': updatedVariantId}, {$set: {'variants.$.inventoryQuantity': updatedQty }})
       break unless updatedVariant.parentId # Break out of loop if top level variant
       updatedVariantId = updatedVariant.parentId
       updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
+      
+    #TODO: Fix the loop so that it accounts for any combination of inventory
+    # and option variants
+    # loop
+    #   break unless updatedVariantId # Check to make sure we have a variant to update
+    #   childVariants = (variant for variant in product.variants when variant.parentId is updatedVariantId)
+    #   onlyVariant = (childVariants.length == 1 and childVariants[0].type == 'variant')
+    #   if onlyVariant
+    #     updatedQty = modifier.$set?['variants.$']?.inventoryQuantity || childVariants[0].inventoryQuantity + differenceInQty
+    #   else # if updatedVariant.inventoryQuantity
+    #     updatedQty = updatedVariant.inventoryQuantity + differenceInQty
+    #   # else
+    #   #   updatedQty = differenceInQty
+    #   Products.direct.update({'_id': product._id, 'variants._id': updatedVariantId}, {$set: {'variants.$.inventoryQuantity': updatedQty }})
+    #   break unless updatedVariant.parentId # Break out of loop if top level variant
+    #   updatedVariantId = updatedVariant.parentId
+    #   updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
     
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
