@@ -135,10 +135,7 @@ Router.map ->
     data: ->
       if @ready()
         id = @params._id
-        if id.match  /^[A-Za-z0-9]{17}$/
-          return tag: Tags.findOne(id)
-        else
-          return tag: Tags.findOne(slug: id.toLowerCase())
+        return tag : Tags.findOne(slug: id) || Tags.findOne(id)
 
   # product view / edit page
   @route 'product',
