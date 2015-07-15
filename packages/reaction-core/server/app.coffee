@@ -24,7 +24,7 @@ ReactionCore.Events = logger.bunyan.createLogger(
   streams: [
     {
       level: "debug"
-      stream: (unless isDebug is "DEBUG" then logger.bunyanPretty() else process.stdout )
+      stream: (unless isDebug is "DEBUG" then new logger.bunyanPrettyStream(process.stdout) else process.stdout )
     }
   ]
 )
