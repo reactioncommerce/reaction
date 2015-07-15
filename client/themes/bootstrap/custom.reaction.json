@@ -1,5 +1,4 @@
 {"modules": {
-  "core":            true,
   "accounts":        true,
   "cart":            true,
   "dashboard":       true,
