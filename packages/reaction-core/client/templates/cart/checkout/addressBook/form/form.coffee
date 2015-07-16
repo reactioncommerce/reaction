@@ -10,7 +10,7 @@ Template.addressBookForm.helpers
     return options
   statesForCountry: ->
     shop = ReactionCore.Collections.Shops.findOne()
-    selectedCountry = AutoForm.getFieldValue(@._af.formId,"country")
+    selectedCountry = AutoForm.getFieldValue('country')
     unless selectedCountry  
       return false
     unless shop?.locales.countries[selectedCountry].states?  

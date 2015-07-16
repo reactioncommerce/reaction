@@ -296,7 +296,7 @@ Meteor.methods
   updateProductField: (productId, field, value) ->
     check productId, String
     check field, String
-    check value, Match.OneOf(String, Object, Array)
+    check value, Match.OneOf(String, Object, Array, Boolean)
     unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()

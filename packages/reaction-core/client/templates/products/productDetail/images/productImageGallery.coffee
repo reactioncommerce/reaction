@@ -48,6 +48,7 @@ Template.productImageGallery.onRendered ->
 uploadHandler = (event, template) ->
   productId = selectedProductId()
   variantId = selectedVariantId()
+  shopId = selectedProduct().shopId ||  ReactionCore.getShopId()
   userId = Meteor.userId()
   count = Media.find({'metadata.variantId': variantId }).count()
   FS.Utility.eachFile event, (file) ->
@@ -56,7 +57,7 @@ uploadHandler = (event, template) ->
       ownerId: userId
       productId: productId
       variantId: variantId
-      shopId: ReactionCore.getShopId()
+      shopId: shopId
       priority: count
     Media.insert fileObj
     count++

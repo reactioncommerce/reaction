@@ -33,8 +33,15 @@ Meteor.publish 'Sessions', (id) ->
 ###
 # CollectionFS - Image/Video Publication
 ###
-Meteor.publish "Media", ->
-  return Media.find 'metadata.shopId' : ReactionCore.getShopId(@),
+Meteor.publish "Media", (shops) ->
+  check shops, Match.Optional(Array)
+  shopId = ReactionCore.getShopId( @)
+  if shopId
+    selector = {'metadata.shopId': shopId}
+    ## add additional shops
+  if shops
+    selector = {'metadata.shopId': {$in: shops}}
+  return Media.find selector,
     sort : {"metadata.priority" : 1}
 
 ###
@@ -137,7 +144,11 @@ Meteor.publish 'Products', (shops) ->
     ## add additional shops
     if shops
       selector = {shopId: {$in: shops}}
-    unless Roles.userIsInRole(@userId, ['admin','createProduct'], shop._id)
+      ## check if the user is admin in any of the shops
+      for shop in shops
+        if Roles.userIsInRole this.userId, ['admin','createProduct'], shop
+          shopAdmin = true
+    unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id) or shopAdmin
       selector.isVisible = true
     return Products.find(selector)
   else

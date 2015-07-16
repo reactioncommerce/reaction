@@ -123,6 +123,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
+  defaultRoles:
+    type: [String]
+    defaultValue: [ "guest", "account/profile" ]
   createdAt:
     type: Date
     autoValue: ->
