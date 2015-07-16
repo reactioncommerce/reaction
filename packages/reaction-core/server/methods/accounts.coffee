@@ -11,8 +11,9 @@ Accounts.onCreateUser (options, user) ->
   # see: https://github.com/alanning/meteor-roles/issues/79
   unless user.roles
     shopId = ReactionCore.getShopId()
+    shop = ReactionCore.getCurrentShop()
     user.roles = {}
-    user.roles[shopId] = [ "guest", "account/profile" ]
+    user.roles[shopId] = shop.defaultRoles
 
   # TODO: only use accounts for managing profiles
   for service, profile of user.services
