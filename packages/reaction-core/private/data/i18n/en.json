@@ -56,7 +56,10 @@
                     "limitedSupply": "Limited Supply",
                     "publishProductVisible": "is now visible",
                     "publishProductHidden": "is now hidden",
-                    "startTracking": "Start Tracking"
+                    "startTracking": "Start Tracking",
+                    "addBarcode": "Add Barcode",
+                    "quantity": "Quantity",
+                    "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
                 },
                 "productDetailEdit": {
                     "title": "Product title",

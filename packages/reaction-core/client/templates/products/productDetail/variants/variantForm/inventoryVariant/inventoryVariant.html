@@ -16,6 +16,7 @@
         <div class="form-group">
           <h5 data-i18n="productDetail.generateBarcodes">Generate Barcodes</h5>
         </div>
+        {{> bootstrapAlerts placement="generateBarcodes" }}
         <div class="form-group">
           <label for="generate-qty-{{_id}}" class="sr-only" data-i18n="productDetail.quantityAbbreviation">QTY</label>
           <input type="number" class="form-control" id="generate-qty-{{_id}}" name="generateqty" placeholder="{{i18n 'productDetail.quantity' 'Quantity'}}">

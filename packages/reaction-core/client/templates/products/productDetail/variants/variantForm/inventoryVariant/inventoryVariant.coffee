@@ -35,9 +35,11 @@ Template.generateInventoryVariantForm.events
     event.preventDefault()
     productId = selectedProductId()
     qty = event.target.generateqty.value
-    
-    Meteor.call "createInventoryVariants", productId, @._id, qty
-    event.target.generateqty.value = ""
+    if(qty and parseInt(qty) > 0)
+      Meteor.call "createInventoryVariants", productId, @._id, qty
+      event.target.generateqty.value = ""
+    else
+      Alerts.add i18n.t('productDetail.quantityGreaterThanZero'), 'danger', placement: 'generateBarcodes'
     return false
 
 
