@@ -23,7 +23,7 @@ Template.inventoryVariantForm.events
     event.stopPropagation()
     event.preventDefault()
     barcode = @.barcode || "barcode not found"
-    if confirm("Are you sure you want to delete barcode: "+ barcode)
+    if confirm(i18n.t("productDetail.confirmDeleteBarcode") + ": "+ barcode)
       id = @._id
       Meteor.call "deleteVariant", id, (error, result) ->
         if result and selectedVariantId() is id

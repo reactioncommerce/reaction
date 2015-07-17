@@ -1,12 +1,10 @@
 <template name="inventoryVariantForm">
   <tr class="inventory-variant-form" id="{{inventoryVariantFormId}}">
-    <!-- <td> @index </td> -->
     <td>
       <input type="text" class="form-control input-sm inventory-variant-input" value="{{barcode}}" name="barcode" placeholder="Add barcode"/>
     </td>
     <td>
-      <button class="remove-inventory-variant btn btn-danger btn-sm" id="{{removeInventoryVariantId}}">Remove</button>
-      <!-- <i class="fa fa-times-circle remove-inventory-variant" id="{{removeInventoryVariantId}}"></i> -->
+      <button class="remove-inventory-variant btn btn-danger btn-sm" id="{{removeInventoryVariantId}}" data-i18n="productDetail.remove">Remove</button>
     </td>
   </tr>
 </template>
@@ -16,13 +14,13 @@
     <td colspan="7">
       <form class="form-inline generate-inventory-variants-form" id="generateInventoryVariantsForm">
         <div class="form-group">
-          <h5>Generate Barcodes</h5>
+          <h5 data-i18n="productDetail.generateBarcodes">Generate Barcodes</h5>
         </div>
         <div class="form-group">
-          <label for="generate-qty-{{_id}}" class="sr-only">QTY</label>
-          <input type="number" class="form-control" id="generate-qty-{{_id}}" name="generateqty" placeholder="Quantity">
+          <label for="generate-qty-{{_id}}" class="sr-only" data-i18n="productDetail.quantityAbbreviation">QTY</label>
+          <input type="number" class="form-control" id="generate-qty-{{_id}}" name="generateqty" placeholder="{{i18n 'productDetail.quantity' 'Quantity'}}">
         </div>
-        <button type="submit" class="btn btn-success btn-sm generate-barcodes">Generate</button>
+        <button type="submit" class="btn btn-success btn-sm generate-barcodes" data-i18n="productDetail.generate">Generate</button>
       </form>
     </td>
   </tr>
@@ -32,10 +30,10 @@
   <tr>
     <td colspan="7">
       <form class="form-inline add-inventory-variant-form" id="{{addInventoryVariantFormId}}">
-        <h5>Add Inventory</h5>
+        <h5 data-i18n="productDetail.addInventory">Add Inventory</h5>
         <div class="form-group">
-          <label for="add-inventory-variant-barcode-{{_id}}" class="sr-only">Barcode</label>
-          <input type="text" id="add-inventory-variant-barcode-{{_id}}" class="form-control input-sm inventory-variant-input" value="{{barcode}}" name="barcode" placeholder="Add barcode"/>
+          <label for="add-inventory-variant-barcode-{{_id}}" class="sr-only" data-i18n='productDetail.barcode'>Barcode</label>
+          <input type="text" id="add-inventory-variant-barcode-{{_id}}" class="form-control input-sm inventory-variant-input" value="{{barcode}}" name="barcode" placeholder="{{i18n 'productDetail.addBarcode' 'Add Barcode'}}"/>
         </div>
         <input type="submit" class="add-inventory-variant btn btn-primary btn-sm" id="{{addInventoryVariantId}}" value="Add">
       </form>
