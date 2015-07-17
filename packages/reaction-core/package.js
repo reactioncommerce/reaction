@@ -5,20 +5,6 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
-Package.registerBuildPlugin({
-  name: 'theme-configurator',
-  use: [
-    'underscore',
-    'reactioncommerce:core-theme@1.4.0'
-  ],
-  sources: [
-    'server/buildtools/module-definitions.js',
-    'server/buildtools/distributed-configuration.js',
-    'server/buildtools/theme-configurator.js'
-  ],
-  npmDependencies: {}
-});
-
 Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.0');
 
@@ -43,10 +29,7 @@ Package.onUse(function (api) {
 
   //community packages
   api.use("mquandalle:bower@1.3.12_3");
-  api.use("nemo64:bootstrap@3.3.4_2","client");
-  api.use("nemo64:bootstrap@3.3.4_2","server", {'weak': 1});
   api.use("d3js:d3@3.5.5");
-  api.use("fortawesome:fontawesome@4.3.0");
   api.use("mrt:underscore-string-latest@2.3.3");
   api.use("aldeed:geocoder@0.3.6");
   api.use("aldeed:autoform@5.3.0");
