@@ -44,7 +44,7 @@ organizedChildVariants = (product) ->
           variantChildren[currentVariant.parentId] = []
         variantChildren[currentVariant.parentId].push currentVariant
     i++
-  {
+  return {
     children: children
     variantChildren: variantChildren
     inventoryChildren: inventoryChildren
@@ -147,7 +147,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       
     ## Loop through all variants in the ancestor chain for the variant that
     ## we are updating and update the inventory quantity for each one
-    loop
+    while true
       break unless updatedVariantId # Check to make sure we have a variant to update
       runningQty = 0
       
