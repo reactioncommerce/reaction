@@ -94,7 +94,8 @@
                     "submitted": "submitted",
                     "registerGuest": "Hello! Add an email and receive order updates.",
                     "trackYourDelivery": "Order updates will be sent to",
-                    "noOrdersFound": "No orders found."
+                    "noOrdersFound": "No orders found.",
+                    "adminMessage": "You are viewing orders as an administrator"
                 },
                 "checkoutLogin": {
                     "loginCompleted": "Account completed",

@@ -1,16 +1,5 @@
 <template name="cartCompleted">
-{{#if hasDashboardAccess}}
-<div class="alert alert-info" data-dismiss="alert">
-  <i class="fa fa-th fa-lg"></i>
-  <span data-i18n="cartCompleted.adminMessage">
-    As an administrator, you are viewing the 25 most recent orders.
-  </span>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-
-{{else}}
+<div class="cart-completed-orders">
   <div class="row">
     <div class="well completed-order-confirmation">
       <h3><span data-i18n="cartCompleted.thankYou">Thank you!</span></h3>
@@ -35,8 +24,9 @@
       </div>
     </div>
   </div>
-{{/if}}
-<div class="row">
-  {{> dashboardOrdersList}}
+
+  <div class="row">
+    {{> dashboardOrdersList}}
+  </div>
 </div>
 </template>
