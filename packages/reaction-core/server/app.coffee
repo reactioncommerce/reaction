@@ -18,13 +18,14 @@ if isDebug is true or ( process.env.NODE_ENV is "development" and isDebug isnt f
     isDebug = "WARN"
 
 # Define bunyan levels and output to Meteor console
+formatOut = logger.format({ outputMode: 'short' })
 ReactionCore.Events = logger.bunyan.createLogger(
   name: "core"
   serializers: logger.bunyan.stdSerializers
   streams: [
     {
       level: "debug"
-      stream: (unless isDebug is "DEBUG" then new logger.bunyanPrettyStream(process.stdout) else process.stdout )
+      stream: (unless isDebug is "DEBUG" then formatOut else process.stdout )
     }
   ]
 )
@@ -81,7 +82,7 @@ _.extend ReactionCore,
   hasDashboardAccess: (client) ->
     dashboardPermissions = ['owner','admin','dashboard']
     return @hasPermission dashboardPermissions
- 
+
   # return the logged in user's shop[s] if he owns any or if he is an admin -> used in multivendor
   getSellerShopId: (client) ->
     return Roles.getGroupsForUser Meteor.userId(), 'admin'
