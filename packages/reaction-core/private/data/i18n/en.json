@@ -55,8 +55,8 @@
                     "backOrder": "Backorder",
                     "limitedSupply": "Limited Supply",
                     "publishProductVisible": "is now visible",
-                    "publishProductHidden": "is now hidden"
-                    "startTracking": "Start Tracking",
+                    "publishProductHidden": "is now hidden",
+                    "startTracking": "Start Tracking"
                 },
                 "productDetailEdit": {
                     "title": "Product title",
