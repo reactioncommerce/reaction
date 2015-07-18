@@ -23,7 +23,7 @@ Template.inventoryVariantForm.events
     event.stopPropagation()
     event.preventDefault()
     barcode = @.barcode || "barcode not found"
-    if confirm("Are you sure you want to delete barcode: "+ barcode)
+    if confirm(i18n.t("productDetail.confirmDeleteBarcode") + ": "+ barcode)
       id = @._id
       Meteor.call "deleteVariant", id, (error, result) ->
         if result and selectedVariantId() is id
@@ -35,9 +35,11 @@ Template.generateInventoryVariantForm.events
     event.preventDefault()
     productId = selectedProductId()
     qty = event.target.generateqty.value
-    
-    Meteor.call "createInventoryVariants", productId, @._id, qty
-    event.target.generateqty.value = ""
+    if(qty and parseInt(qty) > 0)
+      Meteor.call "createInventoryVariants", productId, @._id, qty
+      event.target.generateqty.value = ""
+    else
+      Alerts.add i18n.t('productDetail.quantityGreaterThanZero'), 'danger', placement: 'generateBarcodes'
     return false
 
 

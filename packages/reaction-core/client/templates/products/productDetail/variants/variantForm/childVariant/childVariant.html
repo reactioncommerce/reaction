@@ -20,7 +20,7 @@
        {{#if hasInventoryVariants}}
          <button id="edit-inventory-variants-{{_id}}" class="edit-inventory-variants btn-small btn-primary btn">{{editInventoryToggleText}}</button>
        {{else}}
-         <button id="edit-inventory-variants-{{_id}}" class="init-inventory-variants btn-small btn-primary btn">Start Tracking</button>
+         <button id="edit-inventory-variants-{{_id}}" class="init-inventory-variants btn-small btn-primary btn" data-i18n="productDetail.startTracking">Start Tracking</button>
        {{/if}}
      </td>
      <td>
@@ -33,8 +33,7 @@
         <table class="inventory-variant-table table table-striped">
           <thead>
             <tr>
-              <!-- <th></th> -->
-              <th>Barcode</th>
+              <th data-i18n="productDetail.barcode">Barcode</th>
               <th></th>
             </tr>
           </thead>

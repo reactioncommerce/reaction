@@ -3,6 +3,7 @@ Meteor.methods
   # the cloneVariant method copies variants, but will also create and clone child variants (options)
   # productId,variantId to clone
   # add parentId to create children
+  # Note: parentId and variantId can be the same if creating a child variant.
   ###
   cloneVariant: (productId, variantId, parentId) ->
     check productId, String

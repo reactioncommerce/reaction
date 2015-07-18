@@ -18,9 +18,9 @@ Template.childVariantForm.helpers
   
   editInventoryToggleText: () ->
     if Session.get("showInventoryVariants"+@._id)
-      return "Hide Barcodes"
+      return i18n.t("productDetail.hideBarcodes")
     else
-      return "Show Barcodes"
+      return i18n.t("productDetail.showBarcodes")
 
 Template.childVariantForm.events
   "click .child-variant-form :input, click li": (event,template) ->
