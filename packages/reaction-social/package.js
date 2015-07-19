@@ -1,13 +1,13 @@
 Package.describe({
   summary: "Reaction Social - Social Sharing Package for Reaction",
   name: "reactioncommerce:reaction-social",
-  version: "0.2.0",
+  version: "0.2.1",
   git: "https://github.com/reactioncommerce/reaction-social.git"
 });
 
 Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
-  api.use("meteor-platform@1.2.2");
+  api.use("meteor-platform");
   api.use("templating");
   api.use("coffeescript");
   api.use("less");
