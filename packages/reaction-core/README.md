@@ -15,6 +15,7 @@ If this is a newly created Meteor project:
 meteor remove insecure
 meteor remove autopublish
 meteor add nemo64:bootstrap
+meteor add reactioncommerce:bootstrap-theme
 ```
 
 Create [client/themes/bootstrap/custom.reaction.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.reaction.json) and [client/themes/bootstrap/custom.bootstrap.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.bootstrap.json). These files configure the default LESS theme.
