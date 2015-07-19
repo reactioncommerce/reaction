@@ -1,38 +1,50 @@
-#Reaction Commerce
-A commerce platform developed with Meteor, Node.js, MongoDB, CoffeeScript with a reactive,real-time design that puts usability and conversions first.
+#Reaction
+[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction)
+[![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+The Reaction commerce platform provides a reactive, real-time architecture and design that puts usability and user experience on the same priority as the development experience.
+
+Reaction is a Meteor application built with Meteor, Node.js, MongoDB, Javascript and CoffeeScript.
+
+See: [Package Repository for Reaction] (https://atmospherejs.com/?q=reactioncommerce)
 
 ##Installation
-Node.js + NPM is required. Install from http://nodejs.org/
-
+```
+Node.js and NPM are required. Install from http://nodejs.org/
+```
 To install Meteor + Reaction, and start the latest release:
 
 ```bash
-curl -L http://getrxn.io/installreaction | /bin/sh
+curl https://install.meteor.com | /bin/sh
+git clone https://github.com/reactioncommerce/reaction.git
+cd reaction && git checkout master
+meteor
 ```
 
-This terminal command executes [this file](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
+There is also an executable [script that you run](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
+
+*Note: for windows installation you also need:*
+
+- OpenSSL
+- Visual Studio 2008 redistributables
+- Git + mysgit
+- ImageMagick
+
 
 
 ##Demonstration
 
-At [reactioncommerce.com](https://reactioncommerce.com) you can launch a test shop, launched as a Docker container.
+At [reactioncommerce.com](https://reactioncommerce.com) you can launch a test shop, launched as a Docker container. These test shops help us gather feedback for Reaction development, as well as testing deployment approaches.
 
-*Note: These are test shops, and not for production.*
-
-Test shops help us gather feedback for Reaction development, as well as testing [Launchdock](https://github.com/ongoworks/launchdock), the docker container management application we are building to deploy Reaction shops with.
-
+*Note: These are test shops, and not for production, and are not persistent.*
 
 ##Status
-![](https://circleci.com/gh/reactioncommerce/reaction.svg?style=badge&circle-token=:circle-token)
-[![Stories in Ready](https://badge.waffle.io/reactioncommerce/reaction.svg?label=ready&title=Ready)](http://waffle.io/reactioncommerce/reaction)
 
-**Current status: Alpha Preview**
+**Current status: Pre-Beta**
 
-**Functional but unstable, with HEAVY ongoing development!**
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development! 
 
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
-
-The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
+The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any `master` repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
 
 ##Roadmap
 As with all development, some items are ahead of schedule, and some are not. Here's how to get the details:
@@ -44,6 +56,15 @@ For grouping of development channels by feature see project milestones: https://
 *note: progress indicators highly volatile indicators at the moment*
 
 And finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
+
+##Feedback
+**GitHub Issues**
+Best way to let us know is to use GitHub issues on the [Reaction](https://github.com/reactioncommerce/reaction) project.
+
+**Chat Room**
+
+>  Join us on our [Gitter chat room](https://gitter.im/reactioncommerce/reaction) to discuss, communicate, and share community support.
+
 
 ##Core Vision
 
@@ -63,19 +84,10 @@ And finally for the kanban-esque, hardcore real time progress view, take a look 
 * Migration paths from existing commerce platforms (Magento, Shopify, BigCommerce)
 * reactioncommerce:core package can be used as a package in meteor applications
 * Designer and developer friendly!
-    * HTML/CSS/Javascript or CoffeeScript knowledge should be sufficient for customization.
+    * HTML/CSS/Javascript or CoffeeScript knowledge should be sufficient for customization. *ES6 / ECMAScript 2015 migration in the near future.*
     * Commercial package and theme development encouraged.
     * All contributors should be rewarded. [please contact us](mailto:hello@ongoworks.com)
 
-
-#Feedback
-###GitHub Issues
-Our preferred method for Reaction feedback it that you use GitHub issues on the https://github.com/reactioncommerce/reaction project.
-
-### Chat Room
-Join us on our Gitter chat room, discuss, get help.
-
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 #Developer Documentation
 
