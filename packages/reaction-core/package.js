@@ -110,12 +110,13 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.addFiles([
+    "server/logger.coffee",
+    "server/fixtures.coffee",
     "server/app.coffee",
     "server/browserPolicy.coffee",
     "server/register.coffee",
     "server/security.coffee",
     "server/publications.coffee",
-    "server/fixtures.coffee",
     "server/factories.coffee",
     "server/methods/accounts.coffee",
     "server/methods/cart.coffee",
@@ -430,12 +431,13 @@ Package.onUse(function (api) {
 
 Package.onTest(function(api) {
   api.use('sanjo:jasmine@0.14.0');
-  api.use('velocity:html-reporter@0.6.2');
+  api.use('velocity:html-reporter@0.7.0');
   api.use('velocity:console-reporter@0.1.1');
   api.use('reactioncommerce:core');
   api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
   api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/server/integration/accountsSpec.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/shop.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
 });

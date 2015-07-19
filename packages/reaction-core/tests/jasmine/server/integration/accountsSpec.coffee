@@ -2,13 +2,13 @@ Accounts = ReactionCore.Collections.Accounts
 
 fakeAddress = {
   fullName: 'Fake Name'
-  address1: 'Fake Address'
-  address2: '123'
+  address1: '123 Fake Address'
+  address2: 'Ste. 123'
   city: 'Vegas'
   company: 'Fake Company'
   phone: '7195555555'
   region: 'FakeRegion'
-  postal: '80903'
+  postal: '80903-4044'
   country: 'USA'
   isCommercial: false
   isShippingDefault: true
@@ -35,13 +35,13 @@ describe "Account Meteor method ", ->
       account2 = Factory.create 'account'
       spyOn(Meteor, 'userId').and.returnValue account1._id
       spyOn(Accounts, 'update')
-      
+
       Meteor.call 'addressBookAdd', fakeAddress, account2._id
-      
+
       # expect(Accounts.update).not.toHaveBeenCalled()
 
       done()
-      
+
   describe 'inviteShopMember', ->
 
     beforeEach ->
@@ -51,22 +51,19 @@ describe "Account Meteor method ", ->
       spyOn(ReactionCore, 'hasOwnerAccess').and.returnValue false
       account = Factory.create 'account'
       shop = Factory.create 'shop'
-      spyOn(Shops, 'update')
-      Meteor.call "inviteShopMember", shop._id, 'newUser@example.com', 'New User'
-      expect(Shops.update).not.toHaveBeenCalled()
+      testerEmail = shop.emails[1]?.address || 'mailtest@reactioncommerce.org'
+      spyOn(Accounts, 'update')
+      expect(-> Meteor.call "inviteShopMember", shop._id, testerEmail, 'Illegitimate User').toThrow()
+      expect(Accounts.update).not.toHaveBeenCalled()
       done()
-      
+
     it 'should add a user to the shop with Owner Access', (done) ->
       spyOn(ReactionCore, 'hasOwnerAccess').and.returnValue true
       account = Factory.create 'account'
       shop = Factory.create 'shop'
-      spyOn(Shops, 'update')
-      
-      # Currently this test fails if email is not setup.
-      # Expect this to throw error regarding email not being configured.
-      expect(-> Meteor.call "inviteShopMember", shop._id, 'newUser@example.com', 'New User').toThrow()
-      # Doesn't get called b/c of error with emails
-      # expect(Shops.update).toHaveBeenCalled()
-      # newUser = Meteor.users.findOne({email: 'newUser@example.com'})
-      # expect(_.contains(Shops.findOne(shop._id).members, newUser._id)).toBe true
+      testerEmail = shop.emails[1]?.address || 'mailtest@reactioncommerce.org'
+
+      # spyOn(Accounts, 'update')
+      expect(-> Meteor.call "inviteShopMember", shop._id, testerEmail, 'Test User').not.toThrow()
+      # expect(Accounts.update).toHaveBeenCalled()
       done()

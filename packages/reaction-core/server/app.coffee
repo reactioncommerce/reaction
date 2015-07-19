@@ -1,41 +1,18 @@
 ###
-# configure bunyan logging module for reaction server
-# See: https://github.com/trentm/node-bunyan#levels
+# Application Startup
+# ReactionCore Server Configuration
 ###
-isDebug = Meteor.settings.isDebug
-
-# acceptable levels
-levels = ["FATAL","ERROR","WARN", "INFO", "DEBUG", "TRACE"]
-
-#
-# if debug is true, or NODE_ENV development environment and not false
-# set to lowest level, or any defined level set to level
-#
-if isDebug is true or ( process.env.NODE_ENV is "development" and isDebug isnt false )
-  # set logging levels from settings
-  if typeof isDebug isnt 'boolean' and typeof isDebug isnt 'undefined' then isDebug = isDebug.toUpperCase()
-  unless _.contains levels, isDebug
-    isDebug = "WARN"
-
-# Define bunyan levels and output to Meteor console
-formatOut = logger.format({ outputMode: 'short' })
-ReactionCore.Events = logger.bunyan.createLogger(
-  name: "core"
-  serializers: logger.bunyan.stdSerializers
-  streams: [
-    {
-      level: "debug"
-      stream: (unless isDebug is "DEBUG" then formatOut else process.stdout )
-    }
-  ]
-)
-# set bunyan logging level
-ReactionCore.Events.level(isDebug)
 
 ###
 # ReactionCore methods (server)
 ###
 _.extend ReactionCore,
+  init: ->
+    self = @
+    ReactionRegistry.loadFixtures()
+    ReactionCore.configureMailUrl()
+    return self
+
   getCurrentShopCursor: (client) ->
     domain = @getDomain(client)
     cursor = Shops.find({domains: domain}, {limit: 1})
@@ -86,3 +63,29 @@ _.extend ReactionCore,
   # return the logged in user's shop[s] if he owns any or if he is an admin -> used in multivendor
   getSellerShopId: (client) ->
     return Roles.getGroupsForUser Meteor.userId(), 'admin'
+
+  # sets the shop mail server auth info
+  # load priority: param, shop data, enviroment, settings
+  configureMailUrl: (user, password, host, port) ->
+    shopMail = ReactionCore.Collections.Packages.findOne({shopId: @getShopId(), name: "core"}).settings.mail
+
+    if user and password and host and port
+      return process.env.MAIL_URL = Meteor.settings.MAIL_URL = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/"
+
+    else if shopMail.user and shopMail.password and shopMail.host and shopMail.port
+      ReactionCore.Events.info "setting default mail url to: " + shopMail.host
+      return process.env.MAIL_URL =
+        Meteor.settings.MAIL_URL =
+          "smtp://" + shopMail.user + ":" + shopMail.password + "@" + shopMail.host + ":" + shopMail.port + "/"
+
+    unless Meteor.settings.MAIL_URL or process.env.MAIL_URL
+      ReactionCore.Events.warn 'Mail server not configured. Unable to send email.'
+      return false
+
+###
+# Execute start up fixtures
+###
+Meteor.startup ->
+  # notifiy that we're done with initialization
+  ReactionCore.init()
+  ReactionCore.Events.info "Reaction Commerce initialization finished. "

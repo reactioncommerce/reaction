@@ -30,19 +30,6 @@ Accounts.onCreateUser (options, user) ->
   return user
 
 ###
-# sets the shop mail server auth info
-###
-@setMailUrlForShop = (shop) ->
-  coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
-  if coreMail.user and coreMail.password
-    mailUrl = "smtp://" + coreMail.user + ":" + coreMail.password + "@" + coreMail.host + ":" + coreMail.port + "/"
-    process.env.MAIL_URL = process.env.MAIL_URL || mailUrl
-  else
-    ReactionCore.Events.warn 'Core Mail Settings not set. Unable to send email.'
-    throw new Meteor.Error( 403, '<a href="/dashboard/settings/shop#mail">Core Mail Settings</a> not set. Unable to send email.')
-    return
-
-###
 # Account Methods
 ###
 Meteor.methods
@@ -123,6 +110,9 @@ Meteor.methods
     check name, String
     @unblock()
 
+    unless ReactionCore.hasOwnerAccess()
+      throw new Meteor.Error 403, "Access denied."
+
     shop = Shops.findOne shopId
     if shop and email and name
       if ReactionCore.hasOwnerAccess(shop)
@@ -143,41 +133,45 @@ Meteor.methods
                 email: email
                 when: new Date()
 
-          setMailUrlForShop(shop)
           SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
-          Email.send
-            to: email
-            from: currentUserName + " <" + shop.emails[0] + ">"
-            subject: "You have been invited to join " + shop.name
-            html: SSR.render 'shopMemberInvite',
-              homepage: Meteor.absoluteUrl()
-              shop: shop
-              currentUserName: currentUserName
-              invitedUserName: name
-              url: Accounts.urls.enrollAccount(token)
-        else # user exist, send notification
-          setMailUrlForShop(shop)
+          try
+            Email.send
+              to: email
+              from: currentUserName + " <" + shop.emails[0] + ">"
+              subject: "You have been invited to join " + shop.name
+              html: SSR.render 'shopMemberInvite',
+                homepage: Meteor.absoluteUrl()
+                shop: shop
+                currentUserName: currentUserName
+                invitedUserName: name
+                url: Accounts.urls.enrollAccount(token)
+          catch
+            throw new Meteor.Error 403, "Unable to send invitation email."
+        # existing user, send notification
+        else
           SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
-          Email.send
-            to: email
-            from: currentUserName + " <" + shop.emails[0] + ">"
-            subject: "You have been invited to join the " + shop.name
-            html: SSR.render 'shopMemberInvite',
-              homepage: Meteor.absoluteUrl()
-              shop: shop
-              currentUserName: currentUserName
-              invitedUserName: name
-              url: Meteor.absoluteUrl()
+          try
+            Email.send
+              to: email
+              from: currentUserName + " <" + shop.emails[0] + ">"
+              subject: "You have been invited to join the " + shop.name
+              html: SSR.render 'shopMemberInvite',
+                homepage: Meteor.absoluteUrl()
+                shop: shop
+                currentUserName: currentUserName
+                invitedUserName: name
+                url: Meteor.absoluteUrl()
+          catch
+            throw new Meteor.Error 403, "Unable to send invitation email."
 
   ###
   # send an email to consumers on sign up
   ###
-  sendWelcomeEmail: (shop) ->
+  sendWelcomeEmail: (shopId, userId) ->
     check shop, Object
     @unblock()
 
-    email = Meteor.user().emails[0].address
-    setMailUrlForShop(shop)
+    email = Meteor.user(userId).emails[0].address
     SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'))
     Email.send
       to: email
@@ -187,6 +181,7 @@ Meteor.methods
         homepage: Meteor.absoluteUrl()
         shop: shop
         user: Meteor.user()
+    return true
 
   ###
   # @summary addUserPermissions
