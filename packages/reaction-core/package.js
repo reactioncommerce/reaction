@@ -47,8 +47,8 @@ Package.onUse(function (api) {
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.3", 'client');
   api.use("risul:moment-timezone",'client');
-  api.use("sacha:spin@2.3.1", "client");
-  api.use("sacha:avatar@0.7.7");
+  api.use("utilities:spin@2.3.1", "client");
+  api.use("utilities:avatar@0.7.15");
 
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.2");
@@ -79,8 +79,8 @@ Package.onUse(function (api) {
   api.imply("matb33:collection-hooks");
   api.imply("alanning:roles");
   api.imply("momentjs:moment", ["client"]);
-  api.imply("sacha:spin" ["client"]);
-  api.imply("sacha:avatar");
+  api.imply("utilities:spin" ["client"]);
+  api.imply("utilities:avatar");
   api.imply("dburles:factory");
   api.imply("anti:fake");
   api.imply("ongoworks:speakingurl");
