@@ -17,5 +17,4 @@ dependencies:
 
 test:
   override:
-    - cd $HOME/reaction && JASMINE_BROWSER=PhantomJS JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --allow-incompatible-update --once
-
+    - cd $HOME/reaction && VELOCITY_CI=1 JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --release velocity:METEOR@1.1.0.2_3 --allow-incompatible-update
