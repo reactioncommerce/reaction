@@ -110,14 +110,13 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.addFiles([
-    "server/logger.coffee",
-    "server/fixtures.coffee",
     "server/app.coffee",
     "server/browserPolicy.coffee",
     "server/register.coffee",
     "server/security.coffee",
     "server/publications.coffee",
     "server/factories.coffee",
+    "server/fixtures.coffee",
     "server/methods/accounts.coffee",
     "server/methods/cart.coffee",
     "server/methods/orders.coffee",
