@@ -8,10 +8,11 @@
 ###
 _.extend ReactionCore,
   init: ->
-    self = @
-    ReactionRegistry.loadFixtures()
-    ReactionCore.configureMailUrl()
-    return self
+    try
+      ReactionRegistry.loadFixtures()
+    catch e
+      throw new Meteor.Error 200, e
+    return true
 
   getCurrentShopCursor: (client) ->
     domain = @getDomain(client)
@@ -68,17 +69,19 @@ _.extend ReactionCore,
   # load priority: param, shop data, enviroment, settings
   configureMailUrl: (user, password, host, port) ->
     shopMail = ReactionCore.Collections.Packages.findOne({shopId: @getShopId(), name: "core"}).settings.mail
-
+    # use configurMailUrl as a function
     if user and password and host and port
-      return process.env.MAIL_URL = Meteor.settings.MAIL_URL = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/"
-
+      return process.env.MAIL_URL = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/"
+    # shops configuration
     else if shopMail.user and shopMail.password and shopMail.host and shopMail.port
       ReactionCore.Events.info "setting default mail url to: " + shopMail.host
       return process.env.MAIL_URL =
-        Meteor.settings.MAIL_URL =
           "smtp://" + shopMail.user + ":" + shopMail.password + "@" + shopMail.host + ":" + shopMail.port + "/"
-
-    unless Meteor.settings.MAIL_URL or process.env.MAIL_URL
+    # Meteor.settings isn't standard, if you add it, respect over default
+    else if Meteor.settings.MAIL_URL and not process.env.MAIL_URL
+      return process.env.MAIL_URL = Meteor.settings.MAIL_URL
+    # default meteor env config
+    unless process.env.MAIL_URL
       ReactionCore.Events.warn 'Mail server not configured. Unable to send email.'
       return false
 

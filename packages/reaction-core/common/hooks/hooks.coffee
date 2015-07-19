@@ -49,16 +49,26 @@ organizedChildVariants = (product) ->
     variantChildren: variantChildren
     inventoryChildren: inventoryChildren
   }
-  
+
 ###
 # Collection Hooks
 # See: https://github.com/matb33/meteor-collection-hooks
 ###
 
 #
+# refresh mail configuration on package change
+#
+ReactionCore.Collections.Packages.after.update (userId, doc, fieldNames, modifier, options) ->
+  if modifier.$set?.settings?.mail or modifier.$set['settings.mail.user']
+    if Meteor.isServer
+      ReactionCore.configureMailUrl() # set email configuration
+
+
+
+#
 # create unpublished product
 #
-Products.before.insert (userId, product) ->
+ReactionCore.Collections.Products.before.insert (userId, product) ->
   product.shopId = product.shopId || ReactionCore.getShopId() # avoid calling if present
   _.defaults(product,
     productType: "Simple"
@@ -73,7 +83,7 @@ Products.before.insert (userId, product) ->
 ###
 # On product update
 ###
-Products.before.update (userId, product, fieldNames, modifier, options) ->
+ReactionCore.Collections.Products.before.update (userId, product, fieldNames, modifier, options) ->
   #set default variants
   updatedAt: new Date()
   if modifier.$push
@@ -91,16 +101,16 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
   modifier.$addToSet?.variants?.$each?[0].type is 'inventory' or
   modifier.$addToSet?.variants?.type is 'inventory' or
   modifier.$pull?.variants?._id
-  
+
     organizedChildren = organizedChildVariants(product)
-    
+
     if modifier.$set?['variants.$']
       updatedVariantId = modifier.$set['variants.$']._id
       updatedVariant = modifier.$set['variants.$']
       updatedInventoryQuantity = modifier.$set['variants.$'].inventoryQuantity
       originalInventoryQuantity = (variant for variant in product.variants when variant._id is updatedVariantId)[0].inventoryQuantity || 0
       differenceInQty = updatedInventoryQuantity - originalInventoryQuantity
-      
+
     else if modifier.$pull?.variants?._id
       removedVariantId = modifier.$pull['variants']._id
       removedVariant = (variant for variant in product.variants when variant._id is removedVariantId)[0]
@@ -112,12 +122,12 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
           differenceInQty = -removedVariant.inventoryQuantity
         else
           differenceInQty = -1
-      
+
       else # variant is top level option, no need to cascade updates
         updatedVariant = {parentId: null}
         updatedVariantId = null
         differenceInQty = null
-      
+
     else if modifier.$addToSet?.variants?.type is 'inventory'
       # Add single variant of type inventory to an existing parent
       # find by parentId
@@ -126,47 +136,47 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       differenceInQty = 1
       # Flag to let us know if this is the first inventory variant for this option
       firstInventoryVariant = (variant for variant in product.variants when variant.parentId is updatedVariantId and variant.type == 'inventory').length is 0
-      
+
       if firstInventoryVariant
         differenceInQty = 1 - updatedVariant.inventoryQuantity
-      
+
     else if modifier.$addToSet?.variants?.$each[0].type = 'inventory'
       # Add multiple variants of type inventory to an existing parent
       updatedVariantId = modifier.$addToSet['variants'].$each[0].parentId
       updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
       differenceInQty = modifier.$addToSet['variants'].$each.length
-      
+
       # Flag to let us know if this is the first inventory variant for this option
       firstInventoryVariant = (variant for variant in product.variants when variant.parentId is updatedVariantId and variant.type == 'inventory').length is 0
-      
+
       # If this is the first inventory variant, we are replacing old qty with
       # new variant based inventoryQuantity.
       if firstInventoryVariant and updatedVariant.inventoryQuantity
         differenceInQty = differenceInQty - updatedVariant.inventoryQuantity
-      
-      
+
+
     ## Loop through all variants in the ancestor chain for the variant that
     ## we are updating and update the inventory quantity for each one
     while true
       break unless updatedVariantId # Check to make sure we have a variant to update
       runningQty = 0
-      
+
       # If the current `updatedVariant` has children with type `'variant'`
       # add up the totals of all of it's variant children
       if organizedChildren.variantChildren[updatedVariantId]?.constructor is Array
         runningQty += organizedChildren.variantChildren[updatedVariantId].reduce ((total, child) ->
           total + (child.inventoryQuantity || 0)
         ), 0
-      
+
       # If the current `updatedVariant` has children with type `'inventory'`
       # add the count of inventory variants that it has to it's total
       if organizedChildren.inventoryChildren[updatedVariantId]?.length
         runningQty += organizedChildren.inventoryChildren[updatedVariantId].length
-      
+
       # Account for change in qty to just updated variant
       if differenceInQty
         runningQty += differenceInQty
-      
+
       # If this variant has _no children_, we need to add the difference in qty
       # to the current `inventoryQuantity`
       unless organizedChildren.children[updatedVariantId]
@@ -177,7 +187,7 @@ Products.before.update (userId, product, fieldNames, modifier, options) ->
       updatedVariantId = updatedVariant.parentId
       updatedVariant = (variant for variant in product.variants when variant._id is updatedVariantId)[0]
   ## End InventoryQuantity Update Loop
-    
+
   unless _.indexOf(fieldNames, 'positions') is -1
     addToSet = modifier.$addToSet?.positions
     if addToSet
