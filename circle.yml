@@ -1,18 +1,13 @@
 machine:
   node:
     version: 0.10.36
-  services:
-    - mongodb
 
 dependencies:
   cache_directories:
     - "~/.meteor"
   pre:
     - meteor || curl https://install.meteor.com | /bin/sh
-
-checkout:
-  post:
-    - cd bin && clone-packages.sh
+    - cd $HOME/$CIRCLE_PROJECT_REPONAME/bin && ./clone-packages.sh
 
 test:
   override:
