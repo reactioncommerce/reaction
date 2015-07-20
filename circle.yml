@@ -11,4 +11,4 @@ dependencies:
 
 test:
   override:
-    - $HOME/$CIRCLE_PROJECT_REPONAME && VELOCITY_CI=1 JASMINE_BROWSER=PhantomJS JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --once --allow-incompatible-update
+    - cd $HOME/$CIRCLE_PROJECT_REPONAME && VELOCITY_CI=1 JASMINE_BROWSER=PhantomJS JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --once --allow-incompatible-update
