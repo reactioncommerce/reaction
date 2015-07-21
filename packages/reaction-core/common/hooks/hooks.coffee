@@ -59,7 +59,7 @@ organizedChildVariants = (product) ->
 # refresh mail configuration on package change
 #
 ReactionCore.Collections.Packages.after.update (userId, doc, fieldNames, modifier, options) ->
-  if modifier.$set?.settings?.mail or modifier.$set['settings.mail.user']
+  if modifier.$set?.settings?.mail or ( modifier.$set? and modifier.$set['settings.mail.user'])
     if Meteor.isServer
       ReactionCore.configureMailUrl() # set email configuration
 
