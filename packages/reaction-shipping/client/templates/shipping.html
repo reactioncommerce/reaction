@@ -256,12 +256,10 @@
       {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
       <li class="list-group-item autoform-array-item">
         <div class="row">
-          <div class="col-sm-11">
-            {{> afQuickField name=this.name label=false options="auto" template=../atts.name}}
-          </div>
-          <div class="col-sm-1">
+          {{> afQuickField name=this.name label=false options=afOptionsFromSchema template=../atts.name}}
+          <div class="col-sm-12">
             {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-              <span class="pull-right autoform-remove-item"><span class="fa fa-minus-square-o fa-lg"></span></span>
+              <span class="pull-right"><span class="fa fa-trash-o fa-lg"></span></span>
             {{/if}}
           </div>
         </div>
@@ -275,41 +273,50 @@
 
 <template name="afObjectField_validRanges">
       {{#if afFieldIsInvalid name=this.atts.name}}
-      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
       {{/if}}
-      {{> afQuickFields name=this.atts.name}}
+      {{> afQuickFields name=this.name}}
 </template>
 
 
 <template name="afObjectField_validLocales">
-      {{#if afFieldIsInvalid name=this.atts.name}}
-      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      {{#if afFieldIsInvalid name=this.name}}
+      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
       {{/if}}
-      {{> afQuickFields name=this.atts.name}}
+      {{> afQuickFields name=this.name}}
 </template>
 
 
 <template name="afFormGroup_validRanges">
-  <div class="col-sm-5">
-    <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+  <div class="col-sm-12">
+    <div class="form-group {{#if afFieldIsInvalid name=this.name}}has-error{{/if}}">
       {{#unless skipLabel}}
-      <label {{bsFieldLabelAtts}}>{{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.atts.name}}{{/if}}</label>
+      <div>
+        <label {{bsFieldLabelAtts}}>
+          {{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.name}}{{/if}}
+        </label>
+      </div>
       {{/unless}}
       {{> afFieldInput this.afFieldInputAtts}}
-      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
     </div>
   </div>
 </template>
 
 
 <template name="afFormGroup_validLocales">
-  <div class="col-sm-3">
-    <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+  <div class="col-md-12">
+    <div class="form-group {{#if afFieldIsInvalid name=this.name}}has-error{{/if}}">
       {{#unless skipLabel}}
-      <label {{bsFieldLabelAtts}}>{{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.atts.name}}{{/if}}</label>
+      <div>
+      {{this.name}}
+        <label {{bsFieldLabelAtts}}>
+          {{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.name}}{{/if}}
+        </label>
+      </div>
       {{/unless}}
       {{> afFieldInput this.afFieldInputAtts}}
-      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      <p class="help-block">{{{afFieldMessage name=this.name}}}</p>
     </div>
   </div>
 </template>
