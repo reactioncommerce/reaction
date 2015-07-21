@@ -3041,6 +3041,7 @@
             "KG": {
                 "name": "Kilograms"
             }
-        }
+        },
+        "defaultRoles": [ "guest", "account/profile" ]
     }
 ]

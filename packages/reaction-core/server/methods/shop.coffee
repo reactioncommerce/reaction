@@ -21,15 +21,12 @@ Meteor.methods
     adminRoles  = Roles.getRolesForUser(currentUser, ReactionCore.getShopId())
 
     try
-      shop =  Factory.create 'shop', shop
+      shop = Factory.create 'shop', shop
+      ReactionCore.Events.warn "Created shop: ", shop._id
       Roles.addUsersToRoles [currentUser, userId], adminRoles, shop._id
-      return shop._id
-
     catch e
       ReactionCore.Events.warn "Failed to createShop", e
-
-    return
-
+    return shop._id
   ###
   # determine user's countryCode and return locale object
   ###
@@ -68,6 +65,8 @@ Meteor.methods
             # TODO Add some alternate configurable services like Open Exchange Rate
             rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency
             exchangeRate = HTTP.get rateUrl
+            unless exchangeRate
+              ReactionCore.Events.warn "Failed to fetch rate exchange rates."
             result.currency.exchangeRate = exchangeRate.data
           return result #returning first match.
 
