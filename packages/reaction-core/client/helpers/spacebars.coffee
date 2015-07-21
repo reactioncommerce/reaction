@@ -62,8 +62,9 @@ Template.registerHelper "pathForSEO", (path, params) ->
 #
 Template.registerHelper "displayName", (user) ->
   userSub = Meteor.subscribe "UserProfile", user?._id || Meteor.userId()
+  userId = user?._id || Meteor.userId()
   if userSub.ready()
-    user = Meteor.users.findOne() unless user
+    user = Meteor.users.findOne(userId) unless user
     # every social channel is different
     # legacy profile name
     if user and user.profile and user.profile.name
