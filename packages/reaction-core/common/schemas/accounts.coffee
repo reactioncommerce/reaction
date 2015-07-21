@@ -76,11 +76,11 @@ ReactionCore.Schemas.Accounts = new SimpleSchema
     optional: true
     regEx: SimpleSchema.RegEx.Id
     index: 1
-  sessions:
+  sessions: #review using users for guest checkout
     type: [String]
     optional: true
     index: 1
-  shopId:
+  shopId: #review shopId, should this be a lookup on roles?
     type: String
     autoValue: ReactionCore.shopIdAutoValue
     regEx: SimpleSchema.RegEx.Id

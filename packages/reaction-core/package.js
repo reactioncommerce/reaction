@@ -428,16 +428,18 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 });
 
-
 Package.onTest(function(api) {
   api.use('sanjo:jasmine@0.14.0');
   api.use('velocity:html-reporter@0.7.0');
-  api.use('velocity:console-reporter@0.1.1');
+  api.use('velocity:console-reporter@0.1.2');
   api.use('reactioncommerce:core');
-  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
-  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
-  api.addFiles('tests/jasmine/server/integration/accountsSpec.coffee', 'server');
+  api.use('reactioncommerce:bootstrap-theme');
+
+  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/accounts.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
+  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+
 });
