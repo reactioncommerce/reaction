@@ -30,9 +30,15 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema
   position:
     type: Number
     optional: true
+  pinned:
+    type: Boolean
+    optional: true
   weight:
     type: Number
     optional: true
+    defaultValue: 0
+    min: 0
+    max: 3
   updatedAt:
     type: Date
 

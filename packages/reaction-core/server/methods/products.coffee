@@ -413,6 +413,8 @@ Meteor.methods
         ,
           $set:
             "positions.$.position": positionData.position
+            "positions.$.pinned": positionData.pinned
+            "positions.$.weight": positionData.weight
             "positions.$.updatedAt": new Date()
         ,
           (error,results) ->

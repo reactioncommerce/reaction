@@ -126,6 +126,7 @@ Package.onUse(function (api) {
   ], ["server"]);
 
   api.addFiles([
+    "lib/bower/packery/index.js",
     "lib/bower/jquery.ui/ui/core.js",
     "lib/bower/jquery.ui/ui/widget.js",
     "lib/bower/jquery.ui/ui/mouse.js",
@@ -137,10 +138,10 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/effect.js",
     "lib/bower/jquery.ui/ui/effect-slide.js",
     "lib/bower/jquery.ui/ui/menu.js",
-    "lib/bower/autosize/dest/autosize.js",
+    "lib/bower/autosize/dist/autosize.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
     "lib/bower/openexchangerates.money/money.js",
-    "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
+    "lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css",
     "lib/css/jquery-ui.css",
 
     "client/subscriptions.coffee",
@@ -374,7 +375,7 @@ Package.onUse(function (api) {
     "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.coffee",
 
     "client/templates/products/productDetail/attributes/attributes.html",
-    "client/templates/products/productDetail/attributes/attributes.coffee",
+    "client/templates/products/productDetail/attributes/attributes.coffee"
   ], ["client"]);
 
   // Email Templates

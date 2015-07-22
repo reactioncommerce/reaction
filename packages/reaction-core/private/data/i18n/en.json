@@ -72,7 +72,13 @@
                     "googleplusMsg": "Google+ Message",
                     "duplicateVariant": "Duplicate",
                     "addVariantOption": "Add Option",
-                    "removeVariant": "Remove"
+                    "removeVariant": "Remove",
+                    "duplicateProduct": "Duplicate Product",
+                    "pinProduct": "Pin Product",
+                    "toggleSize": "Toggle Size",
+                    "deleteProduct": "Delete Product",
+                    "publish": "Publish",
+                    "moreOptions": "More Options"
                 },
                 "variantList": {
                     "moreOptions": "There are more options available for this selection.",
