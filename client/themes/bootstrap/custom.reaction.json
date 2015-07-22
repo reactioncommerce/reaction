@@ -3,5 +3,6 @@
   "cart":            true,
   "dashboard":       true,
   "layout":          true,
-  "products":        true
+  "products":        true,
+  "core":            true
 }}
