@@ -4,6 +4,5 @@
   "cart":            true,
   "dashboard":       true,
   "layout":          true,
-  "products":        true,
-  "core":            true
+  "products":        true
 }}
