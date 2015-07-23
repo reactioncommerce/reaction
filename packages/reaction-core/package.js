@@ -28,7 +28,7 @@ Package.onUse(function (api) {
   api.use("amplify@1.0.0");
 
   //community packages
-  api.use("mquandalle:bower@1.3.12_3");
+  api.use("mquandalle:bower@1.4.1_1");
   api.use("d3js:d3@3.5.5");
   api.use("mrt:underscore-string-latest@2.3.3");
   api.use("aldeed:geocoder@0.3.6");

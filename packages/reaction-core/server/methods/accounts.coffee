@@ -110,59 +110,63 @@ Meteor.methods
     check name, String
     @unblock()
 
-    unless ReactionCore.hasOwnerAccess()
-      throw new Meteor.Error 403, "Access denied."
+    unless ReactionCore.hasOwnerAccess(shop)
+      throw new Meteor.Error 403, "Access denied"
 
     shop = Shops.findOne shopId
     if shop and email and name
-      if ReactionCore.hasOwnerAccess(shop)
-        currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
-        user = Meteor.users.findOne {"emails.address": email}
-        unless user # user does not exist, invite user
-          userId = Accounts.createUser
-            email: email
-            username: name
-          user = Meteor.users.findOne(userId)
-          unless user
-            throw new Error("Can't find user")
-          token = Random.id()
-          Meteor.users.update userId,
-            $set:
-              "services.password.reset":
-                token: token
-                email: email
-                when: new Date()
+      currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
+      user = Meteor.users.findOne {"emails.address": email}
+      unless user # user does not exist, invite user
+        userId = Accounts.createUser
+          email: email
+          username: name
+        user = Meteor.users.findOne(userId)
+        unless user
+          throw new Error("Can't find user")
+        token = Random.id()
+        Meteor.users.update userId,
+          $set:
+            "services.password.reset":
+              token: token
+              email: email
+              when: new Date()
+        # compile mail template
+        SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
+        try
+          Email.send
+            to: email
+            from: currentUserName + " <" + shop.emails[0] + ">"
+            subject: "You have been invited to join " + shop.name
+            html: SSR.render 'shopMemberInvite',
+              homepage: Meteor.absoluteUrl()
+              shop: shop
+              currentUserName: currentUserName
+              invitedUserName: name
+              url: Accounts.urls.enrollAccount(token)
+        catch
+          throw new Meteor.Error 403, "Unable to send invitation email."
+      # existing user, send notification
+      else
+        # compile mail template
+        SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
+        try
+          Email.send
+            to: email
+            from: currentUserName + " <" + shop.emails[0] + ">"
+            subject: "You have been invited to join the " + shop.name
+            html: SSR.render 'shopMemberInvite',
+              homepage: Meteor.absoluteUrl()
+              shop: shop
+              currentUserName: currentUserName
+              invitedUserName: name
+              url: Meteor.absoluteUrl()
+        catch
+          throw new Meteor.Error 403, "Unable to send invitation email."
+    else
+      throw new Meteor.Error 403, "Access denied"
+    return true
 
-          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
-          try
-            Email.send
-              to: email
-              from: currentUserName + " <" + shop.emails[0] + ">"
-              subject: "You have been invited to join " + shop.name
-              html: SSR.render 'shopMemberInvite',
-                homepage: Meteor.absoluteUrl()
-                shop: shop
-                currentUserName: currentUserName
-                invitedUserName: name
-                url: Accounts.urls.enrollAccount(token)
-          catch
-            throw new Meteor.Error 403, "Unable to send invitation email."
-        # existing user, send notification
-        else
-          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
-          try
-            Email.send
-              to: email
-              from: currentUserName + " <" + shop.emails[0] + ">"
-              subject: "You have been invited to join the " + shop.name
-              html: SSR.render 'shopMemberInvite',
-                homepage: Meteor.absoluteUrl()
-                shop: shop
-                currentUserName: currentUserName
-                invitedUserName: name
-                url: Meteor.absoluteUrl()
-          catch
-            throw new Meteor.Error 403, "Unable to send invitation email."
 
   ###
   # send an email to consumers on sign up

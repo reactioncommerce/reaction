@@ -19,14 +19,14 @@ Meteor.methods
     @unblock()
 
     adminRoles  = Roles.getRolesForUser(currentUser, ReactionCore.getShopId())
-
+    shopId = Factory.create("shop")._id
     try
-      shop = Factory.create 'shop', shop
-      ReactionCore.Events.warn "Created shop: ", shop._id
-      Roles.addUsersToRoles [currentUser, userId], adminRoles, shop._id
+      ReactionCore.Events.warn "Created shop: ", shopId
+      Roles.addUsersToRoles [currentUser, userId], adminRoles, shopId
+      return shopId
     catch e
       ReactionCore.Events.warn "Failed to createShop", e
-    return shop._id
+
   ###
   # determine user's countryCode and return locale object
   ###
