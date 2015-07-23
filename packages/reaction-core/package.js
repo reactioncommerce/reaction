@@ -28,7 +28,7 @@ Package.onUse(function (api) {
   api.use("amplify@1.0.0");
 
   //community packages
-  api.use("mquandalle:bower@1.3.12_3");
+  api.use("mquandalle:bower@1.4.1_1");
   api.use("d3js:d3@3.5.5");
   api.use("mrt:underscore-string-latest@2.3.3");
   api.use("aldeed:geocoder@0.3.6");
@@ -428,16 +428,18 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 });
 
-
 Package.onTest(function(api) {
   api.use('sanjo:jasmine@0.14.0');
   api.use('velocity:html-reporter@0.7.0');
-  api.use('velocity:console-reporter@0.1.1');
+  api.use('velocity:console-reporter@0.1.2');
   api.use('reactioncommerce:core');
-  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
-  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
-  api.addFiles('tests/jasmine/server/integration/accountsSpec.coffee', 'server');
+  api.use('reactioncommerce:bootstrap-theme');
+
+  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/accounts.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
+  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+
 });

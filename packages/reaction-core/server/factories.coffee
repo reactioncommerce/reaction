@@ -46,6 +46,7 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
   timezone: -> "US/Pacific"
   baseUOM: "OZ"
   metafields: []
+  defaultRoles: [ "guest", "account/profile" ]
   createdAt: -> new Date()
   updatedAt: -> new Date()
 
