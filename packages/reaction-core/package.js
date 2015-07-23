@@ -46,7 +46,7 @@ Package.onUse(function (api) {
   api.use("matb33:collection-hooks@0.7.13");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.3", 'client');
-  api.use("risul:moment-timezone",'client');
+  api.use("risul:moment-timezone@0.4.0",'client');
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.7.15");
 
