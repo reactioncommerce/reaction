@@ -429,9 +429,11 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function(api) {
+  api.use('coffeescript');
   api.use('sanjo:jasmine@0.14.0');
   api.use('velocity:html-reporter@0.7.0');
   api.use('velocity:console-reporter@0.1.2');
+
   api.use('reactioncommerce:core');
   api.use('reactioncommerce:bootstrap-theme');
 
