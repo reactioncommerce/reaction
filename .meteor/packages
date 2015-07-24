@@ -10,7 +10,6 @@ coffeescript
 less
 
 # Optional Meteor Packages
-# package-stats-opt-out
 accounts-facebook
 spiderable
 audit-argument-checks

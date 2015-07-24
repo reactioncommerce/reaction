@@ -1,8 +1,8 @@
 #Reaction
-[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction)
+[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction)
 [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The Reaction commerce platform provides a reactive, real-time architecture and design that puts usability and user experience on the same priority as the development experience.
+The Reaction commerce platform uses a reactive, real-time architecture and design approach that provides a modern commerce experience for the shopper, administrator, and developer equally.
 
 Reaction is a Meteor application built with Meteor, Node.js, MongoDB, Javascript and CoffeeScript.
 
@@ -21,28 +21,29 @@ cd reaction && git checkout master
 meteor
 ```
 
-There is also an executable [script that you run](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
+There is also an executable shell [script that you can run](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
 
-*Note: for windows installation you also need:*
+*Note: for Windows installation you also need:*
 
 - OpenSSL
 - Visual Studio 2008 redistributables
 - Git + mysgit
 - ImageMagick
+- Python 2.7.x
 
 
 
 ##Demonstration
 
-At [reactioncommerce.com](https://reactioncommerce.com) you can launch a test shop, launched as a Docker container. These test shops help us gather feedback for Reaction development, as well as testing deployment approaches.
+You can create a sandbox shop at [reactioncommerce.com](https://reactioncommerce.com). These test shops help us gather feedback for Reaction development, as well as testing PaaS deployment approaches.
 
 *Note: These are test shops, and not for production, and are not persistent.*
 
 ##Status
 
-**Current status: Pre-Beta**
+**Current status: Alpha**
 
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development! 
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
 
 The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any `master` repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
 
@@ -51,17 +52,13 @@ As with all development, some items are ahead of schedule, and some are not. Her
 
 For a high level review our roadmap, take a look at the vision page [Reaction Vision](http://reactioncommerce.com/vision)
 
-For grouping of development channels by feature see project milestones: https://github.com/reactioncommerce/reaction/milestones
+For grouping of development channels by feature see [the project milestones]( https://github.com/reactioncommerce/reaction/milestones
+ ).
 
-*note: progress indicators highly volatile indicators at the moment*
-
-And finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
+Finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
 
 ##Feedback
-**GitHub Issues**
-Best way to let us know is to use GitHub issues on the [Reaction](https://github.com/reactioncommerce/reaction) project.
-
-**Chat Room**
+Best way to provide feedback and get involved is to use the GitHub issues on the [Reaction](https://github.com/reactioncommerce/reaction) project.
 
 >  Join us on our [Gitter chat room](https://gitter.im/reactioncommerce/reaction) to discuss, communicate, and share community support.
 
