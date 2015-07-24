@@ -4,12 +4,12 @@ machine:
 
 dependencies:
   cache_directories:
-    - "~/.meteor"
+    - /tmp/reaction-packages
+    - $PACKAGE_DIRS
   pre:
-    - meteor || curl https://install.meteor.com | /bin/sh
-    - cd $HOME/$CIRCLE_PROJECT_REPONAME/bin && ./clone-packages.sh
-    - cd $HOME/$CIRCLE_PROJECT_REPONAME && meteor update
+    - meteor update || curl https://install.meteor.com | /bin/sh
+    - ./bin/clone-packages.sh
 
 test:
   override:
-    - cd $HOME/$CIRCLE_PROJECT_REPONAME && JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --once
+    - meteor --test --release velocity:METEOR@1.1.0.2_3
