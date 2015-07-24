@@ -31,6 +31,18 @@ Template.addShippingMethod.helpers
   shipping: ->
     return ReactionCore.Collections.Shipping.find()
 
+#
+# restores lost bootstrap styling
+# TODO: review where the cause of this requirement is
+#
+Template.afFormGroup_validLocales.helpers
+  afFieldInputAtts: ->
+    return _.extend { template: 'bootstrap3' }, @afFieldInputAtts
+
+Template.afFormGroup_validRanges.helpers
+  afFieldInputAtts: ->
+    return _.extend { template: 'bootstrap3' }, @afFieldInputAtts
+
 ###
 # template addShippingProvider events
 ###
@@ -43,7 +55,7 @@ Template.editShippingMethod.events
 ###
 # template addShippingProvider events
 ###
-Template.editShippingProvider.events
+Template.updateShippingProvider.events
   # add new shipping provider
   'click .cancel': (event, template) ->
     toggleSession "selectedShippingProvider"
@@ -106,13 +118,7 @@ Template.shippingProviderTable.events
 
   # toggle selected provider
   'click .edit-shipping-provider': (event, template) ->
-    # session = Session.get "selectedShippingProvider"
     return toggleSession "selectedShippingProvider", @
-
-    # if _.isEqual @, session
-    #   Session.set "selectedShippingProvider", false
-    # else
-    #   toggleSessionObj "selectedShippingProvider", @
 
   # call method to delete shipping method
   'click #delete-shipping-method': (event, template) ->
@@ -137,21 +143,35 @@ Template.shippingProviderTable.events
 # Autoform hooks
 # Because these are some convoluted forms
 ###
+AutoForm.hooks "shipping-provider-add-form":
+  onSuccess: (operation, result, template) ->
+    toggleSession "selectedShippingProvider"
+    Alerts.add "Shipping provider saved.", "success", autoHide: true, placement:"shippingPackage"
+
 AutoForm.hooks "shipping-method-add-form":
+  onSubmit: (insertDoc, updateDoc, currentDoc) ->
+    try
+      Meteor.call "addShippingMethod", insertDoc, currentDoc._id || currentDoc.id
+      @done()
+    catch error
+      @done new Error("Submission failed")
+    return false
   onSuccess: (operation, result, template) ->
     toggleSession "selectedAddShippingMethod"
     Alerts.add "Shipping method rate added.", "success", autoHide: true, placement:"shippingPackage"
-
-AutoForm.hooks "shipping-provider-add-form":
-  onSuccess: (operation, result, template) ->
-    Alerts.add "Shipping provider saved.", "success", autoHide: true, placement:"shippingPackage"
 
 AutoForm.hooks "shipping-method-edit-form":
   onSubmit: (doc) ->
     try
       Meteor.call "updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), doc
-      Alerts.add "Shipping method rate updated.", "success", autoHide: true, placement:"shippingPackage"
       @done()
     catch error
       @done new Error("Submission failed")
     return false
+
+  onSuccess: (operation, result, template) ->
+      Alerts.add "Shipping method rate updated.", "success", autoHide: true, placement:"shippingPackage"
+
+# AutoForm.hooks "shipping-provider-update-form":
+#   onSuccess: (operation, result, template) ->
+#       Alerts.add "Shipping provider updated.", "success", autoHide: true, placement:"shippingPackage"

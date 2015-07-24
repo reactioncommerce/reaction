@@ -4,15 +4,13 @@ Meteor.methods
   ###
   # add new shipping methods
   ###
-  addShippingMethod: (insertDoc, updateDoc, currentDoc) ->
+  addShippingMethod: (insertDoc, currentDoc) ->
     check insertDoc, Object
     check currentDoc, String
-    check updateDoc, Object
 
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # updates
     return ReactionCore.Collections.Shipping.update({'_id': currentDoc}, {$addToSet:{'methods': insertDoc}})
-
   ###
   # Update Shipping methods for a provider
   ###
@@ -40,23 +38,20 @@ Meteor.methods
   ###
   # add / insert shipping provider
   ###
-  addShippingProvider: (insertDoc, updateDoc, currentDoc) ->
-    check insertDoc, Object
-    check updateDoc, Object
-    check currentDoc, Match.OptionalOrNull(String)
-
+  addShippingProvider: (doc) ->
+    check doc, Object
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # insert provider
-    return ReactionCore.Collections.Shipping.insert(insertDoc)
+    return ReactionCore.Collections.Shipping.insert(doc)
 
   ###
   # update shipping provider
   ###
-  updateShippingProvider: (insertDoc, updateDoc, currentDoc) ->
-    check insertDoc, Object
+  updateShippingProvider: (updateDoc, currentDoc) ->
     check updateDoc, Object
     check currentDoc, String
 
     unless Roles.userIsInRole(Meteor.userId(), ['admin','shipping']) then return false
     # insert provider
-    return ReactionCore.Collections.Shipping.update('_id': currentDoc, updateDoc)
+    return ReactionCore.Collections.Shipping.update( '_id': currentDoc, updateDoc )
+
