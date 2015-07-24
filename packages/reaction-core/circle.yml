@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   cache_directories:
-    - "/usr/local/bin"
+    - /usr/local/bin
     - ~/.meteor
   pre:
     - meteor update || curl https://install.meteor.com | /bin/sh
