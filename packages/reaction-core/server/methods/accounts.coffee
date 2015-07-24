@@ -109,11 +109,13 @@ Meteor.methods
     check email, String
     check name, String
     @unblock()
-
+    # get the shop first
+    shop = Shops.findOne shopId
+    # check permissions
     unless ReactionCore.hasOwnerAccess(shop)
       throw new Meteor.Error 403, "Access denied"
 
-    shop = Shops.findOne shopId
+    # all params are required
     if shop and email and name
       currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
       user = Meteor.users.findOne {"emails.address": email}

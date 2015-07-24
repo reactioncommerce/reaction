@@ -19,7 +19,6 @@ fakeAddress = {
   isShippingDefault: true
   isBillingDefault: true
 }
-console.log fakeAddress
 
 shopId = Factory.create("shop")._id
 
@@ -52,6 +51,7 @@ describe "Account Meteor method ", ->
     it 'should not let non-Owners invite a user to the shop', (done) ->
       spyOn(ReactionCore, 'hasOwnerAccess').and.returnValue false
       spyOn(Accounts, 'createUser')
+      shopId = Factory.create('shop')._id
 
       expect(-> Meteor.call "inviteShopMember", shopId, fakeUser.emails[0].address, fakeUser.profile.name ).toThrow(new Meteor.Error 403, "Access denied")
 
@@ -61,6 +61,7 @@ describe "Account Meteor method ", ->
     it 'should let a Owner invite a user to the shop', (done) ->
       spyOn(ReactionCore, 'hasOwnerAccess').and.returnValue true
       spyOn(Accounts, 'createUser')
+      shopId = Factory.create('shop')._id
       # send an invite with fake user, we shouldn't get access denied.
       expect(-> Meteor.call  "inviteShopMember", shopId, fakeUser.emails[0].address, fakeUser.profile.name ).not.toThrow(new Meteor.Error 403, "Access denied")
       # not sure how to test for email send (perhaps for the thrown error)

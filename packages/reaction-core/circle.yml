@@ -6,15 +6,10 @@ machine:
 
 dependencies:
   cache_directories:
-    - "~/reaction"
+    - "~/.meteor"
     - "/usr/local/bin"
   pre:
-    - meteor || curl https://install.meteor.com | /bin/sh
-    - git clone https://github.com/reactioncommerce/reaction $HOME/reaction
-    - mkdir -p $HOME/reaction/packages
-    - mv $HOME/$CIRCLE_PROJECT_REPONAME $HOME/reaction/packages/$CIRCLE_PROJECT_REPONAME
-    - meteor update
-
+    - meteor update || curl https://install.meteor.com | /bin/sh
 test:
   override:
-    - cd $HOME/reaction && VELOCITY_CI=1 JASMINE_BROWSER=PhantomJS JASMINE_CLIENT_UNIT=0 JASMINE_CLIENT_INTEGRATION=0 meteor --test --once --allow-incompatible-update
+    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity --release velocity:METEOR@1.1.0.2_3 ./
