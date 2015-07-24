@@ -1,7 +1,7 @@
 ##Conventions
 This entire doc is really just a bunch of stuff you'll probably need to know, or at least reference to contribute successfully to Reaction development.
 
-Our core is being built with a preference for Coffeescript + LESS, but JavaScript is welcome in packages. [There has been some discussion about moving to ES6.](https://github.com/reactioncommerce/reaction/issues/320)
+Our core is being built with a preference for Coffeescript + LESS, but JavaScript is welcome in packages. [We will be migrating core to ES6 in the near future.](https://github.com/reactioncommerce/reaction/issues/320)
 
 ##Issues
 For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
@@ -24,11 +24,9 @@ No pull requests to `master` will be accepted.
 `master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](https://github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
 
 ##Testing
-We're testing a couple of [Velocity packages](http://velocity.meteor.com/).
+We're using the Meteor testing framework [Velocity](http://velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](https://github.com/Sanjo/meteor-jasmine) for the majority of tests.
 
-See: https://github.com/reactioncommerce/reaction/issues/241
-
-Velocity doesn't always make it easy to test packages separately from the app, [see:](https://github.com/meteor-velocity/velocity/pull/231).
+Velocity doesn't always make it easy to test packages separately from the app. Velocity can also slow down the reload process during development while it's running tests in multiple cloned instances of the shop. 
 
 Velocity should use packages tests, but it doesn't always work out that way. If the tests don't automatically run, or you don't see any tests in the Velocity panel,  try adding the package's `tests` to Velocity symlinking (or copying) the tests into the main Reaction app's `/tests` directory and running from there.
 
@@ -41,6 +39,12 @@ A few things you should know:
 * You should set your `NODE_ENV` environment variable to 'development' to open up ports that velocity uses. The easiest way to do this is to run `export NODE_ENV="development"` before you start `meteor`
 * After doing that, your Velocity tests should run when you run `meteor run`
 * If you run `meteor --test` your tests will only run once and will not re-run when you update files.
+
+You can also test individual packages.
+
+
+	VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter package-to-test
+
 
 We'd like for new features to include at least basic integration test-coverage. If you are unsure about how to do this just ask and, we can point you in the right direction.
 
@@ -197,7 +201,7 @@ api.export(["ReactionCore"]);
 ```
 
 ###Logging
-We use Bunyan for server logging https://github.com/trentm/node-bunyan. Client logging is standard Meteor client handling of `console.log`.
+We use [Bunyan](https://github.com/trentm/node-bunyan) to provide a JSON friendly log handler Reaction . 
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
 
