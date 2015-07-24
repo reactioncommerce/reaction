@@ -5,12 +5,10 @@ machine:
 dependencies:
   cache_directories:
     - /tmp/reaction-packages
-    - $PACKAGE_DIRS
   pre:
     - meteor update || curl https://install.meteor.com | /bin/sh
     - ./bin/clone-packages.sh
 
 test:
   override:
-    - meteor --test --release velocity:METEOR@1.1.0.2_3
-
+    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity --release velocity:METEOR@1.1.0.2_3
