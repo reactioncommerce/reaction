@@ -9,10 +9,6 @@ dependencies:
     - "/usr/local/bin"
   pre:
     - meteor update || curl https://install.meteor.com | /bin/sh
-    - git clone https://github.com/reactioncommerce/reaction $HOME/reaction
-    - mkdir -p $HOME/reaction/packages
-    - mv $HOME/$CIRCLE_PROJECT_REPONAME $HOME/reaction/packages/$CIRCLE_PROJECT_REPONAME
-
 test:
   override:
-    - cd $HOME/reaction && VELOCITY_TEST_PACKAGES=1 VELOCITY_DEBUG=1 meteor test-packages --driver-package velocity:html-reporter
+    - VELOCITY_TEST_PACKAGES=1 VELOCITY_DEBUG=1 meteor test-packages --driver-package velocity:html-reporter
