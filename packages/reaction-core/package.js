@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.6.1",
+  version: "0.6.2",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -430,8 +430,9 @@ Package.onUse(function (api) {
 
 Package.onTest(function(api) {
   api.use('coffeescript');
-  api.use('sanjo:jasmine@0.14.0');
-  api.use('velocity:html-reporter@0.7.0');
+  api.use('underscore');
+  api.use('sanjo:jasmine@0.15.1');
+  api.use('velocity:html-reporter@0.7.1');
   api.use('velocity:console-reporter@0.1.2');
 
   api.use('reactioncommerce:core');
