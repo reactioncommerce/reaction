@@ -7,21 +7,6 @@
 # release with latest development branch packages.
 #
 
-# just a little a little copy and paste
-# from http://unix.stackexchange.com/questions/70615/bash-script-echo-output-in-box
-# just couldn't resist.
-function box_out()
-{
-  local s="$*"
-  tput setaf 3
-  echo " -${s//?/-}-
-| ${s//?/ } |
-| $(tput setaf 4)$s$(tput setaf 3) |
-| ${s//?/ } |
- -${s//?/-}-"
-  tput sgr 0
-}
-
 # set default meteor packages dir to tmp
 : ${PACKAGE_DIRS:="/tmp/reaction-packages"}
 
@@ -51,6 +36,8 @@ grep "reactioncommerce:" .meteor/packages |while read PACKAGE; do
 done
 
 # just a little eye candy fun after spitting out some code spray
-box_out "reactioncommerce development packages updated to " $PACKAGE_DIRS
+echo "*****************************************************************"
+echo "reactioncommerce development packages updated to " $PACKAGE_DIRS
+echo "*****************************************************************"
 export PACKAGE_DIRS=$PACKAGE_DIRS
 exit
