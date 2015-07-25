@@ -135,7 +135,7 @@ ReactionRegistry.createDefaultAdminUser = ->
     unless options.password then options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
   else
-    # random options if nothing has been set
+    # from Meteor.settings or random options if nothing has been set
     options.username = Meteor.settings?.reaction?.METEOR_USER || "Owner"
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain

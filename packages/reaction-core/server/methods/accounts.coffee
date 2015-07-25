@@ -60,9 +60,8 @@ Meteor.methods
         ,
           $set:
             "profile.addressBook.$.isBillingDefault": false
-
     # add address book entry
-    ReactionCore.Collections.Accounts.upsert accountId, {$addToSet: {"profile.addressBook": doc}}
+    ReactionCore.Collections.Accounts.update accountId, {$addToSet: {"profile.addressBook": doc}}
     return doc
 
   ###

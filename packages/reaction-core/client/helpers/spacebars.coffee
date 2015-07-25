@@ -151,8 +151,9 @@ Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
 Template.registerHelper "allowGuestCheckout", ->
-  packageRegistry =  ReactionCore.Collections.Packages.findOne shopId: ReactionCore.getShopId()
-  return packageRegistry.settings.public.allowGuestCheckout || false
+  packageRegistry = ReactionCore.Collections.Packages.findOne shopId: ReactionCore.getShopId(), name: 'core'
+  allowGuest = packageRegistry?.settings?.public?.allowGuestCheckout || false
+  return allowGuest
 
 ###
 # activeRouteClass
