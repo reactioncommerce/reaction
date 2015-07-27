@@ -1,0 +1,16 @@
+
+<template name="loginForm">
+  <div class="loginForm">
+    {{> Template.dynamic template=loginFormCurrentView}}
+  </div>
+</template>
+
+
+<template name="loginFormServiceButton">
+  {{!-- {{#if configured}} --}}
+    <button class="btn btn-primary btn-block action--signInWithProvider provider--{{name}} text-besides-image sign-in-text-{{name}}" type="button">
+      <span data-i18n="accountsUI.signInWith">Sign in with</span>
+      <span data-i18n="social.{{name}}"> {{capitalizedName}}</span>
+    </button>
+  {{!-- {{if}} --}}
+</template>

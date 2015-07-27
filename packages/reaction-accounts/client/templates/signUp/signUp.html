@@ -1,0 +1,42 @@
+<template name="loginFormSignUpView">
+
+  <!-- {{#if hasPasswordService}} -->
+    <div class="login-form">
+
+      <div class="form-group {{hasError errors.email}}">
+        <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
+        <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email">
+
+        {{#if hasError errors.email}}
+          <span class="help-block">
+            {{errors.email}}
+          </span>
+        {{/if}}
+      </div>
+
+      <div class="form-group {{hasError errors.password }}">
+        <label for="password_{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
+        <input id="password_{{uniqueId}}" class="form-control login-input--password" type="text">
+
+        {{#if hasError errors.password}}
+          <span class="help-block">
+            {{errors.password}}
+          </span>
+        {{/if}}
+      </div>
+
+    </div>
+
+
+    <div class="">
+      <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signIn">Sign In</button>
+
+      <p>
+        <a class="action--forgot" data-i18n="accountsUI.forgotPassword">Reset Password</a>
+        <a class="action--signUp" href data-i18n="accountsUI.createAccount">Create An Account</a>
+      </p>
+    </div>
+  <!-- {{/if}} -->
+
+
+</template>
