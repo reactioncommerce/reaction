@@ -5,8 +5,6 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 
-Npm.depends({'paynode': '0.3.6'});
-
 Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
 
