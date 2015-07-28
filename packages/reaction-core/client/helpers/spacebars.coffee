@@ -145,7 +145,7 @@ Template.registerHelper "hasOwnerAccess", ->
   ReactionCore.hasOwnerAccess()
 
 Template.registerHelper "hasAdminAccess", ->
-  ReactionCore.hasOwnerAccess()
+  ReactionCore.hasAdminAccess()
 
 Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
