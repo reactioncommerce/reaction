@@ -431,7 +431,7 @@ Package.onUse(function (api) {
 Package.onTest(function(api) {
   api.use('coffeescript');
   api.use('underscore');
-  api.use('sanjo:jasmine@0.15.1');
+  api.use('sanjo:jasmine@0.15.2');
   api.use('velocity:html-reporter@0.7.1');
   api.use('velocity:console-reporter@0.1.2');
 

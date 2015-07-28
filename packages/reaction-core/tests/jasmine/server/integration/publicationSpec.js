@@ -76,15 +76,15 @@ describe("Publication.", function() {
         expect(data.title).toEqual('Shopkins - Peachy');
       });
 
-      fit("should not return a product based on a regex if it isn't visible", function() {
-        // setup
-        spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
-        // execute
-        cursor = Meteor.server.publish_handlers["Product"]("my");
-        // verify
-        data = cursor.fetch()[0];
-        expect(data.title).toEqual([]);
-      });
+      // fit("should not return a product based on a regex if it isn't visible", function() {
+      //   // setup
+      //   spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
+      //   // execute
+      //   cursor = Meteor.server.publish_handlers["Product"]("my");
+      //   // verify
+      //   data = cursor.fetch()[0];
+      //   expect(data.title).toEqual([]);
+      // });
     });
   });
 
