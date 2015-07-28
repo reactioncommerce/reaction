@@ -1,9 +1,15 @@
 
 <template name="loginFormResetPasswordView">
 
-  <div class="form-group">
-    <label for="" data-i18n="accountsUI.emailAddress">Email</label>
-    <input class="form-control login-input--email" type="text">
+  <div class="form-group {{hasError errors.email}}">
+    <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email Address</label>
+    <input id="email_{{uniqueId}}" class="form-control login-input--email" type="text">
+
+    {{#if hasError errors.email}}
+      <span class="help-block">
+        {{errors.email}}
+      </span>
+    {{/if}}
   </div>
 
   <div class="">

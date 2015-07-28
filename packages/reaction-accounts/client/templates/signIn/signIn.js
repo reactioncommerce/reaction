@@ -6,8 +6,6 @@ Template.loginFormSignInView.events({
   'click .action--submit': function (event, template) {
     var options = {};
 
-    console.log(template);
-
     var usernameInput = template.$('.login-input--email');
     var passwordInput = template.$('.login-input--password');
 
@@ -23,13 +21,12 @@ Template.loginFormSignInView.events({
       errors.email = validatedEmail.reason;
     }
 
-    // if (validatedPassword !== true) {
-    //   errors.password = validatedPassword.reason;
-    // }
+    if (validatedPassword !== true) {
+      errors.password = validatedPassword.reason;
+    }
 
     if ($.isEmptyObject(errors) === false) {
       Template.instance().formErrors.set(errors);
-// console.log(errors)
       // prevent login
       return;
     }

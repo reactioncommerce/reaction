@@ -3,6 +3,10 @@
   <!-- {{#if hasPasswordService}} -->
     <div class="login-form">
 
+      <div>
+        <h2 data-i18n="accountsUI.createAccount">Create an Account</h2>
+      </div>
+
       <div class="form-group {{hasError errors.email}}">
         <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
         <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email">
@@ -20,7 +24,9 @@
 
         {{#if hasError errors.password}}
           <span class="help-block">
-            {{errors.password}}
+            {{#each errors.password}}
+              <p>{{reason}}</p>
+            {{/each}}
           </span>
         {{/if}}
       </div>
@@ -29,11 +35,10 @@
 
 
     <div class="">
-      <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signIn">Sign In</button>
+      <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signUp">Register</button>
 
       <p>
-        <a class="action--forgot" data-i18n="accountsUI.forgotPassword">Reset Password</a>
-        <a class="action--signUp" href data-i18n="accountsUI.createAccount">Create An Account</a>
+        <a class="action--forgot" data-i18n="accountsUI.signIn">Sign In</a>
       </p>
     </div>
   <!-- {{/if}} -->

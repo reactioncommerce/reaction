@@ -39,6 +39,10 @@ Package.onUse(function (api, where) {
     "client/templates/signIn/signIn.html",
     "client/templates/signIn/signIn.js",
 
+    // sign in
+    "client/templates/signUp/signUp.html",
+    "client/templates/signUp/signUp.js",
+
     // reset password
     "client/templates/forgot/forgot.html",
     "client/templates/forgot/forgot.js",
@@ -50,4 +54,13 @@ Package.onUse(function (api, where) {
   ],
   ["client"]);
 
+});
+
+
+Package.onTest(function(api) {
+  api.use('sanjo:jasmine@0.14.0');
+  api.use('velocity:html-reporter@0.7.0');
+  api.use('velocity:console-reporter@0.1.2');
+
+  api.addFiles('tests/jasmine/client/unit/login.js', 'client');
 });

@@ -1,5 +1,10 @@
 <template name="loginFormSignInView">
 
+
+  <div>
+    <h2 data-i18n="accountsUI.signIn">Sign In</h2>
+  </div>
+
   {{#each services}}
     {{> loginFormServiceButton}}
   {{/each}}
@@ -18,13 +23,13 @@
   {{#if hasPasswordService}}
     <div class="login-form">
 
-      <div class="form-group {{hasError errors.email}}">
+      <div class="form-group form-group--email {{hasError errors.email}}">
         <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
         <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email">
 
         {{#if hasError errors.email}}
           <span class="help-block">
-            {{errors.email}}
+            {{jsonerrors.email}}
           </span>
         {{/if}}
       </div>

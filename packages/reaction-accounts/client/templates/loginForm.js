@@ -54,26 +54,81 @@ LoginFormValidation = {
   },
 
   password: function(password, options) {
-    if (options.validationLevel === 'exists' && password.length > 0) {
-      return true;
-    } else {
-      return {
+
+    // Must have one number and/or symbol
+    var validPasswordRegex = /^.*(?=.*[a-z])(?=.*[\d\W]).*$/;
+    options = options || {};
+
+    // Only check if a password has been entered at all.
+    // This is usefull for the login forms
+    if (options.validationLevel === 'exists') {
+      if (password.length > 0) {
+        return true;
+      } else {
+        return {
+          error: "INVALID_PASSWORD",
+          reason: 'Please enter a valid password'
+        };
+      }
+    }
+
+    // ---
+    // Validate the password pased on some rules
+    // This is useful for cases where a password needs to be created or updated.
+    //
+
+    var errors = [];
+
+    if (password.length < 6) {
+      errors.push({
         error: "INVALID_PASSWORD",
-        reason: 'Please enter a valid password'
-      };
+        reason: 'Password must be at least 6 characters long'
+      });
     }
 
-    // Valid
-    if (password.length >= 6) {
-      return true;
+    if (password.match(validPasswordRegex) === null) {
+      errors.push({
+        error: "INVALID_PASSWORD",
+        reason: 'Password must contain at least one number or symbol'
+      });
     }
 
-    // Invalid
-    return {
-      error: "INVALID_PASSWORD",
-      reason: 'Password must be at least 6 characters long'
-    };
+
+    if (errors.length) {
+      return errors;
+    }
+
+    // Otherwise the password is valid
+    return true
   }
+};
+
+
+LoginFormSharedHelpers = {
+
+  errors: function(name) {
+    return Template.instance().formErrors.get();
+  },
+
+  hasError: function(error) {
+
+    // True here means the field is valid
+    // We're checking if theres some other message to display
+    if (error !== true && typeof error !== 'undefined') {
+      return 'has-error has-feedback';
+    }
+
+    return false;
+  },
+
+  formErrors: function () {
+    return Template.instance().formErrors.get();
+  },
+
+  uniqueId: function() {
+    return Template.instance().uniqueId;
+  }
+
 };
 
 
@@ -116,6 +171,7 @@ Template.loginForm.onCreated(function () {
 
 // ----------------------------------------------------------------------------
 // Login Form events
+// These events are shared across all login form views and subviews
 //
 Template.loginForm.events({
 
@@ -125,8 +181,20 @@ Template.loginForm.events({
   //
   'click .action--signIn': function (event, template) {
     event.preventDefault();
+    event.stopPropagation();
 
     template.loginFormCurrentView.set('loginFormSignInView')
+  },
+
+
+  // **************************************************************************
+  // Show the sign in view
+  //
+  'click .action--signUp': function (event, template) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    template.loginFormCurrentView.set('loginFormSignUpView')
   },
 
 
@@ -135,7 +203,8 @@ Template.loginForm.events({
   //
   'click .action--forgot': function (event, template) {
 
-    event.preventDefault()
+    event.preventDefault();
+    event.stopPropagation();
 
     template.loginFormCurrentView.set('loginFormResetPasswordView')
   },
