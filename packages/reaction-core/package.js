@@ -442,6 +442,7 @@ Package.onTest(function(api) {
   api.addFiles('tests/jasmine/server/integration/accounts.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
   api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
   api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
 

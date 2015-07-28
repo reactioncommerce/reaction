@@ -35,7 +35,7 @@ describe 'client layout', ->
       expect($('body > nav.reaction-navigation-header').text()).not.toBeNull()
       return
 
-    it 'loads product pricing'
+    it 'loads product pricing', ->
       expect($('div.currency-symbol').text()).not.toBeNull()
       return
 
