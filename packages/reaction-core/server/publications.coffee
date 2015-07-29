@@ -150,7 +150,7 @@ Meteor.publish 'Products', (shops) ->
           shopAdmin = true
     unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id) or shopAdmin
       selector.isVisible = true
-    return Products.find(selector)
+    return Products.find(selector, {sort: {title: 1}})
   else
     return []
 
