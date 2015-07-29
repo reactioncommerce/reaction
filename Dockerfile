@@ -40,7 +40,7 @@
 #
 ##############################################################
 
-FROM ubuntu:14.04
+FROM mongo:latest
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -55,34 +55,53 @@ RUN apt-get -qq update && apt-get install -qq -y \
   gcc \
   git \
   imagemagick \
-  graphicsmagick \
   libfreetype6 \
   libfreetype6-dev \
   libssl-dev \
   libfontconfig1 \
   make \
   procps \
-  python \
-  xz-utils
+  python
 
-RUN apt-get -qq upgrade
-RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-RUN echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
-RUN apt-get install -y nodejs mongodb-org
-RUN nohup mongod&
+# install node
+RUN mkdir /nodejs && curl http://nodejs.org/dist/v0.10.36/node-v0.10.36-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
 
-#clone reaction commerce
-RUN git clone https://github.com/reactioncommerce/reaction
+# Default (required) Meteor env variables
+ENV PATH $PATH:/nodejs/bin
+ENV PORT 3000
+ENV ROOT_URL http://localhost
+ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
+ENV MAIL_URL smtp://localhost:25
 
 # Expose container port 3000 to the host (outside the container)
-EXPOSE 3000 27017
+EXPOSE 3000
+
+# Install forever & phantomjs
+RUN npm install --silent -g forever phantomjs
 
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
 
+# Install entrypoint
+COPY bin/docker/entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
+
+COPY bin/docker/build-meteor.sh /usr/bin/build-meteor.sh
+RUN chmod +x /usr/bin/build-meteor.sh
+
+# Make sure we have a directory for the application
+RUN mkdir -p /var/www
+RUN chown -R www-data:www-data /var/www
+
+# add app to /usr/src
+VOLUME ["/usr/src/meteor"]
+COPY . /usr/src/meteor
+WORKDIR /usr/src/meteor/
+
+# Build meteor
+RUN bash /usr/bin/build-meteor.sh
+
 # Rebuild Meteor and start Meteor, Reaction and MongoDB
-WORKDIR /reaction
-RUN meteor update
-RUN npm update
-CMD ./reaction
+WORKDIR /var/www/bundle
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+CMD []

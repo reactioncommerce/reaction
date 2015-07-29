@@ -8,7 +8,7 @@
 # anxiously waiting for
 # https://meteor.hackpad.com/Improvements-to-LESS-and-other-CSS-preprocessors-fqDPbgOH8Fn
 #
-if [ ! -f client/themes/custom.reaction.less ]; then
+if [ ! -f client/themes/bootstrap/custom.reaction.less ]; then
     echo "warning: less theme files not found!!"
     echo "info: using development mode in an attempt to create missing files."
     # startup development server
