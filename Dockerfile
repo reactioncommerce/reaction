@@ -76,7 +76,7 @@ RUN nohup mongod&
 RUN git clone https://github.com/reactioncommerce/reaction
 
 # Expose container port 3000 to the host (outside the container)
-EXPOSE 3000
+EXPOSE 3000 27017
 
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
