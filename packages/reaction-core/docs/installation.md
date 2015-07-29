@@ -3,12 +3,11 @@
 **Prerequisites**
 
 - Npm and [Node.js](http://nodejs.org/)
-- *`graphicsmagick` - Optional but suggested*
+- *`ImageMagick` - Optional but suggested*
 - *For [windows installation](https://github.com/reactioncommerce/reaction/issues/363) you also need:*
-	- OpenSSL
+	- Win32 OpenSSL
 	- Visual Studio 2008 redistributables
-	- Git + mysgit
-	- ImageMagick
+	- Git / mysgit
 
 **Installation**
 
@@ -66,7 +65,7 @@ Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run
 
 
 	 meteor --settings settings/<your-settings>.json
-	 
+
 
 
 ***settings/dev.settings.json***
