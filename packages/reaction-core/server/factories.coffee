@@ -46,7 +46,36 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
   timezone: -> "US/Pacific"
   baseUOM: "OZ"
   metafields: []
-  allowGuestCheckout: true
+  defaultRoles: [ "guest", "account/profile" ]
+  createdAt: -> new Date()
+  updatedAt: -> new Date()
+
+Factory.define 'account', ReactionCore.Collections.Accounts,
+  shopId: Factory.get 'shop'
+  emails: -> [
+    address: Fake.word() + '@example.com'
+    verified: Fake.fromArray([true, false])
+  ]
+  acceptsMarketing: true
+  state: 'new'
+  note: -> Fake.sentence 20
+  profile:
+    addressBook: -> [
+      fullName: Fake.sentence 2
+      address1: Fake.sentence 2
+      address2: Fake.sentence 2
+      city: Fake.word()
+      company: Fake.word()
+      phone: "Phone"
+      region: Fake.word()
+      postal: _.random 10000, 100000
+      country: "USA"
+      isCommercial: false
+      isShippingDefault: true
+      isBillingDefault: true
+      metafields: undefined
+    ]
+  metafields: []
   createdAt: -> new Date()
   updatedAt: -> new Date()
 

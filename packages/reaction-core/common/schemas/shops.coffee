@@ -66,7 +66,6 @@ ReactionCore.Schemas.Locale = new SimpleSchema
     type: Object
     blackbox: true
 
-
 ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
@@ -86,6 +85,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   domains:
     type: [String]
     defaultValue: ["localhost"]
+    index: 1
   emails:
     type: [ReactionCore.Schemas.Email]
     optional: true
@@ -93,7 +93,8 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     type: String
     defaultValue: "USD"
   currencies:
-    type: ReactionCore.Schemas.Currency
+    type: Object # ReactionCore.Schemas.Currency
+    blackbox: true
   locale:
     type: String
     defaultValue: "en"
@@ -119,12 +120,12 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     optional: true
     defaultValue: "OZ"
     label: "Base Unit of Measure"
-  allowGuestCheckout:
-    type: Boolean
-    defaultValue: false
   metafields:
     type: [ReactionCore.Schemas.Metafield]
     optional: true
+  defaultRoles:
+    type: [String]
+    defaultValue: [ "guest", "account/profile" ]
   createdAt:
     type: Date
     autoValue: ->

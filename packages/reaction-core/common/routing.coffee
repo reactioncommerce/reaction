@@ -22,6 +22,8 @@ Router.configure
   onBeforeAction: ->
     @render "loading"
     Alerts.removeSeen()
+    $(document).trigger('closeAllPopovers')
+    $(window).scrollTop(0)
     @next()
 
 

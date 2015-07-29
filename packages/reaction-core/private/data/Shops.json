@@ -1,6 +1,5 @@
 [
     {
-        "_id": "WvrKDomkYth3THbDD",
         "baseUOM": "OZ",
         "currencies": {
             "AED": {
@@ -3042,6 +3041,7 @@
             "KG": {
                 "name": "Kilograms"
             }
-        }
+        },
+        "defaultRoles": [ "guest", "account/profile" ]
     }
 ]

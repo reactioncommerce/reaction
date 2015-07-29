@@ -1,16 +1,19 @@
 {
   "name": "reactioncommerce-core",
   "dependencies": {
-    "jquery.payment": "1.2.3",
-    "autosize": "3.0.0",
-    "i18next": "1.8.0",
-    "swiper": "3.0.6",
-    "imagesloaded": "3.1.8",
-    "jquery.tagsinput": "1.3.2",
+    "jquery.payment": "1.2.4",
+    "autosize": "3.0.7",
+    "i18next": "1.10.2",
+    "swiper": "3.0.8",
+    "jquery.tagsinput": "1.3.6",
     "jquery.ui": "1.11.4",
     "javascript-state-machine": "2.3.5",
+    "tether": "1.0.2",
     "openexchangerates.accounting": "https://github.com/openexchangerates/accounting.js.git",
-    "openexchangerates.money": "https://github.com/openexchangerates/money.js.git"
+    "openexchangerates.money": "https://github.com/openexchangerates/money.js.git",
+    "draggabilly": "1.2.0",
+    "packery": "https://raw.githubusercontent.com/metafizzy/packery/v1.4.2/dist/packery.pkgd.min.js",
+    "imagesloaded": "https://raw.githubusercontent.com/desandro/imagesloaded/v3.1.8/imagesloaded.pkgd.min.js"
   },
   "overrides": {
     "jquery": {
@@ -29,4 +32,3 @@
     }
   }
 }
-

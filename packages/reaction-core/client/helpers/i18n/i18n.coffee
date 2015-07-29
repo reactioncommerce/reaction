@@ -79,13 +79,13 @@ Meteor.startup ->
         return x
       , {}
 
-      i18n.init {
+      $.i18n.init {
           lng: ReactionCore.Locale.language
           fallbackLng: 'en'
           ns: "core"
           resStore: resources
           # debug: true
-        },(t)->
+        }, ->
           # update labels and messages for autoform,schemas
           for schema, ss of ReactionCore.Schemas
             ss.labels getLabelsFor(ss, schema)
@@ -95,13 +95,13 @@ Meteor.startup ->
           i18nextDep.changed()
 
           # set document direction class
-          if (t('languageDirection') == 'rtl')
+          if ($.t('languageDirection') == 'rtl')
             $('html').addClass 'rtl'
           else
             $('html').removeClass 'rtl'
 
   # reactive translations in all templates
-  Template.onRendered () ->
+  Template.onRendered ->
     @autorun () =>
       i18nextDep.depend() #rerun whenever language changes and we re-init $.i18n
       $elements = @$("[data-i18n]")
@@ -110,7 +110,7 @@ Meteor.startup ->
     return
 
   # trigger translations when template are removed
-  Template.onDestroyed () ->
+  Template.onDestroyed ->
     i18nextDep.changed()
     return
 

@@ -2,11 +2,12 @@
 
 **Prerequisites**
 
-- Install npm and [node.js](http://nodejs.org/)
-- Install Meteor
-- Clone the `reactioncommerce/reaction` repo
-- *Optional, suggested: install `graphicsmagick`*
-- *Windows: OpenSSL and bower installation*
+- Npm and [Node.js](http://nodejs.org/)
+- *`ImageMagick` - Optional but suggested*
+- *For [windows installation](https://github.com/reactioncommerce/reaction/issues/363) you also need:*
+	- Win32 OpenSSL
+	- Visual Studio 2008 redistributables
+	- Git / mysgit
 
 **Installation**
 
@@ -17,7 +18,9 @@ cd reaction && git checkout master
 meteor
 ```
 
-The `master` branch will ensure your initial installation is a stable release, and also should work with published packages from the [Meteor package manager](https://atmospherejs.com/).
+The `master` branch will ensure your initial installation is a stable release, and also should work with published packages from the [Meteor package manager](https://atmospherejs.com/). However, the most recent code is in `development`, which is the recommended branch if you are a developer.
+
+When mixing branches and versions of published packages (versus local packages), you may get some package compatibility warnings. You can use `meteor --allow-incompatible` to resolve this.
 
 See the [package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) for details on working with the `development` branch, and using local package dependencies. You can clone or create new packages in `reaction/packages` for local package development.
 
@@ -58,10 +61,16 @@ You can also use `meteor upgrade` to pull the latest published packages.
 
 ##Settings
 
-Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run `meteor --settings settings/<your-settings>.json`.
+Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run:
+
+
+	 meteor --settings settings/<your-settings>.json
+
+
 
 ***settings/dev.settings.json***
-```json
+
+```
 {
   "ROOT_URL": "",
   "MONGO_URL": "",

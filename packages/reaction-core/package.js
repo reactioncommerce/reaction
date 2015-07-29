@@ -1,22 +1,8 @@
 Package.describe({
   summary: "Core - Reaction Commerce ecommerce Meteor package",
   name: "reactioncommerce:core",
-  version: "0.6.0",
+  version: "0.6.3",
   git: "https://github.com/reactioncommerce/reaction-core.git"
-});
-
-Package.registerBuildPlugin({
-  name: 'theme-configurator',
-  use: [
-    'underscore',
-    'reactioncommerce:core-theme@1.3.4'
-  ],
-  sources: [
-    'server/buildtools/module-definitions.js',
-    'server/buildtools/distributed-configuration.js',
-    'server/buildtools/theme-configurator.js'
-  ],
-  npmDependencies: {}
 });
 
 Package.onUse(function (api) {
@@ -42,30 +28,27 @@ Package.onUse(function (api) {
   api.use("amplify@1.0.0");
 
   //community packages
-  api.use("mquandalle:bower@1.3.12_3");
-  api.use("nemo64:bootstrap@3.3.4_2","client");
-  api.use("nemo64:bootstrap@3.3.4_2","server", {'weak': 1});
+  api.use("mquandalle:bower@1.4.1_1");
   api.use("d3js:d3@3.5.5");
-  api.use("fortawesome:fontawesome@4.2.0_2");
   api.use("mrt:underscore-string-latest@2.3.3");
   api.use("aldeed:geocoder@0.3.6");
-  api.use("aldeed:autoform@4.2.2");
+  api.use("aldeed:autoform@5.3.0");
   api.use("aldeed:collection2@2.3.3");
-  api.use("aldeed:simple-schema@1.3.3", {'weak': 1});
+  api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3","client");
   api.use("iron:router@1.0.9");
   api.use("ongoworks:speakingurl@5.0.1");
-  api.use("ongoworks:bunyan-logger@1.4.0");
-  api.use("ongoworks:security@1.1.0");
+  api.use("ongoworks:bunyan-logger@2.5.0");
+  api.use("ongoworks:security@1.2.0");
 
-  api.use("dburles:factory@0.3.9");
+  api.use("dburles:factory@0.3.10");
   api.use("anti:fake@0.4.1");
   api.use("matb33:collection-hooks@0.7.13");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.3", 'client');
-  api.use("risul:moment-timezone",'client');
-  api.use("sacha:spin@2.0.4", "client");
-  api.use("sacha:avatar@0.7.7");
+  api.use("risul:moment-timezone@0.4.0",'client');
+  api.use("utilities:spin@2.3.1", "client");
+  api.use("utilities:avatar@0.7.15");
 
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.2");
@@ -96,8 +79,8 @@ Package.onUse(function (api) {
   api.imply("matb33:collection-hooks");
   api.imply("alanning:roles");
   api.imply("momentjs:moment", ["client"]);
-  api.imply("sacha:spin" ["client"]);
-  api.imply("sacha:avatar");
+  api.imply("utilities:spin" ["client"]);
+  api.imply("utilities:avatar");
   api.imply("dburles:factory");
   api.imply("anti:fake");
   api.imply("ongoworks:speakingurl");
@@ -132,8 +115,8 @@ Package.onUse(function (api) {
     "server/register.coffee",
     "server/security.coffee",
     "server/publications.coffee",
-    "server/fixtures.coffee",
     "server/factories.coffee",
+    "server/fixtures.coffee",
     "server/methods/accounts.coffee",
     "server/methods/cart.coffee",
     "server/methods/orders.coffee",
@@ -143,6 +126,7 @@ Package.onUse(function (api) {
   ], ["server"]);
 
   api.addFiles([
+    "lib/bower/packery/index.js",
     "lib/bower/jquery.ui/ui/core.js",
     "lib/bower/jquery.ui/ui/widget.js",
     "lib/bower/jquery.ui/ui/mouse.js",
@@ -154,10 +138,10 @@ Package.onUse(function (api) {
     "lib/bower/jquery.ui/ui/effect.js",
     "lib/bower/jquery.ui/ui/effect-slide.js",
     "lib/bower/jquery.ui/ui/menu.js",
-    "lib/bower/autosize/dest/autosize.js",
+    "lib/bower/autosize/dist/autosize.js",
     "lib/bower/openexchangerates.accounting/accounting.min.js",
     "lib/bower/openexchangerates.money/money.js",
-    "lib/bower/jquery.tagsinput/jquery.tagsinput.js",
+    "lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css",
     "lib/css/jquery-ui.css",
 
     "client/subscriptions.coffee",
@@ -384,11 +368,14 @@ Package.onUse(function (api) {
     "client/templates/products/productDetail/variants/variantForm/variantForm.html",
     "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
 
+    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.html",
+    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.coffee",
+
     "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html",
     "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.coffee",
 
     "client/templates/products/productDetail/attributes/attributes.html",
-    "client/templates/products/productDetail/attributes/attributes.coffee",
+    "client/templates/products/productDetail/attributes/attributes.coffee"
   ], ["client"]);
 
   // Email Templates
@@ -441,15 +428,22 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 });
 
-
 Package.onTest(function(api) {
-  api.use('sanjo:jasmine@0.14.0');
-  api.use('velocity:html-reporter@0.6.2');
-  api.use('velocity:console-reporter@0.1.1');
+  api.use('coffeescript');
+  api.use('underscore');
+  api.use('sanjo:jasmine@0.15.2');
+  api.use('velocity:html-reporter@0.7.1');
+  api.use('velocity:console-reporter@0.1.2');
+
   api.use('reactioncommerce:core');
-  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
-  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+  api.use('reactioncommerce:bootstrap-theme');
+
+  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/accounts.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
   api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/shop.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
+  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+
 });

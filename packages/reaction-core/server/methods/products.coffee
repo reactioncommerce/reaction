@@ -3,6 +3,7 @@ Meteor.methods
   # the cloneVariant method copies variants, but will also create and clone child variants (options)
   # productId,variantId to clone
   # add parentId to create children
+  # Note: parentId and variantId can be the same if creating a child variant.
   ###
   cloneVariant: (productId, variantId, parentId) ->
     check productId, String
@@ -67,6 +68,72 @@ Meteor.methods
     Products.update({"_id": productId}, {$addToSet: {"variants": newVariant}}, {validate: false})
     return newVariantId
 
+  ###
+  # initializes inventory variant template
+  # should only be called to create variants of type=inventory
+  # pass newVariant object to create with options
+  ###
+  createInventoryVariant: (productId, parentId, newVariant) ->
+    check productId, String
+    check parentId, String
+    check newVariant, Match.OneOf(Object, undefined)
+    @unblock()
+    
+    unless Roles.userIsInRole Meteor.userId(), ['admin']
+      throw new Meteor.Error 403, "Access Denied"
+    
+    newVariantId = Random.id()
+    newBarcode = Random.id()
+    if newVariant
+      newVariant._id = newVariantId
+      newVariant.parentId = parentId
+      newVariant.type = "inventory"
+      check(newVariant, ReactionCore.Schemas.ProductVariant)
+    else
+      newVariant = { "_id": newVariantId, parentId: parentId, barcode: newBarcode, type: "inventory"}
+    Products.update({ "_id": productId }, { $addToSet: { "variants": newVariant }}, { validate: false })
+    return newVariantId
+  
+  ###
+  # Creates default inventory variants for each quantity
+  # Optional defaultValue will initialize all variants to some string + index
+  ###
+  createInventoryVariants: (productId, parentId, quantity, defaultValue) ->
+    check productId, String
+    check parentId, String
+    check defaultValue, Match.Optional(String)
+    check quantity, Match.OneOf(
+      (Match.Where () ->
+        check quantity, String
+        return /[0-9]+/.test(quantity)),
+      (Match.Where () ->
+        check quantity, Number
+        return quantity > 0)
+    )
+      
+    @unblock()
+    
+    unless Roles.userIsInRole Meteor.userId(), ["admin"]
+      throw new Meteor.Error 403, "Access Denied"
+    
+    newVariantIds = []
+    newVariants = []
+    
+    # Push default variant for each quantity
+    _(Number(quantity)).times (index)->
+      if (defaultValue or defaultValue == "")
+        newVariantBarcode = defaultValue + index
+      else
+        newVariantBarcode = Random.id()
+      
+      newVariantId = Random.id()
+        
+      newVariants.push { "_id": newVariantId, parentId: parentId, barcode: newVariantBarcode, type: "inventory"}
+      newVariantIds.push newVariantId
+    
+    # Add array of inventory variants to Product's variants array.
+    Products.update({ "_id": productId }, { $addToSet: { "variants": { $each: newVariants }}}, { validate: false })
+    return newVariantIds
   ###
   # update individual variant with new values, merges into original
   # only need to supply updated information
@@ -230,7 +297,7 @@ Meteor.methods
   updateProductField: (productId, field, value) ->
     check productId, String
     check field, String
-    check value, String
+    check value, Match.OneOf(String, Object, Array, Boolean)
     unless ReactionCore.hasPermission('createProduct')
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
@@ -261,7 +328,8 @@ Meteor.methods
 
     if existingTag
       productCount = Products.find({"_id": productId, "hashtags": {$in:[existingTag._id]}}).count()
-      return false if productCount > 0
+      if productCount > 0
+        throw new Meteor.Error 403, "Existing Tag, Update Denied"
       Products.update(productId, {$push: {"hashtags": existingTag._id}})
     else if tagId
       Tags.update tagId, {$set: newTag}
@@ -334,7 +402,9 @@ Meteor.methods
       Products.update {_id: productId},
         {$addToSet: { positions: positionData },$set: {updatedAt: new Date() } },
       , (error,results) ->
-        ReactionCore.Events.warn error if error
+        if error
+          ReactionCore.Events.warn error
+          throw new Meteor.Error 403, error
     else
       #Collection2 doesn't support elemMatch, use core collection
       Products.update
@@ -343,10 +413,14 @@ Meteor.methods
         ,
           $set:
             "positions.$.position": positionData.position
+            "positions.$.pinned": positionData.pinned
+            "positions.$.weight": positionData.weight
             "positions.$.updatedAt": new Date()
         ,
           (error,results) ->
-            ReactionCore.Events.warn error if error
+            if error
+              ReactionCore.Events.warn error
+              throw new Meteor.Error 403, error
 
   updateMetaFields: (productId, updatedMeta, meta) ->
     check productId, String

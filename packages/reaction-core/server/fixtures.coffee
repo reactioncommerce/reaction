@@ -15,9 +15,9 @@ PackageFixture = ->
     if collection.find().count() > 0 then return
 
    # load fixture data
-    ReactionCore.Events.info "Loading fixture data for "+collection._name
+    ReactionCore.Events.info "Loading fixture data for " + collection._name
     unless jsonFile
-      json = EJSON.parse Assets.getText("private/data/"+collection._name+".json")
+      json = EJSON.parse Assets.getText("private/data/" + collection._name + ".json")
     else
       json = EJSON.parse jsonFile
 
@@ -45,31 +45,7 @@ PackageFixture = ->
   #
   # All settings are private unless added to `settings.public`
   #
-  # Meteor account services can be added in `settings.services`:
-  #
-  # {
-  #     "name": "core",
-  #     "enabled": true,
-  #     "settings": {
-  #         "public": {
-  #             "allowGuestCheckout": true
-  #         },
-  #         "mail": {
-  #             "user": "postmaster@mailgun.org",
-  #             "password": "xxxxxxxxxxxxxxxx",
-  #             "host": "smtp.mailgun.org",
-  #             "port": 25
-  #         },
-  #         "services": [
-  #             {
-  #                 "facebook": {
-  #                     "appId": "xxxxxxxxxxxxxxxx",
-  #                     "secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  #                 }
-  #             }
-  #         ]
-  #     }
-  # }
+  # Meteor account services can be added in `settings.services`
   ###
   loadSettings: (json) ->
     check json, String
@@ -128,20 +104,23 @@ PackageFixture = ->
         ReactionCore.Events.info "Success adding " + language.i18n + " to " + collection._name
     return
 
-
+###
 # instantiate fixtures
+###
 @Fixtures = new PackageFixture
 
-# helper for creating admin users
+###
+# local helper for creating admin users
+###
 getDomain = (url) ->
   unless url then url = process.env.ROOT_URL
   domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1]
   return domain
 
 ###
-# Three methods to create users default (empty db) admin user
+# Method that creates default admin user
 ###
-createDefaultAdminUser = ->
+ReactionRegistry.createDefaultAdminUser = ->
   # options from set env variables
   options = {}
   options.email = process.env.METEOR_EMAIL #set in env if we want to supply email
@@ -156,7 +135,7 @@ createDefaultAdminUser = ->
     unless options.password then options.password = url.substring(url.indexOf("/") + 2,url.indexOf("@")).split(":")[1]
     ReactionCore.Events.warn ("\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n")
   else
-    # random options if nothing has been set
+    # from Meteor.settings or random options if nothing has been set
     options.username = Meteor.settings?.reaction?.METEOR_USER || "Owner"
     options.password = Meteor.settings?.reaction?.METEOR_AUTH || Random.secret(8)
     options.email = Meteor.settings?.reaction?.METEOR_EMAIL || Random.id(8).toLowerCase() + "@" + domain
@@ -191,7 +170,7 @@ createDefaultAdminUser = ->
 ###
 # load core fixture data
 ###
-loadFixtures = ->
+ReactionRegistry.loadFixtures = ->
   # Load data from json files
   Fixtures.loadData ReactionCore.Collections.Shops
   Fixtures.loadData ReactionCore.Collections.Products
@@ -227,13 +206,4 @@ loadFixtures = ->
           ReactionCore.Collections.Packages.remove {shopId: shop._id, name: pkg.name}
 
   # create default admin user account
-  createDefaultAdminUser() unless Meteor.users.find().count()
-
-###
-# Execute start up fixtures
-###
-Meteor.startup ->
-  loadFixtures()
-
-  # notifiy that we're done with initialization
-  ReactionCore.Events.info "Reaction Commerce initialization finished. "
+  ReactionRegistry.createDefaultAdminUser() unless Meteor.users.find().count()

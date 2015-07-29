@@ -19,16 +19,13 @@ Meteor.methods
     @unblock()
 
     adminRoles  = Roles.getRolesForUser(currentUser, ReactionCore.getShopId())
-
+    shopId = Factory.create("shop")._id
     try
-      shop =  Factory.create 'shop', shop
-      Roles.addUsersToRoles [currentUser, userId], adminRoles, shop._id
-      return shop._id
-
+      ReactionCore.Events.warn "Created shop: ", shopId
+      Roles.addUsersToRoles [currentUser, userId], adminRoles, shopId
+      return shopId
     catch e
       ReactionCore.Events.warn "Failed to createShop", e
-
-    return
 
   ###
   # determine user's countryCode and return locale object
@@ -68,6 +65,8 @@ Meteor.methods
             # TODO Add some alternate configurable services like Open Exchange Rate
             rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency
             exchangeRate = HTTP.get rateUrl
+            unless exchangeRate
+              ReactionCore.Events.warn "Failed to fetch rate exchange rates."
             result.currency.exchangeRate = exchangeRate.data
           return result #returning first match.
 
@@ -79,6 +78,7 @@ Meteor.methods
   locateAddress: (latitude, longitude) ->
     check latitude, Match.Optional(Number)
     check longitude, Match.Optional(Number)
+    @unblock()
 
     try
       if latitude? and longitude?
@@ -126,38 +126,49 @@ Meteor.methods
 
     unless ReactionCore.hasPermission('core')
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     newTag =
       slug: getSlug tagName
       name: tagName
 
-    #new tags
-    if tagId #just an update
-      Tags.update tagId, {$set:newTag}
-      ReactionCore.Events.info "Changed name of tag " + tagId + " to " + tagName
-    else # create a new tag
-      #prevent duplicate tags by checking for existing
-      existingTag = Tags.findOne "name":tagName
-      #if a tag already exists with that name
-      if existingTag
-        if currentTagId
-          Tags.update currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}}
+    # lookup existing tags
+    existingTag = Tags.findOne "name":tagName
+
+    # if tagId then update
+    if tagId
+      Tags.update tagId, {$set:newTag}, () ->
+        ReactionCore.Events.info "Changed name of tag " + tagId + " to " + tagName
+        return true
+    # create a new tag
+    else if existingTag
+      # prevent duplicate tags by checking for existing
+      if currentTagId
+        Tags.update currentTagId, {$addToSet: {"relatedTagIds": existingTag._id}}, () ->
           ReactionCore.Events.info 'Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId
-        else
-          Tags.update existingTag._id, {$set:{"isTopLevel":true}}
-          ReactionCore.Events.info 'Marked tag "' + existingTag.name + '" as a top level tag'
-      #if a tag with that name does not exist yet
+          return true
       else
-        newTag.isTopLevel = !currentTagId
-        newTag.shopId = ReactionCore.getShopId()
-        newTag.updatedAt = new Date()
-        newTag.createdAt = new Date()
-        newTagId = Tags.insert newTag
-        ReactionCore.Events.info 'Created tag "' + newTag.name + '"'
-        if currentTagId
-          Tags.update currentTagId, {$addToSet: {"relatedTagIds": newTagId}}
+        Tags.update existingTag._id, {$set:{"isTopLevel":true}}, () ->
+          ReactionCore.Events.info 'Marked tag "' + existingTag.name + '" as a top level tag'
+          return true
+      #if a tag with that name does not exist yet
+    else
+      newTag.isTopLevel = !currentTagId
+      newTag.shopId = ReactionCore.getShopId()
+      newTag.updatedAt = new Date()
+      newTag.createdAt = new Date()
+      newTagId = Tags.insert newTag
+      if currentTagId
+        Tags.update currentTagId, {$addToSet: {"relatedTagIds": newTagId}}, () ->
           ReactionCore.Events.info 'Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId
-    return;
+          return true
+      else if newTagId && !currentTagId
+        ReactionCore.Events.info 'Created tag "' + newTag.name + '"'
+        return true
+      else
+        # we should have returned in one of the previous conditions
+        throw new Meteor.Error 403, "Failed to update header tags."
+
 
   removeHeaderTag: (tagId, currentTagId) ->
     check tagId, String
@@ -165,6 +176,7 @@ Meteor.methods
 
     unless ReactionCore.hasPermission('core')
       throw new Meteor.Error 403, "Access Denied"
+    @unblock()
 
     Tags.update(currentTagId, {$pull: {"relatedTagIds": tagId}})
     # if not in use delete from system
@@ -173,6 +185,8 @@ Meteor.methods
 
     if (productCount is 0) and (relatedTagsCount is 0)
       return Tags.remove(tagId)
+    else
+      throw new Meteor.Error 403, "Unable to delete tags that are in use."
 
   ###
   # Helper method to remove all translations, and reload from jsonFiles

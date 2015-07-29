@@ -1,31 +1,50 @@
 <template name="productGrid">
-<div class="row product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
-  <ul class="product-grid-list list-unstyled" id="product-grid-list">
-  {{#each products}}
-    {{> productGridItems}}
-  {{/each}}
-  </ul>
-</div>
+  <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
+    <ul class="product-grid-list list-unstyled" id="product-grid-list">
+    {{#each products}}
+      {{> productGridItems}}
+    {{/each}}
+    </ul>
+  </div>
 </template>
 
 <template name="productGridItems">
-<li class="product-grid-item" data-id="{{_id}}" id="{{_id}}">
-  {{> gridNotice}}
-  <span class="product-grid-item-alerts">
-    {{> bootstrapAlerts placement="productGridItem" id=_id}}
-  </span>
-  <div class="product-grid-item-images">
-    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
-      {{#with media}}
-        <img src="{{url store='large'}}" class="img-responsive" alt="{{title}}">
-      {{else}}
-        <img src= "/resources/placeholder.gif" class="img-responsive" alt="">
-      {{/with}}
+  <li class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
+    {{> gridNotice}}
+    <span class="product-grid-item-alerts">
+      {{> bootstrapAlerts placement="productGridItem" id=_id}}
+    </span>
+
+    <a class="product-grid-item-images"
+      href="{{pathForSEO 'product' 'handle'}}"
+      data-event-category="grid"
+      data-event-action="product-click"
+      data-event-label="grid product click"
+      data-event-value="{{_id}}">
+
+      <div class="product-primary-images">
+        {{#with media}}
+          <span class="product-image" style="background-image: url({{url store='large'}})"></span>
+        {{else}}
+          <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
+        {{/with}}
+      </div>
+
+      {{#if additionalMedia}}
+        {{#if isMediumWeight}}
+          <div class="product-additional-images">
+            {{#each additionalMedia}}
+                <span class="product-image" style="background-image: url({{url store='medium'}})"></span>
+
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/if}}
     </a>
-  </div>
-  {{> gridControls}}
-  {{> gridContent}}
-</li>
+
+    {{> gridControls}}
+    {{> gridContent}}
+  </li>
 </template>
 
 
@@ -45,23 +64,103 @@
 
 
 <template name="gridContent">
-<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
-  <div class="overlay">
-    <div class="overlay-title">{{title}}</div>
-    <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+  <div class="grid-content">
+    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
+      <div class="overlay">
+        <div class="overlay-title">{{title}}</div>
+        <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+      </div>
+    </a>
   </div>
-</a>
 </template>
 
 
 <template name="gridControls">
 {{#if hasPermission "createProduct"}}
-  <div class="product-grid-controls">
-    {{#if isVisible}}<span class="fa fa-eye fa-lg publish-product" title="Publish"></span>
-    {{else}}<span class="fa fa-eye-slash  fa-lg .pull-left publish-product" title="Publish"></span>
-    {{/if}}
-    <span class="fa fa-code-fork fa-rotate-180 fa-lg clone-product"  title="Clone product"></span>
-    <span class="fa fa-trash-o delete-product fa-lg" title="Delete product"></span>
+  <div class="product-grid-controls-wrap">
+    <div class="product-grid-controls">
+
+      {{! TODO: There has got to be a better way to do i18n for tooltips }}
+      <button
+        class="publish-product"
+        data-toggle="tooltip"
+        title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+        data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+        >
+        {{#if isVisible}}
+          <span class="fa fa-eye fa-lg"></span>
+        {{else}}
+          <span class="fa fa-eye-slash fa-lg"></span>
+        {{/if}}
+      </button>
+
+      <button
+        class="clone-product"
+        data-toggle="tooltip"
+        title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+        data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}">
+        <span class="fa fa-files-o fa-lg"></span>
+      </button>
+
+      {{!--
+      For another time
+      <button
+        class="pin-product {{#if position.pinned}}active{{/if}}"
+        data-toggle="tooltip"
+        title="{{i18n 'productDetailEdit.pinProduct' 'Pin Product'}}"
+        data-original-title="{{i18n 'productDetailEdit.pinProduct' 'Pin Product'}}">
+        <span class="fa fa-thumb-tack fa-lg"></span>
+      </button>
+      --}}
+
+      <button
+        class="update-product-weight"
+        data-toggle="tooltip"
+        title="{{i18n 'productDetailEdit.toggleSize' 'Toggle Size'}}"
+        data-original-title="{{i18n 'productDetailEdit.toggleSize' 'Toggle Size'}}">
+        <span class="fa fa-plus-square-o fa-lg"></span>
+      </button>
+
+
+      <button
+        class="delete-product"
+        data-toggle="tooltip"
+        title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+        data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}">
+        <span class="fa fa-trash-o fa-lg"></span>
+      </button>
+
+      {{!-- For another day
+      <button
+        class="more-options"
+        data-toggle="dropdown"
+        title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
+        data-original-title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}">
+        <span class="fa fa-ellipsis-h fa-lg"></span>
+      </button>
+      --}}
+
+    </div>
   </div>
 {{/if}}
 </template>
+
+<template name="productExtendedControls">
+  <div class="popover popover-advanced fade in right" style="display: block">
+    <div class="arrow"></div>
+    <div class="popover-title">Controls <button class="close"><i class="fa fa-times"></i></button></div>
+    <div class="popover-content">
+
+    </div>
+    <div class="popover-footer">
+      <button
+        class="delete-product2 btn btn-danger"
+        data-toggle="tooltip"
+        title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+        data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}">
+        <span class="fa fa-trash-o fa-lg"></span>
+      </button>
+    </div>
+  </div>
+</template>
+

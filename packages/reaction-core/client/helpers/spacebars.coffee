@@ -62,8 +62,9 @@ Template.registerHelper "pathForSEO", (path, params) ->
 #
 Template.registerHelper "displayName", (user) ->
   userSub = Meteor.subscribe "UserProfile", user?._id || Meteor.userId()
+  userId = user?._id || Meteor.userId()
   if userSub.ready()
-    user = Meteor.users.findOne() unless user
+    user = Meteor.users.findOne(userId) unless user
     # every social channel is different
     # legacy profile name
     if user and user.profile and user.profile.name
@@ -144,20 +145,15 @@ Template.registerHelper "hasOwnerAccess", ->
   ReactionCore.hasOwnerAccess()
 
 Template.registerHelper "hasAdminAccess", ->
-  ReactionCore.hasOwnerAccess()
+  ReactionCore.hasAdminAccess()
 
 Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
-
-###
-# general helper for determine if user has a store
-# returns boolean
-###
-Template.registerHelper "userHasProfile", ->
-  user = Meteor.user()
-  return user and !!user.profile.store
-
+Template.registerHelper "allowGuestCheckout", ->
+  packageRegistry = ReactionCore.Collections.Packages.findOne shopId: ReactionCore.getShopId(), name: 'core'
+  allowGuest = packageRegistry?.settings?.public?.allowGuestCheckout || false
+  return allowGuest
 
 ###
 # activeRouteClass

@@ -5,7 +5,7 @@
       "$date":1391722983298
     },
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "updatedAt":{
       "$date":1391722983298
     },
@@ -278,7 +278,7 @@
       }
     ],
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "updatedAt":{
       "$date":1391642478511
     },
@@ -343,7 +343,7 @@
       "$date":1391669778453
     },
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "updatedAt":{
       "$date":1391669778453
     },
@@ -631,7 +631,7 @@
         "value":"2.99"
       }
     },
-    "shopId":"WvrKDomkYth3THbDD",
+
     "updatedAt":{
       "$date":1391728521284
     },
@@ -641,7 +641,7 @@
   {
     "_id":"Ku6v5Cumanj9A8TJL",
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "userId":"sp8nAatBMw7cXKLjc",
     "createdAt":{
       "$date":1391644581945
@@ -774,7 +774,7 @@
   {
     "_id":"PcaKnZSrCDWKR3TBw",
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "userId":"sp8nAatBMw7cXKLjc",
     "createdAt":{
       "$date":1391728647250
@@ -907,7 +907,7 @@
   {
     "_id":"bohz745A9eDQoxcG5",
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "userId":"XTccQmfMNiSfgMHgT",
     "createdAt":{
       "$date":1391723017428
@@ -1018,7 +1018,7 @@
   {
     "_id":"bvBRWbFD8cq2swdmo",
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "userId":"sp8nAatBMw7cXKLjc",
     "createdAt":{
       "$date":1391645530806
@@ -1480,7 +1480,7 @@
       }
     ],
     "sessionId":"xWYMS2JoYBj2tBT7Z",
-    "shopId":"WvrKDomkYth3THbDD",
+
     "updatedAt":{
       "$date":1391735415291
     },

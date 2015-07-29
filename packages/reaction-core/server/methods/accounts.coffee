@@ -11,8 +11,9 @@ Accounts.onCreateUser (options, user) ->
   # see: https://github.com/alanning/meteor-roles/issues/79
   unless user.roles
     shopId = ReactionCore.getShopId()
+    shop = ReactionCore.getCurrentShop()
     user.roles = {}
-    user.roles[shopId] = [ "guest", "account/profile" ]
+    user.roles[shopId] = shop?.defaultRoles || [ "guest", "account/profile" ]
 
   # TODO: only use accounts for managing profiles
   for service, profile of user.services
@@ -27,19 +28,6 @@ Accounts.onCreateUser (options, user) ->
 
   # return user to meteor accounts
   return user
-
-###
-# sets the shop mail server auth info
-###
-@setMailUrlForShop = (shop) ->
-  coreMail = ReactionCore.Collections.Packages.findOne(name: "core").settings.mail
-  if coreMail.user and coreMail.password
-    mailUrl = "smtp://" + coreMail.user + ":" + coreMail.password + "@" + coreMail.host + ":" + coreMail.port + "/"
-    process.env.MAIL_URL = process.env.MAIL_URL || mailUrl
-  else
-    ReactionCore.Events.warn 'Core Mail Settings not set. Unable to send email.'
-    throw new Meteor.Error( 403, '<a href="/dashboard/settings/shop#mail">Core Mail Settings</a> not set. Unable to send email.')
-    return
 
 ###
 # Account Methods
@@ -72,9 +60,8 @@ Meteor.methods
         ,
           $set:
             "profile.addressBook.$.isBillingDefault": false
-
     # add address book entry
-    ReactionCore.Collections.Accounts.upsert accountId, {$addToSet: {"profile.addressBook": doc}}
+    ReactionCore.Collections.Accounts.update accountId, {$addToSet: {"profile.addressBook": doc}}
     return doc
 
   ###
@@ -121,29 +108,33 @@ Meteor.methods
     check email, String
     check name, String
     @unblock()
-
+    # get the shop first
     shop = Shops.findOne shopId
-    if shop and email and name
-      if ReactionCore.hasOwnerAccess(shop)
-        currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
-        user = Meteor.users.findOne {"emails.address": email}
-        unless user # user does not exist, invite user
-          userId = Accounts.createUser
-            email: email
-            username: name
-          user = Meteor.users.findOne(userId)
-          unless user
-            throw new Error("Can't find user")
-          token = Random.id()
-          Meteor.users.update userId,
-            $set:
-              "services.password.reset":
-                token: token
-                email: email
-                when: new Date()
+    # check permissions
+    unless ReactionCore.hasOwnerAccess(shop)
+      throw new Meteor.Error 403, "Access denied"
 
-          setMailUrlForShop(shop)
-          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
+    # all params are required
+    if shop and email and name
+      currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
+      user = Meteor.users.findOne {"emails.address": email}
+      unless user # user does not exist, invite user
+        userId = Accounts.createUser
+          email: email
+          username: name
+        user = Meteor.users.findOne(userId)
+        unless user
+          throw new Error("Can't find user")
+        token = Random.id()
+        Meteor.users.update userId,
+          $set:
+            "services.password.reset":
+              token: token
+              email: email
+              when: new Date()
+        # compile mail template
+        SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
+        try
           Email.send
             to: email
             from: currentUserName + " <" + shop.emails[0] + ">"
@@ -154,9 +145,13 @@ Meteor.methods
               currentUserName: currentUserName
               invitedUserName: name
               url: Accounts.urls.enrollAccount(token)
-        else # user exist, send notification
-          setMailUrlForShop(shop)
-          SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
+        catch
+          throw new Meteor.Error 403, "Unable to send invitation email."
+      # existing user, send notification
+      else
+        # compile mail template
+        SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'))
+        try
           Email.send
             to: email
             from: currentUserName + " <" + shop.emails[0] + ">"
@@ -167,16 +162,21 @@ Meteor.methods
               currentUserName: currentUserName
               invitedUserName: name
               url: Meteor.absoluteUrl()
+        catch
+          throw new Meteor.Error 403, "Unable to send invitation email."
+    else
+      throw new Meteor.Error 403, "Access denied"
+    return true
+
 
   ###
   # send an email to consumers on sign up
   ###
-  sendWelcomeEmail: (shop) ->
+  sendWelcomeEmail: (shopId, userId) ->
     check shop, Object
     @unblock()
 
-    email = Meteor.user().emails[0].address
-    setMailUrlForShop(shop)
+    email = Meteor.user(userId).emails[0].address
     SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'))
     Email.send
       to: email
@@ -186,6 +186,7 @@ Meteor.methods
         homepage: Meteor.absoluteUrl()
         shop: shop
         user: Meteor.user()
+    return true
 
   ###
   # @summary addUserPermissions

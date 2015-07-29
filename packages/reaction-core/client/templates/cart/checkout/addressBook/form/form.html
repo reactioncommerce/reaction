@@ -50,7 +50,11 @@
   </div>
   <div class="col-md-4 form-group{{#if afFieldIsInvalid name='region'}} has-error{{/if}}">
       <label class="control-label">{{afFieldLabelText name='region'}}</label>
-      {{>afFieldInput name="region" value=region}}
+      {{#if statesForCountry}}
+        {{>afFieldInput name="region" value=region options=statesForCountry}}
+      {{else}}
+        {{>afFieldInput name="region" value=region }}
+      {{/if}}
       {{#if afFieldIsInvalid name="region"}}
       <span class="help-block">{{afFieldMessage name="region"}}</span>
       {{/if}}
