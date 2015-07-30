@@ -22,13 +22,29 @@ Package.onUse(function (api, where) {
   api.use("coffeescript");
   api.use("less");
 
+  api.use("reactioncommerce:core@0.6.0");
+
+
   // Core Reaction packages
 
-  // api.addFiles([
-  //   "common/routing.coffee",
-  // ],["client","server"]);
+  api.addFiles([
+    "server/register.js", // register as a reaction package
+  ], "server");
 
   api.addFiles([
+    // "common/collections.js",
+    "common/routing.js",
+  ], ["client", "server"]);
+
+  api.addFiles([
+
+    // settings
+    "client/templates/dashboard/accounts.html",
+
+    "client/templates/profile/profile.html",
+    "client/templates/profile/profile.js",
+
+
 
     // core login form and generic templates
     "client/templates/login/loginForm.html",
