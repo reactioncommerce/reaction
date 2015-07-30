@@ -60,7 +60,7 @@ _.extend ReactionCore,
 # configure bunyan logging module for reaction client
 # See: https://github.com/trentm/node-bunyan#levels
 ###
-isDebug = Meteor?.settings?.public?.isDebug || "INFO"
+isDebug = Meteor?.settings?.public?.isDebug
 # acceptable levels
 levels = ["FATAL","ERROR","WARN", "INFO", "DEBUG", "TRACE"]
 # set logging levels from settings

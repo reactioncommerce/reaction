@@ -165,6 +165,7 @@ ReactionRegistry.createDefaultAdminUser = ->
   Meteor.call "addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId
   # global owner permissions
   Meteor.call "addUserPermissions", accountId,['owner','admin','dashboard'], Roles.GLOBAL_GROUP
+  return
 
 
 ###
