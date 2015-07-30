@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Social - Social Sharing Package for Reaction",
   name: "reactioncommerce:reaction-social",
-  version: "0.2.1",
+  version: "0.2.2",
   git: "https://github.com/reactioncommerce/reaction-social.git"
 });
 

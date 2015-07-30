@@ -98,7 +98,7 @@ raix:eventemitter@0.1.1
 raix:ui-dropped-event@0.0.7
 random@1.0.3
 reactioncommerce:core@0.6.1
-reactioncommerce:reaction-social@0.2.1
+reactioncommerce:reaction-social@0.2.2
 reactive-dict@1.1.0
 reactive-var@1.0.5
 reload@1.1.3
