@@ -43,18 +43,19 @@
 FROM mongo:latest
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
+
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install git, curl, python, etc
 # Install imagemagick (optional for cfs:graphicsmagick)
 RUN apt-get -qq update && apt-get install -qq -y \
   build-essential \
+  apt-utils \
   ca-certificates \
   chrpath \
   curl \
   gcc \
   git \
-  imagemagick \
   graphicsmagick \
   libfreetype6 \
   libfreetype6-dev \
@@ -65,20 +66,9 @@ RUN apt-get -qq update && apt-get install -qq -y \
   python \
   xz-utils
 
-# install node
-RUN mkdir /nodejs && curl http://nodejs.org/dist/v0.10.36/node-v0.10.36-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
-
-
-
-# Default (required) Meteor env variables
-ENV PATH $PATH:/nodejs/bin
-ENV PORT 3000
-ENV ROOT_URL http://localhost
-ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
-ENV MAIL_URL smtp://localhost:25
-
-# Expose container port 3000 to the host (outside the container)
-EXPOSE 3000
+RUN apt-get -qq upgrade
+RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
+RUN apt-get install -y nodejs
 
 # Install forever & phantomjs
 RUN npm install --silent -g forever phantomjs
@@ -86,7 +76,21 @@ RUN npm install --silent -g forever phantomjs
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
 
-# Install entrypoint
+# Default (required) Meteor env variables
+ENV PORT 3000
+ENV ROOT_URL http://localhost
+ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
+ENV MAIL_URL smtp://localhost:25
+
+# Expose container port 3000 to the host (outside the container)
+# Expose container port 3000 to the host (outside the container)
+EXPOSE 3000
+EXPOSE 8080
+EXPOSE 27017
+
+# Install entrypoint and build scripts
+# adding the files locally
+# and setting permissions.
 COPY bin/docker/entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 
@@ -99,13 +103,23 @@ RUN chown -R www-data:www-data /var/www
 
 # add app to /usr/src
 VOLUME ["/usr/src/meteor"]
+VOLUME ["/data/db"]
 COPY . /usr/src/meteor
 WORKDIR /usr/src/meteor/
 
-# Build meteor
+# Build meteor..
+# most of this can go away with Less updates
+# coming in Meteor 1.2.0 - however unless you
+# package the repo to just run development
+# you'll need to do some trick like this
+#
 RUN bash /usr/bin/build-meteor.sh
 
-# Rebuild Meteor and start Meteor, Reaction and MongoDB
+# run meteor npm update
+RUN cd /var/www/bundle/programs/server && npm install
+
+# switch to production meteor bundle
 WORKDIR /var/www/bundle
+
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
-CMD []
+CMD ['/bin/bash']
