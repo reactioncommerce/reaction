@@ -40,7 +40,7 @@
 #
 ##############################################################
 
-FROM mongo:2.6.8
+FROM mongo:latest
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -55,16 +55,20 @@ RUN apt-get -qq update && apt-get install -qq -y \
   gcc \
   git \
   imagemagick \
+  graphicsmagick \
   libfreetype6 \
   libfreetype6-dev \
   libssl-dev \
   libfontconfig1 \
   make \
   procps \
-  python
+  python \
+  xz-utils
 
 # install node
 RUN mkdir /nodejs && curl http://nodejs.org/dist/v0.10.36/node-v0.10.36-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
+
+
 
 # Default (required) Meteor env variables
 ENV PATH $PATH:/nodejs/bin
