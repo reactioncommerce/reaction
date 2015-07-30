@@ -66,6 +66,7 @@ RUN apt-get -qq update && apt-get install -qq -y \
   python \
   xz-utils
 
+# install node from package nodesource
 RUN apt-get -qq upgrade
 RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
 RUN apt-get install -y nodejs
@@ -83,11 +84,8 @@ ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
 ENV MAIL_URL smtp://localhost:25
 
 # Expose container port 3000 to the host (outside the container)
-<<<<<<< HEAD
-=======
 # Expose container port 3000 to the host (outside the container)
 EXPOSE 3000
->>>>>>> development
 EXPOSE 8080
 EXPOSE 27017
 
