@@ -14,7 +14,7 @@
 #
 #   Run Reaction, Meteor + local mongo with open port for e-mail (note that you will need to choose one of the three possible e-mail ports)
 #
-#   docker run --rm  -p ::3000 -p::(25 OR 465 OR 2525)
+#   docker run --rm  -p ::3000 -p::(25 OR 465 OR 587 OR 2525)
 #     -e ROOT_URL="http://localhost" \
 #     -e METEOR_EMAIL="youradmin@yourdomain.com" \
 #     -e METEOR_USER="admin" \
