@@ -77,8 +77,14 @@ ENV ROOT_URL http://localhost
 ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
 ENV MAIL_URL smtp://localhost:25
 
-# Expose container port 3000 to the host (outside the container)
+# Expose container ports
+# REACTION 3000
+# E-MAIL 587,25,2525,465
 EXPOSE 3000
+EXPOSE 587
+EXPOSE 25
+EXPOSE 2525
+EXPOSE 465
 
 # Install forever & phantomjs
 RUN npm install --silent -g forever phantomjs
