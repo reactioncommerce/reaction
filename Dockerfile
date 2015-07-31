@@ -66,6 +66,7 @@ RUN apt-get -qq update && apt-get install -qq -y \
   python \
   xz-utils
 
+# install node from package nodesource
 RUN apt-get -qq upgrade
 RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
 RUN apt-get install -y nodejs
