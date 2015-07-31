@@ -21,6 +21,4 @@ if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
 fi
 
 # Run meteor
-cd /var/www/bundle
-echo "*.log" >> .foreverignore
-exec forever -w ./main.js
+exec nodemon ./main.js
