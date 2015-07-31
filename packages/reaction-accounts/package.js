@@ -44,6 +44,21 @@ Package.onUse(function (api, where) {
     "client/templates/profile/profile.html",
     "client/templates/profile/profile.js",
 
+    // Address BooK
+    "client/templates/addressBook/addressBook.html",
+    "client/templates/addressBook/addressBook.js",
+
+    "client/templates/addressBook/add/add.html",
+    "client/templates/addressBook/add/add.js",
+
+    "client/templates/addressBook/edit/edit.html",
+    "client/templates/addressBook/edit/edit.js",
+
+    "client/templates/addressBook/form/form.html",
+    "client/templates/addressBook/form/form.coffee",
+
+    "client/templates/addressBook/grid/grid.html",
+    "client/templates/addressBook/grid/grid.coffee",
 
 
     // core login form and generic templates
