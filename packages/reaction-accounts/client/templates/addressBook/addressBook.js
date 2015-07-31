@@ -7,10 +7,8 @@
 
 
 Template.addressBook.onRendered(function () {
-  console.log('rendered address book', this)
-
-  var view = this.$('[blaze-view="addressBook"]').get(0)
-  Blaze.render(Template.addressBookGrid, view)
+  var view = this.$('[blaze-view="addressBook"]').get(0);
+  Blaze.render(Template.addressBookGrid, view);
 });
 
 
@@ -49,6 +47,7 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
+    Meteor.call('addressBookRemove', this, Meteor.userId())
   },
 
 
