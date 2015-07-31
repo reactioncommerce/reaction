@@ -31,11 +31,11 @@
       </div>
 
       <div class="col-xs-5 col-xs-offset-1 col-sm-6 col-sm-offset-0 col-md-5">
-      <ul class="list-unstyled pull-right">
-        {{#each reactionApps provides="social" name="reaction-social"}}
-          {{> Template.dynamic template=template data=customSocialSettings }}
-        {{/each}}
-      </ul>
+        <div class="list-unstyled pull-right">
+          {{#each reactionApps provides="social" name="reaction-social"}}
+            {{> Template.dynamic template=template data=customSocialSettings }}
+          {{/each}}
+        </div>
       </div>
     </div>
   </nav>
