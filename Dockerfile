@@ -72,7 +72,7 @@ RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
 RUN apt-get install -y nodejs
 
 # Install forever & phantomjs
-RUN npm install --silent -g forever phantomjs
+RUN npm install --silent -g phantomjs nodemon
 
 # Install Meteor
 RUN curl https://install.meteor.com | /bin/sh
@@ -84,10 +84,8 @@ ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
 ENV MAIL_URL smtp://localhost:25
 
 # Expose container port 3000 to the host (outside the container)
-# Expose container port 3000 to the host (outside the container)
+# you can always map other ports such as 8080 in docker run
 EXPOSE 3000
-EXPOSE 8080
-EXPOSE 27017
 
 # Install entrypoint and build scripts
 # adding the files locally
@@ -108,19 +106,19 @@ VOLUME ["/data/db"]
 COPY . /usr/src/meteor
 WORKDIR /usr/src/meteor/
 
+#
 # Build meteor..
 # most of this can go away with Less updates
 # coming in Meteor 1.2.0 - however unless you
 # package the repo to just run development
 # you'll need to do some trick like this
+# also runs npm install in programs/server
 #
 RUN bash /usr/bin/build-meteor.sh
-
-# run meteor npm update
-RUN cd /var/www/bundle/programs/server && npm install
 
 # switch to production meteor bundle
 WORKDIR /var/www/bundle
 
+# start mongo and reaction
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
-CMD ['/bin/bash']
+CMD []
