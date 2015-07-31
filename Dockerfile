@@ -86,6 +86,7 @@ ENV MAIL_URL smtp://localhost:25
 # Expose container port 3000 to the host (outside the container)
 # you can always map other ports such as 8080 in docker run
 EXPOSE 3000
+EXPOSE 8080
 
 # Install entrypoint and build scripts
 # adding the files locally
