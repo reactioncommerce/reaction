@@ -22,7 +22,7 @@ Package.onUse(function (api, where) {
   api.use("coffeescript");
   api.use("less");
 
-  api.use("reactioncommerce:core@0.6.0");
+  api.use("reactioncommerce:core@0.6.4");
 
 
   // Core Reaction packages
