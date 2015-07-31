@@ -1,8 +1,9 @@
 Template.reactionSocial.onCreated ->
   _self = this
-  subscription = @subscribe "Packages"
-  if subscription.ready()
-    _self.socialSettings = ReactionCore.Collections.Packages.findOne({name: 'reaction-social'}).settings.public
+  @autorun () ->
+    subscription = _self.subscribe "Packages"
+    if subscription.ready()
+      _self.socialSettings = ReactionCore.Collections.Packages.findOne({name: 'reaction-social'}).settings.public
 
 Template.reactionSocial.helpers
   settings: -> # this settings would be available in all social apps. e.g. facebook.html
