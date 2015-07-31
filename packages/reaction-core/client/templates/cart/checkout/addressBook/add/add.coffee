@@ -22,7 +22,8 @@ Template.addressBookAdd.events
 ###
 AutoForm.hooks addressBookAddForm: onSubmit: (insertDoc, updateDoc, currentDoc) ->
   this.event.preventDefault()
-  accountId = ReactionCore.Collections.Accounts.findOne()._id
+  accountId = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() })._id
+
   # this should be handled by schema
   unless insertDoc._id then insertDoc._id = Random.id()
   # try addressBookAdd method

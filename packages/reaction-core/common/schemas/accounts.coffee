@@ -73,7 +73,6 @@ ReactionCore.Schemas.Address = new SimpleSchema
 ReactionCore.Schemas.Accounts = new SimpleSchema
   userId:
     type: String
-    optional: true
     regEx: SimpleSchema.RegEx.Id
     index: 1
   sessions: #review using users for guest checkout
