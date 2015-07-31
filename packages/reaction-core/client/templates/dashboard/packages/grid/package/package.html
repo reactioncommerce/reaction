@@ -1,13 +1,45 @@
 <template name="gridPackage">
-  <div class="pkg-card {{pkgTypeClass.class}}" data-ribbon="{{pkgTypeClass.text}}">
+  <div class="panel pkg-card pkg-app-card {{pkgTypeClass.class}}" data-ribbon="{{pkgTypeClass.text}}">
     {{!-- display overview route --}}
-    <a class="pkg-app-card">
+<!--     <a class="pkg-app-card">
       <div class="row pkg-content">
         <h3>{{label}}</h3>
         <small>{{{description}}}</small>
       </div>
-    </a>
-    <div class="row pkg-status">
+    </a> -->
+
+    <div class="panel-header">
+      <h3>{{label}}</h3>
+      <small>{{{description}}}</small>
+    </div>
+
+    <div class="panel-content">
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="left">
+        <i class="{{icon}} fa-3x .pull-left"></i>
+      </div>
+      <div class="right">
+          {{#if enabled}}
+            {{#if condition name 'neq' 'core'}}
+              <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
+            {{/if}}
+            {{#each reactionApps provides="settings" name=name container=container}}
+              {{#if hasPermission route}}
+              <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
+              {{/if}}
+            {{/each}}
+          {{else}}
+            <a class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
+          {{/if}}
+      </div>
+    </div>
+
+
+
+<!--     <div class="row pkg-status">
         <i class="{{icon}} fa-3x .pull-left"></i>
          <div class="pkg-controls">
             {{#if enabled}}
@@ -23,6 +55,6 @@
               <a class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
             {{/if}}
         </div>
-    </div>
+    </div> -->
   </div>
 </template>
