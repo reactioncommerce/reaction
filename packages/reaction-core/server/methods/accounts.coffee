@@ -110,14 +110,13 @@ Meteor.methods
     @unblock()
     check doc, ReactionCore.Schemas.Address
     check accountId, String
-    console.log(doc, accountId)
+
     # remove
     ReactionCore.Collections.Accounts.update
       "_id": accountId
       "profile.addressBook._id": doc._id
     ,
       $pull: "profile.addressBook": { "_id": doc._id }
-
 
     return doc
 
