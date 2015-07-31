@@ -1,6 +1,7 @@
 Template.reactionSocial.onCreated ->
   _self = this
-  @subscribe "Packages", ->
+  subscription = @subscribe "Packages"
+  if subscription.ready()
     _self.socialSettings = ReactionCore.Collections.Packages.findOne({name: 'reaction-social'}).settings.public
 
 Template.reactionSocial.helpers
