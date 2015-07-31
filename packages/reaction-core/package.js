@@ -79,7 +79,7 @@ Package.onUse(function (api) {
   api.imply("matb33:collection-hooks");
   api.imply("alanning:roles");
   api.imply("momentjs:moment", ["client"]);
-  api.imply("utilities:spin" ["client"]);
+  api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
   api.imply("dburles:factory");
   api.imply("anti:fake");
