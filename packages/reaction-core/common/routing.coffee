@@ -192,23 +192,6 @@ Router.map ->
       else
         @render "loading"
 
-  # account profile
-  @route 'account/profile',
-    controller: ShopController
-    path: 'account/profile'
-    template: 'accountProfile'
-    subscriptions: ->
-      @subscribe "AccountOrders", Session.get("sessionId"), Meteor.userId()
-    data: ->
-      if @ready()
-        if Orders.findOne() or Meteor.userId()
-          # if subscription has results or Meteor userId
-          return ReactionCore.Collections.Orders.find({}, {sort: { createdAt: -1 }})
-        else
-          @render 'unauthorized'
-      else
-        @render "loading"
-
   # route for PDF pages. No layout
   @route 'dashboard/pdf/orders',
     controller: PrintController

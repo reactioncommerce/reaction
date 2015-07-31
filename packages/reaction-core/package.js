@@ -11,8 +11,6 @@ Package.onUse(function (api) {
   //core meteor packages
   api.use("meteor-platform");
   api.use("oauth-encryption");
-  api.use("accounts-base");
-  api.use("accounts-password");
   api.use("accounts-ui-unstyled");
   api.use("less");
   api.use("http");
@@ -197,9 +195,6 @@ Package.onUse(function (api) {
     "client/templates/accounts/dropdown/dropdown.html",
     "client/templates/accounts/dropdown/dropdown.coffee",
 
-    "client/templates/accounts/profile/profile.html",
-    "client/templates/accounts/profile/profile.coffee",
-
     "client/templates/cart/cartDrawer/cartDrawer.html",
     "client/templates/cart/cartDrawer/cartDrawer.coffee",
 
@@ -226,21 +221,6 @@ Package.onUse(function (api) {
 
     "client/templates/cart/checkout/progressBar/progressBar.html",
     "client/templates/cart/checkout/progressBar/progressBar.coffee",
-
-    "client/templates/cart/checkout/addressBook/addressBook.html",
-    "client/templates/cart/checkout/addressBook/addressBook.coffee",
-
-    "client/templates/cart/checkout/addressBook/add/add.html",
-    "client/templates/cart/checkout/addressBook/add/add.coffee",
-
-    "client/templates/cart/checkout/addressBook/edit/edit.html",
-    "client/templates/cart/checkout/addressBook/edit/edit.coffee",
-
-    "client/templates/cart/checkout/addressBook/form/form.html",
-    "client/templates/cart/checkout/addressBook/form/form.coffee",
-
-    "client/templates/cart/checkout/addressBook/grid/grid.html",
-    "client/templates/cart/checkout/addressBook/grid/grid.coffee",
 
     "client/templates/cart/checkout/review/review.html",
     "client/templates/cart/checkout/review/review.coffee",

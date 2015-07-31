@@ -305,5 +305,5 @@ correctDropdownZIndexes = ->
 # use all this with the unauthorized login as well
 ###
 
-Template.unauthorized.inheritsHelpersFrom "accounts"
-Template.unauthorized.inheritsEventsFrom "accounts"
+Template.unauthorized.inheritsHelpersFrom "loginForm"
+Template.unauthorized.inheritsEventsFrom "loginForm"
