@@ -18,6 +18,7 @@ audit-argument-checks
 # Reaction Commerce Packages
 reactioncommerce:core
 reactioncommerce:bootstrap-theme
+reactioncommerce:reaction-accounts
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-braintree
