@@ -28,6 +28,7 @@ Meteor.publish 'Sessions', (id) ->
   if serverSession.count() is 0
     id = ServerSessions.insert(created: created)
     serverSession = ServerSessions.find(id)
+  ReactionCore.sessionId = id
   return serverSession
 
 ###
@@ -59,10 +60,8 @@ Meteor.publish "Translations", (sessionLanguage) ->
 Meteor.publish "UserProfile", (profileUserId) ->
   check profileUserId, Match.OneOf(String, null)
   permissions = ['dashboard/orders','owner','admin','dashboard/customers']
-
-  if profileUserId isnt @userId
-    # admin users can see some additional restricteduser details
-    if @userId and (
+  # admin users can see some additional restricted user details
+  if profileUserId isnt @userId and (
       Roles.userIsInRole @userId, permissions, ReactionCore.getCurrentShop(@)._id or
       Roles.userIsInRole @userId, permissions, Roles.GLOBAL_GROUP
       )
@@ -79,10 +78,6 @@ Meteor.publish "UserProfile", (profileUserId) ->
           "services.google.picture": true
           "services.github.username": true
           "services.instagram.profile_picture": true
-    else
-      ReactionCore.Events.info "user profile access denied"
-      return []
-  # a user can see their own user data
   else if @userId
     return Meteor.users.find _id: @userId
   # prevent other access to users
@@ -94,7 +89,7 @@ Meteor.publish "UserProfile", (profileUserId) ->
 #  settings, package access rights
 ###
 Meteor.publish 'Packages', (shop) ->
-  shop = ReactionCore.getCurrentShop(@)
+  shop = shop || ReactionCore.getCurrentShop(@)
   if shop
     if Roles.userIsInRole(@userId, [
         'dashboard'
@@ -177,38 +172,42 @@ Meteor.publish 'Orders', (userId) ->
 ###
 # account orders
 ###
-Meteor.publish 'AccountOrders', (sessionId, userId) ->
-  check sessionId, Match.OptionalOrNull(String)
+Meteor.publish 'AccountOrders', (userId, shopId ) ->
   check userId, Match.OptionalOrNull(String)
-  shopId = ReactionCore.getShopId(@)
-  # cure for null query match and added check
-  if userId and userId isnt @userId then return []
-  unless userId then userId = ''
-  unless sessionId then sessionId = ''
-  # publish user / session orders
-  return Orders.find({'shopId': shopId, $or: [{'userId': userId}, 'sessions': $in: [ sessionId ]] })
+  check shopId, Match.OptionalOrNull(String)
+  shopId = shopId || ReactionCore.getShopId(@)
+  if userId and userId isnt @userId then return []  #cure for null query match and added check
+
+  return Orders.find 'shopId': shopId, 'userId': @userId
 
 ###
 # cart
 ###
-Meteor.publish 'Cart', (sessionId, userId) ->
-  check sessionId, Match.OptionalOrNull(String)
+Meteor.publish 'Cart', (userId) ->
   check userId, Match.OptionalOrNull(String)
-  if !sessionId then return
-  shopId = ReactionCore.getShopId(@)
+  sessionId = ReactionCore.sessionId
+  Cart = ReactionCore.Collections.Cart
+  unless @userId then return
 
-  # getCurrentCart returns cart cursor
-  currentCart = getCurrentCart sessionId, shopId, @userId
-  ReactionCore.Events.debug "Publishing cart sessionId:" + sessionId
-  return currentCart
+  # carts are created in Accounts.onCreate
+  currentCart = Cart.findOne userId: @userId
+
+  console.log "current cart publication: " + currentCart._id
+
+  sessionCarts = Cart.find({ $or: [{'userId': @userId }, {'sessions': {$in: [sessionId] } } ] })
+  if sessionCarts.count() >= 1
+    console.log "call merge carts", currentCart._id
+    Meteor.call "mergeCart", currentCart._id
+
+
+  ReactionCore.Events.info "publishing cart: " + currentCart._id + " for " + @userId
+  return Cart.find userId: @userId
 
 ###
 # accounts
 ###
-Meteor.publish 'Accounts', (sessionId, userId) ->
-  check sessionId, Match.OneOf(String, null)
+Meteor.publish 'Accounts', (userId) ->
   check userId, Match.OneOf(String, null)
-
   # global owner gets it all
   if Roles.userIsInRole @userId, ['owner'], Roles.GLOBAL_GROUP
     return Accounts.find()
@@ -219,19 +218,11 @@ Meteor.publish 'Accounts', (sessionId, userId) ->
 
   # returns userId (authenticated account) details only
   else
-    ReactionCore.Events.debug "subscribe account", sessionId, @userId
-    # get current account
-    if @userId # userAccount
-      accountId = ReactionCore.Collections.Accounts.findOne('userId': @userId)?._id
-    else # sessionAccount
-      accountId = ReactionCore.Collections.Accounts.findOne('sessions': sessionId)?._id
-    unless accountId
-      accountId = ReactionCore.Collections.Accounts.insert 'sessions': [sessionId], 'userId': userId
-
-    #return accountId
-    ReactionCore.Events.info "publishing account", accountId
-    return ReactionCore.Collections.Accounts.find accountId
-
+    accountId = ReactionCore.Collections.Accounts.findOne('userId': @userId)?._id
+    if accountId
+      ReactionCore.Events.info "publishing account", accountId
+      return ReactionCore.Collections.Accounts.find accountId, 'userId': @userId
+  return
 ###
 # tags
 ###

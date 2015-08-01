@@ -174,7 +174,7 @@ Router.map ->
     subscriptions: ->
       @subscribe "Products"
       @subscribe "Shipping"
-      @subscribe "AccountOrders", Session.get("sessionId"), Meteor.userId()
+      @subscribe "AccountOrders"
 
   # completed orders
   @route 'cartCompleted',
@@ -182,7 +182,7 @@ Router.map ->
     path: 'completed/:_id'
     template: 'cartCompleted'
     subscriptions: ->
-      @subscribe "AccountOrders", Session.get("sessionId"), Meteor.userId()
+      @subscribe "AccountOrders"
     data: ->
       if @ready()
         if Orders.findOne(@params._id)

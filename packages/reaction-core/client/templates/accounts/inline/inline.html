@@ -1,6 +1,6 @@
 <template name="loginInline">
 <div class="accounts-dialog accounts-inline">
-  {{#if allowGuestCheckout}}
+  {{#unless currentUser}}
     <div class="col-md-6 pull-left checkout-guest">
       <div class="guest-checkout">
         <p class="text-justify" data-i18n="checkoutLogin.guestMessage">Continue as a guest, and you can create an account later.
@@ -17,6 +17,6 @@
     <div class="checkout-login">
       {{>_loginButtonsLoggedOutAllServices inline="inline"}}
     </div>
-  {{/if}}
+  {{/unless}}
 </div>
 </template>

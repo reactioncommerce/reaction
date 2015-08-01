@@ -69,7 +69,7 @@ Meteor.methods
     # process payment
     order = Orders.findOne(orderId)
     for paymentMethod,index in order.payment.paymentMethod
-      if paymentMethod.mode is 'authorize' and paymentMethod.status is 'approved'
+      if paymentMethod.mode is 'authorize' and paymentMethod.status is 'approved' and paymentMethod.processor
         Meteor[paymentMethod.processor].capture paymentMethod.transactionId, paymentMethod.amount, (error,result) ->
           if result.capture?
             transactionId = paymentMethod.transactionId
@@ -79,5 +79,8 @@ Meteor.methods
                 "payment.paymentMethod.$.mode": "capture"
                 "payment.paymentMethod.$.status": "completed"
               }
+          else
+            throw new Meteor.Error("Failed to capture transaction")
+            ReactionCore.Events.warn "Failed to capture transaction.", order, paymentMethod.transactionId
           return
     return

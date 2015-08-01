@@ -1,5 +1,8 @@
-loginButtonsSession = Accounts._loginButtonsSession
+# loginButtonsSession = Accounts._loginButtonsSession
 
-Template.checkoutLogin.onRendered ->
-  # initial screen in checkout should be to create an account
-  loginButtonsSession.set "inSignupFlow", true
+# # Template.loginInline.onRendered ->
+# #   # initial screen in checkout should be to create an account
+# #   console.log loginButtonsSession
+# #   console.log loginButtonsSession.get "inSignupFlow"
+
+# #   loginButtonsSession.setDefault "inSignupFlow", true
