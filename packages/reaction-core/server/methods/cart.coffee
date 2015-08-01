@@ -172,20 +172,19 @@ Meteor.methods
   ###
   mergeCart: (cartId) ->
     check cartId, String
-    # @unblock()
+    @unblock()
 
     Cart = ReactionCore.Collections.Cart
     currentCart = Cart.findOne cartId
     userId = currentCart.userId
     sessionId = ReactionCore.sessionId
     shopId = ReactionCore.getShopId()
-    console.log "executing cart merge"
     # we don't merge into anonymous accounts
-    # if Roles.userIsInRole userId, 'anonymous', shopId then return false
+    unless Roles.userIsInRole userId, 'guest', shopId then return false
     # if meteor user is not anonymous
     sessionCarts = Cart.find({ $or: [{'userId': userId }, {'sessions': {$in: [sessionId] } } ] })
 
-    console.log "begin merge processing into: " + currentCart._id
+    ReactionCore.Events.info "begin merge processing into: " + currentCart._id
 
     sessionCarts.forEach (sessionCart) -> # merge session cart into usercart
       if userId isnt sessionCart.userId and currentCart._id isnt sessionCart._id
@@ -199,13 +198,14 @@ Meteor.methods
 
         # a little garbage collection
         Cart.remove sessionCart._id
-        console.log "delete: " + sessionCart._id
-        ReactionCore.Events.info "Matching Session " + sessionId + "for user: " + currentCart.userId
-        console.log "processed merge for cartId: " + sessionCart._id
-
+        ReactionCore.Events.info "delete: " + sessionCart._id
+        ReactionCore.Events.info "processed merge for cartId: " + sessionCart._id
+    return true
 
   createCart: (userId) ->
     check userId, String
+    @unblock()
+
     Cart = ReactionCore.Collections.Cart
     sessionId = ReactionCore.sessionId
     shopId = ReactionCore.getShopId()

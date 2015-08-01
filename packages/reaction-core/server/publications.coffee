@@ -191,16 +191,17 @@ Meteor.publish 'Cart', (userId) ->
 
   # carts are created in Accounts.onCreate
   currentCart = Cart.findOne userId: @userId
-
-  console.log "current cart publication: " + currentCart._id
-
   sessionCarts = Cart.find({ $or: [{'userId': @userId }, {'sessions': {$in: [sessionId] } } ] })
-  if sessionCarts.count() >= 1
-    console.log "call merge carts", currentCart._id
+  # if multiple session carts found we'll merge them into new guest users
+  if currentCart and sessionCarts.count() >= 1
+    ReactionCore.Events.info "multiple carts found for user " + @userId
     Meteor.call "mergeCart", currentCart._id
+    ReactionCore.Events.info "publishing merged cart: " + currentCart._id + " for " + @userId
+  # if no cart is found create
+  else if !currentCart
+    Meteor.call "createCart", @userId
 
-
-  ReactionCore.Events.info "publishing cart: " + currentCart._id + " for " + @userId
+  ReactionCore.Events.info "published cart for " + @userId
   return Cart.find userId: @userId
 
 ###
