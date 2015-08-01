@@ -108,129 +108,129 @@ Template.accounts.events
     loginOrSignup()  if event.keyCode is 13
     return
 
-#
-# from accounts_ui.js
-#
-passwordSignupFields = ->
-  Accounts.ui._options.passwordSignupFields or "EMAIL_ONLY"
+  #
+  # from accounts_ui.js
+  #
+  passwordSignupFields = ->
+    Accounts.ui._options.passwordSignupFields or "EMAIL_ONLY"
 
-#
-# from login_buttons.js
-#
-validateUsername = (username) ->
-  if username.length >= 3
-    true
-  else
-    loginButtonsSession.errorMessage "Username must be at least 3 characters long"
-    false
-
-validateEmail = (email) ->
-  return true  if passwordSignupFields() is "USERNAME_AND_OPTIONAL_EMAIL" and email is ""
-  if email.indexOf("@") isnt -1
-    true
-  else
-    loginButtonsSession.errorMessage "Invalid email"
-    false
-
-validatePassword = (password) ->
-  if password.length >= 6
-    true
-  else
-    loginButtonsSession.errorMessage "Password must be at least 6 characters long"
-    false
-
-#
-# helpers from login_buttons_dropdown.js
-#
-elementValueById = (id) ->
-  element = document.getElementById(id)
-  unless element
-    null
-  else
-    element.value
-
-trimmedElementValueById = (id) ->
-  element = document.getElementById(id)
-  unless element
-    null
-  else # trim() doesn't work on IE8;
-    element.value.replace /^\s*|\s*$/g, ""
-
-loginOrSignup = ->
-  if loginButtonsSession.get("inSignupFlow")
-    signup()
-  else
-    login()
-  return
-
-login = ->
-  loginButtonsSession.resetMessages()
-  username = trimmedElementValueById("login-username")
-  email = trimmedElementValueById("login-email")
-  usernameOrEmail = trimmedElementValueById("login-username-or-email")
-
-  # notably not trimmed. a password could (?) start or end with a space
-  password = elementValueById("login-password")
-  loginSelector = undefined
-  if username isnt null
-    unless validateUsername(username)
-      return
+  #
+  # from login_buttons.js
+  #
+  validateUsername = (username) ->
+    if username.length >= 3
+      true
     else
-      loginSelector = username: username
-  else if email isnt null
-    unless validateEmail(email)
-      return
-    else
-      loginSelector = email: email
-  else if usernameOrEmail isnt null
+      loginButtonsSession.errorMessage "Username must be at least 3 characters long"
+      false
 
-    # XXX not sure how we should validate this. but this seems good enough (for now),
-    # since an email must have at least 3 characters anyways
-    unless validateUsername(usernameOrEmail)
-      return
+  validateEmail = (email) ->
+    return true  if passwordSignupFields() is "USERNAME_AND_OPTIONAL_EMAIL" and email is ""
+    if email.indexOf("@") isnt -1
+      true
     else
-      loginSelector = usernameOrEmail
-  else
-    throw new Error("Unexpected -- no element to use as a login user selector")
-  Meteor.loginWithPassword loginSelector, password, (error, result) ->
-    if error
-      loginButtonsSession.errorMessage error.reason or "Unknown error"
-    else
-      loginButtonsSession.closeDropdown()
-    return
-  return
+      loginButtonsSession.errorMessage "Invalid email"
+      false
 
-signup = ->
-  loginButtonsSession.resetMessages()
-  options = {} # to be passed to Accounts.createUser
-  username = trimmedElementValueById("login-username")
-  if username isnt null
-    unless validateUsername(username)
-      return
+  validatePassword = (password) ->
+    if password.length >= 6
+      true
     else
-      options.username = username
-  email = trimmedElementValueById("login-email")
-  if email isnt null
-    unless validateEmail(email)
-      return
-    else
-      options.email = email
+      loginButtonsSession.errorMessage "Password must be at least 6 characters long"
+      false
 
-  # notably not trimmed. a password could (?) start or end with a space
-  password = elementValueById("login-password")
-  unless validatePassword(password)
-    return
-  else
-    options.password = password
-  return  unless matchPasswordAgainIfPresent()
-  Accounts.createUser options, (error) ->
-    if error
-      loginButtonsSession.errorMessage error.reason or "Unknown error"
+  #
+  # helpers from login_buttons_dropdown.js
+  #
+  elementValueById = (id) ->
+    element = document.getElementById(id)
+    unless element
+      null
     else
-      loginButtonsSession.closeDropdown()
+      element.value
+
+  trimmedElementValueById = (id) ->
+    element = document.getElementById(id)
+    unless element
+      null
+    else # trim() doesn't work on IE8;
+      element.value.replace /^\s*|\s*$/g, ""
+
+  loginOrSignup = ->
+    if loginButtonsSession.get("inSignupFlow")
+      signup()
+    else
+      login()
     return
 
-  return
+  login = ->
+    loginButtonsSession.resetMessages()
+    username = trimmedElementValueById("login-username")
+    email = trimmedElementValueById("login-email")
+    usernameOrEmail = trimmedElementValueById("login-username-or-email")
+
+    # notably not trimmed. a password could (?) start or end with a space
+    password = elementValueById("login-password")
+    loginSelector = undefined
+    if username isnt null
+      unless validateUsername(username)
+        return
+      else
+        loginSelector = username: username
+    else if email isnt null
+      unless validateEmail(email)
+        return
+      else
+        loginSelector = email: email
+    else if usernameOrEmail isnt null
+
+      # XXX not sure how we should validate this. but this seems good enough (for now),
+      # since an email must have at least 3 characters anyways
+      unless validateUsername(usernameOrEmail)
+        return
+      else
+        loginSelector = usernameOrEmail
+    else
+      throw new Error("Unexpected -- no element to use as a login user selector")
+    Meteor.loginWithPassword loginSelector, password, (error, result) ->
+      if error
+        loginButtonsSession.errorMessage error.reason or "Unknown error"
+      else
+        loginButtonsSession.closeDropdown()
+      return
+    return
+
+  signup = ->
+    loginButtonsSession.resetMessages()
+    options = {} # to be passed to Accounts.createUser
+    username = trimmedElementValueById("login-username")
+    if username isnt null
+      unless validateUsername(username)
+        return
+      else
+        options.username = username
+    email = trimmedElementValueById("login-email")
+    if email isnt null
+      unless validateEmail(email)
+        return
+      else
+        options.email = email
+
+    # notably not trimmed. a password could (?) start or end with a space
+    password = elementValueById("login-password")
+    unless validatePassword(password)
+      return
+    else
+      options.password = password
+    return  unless matchPasswordAgainIfPresent()
+    Accounts.createUser options, (error) ->
+      if error
+        loginButtonsSession.errorMessage error.reason or "Unknown error"
+      else
+        loginButtonsSession.closeDropdown()
+      return
+
+    return
 
 forgotPassword = ->
   loginButtonsSession.resetMessages()
@@ -305,5 +305,5 @@ correctDropdownZIndexes = ->
 # use all this with the unauthorized login as well
 ###
 
-Template.unauthorized.inheritsHelpersFrom "loginForm"
-Template.unauthorized.inheritsEventsFrom "loginForm"
+# Template.unauthorized.inheritsHelpersFrom "loginForm"
+# Template.unauthorized.inheritsEventsFrom "loginForm"

@@ -79,8 +79,8 @@ CartWorkflow = StateMachine.create(
       unless cartId and address then return
       # update shipping address
       Cart.update cartId, {$set: {"shipping.address": address} }
-      # refresh rates with new address
-      Meteor.call "updateShipmentQuotes", cartId
+      Meteor.call "setShipmentAddress", cartId, address
+      return
 
     onbeforepaymentAddress: (event, from, to, address) ->
       cartId = Cart.findOne()._id

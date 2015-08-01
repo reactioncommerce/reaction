@@ -16,7 +16,6 @@
 # short and sweet
 ###
 Cart = ReactionCore.Collections.Cart
-Customers = ReactionCore.Collections.Customers
 Discounts = ReactionCore.Collections.Discounts
 Media = ReactionCore.Collections.Media
 Orders = ReactionCore.Collections.Orders
@@ -128,7 +127,7 @@ Orders.permit('remove')
 # Can update all session carts if not logged in or user cart if logged in as that user
 # XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
 ###
-Cart.permit('update').ifUserIdMatches().exceptProps(['shopId']).apply()
+Cart.permit('update').ifUserIdMatches().apply()
 
 # Allow anonymous file downloads
 # XXX This is probably not actually how we want to handle file download security.

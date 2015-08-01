@@ -1,21 +1,58 @@
+Meteor_updateOrCreateUserFromExternalService = Accounts.updateOrCreateUserFromExternalService
+
+Accounts.updateOrCreateUserFromExternalService = (serviceName, serviceData, options) ->
+  loggedInUser = Meteor.user()
+  shopId = ReactionCore.getShopId()
+  ReactionCore.Events.info "updateOrCreateUserFromExternalService", serviceName
+
+  if loggedInUser and typeof loggedInUser?.services[serviceName] == 'undefined'
+    # remove anonymous role if user has it
+    update = { $pullAll: {} }
+    update.$pullAll['roles.'+shopId] = ['anonymous']
+    Meteor.users.update( { _id: loggedInUser._id }, update, {multi: true} )
+
+  Meteor_updateOrCreateUserFromExternalService.apply this, arguments
+
+
+
+# handler to login anonymously
+# # TODO could we use alternate tmp storage for anon users
+Accounts.registerLoginHandler (options) ->
+  if !options.anonymous   # don't handle
+    return undefined
+  # creating a token and adding to the user
+  stampedToken = Accounts._generateStampedLoginToken()
+  hashStampedToken = Accounts._hashStampedToken(stampedToken)
+  userId = Accounts.insertUserDoc({ profile: { anonymous: true}, token: stampedToken.token})
+  #sending token along with the user
+  loginHandler = {
+      type: 'anonymous'
+      userId: userId
+    }
+  return loginHandler
+
 ###
 # onCreateUser
 # a special meteor hook to default user info on create
 # see: http://docs.meteor.com/#/full/accounts_oncreateuser
 # see: hooks.coffee for additional collection hooks
 ###
+
 Accounts.onCreateUser (options, user) ->
   unless user.emails then user.emails = []
-  # add default role for all users
-  # Roles.addUsersToRoles user, 'guest', ReactionCore.getShopId()
-  # see: https://github.com/alanning/meteor-roles/issues/79
-  unless user.roles
-    shopId = ReactionCore.getShopId()
-    shop = ReactionCore.getCurrentShop()
-    user.roles = {}
+  shopId = ReactionCore.getShopId()
+  shop = ReactionCore.getCurrentShop()
+  sessionId = ReactionCore.sessionId
+  Cart = ReactionCore.Collections.Cart
+
+  user.roles = roles = user.roles || {}
+  unless (!user.services && !user.services?.anonymous)
     user.roles[shopId] = shop?.defaultRoles || [ "guest", "account/profile" ]
+  else
+    user.roles[shopId] = shop?.defaultVisitorRole || [ "anonymous", "guest", "account/profile" ]
 
   # TODO: only use accounts for managing profiles
+  # could we use instead of sessions for carts
   for service, profile of user.services
     if !user.username and profile.name then user.username = profile.name
     if profile.email then user.emails.push {'address': profile.email}
@@ -24,7 +61,14 @@ Accounts.onCreateUser (options, user) ->
   account = _.clone(user)
   account.userId = user._id
   accountId = ReactionCore.Collections.Accounts.insert(account)
-  ReactionCore.Events.info "Created account: " + accountId + " for user: " + user._id
+
+  # newCartId =  Meteor.call "createCart", accountId
+  newCartId = Cart.insert sessions: [sessionId], shopId: shopId, userId: account.userId
+
+  # check for user carts and merge if necessary
+  sessionCarts = Cart.find({ $or: [{'userId': account.userId }, {'sessions': {$in: [sessionId] } } ] })
+  if sessionCarts.count() >= 1
+    Meteor.call "mergeCart", newCartId
 
   # return user to meteor accounts
   return user
@@ -237,6 +281,7 @@ Meteor.methods
   # removeUserPermissions
   ###
   removeUserPermissions: (userId, permissions, group) ->
+    console.log userId, permissions, group
     check userId, String
     check permissions, Match.OneOf(String, Array)
     check group, Match.Optional(String, null)
@@ -244,9 +289,10 @@ Meteor.methods
 
     # for shop member data
     try
-      Roles.removeUsersFromRoles(userId, permissions, group)
-    catch e
-      ReactionCore.Events.info e
+      console.log Roles.removeUsersFromRoles(userId, permissions, group)
+    catch error
+      throw new Meteor.Error 403, "Access Denied"
+      ReactionCore.Events.info error
 
   ###
   # setUserPermissions
@@ -262,3 +308,4 @@ Meteor.methods
       Roles.setUserRoles(userId, permissions, group)
     catch e
       ReactionCore.Events.info e
+

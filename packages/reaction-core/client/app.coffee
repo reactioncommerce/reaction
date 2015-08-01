@@ -12,11 +12,10 @@ _.extend ReactionCore,
         domain = Meteor.absoluteUrl().split('/')[2].split(':')[0]
         shop = ReactionCore.Collections.Shops.findOne domains: domain
         self.shopId = shop._id
-        return
+        return self
 
   # permission check
   hasPermission: (permissions, userId) ->
-    userId = userId || Meteor.userId()
     # assume admin, owner access
     unless _.isArray permissions
       permissions = [permissions]
@@ -52,6 +51,12 @@ _.extend ReactionCore,
   # TODO:  setShopId: (shopId) ->
   #   @.shopId = shopId
 
+  allowGuestCheckout: ->
+    # todo: refactor, this is overkill
+    packageRegistry = ReactionCore.Collections.Packages.findOne name: 'core', shopId: @shopId
+    allowGuest = packageRegistry?.settings?.public?.allowGuestCheckout || true
+    return allowGuest
+
   # return the logged in user's shop[s] if he owns any or if he is an admin -> used in multivendor
   getSellerShopId: (client) ->
     return Roles.getGroupsForUser Meteor.userId(), 'admin'
@@ -73,6 +78,18 @@ ReactionCore.Events = bunyan.createLogger name: 'core-client'
 # sets bunyan logging level
 ReactionCore.Events.level(isDebug)
 
+
+###
+# registerLoginHandler
+# method to create anonymous users
+###
+Accounts.loginWithAnonymous = (anonymous, callback) ->
+  Accounts.callLoginMethod
+    methodArguments: [ { anonymous: true } ]
+    userCallback: callback
+  return
+
+
 ###
 #  Init Reaction client
 ###
@@ -83,3 +100,9 @@ Meteor.startup ->
 
   # Ignition.....
   ReactionCore.init()
+
+  # Enable anonymous users
+  Deps.autorun ->
+    if ReactionCore.allowGuestCheckout() and !Meteor.userId()
+      Accounts.loginWithAnonymous()
+    return
