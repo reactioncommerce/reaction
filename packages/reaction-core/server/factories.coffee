@@ -52,6 +52,7 @@ Factory.define 'shop', ReactionCore.Collections.Shops,
 
 Factory.define 'account', ReactionCore.Collections.Accounts,
   shopId: Factory.get 'shop'
+  userId: Accounts.createUser(Fake.user())
   emails: -> [
     address: Fake.word() + '@example.com'
     verified: Fake.fromArray([true, false])
