@@ -274,4 +274,15 @@ currentProduct = @currentProduct
 # return userId if authenticated checkout
 ###
 @getGuestLoginState = ->
-  Meteor.userId() || Session.equals "guestCheckoutFlow", true
+  if Meteor.user() and ReactionCore.getShopId() and ReactionCore.allowGuestCheckout()
+    isGuestFlow = Session.equals "guestCheckoutFlow", true
+    isGuest = Roles.userIsInRole( Meteor.user(), 'guest', ReactionCore.getShopId() )
+    isAnonymous = Roles.userIsInRole( Meteor.user(), 'anonymous', ReactionCore.getShopId() )
+    #if user and anonymous
+    if !isGuestFlow and !isGuest and isAnonymous
+      return false
+    else if !isGuestFlow and isGuest and !isAnonymous
+      return true
+
+  else if Session.equals("guestCheckoutFlow", true) and _.pluck( Meteor.user().emails, "address" )
+    return true

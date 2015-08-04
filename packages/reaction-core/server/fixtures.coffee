@@ -127,6 +127,12 @@ ReactionRegistry.createDefaultAdminUser = ->
   options.username = process.env.METEOR_USER
   options.password = process.env.METEOR_AUTH
   domain = getDomain()
+  defaultAdminRoles = ['owner','admin']
+  shopId = ReactionCore.getShopId()
+
+  # check if admin or owner role exists for this shop
+  # exit if there is an existing aowner / dmin role
+  if Roles.getUsersInRole(defaultAdminRoles, shopId ).count() isnt 0 then return
 
   # options from mixing known set ENV production variables
   if process.env.METEOR_EMAIL
@@ -143,10 +149,8 @@ ReactionRegistry.createDefaultAdminUser = ->
 
   # newly created admin user
   accountId = Accounts.createUser options
-  shopId = ReactionCore.getShopId()
 
   # add default roles and update shop with admin user
-  defaultAdminRoles = ['owner','admin']
   packages = ReactionCore.Collections.Packages.find().fetch()
 
   # we need a contact and a domain
@@ -177,6 +181,7 @@ ReactionRegistry.loadFixtures = ->
   Fixtures.loadData ReactionCore.Collections.Products
   Fixtures.loadData ReactionCore.Collections.Tags
   Fixtures.loadI18n ReactionCore.Collections.Translations
+  ReactionRegistry.createDefaultAdminUser()
 
   # if ROOT_URL update shop domain
   # for now, we're assuming the first domain is the primary
@@ -205,6 +210,4 @@ ReactionRegistry.loadFixtures = ->
         unless _.has(ReactionRegistry.Packages, pkg.name)
           ReactionCore.Events.info ("Removing "+ pkg.name)
           ReactionCore.Collections.Packages.remove {shopId: shop._id, name: pkg.name}
-
-  # create default admin user account
-  ReactionRegistry.createDefaultAdminUser() unless Meteor.users.find().count()
+  return

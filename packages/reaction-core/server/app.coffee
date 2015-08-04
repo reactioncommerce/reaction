@@ -52,7 +52,7 @@ _.extend ReactionCore,
     domain = @getDomain(client)
     cursor = Shops.find({domains: domain}, {limit: 1})
     if !cursor.count()
-      ReactionCore.Events.info "Reaction Configuration: Add a domain entry to shops for: ", domain
+      ReactionCore.Events.debug "Reaction Configuration: Add a domain entry to shops for: ", domain
     return cursor
 
   getCurrentShop: (client) ->

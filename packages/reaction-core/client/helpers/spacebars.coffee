@@ -5,12 +5,27 @@
 #
 ###
 
+# If our app has a Blaze, override the {{currentUser}} helper to deal guest logins
+if Package.blaze
+  Package.blaze.Blaze.Template.registerHelper 'currentUser', ->
+    if Meteor.user and ReactionCore.getShopId() and ReactionCore.allowGuestCheckout()
+      isGuest = Roles.userIsInRole( Meteor.user(), 'guest', ReactionCore.getShopId() )
+      isAnonymous = Roles.userIsInRole( Meteor.user(), 'anonymous', ReactionCore.getShopId() )
+      #if user and anonymous
+      if !isGuest and isAnonymous
+        return null
+      else if isGuest and !isAnonymous
+        return Meteor.user()
+    else
+      return null
+
 #
 # monthOptions
 # returns momentjs months formatted for autoform
 #
 Template.registerHelper "monthOptions", () ->
-  monthOptions = [{value: "", label: "Choose month"}]
+  label = i18n.t('app.monthOptions') ||  "Choose month"
+  monthOptions = [{value: "", label: label}]
   months = moment.months()
   for month, index in months
     monthOptions.push value: index + 1, label: month
@@ -21,7 +36,8 @@ Template.registerHelper "monthOptions", () ->
 # returns array of years, formatted for autoform
 #
 Template.registerHelper "yearOptions",  () ->
-  yearOptions = [{ value: "", label: "Choose year" }]
+  label = i18n.t('app.yearOptions') ||  "Choose year"
+  yearOptions = [{ value: "", label: label}]
   year = new Date().getFullYear()
   for x in [1...9] by 1
     yearOptions.push { value: year , label: year}
@@ -33,7 +49,8 @@ Template.registerHelper "yearOptions",  () ->
 # returns array of momentjs timezones formatted for autoform
 #
 Template.registerHelper "timezoneOptions", () ->
-  timezoneOptions = [{value: "", label: "Choose timezone"}]
+  label = i18n.t('app.timezoneOptions') ||  "Choose timezone"
+  timezoneOptions = [{value: "", label: label}]
   timezones = moment.tz.names()
   for timezone, index in timezones
     timezoneOptions.push value: timezone, label: timezone
@@ -61,25 +78,24 @@ Template.registerHelper "pathForSEO", (path, params) ->
 # returns string user name
 #
 Template.registerHelper "displayName", (user) ->
-  userSub = Meteor.subscribe "UserProfile", user?._id || Meteor.userId()
-  userId = user?._id || Meteor.userId()
-  if userSub.ready()
-    user = Meteor.users.findOne(userId) unless user
-    # every social channel is different
-    # legacy profile name
-    if user and user.profile and user.profile.name
-      return user.profile.name
-    # meteor user name
-    else if user and user.username
-      return user.username
-    # service names
-    if user and user.services
-      username = switch
-        when user.services.twitter then user.services.twitter.name
-        when user.services.facebook then user.services.facebook.name
-        when user.services.instagram then user.services.instagram.name
-        when user.services.pinterest then user.services.pinterest.name
-        else "Guest"
+  user = user || Meteor.user()
+  # every social channel is different
+  # legacy profile name
+  if user and user.profile and user.profile.name
+    return user.profile.name
+  # meteor user name
+  else if user and user.username
+    return user.username
+  # service names
+  if user and user.services
+    username = switch
+      when user.services.twitter then user.services.twitter.name
+      when user.services.facebook then user.services.facebook.name
+      when user.services.instagram then user.services.instagram.name
+      when user.services.pinterest then user.services.pinterest.name
+      else i18n.t('accountsUI.guest') || "Guest"
+  else
+    return  i18n.t('accountsUI.signIn') || "Sign in"
 
 #
 # general helper user name handling
@@ -87,24 +103,25 @@ Template.registerHelper "displayName", (user) ->
 # returns first word in profile name
 #
 Template.registerHelper "fName", (user) ->
-  userSub = Meteor.subscribe "UserProfile", user?._id || Meteor.userId()
-  if userSub.ready()
-    user = Meteor.users.findOne() unless user
-    # every social channel is different
-    # legacy profile name
-    if user and user.profile and user.profile.name
-      return user.profile.name.split(" ")[0]
-    else if user and user.username
-      return user.username.name.split(" ")[0]
+  user = user || Meteor.user()
+  # every social channel is different
+  # legacy profile name
+  if user and user.profile and user.profile.name
+    return user.profile.name.split(" ")[0]
+  else if user and user.username
+    return user.username.name.split(" ")[0]
 
-    # service names
-    if user and user.services
-      username = switch
-        when user.services.twitter then user.services.twitter.first_name
-        when user.services.facebook then user.services.facebook.first_name
-        when user.services.instagram then user.services.instagram.first_name
-        when user.services.pinterest then user.services.pinterest.first_name
-        else "Guest"
+  # service names
+  if user and user.services
+    username = switch
+      when user.services.twitter then user.services.twitter.first_name
+      when user.services.facebook then user.services.facebook.first_name
+      when user.services.instagram then user.services.instagram.first_name
+      when user.services.pinterest then user.services.pinterest.first_name
+      else i18n.t('accountsUI.guest') || "Guest"
+  else
+    return  i18n.t('accountsUI.signIn') || "Sign in"
+
 
 #
 # decamelSpace
@@ -151,9 +168,7 @@ Template.registerHelper "hasDashboardAccess", ->
   return ReactionCore.hasDashboardAccess()
 
 Template.registerHelper "allowGuestCheckout", ->
-  packageRegistry = ReactionCore.Collections.Packages.findOne shopId: ReactionCore.getShopId(), name: 'core'
-  allowGuest = packageRegistry?.settings?.public?.allowGuestCheckout || false
-  return allowGuest
+  return ReactionCore.allowGuestCheckout()
 
 ###
 # activeRouteClass

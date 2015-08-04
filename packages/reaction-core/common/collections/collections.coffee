@@ -46,17 +46,16 @@ ReactionCore.Helpers.cartTransform =
     total = subtotal.toFixed(2)
     return total
 
+
 ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
   transform: (cart) ->
     newInstance = Object.create(ReactionCore.Helpers.cartTransform);
-
     return  _.extend newInstance, cart;
-
 
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
 # Accounts
-ReactionCore.Collections.Accounts = Accounts = @Accounts = new Mongo.Collection "Accounts"
+ReactionCore.Collections.Accounts = new Mongo.Collection "Accounts"
 ReactionCore.Collections.Accounts.attachSchema ReactionCore.Schemas.Accounts
 
 # Orders

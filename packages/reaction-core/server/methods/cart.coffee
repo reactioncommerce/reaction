@@ -11,78 +11,6 @@ Match.OptionalOrNull = (pattern) -> Match.OneOf undefined, null, pattern
 # If they had more than one cart, on more than one device,logged in at seperate times then merge the carts
 #
 ###
-@getCurrentCart = (sessionId, shopId, userId) ->
-  check sessionId, String
-  check shopId, Match.OptionalOrNull(String)
-  check userId, Match.OptionalOrNull(String)
-
-  shopid = shopId || ReactionCore.getShopId(@)
-  userId = userId || "" # no null
-
-  Cart = ReactionCore.Collections.Cart
-  currentCarts = Cart.find 'shopId': shopId, 'sessions': $in: [ sessionId ]
-  #
-  # if sessionCart just logged out, remove sessionId and create new sessionCart
-  #
-  if currentCarts.count() is 0
-    newCartId = Cart.insert  sessions: [sessionId], shopId: shopId, userId: userId
-    ReactionCore.Events.debug "Created new session cart", newCartId
-    currentCart = Cart.find newCartId
-    return currentCart
-
-  # check for user carts and merge if necessary
-  currentCarts.forEach (cart) ->
-    #
-    # if user just logged out, remove sessionId and create new sessionCart
-    # leave the userId so we can merge with this cart when user logs back in
-    #
-    if cart.userId and !userId
-      Cart.update cart._id, $pull: 'sessions': sessionId
-      ReactionCore.Events.debug "Logging out. Removed session from cart."
-    #
-    # if sessionCart is first time authenticated add user to cart
-    # add sessionId to any existing userCart
-    # and then merge session cart into userCart
-    # and remove sessionCart so that the user has clean cart on logout
-    #
-    if userId
-      userCart = Cart.findOne
-        'userId': userId
-        'shopId': shopId
-        'sessions': $nin: [ sessionId ]
-
-      # merge session cart into usercart
-      if userCart and !cart.userId
-        # catch undefined items
-        unless cart.items then cart.items = []
-        # update userCart and remove sessionCart
-        Cart.update userCart._id,
-            $set:
-              userId: userId
-            $addToSet:
-              items: $each: cart.items
-              sessions: $each: cart.sessions
-        Cart.remove cart._id
-        ReactionCore.Events.debug "Updated user cart", cart._id, "with sessionId: " + sessionId
-        return Cart.find userCart._id
-      # neither a user existing user cart, just add userId
-      else if !userCart and !cart.userId
-        Cart.update cart._id,
-          $set:
-            userId: userId
-        return Cart.find cart._id
-
-  # if no user cart actions, just return current cart
-  if currentCarts.count() is 1
-    cart = currentCarts.fetch()
-    ReactionCore.Events.debug "getCurrentCart returned sessionId:" + sessionId + " cartId: " + cart[0]._id
-    currentCarts = Cart.find cart[0]._id
-    return currentCarts
-
-  # if all patterns failed.
-  ReactionCore.Events.debug "getCurrentCart error:", currentCarts
-  return currentCarts
-
 ###
 #  Cart Methods
 ###
@@ -187,7 +115,9 @@ Meteor.methods
 
     # attach an email if user cart
     if cart.userId and !cart.email
-      cart.email = Meteor.user(cart.userId).emails[0].address
+      user = Meteor.user cart.userId
+      emails = _.pluck user.emails, "address"
+      cart.email = emails[0]
 
     # TODO: these defaults should be done in schema
     now = new Date()
@@ -222,3 +152,71 @@ Meteor.methods
 
     # return new orderId
     return orderId
+
+  setShipmentAddress: (cartId, address) ->
+    check cartId, String
+    check address, Object
+    unless cartId and address then return
+    #
+    cart = ReactionCore.Collections.Cart.findOne _id: cartId, userId: Meteor.userId
+    if cart
+      # update shipping address
+      Cart.update cartId, {$set: {"shipping.address": address} }
+      # refresh rates with new address
+      Meteor.call "updateShipmentQuotes", cartId
+    else
+      throw new Meteor.Error "setShipmentAddress: Invalid request"
+
+  ###
+  # merge matching sessionId cart into specified userId cart
+  ###
+  mergeCart: (cartId) ->
+    check cartId, String
+    @unblock()
+
+    Cart = ReactionCore.Collections.Cart
+    currentCart = Cart.findOne cartId
+    userId = currentCart.userId
+    sessionId = ReactionCore.sessionId
+    shopId = ReactionCore.getShopId()
+
+    # don't merge into anonymous accounts
+    if Roles.userIsInRole userId, 'anonymous', shopId then return
+
+    # if meteor user is not anonymous
+    sessionCarts = Cart.find({ $or: [{'userId': userId }, {'sessions': {$in: [sessionId] } } ] })
+    ReactionCore.Events.info "begin merge processing into: " + currentCart._id
+
+    # merge session cart into current user cart
+    sessionCarts.forEach (sessionCart) ->
+      if userId isnt sessionCart.userId and currentCart._id isnt sessionCart._id
+        # catch undefined items
+        unless sessionCart.items then sessionCart.items = []
+        # update userCart and remove sessionCart
+        Cart.update currentCart._id,
+            $addToSet:
+              items: $each: sessionCart.items
+              sessions: $each: sessionCart.sessions
+
+        # a little garbage collection
+        Cart.remove sessionCart._id
+        Meteor.users.remove sessionCart.userId
+        ReactionCore.Collections.Accounts.remove userId: sessionCart.userId
+
+        ReactionCore.Events.info "delete cart: " + sessionCart._id + "and user: " + sessionCart.userId
+        ReactionCore.Events.info "processed merge for cartId: " + sessionCart._id
+    return true
+
+  createCart: (userId) ->
+    check userId, String
+    @unblock()
+
+    Cart = ReactionCore.Collections.Cart
+    sessionId = ReactionCore.sessionId
+    shopId = ReactionCore.getShopId()
+
+    newCartId = Cart.insert sessions: [sessionId], shopId: shopId, userId: userId
+
+    ReactionCore.Events.info "created cart: " + newCartId + " for user: " + userId
+
+    return Cart.find newCartId
