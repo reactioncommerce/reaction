@@ -8,37 +8,37 @@ Reaction uses [Bootstrap 3](http://getbootstrap.com/css/#less) and the [Less](ht
 
 In `client/themes/bootstrap` edit
 
-	custom.reaction.user-imports.less
+	custom.reaction.import.less
 
- *Note: Comments at the top of the file will let you know if the file is safe to be edited. *
 
->Our suggested approach is to create your own theme directory and import.less file:
+
+Our suggested approach is to create your own theme directory and import.less file:
 >
 >	mkdir -p client/themes/custom
 >	touch client/themes/custom.import.less
 >
 >
->In  `/client/themes/bootstrap/custom.reaction.user-overrides.less` import `client/themes/custom/custom.import.less` by adding:
+>In  `/client/themes/bootstrap/custom.reaction.overrides.import.less` import `client/themes/custom/custom.import.less` by adding:
 >
 >	`@import "../custom/custom.import.less";`
 >
-> in the /client/themes/bootstrap/custom.reaction.user-overrides.less
->
-> This will allow you to reset the theme using `rm client/themes/bootstrap/*.less` without risking your own updates.
+> in `/client/themes/bootstrap/custom.reaction.overrides.import.less`
+
+This will allow you to reset the theme using `rm client/themes/bootstrap/*.less` without risking your own updates.
 
 Files are loaded in this order, top to bottom.
 
 
 - custom.reaction.less
-	- custom.reaction.user-imports.less **(imported first, user modifiable)**
+	- custom.reaction.import.less **(imported first, user modifiable)**
 		- custom.bootstrap.less
 			- custom.bootstrap.import.less
 				- custom.bootstrap.mixins.import.less
 		- custom.reaction.mixins.import.less
 		- custom.reaction.variables.import.less
-	- custom.reaction.user-overrides.less **(imported last in custom.reaction.less)**
+	- custom.reaction.overrides.import.less **(imported last in custom.reaction.less)**
 
-
+ *Note: Comments at the top of the file will let you know if the file is safe to be edited.*
 
 The `custom.reaction.less` file imports the `custom.bootstrap.less`, which in turn is created automatically from `client/themes/custom.bootstrap.import.less`, so there is an order of precedence, and any change you make in `custom.bootstrap.import.less` will cascade down to `custom.reaction.less`, but changes made in `custom.reaction.overrides.import.less` will override changes made in any other file.
 
