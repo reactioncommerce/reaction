@@ -1,20 +1,23 @@
-# If our app has a Blaze, override the {{currentUser}} helper to deal guest logins
-if Package.blaze
-  Package.blaze.Blaze.Template.registerHelper 'currentUser', ->
-    user = Meteor.user()
-    isGuestFlow = Session.equals "guestCheckoutFlow", true
-    isGuestRole = Roles.userIsInRole user, 'anonymous', ReactionCore.getShopId()
-    if user and isGuestRole and !isGuestFlow and ReactionCore.allowGuestCheckout()
-      return null
-    else
-      Meteor.user()
-
 ###
 #
 # Reaction Spacebars helpers
 # See: http://docs.meteor.com/#/full/template_registerhelper
 #
 ###
+
+# If our app has a Blaze, override the {{currentUser}} helper to deal guest logins
+if Package.blaze
+  Package.blaze.Blaze.Template.registerHelper 'currentUser', ->
+    if Meteor.user and ReactionCore.getShopId() and ReactionCore.allowGuestCheckout()
+      isGuest = Roles.userIsInRole( Meteor.user(), 'guest', ReactionCore.getShopId() )
+      isAnonymous = Roles.userIsInRole( Meteor.user(), 'anonymous', ReactionCore.getShopId() )
+      #if user and anonymous
+      if !isGuest and isAnonymous
+        return null
+      else if isGuest and !isAnonymous
+        return Meteor.user()
+    else
+      return null
 
 #
 # monthOptions

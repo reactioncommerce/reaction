@@ -168,7 +168,7 @@ Meteor.methods
       throw new Meteor.Error "setShipmentAddress: Invalid request"
 
   ###
-  # merge matching sessionId into specified userId cart
+  # merge matching sessionId cart into specified userId cart
   ###
   mergeCart: (cartId) ->
     check cartId, String
@@ -179,14 +179,16 @@ Meteor.methods
     userId = currentCart.userId
     sessionId = ReactionCore.sessionId
     shopId = ReactionCore.getShopId()
-    # we don't merge into anonymous accounts
-    unless Roles.userIsInRole userId, 'guest', shopId then return false
+
+    # don't merge into anonymous accounts
+    if Roles.userIsInRole userId, 'anonymous', shopId then return
+
     # if meteor user is not anonymous
     sessionCarts = Cart.find({ $or: [{'userId': userId }, {'sessions': {$in: [sessionId] } } ] })
-
     ReactionCore.Events.info "begin merge processing into: " + currentCart._id
 
-    sessionCarts.forEach (sessionCart) -> # merge session cart into usercart
+    # merge session cart into current user cart
+    sessionCarts.forEach (sessionCart) ->
       if userId isnt sessionCart.userId and currentCart._id isnt sessionCart._id
         # catch undefined items
         unless sessionCart.items then sessionCart.items = []
@@ -198,7 +200,10 @@ Meteor.methods
 
         # a little garbage collection
         Cart.remove sessionCart._id
-        ReactionCore.Events.info "delete: " + sessionCart._id
+        Meteor.users.remove sessionCart.userId
+        ReactionCore.Collections.Accounts.remove userId: sessionCart.userId
+
+        ReactionCore.Events.info "delete cart: " + sessionCart._id + "and user: " + sessionCart.userId
         ReactionCore.Events.info "processed merge for cartId: " + sessionCart._id
     return true
 
