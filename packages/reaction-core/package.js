@@ -12,6 +12,7 @@ Package.onUse(function (api) {
   api.use("meteor-platform");
   api.use("oauth-encryption");
   api.use("accounts-base");
+  api.use("accounts-password");
   api.use("less");
   api.use("http");
   api.use("coffeescript");
