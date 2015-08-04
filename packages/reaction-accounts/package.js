@@ -18,7 +18,6 @@ Package.onUse(function (api, where) {
   api.use("accounts-password");
   api.use("accounts-oauth");
   api.use("accounts-facebook");
-  api.use("accounts-ui");
   api.use("coffeescript");
   api.use("less");
 
