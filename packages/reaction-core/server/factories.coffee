@@ -104,10 +104,12 @@ Factory.define 'product', ReactionCore.Collections.Products,
     metafields: [
       key: Fake.word()
       value: Fake.word()
-      scope: "detail",
+      scope: "detail"
+    ,
       key: "facebook"
       value: Fake.paragraph()
-      scope: "socialMessages",
+      scope: "socialMessages"
+    ,
       key: "twitter"
       value: Fake.sentence()
       scope: "socialMessages"
