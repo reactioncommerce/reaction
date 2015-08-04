@@ -4,7 +4,9 @@ Template.loginFormResetPasswordView.events({
   // *******************************************************
   // Submit the password reset form
   //
-  'click .action--submit': function (event, template) {
+  'submit form': function (event, template) {
+
+    event.preventDefault();
 
     var emailAddress = template.$('.login-input--email').val().trim();
     var validatedEmail = LoginFormValidation.email(emailAddress);

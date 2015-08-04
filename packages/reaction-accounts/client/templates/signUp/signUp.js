@@ -5,7 +5,10 @@ Template.loginFormSignUpView.events({
   // *******************************************************
   // Submit the sign in form
   //
-  'click .action--submit': function (event, template) {
+  'submit form': function (event, template) {
+
+    event.preventDefault();
+
     var options = {};
 
     // var usernameInput = template.$('.login-input--username');

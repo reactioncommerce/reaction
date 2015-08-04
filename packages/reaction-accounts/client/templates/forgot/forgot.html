@@ -1,25 +1,28 @@
 
 <template name="loginFormResetPasswordView">
 
-  <div class="form-group {{hasError errors.email}}">
-    <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email Address</label>
-    <input id="email_{{uniqueId}}" class="form-control login-input--email" type="text">
-
-    {{#if hasError errors.email}}
-      <span class="help-block">
-        {{errors.email}}
-      </span>
-    {{/if}}
+  <div class="loginForm-title">
+    <h2 data-i18n="accountsUI.resetYourPassword">Reset your password</h2>
   </div>
 
-  <div class="">
-    <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.resetYourPassword">Reset Your Password</button>
+  <form name="loginForm">
+    <div class="form-group {{hasError errors.email}}">
+      <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email Address</label>
+      <input id="email_{{uniqueId}}" class="form-control login-input--email" type="text">
 
-    <p>
+      {{#if hasError errors.email}}
+        <span class="help-block">
+          {{errors.email}}
+        </span>
+      {{/if}}
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.resetYourPassword">Reset Your Password</button>
+    </div>
+
+    <div class="form-group">
       <a class="action--signIn" href data-i18n="accountsUI.signIn">Sign In</a>
-      {{!-- <a class="action--signUp" href data-i18n="accountsUI.signUp">Register</a> --}}
-    </p>
-  </div>
-
+    </div>
+  </form>
 </template>
-

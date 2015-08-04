@@ -1,7 +1,7 @@
 <template name="loginFormSignInView">
 
 
-  <div>
+  <div class="loginForm-title">
     <h2 data-i18n="accountsUI.signIn">Sign In</h2>
   </div>
 
@@ -21,7 +21,7 @@
 
 
   {{#if hasPasswordService}}
-    <div class="login-form">
+    <form class="login-form">
 
       <div class="form-group form-group--email {{hasError errors.email}}">
         <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
@@ -45,17 +45,19 @@
         {{/if}}
       </div>
 
-    </div>
 
 
-    <div class="">
-      <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signIn">Sign In</button>
+      <div class="form-group">
+        <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signIn">Sign In</button>
+      </div>
 
-      <p>
-        <a class="action--forgot" data-i18n="accountsUI.forgotPassword">Reset Password</a>
-        <a class="action--signUp" href data-i18n="accountsUI.createAccount">Create An Account</a>
-      </p>
-    </div>
+      <div class="form-group flex flex-justify--spaceBetween">
+        <a class="action--forgot" data-i18n="accountsUI.forgotPassword" href>Reset Password</a>
+        <a class="action--signUp" data-i18n="accountsUI.signUp" href>Register</a>
+      </div>
+
+    </form>
+
   {{/if}}
 
 
