@@ -11,7 +11,7 @@ Package.onUse(function (api) {
   //core meteor packages
   api.use("meteor-platform");
   api.use("oauth-encryption");
-  api.use("accounts-ui-unstyled");
+  api.use("accounts-base");
   api.use("less");
   api.use("http");
   api.use("coffeescript");
