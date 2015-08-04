@@ -64,7 +64,7 @@ Meteor.methods
       newVariant._id = newVariantId
       check(newVariant, ReactionCore.Schemas.ProductVariant)
     else
-      newVariant = { "_id": newVariantId, "title": "", "price": "0.00" }
+      newVariant = { "_id": newVariantId, "title": "", "price": 0.00 }
     Products.update({"_id": productId}, {$addToSet: {"variants": newVariant}}, {validate: false})
     return newVariantId
 
