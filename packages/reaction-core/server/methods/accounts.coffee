@@ -1,22 +1,10 @@
-Meteor_updateOrCreateUserFromExternalService = Accounts.updateOrCreateUserFromExternalService
+###
+# Reaction Accounts handlers
+###
 
-Accounts.updateOrCreateUserFromExternalService = (serviceName, serviceData, options) ->
-  loggedInUser = Meteor.user()
-  shopId = ReactionCore.getShopId()
-  ReactionCore.Events.info "updateOrCreateUserFromExternalService", serviceName
-
-  if loggedInUser and typeof loggedInUser?.services[serviceName] == 'undefined'
-    # remove anonymous role if user has it
-    update = { $pullAll: {} }
-    update.$pullAll['roles.'+shopId] = ['anonymous']
-    Meteor.users.update( { _id: loggedInUser._id }, update, {multi: true} )
-
-  Meteor_updateOrCreateUserFromExternalService.apply this, arguments
-
-
-
-# handler to login anonymously
-# # TODO could we use alternate tmp storage for anon users
+#
+#  handler to login anonymously
+#
 Accounts.registerLoginHandler (options) ->
   if !options.anonymous   # don't handle
     return undefined
@@ -33,11 +21,10 @@ Accounts.registerLoginHandler (options) ->
 
 ###
 # onCreateUser
-# a special meteor hook to default user info on create
+# adding either a guest or anonymous role to the user on create
+# adds Accounts record for reaction user profiles
 # see: http://docs.meteor.com/#/full/accounts_oncreateuser
-# see: hooks.coffee for additional collection hooks
 ###
-
 Accounts.onCreateUser (options, user) ->
   unless user.emails then user.emails = []
   shopId = ReactionCore.getShopId()
@@ -46,10 +33,6 @@ Accounts.onCreateUser (options, user) ->
   Cart = ReactionCore.Collections.Cart
 
   user.roles = roles = user.roles || {}
-  unless (!user.services && !user.services?.anonymous)
-    user.roles[shopId] = shop?.defaultRoles || [ "guest", "account/profile" ]
-  else
-    user.roles[shopId] = shop?.defaultVisitorRole || [ "anonymous", "guest", "account/profile" ]
 
   # TODO: only use accounts for managing profiles
   # could we use instead of sessions for carts
@@ -57,21 +40,70 @@ Accounts.onCreateUser (options, user) ->
     if !user.username and profile.name then user.username = profile.name
     if profile.email then user.emails.push {'address': profile.email}
 
+  # if user  has email or not services.anonymous then give "guest" role
+  unless (!user.services && !user.services?.anonymous) or user.emails.length > 0
+    user.roles[shopId] = shop?.defaultRoles || [ "guest", "account/profile" ]
+  # else this is anonymouse user
+  else
+    user.roles[shopId] = shop?.defaultVisitorRole || [ "anonymous", "guest", "account/profile" ]
+
   # clone into and create our user's account
   account = _.clone(user)
   account.userId = user._id
   accountId = ReactionCore.Collections.Accounts.insert(account)
 
-  # newCartId =  Meteor.call "createCart", accountId
-  newCartId = Cart.insert sessions: [sessionId], shopId: shopId, userId: account.userId
-
-  # check for user carts and merge if necessary
-  sessionCarts = Cart.find({ $or: [{'userId': account.userId }, {'sessions': {$in: [sessionId] } } ] })
-  if sessionCarts.count() >= 1
-    Meteor.call "mergeCart", newCartId
-
   # return user to meteor accounts
   return user
+
+###
+# "real" logged in users don't need anonymous
+#  see:
+###
+Accounts.onLogin (options) ->
+  user = options.user
+  userId = user._id
+  shopId = ReactionCore.getShopId()
+  sessionId = ReactionCore.sessionId
+  Cart = ReactionCore.Collections.Cart
+
+  if userId and sessionId
+    currentCart = Cart.findOne userId: userId
+    sessionCarts = Cart.find 'sessions': $in: [sessionId]
+
+    # ReactionCore.Events.info userId, sessionId, currentCart?._id, sessionCarts.count()
+
+    # first some role cleanup
+    # if we've previously logged in as anonymous, let's remove
+    # authenticated users should have guest role
+    if (user.services && !user.services?.anonymous) or user.emails.length > 0
+      # remove anonymous role if user has it
+      update = { $pullAll: {} }
+      update.$pullAll['roles.' + shopId] = ['anonymous']
+      Meteor.users.update( { _id: userId }, update, {multi: true} )
+      ReactionCore.Events.info "removed anonymous role from user: " + userId
+
+    # if multiple session carts found we'll merge them into current cart
+    if currentCart and sessionCarts.count() >= 1
+      ReactionCore.Events.info "multiple carts found for user " + userId
+      Meteor.call "mergeCart", currentCart._id
+      ReactionCore.Events.info "merged cart: " + currentCart._id + " for " + userId
+      return
+
+    # we only have one session cart, no user cart no need to merge
+    if !currentCart and sessionCarts.count() is 1
+      sessionCart = sessionCarts.fetch()[0]
+      ReactionCore.Events.info "transformed from session cart: " + sessionCart._id + " for " + userId
+      Cart.update sessionCart._id, $set: userId: userId, sessions: [userId]
+      return
+
+    # no carts for this session or user
+    if !currentCart and sessionCarts.count() is 0
+      newCartId = Cart.insert sessions: [sessionId], shopId: shopId, userId: userId
+      ReactionCore.Events.info "created cart: " + newCartId + " for " + userId
+      return
+    return
+
+
 
 ###
 # Account Methods

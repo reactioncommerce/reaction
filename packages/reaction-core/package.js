@@ -179,13 +179,6 @@ Package.onUse(function (api) {
     "client/templates/layout/notice/unauthorized.html",
     "client/templates/layout/notice/shopNotFound.html",
 
-    // "client/templates/accounts/accounts-ui/login_buttons.html",
-    // "client/templates/accounts/accounts-ui/login_buttons_dialogs.html",
-    // "client/templates/accounts/accounts-ui/login_buttons_dropdown.html",
-    // "client/templates/accounts/accounts-ui/login_buttons_dropdown.coffee",
-    // "client/templates/accounts/accounts-ui/login_buttons_single.html",
-    // "client/templates/accounts/accounts-ui/accounts-ui.coffee",
-
     "client/templates/accounts/accounts.html",
     "client/templates/accounts/accounts.coffee",
 
@@ -411,9 +404,9 @@ Package.onUse(function (api) {
 Package.onTest(function(api) {
   api.use('coffeescript');
   api.use('underscore');
-  api.use('sanjo:jasmine@0.15.2');
-  api.use('velocity:html-reporter@0.7.1');
-  api.use('velocity:console-reporter@0.1.2');
+  api.use('sanjo:jasmine@0.16.2');
+  api.use('velocity:html-reporter@0.7.3');
+  api.use('velocity:console-reporter@0.1.3');
 
   api.use('reactioncommerce:core');
   api.use('reactioncommerce:bootstrap-theme');
@@ -425,5 +418,4 @@ Package.onTest(function(api) {
   api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
   api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
   api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
-
 });
