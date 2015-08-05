@@ -181,7 +181,6 @@ ReactionRegistry.loadFixtures = ->
   Fixtures.loadData ReactionCore.Collections.Products
   Fixtures.loadData ReactionCore.Collections.Tags
   Fixtures.loadI18n ReactionCore.Collections.Translations
-  ReactionRegistry.createDefaultAdminUser()
 
   # if ROOT_URL update shop domain
   # for now, we're assuming the first domain is the primary
@@ -210,4 +209,6 @@ ReactionRegistry.loadFixtures = ->
         unless _.has(ReactionRegistry.Packages, pkg.name)
           ReactionCore.Events.info ("Removing "+ pkg.name)
           ReactionCore.Collections.Packages.remove {shopId: shop._id, name: pkg.name}
+
+  ReactionRegistry.createDefaultAdminUser()
   return
