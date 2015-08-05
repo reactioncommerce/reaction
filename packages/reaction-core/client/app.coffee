@@ -46,6 +46,7 @@ _.extend ReactionCore,
 
   # returns shop id
   getShopId: ->
+    Session.set "currentShopId", @shopId
     return @shopId
 
   # TODO:  setShopId: (shopId) ->

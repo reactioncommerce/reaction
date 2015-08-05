@@ -6,9 +6,10 @@
 ###
 
 # If our app has a Blaze, override the {{currentUser}} helper to deal guest logins
+# setting 'currentShopId' as a reactive session in app.coffee
 if Package.blaze
   Package.blaze.Blaze.Template.registerHelper 'currentUser', ->
-    if Meteor.user and ReactionCore.getShopId() and ReactionCore.allowGuestCheckout()
+    if Session.get "currentShopId"
       isGuest = Roles.userIsInRole( Meteor.user(), 'guest', ReactionCore.getShopId() )
       isAnonymous = Roles.userIsInRole( Meteor.user(), 'anonymous', ReactionCore.getShopId() )
       #if user and anonymous
@@ -18,6 +19,7 @@ if Package.blaze
         return Meteor.user()
     else
       return null
+
 
 #
 # monthOptions
