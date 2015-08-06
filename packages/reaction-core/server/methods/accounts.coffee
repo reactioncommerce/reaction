@@ -47,6 +47,7 @@ Meteor.methods
       if doc.isShippingDefault
         ReactionCore.Collections.Accounts.update
           "_id": accountId
+          "userId": accountId
           "profile.addressBook.isShippingDefault": true
         ,
           $set:
@@ -56,12 +57,16 @@ Meteor.methods
       if doc.isBillingDefault
         ReactionCore.Collections.Accounts.update
           '_id': accountId
+          "userId": accountId
           "profile.addressBook.isBillingDefault": true
         ,
           $set:
             "profile.addressBook.$.isBillingDefault": false
     # add address book entry
-    ReactionCore.Collections.Accounts.update accountId, {$addToSet: {"profile.addressBook": doc}}
+    ReactionCore.Collections.Accounts.upsert accountId, {
+      $set: {"userId": accountId}
+      $addToSet: {"profile.addressBook": doc}
+    }
     return doc
 
   ###
@@ -96,6 +101,24 @@ Meteor.methods
     ,
       $set:
         "profile.addressBook.$": doc
+    return doc
+
+  ###
+  # update existing address in user's profile
+  ###
+  addressBookRemove: (doc, accountId) ->
+    @unblock()
+    check doc, ReactionCore.Schemas.Address
+    check accountId, String
+
+    # remove
+    ReactionCore.Collections.Accounts.update
+      "_id": accountId
+      "profile.addressBook._id": doc._id
+    ,
+      $pull:
+        "profile.addressBook.$": doc
+
     return doc
 
   ###
