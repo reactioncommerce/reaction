@@ -187,7 +187,11 @@ Meteor.methods
     @unblock()
     check doc, ReactionCore.Schemas.Address
     check accountId, String
+<<<<<<< HEAD
     console.log(doc, accountId)
+=======
+
+>>>>>>> origin/feature-accounts-348
     # remove
     ReactionCore.Collections.Accounts.update
       "_id": accountId
@@ -195,7 +199,10 @@ Meteor.methods
     ,
       $pull: "profile.addressBook": { "_id": doc._id }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/feature-accounts-348
     return doc
 
   ###

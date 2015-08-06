@@ -63,9 +63,13 @@ ReactionCore.Helpers.cartTransform =
 
 ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
   transform: (cart) ->
+<<<<<<< HEAD
     newInstance = Object.create(ReactionCore.Helpers.cartTransform)
     return  _.extend newInstance, cart
-
+=======
+    newInstance = Object.create(ReactionCore.Helpers.cartTransform);
+    return  _.extend newInstance, cart;
+>>>>>>> origin/feature-accounts-348
 
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
