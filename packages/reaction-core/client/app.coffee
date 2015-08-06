@@ -16,6 +16,7 @@ _.extend ReactionCore,
 
   # permission check
   hasPermission: (permissions, userId) ->
+    userId = userId || Meteor.userId()
     # assume admin, owner access
     unless _.isArray permissions
       permissions = [permissions]
