@@ -232,7 +232,7 @@ Meteor.methods
       #clone images for each variant
       ReactionCore.Collections.Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
         newFile = fileObj.copy()
-        newFile.update({$set: {'metadata.productId': product._id, 'metadata.variantId': newVariantId}})
+        newFile.update({$set: {'metadata.productId': product._id, 'metadata.variantId': newVariantId, 'metadata.shopId': product.shopId}})
       #update any child variants with the newly assigned ID
       unless product.variants[i].parentId
         while i < product.variants.length
