@@ -6,16 +6,16 @@
         <p class="text-justify" data-i18n="checkoutLogin.guestMessage">Continue as a guest, and you can create an account later.
         </p>
         <div class="login-button single-login-button continue-guest">
-          <span data-i18n="checkoutLogin.continueAsGuest">Continue as Guest</span>
+          <a class="btn btn-primary btn-box" data-i18n="checkoutLogin.continueAsGuest" href>Continue as Guest</a>
         </div>
       </div>
     </div>
     <div class="col-md-6 pull-right checkout-login">
-      {{> loginForm}}
+      {{> loginForm startView='loginFormSignUpView'}}
     </div>
   {{else}}
     <div class="checkout-login">
-      {{> loginForm}}
+      {{> loginForm startView='loginFormSignUpView'}}
     </div>
   {{/unless}}
 </div>
