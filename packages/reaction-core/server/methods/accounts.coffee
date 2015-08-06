@@ -42,6 +42,7 @@ Accounts.onCreateUser (options, user) ->
 
   # if user  has email or not services.anonymous then give "guest" role
   unless (!user.services && !user.services?.anonymous) or user.emails.length > 0
+    console.log user
     user.roles[shopId] = shop?.defaultRoles || [ "guest", "account/profile" ]
   # else this is anonymouse user
   else
@@ -69,13 +70,13 @@ Accounts.onLogin (options) ->
   if userId and sessionId
     currentCart = Cart.findOne userId: userId
     sessionCarts = Cart.find 'sessions': $in: [sessionId]
-
-    # ReactionCore.Events.info userId, sessionId, currentCart?._id, sessionCarts.count()
-
+    #
     # first some role cleanup
     # if we've previously logged in as anonymous, let's remove
     # authenticated users should have guest role
-    if (user.services && !user.services?.anonymous) or user.emails.length > 0
+    # TODO: user.emails.length is probably needs a little stronger check
+    #
+    if user.emails.length > 0
       # remove anonymous role if user has it
       update = { $pullAll: {} }
       update.$pullAll['roles.' + shopId] = ['anonymous']
