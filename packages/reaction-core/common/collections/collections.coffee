@@ -9,12 +9,12 @@
 # in code: ReactionCore.Collections.Cart.findOne().cartTotal()
 ###
 ReactionCore.Helpers.cartTransform =
-  
+
   cartCount : ->
     count = 0
     ((count += items.quantity) for items in @.items) if @?.items
     return count
-  
+
   cartShipping : ->
     shipping = 0
     if @?.shipping?.shipmentMethod?.rate
@@ -23,56 +23,54 @@ ReactionCore.Helpers.cartTransform =
       shipping += shippingMethod.rate \
         for shippingMethod in @.shipping.shipmentMethod
     return shipping
-  
+
   cartSubTotal : ->
     subtotal = 0
     if @?.items
       subtotal += (items.quantity * items.variants.price) for items in @.items
     subtotal = subtotal.toFixed(2)
     return subtotal
-  
+
   cartTaxes : ->
     ###
     # TODO: lookup cart taxes, and apply rules here
     ###
     return "0.00"
-  
+
   cartDiscounts : ->
     ###
     # TODO: lookup discounts, and apply rules here
     ###
     return "0.00"
-  
+
   cartTotal : ->
     subtotal = 0
     if @?.items
       subtotal += (items.quantity * items.variants.price) for items in @.items
-    
+
     shipping = 0
     if @?.shipping?.shipmentMethod?.rate
       shipping = @?.shipping?.shipmentMethod?.rate
     else if @?.shipping?.shipmentMethod.length > 0
       shipping += shippingMethod.rate \
       for shippingMethod in @.shipping.shipmentMethod
-      
+
     shipping = parseFloat shipping
     subtotal = (subtotal + shipping) unless isNaN(shipping)
     total = subtotal.toFixed(2)
     return total
 
+
 ReactionCore.Collections.Cart = Cart = @Cart = new Mongo.Collection "Cart",
   transform: (cart) ->
     newInstance = Object.create(ReactionCore.Helpers.cartTransform)
-
     return  _.extend newInstance, cart
 
 
 ReactionCore.Collections.Cart.attachSchema ReactionCore.Schemas.Cart
 
 # Accounts
-ReactionCore.Collections.Accounts =
-  Accounts = @Accounts = new Mongo.Collection "Accounts"
-
+ReactionCore.Collections.Accounts = new Mongo.Collection "Accounts"
 ReactionCore.Collections.Accounts.attachSchema ReactionCore.Schemas.Accounts
 
 # Orders
@@ -98,7 +96,7 @@ ReactionCore.Collections.Packages.attachSchema(
 # Products
 ReactionCore.Collections.Products =
   Products = @Products = new Mongo.Collection "Products"
-  
+
 ReactionCore.Collections.Products.attachSchema(
   ReactionCore.Schemas.Product)
 
