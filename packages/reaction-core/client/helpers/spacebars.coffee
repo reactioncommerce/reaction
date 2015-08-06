@@ -17,8 +17,8 @@ if Package.blaze
         return null
       else if isGuest and !isAnonymous
         return Meteor.user()
-    else
-      return null
+      else
+        return null
 
 
 #
