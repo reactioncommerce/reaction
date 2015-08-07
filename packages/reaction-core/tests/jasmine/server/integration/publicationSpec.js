@@ -1,4 +1,4 @@
-describe("Publication.", function() {
+describe("Publication", function() {
 
   var shop;
 
@@ -118,5 +118,52 @@ describe("Publication.", function() {
       expect(data).toEqual([]);
     });
 
+  });
+
+  fdescribe("ShopMembers", function() {
+    var user;
+
+    beforeEach(function() {
+      Meteor.users.remove({});
+      user = Accounts.createUser({username: "shopMember", password: "1234", email: "joe@test.com"});
+    });
+
+    afterEach(function() {
+      Meteor.users.remove({});
+    });
+
+    it("should let an admin fetch userIds", function() {
+      // setup
+      spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      // execute
+      cursor = Meteor.server.publish_handlers["ShopMembers"]();
+      // verify
+      data = cursor.fetch()[0];
+      console.log(user);
+      expect(data._id).toEqual(user);
+    });
+
+    it("should not let a regular user fetch userIds", function() {
+      // setup
+      spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
+      spyOn(Roles, "userIsInRole").and.returnValue(false);
+      // execute
+      cursor = Meteor.server.publish_handlers["ShopMembers"]();
+      // verify
+      data = cursor;
+      expect(data).toEqual([]);
+    });
+
+    it("should not overpublish user data to admins", function() {
+      spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      // execute
+      cursor = Meteor.server.publish_handlers["ShopMembers"]();
+      // verify
+      data = cursor.fetch()[0];
+      console.log(user);
+      expect(data.services).toBeUndefined();
+    });
   });
 });
