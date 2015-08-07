@@ -140,7 +140,6 @@ describe("Publication", function() {
       cursor = Meteor.server.publish_handlers["ShopMembers"]();
       // verify
       data = cursor.fetch()[0];
-      console.log(user);
       expect(data._id).toEqual(user);
     });
 
@@ -162,7 +161,6 @@ describe("Publication", function() {
       cursor = Meteor.server.publish_handlers["ShopMembers"]();
       // verify
       data = cursor.fetch()[0];
-      console.log(user);
       expect(data.services).toBeUndefined();
     });
   });
