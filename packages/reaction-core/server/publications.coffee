@@ -158,10 +158,16 @@ Meteor.publish 'Product', (productId) ->
   check productId, String
 
   shop = ReactionCore.getCurrentShop(@) #TODO: wire in shop
+  selector = {}
+  selector.isVisible = true
+  if Roles.userIsInRole this.userId, ['admin','createProduct'], shop
+    selector.isVisible = {$in: [true, false]}
+
   if productId.match /^[A-Za-z0-9]{17}$/
-    return Products.find(productId)
+    selector._id = productId
   else
-    return Products.find({handle: { $regex : productId, $options:"i" } })
+    selector.handle = { $regex : productId, $options:"i" }
+  Products.find(selector)
 
 ###
 # orders
