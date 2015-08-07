@@ -77,6 +77,10 @@ Package.onUse(function (api, where) {
     "client/templates/forgot/forgot.html",
     "client/templates/forgot/forgot.js",
 
+    // Update password views
+    "client/templates/updatePassword/updatePassword.html",
+    "client/templates/updatePassword/updatePassword.js",
+
     // basic styles
     "client/templates/loginForm.less"
 
