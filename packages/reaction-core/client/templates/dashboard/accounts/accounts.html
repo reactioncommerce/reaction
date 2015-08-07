@@ -10,9 +10,14 @@
   </div>
 </div>
 
-{{#each members}}
-  {{> shopMember}}
-{{/each}}
+  <div class="flex">
+    {{#each members}}
+      <div class="flex-item">
+        {{> shopMember}}
+      </div>
+    {{/each}}
+  </div>
+
 </template>
 
 <template name="createUser">

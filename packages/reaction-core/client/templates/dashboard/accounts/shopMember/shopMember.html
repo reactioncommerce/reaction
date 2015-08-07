@@ -1,8 +1,8 @@
 <template name="shopMember">
-<div class="row shop-member-row">
-  <div class="col-sm-2">
+<div class="panel shop-member-row">
+  <div class="panel-header panel-header--brand">
     <div class="shop-member-profile">
-      {{> avatar user=this shape="circle"}}
+      {{> avatar user=this size="large" shape="circle"}}
       {{displayName this}}
       {{email}}
       {{#if hasOwnerAccess}}
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="col-sm-10 shop-member-groups">
+  <div class="panel-content shop-member-groups">
   {{#each groupsForUser}}
     <div class="row">
       <label>{{shopLabel}}</label>

@@ -95,7 +95,7 @@ ReactionCore.registerPackage
     }
     # users
     {
-      route: 'dashboard/accounts'
+      route: 'dashboard/members'
       label: 'Members'
       description: 'Manage your user accounts'
       icon: 'fa fa-users'
@@ -104,13 +104,13 @@ ReactionCore.registerPackage
     }
     # members / users
     {
-      route: 'dashboard/accounts'
+      route: 'dashboard/members'
       label: 'Members'
       provides: 'console'
     }
     # shortcut for members / users
     {
-      route: "dashboard/accounts"
+      route: "dashboard/members"
       provides: 'shortcut'
       label: 'Members'
       icon: 'fa fa-users'

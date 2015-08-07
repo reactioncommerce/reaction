@@ -48,7 +48,8 @@ Template.gridPackage.events
     return
 
   "click .pkg-app-card": (event, template) ->
+    console.log this
     Router.go @.route if @.route
 
-  "click .pkg-settings": (event, template) ->
+  "click .pkg-settings, click .action--showPackageSettings": (event, template) ->
     Router.go @.route if @.route
