@@ -2,12 +2,8 @@
 {{#with account.profile}}
   <div class="panel-heading">
     <h3 class="panel-title">
-      {{#if addressBook}}
       <span id="address-selection-help" data-i18n="addressBookGrid.chooseAddress">Choose shipping & billing address</span>
       <i class="fa fa-plus fa-lg pull-right address-icons action--addNewAddress"></i>
-      {{else}}
-        <span data-i18n="addressBookGrid.createDefault">Create your default address</span>
-      {{/if}}
     </h3>
   </div>
   <div class="panel-body">

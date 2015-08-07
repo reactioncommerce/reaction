@@ -12,17 +12,31 @@ Template.addressBookAdd.helpers({
       thisAddress.region = Session.get("address").state;
     }
     return thisAddress;
+  },
+
+  hasAddressBookEntries: function() {
+    var account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
+
+    if (account.profile) {
+      if (account.profile.addressBook) {
+        if (account.profile.addressBook.length > 0) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 });
 
 Template.addressBookAdd.events({
-  'click #cancel-new, form submit': function(event, template) {
-    console.log(event, template, Template.instance())
-    return Session.set("addressBookView", "addressBookGrid");
-  },
-  'submit form': function() {
-    return Session.set("addressBookView", "addressBookGrid");
-  }
+  // 'click #cancel-new, form submit': function(event, template) {
+  //   console.log(event, template, Template.instance())
+  //   return Session.set("addressBookView", "addressBookGrid");
+  // },
+  // 'submit form': function() {
+  //   return Session.set("addressBookView", "addressBookGrid");
+  // }
 });
 
 
@@ -37,9 +51,9 @@ AutoForm.hooks({
 
       var accountId, error;
 
-      this.event.preventDefault();
+      // this.event.preventDefault();
 
-      console.log('YSYSYSYSYSY!!!!', this.template)
+      // console.log('YSYSYSYSYSY!!!!', this.template)
 
       accountId = ReactionCore.Collections.Accounts.findOne({
         userId: Meteor.userId()
@@ -59,8 +73,8 @@ AutoForm.hooks({
       }
 
       this.done();
-      Session.set("addressBookView", "addressBookGrid");
-      addressBookEditId.set();
+      // Session.set("addressBookView", "addressBookGrid");
+      // addressBookEditId.set();
     }
   }
 });

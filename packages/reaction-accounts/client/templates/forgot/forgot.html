@@ -8,7 +8,7 @@
   <form name="loginForm">
     <div class="form-group {{hasError errors.email}}">
       <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email Address</label>
-      <input id="email_{{uniqueId}}" class="form-control login-input--email" type="text">
+      <input id="email_{{uniqueId}}" class="form-control login-input--email" type="text" value="{{email}}">
 
       {{#if hasError errors.email}}
         <span class="help-block">

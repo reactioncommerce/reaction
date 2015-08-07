@@ -1,5 +1,8 @@
 
 
+Template.accountProfile.onCr
+
+
 Template.accountProfile.helpers({
 
   userOrders: function () {

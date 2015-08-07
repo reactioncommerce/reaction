@@ -25,7 +25,7 @@
 
       <div class="form-group form-group--email {{hasError errors.email}}">
         <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
-        <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email">
+        <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email" tabindex="1" value="{{email}}">
 
         {{#if hasError errors.email}}
           <span class="help-block">
@@ -36,7 +36,7 @@
 
       <div class="form-group {{hasError errors.password }}">
         <label for="password_{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
-        <input id="password_{{uniqueId}}" class="form-control login-input--password" type="text">
+        <input id="password_{{uniqueId}}" class="form-control login-input--password" type="password" tabindex="2" value="{{password}}">
 
         {{#if hasError errors.password}}
           <span class="help-block">
@@ -48,12 +48,12 @@
 
 
       <div class="form-group">
-        <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signIn">Sign In</button>
+        <button class="btn btn-primary btn-block action--submit" type="Submit" data-i18n="accountsUI.signIn" tabindex="3">Sign In</button>
       </div>
 
       <div class="form-group flex flex-justify--spaceBetween">
-        <a class="action--forgot" data-i18n="accountsUI.forgotPassword" href>Reset Password</a>
-        <a class="action--signUp" data-i18n="accountsUI.signUp" href>Register</a>
+        <a class="action--forgot" data-i18n="accountsUI.forgotPassword" href tabindex="4">Reset Password</a>
+        <a class="action--signUp" data-i18n="accountsUI.signUp" href tabindex="5">Register</a>
       </div>
 
     </form>

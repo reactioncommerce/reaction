@@ -1,7 +1,7 @@
 <template name="addressBookAdd">
 <div class="panel-heading">
   <h3 class="panel-title">
-    {{#if profile.addressBook}}
+    {{#if hasAddressBookEntries}}
       <span data-i18n="addressBookAdd.addAddress">Add address</span>
     {{else}}
       <span data-i18n="addressBookAdd.createAddress">Create your default address</span>
@@ -14,7 +14,7 @@
         {{> addressBookForm}}
         <div class="row text-right">
           <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
-          {{#if profile.addressBook}}
+          {{#if hasAddressBookEntries}}
           <button type="reset" class="btn btn-default action--cancelEdit" data-i18n="app.cancel">Cancel</button>
           {{/if}}
         </div>

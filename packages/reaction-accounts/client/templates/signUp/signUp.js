@@ -60,6 +60,8 @@ Template.loginFormSignUpView.events({
 Template.loginFormSignUpView.onCreated(function() {
   this.uniqueId = Random.id();
   this.formErrors = new ReactiveVar({})
+
+  console.log('Sign up created:', this);
 })
 
 

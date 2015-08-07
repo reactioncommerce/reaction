@@ -8,7 +8,7 @@
 
     <div class="form-group {{hasError errors.email}}">
       <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
-      <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email">
+      <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email" value="{{email}}">
 
       {{#if hasError errors.email}}
         <span class="help-block">
@@ -19,7 +19,7 @@
 
     <div class="form-group {{hasError errors.password }}">
       <label for="password_{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
-      <input id="password_{{uniqueId}}" class="form-control login-input--password" type="text">
+      <input id="password_{{uniqueId}}" class="form-control login-input--password" type="password" value="{{password}}">
 
       {{#if hasError errors.password}}
         <span class="help-block">

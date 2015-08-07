@@ -1,3 +1,8 @@
+
+Template.addressBookEdit.onCreated(function () {
+  console.log('addressBookEdit', this)
+})
+
 /*
  * update address book (cart) form handling
  * onSubmit we need to add accountId which is not in context

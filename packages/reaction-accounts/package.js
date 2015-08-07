@@ -57,7 +57,7 @@ Package.onUse(function (api, where) {
     "client/templates/addressBook/form/form.coffee",
 
     "client/templates/addressBook/grid/grid.html",
-    "client/templates/addressBook/grid/grid.coffee",
+    "client/templates/addressBook/grid/grid.js",
 
 
     // core login form and generic templates

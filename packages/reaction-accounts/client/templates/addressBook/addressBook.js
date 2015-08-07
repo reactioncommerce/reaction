@@ -5,10 +5,27 @@
  * addressBookView (view)
  */
 
+Template.addressBook.onCreated(function () {
+
+  var account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
+
+  this.currentViewTemplate = ReactiveVar('addressBookAdd');
+  this.templateData = ReactiveVar({});
+
+  if (account.profile) {
+    if (account.profile.addressBook) {
+      if (account.profile.addressBook.length > 0) {
+        this.currentViewTemplate.set('addressBookGrid');
+      }
+    }
+  }
+    console.log(Template.instance().currentViewTemplate.get(), account)
+
+});
+
 
 Template.addressBook.onRendered(function () {
   var view = this.$('[blaze-view="addressBook"]').get(0);
-  Blaze.render(Template.addressBookGrid, view);
 });
 
 
@@ -18,9 +35,28 @@ Template.addressBook.helpers({
     account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
     return account;
   },
+
+  data: function() {
+    return Template.instance().templateData.get();
+  },
+
+  currentView: function() {
+    console.log(Template.instance().currentViewTemplate.get())
+    return Template.instance().currentViewTemplate.get();
+  }
 });
 
 Template.addressBook.events({
+
+  // **************************************************************************
+  //
+  //
+  'click .action--addNewAddress': function (event, template) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    Template.instance().currentViewTemplate.set('addressBookAdd');
+  },
 
   // **************************************************************************
   // Edit an address
@@ -30,12 +66,11 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
-    var addressBook = template.$('[blaze-view="addressBook"]');
-    addressBook.children().remove();
-
-    Blaze.renderWithData(Template.addressBookEdit, {
+    Template.instance().templateData.set({
       address: this
-    }, addressBook.get(0))
+    });
+
+    Template.instance().currentViewTemplate.set('addressBookEdit');
 
   },
 
@@ -51,27 +86,19 @@ Template.addressBook.events({
   },
 
 
-  // **************************************************************************
-  //
-  //
-  'click .action--addNewAddress': function (event, template) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    var addressBook = template.$('[blaze-view="addressBook"]');
-    addressBook.children().remove();
-
-    Blaze.render(Template.addressBookAdd, addressBook.get(0))
-  },
-
   'click .action--cancelEdit, form submit': function (event, template) {
     event.preventDefault();
     event.stopPropagation();
 
-    var addressBook = template.$('[blaze-view="addressBook"]');
-    addressBook.children().remove();
 
-    Blaze.render(Template.addressBookGrid, addressBook.get(0))
+    Template.instance().currentViewTemplate.set('addressBookGrid');
+
+
+
+    // var addressBook = template.$('[blaze-view="addressBook"]');
+    // addressBook.children().remove();
+
+    // Blaze.render(Template.addressBookGrid, addressBook.get(0))
   }
 
 });

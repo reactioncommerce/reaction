@@ -127,11 +127,43 @@ LoginFormSharedHelpers = {
 
   uniqueId: function() {
     return Template.instance().uniqueId;
+  },
+
+  // ::PLUCKED and modified from accounts-ui-unstyled ::
+  services: function () {
+    var self = this;
+
+    // First look for OAuth services.
+    var services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
+
+    // Be equally kind to all login services. This also preserves
+    // backwards-compatibility. (But maybe order should be
+    // configurable?)
+    services.sort();
+
+    // Add password, if it's there; it must come last.
+    // if( !!Package['accounts-password'] ) {
+    //   services.push('password');
+    // }
+
+    return _.map(services, function (name) {
+      return {name: name};
+    });
+
+  },
+
+  shouldShowSeperator: function () {
+    return !!Package['accounts-password'] && Accounts.oauth.serviceNames().length
+  },
+
+  hasPasswordService: function () {
+    return ( !!Package['accounts-password'] )
   }
+
 
 };
 
-
+var LoginForm
 
 // ----------------------------------------------------------------------------
 // Login Form helpers
@@ -157,13 +189,12 @@ Template.loginForm.helpers({
 // Login Form:: Created
 //
 Template.loginForm.onCreated(function () {
-  this.loginFormCurrentView = new ReactiveVar('loginFormSignInView');
+
+  var startView = this.data.startView || 'loginFormSignInView';
+
+  this.loginFormCurrentView = new ReactiveVar(startView);
   this.uniqueId = Random.id();
-
-
-  Random.id();
-  console.log('would be random id', Random.id())
-
+  this.credentials = {};
 });
 
 
@@ -183,6 +214,9 @@ Template.loginForm.events({
     event.preventDefault();
     event.stopPropagation();
 
+    this.email = template.$('.login-input--email').val();
+    this.password = template.$('.login-input--password').val();
+
     template.loginFormCurrentView.set('loginFormSignInView')
   },
 
@@ -194,6 +228,10 @@ Template.loginForm.events({
     event.preventDefault();
     event.stopPropagation();
 
+
+    this.email = template.$('.login-input--email').val();
+    this.password = template.$('.login-input--password').val();
+
     template.loginFormCurrentView.set('loginFormSignUpView')
   },
 
@@ -202,9 +240,11 @@ Template.loginForm.events({
   // Show the password reset view
   //
   'click .action--forgot': function (event, template) {
-
     event.preventDefault();
     event.stopPropagation();
+
+    this.email = template.$('.login-input--email').val();
+    this.password = template.$('.login-input--password').val();
 
     template.loginFormCurrentView.set('loginFormResetPasswordView')
   },
@@ -230,20 +270,20 @@ Template.loginForm.events({
 
     var options = {}; // use default scope unless specified
 
-    if (Accounts.ui._options.requestPermissions[serviceName]) {
-      options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
-    }
+    // if (Accounts.ui._options.requestPermissions[serviceName]) {
+    //   options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
+    // }
 
-    if (Accounts.ui._options.requestOfflineToken[serviceName]) {
-      options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
-    }
+    // if (Accounts.ui._options.requestOfflineToken[serviceName]) {
+    //   options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
+    // }
 
-    if (Accounts.ui._options.forceApprovalPrompt[serviceName]) {
-      options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
-    }
+    // if (Accounts.ui._options.forceApprovalPrompt[serviceName]) {
+    //   options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
+    // }
 
     loginWithService(options, function (err) {
-      loginResultCallback(serviceName, err);
+      //loginResultCallback(serviceName, err);
     });
 
   }

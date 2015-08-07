@@ -3,8 +3,8 @@
     <div class="panel-header">
       <h2>Address Book</h2>
     </div>
-    <div class="panel-content" blaze-view="addressBook">
-
+    <div class="panel-content">
+      {{> Template.dynamic template=currentView data=data}}
     </div>
   </div>
 </template>
