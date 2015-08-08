@@ -5,59 +5,17 @@
       {{>checkoutProgressBar}}
     </div>
     <div class="row cart-checkout-steps">
-        <div class="col-md-8">
-          <div class="row">
-            {{#if currentUser}}
-              <div class="col-md-12"><i class="{{loginStatus}}">1</i>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title" data-i18n='checkoutLogin.loginCompleted'>Account completed</h3>
-                  </div>
-                </div>
-              </div>
-            {{else}}
-              <div class="col-md-12"><i class="checkout-step-badge">1</i>{{>checkoutLogin}}</div>
-            {{/if}}
-          </div>
-
-          <div class="row">
-            {{#if addressStatus}}
-              <div class="col-md-12"><i class="{{addressStatus}}">2</i>{{>addressBook}}</div>
-            {{else}}
-              <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">2</i></div>
-            {{/if}}
-          </div>
-
-          <div class="row">
-            {{#if shippingOptionStatus}}
-              <div class="col-md-12"><i class="{{shippingOptionStatus}}">3</i>{{>coreCheckoutShipping}}</div>
-            {{else}}
-            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">3</i></div>
-           {{/if}}
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          {{#if checkoutReviewStatus}}
-            <div class="col-md-12">
-              <i class="checkout-step-badge">4</i>
-              {{>checkoutReview}}
+      {{#each cartWorkflow}}
+        <div class="row">
+          {{#if status}}
+            <div class="col-md-12"><i class="checkout-step-badge-completed">{{position}}</i>
+            {{> Template.dynamic template=workflow}}
             </div>
           {{else}}
-            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">4</i></div>
+          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">{{position}}</i></div>
           {{/if}}
         </div>
-
-        <div class="col-md-4" id="checkout-step-payment-methods">
-          {{#if checkoutReviewStatus}}
-            <div class="col-md-12">
-              <i class="checkout-step-badge">4</i>
-              {{>checkoutPayment}}
-            </div>
-          {{else}}
-            <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">5</i></div>
-          {{/if}}
-        </div>
+      {{/each}}
     </div>
   </div>
 {{else}}

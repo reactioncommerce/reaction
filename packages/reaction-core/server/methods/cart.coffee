@@ -97,7 +97,7 @@ Meteor.methods
   # the order, we don't want to just make another cart item
   #
   # TODO:  Partial order processing, shopId processing
-  #
+  # TODO:  Review Security on this method
   ###
   copyCartToOrder: (cartId) ->
     check cartId, String
@@ -143,6 +143,8 @@ Meteor.methods
       orderId = Orders.insert cart
       if orderId
         Cart.remove _id: cartId
+        # adjust inventory
+        Meteor.call "inventoryAdjust", orderId
         ReactionCore.Events.info "Completed cart for " + cartId
 
     catch error
@@ -158,7 +160,7 @@ Meteor.methods
     check address, Object
     unless cartId and address then return
     #
-    cart = ReactionCore.Collections.Cart.findOne _id: cartId, userId: Meteor.userId
+    cart = ReactionCore.Collections.Cart.findOne _id: cartId, userId: Meteor.userId()
     if cart
       # update shipping address
       Cart.update cartId, {$set: {"shipping.address": address} }
@@ -167,7 +169,19 @@ Meteor.methods
     else
       throw new Meteor.Error "setShipmentAddress: Invalid request"
 
+  setPaymentAddress: (cartId, address) ->
+    check cartId, String
+    check address, Object
+    unless cartId and address then return
+    #
+    cart = ReactionCore.Collections.Cart.findOne _id: cartId, userId: Meteor.userId()
+    if cart
+      Cart.update cartId, {$set: {"payment.address": address} }
+    else
+      throw new Meteor.Error "setPaymentAddress: Invalid request"
+
   ###
+  # mergeCart
   # merge matching sessionId cart into specified userId cart
   ###
   mergeCart: (cartId) ->
@@ -207,6 +221,10 @@ Meteor.methods
         ReactionCore.Events.info "processed merge for cartId: " + sessionCart._id
     return true
 
+  ###
+  # createCart
+  # returns new cart for user
+  ###
   createCart: (userId) ->
     check userId, String
     @unblock()
@@ -220,3 +238,19 @@ Meteor.methods
     ReactionCore.Events.info "created cart: " + newCartId + " for user: " + userId
 
     return Cart.find newCartId
+
+  ###
+  # "cart/setStatu"
+  # updates cart status
+  ###
+  'cart/setStatus': (status, cartId, userId) ->
+    check status, String
+    check userId, Match.Optional(String)
+    check cartId, Match.Optional(String)
+    @unblock()
+
+    Cart = ReactionCore.Collections.Cart
+    userId = userId || Meteor.userId()
+    cartId = cartId || Cart.findOne( userId: userId )._id
+
+    return Cart.update cartId, $set: status: status

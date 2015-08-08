@@ -178,8 +178,10 @@ ReactionCore.Schemas.Product = new SimpleSchema
   description:
     type: String
     optional: true
-  productType:
+  type:
+    label: "Type"
     type: String
+    defaultValue: "simple"
   vendor:
     type: String
     optional: true

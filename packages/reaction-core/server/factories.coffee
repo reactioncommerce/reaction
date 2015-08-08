@@ -86,7 +86,7 @@ Factory.define 'product', ReactionCore.Collections.Products,
   title: Fake.word
   pageTitle: -> Fake.sentence 5
   description: -> Fake.paragraph 20
-  productType: -> Fake.sentence 2
+  type: -> "simple"
   vendor: ''
 #   metafields:
   variants: -> [

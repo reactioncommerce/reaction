@@ -13,7 +13,7 @@ Template.pageOrderDetail.helpers
     @.shipping.shipmentMethod.tracking
 
   orderStateHelper: () ->
-    switch @.state
+    switch @.status
       when 'orderCreated' then Template.stateHelperTracking
       when 'shipmentTracking' then Template.spinner
       when 'shipmentPrepare' then Template.stateHelperDocuments
@@ -21,6 +21,6 @@ Template.pageOrderDetail.helpers
       when 'processPayment' then Template.stateHelperPayment
       when 'shipmentShipped' then Template.stateHelperShipped
       when 'orderCompleted' then Template.stateHelperCompleted
- 
+
   paymentMethod: ->
     return this.payment.paymentMethod[0].processor

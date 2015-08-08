@@ -9,8 +9,6 @@ Template.checkoutAddressBook.helpers
     account = ReactionCore.Collections.Accounts.findOne()
     return account
 
-  addressBookView: ->
-    return Session.get "addressBookView"
 
 Template.checkoutAddressBook.events
   'click .address-edit-icon': (event,template) ->
