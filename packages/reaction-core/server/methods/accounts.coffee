@@ -110,6 +110,14 @@ Accounts.onLogin (options) ->
 # Account Methods
 ###
 Meteor.methods
+  currentUserHasPassword: () ->
+    user = Meteor.users.findOne(Meteor.userId())
+
+    if user.services.password
+      return true
+
+    return false
+
   ###
   # add new addresses to an account
   ###
