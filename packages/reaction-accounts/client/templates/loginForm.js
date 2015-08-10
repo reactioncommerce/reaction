@@ -40,7 +40,7 @@ LoginFormValidation = {
 
     // Valid
     if (optional === true && email.length === 0) {
-      return true;;
+      return true;
     } else if (email.indexOf('@') !== -1) {
       return true;
     }
@@ -48,7 +48,7 @@ LoginFormValidation = {
     // Invalid
     return {
       error: "INVALID_EMAIL",
-      reason: "Not a valid email address"
+      reason: i18n.t('accountsUI.error.invalidEmail')
     };
 
   },
@@ -67,7 +67,7 @@ LoginFormValidation = {
       } else {
         return {
           error: "INVALID_PASSWORD",
-          reason: 'Please enter a valid password'
+          reason: i18n.t('accountsUI.error.passwordRequired')
         };
       }
     }
@@ -82,14 +82,14 @@ LoginFormValidation = {
     if (password.length < 6) {
       errors.push({
         error: "INVALID_PASSWORD",
-        reason: 'Password must be at least 6 characters long'
+        reason: i18n.t('accountsUI.error.passwordMustBeAtLeast6CharactersLong')
       });
     }
 
     if (password.match(validPasswordRegex) === null) {
       errors.push({
         error: "INVALID_PASSWORD",
-        reason: 'Password must contain at least one number or symbol'
+        reason: i18n.t('accountsUI.error.passwordMustContainRequirements')
       });
     }
 
@@ -273,6 +273,7 @@ Template.loginForm.events({
 
     var options = {}; // use default scope unless specified
 
+    // TODO: update or remove
     // if (Accounts.ui._options.requestPermissions[serviceName]) {
     //   options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
     // }
