@@ -168,6 +168,9 @@ var LoginForm
 // ----------------------------------------------------------------------------
 // Login Form helpers
 //
+
+Template.loginFormErrorAlert.helpers(LoginFormSharedHelpers);
+
 Template.loginForm.helpers({
 
   // **************************************************************************

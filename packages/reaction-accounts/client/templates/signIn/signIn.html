@@ -23,6 +23,8 @@
   {{#if hasPasswordService}}
     <form class="login-form">
 
+      {{> loginFormErrorAlert alerts=errors.alert}}
+
       <div class="form-group form-group--email {{hasError errors.email}}">
         <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
         <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email" tabindex="1" value="{{email}}">

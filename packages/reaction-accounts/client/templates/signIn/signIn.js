@@ -19,6 +19,7 @@ Template.loginFormSignInView.events({
     var validatedPassword = LoginFormValidation.password(password, {validationLevel: 'exists'});
 
     var errors = {};
+    Template.instance().formErrors.set({});
 
     if (validatedEmail !== true ) {
       errors.email = validatedEmail.reason;
@@ -28,16 +29,22 @@ Template.loginFormSignInView.events({
       errors.password = validatedPassword.reason;
     }
 
-    if ($.isEmptyObject(errors) === false) {
-      Template.instance().formErrors.set(errors);
-      // prevent login
-      return;
-    }
+    // if ($.isEmptyObject(errors) === false) {
+    //   Template.instance().formErrors.set(errors);
+    //   // prevent login
+    //   return;
+    // }
+
+    var templateInstance = Template.instance();
 
     Meteor.loginWithPassword(username, password, function(error, result) {
       if( error ) {
         // Show some error message
-        console.log(error)
+        console.log('Sign in errors', error);
+        errors.alert = [error]
+
+        templateInstance.formErrors.set(errors);
+
       } else {
         // Close dropdown or navigate to page
       }

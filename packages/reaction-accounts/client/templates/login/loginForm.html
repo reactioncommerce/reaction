@@ -14,3 +14,14 @@
     </button>
   {{!-- {{if}} --}}
 </template>
+
+
+<template name="loginFormErrorAlert">
+    {{#if alerts}}
+      <div class="alert alert-danger">
+        {{#each alerts}}
+          <p>{{reason}}</p>
+        {{/each}}
+      </div>
+    {{/if}}
+</template>

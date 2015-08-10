@@ -1,9 +1,21 @@
 
 
-Template.accountProfile.onCr
 
+Template.accountProfile.onCreated(function () {
+  var self = this;
+
+  this.userHasPassword = ReactiveVar(false);
+
+  Meteor.call('currentUserHasPassword', function(error, result) {
+    self.userHasPassword.set(result);
+  });
+});
 
 Template.accountProfile.helpers({
+
+  userHasPassword: function () {
+    return Template.instance().userHasPassword.get();
+  },
 
   userOrders: function () {
     if (Meteor.user()) {

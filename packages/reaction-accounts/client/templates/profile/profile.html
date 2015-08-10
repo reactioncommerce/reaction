@@ -15,7 +15,9 @@
         </div>
         <div class="panel-content">
           <!-- <span data-i18n="accountProfile.greeting">Hello!</span> -->
-          {{> loginFormChangePassword}}
+          {{#if userHasPassword}}
+            {{> loginFormChangePassword}}
+          {{/if}}
         </div>
 
       </div>
