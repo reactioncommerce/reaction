@@ -162,7 +162,6 @@ LoginFormSharedHelpers = {
 
 };
 
-var LoginForm
 
 // ----------------------------------------------------------------------------
 // Login Form helpers
@@ -190,7 +189,13 @@ Template.loginForm.helpers({
 //
 Template.loginForm.onCreated(function () {
 
-  var startView = this.data.startView || 'loginFormSignInView';
+  var startView = 'loginFormSignInView';
+
+  if (this.data) {
+    if (this.data.startView) {
+      startview = this.data.startview;
+    }
+  }
 
   this.loginFormCurrentView = new ReactiveVar(startView);
   this.uniqueId = Random.id();

@@ -4,7 +4,7 @@ ReactionCore.registerPackage({
   allowDisable: false,
   registry: [
     {
-      route: 'dashboard/accounts',
+      route: 'accounts',
       provides: 'dashboard',
       label: 'Accounts',
       description: 'Manage how members sign into your shop.',
