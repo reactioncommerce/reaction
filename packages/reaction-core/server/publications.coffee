@@ -128,7 +128,7 @@ Meteor.publish 'ShopMembers', ->
   permissions = ['dashboard/orders','owner','admin','dashboard/customers']
   shopId = ReactionCore.getShopId(@)
   if Roles.userIsInRole(@userId, permissions, shopId)
-    return Meteor.users.find()
+    return Meteor.users.find({}, {fields: {_id: 1, email: 1, username: 1, roles: 1}})
   else
     ReactionCore.Events.info "ShopMembers access denied"
     return []
