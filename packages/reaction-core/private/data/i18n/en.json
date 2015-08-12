@@ -267,7 +267,9 @@
                     },
                     "error": {
                         "emailRequired": "Email is required.",
+                        "passwordRequired": "Email is required.",
                         "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
+                        "passwordMustContainRequirements": "Password must contain at least one number or symbol",
                         "minChar": "6 character minimum password.",
                         "pwdsDontMatch": "Passwords don't match",
                         "pwOneDigit": "Password must have at least one digit.",
