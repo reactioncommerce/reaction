@@ -221,10 +221,15 @@ Meteor.methods
     unless ReactionCore.hasOwnerAccess(shop)
       throw new Meteor.Error 403, "Access denied"
 
+
+    # Make sure mail is properly configured for this shop before we end anything
+    ReactionCore.configureMailUrl()
+
     # all params are required
     if shop and email and name
       currentUserName = Meteor.user()?.profile?.name || Meteor.user()?.username || "Admin"
       user = Meteor.users.findOne {"emails.address": email}
+
       unless user # user does not exist, invite user
         userId = Accounts.createUser
           email: email
@@ -284,6 +289,11 @@ Meteor.methods
     @unblock()
 
     email = Meteor.user(userId).emails[0].address
+
+
+    # Make sure mail is properly configured for this shop before we end anything
+    ReactionCore.configureMailUrl()
+
     SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'))
     Email.send
       to: email
