@@ -10,7 +10,7 @@ Template.addressBookGrid.helpers({
         return "active";
       }
       if (this.isBillingDefault && !(cart != null ? (ref2 = cart.payment) != null ? (ref3 = ref2.address) != null ? ref3.fullName : void 0 : void 0 : void 0)) {
-        return CartWorkflow.paymentAddress(this);
+        return Meteor.call("setPaymentAddress", cart._id, this);
       }
     }
   },
@@ -22,7 +22,7 @@ Template.addressBookGrid.helpers({
         return "active";
       }
       if (this.isShippingDefault && !(cart != null ? (ref1 = cart.shipping) != null ? (ref2 = ref1.address) != null ? ref2.fullName : void 0 : void 0 : void 0)) {
-        return CartWorkflow.shipmentAddress(this);
+        return Meteor.call("setShipmentAddress", cart._id, this);
       }
     }
   },
@@ -40,9 +40,11 @@ Template.addressBookGrid.helpers({
 
 Template.addressBookGrid.events({
   'click .address-ship-to': function(event, template) {
-    return CartWorkflow.shipmentAddress(this);
+    cart = ReactionCore.Collections.Cart.findOne();
+    return Meteor.call("setShipmentAddress", cart._id, this);
   },
   'click .address-bill-to': function(event, template) {
-    return CartWorkflow.paymentAddress(this);
+    cart = ReactionCore.Collections.Cart.findOne();
+    return Meteor.call("setPaymentAddress", cart._id, this);
   }
 });
