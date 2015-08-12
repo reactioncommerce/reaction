@@ -10,25 +10,39 @@ Template.loginFormResetPasswordView.events({
 
     var emailAddress = template.$('.login-input--email').val().trim();
     var validatedEmail = LoginFormValidation.email(emailAddress);
+    var templateInstance = Template.instance();
     var errors = {};
+
+    templateInstance.formMessages.set({});
 
     if (validatedEmail !== true ) {
       errors.email = validatedEmail.reason;
     }
 
     if ($.isEmptyObject(errors) === false) {
-      Template.instance().formErrors.set(errors);
+      templateInstance.formMessages.set({
+        errors: errors
+      });
       // prevent password reset
       return;
     }
+
+    // Make sure mail is properly configured for this shop before we end anything
+    ReactionCore.configureMailUrl()
 
     Accounts.forgotPassword({ email: emailAddress}, function (error) {
       // Show some message confirming result
 
       if (error) {
-        console.log('Error', error);
+        templateInstance.formMessages.set({
+          alerts: [error]
+        });
       } {
-        console.log('success');
+        templateInstance.formMessages.set({
+          info: [{
+            reason: i18n.t('accountsUI.info.passwordResetSend')
+          }]
+        });
       }
     });
 
@@ -41,7 +55,7 @@ Template.loginFormResetPasswordView.events({
 
 Template.loginFormResetPasswordView.onCreated(function () {
   this.uniqueId = Random.id();
-  this.formErrors = new ReactiveVar({})
+  this.formMessages = new ReactiveVar({})
 });
 
 

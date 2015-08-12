@@ -10,6 +10,7 @@ Package.onUse(function (api, where) {
 
   // Core Meteor packages
   api.use("meteor-platform@1.2.1");
+  api.use("email");
   api.use("random");
   api.use("reactive-var");
   api.use("reactive-dict");

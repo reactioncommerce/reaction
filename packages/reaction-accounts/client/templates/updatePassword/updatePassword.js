@@ -8,7 +8,6 @@ ModalHelper = {
 
 
 Accounts.onResetPasswordLink(function (token, done) {
-  Router.go('/update-password');
 
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token: token,
@@ -38,7 +37,7 @@ Accounts.onEmailVerificationLink(function (token, done) {
 
 Template.loginFormUpdatePasswordOverlay.onCreated(function() {
   this.uniqueId = Random.id();
-  this.formErrors = new ReactiveVar({})
+  this.formMessages = new ReactiveVar({})
 })
 
 Template.loginFormUpdatePasswordOverlay.helpers(LoginFormSharedHelpers);
@@ -50,6 +49,10 @@ Template.loginFormUpdatePasswordOverlay.helpers({
 
 Template.loginFormUpdatePasswordOverlay.events({
 
+  'click .close, click .cancel': function(event, template) {
+    Blaze.remove(template.view)
+  },
+
   'submit form': function (event, template) {
     event.preventDefault();
     event.stopPropagation();
@@ -59,14 +62,19 @@ Template.loginFormUpdatePasswordOverlay.events({
     var password = passwordInput.val().trim()
     var validatedPassword = LoginFormValidation.password(password);
 
+    var templateInstance = Template.instance();
     var errors = {};
+
+    templateInstance.formMessages.set({});
 
     if (validatedPassword !== true) {
       errors.password = validatedPassword;
     }
 
     if ($.isEmptyObject(errors) === false) {
-      Template.instance().formErrors.set(errors);
+      templateInstance.formMessages.set({
+        errors: errors
+      });
       // prevent password update
       return;
     }
@@ -74,15 +82,14 @@ Template.loginFormUpdatePasswordOverlay.events({
     Accounts.resetPassword(this.token, password, function(error, result) {
       if( error ) {
         // Show some error message
-
-        Template.instance().formErrors.set({
-          'alert': [{
-            reason: error.reason
-          }]
+        templateInstance.formMessages.set({
+          alerts: [error]
         });
       } else {
         // Close dropdown or navigate to page
         self.callback();
+
+        Blaze.remove(template.view)
       }
 
     });
@@ -95,7 +102,7 @@ Template.loginFormUpdatePasswordOverlay.events({
 
 Template.loginFormChangePassword.onCreated(function() {
   this.uniqueId = Random.id();
-  this.formErrors = new ReactiveVar({})
+  this.formMessages = new ReactiveVar({})
 })
 
 Template.loginFormChangePassword.helpers(LoginFormSharedHelpers);
@@ -118,7 +125,11 @@ Template.loginFormChangePassword.events({
     var validatedOldPassword = LoginFormValidation.password(password, {validationLevel: 'exists'});
     var validatedPassword = LoginFormValidation.password(password);
 
+    var templateInstance = Template.instance();
     var errors = {};
+
+    templateInstance.formMessages.set({});
+
 
     if (validatedOldPassword !== true) {
       errors.oldPassword = validatedOldPassword;
@@ -129,7 +140,9 @@ Template.loginFormChangePassword.events({
     }
 
     if ($.isEmptyObject(errors) === false) {
-      Template.instance().formErrors.set(errors);
+      templateInstance.formMessages.set({
+        errors: errors
+      });
       // prevent password update
       return;
     }
@@ -137,15 +150,17 @@ Template.loginFormChangePassword.events({
     Accounts.changePassword(oldPassword, password, function(error, result) {
       if( error ) {
         // Show some error message
-
-        Template.instance().formErrors.set({
-          'alert': [{
-            reason: error.reason
-          }]
+        templateInstance.formMessages.set({
+          alerts: [error]
         });
       } else {
         // // Close dropdown or navigate to page
         // self.callback();
+        templateInstance.formMessages.set({
+          info: [{
+            reason: i18n.t('accountsUI.info.passwordChanged')
+          }]
+        });
       }
 
     });

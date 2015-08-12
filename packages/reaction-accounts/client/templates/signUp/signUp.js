@@ -21,7 +21,10 @@ Template.loginFormSignUpView.events({
     var validatedEmail = LoginFormValidation.email(email);
     var validatedPassword = LoginFormValidation.password(password);
 
+    var templateInstance = Template.instance();
     var errors = {};
+
+    templateInstance.formMessages.set({});
 
     if (validatedEmail !== true ) {
       errors.email = validatedEmail.reason;
@@ -32,7 +35,9 @@ Template.loginFormSignUpView.events({
     }
 
     if ($.isEmptyObject(errors) === false) {
-      Template.instance().formErrors.set(errors);
+      templateInstance.formMessages.set({
+        errors: errors
+      });
       // prevent signup
       return;
     }
@@ -46,7 +51,9 @@ Template.loginFormSignUpView.events({
     Accounts.createUser(newUserData, function(error, result) {
       if( error ) {
         // Show some error message
-        console.log(error)
+        templateInstance.formMessages.set({
+          alerts: [error]
+        });
       } else {
         // Close dropdown or navigate to page
       }
@@ -59,7 +66,7 @@ Template.loginFormSignUpView.events({
 
 Template.loginFormSignUpView.onCreated(function() {
   this.uniqueId = Random.id();
-  this.formErrors = new ReactiveVar({})
+  this.formMessages = new ReactiveVar({})
 
   console.log('Sign up created:', this);
 })

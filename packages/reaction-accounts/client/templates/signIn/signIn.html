@@ -23,26 +23,26 @@
   {{#if hasPasswordService}}
     <form class="login-form">
 
-      {{> loginFormErrorAlert alerts=errors.alert}}
+      {{> loginFormMessages messages=messages}}
 
-      <div class="form-group form-group--email {{hasError errors.email}}">
+      <div class="form-group form-group--email {{hasError messages.errors.email}}">
         <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
         <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email" tabindex="1" value="{{email}}">
 
-        {{#if hasError errors.email}}
+        {{#if hasError messages.errors.email}}
           <span class="help-block">
-            {{jsonerrors.email}}
+            {{messages.errors.email}}
           </span>
         {{/if}}
       </div>
 
-      <div class="form-group {{hasError errors.password }}">
+      <div class="form-group {{hasError messages.errors.password }}">
         <label for="password_{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
         <input id="password_{{uniqueId}}" class="form-control login-input--password" type="password" tabindex="2" value="{{password}}">
 
-        {{#if hasError errors.password}}
+        {{#if hasError messages.errors.password}}
           <span class="help-block">
-            {{errors.password}}
+            {{messages.errors.password}}
           </span>
         {{/if}}
       </div>

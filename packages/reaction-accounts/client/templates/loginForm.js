@@ -103,11 +103,10 @@ LoginFormValidation = {
   }
 };
 
-
 LoginFormSharedHelpers = {
 
-  errors: function(name) {
-    return Template.instance().formErrors.get();
+  messages: function() {
+    return Template.instance().formMessages.get();
   },
 
   hasError: function(error) {
@@ -169,7 +168,7 @@ var LoginForm
 // Login Form helpers
 //
 
-Template.loginFormErrorAlert.helpers(LoginFormSharedHelpers);
+Template.loginFormMessages.helpers(LoginFormSharedHelpers);
 
 Template.loginForm.helpers({
 

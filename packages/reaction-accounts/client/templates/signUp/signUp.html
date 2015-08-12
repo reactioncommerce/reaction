@@ -6,26 +6,26 @@
 
   <form class="login-form">
 
-    {{> loginFormErrorAlert alerts=errors.alert}}
+    {{> loginFormMessages messages=messages}}
 
-    <div class="form-group {{hasError errors.email}}">
+    <div class="form-group {{hasError messages.errors.email}}">
       <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
       <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email" value="{{email}}">
 
-      {{#if hasError errors.email}}
+      {{#if hasError messages.errors.email}}
         <span class="help-block">
-          {{errors.email}}
+          {{messages.errors.email}}
         </span>
       {{/if}}
     </div>
 
-    <div class="form-group {{hasError errors.password }}">
+    <div class="form-group {{hasError messages.errors.password }}">
       <label for="password_{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
       <input id="password_{{uniqueId}}" class="form-control login-input--password" type="password" value="{{password}}">
 
-      {{#if hasError errors.password}}
+      {{#if hasError messages.errors.password}}
         <span class="help-block">
-          {{#each errors.password}}
+          {{#each messages.errors.password}}
             <p>{{reason}}</p>
           {{/each}}
         </span>
