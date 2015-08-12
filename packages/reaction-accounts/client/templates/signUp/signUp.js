@@ -1,6 +1,6 @@
 
 
-
+// TODO: reduce duplication and merge with sign in form. maybe?
 Template.loginFormSignUpView.events({
   // *******************************************************
   // Submit the sign in form
@@ -66,17 +66,9 @@ Template.loginFormSignUpView.events({
 
 Template.loginFormSignUpView.onCreated(function() {
   this.uniqueId = Random.id();
-  this.formMessages = new ReactiveVar({})
-
-  console.log('Sign up created:', this);
-})
+  this.formMessages = new ReactiveVar({});
+  this.type = 'signUp';
+});
 
 
 Template.loginFormSignUpView.helpers(LoginFormSharedHelpers);
-
-
-Template.loginFormSignUpView.helpers({
-  json: function (obj) {
-    return JSON.stringify(obj)
-  }
-});

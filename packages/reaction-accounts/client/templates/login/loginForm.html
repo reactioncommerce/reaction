@@ -9,7 +9,12 @@
 <template name="loginFormServiceButton">
   {{!-- {{#if configured}} --}}
     <button class="btn btn-primary btn-block action--signInWithProvider provider--{{name}} text-besides-image sign-in-text-{{name}}" type="button">
-      <span data-i18n="accountsUI.signInWith">Sign in with</span>
+      {{#if condition buttonType "eq" "signUp"}}
+        <span data-i18n="accountsUI.signUpWith">Sign up with</span>
+      {{else}}
+        <span data-i18n="accountsUI.signInWith">Sign in with</span>
+      {{/if}}
+
       <span data-i18n="social.{{name}}"> {{capitalizedName}}</span>
     </button>
   {{!-- {{if}} --}}
@@ -32,4 +37,12 @@
       {{/each}}
     </div>
   {{/if}}
+</template>
+
+<template class="loginFormSeperator">
+  <div class="loginForm-seperator">
+    <span></span>
+    <span class="text" data-i18n="accountsUI.or">or</span>
+    <span></span>
+  </div>
 </template>

@@ -4,6 +4,14 @@
     <h2 data-i18n="accountsUI.createAccount">Create an Account</h2>
   </div>
 
+  {{#each services}}
+    {{> loginFormServiceButton}}
+  {{/each}}
+
+  {{#if shouldShowSeperator}}
+    {{> loginFormnSeperator}}
+  {{/if}}
+
   <form class="login-form">
 
     {{> loginFormMessages messages=messages}}

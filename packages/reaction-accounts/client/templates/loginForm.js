@@ -128,25 +128,17 @@ LoginFormSharedHelpers = {
     return Template.instance().uniqueId;
   },
 
-  // ::PLUCKED and modified from accounts-ui-unstyled ::
+
   services: function () {
-    var self = this;
 
-    // First look for OAuth services.
     var services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
-
-    // Be equally kind to all login services. This also preserves
-    // backwards-compatibility. (But maybe order should be
-    // configurable?)
     services.sort();
 
-    // Add password, if it's there; it must come last.
-    // if( !!Package['accounts-password'] ) {
-    //   services.push('password');
-    // }
-
     return _.map(services, function (name) {
-      return {name: name};
+      return {
+        name: name,
+        buttonType: Template.instance().type || 'signIn'
+      };
     });
 
   },

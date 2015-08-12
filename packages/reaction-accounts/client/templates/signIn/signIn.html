@@ -10,15 +10,8 @@
   {{/each}}
 
   {{#if shouldShowSeperator}}
-
-    <div class="loginForm-seperator">
-      <span></span>
-      <span class="text" data-i18n="accountsUI.or">or</span>
-      <span></span>
-    </div>
-
+    {{> loginFormnSeperator}}
   {{/if}}
-
 
   {{#if hasPasswordService}}
     <form class="login-form">
