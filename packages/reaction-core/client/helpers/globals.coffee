@@ -1,4 +1,9 @@
 ###
+# Match.OptionalOrNull
+###
+Match.OptionalOrNull = (pattern) -> Match.OneOf undefined, null, pattern
+
+###
 # convert a string to camelCase for use with i18n keys
 ###
 String::toCamelCase = ->

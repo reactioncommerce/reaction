@@ -45,7 +45,7 @@ _.extend ReactionCore,
     try
       ReactionRegistry.loadFixtures()
     catch e
-      throw new Meteor.Error 200, e
+      ReactionCore.Events.error e
     return true
 
   getCurrentShopCursor: (client) ->
@@ -125,4 +125,4 @@ _.extend ReactionCore,
 Meteor.startup ->
   # notifiy that we're done with initialization
   ReactionCore.init()
-  ReactionCore.Events.info "Reaction Commerce initialization finished. "
+  ReactionCore.Events.info "Reaction Core initialization finished. "

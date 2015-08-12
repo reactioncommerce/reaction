@@ -119,6 +119,7 @@
                     "adminMessage": "You are viewing orders as an administrator"
                 },
                 "checkoutLogin": {
+                    "welcome": "Welcome, it's so good to see you.",
                     "loginCompleted": "Account completed",
                     "createOrLogin": "Create an acccount, or sign in",
                     "guestOrLogin": "Sign in, or checkout as a guest",

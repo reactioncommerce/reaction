@@ -2,11 +2,12 @@
 # These helpers can be used in general shipping packages
 # or replaced, but are meant to be generalized in nature.
 ###
+cart = ReactionCore.Collections.Cart.findOne()
+
 Template.coreCheckoutShipping.helpers
   # retrieves current rates and updates shipping rates
   # in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: () ->
-    cart = ReactionCore.Collections.Cart.findOne()
     return cart?.shipping?.shipmentQuotes
 
   # helper to make sure there are some shipping providers
@@ -15,7 +16,7 @@ Template.coreCheckoutShipping.helpers
     return exists
   # helper to display currently selected shipmentMethod
   isSelected: (cart)->
-    shipmentMethod  = ReactionCore.Collections.Cart.findOne()?.shipping?.shipmentMethod
+    shipmentMethod  = cart?.shipping?.shipmentMethod
     unless shipmentMethod then return
     # if there is already a selected method, set active
     if _.isEqual @.method, shipmentMethod?.method
@@ -30,8 +31,7 @@ Template.coreCheckoutShipping.helpers
 Template.coreCheckoutShipping.events
   'click .list-group-item': (event, template) ->
     try
-      CartWorkflow.shipmentMethod(@)
-      Session.set "shipmentMethod", @
+      Meteor.call "setShipmentMethod", cart._id, @
     catch
       console.info "Cannot change methods while processing."
       event.preventDefault()

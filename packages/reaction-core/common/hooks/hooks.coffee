@@ -73,7 +73,7 @@ ReactionCore.Collections.Products.before.insert (userId, product) ->
   # avoid calling if present
   product.shopId = product.shopId || ReactionCore.getShopId()
   _.defaults(product,
-    productType: "Simple"
+    type: "Simple"
     handle: getSlug product.title
     isVisible: false
     updatedAt: new Date()
@@ -111,7 +111,7 @@ ReactionCore.Collections.Products.before.update (
       updatedVariantId = modifier.$set['variants.$']._id
       updatedVariant = modifier.$set['variants.$']
       updatedInventoryQuantity = modifier.$set['variants.$'].inventoryQuantity
-      
+
       originalInventoryQuantity = (variant for variant in product.variants \
         when variant._id is updatedVariantId)[0].inventoryQuantity || 0
 
@@ -119,17 +119,17 @@ ReactionCore.Collections.Products.before.update (
 
     else if modifier.$pull?.variants?._id
       removedVariantId = modifier.$pull['variants']._id
-      
+
       removedVariant = (variant for variant in product.variants \
         when variant._id is removedVariantId)[0]
-      
+
       # If variant we pulled has a parent (is not the top level option)
       if removedVariant.parentId
         updatedVariantId = removedVariant.parentId
-        
+
         updatedVariant = (variant for variant in product.variants \
           when variant._id is updatedVariantId)[0]
-            
+
         if removedVariant.inventoryQuantity
           differenceInQty = -removedVariant.inventoryQuantity
         else
@@ -144,12 +144,12 @@ ReactionCore.Collections.Products.before.update (
       # Add single variant of type inventory to an existing parent
       # find by parentId
       updatedVariantId = modifier.$addToSet['variants'].parentId
-      
+
       updatedVariant = (variant for variant in product.variants \
         when variant._id is updatedVariantId)[0]
-      
+
       differenceInQty = 1
-      
+
       # Flag to let us know if this is the first inventory variant
       # for this option
       firstInventoryVariant = (variant for variant in product.variants \
@@ -162,10 +162,10 @@ ReactionCore.Collections.Products.before.update (
     else if modifier.$addToSet?.variants?.$each[0].type = 'inventory'
       # Add multiple variants of type inventory to an existing parent
       updatedVariantId = modifier.$addToSet['variants'].$each[0].parentId
-      
+
       updatedVariant = (variant for variant in product.variants \
         when variant._id is updatedVariantId)[0]
-      
+
       differenceInQty = modifier.$addToSet['variants'].$each.length
 
       # Flag to let us know if this is the first inventory variant
@@ -193,7 +193,7 @@ ReactionCore.Collections.Products.before.update (
       # add up the totals of all of it's variant children
       if organizedChildren. \
       variantChildren[updatedVariantId]?.constructor is Array
-        
+
         runningQty += organizedChildren. \
         variantChildren[updatedVariantId].reduce(
           ((total, child) ->
@@ -218,7 +218,7 @@ ReactionCore.Collections.Products.before.update (
       Products.direct.update(
         {'_id': product._id, 'variants._id': updatedVariantId},
         {$set: {'variants.$.inventoryQuantity': runningQty }})
-      
+
       # TODO: figure out why this loop isn't breaking for 1000+ additions
       # Break out of loop if top level variant
       break unless updatedVariant.parentId

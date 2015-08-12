@@ -7,7 +7,7 @@ Template.stateHelperTracking.events
       return false
 
     #transition order to next workflow
-    currentState = Orders.findOne(@._id).state
+    currentState = Orders.findOne(@._id).status
     OrderWorkflow.current = currentState
     OrderWorkflow[currentState](@,tracking)
     #save tracking

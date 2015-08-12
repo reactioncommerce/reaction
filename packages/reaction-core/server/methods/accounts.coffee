@@ -76,12 +76,13 @@ Accounts.onLogin (options) ->
     # authenticated users should have guest role
     # TODO: user.emails.length is probably needs a little stronger check
     #
-    if user.emails.length > 0
+    if currentCart and user.emails.length > 0
       # remove anonymous role if user has it
       update = { $pullAll: {} }
       update.$pullAll['roles.' + shopId] = ['anonymous']
       Meteor.users.update( { _id: userId }, update, {multi: true} )
       ReactionCore.Events.info "removed anonymous role from user: " + userId
+      Meteor.call("cart/setStatus", 'checkoutLogin', currentCart._id)
 
     # if multiple session carts found we'll merge them into current cart
     if currentCart and sessionCarts.count() >= 1

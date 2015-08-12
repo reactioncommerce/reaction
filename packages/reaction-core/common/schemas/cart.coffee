@@ -58,7 +58,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema
     optional: true
     decimal: true
     min: 0
-  state:
+  status:
     type: String
     defaultValue: "new"
     optional: true

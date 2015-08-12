@@ -15,8 +15,8 @@ describe("Publication.", function() {
   describe("with products", function() {
 
     beforeEach(function() {
-      Products.insert({title: 'My Little Pony', shopId: shop._id, productType: 'Simple', variants: [], isVisible: false});
-      Products.insert({title: 'Shopkins - Peachy', shopId: shop._id, productType: 'Simple', variants: [], isVisible: true});
+      Products.insert({title: 'My Little Pony', shopId: shop._id, type: 'simple', variants: [], isVisible: false});
+      Products.insert({title: 'Shopkins - Peachy', shopId: shop._id, type: 'simple', variants: [], isVisible: true});
     });
 
     describe("Products", function() {

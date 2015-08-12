@@ -13,7 +13,7 @@ Template.orderDetail.helpers
     @.shipping.shipmentMethod.tracking
 
   orderStateHelper: () ->
-    switch @.state
+    switch @.status
       when 'orderCreated' then Template.stateHelperTracking
       when 'shipmentTracking' then Template.spinner
       when 'shipmentPrepare' then Template.stateHelperDocuments

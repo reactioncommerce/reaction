@@ -70,6 +70,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   _id:
     type: String
     optional: true
+  status:
+    type: String
+    defaultValue: "active"
   name:
     type: String
     index: 1
@@ -126,6 +129,15 @@ ReactionCore.Schemas.Shop = new SimpleSchema
   defaultRoles:
     type: [String]
     defaultValue: [ "guest", "account/profile" ]
+  defaultWorkflows:
+    type: [Object]
+    optional: true
+  'defaultWorkflows.$.provides':
+    type: String
+    defaultValue: "simple"
+  'defaultWorkflows.$.workflow':
+    type: [String]
+    defaultValue: ['checkoutLogin', 'checkoutAddressBook', 'coreCheckoutShipping', 'checkoutReview', 'checkoutPayment']
   createdAt:
     type: Date
     autoValue: ->
@@ -139,3 +151,4 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     autoValue : ->
       new Date()  if @isUpdate
     optional: true
+

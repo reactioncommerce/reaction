@@ -104,7 +104,20 @@ Template.productDetail.events
         return
       else
         # Add to cart
-        CartWorkflow.addToCart ReactionCore.Collections.Cart.findOne()._id, currentProduct._id, currentVariant, quantity
+        cartId = ReactionCore.Collections.Cart.findOne()._id
+        productId = currentProduct._id
+
+        if (cartId and productId)
+          count = Cart.findOne(cartId).cartCount() || 0
+          Meteor.call "addToCart", cartId, productId, currentVariant, quantity, (error, result) ->
+            # When we add the first item to the cart, we geolocate the session/user
+            if not error and count is 0
+              # If address.city is set, we've already geolocated, so we skip it
+              address = Session.get "address"
+              locateUser() unless address?.city
+            else if error
+              ReactionCore.Events.error "Failed to add to cart.", error
+              return error
         # Deselect the current variant
         # TODO: make this variant reset an option
         template.$(".variant-select-option").removeClass("active")

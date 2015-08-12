@@ -34,7 +34,7 @@ Package.onUse(function (api) {
   api.use("aldeed:autoform@5.3.2");
   api.use("aldeed:collection2@2.3.3");
   api.use("aldeed:simple-schema@1.3.3");
-  api.use("aldeed:template-extension@3.4.3","client");
+  api.use("aldeed:template-extension@3.4.3", 'client');
   api.use("iron:router@1.0.9");
   api.use("ongoworks:speakingurl@5.0.1");
   api.use("ongoworks:bunyan-logger@2.5.0");
@@ -118,6 +118,7 @@ Package.onUse(function (api) {
     "server/fixtures.coffee",
     "server/methods/accounts.coffee",
     "server/methods/cart.coffee",
+    "server/methods/hooks.coffee",
     "server/methods/orders.coffee",
     "server/methods/products.coffee",
     "server/methods/shop.coffee",
@@ -125,7 +126,7 @@ Package.onUse(function (api) {
   ], ["server"]);
 
   api.addFiles([
-    "lib/bower/packery/index.js",
+    // "lib/bower/packery/index.js",
     "lib/bower/jquery.ui/ui/core.js",
     "lib/bower/jquery.ui/ui/widget.js",
     "lib/bower/jquery.ui/ui/mouse.js",
@@ -146,13 +147,14 @@ Package.onUse(function (api) {
     "client/subscriptions.coffee",
     "client/app.coffee",
 
-    "client/helpers/helpers.coffee",
-    "client/helpers/i18n/i18n.coffee",
+    "client/helpers/apps.coffee",
+    "client/helpers/cart.coffee",
+    "client/helpers/globals.coffee",
+    "client/helpers/i18n.coffee",
     "client/helpers/metadata.coffee",
-    "client/helpers/spacebars.coffee",
-
-    "client/workflows/cart.coffee",
-    "client/workflows/orders.coffee",
+    "client/helpers/patches.coffee",
+    "client/helpers/permissions.coffee",
+    "client/helpers/utilities.coffee",
 
     "client/templates/layout/layout.html",
     "client/templates/layout/layout.coffee",

@@ -16,6 +16,7 @@ meteor remove insecure
 meteor remove autopublish
 meteor add nemo64:bootstrap
 meteor add reactioncommerce:bootstrap-theme
+meteor add reactioncommerce:reaction-accounts
 ```
 
 Create [client/themes/bootstrap/custom.reaction.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.reaction.json) and [client/themes/bootstrap/custom.bootstrap.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.bootstrap.json). These files configure the default LESS theme.
@@ -50,6 +51,8 @@ You can find a list of published packages on [Atmosphere](https://atmospherejs.c
 [i18n Translations](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md)
 
 [Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
+
+[Cart Workflow](docs/workflow.md)
 
 [Deploying](https://github.com/ongoworks/reaction-core/blob/master/docs/deploying.md)
 

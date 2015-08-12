@@ -1,14 +1,46 @@
 <template name="checkoutLogin">
+{{#if cartWorkflowCompleted}}
+
+  {{> checkoutLoggedIn}}
+
+{{else}}
+
   <div class="panel panel-default">
     <div class="panel-heading">
       {{#if allowGuestCheckout}}
-      <h3 class="panel-title"><i class="checkout-step-badge">1</i><span data-i18n="checkoutLogin.guestOrLogin">Sign in, or checkout as a guest</span></h3>
+      <h3 class="panel-title">
+        <i class="checkout-step-badge">{{cartWorkflowPosition}}</i>
+        <span data-i18n="checkoutLogin.guestOrLogin">Sign in, or checkout as a guest</span>
+      </h3>
       {{else}}
-      <h3 class="panel-title"><i class="checkout-step-badge">1</i><span data-i18n="checkoutLogin.createOrLogin">Create an acccount, or sign in</span></h3>
+      <h3 class="panel-title">
+        <i class="checkout-step-badge">{{cartWorkflowPosition}}</i>
+        <span data-i18n="checkoutLogin.createOrLogin">Create an acccount, or sign in</span>
+      </h3>
       {{/if}}
     </div>
     <div class="panel-body">
       {{> accounts tpl="loginInline"}}
     </div>
   </div>
+
+{{/if}}
+
+</template>
+
+
+<template name="checkoutLoggedIn">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <i class="checkout-step-badge">{{cartWorkflowPosition}}</i>
+        <span data-i18n="checkoutLogin.loginCompleted">Account completed</span>
+      </h3>
+    </div>
+    <div class="panel-body">
+        <h3><span data-i18n="checkoutLogin.welcome">Welcome, it's so good to see you.</span></h3>
+    </div>
+  </div>
+
 </template>
