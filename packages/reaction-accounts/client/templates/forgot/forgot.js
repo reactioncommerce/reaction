@@ -28,7 +28,7 @@ Template.loginFormResetPasswordView.events({
     }
 
     // Make sure mail is properly configured for this shop before we end anything
-    ReactionCore.configureMailUrl()
+    ReactionCore.configureMailUrl();
 
     Accounts.forgotPassword({ email: emailAddress}, function (error) {
       // Show some message confirming result
