@@ -19,7 +19,8 @@ ReactionCore.registerPackage
   # app registry
   registry: [
     {
-      route: "dashboard"
+      # route: "dashboard"
+      route: "dashboard/settings/shop"
       provides: 'dashboard'
       label: 'Core'
       description: 'Reaction Commerce Core'
@@ -34,6 +35,7 @@ ReactionCore.registerPackage
       ]
     }
     {
+      # route: "dashboard"
       route: "dashboard"
       provides: 'shortcut'
       label: 'Dashboard'

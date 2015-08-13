@@ -53,7 +53,13 @@ ShopAdminController = @ShopController.extend
   onBeforeAction: () ->
     # could check for roles here for dashboard access
     unless ReactionCore.hasPermission @route.getName()
-      @render('unauthorized', {to: 'main'})
+
+      # TODO: There has got to be a better way
+      @render('layoutHeader', {to: 'layoutHeader'})
+      @render('layoutFooter', {to: 'layoutFooter'})
+      @render('unauthorized')
+
+      @done()
     else
       @next()
     return
@@ -81,9 +87,6 @@ Router.map ->
   @route "unauthorized",
     template: "unauthorized"
     name: "unauthorized"
-    yieldTemplates:
-      checkoutHeader:
-        to: "layoutHeader"
 
   # default index route, normally overriden parent meteor app
   @route "index",
@@ -111,9 +114,9 @@ Router.map ->
       ReactionCore.Collections.Shops.findOne()
 
   # members aka accounts mgmt
-  @route 'dashboard/accounts',
+  @route 'dashboard/members',
     controller: ShopAdminController
-    path: '/dashboard/accounts'
+    path: '/dashboard/members'
     template: 'coreAccounts'
 
   # list page of shop orders
