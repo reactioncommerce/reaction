@@ -105,11 +105,11 @@ _.extend ReactionCore,
     shopMail = ReactionCore.Collections.Packages.findOne({shopId: @getShopId(), name: "core"}).settings.mail
     # use configurMailUrl as a function
     if user and password and host and port
-      return process.env.MAIL_URL = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/"
+      return process.env.MAIL_URL = Meteor.settings.MAIL_URL = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/"
     # shops configuration
     else if shopMail.user and shopMail.password and shopMail.host and shopMail.port
       ReactionCore.Events.info "setting default mail url to: " + shopMail.host
-      return process.env.MAIL_URL =
+      return process.env.MAIL_URL = Meteor.settings.MAIL_URL =
           "smtp://" + shopMail.user + ":" + shopMail.password + "@" + shopMail.host + ":" + shopMail.port + "/"
     # Meteor.settings isn't standard, if you add it, respect over default
     else if Meteor.settings.MAIL_URL and not process.env.MAIL_URL
@@ -126,3 +126,4 @@ Meteor.startup ->
   # notifiy that we're done with initialization
   ReactionCore.init()
   ReactionCore.Events.info "Reaction Core initialization finished. "
+

@@ -388,20 +388,16 @@ Package.onUse(function (api) {
   // We are now grouping all exported app variables and methods under
   // "ReactionCore". The other exported variables should be moved to
   // somewhere within this scope.
-  api.export(["ReactionCore"]);
+  api.export("ReactionCore");
   api.export("ReactionRegistry","server");
 
   // legacy Exports (TODO: move to ReactionCore)
-  api.export([
-    "Alerts",
-    "CartWorkflow",
-    "OrderWorkflow",
-    "OrderWorkflowEvents"
-  ], ["client"]);
+  api.export("Alerts", ["client"]);
+  api.export("CartWorkflow", ["client"]);
+  api.export("OrderWorkflow", ["client"]);
+  api.export("OrderWorkflowEvents", ["client"]);
 
-  api.export([
-    "currentProduct",
-  ], ["client", "server"]);
+  api.export("currentProduct", ["client", "server"]);
 });
 
 Package.onTest(function(api) {
