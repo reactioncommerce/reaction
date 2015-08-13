@@ -407,8 +407,9 @@ Package.onUse(function (api) {
 Package.onTest(function(api) {
   api.use('coffeescript');
   api.use('underscore');
-  api.use('sanjo:jasmine@0.16.2');
-  api.use('velocity:html-reporter@0.7.3');
+  api.use('sanjo:jasmine@0.17.0');
+  api.use("anti:fake@0.4.1");
+  api.use('velocity:html-reporter@0.8.2');
   api.use('velocity:console-reporter@0.1.3');
 
   api.use('reactioncommerce:core');
