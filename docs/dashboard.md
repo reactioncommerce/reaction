@@ -1,24 +1,22 @@
 ##Dashboard
 
-The Dashboard is the brain center for your shop: The place where you can access Settings, manage Orders, view and install Reaction Apps, manage Admin Access, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, and a window will open where you can choose to view the Dashboard.
+The Dashboard is the brain center for your shop: The place where you can access your shop's Core ettings, manage Orders, view and install apps, manage shop Members, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, and a window will open where you can choose to view the Dashboard.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard.png)
 
-###Settings
+###Core
 
-Settings are located in the first card of your Dashboard drawer. Click the cog icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog.png)) next to it to access your Shop Settings screen. The General tab will open, and you can change your Shop Name and Email address. Under the Address tab you will need to fill out your company information. The SMTP tab and the Settings tab allow you to configure email and domains for your shop.
+Core is where you can view and modify your shop settings. Click the purple cog wheel icon next to it to access your Shop Settings screen. The General tab will open, and you can change your Shop Name,  Email address.  Description, and Keywords. Under the Address tab you will need to fill out your company information. The Mail tab lets you configure email for your shop. Localization sets the default location and currency. Options is where you can enable or disable Guest Checkout.
 
-###Access
+###Members
 
-The Access page is found by clicking the cog icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog.png)) next to Admin Access in your Dashboard drawer. This is where you can give your staff members access to administer your Reaction site.
+The Members app is where you can give your staff members access to administer your Reaction site.
 
+###Apps
 
-###Reaction Apps
+From the Dashboard, you can also view and configure apps such as PayPal and Google Analytics. Each individual app card has its own cog wheel icon to view and change your settings. To install an app, click the plus icon; to uninstall an app, click the checkmark icon.
 
-Clicking on the Reaction Apps link under the Dashboard drawer opens the Reaction Apps. You can view and configure apps such as PayPal and Google Analytics. Each individual app card has its own cog icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-cog-lg.png)) to view and change your settings. To install an app, click the plus icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-plus-square.png)); to uninstall an app, click the checkmark icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-check-square.png)).
-
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard-appgallery.png)
 
 ###Orders
 
-The Orders page is found by clicking the Orders link under the Dashboard drawer. This is where you can view and process your orders.
+The Orders page is found by clicking the Orders card on your Dashboard. This is where you can view and process your orders.
