@@ -26,11 +26,11 @@ While this functionality may seem uneventful at the moment, we have big plans. E
 
 To edit the top Navigation Tags of your shop, login as an admin, and click on the “Tags” icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-tag.png)) in the top navigation bar of your shop.
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-tags-nav.png)
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-tags-editnav.png)
 
 To create a new Navigation Tag, click the “Add tags” box, type in your tag, and hit enter or tab on your keyboard to save the tag. If you created tags for your products, you will notice that as you type, previously created tags are auto suggested for you. You will likely want to make sure that at least one of your Product Tags corresponds to a Navigation Tag so that when a shopper clicks on the Navigation Tags that appear in your shop’s top navigation, they will discover your products by category. If you create a Navigation Tag that doesn’t have any products with that corresponding tag, then that Navigation Tag will be empty when your shoppers click on it.
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-tags-editnav.png)
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-tags-nav.png)
 
 To delete a Navigation Tag, click the grey “x” icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-deletetag.png)).
 
