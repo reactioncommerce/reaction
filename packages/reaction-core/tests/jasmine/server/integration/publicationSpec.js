@@ -132,7 +132,7 @@ describe("Publication", function() {
 
   });
 
-  fdescribe("ShopMembers", function() {
+  describe("ShopMembers", function() {
     var user;
 
     beforeEach(function() {
