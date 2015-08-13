@@ -1,6 +1,7 @@
 Meteor.methods
   ###
-  # the cloneVariant method copies variants, but will also create and clone child variants (options)
+  # the cloneVariant method copies variants, but will also create
+  # and clone child variants (options)
   # productId,variantId to clone
   # add parentId to create children
   # Note: parentId and variantId can be the same if creating a child variant.
@@ -15,7 +16,9 @@ Meteor.methods
 
     # clone variant
     product = Products.findOne(productId)
-    variant = (variant for variant in product.variants when variant._id is variantId)
+    variant = (
+      variant for variant in product.variants when variant._id is variantId)
+
     return false unless variant.length > 0
 
     clone = variant[0]
@@ -25,7 +28,8 @@ Meteor.methods
       ReactionCore.Events.debug "create child clone"
       clone.parentId = variantId
       delete clone.inventoryQuantity
-      Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
+      Products.update(
+        {_id:productId}, {$push: {variants: clone}}, {validate: false})
       return clone._id
 
     #clean clone
@@ -34,16 +38,20 @@ Meteor.methods
     delete clone.createdAt
     delete clone.inventoryQuantity
     delete clone.title
-    Products.update({_id:productId}, {$push: {variants: clone}}, {validate: false})
+    Products.update(
+      {_id:productId}, {$push: {variants: clone}}, {validate: false})
 
     #make child clones
-    children = (variant for variant in product.variants when variant.parentId is variantId)
+    children = (variant for variant in product.variants \
+      when variant.parentId is variantId)
+
     if children.length > 0
       ReactionCore.Events.debug "clone children"
       for childClone in children
         childClone._id = Random.id()
         childClone.parentId = clone._id
-        Products.update({_id:productId}, {$push: {variants: childClone}}, {validate: false})
+        Products.update(
+          {_id:productId}, {$push: {variants: childClone}}, {validate: false})
 
     return clone._id
 
@@ -64,8 +72,13 @@ Meteor.methods
       newVariant._id = newVariantId
       check(newVariant, ReactionCore.Schemas.ProductVariant)
     else
-      newVariant = { "_id": newVariantId, "title": "", "price": "0.00" }
-    Products.update({"_id": productId}, {$addToSet: {"variants": newVariant}}, {validate: false})
+      newVariant = { "_id": newVariantId, "title": "", "price": 0.00 }
+
+    Products.update(
+      {"_id": productId},
+      {$addToSet: {"variants": newVariant}},
+      {validate: false})
+
     return newVariantId
 
   ###
@@ -78,10 +91,10 @@ Meteor.methods
     check parentId, String
     check newVariant, Match.OneOf(Object, undefined)
     @unblock()
-    
+
     unless Roles.userIsInRole Meteor.userId(), ['admin']
       throw new Meteor.Error 403, "Access Denied"
-    
+
     newVariantId = Random.id()
     newBarcode = Random.id()
     if newVariant
@@ -90,10 +103,19 @@ Meteor.methods
       newVariant.type = "inventory"
       check(newVariant, ReactionCore.Schemas.ProductVariant)
     else
-      newVariant = { "_id": newVariantId, parentId: parentId, barcode: newBarcode, type: "inventory"}
-    Products.update({ "_id": productId }, { $addToSet: { "variants": newVariant }}, { validate: false })
+      newVariant =
+        "_id": newVariantId
+        parentId: parentId
+        barcode: newBarcode
+        type: "inventory"
+
+    Products.update(
+      { "_id": productId },
+      { $addToSet: { "variants": newVariant }},
+      { validate: false })
+
     return newVariantId
-  
+
   ###
   # Creates default inventory variants for each quantity
   # Optional defaultValue will initialize all variants to some string + index
@@ -110,29 +132,38 @@ Meteor.methods
         check quantity, Number
         return quantity > 0)
     )
-      
+
     @unblock()
-    
+
     unless Roles.userIsInRole Meteor.userId(), ["admin"]
       throw new Meteor.Error 403, "Access Denied"
-    
+
     newVariantIds = []
     newVariants = []
-    
+
     # Push default variant for each quantity
     _(Number(quantity)).times (index)->
       if (defaultValue or defaultValue == "")
         newVariantBarcode = defaultValue + index
       else
         newVariantBarcode = Random.id()
-      
+
       newVariantId = Random.id()
-        
-      newVariants.push { "_id": newVariantId, parentId: parentId, barcode: newVariantBarcode, type: "inventory"}
+
+      newVariants.push
+        "_id": newVariantId
+        parentId: parentId
+        barcode: newVariantBarcode
+        type: "inventory"
+
       newVariantIds.push newVariantId
-    
+
     # Add array of inventory variants to Product's variants array.
-    Products.update({ "_id": productId }, { $addToSet: { "variants": { $each: newVariants }}}, { validate: false })
+    Products.update(
+      { "_id": productId },
+      { $addToSet: { "variants": { $each: newVariants }}},
+      { validate: false })
+
     return newVariantIds
   ###
   # update individual variant with new values, merges into original
@@ -153,7 +184,11 @@ Meteor.methods
       for variants,value in product.variants
         if variants._id is variant._id
           newVariant = _.extend variants,variant
-      Products.update({"_id":product._id,"variants._id":variant._id}, {$set: {"variants.$": newVariant}}, {validate: false})
+
+      Products.update(
+        {"_id":product._id,"variants._id":variant._id},
+        {$set: {"variants.$": newVariant}},
+        {validate: false})
 
 
   ###
@@ -179,21 +214,31 @@ Meteor.methods
     @unblock()
 
     #what will we be deleteing?
-    deleted = Products.find({$or: [{"variants.parentId": variantId}, {"variants._id": variantId}]}).fetch()
+    deleted = Products.find({$or: [
+      {"variants.parentId": variantId},
+      {"variants._id": variantId}]}).fetch()
+
     #delete variants with this variant as parent
-    Products.update {"variants.parentId": variantId}, {$pull: 'variants': {'parentId': variantId}}
+    Products.update(
+      {"variants.parentId": variantId},
+      {$pull: 'variants': {'parentId': variantId}})
+
     #delete this variant
-    Products.update {"variants._id": variantId}, {$pull: 'variants': {'_id': variantId}}
+    Products.update(
+      {"variants._id": variantId},
+      {$pull: 'variants': {'_id': variantId}})
+
     # unlink media
     _.each deleted, (product) ->
       _.each product.variants, (variant) ->
         if variant.parentId is variantId or variant._id is variantId
-          ReactionCore.Collections.Media.update 'metadata.variantId': variant._id,
-            $unset:
+          ReactionCore.Collections.Media.update(
+            { 'metadata.variantId': variant._id},
+            { $unset: {
               'metadata.productId': ""
               'metadata.variantId': ""
-              'metadata.priority': ""
-          , multi: true
+              'metadata.priority': "" }},
+            { multi: true })
     return true
 
 
@@ -229,10 +274,16 @@ Meteor.methods
       newVariantId = Random.id()
       oldVariantId = product.variants[i]._id
       product.variants[i]._id = newVariantId
+
       #clone images for each variant
-      ReactionCore.Collections.Media.find({'metadata.variantId': oldVariantId}).forEach (fileObj) ->
+      ReactionCore.Collections.Media.find(
+        {'metadata.variantId': oldVariantId}).forEach (fileObj) ->
         newFile = fileObj.copy()
-        newFile.update({$set: {'metadata.productId': product._id, 'metadata.variantId': newVariantId}})
+        newFile.update(
+          {$set: {
+            'metadata.productId': product._id,
+            'metadata.variantId': newVariantId }})
+
       #update any child variants with the newly assigned ID
       unless product.variants[i].parentId
         while i < product.variants.length
@@ -327,7 +378,9 @@ Meteor.methods
     existingTag = Tags.findOne({"name": tagName})
 
     if existingTag
-      productCount = Products.find({"_id": productId, "hashtags": {$in:[existingTag._id]}}).count()
+      productCount = Products.find(
+        {"_id": productId, "hashtags": {$in:[existingTag._id]}}).count()
+
       if productCount > 0
         throw new Meteor.Error 403, "Existing Tag, Update Denied"
       Products.update(productId, {$push: {"hashtags": existingTag._id}})
@@ -398,13 +451,19 @@ Meteor.methods
       throw new Meteor.Error 403, "Access Denied"
     @unblock()
 
-    unless Products.findOne({'_id' : productId,"positions.tag": positionData.tag})
-      Products.update {_id: productId},
-        {$addToSet: { positions: positionData },$set: {updatedAt: new Date() } },
-      , (error,results) ->
-        if error
-          ReactionCore.Events.warn error
-          throw new Meteor.Error 403, error
+    unless Products.findOne(
+      {'_id' : productId,"positions.tag": positionData.tag})
+
+      Products.update(
+        { _id: productId },
+        {
+          $addToSet: { positions: positionData },
+          $set: {updatedAt: new Date() }
+        },
+        (error,results) ->
+          if error
+            ReactionCore.Events.warn error
+            throw new Meteor.Error 403, error )
     else
       #Collection2 doesn't support elemMatch, use core collection
       Products.update
@@ -431,9 +490,13 @@ Meteor.methods
     @unblock()
 
     if meta
-      Products.update({"_id": productId, "metafields": meta}, {$set: {"metafields.$": updatedMeta} })
+      Products.update(
+        { "_id": productId, "metafields": meta },
+        { $set: { "metafields.$": updatedMeta }})
     else
-      Products.update( "_id": productId, { "$addToSet": { "metafields": updatedMeta } })
+      Products.update(
+        { "_id": productId },
+        { "$addToSet": { "metafields": updatedMeta }})
 
   #
   # toggle isVisible status of product
@@ -446,11 +509,18 @@ Meteor.methods
 
     product = ReactionCore.Collections.Products.findOne(productId)
     #one variant required to publish product
-    if product?.variants[0].price and product?.variants[0].title and product?.title
+    if product?.variants[0].price and
+       product?.variants[0].title and
+       product?.title
+
       # log this
-      ReactionCore.Events.info "toggle product visibility ", product._id, !product.isVisible
+      ReactionCore.Events.info(
+        "toggle product visibility ", product._id, !product.isVisible)
+
       # toggle isVisible
-      result = Products.update product._id, {$set: {isVisible: !product.isVisible}}
+      result = Products.update(
+        product._id, {$set: {isVisible: !product.isVisible}})
+
       return Products.findOne(product._id).isVisible
     else
       # debug log this
