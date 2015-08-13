@@ -1,6 +1,6 @@
 ##Dashboard
 
-The Dashboard is the brain center for your shop: The place where you can access your shop's Core ettings, manage Orders, view and install apps, manage shop Members, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, and a window will open where you can choose to view the Dashboard.
+The Dashboard is the brain center for your shop: The place where you can access your shop's Core settings, manage Orders, view and install apps, manage shop Members, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, and a window will open where you can choose to view the Dashboard.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard.png)
 
@@ -14,7 +14,7 @@ The Members app is where you can give your staff members access to administer yo
 
 ###Apps
 
-From the Dashboard, you can also view and configure apps such as PayPal and Google Analytics. Each individual app card has its own cog wheel icon to view and change your settings. To install an app, click the plus icon; to uninstall an app, click the checkmark icon.
+From the Dashboard, you can also view and configure apps such as PayPal, Google Analytics, and other packages. Each individual app card has its own cog wheel icon to view and change your settings. To install an app, click the plus icon; to uninstall an app, click the checkmark icon.
 
 
 ###Orders
