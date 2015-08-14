@@ -152,7 +152,6 @@ Package.onUse(function (api) {
     "client/helpers/globals.coffee",
     "client/helpers/i18n.coffee",
     "client/helpers/metadata.coffee",
-    "client/helpers/patches.coffee",
     "client/helpers/permissions.coffee",
     "client/helpers/utilities.coffee",
 

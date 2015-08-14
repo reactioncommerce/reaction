@@ -12,4 +12,4 @@ dependencies:
     - meteor update || curl https://install.meteor.com | /bin/sh
 test:
   override:
-    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity --release velocity:METEOR@1.1.0.2_3 ./
+    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter  ./
