@@ -123,7 +123,7 @@ Meteor.publish 'ShopMembers', ->
   permissions = ['dashboard/orders','owner','admin','dashboard/customers']
   shopId = ReactionCore.getShopId(@)
   if Roles.userIsInRole(@userId, permissions, shopId)
-    return Meteor.users.find 'roles.' + shopId:  $nin: ['anonymous']
+    return Meteor.users.find('roles.' + shopId:  $nin: ['anonymous'], {fields: {_id: 1, email: 1, username: 1, roles: 1}})
   else
     ReactionCore.Events.info "ShopMembers access denied"
     return []
@@ -153,10 +153,16 @@ Meteor.publish 'Product', (productId) ->
   check productId, String
 
   shop = ReactionCore.getCurrentShop(@) #TODO: wire in shop
+  selector = {}
+  selector.isVisible = true
+  if Roles.userIsInRole this.userId, ['admin','createProduct'], shop
+    selector.isVisible = {$in: [true, false]}
+
   if productId.match /^[A-Za-z0-9]{17}$/
-    return Products.find(productId)
+    selector._id = productId
   else
-    return Products.find({handle: { $regex : productId, $options:"i" } })
+    selector.handle = { $regex : productId, $options:"i" }
+  Products.find(selector)
 
 ###
 # orders
