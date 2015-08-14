@@ -106,7 +106,7 @@ ReactionCore.Schemas.Notes = new SimpleSchema
 
 ###
 # ReactionCore.Schemas.OrderItems
-# merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.OrderItems]
+# merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order]
 # to create Orders collection
 ###
 ReactionCore.Schemas.OrderItems = new SimpleSchema
