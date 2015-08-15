@@ -16,11 +16,15 @@ Template.addressBook.onCreated(function () {
     if (account.profile.addressBook) {
       if (account.profile.addressBook.length > 0) {
         this.currentViewTemplate.set('addressBookGrid');
+
+        // TODO: make this more bullet proof
+        // Assume that if we're seeing the address book grid
+        // then we should have both a default bulling and shipping
+        // address selected
+        Meteor.call("cart/setStatus", 'checkoutAddressBook');
       }
     }
   }
-    console.log(Template.instance().currentViewTemplate.get(), account)
-
 });
 
 
@@ -86,7 +90,7 @@ Template.addressBook.events({
   },
 
 
-  'click .action--cancelEdit, form submit': function (event, template) {
+  'click .action--cancelEdit, form submit, showMainView': function (event, template) {
     event.preventDefault();
     event.stopPropagation();
 

@@ -49,16 +49,14 @@ AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function(insertDoc, updateDoc, currentDoc) {
 
+      this.event.preventDefault();
+
       var accountId, error;
-
-      // this.event.preventDefault();
-
-      // console.log('YSYSYSYSYSY!!!!', this.template)
+      var addressBook = $(this.template.firstNode).closest('.address-book');
 
       accountId = ReactionCore.Collections.Accounts.findOne({
         userId: Meteor.userId()
       })._id;
-
 
       if (!insertDoc._id) {
         insertDoc._id = Random.id();
@@ -72,9 +70,15 @@ AutoForm.hooks({
         return false;
       }
 
+
       this.done();
-      // Session.set("addressBookView", "addressBookGrid");
-      // addressBookEditId.set();
+
+      // Show the grid
+      addressBook.trigger($.Event('showMainView'))
+
+      // Set the cart status
+      Meteor.call("cart/setStatus", 'checkoutAddressBook');
+
     }
   }
 });
