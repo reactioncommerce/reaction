@@ -45,7 +45,6 @@ Template.addressBook.helpers({
   },
 
   currentView: function() {
-    console.log(Template.instance().currentViewTemplate.get())
     return Template.instance().currentViewTemplate.get();
   }
 });
