@@ -1,26 +1,41 @@
 <template name="cartCheckout">
-{{#if cart.items}}
-  <div class="col-sm-12">
-    <div class="row cart-checkout-progress">
-      {{>checkoutProgressBar}}
-    </div>
-    <div class="row cart-checkout-steps">
-      {{#each cartWorkflow}}
-        <div class="row">
-          {{#if status}}
-            <div class="col-md-12"><i class="checkout-step-badge-completed">{{position}}</i>
-            {{> Template.dynamic template=workflow}}
-            </div>
-          {{else}}
-          <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">{{position}}</i></div>
-          {{/if}}
+  {{#if cart.items}}
+    <div class="col-sm-12">
+      <div class="row cart-checkout-progress">
+        {{>checkoutProgressBar}}
+      </div>
+
+
+
+      <div class="row cart-checkout-steps">
+        <div class="col-sm-8">
+          {{> cartWorkflowViews views=cartWorkflow.main}}
         </div>
-      {{/each}}
+
+        <div class="col-sm-4">
+          {{> cartWorkflowViews views=cartWorkflow.aside}}
+        </div>
+
+      </div>
     </div>
-  </div>
-{{else}}
-  {{> emptyCheckoutCart}}
-{{/if}}
+  {{else}}
+    {{> emptyCheckoutCart}}
+  {{/if}}
+</template>
+
+
+<template name="cartWorkflowViews">
+  {{#each views}}
+      <div class="row">
+        {{#if status}}
+          <div class="col-md-12"><i class="checkout-step-badge-completed">{{position}}</i>
+          {{> Template.dynamic template=workflow}}
+          </div>
+        {{else}}
+        <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">{{position}}</i></div>
+        {{/if}}
+      </div>
+  {{/each}}
 </template>
 
 <template name="emptyCheckoutCart">

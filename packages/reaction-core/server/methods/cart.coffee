@@ -166,6 +166,7 @@ Meteor.methods
       Cart.update cartId, {$set: {"shipping.address": address} }
       # refresh rates with new address
       Meteor.call "updateShipmentQuotes", cartId
+      Meteor.call("cart/setStatus", 'coreCheckoutShipping')
     else
       throw new Meteor.Error "setShipmentAddress: Invalid request"
 

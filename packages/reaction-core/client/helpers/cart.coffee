@@ -48,6 +48,11 @@ Template.registerHelper "cartWorkflow", (options) ->
   shopWorkflows = ReactionCore.Collections.Shops.findOne({ defaultWorkflows: { $elemMatch: { provides: "simple"} } }, fields: defaultWorkflows: true)
   currentStatus = ReactionCore.Collections.Cart.findOne().status
   cartWorkflow = []
+
+  # TODO: This is a quick and dirty solution to split the
+  # checkout steps into 2 colums.
+  cartWorkflowMain = []
+  cartWorkflowAside = []
   # loop through the shop's defaultWorkflows
   # and inject index and current status
   # all workflows steps until cart.status is true
@@ -69,7 +74,15 @@ Template.registerHelper "cartWorkflow", (options) ->
     else
       cartWorkflow[index].status = true
 
-  return cartWorkflow
+    # TODO: Make this better. Perhaps store position data with workflow
+    # views in the database
+    if cartWorkflow[index].workflow in ['checkoutReview', 'checkoutPayment']
+      cartWorkflowAside.push cartWorkflow[index]
+    else
+      cartWorkflowMain.push cartWorkflow[index]
+
+  console.log 'Workflow', cartWorkflow
+  return {main: cartWorkflowMain, aside: cartWorkflowAside}
 
 ###
 # cartWorkflowPosition

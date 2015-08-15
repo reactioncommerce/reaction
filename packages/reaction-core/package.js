@@ -232,6 +232,9 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.coffee",
 
+    "client/templates/cart/checkout/addressBook/addressBook.html",
+    "client/templates/cart/checkout/addressBook/addressBook.coffee",
+
     "client/templates/dashboard/console/console.html",
     "client/templates/dashboard/console/console.coffee",
 

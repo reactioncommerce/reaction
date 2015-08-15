@@ -8,6 +8,8 @@ Template.coreCheckoutShipping.helpers
   # retrieves current rates and updates shipping rates
   # in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: () ->
+    cart = ReactionCore.Collections.Cart.findOne()
+    console.log 'Shipping quotes', cart
     return cart?.shipping?.shipmentQuotes
 
   # helper to make sure there are some shipping providers
@@ -31,7 +33,7 @@ Template.coreCheckoutShipping.helpers
 Template.coreCheckoutShipping.events
   'click .list-group-item': (event, template) ->
     try
-      Meteor.call "setShipmentMethod", cart._id, @
+      Meteor.call "setShipmentAddress", cart._id, @
     catch
       console.info "Cannot change methods while processing."
       event.preventDefault()
