@@ -1,23 +1,22 @@
-var signIn = function (user, callback) {
 
-  $('.dropdown-toggle').trigger('click')
-  $('#signup-link').trigger('click')
-  $('#login-email').val(user.email)
-  $('#login-password').val(user.password)
-  $('#login-buttons-password').trigger('click')
+describe("User sign up", function () {
 
-  callback();
+  beforeEach(function(done) {
+    var user = {
+      email: "Not a valid email",
+      password: "1234"
+    }
 
-  return;
-};
+    $('.login-input--email').val(user.email);
+    $('.login-input--password').val(user.password);
+    $('.action--submit').trigger('click');
 
-
-describe("User sign in", function () {
-  var user = "notValidEmail";
-  var password = "";
+    setTimeout(function() {
+      done();
+    }, 1)
+  });
 
   it("should display invalid username error", function() {
-    signIn(user);
     expect($(".login-form .form-group--email").hasClass('has-error')).toBe(true);
   });
 

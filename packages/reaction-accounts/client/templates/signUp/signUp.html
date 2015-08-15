@@ -16,7 +16,7 @@
 
     {{> loginFormMessages messages=messages}}
 
-    <div class="form-group {{hasError messages.errors.email}}">
+    <div class="form-group form-group--email {{hasError messages.errors.email}}">
       <label for="email_{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
       <input id="email_{{uniqueId}}" class="form-control login-input--email" type="email" value="{{email}}">
 
@@ -27,7 +27,7 @@
       {{/if}}
     </div>
 
-    <div class="form-group {{hasError messages.errors.password }}">
+    <div class="form-group form-group--password {{hasError messages.errors.password }}">
       <label for="password_{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
       <input id="password_{{uniqueId}}" class="form-control login-input--password" type="password" value="{{password}}">
 
