@@ -1,8 +1,12 @@
 #Apps / Packages
 
-`Reaction Apps` are the heart of Reaction Commerce. You can increase the power of your shop by adding and configuring additional `Reaction Apps`.
+Reaction apps are the heart of Reaction. You can increase the power of your shop by adding and configuring additional Reaction apps.
 
-To access the Reaction Apps, login as an admin, navigate to your Dashboard, and click on the `Reaction Apps`link.
+To access the apps and packages available in your shop, login as an admin, navigate to your Dashboard.
+
+![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard.png "Reaction Commerce Dashboard")
+
+You can also see these and other Reaction packages at: [Atmospherejs.com](https://atmospherejs.com/?q=reaction)
 
 Developers can also create both private and public packages. [See developer documentation.](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md)
 
