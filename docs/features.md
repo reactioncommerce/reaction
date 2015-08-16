@@ -26,16 +26,6 @@ Our [Features page](https://reactioncommerce.com/features) highlights many of th
 
 ## Accounts
 * Social authentication and account creation methods built in, using Meteor packages
-	* Facebook
-	* Twitter
-	* Google
-	* Google+
-	* LinkedIn
-	* Vkontakte
-	* Yahoo
-	* Stripe
-	* Salesforce
-	* and more...
 * Administrator role/package based invitation access
 
 ## Cart and Checkout
