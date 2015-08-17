@@ -60,19 +60,26 @@ Template.registerHelper "cartWorkflow", (options) ->
   for shopWorkflow in shopWorkflows.defaultWorkflows
     for workflow, index in shopWorkflow.workflow
       if workflow is currentStatus then status = true else status = false
-      cartWorkflow.push position: index + 1, workflow: workflow, status: status
+      cartWorkflow.push index: index, position: index + 1, workflow: workflow, status: status
 
   # if no current state, the first state is the default
   # and all previously completed states are also true
-  currentWorkflow =_.findWhere(cartWorkflow, {status: true})
-  unless currentWorkflow
-    currentWorkflow = cartWorkflow[0]
 
+  # if currentStatus in shopWorkflows
+  currentWorkflow = _.findWhere(cartWorkflow, {status: true}) || currentWorkflow = cartWorkflow[0]
+
+  if currentStatus is "new"
+    stepInc = 0
+  else
+    stepInc = 1
+
+  # this logic is just to set status = true to steps already past
   for workflow, index in cartWorkflow
-    unless index <= currentWorkflow.position
-      cartWorkflow[index].status = false
-    else
+
+    if workflow.position <= currentWorkflow.position + stepInc
       cartWorkflow[index].status = true
+    else
+      cartWorkflow[index].status = false
 
     # TODO: Make this better. Perhaps store position data with workflow
     # views in the database
@@ -101,6 +108,9 @@ Template.registerHelper "cartWorkflowPosition", (options) ->
 Template.registerHelper "cartWorkflowCompleted", (options) ->
   workflowStep = Template.parentData(2).data
   currentStatus = ReactionCore.Collections.Cart.findOne().status
+
+  console.log 'cart workflow completed', workflowStep, currentStatus
+
   if workflowStep.status is true and currentStatus isnt workflowStep.workflow
     return false
   else

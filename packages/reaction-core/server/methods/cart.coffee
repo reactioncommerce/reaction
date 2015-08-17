@@ -155,6 +155,23 @@ Meteor.methods
     # return new orderId
     return orderId
 
+  setShipmentMethod: (cartId, method) ->
+    check cartId, String
+    check method, Object
+
+    unless cartId and method then return
+    #
+    cart = ReactionCore.Collections.Cart.findOne _id: cartId, userId: Meteor.userId()
+    if cart
+      # update shipping address
+      Cart.update cartId, {$set: {"shipping.shipmentMethod": method} }
+      # refresh rates with new address
+
+      # TODO: Fix this. shomehow
+      Meteor.call 'cart/setStatus', 'checkoutPayment'
+    else
+      throw new Meteor.Error "setShipmentAddress: Invalid request"
+
   setShipmentAddress: (cartId, address) ->
     check cartId, String
     check address, Object
@@ -166,7 +183,6 @@ Meteor.methods
       Cart.update cartId, {$set: {"shipping.address": address} }
       # refresh rates with new address
       Meteor.call "updateShipmentQuotes", cartId
-      Meteor.call("cart/setStatus", 'coreCheckoutShipping')
     else
       throw new Meteor.Error "setShipmentAddress: Invalid request"
 

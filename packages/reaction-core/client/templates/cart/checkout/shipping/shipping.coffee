@@ -17,11 +17,14 @@ Template.coreCheckoutShipping.helpers
     return exists
   # helper to display currently selected shipmentMethod
   isSelected: (cart)->
+
+    cart = ReactionCore.Collections.Cart.findOne()
+
     shipmentMethod  = cart?.shipping?.shipmentMethod
+
     unless shipmentMethod then return
     # if there is already a selected method, set active
-    if _.isEqual @.method, shipmentMethod?.method
-      Session.set "shipmentMethod", this
+    if _.isEqual @.method, shipmentMethod
       return "active"
 
 ###
@@ -31,11 +34,22 @@ Template.coreCheckoutShipping.helpers
 ###
 Template.coreCheckoutShipping.events
   'click .list-group-item': (event, template) ->
-    try
-      Meteor.call "setShipmentAddress", cart._id, @
-    catch
-      console.info "Cannot change methods while processing."
-      event.preventDefault()
-      event.stopPropagation()
-      return
+    cart = ReactionCore.Collections.Cart.findOne()
+
+
+    # Session.set "shipmentMethod", this.method.name
+
+    # Meteor.call "updateShipmentQuotes", cart._id
+    console.log 'OOK WHAT THE HELL', this.method
+    Meteor.call "setShipmentMethod", cart._id, this.method
+
+    # Meteor.call "setShipmentAddress", cart._id, @
+
+    # try
+    #   Meteor.call "setShipmentAddress", cart._id, @
+    # catch
+    #   console.info "Cannot change methods while processing."
+    #   event.preventDefault()
+    #   event.stopPropagation()
+    #   return
 
