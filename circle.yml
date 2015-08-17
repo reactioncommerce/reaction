@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 0.10.36
+    version: 0.10.40
   services:
     - mongodb
     - docker
@@ -16,7 +16,7 @@ dependencies:
 
 test:
   override:
-    - cd $HOME/$CIRCLE_PROJECT_REPONAME  && meteor run --test --release velocity:METEOR@1.1.0.2_2
+    - cd $HOME/$CIRCLE_PROJECT_REPONAME  && meteor run --test --release velocity:METEOR@1.1.0.3_2
     - docker run -d -p 3000:3000 ongoworks/reaction; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost:3000
 
