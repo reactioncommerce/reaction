@@ -12,7 +12,7 @@ To open your Console drawer, click on the two down arrows shown here:
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-console-closed-arrow.png "Reaction Commerce Console closed")
 
-When your Console is open, it appears like a "drawer" that now follows you around as you navigate through your shop. Our vision is to offer contextual analytics throughout your shop.
+When your Console is open, it appears like a "drawer" that now follows you around as you navigate through your shop. You can close the Console by clicking on the double arrows. You can remove the Console by clicking on the "x" icon. Our vision is to offer contextual analytics via the Console as you navigate throughout your shop.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-console-open.png "Reaction Commerce Console drawer")
 
