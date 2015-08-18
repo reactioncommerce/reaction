@@ -2,7 +2,11 @@
  * helper for checking route state
  * See: https://velocity.readme.io/docs/jasmine-integration-tests-with-iron-router
  * this is far from the perfect solution, it's not every beforeEach, but it is consistent
+ *
+ * jasmine-jquery helpers included by default
+ * See: https://github.com/velesin/jasmine-jquery
  */
+
 
 (function (Meteor, Tracker, Router) {
   var isRouterReady = false;
@@ -18,7 +22,6 @@
 
   Router.onAfterAction(function () {
     if (!isRouterReady && this.ready()) {
-
       Tracker.afterFlush(function () {
         isRouterReady = true;
         callbacks.forEach(function (callback) {
