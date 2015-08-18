@@ -34,22 +34,15 @@ Template.coreCheckoutShipping.helpers
 ###
 Template.coreCheckoutShipping.events
   'click .list-group-item': (event, template) ->
+
+    event.preventDefault()
+    event.stopPropagation()
+
     cart = ReactionCore.Collections.Cart.findOne()
 
-
-    # Session.set "shipmentMethod", this.method.name
-
-    # Meteor.call "updateShipmentQuotes", cart._id
-    console.log 'OOK WHAT THE HELL', this.method
-    Meteor.call "setShipmentMethod", cart._id, this.method
-
-    # Meteor.call "setShipmentAddress", cart._id, @
-
-    # try
-    #   Meteor.call "setShipmentAddress", cart._id, @
-    # catch
-    #   console.info "Cannot change methods while processing."
-    #   event.preventDefault()
-    #   event.stopPropagation()
-    #   return
+    try
+      Meteor.call "setShipmentMethod", cart._id, @.method
+    catch
+      console.info "Cannot change methods while processing."
+      return
 

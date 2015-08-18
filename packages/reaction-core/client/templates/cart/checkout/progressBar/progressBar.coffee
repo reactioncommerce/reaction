@@ -19,8 +19,10 @@ Template.checkoutProgressBar.helpers
 
   shippingOptionStatus: () ->
     cart = Cart.findOne()
+    shipmentMethod = cart?.shipping?.shipmentMethod
+
     if cart?.shipping?.address and cart?.payment?.address
-      if (getGuestLoginState() and Session.get("shipmentMethod"))
+      if (getGuestLoginState() and shipmentMethod)
         return "previous visited"
       else if (getGuestLoginState() and cart?.shipping?.address and cart?.payment?.address)
         return "active"
@@ -28,10 +30,29 @@ Template.checkoutProgressBar.helpers
 
   reviewStatus: () ->
     cart = Cart.findOne()
+    shipmentMethod = cart?.shipping?.shipmentMethod
 
-    if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
-      return "active"
-    else if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
-      return "next"
+
+    if getGuestLoginState() and shipmentMethod and cart?.payment?.address
+      return "previous visited"
+
     return
+
+  completeStatus: () ->
+    cart = Cart.findOne()
+    shipmentMethod = cart?.shipping?.shipmentMethod
+
+
+    if getGuestLoginState() and shipmentMethod and cart?.payment?.address
+      return "active"
+
+    return
+
+
+
+    # if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
+    #   return "active"
+    # else if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
+    #   return "next"
+    # return
 
