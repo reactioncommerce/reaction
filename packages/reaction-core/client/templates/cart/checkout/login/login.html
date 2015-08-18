@@ -1,8 +1,7 @@
 <template name="checkoutLogin">
+
 {{#if cartWorkflowCompleted}}
-
   {{> checkoutLoggedIn}}
-
 {{else}}
 
   <div class="panel panel-default">
@@ -20,7 +19,7 @@
       {{/if}}
     </div>
     <div class="panel-body">
-      {{> accounts tpl="loginInline"}}
+      {{> loginInline}}
     </div>
   </div>
 

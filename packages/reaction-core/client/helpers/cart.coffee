@@ -111,7 +111,7 @@ Template.registerHelper "cartWorkflowCompleted", (options) ->
 
   console.log 'cart workflow completed', workflowStep, currentStatus
 
-  if workflowStep.status is true and currentStatus isnt workflowStep.workflow
-    return false
-  else
+  if workflowStep.status is true and currentStatus isnt workflowStep.workflow and currentStatus isnt "new"
     return true
+  else
+    return false
