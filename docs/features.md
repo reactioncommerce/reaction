@@ -25,13 +25,13 @@ Our [Features page](https://reactioncommerce.com/features) highlights many of th
 	* Drag and drop image upload from desktop
 
 ## Accounts
-* Social authentication and account creation methods built in, using Meteor packages
+* Social authentication and account creation methods built in using Meteor packages
 * Administrator role/package based invitation access
 
 ## Cart and Checkout
 * One page checkout
 * IP address location determines initial address
-* Geolocation address pre-populates city,state,country
+* Geolocation address pre-populates city, state, country
 * Social login initializes name
 * Integrated flat-rate shipping calculations
 * Integrated location specific configurable taxation tables

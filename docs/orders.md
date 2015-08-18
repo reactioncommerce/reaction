@@ -1,11 +1,11 @@
 #Order processing
 
-To view and process orders, login as an admin, click on your avatar in the upper right corner of your shop. From the dropdown menu, select Orders.
+To view and process orders, login as an admin and click on your avatar in the upper right corner of your shop. From the dropdown menu, select Orders.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-admin-navigation-dropdown.png)
 
 
-You can also access the Orders page by navigating to your Dashboard, and clicking on the "Orders" card on the Dashboard page.
+You can also access the Orders page by navigating to your Dashboard and clicking on the "Orders" card on the Dashboard page.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard.png)
 

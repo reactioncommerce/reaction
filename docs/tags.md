@@ -10,7 +10,7 @@ To assign a tag to a product, login as an admin, and click on a product to go to
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-tags-editproduct.png "Reaction Commerce tags and navigation")
 
-To create a new tag, click on the “Add tags” box and type in your tag. Hit Enter on your keyboard to save the tag. For example, if the product is a tshirt you might want to add Tags like: Mens, Short sleeve, Cotton, Crew neck, etc. 
+To create a new tag, click on the “Add tags” box and type in your tag. Hit Enter on your keyboard to save the tag. For example, if the product is a t-shirt you might want to add Tags like: Mens, Short sleeve, Cotton, Crew neck, etc. 
 
 To delete a tag, click the grey “x” icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-deletetag.png "Reaction Commerce delete tag").)
 
@@ -18,7 +18,7 @@ To rearrange tags, click on the 3 horizontal lines icon (![](http://raw.github.c
 
 ###Hashtag URLs
 
-The green flag icon in each tag automatically creates a URL for that product based on that tag. By clicking on the green flag outline, it changes to a filled green flag, and the URL for your product changes from an automated URL of nonsensical characters to a URL containing just the words from that tag.
+The flag icon in each tag automatically creates a URL for that product based on that tag. By clicking on the flag outline, it changes to a solid flag, and the URL for your product changes from an automated URL of nonsensical characters to a URL containing just the words from that tag.
 
 While this functionality may seem uneventful at the moment, we have big plans. Eventually, Hashtag URLs will allow you to glean important information about the popularity and social weight of your products, like how often it’s shared on social networks, how popular it is compared to similar products, whether it’s trending and, if so, where in the world it’s trending, and more. With this information, you’ll be able to better target your marketing efforts. 
 

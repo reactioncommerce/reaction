@@ -1,6 +1,6 @@
 ##Dashboard
 
-The Dashboard is the brain center for your shop: The place where you can access your shop's Core settings, manage Orders, view and install apps, manage shop Members, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page, from the dropdown menu select Dashboard.
+The Dashboard is the brain center for your shop: The place where you can access your shop's Core settings, manage Orders, view and install apps, manage shop Members, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page and from the dropdown menu select Dashboard.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-admin-navigation-dropdown-dashboard.png "Reaction Commerce Dashboard")
 
@@ -12,10 +12,10 @@ Once on the Dashboard page, you will see a selection of apps/packages available 
 
 ###Core
 
-Core is where you can view and modify your global shop settings. Click the cog wheel icon next to it to access your Shop Settings screen. 
+Core is where you can view and modify your global shop settings. Click the cog wheel icon on the card to access your Shop Settings screen. 
 
  * General: Edit your shop's Name,  Email, Description and Keywords. 
- * Address:  Enter your Company address, default shipping and billing address.
+ * Address:  Enter your Company address and default shipping and billing addresses.
  * Mail: Configure email for your shop. 
  * Localization: Set the default Timezone, Currency, Locale, and Base Unit of Measure.  
  * Options: Enable or disable Guest Checkout.

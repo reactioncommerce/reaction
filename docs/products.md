@@ -1,6 +1,6 @@
 ##Products
 
-Products are the individual items that you are selling in your Reaction shop. With Reaction, you can create and edit products in-line with the same view your shoppers will see: No separate administrator views, just simple product management.
+Products are the individual items that you are selling in your Reaction shop. With Reaction, you can create and edit products inline with the same view your shoppers will see: No separate administrator views; just simple product management.
 
 ###Creating Products
 
@@ -22,19 +22,19 @@ Until you choose to make a product visible, it is, by default, hidden from the p
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-makevisible.png "Reaction Commerce make visible")
 
-Once the product is set to be visible, a link appears at the top of the product that you can use change it back to hidden status at any time.
+Once the product is set to be visible, a link appears at the top of the product that you can use to change it back to hidden status at any time.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-makeinvisible.png "Reaction Commerce make invisible")
 
 ###Editing Products
 
-In Reaction, products are edited from the same view the shopper sees. All you need to do is login as a user with sufficient permissions and click on the product you wish to edit. From the product detail view, you can click to change any field.
+In Reaction, products are edited from the same view the shopper sees. All you need to do is login as a user with sufficient permissions, and click on the product you wish to edit. From the product detail view, you can click to change any field.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-editproduct.png "Reaction Commerce edit product")
 
 ###Removing Products
 
-To remove an entire product, login as a user with sufficient permissions and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png "Reaction Commerce delete product")) in the grid view. To remove an individual variant, see the Product Variant section below.
+To remove an entire product, login as a user with sufficient permissions, and click the Delete icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-delete.png "Reaction Commerce delete product")) in the grid view. To remove an individual variant, see the Product Variant section below.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-removeproduct.png "Reaction Commerce remove product")
 
@@ -46,7 +46,7 @@ Each newly created product comes preloaded with one variant. To create additiona
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-openvariant.png "Reaction Commerce product variants")
 
-Then click the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-files.png "Reaction Commerce clone variant")) and a new variant will be created as a clone of the original.
+Then click the Clone icon (![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-icon-files.png "Reaction Commerce clone variant")), and a new variant will be created as a clone of the original.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-createvariant.png "Reaction Commerce create variant")
 
@@ -64,7 +64,7 @@ To add options to a variant, click the variant options button to the left of the
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-addvariantoption.png "Reaction Commerce add variant option")
 
-Each option can have its own price, quantity, name, and even its own set of images. When an option is selected (you'll know by the highlighted background) you can simply add media to the gallery and it will be associated with that option.
+Each option can have its own price, quantity, name, and even its own set of images. When an option is selected (you'll know by the highlighted background), you can simply add media to the gallery and it will be associated with that option.
 
 ![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-products-editvariantoption.png "Reaction Commerce edit variant option")
 
