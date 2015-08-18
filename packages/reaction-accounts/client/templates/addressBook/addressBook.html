@@ -1,10 +1,15 @@
-<template name="addressBook">
+<template name="addressBookPanel">
   <div class="panel panel-default address-book">
     <div class="panel-header">
       <h2>Address Book</h2>
     </div>
     <div class="panel-content">
-      {{> Template.dynamic template=currentView data=data}}
+      {{> addressBook}}
     </div>
   </div>
+</template>
+
+
+<template name="addressBook">
+  {{> Template.dynamic template=currentView data=data}}
 </template>
