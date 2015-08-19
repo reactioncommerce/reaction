@@ -1,6 +1,8 @@
 #Introduction
 
-Reaction Commerce development is being led by [Ongo Works](http://ongoworks.com). It is an open source ecommerce platform developed on [Node.js](http://nodejs.org) and the [Meteor](http://meteor.com) framework.  Reaction provides a lightweight, reactive commerce platform with a goal of simplifying and aligning the user experience to the admin experience. 
+Reaction Commerce is an open source ecommerce platform for small-to-medium-size businesses as well as for developers and designers. Reaction is developed on [Node.js](http://nodejs.org) and the [Meteor](http://meteor.com) framework. 
+
+Reaction is a lightweight, reactive commerce platform with the goal of simplifying and aligning the user experience to the shop owner/admin experience. 
 
 
 ``` Selling online should be as easy as shopping online.```
@@ -8,10 +10,8 @@ Reaction Commerce development is being led by [Ongo Works](http://ongoworks.com)
 
 This documentation provides an overview of the features of Reaction, and it will answer questions about how to use Reaction as a shop owner. There is also a section for developers, which helps a developer or designer quickly start using the platform locally where they can contribute changes to the project, or fork the project and modify to suit any requirement.
 
-This documentation is part of the project pages, which you can browse at [GitHub](http://github.com/ongoworks/).
+This documentation is part of the project pages, which you can browse at [GitHub](http://github.com/reactioncommerce/).
 
-Documentation includes existing features, marked with a Reaction release version number, but also describes features that are under development. If the feature is under development, there will be an associated link to an issue page on GitHub. You are encouraged to contribute ideas, feedback and questions on the [issues page](https://github.com/ongoworks/reaction/issues?state=open). For general discussion and support, check out our [Google Group](https://groups.google.com/forum/#!forum/reaction-talk).
+You are encouraged to contribute ideas, feedback and questions on the [issues page](https://github.com/ongoworks/reaction/issues?state=open). For general discussion and support, check out our [chat room](gitter.im/reactioncommerce/reaction).
 
-You can also view our Getting Started video here:
-
-[![Getting Started](http://img.youtube.com/vi/tQm80OYzux8/0.jpg)](http://www.youtube.com/watch?v=tQm80OYzux8)
+Reaction is created by the [Ongo Works team](http://ongoworks.com) in Los Angeles, CA.
