@@ -47,9 +47,8 @@ Template.gridPackage.events
             throw new Meteor.Error "error disabling package", error
     return
 
-  "click .pkg-app-card": (event, template) ->
-    console.log this
-    Router.go @.route if @.route
-
   "click .pkg-settings, click .action--showPackageSettings": (event, template) ->
+    event.preventDefault()
+    event.stopPropagation()
+
     Router.go @.route if @.route
