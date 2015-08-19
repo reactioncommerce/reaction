@@ -161,7 +161,7 @@ Router.map ->
             @render 'unauthorized'
         return product
       if @ready() and !product
-        @render 'notFound'
+        @render 'productNotFound'
 
   # checkout
   @route 'cartCheckout',
