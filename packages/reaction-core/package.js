@@ -105,7 +105,10 @@ Package.onUse(function (api) {
     "common/schemas/discounts.coffee",
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
-    "common/hooks/hooks.coffee"
+    "common/hooks/hooks.coffee",
+
+    "common/methods/cart.coffee"
+
   ], ["client", "server"]);
 
   api.addFiles([
