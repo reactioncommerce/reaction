@@ -142,3 +142,166 @@ Factory.define 'tag', ReactionCore.Collections.Tags,
   shopId: Factory.get 'shop'
   createdAt: -> new Date
   updatedAt: -> new Date
+
+Factory.define 'cart', ReactionCore.Collections.Cart,
+  shopId: Factory.get 'shop'
+  userId: Random.id() #link to user factory
+  sessions: [Random.id()]
+  email: Fake.email
+  items: [
+    _id: Random.id()
+    productId: Random.id()
+    shopId: Random.id()
+    quantity: _.random 1, 5
+    variants:
+      _id: Random.id()
+      compareAtPrice: _.random 0, 1000
+      weight: _.random 0, 10
+      inventoryManagement: true
+      inventoryPolicy: false
+      lowInventoryWarningThreshold: 1
+      inventoryQuantity: _.random 0, 100
+      price: _.random 10, 1000
+      optionTitle: Fake.word()
+      title: Fake.word()
+      sku: Fake.word()
+      taxable: true
+      metafields: [
+        key: Fake.word()
+        value: Fake.word()
+        scope: "detail"
+      ,
+        key: "facebook"
+        value: Fake.paragraph()
+        scope: "socialMessages"
+      ,
+        key: "twitter"
+        value: Fake.sentence()
+        scope: "socialMessages"
+      ]
+  ,
+    _id: Random.id()
+    productId: Random.id()
+    shopId: Random.id()
+    quantity: _.random 1, 5
+    variants:
+      _id: Random.id()
+      compareAtPrice: _.random 0, 1000
+      weight: _.random 0, 10
+      inventoryManagement: true
+      inventoryPolicy: false
+      lowInventoryWarningThreshold: 1
+      inventoryQuantity: _.random 0, 100
+      price: _.random 10, 1000
+      optionTitle: Fake.word()
+      title: Fake.word()
+      sku: _.random 0, 6
+      taxable: true
+      metafields: [
+        key: Fake.word()
+        value: Fake.word()
+        scope: "detail"
+      ,
+        key: "facebook"
+        value: Fake.paragraph()
+        scope: "socialMessages"
+      ,
+        key: "twitter"
+        value: Fake.sentence()
+        scope: "socialMessages"
+      ]
+  ]
+  requiresShipping: true
+  shipping: {} #Shipment schema
+  payment: {} #Payment schema
+  totalPrice: _.random 1, 1000
+  state: 'new'
+  createdAt: new Date
+  updatedAt: new Date
+
+Factory.define 'order', ReactionCore.Collections.Orders,
+  # Schemas.OrderItems
+  additionalField: Fake.sentence 2
+  status: Fake.sentence 3
+  history: []
+  documents: []
+  
+  # Schemas.order
+  cartId: Factory.get 'cart'
+  notes: []
+  
+  # Schemas.cart
+  shopId: Random.id()
+  userId: Random.id() #link to user factory
+  sessions: ['Session']
+  email: Fake.email
+  items: [
+    _id: Random.id()
+    productId: Random.id()
+    shopId: Random.id()
+    quantity: _.random 1, 5
+    variants:
+      _id: Random.id()
+      compareAtPrice: _.random 0, 1000
+      weight: _.random 0, 10
+      inventoryManagement: true
+      inventoryPolicy: false
+      lowInventoryWarningThreshold: 1
+      inventoryQuantity: _.random 0, 100
+      price: _.random 10, 1000
+      optionTitle: Fake.word()
+      title: Fake.word()
+      sku: _.random 0, 6
+      taxable: true
+      metafields: [
+        key: Fake.word()
+        value: Fake.word()
+        scope: "detail"
+      ,
+        key: "facebook"
+        value: Fake.paragraph()
+        scope: "socialMessages"
+      ,
+        key: "twitter"
+        value: Fake.sentence()
+        scope: "socialMessages"
+      ]
+  ,
+    _id: Random.id()
+    productId: Random.id()
+    shopId: Random.id()
+    quantity: _.random 1, 5
+    variants:
+      _id: Random.id()
+      compareAtPrice: _.random 0, 1000
+      weight: _.random 0, 10
+      inventoryManagement: true
+      inventoryPolicy: false
+      lowInventoryWarningThreshold: 1
+      inventoryQuantity: _.random 0, 100
+      price: _.random 10, 1000
+      optionTitle: Fake.word()
+      title: Fake.word()
+      sku: _.random 0, 6
+      taxable: true
+      metafields: [
+        key: Fake.word()
+        value: Fake.word()
+        scope: "detail"
+      ,
+        key: "facebook"
+        value: Fake.paragraph()
+        scope: "socialMessages"
+      ,
+        key: "twitter"
+        value: Fake.sentence()
+        scope: "socialMessages"
+      ]
+  ]
+  requiresShipping: true
+  shipping: {} #Shipment schema
+  payment: {} #Payment schema
+  totalPrice: _.random 1, 1000
+  state: 'new'
+  createdAt: new Date
+  updatedAt: new Date

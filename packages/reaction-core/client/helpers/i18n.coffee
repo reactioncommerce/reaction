@@ -55,6 +55,7 @@ getMessagesFor = (schema, name) ->
 ###
 
 @i18nextDep = new Tracker.Dependency()
+@localeDep = new Tracker.Dependency()
 
 Meteor.startup ->
   # set language
@@ -66,6 +67,7 @@ Meteor.startup ->
       ReactionCore.Locale = result
       ReactionCore.Locale.language = Session.get "language"
       moment.locale(ReactionCore.Locale.language)
+      localeDep.changed()
     return
 
   # start the autorun after startup, so that "language" session var is already set
@@ -143,6 +145,7 @@ Template.registerHelper "currencySymbol", () ->
 # also accepts a range formatted with " - "
 ###
 Template.registerHelper "formatPrice", (price) ->
+  localeDep.depend() # create dependency on localeDep
   try
     prices = price.split(' - ')
     for actualPrice in prices

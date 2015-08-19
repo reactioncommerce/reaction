@@ -93,6 +93,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema
     type: [ReactionCore.Schemas.Email]
     optional: true
   currency:
+    label: "Reference currency (not necessarily the currency displayed to user)."
     type: String
     defaultValue: "USD"
   currencies:
