@@ -35,7 +35,7 @@ _Note: for windows installation you also need:_
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
 
-The Docker image is automatically built at the [Ongo Works public Docker repo](https://index.docker.io/u/ongoworks/), on any `master` repository changes. We're working on functionality to allow selectable Reaction/Docker images in the future.
+The latest `reactioncommerce:reaction` Docker image can be found on the [Reaction Commerce public Docker repo](https://index.docker.io/u/reactioncommerce/). The image is built from the latest `master` repository changes.
 
 For a high level review our roadmap, take a look at the vision page [Reaction Vision](http://reactioncommerce.com/vision)
 
