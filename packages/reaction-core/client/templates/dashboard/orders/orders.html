@@ -15,7 +15,7 @@
               <div class="panel-body">
                 <ul class="list-group orders-list">
                   {{#each ..}}
-                    {{#if condition state "eq" ../value}}
+                    {{#if condition status "eq" ../value}}
                       {{>orderDetail}}
                     {{/if}}
                   {{/each}}

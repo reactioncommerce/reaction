@@ -208,6 +208,8 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/checkout.html",
     "client/templates/cart/checkout/checkout.coffee",
 
+    "client/workflows/orders.coffee",
+
     "client/templates/cart/checkout/login/login.html",
     "client/templates/cart/checkout/login/login.coffee",
 

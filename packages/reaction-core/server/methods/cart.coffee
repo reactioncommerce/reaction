@@ -125,8 +125,8 @@ Meteor.methods
     cart.updatedAt = now
 
     # set workflow status
-    cart.state = "orderCreated"
-    cart.status = "new"
+    # cart.state = "orderCreated"
+    cart.status = "orderCreated"
 
     # update orderId
     cart._id = Random.id()
@@ -255,6 +255,51 @@ Meteor.methods
     ReactionCore.Events.info "created cart: " + newCartId + " for user: " + userId
 
     return Cart.find newCartId
+
+  "cart/processPayment": (paymentMethod) ->
+    ReactionCore.Events.info 'Begin Process Payment'
+    check paymentMethod, Object
+    # @unblock()
+
+    # before payment really should be async
+    cartId = Cart.findOne()._id
+
+    # Step 1:
+    Meteor.call "paymentMethod", cartId, paymentMethod, (error, result) ->
+
+      if error
+        throw new Meteor.Error "An error occurred saving the payment method", error
+        return
+
+      # Step 2
+      Meteor.call "copyCartToOrder", cartId, (error, orderId) ->
+
+        ReactionCore.Events.info 'Attempt to copy cart to order:', orderId
+
+        if error
+          throw new Meteor.Error "An error occurred saving the order", error
+          return
+
+        ReactionCore.Events.info '-- (SUCCESS) Copy cart to order:', orderId
+        ReactionCore.Events.info 'Attempt to adjust inventory for order:', orderId
+
+        # Step 4
+        # go to order success
+        Meteor.call "inventoryAdjust", orderId, (error, result) ->
+          console.log 'Attempt to show completion page', result
+
+          if error
+            throw new Meteor.Error "An error occurred while updating inventory", error
+            return
+
+          return unless orderId
+
+          console.log 'Show Completion page'
+
+          # ******** FINISH  ********
+          Router.go "cartCompleted", _id: orderId
+
+    # return
 
   ###
   # "cart/setStatu"

@@ -109,8 +109,6 @@ Template.registerHelper "cartWorkflowCompleted", (options) ->
   workflowStep = Template.parentData(2).data
   currentStatus = ReactionCore.Collections.Cart.findOne().status
 
-  console.log 'cart workflow completed', workflowStep, currentStatus
-
   if workflowStep.status is true and currentStatus isnt workflowStep.workflow and currentStatus isnt "new"
     return true
   else
