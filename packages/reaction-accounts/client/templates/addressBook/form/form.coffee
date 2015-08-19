@@ -10,12 +10,14 @@ Template.addressBookForm.helpers
     return options
   statesForCountry: ->
     shop = ReactionCore.Collections.Shops.findOne()
-    selectedCountry = AutoForm.getFieldValue('country')
-    unless selectedCountry  
+
+    #TODO: Could use somehting better than Session
+    selectedCountry = Session.get 'addressBookCountry' || AutoForm.getFieldValue('country')
+    unless selectedCountry
       return false
-    unless shop?.locales.countries[selectedCountry].states?  
+    unless shop?.locales.countries[selectedCountry].states?
       return false
-    options = []  
+    options = []
     for state, locale of shop?.locales.countries[selectedCountry].states
       options.push {'label': locale.name, 'value': state}
     return options
@@ -34,3 +36,7 @@ Template.addressBookForm.helpers
   isShippingDefault: ->
     unless @.profile?.addressBook and !addressBookEditId.get()
       return true
+
+Template.addressBookForm.events
+  'change [name="country"]': ->
+    Session.set 'addressBookCountry', AutoForm.getFieldValue('country')
