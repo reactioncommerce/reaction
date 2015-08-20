@@ -1,13 +1,12 @@
 #Installation
 
 **Prerequisites**
-
 - Npm and [Node.js](http://nodejs.org/)
-- *`ImageMagick` - Optional but suggested*
-- *For [windows installation](https://github.com/reactioncommerce/reaction/issues/363) you also need:*
-	- Win32 OpenSSL
-	- Visual Studio 2008 redistributables
-	- Git / mysgit
+- _`ImageMagick` - Optional but suggested_
+- _For [windows installation](https://github.com/reactioncommerce/reaction/issues/363) you also need:_
+  - Win32 OpenSSL
+  - Visual Studio 2008 redistributables
+  - Git / mysgit
 
 **Installation**
 
@@ -32,15 +31,17 @@ Browse to [http://localhost:3000](http://localhost:3000) and you should see Reac
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
 
-*Note: the [velocity](http://velocity.meteor.com/) testing frameworks is installed by default, you can view results by clicking the "pulsing velocity circle-dot"*
+_Note: the [velocity](http://velocity.meteor.com/) testing frameworks is installed by default, you can view results by clicking the "pulsing velocity circle-dot"_
 
 **Reset**
 
 To reset project data and give you a fresh test dataset from `packages/reaction-core/private/data/*.json`:
 
-    meteor reset
+```
+meteor reset
+```
 
-The  *packages/reaction-core/private/data* folder contains fixture data  files that can be modified to the change initial data loaded.
+The  _packages/reaction-core/private/data_ folder contains fixture data  files that can be modified to the change initial data loaded.
 
 See the [package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md)  and the [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md) for detailed instructions on modifying initial fixture data.
 
@@ -57,18 +58,17 @@ meteor
 
 You can also use `meteor upgrade` to pull the latest published packages.
 
-*Note: currently there is not any data schema compatibility tests between releases, which is why we use `meteor reset` in this example. It's not necessary if you want to preserve your data, but there could be compatibility issues with the upgrade.*
+_Note: currently there is not any data schema compatibility tests between releases, which is why we use `meteor reset` in this example. It's not necessary if you want to preserve your data, but there could be compatibility issues with the upgrade._
 
 ##Settings
 
 Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run:
 
+```
+ meteor --settings settings/<your-settings>.json
+```
 
-	 meteor --settings settings/<your-settings>.json
-
-
-
-***settings/dev.settings.json***
+**_settings/dev.settings.json_**
 
 ```
 {
@@ -96,19 +96,16 @@ You can use `meteor remove force-ssl` to remove redirection to the `https` proto
 
 **Failed to load c++ Json message**
 
-You can ignore this error, but if it annoys you can run
-`xcode-select --install` (on a mac) or
-`sudo apt-get install gcc make build-essential` (on ubuntu)
+You can ignore this error, but if it annoys you can run `xcode-select --install` (on a mac) or `sudo apt-get install gcc make build-essential` (on ubuntu)
 
 **env: node: No such file or directory**
 
-Caused by a broken node, npm installation.
-Reinstall Node.js with NPM (or when packaged seperately, reinstall them both).
+Caused by a broken node, npm installation. Reinstall Node.js with NPM (or when packaged separately, reinstall them both).
 
 **windows OpenSSL errors prevent startup**
 
-Install OpenSSL per: https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md
+Install OpenSSL per: [https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md](https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md)
 
 **windows bower install errors**
 
-We use bower to install some core dependencies. To use Bower on Windows, you must install msysgit. See: https://github.com/bower/bower/tree/master#windows-users
+We use bower to install some core dependencies. To use Bower on Windows, you must install msysgit. See: [https://github.com/bower/bower/tree/master#windows-users](https://github.com/bower/bower/tree/master#windows-users)

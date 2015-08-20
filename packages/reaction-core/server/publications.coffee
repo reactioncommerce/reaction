@@ -141,9 +141,9 @@ Meteor.publish 'Products', (shops) ->
       selector = {shopId: {$in: shops}}
       ## check if the user is admin in any of the shops
       for shop in shops
-        if Roles.userIsInRole this.userId, ['admin','createProduct'], shop
+        if Roles.userIsInRole this.userId, ['admin','createProduct'], shop._id
           shopAdmin = true
-    unless Roles.userIsInRole(this.userId, ['admin','createProduct'], shop._id) or shopAdmin
+    unless Roles.userIsInRole(this.userId, ['owner'], shop._id) or shopAdmin
       selector.isVisible = true
     return Products.find(selector, {sort: {title: 1}})
   else
@@ -151,11 +151,10 @@ Meteor.publish 'Products', (shops) ->
 
 Meteor.publish 'Product', (productId) ->
   check productId, String
-
   shop = ReactionCore.getCurrentShop(@) #TODO: wire in shop
   selector = {}
   selector.isVisible = true
-  if Roles.userIsInRole this.userId, ['admin','createProduct'], shop
+  if Roles.userIsInRole this.userId, ['owner','admin','createProduct'], shop._id
     selector.isVisible = {$in: [true, false]}
 
   if productId.match /^[A-Za-z0-9]{17}$/
