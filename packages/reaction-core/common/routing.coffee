@@ -143,7 +143,7 @@ Router.map ->
     controller: ShopController
     path: 'product/:_id/:variant?'
     template: 'productDetail'
-    waitOn: ->
+    subscriptions: ->
       @subscribe 'Product', @params._id
     onBeforeAction: ->
       variant = @params.variant || @params.query.variant
