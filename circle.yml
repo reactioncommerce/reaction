@@ -20,11 +20,16 @@ dependencies:
 test:
   override:
     - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity --release velocity:METEOR@1.1.0.3_2
-    - docker run -d -p ::3000 reactioncommerce/reaction; sleep 10
-    - curl --retry 10 --retry-delay 5 -v http://localhost:3000
+    - docker run -d -p :80:3000 reactioncommerce/reaction; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost
 deployment:
   hub:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM
+  hub:
+    branch: development
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push reactioncommerce/aliquam:$CIRCLE_BUILD_NUM

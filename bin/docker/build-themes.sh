@@ -11,7 +11,7 @@
 if [ ! -f client/themes/bootstrap/custom.reaction.less ]; then
     echo "warning: less theme files not found!!"
     echo "info: using development mode in an attempt to create missing files."
-    echo "info: this cant take 2-5 minutes. be patient."
+    echo "info: this can take 2-5 minutes. be patient."
     # startup development server
     command="env -i HOME="$HOME" LC_CTYPE="${LC_ALL:-${LC_CTYPE:-$LANG}}" PATH="$PATH" USER="$USER" /usr/local/bin/meteor"
     log=".build.log"
