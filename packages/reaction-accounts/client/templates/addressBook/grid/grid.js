@@ -2,34 +2,45 @@
  * handles display of addressBook grid
  */
 Template.addressBookGrid.helpers({
+
   selectedBilling: function() {
-    var cart, ref, ref1, ref2, ref3;
-    cart = ReactionCore.Collections.Cart.findOne();
+
+    var cart = ReactionCore.Collections.Cart.findOne();
+
     if (cart) {
-      if (this._id === (cart != null ? (ref = cart.payment) != null ? (ref1 = ref.address) != null ? ref1._id : void 0 : void 0 : void 0)) {
-        return "active";
-      }
-      if (this.isBillingDefault && !(cart != null ? (ref2 = cart.payment) != null ? (ref3 = ref2.address) != null ? ref3.fullName : void 0 : void 0 : void 0)) {
-        return Meteor.call("setPaymentAddress", cart._id, this);
+      if (cart.payment) {
+        if ( cart.payment.address) {
+          if (this._id === cart.payment.address._id) {
+            return "active";
+          }
+        }
       }
     }
+
   },
+
   selectedShipping: function() {
-    var cart, ref, ref1, ref2;
-    cart = ReactionCore.Collections.Cart.findOne();
+
+    var cart = ReactionCore.Collections.Cart.findOne();
+
     if (cart) {
-      if (this._id === ((ref = cart.shipping.address) != null ? ref._id : void 0)) {
-        return "active";
-      }
-      if (this.isShippingDefault && !(cart != null ? (ref1 = cart.shipping) != null ? (ref2 = ref1.address) != null ? ref2.fullName : void 0 : void 0 : void 0)) {
-        return Meteor.call("setShipmentAddress", cart._id, this);
+      if (cart.shipping) {
+        if ( cart.shipping.address) {
+          if (this._id === cart.shipping.address._id) {
+            return "active";
+          }
+        }
       }
     }
+
   },
+
   account: function() {
+
     return ReactionCore.Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
+
   }
 });
 
