@@ -141,6 +141,7 @@ Meteor.methods
 
     try
       orderId = Orders.insert cart
+
       if orderId
         Cart.remove _id: cartId
         # adjust inventory
@@ -167,7 +168,7 @@ Meteor.methods
       Cart.update cartId, {$set: {"shipping.shipmentMethod": method} }
       # refresh rates with new address
 
-      # TODO: Fix this. shomehow
+      # TODO: Fix this. somehow
       Meteor.call 'cart/setStatus', 'checkoutPayment'
     else
       throw new Meteor.Error "setShipmentAddress: Invalid request"

@@ -291,3 +291,5 @@ currentProduct = @currentProduct
 
   else if Session.equals("guestCheckoutFlow", true) and _.pluck( Meteor.user().emails, "address" )
     return true
+
+  return false

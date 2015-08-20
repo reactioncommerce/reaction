@@ -106,9 +106,7 @@ Package.onUse(function (api) {
     "common/collections/collections.coffee",
     "common/collections/collectionFS.coffee",
     "common/hooks/hooks.coffee",
-
-    "common/methods/cart.coffee"
-
+    "common/methods/cart.js"
   ], ["client", "server"]);
 
   api.addFiles([
@@ -214,7 +212,7 @@ Package.onUse(function (api) {
     "client/workflows/orders.coffee",
 
     "client/templates/cart/checkout/login/login.html",
-    "client/templates/cart/checkout/login/login.coffee",
+    "client/templates/cart/checkout/login/login.js",
 
     "client/templates/cart/checkout/header/header.html",
     "client/templates/cart/checkout/header/header.coffee",
@@ -235,10 +233,10 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/completed/completed.coffee",
 
     "client/templates/cart/checkout/shipping/shipping.html",
-    "client/templates/cart/checkout/shipping/shipping.coffee",
+    "client/templates/cart/checkout/shipping/shipping.js",
 
     "client/templates/cart/checkout/addressBook/addressBook.html",
-    "client/templates/cart/checkout/addressBook/addressBook.coffee",
+    "client/templates/cart/checkout/addressBook/addressBook.js",
 
     "client/templates/dashboard/console/console.html",
     "client/templates/dashboard/console/console.coffee",
