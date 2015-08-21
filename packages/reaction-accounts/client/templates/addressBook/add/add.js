@@ -3,7 +3,7 @@ Template.addressBookAdd.helpers({
     var account, ref, thisAddress;
     account = ReactionCore.Collections.Accounts.findOne();
     thisAddress = {
-      'fullName': account != null ? (ref = account.profile) != null ? ref.name : void 0 : void 0
+      'fullName': account !== null ? (ref = account.profile) !== null ? ref.name : void 0 : void 0
     };
     if (Session.get("address")) {
       thisAddress.postal = Session.get("address").zipcode;
@@ -74,11 +74,7 @@ AutoForm.hooks({
       this.done();
 
       // Show the grid
-      addressBook.trigger($.Event('showMainView'))
-
-      // Set the cart status
-      Meteor.call("cart/setStatus", 'checkoutAddressBook');
-
+      addressBook.trigger($.Event('showMainView'));
     }
   }
 });
