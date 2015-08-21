@@ -37,7 +37,7 @@ Template.checkoutStepBadge.helpers({
     {
       return "completed";
     } else {
-      return "in-progress";
+      return "active";
     }
 
   }
