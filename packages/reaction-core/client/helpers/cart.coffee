@@ -46,6 +46,7 @@ Template.registerHelper "cartPayerName",  ->
 ###
 Template.registerHelper "cartWorkflow", (options) ->
   shopWorkflows = ReactionCore.Collections.Shops.findOne({ defaultWorkflows: { $elemMatch: { provides: "simple"} } }, fields: defaultWorkflows: true)
+  defaultWorkflow = shopWorkflows.defaultWorkflows[0].workflow #just defaults
   currentStatus = ReactionCore.Collections.Cart.findOne().status
   cartWorkflow = []
 
@@ -53,33 +54,25 @@ Template.registerHelper "cartWorkflow", (options) ->
   # checkout steps into 2 colums.
   cartWorkflowMain = []
   cartWorkflowAside = []
-  # loop through the shop's defaultWorkflows
-  # and inject index and current status
-  # all workflows steps until cart.status is true
-  # are also marked as true
-  for shopWorkflow in shopWorkflows.defaultWorkflows
-    for workflow, index in shopWorkflow.workflow
-      if workflow is currentStatus then status = true else status = false
-      cartWorkflow.push index: index, position: index + 1, workflow: workflow, status: status
+  # validate currentStatus in shopWorkflows
+  found = defaultWorkflow.indexOf(currentStatus)
+  unless found then currentStatus = defaultWorkflow?[0]
 
+  # currentStatus = found || currentStatus = cartWorkflow[0]
+  # this logic is just to set status = true to steps already prior to current
   # if no current state, the first state is the default
   # and all previously completed states are also true
+  for workflow, index in defaultWorkflow
 
-  # if currentStatus in shopWorkflows
-  currentWorkflow = _.findWhere(cartWorkflow, {status: true}) || currentWorkflow = cartWorkflow[0]
+    if !stopAt and workflow isnt currentStatus then status = true
 
-  if currentStatus is "new"
-    stepInc = 0
-  else
-    stepInc = 1
+    if workflow is currentStatus and !stopAt
+      if index is 0 then stopAt = 1 else stopAt = index + 1
 
-  # this logic is just to set status = true to steps already past
-  for workflow, index in cartWorkflow
-
-    if workflow.position <= currentWorkflow.position + stepInc
-      cartWorkflow[index].status = true
-    else
-      cartWorkflow[index].status = false
+      status = true
+    # we're done here
+    if index >= stopAt then status = false
+    cartWorkflow.push index: index, position: index + 1, workflow: workflow, status: status
 
     # TODO: Make this better. Perhaps store position data with workflow
     # views in the database
@@ -87,7 +80,7 @@ Template.registerHelper "cartWorkflow", (options) ->
       cartWorkflowAside.push cartWorkflow[index]
     else
       cartWorkflowMain.push cartWorkflow[index]
-
+  console.table cartWorkflow
   return {main: cartWorkflowMain, aside: cartWorkflowAside}
 
 ###
@@ -109,7 +102,7 @@ Template.registerHelper "cartWorkflowCompleted", (options) ->
   workflowStep = Template.parentData(2).data
   currentStatus = ReactionCore.Collections.Cart.findOne().status
 
-  if workflowStep.status is true and currentStatus isnt workflowStep.workflow and currentStatus isnt "new"
+  if workflowStep.status is true and currentStatus isnt workflowStep.workflow
     return true
   else
     return false

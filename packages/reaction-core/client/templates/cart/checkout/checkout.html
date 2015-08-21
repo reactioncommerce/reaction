@@ -30,7 +30,6 @@
   {{#each views}}
       <div class="checkout-step">
         {{#if status}}
-          <!-- <i class="checkout-step-badge-completed">{{position}}</i> -->
           {{> Template.dynamic template=workflow}}
         {{else}}
         <div class="col-md-12 checkout-pending">

@@ -166,11 +166,6 @@ Meteor.methods
     if cart
       # update shipping address
       Cart.update cartId, {$set: {"shipping.shipmentMethod": method} }
-      # refresh rates with new address
-
-      # TODO: Fix this. somehow
-      Meteor.call 'cart/setStatus', 'checkoutPayment'
-    else
       throw new Meteor.Error "setShipmentAddress: Invalid request"
 
   setShipmentAddress: (cartId, address) ->
@@ -183,7 +178,11 @@ Meteor.methods
       # update shipping address
       Cart.update cartId, {$set: {"shipping.address": address} }
       # refresh rates with new address
+      console.log(cart.status)
       Meteor.call "updateShipmentQuotes", cartId
+      unless cart.shipping.address.fullName
+        Meteor.call 'cart/setStatus', 'checkoutAddressBook'
+
     else
       throw new Meteor.Error "setShipmentAddress: Invalid request"
 
@@ -260,6 +259,8 @@ Meteor.methods
   ###
   # "cart/setStatu"
   # updates cart status
+  # first sets, second call to same
+  # will go to next status.
   ###
   'cart/setStatus': (status, cartId, userId) ->
     check status, String
@@ -267,8 +268,21 @@ Meteor.methods
     check cartId, Match.Optional(String)
     @unblock()
 
-    Cart = ReactionCore.Collections.Cart
     userId = userId || Meteor.userId()
-    cartId = cartId || Cart.findOne( userId: userId )._id
+    Cart = ReactionCore.Collections.Cart
+    currentCart = Cart.findOne( userId: userId )
+    cartId = cartId || currentCart._id
+    currentStatus = currentCart.status
+    shopWorkflows = ReactionCore.Collections.Shops.findOne({ defaultWorkflows: { $elemMatch: { provides: "simple"} } }, fields: defaultWorkflows: true)
+    defaultWorkflow = shopWorkflows.defaultWorkflows[0].workflow #just defaults
+
+    if status is currentStatus
+      # if weve found it, that means we're already in process
+      # we want to move on the next step as the defaultWorkflow
+      # we could add hooks here later.
+      found = defaultWorkflow.indexOf(currentStatus)
+      status = defaultWorkflow[found + 1]
+
+    Cart.update cartId, $set: status: status
 
     return Cart.update cartId, $set: status: status

@@ -60,7 +60,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema
     min: 0
   status:
     type: String
-    defaultValue: "new"
+    defaultValue: "checkoutLogin"
     optional: true
   createdAt:
     type: Date
