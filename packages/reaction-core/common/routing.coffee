@@ -20,11 +20,11 @@ Router.configure
   notFoundTemplate: "notFound"
   loadingTemplate: "loading"
   onBeforeAction: ->
-    @render "loading"
-    Alerts.removeSeen()
-    $(document).trigger('closeAllPopovers')
+    if Meteor.isClient
+      @render "loading"
+      Alerts.removeSeen()
+      $(document).trigger('closeAllPopovers')
     @next()
-
 
 # we always need to wait on these publications
 Router.waitOn ->
