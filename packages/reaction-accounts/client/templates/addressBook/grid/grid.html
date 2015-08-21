@@ -1,17 +1,19 @@
 <template name="addressBookGrid">
 {{#with account.profile}}
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span id="address-selection-help" data-i18n="addressBookGrid.chooseAddress">Choose shipping & billing address</span>
-      <i class="fa fa-plus fa-lg pull-right address-icons action--addNewAddress"></i>
-    </h3>
+  <div class="panel-control-bar">
+    <div class="panel-controls">
+      <button class="btn btn-default" type="button" data-action="addNewAddress">
+        <i class="fa fa-plus fa-lg address-icons"></i>
+        <span data-i18n="addressBookGrid.addAddress">Add Address</span>
+      </button>
+    </div>
+
   </div>
   <div class="panel-body">
     <div class="row" id="addressBook">
       <div class="col-md-6">
+        <h4 id="shipping-address-label" data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</h4>
         <div class="list-group">
-
-          <span id="shipping-address-label" data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</span>
            {{#each addressBook}}
             <div class="address-ship-to list-group-item {{selectedShipping}}">
                 <a class="action--editAddress" data-id="{{_id}}">
@@ -40,8 +42,8 @@
         </div>
       </div>
       <div class="col-md-6">
+        <h4 id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</h4>
         <div class="list-group">
-          <span id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</span>
           {{#each addressBook}}
             <div class="address-bill-to list-group-item {{selectedBilling}}">
               <a class="action--editAddress" data-id="{{_id}}">

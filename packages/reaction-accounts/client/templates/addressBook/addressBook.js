@@ -54,7 +54,7 @@ Template.addressBook.events({
   // **************************************************************************
   //
   //
-  'click .action--addNewAddress': function (event, template) {
+  "click [data-action=addNewAddress]": function (event, template) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -64,7 +64,7 @@ Template.addressBook.events({
   // **************************************************************************
   // Edit an address
   //
-  'click .action--editAddress': function (event, template) {
+  "click .action--editAddress": function (event, template) {
 
     event.preventDefault();
     event.stopPropagation();

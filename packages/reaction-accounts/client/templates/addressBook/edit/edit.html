@@ -1,19 +1,19 @@
 <template name="addressBookEdit">
-<div class="panel-heading">
-  <h3 class="panel-title">
-    <span  data-i18n="addressBookEdit.addAddress">Editing this address entry</span>
-  </h3>
-</div>
-<div class="panel-body">
-{{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookEditForm" doc=address type="normal"}}
-  <fieldset>
-    {{>addressBookForm}}
-    <div class="row text-right">
-      <button type="submit" class="btn btn-primary update" data-i18n="app.saveAndContinue">Save and Continue</button>
-      <button type="reset" class="btn btn-default action--cancelEdit" data-i18n="app.cancel">Cancel</button>
-    </div>
-    {{>afFieldInput name="_id" value=thisAddress._id type="hidden"}}
-  </fieldset>
-{{/autoForm}}
-</div>
+  <div class="panel-heading">
+    <h3 class="panel-control-bar">
+      <span  data-i18n="addressBookEdit.addAddress">Editing this address entry</span>
+    </h3>
+  </div>
+  <div class="panel-body">
+  {{#autoForm schema="ReactionCore.Schemas.Address" id="addressBookEditForm" doc=address type="normal"}}
+    <fieldset>
+      {{>addressBookForm}}
+      <div class="row text-right">
+        <button type="submit" class="btn btn-primary update" data-i18n="app.saveAndContinue">Save and Continue</button>
+        <button type="reset" class="btn btn-default action--cancelEdit" data-i18n="app.cancel">Cancel</button>
+      </div>
+      {{>afFieldInput name="_id" value=thisAddress._id type="hidden"}}
+    </fieldset>
+  {{/autoForm}}
+  </div>
 </template>
