@@ -207,7 +207,7 @@ Package.onUse(function (api) {
     "client/templates/cart/cartPanel/cartPanel.coffee",
 
     "client/templates/cart/checkout/checkout.html",
-    "client/templates/cart/checkout/checkout.coffee",
+    "client/templates/cart/checkout/checkout.js",
 
     "client/workflows/orders.coffee",
 

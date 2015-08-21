@@ -1,11 +1,33 @@
 <template name="checkoutProgressBar">
-<div class="checkout-progress-wrap">
-  <ul class="checkout-bar">
-    <li class="{{loginStatus}}" data-i18n="checkoutProgressBar.login">Account</li>
-    <li class="{{shippingStatus}}" data-i18n="checkoutProgressBar.shippingBilling">Address Details</li>
-    <li class="{{shippingOptionStatus}}" data-i18n="checkoutProgressBar.shippingOptions">Shipping Options</li>
-    <li class="{{reviewStatus}}" data-i18n="checkoutProgressBar.reviewPayment">Review</li>
-    <li class="{{completeStatus}}" data-i18n="checkoutProgressBar.complete">Complete</li>
-  </ul>
-</div>
+  <div class="checkout-progress-container">
+    <ul class="checkout-progress-bar">
+
+      {{!-- TODO: Generate this from workflow --}}
+      <li class="{{loginStatus}}">
+        <span class="position">1</span>
+        <span class="checkout-step-label" data-i18n="checkoutProgressBar.login">Account</span>
+      </li>
+
+      <li class="{{shippingStatus}}">
+        <span class="position">2</span>
+        <span class="checkout-step-label" data-i18n="checkoutProgressBar.shippingBilling">Address Details</span>
+      </li>
+
+      <li class="{{shippingOptionStatus}}">
+        <div class="ca"></div>
+        <span class="position">3</span>
+        <span class="checkout-step-label" data-i18n="checkoutProgressBar.shippingOptions">Shipping Options</span>
+      </li>
+
+      <li class="{{reviewStatus}}">
+        <span class="position">4</span>
+        <span class="checkout-step-label" data-i18n="checkoutProgressBar.reviewPayment">Review</span>
+      </li>
+
+      <li class="{{completeStatus}}">
+        <span class="position">5</span>
+        <span class="checkout-step-label" data-i18n="checkoutProgressBar.complete">Complete</span>
+      </li>
+    </ul>
+  </div>
 </template>

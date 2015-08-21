@@ -1,21 +1,23 @@
 <template name="cartCheckout">
   {{#if cart.items}}
-    <div class="col-sm-12">
-      <div class="row cart-checkout-progress">
+
+    <div class="checkout-progress">
+      <div class="container">
         {{>checkoutProgressBar}}
       </div>
+    </div>
 
+    <div class="checkout section">
+      <div class="container">
+        <div class="checkout-steps">
+          <div class="checkout-steps-main">
+            {{> cartWorkflowViews views=cartWorkflow.main}}
+          </div>
 
-
-      <div class="row cart-checkout-steps">
-        <div class="col-sm-7">
-          {{> cartWorkflowViews views=cartWorkflow.main}}
+          <div class="checkout-steps-side">
+            {{> cartWorkflowViews views=cartWorkflow.aside}}
+          </div>
         </div>
-
-        <div class="col-sm-4 col-sm-offset-1">
-          {{> cartWorkflowViews views=cartWorkflow.aside}}
-        </div>
-
       </div>
     </div>
   {{else}}
@@ -26,13 +28,14 @@
 
 <template name="cartWorkflowViews">
   {{#each views}}
-      <div class="row">
+      <div class="checkout-step">
         {{#if status}}
-          <div class="col-md-12"><i class="checkout-step-badge-completed">{{position}}</i>
+          <!-- <i class="checkout-step-badge-completed">{{position}}</i> -->
           {{> Template.dynamic template=workflow}}
-          </div>
         {{else}}
-        <div class="col-md-12 checkout-pending"><i class="checkout-step-badge">{{position}}</i></div>
+        <div class="col-md-12 checkout-pending">
+          <i class="checkout-step-badge">{{position}}</i>
+        </div>
         {{/if}}
       </div>
   {{/each}}
@@ -45,4 +48,9 @@
     <span data-i18n="cartCheckout.emptyCheckoutCart">looks like your cart is empty!</span>
   </small>
   </h2>
+</template>
+
+
+<template name="checkoutStepBadge">
+  <i class="checkout-step-badge {{status}}">{{position}}</i>
 </template>

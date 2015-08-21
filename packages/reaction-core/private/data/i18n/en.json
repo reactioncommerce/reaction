@@ -127,6 +127,7 @@
                     "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later."
                 },
                 "addressBookGrid": {
+                    "addAddress": "Add Address",
                     "chooseAddress": "Choose shipping & billing address",
                     "createDefault": "Create your default address",
                     "selectShippingAddress": "Select a shipping address",

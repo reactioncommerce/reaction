@@ -47,7 +47,7 @@ Template.gridPackage.events
             throw new Meteor.Error "error disabling package", error
     return
 
-  "click .pkg-settings, click .action--showPackageSettings": (event, template) ->
+  "click .pkg-settings, click [data-action=showPackageSettings]": (event, template) ->
     event.preventDefault()
     event.stopPropagation()
 
