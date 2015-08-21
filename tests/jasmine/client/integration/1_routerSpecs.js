@@ -52,7 +52,9 @@ describe('Router', function () {
 
     describe("tags", function() {
       it('loads navigation header', function() {
-        expect($('.header-tag').text()).toContain('Products');
+        waitForElement($('.header-tag'), function() {
+          expect($('.header-tag').text()).toContain('Products');
+        });
       });
     });
 

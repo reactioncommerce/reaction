@@ -6,6 +6,40 @@
     });
 
     beforeEach(waitForRouter);
+
+    describe("create", function() {
+
+      it("should throw 403 error by non admin", function(done) {
+        spyOn(Roles, "userIsInRole").and.returnValue(false);
+        spyOn(Products, "insert");
+
+        Meteor.call("createProduct", function(error,result) {
+          expect(error.error).toEqual(403);
+          console.log(error.error);
+        });
+
+        expect(Products.insert).not.toHaveBeenCalled();
+        return done();
+      });
+
+      /*
+      it("should create new product by admin", function(done) {
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        productSpy = spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
+
+        Meteor.call("createProduct", function(error,result) {
+          expect(error.error ).not.toEqual(403);
+          expect(productSpy).toHaveBeenCalled();
+        } );
+        return done();
+
+      });*/
+
+      // TODO: Tags should equal current Tag
+      // TOOO: Goto Tag, Check for visibility of product
+      //
+    });
+
     // test various product meta data
     describe("meta data", function() {
 
