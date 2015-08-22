@@ -57,7 +57,7 @@ facebook@1.2.1
 fastclick@1.0.3
 fortawesome:fontawesome@4.3.0
 geojson-utils@1.0.3
-grigio:babel@0.1.6
+grigio:babel@0.1.7
 html-tools@1.0.4
 htmljs@1.0.4
 http@1.1.0
@@ -92,7 +92,7 @@ mobile-status-bar@1.0.3
 momentjs:moment@2.10.6
 mongo@1.1.0
 mongo-livedata@1.0.8
-mquandalle:bower@1.4.1_1
+mquandalle:bower@1.4.1_3
 mrt:underscore-string-latest@2.3.3
 nemo64:bootstrap@3.3.5_2
 nemo64:bootstrap-data@3.3.5

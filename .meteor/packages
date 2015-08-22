@@ -6,12 +6,10 @@
 # Core Meteor Packages
 meteor-platform
 oauth-encryption
-coffeescript
 underscore
 less
 
 # Optional Meteor Packages
-# package-stats-opt-out
 accounts-facebook
 spiderable
 audit-argument-checks
