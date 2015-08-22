@@ -89,23 +89,23 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower.json","client");
   api.addFiles([
     "common/packageGlobals.js",
-    "common/common.coffee",
-    "common/helpers.coffee",
-    "common/routing.coffee",
-    "common/schemas/packages.coffee",
-    "common/schemas/accounts.coffee",
-    "common/schemas/shops.coffee",
-    "common/schemas/shipping.coffee",
-    "common/schemas/products.coffee",
-    "common/schemas/tags.coffee",
-    "common/schemas/cart.coffee",
-    "common/schemas/orders.coffee",
-    "common/schemas/translations.coffee",
-    "common/schemas/taxes.coffee",
-    "common/schemas/discounts.coffee",
-    "common/collections/collections.coffee",
-    "common/collections/collectionFS.coffee",
-    "common/hooks/hooks.coffee",
+    "common/common.js",
+    "common/helpers.js",
+    "common/routing.js",
+    "common/schemas/packages.js",
+    "common/schemas/accounts.js",
+    "common/schemas/shops.js",
+    "common/schemas/shipping.js",
+    "common/schemas/products.js",
+    "common/schemas/tags.js",
+    "common/schemas/cart.js",
+    "common/schemas/orders.js",
+    "common/schemas/translations.js",
+    "common/schemas/taxes.js",
+    "common/schemas/discounts.js",
+    "common/collections/collections.js",
+    "common/collections/collectionFS.js",
+    "common/hooks/hooks.js",
     "common/methods/cart.js"
   ], ["client", "server"]);
 
@@ -149,36 +149,36 @@ Package.onUse(function (api) {
     "lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css",
     "lib/css/jquery-ui.css",
 
-    "client/subscriptions.coffee",
-    "client/app.coffee",
+    "client/subscriptions.js",
+    "client/app.js",
 
-    "client/helpers/apps.coffee",
-    "client/helpers/cart.coffee",
-    "client/helpers/globals.coffee",
-    "client/helpers/i18n.coffee",
-    "client/helpers/metadata.coffee",
-    "client/helpers/permissions.coffee",
-    "client/helpers/utilities.coffee",
+    "client/helpers/apps.js",
+    "client/helpers/cart.js",
+    "client/helpers/globals.js",
+    "client/helpers/i18n.js",
+    "client/helpers/metadata.js",
+    "client/helpers/permissions.js",
+    "client/helpers/utilities.js",
 
     "client/templates/layout/layout.html",
-    "client/templates/layout/layout.coffee",
+    "client/templates/layout/layout.js",
 
     "client/templates/layout/header/header.html",
-    "client/templates/layout/header/header.coffee",
+    "client/templates/layout/header/header.js",
 
     "client/templates/layout/header/tags/tags.html",
-    "client/templates/layout/header/tags/tags.coffee",
+    "client/templates/layout/header/tags/tags.js",
 
     "client/templates/layout/header/i18n/i18n.html",
-    "client/templates/layout/header/i18n/i18n.coffee",
+    "client/templates/layout/header/i18n/i18n.js",
 
     "client/templates/layout/header/brand/brand.html",
 
     "client/templates/layout/footer/footer.html",
 
-    "client/templates/layout/alerts/bootstrap-alerts.coffee",
+    "client/templates/layout/alerts/bootstrapAlerts.js",
     "client/templates/layout/alerts/alerts.html",
-    "client/templates/layout/alerts/alerts.coffee",
+    "client/templates/layout/alerts/alerts.js",
 
     "client/templates/layout/loading/loading.html",
     "client/templates/layout/notFound/notFound.html",
@@ -187,7 +187,7 @@ Package.onUse(function (api) {
     "client/templates/layout/notice/shopNotFound.html",
 
     "client/templates/accounts/accounts.html",
-    "client/templates/accounts/accounts.coffee",
+    "client/templates/accounts/accounts.js",
 
     "client/templates/accounts/inline/inline.html",
     "client/templates/accounts/inline/inline.js",
@@ -213,7 +213,7 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/checkout.html",
     "client/templates/cart/checkout/checkout.js",
 
-    "client/workflows/orders.coffee",
+    "client/workflows/orders.js",
 
     "client/templates/cart/checkout/header/header.html",
 
@@ -221,7 +221,7 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/login/login.js",
 
     "client/templates/cart/checkout/progressBar/progressBar.html",
-    "client/templates/cart/checkout/progressBar/progressBar.coffee",
+    "client/templates/cart/checkout/progressBar/progressBar.js",
 
     "client/templates/cart/checkout/review/review.html",
     "client/templates/cart/checkout/review/review.js",
@@ -240,124 +240,121 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/addressBook/addressBook.js",
 
     "client/templates/dashboard/console/console.html",
-    "client/templates/dashboard/console/console.coffee",
+    "client/templates/dashboard/console/console.js",
 
     "client/templates/dashboard/console/icon/icon.html",
-    "client/templates/dashboard/console/icon/icon.coffee",
+    "client/templates/dashboard/console/icon/icon.js",
 
     "client/templates/dashboard/orders/orders.html",
-    "client/templates/dashboard/orders/orders.coffee",
+    "client/templates/dashboard/orders/orders.js",
 
     "client/templates/dashboard/orders/orderPage/orderPage.html",
-    "client/templates/dashboard/orders/orderPage/orderPage.coffee",
+    "client/templates/dashboard/orders/orderPage/orderPage.js",
 
     "client/templates/dashboard/orders/orderPage/details/details.html",
-    "client/templates/dashboard/orders/orderPage/details/details.coffee",
+    "client/templates/dashboard/orders/orderPage/details/details.js",
 
     "client/templates/dashboard/orders/list/ordersList.html",
-    "client/templates/dashboard/orders/list/ordersList.coffee",
+    "client/templates/dashboard/orders/list/ordersList.js",
 
     "client/templates/dashboard/orders/list/items/items.html",
-    "client/templates/dashboard/orders/list/items/items.coffee",
+    "client/templates/dashboard/orders/list/items/items.js",
 
     "client/templates/dashboard/orders/list/summary/summary.html",
-    "client/templates/dashboard/orders/list/summary/summary.coffee",
+    "client/templates/dashboard/orders/list/summary/summary.js",
 
     "client/templates/dashboard/orders/list/pdf/pdf.html",
-    "client/templates/dashboard/orders/list/pdf/pdf.coffee",
+    "client/templates/dashboard/orders/list/pdf/pdf.js",
 
     "client/templates/dashboard/orders/widget/widget.html",
-    "client/templates/dashboard/orders/widget/widget.coffee",
+    "client/templates/dashboard/orders/widget/widget.js",
 
     "client/templates/dashboard/orders/details/detail.html",
-    "client/templates/dashboard/orders/details/detail.coffee",
+    "client/templates/dashboard/orders/details/detail.js",
 
     "client/templates/dashboard/orders/social/orderSocial.html",
-    "client/templates/dashboard/orders/social/orderSocial.coffee",
 
     "client/templates/dashboard/orders/stateHelpers/completed/completed.html",
-    "client/templates/dashboard/orders/stateHelpers/completed/completed.coffee",
 
     "client/templates/dashboard/orders/stateHelpers/documents/documents.html",
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.coffee",
+    "client/templates/dashboard/orders/stateHelpers/documents/documents.js",
 
     "client/templates/dashboard/orders/stateHelpers/packing/packing.html",
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.coffee",
+    "client/templates/dashboard/orders/stateHelpers/packing/packing.js",
 
     "client/templates/dashboard/orders/stateHelpers/payment/payment.html",
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.coffee",
+    "client/templates/dashboard/orders/stateHelpers/payment/payment.js",
 
     "client/templates/dashboard/orders/stateHelpers/shipped/shipped.html",
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.coffee",
+    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.js",
 
     "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.coffee",
+    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.js",
 
     "client/templates/dashboard/packages/packages.html",
-    "client/templates/dashboard/packages/packages.coffee",
 
     "client/templates/dashboard/packages/grid/package/package.html",
-    "client/templates/dashboard/packages/grid/package/package.coffee",
+    "client/templates/dashboard/packages/grid/package/package.js",
 
     "client/templates/dashboard/packages/grid/grid.html",
-    "client/templates/dashboard/packages/grid/grid.coffee",
+    "client/templates/dashboard/packages/grid/grid.js",
 
     "client/templates/dashboard/dashboard.html",
-    "client/templates/dashboard/dashboard.coffee",
+    "client/templates/dashboard/dashboard.js",
 
     "client/templates/dashboard/shop/settings/settings.html",
-    "client/templates/dashboard/shop/settings/settings.coffee",
+    "client/templates/dashboard/shop/settings/settings.js",
 
     "client/templates/dashboard/accounts/accounts.html",
-    "client/templates/dashboard/accounts/accounts.coffee",
+    "client/templates/dashboard/accounts/accounts.js",
 
     "client/templates/dashboard/accounts/shopMember/shopMember.html",
-    "client/templates/dashboard/accounts/shopMember/shopMember.coffee",
+    "client/templates/dashboard/accounts/shopMember/shopMember.js",
 
     "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html",
-    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.coffee",
+    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.js",
 
     "client/templates/products/products.html",
-    "client/templates/products/products.coffee",
+    "client/templates/products/products.js",
 
     "client/templates/products/productList/productList.html",
-    "client/templates/products/productList/productList.coffee",
+    "client/templates/products/productList/productList.js",
 
     "client/templates/products/productGrid/productGrid.html",
-    "client/templates/products/productGrid/productGrid.coffee",
+    "client/templates/products/productGrid/productGrid.js",
 
     "client/templates/products/productDetail/productDetail.html",
-    "client/templates/products/productDetail/productDetail.coffee",
+    "client/templates/products/productDetail/productDetail.js",
 
     "client/templates/products/productDetail/edit/edit.html",
-    "client/templates/products/productDetail/edit/edit.coffee",
+    "client/templates/products/productDetail/edit/edit.js",
 
     "client/templates/products/productDetail/images/productImageGallery.html",
-    "client/templates/products/productDetail/images/productImageGallery.coffee",
+    "client/templates/products/productDetail/images/productImageGallery.js",
 
     "client/templates/products/productDetail/tags/tags.html",
-    "client/templates/products/productDetail/tags/tags.coffee",
+    "client/templates/products/productDetail/tags/tags.js",
 
     "client/templates/products/productDetail/social/social.html",
-    "client/templates/products/productDetail/social/social.coffee",
+    "client/templates/products/productDetail/social/social.js",
 
     "client/templates/products/productDetail/variants/variant.html",
-    "client/templates/products/productDetail/variants/variant.coffee",
+    "client/templates/products/productDetail/variants/variant.js",
 
     "client/templates/products/productDetail/variants/variantList/variantList.html",
-    "client/templates/products/productDetail/variants/variantList/variantList.coffee",
+    "client/templates/products/productDetail/variants/variantList/variantList.js",
 
     "client/templates/products/productDetail/variants/variantForm/variantForm.html",
-    "client/templates/products/productDetail/variants/variantForm/variantForm.coffee",
+    "client/templates/products/productDetail/variants/variantForm/variantForm.js",
 
     "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.html",
-    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.coffee",
+    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.js",
 
     "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html",
-    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.coffee",
+    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.js",
 
     "client/templates/products/productDetail/attributes/attributes.html",
-    "client/templates/products/productDetail/attributes/attributes.coffee"
+    "client/templates/products/productDetail/attributes/attributes.js"
   ], ["client"]);
 
   // Email Templates
@@ -417,11 +414,11 @@ Package.onTest(function(api) {
   api.use('reactioncommerce:core');
   api.use('reactioncommerce:bootstrap-theme');
 
-  api.addFiles('tests/jasmine/server/integration/shops.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/accounts.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/methods.coffee', 'server');
-  api.addFiles('tests/jasmine/server/integration/products.coffee', 'server');
+  api.addFiles('tests/jasmine/server/integration/shops.js', 'server');
+  api.addFiles('tests/jasmine/server/integration/accounts.js', 'server');
+  api.addFiles('tests/jasmine/server/integration/methods.js', 'server');
+  api.addFiles('tests/jasmine/server/integration/products.js', 'server');
   api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
-  api.addFiles('tests/jasmine/client/unit/shops.coffee', 'client');
-  api.addFiles('tests/jasmine/client/integration/shops.coffee', 'client');
+  api.addFiles('tests/jasmine/client/unit/shops.js', 'client');
+  api.addFiles('tests/jasmine/client/integration/shops.js', 'client');
 });

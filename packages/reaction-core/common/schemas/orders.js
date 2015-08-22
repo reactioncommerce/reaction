@@ -1,0 +1,190 @@
+
+/*
+ * Payments Schema
+ */
+
+(function() {
+  ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
+    processor: {
+      type: String
+    },
+    storedCard: {
+      type: String,
+      optional: true
+    },
+    method: {
+      type: String,
+      optional: true
+    },
+    transactionId: {
+      type: String
+    },
+    status: {
+      type: String,
+      allowedValues: ["created", "approved", "failed", "canceled", "expired", "pending", "voided", "settled"]
+    },
+    mode: {
+      type: String,
+      allowedValues: ["authorize", 'capture', 'refund', 'void']
+    },
+    createdAt: {
+      type: Date,
+      autoValue: function() {
+        if (this.isInsert) {
+          return new Date;
+        } else if (this.isUpsert) {
+          return {
+            $setOnInsert: new Date
+          };
+        }
+      },
+      denyUpdate: true
+    },
+    updatedAt: {
+      type: Date,
+      optional: true
+    },
+    authorization: {
+      type: String,
+      optional: true
+    },
+    amount: {
+      type: Number,
+      decimal: true
+    },
+    transactions: {
+      type: [Object],
+      optional: true,
+      blackbox: true
+    }
+  });
+
+  ReactionCore.Schemas.Invoice = new SimpleSchema({
+    transaction: {
+      type: String,
+      optional: true
+    },
+    shipping: {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    taxes: {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    subtotal: {
+      type: Number,
+      decimal: true
+    },
+    discounts: {
+      type: Number,
+      decimal: true,
+      optional: true
+    },
+    total: {
+      type: Number,
+      decimal: true
+    }
+  });
+
+  ReactionCore.Schemas.Payment = new SimpleSchema({
+    address: {
+      type: ReactionCore.Schemas.Address,
+      optional: true
+    },
+    paymentMethod: {
+      type: [ReactionCore.Schemas.PaymentMethod],
+      optional: true
+    },
+    invoices: {
+      type: [ReactionCore.Schemas.Invoice],
+      optional: true
+    }
+  });
+
+
+  /*
+   * Orders
+   */
+
+  ReactionCore.Schemas.Document = new SimpleSchema({
+    docId: {
+      type: String
+    },
+    docType: {
+      type: String,
+      optional: true
+    }
+  });
+
+  ReactionCore.Schemas.History = new SimpleSchema({
+    event: {
+      type: String
+    },
+    userId: {
+      type: String
+    },
+    updatedAt: {
+      type: Date
+    }
+  });
+
+  ReactionCore.Schemas.Notes = new SimpleSchema({
+    content: {
+      type: String
+    },
+    userId: {
+      type: String
+    },
+    updatedAt: {
+      type: Date
+    }
+  });
+
+
+  /*
+   * ReactionCore.Schemas.OrderItems
+   * merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order]
+   * to create Orders collection
+   */
+
+  ReactionCore.Schemas.OrderItems = new SimpleSchema({
+    additionalField: {
+      type: String,
+      optional: true
+    },
+    status: {
+      type: String
+    },
+    history: {
+      type: [ReactionCore.Schemas.History],
+      optional: true
+    },
+    documents: {
+      type: [ReactionCore.Schemas.Document],
+      optional: true
+    }
+  });
+
+  ReactionCore.Schemas.Order = new SimpleSchema({
+    cartId: {
+      type: String,
+      optional: true
+    },
+    history: {
+      type: [ReactionCore.Schemas.History],
+      optional: true
+    },
+    documents: {
+      type: [ReactionCore.Schemas.Document],
+      optional: true
+    },
+    notes: {
+      type: [ReactionCore.Schemas.Notes],
+      optional: true
+    }
+  });
+
+}).call(this);
