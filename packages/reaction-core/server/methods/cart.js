@@ -1,6 +1,7 @@
 /**
 * Reaction Cart Methods
 */
+// match helper
 Match.OptionalOrNull = function(pattern) {
   return Match.OneOf(void 0, null, pattern);
 };
@@ -132,7 +133,8 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
+   * copyCartToOrder - transforms cart to order
    * when a payment is processed we want to copy the cart
    * over to an order object, and give the user a new empty
    * cart. reusing the cart schema makes sense, but integrity of
@@ -187,26 +189,42 @@ Meteor.methods({
     }
     return orderId;
   },
+
+  /**
+   * setShipmentMethod
+   * saves method as order default
+   */
   setShipmentMethod: function(cartId, method) {
     var cart;
     check(cartId, String);
     check(method, Object);
+
     if (!(cartId && method)) {
       return;
     }
+
     cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
       userId: Meteor.userId()
     });
+
     if (cart) {
-      Cart.update(cartId, {
-        $set: {
-          "shipping.shipmentMethod": method
+        ReactionCore.Collections.Cart.update(cartId, {
+          $set: { "shipping.shipmentMethod": method }
+        });
+
+        ReactionCore.Events.info("cart/setStatus coreCheckoutShipping", cartId);
+        // this will transition to review
+        if (cart.status == "coreCheckoutShipping") {
+          Meteor.call('cart/setStatus', 'coreCheckoutReview');
         }
-      });
-      throw new Meteor.Error("setShipmentAddress: Invalid request");
-    }
+      }
   },
+
+  /**
+   * setShipmentAddress
+   * adds addressBook entry to cart shipping
+   */
   setShipmentAddress: function(cartId, address) {
     var cart;
     check(cartId, String);
@@ -224,15 +242,24 @@ Meteor.methods({
           "shipping.address": address
         }
       });
-      console.log(cart.status);
+
       Meteor.call("updateShipmentQuotes", cartId);
       if (!cart.shipping.address.fullName) {
-        return Meteor.call('cart/setStatus', 'checkoutAddressBook');
+        ReactionCore.Events.info("cart/setStatus checkoutAddressBook", cartId);
+        if (!cart.payment) {
+          Meteor.call('setPaymentAddress', cartId, address);
+        }
+        return  Meteor.call('cart/setStatus', 'checkoutAddressBook');
       }
     } else {
       throw new Meteor.Error("setShipmentAddress: Invalid request");
     }
   },
+
+  /**
+   * setPaymentAddress
+   * adds addressBook entry to cart
+   */
   setPaymentAddress: function(cartId, address) {
     var cart;
     check(cartId, String);
@@ -245,17 +272,22 @@ Meteor.methods({
       userId: Meteor.userId()
     });
     if (cart) {
-      return Cart.update(cartId, {
+      result = Cart.update(cartId, {
         $set: {
           "payment.address": address
         }
       });
+      if (!cart.shipping.address.fullName) {
+        ReactionCore.Events.info("cart/setStatus checkoutAddressBook", cartId);
+        Meteor.call('setShipmentAddress', cartId, address);
+      }
+      return result;
     } else {
       throw new Meteor.Error("setPaymentAddress: Invalid request");
     }
   },
 
-  /*
+  /**
    * mergeCart
    * merge matching sessionId cart into specified userId cart
    */
@@ -310,7 +342,7 @@ Meteor.methods({
     return true;
   },
 
-  /*
+  /**
    * createCart
    * returns new cart for user
    */
@@ -330,7 +362,7 @@ Meteor.methods({
     return Cart.find(newCartId);
   },
 
-  /*
+  /**
    * "cart/setStatu"
    * updates cart status
    * first sets, second call to same

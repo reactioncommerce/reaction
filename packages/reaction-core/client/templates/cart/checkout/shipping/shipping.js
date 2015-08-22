@@ -32,19 +32,6 @@ var getShipmentMethod = function (cart) {
   return null;
 }
 
-
-
-Template.coreCheckoutShipping.onRendered(function () {
-
-  var shipmentMethod = getShipmentMethod();
-
-  if (shipmentMethod) {
-    Meteor.call("cart/setStatus", "checkoutPayment");
-  }
-
-});
-
-
 Template.coreCheckoutShipping.helpers({
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)

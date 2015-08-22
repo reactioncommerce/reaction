@@ -25,7 +25,7 @@ Template.cartCheckout.onRendered(function () {
 Template.checkoutStepBadge.helpers({
   "position": function () {
     var workflowStep = Template.parentData(2).data;
-    console.log("Workflow Position", workflowStep);
+    /*console.log("Workflow Position", workflowStep);*/
     return workflowStep.position;
   },
 
@@ -33,7 +33,7 @@ Template.checkoutStepBadge.helpers({
     var workflowStep = Template.parentData(2).data;
     var currentStatus = ReactionCore.Collections.Cart.findOne().status;
 
-    if (workflowStep.status === true && currentStatus !== workflowStep.workflow)
+    if (workflowStep.status === true && currentStatus != workflowStep.workflow)
     {
       return "completed";
     } else {

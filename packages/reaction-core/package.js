@@ -225,7 +225,7 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/progressBar/progressBar.coffee",
 
     "client/templates/cart/checkout/review/review.html",
-    "client/templates/cart/checkout/review/review.coffee",
+    "client/templates/cart/checkout/review/review.js",
 
     "client/templates/cart/checkout/payment/payment.html",
     "client/templates/cart/checkout/payment/payment.coffee",

@@ -80,7 +80,6 @@ Template.registerHelper "cartWorkflow", (options) ->
       cartWorkflowAside.push cartWorkflow[index]
     else
       cartWorkflowMain.push cartWorkflow[index]
-  console.table cartWorkflow
   return {main: cartWorkflowMain, aside: cartWorkflowAside}
 
 ###
