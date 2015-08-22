@@ -15,7 +15,6 @@ Package.onUse(function (api) {
   api.use("accounts-password");
   api.use("less");
   api.use("http");
-  api.use("coffeescript");
   api.use("underscore");
   api.use("blaze");
   api.use("jquery");
