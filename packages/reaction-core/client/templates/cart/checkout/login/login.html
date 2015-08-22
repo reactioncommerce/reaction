@@ -1,31 +1,31 @@
 <template name="checkoutLogin">
+  {{#if guestIsLoggedIn}}
 
-{{#if guestIsLoggedIn}}
-xx
-  {{> checkoutLoggedIn}}
-{{else}}
+    {{> checkoutLoggedIn}}
 
-  <div class="panel panel-default">
+  {{else}}
 
-    <div class="panel-heading">
-      {{> checkoutStepBadge}}
+    <div class="panel panel-default">
 
-      {{#if allowGuestCheckout}}
-        <h3 class="panel-title">
-          <span data-i18n="checkoutLogin.guestOrLogin">Sign in, or checkout as a guest</span>
-        </h3>
-      {{else}}
-        <h3 class="panel-title">
-          <span data-i18n="checkoutLogin.createOrLogin">Create an acccount, or sign in</span>
-        </h3>
-      {{/if}}
+      <div class="panel-heading">
+        {{> checkoutStepBadge}}
+
+        {{#if allowGuestCheckout}}
+          <h3 class="panel-title">
+            <span data-i18n="checkoutLogin.guestOrLogin">Sign in, or checkout as a guest</span>
+          </h3>
+        {{else}}
+          <h3 class="panel-title">
+            <span data-i18n="checkoutLogin.createOrLogin">Create an acccount, or sign in</span>
+          </h3>
+        {{/if}}
+      </div>
+      <div class="panel-body">
+        {{> loginInline}}
+      </div>
     </div>
-    <div class="panel-body">
-      {{> loginInline}}
-    </div>
-  </div>
 
-{{/if}}
+  {{/if}}
 
 </template>
 

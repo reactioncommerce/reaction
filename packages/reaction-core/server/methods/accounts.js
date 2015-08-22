@@ -96,7 +96,6 @@ Accounts.onLogin(function(options) {
         multi: true
       });
       ReactionCore.Events.info("removed anonymous role from user: " + userId);
-      Meteor.call("cart/setStatus", 'checkoutLogin', currentCart._id);
     }
     if (currentCart && sessionCarts.count() >= 1) {
       ReactionCore.Events.info("multiple carts found for user " + userId);
