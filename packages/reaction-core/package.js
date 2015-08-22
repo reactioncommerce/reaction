@@ -110,24 +110,24 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.addFiles([
-    "server/app.coffee",
-    "server/browserPolicy.coffee",
-    "server/register.coffee",
-    "server/security.coffee",
-    "server/publications.coffee",
+    "server/app.js",
+    "server/browserPolicy.js",
+    "server/register.js",
+    "server/security.js",
+    "server/publications.js",
     "server/factories/shops.js",
     "server/factories/accounts.js",
     "server/factories/cart.js",
     "server/factories/orders.js",
     "server/factories/products.js",
-    "server/fixtures.coffee",
-    "server/methods/accounts.coffee",
-    "server/methods/cart.coffee",
-    "server/methods/hooks.coffee",
-    "server/methods/orders.coffee",
-    "server/methods/products.coffee",
-    "server/methods/shop.coffee",
-    "server/methods/shipping.coffee"
+    "server/fixtures.js",
+    "server/methods/accounts.js",
+    "server/methods/cart.js",
+    "server/methods/hooks.js",
+    "server/methods/orders.js",
+    "server/methods/products.js",
+    "server/methods/shop.js",
+    "server/methods/shipping.js"
   ], ["server"]);
 
   api.addFiles([
