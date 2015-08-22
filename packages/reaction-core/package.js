@@ -190,36 +190,35 @@ Package.onUse(function (api) {
     "client/templates/accounts/accounts.coffee",
 
     "client/templates/accounts/inline/inline.html",
-    "client/templates/accounts/inline/inline.coffee",
+    "client/templates/accounts/inline/inline.js",
 
     "client/templates/accounts/dropdown/dropdown.html",
-    "client/templates/accounts/dropdown/dropdown.coffee",
+    "client/templates/accounts/dropdown/dropdown.js",
 
     "client/templates/cart/cartDrawer/cartDrawer.html",
-    "client/templates/cart/cartDrawer/cartDrawer.coffee",
+    "client/templates/cart/cartDrawer/cartDrawer.js",
 
     "client/templates/cart/cartDrawer/cartItems/cartItems.html",
-    "client/templates/cart/cartDrawer/cartItems/cartItems.coffee",
+    "client/templates/cart/cartDrawer/cartItems/cartItems.js",
 
     "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.html",
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.coffee",
+    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.js",
 
     "client/templates/cart/cartIcon/cartIcon.html",
-    "client/templates/cart/cartIcon/cartIcon.coffee",
+    "client/templates/cart/cartIcon/cartIcon.js",
 
     "client/templates/cart/cartPanel/cartPanel.html",
-    "client/templates/cart/cartPanel/cartPanel.coffee",
+    "client/templates/cart/cartPanel/cartPanel.js",
 
     "client/templates/cart/checkout/checkout.html",
     "client/templates/cart/checkout/checkout.js",
 
     "client/workflows/orders.coffee",
 
+    "client/templates/cart/checkout/header/header.html",
+
     "client/templates/cart/checkout/login/login.html",
     "client/templates/cart/checkout/login/login.js",
-
-    "client/templates/cart/checkout/header/header.html",
-    "client/templates/cart/checkout/header/header.coffee",
 
     "client/templates/cart/checkout/progressBar/progressBar.html",
     "client/templates/cart/checkout/progressBar/progressBar.coffee",
@@ -228,13 +227,11 @@ Package.onUse(function (api) {
     "client/templates/cart/checkout/review/review.js",
 
     "client/templates/cart/checkout/payment/payment.html",
-    "client/templates/cart/checkout/payment/payment.coffee",
-
     "client/templates/cart/checkout/payment/methods/cards.html",
-    "client/templates/cart/checkout/payment/methods/cards.coffee",
+    "client/templates/cart/checkout/payment/methods/cards.js",
 
     "client/templates/cart/checkout/completed/completed.html",
-    "client/templates/cart/checkout/completed/completed.coffee",
+    "client/templates/cart/checkout/completed/completed.js",
 
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.js",

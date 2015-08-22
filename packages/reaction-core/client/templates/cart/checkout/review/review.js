@@ -4,5 +4,9 @@
 */
 
 Template.checkoutReview.onRendered(function () {
-  Meteor.call("cart/setStatus", "checkoutPayment");
+  var currentStatus = ReactionCore.Collections.Cart.findOne().status
+  if (currentStatus == "checkoutReview") {
+    Meteor.call("cart/setStatus", "checkoutPayment");
+  }
+
 });

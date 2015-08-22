@@ -55,4 +55,3 @@ Template.checkoutProgressBar.helpers
     # else if getGuestLoginState() and cart?.shipping?.shipmentMethod?.shopId and cart?.payment?.address
     #   return "next"
     # return
-
