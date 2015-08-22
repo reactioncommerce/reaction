@@ -21,24 +21,22 @@ Template.cartCheckout.onRendered(function () {
   Session.set("displayCartDrawer", false);
 });
 
-
 Template.checkoutStepBadge.helpers({
+
   "position": function () {
-    var workflowStep = Template.parentData(2).data;
-    /*console.log("Workflow Position", workflowStep);*/
+    var workflowStep = Template.instance().data;
     return workflowStep.position;
   },
 
   "status": function () {
-    var workflowStep = Template.parentData(2).data;
+    var workflowStep = Template.instance().data;
     var currentStatus = ReactionCore.Collections.Cart.findOne().status;
 
-    if (workflowStep.status === true && currentStatus != workflowStep.workflow)
-    {
-      return "completed";
-    } else {
+    if (workflowStep.status === true) {
       return "active";
     }
 
+    return "";
   }
+
 });

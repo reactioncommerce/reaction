@@ -11,11 +11,11 @@
       <div class="container">
         <div class="checkout-steps">
           <div class="checkout-steps-main">
-            {{> cartWorkflowViews views=cartWorkflow.main}}
+            {{> checkoutSteps views=cartWorkflow.main}}
           </div>
 
           <div class="checkout-steps-side">
-            {{> cartWorkflowViews views=cartWorkflow.aside}}
+            {{> checkoutSteps views=cartWorkflow.aside}}
           </div>
         </div>
       </div>
@@ -26,18 +26,27 @@
 </template>
 
 
-<template name="cartWorkflowViews">
+<template name="checkoutSteps">
   {{#each views}}
-      <div class="checkout-step">
-        {{#if status}}
+      {{#if status}}
+        <div class="checkout-step">
           {{> Template.dynamic template=workflow}}
-        {{else}}
-        <div class="col-md-12 checkout-pending">
-          <i class="checkout-step-badge">{{position}}</i>
         </div>
-        {{/if}}
-      </div>
+      {{else}}
+        <div class="checkout-step-pending">
+          {{> checkoutStepPending}}
+        </div>
+      {{/if}}
   {{/each}}
+</template>
+
+
+<template name="checkoutStepPending">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{> checkoutStepBadge}}
+    </div>
+  </div>
 </template>
 
 <template name="emptyCheckoutCart">
