@@ -5,8 +5,12 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
+Npm.depends({
+  faker: '3.0.1'
+});
+
 Package.onUse(function (api) {
-  api.versionsFrom('METEOR@1.0');
+  api.versionsFrom('METEOR@1.1.0.2');
 
   //core meteor packages
   api.use("meteor-platform");
@@ -40,7 +44,6 @@ Package.onUse(function (api) {
   api.use("ongoworks:security@1.2.0");
 
   api.use("dburles:factory@0.3.10");
-  api.use("digilord:faker@1.0.7");
   api.use("matb33:collection-hooks@0.7.13");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
@@ -64,6 +67,9 @@ Package.onUse(function (api) {
   api.imply("ui");
   api.imply("browser-policy");
   api.imply("service-configuration");
+  api.imply("ongoworks:speakingurl");
+  api.imply("ongoworks:security");
+  api.imply("dburles:factory");
   api.imply("mquandalle:bower");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
@@ -79,18 +85,17 @@ Package.onUse(function (api) {
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
-  api.imply("dburles:factory");
-  api.imply("digilord:faker");
-  api.imply("ongoworks:speakingurl");
-  api.imply("ongoworks:security");
 
   // Core Reaction files
   api.addFiles("lib/bower.json","client");
+  api.addFiles("lib/bower/Faker/build/build/faker.js", ["client","server"]);
+  api.addFiles("lib/faker.js", ["server"]);
+
   api.addFiles([
-    "common/packageGlobals.js",
-    "common/common.js",
+    "common/globals.js",
     "common/helpers.js",
-    "common/routing.js",
+    "common/routers.js",
+
     "common/schemas/packages.js",
     "common/schemas/accounts.js",
     "common/schemas/shops.js",
@@ -102,26 +107,28 @@ Package.onUse(function (api) {
     "common/schemas/translations.js",
     "common/schemas/taxes.js",
     "common/schemas/discounts.js",
+
     "common/collections/collections.js",
     "common/collections/collectionFS.js",
+
     "common/hooks/hooks.js",
-    "common/methods/cart.js"
+    "common/methods/cart.js",
+    "common/factories/faker.js",
+    "common/factories/users.js",
+    "common/factories/shops.js",
+    "common/factories/accounts.js",
+    "common/factories/products.js",
+    "common/factories/cart.js",
+    "common/factories/orders.js"
   ], ["client", "server"]);
 
   api.addFiles([
     "server/app.js",
+    "server/fixtures.js",
     "server/browserPolicy.js",
     "server/register.js",
     "server/security.js",
     "server/publications.js",
-    "server/factories/fake.js",
-    "server/factories/users.js",
-    "server/factories/shops.js",
-    "server/factories/accounts.js",
-    "server/factories/products.js",
-    "server/factories/cart.js",
-    "server/factories/orders.js",
-    "server/fixtures.js",
     "server/methods/accounts.js",
     "server/methods/cart.js",
     "server/methods/hooks.js",
@@ -132,7 +139,6 @@ Package.onUse(function (api) {
   ], ["server"]);
 
   api.addFiles([
-    // "lib/bower/packery/index.js",
     "lib/bower/jquery.ui/ui/core.js",
     "lib/bower/jquery.ui/ui/widget.js",
     "lib/bower/jquery.ui/ui/mouse.js",
@@ -362,6 +368,7 @@ Package.onUse(function (api) {
   api.addFiles('server/emailTemplates/welcomeNotification.html', 'server', {isAsset: true});
   api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
 
+
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
@@ -394,20 +401,19 @@ Package.onUse(function (api) {
   // somewhere within this scope.
   api.export("ReactionCore");
   api.export("ReactionRegistry","server");
+  api.export("faker", ["server"]); //for testing only?
 
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
-  api.export("CartWorkflow", ["client"]);
   api.export("OrderWorkflow", ["client"]);
   api.export("OrderWorkflowEvents", ["client"]);
-
   api.export("currentProduct", ["client", "server"]);
 });
+
 
 Package.onTest(function(api) {
   api.use('sanjo:jasmine@0.18.0');
   api.use('underscore');
-  api.use("digilord:faker@1.0.7");
   api.use("dburles:factory@0.3.10");
   api.use('velocity:html-reporter@0.8.2');
   api.use('velocity:console-reporter@0.1.3');
@@ -415,7 +421,6 @@ Package.onTest(function(api) {
   api.use('reactioncommerce:core');
   api.use('reactioncommerce:bootstrap-theme');
 
-  api.addFiles("server/factories/fake.js");
   api.addFiles('tests/jasmine/server/integration/shops.js', 'server');
   api.addFiles('tests/jasmine/server/integration/accounts.js', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.js', 'server');
@@ -423,5 +428,4 @@ Package.onTest(function(api) {
   api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
   api.addFiles('tests/jasmine/client/unit/shops.js', 'client');
   api.addFiles('tests/jasmine/client/integration/shops.js', 'client');
-  api.export("Fake");
 });

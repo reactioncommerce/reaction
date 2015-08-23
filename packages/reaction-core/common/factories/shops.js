@@ -2,7 +2,7 @@ Factory.define('shop', ReactionCore.Collections.Shops, {
   name: faker.company.companyName(),
   description: faker.company.catchPhrase(),
   keywords: faker.company.bsAdjective(),
-  addressBook: [Fake.reactionAddress() ],
+  addressBook: [faker.reaction.address() ],
   domains: ["localhost"],
   emails: [
     {

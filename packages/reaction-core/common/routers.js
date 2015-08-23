@@ -1,6 +1,6 @@
 /**
 * Reaction Core Routing
-* reaction routing and security configuration
+* @summary reaction routing and security configuration
 * uses iron:router package.
 */
 

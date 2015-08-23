@@ -1,8 +1,7 @@
 /**
  * ordersListSummary helpers
  *
- * @param
- * @returns
+ * @returns paymentInvoice
  */
 Template.ordersListSummary.helpers({
   invoice: function() {

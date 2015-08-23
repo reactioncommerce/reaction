@@ -5,7 +5,6 @@
  * users Factory.users
  *
  * @param {Number} amount of users
- * @returns
  */
 
 if (process.env.NODE_ENV === "development") {

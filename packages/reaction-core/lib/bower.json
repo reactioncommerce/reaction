@@ -2,6 +2,7 @@
   "name": "reactioncommerce-core",
   "dependencies": {
     "jquery.payment": "1.2.4",
+    "Faker": "3.0.1",
     "autosize": "3.0.7",
     "i18next": "1.10.2",
     "swiper": "3.0.8",
@@ -26,6 +27,11 @@
     "swiper": {
       "main": [
         "dist/js/swiper.jquery.min.js"
+      ]
+    },
+    "Faker": {
+      "main": [
+        "build/build/faker.j"
       ]
     }
   }

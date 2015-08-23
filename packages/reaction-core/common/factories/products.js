@@ -27,7 +27,7 @@ Factory.define('product', ReactionCore.Collections.Products, {
   vendor: faker.company.companyName(),
   metafields: [],
   variants: [
-    Fake.reactionProductVariant()
+    faker.reaction.productVariant()
   ],
   requiresShipping: true,
   // parcel: ?,

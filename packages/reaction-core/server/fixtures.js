@@ -1,9 +1,8 @@
-
 /*
-* Fixtures is a global server object that it can be reused in packages
-* assumes collection data in reaction-core/private/data, optionally jsonFile
-* use jsonFile when calling from another package, as we can't read the assets from here
-*/
+ * Fixtures is a global server object that it can be reused in packages
+ * assumes collection data in reaction-core/private/data, optionally jsonFile
+ * use jsonFile when calling from another package, as we can't read the assets from here
+ */
 
 
 var PackageFixture, getDomain;
@@ -112,11 +111,9 @@ PackageFixture = function() {
       if (shop) {
         ReactionCore.Events.info("Loading fixture data for " + collection._name);
         if (!(shop != null ? shop.languages : void 0)) {
-          shop.languages = [
-            {
-              'i18n': 'en'
-            }
-          ];
+          shop.languages = [{
+            'i18n': 'en'
+          }];
         }
         _ref = shop.languages;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -190,8 +187,11 @@ ReactionRegistry.createDefaultAdminUser = function() {
     options.email = ((_ref4 = Meteor.settings) != null ? (_ref5 = _ref4.reaction) != null ? _ref5.METEOR_EMAIL : void 0 : void 0) || Random.id(8).toLowerCase() + "@" + domain;
     ReactionCore.Events.warn("\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email + "\n  PASSWORD: " + options.password + "\n");
   }
+
   accountId = Accounts.createUser(options);
+
   packages = ReactionCore.Collections.Packages.find().fetch();
+
   ReactionCore.Collections.Shops.update(shopId, {
     $addToSet: {
       emails: {
@@ -201,6 +201,7 @@ ReactionRegistry.createDefaultAdminUser = function() {
       domains: Meteor.settings.ROOT_URL
     }
   });
+
   for (_i = 0, _len = packages.length; _i < _len; _i++) {
     pkg = packages[_i];
     _ref6 = pkg.registry;
@@ -215,6 +216,7 @@ ReactionRegistry.createDefaultAdminUser = function() {
     }
     defaultAdminRoles.push(pkg.name);
   }
+
   Meteor.call("addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId);
   Meteor.call("addUserPermissions", accountId, ['owner', 'admin', 'dashboard'], Roles.GLOBAL_GROUP);
 };

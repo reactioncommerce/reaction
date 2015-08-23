@@ -1,41 +1,37 @@
-/**
-* Method Hooks
-*/
-
-
 /*
 *  Blatant reuse of Meteor method hooks from
 *  https://github.com/hitchcott/meteor-method-hooks
 *  and
 *  https://github.com/Workpop/meteor-method-hooks
 */
-
-
 var MethodHooks;
-
 MethodHooks = {};
 
-
 /**
- * A hook to be run before or after a method.
- * @name Hook
- * @function
- * @return {*} The result of the method. Ignored for before hooks, passed as the methodResult to subsequent method hooks.
- * You can mutate the return value in after hooks.
- * @param {{result: *, error: *, arguments: Array, hooksProcessed: Number}} An options parameter that has the result and
- * error from calling the method and the arguments used to call that method. `result` and `error` are null for before
- * hooks, since the method has not yet been called. On the client, after hooks are called when the method returns from
- * the server, but before the callback is invoked. `hooksProcessed` gives you the number of hooks processed so far,
- * since previous hooks may have mutated the arguments.
- *
- * After hooks can change the result values. Use `hooksProcessed` to keep track of how many modifications have been
- * made.
- */
+* Meteor Method Hooks
+* @summary Method Hooks
+*
+* Returns the result of the method. Ignored for before hooks, passed as the methodResult to subsequent method hooks.
+* You can mutate the return value in after hooks.
+*
+* @param {{result: *, error: *, arguments: Array, hooksProcessed: Number}}
+*
+* An options parameter that has the result and error from calling the method and the arguments used to call that method.
+*
+* `result` and `error` are null for before hooks, since the method has not yet been called.
+* On the client, after hooks are called when the method returns from the server, but before the callback is invoked.
+*
+* `hooksProcessed` gives you the number of hooks processed so far,
+* since previous hooks may have mutated the arguments.
+*
+* After hooks can change the result values. Use `hooksProcessed` to keep track of how many modifications have been
+* made.
+*/
 
 
 /**
  * A collection of after hooks
- * @type {Object.<String, [Hook]>} A mapping from method names to arrays of hooks
+ * @summary A mapping from method names to arrays of hooks
  * @private
  */
 
@@ -44,7 +40,7 @@ MethodHooks._afterHooks = {};
 
 /**
  * A collection of before hooks
- * @type {Object.<String, [Hook]>} A mapping from method names to arrays of hooks
+ * @summary A mapping from method names to arrays of hooks
  * @private
  */
 
@@ -60,7 +56,7 @@ MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers : Me
 
 /**
  * The original method handlers
- * @type {Object.<String, Function>} Method handler mapping
+ * @summary Method handler mapping
  * @private
  */
 
@@ -69,7 +65,7 @@ MethodHooks._originalMethodHandlers = {};
 
 /**
  * Wrappers
- * @type {Object.<String, Function>} A mapping from method names to method functions
+ * @summary A mapping from method names to method functions
  * @private
  */
 
@@ -78,7 +74,7 @@ MethodHooks._wrappers = {};
 
 /**
  * Initializes a new hook
- * @param mapping {{}<String, [Hook]>} A place to store the mapping
+ * @param mapping <String, [Hook]> A place to store the mapping
  * @param methodName {String} The name of the method
  * @param hookFunction {function} The hook function
  * @private

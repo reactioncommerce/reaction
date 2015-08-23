@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "faker": {
+      "version": "3.0.1"
+    }
+  }
+}
