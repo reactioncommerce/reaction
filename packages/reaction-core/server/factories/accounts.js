@@ -1,14 +1,20 @@
+/**
+* Factory account
+*
+*/
+
 Factory.define('account', ReactionCore.Collections.Accounts, {
   shopId: Factory.get('shop'),
+  userId: Factory.get('user'),
   emails: [
     {
-      address: Fake.word() + '@example.com',
-      verified: Fake.fromArray([true, false])
+      address: faker.internet.email(),
+      verified: faker.random.boolean()
     }
   ],
   acceptsMarketing: true,
   state: 'new',
-  note: Fake.sentence(20),
+  note: faker.lorem.sentences(),
   profile: {
     addressBook: [
       Fake.reactionAddress()

@@ -1,34 +1,16 @@
-Fake.reactionAddress = function() {
-  return {
-    fullName: Fake.sentence(2),
-    address1: Fake.sentence(2),
-    address2: Fake.sentence(2),
-    city: Fake.word(),
-    company: Fake.word(),
-    phone: "Phone",
-    region: Fake.word(),
-    postal: _.random(10000, 100000),
-    country: "USA",
-    isCommercial: false,
-    isShippingDefault: true,
-    isBillingDefault: true,
-    metafields: []
-  };
-};
-
 Factory.define('shop', ReactionCore.Collections.Shops, {
-  name: Fake.sentence(2),
-  description: Fake.paragraph(20),
-  keywords: Fake.sentence(20),
-  addressBook: [Fake.reactionAddress()],
+  name: faker.company.companyName(),
+  description: faker.company.catchPhrase(),
+  keywords: faker.company.bsAdjective(),
+  addressBook: [Fake.reactionAddress() ],
   domains: ["localhost"],
   emails: [
     {
-      'address': 'root@localhost',
-      'verified': true
+      'address': faker.internet.email(),
+      'verified': faker.random.boolean(),
     }
   ],
-  currency: "USD",
+  currency: "USD",//faker.finance.currencyCode()
   currencies: {
     "USD": {
       "format": "%s%v",

@@ -1,25 +1,7 @@
 
-var fakeAddress, fakeUser, shopId;
+var fakeUser, shopId;
 
-fakeUser = Fake.user({
-  fields: ['name', 'username', 'emails.address', 'profile.name']
-});
-
-fakeAddress = {
-  fullName: fakeUser.profile.name,
-  address1: _.random(0, 100) + " " + Fake.word(),
-  address2: _.random(0, 100) + " " + Fake.word(),
-  city: Fake.word(),
-  company: Fake.word(),
-  phone: '0180055551212',
-  region: Fake.word(),
-  postal: '90401-0000',
-  country: 'USA',
-  isCommercial: false,
-  isShippingDefault: true,
-  isBillingDefault: true
-};
-
+fakeUser = Factory.create("user");
 shopId = Factory.create("shop")._id;
 
 describe("Account Meteor method ", function() {
@@ -44,7 +26,7 @@ describe("Account Meteor method ", function() {
       spyOn(Meteor, 'userId').and.returnValue(account1._id);
       spyOn(ReactionCore.Collections.Accounts, 'update');
       expect(function() {
-        return Meteor.call('addressBookAdd', fakeAddress, account2._id);
+        return Meteor.call('addressBookAdd', Fake.reactionAddress(), account2._id);
       }).not.toThrow();
       expect(ReactionCore.Collections.Accounts.update).toHaveBeenCalled();
       return done();

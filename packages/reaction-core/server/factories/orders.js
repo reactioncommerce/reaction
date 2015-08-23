@@ -32,20 +32,20 @@ var paymentMethod = function(doc) {
 
 Factory.define('order', ReactionCore.Collections.Orders, {
   // Schemas.OrderItems
-  additionalField: Fake.sentence(2),
-  status: Fake.sentence(3),
+  additionalField: faker.lorem.sentence(),
+  status: faker.lorem.sentence(3),
   history: [],
   documents: [],
-  
+
   // Schemas.Order
   cartId: Factory.get('cart'),
   notes: [],
-  
+
   // Schemas.Cart
-  shopId: Random.id(),
-  userId: Random.id(),
+  shopId: Factory.get("shop"),
+  userId: Factory.get("user"),
   sessions: ['Session'],
-  email: Fake.email,
+  email: faker.internet.email(),
   items: [
     {
       _id: Random.id(),
@@ -61,22 +61,22 @@ Factory.define('order', ReactionCore.Collections.Orders, {
         lowInventoryWarningThreshold: 1,
         inventoryQuantity: _.random(0, 100),
         price: _.random(10, 1000),
-        optionTitle: Fake.word(),
-        title: Fake.word(),
+        optionTitle: faker.lorem.words(),
+        title: faker.lorem.words(),
         sku: _.random(0, 6),
         taxable: true,
         metafields: [
           {
-            key: Fake.word(),
-            value: Fake.word(),
+            key: faker.lorem.words(),
+            value: faker.lorem.words(),
             scope: "detail"
           }, {
             key: "facebook",
-            value: Fake.paragraph(),
+            value: faker.lorem.paragraph(),
             scope: "socialMessages"
           }, {
             key: "twitter",
-            value: Fake.sentence(),
+            value: faker.lorem.sentence(),
             scope: "socialMessages"
           }
         ]
@@ -95,22 +95,22 @@ Factory.define('order', ReactionCore.Collections.Orders, {
         lowInventoryWarningThreshold: 1,
         inventoryQuantity: _.random(0, 100),
         price: _.random(10, 1000),
-        optionTitle: Fake.word(),
-        title: Fake.word(),
+        optionTitle: faker.lorem.words(),
+        title: faker.lorem.words(),
         sku: _.random(0, 6),
         taxable: true,
         metafields: [
           {
-            key: Fake.word(),
-            value: Fake.word(),
+            key: faker.lorem.words(),
+            value: faker.lorem.words(),
             scope: "detail"
           }, {
             key: "facebook",
-            value: Fake.paragraph(),
+            value: faker.lorem.paragraph(),
             scope: "socialMessages"
           }, {
             key: "twitter",
-            value: Fake.sentence(),
+            value: faker.lorem.sentence(),
             scope: "socialMessages"
           }
         ]

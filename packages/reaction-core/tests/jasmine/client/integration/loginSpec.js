@@ -20,8 +20,8 @@ signUp = function(user, callback) {
 describe('User signup', function() {
   var user;
   user = {
-    email: Fake.email,
-    password: Fake.password
+    email: faker.internet.email(),
+    password: faker.internet.password()
   };
   it('should return a meteor userId users by one', function() {
     signUp(user);

@@ -259,15 +259,19 @@ Meteor.methods({
     check(name, String);
     this.unblock();
     shop = Shops.findOne(shopId);
-    if (!ReactionCore.hasOwnerAccess(shop)) {
+
+    if (!ReactionCore.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access denied");
     }
+
     ReactionCore.configureMailUrl();
+
     if (shop && email && name) {
       currentUserName = ((_ref = Meteor.user()) !== null ? (_ref1 = _ref.profile) !== null ? _ref1.name : void 0 : void 0) || ((_ref2 = Meteor.user()) !== null ? _ref2.username : void 0) || "Admin";
       user = Meteor.users.findOne({
         "emails.address": email
       });
+      
       if (!user) {
         userId = Accounts.createUser({
           email: email,

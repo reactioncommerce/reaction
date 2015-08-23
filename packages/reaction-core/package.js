@@ -40,11 +40,11 @@ Package.onUse(function (api) {
   api.use("ongoworks:security@1.2.0");
 
   api.use("dburles:factory@0.3.10");
-  api.use("anti:fake@0.4.1");
+  api.use("digilord:faker@1.0.7");
   api.use("matb33:collection-hooks@0.7.13");
   api.use("alanning:roles@1.2.13");
-  api.use("momentjs:moment@2.10.6", 'client');
-  api.use("risul:moment-timezone@0.4.0",'client');
+  api.use("momentjs:moment@2.10.6");
+  api.use("risul:moment-timezone@0.4.0");
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.8.2");
 
@@ -76,11 +76,11 @@ Package.onUse(function (api) {
   api.imply("raix:ui-dropped-event");
   api.imply("matb33:collection-hooks");
   api.imply("alanning:roles");
-  api.imply("momentjs:moment", ["client"]);
+  api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
   api.imply("dburles:factory");
-  api.imply("anti:fake");
+  api.imply("digilord:faker");
   api.imply("ongoworks:speakingurl");
   api.imply("ongoworks:security");
 
@@ -114,11 +114,13 @@ Package.onUse(function (api) {
     "server/register.js",
     "server/security.js",
     "server/publications.js",
+    "server/factories/fake.js",
+    "server/factories/users.js",
     "server/factories/shops.js",
     "server/factories/accounts.js",
+    "server/factories/products.js",
     "server/factories/cart.js",
     "server/factories/orders.js",
-    "server/factories/products.js",
     "server/fixtures.js",
     "server/methods/accounts.js",
     "server/methods/cart.js",
@@ -403,16 +405,17 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function(api) {
-  api.use('coffeescript');
+  api.use('sanjo:jasmine@0.18.0');
   api.use('underscore');
-  api.use('sanjo:jasmine@0.17.0');
-  api.use("anti:fake@0.4.1");
+  api.use("digilord:faker@1.0.7");
+  api.use("dburles:factory@0.3.10");
   api.use('velocity:html-reporter@0.8.2');
   api.use('velocity:console-reporter@0.1.3');
 
   api.use('reactioncommerce:core');
   api.use('reactioncommerce:bootstrap-theme');
 
+  api.addFiles("server/factories/fake.js");
   api.addFiles('tests/jasmine/server/integration/shops.js', 'server');
   api.addFiles('tests/jasmine/server/integration/accounts.js', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.js', 'server');
@@ -420,4 +423,5 @@ Package.onTest(function(api) {
   api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
   api.addFiles('tests/jasmine/client/unit/shops.js', 'client');
   api.addFiles('tests/jasmine/client/integration/shops.js', 'client');
+  api.export("Fake");
 });

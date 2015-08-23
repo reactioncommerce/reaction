@@ -1,8 +1,8 @@
 Fake.reactionCartItem = function() {
   return {
     _id: Random.id(),
-    productId: Random.id(),
-    shopId: Random.id(),
+    productId: Factory.get("product"),
+    shopId: Factory.get("shop"),
     quantity: _.random(1, 5),
     variants: {
       _id: Random.id(),
@@ -13,22 +13,22 @@ Fake.reactionCartItem = function() {
       lowInventoryWarningThreshold: 1,
       inventoryQuantity: _.random(0, 100),
       price: _.random(10, 1000),
-      optionTitle: Fake.word(),
-      title: Fake.word(),
-      sku: Fake.word(),
+      optionTitle: faker.commerce.productName(),
+      title: faker.lorem.words(),
+      sku: faker.commerce.product(),
       taxable: true,
       metafields: [
         {
-          key: Fake.word(),
-          value: Fake.word(),
+          key: faker.commerce.productAdjective(),
+          value: faker.commerce.productMaterial(),
           scope: "detail"
         }, {
           key: "facebook",
-          value: Fake.paragraph(),
+          value: faker.lorem.paragraph(),
           scope: "socialMessages"
         }, {
           key: "twitter",
-          value: Fake.sentence(),
+          value: faker.lorem.sentence(),
           scope: "socialMessages"
         }
       ]
@@ -38,9 +38,9 @@ Fake.reactionCartItem = function() {
 
 Factory.define('cart', ReactionCore.Collections.Cart, {
   shopId: Factory.get('shop'),
-  userId: Random.id(),
+  userId: Factory.get('user'),
   sessions: [Random.id()],
-  email: Fake.email,
+  email: faker.internet.email(),
   items: [
     Fake.reactionCartItem(),
     Fake.reactionCartItem()
@@ -50,6 +50,6 @@ Factory.define('cart', ReactionCore.Collections.Cart, {
   payment: {},
   totalPrice: _.random(1, 1000),
   state: 'new',
-  createdAt: new Date(),
+  createdAt: faker.date.past(),
   updatedAt: new Date()
 });
