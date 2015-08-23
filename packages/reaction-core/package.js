@@ -374,8 +374,8 @@ Package.onUse(function (api) {
   ], ["client"]);
 
   // Email Templates
-  api.addFiles('server/emailTemplates/welcomeNotification.html', 'server', {isAsset: true});
-  api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
+  api.addFiles('server/templates/welcomeNotification.html', 'server', {isAsset: true});
+  api.addFiles('server/templates/shopMemberInvite.html', 'server', {isAsset: true});
 
 
   // Private fixture data
