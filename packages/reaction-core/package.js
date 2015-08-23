@@ -128,7 +128,16 @@ Package.onUse(function (api) {
     "server/browserPolicy.js",
     "server/register.js",
     "server/security.js",
-    "server/publications.js",
+
+    "server/publications/accounts.js",
+    "server/publications/cart.js",
+    "server/publications/media.js",
+    "server/publications/orders.js",
+    "server/publications/products.js",
+    "server/publications/sessions.js",
+    "server/publications/shops.js",
+    "server/publications/translations.js",
+
     "server/methods/accounts.js",
     "server/methods/cart.js",
     "server/methods/hooks.js",

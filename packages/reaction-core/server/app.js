@@ -61,7 +61,7 @@ _.extend(ReactionCore, {
   getCurrentShopCursor: function(client) {
     var cursor, domain;
     domain = this.getDomain(client);
-    cursor = Shops.find({
+    cursor = ReactionCore.Collections.Shops.find({
       domains: domain
     }, {
       limit: 1
