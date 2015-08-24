@@ -9,32 +9,31 @@ Package.onUse(function (api, where) {
   api.versionsFrom('METEOR@1.0');
   api.use("meteor-platform");
   api.use("templating");
-  api.use("coffeescript");
   api.use("less");
   api.use("reactioncommerce:core@0.6.3");
 
-  api.addFiles("server/register.coffee",["server"]); // register as a reaction package
-  api.addFiles("server/policy.coffee",["server"]); // browser-policies
+  api.addFiles("server/register.js",["server"]); // register as a reaction package
+  api.addFiles("server/policy.js",["server"]); // browser-policies
 
   api.addFiles([
-    "common/routing.coffee",
-    "common/schemas.coffee"   // Social Apps Config
+    "common/routing.js",
+    "common/schemas.js"   // Social Apps Config
   ], ["client","server"]);
 
   api.addFiles([
     "client/templates/social.html",
-    "client/templates/social.coffee",
+    "client/templates/social.js",
 
     "client/templates/dashboard/social.html",
-    "client/templates/dashboard/social.coffee",
+    "client/templates/dashboard/social.js",
 
     "client/templates/apps/facebook.html",
-    "client/templates/apps/facebook.coffee",
+    "client/templates/apps/facebook.js",
     "client/templates/apps/googleplus.html",
-    "client/templates/apps/googleplus.coffee",
+    "client/templates/apps/googleplus.js",
     "client/templates/apps/pinterest.html",
-    "client/templates/apps/pinterest.coffee",
+    "client/templates/apps/pinterest.js",
     "client/templates/apps/twitter.html",
-    "client/templates/apps/twitter.coffee",
+    "client/templates/apps/twitter.js",
   ], ["client"]);
 });
