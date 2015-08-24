@@ -9,7 +9,6 @@ aldeed:geocoder@0.3.6
 aldeed:simple-schema@1.3.3
 aldeed:template-extension@3.4.3
 amplify@1.0.0
-anti:fake@0.4.1
 audit-argument-checks@1.0.3
 autoupdate@1.2.1
 babel-compiler@5.8.3_1

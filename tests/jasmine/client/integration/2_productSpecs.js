@@ -44,8 +44,7 @@
     describe("meta data", function() {
 
       it("url should be product/example-product", function() {
-        var route;
-        route = Router.current().url;
+        var route = Router.current().url;
         expect(route).toContain("product/example-product");
       });
       // waitForElement doesn't play nice with these next two cases
