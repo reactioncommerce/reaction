@@ -22,7 +22,6 @@ Package.registerBuildPlugin({
 Package.on_use(function (api, where) {
   api.versionsFrom('METEOR@1.0');
   api.use("meteor-platform@1.2.1");
-  api.use("coffeescript");
   api.use("less");
   api.use("jquery");
   api.use('browser-policy-content', 'server');
@@ -31,20 +30,20 @@ Package.on_use(function (api, where) {
   api.use("spencern:reaction-analytics-libs@0.0.1", 'client');
 
   api.addFiles([
-    "common/routing.coffee",
-    "common/collections.coffee"
+    "common/routing.js",
+    "common/collections.js"
   ], ["client", "server"]);
 
   api.addFiles([
-    "client/startup.coffee",
+    "client/startup.js",
     "client/templates/reactionAnalytics/reactionAnalytics.html",
-    "client/templates/reactionAnalytics/reactionAnalytics.coffee"
+    "client/templates/reactionAnalytics/reactionAnalytics.js"
   ], ["client"]);
 
   api.addFiles([
-    "server/security/browserPolicy.coffee",
-    "server/security/AnalyticsEvents.coffee",
-    "server/publications.coffee",
-    "server/register.coffee"
+    "server/security/browserPolicy.js",
+    "server/security/AnalyticsEvents.js",
+    "server/publications.js",
+    "server/register.js"
   ], ["server"]);
 });
