@@ -29,7 +29,7 @@ AutoForm.hooks({
                 if (cart.shipping.address !== null) {
                   cart.shipping._id = insertDoc.id;
 
-                  CartWorkflow.shipmentAddress(insertDoc);
+                  Meteor.call("addressBookAdd", insertDoc, accountId);
                 }
 
 
@@ -38,7 +38,7 @@ AutoForm.hooks({
               if (cart.billing !== null) {
                 if (cart.billing.address !== null) {
                   cart.billing._id = insertDoc._id
-                  CartWorkflow.paymentAddress(insertDoc);
+                  Meteor.call("addressBookAdd", insertDoc, accountId);
                 }
               }
             }
