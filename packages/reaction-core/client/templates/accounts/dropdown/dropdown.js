@@ -1,21 +1,32 @@
 Template.loginDropdown.events({
+
   "click .dropdown-menu": function(event) {
     return event.stopPropagation();
   },
+
   "click #logout": function(event, template) {
     Session.set('displayConsoleNavBar', false);
+
+    console.log('logout please')
+
     Meteor.logout(function(err) {
+
+      console.log('should logout!!!', err)
+
       if (err) {
         return Meteor._debug(err);
       }
     });
     event.preventDefault();
-    return template.$('.dropdown-toggle').dropdown('toggle');
+
+    template.$('.dropdown-toggle').dropdown('toggle');
   },
+
   "click .user-accounts-dropdown-apps a": function(event, template) {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
+
       Meteor.call("createProduct", function(error, productId) {
         var currentTag, currentTagId;
         if (error) {
@@ -31,9 +42,11 @@ Template.loginDropdown.events({
           });
         }
       });
+
     } else if (this.route) {
       event.preventDefault();
       template.$('.dropdown-toggle').dropdown('toggle');
+
       return Router.go(this.route);
     }
   }

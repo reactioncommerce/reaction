@@ -46,6 +46,8 @@ Router.waitOn(function() {
   return this.subscribe("Packages");
 });
 
+// ----------------------------------------------------------------------------
+
 ShopController = RouteController.extend({
   onAfterAction: function() {
     return ReactionCore.MetaData.refresh(this.route, this.params);
@@ -66,6 +68,9 @@ ShopController = RouteController.extend({
 
 this.ShopController = ShopController;
 
+
+// ----------------------------------------------------------------------------
+
 ShopAdminController = this.ShopController.extend({
   onBeforeAction: function() {
     if (!ReactionCore.hasPermission(this.route.getName())) {
@@ -85,6 +90,20 @@ ShopAdminController = this.ShopController.extend({
 
 this.ShopAdminController = ShopAdminController;
 
+
+// ----------------------------------------------------------------------------
+
+
+ShopSettingsController = this.ShopAdminController.extend({
+  layoutTemplate: "coreSettingsLayout"
+});
+
+this.ShopSettingsController = ShopSettingsController;
+
+
+// ----------------------------------------------------------------------------
+
+
 PrintController = RouteController.extend({
   onBeforeAction: function() {
     if (!ReactionCore.hasPermission(this.route.getName())) {
@@ -98,15 +117,21 @@ PrintController = RouteController.extend({
 this.PrintController = PrintController;
 
 
+// ----------------------------------------------------------------------------
+
+
 /*
  * General Route Declarations
  */
 
 Router.map(function() {
+
   this.route("unauthorized", {
     template: "unauthorized",
     name: "unauthorized"
   });
+
+
   this.route("index", {
     controller: ShopController,
     path: "/",
@@ -116,6 +141,8 @@ Router.map(function() {
       return this.subscribe("Products");
     }
   });
+
+
   this.route('dashboard', {
     controller: ShopAdminController,
     template: 'dashboardPackages',
@@ -124,19 +151,25 @@ Router.map(function() {
       return this.next();
     }
   });
+
+
   this.route('dashboard/settings/shop', {
-    controller: ShopAdminController,
+    controller: ShopSettingsController,
     path: '/dashboard/settings/shop',
     template: 'shopSettings',
     data: function() {
       return ReactionCore.Collections.Shops.findOne();
     }
   });
+
+
   this.route('dashboard/members', {
     controller: ShopAdminController,
     path: '/dashboard/members',
     template: 'coreAccounts'
   });
+
+
   this.route('dashboard/orders', {
     controller: ShopAdminController,
     path: 'dashboard/orders/:_id?',
@@ -149,6 +182,8 @@ Router.map(function() {
       }
     }
   });
+
+
   this.route('product/tag', {
     controller: ShopController,
     path: 'product/tag/:_id',
@@ -171,6 +206,8 @@ Router.map(function() {
       }
     }
   });
+
+
   this.route('product', {
     controller: ShopController,
     path: 'product/:_id/:variant?',
@@ -200,6 +237,8 @@ Router.map(function() {
       }
     }
   });
+
+
   this.route('cartCheckout', {
     layoutTemplate: "coreLayout",
     path: 'checkout',
@@ -218,6 +257,8 @@ Router.map(function() {
       return this.subscribe("AccountOrders");
     }
   });
+
+
   this.route('cartCompleted', {
     controller: ShopController,
     path: 'completed/:_id',
@@ -239,6 +280,8 @@ Router.map(function() {
       }
     }
   });
+
+
   return this.route('dashboard/pdf/orders', {
     controller: PrintController,
     path: 'dashboard/pdf/orders/:_id',

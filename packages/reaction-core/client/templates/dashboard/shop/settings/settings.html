@@ -1,82 +1,86 @@
 <template name="shopSettings">
-<h3>
-  <span data-i18n="app.shop">Shop</span>
-  <small data-i18n="app.settings">Settings</small>
-</h3>
-<div class="tab-panel">
-  <ul class="nav nav-tabs" role="tablist">
-    <li class="active" role="presentation">
-      <a href="#general" aria-controls="general" role="tab" data-toggle="tab" data-i18n="shopSettings.general">General</a>
-    </li>
-    <li role="presentation">
-      <a href="#address" aria-controls="address" role="tab" data-toggle="tab" data-i18n="shopSettings.address">Address</a>
-    </li>
-    <li role="presentation">
-      <a href="#mail" aria-controls="mail" role="tab" data-toggle="tab" data-i18n="shopSettings.mail">Mail</a>
-    </li>
-    <li role="presentation">
-      <a href="#localization" aria-controls="localization" role="tab" data-toggle="tab" data-i18n="shopSettings.localization">Localization</a>
-    </li>
-    <li role="presentation">
-      <a href="#options" aria-controls="options" role="tab" data-toggle="tab" data-i18n="shopSettings.options">Options</a>
-    </li>
-  </ul>
 
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="general">
-      {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
-        {{> afQuickField name='name' placeholder="Shop Name"}}
-        {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
-        {{> afQuickField name='description' placeholder="Description"}}
-        {{> afQuickField name='keywords' placeholder="Keywords"}}
-        {{> shopSettingsSubmitButton}}
-      {{/autoForm}}
-    </div>
+<div class="container section">
 
-    <div role="tabpanel" class="tab-pane" id="address">
-        {{#autoForm collection="Shops" doc=. id="shopEditAddressForm" type="update"}}
-          {{> afQuickField name='addressBook.0.company'}}
-          {{> afQuickField name='addressBook.0.fullName'}}
-          {{> afQuickField name='addressBook.0.address1'}}
-          {{> afQuickField name='addressBook.0.address2'}}
-          {{> afQuickField name='addressBook.0.city'}}
-          {{> afQuickField name='addressBook.0.region'}}
-          {{> afQuickField name='addressBook.0.postal'}}
-          {{> afQuickField name='addressBook.0.country' options=countryOptions}}
-          {{> afQuickField name='addressBook.0.phone'}}
-          {{> afQuickField name='addressBook.0.isCommercial'}}
-          {{> afQuickField name='addressBook.0.isShippingDefault' value=true}}
-          {{> afQuickField name='addressBook.0.isBillingDefault' value=true}}
+  {{#contentFor "settingsTabs"}}
+    <ul class="nav nav-pills" role="tablist">
+      <li class="active" role="presentation">
+        <a href="#general" aria-controls="general" role="tab" data-toggle="tab" data-i18n="shopSettings.general">General</a>
+      </li>
+      <li role="presentation">
+        <a href="#address" aria-controls="address" role="tab" data-toggle="tab" data-i18n="shopSettings.address">Address</a>
+      </li>
+      <li role="presentation">
+        <a href="#mail" aria-controls="mail" role="tab" data-toggle="tab" data-i18n="shopSettings.mail">Mail</a>
+      </li>
+      <li role="presentation">
+        <a href="#localization" aria-controls="localization" role="tab" data-toggle="tab" data-i18n="shopSettings.localization">Localization</a>
+      </li>
+      <li role="presentation">
+        <a href="#options" aria-controls="options" role="tab" data-toggle="tab" data-i18n="shopSettings.options">Options</a>
+      </li>
+    </ul>
+  {{/contentFor}}
+
+  <div class="tab-panel">
+
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="general">
+        {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
+          {{> afQuickField name='name' placeholder="Shop Name"}}
+          {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
+          {{> afQuickField name='description' placeholder="Description"}}
+          {{> afQuickField name='keywords' placeholder="Keywords"}}
           {{> shopSettingsSubmitButton}}
         {{/autoForm}}
-    </div>
+      </div>
 
-    <div role="tabpanel" class="tab-pane" id="mail">
-        {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditEmailForm" type="update"}}
-          {{> afQuickField name='settings.mail.user'}}
-          {{> afQuickField name='settings.mail.password'}}
-          {{> afQuickField name='settings.mail.host'}}
-          {{> afQuickField name='settings.mail.port'}}
-          {{> shopSettingsSubmitButton}}
-        {{/autoForm}}
-    </div>
+      <div role="tabpanel" class="tab-pane" id="address">
+          {{#autoForm collection="Shops" doc=. id="shopEditAddressForm" type="update"}}
+            {{> afQuickField name='addressBook.0.company'}}
+            {{> afQuickField name='addressBook.0.fullName'}}
+            {{> afQuickField name='addressBook.0.address1'}}
+            {{> afQuickField name='addressBook.0.address2'}}
+            {{> afQuickField name='addressBook.0.city'}}
+            {{> afQuickField name='addressBook.0.region'}}
+            {{> afQuickField name='addressBook.0.postal'}}
+            {{> afQuickField name='addressBook.0.country' options=countryOptions}}
+            {{> afQuickField name='addressBook.0.phone'}}
+            {{> afQuickField name='addressBook.0.isCommercial'}}
+            {{> afQuickField name='addressBook.0.isShippingDefault' value=true}}
+            {{> afQuickField name='addressBook.0.isBillingDefault' value=true}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+      </div>
 
-    <div role="tabpanel" class="tab-pane" id="localization">
-        {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
-          {{> afQuickField name='timezone' options=timezoneOptions}}
-          {{> afQuickField name='currency' options=currencyOptions}}
-          {{> afQuickField name='locale' options=countryOptions}}
-          {{> afQuickField name='baseUOM' options=uomOptions}}
-          {{> shopSettingsSubmitButton}}
-        {{/autoForm}}
-    </div>
+      <div role="tabpanel" class="tab-pane" id="mail">
+          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditEmailForm" type="update"}}
+            {{> afQuickField name='settings.mail.user'}}
+            {{> afQuickField name='settings.mail.password'}}
+            {{> afQuickField name='settings.mail.host'}}
+            {{> afQuickField name='settings.mail.port'}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+      </div>
 
-    <div role="tabpanel" class="tab-pane" id="options">
-        {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOptionsForm" type="update"}}
-          {{> afFieldInput name='settings.public.allowGuestCheckout'}}
-          {{> shopSettingsSubmitButton}}
-        {{/autoForm}}
+      <div role="tabpanel" class="tab-pane" id="localization">
+          {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
+            {{> afQuickField name='timezone' options=timezoneOptions}}
+            {{> afQuickField name='currency' options=currencyOptions}}
+            {{> afQuickField name='locale' options=countryOptions}}
+            {{> afQuickField name='baseUOM' options=uomOptions}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="options">
+          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOptionsForm" type="update"}}
+            {{> afFieldInput name='settings.public.allowGuestCheckout'}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+      </div>
     </div>
   </div>
 </div>
@@ -84,6 +88,6 @@
 
 <template name="shopSettingsSubmitButton">
   <div class="clearfix">
-    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+    <button type="submit" class="btn btn-primary pull-right">Save Changes</button>
   </div>
 </template>

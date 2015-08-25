@@ -363,7 +363,7 @@ Template.registerHelper("pluralize", function(n, thing) {
 
 /**
  * registerHelper active
- * 
+ *
  * general helper to return 'active' when on current path
  * returns string\
  * handlebars: {{active 'route'}}

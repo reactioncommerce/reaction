@@ -21,7 +21,9 @@
                     "unauthorizedMessage": "You don't have permission to view this content.",
                     "monthOptions": "Choose month",
                     "yearOptions": "Chose year",
-                    "timezoneOptions": "Choose timezone"
+                    "timezoneOptions": "Choose timezone",
+                    "shopSettings": "Shop Settings",
+                    "dashboard": "Dashboard"
                 },
                 "header": {
                     "tagsAdd": "Add tag",

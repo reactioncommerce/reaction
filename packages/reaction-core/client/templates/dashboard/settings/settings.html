@@ -1,0 +1,46 @@
+
+<template name="settingsHeader">
+  <div class="settings-tabs">
+    <a class="btn btn-primary btn-dashboard-home" href="/dashboard">
+      <i class="fa fa-angle-left"></i> <span data-i18n="app.dashboard">Dashboard</span>
+    </a>
+    <h3>
+      <span data-i18n="{{thisApp.i18nLabel}}">{{thisApp.label}}</span>
+    </h3>
+
+    {{> yield region="settingsTabs"}}
+
+  </div>
+</template>
+
+
+<template name="settingsSidebar">
+  <div class="dashboard-nav">
+    <ul class="nav nav-pills nav-stacked">
+    {{#each reactionApps provides='dashboard'}}
+      {{#if pkgPermissions}}
+          {{> settingsSidebarItem}}
+      {{/if}}
+    {{/each}}
+    </ul>
+  </div>
+</template>
+
+
+<template name="settingsSidebarItem">
+
+  {{#if enabled}}
+
+      {{#each reactionApps provides="settings" name=name container=container}}
+        {{#if hasPermission route}}
+        <li class="{{active route}}">
+
+          <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}" href="{{route}}">
+            <i class="{{../icon}}"></i> {{label}}
+          </a>
+          </li>
+        {{/if}}
+      {{/each}}
+  {{/if}}
+
+</template>

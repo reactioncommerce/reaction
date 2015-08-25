@@ -318,6 +318,9 @@ Package.onUse(function (api) {
     "client/templates/dashboard/dashboard.html",
     "client/templates/dashboard/dashboard.js",
 
+    "client/templates/dashboard/settings/settings.html",
+    "client/templates/dashboard/settings/settings.js",
+
     "client/templates/dashboard/shop/settings/settings.html",
     "client/templates/dashboard/shop/settings/settings.js",
 

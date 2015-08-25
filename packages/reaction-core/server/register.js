@@ -54,6 +54,8 @@ ReactionCore.registerPackage({
       ]
     }, {
       route: "dashboard/settings/shop",
+      label: "Shop Settings",
+      i18nLabel: "app.shopSettings",
       provides: 'settings',
       icon: "fa fa-cog fa-2x fa-fw",
       container: 'dashboard'
