@@ -26,6 +26,8 @@ ReactionCore.registerPackage({
       cycle: '3',
       container: 'dashboard'
     }, {
+      label: "Analytics Settings",
+      i18nLabel: "app.analyticsSettings",
       route: 'reactionAnalytics',
       provides: 'settings',
       container: 'dashboard'
