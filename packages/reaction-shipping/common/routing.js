@@ -1,6 +1,6 @@
 Router.map(function() {
   return this.route('shipping', {
-    controller: ShopAdminController,
+    controller: ShopSettingsController,
     path: 'dashboard/settings/shipping',
     template: 'shipping',
     waitOn: function() {

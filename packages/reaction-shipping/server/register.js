@@ -1,4 +1,5 @@
 ReactionCore.registerPackage({
+  label: "Shipping",
   name: 'reaction-shipping',
   autoEnable: true,
   settings: {
@@ -13,6 +14,8 @@ ReactionCore.registerPackage({
       cycle: 3,
       group: "reaction-shipping"
     }, {
+      label: "Shipping Settings",
+      i18nLabel: "app.shippingSettings",
       route: 'shipping',
       provides: 'settings',
       group: "reaction-shipping"

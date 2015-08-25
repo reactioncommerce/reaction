@@ -61,6 +61,16 @@ Template.afFormGroup_validRanges.helpers({
  * template addShippingProvider events
  */
 
+ Template.shippingSettingsNav.events({
+  'click [data-action=addShippingProvider]': function(event, template) {
+    event.preventDefault();
+    toggleSession("selectedShippingProvider");
+    console.log("poop?")
+  }
+});
+
+
+
 Template.editShippingMethod.events({
   'click .cancel': function(event, template) {
     toggleSession("selectedShippingMethod");
