@@ -1,8 +1,4 @@
 
-Template.addressBookEdit.onCreated(function () {
-  console.log('addressBookEdit', this)
-})
-
 /*
  * update address book (cart) form handling
  * onSubmit we need to add accountId which is not in context
@@ -11,10 +7,13 @@ Template.addressBookEdit.onCreated(function () {
 AutoForm.hooks({
   addressBookEditForm: {
     onSubmit: function(insertDoc, updateDoc, currentDoc) {
-      var accountId, error;
 
       this.event.preventDefault();
-      accountId = ReactionCore.Collections.Accounts.findOne()._id;
+
+      var addressBook = $(this.template.firstNode).closest('.address-book');
+      var accountId = ReactionCore.Collections.Accounts.findOne()._id;
+      var error;
+
       try {
         Meteor.call("addressBookUpdate", insertDoc, accountId, function(error, result) {
           var cart, ref, ref1, ref2, ref3;
@@ -52,13 +51,8 @@ AutoForm.hooks({
       }
       this.done();
 
-      console.log('return to address grid', this.template)
-
-      var view = $(this.template.firstNode).closest('[blaze-view="addressBook"]');
-      view.empty();
-
-      Blaze.render(Template.addressBookGrid, view.get(0));
-
+      // Show the grid
+      addressBook.trigger($.Event('showMainView'));
 
     }
   }

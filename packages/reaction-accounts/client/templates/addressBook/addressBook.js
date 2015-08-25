@@ -35,8 +35,7 @@ Template.addressBook.onRendered(function () {
 
 Template.addressBook.helpers({
   account: function () {
-    var account;
-    account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
+    var account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
     return account;
   },
 
@@ -46,6 +45,10 @@ Template.addressBook.helpers({
 
   currentView: function() {
     return Template.instance().currentViewTemplate.get();
+  },
+
+  selectedAddress: function() {
+    return Template.instance.templateData.get()
   }
 });
 
@@ -96,12 +99,6 @@ Template.addressBook.events({
 
     Template.instance().currentViewTemplate.set('addressBookGrid');
 
-
-
-    // var addressBook = template.$('[blaze-view="addressBook"]');
-    // addressBook.children().remove();
-
-    // Blaze.render(Template.addressBookGrid, addressBook.get(0))
   }
 
 });
