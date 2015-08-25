@@ -1,6 +1,6 @@
 Router.map(function() {
   return this.route("social", {
-    controller: ShopAdminController,
+    controller: ShopSettingsController,
     path: 'dashboard/settings/social',
     template: 'socialDashboard',
     waitOn: function() {

@@ -38,6 +38,8 @@ ReactionCore.registerPackage({
       cycle: '4',
       container: 'dashboard'
     }, {
+      label: "Social Settings",
+      i18nLabel: "app.socialSettings",
       route: 'social',
       template: 'socialDashboard',
       provides: 'settings',
