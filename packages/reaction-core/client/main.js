@@ -1,8 +1,7 @@
-
 /**
-* ReactionCore
-* Global reaction shop permissions methods and shop initialization
-*/
+ * ReactionCore
+ * Global reaction shop permissions methods and shop initialization
+ */
 
 var isDebug, levels, _ref, _ref1;
 
@@ -110,11 +109,9 @@ ReactionCore.Events.level(isDebug);
 
 Accounts.loginWithAnonymous = function(anonymous, callback) {
   Accounts.callLoginMethod({
-    methodArguments: [
-      {
-        anonymous: true
-      }
-    ],
+    methodArguments: [{
+      anonymous: true
+    }],
     userCallback: callback
   });
 };

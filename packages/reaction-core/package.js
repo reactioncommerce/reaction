@@ -12,7 +12,7 @@ Npm.depends({
 Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.1.0.2');
 
-  //core meteor packages
+  // core meteor packages
   api.use("meteor-platform");
   api.use("oauth-encryption");
   api.use("accounts-base");
@@ -29,7 +29,7 @@ Package.onUse(function (api) {
   api.use("service-configuration");
   api.use("amplify@1.0.0");
 
-  //community packages
+  // community packages
   api.use("mquandalle:bower@1.4.1_1");
   api.use("d3js:d3@3.5.5");
   api.use("mrt:underscore-string-latest@2.3.3");
@@ -60,7 +60,7 @@ Package.onUse(function (api) {
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.1.2");
 
-  //implying these are reused in reaction packages
+  // imply exports package vars
   api.imply("less");
   api.imply("amplify");
   api.imply("accounts-base");
@@ -86,306 +86,42 @@ Package.onUse(function (api) {
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
 
-  // Core Reaction files
+  // reaction core dependencies
   api.addFiles("lib/bower.json","client");
+  api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/mouse.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/position.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/autocomplete.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/sortable.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/draggable.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/droppable.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/effect.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/effect-slide.js", "client");
+  api.addFiles("lib/bower/jquery.ui/ui/menu.js", "client");
+  api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
+  api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
+  api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
+  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client', {isAsset: true});
+  api.addFiles("lib/css/jquery-ui.css", 'client', {isAsset: true});
   api.addFiles("lib/bower/Faker/build/build/faker.js", ["client","server"]);
   api.addFiles("lib/faker.js", ["server"]);
 
-  api.addFiles([
-    "common/globals.js",
-    "common/helpers.js",
-    "common/routers.js",
-
-    "common/schemas/packages.js",
-    "common/schemas/accounts.js",
-    "common/schemas/shops.js",
-    "common/schemas/shipping.js",
-    "common/schemas/products.js",
-    "common/schemas/tags.js",
-    "common/schemas/cart.js",
-    "common/schemas/orders.js",
-    "common/schemas/translations.js",
-    "common/schemas/taxes.js",
-    "common/schemas/discounts.js",
-
-    "common/collections/collections.js",
-    "common/collections/collectionFS.js",
-
-    "common/hooks/hooks.js",
-    "common/methods/cart.js",
-    "common/factories/faker.js",
-    "common/factories/users.js",
-    "common/factories/shops.js",
-    "common/factories/accounts.js",
-    "common/factories/products.js",
-    "common/factories/cart.js",
-    "common/factories/orders.js"
-  ], ["client", "server"]);
-
-  api.addFiles([
-    "server/app.js",
-    "server/fixtures.js",
-    "server/browserPolicy.js",
-    "server/register.js",
-    "server/security.js",
-
-    "server/publications/accounts.js",
-    "server/publications/cart.js",
-    "server/publications/media.js",
-    "server/publications/orders.js",
-    "server/publications/products.js",
-    "server/publications/sessions.js",
-    "server/publications/shops.js",
-    "server/publications/translations.js",
-
-    "server/methods/accounts.js",
-    "server/methods/cart.js",
-    "server/methods/hooks.js",
-    "server/methods/orders.js",
-    "server/methods/products.js",
-    "server/methods/shop.js",
-    "server/methods/shipping.js"
-  ], ["server"]);
-
-  api.addFiles([
-    "lib/bower/jquery.ui/ui/core.js",
-    "lib/bower/jquery.ui/ui/widget.js",
-    "lib/bower/jquery.ui/ui/mouse.js",
-    "lib/bower/jquery.ui/ui/position.js",
-    "lib/bower/jquery.ui/ui/autocomplete.js",
-    "lib/bower/jquery.ui/ui/sortable.js",
-    "lib/bower/jquery.ui/ui/draggable.js",
-    "lib/bower/jquery.ui/ui/droppable.js",
-    "lib/bower/jquery.ui/ui/effect.js",
-    "lib/bower/jquery.ui/ui/effect-slide.js",
-    "lib/bower/jquery.ui/ui/menu.js",
-    "lib/bower/autosize/dist/autosize.js",
-    "lib/bower/openexchangerates.accounting/accounting.min.js",
-    "lib/bower/openexchangerates.money/money.js",
-    "lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css",
-    "lib/css/jquery-ui.css",
-
-    "client/subscriptions.js",
-    "client/app.js",
-
-    "client/helpers/apps.js",
-    "client/helpers/cart.js",
-    "client/helpers/globals.js",
-    "client/helpers/i18n.js",
-    "client/helpers/metadata.js",
-    "client/helpers/permissions.js",
-    "client/helpers/utilities.js",
-
-    "client/templates/layout/layout.html",
-    "client/templates/layout/layout.js",
-
-    "client/templates/layout/header/header.html",
-    "client/templates/layout/header/header.js",
-
-    "client/templates/layout/header/tags/tags.html",
-    "client/templates/layout/header/tags/tags.js",
-
-    "client/templates/layout/header/i18n/i18n.html",
-    "client/templates/layout/header/i18n/i18n.js",
-
-    "client/templates/layout/header/brand/brand.html",
-
-    "client/templates/layout/footer/footer.html",
-
-    "client/templates/layout/alerts/bootstrapAlerts.js",
-    "client/templates/layout/alerts/alerts.html",
-    "client/templates/layout/alerts/alerts.js",
-
-    "client/templates/layout/loading/loading.html",
-    "client/templates/layout/notFound/notFound.html",
-
-    "client/templates/layout/notice/unauthorized.html",
-    "client/templates/layout/notice/shopNotFound.html",
-
-    "client/templates/accounts/accounts.html",
-    "client/templates/accounts/accounts.js",
-
-    "client/templates/accounts/inline/inline.html",
-    "client/templates/accounts/inline/inline.js",
-
-    "client/templates/accounts/dropdown/dropdown.html",
-    "client/templates/accounts/dropdown/dropdown.js",
-
-    "client/templates/cart/cartDrawer/cartDrawer.html",
-    "client/templates/cart/cartDrawer/cartDrawer.js",
-
-    "client/templates/cart/cartDrawer/cartItems/cartItems.html",
-    "client/templates/cart/cartDrawer/cartItems/cartItems.js",
-
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.html",
-    "client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.js",
-
-    "client/templates/cart/cartIcon/cartIcon.html",
-    "client/templates/cart/cartIcon/cartIcon.js",
-
-    "client/templates/cart/cartPanel/cartPanel.html",
-    "client/templates/cart/cartPanel/cartPanel.js",
-
-    "client/templates/cart/checkout/checkout.html",
-    "client/templates/cart/checkout/checkout.js",
-
-    "client/workflows/orders.js",
-
-    "client/templates/cart/checkout/header/header.html",
-
-    "client/templates/cart/checkout/login/login.html",
-    "client/templates/cart/checkout/login/login.js",
-
-    "client/templates/cart/checkout/progressBar/progressBar.html",
-    "client/templates/cart/checkout/progressBar/progressBar.js",
-
-    "client/templates/cart/checkout/review/review.html",
-    "client/templates/cart/checkout/review/review.js",
-
-    "client/templates/cart/checkout/payment/payment.html",
-    "client/templates/cart/checkout/payment/methods/cards.html",
-    "client/templates/cart/checkout/payment/methods/cards.js",
-
-    "client/templates/cart/checkout/completed/completed.html",
-    "client/templates/cart/checkout/completed/completed.js",
-
-    "client/templates/cart/checkout/shipping/shipping.html",
-    "client/templates/cart/checkout/shipping/shipping.js",
-
-    "client/templates/cart/checkout/addressBook/addressBook.html",
-    "client/templates/cart/checkout/addressBook/addressBook.js",
-
-    "client/templates/dashboard/console/console.html",
-    "client/templates/dashboard/console/console.js",
-
-    "client/templates/dashboard/console/icon/icon.html",
-    "client/templates/dashboard/console/icon/icon.js",
-
-    "client/templates/dashboard/orders/orders.html",
-    "client/templates/dashboard/orders/orders.js",
-
-    "client/templates/dashboard/orders/orderPage/orderPage.html",
-    "client/templates/dashboard/orders/orderPage/orderPage.js",
-
-    "client/templates/dashboard/orders/orderPage/details/details.html",
-    "client/templates/dashboard/orders/orderPage/details/details.js",
-
-    "client/templates/dashboard/orders/list/ordersList.html",
-    "client/templates/dashboard/orders/list/ordersList.js",
-
-    "client/templates/dashboard/orders/list/items/items.html",
-    "client/templates/dashboard/orders/list/items/items.js",
-
-    "client/templates/dashboard/orders/list/summary/summary.html",
-    "client/templates/dashboard/orders/list/summary/summary.js",
-
-    "client/templates/dashboard/orders/list/pdf/pdf.html",
-    "client/templates/dashboard/orders/list/pdf/pdf.js",
-
-    "client/templates/dashboard/orders/widget/widget.html",
-    "client/templates/dashboard/orders/widget/widget.js",
-
-    "client/templates/dashboard/orders/details/detail.html",
-    "client/templates/dashboard/orders/details/detail.js",
-
-    "client/templates/dashboard/orders/social/orderSocial.html",
-
-    "client/templates/dashboard/orders/stateHelpers/completed/completed.html",
-
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.html",
-    "client/templates/dashboard/orders/stateHelpers/documents/documents.js",
-
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.html",
-    "client/templates/dashboard/orders/stateHelpers/packing/packing.js",
-
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.html",
-    "client/templates/dashboard/orders/stateHelpers/payment/payment.js",
-
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.html",
-    "client/templates/dashboard/orders/stateHelpers/shipped/shipped.js",
-
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.html",
-    "client/templates/dashboard/orders/stateHelpers/tracking/tracking.js",
-
-    "client/templates/dashboard/packages/packages.html",
-
-    "client/templates/dashboard/packages/grid/package/package.html",
-    "client/templates/dashboard/packages/grid/package/package.js",
-
-    "client/templates/dashboard/packages/grid/grid.html",
-    "client/templates/dashboard/packages/grid/grid.js",
-
-    "client/templates/dashboard/dashboard.html",
-    "client/templates/dashboard/dashboard.js",
-
-    "client/templates/dashboard/settings/settings.html",
-    "client/templates/dashboard/settings/settings.js",
-
-    "client/templates/dashboard/shop/settings/settings.html",
-    "client/templates/dashboard/shop/settings/settings.js",
-
-    "client/templates/dashboard/accounts/accounts.html",
-    "client/templates/dashboard/accounts/accounts.js",
-
-    "client/templates/dashboard/accounts/shopMember/shopMember.html",
-    "client/templates/dashboard/accounts/shopMember/shopMember.js",
-
-    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html",
-    "client/templates/dashboard/accounts/shopMember/memberForm/memberForm.js",
-
-    "client/templates/products/products.html",
-    "client/templates/products/products.js",
-
-    "client/templates/products/productList/productList.html",
-    "client/templates/products/productList/productList.js",
-
-    "client/templates/products/productGrid/productGrid.html",
-    "client/templates/products/productGrid/productGrid.js",
-
-    "client/templates/products/productDetail/productDetail.html",
-    "client/templates/products/productDetail/productDetail.js",
-
-    "client/templates/products/productDetail/edit/edit.html",
-    "client/templates/products/productDetail/edit/edit.js",
-
-    "client/templates/products/productDetail/images/productImageGallery.html",
-    "client/templates/products/productDetail/images/productImageGallery.js",
-
-    "client/templates/products/productDetail/tags/tags.html",
-    "client/templates/products/productDetail/tags/tags.js",
-
-    "client/templates/products/productDetail/social/social.html",
-    "client/templates/products/productDetail/social/social.js",
-
-    "client/templates/products/productDetail/variants/variant.html",
-    "client/templates/products/productDetail/variants/variant.js",
-
-    "client/templates/products/productDetail/variants/variantList/variantList.html",
-    "client/templates/products/productDetail/variants/variantList/variantList.js",
-
-    "client/templates/products/productDetail/variants/variantForm/variantForm.html",
-    "client/templates/products/productDetail/variants/variantForm/variantForm.js",
-
-    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.html",
-    "client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.js",
-
-    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html",
-    "client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.js",
-
-    "client/templates/products/productDetail/attributes/attributes.html",
-    "client/templates/products/productDetail/attributes/attributes.js"
-  ], ["client"]);
-
-  // Email Templates
-  api.addFiles('server/templates/welcomeNotification.html', 'server', {isAsset: true});
-  api.addFiles('server/templates/shopMemberInvite.html', 'server', {isAsset: true});
-
+  // exports
+  api.addFiles("common/globals.js");
+
+  // init reaction core
+  api.addFiles("client/main.js", "client");
+  api.addFiles("server/main.js", "server");
+  api.addFiles("server/register.js", "server");
+  api.addFiles("common/common.js");
 
   // Private fixture data
   api.addFiles('private/data/Products.json', 'server', {isAsset: true});
   api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
   api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
   api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
+
   //i18n translations
   api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/cn.json', 'server', {isAsset: true});
@@ -408,17 +144,284 @@ Package.onUse(function (api) {
   api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
   api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
 
-  // We are now grouping all exported app variables and methods under
-  // "ReactionCore". The other exported variables should be moved to
-  // somewhere within this scope.
+  // import fixture data
+  api.addFiles("server/fixtures.js", "server");
+
+  // schemas
+  api.addFiles("common/schemas/packages.js");
+  api.addFiles("common/schemas/accounts.js");
+  api.addFiles("common/schemas/shops.js");
+  api.addFiles("common/schemas/shipping.js");
+  api.addFiles("common/schemas/products.js");
+  api.addFiles("common/schemas/tags.js");
+  api.addFiles("common/schemas/cart.js");
+  api.addFiles("common/schemas/orders.js");
+  api.addFiles("common/schemas/translations.js");
+  api.addFiles("common/schemas/taxes.js");
+  api.addFiles("common/schemas/discounts.js");
+
+  // collections
+  api.addFiles("common/collections/collections.js");
+  api.addFiles("common/collections/collectionFS.js");
+
+  // security
+  api.addFiles("server/browserPolicy.js", "server");
+  api.addFiles("server/security.js", "server");
+
+  // common
+  api.addFiles("common/routers.js");
+
+  api.addFiles("common/hooks/hooks.js");
+
+  api.addFiles("common/methods/cart.js");
+
+  api.addFiles("common/factories/faker.js");
+  api.addFiles("common/factories/users.js");
+  api.addFiles("common/factories/shops.js");
+  api.addFiles("common/factories/accounts.js");
+  api.addFiles("common/factories/products.js");
+  api.addFiles("common/factories/cart.js");
+  api.addFiles("common/factories/orders.js");
+
+  // publications
+  api.addFiles("server/publications/accounts.js", "server");
+  api.addFiles("server/publications/cart.js", "server");
+  api.addFiles("server/publications/media.js", "server");
+  api.addFiles("server/publications/orders.js", "server");
+  api.addFiles("server/publications/products.js", "server");
+  api.addFiles("server/publications/sessions.js", "server");
+  api.addFiles("server/publications/shops.js", "server");
+  api.addFiles("server/publications/translations.js", "server");
+
+  // methods
+  api.addFiles("server/methods/accounts.js", "server");
+  api.addFiles("server/methods/cart.js", "server");
+  api.addFiles("server/methods/hooks.js", "server");
+  api.addFiles("server/methods/orders.js", "server");
+  api.addFiles("server/methods/products.js", "server");
+  api.addFiles("server/methods/shop.js", "server");
+  api.addFiles("server/methods/shipping.js");
+
+  // client
+  api.addFiles("client/subscriptions.js", "client");
+  api.addFiles("client/helpers/apps.js", "client");
+  api.addFiles("client/helpers/cart.js", "client");
+  api.addFiles("client/helpers/globals.js", "client");
+  api.addFiles("client/helpers/i18n.js", "client");
+  api.addFiles("client/helpers/metadata.js", "client");
+  api.addFiles("client/helpers/permissions.js", "client");
+  api.addFiles("client/helpers/utilities.js", "client");
+
+  api.addFiles("client/templates/layout/layout.html", "client");
+  api.addFiles("client/templates/layout/layout.js", "client");
+
+  api.addFiles("client/templates/layout/header/header.html", "client");
+  api.addFiles("client/templates/layout/header/header.js", "client");
+
+  api.addFiles("client/templates/layout/header/tags/tags.html", "client");
+  api.addFiles("client/templates/layout/header/tags/tags.js", "client");
+
+  api.addFiles("client/templates/layout/header/i18n/i18n.html", "client");
+  api.addFiles("client/templates/layout/header/i18n/i18n.js", "client");
+
+  api.addFiles("client/templates/layout/header/brand/brand.html", "client");
+
+  api.addFiles("client/templates/layout/footer/footer.html", "client");
+
+  api.addFiles("client/templates/layout/alerts/bootstrapAlerts.js", "client");
+  api.addFiles("client/templates/layout/alerts/alerts.html", "client");
+  api.addFiles("client/templates/layout/alerts/alerts.js", "client");
+
+  api.addFiles("client/templates/layout/loading/loading.html", "client");
+  api.addFiles("client/templates/layout/notFound/notFound.html", "client");
+
+  api.addFiles("client/templates/layout/notice/unauthorized.html", "client");
+  api.addFiles("client/templates/layout/notice/shopNotFound.html", "client");
+
+  api.addFiles("client/templates/accounts/accounts.html", "client");
+  api.addFiles("client/templates/accounts/accounts.js", "client");
+
+  api.addFiles("client/templates/accounts/inline/inline.html", "client");
+  api.addFiles("client/templates/accounts/inline/inline.js", "client");
+
+  api.addFiles("client/templates/accounts/dropdown/dropdown.html", "client");
+  api.addFiles("client/templates/accounts/dropdown/dropdown.js", "client");
+
+  api.addFiles("client/templates/cart/cartDrawer/cartDrawer.html", "client");
+  api.addFiles("client/templates/cart/cartDrawer/cartDrawer.js", "client");
+
+  api.addFiles("client/templates/cart/cartDrawer/cartItems/cartItems.html", "client");
+  api.addFiles("client/templates/cart/cartDrawer/cartItems/cartItems.js", "client");
+
+  api.addFiles("client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.html", "client");
+  api.addFiles("client/templates/cart/cartDrawer/cartSubTotals/cartSubTotals.js", "client");
+
+  api.addFiles("client/templates/cart/cartIcon/cartIcon.html", "client");
+  api.addFiles("client/templates/cart/cartIcon/cartIcon.js", "client");
+
+  api.addFiles("client/templates/cart/cartPanel/cartPanel.html", "client");
+  api.addFiles("client/templates/cart/cartPanel/cartPanel.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/checkout.html", "client");
+  api.addFiles("client/templates/cart/checkout/checkout.js", "client");
+
+  api.addFiles("client/workflows/orders.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/header/header.html", "client");
+
+  api.addFiles("client/templates/cart/checkout/login/login.html", "client");
+  api.addFiles("client/templates/cart/checkout/login/login.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/progressBar/progressBar.html", "client");
+  api.addFiles("client/templates/cart/checkout/progressBar/progressBar.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/review/review.html", "client");
+  api.addFiles("client/templates/cart/checkout/review/review.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/payment/payment.html", "client");
+  api.addFiles("client/templates/cart/checkout/payment/methods/cards.html", "client");
+  api.addFiles("client/templates/cart/checkout/payment/methods/cards.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/completed/completed.html", "client");
+  api.addFiles("client/templates/cart/checkout/completed/completed.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/shipping/shipping.html", "client");
+  api.addFiles("client/templates/cart/checkout/shipping/shipping.js", "client");
+
+  api.addFiles("client/templates/cart/checkout/addressBook/addressBook.html", "client");
+  api.addFiles("client/templates/cart/checkout/addressBook/addressBook.js", "client");
+
+  api.addFiles("client/templates/dashboard/console/console.html", "client");
+  api.addFiles("client/templates/dashboard/console/console.js", "client");
+
+  api.addFiles("client/templates/dashboard/console/icon/icon.html", "client");
+  api.addFiles("client/templates/dashboard/console/icon/icon.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/orders.html", "client");
+  api.addFiles("client/templates/dashboard/orders/orders.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/orderPage/orderPage.html", "client");
+  api.addFiles("client/templates/dashboard/orders/orderPage/orderPage.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/orderPage/details/details.html", "client");
+  api.addFiles("client/templates/dashboard/orders/orderPage/details/details.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/list/ordersList.html", "client");
+  api.addFiles("client/templates/dashboard/orders/list/ordersList.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/list/items/items.html", "client");
+  api.addFiles("client/templates/dashboard/orders/list/items/items.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/list/summary/summary.html", "client");
+  api.addFiles("client/templates/dashboard/orders/list/summary/summary.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/list/pdf/pdf.html", "client");
+  api.addFiles("client/templates/dashboard/orders/list/pdf/pdf.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/widget/widget.html", "client");
+  api.addFiles("client/templates/dashboard/orders/widget/widget.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/details/detail.html", "client");
+  api.addFiles("client/templates/dashboard/orders/details/detail.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/social/orderSocial.html", "client");
+
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/completed/completed.html", "client");
+
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/documents/documents.html", "client");
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/documents/documents.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/packing/packing.html", "client");
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/packing/packing.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/payment/payment.html", "client");
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/payment/payment.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/shipped/shipped.html", "client");
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/shipped/shipped.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/tracking/tracking.html", "client");
+  api.addFiles("client/templates/dashboard/orders/stateHelpers/tracking/tracking.js", "client");
+
+  api.addFiles("client/templates/dashboard/packages/packages.html", "client");
+
+  api.addFiles("client/templates/dashboard/packages/grid/package/package.html", "client");
+  api.addFiles("client/templates/dashboard/packages/grid/package/package.js", "client");
+
+  api.addFiles("client/templates/dashboard/packages/grid/grid.html", "client");
+  api.addFiles("client/templates/dashboard/packages/grid/grid.js", "client");
+
+  api.addFiles("client/templates/dashboard/dashboard.html", "client");
+  api.addFiles("client/templates/dashboard/dashboard.js", "client");
+
+  api.addFiles("client/templates/dashboard/settings/settings.html", "client");
+  api.addFiles("client/templates/dashboard/settings/settings.js", "client");
+
+  api.addFiles("client/templates/dashboard/shop/settings/settings.html", "client");
+  api.addFiles("client/templates/dashboard/shop/settings/settings.js", "client");
+
+  api.addFiles("client/templates/dashboard/accounts/accounts.html", "client");
+  api.addFiles("client/templates/dashboard/accounts/accounts.js", "client");
+
+  api.addFiles("client/templates/dashboard/accounts/shopMember/shopMember.html", "client");
+  api.addFiles("client/templates/dashboard/accounts/shopMember/shopMember.js", "client");
+
+  api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html", "client");
+  api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.js", "client");
+
+  api.addFiles("client/templates/products/products.html", "client");
+  api.addFiles("client/templates/products/products.js", "client");
+
+  api.addFiles("client/templates/products/productList/productList.html", "client");
+  api.addFiles("client/templates/products/productList/productList.js", "client");
+
+  api.addFiles("client/templates/products/productGrid/productGrid.html", "client");
+  api.addFiles("client/templates/products/productGrid/productGrid.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/productDetail.html", "client");
+  api.addFiles("client/templates/products/productDetail/productDetail.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/edit/edit.html", "client");
+  api.addFiles("client/templates/products/productDetail/edit/edit.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/images/productImageGallery.html", "client");
+  api.addFiles("client/templates/products/productDetail/images/productImageGallery.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/tags/tags.html", "client");
+  api.addFiles("client/templates/products/productDetail/tags/tags.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/social/social.html", "client");
+  api.addFiles("client/templates/products/productDetail/social/social.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/variants/variant.html", "client");
+  api.addFiles("client/templates/products/productDetail/variants/variant.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/variants/variantList/variantList.html", "client");
+  api.addFiles("client/templates/products/productDetail/variants/variantList/variantList.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/variants/variantForm/variantForm.html", "client");
+  api.addFiles("client/templates/products/productDetail/variants/variantForm/variantForm.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.html", "client");
+  api.addFiles("client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html", "client");
+  api.addFiles("client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.js", "client");
+
+  api.addFiles("client/templates/products/productDetail/attributes/attributes.html", "client");
+  api.addFiles("client/templates/products/productDetail/attributes/attributes.js", "client");
+
+  // Email Templates
+  api.addFiles('server/templates/welcomeNotification.html', 'server', {isAsset: true});
+  api.addFiles('server/templates/shopMemberInvite.html', 'server', {isAsset: true});
+
+  // Exports
   api.export("ReactionCore");
   api.export("ReactionRegistry","server");
   api.export("faker", ["server"]); //for testing only?
 
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
-  api.export("OrderWorkflow", ["client"]);
-  api.export("OrderWorkflowEvents", ["client"]);
   api.export("currentProduct", ["client", "server"]);
 });
 

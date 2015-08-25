@@ -65,8 +65,8 @@ Returns false if the currently active status has not yet been set in the cart.
 
 See:  `server/methods/cart.coffee`
 
-###cart/setStatus
+###cart/pushWorkflow
 
-`Meteor.call('cart/setStatus', status, cartId, userId)`
+`Meteor.call('cart/pushWorkflow', status, cartId, userId)`
 
 Status is required.

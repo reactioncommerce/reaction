@@ -3,6 +3,7 @@
  *
  * used for schemea injection autoValue
  */
+
 _.extend(ReactionCore, {
   shopIdAutoValue: function() {
     if (this.isSet && this.isFromTrustedCode) {
@@ -13,7 +14,7 @@ _.extend(ReactionCore, {
     } else if (Meteor.isServer && (this.isInsert || this.isUpsert)) {
       return ReactionCore.getShopId();
     } else {
-      this.unset();
+      return this.unset();
     }
   }
 });

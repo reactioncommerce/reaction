@@ -78,9 +78,8 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
     decimal: true,
     min: 0
   },
-  status: {
-    type: String,
-    defaultValue: "checkoutLogin",
+  workflow: {
+    type: ReactionCore.Schemas.Workflow,
     optional: true
   },
   createdAt: {

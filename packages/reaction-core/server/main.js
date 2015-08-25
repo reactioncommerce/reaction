@@ -58,6 +58,7 @@ _.extend(ReactionCore, {
     }
     return true;
   },
+
   getCurrentShopCursor: function(client) {
     var cursor, domain;
     domain = this.getDomain(client);
@@ -137,7 +138,6 @@ _.extend(ReactionCore, {
     }
   }
 });
-
 
 /*
  * Execute start up fixtures

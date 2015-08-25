@@ -11,6 +11,20 @@ ReactionCore.Schemas.Permissions = new SimpleSchema({
   }
 });
 
+
+ReactionCore.Schemas.Workflow = new SimpleSchema({
+  status: {
+    type: String,
+    defaultValue: "checkoutLogin",
+    optional: true
+  },
+  workflow: {
+    type: [String],
+    optional: true
+  }
+});
+
+
 /**
 * PackageConfig Schema
 */

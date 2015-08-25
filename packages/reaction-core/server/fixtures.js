@@ -9,18 +9,28 @@ var PackageFixture, getDomain;
 
 PackageFixture = function() {
   return {
+    /**
+     * PackageFixture loadData
+     * @summary imports collection fixture data
+     */
     loadData: function(collection, jsonFile) {
-      var index, item, json, _i, _len;
       check(jsonFile, Match.Optional(String));
+      var index, item, json, _i, _len;
+
+      // skip import if existing
       if (collection.find().count() > 0) {
         return;
       }
+
       ReactionCore.Events.info("Loading default data for " + collection._name);
+      // accepts jsonFile to load file
       if (!jsonFile) {
         json = EJSON.parse(Assets.getText("private/data/" + collection._name + ".json"));
       } else {
         json = EJSON.parse(jsonFile);
       }
+
+      // loop over each item in json and import insert into collection
       for (index = _i = 0, _len = json.length; _i < _len; index = ++_i) {
         item = json[index];
         collection.insert(item, function(error, result) {
@@ -30,6 +40,8 @@ PackageFixture = function() {
           }
         });
       }
+
+      // TODO: more robust data validation
       if (index > 0) {
         ReactionCore.Events.info("Success adding document " + index + " items to " + collection._name);
       } else {
@@ -37,8 +49,10 @@ PackageFixture = function() {
       }
     },
 
-    /*
-     * updates package settings, accepts json string
+    /**
+     * loadSettings
+     * @summary updates package settings, accepts json string
+     *
      * example:
      *  Fixtures.loadSettings Assets.getText("settings/reaction.json")
      *
@@ -51,13 +65,15 @@ PackageFixture = function() {
      * Meteor account services can be added in `settings.services`
      */
     loadSettings: function(json) {
-      var exists, item, pkg, result, service, services, settings, validatedJson, _i, _j, _k, _len, _len1, _len2, _ref;
       check(json, String);
-      validatedJson = EJSON.parse(json);
+      var exists, item, pkg, result, service, services, settings, _i, _j, _k, _len, _len1, _len2, _ref;
+      var validatedJson = EJSON.parse(json);
+
       if (!_.isArray(validatedJson[0])) {
         ReactionCore.Events.warn("Load Settings is not an array. Failed to load settings.");
         return;
       }
+      // loop settings and upsert packages.
       for (_i = 0, _len = validatedJson.length; _i < _len; _i++) {
         pkg = validatedJson[_i];
         for (_j = 0, _len1 = pkg.length; _j < _len1; _j++) {
@@ -98,6 +114,10 @@ PackageFixture = function() {
         }
       }
     },
+    /**
+     * loadI18n fixtures
+     * @summary imports translation fixture data
+     */
     loadI18n: function(collection) {
       var item, json, language, languages, shop, _i, _j, _len, _len1, _ref;
       if (collection == null) {
@@ -136,12 +156,10 @@ PackageFixture = function() {
   };
 };
 
-
 /*
  * instantiate fixtures
  */
-
-this.Fixtures = new PackageFixture;
+this.Fixtures = new PackageFixture();
 
 
 /*
@@ -158,8 +176,9 @@ getDomain = function(url) {
 };
 
 
-/*
- * Method that creates default admin user
+/**
+ * ReactionRegistry createDefaultAdminUser
+ * @summary Method that creates default admin user
  */
 
 ReactionRegistry.createDefaultAdminUser = function() {
@@ -232,12 +251,15 @@ ReactionRegistry.loadFixtures = function() {
   Fixtures.loadData(ReactionCore.Collections.Products);
   Fixtures.loadData(ReactionCore.Collections.Tags);
   Fixtures.loadI18n(ReactionCore.Collections.Translations);
+
   try {
     currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
   } catch (_error) {
     e = _error;
     ReactionCore.Events.error("Failed to determine default shop.", e);
   }
+
+  // if the server domain changes, update shop.
   if (currentDomain && currentDomain !== getDomain()) {
     ReactionCore.Events.info("Updating domain to " + getDomain());
     Shops.update({
@@ -248,6 +270,7 @@ ReactionRegistry.loadFixtures = function() {
       }
     });
   }
+  //  insert packages into registry
   if (ReactionCore.Collections.Packages.find().count() !== ReactionCore.Collections.Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
     _.each(ReactionRegistry.Packages, function(config, pkgName) {
       return ReactionCore.Collections.Shops.find().forEach(function(shop) {
@@ -266,6 +289,7 @@ ReactionRegistry.loadFixtures = function() {
       });
     });
   }
+  // remove registry entries for packages that have been removed
   ReactionCore.Collections.Shops.find().forEach(function(shop) {
     return ReactionCore.Collections.Packages.find().forEach(function(pkg) {
       if (!_.has(ReactionRegistry.Packages, pkg.name)) {
@@ -277,5 +301,6 @@ ReactionRegistry.loadFixtures = function() {
       }
     });
   });
+  // create default admin user
   ReactionRegistry.createDefaultAdminUser();
 };

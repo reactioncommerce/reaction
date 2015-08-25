@@ -88,7 +88,7 @@ ReactionCore.Collections.Products.before.insert(function(userId, product) {
   var variant, _i, _len, _ref, _results;
   product.shopId = product.shopId || ReactionCore.getShopId();
   _.defaults(product, {
-    type: "Simple",
+    type: "simple",
     handle: getSlug(product.title),
     isVisible: false,
     updatedAt: new Date(),
@@ -104,7 +104,7 @@ ReactionCore.Collections.Products.before.insert(function(userId, product) {
 });
 
 
-/** 
+/**
 * ReactionCore.Collections.Products.before.update
 * See: https://github.com/matb33/meteor-collection-hooks
 */

@@ -17,9 +17,9 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   transactionId: {
     type: String
   },
-  status: {
-    type: String,
-    allowedValues: ["created", "approved", "failed", "canceled", "expired", "pending", "voided", "settled"]
+  workflow: {
+    type: ReactionCore.Schemas.Workflow,
+    optional: true
   },
   mode: {
     type: String,

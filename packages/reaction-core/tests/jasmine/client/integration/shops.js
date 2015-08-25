@@ -14,7 +14,7 @@ signUp = function(user, callback) {
   $('#login-email').val(user.email);
   $('#login-password').val(user.password);
   $('#login-buttons-password').trigger('click');
-  callback;
+  callback();
 };
 
 describe('User signup', function() {
@@ -25,10 +25,10 @@ describe('User signup', function() {
   };
   it('should return a meteor userId users by one', function() {
     signUp(user);
-    expect(Meteor.userId()).not.toBeNull;
+    expect(Meteor.userId()).not.toBeNull();
   });
   it('should automatically log-in new user', function() {
-    expect(Meteor.userId()).not.toBeNull;
+    expect(Meteor.userId()).not.toBeNull();
   });
 });
 

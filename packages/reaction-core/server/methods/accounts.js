@@ -52,12 +52,17 @@ Accounts.onCreateUser(function(options, user) {
       });
     }
   }
-  if (!((!user.services && !((_ref1 = user.services) != null ? _ref1.anonymous : void 0)) || user.emails.length > 0)) {
-    console.log(user);
-    user.roles[shopId] = (shop !== null ? shop.defaultRoles : void 0) || ["guest", "account/profile"];
-  } else {
-    user.roles[shopId] = (shop !== null ? shop.defaultVisitorRole : void 0) || ["anonymous", "guest", "account/profile"];
+
+  // add default user roles
+  if (shop) {
+    if (user.emails.length > 0) {
+      user.roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
+    } else {
+      user.roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest", "account/profile"];
+    }
   }
+
+  // clone user into account
   account = _.clone(user);
   account.userId = user._id;
   accountId = ReactionCore.Collections.Accounts.insert(account);
@@ -271,7 +276,7 @@ Meteor.methods({
       user = Meteor.users.findOne({
         "emails.address": email
       });
-      
+
       if (!user) {
         userId = Accounts.createUser({
           email: email,

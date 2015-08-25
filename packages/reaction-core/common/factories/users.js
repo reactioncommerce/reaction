@@ -2,7 +2,7 @@
  * User factory
  *
  */
- 
+
 Factory.define('user', Meteor.users, {
   username: function() {
     return faker.internet.userName() + _.random(0, 1000);
@@ -44,7 +44,4 @@ Factory.define('user', Meteor.users, {
 
   createdAt: new Date()
 
-}).after(function(doc) {
-  console.log(doc);
-  Roles.addUsersToRoles(doc._id, ['admin']);
 });

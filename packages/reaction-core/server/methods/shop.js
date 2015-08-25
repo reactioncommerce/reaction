@@ -1,6 +1,6 @@
 /**
-* Reaction Product Methods
-*/
+ * Reaction Product Methods
+ */
 var Packages;
 
 Packages = ReactionCore.Collections.Packages;
@@ -36,7 +36,7 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
    * determine user's countryCode and return locale object
    */
   getLocale: function() {
@@ -84,7 +84,7 @@ Meteor.methods({
     return result;
   },
 
-  /*
+  /**
    * determine user's full location for autopopulating addresses
    */
   locateAddress: function(latitude, longitude) {
@@ -131,7 +131,7 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
    * method to insert or update tag with hierarchy
    * tagName will insert
    * tagName + tagId will update existing
@@ -233,7 +233,7 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
    * Helper method to remove all translations, and reload from jsonFiles
    */
   flushTranslations: function() {
@@ -243,5 +243,27 @@ Meteor.methods({
     ReactionCore.Collections.Translations.remove({});
     Fixtures.loadI18n();
     return ReactionCore.Events.info(Meteor.userId() + " Flushed Translations.");
+  },
+
+  /**
+   * "shop/getWorkflow"
+   * returns workflow array
+   */
+
+  'shop/getWorkflow': function(name) {
+    check(name, String);
+
+    shopWorkflows = ReactionCore.Collections.Shops.findOne({
+      defaultWorkflows: {
+        $elemMatch: {
+          provides: name
+        }
+      }
+    }, {
+      fields: {
+        defaultWorkflows: true
+      }
+    });
+    return shopWorkflows;
   }
 });
