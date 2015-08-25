@@ -21,7 +21,7 @@ Template.addressBook.onCreated(function () {
         // Assume that if we're seeing the address book grid
         // then we should have both a default bulling and shipping
         // address selected
-        Meteor.call("cart/setStatus", 'checkoutAddressBook');
+        Meteor.call("cart/pushWorkflow", 'checkoutAddressBook');
       }
     }
   }

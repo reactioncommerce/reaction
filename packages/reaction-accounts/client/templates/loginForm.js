@@ -282,7 +282,7 @@ Template.loginForm.events({
 
     loginWithService(options, function (err) {
       //loginResultCallback(serviceName, err);
-      Meteor.call("cart/setStatus", 'checkoutLogin')
+      Meteor.call("cart/pushWorkflow", 'checkoutLogin')
     });
 
   }
