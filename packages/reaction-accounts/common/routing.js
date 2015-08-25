@@ -2,7 +2,7 @@
 Router.map(function() {
 
   this.route('accounts', {
-    controller: ShopAdminController,
+    controller: ShopSettingsController,
     path: '/dashboard/settings/accounts',
     template: 'accountsDashboard'
   });
