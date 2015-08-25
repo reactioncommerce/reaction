@@ -16,27 +16,29 @@
         <div class="list-group">
            {{#each addressBook}}
             <div class="address-ship-to list-group-item {{selectedShipping}}">
-                <a class="action--editAddress" data-id="{{_id}}">
-                  <div class="col-sm-1 pull-right address-icons">
-                    <span class="fa-stack fa-lg address-edit-icon">
-                      <i class="fa fa-pencil fa-stack-1x"></i>
-                    </span>
-                  </div>
-                </a>
-              <a class="action--removeAddress" data-id="{{_id}}">
+
+              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
+                <div class="col-sm-1 pull-right address-icons">
+                  <span class="fa-stack fa-lg address-edit-icon">
+                    <i class="fa fa-pencil fa-stack-1x"></i>
+                  </span>
+                </div>
+              </button>
+              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
                 <div class="col-sm-1 pull-right address-icons">
                   <span class="fa-stack fa-lg address-edit-icon">
                     <i class="fa fa-trash-o fa-stack-1x"></i>
                   </span>
                 </div>
-              </a>
-                <strong>{{fullName}}</strong>
-                <address>
-                  {{address1}}
-                  {{address2}},<br>
-                  {{city}}, {{region}} {{postal}} {{country}}<br>
-                  {{phone}}
-                </address>
+              </button>
+
+              <strong>{{fullName}}</strong>
+              <address>
+                {{address1}}
+                {{address2}},<br>
+                {{city}}, {{region}} {{postal}} {{country}}<br>
+                {{phone}}
+              </address>
             </div>
           {{/each}}
         </div>
@@ -46,20 +48,22 @@
         <div class="list-group">
           {{#each addressBook}}
             <div class="address-bill-to list-group-item {{selectedBilling}}">
-              <a class="action--editAddress" data-id="{{_id}}">
+
+              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
                 <div class="col-sm-1 pull-right address-icons">
                   <span class="fa-stack fa-lg address-edit-icon">
                     <i class="fa fa-pencil fa-stack-1x"></i>
                   </span>
                 </div>
-              </a>
-              <a class="action--removeAddress" data-id="{{_id}}">
+              </button>
+              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
                 <div class="col-sm-1 pull-right address-icons">
                   <span class="fa-stack fa-lg address-edit-icon">
                     <i class="fa fa-trash-o fa-stack-1x"></i>
                   </span>
                 </div>
-              </a>
+              </button>
+
               <strong>{{fullName}}</strong>
               <address>
                 {{address1}}

@@ -13,6 +13,7 @@ ReactionCore.registerPackage({
       container: 'accounts'
     },
     {
+      label: 'Account Settings',
       route: 'accounts',
       provides: 'settings',
       container: 'accounts'

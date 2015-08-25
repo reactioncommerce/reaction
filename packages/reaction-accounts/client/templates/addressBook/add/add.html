@@ -13,9 +13,9 @@
     <fieldset>
         {{> addressBookForm}}
         <div class="row text-right">
-          <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
+          <button type="submit" class="btn btn-primary" data-i18n="app.saveAndContinue" data-event-action="saveAddress">Save and continue</button>
           {{#if hasAddressBookEntries}}
-          <button type="reset" class="btn btn-default action--cancelEdit" data-i18n="app.cancel">Cancel</button>
+          <button type="reset" class="btn btn-default" data-i18n="app.cancel" data-event-action="cancelAddressEdit">Cancel</button>
           {{/if}}
         </div>
     </fieldset>

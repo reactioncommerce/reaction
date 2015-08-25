@@ -19,7 +19,7 @@ Template.addressBook.onCreated(function () {
 
         // TODO: make this more bullet proof
         // Assume that if we're seeing the address book grid
-        // then we should have both a default bulling and shipping
+        // then we should have both a default billing and shipping
         // address selected
         Meteor.call("cart/pushWorkflow", 'checkoutAddressBook');
       }
@@ -57,7 +57,7 @@ Template.addressBook.events({
   // **************************************************************************
   //
   //
-  "click [data-action=addNewAddress]": function (event, template) {
+  "click [data-event-action=addNewAddress]": function (event, template) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -67,7 +67,7 @@ Template.addressBook.events({
   // **************************************************************************
   // Edit an address
   //
-  "click .action--editAddress": function (event, template) {
+  "click [data-event-action=editAddress]": function (event, template) {
 
     event.preventDefault();
     event.stopPropagation();
@@ -83,7 +83,7 @@ Template.addressBook.events({
   // **************************************************************************
   // Remove the address from the address book
   //
-  'click .action--removeAddress': function (event, template) {
+  'click [data-event-action=removeAddress]': function (event, template) {
 
     event.preventDefault();
     event.stopPropagation();
@@ -92,7 +92,7 @@ Template.addressBook.events({
   },
 
 
-  'click .action--cancelEdit, form submit, showMainView': function (event, template) {
+  'click [data-event-action=cancelAddressEdit], form submit, showMainView': function (event, template) {
     event.preventDefault();
     event.stopPropagation();
 

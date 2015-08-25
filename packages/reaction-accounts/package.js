@@ -19,7 +19,6 @@ Package.onUse(function (api, where) {
   api.use("accounts-password");
   api.use("accounts-oauth");
   api.use("accounts-facebook");
-  api.use("coffeescript");
   api.use("less");
 
   api.use("reactioncommerce:core@0.6.4");
@@ -54,7 +53,7 @@ Package.onUse(function (api, where) {
     "client/templates/addressBook/edit/edit.js",
 
     "client/templates/addressBook/form/form.html",
-    "client/templates/addressBook/form/form.coffee",
+    "client/templates/addressBook/form/form.js",
 
     "client/templates/addressBook/grid/grid.html",
     "client/templates/addressBook/grid/grid.js",
