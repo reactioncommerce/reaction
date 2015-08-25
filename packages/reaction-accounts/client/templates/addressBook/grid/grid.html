@@ -2,7 +2,7 @@
 {{#with account.profile}}
   <div class="panel-control-bar">
     <div class="panel-controls">
-      <button class="btn btn-default" type="button" data-action="addNewAddress">
+      <button class="btn btn-default" type="button" data-event-action="addNewAddress">
         <i class="fa fa-plus fa-lg address-icons"></i>
         <span data-i18n="addressBookGrid.addAddress">Add Address</span>
       </button>
@@ -16,29 +16,29 @@
         <div class="list-group">
            {{#each addressBook}}
             <div class="address-ship-to list-group-item {{selectedShipping}}">
-
-              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
-                <div class="col-sm-1 pull-right address-icons">
-                  <span class="fa-stack fa-lg address-edit-icon">
-                    <i class="fa fa-pencil fa-stack-1x"></i>
-                  </span>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <strong>{{fullName}}</strong>
+                    <address>
+                      {{address1}}
+                      {{address2}},<br>
+                      {{city}}, {{region}} {{postal}} {{country}}<br>
+                      {{phone}}
+                    </address>
+                  </div>
                 </div>
-              </button>
-              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
-                <div class="col-sm-1 pull-right address-icons">
-                  <span class="fa-stack fa-lg address-edit-icon">
-                    <i class="fa fa-trash-o fa-stack-1x"></i>
-                  </span>
-                </div>
-              </button>
 
-              <strong>{{fullName}}</strong>
-              <address>
-                {{address1}}
-                {{address2}},<br>
-                {{city}}, {{region}} {{postal}} {{country}}<br>
-                {{phone}}
-              </address>
+                <div class="col-sm-12 address-icons">
+                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
+
+              </div>
             </div>
           {{/each}}
         </div>
@@ -47,30 +47,30 @@
         <h4 id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</h4>
         <div class="list-group">
           {{#each addressBook}}
-            <div class="address-bill-to list-group-item {{selectedBilling}}">
-
-              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
-                <div class="col-sm-1 pull-right address-icons">
-                  <span class="fa-stack fa-lg address-edit-icon">
-                    <i class="fa fa-pencil fa-stack-1x"></i>
-                  </span>
+            <div class="address-ship-to list-group-item {{selectedBilling}}">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <strong>{{fullName}}</strong>
+                    <address>
+                      {{address1}}
+                      {{address2}},<br>
+                      {{city}}, {{region}} {{postal}} {{country}}<br>
+                      {{phone}}
+                    </address>
+                  </div>
                 </div>
-              </button>
-              <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
-                <div class="col-sm-1 pull-right address-icons">
-                  <span class="fa-stack fa-lg address-edit-icon">
-                    <i class="fa fa-trash-o fa-stack-1x"></i>
-                  </span>
-                </div>
-              </button>
 
-              <strong>{{fullName}}</strong>
-              <address>
-                {{address1}}
-                {{address2}},<br>
-                {{city}}, {{region}} {{postal}} {{country}}<br>
-                {{phone}}
-              </address>
+                <div class="col-sm-12 address-icons">
+                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
+
+              </div>
             </div>
           {{/each}}
         </div>
