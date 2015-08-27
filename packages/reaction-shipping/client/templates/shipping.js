@@ -1,7 +1,7 @@
 /*
  * Template shipping Helpers
  */
-Template.shipping.helpers({
+Template.shippingSettings.helpers({
   packageData: function() {
     return ReactionCore.Collections.Packages.findOne({
       name: "reaction-shipping"
@@ -20,7 +20,7 @@ Template.shipping.helpers({
  * Template Shipping Events
  */
 
-Template.shipping.events({
+Template.shippingSettings.events({
   'click': function() {
     return Alerts.removeSeen();
   },

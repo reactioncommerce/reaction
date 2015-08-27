@@ -7,8 +7,29 @@
 
 <template name="shipping">
 
-  {{> contentFor region="settingsTabs" template="shippingSettingsNav"}}
+  {{> contentFor region="settingsHeaderControls" template="shippingSettingsNav"}}
 
+  
+  {{#if selectedShippingProvider}}
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+        {{> addShippingProvider}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+  <div class="shipping-rate-tables">
+    {{> shippingProviderTable}}
+  </div>
+  <span id="shipping-alerts">
+    {{>bootstrapAlerts placement="shippingPackage"}}
+  </span>
+</template>
+
+<template name="shippingSettings">
+  
+  {{> contentFor region="settingsHeaderControls" template="shippingSettingsNav"}}
   
   {{#if selectedShippingProvider}}
     <div class="row">
@@ -191,6 +212,7 @@
 
 
 <template name="addShippingProvider">
+  <div class="container-fluid">
     {{#autoForm
       collection="ReactionCore.Collections.Shipping"
       doc=.
@@ -202,15 +224,16 @@
       }}
     <fieldset>
     <legend>Add Provider</legend>
-    <div class="col-md-2">
+    <div class="col-md-12">
       {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
       {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
       {{>afQuickField name='provider.enabled'}}
     </div>
     </fieldset>
     <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+    <button type="cancel" class="btn btn-default cancel">Cancel</button>
     {{/autoForm}}
+  </div>
 </template>
 
 

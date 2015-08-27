@@ -18,7 +18,8 @@ ReactionCore.registerPackage({
       i18nLabel: "app.shippingSettings",
       route: 'shipping',
       provides: 'settings',
-      group: "reaction-shipping"
+      group: "reaction-shipping",
+      template: 'shippingSettings'
     }, {
       template: 'flatRateCheckoutShipping',
       provides: 'shippingMethod'
