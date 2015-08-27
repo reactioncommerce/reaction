@@ -1,16 +1,16 @@
 <template name="accountProfile">
 
-  <div class="flex flex--2x">
+  <div class="flex flex-column flex-align-center flex-2x">
 
     <div class="flex-item">
-      <div class="panel">
+      <div class="panel panel-lg">
 
-        <div class="panel-header">
+        <div class="panel-heading  panel-title-center">
 
-          <div class="profile-image">
-            {{> avatar user=currentUser class="circular-icon" size="large" shape="circle"}}
-            <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
-          </div>
+            <div class="profile-image">
+              {{> avatar user=currentUser class="circular-icon" size="large" shape="circle"}}
+              <span class="profile-image-display-name">{{displayName}}</span>
+            </div>
 
         </div>
         <div class="panel-content">
@@ -24,7 +24,7 @@
 
 
     <div class="flex-item">
-      <div class="panel panel-default address-book">
+      <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Orders</h3>
         </div>
