@@ -43,7 +43,8 @@ ReactionCore.registerPackage({
       route: 'social',
       template: 'socialDashboard',
       provides: 'settings',
-      container: 'dashboard'
+      container: 'dashboard',
+      template: 'socialSettings'
     }, {
       template: 'reactionSocial',
       provides: 'social'

@@ -1,52 +1,8 @@
-<template name="socialDashboard">
-<div class="social">
-  <div class="row">
-    <h2>Social Apps <small data-18n="app.settings">Configuration</small></h2>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.SocialPackageConfig" doc=packageData type="update" id="social-update-form"}}
-        {{>afObjectField name='settings.public.apps'}}
-        <button type="submit" class="btn btn-primary pull-right">Update</button>
-      {{/autoForm}}
-    </div>
-  </div>
-
-</div>
-</template>
-
-
-<template name="afObjectField_social">
-  <div class="panel {{panelClass}}">
-    {{#with afFieldLabelText name=this.name}}
-    <div class="panel-heading {{headingClass}}">
-      <h3 class="panel-title">{{this}} POOOOP</h3>
-    </div>
-    {{/with}}
-    <div class="panel-body {{bodyClass}}">
-      {{#if afFieldIsInvalid name=this.name}}
-      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
-      {{/if}}
-
-      {{> afQuickFields quickFieldsAtts template="social2"}}
-    </div>
-  </div>
-</template>
-
-
-<template name="afObjectField_social2">
-  <div class="panel {{panelClass}}">
-    {{#with afFieldLabelText name=this.name}}
-    <div class="panel-heading {{headingClass}}">
-      <h3 class="panel-title">{{this}} POOOOP</h3>
-    </div>
-    {{/with}}
-    <div class="panel-body {{bodyClass}}">
-      {{#if afFieldIsInvalid name=this.name}}
-      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
-      {{/if}}
-      
-      {{> afQuickFields quickFieldsAtts}}
-    </div>
+<template name="socialSettings">
+  <div class="social">
+    {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.SocialPackageConfig" doc=packageData type="update" id="social-update-form"}}
+      {{>afObjectField name='settings.public.apps'}}
+      <button type="submit" class="btn btn-primary pull-right">Update</button>
+    {{/autoForm}}
   </div>
 </template>

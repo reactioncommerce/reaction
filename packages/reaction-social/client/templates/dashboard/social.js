@@ -1,4 +1,4 @@
-Template.socialDashboard.helpers({
+Template.socialSettings.helpers({
   packageData: function() {
     return ReactionCore.Collections.Packages.findOne({
       name: 'reaction-social'
