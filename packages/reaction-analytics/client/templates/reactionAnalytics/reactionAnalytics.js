@@ -1,4 +1,4 @@
-Template.reactionAnalytics.helpers({
+Template.reactionAnalyticsSettings.helpers({
   packageData: function() {
     return ReactionCore.Collections.Packages.findOne({
       name: "reaction-analytics"

@@ -1,33 +1,26 @@
-<template name="reactionAnalytics">
-  <div class="row">
-    <h2>Reaction Analytics<small> Settings</small></h2>
-  </div>
-  <div class="row">
-    <div class="well col-md-4">
-      {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form"}}
-        {{#if segmentioEnabled}}
-          <fieldset>
-            <h4>Segment</h4>
-            {{>afQuickField name="settings.public.segmentio.enabled"}}
-            {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
-          </fieldset>
-        {{/if}}
-        {{#if googleAnalyticsEnabled}}
-          <fieldset>
-            <h4>Google Analytics</h4>
-            {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
-            {{>afQuickField name="settings.public.googleAnalytics.api_key" placeholder="UA-XXXXX-X"}}
-          </fieldset>
-        {{/if}}
-        {{#if mixpanelEnabled}}
-          <fieldset>
-            <h4>Mixpanel</h4>
-            {{>afQuickField name="settings.public.mixpanel.enabled"}}
-            {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
-          </fieldset>
-        {{/if}}
-        <button type="submit" class="btn btn-primary pull-right">Update</button>
-      {{/autoForm}}
-    </div>
-  </div>
+<template name="reactionAnalyticsSettings">
+  {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form"}}
+    {{#if segmentioEnabled}}
+      <fieldset>
+        <h4>Segment</h4>
+        {{>afQuickField name="settings.public.segmentio.enabled"}}
+        {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
+      </fieldset>
+    {{/if}}
+    {{#if googleAnalyticsEnabled}}
+      <fieldset>
+        <h4>Google Analytics</h4>
+        {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
+        {{>afQuickField name="settings.public.googleAnalytics.api_key" placeholder="UA-XXXXX-X"}}
+      </fieldset>
+    {{/if}}
+    {{#if mixpanelEnabled}}
+      <fieldset>
+        <h4>Mixpanel</h4>
+        {{>afQuickField name="settings.public.mixpanel.enabled"}}
+        {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
+      </fieldset>
+    {{/if}}
+    <button type="submit" class="btn btn-primary pull-right">Update</button>
+  {{/autoForm}}
 </template>

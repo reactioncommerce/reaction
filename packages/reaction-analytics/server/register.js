@@ -30,7 +30,8 @@ ReactionCore.registerPackage({
       i18nLabel: "app.analyticsSettings",
       route: 'reactionAnalytics',
       provides: 'settings',
-      container: 'dashboard'
+      container: 'dashboard',
+      template: 'reactionAnalyticsSettings'
     }
   ],
   permissions: [
