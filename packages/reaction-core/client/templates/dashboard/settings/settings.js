@@ -1,6 +1,11 @@
 
 
 Template.settingsHeader.helpers({
+
+  "registry": function () {
+    return Session.get('admin/showSettings')
+  },
+
   "thisApp": function () {
 
     var fields = {
@@ -25,11 +30,8 @@ Template.settingsHeader.helpers({
         return item.route == Router.current().route.getName() && item.provides == "settings"
       })
 
-      console.log('Settings Data', settingsData);
-
       return settingsData;
     }
-    console.table(reactionApp);
 
     return reactionApp;
 
@@ -55,7 +57,7 @@ Template.settingsSidebar.helpers({
 
 Template.settingsSidebarItem.helpers({
   "label": function() {
-    return this.label || Template.parentData(1).label
+    return Template.parentData(1).label || this.label;
   },
 
   "active": function (route) {

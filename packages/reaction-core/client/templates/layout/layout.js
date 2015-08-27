@@ -9,3 +9,18 @@ Template.coreHead.helpers({
     return ReactionCore.MetaData;
   }
 });
+
+
+
+
+
+
+Template.coreAdminLayout.onRendered(function () {
+
+});
+
+Template.coreAdminLayout.helpers({
+  template: function () {
+    return Session.get("admin/showSettings");
+  }
+});

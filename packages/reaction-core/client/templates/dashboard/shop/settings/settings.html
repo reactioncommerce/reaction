@@ -1,8 +1,5 @@
 <template name="shopSettings">
 
-<div class="container section">
-
-  {{#contentFor "settingsTabs"}}
     <ul class="nav nav-pills" role="tablist">
       <li class="active" role="presentation">
         <a href="#general" aria-controls="general" role="tab" data-toggle="tab" data-i18n="shopSettings.general">General</a>
@@ -20,7 +17,6 @@
         <a href="#options" aria-controls="options" role="tab" data-toggle="tab" data-i18n="shopSettings.options">Options</a>
       </li>
     </ul>
-  {{/contentFor}}
 
   <div class="tab-panel">
 
@@ -83,8 +79,10 @@
       </div>
     </div>
   </div>
-</div>
+
 </template>
+
+
 
 <template name="shopSettingsSubmitButton">
   <div class="clearfix">
