@@ -20,12 +20,12 @@
 
 
 <template name="coreAdminLayout">
+  <span class="layout-alerts-global">{{>bootstrapAlerts}}</span>
   <div class="page">
     <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
     <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
     <main role="main" id="main">
-      <span id="layout-alerts">{{>bootstrapAlerts}}</span>
       {{> yield}}
     </main>
     <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
