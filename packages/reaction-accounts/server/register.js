@@ -1,4 +1,5 @@
 ReactionCore.registerPackage({
+  label: 'Accounts',
   name: 'reaction-accounts',
   autoEnable: true,
   allowDisable: false,
@@ -16,7 +17,8 @@ ReactionCore.registerPackage({
       label: 'Account Settings',
       route: 'accounts',
       provides: 'settings',
-      container: 'accounts'
+      container: 'accounts',
+      template: 'accountsSettings'
     }
   ],
   permissions: [
