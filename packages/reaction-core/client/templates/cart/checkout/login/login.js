@@ -12,7 +12,7 @@ Template.checkoutLogin.helpers({
 
     var guestUser = ReactionCore.hasPermission("guest", Meteor.user());
     var anonUser = Roles.userIsInRole("anonymous", Meteor.user(), ReactionCore.getShopId());
-    var currentStatus = ReactionCore.Collections.Cart.findOne().status;
+    var currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
 
     if (currentStatus != self.workflow && guestUser === true && anonUser === false) {
       return true;
@@ -28,6 +28,6 @@ Template.checkoutLogin.helpers({
 * trigger checkoutPayment step on template render
 */
 
-Template.checkoutLogin.onRendered(function () {
-    Meteor.call("cart/pushWorkflow", "checkoutLogin");
-});
+/*Template.checkoutLogin.onRendered(function () {
+    Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
+});*/

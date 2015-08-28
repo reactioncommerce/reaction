@@ -1,6 +1,6 @@
 /**
-* CartItem Schema
-*/
+ * CartItem Schema
+ */
 
 ReactionCore.Schemas.CartItem = new SimpleSchema({
   _id: {
@@ -26,8 +26,8 @@ ReactionCore.Schemas.CartItem = new SimpleSchema({
 });
 
 /**
-* Cart Schema
-*/
+ * Cart Schema
+ */
 
 ReactionCore.Schemas.Cart = new SimpleSchema({
   shopId: {
@@ -37,8 +37,15 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   userId: {
     type: String,
-    optional: true,
-    index: 1
+    autoValue: function() {
+      if (this.isInsert) {
+        if (!this.isFromTrustedCode) {
+          return this.userId;
+        }
+      } else {
+        this.unset();
+      }
+    }
   },
   sessions: {
     type: [String],
@@ -84,7 +91,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -97,7 +104,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isUpdate) {
         return {
           $set: new Date

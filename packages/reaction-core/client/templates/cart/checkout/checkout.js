@@ -16,6 +16,14 @@ Template.cartCheckout.helpers({
   }
 });
 
+Template.checkoutSteps.helpers({
+  status: function() {
+    /*console.log(this);*/
+    return ReactionCore.Collections.Cart.findOne().workflow.status;
+  }
+});
+
+
 Template.cartCheckout.onRendered(function () {
   // ensure checkout drawer does not display
   Session.set("displayCartDrawer", false);
@@ -30,7 +38,7 @@ Template.checkoutStepBadge.helpers({
 
   "status": function () {
     var workflowStep = Template.instance().data;
-    var currentStatus = ReactionCore.Collections.Cart.findOne().status;
+    var currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
 
     if (workflowStep.status === true) {
       return "active";

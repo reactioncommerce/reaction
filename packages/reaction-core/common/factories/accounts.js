@@ -19,6 +19,6 @@ Factory.define('account', ReactionCore.Collections.Accounts, {
     ]
   },
   metafields: [],
-  createdAt: new Date(),
+  createdAt: new Date,
   updatedAt: new Date()
 });

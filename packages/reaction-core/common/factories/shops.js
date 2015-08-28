@@ -45,6 +45,6 @@ Factory.define('shop', ReactionCore.Collections.Shops, {
   baseUOM: "OZ",
   metafields: [],
   defaultRoles: ["guest", "account/profile"],
-  createdAt: new Date(),
+  createdAt: new Date,
   updatedAt: new Date()
 });

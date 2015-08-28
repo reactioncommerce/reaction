@@ -122,7 +122,7 @@ Factory.define('order', ReactionCore.Collections.Orders, {
   payment: {},  // Payment Schema
   totalPrice: _.random(1, 1000),
   state: 'new',
-  createdAt: new Date(),
+  createdAt: new Date,
   updatedAt: new Date()
 });
 

@@ -26,11 +26,14 @@
 </template>
 
 
+
 <template name="checkoutSteps">
-  {{#each views}}
-      {{#if status}}
+
+  {{#each reactionTemplate workflow='coreCartWorkflow'}}
+    {{status}} {{template}} {{views}}
+      {{#if condition status eq template }}
         <div class="checkout-step">
-          {{> Template.dynamic template=workflow}}
+          {{> Template.dynamic template=template}}
         </div>
       {{else}}
         <div class="checkout-step-pending">
@@ -39,6 +42,21 @@
       {{/if}}
   {{/each}}
 </template>
+
+
+<!-- <template name="checkoutSteps">
+  {{#each container}}
+      {{#if status}}
+        <div class="checkout-step">
+          {{> Template.dynamic template=template}}
+        </div>
+      {{else}}
+        <div class="checkout-step-pending">
+          {{> checkoutStepPending}}
+        </div>
+      {{/if}}
+  {{/each}}
+</template> -->
 
 
 <template name="checkoutStepPending">

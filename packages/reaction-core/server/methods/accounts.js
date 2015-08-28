@@ -1,8 +1,8 @@
 /**
-* Reaction Accounts handlers
-*/
+ * Reaction Accounts handlers
+ */
 
-Accounts.registerLoginHandler(function(options) {
+Accounts.registerLoginHandler(function (options) {
   var hashStampedToken, loginHandler, stampedToken, userId;
   if (!options.anonymous) {
     return void 0;
@@ -30,7 +30,7 @@ Accounts.registerLoginHandler(function(options) {
  * see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
 
-Accounts.onCreateUser(function(options, user) {
+Accounts.onCreateUser(function (options, user) {
   var Cart, account, accountId, profile, roles, service, sessionId, shop, shopId, _ref, _ref1;
   if (!user.emails) {
     user.emails = [];
@@ -71,10 +71,18 @@ Accounts.onCreateUser(function(options, user) {
 
 
 /**
- * "real" logged in users don't need anonymous
+ * Accounts.onLogin Events
+ * Every visitor to reaction gets an account, and is
+ * automatically logged in.
+ * The distinction is with the role of anonymous
+ * which is a user that has not authenticated "registered".
+ *
+ * A Guest is a user that has authenticated,
+ * and we remove the "anonymous" role.
+ *
  */
 
-Accounts.onLogin(function(options) {
+Accounts.onLogin(function (options) {
   var Cart, currentCart, newCartId, sessionCart, sessionCarts, sessionId, shopId, update, user, userId;
   user = options.user;
   userId = user._id;
@@ -82,14 +90,33 @@ Accounts.onLogin(function(options) {
   sessionId = ReactionCore.sessionId;
   Cart = ReactionCore.Collections.Cart;
   if (userId && sessionId) {
+    // find current cart
     currentCart = Cart.findOne({
       userId: userId
     });
+
+    // find carts this user might have had
+    // while anonymous and merge into user cart
     sessionCarts = Cart.find({
       'sessions': {
         $in: [sessionId]
       }
     });
+
+    // if no session cart or currentCart
+    // create a new cart
+    if (!currentCart && sessionCarts.count() === 0) {
+      console.log(userId, this.userId);
+      newCartId = Cart.insert({
+        sessions: [sessionId],
+        shopId: shopId,
+        userId: userId
+      });
+      ReactionCore.Events.info("created cart: " + newCartId + " for " + userId);
+    }
+
+    // if there is a cart, and the user is logged
+    // in with an email they are no longer anonymous.
     if (currentCart && user.emails.length > 0) {
       update = {
         $pullAll: {}
@@ -102,12 +129,19 @@ Accounts.onLogin(function(options) {
       });
       ReactionCore.Events.info("removed anonymous role from user: " + userId);
     }
-    if (currentCart && sessionCarts.count() >= 1) {
+
+    // if there is a cart, but multiple session carts
+    // we're going to merge the session carts in to the authenticated user cart.
+    console.log (currentCart,sessionCarts.count());
+    if (currentCart && sessionCarts.count() >= 2) {
       ReactionCore.Events.info("multiple carts found for user " + userId);
-      Meteor.call("mergeCart", currentCart._id);
-      ReactionCore.Events.info("merged cart: " + currentCart._id + " for " + userId);
-      return;
+      Meteor.call("mergeCart", currentCart._id, function(error,result) {
+        console.log(error,result);
+        ReactionCore.Events.info("merged cart: " + currentCart._id + " for " + userId);
+      });
     }
+
+    // if there isn't an authenticated cart, but there is a session cart.
     if (!currentCart && sessionCarts.count() === 1) {
       sessionCart = sessionCarts.fetch()[0];
       ReactionCore.Events.info("transformed from session cart: " + sessionCart._id + " for " + userId);
@@ -117,17 +151,8 @@ Accounts.onLogin(function(options) {
           sessions: [userId]
         }
       });
-      return;
     }
-    if (!currentCart && sessionCarts.count() === 0) {
-      newCartId = Cart.insert({
-        sessions: [sessionId],
-        shopId: shopId,
-        userId: userId
-      });
-      ReactionCore.Events.info("created cart: " + newCartId + " for " + userId);
-      return;
-    }
+
   }
 });
 
@@ -140,7 +165,7 @@ Meteor.methods({
   /**
    * check if current user has password
    */
-  currentUserHasPassword: function() {
+  currentUserHasPassword: function () {
     var user;
     user = Meteor.users.findOne(Meteor.userId());
     if (user.services.password) {
@@ -152,7 +177,7 @@ Meteor.methods({
   /**
    * add new addresses to an account
    */
-  addressBookAdd: function(doc, accountId) {
+  addressBookAdd: function (doc, accountId) {
     this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
@@ -195,7 +220,7 @@ Meteor.methods({
   /**
    * update existing address in user's profile
    */
-  addressBookUpdate: function(doc, accountId) {
+  addressBookUpdate: function (doc, accountId) {
     this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
@@ -235,7 +260,7 @@ Meteor.methods({
   /**
    * remove existing address in user's profile
    */
-  addressBookRemove: function(doc, accountId) {
+  addressBookRemove: function (doc, accountId) {
     this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
@@ -257,7 +282,7 @@ Meteor.methods({
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
    */
-  inviteShopMember: function(shopId, email, name) {
+  inviteShopMember: function (shopId, email, name) {
     var currentUserName, shop, token, user, userId, _ref, _ref1, _ref2;
     check(shopId, String);
     check(email, String);
@@ -341,7 +366,7 @@ Meteor.methods({
   /**
    * send an email to consumers on sign up
    */
-  sendWelcomeEmail: function(shopId, userId) {
+  sendWelcomeEmail: function (shopId, userId) {
     var email;
     check(shop, Object);
     this.unblock();
@@ -371,7 +396,7 @@ Meteor.methods({
    *                         User's Roles.GLOBAL_GROUP will also be checked.
    * @returns {Boolean} success/failure
    */
-  addUserPermissions: function(userId, permissions, group) {
+  addUserPermissions: function (userId, permissions, group) {
     var e;
     check(userId, Match.OneOf(String, Array));
     check(permissions, Match.OneOf(String, Array));
@@ -388,7 +413,7 @@ Meteor.methods({
   /**
    * removeUserPermissions
    */
-  removeUserPermissions: function(userId, permissions, group) {
+  removeUserPermissions: function (userId, permissions, group) {
     var error;
     console.log(userId, permissions, group);
     check(userId, String);
@@ -407,7 +432,7 @@ Meteor.methods({
   /**
    * setUserPermissions
    */
-  setUserPermissions: function(userId, permissions, group) {
+  setUserPermissions: function (userId, permissions, group) {
     var e;
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));

@@ -63,61 +63,39 @@ Template.registerHelper("cartPayerName", function() {
  * return object with workflow, status(boolean)
  */
 
-Template.registerHelper("cartWorkflow", function(options) {
-  var cartWorkflow, cartWorkflowAside, cartWorkflowMain, currentStatus, defaultWorkflow, found, index, shopWorkflows, status, stopAt, workflow, _i, _len, _ref;
-  shopWorkflows = ReactionCore.Collections.Shops.findOne({
-    defaultWorkflows: {
-      $elemMatch: {
-        provides: "simple"
-      }
-    }
-  }, {
-    fields: {
-      defaultWorkflows: true
-    }
-  });
-  defaultWorkflow = shopWorkflows.defaultWorkflows[0].workflow;
-  currentStatus = ReactionCore.Collections.Cart.findOne().status;
-  cartWorkflow = [];
-  cartWorkflowMain = [];
-  cartWorkflowAside = [];
-  found = defaultWorkflow.indexOf(currentStatus);
+/*Template.registerHelper("cartWorkflow", function(options) {
+  var shopWorkflows = ReactionCore.Collections.Shops.findOne().defaultWorkflow
+  var defaultWorkflow = shopWorkflows.defaultWorkflows[0].workflow;
+  var currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
+  var cartWorkflow = [];
+  var cartWorkflowMain = [];
+  var cartWorkflowAside = [];
+  var found = defaultWorkflow.indexOf(currentStatus);
+
   if (!found) {
-    currentStatus = defaultWorkflow != null ? defaultWorkflow[0] : void 0;
+    currentStatus = defaultWorkflow || defaultWorkflow[0] || 'new';
   }
-  for (index = _i = 0, _len = defaultWorkflow.length; _i < _len; index = ++_i) {
-    workflow = defaultWorkflow[index];
-    if (!stopAt && workflow !== currentStatus) {
-      status = true;
-    }
-    if (workflow === currentStatus && !stopAt) {
-      if (index === 0) {
-        stopAt = 1;
+
+  for (workflow in defaultWorkflow) {
+      if workflow.status === currentStatus
+
+      cartWorkflow.push({
+        index: index,
+        position: index + 1,
+        workflow: workflow,
+        status: status
+      });
+      if ((_ref = cartWorkflow[index].workflow) === 'checkoutReview' || _ref === 'checkoutPayment') {
+        cartWorkflowAside.push(cartWorkflow[index]);
       } else {
-        stopAt = index + 1;
+        cartWorkflowMain.push(cartWorkflow[index]);
       }
-      status = true;
     }
-    if (index >= stopAt) {
-      status = false;
-    }
-    cartWorkflow.push({
-      index: index,
-      position: index + 1,
-      workflow: workflow,
-      status: status
-    });
-    if ((_ref = cartWorkflow[index].workflow) === 'checkoutReview' || _ref === 'checkoutPayment') {
-      cartWorkflowAside.push(cartWorkflow[index]);
-    } else {
-      cartWorkflowMain.push(cartWorkflow[index]);
-    }
-  }
-  return {
-    main: cartWorkflowMain,
-    aside: cartWorkflowAside
+    return {
+      main: cartWorkflowMain,
+      aside: cartWorkflowAside
   };
-});
+});*/
 
 
 /**
@@ -143,7 +121,7 @@ Template.registerHelper("cartWorkflowPosition", function(options) {
 Template.registerHelper("cartWorkflowCompleted", function(options) {
   var currentStatus, workflowStep;
   workflowStep = Template.parentData(2).data;
-  currentStatus = ReactionCore.Collections.Cart.findOne().status;
+  currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
   if (workflowStep.status === true && currentStatus !== workflowStep.workflow) {
     return true;
   } else {

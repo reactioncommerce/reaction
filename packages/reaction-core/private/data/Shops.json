@@ -3024,14 +3024,23 @@
     "guest",
     "account/profile"
   ],
-  "defaultWorkflows": [{
-    "provides": "simple",
-    "workflow": [
-      "checkoutLogin",
-      "checkoutAddressBook",
-      "coreCheckoutShipping",
-      "checkoutReview",
-      "checkoutPayment"
-    ]
-  }]
+  "layout": [{
+    "layout": "coreLayout",
+    "workflow": "coreLayout",
+    "theme": "default",
+    "enabled": true
+    },
+    {
+    "layout": "coreLayout",
+    "workflow": "coreCartWorkflow",
+    "theme": "default",
+    "enabled": true
+    },
+    {
+    "layout": "coreLayout",
+    "workflow": "coreOrderWorkflow",
+    "theme": "default",
+    "enabled": true
+    }
+  ]
 }]

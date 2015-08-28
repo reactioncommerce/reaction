@@ -18,7 +18,7 @@ applyVariantDefaults = function(variant) {
     _id: Random.id(),
     inventoryManagement: true,
     inventoryPolicy: true,
-    updatedAt: new Date(),
+    updatedAt: new Date,
     createdAt: new Date()
   });
 };
@@ -91,7 +91,7 @@ ReactionCore.Collections.Products.before.insert(function(userId, product) {
     type: "simple",
     handle: getSlug(product.title),
     isVisible: false,
-    updatedAt: new Date(),
+    updatedAt: new Date,
     createdAt: new Date()
   });
   _ref = product.variants;
