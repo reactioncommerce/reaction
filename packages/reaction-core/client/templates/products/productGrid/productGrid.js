@@ -48,7 +48,7 @@ Template.productGrid.helpers({
           _results = [];
           for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
             position = _ref2[_k];
-            if (position.tag === share.tag) {
+            if (position.tag === ReactionCore.getCurrentTag()) {
               _results.push(position);
             }
           }
@@ -166,17 +166,22 @@ Template.productGridItems.helpers({
 */
 
 Template.productGridItems.events({
-  'click .more-options': function(event, template) {
+  'click [data-event-action=showProductSettings]': function(event, template) {
     event.preventDefault();
-    Session.set('advancedControls', {
+
+    Session.set('admin/showSettings', {
+      label: "Edit Product",
+      template: "productSettings",
       type: 'product',
       data: this
     });
-    Blaze.renderWithData(Template.productExtendedControls, {
-      shouldPopover: true,
-      affectsTemplate: template,
-      type: 'product'
-    }, $('body')[0]);
+
+    // Blaze.renderWithData(Template.productExtendedControls, {
+    //   shouldPopover: true,
+    //   affectsTemplate: template,
+    //   type: 'product'
+    // }, $('body')[0]);
+
   },
   'click .clone-product': function() {
     var title;
@@ -372,46 +377,6 @@ Template.gridControls.onRendered(function() {
   });
 });
 
-Template.productExtendedControls.onRendered(function() {
-  var tether;
-  $(document).trigger('closeAllPopovers');
-  $(document).on('closeAllPopovers', (function(_this) {
-    return function() {
-      Blaze.remove(_this.view);
-      return tether.destroy();
-    };
-  })(this));
-  return tether = new Tether({
-    element: this.firstNode,
-    target: this.data.affectsTemplate.firstNode,
-    attachment: 'center left',
-    targetAttachment: 'center right',
-    constraints: [
-      {
-        to: 'scrollParent',
-        attachment: 'together'
-      }
-    ]
-  });
-});
-
-/**
-* productExtendedControls events
-*/
-
-Template.productExtendedControls.events({
-  'click .delete-product': function(event, template) {
-    var session;
-    session = Session.get('advancedControls');
-    if (session.type === 'product') {
-      Blaze.remove(template.view);
-      return maybeDeleteProduct(session.data);
-    }
-  },
-  'click .close': function(event, template) {
-    return Blaze.remove(template.view);
-  }
-});
 
 Template.productGridItems.onRendered(function() {
   var productSort;
@@ -433,7 +398,7 @@ Template.productGridItems.onRendered(function() {
         for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++_i) {
           productId = uiPositions[index];
           position = {
-            tag: share.tag,
+            tag: ReactionCore.getCurrentTag(),
             position: index,
             updatedAt: new Date()
           };
