@@ -1,8 +1,5 @@
 <template name="shopSettings">
 
-<div class="container section">
-
-  {{#contentFor "settingsTabs"}}
     <ul class="nav nav-pills" role="tablist">
       <li class="active" role="presentation">
         <a href="#general" aria-controls="general" role="tab" data-toggle="tab" data-i18n="shopSettings.general">General</a>
@@ -20,7 +17,6 @@
         <a href="#options" aria-controls="options" role="tab" data-toggle="tab" data-i18n="shopSettings.options">Options</a>
       </li>
     </ul>
-  {{/contentFor}}
 
   <div class="tab-panel">
 
@@ -28,7 +24,7 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="general">
-        {{#autoForm collection="Shops" doc=. id="shopEditForm" type="update"}}
+        {{#autoForm collection="Shops" doc=shop id="shopEditForm" type="update"}}
           {{> afQuickField name='name' placeholder="Shop Name"}}
           {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
           {{> afQuickField name='description' placeholder="Description"}}
@@ -38,7 +34,7 @@
       </div>
 
       <div role="tabpanel" class="tab-pane" id="address">
-          {{#autoForm collection="Shops" doc=. id="shopEditAddressForm" type="update"}}
+          {{#autoForm collection="Shops" doc=shop id="shopEditAddressForm" type="update"}}
             {{> afQuickField name='addressBook.0.company'}}
             {{> afQuickField name='addressBook.0.fullName'}}
             {{> afQuickField name='addressBook.0.address1'}}
@@ -66,7 +62,7 @@
       </div>
 
       <div role="tabpanel" class="tab-pane" id="localization">
-          {{#autoForm collection="Shops" doc=. id="shopEditSettingsForm" type="update"}}
+          {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update"}}
             {{> afQuickField name='timezone' options=timezoneOptions}}
             {{> afQuickField name='currency' options=currencyOptions}}
             {{> afQuickField name='locale' options=countryOptions}}
@@ -83,8 +79,10 @@
       </div>
     </div>
   </div>
-</div>
+
 </template>
+
+
 
 <template name="shopSettingsSubmitButton">
   <div class="clearfix">

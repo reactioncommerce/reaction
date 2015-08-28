@@ -37,6 +37,45 @@ Router.configure({
       Alerts.removeSeen();
       $(document).trigger('closeAllPopovers');
     }
+
+    if (Meteor.isClient) {
+
+      var routeName = this.route.getName()
+
+      if (ReactionCore.hasDashboardAccess()) {
+        this.layout("coreAdminLayout");
+
+        // Does a template exist for this rote with the proper name?
+        if (Template[routeName + "Settings"]) {
+          this.render(routeName + "Settings", {
+            to: 'adminControlsContent'
+          });
+        } else {
+          // Otherwise, see if a settings panel is open
+          if (!Session.get('admin/showSettings')) {
+
+            // .. And if not, render a default view in the settings panel
+            this.render("blankControls", {
+              to: 'adminControlsContent'
+            });
+          } else {
+            this.render("emptyControls", {
+              to: 'adminControlsContent'
+            });
+          }
+        }
+
+        // this.render("dashboardPackages")
+        $("body").addClass("admin");
+
+      } else {
+
+        $("body").removeClass("admin");
+
+        this.layout('coreLayout');
+      }
+    }
+
     return this.next();
   }
 });
@@ -52,7 +91,6 @@ ShopController = RouteController.extend({
   onAfterAction: function() {
     return ReactionCore.MetaData.refresh(this.route, this.params);
   },
-  layoutTemplate: "coreLayout",
   yieldTemplates: {
     layoutHeader: {
       to: "layoutHeader"
@@ -81,7 +119,6 @@ ShopAdminController = this.ShopController.extend({
         to: 'layoutFooter'
       });
       this.render('unauthorized');
-      this.done();
     } else {
       this.next();
     }
@@ -95,7 +132,7 @@ this.ShopAdminController = ShopAdminController;
 
 
 ShopSettingsController = this.ShopAdminController.extend({
-  layoutTemplate: "coreSettingsLayout"
+  layoutTemplate: "coreAdminLayout"
 });
 
 this.ShopSettingsController = ShopSettingsController;
@@ -156,7 +193,7 @@ Router.map(function() {
   this.route('dashboard/settings/shop', {
     controller: ShopSettingsController,
     path: '/dashboard/settings/shop',
-    template: 'shopSettings',
+    template: 'dashboardPackages',
     data: function() {
       return ReactionCore.Collections.Shops.findOne();
     }
@@ -166,7 +203,7 @@ Router.map(function() {
   this.route('dashboard/members', {
     controller: ShopAdminController,
     path: '/dashboard/members',
-    template: 'coreAccounts'
+    template: 'dashboardPackages'
   });
 
 

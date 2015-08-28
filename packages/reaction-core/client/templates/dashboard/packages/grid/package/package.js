@@ -92,8 +92,8 @@ Template.gridPackage.events({
   "click .pkg-settings, click [data-action=showPackageSettings]": function(event, template) {
     event.preventDefault();
     event.stopPropagation();
-    if (this.route) {
-      return Router.go(this.route);
-    }
+
+    Session.set('admin/showSettings', this);
+
   }
 });

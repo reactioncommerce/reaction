@@ -54,6 +54,7 @@ ReactionCore.registerPackage({
       ]
     }, {
       route: "dashboard/settings/shop",
+      template: "shopSettings",
       label: "Shop Settings",
       i18nLabel: "app.shopSettings",
       provides: 'settings',

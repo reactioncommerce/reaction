@@ -74,6 +74,13 @@ _.extend(ReactionCore, {
   },
   getSellerShopId: function(client) {
     return Roles.getGroupsForUser(Meteor.userId(), 'admin');
+  },
+
+  // TODO: Create a global function to display sidebar tools for any item with extra settings
+  showAdvancedSettings: function (registryEntry) {
+    if (registryEntry.template) {
+
+    }
   }
 });
 

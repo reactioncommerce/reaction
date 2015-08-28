@@ -3,6 +3,11 @@
  *
  */
 Template.shopSettings.helpers({
+
+  shop: function () {
+    return ReactionCore.Collections.Shops.findOne();
+  },
+
   packageData: function() {
     return ReactionCore.Collections.Packages.findOne({
       name: "core"

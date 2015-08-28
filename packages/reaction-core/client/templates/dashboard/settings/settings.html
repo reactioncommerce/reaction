@@ -1,14 +1,22 @@
 
 <template name="settingsHeader">
-  <div class="settings-tabs">
-    <a class="btn btn-primary btn-dashboard-home" href="/dashboard">
+  <div class="nav nav-dashboard">
+<!--     <a class="btn btn-primary btn-dashboard-home" href="/dashboard">
       <i class="fa fa-angle-left"></i> <span data-i18n="app.dashboard">Dashboard</span>
     </a>
-    <h3>
-      <span data-i18n="{{thisApp.i18nLabel}}">{{thisApp.label}}</span>
-    </h3>
+ -->
+    <div class="nav-dashboard-heading">
+      <h3 class="nav-dashboard-title">
+        <span data-i18n="{{thisApp.i18nLabel}}">{{registry.label}}</span>
+        {{> yield "settingsHeaderControls"}}
+      </h3>
+    </div>
 
-    {{> yield region="settingsTabs"}}
+
+    <div class="nav-dashboard-controls">
+      {{> yield region="settingsTabs"}}
+    </div>
+
 
   </div>
 </template>
@@ -16,7 +24,7 @@
 
 <template name="settingsSidebar">
   <div class="dashboard-nav">
-    <ul class="nav nav-pills nav-stacked">
+    <ul class="nav nav-pills nav-stacked nav-default">
     {{#each reactionApps provides='dashboard'}}
       {{#if pkgPermissions}}
           {{> settingsSidebarItem}}
