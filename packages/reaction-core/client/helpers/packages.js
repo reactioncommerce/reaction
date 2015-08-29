@@ -163,12 +163,12 @@ Template.registerHelper("reactionTemplate", function (options) {
 
   // find the packages with this workflow
   var Packages = ReactionCore.Collections.Packages.find({
-    'layout.workflow': options.hash.workflow
-  }).fetch();
+    'layout.workflow': workflow
+  });
 
   /*console.log("layoutConfiguration", layoutConfiguration );*/
-
-  var currentLayoutWorkflow = _.findWhere(Packages, {'layout': workflow} );
+  // fetch unknown
+  var currentLayoutWorkflow = _.findWhere(Packages.fetch(), {'layout': workflow} );
   console.log("currentLayoutWorkflow", currentLayoutWorkflow);
 
   //  we can have multiple packages contributing to the layout / workflow

@@ -369,7 +369,7 @@ Meteor.methods({
       userId: userId
     });
 
-    ReactionCore.Events.info("created cart: " + newCartId + " for user: " + userId);
+    ReactionCore.Events.info("createCart: " + newCartId + " for user: " + userId);
     return Cart.find(newCartId);
   }
 });

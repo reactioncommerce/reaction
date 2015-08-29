@@ -6,15 +6,11 @@ Template.loginDropdown.events({
 
   "click #logout": function(event, template) {
     Session.set('displayConsoleNavBar', false);
-
-    console.log('logout please')
-
-    Meteor.logout(function(err) {
-
-      console.log('should logout!!!', err)
-
-      if (err) {
-        return Meteor._debug(err);
+    Meteor.logoutOtherClients();
+    Meteor.logout(function(error, result) {
+      if (error) {
+        console.warn('Failed to logout.', error)
+        return Meteor._debug(error);
       }
     });
     event.preventDefault();

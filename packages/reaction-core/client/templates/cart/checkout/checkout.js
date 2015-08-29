@@ -18,7 +18,6 @@ Template.cartCheckout.helpers({
 
 Template.checkoutSteps.helpers({
   status: function() {
-    /*console.log(this);*/
     return ReactionCore.Collections.Cart.findOne().workflow.status;
   }
 });

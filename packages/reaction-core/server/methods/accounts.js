@@ -83,13 +83,14 @@ Accounts.onCreateUser(function (options, user) {
  */
 
 Accounts.onLogin(function (options) {
-  var Cart, currentCart, newCartId, sessionCart, sessionCarts, sessionId, shopId, update, user, userId;
-  user = options.user;
-  userId = user._id;
-  shopId = ReactionCore.getShopId();
-  sessionId = ReactionCore.sessionId;
-  Cart = ReactionCore.Collections.Cart;
-  if (userId && sessionId) {
+  var user = options.user;
+  var userId = options.user._id;
+  var shopId = ReactionCore.getShopId();
+  var sessionId = ReactionCore.sessionId;
+  var Cart = ReactionCore.Collections.Cart;
+
+
+    console.log("sessionId", sessionId, "userId", userId)
     // find current cart
     currentCart = Cart.findOne({
       userId: userId
@@ -106,7 +107,6 @@ Accounts.onLogin(function (options) {
     // if no session cart or currentCart
     // create a new cart
     if (!currentCart && sessionCarts.count() === 0) {
-      console.log(userId, this.userId);
       newCartId = Cart.insert({
         sessions: [sessionId],
         shopId: shopId,
@@ -132,7 +132,7 @@ Accounts.onLogin(function (options) {
 
     // if there is a cart, but multiple session carts
     // we're going to merge the session carts in to the authenticated user cart.
-    console.log (currentCart,sessionCarts.count());
+    console.log ("currentCart + sessionCart", currentCart,sessionCarts.count());
     if (currentCart && sessionCarts.count() >= 2) {
       ReactionCore.Events.info("multiple carts found for user " + userId);
       Meteor.call("mergeCart", currentCart._id, function(error,result) {
@@ -144,16 +144,17 @@ Accounts.onLogin(function (options) {
     // if there isn't an authenticated cart, but there is a session cart.
     if (!currentCart && sessionCarts.count() === 1) {
       sessionCart = sessionCarts.fetch()[0];
-      ReactionCore.Events.info("transformed from session cart: " + sessionCart._id + " for " + userId);
-      Cart.update(sessionCart._id, {
+      ReactionCore.Collections.Cart.update(sessionCart._id, {
         $set: {
           userId: userId,
           sessions: [userId]
         }
       });
+
+      ReactionCore.Events.info("transformed from session cart: " + sessionCart._id + " for " + userId);
     }
 
-  }
+  
 });
 
 
