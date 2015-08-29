@@ -81,6 +81,16 @@ _.extend(ReactionCore, {
     if (registryEntry.template) {
 
     }
+  },
+
+  getCurrentTag: function() {
+    var tag;
+
+    if (Router.current().route.getName() === "/product/tag") {
+      tag = Router.current().params._id;
+    }
+
+    return tag
   }
 });
 

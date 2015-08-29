@@ -372,6 +372,7 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html", "client");
   api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.js", "client");
 
+  // Product Templates
   api.addFiles("client/templates/products/products.html", "client");
   api.addFiles("client/templates/products/products.js", "client");
 
@@ -413,6 +414,9 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/products/productDetail/attributes/attributes.html", "client");
   api.addFiles("client/templates/products/productDetail/attributes/attributes.js", "client");
+
+  api.addFiles("client/templates/products/productSettings/productSettings.html", "client");
+  api.addFiles("client/templates/products/productSettings/productSettings.js", "client");
 
   // Email Templates
   api.addFiles('server/templates/welcomeNotification.html', 'server', {isAsset: true});

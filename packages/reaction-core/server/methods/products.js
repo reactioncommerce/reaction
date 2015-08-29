@@ -614,31 +614,39 @@ Meteor.methods({
   updateProductPosition: function(productId, positionData) {
     check(productId, String);
     check(positionData, Object);
+
     if (!ReactionCore.hasPermission('createProduct')) {
       throw new Meteor.Error(403, "Access Denied");
     }
+
     this.unblock();
-    if (!Products.findOne({
+
+    var updateResult;
+    var product = Products.findOne({
       '_id': productId,
       "positions.tag": positionData.tag
-    })) {
-      return Products.update({
-        _id: productId
-      }, {
-        $addToSet: {
-          positions: positionData
-        },
-        $set: {
-          updatedAt: new Date()
-        }
-      }, function(error, results) {
-        if (error) {
-          ReactionCore.Events.warn(error);
-          throw new Meteor.Error(403, error);
-        }
-      });
-    } else {
-      return Products.update({
+    });
+
+    var addPosition = function () {
+      updateResult = Products.update({
+          _id: productId
+        }, {
+          $addToSet: {
+            positions: positionData
+          },
+          $set: {
+            updatedAt: new Date()
+          }
+        }, function(error, results) {
+          if (error) {
+            ReactionCore.Events.warn(error);
+            throw new Meteor.Error(403, error);
+          }
+        });
+    }
+
+    var updatePosition = function () {
+      updateResult = Products.update({
         "_id": productId,
         "positions.tag": positionData.tag
       }, {
@@ -655,6 +663,21 @@ Meteor.methods({
         }
       });
     }
+
+
+    if ( typeof product === 'undefined' || product === null ) {
+      addPosition();
+    } else {
+      if (product.positions) {
+        updatePosition();
+      } else {
+        addPosition();
+      }
+    }
+
+
+
+    return updateResult;
   },
   updateMetaFields: function(productId, updatedMeta, meta) {
     check(productId, String);

@@ -1,0 +1,128 @@
+<template name="productSettings">
+
+  <!-- {{#contentFor "settingsHeaderControls"}} -->
+
+  <div class="admin-controls-toolbar">
+    <button
+      class="btn btn-default"
+      data-toggle="tooltip"
+      title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+      data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+      data-event-action="publishProduct"
+      >
+      {{#if isVisible}}
+        <span class="fa fa-eye fa-lg"></span>
+      {{else}}
+        <span class="fa fa-eye-slash fa-lg"></span>
+      {{/if}}
+    </button>
+
+    <button
+      class="btn btn-default"
+      data-toggle="tooltip"
+      title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+      data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+      data-event-action="cloneProduct"
+      >
+      <span class="fa fa-files-o fa-lg"></span>
+    </button>
+
+    <button
+      class="delete-product2 btn btn-danger"
+      data-toggle="tooltip"
+      title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+      data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}">
+      <span class="fa fa-trash-o fa-lg"></span>
+    </button>
+  </div>
+
+  <!-- {{/contentFor}} -->
+
+
+
+  <div class="product-settings-mock-grid">
+    <div class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
+      {{> gridNotice}}
+      <span class="product-grid-item-alerts">
+        {{> bootstrapAlerts placement="productGridItem" id=_id}}
+      </span>
+
+      <a class="product-grid-item-images"
+        href="{{pathForSEO 'product' 'handle'}}"
+        data-event-category="grid"
+        data-event-action="product-click"
+        data-event-label="grid product click"
+        data-event-value="{{_id}}">
+
+        <div class="product-primary-images">
+          {{#with media}}
+            <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
+          {{else}}
+            <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
+          {{/with}}
+        </div>
+
+        {{#if additionalMedia}}
+          {{#if isMediumWeight}}
+            <div class="product-additional-images">
+              {{#each additionalMedia}}
+                  <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
+
+              {{/each}}
+            </div>
+          {{/if}}
+        {{/if}}
+      </a>
+
+
+      <div class="grid-content">
+        <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
+          <div class="overlay">
+            <div class="overlay-title">{{title}}</div>
+            <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="product-settings-size-controls">
+
+    <div class="product-settings-size-control" data-event-action="changeProductWeight" data-event-data="0">
+        <div class="main"></div>
+    </div>
+
+    <div class="product-settings-size-control main-wide" data-event-action="changeProductWeight" data-event-data="1">
+        <div class="main"></div>
+        <div class="side">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+    </div>
+
+    <div class="product-settings-size-control main-full" data-event-action="changeProductWeight" data-event-data="2">
+      <div class="main"></div>
+    </div>
+  </div>
+
+</template>
