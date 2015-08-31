@@ -10,7 +10,7 @@
   "isDebug": "info",
   "public": {
     "velocity:html-reporter": {
-      "position": "bottom right",
+      "position": "top right",
       "tab-index" : 1
     }
   }

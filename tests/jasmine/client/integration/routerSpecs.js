@@ -10,13 +10,13 @@ describe('Router', function () {
       Router.go('/');
       Tracker.afterFlush(done);
     });
+
     beforeEach(waitForRouter);
 
     describe("meta data", function() {
 
       it("path should be root url", function() {
-        var route;
-        route = Router.current().url;
+        var route = Router.current().url;
         expect(route).toEqual("/");
       });
 
@@ -45,26 +45,17 @@ describe('Router', function () {
       });
 
       it('should have a title set to Index', function () {
-        expect($('title').text()).toEqual("REACTION | Index");
+        expect($('title')).toContainText("REACTION | Index");
       });
 
     });
 
-    describe("tags", function() {
-      it('loads navigation header', function() {
-        waitForElement($('.header-tag'), function() {
-          expect($('.header-tag').text()).toContain('Products');
-        });
-      });
-    });
-
+    // users
     describe("users", function() {
       it("should have a user id", function() {
         expect(Meteor.userId()).not.toBeNull();
       });
     });
-
-
   });
 
 });
