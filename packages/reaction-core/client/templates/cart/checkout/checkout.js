@@ -18,9 +18,13 @@ Template.cartCheckout.helpers({
 
 
 Template.cartCheckout.onRendered(function () {
+
   // ensure checkout drawer does not display
   Session.set("displayCartDrawer", false);
+
+  // ensure that initial cart status is "checkoutLogin"
   Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
+
 });
 
 

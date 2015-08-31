@@ -12,7 +12,7 @@
 
       var Cart = ReactionCore.Collections.Cart;
       var defaultWorkflows = [];
-      var nextWorkflowStep = {};
+      /*var nextWorkflowStep = {};*/
       var currentCart = Cart.findOne({
         'userId': Meteor.userId()
       });
@@ -48,25 +48,12 @@
         });
       });
 
-      if (Meteor.isClient){
-        console.table(defaultWorkflows);
-      }
-
-
-      // loops through all layouts, and their workflows
-      // and determine the next workflow step
+      // loops through all shop configured layouts, and their default workflows
+      // to determine what the next workflow step should be
       maxSteps = defaultWorkflows.length;
-/*
-      currentStatusIndex = _.findLastIndex(defaultWorkflows, {
-        'workflow.template': currentWorkflowStatus
-      });
-      console.log(currentStatusIndex);*/
-
-      /*currentStatusIndex = _.indexOf(defaultWorkflows, {'workflow.template': currentWorkflowStatus} );*/
-
       _.each(defaultWorkflows, function (workflow, currentStatusIndex) {
-        if ( workflow.template === currentWorkflowStatus ) {
-          console.log(workflow.template);
+        if (workflow.template === currentWorkflowStatus && _.contains(currentCart.workflow.workflow, newWorkflowStatus)) {
+
           if (currentStatusIndex < maxSteps) {
             nextWorkflowStepIndex = currentStatusIndex + 1;
           } else {
@@ -76,29 +63,16 @@
         }
       });
 
+      // if this status, and the next workflow step have already been used,
+      // we'll just skip out of here.
+      if (nextWorkflowStep && _.contains(currentCart.workflow.workflow, newWorkflowStatus) && _.contains(currentCart.workflow.workflow, nextWorkflowStep.template)) {
+        console.log("already processed workflow: ", nextWorkflowStep.template);
+        return false;
+      }
 
-
-      /*_.each(defaultWorkflows, function (workflow, index) {
-
-        // workflow ends on last step
-        if (index + 1 !== maxSteps) {
-          nextWorkflowStepIndex = index + 1;
-        } else {
-          nextWorkflowStepIndex = index;
-        }
-        nextWorkflowStep = defaultWorkflows[nextWorkflowStepIndex];
-      });*/
-
-      console.log(nextWorkflowStep);
-
-
-      // we're going to check if  this workflow has already been processed.
-      if (nextWorkflowStep && _.contains( currentCart.workflow.workflow, newWorkflowStatus) === true) {
-
-        /*console.log(currentCart.workflow.workflow, newWorkflowStatus);
-        console.log(_.contains(currentCart.workflow.workflow, newWorkflowStatus));*/
-        console.log("setting nextWorkflowStep", newWorkflowStatus, nextWorkflowStep);
-
+      // we're going to check if this workflow has already been started, but not yet processing
+      // if it has, we're going to move to the next step, otherwise we'll use the current step
+      if (nextWorkflowStep && _.contains(currentCart.workflow.workflow, newWorkflowStatus) === true) {
         return Cart.update(currentCart._id, {
           $set: {
             'workflow.status': nextWorkflowStep.template
@@ -107,7 +81,7 @@
             'workflow.workflow': newWorkflowStatus
           }
         });
-      // else just update to this first step.
+      // else just update to this first step in the workflow.
       } else {
         return Cart.update(currentCart._id, {
           $set: {
@@ -118,7 +92,5 @@
           }
         });
       }
-
-
     }
   });

@@ -211,10 +211,9 @@ Meteor.methods({
           "shipping.shipmentMethod": method
         }
       });
-
-      ReactionCore.Events.info("layout/pushWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cartId);
       // this will transition to review
-      Meteor.call("layout/pushWorkflow", "coreCartWorkflow",  "checkoutReview");
+      ReactionCore.Events.info("layout/pushWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cartId);
+      Meteor.call("layout/pushWorkflow", "coreCartWorkflow",  "coreCheckoutShipping");
     }
   },
 
@@ -242,9 +241,13 @@ Meteor.methods({
         }
       });
 
+      // refresh shipping quotes
       Meteor.call("updateShipmentQuotes", cartId);
+
+      // it's ok for this to be called multiple times
       Meteor.call('layout/pushWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
 
+      // this is probably a crappy way to do this.
       if (!cart.payment) Meteor.call('setPaymentAddress', cartId, address);
 
     } else {
@@ -275,7 +278,7 @@ Meteor.methods({
           "payment.address": address
         }
       });
-
+      // set as default shipping if not set
       if (!cart.shipping.address.fullName) {
         Meteor.call('setShipmentAddress', cartId, address);
       }
