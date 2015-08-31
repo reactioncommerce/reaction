@@ -11,11 +11,15 @@
       <div class="container container-lg">
         <div class="checkout-steps">
           <div class="checkout-steps-main">
-            {{> checkoutSteps views=cartWorkflow.main}}
+            {{#each reactionTemplate workflow="coreCartWorkflow" container="checkout-steps-main"}}
+              {{> checkoutSteps}}
+            {{/each}}
           </div>
 
           <div class="checkout-steps-side">
-            {{> checkoutSteps views=cartWorkflow.aside}}
+            {{#each reactionTemplate workflow="coreCartWorkflow" container="checkout-steps-side"}}
+              {{> checkoutSteps}}
+            {{/each}}
           </div>
         </div>
       </div>
@@ -28,35 +32,16 @@
 
 
 <template name="checkoutSteps">
-
-  {{#each reactionTemplate workflow='coreCartWorkflow'}}
-    {{status}} {{template}} {{views}}
-      {{#if condition status eq template }}
-        <div class="checkout-step">
-          {{> Template.dynamic template=template}}
-        </div>
-      {{else}}
-        <div class="checkout-step-pending">
-          {{> checkoutStepPending}}
-        </div>
-      {{/if}}
-  {{/each}}
+    {{#if status}}
+      <div class="checkout-step">
+        {{> Template.dynamic template=template}}
+      </div>
+    {{else}}
+      <div class="checkout-step-pending">
+        {{> checkoutStepPending}}
+      </div>
+    {{/if}}
 </template>
-
-
-<!-- <template name="checkoutSteps">
-  {{#each container}}
-      {{#if status}}
-        <div class="checkout-step">
-          {{> Template.dynamic template=template}}
-        </div>
-      {{else}}
-        <div class="checkout-step-pending">
-          {{> checkoutStepPending}}
-        </div>
-      {{/if}}
-  {{/each}}
-</template> -->
 
 
 <template name="checkoutStepPending">

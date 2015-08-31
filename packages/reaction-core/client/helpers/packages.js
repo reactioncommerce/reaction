@@ -155,54 +155,42 @@ Template.registerHelper("reactionTemplate", function (options) {
   var shopId = options.hash.shopId || ReactionCore.getShopId();
   // get shop info, defaults to current
   var Shop = ReactionCore.Collections.Shops.findOne(shopId);
-  var currentCart = ReactionCore.Collections.Cart.findOne({ 'userId': Meteor.userId() } );
+  var currentCart = ReactionCore.Collections.Cart.findOne({
+    'userId': Meteor.userId()
+  });
   var currentStatus = currentCart.workflow.status;
   var layoutConfiguration = Shop.layout;
   var reactionTemplates = [];
-  var workflow = options.hash.workflow || "coreLayout";
 
-  // find the packages with this workflow
-  var Packages = ReactionCore.Collections.Packages.find({
-    'layout.workflow': workflow
-  });
-
-  /*console.log("layoutConfiguration", layoutConfiguration );*/
-  // fetch unknown
-  var currentLayoutWorkflow = _.findWhere(Packages.fetch(), {'layout': workflow} );
-  console.log("currentLayoutWorkflow", currentLayoutWorkflow);
-
+  // find the packages with these options
+  var Packages = ReactionCore.Collections.Packages.find({ layout: { $elemMatch: options.hash } } );
   //  we can have multiple packages contributing to the layout / workflow
   Packages.forEach(function (package) {
-      console.log("package", package);
+    // match template or workflow
+    var layoutWorkflows = _.where(package.layout, options.hash);
 
-      // match template or workflow
-      var layoutWorkflows = _.where(package.layout, {
-        'workflow': options.hash.workflow
-      });
-      /*console.log(layoutWorkflows);*/
+    _.each(layoutWorkflows, function (layout) {
+      // audience is layout permissions
+      if (layout.audience === undefined) {
+        defaultRoles = ReactionCore.Collections.Shops.findOne().defaultRoles;
+        layout.audience = defaultRoles;
+      }
 
-      _.each(layoutWorkflows, function (layout) {
-        /*console.log(layoutWorkflows);*/
-        // audience is the layout permissions
-        if (layout.audience === undefined) {
-          defaultRoles = ReactionCore.Collections.Shops.findOne().defaultRoles;
-          layout.audience = defaultRoles;
+      // check permissions so you don't have to on template.
+      if (ReactionCore.hasPermission(layout.audience)) {
+        layout.status = _.contains(currentCart.workflow.workflow, layout.template);
+        // if the current template is already the current status
+        if (layout.template === currentStatus) {
+          layout.status = currentStatus;
         }
+        // add to templates list
+        reactionTemplates.push(layout);
+      }
 
-        // check permissions so you don't have to on template.
-        if (ReactionCore.hasPermission(layout.audience)) {
-          /*console.log(currentStatus)*/
-          layout.status = false;
-
-          //status defaults to false unless it's been set.
-          if (layout.workflow === currentStatus) {
-            layout.status = true;
-          }
-          // add to templates list
-          reactionTemplates.push(layout);
-        }
-      });
+    });
   });
+
+  //console.table(reactionTemplates);
 
   return reactionTemplates;
 

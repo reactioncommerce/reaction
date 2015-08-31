@@ -214,7 +214,7 @@ Meteor.methods({
 
       ReactionCore.Events.info("layout/pushWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cartId);
       // this will transition to review
-      Meteor.call("layout/pushWorkflow", "coreCartWorkflow",  "coreCheckoutReview");
+      Meteor.call("layout/pushWorkflow", "coreCartWorkflow",  "checkoutReview");
     }
   },
 

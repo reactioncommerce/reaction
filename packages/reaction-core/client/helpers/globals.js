@@ -49,7 +49,7 @@ this.toggleSession = function(sessionVariable, positive) {
  */
 
 this.getProductsByTag = function(tag) {
-  var cursor, hashtags, newRelatedTags, relatedTag, relatedTags, selector, _i, _len;
+  var  hashtags, newRelatedTags, relatedTag, relatedTags, selector, _i, _len;
   selector = {};
   if (tag) {
     hashtags = [];
@@ -68,7 +68,8 @@ this.getProductsByTag = function(tag) {
       $in: hashtags
     };
   }
-  return cursor = Products.find(selector);
+  var cursor = Products.find(selector);
+  return cursor;
 };
 
 
@@ -157,7 +158,7 @@ this.currentProduct = {
   },
   ensureDeps: function(key) {
     if (!this.deps[key]) {
-      return this.deps[key] = new Tracker.Dependency;
+      return this.deps[key] = new Tracker.Dependency();
     }
   }
 };

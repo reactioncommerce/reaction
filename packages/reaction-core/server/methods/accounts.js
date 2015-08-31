@@ -89,74 +89,72 @@ Accounts.onLogin(function (options) {
   var sessionId = ReactionCore.sessionId;
   var Cart = ReactionCore.Collections.Cart;
 
+  // find current cart
+  currentCart = Cart.findOne({
+    userId: userId
+  });
 
-    console.log("sessionId", sessionId, "userId", userId)
-    // find current cart
-    currentCart = Cart.findOne({
+  // find carts this user might have had
+  // while anonymous and merge into user cart
+  sessionCarts = Cart.find({
+    'sessions': {
+      $in: [sessionId]
+    }
+  });
+
+  // if no session cart or currentCart
+  // create a new cart
+  if (!currentCart && sessionCarts.count() === 0) {
+    newCartId = Cart.insert({
+      sessions: [sessionId],
+      shopId: shopId,
       userId: userId
     });
+    ReactionCore.Events.info("created cart: " + newCartId + " for " + userId);
+  }
 
-    // find carts this user might have had
-    // while anonymous and merge into user cart
-    sessionCarts = Cart.find({
-      'sessions': {
-        $in: [sessionId]
+  // if there is a cart, and the user is logged
+  // in with an email they are no longer anonymous.
+  if (currentCart && user.emails.length > 0) {
+    update = {
+      $pullAll: {}
+    };
+    update.$pullAll['roles.' + shopId] = ['anonymous'];
+    Meteor.users.update({
+      _id: userId
+    }, update, {
+      multi: true
+    });
+    ReactionCore.Events.info("removed anonymous role from user: " + userId);
+  }
+
+  // if there is a cart, but multiple session carts
+  // we're going to merge the session carts in to the authenticated user cart.
+  if (currentCart && sessionCarts.count() >= 2) {
+    ReactionCore.Events.info("multiple carts found for user " + userId);
+    Meteor.call("mergeCart", currentCart._id, function (error, result) {
+      console.log(error, result);
+      ReactionCore.Events.info("merged cart: " + currentCart._id + " for " + userId);
+    });
+  }
+
+  // if there isn't an authenticated cart, but there is a session cart.
+  if (!currentCart && sessionCarts.count() === 1) {
+    sessionCart = sessionCarts.fetch()[0];
+    ReactionCore.Collections.Cart.update(sessionCart._id, {
+      $set: {
+        userId: userId,
+        sessions: [userId]
       }
     });
 
-    // if no session cart or currentCart
-    // create a new cart
-    if (!currentCart && sessionCarts.count() === 0) {
-      newCartId = Cart.insert({
-        sessions: [sessionId],
-        shopId: shopId,
-        userId: userId
-      });
-      ReactionCore.Events.info("created cart: " + newCartId + " for " + userId);
-    }
+    ReactionCore.Events.info("logout please from session cart: " + sessionCart._id + " for " + userId);
+  }
 
-    // if there is a cart, and the user is logged
-    // in with an email they are no longer anonymous.
-    if (currentCart && user.emails.length > 0) {
-      update = {
-        $pullAll: {}
-      };
-      update.$pullAll['roles.' + shopId] = ['anonymous'];
-      Meteor.users.update({
-        _id: userId
-      }, update, {
-        multi: true
-      });
-      ReactionCore.Events.info("removed anonymous role from user: " + userId);
-    }
 
-    // if there is a cart, but multiple session carts
-    // we're going to merge the session carts in to the authenticated user cart.
-    console.log ("currentCart + sessionCart", currentCart,sessionCarts.count());
-    if (currentCart && sessionCarts.count() >= 2) {
-      ReactionCore.Events.info("multiple carts found for user " + userId);
-      Meteor.call("mergeCart", currentCart._id, function(error,result) {
-        console.log(error,result);
-        ReactionCore.Events.info("merged cart: " + currentCart._id + " for " + userId);
-      });
-    }
 
-    // if there isn't an authenticated cart, but there is a session cart.
-    if (!currentCart && sessionCarts.count() === 1) {
-      sessionCart = sessionCarts.fetch()[0];
-      ReactionCore.Collections.Cart.update(sessionCart._id, {
-        $set: {
-          userId: userId,
-          sessions: [userId]
-        }
-      });
 
-      ReactionCore.Events.info("transformed from session cart: " + sessionCart._id + " for " + userId);
-    }
-
-  
 });
-
 
 /**
  * Reaction Account Methods
