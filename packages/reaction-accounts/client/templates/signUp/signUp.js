@@ -56,7 +56,7 @@ Template.loginFormSignUpView.events({
         });
       } else {
         // Close dropdown or navigate to page
-        Meteor.call("cart/pushWorkflow", 'checkoutLogin')
+        /*Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");*/
       }
 
     });

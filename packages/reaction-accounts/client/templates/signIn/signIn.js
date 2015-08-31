@@ -48,7 +48,7 @@ Template.loginFormSignInView.events({
 
       } else {
         // Close dropdown or navigate to page
-        Meteor.call("cart/pushWorkflow", 'checkoutLogin');
+        /*Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");*/
       }
 
     });
@@ -64,5 +64,3 @@ Template.loginFormSignInView.onCreated(function() {
 
 
 Template.loginFormSignInView.helpers(LoginFormSharedHelpers);
-
-

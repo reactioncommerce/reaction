@@ -1,5 +1,5 @@
-Template.loginInline.events({
+/*Template.loginInline.events({
   'click .continue-guest': function () {
-    Meteor.call("cart/pushWorkflow", 'checkoutLogin')
+    Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
   }
-});
+});*/

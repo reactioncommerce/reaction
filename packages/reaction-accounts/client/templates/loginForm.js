@@ -282,11 +282,9 @@ Template.loginForm.events({
 
     loginWithService(options, function (err) {
       //loginResultCallback(serviceName, err);
-      Meteor.call("cart/pushWorkflow", 'checkoutLogin')
+      Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
     });
 
   }
 
 })
-
-
