@@ -111,5 +111,96 @@ ReactionCore.registerPackage({
       icon: 'fa fa-user',
       provides: 'userAccountDropdown'
     }
+  ],
+  layout: [
+    {
+      template: "checkoutLogin",
+      label: "Account",
+      workflow: 'coreCartWorkflow',
+      container: 'checkout-steps-main',
+      audience: ["guest", "anonymous"],
+      priority: 1,
+      position: "1"
+    },
+    {
+      template: "checkoutAddressBook",
+      label: "Address Details",
+      workflow: 'coreCartWorkflow',
+      container: 'checkout-steps-main',
+      audience: ["guest", "anonymous"],
+      priority: 2,
+      position: "2"
+    },
+    {
+      template: "coreCheckoutShipping",
+      label: "Shipping Options",
+      workflow: 'coreCartWorkflow',
+      container: 'checkout-steps-main',
+      audience: ["guest", "anonymous"],
+      priority: 3,
+      position: "3"
+    },
+    {
+      template: "checkoutReview",
+      label: "Review",
+      workflow: 'coreCartWorkflow',
+      container: 'checkout-steps-side',
+      audience: ["guest", "anonymous"],
+      priority: 4,
+      position: "4"
+    },
+    {
+      template: "checkoutPayment",
+      label: "Complete",
+      workflow: 'coreCartWorkflow',
+      container: 'checkout-steps-side',
+      audience: ["guest", "anonymous"],
+      priority: 5,
+      position: "5"
+    },
+    {
+      template: "orderCreated",
+      label: "Created",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"],
+      priority: 1,
+      position: ""
+    },
+    {
+      template: "shipmentTracking",
+      label: "Tracking",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "shipmentPrepare",
+      label: "Preparation",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "processPayment",
+      label: "Process Payments",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "shipmentShipped",
+      label: "Shipped",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "orderCompleted",
+      label: "Completed",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "orderAdjustments",
+      label: "Adjusted",
+      workflow: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    }
   ]
 });

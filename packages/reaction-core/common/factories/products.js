@@ -39,9 +39,9 @@ Factory.define('product', ReactionCore.Collections.Products, {
   // metaDescription: ?,
   // handle: ?,
   isVisible: faker.random.boolean(),
-  publishedAt: new Date(),
+  publishedAt: new Date,
   // publishedScope: ?,
   // templateSuffix: ?,
-  createdAt: new Date(),
+  createdAt: new Date,
   updatedAt: new Date()
 });

@@ -11,26 +11,33 @@
 //
 
 Template.cartCheckout.helpers({
-  cart: function() {
+  cart: function () {
     return Cart.findOne();
   }
 });
 
+
 Template.cartCheckout.onRendered(function () {
+
   // ensure checkout drawer does not display
   Session.set("displayCartDrawer", false);
+
+  // ensure that initial cart status is "checkoutLogin"
+  Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
+
 });
+
+
+/**
+ * checkoutStepBadge Helpers
+ *
+ */
 
 Template.checkoutStepBadge.helpers({
 
-  "position": function () {
-    var workflowStep = Template.instance().data;
-    return workflowStep.position;
-  },
-
   "status": function () {
     var workflowStep = Template.instance().data;
-    var currentStatus = ReactionCore.Collections.Cart.findOne().status;
+    var currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
 
     if (workflowStep.status === true) {
       return "active";

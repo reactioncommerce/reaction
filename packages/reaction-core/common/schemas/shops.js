@@ -190,17 +190,26 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [String],
     defaultValue: ["guest", "account/profile"]
   },
-  defaultWorkflows: {
+  layout: {
     type: [Object],
     optional: true
   },
-  'defaultWorkflows.$.provides': {
+  'layout.$.layout': {
     type: String,
-    defaultValue: "simple"
+    defaultValue: "coreLayout"
   },
-  'defaultWorkflows.$.workflow': {
-    type: [String],
-    defaultValue: ['checkoutLogin', 'checkoutAddressBook', 'coreCheckoutShipping', 'checkoutReview', 'checkoutPayment']
+  'layout.$.theme': {
+    type: String,
+    defaultValue: "default"
+  },
+  'layout.$.workflow': {
+    type: String,
+    optional: true
+  },
+  'layout.$.enabled': {
+    type: Boolean,
+    defaultValue: true
+
   },
   createdAt: {
     type: Date,
@@ -219,7 +228,7 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: Date,
     autoValue: function() {
       if (this.isUpdate) {
-        return new Date();
+        return new Date;
       }
     },
     optional: true

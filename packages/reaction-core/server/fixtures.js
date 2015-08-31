@@ -283,7 +283,8 @@ ReactionRegistry.loadFixtures = function() {
             shopId: shop._id,
             enabled: !!config.autoEnable,
             settings: config.settings,
-            registry: config.registry
+            registry: config.registry,
+            layout: config.layout
           }
         });
       });

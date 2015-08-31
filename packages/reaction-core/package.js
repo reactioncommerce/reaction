@@ -30,12 +30,12 @@ Package.onUse(function (api) {
   api.use("amplify@1.0.0");
 
   // community packages
-  api.use("mquandalle:bower@1.4.1_1");
+  api.use("mquandalle:bower@1.4.1_3");
   api.use("d3js:d3@3.5.5");
-  api.use("mrt:underscore-string-latest@2.3.3");
+  api.use("underscorestring:underscore.string@3.2.0");
   api.use("aldeed:geocoder@0.3.6");
-  api.use("aldeed:autoform@5.3.2");
-  api.use("aldeed:collection2@2.3.3");
+  api.use("aldeed:autoform@5.4.1");
+  api.use("aldeed:collection2@2.4.0");
   api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3", 'client');
   api.use("iron:router@1.0.9");
@@ -44,7 +44,7 @@ Package.onUse(function (api) {
   api.use("ongoworks:security@1.2.0");
 
   api.use("dburles:factory@0.3.10");
-  api.use("matb33:collection-hooks@0.7.13");
+  api.use("matb33:collection-hooks@0.7.14");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.0");
@@ -173,6 +173,7 @@ Package.onUse(function (api) {
 
   api.addFiles("common/hooks/hooks.js");
 
+  api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/cart.js");
 
   api.addFiles("common/factories/faker.js");
@@ -188,6 +189,7 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/cart.js", "server");
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
+  api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
   api.addFiles("server/publications/sessions.js", "server");
   api.addFiles("server/publications/shops.js", "server");
@@ -204,7 +206,7 @@ Package.onUse(function (api) {
 
   // client
   api.addFiles("client/subscriptions.js", "client");
-  api.addFiles("client/helpers/apps.js", "client");
+  api.addFiles("client/helpers/packages.js", "client");
   api.addFiles("client/helpers/cart.js", "client");
   api.addFiles("client/helpers/globals.js", "client");
   api.addFiles("client/helpers/i18n.js", "client");

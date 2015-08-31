@@ -2,7 +2,7 @@
  * Reaction Cart Methods
  */
 // match helper
-Match.OptionalOrNull = function(pattern) {
+Match.OptionalOrNull = function (pattern) {
   return Match.OneOf(void 0, null, pattern);
 };
 
@@ -31,7 +31,7 @@ Meteor.methods({
    * however, we could check reactively for price /qty etc, adjustments on
    * the original and notify them
    */
-  addToCart: function(cartId, productId, variantData, quantity) {
+  addToCart: function (cartId, productId, variantData, quantity) {
     var cartVariantExists, currentCart, product, shopId;
     check(cartId, String);
     check(productId, String);
@@ -55,7 +55,7 @@ Meteor.methods({
           'items.$.quantity': quantity
         }
       });
-      return function(error, result) {
+      return function (error, result) {
         if (error) {
           ReactionCore.Events.warn("error adding to cart", Cart.simpleSchema().namedContext().invalidKeys());
           return error;
@@ -75,7 +75,7 @@ Meteor.methods({
             variants: variantData
           }
         }
-      }, function(error, result) {
+      }, function (error, result) {
         if (error) {
           ReactionCore.Events.warn("error adding to cart", Cart.simpleSchema().namedContext().invalidKeys());
           return;
@@ -87,7 +87,7 @@ Meteor.methods({
   /*
    * removes a variant from the cart
    */
-  removeFromCart: function(sessionId, cartId, variantData) {
+  removeFromCart: function (sessionId, cartId, variantData) {
     check(sessionId, String);
     check(cartId, String);
     check(variantData, Object);
@@ -110,7 +110,7 @@ Meteor.methods({
   /*
    * adjust inventory when an order is placed
    */
-  inventoryAdjust: function(orderId) {
+  inventoryAdjust: function (orderId) {
     var order, product, _i, _len, _ref;
     check(orderId, String);
     order = Orders.findOne(orderId);
@@ -141,7 +141,7 @@ Meteor.methods({
    * TODO:  Partial order processing, shopId processing
    * TODO:  Review Security on this method
    */
-  copyCartToOrder: function(cartId) {
+  copyCartToOrder: function (cartId) {
     check(cartId, String);
     var emails, error, invoice, now, orderId, user;
     var cart = ReactionCore.Collections.Cart.findOne(cartId);
@@ -165,9 +165,8 @@ Meteor.methods({
     cart._id = Random.id();
     cart.cartId = cartId;
 
-    /*
-     * final sanity check
-     * TODO add `check cart, ReactionCore.Schemas.Order`
+
+    /* TODO add `check cart, ReactionCore.Schemas.Order`
      * and add some additional validation that all is good
      * and no tampering has occurred
      */
@@ -193,14 +192,14 @@ Meteor.methods({
    * setShipmentMethod
    * saves method as order default
    */
-  setShipmentMethod: function(cartId, method) {
+  setShipmentMethod: function (cartId, method) {
     check(cartId, String);
     check(method, Object);
 
     if (!(cartId && method)) {
       return;
     }
-
+    // get current cart
     var cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
       userId: Meteor.userId()
@@ -212,10 +211,9 @@ Meteor.methods({
           "shipping.shipmentMethod": method
         }
       });
-
-      ReactionCore.Events.info("cart/pushWorkflow coreCheckoutShipping", cartId);
       // this will transition to review
-      Meteor.call('cart/pushWorkflow', 'coreCheckoutReview');
+      ReactionCore.Events.info("layout/pushWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cartId);
+      Meteor.call("layout/pushWorkflow", "coreCartWorkflow",  "coreCheckoutShipping");
     }
   },
 
@@ -223,7 +221,7 @@ Meteor.methods({
    * setShipmentAddress
    * adds addressBook entry to cart shipping
    */
-  setShipmentAddress: function(cartId, address) {
+  setShipmentAddress: function (cartId, address) {
     check(cartId, String);
     check(address, Object);
     this.unblock();
@@ -243,9 +241,13 @@ Meteor.methods({
         }
       });
 
+      // refresh shipping quotes
       Meteor.call("updateShipmentQuotes", cartId);
-      Meteor.call('cart/pushWorkflow', 'coreCheckoutShipping');
 
+      // it's ok for this to be called multiple times
+      Meteor.call('layout/pushWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
+
+      // this is probably a crappy way to do this.
       if (!cart.payment) Meteor.call('setPaymentAddress', cartId, address);
 
     } else {
@@ -257,7 +259,7 @@ Meteor.methods({
    * setPaymentAddress
    * adds addressBook entry to cart
    */
-  setPaymentAddress: function(cartId, address) {
+  setPaymentAddress: function (cartId, address) {
     check(cartId, String);
     check(address, Object);
 
@@ -276,7 +278,7 @@ Meteor.methods({
           "payment.address": address
         }
       });
-
+      // set as default shipping if not set
       if (!cart.shipping.address.fullName) {
         Meteor.call('setShipmentAddress', cartId, address);
       }
@@ -290,7 +292,7 @@ Meteor.methods({
    * mergeCart
    * merge matching sessionId cart into specified userId cart
    */
-  mergeCart: function(cartId) {
+  mergeCart: function (cartId) {
     check(cartId, String);
     this.unblock();
 
@@ -300,9 +302,11 @@ Meteor.methods({
     userId = currentCart.userId;
     sessionId = ReactionCore.sessionId;
     shopId = ReactionCore.getShopId();
+    console.log("DAMN MERGE CART", userId);
 
     if (Roles.userIsInRole(userId, 'anonymous', shopId)) {
-      return;
+      console.log("anonymous");
+      return false;
     }
 
     sessionCarts = Cart.find({
@@ -317,30 +321,36 @@ Meteor.methods({
 
     ReactionCore.Events.info("begin merge processing into: " + currentCart._id);
 
-    sessionCarts.forEach(function(sessionCart) {
-      if (userId !== sessionCart.userId && currentCart._id !== sessionCart._id) {
-        if (!sessionCart.items) {
-          sessionCart.items = [];
-        }
-        Cart.update(currentCart._id, {
+    sessionCarts.forEach(function (sessionCart) {
+      console.log(userId, sessionCart.userId, currentCart._id, sessionCart._id)
+      if (userId == sessionCart.userId || currentCart._id == sessionCart._id) {
+
+        Cart.update(sessionCart._id, {
+          $set: {
+            userId: Meteor.userId()
+          },
           $addToSet: {
             items: {
-              $each: sessionCart.items
+              $each: currentCart.items
             },
             sessions: {
-              $each: sessionCart.sessions
+              $each: currentCart.sessions
             }
           }
         });
-        Cart.remove(sessionCart._id);
-        Meteor.users.remove(sessionCart.userId);
+
+        // delete the session Cart after merge.
+        Cart.remove(currentCart._id);
+        Meteor.users.remove(currentCart.userId);
         ReactionCore.Collections.Accounts.remove({
-          userId: sessionCart.userId
+          userId: currentCart.userId
         });
+
         ReactionCore.Events.info("delete cart: " + sessionCart._id + "and user: " + sessionCart.userId);
         return ReactionCore.Events.info("processed merge for cartId: " + sessionCart._id);
       }
     });
+
     return true;
   },
 
@@ -348,7 +358,7 @@ Meteor.methods({
    * createCart
    * returns new cart for user
    */
-  createCart: function(userId) {
+  createCart: function (userId) {
     check(userId, String);
     this.unblock();
     var Cart, newCartId, sessionId, shopId;
@@ -362,64 +372,7 @@ Meteor.methods({
       userId: userId
     });
 
-    ReactionCore.Events.info("created cart: " + newCartId + " for user: " + userId);
+    ReactionCore.Events.info("createCart: " + newCartId + " for user: " + userId);
     return Cart.find(newCartId);
-  },
-
-  /**
-   * "cart/pushWorkflow"
-   * updates cart status
-   * first sets, second call moves status to next workflow
-   * additional calls do nothing
-   */
-  'cart/pushWorkflow': function(status, cartId, userId) {
-    check(status, String);
-    check(userId, Match.Optional(String));
-    check(cartId, Match.Optional(String));
-    this.unblock();
-
-    var Cart, currentCart, currentStatus, defaultWorkflow, found, shopWorkflows;
-
-    userId = userId || Meteor.userId();
-    Cart = ReactionCore.Collections.Cart;
-
-    currentCart = Cart.findOne({
-      userId: userId
-    });
-
-    console.log("cart/pushWorkflow", status);
-    cartId = cartId || currentCart._id;
-    currentStatus = currentCart.workflow.status;
-    shopWorkflows = Meteor.call("shop/getWorkflow", "simple");
-
-    // we're going to check if  this workflow has already been processed.
-    if (_.contains(currentCart.workflow.workflow, currentStatus)) {
-      console.log("cart has status in workflow:", currentStatus);
-
-      defaultWorkflow = shopWorkflows.defaultWorkflows[0].workflow;
-
-      found = defaultWorkflow.indexOf(currentStatus);
-
-      nextWorkflowStep = defaultWorkflow[found + 1];
-
-      return Cart.update(cartId, {
-        $set: {
-          'workflow.status': nextWorkflowStep
-        },
-        $addToSet: {
-          'workflow.workflow': status
-        }
-      });
-    // else just update to this first step.
-    } else {
-      return Cart.update(cartId, {
-        $set: {
-          'workflow.status': status
-        },
-        $addToSet: {
-          'workflow.workflow': status
-        }
-      });
-    }
   }
 });
