@@ -169,18 +169,12 @@ Template.productGridItems.events({
   'click [data-event-action=showProductSettings]': function(event, template) {
     event.preventDefault();
 
-    Session.set('admin/showSettings', {
+    ReactionCore.showAdvancedSettings({
       label: "Edit Product",
       template: "productSettings",
       type: 'product',
       data: this
     });
-
-    // Blaze.renderWithData(Template.productExtendedControls, {
-    //   shouldPopover: true,
-    //   affectsTemplate: template,
-    //   type: 'product'
-    // }, $('body')[0]);
 
   },
   'click .clone-product': function() {

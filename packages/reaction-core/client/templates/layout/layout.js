@@ -21,6 +21,15 @@ Template.coreAdminLayout.onRendered(function () {
 
 Template.coreAdminLayout.helpers({
   template: function () {
-    return Session.get("admin/showSettings");
-  }
+    return ReactionCore.getAdvancedSettingsView();
+  },
+
+  adminControlsClassname: function () {
+    if (ReactionCore.isAdvancedSettingsVisible()) {
+      return "show";
+    }
+
+    return "";
+  },
+
 });

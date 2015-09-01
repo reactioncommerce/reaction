@@ -39,6 +39,13 @@ Template.settingsHeader.helpers({
 });
 
 
+Template.settingsHeader.events({
+  "click [data-event-action=closeSettings]": function () {
+    ReactionCore.hideAdvancedSettings();
+  }
+});
+
+
 // Templte.settingsSidebar.inheritsHelpersFrom("packagesGrid");
 
 Template.settingsSidebar.helpers({

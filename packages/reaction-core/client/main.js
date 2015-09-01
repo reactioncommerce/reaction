@@ -77,10 +77,22 @@ _.extend(ReactionCore, {
   },
 
   // TODO: Create a global function to display sidebar tools for any item with extra settings
-  showAdvancedSettings: function (registryEntry) {
-    if (registryEntry.template) {
+  showAdvancedSettings: function (viewData) {
+    Session.set('admin/showAdvancedSettings', true);
+    Session.set('admin/advanceSettingsView', viewData);
+  },
 
-    }
+  isAdvancedSettingsVisible: function () {
+    return Session.equals('admin/showAdvancedSettings', true);
+  },
+
+  getAdvancedSettingsView: function () {
+    return Session.get('admin/advanceSettingsView');
+  },
+
+  hideAdvancedSettings: function () {
+    Session.set('admin/showAdvancedSettings', false);
+    // Session.set('admin/advanceSettingsView', {});
   },
 
   getCurrentTag: function() {

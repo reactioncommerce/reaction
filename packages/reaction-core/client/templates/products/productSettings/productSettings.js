@@ -6,7 +6,6 @@ Template.productSettings.helpers({
   },
 
   media: function(variant) {
-    console.log('Get media for product', this, 'for variant', variant)
     var defaultImage, variantId, variants;
     variants = (function() {
       var _i, _len, _ref, _results;
@@ -108,10 +107,25 @@ Template.productSettings.events({
       return maybeDeleteProduct(session.data);
     }
   },
-  'click .close': function(event, template) {
-    return Blaze.remove(template.view);
+  'click [data-event-action=cloneProduct]': function() {
+    var title;
+    title = this.title;
+    return Meteor.call("cloneProduct", this, function(error, productId) {
+      if (error) {
+        throw new Meteor.Error("error cloning product", error);
+      }
+      Router.go("product", {
+        _id: productId
+      });
+      return Alerts.add("Cloned " + title, "success", {
+        'placement': "productManagement",
+        'id': productId,
+        'i18n_key': "productDetail.cloneMsg",
+        'autoHide': true,
+        'dismissable': false
+      });
+    });
   },
-
 
   'click [data-event-action=changeProductWeight]': function (event, template) {
 
@@ -122,8 +136,6 @@ Template.productSettings.events({
       tag: ReactionCore.getCurrentTag(),
       weight: weight
     };
-
-    console.log('would try to update thing', position, this._id)
 
     Meteor.call("updateProductPosition", this._id, position);
   },

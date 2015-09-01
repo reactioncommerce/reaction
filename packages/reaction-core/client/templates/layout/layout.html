@@ -21,7 +21,7 @@
 
 <template name="coreAdminLayout">
   <span class="layout-alerts-global">{{>bootstrapAlerts}}</span>
-  <div class="page">
+  <div class="page {{adminControlsClassname}}">
     <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
     <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
@@ -30,22 +30,25 @@
     </main>
     <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
   </div>
-  <div class="admin-controls">
-    <div class="admin-controls-heading">
-      {{> settingsHeader}}
-    </div>
-    <div class="admin-controls-content">
-      {{>yield region="adminControlsContent"}}
-      <div class="container-fluid container-fluid-sm">
-        {{> Template.dynamic template=template.template data=template.data}}
+
+  <!-- <div class="admin-controls-wrap"> -->
+    <div class="admin-controls {{adminControlsClassname}}">
+      <div class="admin-controls-heading">
+        {{> settingsHeader}}
+      </div>
+      <div class="admin-controls-content">
+        {{>yield region="adminControlsContent"}}
+        <div class="container-fluid container-fluid-sm">
+          {{> Template.dynamic template=template.template data=template.data}}
+        </div>
+      </div>
+      <div class="admin-controls-footer">
+        <div class="container-fluid container-fluid-sm">
+          {{>yield region="adminControlsFooter"}}
+        </div>
       </div>
     </div>
-    <div class="admin-controls-footer">
-      <div class="container-fluid container-fluid-sm">
-        {{>yield region="adminControlsFooter"}}
-      </div>
-    </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <template name="coreSettingsLayout">

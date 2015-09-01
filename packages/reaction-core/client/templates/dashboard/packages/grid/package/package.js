@@ -93,7 +93,8 @@ Template.gridPackage.events({
     event.preventDefault();
     event.stopPropagation();
 
-    Session.set('admin/showSettings', this);
+    // Show the advanced settings view using this package registry entry
+    ReactionCore.showAdvancedSettings(this)
 
   }
 });
