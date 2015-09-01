@@ -15,7 +15,7 @@
         <h4 id="shipping-address-label" data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</h4>
         <div class="list-group">
            {{#each addressBook}}
-            <div class="address-ship-to list-group-item {{selectedShipping}}">
+            <div class="address-ship-to list-group-item {{selectedShipping}}" data-event-action="selectShippingAddress">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-12">
@@ -47,7 +47,7 @@
         <h4 id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</h4>
         <div class="list-group">
           {{#each addressBook}}
-            <div class="address-ship-to list-group-item {{selectedBilling}}">
+            <div class="address-bill-to list-group-item {{selectedBilling}}" data-event-action="selectBillingAddress">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-12">

@@ -88,7 +88,17 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
-    Meteor.call('addressBookRemove', this, Meteor.userId())
+    Meteor.call('addressBookRemove', this, Meteor.userId(), function(result) {
+      var account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
+
+      if (account) {
+        if (account.profile) {
+          if (account.profile.addressBook.length === 0) {
+            template.currentViewTemplate.set('addressBookAdd');
+          }
+        }
+      }
+    });
   },
 
 
