@@ -1,6 +1,7 @@
 /*
  * Template shipping Helpers
  */
+ Meteor.subscribe("Shipping");
 Template.shippingSettings.helpers({
   packageData: function() {
     return ReactionCore.Collections.Packages.findOne({
@@ -8,13 +9,22 @@ Template.shippingSettings.helpers({
     });
   },
   shipping: function() {
-    return ReactionCore.Collections.Shipping.find();
+    return ReactionCore.Collections.Shipping.find({
+      shopId: ReactionCore.getShopId()
+    });
   },
   selectedShippingProvider: function() {
     return Session.equals("selectedShippingProvider", true);
   }
 });
 
+Template.shippingProviderTable.helpers({
+  shipping: function() {
+    return ReactionCore.Collections.Shipping.find({
+      shopId: ReactionCore.getShopId()
+    });
+  },
+});
 
 /*
  * Template Shipping Events
