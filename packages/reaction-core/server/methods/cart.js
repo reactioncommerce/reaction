@@ -248,7 +248,11 @@ Meteor.methods({
       Meteor.call('layout/pushWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
 
       // this is probably a crappy way to do this.
-      if (!cart.payment) Meteor.call('setPaymentAddress', cartId, address);
+      if (!cart.payment) {
+        if(!cart.payment.address) {
+          Meteor.call('setPaymentAddress', cartId, address);
+        }
+      }
 
     } else {
       throw new Meteor.Error("setShipmentAddress: Invalid request");
@@ -262,6 +266,7 @@ Meteor.methods({
   setPaymentAddress: function (cartId, address) {
     check(cartId, String);
     check(address, Object);
+    this.unblock();
 
     if (!(cartId && address)) {
       return;
@@ -278,10 +283,14 @@ Meteor.methods({
           "payment.address": address
         }
       });
+
       // set as default shipping if not set
-      if (!cart.shipping.address.fullName) {
-        Meteor.call('setShipmentAddress', cartId, address);
+      if (!cart.shipping) {
+        if(!cart.shipping.address) {
+          Meteor.call('setShipmentAddress', cartId, address);
+        }
       }
+
       return result;
     } else {
       throw new Meteor.Error("setPaymentAddress: Invalid request");

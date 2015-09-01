@@ -22,6 +22,11 @@ Meteor.methods({
     cart = ReactionCore.Collections.Cart.findOne(cartId);
     if (cart) {
       rates = Meteor.call("getShippingRates", cart);
+
+      if(!rates) {
+        return;
+      }
+
       if (rates.length > 0) {
         ReactionCore.Collections.Cart.update({
           '_id': cartId
@@ -47,6 +52,12 @@ Meteor.methods({
     };
     shops = [];
     _ref = options.items;
+
+
+    if(!options.items) {
+      return;
+    }
+
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       product = _ref[_i];
       if (_ref1 = product.shopId, __indexOf.call(shops, _ref1) < 0) {
