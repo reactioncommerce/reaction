@@ -24,6 +24,8 @@
         'layout.workflow': workflow
       });
 
+      // console.log("layout/pushWorkflow worklow:", workflow, "new status: ", newWorkflowStatus, "current cartId:",  currentCart._id);
+
       // get this package defaultWorkflow  and check permission
       Packages.forEach(function (package) {
         var layouts = _.where(package.layout, {
@@ -66,7 +68,7 @@
       // if this status, and the next workflow step have already been used,
       // we'll just skip out of here.
       if (nextWorkflowStep && _.contains(currentCart.workflow.workflow, newWorkflowStatus) && _.contains(currentCart.workflow.workflow, nextWorkflowStep.template)) {
-        console.log("already processed workflow: ", nextWorkflowStep.template);
+        // console.log("already processed workflow: ", nextWorkflowStep.template);
         return false;
       }
 

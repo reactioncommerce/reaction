@@ -132,7 +132,8 @@ Template.productGridItems.helpers({
     }
   },
   weightClass: function() {
-    switch (this.position.weight) {
+    var weight = this.position.weight || 0;
+    switch (weight) {
       case 1:
         return 'product-medium';
       case 2:
@@ -142,13 +143,16 @@ Template.productGridItems.helpers({
     }
   },
   isMediumWeight: function() {
-    if (this.position.weight === 1) {
+    var weight = this.position.weight || 0;
+
+    if (weight === 1) {
       return true;
     }
     return false;
   },
   isLargeWeight: function() {
-    if (this.position.weight === 3) {
+    var weight = this.position.weight || 0;
+    if (weight === 3) {
       return true;
     }
     return false;

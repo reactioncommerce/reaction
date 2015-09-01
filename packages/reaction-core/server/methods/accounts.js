@@ -143,12 +143,11 @@ Accounts.onLogin(function (options) {
     sessionCart = sessionCarts.fetch()[0];
     ReactionCore.Collections.Cart.update(sessionCart._id, {
       $set: {
-        userId: userId,
-        sessions: [userId]
+        userId: userId
       }
     });
 
-    ReactionCore.Events.info("logout please from session cart: " + sessionCart._id + " for " + userId);
+    ReactionCore.Events.info("update session cart: " + sessionCart._id + " with user: " + userId);
   }
 
 

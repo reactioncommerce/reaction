@@ -212,7 +212,6 @@ Meteor.methods({
         }
       });
       // this will transition to review
-      ReactionCore.Events.info("layout/pushWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cartId);
       Meteor.call("layout/pushWorkflow", "coreCartWorkflow",  "coreCheckoutShipping");
     }
   },
@@ -311,13 +310,13 @@ Meteor.methods({
     userId = currentCart.userId;
     sessionId = ReactionCore.sessionId;
     shopId = ReactionCore.getShopId();
-    console.log("DAMN MERGE CART", userId);
 
+    // no need to merge anonymous carts
     if (Roles.userIsInRole(userId, 'anonymous', shopId)) {
-      console.log("anonymous");
       return false;
     }
 
+    // get session or user carts
     sessionCarts = Cart.find({
       $or: [{
         'userId': userId
@@ -329,9 +328,10 @@ Meteor.methods({
     });
 
     ReactionCore.Events.info("begin merge processing into: " + currentCart._id);
-
+    // loop through session carts and merge into user cart
     sessionCarts.forEach(function (sessionCart) {
-      console.log(userId, sessionCart.userId, currentCart._id, sessionCart._id)
+      ReactionCore.Events.info("merge info: ", userId, sessionCart.userId, currentCart._id, sessionCart._id);
+
       if (userId == sessionCart.userId || currentCart._id == sessionCart._id) {
 
         Cart.update(sessionCart._id, {
@@ -356,6 +356,7 @@ Meteor.methods({
         });
 
         ReactionCore.Events.info("delete cart: " + sessionCart._id + "and user: " + sessionCart.userId);
+
         return ReactionCore.Events.info("processed merge for cartId: " + sessionCart._id);
       }
     });

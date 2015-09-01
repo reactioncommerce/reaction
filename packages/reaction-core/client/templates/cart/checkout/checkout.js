@@ -35,15 +35,15 @@ Template.cartCheckout.onRendered(function () {
 
 Template.checkoutStepBadge.helpers({
 
-  "status": function () {
+  "checkoutStepBadgeClass": function () {
     var workflowStep = Template.instance().data;
     var currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
 
-    if (workflowStep.status === true) {
+    if (workflowStep.status === true || workflowStep.status == this.template ) {
       return "active";
+    } else {
+      return "";
     }
-
-    return "";
   }
 
 });

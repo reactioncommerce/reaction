@@ -137,7 +137,7 @@ describe("Publication", function() {
 
     beforeEach(function() {
       Meteor.users.remove({});
-      user = Accounts.createUser({username: "shopMember", password: "1234", email: "joe@test.com"});
+      user = Factory.create("user")
     });
 
     afterEach(function() {
