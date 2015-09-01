@@ -31,11 +31,11 @@ spencern:reaction-analytics
 nemo64:bootstrap
 
 # Testing packages
-velocity:html-reporter
-sanjo:jasmine
-velocity:helpers
+#velocity:html-reporter
+#sanjo:jasmine
+#velocity:helpers
 
 # Performance & Debugging Tools
-#meteorhacks:kadira
-#meteorhacks:kadira-profiler
+meteorhacks:kadira
+meteorhacks:kadira-profiler
 #meteortoys:allthings

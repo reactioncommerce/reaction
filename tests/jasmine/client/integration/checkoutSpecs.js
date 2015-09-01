@@ -1,18 +1,15 @@
-describe("Checkout", function() {
-  var checkoutState = function (callback) {
-    if (callback) {
-      var cartId = ReactionCore.Collections.Cart.findOne()._id;
-      cartWorkflow = ReactionCore.Collections.Cart.findOne(cartId).workflow;
-      Tracker.afterFlush(callback);
-    }
-  };
-  var originalTimeout;
+var checkoutState = function (callback) {
+  if (callback) {
+    var cartId = ReactionCore.Collections.Cart.findOne()._id;
+    cartWorkflow = ReactionCore.Collections.Cart.findOne(cartId).workflow;
+    Tracker.afterFlush(callback);
+  }
+};
+var originalTimeout;
 
+describe("Checkout", function() {
   beforeEach(waitForRouter);
   beforeEach(function(done) {
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
-
     Meteor.autorun(function (c) {
     var status = ReactionCore.Collections.Cart.findOne().workflow.status;
       if (status) {
@@ -22,37 +19,57 @@ describe("Checkout", function() {
     });
 
     spyOn(ReactionCore.Collections.Cart, "update");
-
     Router.go('/checkout');
     Tracker.afterFlush(done);
   });
 
-  afterEach(function() {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-  });
-
   describe("checkoutLogin", function(done) {
 
-    it("should goto first checkout workflow step", function(done) {
-
-      //console.log("first step go to checkout url: ", cartWorkflow.status);
-
+    it("should go to checkout route", function(done) {
       expect(Router.current().url).toEqual("/checkout");
       done();
     });
 
+
+    it("should display i18n empty checkout msg if no products", function(done) {
+      var cartItems = ReactionCore.Collections.Cart.findOne().items
+      if (cartItems === 'undefined') {
+        expect($('*[data-i18n="cartCheckout.emptyCheckoutCart"]')).toHaveValue();
+        expect(Router.current().url).toEqual("/checkout");
+      } else {
+        expect($('*[data-i18n="cartCheckout.emptyCheckoutCart"]')).not.toHaveValue();
+      }
+      done();
+    });
+
+    it("should display guest user login", function(done) {
+      var thisStep = (cartWorkflow.status === "checkoutLogin" || cartWorkflow.status === "new");
+      var thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutLogin");
+      // if this step is already process, we expect the workflow.workflow
+      // to already contain this step, and not to see the login flow
+      console.log("guest", thisStep, thisWorkflow)
+
+      if (thisStep && !thisWorkflow) {
+        expect( $('.continue-guest')).toExist();
+      } else {
+        expect(cartWorkflow.workflow).toContain("checkoutLogin");
+      }
+      done();
+    });
+
     it("should continue as a guest user", function(done) {
-      if (cartWorkflow.status === "checkoutLogin") {
+      var thisStep = (cartWorkflow.status === "checkoutLogin" || cartWorkflow.status === "new");
+      var thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutLogin");
 
-        //console.log("first step go to checkout url: ", cartWorkflow.status);
-
+      if (thisStep && !thisWorkflow) {
         var guestGo = $('.continue-guest');
+        // test guest login button
         $('.continue-guest').trigger('click');
 
         expect(guestGo).toHandle("click");
         expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
       } else {
-        expect(cartWorkflow.status).not.toEqual("new");
+        expect(cartWorkflow.workflow).toContain("checkoutLogin");
       }
       done();
     });
@@ -62,11 +79,11 @@ describe("Checkout", function() {
   describe("checkoutAddressBook", function(done) {
 
     it("should add primary address to addressBook", function() {
+      var thisStep = (cartWorkflow.status === "checkoutAddressBook");
+      var thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
 
-      //console.log("add new addressBook: ", cartWorkflow.status);
-
-      if (cartWorkflow.status === "checkoutAddressBook") {
-        expect(cartWorkflow.status).toEqual("checkoutAddressBook");
+      if (thisStep && !thisWorkflow) {
+        expect(cartWorkflow.status ).toEqual("checkoutAddressBook");
         var fakeAddress = faker.reaction.address();
 
         $('select[name="country"]').val(fakeAddress.country);
@@ -79,27 +96,23 @@ describe("Checkout", function() {
         $('input[name="region"]').val(fakeAddress.region);
         $('input[name="phone"]').val(fakeAddress.phone);
 
+        /*$('*[data-event-action="saveAddress"]').trigger("click");
+        expect($('*[data-event-action="saveAddress"]')).toHandle("click");*/
 
-
-        $('*[data-event-action="saveAddress"]').trigger("click");
-        expect($('*[data-event-action="saveAddress"]')).toHandle("click");
-
-        /*$('#addressBookAddForm').submit();
-        expect($('#addressBookAddForm')).toHandle("submit");*/
-
+        $('#addressBookAddForm').submit();
+        expect($('#addressBookAddForm')).toHandle("submit");
         expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
       } else {
-        expect(cartWorkflow.status).not.toEqual("checkoutLogin");
+        expect(cartWorkflow.workflow).not.toContain("checkoutAddressBook");
       }
     });
 
     it("should add secondary address to addressBook", function() {
-      console.log("add secondary addressBook: ", cartWorkflow.status);
-      // if addressbook has succeeded at least once
-      // console.log(cartWorkflow.workflow);
-      // console.log(cartWorkflow.workflow.indexOf("checkoutAddressBook"));
+      var thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
 
-      if (cartWorkflow.workflow.indexOf("checkoutAddressBook") > 1) {
+      // if addressbook has succeeded at least once
+      if (thisWorkflow && cartWorkflow.workflow.indexOf("checkoutAddressBook") > 1) {
+        console.log("add secondary addressBook: ", cartWorkflow.status);
         var fakeAddress = faker.reaction.address();
 
         $('*[data-action="addNewAddress"]').trigger("click");
@@ -128,21 +141,22 @@ describe("Checkout", function() {
     });
 
     it("should select address for shipping", function() {
-      if (cartWorkflow.status === "checkoutAddressBook") {
+      var thisStep = (cartWorkflow.status === "checkoutAddressBook");
+      var thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
 
-        //console.log("select shipto: ", cartWorkflow.status);
+      if (thisStep && thisWorkflow) {
 
         var primaryAddress = $('.list-group .address-ship-to:first-child');
 
         $('.list-group .address-ship-to:first-child').trigger('click');
 
-        expect(primaryAddress).toHandle('click');
+        expect($(primaryAddress)).toHaveBeenTriggeredOn('click');
         expect($('.address-ship-to .list-group-item .active')).toExist();
         expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
 
       } else {
 
-        expect(cartWorkflow.status).not.toEqual("checkoutLogin");
+        expect(cartWorkflow.workflow).not.toContain("checkoutAddressBook");
       }
 
     });
@@ -152,16 +166,18 @@ describe("Checkout", function() {
 
   describe("coreCheckoutShipping", function() {
     it("should select Standard shipping method", function() {
-      if (cartWorkflow.status === "coreCheckoutShipping") {
+      var thisStep = (cartWorkflow.status === "coreCheckoutShipping");
+      var thisWorkflow = _.contains(cartWorkflow.workflow, "coreCheckoutShipping");
 
-        //console.log("select shipping: ", cartWorkflow.status);
-
+      if (thisStep || thisWorkflow) {
         var standardShipping = $('.checkout-shipping .list-group-item:nth-child(2)');
 
-        standardShipping.trigger('click');
+         $('.checkout-shipping .list-group-item:nth-child(2)').trigger('click');
 
         expect(standardShipping).toHandle('click');
-        /*expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();*/
+        expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+      } else {
+        expect(cartWorkflow.workflow).not.toContain("coreCheckoutShipping");
       }
     });
 
