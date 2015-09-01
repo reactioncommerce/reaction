@@ -4,7 +4,7 @@
 */
 
 Template.checkoutProgressBar.helpers({
-  progressbarStatusClass: function(workflow) {
+  progressbarStatusClass: function() {
     var cartWorkflow = ReactionCore.Collections.Cart.findOne().workflow;
     var thisStep = (cartWorkflow.status === this.template); // active
     var previouslyVisited = _.contains(cartWorkflow.workflow, this.template);
@@ -12,7 +12,7 @@ Template.checkoutProgressBar.helpers({
     if (previouslyVisited === true && thisStep === false) {
       return "visited";
     } else if (thisStep === true) {
-      return "active";
+      return "visited active";
     } else {
       return "";
     }
