@@ -105,24 +105,32 @@
 
 
 
-  <div class="product-settings-size-controls">
+  <div class="product-settings-size-controls list-group">
 
-    <div class="product-settings-size-control" data-event-action="changeProductWeight" data-event-data="0">
+    <div class="list-group-item {{itemWeightActive 0}}" data-event-action="changeProductWeight" data-event-data="0">
+      <div class="product-settings-size-control">
+          <div class="main"></div>
+      </div>
+    </div>
+
+    <div class="list-group-item {{itemWeightActive 1}}" data-event-action="changeProductWeight" data-event-data="1">
+
+      <div class="product-settings-size-control main-wide">
+          <div class="main"></div>
+          <div class="side">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+      </div>
+    </div>
+
+    <div class="list-group-item {{itemWeightActive 2}}" data-event-action="changeProductWeight" data-event-data="2">
+      <div class="product-settings-size-control main-full">
         <div class="main"></div>
+      </div>
     </div>
 
-    <div class="product-settings-size-control main-wide" data-event-action="changeProductWeight" data-event-data="1">
-        <div class="main"></div>
-        <div class="side">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-    </div>
-
-    <div class="product-settings-size-control main-full" data-event-action="changeProductWeight" data-event-data="2">
-      <div class="main"></div>
-    </div>
   </div>
 
 </template>

@@ -10,16 +10,19 @@
         <span data-i18n="{{thisApp.i18nLabel}}">{{registry.label}}</span>
         {{> yield "settingsHeaderControls"}}
       </h3>
+
+
+
     </div>
 
 
     <div class="nav-dashboard-controls">
-      {{> yield region="settingsTabs"}}
-    </div>
-
-    <div>
       <button class="btn btn-default" data-event-action="closeSettings">Done</button>
     </div>
+
+<!--     <div>
+      <button class="btn btn-default" data-event-action="closeSettings">Done</button>
+    </div> -->
   </div>
 </template>
 

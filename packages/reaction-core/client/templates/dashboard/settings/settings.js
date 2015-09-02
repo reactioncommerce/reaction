@@ -3,7 +3,7 @@
 Template.settingsHeader.helpers({
 
   "registry": function () {
-    return Session.get('admin/showSettings')
+    return ReactionCore.getAdvancedSettingsView();
   },
 
   "thisApp": function () {

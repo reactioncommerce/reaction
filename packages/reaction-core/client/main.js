@@ -95,6 +95,10 @@ _.extend(ReactionCore, {
     // Session.set('admin/advanceSettingsView', {});
   },
 
+  clearCurrentAdvancedSettingsView: function () {
+    Session.set('admin/advanceSettingsView', undefined);
+  },
+
   getCurrentTag: function() {
     var tag;
 

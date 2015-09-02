@@ -1,3 +1,6 @@
+
+var weightDependency = new Tracker.Dependency;
+
 Template.productSettings.helpers({
   displayPrice: function() {
     if (this._id) {
@@ -64,6 +67,8 @@ Template.productSettings.helpers({
     }
   },
   weightClass: function() {
+    weightDependency.depend();
+
     var weight = this.position.weight || 0;
     switch (weight) {
       case 1:
@@ -74,7 +79,22 @@ Template.productSettings.helpers({
         return 'product-small';
     }
   },
+
+
+  itemWeightActive: function(weight) {
+    weightDependency.depend();
+
+    var currentWeight = this.position.weight || 0;
+    if (currentWeight === weight) {
+      return "active"
+    }
+
+    return "";
+  },
+
   isMediumWeight: function() {
+    weightDependency.depend();
+
     var weight = this.position.weight || 0;
     if (weight === 1) {
       return true;
@@ -82,6 +102,8 @@ Template.productSettings.helpers({
     return false;
   },
   isLargeWeight: function() {
+    weightDependency.depend();
+
     var weight = this.position.weight || 0;
     if (weight === 3) {
       return true;
@@ -89,6 +111,8 @@ Template.productSettings.helpers({
     return false;
   },
   shouldShowAdditionalImages: function() {
+    weightDependency.depend();
+
     if (this.isMediumWeight && this.mediaArray) {
       return true;
     }
@@ -137,10 +161,15 @@ Template.productSettings.events({
     var weight = $(event.currentTarget).data('event-data') || 0;
     var position = {
       tag: ReactionCore.getCurrentTag(),
-      weight: weight
+      weight: weight,
+      updatedAt: new Date()
     };
 
-    Meteor.call("updateProductPosition", this._id, position);
+    this.position = position
+
+    Meteor.call("updateProductPosition", this._id, position, function () {
+      weightDependency.changed();
+    });
   },
 
   'click [data-event-action=publishProduct]': function() {

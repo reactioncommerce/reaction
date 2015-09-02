@@ -26,7 +26,7 @@ Template.coreAdminLayout.helpers({
 
   adminControlsClassname: function () {
     if (ReactionCore.isAdvancedSettingsVisible()) {
-      return "show";
+      return "show-settings";
     }
 
     return "";

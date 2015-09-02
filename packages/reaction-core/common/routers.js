@@ -31,6 +31,13 @@ setProduct = function(productId, variantId) {
 Router.configure({
   notFoundTemplate: "notFound",
   loadingTemplate: "loading",
+
+  onRun: function() {
+    $(window).scrollTop(0);
+    ReactionCore.clearCurrentAdvancedSettingsView();
+  },
+
+
   onBeforeAction: function() {
     if (Meteor.isClient) {
       this.render("loading");
@@ -52,7 +59,7 @@ Router.configure({
           });
         } else {
           // Otherwise, see if a settings panel is open
-          if (!Session.get('admin/showSettings')) {
+          if (!Session.get('admin/showAdvancedSettings')) {
 
             // .. And if not, render a default view in the settings panel
             this.render("blankControls", {
