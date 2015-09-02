@@ -16,33 +16,7 @@ AutoForm.hooks({
 
       try {
         Meteor.call("addressBookUpdate", insertDoc, accountId, function(error, result) {
-          var cart, ref, ref1, ref2, ref3;
-          if (result) {
-
-            // TODO: Maybe only do this when inside the cart
-            cart = ReactionCore.Collections.Cart.findOne();
-
-            if (cart !== null) {
-
-              if (cart.shipping !== null) {
-                if (cart.shipping.address !== null) {
-                  cart.shipping._id = insertDoc.id;
-
-                  Meteor.call("addressBookAdd", insertDoc, accountId);
-                }
-
-
-              }
-
-              if (cart.billing !== null) {
-                if (cart.billing.address !== null) {
-                  cart.billing._id = insertDoc._id
-                  Meteor.call("addressBookAdd", insertDoc, accountId);
-                }
-              }
-            }
-
-          }
+          // TODO: On error show message, maybe?
         });
       } catch (_error) {
         error = _error;
