@@ -12,21 +12,44 @@
 
 Template.cartCheckout.helpers({
   cart: function () {
-    return Cart.findOne();
+    return ReactionCore.Collections.Cart.findOne();
   }
 });
 
 
 Template.cartCheckout.onRendered(function () {
-
   // ensure checkout drawer does not display
   Session.set("displayCartDrawer", false);
-
-  // ensure that initial cart status is "checkoutLogin"
-  Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
-
+  // init cart workflow
+  if (!ReactionCore.Collections.Cart.findOne().workflow.workflow) {
+    Meteor.call("layout/pushWorkflow", "coreCartWorkflow", 'checkoutLogin');
+  }
 });
 
+
+/**
+ * checkoutSteps Helpers
+ * helper isPending evaluates that this is
+ * the current step, or has been processed already
+ *
+ */
+Template.checkoutSteps.helpers({
+  "isCompleted": function () {
+    if (this.status === true) {
+      return this.status;
+    } else {
+      return false;
+    }
+  },
+
+  "isPending": function () {
+    if (this.status === this.template) {
+      return this.status;
+    } else {
+      return false;
+    }
+  }
+});
 
 /**
  * checkoutStepBadge Helpers
@@ -39,7 +62,7 @@ Template.checkoutStepBadge.helpers({
     var workflowStep = Template.instance().data;
     var currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
 
-    if (workflowStep.status === true || workflowStep.status == this.template ) {
+    if (workflowStep.status === true || workflowStep.status == this.template) {
       return "active";
     } else {
       return "";

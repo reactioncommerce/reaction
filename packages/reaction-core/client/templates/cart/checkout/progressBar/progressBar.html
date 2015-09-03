@@ -6,7 +6,7 @@
       {{#each reactionTemplate workflow="coreCartWorkflow"}}
       <li class="{{progressbarStatusClass}}">
         <span class="progress-step-badge">{{position}}</span>
-        <span class="progress-step-label" data-i18n="checkoutProgressBar.{{label}}">{{label}}</span>
+        <span class="progress-step-label" data-i18n="checkoutProgressBar.{{toCamelCase label}}">{{label}}</span>
       </li>
       {{/each}}
 

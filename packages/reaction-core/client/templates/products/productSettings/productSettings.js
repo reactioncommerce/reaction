@@ -68,8 +68,8 @@ Template.productSettings.helpers({
   },
   weightClass: function() {
     weightDependency.depend();
-
-    var weight = this.position.weight || 0;
+    var position = this.position || {};
+    var weight = position.weight || 0;
     switch (weight) {
       case 1:
         return 'product-medium';
@@ -84,7 +84,8 @@ Template.productSettings.helpers({
   itemWeightActive: function(weight) {
     weightDependency.depend();
 
-    var currentWeight = this.position.weight || 0;
+    var position = this.position || {};
+    var currentWeight = position.weight || 0;
     if (currentWeight === weight) {
       return "active"
     }
@@ -95,7 +96,8 @@ Template.productSettings.helpers({
   isMediumWeight: function() {
     weightDependency.depend();
 
-    var weight = this.position.weight || 0;
+    var position = this.position || {};
+    var weight = position.weight || 0;
     if (weight === 1) {
       return true;
     }
@@ -104,7 +106,8 @@ Template.productSettings.helpers({
   isLargeWeight: function() {
     weightDependency.depend();
 
-    var weight = this.position.weight || 0;
+    var position = this.position || {};
+    var weight = position.weight || 0;
     if (weight === 3) {
       return true;
     }

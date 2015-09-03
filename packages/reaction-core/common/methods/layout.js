@@ -1,8 +1,13 @@
   /**
-   * cart/pushWorkflow
-   * updates cart status
+   * layout/pushWorkflow
+   * updates workflow status
+   * status in the workflow is stored as the current active
+   * workflow step.
+   *
    * first sets, second call moves status to next workflow
    * additional calls do nothing
+   * user permissions to template are verified
+   *
    */
   Meteor.methods({
     'layout/pushWorkflow': function (workflow, newWorkflowStatus) {
@@ -11,22 +16,17 @@
       this.unblock();
 
       var Cart = ReactionCore.Collections.Cart;
-      var defaultWorkflows = [];
-      /*var nextWorkflowStep = {};*/
+      var defaultPackageWorkflows = [];
+      var nextWorkflowStep = {template: ''};
       var currentCart = Cart.findOne({
         'userId': Meteor.userId()
       });
-
       var currentWorkflowStatus = currentCart.workflow.status;
-
-      // get packages workflow
       var Packages = ReactionCore.Collections.Packages.find({
         'layout.workflow': workflow
       });
 
-      // console.log("layout/pushWorkflow worklow:", workflow, "new status: ", newWorkflowStatus, "current cartId:",  currentCart._id);
-
-      // get this package defaultWorkflow  and check permission
+      // loop through packages and set the defaultPackageWorkflows
       Packages.forEach(function (package) {
         var layouts = _.where(package.layout, {
           workflow: workflow
@@ -45,54 +45,115 @@
 
           // check permissions so you don't have to on template.
           if (ReactionCore.hasPermission(layout.audience)) {
-            defaultWorkflows.push(layout);
+            defaultPackageWorkflows.push(layout);
           }
         });
       });
 
-      // loops through all shop configured layouts, and their default workflows
-      // to determine what the next workflow step should be
-      maxSteps = defaultWorkflows.length;
-      _.each(defaultWorkflows, function (workflow, currentStatusIndex) {
-        if (workflow.template === currentWorkflowStatus && _.contains(currentCart.workflow.workflow, newWorkflowStatus)) {
+      // statusExistsInWorkflow boolean
+      var statusExistsInWorkflow = _.contains(currentCart.workflow.workflow, newWorkflowStatus);
 
-          if (currentStatusIndex < maxSteps) {
+      var maxSteps = defaultPackageWorkflows.length;
+      var nextWorkflowStepIndex;
+      var templateProcessedinWorkflow = false;
+      var gotoNextWorkflowStep = false;
+
+      // loop through all shop configured layouts, and their default workflows
+      // to determine what the next workflow step should be
+      // the cart workflow status while processing is neither true nor false (set to template)
+
+      _.each(defaultPackageWorkflows, function (workflow, currentStatusIndex) {
+        if (workflow.template === currentWorkflowStatus) {
+          // don't go past the end of the workflow
+          if (currentStatusIndex < maxSteps - 1) {
+            ReactionCore.Events.debug( "currentStatusIndex, maxSteps", currentStatusIndex, maxSteps);
             nextWorkflowStepIndex = currentStatusIndex + 1;
           } else {
             nextWorkflowStepIndex = currentStatusIndex;
           }
-          nextWorkflowStep = defaultWorkflows[nextWorkflowStepIndex];
+
+          ReactionCore.Events.debug("nextWorkflowStepIndex", nextWorkflowStepIndex);
+          // set the nextWorkflowStep as the next workflow object from registry
+          nextWorkflowStep = defaultPackageWorkflows[nextWorkflowStepIndex];
+
+          ReactionCore.Events.debug("setting nextWorkflowStep", nextWorkflowStep.template);
         }
       });
 
-      // if this status, and the next workflow step have already been used,
-      // we'll just skip out of here.
-      if (nextWorkflowStep && _.contains(currentCart.workflow.workflow, newWorkflowStatus) && _.contains(currentCart.workflow.workflow, nextWorkflowStep.template)) {
-        // console.log("already processed workflow: ", nextWorkflowStep.template);
-        return false;
+      // check to see if the next step has aready been processed.
+      // templateProcessedinWorkflow boolean
+
+
+      gotoNextWorkflowStep = nextWorkflowStep.template;
+      templateProcessedinWorkflow = _.contains(currentCart.workflow.workflow, nextWorkflowStep.template);
+
+
+      // debug info
+      ReactionCore.Events.debug("currentWorkflowStatus:", currentWorkflowStatus);
+      ReactionCore.Events.debug("layout/pushWorkflow workflow:", workflow);
+      ReactionCore.Events.debug("newWorkflowStatus: ", newWorkflowStatus);
+      ReactionCore.Events.debug("current cartId: ", currentCart._id);
+      ReactionCore.Events.debug("currentWorkflow: ", currentCart.workflow.workflow);
+      ReactionCore.Events.debug("nextWorkflowStep: ", nextWorkflowStep.template);
+      ReactionCore.Events.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
+      ReactionCore.Events.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
+      ReactionCore.Events.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
+
+
+      // Condition One
+      // if you're going to join the workflow you need a status that is a template name.
+      // this status/template is how we know
+      // where you are in the flow and configures `gotoNextWorkflowStep`
+
+      if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus ) {
+        ReactionCore.Events.debug("######## Condition One #########: initialise the " + workflow + ":  " + defaultPackageWorkflows[0].template);
+        return Cart.update(currentCart._id, {
+          $set: {
+            'workflow.status': defaultPackageWorkflows[0].template
+          }
+        });
       }
 
-      // we're going to check if this workflow has already been started, but not yet processing
-      // if it has, we're going to move to the next step, otherwise we'll use the current step
-      if (nextWorkflowStep && _.contains(currentCart.workflow.workflow, newWorkflowStatus) === true) {
+
+      // Condition Two
+      // your're now accepted into the workflow,
+      // but to begin the workflow you need to have a next step
+      // and you should have already be in the current workflow template
+      if (gotoNextWorkflowStep && statusExistsInWorkflow === false && templateProcessedinWorkflow === false) {
+        ReactionCore.Events.debug("######## Condition Two #########: set status to: ", nextWorkflowStep.template);
+
         return Cart.update(currentCart._id, {
           $set: {
             'workflow.status': nextWorkflowStep.template
           },
           $addToSet: {
-            'workflow.workflow': newWorkflowStatus
+            'workflow.workflow': currentWorkflowStatus
           }
         });
-      // else just update to this first step in the workflow.
-      } else {
+      }
+
+
+      // Condition Three
+      // If you got here by skipping around willy nilly
+      // we're going to do our best to ignore you.
+      if (gotoNextWorkflowStep && statusExistsInWorkflow === true && templateProcessedinWorkflow === false) {
+        ReactionCore.Events.debug("######## Condition Three #########: complete workflow " + currentWorkflowStatus + " updates and move to: ", nextWorkflowStep.template);
         return Cart.update(currentCart._id, {
           $set: {
-            'workflow.status': newWorkflowStatus
+            'workflow.status': nextWorkflowStep.template
           },
           $addToSet: {
-            'workflow.workflow': newWorkflowStatus
+            'workflow.workflow': currentWorkflowStatus
           }
         });
+      }
+
+      // Condition Four
+      // you got here through hard work, and processed the previous template
+      // nice job. now start over with the next step.
+      if (gotoNextWorkflowStep && statusExistsInWorkflow === true && templateProcessedinWorkflow === true) {
+        ReactionCore.Events.debug("######## Condition Four #########: previously ran, doing nothing. : ", newWorkflowStatus);
+        return true;
       }
     }
   });

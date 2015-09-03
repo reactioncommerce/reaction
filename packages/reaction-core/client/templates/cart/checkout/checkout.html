@@ -32,14 +32,24 @@
 
 
 <template name="checkoutSteps">
-    {{#if status}}
+    {{#if isPending }}
+
       <div class="checkout-step">
         {{> Template.dynamic template=template}}
       </div>
+
     {{else}}
-      <div class="checkout-step-pending">
-        {{> checkoutStepPending}}
-      </div>
+
+      {{#if isCompleted}}
+        <div class="checkout-step-completed">
+          {{> Template.dynamic template=template}}
+        </div>
+      {{else}}
+        <div class="checkout-step-pending">
+          {{> checkoutStepPending}}
+        </div>
+      {{/if}}
+
     {{/if}}
 </template>
 

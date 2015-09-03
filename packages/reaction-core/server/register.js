@@ -56,7 +56,6 @@ ReactionCore.registerPackage({
       route: "dashboard/settings/shop",
       template: "shopSettings",
       label: "Shop Settings",
-      i18nLabel: "app.shopSettings",
       provides: 'settings',
       icon: "fa fa-cog fa-2x fa-fw",
       container: 'dashboard'
@@ -115,7 +114,7 @@ ReactionCore.registerPackage({
   layout: [
     {
       template: "checkoutLogin",
-      label: "Account",
+      label: "Login",
       workflow: 'coreCartWorkflow',
       container: 'checkout-steps-main',
       audience: ["guest", "anonymous"],
@@ -142,7 +141,7 @@ ReactionCore.registerPackage({
     },
     {
       template: "checkoutReview",
-      label: "Review",
+      label: "Review Payment",
       workflow: 'coreCartWorkflow',
       container: 'checkout-steps-side',
       audience: ["guest", "anonymous"],

@@ -35,6 +35,7 @@ Router.configure({
   onRun: function() {
     $(window).scrollTop(0);
     ReactionCore.clearCurrentAdvancedSettingsView();
+    this.next();
   },
 
 

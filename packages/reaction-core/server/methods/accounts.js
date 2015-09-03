@@ -147,7 +147,9 @@ Accounts.onLogin(function (options) {
       }
     });
 
-    ReactionCore.Events.info("update session cart: " + sessionCart._id + " with user: " + userId);
+    Meteor.call("layout/pushWorkflow", "coreCartWorkflow", 'checkoutLogin');
+
+    ReactionCore.Events.info("update session cart, initilize workflow: " + sessionCart._id + " with user: " + userId);
   }
 
 

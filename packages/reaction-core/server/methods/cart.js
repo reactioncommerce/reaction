@@ -248,9 +248,7 @@ Meteor.methods({
 
       // this is probably a crappy way to do this.
       if (!cart.payment) {
-        if(!cart.payment.address) {
-          Meteor.call('setPaymentAddress', cartId, address);
-        }
+        Meteor.call('setPaymentAddress', cartId, address);
       }
 
     } else {
@@ -285,9 +283,7 @@ Meteor.methods({
 
       // set as default shipping if not set
       if (!cart.shipping) {
-        if(!cart.shipping.address) {
-          Meteor.call('setShipmentAddress', cartId, address);
-        }
+        Meteor.call('setShipmentAddress', cartId, address);
       }
 
       return result;

@@ -208,7 +208,7 @@ Template.registerHelper("capitalize", function(str) {
 */
 
 Template.registerHelper("toCamelCase", function(str) {
-  return str.toCamelCase();
+  if (!!str) return str.toCamelCase();
 });
 
 

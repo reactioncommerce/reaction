@@ -7,7 +7,9 @@
  -->
     <div class="nav-dashboard-heading">
       <h3 class="nav-dashboard-title">
-        <span data-i18n="{{thisApp.i18nLabel}}">{{registry.label}}</span>
+        <span data-i18n="{{toCamelCase registry.name}}.{{toCamelCase registry.label}}">
+          {{registry.label}}
+        </span>
         {{> yield "settingsHeaderControls"}}
       </h3>
 

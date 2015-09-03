@@ -1,8 +1,10 @@
-##Conventions This entire doc is really just a bunch of stuff you'll probably need to know, or at least reference to contribute successfully to Reaction development.
+##Conventions
 
-[We will be migrating core to ES6 in the near future.](https://github.com/reactioncommerce/reaction/issues/320)
+This is a lot of the stuff you'll probably need to know, or at least reference, in order to contribute successfully to Reaction core development.
 
-##Issues For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
+##Issues
+
+For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
 
 The default branch for reaction, reaction-core, reaction-core-theme is _development_. Pull requests made into the _development_ branch, will be reviewed and accepted into development for a quick release, while we work on specific feature branches separately, to be merged into _development_.
 
@@ -14,33 +16,52 @@ The [ready](https://github.com/reactioncommerce/reaction/labels/ready) label gro
 
 Of course, [in progress](https://github.com/reactioncommerce/reaction/labels/in%20progress) labels are actively being worked on.
 
-##Releases We will publish packages, and merge `development` into `master`, whenever a major feature set becomes test-able.
+##Releases
+
+We will publish packages, and merge `development` into `master`, whenever a major feature set becomes test-able.
 
 No pull requests to `master` will be accepted.
 
 `master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](https://github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
 
-##Testing We're using the Meteor testing framework [Velocity](http://velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](https://github.com/Sanjo/meteor-jasmine) for the majority of tests.
+##Testing
+
+We're using the Meteor testing framework [Velocity](http://velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](https://github.com/Sanjo/meteor-jasmine) for the majority of tests.
 
 Velocity doesn't always make it easy to test packages separately from the app. Velocity can also slow down the reload process during development while it's running tests in multiple cloned instances of the shop.
-
-Velocity should use packages tests, but it doesn't always work out that way. If the tests don't automatically run, or you don't see any tests in the Velocity panel,  try adding the package's `tests` to Velocity symlinking (or copying) the tests into the main Reaction app's `/tests` directory and running from there.
-
-```
-ln -s packages/reaction-core/tests/* tests/
-```
-
-A few things you should know:
-- First you'll need to uncomment `sanjo:jasmine` in the `/.meteor/packages` file in the main meteor app.
-- You should set your `NODE_ENV` environment variable to 'development' to open up ports that velocity uses. The easiest way to do this is to run `export NODE_ENV="development"` before you start `meteor`
-- After doing that, your Velocity tests should run when you run `meteor run`
-- If you run `meteor --test` your tests will only run once and will not re-run when you update files.
 
 You can also test individual packages.
 
 ```
 VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter package-to-test
 ```
+
+As such, our testing falls into two locations:
+
+####Reaction End to End Tests
+
+   Located in the `reaction/tests/jasmine/client/integration` folder, these tests cover UIX testing. These are relatively fragile tests as they are only testing core theme and UIX.
+
+   You enable these tests by uncommenting the velocity testing packages in `.meteor/packages`.
+
+####Package integration Tests
+
+   Tests for the individual reaction packages, are respectively located in `/tests/jasmine/server/integration`. Each package should cover tests  these tests cover UIX testing. These are relatively fragile tests as they are only testing core theme and UIX.
+
+   These tests are run independently from the end to end tests, and can be run from the command line:
+
+   `VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter package-to-test`
+
+   To continuously test changes to the `core` package while using Reaction End to End tests simultaneously on another port:
+
+```
+   VELOCITY_TEST_PACKAGES=1 meteor test-packages --port 3006 reactioncommerce:core
+```
+
+Some Velocity setup tips:
+- Uncomment `sanjo:jasmine` and the other testing packages found in the `/.meteor/packages` file in the Reaction path to use the browser testing console.
+- You can set your `NODE_ENV` environment variable to 'development' to open up ports that velocity uses. The easiest way to do this is to run `export NODE_ENV="development"` before you start `meteor`
+- If you run `meteor --test` your tests will only run once and will not re-run when you update files.
 
 We'd like for new features to include at least basic integration test-coverage. If you are unsure about how to do this just ask and, we can point you in the right direction.
 - Feature branches can be merged and released when they are feature incomplete, but soon we're planning on enforcing a passing test written for every pull request.*
@@ -91,41 +112,7 @@ When using event, template parameters in methods, use full names
 
   'click': (event, template) ->
 
-**comments** Use of `{{!-- comment --}}` rather than `<!-- comment -->` is suggested, this isn't outputed in production.
-
-###Folder structure
-
-```
-public *public file assets*
-private *private files*
-settings *runtime configuration files*
-packages
-        -> client
-            -> templates         *all client templates*
-                -> functionalTriad        *camelCased short functional template naming*
-                    functionalTriad.less    *triad of functional group, new functionality goes in sub*
-                    functionalTriad.html
-                    functionalTriad.coffee
-                        -> subFunctionalTriad
-                            subFunctionalTriad.less
-                            subFunctionalTriad.html
-                            subFunctionalTriad.coffee
-
-            -> lib  *client specific shared libraries*
-            register.coffee     *files common to all client side* *register adds to reaction dashboard*
-            routing.coffee
-            subscriptions.coffee
-        -> common *code common to client and server*
-            -> collections
-            -> schemas
-            -> helpers
-            -> hooks
-        -> lib         *libraries for server side*
-        -> server    *server side code*
-            methods.coffee
-            publications.coffee
-        package.js *package declarations for meteor*
-```
+**comments** Use of `{{!-- comment --}}` rather than `<!-- comment -->` is suggested, as this isn't output in production.
 
 ###Presentation layer
 
@@ -146,9 +133,11 @@ See [themes.md](themes.md) for details on the themes and LESS implementation.
 
 ##Server Methods
 
+See `core/server/methods/*` and `core/common/methods/*` source for reference.
+
 ###Variable Scope & Namespaces
 
-_common/packageGlobals.js:_
+_core/common/packageGlobals.js:_
 
 ```js
 // exported, global/window scope
@@ -161,23 +150,11 @@ ReactionCore.Locale = {}; //i18n translation object
 ReactionCore.Events = {}; // Logger instantiation (server)
 ```
 
-_common/collections/collections.coffee:_
+_core/common/collections/products.js:_
 
-```coffee
-Product = ReactionCore.Collections.Product = new Mongo.Collection("Product")
+```javascript
+ReactionCore.Collections.Product = new Mongo.Collection("Product");
 # etc...
-```
-
-_anyfile.coffee:_
-
-```coffee
-# If we're going to use Product collection in this file, which could be in core or in an add-on pkg,
-# we can optionally assign to a file-scope variable at the top of the file to keep our code short.
-Product = ReactionCore.Collections.Product
-# etc...
-# At some point, in some file, we eventually define all the variables from packageGlobals.js
-helperOne = ->
-  return true
 ```
 
 The `reaction-core` package exports `ReactionCore`, on both client and server:
@@ -186,7 +163,9 @@ The `reaction-core` package exports `ReactionCore`, on both client and server:
 api.export(["ReactionCore"]);
 ```
 
-###Logging We use [Bunyan](https://github.com/trentm/node-bunyan) to provide a JSON friendly log handler Reaction .
+###Logging
+
+[Bunyan](https://github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
 

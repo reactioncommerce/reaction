@@ -1,26 +1,26 @@
 /**
-* productDetail helpers
-*/
+ * productDetail helpers
+ */
 Template.productDetail.helpers({
-  tags: function() {
+  tags: function () {
     var _ref;
-    return _.map((_ref = selectedProduct()) != null ? _ref.hashtags : void 0, function(id) {
+    return _.map((_ref = selectedProduct()) != null ? _ref.hashtags : void 0, function (id) {
       return Tags.findOne(id);
     });
   },
-  tagsComponent: function() {
+  tagsComponent: function () {
     if (ReactionCore.hasPermission('createProduct')) {
       return Template.productTagInputForm;
     } else {
       return Template.productDetailTags;
     }
   },
-  actualPrice: function() {
+  actualPrice: function () {
     var childVariants, current, product, purchasable, variant;
     current = selectedVariant();
     product = selectedProduct();
     if (product && current) {
-      childVariants = (function() {
+      childVariants = (function () {
         var _i, _len, _ref, _results;
         _ref = product.variants;
         _results = [];
@@ -40,14 +40,14 @@ Template.productDetail.helpers({
       return getProductPriceRange();
     }
   },
-  fieldComponent: function(field) {
+  fieldComponent: function (field) {
     if (ReactionCore.hasPermission('createProduct')) {
       return Template.productDetailEdit;
     } else {
       return Template.productDetailField;
     }
   },
-  metaComponent: function() {
+  metaComponent: function () {
     if (ReactionCore.hasPermission('createProduct')) {
       return Template.productMetaFieldForm;
     } else {
@@ -57,11 +57,11 @@ Template.productDetail.helpers({
 });
 
 /**
-* productDetail events
-*/
+ * productDetail events
+ */
 
 Template.productDetail.events({
-  "click #price": function() {
+  "click #price": function () {
     var formName, v;
     if (ReactionCore.hasPermission('createProduct')) {
       v = selectedVariant();
@@ -78,11 +78,11 @@ Template.productDetail.events({
       $('#' + formName + ' [name=price]').focus();
     }
   },
-  "click #add-to-cart-quantity": function(event, template) {
+  "click #add-to-cart-quantity": function (event, template) {
     event.preventDefault();
     return event.stopPropagation();
   },
-  "change #add-to-cart-quantity": function(event, template) {
+  "change #add-to-cart-quantity": function (event, template) {
     var currentVariant, qtyField, quantity;
     event.preventDefault();
     event.stopPropagation();
@@ -98,14 +98,16 @@ Template.productDetail.events({
       }
     }
   },
-  "click #add-to-cart": function(event, template) {
+  "click #add-to-cart": function (event, template) {
     var cartId, count, currentProduct, currentVariant, now, options, productId, qtyField, quantity, variant;
     now = new Date();
     currentVariant = selectedVariant();
     currentProduct = selectedProduct();
+
     if (currentVariant) {
+
       if (currentVariant.parentId == null) {
-        options = (function() {
+        options = (function () {
           var _i, _len, _ref, _results;
           _ref = currentProduct.variants;
           _results = [];
@@ -117,6 +119,7 @@ Template.productDetail.events({
           }
           return _results;
         })();
+
         if (options.length > 0) {
           Alerts.add("Please choose options before adding to cart", "danger", {
             placement: "productDetail",
@@ -126,6 +129,7 @@ Template.productDetail.events({
           return;
         }
       }
+
       if (currentVariant.inventoryPolicy && currentVariant.inventoryQuantity < 1) {
         Alerts.add("Sorry, this item is out of stock!", "danger", {
           placement: "productDetail",
@@ -134,11 +138,14 @@ Template.productDetail.events({
         });
         return;
       }
+
       qtyField = template.$('input[name="addToCartQty"]');
       quantity = qtyField.val();
+
       if (quantity < 1) {
         quantity = 1;
       }
+
       if (!this.isVisible) {
         Alerts.add("Publish product before adding to cart.", "danger", {
           placement: "productDetail",
@@ -148,9 +155,11 @@ Template.productDetail.events({
       } else {
         cartId = ReactionCore.Collections.Cart.findOne()._id;
         productId = currentProduct._id;
+
         if (cartId && productId) {
-          count = Cart.findOne(cartId).cartCount() || 0;
-          Meteor.call("addToCart", cartId, productId, currentVariant, quantity, function(error, result) {
+          count = ReactionCore.Collections.Cart.findOne(cartId).cartCount() || 0;
+
+          Meteor.call("addToCart", cartId, productId, currentVariant, quantity, function (error, result) {
             var address;
             if (!error && count === 0) {
               address = Session.get("address");
@@ -163,12 +172,15 @@ Template.productDetail.events({
             }
           });
         }
+
         template.$(".variant-select-option").removeClass("active");
         setCurrentVariant(null);
         qtyField.val(1);
+
         $('html,body').animate({
           scrollTop: 0
         }, 0);
+
         $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart'));
         return $('.cart-alert').toggle('slide', {
           direction: i18n.t('languageDirection') === 'rtl' ? 'left' : 'right',
@@ -176,6 +188,7 @@ Template.productDetail.events({
         }, 600).delay(5000).toggle('slide', {
           direction: i18n.t('languageDirection') === 'rtl' ? 'left' : 'right'
         });
+
       }
     } else {
       Alerts.add("Select an option before adding to cart", "danger", {
@@ -185,7 +198,7 @@ Template.productDetail.events({
       });
     }
   },
-  "click .toggle-product-isVisible-link": function(event, template) {
+  "click .toggle-product-isVisible-link": function (event, template) {
     var errorMsg, index, variant, _i, _len, _ref;
     errorMsg = "";
     if (!this.title) {
@@ -211,34 +224,34 @@ Template.productDetail.events({
       Meteor.call("publishProduct", this._id);
     }
   },
-  "click .delete-product-link": function(event, template) {
+  "click .delete-product-link": function (event, template) {
     maybeDeleteProduct(this);
   },
-  "click .fa-facebook": function() {
+  "click .fa-facebook": function () {
     if (ReactionCore.hasPermission('createProduct')) {
       $(".facebookMsg-edit").fadeIn();
       return $(".facebookMsg-edit-input").focus();
     }
   },
-  "click .fa-twitter": function() {
+  "click .fa-twitter": function () {
     if (ReactionCore.hasPermission('createProduct')) {
       $(".twitterMsg-edit").fadeIn();
       return $(".twitterMsg-edit-input").focus();
     }
   },
-  "click .fa-pinterest": function() {
+  "click .fa-pinterest": function () {
     if (ReactionCore.hasPermission('createProduct')) {
       $(".pinterestMsg-edit").fadeIn();
       return $(".pinterestMsg-edit-input").focus();
     }
   },
-  "click .fa-google-plus": function() {
+  "click .fa-google-plus": function () {
     if (ReactionCore.hasPermission('createProduct')) {
       $(".googleplusMsg-edit").fadeIn();
       return $(".googleplusMsg-edit-input").focus();
     }
   },
-  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": function() {
+  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": function () {
     Session.set("editing-" + this.field, false);
     return $('.social-media-inputs > *').hide();
   }
