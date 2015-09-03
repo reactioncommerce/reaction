@@ -12,12 +12,15 @@ getLabelsFor = function(schema, name) {
   var fieldName, i18n_key, labels, translation, _i, _len, _ref;
   labels = {};
   _ref = schema._schemaKeys;
+  //loop through all the rendered form fields and generate i18n keys
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     fieldName = _ref[_i];
+
     i18n_key = name.charAt(0).toLowerCase() + name.slice(1) + "." + fieldName.split(".$").join("");
     translation = i18n.t(i18n_key);
+
     if (new RegExp('string').test(translation) !== true && translation !== i18n_key) {
-      labels[fieldName] = translation;
+      if (translation) labels[fieldName] = translation;
     }
   }
   return labels;
@@ -134,14 +137,20 @@ Meteor.startup(function() {
  */
 
 Template.registerHelper("i18n", function(i18n_key, message) {
-  i18nextDep.depend();
   if (!i18n_key) {
     throw new Meteor.Error("i18n key string required to translate");
   }
+
+  check(i18n_key, String);
+  check(message, Match.Optional(String));
+
+  i18nextDep.depend();
+
   message = new Handlebars.SafeString(message);
+
   if (i18n.t(i18n_key) === i18n_key) {
     console.info("no translation found. returning raw message for:" + i18n_key);
-    return message;
+    return message.string;
   } else {
     return i18n.t(i18n_key);
   }

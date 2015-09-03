@@ -7,8 +7,8 @@
  -->
     <div class="nav-dashboard-heading">
       <h3 class="nav-dashboard-title">
-        <span data-i18n="{{toCamelCase registry.name}}.{{toCamelCase registry.label}}">
-          {{registry.label}}
+        <span>
+          {{i18n registry.i18nKey registry.i18nLabel}}
         </span>
         {{> yield "settingsHeaderControls"}}
       </h3>

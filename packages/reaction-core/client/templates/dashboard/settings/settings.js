@@ -1,13 +1,16 @@
-
-
 Template.settingsHeader.helpers({
 
   "registry": function () {
-    return ReactionCore.getAdvancedSettingsView();
+    // just some handle little helpers for default package i18nKey/i18nLabel
+    var registry = ReactionCore.getAdvancedSettingsView() || {};
+    registry.nameSpace = registry.name || registry.template || "app";
+    registry.i18nLabel = registry.label || registry.provides || "Settings";
+    registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase();
+    return registry;
+
   },
 
   "thisApp": function () {
-
     var fields = {
       'enabled': 1,
       'registry': 1,
@@ -24,18 +27,16 @@ Template.settingsHeader.helpers({
       'route': 1
     });
 
-
     if (reactionApp) {
       var settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route == Router.current().route.getName() && item.provides == "settings"
-      })
+        return item.route == Router.current().route.getName() && item.provides == "settings";
+      });
 
       return settingsData;
     }
-
     return reactionApp;
-
   }
+
 });
 
 
@@ -49,7 +50,7 @@ Template.settingsHeader.events({
 // Templte.settingsSidebar.inheritsHelpersFrom("packagesGrid");
 
 Template.settingsSidebar.helpers({
-  pkgPermissions: function() {
+  pkgPermissions: function () {
     if (ReactionCore.hasPermission('dashboard')) {
       if (this.route) {
         return ReactionCore.hasPermission(this.route);
@@ -63,7 +64,7 @@ Template.settingsSidebar.helpers({
 });
 
 Template.settingsSidebarItem.helpers({
-  "label": function() {
+  "label": function () {
     return Template.parentData(1).label || this.label;
   },
 
