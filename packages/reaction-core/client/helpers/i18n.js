@@ -142,8 +142,6 @@ Template.registerHelper("i18n", function(i18n_key, message) {
   }
 
   check(i18n_key, String);
-  check(message, Match.Optional(String));
-
   i18nextDep.depend();
 
   message = new Handlebars.SafeString(message);
