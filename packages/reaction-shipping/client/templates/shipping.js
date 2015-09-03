@@ -1,7 +1,9 @@
 /*
  * Template shipping Helpers
  */
- Meteor.subscribe("Shipping");
+Meteor.subscribe("Shipping");
+
+
 Template.shippingSettings.helpers({
   packageData: function() {
     return ReactionCore.Collections.Packages.findOne({
@@ -30,12 +32,17 @@ Template.shippingProviderTable.helpers({
  * Template Shipping Events
  */
 
-Template.shippingSettings.events({
-  'click': function() {
+Template.shipping.events({
+  "click": function () {
     return Alerts.removeSeen();
   },
-  'click .add-shipping-provider': function(event, template) {
-    return toggleSession("selectedShippingProvider");
+  "click [data-action=addShippingProvider]": function (event, template) {
+
+    ReactionCore.showAdvancedSettings({
+      label: "Add Shipping Provider",
+      template: "addShippingProvider"
+    });
+
   }
 });
 
@@ -80,23 +87,22 @@ Template.afFormGroup_validRanges.helpers({
 });
 
 
-
-Template.editShippingMethod.events({
-  'click .cancel': function(event, template) {
-    toggleSession("selectedShippingMethod");
-    return event.preventDefault();
-  }
-});
+// Template.editShippingMethod.events({
+//   'click .cancel': function(event, template) {
+//     toggleSession("selectedShippingMethod");
+//     return event.preventDefault();
+//   }
+// });
 
 
 /*
  * template addShippingProvider events
  */
 
-Template.updateShippingProvider.events({
-  'click .cancel': function(event, template) {
-    toggleSession("selectedShippingProvider");
-    return event.preventDefault();
+Template.editShippingProvider.events({
+  "click [data-event-action=cancelUpdateShippingProvider]": function(event, template) {
+    event.preventDefault();
+    ReactionCore.hideAdvancedSettings();
   }
 });
 
@@ -106,9 +112,9 @@ Template.updateShippingProvider.events({
  */
 
 Template.addShippingProvider.events({
-  'click .cancel': function(event, template) {
-    toggleSession("selectedShippingProvider");
-    return event.preventDefault();
+  "click [data-event-action=cancelAddShippingProvider]": function(event, template) {
+    event.preventDefault();
+    ReactionCore.hideAdvancedSettings();
   }
 });
 
@@ -162,19 +168,26 @@ Template.shippingProviderTable.helpers({
  */
 
 Template.shippingProviderTable.events({
-  'click .edit-shipping-method': function(event, template) {
-    var session;
-    session = Session.get("selectedShippingMethod");
-    if (_.isEqual(this, session)) {
-      return Session.set("selectedShippingMethod", false);
-    } else {
-      return Session.set("selectedShippingMethod", this);
-    }
+  "click [data-event-action=editShippingMethod]": function(event, template) {
+    event.preventDefault();
+
+    ReactionCore.showAdvancedSettings({
+      label: "Edit Shipping Method",
+      data: this,
+      template: "editShippingMethod"
+    });
+
   },
-  'click .edit-shipping-provider': function(event, template) {
-    return toggleSession("selectedShippingProvider", this);
+  "click [data-event-action=editShippingProvider]": function(event, template) {
+    event.preventDefault();
+
+    ReactionCore.showAdvancedSettings({
+      label: "Edit Shipping Provider",
+      data: this,
+      template: "editShippingProvider"
+    });
   },
-  'click #delete-shipping-method': function(event, template) {
+  'click [data-event-action=deleteShippingMethod]': function(event, template) {
     if (confirm("Are you sure you want to delete " + this.name)) {
       Meteor.call("removeShippingMethod", $(event.currentTarget).data('provider-id'), this);
       return Alerts.add("Shipping method deleted.", "success", {
@@ -186,14 +199,14 @@ Template.shippingProviderTable.events({
       event.stopPropagation();
     }
   },
-  'click #add-shipping-method': function(event, template) {
-    var session;
-    session = Session.get("selectedAddShippingMethod");
-    if (_.isEqual(this, session)) {
-      return Session.set("selectedAddShippingMethod", false);
-    } else {
-      return Session.set("selectedAddShippingMethod", this);
-    }
+  'click [data-event-action=addShippingMethod]': function(event, template) {
+    event.preventDefault();
+
+    ReactionCore.showAdvancedSettings({
+      label: "Add Shipping Method",
+      template: "addShippingMethod"
+    });
+
   }
 });
 

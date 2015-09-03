@@ -1,7 +1,7 @@
 Router.map(function() {
   return this.route('shipping', {
-    controller: ShopSettingsController,
-    path: 'dashboard/settings/shipping',
+    controller: ShopAdminController,
+    path: 'dashboard/shipping',
     template: 'shipping',
     waitOn: function() {
       return ReactionCore.Subscriptions.Packages;
