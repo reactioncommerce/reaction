@@ -89,7 +89,19 @@ Template.gridPackage.events({
       });
     }
   },
-  "click .pkg-settings, click [data-action=showPackageSettings]": function(event, template) {
+
+
+  "click [data-event-action=showPackageManagement]": function(event, template) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log(this)
+    if (this.route) {
+      Router.go(this.route);
+    }
+
+  },
+
+  "click .pkg-settings, click [data-event-action=showPackageSettings]": function(event, template) {
     event.preventDefault();
     event.stopPropagation();
 
