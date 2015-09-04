@@ -164,6 +164,9 @@ Package.onUse(function (api) {
   api.addFiles("common/collections/collections.js");
   api.addFiles("common/collections/collectionFS.js");
 
+  // accounts
+  api.addFiles("server/accounts.js", "server");
+
   // security
   api.addFiles("server/browserPolicy.js", "server");
   api.addFiles("server/security.js", "server");
