@@ -209,6 +209,8 @@ ReactionRegistry.createDefaultAdminUser = function() {
 
   accountId = Accounts.createUser(options);
 
+  Accounts.sendVerificationEmail(accountId);
+
   // configure Launchdock auth
   if (process.env.LAUNCHDOCK_USERID) {
     Meteor.users.update({ _id: accountId }, {
