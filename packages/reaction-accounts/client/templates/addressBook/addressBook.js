@@ -21,7 +21,6 @@ Template.addressBook.onCreated(function () {
         // Assume that if we're seeing the address book grid
         // then we should have both a default billing and shipping
         // address selected
-        /*Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutAddressBook");*/
       }
     }
   }
