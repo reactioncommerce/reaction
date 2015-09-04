@@ -107,7 +107,33 @@ _.extend(ReactionCore, {
     }
 
     return tag
+  },
+
+  getRegisryForCurrentRoute: function (provides) {
+
+    var routeName = Router.current().route.getName();
+
+    var reactionApp = ReactionCore.Collections.Packages.findOne({
+      // "registry.provides": provides,
+      "registry.route": routeName
+    }, {
+      'enabled': 1,
+      'registry': 1,
+      'name': 1,
+      'route': 1
+    });
+
+    if (reactionApp) {
+      var settingsData = _.find(reactionApp.registry, function (item) {
+        return item.provides === provides;
+      });
+
+      return settingsData;
+    }
+
+    return null;
   }
+
 });
 
 

@@ -26,6 +26,7 @@
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
     <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
     <main role="main" id="main">
+      {{> dashboardHeader}}
       {{> yield}}
     </main>
     <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>

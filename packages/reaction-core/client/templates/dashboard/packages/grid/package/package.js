@@ -94,7 +94,7 @@ Template.gridPackage.events({
   "click [data-event-action=showPackageManagement]": function(event, template) {
     event.preventDefault();
     event.stopPropagation();
-    console.log(this)
+
     if (this.route) {
       Router.go(this.route);
     }
