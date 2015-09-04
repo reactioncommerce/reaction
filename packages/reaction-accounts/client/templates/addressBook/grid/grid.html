@@ -10,72 +10,49 @@
 
   </div>
   <div class="panel-body">
-    <div class="row" id="addressBook">
-      <div class="col-md-6">
-        <h4 id="shipping-address-label" data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</h4>
-        <div class="list-group">
-           {{#each addressBook}}
-            <div class="address-ship-to list-group-item {{selectedShipping}}" data-event-action="selectShippingAddress">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <strong>{{fullName}}</strong>
-                    <address>
-                      {{address1}}
-                      {{address2}},<br>
-                      {{city}}, {{region}} {{postal}} {{country}}<br>
-                      {{phone}}
-                    </address>
-                  </div>
-                </div>
 
-                <div class="col-sm-12 address-icons">
-                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
-                    <i class="fa fa-pencil"></i>
-                  </button>
-                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
-                    <i class="fa fa-trash-o"></i>
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          {{/each}}
+    <div class="address-list">
+      <div class="address-list-header">
+        <div class="address-list-heading">
+          <h4 data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</h4>
         </div>
-      </div>
-      <div class="col-md-6">
-        <h4 id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</h4>
-        <div class="list-group">
-          {{#each addressBook}}
-            <div class="address-bill-to list-group-item {{selectedBilling}}" data-event-action="selectBillingAddress">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <strong>{{fullName}}</strong>
-                    <address>
-                      {{address1}}
-                      {{address2}},<br>
-                      {{city}}, {{region}} {{postal}} {{country}}<br>
-                      {{phone}}
-                    </address>
-                  </div>
-                </div>
-
-                <div class="col-sm-12 address-icons">
-                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
-                    <i class="fa fa-pencil"></i>
-                  </button>
-                  <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="removeAddress">
-                    <i class="fa fa-trash-o"></i>
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          {{/each}}
+        <div class="address-list-heading">
+          <h4 id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</h4>
         </div>
+        <div class="address-list-heading-blank"></div>
       </div>
+      {{#each addressBook}}
+        <div class="address-list-item">
+          <div class="address {{selectedShipping}}" data-event-action="selectShippingAddress">
+            <strong>{{fullName}}</strong>
+            <address>
+              {{address1}}
+              {{address2}},<br>
+              {{city}}, {{region}} {{postal}} {{country}}<br>
+              {{phone}}
+            </address>
+          </div>
+          <div class="address {{selectedBilling}}" data-event-action="selectBillingAddress">
+            <strong>{{fullName}}</strong>
+            <address>
+              {{address1}}
+              {{address2}},<br>
+              {{city}}, {{region}} {{postal}} {{country}}<br>
+              {{phone}}
+            </address>
+          </div>
+          <div class="controls">
+            <button type="button" class="btn btn-default" data-id="{{_id}}" data-event-action="editAddress">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-default danger-action" data-id="{{_id}}" data-event-action="removeAddress">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      {{/each}}
     </div>
+
   </div>
 {{/with}}
 </template>
