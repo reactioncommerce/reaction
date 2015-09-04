@@ -39,9 +39,7 @@
       </div>
       <div class="admin-controls-content">
         {{>yield region="adminControlsContent"}}
-        <div class="admin-controls-container">
-          {{> Template.dynamic template=template.template data=template.data}}
-        </div>
+        {{> Template.dynamic template=template.template data=template.data}}
       </div>
       <div class="admin-controls-footer">
         <div class="admin-controls-container">

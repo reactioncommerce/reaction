@@ -362,15 +362,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/shop/settings/settings.html", "client");
   api.addFiles("client/templates/dashboard/shop/settings/settings.js", "client");
 
-  api.addFiles("client/templates/dashboard/accounts/accounts.html", "client");
-  api.addFiles("client/templates/dashboard/accounts/accounts.js", "client");
-
-  api.addFiles("client/templates/dashboard/accounts/shopMember/shopMember.html", "client");
-  api.addFiles("client/templates/dashboard/accounts/shopMember/shopMember.js", "client");
-
-  api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html", "client");
-  api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.js", "client");
-
   // Product Templates
   api.addFiles("client/templates/products/products.html", "client");
   api.addFiles("client/templates/products/products.js", "client");
