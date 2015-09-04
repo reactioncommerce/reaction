@@ -3,6 +3,15 @@
  */
 Meteor.subscribe("Shipping");
 
+Template.shippingDashboardControls.events({
+  "click [data-event-action=addShippingProvider]": function () {
+    ReactionCore.showAdvancedSettings({
+      label: "Add Shipping Provider",
+      template: "addShippingProvider"
+    });
+
+  }
+});
 
 Template.shippingSettings.helpers({
   packageData: function() {
@@ -77,14 +86,6 @@ Template.afFormGroup_validRanges.helpers({
 /*
  * template addShippingProvider events
  */
-
- Template.shippingSettingsNav.events({
-  'click [data-action=addShippingProvider]': function(event, template) {
-    event.preventDefault();
-    toggleSession("selectedShippingProvider");
-    console.log("poop?")
-  }
-});
 
 
 // Template.editShippingMethod.events({

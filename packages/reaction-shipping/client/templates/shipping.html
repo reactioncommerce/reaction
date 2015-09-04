@@ -1,21 +1,13 @@
 
-<template name="shippingSettingsNav">
-
+<template name="shippingDashboardControls">
+  <button type="button" class="btn btn-default" data-event-action="addShippingProvider">
+    <i class="fa fa-plus fa-lg" title="Add shipping provider"></i> Add Provider
+  </button>
 </template>
 
 <template name="shipping">
-  <div class="nav-dashboard">
-    <div class="nav-dashboard-heading">
-      <h2 class="nav-dashboard-title">Shipping</h2>
-    </div>
 
-    <div class="nav-dashboard-controls">
-        <button type="button" class="btn btn-default" data-action="addShippingProvider">
-        <i class="fa fa-plus fa-lg" title="Add shipping provider"></i> Add Provider
-      </button>
-      
-    </div>
-  </div>
+  {{> contentFor region="dashboardControls" template="shippingDashboardControls"}}
 
   <div class="container-fluid-sm">
     <div class="shipping-rate-tables">
