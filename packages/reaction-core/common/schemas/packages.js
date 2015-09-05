@@ -86,6 +86,10 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema({
     type: Boolean,
     defaultValue: true
   },
+  icon: {
+    type: String,
+    optional: true
+  },
   settings: {
     type: Object,
     optional: true,
