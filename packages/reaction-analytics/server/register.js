@@ -1,5 +1,6 @@
 ReactionCore.registerPackage({
   name: 'reaction-analytics',
+  icon: "fa fa-bar-chart-o",
   autoEnable: false,
   settings: {
     "public": {
