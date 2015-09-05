@@ -294,9 +294,7 @@ Router.map(function() {
       }
     },
     waitOn: function() {
-      return this.subscribe("Packages");
-    },
-    subscriptions: function() {
+      this.subscribe("Packages");
       this.subscribe("Products");
       this.subscribe("Shipping");
       return this.subscribe("AccountOrders");
@@ -308,14 +306,14 @@ Router.map(function() {
     controller: ShopController,
     path: 'completed/:_id',
     template: 'cartCompleted',
-    subscriptions: function() {
-      return this.subscribe("AccountOrders");
+    waitOn: function() {
+      return this.subscribe("CompletedCartOrder", Meteor.userId(), this.params._id);
     },
     data: function() {
       if (this.ready()) {
-        if (Orders.findOne(this.params._id)) {
+        if (Orders.findOne({'cartId': this.params._id })) {
           return ReactionCore.Collections.Orders.findOne({
-            '_id': this.params._id
+            'cartId': this.params._id
           });
         } else {
           return this.render('unauthorized');

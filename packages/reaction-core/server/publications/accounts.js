@@ -68,20 +68,3 @@ Meteor.publish("UserProfile", function(profileUserId) {
     return [];
   }
 });
-
-/**
- * account orders
- */
-
-Meteor.publish('AccountOrders', function(userId, shopId) {
-  check(userId, Match.OptionalOrNull(String));
-  check(shopId, Match.OptionalOrNull(String));
-  shopId = shopId || ReactionCore.getShopId(this);
-  if (userId && userId !== this.userId) {
-    return [];
-  }
-  return Orders.find({
-    'shopId': shopId,
-    'userId': this.userId
-  });
-});

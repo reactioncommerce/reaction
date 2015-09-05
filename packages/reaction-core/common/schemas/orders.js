@@ -169,8 +169,9 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema({
     type: String,
     optional: true
   },
-  status: {
-    type: String
+  workflow: {
+    type: ReactionCore.Schemas.Workflow,
+    optional: true
   },
   history: {
     type: [ReactionCore.Schemas.History],
@@ -184,6 +185,7 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema({
 
 /**
 * Order Schema
+* extended from cart schema
 */
 
 ReactionCore.Schemas.Order = new SimpleSchema({

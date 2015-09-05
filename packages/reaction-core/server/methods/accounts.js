@@ -82,7 +82,7 @@ Accounts.onCreateUser(function (options, user) {
  *
  */
 
-Accounts.onLogin(function (options) {
+/*Accounts.onLogin(function (options) {
   var user = options.user;
   var userId = options.user._id;
   var shopId = ReactionCore.getShopId();
@@ -155,7 +155,7 @@ Accounts.onLogin(function (options) {
 
 
 
-});
+});*/
 
 /**
  * Reaction Account Methods

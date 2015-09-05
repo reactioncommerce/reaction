@@ -18,7 +18,7 @@ Meteor.methods({
       return;
     }
     check(cartId, String);
-    this.unblock;
+    this.unblock();
     cart = ReactionCore.Collections.Cart.findOne(cartId);
     if (cart) {
       rates = Meteor.call("getShippingRates", cart);
@@ -103,20 +103,5 @@ Meteor.methods({
     ReactionCore.Events.info("getShippingrates returning rates");
     ReactionCore.Events.debug("rates", rates);
     return rates;
-  },
-
-  /**
-   * add payment method
-   */
-  paymentMethod: function(cartId, paymentMethod) {
-    check(cartId, String);
-    check(paymentMethod, Object);
-    return Cart.update({
-      _id: cartId
-    }, {
-      $addToSet: {
-        "payment.paymentMethod": paymentMethod
-      }
-    });
   }
 });

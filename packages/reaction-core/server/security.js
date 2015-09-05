@@ -153,6 +153,9 @@ Orders.permit('remove').ifHasRole({
 
 Cart.permit('update').ifUserIdMatches().apply();
 
+/*
+ * apply download permissions to file collections
+ */
 _.each([Media], function(fsCollection) {
   return fsCollection.allow({
     download: function() {

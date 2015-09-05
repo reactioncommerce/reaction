@@ -1,49 +1,27 @@
 /**
- * checkout publications
- *
- */
-
-
-var Cart = ReactionCore.Collections.Cart;
-var Discounts = ReactionCore.Collections.Discounts;
-var Orders = ReactionCore.Collections.Orders;
-var Shipping = ReactionCore.Collections.Shipping;
-var Taxes = ReactionCore.Collections.Taxes;
-
-
-/**
- * orders
- */
-
-Meteor.publish('Orders', function(userId) {
-  check(userId, Match.Optional(String));
-  if (Roles.userIsInRole(this.userId, ['admin', 'owner'], ReactionCore.getShopId(this))) {
-    return Orders.find({
-      shopId: ReactionCore.getShopId(this)
-    });
-  } else {
-    return [];
-  }
-});
-
-
-
-
-
-/**
  * cart
  */
 
-Meteor.publish('Cart', function(userId) {
-  check(userId, Match.OptionalOrNull(String));
-  if (!this.userId) {
+Meteor.publish('Cart', function() {
+  /*check(userId, Match.OptionalOrNull(String));*/
+  /*if (!this.userId) {
     return;
-  }
-  return ReactionCore.Collections.Cart.find({
+  }*/
+
+  cart = ReactionCore.Collections.Cart.find({
     userId: this.userId
   });
-});
 
+  if (cart.count() > 0 ) {
+    return cart;
+  }
+  else if (this.userId)
+  {
+    Meteor.call("createCart", this.userId);
+    return cart;
+  }
+
+});
 
 
 /**
@@ -51,7 +29,7 @@ Meteor.publish('Cart', function(userId) {
  */
 
 Meteor.publish("Shipping", function() {
-  return Shipping.find({
+  return ReactionCore.Collections.Shipping.find({
     shopId: ReactionCore.getShopId()
   });
 });
@@ -62,7 +40,7 @@ Meteor.publish("Shipping", function() {
  */
 
 Meteor.publish("Taxes", function() {
-  return Taxes.find({
+  return ReactionCore.Collections.Taxes.find({
     shopId: ReactionCore.getShopId()
   });
 });
@@ -73,7 +51,7 @@ Meteor.publish("Taxes", function() {
  */
 
 Meteor.publish("Discounts", function() {
-  return Discounts.find({
+  return ReactionCore.Collections.Discounts.find({
     shopId: ReactionCore.getShopId()
   });
 });

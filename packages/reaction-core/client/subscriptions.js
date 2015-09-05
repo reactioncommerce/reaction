@@ -7,28 +7,23 @@
  * supports reactivity when server changes the serverSession
  * Stores the server session id into local storage / cookies
  */
-
-
-  var cart, handle;
-
   ReactionCore.Subscriptions.Account = Meteor.subscribe("Accounts", Meteor.userId());
 
-  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart", Meteor.userId());
+  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart");
 
   ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions", amplify.store("ReactionCore.session"), function() {
-    var serverSession;
-    serverSession = new Mongo.Collection("Sessions").findOne();
+    var serverSession = new Mongo.Collection("Sessions").findOne();
     return amplify.store("ReactionCore.session", serverSession._id);
   });
 
-  cart = ReactionCore.Collections.Cart.find({
+  var cart = ReactionCore.Collections.Cart.find({
     userId: Meteor.userId()
   });
 
-  handle = cart.observeChanges({
+  var handle = cart.observeChanges({
     removed: function() {
-      ReactionCore.Events.debug("detected cart destruction... resetting now.");
-      Meteor.subscribe("Cart", Meteor.userId());
+      ReactionCore.Events.info("detected cart destruction... resetting now.");
+      Meteor.subscribe("Cart");
     }
   });
 

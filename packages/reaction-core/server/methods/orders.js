@@ -1,13 +1,80 @@
 /**
-* Reaction Order Methods
-*/
+ * Reaction Order Methods
+ */
 Meteor.methods({
+  // shipmentTracking
+  shipmentTracking: function (order, tracking) {
+    check(order, Object);
+    check(tracking, String);
+    this.unblock();
 
+    var orderId;
+    check(order, Object);
+    check(tracking, String);
+    orderId = order._id;
+    Meteor.call("addTracking", orderId, tracking);
+    Meteor.call("updateHistory", orderId, "Tracking Added", tracking);
+    return Meteor.call("updateWorkflow", orderId, "shipmentPrepare");
+  },
+
+  // shipmentPrepare
+  shipmentPrepare: function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      return Meteor.call("updateWorkflow", order._id, "shipmentPacking");
+    }
+  },
+
+  // shipmentPacking
+  shipmentPacking: function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      Meteor.call("updateWorkflow", order._id, "processPayment");
+    }
+    return this.processPayment(order);
+  },
+
+  // processPayment
+  processPayment: function (order) {
+    check(order, Object);
+    this.unblock();
+
+    return Meteor.call("processPayments", order._id, function (error, result) {
+      if (result) {
+        Meteor.call("updateWorkflow", order._id, "shipmentShipped");
+        return OrderWorkflow.shipmentShipped(order);
+      }
+    });
+  },
+
+  // shipmentShipped
+  shipmentShipped: function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      Meteor.call("updateWorkflow", order._id, "orderCompleted");
+    }
+    return this.orderCompleted(order);
+  },
+  // orderCompleted
+  orderCompleted: function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      return Meteor.call("updateWorkflow", order._id, "orderCompleted");
+    }
+  },
   /*
    * Adds tracking information to order
    * Call after any tracking code is generated
    */
-  addTracking: function(orderId, tracking) {
+  addTracking: function (orderId, tracking) {
     check(orderId, String);
     check(tracking, String);
     return Orders.update(orderId, {
@@ -20,7 +87,7 @@ Meteor.methods({
   /*
    * adds email to existing order
    */
-  addOrderEmail: function(orderId, email) {
+  addOrderEmail: function (orderId, email) {
     check(orderId, String);
     check(email, String);
     return Orders.update(orderId, {
@@ -33,7 +100,7 @@ Meteor.methods({
   /*
    * Save supplied order workflow state
    */
-  updateWorkflow: function(orderId, currentState) {
+  updateWorkflow: function (orderId, currentState) {
     check(orderId, String);
     check(currentState, String);
     Orders.update(orderId, {
@@ -48,7 +115,7 @@ Meteor.methods({
    * Add files/documents to order
    * use for packing slips, labels, customs docs, etc
    */
-  updateDocuments: function(orderId, docId, docType) {
+  updateDocuments: function (orderId, docId, docType) {
     check(orderId, String);
     check(docId, String);
     check(docType, String);
@@ -65,7 +132,7 @@ Meteor.methods({
   /*
    * Add to order event history
    */
-  updateHistory: function(orderId, event, value) {
+  updateHistory: function (orderId, event, value) {
     check(orderId, String);
     check(event, String);
     check(value, Match.Optional(String));
@@ -87,17 +154,18 @@ Meteor.methods({
    * TODO: add tests working with new payment methods
    * TODO: refactor to use non Meteor.namespace
    */
-  processPayments: function(orderId) {
-    var index, order, paymentMethod, _i, _len, _ref;
+  processPayments: function (orderId) {
     check(orderId, String);
-    order = Orders.findOne(orderId);
-    _ref = order.payment.paymentMethod;
-    for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
-      paymentMethod = _ref[index];
+
+    var order = Orders.findOne(orderId);
+
+    // process order..payment.paymentMethod
+    _.each(order.payment.paymentMethod, function (paymentMethod) {
       if (paymentMethod.mode === 'authorize' && paymentMethod.status === 'approved' && paymentMethod.processor) {
-        Meteor[paymentMethod.processor].capture(paymentMethod.transactionId, paymentMethod.amount, function(error, result) {
+        Meteor[paymentMethod.processor].capture(paymentMethod.transactionId, paymentMethod.amount, function (error, result) {
           var transactionId;
-          if (result.capture != null) {
+
+          if (result.capture) {
             transactionId = paymentMethod.transactionId;
             Orders.update({
               "_id": orderId,
@@ -109,12 +177,16 @@ Meteor.methods({
                 "payment.paymentMethod.$.status": "completed"
               }
             });
+
           } else {
-            throw new Meteor.Error("Failed to capture transaction");
             ReactionCore.Events.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
+            throw new Meteor.Error("Failed to capture transaction");
           }
         });
+
+
       }
-    }
+
+    });
   }
 });
