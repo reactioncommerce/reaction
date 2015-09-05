@@ -32,24 +32,22 @@
     <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
   </div>
 
-  <!-- <div class="admin-controls-wrap"> -->
-    <div class="admin-controls {{adminControlsClassname}}">
-      <div class="admin-controls-heading">
-        {{> settingsHeader}}
-      </div>
-      <div class="admin-controls-content">
-        {{>yield region="adminControlsContent"}}
-        <div class="admin-controls-container">
-          {{> Template.dynamic template=template.template data=template.data}}
-        </div>
-      </div>
-      <div class="admin-controls-footer">
-        <div class="admin-controls-container">
-          {{>yield region="adminControlsFooter"}}
-        </div>
+
+  <div class="admin-controls {{adminControlsClassname}}">
+    <div class="admin-controls-heading">
+      {{> settingsHeader}}
+    </div>
+    <div class="admin-controls-content">
+      {{!-- {{>yield region="adminControlsContent"}} --}}
+      {{> Template.dynamic template=template.template data=template.data}}
+    </div>
+    <div class="admin-controls-footer">
+      <div class="admin-controls-container">
+        {{>yield region="adminControlsFooter"}}
       </div>
     </div>
-  <!-- </div> -->
+  </div>
+
 </template>
 
 <template name="coreSettingsLayout">

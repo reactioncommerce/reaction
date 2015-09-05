@@ -281,6 +281,7 @@ ReactionRegistry.loadFixtures = function() {
         }, {
           $setOnInsert: {
             shopId: shop._id,
+            icon: config.icon,
             enabled: !!config.autoEnable,
             settings: config.settings,
             registry: config.registry,

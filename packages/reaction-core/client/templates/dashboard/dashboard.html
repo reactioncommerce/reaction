@@ -28,31 +28,21 @@
 
 
 <template name="dashboardHeader">
-
   {{#if showHeader}}
-
     <div class="nav nav-dashboard">
-
       <div class="nav-dashboard-heading">
         <h3 class="nav-dashboard-title">
-          <span>
             {{i18n registry.i18nKey registry.i18nLabel}}
-          </span>
         </h3>
-
-
-
       </div>
 
 
       <div class="nav-dashboard-controls">
         {{> yield "dashboardControls"}}
-
         <button class="btn btn-default" data-event-action="showPackageSettings">
           <i class="fa fa-gear"></i>
         </button>
       </div>
-
     </div>
   {{/if}}
 </template>

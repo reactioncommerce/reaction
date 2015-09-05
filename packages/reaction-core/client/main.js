@@ -76,10 +76,13 @@ _.extend(ReactionCore, {
     return Roles.getGroupsForUser(Meteor.userId(), 'admin');
   },
 
-  // TODO: Create a global function to display sidebar tools for any item with extra settings
-  showAdvancedSettings: function (viewData) {
+  showActionView: function(viewData) {
     Session.set('admin/showAdvancedSettings', true);
     Session.set('admin/advanceSettingsView', viewData);
+  },
+  // TODO: Remove in favor of showActionView
+  showAdvancedSettings: function (viewData) {
+    ReactionCore.showActionView(viewData);
   },
 
   isAdvancedSettingsVisible: function () {
@@ -109,7 +112,7 @@ _.extend(ReactionCore, {
     return tag
   },
 
-  getRegisryForCurrentRoute: function (provides) {
+  getRegistryForCurrentRoute: function (provides) {
 
     var routeName = Router.current().route.getName();
 

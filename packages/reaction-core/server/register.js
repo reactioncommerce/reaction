@@ -8,7 +8,9 @@ ReactionCore.registerPackage = function(packageInfo) {
 };
 
 ReactionCore.registerPackage({
+  label: "Core",
   name: 'core',
+  icon: 'fa fa-th',
   autoEnable: true,
   settings: {
     "public": {
@@ -87,23 +89,6 @@ ReactionCore.registerPackage({
       label: 'Add Product',
       icon: 'fa fa-plus',
       provides: 'shortcut'
-    }, {
-      route: 'dashboard/members',
-      label: 'Members',
-      description: 'Manage your user accounts',
-      icon: 'fa fa-users',
-      provides: 'dashboard',
-      cycle: 3
-    }, {
-      route: 'dashboard/members',
-      label: 'Members',
-      provides: 'console'
-    }, {
-      route: "dashboard/members",
-      provides: 'shortcut',
-      label: 'Members',
-      icon: 'fa fa-users',
-      cycle: 1
     }, {
       route: 'account/profile',
       label: 'Profile',
