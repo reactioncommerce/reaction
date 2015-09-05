@@ -3,7 +3,7 @@ Router.map(function() {
 
   this.route('accounts', {
     controller: ShopSettingsController,
-    path: '/dashboard/settings/accounts',
+    path: '/dashboard/accounts',
     template: 'accountsDashboard'
   });
 

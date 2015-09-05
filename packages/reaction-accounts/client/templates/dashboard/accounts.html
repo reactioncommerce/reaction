@@ -1,35 +1,48 @@
+
+
+
+
+
+
 <template name="accountsDashboard">
-
-  <div class="panel">
-
-    <div class="panel-header">
-      <h2>Accounts</h2>
-    </div>
-
-    <div class="panel-content">
-      No options at the moment
-    </div>
-
-    <div class="panel-footer">
-
-    </div>
+  <div class="container-fluid-sm">
+    <ul class="list-unstyled">
+      {{#each members}}
+        {{> member}}
+      {{/each}}
+    </ul>
   </div>
+</template>
+
+
+<template name="accoutnsAddMember">
+  {{>memberForm}}
+</template>
+
+<template name="createUser">
+  {{#if hasOwnerAccess}}
+  <div class="floating-action-button">
+    <button type="button" class="btn btn-default button-add-member">
+      <span data-i18n="accountsUI.addMember">Add a member</span>
+    </button>
+  </div>
+  {{/if}}
 </template>
 
 <template name="accountsSettings">
 
-  <div class="panel">
+  <div class="panel panel-default">
 
-    <div class="panel-header">
-      <h2>Accounts</h2>
+    <div class="panel-heading">
+      <h2>Add User</h2>
     </div>
 
-    <div class="panel-content">
-      No options at the moment
+    <div class="panel-body">
+      Add Member
     </div>
 
     <div class="panel-footer">
-
+      submit
     </div>
   </div>
 </template>

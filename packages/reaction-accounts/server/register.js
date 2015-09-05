@@ -1,8 +1,8 @@
 ReactionCore.registerPackage({
   label: 'Accounts',
   name: 'reaction-accounts',
+  icon: 'fa fa-sign-in',
   autoEnable: true,
-  allowDisable: false,
   registry: [
     {
       route: 'accounts',
@@ -19,7 +19,14 @@ ReactionCore.registerPackage({
       provides: 'settings',
       container: 'accounts',
       template: 'accountsSettings'
-    }
+    },
+    {
+      route: "accounts",
+      provides: 'shortcut',
+      label: 'Accounts',
+      icon: 'fa fa-users',
+      cycle: 1
+    },
   ],
   permissions: [
     {

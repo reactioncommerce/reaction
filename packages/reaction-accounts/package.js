@@ -34,57 +34,64 @@ Package.onUse(function (api, where) {
     "common/routing.js",
   ], ["client", "server"]);
 
-  api.addFiles([
-
-    // settings
-    "client/templates/dashboard/accounts.html",
-
-    "client/templates/profile/profile.html",
-    "client/templates/profile/profile.js",
-
-    // Address BooK
-    "client/templates/addressBook/addressBook.html",
-    "client/templates/addressBook/addressBook.js",
-
-    "client/templates/addressBook/add/add.html",
-    "client/templates/addressBook/add/add.js",
-
-    "client/templates/addressBook/edit/edit.html",
-    "client/templates/addressBook/edit/edit.js",
-
-    "client/templates/addressBook/form/form.html",
-    "client/templates/addressBook/form/form.js",
-
-    "client/templates/addressBook/grid/grid.html",
-    "client/templates/addressBook/grid/grid.js",
 
 
-    // core login form and generic templates
-    "client/templates/login/loginForm.html",
-    "client/templates/login/loginButtons.html",
-    "client/templates/loginForm.js",
+  // Dashboard
+  api.addFiles("client/templates/dashboard/accounts.html", "client");
+  api.addFiles("client/templates/dashboard/accounts.js", "client");
 
-    // sign in
-    "client/templates/signIn/signIn.html",
-    "client/templates/signIn/signIn.js",
+  api.addFiles("client/templates/members/member.html", "client");
+  api.addFiles("client/templates/members/member.js", "client");
+  api.addFiles("client/templates/members/memberForm.html", "client");
+  api.addFiles("client/templates/members/memberForm.js", "client");
 
-    // sign in
-    "client/templates/signUp/signUp.html",
-    "client/templates/signUp/signUp.js",
+  // User profile
+  api.addFiles("client/templates/profile/profile.html", "client");
+  api.addFiles("client/templates/profile/profile.js", "client");
 
-    // reset password
-    "client/templates/forgot/forgot.html",
-    "client/templates/forgot/forgot.js",
+  // Address Book
+  api.addFiles("client/templates/addressBook/addressBook.html", "client");
+  api.addFiles("client/templates/addressBook/addressBook.js", "client");
 
-    // Update password views
-    "client/templates/updatePassword/updatePassword.html",
-    "client/templates/updatePassword/updatePassword.js",
+  api.addFiles("client/templates/addressBook/add/add.html", "client");
+  api.addFiles("client/templates/addressBook/add/add.js", "client");
 
-    // basic styles
-    "client/templates/loginForm.less",
+  api.addFiles("client/templates/addressBook/edit/edit.html", "client");
+  api.addFiles("client/templates/addressBook/edit/edit.js", "client");
 
-  ],
-  ["client"]);
+  api.addFiles("client/templates/addressBook/form/form.html", "client");
+  api.addFiles("client/templates/addressBook/form/form.js", "client");
+
+  api.addFiles("client/templates/addressBook/grid/grid.html", "client");
+  api.addFiles("client/templates/addressBook/grid/grid.js", "client");
+
+
+
+  // core login form and generic templates
+  api.addFiles("client/templates/login/loginForm.html", "client");
+  api.addFiles("client/templates/login/loginButtons.html", "client");
+  api.addFiles("client/templates/loginForm.js", "client");
+
+  // sign in
+  api.addFiles("client/templates/signIn/signIn.html", "client");
+  api.addFiles("client/templates/signIn/signIn.js", "client");
+
+  // sign in
+  api.addFiles("client/templates/signUp/signUp.html", "client");
+  api.addFiles("client/templates/signUp/signUp.js", "client");
+
+  // reset password
+  api.addFiles("client/templates/forgot/forgot.html", "client");
+  api.addFiles("client/templates/forgot/forgot.js", "client");
+
+  // Update password views
+  api.addFiles("client/templates/updatePassword/updatePassword.html", "client");
+  api.addFiles("client/templates/updatePassword/updatePassword.js", "client");
+
+  // basic styles
+  api.addFiles("client/templates/loginForm.less", "client");
+
+
 
 });
 
