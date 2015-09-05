@@ -55,10 +55,8 @@ Template.memberSettings.helpers({
     });
 
     packages.forEach(function (package) {
-      console.log("each package", package)
-      var existing, label, permission, permissionMap, permissions, registryItem, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
-      permissions = [];
-      permissionMap = {};
+      var permissions = [];
+      var permissionMap = {};
 
       if (package.enabled) {
 
