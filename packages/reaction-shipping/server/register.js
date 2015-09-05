@@ -1,6 +1,7 @@
 ReactionCore.registerPackage({
   label: "Shipping",
   name: 'reaction-shipping',
+  icon: 'fa fa-truck',
   autoEnable: true,
   settings: {
     name: "Flat Rate Service"
