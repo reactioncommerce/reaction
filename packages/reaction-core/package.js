@@ -164,6 +164,9 @@ Package.onUse(function (api) {
   api.addFiles("common/collections/collections.js");
   api.addFiles("common/collections/collectionFS.js");
 
+  // collection hooks
+  api.addFiles("common/collections/hooks/hooks.js");
+
   // security
   api.addFiles("server/browserPolicy.js", "server");
   api.addFiles("server/security.js", "server");
@@ -171,10 +174,8 @@ Package.onUse(function (api) {
   // common
   api.addFiles("common/routers.js");
 
-  api.addFiles("common/hooks/hooks.js");
-
   api.addFiles("common/methods/layout.js");
-  api.addFiles("common/methods/cart.js");
+  api.addFiles("common/methods/cart.js", "client");
 
   api.addFiles("common/factories/faker.js");
   api.addFiles("common/factories/users.js");
@@ -198,11 +199,14 @@ Package.onUse(function (api) {
   // methods
   api.addFiles("server/methods/accounts.js", "server");
   api.addFiles("server/methods/cart.js", "server");
-  api.addFiles("server/methods/hooks.js", "server");
   api.addFiles("server/methods/orders.js", "server");
   api.addFiles("server/methods/products.js", "server");
+  api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
-  api.addFiles("server/methods/shipping.js");
+
+  // method hooks
+  api.addFiles("server/methods/hooks/hooks.js");
+  api.addFiles("server/methods/hooks/cart.js", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");
@@ -241,7 +245,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/notice/shopNotFound.html", "client");
 
   api.addFiles("client/templates/accounts/accounts.html", "client");
-  api.addFiles("client/templates/accounts/accounts.js", "client");
 
   api.addFiles("client/templates/accounts/inline/inline.html", "client");
   api.addFiles("client/templates/accounts/inline/inline.js", "client");
@@ -266,8 +269,6 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/cart/checkout/checkout.html", "client");
   api.addFiles("client/templates/cart/checkout/checkout.js", "client");
-
-  api.addFiles("client/workflows/orders.js", "client");
 
   api.addFiles("client/templates/cart/checkout/header/header.html", "client");
 
