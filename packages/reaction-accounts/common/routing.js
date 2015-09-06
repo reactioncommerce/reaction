@@ -15,12 +15,11 @@ Router.map(function() {
 
   // account profile
   this.route('account/profile', {
-    controller: ShopController,
+    controller: ShopAccountsController,
     path: 'account/profile',
     template: 'accountProfile',
-
     subscriptions: function () {
-      this.subscribe('AccountOrders', Session.get('sessionId'), Meteor.userId())
+      this.subscribe('AccountOrders', Meteor.userId())
     },
 
     data: function () {
