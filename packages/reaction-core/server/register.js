@@ -45,16 +45,6 @@ ReactionCore.registerPackage({
       icon: 'fa fa-th',
       cycle: 1
     }, {
-      route: "dashboard",
-      label: 'Dashboard',
-      provides: 'console',
-      permissions: [
-        {
-          label: "Console",
-          permission: "console"
-        }
-      ]
-    }, {
       route: "dashboard/settings/shop",
       template: "shopSettings",
       label: "Shop Settings",
@@ -76,10 +66,6 @@ ReactionCore.registerPackage({
       description: 'Fulfill your orders',
       icon: 'fa fa-sun-o',
       cycle: 3
-    }, {
-      route: "dashboard/orders",
-      label: 'Orders',
-      provides: 'console'
     }, {
       template: "coreOrderWidgets",
       provides: 'widget',

@@ -210,7 +210,19 @@ Meteor.methods({
     ReactionCore.configureMailUrl();
 
     if (shop && email && name) {
-      currentUserName = ((_ref = Meteor.user()) !== null ? (_ref1 = _ref.profile) !== null ? _ref1.name : void 0 : void 0) || ((_ref2 = Meteor.user()) !== null ? _ref2.username : void 0) || "Admin";
+
+      var currentUser = Meteor.user();
+
+      if (currentUser) {
+        if(currentUser.profile) {
+          currentUserName = currentUser.profile.name
+        } else {
+          currentUserName = currentUser.username
+        }
+      } else {
+        currentUserName = "Admin";
+      }
+
       user = Meteor.users.findOne({
         "emails.address": email
       });
