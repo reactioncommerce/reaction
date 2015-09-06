@@ -1,6 +1,5 @@
 <template name="member">
   {{!-- TODO: make this a Reactive Table --}}
-    <li class="member-list-item">
       <div class="member-list-item-image">
         {{> avatar user=this size="medium" shape="circle"}}
       </div>
@@ -10,7 +9,7 @@
       <div class="member-list-item-controls">
         <button class="btn btn-default" data-event-action="showMemberSettings">Manage</button>
       </div>
-    </li>
+
 </template>
 
 <template name="memberSettings">
@@ -39,18 +38,21 @@
 
           <div class="panel-heading panel-heading-flex" data-event-action="expandPermission">
 
-            <label class="panel-title" for="permissions-{{name}}-{{../../userId}}">
-              <i class="{{icon}}"></i> {{label}}
-            </label>
+            <div class="panel-title">
+              <label for="permissions-{{name}}-{{../../userId}}">
+                <i class="{{icon}}"></i> {{label}}
+              </label>
+            </div>
 
 
-            <div class="pabel-controls">
-              <input type="checkbox" class="toggle-shop-member-permission checkbox-switch"
+            <div class="panel-controls">
+              <input type="checkbox" class="checkbox-switch"
                 id="permissions-{{name}}-{{../../userId}}"
                 data-userId="{{../../userId}}"
                 data-permission="{{name}}"
                 {{hasPermissionChecked name ../../userId}}
                 {{isOwnerDisabled ../../userId}}
+                data-event-action="toggleMemberPermission"
               />
             </div>
           </div>
@@ -58,17 +60,24 @@
           {{#if hasManyPermissions permissions}}
             <ul class="list-group">
               {{#each permissions}}
-                <li class="list-group-item shop-member-permission">
-                  <label>
-                    <input class="toggle-shop-member-permission"
-                           type="checkbox"
-                           data-userId="{{../../../userId}}"
-                           data-permission="{{permission}}"
-                           {{hasPermissionChecked permission ../../../userId}}
-                           {{isOwnerDisabled ../../../userId}}
-                            />
-                    {{label}}
-                  </label>
+                <li class="list-group-item shop-member-permission flex">
+                  <div class="flex-item-fill">
+                    <label for="sub-permissions-{{name}}-{{../../userId}}">
+                      <i class="{{orElse icon 'fa fa-gear'}}"></i> {{label}}
+                    </label>
+                  </div>
+
+                  <div class="flex-item-static">
+                    <input class="checkbox-switch"
+                      id="sub-permissions-{{name}}-{{../../userId}}"
+                      type="checkbox"
+                      data-userId="{{../../../userId}}"
+                      data-permission="{{permission}}"
+                      {{hasPermissionChecked permission ../../../userId}}
+                      {{isOwnerDisabled ../../../userId}}
+                      data-event-action="toggleMemberPermission"
+                    />
+                  </div>
                 </li>
               {{/each}}
             </ul>

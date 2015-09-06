@@ -86,6 +86,7 @@ Template.memberSettings.helpers({
             permissions.push({
               shopId: package.shopId,
               permission: registryItem.route,
+              icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });
           }
@@ -118,7 +119,7 @@ Template.memberSettings.helpers({
  *
  */
 Template.memberSettings.events({
-  "change .toggle-shop-member-permission": function(event, template) {
+  "change [data-event-action=toggleMemberPermission]": function(event, template) {
     var member, permissions, pkgPermissions, self, _i, _len, _ref;
     self = this;
     permissions = [];
@@ -142,7 +143,7 @@ Template.memberSettings.events({
       Meteor.call("removeUserPermissions", member.userId, permissions, this.shopId);
     }
   },
-  "click .link-shop-member-remove": function(event, template) {
+  "click [data-event-action=resetMemberPermission]": function(event, template) {
     var $icon, index, role, _ref, _results;
     $icon = $(event.currentTarget);
     if (confirm($icon.data("confirm"))) {
