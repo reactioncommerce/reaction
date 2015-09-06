@@ -60,14 +60,13 @@ Template.openCartDrawer.events({
     return Router.go("cartCheckout");
   },
   'click .remove-cart-item': function(event, template) {
-    var currentCartId, currentVariant, sessionId;
     event.stopPropagation();
     event.preventDefault();
-    currentCartId = Cart.findOne()._id;
-    currentVariant = this.variants;
-    sessionId = Session.get("sessionId");
+    var currentCartId = Cart.findOne()._id;
+    var currentVariant = this.variants;
+
     return $(event.currentTarget).fadeOut(300, function() {
-      return Meteor.call('removeFromCart', sessionId, currentCartId, currentVariant);
+      return Meteor.call('removeFromCart', currentCartId, currentVariant);
     });
   }
 });

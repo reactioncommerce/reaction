@@ -77,7 +77,7 @@ Meteor.methods({
   addTracking: function (orderId, tracking) {
     check(orderId, String);
     check(tracking, String);
-    return Orders.update(orderId, {
+    return ReactionCore.Collections.Orders.update(orderId, {
       $set: {
         "shipping.shipmentMethod.tracking": tracking
       }
@@ -90,7 +90,7 @@ Meteor.methods({
   addOrderEmail: function (orderId, email) {
     check(orderId, String);
     check(email, String);
-    return Orders.update(orderId, {
+    return ReactionCore.Collections.Orders.update(orderId, {
       $set: {
         "email": email
       }
@@ -103,7 +103,7 @@ Meteor.methods({
   updateWorkflow: function (orderId, currentState) {
     check(orderId, String);
     check(currentState, String);
-    Orders.update(orderId, {
+    ReactionCore.Collections.Orders.update(orderId, {
       $set: {
         "state": currentState
       }
@@ -119,7 +119,7 @@ Meteor.methods({
     check(orderId, String);
     check(docId, String);
     check(docType, String);
-    return Orders.update(orderId, {
+    return ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
         "documents": {
           docId: docId,
@@ -136,7 +136,7 @@ Meteor.methods({
     check(orderId, String);
     check(event, String);
     check(value, Match.Optional(String));
-    return Orders.update(orderId, {
+    return ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
         "history": {
           event: event,
@@ -149,6 +149,25 @@ Meteor.methods({
   },
 
   /*
+   * adjust inventory when an order is placed
+   */
+  inventoryAdjust: function (orderId) {
+    check(orderId, String);
+    var order = ReactionCore.Collections.Orders.findOne(orderId);
+
+    _.each(order.items, function (product) {
+      ReactionCore.Collections.Products.update({
+        _id: product.productId,
+        "variants._id": product.variants._id
+      }, {
+        $inc: {
+          "variants.$.inventoryQuantity": -product.quantity
+        }
+      });
+    });
+  },
+
+  /*
    * Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
    * TODO: add tests working with new payment methods
@@ -157,7 +176,7 @@ Meteor.methods({
   processPayments: function (orderId) {
     check(orderId, String);
 
-    var order = Orders.findOne(orderId);
+    var order = ReactionCore.Collections.Orders.findOne(orderId);
 
     // process order..payment.paymentMethod
     _.each(order.payment.paymentMethod, function (paymentMethod) {
@@ -167,7 +186,7 @@ Meteor.methods({
 
           if (result.capture) {
             transactionId = paymentMethod.transactionId;
-            Orders.update({
+            ReactionCore.Collections.Orders.update({
               "_id": orderId,
               "payment.paymentMethod.transactionId": transactionId
             }, {

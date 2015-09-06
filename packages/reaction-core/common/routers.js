@@ -15,7 +15,7 @@ setProduct = function(productId, variantId) {
     product = Products.findOne({
       handle: productId.toLowerCase()
     });
-    productId = product != null ? product._id : void 0;
+    productId = product   != null ? product._id : void 0;
   }
   setCurrentProduct(productId);
   setCurrentVariant(variantId);
@@ -113,6 +113,37 @@ ShopController = RouteController.extend({
 });
 
 this.ShopController = ShopController;
+
+// ----------------------------------------------------------------------------
+
+ShopAccountsController = RouteController.extend({
+  onBeforeAction: function() {
+    if (!ReactionCore.hasPermission(this.route.getName())) {
+      this.render('layoutHeader', {
+        to: 'layoutHeader'
+      });
+      this.render('layoutFooter', {
+        to: 'layoutFooter'
+      });
+      this.render('unauthorized');
+    } else {
+      this.next();
+    }
+  },
+  yieldTemplates: {
+    layoutHeader: {
+      to: "layoutHeader"
+    },
+    layoutFooter: {
+      to: "layoutFooter"
+    },
+    dashboard: {
+      to: "dashboard"
+    }
+  }
+});
+
+this.ShopAccountsController = ShopAccountsController;
 
 
 // ----------------------------------------------------------------------------
@@ -306,12 +337,12 @@ Router.map(function() {
     controller: ShopController,
     path: 'completed/:_id',
     template: 'cartCompleted',
-    waitOn: function() {
+    subscriptions: function() {
       return this.subscribe("CompletedCartOrder", Meteor.userId(), this.params._id);
     },
     data: function() {
       if (this.ready()) {
-        if (Orders.findOne({'cartId': this.params._id })) {
+        if (ReactionCore.Collections.Orders.findOne({'cartId': this.params._id })) {
           return ReactionCore.Collections.Orders.findOne({
             'cartId': this.params._id
           });

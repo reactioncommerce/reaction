@@ -81,12 +81,17 @@ Meteor.methods({
    */
   createCart: function (createForUserId) {
     check(createForUserId, Match.OneOf(String, null));
+    console.log('createCart');
 
     var user = Meteor.user;
     var userId = createForUserId || Meteor.userId();
     var shopId = ReactionCore.getShopId();
     var sessionId = ReactionCore.sessionId;
     var Cart = ReactionCore.Collections.Cart;
+
+    // required
+    check(sessionId, String);
+    check(userId, String);
 
     // find current cart
     currentCart = Cart.findOne({
@@ -104,6 +109,7 @@ Meteor.methods({
     // if no session cart or currentCart
     // create a new cart
     if (!currentCart && sessionCarts.count() === 0) {
+      console.log("!currentCart && sessionCarts.count() === 0")
       newCartId = Cart.insert({
         sessions: [sessionId],
         shopId: shopId,
@@ -115,6 +121,7 @@ Meteor.methods({
     // if there is a cart, and the user is logged
     // in with an email they are no longer anonymous.
     if (currentCart && user.emails.length > 0) {
+      console.log("currentCart && user.emails.length > 0")
       update = {
         $pullAll: {}
       };
@@ -139,17 +146,20 @@ Meteor.methods({
 
     // if there isn't an authenticated cart, but there is a session cart.
     if (!currentCart && sessionCarts.count() === 1) {
-      sessionCart = sessionCarts.fetch()[0];
-      ReactionCore.Collections.Cart.update(sessionCart._id, {
+      var sessionCartId = sessionCarts.fetch()[0]._id;
+      console.log("sessionCartId", sessionCartId);
+      console.log("userId", userId);
+
+      var result = ReactionCore.Collections.Cart.update({
+        '_id': sessionCartId
+      }, {
         $set: {
-          userId: userId
+          'userId': userId
         }
       });
-
-      Meteor.call("layout/pushWorkflow", "coreCartWorkflow", 'checkoutLogin');
-
-      ReactionCore.Events.info("update session cart, initilize workflow: " + sessionCart._id + " with user: " + userId);
+      ReactionCore.Events.info("cart initialization completed for user: " + userId);
     }
+    return Cart.findOne({'userId':userId});
   },
   /**
    *  @summary addToCart
@@ -219,17 +229,12 @@ Meteor.methods({
   /*
    * removes a variant from the cart
    */
-  removeFromCart: function (sessionId, cartId, variantData) {
-    check(sessionId, String);
+  removeFromCart: function (cartId, variantData) {
     check(cartId, String);
     check(variantData, Object);
+
     return Cart.update({
       _id: cartId,
-      $or: [{
-        userId: this.userId
-      }, {
-        sessionId: sessionId
-      }]
     }, {
       $pull: {
         "items": {
@@ -237,29 +242,6 @@ Meteor.methods({
         }
       }
     });
-  },
-
-  /*
-   * adjust inventory when an order is placed
-   */
-  inventoryAdjust: function (orderId) {
-    check(orderId, String);
-
-    var product;
-    var order = ReactionCore.Collections.Orders.findOne(orderId);
-    var items = order.items;
-
-    for (var _i = 0, numOfItems = items.length; _i < numOfItems; _i++) {
-      product = items[_i];
-      ReactionCore.Collections.Products.update({
-        _id: product.productId,
-        "variants._id": product.variants._id
-      }, {
-        $inc: {
-          "variants.$.inventoryQuantity": -product.quantity
-        }
-      });
-    }
   },
 
   /**
@@ -275,37 +257,35 @@ Meteor.methods({
   copyCartToOrder: function (cartId) {
     check(cartId, String);
 
-    var invoice = {};
     var error;
     var now = new Date();
     var cart = ReactionCore.Collections.Cart.findOne(cartId);
 
+    // reassign the id, we'll get a new orderId
+    cart.cartId = cart._id;
+
+    // a helper for guest login, we let guest add email afterwords
+    // for ease, we'll also add automatically for logged in users
     if (cart.userId && !cart.email) {
       var user = Meteor.user(cart.userId);
       var emails = _.pluck(user.emails, "address");
       cart.email = emails[0];
     }
 
-    invoice.shipping = cart.cartShipping();
-    invoice.subtotal = cart.cartSubTotal();
-    invoice.taxes = cart.cartTaxes();
-    invoice.discounts = cart.cartDiscounts();
-    invoice.total = cart.cartTotal();
-    cart.payment.invoices = [invoice];
-    cart.cartId = cartId;
-
-    // init item level workflow
-    _.each(cart.items, function (item, index) {
-      cart.items[index].workflow = {
-        status: "orderCreated",
-        workflow: []
-      };
-    });
-
-    // schema should provide defaults
+    // schema should provide order defaults
+    // so we'll delete the cart autovalues
     delete cart.createdAt; // autovalues
     delete cart.updatedAt;
     delete cart._id;
+
+    var items = cart.items;
+    // init item level workflow
+    _.each(items, function (item, index) {
+      cart.items[index].workflow = {
+        'status': "orderCreated",
+        'workflow': ["inventoryAdjusted"]
+      };
+    });
 
     // set new workflow status
 
@@ -317,12 +297,16 @@ Meteor.methods({
     var orderId = ReactionCore.Collections.Orders.insert(cart);
 
     if (orderId) {
+      // TODO: check for succesful inventoryAdjust
+      Meteor.call("inventoryAdjust", orderId);
+
+      // trash the old cart
       ReactionCore.Collections.Cart.remove({
         _id: cart.cartId
       });
 
-      // inventoryAdjust
-      Meteor.call("inventoryAdjust", orderId);
+      Meteor.call("createCart", cart.userId);
+
       // return
       ReactionCore.Events.info("Transitioned cart " + cartId + " to order " + orderId);
       return orderId;
@@ -445,8 +429,16 @@ Meteor.methods({
     check(paymentMethod, Object);
     this.unblock();
 
-    var Cart = ReactionCore.Collections.Cart.findOne();
-    var cartId = Cart._id;
+    var invoice = {};
+    var cart = ReactionCore.Collections.Cart.findOne();
+    var cartId = cart._id;
+
+    invoice.shipping = cart.cartShipping();
+    invoice.subtotal = cart.cartSubTotal();
+    invoice.taxes = cart.cartTaxes();
+    invoice.discounts = cart.cartDiscounts();
+    invoice.total = cart.cartTotal();
+
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow where
@@ -457,6 +449,7 @@ Meteor.methods({
     }, {
       $addToSet: {
         "payment.paymentMethod": paymentMethod,
+        "payment.invoice": invoice,
         "workflow.workflow": "paymentSubmitted"
       }
     });

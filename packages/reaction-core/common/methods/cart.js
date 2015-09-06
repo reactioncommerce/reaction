@@ -7,8 +7,16 @@ Meteor.methods({
     check(paymentMethod, Object);
     this.unblock();
 
-    var Cart = ReactionCore.Collections.Cart.findOne();
-    var cartId = Cart._id;
+    var invoice = {};
+    var cart = ReactionCore.Collections.Cart.findOne();
+    var cartId = cart._id;
+
+    invoice.shipping = cart.cartShipping();
+    invoice.subtotal = cart.cartSubTotal();
+    invoice.taxes = cart.cartTaxes();
+    invoice.discounts = cart.cartDiscounts();
+    invoice.total = cart.cartTotal();
+
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow where
@@ -19,10 +27,12 @@ Meteor.methods({
     }, {
       $addToSet: {
         "payment.paymentMethod": paymentMethod,
+        "payment.invoice": invoice,
         "workflow.workflow": "paymentSubmitted"
       }
     });
 
+    // Client Stub Actions
     if (result === 1) {
       Router.go("cartCompleted", {
         _id: cartId

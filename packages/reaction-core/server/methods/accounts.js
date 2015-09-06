@@ -58,7 +58,7 @@ Accounts.onCreateUser(function (options, user) {
     if (user.emails.length > 0) {
       user.roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
     } else {
-      user.roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest", "account/profile"];
+      user.roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
     }
   }
 
@@ -69,93 +69,6 @@ Accounts.onCreateUser(function (options, user) {
   return user;
 });
 
-
-/**
- * Accounts.onLogin Events
- * Every visitor to reaction gets an account, and is
- * automatically logged in.
- * The distinction is with the role of anonymous
- * which is a user that has not authenticated "registered".
- *
- * A Guest is a user that has authenticated,
- * and we remove the "anonymous" role.
- *
- */
-
-/*Accounts.onLogin(function (options) {
-  var user = options.user;
-  var userId = options.user._id;
-  var shopId = ReactionCore.getShopId();
-  var sessionId = ReactionCore.sessionId;
-  var Cart = ReactionCore.Collections.Cart;
-
-  // find current cart
-  currentCart = Cart.findOne({
-    userId: userId
-  });
-
-  // find carts this user might have had
-  // while anonymous and merge into user cart
-  sessionCarts = Cart.find({
-    'sessions': {
-      $in: [sessionId]
-    }
-  });
-
-  // if no session cart or currentCart
-  // create a new cart
-  if (!currentCart && sessionCarts.count() === 0) {
-    newCartId = Cart.insert({
-      sessions: [sessionId],
-      shopId: shopId,
-      userId: userId
-    });
-    ReactionCore.Events.info("created cart: " + newCartId + " for " + userId);
-  }
-
-  // if there is a cart, and the user is logged
-  // in with an email they are no longer anonymous.
-  if (currentCart && user.emails.length > 0) {
-    update = {
-      $pullAll: {}
-    };
-    update.$pullAll['roles.' + shopId] = ['anonymous'];
-    Meteor.users.update({
-      _id: userId
-    }, update, {
-      multi: true
-    });
-    ReactionCore.Events.info("removed anonymous role from user: " + userId);
-  }
-
-  // if there is a cart, but multiple session carts
-  // we're going to merge the session carts in to the authenticated user cart.
-  if (currentCart && sessionCarts.count() >= 2) {
-    ReactionCore.Events.info("multiple carts found for user " + userId);
-    Meteor.call("mergeCart", currentCart._id, function (error, result) {
-      console.log(error, result);
-      ReactionCore.Events.info("merged cart: " + currentCart._id + " for " + userId);
-    });
-  }
-
-  // if there isn't an authenticated cart, but there is a session cart.
-  if (!currentCart && sessionCarts.count() === 1) {
-    sessionCart = sessionCarts.fetch()[0];
-    ReactionCore.Collections.Cart.update(sessionCart._id, {
-      $set: {
-        userId: userId
-      }
-    });
-
-    Meteor.call("layout/pushWorkflow", "coreCartWorkflow", 'checkoutLogin');
-
-    ReactionCore.Events.info("update session cart, initilize workflow: " + sessionCart._id + " with user: " + userId);
-  }
-
-
-
-
-});*/
 
 /**
  * Reaction Account Methods

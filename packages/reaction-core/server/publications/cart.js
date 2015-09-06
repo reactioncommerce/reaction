@@ -2,25 +2,24 @@
  * cart
  */
 
-Meteor.publish('Cart', function() {
-  /*check(userId, Match.OptionalOrNull(String));*/
-  /*if (!this.userId) {
+Meteor.publish('Cart', function(userId) {
+  check(userId, Match.OptionalOrNull(String));
+  if (!this.userId) {
     return;
-  }*/
+  }
 
   cart = ReactionCore.Collections.Cart.find({
     userId: this.userId
   });
 
-  if (cart.count() > 0 ) {
-    return cart;
-  }
-  else if (this.userId)
-  {
+  if (cart.count() === 0 ) {
+    console.log("creating cart from publish method");
     Meteor.call("createCart", this.userId);
-    return cart;
   }
 
+  return ReactionCore.Collections.Cart.find({
+    userId: this.userId
+  });
 });
 
 

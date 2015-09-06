@@ -39,7 +39,7 @@ Template.dashboard.events({
 
 Template.dashboardHeader.helpers({
   showHeader: function () {
-    if (Router.current().route.path().indexOf("/dashboard/") === 0) {
+    if (Router.current().route.getName().indexOf("dashboard") === 0) {
       return true;
     }
 

@@ -16,8 +16,7 @@ Template.cartCompleted.helpers({
   userOrders: function() {
     if (Meteor.user()) {
       return ReactionCore.Collections.Orders.find({
-        userId: Meteor.userId(),
-        sessionId: Session.get("sessionId")
+        userId: Meteor.userId()
       });
     }
   }

@@ -186,14 +186,14 @@ Package.onUse(function (api) {
   api.addFiles("common/factories/orders.js");
 
   // publications
+  api.addFiles("server/publications/sessions.js", "server");
+  api.addFiles("server/publications/shops.js", "server");
   api.addFiles("server/publications/accounts.js", "server");
   api.addFiles("server/publications/cart.js", "server");
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
-  api.addFiles("server/publications/sessions.js", "server");
-  api.addFiles("server/publications/shops.js", "server");
   api.addFiles("server/publications/translations.js", "server");
 
   // methods

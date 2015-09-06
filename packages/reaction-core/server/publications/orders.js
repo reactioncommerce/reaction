@@ -45,10 +45,6 @@ Meteor.publish('CompletedCartOrder', function(userId, cartId) {
   check(userId, String);
   check(cartId, String);
 
-  /*if (userId !== this.userId) {
-    return [];
-  }*/
-
   return ReactionCore.Collections.Orders.find({
     'cartId': cartId,
     'userId': userId
