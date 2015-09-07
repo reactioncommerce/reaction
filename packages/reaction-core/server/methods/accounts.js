@@ -1,5 +1,7 @@
 /**
  * Reaction Accounts handlers
+ * creates a login type "anonymous"
+ * default for all unauthenticated visitors
  */
 
 Accounts.registerLoginHandler(function (options) {
@@ -10,7 +12,7 @@ Accounts.registerLoginHandler(function (options) {
   stampedToken = Accounts._generateStampedLoginToken();
   hashStampedToken = Accounts._hashStampedToken(stampedToken);
   userId = Accounts.insertUserDoc({
-    profile: {
+    services: {
       anonymous: true
     },
     token: stampedToken.token
@@ -24,50 +26,72 @@ Accounts.registerLoginHandler(function (options) {
 
 
 /**
- * onCreateUser
+ * Accounts.onCreateUser event
  * adding either a guest or anonymous role to the user on create
  * adds Accounts record for reaction user profiles
+ * we clone the user into accounts, as the user collection is
+ * only to be used for authentication.
+ *
  * see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
 
 Accounts.onCreateUser(function (options, user) {
-  var Cart, account, accountId, profile, roles, service, sessionId, shop, shopId, _ref, _ref1;
-  if (!user.emails) {
-    user.emails = [];
-  }
-  shopId = ReactionCore.getShopId();
-  shop = ReactionCore.getCurrentShop();
-  sessionId = ReactionCore.sessionId;
-  Cart = ReactionCore.Collections.Cart;
-  user.roles = roles = user.roles || {};
-  _ref = user.services;
-  for (service in _ref) {
-    profile = _ref[service];
-    if (!user.username && profile.name) {
-      user.username = profile.name;
-    }
-    if (profile.email) {
-      user.emails.push({
-        'address': profile.email
-      });
-    }
-  }
+  var shop = ReactionCore.getCurrentShop();
+  var shopId = ReactionCore.getShopId();
+  var sessionId = ReactionCore.sessionId;
+  var Cart = ReactionCore.Collections.Cart;
+  var roles = {};
 
-  // add default user roles
-  if (shop) {
-    if (user.emails.length > 0) {
-      user.roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
-    } else {
-      user.roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
-    }
-  }
-
-  // clone user into account
-  account = _.clone(user);
+  // clone before adding roles
+  var account = _.clone(user);
   account.userId = user._id;
-  accountId = ReactionCore.Collections.Accounts.insert(account);
+  var accountId = ReactionCore.Collections.Accounts.insert(account);
+
+  // init default user roles
+  if (shop) {
+    if (user.services === undefined) {
+      roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
+    } else {
+      roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
+    }
+  }
+  // assign default user roles
+  user.roles = roles;
   return user;
 });
+
+
+
+/**
+ * Accounts.onLogin event
+ * automatically push checkoutLogin when users login.
+ * let's remove 'anonymous' role, if the login type isn't 'anonymous'
+ * @param
+ * @returns
+ */
+Accounts.onLogin(function (options, user) {
+
+  if (options.type !== 'anonymous' && options.type !== 'resume') {
+    var update = {
+      $pullAll: {}
+    };
+    update.$pullAll['roles.' + ReactionCore.getShopId()] = ['anonymous'];
+
+    // remove anonymous role
+    Meteor.users.update({
+      _id: options.user._id
+    }, update, {
+      multi: true
+    });
+    ReactionCore.Events.info("removed anonymous role from user: " + options.user._id);
+
+    // logged in users need an additonal worfklow push to get started with checkoutLogin
+    return Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
+  }
+
+});
+
+
 
 
 /**

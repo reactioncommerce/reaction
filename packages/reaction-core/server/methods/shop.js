@@ -1,9 +1,18 @@
 /**
- * Reaction Product Methods
+ * node-geocoder
+ * configure node-geocoder
  */
+
 var Packages;
+var geocoderProvider = 'freegeoip';
+var httpAdapter = 'https';
+var GeoCoder = Npm.require('node-geocoder')(geocoderProvider, httpAdapter);
 
 Packages = ReactionCore.Collections.Packages;
+
+/**
+ * Reaction Shop Methods
+ */
 
 Meteor.methods({
 
@@ -14,7 +23,7 @@ Meteor.methods({
    * param Object 'shop' optionally provide shop object to customize
    *
    */
-  createShop: function(userId, shop) {
+  createShop: function (userId, shop) {
     var adminRoles, currentUser, e, shopId;
     check(userId, Match.Optional(String));
     check(shop, Match.Optional(Object));
@@ -37,65 +46,100 @@ Meteor.methods({
   },
 
   /**
+   * getLocale
    * determine user's countryCode and return locale object
+   * determine local currency and conversion rate from shop currency
+   * @return  {Object}
    */
-  getLocale: function() {
-    var countryCode, currency, exchangeRate, geo, ip, localeCurrency, rateUrl, result, shop, _i, _len;
+  getLocale: function () {
     this.unblock();
-    result = {};
-    ip = this.connection.httpHeaders['x-forwarded-for'];
-    try {
-      geo = new GeoCoder({
-        geocoderProvider: "freegeoip"
-      });
-      countryCode = geo.geocode(ip)[0].countryCode.toUpperCase();
-    } catch (_error) {}
-    shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
+    var countryCode, geoCountryCode, currency, exchangeRate, localeCurrency, rateUrl, _i, _len;
+    var clientAddress = this.connection.clientAddress;
+    var result = {};
+
+    var shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
+      fields: {
+        addressBook: 1,
+        locales: 1,
+        currencies: 1,
+        currency: 1
+      }
+    });
+
+    shopSettings = ReactionCore.Collections.Packages.findOne({
+      shopId: ReactionCore.getShopId(),
+      name: "core"
+    }, {
+      fields: {
+        settings: 1
+      }
+    });
+
+    console.log(shopSettings);
+
+    // shouldn't be here before a shop!
     if (!shop) {
       return result;
     }
-    if (!countryCode || countryCode === 'RD') {
-      if (shop.addressBook) {
-        countryCode = shop.addressBook[0].country;
-      } else {
-        countryCode = 'US';
-      }
+
+    // cofigure default defaultCountryCode
+    // fallback to shop settings
+    if (shop.addressBook.length >= 1) {
+      defaultCountryCode = shop.addressBook[0].country;
+    } else {
+      defaultCountryCode = 'US';
     }
-    try {
-      result.locale = shop.locales.countries[countryCode];
-      result.currency = {};
-      localeCurrency = shop.locales.countries[countryCode].currency.split(',');
-      for (_i = 0, _len = localeCurrency.length; _i < _len; _i++) {
-        currency = localeCurrency[_i];
-        if (shop.currencies[currency]) {
-          result.currency = shop.currencies[currency];
-          if (shop.currency !== currency) {
-            rateUrl = "http://rate-exchange.herokuapp.com/fetchRate?from=" + shop.currency + "&to=" + currency;
-            exchangeRate = HTTP.get(rateUrl);
-            if (!exchangeRate) {
-              ReactionCore.Events.warn("Failed to fetch rate exchange rates.");
-            }
-            result.currency.exchangeRate = exchangeRate.data;
+
+    // geocode reverse ip lookup
+    GeoCoder.geocode(clientAddress, function (err, geo) {
+      if (geo) {
+        geoCountryCode = geo.countryCode;
+      }
+    });
+
+    // countryCode either from geo or defaults
+    countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
+
+    // get currency rates
+    result.currency = {};
+    result.locale = shop.locales.countries[countryCode];
+    localeCurrency = shop.locales.countries[countryCode].currency.split(',');
+
+    // localeCurrency is an array of allowed currencies
+    _.each(localeCurrency, function (currency) {
+      if (shop.currencies[currency]) {
+        result.currency = shop.currencies[currency];
+        // only fetch rates if current user currency
+        // from locale and shop currency arent the same
+        if (shop.currency == currency) {
+          rateUrl = "https://openexchangerates.org/api/convert/1/" + shop.currency + "/" + currency + "?app_id=" + "c102629388344603bd34c150a66291aa";
+          ReactionCore.Events.info("Fetching exchange rates from: ", rateUrl);
+          exchangeRate = HTTP.get(rateUrl);
+
+          if (!exchangeRate) {
+            ReactionCore.Events.warn("Failed to fetch rate exchange rates.");
           }
-          return result;
+          result.currency.exchangeRate = exchangeRate.data;
         }
       }
-    } catch (_error) {}
+    });
     return result;
   },
 
   /**
    * determine user's full location for autopopulating addresses
    */
-  locateAddress: function(latitude, longitude) {
-    var address, error, geo, ip;
+  locateAddress: function (latitude, longitude) {
     check(latitude, Match.Optional(Number));
     check(longitude, Match.Optional(Number));
     this.unblock();
+
+    var address, error, geo, ip;
+
     try {
       if ((latitude != null) && (longitude != null)) {
         geo = new GeoCoder();
-        address = geo.reverse(latitude, longitude);
+        address = GeoCoder.reverse(latitude, longitude);
       } else {
         ip = this.connection.httpHeaders['x-forwarded-for'];
         if (ip) {
@@ -113,6 +157,7 @@ Meteor.methods({
         ReactionCore.Events.info("Error in locateAddress for IP lookup (" + ip + "):" + error.message);
       }
     }
+
     if (address != null ? address.length : void 0) {
       return address[0];
     } else {
@@ -137,7 +182,8 @@ Meteor.methods({
    * tagName + tagId will update existing
    * currentTagId will update related/hierarchy
    */
-  updateHeaderTags: function(tagName, tagId, currentTagId) {
+  updateHeaderTags: function (tagName, tagId, currentTagId) {
+    console.log("updateHeaderTags")
     var existingTag, newTag, newTagId;
     check(tagName, String);
     check(tagId, Match.OneOf(String, null, void 0));
@@ -156,7 +202,7 @@ Meteor.methods({
     if (tagId) {
       return Tags.update(tagId, {
         $set: newTag
-      }, function() {
+      }, function () {
         ReactionCore.Events.info("Changed name of tag " + tagId + " to " + tagName);
         return true;
       });
@@ -166,7 +212,7 @@ Meteor.methods({
           $addToSet: {
             "relatedTagIds": existingTag._id
           }
-        }, function() {
+        }, function () {
           ReactionCore.Events.info('Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId);
           return true;
         });
@@ -175,7 +221,7 @@ Meteor.methods({
           $set: {
             "isTopLevel": true
           }
-        }, function() {
+        }, function () {
           ReactionCore.Events.info('Marked tag "' + existingTag.name + '" as a top level tag');
           return true;
         });
@@ -191,7 +237,7 @@ Meteor.methods({
           $addToSet: {
             "relatedTagIds": newTagId
           }
-        }, function() {
+        }, function () {
           ReactionCore.Events.info('Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId);
           return true;
         });
@@ -203,7 +249,7 @@ Meteor.methods({
       }
     }
   },
-  removeHeaderTag: function(tagId, currentTagId) {
+  removeHeaderTag: function (tagId, currentTagId) {
     var productCount, relatedTagsCount;
     check(tagId, String);
     check(currentTagId, String);
@@ -236,7 +282,7 @@ Meteor.methods({
   /**
    * Helper method to remove all translations, and reload from jsonFiles
    */
-  flushTranslations: function() {
+  flushTranslations: function () {
     if (!ReactionCore.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -250,7 +296,7 @@ Meteor.methods({
    * returns workflow array
    */
 
-  'shop/getWorkflow': function(name) {
+  'shop/getWorkflow': function (name) {
     check(name, String);
 
     shopWorkflows = ReactionCore.Collections.Shops.findOne({

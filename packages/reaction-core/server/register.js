@@ -21,6 +21,9 @@ ReactionCore.registerPackage({
       password: "",
       host: "localhost",
       port: "25"
+    },
+    openexchangerates: {
+      appId: "",
     }
   },
   registry: [

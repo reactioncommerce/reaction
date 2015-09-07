@@ -6,7 +6,8 @@ Package.describe({
 });
 
 Npm.depends({
-  faker: '3.0.1'
+  'faker': "3.0.1",
+  'node-geocoder': "3.0.0"
 });
 
 Package.onUse(function (api) {
@@ -33,7 +34,6 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.4.1_3");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.0");
-  api.use("aldeed:geocoder@0.3.6");
   api.use("aldeed:autoform@5.5.0");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");

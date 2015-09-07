@@ -13,9 +13,6 @@
       <li role="presentation">
         <a href="#localization" aria-controls="localization" role="tab" data-toggle="tab" data-i18n="shopSettings.localization">Localization</a>
       </li>
-      <li role="presentation">
-        <a href="#options" aria-controls="options" role="tab" data-toggle="tab" data-i18n="shopSettings.options">Options</a>
-      </li>
     </ul>
 
   <div class="tab-panel">
@@ -24,6 +21,12 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="general">
+
+
+        {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOptionsForm" type="update" autosave=true}}
+          {{> afFieldInput name='settings.public.allowGuestCheckout'}}
+        {{/autoForm}}
+
         {{#autoForm collection="Shops" doc=shop id="shopEditForm" type="update"}}
           {{> afQuickField name='name' placeholder="Shop Name"}}
           {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
@@ -31,6 +34,7 @@
           {{> afQuickField name='keywords' placeholder="Keywords"}}
           {{> shopSettingsSubmitButton}}
         {{/autoForm}}
+
       </div>
 
       <div role="tabpanel" class="tab-pane" id="address">
@@ -62,20 +66,18 @@
       </div>
 
       <div role="tabpanel" class="tab-pane" id="localization">
-          {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update"}}
+          {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update" autosave=true}}
             {{> afQuickField name='timezone' options=timezoneOptions}}
             {{> afQuickField name='currency' options=currencyOptions}}
             {{> afQuickField name='locale' options=countryOptions}}
             {{> afQuickField name='baseUOM' options=uomOptions}}
-            {{> shopSettingsSubmitButton}}
           {{/autoForm}}
-      </div>
 
-      <div role="tabpanel" class="tab-pane" id="options">
-          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOptionsForm" type="update"}}
-            {{> afFieldInput name='settings.public.allowGuestCheckout'}}
+          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOpenExchangeRatesForm" type="update"}}
+            {{> afQuickField name='settings.openexchangerates.appId'}}
             {{> shopSettingsSubmitButton}}
           {{/autoForm}}
+
       </div>
     </div>
   </div>
