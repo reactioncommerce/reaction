@@ -172,16 +172,6 @@ this.ShopAdminController = ShopAdminController;
 // ----------------------------------------------------------------------------
 
 
-ShopSettingsController = this.ShopAdminController.extend({
-  layoutTemplate: "coreAdminLayout"
-});
-
-this.ShopSettingsController = ShopSettingsController;
-
-
-// ----------------------------------------------------------------------------
-
-
 PrintController = RouteController.extend({
   onBeforeAction: function() {
     if (!ReactionCore.hasPermission(this.route.getName())) {
@@ -232,7 +222,7 @@ Router.map(function() {
 
 
   this.route('dashboard/shop', {
-    controller: ShopSettingsController,
+    controller: ShopAdminController,
     path: '/dashboard/shop',
     template: 'shopDashboard',
     data: function() {
