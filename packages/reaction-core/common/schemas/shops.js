@@ -83,6 +83,10 @@ ReactionCore.Schemas.Currency = new SimpleSchema({
     type: String,
     defaultValue: ",",
     optional: true
+  },
+  rate: {
+    type: Number,
+    optional: true
   }
 });
 
@@ -140,12 +144,12 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     optional: true
   },
   currency: {
-    label: "Reference currency (not necessarily the currency displayed to user).",
+    label: "Base Currency",
     type: String,
     defaultValue: "USD"
   },
   currencies: {
-    type: Object,
+    type: Object, // ReactionCore.Schemas.Currency
     blackbox: true
   },
   locale: {

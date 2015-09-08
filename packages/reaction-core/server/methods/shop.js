@@ -66,21 +66,6 @@ Meteor.methods({
       }
     });
 
-    shopSettings = ReactionCore.Collections.Packages.findOne({
-      shopId: ReactionCore.getShopId(),
-      name: "core"
-    }, {
-      fields: {
-        settings: 1
-      }
-    });
-
-    console.log(shopSettings);
-
-    // shouldn't be here before a shop!
-    if (!shop) {
-      return result;
-    }
 
     // cofigure default defaultCountryCode
     // fallback to shop settings
@@ -107,14 +92,13 @@ Meteor.methods({
 
     // localeCurrency is an array of allowed currencies
     _.each(localeCurrency, function (currency) {
+
       if (shop.currencies[currency]) {
         result.currency = shop.currencies[currency];
-        // only fetch rates if current user currency
-        // from locale and shop currency arent the same
-        if (shop.currency == currency) {
-          rateUrl = "https://openexchangerates.org/api/convert/1/" + shop.currency + "/" + currency + "?app_id=" + "c102629388344603bd34c150a66291aa";
-          ReactionCore.Events.info("Fetching exchange rates from: ", rateUrl);
-          exchangeRate = HTTP.get(rateUrl);
+        // only fetch rates if locale and shop currency are not equal
+        // if shop.curency = locale currency the rate is 1
+        if (shop.currency !== currency) {
+          result.currency.exchangeRate = Meteor.call("getCurrencyRates", currency);
 
           if (!exchangeRate) {
             ReactionCore.Events.warn("Failed to fetch rate exchange rates.");
@@ -123,10 +107,77 @@ Meteor.methods({
         }
       }
     });
+
+    // should contain rates, locale, currency
     return result;
   },
 
   /**
+   * getCurrencyRates
+   * determine user's full location for autopopulating addresses
+   * usage: Meteor.call("getCurrencyRates","USD")
+   * @param String currency code
+   * @return Number currency conversion rate
+   */
+  getCurrencyRates: function (currency) {
+    check(currency, String);
+    var shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
+      fields: {
+        addressBook: 1,
+        locales: 1,
+        currencies: 1,
+        currency: 1
+      }
+    });
+    var baseCurrency = shop.currency || "USD";
+    var shopCurrencies = shop.currencies;
+    var shopId = ReactionCore.getShopId();
+
+    // fetch shop settings for api auth credentials
+    var shopSettings = ReactionCore.Collections.Packages.findOne({
+      shopId: shopId,
+      name: "core"
+    }, {
+      fields: {
+        settings: 1
+      }
+    });
+
+    // shop open exchange rates appId
+    var openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
+
+    // update Shops.currencies[currencyKey].rate
+    // with current rates from Open Exchange Rates
+    // warn if we don't have app_id, but default to 1
+    if (!openexchangeratesAppId) {
+      ReactionCore.Events.warn("Open Exchange Rates AppId not configured. Configure for current rates.");
+    } else {
+      // we'll update all the available rates in Shops.currencies whenever we get a rate request, using base currency
+      var rateUrl = "https://openexchangerates.org/api/latest.json?base=" + baseCurrency + "&app_id=" + openexchangeratesAppId;
+      var rateResults = HTTP.get(rateUrl);
+      var exchangeRates = rateResults.data.rates;
+
+      _.each(shopCurrencies, function (currencyConfig, currencyKey) {
+
+        if (exchangeRates[currencyKey] !== undefined) {
+          var rateUpdate = {};
+          var collectionKey = 'currencies.' + currencyKey + '.rate';
+          rateUpdate[collectionKey] = exchangeRates[currencyKey];
+          ReactionCore.Collections.Shops.update(shopId, {$set: rateUpdate});
+        }
+      });
+      // return just the rate requested.
+      return exchangeRates[currency];
+    }
+
+    return 1;
+
+
+
+  },
+
+  /**
+   * locateAddress
    * determine user's full location for autopopulating addresses
    */
   locateAddress: function (latitude, longitude) {
@@ -177,6 +228,7 @@ Meteor.methods({
   },
 
   /**
+   * updateHeaderTags
    * method to insert or update tag with hierarchy
    * tagName will insert
    * tagName + tagId will update existing
@@ -249,6 +301,11 @@ Meteor.methods({
       }
     }
   },
+
+  /**
+   * removeHeaderTag
+   * method to remove tag navigation tags
+   */
   removeHeaderTag: function (tagId, currentTagId) {
     var productCount, relatedTagsCount;
     check(tagId, String);
@@ -280,6 +337,7 @@ Meteor.methods({
   },
 
   /**
+   * flushTranslations
    * Helper method to remove all translations, and reload from jsonFiles
    */
   flushTranslations: function () {
@@ -295,7 +353,6 @@ Meteor.methods({
    * "shop/getWorkflow"
    * returns workflow array
    */
-
   'shop/getWorkflow': function (name) {
     check(name, String);
 

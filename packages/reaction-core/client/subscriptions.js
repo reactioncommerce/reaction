@@ -19,9 +19,10 @@ var cart = ReactionCore.Collections.Cart.find({
   userId: Meteor.userId()
 });
 
+// detect when a cart has been deleted
+// resubscribe will force cart to be rebuilt
 var handle = cart.observeChanges({
   removed: function () {
-    ReactionCore.Events.info("detected cart destruction... resetting now.");
     Meteor.subscribe("Cart", Meteor.userId());
   }
 });
