@@ -3,8 +3,15 @@ Template.socialSettings.helpers({
     return ReactionCore.Collections.Packages.findOne({
       name: 'reaction-social'
     });
+  },
+
+  checkboxAtts: function () {
+    return {
+      class: "checkbox-switch"
+    }
   }
 });
+
 
 AutoForm.hooks({
   "social-update-form": {
