@@ -21,18 +21,11 @@
 </template>
 
 <template name="shippingSettings">
-  
-  {{#if selectedShippingProvider}}
-
-      <div class="panel panel-default">
-        <div class="panel-body">
-        {{> addShippingProvider}}
-        </div>
-      </div>
-
-  {{else}}
-
-  {{/if}}
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">No settings for this view</div>
+    </div>
+  </div>
 
 </template>
 
