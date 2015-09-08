@@ -1,5 +1,5 @@
 Router.map(function() {
-  return this.route('shipping', {
+  return this.route('dashboard/shipping', {
     controller: ShopAdminController,
     path: 'dashboard/shipping',
     template: 'shipping',

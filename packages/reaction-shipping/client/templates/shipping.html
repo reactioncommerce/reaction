@@ -23,13 +23,15 @@
 <template name="shippingSettings">
   
   {{#if selectedShippingProvider}}
-    <div class="row">
+
       <div class="panel panel-default">
         <div class="panel-body">
         {{> addShippingProvider}}
         </div>
       </div>
-    </div>
+
+  {{else}}
+
   {{/if}}
 
 </template>
@@ -193,54 +195,65 @@
 
 
 <template name="addShippingProvider">
-  <div class="container-fluid">
-    {{#autoForm
-      collection="ReactionCore.Collections.Shipping"
-      doc=.
-      id="shipping-provider-add-form"
-      template="bootstrap3-inline"
-      type="method"
-      meteormethod="addShippingProvider"
-      resetOnSuccess=false
-      }}
-    <fieldset>
-    <!-- <legend>Add Provider</legend> -->
-    <div class="col-md-12">
-      {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
-      {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
-      {{>afQuickField name='provider.enabled'}}
+  <div class="panel">
+    <div class="panel-body">
+      {{#autoForm
+        collection="ReactionCore.Collections.Shipping"
+        doc=.
+        id="shipping-provider-add-form"
+        template="bootstrap3-inline"
+        type="method"
+        meteormethod="addShippingProvider"
+        resetOnSuccess=false
+        }}
+      <fieldset>
+      <!-- <legend>Add Provider</legend> -->
+      <div class="col-md-12">
+        {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
+        {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
+        {{>afQuickField name='provider.enabled'}}
+      </div>
+      </fieldset>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="button" class="btn btn-link" data-event-action="cancelAddShippingProvider">Cancel</button>
+      {{/autoForm}}
     </div>
-    </fieldset>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="button" class="btn btn-link" data-event-action="cancelAddShippingProvider">Cancel</button>
-    {{/autoForm}}
   </div>
 </template>
 
 
 <template name="editShippingProvider">
 
-  <div class="container-fluid">
-    {{#autoForm
-      schema="ReactionCore.Schemas.Shipping"
-      doc=.
-      template="bootstrap3-inline"
-      id="shipping-provider-update-form"
-      type="method-update"
-      meteormethod="updateShippingProvider"
-      resetOnSuccess=false
-      }}
-
-
-    <div class="col-md-12">
-      {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
-      {{>afQuickField name='provider.label'}}
-      {{>afQuickField name='provider.enabled'}}
+  <div class="panel panel-default">
+    <div class="panel-heading panel-heading-flex">
+      <h3 class="panel-title">
+        {{provider.name}}
+      </h3>
+      <div class="panel-controls">
+        <button type="button" class="btn btn-link"><i class="fa fa-trash-o"></i></button>
+      </div>
     </div>
+    <div class="panel-body">
+      {{#autoForm
+        schema="ReactionCore.Schemas.Shipping"
+        doc=.
+        template="bootstrap3-inline"
+        id="shipping-provider-update-form"
+        type="method-update"
+        meteormethod="updateShippingProvider"
+        resetOnSuccess=false
+        }}
+        
+        <div class="col-md-12">
+          {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
+          {{>afQuickField name='provider.label'}}
+          {{>afQuickField name='provider.enabled'}}
+        </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="button" class="btn btn-link" data-event-action="cancelUpdateShippingProvider">Cancel</button>
-    {{/autoForm}}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-link" data-event-action="cancelUpdateShippingProvider">Cancel</button>
+      {{/autoForm}}
+    </div>
   </div>
 
 </template>

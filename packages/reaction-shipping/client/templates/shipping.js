@@ -5,7 +5,7 @@ Meteor.subscribe("Shipping");
 
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
-    ReactionCore.showAdvancedSettings({
+    ReactionCore.showActionView({
       label: "Add Shipping Provider",
       template: "addShippingProvider"
     });
@@ -47,7 +47,7 @@ Template.shipping.events({
   },
   "click [data-action=addShippingProvider]": function (event, template) {
 
-    ReactionCore.showAdvancedSettings({
+    ReactionCore.showActionView({
       label: "Add Shipping Provider",
       template: "addShippingProvider"
     });
@@ -103,7 +103,7 @@ Template.afFormGroup_validRanges.helpers({
 Template.editShippingProvider.events({
   "click [data-event-action=cancelUpdateShippingProvider]": function(event, template) {
     event.preventDefault();
-    ReactionCore.hideAdvancedSettings();
+    ReactionCore.hideActionView();
   }
 });
 
@@ -115,7 +115,7 @@ Template.editShippingProvider.events({
 Template.addShippingProvider.events({
   "click [data-event-action=cancelAddShippingProvider]": function(event, template) {
     event.preventDefault();
-    ReactionCore.hideAdvancedSettings();
+    ReactionCore.hideActionView();
   }
 });
 
@@ -172,7 +172,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=editShippingMethod]": function(event, template) {
     event.preventDefault();
 
-    ReactionCore.showAdvancedSettings({
+    ReactionCore.showActionView({
       label: "Edit Shipping Method",
       data: this,
       template: "editShippingMethod"
@@ -182,7 +182,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=editShippingProvider]": function(event, template) {
     event.preventDefault();
 
-    ReactionCore.showAdvancedSettings({
+    ReactionCore.showActionView({
       label: "Edit Shipping Provider",
       data: this,
       template: "editShippingProvider"
@@ -203,7 +203,7 @@ Template.shippingProviderTable.events({
   'click [data-event-action=addShippingMethod]': function(event, template) {
     event.preventDefault();
 
-    ReactionCore.showAdvancedSettings({
+    ReactionCore.showActionView({
       label: "Add Shipping Method",
       template: "addShippingMethod"
     });
