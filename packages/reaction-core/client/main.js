@@ -77,11 +77,29 @@ _.extend(ReactionCore, {
 
   showActionView: function(viewData) {
     Session.set('admin/showActionView', true);
-    Session.set('admin/actionView', viewData);
+    ReactionCore.setActionView(viewData);
   },
 
   isActionViewOpen: function() {
     return Session.equals('admin/showActionView', true);
+  },
+
+  setActionView: function (viewData) {
+
+    if (viewData) {
+      Session.set('admin/actionView', viewData);
+    } else {
+
+      var registryItem = ReactionCore.getRegistryForCurrentRoute("settings");
+
+      if (registryItem) {
+        ReactionCore.setActionView(registryItem);
+      } else {
+        ReactionCore.setActionView({
+          template: "blankControls"
+        });
+      }
+    }
   },
 
   getActionView: function () {

@@ -55,25 +55,7 @@ Router.configure({
 
         // Find a registry entry for this page that provides settings
         // -- Settings is the default view for the "Action View"
-
-        var registryItem = ReactionCore.getRegistryForCurrentRoute("settings");
-
-        if (registryItem) {
-          ReactionCore.showActionView(registryItem);
-        } else {
-          // Otherwise, see if a settings panel is open
-          if (!Session.get('admin/showActionView')) {
-
-            // .. And if not, render a default view in the settings panel
-            this.render("blankControls", {
-              to: 'adminControlsContent'
-            });
-          } else {
-            this.render("emptyControls", {
-              to: 'adminControlsContent'
-            });
-          }
-        }
+        ReactionCore.setActionView();
 
         // this.render("dashboardPackages")
         $("body").addClass("admin");
@@ -228,13 +210,6 @@ Router.map(function() {
     data: function() {
       return ReactionCore.Collections.Shops.findOne();
     }
-  });
-
-
-  this.route('dashboard/members', {
-    controller: ShopAdminController,
-    path: '/dashboard/members',
-    template: 'dashboardPackages'
   });
 
 
