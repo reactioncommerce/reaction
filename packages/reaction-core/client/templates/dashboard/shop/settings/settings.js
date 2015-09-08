@@ -113,6 +113,19 @@ AutoForm.hooks({
 });
 
 AutoForm.hooks({
+  shopEditOpenExchangeRatesForm: {
+    onSuccess: function(operation, result, template) {
+      return Alerts.add("Open Exchange settings saved.", "success", {
+        autoHide: true
+      });
+    },
+    onError: function(operation, error, template) {
+      return Alerts.add("Open Exchange settings update failed. " + error, "danger");
+    }
+  }
+});
+
+AutoForm.hooks({
   shopEditSettingsForm: {
     onSuccess: function(operation, result, template) {
       return Alerts.add("Shop settings saved.", "success", {

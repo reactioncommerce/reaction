@@ -60,7 +60,6 @@ _.extend(ReactionCore, {
     return this.hasPermission(dashboardPermissions);
   },
   getShopId: function() {
-    Session.set("currentShopId", this.shopId);
     return this.shopId;
   },
   allowGuestCheckout: function() {

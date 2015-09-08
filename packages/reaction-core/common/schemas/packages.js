@@ -173,6 +173,10 @@ ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
       type: String,
       label: "Port"
     },
+    "settings.openexchangerates.appId": {
+      type: String,
+      label: "Open Exchange Rates App Id"
+    },
     "settings.public": {
       type: Object,
       optional: true
