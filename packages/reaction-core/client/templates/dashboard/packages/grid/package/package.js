@@ -106,7 +106,7 @@ Template.gridPackage.events({
     event.stopPropagation();
 
     // Show the advanced settings view using this package registry entry
-    ReactionCore.showAdvancedSettings(this)
+    ReactionCore.showActionView(this)
 
   }
 });

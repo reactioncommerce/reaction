@@ -25,7 +25,7 @@ ReactionCore.registerPackage({
   },
   registry: [
     {
-      route: "dashboard/settings/shop",
+      route: "dashboard/shop",
       provides: 'dashboard',
       label: 'Core',
       description: 'Reaction Commerce Core',
@@ -45,7 +45,7 @@ ReactionCore.registerPackage({
       icon: 'fa fa-th',
       cycle: 1
     }, {
-      route: "dashboard/settings/shop",
+      route: "dashboard/shop",
       template: "shopSettings",
       label: "Shop Settings",
       provides: 'settings',

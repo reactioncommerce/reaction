@@ -1,35 +1,36 @@
 <template name="orders">
-  <h3>Orders</h3>
-  {{#if isOrder}}
-    {{>orderPage}}
-  {{else}}
-    {{#with orders}}
-      <div class="row orders-grid">
-        {{!-- Orders Page Header --}}
-        <div class="row" id="order-carousel">
-          {{!-- Order Details --}}
-          {{#each fulfillmentWorkflow}}
-          <div class="col-sm-4">
-            <div class="panel panel-default panel-order">
-              <div class="panel-heading">{{label}} <span class="badge">{{count}}</span></div>
-              <div class="panel-body">
-                <ul class="list-group orders-list">
-                  {{#each ..}}
-                    {{#if condition status "eq" ../value}}
-                      {{>orderDetail}}
-                    {{/if}}
-                  {{/each}}
-                </ul>
+  <div class="container-fluid-sm">
+    {{#if isOrder}}
+      {{>orderPage}}
+    {{else}}
+      {{#with orders}}
+        <div class="row orders-grid">
+          {{!-- Orders Page Header --}}
+          <div class="row" id="order-carousel">
+            {{!-- Order Details --}}
+            {{#each fulfillmentWorkflow}}
+            <div class="col-sm-4">
+              <div class="panel panel-default panel-order">
+                <div class="panel-heading">{{label}} <span class="badge">{{count}}</span></div>
+                <div class="panel-body">
+                  <ul class="list-group orders-list">
+                    {{#each ..}}
+                      {{#if condition status "eq" ../value}}
+                        {{>orderDetail}}
+                      {{/if}}
+                    {{/each}}
+                  </ul>
+                </div>
               </div>
             </div>
+            {{/each}}
           </div>
-          {{/each}}
         </div>
-      </div>
-    {{else}}
-      <div class="row">
-        <h2>There are no orders to display.</h2>
-      </div>
-    {{/with}}
-  {{/if}}
+      {{else}}
+        <div class="row">
+          <h2>There are no orders to display.</h2>
+        </div>
+      {{/with}}
+    {{/if}}
+  </div>
 </template>

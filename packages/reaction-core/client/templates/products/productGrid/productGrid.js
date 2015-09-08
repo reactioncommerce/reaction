@@ -176,7 +176,7 @@ Template.productGridItems.events({
   'click [data-event-action=showProductSettings]': function(event, template) {
     event.preventDefault();
 
-    ReactionCore.showAdvancedSettings({
+    ReactionCore.showActionView({
       label: "Edit Product",
       template: "productSettings",
       type: 'product',

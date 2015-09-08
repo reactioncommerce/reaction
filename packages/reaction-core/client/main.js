@@ -77,29 +77,24 @@ _.extend(ReactionCore, {
   },
 
   showActionView: function(viewData) {
-    Session.set('admin/showAdvancedSettings', true);
-    Session.set('admin/advanceSettingsView', viewData);
-  },
-  // TODO: Remove in favor of showActionView
-  showAdvancedSettings: function (viewData) {
-    ReactionCore.showActionView(viewData);
+    Session.set('admin/showActionView', true);
+    Session.set('admin/actionView', viewData);
   },
 
-  isAdvancedSettingsVisible: function () {
-    return Session.equals('admin/showAdvancedSettings', true);
+  isActionViewOpen: function() {
+    return Session.equals('admin/showActionView', true);
   },
 
-  getAdvancedSettingsView: function () {
-    return Session.get('admin/advanceSettingsView');
+  getActionView: function () {
+    return Session.get('admin/actionView');
   },
 
-  hideAdvancedSettings: function () {
-    Session.set('admin/showAdvancedSettings', false);
-    // Session.set('admin/advanceSettingsView', {});
+  hideActionView: function () {
+    Session.set('admin/showActionView', false);
   },
 
-  clearCurrentAdvancedSettingsView: function () {
-    Session.set('admin/advanceSettingsView', undefined);
+  clearActionView: function () {
+    Session.set('admin/actionView', undefined);
   },
 
   getCurrentTag: function() {
@@ -128,7 +123,7 @@ _.extend(ReactionCore, {
 
     if (reactionApp) {
       var settingsData = _.find(reactionApp.registry, function (item) {
-        return item.provides === provides;
+        return item.provides === provides && item.route === routeName;
       });
 
       return settingsData;

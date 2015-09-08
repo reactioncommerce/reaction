@@ -34,7 +34,7 @@ Router.configure({
 
   onRun: function() {
     $(window).scrollTop(0);
-    ReactionCore.clearCurrentAdvancedSettingsView();
+    ReactionCore.clearActionView();
     this.next();
   },
 
@@ -53,14 +53,16 @@ Router.configure({
       if (ReactionCore.hasDashboardAccess()) {
         this.layout("coreAdminLayout");
 
-        // Does a template exist for this rote with the proper name?
-        if (Template[routeName + "Settings"]) {
-          this.render(routeName + "Settings", {
-            to: 'adminControlsContent'
-          });
+        // Find a registry entry for this page that provides settings
+        // -- Settings is the default view for the "Action View"
+
+        var registryItem = ReactionCore.getRegistryForCurrentRoute("settings");
+
+        if (registryItem) {
+          ReactionCore.showActionView(registryItem);
         } else {
           // Otherwise, see if a settings panel is open
-          if (!Session.get('admin/showAdvancedSettings')) {
+          if (!Session.get('admin/showActionView')) {
 
             // .. And if not, render a default view in the settings panel
             this.render("blankControls", {
@@ -229,10 +231,10 @@ Router.map(function() {
   });
 
 
-  this.route('dashboard/settings/shop', {
+  this.route('dashboard/shop', {
     controller: ShopSettingsController,
-    path: '/dashboard/settings/shop',
-    template: 'dashboardPackages',
+    path: '/dashboard/shop',
+    template: 'shopDashboard',
     data: function() {
       return ReactionCore.Collections.Shops.findOne();
     }
