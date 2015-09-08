@@ -15,6 +15,12 @@ Template.reactionAnalyticsSettings.helpers({
   }
 });
 
+
+Template.reactionAnalytics.events({
+  
+});
+
+
 AutoForm.hooks({
   "analytics-update-form": {
     onSuccess: function(operation, result, template) {

@@ -1,5 +1,5 @@
 ReactionCore.registerPackage({
-  name: 'reaction-analytics',
+  name: "reaction-analytics",
   icon: "fa fa-bar-chart-o",
   autoEnable: false,
   settings: {
@@ -20,19 +20,19 @@ ReactionCore.registerPackage({
   },
   registry: [
     {
-      provides: 'dashboard',
-      label: 'Reaction Analytics',
+      provides: "dashboard",
+      label: "Reaction Analytics",
       description: "Event tracking and analytics with Reaction",
+      route: "dashboard/reactionAnalytics",
       icon: "fa fa-bar-chart-o",
-      cycle: '3',
-      container: 'dashboard'
+      cycle: "3",
+      container: "dashboard"
     }, {
       label: "Analytics Settings",
-      i18nLabel: "app.analyticsSettings",
-      route: 'reactionAnalytics',
-      provides: 'settings',
-      container: 'dashboard',
-      template: 'reactionAnalyticsSettings'
+      route: "dashboard/reactionAnalytics",
+      provides: "settings",
+      container: "dashboard",
+      template: "reactionAnalyticsSettings"
     }
   ],
   permissions: [

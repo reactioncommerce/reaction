@@ -1,5 +1,5 @@
 Router.map(function() {
-  return this.route('reactionAnalytics', {
+  return this.route('dashboard/reactionAnalytics', {
     controller: ShopSettingsController,
     path: 'dashboard/settings/reaction-analytics',
     template: 'reactionAnalytics'
