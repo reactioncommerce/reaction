@@ -460,7 +460,7 @@ Meteor.methods({
     }, {
       $addToSet: {
         "payment.paymentMethod": paymentMethod,
-        "payment.invoice": invoice,
+        "payment.invoices": invoice,
         "workflow.workflow": "paymentSubmitted"
       }
     });

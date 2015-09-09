@@ -6,12 +6,11 @@
 
 Template.cartCompleted.helpers({
   orderStatus: function() {
-    var status;
-    status = (typeof this !== "undefined" && this !== null ? this.status : void 0) || "processing";
-    if (status === "new") {
-      status = i18n.t('cartCompleted.submitted');
+    if (this.workflow.status === "new") {
+      return i18n.t('cartCompleted.submitted');
+    } else {
+      return this.workflow.status;
     }
-    return status;
   },
   userOrders: function() {
     if (Meteor.user()) {
