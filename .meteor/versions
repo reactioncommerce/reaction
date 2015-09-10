@@ -8,6 +8,8 @@ aldeed:collection2@2.5.0
 aldeed:simple-schema@1.3.3
 aldeed:template-extension@3.4.3
 amplify@1.0.0
+anti:i18n@0.4.3
+aslagle:reactive-table@0.8.12
 audit-argument-checks@1.0.3
 autoupdate@1.2.1
 babel-compiler@5.6.15
@@ -31,7 +33,7 @@ cfs:file@0.1.17
 cfs:filesystem@0.1.2
 cfs:graphicsmagick@0.0.18
 cfs:gridfs@0.0.33
-cfs:http-methods@0.0.29
+cfs:http-methods@0.0.30
 cfs:http-publish@0.0.13
 cfs:power-queue@0.9.11
 cfs:reactive-list@0.0.9
@@ -55,6 +57,7 @@ facebook@1.2.1
 fastclick@1.0.3
 fortawesome:fontawesome@4.3.0
 geojson-utils@1.0.3
+grigio:babel@0.1.7
 html-tools@1.0.4
 htmljs@1.0.4
 http@1.1.0
@@ -82,10 +85,6 @@ matb33:collection-hooks@0.7.15
 meteor@1.1.6
 meteor-platform@1.2.2
 meteorhacks:inject-initial@1.0.2
-meteorhacks:kadira@2.23.1
-meteorhacks:kadira-binary-deps@1.4.0
-meteorhacks:kadira-profiler@1.2.0
-meteorhacks:meteorx@1.3.1
 meteorhacks:ssr@2.1.2
 minifiers@1.1.5
 minimongo@1.0.8
@@ -106,6 +105,9 @@ ongoworks:bunyan-logger@2.5.0
 ongoworks:security@1.2.0
 ongoworks:speakingurl@5.0.1
 ordered-dict@1.0.3
+package-version-parser@3.0.3
+practicalmeteor:chai@2.1.0_1
+practicalmeteor:loglevel@1.2.0_2
 raix:eventemitter@0.1.3
 raix:ui-dropped-event@0.0.7
 random@1.0.3
@@ -126,6 +128,11 @@ reload@1.1.3
 retry@1.0.3
 risul:moment-timezone@0.4.0
 routepolicy@1.0.5
+sanjo:jasmine@0.18.0
+sanjo:karma@1.7.0
+sanjo:long-running-child-process@1.1.3
+sanjo:meteor-files-helpers@1.1.0_7
+sanjo:meteor-version@1.0.0
 service-configuration@1.0.4
 session@1.1.0
 sha@1.0.3
@@ -143,5 +150,13 @@ underscorestring:underscore.string@3.2.2
 url@1.0.4
 utilities:avatar@0.8.2
 utilities:spin@2.3.1
+velocity:chokidar@1.0.3_1
+velocity:core@0.9.3
+velocity:helpers@0.3.0
+velocity:html-reporter@0.8.2
+velocity:meteor-internals@1.1.0_7
+velocity:meteor-stubs@1.1.0
+velocity:shim@0.1.0
+velocity:source-map-support@0.3.2_1
 webapp@1.2.0
 webapp-hashing@1.0.3

@@ -27,8 +27,8 @@
         callbacks.forEach(function (callback) {
           callback();
         });
-        callbacks = [];
-      });
+        callbacks = []
+      })
     }
   });
 
