@@ -88,7 +88,7 @@ this.maybeDeleteProduct = function(prod) {
           type: "prod-delete-" + id,
           i18n_key: "productDetail.productDeleteError"
         });
-        return console.log("Error deleting product " + id, error);
+        throw new Meteor.Error("Error deleting product " + id, error);
       } else {
         setCurrentProduct(null);
         Router.go("/");

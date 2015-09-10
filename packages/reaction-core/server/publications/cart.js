@@ -13,7 +13,6 @@ Meteor.publish('Cart', function(userId) {
   });
 
   if (cart.count() === 0 ) {
-    console.log("creating cart from publish method");
     Meteor.call("createCart", this.userId);
   }
 

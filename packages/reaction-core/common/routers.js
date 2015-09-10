@@ -217,6 +217,9 @@ Router.map(function() {
     controller: ShopAdminController,
     path: 'dashboard/orders/:_id?',
     template: 'orders',
+    waitOn: function() {
+      return this.subscribe("Orders");
+    },
     data: function() {
       if (Orders.findOne(this.params._id)) {
         return ReactionCore.Collections.Orders.findOne({
@@ -305,7 +308,8 @@ Router.map(function() {
     path: 'completed/:_id',
     template: 'cartCompleted',
     subscriptions: function() {
-      return this.subscribe("CompletedCartOrder", Meteor.userId(), this.params._id);
+      this.subscribe("Orders");
+      return this.subscribe("CompletedCartOrder", Meteor.userId(), this.params._id);    
     },
     data: function() {
       if (this.ready()) {

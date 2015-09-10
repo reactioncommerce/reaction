@@ -2,21 +2,24 @@
 // Client stub.
 //
 
+
 Meteor.methods({
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Object);
-    this.unblock();
 
-    var invoice = {};
-    var cart = ReactionCore.Collections.Cart.findOne();
+    var checkoutCart = ReactionCore.Collections.Cart.findOne({
+      'userId': Meteor.userId()
+    });
+
+    var cart = _.clone(checkoutCart);
     var cartId = cart._id;
-
-    invoice.shipping = cart.cartShipping();
-    invoice.subtotal = cart.cartSubTotal();
-    invoice.taxes = cart.cartTaxes();
-    invoice.discounts = cart.cartDiscounts();
-    invoice.total = cart.cartTotal();
-
+    var invoice = {
+      shipping: cart.cartShipping(),
+      subtotal: cart.cartSubTotal(),
+      taxes: cart.cartTaxes(),
+      discounts: cart.cartDiscounts(),
+      total: cart.cartTotal()
+    };
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow where
@@ -32,8 +35,12 @@ Meteor.methods({
       }
     });
 
+    var updatedCart = ReactionCore.Collections.Cart.findOne({
+      'userId': Meteor.userId()
+    });
+
     // Client Stub Actions
-    if (result === 1) {
+    if (result === 1 && updatedCart.payment && updatedCart.items) {
       Router.go("cartCompleted", {
         _id: cartId
       });
@@ -42,7 +49,7 @@ Meteor.methods({
         autoHide: true,
         placement: "paymentMethod"
       });
-      throw new Meteor.Error("An error occurred saving the order", error);
+      throw new Meteor.Error("An error occurred saving the order", cartId, error);
     }
   }
 });

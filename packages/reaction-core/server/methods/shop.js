@@ -201,7 +201,6 @@ Meteor.methods({
    * currentTagId will update related/hierarchy
    */
   updateHeaderTags: function (tagName, tagId, currentTagId) {
-    console.log("updateHeaderTags")
     var existingTag, newTag, newTagId;
     check(tagName, String);
     check(tagId, Match.OneOf(String, null, void 0));

@@ -57,7 +57,7 @@ describe("Account Meteor method ", function() {
       return done();
     });
 
-    it('should let a Owner invite a user to the shop', function(done) {
+    /*it('should let a Owner invite a user to the shop', function(done) {
       spyOn(ReactionCore, 'hasOwnerAccess').and.returnValue(true);
       spyOn(Accounts, 'createUser');
       shopId = Factory.create('shop')._id;
@@ -71,7 +71,7 @@ describe("Account Meteor method ", function() {
         username: fakeUser.profile.name
       });
       return done();
-    });
+    });*/
 
   });
 

@@ -1,9 +1,12 @@
 // Meteor.after to call after
 ReactionCore.MethodHooks.after('cart/submitPayment', function(options) {
   if (options.error === undefined) {
-    var cartId = ReactionCore.Collections.Cart.findOne()._id;
-    var order = ReactionCore.Collections.Orders.findOne({'cartId': cartId});
-    Meteor.call("copyCartToOrder", cartId);
+    var cart = ReactionCore.Collections.Cart.findOne(options.result);
+    if (cart.items && cart.payment.paymentMethod) {
+      Meteor.call("copyCartToOrder", cart._id);
+    } else {
+      throw new Meteor.Error("An error occurred verifing payment method. Failed to save order.");
+    }
   }
   return options.result;
 });

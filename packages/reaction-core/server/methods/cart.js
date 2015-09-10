@@ -96,13 +96,13 @@ Meteor.methods({
 
     // find current userCart
     // this is the only true cart
-    currentUserCart = Cart.findOne({
+    var currentUserCart = Cart.findOne({
       'userId': userId
     });
 
     // find carts this user might have had
     // while anonymous and merge into user cart
-    sessionCarts = Cart.find({
+    var sessionCarts = Cart.find({
       'sessions': {
         $in: [sessionId]
       },
@@ -135,6 +135,8 @@ Meteor.methods({
     if (currentCartId && sessionCarts.count() !== 0 && !anonymousUser) {
 
       sessionCarts.forEach(function (sessionCart) {
+        var staleCartId = sessionCart._id;
+        var staleCartUserId = sessionCart.userId;
         // merge items if they exist
         if (sessionCart.items) {
           // update the current userCart
@@ -151,27 +153,19 @@ Meteor.methods({
         }
         // the 'anonymous' session carts are now longer needed.
         // instead of deleting, defer cleanup
-
-        /*Meteor.users.update(sessionCart.userId);*/
-
         // mark accounts "expired"
+        /*ReactionCore.Events.info("Remove stale cart", staleCartId);*/
         ReactionCore.Collections.Accounts.update({
-          'userId': sessionCart.userId,
+          'userId': staleCartUserId,
           $set: {
             state: "expired"
           }
         });
         // remove the cart user and session
-        Cart.update(
-          sessionCart._id, {
-            $unset: {
-              'userId': "",
-              'sessionId': ""
-            }
-          });
+        Cart.remove(staleCartId);
 
-        ReactionCore.Events.info("delete cart: " + sessionCart._id + "and user: " + sessionCart.userId);
-        ReactionCore.Events.info("processed merge into cartId: " + currentCartId);
+        ReactionCore.Events.info("processed: " + staleCartId + "for user: " + sessionCart.userId + " into " + currentCartId);
+
       });
     }
   },
@@ -190,6 +184,7 @@ Meteor.methods({
     check(productId, String);
     check(variantData, ReactionCore.Schemas.ProductVariant);
     check(quantity, String);
+    this.unblock();
 
     var shopId = ReactionCore.getShopId(this);
     var currentCart = ReactionCore.Collections.Cart.findOne(cartId);
@@ -246,6 +241,7 @@ Meteor.methods({
   removeFromCart: function (cartId, variantData) {
     check(cartId, String);
     check(variantData, Object);
+    this.unblock();
 
     return Cart.update({
       _id: cartId,
@@ -274,38 +270,50 @@ Meteor.methods({
     var error;
     var now = new Date();
     var cart = ReactionCore.Collections.Cart.findOne(cartId);
+    var order = _.clone(cart);
 
     // reassign the id, we'll get a new orderId
-    cart.cartId = cart._id;
+    order.cartId = cart._id;
 
     // a helper for guest login, we let guest add email afterwords
     // for ease, we'll also add automatically for logged in users
-    if (cart.userId && !cart.email) {
-      var user = Meteor.user(cart.userId);
+    if (order.userId && !order.email) {
+      var user = Meteor.user(order.userId);
       var emails = _.pluck(user.emails, "address");
-      cart.email = emails[0];
+      order.email = emails[0];
     }
 
     // schema should provide order defaults
     // so we'll delete the cart autovalues
-    delete cart.createdAt; // autovalues
-    delete cart.updatedAt;
-    delete cart._id;
+    delete order.createdAt; // autovalues
+    delete order.updatedAt;
+    delete order.cartCount;
+    delete order.cartShipping;
+    delete order.cartSubTotal;
+    delete order.cartTaxes;
+    delete order.cartDiscounts;
+    delete order.cartTotal;
+    delete order._id;
 
-    var items = cart.items;
     // init item level workflow
-    _.each(items, function (item, index) {
-      cart.items[index].workflow = {
+    _.each(order.items, function (item, index) {
+      order.items[index].workflow = {
         'status': "orderCreated",
         'workflow': ["inventoryAdjusted"]
       };
     });
 
-    // set new workflow status
-    cart.workflow.status = "new";
-    cart.workflow.workflow = ["orderCreated"];
+    if (!order.items) {
+      throw new Meteor.Error("An error occurred saving the order. Missing cart items.");
+    }
 
-    var orderId = ReactionCore.Collections.Orders.insert(cart);
+    // set new workflow status
+    order.workflow.status = "new";
+    order.workflow.workflow = ["orderCreated"];
+
+    // insert new reaction order
+    var orderId = ReactionCore.Collections.Orders.insert(order);
+    ReactionCore.Events.info("Created orderId", orderId);
 
     if (orderId) {
       // TODO: check for succesful inventoryAdjust
@@ -313,11 +321,16 @@ Meteor.methods({
 
       // trash the old cart
       ReactionCore.Collections.Cart.remove({
-        _id: cart.cartId
+        _id: order.cartId
       });
 
-      /*Meteor.call("createCart", cart.userId);*/
-
+      // create a new cart for the user
+      // even though this should be caught by
+      // subscription handler, it's not always working
+      var newCartExists = ReactionCore.Collections.Cart.find(order.userId);
+      if (newCartExists.count() === 0) {
+        Meteor.call("createCart", order.userId);
+      }
       // return
       ReactionCore.Events.info("Transitioned cart " + cartId + " to order " + orderId);
       return orderId;
@@ -438,18 +451,20 @@ Meteor.methods({
 
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Object);
-    this.unblock();
 
-    var invoice = {};
-    var cart = ReactionCore.Collections.Cart.findOne();
+    var checkoutCart = ReactionCore.Collections.Cart.findOne({
+      'userId': Meteor.userId()
+    });
+
+    var cart = _.clone(checkoutCart);
     var cartId = cart._id;
-
-    invoice.shipping = cart.cartShipping();
-    invoice.subtotal = cart.cartSubTotal();
-    invoice.taxes = cart.cartTaxes();
-    invoice.discounts = cart.cartDiscounts();
-    invoice.total = cart.cartTotal();
-
+    var invoice = {
+      shipping: cart.cartShipping(),
+      subtotal: cart.cartSubTotal(),
+      taxes: cart.cartTaxes(),
+      discounts: cart.cartDiscounts(),
+      total: cart.cartTotal()
+    };
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow where
@@ -465,10 +480,19 @@ Meteor.methods({
       }
     });
 
-    if (result === 1) {
+    var updatedCart = ReactionCore.Collections.Cart.findOne({
+      'userId': Meteor.userId()
+    });
+
+    // Client Stub Actions
+    if (result === 1 && updatedCart.payment && updatedCart.items) {
       return cartId;
     } else {
-      return;
+      Alerts.add("Failed to place order.", "danger", {
+        autoHide: true,
+        placement: "paymentMethod"
+      });
+      throw new Meteor.Error("An error occurred saving the order", cartId, error);
     }
   }
 });

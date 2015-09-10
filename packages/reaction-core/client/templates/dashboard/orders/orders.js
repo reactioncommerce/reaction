@@ -5,7 +5,9 @@
 
 Template.orders.helpers({
   settings: function () {
-    ReactionCore.Subscriptions.Orders = Meteor.subscribe("Orders", Meteor.userId());
+    // ensure sub is up to date
+    ReactionCore.Subscriptions.Orders = Meteor.subscribe("Orders");
+    // return reactive-table setup
     return {
       collection: ReactionCore.Collections.Orders,
       rowsPerPage: 10,

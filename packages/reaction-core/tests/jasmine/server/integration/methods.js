@@ -1,4 +1,5 @@
 describe("core methods", function () {
+
   describe("flushTranslations", function () {
     it("should throw 403 error by non admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(false);
@@ -21,10 +22,12 @@ describe("core methods", function () {
       return done();
     });
   });
+
   describe("removeHeaderTag", function () {
     beforeEach(function () {
       return Tags.remove({});
     });
+
     it("should throw 403 error by non admin", function (done) {
       var currentTag, tag;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
@@ -54,6 +57,7 @@ describe("core methods", function () {
     beforeEach(function () {
       return Tags.remove({});
     });
+
     it("should throw 403 error by non admin", function (done) {
       var tag;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
@@ -65,6 +69,7 @@ describe("core methods", function () {
       expect(Tags.update).not.toHaveBeenCalled();
       return done();
     });
+
     it("should insert new header tag with 1 argument by admin", function (done) {
       var tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
@@ -75,7 +80,8 @@ describe("core methods", function () {
       expect(tag.slug).toEqual("new-tag");
       return done();
     });
-    return it("should update exising header tag with 2 arguments by admin", function (done) {
+
+    it("should update exising header tag with 2 arguments by admin", function (done) {
       var tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       tag = Factory.create("tag");
@@ -87,41 +93,42 @@ describe("core methods", function () {
       return done();
     });
   });
-  return describe("locateAddress", function () {
+
+  describe("locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
       var address = Meteor.call("locateAddress", 34.043125, -118.267118);
+
       expect(address).toEqual({
-        formattedAddress: '1111 South Figueroa Street, Los Angeles, CA 90015, USA',
-        latitude: 34.043125,
-        longitude: -118.267118,
-        extra: {
-          googlePlaceId: 'ChIJ0ygfX7jHwoARdAU7rfbSlxQ',
-          confidence: 1,
-          premise: null,
-          subpremise: null,
-          neighborhood: 'Downtown',
-          establishment: null
-        },
-        administrativeLevels: {
-          level2long: 'Los Angeles County',
-          level2short: 'Los Angeles County',
-          level1long: 'California',
-          level1short: 'CA'
-        },
-        streetNumber: '1111',
-        streetName: 'South Figueroa Street',
-        city: 'Los Angeles',
-        country: 'United States',
-        countryCode: 'US',
-        zipcode: '90015'
+        formattedAddress: '1111 S Figueroa St, Los Angeles, CA 90015, USA',
+          latitude: 34.043125,
+          longitude: -118.267118,
+          extra:
+           { googlePlaceId: 'ChIJ0ygfX7jHwoARdAU7rfbSlxQ',
+             confidence: 1,
+             premise: null,
+             subpremise: null,
+             neighborhood: 'Downtown',
+             establishment: null },
+          administrativeLevels:
+           { level2long: 'Los Angeles County',
+             level2short: 'Los Angeles County',
+             level1long: 'California',
+             level1short: 'CA' },
+          streetNumber: '1111',
+          streetName: 'South Figueroa Street',
+          city: 'Los Angeles',
+          country: 'United States',
+          countryCode: 'US',
+          zipcode: '90015'
       });
       return done();
     });
+
     it("should locate an address with known international coordinates", function (done) {
       var address = Meteor.call("locateAddress", 53.414619, -2.947065);
 
       expect(address).toEqual({
-        formattedAddress: '188 Molyneux Road, Kensington, Liverpool, Merseyside L6 6AW, UK',
+        formattedAddress: '188 Molyneux Rd, Kensington, Liverpool, Merseyside L6 6AW, UK',
         latitude: 53.4146191,
         longitude: -2.9470654,
         extra: {
@@ -143,9 +150,11 @@ describe("core methods", function () {
         countryCode: 'GB',
         zipcode: 'L6 6AW'
       });
+
       return done();
     });
-    return it("should provide default empty address", function (done) {
+
+    it("should provide default empty address", function (done) {
       var address = Meteor.call("locateAddress", 26.352498, -89.25293);
 
       expect(address).toEqual({
@@ -160,6 +169,7 @@ describe("core methods", function () {
         streetNumber: null,
         countryCode: 'US'
       });
+
       return done();
     });
   });

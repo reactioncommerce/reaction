@@ -32,7 +32,6 @@ var handle = cart.observeChanges({
  */
 ReactionCore.Subscriptions.Account = Meteor.subscribe("Accounts", Meteor.userId());
 ReactionCore.Subscriptions.Profile = Meteor.subscribe("UserProfile", Meteor.userId());
-
 ReactionCore.Subscriptions.Packages = Meteor.subscribe("Packages");
 ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
 ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
