@@ -1,19 +1,6 @@
 /**
- * node-geocoder
- * configure node-geocoder
- */
-
-var Packages;
-var geocoderProvider = 'freegeoip';
-var httpAdapter = 'https';
-var GeoCoder = Npm.require('node-geocoder')(geocoderProvider, httpAdapter);
-
-Packages = ReactionCore.Collections.Packages;
-
-/**
  * Reaction Shop Methods
  */
-
 Meteor.methods({
 
   /*
@@ -66,7 +53,6 @@ Meteor.methods({
       }
     });
 
-
     // cofigure default defaultCountryCode
     // fallback to shop settings
     if (shop.addressBook.length >= 1) {
@@ -76,11 +62,10 @@ Meteor.methods({
     }
 
     // geocode reverse ip lookup
-    GeoCoder.geocode(clientAddress, function (err, geo) {
-      if (geo) {
-        geoCountryCode = geo.countryCode;
-      }
+    var geo = new GeoCoder({
+      geocoderProvider: 'freegeoip'
     });
+    geoCountryCode = geo.geocode(clientAddress).countryCode;
 
     // countryCode either from geo or defaults
     countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
@@ -121,6 +106,8 @@ Meteor.methods({
    */
   getCurrencyRates: function (currency) {
     check(currency, String);
+    this.unblock();
+
     var shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
       fields: {
         addressBook: 1,
@@ -163,17 +150,16 @@ Meteor.methods({
           var rateUpdate = {};
           var collectionKey = 'currencies.' + currencyKey + '.rate';
           rateUpdate[collectionKey] = exchangeRates[currencyKey];
-          ReactionCore.Collections.Shops.update(shopId, {$set: rateUpdate});
+          ReactionCore.Collections.Shops.update(shopId, {
+            $set: rateUpdate
+          });
         }
       });
       // return just the rate requested.
       return exchangeRates[currency];
     }
-
+    // default conversion rate 1 to 1
     return 1;
-
-
-
   },
 
   /**
@@ -185,45 +171,23 @@ Meteor.methods({
     check(longitude, Match.Optional(Number));
     this.unblock();
 
-    var address, error, geo, ip;
-
-    try {
-      if ((latitude != null) && (longitude != null)) {
-        geo = new GeoCoder();
-        address = GeoCoder.reverse(latitude, longitude);
-      } else {
-        ip = this.connection.httpHeaders['x-forwarded-for'];
-        if (ip) {
-          geo = new GeoCoder({
-            geocoderProvider: "freegeoip"
-          });
-          address = geo.geocode(ip);
-        }
-      }
-    } catch (_error) {
-      error = _error;
-      if ((latitude != null) && (longitude != null)) {
-        ReactionCore.Events.info("Error in locateAddress for latitude/longitude lookup (" + latitude + "," + longitude + "):" + error.message);
-      } else {
-        ReactionCore.Events.info("Error in locateAddress for IP lookup (" + ip + "):" + error.message);
-      }
+    // if called from server, ip won't be defined.
+    if (this.connection !== null) {
+      var clientAddress = this.connection.clientAddress
+    } else {
+      var clientAddress = "127.0.0.1";
     }
 
-    if (address != null ? address.length : void 0) {
-      return address[0];
+    // begin actual address lookups
+    if ((latitude != null) && (longitude != null)) {
+      var geo = new GeoCoder();
+      return geo.reverse(latitude, longitude);
     } else {
-      return {
-        latitude: null,
-        longitude: null,
-        country: "United States",
-        city: null,
-        state: null,
-        stateCode: null,
-        zipcode: null,
-        streetName: null,
-        streetNumber: null,
-        countryCode: "US"
-      };
+      // geocode reverse ip lookup
+      var geo = new GeoCoder({
+        geocoderProvider: 'freegeoip'
+      });
+      return geo.geocode(clientAddress);
     }
   },
 
