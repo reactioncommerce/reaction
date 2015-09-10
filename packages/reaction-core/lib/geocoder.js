@@ -95,7 +95,10 @@ GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
 
 
 var gi = function (address, options, callback) {
-  HTTP.get("https://geo.getreaction.io/json/" + address, callback);
+  // short term solution to an haproxy ssl cert installation issue
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED=0;
+  // calls a private reaction hosted version of freegeoip
+  HTTP.call( "GET", "https://geo.getreaction.io/json/" + address, callback);
 };
 
 GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
@@ -106,6 +109,6 @@ GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
     gi(address, this.options, callback);
   } else {
     address = Meteor.wrapAsync(gi)(address, this.options)
-    return address[0];
+    return address.data;
   }
 };

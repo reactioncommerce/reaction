@@ -41,9 +41,15 @@ Meteor.methods({
   getLocale: function () {
     this.unblock();
     var countryCode, geoCountryCode, currency, exchangeRate, localeCurrency, rateUrl, _i, _len;
-    var clientAddress = this.connection.clientAddress;
     var result = {};
 
+    // if called from server, ip won't be defined.
+    if (this.connection !== null) {
+      var clientAddress = this.connection.clientAddress
+    } else {
+      var clientAddress = "127.0.0.1";
+    }
+    // get shop locale/currency related data
     var shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
       fields: {
         addressBook: 1,
