@@ -175,7 +175,17 @@ ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
     },
     "settings.openexchangerates.appId": {
       type: String,
-      label: "Open Exchange Rates App Id"
+      label: "Open Exchange Rates App Id",
+    },
+    "settings.google.clientId": {
+      type: String,
+      label: "Google Client Id",
+      defaultValue: null
+    },
+    "settings.google.apiKey": {
+      type: String,
+      label: "Google Api Key",
+      defaultValue: null
     },
     "settings.public": {
       type: Object,

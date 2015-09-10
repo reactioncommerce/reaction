@@ -101,6 +101,8 @@
         <div class="panel-body">
           {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOpenExchangeRatesForm" type="update"}}
             {{> afQuickField name='settings.openexchangerates.appId'}}
+            {{> afQuickField name='settings.google.clientId'}}
+            {{> afQuickField name='settings.google.apiKey'}}
             {{> shopSettingsSubmitButton}}
           {{/autoForm}}
       </div>

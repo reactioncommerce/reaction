@@ -24,7 +24,7 @@ Template.coreOrderWidgets.onRendered(function() {
   currentDay = new Date(now.setDate(now.getDate() - 1));
   agingRange = new Date(now.setDate(now.getDate() - age));
   currentOrdersCount = Orders.find({
-    'state': {
+    'workflow.status': {
       $not: "orderComplete"
     },
     'createdAt': {
@@ -32,7 +32,7 @@ Template.coreOrderWidgets.onRendered(function() {
     }
   }).count();
   agingOrdersCount = Orders.find({
-    'state': {
+    'workflow.status': {
       $not: "orderComplete"
     },
     'createdAt': {
@@ -41,30 +41,30 @@ Template.coreOrderWidgets.onRendered(function() {
     }
   }).count();
   agedOrdersCount = Orders.find({
-    'state': {
-      $not: "orderComplete"
+    'workflow.status': {
+      $not: "coreOrderComplete"
     },
     'createdAt': {
       $lt: agingRange
     }
   }).count();
   pendingOrdersCount = Orders.find({
-    'state': {
+    'workflow.status': {
       $in: ["orderCreated"]
     }
   }).count();
   processingOrdersCount = Orders.find({
-    'state': {
+    'workflow.status': {
       $in: ["shipmentTracking", "shipmentPrepare"]
     }
   }).count();
   packingOrdersCount = Orders.find({
-    'state': {
+    'workflow.status': {
       $in: ["shipmentPacking", "processPayment", "processPayment"]
     }
   }).count();
   completedOrdersCount = Orders.find({
-    'state': {
+    'workflow.status': {
       $in: ["shipmentShipped", "orderCompleted"]
     }
   }).count();

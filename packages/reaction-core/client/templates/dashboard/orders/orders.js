@@ -1,52 +1,45 @@
 /**
-* orders helpers
-*
-*/
+ * orders helpers
+ *
+ */
+
 Template.orders.helpers({
-  orders: function() {
-    return Orders.find();
+  settings: function () {
+    ReactionCore.Subscriptions.Orders = Meteor.subscribe("Orders", Meteor.userId());
+    return {
+      collection: ReactionCore.Collections.Orders,
+      rowsPerPage: 10,
+      showFilter: false,
+      showNavigation: true,
+      fields: [
+          { key: 'userId', label: 'User', tmpl: Template.orderDetail },
+          { key: 'items', label: 'Items', tmpl: Template.ordersListItems},
+          { key: 'workflow.status', label: 'Status', tmpl: Template.orderStatusDetail },
+          { key: 'invoices', label: 'Summary', tmpl: Template.ordersListSummary}
+      ]
+    };
   },
-  isOrder: function() {
+
+  isOrder: function () {
     if (this._id) {
       return true;
     } else {
       return false;
     }
-  },
-  fulfillmentWorkflow: function() {
-    var count, displayNext, events, finalEvent, fulfillmentWorkflow, index, key, value, _i, _len;
-    fulfillmentWorkflow = [];
-    for (key in OrderWorkflow) {
-      for (index = _i = 0, _len = OrderWorkflowEvents.length; _i < _len; index = ++_i) {
-        events = OrderWorkflowEvents[index];
-        if (events.name === key) {
-          count = Orders.find({
-            status: key
-          }).count();
-          value = key;
-          if (count > 0 || displayNext !== false) {
-            if (count === 0) {
-              displayNext = false;
-              finalEvent = {
-                index: index,
-                count: count,
-                value: value,
-                label: events.label
-              };
-            } else {
-              displayNext = true;
-              fulfillmentWorkflow.push({
-                index: index,
-                count: count,
-                value: value,
-                label: events.label
-              });
-            }
-          }
-        }
-      }
+  }
+});
+
+Template.orders.events({
+  'click .reactive-table tbody tr': function (event) {
+    if (this.workflow.status === "new") {
+      this.workflow.status = "coreShipmentTracking"
+      /*Meteor.call("layout/workflow", "coreOrderWorkflow", "shipmentTracking");*/
     }
-    fulfillmentWorkflow.push(finalEvent);
-    return fulfillmentWorkflow;
+    ReactionCore.showActionView({
+      label: "Order " + this._id ,
+      data: this,
+      template: this.workflow.status
+    });
+
   }
 });

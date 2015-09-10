@@ -59,6 +59,7 @@ Package.onUse(function (api) {
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.1.2");
+  api.use("aslagle:reactive-table@0.8.12");
 
   // imply exports package vars
   api.imply("less");
@@ -106,6 +107,7 @@ Package.onUse(function (api) {
   api.addFiles("lib/css/jquery-ui.css", 'client', {isAsset: true});
   api.addFiles("lib/bower/Faker/build/build/faker.js", ["client","server"]);
   api.addFiles("lib/faker.js", ["server"]);
+  api.addFiles("lib/geocoder.js", ["server"]);
 
   // exports
   api.addFiles("common/globals.js");
@@ -329,22 +331,22 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/dashboard/orders/social/orderSocial.html", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/completed/completed.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/completed/completed.html", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/documents/documents.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/documents/documents.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/documents/documents.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/documents/documents.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/packing/packing.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/packing/packing.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/packing/packing.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/packing/packing.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/payment/payment.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/payment/payment.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/shipped/shipped.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/shipped/shipped.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/tracking/tracking.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/tracking/tracking.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.js", "client");
 
   api.addFiles("client/templates/dashboard/packages/packages.html", "client");
 

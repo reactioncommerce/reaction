@@ -75,6 +75,12 @@ _.extend(ReactionCore, {
     return Roles.getGroupsForUser(Meteor.userId(), 'admin');
   },
 
+  /**
+   * showActionView
+   *
+   * @viewData {label, template, data}
+   * @returns
+   */
   showActionView: function(viewData) {
     Session.set('admin/showActionView', true);
     ReactionCore.setActionView(viewData);
