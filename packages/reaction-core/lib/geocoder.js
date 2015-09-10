@@ -92,3 +92,20 @@ GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
     }
   }
 };
+
+
+var gi = function (address, options, callback) {
+  HTTP.get("https://geo.getreaction.io/json/" + address, callback);
+};
+
+GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
+  if (callback) {
+    callback = Meteor.bindEnvironment(callback, function (error) {
+      if (error) throw error;
+    });
+    gi(address, this.options, callback);
+  } else {
+    address = Meteor.wrapAsync(gi)(address, this.options)
+    return address[0];
+  }
+};

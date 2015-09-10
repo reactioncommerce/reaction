@@ -62,10 +62,8 @@ Meteor.methods({
     }
 
     // geocode reverse ip lookup
-    var geo = new GeoCoder({
-      geocoderProvider: 'freegeoip'
-    });
-    geoCountryCode = geo.geocode(clientAddress).countryCode;
+    var geo = new GeoCoder();
+    geoCountryCode = geo.geoip(clientAddress).countryCode;
 
     // countryCode either from geo or defaults
     countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
@@ -184,10 +182,8 @@ Meteor.methods({
       return geo.reverse(latitude, longitude);
     } else {
       // geocode reverse ip lookup
-      var geo = new GeoCoder({
-        geocoderProvider: 'freegeoip'
-      });
-      return geo.geocode(clientAddress);
+      var geo = new GeoCoder();
+      return geo.geoip(clientAddress);
     }
   },
 

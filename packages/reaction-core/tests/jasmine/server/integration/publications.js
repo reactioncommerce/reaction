@@ -104,7 +104,9 @@ describe("Publication", function() {
     var order;
 
     beforeEach(function() {
-      Orders.insert({shopId: shop._id, status: "created"});
+      var userId = Factory.get("user")._id;
+      console.log(userId);
+      Orders.insert({shopId: shop._id, userId: userId, status: "created"});
       order = Orders.findOne();
     });
 

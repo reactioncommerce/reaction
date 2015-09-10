@@ -440,7 +440,6 @@ Package.onTest(function(api) {
   api.addFiles('tests/jasmine/server/integration/accounts.js', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.js', 'server');
   api.addFiles('tests/jasmine/server/integration/products.js', 'server');
-  api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
-  api.addFiles('tests/jasmine/client/unit/shops.js', 'client');
+  api.addFiles('tests/jasmine/server/integration/publications.js', 'server');
   api.addFiles('tests/jasmine/client/integration/shops.js', 'client');
 });
