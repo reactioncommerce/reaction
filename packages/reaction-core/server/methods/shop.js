@@ -45,7 +45,7 @@ Meteor.methods({
 
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
-      var clientAddress = this.connection.clientAddress
+      var clientAddress = this.connection.clientAddress;
     } else {
       var clientAddress = "127.0.0.1";
     }
@@ -59,10 +59,13 @@ Meteor.methods({
       }
     });
 
+
     // cofigure default defaultCountryCode
     // fallback to shop settings
-    if (shop.addressBook.length >= 1) {
-      defaultCountryCode = shop.addressBook[0].country;
+    if (shop.addressBook) {
+      if (shop.addressBook.length >= 1) {
+        defaultCountryCode = shop.addressBook[0].country;
+      }
     } else {
       defaultCountryCode = 'US';
     }
