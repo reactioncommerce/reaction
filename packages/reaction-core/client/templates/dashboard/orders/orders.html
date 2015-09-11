@@ -1,35 +1,33 @@
 <template name="orders">
-  <h3>Orders</h3>
-  {{#if isOrder}}
-    {{>orderPage}}
-  {{else}}
-    {{#with orders}}
-      <div class="row orders-grid">
-        {{!-- Orders Page Header --}}
-        <div class="row" id="order-carousel">
-          {{!-- Order Details --}}
-          {{#each fulfillmentWorkflow}}
-          <div class="col-sm-4">
-            <div class="panel panel-default panel-order">
-              <div class="panel-heading">{{label}} <span class="badge">{{count}}</span></div>
-              <div class="panel-body">
-                <ul class="list-group orders-list">
-                  {{#each ..}}
-                    {{#if condition state "eq" ../value}}
-                      {{>orderDetail}}
-                    {{/if}}
-                  {{/each}}
-                </ul>
-              </div>
-            </div>
-          </div>
-          {{/each}}
-        </div>
-      </div>
-    {{else}}
-      <div class="row">
-        <h2>There are no orders to display.</h2>
-      </div>
-    {{/with}}
-  {{/if}}
+  <div class="container-fluid-sm">
+    <div class="panel panel-default">
+      {{> reactiveTable settings=settings}}
+    </div>
+  </div>
+</template>
+
+<template name="orderUserDetail">
+
+  {{userId}}
+
+</template>
+
+<template name="orderShopDetail">
+
+  {{shopId}}
+
+</template>
+
+<template name="orderWorkflowDetail">
+  {{> Template.dynamic template=workflow.status}}
+</template>
+
+<template name="orderStatusDetail">
+  <div><strong>{{workflow.status}}</strong></div>
+  <div class="col-xs-8">
+    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D"}}</div>
+    {{#if shipmentTracking}}
+    <p>Tracking: <a href="#">{{shipmentTracking}}</a></p>
+    {{/if}}
+  </div>
 </template>

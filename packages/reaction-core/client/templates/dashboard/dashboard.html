@@ -16,3 +16,33 @@
   {{/if}}
 {{/if}}
 </template>
+
+<template name="blankControls">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">No controls for this view.</h3>
+    </div>
+  </div>
+</template>
+
+<template name="dashboardHeader">
+  {{#if showHeader}}
+    <div class="nav nav-dashboard">
+      <div class="nav-dashboard-heading">
+        <h3 class="nav-dashboard-title">
+            {{i18n registry.i18nKey registry.i18nLabel}}
+        </h3>
+
+        <a href="/dashboard">Dashboard</a>
+      </div>
+
+
+      <div class="nav-dashboard-controls">
+        {{> yield "dashboardControls"}}
+        <button class="btn btn-default" data-event-action="showPackageSettings">
+          <i class="fa fa-gear"></i>
+        </button>
+      </div>
+    </div>
+  {{/if}}
+</template>

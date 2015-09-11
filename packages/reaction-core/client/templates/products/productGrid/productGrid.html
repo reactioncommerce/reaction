@@ -1,4 +1,5 @@
 <template name="productGrid">
+  <div class="container-main">
   <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
     <ul class="product-grid-list list-unstyled" id="product-grid-list">
     {{#each products}}
@@ -6,6 +7,7 @@
     {{/each}}
     </ul>
   </div>
+</div>
 </template>
 
 <template name="productGridItems">
@@ -76,11 +78,8 @@
 
 
 <template name="gridControls">
-{{#if hasPermission "createProduct"}}
-  <div class="product-grid-controls-wrap">
+  {{#if hasPermission "createProduct"}}
     <div class="product-grid-controls">
-
-      {{! TODO: There has got to be a better way to do i18n for tooltips }}
       <button
         class="publish-product"
         data-toggle="tooltip"
@@ -88,79 +87,22 @@
         data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
         >
         {{#if isVisible}}
-          <span class="fa fa-eye fa-lg"></span>
+          <i class="fa fa-eye"></i>
         {{else}}
-          <span class="fa fa-eye-slash fa-lg"></span>
+          <i class="fa fa-eye-slash"></i>
         {{/if}}
       </button>
 
       <button
-        class="clone-product"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
-        data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}">
-        <span class="fa fa-files-o fa-lg"></span>
-      </button>
-
-      {{!--
-      For another time
-      <button
-        class="pin-product {{#if position.pinned}}active{{/if}}"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.pinProduct' 'Pin Product'}}"
-        data-original-title="{{i18n 'productDetailEdit.pinProduct' 'Pin Product'}}">
-        <span class="fa fa-thumb-tack fa-lg"></span>
-      </button>
-      --}}
-
-      <button
-        class="update-product-weight"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.toggleSize' 'Toggle Size'}}"
-        data-original-title="{{i18n 'productDetailEdit.toggleSize' 'Toggle Size'}}">
-        <span class="fa fa-plus-square-o fa-lg"></span>
-      </button>
-
-
-      <button
-        class="delete-product"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
-        data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}">
-        <span class="fa fa-trash-o fa-lg"></span>
-      </button>
-
-      {{!-- For another day
-      <button
-        class="more-options"
+        class="admin-controls-open"
         data-toggle="dropdown"
         title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
-        data-original-title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}">
-        <span class="fa fa-ellipsis-h fa-lg"></span>
-      </button>
-      --}}
-
-    </div>
-  </div>
-{{/if}}
-</template>
-
-<template name="productExtendedControls">
-  <div class="popover popover-advanced fade in right" style="display: block">
-    <div class="arrow"></div>
-    <div class="popover-title">Controls <button class="close"><i class="fa fa-times"></i></button></div>
-    <div class="popover-content">
-
-    </div>
-    <div class="popover-footer">
-      <button
-        class="delete-product2 btn btn-danger"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
-        data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}">
-        <span class="fa fa-trash-o fa-lg"></span>
+        data-original-title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
+        data-event-action="showProductSettings">
+        <i class="fa fa-gear"></i>
       </button>
     </div>
-  </div>
+  {{/if}}
 </template>
+
 

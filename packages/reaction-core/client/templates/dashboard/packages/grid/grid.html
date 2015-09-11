@@ -1,8 +1,8 @@
 <template name="packagesGrid">
-  <div class="available-pkg-grid">
+  <div class="flex flex-xx available-pkg-grid">
     {{#each reactionApps provides='dashboard'}}
       {{#if pkgPermissions}}
-        <div class="col-sm-3">
+        <div class="flex-item">
           {{> gridPackage}}
         </div>
       {{/if}}

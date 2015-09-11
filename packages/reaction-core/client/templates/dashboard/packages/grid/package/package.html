@@ -1,28 +1,36 @@
 <template name="gridPackage">
-  <div class="pkg-card {{pkgTypeClass.class}}" data-ribbon="{{pkgTypeClass.text}}">
+  <div class="panel pkg-card pkg-app-card" data-settings-view="{{packageSettings.template}}">
     {{!-- display overview route --}}
-    <a class="pkg-app-card">
-      <div class="row pkg-content">
-        <h3>{{label}}</h3>
-        <small>{{{description}}}</small>
-      </div>
-    </a>
-    <div class="row pkg-status">
-        <i class="{{icon}} fa-3x .pull-left"></i>
-         <div class="pkg-controls">
-            {{#if enabled}}
-              {{#if condition name 'neq' 'core'}}
-                <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
-              {{/if}}
-              {{#each reactionApps provides="settings" name=name container=container}}
-                {{#if hasPermission route}}
-                <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
-                {{/if}}
-              {{/each}}
-            {{else}}
-              <a class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
-            {{/if}}
-        </div>
+    <div class="panel-heading" data-event-action="showPackageManagement">
+      <h3>{{label}}</h3>
+      <small>{{{description}}}</small>
     </div>
+
+    <div class="panel-body">
+    </div>
+
+    <div class="panel-footer">
+      <div class="left">
+        <i class="{{icon}} fa-2x"></i>
+      </div>
+      <div class="right">
+          {{pkgTypeClass.text}}
+          {{!-- {{pkgTypeClass.class}} --}}
+
+          {{#if enabled}}
+            {{#if condition name 'neq' 'core'}}
+              <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
+            {{/if}}
+            {{#each reactionApps provides="settings" name=name container=container}}
+              {{#if hasPermission route}}
+              <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}"><i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i></a>
+              {{/if}}
+            {{/each}}
+          {{else}}
+            <a class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}"> <i class="fa fa-plus-square fa-2x fa-fw"></i></a>
+          {{/if}}
+      </div>
+    </div>
+
   </div>
 </template>

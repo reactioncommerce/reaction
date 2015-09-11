@@ -18,7 +18,12 @@
                     "loading": "Loading",
                     "toggle": "Toggle",
                     "warning": "Oops!",
-                    "unauthorizedMessage": "You don't have permission to view this content."
+                    "unauthorizedMessage": "You don't have permission to view this content.",
+                    "monthOptions": "Choose month",
+                    "yearOptions": "Chose year",
+                    "timezoneOptions": "Choose timezone",
+                    "shopSettings": "Shop Settings",
+                    "dashboard": "Dashboard"
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -116,6 +121,7 @@
                     "adminMessage": "You are viewing orders as an administrator"
                 },
                 "checkoutLogin": {
+                    "welcome": "Welcome, it's so good to see you.",
                     "loginCompleted": "Account completed",
                     "createOrLogin": "Create an acccount, or sign in",
                     "guestOrLogin": "Sign in, or checkout as a guest",
@@ -123,6 +129,7 @@
                     "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later."
                 },
                 "addressBookGrid": {
+                    "addAddress": "Add Address",
                     "chooseAddress": "Choose shipping & billing address",
                     "createDefault": "Create your default address",
                     "selectShippingAddress": "Select a shipping address",
@@ -172,7 +179,8 @@
                 },
                 "checkoutPayment": {
                     "addPaymentToCompleteOrder": "Add payment to complete order",
-                    "processingError": "There was a problem with your payment."
+                    "processingError": "There was a problem with your payment.",
+                    "completeYourOrder": "Complete your order"
                 },
                 "checkoutReview": {
                     "review": "Review"
@@ -210,6 +218,7 @@
                 },
                 "accountsUI": {
                     "members": "Members",
+                    "guest": "Guest",
                     "addMember": "Add a member",
                     "add": "add",
                     "and": "and",
@@ -240,6 +249,7 @@
                     "signIn": "Sign In",
                     "signin": "sign in",
                     "signInWith": "Sign in with",
+                    "signUpWith": "Sign up with",
                     "signedIn": "You are signed in.",
                     "signOut": "Sign Out",
                     "signUp": "Register",
@@ -247,6 +257,7 @@
                     "signUpWithYourEmailAddress": "Register with your email address",
                     "terms": "Terms of Use",
                     "updateYourPassword": "Update your password",
+                    "updatePasswordAndContinue": "Update and continue",
                     "username": "Username",
                     "usernameOrEmail": "Username or email",
                     "with": "with",
@@ -262,7 +273,9 @@
                     },
                     "error": {
                         "emailRequired": "Email is required.",
+                        "passwordRequired": "Email is required.",
                         "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
+                        "passwordMustContainRequirements": "Password must contain at least one number or symbol",
                         "minChar": "6 character minimum password.",
                         "pwdsDontMatch": "Passwords don't match",
                         "pwOneDigit": "Password must have at least one digit.",

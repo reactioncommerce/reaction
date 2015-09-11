@@ -22,7 +22,7 @@
       }
     ],
     "pageTitle":"Basic Example Product",
-    "productType":"Simple",
+    "type":"simple",
     "title":"Example Product",
     "updatedAt":{
       "$date":"2014-06-01T12:17:13.949-0700"

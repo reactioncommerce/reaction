@@ -1,11 +1,15 @@
 <template name="checkoutProgressBar">
-<div class="checkout-progress-wrap">
-  <ul class="checkout-bar">
-    <li class="{{loginStatus}}" data-i18n="checkoutProgressBar.login">Account</li>
-    <li class="{{shippingStatus}}" data-i18n="checkoutProgressBar.shippingBilling">Address Details</li>
-    <li class="{{shippingOptionStatus}}" data-i18n="checkoutProgressBar.shippingOptions">Shipping Options</li>
-    <li class="{{reviewStatus}}" data-i18n="checkoutProgressBar.reviewPayment">Review</li>
-    <li class="" data-i18n="checkoutProgressBar.complete">Complete</li>
-  </ul>
-</div>
+  <div class="checkout-progress-container">
+    <ul class="checkout-progress-bar">
+
+
+      {{#each reactionTemplate workflow="coreCartWorkflow"}}
+      <li class="{{progressbarStatusClass}}">
+        <span class="progress-step-badge">{{position}}</span>
+        <span class="progress-step-label" data-i18n="checkoutProgressBar.{{toCamelCase label}}">{{label}}</span>
+      </li>
+      {{/each}}
+
+    </ul>
+  </div>
 </template>

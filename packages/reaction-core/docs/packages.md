@@ -1,47 +1,48 @@
 # Packages
+Reaction packages are Meteor packages that add a call to `ReactionCore.registerPackage` that declares the Meteor package to the Reaction registry.
 
-###### Private packages
+## Public packages
+If you create a package and would like to share it with the Meteor community, you can publish the package to the Meteor package registry with `meteor publish`.
+
+_Publishing packages is not a requirement to share or deploy packages._
+
+If you would like to share a package in the registry, but don't want to be responsible for long term ownership of the package, create an issue and let us know. We can also fork and maintain a [Reaction Commerce published org version of your package](https://atmospherejs.com/reactioncommerce).
+
+## Private packages
 Packages within Reaction are Meteor packages. There are private packages, that a developer can create to customize any of Reaction's functionality. Private packages can be deployed by including them in the `packages` folder.
 
-###### Public packages
-If you create a private package and would like to share it with the Meteor community you can make it publish the package to the Meteor package registry with `meteor publish`.
+## Core Packages
+For local core package development you must _git clone_ packages locally, either into `reaction/packages`, or define the `PACKAGES_DIR` env variable for an alternate location.
 
-*Publishing packages is not a requirement to share or deploy packages.*
-
-If you would like to share a package in the registry, but don't want to be responsible for long term ownership of the package, create an issue and let us know. We'll consider forking and maintaining a (reactioncommerce org published version of your package)[https://atmospherejs.com/reactioncommerce].
-
-## Package development
-
-For local package development you must *git clone* packages locally, either into `reaction/packages`, or by creating a symbolic link to the package checkout.
-
-For example:
+An example fresh development structure might look like:
 
 ```bash
-  mkdir ~/reactioncommerce
-  cd ~/reactioncommerce
-  git clone https://github.com/reactioncommerce/reaction.git
-
-  cd reaction/packages
-  git clone https://github.com/reactioncommerce/reaction-core.git
-  git clone https://github.com/reactioncommerce/reaction-core-theme.git
+mkdir ~/reaction-packages
+cd ~/reaction-packages
+git clone https://github.com/reactioncommerce/reaction-core.git
+git clone https://github.com/reactioncommerce/reaction-core-theme.git
 ```
 
-or
+and then run Reaction as normal, but using `PACKAGES_DIR`
 
 ```bash
-    cd reaction
-    ln -s <full path to package>  packages/
+cd ~
+git clone https://github.com/reactioncommerce/reaction.git
+cd reaction
+PACKAGES_DIR="~/reaction-packages" meteor --settings settings/settings.json
 ```
 
 It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone all used Reaction packages to ensure you're working with a complete development enviroment.
 
-*Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master.*
+_Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master._
 
-*Tip: Copy the `settings/dev.settings.json` to `settings/settings.json` and edit the file to retain authentication and Meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`*
+_Tip: Copy the `settings/dev.settings.json` to `settings/settings.json` and edit the file to retain authentication and Meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`_
 
 **Create packages**
 
-    meteor create --package
+```
+meteor create --package
+```
 
 See [Meteor docs](http://docs.meteor.com/#/full/writingpackages) for additional help creating packages.
 
@@ -60,7 +61,7 @@ Package.describe({
 
 Package.onUse(function (api, where) {
   api.use("reactioncommerce:core@x.x.x"); //current release
-  api.addFiles("server/register.coffee",'server');
+  api.addFiles("server/register.js",'server');
 });
 ```
 
@@ -72,64 +73,51 @@ Any files you create in your package you will need to add in your [package.js](h
 api.addFiles('myfile');
 ```
 
-
 To test your package, add it to your application :
 
-    meteor add your-new-package
+```
+meteor add your-new-package
+```
 
-*Tip: You can also add and remove packages by editing `.meteor/packages`*
+_Tip: You can also add and remove packages by editing `.meteor/packages`_
 
 ### ReactionCore.registerPackage
-To integrate a package into the rest of Reaction Commerce use
-`ReactionCore.registerPackage` to describe package details
-and provide some common integration hooks.
+The `ReactionCore.registerPackage` method describes a Meteor package to other Reaction packages.
 
-Integrate packages with reaction-core by adding **server/register.coffee**
+Integrate packages with reaction-core by adding **server/register.js**
 
-```coffeescript
-ReactionCore.registerPackage
-  name: 'reaction-paypal' # usually same as meteor package
-  autoEnable: false # auto-enable in dashboard,transforms to enabled
-  settings:
-    # private package settings config (blackbox)
-    mode: false
-    client_id: ''
-    client_secret: ''
-    # public package settings
-    public:
-      notSoSecret: true
+```javascript
+ReactionCore.registerPackage({
+  label: 'PayPal',
+  name: 'reaction-paypal',
+  autoEnable: false,
   registry: [
-    # all options except route and template
-    # are used to describe the
-    # dashboard 'app card'.
     {
-      provides: 'dashboard'
-      label: 'PayPal'
-      description: 'Accept PayPal payments'
-      icon: 'fa fa-paypal'
-      cycle: 3
-      container: 'paypal'
-      permissions: [
-        {
-          label: "Dashboard"
-          permission: "dashboard"
-        }
-      ]
-    }
-    # configures settings link for app card
-    # use 'group' to link to dashboard card
-    {
-      route: 'paypal'
-      provides: 'settings'
-      container: 'paypal'
-    }
-    # configures template for checkout
-    # paymentMethod dynamic template
-    {
-      template: 'paypalPaymentForm'
+      provides: 'dashboard',
+      label: 'PayPal',
+      description: 'PayPal Payment for Reaction Commerce',
+      icon: 'fa fa-paypal',
+      cycle: '3',
+      container: 'reaction-paypal'
+    }, {
+      label: 'PayPal Settings',
+      route: 'paypal',
+      provides: 'settings',
+      container: 'reaction-paypal',
+      template: 'paypalSettings'
+    }, {
+      template: 'paypalPaymentForm',
       provides: 'paymentMethod'
     }
+  ],
+  permissions: [
+    {
+      label: 'PayPal',
+      permission: 'dashboard/payments',
+      group: 'Shop Settings'
+    }
   ]
+});
 ```
 
 #### Registry
@@ -137,42 +125,107 @@ The registry is used to settings, routes,  and permissions for Reaction specific
 
 A `registry` object can be any combination of properties, with `provides` being the only required element.
 
-*Note: The registry is currently refreshed only on update/deleting the package record in the database, or on delete/addition of the package.*
+_Note: The registry is currently refreshed only on update/deleting the package record in the database, or on delete/addition of the package._
 
 You may filter, or define using any of the optional registry properties:
 
 **package**
-  * name
-  * enabled
+
+```
+ReactionCore.registerPackage({
+  name: 'core',
+  autoEnable: true,
+  settings: {
+    "public": {
+      allowGuestCheckout: true
+    },
+    mail: {
+      user: "",
+      password: "",
+      host: "localhost",
+      port: "25"
+    }
+  },
+```
 
 **registry**
-  - provides
-  - route
-  - template
-  - icon
-  - label
-  - cycle
-  - container
 
-***Special Usage***
- - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
- - `container` group alike for presentation *example: used to connect settings on dashboard app card registry object*
+```
+  registry: [
+    {
+      route: "dashboard/settings/shop",
+      provides: 'dashboard',
+      label: 'Core',
+      description: 'Reaction Commerce Core',
+      icon: 'fa fa-th',
+      cycle: 1,
+      container: "dashboard",
+      permissions: [
+        {
+          label: "Dashboard",
+          permission: "dashboard"
+        }
+      ]
+    }, {
+      route: "dashboard",
+      provides: 'shortcut',
+      label: 'Dashboard',
+      icon: 'fa fa-th',
+      cycle: 1
+    }, {
+      route: "dashboard",
+      label: 'Dashboard',
+      provides: 'console',
+      permissions: [
+        {
+          label: "Console",
+          permission: "console"
+        }
+      ]
+    }, {
+      route: "dashboard/settings/shop",
+      template: "shopSettings",
+      label: "Shop Settings",
+      provides: 'settings',
+      icon: "fa fa-cog fa-2x fa-fw",
+      container: 'dashboard'
+    }
+  ]
+```
 
+**layout**
+
+```
+layout: [
+  {
+    template: "checkoutLogin",
+    label: "Login",
+    workflow: 'coreCartWorkflow',
+    container: 'checkout-steps-main',
+    audience: ["guest", "anonymous"],
+    priority: 1,
+    position: "1"
+  }
+]
+```
+
+**_Special Usage_**
+- `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
+- `container` group alike for presentation _example: used to connect settings on dashboard app card registry object_
 
 **Dynamic Templates**
 
 The `provides` property is a "placement" value, loading it as `dynamic template` where the other conditions match a request from the `reactionApps` helper.
 
 The following `provides` values are defined in reaction-core:
-
- * widget
- * paymentMethod
- * shippingMethod
- * settings
- * shortcut
- * dashboard
- * console
- * userAccountDropdown
+- widget
+- paymentMethod
+- shippingMethod
+- settings
+- shortcut
+- dashboard
+- console
+- userAccountDropdown
 
 To add a new `settings` link to the app card:
 
@@ -209,19 +262,21 @@ From templates, you can create additional dynamic template `provides` using the 
 
 Add widgets to your package to be included on the `console dashboard` by including a registry entry and a template that provides 'widget'.
 
-    <template name="reactionHelloworldWidget">
-        <div class="dashboard-widget">
-          <div class="dashboard-widget-center">
-            <div>
-              <h3 class="helloworld-text">Widget Panel</h3><small>your widget</small>
-            </div>
-          </div>
+```
+<template name="reactionHelloworldWidget">
+    <div class="dashboard-widget">
+      <div class="dashboard-widget-center">
+        <div>
+          <h3 class="helloworld-text">Widget Panel</h3><small>your widget</small>
         </div>
-    </template>
+      </div>
+    </div>
+</template>
+```
 
-*See example: packages/reaction-core/client/templates/dashboard/orders/widget/widget.html*
+_See example: packages/reaction-core/client/templates/dashboard/orders/widget/widget.html_
 
-*Tip: the `dashboard-widget` and `dashboard-widget-center` classes will create touch/swipeable widget boxes.*
+_Tip: the `dashboard-widget` and `dashboard-widget-center` classes will create touch/swipeable widget boxes._
 
 Include in **server/register.coffee** registry:
 
@@ -236,14 +291,13 @@ Include in **server/register.coffee** registry:
 You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
 
 #### Permissions
-
-We use [alanning:roles](https://github.com/alanning/meteor-roles) for providing roles support.
+[alanning:roles](https://github.com/alanning/meteor-roles) package provides Reaction permissions support.
 
 **Permissions are grouped by `shopId`.**
 
-Package specific roles can be defined in `register.coffee`, by adding custom permissions to registry entries with:
+Package specific roles can be defined in `register.js`, by adding custom permissions to registry entries with:
 
-```coffeescript
+```
       permissions: [
         {
           label: "Custom Permission"
@@ -254,23 +308,24 @@ Package specific roles can be defined in `register.coffee`, by adding custom per
 
 Permission of the current route and user are compared against the package route by default, adding specific permissions to the registry entry is optional.
 
-
 ##### Owner
 The initial setup user was added to the shops 'owner' permission group with the 'owner' permission.
 
 Users with "owner" role are full-permission, app-wide users.
 
 **To check if user has owner access:**
-```
-	# client / server
-	ReactionCore.hasOwnerAccess()
 
-	# template
-	{{#if hasOwnerAccess}}
 ```
+    # client / server
+    ReactionCore.hasOwnerAccess()
+
+    # template
+    {{#if hasOwnerAccess}}
+```
+
 ##### Admin
-Users with "admin" role are full-permission, site-wide users.
-**To check if user has admin access:**
+Users with "admin" role are full-permission, site-wide users.<br>**To check if user has admin access:**
+
 ```
   # client / server
   ReactionCore.hasAdminAccess()
@@ -283,6 +338,7 @@ Users with "admin" role are full-permission, site-wide users.
 Users with "dashboard" role are limited-permission, site-wide users.
 
 **To check if user has Dashboard access:**
+
 ```
   # client / server
   ReactionCore.hasDashboardAccess()
@@ -295,36 +351,43 @@ To check if user has some specific permissions:
 
 on Client: for current user, where "permissions" is string or ['string']
 
-    ReactionCore.hasPermission(permissions)
+```
+ReactionCore.hasPermission(permissions)
+```
 
 on Server: for some shop (current if not defined) and some userId (current if not defined), where "permissions" is string or ['string']
 
-    ReactionCore.hasPermission(permissions, shop, userId)
+```
+ReactionCore.hasPermission(permissions, shop, userId)
+```
 
 in templates:
 
-    {{#if hasPermission permissions}}{{/if}}
+```
+{{#if hasPermission permissions}}{{/if}}
+```
 
-
-For using shop permissions in some packages you must add it into register directive.
-If we add this package then permissions will be available in Shop Accounts Settings.
+For using shop permissions in some packages you must add it into register directive.<br>If we add this package then permissions will be available in Shop Accounts Settings.
 
 Another example:
 
-    ReactionCore.registerPackage
-     name: 'reaction-commerce-orders'
-     provides: ['orderManager']
-     permissions: [
-       {
-         label: "Orders"
-         permission: "dashboard/orders"
-       }
-     ]
-
+```
+ReactionCore.registerPackage
+ name: 'reaction-commerce-orders'
+ provides: ['orderManager']
+ permissions: [
+   {
+     label: "Orders"
+     permission: "dashboard/orders"
+   }
+ ]
+```
 
 ###Routes
-We use the [iron:router](https://github.com/iron-meteor/iron-router) package for managing routes.
-Routes are created in `common/routing.coffee`
+
+[Iron:router](https://github.com/iron-meteor/iron-router) provides routing in Reaction.
+
+Routes are defined, both in app and packages. Most often found in `common/routers.js`.
 
 ```
 Router.map ->
@@ -341,7 +404,8 @@ Use the controller `ShopController` for public/shop routes, and `ShopAdminContro
 In addition to defining the route in the `Router.map`, you should add the route and template in the `ReactionCore.registerPackage` to export this route to ReactionCore and add permissions.
 
 ###Collections
-We use the [AutoForm, collection2, simple-schema](https://github.com/aldeed/meteor-autoform) package for defining forms, collections and schemas.
+
+[AutoForm, collection2, simple-schema](https://github.com/aldeed/meteor-autoform) packages provide functionality for defining forms, collections and schemas.
 
 You can extend core collections, schemas in your package. You can also create your own collections.
 
@@ -368,13 +432,14 @@ ReactionCore.Schemas.BraintreePackageConfig = new SimpleSchema([
 ```
 
 ###Security
-These Meteor packages are installed by as dependencies.
 
-**ongoworks/security**
-**alanning:meteor-roles**
-**audit-argument-checks**
+Community tested Meteor packages that enforce security rules are installed as required dependencies in Reaction Core.
 
-Use [`check`](http://docs.meteor.com/#/full/check) for all `Meteor.methods` arguments. You can remove with `meteor remove audit-argument-checks` if necessary, but packages will be required to pass `check` to be accepted as Reaction packages.
+**ongoworks/security**<br>**alanning:meteor-roles**<br>**audit-argument-checks**
+
+Use [`check`](http://docs.meteor.com/#/full/check) for all `Meteor.methods` arguments.
+
+You can remove with `meteor remove audit-argument-checks` if necessary, but packages will be required to pass `check` to be accepted as Reaction packages.
 
 **browser-policy**
 
@@ -390,4 +455,4 @@ To have your package included in a Reaction release, please create a GitHub issu
 
 See [meteor publish](http://docs.meteor.com/#/full/meteorpublish) for details on publishing to the Meteor package registry.
 
-*We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution.*
+_We can fork and publish packages under the reactioncommerce organization if the packages are included, and a pull request is made in reaction-core or reaction application distribution._

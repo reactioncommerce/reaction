@@ -4,9 +4,9 @@
 
 We are using [CollectionFs](https://github.com/CollectionFS/Meteor-CollectionFS)  for file uploading handling.  There is a [CFS GraphicsMagick](https://github.com/CollectionFS/Meteor-cfs-graphicsmagick) package that handles resizing images when they are uploaded.
 
-Take a look at */reaction-core/common/collectionFS.coffee* and you'll note that we have this commented out, but the templates should be using the appropriate collections (thumbnails, gridfs ,etc). 
+Take a look at */reaction-core/common/collectionFS.coffee* and you'll note that we have this commented out, but the templates should be using the appropriate collections (thumbnails, gridfs ,etc).
 
-It's a fairly simple matter from here to resize images on upload, and use the thumbnail size for the cart. 
+It's a fairly simple matter from here to resize images on upload, and use the thumbnail size for the cart.
 
 The reason this isn't enabled by default this is because it requires an additional step of installing imagemagick on your server/local installation to work, and if you are deploying to meteor.com they don't have it installed serverside (and thus doesn't work).
 
@@ -46,7 +46,7 @@ createProduct returns the insert callback from the newly created product. As wit
 
 The cloneProduct method clones a whole product, including all variants and images. This method can only be triggered by users with an admin role.
 
-Usage: 
+Usage:
 
 ```
 Meteor.call "cloneProduct", productId, (error, newCloneId) ->
@@ -94,7 +94,7 @@ updateProductField takes a product id, a field name, and a value and updates tha
 
 ### updateProductTags
 
-The updateProductTags method inserts or updates tags with hierarchy. 
+The updateProductTags method inserts or updates tags with hierarchy.
 
 Usage:
 
@@ -285,3 +285,7 @@ Meteor.call "updateHeaderTags", tagId, currentTagId (error) ->
 ```
 
 removeHeaderTag takes a tag id (`tagId`) and optionally the id of the parent tag (`currentTagId`) and returns an error object if something goes wrong. If `currentTagId` is present, then `tagId` is removed as a related tag. Either way the method checks to see if `tagId` is in use elsewhere in the system, and if not the tag is removed completely.
+
+
+### Cart Workflow
+  See: [Cart workflow documentation](workflow.md)
