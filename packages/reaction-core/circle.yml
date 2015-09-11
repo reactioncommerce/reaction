@@ -1,9 +1,6 @@
 machine:
   node:
-    version: 0.10.36
-  services:
-    - mongodb
-
+    version: 0.10.40
 dependencies:
   cache_directories:
     - "~/.meteor"
