@@ -24,10 +24,10 @@ reactioncommerce:reaction-braintree
 reactioncommerce:reaction-stripe
 reactioncommerce:reaction-auth-net
 reactioncommerce:reaction-social
+reactioncommerce:reaction-analytics-libs
+reactioncommerce:reaction-analytics
 
 # Community Packages
-spencern:reaction-analytics-libs
-spencern:reaction-analytics
 nemo64:bootstrap
 
 # Testing packages
