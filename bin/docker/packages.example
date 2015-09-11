@@ -6,36 +6,41 @@
 #
 # and we'll use these packages when building a docker image
 #
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
 
 # Core Meteor Packages
-package-stats-opt-out
 meteor-platform
 oauth-encryption
 coffeescript
 less
+force-ssl
 
 # Optional Meteor Packages
 accounts-facebook
-spiderable
 audit-argument-checks
-fastclick
-force-ssl
-
-# Community Packages
-#okgrow:iron-router-autoscroll
-nemo64:bootstrap
-#mike:mocha
-#sanjo:jasmine
 
 # Reaction Commerce Packages
 reactioncommerce:core
-reactioncommerce:core-theme
+reactioncommerce:bootstrap-theme
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-braintree
 reactioncommerce:reaction-stripe
 reactioncommerce:reaction-auth-net
 reactioncommerce:reaction-social
+#ongoworks:spiderable
 
+# Community Packages
 spencern:reaction-analytics-libs
 spencern:reaction-analytics
+nemo64:bootstrap
+
+# Testing packages
+#velocity:html-reporter
+#sanjo:jasmine
+#meteorhacks:kadira
+#meteorhacks:kadira-profiler
+#meteortoys:allthings

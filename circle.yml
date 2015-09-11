@@ -2,29 +2,33 @@ machine:
   node:
     version: 0.10.40
   services:
-    - mongodb
     - docker
+  pre:
+    - meteor update || curl https://install.meteor.com | /bin/sh
+    - ./bin/clone-packages.sh
 
 dependencies:
   cache_directories:
+    - "/tmp/reaction-packages"
+    - "~/docker"
     - "~/.meteor"
-  pre:
-    - meteor || curl https://install.meteor.com | /bin/sh
+    - "/usr/local/bin"
   override:
-    - docker info
-    - docker build -t ongoworks/reaction:latest .
+    - docker build -t reactioncommerce/reaction .
 
 test:
   override:
-    - cd $HOME/$CIRCLE_PROJECT_REPONAME  && meteor run --test --release velocity:METEOR@1.1.0.3_2
-    - docker run -d -p 3000:3000 ongoworks/reaction; sleep 10
-    - curl --retry 10 --retry-delay 5 -v http://localhost:3000
-
+    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity --release velocity:METEOR@1.1.0.3_2
+    - docker run -d -p :80:3000 reactioncommerce/reaction; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost
 deployment:
   hub:
     branch: master
     commands:
-      - $DEPLOY
-notify:
-  webhooks:
-    - url: https://webhooks.gitter.im/e/d7372b8add1c57bc8d96
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM
+  hub:
+    branch: development
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push reactioncommerce/aliquam:$CIRCLE_BUILD_NUM
