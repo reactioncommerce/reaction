@@ -1,5 +1,5 @@
 Package.describe({
-  summary: "Core - Reaction Commerce ecommerce Meteor package",
+  summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
   version: "0.7.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
@@ -18,7 +18,6 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
-  api.use("webapp");
   api.use("less");
   api.use("http");
   api.use("underscore");
