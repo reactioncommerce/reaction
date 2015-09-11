@@ -209,6 +209,20 @@ ReactionRegistry.createDefaultAdminUser = function() {
 
   accountId = Accounts.createUser(options);
 
+  Accounts.sendVerificationEmail(accountId);
+
+  // configure Launchdock auth
+  if (process.env.LAUNCHDOCK_USERID) {
+    Meteor.users.update({ _id: accountId }, {
+      $set: {
+        'services.launchdock.userId': process.env.LAUNCHDOCK_USERID,
+        'services.launchdock.username': process.env.LAUNCHDOCK_USERNAME,
+        'services.launchdock.auth': process.env.LAUNCHDOCK_AUTH,
+        'services.launchdock.url': process.env.LAUNCHDOCK_URL
+      }
+    });
+  }
+
   packages = ReactionCore.Collections.Packages.find().fetch();
 
   ReactionCore.Collections.Shops.update(shopId, {
