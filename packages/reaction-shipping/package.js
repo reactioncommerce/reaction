@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
-  version: "0.4.0",
+  version: "0.5.0",
   git: "https://github.com/reactioncommerce/reaction-shipping.git"
 });
 
@@ -11,7 +11,7 @@ Package.onUse(function (api) {
   api.use("meteor-platform@1.2.1");
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.6.1",["client","server"]);
+  api.use("reactioncommerce:core@0.7.0",["client","server"]);
 
   api.addFiles([
     "common/collections.js", // any unique collections
