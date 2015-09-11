@@ -60,7 +60,6 @@ _.extend(ReactionCore, {
     return this.hasPermission(dashboardPermissions);
   },
   getShopId: function() {
-    Session.set("currentShopId", this.shopId);
     return this.shopId;
   },
   allowGuestCheckout: function() {
@@ -76,27 +75,49 @@ _.extend(ReactionCore, {
     return Roles.getGroupsForUser(Meteor.userId(), 'admin');
   },
 
-  // TODO: Create a global function to display sidebar tools for any item with extra settings
-  showAdvancedSettings: function (viewData) {
-    Session.set('admin/showAdvancedSettings', true);
-    Session.set('admin/advanceSettingsView', viewData);
+  /**
+   * showActionView
+   *
+   * @viewData {label, template, data}
+   * @returns
+   */
+  showActionView: function(viewData) {
+    Session.set('admin/showActionView', true);
+    ReactionCore.setActionView(viewData);
   },
 
-  isAdvancedSettingsVisible: function () {
-    return Session.equals('admin/showAdvancedSettings', true);
+  isActionViewOpen: function() {
+    return Session.equals('admin/showActionView', true);
   },
 
-  getAdvancedSettingsView: function () {
-    return Session.get('admin/advanceSettingsView');
+  setActionView: function (viewData) {
+
+    if (viewData) {
+      Session.set('admin/actionView', viewData);
+    } else {
+
+      var registryItem = ReactionCore.getRegistryForCurrentRoute("settings");
+
+      if (registryItem) {
+        ReactionCore.setActionView(registryItem);
+      } else {
+        ReactionCore.setActionView({
+          template: "blankControls"
+        });
+      }
+    }
   },
 
-  hideAdvancedSettings: function () {
-    Session.set('admin/showAdvancedSettings', false);
-    // Session.set('admin/advanceSettingsView', {});
+  getActionView: function () {
+    return Session.get('admin/actionView');
   },
 
-  clearCurrentAdvancedSettingsView: function () {
-    Session.set('admin/advanceSettingsView', undefined);
+  hideActionView: function () {
+    Session.set('admin/showActionView', false);
+  },
+
+  clearActionView: function () {
+    Session.set('admin/actionView', undefined);
   },
 
   getCurrentTag: function() {
@@ -107,7 +128,33 @@ _.extend(ReactionCore, {
     }
 
     return tag
+  },
+
+  getRegistryForCurrentRoute: function (provides) {
+
+    var routeName = Router.current().route.getName();
+
+    var reactionApp = ReactionCore.Collections.Packages.findOne({
+      // "registry.provides": provides,
+      "registry.route": routeName
+    }, {
+      'enabled': 1,
+      'registry': 1,
+      'name': 1,
+      'route': 1
+    });
+
+    if (reactionApp) {
+      var settingsData = _.find(reactionApp.registry, function (item) {
+        return item.provides === provides && item.route === routeName;
+      });
+
+      return settingsData;
+    }
+
+    return null;
   }
+
 });
 
 

@@ -139,6 +139,13 @@ _.extend(ReactionCore, {
   }
 });
 
+
+// Method Check Helper
+Match.OptionalOrNull = function (pattern) {
+  return Match.OneOf(void 0, null, pattern);
+};
+
+
 /*
  * Execute start up fixtures
  */

@@ -20,7 +20,7 @@ Template.pageOrderDetail.helpers({
     return this.shipping.shipmentMethod.tracking;
   },
   orderStateHelper: function() {
-    switch (this.status) {
+    switch (this.workflow.status) {
       case 'orderCreated':
         return Template.stateHelperTracking;
       case 'shipmentTracking':
@@ -32,7 +32,7 @@ Template.pageOrderDetail.helpers({
       case 'processPayment':
         return Template.stateHelperPayment;
       case 'shipmentShipped':
-        return Template.stateHelperShipped;
+        return Template.workflowhipped;
       case 'orderCompleted':
         return Template.stateHelperCompleted;
     }

@@ -179,7 +179,8 @@
                 },
                 "checkoutPayment": {
                     "addPaymentToCompleteOrder": "Add payment to complete order",
-                    "processingError": "There was a problem with your payment."
+                    "processingError": "There was a problem with your payment.",
+                    "completeYourOrder": "Complete your order"
                 },
                 "checkoutReview": {
                     "review": "Review"
@@ -217,6 +218,7 @@
                 },
                 "accountsUI": {
                     "members": "Members",
+                    "guest": "Guest",
                     "addMember": "Add a member",
                     "add": "add",
                     "and": "and",

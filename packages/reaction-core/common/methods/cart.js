@@ -1,43 +1,55 @@
-
-
 // Cart Methods
-Meteor.methods({
+// Client stub.
+//
 
-  "cart/processPayment": function (paymentMethod) {
+
+Meteor.methods({
+  "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Object);
 
-    // before payment really should be async
-    var cartId = Cart.findOne()._id
+    var checkoutCart = ReactionCore.Collections.Cart.findOne({
+      'userId': Meteor.userId()
+    });
 
-    // Step 1: Set the payment method
-    Meteor.call("paymentMethod", cartId, paymentMethod, function (error, result) {
+    var cart = _.clone(checkoutCart);
+    var cartId = cart._id;
+    var invoice = {
+      shipping: cart.cartShipping(),
+      subtotal: cart.cartSubTotal(),
+      taxes: cart.cartTaxes(),
+      discounts: cart.cartDiscounts(),
+      total: cart.cartTotal()
+    };
 
-      if (error) {
-        throw new Meteor.Error("An error occurred saving the payment method", error);
-        return;
+    // we won't actually close the order at this stage.
+    // we'll just update the workflow where
+    // method-hooks can process the workflow update.
+
+    result = ReactionCore.Collections.Cart.update({
+      _id: cartId
+    }, {
+      $addToSet: {
+        "payment.paymentMethod": paymentMethod,
+        "payment.invoices": invoice,
+        "workflow.workflow": "paymentSubmitted"
       }
+    });
 
-      // Step 2: Complete the order
-      Meteor.call("copyCartToOrder", cartId, function (error, result) {
-        // Original order ID
-        var orderId = result;
+    var updatedCart = ReactionCore.Collections.Cart.findOne({
+      'userId': Meteor.userId()
+    });
 
-        if (error) {
-          throw new Meteor.Error("An error occurred saving the order", error);
-          return;
-        }
-
-        // FINISH: Route the client to the order completion page
-        if (Meteor.isClient) {
-          Router.go("cartCompleted", {
-            _id: orderId
-          });
-        }
-
-      }); // END: step 2
-
-    }); // END: step 1
-
+    // Client Stub Actions
+    if (result === 1 && updatedCart.payment && updatedCart.items) {
+      Router.go("cartCompleted", {
+        _id: cartId
+      });
+    } else {
+      Alerts.add("Failed to place order.", "danger", {
+        autoHide: true,
+        placement: "paymentMethod"
+      });
+      throw new Meteor.Error("An error occurred saving the order", cartId, error);
+    }
   }
-
 });

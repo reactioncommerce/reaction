@@ -19,31 +19,27 @@
 * Assign to some local variables to keep code
 * short and sweet
 */
+var Cart = ReactionCore.Collections.Cart;
 
+var Discounts = ReactionCore.Collections.Discounts;
 
-var Cart, Discounts, Media, Orders, Packages, Products, Shipping, Shops, Tags, Taxes, Translations;
+var Media = ReactionCore.Collections.Media;
 
-Cart = ReactionCore.Collections.Cart;
+var Orders = ReactionCore.Collections.Orders;
 
-Discounts = ReactionCore.Collections.Discounts;
+var Packages = ReactionCore.Collections.Packages;
 
-Media = ReactionCore.Collections.Media;
+var Products = ReactionCore.Collections.Products;
 
-Orders = ReactionCore.Collections.Orders;
+var Shipping = ReactionCore.Collections.Shipping;
 
-Packages = ReactionCore.Collections.Packages;
+var Shops = ReactionCore.Collections.Shops;
 
-Products = ReactionCore.Collections.Products;
+var Tags = ReactionCore.Collections.Tags;
 
-Shipping = ReactionCore.Collections.Shipping;
+var Taxes = ReactionCore.Collections.Taxes;
 
-Shops = ReactionCore.Collections.Shops;
-
-Tags = ReactionCore.Collections.Tags;
-
-Taxes = ReactionCore.Collections.Taxes;
-
-Translations = ReactionCore.Collections.Translations;
+var Translations = ReactionCore.Collections.Translations;
 
 
 /*
@@ -85,11 +81,16 @@ Security.defineMethod('ifUserIdMatchesProp', {
   }
 });
 
+Security.defineMethod('ifSessionIdMatches', {
+  fetch: [],
+  deny: function(type, arg, userId, doc) {
+    return doc.sessionId !== ReactionCore.sessionId;
+  }
+});
 
 /**
  * Define all security rules
  */
-
 
 /**
  * admin security
@@ -151,8 +152,15 @@ Orders.permit('remove').ifHasRole({
  * XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
  */
 
-Cart.permit('update').ifUserIdMatches().apply();
+Cart.permit(['insert', 'update', 'remove']).ifHasRole({
+  role: ['anonymous', 'guest'],
+  group: ReactionCore.getShopId()
+}).ifShopIdMatchesThisId().ifUserIdMatches().ifSessionIdMatches().apply();
 
+
+/*
+ * apply download permissions to file collections
+ */
 _.each([Media], function(fsCollection) {
   return fsCollection.allow({
     download: function() {

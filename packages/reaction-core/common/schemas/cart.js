@@ -38,11 +38,13 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   userId: {
     type: String,
     autoValue: function() {
-      if (this.isInsert) {
+      if (this.isInsert || this.isUpdate ) {
         if (!this.isFromTrustedCode) {
           return this.userId;
         }
-      } else {
+      }
+      else
+      {
         this.unset();
       }
     }

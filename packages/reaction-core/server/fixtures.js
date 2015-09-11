@@ -260,17 +260,16 @@ ReactionRegistry.createDefaultAdminUser = function() {
  */
 
 ReactionRegistry.loadFixtures = function() {
-  var currentDomain, e;
   Fixtures.loadData(ReactionCore.Collections.Shops);
   Fixtures.loadData(ReactionCore.Collections.Products);
   Fixtures.loadData(ReactionCore.Collections.Tags);
   Fixtures.loadI18n(ReactionCore.Collections.Translations);
+  var currentDomain;
 
   try {
     currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
   } catch (_error) {
-    e = _error;
-    ReactionCore.Events.error("Failed to determine default shop.", e);
+    ReactionCore.Events.error("Failed to determine default shop.", _error);
   }
 
   // if the server domain changes, update shop.
@@ -295,6 +294,7 @@ ReactionRegistry.loadFixtures = function() {
         }, {
           $setOnInsert: {
             shopId: shop._id,
+            icon: config.icon,
             enabled: !!config.autoEnable,
             settings: config.settings,
             registry: config.registry,

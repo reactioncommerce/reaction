@@ -1,24 +1,7 @@
 #ReactionWorkflow
 
-# Shops.defaultWorkflows
-
-```
-    "defaultWorkflows": [
-        {
-            "provides": "simple",
-            "workflow": [
-                "checkoutLogin",
-                "checkoutAddressBook",
-                "coreCheckoutShipping",
-                "checkoutReview",
-                "checkoutPayment",
-                "checkoutCompleted"
-            ]
-        }
-    ]
-```
-
-Where "provides" is the name of the the matching product types, and the workflow array contains an ordered array of independant workflow templates that will apply for this product during checkout.
+# Shops.workflows
+Where "provides" is the name of the the matching product types, and the workflow array contains an ordered array of independent workflow templates that will apply for this product during checkout.
 
 `Product.type = 'simple' #by default`
 
@@ -51,24 +34,18 @@ If the cart then has two items, one 'download' and one 'simple' you would end up
 
 Where each workflow entry represents the appearance order and the template to load.
 
-##Client helpers See: `client/helpers/cart.coffee`
-
-###cartWorkFlow Describes current status of cart checkout workflow. Returns object with workflow, status(boolean)
-
-###cartWorkflowPosition Returns index+1 for actual "human" workflow order.
-
-###cartWorkflowCompleted
-
-Returns false if the currently active status has not yet been set in the cart.
-
-##Meteor.methods
-
-See:  `server/methods/cart.coffee`
-
-##
-
-'layout/pushWorkflow', 'coreCartWorkflow', workflowSte
-
-`Meteor.call('layout/pushWorkflow', workflow , status, cartId, userId)`
+`Meteor.call('layout/pushWorkflow', workflow , status)`
 
 `workflow` and `status` are required.
+
+```
+Meteor.call('layout/pushWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
+```
+
+####Client helpers
+
+See: `client/helpers/cart.coffee`
+
+####Meteor.methods
+
+See:  `server/methods/cart.coffee`

@@ -22,22 +22,5 @@ Template.orderDetail.helpers({
   shipmentTracking: function() {
     return this.shipping.shipmentMethod.tracking;
   },
-  orderStateHelper: function() {
-    switch (this.status) {
-      case 'orderCreated':
-        return Template.stateHelperTracking;
-      case 'shipmentTracking':
-        return Template.spinner;
-      case 'shipmentPrepare':
-        return Template.stateHelperDocuments;
-      case 'shipmentPacking':
-        return Template.stateHelperPacking;
-      case 'processPayment':
-        return Template.stateHelperPayment;
-      case 'shipmentShipped':
-        return Template.stateHelperShipped;
-      case 'orderCompleted':
-        return Template.stateHelperCompleted;
-    }
-  }
+
 });

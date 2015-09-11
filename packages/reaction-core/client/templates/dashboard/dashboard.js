@@ -35,3 +35,39 @@ Template.dashboard.events({
     }
   }
 });
+
+
+Template.dashboardHeader.helpers({
+  showHeader: function () {
+    if (Router.current().route.getName().indexOf("dashboard") === 0) {
+      return true;
+    }
+
+    return false;
+  },
+
+  "registry": function () {
+    // just some handle little helpers for default package i18nKey/i18nLabel
+    var registry = ReactionCore.getRegistryForCurrentRoute("dashboard") || {};
+    registry.nameSpace = registry.name || registry.template || "app";
+    registry.i18nLabel = registry.label || registry.provides || "Settings";
+    registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase();
+    return registry;
+  },
+
+  thisDashboard: function () {
+
+    return ReactionCore.getRegistryForCurrentRoute("dashboard");
+
+  }
+
+
+
+});
+
+
+Template.dashboardHeader.events({
+  "click [data-event-action=showPackageSettings]": function () {
+    ReactionCore.showActionView();
+  }
+});

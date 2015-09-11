@@ -86,6 +86,10 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema({
     type: Boolean,
     defaultValue: true
   },
+  icon: {
+    type: String,
+    optional: true
+  },
   settings: {
     type: Object,
     optional: true,
@@ -168,6 +172,20 @@ ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
     "settings.mail.port": {
       type: String,
       label: "Port"
+    },
+    "settings.openexchangerates.appId": {
+      type: String,
+      label: "Open Exchange Rates App Id",
+    },
+    "settings.google.clientId": {
+      type: String,
+      label: "Google Client Id",
+      defaultValue: null
+    },
+    "settings.google.apiKey": {
+      type: String,
+      label: "Google Api Key",
+      defaultValue: null
     },
     "settings.public": {
       type: Object,

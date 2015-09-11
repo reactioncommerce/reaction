@@ -2,7 +2,7 @@ Template.settingsHeader.helpers({
 
   "registry": function () {
     // just some handle little helpers for default package i18nKey/i18nLabel
-    var registry = ReactionCore.getAdvancedSettingsView() || {};
+    var registry = ReactionCore.getActionView() || {};
     registry.nameSpace = registry.name || registry.template || "app";
     registry.i18nLabel = registry.label || registry.provides || "Settings";
     registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase();
@@ -42,7 +42,7 @@ Template.settingsHeader.helpers({
 
 Template.settingsHeader.events({
   "click [data-event-action=closeSettings]": function () {
-    ReactionCore.hideAdvancedSettings();
+    ReactionCore.hideActionView();
   }
 });
 

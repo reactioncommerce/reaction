@@ -21,6 +21,10 @@
       var currentCart = Cart.findOne({
         'userId': Meteor.userId()
       });
+
+      // exit if a cart doesn't exist.
+      if (!currentCart) return;
+
       var currentWorkflowStatus = currentCart.workflow.status;
       var Packages = ReactionCore.Collections.Packages.find({
         'layout.workflow': workflow

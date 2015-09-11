@@ -5,24 +5,18 @@
 var Accounts = ReactionCore.Collections.Accounts;
 
 Meteor.publish('Accounts', function(userId) {
-  var accountId, _ref;
   check(userId, Match.OneOf(String, null));
+  // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ['owner'], Roles.GLOBAL_GROUP)) {
     return Accounts.find();
+  // shop admin gets accouns for just this shop
   } else if (Roles.userIsInRole(this.userId, ['admin', 'owner'], ReactionCore.getShopId(this))) {
     return Accounts.find({
       shopId: ReactionCore.getShopId(this)
     });
+  // regular users should get just their account
   } else {
-    accountId = (_ref = ReactionCore.Collections.Accounts.findOne({
-      'userId': this.userId
-    })) != null ? _ref._id : void 0;
-    if (accountId) {
-      ReactionCore.Events.info("publishing account", accountId);
-      return ReactionCore.Collections.Accounts.find(accountId, {
-        'userId': this.userId
-      });
-    }
+    return ReactionCore.Collections.Accounts.find({'userId': this.userId});
   }
 });
 
@@ -39,9 +33,10 @@ Meteor.publish('Accounts', function(userId) {
 
 
 Meteor.publish("UserProfile", function(profileUserId) {
-  var permissions;
   check(profileUserId, Match.OneOf(String, null));
-  permissions = ['dashboard/orders', 'owner', 'admin', 'dashboard/customers'];
+
+  var permissions = ['dashboard/orders', 'owner', 'admin', 'dashboard/customers'];
+
   if (profileUserId !== this.userId && (Roles.userIsInRole(this.userId, permissions, ReactionCore.getCurrentShop(this)._id || Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP)))) {
     return Meteor.users.find({
       _id: profileUserId
@@ -67,21 +62,4 @@ Meteor.publish("UserProfile", function(profileUserId) {
   } else {
     return [];
   }
-});
-
-/**
- * account orders
- */
-
-Meteor.publish('AccountOrders', function(userId, shopId) {
-  check(userId, Match.OptionalOrNull(String));
-  check(shopId, Match.OptionalOrNull(String));
-  shopId = shopId || ReactionCore.getShopId(this);
-  if (userId && userId !== this.userId) {
-    return [];
-  }
-  return Orders.find({
-    'shopId': shopId,
-    'userId': this.userId
-  });
 });

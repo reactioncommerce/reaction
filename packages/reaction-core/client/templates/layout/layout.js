@@ -21,11 +21,11 @@ Template.coreAdminLayout.onRendered(function () {
 
 Template.coreAdminLayout.helpers({
   template: function () {
-    return ReactionCore.getAdvancedSettingsView();
+    return ReactionCore.getActionView();
   },
 
   adminControlsClassname: function () {
-    if (ReactionCore.isAdvancedSettingsVisible()) {
+    if (ReactionCore.isActionViewOpen()) {
       return "show-settings";
     }
 

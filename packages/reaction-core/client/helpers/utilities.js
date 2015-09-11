@@ -1,17 +1,18 @@
-
 /**
-*
-* Reaction Spacebars helpers
-* See: http://docs.meteor.com/#/full/template_registerhelper
-*
-*/
+ *
+ * Reaction Spacebars helpers
+ * See: http://docs.meteor.com/#/full/template_registerhelper
+ *
+ */
 
 if (Package.blaze) {
-  Package.blaze.Blaze.Template.registerHelper('currentUser', function() {
-    var isAnonymous, isGuest;
-    if (Session.get("currentShopId")) {
-      isGuest = Roles.userIsInRole(Meteor.user(), 'guest', ReactionCore.getShopId());
-      isAnonymous = Roles.userIsInRole(Meteor.user(), 'anonymous', ReactionCore.getShopId());
+  Package.blaze.Blaze.Template.registerHelper('currentUser', function () {
+    if (ReactionCore !== undefined) {
+      // shoppers should always be guests
+      var isGuest = Roles.userIsInRole(Meteor.user(), 'guest', ReactionCore.getShopId());
+      // but if a user has never logged in then they are anonymous
+      var isAnonymous = Roles.userIsInRole(Meteor.user(), 'anonymous', ReactionCore.getShopId());
+
       if (!isGuest && isAnonymous) {
         return null;
       } else if (isGuest && !isAnonymous) {
@@ -24,10 +25,10 @@ if (Package.blaze) {
 }
 
 /**
-* registerHelper monthOptions
-*/
+ * registerHelper monthOptions
+ */
 
-Template.registerHelper("monthOptions", function() {
+Template.registerHelper("monthOptions", function () {
   var index, label, month, monthOptions, months, _i, _len;
   label = i18n.t('app.monthOptions') || "Choose month";
   monthOptions = [
@@ -48,10 +49,10 @@ Template.registerHelper("monthOptions", function() {
 });
 
 /**
-* registerHelper yearOptions
-*/
+ * registerHelper yearOptions
+ */
 
-Template.registerHelper("yearOptions", function() {
+Template.registerHelper("yearOptions", function () {
   var label, x, year, yearOptions, _i;
   label = i18n.t('app.yearOptions') || "Choose year";
   yearOptions = [
@@ -72,10 +73,10 @@ Template.registerHelper("yearOptions", function() {
 });
 
 /**
-* registerHelper timezoneOptions
-*/
+ * registerHelper timezoneOptions
+ */
 
-Template.registerHelper("timezoneOptions", function() {
+Template.registerHelper("timezoneOptions", function () {
   var index, label, timezone, timezoneOptions, timezones, _i, _len;
   label = i18n.t('app.timezoneOptions') || "Choose timezone";
   timezoneOptions = [
@@ -96,9 +97,9 @@ Template.registerHelper("timezoneOptions", function() {
 });
 
 /**
-* registerHelper pathForSEO
-*/
-Template.registerHelper("pathForSEO", function(path, params) {
+ * registerHelper pathForSEO
+ */
+Template.registerHelper("pathForSEO", function (path, params) {
   if (this[params]) {
     return "/" + path + "/" + this[params];
   } else {
@@ -107,18 +108,25 @@ Template.registerHelper("pathForSEO", function(path, params) {
 });
 
 /**
-* registerHelper displayName
-*/
-Template.registerHelper("displayName", function(user) {
+ * registerHelper displayName
+ */
+Template.registerHelper("displayName", function (user) {
   var username;
+  var authenticated = false;
   user = user || Meteor.user();
+
   if (user && user.profile && user.profile.name) {
     return user.profile.name;
   } else if (user && user.username) {
     return user.username;
   }
-  if (user && user.services) {
-    return username = (function() {
+
+  if (user.services && user.services !== 'anonymous' && user.services !== 'resume') {
+    authenticated = true;
+  }
+
+  if (user && authenticated === true) {
+    return username = (function () {
       switch (false) {
         case !user.services.twitter:
           return user.services.twitter.name;
@@ -138,10 +146,10 @@ Template.registerHelper("displayName", function(user) {
 });
 
 /**
-* registerHelper fName
-*/
+ * registerHelper fName
+ */
 
-Template.registerHelper("fName", function(user) {
+Template.registerHelper("fName", function (user) {
   var username;
   user = user || Meteor.user();
   if (user && user.profile && user.profile.name) {
@@ -150,7 +158,7 @@ Template.registerHelper("fName", function(user) {
     return user.username.name.split(" ")[0];
   }
   if (user && user.services) {
-    return username = (function() {
+    return username = (function () {
       switch (false) {
         case !user.services.twitter:
           return user.services.twitter.first_name;
@@ -170,44 +178,44 @@ Template.registerHelper("fName", function(user) {
 });
 
 /**
-* registerHelper camelToSpace
-*/
+ * registerHelper camelToSpace
+ */
 
-Template.registerHelper("camelToSpace", function(str) {
+Template.registerHelper("camelToSpace", function (str) {
   var downCamel;
   downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
   return downCamel.toLowerCase();
 });
 
 /**
-* registerHelper toLowerCase
-*/
+ * registerHelper toLowerCase
+ */
 
-Template.registerHelper("toLowerCase", function(str) {
+Template.registerHelper("toLowerCase", function (str) {
   return str.toLowerCase();
 });
 
 /**
-* registerHelper toUpperCase
-*/
+ * registerHelper toUpperCase
+ */
 
-Template.registerHelper("toUpperCase", function(str) {
+Template.registerHelper("toUpperCase", function (str) {
   return str.toUpperCase();
 });
 
 /**
-* registerHelper capitalize
-*/
+ * registerHelper capitalize
+ */
 
-Template.registerHelper("capitalize", function(str) {
+Template.registerHelper("capitalize", function (str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 });
 
 /**
-* registerHelper toCamelCase
-*/
+ * registerHelper toCamelCase
+ */
 
-Template.registerHelper("toCamelCase", function(str) {
+Template.registerHelper("toCamelCase", function (str) {
   if (!!str) return str.toCamelCase();
 });
 
@@ -217,11 +225,11 @@ Template.registerHelper("toCamelCase", function(str) {
  * @return "active" if current path
  */
 
-Template.registerHelper("activeRouteClass", function() {
+Template.registerHelper("activeRouteClass", function () {
   var active, args;
   args = Array.prototype.slice.call(arguments, 0);
   args.pop();
-  active = _.any(args, function(name) {
+  active = _.any(args, function (name) {
     return location.pathname === Router.path(name);
   });
   return active && "active";
@@ -233,7 +241,7 @@ Template.registerHelper("activeRouteClass", function() {
  * return site name
  */
 
-Template.registerHelper("siteName", function() {
+Template.registerHelper("siteName", function () {
   var _ref;
   return (_ref = Shops.findOne()) != null ? _ref.name : void 0;
 });
@@ -245,12 +253,12 @@ Template.registerHelper("siteName", function() {
 
 
 /**
-* registerHelper condition
-* conditional template helpers
-* example:  {{#if condition status "eq" ../value}}
-*/
+ * registerHelper condition
+ * conditional template helpers
+ * example:  {{#if condition status "eq" ../value}}
+ */
 
-Template.registerHelper("condition", function(v1, operator, v2, options) {
+Template.registerHelper("condition", function (v1, operator, v2, options) {
   switch (operator) {
     case "==":
     case "eq":
@@ -288,20 +296,20 @@ Template.registerHelper("condition", function(v1, operator, v2, options) {
 });
 
 /**
-* registerHelper orElse
-*/
+ * registerHelper orElse
+ */
 
-Template.registerHelper("orElse", function(v1, v2) {
+Template.registerHelper("orElse", function (v1, v2) {
   return v1 || v2;
 });
 
 /**
-* registerHelper key_value
-*/
-Template.registerHelper("key_value", function(context, options) {
+ * registerHelper key_value
+ */
+Template.registerHelper("key_value", function (context, options) {
   var result;
   result = [];
-  _.each(context, function(value, key, list) {
+  _.each(context, function (value, key, list) {
     return result.push({
       key: key,
       value: value
@@ -317,7 +325,7 @@ Template.registerHelper("key_value", function(context, options) {
  * from http://phpjs.org/functions/nl2br:480
  */
 
-Template.registerHelper("nl2br", function(text) {
+Template.registerHelper("nl2br", function (text) {
   var nl2br;
   nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + "<br>" + "$2");
   return new Spacebars.SafeString(nl2br);
@@ -333,7 +341,7 @@ Template.registerHelper("nl2br", function(text) {
  * usage: {{dateFormat creation_date format="MMMM YYYY"}}
  */
 
-Template.registerHelper("dateFormat", function(context, block) {
+Template.registerHelper("dateFormat", function (context, block) {
   var f;
   if (window.moment) {
     f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
@@ -352,7 +360,7 @@ Template.registerHelper("dateFormat", function(context, block) {
  * TODO: adapt to, and use i18n
  */
 
-Template.registerHelper("pluralize", function(n, thing) {
+Template.registerHelper("pluralize", function (n, thing) {
   if (n === 1) {
     return "1 " + thing;
   } else {
@@ -369,7 +377,7 @@ Template.registerHelper("pluralize", function(n, thing) {
  * handlebars: {{active 'route'}}
  */
 
-Template.registerHelper("active", function(path) {
+Template.registerHelper("active", function (path) {
   var current, routeName;
   current = Router.current();
   routeName = current && current.route.getName();
@@ -389,7 +397,7 @@ Template.registerHelper("active", function(path) {
  * handlebars: {{navLink 'projectsList' 'icon-edit'}}
  */
 
-Template.registerHelper("navLink", function(page, icon) {
+Template.registerHelper("navLink", function (page, icon) {
   var ret;
   ret = "<li ";
   if (Meteor.Router.page() === page) {

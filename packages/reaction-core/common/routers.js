@@ -15,7 +15,7 @@ setProduct = function(productId, variantId) {
     product = Products.findOne({
       handle: productId.toLowerCase()
     });
-    productId = product != null ? product._id : void 0;
+    productId = product   != null ? product._id : void 0;
   }
   setCurrentProduct(productId);
   setCurrentVariant(variantId);
@@ -34,7 +34,7 @@ Router.configure({
 
   onRun: function() {
     $(window).scrollTop(0);
-    ReactionCore.clearCurrentAdvancedSettingsView();
+    ReactionCore.clearActionView();
     this.next();
   },
 
@@ -53,25 +53,9 @@ Router.configure({
       if (ReactionCore.hasDashboardAccess()) {
         this.layout("coreAdminLayout");
 
-        // Does a template exist for this rote with the proper name?
-        if (Template[routeName + "Settings"]) {
-          this.render(routeName + "Settings", {
-            to: 'adminControlsContent'
-          });
-        } else {
-          // Otherwise, see if a settings panel is open
-          if (!Session.get('admin/showAdvancedSettings')) {
-
-            // .. And if not, render a default view in the settings panel
-            this.render("blankControls", {
-              to: 'adminControlsContent'
-            });
-          } else {
-            this.render("emptyControls", {
-              to: 'adminControlsContent'
-            });
-          }
-        }
+        // Find a registry entry for this page that provides settings
+        // -- Settings is the default view for the "Action View"
+        ReactionCore.setActionView();
 
         // this.render("dashboardPackages")
         $("body").addClass("admin");
@@ -114,6 +98,37 @@ ShopController = RouteController.extend({
 
 this.ShopController = ShopController;
 
+// ----------------------------------------------------------------------------
+
+ShopAccountsController = RouteController.extend({
+  onBeforeAction: function() {
+    if (!ReactionCore.hasPermission(this.route.getName())) {
+      this.render('layoutHeader', {
+        to: 'layoutHeader'
+      });
+      this.render('layoutFooter', {
+        to: 'layoutFooter'
+      });
+      this.render('unauthorized');
+    } else {
+      this.next();
+    }
+  },
+  yieldTemplates: {
+    layoutHeader: {
+      to: "layoutHeader"
+    },
+    layoutFooter: {
+      to: "layoutFooter"
+    },
+    dashboard: {
+      to: "dashboard"
+    }
+  }
+});
+
+this.ShopAccountsController = ShopAccountsController;
+
 
 // ----------------------------------------------------------------------------
 
@@ -134,16 +149,6 @@ ShopAdminController = this.ShopController.extend({
 });
 
 this.ShopAdminController = ShopAdminController;
-
-
-// ----------------------------------------------------------------------------
-
-
-ShopSettingsController = this.ShopAdminController.extend({
-  layoutTemplate: "coreAdminLayout"
-});
-
-this.ShopSettingsController = ShopSettingsController;
 
 
 // ----------------------------------------------------------------------------
@@ -198,20 +203,13 @@ Router.map(function() {
   });
 
 
-  this.route('dashboard/settings/shop', {
-    controller: ShopSettingsController,
-    path: '/dashboard/settings/shop',
-    template: 'dashboardPackages',
+  this.route('dashboard/shop', {
+    controller: ShopAdminController,
+    path: '/dashboard/shop',
+    template: 'shopDashboard',
     data: function() {
       return ReactionCore.Collections.Shops.findOne();
     }
-  });
-
-
-  this.route('dashboard/members', {
-    controller: ShopAdminController,
-    path: '/dashboard/members',
-    template: 'dashboardPackages'
   });
 
 
@@ -219,6 +217,9 @@ Router.map(function() {
     controller: ShopAdminController,
     path: 'dashboard/orders/:_id?',
     template: 'orders',
+    waitOn: function() {
+      return this.subscribe("Orders");
+    },
     data: function() {
       if (Orders.findOne(this.params._id)) {
         return ReactionCore.Collections.Orders.findOne({
@@ -294,9 +295,7 @@ Router.map(function() {
       }
     },
     waitOn: function() {
-      return this.subscribe("Packages");
-    },
-    subscriptions: function() {
+      this.subscribe("Packages");
       this.subscribe("Products");
       this.subscribe("Shipping");
       return this.subscribe("AccountOrders");
@@ -309,13 +308,14 @@ Router.map(function() {
     path: 'completed/:_id',
     template: 'cartCompleted',
     subscriptions: function() {
-      return this.subscribe("AccountOrders");
+      this.subscribe("Orders");
+      return this.subscribe("CompletedCartOrder", Meteor.userId(), this.params._id);    
     },
     data: function() {
       if (this.ready()) {
-        if (Orders.findOne(this.params._id)) {
+        if (ReactionCore.Collections.Orders.findOne({'cartId': this.params._id })) {
           return ReactionCore.Collections.Orders.findOne({
-            '_id': this.params._id
+            'cartId': this.params._id
           });
         } else {
           return this.render('unauthorized');

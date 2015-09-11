@@ -8,7 +8,9 @@ ReactionCore.registerPackage = function(packageInfo) {
 };
 
 ReactionCore.registerPackage({
+  label: "Core",
   name: 'core',
+  icon: 'fa fa-th',
   autoEnable: true,
   settings: {
     "public": {
@@ -19,11 +21,14 @@ ReactionCore.registerPackage({
       password: "",
       host: "localhost",
       port: "25"
+    },
+    openexchangerates: {
+      appId: "",
     }
   },
   registry: [
     {
-      route: "dashboard/settings/shop",
+      route: "dashboard/shop",
       provides: 'dashboard',
       label: 'Core',
       description: 'Reaction Commerce Core',
@@ -43,17 +48,7 @@ ReactionCore.registerPackage({
       icon: 'fa fa-th',
       cycle: 1
     }, {
-      route: "dashboard",
-      label: 'Dashboard',
-      provides: 'console',
-      permissions: [
-        {
-          label: "Console",
-          permission: "console"
-        }
-      ]
-    }, {
-      route: "dashboard/settings/shop",
+      route: "dashboard/shop",
       template: "shopSettings",
       label: "Shop Settings",
       provides: 'settings',
@@ -75,10 +70,6 @@ ReactionCore.registerPackage({
       icon: 'fa fa-sun-o',
       cycle: 3
     }, {
-      route: "dashboard/orders",
-      label: 'Orders',
-      provides: 'console'
-    }, {
       template: "coreOrderWidgets",
       provides: 'widget',
       route: "dashboard/orders"
@@ -87,23 +78,6 @@ ReactionCore.registerPackage({
       label: 'Add Product',
       icon: 'fa fa-plus',
       provides: 'shortcut'
-    }, {
-      route: 'dashboard/members',
-      label: 'Members',
-      description: 'Manage your user accounts',
-      icon: 'fa fa-users',
-      provides: 'dashboard',
-      cycle: 3
-    }, {
-      route: 'dashboard/members',
-      label: 'Members',
-      provides: 'console'
-    }, {
-      route: "dashboard/members",
-      provides: 'shortcut',
-      label: 'Members',
-      icon: 'fa fa-users',
-      cycle: 1
     }, {
       route: 'account/profile',
       label: 'Profile',
@@ -158,48 +132,46 @@ ReactionCore.registerPackage({
       position: "5"
     },
     {
-      template: "orderCreated",
+      template: "coreOrderCreated",
       label: "Created",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"],
-      priority: 1,
-      position: ""
+      audience: ["dashboard/orders"]
     },
     {
-      template: "shipmentTracking",
+      template: "coreShipmentTracking",
       label: "Tracking",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      audience: ["dashboard/orders"]
     },
     {
-      template: "shipmentPrepare",
+      template: "coreShipmentPrepare",
       label: "Preparation",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      audience: ["dashboard/orders"]
     },
     {
-      template: "processPayment",
+      template: "coreProcessPayment",
       label: "Process Payments",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      audience: ["dashboard/orders"]
     },
     {
-      template: "shipmentShipped",
+      template: "coreShipmentShipped",
       label: "Shipped",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      audience: ["dashboard/orders"]
     },
     {
-      template: "orderCompleted",
+      template: "coreOrderCompleted",
       label: "Completed",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      audience: ["dashboard/orders"]
     },
     {
-      template: "orderAdjustments",
+      template: "coreOrderAdjustments",
       label: "Adjusted",
       workflow: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      audience: ["dashboard/orders"]
     }
   ]
 });

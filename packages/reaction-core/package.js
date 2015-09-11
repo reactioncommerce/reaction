@@ -6,7 +6,8 @@ Package.describe({
 });
 
 Npm.depends({
-  faker: '3.0.1'
+  'faker': "3.0.1",
+  'node-geocoder': "3.0.0"
 });
 
 Package.onUse(function (api) {
@@ -17,6 +18,7 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
+  api.use("webapp");
   api.use("less");
   api.use("http");
   api.use("underscore");
@@ -33,7 +35,6 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.4.1_3");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.0");
-  api.use("aldeed:geocoder@0.3.6");
   api.use("aldeed:autoform@5.5.0");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
@@ -59,6 +60,7 @@ Package.onUse(function (api) {
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.1.2");
+  api.use("aslagle:reactive-table@0.8.12");
 
   // imply exports package vars
   api.imply("less");
@@ -106,6 +108,7 @@ Package.onUse(function (api) {
   api.addFiles("lib/css/jquery-ui.css", 'client', {isAsset: true});
   api.addFiles("lib/bower/Faker/build/build/faker.js", ["client","server"]);
   api.addFiles("lib/faker.js", ["server"]);
+  api.addFiles("lib/geocoder.js", ["server"]);
 
   // exports
   api.addFiles("common/globals.js");
@@ -167,6 +170,9 @@ Package.onUse(function (api) {
   // accounts
   api.addFiles("server/accounts.js", "server");
 
+  // collection hooks
+  api.addFiles("common/collections/hooks/hooks.js");
+
   // security
   api.addFiles("server/browserPolicy.js", "server");
   api.addFiles("server/security.js", "server");
@@ -174,10 +180,8 @@ Package.onUse(function (api) {
   // common
   api.addFiles("common/routers.js");
 
-  api.addFiles("common/hooks/hooks.js");
-
   api.addFiles("common/methods/layout.js");
-  api.addFiles("common/methods/cart.js");
+  api.addFiles("common/methods/cart.js", "client");
 
   api.addFiles("common/factories/faker.js");
   api.addFiles("common/factories/users.js");
@@ -188,24 +192,27 @@ Package.onUse(function (api) {
   api.addFiles("common/factories/orders.js");
 
   // publications
+  api.addFiles("server/publications/sessions.js", "server");
+  api.addFiles("server/publications/shops.js", "server");
   api.addFiles("server/publications/accounts.js", "server");
   api.addFiles("server/publications/cart.js", "server");
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
-  api.addFiles("server/publications/sessions.js", "server");
-  api.addFiles("server/publications/shops.js", "server");
   api.addFiles("server/publications/translations.js", "server");
 
   // methods
   api.addFiles("server/methods/accounts.js", "server");
   api.addFiles("server/methods/cart.js", "server");
-  api.addFiles("server/methods/hooks.js", "server");
   api.addFiles("server/methods/orders.js", "server");
   api.addFiles("server/methods/products.js", "server");
+  api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
-  api.addFiles("server/methods/shipping.js");
+
+  // method hooks
+  api.addFiles("server/methods/hooks/hooks.js");
+  api.addFiles("server/methods/hooks/cart.js", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");
@@ -244,7 +251,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/notice/shopNotFound.html", "client");
 
   api.addFiles("client/templates/accounts/accounts.html", "client");
-  api.addFiles("client/templates/accounts/accounts.js", "client");
 
   api.addFiles("client/templates/accounts/inline/inline.html", "client");
   api.addFiles("client/templates/accounts/inline/inline.js", "client");
@@ -269,8 +275,6 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/cart/checkout/checkout.html", "client");
   api.addFiles("client/templates/cart/checkout/checkout.js", "client");
-
-  api.addFiles("client/workflows/orders.js", "client");
 
   api.addFiles("client/templates/cart/checkout/header/header.html", "client");
 
@@ -331,22 +335,22 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/dashboard/orders/social/orderSocial.html", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/completed/completed.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/completed/completed.html", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/documents/documents.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/documents/documents.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/documents/documents.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/documents/documents.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/packing/packing.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/packing/packing.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/packing/packing.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/packing/packing.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/payment/payment.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/payment/payment.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/shipped/shipped.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/shipped/shipped.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/tracking/tracking.html", "client");
-  api.addFiles("client/templates/dashboard/orders/stateHelpers/tracking/tracking.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.js", "client");
 
   api.addFiles("client/templates/dashboard/packages/packages.html", "client");
 
@@ -364,15 +368,6 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/dashboard/shop/settings/settings.html", "client");
   api.addFiles("client/templates/dashboard/shop/settings/settings.js", "client");
-
-  api.addFiles("client/templates/dashboard/accounts/accounts.html", "client");
-  api.addFiles("client/templates/dashboard/accounts/accounts.js", "client");
-
-  api.addFiles("client/templates/dashboard/accounts/shopMember/shopMember.html", "client");
-  api.addFiles("client/templates/dashboard/accounts/shopMember/shopMember.js", "client");
-
-  api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.html", "client");
-  api.addFiles("client/templates/dashboard/accounts/shopMember/memberForm/memberForm.js", "client");
 
   // Product Templates
   api.addFiles("client/templates/products/products.html", "client");
@@ -421,8 +416,8 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/products/productSettings/productSettings.js", "client");
 
   // Email Templates
-  api.addFiles('server/templates/welcomeNotification.html', 'server', {isAsset: true});
-  api.addFiles('server/templates/shopMemberInvite.html', 'server', {isAsset: true});
+  api.addFiles('server/emailTemplates/welcomeNotification.html', 'server', {isAsset: true});
+  api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
 
   // Exports
   api.export("ReactionCore");
@@ -449,7 +444,5 @@ Package.onTest(function(api) {
   api.addFiles('tests/jasmine/server/integration/accounts.js', 'server');
   api.addFiles('tests/jasmine/server/integration/methods.js', 'server');
   api.addFiles('tests/jasmine/server/integration/products.js', 'server');
-  api.addFiles('tests/jasmine/server/integration/publicationSpec.js', 'server');
-  api.addFiles('tests/jasmine/client/unit/shops.js', 'client');
-  api.addFiles('tests/jasmine/client/integration/shops.js', 'client');
+  api.addFiles('tests/jasmine/server/integration/publications.js', 'server');
 });

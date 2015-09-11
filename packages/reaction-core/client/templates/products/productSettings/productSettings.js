@@ -129,13 +129,8 @@ Template.productSettings.helpers({
 */
 
 Template.productSettings.events({
-  'click .delete-product': function(event, template) {
-    var session;
-    session = Session.get('advancedControls');
-    if (session.type === 'product') {
-      Blaze.remove(template.view);
-      return maybeDeleteProduct(session.data);
-    }
+  "click [data-event-action=deleteProduct]": function(event, template) {
+    maybeDeleteProduct(this);
   },
   'click [data-event-action=cloneProduct]': function() {
     var title;
