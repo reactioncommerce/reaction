@@ -3,6 +3,9 @@ machine:
     version: 0.10.40
   services:
     - docker
+  pre:
+    - meteor update || curl https://install.meteor.com | /bin/sh
+    - ./bin/clone-packages.sh
 
 dependencies:
   cache_directories:
@@ -10,10 +13,6 @@ dependencies:
     - "~/docker"
     - "~/.meteor"
     - "/usr/local/bin"
-  pre:
-    - meteor update || curl https://install.meteor.com | /bin/sh
-    - ./bin/clone-packages.sh
-
   override:
     - docker build -t reactioncommerce/reaction .
 

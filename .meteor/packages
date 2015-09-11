@@ -6,7 +6,7 @@
 # Core Meteor Packages
 meteor-platform
 oauth-encryption
-coffeescript
+underscore
 less
 
 # Optional Meteor Packages
@@ -17,6 +17,7 @@ audit-argument-checks
 # Reaction Commerce Packages
 reactioncommerce:core
 reactioncommerce:bootstrap-theme
+reactioncommerce:reaction-accounts
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-braintree
@@ -32,6 +33,9 @@ nemo64:bootstrap
 # Testing packages
 #velocity:html-reporter
 #sanjo:jasmine
+#velocity:helpers
+
+# Performance & Debugging Tools
 #meteorhacks:kadira
 #meteorhacks:kadira-profiler
 #meteortoys:allthings
