@@ -1,34 +1,39 @@
+
+<template name="shippingDashboardControls">
+  <button type="button" class="btn btn-default" data-event-action="addShippingProvider">
+    <i class="fa fa-plus fa-lg" title="Add shipping provider"></i> Add Provider
+  </button>
+</template>
+
 <template name="shipping">
-  <div class="row">
-    <div class="col-sm-11">
-      <h3><span data-i18n="checkoutShipping.shipping">Shipping</span></h3>
+
+  {{> contentFor region="dashboardControls" template="shippingDashboardControls"}}
+
+  <div class="container-fluid-sm">
+    <div class="shipping-rate-tables">
+      {{> shippingProviderTable}}
     </div>
-    <div class="col-sm-1">
-      <div class="add-shipping-provider pull-right"><i class="fa fa-plus fa-lg" title="Add shipping provider"></i></div>
+    <span id="shipping-alerts">
+      {{>bootstrapAlerts placement="shippingPackage"}}
+    </span>
+  </div>
+
+</template>
+
+<template name="shippingSettings">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">No settings for this view</div>
     </div>
   </div>
-  {{#if selectedShippingProvider}}
-    <div class="row">
-      <div class="panel panel-default">
-        <div class="panel-body">
-        {{> addShippingProvider}}
-        </div>
-      </div>
-    </div>
-  {{/if}}
-  <div class="shipping-rate-tables">
-    {{> shippingProviderTable}}
-  </div>
-  <span id="shipping-alerts">
-    {{>bootstrapAlerts placement="shippingPackage"}}
-  </span>
+
 </template>
 
 
 <template name="shippingProviderTable">
   {{#each shipping}}
       <div class="panel panel-default">
-        <div class="panel-heading edit-shipping-provider">
+        <div class="panel-heading" data-event-action="editShippingProvider">
           <span class="text-left">{{provider.name}}</span>
           <span class="pull-right">
             <i class="fa fa-cog" id="edit-shipping-provider" title="Edit shipping provider"></i>
@@ -51,7 +56,7 @@
                 <th>Handling</th>
                 <th>Rate</th>
                 <th>Enabled</th>
-                <th><i class="fa fa-plus pull-right" id="add-shipping-method" title="Add shipping method"></i></th>
+                <th><i class="fa fa-plus pull-right add-shipping-method" title="Add shipping method" data-event-action="addShippingMethod"></i></th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +68,7 @@
               </tr>
             {{/if}}
             {{#each methods}}
-              <tr class="edit-shipping-method">
+              <tr class="edit-shipping-method" data-event-action="editShippingMethod">
                 <td>{{name}}</td>
                 <td>{{label}}</td>
                 <td>{{group}}</td>
@@ -78,8 +83,8 @@
                   {{/if}}
                 </td>
                 <td class="text-right">
-                  <i class="fa fa-cog" id="edit-shipping-method" title="Edit shipping method"></i>
-                  <i class="fa fa-trash" id="delete-shipping-method" data-provider-id="{{../_id}}" title="Delete shipping method"></i>
+                  <i class="fa fa-cog edit-shipping-method" title="Edit shipping method" data-event-action="editShippingMethod"></i>
+                  <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="Delete shipping method" data-event-action="deleteShippingMethod"></i>
                 </td>
               </tr>
               {{#if selectedShippingMethod}}
@@ -112,108 +117,116 @@
     id="shipping-method-add-form"
     resetOnSuccess=false
     }}
-  <fieldset>
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">Add rate</div>
-        <div class="panel-body">
-          <div class="col-md-6">
-            {{>afQuickField name='name' autofocus=''}}
-            {{>afQuickField name='label'}}
-            {{>afQuickField name='group'}}
-            {{>afQuickField name='enabled' value=true}}
-          </div>
-          <div class="col-md-6">
-            {{>afQuickField name='cost'}}
-            {{>afQuickField name='handling'}}
-            {{>afQuickField name='rate'}}
-          </div>
-          <div class="pull-right">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="cancel" class="btn btn-primary cancel">Cancel</button>
-          </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Add rate</div>
+      <div class="panel-body">
+        <div class="col-md-6">
+          {{>afQuickField name='name' autofocus=''}}
+          {{>afQuickField name='label'}}
+          {{>afQuickField name='group'}}
+          {{>afQuickField name='enabled' value=true}}
         </div>
+        <div class="col-md-6">
+          {{>afQuickField name='cost'}}
+          {{>afQuickField name='handling'}}
+          {{>afQuickField name='rate'}}
         </div>
+        <div class="pull-right">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+        </div>
+      </div>
     </div>
-    <div class="col-md-5">
-      {{>afArrayField name='validLocales' template="inlineRange"}}
-    </div>
-    <div class="col-md-3">
-      {{>afArrayField name='validRanges' template="inlineRange"}}
-    </div>
-  </fieldset>
+
+
+
   {{/autoForm}}
 </template>
 
 
 <template name="editShippingMethod">
-    {{#autoForm
-      schema="ReactionCore.Schemas.ShippingMethod"
-      id="shipping-method-edit-form"
-      template="bootstrap3-inline"
-      doc=.
-      }}
-    <fieldset>
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">Update {{name}} rate</div>
-          <div class="panel-body">
-            <div class="col-md-6">
-              {{>afQuickField name='name' autofocus=''}}
-              {{>afQuickField name='label'}}
-              {{>afQuickField name='group'}}
-              {{>afQuickField name='enabled'}}
-            </div>
-            <div class="col-md-6">
-              {{>afQuickField name='cost'}}
-              {{>afQuickField name='handling'}}
-              {{>afQuickField name='rate'}}
-            </div>
-            <div class="pull-right">
-              <button type="submit" class="btn btn-primary">Submit</button>
-              <button type="cancel" class="btn btn-primary cancel">Cancel</button>
-            </div>
-          </div>
-          </div>
+  {{#autoForm
+    schema="ReactionCore.Schemas.ShippingMethod"
+    id="shipping-method-edit-form"
+    template="bootstrap3-inline"
+    doc=.
+    }}
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Update {{name}} rate</div>
+      <div class="panel-body">
+        <div class="col-md-6">
+          {{>afQuickField name='name' autofocus=''}}
+          {{>afQuickField name='label'}}
+          {{>afQuickField name='group'}}
+          {{>afQuickField name='enabled'}}
+        </div>
+        <div class="col-md-6">
+          {{>afQuickField name='cost'}}
+          {{>afQuickField name='handling'}}
+          {{>afQuickField name='rate'}}
+        </div>
       </div>
-      <div class="col-md-5">
-        {{>afArrayField name='validLocales' template="inlineRange" class="form-control"}}
+
+      <div class="panel-footer">
+        <div class="right">
+          <!-- <button type="button" class="btn btn-link" data-event-action="cancelShippingMethodEdit">Cancel</button> -->
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
       </div>
-      <div class="col-md-3">
-        {{>afArrayField name='validRanges' template="inlineRange"}}
-      </div>
-    </fieldset>
+    </div>
+    
+    {{>afArrayField name='validLocales' template="inlineRange" class="form-control"}}
+    
+    {{>afArrayField name='validRanges' template="inlineRange"}}
+
+
     {{/autoForm}}
 </template>
 
 
 <template name="addShippingProvider">
-    {{#autoForm
-      collection="ReactionCore.Collections.Shipping"
-      doc=.
-      id="shipping-provider-add-form"
-      template="bootstrap3-inline"
-      type="method"
-      meteormethod="addShippingProvider"
-      resetOnSuccess=false
-      }}
-    <fieldset>
-    <legend>Add Provider</legend>
-    <div class="col-md-2">
-      {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
-      {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
-      {{>afQuickField name='provider.enabled'}}
+  <div class="panel">
+    <div class="panel-body">
+      {{#autoForm
+        collection="ReactionCore.Collections.Shipping"
+        doc=.
+        id="shipping-provider-add-form"
+        template="bootstrap3-inline"
+        type="method"
+        meteormethod="addShippingProvider"
+        resetOnSuccess=false
+        }}
+      <fieldset>
+      <!-- <legend>Add Provider</legend> -->
+      <div class="col-md-12">
+        {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
+        {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
+        {{>afQuickField name='provider.enabled'}}
+      </div>
+      </fieldset>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="button" class="btn btn-link" data-event-action="cancelAddShippingProvider">Cancel</button>
+      {{/autoForm}}
     </div>
-    </fieldset>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="cancel" class="btn btn-primary cancel">Cancel</button>
-    {{/autoForm}}
+  </div>
 </template>
 
 
-<template name="updateShippingProvider">
+<template name="editShippingProvider">
+
   <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-heading panel-heading-flex">
+      <h3 class="panel-title">
+        {{provider.name}}
+      </h3>
+      <div class="panel-controls">
+        <button type="button" class="btn btn-link"><i class="fa fa-trash-o"></i></button>
+      </div>
+    </div>
+    <div class="panel-body">
       {{#autoForm
         schema="ReactionCore.Schemas.Shipping"
         doc=.
@@ -223,19 +236,19 @@
         meteormethod="updateShippingProvider"
         resetOnSuccess=false
         }}
-      <fieldset>
-      <legend>Update Provider</legend>
-      <div class="col-md-2">
-        {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
-        {{>afQuickField name='provider.label'}}
-        {{>afQuickField name='provider.enabled'}}
-      </div>
-      </fieldset>
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+        
+        <div class="col-md-12">
+          {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
+          {{>afQuickField name='provider.label'}}
+          {{>afQuickField name='provider.enabled'}}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-link" data-event-action="cancelUpdateShippingProvider">Cancel</button>
       {{/autoForm}}
     </div>
   </div>
+
 </template>
 
 
@@ -269,41 +282,50 @@
 </template>
 
 <template name="afObjectField_validRanges">
-      {{#if afFieldIsInvalid name=this.name}}
-      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
-      {{/if}}
-      {{> afQuickFields name=this.name}}
-</template>
+  {{#if afFieldIsInvalid name=this.name}}
+    <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+  {{/if}}
 
-
-<template name="afObjectField_validLocales">
-      {{#if afFieldIsInvalid name=this.name}}
-      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
-      {{/if}}
-      {{> afQuickFields name=this.name}}
-</template>
-
-
-<template name="afFormGroup_validRanges">
-  <div class="col-sm-12">
-  <div class="form-group form-inline {{#if afFieldIsInvalid name=this.name}}has-error{{/if}} {{afFormGroupClass}}" data-required={{required}} {{afFormGroupAtts}}>
-      {{#unless skipLabel}}
-      <div>
-        <label {{bsFieldLabelAtts}}>
-          {{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.name}}{{/if}}
-        </label>
-      </div>
-      {{/unless}}
-      {{> afFieldInput afFieldInputAtts}}
-      <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
-    </div>
+  <div class="flex flex-2x">
+    {{> afQuickFields name=this.name}}
   </div>
 </template>
 
 
+<template name="afObjectField_validLocales">
+  {{#if afFieldIsInvalid name=this.name}}
+    <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+  {{/if}}
+
+  <div class="flex flex-2x">
+    {{> afQuickFields name=this.name}}
+  </div>
+</template>
+
+
+<template name="afFormGroup_validRanges">
+  <div class="flex-item">
+    <div class="form-group form-inline {{#if afFieldIsInvalid name=this.name}}has-error{{/if}} {{afFormGroupClass}}" data-required={{required}} {{afFormGroupAtts}}>
+
+      {{#unless skipLabel}}
+        <label {{bsFieldLabelAtts}}>
+          {{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.name}}{{/if}}
+        </label>
+      {{/unless}}
+      {{> afFieldInput afFieldInputAtts}}
+      
+      {{#if afFieldMessage name=this.name}}
+        <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+      {{/if}}
+    </div>
+  </div>
+
+</template>
+
+
 <template name="afFormGroup_validLocales">
-  <div class="col-md-12">
-  <div class="form-group form-inline {{#if afFieldIsInvalid name=this.name}}has-error{{/if}} {{afFormGroupClass}}" data-required={{required}} {{afFormGroupAtts}}>
+  <div class="flex-item">
+    <div class="form-group form-inline {{#if afFieldIsInvalid name=this.name}}has-error{{/if}} {{afFormGroupClass}}" data-required={{required}} {{afFormGroupAtts}}>
       {{#unless skipLabel}}
       <div>
         <label {{bsFieldLabelAtts}}>
@@ -311,8 +333,12 @@
         </label>
       </div>
       {{/unless}}
-       {{> afFieldInput afFieldInputAtts}}
-      <p class="help-block">{{{afFieldMessage name=this.name}}}</p>
+      
+      {{> afFieldInput afFieldInputAtts}}
+      
+      {{#if afFieldMessage name=this.name}}
+        <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+      {{/if}}
     </div>
   </div>
 </template>
