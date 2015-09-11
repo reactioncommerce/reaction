@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
-  version: "1.0.0",
+  version: "1.0.3",
   git: "https://github.com/reactioncommerce/reaction-analytics.git"
 });
 
@@ -9,7 +9,7 @@ Package.registerBuildPlugin({
   name: 'analyticsConfigurator',
   use: [
     'underscore@1.0.3',
-    'reactioncommerce:reaction-analytics-libs@1.0.0'
+    'reactioncommerce:reaction-analytics-libs@1.0.1'
   ],
   sources: [
     'server/buildtools/analyticsSources.js',
@@ -27,7 +27,7 @@ Package.on_use(function (api, where) {
   api.use('browser-policy-content', 'server');
   api.use('iron:router@1.0.9', 'client');
   api.use("reactioncommerce:core@0.7.0");
-  api.use("reactioncommerce:reaction-analytics-libs@1.0.0", 'client');
+  api.use("reactioncommerce:reaction-analytics-libs@1.0.1", 'client');
 
   api.addFiles([
     "common/routing.js",
