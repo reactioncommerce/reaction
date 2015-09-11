@@ -12,9 +12,9 @@ Package.registerBuildPlugin({
     'reactioncommerce:reaction-analytics-libs@1.0.1'
   ],
   sources: [
-    'server/buildtools/analyticsSources.js',
-    'server/buildtools/defaultConfiguration.js',
-    'server/buildtools/analyticsConfigurator.js'
+    'server/buildTools/analyticsSources.js',
+    'server/buildTools/defaultConfiguration.js',
+    'server/buildTools/analyticsConfigurator.js'
   ],
   npmDependencies: {}
 });
