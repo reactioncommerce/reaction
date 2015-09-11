@@ -1,15 +1,15 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "0.1.0",
+  version: "1.0.0",
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 
 Package.onUse(function (api, where) {
-  api.versionsFrom('METEOR@1.0');
+  api.versionsFrom('METEOR@1.1.0.3');
 
   // Core Meteor packages
-  api.use("meteor-platform@1.2.1");
+  api.use("meteor-platform@1.2.2");
   api.use("email");
   api.use("random");
   api.use("reactive-var");
@@ -21,7 +21,7 @@ Package.onUse(function (api, where) {
   api.use("accounts-facebook");
   api.use("less");
 
-  api.use("reactioncommerce:core@0.6.4");
+  api.use("reactioncommerce:core@0.7.0");
 
   // Core Reaction packages
 

@@ -31,7 +31,6 @@ Template.accountProfile.helpers({
 
   account: function () {
     var account = ReactionCore.Collections.Accounts.findOne()
-    console.log(account)
     return account;
   },
 
@@ -48,4 +47,3 @@ Template.accountProfile.helpers({
   }
 
 });
-
