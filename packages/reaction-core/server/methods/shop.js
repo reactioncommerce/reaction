@@ -59,12 +59,16 @@ Meteor.methods({
       }
     });
 
-
+    if (!shop) {
+      throw new Meteor.Error("Failed to find shop data. Unable to determine locale.");
+    }
     // cofigure default defaultCountryCode
     // fallback to shop settings
     if (shop.addressBook) {
       if (shop.addressBook.length >= 1) {
         defaultCountryCode = shop.addressBook[0].country;
+      } else {
+        defaultCountryCode = 'US';
       }
     } else {
       defaultCountryCode = 'US';
@@ -80,7 +84,12 @@ Meteor.methods({
     // get currency rates
     result.currency = {};
     result.locale = shop.locales.countries[countryCode];
-    localeCurrency = shop.locales.countries[countryCode].currency.split(',');
+    // ensure default currency
+    if (result.locale) {
+        localeCurrency = shop.locales.countries[countryCode].currency.split(',');
+    } else {
+        localeCurrency = "USD"
+    }
 
     // localeCurrency is an array of allowed currencies
     _.each(localeCurrency, function (currency) {
@@ -180,13 +189,13 @@ Meteor.methods({
 
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
-      var clientAddress = this.connection.clientAddress
+      var clientAddress = this.connection.clientAddress;
     } else {
       var clientAddress = "127.0.0.1";
     }
 
     // begin actual address lookups
-    if ((latitude != null) && (longitude != null)) {
+    if ((latitude !== null) && (longitude !== null)) {
       var geo = new GeoCoder();
       return geo.reverse(latitude, longitude);
     } else {
