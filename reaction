@@ -1,3 +1,11 @@
 #!/bin/bash
+#
 
+# copy clone-packages.sh so that any directory
+# can be specified for use in PACKAGE_DIR config.
+cp bin/clone-packages.sh /usr/local/bin/
+
+#
+# example dev.settings
+#
 meteor --raw-logs --settings settings/dev.settings.json

@@ -12,8 +12,6 @@ anti:i18n@0.4.3
 aslagle:reactive-table@0.8.12
 audit-argument-checks@1.0.3
 autoupdate@1.2.1
-babel-compiler@5.6.15
-babel-runtime@0.1.3
 base64@1.0.3
 binary-heap@1.0.3
 blaze@2.1.2
@@ -74,7 +72,6 @@ jparker:crypto-md5@0.1.1
 jparker:gravatar@0.3.1
 jquery@1.11.3_2
 json@1.0.3
-jsx@0.1.6
 launch-screen@1.0.2
 less@1.0.14
 livedata@1.0.13
@@ -107,7 +104,6 @@ ordered-dict@1.0.3
 raix:eventemitter@0.1.3
 raix:ui-dropped-event@0.0.7
 random@1.0.3
-react-meteor-data@0.1.6
 reactioncommerce:bootstrap-theme@1.5.0
 reactioncommerce:core@0.7.0
 reactioncommerce:core-theme@1.6.0
@@ -139,7 +135,7 @@ ui@1.0.6
 underscore@1.0.3
 underscorestring:underscore.string@3.2.2
 url@1.0.4
-utilities:avatar@0.8.2
+utilities:avatar@0.9.0
 utilities:spin@2.3.1
 webapp@1.2.0
 webapp-hashing@1.0.3
