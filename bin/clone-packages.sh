@@ -28,8 +28,12 @@ echo "checking the default branches for reactioncommerce:* packages    "
 echo "*****************************************************************"
 # loop through packages file and get the reactioncommerce package repos
 grep "reactioncommerce:" .meteor/versions|while read PACKAGE; do
+  PACKAGE=$(echo $PACKAGE | sed -e 's/@.*//')
+
+  echo "fetching meteor package info ---> " $PACKAGE
+
   REPO=$(meteor show $PACKAGE --show-all |grep 'Git: ' | sed -e 's/Git: //g')
-  FOLDER=$(echo $PACKAGE | sed -e 's/@.*//')
+  FOLDER=$(echo $PACKAGE | sed -e 's/reactioncommerce://g')
   if [ -n "$PACKAGE" ]; then
     # if we've not checked it, now would be a good time
     if [ ! -d "$PKGDST/$FOLDER" ]; then
