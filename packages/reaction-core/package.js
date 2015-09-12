@@ -105,7 +105,6 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
   api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client', {isAsset: true});
   api.addFiles("lib/css/jquery-ui.css", 'client', {isAsset: true});
-  api.addFiles("lib/bower/Faker/build/build/faker.js", ["client","server"]);
   api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("lib/geocoder.js", ["server"]);
 
