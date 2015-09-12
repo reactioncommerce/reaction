@@ -5,13 +5,13 @@ machine:
     - docker
   pre:
     - meteor update || curl https://install.meteor.com | /bin/sh
-    - cp bin/clone-packages.sh /usr/local/bin/
 
 dependencies:
   cache_directories:
     - "~/.meteor"
     - "/usr/local/bin"
   override:
+    - cp $HOME/reaction/bin/clone-packages.sh /usr/local/bin/
     - /usr/local/bin/clone-packages.sh
     - docker build -t reactioncommerce/reaction.
 
