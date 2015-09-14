@@ -108,8 +108,8 @@ reactioncommerce:bootstrap-theme@1.5.0
 reactioncommerce:core@0.7.0
 reactioncommerce:core-theme@1.6.0
 reactioncommerce:reaction-accounts@1.0.0
-reactioncommerce:reaction-analytics@1.0.0
-reactioncommerce:reaction-analytics-libs@1.0.0
+reactioncommerce:reaction-analytics@1.0.3
+reactioncommerce:reaction-analytics-libs@1.0.1
 reactioncommerce:reaction-auth-net@0.4.2
 reactioncommerce:reaction-braintree@1.3.0
 reactioncommerce:reaction-paypal@1.0.0
