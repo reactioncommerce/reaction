@@ -7,13 +7,13 @@
 
 var PackageFixture, getDomain;
 
-PackageFixture = function() {
+PackageFixture = function () {
   return {
     /**
      * PackageFixture loadData
      * @summary imports collection fixture data
      */
-    loadData: function(collection, jsonFile) {
+    loadData: function (collection, jsonFile) {
       check(jsonFile, Match.Optional(String));
       var index, item, json, _i, _len;
 
@@ -33,7 +33,7 @@ PackageFixture = function() {
       // loop over each item in json and import insert into collection
       for (index = _i = 0, _len = json.length; _i < _len; index = ++_i) {
         item = json[index];
-        collection.insert(item, function(error, result) {
+        collection.insert(item, function (error, result) {
           if (error) {
             ReactionCore.Events.error("Error adding document " + index + " to " + collection._name);
             return false;
@@ -64,7 +64,7 @@ PackageFixture = function() {
      *
      * Meteor account services can be added in `settings.services`
      */
-    loadSettings: function(json) {
+    loadSettings: function (json) {
       check(json, String);
       var exists, item, pkg, result, service, services, settings, _i, _j, _k, _len, _len1, _len2, _ref;
       var validatedJson = EJSON.parse(json);
@@ -118,7 +118,7 @@ PackageFixture = function() {
      * loadI18n fixtures
      * @summary imports translation fixture data
      */
-    loadI18n: function(collection) {
+    loadI18n: function (collection) {
       var item, json, language, languages, shop, _i, _j, _len, _len1, _ref;
       if (collection == null) {
         collection = ReactionCore.Collections.Translations;
@@ -141,7 +141,7 @@ PackageFixture = function() {
           json = EJSON.parse(Assets.getText("private/data/i18n/" + language.i18n + ".json"));
           for (_j = 0, _len1 = json.length; _j < _len1; _j++) {
             item = json[_j];
-            collection.insert(item, function(error, result) {
+            collection.insert(item, function (error, result) {
               if (error) {
                 ReactionCore.Events.warn("Error adding " + language.i18n + " to " + collection._name, item, error);
               }
@@ -166,7 +166,7 @@ this.Fixtures = new PackageFixture();
  * local helper for creating admin users
  */
 
-getDomain = function(url) {
+getDomain = function (url) {
   var domain;
   if (!url) {
     url = process.env.ROOT_URL;
@@ -181,7 +181,7 @@ getDomain = function(url) {
  * @summary Method that creates default admin user
  */
 
-ReactionRegistry.createDefaultAdminUser = function() {
+ReactionRegistry.createDefaultAdminUser = function () {
   var accountId, defaultAdminRoles, domain, options, packages, pkg, reg, shopId, url, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
   options = {};
   options.email = process.env.METEOR_EMAIL;
@@ -209,11 +209,22 @@ ReactionRegistry.createDefaultAdminUser = function() {
 
   accountId = Accounts.createUser(options);
 
-  Accounts.sendVerificationEmail(accountId);
+  // account email should print on console
+  // if server is not confgured. Error in configuration
+  // are caught, but admin isn't verified. 
+  try {
+    Accounts.sendVerificationEmail(accountId);
+  } catch (_error) {
+    ReactionCore.Events.warn("Unable to send admin account verification email.", error);
+  }
+
+
 
   // configure Launchdock auth
   if (process.env.LAUNCHDOCK_USERID) {
-    Meteor.users.update({ _id: accountId }, {
+    Meteor.users.update({
+      _id: accountId
+    }, {
       $set: {
         'services.launchdock.userId': process.env.LAUNCHDOCK_USERID,
         'services.launchdock.username': process.env.LAUNCHDOCK_USERNAME,
@@ -259,7 +270,7 @@ ReactionRegistry.createDefaultAdminUser = function() {
  * load core fixture data
  */
 
-ReactionRegistry.loadFixtures = function() {
+ReactionRegistry.loadFixtures = function () {
   Fixtures.loadData(ReactionCore.Collections.Shops);
   Fixtures.loadData(ReactionCore.Collections.Products);
   Fixtures.loadData(ReactionCore.Collections.Tags);
@@ -285,8 +296,8 @@ ReactionRegistry.loadFixtures = function() {
   }
   //  insert packages into registry
   if (ReactionCore.Collections.Packages.find().count() !== ReactionCore.Collections.Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
-    _.each(ReactionRegistry.Packages, function(config, pkgName) {
-      return ReactionCore.Collections.Shops.find().forEach(function(shop) {
+    _.each(ReactionRegistry.Packages, function (config, pkgName) {
+      return ReactionCore.Collections.Shops.find().forEach(function (shop) {
         ReactionCore.Events.info("Initializing " + pkgName);
         return ReactionCore.Collections.Packages.upsert({
           shopId: shop._id,
@@ -305,8 +316,8 @@ ReactionRegistry.loadFixtures = function() {
     });
   }
   // remove registry entries for packages that have been removed
-  ReactionCore.Collections.Shops.find().forEach(function(shop) {
-    return ReactionCore.Collections.Packages.find().forEach(function(pkg) {
+  ReactionCore.Collections.Shops.find().forEach(function (shop) {
+    return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
       if (!_.has(ReactionRegistry.Packages, pkg.name)) {
         ReactionCore.Events.info("Removing " + pkg.name);
         return ReactionCore.Collections.Packages.remove({

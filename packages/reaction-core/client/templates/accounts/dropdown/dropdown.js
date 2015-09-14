@@ -1,5 +1,4 @@
 Template.loginDropdown.events({
-
   "click .dropdown-menu": function(event) {
     return event.stopPropagation();
   },
@@ -9,7 +8,7 @@ Template.loginDropdown.events({
     Meteor.logoutOtherClients();
     Meteor.logout(function(error, result) {
       if (error) {
-        console.warn('Failed to logout.', error)
+        ReactionCore.Events.warn('Failed to logout.', error);
         return Meteor._debug(error);
       }
     });
