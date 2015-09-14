@@ -91,18 +91,14 @@ Package.onUse(function (api, where) {
 
 
 Package.onTest(function(api) {
-  api.use("meteor-platform@1.2.1");
-
+  api.use('sanjo:jasmine@0.18.0');
   api.use('underscore');
-  api.use('sanjo:jasmine@0.17.0');
-  api.use("anti:fake@0.4.1");
+  api.use("dburles:factory@0.3.10");
   api.use('velocity:html-reporter@0.8.2');
   api.use('velocity:console-reporter@0.1.3');
 
-  api.use('reactioncommerce:core');
-  api.use('twbs:bootstrap');
   api.use("reactioncommerce:reaction-accounts");
 
-  api.addFiles('tests/jasmine/client/unit/login.js', 'client');
+  api.addFiles('tests/jasmine/client/integration/login.js', 'client');
 
 });

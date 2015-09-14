@@ -1,11 +1,16 @@
-reaction-accounts
-=============
+#Reaction Accounts
 
-Meteor package adds accounts & user management for Reaction Commerce.
+[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-accounts.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction-accounts)
 
-This package provides the UI for authentication, user profile management and address book for Reaction.
+This is a core package of Reaction Commerce and provides
+- dropdown accounts ui
+- inline accounts ui
+- user profile
+- user management
+- address book CRUD
 
 **Usage**
+
 ```bash
 meteor add reactioncommerce:reaction-accounts
 ```
