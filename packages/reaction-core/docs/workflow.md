@@ -1,51 +1,174 @@
-#ReactionWorkflow
+# Layout and Workflows
+Reaction template display (layout) and workflow rules are created and stored in the Package registry.
 
-# Shops.workflows
-Where "provides" is the name of the the matching product types, and the workflow array contains an ordered array of independent workflow templates that will apply for this product during checkout.
+A workflow is essentially a registry entry with the following properties:
+- It does not control routes anywhere.
+- only used for views
+- For each workflow in the package registry
+  - needs to be a stored status, workflow on the target collection
+  - exists cart.workflow, orders.workflow
+  - the template helper
 
-`Product.type = 'simple' #by default`
+- parallel split pattern
+- audience is just another label for 'permissions', essentially just permissions for UIX.
+- can be used to control page layout for the content manager
+- does it make sense that audience could be used to control different check out, different product views,  for users with different roles..
+- status and workflow combine to create a workflow state (status = where I am, workflow = [where I've been])
+- has a detailed enough dataset to trigger events from analytics events
+- to disable a workflow template you'd just remove audience roles
+- a registry entry is a functional components
+- a workflow controls "the how and where" of layout components
+- routes can be dynamically generated from registry
 
-On checkout, review product.type (s) and merge matching workflows into single workflow (could also later be a grouped cart flow)
+Example package.layout and package.layout.workflow definition:
 
-So if you had an item.type = 'simple' and item.type = 'download' and the download workflow was defined as:
+## Shops Collection
 
 ```
-    "defaultWorkflows": [
+
+    "defaultWorkflows" : [
         {
-            "provides": "download",
-            "workflow": [
-                "checkoutLogin",
-                "checkoutReview",
-                "checkoutPayment",
-                "checkoutDownload"
+            "provides" : "coreWorkflow",
+            "workflow" : [
+                {
+                    "cartCheckout" : "coreCartWorkflow"
+                },
+                {
+                    "orders" : "coreOrderWorkflow"
+                }
             ]
         }
-    ]
+    ],
 ```
 
-If the cart then has two items, one 'download' and one 'simple' you would end up with a merged workflow
-1. "checkoutLogin"
-2. "checkoutAddressBook"
-3. "coreCheckoutShipping"
-4. "checkoutReview"
-5. "checkoutPayment"
-6. "checkoutDownload"
-7. "checkoutCompleted"
+## Package Registry
+**Available in the Packages collection, ie: `package.layout`**
 
-Where each workflow entry represents the appearance order and the template to load.
+```json
 
-`Meteor.call('layout/pushWorkflow', workflow , status)`
+  layout: [
+    {
+      template: "checkoutLogin",
+      label: "Account",
+      provides: 'coreCartWorkflow',
+      container: 'cartWorkflow.main',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "checkoutAddressBook",
+      label: "Address Details",
+      provides: 'coreCartWorkflow',
+      container: 'cartWorkflow.main',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "coreCheckoutShipping",
+      label: "Shipping Options",
+      provides: 'coreCartWorkflow',
+      container: 'cartWorkflow.main',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "checkoutReview",
+      label: "Review",
+      provides: 'coreCartWorkflow',
+      container: 'cartWorkflow.aside',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "checkoutPayment",
+      label: "Complete",
+      provides: 'coreCartWorkflow',
+      container: 'cartWorkflow.aside',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "orderCreated",
+      label: "Created",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "shipmentTracking",
+      label: "Tracking",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "shipmentPrepare",
+      label: "Preparation",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "processPayment",
+      label: "Process Payments",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "shipmentShipped",
+      label: "Shipped",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "orderCompleted",
+      label: "Completed",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    },
+    {
+      template: "orderAdjustments",
+      label: "Adjusted",
+      provides: 'coreOrderWorkflow',
+      audience: ["guest", "anonymous"]
+    }
+  ]
+```
 
-`workflow` and `status` are required.
+## Collection Workflows
+For each collection using a workflow, a workflow schema is attached.  The state/status of a workflow is stored as an object on each document in the collection.
 
 ```
-Meteor.call('layout/pushWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
+"workflow" : {
+    "status" : "checkoutLogin"
+    "workflow": ["new", "checkoutLogin"]
+},
 ```
 
-####Client helpers
+Where **status** is the current workflow, and **workflow** are the workflow steps that have begun, or finished processing.
 
-See: `client/helpers/cart.coffee`
+If `workflow.workflow` contains the current `workflow.status`, that means the workflow is processing, and when status now longer contains the workflow, but it exists in `workflow.workflow` the workflow has been completed.
 
-####Meteor.methods
+## Workflow Schema
+For reference, the Workflow schema is:
 
-See:  `server/methods/cart.coffee`
+```
+ReactionCore.Schemas.Workflow = new SimpleSchema({
+  template: {
+    type: String,
+    optional: true
+  },
+  label: {
+    type: String,
+    optional: true
+  },
+  provides: {
+    type: String,
+    optional: true
+  },
+  audience: {
+    type: [String],
+    optional: true
+  },
+  status: {
+    type: String,
+    optional: true
+  },
+  workflow: {
+    type: [String],
+    optional: true
+  }
+});
+```

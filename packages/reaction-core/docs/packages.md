@@ -1,5 +1,32 @@
 # Packages
-Reaction packages are Meteor packages that add a call to `ReactionCore.registerPackage` that declares the Meteor package to the Reaction registry.
+Reaction packages are Meteor packages that add a call to `ReactionCore.registerPackage` declaring the package structure to the Reaction registry.
+
+## Core Packages
+For local core package development you must _git clone_ packages locally, either into `reaction/packages`, or define the `PACKAGES_DIR` env variable for an alternate location.
+
+The `bin/clone-packages.sh` is a helper script that will clone all current reactioncommerce:* packages into the PACKAGES_DIR location.
+
+First set your PACKAGES_DIR variable:
+
+```bash
+export PACKAGES_DIR="~/reaction/packages"
+```
+
+Checkout Reaction and execute `clone-packages.sh`.
+
+```bash
+cd ~
+git clone https://github.com/reactioncommerce/reaction.git
+cd reaction
+./bin/clone-packages.sh
+meteor --settings settings/dev-settings.json
+```
+
+This is our recommended practice, and ensure you are working with the default branches (development) for all the Reaction packages.
+
+_Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master._
+
+_Tip: Copy the `settings/dev.settings.json` to `settings/settings.json` and edit the file to retain authentication and Meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`_
 
 ## Public packages
 If you create a package and would like to share it with the Meteor community, you can publish the package to the Meteor package registry with `meteor publish`.
@@ -10,33 +37,6 @@ If you would like to share a package in the registry, but don't want to be respo
 
 ## Private packages
 Packages within Reaction are Meteor packages. There are private packages, that a developer can create to customize any of Reaction's functionality. Private packages can be deployed by including them in the `packages` folder.
-
-## Core Packages
-For local core package development you must _git clone_ packages locally, either into `reaction/packages`, or define the `PACKAGES_DIR` env variable for an alternate location.
-
-An example fresh development structure might look like:
-
-```bash
-mkdir ~/reaction-packages
-cd ~/reaction-packages
-git clone https://github.com/reactioncommerce/reaction-core.git
-git clone https://github.com/reactioncommerce/reaction-core-theme.git
-```
-
-and then run Reaction as normal, but using `PACKAGES_DIR`
-
-```bash
-cd ~
-git clone https://github.com/reactioncommerce/reaction.git
-cd reaction
-PACKAGES_DIR="~/reaction-packages" meteor --settings settings/settings.json
-```
-
-It's a little more work, but it's a good idea to make sure you are in the `development` branches, and clone all used Reaction packages to ensure you're working with a complete development enviroment.
-
-_Note: Pull requests are happily accepted, please make your GitHub pull request a merge to the `development` branch, and not master._
-
-_Tip: Copy the `settings/dev.settings.json` to `settings/settings.json` and edit the file to retain authentication and Meteor settings between `meteor reset`. Start with `meteor --settings settings/settings.json --raw-logs`_
 
 **Create packages**
 
@@ -209,6 +209,8 @@ layout: [
 ]
 ```
 
+For more details about layouts, and workflows see: [workflow.md](workflow.md)
+
 **_Special Usage_**
 - `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
 - `container` group alike for presentation _example: used to connect settings on dashboard app card registry object_
@@ -256,36 +258,6 @@ From templates, you can create additional dynamic template `provides` using the 
       <i class="{{orElse icon 'fa fa-cog fa-2x fa-fw'}}"></i>
     </a>
   {{/each}}
-```
-
-**Widgets**
-
-Add widgets to your package to be included on the `console dashboard` by including a registry entry and a template that provides 'widget'.
-
-```
-<template name="reactionHelloworldWidget">
-    <div class="dashboard-widget">
-      <div class="dashboard-widget-center">
-        <div>
-          <h3 class="helloworld-text">Widget Panel</h3><small>your widget</small>
-        </div>
-      </div>
-    </div>
-</template>
-```
-
-_See example: packages/reaction-core/client/templates/dashboard/orders/widget/widget.html_
-
-_Tip: the `dashboard-widget` and `dashboard-widget-center` classes will create touch/swipeable widget boxes._
-
-Include in **server/register.coffee** registry:
-
-```
-    # order widgets
-    {
-      template: "reactionHelloworldWidget"
-      provides: 'widget'
-    }
 ```
 
 You can also extend or replace any core template using [template extensions](https://github.com/aldeed/meteor-template-extension/).
