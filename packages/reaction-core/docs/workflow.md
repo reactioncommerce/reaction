@@ -91,44 +91,37 @@ Example package.layout and package.layout.workflow definition:
     {
       template: "orderCreated",
       label: "Created",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     },
     {
       template: "shipmentTracking",
       label: "Tracking",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     },
     {
       template: "shipmentPrepare",
       label: "Preparation",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     },
     {
       template: "processPayment",
       label: "Process Payments",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     },
     {
       template: "shipmentShipped",
       label: "Shipped",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     },
     {
       template: "orderCompleted",
       label: "Completed",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     },
     {
       template: "orderAdjustments",
       label: "Adjusted",
-      provides: 'coreOrderWorkflow',
-      audience: ["guest", "anonymous"]
+      provides: 'coreOrderWorkflow'
     }
   ]
 ```
