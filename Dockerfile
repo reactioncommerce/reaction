@@ -81,12 +81,10 @@ RUN curl https://install.meteor.com | /bin/sh
 ENV PORT 80
 ENV ROOT_URL http://localhost
 ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
-ENV MAIL_URL smtp://localhost:25
 
 # Expose container port 3000 to the host (outside the container)
 # you can always map other ports such as 8080 in docker run
 # 80 is the default meteor production port, while 3000 is development mode
-EXPOSE 3000
 EXPOSE 80
 
 # Install entrypoint and build scripts
