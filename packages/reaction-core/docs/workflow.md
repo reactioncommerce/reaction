@@ -25,20 +25,26 @@ Example package.layout and package.layout.workflow definition:
 ## Shops Collection
 
 ```
-
-    "defaultWorkflows" : [
-        {
-            "provides" : "coreWorkflow",
-            "workflow" : [
-                {
-                    "cartCheckout" : "coreCartWorkflow"
-                },
-                {
-                    "orders" : "coreOrderWorkflow"
-                }
-            ]
-        }
-    ],
+  "layout" : [
+      {
+          "layout" : "coreLayout",
+          "workflow" : "coreLayout",
+          "theme" : "default",
+          "enabled" : true
+      },
+      {
+          "layout" : "coreLayout",
+          "workflow" : "coreCartWorkflow",
+          "theme" : "default",
+          "enabled" : true
+      },
+      {
+          "layout" : "coreLayout",
+          "workflow" : "coreOrderWorkflow",
+          "theme" : "default",
+          "enabled" : true
+      }
+  ]
 ```
 
 ## Package Registry
