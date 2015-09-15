@@ -2,12 +2,12 @@
 
 The Dashboard is the brain center for your shop: The place where you can access your shop's Core settings, manage Orders, view and install apps, manage shop Members, and otherwise oversee your shop. To access your Dashboard you must be logged in. Click on your avatar in the upper right corner of the page and from the dropdown menu select Dashboard.
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-admin-navigation-dropdown-dashboard.png "Reaction Commerce Dashboard")
+![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-admin-navigation-dropdown-dashboard.png "Reaction Commerce Dashboard")
 
 
 Once on the Dashboard page, you will see a selection of apps/packages available for your shop:
 
-![](http://raw.github.com/ongoworks/reaction/master/docs/assets/guide-dashboard.png "Reaction Commerce Dashboard")
+![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-dashboard.png "Reaction Commerce Dashboard")
 
 
 ###Core
