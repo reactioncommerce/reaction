@@ -4,7 +4,7 @@ This is a lot of the stuff you'll probably need to know, or at least reference, 
 
 ##Issues
 
-For development tasks/issues please use the [Reaction project issues](https://github.com/ongoworks/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
+For development tasks/issues please use the [Reaction project issues](https://github.com/reactioncommerce/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
 
 The default branch for reaction, reaction-core, reaction-core-theme is _development_. Pull requests made into the _development_ branch, will be reviewed and accepted into development for a quick release, while we work on specific feature branches separately, to be merged into _development_.
 
