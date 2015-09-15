@@ -20,7 +20,7 @@ meteor
 
 The `master` branch will ensure your initial installation is a stable release, and also should work with published packages from the [Meteor package manager](https://atmospherejs.com/). However, the most recent code is in `development`, which is the recommended branch if you are a developer.
 
-When mixing branches and versions of published packages (versus local packages), you may get some package compatibility warnings. You can use `meteor --allow-incompatible` to resolve this.
+When mixing branches and versions of published packages (versus local packages), you may get some package compatibility warnings. You can use `meteor --allow-incompatible-update` to resolve this.
 
 See the [package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) for details on working with the `development` branch, and using local package dependencies. You can clone or create new packages in `reaction/packages` for local package development.
 
