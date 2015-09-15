@@ -43,7 +43,7 @@ meteor reset
 
 The  _packages/reaction-core/private/data_ folder contains fixture data  files that can be modified to the change initial data loaded.
 
-See the [package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md)  and the [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md) for detailed instructions on modifying initial fixture data.
+See the [package development documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md)  and the [settings and fixture data documentation](https://github.com/reactioncommerce/reaction-core/blob/master/docs/fixtures.md) for detailed instructions on modifying initial fixture data.
 
 **Updates**
 
