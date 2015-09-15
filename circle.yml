@@ -9,7 +9,6 @@ machine:
 dependencies:
   cache_directories:
     - "~/.meteor"
-    - "/usr/local/bin"
 
   override:
     - cd $HOME/reaction
