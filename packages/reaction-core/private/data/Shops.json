@@ -3056,7 +3056,7 @@
     {
       "layout": "coreLayout",
       "workflow": "coreOrderWorkflow",
-      "collection": "Orders"
+      "collection": "Orders",
       "theme": "default",
       "enabled": true
     }
