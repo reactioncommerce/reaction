@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.7.0",
+  version: "0.7.1",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -179,6 +179,7 @@ Package.onUse(function (api) {
   api.addFiles("common/routers.js");
 
   api.addFiles("common/methods/layout.js");
+  api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js", "client");
 
   api.addFiles("common/factories/faker.js");
@@ -332,6 +333,12 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/orders/details/detail.js", "client");
 
   api.addFiles("client/templates/dashboard/orders/social/orderSocial.html", "client");
+
+  api.addFiles("client/templates/dashboard/orders/workflow/workflow.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/workflow.js", "client");
+
+  api.addFiles("client/templates/dashboard/orders/workflow/created/created.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/created/created.js", "client");
 
   api.addFiles("client/templates/dashboard/orders/workflow/completed/completed.html", "client");
 

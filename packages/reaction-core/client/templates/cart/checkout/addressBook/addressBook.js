@@ -1,3 +1,3 @@
 /*Template.checkoutAddressBook.onRendered(function () {
-  Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutAddressBook");
+  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
 });*/

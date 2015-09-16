@@ -34,13 +34,14 @@ Template.orders.helpers({
 Template.orders.events({
   'click .reactive-table tbody tr': function (event) {
     if (this.workflow.status === "new") {
-      this.workflow.status = "coreShipmentTracking"
-      /*Meteor.call("layout/workflow", "coreOrderWorkflow", "shipmentTracking");*/
+      this.workflow.status = "coreOrderCreated";
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
     }
+
     ReactionCore.showActionView({
-      label: "Order " + this._id ,
+      label: "Order Details",
       data: this,
-      template: this.workflow.status
+      template: "coreOrderWorkflow"
     });
 
   }

@@ -1,0 +1,38 @@
+<template name="coreOrderWorkflow">
+  <div aria-multiselectable="true" class="panel-group" id="core-order-workflow-accordion" role="tablist">
+    {{#each reactionTemplate workflow="coreOrderWorkflow"}}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <a aria-controls="{{label}}" aria-expanded="true" data-i18n="coreOrderWorkflow.{{label}}" data-parent="#core-order-workflow-accordion" data-toggle="collapse" href="#{{template}}-panel" role="button">{{label}}</a>
+          </div>
+        </div>
+
+        {{#if isCompleted}}
+          <div aria-labelledby="{{template}}" class="panel-collapse" id="{{template}}-panel" role="tabpanel">
+            <div class="panel-body">
+              {{> Template.dynamic template=template data=..}}
+            </div>
+          </div>
+        {{/if}}
+
+        {{#if isPending}}
+          <div aria-labelledby="{{template}}" class="panel-collapse" id="{{template}}-panel" role="tabpanel">
+            <div class="panel-body">
+              {{> Template.dynamic template=template data=..}}
+            </div>
+          </div>
+        {{/if}}
+
+        {{#if status}}
+        <div aria-labelledby="{{template}}" class="panel-collapse collapse" id="{{template}}-panel" role="tabpanel">
+            <div class="panel-body">
+              {{> Template.dynamic template=template data=..}}
+            </div>
+          </div>
+        {{/if}}
+
+      </div>
+    {{/each}}
+  </div>
+</template>

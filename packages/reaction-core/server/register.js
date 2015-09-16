@@ -144,8 +144,8 @@ ReactionCore.registerPackage({
       audience: ["dashboard/orders"]
     },
     {
-      template: "coreShipmentPrepare",
-      label: "Preparation",
+      template: "coreOrderDocuments",
+      label: "Documents",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     },

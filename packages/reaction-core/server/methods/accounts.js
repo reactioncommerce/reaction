@@ -86,7 +86,7 @@ Accounts.onLogin(function (options, user) {
     ReactionCore.Events.info("removed anonymous role from user: " + options.user._id);
 
     // logged in users need an additonal worfklow push to get started with checkoutLogin
-    return Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutLogin");
+    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
   }
 
 });

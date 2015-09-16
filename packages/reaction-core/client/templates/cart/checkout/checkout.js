@@ -22,7 +22,7 @@ Template.cartCheckout.onRendered(function () {
   Session.set("displayCartDrawer", false);
   // init cart workflow
   if (!ReactionCore.Collections.Cart.findOne().workflow.workflow) {
-    Meteor.call("layout/pushWorkflow", "coreCartWorkflow", 'checkoutLogin');
+    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", 'checkoutLogin');
   }
 });
 

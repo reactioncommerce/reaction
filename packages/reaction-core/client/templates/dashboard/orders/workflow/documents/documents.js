@@ -1,14 +1,14 @@
 /**
- * coreShipmentPrepare helpers and events
+ * coreOrderDocuments helpers and events
  *
  */
-Template.coreShipmentPrepare.helpers({
+Template.coreOrderDocuments.helpers({
   documents: function () {}
 });
 
-Template.coreShipmentPrepare.events({
+Template.coreOrderDocuments.events({
   'click .download-documents': function () {
     Meteor.call("shipmentPrepare", this);
-    Meteor.call("layout/workflow", "coreOrderWorkflow", "coreShipmentPrepare");
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderDocuments", this._id);
   }
 });

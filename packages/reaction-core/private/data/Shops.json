@@ -3049,12 +3049,14 @@
     {
       "layout": "coreLayout",
       "workflow": "coreCartWorkflow",
+      "collection": "Cart",
       "theme": "default",
       "enabled": true
     },
     {
       "layout": "coreLayout",
       "workflow": "coreOrderWorkflow",
+      "collection": "Orders"
       "theme": "default",
       "enabled": true
     }

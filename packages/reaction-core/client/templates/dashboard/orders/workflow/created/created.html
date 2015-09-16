@@ -1,0 +1,20 @@
+<template name="coreOrderCreated">
+  <div class="core-order-created">
+    <span data-i18n="orderDetail.created">Created</span>
+    <span>
+      {{orderAge}} {{dateFormat createdAt format="MMM D"}}
+    </span>
+
+    <div>
+      <p>
+        <span data-i18n="orderDetail.reference">Reference:{{_id}}</span>
+      </p>
+      {{#if shipmentTracking}}
+        <p>
+          <span data-i18n="orderDetail.tracking">Tracking:</span>
+          <a href="#">{{shipmentTracking}}</a>
+        </p>
+      {{/if}}
+    </div>
+  </div>
+</template>

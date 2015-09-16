@@ -210,6 +210,10 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: String,
     optional: true
   },
+  'layout.$.collection': {
+    type: String,
+    optional: true
+  },
   'layout.$.enabled': {
     type: Boolean,
     defaultValue: true
