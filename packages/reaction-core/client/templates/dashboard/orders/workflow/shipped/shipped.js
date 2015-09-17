@@ -1,5 +1,5 @@
 /**
- * workflowhipped events
+ * coreShipmentShipped events
  *
  */
 Template.coreShipmentShipped.events({

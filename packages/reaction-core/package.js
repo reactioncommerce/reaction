@@ -338,6 +338,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/orders/workflow/workflow.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/workflow.js", "client");
 
+  api.addFiles("client/templates/dashboard/orders/workflow/adjustments/adjustments.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/adjustments/adjustments.js", "client");
+
   api.addFiles("client/templates/dashboard/orders/workflow/created/created.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/created/created.js", "client");
 

@@ -150,6 +150,12 @@ ReactionCore.registerPackage({
       audience: ["dashboard/orders"]
     },
     {
+      template: "coreOrderAdjustments",
+      label: "Adjustments",
+      workflow: 'coreOrderWorkflow',
+      audience: ["dashboard/orders"]
+    },
+    {
       template: "coreProcessPayment",
       label: "Payments",
       workflow: 'coreOrderWorkflow',
@@ -164,12 +170,6 @@ ReactionCore.registerPackage({
     {
       template: "coreOrderCompleted",
       label: "Completed",
-      workflow: 'coreOrderWorkflow',
-      audience: ["dashboard/orders"]
-    },
-    {
-      template: "coreOrderAdjustments",
-      label: "Adjusted",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     }
