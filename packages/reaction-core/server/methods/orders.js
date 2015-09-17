@@ -14,16 +14,16 @@ Meteor.methods({
     orderId = order._id;
     Meteor.call("addTracking", orderId, tracking);
     Meteor.call("updateHistory", orderId, "Tracking Added", tracking);
-    return Meteor.call("updateWorkflow", orderId, "shipmentPrepare");
+    return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentTracking", order._id);
   },
 
   // shipmentPrepare
-  shipmentPrepare: function (order) {
+  documentPrepare: function (order) {
     check(order, Object);
     this.unblock();
 
     if (order) {
-      return Meteor.call("updateWorkflow", order._id, "shipmentPacking");
+      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
 
@@ -33,7 +33,7 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
-      Meteor.call("updateWorkflow", order._id, "processPayment");
+      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentPacking", order._id);
     }
     return this.processPayment(order);
   },
@@ -45,8 +45,7 @@ Meteor.methods({
 
     return Meteor.call("processPayments", order._id, function (error, result) {
       if (result) {
-        Meteor.call("updateWorkflow", order._id, "shipmentShipped");
-        return OrderWorkflow.shipmentShipped(order);
+      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
       }
     });
   },
@@ -57,7 +56,7 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
-      Meteor.call("updateWorkflow", order._id, "orderCompleted");
+      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentShipped", order._id);
     }
     return this.orderCompleted(order);
   },
@@ -67,7 +66,7 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
-      return Meteor.call("updateWorkflow", order._id, "orderCompleted");
+      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCompleted", order._id);
     }
   },
   /*
@@ -95,20 +94,6 @@ Meteor.methods({
         "email": email
       }
     });
-  },
-
-  /*
-   * Save supplied order workflow state
-   */
-  updateWorkflow: function (orderId, currentState) {
-    check(orderId, String);
-    check(currentState, String);
-    ReactionCore.Collections.Orders.update(orderId, {
-      $set: {
-        "workflow.state": currentState
-      }
-    });
-    return Meteor.call("updateHistory", orderId, currentState);
   },
 
   /*

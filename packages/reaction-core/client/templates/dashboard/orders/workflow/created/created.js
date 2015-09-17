@@ -1,6 +1,6 @@
 /*
-* automatically start order processing on first view
-*/
+ * automatically start order processing on first view
+ */
 
 Template.coreOrderCreated.onRendered(function () {
   if (this.workflow) {
@@ -8,5 +8,15 @@ Template.coreOrderCreated.onRendered(function () {
       this.workflow.status = "coreOrderCreated";
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
     }
+  }
+});
+
+/**
+ * coreOrderCreated events
+ *
+ */
+Template.coreOrderCreated.events({
+  'click .btn': function () {
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
   }
 });

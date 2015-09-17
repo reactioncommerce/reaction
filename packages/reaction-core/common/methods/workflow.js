@@ -285,6 +285,9 @@ Meteor.methods({
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus) {
       ReactionCore.Events.debug("######## Condition One #########: initialise the " + workflow + ":  " + defaultPackageWorkflows[0].template);
+
+      Meteor.call("updateHistory", orderId, defaultPackageWorkflows[0].template);
+
       return Order.update(currentOrder._id, {
         $set: {
           'workflow.status': defaultPackageWorkflows[0].template
@@ -299,6 +302,8 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false && templateProcessedinWorkflow === false) {
       ReactionCore.Events.debug("######## Condition Two #########: set status to: ", nextWorkflowStep.template);
+
+      Meteor.call("updateHistory", orderId, nextWorkflowStep.template);
 
       return Order.update(currentOrder._id, {
         $set: {
@@ -316,6 +321,9 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true && templateProcessedinWorkflow === false) {
       ReactionCore.Events.debug("######## Condition Three #########: complete workflow " + currentWorkflowStatus + " updates and move to: ", nextWorkflowStep.template);
+
+      Meteor.call("updateHistory", orderId, nextWorkflowStep.template);
+
       return Order.update(currentOrder._id, {
         $set: {
           'workflow.status': nextWorkflowStep.template

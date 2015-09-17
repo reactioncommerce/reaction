@@ -17,7 +17,7 @@
 
         {{#if isCompleted}}
 
-          {{#if condition label 'eq' "Created"}}
+          {{#if condition template 'eq' "coreOrderCreated"}}
             <div aria-labelledby="{{template}}" class="panel-collapse" id="{{template}}-panel" role="tabpanel">
               <div class="panel-body">
                 {{> Template.dynamic template=template data=.. }}

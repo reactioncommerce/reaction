@@ -1,22 +1,28 @@
 <template name="coreOrderCreated">
-
-  {{> orderDetail}}
-
   <div class="core-order-created">
-    <span>
-      {{orderAge}} {{dateFormat createdAt format="MMM D"}}
-    </span>
-  </div>
-  <div>
-    <p>
-      <span data-i18n="orderDetail.reference">Reference</span>
-      <span>{{_id}}</span>
-    </p>
-    {{#if shipmentTracking}}
-    <p>
-      <span data-i18n="orderDetail.tracking">Tracking</span>
-      <a href="#">{{shipmentTracking}}</a>
-    </p>
+    {{> orderDetail}}
+
+    <div class="core-order-created">
+      <span>
+        {{orderAge}} {{dateFormat createdAt format="MMM D"}}
+      </span>
+    </div>
+    <div>
+      <p>
+        <span data-i18n="orderDetail.reference">Reference</span>
+        <span>{{_id}}</span>
+      </p>
+      {{#if shipmentTracking}}
+      <p>
+        <span data-i18n="orderDetail.tracking">Tracking</span>
+        <a href="#">{{shipmentTracking}}</a>
+      </p>
+      {{/if}}
+    </div>
+    {{#if condition workflow.status 'eq' 'coreOrderCreated' }}
+      <span class="pull-right">
+        <button class="btn btn-success" data-i18n="coreOrderCreated.startProcessingOrder">Begin</button>
+      </span>
     {{/if}}
   </div>
 </template>
