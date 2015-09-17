@@ -144,14 +144,20 @@ ReactionCore.registerPackage({
       audience: ["dashboard/orders"]
     },
     {
-      template: "coreShipmentPrepare",
-      label: "Preparation",
+      template: "coreOrderDocuments",
+      label: "Documents",
+      workflow: 'coreOrderWorkflow',
+      audience: ["dashboard/orders"]
+    },
+    {
+      template: "coreOrderAdjustments",
+      label: "Adjustments",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     },
     {
       template: "coreProcessPayment",
-      label: "Process Payments",
+      label: "Payments",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     },
@@ -164,12 +170,6 @@ ReactionCore.registerPackage({
     {
       template: "coreOrderCompleted",
       label: "Completed",
-      workflow: 'coreOrderWorkflow',
-      audience: ["dashboard/orders"]
-    },
-    {
-      template: "coreOrderAdjustments",
-      label: "Adjusted",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     }

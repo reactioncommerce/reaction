@@ -363,7 +363,7 @@ Meteor.methods({
         }
       });
       // this will transition to review
-      Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
     }
   },
 
@@ -395,7 +395,7 @@ Meteor.methods({
       Meteor.call("updateShipmentQuotes", cartId);
 
       // it's ok for this to be called multiple times
-      Meteor.call('layout/pushWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
+      Meteor.call('workflow/pushCartWorkflow', "coreCartWorkflow", "coreCheckoutShipping");
 
       // this is probably a crappy way to do this.
       if (!cart.payment) {

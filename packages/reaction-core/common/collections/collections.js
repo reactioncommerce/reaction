@@ -207,3 +207,10 @@ ReactionCore.Collections.Tags.attachSchema(ReactionCore.Schemas.Tag);
 ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
+
+/**
+* ReactionCore Collections Accounts
+*/
+ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
+
+ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);

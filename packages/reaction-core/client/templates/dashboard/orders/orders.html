@@ -6,24 +6,7 @@
   </div>
 </template>
 
-<template name="orderUserDetail">
-
-  {{userId}}
-
-</template>
-
-<template name="orderShopDetail">
-
-  {{shopId}}
-
-</template>
-
-<template name="orderWorkflowDetail">
-  {{> Template.dynamic template=workflow.status}}
-</template>
-
 <template name="orderStatusDetail">
-  <div><strong>{{workflow.status}}</strong></div>
   <div class="col-xs-8">
     <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D"}}</div>
     {{#if shipmentTracking}}

@@ -4,5 +4,5 @@
 */
 
 Template.checkoutReview.onRendered(function () {
-  Meteor.call("layout/pushWorkflow", "coreCartWorkflow", "checkoutReview");
+  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutReview");
 });
