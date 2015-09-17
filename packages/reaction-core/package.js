@@ -149,6 +149,7 @@ Package.onUse(function (api) {
   api.addFiles("server/fixtures.js", "server");
 
   // schemas
+  api.addFiles("common/schemas/layouts.js");
   api.addFiles("common/schemas/packages.js");
   api.addFiles("common/schemas/accounts.js");
   api.addFiles("common/schemas/shops.js");

@@ -20,8 +20,8 @@ Template.coreOrderWorkflow.helpers({
 /* when order is first viewed we'll push the order status to created*/
 Template.coreOrderWorkflow.onRendered(function () {
   var order = Template.currentData();
+  // force order created to always be completed.
   if (order.workflow.status === "coreOrderCreated") {
-
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
   }
 

@@ -183,6 +183,16 @@ Template.registerHelper("reactionTemplate", function (options) {
   // layoutConfigCollection is the collection defined in Shops.workflow
   var workflowTargetCollection = ReactionCore.Collections[layoutConfigCollection];
   var currentCollection = workflowTargetCollection.findOne(currentId);
+
+  // if we be here without a workflow, we're layouteers
+  // if there isn't a layout defined
+  if (!currentCollection) {
+    var currentCollection = ReactionCore.Collections.Layouts.findOne(currentId);
+    if (!currentCollection) {
+      return;
+    }
+  }
+
   var currentStatus = currentCollection.workflow.status;
   var currentCollectionWorkflow = currentCollection.workflow.workflow;
 

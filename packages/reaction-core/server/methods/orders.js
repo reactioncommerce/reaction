@@ -105,7 +105,7 @@ Meteor.methods({
     check(currentState, String);
     ReactionCore.Collections.Orders.update(orderId, {
       $set: {
-        "state": currentState
+        "workflow.state": currentState
       }
     });
     return Meteor.call("updateHistory", orderId, currentState);
