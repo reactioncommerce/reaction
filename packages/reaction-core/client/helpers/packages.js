@@ -168,20 +168,23 @@ Template.registerHelper("reactionTemplate", function (options) {
 
   // if we've got an id, we'll use it with the layout's collection
   if (Template.currentData()) {
-    currentId = Template.currentData();
+    currentId = Template.currentData()._id;
   } else {
     var currentCart = ReactionCore.Collections.Cart.findOne({
       'userId': Meteor.userId()
     });
     currentId = currentCart._id;
   }
-  //
-  currentId = options.hash.id || currentId;
   // we'll get current cart status by default, as the most common case
-  // todo: expand query options
-  currentCollection = ReactionCore.Collections[layoutConfigCollection].findOne(currentId);
-  currentStatus = currentCollection.workflow.status;
-  currentCollectionWorkflow = currentCollection.workflow.workflow;
+  // TODO: expand query options
+  currentId = options.hash.id || currentId;
+
+  // The currentCollection must have workflow schema attached.
+  // layoutConfigCollection is the collection defined in Shops.workflow
+  var workflowTargetCollection = ReactionCore.Collections[layoutConfigCollection];
+  var currentCollection = workflowTargetCollection.findOne(currentId);
+  var currentStatus = currentCollection.workflow.status;
+  var currentCollectionWorkflow = currentCollection.workflow.workflow;
 
   // find the packages with these options
   var Packages = ReactionCore.Collections.Packages.find({
@@ -216,7 +219,7 @@ Template.registerHelper("reactionTemplate", function (options) {
     });
   });
 
-  /*console.table(reactionTemplates);*/
+  ReactionCore.Events.debug("reactionTemplates", reactionTemplates);
 
   return reactionTemplates;
 

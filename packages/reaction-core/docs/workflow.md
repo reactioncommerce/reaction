@@ -1,135 +1,179 @@
 # Layout and Workflows
 Reaction template display (layout) and workflow rules are created and stored in the Package registry.
 
-A workflow is essentially a registry entry with the following properties:
+A workflow is similar to `package.registry` entries,  but  `package.layout` entries are defined by the following properties:
+
 - It does not control routes anywhere.
-- only used for views
-- For each workflow in the package registry
-  - needs to be a stored status, workflow on the target collection
-  - exists cart.workflow, orders.workflow
-  - the template helper
+- each workflow in the package registry has a definition in Shops
+- stores **status** in a **collection** specified in Shops
+- collections should have attached *Workflow schema*
 
-- parallel split pattern
-- audience is just another label for 'permissions', essentially just permissions for UIX.
+- **audience** is just another label for 'permissions', essentially just permissions for UIX.
 - can be used to control page layout for the content manager
-- does it make sense that audience could be used to control different check out, different product views,  for users with different roles..
-- status and workflow combine to create a workflow state (status = where I am, workflow = [where I've been])
-- has a detailed enough dataset to trigger events from analytics events
-- to disable a workflow template you'd just remove audience roles
-- a registry entry is a functional components
-- a workflow controls "the how and where" of layout components
-- routes can be dynamically generated from registry
+- audience can be used to control different check out, different product views,  for users with different roles..
 
-Example package.layout and package.layout.workflow definition:
+- a **workflow** controls "the how and where" of layout components
+- can be used to trigger events from analytics events
+- to disable a workflow template remove audience roles
+- routes could be dynamically generated from registry
+
+<u>*The default workflow configuration components are configured in the following manner:*</u>
 
 ## Shops Collection
 
 ```
-  "layout" : [
-      {
-          "layout" : "coreLayout",
-          "workflow" : "coreLayout",
-          "theme" : "default",
-          "enabled" : true
-      },
-      {
-          "layout" : "coreLayout",
-          "workflow" : "coreCartWorkflow",
-          "theme" : "default",
-          "enabled" : true
-      },
-      {
-          "layout" : "coreLayout",
-          "workflow" : "coreOrderWorkflow",
-          "theme" : "default",
-          "enabled" : true
-      }
-  ]
+    "layout" : [
+        {
+            "layout" : "coreLayout",
+            "workflow" : "coreLayout",
+            "theme" : "default",
+            "enabled" : true
+        },
+        {
+            "layout" : "coreLayout",
+            "workflow" : "coreCartWorkflow",
+            "theme" : "default",
+            "collection" : "Cart",
+            "enabled" : true
+        },
+        {
+            "layout" : "coreLayout",
+            "workflow" : "coreOrderWorkflow",
+            "theme" : "default",
+            "collection" : "Orders",
+            "enabled" : true
+        }
+    ]
 ```
 
-## Package Registry
+## Package Registry - Layout
 **Available in the Packages collection, ie: `package.layout`**
 
-```json
-
-  layout: [
-    {
-      template: "checkoutLogin",
-      label: "Account",
-      provides: 'coreCartWorkflow',
-      container: 'cartWorkflow.main',
-      audience: ["guest", "anonymous"]
-    },
-    {
-      template: "checkoutAddressBook",
-      label: "Address Details",
-      provides: 'coreCartWorkflow',
-      container: 'cartWorkflow.main',
-      audience: ["guest", "anonymous"]
-    },
-    {
-      template: "coreCheckoutShipping",
-      label: "Shipping Options",
-      provides: 'coreCartWorkflow',
-      container: 'cartWorkflow.main',
-      audience: ["guest", "anonymous"]
-    },
-    {
-      template: "checkoutReview",
-      label: "Review",
-      provides: 'coreCartWorkflow',
-      container: 'cartWorkflow.aside',
-      audience: ["guest", "anonymous"]
-    },
-    {
-      template: "checkoutPayment",
-      label: "Complete",
-      provides: 'coreCartWorkflow',
-      container: 'cartWorkflow.aside',
-      audience: ["guest", "anonymous"]
-    },
-    {
-      template: "orderCreated",
-      label: "Created",
-      provides: 'coreOrderWorkflow'
-    },
-    {
-      template: "shipmentTracking",
-      label: "Tracking",
-      provides: 'coreOrderWorkflow'
-    },
-    {
-      template: "shipmentPrepare",
-      label: "Preparation",
-      provides: 'coreOrderWorkflow'
-    },
-    {
-      template: "processPayment",
-      label: "Process Payments",
-      provides: 'coreOrderWorkflow'
-    },
-    {
-      template: "shipmentShipped",
-      label: "Shipped",
-      provides: 'coreOrderWorkflow'
-    },
-    {
-      template: "orderCompleted",
-      label: "Completed",
-      provides: 'coreOrderWorkflow'
-    },
-    {
-      template: "orderAdjustments",
-      label: "Adjusted",
-      provides: 'coreOrderWorkflow'
-    }
-  ]
+```javascript
+"layout" : [
+        {
+            "template" : "checkoutLogin",
+            "label" : "Login",
+            "workflow" : "coreCartWorkflow",
+            "container" : "checkout-steps-main",
+            "audience" : [
+                "guest",
+                "anonymous"
+            ],
+            "priority" : "1",
+            "position" : "1"
+        },
+        {
+            "template" : "checkoutAddressBook",
+            "label" : "Address Details",
+            "workflow" : "coreCartWorkflow",
+            "container" : "checkout-steps-main",
+            "audience" : [
+                "guest",
+                "anonymous"
+            ],
+            "priority" : "2",
+            "position" : "2"
+        },
+        {
+            "template" : "coreCheckoutShipping",
+            "label" : "Shipping Options",
+            "workflow" : "coreCartWorkflow",
+            "container" : "checkout-steps-main",
+            "audience" : [
+                "guest",
+                "anonymous"
+            ],
+            "priority" : "3",
+            "position" : "3"
+        },
+        {
+            "template" : "checkoutReview",
+            "label" : "Review Payment",
+            "workflow" : "coreCartWorkflow",
+            "container" : "checkout-steps-side",
+            "audience" : [
+                "guest",
+                "anonymous"
+            ],
+            "priority" : "4",
+            "position" : "4"
+        },
+        {
+            "template" : "checkoutPayment",
+            "label" : "Complete",
+            "workflow" : "coreCartWorkflow",
+            "container" : "checkout-steps-side",
+            "audience" : [
+                "guest",
+                "anonymous"
+            ],
+            "priority" : "5",
+            "position" : "5"
+        },
+        {
+            "template" : "coreOrderCreated",
+            "label" : "Created",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        },
+        {
+            "template" : "coreShipmentTracking",
+            "label" : "Tracking",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        },
+        {
+            "template" : "coreOrderDocuments",
+            "label" : "Preparation",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        },
+        {
+            "template" : "coreProcessPayment",
+            "label" : "Process Payments",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        },
+        {
+            "template" : "coreShipmentShipped",
+            "label" : "Shipped",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        },
+        {
+            "template" : "coreOrderCompleted",
+            "label" : "Completed",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        },
+        {
+            "template" : "coreOrderAdjustments",
+            "label" : "Adjusted",
+            "workflow" : "coreOrderWorkflow",
+            "audience" : [
+                "dashboard/orders"
+            ]
+        }
+    ]
 ```
 
 ## Collection Workflows
 For each collection using a workflow, a workflow schema is attached.  The state/status of a workflow is stored as an object on each document in the collection.
 
-```
+```javascript
 "workflow" : {
     "status" : "checkoutLogin"
     "workflow": ["new", "checkoutLogin"]
@@ -143,7 +187,7 @@ If `workflow.workflow` contains the current `workflow.status`, that means the wo
 ## Workflow Schema
 For reference, the Workflow schema is:
 
-```
+```javascript
 ReactionCore.Schemas.Workflow = new SimpleSchema({
   template: {
     type: String,

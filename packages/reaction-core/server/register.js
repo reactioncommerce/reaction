@@ -151,7 +151,7 @@ ReactionCore.registerPackage({
     },
     {
       template: "coreProcessPayment",
-      label: "Process Payments",
+      label: "Payments",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     },

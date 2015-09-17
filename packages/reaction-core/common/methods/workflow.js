@@ -95,8 +95,8 @@ Meteor.methods({
     // templateProcessedinWorkflow boolean
 
 
-    gotoNextWorkflowStep = nextWorkflowStep.template;
-    templateProcessedinWorkflow = _.contains(currentCart.workflow.workflow, nextWorkflowStep.template);
+    var gotoNextWorkflowStep = nextWorkflowStep.template;
+    var templateProcessedinWorkflow = _.contains(currentCart.workflow.workflow, nextWorkflowStep.template);
 
 
     // debug info
