@@ -1,16 +1,34 @@
 Package.describe({
   summary: "Reaction Social - Social Sharing Package for Reaction",
   name: "reactioncommerce:reaction-social",
-  version: "0.3.0",
+  version: "0.4.0",
   git: "https://github.com/reactioncommerce/reaction-social.git"
 });
 
 Package.onUse(function (api, where) {
-  api.versionsFrom('METEOR@1.0');
-  api.use("meteor-platform");
+  api.versionsFrom('METEOR@1.2');
+
+  // meteor base packages
+  api.use("standard-minifiers");
+  api.use("mobile-experience");
+  api.use("meteor-base");
+  api.use("mongo");
+  api.use("blaze-html-templates");
+  api.use("session");
+  api.use("jquery");
+  api.use("tracker");
+  api.use("logging");
+  api.use("reload");
+  api.use("random");
+  api.use("ejson");
+  api.use("spacebars");
+  api.use("check");
+
+  // meteor add-on packages
+
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.7.0");
+  api.use("reactioncommerce:core@0.8.0");
 
   api.addFiles("server/register.js",["server"]); // register as a reaction package
   api.addFiles("server/policy.js",["server"]); // browser-policies
