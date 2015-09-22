@@ -1,17 +1,35 @@
 Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
-  version: "0.5.0",
+  version: "0.6.0",
   git: "https://github.com/reactioncommerce/reaction-shipping.git"
 });
 
 
 Package.onUse(function (api) {
-  api.versionsFrom('METEOR@1.0');
-  api.use("meteor-platform@1.2.1");
+  api.versionsFrom('METEOR@1.2');
+
+  // meteor base packages
+  api.use("standard-minifiers");
+  api.use("mobile-experience");
+  api.use("meteor-base");
+  api.use("mongo");
+  api.use("blaze-html-templates");
+  api.use("session");
+  api.use("jquery");
+  api.use("tracker");
+  api.use("logging");
+  api.use("reload");
+  api.use("random");
+  api.use("ejson");
+  api.use("spacebars");
+  api.use("check");
+
+  // meteor add-on packages
+
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.7.0",["client","server"]);
+  api.use("reactioncommerce:core@0.8.0",["client","server"]);
 
   api.addFiles([
     "common/collections.js", // any unique collections
@@ -21,7 +39,7 @@ Package.onUse(function (api) {
   api.addFiles("server/register.js",["server"]); // register as a reaction package
   api.addFiles("server/methods.js",["server"]); // server methods
   api.addFiles("server/fixtures.js",["server"]); // fixtures
-  api.addFiles('private/data/Shipping.json', 'server', {isAsset: true});// fixture data
+  api.addAssets('private/data/Shipping.json', 'server');// fixture data
 
   api.addFiles([
     // admin screens
