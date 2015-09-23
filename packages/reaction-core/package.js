@@ -102,7 +102,7 @@ Package.onUse(function (api) {
   api.imply("utilities:avatar");
 
   // reaction core dependencies
-  api.addAssets("lib/bower.json","client");
+  api.addFiles("lib/bower.json","client");
   api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/mouse.js", "client");
