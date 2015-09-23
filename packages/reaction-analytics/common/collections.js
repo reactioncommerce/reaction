@@ -31,11 +31,17 @@ ReactionCore.Schemas.AnalyticsEvents = new SimpleSchema({
   'user.id': {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    optional: true
+    optional: true,
+    autoValue: function() {
+      return Meteor.userId()
+    }
   },
-  'user.role': {
-    type: String,
-    optional: true
+  'user.isAnonymous': {
+    type: Boolean,
+    optional: true,
+    autoValue: function() {
+      return Roles.userIsInRole(Meteor.user(), 'anonymous', ReactionCore.getShopId())
+    }
   },
   shopId: {
     type: String,
