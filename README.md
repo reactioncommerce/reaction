@@ -8,8 +8,8 @@ See: [Package Repository for Reaction] ([https://atmospherejs.com/?q=reactioncom
 
 ##Status
 - 0.6.4 Master (Alpha, Stable)
-- 0.7.0 Development (Not Stable)
-- 0.8.0 Next Stable Release
+- 0.8.0 Development (Not Stable)
+- 0.9.0 Next Stable Release
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
 

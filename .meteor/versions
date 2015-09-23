@@ -93,7 +93,6 @@ logging@1.0.8
 matb33:collection-hooks@0.8.0
 meteor@1.1.7
 meteor-base@1.0.1
-meteor-platform@1.2.3
 meteorhacks:inject-initial@1.0.2
 meteorhacks:ssr@2.1.2
 minifiers@1.1.7
@@ -125,7 +124,7 @@ random@1.0.4
 rate-limit@1.0.0
 reactioncommerce:bootstrap-theme@1.5.0
 reactioncommerce:core@0.8.0
-reactioncommerce:core-theme@1.6.0
+reactioncommerce:core-theme@1.7.0
 reactioncommerce:reaction-accounts@1.1.0
 reactioncommerce:reaction-analytics@1.1.0
 reactioncommerce:reaction-analytics-libs@1.1.0
