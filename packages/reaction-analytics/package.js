@@ -36,6 +36,7 @@ Package.on_use(function (api, where) {
   api.use("ejson");
   api.use("spacebars");
   api.use("check");
+  api.use("ecmascript");
 
   // meteor add-on packages
 
