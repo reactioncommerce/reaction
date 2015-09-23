@@ -3,39 +3,62 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+###
 # Core Meteor Packages
-meteor-platform
-oauth-encryption
+###
+
+meteor-base             # Packages every Meteor app needs to have
+mobile-experience       # Packages for a great mobile UX
+mongo                   # The database Meteor supports right now
+blaze-html-templates    # Compile .html files into Meteor Blaze views
+session                 # Client-side reactive dictionary for your app
+jquery                  # Helpful client-side library
+tracker                 # Meteor's client-side reactive programming library
+standard-minifiers      # JS/CSS minifiers run for production mode
+es5-shim                # ECMAScript 5 compatibility for older browsers.
+ecmascript              # Enable ECMAScript2015+ syntax in app code
+
+# Meteor Community Packages
+
+logging
+reload
+random
+ejson
+check
 underscore
 less
-
-# Optional Meteor Packages
+oauth-encryption
 accounts-facebook
-spiderable
 audit-argument-checks
+spiderable
+nemo64:bootstrap
 
 # Reaction Commerce Packages
+
 reactioncommerce:core
 reactioncommerce:bootstrap-theme
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-shipping
-reactioncommerce:reaction-paypal
-reactioncommerce:reaction-braintree
-reactioncommerce:reaction-stripe
-reactioncommerce:reaction-auth-net
-reactioncommerce:reaction-social
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
+reactioncommerce:reaction-social
 
-# Community Packages
-nemo64:bootstrap
+
+# Reaction Payment Packages
+
+reactioncommerce:reaction-paypal
+reactioncommerce:reaction-stripe
+#reactioncommerce:reaction-auth-net
+#reactioncommerce:reaction-braintree
 
 # Testing packages
+
 #velocity:html-reporter
 #sanjo:jasmine
 #velocity:helpers
 
 # Performance & Debugging Tools
+
 #meteorhacks:kadira
 #meteorhacks:kadira-profiler
 #meteortoys:allthings
