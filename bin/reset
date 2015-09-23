@@ -9,7 +9,7 @@ then
   rm .meteor/versions 2> /dev/null
   rm -r client/themes/custom*.less 2> /dev/null
   rm -r client/themes/bootstrap/custom*.less 2> /dev/null
-  rm -rf packages/reaction-core/lib/bower 2> /dev/null
+  rm -rf $PACKAGE_DIRS/core/lib/bower 2> /dev/null
 else
   meteor reset "$@"
 fi
