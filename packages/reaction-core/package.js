@@ -118,8 +118,8 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
   api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
   api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
-  api.addAssets("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client');
-  api.addAssets("lib/css/jquery-ui.css", 'client');
+  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client');
+  api.addFiles("lib/css/jquery-ui.css", 'client');
   api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("lib/geocoder.js", ["server"]);
 
