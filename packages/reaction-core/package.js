@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.7.1",
+  version: "0.8.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -11,27 +11,42 @@ Npm.depends({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('METEOR@1.1.0.2');
+  api.versionsFrom('METEOR@1.2');
 
-  // core meteor packages
-  api.use("meteor-platform");
-  api.use("oauth-encryption");
-  api.use("accounts-base");
-  api.use("accounts-password");
+  // meteor base packages
+  api.use("standard-minifiers");
+  api.use("mobile-experience");
+  api.use("meteor-base");
+  api.use("mongo");
+  api.use("ecmascript");
+  api.use("es5-shim");
+  api.use("blaze-html-templates");
+  api.use("session");
+  api.use("jquery");
+  api.use("tracker");
+
+  // meteor add-on packages
+  api.use("underscore");
+  api.use("logging");
+  api.use("reload");
+  api.use("random");
+  api.use("ejson");
+  api.use("check");
   api.use("less");
   api.use("http");
-  api.use("underscore");
-  api.use("blaze");
-  api.use("jquery");
-  api.use("email");
-  api.use("check");
-  api.use("browser-policy");
   api.use("reactive-var");
+  api.use("email");
+  api.use("browser-policy");
   api.use("service-configuration");
   api.use("amplify@1.0.0");
 
+  // meteor authentication packages
+  api.use("oauth-encryption");
+  api.use("accounts-base");
+  api.use("accounts-password");
+
   // community packages
-  api.use("mquandalle:bower@1.4.1_3");
+  api.use("mquandalle:bower@1.5.2");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.0");
   api.use("aldeed:autoform@5.5.0");
@@ -44,12 +59,12 @@ Package.onUse(function (api) {
   api.use("ongoworks:security@1.2.0");
 
   api.use("dburles:factory@0.3.10");
-  api.use("matb33:collection-hooks@0.7.14");
+  api.use("matb33:collection-hooks@0.8.0");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.0");
   api.use("utilities:spin@2.3.1", "client");
-  api.use("utilities:avatar@0.8.2");
+  api.use("utilities:avatar@0.9.0");
 
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.2");
@@ -103,8 +118,8 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
   api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
   api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
-  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client', {isAsset: true});
-  api.addFiles("lib/css/jquery-ui.css", 'client', {isAsset: true});
+  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client');
+  api.addFiles("lib/css/jquery-ui.css", 'client');
   api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("lib/geocoder.js", ["server"]);
 
@@ -118,32 +133,32 @@ Package.onUse(function (api) {
   api.addFiles("common/common.js");
 
   // Private fixture data
-  api.addFiles('private/data/Products.json', 'server', {isAsset: true});
-  api.addFiles('private/data/Shops.json', 'server', {isAsset: true});
-  api.addFiles('private/data/Tags.json', 'server', {isAsset: true});
-  api.addFiles('private/data/Orders.json', 'server', {isAsset: true});
+  api.addAssets('private/data/Products.json', 'server');
+  api.addAssets('private/data/Shops.json', 'server');
+  api.addAssets('private/data/Tags.json', 'server');
+  api.addAssets('private/data/Orders.json', 'server');
 
   //i18n translations
-  api.addFiles('private/data/i18n/ar.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/cn.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/cs.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/de.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/en.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/el.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/es.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/fr.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/he.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/hr.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/hu.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/it.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/my.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/nl.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/pl.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/pt.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/ru.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/sl.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/sv.json', 'server', {isAsset: true});
-  api.addFiles('private/data/i18n/vi.json', 'server', {isAsset: true});
+  api.addAssets('private/data/i18n/ar.json', 'server');
+  api.addAssets('private/data/i18n/cn.json', 'server');
+  api.addAssets('private/data/i18n/cs.json', 'server');
+  api.addAssets('private/data/i18n/de.json', 'server');
+  api.addAssets('private/data/i18n/en.json', 'server');
+  api.addAssets('private/data/i18n/el.json', 'server');
+  api.addAssets('private/data/i18n/es.json', 'server');
+  api.addAssets('private/data/i18n/fr.json', 'server');
+  api.addAssets('private/data/i18n/he.json', 'server');
+  api.addAssets('private/data/i18n/hr.json', 'server');
+  api.addAssets('private/data/i18n/hu.json', 'server');
+  api.addAssets('private/data/i18n/it.json', 'server');
+  api.addAssets('private/data/i18n/my.json', 'server');
+  api.addAssets('private/data/i18n/nl.json', 'server');
+  api.addAssets('private/data/i18n/pl.json', 'server');
+  api.addAssets('private/data/i18n/pt.json', 'server');
+  api.addAssets('private/data/i18n/ru.json', 'server');
+  api.addAssets('private/data/i18n/sl.json', 'server');
+  api.addAssets('private/data/i18n/sv.json', 'server');
+  api.addAssets('private/data/i18n/vi.json', 'server');
 
   // import fixture data
   api.addFiles("server/fixtures.js", "server");
@@ -425,8 +440,8 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/products/productSettings/productSettings.js", "client");
 
   // Email Templates
-  api.addFiles('server/emailTemplates/welcomeNotification.html', 'server', {isAsset: true});
-  api.addFiles('server/emailTemplates/shopMemberInvite.html', 'server', {isAsset: true});
+  api.addAssets('server/emailTemplates/welcomeNotification.html', 'server');
+  api.addAssets('server/emailTemplates/shopMemberInvite.html', 'server');
 
   // Exports
   api.export("ReactionCore");
