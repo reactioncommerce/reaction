@@ -18,34 +18,35 @@ Package.onUse(function (api) {
   api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
+  api.use("ecmascript");
+  api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
   api.use("jquery");
   api.use("tracker");
+
+  // meteor add-on packages
+  api.use("underscore");
   api.use("logging");
   api.use("reload");
   api.use("random");
   api.use("ejson");
-  api.use("spacebars");
   api.use("check");
-
-  // meteor add-on packages
-
   api.use("less");
   api.use("http");
-  api.use("underscore");
-  api.use("blaze");
   api.use("reactive-var");
   api.use("email");
   api.use("browser-policy");
   api.use("service-configuration");
   api.use("amplify@1.0.0");
+
+  // meteor authentication packages
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
 
   // community packages
-  api.use("mquandalle:bower@1.4.1_3");
+  api.use("mquandalle:bower@1.5.2");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.0");
   api.use("aldeed:autoform@5.5.0");
