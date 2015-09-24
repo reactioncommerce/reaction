@@ -51,9 +51,41 @@
 
 
 <template name="accountsSettings">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">No Settings Available</div>
+  {{#each service in services}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">{{service.label}} Login Settings</div>
+        <p></p>
+      </div>
+      <div class="panel-body">
+        <form name="{{service.name}}Settings">
+          <input type="hidden" value="{{service.name}}" name="service">
+          {{#each field in service.fields}}
+              <div class="form-group">
+                <label for="{{name}}SettingsClientId">{{field.label}}</label>
+                <input
+                  class="form-control"
+                  id="{{service.name}}SettingsClientId"
+                  type="{{field.type}}"
+                  name="{{field.property}}"
+                  value="{{valueForField field.property service}}">
+
+                {{#if isSecretField field.property}}
+                  <button class="btn btn-default" type="button" data-event-action="showSecret">Show</button>
+                {{/if}}
+              </div>
+          {{/each}}
+          <div class="form-group">
+            <button class="btn btn-primary" type="submit">Update Settings</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  {{else}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">No Additional login services available</div>
+      </div>
+    </div>
+  {{/each}}
 </template>

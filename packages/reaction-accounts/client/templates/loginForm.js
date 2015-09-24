@@ -1,3 +1,5 @@
+"use strict";
+
 // ============================================================================
 // Login form
 //
@@ -19,7 +21,7 @@ var capitalize = function(str){
 };
 
 
-LoginFormValidation = {
+window.LoginFormValidation = {
   username: function(username) {
 
     // Valid
@@ -103,7 +105,7 @@ LoginFormValidation = {
   }
 };
 
-LoginFormSharedHelpers = {
+window.LoginFormSharedHelpers = {
 
   messages: function() {
     return Template.instance().formMessages.get();
@@ -252,15 +254,14 @@ Template.loginForm.events({
   // **************************************************************************
   // Sign in with a OAuth provider (e.g. facebook, google+, etc)
   //
-  'click .action--signInWithProvider': function (event, template) {
-    var serviceName = capitalize(this.name);
-    // loginButtonsSession.resetMessages();
+  "click .action--signInWithProvider": (event, template) => {
 
-    // XXX Service providers should be able to specify their
-    // `Meteor.loginWithX` method name.
+    let serviceName;
 
-    if (serviceName === 'meteor-developer') {
-      serviceName = 'MeteorDeveloperAccount'
+    if (this.name === "meteor-developer") {
+      serviceName = "MeteorDeveloperAccount"
+    } else {
+      serviceName = capitalize(this.name);
     }
 
     var loginWithService = Meteor["loginWith" + serviceName];

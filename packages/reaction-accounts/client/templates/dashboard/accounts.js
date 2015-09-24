@@ -1,8 +1,13 @@
+"use strict";
+
 /**
  * Accounts helpers
  *
  */
 
+
+
+//
 Template.accountsDashboardControls.events({
   "click [data-event-action=addShopMember]": function () {
     ReactionCore.showActionView({
@@ -107,3 +112,91 @@ Template.accountsDashboard.events({
     return $permissionView.hide();
   }
 });
+
+
+
+
+Template.accountsSettings.onRendered( () => {
+  let template = Template.instance();
+})
+
+
+Template.accountsSettings.helpers({
+  services() {
+
+    let serviceHelper = new window.ReactionServiceHelper();
+    let configurations = ServiceConfiguration.configurations.find().fetch();
+    let services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
+
+
+
+    services = _.map(services, function (name) {
+
+      let serviceName = serviceHelper.getCapitalizedServiceName(name);
+
+      var thing = {
+        name: name,
+        label: serviceHelper.getCapitalizedServiceName(name),
+        buttonType: Template.instance().type || 'signIn',
+        fields: serviceHelper.getConfigFieldsForService(name)
+      };
+
+      var matchingConfigurations = _.where(configurations, {service: name})
+
+      if (matchingConfigurations.length) {
+        thing = _.extend(thing, matchingConfigurations[0])
+      }
+
+      return thing
+
+    });
+
+    return services;
+  },
+
+  isSecretField(fieldName) {
+    return fieldName === "secret";
+  },
+
+  valueForField(fieldName, service) {
+    return service[fieldName] || "";
+  }
+})
+
+
+Template.accountsSettings.events({
+  "submit form": (event, template) => {
+    event.preventDefault();
+
+    let serviceHelper = new window.ReactionServiceHelper();
+    let fields = serviceHelper.getConfigFieldsForService(event.target.service.value);
+
+    for (let field of fields) {
+      field.value = event.target[field.property].value;
+    }
+
+    Meteor.call("accounts/updateServiceConfiguration", "facebook", fields, function(result) {
+
+    })
+
+  },
+
+  "click [data-event-action=showSecret]": (event, template) => {
+    let button = $(event.currentTarget)
+    let input = button.closest(".form-group").find("input[name=secret]");
+
+    if (input.attr("type") === "password") {
+      input.attr("type", "text");
+      button.html("Hide");
+    } else {
+      input.attr("type", "password");
+      button.html("Show");
+    }
+  }
+})
+
+
+
+
+
+

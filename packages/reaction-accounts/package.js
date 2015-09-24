@@ -42,8 +42,13 @@ Package.onUse(function (api, where) {
 
   // register as a reaction package
   api.addFiles("server/register.js", "server");
+  api.addFiles("server/methods/accounts.js", "server");
+  api.addFiles("server/publications/serviceConfiguration.js", "server");
 
   api.addFiles("common/routing.js", ["client", "server"]);
+
+
+  api.addFiles("client/helpers/util.js", ["client"]);
 
   // Dashboard
   api.addFiles("client/templates/dashboard/accounts.html", "client");
