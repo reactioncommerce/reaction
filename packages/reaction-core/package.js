@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.8.0",
+  version: "0.8.1",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -48,8 +48,8 @@ Package.onUse(function (api) {
   // community packages
   api.use("mquandalle:bower@1.5.2");
   api.use("d3js:d3@3.5.5");
-  api.use("underscorestring:underscore.string@3.2.0");
-  api.use("aldeed:autoform@5.5.0");
+  api.use("underscorestring:underscore.string@3.2.2");
+  api.use("aldeed:autoform@5.5.1");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3", 'client');
@@ -64,7 +64,7 @@ Package.onUse(function (api) {
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.0");
   api.use("utilities:spin@2.3.1", "client");
-  api.use("utilities:avatar@0.9.0");
+  api.use("utilities:avatar@0.9.1");
 
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.2");
@@ -80,7 +80,8 @@ Package.onUse(function (api) {
   api.imply("less");
   api.imply("amplify");
   api.imply("accounts-base");
-  api.imply("ui");
+  api.imply("ecmascript");
+  api.imply("es5-shim");
   api.imply("browser-policy");
   api.imply("service-configuration");
   api.imply("ongoworks:speakingurl");
@@ -455,10 +456,10 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function(api) {
-  api.use('sanjo:jasmine@0.18.0');
+  api.use('sanjo:jasmine@0.19.0');
   api.use('underscore');
   api.use("dburles:factory@0.3.10");
-  api.use('velocity:html-reporter@0.8.2');
+  api.use('velocity:html-reporter@0.9.0');
   api.use('velocity:console-reporter@0.1.3');
 
   api.use('reactioncommerce:core');
