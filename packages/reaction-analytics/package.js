@@ -48,7 +48,8 @@ Package.on_use(function (api, where) {
 
   api.addFiles([
     "common/routing.js",
-    "common/collections.js"
+    "common/collections.js",
+    "common/hooks.js"
   ], ["client", "server"]);
 
   api.addFiles([
