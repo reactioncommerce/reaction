@@ -94,11 +94,15 @@ GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
 };
 
 
-var gi = function (address, options, callback) {
+var gi = function (address, callback) {
   // short term solution to an haproxy ssl cert installation issue
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED=0;
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+  // if we're local, let's let freegeoip guess.
+  if (address = "127.0.0.1") {
+    address = "";
+  }
   // calls a private reaction hosted version of freegeoip
-  HTTP.call( "GET", "https://geo.getreaction.io/json/" + address, callback);
+  HTTP.call("GET", "https://geo.getreaction.io/json/" + address, callback);
 };
 
 GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
@@ -108,7 +112,12 @@ GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
     });
     gi(address, this.options, callback);
   } else {
-    address = Meteor.wrapAsync(gi)(address, this.options)
-    return address.data;
+    try {
+      address = Meteor.wrapAsync(gi)(address)
+      return address.data;
+    } catch (error) {
+      ReactionCore.Events.warn("getLocale geoip lookup failure", error);
+      return;
+    }
   }
 };
