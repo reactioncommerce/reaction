@@ -16,10 +16,11 @@ Meteor.publish('ServiceConfiguration', function (userId) {
   check(userId, Match.OneOf(String, null));
 
   // global admin can get all accounts
-  if (Roles.userIsInRole(this.userId, ['owner', 'admin'], Roles.GLOBAL_GROUP)) {
+  if (ReactionCore.hasPermission(["dashboard/accounts"])) {
     return ServiceConfiguration.configurations.find({}, {
       fields: {
-        "secret": 1
+        "secret": 1,
+        "enabled": 1
       }
     });
   // shop admin gets accouns for just this shop
@@ -27,7 +28,8 @@ Meteor.publish('ServiceConfiguration', function (userId) {
 
   return ServiceConfiguration.configurations.find({}, {
     fields: {
-      "secret": 0
+      "secret": 0,
+      "enabled": 1
     }
   });
 });

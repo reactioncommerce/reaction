@@ -53,9 +53,11 @@
 <template name="accountsSettings">
   {{#each service in services}}
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading panel-heading-flex">
         <div class="panel-title">{{service.label}} Login Settings</div>
-        <p></p>
+        <div class="panel-controls">
+          <input class="checkbox-switch" type="checkbox" name="enabled" value="{{service.name}}" {{checked service.enabled}}>
+        </div>
       </div>
       <div class="panel-body">
         <form name="{{service.name}}Settings">

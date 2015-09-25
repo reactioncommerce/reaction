@@ -7,8 +7,13 @@
 
 
 <template name="loginFormServiceButton">
-  {{!-- {{#if configured}} --}}
-    <button class="btn btn-primary btn-block action--signInWithProvider provider--{{name}} text-besides-image sign-in-text-{{name}}" type="button">
+{{enabled}}
+  {{#if condition enabled "eq" "true"}}
+    <button
+      class="btn btn-primary btn-block provider--{{name}} text-besides-image sign-in-text-{{name}}"
+      type="button"
+      data-event-action="signInWithProvider"
+      data-provider="{{name}}">
       {{#if condition buttonType "eq" "signUp"}}
         <span data-i18n="accountsUI.signUpWith">Sign up with</span>
       {{else}}
@@ -17,7 +22,7 @@
 
       <span data-i18n="social.{{name}}"> {{capitalizedName}}</span>
     </button>
-  {{!-- {{if}} --}}
+  {{/if}}
 </template>
 
 

@@ -2,7 +2,7 @@
 
 
 Meteor.methods({
-  "accounts/updateServiceConfiguration": function (service, fields) {
+  "accounts/updateServiceConfiguration": (service, fields) => {
 
     check(service, String);
     check(fields, Array);
@@ -13,10 +13,7 @@ Meteor.methods({
       dataToSave[field.property] = field.value
     });
 
-    // let appId = event.target.appId.value
-    // let secret = event.target.secret.value
-
-    if (Roles.userIsInRole(this.userId, ['owner', 'admin'], Roles.GLOBAL_GROUP)) {
+    if (ReactionCore.hasPermission(["dashboard/accounts"])) {
       return ServiceConfiguration.configurations.upsert({
         service: service
       }, {
@@ -26,4 +23,5 @@ Meteor.methods({
 
     return false;
   }
+
 })

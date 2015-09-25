@@ -1,15 +1,14 @@
-"use strict";
 
 var capitalize = function(str){
   str = str == null ? '' : String(str);
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-window.ReactionServiceHelper = class ReactionServiceHelper {
+ReactionServiceHelper = class ReactionServiceHelper {
 
   construct() {}
 
-  getAvailableServices() {
+  availableServices() {
 
     let services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
     services.sort();
@@ -17,7 +16,7 @@ window.ReactionServiceHelper = class ReactionServiceHelper {
     return services;
   }
 
-  getCapitalizedServiceName(name) {
+  capitalizedServiceName(name) {
     if (name === "meteor-developer") {
       return "MeteorDeveloperAccount"
     } else {
@@ -25,18 +24,49 @@ window.ReactionServiceHelper = class ReactionServiceHelper {
     }
   }
 
-  getConfigFieldsForService(name) {
-    let capitalizedName = this.getCapitalizedServiceName(name);
+  configFieldsForService(name) {
+    let capitalizedName = this.capitalizedServiceName(name);
     let template = Template[`configureLoginServiceDialogFor${capitalizedName}`];
 
     if (template) {
-      return template.fields().map((field) => {
+      let fields = template.fields();
+
+      return _.map(fields, (field) => {
+
+        if (!field.type) {
+          field.type = (field.property === "secret") ? "password" : "text"
+        }
+
         return _.extend(field, {
-          type: (field.property === "secret") ? "password" : "text"
+          type: field.type
         });
       });
     }
 
     return [];
+  }
+
+  services(extendEach) {
+
+    let services = this.availableServices();
+
+    return _.map(services, (name) => {
+
+      let serviceName = this.capitalizedServiceName(name);
+
+      var thing = {
+        name: name,
+        label: this.capitalizedServiceName(name),
+        fields: this.configFieldsForService(name)
+      };
+
+      if (_.isFunction(extendEach)) {
+        thing = _.extend(thing, extendEach(thing) || {})
+      }
+
+      return thing
+
+    });
+
   }
 }

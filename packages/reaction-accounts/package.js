@@ -38,6 +38,11 @@ Package.onUse(function (api, where) {
   api.use("accounts-facebook");
   api.use("reactioncommerce:core@0.8.0");
 
+  api.use("ecmascript");
+  api.use("accounts-twitter");
+  api.use("accounts-github");
+  api.use("accounts-weibo");
+
   // Core Reaction packages
 
   // register as a reaction package
@@ -48,7 +53,9 @@ Package.onUse(function (api, where) {
   api.addFiles("common/routing.js", ["client", "server"]);
 
 
-  api.addFiles("client/helpers/util.js", ["client"]);
+  api.addFiles("client/helpers/util.js", ["client", "server"]);
+  api.addFiles("client/helpers/validation.js", ["client"]);
+  api.addFiles("client/helpers/helpers.js", ["client"]);
 
   // Dashboard
   api.addFiles("client/templates/dashboard/accounts.html", "client");

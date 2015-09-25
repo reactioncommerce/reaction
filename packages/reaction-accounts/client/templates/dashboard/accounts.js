@@ -124,38 +124,26 @@ Template.accountsSettings.onRendered( () => {
 Template.accountsSettings.helpers({
   services() {
 
-    let serviceHelper = new window.ReactionServiceHelper();
+    let serviceHelper = new ReactionServiceHelper();
     let configurations = ServiceConfiguration.configurations.find().fetch();
-    let services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
 
-
-
-    services = _.map(services, function (name) {
-
-      let serviceName = serviceHelper.getCapitalizedServiceName(name);
-
-      var thing = {
-        name: name,
-        label: serviceHelper.getCapitalizedServiceName(name),
-        buttonType: Template.instance().type || 'signIn',
-        fields: serviceHelper.getConfigFieldsForService(name)
-      };
-
-      var matchingConfigurations = _.where(configurations, {service: name})
-
+    let services = serviceHelper.services((item) => {
+      let matchingConfigurations = _.where(configurations, {service: item.name})
       if (matchingConfigurations.length) {
-        thing = _.extend(thing, matchingConfigurations[0])
+        return matchingConfigurations[0]
       }
-
-      return thing
-
     });
 
+    console.log(services);
     return services;
   },
 
   isSecretField(fieldName) {
     return fieldName === "secret";
+  },
+
+  checked(enabled) {
+    return enabled === "true" ? "checked": "";
   },
 
   valueForField(fieldName, service) {
@@ -168,17 +156,35 @@ Template.accountsSettings.events({
   "submit form": (event, template) => {
     event.preventDefault();
 
-    let serviceHelper = new window.ReactionServiceHelper();
-    let fields = serviceHelper.getConfigFieldsForService(event.target.service.value);
+    let service = event.target.service.value;
+    let serviceHelper = new ReactionServiceHelper();
+    let fields = serviceHelper.configFieldsForService(service);
 
     for (let field of fields) {
       field.value = event.target[field.property].value;
     }
 
-    Meteor.call("accounts/updateServiceConfiguration", "facebook", fields, function(result) {
+    console.log(fields)
+
+    Meteor.call("accounts/updateServiceConfiguration", service, fields, function(result) {
 
     })
 
+  },
+
+  "change input[name=enabled]": (event, template) => {
+    console.log(event.target.checked);
+
+    let service = event.target.value;
+    var fields = [{
+      "property": "enabled",
+      value: event.target.checked ? "true" : "false"
+    }];
+
+
+    Meteor.call("accounts/updateServiceConfiguration", service, fields, function(result) {
+      console.log("poop", result)
+    });
   },
 
   "click [data-event-action=showSecret]": (event, template) => {
