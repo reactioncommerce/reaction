@@ -8,4 +8,4 @@
  */
 
 
-//Template.layout.replaces("coreLayout");
+// Template.layout.replaces("coreLayout");

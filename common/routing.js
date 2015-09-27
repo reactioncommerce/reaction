@@ -4,15 +4,15 @@
  * ReactionCore common/routing.js contains the core routes.
  */
 
-var staticPages;
-staticPages = ["about", "team", "faqs", "terms", "privacy"];
+let staticPages = ["about", "team", "faqs", "terms", "privacy" ];
 
 /**
  * app router mapping
  */
- 
-Router.map(function() {
-  var page, _i, _len;
+Router.map(function route() {
+  let page;
+  let _i;
+  let _len;
   for (_i = 0, _len = staticPages.length; _i < _len; _i++) {
     page = staticPages[_i];
     this.route(page, {
