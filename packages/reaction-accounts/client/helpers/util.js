@@ -1,16 +1,15 @@
 
-var capitalize = function(str){
-  str = str == null ? '' : String(str);
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
+function capitalize(str) {
+  let finalString = str == null ? "" : String(str);
+  return finalString.charAt(0).toUpperCase() + str.slice(1);
+}
 
 ReactionServiceHelper = class ReactionServiceHelper {
 
   construct() {}
 
   availableServices() {
-
-    let services = Package['accounts-oauth'] ? Accounts.oauth.serviceNames() : [];
+    let services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
     services.sort();
 
     return services;
@@ -18,10 +17,10 @@ ReactionServiceHelper = class ReactionServiceHelper {
 
   capitalizedServiceName(name) {
     if (name === "meteor-developer") {
-      return "MeteorDeveloperAccount"
-    } else {
-      return capitalize(name);
+      return "MeteorDeveloperAccount";
     }
+
+    return capitalize(name);
   }
 
   configFieldsForService(name) {
@@ -32,9 +31,8 @@ ReactionServiceHelper = class ReactionServiceHelper {
       let fields = template.fields();
 
       return _.map(fields, (field) => {
-
         if (!field.type) {
-          field.type = (field.property === "secret") ? "password" : "text"
+          field.type = (field.property === "secret") ? "password" : "text";
         }
 
         return _.extend(field, {
@@ -47,26 +45,26 @@ ReactionServiceHelper = class ReactionServiceHelper {
   }
 
   services(extendEach) {
-
     let services = this.availableServices();
+    let configurations = ServiceConfiguration.configurations.find().fetch();
 
     return _.map(services, (name) => {
-
-      let serviceName = this.capitalizedServiceName(name);
-
-      var thing = {
+      let matchingConfigurations = _.where(configurations, {service: name});
+      let service = {
         name: name,
         label: this.capitalizedServiceName(name),
         fields: this.configFieldsForService(name)
       };
 
-      if (_.isFunction(extendEach)) {
-        thing = _.extend(thing, extendEach(thing) || {})
+      if (matchingConfigurations.length) {
+        service = _.extend(service, matchingConfigurations[0]);
       }
 
-      return thing
+      if (_.isFunction(extendEach)) {
+        service = _.extend(service, extendEach(service) || {});
+      }
 
+      return service;
     });
-
   }
-}
+};

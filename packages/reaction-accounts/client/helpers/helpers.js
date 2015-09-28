@@ -6,18 +6,17 @@ window.LoginFormSharedHelpers = {
     return Template.instance().formMessages.get();
   },
 
-  hasError: function(error) {
-
+  hasError(error) {
     // True here means the field is valid
     // We're checking if theres some other message to display
-    if (error !== true && typeof error !== 'undefined') {
-      return 'has-error has-feedback';
+    if (error !== true && typeof error !== "undefined") {
+      return "has-error has-feedback";
     }
 
     return false;
   },
 
-  formErrors: function () {
+  formErrors() {
     return Template.instance().formErrors.get();
   },
 
@@ -26,18 +25,20 @@ window.LoginFormSharedHelpers = {
   },
 
 
-  services: function () {
-    let services = new ReactionServiceHelper();
-    return services.services();
+  services() {
+    let serviceHelper = new ReactionServiceHelper();
+    return serviceHelper.services();
   },
 
-  shouldShowSeperator: function () {
-    return !!Package['accounts-password'] && Accounts.oauth.serviceNames().length
+  shouldShowSeperator() {
+    let serviceHelper = new ReactionServiceHelper();
+    let services = serviceHelper.services();
+    let enabledServices = _.where(services, {enabled: "true"});
+
+    return !!Package["accounts-password"] && enabledServices.length > 0;
   },
 
-  hasPasswordService: function () {
-    return ( !!Package['accounts-password'] )
+  hasPasswordService() {
+    return !!Package["accounts-password"];
   }
-
-
 };

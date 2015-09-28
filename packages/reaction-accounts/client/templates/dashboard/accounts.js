@@ -1,15 +1,13 @@
-"use strict";
-
 /**
  * Accounts helpers
  *
  */
-
-
-
-//
 Template.accountsDashboardControls.events({
-  "click [data-event-action=addShopMember]": function () {
+  /**
+   * Accounts helpers
+   * @return {void}
+   */
+  "click [data-event-action=addShopMember]": () => {
     ReactionCore.showActionView({
       label: "Add Shop Member",
       template: "memberForm"
@@ -19,9 +17,12 @@ Template.accountsDashboardControls.events({
 
 
 Template.accountsDashboard.helpers({
-
-  isShopMember: function () {
-    var roles = ["Dashboard", "Administrator", "Owner"];
+  /**
+   * isShopMember
+   * @return {Boolean} True if the memnber is an administrator
+   */
+  isShopMember() {
+    let roles = ["Dashboard", "Administrator", "Owner"];
 
     if (_.contains(roles, this.role)) {
       return true;
@@ -30,16 +31,24 @@ Template.accountsDashboard.helpers({
     return false;
   },
 
-  isShopGuest: function () {
-    var roles = ["Dashboard", "Administrator", "Owner"];
+  /**
+   * isShopGuest
+   * @return {Boolean} True if the memnber is an administrator
+   */
+  isShopGuest() {
+    let roles = ["Dashboard", "Administrator", "Owner"];
 
     if (_.contains(roles, this.role) === false) {
       return true;
     }
 
-    return false;
+    return true;
   },
 
+  /**
+   * isShopGuest
+   * @return {Boolean} True if the memnber is an administrator
+   */
   members: function() {
     var ShopMembers, members, shopUsers;
     members = [];
@@ -164,12 +173,14 @@ Template.accountsSettings.events({
       field.value = event.target[field.property].value;
     }
 
-    console.log(fields)
-
-    Meteor.call("accounts/updateServiceConfiguration", service, fields, function(result) {
-
-    })
-
+    Meteor.call(
+      "accounts/updateServiceConfiguration",
+      service,
+      fields, (result) => {
+        if (result) {
+          // Display Result
+        }
+      });
   },
 
   "change input[name=enabled]": (event, template) => {
@@ -200,9 +211,3 @@ Template.accountsSettings.events({
     }
   }
 })
-
-
-
-
-
-

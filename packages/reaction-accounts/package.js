@@ -36,12 +36,15 @@ Package.onUse(function (api, where) {
   api.use("accounts-password");
   api.use("accounts-oauth");
   api.use("accounts-facebook");
+  api.use("accounts-google");
   api.use("reactioncommerce:core@0.8.0");
 
   api.use("ecmascript");
   api.use("accounts-twitter");
   api.use("accounts-github");
   api.use("accounts-weibo");
+
+  api.use("reactioncommerce:core-theme");
 
   // Core Reaction packages
 
