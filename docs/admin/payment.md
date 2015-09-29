@@ -1,6 +1,6 @@
-#Payment Processing
+# Payment Processing
 
-##Payment Apps
+## Payment Apps
 
 To enable a payment provider for your shop, login as a shop admin and navigate to your Dashboard.
 

@@ -1,4 +1,4 @@
-#Apps / Packages
+# Apps / Packages
 
 Reaction apps are the heart of Reaction. You can increase the power of your shop by adding and configuring additional Reaction apps.
 

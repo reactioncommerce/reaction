@@ -10,11 +10,7 @@ let staticPages = ["about", "team", "faqs", "terms", "privacy" ];
  * app router mapping
  */
 Router.map(function route() {
-  let page;
-  let _i;
-  let _len;
-  for (_i = 0, _len = staticPages.length; _i < _len; _i++) {
-    page = staticPages[_i];
+  for (let page of staticPages) {
     this.route(page, {
       controller: ShopController,
       name: page

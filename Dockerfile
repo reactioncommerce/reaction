@@ -16,9 +16,9 @@
 #
 #   docker run --rm  -p ::3000
 #     -e ROOT_URL="http://localhost" \
-#     -e METEOR_EMAIL="youradmin@yourdomain.com" \
-#     -e METEOR_USER="admin" \
-#     -e METEOR_AUTH="password" \
+#     -e REACTION_EMAIL="youradmin@yourdomain.com" \
+#     -e REACTION_USER="admin" \
+#     -e REACTION_AUTH="password" \
 #     -t ongoworks/reaction
 #
 #
@@ -34,9 +34,9 @@
 #   Reaction Specific parameter (-e):
 #
 #     MAIL_URL="<smtp connection string>"
-#     METEOR_EMAIL="youradmin@yourdomain.com"
-#     METEOR_USER="admin"
-#     METEOR_AUTH="password"
+#     REACTION_EMAIL="youradmin@yourdomain.com"
+#     REACTION_USER="admin"
+#     REACTION_AUTH="password"
 #
 ##############################################################
 

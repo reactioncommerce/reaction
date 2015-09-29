@@ -1,10 +1,10 @@
-#Tags and Navigation
+# Tags and Navigation
 
 Tags are the way to classify and group your products. Tags on Reaction Commerce are similar to hashtags on social media sites in that they are a way to easily search a grouping of related items. Tags make it possible to group products, and then a search on that tag returns all the products that contain it. This is what we refer to as a “Hashtag Taxonomy.” 
 
 On Reaction, there are two types of tags: Product Tags and Navigation Tags. You can think of Product Tags as a list of keywords that help shoppers find what they’re looking for. Navigation Tags are more like category headings.
 
-##Product Tags
+## Product Tags
 
 To assign a tag to a product, login as an admin, and click on a product to go to a product detail page. Below the images section is the “Tags” section.
 
@@ -16,13 +16,13 @@ To delete a tag, click the grey “x” icon (![](http://raw.github.com/reaction
 
 To rearrange tags, click on the 3 horizontal lines icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-movetag.png "Reaction Commerce move tags")), and drag and drop the tag where you want it.
 
-###Hashtag URLs
+### Hashtag URLs
 
 The flag icon in each tag automatically creates a URL for that product based on that tag. By clicking on the flag outline, it changes to a solid flag, and the URL for your product changes from an automated URL of nonsensical characters to a URL containing just the words from that tag.
 
 While this functionality may seem uneventful at the moment, we have big plans. Eventually, Hashtag URLs will allow you to glean important information about the popularity and social weight of your products, like how often it’s shared on social networks, how popular it is compared to similar products, whether it’s trending and, if so, where in the world it’s trending, and more. With this information, you’ll be able to better target your marketing efforts. 
 
-##Navigation Tags
+## Navigation Tags
 
 To edit the top Navigation Tags of your shop, login as an admin, and click on the “Tags” icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-tag.png "Reaction Commerce tags")) in the top navigation bar of your shop.
 

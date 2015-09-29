@@ -1,4 +1,4 @@
-#Basic Shipping
+# Basic Shipping
 
 To create flat rate shipping rules, login as an admin, navigate to your Dashboard, and click on the plus icon located on "Basic Shipping" app card. 
 

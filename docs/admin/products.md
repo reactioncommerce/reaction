@@ -1,8 +1,8 @@
-##Products
+## Products
 
 Products are the individual items that you are selling in your Reaction shop. With Reaction, you can create and edit products inline with the same view your shoppers will see: No separate administrator views; just simple product management.
 
-###Creating Products
+### Creating Products
 
 To create a product, first login as an administrator and click on your avatar in the top right corner of your shop. Then click  "Add Product" in the dropdown window that appears.
 
@@ -26,19 +26,19 @@ Once the product is set to be visible, a link appears at the top of the product 
 
 ![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-products-makeinvisible.png "Reaction Commerce make invisible")
 
-###Editing Products
+### Editing Products
 
 In Reaction, products are edited from the same view the shopper sees. All you need to do is login as a user with sufficient permissions, and click on the product you wish to edit. From the product detail view, you can click to change any field.
 
 ![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-products-editproduct.png "Reaction Commerce edit product")
 
-###Removing Products
+### Removing Products
 
 To remove an entire product, login as a user with sufficient permissions, and click the Delete icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-delete.png "Reaction Commerce delete product")) in the grid view. To remove an individual variant, see the Product Variant section below.
 
 ![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-products-removeproduct.png "Reaction Commerce remove product")
 
-###Product Variants
+### Product Variants
 
 Product variants allow you to create variations of the same base product. You can specify different prices, weights, quantities, and other key information for each variant. An example of variants is carrying multiple colors of a given shirt.
 
@@ -67,7 +67,7 @@ Each option can have its own price, quantity, name, and even its own set of imag
 
 ![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-products-editvariantoption.png "Reaction Commerce edit variant option")
 
-###Product Media
+### Product Media
 
 In Reaction, you can easily add images to show off your products. Each variant has its own media gallery. Currently, only image file types are supported. Support for more file types, as well as integration with Google Drive, Dropbox, and others, is on our feature list. See [Issue #50](https://github.com/reactioncommerce/reaction/issues/50) and [Issue #69](https://github.com/reactioncommerce/reaction/issues/69).
 
@@ -81,7 +81,7 @@ Once you have images/videos added to your gallery, simply drag and drop to chang
 
 ![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-products-dragmedia.png "Reaction Commerce drag and drop image")
 
-###Product Grid
+### Product Grid
 
 Products are displayed, by default, in a grid layout. When logged in as an Administrator, you can drag and drop products to reorder them. What you see is the same as what your shoppers will see.
 
