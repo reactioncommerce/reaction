@@ -1,5 +1,4 @@
-#Variable Scope & Namespaces
-
+# Variable Scope & Namespaces
 _core/common/packageGlobals.js:_
 
 ```javascript

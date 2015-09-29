@@ -1,10 +1,9 @@
-#Style Guide
-
+# Style Guide
 _A work in progress, but this is good guides._
 
 Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for ideas on format and style of contributions.
 
-# Linters
+## Linters
 **Installation & Usage**
 
 We've been developing a lot lately using the Atom editor, here's how we setup ESLinting with Atom:

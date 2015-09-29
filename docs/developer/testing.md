@@ -1,5 +1,4 @@
-#Testing
-
+# Testing
 We're using the Meteor testing framework [Velocity](http://velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](https://github.com/Sanjo/meteor-jasmine) for the majority of tests.
 
 Velocity doesn't always make it easy to test packages separately from the app. Velocity can also slow down the reload process during development while it's running tests in multiple cloned instances of the shop.
@@ -12,14 +11,12 @@ VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-rep
 
 As such, our testing falls into two locations:
 
-####Reaction End to End Tests
-
+## Reaction End to End Tests
    Located in the `reaction/tests/jasmine/client/integration` folder, these tests cover UIX testing. These are relatively fragile tests as they are only testing core theme and UIX.
 
    You enable these tests by uncommenting the velocity testing packages in `.meteor/packages`.
 
-####Package integration Tests
-
+## Package integration Tests
    Tests for the individual reaction packages, are respectively located in `/tests/jasmine/server/integration`. Each package should cover tests  these tests cover UIX testing. These are relatively fragile tests as they are only testing core theme and UIX.
 
    These tests are run independently from the end to end tests, and can be run from the command line:

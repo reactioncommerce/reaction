@@ -1,16 +1,20 @@
-#Vagrant
+# Vagrant
 Install [Vagrant](http://www.vagrantup.com/downloads.html)
 
-	vagrant init hashicorp/precise32
-	vagrant up
+```
+vagrant init hashicorp/precise32
+vagrant up
+```
 
 Setup vagrant port forwarding, edit Vagrantfile and uncomment the config.vm.network and edit ports
 
-	config.vm.network "forwarded_port", guest: 3000, host: 3001
+```
+config.vm.network "forwarded_port", guest: 3000, host: 3001
+```
 
 This example will allow you to access the Reaction/Meteor server on port localhost:3001 in the host machine browser.
 
-#Ubuntu
+# Ubuntu
 
 ```bash
 sudo apt-get update
@@ -24,6 +28,3 @@ git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
 meteor
 ```
-
-
-

@@ -1,13 +1,11 @@
-#Deploying
-
+# Deploying
 An example of a deployment with password to a [meteor.com hosted site](http://docs.meteor.com/#deploying)
 
   meteor deploy --settings settings/<prod-settings>.json <yoursite>.meteor.com
 
 _Note: If you are running Reaction remotely (not localhost, ie: vm, aws, docker, etc) and don't want https forwarding, you may remove the [Meteor force-ssl](https://atmospherejs.com/meteor/force-ssl) package using `meteor remove force-ssl`. See [section in docs regarding https](https://github.com/reactioncommerce/reaction-core/blob/master/docs/installation.md#https)._
 
-##Docker
-
+## Docker
 Requires installation of Docker. On OS X or Windows install [boot2docker](http://boot2docker.io/).
 
 The `Dockerfile` in the project root creates a Docker image of Reaction Commerce, and starts the reaction/meteor bundled version with `forever -w ./main.js` . It includes a local mongo installation, but the container accepts environment variables for configuring `MONGO_URL` to provide an alternate data source.
@@ -38,8 +36,7 @@ docker build -t reactioncommerce/reaction-test .
 docker run -p :3000 -it reactioncommerce/reaction-test
 ```
 
-##Docker Machine
-
+## Docker Machine
 Install the Docker Toolbox from [https://www.docker.com/toolbox](https://www.docker.com/toolbox).
 
 Build and deploy reaction-drive on AWS with `docker-machine`:
@@ -53,6 +50,5 @@ docker run -d -p :80:3000 reactioncommerce/reaction
 
 In this example, you'll need to add port 80 your `security group`'s inbound rules.
 
-##Vagrant / Ubuntu
-
+## Vagrant / Ubuntu
 Linux or Vagrant Installation: [Ubuntu / Vagrant Install](https://github.com/reactioncommerce/reaction-core/blob/master/docs/vagrant.md)

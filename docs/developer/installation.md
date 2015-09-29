@@ -1,5 +1,4 @@
-#Installation
-
+# Installation
 **Prerequisites**
 - Npm and [Node.js](http://nodejs.org/)
 - _`ImageMagick` - Optional but suggested_
@@ -60,8 +59,7 @@ You can also use `meteor upgrade` to pull the latest published packages.
 
 _Note: currently there is not any data schema compatibility tests between releases, which is why we use `meteor reset` in this example. It's not necessary if you want to preserve your data, but there could be compatibility issues with the upgrade._
 
-##Settings
-
+## Settings
 Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run:
 
 ```
