@@ -84,17 +84,18 @@ _.extend(ReactionCore, {
   getDomain: function(client) {
     return Meteor.absoluteUrl().split('/')[2].split(':')[0];
   },
-  hasPermission: function(permissions) {
+  hasPermission: function(permissions, userId) {
     var shop, _i, _len, _ref2;
-    if (Roles.userIsInRole(Meteor.userId(), permissions, this.getShopId())) {
+    var uid = userId || Meteor.userId();
+    if (Roles.userIsInRole(uid, permissions, this.getShopId())) {
       return true;
-    } else if (Roles.userIsInRole(Meteor.userId(), permissions, Roles.GLOBAL_GROUP)) {
+    } else if (Roles.userIsInRole(uid, permissions, Roles.GLOBAL_GROUP)) {
       return true;
     }
     _ref2 = this.getSellerShopId();
     for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
       shop = _ref2[_i];
-      if (Roles.userIsInRole(Meteor.userId(), permissions, shop)) {
+      if (Roles.userIsInRole(uid, permissions, shop)) {
         return true;
       }
     }
