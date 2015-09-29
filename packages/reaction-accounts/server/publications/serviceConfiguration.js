@@ -1,35 +1,24 @@
-
-
-// var serviceFieldConfigurations = {
-//   // Pulled from
-//   "github": [
-//     {property: 'clientId', label: 'Client ID'},
-//     {property: 'secret', label: 'Client Secret'}
-//   ]
-// }
-
-
-
-
-Meteor.publish('ServiceConfiguration', function (userId) {
-
+/* eslint new-cap: 0 */
+/**
+ * Publish ServiceConfiguration
+ */
+Meteor.publish("ServiceConfiguration", function(userId) {
   check(userId, Match.OneOf(String, null));
 
-  // global admin can get all accounts
-  if (ReactionCore.hasPermission(["dashboard/accounts"])) {
+  // Admins and account managers can manage the login methods for the shop
+  if (ReactionCore.hasPermission(["dashboard/accounts"], this.userId)) {
     return ServiceConfiguration.configurations.find({}, {
       fields: {
-        "secret": 1,
-        "enabled": 1
+        secret: 1,
+        enabled: 1
       }
     });
-  // shop admin gets accouns for just this shop
   }
 
   return ServiceConfiguration.configurations.find({}, {
     fields: {
-      "secret": 0,
-      "enabled": 1
+      secret: 0,
+      enabled: 1
     }
   });
 });

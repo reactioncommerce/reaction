@@ -5,8 +5,8 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 
-Package.onUse(function (api, where) {
-  api.versionsFrom('METEOR@1.2');
+Package.onUse(function(api) {
+  api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
   api.use("standard-minifiers");
@@ -25,7 +25,6 @@ Package.onUse(function (api, where) {
   api.use("check");
 
   // meteor add-on packages
-
   api.use("less");
   api.use("email");
   api.use("random");
@@ -47,7 +46,6 @@ Package.onUse(function (api, where) {
   api.use("reactioncommerce:core-theme");
 
   // Core Reaction packages
-
   // register as a reaction package
   api.addFiles("server/register.js", "server");
   api.addFiles("server/methods/accounts.js", "server");
@@ -55,7 +53,6 @@ Package.onUse(function (api, where) {
   api.addFiles("server/publications/members.js", "server");
 
   api.addFiles("common/routing.js", ["client", "server"]);
-
 
   api.addFiles("client/helpers/util.js", ["client", "server"]);
   api.addFiles("client/helpers/validation.js", ["client"]);
@@ -90,8 +87,6 @@ Package.onUse(function (api, where) {
   api.addFiles("client/templates/addressBook/grid/grid.html", "client");
   api.addFiles("client/templates/addressBook/grid/grid.js", "client");
 
-
-
   // core login form and generic templates
   api.addFiles("client/templates/login/loginForm.html", "client");
   api.addFiles("client/templates/login/loginButtons.html", "client");
@@ -115,21 +110,16 @@ Package.onUse(function (api, where) {
 
   // basic styles
   api.addFiles("client/templates/loginForm.less", "client");
-
-
-
 });
 
-
 Package.onTest(function(api) {
-  api.use('sanjo:jasmine@0.18.0');
-  api.use('underscore');
+  api.use("sanjo:jasmine@0.18.0");
+  api.use("underscore");
   api.use("dburles:factory@0.3.10");
-  api.use('velocity:html-reporter@0.8.2');
-  api.use('velocity:console-reporter@0.1.3');
+  api.use("velocity:html-reporter@0.8.2");
+  api.use("velocity:console-reporter@0.1.3");
 
   api.use("reactioncommerce:reaction-accounts");
 
-  api.addFiles('tests/jasmine/client/integration/login.js', 'client');
-
+  api.addFiles("tests/jasmine/client/integration/login.js", "client");
 });
