@@ -1,4 +1,4 @@
-#Order processing
+# Order processing
 
 To view and process orders, login as an admin and click on your avatar in the upper right corner of your shop. From the dropdown menu, select Orders.
 
