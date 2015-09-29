@@ -52,6 +52,7 @@ Package.onUse(function (api, where) {
   api.addFiles("server/register.js", "server");
   api.addFiles("server/methods/accounts.js", "server");
   api.addFiles("server/publications/serviceConfiguration.js", "server");
+  api.addFiles("server/publications/members.js", "server");
 
   api.addFiles("common/routing.js", ["client", "server"]);
 

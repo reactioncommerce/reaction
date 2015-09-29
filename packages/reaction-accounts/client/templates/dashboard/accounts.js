@@ -42,7 +42,7 @@ Template.accountsDashboard.helpers({
       return true;
     }
 
-    return true;
+    return false;
   },
 
   /**
