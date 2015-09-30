@@ -1,5 +1,5 @@
 # Style Guide
-_A work in progress, but this is good guides._
+_A work in progress, but this is good guide to start._
 
 Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for ideas on format and style of contributions.
 

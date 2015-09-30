@@ -1,4 +1,5 @@
 # Installation
+## Prerequisites
 **Prerequisites**
 - Npm and [Node.js](http://nodejs.org/)
 - _`ImageMagick` - Optional but suggested_
@@ -7,7 +8,7 @@
   - Visual Studio 2008 redistributables
   - Git / mysgit
 
-**Installation**
+## Install Meteor, Clone Repository
 
 ```bash
 curl https://install.meteor.com | /bin/sh

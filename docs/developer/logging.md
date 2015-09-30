@@ -1,5 +1,6 @@
 #Logging
 
+# Bunyan
 [Bunyan](https://github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
