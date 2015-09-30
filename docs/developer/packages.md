@@ -363,7 +363,7 @@ Routes are defined, both in app and packages. Most often found in `common/router
 
 ```
 Router.map ->
-  @route 'paypal',
+  this.route 'paypal',
     controller: ShopAdminController
     path: 'dashboard/settings/paypal',
     template: 'paypal'
