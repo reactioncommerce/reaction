@@ -7,6 +7,7 @@ Router.map(function() {
     template: 'accountsDashboard',
     subscriptions: function () {
       this.subscribe('ServiceConfiguration', Meteor.userId())
+      this.subscribe('ShopMembers')
     },
   });
 

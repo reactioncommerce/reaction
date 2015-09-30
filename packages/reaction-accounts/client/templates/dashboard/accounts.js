@@ -72,6 +72,7 @@ Template.accountsDashboard.helpers({
           member.username = user !== null ? user.username : void 0;
           member.isAdmin = Roles.userIsInRole(user._id, "admin", ReactionCore.getShopId());
           member.roles = user.roles;
+          member.services = user.services;
 
           if (Roles.userIsInRole(member.userId, "dashboard", ReactionCore.getShopId())) {
             member.role = "Dashboard";

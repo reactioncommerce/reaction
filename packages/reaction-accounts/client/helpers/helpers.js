@@ -42,3 +42,78 @@ window.LoginFormSharedHelpers = {
     return !!Package["accounts-password"];
   }
 };
+
+
+/**
+ * registerHelper displayName
+ */
+Template.registerHelper("displayName", function (user) {
+  let username;
+  let authenticated = false;
+  user = user || Meteor.user();
+
+  if (user && user.profile && user.profile.name) {
+    return user.profile.name;
+  } else if (user && user.username) {
+    return user.username;
+  }
+
+  if (user.services && user.services !== 'anonymous' && user.services !== 'resume') {
+    authenticated = true;
+  }
+
+  if (user && authenticated === true) {
+    return username = (function () {
+      switch (false) {
+        case !user.services.twitter:
+          return user.services.twitter.name;
+        case !user.services.google:
+          return user.services.google.name;
+        case !user.services.facebook:
+          return user.services.facebook.name;
+        case !user.services.instagram:
+          return user.services.instagram.name;
+        case !user.services.pinterest:
+          return user.services.pinterest.name;
+        default:
+          return i18n.t('accountsUI.guest') || "Guest";
+      }
+    })();
+  } else {
+    return i18n.t('accountsUI.signIn') || "Sign in TEST";
+  }
+});
+
+/**
+ * registerHelper fName
+ */
+
+Template.registerHelper("fName", function (user) {
+  var username;
+  user = user || Meteor.user();
+  if (user && user.profile && user.profile.name) {
+    return user.profile.name.split(" ")[0];
+  } else if (user && user.username) {
+    return user.username.name.split(" ")[0];
+  }
+  if (user && user.services) {
+    return username = (function () {
+      switch (false) {
+        case !user.services.twitter:
+          return user.services.twitter.first_name;
+        case !user.services.google:
+          return user.services.google.given_name;
+        case !user.services.facebook:
+          return user.services.facebook.first_name;
+        case !user.services.instagram:
+          return user.services.instagram.first_name;
+        case !user.services.pinterest:
+          return user.services.pinterest.first_name;
+        default:
+          return i18n.t('accountsUI.guest') || "Guest";
+      }
+    })();
+  } else {
+    return i18n.t('accountsUI.signIn') || "Sign in";
+  }
+});
