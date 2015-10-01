@@ -1,22 +1,13 @@
 /**
-* coreHead helpers
-* used to define layout for routes
-* see: common/routing.coffee
-*/
+ * coreHead helpers
+ * used to define layout for routes
+ * see: common/routing.js
+ */
 
 Template.coreHead.helpers({
-  metaData: function(metaData) {
+  metaData: function () {
     return ReactionCore.MetaData;
   }
-});
-
-
-
-
-
-
-Template.coreAdminLayout.onRendered(function () {
-
 });
 
 Template.coreAdminLayout.helpers({
@@ -28,8 +19,6 @@ Template.coreAdminLayout.helpers({
     if (ReactionCore.isActionViewOpen()) {
       return "show-settings";
     }
-
     return "";
-  },
-
+  }
 });
