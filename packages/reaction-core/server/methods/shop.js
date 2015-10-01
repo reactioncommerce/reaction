@@ -23,12 +23,12 @@ Meteor.methods({
     adminRoles = Roles.getRolesForUser(currentUser, ReactionCore.getShopId());
     shopId = Factory.create("shop")._id;
     try {
-      ReactionCore.Events.warn("Created shop: ", shopId);
+      ReactionCore.Log.warn("Created shop: ", shopId);
       Roles.addUsersToRoles([currentUser, userId], adminRoles, shopId);
       return shopId;
     } catch (_error) {
       e = _error;
-      return ReactionCore.Events.warn("Failed to createShop", e);
+      return ReactionCore.Log.warn("Failed to createShop", e);
     }
   },
 
@@ -102,7 +102,7 @@ Meteor.methods({
           result.currency.exchangeRate = Meteor.call("getCurrencyRates", currency);
 
           if (!exchangeRate) {
-            ReactionCore.Events.warn("Failed to fetch rate exchange rates.");
+            ReactionCore.Log.warn("Failed to fetch rate exchange rates.");
           }
           result.currency.exchangeRate = exchangeRate.data;
         }
@@ -153,7 +153,7 @@ Meteor.methods({
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id, but default to 1
     if (!openexchangeratesAppId) {
-      ReactionCore.Events.warn("Open Exchange Rates AppId not configured. Configure for current rates.");
+      ReactionCore.Log.warn("Open Exchange Rates AppId not configured. Configure for current rates.");
     } else {
       // we'll update all the available rates in Shops.currencies whenever we get a rate request, using base currency
       var rateUrl = "https://openexchangerates.org/api/latest.json?base=" + baseCurrency + "&app_id=" + openexchangeratesAppId;
@@ -232,7 +232,7 @@ Meteor.methods({
       return Tags.update(tagId, {
         $set: newTag
       }, function () {
-        ReactionCore.Events.info("Changed name of tag " + tagId + " to " + tagName);
+        ReactionCore.Log.info("Changed name of tag " + tagId + " to " + tagName);
         return true;
       });
     } else if (existingTag) {
@@ -242,7 +242,7 @@ Meteor.methods({
             "relatedTagIds": existingTag._id
           }
         }, function () {
-          ReactionCore.Events.info('Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId);
+          ReactionCore.Log.info('Added tag "' + existingTag.name + '" to the related tags list for tag ' + currentTagId);
           return true;
         });
       } else {
@@ -251,7 +251,7 @@ Meteor.methods({
             "isTopLevel": true
           }
         }, function () {
-          ReactionCore.Events.info('Marked tag "' + existingTag.name + '" as a top level tag');
+          ReactionCore.Log.info('Marked tag "' + existingTag.name + '" as a top level tag');
           return true;
         });
       }
@@ -267,11 +267,11 @@ Meteor.methods({
             "relatedTagIds": newTagId
           }
         }, function () {
-          ReactionCore.Events.info('Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId);
+          ReactionCore.Log.info('Added tag "' + newTag.name + '" to the related tags list for tag ' + currentTagId);
           return true;
         });
       } else if (newTagId && !currentTagId) {
-        ReactionCore.Events.info('Created tag "' + newTag.name + '"');
+        ReactionCore.Log.info('Created tag "' + newTag.name + '"');
         return true;
       } else {
         throw new Meteor.Error(403, "Failed to update header tags.");
@@ -323,7 +323,7 @@ Meteor.methods({
     }
     ReactionCore.Collections.Translations.remove({});
     Fixtures.loadI18n();
-    return ReactionCore.Events.info(Meteor.userId() + " Flushed Translations.");
+    return ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
   },
 
   /**

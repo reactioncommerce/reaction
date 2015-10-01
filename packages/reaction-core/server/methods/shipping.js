@@ -36,7 +36,7 @@ Meteor.methods({
           }
         });
       }
-      ReactionCore.Events.debug(rates);
+      ReactionCore.Log.debug(rates);
     }
   },
 
@@ -100,8 +100,8 @@ Meteor.methods({
       }
       return _results;
     });
-    ReactionCore.Events.info("getShippingrates returning rates");
-    ReactionCore.Events.debug("rates", rates);
+    ReactionCore.Log.info("getShippingrates returning rates");
+    ReactionCore.Log.debug("rates", rates);
     return rates;
   }
 });

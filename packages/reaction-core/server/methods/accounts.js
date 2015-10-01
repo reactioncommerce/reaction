@@ -86,7 +86,7 @@ Accounts.onLogin(function (options) {
       multi: true
     });
     // debug info
-    ReactionCore.Events.info("removed anonymous role from user: " + options.user._id);
+    ReactionCore.Log.info("removed anonymous role from user: " + options.user._id);
 
     // onLogin, we want to merge session cart into user cart.
     cart = ReactionCore.Collections.Cart.findOne({userId: options.user._id});
@@ -362,7 +362,7 @@ Meteor.methods({
       return Roles.addUsersToRoles(userId, permissions, group);
     } catch (_error) {
       e = _error;
-      return ReactionCore.Events.info(e);
+      return ReactionCore.Log.info(e);
     }
   },
 
@@ -380,7 +380,7 @@ Meteor.methods({
       return console.log(Roles.removeUsersFromRoles(userId, permissions, group));
     } catch (_error) {
       error = _error;
-      ReactionCore.Events.info(error);
+      ReactionCore.Log.info(error);
       throw new Meteor.Error(403, "Access Denied");
     }
   },
@@ -398,7 +398,7 @@ Meteor.methods({
       return Roles.setUserRoles(userId, permissions, group);
     } catch (_error) {
       e = _error;
-      return ReactionCore.Events.info(e);
+      return ReactionCore.Log.info(e);
     }
   }
 });

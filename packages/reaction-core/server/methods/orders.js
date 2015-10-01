@@ -183,7 +183,7 @@ Meteor.methods({
             });
 
           } else {
-            ReactionCore.Events.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
+            ReactionCore.Log.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
             throw new Meteor.Error("Failed to capture transaction");
           }
         });

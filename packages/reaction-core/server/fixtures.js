@@ -28,7 +28,7 @@ PackageFixture = class {
     let json = null;
     let result = null;
 
-    ReactionCore.Events.debug(
+    ReactionCore.Log.debug(
       `Loading fixture data for ${collection._name}`);
     // if jsonFile was path wasn't provided
     // we'll assume we're loading collection data
@@ -45,11 +45,11 @@ PackageFixture = class {
     }
 
     if (result) {
-      ReactionCore.Events.info(
+      ReactionCore.Log.info(
         `Success importing fixture data to ${collection._name}`
       );
     } else {
-      ReactionCore.Events.error("Error adding fixture data to " +
+      ReactionCore.Log.error("Error adding fixture data to " +
         collection._name, error.message);
     }
   }
@@ -79,7 +79,7 @@ PackageFixture = class {
     let validatedJson = EJSON.parse(json);
     // validate json and error out if not an array
     if (!_.isArray(validatedJson[0])) {
-      ReactionCore.Events.warn(
+      ReactionCore.Log.warn(
         "Load Settings is not an array. Failed to load settings.");
       return;
     }
@@ -118,13 +118,13 @@ PackageFixture = class {
                 }, {
                   $set: settings
                 });
-                ReactionCore.Events.info("service configuration loaded: " +
+                ReactionCore.Log.info("service configuration loaded: " +
                   item.name + " | " + service);
               }
             }
           }
         }
-        ReactionCore.Events.info(`loaded local package data: ${item.name}`);
+        ReactionCore.Log.info(`loaded local package data: ${item.name}`);
       }
     }
   }
@@ -146,7 +146,7 @@ PackageFixture = class {
 
     shop = ReactionCore.Collections.Shops.findOne();
     if (shop) {
-      ReactionCore.Events.info(
+      ReactionCore.Log.info(
         `Loading fixture data for ${collection._name}`);
       if (!(shop !== null ? shop.languages : void 0)) {
         shop.languages = [{
@@ -160,17 +160,17 @@ PackageFixture = class {
         for (let item of json) {
           collection.insert(item, function (error) {
             if (error) {
-              ReactionCore.Events.warn("Error adding " + language.i18n +
+              ReactionCore.Log.warn("Error adding " + language.i18n +
                 " to " + collection._name, item, error);
             }
           });
-          ReactionCore.Events.info("Success adding " + language.i18n +
+          ReactionCore.Log.info("Success adding " + language.i18n +
             " to " +
             collection._name);
         }
       }
     } else {
-      ReactionCore.Events.error("No shop found. Failed to load languages.");
+      ReactionCore.Log.error("No shop found. Failed to load languages.");
       return;
     }
   }
@@ -222,7 +222,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
       options.password = url.substring(url.indexOf("/") + 2, url.indexOf("@"))
         .split(":")[1];
     }
-    ReactionCore.Events.warn(
+    ReactionCore.Log.warn(
       "\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email +
       "\n  PASSWORD: " + options.password + "\n");
   } else {
@@ -230,7 +230,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
     options.password = Meteor.settings.REACTION_AUTH || Random.secret(8);
     options.email = Meteor.settings.REACTION_EMAIL || Random.id(8).toLowerCase() +
       "@" + domain;
-    ReactionCore.Events.warn(
+    ReactionCore.Log.warn(
       "\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email +
       "\n  PASSWORD: " + options.password + "\n");
   }
@@ -243,7 +243,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
   try {
     Accounts.sendVerificationEmail(accountId);
   } catch (_error) {
-    ReactionCore.Events.warn(
+    ReactionCore.Log.warn(
       "Unable to send admin account verification email.", error);
   }
 
@@ -306,12 +306,12 @@ ReactionRegistry.loadFixtures = function () {
   try {
     currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
   } catch (_error) {
-    ReactionCore.Events.error("Failed to determine default shop.", _error);
+    ReactionCore.Log.error("Failed to determine default shop.", _error);
   }
 
   // if the server domain changes, update shop
   if (currentDomain && currentDomain !== getDomain()) {
-    ReactionCore.Events.info("Updating domain to " + getDomain());
+    ReactionCore.Log.info("Updating domain to " + getDomain());
     Shops.update({
       domains: currentDomain
     }, {
@@ -331,7 +331,7 @@ ReactionRegistry.loadFixtures = function () {
       return ReactionCore.Collections.Shops.find().forEach(function (
         shop) {
         let shopId = shop._id;
-        ReactionCore.Events.info("Initializing " + shop.name + " " +
+        ReactionCore.Log.info("Initializing " + shop.name + " " +
           pkgName);
         // existing registry will be upserted with changes
         if (!shopId) return [];
@@ -356,7 +356,7 @@ ReactionRegistry.loadFixtures = function () {
   ReactionCore.Collections.Shops.find().forEach(function (shop) {
     return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
       if (!_.has(ReactionRegistry.Packages, pkg.name)) {
-        ReactionCore.Events.info("Removing " + pkg.name);
+        ReactionCore.Log.info(`Removing ${pkg.name}`, pkg);
         return ReactionCore.Collections.Packages.remove({
           shopId: shop._id,
           name: pkg.name

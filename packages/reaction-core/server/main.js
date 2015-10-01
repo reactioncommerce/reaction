@@ -30,14 +30,14 @@ if (process.env.VELOCITY_CI === "1") {
   });
 }
 
-ReactionCore.Events = logger.bunyan.createLogger({
+ReactionCore.Log = logger.bunyan.createLogger({
   name: "core",
   stream: isDebug !== "DEBUG" ? formatOut : process.stdout,
   level: "debug"
 });
 
 // set logging level
-ReactionCore.Events.level(isDebug);
+ReactionCore.Log.level(isDebug);
 
 /**
  * ReactionCore methods (server)
@@ -48,7 +48,7 @@ _.extend(ReactionCore, {
     try {
       ReactionRegistry.loadFixtures();
     } catch (error) {
-      ReactionCore.Events.error("loadFixtures: ", error.message);
+      ReactionCore.Log.error("loadFixtures: ", error.message);
     }
     return true;
   },
@@ -61,7 +61,7 @@ _.extend(ReactionCore, {
       limit: 1
     });
     if (!cursor.count()) {
-      ReactionCore.Events.debug("Add a domain entry to shops for ",
+      ReactionCore.Log.debug("Add a domain entry to shops for ",
         domain);
     }
     return cursor;
@@ -158,7 +158,7 @@ _.extend(ReactionCore, {
       return mailString;
     } else if (shopMail.user && shopMail.password && shopMail.host &&
       shopMail.port) {
-      ReactionCore.Events.info("setting default mail url to: " + shopMail
+      ReactionCore.Log.info("setting default mail url to: " + shopMail
         .host);
       let mailString = "smtp://" + shopMail.user + ":" + shopMail.password +
         "@" + shopMail.host + ":" + shopMail.port + "/";
@@ -170,7 +170,7 @@ _.extend(ReactionCore, {
       return mailUrl;
     }
     if (!process.env.MAIL_URL) {
-      ReactionCore.Events.warn(
+      ReactionCore.Log.warn(
         'Mail server not configured. Unable to send email.');
       return false;
     }
@@ -188,5 +188,5 @@ Match.OptionalOrNull = function (pattern) {
 
 Meteor.startup(function () {
   ReactionCore.init();
-  return ReactionCore.Events.info("Reaction Core initialization finished. ");
+  return ReactionCore.Log.info("Reaction Core initialization finished. ");
 });
