@@ -229,7 +229,7 @@ Template.registerHelper("reactionTemplate", function (options) {
     });
   });
 
-  ReactionCore.Events.debug("reactionTemplates", reactionTemplates);
+  ReactionCore.Log.debug("reactionTemplates", reactionTemplates);
 
   return reactionTemplates;
 

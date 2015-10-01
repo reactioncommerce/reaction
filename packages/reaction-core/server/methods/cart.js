@@ -34,13 +34,13 @@ Meteor.methods({
       }
     });
 
-    ReactionCore.Events.info("merge cart: begin merge processing of session " + sessionId + " into: " + currentCart._id);
+    ReactionCore.Log.info("merge cart: begin merge processing of session " + sessionId + " into: " + currentCart._id);
 
     let currentCartItems = currentCart.items;
 
     // loop through session carts and merge into user cart
     sessionCarts.forEach((sessionCart) => {
-      ReactionCore.Events.info("merge cart: merge user userId:", userId, "sessionCart.userId:" + sessionCart.userId,"sessionCart id: "  + sessionCart._id);
+      ReactionCore.Log.info("merge cart: merge user userId:", userId, "sessionCart.userId:" + sessionCart.userId,"sessionCart id: "  + sessionCart._id);
       // really if we have no items, there's nothing to merge
       if (sessionCart.items) {
         // merge session cart into current cart
@@ -64,10 +64,10 @@ Meteor.methods({
         ReactionCore.Collections.Accounts.remove({
           userId: sessionCart.userId
         });
-        ReactionCore.Events.info("merge cart: delete cart " + sessionCart._id + "and user: " + sessionCart.userId);
+        ReactionCore.Log.info("merge cart: delete cart " + sessionCart._id + "and user: " + sessionCart.userId);
       }
 
-      ReactionCore.Events.info("merge cart: processed merge for cartId " + sessionCart._id);
+      ReactionCore.Log.info("merge cart: processed merge for cartId " + sessionCart._id);
       return currentCart._id;
     });
 
@@ -113,12 +113,12 @@ Meteor.methods({
       var currentCartId = currentUserCart._id;
     }
 
-    ReactionCore.Events.debug("create cart: shopId", shopId);
-    ReactionCore.Events.debug("create cart: userId", userId);
-    ReactionCore.Events.debug("create cart: sessionId", sessionId);
-    ReactionCore.Events.debug("create cart: currentUserCart", currentCartId);
-    ReactionCore.Events.debug("create cart: sessionCarts.count", sessionCartCount);
-    ReactionCore.Events.debug("create cart: anonymousUser", anonymousUser);
+    ReactionCore.Log.debug("create cart: shopId", shopId);
+    ReactionCore.Log.debug("create cart: userId", userId);
+    ReactionCore.Log.debug("create cart: sessionId", sessionId);
+    ReactionCore.Log.debug("create cart: currentUserCart", currentCartId);
+    ReactionCore.Log.debug("create cart: sessionCarts.count", sessionCartCount);
+    ReactionCore.Log.debug("create cart: anonymousUser", anonymousUser);
 
     // if we have a session cart, but just create or
     // authenticated into a new user we need to create a user
@@ -128,12 +128,12 @@ Meteor.methods({
         sessionId: sessionId,
         userId: userId
       });
-      ReactionCore.Events.info("create cart: into new user cart. created: " + currentCartId + " for user " + userId);
+      ReactionCore.Log.info("create cart: into new user cart. created: " + currentCartId + " for user " + userId);
     }
 
     // merge session carts into the current cart
     if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
-      ReactionCore.Events.info("create cart: found existing cart. merge into " + currentCartId + " for user " + userId);
+      ReactionCore.Log.info("create cart: found existing cart. merge into " + currentCartId + " for user " + userId);
       Meteor.call("mergeCart", currentCartId);
 
     } else if (!currentCartId) { // Create empty cart if there is none.
@@ -142,7 +142,7 @@ Meteor.methods({
         shopId: shopId,
         userId: userId
       });
-      ReactionCore.Events.info("create cart: no existing cart. created: " + currentCartId + " for " + userId);
+      ReactionCore.Log.info("create cart: no existing cart. created: " + currentCartId + " for " + userId);
     }
     return currentCartId;
   },
@@ -184,7 +184,7 @@ Meteor.methods({
       });
       return function (error, result) {
         if (error) {
-          ReactionCore.Events.warn("error adding to cart", ReactionCore.Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
       };
@@ -205,7 +205,7 @@ Meteor.methods({
         }
       }, function (error, result) {
         if (error) {
-          ReactionCore.Events.warn("error adding to cart", ReactionCore.Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return;
         }
       });
@@ -290,7 +290,7 @@ Meteor.methods({
 
     // insert new reaction order
     var orderId = ReactionCore.Collections.Orders.insert(order);
-    ReactionCore.Events.info("Created orderId", orderId);
+    ReactionCore.Log.info("Created orderId", orderId);
 
     if (orderId) {
       // TODO: check for succesful inventoryAdjust
@@ -309,7 +309,7 @@ Meteor.methods({
         Meteor.call("createCart", order.userId);
       }
       // return
-      ReactionCore.Events.info("Transitioned cart " + cartId + " to order " + orderId);
+      ReactionCore.Log.info("Transitioned cart " + cartId + " to order " + orderId);
       return orderId;
     } else {
       throw new Meteor.Error("copyCartToOrder: Invalid request");

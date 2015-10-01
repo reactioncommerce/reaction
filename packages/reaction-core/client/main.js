@@ -211,11 +211,11 @@ if (!_.contains(levels, isDebug)) {
   isDebug = "INFO";
 }
 
-ReactionCore.Events = bunyan.createLogger({
+ReactionCore.Log = bunyan.createLogger({
   name: "core-client"
 });
 
-ReactionCore.Events.level(isDebug);
+ReactionCore.Log.level(isDebug);
 
 /*
  * registerLoginHandler
@@ -240,7 +240,7 @@ Meteor.startup(function () {
   // warn on insecure exporting of PackageRegistry settings
   if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
     let msg = "PackageRegistry: Insecure export to client.";
-    ReactionCore.Events.warn(msg, PackageRegistry);
+    ReactionCore.Log.warn(msg, PackageRegistry);
   }
   // init the core
   ReactionCore.init();

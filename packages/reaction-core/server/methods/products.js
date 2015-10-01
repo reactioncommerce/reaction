@@ -39,7 +39,7 @@ Meteor.methods({
     clone = variant[0];
     clone._id = Random.id();
     if (parentId) {
-      ReactionCore.Events.debug("create child clone");
+      ReactionCore.Log.debug("create child clone");
       clone.parentId = variantId;
       delete clone.inventoryQuantity;
       Products.update({
@@ -80,7 +80,7 @@ Meteor.methods({
       return _results;
     })();
     if (children.length > 0) {
-      ReactionCore.Events.debug("clone children");
+      ReactionCore.Log.debug("clone children");
       for (_i = 0, _len = children.length; _i < _len; _i++) {
         childClone = children[_i];
         childClone._id = Random.id();
@@ -639,7 +639,7 @@ Meteor.methods({
           }
         }, function(error, results) {
           if (error) {
-            ReactionCore.Events.warn(error);
+            ReactionCore.Log.warn(error);
             throw new Meteor.Error(403, error);
           }
         });
@@ -658,7 +658,7 @@ Meteor.methods({
         }
       }, function(error, results) {
         if (error) {
-          ReactionCore.Events.warn(error);
+          ReactionCore.Log.warn(error);
           throw new Meteor.Error(403, error);
         }
       });
@@ -715,7 +715,7 @@ Meteor.methods({
     this.unblock();
     product = ReactionCore.Collections.Products.findOne(productId);
     if ((product != null ? product.variants[0].price : void 0) && (product != null ? product.variants[0].title : void 0) && (product != null ? product.title : void 0)) {
-      ReactionCore.Events.info("toggle product visibility ", product._id, !product.isVisible);
+      ReactionCore.Log.info("toggle product visibility ", product._id, !product.isVisible);
       result = Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
@@ -723,7 +723,7 @@ Meteor.methods({
       });
       return Products.findOne(product._id).isVisible;
     } else {
-      ReactionCore.Events.debug("invalid product visibility ", productId);
+      ReactionCore.Log.debug("invalid product visibility ", productId);
       throw new Meteor.Error(400, "Bad Request");
     }
   }

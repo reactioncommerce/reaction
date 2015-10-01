@@ -147,7 +147,7 @@ Template.registerHelper("i18n", function(i18n_key, message) {
   message = new Handlebars.SafeString(message);
 
   if (i18n.t(i18n_key) === i18n_key) {
-    ReactionCore.Events.debug("no translation found. returning raw message for:" + i18n_key);
+    ReactionCore.Log.debug("no translation found. returning raw message for:" + i18n_key);
     return message.string;
   } else {
     return i18n.t(i18n_key);

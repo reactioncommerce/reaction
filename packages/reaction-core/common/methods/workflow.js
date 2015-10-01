@@ -78,20 +78,20 @@ Meteor.methods({
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {
-          ReactionCore.Events.debug("currentStatusIndex, maxSteps",
+          ReactionCore.Log.debug("currentStatusIndex, maxSteps",
             currentStatusIndex, maxSteps);
           nextWorkflowStepIndex = currentStatusIndex + 1;
         } else {
           nextWorkflowStepIndex = currentStatusIndex;
         }
 
-        ReactionCore.Events.debug("nextWorkflowStepIndex",
+        ReactionCore.Log.debug("nextWorkflowStepIndex",
           nextWorkflowStepIndex);
         // set the nextWorkflowStep as the next workflow object from registry
         nextWorkflowStep = defaultPackageWorkflows[
           nextWorkflowStepIndex];
 
-        ReactionCore.Events.debug("setting nextWorkflowStep",
+        ReactionCore.Log.debug("setting nextWorkflowStep",
           nextWorkflowStep.template);
       }
     });
@@ -103,19 +103,19 @@ Meteor.methods({
       nextWorkflowStep.template);
 
     // debug info
-    ReactionCore.Events.debug("currentWorkflowStatus:",
+    ReactionCore.Log.debug("currentWorkflowStatus:",
       currentWorkflowStatus);
-    ReactionCore.Events.debug("workflow/pushCartWorkflow workflow:",
+    ReactionCore.Log.debug("workflow/pushCartWorkflow workflow:",
       workflow);
-    ReactionCore.Events.debug("newWorkflowStatus: ", newWorkflowStatus);
-    ReactionCore.Events.debug("current cartId: ", currentCart._id);
-    ReactionCore.Events.debug("currentWorkflow: ", currentCart.workflow.workflow);
-    ReactionCore.Events.debug("nextWorkflowStep: ", nextWorkflowStep.template);
-    ReactionCore.Events.debug("statusExistsInWorkflow: ",
+    ReactionCore.Log.debug("newWorkflowStatus: ", newWorkflowStatus);
+    ReactionCore.Log.debug("current cartId: ", currentCart._id);
+    ReactionCore.Log.debug("currentWorkflow: ", currentCart.workflow.workflow);
+    ReactionCore.Log.debug("nextWorkflowStep: ", nextWorkflowStep.template);
+    ReactionCore.Log.debug("statusExistsInWorkflow: ",
       statusExistsInWorkflow);
-    ReactionCore.Events.debug("templateProcessedinWorkflow: ",
+    ReactionCore.Log.debug("templateProcessedinWorkflow: ",
       templateProcessedinWorkflow);
-    ReactionCore.Events.debug("gotoNextWorkflowStep: ",
+    ReactionCore.Log.debug("gotoNextWorkflowStep: ",
       gotoNextWorkflowStep);
 
     // Condition One
@@ -125,7 +125,7 @@ Meteor.methods({
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !==
       newWorkflowStatus) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition One #########: initialise the " + workflow +
         ":  " + defaultPackageWorkflows[0].template);
       return Cart.update(currentCart._id, {
@@ -141,7 +141,7 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
       templateProcessedinWorkflow === false) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition Two #########: set status to: ",
         nextWorkflowStep.template);
 
@@ -160,7 +160,7 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
         nextWorkflowStep.template);
@@ -179,7 +179,7 @@ Meteor.methods({
     // nice job. now start over with the next step.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === true) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
         newWorkflowStatus);
       return true;
@@ -263,20 +263,20 @@ Meteor.methods({
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {
-          ReactionCore.Events.debug("currentStatusIndex, maxSteps",
+          ReactionCore.Log.debug("currentStatusIndex, maxSteps",
             currentStatusIndex, maxSteps);
           nextWorkflowStepIndex = currentStatusIndex + 1;
         } else {
           nextWorkflowStepIndex = currentStatusIndex;
         }
 
-        ReactionCore.Events.debug("nextWorkflowStepIndex",
+        ReactionCore.Log.debug("nextWorkflowStepIndex",
           nextWorkflowStepIndex);
         // set the nextWorkflowStep as the next workflow object from registry
         nextWorkflowStep = defaultPackageWorkflows[
           nextWorkflowStepIndex];
 
-        ReactionCore.Events.debug("setting nextWorkflowStep",
+        ReactionCore.Log.debug("setting nextWorkflowStep",
           nextWorkflowStep.template);
       }
     });
@@ -289,19 +289,19 @@ Meteor.methods({
       nextWorkflowStep.template);
 
     // debug info
-    ReactionCore.Events.debug("currentWorkflowStatus:",
+    ReactionCore.Log.debug("currentWorkflowStatus:",
       currentWorkflowStatus);
-    ReactionCore.Events.debug("workflow/pushOrderWorkflow workflow:",
+    ReactionCore.Log.debug("workflow/pushOrderWorkflow workflow:",
       workflow);
-    ReactionCore.Events.debug("newWorkflowStatus: ", newWorkflowStatus);
-    ReactionCore.Events.debug("current orderId: ", currentOrder._id);
-    ReactionCore.Events.debug("currentWorkflow: ", currentOrder.workflow.workflow);
-    ReactionCore.Events.debug("nextWorkflowStep: ", nextWorkflowStep.template);
-    ReactionCore.Events.debug("statusExistsInWorkflow: ",
+    ReactionCore.Log.debug("newWorkflowStatus: ", newWorkflowStatus);
+    ReactionCore.Log.debug("current orderId: ", currentOrder._id);
+    ReactionCore.Log.debug("currentWorkflow: ", currentOrder.workflow.workflow);
+    ReactionCore.Log.debug("nextWorkflowStep: ", nextWorkflowStep.template);
+    ReactionCore.Log.debug("statusExistsInWorkflow: ",
       statusExistsInWorkflow);
-    ReactionCore.Events.debug("templateProcessedinWorkflow: ",
+    ReactionCore.Log.debug("templateProcessedinWorkflow: ",
       templateProcessedinWorkflow);
-    ReactionCore.Events.debug("gotoNextWorkflowStep: ",
+    ReactionCore.Log.debug("gotoNextWorkflowStep: ",
       gotoNextWorkflowStep);
 
     // Condition One
@@ -311,7 +311,7 @@ Meteor.methods({
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !==
       newWorkflowStatus) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition One #########: initialise the " + workflow +
         ":  " + defaultPackageWorkflows[0].template);
 
@@ -330,7 +330,7 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
       templateProcessedinWorkflow === false) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition Two #########: set status to: ",
         nextWorkflowStep.template);
 
@@ -351,7 +351,7 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
         nextWorkflowStep.template);
@@ -373,7 +373,7 @@ Meteor.methods({
     // nice job. now start over with the next step.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === true) {
-      ReactionCore.Events.debug(
+      ReactionCore.Log.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
         newWorkflowStatus);
       return true;

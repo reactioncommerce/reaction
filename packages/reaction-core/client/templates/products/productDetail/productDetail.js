@@ -167,7 +167,7 @@ Template.productDetail.events({
                 return locateUser();
               }
             } else if (error) {
-              ReactionCore.Events.error("Failed to add to cart.", error);
+              ReactionCore.Log.error("Failed to add to cart.", error);
               return error;
             }
           });
