@@ -315,7 +315,7 @@ Meteor.methods({
         "######## Condition One #########: initialise the " + workflow +
         ":  " + defaultPackageWorkflows[0].template);
 
-      Meteor.call("updateHistory", orderId, defaultPackageWorkflows[0].template);
+      Meteor.call("orders/updateHistory", orderId, defaultPackageWorkflows[0].template);
 
       return Order.update(currentOrder._id, {
         $set: {
@@ -334,7 +334,7 @@ Meteor.methods({
         "######## Condition Two #########: set status to: ",
         nextWorkflowStep.template);
 
-      Meteor.call("updateHistory", orderId, nextWorkflowStep.template);
+      Meteor.call("orders/updateHistory", orderId, nextWorkflowStep.template);
 
       return Order.update(currentOrder._id, {
         $set: {
@@ -356,7 +356,7 @@ Meteor.methods({
         currentWorkflowStatus + " updates and move to: ",
         nextWorkflowStep.template);
 
-      Meteor.call("updateHistory", orderId, nextWorkflowStep.template);
+      Meteor.call("orders/updateHistory", orderId, nextWorkflowStep.template);
 
       return Order.update(currentOrder._id, {
         $set: {

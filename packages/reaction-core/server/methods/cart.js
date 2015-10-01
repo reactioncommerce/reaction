@@ -296,8 +296,8 @@ Meteor.methods({
     ReactionCore.Log.info("Created orderId", orderId);
 
     if (orderId) {
-      // TODO: check for succesful inventoryAdjust
-      Meteor.call("inventoryAdjust", orderId);
+      // TODO: check for succesful orders/inventoryAdjust
+      Meteor.call("orders/inventoryAdjust", orderId);
 
       // trash the old cart
       ReactionCore.Collections.Cart.remove({

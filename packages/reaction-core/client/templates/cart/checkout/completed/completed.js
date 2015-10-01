@@ -31,6 +31,6 @@ Template.cartCompleted.events({
     var email;
     email = template.find("input[name=email]").value;
     check(email, String);
-    return Meteor.call("addOrderEmail", Template.parentData()._id, email);
+    return Meteor.call("orders/addOrderEmail", Template.parentData()._id, email);
   }
 });
