@@ -68,7 +68,7 @@ Template.childVariantForm.events({
     showInventoryVariantsId = "showInventoryVariants" + this._id;
     Session.set(showInventoryVariantsId, true);
     productId = selectedProductId();
-    return Meteor.call("createInventoryVariants", productId, this._id, this.inventoryQuantity, "default");
+    return Meteor.call("products/createInventoryVariants", productId, this._id, this.inventoryQuantity, "default");
   },
   "change .child-variant-form :input": function(event, template) {
     var field, productId, value, variant;
@@ -77,7 +77,7 @@ Template.childVariantForm.events({
     value = $(event.currentTarget).val();
     field = $(event.currentTarget).attr('name');
     variant[field] = value;
-    Meteor.call("updateVariant", variant, function(error, result) {
+    Meteor.call("products/updateVariant", variant, function(error, result) {
       if (error) {
         throw new Meteor.Error("error updating variant", error);
       }
@@ -91,7 +91,7 @@ Template.childVariantForm.events({
     optionTitle = this.optionTitle || "this option";
     if (confirm("Are you sure you want to delete " + optionTitle)) {
       id = this._id;
-      return Meteor.call("deleteVariant", id, function(error, result) {
+      return Meteor.call("products/deleteVariant", id, function(error, result) {
         if (result && selectedVariantId() === id) {
           return setCurrentVariant(null);
         }

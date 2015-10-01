@@ -26,7 +26,7 @@ Template.inventoryVariantForm.events({
     value = $(event.currentTarget).val();
     field = $(event.currentTarget).attr('name');
     variant[field] = value;
-    Meteor.call("updateVariant", variant, function (error, result) {
+    Meteor.call("products/updateVariant", variant, function (error, result) {
       if (error) {
         throw new Meteor.Error("error updating variant", error);
       }
@@ -40,7 +40,7 @@ Template.inventoryVariantForm.events({
     barcode = this.barcode || "barcode not found";
     if (confirm(i18n.t("productDetail.confirmDeleteBarcode") + ": " + barcode)) {
       id = this._id;
-      return Meteor.call("deleteVariant", id, function (error, result) {
+      return Meteor.call("products/deleteVariant", id, function (error, result) {
         if (result && selectedVariantId() === id) {
           return setCurrentVariant(null);
         }
@@ -61,7 +61,7 @@ Template.generateInventoryVariantForm.events({
     productId = selectedProductId();
     qty = event.target.generateqty.value;
     if (qty && parseInt(qty) > 0) {
-      Meteor.call("createInventoryVariants", productId, this._id, qty);
+      Meteor.call("products/createInventoryVariants", productId, this._id, qty);
       event.target.generateqty.value = "";
     } else {
       Alerts.add(i18n.t('productDetail.quantityGreaterThanZero'), 'danger', {
@@ -83,7 +83,7 @@ Template.addInventoryVariantForm.events({
     event.preventDefault();
     productId = selectedProductId();
     barcode = event.target.barcode.value;
-    Meteor.call("createInventoryVariant", productId, this._id, {
+    Meteor.call("products/createInventoryVariant", productId, this._id, {
       barcode: barcode
     });
     event.target.barcode.value = "";

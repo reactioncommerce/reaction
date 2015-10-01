@@ -80,7 +80,7 @@ Template.variantList.helpers({
 
 Template.variantList.events({
   "click #create-variant": function(event) {
-    return Meteor.call("createVariant", this._id);
+    return Meteor.call("products/createVariant", this._id);
   },
   "click .variant-select-option": function(event, template) {
     template.$(".variant-select-option").removeClass("active");

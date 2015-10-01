@@ -82,7 +82,7 @@ this.maybeDeleteProduct = function(prod) {
   title = prod.title || "the product";
   id = prod._id;
   if (confirm("Delete this product?")) {
-    return Meteor.call("deleteProduct", id, function(error, result) {
+    return Meteor.call("products/deleteProduct", id, function(error, result) {
       if (error || !result) {
         Alerts.add("There was an error deleting " + title, "danger", {
           type: "prod-delete-" + id,

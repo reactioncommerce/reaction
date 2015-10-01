@@ -83,14 +83,14 @@ Template.variantForm.events({
     if (!productId) {
       return;
     }
-    Meteor.call("cloneVariant", productId, template.data._id, this._id);
+    Meteor.call("products/cloneVariant", productId, template.data._id, this._id);
   },
   "click .btn-remove-variant": function(event, template) {
     var id, title;
     title = this.title || "this variant";
     if (confirm("Are you sure you want to delete " + title)) {
       id = this._id;
-      Meteor.call("deleteVariant", id, function(error, result) {
+      Meteor.call("products/deleteVariant", id, function(error, result) {
         if (result && selectedVariantId() === id) {
           return setCurrentVariant(null);
         }
@@ -105,7 +105,7 @@ Template.variantForm.events({
     if (!productId) {
       return;
     }
-    Meteor.call("cloneVariant", productId, template.data._id, function(error, result) {
+    Meteor.call("products/cloneVariant", productId, template.data._id, function(error, result) {
       return toggleSession("variant-form-" + result);
     });
   }

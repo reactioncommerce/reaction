@@ -221,7 +221,7 @@ Template.productDetail.events({
         i18n_key: "productDetail.errorMsg"
       });
     } else {
-      Meteor.call("publishProduct", this._id);
+      Meteor.call("products/publishProduct", this._id);
     }
   },
   "click .delete-product-link": function (event, template) {

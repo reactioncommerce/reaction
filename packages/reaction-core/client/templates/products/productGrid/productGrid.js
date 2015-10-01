@@ -187,7 +187,7 @@ Template.productGridItems.events({
   'click .clone-product': function() {
     var title;
     title = this.title;
-    return Meteor.call("cloneProduct", this, function(error, productId) {
+    return Meteor.call("products/cloneProduct", this, function(error, productId) {
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
@@ -220,7 +220,7 @@ Template.productGridItems.events({
       pinned: pin,
       updatedAt: new Date()
     };
-    Meteor.call("updateProductPosition", this._id, position);
+    Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
   },
   'click .update-product-weight': function(event, template) {
@@ -237,13 +237,13 @@ Template.productGridItems.events({
       weight: weight,
       updatedAt: new Date()
     };
-    Meteor.call("updateProductPosition", this._id, position);
+    Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
   },
   'click .publish-product': function() {
     var self;
     self = this;
-    return Meteor.call("publishProduct", this._id, function(error, result) {
+    return Meteor.call("products/publishProduct", this._id, function(error, result) {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",
@@ -403,7 +403,7 @@ Template.productGridItems.onRendered(function() {
             position: index,
             updatedAt: new Date()
           };
-          Meteor.call("updateProductPosition", productId, position);
+          Meteor.call("products/updateProductPosition", productId, position);
         }
         return Tracker.flush();
       }

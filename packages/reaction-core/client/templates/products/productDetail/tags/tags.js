@@ -21,7 +21,7 @@
 
   Template.productTagInputForm.events({
     'click .tag-input-hashtag': function(event, template) {
-      return Meteor.call("setHandleTag", selectedProductId(), this._id, function(error, result) {
+      return Meteor.call("products/setHandleTag", selectedProductId(), this._id, function(error, result) {
         if (result) {
           return Router.go("product", {
             "_id": result
@@ -30,7 +30,7 @@
       });
     },
     'click .tag-input-group-remove': function(event, template) {
-      return Meteor.call("removeProductTag", selectedProductId(), this._id);
+      return Meteor.call("products/removeProductTag", selectedProductId(), this._id);
     },
     'click .tags-input-select': function(event, template) {
       return $(event.currentTarget).autocomplete({
@@ -56,7 +56,7 @@
       val = $(event.currentTarget).val();
       if (val) {
         currentTag = Session.get("currentTag");
-        return Meteor.call("updateProductTags", selectedProductId(), val, this._id, currentTag, function(error, result) {
+        return Meteor.call("products/updateProductTags", selectedProductId(), val, this._id, currentTag, function(error, result) {
           template.$('.tags-submit-new').val('').focus();
           if (error) {
             Alerts.add("Tag already exists, duplicate add failed.", "danger", {
@@ -88,7 +88,7 @@
             hashtagsList.push(tag);
           }
         }
-        return Meteor.call("updateProductField", selectedProductId(), "hashtags", hashtagsList);
+        return Meteor.call("products/updateProductField", selectedProductId(), "hashtags", hashtagsList);
       }
     });
   });

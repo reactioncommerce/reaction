@@ -164,7 +164,6 @@ Meteor.methods({
     check(productId, String);
     check(variantData, ReactionCore.Schemas.ProductVariant);
     check(quantity, String);
-    this.unblock();
 
     var shopId = ReactionCore.getShopId(this);
     var currentCart = ReactionCore.Collections.Cart.findOne(cartId);

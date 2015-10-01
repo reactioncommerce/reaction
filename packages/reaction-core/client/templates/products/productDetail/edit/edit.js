@@ -21,7 +21,7 @@ Template.productDetailEdit.helpers({
 
 Template.productDetailEdit.events({
   "change input,textarea": function(event, template) {
-    Meteor.call("updateProductField", selectedProductId(), this.field, $(event.currentTarget).val(), function(error, results) {
+    Meteor.call("products/updateProductField", selectedProductId(), this.field, $(event.currentTarget).val(), function(error, results) {
       if (results) {
         return $(event.currentTarget).animate({
           backgroundColor: "#e2f2e2"

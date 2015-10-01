@@ -5,13 +5,13 @@
 Meteor.methods({
 
   /*
-   * the cloneVariant method copies variants, but will also create
+   * the products/cloneVariant method copies variants, but will also create
    * and clone child variants (options)
    * productId,variantId to clone
    * add parentId to create children
    * Note: parentId and variantId can be the same if creating a child variant.
    */
-  cloneVariant: function(productId, variantId, parentId) {
+  "products/cloneVariant": (productId, variantId, parentId) => {
     var childClone, children, clone, product, variant, _i, _len;
     check(productId, String);
     check(variantId, String);
@@ -103,7 +103,7 @@ Meteor.methods({
    * initializes empty variant template (all others are clones)
    * should only be seen when all variants have been deleted from a product.
    */
-  createVariant: function(productId, newVariant) {
+  "products/createVariant": (productId, newVariant) => {
     var newVariantId;
     check(productId, String);
     check(newVariant, Match.OneOf(Object, void 0));
@@ -139,7 +139,7 @@ Meteor.methods({
    * should only be called to create variants of type=inventory
    * pass newVariant object to create with options
    */
-  createInventoryVariant: function(productId, parentId, newVariant) {
+  "products/createInventoryVariant": (productId, parentId, newVariant) =>{
     var newBarcode, newVariantId;
     check(productId, String);
     check(parentId, String);
@@ -179,7 +179,7 @@ Meteor.methods({
    * Creates default inventory variants for each quantity
    * Optional defaultValue will initialize all variants to some string + index
    */
-  createInventoryVariants: function(productId, parentId, quantity, defaultValue) {
+  "products/createInventoryVariants": (productId, parentId, quantity, defaultValue) => {
     var newVariantIds, newVariants;
     check(productId, String);
     check(parentId, String);
@@ -231,7 +231,7 @@ Meteor.methods({
    * update individual variant with new values, merges into original
    * only need to supply updated information
    */
-  updateVariant: function(variant, updateDoc, currentDoc) {
+  "products/updateVariant": (variant, updateDoc, currentDoc) => {
     var Products, newVariant, product, value, variants, _i, _len, _ref;
     check(variant, Object);
     check(updateDoc, Match.OptionalOrNull(Object));
@@ -268,7 +268,7 @@ Meteor.methods({
   /*
    * update whole variants array
    */
-  updateVariants: function(variants) {
+  "products/updateVariants": (variants) => {
     var product;
     check(variants, [Object]);
     if (!ReactionCore.hasPermission('createProduct')) {
@@ -290,7 +290,7 @@ Meteor.methods({
   /*
    * delete variant, which should also delete child variants
    */
-  deleteVariant: function(variantId) {
+  "products/deleteVariant": (variantId) => {
     var deleted;
     check(variantId, String);
     if (!ReactionCore.hasPermission('createProduct')) {
@@ -350,7 +350,7 @@ Meteor.methods({
    * that maintains relationships with the cloned
    * product tree
    */
-  cloneProduct: function(product) {
+  "products/cloneProduct": (product) => {
     var handleCount, i, newVariantId, oldVariantId;
     check(product, Object);
     if (!ReactionCore.hasPermission('createProduct')) {
@@ -407,7 +407,7 @@ Meteor.methods({
    * an empty variant. all products have a variant
    * with pricing and details
    */
-  createProduct: function(product) {
+  "products/createProduct": (product) => {
     check(product, Match.Optional(Object));
     if (!ReactionCore.hasPermission('createProduct')) {
       throw new Meteor.Error(403, "Access Denied");
@@ -435,7 +435,7 @@ Meteor.methods({
   /*
    * delete a product and unlink it from all media
    */
-  deleteProduct: function(productId) {
+  "products/deleteProduct": (productId) => {
     var numRemoved;
     check(productId, String);
     if (!ReactionCore.hasAdminAccess()) {
@@ -464,7 +464,7 @@ Meteor.methods({
   /*
    * update single product field
    */
-  updateProductField: function(productId, field, value) {
+  "products/updateProductField": (productId, field, value) => {
     var update;
     check(productId, String);
     check(field, String);
@@ -485,7 +485,7 @@ Meteor.methods({
    * tagName will insert
    * tagName + tagId will update existing
    */
-  updateProductTags: function(productId, tagName, tagId, currentTagId) {
+  "products/updateProductTags": (productId, tagName, tagId, currentTagId) => {
     var existingTag, newTag, productCount;
     check(productId, String);
     check(tagName, String);
@@ -538,7 +538,7 @@ Meteor.methods({
   /*
    * remove product tag
    */
-  removeProductTag: function(productId, tagId) {
+  "products/removeProductTag": (productId, tagId) => {
     var productCount, relatedTagsCount;
     check(productId, String);
     check(tagId, String);
@@ -569,7 +569,7 @@ Meteor.methods({
   /*
    * set or toggle product handle
    */
-  setHandleTag: function(productId, tagId) {
+  "products/setHandleTag": (productId, tagId) => {
     var currentProduct, existingHandles, product, tag, _i, _len;
     check(productId, String);
     check(tagId, String);
@@ -611,7 +611,7 @@ Meteor.methods({
    * update product grid positions
    * position is an object with tag,position,dimensions
    */
-  updateProductPosition: function(productId, positionData) {
+  "products/updateProductPosition": (productId, positionData) => {
     check(productId, String);
     check(positionData, Object);
 
@@ -679,7 +679,7 @@ Meteor.methods({
 
     return updateResult;
   },
-  updateMetaFields: function(productId, updatedMeta, meta) {
+  "products/updateMetaFields": (productId, updatedMeta, meta) => {
     check(productId, String);
     check(updatedMeta, Object);
     check(meta, Match.OptionalOrNull(Object));
@@ -706,7 +706,7 @@ Meteor.methods({
       });
     }
   },
-  publishProduct: function(productId) {
+  "products/publishProduct": (productId) => {
     var product, result;
     check(productId, String);
     if (!ReactionCore.hasPermission('createProduct')) {

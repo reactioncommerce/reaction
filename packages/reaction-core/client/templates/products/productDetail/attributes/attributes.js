@@ -28,7 +28,7 @@ Template.metaComponent.events({
     };
     if (this.key) {
       productId = selectedProductId();
-      Meteor.call("updateMetaFields", productId, updateMeta, this);
+      Meteor.call("products/updateMetaFields", productId, updateMeta, this);
       $(event.currentTarget).animate({
         backgroundColor: "#e2f2e2"
       }).animate({
@@ -40,7 +40,7 @@ Template.metaComponent.events({
         $(event.currentTarget).parent().children('.metafield-key-input').val('').focus();
       }
       if (updateMeta.key && updateMeta.value) {
-        Meteor.call("updateMetaFields", this._id, updateMeta);
+        Meteor.call("products/updateMetaFields", this._id, updateMeta);
         Tracker.flush();
         $(event.currentTarget).parent().children('.metafield-key-input').val('').focus();
         return $(event.currentTarget).parent().children('.metafield-value-input').val('');

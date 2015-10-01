@@ -135,7 +135,7 @@ Template.productSettings.events({
   'click [data-event-action=cloneProduct]': function() {
     var title;
     title = this.title;
-    return Meteor.call("cloneProduct", this, function(error, productId) {
+    return Meteor.call("products/cloneProduct", this, function(error, productId) {
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
@@ -165,7 +165,7 @@ Template.productSettings.events({
 
     this.position = position
 
-    Meteor.call("updateProductPosition", this._id, position, function () {
+    Meteor.call("products/updateProductPosition", this._id, position, function () {
       weightDependency.changed();
     });
   },
@@ -173,7 +173,7 @@ Template.productSettings.events({
   'click [data-event-action=publishProduct]': function() {
     var self;
     self = this;
-    return Meteor.call("publishProduct", this._id, function(error, result) {
+    return Meteor.call("products/publishProduct", this._id, function(error, result) {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",
