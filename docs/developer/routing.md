@@ -254,12 +254,12 @@ Router.path('Homepage')          // return the path of the defined route as a st
 Router.current().path            // return the current path
 ```
 
-## Iron Roter > Extending Existing Routes
+## Iron Router > Extending Existing Routes
 
-At the app level you can define for following:
+At the app level you can define the following:
 
 ```
-// This can be placed in "reaction/common/routing.js", for example.
+// This can be placed in "reaction/common/routing.js".
 Router.map(function route() {
   _.extend(Router.routes.nameOfRoute.options, {
     // Just an example. You can put any Iron Router options here.
