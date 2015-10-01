@@ -17,9 +17,9 @@ See [themes.md](themes.md) for details on the themes and LESS implementation.
 
 ### Logging
 Client and server logging.
-- `ReactionCore.Events.info("This is some info")`
-- `ReactionCore.Events.warn("Warn Will Robinson")`
-- `ReactionCore.Events.debug("Stuff", stuffObject)`
+- `ReactionCore.Log.info("This is some info")`
+- `ReactionCore.Log.warn("Warn Will Robinson")`
+- `ReactionCore.Log.debug("Stuff", stuffObject)`
 
 More options and use examples at [logging.md](logging.md).
 
