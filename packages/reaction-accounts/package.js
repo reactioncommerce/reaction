@@ -23,6 +23,7 @@ Package.onUse(function(api) {
   api.use("ejson");
   api.use("spacebars");
   api.use("check");
+  api.use("ecmascript");
 
   // meteor add-on packages
   api.use("less");
@@ -36,14 +37,24 @@ Package.onUse(function(api) {
   api.use("accounts-oauth");
   api.use("accounts-facebook");
   api.use("accounts-google");
-  api.use("reactioncommerce:core@0.8.0");
 
-  api.use("ecmascript");
   api.use("accounts-twitter");
   api.use("accounts-github");
   api.use("accounts-weibo");
+  api.use("reactioncommerce:core@0.8.0");
 
+  // Reaction
   api.use("reactioncommerce:core-theme");
+
+  // Files
+  api.addFiles("common/schemas/accounts.js");
+
+  // accounts
+  api.addFiles("server/accounts.js", "server");
+  api.addFiles("common/factories/accounts.js");
+  api.addFiles("server/publications/accounts.js", "server");
+  api.addFiles("server/methods/serviceConfiguration.js", "server");
+
 
   // Core Reaction packages
   // register as a reaction package
@@ -90,7 +101,8 @@ Package.onUse(function(api) {
   // core login form and generic templates
   api.addFiles("client/templates/login/loginForm.html", "client");
   api.addFiles("client/templates/login/loginButtons.html", "client");
-  api.addFiles("client/templates/loginForm.js", "client");
+  api.addFiles("client/templates/login/loginForm.less", "client");
+  api.addFiles("client/templates/login/loginForm.js", "client");
 
   // sign in
   api.addFiles("client/templates/signIn/signIn.html", "client");
@@ -108,8 +120,19 @@ Package.onUse(function(api) {
   api.addFiles("client/templates/updatePassword/updatePassword.html", "client");
   api.addFiles("client/templates/updatePassword/updatePassword.js", "client");
 
+  api.addFiles("client/templates/accounts.html", "client");
+
+  api.addFiles("client/templates/inline/inline.html", "client");
+  api.addFiles("client/templates/inline/inline.js", "client");
+
+  api.addFiles("client/templates/dropdown/dropdown.html", "client");
+  api.addFiles("client/templates/dropdown/dropdown.js", "client");
+
   // basic styles
-  api.addFiles("client/templates/loginForm.less", "client");
+
+  // Email Templates
+  api.addAssets('server/emailTemplates/welcomeNotification.html', 'server');
+  api.addAssets('server/emailTemplates/shopMemberInvite.html', 'server');
 });
 
 Package.onTest(function(api) {
