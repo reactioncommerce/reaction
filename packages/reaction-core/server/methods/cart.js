@@ -15,12 +15,11 @@ Meteor.methods({
   mergeCart: function (cartId) {
     check(cartId, String);
 
-    var Cart, currentCart, sessionCarts, sessionId, shopId, userId;
-    Cart = ReactionCore.Collections.Cart;
-    currentCart = Cart.findOne(cartId);
-    userId = currentCart.userId;
-    sessionId = ReactionCore.sessionId;
-    shopId = ReactionCore.getShopId();
+    var Cart = ReactionCore.Collections.Cart;
+    var currentCart = Cart.findOne(cartId);
+    var userId = currentCart.userId;
+    var sessionId = ReactionCore.sessionId;
+    var shopId = ReactionCore.getShopId();
 
     // no need to merge anonymous carts
     if (Roles.userIsInRole(userId, 'anonymous', shopId)) {
@@ -28,51 +27,51 @@ Meteor.methods({
     }
 
     // get session or user carts
-    sessionCarts = Cart.find({
-      $or: [{
-        'userId': userId
-      }, {
-        'sessions': {
-          $in: [sessionId]
-        }
-      }]
+    var sessionCarts = Cart.find({
+      'session': sessionId,
+      'userId': {
+        $ne: userId
+      }
     });
 
-    ReactionCore.Events.info("begin merge processing into: " + currentCart._id);
+    ReactionCore.Events.info("merge cart: begin merge processing of session " + sessionId + " into: " + currentCart._id);
+
+    let currentCartItems = currentCart.items;
+
     // loop through session carts and merge into user cart
-    sessionCarts.forEach(function (sessionCart) {
-      ReactionCore.Events.info("merge info: ", userId, sessionCart.userId, currentCart._id, sessionCart._id);
-
-      if (userId == sessionCart.userId || currentCart._id == sessionCart._id) {
-
-        Cart.update(sessionCart._id, {
+    sessionCarts.forEach((sessionCart) => {
+      ReactionCore.Events.info("merge cart: merge user userId:", userId, "sessionCart.userId:" + sessionCart.userId,"sessionCart id: "  + sessionCart._id);
+      // really if we have no items, there's nothing to merge
+      if (sessionCart.items) {
+        // merge session cart into current cart
+        Cart.update(currentCart._id, {
           $set: {
             userId: Meteor.userId()
           },
           $addToSet: {
             items: {
-              $each: currentCart.items
-            },
-            sessions: {
-              $each: currentCart.sessions
+              $each: sessionCart.items
             }
           }
         });
-
-        // delete the session Cart after merge.
-        Cart.remove(currentCart._id);
-        Meteor.users.remove(currentCart.userId);
-        ReactionCore.Collections.Accounts.remove({
-          userId: currentCart.userId
-        });
-
-        ReactionCore.Events.info("delete cart: " + sessionCart._id + "and user: " + sessionCart.userId);
-
-        return ReactionCore.Events.info("processed merge for cartId: " + sessionCart._id);
       }
+      // cleanup session Carts after merge.
+      if (sessionCart.userId !== this.userId) {
+        // clear the cart that was used for a session
+        // and we're also going to do some garbage Collection
+        Cart.remove(sessionCart._id);
+        Meteor.users.remove(sessionCart.userId);
+        ReactionCore.Collections.Accounts.remove({
+          userId: sessionCart.userId
+        });
+        ReactionCore.Events.info("merge cart: delete cart " + sessionCart._id + "and user: " + sessionCart.userId);
+      }
+
+      ReactionCore.Events.info("merge cart: processed merge for cartId " + sessionCart._id);
+      return currentCart._id;
     });
 
-    return true;
+    return currentCart._id;
   },
 
   /**
@@ -80,19 +79,13 @@ Meteor.methods({
    * returns new cart for user
    */
   createCart: function (createForUserId) {
-    check(createForUserId, Match.OneOf(String, null));
+    check(createForUserId, Match.Optional(String));
     this.unblock();
-
-    var user = Meteor.user();
-    var userId = createForUserId || user._id;
+    var sessionId;
+    var userId = createForUserId || this.userId;
     var shopId = ReactionCore.getShopId();
-    var sessionId = ReactionCore.sessionId;
     var Cart = ReactionCore.Collections.Cart;
     var newCartId;
-
-    // required
-    check(sessionId, String);
-    check(userId, String);
 
     // find current userCart
     // this is the only true cart
@@ -100,74 +93,60 @@ Meteor.methods({
       'userId': userId
     });
 
-    // find carts this user might have had
+    if (currentUserCart) {
+      sessionId = currentUserCart.session;
+    } else {
+      sessionId = ReactionCore.sessionId;
+    }
+
     // while anonymous and merge into user cart
-    var sessionCarts = Cart.find({
-      'sessions': {
-        $in: [sessionId]
-      },
+    var sessionCartCount = Cart.find({
+      'session': sessionId,
       'userId': {
         $ne: userId
       }
-    });
+    }).count();
 
-    // if no session cart or currentCart then create a new cart
-    if (!currentUserCart) {
-      newCartId = Cart.insert({
-        sessions: [sessionId],
+    // check if user has `anonymous` role.( this is a visitor)
+    anonymousUser = ReactionCore.hasPermission('anonymous');
+    // the cart is either current or new
+    if (currentUserCart) {
+      var currentCartId = currentUserCart._id;
+    }
+
+    ReactionCore.Events.debug("create cart: shopId", shopId);
+    ReactionCore.Events.debug("create cart: userId", userId);
+    ReactionCore.Events.debug("create cart: sessionId", sessionId);
+    ReactionCore.Events.debug("create cart: currentUserCart", currentCartId);
+    ReactionCore.Events.debug("create cart: sessionCarts.count", sessionCartCount);
+    ReactionCore.Events.debug("create cart: anonymousUser", anonymousUser);
+
+    // if we have a session cart, but just create or
+    // authenticated into a new user we need to create a user
+    // cart for the new authenticated user.
+    if (!currentCartId && anonymousUser === false) {
+      currentCartId = Cart.insert({
+        sessionId: sessionId,
         shopId: shopId,
         userId: userId
       });
-      ReactionCore.Events.info("no existing cart. created: " + newCartId + " for " + userId);
-    }
-    // the cart is either current or new
-    if (currentUserCart) {
-      currentCartId = currentUserCart._id;
-    } else {
-      currentCartId = newCartId;
+      ReactionCore.Events.info("create cart: into new user cart. created: " + currentCartId + " for user " + userId);
     }
 
-    // check if use is anonymous
-    anonymousUser = ReactionCore.hasPermission('anonymous');
+    // merge session carts into the current cart
+    if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
+      ReactionCore.Events.info("create cart: found existing cart. merge into " + currentCartId + " for user " + userId);
+      Meteor.call("mergeCart", currentCartId);
 
-    // if there are session carts, we're merge them
-    // there should only be one cart - the currentUserCart
-    if (currentCartId && sessionCarts.count() !== 0 && !anonymousUser) {
-
-      sessionCarts.forEach(function (sessionCart) {
-        var staleCartId = sessionCart._id;
-        var staleCartUserId = sessionCart.userId;
-        // merge items if they exist
-        if (sessionCart.items) {
-          // update the current userCart
-          Cart.update(currentCartId, {
-            $set: {
-              'userId': userId
-            },
-            $addToSet: {
-              'items': {
-                $each: sessionCart.items
-              }
-            }
-          });
-        }
-        // the 'anonymous' session carts are now longer needed.
-        // instead of deleting, defer cleanup
-        // mark accounts "expired"
-        /*ReactionCore.Events.info("Remove stale cart", staleCartId);*/
-        ReactionCore.Collections.Accounts.update({
-          'userId': staleCartUserId,
-          $set: {
-            state: "expired"
-          }
-        });
-        // remove the cart user and session
-        Cart.remove(staleCartId);
-
-        ReactionCore.Events.info("processed: " + staleCartId + "for user: " + sessionCart.userId + " into " + currentCartId);
-
+    } else if (!currentCartId) { // Create empty cart if there is none.
+      currentCartId = Cart.insert({
+        sessionId: sessionId,
+        shopId: shopId,
+        userId: userId
       });
+      ReactionCore.Events.info("create cart: no existing cart. created: " + currentCartId + " for " + userId);
     }
+    return currentCartId;
   },
   /**
    *  @summary addToCart
