@@ -79,7 +79,7 @@ Template.coreCheckoutShipping.events({
     var cart = ReactionCore.Collections.Cart.findOne();
 
     try {
-      Meteor.call("setShipmentMethod", cart._id, self.method);
+      Meteor.call("cart/setShipmentMethod", cart._id, self.method);
     } catch (error) {
       throw new Meteor.Error(error, "Cannot change methods while processing.");
     }

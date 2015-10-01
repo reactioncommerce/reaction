@@ -26,7 +26,7 @@ Meteor.publish("Cart", function(clientSessionId, userId) {
   if (cart) {
     cartId = cart._id;
   } else {
-    cartId = Meteor.call("createCart", this.userId);
+    cartId = Meteor.call("cart/createCart", this.userId);
   }
   // return cart cursor
   return ReactionCore.Collections.Cart.find(cartId);

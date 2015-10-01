@@ -4,7 +4,7 @@
 
 Meteor.methods({
   /**
-   * mergeCart
+   * cart/mergeCart
    * merge matching sessionId cart into specified userId cart
    *
    * There should be one cart for each independent, non logged in user session
@@ -12,7 +12,7 @@ Meteor.methods({
    * If they are logged in on more than one devices, regardless of session, the user cart will be used
    * If they had more than one cart, on more than one device,logged in at seperate times then merge the carts
    */
-  mergeCart: function (cartId) {
+  "cart/mergeCart": (cartId) => {
     check(cartId, String);
 
     var Cart = ReactionCore.Collections.Cart;
@@ -75,10 +75,10 @@ Meteor.methods({
   },
 
   /**
-   * createCart
+   * cart/createCart
    * returns new cart for user
    */
-  createCart: function (createForUserId) {
+  "cart/createCart": (createForUserId) => {
     check(createForUserId, Match.Optional(String));
     this.unblock();
     var sessionId;
@@ -134,7 +134,7 @@ Meteor.methods({
     // merge session carts into the current cart
     if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
       ReactionCore.Log.info("create cart: found existing cart. merge into " + currentCartId + " for user " + userId);
-      Meteor.call("mergeCart", currentCartId);
+      Meteor.call("cart/mergeCart", currentCartId);
 
     } else if (!currentCartId) { // Create empty cart if there is none.
       currentCartId = Cart.insert({
@@ -147,16 +147,19 @@ Meteor.methods({
     return currentCartId;
   },
   /**
-   *  @summary addToCart
-   *  @params cartId
-   *  @params productId
+   *  cart/addToCart
+   *  @summary add items to a user cart
+   *  @params {String} cartId - cartId
+   *  @params {String} productId - productId to add to Cart
+   *  @params {String} variantData - variant object
+   *  @params {String} quantity - qty to add to cart, deducts from inventory
    *
    * when we add an item to the cart, we want to break all relationships
    * with the existing item. We want to fix price, qty, etc into history
    * however, we could check reactively for price /qty etc, adjustments on
    * the original and notify them
    */
-  addToCart: function (cartId, productId, variantData, quantity) {
+  "cart/addToCart": (cartId, productId, variantData, quantity) => {
     check(cartId, String);
     check(productId, String);
     check(variantData, ReactionCore.Schemas.ProductVariant);
@@ -215,7 +218,7 @@ Meteor.methods({
   /*
    * removes a variant from the cart
    */
-  removeFromCart: function (cartId, variantData) {
+  "cart/removeFromCart": (cartId, variantData) => {
     check(cartId, String);
     check(variantData, Object);
     this.unblock();
@@ -232,7 +235,7 @@ Meteor.methods({
   },
 
   /**
-   * copyCartToOrder - transforms cart to order
+   * cart/copyCartToOrder - transforms cart to order
    * when a payment is processed we want to copy the cart
    * over to an order object, and give the user a new empty
    * cart. reusing the cart schema makes sense, but integrity of
@@ -241,7 +244,7 @@ Meteor.methods({
    * TODO:  Partial order processing, shopId processing
    * TODO:  Review Security on this method
    */
-  copyCartToOrder: function (cartId) {
+  "cart/copyCartToOrder": (cartId) => {
     check(cartId, String);
 
     var error;
@@ -306,21 +309,21 @@ Meteor.methods({
       // subscription handler, it's not always working
       var newCartExists = ReactionCore.Collections.Cart.find(order.userId);
       if (newCartExists.count() === 0) {
-        Meteor.call("createCart", order.userId);
+        Meteor.call("cart/createCart", order.userId);
       }
       // return
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " + orderId);
       return orderId;
     } else {
-      throw new Meteor.Error("copyCartToOrder: Invalid request");
+      throw new Meteor.Error("cart/copyCartToOrder: Invalid request");
     }
   },
 
   /**
-   * setShipmentMethod
+   * cart/setShipmentMethod
    * saves method as order default
    */
-  setShipmentMethod: function (cartId, method) {
+  "cart/setShipmentMethod": (cartId, method) => {
     check(cartId, String);
     check(method, Object);
 
@@ -345,10 +348,10 @@ Meteor.methods({
   },
 
   /**
-   * setShipmentAddress
+   * cart/setShipmentAddress
    * adds addressBook entry to cart shipping
    */
-  setShipmentAddress: function (cartId, address) {
+  "cart/setShipmentAddress": (cartId, address) => {
     check(cartId, String);
     check(address, Object);
     this.unblock();
@@ -376,19 +379,19 @@ Meteor.methods({
 
       // this is probably a crappy way to do this.
       if (!cart.payment) {
-        Meteor.call('setPaymentAddress', cartId, address);
+        Meteor.call('cart/setPaymentAddress', cartId, address);
       }
 
     } else {
-      throw new Meteor.Error("setShipmentAddress: Invalid request");
+      throw new Meteor.Error("cart/setShipmentAddress: Invalid request");
     }
   },
 
   /**
-   * setPaymentAddress
+   * cart/setPaymentAddress
    * adds addressBook entry to cart
    */
-  setPaymentAddress: function (cartId, address) {
+  "cart/setPaymentAddress": (cartId, address) => {
     check(cartId, String);
     check(address, Object);
     this.unblock();
@@ -411,12 +414,12 @@ Meteor.methods({
 
       // set as default shipping if not set
       if (!cart.shipping) {
-        Meteor.call('setShipmentAddress', cartId, address);
+        Meteor.call('cart/setShipmentAddress', cartId, address);
       }
 
       return result;
     } else {
-      throw new Meteor.Error("setPaymentAddress: Invalid request");
+      throw new Meteor.Error("cart/setPaymentAddress: Invalid request");
     }
   },
 

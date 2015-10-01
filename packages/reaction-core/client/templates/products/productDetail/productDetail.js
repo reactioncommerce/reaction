@@ -159,7 +159,7 @@ Template.productDetail.events({
         if (cartId && productId) {
           count = ReactionCore.Collections.Cart.findOne(cartId).cartCount() || 0;
 
-          Meteor.call("addToCart", cartId, productId, currentVariant, quantity, function (error, result) {
+          Meteor.call("cart/addToCart", cartId, productId, currentVariant, quantity, function (error, result) {
             var address;
             if (!error && count === 0) {
               address = Session.get("address");
