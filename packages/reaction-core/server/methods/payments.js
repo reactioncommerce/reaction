@@ -1,8 +1,12 @@
-Meteor.methods( {
+Meteor.methods({
   /**
-   * add payment method
+   * Description of what this does.
+   *
+   * @param {String} cartId - cartId
+   * @param {Object} paymentMethod - formatted payment method object
+   * @returns {boolean} boolean
    */
-  paymentMethod: function(cartId, paymentMethod) {
+  "payments/paymentMethod": (cartId, paymentMethod) => {
     check(cartId, String);
     check(paymentMethod, Object);
     return Cart.update({
