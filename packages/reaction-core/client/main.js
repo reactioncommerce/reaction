@@ -4,10 +4,10 @@
  */
 _.extend(ReactionCore, {
   shopId: null,
-  init: function() {
+  init: function () {
     let self;
     self = this;
-    return Tracker.autorun(function() {
+    return Tracker.autorun(function () {
       let domain;
       let shop;
       let shopHandle;
@@ -23,22 +23,30 @@ _.extend(ReactionCore, {
       }
     });
   },
-  hasPermission: function(hasPermissions, userId) {
+  /**
+   * hasPermission - server permissions checks
+   * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
+   * @param {String} userId - userId, defaults to Meteor.userId()
+   * @param {String} role - default to shopId
+   * @return {Boolean} Boolean - true if has permission
+   */
+  hasPermission: function (checkPermissions, userId, role) {
     // use current user if userId if not provided
-    let checkUserId = userId;
-    if (!checkUserId) {
-      checkUserId = this.userId;
+    let checkUserId = userId || Meteor.userId();
+    let shopId = role || this.getShopId();
+    let permissions = [];
+    // permissions can be either a string or an array
+    // we'll force it into an array so we can add
+    // admin roles
+    if (!_.isArray(checkPermissions)) {
+      permissions = [checkPermissions];
+    } else {
+      permissions = checkPermissions;
     }
-    // if the user has admin, owner permissions
-    // we'll always check if those roles are enough
-    let permissions = hasPermissions;
-
-    if (!_.isArray(permissions)) {
-      permissions = [hasPermissions];
-      permissions.push("admin", "owner");
-    }
+    // if the user has admin, owner permissions we'll always check if those roles are enough
+    permissions.push("admin", "owner");
     // check if userIs the Roles
-    if (Roles.userIsInRole(checkUserId, permissions, this.shopId)) {
+    if (Roles.userIsInRole(checkUserId, permissions, shopId)) {
       return true;
     } else if (Roles.userIsInRole(checkUserId,
         permissions,
@@ -65,24 +73,24 @@ _.extend(ReactionCore, {
     // returning false
     return false;
   },
-  hasOwnerAccess: function() {
+  hasOwnerAccess: function () {
     let ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
   },
-  hasAdminAccess: function() {
+  hasAdminAccess: function () {
     let adminPermissions;
     adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
   },
-  hasDashboardAccess: function() {
+  hasDashboardAccess: function () {
     let dashboardPermissions;
     dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
-  getShopId: function() {
+  getShopId: function () {
     return this.shopId;
   },
-  allowGuestCheckout: function() {
+  allowGuestCheckout: function () {
     let allowGuest = true;
 
     let packageRegistry = ReactionCore.Collections.Packages.findOne({
@@ -99,7 +107,7 @@ _.extend(ReactionCore, {
     }
     return allowGuest;
   },
-  getSellerShopId: function() {
+  getSellerShopId: function () {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
 
@@ -109,20 +117,21 @@ _.extend(ReactionCore, {
    * @param {String} viewData {label, template, data}
    * @returns {String} Session "admin/showActionView"
    */
-  showActionView: function(viewData) {
+  showActionView: function (viewData) {
     Session.set("admin/showActionView", true);
     ReactionCore.setActionView(viewData);
   },
 
-  isActionViewOpen: function() {
+  isActionViewOpen: function () {
     return Session.equals("admin/showActionView", true);
   },
 
-  setActionView: function(viewData) {
+  setActionView: function (viewData) {
     if (viewData) {
       Session.set("admin/actionView", viewData);
     } else {
-      let registryItem = ReactionCore.getRegistryForCurrentRoute("settings");
+      let registryItem = ReactionCore.getRegistryForCurrentRoute(
+        "settings");
 
       if (registryItem) {
         ReactionCore.setActionView(registryItem);
@@ -134,24 +143,24 @@ _.extend(ReactionCore, {
     }
   },
 
-  getActionView: function() {
+  getActionView: function () {
     return Session.get("admin/actionView");
   },
 
-  hideActionView: function() {
+  hideActionView: function () {
     Session.set("admin/showActionView", false);
   },
 
-  clearActionView: function() {
+  clearActionView: function () {
     Session.set("admin/actionView", undefined);
   },
 
-  getCurrentTag: function() {
+  getCurrentTag: function () {
     if (Router.current().route.getName() === "/product/tag") {
       return Router.current().params._id;
     }
   },
-  getRegistryForCurrentRoute: function(provides) {
+  getRegistryForCurrentRoute: function (provides) {
     let routeName = Router.current().route.getName();
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
@@ -165,7 +174,7 @@ _.extend(ReactionCore, {
     });
 
     if (reactionApp) {
-      let settingsData = _.find(reactionApp.registry, function(item) {
+      let settingsData = _.find(reactionApp.registry, function (item) {
         return item.provides === provides && item.route === routeName;
       });
 
@@ -176,7 +185,6 @@ _.extend(ReactionCore, {
   }
 
 });
-
 
 /*
  * configure bunyan logging module for reaction client
@@ -209,13 +217,12 @@ ReactionCore.Events = bunyan.createLogger({
 
 ReactionCore.Events.level(isDebug);
 
-
 /*
  * registerLoginHandler
  * method to create anonymous users
  */
 
-Accounts.loginWithAnonymous = function(anonymous, callback) {
+Accounts.loginWithAnonymous = function (anonymous, callback) {
   Accounts.callLoginMethod({
     methodArguments: [{
       anonymous: true
@@ -224,13 +231,12 @@ Accounts.loginWithAnonymous = function(anonymous, callback) {
   });
 };
 
-
 /**
  *  Startup Reaction
  *  Init Reaction client
  */
 
-Meteor.startup(function() {
+Meteor.startup(function () {
   // warn on insecure exporting of PackageRegistry settings
   if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
     let msg = "PackageRegistry: Insecure export to client.";
@@ -239,7 +245,7 @@ Meteor.startup(function() {
   // init the core
   ReactionCore.init();
   // initialize anonymous guest users
-  return Deps.autorun(function() {
+  return Deps.autorun(function () {
     if (ReactionCore.allowGuestCheckout() && !Meteor.userId()) {
       Accounts.loginWithAnonymous();
     }

@@ -28,7 +28,8 @@ PackageFixture = class {
     let json = null;
     let result = null;
 
-    ReactionCore.Events.info(`Loading default data for ${collection._name}`);
+    ReactionCore.Events.debug(
+      `Loading fixture data for ${collection._name}`);
     // if jsonFile was path wasn't provided
     // we'll assume we're loading collection data
     if (!jsonFile) {
@@ -45,10 +46,10 @@ PackageFixture = class {
 
     if (result) {
       ReactionCore.Events.info(
-        `Success importing document to ${collection._name}`
+        `Success importing fixture data to ${collection._name}`
       );
     } else {
-      ReactionCore.Events.error("Error adding document to " +
+      ReactionCore.Events.error("Error adding fixture data to " +
         collection._name, error.message);
     }
   }
@@ -70,42 +71,47 @@ PackageFixture = class {
    *  Fixtures.loadSettings Assets.getText("settings/reaction.json")
    */
   loadSettings(json) {
-    check(json, Object);
-    var exists, item, pkg, result, service, services, settings, _i, _j, _k,
-      _len, _len1, _len2, _ref;
-    var validatedJson = EJSON.parse(json);
-
+    check(json, String);
+    let exists;
+    let service;
+    let services;
+    let settings;
+    let validatedJson = EJSON.parse(json);
+    // validate json and error out if not an array
     if (!_.isArray(validatedJson[0])) {
       ReactionCore.Events.warn(
         "Load Settings is not an array. Failed to load settings.");
       return;
     }
     // loop settings and upsert packages.
-    for (_i = 0, _len = validatedJson.length; _i < _len; _i++) {
-      pkg = validatedJson[_i];
-      for (_j = 0, _len1 = pkg.length; _j < _len1; _j++) {
-        item = pkg[_j];
+    for (let pkg of validatedJson) {
+      for (let item of pkg) {
         exists = ReactionCore.Collections.Packages.findOne({
-          'name': item.name
+          name: item.name
         });
+        // insert into the Packages collection
         if (exists) {
           result = ReactionCore.Collections.Packages.upsert({
-            'name': item.name
+            name: item.name
           }, {
             $set: {
-              'settings': item.settings,
-              'enabled': item.enabled
+              settings: item.settings,
+              enabled: item.enabled
             }
           }, {
             multi: true,
             upsert: true,
             validate: false
           });
-          if (item.settings.services) {
-            _ref = item.settings.services;
-            for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
-              services = _ref[_k];
-              for (service in services) {
+        }
+        // sets the private settings of various
+        // accounts authentication services
+        if (item.settings.services) {
+          for (services of item.settings.services) {
+            for (service in services) {
+              // this is just a sanity check required by linter
+              if ({}.hasOwnProperty.call(services, service)) {
+                // actual settings for the service
                 settings = services[service];
                 ServiceConfiguration.configurations.upsert({
                   service: service
@@ -117,8 +123,8 @@ PackageFixture = class {
               }
             }
           }
-          ReactionCore.Events.info("loaded local package data: " + item.name);
         }
+        ReactionCore.Events.info(`loaded local package data: ${item.name}`);
       }
     }
   }
@@ -126,32 +132,33 @@ PackageFixture = class {
   /**
    * loadI18n fixtures
    * @summary imports translation fixture data
+   * @param {Object} translationCollection - optional collection object
+   * @returns {null} inserts collection
    */
-  loadI18n(collection) {
-    var item, json, language, languages, shop, _i, _j, _len, _len1, _ref;
-    if (collection == null) {
-      collection = ReactionCore.Collections.Translations;
-    }
-    languages = [];
+  loadI18n(translationCollection) {
+    let collection = translationCollection || ReactionCore.Collections.Translations;
+    let json;
+    let shop;
+
     if (collection.find().count() > 0) {
       return;
     }
+
     shop = ReactionCore.Collections.Shops.findOne();
     if (shop) {
-      ReactionCore.Events.info("Loading fixture data for " + collection._name);
-      if (!(shop != null ? shop.languages : void 0)) {
+      ReactionCore.Events.info(
+        `Loading fixture data for ${collection._name}`);
+      if (!(shop !== null ? shop.languages : void 0)) {
         shop.languages = [{
-          'i18n': 'en'
+          i18n: "en"
         }];
       }
-      _ref = shop.languages;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        language = _ref[_i];
+
+      for (let language of shop.languages) {
         json = EJSON.parse(Assets.getText("private/data/i18n/" + language.i18n +
           ".json"));
-        for (_j = 0, _len1 = json.length; _j < _len1; _j++) {
-          item = json[_j];
-          collection.insert(item, function (error, result) {
+        for (let item of json) {
+          collection.insert(item, function (error) {
             if (error) {
               ReactionCore.Events.warn("Error adding " + language.i18n +
                 " to " + collection._name, item, error);
@@ -163,8 +170,8 @@ PackageFixture = class {
         }
       }
     } else {
-      return ReactionCore.Events.error(
-        "No shop found. Failed to load languages.");
+      ReactionCore.Events.error("No shop found. Failed to load languages.");
+      return;
     }
   }
 };
@@ -174,16 +181,15 @@ PackageFixture = class {
  */
 this.Fixtures = new PackageFixture();
 
-/*
+/**
+ * getDomain
  * local helper for creating admin users
+ * @param {String} requestUrl - url
+ * @return {String} domain name stripped from requestUrl
  */
-
-getDomain = function (url) {
-  var domain;
-  if (!url) {
-    url = process.env.ROOT_URL;
-  }
-  domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+getDomain = function (requestUrl) {
+  let url = requestUrl || process.env.ROOT_URL;
+  let domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
   return domain;
 };
 
@@ -193,14 +199,17 @@ getDomain = function (url) {
  */
 
 ReactionRegistry.createDefaultAdminUser = function () {
-  var accountId, defaultAdminRoles, domain, options, packages, pkg, reg,
-    shopId, url, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5,
-    _ref6;
-  options = {};
+  let accountId;
+  let defaultAdminRoles;
+  let packages;
+  let shopId;
+  let url;
+  let domain = getDomain();
+  let options = {};
   options.email = process.env.REACTION_EMAIL;
   options.username = process.env.REACTION_USER;
   options.password = process.env.REACTION_AUTH;
-  domain = getDomain();
+
   defaultAdminRoles = ["owner", "admin"];
   shopId = ReactionCore.getShopId();
   if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
@@ -217,12 +226,9 @@ ReactionRegistry.createDefaultAdminUser = function () {
       "\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email +
       "\n  PASSWORD: " + options.password + "\n");
   } else {
-    options.username = ((_ref = Meteor.settings) != null ? (_ref1 = _ref.reaction) !=
-      null ? _ref1.REACTION_USER : void 0 : void 0) || "Owner";
-    options.password = ((_ref2 = Meteor.settings) != null ? (_ref3 = _ref2.reaction) !=
-      null ? _ref3.REACTION_AUTH : void 0 : void 0) || Random.secret(8);
-    options.email = ((_ref4 = Meteor.settings) != null ? (_ref5 = _ref4.reaction) !=
-        null ? _ref5.REACTION_EMAIL : void 0 : void 0) || Random.id(8).toLowerCase() +
+    options.username = Meteor.settings.REACTION_USER || "Owner";
+    options.password = Meteor.settings.REACTION_AUTH || Random.secret(8);
+    options.email = Meteor.settings.REACTION_EMAIL || Random.id(8).toLowerCase() +
       "@" + domain;
     ReactionCore.Events.warn(
       "\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email +
@@ -267,11 +273,8 @@ ReactionRegistry.createDefaultAdminUser = function () {
     }
   });
 
-  for (_i = 0, _len = packages.length; _i < _len; _i++) {
-    pkg = packages[_i];
-    _ref6 = pkg.registry;
-    for (_j = 0, _len1 = _ref6.length; _j < _len1; _j++) {
-      reg = _ref6[_j];
+  for (let pkg of packages) {
+    for (let reg of pkg.registry) {
       if (reg.route) {
         defaultAdminRoles.push(reg.route);
       }
@@ -331,6 +334,7 @@ ReactionRegistry.loadFixtures = function () {
         ReactionCore.Events.info("Initializing " + shop.name + " " +
           pkgName);
         // existing registry will be upserted with changes
+        if (!shopId) return [];
         let result = ReactionCore.Collections.Packages.upsert({
           shopId: shopId,
           name: pkgName
