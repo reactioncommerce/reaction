@@ -253,3 +253,21 @@ Router.go('Homepage')            // redirect to the defined route (here: '/') Ro
 Router.path('Homepage')          // return the path of the defined route as a string. (here: '/')
 Router.current().path            // return the current path
 ```
+
+## Iron Roter > Extending Existing Routes
+
+At the app level you can define for following:
+
+```
+// This can be placed in "reaction/common/routing.js", for example.
+Router.map(function route() {
+  _.extend(Router.routes.nameOfRoute.options, {
+    // Just an example. You can put any Iron Router options here.
+    yieldTemplates: {
+      checkoutHeader: {
+        to: "layoutHeader"
+      }
+    }
+  });
+});
+```
