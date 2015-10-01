@@ -23,7 +23,7 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   },
   mode: {
     type: String,
-    allowedValues: ["authorize", 'capture', 'refund', 'void']
+    allowedValues: ["authorize", "capture", "refund", "void"]
   },
   createdAt: {
     type: Date,

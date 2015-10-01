@@ -25,27 +25,27 @@ ReactionCore.Schemas.DiscountType = new SimpleSchema({
 */
 
 ReactionCore.Schemas.DiscountRules = new SimpleSchema({
-  validUses: {
+  "validUses": {
     type: Number,
     optional: true
   },
-  products: {
+  "products": {
     type: [String],
     optional: true
   },
-  codes: {
+  "codes": {
     type: [String],
     optional: true
   },
-  range: {
+  "range": {
     type: [Object],
     optional: true
   },
-  'range.$.begin': {
+  "range.$.begin": {
     type: Number,
     optional: true
   },
-  'range.$.end': {
+  "range.$.end": {
     type: Number,
     optional: true
   }

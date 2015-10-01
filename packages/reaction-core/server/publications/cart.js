@@ -2,23 +2,34 @@
  * cart
  */
 
-Meteor.publish('Cart', function(userId) {
+Meteor.publish("Cart", function(clientSessionId, userId) {
+  check(clientSessionId, Match.OptionalOrNull(String));
   check(userId, Match.OptionalOrNull(String));
-  if (!this.userId) {
-    return;
+
+  if (!ReactionCore.getShopId()) {
+    return [];
   }
-
-  cart = ReactionCore.Collections.Cart.find({
-    userId: this.userId
-  });
-
-  if (cart.count() === 0 ) {
-    Meteor.call("createCart", this.userId);
+  // sessionId is required, not for selecting
+  // the cart, (userId), but as a key in merging
+  // anonymous user carts into authenticated existing
+  // user carts.
+  let sessionId = clientSessionId || ReactionCore.sessionId;
+  // we won't create carts for unless
+  // we've got an id an session
+  if (!this.userId || sessionId === null) {
+    return [];
   }
+  // select user cart
+  cart = ReactionCore.Collections.Cart.findOne({userId: this.userId});
 
-  return ReactionCore.Collections.Cart.find({
-    userId: this.userId
-  });
+  // we may create a cart if we didn't find one.
+  if (cart) {
+    cartId = cart._id;
+  } else {
+    cartId = Meteor.call("createCart", this.userId);
+  }
+  // return cart cursor
+  return ReactionCore.Collections.Cart.find(cartId);
 });
 
 

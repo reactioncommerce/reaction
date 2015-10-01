@@ -243,7 +243,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
-    index: 1
+    index: 1,
+    label: "Product ShopId"
   },
   title: {
     type: String

@@ -33,72 +33,74 @@ ReactionCore.Schemas.Workflow = new SimpleSchema({
 */
 
 ReactionCore.Schemas.PackageConfig = new SimpleSchema({
-  shopId: {
+  "shopId": {
     type: String,
     index: 1,
-    autoValue: ReactionCore.shopIdAutoValue
+    autoValue: ReactionCore.shopIdAutoValue,
+    label: "PackageConfig ShopId",
+    optional: true
   },
-  name: {
+  "name": {
     type: String,
     index: 1
   },
-  enabled: {
+  "enabled": {
     type: Boolean,
     defaultValue: true
   },
-  icon: {
+  "icon": {
     type: String,
     optional: true
   },
-  settings: {
+  "settings": {
     type: Object,
     optional: true,
     blackbox: true
   },
-  layout: {
+  "layout": {
     type: [ReactionCore.Schemas.Layout],
     optional: true
   },
-  registry: {
+  "registry": {
     type: [Object],
     optional: true
   },
-  'registry.$.provides': {
+  "registry.$.provides": {
     type: String
   },
-  'registry.$.route': {
+  "registry.$.route": {
     type: String,
     optional: true
   },
-  'registry.$.template': {
+  "registry.$.template": {
     type: String,
     optional: true
   },
-  'registry.$.description': {
+  "registry.$.description": {
     type: String,
     optional: true
   },
-  'registry.$.icon': {
+  "registry.$.icon": {
     type: String,
     optional: true
   },
-  'registry.$.label': {
+  "registry.$.label": {
     type: String,
     optional: true
   },
-  'registry.$.container': {
+  "registry.$.container": {
     type: String,
     optional: true
   },
-  'registry.$.cycle': {
+  "registry.$.cycle": {
     type: Number,
     optional: true
   },
-  'registry.$.enabled': {
+  "registry.$.enabled": {
     type: Boolean,
     optional: true
   },
-  'registry.$.permissions': {
+  "registry.$.permissions": {
     type: [ReactionCore.Schemas.Permissions],
     optional: true
   }
@@ -135,7 +137,7 @@ ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
     },
     "settings.openexchangerates.appId": {
       type: String,
-      label: "Open Exchange Rates App Id",
+      label: "Open Exchange Rates App Id"
     },
     "settings.google.clientId": {
       type: String,

@@ -103,8 +103,7 @@ ReactionCore.Helpers.cartTransform = {
 */
 ReactionCore.Collections.Cart = Cart = this.Cart = new Mongo.Collection("Cart", {
   transform: function(cart) {
-    var newInstance;
-    newInstance = Object.create(ReactionCore.Helpers.cartTransform);
+    let newInstance = Object.create(ReactionCore.Helpers.cartTransform);
     return _.extend(newInstance, cart);
   }
 });
@@ -179,18 +178,7 @@ ReactionCore.Collections.Discounts.attachSchema(ReactionCore.Schemas.Discounts);
 /**
 * ReactionCore Collections Shops
 */
-ReactionCore.Collections.Shops = Shops = this.Shops = new Mongo.Collection("Shops", {
-  transform: function(shop) {
-    var index, member, _ref;
-    _ref = shop.members;
-    for (index in _ref) {
-      member = _ref[index];
-      member.index = index;
-      member.user = Meteor.users.findOne(member.userId);
-    }
-    return shop;
-  }
-});
+ReactionCore.Collections.Shops = Shops = this.Shops = new Mongo.Collection("Shops");
 
 ReactionCore.Collections.Shops.attachSchema(ReactionCore.Schemas.Shop);
 

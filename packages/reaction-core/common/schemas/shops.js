@@ -163,13 +163,13 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [Object],
     optional: true
   },
-  'languages.$.label': {
+  "languages.$.label": {
     type: String
   },
-  'languages.$.i18n': {
+  "languages.$.i18n": {
     type: String
   },
-  'languages.$.enabled': {
+  "languages.$.enabled": {
     type: Boolean,
     defaultValue: false
   },
@@ -198,23 +198,23 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [Object],
     optional: true
   },
-  'layout.$.layout': {
+  "layout.$.layout": {
     type: String,
     defaultValue: "coreLayout"
   },
-  'layout.$.theme': {
+  "layout.$.theme": {
     type: String,
     defaultValue: "default"
   },
-  'layout.$.workflow': {
+  "layout.$.workflow": {
     type: String,
     optional: true
   },
-  'layout.$.collection': {
+  "layout.$.collection": {
     type: String,
     optional: true
   },
-  'layout.$.enabled': {
+  "layout.$.enabled": {
     type: Boolean,
     defaultValue: true
 

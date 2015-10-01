@@ -7,7 +7,6 @@
  */
 
 Accounts.validateLoginAttempt(function(attempt) {
-
   if (!attempt.allowed) {
     return false;
   }
@@ -21,18 +20,18 @@ Accounts.validateLoginAttempt(function(attempt) {
     return attempt.allowed;
   }
 
-  var loginEmail = attempt.methodArguments[0].user.email;
-  var adminEmail = process.env.METEOR_EMAIL;
+  let loginEmail = attempt.methodArguments[0].user.email;
+  let adminEmail = process.env.REACTION_EMAIL;
 
   if (loginEmail && loginEmail === adminEmail) {
     // filter out the matching login email from any existing emails
-    var email = _.filter(attempt.user.emails, function(email) {
+    let userEmail = _.filter(attempt.user.emails, function(email) {
       return email.address === loginEmail;
     });
 
     // check if the email is verified
-    if (!email.length || !email[0].verified) {
-      throw new Meteor.Error(403, 'Oops! Please validate your email first.');
+    if (!userEmail.length || !userEmail[0].verified) {
+      throw new Meteor.Error("403", "Oops! Please validate your email first.");
     }
   }
 

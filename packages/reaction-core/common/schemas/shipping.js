@@ -108,25 +108,25 @@ ReactionCore.Schemas.ShippingParcel = new SimpleSchema({
 */
 
 ReactionCore.Schemas.ShippingMethod = new SimpleSchema({
-  name: {
+  "name": {
     type: String,
     label: "Method Code"
   },
-  label: {
+  "label": {
     type: String,
     label: "Public Label"
   },
-  group: {
+  "group": {
     type: String,
     label: "Group"
   },
-  cost: {
+  "cost": {
     type: Number,
     label: "Cost",
     decimal: true,
     optional: true
   },
-  handling: {
+  "handling": {
     type: Number,
     label: "Handling",
     optional: true,
@@ -134,63 +134,63 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema({
     defaultValue: 0,
     min: 0
   },
-  rate: {
+  "rate": {
     type: Number,
     label: "Rate",
     decimal: true,
     min: 0
   },
-  enabled: {
+  "enabled": {
     type: Boolean,
     label: "Enabled",
     defaultValue: true
   },
-  validRanges: {
+  "validRanges": {
     type: Array,
     optional: true,
     label: "Matching Cart Ranges"
   },
-  'validRanges.$': {
+  "validRanges.$": {
     type: Object,
     optional: true
   },
-  'validRanges.$.begin': {
+  "validRanges.$.begin": {
     type: Number,
     decimal: true,
     label: "Begin",
     optional: true
   },
-  'validRanges.$.end': {
+  "validRanges.$.end": {
     type: Number,
     decimal: true,
     label: "End",
     optional: true
   },
-  validLocales: {
+  "validLocales": {
     type: Array,
     optional: true,
     label: "Matching Locales"
   },
-  'validLocales.$': {
+  "validLocales.$": {
     type: Object,
     optional: true
   },
-  'validLocales.$.origination': {
+  "validLocales.$.origination": {
     type: String,
     label: "From",
     optional: true
   },
-  'validLocales.$.destination': {
+  "validLocales.$.destination": {
     type: String,
     label: "To",
     optional: true
   },
-  'validLocales.$.deliveryBegin': {
+  "validLocales.$.deliveryBegin": {
     type: Number,
     label: "Shipping Est.",
     optional: true
   },
-  'validLocales.$.deliveryEnd': {
+  "validLocales.$.deliveryEnd": {
     type: Number,
     label: "Delivery Est.",
     optional: true
@@ -205,7 +205,8 @@ ReactionCore.Schemas.Shipping = new SimpleSchema({
   shopId: {
     type: String,
     index: 1,
-    autoValue: ReactionCore.shopIdAutoValue
+    autoValue: ReactionCore.shopIdAutoValue,
+    label: "Shipping shopId"
   },
   provider: {
     type: ReactionCore.Schemas.ShippingProvider
