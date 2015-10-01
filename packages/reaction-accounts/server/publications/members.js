@@ -49,6 +49,6 @@ Meteor.publish("ShopMembers", function() {
     return users;
   }
 
-  ReactionCore.Events.info("ShopMembers access denied");
+  ReactionCore.Log.info("ShopMembers access denied");
   return [];
 });
