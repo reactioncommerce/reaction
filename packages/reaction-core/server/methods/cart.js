@@ -371,7 +371,7 @@ Meteor.methods({
       });
 
       // refresh shipping quotes
-      Meteor.call("updateShipmentQuotes", cartId);
+      Meteor.call("shipping/updateShipmentQuotes", cartId);
 
       // it's ok for this to be called multiple times
       Meteor.call('workflow/pushCartWorkflow', "coreCartWorkflow", "coreCheckoutShipping");

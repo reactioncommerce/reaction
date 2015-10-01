@@ -12,7 +12,7 @@ Meteor.methods({
    * gets shipping rates and updates the users cart methods
    * TODO: add orderId argument/fallback
    */
-  updateShipmentQuotes: function(cartId) {
+  "shipping/updateShipmentQuotes": function(cartId) {
     var cart, rates;
     if (!cartId) {
       return;
@@ -21,7 +21,7 @@ Meteor.methods({
     this.unblock();
     cart = ReactionCore.Collections.Cart.findOne(cartId);
     if (cart) {
-      rates = Meteor.call("getShippingRates", cart);
+      rates = Meteor.call("shipping/getShippingRates", cart);
 
       if(!rates) {
         return;
@@ -43,7 +43,7 @@ Meteor.methods({
   /**
    *  just gets rates, without updating anything
    */
-  getShippingRates: function(options) {
+  "shipping/getShippingRates": function(options) {
     var product, rates, selector, shipping, shops, _i, _len, _ref, _ref1, _ref2;
     check(options, Object);
     rates = [];
