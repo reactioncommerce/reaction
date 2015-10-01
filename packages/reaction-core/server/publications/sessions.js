@@ -11,18 +11,27 @@ Meteor.publish('Sessions', function(id) {
   var created, serverSession;
   check(id, Match.OneOf(String, null));
   created = new Date().getTime();
+  // if we don't have a sessionId create
+  // a new session
+
   if (!id) {
     id = ServerSessions.insert({
       created: created
     });
   }
+  // get the session from existing sessionId
   serverSession = ServerSessions.find(id);
+
+  // if not found, also create a new session
   if (serverSession.count() === 0) {
     id = ServerSessions.insert({
       created: created
     });
-    serverSession = ServerSessions.find(id);
   }
+
+  // set global sessionId
   ReactionCore.sessionId = id;
-  return serverSession;
+
+  // return cursor
+  return ServerSessions.find(id)
 });

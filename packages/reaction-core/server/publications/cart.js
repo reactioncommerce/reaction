@@ -3,7 +3,7 @@
  */
 
 Meteor.publish("Cart", function(clientSessionId, userId) {
-  check(sessionId, Match.OptionalOrNull(String));
+  check(clientSessionId, Match.OptionalOrNull(String));
   check(userId, Match.OptionalOrNull(String));
 
   if (!ReactionCore.getShopId()) {
