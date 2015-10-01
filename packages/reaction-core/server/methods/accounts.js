@@ -69,21 +69,28 @@ Accounts.onCreateUser(function (options, user) {
  * @param
  * @returns
  */
-Accounts.onLogin(function (options, user) {
-
+Accounts.onLogin(function (options) {
+  // remove anonymous role
+  // all users are guest, but anonymous user don't have profile access
+  // or ability to order history, etc. so ensure its removed upon login.
   if (options.type !== 'anonymous' && options.type !== 'resume') {
     var update = {
       $pullAll: {}
     };
+
     update.$pullAll['roles.' + ReactionCore.getShopId()] = ['anonymous'];
 
-    // remove anonymous role
     Meteor.users.update({
-      _id: options.user._id
+      "_id": options.user._id
     }, update, {
       multi: true
     });
+    // debug info
     ReactionCore.Events.info("removed anonymous role from user: " + options.user._id);
+
+    // onLogin, we want to merge session cart into user cart.
+    cart = ReactionCore.Collections.Cart.findOne({userId: options.user._id});
+    Meteor.call("mergeCart", cart._id);
 
     // logged in users need an additonal worfklow push to get started with checkoutLogin
     return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
@@ -239,9 +246,9 @@ Meteor.methods({
 
       if (currentUser) {
         if(currentUser.profile) {
-          currentUserName = currentUser.profile.name
+          currentUserName = currentUser.profile.name;
         } else {
-          currentUserName = currentUser.username
+          currentUserName = currentUser.username;
         }
       } else {
         currentUserName = "Admin";
