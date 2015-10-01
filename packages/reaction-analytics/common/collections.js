@@ -46,9 +46,8 @@ ReactionCore.Schemas.AnalyticsEvents = new SimpleSchema({
   shopId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    autoValue: function() {
-      return ReactionCore.getShopId();
-    }
+    autoValue: ReactionCore.shopIdAutoValue,
+    label: "AnalyticsEvents shopId"
   },
   createdAt: {
     type: Date,
