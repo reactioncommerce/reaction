@@ -9,7 +9,7 @@ _.extend(ReactionCore, {
     // we should always have a shopId
     if (ReactionCore.getShopId()) {
       if (this.isSet && this.isFromTrustedCode) {
-        return null;
+        return ReactionCore.getShopId();
       }
       if (Meteor.isClient && this.isInsert) {
         return ReactionCore.getShopId();
