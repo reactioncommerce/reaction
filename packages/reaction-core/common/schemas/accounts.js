@@ -31,7 +31,7 @@ ReactionCore.Schemas.Address = new SimpleSchema({
   },
   fullName: {
     type: String,
-    label: 'Full name'
+    label: "Full name"
   },
   address1: {
     label: "Address 1",
@@ -90,53 +90,54 @@ ReactionCore.Schemas.Address = new SimpleSchema({
 */
 
 ReactionCore.Schemas.Accounts = new SimpleSchema({
-  userId: {
+  "userId": {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    index: 1
+    index: 1,
+    label: "Accounts ShopId"
   },
-  sessions: {
+  "sessions": {
     type: [String],
     optional: true,
     index: 1
   },
-  shopId: {
+  "shopId": {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
     regEx: SimpleSchema.RegEx.Id,
     index: 1
   },
-  emails: {
+  "emails": {
     type: [ReactionCore.Schemas.Email],
     optional: true
   },
-  acceptsMarketing: {
+  "acceptsMarketing": {
     type: Boolean,
     defaultValue: false,
     optional: true
   },
-  state: {
+  "state": {
     type: String,
     defaultValue: "new",
     optional: true
   },
-  note: {
+  "note": {
     type: String,
     optional: true
   },
-  profile: {
+  "profile": {
     type: Object,
     optional: true
   },
-  'profile.addressBook': {
+  "profile.addressBook": {
     type: [ReactionCore.Schemas.Address],
     optional: true
   },
-  metafields: {
+  "metafields": {
     type: [ReactionCore.Schemas.Metafield],
     optional: true
   },
-  createdAt: {
+  "createdAt": {
     type: Date,
     autoValue: function() {
       if (this.isInsert) {
@@ -148,7 +149,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
       }
     }
   },
-  updatedAt: {
+  "updatedAt": {
     type: Date,
     autoValue: function() {
       if (this.isUpdate) {

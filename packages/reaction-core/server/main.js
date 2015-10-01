@@ -10,14 +10,12 @@
 * See: https://github.com/trentm/node-bunyan#levels
 */
 
-var formatOut, isDebug, levels, _ref, _ref1;
+let isDebug = Meteor.settings.isDebug || process.env.REACTION_DEBUG || "INFO";
+let levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
+let mode = process.env.NODE_ENV || "production";
 
-isDebug = Meteor.settings.isDebug || process.env.REACTION_DEBUG || "INFO";
-
-levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
-
-if (isDebug === true || (process.env.NODE_ENV === "development" && isDebug !== false)) {
-  if (typeof isDebug !== 'boolean' && typeof isDebug !== 'undefined') {
+if (isDebug === true || mode === "development" && isDebug !== false) {
+  if (typeof isDebug !== "boolean" && typeof isDebug !== undefined) {
     isDebug = isDebug.toUpperCase();
   }
   if (!_.contains(levels, isDebug)) {
@@ -29,17 +27,18 @@ if (process.env.VELOCITY_CI === "1") {
   formatOut = process.stdout;
 } else {
   formatOut = logger.format({
-    outputMode: 'short',
+    outputMode: "short",
     levelInString: false
   });
 }
 
 ReactionCore.Events = logger.bunyan.createLogger({
-  name: 'core',
-  stream: (isDebug !== "DEBUG" ? formatOut : process.stdout),
-  level: 'debug'
+  name: "core",
+  stream: isDebug !== "DEBUG" ? formatOut : process.stdout,
+  level: "debug"
 });
 
+// set logging level
 ReactionCore.Events.level(isDebug);
 
 
@@ -49,88 +48,115 @@ ReactionCore.Events.level(isDebug);
 
 _.extend(ReactionCore, {
   init: function() {
-    var e;
     try {
       ReactionRegistry.loadFixtures();
-    } catch (_error) {
-      e = _error;
-      ReactionCore.Events.error(e);
+    } catch (error) {
+      ReactionCore.Events.error("loadFixtures: ", error.message);
     }
     return true;
   },
 
   getCurrentShopCursor: function(client) {
-    var cursor, domain;
-    domain = this.getDomain(client);
-    cursor = ReactionCore.Collections.Shops.find({
+    let domain = this.getDomain(client);
+    let cursor = ReactionCore.Collections.Shops.find({
       domains: domain
     }, {
       limit: 1
     });
     if (!cursor.count()) {
-      ReactionCore.Events.debug("Reaction Configuration: Add a domain entry to shops for: ", domain);
+      ReactionCore.Events.debug("Add a domain entry to shops for ", domain);
     }
     return cursor;
   },
   getCurrentShop: function(client) {
-    var cursor;
-    cursor = this.getCurrentShopCursor(client);
+    let cursor = this.getCurrentShopCursor(client);
     return cursor.fetch()[0];
   },
   getShopId: function(client) {
-    var _ref2;
-    return (_ref2 = this.getCurrentShop(client)) != null ? _ref2._id : void 0;
+    if (this.getCurrentShop(client)) {
+      return this.getCurrentShop(client)._id;
+    }
   },
-  getDomain: function(client) {
-    return Meteor.absoluteUrl().split('/')[2].split(':')[0];
+  getDomain: function() {
+    return Meteor.absoluteUrl().split("/")[2].split(":")[0];
   },
-  hasPermission: function(permissions) {
-    var shop, _i, _len, _ref2;
-    if (Roles.userIsInRole(Meteor.userId(), permissions, this.getShopId())) {
+  hasPermission: function(hasPermissions, userId) {
+    // use current user if userId if not provided
+    let checkUserId = userId;
+    if (!checkUserId) {
+      checkUserId = this.userId;
+    }
+    // if the user has admin, owner permissions
+    // we'll always check if those roles are enough
+    let permissions = hasPermissions;
+
+    if (!_.isArray(permissions)) {
+      permissions = [hasPermissions];
+      permissions.push("admin", "owner");
+    }
+    // check if userIs the Roles
+    if (Roles.userIsInRole(checkUserId, permissions, this.shopId)) {
       return true;
-    } else if (Roles.userIsInRole(Meteor.userId(), permissions, Roles.GLOBAL_GROUP)) {
+    } else if (Roles.userIsInRole(checkUserId,
+        permissions,
+        Roles.GLOBAL_GROUP
+      )) {
       return true;
     }
-    _ref2 = this.getSellerShopId();
-    for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-      shop = _ref2[_i];
-      if (Roles.userIsInRole(Meteor.userId(), permissions, shop)) {
-        return true;
+
+    // global roles check
+    let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
+    // we're looking for seller permissions.
+    if (sellerShopPermissions) {
+      // loop through shops roles and check permissions
+      for (let key in sellerShopPermissions) {
+        if (key) {
+          let shop = sellerShopPermissions[key];
+          if (Roles.userIsInRole(checkUserId, permissions, shop)) {
+            return true;
+          }
+        }
       }
     }
+    // no specific permissions found
+    // returning false
     return false;
   },
-  hasOwnerAccess: function(client) {
-    var ownerPermissions;
-    ownerPermissions = ['owner'];
+  hasOwnerAccess: function() {
+    let ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
   },
-  hasAdminAccess: function(client) {
-    var adminPermissions;
-    adminPermissions = ['owner', 'admin'];
+  hasAdminAccess: function() {
+    let adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
   },
-  hasDashboardAccess: function(client) {
-    var dashboardPermissions;
-    dashboardPermissions = ['owner', 'admin', 'dashboard'];
+  hasDashboardAccess: function() {
+    let dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
-  getSellerShopId: function(client) {
-    return Roles.getGroupsForUser(Meteor.userId(), 'admin');
+  getSellerShopId: function() {
+    return Roles.getGroupsForUser(this.userId, "admin");
   },
   configureMailUrl: function(user, password, host, port) {
-    var shopMail;
-    shopMail = ReactionCore.Collections.Packages.findOne({
+    let shopMail = ReactionCore.Collections.Packages.findOne({
       shopId: this.getShopId(),
       name: "core"
     }).settings.mail;
+
     if (user && password && host && port) {
-      return process.env.MAIL_URL = Meteor.settings.MAIL_URL = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/";
+      let mailString = "smtp://" + user + ":" + password + "@" + host + ":" + port + "/";
+      let processUrl = process.env.MAIL_URL;
+      let settingsUrl = Meteor.settings.MAIL_URL;
+      mailUrl = processUrl = settingsUrl = mailString;
+      return mailString;
     } else if (shopMail.user && shopMail.password && shopMail.host && shopMail.port) {
       ReactionCore.Events.info("setting default mail url to: " + shopMail.host);
-      return process.env.MAIL_URL = Meteor.settings.MAIL_URL = "smtp://" + shopMail.user + ":" + shopMail.password + "@" + shopMail.host + ":" + shopMail.port + "/";
+      let mailString = "smtp://" + shopMail.user + ":" + shopMail.password + "@" + shopMail.host + ":" + shopMail.port + "/";
+      let mailUrl = process.env.MAIL_URL = Meteor.settings.MAIL_URL = mailString;
+      return mailUrl;
     } else if (Meteor.settings.MAIL_URL && !process.env.MAIL_URL) {
-      return process.env.MAIL_URL = Meteor.settings.MAIL_URL;
+      let mailUrl = process.env.MAIL_URL = Meteor.settings.MAIL_URL;
+      return mailUrl;
     }
     if (!process.env.MAIL_URL) {
       ReactionCore.Events.warn('Mail server not configured. Unable to send email.');
@@ -141,7 +167,7 @@ _.extend(ReactionCore, {
 
 
 // Method Check Helper
-Match.OptionalOrNull = function (pattern) {
+Match.OptionalOrNull = function(pattern) {
   return Match.OneOf(void 0, null, pattern);
 };
 

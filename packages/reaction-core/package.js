@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.8.1",
+  version: "0.8.2",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -64,7 +64,7 @@ Package.onUse(function (api) {
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.0");
   api.use("utilities:spin@2.3.1", "client");
-  api.use("utilities:avatar@0.9.1");
+  api.use("utilities:avatar@0.9.2");
 
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.2");

@@ -13,7 +13,9 @@ ReactionCore.Schemas.CartItem = new SimpleSchema({
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
-    index: 1
+    index: 1,
+    label: "Cart Item shopId",
+    optional: true
   },
   quantity: {
     label: "Quantity",
@@ -33,25 +35,27 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
-    index: 1
+    index: 1,
+    label: "Cart ShopId"
   },
   userId: {
     type: String,
+    unique: true,
     autoValue: function() {
-      if (this.isInsert || this.isUpdate ) {
+      if (this.isInsert || this.isUpdate) {
         if (!this.isFromTrustedCode) {
           return this.userId;
         }
-      }
-      else
-      {
+      } else {
         this.unset();
       }
     }
   },
-  sessions: {
-    type: [String],
-    optional: true,
+  sessionId: {
+    type: String,
+    autoValue: function() {
+      return ReactionCore.sessionId;
+    },
     index: 1
   },
   email: {
@@ -93,7 +97,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function () {
+    autoValue: function() {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -106,7 +110,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function () {
+    autoValue: function() {
       if (this.isUpdate) {
         return {
           $set: new Date

@@ -34,6 +34,7 @@ Meteor.methods({
 
     var currentWorkflowStatus = currentCart.workflow.status;
     var Packages = ReactionCore.Collections.Packages.find({
+      'shopId': ReactionCore.getShopId(),
       'layout.workflow': workflow
     });
 
@@ -46,7 +47,7 @@ Meteor.methods({
       _.each(layouts, function (layout) {
         // audience is the layout permissions
         if (layout.audience === undefined) {
-          var defaultRoles = ReactionCore.Collections.Shops.findOne({}, {
+          var defaultRoles = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
             sort: {
               priority: 1
             }
@@ -109,7 +110,6 @@ Meteor.methods({
     ReactionCore.Events.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
     ReactionCore.Events.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
     ReactionCore.Events.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
-
 
     // Condition One
     // if you're going to join the workflow you need a status that is a template name.
