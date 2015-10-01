@@ -65,7 +65,7 @@ this.localeDep = new Tracker.Dependency();
 
 Meteor.startup(function() {
   Session.set("language", i18n.detectLanguage());
-  Meteor.call('getLocale', function(error, result) {
+  Meteor.call('shop/getLocale', function(error, result) {
     if (result) {
       ReactionCore.Locale = result;
       ReactionCore.Locale.language = Session.get("language");

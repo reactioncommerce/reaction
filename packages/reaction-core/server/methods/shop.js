@@ -5,12 +5,12 @@ Meteor.methods({
 
   /*
    *
-   * createShop
+   * shop/createShop
    * param String 'userId' optionally create shop for provided userId
    * param Object 'shop' optionally provide shop object to customize
    *
    */
-  createShop: function (userId, shop) {
+  "shop/createShop": function (userId, shop) {
     var adminRoles, currentUser, e, shopId;
     check(userId, Match.Optional(String));
     check(shop, Match.Optional(Object));
@@ -28,17 +28,17 @@ Meteor.methods({
       return shopId;
     } catch (_error) {
       e = _error;
-      return ReactionCore.Log.warn("Failed to createShop", e);
+      return ReactionCore.Log.warn("Failed to shop/createShop", e);
     }
   },
 
   /**
-   * getLocale
+   * shop/getLocale
    * determine user's countryCode and return locale object
    * determine local currency and conversion rate from shop currency
    * @return  {Object}
    */
-  getLocale: function () {
+  "shop/getLocale": function () {
     this.unblock();
     var countryCode, geoCountryCode, currency, exchangeRate, localeCurrency, rateUrl, _i, _len;
     var result = {};
@@ -99,7 +99,7 @@ Meteor.methods({
         // only fetch rates if locale and shop currency are not equal
         // if shop.curency = locale currency the rate is 1
         if (shop.currency !== currency) {
-          result.currency.exchangeRate = Meteor.call("getCurrencyRates", currency);
+          result.currency.exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
 
           if (!exchangeRate) {
             ReactionCore.Log.warn("Failed to fetch rate exchange rates.");
@@ -114,13 +114,13 @@ Meteor.methods({
   },
 
   /**
-   * getCurrencyRates
+   * shop/getCurrencyRates
    * determine user's full location for autopopulating addresses
-   * usage: Meteor.call("getCurrencyRates","USD")
+   * usage: Meteor.call("shop/getCurrencyRates","USD")
    * @param String currency code
    * @return Number currency conversion rate
    */
-  getCurrencyRates: function (currency) {
+  "shop/getCurrencyRates": function (currency) {
     check(currency, String);
     this.unblock();
 
@@ -179,10 +179,10 @@ Meteor.methods({
   },
 
   /**
-   * locateAddress
+   * shop/locateAddress
    * determine user's full location for autopopulating addresses
    */
-  locateAddress: function (latitude, longitude) {
+  "shop/locateAddress": function (latitude, longitude) {
     check(latitude, Match.Optional(Number));
     check(longitude, Match.Optional(Number));
     this.unblock();
@@ -206,13 +206,13 @@ Meteor.methods({
   },
 
   /**
-   * updateHeaderTags
+   * shop/updateHeaderTags
    * method to insert or update tag with hierarchy
    * tagName will insert
    * tagName + tagId will update existing
    * currentTagId will update related/hierarchy
    */
-  updateHeaderTags: function (tagName, tagId, currentTagId) {
+  "shop/updateHeaderTags": function (tagName, tagId, currentTagId) {
     var existingTag, newTag, newTagId;
     check(tagName, String);
     check(tagId, Match.OneOf(String, null, void 0));
@@ -280,10 +280,10 @@ Meteor.methods({
   },
 
   /**
-   * removeHeaderTag
+   * shop/removeHeaderTag
    * method to remove tag navigation tags
    */
-  removeHeaderTag: function (tagId, currentTagId) {
+  "shop/removeHeaderTag": function (tagId, currentTagId) {
     var productCount, relatedTagsCount;
     check(tagId, String);
     check(currentTagId, String);

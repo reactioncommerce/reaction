@@ -106,14 +106,14 @@ this.locateUser = function() {
     var lat, lng;
     lat = position.coords.latitude;
     lng = position.coords.longitude;
-    return Meteor.call("locateAddress", lat, lng, function(error, address) {
+    return Meteor.call("shop/locateAddress", lat, lng, function(error, address) {
       if (address) {
         return Session.set("address", address);
       }
     });
   };
   errorFunction = function() {
-    return Meteor.call("locateAddress", function(error, address) {
+    return Meteor.call("shop/locateAddress", function(error, address) {
       if (address) {
         return Session.set("address", address);
       }

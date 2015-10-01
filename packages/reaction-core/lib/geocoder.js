@@ -116,7 +116,7 @@ GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
       address = Meteor.wrapAsync(gi)(address)
       return address.data;
     } catch (error) {
-      ReactionCore.Log.warn("getLocale geoip lookup failure", error);
+      ReactionCore.Log.warn("shop/getLocale geoip lookup failure", error);
       return;
     }
   }

@@ -131,7 +131,7 @@ Template.tagInputForm.helpers({
 
 Template.tagInputForm.events({
   'click .tag-input-group-remove': function(event, template) {
-    return Meteor.call("removeHeaderTag", this._id, currentTag(), function(error, result) {
+    return Meteor.call("shop/removeHeaderTag", this._id, currentTag(), function(error, result) {
       if (error) {
         return Alerts.add("Tag is in use. It must be deleted from products first.", "warning", {
           autoHide: true
@@ -159,7 +159,7 @@ Template.tagInputForm.events({
       },
       select: function(event, ui) {
         if (ui.item.value) {
-          return Meteor.call("updateHeaderTags", ui.item.value, this._id, currentTag(), function(error, result) {
+          return Meteor.call("shop/updateHeaderTags", ui.item.value, this._id, currentTag(), function(error, result) {
             if (error) {
               return Alerts.add("Tag already exists, duplicate add failed.", "danger", {
                 autoHide: true
@@ -176,7 +176,7 @@ Template.tagInputForm.events({
     var val;
     val = $(event.currentTarget).val();
     if (val) {
-      return Meteor.call("updateHeaderTags", val, this._id, currentTag(), function(error, result) {
+      return Meteor.call("shop/updateHeaderTags", val, this._id, currentTag(), function(error, result) {
         if (error) {
           Alerts.add("Tag already exists, duplicate add failed.", "danger", {
             autoHide: true
