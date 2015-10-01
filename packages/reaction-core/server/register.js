@@ -78,11 +78,6 @@ ReactionCore.registerPackage({
       label: 'Add Product',
       icon: 'fa fa-plus',
       provides: 'shortcut'
-    }, {
-      route: 'account/profile',
-      label: 'Profile',
-      icon: 'fa fa-user',
-      provides: 'userAccountDropdown'
     }
   ],
   layout: [

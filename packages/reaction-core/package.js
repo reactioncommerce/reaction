@@ -167,7 +167,6 @@ Package.onUse(function (api) {
   // schemas
   api.addFiles("common/schemas/layouts.js");
   api.addFiles("common/schemas/packages.js");
-  api.addFiles("common/schemas/accounts.js");
   api.addFiles("common/schemas/shops.js");
   api.addFiles("common/schemas/shipping.js");
   api.addFiles("common/schemas/products.js");
@@ -181,9 +180,6 @@ Package.onUse(function (api) {
   // collections
   api.addFiles("common/collections/collections.js");
   api.addFiles("common/collections/collectionFS.js");
-
-  // accounts
-  api.addFiles("server/accounts.js", "server");
 
   // collection hooks
   api.addFiles("common/collections/hooks/hooks.js");
@@ -202,7 +198,6 @@ Package.onUse(function (api) {
   api.addFiles("common/factories/faker.js");
   api.addFiles("common/factories/users.js");
   api.addFiles("common/factories/shops.js");
-  api.addFiles("common/factories/accounts.js");
   api.addFiles("common/factories/products.js");
   api.addFiles("common/factories/cart.js");
   api.addFiles("common/factories/orders.js");
@@ -210,7 +205,6 @@ Package.onUse(function (api) {
   // publications
   api.addFiles("server/publications/sessions.js", "server");
   api.addFiles("server/publications/shops.js", "server");
-  api.addFiles("server/publications/accounts.js", "server");
   api.addFiles("server/publications/cart.js", "server");
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
@@ -219,7 +213,6 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/translations.js", "server");
 
   // methods
-  api.addFiles("server/methods/accounts.js", "server");
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
   api.addFiles("server/methods/products.js", "server");
@@ -265,14 +258,6 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/layout/notice/unauthorized.html", "client");
   api.addFiles("client/templates/layout/notice/shopNotFound.html", "client");
-
-  api.addFiles("client/templates/accounts/accounts.html", "client");
-
-  api.addFiles("client/templates/accounts/inline/inline.html", "client");
-  api.addFiles("client/templates/accounts/inline/inline.js", "client");
-
-  api.addFiles("client/templates/accounts/dropdown/dropdown.html", "client");
-  api.addFiles("client/templates/accounts/dropdown/dropdown.js", "client");
 
   api.addFiles("client/templates/cart/cartDrawer/cartDrawer.html", "client");
   api.addFiles("client/templates/cart/cartDrawer/cartDrawer.js", "client");
@@ -439,10 +424,6 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/products/productSettings/productSettings.html", "client");
   api.addFiles("client/templates/products/productSettings/productSettings.js", "client");
-
-  // Email Templates
-  api.addAssets('server/emailTemplates/welcomeNotification.html', 'server');
-  api.addAssets('server/emailTemplates/shopMemberInvite.html', 'server');
 
   // Exports
   api.export("ReactionCore");

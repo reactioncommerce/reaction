@@ -39,12 +39,6 @@ cart.observeChanges({
 /**
  * General Subscriptions
  */
-ReactionCore.Subscriptions.Account =
-  Meteor.subscribe("Accounts", Meteor.userId());
-
-ReactionCore.Subscriptions.Profile =
-  Meteor.subscribe("UserProfile", Meteor.userId());
-
 ReactionCore.Subscriptions.Packages =
   Meteor.subscribe("Packages");
 
