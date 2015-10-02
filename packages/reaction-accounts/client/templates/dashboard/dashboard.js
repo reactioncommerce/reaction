@@ -101,6 +101,13 @@ Template.accountsDashboard.helpers({
 /**
  * Account Settings Helpers
  */
+Template.accountsSettings.onCreated(() => {
+  Meteor.subscribe("ServiceConfiguration", Meteor.userId());
+});
+
+/**
+ * Account Settings Helpers
+ */
 Template.accountsSettings.helpers({
 
   /**
@@ -127,7 +134,7 @@ Template.accountsSettings.helpers({
    * @return {String}          "hidden" or ""
    */
   shown(enabled) {
-    return enabled === "false" ? "hidden" : "";
+    return enabled !== true ? "hidden" : "";
   },
 
   /**
@@ -136,7 +143,7 @@ Template.accountsSettings.helpers({
    * @return {String}          "checked" or ""
    */
   checked(enabled) {
-    return enabled === "true" ? "checked" : "";
+    return enabled === true ? "checked" : "";
   },
 
   /**
@@ -189,7 +196,7 @@ Template.accountsSettings.events({
     let service = event.target.value;
     let fields = [{
       property: "enabled",
-      value: event.target.checked ? "true" : "false"
+      value: event.target.checked
     }];
 
     Meteor.call("accounts/updateServiceConfiguration", service, fields);

@@ -71,8 +71,8 @@ Package.onUse(function(api) {
   api.addFiles("client/helpers/subscriptions.js", "client");
 
   // Dashboard
-  api.addFiles("client/templates/dashboard/accounts.html", "client");
-  api.addFiles("client/templates/dashboard/accounts.js", "client");
+  api.addFiles("client/templates/dashboard/dashboard.html", "client");
+  api.addFiles("client/templates/dashboard/dashboard.js", "client");
 
   api.addFiles("client/templates/members/member.html", "client");
   api.addFiles("client/templates/members/member.js", "client");
