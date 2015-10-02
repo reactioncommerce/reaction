@@ -129,8 +129,6 @@ Package.onUse(function(api) {
   api.addFiles("client/templates/dropdown/dropdown.html", "client");
   api.addFiles("client/templates/dropdown/dropdown.js", "client");
 
-  // basic styles
-
   // Email Templates
   api.addAssets('server/emailTemplates/welcomeNotification.html', 'server');
   api.addAssets('server/emailTemplates/shopMemberInvite.html', 'server');

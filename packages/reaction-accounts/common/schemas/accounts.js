@@ -165,3 +165,11 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     optional: true
   }
 });
+
+
+/**
+* ReactionCore Collections Accounts
+*/
+ReactionCore.Collections.Accounts = new Mongo.Collection("Accounts");
+
+ReactionCore.Collections.Accounts.attachSchema(ReactionCore.Schemas.Accounts);
