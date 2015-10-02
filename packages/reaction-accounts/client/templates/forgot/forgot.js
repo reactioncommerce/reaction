@@ -9,7 +9,7 @@ Template.loginFormResetPasswordView.events({
   "submit form": (event, template) => {
     event.preventDefault();
 
-    let emailAddress = template.$(".login-input--email").val().trim();
+    let emailAddress = template.$(".login-input-email").val().trim();
     let validatedEmail = LoginFormValidation.email(emailAddress);
     let templateInstance = Template.instance();
     let errors = {};

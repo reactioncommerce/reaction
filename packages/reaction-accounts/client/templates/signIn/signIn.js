@@ -9,8 +9,8 @@ Template.loginFormSignInView.events({
 
     let options = {};
 
-    let usernameInput = template.$('.login-input--email');
-    let passwordInput = template.$('.login-input--password');
+    let usernameInput = template.$('.login-input-email');
+    let passwordInput = template.$('.login-input-password');
 
     let username = usernameInput.val().trim()
     let password = passwordInput.val().trim()

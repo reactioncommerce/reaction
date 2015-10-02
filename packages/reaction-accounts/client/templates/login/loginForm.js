@@ -1,14 +1,11 @@
-"use strict";
-
 // ============================================================================
 // Login form
 //
 //
 
-
 // XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
 var capitalize = function(str){
-  str = str == null ? '' : String(str);
+  str = str == null ? "" : String(str);
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
@@ -19,157 +16,122 @@ var capitalize = function(str){
 
 Template.loginForm.helpers({
 
-  // **************************************************************************
-  // Dynamic template name for view switching
-  //
-  loginFormCurrentView: function () {
+  /**
+   * Login form current view
+   * @return {String} Name of the template to use as the current view.
+   */
+  loginFormCurrentView() {
     return Template.instance().loginFormCurrentView.get();
   },
 
-  uniqueId: function() {
+  /**
+   * Unique id to use on form elements
+   * @return {String} String of the unique ID for the current template
+   */
+  uniqueId() {
     return Template.instance().uniqueId;
   }
 
 });
 
-
-
-// ----------------------------------------------------------------------------
-// Login Form:: Created
-//
+/**
+ * Login form onCreated
+ */
 Template.loginForm.onCreated(function () {
+  let template = Template.instance();
+  let currentData = Template.currentData();
+  let startView = "loginFormSignInView";
 
-  var startView = 'loginFormSignInView';
-
-  if (this.data) {
-    if (this.data.startView) {
-      startview = this.data.startview;
-    }
+  if (currentData.startView) {
+    startView = currentData.startView;
   }
 
-  this.loginFormCurrentView = new ReactiveVar(startView);
-  this.uniqueId = Random.id();
-  this.credentials = {};
+  template.loginFormCurrentView = new ReactiveVar(startView);
+  template.uniqueId = Random.id();
+  template.credentials = {};
 });
 
-
-
-
-// ----------------------------------------------------------------------------
-// Login Form events
-// These events are shared across all login form views and subviews
-//
+/**
+ * Login Form events
+ * These events are shared across all login form views and subviews
+ */
 Template.loginForm.events({
 
-
-  // **************************************************************************
-  // Show the sign in view
-  //
-  'click .action--signIn': function (event, template) {
+  /**
+   * Event: Show sign in view
+   * @param  {Event}    event    jQuery Event
+   * @param  {Template} template Blaze Template instance
+   * @return {void}
+   */
+  "click [data-event-action=signIn]": function (event, template) {
     event.preventDefault();
     event.stopPropagation();
 
-    this.email = template.$('.login-input--email').val();
-    this.password = template.$('.login-input--password').val();
+    template.email = template.$(".login-input-email").val();
+    template.password = template.$(".login-input-password").val();
 
-    template.loginFormCurrentView.set('loginFormSignInView')
+    template.loginFormCurrentView.set("loginFormSignInView");
   },
 
-
-  // **************************************************************************
-  // Show the sign in view
-  //
-  'click .action--signUp': function (event, template) {
+  /**
+   * Event: Show the sign up (register) view
+   * @param  {Event}    event    jQuery Event
+   * @param  {Template} template Blaze Template instance
+   * @return {void}
+   */
+  "click [data-event-action=signUp]": (event, template) => {
     event.preventDefault();
     event.stopPropagation();
 
+    template.email = template.$(".login-input-email").val();
+    template.password = template.$(".login-input-password").val();
 
-    this.email = template.$('.login-input--email').val();
-    this.password = template.$('.login-input--password').val();
-
-    template.loginFormCurrentView.set('loginFormSignUpView')
+    template.loginFormCurrentView.set("loginFormSignUpView");
   },
 
-
-  // **************************************************************************
-  // Show the password reset view
-  //
-  'click .action--forgot': function (event, template) {
+  /**
+   * Event: Show the password reset view
+   * @param  {Event}    event    jQuery Event
+   * @param  {Template} template Blaze Template instance
+   * @return {void}
+   */
+  "click [data-event-action=forgotPassword]": (event, template) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this.email = template.$('.login-input--email').val();
-    this.password = template.$('.login-input--password').val();
+    template.email = template.$(".login-input-email").val();
+    template.password = template.$(".login-input-password").val();
 
-    template.loginFormCurrentView.set('loginFormResetPasswordView')
-  },
+    template.loginFormCurrentView.set("loginFormResetPasswordView");
+  }
+});
 
-
-
-
-  // **************************************************************************
-  // Sign in with a OAuth provider (e.g. facebook, google+, etc)
-  //
-//   "click [data-event-action=signInWithProvider]": (event, template) => {
-
-//     let data = Template.currentData();
-//     let serviceName;
-
-//     if (this.name === "meteor-developer") {
-//       serviceName = "MeteorDeveloperAccount"
-//     } else {
-//       serviceName = capitalize(this.name);
-//     }
-// console.log("loginWith", data, Template.instance())
-//     var loginWithService = Meteor["loginWith" + serviceName];
-
-//     var options = {}; // use default scope unless specified
-
-//     // TODO: update or remove
-//     // if (Accounts.ui._options.requestPermissions[serviceName]) {
-//     //   options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
-//     // }
-
-//     // if (Accounts.ui._options.requestOfflineToken[serviceName]) {
-//     //   options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
-//     // }
-
-//     // if (Accounts.ui._options.forceApprovalPrompt[serviceName]) {
-//     //   options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
-//     // }
-
-//     loginWithService(options, function (err) {
-//       //loginResultCallback(serviceName, err);
-//     });
-
-//   }
-
-})
-
-
+/**
+ * Service sign in button helpers
+ */
 Template.loginFormServiceButton.events({
 
+  /**
+   * Event: Click (click on the service button to sign in / sign up)
+   * @param  {Event}    event    jQuery Event
+   * @param  {Template} template Blaze Template instance
+   * @return {void}
+   */
   "click button": (event, template) => {
-
     let serviceName = template.data.name;
 
+    // Get proper service name
     if (serviceName === "meteor-developer") {
-      serviceName = "MeteorDeveloperAccount"
+      serviceName = "MeteorDeveloperAccount";
     } else {
       serviceName = capitalize(serviceName);
     }
 
-    console.log(serviceName)
+    let loginWithService = Meteor["loginWith" + serviceName];
+    let options = {}; // use default scope unless specified
 
-    var loginWithService = Meteor["loginWith" + serviceName];
-
-    var options = {}; // use default scope unless specified
-
-    loginWithService(options, function (err) {
-      //loginResultCallback(serviceName, err);
-      if (err) {
-        console.log(`Could not sign in with ${serviceName}`, err)
-      }
+    loginWithService(options, () => {
+      // TODO: add error message for failed login attempt
     });
   }
-})
+});
