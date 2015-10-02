@@ -90,7 +90,7 @@ Accounts.onLogin(function (options) {
 
     // onLogin, we want to merge session cart into user cart.
     cart = ReactionCore.Collections.Cart.findOne({userId: options.user._id});
-    Meteor.call("mergeCart", cart._id);
+    Meteor.call("cart/mergeCart", cart._id);
 
     // logged in users need an additonal worfklow push to get started with checkoutLogin
     return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");

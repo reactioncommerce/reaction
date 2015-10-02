@@ -22,7 +22,7 @@ Template.loginDropdown.events({
       event.preventDefault();
       event.stopPropagation();
 
-      Meteor.call("createProduct", function(error, productId) {
+      Meteor.call("products/createProduct", function(error, productId) {
         var currentTag, currentTagId;
         if (error) {
           throw new Meteor.Error("createProduct error", error);
@@ -30,7 +30,7 @@ Template.loginDropdown.events({
           currentTagId = Session.get("currentTag");
           currentTag = ReactionCore.Collections.Tags.findOne(currentTagId);
           if (currentTag) {
-            Meteor.call("updateProductTags", productId, currentTag.name, currentTagId);
+            Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
           Router.go("product", {
             _id: productId
