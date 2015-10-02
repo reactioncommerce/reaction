@@ -1,5 +1,5 @@
 # Testing
-We're using the Meteor testing framework [Velocity](http://velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](https://github.com/Sanjo/meteor-jasmine) for the majority of tests.
+We're using the Meteor testing framework [Velocity](//velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](//github.com/Sanjo/meteor-jasmine) for the majority of tests.
 
 Velocity doesn't always make it easy to test packages separately from the app. Velocity can also slow down the reload process during development while it's running tests in multiple cloned instances of the shop.
 
@@ -39,4 +39,4 @@ We'd like for new features to include at least basic integration test-coverage. 
 
 _Writing tests is a great way to get to know the codebase a little better too._
 
-[We've got an open issue on testing where any problems you run into while testing can go for now.](https://github.com/reactioncommerce/reaction/issues/241)
+[We've got an open issue on testing where any problems you run into while testing can go for now.](//github.com/reactioncommerce/reaction/issues/241)

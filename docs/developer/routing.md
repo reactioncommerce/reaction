@@ -1,5 +1,5 @@
 # Routing
-[*common/routing.coffee](https://github.com/reactioncommerce/reaction/blob/master/common/routing.coffee) can be customized to change layouts.
+[*common/routing.coffee](//github.com/reactioncommerce/reaction/blob/master/common/routing.coffee) can be customized to change layouts.
 
 If you are adding reaction-core to your own meteor application, `iron:router` is installed as a dependency of `reactioncommerce:core`.
 
