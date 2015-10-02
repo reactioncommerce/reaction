@@ -228,13 +228,13 @@ Meteor.methods({
       }
     });
   },
-/**
- * cart/removeFromCart
- * @summary removes a variant from the cart
- * @param {String} cartId - user cartId
- * @param {String} variantData - variant object
- * @returns {String} returns Mongo update result
- */
+  /**
+   * cart/removeFromCart
+   * @summary removes a variant from the cart
+   * @param {String} cartId - user cartId
+   * @param {String} variantData - variant object
+   * @returns {String} returns Mongo update result
+   */
   "cart/removeFromCart": function (cartId, variantData) {
     check(cartId, String);
     check(variantData, Object);
@@ -424,7 +424,7 @@ Meteor.methods({
    * @param {Object} address - addressBook object
    * @return {String} return Mongo update result
    */
-  "cart/setPaymentAddress": function (cartId, address)  {
+  "cart/setPaymentAddress": function (cartId, address) {
     check(cartId, String);
     check(address, Object);
     this.unblock();
