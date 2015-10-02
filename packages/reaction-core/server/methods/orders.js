@@ -2,19 +2,23 @@
  * Reaction Order Methods
  */
 Meteor.methods({
-  // shipmentTracking
-  "orders/shipmentTracking": (order, tracking) => {
+  /**
+   * orders/shipmentTracking
+   * @summary wraps addTracking and triggers workflow update
+   * @param {Object} order - order Object
+   * @param {String} tracking - tracking number to add to order
+   * @returns {String} returns workflow update result
+   */
+  "orders/shipmentTracking": function (order, tracking) {
     check(order, Object);
     check(tracking, String);
     this.unblock();
+    let orderId = order._id;
 
-    var orderId;
-    check(order, Object);
-    check(tracking, String);
-    orderId = order._id;
     Meteor.call("orders/addTracking", orderId, tracking);
-    Meteor.call("orders/updateHistory", orderId, "Tracking Added", tracking);
-    return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow",
+    Meteor.call("orders/updateHistory", orderId, "Tracking Added",
+      tracking);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow",
       "coreShipmentTracking", order._id);
   },
 
@@ -28,9 +32,14 @@ Meteor.methods({
         "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
-
-  // shipmentPacking
-  "orders/shipmentPacking": (order) => {
+  /**
+   * orders/shipmentPacking
+   *
+   * @summary trigger packing status
+   * @param {Object} order - order object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentPacking": function (order) {
     check(order, Object);
     this.unblock();
 
@@ -38,25 +47,36 @@ Meteor.methods({
       return Meteor.call("workflow/pushOrderWorkflow",
         "coreOrderWorkflow", "coreShipmentPacking", order._id);
     }
-    return this.processPayment(order);
   },
-
-  // processPayment
-  "orders/processPayment": (order) => {
+  /**
+   * orders/processPayment
+   *
+   * @summary trigger processPayment and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return this.processPayment result
+   */
+  "orders/processPayment": function (order) {
     check(order, Object);
     this.unblock();
 
-    return Meteor.call("orders/processPayments", order._id, function (error,
+    return Meteor.call("orders/processPayments", order._id, function (
+      error,
       result) {
       if (result) {
-        return Meteor.call("workflow/pushOrderWorkflow",
+        Meteor.call("workflow/pushOrderWorkflow",
           "coreOrderWorkflow", "coreProcessPayment", order._id);
+        return this.processPayment(order);
       }
     });
   },
-
-  // shipmentShipped
-  "orders/shipmentShipped": (order) => {
+  /**
+   * orders/shipmentShipped
+   *
+   * @summary trigger shipmentShipped status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentShipped": function (order) {
     check(order, Object);
     this.unblock();
 
@@ -64,36 +84,50 @@ Meteor.methods({
       return Meteor.call("workflow/pushOrderWorkflow",
         "coreOrderWorkflow", "coreShipmentShipped", order._id);
     }
-    return this.orderCompleted(order);
   },
-  // orderCompleted
-  "orders/orderCompleted": (order) => {
+  /**
+   * orders/orderCompleted
+   *
+   * @summary trigger orderCompleted status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return this.orderCompleted result
+   */
+  "orders/orderCompleted": function (order) {
     check(order, Object);
     this.unblock();
 
     if (order) {
-      return Meteor.call("workflow/pushOrderWorkflow",
+      Meteor.call("workflow/pushOrderWorkflow",
         "coreOrderWorkflow", "coreOrderCompleted", order._id);
+      return this.orderCompleted(order);
     }
   },
-  /*
-   * Adds tracking information to order
+  /**
+   * orders/addTracking
+   * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} tracking - tracking id
+   * @return {String} returns order update result
    */
-  "orders/addTracking": (orderId, tracking) =>  {
+  "orders/addTracking": function (orderId, tracking) {
     check(orderId, String);
     check(tracking, String);
     return ReactionCore.Collections.Orders.update(orderId, {
-      $set: {
+      $addToSet: {
         "shipping.shipmentMethod.tracking": tracking
       }
     });
   },
 
-  /*
-   * adds email to existing order
+  /**
+   * orders/addOrderEmail
+   * @summary Adds email to order, used for guest users
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} email - valid email address
+   * @return {String} returns order update result
    */
-  "orders/addOrderEmail": (orderId, email) => {
+  "orders/addOrderEmail": function (orderId, email) {
     check(orderId, String);
     check(email, String);
     return ReactionCore.Collections.Orders.update(orderId, {
@@ -102,18 +136,21 @@ Meteor.methods({
       }
     });
   },
-
-  /*
-   * Add files/documents to order
-   * use for packing slips, labels, customs docs, etc
+  /**
+   * orders/addOrderEmail
+   * @summary Adds file, documents to order. use for packing slips, labels, customs docs, etc
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} docId - CFS collection docId
+   * @param {String} docType - CFS docType
+   * @return {String} returns order update result
    */
-  "orders/updateDocuments": (orderId, docId, docType) => {
+  "orders/updateDocuments": function (orderId, docId, docType) {
     check(orderId, String);
     check(docId, String);
     check(docType, String);
     return ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
-        "documents": {
+        documents: {
           docId: docId,
           docType: docType
         }
@@ -121,16 +158,21 @@ Meteor.methods({
     });
   },
 
-  /*
-   * Add to order event history
+  /**
+   * orders/updateHistory
+   * @summary adds order history item for tracking and logging order updates
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} event - workflow event
+   * @param {String} value - event value
+   * @return {String} returns order update result
    */
-  "orders/updateHistory": (orderId, event, value) => {
+  "orders/updateHistory": function (orderId, event, value) {
     check(orderId, String);
     check(event, String);
     check(value, Match.Optional(String));
     return ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
-        "history": {
+        history: {
           event: event,
           value: value,
           userId: Meteor.userId(),
@@ -140,16 +182,19 @@ Meteor.methods({
     });
   },
 
-  /*
+  /**
+   * orders/inventoryAdjust
    * adjust inventory when an order is placed
+   * @param {String} orderId - add tracking to orderId
+   * @return {null} no return value
    */
-  "orders/inventoryAdjust": (orderId) => {
+  "orders/inventoryAdjust": function (orderId) {
     check(orderId, String);
-    var order = ReactionCore.Collections.Orders.findOne(orderId);
+    let order = ReactionCore.Collections.Orders.findOne(orderId);
 
     _.each(order.items, function (product) {
       ReactionCore.Collections.Products.update({
-        _id: product.productId,
+        "_id": product.productId,
         "variants._id": product.variants._id
       }, {
         $inc: {
@@ -157,27 +202,31 @@ Meteor.methods({
         }
       });
     });
+    return;
   },
 
-  /*
-   * Finalize any payment where mode is "authorize"
+  /**
+   * orders/processPayments
+   * @summary Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
-   * TODO: add tests working with new payment methods
-   * TODO: refactor to use non Meteor.namespace
+   * @todo: add tests working with new payment methods
+   * @todo: refactor to use non Meteor.namespace
+   * @param {String} orderId - add tracking to orderId
+   * @return {null} no return value
    */
   "orders/processPayments": (orderId) => {
     check(orderId, String);
 
-    var order = ReactionCore.Collections.Orders.findOne(orderId);
+    let order = ReactionCore.Collections.Orders.findOne(orderId);
 
     // process order..payment.paymentMethod
     _.each(order.payment.paymentMethod, function (paymentMethod) {
-      if (paymentMethod.mode === 'authorize' && paymentMethod.status ===
-        'approved' && paymentMethod.processor) {
+      if (paymentMethod.mode === "authorize" && paymentMethod.status ===
+        "approved" && paymentMethod.processor) {
         Meteor[paymentMethod.processor].capture(paymentMethod.transactionId,
           paymentMethod.amount,
           function (error, result) {
-            var transactionId;
+            let transactionId;
 
             if (result.capture) {
               transactionId = paymentMethod.transactionId;
@@ -192,7 +241,6 @@ Meteor.methods({
                   "payment.paymentMethod.$.status": "completed"
                 }
               });
-
             } else {
               ReactionCore.Log.warn(
                 "Failed to capture transaction.", order,
@@ -201,9 +249,7 @@ Meteor.methods({
                 "Failed to capture transaction");
             }
           });
-
       }
-
     });
   }
 });
