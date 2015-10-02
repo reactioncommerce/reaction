@@ -27,12 +27,12 @@ Meteor.publish("ShopMembers", function() {
         // Twitter
         "services.twitter.name": 1,
         "services.twitter.email": 1,
-        "services.twitter.picture": 1,
+        "services.twitter.profile_image_url_https": 1,
 
         // Facebook
         "services.facebook.name": 1,
         "services.facebook.email": 1,
-        "services.facebook.picture": 1,
+        "services.facebook.id": 1,
 
         // Weibo
         "services.weibo.name": 1,
@@ -42,7 +42,7 @@ Meteor.publish("ShopMembers", function() {
         // Github
         "services.github.name": 1,
         "services.github.email": 1,
-        "services.github.picture": 1
+        "services.github.username": 1
       }
     });
 

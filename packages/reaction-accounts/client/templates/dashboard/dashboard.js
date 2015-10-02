@@ -68,7 +68,7 @@ Template.accountsDashboard.helpers({
               member.email = user.emails[0];
             }
           }
-
+          member.user = user;
           member.username = user !== null ? user.username : void 0;
           member.isAdmin = Roles.userIsInRole(user._id, "admin", ReactionCore.getShopId());
           member.roles = user.roles;

@@ -51,6 +51,7 @@ Package.onUse(function(api) {
 
   // accounts
   api.addFiles("server/accounts.js", "server");
+  api.addFiles("server/policy.js", "server");
   api.addFiles("common/factories/accounts.js");
   api.addFiles("server/publications/accounts.js", "server");
   api.addFiles("server/methods/serviceConfiguration.js", "server");
