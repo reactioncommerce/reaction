@@ -110,12 +110,6 @@ ReactionCore.Collections.Cart = Cart = this.Cart = new Mongo.Collection("Cart", 
 
 ReactionCore.Collections.Cart.attachSchema(ReactionCore.Schemas.Cart);
 
-/**
-* ReactionCore Collections Accounts
-*/
-ReactionCore.Collections.Accounts = new Mongo.Collection("Accounts");
-
-ReactionCore.Collections.Accounts.attachSchema(ReactionCore.Schemas.Accounts);
 
 /**
 * ReactionCore Collections Orders

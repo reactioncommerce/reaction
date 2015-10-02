@@ -8,7 +8,7 @@
 
 let getDomain;
 
-PackageFixture = class {
+PackageFixture = class PackageFixture {
   /**
    * PackageFixture.loadData
    * @summary imports collection fixture data
