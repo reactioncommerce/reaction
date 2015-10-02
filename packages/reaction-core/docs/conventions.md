@@ -4,17 +4,17 @@ This is a lot of the stuff you'll probably need to know, or at least reference, 
 
 ##Issues
 
-For development tasks/issues please use the [Reaction project issues](https://github.com/reactioncommerce/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](https://github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](https://waffle.io/reactioncommerce/reaction).
+For development tasks/issues please use the [Reaction project issues](/github.com/reactioncommerce/reaction/issues?state=open). We're keeping this as the central issue tracking for all [reactioncommerce:*](//github.com/reactioncommerce/) packages. You can also view issues on our [waffle board](//waffle.io/reactioncommerce/reaction).
 
 The default branch for reaction, reaction-core, reaction-core-theme is _development_. Pull requests made into the _development_ branch, will be reviewed and accepted into development for a quick release, while we work on specific feature branches separately, to be merged into _development_.
 
 We're trying to practice the art of liberally creating issues for every development task, rather than just 'community' bugs. This can be much noisier but we're trying to ensure we're publicly capturing and sharing all the tasks so everyone can have detailed insight into the project progress.
 
-The [help wanted](https://github.com/reactioncommerce/reaction/labels/help%20wanted) label calls out issues that prioritize where community member contributions would be relatively easy. Of course, all contributions are welcome.
+The [help wanted](//github.com/reactioncommerce/reaction/labels/help%20wanted) label calls out issues that prioritize where community member contributions would be relatively easy. Of course, all contributions are welcome.
 
-The [ready](https://github.com/reactioncommerce/reaction/labels/ready) label groups issues that can be worked on immediately; requirements documentation should be complete (work to do on this). If you want to take ownership of one these [![Stories in Ready](https://badge.waffle.io/reactioncommerce/reaction.svg?label=ready&title=Ready)](http://waffle.io/reactioncommerce/reaction) issues, self assign it and change to "in progress" label when the item is actually being worked on, or comment in the issue.
+The [ready](//github.com/reactioncommerce/reaction/labels/ready) label groups issues that can be worked on immediately; requirements documentation should be complete (work to do on this). If you want to take ownership of one these [![Stories in Ready](https://badge.waffle.io/reactioncommerce/reaction.svg?label=ready&title=Ready)](//waffle.io/reactioncommerce/reaction) issues, self assign it and change to "in progress" label when the item is actually being worked on, or comment in the issue.
 
-Of course, [in progress](https://github.com/reactioncommerce/reaction/labels/in%20progress) labels are actively being worked on.
+Of course, [in progress](//github.com/reactioncommerce/reaction/labels/in%20progress) labels are actively being worked on.
 
 ##Releases
 
@@ -22,11 +22,11 @@ We will publish packages, and merge `development` into `master`, whenever a majo
 
 No pull requests to `master` will be accepted.
 
-`master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](https://github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
+`master` should always be a stable branch, but with a rapid merge cycle from `development`.  The [release](//github.com/reactioncommerce/reaction/releases) and published packages will be tagged for minor release or higher, and sometimes for special case patches.
 
 ##Testing
 
-We're using the Meteor testing framework [Velocity](http://velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](https://github.com/Sanjo/meteor-jasmine) for the majority of tests.
+We're using the Meteor testing framework [Velocity](//velocity.meteor.com/). Velocity allows us to use different testing approaches as needed.  Currently we're using [Jasmine](//github.com/Sanjo/meteor-jasmine) for the majority of tests.
 
 Velocity doesn't always make it easy to test packages separately from the app. Velocity can also slow down the reload process during development while it's running tests in multiple cloned instances of the shop.
 
@@ -68,7 +68,7 @@ We'd like for new features to include at least basic integration test-coverage. 
 
 _Writing tests is a great way to get to know the codebase a little better too._
 
-[We've got an open issue on testing where any problems you run into while testing can go for now.](https://github.com/reactioncommerce/reaction/issues/241)
+[We've got an open issue on testing where any problems you run into while testing can go for now.](//github.com/reactioncommerce/reaction/issues/241)
 
 ##Pull Requests
 
@@ -98,13 +98,13 @@ You can now `push` your branch to GitHub. If you've already published this branc
 git push --force
 ```
 
-Finally, [create a pull request](https://help.github.com/articles/creating-a-pull-request/) into the `development` branch of the appropriate reaction package.
+Finally, [create a pull request](//help.github.com/articles/creating-a-pull-request/) into the `development` branch of the appropriate reaction package.
 
 ##Style Guide
 
 _A work in progress, but these are good guides._
 
-Read [Meteor Style Guide](https://github.com/meteor/meteor/wiki/Meteor-Style-Guide) for ideas on format and style of contributions.
+Read [Meteor Style Guide](//github.com/meteor/meteor/wiki/Meteor-Style-Guide) for ideas on format and style of contributions.
 
 **event,template**
 
@@ -165,7 +165,7 @@ api.export(["ReactionCore"]);
 
 ###Logging
 
-[Bunyan](https://github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
+[Bunyan](//github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
 
@@ -175,7 +175,7 @@ Setting a level of _debug_  `isDebug:  "debug"` or higher will display verbose l
 
 _Recommend running meteor with `--raw-log` to remove Meteor's default console formatting. This is the default when you use `./bin/run` to start Meteor._
 
-Feel free to include verbose logging, but follow [Bunyan recommendations on log levels](https://github.com/trentm/node-bunyan#levels) and use appropriate levels for your messages.
+Feel free to include verbose logging, but follow [Bunyan recommendations on log levels](//github.com/trentm/node-bunyan#levels) and use appropriate levels for your messages.
 
 ```
 The log levels in bunyan are as follows. The level descriptions are best practice opinions.

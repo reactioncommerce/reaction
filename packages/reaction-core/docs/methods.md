@@ -2,7 +2,7 @@
 
 ## Image Handling
 
-We are using [CollectionFs](https://github.com/CollectionFS/Meteor-CollectionFS)  for file uploading handling.  There is a [CFS GraphicsMagick](https://github.com/CollectionFS/Meteor-cfs-graphicsmagick) package that handles resizing images when they are uploaded.
+We are using [CollectionFs](//github.com/CollectionFS/Meteor-CollectionFS)  for file uploading handling.  There is a [CFS GraphicsMagick](//github.com/CollectionFS/Meteor-cfs-graphicsmagick) package that handles resizing images when they are uploaded.
 
 Take a look at */reaction-core/common/collectionFS.coffee* and you'll note that we have this commented out, but the templates should be using the appropriate collections (thumbnails, gridfs ,etc).
 
@@ -40,7 +40,7 @@ Meteor.call "createProduct", (error, productId) ->
     # do something on successful callback
 ```
 
-createProduct returns the insert callback from the newly created product. As with all [meteor inserts](http://docs.meteor.com/#insert), this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
+createProduct returns the insert callback from the newly created product. As with all [meteor inserts](//docs.meteor.com/#insert), this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
 
 ### cloneProduct
 
@@ -56,7 +56,7 @@ Meteor.call "cloneProduct", productId, (error, newCloneId) ->
     # do something on successful callback
 ```
 
-cloneProduct takes a product object (the one you want to clone) and returns the insert callback from the newly created clone. As with all [meteor inserts](http://docs.meteor.com/#insert), this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
+cloneProduct takes a product object (the one you want to clone) and returns the insert callback from the newly created clone. As with all [meteor inserts](//docs.meteor.com/#insert), this callback includes an error object as the first argument and, if no error, the _id of the new document as the second.
 
 *Note: In the future we are going to implement an inheritance product that maintains relationships with the cloned product tree*
 
@@ -90,7 +90,7 @@ Meteor.call "updateProductField", productId, field, value, (error, result) ->
     # do something on successful callback
 ```
 
-updateProductField takes a product id, a field name, and a value and updates that single product field. It then returns the meteor [update callback](http://docs.meteor.com/#update).
+updateProductField takes a product id, a field name, and a value and updates that single product field. It then returns the meteor [update callback](//docs.meteor.com/#update).
 
 ### updateProductTags
 
@@ -223,7 +223,7 @@ Meteor.call "locateAddress", latitude, longitude, (address) ->
   # do something on callback
 ```
 
-locateAddress takes latitude and longitude in [decimal degree format](http://en.wikipedia.org/wiki/Decimal_degrees) and uses a reverse geolocation lookup to determine street address. If coordinates are not provided, the method attempts to use the user's ip address to determine general location. An address is returned in this format:
+locateAddress takes latitude and longitude in [decimal degree format](//en.wikipedia.org/wiki/Decimal_degrees) and uses a reverse geolocation lookup to determine street address. If coordinates are not provided, the method attempts to use the user's ip address to determine general location. An address is returned in this format:
 
 ```
 [{
@@ -257,7 +257,7 @@ If no address can be found, then the following address object is returned:
 }]
 ```
 
-For more information on how geocoding works in Reaction, check out the [meteor-geocoder package](https://github.com/aldeed/meteor-geocoder)
+For more information on how geocoding works in Reaction, check out the [meteor-geocoder package](//github.com/aldeed/meteor-geocoder)
 
 ### updateHeaderTags
 
