@@ -1,12 +1,12 @@
 Meteor.methods({
   /**
-   * Description of what this does.
-   *
+   * payments/paymentMethod
+   * @summary adds payment to order
    * @param {String} cartId - cartId
    * @param {Object} paymentMethod - formatted payment method object
-   * @returns {boolean} boolean
+   * @returns {String} return cart update result
    */
-  "payments/paymentMethod": (cartId, paymentMethod) => {
+  "payments/paymentMethod": function (cartId, paymentMethod) {
     check(cartId, String);
     check(paymentMethod, Object);
     return Cart.update({
