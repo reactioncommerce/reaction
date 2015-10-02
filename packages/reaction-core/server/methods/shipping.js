@@ -1,38 +1,35 @@
-
-/**
-* ReactionCore Shipping Methods
-* methods typically used for checkout (shipping, taxes, etc)
-*/
-
-var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
+/*
+ * ReactionCore Shipping Methods
+ * methods typically used for checkout (shipping, taxes, etc)
+ */
 Meteor.methods({
-
   /**
-   * gets shipping rates and updates the users cart methods
-   * TODO: add orderId argument/fallback
+   * shipping/updateShipmentQuotes
+   * @summary gets shipping rates and updates the users cart methods
+   * @todo add orderId argument/fallback
+   * @param {String} cartId - cartId
+   * @return {String} returns
    */
-  "shipping/updateShipmentQuotes": function(cartId) {
-    var cart, rates;
+  "shipping/updateShipmentQuotes": function (cartId) {
     if (!cartId) {
       return;
     }
     check(cartId, String);
     this.unblock();
-    cart = ReactionCore.Collections.Cart.findOne(cartId);
+    let cart = ReactionCore.Collections.Cart.findOne(cartId);
     if (cart) {
-      rates = Meteor.call("shipping/getShippingRates", cart);
+      let rates = Meteor.call("shipping/getShippingRates", cart);
 
-      if(!rates) {
+      if (!rates) {
         return;
       }
 
       if (rates.length > 0) {
         ReactionCore.Collections.Cart.update({
-          '_id': cartId
+          _id: cartId
         }, {
           $set: {
-            'shipping.shipmentQuotes': rates
+            "shipping.shipmentQuotes": rates
           }
         });
       }
@@ -41,46 +38,45 @@ Meteor.methods({
   },
 
   /**
-   *  just gets rates, without updating anything
+   * shipping/getShippingRates
+   * @summary just gets rates, without updating anything
+   * @param {Object} cart - cart object
+   * @return {String} return updated rates in cart
    */
-  "shipping/getShippingRates": function(options) {
-    var product, rates, selector, shipping, shops, _i, _len, _ref, _ref1, _ref2;
-    check(options, Object);
-    rates = [];
-    selector = {
+  "shipping/getShippingRates": function (cart) {
+    check(cart, Object);
+    let rates = [];
+    let shops = [];
+    let products = cart.items;
+    // default selector is current shop
+    let selector = {
       shopId: ReactionCore.getShopId()
     };
-    shops = [];
-    _ref = options.items;
-
-
-    if(!options.items) {
-      return;
+    // must have products to calculate shipping
+    if (!cart.items) {
+      return [];
     }
-
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      product = _ref[_i];
-      if (_ref1 = product.shopId, __indexOf.call(shops, _ref1) < 0) {
+    // create an array of shops, allowing
+    // the cart to have products from multiple shops
+    for (let product of products) {
+      if (product.shopId) {
         shops.push(product.shopId);
       }
     }
-    if (_ref2 = ReactionCore.getShopId(), __indexOf.call(shops, _ref2) < 0) {
-      shops.push(ReactionCore.getShopId());
-    }
-    if ((shops != null ? shops.length : void 0) > 0) {
+    // if we have multiple shops in cart
+    if ((shops !== null ? shops.length : void 0) > 0) {
       selector = {
         shopId: {
           $in: shops
         }
       };
     }
-    shipping = ReactionCore.Collections.Shipping.find(selector);
-    shipping.forEach(function(shipping) {
-      var index, method, rate, _j, _len1, _ref3, _results;
-      _ref3 = shipping.methods;
-      _results = [];
-      for (index = _j = 0, _len1 = _ref3.length; _j < _len1; index = ++_j) {
-        method = _ref3[index];
+
+    let shippingMethods = ReactionCore.Collections.Shipping.find(selector);
+
+    shippingMethods.forEach(function (shipping) {
+      let _results = [];
+      for (let method of shipping.methods) {
         if (!(method.enabled === true)) {
           continue;
         }
