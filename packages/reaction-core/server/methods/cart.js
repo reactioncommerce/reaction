@@ -88,7 +88,7 @@ Meteor.methods({
    * @param {String} createForUserId - userId to create cart for
    * @returns {String} cartId - users cartId
    */
-  "cart/createCart": (createForUserId) => {
+  "cart/createCart": function (createForUserId) {
     check(createForUserId, Match.Optional(String));
     this.unblock();
     let sessionId;

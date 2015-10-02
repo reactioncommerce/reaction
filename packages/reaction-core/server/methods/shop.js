@@ -42,10 +42,11 @@ Meteor.methods({
   "shop/getLocale": function () {
     this.unblock();
     let exchangeRate;
-    let localeCurrency;
     let clientAddress;
     let geo = new GeoCoder();
     let result = {};
+    let defaultCountryCode = "US";
+    let localeCurrency = "USD";
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
       clientAddress = this.connection.clientAddress;
@@ -71,28 +72,26 @@ Meteor.methods({
     // fallback to shop settings
     if (shop.addressBook) {
       if (shop.addressBook.length >= 1) {
-        defaultCountryCode = shop.addressBook[0].country;
-      } else {
-        defaultCountryCode = "US";
+        if (shop.addressBook[0].country) {
+          defaultCountryCode = shop.addressBook[0].country;
+        }
       }
-    } else {
-      defaultCountryCode = "US";
     }
-
     // geocode reverse ip lookup
     let geoCountryCode = geo.geoip(clientAddress).countryCode;
+
     // countryCode either from geo or defaults
     let countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
 
     // get currency rates
     result.currency = {};
     result.locale = shop.locales.countries[countryCode];
-    // ensure default currency
+
+    // check if locale has a currency defined
     if (result.locale) {
-      localeCurrency = shop.locales.countries[countryCode].currency.split(
-        ",");
-    } else {
-      localeCurrency = "USD";
+      if (result.locale.currency) {
+        localeCurrency = result.locale.currency.split(",");
+      }
     }
 
     // localeCurrency is an array of allowed currencies
