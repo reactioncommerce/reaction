@@ -160,10 +160,15 @@ Meteor.methods({
     return newVariantId;
   },
 
-  /*
-   * initializes inventory variant template
+  /**
+   * products/createInventoryVariant
+   * @summary initializes inventory variant template
    * should only be called to create variants of type=inventory
    * pass newVariant object to create with options
+   * @param {String} productId - productId
+   * @param {String} parentId -  parent variantId
+   * @param {Object} newVariant -  optional variant object
+   * @return {String} returns new variantId
    */
   "products/createInventoryVariant": function (productId, parentId,
     newVariant) {
