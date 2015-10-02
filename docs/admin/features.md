@@ -1,5 +1,5 @@
 # Features
-Our [Features page](https://reactioncommerce.com/features) highlights many of the existing and upcoming features of Reaction.
+Our [Features page](//reactioncommerce.com/features) highlights many of the existing and upcoming features of Reaction.
 
 ## Products
 - Add/edit products inline, same view as user sees

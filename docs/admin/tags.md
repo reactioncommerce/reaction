@@ -8,13 +8,13 @@ On Reaction, there are two types of tags: Product Tags and Navigation Tags. You 
 
 To assign a tag to a product, login as an admin, and click on a product to go to a product detail page. Below the images section is the “Tags” section.
 
-![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-tags-editproduct.png "Reaction Commerce tags and navigation")
+![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-tags-editproduct.png "Reaction Commerce tags and navigation")
 
 To create a new tag, click on the “Add tags” box and type in your tag. Hit Enter on your keyboard to save the tag. For example, if the product is a t-shirt you might want to add Tags like: Mens, Short sleeve, Cotton, Crew neck, etc. 
 
-To delete a tag, click the grey “x” icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-deletetag.png "Reaction Commerce delete tag").)
+To delete a tag, click the grey “x” icon (![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-deletetag.png "Reaction Commerce delete tag").)
 
-To rearrange tags, click on the 3 horizontal lines icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-movetag.png "Reaction Commerce move tags")), and drag and drop the tag where you want it.
+To rearrange tags, click on the 3 horizontal lines icon (![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-movetag.png "Reaction Commerce move tags")), and drag and drop the tag where you want it.
 
 ### Hashtag URLs
 
@@ -24,16 +24,16 @@ While this functionality may seem uneventful at the moment, we have big plans. E
 
 ## Navigation Tags
 
-To edit the top Navigation Tags of your shop, login as an admin, and click on the “Tags” icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-tag.png "Reaction Commerce tags")) in the top navigation bar of your shop.
+To edit the top Navigation Tags of your shop, login as an admin, and click on the “Tags” icon (![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-tag.png "Reaction Commerce tags")) in the top navigation bar of your shop.
 
-![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-tags-editnav.png "Reaction Commerce Navigation")
+![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-tags-editnav.png "Reaction Commerce Navigation")
 
 To create a new Navigation Tag, click the “Add tags” box, type in your tag, and hit enter or tab on your keyboard to save the tag. If you created tags for your products, you will notice that as you type, previously created tags are auto suggested for you. You will likely want to make sure that at least one of your Product Tags corresponds to a Navigation Tag so that when a shopper clicks on the Navigation Tags that appear in your shop’s top navigation, they will discover your products by category. If you create a Navigation Tag that doesn’t have any products with that corresponding tag, then that Navigation Tag will be empty when your shoppers click on it.
 
-![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-tags-nav.png "Reaction Commerce navigation bar")
+![](/raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-tags-nav.png "Reaction Commerce navigation bar")
 
-To delete a Navigation Tag, click the grey “x” icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-deletetag.png "Reaction Commerce delete tag")).
+To delete a Navigation Tag, click the grey “x” icon (![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-deletetag.png "Reaction Commerce delete tag")).
 
-To rearrange Navigation Tags, click on the 3 horizontal lines icon (![](http://raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-movetag.png "Reaction Commerce move tag")), and drag and drop the tag where you want it. 
+To rearrange Navigation Tags, click on the 3 horizontal lines icon (![](//raw.github.com/reactioncommerce/reaction/master/docs/assets/guide-icon-movetag.png "Reaction Commerce move tag")), and drag and drop the tag where you want it. 
 
 When you finish updating your navigation, click anywhere on your shop outside of the top nav bar to close out of the editing interface.
