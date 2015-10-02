@@ -4,7 +4,13 @@
     <h2 data-i18n="accountsUI.createAccount">Create an Account</h2>
   </div>
 
-  {{#each services}} {{> loginFormServiceButton}} {{/each}} {{#if shouldShowSeperator}} {{> loginFormSeperator}} {{/if}}
+  {{#each services}}
+    {{> loginFormServiceButton}}
+  {{/each}}
+
+  {{#if shouldShowSeperator}}
+    {{> loginFormSeperator}}
+  {{/if}}
 
   <form class="login-form" novalidate>
 

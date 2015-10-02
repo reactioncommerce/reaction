@@ -1,4 +1,3 @@
-"use strict";
 
 window.LoginFormSharedHelpers = {
 
@@ -33,7 +32,7 @@ window.LoginFormSharedHelpers = {
   shouldShowSeperator() {
     let serviceHelper = new ReactionServiceHelper();
     let services = serviceHelper.services();
-    let enabledServices = _.where(services, {enabled: "true"});
+    let enabledServices = _.where(services, {enabled: true});
 
     return !!Package["accounts-password"] && enabledServices.length > 0;
   },
