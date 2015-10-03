@@ -1,50 +1,59 @@
+/*
+ * Methods for the reaction permissions
+ * https://github.com/ongoworks/reaction#rolespermissions-system
+ * use: {{hasPermissions admin userId}}
+ */
 
 /**
-* Methods for the reaction permissions
-* https://github.com/ongoworks/reaction#rolespermissions-system
-* use: {{hasPermissions admin userId}}
-*/
-
-/**
-* registerHelper hasPermission
-*/
-
-Template.registerHelper("hasPermission", function(permissions, userId) {
+ * hasPermission template helper
+ * @summary check current user hasPermission
+ * @param  {String|Array} "permissions"
+ * @param  {String} checkUserId - optional Meteor.userId, default to current
+ * @return {Boolean}
+ */
+Template.registerHelper("hasPermission", function (permissions, checkUserId) {
   check(permissions, Match.OneOf(String, Object));
-  if (typeof userId === 'object') {
+  let userId;
+  if (typeof checkUserId === "object") {
+    userId = checkUserId;
+  } else {
     userId = Meteor.userId();
   }
   return ReactionCore.hasPermission(permissions, userId);
 });
 
 /**
-* registerHelper hasOwnerAccess
-*/
-
-Template.registerHelper("hasOwnerAccess", function() {
+ * hasOwnerAccess template helper
+ * @summary check if user has owner access
+ * @return {Boolean} return true if owner
+ */
+Template.registerHelper("hasOwnerAccess", function () {
   return ReactionCore.hasOwnerAccess();
 });
 
 /**
-* registerHelper hasAdminAccess
-*/
-
-Template.registerHelper("hasAdminAccess", function() {
+ * hasAdminAccess template helper
+ * @summary check if user has admin access
+ * @return {Boolean} return true if admin
+ */
+Template.registerHelper("hasAdminAccess", function () {
   return ReactionCore.hasAdminAccess();
 });
 
 /**
-* registerHelper hasDashboardAccess
-*/
-
-Template.registerHelper("hasDashboardAccess", function() {
+ * hasDashboardAccess template helper
+ * @summary check if user has dashboard access
+ * @return {Boolean} return true if user has dashboard permission
+ */
+Template.registerHelper("hasDashboardAccess", function () {
   return ReactionCore.hasDashboardAccess();
 });
 
 /**
-* registerHelper allowGuestCheckout
-*/
-
-Template.registerHelper("allowGuestCheckout", function() {
+ * allowGuestCheckout template helper
+ * @summary check if guest users are allowed to checkout
+ * @return {Boolean} return true if shop has guest checkout enabled
+ */
+Template.registerHelper("allowGuestCheckout", function () {
   return ReactionCore.allowGuestCheckout();
 });
