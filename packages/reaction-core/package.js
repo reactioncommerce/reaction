@@ -59,7 +59,7 @@ Package.onUse(function (api) {
   api.use("ongoworks:security@1.2.0");
 
   api.use("dburles:factory@0.3.10");
-  api.use("matb33:collection-hooks@0.8.0");
+  api.use("matb33:collection-hooks@0.8.1");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.0");
