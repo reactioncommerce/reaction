@@ -1,17 +1,17 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.8.2",
+  version: "0.9.0",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
 Npm.depends({
-  'faker': "3.0.1",
-  'node-geocoder': "3.0.0"
+  "faker": "3.0.1",
+  "node-geocoder": "3.0.0"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom('METEOR@1.2');
+  api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
   api.use("standard-minifiers");
@@ -52,7 +52,7 @@ Package.onUse(function (api) {
   api.use("aldeed:autoform@5.5.1");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
-  api.use("aldeed:template-extension@3.4.3", 'client');
+  api.use("aldeed:template-extension@3.4.3", "client");
   api.use("iron:router@1.0.9");
   api.use("ongoworks:speakingurl@5.0.1");
   api.use("ongoworks:bunyan-logger@2.5.0");
@@ -104,7 +104,7 @@ Package.onUse(function (api) {
   api.imply("utilities:avatar");
 
   // reaction core dependencies
-  api.addFiles("lib/bower.json","client");
+  api.addFiles("lib/bower.json", "client");
   api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/mouse.js", "client");
@@ -119,8 +119,8 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
   api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
   api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
-  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", 'client');
-  api.addFiles("lib/css/jquery-ui.css", 'client');
+  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
+  api.addFiles("lib/css/jquery-ui.css", "client");
   api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("lib/geocoder.js", ["server"]);
 
@@ -134,32 +134,32 @@ Package.onUse(function (api) {
   api.addFiles("common/common.js");
 
   // Private fixture data
-  api.addAssets('private/data/Products.json', 'server');
-  api.addAssets('private/data/Shops.json', 'server');
-  api.addAssets('private/data/Tags.json', 'server');
-  api.addAssets('private/data/Orders.json', 'server');
+  api.addAssets("private/data/Products.json", "server");
+  api.addAssets("private/data/Shops.json", "server");
+  api.addAssets("private/data/Tags.json", "server");
+  api.addAssets("private/data/Orders.json", "server");
 
-  //i18n translations
-  api.addAssets('private/data/i18n/ar.json', 'server');
-  api.addAssets('private/data/i18n/cn.json', 'server');
-  api.addAssets('private/data/i18n/cs.json', 'server');
-  api.addAssets('private/data/i18n/de.json', 'server');
-  api.addAssets('private/data/i18n/en.json', 'server');
-  api.addAssets('private/data/i18n/el.json', 'server');
-  api.addAssets('private/data/i18n/es.json', 'server');
-  api.addAssets('private/data/i18n/fr.json', 'server');
-  api.addAssets('private/data/i18n/he.json', 'server');
-  api.addAssets('private/data/i18n/hr.json', 'server');
-  api.addAssets('private/data/i18n/hu.json', 'server');
-  api.addAssets('private/data/i18n/it.json', 'server');
-  api.addAssets('private/data/i18n/my.json', 'server');
-  api.addAssets('private/data/i18n/nl.json', 'server');
-  api.addAssets('private/data/i18n/pl.json', 'server');
-  api.addAssets('private/data/i18n/pt.json', 'server');
-  api.addAssets('private/data/i18n/ru.json', 'server');
-  api.addAssets('private/data/i18n/sl.json', 'server');
-  api.addAssets('private/data/i18n/sv.json', 'server');
-  api.addAssets('private/data/i18n/vi.json', 'server');
+  // i18n translations
+  api.addAssets("private/data/i18n/ar.json", "server");
+  api.addAssets("private/data/i18n/cn.json", "server");
+  api.addAssets("private/data/i18n/cs.json", "server");
+  api.addAssets("private/data/i18n/de.json", "server");
+  api.addAssets("private/data/i18n/en.json", "server");
+  api.addAssets("private/data/i18n/el.json", "server");
+  api.addAssets("private/data/i18n/es.json", "server");
+  api.addAssets("private/data/i18n/fr.json", "server");
+  api.addAssets("private/data/i18n/he.json", "server");
+  api.addAssets("private/data/i18n/hr.json", "server");
+  api.addAssets("private/data/i18n/hu.json", "server");
+  api.addAssets("private/data/i18n/it.json", "server");
+  api.addAssets("private/data/i18n/my.json", "server");
+  api.addAssets("private/data/i18n/nl.json", "server");
+  api.addAssets("private/data/i18n/pl.json", "server");
+  api.addAssets("private/data/i18n/pt.json", "server");
+  api.addAssets("private/data/i18n/ru.json", "server");
+  api.addAssets("private/data/i18n/sl.json", "server");
+  api.addAssets("private/data/i18n/sv.json", "server");
+  api.addAssets("private/data/i18n/vi.json", "server");
 
   // import fixture data
   api.addFiles("server/fixtures.js", "server");
@@ -428,8 +428,8 @@ Package.onUse(function (api) {
 
   // Exports
   api.export("ReactionCore");
-  api.export("ReactionRegistry","server");
-  api.export("faker", ["server"]); //for testing only?
+  api.export("ReactionRegistry", "server");
+  api.export("faker", ["server"]); // for testing only?
 
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
@@ -437,19 +437,19 @@ Package.onUse(function (api) {
 });
 
 
-Package.onTest(function(api) {
-  api.use('sanjo:jasmine@0.19.0');
-  api.use('underscore');
+Package.onTest(function (api) {
+  api.use("sanjo:jasmine@0.20.1");
+  api.use("underscore");
   api.use("dburles:factory@0.3.10");
-  api.use('velocity:html-reporter@0.9.0');
-  api.use('velocity:console-reporter@0.1.3');
+  api.use("velocity:html-reporter@0.9.0");
+  api.use("velocity:console-reporter@0.1.3");
 
-  api.use('reactioncommerce:core');
-  api.use('reactioncommerce:bootstrap-theme');
+  api.use("reactioncommerce:core");
+  api.use("reactioncommerce:bootstrap-theme");
 
-  api.addFiles('tests/jasmine/server/integration/shops.js', 'server');
-  api.addFiles('tests/jasmine/server/integration/accounts.js', 'server');
-  api.addFiles('tests/jasmine/server/integration/methods.js', 'server');
-  api.addFiles('tests/jasmine/server/integration/products.js', 'server');
-  api.addFiles('tests/jasmine/server/integration/publications.js', 'server');
+  api.addFiles("tests/jasmine/server/integration/shops.js", "server");
+  api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
+  api.addFiles("tests/jasmine/server/integration/methods.js", "server");
+  api.addFiles("tests/jasmine/server/integration/products.js", "server");
+  api.addFiles("tests/jasmine/server/integration/publications.js", "server");
 });
