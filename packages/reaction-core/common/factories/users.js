@@ -3,24 +3,24 @@
  *
  */
 
-Factory.define('user', Meteor.users, {
-  username: function() {
+Factory.define("user", Meteor.users, {
+  username: function () {
     return faker.internet.userName() + _.random(0, 1000);
   },
 
-  name: function() {
+  name: function () {
     return faker.name.findName();
   },
 
-  emails: function() {
-    var email = faker.internet.email();
+  emails: function () {
+    let email = faker.internet.email();
     return [{
       address: email,
       verified: true
     }];
   },
 
-  profile: function() {
+  profile: function () {
     return {
       name: this.name,
       email: faker.internet.email(),
@@ -28,18 +28,19 @@ Factory.define('user', Meteor.users, {
     };
   },
 
-  gender: function() {
-    return ['Either', 'Male', 'Female'][_.random(0, 2)];
+  gender: function () {
+    return ["Either", "Male", "Female"][_.random(0, 2)];
   },
 
-  description: function() {
+  description: function () {
     return faker.lorem.paragraphs(3);
   },
 
-  startTime: function() {
+  startTime: function () {
     // needs moment.js package
     // some date within the next month
-    return moment().add(_.random(0, 31), 'days').add(_.random(0, 24), 'hours').toDate();
+    return moment().add(_.random(0, 31), "days").add(_.random(0, 24),
+      "hours").toDate();
   },
 
   createdAt: new Date()

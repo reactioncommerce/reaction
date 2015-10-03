@@ -342,6 +342,7 @@ Meteor.methods({
   /**
    * flushTranslations
    * @summary Helper method to remove all translations, and reload from jsonFiles
+   * @return {undefined}
    */
   "flushTranslations": function () {
     if (!ReactionCore.hasAdminAccess()) {
@@ -349,8 +350,8 @@ Meteor.methods({
     }
     ReactionCore.Collections.Translations.remove({});
     Fixtures.loadI18n();
-    return ReactionCore.Log.info(Meteor.userId() +
-      " Flushed Translations.");
+    ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
+    return;
   },
 
   /**

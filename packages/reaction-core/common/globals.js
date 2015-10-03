@@ -7,7 +7,6 @@ ReactionCore.MetaData = {};
 ReactionCore.Locale = {};
 ReactionCore.Log = {};
 
-
 if (Meteor.isClient) {
   ReactionCore.Alerts = {};
   ReactionCore.Subscriptions = {};

@@ -1,6 +1,6 @@
 /**
-* PaymentMethod Schema
-*/
+ * PaymentMethod Schema
+ */
 
 ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   processor: {
@@ -27,7 +27,7 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -58,8 +58,8 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
 });
 
 /**
-* Invoice Schema
-*/
+ * Invoice Schema
+ */
 
 ReactionCore.Schemas.Invoice = new SimpleSchema({
   transaction: {
@@ -110,7 +110,6 @@ ReactionCore.Schemas.Payment = new SimpleSchema({
   }
 });
 
-
 /**
  * Order Document Schema
  */
@@ -157,7 +156,6 @@ ReactionCore.Schemas.Notes = new SimpleSchema({
   }
 });
 
-
 /**
  * OrderItems Schema
  * merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order]
@@ -184,9 +182,9 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema({
 });
 
 /**
-* Order Schema
-* extended from cart schema
-*/
+ * Order Schema
+ * extended from cart schema
+ */
 
 ReactionCore.Schemas.Order = new SimpleSchema({
   cartId: {

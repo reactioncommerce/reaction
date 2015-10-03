@@ -1,7 +1,6 @@
-
 /**
-* VariantMedia Schema
-*/
+ * VariantMedia Schema
+ */
 ReactionCore.Schemas.VariantMedia = new SimpleSchema({
   mediaId: {
     type: String,
@@ -21,7 +20,7 @@ ReactionCore.Schemas.VariantMedia = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -35,8 +34,8 @@ ReactionCore.Schemas.VariantMedia = new SimpleSchema({
 });
 
 /**
-* ProductPosition Schema
-*/
+ * ProductPosition Schema
+ */
 ReactionCore.Schemas.ProductPosition = new SimpleSchema({
   tag: {
     type: String,
@@ -63,8 +62,8 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 });
 
 /**
-* ProductVariant Schema
-*/
+ * ProductVariant Schema
+ */
 
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
@@ -86,7 +85,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     label: "Barcode",
     type: String,
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
         if (this.siblingField("type").value === "inventory" && !this.value) {
           return "required";
@@ -111,9 +110,10 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Number,
     min: 0,
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value || this.value === 0)) {
+        if (!(this.siblingField("type").value === "inventory" || this.value ||
+            this.value === 0)) {
           return "required";
         }
       }
@@ -123,9 +123,10 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Boolean,
     label: "Inventory Tracking",
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value || this.value === false)) {
+        if (!(this.siblingField("type").value === "inventory" || this.value ||
+            this.value === false)) {
           return "required";
         }
       }
@@ -135,9 +136,10 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Boolean,
     label: "Deny when out of stock",
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value || this.value === false)) {
+        if (!(this.siblingField("type").value === "inventory" || this.value ||
+            this.value === false)) {
           return "required";
         }
       }
@@ -153,7 +155,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Number,
     label: "Quantity",
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
         if (this.siblingField("type").value !== "inventory") {
           if (checkChildVariants(this.docId) === 0 && !this.value) {
@@ -169,7 +171,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     decimal: true,
     min: 0,
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
         if (this.siblingField("type").value !== "inventory") {
           if (checkChildVariants(this.docId) === 0 && !this.value) {
@@ -198,7 +200,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     label: "Label",
     type: String,
     optional: true,
-    custom: function() {
+    custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value)) {
           return "required";
@@ -228,8 +230,8 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
 });
 
 /**
-* Product Schema
-*/
+ * Product Schema
+ */
 
 ReactionCore.Schemas.Product = new SimpleSchema({
   _id: {
@@ -339,7 +341,7 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -351,7 +353,7 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isUpdate) {
         return {
           $set: new Date

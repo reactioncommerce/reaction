@@ -8,7 +8,7 @@ Meteor.methods({
    * @summary gets shipping rates and updates the users cart methods
    * @todo add orderId argument/fallback
    * @param {String} cartId - cartId
-   * @return {String} returns
+   * @return {undefined}
    */
   "shipping/updateShipmentQuotes": function (cartId) {
     if (!cartId) {
@@ -41,7 +41,7 @@ Meteor.methods({
    * shipping/getShippingRates
    * @summary just gets rates, without updating anything
    * @param {Object} cart - cart object
-   * @return {String} return updated rates in cart
+   * @return {Array} return updated rates in cart
    */
   "shipping/getShippingRates": function (cart) {
     check(cart, Object);

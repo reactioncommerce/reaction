@@ -9,7 +9,7 @@
 
 ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions",
   amplify.store("ReactionCore.session"),
-  function() {
+  function () {
     let serverSession = new Mongo.Collection("Sessions").findOne();
     return amplify.store("ReactionCore.session", serverSession._id);
   });
@@ -31,7 +31,7 @@ let cart = ReactionCore.Collections.Cart.find({
 // detect when a cart has been deleted
 // resubscribe will force cart to be rebuilt
 cart.observeChanges({
-  removed: function() {
+  removed: function () {
     Meteor.subscribe("Cart", sessionId, Meteor.userId());
   }
 });

@@ -1,7 +1,6 @@
-
 /**
-* CustomEmailSettings Schema
-*/
+ * CustomEmailSettings Schema
+ */
 
 ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema({
   username: {
@@ -24,8 +23,8 @@ ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema({
 });
 
 /**
-* Metafield Schema
-*/
+ * Metafield Schema
+ */
 
 ReactionCore.Schemas.Metafield = new SimpleSchema({
   key: {
@@ -57,8 +56,8 @@ ReactionCore.Schemas.Metafield = new SimpleSchema({
 });
 
 /**
-* Currency Schema
-*/
+ * Currency Schema
+ */
 
 ReactionCore.Schemas.Currency = new SimpleSchema({
   symbol: {
@@ -91,8 +90,8 @@ ReactionCore.Schemas.Currency = new SimpleSchema({
 });
 
 /**
-* Locale Schema
-*/
+ * Locale Schema
+ */
 
 ReactionCore.Schemas.Locale = new SimpleSchema({
   continents: {
@@ -106,60 +105,60 @@ ReactionCore.Schemas.Locale = new SimpleSchema({
 });
 
 /**
-* Shop Schema
-*/
+ * Shop Schema
+ */
 
 ReactionCore.Schemas.Shop = new SimpleSchema({
-  _id: {
+  "_id": {
     type: String,
     optional: true
   },
-  status: {
+  "status": {
     type: String,
     defaultValue: "active"
   },
-  name: {
+  "name": {
     type: String,
     index: 1
   },
-  description: {
+  "description": {
     type: String,
     optional: true
   },
-  keywords: {
+  "keywords": {
     type: String,
     optional: true
   },
-  addressBook: {
+  "addressBook": {
     type: [ReactionCore.Schemas.Address],
     optional: true
   },
-  domains: {
+  "domains": {
     type: [String],
     defaultValue: ["localhost"],
     index: 1
   },
-  emails: {
+  "emails": {
     type: [ReactionCore.Schemas.Email],
     optional: true
   },
-  currency: {
+  "currency": {
     label: "Base Currency",
     type: String,
     defaultValue: "USD"
   },
-  currencies: {
+  "currencies": {
     type: Object, // ReactionCore.Schemas.Currency
     blackbox: true
   },
-  locale: {
+  "locale": {
     type: String,
     defaultValue: "en"
   },
-  locales: {
+  "locales": {
     type: ReactionCore.Schemas.Locale
   },
-  languages: {
+  "languages": {
     type: [Object],
     optional: true
   },
@@ -177,24 +176,24 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: String,
     optional: true
   },
-  timezone: {
+  "timezone": {
     type: String
   },
-  baseUOM: {
+  "baseUOM": {
     type: String,
     optional: true,
     defaultValue: "OZ",
     label: "Base Unit of Measure"
   },
-  metafields: {
+  "metafields": {
     type: [ReactionCore.Schemas.Metafield],
     optional: true
   },
-  defaultRoles: {
+  "defaultRoles": {
     type: [String],
     defaultValue: ["guest", "account/profile"]
   },
-  layout: {
+  "layout": {
     type: [Object],
     optional: true
   },
@@ -219,9 +218,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     defaultValue: true
 
   },
-  createdAt: {
+  "createdAt": {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -232,9 +231,9 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     },
     denyUpdate: true
   },
-  updatedAt: {
+  "updatedAt": {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isUpdate) {
         return new Date;
       }
