@@ -2,7 +2,7 @@
  * cart
  */
 
-Meteor.publish("Cart", function(clientSessionId, userId) {
+Meteor.publish("Cart", function (clientSessionId, userId) {
   check(clientSessionId, Match.OptionalOrNull(String));
   check(userId, Match.OptionalOrNull(String));
 
@@ -20,7 +20,9 @@ Meteor.publish("Cart", function(clientSessionId, userId) {
     return [];
   }
   // select user cart
-  cart = ReactionCore.Collections.Cart.findOne({userId: this.userId});
+  cart = ReactionCore.Collections.Cart.findOne({
+    userId: this.userId
+  });
 
   // we may create a cart if we didn't find one.
   if (cart) {
@@ -32,34 +34,31 @@ Meteor.publish("Cart", function(clientSessionId, userId) {
   return ReactionCore.Collections.Cart.find(cartId);
 });
 
-
 /**
  * shipping
  */
 
-Meteor.publish("Shipping", function() {
+Meteor.publish("Shipping", function () {
   return ReactionCore.Collections.Shipping.find({
     shopId: ReactionCore.getShopId()
   });
 });
 
-
 /**
  * taxes
  */
 
-Meteor.publish("Taxes", function() {
+Meteor.publish("Taxes", function () {
   return ReactionCore.Collections.Taxes.find({
     shopId: ReactionCore.getShopId()
   });
 });
 
-
 /**
  * discounts
  */
 
-Meteor.publish("Discounts", function() {
+Meteor.publish("Discounts", function () {
   return ReactionCore.Collections.Discounts.find({
     shopId: ReactionCore.getShopId()
   });

@@ -1,14 +1,12 @@
-
 /*
  * set browser policies
  */
 
-
-if (process.env.NODE_ENV === 'development') {
-  BrowserPolicy.content.allowOriginForAll('localhost:*');
-  BrowserPolicy.content.allowConnectOrigin('ws://localhost:*');
-  BrowserPolicy.content.allowConnectOrigin('http://localhost:*');
-  BrowserPolicy.content.allowConnectOrigin('https://localhost:*');
+if (process.env.NODE_ENV === "development") {
+  BrowserPolicy.content.allowOriginForAll("localhost:*");
+  BrowserPolicy.content.allowConnectOrigin("ws://localhost:*");
+  BrowserPolicy.content.allowConnectOrigin("http://localhost:*");
+  BrowserPolicy.content.allowConnectOrigin("https://localhost:*");
   BrowserPolicy.framing.allowAll();
 }
 

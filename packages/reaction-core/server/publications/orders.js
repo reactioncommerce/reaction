@@ -2,49 +2,43 @@
  * orders
  */
 
-Meteor.publish('Orders', function () {
+Meteor.publish("Orders", function () {
   shopId = ReactionCore.getShopId();
 
-  if (Roles.userIsInRole(this.userId, ['admin', 'owner'], ReactionCore.getShopId())) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner"], ReactionCore.getShopId())) {
     return ReactionCore.Collections.Orders.find({
       shopId: shopId
     });
-  } else {
-    return ReactionCore.Collections.Orders.find({
-      'shopId': shopId,
-      'userId': this.userId
-    });
   }
-
+  return ReactionCore.Collections.Orders.find({
+    shopId: shopId,
+    userId: this.userId
+  });
 });
 
-
-/**
+/*
  * account orders
  */
 
-Meteor.publish('AccountOrders', function (userId, shopId) {
+Meteor.publish("AccountOrders", function (userId, currentShopId) {
   check(userId, Match.OptionalOrNull(String));
-  check(shopId, Match.OptionalOrNull(String));
-  shopId = shopId || ReactionCore.getShopId(this);
+  check(currentShopId, Match.OptionalOrNull(String));
+  shopId = currentShopId || ReactionCore.getShopId(this);
 
   if (userId && userId !== this.userId) {
     return [];
   }
 
   return ReactionCore.Collections.Orders.find({
-    'shopId': shopId,
-    'userId': this.userId
+    shopId: shopId,
+    userId: this.userId
   });
-
 });
 
-
-/**
+/*
  * completed cart order
  */
-
-Meteor.publish('CompletedCartOrder', function (userId, cartId) {
+Meteor.publish("CompletedCartOrder", function (userId, cartId) {
   check(userId, String);
   check(cartId, String);
 
@@ -53,8 +47,7 @@ Meteor.publish('CompletedCartOrder', function (userId, cartId) {
   }
 
   return ReactionCore.Collections.Orders.find({
-    'cartId': cartId,
-    'userId': userId
+    cartId: cartId,
+    userId: userId
   });
-
 });

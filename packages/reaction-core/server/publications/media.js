@@ -2,21 +2,20 @@
  * CollectionFS - Image/Video Publication
  * @params {Array} shops - array of current shop object
  */
-
-var Media = ReactionCore.Collections.Media;
-
-Meteor.publish("Media", function(shops) {
-  var selector, shopId;
+Meteor.publish("Media", function (shops) {
   check(shops, Match.Optional(Array));
-  shopId = ReactionCore.getShopId(this);
+  let Media = ReactionCore.Collections.Media;
+  let selector;
+  let shopId = ReactionCore.getShopId(this);
+
   if (shopId) {
     selector = {
-      'metadata.shopId': shopId
+      "metadata.shopId": shopId
     };
   }
   if (shops) {
     selector = {
-      'metadata.shopId': {
+      "metadata.shopId": {
         $in: shops
       }
     };
