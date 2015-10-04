@@ -1,16 +1,13 @@
 /**
-* i18nChooser helpers
-*/
+ * i18nChooser helpers
+ */
 
 Template.i18nChooser.helpers({
-  languages: function() {
-    var language, languages, shop, _i, _len, _ref;
-    languages = [];
-    shop = ReactionCore.Collections.Shops.findOne();
-    if (shop != null ? shop.languages : void 0) {
-      _ref = shop.languages;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        language = _ref[_i];
+  languages: function () {
+    let languages = [];
+    let shop = ReactionCore.Collections.Shops.findOne();
+    if (shop !== null ? shop.languages : void 0) {
+      for (let language of shop.languages) {
         if (language.enabled === true) {
           language.translation = "languages." + language.label.toLowercase;
           languages.push(language);
@@ -19,7 +16,7 @@ Template.i18nChooser.helpers({
       return languages;
     }
   },
-  active: function() {
+  active: function () {
     if (Session.equals("language", this.i18n)) {
       return "active";
     }
@@ -27,12 +24,12 @@ Template.i18nChooser.helpers({
 });
 
 /**
-* i18nChooser events
-*/
+ * i18nChooser events
+ */
 
 Template.i18nChooser.events({
-  'click .i18n-language': function(event, template) {
+  "click .i18n-language": function (event) {
     event.preventDefault();
-    return Session.set('language', this.i18n);
+    return Session.set("language", this.i18n);
   }
 });
