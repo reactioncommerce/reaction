@@ -123,7 +123,7 @@ Template.productDetail.events({
         if (options.length > 0) {
           Alerts.add("Please choose options before adding to cart", "danger", {
             placement: "productDetail",
-            i18n_key: "productDetail.chooseOptions",
+            i18nKey: "productDetail.chooseOptions",
             autoHide: 10000
           });
           return;
@@ -133,7 +133,7 @@ Template.productDetail.events({
       if (currentVariant.inventoryPolicy && currentVariant.inventoryQuantity < 1) {
         Alerts.add("Sorry, this item is out of stock!", "danger", {
           placement: "productDetail",
-          i18n_key: "productDetail.outOfStock",
+          i18nKey: "productDetail.outOfStock",
           autoHide: 10000
         });
         return;
@@ -149,7 +149,7 @@ Template.productDetail.events({
       if (!this.isVisible) {
         Alerts.add("Publish product before adding to cart.", "danger", {
           placement: "productDetail",
-          i18n_key: "productDetail.publishFirst",
+          i18nKey: "productDetail.publishFirst",
           autoHide: 10000
         });
       } else {
@@ -193,7 +193,7 @@ Template.productDetail.events({
     } else {
       Alerts.add("Select an option before adding to cart", "danger", {
         placement: "productDetail",
-        i18n_key: "productDetail.selectOption",
+        i18nKey: "productDetail.selectOption",
         autoHide: 8000
       });
     }
@@ -218,7 +218,7 @@ Template.productDetail.events({
     if (errorMsg.length) {
       Alerts.add(errorMsg, "danger", {
         placement: "productManagement",
-        i18n_key: "productDetail.errorMsg"
+        i18nKey: "productDetail.errorMsg"
       });
     } else {
       Meteor.call("products/publishProduct", this._id);

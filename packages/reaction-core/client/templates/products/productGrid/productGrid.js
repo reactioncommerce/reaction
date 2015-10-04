@@ -197,7 +197,7 @@ Template.productGridItems.events({
       return Alerts.add("Cloned " + title, "success", {
         'placement': "productManagement",
         'id': productId,
-        'i18n_key': "productDetail.cloneMsg",
+        'i18nKey': "productDetail.cloneMsg",
         'autoHide': true,
         'dismissable': false
       });
@@ -256,7 +256,7 @@ Template.productGridItems.events({
           'placement': "productGridItem",
           'type': self._id,
           'id': self._id,
-          'i18n_key': "productDetail.publishProductVisible",
+          'i18nKey': "productDetail.publishProductVisible",
           'autoHide': true,
           'dismissable': false
         });
@@ -265,7 +265,7 @@ Template.productGridItems.events({
           'placement': "productGridItem",
           'type': self._id,
           'id': self._id,
-          'i18n_key': "productDetail.publishProductHidden",
+          'i18nKey': "productDetail.publishProductHidden",
           'autoHide': true,
           'dismissable': false
         });

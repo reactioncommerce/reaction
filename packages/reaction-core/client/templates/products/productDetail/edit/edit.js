@@ -1,35 +1,36 @@
 /**
-* productDetailEdit helpers
-*/
+ * productDetailEdit helpers
+ */
 
 Template.productDetailEdit.helpers({
-  i18nPlaceholder: function() {
-    var i18n_key;
+  i18nPlaceholder: function () {
     i18nextDep.depend();
-    i18n_key = "productDetailEdit." + this.field;
-    if (i18n.t(i18n_key) === i18n_key) {
-      console.info("returning empty placeholder,'productDetailEdit:" + i18n_key + "' no i18n key found.");
+    let i18nKey = `productDetailEdit.${this.field}`;
+    if (i18n.t(i18nKey) === i18nKey) {
+      ReactionCore.Log.info(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
     } else {
-      return i18n.t(i18n_key);
+      return i18n.t(i18nKey);
     }
   }
 });
 
 /**
-* productDetailEdit events
-*/
+ * productDetailEdit events
+ */
 
 Template.productDetailEdit.events({
-  "change input,textarea": function(event, template) {
-    Meteor.call("products/updateProductField", selectedProductId(), this.field, $(event.currentTarget).val(), function(error, results) {
-      if (results) {
-        return $(event.currentTarget).animate({
-          backgroundColor: "#e2f2e2"
-        }).animate({
-          backgroundColor: "#fff"
-        });
-      }
-    });
+  "change input,textarea": function (event) {
+    Meteor.call("products/updateProductField", selectedProductId(), this.field,
+      $(event.currentTarget).val(),
+      function (error, results) {
+        if (results) {
+          return $(event.currentTarget).animate({
+            backgroundColor: "#e2f2e2"
+          }).animate({
+            backgroundColor: "#fff"
+          });
+        }
+      });
     if (this.type === "textarea") {
       autosize($(event.currentTarget));
     }
@@ -38,25 +39,24 @@ Template.productDetailEdit.events({
 });
 
 /**
-* productDetailField events
-*/
+ * productDetailField events
+ */
 
 Template.productDetailField.events({
-  "click .product-detail-field": function(event, template) {
-    var fieldClass;
+  "click .product-detail-field": function () {
     if (ReactionCore.hasOwnerAccess()) {
-      fieldClass = "editing-" + this.field;
+      let fieldClass = "editing-" + this.field;
       Session.set(fieldClass, true);
       Tracker.flush();
-      return $('.' + this.field + '-edit-input').focus();
+      return $(`.${this.field}-edit-input`).focus();
     }
   }
 });
 
 /**
-* productDetailEdit onRendered
-*/
+ * productDetailEdit onRendered
+ */
 
-Template.productDetailEdit.onRendered(function() {
-  return autosize($('textarea'));
+Template.productDetailEdit.onRendered(function () {
+  return autosize($("textarea"));
 });
