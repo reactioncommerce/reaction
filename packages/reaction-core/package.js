@@ -229,6 +229,7 @@ Package.onUse(function (api) {
   api.addFiles("client/helpers/packages.js", "client");
   api.addFiles("client/helpers/cart.js", "client");
   api.addFiles("client/helpers/globals.js", "client");
+  api.addFiles("client/helpers/products.js", "client");
   api.addFiles("client/helpers/i18n.js", "client");
   api.addFiles("client/helpers/metadata.js", "client");
   api.addFiles("client/helpers/permissions.js", "client");
