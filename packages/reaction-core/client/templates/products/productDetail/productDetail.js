@@ -3,30 +3,31 @@
  */
 Template.productDetail.helpers({
   tags: function () {
-    var _ref;
-    return _.map((_ref = selectedProduct()) != null ? _ref.hashtags : void 0, function (id) {
-      return Tags.findOne(id);
-    });
-  },
-  tagsComponent: function () {
-    if (ReactionCore.hasPermission('createProduct')) {
-      return Template.productTagInputForm;
-    } else {
-      return Template.productDetailTags;
+    let product = selectedProduct();
+    if (product) {
+      if (product.hashtags) {
+        return _.map(product.hashtags, function (id) {
+          return Tags.findOne(id);
+        });
+      }
     }
   },
+  tagsComponent: function () {
+    if (ReactionCore.hasPermission("createProduct")) {
+      return Template.productTagInputForm;
+    }
+    return Template.productDetailTags;
+  },
   actualPrice: function () {
-    var childVariants, current, product, purchasable, variant;
-    current = selectedVariant();
-    product = selectedProduct();
+    let childVariants;
+    let purchasable;
+    let current = selectedVariant();
+    let product = selectedProduct();
     if (product && current) {
       childVariants = (function () {
-        var _i, _len, _ref, _results;
-        _ref = product.variants;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          variant = _ref[_i];
-          if ((variant != null ? variant.parentId : void 0) === current._id) {
+        let _results = [];
+        for (let variant of product.variants) {
+          if ((variant !== null ? variant.parentId : void 0) === current._id) {
             _results.push(variant);
           }
         }
@@ -36,23 +37,20 @@ Template.productDetail.helpers({
     }
     if (purchasable) {
       return current.price;
-    } else {
-      return getProductPriceRange();
     }
+    return getProductPriceRange();
   },
-  fieldComponent: function (field) {
-    if (ReactionCore.hasPermission('createProduct')) {
+  fieldComponent: function () {
+    if (ReactionCore.hasPermission("createProduct")) {
       return Template.productDetailEdit;
-    } else {
-      return Template.productDetailField;
     }
+    return Template.productDetailField;
   },
   metaComponent: function () {
-    if (ReactionCore.hasPermission('createProduct')) {
+    if (ReactionCore.hasPermission("createProduct")) {
       return Template.productMetaFieldForm;
-    } else {
-      return Template.productMetaField;
     }
+    return Template.productMetaField;
   }
 });
 
@@ -62,28 +60,32 @@ Template.productDetail.helpers({
 
 Template.productDetail.events({
   "click #price": function () {
-    var formName, v;
-    if (ReactionCore.hasPermission('createProduct')) {
-      v = selectedVariant();
-      if (!v) {
+    let formName;
+    if (ReactionCore.hasPermission("createProduct")) {
+      let variant = selectedVariant();
+      if (!variant) {
         return;
       }
-      if (v.parentId) {
-        formName = v.parentId;
+
+      if (variant.parentId) {
+        formName = variant.parentId;
       } else {
-        formName = v._id;
+        formName = variant._id;
       }
+
       formName = "variant-form-" + formName;
       Session.set(formName, true);
-      $('#' + formName + ' [name=price]').focus();
+      $(`#${formName}[name="price"]`).focus();
     }
   },
-  "click #add-to-cart-quantity": function (event, template) {
+  "click #add-to-cart-quantity": function (event) {
     event.preventDefault();
     return event.stopPropagation();
   },
   "change #add-to-cart-quantity": function (event, template) {
-    var currentVariant, qtyField, quantity;
+    let currentVariant;
+    let qtyField;
+    let quantity;
     event.preventDefault();
     event.stopPropagation();
     currentVariant = selectedVariant();
@@ -99,20 +101,20 @@ Template.productDetail.events({
     }
   },
   "click #add-to-cart": function (event, template) {
-    var cartId, count, currentProduct, currentVariant, now, options, productId, qtyField, quantity, variant;
-    now = new Date();
-    currentVariant = selectedVariant();
-    currentProduct = selectedProduct();
+    let cartId;
+    let count;
+    let options;
+    let productId;
+    let qtyField;
+    let quantity;
+    let currentVariant = selectedVariant();
+    let currentProduct = selectedProduct();
 
     if (currentVariant) {
-
-      if (currentVariant.parentId == null) {
+      if (currentVariant.parentId === null) {
         options = (function () {
-          var _i, _len, _ref, _results;
-          _ref = currentProduct.variants;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            variant = _ref[_i];
+          let _results = [];
+          for (let variant of currentProduct.variants) {
             if (variant.parentId === currentVariant._id) {
               _results.push(variant);
             }
@@ -126,7 +128,7 @@ Template.productDetail.events({
             i18nKey: "productDetail.chooseOptions",
             autoHide: 10000
           });
-          return;
+          return [];
         }
       }
 
@@ -136,7 +138,7 @@ Template.productDetail.events({
           i18nKey: "productDetail.outOfStock",
           autoHide: 10000
         });
-        return;
+        return [];
       }
 
       qtyField = template.$('input[name="addToCartQty"]');
@@ -159,11 +161,11 @@ Template.productDetail.events({
         if (cartId && productId) {
           count = ReactionCore.Collections.Cart.findOne(cartId).cartCount() || 0;
 
-          Meteor.call("cart/addToCart", cartId, productId, currentVariant, quantity, function (error, result) {
-            var address;
+          Meteor.call("cart/addToCart", cartId, productId, currentVariant, quantity, function (error) {
+            let address;
             if (!error && count === 0) {
               address = Session.get("address");
-              if (!(address != null ? address.city : void 0)) {
+              if (!(address !== null ? address.city : void 0)) {
                 return locateUser();
               }
             } else if (error) {
@@ -177,18 +179,17 @@ Template.productDetail.events({
         setCurrentVariant(null);
         qtyField.val(1);
 
-        $('html,body').animate({
+        $("html,body").animate({
           scrollTop: 0
         }, 0);
 
-        $('.cart-alert-text').text(quantity + " " + currentVariant.title + " " + i18n.t('productDetail.addedToCart'));
-        return $('.cart-alert').toggle('slide', {
-          direction: i18n.t('languageDirection') === 'rtl' ? 'left' : 'right',
-          'width': currentVariant.title.length + 50 + "px"
-        }, 600).delay(5000).toggle('slide', {
-          direction: i18n.t('languageDirection') === 'rtl' ? 'left' : 'right'
+        $(".cart-alert-text").text(`${quantity} {$currentVariant.title}  ${i18n.t("productDetail.addedToCart")}`);
+        return $(".cart-alert").toggle("slide", {
+          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right",
+          width: currentVariant.title.length + 50 + "px"
+        }, 600).delay(4000).toggle("slide", {
+          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right"
         });
-
       }
     } else {
       Alerts.add("Select an option before adding to cart", "danger", {
@@ -199,15 +200,14 @@ Template.productDetail.events({
     }
   },
   "click .toggle-product-isVisible-link": function (event, template) {
-    var errorMsg, index, variant, _i, _len, _ref;
-    errorMsg = "";
+    let errorMsg = "";
     if (!this.title) {
       errorMsg += "Product title is required. ";
       template.$(".title-edit-input").focus();
     }
-    _ref = this.variants;
-    for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
-      variant = _ref[index];
+    let variants = this.variants;
+    for (let variant of variants) {
+      let index = _.indexOf(variants, variant);
       if (!variant.title) {
         errorMsg += "Variant " + (index + 1) + " label is required. ";
       }
@@ -224,35 +224,35 @@ Template.productDetail.events({
       Meteor.call("products/publishProduct", this._id);
     }
   },
-  "click .delete-product-link": function (event, template) {
+  "click .delete-product-link": function () {
     maybeDeleteProduct(this);
   },
   "click .fa-facebook": function () {
-    if (ReactionCore.hasPermission('createProduct')) {
+    if (ReactionCore.hasPermission("createProduct")) {
       $(".facebookMsg-edit").fadeIn();
       return $(".facebookMsg-edit-input").focus();
     }
   },
   "click .fa-twitter": function () {
-    if (ReactionCore.hasPermission('createProduct')) {
+    if (ReactionCore.hasPermission("createProduct")) {
       $(".twitterMsg-edit").fadeIn();
       return $(".twitterMsg-edit-input").focus();
     }
   },
   "click .fa-pinterest": function () {
-    if (ReactionCore.hasPermission('createProduct')) {
+    if (ReactionCore.hasPermission("createProduct")) {
       $(".pinterestMsg-edit").fadeIn();
       return $(".pinterestMsg-edit-input").focus();
     }
   },
   "click .fa-google-plus": function () {
-    if (ReactionCore.hasPermission('createProduct')) {
+    if (ReactionCore.hasPermission("createProduct")) {
       $(".googleplusMsg-edit").fadeIn();
       return $(".googleplusMsg-edit-input").focus();
     }
   },
   "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": function () {
     Session.set("editing-" + this.field, false);
-    return $('.social-media-inputs > *').hide();
+    return $(".social-media-inputs > *").hide();
   }
 });
