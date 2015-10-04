@@ -1,13 +1,11 @@
 /**
  * products
  */
-let Products = ReactionCore.Collections.Products;
-let Tags = ReactionCore.Collections.Tags;
-
 Meteor.publish("Products", function (shops) {
   check(shops, Match.Optional(Array));
   let shopAdmin;
   let shop = ReactionCore.getCurrentShop(this);
+  let Products = ReactionCore.Collections.Products;
 
   if (shop) {
     let selector = {
@@ -45,10 +43,11 @@ Meteor.publish("Products", function (shops) {
 
 Meteor.publish("Product", function (productId) {
   check(productId, String);
-
   let shop = ReactionCore.getCurrentShop(this);
+  let Products = ReactionCore.Collections.Products;
   let selector = {};
   selector.isVisible = true;
+
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
@@ -56,7 +55,7 @@ Meteor.publish("Product", function (productId) {
       $in: [true, false]
     };
   }
-
+  // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[A-Za-z0-9]{17}$/)) {
     selector._id = productId;
   } else {
@@ -65,7 +64,6 @@ Meteor.publish("Product", function (productId) {
       $options: "i"
     };
   }
-
   return Products.find(selector);
 });
 
@@ -73,7 +71,7 @@ Meteor.publish("Product", function (productId) {
  * tags
  */
 Meteor.publish("Tags", function () {
-  return Tags.find({
+  return ReactionCore.Collections.Tags.find({
     shopId: ReactionCore.getShopId()
   });
 });

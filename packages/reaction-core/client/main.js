@@ -81,13 +81,11 @@ _.extend(ReactionCore, {
     return this.hasPermission(ownerPermissions);
   },
   hasAdminAccess: function () {
-    let adminPermissions;
-    adminPermissions = ["owner", "admin"];
+    let adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
   },
   hasDashboardAccess: function () {
-    let dashboardPermissions;
-    dashboardPermissions = ["owner", "admin", "dashboard"];
+    let dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
   getShopId: function () {
@@ -95,7 +93,6 @@ _.extend(ReactionCore, {
   },
   allowGuestCheckout: function () {
     let allowGuest = true;
-
     let packageRegistry = ReactionCore.Collections.Packages.findOne({
       name: "core",
       shopId: this.shopId

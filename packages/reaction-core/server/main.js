@@ -120,7 +120,7 @@ _.extend(ReactionCore, {
     if (sellerShopPermissions) {
       // loop through shops roles and check permissions
       for (let key in sellerShopPermissions) {
-        if (key) {
+        if ({}.hasOwnProperty.call(sellerShopPermissions, key)) {
           let shop = sellerShopPermissions[key];
           if (Roles.userIsInRole(checkUserId, permissions, shop)) {
             return true;

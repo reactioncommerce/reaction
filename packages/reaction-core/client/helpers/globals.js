@@ -3,16 +3,6 @@
 /* eslint "no-alert": 0 */
 
 /**
- * Match.OptionalOrNull
- * See Meteor Match methods
- * @param {String} pattern - match pattern
- * @return {Boolen} matches - void, null, or pattern
- */
-Match.OptionalOrNull = function (pattern) {
-  return Match.OneOf(void 0, null, pattern);
-};
-
-/**
  * String.prototype.toCamelCase
  * @summary special toCamelCase for converting a string to camelCase for use with i18n keys
  * @return {String} camelCased string
@@ -38,7 +28,6 @@ String.prototype.toCamelCase = function () {
  */
 this.toggleSession = function (sessionVariable, positiveState) {
   let session;
-  check(sessionVariable, String);
   session = Session.get(sessionVariable);
   positive = positiveState || true;
   if (_.isEqual(positive, session)) {

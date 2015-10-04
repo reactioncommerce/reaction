@@ -1,6 +1,15 @@
+/**
+ * Match.OptionalOrNull
+ * See Meteor Match methods
+ * @param {String} pattern - match pattern
+ * @return {Boolen} matches - void, null, or pattern
+ */
+Match.OptionalOrNull = function (pattern) {
+  return Match.OneOf(void 0, null, pattern);
+};
 /*
-* extend ReactionCore and add common methods
-*/
+ * extend ReactionCore and add common methods
+ */
 _.extend(ReactionCore, {
   /**
    * ReactionCore.shopIdAutoValue
