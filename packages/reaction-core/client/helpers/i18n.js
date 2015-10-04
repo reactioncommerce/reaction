@@ -1,52 +1,55 @@
-/**
- *
- * get i18n messages for  updating autoform labels from simple schema
- *
+/*
+ * Reaction i18n Translations, RTL and Currency Exchange Support
  */
 
-let getLabelsFor;
-let getMessagesFor;
-
-getLabelsFor = function (schema, name) {
+/**
+ * getLabelsFor
+ * get Labels for simple.schema keys
+ * @param  {Object} schema - schema
+ * @param  {String} name - name
+ * @return {Object} return schema label object
+ */
+function getLabelsFor(schema, name) {
   let labels = {};
   // loop through all the rendered form fields and generate i18n keys
   for (let fieldName of schema._schemaKeys) {
-    let i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." + fieldName
+    let i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
+      fieldName
       .split(".$").join("");
     // translate autoform label
     let translation = i18n.t(i18nKey);
-    if (new RegExp("string").test(translation) !== true && translation !== i18nKey) {
+    if (new RegExp("string").test(translation) !== true && translation !==
+      i18nKey) {
       if (translation) labels[fieldName] = translation;
     }
   }
   return labels;
-};
+}
 
 /**
+ * getMessagesFor
  * get i18n messages for autoform messages
- * currently using a globalMessage namespace only
- *
- * TODO: implement messaging hierarchy from simple-schema
- *
+ * currently using a globalMessage namespace only*
  * (1) Use schema-specific message for specific key
  * (2) Use schema-specific message for generic key
  * (3) Use schema-specific message for type
- *
+ * @todo implement messaging hierarchy from simple-schema
+ * @return {Object} returns i18n translated message for schema labels
  */
-
-getMessagesFor = function () {
+function getMessagesFor() {
   let messages = {};
   for (let message in SimpleSchema._globalMessages) {
     if ({}.hasOwnProperty.call(SimpleSchema._globalMessages, message)) {
       let i18nKey = `globalMessages.${message}`;
       let translation = i18n.t(i18nKey);
-      if (new RegExp("string").test(translation) !== true && translation !== i18nKey) {
+      if (new RegExp("string").test(translation) !== true && translation !==
+        i18nKey) {
         messages[message] = translation;
       }
     }
   }
   return messages;
-};
+}
 
 /**
  *  set language and autorun on change of language
@@ -76,12 +79,13 @@ Meteor.startup(function () {
     return Meteor.subscribe("Translations", ReactionCore.Locale.language,
       function () {
         // fetch reaction translations
-        let reactionTranslations = ReactionCore.Collections.Translations.find({}, {
-          fields: {
-            _id: 0
-          },
-          reactive: false
-        }).fetch();
+        let reactionTranslations = ReactionCore.Collections.Translations
+          .find({}, {
+            fields: {
+              _id: 0
+            },
+            reactive: false
+          }).fetch();
         // map reduce translations into i18next formatting
         let resources = reactionTranslations.reduce(function (x, y) {
           x[y.i18n] = y.translation;
@@ -95,7 +99,8 @@ Meteor.startup(function () {
           resStore: resources
         }, function () {
           for (let schema in ReactionCore.Schemas) {
-            if ({}.hasOwnProperty.call(ReactionCore.Schemas, schema)) {
+            if ({}.hasOwnProperty.call(ReactionCore.Schemas,
+                schema)) {
               let ss = ReactionCore.Schemas[schema];
               ss.labels(getLabelsFor(ss, schema));
               ss.messages(getMessagesFor(ss, schema));
@@ -112,7 +117,8 @@ Meteor.startup(function () {
       });
   });
 
-  // global onRendered event
+  // global onRendered event finds and replaces
+  // data-i18n attributes in html/template source.
   Template.onRendered(function () {
     this.autorun((function (_this) {
       return function () {
@@ -131,14 +137,15 @@ Meteor.startup(function () {
 });
 
 /**
- * i18n helper
+ * i18n
  * see: http://i18next.com/
  * pass the translation key as the first argument
  * and the default message as the second argument
- *
- * ex: {{i18n "accountsTemplate.error" "Invalid Email"}}
+ * @param {String} i18nKey - i18nKey
+ * @param {String} i18nMessage - message text
+ * @example {{i18n "accountsTemplate.error" "Invalid Email"}}
+ * @return {String} returns i18n translated message
  */
-
 Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
   if (!i18nKey) {
     throw new Meteor.Error("i18n key string required to translate");
@@ -152,25 +159,30 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
   let message = new Handlebars.SafeString(i18nMessage);
 
   if (i18n.t(i18nKey) === i18nKey) {
-    ReactionCore.Log.debug(`i18n: no translation found. returning raw message for: ${i18nKey}`);
+    ReactionCore.Log.debug(
+      `i18n: no translation found. returning raw message for: ${i18nKey}`
+    );
     return message.string;
   }
   return i18n.t(i18nKey);
 });
 
 /**
- *  return shop /locale specific currency format (ie: $)
+ * currencySymbol
+ * @summary return shop /locale specific currency format (ie: $)
+ * @returns {String} return current locale currency symbol
  */
-
 Template.registerHelper("currencySymbol", function () {
   return ReactionCore.Locale.currency.symbol;
 });
 
 /**
- * return shop /locale specific formatted price
+ * formatPrice
+ * @summary return shop /locale specific formatted price
  * also accepts a range formatted with " - "
+ * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
+ * @return {String} returns locale formatted and exchange rate converted values
  */
-
 Template.registerHelper("formatPrice", function (currentPrice) {
   let actualPrice;
   let formattedPrice;
