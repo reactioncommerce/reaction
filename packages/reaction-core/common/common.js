@@ -41,12 +41,13 @@ _.extend(ReactionCore, {
   setProduct: function (currentProductId, currentVariantId) {
     let productId = currentProductId;
     let variantId = currentVariantId;
-    let product;
     if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
-      product = ReactionCore.Collections.Products.findOne({
+      let product = ReactionCore.Collections.Products.findOne({
         handle: productId.toLowerCase()
       });
-      productId = product !== null ? product._id : void 0;
+      if (product) {
+        productId =  product._id;
+      }
     }
     setCurrentProduct(productId);
     setCurrentVariant(variantId);

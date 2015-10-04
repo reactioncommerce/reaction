@@ -286,7 +286,10 @@ this.getVariantPriceRange = function (currentVariantId, currentProductId) {
 this.getProductPriceRange = function (currentProductId) {
   let productId = currentProductId || selectedProductId();
   let product = Products.findOne(productId);
-  if (!product._id) {
+
+  if (!product) {
+    return undefined;
+  } else if (!product._id) {
     return undefined;
   }
 

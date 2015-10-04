@@ -32,8 +32,6 @@ _.extend(ReactionCore, {
    */
   hasPermission: function (checkPermissions, checkUserId, group) {
     check(checkPermissions, Match.OneOf(String, Array));
-    // console.log("hasPermission", checkPermissions, userId, group)
-    // console.log("userId", userId, this.userId, Meteor.userId())
     // use current user if userId if not provided
     let userId = checkUserId || this.userId || Meteor.userId();
     let shopId = group || this.getShopId();

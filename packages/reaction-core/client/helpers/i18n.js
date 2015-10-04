@@ -147,10 +147,10 @@ Meteor.startup(function () {
  * @return {String} returns i18n translated message
  */
 Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
-  if (!i18nKey) {
-    throw new Meteor.Error("i18n key string required to translate");
+  if (!i18nKey || typeof i18nMessage !== String) {
+    ReactionCore.Log.info("i18n key string required to translate", i18nKey, i18nMessage);
+    return "";
   }
-
   check(i18nKey, String);
   check(i18nMessage, String);
 
