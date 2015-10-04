@@ -16,7 +16,7 @@ Template.productTagInputForm.helpers({
     let product = selectedProduct();
     if (product) {
       if (product.handle) {
-        if (product.handle === product.handle.toLowerCase()) {
+        if (this.handle === product.handle.toLowerCase() || getSlug(product.handle) === this.slug) {
           return "fa-bookmark";
         }
         return "fa-bookmark-o";

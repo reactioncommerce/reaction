@@ -661,7 +661,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {String} return update result
    */
-  "products/setHandleTag": (productId, tagId) => {
+  "products/setHandleTag": function (productId, tagId) {
     check(productId, String);
     check(tagId, String);
 
