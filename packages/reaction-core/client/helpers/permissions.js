@@ -11,13 +11,19 @@
  * @param  {String} checkUserId - optional Meteor.userId, default to current
  * @return {Boolean}
  */
-Template.registerHelper("hasPermission", function (permissions, checkUserId) {
-  check(permissions, Match.OneOf(String, Object));
-  let userId;
-  if (typeof checkUserId === "object") {
-    userId = checkUserId;
-  } else {
-    userId = Meteor.userId();
+Template.registerHelper("hasPermission", function (permissions, options) {
+  check(permissions, Match.OneOf(String, Array));
+  check(options.hash, Match.Optional(Object));
+  // default to checking this.userId
+  let userId = Meteor.userId();
+  // we don't necessarily need to check here
+  // as these same checks and defaults are
+  // also performed in ReactionCore.hasPermission
+  if (typeof options === "object") {
+    if (options.hash.userId) {
+      userId = options.hash.userId;
+      return ReactionCore.hasPermission(permissions, userId);
+    }
   }
   return ReactionCore.hasPermission(permissions, userId);
 });
