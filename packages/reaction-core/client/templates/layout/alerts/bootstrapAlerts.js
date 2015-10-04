@@ -1,7 +1,6 @@
-
 /*
-* Forked and modifed from https://github.com/asktomsk/bootstrap-alerts/
-*/
+ * Forked and modifed from https://github.com/asktomsk/bootstrap-alerts/
+ */
 Alerts = {
 
   /*
@@ -54,7 +53,7 @@ Alerts = {
     /*
     Translation key for i18n (translations collection)
      */
-    i18n_key: "",
+    i18nKey: "",
 
     /*
     unique id (for multiple message placements)
@@ -70,17 +69,24 @@ Alerts = {
   @param options (Object) Options if required to override some of default ones.
   See Alerts.defaultOptions for all values.
    */
-  add: function(message, mode, options) {
-    var a, count;
-    if (options != null ? options.i18n_key : void 0) {
-      if (!(options.i18n_key = i18n.t(options.i18n_key))) {
-        message = i18n.t(options.i18n_key);
+  add: function (alertMessage, mode, alertOptions) {
+    let a;
+    let count;
+    let message = alertMessage;
+    let options = alertOptions;
+    // check options to see if we have translation
+    if (options) {
+      if (options.i18nKey) {
+        if (options.i18nKey === i18n.t(options.i18nKey)) {
+          message = i18n.t(options.i18nKey);
+        }
       }
     }
-    options = _.defaults(options || {}, Alerts.defaultOptions);
+    // get default options
+    options = _.defaults(alertOptions || {}, Alerts.defaultOptions);
     if (options.type) {
       a = Alerts.collection_.findOne({
-        'options.type': options.type
+        "options.type": options.type
       });
       if (a) {
         Alerts.collection_.update(a._id, {
@@ -100,7 +106,7 @@ Alerts = {
           created: -1
         },
         skip: options.alertsLimit - 1
-      }).forEach(function(row) {
+      }).forEach(function (row) {
         Alerts.collection_.remove(row._id);
       });
     }
@@ -117,10 +123,10 @@ Alerts = {
   Call this function before loading a new page to clear errors from previous page
   Best way is using Router filtering feature to call this function
    */
-  removeSeen: function() {
+  removeSeen: function () {
     Alerts.collection_.remove({
-      seen: true,
-      'options.sticky': {
+      "seen": true,
+      "options.sticky": {
         $ne: true
       }
     });
@@ -130,9 +136,9 @@ Alerts = {
   If you provide a `type` option when adding an alert, you can call this function
   to later remove that alert.
    */
-  removeType: function(type) {
+  removeType: function (type) {
     Alerts.collection_.remove({
-      'options.type': type
+      "options.type": type
     });
   },
   collection_: new Mongo.Collection(null)

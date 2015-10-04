@@ -97,7 +97,7 @@ this.maybeDeleteProduct = function (product) {
       if (error || !result) {
         Alerts.add("There was an error deleting " + title, "danger", {
           type: "prod-delete-" + id,
-          i18n_key: "productDetail.productDeleteError"
+          i18nKey: "productDetail.productDeleteError"
         });
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
