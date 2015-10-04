@@ -184,9 +184,11 @@ Template.registerHelper("activeRouteClass", function () {
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", function () {
-  let shopName = Shops.findOne().name;
-  if (shopName) {
-    return shopName;
+  let shop = ReactionCore.Collections.Shops.findOne();
+  if (shop) {
+    if (shop.name) {
+      return shop.name;
+    }
   }
   return "";
 });
