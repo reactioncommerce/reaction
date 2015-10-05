@@ -133,14 +133,8 @@ ReactionCore.registerPackage({
       audience: ["dashboard/orders"]
     },
     {
-      template: "coreShipmentTracking",
-      label: "Tracking",
-      workflow: 'coreOrderWorkflow',
-      audience: ["dashboard/orders"]
-    },
-    {
-      template: "coreOrderDocuments",
-      label: "Documents",
+      template: "coreOrderShipments",
+      label: "Shipments",
       workflow: 'coreOrderWorkflow',
       audience: ["dashboard/orders"]
     },

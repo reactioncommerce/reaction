@@ -1,0 +1,92 @@
+
+<template name="coreOrderShipments">
+
+  {{#if itemsNotInShipments}}
+    <h3>Items <small>(ungrouped)</small></h3>
+    <div class="order-items">
+      {{#each item in itemsNotInShipments}}
+        <div class="order-item" data-item data-item-id="{{item._id}}">
+          <div class="order-item-media">
+            {{#with media item.variants}}
+              <img src="{{url store='thumbnail'}}">
+            {{else}}
+              <img src= "/resources/placeholder.gif">
+            {{/with}}
+          </div>
+          <div class="order-item-details">
+            <p>{{item.variants.title}}</p>
+
+            <select class="" name="shipmentSelect">
+              <option value="" disabled selected>Select One</option>
+              {{#each shipment in order.shipments}}
+                <option value="{{@index}}">{{shipmentIndex @index}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      {{/each}}
+  </div>
+  <hr>
+  {{/if}}
+
+  <div class="order-shipments">
+    {{#each shipment in order.shipments}}
+      <div class="panel panel-default" data-shipment data-shipment-index="{{@index}}">
+        <div class="panel-heading panel-heading-flex">
+          <h4 class="panel-title">Shipment {{shipmentIndex @index}}</h4>
+          <div class="panel-controls">
+            <button class="btn btn-default" type="button" data-event-action="removeShipment"><i class="fa fa-trash-o"></i></button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <h4>Items</h4>
+          {{#each item in (itemsInShipment @index)}}
+            <div class="order-item" data-item data-item-id="{{item._id}}">
+
+              <div class="order-item-media">
+                {{#with media item.variants}}
+                  <img src="{{url store='thumbnail'}}" width="50">
+                {{else}}
+                  <img src= "/resources/placeholder.gif">
+                {{/with}}
+              </div>
+
+              <div class="order-item-details">
+                <p>{{item.variants.title}}</p>
+
+                <select class="" name="shipmentSelect">
+                  <option value="" disabled selected>Select One</option>
+                  {{#each shipment in order.shipments}}
+                    <option value="{{@index}}">{{shipmentIndex @index}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+        <hr>
+        <div class="panel-body">
+          {{#if showTrackingEdit shipment}}
+            <form name="addTrackingForm">
+              <input type="text" name="trackingNumber" value="{{shipment.tracking}}">
+              <button class="btn btn-default" type="submit">Add Tracking</button>
+            </form>
+          {{else}}
+            Tracking: <strong>{{shipment.tracking}}</strong>
+            <button class="btn btn-default" data-event-action="showTrackingEdit">
+              <i class="fa fa-edit"></i>
+            </button>
+          {{/if}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+
+  <button class="btn btn-default btn-block" type="button" data-event-action="addShipment">Add Shipment</button>
+</template>
+
+
+<template name="orderItem">
+
+</template>

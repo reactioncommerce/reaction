@@ -360,6 +360,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.js", "client");
 
+  api.addFiles("client/templates/dashboard/orders/workflow/shipments/shipments.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipments/shipments.js", "client");
+
   api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.js", "client");
 

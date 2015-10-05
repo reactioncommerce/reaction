@@ -121,6 +121,82 @@ Meteor.methods({
   },
 
   /**
+   * orders/addShipment
+   * @summary Adds tracking information to order without workflow update.
+   * Call after any tracking code is generated
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} tracking - tracking id
+   * @return {String} returns order update result
+   */
+  "orders/addShipment": function (orderId, data) {
+    check(orderId, String);
+    check(data, Object);
+    return ReactionCore.Collections.Orders.update(orderId, {
+      $push: {
+        shipments: data
+      }
+    });
+  },
+
+  /**
+   * orders/addShipment
+   * @summary Adds tracking information to order without workflow update.
+   * Call after any tracking code is generated
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} tracking - tracking id
+   * @return {String} returns order update result
+   */
+  "orders/updateShipmentTracking": function (orderId, shipment, tracking) {
+    check(orderId, String);
+    check(shipment, Number);
+    check(tracking, String);
+    return ReactionCore.Collections.Orders.update(orderId, {
+      $set: {
+        [`shipments.${shipment}.tracking`]: tracking
+      }
+    });
+  },
+
+
+  "orders/itemAddShipment": function (orderId, itemId, shipmentIndex) {
+    check(orderId, String);
+    check(itemId, String);
+    check(shipmentIndex, Number);
+    return ReactionCore.Collections.Orders.update({
+      _id: orderId,
+      "items._id": itemId
+    }, {
+      $set: {
+        "items.$.shipment": shipmentIndex
+      }
+    });
+  },
+
+  /**
+   * orders/addShipment
+   * @summary Adds tracking information to order without workflow update.
+   * Call after any tracking code is generated
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} tracking - tracking id
+   * @return {String} returns order update result
+   */
+  "orders/removeShipment": function (orderId, shipmentIndex) {
+    check(orderId, String);
+    check(shipmentIndex, Number);
+    console.log(`shipments.${shipmentIndex}`);
+    ReactionCore.Collections.Orders.update(orderId, {
+      $unset: {
+        [`shipments.${shipmentIndex}`]: 1
+      }
+    });
+    return ReactionCore.Collections.Orders.update(orderId, {
+      $pull: {
+        shipments: null
+      }
+    });
+  },
+
+  /**
    * orders/addOrderEmail
    * @summary Adds email to order, used for guest users
    * @param {String} orderId - add tracking to orderId

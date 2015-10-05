@@ -156,13 +156,38 @@ ReactionCore.Schemas.Notes = new SimpleSchema({
   }
 });
 
+ReactionCore.Schemas.OrderShipment = new SimpleSchema({
+  parcel: {
+    type: [ReactionCore.Schemas.ShippingParcel],
+    optional: true
+  },
+  shippingId: {
+    type: String,
+    optional: true
+  },
+  tracking: {
+    type: String,
+    optional: true
+  },
+  items: {
+    type: [ReactionCore.Collections.OrderItems],
+    optional: true
+  },
+  packed: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  }
+});
+
+
 /**
  * OrderItems Schema
  * merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order]
  * to create Orders collection
+ * @see common/collections.collection.js
  */
-
-ReactionCore.Schemas.OrderItems = new SimpleSchema({
+ReactionCore.Schemas.OrderItem = new SimpleSchema({
   additionalField: {
     type: String,
     optional: true
@@ -178,14 +203,19 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema({
   documents: {
     type: [ReactionCore.Schemas.Document],
     optional: true
+  },
+  shipment: {
+    type: Number,
+    optional: true
   }
 });
+
 
 /**
  * Order Schema
  * extended from cart schema
+ * @see common/collections.collection.js
  */
-
 ReactionCore.Schemas.Order = new SimpleSchema({
   cartId: {
     type: String,
@@ -201,6 +231,14 @@ ReactionCore.Schemas.Order = new SimpleSchema({
   },
   notes: {
     type: [ReactionCore.Schemas.Notes],
+    optional: true
+  },
+  items: {
+    type: [ReactionCore.Schemas.OrderItem],
+    optional: true,
+  },
+  shipments: {
+    type: [ReactionCore.Schemas.OrderShipment],
     optional: true
   }
 });

@@ -1,8 +1,41 @@
 <template name="orders">
   <div class="container-fluid-sm">
-    <div class="panel panel-default">
-      {{> reactiveTable settings=settings}}
+
+    {{#each orders}}
+
+    <div class="panel panel-default order-panel">
+
+      <div class="panel-heading">
+
+        <div class="order-details">
+          <div class="order-detail-item address">
+            {{> orderDetail}}
+
+          </div>
+
+          <div class="order-detail-item status">
+            {{> orderStatusDetail}}
+
+          </div>
+
+          <div class="order-detail-item summary">
+            {{> ordersListSummary}}
+          </div>
+        </div>
+
+        <div class="order-controls">
+          {{> orderViewButton}}
+        </div>
+      </div>
+
+      <div class="order-panel-items">
+        {{> ordersListItems}}
+      </div>
+
     </div>
+
+    {{/each}}
+
   </div>
 </template>
 
@@ -13,4 +46,9 @@
     <p>Tracking: <a href="#">{{shipmentTracking}}</a></p>
     {{/if}}
   </div>
+</template>
+
+
+<template name="orderViewButton">
+  <button class="btn btn-success" type="button"><i class="fa fa-edit"></i></button>
 </template>
