@@ -1,6 +1,15 @@
+/**
+ * Match.OptionalOrNull
+ * See Meteor Match methods
+ * @param {String} pattern - match pattern
+ * @return {Boolen} matches - void, null, or pattern
+ */
+Match.OptionalOrNull = function (pattern) {
+  return Match.OneOf(void 0, null, pattern);
+};
 /*
-* extend ReactionCore and add common methods
-*/
+ * extend ReactionCore and add common methods
+ */
 _.extend(ReactionCore, {
   /**
    * ReactionCore.shopIdAutoValue
@@ -32,12 +41,13 @@ _.extend(ReactionCore, {
   setProduct: function (currentProductId, currentVariantId) {
     let productId = currentProductId;
     let variantId = currentVariantId;
-    let product;
     if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
-      product = ReactionCore.Collections.Products.findOne({
+      let product = ReactionCore.Collections.Products.findOne({
         handle: productId.toLowerCase()
       });
-      productId = product !== null ? product._id : void 0;
+      if (product) {
+        productId =  product._id;
+      }
     }
     setCurrentProduct(productId);
     setCurrentVariant(variantId);

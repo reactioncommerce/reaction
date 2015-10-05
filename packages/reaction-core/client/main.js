@@ -24,17 +24,19 @@ _.extend(ReactionCore, {
     });
   },
   /**
-   * hasPermission - server permissions checks
+   * hasPermission - client permissions checks
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} userId - userId, defaults to Meteor.userId()
-   * @param {String} role - default to shopId
+   * @param {String} checkUserId - userId, defaults to Meteor.userId()
+   * @param {String} group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission: function (checkPermissions, userId, role) {
+  hasPermission: function (checkPermissions, checkUserId, group) {
+    check(checkPermissions, Match.OneOf(String, Array));
     // use current user if userId if not provided
-    let checkUserId = userId || Meteor.userId();
-    let shopId = role || this.getShopId();
+    let userId = checkUserId || this.userId || Meteor.userId();
+    let shopId = group || this.getShopId();
     let permissions = [];
+
     // permissions can be either a string or an array
     // we'll force it into an array so we can add
     // admin roles
@@ -46,9 +48,9 @@ _.extend(ReactionCore, {
     // if the user has admin, owner permissions we'll always check if those roles are enough
     permissions.push("admin", "owner");
     // check if userIs the Roles
-    if (Roles.userIsInRole(checkUserId, permissions, shopId)) {
+    if (Roles.userIsInRole(userId, permissions, shopId)) {
       return true;
-    } else if (Roles.userIsInRole(checkUserId,
+    } else if (Roles.userIsInRole(userId,
         permissions,
         Roles.GLOBAL_GROUP
       )) {
@@ -69,8 +71,7 @@ _.extend(ReactionCore, {
         }
       }
     }
-    // no specific permissions found
-    // returning false
+    // no specific permissions found returning false
     return false;
   },
   hasOwnerAccess: function () {
@@ -78,13 +79,11 @@ _.extend(ReactionCore, {
     return this.hasPermission(ownerPermissions);
   },
   hasAdminAccess: function () {
-    let adminPermissions;
-    adminPermissions = ["owner", "admin"];
+    let adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
   },
   hasDashboardAccess: function () {
-    let dashboardPermissions;
-    dashboardPermissions = ["owner", "admin", "dashboard"];
+    let dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
   getShopId: function () {
@@ -92,7 +91,6 @@ _.extend(ReactionCore, {
   },
   allowGuestCheckout: function () {
     let allowGuest = true;
-
     let packageRegistry = ReactionCore.Collections.Packages.findOne({
       name: "core",
       shopId: this.shopId

@@ -7,20 +7,19 @@
 
 this.ServerSessions = new Mongo.Collection("Sessions");
 
-Meteor.publish('Sessions', function(id) {
-  var created, serverSession;
-  check(id, Match.OneOf(String, null));
-  created = new Date().getTime();
-  // if we don't have a sessionId create
-  // a new session
-
-  if (!id) {
+Meteor.publish("Sessions", function (sessionId) {
+  check(sessionId, Match.OneOf(String, null));
+  let created = new Date().getTime();
+  // if we don"t have a sessionId create a new session
+  if (!sessionId) {
     id = ServerSessions.insert({
       created: created
     });
+  } else {
+    id = sessionId;
   }
   // get the session from existing sessionId
-  serverSession = ServerSessions.find(id);
+  let serverSession = ServerSessions.find(id);
 
   // if not found, also create a new session
   if (serverSession.count() === 0) {
@@ -33,5 +32,5 @@ Meteor.publish('Sessions', function(id) {
   ReactionCore.sessionId = id;
 
   // return cursor
-  return ServerSessions.find(id)
+  return ServerSessions.find(id);
 });

@@ -104,17 +104,16 @@ function gi(address, callback) {
   // short term solution to an haproxy ssl cert installation issue
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
   // if we're local, let's let freegeoip guess.
-  if (lookupAddress === "127.0.0.1") {
+  if (lookupAddress === "127.0.0.1" || lookupAddress === null) {
     lookupAddress = "";
   }
   // calls a private reaction hosted version of freegeoip
-  HTTP.call("GET", "https://geo.getreaction.io/json/" + address, callback);
+  HTTP.call("GET", `https://geo.getreaction.io/json/${lookupAddress}`, callback);
 }
 
 GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
   let geoCallback = callback;
   let geoAddress = address;
-
   if (geoCallback) {
     geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
       if (error) throw error;

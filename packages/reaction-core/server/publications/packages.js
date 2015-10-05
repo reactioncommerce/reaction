@@ -1,14 +1,12 @@
-Packages = ReactionCore.Collections.Packages;
-
 /**
- *  Packages contains user specific configuration
- *  @summary  package publication settings, filtered by permissions
- *  @param {Object} shopCursor - current shop object
- *  @returns {Object} packagesCursor - current packages for shop
+ * Packages contains user specific configuration
+ * @summary  package publication settings, filtered by permissions
+ * @param {Object} shopCursor - current shop object
+ * @returns {Object} packagesCursor - current packages for shop
  */
-
-Meteor.publish("Packages", function(shopCursor) {
+Meteor.publish("Packages", function (shopCursor) {
   check(shopCursor, Match.Optional(Object));
+  let Packages = ReactionCore.Collections.Packages;
   shop = shopCursor || ReactionCore.getCurrentShop(this);
   // we should always have a shop
   if (shop) {
