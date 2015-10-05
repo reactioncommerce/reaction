@@ -352,9 +352,6 @@ Meteor.methods({
     check(cartId, String);
     check(method, Object);
 
-    if (!(cartId && method)) {
-      return [];
-    }
     // get current cart
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
@@ -386,9 +383,6 @@ Meteor.methods({
     check(address, Object);
     this.unblock();
 
-    if (!(cartId && address)) {
-      return;
-    }
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
       userId: Meteor.userId()
@@ -428,10 +422,6 @@ Meteor.methods({
     check(cartId, String);
     check(address, Object);
     this.unblock();
-
-    if (!(cartId && address)) {
-      return [];
-    }
 
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,

@@ -2,22 +2,28 @@
 // These helpers can be used in general shipping packages
 // or replaced, but are meant to be generalized in nature.
 //
-function cartShippingMethods(cart) {
-  if (typeof cart !== "undefined" && cart !== null) {
-    if (cart.shipping !== null) {
-      return cart.shipping.shipmentQuotes;
+function cartShippingMethods(currentCart) {
+  let cart = currentCart || ReactionCore.Collections.Cart.findOne();
+  if (cart) {
+    if (cart.shipping) {
+      if (cart.shipping.shipmentQuotes) {
+        return cart.shipping.shipmentQuotes;
+      }
     }
   }
-  return null;
+  return undefined;
 }
 
-function getShipmentMethod(cart) {
-  if (typeof cart !== "undefined" && cart !== null) {
-    if (cart.shipping !== null) {
-      return cart.shipping.shipmentMethod;
+function getShipmentMethod(currentCart) {
+  let cart = currentCart || ReactionCore.Collections.Cart.findOne();
+  if (cart) {
+    if (cart.shipping) {
+      if (cart.shipping.shipmentMethod) {
+        return cart.shipping.shipmentMethod;
+      }
     }
   }
-  return null;
+  return undefined;
 }
 
 Template.coreCheckoutShipping.helpers({
@@ -58,7 +64,6 @@ Template.coreCheckoutShipping.events({
   "click .list-group-item": function (event) {
     event.preventDefault();
     event.stopPropagation();
-
     let self = this;
     let cart = ReactionCore.Collections.Cart.findOne();
 
