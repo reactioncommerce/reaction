@@ -41,11 +41,11 @@ Template.addressBookGrid.helpers({
  */
 
 Template.addressBookGrid.events({
-  "click [data-event-action=selectShippingAddress]": function (event, template) {
+  "click [data-event-action=selectShippingAddress]": function () {
     cart = ReactionCore.Collections.Cart.findOne();
-    return Meteor.call("cart/setShipmentMethod", cart._id, this);
+    return Meteor.call("cart/setShipmentAddress", cart._id, this);
   },
-  "click [data-event-action=selectBillingAddress]": function (event, template) {
+  "click [data-event-action=selectBillingAddress]": function () {
     cart = ReactionCore.Collections.Cart.findOne();
     return Meteor.call("cart/setPaymentAddress", cart._id, this);
   }
