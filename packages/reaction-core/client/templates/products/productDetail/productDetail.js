@@ -165,7 +165,7 @@ Template.productDetail.events({
             let address;
             if (!error && count === 0) {
               address = Session.get("address");
-              if (!(address !== null ? address.city : void 0)) {
+              if (!address) {
                 return locateUser();
               }
             } else if (error) {
@@ -178,12 +178,14 @@ Template.productDetail.events({
         template.$(".variant-select-option").removeClass("active");
         setCurrentVariant(null);
         qtyField.val(1);
-
+        // scroll to top on cart add
         $("html,body").animate({
           scrollTop: 0
         }, 0);
-
-        $(".cart-alert-text").text(`${quantity} {$currentVariant.title}  ${i18n.t("productDetail.addedToCart")}`);
+        // slide out label
+        let addToCartText = i18n.t("productDetail.addedToCart");
+        let addToCartTitle = currentVariant.title;
+        $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
         return $(".cart-alert").toggle("slide", {
           direction: i18n.t("languageDirection") === "rtl" ? "left" : "right",
           width: currentVariant.title.length + 50 + "px"

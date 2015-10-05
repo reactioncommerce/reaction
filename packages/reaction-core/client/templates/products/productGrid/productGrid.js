@@ -1,33 +1,76 @@
 /**
-* productGrid helpers
-*/
-Template.productGrid.helpers({
-  products: function() {
+ * productGrid helpers
+ */
+/* eslint no-nested-ternary: 0 */
 
+/**
+ * loadMoreProducts
+ * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
+ * this basically runs this:
+ * Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * @return {undefined}
+ */
+function loadMoreProducts() {
+  let threshold;
+  let target = $("#productScrollLimitLoader");
+  if (target.length) {
+    threshold = $(window).scrollTop() + $(window).height() - target.height();
+    if (target.offset().top < threshold) {
+      if (!target.data("visible")) {
+        target.data("productScrollLimit", true);
+        Session.set("productScrollLimit",
+          Session.get("productScrollLimit") + ITEMS_INCREMENT || 10);
+      }
+    } else {
+      if (target.data("visible")) {
+        target.data("visible", false);
+      }
+    }
+  }
+}
+
+// run the above func every time the user scrolls
+$(window).scroll(loadMoreProducts());
+
+Template.productGrid.helpers({
+  productScrollLimit: function () {
+    // if count less rows than we asked for, we've got all the rows in the collection.
+    return !(ReactionCore.Collections.Products.find().count() < Session.get(
+      "productScrollLimit"));
+  },
+  products: function () {
     /*
      * take natural sort, sorting by updatedAt
      * then resort using positions.position for this tag
      * retaining natural sort of untouched items
      */
-    var compare, gridProduct, gridProducts, hashtags, index, newRelatedTags, position, relatedTag, relatedTags, selector, _i, _j, _len, _len1, _ref, _ref1;
-    compare = function(a, b) {
-      var x, y;
+    let hashtags;
+    let newRelatedTags;
+    let position;
+    let relatedTags;
+
+    // function to compare and sort position
+    function compare(a, b) {
+      let x;
+      let y;
       if (a.position.position === b.position.position) {
         x = a.position.updatedAt;
         y = b.position.updatedAt;
-        return (x > y ? -1 : (x < y ? 1 : 0));
+        result = x > y ? -1 : x < y ? 1 : 0;
+        return result;
       }
       return a.position.position - b.position.position;
-    };
-    tag = (_ref = (_ref1 = this.tag) != null ? _ref1._id : void 0) != null ? _ref : "";
-    var selector = {};
-    if (this.tag) {
+    }
+
+    let tag = this.tag || this._id || "";
+    let selector = {};
+
+    if (tag) {
       hashtags = [];
-      relatedTags = [this.tag];
+      relatedTags = [tag];
       while (relatedTags.length) {
         newRelatedTags = [];
-        for (_i = 0, _len = relatedTags.length; _i < _len; _i++) {
-          relatedTag = relatedTags[_i];
+        for (let relatedTag of relatedTags) {
           if (hashtags.indexOf(relatedTag._id) === -1) {
             hashtags.push(relatedTag._id);
           }
@@ -38,88 +81,79 @@ Template.productGrid.helpers({
         $in: hashtags
       };
     }
-    var gridProducts = Products.find(selector).fetch();
-    for (index = _j = 0, _len1 = gridProducts.length; _j < _len1; index = ++_j) {
-      gridProduct = gridProducts[index];
-      if (gridProducts[index].positions != null) {
-        gridProducts[index].position = ((function() {
-          var _k, _len2, _ref2, _results;
-          _ref2 = gridProduct.positions;
-          _results = [];
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            position = _ref2[_k];
+
+    let gridProducts = Products.find(selector).fetch();
+
+    for (let index in gridProducts) {
+      if ({}.hasOwnProperty.call(gridProducts, index)) {
+        let gridProduct = gridProducts[index];
+        if (gridProduct.positions) {
+          let _results = [];
+          for (position of gridProduct.positions) {
             if (position.tag === ReactionCore.getCurrentTag()) {
               _results.push(position);
             }
+            gridProducts[index].position = _results[0];
           }
-          return _results;
-        })())[0];
-      }
-      if (!gridProducts[index].position) {
-        gridProducts[index].position = {
-          position: 0,
-          weight: 0,
-          pinned: false,
-          updatedAt: gridProduct.updatedAt
-        };
+        }
+        if (!gridProduct.position) {
+          gridProducts[index].position = {
+            position: 0,
+            weight: 0,
+            pinned: false,
+            updatedAt: gridProduct.updatedAt
+          };
+        }
       }
     }
+
     return gridProducts.sort(compare);
   }
 });
 
 /**
-* productGridItems helpers
-*/
+ * productGridItems helpers
+ */
 
 Template.productGridItems.helpers({
-  media: function(variant) {
-    var defaultImage, variantId, variants;
-    variants = (function() {
-      var _i, _len, _ref, _results;
-      _ref = this.variants;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        variant = _ref[_i];
-        if (!variant.parentId) {
-          _results.push(variant);
-        }
+  media: function () {
+    let defaultImage;
+    let variantId;
+    let variants = [];
+    for (let variant of this.variants) {
+      if (!variant.parentId) {
+        variants.push(variant);
       }
-      return _results;
-    }).call(this);
+    }
     if (variants.length > 0) {
       variantId = variants[0]._id;
       defaultImage = ReactionCore.Collections.Media.findOne({
-        'metadata.variantId': variantId,
-        'metadata.priority': 0
+        "metadata.variantId": variantId,
+        "metadata.priority": 0
       });
     }
     if (defaultImage) {
       return defaultImage;
-    } else {
-      return false;
     }
+    return false;
   },
-  additionalMedia: function(variant) {
-    var mediaArray, variantId, variants;
-    variants = (function() {
-      var _i, _len, _ref, _results;
-      _ref = this.variants;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        variant = _ref[_i];
-        if (!variant.parentId) {
-          _results.push(variant);
-        }
+  additionalMedia: function () {
+    let mediaArray;
+    let variantId;
+    let variants = [];
+
+    for (let variant of this.variants) {
+      if (!variant.parentId) {
+        variants.push(variant);
       }
-      return _results;
-    }).call(this);
+    }
+
     if (variants.length > 0) {
       variantId = variants[0]._id;
       mediaArray = ReactionCore.Collections.Media.find({
-        'metadata.variantId': variantId,
-        'metadata.priority': {
-          '$gt': 0
+        "metadata.variantId": variantId,
+        "metadata.priority": {
+          $gt: 0
         }
       }, {
         limit: 3
@@ -127,40 +161,39 @@ Template.productGridItems.helpers({
     }
     if (mediaArray.count() > 1) {
       return mediaArray;
-    } else {
-      return false;
     }
+    return false;
   },
-  weightClass: function() {
-    var position = this.position || {};
-    var weight = position.weight || 0;
+  weightClass: function () {
+    let position = this.position || {};
+    let weight = position.weight || 0;
     switch (weight) {
-      case 1:
-        return 'product-medium';
-      case 2:
-        return 'product-large';
-      default:
-        return 'product-small';
+    case 1:
+      return "product-medium";
+    case 2:
+      return "product-large";
+    default:
+      return "product-small";
     }
   },
-  isMediumWeight: function() {
-    var position = this.position || {};
-    var weight = position.weight || 0;
+  isMediumWeight: function () {
+    let position = this.position || {};
+    let weight = position.weight || 0;
 
     if (weight === 1) {
       return true;
     }
     return false;
   },
-  isLargeWeight: function() {
-    var position = this.position || {};
-    var weight = position.weight || 0;
+  isLargeWeight: function () {
+    let position = this.position || {};
+    let weight = position.weight || 0;
     if (weight === 3) {
       return true;
     }
     return false;
   },
-  shouldShowAdditionalImages: function() {
+  shouldShowAdditionalImages: function () {
     if (this.isMediumWeight && this.mediaArray) {
       return true;
     }
@@ -169,25 +202,25 @@ Template.productGridItems.helpers({
 });
 
 /**
-* productGridItems events
-*/
+ * productGridItems events
+ */
 
 Template.productGridItems.events({
-  'click [data-event-action=showProductSettings]': function(event, template) {
+  "click [data-event-action=showProductSettings]": function (event) {
     event.preventDefault();
 
     ReactionCore.showActionView({
       label: "Edit Product",
       template: "productSettings",
-      type: 'product',
+      type: "product",
       data: this
     });
-
   },
-  'click .clone-product': function() {
-    var title;
+  "click .clone-product": function () {
+    let title;
     title = this.title;
-    return Meteor.call("products/cloneProduct", this, function(error, productId) {
+    return Meteor.call("products/cloneProduct", this, function (error,
+      productId) {
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
@@ -195,20 +228,21 @@ Template.productGridItems.events({
         _id: productId
       });
       return Alerts.add("Cloned " + title, "success", {
-        'placement': "productManagement",
-        'id': productId,
-        'i18nKey': "productDetail.cloneMsg",
-        'autoHide': true,
-        'dismissable': false
+        placement: "productManagement",
+        id: productId,
+        i18nKey: "productDetail.cloneMsg",
+        autoHide: true,
+        dismissable: false
       });
     });
   },
-  'click .delete-product': function(event, template) {
+  "click .delete-product": function (event) {
     event.preventDefault();
     maybeDeleteProduct(this);
   },
-  'click .pin-product': function(event, template) {
-    var pin, position;
+  "click .pin-product": function (event) {
+    let pin;
+    let position;
     event.preventDefault();
     if (this.position.pinned === true) {
       pin = false;
@@ -223,8 +257,9 @@ Template.productGridItems.events({
     Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
   },
-  'click .update-product-weight': function(event, template) {
-    var position, weight;
+  "click .update-product-weight": function (event) {
+    let position;
+    let weight;
     event.preventDefault();
     weight = this.position.weight || 0;
     if (weight < 2) {
@@ -240,62 +275,54 @@ Template.productGridItems.events({
     Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
   },
-  'click .publish-product': function() {
-    var self;
+  "click .publish-product": function () {
+    let self;
     self = this;
-    return Meteor.call("products/publishProduct", this._id, function(error, result) {
+    return Meteor.call("products/publishProduct", this._id, function (
+      error, result) {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",
-          'id': self._id
+          id: self._id
         });
-        return;
+        return {};
       }
       if (result === true) {
         return Alerts.add(self.title + " is now visible", "success", {
-          'placement': "productGridItem",
-          'type': self._id,
-          'id': self._id,
-          'i18nKey': "productDetail.publishProductVisible",
-          'autoHide': true,
-          'dismissable': false
-        });
-      } else {
-        return Alerts.add(self.title + " is hidden", "warning", {
-          'placement': "productGridItem",
-          'type': self._id,
-          'id': self._id,
-          'i18nKey': "productDetail.publishProductHidden",
-          'autoHide': true,
-          'dismissable': false
+          placement: "productGridItem",
+          type: self._id,
+          id: self._id,
+          i18nKey: "productDetail.publishProductVisible",
+          autoHide: true,
+          dismissable: false
         });
       }
+      return Alerts.add(self.title + " is hidden", "warning", {
+        placement: "productGridItem",
+        type: self._id,
+        id: self._id,
+        i18nKey: "productDetail.publishProductHidden",
+        autoHide: true,
+        dismissable: false
+      });
     });
   }
 });
 
 /**
-* gridNotice helpers
-*/
+ * gridNotice helpers
+ */
 
 Template.gridNotice.helpers({
-  isLowQuantity: function() {
-    var variant, variants, _i, _len;
-    variants = (function() {
-      var _i, _len, _ref, _results;
-      _ref = this.variants;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        variant = _ref[_i];
-        if (!variant.parentId) {
-          _results.push(variant);
-        }
+  isLowQuantity: function () {
+    let variants = [];
+    for (let variant of this.variants) {
+      if (!variant.parentId) {
+        variants.push(variant);
       }
-      return _results;
-    }).call(this);
+    }
     if (variants.length > 0) {
-      for (_i = 0, _len = variants.length; _i < _len; _i++) {
-        variant = variants[_i];
+      for (let variant of variants) {
         if (variant.inventoryQuantity <= variant.lowInventoryWarningThreshold) {
           return true;
         }
@@ -304,53 +331,37 @@ Template.gridNotice.helpers({
       return false;
     }
   },
-  isSoldOut: function() {
-    var variant, variants, _i, _len;
-    variants = (function() {
-      var _i, _len, _ref, _results;
-      _ref = this.variants;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        variant = _ref[_i];
-        if (!variant.parentId) {
-          _results.push(variant);
-        }
+  isSoldOut: function () {
+    let variants = [];
+    for (let variant of this.variants) {
+      if (!variant.parentId) {
+        variants.push(variant);
       }
-      return _results;
-    }).call(this);
+    }
+
     if (variants.length > 0) {
-      for (_i = 0, _len = variants.length; _i < _len; _i++) {
-        variant = variants[_i];
-        if (!variant.inventoryManagement || (variant.inventoryQuantity > 0)) {
+      for (let variant of variants) {
+        if (!variant.inventoryManagement || variant.inventoryQuantity > 0) {
           return false;
         }
       }
       return true;
     }
   },
-  isBackorder: function() {
-    var variant, variants, _i, _j, _len, _len1;
-    variants = (function() {
-      var _i, _len, _ref, _results;
-      _ref = this.variants;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        variant = _ref[_i];
-        if (!variant.parentId) {
-          _results.push(variant);
-        }
+  isBackorder: function () {
+    let variants = [];
+    for (let variant of this.variants) {
+      if (!variant.parentId) {
+        variants.push(variant);
       }
-      return _results;
-    }).call(this);
+    }
     if (variants.length > 0) {
-      for (_i = 0, _len = variants.length; _i < _len; _i++) {
-        variant = variants[_i];
-        if (!variant.inventoryManagement || (variant.inventoryQuantity > 0)) {
+      for (let variant of variants) {
+        if (!variant.inventoryManagement || variant.inventoryQuantity > 0) {
           return false;
         }
       }
-      for (_j = 0, _len1 = variants.length; _j < _len1; _j++) {
-        variant = variants[_j];
+      for (let variant of variants) {
         if (!variant.inventoryPolicy) {
           return true;
         }
@@ -361,49 +372,51 @@ Template.gridNotice.helpers({
 });
 
 /**
-* gridContent helpers
-*/
+ * gridContent helpers
+ */
 
 Template.gridContent.helpers({
-  displayPrice: function() {
+  displayPrice: function () {
     if (this._id) {
       return getProductPriceRange(this._id);
     }
   }
 });
 
-Template.gridControls.onRendered(function() {
-  return this.$('[data-toggle="tooltip"]').tooltip({
-    position: 'top'
+Template.gridControls.onRendered(function () {
+  return this.$("[data-toggle='tooltip']").tooltip({
+    position: "top"
   });
 });
 
-
-Template.productGridItems.onRendered(function() {
-  var productSort;
-  if (ReactionCore.hasPermission('createProduct')) {
-    productSort = $(".product-grid-list");
+Template.productGridItems.onRendered(function () {
+  if (ReactionCore.hasPermission("createProduct")) {
+    let productSort = $(".product-grid-list");
     return productSort.sortable({
       items: "> li.product-grid-item",
       cursor: "move",
       opacity: 0.5,
       revert: true,
       scroll: false,
-      update: function(event, ui) {
-        var index, position, productId, uiPositions, _i, _len;
-        productId = ui.item[0].id;
-        uiPositions = $(this).sortable("toArray", {
+      update: function (event, ui) {
+        let position;
+        let productId = ui.item[0].id;
+        let uiPositions = $(this).sortable("toArray", {
           attribute: "data-id"
         });
-        index = _.indexOf(uiPositions, productId);
-        for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++_i) {
+        let index = _.indexOf(uiPositions, productId);
+        let _i;
+        let _len;
+        for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++
+          _i) {
           productId = uiPositions[index];
           position = {
             tag: ReactionCore.getCurrentTag(),
             position: index,
             updatedAt: new Date()
           };
-          Meteor.call("products/updateProductPosition", productId, position);
+          Meteor.call("products/updateProductPosition", productId,
+            position);
         }
         return Tracker.flush();
       }

@@ -1,12 +1,17 @@
 /**
- * products
+ * products publication
+ * @param {Number} productScrollLimit - optional, defaults to 20
+ * @param {Array} shops - array of shopId to retrieve product from.
+ * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (shops) {
+Meteor.publish("Products", function (productScrollLimit, shops) {
+  check(productScrollLimit, Match.Optional(Number));
   check(shops, Match.Optional(Array));
+
   let shopAdmin;
   let shop = ReactionCore.getCurrentShop(this);
   let Products = ReactionCore.Collections.Products;
-
+  let limit = productScrollLimit || 10;
   if (shop) {
     let selector = {
       shopId: shop._id
@@ -35,19 +40,24 @@ Meteor.publish("Products", function (shops) {
     return Products.find(selector, {
       sort: {
         title: 1
-      }
+      },
+      limit: limit
     });
   }
   return [];
 });
 
+/**
+ * product detail publication
+ * @param {String} productId - productId
+ * @return {Object} return product cursor
+ */
 Meteor.publish("Product", function (productId) {
   check(productId, String);
   let shop = ReactionCore.getCurrentShop(this);
   let Products = ReactionCore.Collections.Products;
   let selector = {};
   selector.isVisible = true;
-
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {

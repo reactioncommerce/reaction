@@ -125,7 +125,7 @@ Package.onUse(function (api) {
   api.addFiles("lib/geocoder.js", ["server"]);
 
   // exports
-  api.addFiles("common/globals.js");
+  api.addFiles("common/global.js");
 
   // init reaction core
   api.addFiles("client/main.js", "client");
@@ -190,7 +190,7 @@ Package.onUse(function (api) {
   api.addFiles("server/security.js", "server");
 
   // common
-  api.addFiles("common/routers.js");
+  api.addFiles("common/router.js");
 
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");

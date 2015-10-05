@@ -154,7 +154,7 @@ Router.map(function () {
     name: "index",
     template: "products",
     waitOn: function () {
-      return this.subscribe("Products");
+      return this.subscribe("Products", Session.get("productScrollLimit"));
     }
   });
 
@@ -197,7 +197,7 @@ Router.map(function () {
     path: "product/tag/:_id",
     template: "products",
     waitOn: function () {
-      return this.subscribe("Products");
+      return this.subscribe("Products", Session.get("productScrollLimit"));
     },
     subscriptions: function () {
       return this.subscribe("Tags");

@@ -65,7 +65,7 @@ Template.headerTags.helpers({
       Session.set("currentTag", "");
       if (this.tagIds) {
         for (let relatedTagId of this.tagIds) {
-          if (! _.findWhere(tags, {
+          if (!_.findWhere(tags, {
             _id: relatedTagId
           })) {
             tags.push(Tags.findOne(relatedTagId));
@@ -73,10 +73,15 @@ Template.headerTags.helpers({
         }
       }
     }
-    tags.sort(function (a, b) {
-      return a.position - b.position;
-    });
-    return tags;
+    // there are cases where
+    // we'll have no tags, and sort will error
+    // so we check length for safety
+    if (tags) {
+      tags.sort(function (a, b) {
+        return a.position - b.position;
+      });
+      return tags;
+    }
   }
 });
 

@@ -8,6 +8,11 @@
     </ul>
   </div>
 </div>
+{{#if productScrollLimit}}
+<div class="row" id="productScrollLimitLoader">
+    <span class="pager" data-i18n="app.more">More</span>
+</div>
+{{/if}}
 </template>
 
 <template name="productGridItems">
@@ -104,5 +109,3 @@
     </div>
   {{/if}}
 </template>
-
-
