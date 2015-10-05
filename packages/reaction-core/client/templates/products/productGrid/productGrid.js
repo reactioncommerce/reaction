@@ -1,7 +1,7 @@
 /**
  * productGrid helpers
  */
-/* eslint no-nested-ternary: 0 */
+
 
 /**
  * loadMoreProducts
@@ -56,8 +56,14 @@ Template.productGrid.helpers({
       if (a.position.position === b.position.position) {
         x = a.position.updatedAt;
         y = b.position.updatedAt;
-        result = x > y ? -1 : x < y ? 1 : 0;
-        return result;
+
+        if (x > y) {
+          return -1;
+        } else if (x < y) {
+          return 1;
+        }
+
+        return 0;
       }
       return a.position.position - b.position.position;
     }
