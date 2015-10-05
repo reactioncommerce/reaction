@@ -12,9 +12,8 @@ Factory.define("cart", ReactionCore.Collections.Cart, {
     faker.reaction.cartItem(),
     faker.reaction.cartItem()
   ],
-  requiresShipping: true,
   shipping: {},
-  payment: {},
+  billing: {},
   totalPrice: _.random(1, 1000),
   state: "new",
   createdAt: faker.date.past(),

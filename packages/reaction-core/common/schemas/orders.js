@@ -156,31 +156,6 @@ ReactionCore.Schemas.Notes = new SimpleSchema({
   }
 });
 
-ReactionCore.Schemas.OrderShipment = new SimpleSchema({
-  parcel: {
-    type: [ReactionCore.Schemas.ShippingParcel],
-    optional: true
-  },
-  shippingId: {
-    type: String,
-    optional: true
-  },
-  tracking: {
-    type: String,
-    optional: true
-  },
-  items: {
-    type: [ReactionCore.Collections.OrderItems],
-    optional: true
-  },
-  packed: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  }
-});
-
-
 /**
  * OrderItems Schema
  * merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order]
@@ -203,13 +178,8 @@ ReactionCore.Schemas.OrderItem = new SimpleSchema({
   documents: {
     type: [ReactionCore.Schemas.Document],
     optional: true
-  },
-  shipment: {
-    type: Number,
-    optional: true
   }
 });
-
 
 /**
  * Order Schema
@@ -235,10 +205,6 @@ ReactionCore.Schemas.Order = new SimpleSchema({
   },
   items: {
     type: [ReactionCore.Schemas.OrderItem],
-    optional: true,
-  },
-  shipments: {
-    type: [ReactionCore.Schemas.OrderShipment],
     optional: true
   }
 });

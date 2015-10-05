@@ -1,6 +1,6 @@
 /**
-* ShipmentQuote Schema
-*/
+ * ShipmentQuote Schema
+ */
 
 ReactionCore.Schemas.ShipmentQuote = new SimpleSchema({
   carrier: {
@@ -20,22 +20,109 @@ ReactionCore.Schemas.ShipmentQuote = new SimpleSchema({
   }
 });
 
+// populate with order.items that are added to a shipment
+ReactionCore.Schemas.ShipmentItem = new SimpleSchema({
+  _id: {
+    type: String
+  },
+  productId: {
+    type: String,
+    index: 1
+  },
+  shopId: {
+    type: String,
+    index: 1,
+    label: "Shipment Item ShopId",
+    optional: true
+  },
+  quantity: {
+    label: "Quantity",
+    type: Number,
+    min: 0
+  },
+  variantId: {
+    type: String
+  }
+});
+
 /**
-* Shipment Schema
-*/
+ * ShippingParcel Schema
+ */
+
+ReactionCore.Schemas.ShippingParcel = new SimpleSchema({
+  containers: {
+    type: String,
+    optional: true
+  },
+  length: {
+    type: Number,
+    optional: true
+  },
+  width: {
+    type: Number,
+    optional: true
+  },
+  height: {
+    type: Number,
+    optional: true
+  },
+  weight: {
+    type: Number,
+    optional: true
+  }
+});
+
+/**
+ * Shipment Schema
+ */
 
 ReactionCore.Schemas.Shipment = new SimpleSchema({
-  address: {
+  "shipments": {
+    type: Array
+  },
+  "shipments.$": {
+    type: Object
+  },
+  "shipments.$._id": {
+    type: String,
+    autoValue: function () {
+      return Random.id();
+    }
+  },
+  "shipments.$.address": {
     type: ReactionCore.Schemas.Address,
     label: "Destination",
     optional: true
   },
-  shipmentMethod: {
+  "shipments.$.shipmentMethod": {
     type: ReactionCore.Schemas.ShipmentQuote,
     label: "Selected Rate",
     optional: true
   },
-  shipmentQuotes: {
+  "shipments.$.items": {
+    type: [ReactionCore.Schemas.ShipmentItem],
+    label: "Shipment Items",
+    optional: true
+  },
+  "shipments.$.tracking": {
+    type: String,
+    label: "Shipment Items",
+    optional: true
+  },
+  "shipments.$.transactions": {
+    type: [Object],
+    optional: true,
+    blackbox: true
+  },
+  "shipments.$.workflow": {
+    type: ReactionCore.Schemas.Workflow,
+    optional: true
+  },
+  "shipments.$.parcel": {
+    type: [ReactionCore.Schemas.ShippingParcel],
+    optional: true
+  },
+  "shipmentQuotes": {
     type: [ReactionCore.Schemas.ShipmentQuote],
     label: "Rate Quotes",
     optional: true
@@ -43,8 +130,8 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
 });
 
 /**
-* ShippingProvider Schema
-*/
+ * ShippingProvider Schema
+ */
 
 ReactionCore.Schemas.ShippingProvider = new SimpleSchema({
   name: {
@@ -77,35 +164,8 @@ ReactionCore.Schemas.ShippingProvider = new SimpleSchema({
 });
 
 /**
-* ShippingParcel Schema
-*/
-
-ReactionCore.Schemas.ShippingParcel = new SimpleSchema({
-  containers: {
-    type: String,
-    optional: true
-  },
-  length: {
-    type: Number,
-    optional: true
-  },
-  width: {
-    type: Number,
-    optional: true
-  },
-  height: {
-    type: Number,
-    optional: true
-  },
-  weight: {
-    type: Number,
-    optional: true
-  }
-});
-
-/**
-* ShippingMethod Schema
-*/
+ * ShippingMethod Schema
+ */
 
 ReactionCore.Schemas.ShippingMethod = new SimpleSchema({
   "name": {
@@ -198,8 +258,8 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema({
 });
 
 /**
-* Shipping Schema
-*/
+ * Shipping Schema
+ */
 
 ReactionCore.Schemas.Shipping = new SimpleSchema({
   shopId: {

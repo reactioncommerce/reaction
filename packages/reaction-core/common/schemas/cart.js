@@ -41,7 +41,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   userId: {
     type: String,
     unique: true,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert || this.isUpdate) {
         if (!this.isFromTrustedCode) {
           return this.userId;
@@ -53,7 +53,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   sessionId: {
     type: String,
-    autoValue: function() {
+    autoValue: function () {
       return ReactionCore.sessionId;
     },
     index: 1
@@ -68,19 +68,13 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
     type: [ReactionCore.Schemas.CartItem],
     optional: true
   },
-  requiresShipping: {
-    label: "Require a shipping address",
-    type: Boolean,
-    defaultValue: true,
-    optional: true
-  },
   shipping: {
-    type: ReactionCore.Schemas.Shipment,
+    type: [ReactionCore.Schemas.Shipment],
     optional: true,
     blackbox: true
   },
-  payment: {
-    type: ReactionCore.Schemas.Payment,
+  billing: {
+    type: [ReactionCore.Schemas.Payment],
     optional: true,
     blackbox: true
   },
@@ -97,7 +91,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -110,7 +104,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isUpdate) {
         return {
           $set: new Date
