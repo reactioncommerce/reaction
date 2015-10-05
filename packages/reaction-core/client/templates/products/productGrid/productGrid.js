@@ -51,11 +51,9 @@ Template.productGrid.helpers({
 
     // function to compare and sort position
     function compare(a, b) {
-      let x;
-      let y;
       if (a.position.position === b.position.position) {
-        x = a.position.updatedAt;
-        y = b.position.updatedAt;
+        let x = a.position.updatedAt;
+        let y = b.position.updatedAt;
 
         if (x > y) {
           return -1;
