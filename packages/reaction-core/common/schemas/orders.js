@@ -96,6 +96,12 @@ ReactionCore.Schemas.Invoice = new SimpleSchema({
  */
 
 ReactionCore.Schemas.Payment = new SimpleSchema({
+  _id: {
+    type: String,
+    autoValue: function () {
+      return Random.id();
+    }
+  },
   address: {
     type: ReactionCore.Schemas.Address,
     optional: true
@@ -105,7 +111,7 @@ ReactionCore.Schemas.Payment = new SimpleSchema({
     optional: true
   },
   invoices: {
-    type: [ReactionCore.Schemas.Invoice],
+    type: ReactionCore.Schemas.Invoice,
     optional: true
   }
 });
