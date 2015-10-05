@@ -6,25 +6,24 @@
  */
 
 Template.cartDrawer.helpers({
-  displayCartDrawer: function() {
-    var count, items, storedCart, _i, _len, _ref;
+  displayCartDrawer: function () {
     if (!Session.equals("displayCart", true)) {
       return null;
     }
-    storedCart = Cart.findOne();
-    count = 0;
-    if (storedCart != null ? storedCart.items : void 0) {
-      _ref = storedCart.items;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        items = _ref[_i];
+
+    let storedCart = Cart.findOne();
+    let count = 0;
+
+    if (storedCart !== null ? storedCart.items : void 0) {
+      for (let items of storedCart.items) {
         count += items.quantity;
       }
     }
+
     if (count === 0) {
       return Template.emptyCartDrawer;
-    } else {
-      return Template.openCartDrawer;
     }
+    return Template.openCartDrawer;
   }
 });
 
@@ -32,18 +31,18 @@ Template.cartDrawer.helpers({
  * openCartDrawer helpers
  *
  */
-Template.openCartDrawer.onRendered(function() {
-  return $('#cart-drawer-container').fadeIn();
+Template.openCartDrawer.onRendered(function () {
+  return $("#cart-drawer-container").fadeIn();
 });
 
 Template.openCartDrawer.helpers({
-  cartItems: function() {
+  cartItems: function () {
     return Cart.findOne().items;
   },
-  checkoutView: function() {
-    var checkoutView;
+  checkoutView: function () {
+    let checkoutView;
     checkoutView = "display:block";
-    if (Router.current().route.getName() === 'cartCheckout') {
+    if (Router.current().route.getName() === "cartCheckout") {
       return checkoutView;
     }
   }
@@ -54,19 +53,20 @@ Template.openCartDrawer.helpers({
  *
  */
 Template.openCartDrawer.events({
-  'click #btn-checkout': function(event, template) {
-    $('#cart-drawer-container').fadeOut();
+  "click #btn-checkout": function () {
+    $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
     return Router.go("cartCheckout");
   },
-  'click .remove-cart-item': function(event, template) {
+  "click .remove-cart-item": function (event) {
     event.stopPropagation();
     event.preventDefault();
-    var currentCartId = Cart.findOne()._id;
-    var currentVariant = this.variants;
+    let currentCartId = Cart.findOne()._id;
+    let currentVariant = this.variants;
 
-    return $(event.currentTarget).fadeOut(300, function() {
-      return Meteor.call('cart/removeFromCart', currentCartId, currentVariant);
+    return $(event.currentTarget).fadeOut(300, function () {
+      return Meteor.call("cart/removeFromCart", currentCartId,
+        currentVariant);
     });
   }
 });
@@ -76,15 +76,15 @@ Template.openCartDrawer.events({
  *
  */
 Template.emptyCartDrawer.events({
-  'click #btn-keep-shopping': function(event, template) {
+  "click #btn-keep-shopping": function (event) {
     event.stopPropagation();
     event.preventDefault();
-    return $('#cart-drawer-container').fadeOut(300, function() {
+    return $("#cart-drawer-container").fadeOut(300, function () {
       return toggleSession("displayCart");
     });
   }
 });
 
-Template.emptyCartDrawer.onRendered(function() {
-  return $('#cart-drawer-container').fadeIn();
+Template.emptyCartDrawer.onRendered(function () {
+  return $("#cart-drawer-container").fadeIn();
 });

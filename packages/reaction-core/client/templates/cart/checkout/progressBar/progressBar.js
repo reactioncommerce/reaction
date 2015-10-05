@@ -1,10 +1,10 @@
 /**
-* checkoutProgressBar helpers
-* progressbar status: "visited first","previous visited","active","next"
-*/
+ * checkoutProgressBar helpers
+ * progressbar status: "visited first","previous visited","active","next"
+ */
 
 Template.checkoutProgressBar.helpers({
-  progressbarStatusClass: function() {
+  progressbarStatusClass: function () {
     var cartWorkflow = ReactionCore.Collections.Cart.findOne().workflow;
     var thisStep = (cartWorkflow.status === this.template); // active
     var previouslyVisited = _.contains(cartWorkflow.workflow, this.template);
