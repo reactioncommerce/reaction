@@ -5,7 +5,7 @@
  * @return {Object} return product cursor
  */
 Meteor.publish("Products", function (productScrollLimit, shops) {
-  check(productScrollLimit, Match.Optional(Number));
+  check(productScrollLimit, Match.OneOf(null, undefined, Number));
   check(shops, Match.Optional(Array));
 
   let shopAdmin;
