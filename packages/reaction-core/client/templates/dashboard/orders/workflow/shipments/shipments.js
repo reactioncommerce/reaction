@@ -60,11 +60,36 @@ Template.coreOrderShipments.events({
   "change select[name=shipmentSelect]": (event, template) => {
 
     let data = $(event.target).closest("[data-item]").data();
-    let shipmentIndex = parseInt($(event.target).val());
+    let shipmentIndex = $(event.target).val();
     console.log(data, shipmentIndex);
     // return;
+    //
+    let order = template.order;
 
-    Meteor.call("orders/itemAddShipment", template.data._id, data.itemId, shipmentIndex, (error, result) => {
+    let item = _.findWhere(order.items, {_id: data.itemId})
+    let shipmentItem = {
+      _id: item._id,
+      productId: item.productId,
+      shopId: item.shopId,
+      variantId: item.variants._id,
+      quantity: item.quantity
+    };
+
+    console.log("--Shipment item", shipmentItem);
+
+    //
+    // for (index in order.shipping.shipments) {
+    //   if ({}.hasOwnProperty.call(order.shipping.shipments, index)) {
+    //     let shipment = order.shipping.shipments[index];
+    //
+    //     if (shipment._id === shipmentIndex) {
+    //       order.shipping.shipments[index].items.push(shipmentItem);
+    //       break;
+    //     }
+    //   }
+    // }
+
+    Meteor.call("orders/updateOrder", order, shipmentIndex, shipmentItem, (error, result) => {
       if (!error) {
         template.orderDep.changed();
         console.log("completed", template.order);
@@ -75,16 +100,12 @@ Template.coreOrderShipments.events({
   "submit form[name=addTrackingForm]": (event, template) => {
     event.preventDefault();
 
+    let orderId = template.data._id;
     let tracking = event.target.trackingNumber.value;
     let shipmentData = $(event.target).closest("[data-shipment]").data();
-    console.log( tracking);
-    let shipmentIndex = shipmentData.shipmentIndex;
+    let shipmentId = shipmentData.shipmentId;
 
-    let data = {
-      tracking: event.target.trackingNumber.value
-    };
-
-    Meteor.call("orders/updateShipmentTracking", template.data._id, shipmentIndex, tracking, (error, result) => {
+    Meteor.call("orders/updateShipmentTracking", orderId, shipmentId, tracking, (error) => {
       if (!error) {
         template.orderDep.changed();
         template.showTrackingEditForm.set(false);
@@ -113,20 +134,24 @@ Template.coreOrderShipments.helpers({
 
   order() {
     let template = Template.instance();
+    console.log(template.order);
     return template.order;
   },
 
   itemsNotInShipments() {
     let template = Template.instance();
     let order = template.order;
-    let shipments = order.shipments || [];
+    let shipments = order.shipping.shipments || [];
+    let allItemsInShipments = [];
 
+    for (let shipment of shipments) {
+      console.log("shipment", shipment);
+      allItemsInShipments = allItemsInShipments.concat(shipment.items);
+    }
+console.log("All items in shipments", allItemsInShipments);
     let items = _.filter(order.items, (item) => {
-      if (item.shipment > shipments.length - 1) {
-        return true;
-      }
-
-      return false;
+        console.log("item", item, _.where(allItemsInShipments, {_id: item._id}));
+      return _.where(allItemsInShipments, {_id: item._id}).length;
     });
 
     return items;

@@ -18,8 +18,8 @@
 
             <select class="" name="shipmentSelect">
               <option value="" disabled selected>Select One</option>
-              {{#each shipment in order.shipments}}
-                <option value="{{@index}}">{{shipmentIndex @index}}</option>
+              {{#each shipment in order.shipping.shipments}}
+                <option value="{{shipment._id}}">{{shipmentIndex @index}}</option>
               {{/each}}
             </select>
           </div>
@@ -30,8 +30,13 @@
   {{/if}}
 
   <div class="order-shipments">
-    {{#each shipment in order.shipments}}
-      <div class="panel panel-default" data-shipment data-shipment-index="{{@index}}">
+
+    <a href="/dashboard/pdf/orders/{{_id}}" target="_blank">
+      <button type="button" class="btn btn-success save-order-pdf" data-i18n="app.download">Download PDF</button>
+    </a>
+
+    {{#each shipment in order.shipping.shipments}}
+      <div class="panel panel-default" data-shipment data-shipment-id="{{shipment._id}}">
         <div class="panel-heading panel-heading-flex">
           <h4 class="panel-title">Shipment {{shipmentIndex @index}}</h4>
           <div class="panel-controls">
@@ -40,7 +45,7 @@
         </div>
         <div class="panel-body">
           <h4>Items</h4>
-          {{#each item in (itemsInShipment @index)}}
+          {{#each item in shipment.items}}
             <div class="order-item" data-item data-item-id="{{item._id}}">
 
               <div class="order-item-media">
@@ -57,7 +62,7 @@
                 <select class="" name="shipmentSelect">
                   <option value="" disabled selected>Select One</option>
                   {{#each shipment in order.shipments}}
-                    <option value="{{@index}}">{{shipmentIndex @index}}</option>
+                    <option value="{{shipment._id}}">{{shipmentIndex @index}}</option>
                   {{/each}}
                 </select>
               </div>

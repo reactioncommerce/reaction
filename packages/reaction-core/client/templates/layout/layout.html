@@ -7,6 +7,10 @@
   </head>
 </template>
 
+<template name="print">
+  {{> yield}}
+</template>
+
 <template name="coreLayout">
   <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
   <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>

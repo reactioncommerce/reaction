@@ -154,31 +154,51 @@ Meteor.methods({
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
    * @param {String} orderId - add tracking to orderId
-   * @param {String} shipment - shipment
+   * @param {String} shipmentId - shipmentId
    * @param {String} tracking - add tracking to orderId
    * @return {String} returns order update result
    */
-  "orders/updateShipmentTracking": function (orderId, shipment, tracking) {
+  "orders/updateShipmentTracking": function (orderId, shipmentId, tracking) {
     check(orderId, String);
-    check(shipment, Number);
+    check(shipmentId, String);
     check(tracking, String);
-    return ReactionCore.Collections.Orders.update(orderId, {
+
+    return ReactionCore.Collections.Orders.update({
+      "_id": orderId,
+      "shipping.shipments._id": shipmentId
+    }, {
       $set: {
-        [`shipping.${shipments}.tracking`]: tracking
+        [`shipping.shipments.$.tracking`]: tracking
       }
     });
   },
 
-  "orders/itemAddShipment": function (orderId, itemId, shipmentIndex) {
+  "orders/updateOrder": function (order, shipmentId, item) {
+    check(order, Object);
+    check(shipmentId, String);
+    check(item, Object);
+
+    return ReactionCore.Collections.Orders.update({
+      "_id": order._id,
+      "shipping.shipments._id": shipmentId
+    }, {
+      $push: {
+        [`shipping.shipments.$.items`]: item
+      }
+    });
+  },
+
+  "orders/updateShipmentItem": function (orderId, shipmentId, item) {
     check(orderId, String);
-    check(itemId, String);
-    check(shipmentIndex, Number);
+    check(shipmentId, Number);
+    check(item, Object);
+
     return ReactionCore.Collections.Orders.update({
       "_id": orderId,
-      "items._id": itemId
+      "shipments._id": shipmentId
     }, {
-      $set: {
-        "items.$.shipment": shipmentIndex
+      $addToSet: {
+        "shipment.$.items": shipmentIndex
       }
     });
   },

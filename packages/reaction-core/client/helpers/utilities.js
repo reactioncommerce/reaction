@@ -46,7 +46,7 @@ Template.registerHelper("monthOptions", function () {
     if ({}.hasOwnProperty.call(months, index)) {
       let month = months[index];
       monthOptions.push({
-        value: index + 1,
+        value: parseInt(index, 10) + 1,
         label: month
       });
     }

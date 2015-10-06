@@ -115,7 +115,11 @@ ReactionCore.Collections.Orders = Orders = this.Orders = new Mongo.Collection("O
   }
 });
 
-ReactionCore.Collections.Orders.attachSchema([ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order, ReactionCore.Schemas.OrderItem]);
+ReactionCore.Collections.Orders.attachSchema([
+  ReactionCore.Schemas.Cart,
+  ReactionCore.Schemas.Order,
+  ReactionCore.Schemas.OrderItem
+]);
 
 /**
 * ReactionCore Collections Packages
