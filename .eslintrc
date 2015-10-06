@@ -149,9 +149,9 @@
       "beforeColon": false,
       "afterColon": true
     }],
-    "new-cap": [2, { // http://eslint.org/docs/rules/new-cap
+    "new-cap": [0, { // http://eslint.org/docs/rules/new-cap  (turned off for now, as it complains on all Match)
       "newIsCap": true,
-      "capIsNewExceptions": ["Optional"],
+      "capIsNewExceptions": ["Match", "OneOf", "Optional"],
     }],
     "no-multiple-empty-lines": [2, { // http://eslint.org/docs/rules/no-multiple-empty-lines
       "max": 2
