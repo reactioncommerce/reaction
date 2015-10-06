@@ -77,7 +77,6 @@ Template.registerHelper("cartPayerName", function () {
   let cart = ReactionCore.Collections.Cart.findOne();
   if (cart) {
     if (cart.billing) {
-      console.log("cartPayerName", cart.billing)
       if (cart.billing[0].address) {
         if (cart.billing[0].address.fullName) {
           return cart.billing[0].address.fullName;

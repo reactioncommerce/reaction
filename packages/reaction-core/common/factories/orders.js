@@ -118,7 +118,7 @@ Factory.define("order", ReactionCore.Collections.Orders, {
   totalPrice: _.random(1, 1000),
   state: "new",
   createdAt: new Date,
-  updatedAt: new Date()
+  updatedAt: new Date
 });
 
 // Calls paymentMethod() factory helper

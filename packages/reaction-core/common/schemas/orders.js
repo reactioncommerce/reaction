@@ -94,5 +94,37 @@ ReactionCore.Schemas.Order = new SimpleSchema({
   items: {
     type: [ReactionCore.Schemas.OrderItem],
     optional: true
+  },
+  // order transactions tie shipping, billing, and inventory transactions
+  transactions: {
+    type: [Object],
+    optional: true,
+    blackbox: true
+  },
+  "transactions.$.itemId": {
+    type: String,
+    optional: true
+  },
+  "transactions.$.paymentId": {
+    type: String,
+    optional: true
+  },
+  "transactions.$.shipmentId": {
+    type: String,
+    optional: true
+  },
+  "transactions.$.inventoryId": {
+    type: String,
+    optional: true
+  },
+  "transactions.$.createdAt": {
+    type: Date,
+    autoValue: function () {
+      if (this.isUpdate && !this.isSet) {
+        return new Date;
+      }
+      this.unset();
+    },
+    denyUpdate: true
   }
 });

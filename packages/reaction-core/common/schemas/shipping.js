@@ -107,12 +107,12 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
     type: [ReactionCore.Schemas.ShipmentQuote],
     optional: true
   },
-  "tracking": {
+  tracking: {
     type: String,
     optional: true
   },
   parcel: {
-    type: [ReactionCore.Schemas.ShippingParcel],
+    type: ReactionCore.Schemas.ShippingParcel,
     optional: true
   },
   items: {
@@ -131,7 +131,7 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
     type: [Object],
     optional: true,
     blackbox: true
-  },
+  }
 });
 
 /**

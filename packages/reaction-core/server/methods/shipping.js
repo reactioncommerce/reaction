@@ -24,25 +24,35 @@ Meteor.methods({
         return [];
       }
       // temp hack until we build out multiple shipment handlers
-      let shipmentId = "";
+      let selector = {_id: cartId};
       if (cart.shipping) {
-        shipmentId = cart.shipping[0]._id;
+        selector = {
+          "_id": cartId,
+          "shipping._id": cart.shipping[0]._id
+        };
       }
+      console.log(selector)
+        // return ReactionCore.Collections.Orders.update({
+        //   "_id": orderId,
+        //   "shipments._id": shipmentId
+        // }, {
+        //   $addToSet: {
+        //     "shipment.$.items": shipmentIndex
+        //   }
+        // });
       // add quotes to the cart
       if (rates.length > 0) {
-        results = ReactionCore.Collections.Cart.update({
-          "_id": cartId,
-          "shipping._id": shipmentId
-        }, {
+        ReactionCore.Collections.Cart.update(selector, {
           $addToSet: {
-            shipping: {
-              shipmentQuotes: rates
-            }
+            "shipping.$": {shipmentQuotes: rates}
+          }
+        }, function (error) {
+          if (error) {
+            ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
+            return;
           }
         });
       }
-      ReactionCore.Log.debug(rates);
-      return rates;
     }
   },
 

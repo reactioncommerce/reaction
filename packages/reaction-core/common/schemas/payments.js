@@ -111,7 +111,7 @@ ReactionCore.Schemas.Payment = new SimpleSchema({
     optional: true
   },
   paymentMethod: {
-    type: [ReactionCore.Schemas.PaymentMethod],
+    type: ReactionCore.Schemas.PaymentMethod,
     optional: true
   },
   invoice: {
