@@ -69,7 +69,7 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
     optional: true
   },
   shipping: {
-    type: [ReactionCore.Schemas.Shipment],
+    type: ReactionCore.Schemas.Shipping,
     optional: true,
     blackbox: true
   },

@@ -274,5 +274,10 @@ ReactionCore.Schemas.Shipping = new SimpleSchema({
   methods: {
     type: [ReactionCore.Schemas.ShippingMethod],
     optional: true
+  },
+  shipments: {
+    type: [ReactionCore.Schemas.Shipment],
+    optional: true,
+    blackbox: true
   }
 });

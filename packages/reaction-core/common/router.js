@@ -290,8 +290,15 @@ Router.map(function () {
     controller: PrintController,
     path: "dashboard/pdf/orders/:_id",
     template: "completedPDFLayout",
+    onBeforeAction() {
+      this.layout("print");
+      return this.next();
+    },
+    subscriptions: function () {
+      this.subscribe("Orders");
+    },
     data: function () {
-      if (Orders.findOne(this.params._id)) {
+      if (this.ready()) {
         return ReactionCore.Collections.Orders.findOne({
           _id: this.params._id
         });
