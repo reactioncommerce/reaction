@@ -12,28 +12,37 @@ Meteor.methods({
    */
   "shipping/updateShipmentQuotes": function (cartId) {
     if (!cartId) {
-      return;
+      return [];
     }
     check(cartId, String);
     this.unblock();
     let cart = ReactionCore.Collections.Cart.findOne(cartId);
     if (cart) {
       let rates = Meteor.call("shipping/getShippingRates", cart);
-
+      // no rates found
       if (!rates) {
-        return;
+        return [];
       }
-
+      // temp hack until we build out multiple shipment handlers
+      let shipmentId = "";
+      if (cart.shipping) {
+        shipmentId = cart.shipping[0]._id;
+      }
+      // add quotes to the cart
       if (rates.length > 0) {
-        ReactionCore.Collections.Cart.update({
-          _id: cartId
+        results = ReactionCore.Collections.Cart.update({
+          "_id": cartId,
+          "shipping._id": shipmentId
         }, {
-          $set: {
-            "shipping.shipmentQuotes": rates
+          $addToSet: {
+            shipping: {
+              shipmentQuotes: rates
+            }
           }
         });
       }
       ReactionCore.Log.debug(rates);
+      return rates;
     }
   },
 

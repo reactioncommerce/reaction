@@ -70,16 +70,17 @@ Template.registerHelper("cart", function () {
 /**
  * cartPayerName
  * @summary gets current cart billing address / payment name
- * @return {String} returns cart.payment.fullName
+ * @return {String} returns cart.billing[0].fullName
  */
 
 Template.registerHelper("cartPayerName", function () {
   let cart = ReactionCore.Collections.Cart.findOne();
   if (cart) {
-    if (cart.payment) {
-      if (cart.payment.address) {
-        if (cart.payment.address.fullName) {
-          return cart.payment.address.fullName;
+    if (cart.billing) {
+      console.log("cartPayerName", cart.billing)
+      if (cart.billing[0].address) {
+        if (cart.billing[0].address.fullName) {
+          return cart.billing[0].address.fullName;
         }
       }
     }

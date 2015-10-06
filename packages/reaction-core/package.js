@@ -56,7 +56,7 @@ Package.onUse(function (api) {
   api.use("iron:router@1.0.9");
   api.use("ongoworks:speakingurl@5.0.1");
   api.use("ongoworks:bunyan-logger@2.5.0");
-  api.use("ongoworks:security@1.2.0");
+  api.use("ongoworks:security@1.3.0");
 
   api.use("dburles:factory@0.3.10");
   api.use("matb33:collection-hooks@0.8.1");
@@ -137,7 +137,6 @@ Package.onUse(function (api) {
   api.addAssets("private/data/Products.json", "server");
   api.addAssets("private/data/Shops.json", "server");
   api.addAssets("private/data/Tags.json", "server");
-  api.addAssets("private/data/Orders.json", "server");
 
   // i18n translations
   api.addAssets("private/data/i18n/ar.json", "server");
@@ -169,14 +168,15 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/layouts.js");
   api.addFiles("common/schemas/packages.js");
   api.addFiles("common/schemas/shops.js");
+  api.addFiles("common/schemas/payments.js");
   api.addFiles("common/schemas/shipping.js");
+  api.addFiles("common/schemas/taxes.js");
+  api.addFiles("common/schemas/discounts.js");
   api.addFiles("common/schemas/products.js");
   api.addFiles("common/schemas/tags.js");
   api.addFiles("common/schemas/cart.js");
   api.addFiles("common/schemas/orders.js");
   api.addFiles("common/schemas/translations.js");
-  api.addFiles("common/schemas/taxes.js");
-  api.addFiles("common/schemas/discounts.js");
 
   // collections
   api.addFiles("common/collections/collections.js");

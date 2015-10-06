@@ -60,7 +60,6 @@ Template.coreCheckoutShipping.helpers({
 // to shipmentMethod (selected rate)
 //
 Template.coreCheckoutShipping.events({
-
   "click .list-group-item": function (event) {
     event.preventDefault();
     event.stopPropagation();

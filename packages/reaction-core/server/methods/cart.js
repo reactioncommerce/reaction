@@ -359,9 +359,20 @@ Meteor.methods({
     });
 
     if (cart) {
-      let result = ReactionCore.Collections.Cart.update(cartId, {
-        $set: {
-          "shipping.shipmentMethod": method
+      // temp hack until we build out multiple payment handlers
+      let shippingId = Random.id();
+      if (cart.shipping) {
+        shippingId = cart.shipping[0]._id;
+      }
+
+      let result = ReactionCore.Collections.Cart.update({
+        "_id": cartId,
+        "shipping._id": shippingId
+      }, {
+        $addToset: {
+          shipping: {
+            method: method
+          }
         }
       });
       // this will transition to review
@@ -380,7 +391,7 @@ Meteor.methods({
    */
   "cart/setShipmentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, Object);
+    check(address, ReactionCore.Schemas.Address);
     this.unblock();
 
     let cart = ReactionCore.Collections.Cart.findOne({
@@ -389,28 +400,43 @@ Meteor.methods({
     });
 
     if (cart) {
-      Cart.update(cartId, {
-        $set: {
-          "shipping.address": address
-        }
-      });
-
-      // refresh shipping quotes
-      Meteor.call("shipping/updateShipmentQuotes", cartId);
-
-      // it's ok for this to be called multiple times
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-        "coreCheckoutShipping");
-
-      // this is probably a crappy way to do this.
-      if (!cart.payment) {
-        Meteor.call("cart/setPaymentAddress", cartId, address);
+      // temp hack until we build out multiple payment handlers
+      let shippingId = Random.id();
+      if (cart.shipping) {
+        shippingId = cart.shipping[0]._id;
       }
-    } else {
+
+      ReactionCore.Collections.Cart.update({
+        "_id": cartId,
+        "shipping._id": shippingId
+      }, {
+        $addToSet: {
+          shipping: {
+            address: address
+          }
+        }
+      }, // additional updates after address is added
+      function (error) {
+        if (error) {
+          ReactionCore.Log.warn(error);
+          return;
+        }
+        // refresh shipping quotes
+        Meteor.call("shipping/updateShipmentQuotes", cartId);
+
+        // it's ok for this to be called multiple times
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+          "coreCheckoutShipping");
+
+        // this is probably a crappy way to do this.
+        if (!cart.payment) {
+          Meteor.call("cart/setPaymentAddress", cartId, address);
+        }
+        return;
+      });
       throw new Meteor.Error("cart/setShipmentAddress: Invalid request");
     }
   },
-
   /**
    * cart/setPaymentAddress
    * @summary adds addressbook to cart payments
@@ -420,7 +446,7 @@ Meteor.methods({
    */
   "cart/setPaymentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, Object);
+    check(address, ReactionCore.Schemas.Address);
     this.unblock();
 
     let cart = ReactionCore.Collections.Cart.findOne({
@@ -429,17 +455,30 @@ Meteor.methods({
     });
 
     if (cart) {
-      result = Cart.update(cartId, {
-        $set: {
-          "payment.address": address
+      // temp hack until we build out multiple payment handlers
+      let billingId = Random.id();
+      if (cart.billing) {
+        billingId = cart.billing[0]._id;
+      }
+
+      ReactionCore.Collections.Cart.update({
+        "_id": cartId,
+        "billing._id": billingId
+      }, {
+        $addToSet: {
+          billing: {
+            address: address
+          }
+        }
+      },
+      function (error) {
+        if (error) {
+          ReactionCore.Log.warn(error);
+        } else {
+          // post payment address Methods
         }
       });
-
-      // set as default shipping if not set
-      if (!cart.shipping) {
-        Meteor.call("cart/setShipmentAddress", cartId, address);
-      }
-      return result;
+      return;
     }
     // should not have arrive here.
     throw new Meteor.Error("cart/setPaymentAddress: Invalid request");
@@ -477,8 +516,8 @@ Meteor.methods({
       _id: cartId
     }, {
       $addToSet: {
-        "payment.paymentMethod": paymentMethod,
-        "payment.invoices": invoice,
+        "billing.paymentMethod": paymentMethod,
+        "billing.invoice": invoice,
         "workflow.workflow": "paymentSubmitted"
       }
     });
@@ -487,7 +526,7 @@ Meteor.methods({
       userId: Meteor.userId()
     });
     // Client Stub Actions
-    if (result === 1 && updatedCart.payment && updatedCart.items) {
+    if (result === 1 && updatedCart.billing && updatedCart.items) {
       return cartId;
     }
     // we should not have made it here!

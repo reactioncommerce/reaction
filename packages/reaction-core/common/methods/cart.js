@@ -2,18 +2,17 @@
 // Client stub.
 //
 
-
 Meteor.methods({
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Object);
 
-    var checkoutCart = ReactionCore.Collections.Cart.findOne({
-      'userId': Meteor.userId()
+    let checkoutCart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
     });
 
-    var cart = _.clone(checkoutCart);
-    var cartId = cart._id;
-    var invoice = {
+    let cart = _.clone(checkoutCart);
+    let cartId = cart._id;
+    let invoice = {
       shipping: cart.cartShipping(),
       subtotal: cart.cartSubTotal(),
       taxes: cart.cartTaxes(),
@@ -30,13 +29,13 @@ Meteor.methods({
     }, {
       $addToSet: {
         "payment.paymentMethod": paymentMethod,
-        "payment.invoices": invoice,
+        "payment.invoice": invoice,
         "workflow.workflow": "paymentSubmitted"
       }
     });
 
-    var updatedCart = ReactionCore.Collections.Cart.findOne({
-      'userId': Meteor.userId()
+    let updatedCart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
     });
 
     // Client Stub Actions
@@ -49,7 +48,8 @@ Meteor.methods({
         autoHide: true,
         placement: "paymentMethod"
       });
-      throw new Meteor.Error("An error occurred saving the order", cartId, error);
+      throw new Meteor.Error("An error occurred saving the order", cartId,
+        error);
     }
   }
 });
