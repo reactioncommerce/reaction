@@ -3,14 +3,16 @@ Reaction Commerce is a modern, open source commerce platform for small and mediu
 
 Reaction is developed on [Node.js](//nodejs.org) and the [Meteor](//meteor.com) framework. It is both an open source solution and a Platform as a Service (PaaS) that is available via [reactioncommerce.com](//reactioncommerce.com).
 
-This "Introduction" section of our documentation provides an overview of the features of Reaction, and it will answer questions about how to use Reaction as a shop owner. 
+## Docs Overview
 
-There is also a "Developer" section to our docs that are meant to help a developer or designer quickly start using the platform locally, where they can contribute changes to the project, or fork the project and modify to suit any requirement.
+* The **Introduction** section of our documentation provides an overview of the features of Reaction, and it will answer questions about how to use Reaction as a shop owner. 
 
-The "Packages" section documents details on specific Reaction apps/packages.
+* The  **Developer** section to our docs that are meant to help a developer or designer quickly start using the platform locally, where they can contribute changes to the project, or fork the project and modify to suit any requirement.
 
-This documentation is part of the project pages, which you can browse at [GitHub](github.com/reactioncommerce/).
+* The **Packages** section documents details on specific Reaction apps/packages.
 
-We welcome ideas, feedback and questions via [GitHub Isues](//github.com/reactioncommerce/reaction/issues?state=open). For general discussion and support, check out our [chat room](//gitter.im/reactioncommerce/reaction).
+This documentation is part of the project pages, which you can browse at [GitHub](//github.com/reactioncommerce/).
 
-Reaction is created by the [Ongo Works](http://ongoworks.com) team in Los Angeles, CA.
+We welcome [contributions](//reactioncommerce.com/contributors), and ideas, feedback and questions via [GitHub Isues](//github.com/reactioncommerce/reaction/issues?state=open). For general discussion and support, check out our [chat room](//gitter.im/reactioncommerce/reaction).
+
+Reaction is created by the [Ongo Works](//ongoworks.com) team in Los Angeles, CA.

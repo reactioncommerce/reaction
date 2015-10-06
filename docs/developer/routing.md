@@ -1,5 +1,9 @@
 # Routing
+<<<<<<< HEAD
 [*common/routing.js](https://github.com/reactioncommerce/reaction/blob/master/common/routing.js) can be customized to change layouts.
+=======
+[*common/routing.coffee](//github.com/reactioncommerce/reaction/blob/master/common/routing.coffee) can be customized to change layouts.
+>>>>>>> pre-beta-2
 
 If you are adding reaction-core to your own meteor application, `iron:router` is installed as a dependency of `reactioncommerce:core`.
 
@@ -252,4 +256,22 @@ Router.go('Homepage')            // redirect to the defined route (here: '/') Ro
 
 Router.path('Homepage')          // return the path of the defined route as a string. (here: '/')
 Router.current().path            // return the current path
+```
+
+## Iron Router > Extending Existing Routes
+
+At the app level you can define the following:
+
+```
+// This can be placed in "reaction/common/routing.js".
+Router.map(function route() {
+  _.extend(Router.routes.nameOfRoute.options, {
+    // Just an example. You can put any Iron Router options here.
+    yieldTemplates: {
+      checkoutHeader: {
+        to: "layoutHeader"
+      }
+    }
+  });
+});
 ```

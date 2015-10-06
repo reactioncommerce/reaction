@@ -1,7 +1,11 @@
 # Templates
-To add or change features, or make non CSS layout updates you can create your own templates. [Iron Router](https://github.com/EventedMind/iron-router) manages paths, layouts, and which templates load where.
+To add or change features, or make non CSS layout updates you can create your own templates. [Iron Router](//github.com/EventedMind/iron-router) manages paths, layouts, and which templates load where.
 
+<<<<<<< HEAD
 Review the [Iron Router docs](https://github.com/EventedMind/iron-router/blob/devel/DOCS.md) for background information, then reference the file [_packages/reaction-core/common/routing.js](https://github.com/reactioncommerce/reaction-core/blob/master/common/routing.js). Here you will be able to see how all the default routes, paths, and template layouts are configured.
+=======
+Review the [Iron Router docs](//github.com/EventedMind/iron-router/blob/devel/DOCS.md) for background information, then reference the file [_packages/reaction-core/common/routing.coffee_](//github.com/reactioncommerce/reaction-core/blob/master/common/routing.coffee). Here you will be able to see how all the default routes, paths, and template layouts are configured.
+>>>>>>> pre-beta-2
 
 ## Extending and customizing templates
 To extend and customize the html for any reaction/meteor template, add a template extension map to `client/templates.coffee`
@@ -19,6 +23,6 @@ then create a template (probably a copy of the one you are extending).
 </template>
 ```
 
-While you can always organize your templates however you wish, [we suggest](https://github.com/reactioncommerce/reaction-core/blob/master/docs/conventions.md) you mirror the existing structure. For example, if you are extending the template located in `packages/reaction-core/client/templates/products/products.html` then you would mirror that by creating your new template at `reaction/client/templates/products/myTemplate.html`
+While you can always organize your templates however you wish, [we suggest](//github.com/reactioncommerce/reaction-core/blob/master/docs/conventions.md) you mirror the existing structure. For example, if you are extending the template located in `packages/reaction-core/client/templates/products/products.html` then you would mirror that by creating your new template at `reaction/client/templates/products/myTemplate.html`
 
 _The template helpers, events, etc. from the original are still accessible and used in the new extended template._

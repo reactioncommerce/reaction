@@ -12,10 +12,10 @@ Yes, we will offer hosted shops with the Beta release of our Platform as a Servi
 Yes. You can host a Reaction shop on any host/virtual machine container that supports Meteor/Node.js and MongoDB. Our code is fully open source on GitHub at [github.com/reactioncommerce/reaction](//github.com/reactioncommerce/reaction).
 
 ## Do you support multiple languages?
-Yes. We have [internationalization support](/github.com/reactioncommerce/reaction-core/blob/master/docs/i18n.md) for numerous languages, and we support currency conversion and localized currency formats.
+Yes. We have [internationalization support](//github.com/reactioncommerce/reaction-core/blob/master/docs/i18n.md) for numerous languages, and we support currency conversion and localized currency formats.
 
 ## What is the pricing/licensing model?
-Reaction is currently free, and there will always be a free, open source version available. Eventually, we will offer premium plans with tiered pricing structures on the reactioncommerce.com platform. Our code is licensed under the GPL v3 license. The Terms & Conditions for shops hosted on our reactioncommerce.com platform can be found at [//reactioncommerce.com/legal](https://reactioncommerce.com/legal).
+Reaction is currently free, and there will always be a free, open source version available. Eventually, we will offer premium plans with tiered pricing structures on the reactioncommerce.com platform. Our code is licensed under the GPL v3 license. The Terms & Conditions for shops hosted on our reactioncommerce.com platform can be found at [//reactioncommerce.com/legal](//reactioncommerce.com/legal).
 
 ## Is MongoDB/NoSQL best suited for ecommerce?
 We think so! We believe that the common SQL schema for legacy ecommerce platforms isn't just unnecessary; it's overkill. By rethinking the way the database is architected, there are numerous benefits of Mongo/NoSQL -- from speed to simplified code.
