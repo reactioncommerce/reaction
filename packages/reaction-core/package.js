@@ -49,11 +49,11 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.2");
-  api.use("aldeed:autoform@5.5.1");
+  api.use("aldeed:autoform@5.6.0");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3", "client");
-  api.use("iron:router@1.0.9");
+  api.use("iron:router@1.0.10");
   api.use("ongoworks:speakingurl@5.0.1");
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("ongoworks:security@1.3.0");
