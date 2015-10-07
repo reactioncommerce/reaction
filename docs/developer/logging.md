@@ -2,7 +2,7 @@
 ## Bunyan
 [Bunyan](//github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
 
-The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Events` global that can be used anywhere in Reaction code.
+The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Log` global that can be used anywhere in Reaction code.
 
 To enable logging set/add `isDebug: true` in `settings.json`.  Value can be any valid `bunyan level` in settings.json, or true/false.
 
@@ -28,5 +28,5 @@ Example:
 
 ```
 
-ReactionCore.Events.info "Something we want to see during development"
+ReactionCore.Log.info "Something we want to see during development"
 ```

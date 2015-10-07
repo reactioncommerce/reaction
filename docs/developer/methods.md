@@ -160,20 +160,20 @@ Usage:
 Meteor.call "updateMetaFields", productId
 ```
 
-### cloneVariant
-The cloneVariant method copies variants, but will also create and clone child variants (options)
+### products/cloneVariant
+The products/cloneVariant method copies variants, but will also create and clone child variants (options)
 
 Usage:
 
 ```
 # to clone a variant
-Meteor.call "cloneVariant", productId, variantId
+Meteor.call "products/cloneVariant", productId, variantId
 
 # to create a child option from a variant
-Meteor.call "cloneVariant", productId, variantId, parentId
+Meteor.call "products/cloneVariant", productId, variantId, parentId
 ```
 
-cloneVariant takes a product id, a variant id to clone a variant. Adding a parent id will make the new clone as an option of that parent.
+products/cloneVariant takes a product id, a variant id to clone a variant. Adding a parent id will make the new clone as an option of that parent.
 
 ### updateVariant
 The updateVariant method updates an individual variant with new values and merges into the original.
