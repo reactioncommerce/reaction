@@ -1,10 +1,14 @@
 Template.addressBookAdd.helpers({
-  thisAddress: function() {
-    var account, ref, thisAddress;
-    account = ReactionCore.Collections.Accounts.findOne();
-    thisAddress = {
-      'fullName': account != null ? (ref = account.profile) != null ? ref.name : void 0 : void 0
-    };
+  thisAddress: function () {
+    let thisAddress = {};
+    let account = ReactionCore.Collections.Accounts.findOne();
+    if (account) {
+      if (account.profile) {
+        if (account.profile.name) {
+          thisAddress.fullName = account.profile.name;
+        }
+      }
+    }
     if (Session.get("address")) {
       thisAddress.postal = Session.get("address").zipcode;
       thisAddress.country = Session.get("address").countryCode;
@@ -14,13 +18,16 @@ Template.addressBookAdd.helpers({
     return thisAddress;
   },
 
-  hasAddressBookEntries: function() {
-    var account = ReactionCore.Collections.Accounts.findOne({ userId: Meteor.userId() });
-
-    if (account.profile) {
-      if (account.profile.addressBook) {
-        if (account.profile.addressBook.length > 0) {
-          return true;
+  hasAddressBookEntries: function () {
+    let account = ReactionCore.Collections.Accounts.findOne({
+      userId: Meteor.userId()
+    });
+    if (account) {
+      if (account.profile) {
+        if (account.profile.addressBook) {
+          if (account.profile.addressBook.length > 0) {
+            return true;
+          }
         }
       }
     }
@@ -30,15 +37,14 @@ Template.addressBookAdd.helpers({
 });
 
 Template.addressBookAdd.events({
-  // 'click #cancel-new, form submit': function(event, template) {
+  // "click #cancel-new, form submit": function(event, template) {
   //   console.log(event, template, Template.instance())
   //   return Session.set("addressBookView", "addressBookGrid");
   // },
-  // 'submit form': function() {
+  // "submit form": function() {
   //   return Session.set("addressBookView", "addressBookGrid");
   // }
 });
-
 
 /*
  * addressBookAddForm form handling
@@ -47,12 +53,11 @@ Template.addressBookAdd.events({
 
 AutoForm.hooks({
   addressBookAddForm: {
-    onSubmit: function(insertDoc, updateDoc, currentDoc) {
-
+    onSubmit: function (insertDoc) {
       this.event.preventDefault();
-
-      var accountId, error;
-      var addressBook = $(this.template.firstNode).closest('.address-book');
+      let accountId;
+      let error;
+      let addressBook = $(this.template.firstNode).closest(".address-book");
 
       accountId = ReactionCore.Collections.Accounts.findOne({
         userId: Meteor.userId()
@@ -66,15 +71,14 @@ AutoForm.hooks({
         Meteor.call("addressBookAdd", insertDoc, accountId);
       } catch (_error) {
         error = _error;
-        this.done(new Error('Failed to add address', error));
+        this.done(new Error("Failed to add address", error));
         return false;
       }
-
 
       this.done();
 
       // Show the grid
-      addressBook.trigger($.Event('showMainView'));
+      addressBook.trigger($.Event("showMainView"));
     }
   }
 });
