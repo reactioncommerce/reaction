@@ -4,7 +4,11 @@ Router.map(function() {
   this.route('dashboard/accounts', {
     controller: ShopAdminController,
     path: '/dashboard/accounts',
-    template: 'accountsDashboard'
+    template: 'accountsDashboard',
+    subscriptions: function () {
+      this.subscribe('ServiceConfiguration', Meteor.userId())
+      this.subscribe('ShopMembers')
+    },
   });
 
   this.route('signIn', {

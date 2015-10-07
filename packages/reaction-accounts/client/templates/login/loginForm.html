@@ -5,22 +5,6 @@
   </div>
 </template>
 
-
-<template name="loginFormServiceButton">
-  {{!-- {{#if configured}} --}}
-    <button class="btn btn-primary btn-block action--signInWithProvider provider--{{name}} text-besides-image sign-in-text-{{name}}" type="button">
-      {{#if condition buttonType "eq" "signUp"}}
-        <span data-i18n="accountsUI.signUpWith">Sign up with</span>
-      {{else}}
-        <span data-i18n="accountsUI.signInWith">Sign in with</span>
-      {{/if}}
-
-      <span data-i18n="social.{{name}}"> {{capitalizedName}}</span>
-    </button>
-  {{!-- {{if}} --}}
-</template>
-
-
 <template name="loginFormMessages">
   {{#if messages.info}}
     <div class="alert alert-info">

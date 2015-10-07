@@ -12,8 +12,8 @@ Template.loginFormSignUpView.events({
     var options = {};
 
     // var usernameInput = template.$('.login-input--username');
-    var emailInput = template.$('.login-input--email');
-    var passwordInput = template.$('.login-input--password');
+    var emailInput = template.$('.login-input-email');
+    var passwordInput = template.$('.login-input-password');
 
     var email = emailInput.val().trim()
     var password = passwordInput.val().trim()

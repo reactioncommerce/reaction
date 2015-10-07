@@ -1,21 +1,22 @@
 Template.loginFormResetPasswordView.events({
 
-
-  // *******************************************************
-  // Submit the password reset form
-  //
-  'submit form': function (event, template) {
-
+  /**
+   * Submit the password reset form
+   * @param {Event} event - jQuery Event
+   * @param {Object} template - Blaze Template
+   * @return {void}
+   */
+  "submit form": (event, template) => {
     event.preventDefault();
 
-    var emailAddress = template.$('.login-input--email').val().trim();
-    var validatedEmail = LoginFormValidation.email(emailAddress);
-    var templateInstance = Template.instance();
-    var errors = {};
+    let emailAddress = template.$(".login-input-email").val().trim();
+    let validatedEmail = LoginFormValidation.email(emailAddress);
+    let templateInstance = Template.instance();
+    let errors = {};
 
     templateInstance.formMessages.set({});
 
-    if (validatedEmail !== true ) {
+    if (validatedEmail !== true) {
       errors.email = validatedEmail.reason;
     }
 
@@ -24,38 +25,40 @@ Template.loginFormResetPasswordView.events({
         errors: errors
       });
       // prevent password reset
-      return;
+      // return;
     }
 
     // Make sure mail is properly configured for this shop before we end anything
     ReactionCore.configureMailUrl();
 
-    Accounts.forgotPassword({ email: emailAddress}, function (error) {
+    Accounts.forgotPassword({ email: emailAddress}, (error) => {
       // Show some message confirming result
 
       if (error) {
         templateInstance.formMessages.set({
           alerts: [error]
         });
-      } {
+      } else {
         templateInstance.formMessages.set({
           info: [{
-            reason: i18n.t('accountsUI.info.passwordResetSend')
+            reason: i18n.t("accountsUI.info.passwordResetSend")
           }]
         });
       }
     });
-
   }
 
 });
 
+/**
+ * loginFormResetPasswordView
+ *
+ */
+Template.loginFormResetPasswordView.onCreated(() => {
+  let template = Template.instance();
 
-
-
-Template.loginFormResetPasswordView.onCreated(function () {
-  this.uniqueId = Random.id();
-  this.formMessages = new ReactiveVar({})
+  template.uniqueId = Random.id();
+  template.formMessages = new ReactiveVar({});
 });
 
 

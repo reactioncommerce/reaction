@@ -27,6 +27,12 @@ ReactionCore.registerPackage({
       icon: "fa fa-users",
       cycle: 1
     },
+    {
+      route: "account/profile",
+      label: "Profile",
+      icon: "fa fa-user",
+      provides: "userAccountDropdown"
+    }
   ],
   permissions: [
     {

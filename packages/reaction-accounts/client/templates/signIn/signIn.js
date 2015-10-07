@@ -3,27 +3,27 @@ Template.loginFormSignInView.events({
   // *******************************************************
   // Submit the sign in form
   //
-  'submit form': function (event, template) {
+  "submit form": (event, template) => {
 
     event.preventDefault();
 
-    var options = {};
+    let options = {};
 
-    var usernameInput = template.$('.login-input--email');
-    var passwordInput = template.$('.login-input--password');
+    let usernameInput = template.$('.login-input-email');
+    let passwordInput = template.$('.login-input-password');
 
-    var username = usernameInput.val().trim()
-    var password = passwordInput.val().trim()
+    let username = usernameInput.val().trim()
+    let password = passwordInput.val().trim()
 
-    var validatedEmail = LoginFormValidation.email(username);
-    var validatedPassword = LoginFormValidation.password(password, {validationLevel: 'exists'});
+    let validatedEmail = LoginFormValidation.email(username);
+    let validatedPassword = LoginFormValidation.password(password, {validationLevel: 'exists'});
 
-    var templateInstance = Template.instance();
-    var errors = {};
+    let templateInstance = Template.instance();
+    let errors = {};
 
     templateInstance.formMessages.set({});
 
-    if (validatedEmail !== true ) {
+    if (validatedEmail !== true) {
       errors.email = validatedEmail.reason;
     }
 
@@ -39,7 +39,7 @@ Template.loginFormSignInView.events({
       return;
     }
 
-    Meteor.loginWithPassword(username, password, function(error, result) {
+    Meteor.loginWithPassword(username, password, (error, result) => {
       if( error ) {
         // Show some error messages above the form fields
         templateInstance.formMessages.set({
@@ -58,8 +58,8 @@ Template.loginFormSignInView.events({
 
 Template.loginFormSignInView.onCreated(function() {
   this.uniqueId = Random.id();
-  this.formMessages = new ReactiveVar({})
-})
+  this.formMessages = new ReactiveVar({});
+});
 
 
 Template.loginFormSignInView.helpers(LoginFormSharedHelpers);
