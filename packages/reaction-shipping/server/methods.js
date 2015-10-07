@@ -1,13 +1,8 @@
-Match.OptionalOrNull = function(pattern) {
-  return Match.OneOf(void 0, null, pattern);
-};
-
 Meteor.methods({
-
   /*
    * add new shipping methods
    */
-  addShippingMethod: function(insertDoc, currentDoc) {
+  addShippingMethod: function (insertDoc, currentDoc) {
     check(insertDoc, Object);
     check(currentDoc, String);
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
@@ -25,7 +20,7 @@ Meteor.methods({
   /*
    * Update Shipping methods for a provider
    */
-  updateShippingMethods: function(docId, currentDoc, updateDoc) {
+  updateShippingMethods: function (docId, currentDoc, updateDoc) {
     check(docId, String);
     check(currentDoc, Object);
     check(updateDoc, Object);
@@ -46,7 +41,7 @@ Meteor.methods({
   /*
    * remove shipping method
    */
-  removeShippingMethod: function(providerId, removeDoc) {
+  removeShippingMethod: function (providerId, removeDoc) {
     check(providerId, String);
     check(removeDoc, Object);
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
@@ -65,7 +60,7 @@ Meteor.methods({
   /*
    * add / insert shipping provider
    */
-  addShippingProvider: function(doc) {
+  addShippingProvider: function (doc) {
     check(doc, Object);
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
       return false;
@@ -76,7 +71,7 @@ Meteor.methods({
   /*
    * update shipping provider
    */
-  updateShippingProvider: function(updateDoc, currentDoc) {
+  updateShippingProvider: function (updateDoc, currentDoc) {
     check(updateDoc, Object);
     check(currentDoc, String);
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
