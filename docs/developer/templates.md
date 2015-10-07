@@ -3,7 +3,6 @@ To add or change features, or make non CSS layout updates you can create your ow
 
 Review the [Iron Router docs](https://github.com/EventedMind/iron-router/blob/devel/DOCS.md) for background information, then reference the file [_packages/reaction-core/common/routing.js](https://github.com/reactioncommerce/reaction-core/blob/master/common/routing.js). Here you will be able to see how all the default routes, paths, and template layouts are configured.
 
-
 ## Extending and customizing templates
 To extend and customize the html for any reaction/meteor template, add a template extension map to `client/templates.coffee`
 
