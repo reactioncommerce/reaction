@@ -73,7 +73,5 @@ Meteor.methods({
         }
       }
     });
-    // should not have arrive here.
-    throw new Meteor.Error("An error occurred saving the order", cartId);
   }
 });

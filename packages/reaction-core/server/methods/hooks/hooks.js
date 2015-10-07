@@ -59,10 +59,11 @@ ReactionCore.MethodHooks._wrappers = {};
 /**
  *  initializeHook
  * @summary Initializes a new hook
- * @param {<String | Hook>} mapping - A place to store the mapping
+ * @param {String} mapping - map hook: a is  place to store the mapping
  * @param {String} methodName - The name of the method
- * @param {<Hook>} hookFunction - The hook function
+ * @param {Function} hookFunction - The hook function
  * @private
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks._initializeHook = function (mapping, methodName,
   hookFunction) {
@@ -136,10 +137,11 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName,
 };
 
 /**
- * ReactionCore.MethodHooks.before
+ * ReactionCore MethodHooks before
  * @summary Add a function to call before the specified method
  * @param {String} methodName - methodName
- * @param {<Hook>} beforeFunction - beforeFunction
+ * @param {String} beforeFunction - beforeFunction
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.before = function (methodName, beforeFunction) {
   ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._beforeHooks,
@@ -150,7 +152,8 @@ ReactionCore.MethodHooks.before = function (methodName, beforeFunction) {
  * ReactionCore.MethodHooks.after
  * Add a function to call after the specified method
  * @param {String} methodName - methodName
- * @param {Hook} afterFunction - afterFunction
+ * @param {String} afterFunction - afterFunction
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.after = function (methodName, afterFunction) {
   ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._afterHooks,
@@ -161,6 +164,7 @@ ReactionCore.MethodHooks.after = function (methodName, afterFunction) {
  * ReactionCore.MethodHooks.beforeMeth
  * Call the provided hook in values for the key'd method names
  * @param {Object.<string, Hook>} dict - dict
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.beforeMethods = function (dict) {
   _.each(dict, function (v, k) {
@@ -171,6 +175,7 @@ ReactionCore.MethodHooks.beforeMethods = function (dict) {
 /**
  * Call the provided hook in values for the key'd method names
  * @param {Object.<string, Hook>} dict - dict
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.afterMethods = function (dict) {
   _.each(dict, function (v, k) {

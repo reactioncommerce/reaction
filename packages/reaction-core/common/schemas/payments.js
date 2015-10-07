@@ -47,7 +47,8 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   },
   amount: {
     type: Number,
-    decimal: true
+    decimal: true,
+    optional: true
   },
   transactions: {
     type: [Object],

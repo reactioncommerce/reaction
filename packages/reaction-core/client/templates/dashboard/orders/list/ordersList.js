@@ -1,9 +1,9 @@
 /**
-* dashboardOrdersList helpers
-*
-*/
+ * dashboardOrdersList helpers
+ *
+ */
 Template.dashboardOrdersList.helpers({
-  orders: function(data) {
+  orders: function (data) {
     if (data.hash.data) {
       return data.hash.data;
     } else {
@@ -15,13 +15,13 @@ Template.dashboardOrdersList.helpers({
       });
     }
   },
-  orderAge: function() {
+  orderAge: function () {
     return moment(this.createdAt).fromNow();
   },
-  shipmentTracking: function() {
+  shipmentTracking: function () {
     return this.shipping.shipmentMethod.tracking;
   },
-  shopName: function(shopId) {
+  shopName: function () {
     var shop;
     shop = Shops.findOne(this.shopId);
     return shop != null ? shop.name : void 0;
