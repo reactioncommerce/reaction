@@ -21,6 +21,9 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
     type: ReactionCore.Schemas.Workflow,
     optional: true
   },
+  status: {
+    type: String
+  },
   mode: {
     type: String,
     allowedValues: ["authorize", "capture", "refund", "void"]

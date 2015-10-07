@@ -178,8 +178,9 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
   _id: {
     type: String,
     label: "Shipment Id",
+    optional: true,
     autoValue: function () {
-      if (this.isUpdate && !this.isSet) {
+      if (this.insert || this.isUpdate && !this.isSet) {
         return Random.id();
       }
       this.unset();

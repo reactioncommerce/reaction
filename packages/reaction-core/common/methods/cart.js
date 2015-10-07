@@ -50,7 +50,7 @@ Meteor.methods({
       };
     }
 
-    ReactionCore.Collections.Cart.update(selector, update, function (error) {
+    ReactionCore.Collections.Cart.update(selector, update, function (error, result) {
       if (error) {
         ReactionCore.Log.warn(error);
         throw new Meteor.Error("An error occurred saving the order", error);

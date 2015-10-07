@@ -525,6 +525,7 @@ Meteor.methods({
    * cart/submitPayment
    * @summary saves a submitted payment to cart, triggers workflow
    * and adds "paymentSubmitted" to cart workflow
+   * Note: this method also has a client stub, that forwards to cartCompleted
    * @param {Object} paymentMethod - paymentMethod object
    * @return {String} returns update result
    */
@@ -576,14 +577,12 @@ Meteor.methods({
       };
     }
 
-    ReactionCore.Collections.Cart.update(selector, update, function (error) {
+    return ReactionCore.Collections.Cart.update(selector, update, function (error) {
       if (error) {
         ReactionCore.Log.warn(error);
         throw new Meteor.Error("An error occurred saving the order", error);
       }
       return;
     });
-    // should not have arrive here.
-    throw new Meteor.Error("An error occurred saving the order", cartId);
   }
 });

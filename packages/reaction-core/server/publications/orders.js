@@ -42,7 +42,7 @@ Meteor.publish("CompletedCartOrder", function (userId, cartId) {
   check(userId, String);
   check(cartId, String);
 
-  if (userId && userId !== this.userId) {
+  if (userId !== this.userId) {
     return [];
   }
 
