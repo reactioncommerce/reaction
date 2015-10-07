@@ -14,7 +14,7 @@ describe("Product", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(false);
       spyOn(Products, "insert");
 
-      Meteor.call("createProduct", function(error, result) {
+      Meteor.call("products/createProduct", function(error, result) {
         expect(error.error).toEqual(403);
       });
 
