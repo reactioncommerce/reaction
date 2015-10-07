@@ -173,7 +173,16 @@ Meteor.methods({
     });
   },
 
-  "orders/updateOrder": function (order, shipmentId, item) {
+  /**
+   * orders/addItemToShipment
+   * @summary Adds tracking information to order without workflow update.
+   * Call after any tracking code is generated
+   * @param {String} orderId - add tracking to orderId
+   * @param {String} shipmentId - shipmentId
+   * @param {ShipmentItem} item - A ShipmentItem to add to a shipment
+   * @return {String} returns order update result
+   */
+  "orders/addItemToShipment": function (orderId, shipmentId, item) {
     check(order, Object);
     check(shipmentId, String);
     check(item, Object);

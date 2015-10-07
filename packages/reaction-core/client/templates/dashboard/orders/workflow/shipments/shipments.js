@@ -7,12 +7,11 @@ Template.coreOrderShipments.onCreated(() => {
   template.orderDep = new Tracker.Dependency;
   template.showTrackingEditForm = ReactiveVar(false);
 
-  let getOrder = (orderId) => {
+  function getOrder(orderId) {
     template.orderDep.depend();
     return ReactionCore.Collections.Orders.findOne(orderId);
-  };
+  }
 
-  // console.log("Order on created", template.order);
   Tracker.autorun(() => {
     template.order = getOrder(currentData._id);
   });
@@ -54,7 +53,7 @@ Template.coreOrderShipments.events({
       quantity: item.quantity
     };
 
-    Meteor.call("orders/updateOrder", order, shipmentIndex, shipmentItem, (error) => {
+    Meteor.call("orders/addItemToShipment", order._id, shipmentIndex, shipmentItem, (error) => {
       if (!error) {
         template.orderDep.changed();
       }
