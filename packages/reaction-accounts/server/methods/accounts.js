@@ -5,20 +5,19 @@
  */
 
 Accounts.registerLoginHandler(function (options) {
-  var hashStampedToken, loginHandler, stampedToken, userId;
   if (!options.anonymous) {
     return void 0;
   }
-  stampedToken = Accounts._generateStampedLoginToken();
-  hashStampedToken = Accounts._hashStampedToken(stampedToken);
-  userId = Accounts.insertUserDoc({
+  let loginHandler;
+  let stampedToken = Accounts._generateStampedLoginToken();
+  let userId = Accounts.insertUserDoc({
     services: {
       anonymous: true
     },
     token: stampedToken.token
   });
   loginHandler = {
-    type: 'anonymous',
+    type: "anonymous",
     userId: userId
   };
   return loginHandler;
@@ -36,16 +35,13 @@ Accounts.registerLoginHandler(function (options) {
  */
 
 Accounts.onCreateUser(function (options, user) {
-  var shop = ReactionCore.getCurrentShop();
-  var shopId = ReactionCore.getShopId();
-  var sessionId = ReactionCore.sessionId;
-  var Cart = ReactionCore.Collections.Cart;
-  var roles = {};
+  let shop = ReactionCore.getCurrentShop();
+  let shopId = ReactionCore.getShopId();
+  let roles = {};
 
   // clone before adding roles
-  var account = _.clone(user);
+  let account = _.clone(user);
   account.userId = user._id;
-  var accountId = ReactionCore.Collections.Accounts.insert(account);
 
   // init default user roles
   if (shop) {
@@ -60,33 +56,31 @@ Accounts.onCreateUser(function (options, user) {
   return user;
 });
 
-
-
 /**
  * Accounts.onLogin event
  * automatically push checkoutLogin when users login.
- * let's remove 'anonymous' role, if the login type isn't 'anonymous'
+ * let"s remove "anonymous" role, if the login type isn"t "anonymous"
  * @param
  * @returns
  */
 Accounts.onLogin(function (options) {
   // remove anonymous role
-  // all users are guest, but anonymous user don't have profile access
+  // all users are guest, but anonymous user don"t have profile access
   // or ability to order history, etc. so ensure its removed upon login.
-  if (options.type !== 'anonymous' && options.type !== 'resume') {
-    var update = {
+  if (options.type !== "anonymous" && options.type !== "resume") {
+    let update = {
       $pullAll: {}
     };
 
-    update.$pullAll['roles.' + ReactionCore.getShopId()] = ['anonymous'];
+    update.$pullAll["roles." + ReactionCore.getShopId()] = ["anonymous"];
 
     Meteor.users.update({
-      "_id": options.user._id
+      _id: options.user._id
     }, update, {
       multi: true
     });
     // debug info
-    ReactionCore.Log.info("removed anonymous role from user: " + options.user._id);
+    ReactionCore.Log.debug("removed anonymous role from user: " + options.user._id);
 
     // onLogin, we want to merge session cart into user cart.
     cart = ReactionCore.Collections.Cart.findOne({userId: options.user._id});
@@ -95,22 +89,17 @@ Accounts.onLogin(function (options) {
     // logged in users need an additonal worfklow push to get started with checkoutLogin
     return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
   }
-
 });
-
-
-
 
 /**
  * Reaction Account Methods
  */
-
 Meteor.methods({
-  /**
+  /*
    * check if current user has password
    */
   currentUserHasPassword: function () {
-    var user;
+    let user;
     user = Meteor.users.findOne(Meteor.userId());
     if (user.services.password) {
       return true;
@@ -118,7 +107,7 @@ Meteor.methods({
     return false;
   },
 
-  /**
+  /*
    * add new addresses to an account
    */
   addressBookAdd: function (doc, accountId) {
@@ -140,7 +129,7 @@ Meteor.methods({
       }
       if (doc.isBillingDefault) {
         ReactionCore.Collections.Accounts.update({
-          '_id': accountId,
+          "_id": accountId,
           "userId": accountId,
           "profile.addressBook.isBillingDefault": true
         }, {
@@ -152,7 +141,7 @@ Meteor.methods({
     }
     ReactionCore.Collections.Accounts.upsert(accountId, {
       $set: {
-        "userId": accountId
+        userId: accountId
       },
       $addToSet: {
         "profile.addressBook": doc
@@ -161,8 +150,8 @@ Meteor.methods({
     return doc;
   },
 
-  /**
-   * update existing address in user's profile
+  /*
+   * update existing address in user"s profile
    */
   addressBookUpdate: function (doc, accountId) {
     this.unblock();
@@ -201,8 +190,8 @@ Meteor.methods({
     return doc;
   },
 
-  /**
-   * remove existing address in user's profile
+  /*
+   * remove existing address in user"s profile
    */
   addressBookRemove: function (doc, accountId) {
     this.unblock();
@@ -214,20 +203,24 @@ Meteor.methods({
     }, {
       $pull: {
         "profile.addressBook": {
-          "_id": doc._id
+          _id: doc._id
         }
       }
     });
     return doc;
   },
 
-  /**
+  /*
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
    */
   inviteShopMember: function (shopId, email, name) {
-    var currentUserName, shop, token, user, userId, _ref, _ref1, _ref2;
+    let currentUserName;
+    let shop;
+    let token;
+    let user;
+    let userId;
     check(shopId, String);
     check(email, String);
     check(name, String);
@@ -241,11 +234,9 @@ Meteor.methods({
     ReactionCore.configureMailUrl();
 
     if (shop && email && name) {
-
-      var currentUser = Meteor.user();
-
+      let currentUser = Meteor.user();
       if (currentUser) {
-        if(currentUser.profile) {
+        if (currentUser.profile) {
           currentUserName = currentUser.profile.name;
         } else {
           currentUserName = currentUser.username;
@@ -277,13 +268,13 @@ Meteor.methods({
             }
           }
         });
-        SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'));
+        SSR.compileTemplate("shopMemberInvite", Assets.getText("server/emailTemplates/shopMemberInvite.html"));
         try {
           Email.send({
             to: email,
             from: currentUserName + " <" + shop.emails[0] + ">",
             subject: "You have been invited to join " + shop.name,
-            html: SSR.render('shopMemberInvite', {
+            html: SSR.render("shopMemberInvite", {
               homepage: Meteor.absoluteUrl(),
               shop: shop,
               currentUserName: currentUserName,
@@ -295,13 +286,13 @@ Meteor.methods({
           throw new Meteor.Error(403, "Unable to send invitation email.");
         }
       } else {
-        SSR.compileTemplate('shopMemberInvite', Assets.getText('server/emailTemplates/shopMemberInvite.html'));
+        SSR.compileTemplate("shopMemberInvite", Assets.getText("server/emailTemplates/shopMemberInvite.html"));
         try {
           Email.send({
             to: email,
             from: currentUserName + " <" + shop.emails[0] + ">",
             subject: "You have been invited to join the " + shop.name,
-            html: SSR.render('shopMemberInvite', {
+            html: SSR.render("shopMemberInvite", {
               homepage: Meteor.absoluteUrl(),
               shop: shop,
               currentUserName: currentUserName,
@@ -319,21 +310,21 @@ Meteor.methods({
     return true;
   },
 
-  /**
+  /*
    * send an email to consumers on sign up
    */
   sendWelcomeEmail: function (shopId, userId) {
-    var email;
+    let email;
     check(shop, Object);
     this.unblock();
     email = Meteor.user(userId).emails[0].address;
     ReactionCore.configureMailUrl();
-    SSR.compileTemplate('welcomeNotification', Assets.getText('server/emailTemplates/welcomeNotification.html'));
+    SSR.compileTemplate("welcomeNotification", Assets.getText("server/emailTemplates/welcomeNotification.html"));
     Email.send({
       to: email,
       from: shop.emails[0],
       subject: "Welcome to " + shop.name + "!",
-      html: SSR.render('welcomeNotification', {
+      html: SSR.render("welcomeNotification", {
         homepage: Meteor.absoluteUrl(),
         shop: shop,
         user: Meteor.user()
@@ -342,63 +333,56 @@ Meteor.methods({
     return true;
   },
 
-  /**
+  /*
    * addUserPermissions
    * @param {Array|String} permission
    *               Name of role/permission.  If array, users
    *               returned will have at least one of the roles
    *               specified but need not have _all_ roles.
    * @param {String} [group] Optional name of group to restrict roles to.
-   *                         User's Roles.GLOBAL_GROUP will also be checked.
+   *                         User"s Roles.GLOBAL_GROUP will also be checked.
    * @returns {Boolean} success/failure
    */
   addUserPermissions: function (userId, permissions, group) {
-    var e;
     check(userId, Match.OneOf(String, Array));
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String));
     this.unblock();
     try {
       return Roles.addUsersToRoles(userId, permissions, group);
-    } catch (_error) {
-      e = _error;
-      return ReactionCore.Log.info(e);
+    } catch (error) {
+      return ReactionCore.Log.info(error);
     }
   },
 
-  /**
+  /*
    * removeUserPermissions
    */
   removeUserPermissions: function (userId, permissions, group) {
-    var error;
-    console.log(userId, permissions, group);
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String, null));
     this.unblock();
     try {
-      return console.log(Roles.removeUsersFromRoles(userId, permissions, group));
-    } catch (_error) {
-      error = _error;
+      return Roles.removeUsersFromRoles(userId, permissions, group);
+    } catch (error) {
       ReactionCore.Log.info(error);
       throw new Meteor.Error(403, "Access Denied");
     }
   },
 
-  /**
+  /*
    * setUserPermissions
    */
   setUserPermissions: function (userId, permissions, group) {
-    var e;
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String));
     this.unblock();
     try {
       return Roles.setUserRoles(userId, permissions, group);
-    } catch (_error) {
-      e = _error;
-      return ReactionCore.Log.info(e);
+    } catch (error) {
+      return ReactionCore.Log.info(error);
     }
   }
 });
