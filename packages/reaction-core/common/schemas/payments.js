@@ -4,8 +4,7 @@
 
 ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   processor: {
-    type: String,
-    optional: true
+    type: String
   },
   storedCard: {
     type: String,

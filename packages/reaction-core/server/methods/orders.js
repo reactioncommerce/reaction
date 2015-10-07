@@ -326,7 +326,7 @@ Meteor.methods({
     let order = ReactionCore.Collections.Orders.findOne(orderId);
 
     // process order..payment.paymentMethod
-    _.each(order.payment.paymentMethod, function (paymentMethod) {
+    _.each(order.billing.paymentMethod, function (paymentMethod) {
       if (paymentMethod.mode === "authorize" && paymentMethod.status ===
         "approved" && paymentMethod.processor) {
         Meteor[paymentMethod.processor].capture(paymentMethod.transactionId,
