@@ -74,7 +74,8 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   },
   billing: {
     type: [ReactionCore.Schemas.Payment],
-    optional: true
+    optional: true,
+    blackbox: true
   },
   totalPrice: {
     label: "Total Price",

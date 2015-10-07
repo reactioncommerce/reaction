@@ -4,7 +4,6 @@
 
 Meteor.methods({
   "cart/submitPayment": function (paymentMethod) {
-    console.log("paymentMethod",paymentMethod)
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
 
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
@@ -20,7 +19,6 @@ Meteor.methods({
       discounts: cart.cartDiscounts(),
       total: cart.cartTotal()
     };
-    console.log(paymentMethod, invoice)
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where
     // method-hooks can process the workflow update.

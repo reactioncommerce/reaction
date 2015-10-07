@@ -27,10 +27,8 @@ ReactionCore.Helpers.cartTransform = {
   cartShipping: function () {
     let shipping = 0;
     if (this.shipping) {
-      if (this.shipping.shipmentMethod) {
-        for (let shippingMethod of this.shipping.shipmentMethod) {
-          shipping += shippingMethod.rate;
-        }
+      if (this.shipping[0].shipmentMethod) {
+        shipping += this.shipping[0].shipmentMethod.rate;
       }
     }
     return shipping;

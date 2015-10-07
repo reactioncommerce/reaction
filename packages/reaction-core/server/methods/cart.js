@@ -394,8 +394,6 @@ Meteor.methods({
       Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
       return;
     });
-    // we should not have made it here, throw error
-    throw new Meteor.Error("cart/setShipmentMethod: Invalid request");
   },
 
   /**
@@ -464,7 +462,6 @@ Meteor.methods({
         }
         return;
       });
-      throw new Meteor.Error("cart/setShipmentAddress: Invalid request");
     }
   },
   /**
@@ -513,17 +510,15 @@ Meteor.methods({
       }
 
       ReactionCore.Collections.Cart.update(selector, update,
-        function (error) {
+        function (error, result) {
           if (error) {
             ReactionCore.Log.warn(error);
           } else {
             // post payment address Methods
+            return result;
           }
         });
-      return;
     }
-    // should not have arrive here.
-    throw new Meteor.Error("cart/setPaymentAddress: Invalid request");
   },
 
   /**
@@ -534,7 +529,6 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethod) {
-    console.log("paymentMethod",paymentMethod)
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
 
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
