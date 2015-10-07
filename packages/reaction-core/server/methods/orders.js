@@ -183,16 +183,16 @@ Meteor.methods({
    * @return {String} returns order update result
    */
   "orders/addItemToShipment": function (orderId, shipmentId, item) {
-    check(order, Object);
+    check(orderId, String);
     check(shipmentId, String);
     check(item, Object);
 
     return ReactionCore.Collections.Orders.update({
-      "_id": order._id,
+      "_id": orderId,
       "shipping._id": shipmentId
     }, {
       $push: {
-        [`shipping.$.items`]: item
+        "shipping.$.items": item
       }
     });
   },

@@ -120,6 +120,7 @@ ReactionCore.Schemas.ShipmentItem = new SimpleSchema({
   _id: {
     type: String,
     label: "Shipment Line Item",
+    optional: true,
     autoValue: ReactionCore.schemaIdAutoValue
   },
   productId: {

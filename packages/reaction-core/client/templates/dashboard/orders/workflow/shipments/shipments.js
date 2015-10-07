@@ -116,11 +116,12 @@ Template.coreOrderShipments.helpers({
     let order = template.order;
     let shipments = order.shipping.shipments || [];
     let allItemsInShipments = [];
-
+    return order.items
     for (let shipment of shipments) {
       allItemsInShipments = allItemsInShipments.concat(shipment.items);
     }
 
+    console.log("all items in shiments", allItemsInShipments);
     let items = _.filter(order.items, (item) => {
       return _.where(allItemsInShipments, {
         _id: item._id

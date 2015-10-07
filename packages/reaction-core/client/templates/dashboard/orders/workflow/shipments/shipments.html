@@ -18,7 +18,7 @@
 
             <select class="" name="shipmentSelect">
               <option value="" disabled selected>Select One</option>
-              {{#each shipment in order.shipping.shipments}}
+              {{#each shipment in order.shipping}}
                 <option value="{{shipment._id}}">{{shipmentIndex @index}}</option>
               {{/each}}
             </select>
@@ -100,7 +100,7 @@
   {{!-- TODO: add propery ability to adjust the order into multiple shipments
     <button class="btn btn-default btn-block" type="button" data-event-action="addShipment">Add Shipment</button>
   --}}
-
+  <hr>
   <button class="btn btn-default btn-block" type="button" data-event-action="shipmentsPacked">All Shipments Packed</button>
 
 </template>
