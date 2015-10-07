@@ -49,7 +49,8 @@ ReactionCore.Helpers.cartTransform = {
     let subtotal = 0;
     if (typeof this !== "undefined" && this !== null ? this.items : void 0) {
       for (let items of this.items) {
-        subtotal += items.variants.price * this.tax;
+        let tax = this.tax || 0;
+        subtotal += items.variants.price * tax;
       }
     }
     subtotal = subtotal.toFixed(2);

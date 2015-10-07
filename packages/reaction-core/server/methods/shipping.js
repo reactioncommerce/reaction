@@ -27,7 +27,7 @@ Meteor.methods({
       let update;
       // temp hack until we build out multiple shipment handlers
       // if we have an existing item update it, otherwise add to set.
-      if (cart.shipping) {
+      if (cart.shipping && rates.length > 0) {
         selector = {
           "_id": cartId,
           "shipping._id": cart.shipping[0]._id
@@ -42,7 +42,7 @@ Meteor.methods({
           _id: cartId
         };
         update = {
-          $addToSet: {
+          $push: {
             shipping: {
               shipmentQuotes: rates
             }
@@ -56,6 +56,7 @@ Meteor.methods({
             ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
             return;
           }
+          ReactionCore.Log.debug(`Success adding rates to cart ${cartId}`, rates);
         });
       }
     }

@@ -338,13 +338,13 @@ Meteor.methods({
               transactionId = paymentMethod.transactionId;
               ReactionCore.Collections.Orders.update({
                 "_id": orderId,
-                "payment.paymentMethod.transactionId": transactionId
+                "billing.paymentMethod.transactionId": transactionId
               }, {
                 $set: {
                   "payment.paymentMethod.$.transactionId": result
                     .capture.id,
-                  "payment.paymentMethod.$.mode": "capture",
-                  "payment.paymentMethod.$.status": "completed"
+                  "billing.paymentMethod.$.mode": "capture",
+                  "billing.paymentMethod.$.status": "completed"
                 }
               });
             } else {

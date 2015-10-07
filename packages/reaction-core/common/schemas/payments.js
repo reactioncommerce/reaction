@@ -4,7 +4,8 @@
 
 ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   processor: {
-    type: String
+    type: String,
+    optional: true
   },
   storedCard: {
     type: String,
@@ -28,15 +29,11 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   createdAt: {
     type: Date,
     autoValue: function () {
-      if (this.isInsert) {
+      if (this.isUpdate && !this.isSet) {
         return new Date;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: new Date
-        };
       }
-    },
-    denyUpdate: true
+      this.unset();
+    }
   },
   updatedAt: {
     type: Date,

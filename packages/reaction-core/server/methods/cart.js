@@ -347,53 +347,55 @@ Meteor.methods({
   "cart/setShipmentMethod": function (cartId, method) {
     check(cartId, String);
     check(method, Object);
-
     // get current cart
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
       userId: Meteor.userId()
     });
-
-    if (cart) {
-      // temp hack until we build out multiple payment handlers
-      let selector;
-      let update;
-      // temp hack until we build out multiple shipment handlers
-      // if we have an existing item update it, otherwise add to set.
-      if (cart.shipping) {
-        selector = {
-          "_id": cartId,
-          "shipping._id": cart.shipping[0]._id
-        };
-        update = {
-          $set: {
-            "shipping.$.method": method
-          }
-        };
-      } else {
-        selector = {
-          _id: cartId
-        };
-        update = {
-          $addToSet: {
-            shipping: {
-              method: method
-            }
-          }
-        };
-      }
-      // update or insert method
-      ReactionCore.Collections.Cart.update(selector, update, function (error) {
-        if (error) {
-          ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
-          return;
-        }
-        // this will transition to review
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
-      });
-      // we should not have made it here, throw error
-      throw new Meteor.Error("cart/setShipmentMethod: Invalid request");
+    // a cart is required!
+    if (!cart) {
+      return;
     }
+
+    // temp hack until we build out multiple shipping handlers
+    let selector;
+    let update;
+    // temp hack until we build out multiple shipment handlers
+    // if we have an existing item update it, otherwise add to set.
+    if (cart.shipping) {
+      selector = {
+        "_id": cartId,
+        "shipping._id": cart.shipping[0]._id
+      };
+      update = {
+        $set: {
+          "shipping.$.shipmentMethod": method
+        }
+      };
+    } else {
+      selector = {
+        _id: cartId
+      };
+      update = {
+        $addToSet: {
+          shipping: {
+            shipmentMethod: method
+          }
+        }
+      };
+    }
+    // update or insert method
+    ReactionCore.Collections.Cart.update(selector, update, function (error) {
+      if (error) {
+        ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
+        return;
+      }
+      // this will transition to review
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
+      return;
+    });
+    // we should not have made it here, throw error
+    throw new Meteor.Error("cart/setShipmentMethod: Invalid request");
   },
 
   /**
@@ -532,7 +534,8 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethod) {
-    check(paymentMethod, Object);
+    console.log("paymentMethod",paymentMethod)
+    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
 
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
@@ -549,32 +552,44 @@ Meteor.methods({
     };
 
     // we won't actually close the order at this stage.
-    // we'll just update the workflow where
+    // we'll just update the workflow and billing data where
     // method-hooks can process the workflow update.
 
-    result = ReactionCore.Collections.Cart.update({
-      _id: cartId
-    }, {
-      $addToSet: {
-        "billing.paymentMethod": paymentMethod,
-        "billing.invoice": invoice,
-        "workflow.workflow": "paymentSubmitted"
-      }
-    });
-
-    let updatedCart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
-    });
-    // Client Stub Actions
-    if (result === 1 && updatedCart.billing && updatedCart.items) {
-      return cartId;
+    let selector;
+    let update;
+    // temp hack until we build out multiple billing handlers
+    // if we have an existing item update it, otherwise add to set.
+    if (cart.billing) {
+      selector = {
+        "_id": cartId,
+        "billing._id": cart.billing[0]._id
+      };
+      update = {
+        $set: {
+          "billing.$.paymentMethod": paymentMethod,
+          "billing.$.invoice": invoice
+        }
+      };
+    } else {
+      selector = {
+        _id: cartId
+      };
+      update = {
+        $addToSet: {
+          "billing.paymentMethod": paymentMethod,
+          "billing.invoice": invoice
+        }
+      };
     }
-    // we should not have made it here!
-    Alerts.add("Failed to place order.", "danger", {
-      autoHide: true,
-      placement: "paymentMethod"
+
+    ReactionCore.Collections.Cart.update(selector, update, function (error) {
+      if (error) {
+        ReactionCore.Log.warn(error);
+        throw new Meteor.Error("An error occurred saving the order", error);
+      }
+      return;
     });
-    throw new Meteor.Error("An error occurred saving the order", cartId,
-      error);
+    // should not have arrive here.
+    throw new Meteor.Error("An error occurred saving the order", cartId);
   }
 });
