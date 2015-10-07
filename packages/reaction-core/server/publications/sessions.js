@@ -10,27 +10,30 @@ this.ServerSessions = new Mongo.Collection("Sessions");
 Meteor.publish("Sessions", function (sessionId) {
   check(sessionId, Match.OneOf(String, null));
   let created = new Date().getTime();
+  let newSessionId;
   // if we don"t have a sessionId create a new session
+  // REALLY - we should always have a client sessionId
   if (!sessionId) {
-    id = ServerSessions.insert({
+    newSessionId = ServerSessions.insert({
       created: created
     });
   } else {
-    id = sessionId;
+    newSessionId = sessionId;
   }
   // get the session from existing sessionId
-  let serverSession = ServerSessions.find(id);
+  let serverSession = ServerSessions.find(newSessionId);
 
   // if not found, also create a new server session
   if (serverSession.count() === 0) {
-    id = ServerSessions.insert({
+    ServerSessions.insert({
+      _id: newSessionId,
       created: created
     });
   }
 
   // set global sessionId
-  ReactionCore.sessionId = id;
+  ReactionCore.sessionId = newSessionId;
 
   // return cursor
-  return ServerSessions.find(id);
+  return ServerSessions.find(newSessionId);
 });

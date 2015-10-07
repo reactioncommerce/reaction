@@ -6,19 +6,21 @@
  * supports reactivity when server changes the serverSession
  * Stores the server session id into local storage / cookies
  */
+let currentSession;
+let serverSession = Random.id();
+
+Tracker.autorun(function () {
+  currentSession = Session.get("sessionId") || amplify.store(
+    "ReactionCore.session");
+  if (!currentSession) {
+    amplify.store("ReactionCore.session", serverSession);
+    Session.set("sessionId", serverSession);
+    currentSession = serverSession;
+  }
+});
 
 ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions",
-  amplify.store("ReactionCore.session"),
-  function () {
-    let currentSession = Session.get("sessionId");
-    if (!currentSession) {
-      let serverSession = new Mongo.Collection("Sessions").findOne();
-      amplify.store("ReactionCore.session", serverSession._id);
-      return Session.set("sessionId", serverSession._id);
-    }
-    return currentSession;
-  });
-
+  currentSession);
 // Load order is important here, sessions come before cart.
 ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
   Session.get("sessionId"),

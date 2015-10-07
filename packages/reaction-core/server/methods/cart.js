@@ -43,7 +43,7 @@ Meteor.methods({
         }
       }]
     });
-    // console.log("sessionCarts", sessionCarts.fetch())
+    ReactionCore.Log.debug("sessionCarts", sessionCarts.fetch())
     ReactionCore.Log.debug(
       `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
     );
@@ -112,11 +112,12 @@ Meteor.methods({
     });
 
     if (currentUserCart) {
+      ReactionCore.Log.debug("currentUserCart", currentUserCart.sessionId);
       sessionId = currentUserCart.session;
     } else {
       sessionId = ReactionCore.sessionId;
     }
-
+    ReactionCore.Log.debug("current cart serverSession", sessionId);
     // while anonymous and merge into user cart
     let sessionCartCount = Cart.find({
       session: sessionId,
@@ -164,8 +165,9 @@ Meteor.methods({
         shopId: shopId,
         userId: userId
       });
-      ReactionCore.Log.debug("create cart: no existing cart. created: " +
-        currentCartId + " for " + userId);
+      ReactionCore.Log.debug(
+        `create cart: no existing cart. created: ${currentCartId} currentCartId for sessionId ${sessionId} and userId ${userId}`
+      );
     }
     return currentCartId;
   },
