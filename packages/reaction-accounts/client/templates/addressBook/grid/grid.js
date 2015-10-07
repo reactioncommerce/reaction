@@ -3,12 +3,14 @@
  */
 Template.addressBookGrid.helpers({
   selectedBilling: function () {
-    let cart = ReactionCore.Collections.Cart.findOne();
+    let cart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
+    });
 
     if (cart) {
-      if (cart.payment) {
-        if (cart.payment.address) {
-          if (this._id === cart.payment.address._id) {
+      if (cart.billing) {
+        if (cart.billing[0].address) {
+          if (this._id === cart.billing[0].address._id) {
             return "active";
           }
         }
@@ -17,12 +19,14 @@ Template.addressBookGrid.helpers({
   },
 
   selectedShipping: function () {
-    let cart = ReactionCore.Collections.Cart.findOne();
+    let cart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
+    });
 
     if (cart) {
       if (cart.shipping) {
-        if (cart.shipping.address) {
-          if (this._id === cart.shipping.address._id) {
+        if (cart.shipping[0].address) {
+          if (this._id === cart.shipping[0].address._id) {
             return "active";
           }
         }
@@ -42,11 +46,15 @@ Template.addressBookGrid.helpers({
 
 Template.addressBookGrid.events({
   "click [data-event-action=selectShippingAddress]": function () {
-    cart = ReactionCore.Collections.Cart.findOne();
+    let cart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
+    });
     return Meteor.call("cart/setShipmentAddress", cart._id, this);
   },
   "click [data-event-action=selectBillingAddress]": function () {
-    cart = ReactionCore.Collections.Cart.findOne();
+    let cart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
+    });
     return Meteor.call("cart/setPaymentAddress", cart._id, this);
   }
 });
