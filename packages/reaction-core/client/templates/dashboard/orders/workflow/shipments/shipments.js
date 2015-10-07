@@ -22,29 +22,13 @@ Template.coreOrderShipments.onCreated(() => {
  * stateHelperTracking events
  */
 Template.coreOrderShipments.events({
-  "click #add-tracking-code": function (event, template) {
-    var currentState, tracking;
-    event.preventDefault();
-    if (!this._id) {
-      throw new Meteor.Error("Failed", "Missing tracking order.");
-    }
-
-    tracking = template.find("input[name=input-tracking-code]").value;
-    if (!tracking) {
-      Alerts.add("Tracking required to process order.", "danger", {
-        autoHide: true
-      });
-      return false;
-    }
-    Meteor.call("orders/shipmentTracking", this, tracking);
-
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+  "click [data-devent-action=shipmentsPacked]": function () {
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderShipments", this._id);
   },
 
   "click [data-event-action=addShipment]": (event, template) => {
-    console.log(template.data);
     Meteor.call("orders/addShipment", template.data._id, {
-      packed: false,
+      packed: false
     });
   },
 
@@ -52,21 +36,16 @@ Template.coreOrderShipments.events({
     let data = $(event.target).closest("[data-shipment-index]").data();
     Meteor.call("orders/removeShipment", template.data._id, data.shipmentIndex, (error) => {
       if (!error) {
-        template.orderDep.changed()
+        template.orderDep.changed();
       }
     });
   },
 
   "change select[name=shipmentSelect]": (event, template) => {
-
     let data = $(event.target).closest("[data-item]").data();
     let shipmentIndex = $(event.target).val();
-    console.log(data, shipmentIndex);
-    // return;
-    //
     let order = template.order;
-
-    let item = _.findWhere(order.items, {_id: data.itemId})
+    let item = _.findWhere(order.items, {_id: data.itemId});
     let shipmentItem = {
       _id: item._id,
       productId: item.productId,
@@ -75,24 +54,9 @@ Template.coreOrderShipments.events({
       quantity: item.quantity
     };
 
-    console.log("--Shipment item", shipmentItem);
-
-    //
-    // for (index in order.shipping.shipments) {
-    //   if ({}.hasOwnProperty.call(order.shipping.shipments, index)) {
-    //     let shipment = order.shipping.shipments[index];
-    //
-    //     if (shipment._id === shipmentIndex) {
-    //       order.shipping.shipments[index].items.push(shipmentItem);
-    //       break;
-    //     }
-    //   }
-    // }
-
-    Meteor.call("orders/updateOrder", order, shipmentIndex, shipmentItem, (error, result) => {
+    Meteor.call("orders/updateOrder", order, shipmentIndex, shipmentItem, (error) => {
       if (!error) {
         template.orderDep.changed();
-        console.log("completed", template.order);
       }
     });
   },
@@ -115,7 +79,6 @@ Template.coreOrderShipments.events({
 
   "click [data-event-action=showTrackingEdit]": (event, template) => {
     template.showTrackingEditForm.set(true);
-
   }
 });
 
@@ -132,9 +95,19 @@ Template.coreOrderShipments.helpers({
     return false;
   },
 
+  shipmentItems(shipment) {
+    let template = Template.instance();
+
+    let items = _.map(shipment.items, (item) => {
+      let originalItem = _.findWhere(template.order.items, {_id: item._id});
+      return _.extend(originalItem, item);
+    });
+
+    return items;
+  },
+
   order() {
     let template = Template.instance();
-    console.log(template.order);
     return template.order;
   },
 
@@ -145,12 +118,10 @@ Template.coreOrderShipments.helpers({
     let allItemsInShipments = [];
 
     for (let shipment of shipments) {
-      console.log("shipment", shipment);
       allItemsInShipments = allItemsInShipments.concat(shipment.items);
     }
-console.log("All items in shipments", allItemsInShipments);
+
     let items = _.filter(order.items, (item) => {
-        console.log("item", item, _.where(allItemsInShipments, {_id: item._id}));
       return _.where(allItemsInShipments, {_id: item._id}).length;
     });
 
@@ -168,19 +139,20 @@ console.log("All items in shipments", allItemsInShipments);
     return index + 1;
   },
 
-  // parcels() {
-  //   let template = Template.instance();
-  //   return template.order.shipments;
-  // },
-
   /**
    * Media - find meda based on a variant
-   * @param  {Product} variant A variant of a product
+   * @param  {String|Object} variantObjectOrId A variant of a product or a variant Id
    * @return {Object|false}    An object contianing the media or false
    */
-  media(variant) {
+  media(variantObjectOrId) {
+    let variantId = variantObjectOrId;
+
+    if (typeof variant === "Object") {
+      variantId = variantObjectOrId._id;
+    }
+
     let defaultImage = ReactionCore.Collections.Media.findOne({
-      "metadata.variantId": variant.parentId,
+      "metadata.variantId": variantId,
       "metadata.priority": 0
     });
 

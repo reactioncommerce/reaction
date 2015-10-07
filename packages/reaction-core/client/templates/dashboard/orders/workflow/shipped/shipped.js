@@ -4,7 +4,7 @@
  */
 Template.coreShipmentShipped.events({
   "click .btn": function () {
-    Meteor.call("order/orderCompleted", this);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "orderCompleted", this._id);
+    Meteor.call("order/orderShipped", this._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "orderShipped", this._id);
   }
 });

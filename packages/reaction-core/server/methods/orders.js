@@ -165,10 +165,10 @@ Meteor.methods({
 
     return ReactionCore.Collections.Orders.update({
       "_id": orderId,
-      "shipping.shipments._id": shipmentId
+      "shipping._id": shipmentId
     }, {
       $set: {
-        [`shipping.shipments.$.tracking`]: tracking
+        [`shipping.$.tracking`]: tracking
       }
     });
   },
@@ -180,10 +180,10 @@ Meteor.methods({
 
     return ReactionCore.Collections.Orders.update({
       "_id": order._id,
-      "shipping.shipments._id": shipmentId
+      "shipping._id": shipmentId
     }, {
       $push: {
-        [`shipping.shipments.$.items`]: item
+        [`shipping.$.items`]: item
       }
     });
   },
@@ -312,7 +312,7 @@ Meteor.methods({
   },
 
   /**
-   * orders/processPayments
+   * orders/capturePayments
    * @summary Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
    * @todo: add tests working with new payment methods
@@ -320,7 +320,7 @@ Meteor.methods({
    * @param {String} orderId - add tracking to orderId
    * @return {null} no return value
    */
-  "orders/processPayments": (orderId) => {
+  "orders/capturePayments": (orderId) => {
     check(orderId, String);
 
     let order = ReactionCore.Collections.Orders.findOne(orderId);

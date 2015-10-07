@@ -30,26 +30,24 @@
   {{/if}}
 
   <div class="order-shipments">
-
-    <a href="/dashboard/pdf/orders/{{_id}}" target="_blank">
-      <button type="button" class="btn btn-success save-order-pdf" data-i18n="app.download">Download PDF</button>
-    </a>
-
-    {{#each shipment in order.shipping.shipments}}
+    {{#each shipment in order.shipping}}
       <div class="panel panel-default" data-shipment data-shipment-id="{{shipment._id}}">
         <div class="panel-heading panel-heading-flex">
           <h4 class="panel-title">Shipment {{shipmentIndex @index}}</h4>
+
+          {{!-- TODO: add propery ability to adjust the order into multiple shipments
           <div class="panel-controls">
             <button class="btn btn-default" type="button" data-event-action="removeShipment"><i class="fa fa-trash-o"></i></button>
           </div>
+          --}}
         </div>
-        <div class="panel-body">
-          <h4>Items</h4>
-          {{#each item in shipment.items}}
-            <div class="order-item" data-item data-item-id="{{item._id}}">
+
+        <div class="order-list-items list-group">
+          {{#each item in (shipmentItems shipment)}}
+            <div class="order-item list-group-item" data-item data-item-id="{{item._id}}">
 
               <div class="order-item-media">
-                {{#with media item.variants}}
+                {{#with media item.variantId}}
                   <img src="{{url store='thumbnail'}}" width="50">
                 {{else}}
                   <img src= "/resources/placeholder.gif">
@@ -58,19 +56,26 @@
 
               <div class="order-item-details">
                 <p>{{item.variants.title}}</p>
-
+                <p><small>{{item.quantity}}</small></p>
+                {{!-- TODO: Move products between shipments
                 <select class="" name="shipmentSelect">
                   <option value="" disabled selected>Select One</option>
                   {{#each shipment in order.shipments}}
                     <option value="{{shipment._id}}">{{shipmentIndex @index}}</option>
                   {{/each}}
                 </select>
+                --}}
               </div>
+            </div>
+          {{else}}
+            <div class="order-item list-group-item">
+              This shipment has no items
             </div>
           {{/each}}
         </div>
-        <hr>
-        <div class="panel-body">
+
+
+        <div class="panel-footer">
           {{#if showTrackingEdit shipment}}
             <form name="addTrackingForm">
               <input type="text" name="trackingNumber" value="{{shipment.tracking}}">
@@ -82,13 +87,22 @@
               <i class="fa fa-edit"></i>
             </button>
           {{/if}}
+          <hr>
+          <a class="save-order-pdf" href="/dashboard/pdf/orders/{{_id}}" target="_blank" data-i18n="app.download">
+            Download Invoice
+          </a>
         </div>
       </div>
     {{/each}}
   </div>
 
 
-  <button class="btn btn-default btn-block" type="button" data-event-action="addShipment">Add Shipment</button>
+  {{!-- TODO: add propery ability to adjust the order into multiple shipments
+    <button class="btn btn-default btn-block" type="button" data-event-action="addShipment">Add Shipment</button>
+  --}}
+
+  <button class="btn btn-default btn-block" type="button" data-event-action="shipmentsPacked">All Shipments Packed</button>
+
 </template>
 
 
