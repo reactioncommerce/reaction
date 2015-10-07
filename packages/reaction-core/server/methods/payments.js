@@ -1,15 +1,28 @@
-Meteor.methods( {
+Meteor.methods({
   /**
-   * add payment method
+   * payments/paymentMethod
+   * @summary adds payment to order
+   * @param {String} cartId - cartId
+   * @param {Object} paymentMethod - formatted payment method object
+   * @returns {String} return cart update result
    */
-  paymentMethod: function(cartId, paymentMethod) {
+  "payments/paymentMethod": function (cartId, paymentMethod) {
     check(cartId, String);
     check(paymentMethod, Object);
-    return Cart.update({
-      _id: cartId
+
+    // temp hack until we build out multiple payment handlers
+    let cart = ReactionCore.Collections.Cart.findOne(cartId);
+    let paymentId = "";
+    if (cart.biling) {
+      paymentId = cart.billing[0]._id;
+    }
+
+    return Cart.upsert({
+      "_id": cartId,
+      "billing._id": paymentId
     }, {
       $addToSet: {
-        "payment.paymentMethod": paymentMethod
+        "billing.paymentMethod": paymentMethod
       }
     });
   }

@@ -2,10 +2,9 @@
  * Add swiper to cartDrawerItems
  *
  */
-Template.cartDrawerItems.onRendered(function() {
-  return $(function() {
-    var mySwiper;
-    mySwiper = $(".cart-drawer-swiper-container").swiper({
+Template.cartDrawerItems.onRendered(function () {
+  return $(function () {
+    return $(".cart-drawer-swiper-container").swiper({
       direction: "horizontal",
       setWrapperSize: true,
       loop: false,
@@ -27,25 +26,22 @@ Template.cartDrawerItems.onRendered(function() {
  * @returns default product image
  */
 Template.cartDrawerItems.helpers({
-  media: function() {
-    var defaultImage, img, product;
-    if (defaultImage = ReactionCore.Collections.Media.findOne({
-      'metadata.variantId': this.variants._id
-    })) {
+  media: function () {
+    let product = Products.findOne(this.productId);
+    let defaultImage = ReactionCore.Collections.Media.findOne({
+      "metadata.variantId": this.variants._id
+    });
+
+    if (defaultImage) {
       return defaultImage;
-    } else {
-      product = Products.findOne(this.productId);
-      if (!product) {
-        return;
-      }
-      img = null;
-      _.any(product.variants, function(v) {
-        img = ReactionCore.Collections.Media.findOne({
-          'metadata.variantId': v._id
+    } else if (product) {
+      _.any(product.variants, function (variant) {
+        defaultImage = ReactionCore.Collections.Media.findOne({
+          "metadata.variantId": variant._id
         });
-        return !!img;
+        return !!defaultImage;
       });
-      return img;
     }
+    return defaultImage;
   }
 });

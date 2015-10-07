@@ -1,89 +1,86 @@
-
 /**
-* security definitions
-*
-* The following security definitions use the ongoworks:security package.
-* Rules within a single chain stack with AND relationship. Multiple
-* chains for the same collection stack with OR relationship.
-* See https://github.com/ongoworks/meteor-security
-*
-* It's important to note that these security rules are for inserts,
-* updates, and removes initiated from untrusted (client) code.
-* Thus there may be other actions that certain roles are allowed to
-* take, but they do not necessarily need to be listed here if the
-* database operation is executed in a server method.
-*/
-
+ * security definitions
+ *
+ * The following security definitions use the ongoworks:security package.
+ * Rules within a single chain stack with AND relationship. Multiple
+ * chains for the same collection stack with OR relationship.
+ * See https://github.com/ongoworks/meteor-security
+ *
+ * It"s important to note that these security rules are for inserts,
+ * updates, and removes initiated from untrusted (client) code.
+ * Thus there may be other actions that certain roles are allowed to
+ * take, but they do not necessarily need to be listed here if the
+ * database operation is executed in a server method.
+ */
 
 /*
-* Assign to some local variables to keep code
-* short and sweet
-*/
-var Cart = ReactionCore.Collections.Cart;
+ * Assign to some local letiables to keep code
+ * short and sweet
+ */
+let Cart = ReactionCore.Collections.Cart;
 
-var Discounts = ReactionCore.Collections.Discounts;
+let Discounts = ReactionCore.Collections.Discounts;
 
-var Media = ReactionCore.Collections.Media;
+let Media = ReactionCore.Collections.Media;
 
-var Orders = ReactionCore.Collections.Orders;
+let Orders = ReactionCore.Collections.Orders;
 
-var Packages = ReactionCore.Collections.Packages;
+let Packages = ReactionCore.Collections.Packages;
 
-var Products = ReactionCore.Collections.Products;
+let Products = ReactionCore.Collections.Products;
 
-var Shipping = ReactionCore.Collections.Shipping;
+let Shipping = ReactionCore.Collections.Shipping;
 
-var Shops = ReactionCore.Collections.Shops;
+let Shops = ReactionCore.Collections.Shops;
 
-var Tags = ReactionCore.Collections.Tags;
+let Tags = ReactionCore.Collections.Tags;
 
-var Taxes = ReactionCore.Collections.Taxes;
+let Taxes = ReactionCore.Collections.Taxes;
 
-var Translations = ReactionCore.Collections.Translations;
-
+let Translations = ReactionCore.Collections.Translations;
 
 /*
  * Define some additional rule chain methods
  */
 
-Security.defineMethod('ifShopIdMatches', {
+Security.defineMethod("ifShopIdMatches", {
   fetch: [],
-  deny: function(type, arg, userId, doc) {
+  deny: function (type, arg, userId, doc) {
     return doc.shopId !== ReactionCore.getShopId();
   }
 });
 
-Security.defineMethod('ifShopIdMatchesThisId', {
+Security.defineMethod("ifShopIdMatchesThisId", {
   fetch: [],
-  deny: function(type, arg, userId, doc) {
+  deny: function (type, arg, userId, doc) {
     return doc._id !== ReactionCore.getShopId();
   }
 });
 
-Security.defineMethod('ifFileBelongsToShop', {
+Security.defineMethod("ifFileBelongsToShop", {
   fetch: [],
-  deny: function(type, arg, userId, doc) {
+  deny: function (type, arg, userId, doc) {
     return doc.metadata.shopId !== ReactionCore.getShopId();
   }
 });
 
-Security.defineMethod('ifUserIdMatches', {
+Security.defineMethod("ifUserIdMatches", {
   fetch: [],
-  deny: function(type, arg, userId, doc) {
-    return (userId && doc.userId && doc.userId !== userId) || (doc.userId && !userId);
+  deny: function (type, arg, userId, doc) {
+    return userId && doc.userId && doc.userId !== userId || doc.userId && !userId;
   }
 });
 
-Security.defineMethod('ifUserIdMatchesProp', {
+Security.defineMethod("ifUserIdMatchesProp", {
   fetch: [],
-  deny: function(type, arg, userId, doc) {
+  deny: function (type, arg, userId, doc) {
     return doc[arg] !== userId;
   }
 });
 
-Security.defineMethod('ifSessionIdMatches', {
+Security.defineMethod("ifSessionIdMatches", {
   fetch: [],
-  deny: function(type, arg, userId, doc) {
+  deny: function (type, arg, userId, doc) {
     return doc.sessionId !== ReactionCore.sessionId;
   }
 });
@@ -94,76 +91,72 @@ Security.defineMethod('ifSessionIdMatches', {
 
 /**
  * admin security
- * Permissive security for users with the 'admin' role
+ * Permissive security for users with the "admin" role
  */
 
-Security.permit(['insert', 'update', 'remove']).collections([Products, Tags, Translations, Discounts, Taxes, Shipping, Orders, Packages]).ifHasRole({
-  role: 'admin',
+Security.permit(["insert", "update", "remove"]).collections([Products, Tags,
+  Translations, Discounts, Taxes, Shipping, Orders, Packages
+]).ifHasRole({
+  role: "admin",
   group: ReactionCore.getShopId()
-}).ifShopIdMatches().exceptProps(['shopId']).apply();
-
+}).ifShopIdMatches().exceptProps(["shopId"]).apply();
 
 /*
- * Permissive security for users with the 'admin' role for FS.Collections
+ * Permissive security for users with the "admin" role for FS.Collections
  */
 
-Security.permit(['insert', 'update', 'remove']).collections([Media]).ifHasRole({
-  role: ['admin', 'owner', 'createProduct'],
+Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
+  role: ["admin", "owner", "createProduct"],
   group: ReactionCore.getShopId()
 }).ifFileBelongsToShop().apply();
 
-
 /*
- * Users with the 'admin' or 'owner' role may update and
+ * Users with the "admin" or "owner" role may update and
  * remove their shop but may not insert one.
  */
 
-Shops.permit(['update', 'remove']).ifHasRole({
-  role: ['admin', 'owner'],
+Shops.permit(["update", "remove"]).ifHasRole({
+  role: ["admin", "owner"],
   group: ReactionCore.getShopId()
 }).ifShopIdMatchesThisId().apply();
 
-
 /*
- * Users with the 'admin' or 'owner' role may update and
+ * Users with the "admin" or "owner" role may update and
  * remove products, but createProduct allows just for just a product editor
  */
 
-Products.permit(['insert', 'update', 'remove']).ifHasRole({
-  role: ['createProduct'],
+Products.permit(["insert", "update", "remove"]).ifHasRole({
+  role: ["createProduct"],
   group: ReactionCore.getShopId()
 }).ifShopIdMatchesThisId().apply();
 
-
 /*
- * Users with the 'owner' role may remove orders for their shop
+ * Users with the "owner" role may remove orders for their shop
  */
 
-Orders.permit('remove').ifHasRole({
-  role: 'owner',
+Orders.permit("remove").ifHasRole({
+  role: "owner",
   group: ReactionCore.getShopId()
-}).ifShopIdMatches().exceptProps(['shopId']).apply();
-
+}).ifShopIdMatches().exceptProps(["shopId"]).apply();
 
 /*
  * Can update cart from client. Must insert/remove carts using
  * server methods.
  * Can update all session carts if not logged in or user cart if logged in as that user
- * XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
+ * XXX should verify session match, but doesn"t seem possible? Might have to move all cart updates to server methods, too?
  */
 
-Cart.permit(['insert', 'update', 'remove']).ifHasRole({
-  role: ['anonymous', 'guest'],
+Cart.permit(["insert", "update", "remove"]).ifHasRole({
+  role: ["anonymous", "guest"],
   group: ReactionCore.getShopId()
 }).ifShopIdMatchesThisId().ifUserIdMatches().ifSessionIdMatches().apply();
-
 
 /*
  * apply download permissions to file collections
  */
-_.each([Media], function(fsCollection) {
+_.each([Media], function (fsCollection) {
   return fsCollection.allow({
-    download: function() {
+    download: function () {
       return true;
     }
   });

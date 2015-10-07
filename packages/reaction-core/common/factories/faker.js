@@ -1,16 +1,16 @@
 /**
-* faker.reaction
-* @summary reaction specific faker methods for testing
-*
-*/
+ * faker.reaction
+ * @summary reaction specific faker methods for testing
+ *
+ */
 faker.reaction = {};
 
 /**
-* faker.reaction.user()
-*
-* @returns test address data
-*/
-/*faker.reaction.user = {
+ * faker.reaction.user()
+ *
+ * @returns test address data
+ */
+/* faker.reaction.user = {
 	user: function() {		return {
 			username: faker.internet.username(),
 			emails: [
@@ -28,12 +28,12 @@ faker.reaction = {};
 };*/
 
 /**
-* faker.reaction.address()
-*
-* @returns test address data
-*/
+ * faker.reaction.address()
+ *
+ * @returns test address data
+ */
 
-faker.reaction.address = function() {
+faker.reaction.address = function () {
   return {
     fullName: faker.name.findName(),
     address1: faker.address.streetAddress(),
@@ -52,27 +52,27 @@ faker.reaction.address = function() {
 };
 
 /**
-* faker.reaction.metaField()
-*
-* @returns test metaField data
-*/
+ * faker.reaction.metaField()
+ *
+ * @returns test metaField data
+ */
 
-faker.reaction.metaField = function(params) {
-  params = params || {};
+faker.reaction.metaField = function (fakerParams) {
+  params = fakerParams || {};
   return {
     key: params.key ? params.key : faker.commerce.productAdjective(),
     value: params.value ? params.value : faker.commerce.productMaterial(),
-    scope: params.scope ? params.scope : 'detail'
+    scope: params.scope ? params.scope : "detail"
   };
 };
 
 /**
-* faker.reaction.productVariant()
-*
-* @returns test productVariant data
-*/
+ * faker.reaction.productVariant()
+ *
+ * @returns test productVariant data
+ */
 
-faker.reaction.productVariant = function() {
+faker.reaction.productVariant = function () {
   return {
     _id: Random.id(),
     compareAtPrice: _.random(0, 1000),
@@ -89,24 +89,24 @@ faker.reaction.productVariant = function() {
     metafields: [
       faker.reaction.metaField(),
       faker.reaction.metaField({
-        key: 'facebook',
-        scope: 'socialMessages'
+        key: "facebook",
+        scope: "socialMessages"
       }),
       faker.reaction.metaField({
-        key: 'twitter',
-        scope: 'socialMessages'
+        key: "twitter",
+        scope: "socialMessages"
       })
     ]
   };
 };
 
 /**
-* faker.reaction.cartItem()
-*
-* @returns test cartItem data
-*/
+ * faker.reaction.cartItem()
+ *
+ * @returns test cartItem data
+ */
 
-faker.reaction.cartItem = function() {
+faker.reaction.cartItem = function () {
   return {
     _id: Random.id(),
     productId: Factory.get("product"),
@@ -125,21 +125,19 @@ faker.reaction.cartItem = function() {
       title: faker.lorem.words(),
       sku: faker.commerce.product(),
       taxable: true,
-      metafields: [
-        {
-          key: faker.commerce.productAdjective(),
-          value: faker.commerce.productMaterial(),
-          scope: "detail"
-        }, {
-          key: "facebook",
-          value: faker.lorem.paragraph(),
-          scope: "socialMessages"
-        }, {
-          key: "twitter",
-          value: faker.lorem.sentence(),
-          scope: "socialMessages"
-        }
-      ]
+      metafields: [{
+        key: faker.commerce.productAdjective(),
+        value: faker.commerce.productMaterial(),
+        scope: "detail"
+      }, {
+        key: "facebook",
+        value: faker.lorem.paragraph(),
+        scope: "socialMessages"
+      }, {
+        key: "twitter",
+        value: faker.lorem.sentence(),
+        scope: "socialMessages"
+      }]
     }
   };
 };

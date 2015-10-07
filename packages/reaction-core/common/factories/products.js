@@ -3,13 +3,13 @@
  *
  */
 
-Factory.define('tag', ReactionCore.Collections.Tags, {
+Factory.define("tag", ReactionCore.Collections.Tags, {
   name: "Tag",
   slug: "tag",
   position: _.random(0, 100000),
   //  relatedTagIds: [],
   isTopLevel: true,
-  shopId: Factory.get('shop'),
+  shopId: Factory.get("shop"),
   createdAt: faker.date.past(),
   updatedAt: new Date()
 });
@@ -18,8 +18,8 @@ Factory.define('tag', ReactionCore.Collections.Tags, {
  * product Factory
  */
 
-Factory.define('product', ReactionCore.Collections.Products, {
-  shopId: Factory.get('shop'),
+Factory.define("product", ReactionCore.Collections.Products, {
+  shopId: Factory.get("shop"),
   title: faker.commerce.productName(),
   pageTitle: faker.lorem.sentence(),
   description: faker.lorem.paragraph(),

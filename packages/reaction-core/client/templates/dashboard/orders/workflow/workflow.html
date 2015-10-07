@@ -36,6 +36,7 @@
         {{/if}}
 
         {{#if isPending}}
+
           <div aria-labelledby="{{template}}" class="panel-collapse" id="{{template}}-panel" role="tabpanel">
             <div class="panel-body">
               {{> Template.dynamic template=template data=..}}

@@ -23,7 +23,7 @@ describe("core methods", function () {
     });
   });
 
-  describe("removeHeaderTag", function () {
+  describe("shop/removeHeaderTag", function () {
     beforeEach(function () {
       return Tags.remove({});
     });
@@ -36,7 +36,7 @@ describe("core methods", function () {
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
       expect(function () {
-        return Meteor.call("removeHeaderTag", tag._id, currentTag._id);
+        return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Tags.update).not.toHaveBeenCalled();
       expect(Tags.remove).not.toHaveBeenCalled();
@@ -48,12 +48,12 @@ describe("core methods", function () {
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
       expect(Tags.find().count()).toEqual(2);
-      Meteor.call("removeHeaderTag", tag._id, currentTag._id);
+      Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       expect(Tags.find().count()).toEqual(1);
       return done();
     });
   });
-  describe("updateHeaderTags", function () {
+  describe("shop/updateHeaderTags", function () {
     beforeEach(function () {
       return Tags.remove({});
     });
@@ -64,7 +64,7 @@ describe("core methods", function () {
       spyOn(Tags, "update");
       tag = Factory.create("tag");
       expect(function () {
-        return Meteor.call("updateHeaderTags", tag._id);
+        return Meteor.call("shop/updateHeaderTags", tag._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Tags.update).not.toHaveBeenCalled();
       return done();
@@ -73,7 +73,7 @@ describe("core methods", function () {
     it("should insert new header tag with 1 argument by admin", function (done) {
       var tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      Meteor.call("updateHeaderTags", "new tag");
+      Meteor.call("shop/updateHeaderTags", "new tag");
       expect(Tags.find().count()).toEqual(1);
       tag = Tags.find().fetch()[0];
       expect(tag.name).toEqual("new tag");
@@ -85,7 +85,7 @@ describe("core methods", function () {
       var tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       tag = Factory.create("tag");
-      Meteor.call("updateHeaderTags", "updated tag", tag._id);
+      Meteor.call("shop/updateHeaderTags", "updated tag", tag._id);
       expect(Tags.find().count()).toEqual(1);
       tag = Tags.find().fetch()[0];
       expect(tag.name).toEqual("updated tag");
@@ -94,9 +94,9 @@ describe("core methods", function () {
     });
   });
 
-  describe("locateAddress", function () {
+  describe("shop/locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
-      var address = Meteor.call("locateAddress", 34.043125, -118.267118);
+      var address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
 
       expect(address).toEqual({
         formattedAddress: '1111 S Figueroa St, Los Angeles, CA 90015, USA',
@@ -125,7 +125,7 @@ describe("core methods", function () {
     });
 
     it("should locate an address with known international coordinates", function (done) {
-      var address = Meteor.call("locateAddress", 53.414619, -2.947065);
+      var address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
 
       expect(address).toEqual({
         formattedAddress: '188 Molyneux Rd, Kensington, Liverpool, Merseyside L6 6AW, UK',
@@ -155,7 +155,7 @@ describe("core methods", function () {
     });
 
     it("should provide default empty address", function (done) {
-      var address = Meteor.call("locateAddress", 26.352498, -89.25293);
+      var address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
 
       expect(address).toEqual({
         latitude: null,

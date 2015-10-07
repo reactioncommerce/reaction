@@ -1,8 +1,7 @@
 /*
  *  Blatant reuse of Meteor method hooks from
- *  https://github.com/hitchcott/meteor-method-hooks
- *  and
- *  https://github.com/Workpop/meteor-method-hooks
+ *  @see https://github.com/hitchcott/meteor-method-hooks
+ *  @see https://github.com/Workpop/meteor-method-hooks
  */
 ReactionCore.MethodHooks = {};
 
@@ -37,9 +36,11 @@ ReactionCore.MethodHooks._afterHooks = {};
 ReactionCore.MethodHooks._beforeHooks = {};
 
 /**
+ * handlers
  * The method handler definitions appropriate to the environment
  */
-ReactionCore.MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers : Meteor.server.method_handlers;
+ReactionCore.MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
+  Meteor.server.method_handlers;
 
 /**
  * The original method handlers
@@ -56,18 +57,21 @@ ReactionCore.MethodHooks._originalMethodHandlers = {};
 ReactionCore.MethodHooks._wrappers = {};
 
 /**
- * Initializes a new hook
- * @param mapping {{}<String, [Hook]>} A place to store the mapping
- * @param methodName {String} The name of the method
- * @param hookFunction {function} The hook function
+ *  initializeHook
+ * @summary Initializes a new hook
+ * @param {String} mapping - map hook: a is  place to store the mapping
+ * @param {String} methodName - The name of the method
+ * @param {Function} hookFunction - The hook function
  * @private
+ * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
+ReactionCore.MethodHooks._initializeHook = function (mapping, methodName,
+  hookFunction) {
   mapping[methodName] = mapping[methodName] || [];
   mapping[methodName].push(hookFunction);
 
   // Initialize a wrapper for the given method name. Idempotent, it will not erase existing handlers.
-  var method = ReactionCore.MethodHooks._handlers[methodName];
+  let method = ReactionCore.MethodHooks._handlers[methodName];
   // If no method is found, or a wrapper already exists, return
   if (!method || ReactionCore.MethodHooks._wrappers[methodName]) {
     return;
@@ -78,9 +82,9 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
 
   ReactionCore.MethodHooks._wrappers[methodName] = function () {
     // Get arguments you can mutate
-    var args = _.toArray(arguments);
+    let args = _.toArray(arguments);
     // Call the before hooks
-    var beforeHooks = ReactionCore.MethodHooks._beforeHooks[methodName];
+    let beforeHooks = ReactionCore.MethodHooks._beforeHooks[methodName];
     _.each(beforeHooks, function (beforeHook, hooksProcessed) {
       beforeHook.call(this, {
         result: undefined,
@@ -90,20 +94,21 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
       });
     });
 
-    var methodResult;
-    var methodError;
+    let methodResult;
+    let methodError;
 
     // Call the main method body
     try {
-      methodResult = ReactionCore.MethodHooks._originalMethodHandlers[methodName].apply(this, args);
+      methodResult = ReactionCore.MethodHooks._originalMethodHandlers[
+        methodName].apply(this, args);
     } catch (error) {
       methodError = error;
     }
 
     // Call after hooks, providing the result and the original arguments
-    var afterHooks = ReactionCore.MethodHooks._afterHooks[methodName];
+    let afterHooks = ReactionCore.MethodHooks._afterHooks[methodName];
     _.each(afterHooks, function (afterHook, hooksProcessed) {
-      var hookResult = afterHook.call(this, {
+      let hookResult = afterHook.call(this, {
         result: methodResult,
         error: methodError,
         arguments: args,
@@ -111,7 +116,7 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
       });
       // If the after hook did not return a value and the methodResult is not undefined, warn and fix
       if (_.isUndefined(hookResult) && !_.isUndefined(methodResult)) {
-        Meteor._debug('Expected the after hook to return a value.');
+        Meteor._debug("Expected the after hook to return a value.");
       } else {
         methodResult = hookResult;
       }
@@ -127,28 +132,39 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
   };
 
   // Assign to a new handler
-  ReactionCore.MethodHooks._handlers[methodName] = ReactionCore.MethodHooks._wrappers[methodName];
+  ReactionCore.MethodHooks._handlers[methodName] = ReactionCore.MethodHooks._wrappers[
+    methodName];
 };
 
 /**
- * Add a function to call before the specified method
- * @param methodName {string}
- * @param beforeFunction {Hook}
+ * ReactionCore MethodHooks before
+ * @summary Add a function to call before the specified method
+ * @param {String} methodName - methodName
+ * @param {String} beforeFunction - beforeFunction
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.before = function (methodName, beforeFunction) {
-  ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._beforeHooks, methodName, beforeFunction);
+  ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._beforeHooks,
+    methodName, beforeFunction);
 };
+
 /**
+ * ReactionCore.MethodHooks.after
  * Add a function to call after the specified method
- * @param methodName {string}
- * @param afterFunction {Hook}
+ * @param {String} methodName - methodName
+ * @param {String} afterFunction - afterFunction
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.after = function (methodName, afterFunction) {
-  ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._afterHooks, methodName, afterFunction);
+  ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._afterHooks,
+    methodName, afterFunction);
 };
+
 /**
+ * ReactionCore.MethodHooks.beforeMeth
  * Call the provided hook in values for the key'd method names
- * @param dict {Object.<string, Hook>}
+ * @param {Object.<string, Hook>} dict - dict
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.beforeMethods = function (dict) {
   _.each(dict, function (v, k) {
@@ -158,7 +174,8 @@ ReactionCore.MethodHooks.beforeMethods = function (dict) {
 
 /**
  * Call the provided hook in values for the key'd method names
- * @param dict {Object.<string, Hook>}
+ * @param {Object.<string, Hook>} dict - dict
+ * @return {String} - returns transformed data
  */
 ReactionCore.MethodHooks.afterMethods = function (dict) {
   _.each(dict, function (v, k) {

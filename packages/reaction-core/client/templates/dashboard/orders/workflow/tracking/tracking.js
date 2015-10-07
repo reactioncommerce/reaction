@@ -17,7 +17,7 @@ Template.coreShipmentTracking.events({
       });
       return false;
     }
-    Meteor.call("shipmentTracking", this, tracking);
+    Meteor.call("orders/shipmentTracking", this, tracking);
 
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
   }

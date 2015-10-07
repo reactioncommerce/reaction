@@ -6,32 +6,43 @@
  * supports reactivity when server changes the serverSession
  * Stores the server session id into local storage / cookies
  */
+let currentSession;
+let serverSession = Random.id();
 
-ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions", amplify.store("ReactionCore.session"), function () {
-  var serverSession = new Mongo.Collection("Sessions").findOne();
-  return amplify.store("ReactionCore.session", serverSession._id);
+Tracker.autorun(function () {
+  currentSession = Session.get("sessionId") || amplify.store(
+    "ReactionCore.session");
+  if (!currentSession) {
+    amplify.store("ReactionCore.session", serverSession);
+    Session.set("sessionId", serverSession);
+    currentSession = serverSession;
+  }
 });
 
+ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions",
+  currentSession);
 // Load order is important here, sessions come before cart.
-ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart", Meteor.userId());
-
-var cart = ReactionCore.Collections.Cart.find({
-  userId: Meteor.userId()
-});
-
+ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
+  Session.get("sessionId"),
+  Meteor.userId()
+);
 // detect when a cart has been deleted
 // resubscribe will force cart to be rebuilt
-var handle = cart.observeChanges({
+let cart = ReactionCore.Collections.Cart.find();
+cart.observeChanges({
   removed: function () {
-    Meteor.subscribe("Cart", Meteor.userId());
+    Meteor.subscribe("Cart", Session.get("sessionId"), Meteor.userId());
   }
 });
 
 /**
  * General Subscriptions
  */
-ReactionCore.Subscriptions.Account = Meteor.subscribe("Accounts", Meteor.userId());
-ReactionCore.Subscriptions.Profile = Meteor.subscribe("UserProfile", Meteor.userId());
-ReactionCore.Subscriptions.Packages = Meteor.subscribe("Packages");
-ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
-ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
+ReactionCore.Subscriptions.Packages =
+  Meteor.subscribe("Packages");
+
+ReactionCore.Subscriptions.Tags =
+  Meteor.subscribe("Tags");
+
+ReactionCore.Subscriptions.Media =
+  Meteor.subscribe("Media");

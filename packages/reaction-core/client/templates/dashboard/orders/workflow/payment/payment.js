@@ -3,8 +3,8 @@
  *
  */
 Template.coreProcessPayment.events({
-  'click .btn': function () {
-    Meteor.call("shipmentShipped", this);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentShipped", this._id);
+  "click .btn": function () {
+    Meteor.call("orders/capturePayments", this._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", this._id);
   }
 });

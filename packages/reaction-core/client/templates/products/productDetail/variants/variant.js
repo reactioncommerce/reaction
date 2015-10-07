@@ -89,7 +89,7 @@ Template.variant.onRendered(function() {
           }
           updateVariants = _.union(productVariants, newVariants);
           return Meteor.defer(function() {
-            return Meteor.call("updateVariants", updateVariants);
+            return Meteor.call("products/updateVariants", updateVariants);
           });
         },
         start: function(event, ui) {

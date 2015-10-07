@@ -13,7 +13,9 @@ ReactionCore.Schemas.CartItem = new SimpleSchema({
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
-    index: 1
+    index: 1,
+    label: "Cart Item shopId",
+    optional: true
   },
   quantity: {
     label: "Quantity",
@@ -33,25 +35,27 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
-    index: 1
+    index: 1,
+    label: "Cart ShopId"
   },
   userId: {
     type: String,
-    autoValue: function() {
-      if (this.isInsert || this.isUpdate ) {
+    unique: true,
+    autoValue: function () {
+      if (this.isInsert || this.isUpdate) {
         if (!this.isFromTrustedCode) {
           return this.userId;
         }
-      }
-      else
-      {
+      } else {
         this.unset();
       }
     }
   },
-  sessions: {
-    type: [String],
-    optional: true,
+  sessionId: {
+    type: String,
+    autoValue: function () {
+      return ReactionCore.sessionId;
+    },
     index: 1
   },
   email: {
@@ -64,19 +68,13 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
     type: [ReactionCore.Schemas.CartItem],
     optional: true
   },
-  requiresShipping: {
-    label: "Require a shipping address",
-    type: Boolean,
-    defaultValue: true,
-    optional: true
-  },
   shipping: {
-    type: ReactionCore.Schemas.Shipment,
+    type: [ReactionCore.Schemas.Shipment],
     optional: true,
     blackbox: true
   },
-  payment: {
-    type: ReactionCore.Schemas.Payment,
+  billing: {
+    type: [ReactionCore.Schemas.Payment],
     optional: true,
     blackbox: true
   },

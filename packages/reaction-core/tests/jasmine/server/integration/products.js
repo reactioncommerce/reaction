@@ -1,6 +1,6 @@
 
 describe("core product methods", function() {
-  describe("cloneVariant", function() {
+  describe("products/cloneVariant", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -10,7 +10,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "insert");
       expect(function() {
-        return Meteor.call("cloneVariant", product._id, product.variants[0]._id);
+        return Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.insert).not.toHaveBeenCalled();
       return done();
@@ -20,13 +20,13 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("cloneVariant", product._id, product.variants[0]._id);
+      Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
       product = Products.findOne(product._id);
       expect(_.size(product.variants)).toEqual(2);
       return done();
     });
   });
-  describe("createVariant", function() {
+  describe("products/createVariant", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -36,7 +36,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("createVariant", product._id);
+        return Meteor.call("products/createVariant", product._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -46,7 +46,7 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("createVariant", product._id);
+      Meteor.call("products/createVariant", product._id);
       product = Products.findOne(product._id);
       variant = product.variants[1];
       expect(_.size(product.variants)).toEqual(2);
@@ -55,7 +55,7 @@ describe("core product methods", function() {
       return done();
     });
   });
-  describe("updateVariant", function() {
+  describe("products/updateVariant", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -65,7 +65,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("updateVariant", product.variants[0]);
+        return Meteor.call("products/updateVariant", product.variants[0]);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -77,7 +77,7 @@ describe("core product methods", function() {
       variant = product.variants[0];
       variant["title"] = "Updated Title";
       variant["price"] = 7;
-      Meteor.call("updateVariant", variant);
+      Meteor.call("products/updateVariant", variant);
       updatedProduct = Products.find({
         "variants._id": variant._id
       }).fetch()[0];
@@ -91,7 +91,7 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       variant = product.variants[0];
-      Meteor.call("updateVariant", {
+      Meteor.call("products/updateVariant", {
         _id: variant._id,
         title: "Updated Title",
         price: 7
@@ -106,7 +106,7 @@ describe("core product methods", function() {
       return done();
     });
   });
-  describe("updateVariants", function() {
+  describe("products/updateVariants", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -116,7 +116,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("updateVariants", product.variants);
+        return Meteor.call("products/updateVariants", product.variants);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -125,14 +125,14 @@ describe("core product methods", function() {
       var clonedVariant, product, updatedProduct, updatedVariant;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      Meteor.call("cloneVariant", product._id, product.variants[0]._id);
+      Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
       product = Products.findOne({
         "variants._id": product.variants[0]._id
       });
       product.variants[0].title = "Updated Title";
       product.variants[0].price = 7;
       product.variants[1].title = "Updated Clone Title";
-      Meteor.call("updateVariants", product.variants);
+      Meteor.call("products/updateVariants", product.variants);
       updatedProduct = Products.findOne({
         "variants._id": product.variants[0]._id
       });
@@ -145,7 +145,7 @@ describe("core product methods", function() {
       return done();
     });
   });
-  describe("deleteVariant", function() {
+  describe("products/deleteVariant", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -155,7 +155,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("deleteVariant", product.variants[0]._id);
+        return Meteor.call("products/deleteVariant", product.variants[0]._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -165,7 +165,7 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("deleteVariant", product.variants[0]._id);
+      Meteor.call("products/deleteVariant", product.variants[0]._id);
       product = Products.findOne(product._id);
       expect(_.size(product.variants)).toEqual(0);
       return done();
@@ -174,16 +174,16 @@ describe("core product methods", function() {
       var product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      Meteor.call("cloneVariant", product._id, product.variants[0]._id, product.variants[0]._id);
+      Meteor.call("products/cloneVariant", product._id, product.variants[0]._id, product.variants[0]._id);
       product = Products.findOne(product._id);
       expect(_.size(product.variants)).toEqual(2);
-      Meteor.call("deleteVariant", product.variants[0]._id);
+      Meteor.call("products/deleteVariant", product.variants[0]._id);
       product = Products.findOne(product._id);
       expect(_.size(product.variants)).toEqual(0);
       return done();
     });
   });
-  describe("createInventoryVariant", function() {
+  describe("products/createInventoryVariant", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -194,7 +194,7 @@ describe("core product methods", function() {
       variant = product.variants[0];
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("createInventoryVariant", product._id, variant._id);
+        return Meteor.call("products/createInventoryVariant", product._id, variant._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -205,7 +205,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       variant = product.variants[0];
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("createInventoryVariant", product._id, variant._id);
+      Meteor.call("products/createInventoryVariant", product._id, variant._id);
       product = Products.findOne(product._id);
       inventoryVariant = product.variants[1];
       expect(_.size(product.variants)).toEqual(2);
@@ -222,7 +222,7 @@ describe("core product methods", function() {
         barcode: 'specificBarcode123'
       };
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("createInventoryVariant", product._id, variant._id, inventoryVariantOptions);
+      Meteor.call("products/createInventoryVariant", product._id, variant._id, inventoryVariantOptions);
       product = Products.findOne(product._id);
       inventoryVariant = product.variants[1];
       expect(_.size(product.variants)).toEqual(2);
@@ -232,7 +232,7 @@ describe("core product methods", function() {
       return done();
     });
   });
-  describe("createInventoryVariants", function() {
+  describe("products/createInventoryVariants", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -243,7 +243,7 @@ describe("core product methods", function() {
       variant = product.variants[0];
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("createInventoryVariants", product._id, variant._id, 5);
+        return Meteor.call("products/createInventoryVariants", product._id, variant._id, 5);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -255,7 +255,7 @@ describe("core product methods", function() {
       variant = product.variants[0];
       qty = _.random(1, 100);
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("createInventoryVariants", product._id, variant._id, qty);
+      Meteor.call("products/createInventoryVariants", product._id, variant._id, qty);
       product = Products.findOne(product._id);
       variant = product.variants[0];
       inventoryVariant = product.variants[1];
@@ -272,7 +272,7 @@ describe("core product methods", function() {
       variant = product.variants[0];
       qty = _.random(1, 100);
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("createInventoryVariants", product._id, variant._id, qty, 'jasmine');
+      Meteor.call("products/createInventoryVariants", product._id, variant._id, qty, 'jasmine');
       product = Products.findOne(product._id);
       variant = product.variants[0];
       inventoryVariant = product.variants[1];
@@ -291,8 +291,8 @@ describe("core product methods", function() {
       qty = _.random(1, 100);
       initialQty = productVariant.inventoryQuantity;
       expect(_.size(product.variants)).toEqual(1);
-      optionVariantId = Meteor.call("cloneVariant", product._id, productVariant._id, productVariant._id);
-      Meteor.call("createInventoryVariants", product._id, optionVariantId, qty, 'jasmine');
+      optionVariantId = Meteor.call("products/cloneVariant", product._id, productVariant._id, productVariant._id);
+      Meteor.call("products/createInventoryVariants", product._id, optionVariantId, qty, 'jasmine');
       product = Products.findOne(product._id);
       productVariant = product.variants[0];
       optionVariant = ((function() {
@@ -336,7 +336,7 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(false);
       spyOn(Products, "insert");
       expect(function() {
-        return Meteor.call("createProduct");
+        return Meteor.call("products/createProduct");
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.insert).not.toHaveBeenCalled();
       return done();
@@ -344,7 +344,7 @@ describe("core product methods", function() {
     return it("should create new product by admin", function(done) {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       spyOn(Products, "insert").and.returnValue(1);
-      expect(Meteor.call("createProduct")).toEqual(1);
+      expect(Meteor.call("products/createProduct")).toEqual(1);
       expect(Products.insert).toHaveBeenCalled();
       return done();
     });
@@ -359,7 +359,7 @@ describe("core product methods", function() {
       spyOn(Products, "remove");
       product = Factory.create("product");
       expect(function() {
-        return Meteor.call("deleteProduct", product._id);
+        return Meteor.call("products/deleteProduct", product._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.remove).not.toHaveBeenCalled();
       return done();
@@ -369,12 +369,12 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       expect(Products.find().count()).toEqual(1);
-      expect(Meteor.call("deleteProduct", product._id)).toBe(true);
+      expect(Meteor.call("products/deleteProduct", product._id)).toBe(true);
       expect(Products.find().count()).toEqual(0);
       return done();
     });
   });
-  describe("cloneProduct", function() {
+  describe("products/cloneProduct", function() {
     beforeEach(function() {
       return Products.remove({});
     });
@@ -384,7 +384,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "insert");
       expect(function() {
-        return Meteor.call("cloneProduct", product);
+        return Meteor.call("products/cloneProduct", product);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.insert).not.toHaveBeenCalled();
       return done();
@@ -394,7 +394,7 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       expect(Products.find().count()).toEqual(1);
-      Meteor.call("cloneProduct", product);
+      Meteor.call("products/cloneProduct", product);
       expect(Products.find().count()).toEqual(2);
       productCloned = Products.find({
         _id: {
@@ -417,7 +417,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("updateProductField", product._id, "title", "Updated Title");
+        return Meteor.call("products/updateProductField", product._id, "title", "Updated Title");
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -426,7 +426,7 @@ describe("core product methods", function() {
       var product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      Meteor.call("updateProductField", product._id, "title", "Updated Title");
+      Meteor.call("products/updateProductField", product._id, "title", "Updated Title");
       product = Products.findOne({
         _id: product._id
       });
@@ -446,7 +446,7 @@ describe("core product methods", function() {
       spyOn(Products, "update");
       spyOn(Tags, "insert");
       expect(function() {
-        return Meteor.call("updateProductTags", product._id, "productTag", null);
+        return Meteor.call("products/updateProductTags", product._id, "productTag", null);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       expect(Tags.insert).not.toHaveBeenCalled();
@@ -464,7 +464,7 @@ describe("core product methods", function() {
       expect(Tags.findOne({
         "name": tagName
       })).toEqual(void 0);
-      Meteor.call("updateProductTags", product._id, tagName, null);
+      Meteor.call("products/updateProductTags", product._id, tagName, null);
       tag = Tags.findOne({
         name: tagName
       });
@@ -482,7 +482,7 @@ describe("core product methods", function() {
       tag = Factory.create("tag");
       expect(Tags.find().count()).toEqual(1);
       expect(product.hashtags).not.toContain(tag._id);
-      Meteor.call("updateProductTags", product._id, tag.name, tag._id);
+      Meteor.call("products/updateProductTags", product._id, tag.name, tag._id);
       expect(Tags.find().count()).toEqual(1);
       product = Products.findOne({
         _id: product._id
@@ -504,7 +504,7 @@ describe("core product methods", function() {
       spyOn(Products, "update");
       spyOn(Tags, "remove");
       expect(function() {
-        return Meteor.call("removeProductTag", product._id, tag._id);
+        return Meteor.call("products/removeProductTag", product._id, tag._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       expect(Tags.remove).not.toHaveBeenCalled();
@@ -515,13 +515,13 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       tag = Factory.create("tag");
-      Meteor.call("updateProductTags", product._id, tag.name, tag._id);
+      Meteor.call("products/updateProductTags", product._id, tag.name, tag._id);
       product = Products.findOne({
         _id: product._id
       });
       expect(product.hashtags).toContain(tag._id);
       expect(Tags.find().count()).toEqual(1);
-      Meteor.call("removeProductTag", product._id, tag._id);
+      Meteor.call("products/removeProductTag", product._id, tag._id);
       product = Products.findOne({
         _id: product._id
       });
@@ -542,7 +542,7 @@ describe("core product methods", function() {
       tag = Factory.create("tag");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("setHandleTag", product._id, tag._id);
+        return Meteor.call("products/setHandleTag", product._id, tag._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -552,7 +552,7 @@ describe("core product methods", function() {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       tag = Factory.create("tag");
-      Meteor.call("setHandleTag", product._id, tag._id);
+      Meteor.call("products/setHandleTag", product._id, tag._id);
       product = Products.findOne({
         _id: product._id
       });
@@ -571,7 +571,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("updateProductPosition", product._id, {});
+        return Meteor.call("products/updateProductPosition", product._id, {});
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -587,7 +587,7 @@ describe("core product methods", function() {
         weight: '0',
         updatedAt: new Date()
       };
-      Meteor.call("updateProductPosition", product._id, position);
+      Meteor.call("products/updateProductPosition", product._id, position);
       product = Products.findOne(product._id);
       expect(product.positions[0].tag).toEqual(tag._id);
       return done();
@@ -603,7 +603,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("updateMetaFields", product._id, {
+        return Meteor.call("products/updateMetaFields", product._id, {
           key: "Material",
           value: "Spandex"
         });
@@ -615,7 +615,7 @@ describe("core product methods", function() {
       var product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      Meteor.call("updateMetaFields", product._id, {
+      Meteor.call("products/updateMetaFields", product._id, {
         key: "Material",
         value: "Spandex"
       });
@@ -635,7 +635,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function() {
-        return Meteor.call("publishProduct", product._id);
+        return Meteor.call("products/publishProduct", product._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -646,7 +646,7 @@ describe("core product methods", function() {
       product = Factory.create("product");
       isVisible = product.isVisible;
       expect(function() {
-        return Meteor.call("publishProduct", product._id);
+        return Meteor.call("products/publishProduct", product._id);
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
       product = Products.findOne(product._id);
       expect(product.isVisible).toEqual(!isVisible);
@@ -658,12 +658,12 @@ describe("core product methods", function() {
       product = Factory.create("product");
       isVisible = product.isVisible;
       expect(function() {
-        return Meteor.call("publishProduct", product._id);
+        return Meteor.call("products/publishProduct", product._id);
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
       product = Products.findOne(product._id);
       expect(product.isVisible).toEqual(!isVisible);
       expect(function() {
-        return Meteor.call("publishProduct", product._id);
+        return Meteor.call("products/publishProduct", product._id);
       }).not.toThrow(new Meteor.Error(400, "Bad Request"));
       product = Products.findOne(product._id);
       expect(product.isVisible).toEqual(isVisible);
@@ -682,7 +682,7 @@ describe("core product methods", function() {
         validate: false
       });
       expect(function() {
-        return Meteor.call("publishProduct", product._id);
+        return Meteor.call("products/publishProduct", product._id);
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
       product = Products.findOne(product._id);
       expect(product.isVisible).toEqual(isVisible);
@@ -701,7 +701,7 @@ describe("core product methods", function() {
         validate: false
       });
       expect(function() {
-        return Meteor.call("publishProduct", product._id);
+        return Meteor.call("products/publishProduct", product._id);
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
       product = Products.findOne(product._id);
       expect(product.isVisible).toEqual(isVisible);

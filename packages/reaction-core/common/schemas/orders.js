@@ -1,117 +1,4 @@
 /**
-* PaymentMethod Schema
-*/
-
-ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
-  processor: {
-    type: String
-  },
-  storedCard: {
-    type: String,
-    optional: true
-  },
-  method: {
-    type: String,
-    optional: true
-  },
-  transactionId: {
-    type: String
-  },
-  workflow: {
-    type: ReactionCore.Schemas.Workflow,
-    optional: true
-  },
-  mode: {
-    type: String,
-    allowedValues: ["authorize", 'capture', 'refund', 'void']
-  },
-  createdAt: {
-    type: Date,
-    autoValue: function() {
-      if (this.isInsert) {
-        return new Date;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: new Date
-        };
-      }
-    },
-    denyUpdate: true
-  },
-  updatedAt: {
-    type: Date,
-    optional: true
-  },
-  authorization: {
-    type: String,
-    optional: true
-  },
-  amount: {
-    type: Number,
-    decimal: true
-  },
-  transactions: {
-    type: [Object],
-    optional: true,
-    blackbox: true
-  }
-});
-
-/**
-* Invoice Schema
-*/
-
-ReactionCore.Schemas.Invoice = new SimpleSchema({
-  transaction: {
-    type: String,
-    optional: true
-  },
-  shipping: {
-    type: Number,
-    decimal: true,
-    optional: true
-  },
-  taxes: {
-    type: Number,
-    decimal: true,
-    optional: true
-  },
-  subtotal: {
-    type: Number,
-    decimal: true
-  },
-  discounts: {
-    type: Number,
-    decimal: true,
-    optional: true
-  },
-  total: {
-    type: Number,
-    decimal: true
-  }
-});
-
-/**
- * Payment Schema
- */
-
-ReactionCore.Schemas.Payment = new SimpleSchema({
-  address: {
-    type: ReactionCore.Schemas.Address,
-    optional: true
-  },
-  paymentMethod: {
-    type: [ReactionCore.Schemas.PaymentMethod],
-    optional: true
-  },
-  invoices: {
-    type: [ReactionCore.Schemas.Invoice],
-    optional: true
-  }
-});
-
-
-/**
  * Order Document Schema
  */
 
@@ -157,14 +44,13 @@ ReactionCore.Schemas.Notes = new SimpleSchema({
   }
 });
 
-
 /**
  * OrderItems Schema
  * merges with ReactionCore.Schemas.Cart, ReactionCore.Schemas.Order]
  * to create Orders collection
+ * @see common/collections.collection.js
  */
-
-ReactionCore.Schemas.OrderItems = new SimpleSchema({
+ReactionCore.Schemas.OrderItem = new SimpleSchema({
   additionalField: {
     type: String,
     optional: true
@@ -183,12 +69,50 @@ ReactionCore.Schemas.OrderItems = new SimpleSchema({
   }
 });
 
-/**
-* Order Schema
-* extended from cart schema
-*/
 
+/**
+ * OrderTransaction Schema
+ * order transactions tie shipping, billing, and inventory transactions
+ * @see common/collections.collection.js
+ */
+ReactionCore.Schemas.OrderTransaction = new SimpleSchema({
+  itemId: {
+    type: String,
+    optional: true
+  },
+  paymentId: {
+    type: String,
+    optional: true
+  },
+  shipmentId: {
+    type: String,
+    optional: true
+  },
+  inventoryId: {
+    type: String,
+    optional: true
+  },
+  createdAt: {
+    type: Date,
+    autoValue: function () {
+      if (this.isUpdate && !this.isSet) {
+        return new Date;
+      }
+      this.unset();
+    },
+    denyUpdate: true
+  }
+});
+
+/**
+ * Order Schema
+ * @see common/collections.collection.js
+ */
 ReactionCore.Schemas.Order = new SimpleSchema({
+  userId: {
+    type: String,
+    unique: false
+  },
   cartId: {
     type: String,
     optional: true
@@ -203,6 +127,14 @@ ReactionCore.Schemas.Order = new SimpleSchema({
   },
   notes: {
     type: [ReactionCore.Schemas.Notes],
+    optional: true
+  },
+  items: {
+    type: [ReactionCore.Schemas.OrderItem],
+    optional: true
+  },
+  transactions: {
+    type: [ReactionCore.Schemas.OrderTransaction],
     optional: true
   }
 });

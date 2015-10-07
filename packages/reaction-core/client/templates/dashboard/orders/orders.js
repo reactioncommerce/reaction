@@ -4,6 +4,11 @@
  */
 
 Template.orders.helpers({
+
+  orders() {
+    return ReactionCore.Collections.Orders.find({});
+  },
+
   settings: function () {
     // ensure sub is up to date
     ReactionCore.Subscriptions.Orders = Meteor.subscribe("Orders");
@@ -33,6 +38,22 @@ Template.orders.helpers({
 
 Template.orders.events({
   'click .reactive-table tbody tr': function (event) {
+    if (this.workflow.status === "new") {
+      this.workflow.status = "coreOrderCreated";
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+    }
+
+    ReactionCore.showActionView({
+      label: "Order Details",
+      data: this,
+      template: "coreOrderWorkflow"
+    });
+
+  }
+});
+
+Template.orderViewButton.events({
+  'click button': function (event) {
     if (this.workflow.status === "new") {
       this.workflow.status = "coreOrderCreated";
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);

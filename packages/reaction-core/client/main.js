@@ -2,19 +2,19 @@
  * ReactionCore
  * Global reaction shop permissions methods and shop initialization
  */
-
-var isDebug, levels, _ref, _ref1;
-
 _.extend(ReactionCore, {
   shopId: null,
-  init: function() {
-    var self;
+  init: function () {
+    let self;
     self = this;
-    return Tracker.autorun(function() {
-      var domain, shop, shopHandle;
+    return Tracker.autorun(function () {
+      let domain;
+      let shop;
+      let shopHandle;
+      // keep an eye out for shop change
       shopHandle = Meteor.subscribe("Shops");
       if (shopHandle.ready()) {
-        domain = Meteor.absoluteUrl().split('/')[2].split(':')[0];
+        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
         shop = ReactionCore.Collections.Shops.findOne({
           domains: domain
         });
@@ -23,80 +23,113 @@ _.extend(ReactionCore, {
       }
     });
   },
-  hasPermission: function(permissions, userId) {
-    var shop, _i, _len, _ref;
-    userId = userId || Meteor.userId();
-    if (!_.isArray(permissions)) {
-      permissions = [permissions];
-      permissions.push("admin", "owner");
+  /**
+   * hasPermission - client permissions checks
+   * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
+   * @param {String} checkUserId - userId, defaults to Meteor.userId()
+   * @param {String} group - default to shopId
+   * @return {Boolean} Boolean - true if has permission
+   */
+  hasPermission: function (checkPermissions, checkUserId, group) {
+    check(checkPermissions, Match.OneOf(String, Array));
+    // use current user if userId if not provided
+    let userId = checkUserId || this.userId || Meteor.userId();
+    let shopId = group || this.getShopId();
+    let permissions = [];
+
+    // permissions can be either a string or an array
+    // we'll force it into an array so we can add
+    // admin roles
+    if (!_.isArray(checkPermissions)) {
+      permissions = [checkPermissions];
+    } else {
+      permissions = checkPermissions;
     }
-    if (Roles.userIsInRole(userId, permissions, this.shopId)) {
+    // if the user has admin, owner permissions we'll always check if those roles are enough
+    permissions.push("admin", "owner");
+    // check if userIs the Roles
+    if (Roles.userIsInRole(userId, permissions, shopId)) {
       return true;
-    } else if (Roles.userIsInRole(userId, permissions, Roles.GLOBAL_GROUP)) {
+    } else if (Roles.userIsInRole(userId,
+        permissions,
+        Roles.GLOBAL_GROUP
+      )) {
       return true;
     }
-    _ref = this.getSellerShopId();
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      shop = _ref[_i];
-      if (Roles.userIsInRole(userId, permissions, shop)) {
-        return true;
+
+    // global roles check
+    let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
+    // we're looking for seller permissions.
+    if (sellerShopPermissions) {
+      // loop through shops roles and check permissions
+      for (let key in sellerShopPermissions) {
+        if (key) {
+          let shop = sellerShopPermissions[key];
+          if (Roles.userIsInRole(checkUserId, permissions, shop)) {
+            return true;
+          }
+        }
       }
     }
+    // no specific permissions found returning false
     return false;
   },
-  hasOwnerAccess: function() {
-    var ownerPermissions;
-    ownerPermissions = ['owner'];
+  hasOwnerAccess: function () {
+    let ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
   },
-  hasAdminAccess: function() {
-    var adminPermissions;
-    adminPermissions = ['owner', 'admin'];
+  hasAdminAccess: function () {
+    let adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
   },
-  hasDashboardAccess: function() {
-    var dashboardPermissions;
-    dashboardPermissions = ['owner', 'admin', 'dashboard'];
+  hasDashboardAccess: function () {
+    let dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
-  getShopId: function() {
+  getShopId: function () {
     return this.shopId;
   },
-  allowGuestCheckout: function() {
-    var allowGuest, packageRegistry, _ref, _ref1;
-    packageRegistry = ReactionCore.Collections.Packages.findOne({
-      name: 'core',
+  allowGuestCheckout: function () {
+    let allowGuest = true;
+    let packageRegistry = ReactionCore.Collections.Packages.findOne({
+      name: "core",
       shopId: this.shopId
     });
-    allowGuest = (packageRegistry != null ? (_ref = packageRegistry.settings) != null ? (_ref1 = _ref["public"]) != null ? _ref1.allowGuestCheckout : void 0 : void 0 : void 0) || true;
+    // we can disable in admin, let's check.
+    if (packageRegistry !== undefined) {
+      if (packageRegistry.settings) {
+        if (packageRegistry.settings.allowGuestCheckout) {
+          allowGuest = packageRegistry.settings.allowGuestCheckout;
+        }
+      }
+    }
     return allowGuest;
   },
-  getSellerShopId: function(client) {
-    return Roles.getGroupsForUser(Meteor.userId(), 'admin');
+  getSellerShopId: function () {
+    return Roles.getGroupsForUser(this.userId, "admin");
   },
 
   /**
-   * showActionView
+   * @description showActionView
    *
-   * @viewData {label, template, data}
-   * @returns
+   * @param {String} viewData {label, template, data}
+   * @returns {String} Session "admin/showActionView"
    */
-  showActionView: function(viewData) {
-    Session.set('admin/showActionView', true);
+  showActionView: function (viewData) {
+    Session.set("admin/showActionView", true);
     ReactionCore.setActionView(viewData);
   },
 
-  isActionViewOpen: function() {
-    return Session.equals('admin/showActionView', true);
+  isActionViewOpen: function () {
+    return Session.equals("admin/showActionView", true);
   },
 
   setActionView: function (viewData) {
-
     if (viewData) {
-      Session.set('admin/actionView', viewData);
+      Session.set("admin/actionView", viewData);
     } else {
-
-      var registryItem = ReactionCore.getRegistryForCurrentRoute("settings");
+      let registryItem = ReactionCore.getRegistryForCurrentRoute(
+        "settings");
 
       if (registryItem) {
         ReactionCore.setActionView(registryItem);
@@ -109,43 +142,37 @@ _.extend(ReactionCore, {
   },
 
   getActionView: function () {
-    return Session.get('admin/actionView');
+    return Session.get("admin/actionView");
   },
 
   hideActionView: function () {
-    Session.set('admin/showActionView', false);
+    Session.set("admin/showActionView", false);
   },
 
   clearActionView: function () {
-    Session.set('admin/actionView', undefined);
+    Session.set("admin/actionView", undefined);
   },
 
-  getCurrentTag: function() {
-    var tag;
-
+  getCurrentTag: function () {
     if (Router.current().route.getName() === "/product/tag") {
-      tag = Router.current().params._id;
+      return Router.current().params._id;
     }
-
-    return tag
   },
-
   getRegistryForCurrentRoute: function (provides) {
-
-    var routeName = Router.current().route.getName();
-
-    var reactionApp = ReactionCore.Collections.Packages.findOne({
+    let routeName = Router.current().route.getName();
+    // find registry entries for routeName
+    let reactionApp = ReactionCore.Collections.Packages.findOne({
       // "registry.provides": provides,
       "registry.route": routeName
     }, {
-      'enabled': 1,
-      'registry': 1,
-      'name': 1,
-      'route': 1
+      enabled: 1,
+      registry: 1,
+      name: 1,
+      route: 1
     });
 
     if (reactionApp) {
-      var settingsData = _.find(reactionApp.registry, function (item) {
+      let settingsData = _.find(reactionApp.registry, function (item) {
         return item.provides === provides && item.route === routeName;
       });
 
@@ -157,17 +184,24 @@ _.extend(ReactionCore, {
 
 });
 
-
 /*
  * configure bunyan logging module for reaction client
  * See: https://github.com/trentm/node-bunyan#levels
+ * client we'll cofigure WARN as default
  */
+let isDebug = "WARN";
 
-isDebug = typeof Meteor !== "undefined" && Meteor !== null ? (_ref = Meteor.settings) != null ? (_ref1 = _ref["public"]) != null ? _ref1.isDebug : void 0 : void 0 : void 0;
+if (Meteor.settings !== undefined) {
+  if (Meteor.settings.public) {
+    if (Meteor.settings.public.debug) {
+      isDebug = Meteor.settings.public.debug;
+    }
+  }
+}
 
 levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
 
-if (typeof isDebug !== 'boolean' && typeof isDebug !== 'undefined') {
+if (typeof isDebug !== "boolean" && typeof isDebug !== undefined) {
   isDebug = isDebug.toUpperCase();
 }
 
@@ -175,19 +209,18 @@ if (!_.contains(levels, isDebug)) {
   isDebug = "INFO";
 }
 
-ReactionCore.Events = bunyan.createLogger({
-  name: 'core-client'
+ReactionCore.Log = bunyan.createLogger({
+  name: "core-client"
 });
 
-ReactionCore.Events.level(isDebug);
-
+ReactionCore.Log.level(isDebug);
 
 /*
  * registerLoginHandler
  * method to create anonymous users
  */
 
-Accounts.loginWithAnonymous = function(anonymous, callback) {
+Accounts.loginWithAnonymous = function (anonymous, callback) {
   Accounts.callLoginMethod({
     methodArguments: [{
       anonymous: true
@@ -196,18 +229,21 @@ Accounts.loginWithAnonymous = function(anonymous, callback) {
   });
 };
 
-
 /**
  *  Startup Reaction
  *  Init Reaction client
  */
 
-Meteor.startup(function() {
-  if ((typeof PackageRegistry !== "undefined" && PackageRegistry !== null)) {
-    ReactionCore.Events.warn("Bravely warning you that PackageRegistry should not be exported to client.", PackageRegistry);
+Meteor.startup(function () {
+  // warn on insecure exporting of PackageRegistry settings
+  if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
+    let msg = "PackageRegistry: Insecure export to client.";
+    ReactionCore.Log.warn(msg, PackageRegistry);
   }
+  // init the core
   ReactionCore.init();
-  return Deps.autorun(function() {
+  // initialize anonymous guest users
+  return Deps.autorun(function () {
     if (ReactionCore.allowGuestCheckout() && !Meteor.userId()) {
       Accounts.loginWithAnonymous();
     }
