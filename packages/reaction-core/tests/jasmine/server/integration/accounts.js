@@ -40,7 +40,7 @@ describe("Account Meteor method ", function() {
 
   });
 
-  describe('inviteShopMember', function() {
+  describe('accounts/inviteShopMember', function() {
 
     it('should not let non-Owners invite a user to the shop', function(done) {
       spyOn(ReactionCore, 'hasOwnerAccess').and.returnValue(false);
@@ -48,7 +48,7 @@ describe("Account Meteor method ", function() {
       shopId = Factory.create('shop')._id;
 
       expect(function() {
-        return Meteor.call("inviteShopMember", shopId, fakeUser.emails[0].address, fakeUser.profile.name);
+        return Meteor.call("accounts/inviteShopMember", shopId, fakeUser.emails[0].address, fakeUser.profile.name);
       }).toThrow(new Meteor.Error(403, "Access denied"));
 
       expect(Accounts.createUser).not.toHaveBeenCalledWith({
@@ -63,7 +63,7 @@ describe("Account Meteor method ", function() {
       shopId = Factory.create('shop')._id;
 
       expect(function() {
-        return Meteor.call("inviteShopMember", shopId, fakeUser.emails[0].address, fakeUser.profile.name);
+        return Meteor.call("accounts/inviteShopMember", shopId, fakeUser.emails[0].address, fakeUser.profile.name);
       }).not.toThrow(new Meteor.Error(403, "Access denied"));
 
       expect(Accounts.createUser).toHaveBeenCalledWith({

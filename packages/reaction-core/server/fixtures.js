@@ -285,9 +285,9 @@ ReactionRegistry.createDefaultAdminUser = function () {
     defaultAdminRoles.push(pkg.name);
   }
 
-  Meteor.call("addUserPermissions", accountId, _.uniq(defaultAdminRoles),
+  Meteor.call("accounts/addUserPermissions", accountId, _.uniq(defaultAdminRoles),
     shopId);
-  Meteor.call("addUserPermissions", accountId, ["owner", "admin", "dashboard"],
+  Meteor.call("accounts/addUserPermissions", accountId, ["owner", "admin", "dashboard"],
     Roles.GLOBAL_GROUP);
 };
 
