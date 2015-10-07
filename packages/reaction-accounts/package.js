@@ -43,9 +43,6 @@ Package.onUse(function(api) {
   api.use("accounts-weibo");
   api.use("reactioncommerce:core@0.9.0");
 
-  // Reaction
-  api.use("reactioncommerce:core-theme");
-
   // Files
   api.addFiles("common/schemas/accounts.js");
 
