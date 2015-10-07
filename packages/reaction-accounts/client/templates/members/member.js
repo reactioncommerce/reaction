@@ -138,9 +138,9 @@ Template.memberSettings.events({
       permissions.push(self.permission);
     }
     if ($(event.currentTarget).is(':checked')) {
-      Meteor.call("addUserPermissions", member.userId, permissions, this.shopId);
+      Meteor.call("accounts/addUserPermissions", member.userId, permissions, this.shopId);
     } else {
-      Meteor.call("removeUserPermissions", member.userId, permissions, this.shopId);
+      Meteor.call("accounts/removeUserPermissions", member.userId, permissions, this.shopId);
     }
   },
   "click [data-event-action=resetMemberPermission]": function(event, template) {
@@ -151,7 +151,7 @@ Template.memberSettings.events({
       _results = [];
       for (role in _ref) {
         index = _ref[role];
-        _results.push(Meteor.call("setUserPermissions", this.userId, ['guest', 'account/profile'], role));
+        _results.push(Meteor.call("accounts/setUserPermissions", this.userId, ['guest', 'account/profile'], role));
       }
       return _results;
     }

@@ -8,7 +8,7 @@ Template.memberForm.events({
     event.preventDefault();
     newMemberName = template.$('input[name="name"]').val();
     newMemberEmail = template.$('input[name="email"]').val();
-    return Meteor.call("inviteShopMember", ReactionCore.getShopId(), newMemberEmail, newMemberName, function(error) {
+    return Meteor.call("accounts/inviteShopMember", ReactionCore.getShopId(), newMemberEmail, newMemberName, function(error) {
       if (error != null) {
         if (error.reason !== '') {
           Alerts.add(error, "danger", {

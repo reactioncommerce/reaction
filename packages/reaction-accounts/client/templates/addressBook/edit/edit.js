@@ -15,7 +15,7 @@ AutoForm.hooks({
       var error;
 
       try {
-        Meteor.call("addressBookUpdate", insertDoc, accountId, function(error, result) {
+        Meteor.call("accounts/addressBookUpdate", insertDoc, accountId, function(error, result) {
           // TODO: On error show message, maybe?
         });
       } catch (_error) {

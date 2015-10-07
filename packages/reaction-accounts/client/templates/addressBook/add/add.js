@@ -56,30 +56,22 @@ AutoForm.hooks({
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
       let accountId;
-      let error;
       let addressBook = $(this.template.firstNode).closest(".address-book");
+      let account = ReactionCore.Collections.Accounts.findOne();
+      accountId = account._id;
 
-      let account = ReactionCore.Collections.Accounts.findOne({
-        userId: Meteor.userId()
-      });
-
-      if (account) {
-        accountId = account._id;
-        if (!insertDoc._id) {
-          insertDoc._id = Random.id();
-        }
-
-        try {
-          Meteor.call("addressBookAdd", insertDoc, accountId);
-        } catch (_error) {
-          error = _error;
-          this.done(new Error("Failed to add address", error));
-          return false;
-        }
-        this.done();
-        // Show the grid
-        addressBook.trigger($.Event("showMainView"));
+      if (!insertDoc._id) {
+        insertDoc._id = Random.id();
       }
+
+      try {
+        Meteor.call("accounts/addressBookAdd", insertDoc, accountId);
+      } catch (error) {
+        this.done(new Error("Failed to add address", error));
+        return false;
+      }
+      this.done();
+      addressBook.trigger($.Event("showMainView"));
     }
   }
 });

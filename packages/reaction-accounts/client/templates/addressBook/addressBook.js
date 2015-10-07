@@ -86,7 +86,7 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
-    Meteor.call("addressBookRemove", this, Meteor.userId(), function () {
+    Meteor.call("accounts/addressBookRemove", this, Meteor.userId(), function () {
       let account = ReactionCore.Collections.Accounts.findOne({
         userId: Meteor.userId()
       });

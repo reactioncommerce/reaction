@@ -98,7 +98,7 @@ Meteor.methods({
   /*
    * check if current user has password
    */
-  currentUserHasPassword: function () {
+  "accounts/currentUserHasPassword": function () {
     let user;
     user = Meteor.users.findOne(Meteor.userId());
     if (user.services.password) {
@@ -110,7 +110,7 @@ Meteor.methods({
   /*
    * add new addresses to an account
    */
-  addressBookAdd: function (doc, accountId) {
+  "accounts/addressBookAdd": function (doc, accountId) {
     this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
@@ -153,7 +153,7 @@ Meteor.methods({
   /*
    * update existing address in user"s profile
    */
-  addressBookUpdate: function (doc, accountId) {
+  "accounts/addressBookUpdate": function (doc, accountId) {
     this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
@@ -193,7 +193,7 @@ Meteor.methods({
   /*
    * remove existing address in user"s profile
    */
-  addressBookRemove: function (doc, accountId) {
+  "accounts/addressBookRemove": function (doc, accountId) {
     this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
@@ -215,7 +215,7 @@ Meteor.methods({
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
    */
-  inviteShopMember: function (shopId, email, name) {
+  "accounts/inviteShopMember": function (shopId, email, name) {
     let currentUserName;
     let shop;
     let token;
@@ -313,7 +313,7 @@ Meteor.methods({
   /*
    * send an email to consumers on sign up
    */
-  sendWelcomeEmail: function (shopId, userId) {
+  "accounts/sendWelcomeEmail": function (shopId, userId) {
     let email;
     check(shop, Object);
     this.unblock();
@@ -334,7 +334,7 @@ Meteor.methods({
   },
 
   /*
-   * addUserPermissions
+   * accounts/addUserPermissions
    * @param {Array|String} permission
    *               Name of role/permission.  If array, users
    *               returned will have at least one of the roles
@@ -343,7 +343,7 @@ Meteor.methods({
    *                         User"s Roles.GLOBAL_GROUP will also be checked.
    * @returns {Boolean} success/failure
    */
-  addUserPermissions: function (userId, permissions, group) {
+  "accounts/addUserPermissions": function (userId, permissions, group) {
     check(userId, Match.OneOf(String, Array));
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String));
@@ -356,9 +356,9 @@ Meteor.methods({
   },
 
   /*
-   * removeUserPermissions
+   * accounts/removeUserPermissions
    */
-  removeUserPermissions: function (userId, permissions, group) {
+  "accounts/removeUserPermissions": function (userId, permissions, group) {
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String, null));
@@ -372,9 +372,9 @@ Meteor.methods({
   },
 
   /*
-   * setUserPermissions
+   * accounts/setUserPermissions
    */
-  setUserPermissions: function (userId, permissions, group) {
+  "accounts/setUserPermissions": function (userId, permissions, group) {
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String));
