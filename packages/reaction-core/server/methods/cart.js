@@ -317,21 +317,17 @@ Meteor.methods({
     if (orderId) {
       // TODO: check for succesful orders/inventoryAdjust
       Meteor.call("orders/inventoryAdjust", orderId);
-
       // trash the old cart
       ReactionCore.Collections.Cart.remove({
         _id: order.cartId
       });
-
       // create a new cart for the user
       // even though this should be caught by
       // subscription handler, it's not always working
       let newCartExists = ReactionCore.Collections.Cart.find(order.userId);
-
       if (newCartExists.count() === 0) {
         Meteor.call("cart/createCart", order.userId);
       }
-
       // return
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
@@ -360,25 +356,43 @@ Meteor.methods({
 
     if (cart) {
       // temp hack until we build out multiple payment handlers
-      let shippingId = Random.id();
+      let selector;
+      let update;
+      // temp hack until we build out multiple shipment handlers
+      // if we have an existing item update it, otherwise add to set.
       if (cart.shipping) {
-        shippingId = cart.shipping[0]._id;
-      }
-
-      let result = ReactionCore.Collections.Cart.update({
-        "_id": cartId,
-        "shipping._id": shippingId
-      }, {
-        $addToset: {
-          shipping: {
-            method: method
+        selector = {
+          "_id": cartId,
+          "shipping._id": cart.shipping[0]._id
+        };
+        update = {
+          $set: {
+            "shipping.$.method": method
           }
+        };
+      } else {
+        selector = {
+          _id: cartId
+        };
+        update = {
+          $addToSet: {
+            shipping: {
+              method: method
+            }
+          }
+        };
+      }
+      // update or insert method
+      ReactionCore.Collections.Cart.update(selector, update, function (error) {
+        if (error) {
+          ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
+          return;
         }
+        // this will transition to review
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
       });
-      // this will transition to review
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-        "coreCheckoutShipping");
-      return result;
+      // we should not have made it here, throw error
+      throw new Meteor.Error("cart/setShipmentMethod: Invalid request");
     }
   },
 
@@ -400,43 +414,54 @@ Meteor.methods({
     });
 
     if (cart) {
+      let selector;
+      let update;
       // temp hack until we build out multiple shipment handlers
-      let selector = {
-        _id: cartId
-      };
+      // if we have an existing item update it, otherwise add to set.
       if (cart.shipping) {
         selector = {
           "_id": cartId,
           "shipping._id": cart.shipping[0]._id
         };
-      }
-      console.log("setShipmentAddress", selector)
-        // add / or set the shipping address
-      ReactionCore.Collections.Cart.update(selector, {
+        update = {
+          $set: {
+            "shipping.$.address": address
+          }
+        };
+      } else {
+        selector = {
+          _id: cartId
+        };
+        update = {
           $addToSet: {
-            "shipping": {
+            shipping: {
               address: address
             }
           }
-        }, // additional updates after address is added
-        function (error) {
-          if (error) {
-            ReactionCore.Log.warn(error);
-            return;
-          }
-          // refresh shipping quotes
-          Meteor.call("shipping/updateShipmentQuotes", cartId);
+        };
+      }
 
-          // it's ok for this to be called multiple times
-          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-            "coreCheckoutShipping");
-
-          // this is probably a crappy way to do this.
-          if (!cart.payment) {
-            Meteor.call("cart/setPaymentAddress", cartId, address);
-          }
+      // add / or set the shipping address
+      ReactionCore.Collections.Cart.update(selector, update, function (
+        error) {
+        if (error) {
+          ReactionCore.Log.warn(error);
           return;
-        });
+        }
+        // refresh shipping quotes
+        Meteor.call("shipping/updateShipmentQuotes", cartId);
+
+        // it's ok for this to be called multiple times
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+          "coreCheckoutShipping");
+
+        // this is probably a crappy way to do this
+        // let's default the payment address
+        if (!cart.payment) {
+          Meteor.call("cart/setPaymentAddress", cartId, address);
+        }
+        return;
+      });
       throw new Meteor.Error("cart/setShipmentAddress: Invalid request");
     }
   },
@@ -458,24 +483,34 @@ Meteor.methods({
     });
 
     if (cart) {
-      // temp hack until we build out multiple payment handlers
-      let selector = {
-        _id: cartId
-      };
+      let selector;
+      let update;
+      // temp hack until we build out multiple billing handlers
+      // if we have an existing item update it, otherwise add to set.
       if (cart.billing) {
         selector = {
           "_id": cartId,
           "billing._id": cart.billing[0]._id
         };
-      }
-
-      ReactionCore.Collections.Cart.update(selector, {
+        update = {
+          $set: {
+            "billing.$.address": address
+          }
+        };
+      } else {
+        selector = {
+          _id: cartId
+        };
+        update = {
           $addToSet: {
             billing: {
               address: address
             }
           }
-        },
+        };
+      }
+
+      ReactionCore.Collections.Cart.update(selector, update,
         function (error) {
           if (error) {
             ReactionCore.Log.warn(error);

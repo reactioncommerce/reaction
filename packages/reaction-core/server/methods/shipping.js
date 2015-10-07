@@ -23,30 +23,35 @@ Meteor.methods({
       if (!rates) {
         return [];
       }
+      let selector;
+      let update;
       // temp hack until we build out multiple shipment handlers
-      let selector = {_id: cartId};
+      // if we have an existing item update it, otherwise add to set.
       if (cart.shipping) {
         selector = {
           "_id": cartId,
           "shipping._id": cart.shipping[0]._id
         };
+        update = {
+          $set: {
+            "shipping.$.shipmentQuotes": rates
+          }
+        };
+      } else {
+        selector = {
+          _id: cartId
+        };
+        update = {
+          $addToSet: {
+            shipping: {
+              shipmentQuotes: rates
+            }
+          }
+        };
       }
-      console.log(selector)
-        // return ReactionCore.Collections.Orders.update({
-        //   "_id": orderId,
-        //   "shipments._id": shipmentId
-        // }, {
-        //   $addToSet: {
-        //     "shipment.$.items": shipmentIndex
-        //   }
-        // });
       // add quotes to the cart
       if (rates.length > 0) {
-        ReactionCore.Collections.Cart.update(selector, {
-          $addToSet: {
-            "shipping.$": {shipmentQuotes: rates}
-          }
-        }, function (error) {
+        ReactionCore.Collections.Cart.update(selector, update, function (error) {
           if (error) {
             ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
             return;

@@ -1,25 +1,26 @@
 //
 // These helpers can be used in general shipping packages
-// or replaced, but are meant to be generalized in nature.
-//
+// cartShippingMethods to get current shipment methods
+// until we handle multiple methods, we just use the first
 function cartShippingMethods(currentCart) {
   let cart = currentCart || ReactionCore.Collections.Cart.findOne();
   if (cart) {
     if (cart.shipping) {
-      if (cart.shipping.shipmentQuotes) {
-        return cart.shipping.shipmentQuotes;
+      if (cart.shipping[0].shipmentQuotes) {
+        return cart.shipping[0].shipmentQuotes;
       }
     }
   }
   return undefined;
 }
-
+// getShipmentMethod to get current shipment method
+// until we handle multiple methods, we just use the first
 function getShipmentMethod(currentCart) {
   let cart = currentCart || ReactionCore.Collections.Cart.findOne();
   if (cart) {
     if (cart.shipping) {
-      if (cart.shipping.shipmentMethod) {
-        return cart.shipping.shipmentMethod;
+      if (cart.shipping[0].shipmentMethod) {
+        return cart.shipping[0].shipmentMethod;
       }
     }
   }
