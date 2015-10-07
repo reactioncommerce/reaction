@@ -42,7 +42,7 @@ Accounts.onCreateUser(function (options, user) {
   // clone before adding roles
   let account = _.clone(user);
   account.userId = user._id;
-
+  ReactionCore.Collections.Accounts.insert(account);
   // init default user roles
   if (shop) {
     if (user.services === undefined) {
@@ -59,7 +59,7 @@ Accounts.onCreateUser(function (options, user) {
 /**
  * Accounts.onLogin event
  * automatically push checkoutLogin when users login.
- * let"s remove "anonymous" role, if the login type isn"t "anonymous"
+ * let"s remove "anonymous" role, if the login type isn't "anonymous"
  * @param
  * @returns
  */
