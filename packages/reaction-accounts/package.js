@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.1.0",
+  version: "1.2.0",
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 
@@ -41,7 +41,7 @@ Package.onUse(function(api) {
   api.use("accounts-twitter");
   api.use("accounts-github");
   api.use("accounts-weibo");
-  api.use("reactioncommerce:core@0.8.0");
+  api.use("reactioncommerce:core@0.9.0");
 
   // Reaction
   api.use("reactioncommerce:core-theme");
