@@ -5,6 +5,6 @@
  */
 Template.ordersListSummary.helpers({
   invoice: function () {
-    return this.billing[0].invoices;
+    return this.invoice;
   }
 });

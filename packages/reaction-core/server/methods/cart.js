@@ -28,11 +28,9 @@ Meteor.methods({
     if (Roles.userIsInRole(userId, "anonymous", shopId)) {
       return false;
     }
-
-    // console.log("merge cart: matching sessionId");
-    // console.log("current userId", userId);
-    // console.log("sessionId", sessionId);
-
+    ReactionCore.Log.debug("merge cart: matching sessionId");
+    ReactionCore.Log.debug("current userId", userId);
+    ReactionCore.Log.debug("sessionId", sessionId);
     // get session carts without current user cart
     let sessionCarts = Cart.find({
       $and: [{
@@ -45,23 +43,23 @@ Meteor.methods({
         }
       }]
     });
-
     // console.log("sessionCarts", sessionCarts.fetch())
-
-    ReactionCore.Log.info(
+    ReactionCore.Log.debug(
       `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
     );
     // loop through session carts and merge into user cart
     sessionCarts.forEach((sessionCart) => {
-      ReactionCore.Log.info(
+      ReactionCore.Log.debug(
         `merge cart: merge user userId: ${userId}, sessionCart.userId: ${sessionCart.userId}, sessionCart id: ${sessionCart._id}`
       );
-      // really if we have no items, there's nothing to merge
+      // really if we have no items, there's nothing to merge    "workflow" : {
       if (sessionCart.items) {
         // merge session cart into current cart
         Cart.update(currentCart._id, {
           $set: {
-            userId: Meteor.userId()
+            "userId": Meteor.userId(),
+            "workflow.status": "checkoutLogin",
+            "workflow.workflow": ["checkoutLogin"]
           },
           $addToSet: {
             items: {
@@ -79,12 +77,12 @@ Meteor.methods({
         ReactionCore.Collections.Accounts.remove({
           userId: sessionCart.userId
         });
-        ReactionCore.Log.info(
+        ReactionCore.Log.debug(
           `merge cart: delete cart ${sessionCart._id} and user: ${sessionCart.userId}`
         );
       }
 
-      ReactionCore.Log.info(
+      ReactionCore.Log.debug(
         `merge cart: processed merge for cartId ${sessionCart._id}`
       );
       return currentCart._id;
@@ -150,13 +148,13 @@ Meteor.methods({
         sessionId: sessionId,
         userId: userId
       });
-      ReactionCore.Log.info("create cart: into new user cart. created: " +
+      ReactionCore.Log.debug("create cart: into new user cart. created: " +
         currentCartId + " for user " + userId);
     }
 
     // merge session carts into the current cart
     if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
-      ReactionCore.Log.info(
+      ReactionCore.Log.debug(
         "create cart: found existing cart. merge into " + currentCartId +
         " for user " + userId);
       Meteor.call("cart/mergeCart", currentCartId);
@@ -166,7 +164,7 @@ Meteor.methods({
         shopId: shopId,
         userId: userId
       });
-      ReactionCore.Log.info("create cart: no existing cart. created: " +
+      ReactionCore.Log.debug("create cart: no existing cart. created: " +
         currentCartId + " for " + userId);
     }
     return currentCartId;
@@ -323,7 +321,7 @@ Meteor.methods({
 
     // insert new reaction order
     let orderId = ReactionCore.Collections.Orders.insert(order);
-    ReactionCore.Log.info("Created orderId", orderId);
+    ReactionCore.Log.debug("Created orderId", orderId);
 
     if (orderId) {
       // TODO: check for succesful orders/inventoryAdjust
@@ -340,7 +338,7 @@ Meteor.methods({
         Meteor.call("cart/createCart", order.userId);
       }
       // return
-      ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
+      ReactionCore.Log.debug("Transitioned cart " + cartId + " to order " +
         orderId);
       return orderId;
     }

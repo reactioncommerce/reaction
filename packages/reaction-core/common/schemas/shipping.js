@@ -10,7 +10,7 @@ ReactionCore.Schemas.ShippingMethod = new SimpleSchema({
   },
   "name": {
     type: String,
-    label: "Method Code"
+    label: "Method Name"
   },
   "label": {
     type: String,
