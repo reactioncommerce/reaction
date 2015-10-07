@@ -14,8 +14,10 @@ if (typeof Meteor.wrapAsync === "undefined") {
 
 // init geocoder
 GeoCoder = function geoCoderConstructor(options) {
+  let extra;
+  let self = this;
   // fetch shop settings for api auth credentials
-  var shopSettings = ReactionCore.Collections.Packages.findOne({
+  let shopSettings = ReactionCore.Collections.Packages.findOne({
     shopId: ReactionCore.getShopId(),
     name: "core"
   }, {
@@ -26,52 +28,56 @@ GeoCoder = function geoCoderConstructor(options) {
 
   if (shopSettings) {
     if (shopSettings.settings.google) {
-      var extra = {
+      extra = {
         clientId: shopSettings.settings.google.clientId,
         apiKey: shopSettings.settings.google.apiKey
       };
     }
   }
 
-  var self = this;
   self.options = _.extend({
-    geocoderProvider: 'google',
-    httpAdapter: 'https',
+    geocoderProvider: "google",
+    httpAdapter: "https",
     extra: extra
   }, options || {});
 };
 
-var gc = function (address, options, callback) {
-  var g = Npm.require('node-geocoder')(options.geocoderProvider, options.httpAdapter, options.extra);
+function gc(address, options, callback) {
+  let g = Npm.require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
+    options.extra);
   g.geocode(address, callback);
-};
+}
 
 GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
-  if (callback) {
-    callback = Meteor.bindEnvironment(callback, function (error) {
+  let geoCallback = callback;
+  let geoAddress = address;
+  if (geoCallback) {
+    geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
       if (error) throw error;
     });
-    gc(address, this.options, callback);
+    gc(geoAddress, this.options, geoCallback);
   } else {
-    address = Meteor.wrapAsync(gc)(address, this.options)
-    return address[0];
+    geoAddress = Meteor.wrapAsync(gc)(geoAddress, this.options);
+    return geoAddress[0];
   }
 };
 
-var rv = function (lat, lng, options, callback) {
-  var g = Npm.require('node-geocoder')(options.geocoderProvider, options.httpAdapter, options.extra);
+function rv(lat, lng, options, callback) {
+  let g = Npm.require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
+    options.extra);
   g.reverse({
     lat: lat,
     lon: lng
   }, callback);
-};
+}
 
 GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
-  if (callback) {
-    callback = Meteor.bindEnvironment(callback, function (error) {
+  let geoCallback = callback;
+  if (geoCallback) {
+    geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
       if (error) throw error;
     });
-    rv(lat, lng, this.options, callback);
+    rv(lat, lng, this.options, geoCallback);
   } else {
     try {
       address = Meteor.wrapAsync(rv)(lat, lng, this.options);
@@ -93,31 +99,33 @@ GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
   }
 };
 
-
-var gi = function (address, callback) {
+function gi(address, callback) {
+  let lookupAddress = address;
   // short term solution to an haproxy ssl cert installation issue
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
   // if we're local, let's let freegeoip guess.
-  if (address = "127.0.0.1") {
-    address = "";
+  if (lookupAddress === "127.0.0.1" || lookupAddress === null) {
+    lookupAddress = "";
   }
   // calls a private reaction hosted version of freegeoip
-  HTTP.call("GET", "https://geo.getreaction.io/json/" + address, callback);
-};
+  HTTP.call("GET", `https://geo.getreaction.io/json/${lookupAddress}`, callback);
+}
 
 GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
-  if (callback) {
-    callback = Meteor.bindEnvironment(callback, function (error) {
+  let geoCallback = callback;
+  let geoAddress = address;
+  if (geoCallback) {
+    geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
       if (error) throw error;
     });
-    gi(address, this.options, callback);
+    gi(geoAddress, this.options, geoCallback);
   } else {
     try {
-      address = Meteor.wrapAsync(gi)(address)
-      return address.data;
+      geoAddress = Meteor.wrapAsync(gi)(geoAddress);
+      return geoAddress.data;
     } catch (error) {
-      ReactionCore.Events.warn("getLocale geoip lookup failure", error);
-      return;
+      ReactionCore.Log.warn("shop/getLocale geoip lookup failure", error);
+      return {};
     }
   }
 };

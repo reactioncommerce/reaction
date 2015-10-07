@@ -5,8 +5,8 @@
  *
  */
 Template.cartPanel.events({
-  'click #btn-checkout': function(event, template) {
-    $('#cart-drawer-container').fadeOut();
+  "click #btn-checkout": function () {
+    $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
     return Router.go("cartCheckout");
   }

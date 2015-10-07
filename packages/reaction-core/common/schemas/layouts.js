@@ -32,8 +32,8 @@ ReactionCore.Schemas.Layout = new SimpleSchema({
     defaultValue: 1
   },
   position: {
-      type: String,
-      optional: true,
-      defaultValue: 1
-    }
+    type: String,
+    optional: true,
+    defaultValue: 1
+  }
 });

@@ -5,8 +5,7 @@ ReactionCore.Collections = {};
 ReactionCore.Helpers = {};
 ReactionCore.MetaData = {};
 ReactionCore.Locale = {};
-ReactionCore.Events = {};
-
+ReactionCore.Log = {};
 
 if (Meteor.isClient) {
   ReactionCore.Alerts = {};

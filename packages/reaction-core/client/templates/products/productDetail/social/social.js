@@ -3,18 +3,17 @@
 */
 
 Template.productSocial.helpers({
-  customSocialSettings: function() {
-    var current, product, settings, _ref;
-    product = selectedProduct();
-    current = selectedVariant();
-    settings = {
-      placement: 'productDetail',
-      faClass: '',
-      faSize: 'fa-lg',
-      media: Session.get('variantImgSrc'),
+  customSocialSettings: function () {
+    let product = selectedProduct();
+    let current = selectedVariant();
+    let settings = {
+      placement: "productDetail",
+      faClass: "",
+      faSize: "fa-lg",
+      media: Session.get("variantImgSrc"),
       url: window.location.href,
       title: current.title,
-      description: (_ref = product.description) != null ? _ref.substring(0, 254) : void 0,
+      description: product.description !== null ? product.description.substring(0, 254) : void 0,
       apps: {
         facebook: {
           description: product.facebookMsg
@@ -23,7 +22,7 @@ Template.productSocial.helpers({
           title: product.twitterMsg
         },
         googleplus: {
-          itemtype: 'Product',
+          itemtype: "Product",
           description: product.googleplusMsg
         },
         pinterest: {

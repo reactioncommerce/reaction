@@ -6,21 +6,21 @@
  * @returns user profile details on orders
  */
 Template.orderDetail.helpers({
-  userProfile: function() {
-    var profileId, userProfile;
+  userProfile: function () {
+    let profileId;
+    let userProfile;
     profileId = this.userId;
-    if (profileId != null) {
+    if (profileId !== null) {
       userProfile = Meteor.subscribe("UserProfile", profileId);
       if (userProfile.ready()) {
         return Meteor.users.findOne(profileId);
       }
     }
   },
-  orderAge: function() {
+  orderAge: function () {
     return moment(this.createdAt).fromNow();
   },
-  shipmentTracking: function() {
+  shipmentTracking: function () {
     return this.shipping.shipmentMethod.tracking;
-  },
-
+  }
 });

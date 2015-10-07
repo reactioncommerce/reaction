@@ -5,14 +5,13 @@
  */
 
 Template.cartCompleted.helpers({
-  orderStatus: function() {
+  orderStatus: function () {
     if (this.workflow.status === "new") {
-      return i18n.t('cartCompleted.submitted');
-    } else {
-      return this.workflow.status;
+      return i18n.t("cartCompleted.submitted");
     }
+    return this.workflow.status;
   },
-  userOrders: function() {
+  userOrders: function () {
     if (Meteor.user()) {
       return ReactionCore.Collections.Orders.find({
         userId: Meteor.userId()
@@ -27,10 +26,10 @@ Template.cartCompleted.helpers({
  * adds email to order
  */
 Template.cartCompleted.events({
-  'click #update-order': function(event, template) {
-    var email;
-    email = template.find("input[name=email]").value;
+  "click #update-order": function (event, template) {
+    const email = template.find("input[name=email]").value;
     check(email, String);
-    return Meteor.call("addOrderEmail", Template.parentData()._id, email);
+    return Meteor.call("orders/addOrderEmail", Template.parentData()._id,
+      email);
   }
 });

@@ -1,104 +1,94 @@
-
 /**
-* ReactionCore MetaData
-* Spiderable method to set meta tags for crawl
-* accepts current iron-router route
-*/
-
-
-var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
+ * ReactionCore MetaData
+ * Spiderable method to set meta tags for crawl
+ * accepts current iron-router route
+ */
 ReactionCore.MetaData = {
   settings: {
-    title: '',
+    title: "",
     meta: [],
-    ignore: ['viewport', 'fragment']
+    ignore: ["viewport", "fragment"]
   },
-  render: function(route) {
-    var metaContent;
-    metaContent = Blaze.toHTMLWithData(Template.coreHead, Router.current().getName);
-    $('head').append(metaContent);
+  render: function () {
+    let metaContent = Blaze.toHTMLWithData(Template.coreHead, Router.current().getName);
+    $("head").append(metaContent);
     return metaContent;
   },
-  clear: function() {
-    var $m, m, property, _i, _len, _ref, _results;
+  clear: function () {
     $("title").remove();
-    _ref = $("meta");
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      m = _ref[_i];
-      $m = $(m);
-      property = $m.attr('name') || $m.attr('property');
-      if (property && __indexOf.call(ReactionCore.MetaData.settings.ignore, property) < 0) {
-        _results.push($m.remove());
+    let metaElements = $("meta").toArray();
+    let _results = [];
+    for (let meta of metaElements) {
+      $metaTag = $(meta);
+      let property = $metaTag.attr("name") || $metaTag.attr("property");
+      if (property && _.indexOf(ReactionCore.MetaData.settings.ignore, property) < 0) {
+        _results.push($metaTag.remove());
       } else {
         _results.push(void 0);
       }
     }
     return _results;
   },
-  update: function(route, params, meta) {
-    var key, keywords, product, routeName, shop, title;
+  update: function (route, params, updateMeta) {
     if (!Router.current()) {
       return false;
     }
-    product = selectedProduct();
-    shop = Shops.findOne(ReactionCore.getShopId());
-    meta = [];
-    title = "";
-    if (shop != null ? shop.name : void 0) {
+    let product = selectedProduct();
+    let shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
+    let meta = updateMeta || [];
+    let title = "";
+    let keywords = [];
+
+    if (shop) {
       ReactionCore.MetaData.name = shop.name;
-    }
-    if (params._id) {
-      title = params._id.charAt(0).toUpperCase() + params._id.substring(1);
-    } else {
-      routeName = Router.current().route.getName();
-      title = routeName.charAt(0).toUpperCase() + routeName.substring(1);
-    }
-    if (product && product.handle === params._id && product.handle) {
-      if (product != null ? product.description : void 0) {
-        meta.push({
-          'name': 'description',
-          'content': product.description
-        });
+      if (params._id) {
+        title = params._id.charAt(0).toUpperCase() + params._id.substring(1);
+      } else {
+        routeName = Router.current().route.getName();
+        title = routeName.charAt(0).toUpperCase() + routeName.substring(1);
       }
-      if (product != null ? product.metafields : void 0) {
-        keywords = (function() {
-          var _i, _len, _ref, _results;
-          _ref = product.metafields;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            key = _ref[_i];
-            _results.push(key.value);
+      if (product && product.handle === params._id && product.handle) {
+        if (product !== null ? product.description : void 0) {
+          meta.push({
+            name: "description",
+            content: product.description
+          });
+        }
+        if (product !== null ? product.metafields : void 0) {
+          for (let key of product.metafields) {
+            keywords.push(key.value);
           }
-          return _results;
-        })();
+        }
+
+        if (keywords) {
+          meta.push({
+            name: "keywords",
+            content: keywords.toString()
+          });
+        }
+
+        if (product !== null ? product.title : void 0) {
+          title = product.title;
+        }
+      } else {
+        if (shop !== null ? shop.description : void 0) {
+          meta.push({
+            description: shop.description
+          });
+        }
+        if (shop !== null ? shop.keywords : void 0) {
+          meta.push({
+            keywords: shop.keywords
+          });
+        }
       }
-      if (keywords) {
-        meta.push({
-          'name': 'keywords',
-          'content': keywords.toString()
-        });
-      }
-      if (product != null ? product.title : void 0) {
-        title = product.title;
-      }
-    } else {
-      if (shop != null ? shop.description : void 0) {
-        meta.push({
-          'description': shop.description
-        });
-      }
-      if (shop != null ? shop.keywords : void 0) {
-        meta.push({
-          'keywords': shop.keywords
-        });
-      }
+      // set site defaults
+      ReactionCore.MetaData.title = title;
+      ReactionCore.MetaData.meta = meta;
+      return meta;
     }
-    ReactionCore.MetaData.title = title;
-    return ReactionCore.MetaData.meta = meta;
   },
-  refresh: function(route, params, meta) {
+  refresh: function (route, params, meta) {
     ReactionCore.MetaData.clear(route);
     ReactionCore.MetaData.update(route, params, meta);
     return ReactionCore.MetaData.render(route);

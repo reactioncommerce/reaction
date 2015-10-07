@@ -7,20 +7,17 @@
  * label is also translated with checkoutPayment.{{app name}}.label
  */
 Template.corePaymentMethods.helpers({
-  isOpen: function(current) {
+  isOpen: function (current) {
     if (current.priority === 0) {
       return "in";
     }
   },
-  appDetails: function(current) {
-    var app, registry, self, _i, _len, _ref;
-    self = this;
+  appDetails: function () {
+    let self = this;
     if (!(this.icon && this.label)) {
-      app = ReactionCore.Collections.Packages.findOne(this.packageId);
-      _ref = app.registry;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        registry = _ref[_i];
-        if (!(registry.provides === 'dashboard')) {
+      let app = ReactionCore.Collections.Packages.findOne(this.packageId);
+      for (let registry of app.registry) {
+        if (!(registry.provides === "dashboard")) {
           continue;
         }
         self.icon = registry.icon;

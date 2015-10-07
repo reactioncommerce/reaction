@@ -9,14 +9,14 @@
 
 if (process.env.NODE_ENV === "development") {
   Meteor.methods({
-    seedUsers: function(amount){
-      for(var i = 0; i < amount; i++) {
-        Factory.create('user');
+    seedUsers: function (amount) {
+      for (let i = 0; i < amount; i++) {
+        Factory.create("user");
       }
     },
 
-    upgradeMe: function(){
-      return Roles.addUsersToRoles(this.userId, ['admin']);
+    upgradeMe: function () {
+      return Roles.addUsersToRoles(this.userId, ["admin"]);
     }
   });
 }
