@@ -3,6 +3,11 @@
  */
 
 ReactionCore.Schemas.ShippingMethod = new SimpleSchema({
+  "_id": {
+    type: String,
+    label: "Shipment Method Id",
+    autoValue: ReactionCore.schemaIdAutoValue
+  },
   "name": {
     type: String,
     label: "Method Code"
@@ -115,12 +120,7 @@ ReactionCore.Schemas.ShipmentItem = new SimpleSchema({
   _id: {
     type: String,
     label: "Shipment Line Item",
-    autoValue: function () {
-      if (this.isUpdate && !this.isSet) {
-        return Random.id();
-      }
-      this.unset();
-    }
+    autoValue: ReactionCore.schemaIdAutoValue
   },
   productId: {
     type: String,
@@ -178,13 +178,7 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
   _id: {
     type: String,
     label: "Shipment Id",
-    optional: true,
-    autoValue: function () {
-      if (this.insert || this.isUpdate && !this.isSet) {
-        return Random.id();
-      }
-      this.unset();
-    }
+    autoValue: ReactionCore.schemaIdAutoValue
   },
   address: {
     type: ReactionCore.Schemas.Address,

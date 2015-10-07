@@ -10,29 +10,26 @@
 ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions",
   amplify.store("ReactionCore.session"),
   function () {
-    let serverSession = new Mongo.Collection("Sessions").findOne();
-    return amplify.store("ReactionCore.session", serverSession._id);
+    let currentSession = Session.get("sessionId");
+    if (!currentSession) {
+      let serverSession = new Mongo.Collection("Sessions").findOne();
+      amplify.store("ReactionCore.session", serverSession._id);
+      return Session.set("sessionId", serverSession._id);
+    }
+    return currentSession;
   });
-
-let sessionId = amplify.store("ReactionCore.session");
 
 // Load order is important here, sessions come before cart.
 ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
-  sessionId,
+  Session.get("sessionId"),
   Meteor.userId()
 );
-
-// monitoring userId or sessionId changes
-let cart = ReactionCore.Collections.Cart.find({
-  userId: Meteor.userId(),
-  sessionid: sessionId
-});
-
 // detect when a cart has been deleted
 // resubscribe will force cart to be rebuilt
+let cart = ReactionCore.Collections.Cart.find();
 cart.observeChanges({
   removed: function () {
-    Meteor.subscribe("Cart", sessionId, Meteor.userId());
+    Meteor.subscribe("Cart", Session.get("sessionId"), Meteor.userId());
   }
 });
 

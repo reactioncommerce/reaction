@@ -44,7 +44,7 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
       limit: limit
     });
   }
-  return [];
+  this.ready();
 });
 
 /**

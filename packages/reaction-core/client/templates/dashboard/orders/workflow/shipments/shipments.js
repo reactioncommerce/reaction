@@ -1,5 +1,3 @@
-
-
 Template.coreOrderShipments.onCreated(() => {
   let template = Template.instance();
   let currentData = Template.currentData();
@@ -22,7 +20,8 @@ Template.coreOrderShipments.onCreated(() => {
  */
 Template.coreOrderShipments.events({
   "click [data-devent-action=shipmentsPacked]": function () {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderShipments", this._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow",
+      "coreOrderShipments", this._id);
   },
 
   "click [data-event-action=addShipment]": (event, template) => {
@@ -33,7 +32,8 @@ Template.coreOrderShipments.events({
 
   "click [data-event-action=removeShipment]": (event, template) => {
     let data = $(event.target).closest("[data-shipment-index]").data();
-    Meteor.call("orders/removeShipment", template.data._id, data.shipmentIndex, (error) => {
+    Meteor.call("orders/removeShipment", template.data._id, data.shipmentIndex, (
+      error) => {
       if (!error) {
         template.orderDep.changed();
       }
@@ -44,7 +44,9 @@ Template.coreOrderShipments.events({
     let data = $(event.target).closest("[data-item]").data();
     let shipmentIndex = $(event.target).val();
     let order = template.order;
-    let item = _.findWhere(order.items, {_id: data.itemId});
+    let item = _.findWhere(order.items, {
+      _id: data.itemId
+    });
     let shipmentItem = {
       _id: item._id,
       productId: item.productId,
@@ -53,11 +55,12 @@ Template.coreOrderShipments.events({
       quantity: item.quantity
     };
 
-    Meteor.call("orders/addItemToShipment", order._id, shipmentIndex, shipmentItem, (error) => {
-      if (!error) {
-        template.orderDep.changed();
-      }
-    });
+    Meteor.call("orders/addItemToShipment", order._id, shipmentIndex,
+      shipmentItem, (error) => {
+        if (!error) {
+          template.orderDep.changed();
+        }
+      });
   },
 
   "submit form[name=addTrackingForm]": (event, template) => {
@@ -68,12 +71,13 @@ Template.coreOrderShipments.events({
     let shipmentData = $(event.target).closest("[data-shipment]").data();
     let shipmentId = shipmentData.shipmentId;
 
-    Meteor.call("orders/updateShipmentTracking", orderId, shipmentId, tracking, (error) => {
-      if (!error) {
-        template.orderDep.changed();
-        template.showTrackingEditForm.set(false);
-      }
-    });
+    Meteor.call("orders/updateShipmentTracking", orderId, shipmentId,
+      tracking, (error) => {
+        if (!error) {
+          template.orderDep.changed();
+          template.showTrackingEditForm.set(false);
+        }
+      });
   },
 
   "click [data-event-action=showTrackingEdit]": (event, template) => {
@@ -81,24 +85,21 @@ Template.coreOrderShipments.events({
   }
 });
 
-
 Template.coreOrderShipments.helpers({
-
   showTrackingEdit(shipment) {
     let template = Template.instance();
-
     if (!shipment.tracking || template.showTrackingEditForm.get()) {
       return true;
     }
-
     return false;
   },
-
   shipmentItems(shipment) {
     let template = Template.instance();
 
     let items = _.map(shipment.items, (item) => {
-      let originalItem = _.findWhere(template.order.items, {_id: item._id});
+      let originalItem = _.findWhere(template.order.items, {
+        _id: item._id
+      });
       return _.extend(originalItem, item);
     });
 
@@ -121,7 +122,9 @@ Template.coreOrderShipments.helpers({
     }
 
     let items = _.filter(order.items, (item) => {
-      return _.where(allItemsInShipments, {_id: item._id}).length;
+      return _.where(allItemsInShipments, {
+        _id: item._id
+      }).length;
     });
 
     return items;
@@ -131,7 +134,9 @@ Template.coreOrderShipments.helpers({
     let template = Template.instance();
     let order = template.order;
 
-    return _.where(order.items, {shipment: shipment});
+    return _.where(order.items, {
+      shipment: shipment
+    });
   },
 
   shipmentIndex(index) {

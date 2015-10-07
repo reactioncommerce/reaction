@@ -26,7 +26,7 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
   shopId = currentShopId || ReactionCore.getShopId(this);
 
   if (userId && userId !== this.userId) {
-    return [];
+    this.ready();
   }
 
   return ReactionCore.Collections.Orders.find({
@@ -43,7 +43,7 @@ Meteor.publish("CompletedCartOrder", function (userId, cartId) {
   check(cartId, String);
 
   if (userId !== this.userId) {
-    return [];
+    this.ready();
   }
 
   return ReactionCore.Collections.Orders.find({

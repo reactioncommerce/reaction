@@ -14,6 +14,7 @@ _.extend(ReactionCore, {
   /**
    * ReactionCore.shopIdAutoValue
    * @summary used for schemea injection autoValue
+   * @example autoValue: ReactionCore.shopIdAutoValue
    * @return {String} returns current shopId
    */
   shopIdAutoValue: function () {
@@ -30,7 +31,23 @@ _.extend(ReactionCore, {
       return this.unset();
     }
   },
-
+  /**
+   * ReactionCore.schemaIdAutoValue
+   * @summary used for schemea injection autoValue
+   * @example autoValue: ReactionCore.schemaIdAutoValue
+   * @return {String} returns randomId
+   */
+  schemaIdAutoValue: function () {
+    if (this.isSet && this.isFromTrustedCode) {
+      return Random.id();
+    }
+    if (Meteor.isClient && this.isInsert) {
+      return Random.id();
+    } else if (Meteor.isServer && (this.isInsert || this.isUpsert || this.isUpdate)) {
+      return Random.id();
+    }
+    return this.unset();
+  },
   /**
    * ReactionCore.setProduct
    * @summary method to set default/parameterized product variant

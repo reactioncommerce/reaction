@@ -21,7 +21,7 @@ Meteor.publish("Sessions", function (sessionId) {
   // get the session from existing sessionId
   let serverSession = ServerSessions.find(id);
 
-  // if not found, also create a new session
+  // if not found, also create a new server session
   if (serverSession.count() === 0) {
     id = ServerSessions.insert({
       created: created

@@ -18,10 +18,10 @@ Meteor.methods({
   "cart/mergeCart": function (cartId) {
     check(cartId, String);
 
-    let Cart = ReactionCore.Collections.Cart;
-    let currentCart = Cart.findOne(cartId);
-    let userId = currentCart.userId;
-    let sessionId = ReactionCore.sessionId;
+    let Cart = ReactionCore.Collections.Cart; // convienance shorthand
+    let currentCart = Cart.findOne(cartId); // we don't process current cart, but merge into it.
+    let userId = currentCart.userId; // just used to filter out the current cart
+    let sessionId = ReactionCore.sessionId; // persisten sessions, see: publications/sessions.js
     let shopId = ReactionCore.getShopId();
 
     // no need to merge anonymous carts
@@ -29,13 +29,24 @@ Meteor.methods({
       return false;
     }
 
-    // get session or user carts
+    // console.log("merge cart: matching sessionId");
+    // console.log("current userId", userId);
+    // console.log("sessionId", sessionId);
+
+    // get session carts without current user cart
     let sessionCarts = Cart.find({
-      session: sessionId,
-      userId: {
-        $ne: userId
-      }
+      $and: [{
+        userId: {
+          $ne: userId
+        }
+      }, {
+        sessionId: {
+          $eq: sessionId
+        }
+      }]
     });
+
+    // console.log("sessionCarts", sessionCarts.fetch())
 
     ReactionCore.Log.info(
       `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
@@ -385,13 +396,16 @@ Meteor.methods({
       };
     }
     // update or insert method
-    ReactionCore.Collections.Cart.update(selector, update, function (error) {
+    ReactionCore.Collections.Cart.update(selector, update, function (
+      error) {
       if (error) {
-        ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
+        ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`,
+          error);
         return;
       }
       // this will transition to review
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+        "coreCheckoutShipping");
       return;
     });
   },
@@ -577,12 +591,14 @@ Meteor.methods({
       };
     }
 
-    return ReactionCore.Collections.Cart.update(selector, update, function (error) {
-      if (error) {
-        ReactionCore.Log.warn(error);
-        throw new Meteor.Error("An error occurred saving the order", error);
-      }
-      return;
-    });
+    return ReactionCore.Collections.Cart.update(selector, update,
+      function (error) {
+        if (error) {
+          ReactionCore.Log.warn(error);
+          throw new Meteor.Error("An error occurred saving the order",
+            error);
+        }
+        return;
+      });
   }
 });

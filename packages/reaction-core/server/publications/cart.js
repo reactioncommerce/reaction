@@ -2,22 +2,20 @@
  * cart
  */
 
-Meteor.publish("Cart", function (clientSessionId, userId) {
-  check(clientSessionId, Match.OptionalOrNull(String));
+Meteor.publish("Cart", function (sessionId, userId) {
+  check(sessionId, Match.OneOf(String, null));
   check(userId, Match.OptionalOrNull(String));
-
-  if (!ReactionCore.getShopId()) {
-    return [];
-  }
   // sessionId is required, not for selecting
   // the cart, (userId), but as a key in merging
   // anonymous user carts into authenticated existing
   // user carts.
-  let sessionId = clientSessionId || ReactionCore.sessionId;
-  // we won't create carts for unless
-  // we've got an id an session
+  // we won't create carts unless we've got sessionId
   if (!this.userId || sessionId === null) {
-    return [];
+    this.ready();
+  }
+  // shopId is also required.
+  if (!ReactionCore.getShopId()) {
+    this.ready();
   }
   // select user cart
   cart = ReactionCore.Collections.Cart.findOne({
@@ -27,8 +25,10 @@ Meteor.publish("Cart", function (clientSessionId, userId) {
   // we may create a cart if we didn't find one.
   if (cart) {
     cartId = cart._id;
-  } else {
+  } else if (this.userId) {
     cartId = Meteor.call("cart/createCart", this.userId);
+  } else {
+    this.ready();
   }
   // return cart cursor
   return ReactionCore.Collections.Cart.find(cartId);
