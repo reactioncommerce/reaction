@@ -19,7 +19,7 @@
           </strong>
         </div>
         <div class="col-xs-6 col-sm-10">
-          {{status}}
+          {{workflow.status}}
         </div>
       </div>
 
@@ -30,16 +30,18 @@
           </strong>
         </div>
         <div class="col-xs-10">
-          {{#with shipping.address}}
-            <span>
-              <address>
-                {{address1}}
-                {{address2}}
-                {{city}}, {{region}} {{postal}} {{country}}
-                {{phone}}
-              </address>
-            </span>
-          {{/with}}
+          {{#each shipping}}
+            {{#with address}}
+              <span>
+                <address>
+                  {{address1}}
+                  {{address2}}
+                  {{city}}, {{region}} {{postal}} {{country}}
+                  {{phone}}
+                </address>
+              </span>
+            {{/with}}
+          {{/each}}
         </div>
       </div>
 
@@ -49,9 +51,11 @@
             <span data-i18n="cartCompleted.shipment">Shipment</span>
           </strong>
         </div>
+        {{#each shipping}}
         <div class="col-xs-10">
-          {{shipping.shipmentMethod.method.label}}
+          {{shipmentMethod.label}}
         </div>
+        {{/each}}
       </div>
 
       <div class="row order-payment-info">
@@ -61,10 +65,10 @@
           </strong>
         </div>
         <div class="col-xs-10">
-          {{#each payment.paymentMethod}}
-          <span id="order-payment-method">{{storedCard}}</span>
+          {{#each billing}}
+          <span id="order-payment-method">{{paymentMethod.storedCard}}</span>
           <span data-id="cartCompleted.reference">Ref:</span>
-          <span id="order-payment-transaction">{{transactionId}}</span>
+          <span id="order-payment-transaction">{{paymentMethod.transactionId}}</span>
           &nbsp;
           {{/each}}
         </div>

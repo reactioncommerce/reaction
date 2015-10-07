@@ -19,7 +19,7 @@ Template.dashboardOrdersList.helpers({
     return moment(this.createdAt).fromNow();
   },
   shipmentTracking: function () {
-    return this.shipping.shipmentMethod.tracking;
+    return this.shipping[0].shipmentMethod.tracking;
   },
   shopName: function () {
     var shop;

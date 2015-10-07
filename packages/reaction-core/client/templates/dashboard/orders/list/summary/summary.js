@@ -4,7 +4,7 @@
  * @returns paymentInvoice
  */
 Template.ordersListSummary.helpers({
-  invoice: function() {
-    return this.payment.invoices[0];
+  invoice: function () {
+    return this.billing[0].invoices;
   }
 });
