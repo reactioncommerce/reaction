@@ -6,14 +6,13 @@ Template.dashboardOrdersList.helpers({
   orders: function (data) {
     if (data.hash.data) {
       return data.hash.data;
-    } else {
-      return ReactionCore.Collections.Orders.find({}, {
-        sort: {
-          createdAt: -1
-        },
-        limit: 25
-      });
     }
+    return ReactionCore.Collections.Orders.find({}, {
+      sort: {
+        createdAt: -1
+      },
+      limit: 25
+    });
   },
   orderAge: function () {
     return moment(this.createdAt).fromNow();
@@ -22,8 +21,7 @@ Template.dashboardOrdersList.helpers({
     return this.shipping[0].shipmentMethod.tracking;
   },
   shopName: function () {
-    var shop;
-    shop = Shops.findOne(this.shopId);
-    return shop != null ? shop.name : void 0;
+    let shop = Shops.findOne(this.shopId);
+    return shop !== null ? shop.name : void 0;
   }
 });

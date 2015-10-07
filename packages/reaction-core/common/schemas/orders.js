@@ -109,6 +109,10 @@ ReactionCore.Schemas.OrderTransaction = new SimpleSchema({
  * @see common/collections.collection.js
  */
 ReactionCore.Schemas.Order = new SimpleSchema({
+  userId: {
+    type: String,
+    unique: false
+  },
   cartId: {
     type: String,
     optional: true
