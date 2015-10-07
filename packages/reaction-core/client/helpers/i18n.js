@@ -190,6 +190,7 @@ Template.registerHelper("formatPrice", function (currentPrice) {
 
   localeDep.depend();
 
+  // TODO: Refactor
   try {
     let prices = currentPrice.split(" - ");
     for (actualPrice of prices) {
@@ -216,6 +217,8 @@ Template.registerHelper("formatPrice", function (currentPrice) {
             price = price * ReactionCore.Locale.exchangeRate.Rate;
             price = accounting.formatMoney(price, ReactionCore.Locale.currency);
           }
+        } else {
+          price = accounting.formatMoney(currentPrice, ReactionCore.Locale.currency);
         }
       }
     }
