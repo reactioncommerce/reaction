@@ -196,47 +196,42 @@ getDomain = function (requestUrl) {
 /**
  * ReactionRegistry createDefaultAdminUser
  * @summary Method that creates default admin user
+ * Settings load precendence:
+ *  1. settings in meteor.settings
+ *  2. environment variables
  */
 
 ReactionRegistry.createDefaultAdminUser = function () {
-  let accountId;
-  let defaultAdminRoles;
-  let packages;
-  let shopId;
-  let url;
-  let domain = getDomain();
-  let options = {};
-  options.email = process.env.REACTION_EMAIL;
-  options.username = process.env.REACTION_USER;
-  options.password = process.env.REACTION_AUTH;
-
-  defaultAdminRoles = ["owner", "admin"];
-  shopId = ReactionCore.getShopId();
+  const options = {};
+  const domain = getDomain();
+  const defaultAdminRoles = ["owner", "admin"];
+  const shopId = ReactionCore.getShopId();
+  // if an admin user has already been created, we'll exit
   if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
     return;
   }
-  if (process.env.REACTION_EMAIL) {
-    url = process.env.MONGO_URL;
-    options.username = "Owner";
-    if (!options.password) {
-      options.password = url.substring(url.indexOf("/") + 2, url.indexOf("@"))
-        .split(":")[1];
+  // defaults use either env or generated
+  options.email = process.env.REACTION_EMAIL || Random.id(8).toLowerCase() + "@" + domain;
+  options.username = process.env.REACTION_USER || "Admin"; // username
+  options.password = process.env.REACTION_AUTH || Random.secret(8);
+  // but we can override with provided `meteor --settings`
+  if (Meteor.settings) {
+    ReactionCore.Log.info("Using meteor --settings to create admin user");
+    if (Meteor.settings.reaction) {
+      options.username = Meteor.settings.reaction.REACTION_USER || "Admin";
+      options.password = Meteor.settings.reaction.REACTION_AUTH || Random.secret(8);
+      options.email = Meteor.settings.reaction.REACTION_EMAIL || Random.id(8).toLowerCase() + "@" + domain;
     }
-    ReactionCore.Log.warn(
-      "\nIMPORTANT! DEFAULT USER INFO (ENV)\n  EMAIL/LOGIN: " + options.email +
-      "\n  PASSWORD: " + options.password + "\n");
-  } else {
-    options.username = Meteor.settings.REACTION_USER || "Owner";
-    options.password = Meteor.settings.REACTION_AUTH || Random.secret(8);
-    options.email = Meteor.settings.REACTION_EMAIL || Random.id(8).toLowerCase() +
-      "@" + domain;
-    ReactionCore.Log.warn(
-      "\nIMPORTANT! DEFAULT USER INFO (RANDOM)\n  EMAIL/LOGIN: " + options.email +
-      "\n  PASSWORD: " + options.password + "\n");
   }
-
-  accountId = Accounts.createUser(options);
-
+  // create the new admin user
+  let accountId = Accounts.createUser(options);
+  // notify user that admin was created
+  ReactionCore.Log.warn(
+      `\n *********************************
+      \n  IMPORTANT! DEFAULT ADMIN INFO
+      \n  EMAIL/LOGIN: ${options.email}
+      \n  PASSWORD: ${options.password}
+      \n ********************************* \n\n`);
   // account email should print on console
   // if server is not confgured. Error in configuration
   // are caught, but admin isn't verified.
@@ -246,8 +241,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
     ReactionCore.Log.warn(
       "Unable to send admin account verification email.", error);
   }
-
-  // configure Launchdock auth
+  // if we have launchdock credentials, we'll configure them
   if (process.env.LAUNCHDOCK_USERID) {
     Meteor.users.update({
       _id: accountId
@@ -261,7 +255,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
     });
   }
 
-  packages = ReactionCore.Collections.Packages.find().fetch();
+  let packages = ReactionCore.Collections.Packages.find().fetch();
 
   ReactionCore.Collections.Shops.update(shopId, {
     $addToSet: {
@@ -272,7 +266,8 @@ ReactionRegistry.createDefaultAdminUser = function () {
       domains: Meteor.settings.ROOT_URL
     }
   });
-
+  // populate roles with all the packages and their permissions
+  // this way the default user has all permissions
   for (let pkg of packages) {
     for (let reg of pkg.registry) {
       if (reg.route) {
@@ -285,10 +280,8 @@ ReactionRegistry.createDefaultAdminUser = function () {
     defaultAdminRoles.push(pkg.name);
   }
 
-  Meteor.call("accounts/addUserPermissions", accountId, _.uniq(defaultAdminRoles),
-    shopId);
-  Meteor.call("accounts/addUserPermissions", accountId, ["owner", "admin", "dashboard"],
-    Roles.GLOBAL_GROUP);
+  Meteor.call("accounts/addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId);
+  Meteor.call("accounts/addUserPermissions", accountId, ["owner", "admin", "dashboard"], Roles.GLOBAL_GROUP);
 };
 
 /*
