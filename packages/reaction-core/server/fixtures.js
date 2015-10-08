@@ -216,11 +216,11 @@ ReactionRegistry.createDefaultAdminUser = function () {
   options.password = process.env.REACTION_AUTH || Random.secret(8);
   // but we can override with provided `meteor --settings`
   if (Meteor.settings) {
-    ReactionCore.Log.info("Using meteor --settings to create admin user");
     if (Meteor.settings.reaction) {
       options.username = Meteor.settings.reaction.REACTION_USER || "Admin";
       options.password = Meteor.settings.reaction.REACTION_AUTH || Random.secret(8);
       options.email = Meteor.settings.reaction.REACTION_EMAIL || Random.id(8).toLowerCase() + "@" + domain;
+      ReactionCore.Log.info("Using meteor --settings to create admin user");
     }
   }
   // create the new admin user
