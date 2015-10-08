@@ -35,7 +35,7 @@ Meteor.methods({
     product = Products.findOne(productId);
     // create variant hierachy structure
     variant = (function () {
-      let results;
+      const results = [];
       for (let variant of product.variants) {
         if (variant._id === variantId) {
           results.push(variant);
