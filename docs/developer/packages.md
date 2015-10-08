@@ -1,6 +1,20 @@
 # Packages
 Reaction packages are Meteor packages that add a call to `ReactionCore.registerPackage` declaring the package structure to the Reaction registry.
 
+- [Core Packages](#core-packages)
+- [Public packages](#public-packages)
+- [Private packages](#private-packages)
+  - [ReactionCore.registerPackage](#reactioncoreregisterpackage)
+  - [Registry](#registry)
+  - [Permissions](#permissions)
+    - [Owner](#owner)
+    - [Admin](#admin)
+- [Dashboard](#dashboard)
+- [Routes](#routes)
+- [Collections](#collections)
+- [Security](#security)
+- [Publishing](#publishing)
+
 ## Core Packages
 For local core package development you must _git clone_ packages locally, either into `reaction/packages`, or define the `PACKAGES_DIR` env variable for an alternate location.
 
@@ -355,8 +369,7 @@ ReactionCore.registerPackage
  ]
 ```
 
-###Routes
-
+### Routes
 [Iron:router](//github.com/iron-meteor/iron-router) provides routing in Reaction.
 
 Routes are defined, both in app and packages. Most often found in `common/routers.js`.
@@ -375,8 +388,7 @@ Use the controller `ShopController` for public/shop routes, and `ShopAdminContro
 
 In addition to defining the route in the `Router.map`, you should add the route and template in the `ReactionCore.registerPackage` to export this route to ReactionCore and add permissions.
 
-###Collections
-
+### Collections
 [AutoForm, collection2, simple-schema](//github.com/aldeed/meteor-autoform) packages provide functionality for defining forms, collections and schemas.
 
 You can extend core collections, schemas in your package. You can also create your own collections.
@@ -403,8 +415,7 @@ ReactionCore.Schemas.BraintreePackageConfig = new SimpleSchema([
 ])
 ```
 
-###Security
-
+### Security
 Community tested Meteor packages that enforce security rules are installed as required dependencies in Reaction Core.
 
 **ongoworks/security**<br>**alanning:meteor-roles**<br>**audit-argument-checks**
@@ -419,8 +430,7 @@ The [browser-policy](//atmospherejs.com/meteor/browser-policy) package lets you 
 
 `browser-policy` is installed by reaction-core and is not optional.
 
-##Publishing
-
+## Publishing
 You can develop, or even deploy with your packages in the `reaction/packages` directory. If you'd like to publically share the package, you'll need to publish it to the Meteor package registry.
 
 To have your package included in a Reaction release, please create a GitHub issue.
