@@ -36,8 +36,9 @@ Template.headerTags.helpers({
     return Template.headerLinks;
   },
   tags: function () {
+    let tags = [];
+
     if (this.tag) {
-      let tags = [];
       let tagDoc = Tags.findOne(this.tag._id);
 
       if (!tagDoc) {
