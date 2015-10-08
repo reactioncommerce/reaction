@@ -134,6 +134,8 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use("sanjo:jasmine@0.18.0");
+  api.use("ecmascript");
+  api.use("jquery");
   api.use("underscore");
   api.use("dburles:factory@0.3.10");
   api.use("velocity:html-reporter@0.8.2");

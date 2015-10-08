@@ -4,10 +4,10 @@
 */
 
 waitForElement = function (selector, successCallback) {
-  var checkInterval = 50;
-  var timeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-  var startTime = Date.now();
-  var intervalId = Meteor.setInterval(function () {
+  let checkInterval = 50;
+  let timeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+  let startTime = Date.now();
+  let intervalId = Meteor.setInterval(function () {
     if (Date.now() > startTime + timeoutInterval) {
       Meteor.clearInterval(intervalId);
       // Jasmine will handle the test timeout error
@@ -20,15 +20,14 @@ waitForElement = function (selector, successCallback) {
 
 
 describe("User sign up", function () {
-
   beforeEach(function (done) {
-    var user = {
+    let user = {
       email: "",
       password: ""
     };
 
-    $('.login-input--email').val(user.email);
-    $('.login-input--password').val(user.password);
+    $(".login-input-email").val(user.email);
+    $(".login-input-password").val(user.password);
 
     setTimeout(function () {
       done();
@@ -36,30 +35,29 @@ describe("User sign up", function () {
   });
 
   it("should display invalid username error", function (done) {
-    waitForElement($('.login-input--email'), function() {
-      var emailInput = $('.login-input--email');
-      var passInput = $('.login-input--password');
-      var accountDropdown = $('.accounts-dropdown .dropdown-toggle');
-      var loginSubmit = $('.action--submit');
+    waitForElement($(".login-input-email"), function () {
+      let emailInput = $(".login-input-email");
+      let passInput = $(".login-input-password");
+      let loginSubmit = $("[data-event-action=submitSignInForm");
 
-      var user = {
+      let user = {
         email: faker.name.findName(),
-        password: faker.hacker.noun,
+        password: faker.hacker.noun
       };
 
+      let spyOnLoginSubmit = spyOnEvent(loginSubmit, "click");
 
-      var spyOnLoginSubmit = spyOnEvent(loginSubmit, 'click');
-
-      $('.login-input--email').val(user.email);
-      $('.login-input--password').val(user.password);
-      $('.action--submit').trigger('click');
+      emailInput.val(user.email);
+      passInput.val(user.password);
+      loginSubmit.trigger("click");
 
       expect(spyOnLoginSubmit).toHaveBeenTriggered();
 
       // Same thing
-      expect( $(".login-form .form-group--email")).toHaveClass('has-error');
-      expect($(".login-form .form-group--email").hasClass('has-error')).toBeTruthy();
+      expect($(".login-form .form-group-email")).toHaveClass("has-error");
+      expect($(".login-form .form-group-email").hasClass("has-error")).toBeTruthy();
     });
+
     done();
   });
 });
