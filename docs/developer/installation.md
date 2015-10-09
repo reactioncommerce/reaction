@@ -1,9 +1,9 @@
 # Installation
 ## Prerequisites
 **Prerequisites**
-- Npm and [Node.js](//nodejs.org/)
+- Npm and [Node.js](https://nodejs.org/)
 - _`ImageMagick` - Optional but suggested_
-- _For [windows installation](//github.com/reactioncommerce/reaction/issues/363) you also need:_
+- _For [windows installation](https://github.com/reactioncommerce/reaction/issues/363) you also need:_
   - Win32 OpenSSL
   - Visual Studio 2008 redistributables
   - Git / mysgit
@@ -17,21 +17,21 @@ cd reaction && git checkout master
 meteor
 ```
 
-The `master` branch will ensure your initial installation is a stable release, and also should work with published packages from the [Meteor package manager](//atmospherejs.com/). However, the most recent code is in `development`, which is the recommended branch if you are a developer.
+The `master` branch will ensure your initial installation is a stable release, and also should work with published packages from the [Meteor package manager](https://atmospherejs.com/). However, the most recent code is in `development`, which is the recommended branch if you are a developer.
 
 When mixing branches and versions of published packages (versus local packages), you may get some package compatibility warnings. You can use `meteor --allow-incompatible-update` to resolve this.
 
-See the [package development documentation](//github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md) for details on working with the `development` branch, and using local package dependencies. You can clone or create new packages in `reaction/packages` for local package development.
+See the [package development documentation](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/packages.md) for details on working with the `development` branch, and using local package dependencies. You can clone or create new packages in `reaction/packages` for local package development.
 
 **Start**
 
 To start Reaction, run the `meteor` command:
 
-Browse to [http://localhost:3000](//localhost:3000) and you should see Reaction running (sample data same as on demo site)
+Browse to [http://localhost:3000](https://localhost:3000) and you should see Reaction running (sample data same as on demo site)
 
 The initial admin user for the site is auto generated, and displayed in your console (or see: env variables section to default these)
 
-_Note: the [velocity](//velocity.meteor.com/) testing frameworks is installed by default, you can view results by clicking the "pulsing velocity circle-dot"_
+_Note: the [velocity](https://velocity.readme.io/ testing frameworks is installed by default, you can view results by clicking the "pulsing velocity circle-dot"_
 
 **Reset**
 
@@ -43,7 +43,7 @@ meteor reset
 
 The  _packages/reaction-core/private/data_ folder contains fixture data  files that can be modified to the change initial data loaded.
 
-See the [package development documentation](//github.com/reactioncommerce/reaction-core/blob/master/docs/packages.md)  and the [settings and fixture data documentation](//github.com/reactioncommerce/reaction-core/blob/master/docs/fixtures.md) for detailed instructions on modifying initial fixture data.
+See the [package development documentation](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/packages.md)  and the [settings and fixture data documentation](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/fixtures.md) for detailed instructions on modifying initial fixture data.
 
 **Updates**
 
@@ -85,7 +85,7 @@ Copy the optional `settings/dev.settings.json` to `<your-settings>.json` and run
 
 Reaction also uses private/data/reaction.json for loading additional configuration settings.
 
-See [settings and fixture data documentation](//github.com/reactioncommerce/reaction-core/blob/master/docs/deploying.md).
+See [settings and fixture data documentation](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/deploying.md).
 
 #Troubleshooting
 
@@ -103,8 +103,8 @@ Caused by a broken node, npm installation. Reinstall Node.js with NPM (or when p
 
 **windows OpenSSL errors prevent startup**
 
-Install OpenSSL per: [https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md](//github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md)
+Install OpenSSL per: [https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md](https://github.com/meteor/meteor/blob/devel/packages/non-core/npm-node-aes-gcm/README.md)
 
 **windows bower install errors**
 
-We use bower to install some core dependencies. To use Bower on Windows, you must install msysgit. See: [https://github.com/bower/bower/tree/master#windows-users](//github.com/bower/bower/tree/master#windows-users)
+We use bower to install some core dependencies. To use Bower on Windows, you must install msysgit. See: [https://github.com/bower/bower/tree/master#windows-users](https://github.com/bower/bower/tree/master#windows-users)
