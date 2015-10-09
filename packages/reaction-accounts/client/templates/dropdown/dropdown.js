@@ -1,29 +1,51 @@
 Template.loginDropdown.events({
-  "click .dropdown-menu": function(event) {
+
+  /**
+   * Submit sign up form
+   * @param  {Event} event - jQuery Event
+   * @param  {Template} template - Blaze Template
+   * @return {void}
+   */
+  "click .dropdown-menu": (event) => {
     return event.stopPropagation();
   },
 
-  "click #logout": function(event, template) {
-    Session.set('displayConsoleNavBar', false);
+  /**
+   * Submit sign up form
+   * @param  {Event} event - jQuery Event
+   * @param  {Template} template - Blaze Template
+   * @return {void}
+   */
+  "click #logout": (event, template) => {
+    Session.set("displayConsoleNavBar", false);
+
     Meteor.logoutOtherClients();
-    Meteor.logout(function(error, result) {
+    Meteor.logout((error) => {
       if (error) {
-        ReactionCore.Log.warn('Failed to logout.', error);
+        ReactionCore.Log.warn("Failed to logout.", error);
         return Meteor._debug(error);
       }
     });
     event.preventDefault();
 
-    template.$('.dropdown-toggle').dropdown('toggle');
+    template.$(".dropdown-toggle").dropdown("toggle");
   },
 
-  "click .user-accounts-dropdown-apps a": function(event, template) {
+  /**
+   * Submit sign up form
+   * @param  {Event} event - jQuery Event
+   * @param  {Template} template - Blaze Template
+   * @return {void}
+   */
+  "click .user-accounts-dropdown-apps a": (event, template) => {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
-      Meteor.call("products/createProduct", function(error, productId) {
-        var currentTag, currentTagId;
+      Meteor.call("products/createProduct", (error, productId) => {
+        let currentTag;
+        let currentTagId;
+
         if (error) {
           throw new Meteor.Error("createProduct error", error);
         } else if (productId) {
@@ -37,10 +59,9 @@ Template.loginDropdown.events({
           });
         }
       });
-
     } else if (this.route) {
       event.preventDefault();
-      template.$('.dropdown-toggle').dropdown('toggle');
+      template.$(".dropdown-toggle").dropdown("toggle");
 
       return Router.go(this.route);
     }
