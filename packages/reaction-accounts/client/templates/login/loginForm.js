@@ -42,8 +42,10 @@ Template.loginForm.onCreated(function () {
   let currentData = Template.currentData();
   let startView = "loginFormSignInView";
 
-  if (currentData.startView) {
-    startView = currentData.startView;
+  if (currentData) {
+    if (currentData.startView) {
+      startView = currentData.startView;
+    }
   }
 
   template.loginFormCurrentView = new ReactiveVar(startView);
