@@ -1,50 +1,40 @@
 <template name="coreOrderWorkflow">
   <div aria-multiselectable="true" class="panel-group" id="core-order-workflow-accordion" role="tablist">
-    {{#each reactionTemplate workflow="coreOrderWorkflow"}}
-      <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
-        <div class="panel-heading">
-          <div class="panel-title">
-            <a aria-controls="{{label}}" aria-expanded="true" data-i18n="{{template}}.{{label}}" data-parent="#core-order-workflow-accordion" data-toggle="collapse" href="#{{template}}-panel" role="button">{{label}}</a>
-            <span class="pull-right">
-              {{#if isCompleted}}
-              <i class="fa fa-check-circle-o 2x"></i>
-              {{else}}
-               <i class="fa fa-exclamation 2x"></i>
-              {{/if}}
-            </span>
-          </div>
-        </div>
 
-        {{#if isCompleted}}
 
-          {{#if condition template 'eq' "coreOrderCreated"}}
-            <div aria-labelledby="{{template}}" class="panel-collapse" id="{{template}}-panel" role="tabpanel">
-              <div class="panel-body">
-                {{> Template.dynamic template=template data=.. }}
+    {{#each shipment in order.shipping}}
+
+    <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
+      <div class="panel-heading">
+              <div class="panel-title">
+                Fulfilment {{fulfillmentNumber @index}}
+
+                <a aria-controls="{{label}}" aria-expanded="true" data-i18n="app.order.fullfilment" data-parent="#core-order-workflow-accordion" data-toggle="collapse" href="#{{template}}-panel" role="button">Fulfillment</a>
+
+                {{!--
+                <span class="pull-right">
+                  {{#if isCompleted}}
+                  <i class="fa fa-check-circle-o 2x"></i>
+                  {{else}}
+                   <i class="fa fa-exclamation 2x"></i>
+                  {{/if}}
+                </span>--}}
               </div>
             </div>
 
-          {{else}}
+      <div class="list-group">
 
-            <div aria-labelledby="{{template}}" class="panel-collapse collapse" id="{{template}}-panel" role="tabpanel">
-              <div class="panel-body">
-                {{> Template.dynamic template=template data=.. }}
-              </div>
-            </div>
-          {{/if}}
+        {{#each reactionTemplate workflow="coreOrderWorkflow"}}
 
-        {{/if}}
-
-        {{#if isPending}}
-
-          <div aria-labelledby="{{template}}" class="panel-collapse" id="{{template}}-panel" role="tabpanel">
-            <div class="panel-body">
-              {{> Template.dynamic template=template data=..}}
-            </div>
+          <div aria-labelledby="{{template}}" class="list-group-item" id="{{template}}-panel" role="tabpanel">
+            <h3 class="list-group-title" data-i18n="{{template}}.{{label}}">{{label}}</h3>
+            {{> Template.dynamic template=template data=.. }}
           </div>
-        {{/if}}
 
+        {{/each}}
       </div>
+
+    </div>
     {{/each}}
   </div>
 </template>

@@ -147,5 +147,42 @@ ReactionCore.registerPackage({
     label: "Completed",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
+  },
+  // Standard Order Fulfillment with shipping
+  {
+    template: "coreFulfillmentCreated",
+    label: "Created",
+    workflow: "coreOrderFulfillmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreFulfillmentPacking",
+    label: "Packing",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreFulfillmentTracking",
+    label: "Adjustments",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreFulfillmentAdjustments",
+    label: "Adjustments",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreFulfillmentPayment",
+    label: "Payments",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreFulfillmentShipped",
+    label: "Shipped",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreFulfillmentCompleted",
+    label: "Completed",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
   }]
 });
