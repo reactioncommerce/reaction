@@ -25,13 +25,14 @@ ReactionCore.Helpers.cartTransform = {
     return count;
   },
   cartShipping: function () {
-    let shipping = 0;
+    let shippingTotal = 0;
+    // loop through the cart.shipping, sum shipments.
     if (this.shipping) {
-      if (this.shipping[0].shipmentMethod) {
-        shipping += this.shipping[0].shipmentMethod.rate;
+      for (let shipment of this.shipping) {
+        shippingTotal += shipment.shipmentMethod.rate;
       }
     }
-    return shipping;
+    return parseFloat(shippingTotal);
   },
   cartSubTotal: function () {
     let subtotal = 0;
@@ -60,23 +61,22 @@ ReactionCore.Helpers.cartTransform = {
   cartTotal: function () {
     let total;
     let subtotal = 0;
-    if (typeof this !== "undefined" && this !== null ? this.items : void 0) {
+    let shippingTotal = 0;
+    if (this.items) {
       for (let items of this.items) {
         subtotal += items.quantity * items.variants.price;
       }
     }
-    let shipping = 0;
+    // loop through the cart.shipping, sum shipments.
     if (this.shipping) {
-      if (this.shipping.shippingMethod) {
-        for (let shippingMethod of this.shipping.shippingMethod) {
-          shipping += shippingMethod.rate;
-        }
+      for (let shipment of this.shipping) {
+        shippingTotal += shipment.shipmentMethod.rate;
       }
     }
 
-    shipping = parseFloat(shipping);
-    if (!isNaN(shipping)) {
-      subtotal = subtotal + shipping;
+    shippingTotal = parseFloat(shippingTotal);
+    if (!isNaN(shippingTotal)) {
+      subtotal = subtotal + shippingTotal;
     }
     total = subtotal.toFixed(2);
     return total;
