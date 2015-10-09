@@ -561,12 +561,10 @@ Meteor.methods({
    * @param {String} currentTagId - currentTagId
    * @return {String} return result
    */
-  "products/updateProductTags": function (productId, tagName, tagId,
-    currentTagId) {
+  "products/updateProductTags": function (productId, tagName, tagId) {
     check(productId, String);
     check(tagName, String);
     check(tagId, Match.OneOf(String, null));
-    check(currentTagId, Match.Optional(String));
     // must have createProduct permission
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");

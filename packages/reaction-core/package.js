@@ -7,7 +7,8 @@ Package.describe({
 
 Npm.depends({
   "faker": "3.0.1",
-  "node-geocoder": "3.0.0"
+  "node-geocoder": "3.0.0",
+  "transliteration": "0.1.1"
 });
 
 Package.onUse(function (api) {
@@ -54,7 +55,6 @@ Package.onUse(function (api) {
   api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3", "client");
   api.use("iron:router@1.0.10");
-  api.use("ongoworks:speakingurl@5.0.1");
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("ongoworks:security@1.3.0");
 
@@ -84,7 +84,6 @@ Package.onUse(function (api) {
   api.imply("es5-shim");
   api.imply("browser-policy");
   api.imply("service-configuration");
-  api.imply("ongoworks:speakingurl");
   api.imply("ongoworks:security");
   api.imply("dburles:factory");
   api.imply("mquandalle:bower");
@@ -123,6 +122,7 @@ Package.onUse(function (api) {
   api.addFiles("lib/css/jquery-ui.css", "client");
   api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("lib/geocoder.js", ["server"]);
+  api.addFiles("lib/transliteration.js", ["server"]);
 
   // exports
   api.addFiles("common/global.js");
@@ -433,6 +433,7 @@ Package.onUse(function (api) {
 
   // Exports
   api.export("ReactionCore");
+  api.export("getSlug");
   api.export("ReactionRegistry", "server");
   api.export("faker", ["server"]); // for testing only?
 

@@ -13,14 +13,14 @@ Template.productDetailTags.helpers({
 
 Template.productTagInputForm.helpers({
   hashtagMark: function () {
-    let product = selectedProduct();
+    const product = selectedProduct();
     if (product) {
       if (product.handle) {
         if (this.handle === product.handle.toLowerCase() || getSlug(product.handle) === this.slug) {
           return "fa-bookmark";
         }
-        return "fa-bookmark-o";
       }
+      return "fa-bookmark-o";
     }
   }
 });
@@ -62,13 +62,12 @@ Template.productTagInputForm.events({
   "focusout .tags-input-select": function (event, template) {
     let val = $(event.currentTarget).val();
     if (val) {
-      let currentTag = Session.get("currentTag");
       return Meteor.call("products/updateProductTags", selectedProductId(),
-        val, this._id, currentTag,
+        val, this._id,
         function (error) {
           template.$(".tags-submit-new").val("").focus();
           if (error) {
-            Alerts.add("Tag already exists, duplicate add failed.",
+            Alerts.add("Tag already exists, or is empty.",
               "danger", {
                 autoHide: true
               });

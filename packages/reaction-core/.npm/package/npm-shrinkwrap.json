@@ -10,6 +10,9 @@
           "version": "1.4.1"
         }
       }
+    },
+    "transliteration": {
+      "version": "0.1.1"
     }
   }
 }

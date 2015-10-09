@@ -1,3 +1,7 @@
+getSlug = function (slugString) {
+  return Transliteration.slugify(slugString);
+};
+
 /**
  * Match.OptionalOrNull
  * See Meteor Match methods
@@ -43,7 +47,8 @@ _.extend(ReactionCore, {
     }
     if (Meteor.isClient && this.isInsert) {
       return Random.id();
-    } else if (Meteor.isServer && (this.isInsert || this.isUpsert || this.isUpdate)) {
+    } else if (Meteor.isServer && (this.isInsert || this.isUpsert || this
+        .isUpdate)) {
       return Random.id();
     }
     return this.unset();
@@ -63,7 +68,7 @@ _.extend(ReactionCore, {
         handle: productId.toLowerCase()
       });
       if (product) {
-        productId =  product._id;
+        productId = product._id;
       }
     }
     setCurrentProduct(productId);
