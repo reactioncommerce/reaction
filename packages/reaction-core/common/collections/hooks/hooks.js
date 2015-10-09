@@ -92,25 +92,21 @@ ReactionCore.Collections.Packages.after.update(function (userId, doc,
 });
 
 /**
- * create unpublished product
+ * create unpublished product with a default variant
  */
 ReactionCore.Collections.Products.before.insert(function (userId, product) {
-  let variant, _i, _len, _ref, _results;
-  product.shopId = product.shopId || ReactionCore.getShopId();
   _.defaults(product, {
     type: "simple",
-    handle: getSlug(product.title),
+    handle: getSlug(product.title || ""),
     isVisible: false,
     updatedAt: new Date,
     createdAt: new Date()
   });
-  _ref = product.variants;
-  _results = [];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    variant = _ref[_i];
-    _results.push(applyVariantDefaults(variant));
+  const results = [];
+  for (let variant of product.variants) {
+    results.push(applyVariantDefaults(variant));
   }
-  return _results;
+  return results;
 });
 
 /**

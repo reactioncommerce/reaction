@@ -1,6 +1,7 @@
 {
   "name": "reactioncommerce-core",
   "dependencies": {
+    "transliteration": "https://raw.githubusercontent.com/andyhu/node-transliteration/master/transliteration.min.js",
     "jquery.payment": "1.2.4",
     "Faker": "3.0.1",
     "autosize": "3.0.7",
@@ -22,7 +23,7 @@
       "main": [
         "accounting.js"
       ],
-      "arch": [ "client" ]
+      "arch": ["client"]
     },
     "swiper": {
       "main": [

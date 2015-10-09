@@ -1,0 +1,1 @@
+Transliteration = Npm.require("transliteration");
