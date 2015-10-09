@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.1",
+  version: "0.9.2",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -158,6 +158,7 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/ru.json", "server");
   api.addAssets("private/data/i18n/sl.json", "server");
   api.addAssets("private/data/i18n/sv.json", "server");
+  api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
 
   // import fixture data
