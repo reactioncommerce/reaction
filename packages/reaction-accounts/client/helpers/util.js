@@ -1,6 +1,6 @@
 
 function capitalize(str) {
-  let finalString = str == null ? "" : String(str);
+  let finalString = str === null ? "" : String(str);
   return finalString.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -32,7 +32,7 @@ ReactionServiceHelper = class ReactionServiceHelper {
 
       return _.map(fields, (field) => {
         if (!field.type) {
-          field.type = (field.property === "secret") ? "password" : "text";
+          field.type = field.property === "secret" ? "password" : "text";
         }
 
         return _.extend(field, {

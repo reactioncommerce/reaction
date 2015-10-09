@@ -5,7 +5,7 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
@@ -128,11 +128,11 @@ Package.onUse(function(api) {
   api.addFiles("client/templates/dropdown/dropdown.js", "client");
 
   // Email Templates
-  api.addAssets('server/emailTemplates/welcomeNotification.html', 'server');
-  api.addAssets('server/emailTemplates/shopMemberInvite.html', 'server');
+  api.addAssets("server/emailTemplates/welcomeNotification.html", "server");
+  api.addAssets("server/emailTemplates/shopMemberInvite.html", "server");
 });
 
-Package.onTest(function(api) {
+Package.onTest(function (api) {
   api.use("sanjo:jasmine@0.18.0");
   api.use("ecmascript");
   api.use("jquery");
