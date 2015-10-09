@@ -1,5 +1,4 @@
 # Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Reaction is a modern reactive, real-time event driven ecommerce platform.
 
 Reaction is built with JavaScript, Meteor, Node.js and works nicely with Docker.
@@ -28,7 +27,7 @@ cd reaction && git checkout master
 meteor
 ```
 
-There is also an executable [script that you run](https://github.com/reactioncommerce/reaction/blob/development/bin/install). Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction-core/blob/development/docs/installation.md).
+Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
 
 _Note: for windows installation you also need:_
 - OpenSSL
@@ -39,7 +38,6 @@ _Note: for windows installation you also need:_
 A Docker image is available on the [Reaction Commerce Docker Hub ](https://hub.docker.com/r/reactioncommerce/reaction/).
 
 ## Roadmap
-
 As with all development, some items are ahead of schedule, and some are not. Here's how to get the details:
 
 For a high level review our roadmap, take a look at the vision page [Reaction Vision](http://reactioncommerce.com/vision)
@@ -49,31 +47,28 @@ For grouping of development channels by feature see project milestones: [https:/
 And finally for the kanban-esque, hardcore real time progress view, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
 
 ## Developer Documentation
+[Getting started guide](http://blog.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
-[Getting started guide](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
+[Installation](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/installation.md)
 
-[Installation](https://github.com/ongoworks/reaction-core/blob/master/docs/installation.md)
+[Overview](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/overview.md)
 
-[Guidelines](https://github.com/ongoworks/reaction-core/blob/master/docs/conventions.md)
+[Methods](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/methods.md)
 
-[Methods](https://github.com/ongoworks/reaction-core/blob/master/docs/methods.md)
+[Package Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/packages.md)
 
-[Package Development](https://github.com/ongoworks/reaction-core/blob/master/docs/packages.md)
+[Theme Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/themes.md)
 
-[Theme Development](https://github.com/ongoworks/reaction-core/blob/master/docs/themes.md)
+[i18n Translations](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/i18n.md)
 
-[i18n Translations](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md)
-
-[Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
+[Template Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/templates.md)
 
 ### Code Repositories
-
 Hey! Where's all the code!? Most of it is in the [reaction-core](https://github.com/reactioncommerce/reaction-core/) package...
 
 We welcome pull requests to the latest `development` version branch.
 
 # Feedback
-
 **GitHub Issues** on the [Reaction](https://github.com/reactioncommerce/reaction) project are the best way to let us know about a feature request, or to report an issue.
 
 Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)** to discuss, communicate, and share community support.
