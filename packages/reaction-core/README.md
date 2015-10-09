@@ -33,23 +33,23 @@ You can find a list of published packages on [Atmosphere](https://atmospherejs.c
 
 [Getting started guide](http://thoughts.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
-[Installation](https://github.com/ongoworks/reaction-core/blob/master/docs/installation.md)
+[Installation](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/installation.md)
 
-[Guidelines](https://github.com/ongoworks/reaction-core/blob/master/docs/conventions.md)
+[Guidelines](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/overview.md)
 
-[Methods](https://github.com/ongoworks/reaction-core/blob/master/docs/methods.md)
+[Methods](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/methods.md)
 
-[Package Development](https://github.com/ongoworks/reaction-core/blob/master/docs/packages.md)
+[Package Development](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/packages.md)
 
-[Theme Development](https://github.com/ongoworks/reaction-core/blob/master/docs/themes.md)
+[Theme Development](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/themes.md)
 
-[i18n Translations](https://github.com/ongoworks/reaction-core/blob/master/docs/i18n.md)
+[i18n Translations](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/i18n.md)
 
-[Template Development](https://github.com/ongoworks/reaction-core/blob/master/docs/templates.md)
+[Template Development](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/templates.md)
 
 [Workflow](docs/workflow.md)
 
-[Deploying](https://github.com/ongoworks/reaction-core/blob/master/docs/deploying.md)
+[Deploying](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/deploying.md)
 
 ## Roadmap
 For a high level review our roadmap, take a look at the features page [Reaction Vision](http://reactioncommerce.com/features)
