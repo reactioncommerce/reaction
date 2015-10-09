@@ -9,7 +9,7 @@ Template.productSettings.helpers({
 
   media: function () {
     let defaultImage;
-    let variants = [];
+    const variants = [];
     for (let variant of this.variants) {
       if (!variant.parentId) {
         variants.push(variant);
@@ -30,9 +30,8 @@ Template.productSettings.helpers({
   },
   additionalMedia: function () {
     let mediaArray;
-    let variants = [];
+    const variants = [];
     for (let variant of this.variants) {
-      variant = _ref[_i];
       if (!variant.parentId) {
         variants.push(variant);
       }
