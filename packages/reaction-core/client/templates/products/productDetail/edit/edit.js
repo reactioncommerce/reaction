@@ -22,18 +22,26 @@ Template.productDetailEdit.events({
   "change input,textarea": function (event) {
     Meteor.call("products/updateProductField", selectedProductId(), this.field,
       $(event.currentTarget).val(),
-      function (error, results) {
-        if (results) {
-          return $(event.currentTarget).animate({
-            backgroundColor: "#e2f2e2"
-          }).animate({
-            backgroundColor: "#fff"
+      function (error) {
+        if (error) {
+          return Alerts.add(error.reason, "danger", {
+            placement: "productManagement",
+            i18nKey: "productDetail.errorMsg",
+            id: this._id
           });
         }
+        // animate updated field
+        return $(event.currentTarget).animate({
+          backgroundColor: "#e2f2e2"
+        }).animate({
+          backgroundColor: "#fff"
+        });
       });
+
     if (this.type === "textarea") {
       autosize($(event.currentTarget));
     }
+
     return Session.set("editing-" + this.field, false);
   }
 });

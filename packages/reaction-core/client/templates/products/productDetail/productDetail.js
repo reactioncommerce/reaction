@@ -203,11 +203,12 @@ Template.productDetail.events({
   },
   "click .toggle-product-isVisible-link": function (event, template) {
     let errorMsg = "";
-    if (!this.title) {
+    const self = this;
+    if (!self.title) {
       errorMsg += "Product title is required. ";
       template.$(".title-edit-input").focus();
     }
-    let variants = this.variants;
+    let variants = self.variants;
     for (let variant of variants) {
       let index = _.indexOf(variants, variant);
       if (!variant.title) {
@@ -217,13 +218,21 @@ Template.productDetail.events({
         errorMsg += "Variant " + (index + 1) + " price is required. ";
       }
     }
-    if (errorMsg.length) {
+    if (errorMsg.length > 0) {
       Alerts.add(errorMsg, "danger", {
         placement: "productManagement",
         i18nKey: "productDetail.errorMsg"
       });
     } else {
-      Meteor.call("products/publishProduct", this._id);
+      Meteor.call("products/publishProduct", self._id, function (error) {
+        if (error) {
+          return Alerts.add(error.reason, "danger", {
+            placement: "productManagement",
+            id: self._id,
+            i18nKey: "productDetail.errorMsg"
+          });
+        }
+      });
     }
   },
   "click .delete-product-link": function () {
