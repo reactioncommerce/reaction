@@ -186,7 +186,7 @@ Meteor.call "updateVariant", variant
 
 updateVariant takes a variant object which only needs to include fields which are being updated.
 
-### updateVaraints
+### updateVariants
 The updateVariants method updates a whole variants array.
 
 Usage:
@@ -195,17 +195,15 @@ Usage:
 Meteor.call "updateVariants", variants
 ```
 
-updateVaraints takes a whole variant array object and updates the included fields.
+updateVariants takes a whole variant array object and updates the included fields.
 
 
 ## Order Methods
-All order related server methods can be found in _/reaction-core/server/methods/orders.js_
+All order related Meteor methods can be found in [/reaction-core/server/methods/orders.js](https://github.com/reactioncommerce/reaction-core/server/methods/orders.js)
 
-ReactionCore version **0.9.0.** has the following methods for Orders. They happen sequentially based on the workflow order. There are 17 different methods being called during the order process.
+### orders/inventoryAdjust
 
-#### Order Methods Listed Sequentially in terms of the workflow:
-
-1) **orders/inventoryAjust** is called when the customer places an order. It's triggered by entering a credit card that that is not declined and clicking the check out button. The function loops through each Product in an order and adjusts the quantity for that product variant.
+Called when the customer places an order. It's triggered by entering a credit card that that is not declined and clicking the check out button. The function loops through each Product in an order and adjusts the quantity for that product variant.
 
 ```javascript
   ReactionCore.Collections.Products.update({
@@ -217,9 +215,11 @@ ReactionCore version **0.9.0.** has the following methods for Orders. They happe
     });
 ```
 
-2) **orders/addOrderEmail** is called when a customer has checked out as a guest, then adds an email within the order confirmation page. This also adds an email field to `ReactionCore.Collections.Orders.email`
+### orders/addOrderEmail
+Called when a customer has checked out as a guest, then adds an email within the order confirmation page. This also adds an email field to `ReactionCore.Collections.Orders.email`
 
-3) **orders/updateHistory** occurs when any Order event occurs. The first occurance is when a user clicks on the newly created order, but also called  when the **begin** button is clicked or tracking number added etc. It extends the history object with additional fields to `ReactionCore.Collections.Orders.history`
+### orders/updateHistory
+Called when any Order event occurs. The first occurance is when a user clicks on the newly created order, but also called  when the **begin** button is clicked or tracking number added etc. It extends the history object with additional fields to `ReactionCore.Collections.Orders.history`
 
 ```javascript
     "history": {
@@ -230,15 +230,20 @@ ReactionCore version **0.9.0.** has the following methods for Orders. They happe
     }
 ```
 
-4) **orders/shipmentTracking** occurs when a tracking number has been entered and the **Add** button was clicked. This also triggers `addTracking` and `updateHistory`. This method verifies the order and tracking, then calls addTracking and updateHistory and updates the workflow/pushOrderWorkflow status.
+### orders/shipmentTracking 
+Called when a tracking number has been entered and the **Add** button was clicked. This also triggers `addTracking` and `updateHistory`. This method verifies the order and tracking, then calls addTracking and updateHistory and updates the workflow/pushOrderWorkflow status.
 
-5) **orders/addTracking** occurs when a tracking number has been entered and the **Add** button has been clicked.  This updates `ReactionCore.Collections.Orders.shipping.shipmentMethod.tracking`
+### orders/addTracking 
+Called when a tracking number has been entered and the **Add** button has been clicked.  This updates `ReactionCore.Collections.Orders.shipping.shipmentMethod.tracking`
 
-6) **orders/documentPrepare** occurs when the **Download PDF** button is clicked or when the Adjustment *Approved* button is clicked. This also calls updateHistory and updated that shipment is being prepared.
+### orders/documentPrepare
+Called when the **Download PDF** button is clicked or when the Adjustment *Approved* button is clicked. This also calls updateHistory and updated that shipment is being prepared.
 
-7) **orders/processPayment** Still defining when this occurs. This method calls the `processPayments` and also updates the workflow status.
+### orders/processPayment 
+This method calls the `processPayments` and also updates the workflow status.
 
-8) **orders/processPayments** Finds the payment method and hits the payment API to capture the payment. If successful it updates `ReactionCore.Collections.Orders.payment.paymentMethod.transactionId` else it throws an error :
+### orders/processPayments
+Determines the payment method and hits the payment API to capture the payment. If successful it updates `ReactionCore.Collections.Orders.payment.paymentMethod.transactionId` else it throws an error :
 
 ```javascript
 if (result.capture) {
@@ -260,15 +265,18 @@ if (result.capture) {
 }
 ```
 
-9) **orders/shipmentShipped** occurs when payment is completed and updates the work flow to the coreShipmentShipped status.
+### orders/shipmentShipped
+Called when payment is completed and updates the work flow to the coreShipmentShipped status.
 
-do) **orders/orderCompleted** occurs when the order has been completed. This updates the workflow status and also updated the order with the OrderCompleted Status.
+### orders/orderCompleted
+Called when the order has been completed. This updates the workflow status and also updated the order with the OrderCompleted Status.
 
-### Unconfirmed Order of operation
+### orders/shipmentPacking
+Updates the workflow status that the shipment is being packed.
 
-**orders/shipmentPacking** updates the workflow status that the shipment is in packing.
+### orders/updateDocument
+Updates the order with a reference to the specific doc created for shipping and label.
 
-**orders/updateDocument** updates the order with a reference to the specific doc created for shipping and label.
 ```javascript
 ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
@@ -281,7 +289,8 @@ ReactionCore.Collections.Orders.update(orderId, {
 ```
 
 
-**orders/addItemToShipment** This adds an item to the Orders.shipping.items array.
+### orders/addItemToShipment
+This adds an item to the Orders.shipping.items array.
 ```javascript
 ReactionCore.Collections.Orders.update({
       "_id": orderId,
@@ -292,9 +301,11 @@ ReactionCore.Collections.Orders.update({
       }
     });
 ```
-**orders/updateShipmentItem** This updates the items that are being associatated with a specific shipping id.
+### orders/updateShipmentItem
+This updates the items that are being associatated with a specific shipping id.
 
-**orders/removeShipment** This method removed the shipment information from an order. It sets shipment object to null.
+### orders/removeShipment
+This method removed the shipment information from an order. It sets shipment object to null.
 ```javascript
 ReactionCore.Collections.Orders.update(orderId, {
       $pull: {
@@ -302,9 +313,11 @@ ReactionCore.Collections.Orders.update(orderId, {
       }
     });
 ```
-**orders/capturePayments** Cycles through each Orders paymentMethod and attempts to capture the payment. If successful it updates the Paymentmethod status to completed. Else it throws a server warning that payment was not captured.
+### orders/capturePayments
+Cycles through each Orders paymentMethod and attempts to capture the payment. If successful it updates the Paymentmethod status to completed. Else it throws a server warning that payment was not captured.
 
-**orders/updateShipmentTracking** updated the shipment tracking information.
+### orders/updateShipmentTracking
+updated the shipment tracking information.
 
 ## Other Methods
 ### locateAddress
