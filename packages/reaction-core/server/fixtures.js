@@ -6,8 +6,6 @@
 
 /* eslint no-loop-func: 0*/
 
-let getDomain;
-
 PackageFixture = class PackageFixture {
   /**
    * PackageFixture.loadData
@@ -138,13 +136,12 @@ PackageFixture = class PackageFixture {
   loadI18n(translationCollection) {
     let collection = translationCollection || ReactionCore.Collections.Translations;
     let json;
-    let shop;
 
     if (collection.find().count() > 0) {
       return;
     }
 
-    shop = ReactionCore.Collections.Shops.findOne();
+    let shop = ReactionCore.Collections.Shops.findOne();
     if (shop) {
       ReactionCore.Log.info(
         `Loading fixture data for ${collection._name}`);
@@ -187,7 +184,7 @@ this.Fixtures = new PackageFixture();
  * @param {String} requestUrl - url
  * @return {String} domain name stripped from requestUrl
  */
-getDomain = function (requestUrl) {
+let getDomain = function (requestUrl) {
   let url = requestUrl || process.env.ROOT_URL;
   let domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
   return domain;
@@ -239,7 +236,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
     Accounts.sendVerificationEmail(accountId);
   } catch (_error) {
     ReactionCore.Log.warn(
-      "Unable to send admin account verification email.", error);
+      "Unable to send admin account verification email.", _error);
   }
   // if we have launchdock credentials, we'll configure them
   if (process.env.LAUNCHDOCK_USERID) {
@@ -289,7 +286,6 @@ ReactionRegistry.createDefaultAdminUser = function () {
  */
 
 ReactionRegistry.loadFixtures = function () {
-  let currentDomain;
 
   Fixtures.loadData(ReactionCore.Collections.Shops);
   Fixtures.loadData(ReactionCore.Collections.Products);
@@ -297,7 +293,7 @@ ReactionRegistry.loadFixtures = function () {
   Fixtures.loadI18n(ReactionCore.Collections.Translations);
 
   try {
-    currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
+    let currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
   } catch (_error) {
     ReactionCore.Log.error("Failed to determine default shop.", _error);
   }
@@ -321,8 +317,7 @@ ReactionRegistry.loadFixtures = function () {
     .Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
     // for each shop, we're loading packages registry
     _.each(ReactionRegistry.Packages, function (config, pkgName) {
-      return ReactionCore.Collections.Shops.find().forEach(function (
-        shop) {
+      return ReactionCore.Collections.Shops.find().forEach(function (shop) {
         let shopId = shop._id;
         ReactionCore.Log.info("Initializing " + shop.name + " " +
           pkgName);
