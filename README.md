@@ -30,9 +30,9 @@ meteor
 Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
 
 _Note: for windows installation you also need:_
-- OpenSSL
+- OpenSSL x86 ([windows installer](https://slproweb.com/products/Win32OpenSSL.html))
 - Visual Studio 2008 redistributables
-- Git + mysgit
+- Git + msysGit ([git-for-windows/git](https://github.com/git-for-windows/git/releases))
 - ImageMagick
 
 A Docker image is available on the [Reaction Commerce Docker Hub ](https://hub.docker.com/r/reactioncommerce/reaction/).
