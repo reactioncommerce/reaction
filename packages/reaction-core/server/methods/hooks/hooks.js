@@ -65,8 +65,7 @@ ReactionCore.MethodHooks._wrappers = {};
  * @private
  * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks._initializeHook = function (mapping, methodName,
-  hookFunction) {
+ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   mapping[methodName] = mapping[methodName] || [];
   mapping[methodName].push(hookFunction);
 
@@ -83,24 +82,32 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName,
   ReactionCore.MethodHooks._wrappers[methodName] = function () {
     // Get arguments you can mutate
     let args = _.toArray(arguments);
+    let beforeResult;
     // Call the before hooks
     let beforeHooks = ReactionCore.MethodHooks._beforeHooks[methodName];
     _.each(beforeHooks, function (beforeHook, hooksProcessed) {
-      beforeHook.call(this, {
+      beforeResult = beforeHook.call(this, {
         result: undefined,
         error: undefined,
         arguments: args,
         hooksProcessed: hooksProcessed
       });
+
+      if (beforeResult === false) {
+        return false;
+      }
     });
 
+    if (beforeResult === false) {
+      return false;
+    }
     let methodResult;
     let methodError;
 
     // Call the main method body
+    // check(args, Match.Any);
     try {
-      methodResult = ReactionCore.MethodHooks._originalMethodHandlers[
-        methodName].apply(this, args);
+      methodResult = ReactionCore.MethodHooks._originalMethodHandlers[methodName].apply(this, args);
     } catch (error) {
       methodError = error;
     }
@@ -161,7 +168,7 @@ ReactionCore.MethodHooks.after = function (methodName, afterFunction) {
 };
 
 /**
- * ReactionCore.MethodHooks.beforeMeth
+ * ReactionCore.MethodHooks.beforeMethods
  * Call the provided hook in values for the key'd method names
  * @param {Object.<string, Hook>} dict - dict
  * @return {String} - returns transformed data
