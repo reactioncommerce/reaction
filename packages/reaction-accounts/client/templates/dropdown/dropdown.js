@@ -37,7 +37,7 @@ Template.loginDropdown.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a": (event, template) => {
+  "click .user-accounts-dropdown-apps a": function (event, template) {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
