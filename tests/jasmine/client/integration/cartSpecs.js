@@ -30,7 +30,7 @@ describe("Cart", function () {
     });
 
     it("should add selected option to cart", function (done) {
-      let option1 = $(".letiant-product-options .letiant-select-option")[0];
+      let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");
       // needs client stubs
       /* let spyOnCart = spyOn(ReactionCore.Collections.Cart, "update").and.returnValue();*/
@@ -50,7 +50,7 @@ describe("Cart", function () {
     });
 
     it("should let the quantity for selected option be changed", function () {
-      let option1 = $(".letiant-product-options .letiant-select-option")[0];
+      let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");
 
       let spyOnOptionEvent = spyOnEvent(option1, "click");
@@ -67,7 +67,7 @@ describe("Cart", function () {
     });
 
     it("should throw an error if not enough quantity", function () {
-      let option1 = $(".letiant-product-options .letiant-select-option")[0];
+      let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");
       let cartCount = $(".cart-icon .badge").text();
 
@@ -86,7 +86,7 @@ describe("Cart", function () {
       expect($(".cart-icon .badge").text()).toEqual(cartCount);
     });
 
-    it("should not add to cart without letiant/option selected", function () {
+    it("should not add to cart without variant/option selected", function () {
       // no option is selected yet
       $("#add-to-cart").trigger("click");
       // check alert
@@ -94,7 +94,7 @@ describe("Cart", function () {
     });
 
     it("should add selected option to cart", function () {
-      let option1 = $(".letiant-product-options .letiant-select-option")[0];
+      let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");
       let spyOnOptionEvent = spyOnEvent(option1, "click");
       let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
