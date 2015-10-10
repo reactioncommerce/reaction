@@ -37,18 +37,20 @@ PackageFixture = class PackageFixture {
       json = EJSON.parse(jsonFile);
     }
 
-    // loop over each item in json and import insert into collection
+    // loop over each item in json and insert into collection
     for (let item of json) {
-      result = collection.insert(item);
+      try {
+        result = collection.insert(item);
+      } catch (err) {
+        ReactionCore.Log.error("Error adding fixture data to " +
+          collection._name + ":", err.message);
+      }
     }
 
     if (result) {
       ReactionCore.Log.info(
         `Success importing fixture data to ${collection._name}`
       );
-    } else {
-      ReactionCore.Log.error("Error adding fixture data to " +
-        collection._name, error.message);
     }
   }
 
