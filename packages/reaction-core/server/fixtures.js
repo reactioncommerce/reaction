@@ -292,8 +292,10 @@ ReactionRegistry.loadFixtures = function () {
   Fixtures.loadData(ReactionCore.Collections.Tags);
   Fixtures.loadI18n(ReactionCore.Collections.Translations);
 
+  let currentDomain;
+
   try {
-    let currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
+    currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
   } catch (_error) {
     ReactionCore.Log.error("Failed to determine default shop.", _error);
   }
