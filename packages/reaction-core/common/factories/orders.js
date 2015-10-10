@@ -52,7 +52,7 @@ Factory.define("order", ReactionCore.Collections.Orders, {
     productId: Random.id(),
     shopId: Random.id(),
     quantity: _.random(1, 5),
-    letiants: {
+    variants: {
       _id: Random.id(),
       compareAtPrice: _.random(0, 1000),
       weight: _.random(0, 10),
@@ -84,7 +84,7 @@ Factory.define("order", ReactionCore.Collections.Orders, {
     productId: Random.id(),
     shopId: Random.id(),
     quantity: _.random(1, 5),
-    letiants: {
+    variants: {
       _id: Random.id(),
       compareAtPrice: _.random(0, 1000),
       weight: _.random(0, 10),

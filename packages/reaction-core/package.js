@@ -445,7 +445,7 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.1");
+  api.use("sanjo:jasmine@0.20.2");
   api.use("underscore");
   api.use("dburles:factory@0.3.10");
   api.use("velocity:html-reporter@0.9.0");
