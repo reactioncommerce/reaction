@@ -759,7 +759,7 @@ Meteor.methods({
       });
     }
 
-    if (typeof product === undefined || product === null) {
+    if (!product) {
       addPosition();
     } else {
       if (product.positions) {

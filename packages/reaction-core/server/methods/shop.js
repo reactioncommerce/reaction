@@ -14,7 +14,7 @@ Meteor.methods({
 
     // must have owner access to create new shops
     if (!ReactionCore.hasOwnerAccess()) {
-      throw new Meteor.Error(403, "Access Denied. Owner Access Required");
+      throw new Meteor.Error(403, "Access Denied");
     }
 
     this.unblock();
