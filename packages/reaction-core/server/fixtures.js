@@ -290,9 +290,17 @@ ReactionRegistry.createDefaultAdminUser = function () {
 ReactionRegistry.loadFixtures = function () {
 
   Fixtures.loadData(ReactionCore.Collections.Shops);
-  Fixtures.loadData(ReactionCore.Collections.Products);
-  Fixtures.loadData(ReactionCore.Collections.Tags);
-  Fixtures.loadI18n(ReactionCore.Collections.Translations);
+
+  // start checking once per second if Shops collection is ready,
+  // then load the rest of the fixtures when it is
+  let wait = Meteor.setInterval(function () {
+    if (!!ReactionCore.Collections.Shops.find().count()) {
+      Meteor.clearInterval(wait);
+      Fixtures.loadData(ReactionCore.Collections.Products);
+      Fixtures.loadData(ReactionCore.Collections.Tags);
+      Fixtures.loadI18n(ReactionCore.Collections.Translations);
+    }
+  }, 1000);
 
   let currentDomain;
 
