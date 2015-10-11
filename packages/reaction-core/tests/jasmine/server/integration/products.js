@@ -142,12 +142,8 @@ describe("core product methods", function () {
     return it(
       "should update all variants by admin passing in array of objects",
       function (done) {
-        let clonedVariant;
-        let product;
-        let updatedProduct;
-        let updatedVariant;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
+        let product = Factory.create("product");
         Meteor.call("products/cloneVariant", product._id, product.variants[
           0]._id);
         product = Products.findOne({
@@ -156,12 +152,14 @@ describe("core product methods", function () {
         product.variants[0].title = "Updated Title";
         product.variants[0].price = 7;
         product.variants[1].title = "Updated Clone Title";
+        // update variant
         Meteor.call("products/updateVariants", product.variants);
-        updatedProduct = Products.findOne({
+        // check update
+        const updatedProduct = Products.findOne({
           "variants._id": product.variants[0]._id
         });
-        updatedVariant = updatedProduct.variants[0];
-        clonedVariant = updatedProduct.variants[1];
+        const updatedVariant = updatedProduct.variants[0];
+        const clonedVariant = updatedProduct.variants[1];
         expect(updatedVariant.price).toEqual(7);
         expect(updatedVariant.title).toEqual("Updated Title");
         expect(clonedVariant.title).toEqual("Updated Clone Title");
@@ -175,9 +173,8 @@ describe("core product methods", function () {
       return Products.remove({});
     });
     it("should throw 403 error by non admin", function (done) {
-      let product;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      product = Factory.create("product");
+      let product = Factory.create("product");
       spyOn(Products, "update");
       expect(function () {
         return Meteor.call("products/deleteVariant", product.variants[
@@ -187,9 +184,8 @@ describe("core product methods", function () {
       return done();
     });
     it("should delete variant by admin", function (done) {
-      let product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      product = Factory.create("product");
+      let product = Factory.create("product");
       expect(_.size(product.variants)).toEqual(1);
       Meteor.call("products/deleteVariant", product.variants[0]._id);
       product = Products.findOne(product._id);
@@ -198,9 +194,8 @@ describe("core product methods", function () {
     });
     return it("should delete all child variants (options) by admin",
       function (done) {
-        let product;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
+        let product = Factory.create("product");
         Meteor.call("products/cloneVariant", product._id, product.variants[
           0]._id, product.variants[0]._id);
         product = Products.findOne(product._id);
@@ -216,11 +211,9 @@ describe("core product methods", function () {
       return Products.remove({});
     });
     it("should throw 403 error by non admin", function (done) {
-      let product;
-      let variant;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      product = Factory.create("product");
-      variant = product.variants[0];
+      let product = Factory.create("product");
+      let variant = product.variants[0];
       spyOn(Products, "update");
       expect(function () {
         return Meteor.call("products/createInventoryVariant",
@@ -231,44 +224,42 @@ describe("core product methods", function () {
     });
     it("should create default barcode inventory variant by admin",
       function (done) {
-        let inventoryVariant;
-        let product;
-        let variant;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
-        variant = product.variants[0];
+        const product = Factory.create("product");
+        const variant = product.variants[0];
         expect(_.size(product.variants)).toEqual(1);
+        // create inventory variant
         Meteor.call("products/createInventoryVariant", product._id,
           variant._id);
-        product = Products.findOne(product._id);
-        inventoryVariant = product.variants[1];
-        expect(_.size(product.variants)).toEqual(2);
-        expect(inventoryVariant.type).toEqual("inventory");
-        expect(inventoryVariant.parentId).toEqual(variant._id);
+        // check variant
+        const newProduct = Products.findOne(product._id);
+        const newInventoryVariant = newProduct.variants[1];
+        expect(_.size(newProduct.variants)).toEqual(2);
+        expect(newInventoryVariant.type).toEqual("inventory");
+        expect(newInventoryVariant.parentId).toEqual(variant._id);
         return done();
       });
     return it(
       "should create specific barcode inventory variant by admin",
       function (done) {
-        let inventoryVariant;
-        let inventoryVariantOptions;
-        let product;
-        let variant;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
-        variant = product.variants[0];
-        inventoryVariantOptions = {
+        const product = Factory.create("product");
+        const variant = product.variants[0];
+        const inventoryVariantOptions = {
           barcode: "specificBarcode123"
         };
         expect(_.size(product.variants)).toEqual(1);
+        // create inventory variant
         Meteor.call("products/createInventoryVariant", product._id,
           variant._id, inventoryVariantOptions);
-        product = Products.findOne(product._id);
-        inventoryVariant = product.variants[1];
-        expect(_.size(product.variants)).toEqual(2);
-        expect(inventoryVariant.type).toEqual("inventory");
-        expect(inventoryVariant.parentId).toEqual(variant._id);
-        expect(inventoryVariant.barcode).toEqual(
+        // cheack created inventoryVariant
+        const newProduct = Products.findOne(product._id);
+        const newInventoryVariant = newProduct.variants[1];
+        // console.log(newProduct);
+        expect(_.size(newProduct.variants)).toEqual(2);
+        expect(newInventoryVariant.type).toEqual("inventory");
+        expect(newInventoryVariant.parentId).toEqual(variant._id);
+        expect(newInventoryVariant.barcode).toEqual(
           inventoryVariantOptions.barcode);
         return done();
       });
@@ -278,11 +269,9 @@ describe("core product methods", function () {
       return Products.remove({});
     });
     it("should throw 403 error by non admin", function (done) {
-      let product;
-      let variant;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      product = Factory.create("product");
-      variant = product.variants[0];
+      const product = Factory.create("product");
+      const variant = product.variants[0];
       spyOn(Products, "update");
       expect(function () {
         return Meteor.call("products/createInventoryVariants",
@@ -293,97 +282,89 @@ describe("core product methods", function () {
     });
     it("should create default inventory variants by admin", function (
       done) {
-      let inventoryVariant;
-      let product;
-      let qty;
-      let variant;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      product = Factory.create("product");
-      variant = product.variants[0];
-      qty = _.random(1, 100);
+      const product = Factory.create("product");
+      const variant = product.variants[0];
+      const qty = _.random(1, 100);
       expect(_.size(product.variants)).toEqual(1);
+      // create test variant
       Meteor.call("products/createInventoryVariants", product._id,
         variant._id, qty);
-      product = Products.findOne(product._id);
-      variant = product.variants[0];
-      inventoryVariant = product.variants[1];
-      expect(_.size(product.variants)).toEqual(qty + 1);
-      expect(inventoryVariant.type).toEqual("inventory");
-      expect(inventoryVariant.parentId).toEqual(variant._id);
-      expect(variant.inventoryQuantity).toEqual(qty);
+      // check new product variants
+      const newProduct = Products.findOne(product._id);
+      const newVariant = newProduct.variants[0];
+      const newInventoryVariant = newProduct.variants[1];
+      expect(_.size(newProduct.variants)).toEqual(qty + 1);
+      expect(newInventoryVariant.type).toEqual("inventory");
+      expect(newInventoryVariant.parentId).toEqual(variant._id);
+      expect(newVariant.inventoryQuantity).toEqual(qty);
       return done();
     });
     it("should create inventory variants with prefix by admin",
       function (done) {
-        let inventoryVariant;
-        let product;
-        let qty;
-        let variant;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
-        variant = product.variants[0];
-        qty = _.random(1, 100);
+        const product = Factory.create("product");
+        const variant = product.variants[0];
+        const qty = _.random(1, 100);
         expect(_.size(product.variants)).toEqual(1);
+        // create variant
         Meteor.call("products/createInventoryVariants", product._id,
           variant._id, qty, "jasmine");
-        product = Products.findOne(product._id);
-        variant = product.variants[0];
-        inventoryVariant = product.variants[1];
-        expect(_.size(product.variants)).toEqual(qty + 1);
-        expect(inventoryVariant.type).toEqual("inventory");
-        expect(inventoryVariant.parentId).toEqual(variant._id);
-        expect(inventoryVariant.barcode).toContain("jasmine");
-        expect(variant.inventoryQuantity).toEqual(qty);
+        // check variants
+        const newProduct = Products.findOne(product._id);
+        const newVariant = newProduct.variants[0];
+        const newInventoryVariant = newProduct.variants[qty];
+        // check that we added inventory variants
+        // and update parent variant qty
+        expect(_.size(newProduct.variants)).toEqual(qty + 1);
+        expect(newVariant.inventoryQuantity).toEqual(qty);
+        // check one of the new variants
+        expect(newInventoryVariant.type).toEqual("inventory");
+        expect(newInventoryVariant.parentId).toEqual(variant._id);
+        expect(newInventoryVariant.barcode).toContain("jasmine");
+
         return done();
       });
     return it("should create inventory variants with prefix by admin",
       function (done) {
-        // let initialQty;
-        let inventoryVariant;
-        let optionVariant;
-        let optionVariantId;
-        let product;
-        let productVariant;
-        let qty;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
-        productVariant = product.variants[0];
-        qty = _.random(1, 100);
-        initialQty = productVariant.inventoryQuantity;
+        const product = Factory.create("product");
+        const productVariant = product.variants[0];
+        const qty = _.random(1, 100);
+        // const initialQty = productVariant.inventoryQuantity;
+        const optionVariants = [];
+        const inventoryVariants = [];
+
         expect(_.size(product.variants)).toEqual(1);
         optionVariantId = Meteor.call("products/cloneVariant",
           product._id, productVariant._id, productVariant._id);
-
+        // create test variant
         Meteor.call("products/createInventoryVariants", product._id,
           optionVariantId, qty, "jasmine");
-        product = Products.findOne(product._id);
-        productVariant = product.variants[0];
-        optionVariant = ((function () {
-          let _results = [];
-          for (let variant of product.variants) {
-            if (variant._id === optionVariantId) {
-              _results.push(variant);
-            }
+        // check results
+        const newProduct = Products.findOne(product._id);
+        const newProductVariant = newProduct.variants[0];
+        for (let variant of newProduct.variants) {
+          if (variant._id === optionVariantId) {
+            optionVariants.push(variant);
           }
-          return _results;
-        })())[0];
+        }
 
-        inventoryVariant = ((function () {
-          let _results = [];
-          for (let variant of product.variants) {
-            if (variant.type === "inventory") {
-              _results.push(variant);
-            }
+        let optionVariant = optionVariants[0];
+        const newOptionVariant = optionVariants[0];
+        for (let variant of newProduct.variants) {
+          if (variant.type === "inventory") {
+            inventoryVariants.push(variant);
           }
-          return _results;
-        })())[0];
+        }
 
-        expect(_.size(product.variants)).toEqual(qty + 2);
-        expect(inventoryVariant.type).toEqual("inventory");
-        expect(inventoryVariant.parentId).toEqual(optionVariant._id);
-        expect(inventoryVariant.barcode).toContain("jasmine");
-        expect(optionVariant.inventoryQuantity).toEqual(qty);
-        expect(productVariant.inventoryQuantity).toEqual(qty);
+        const newInventoryVariant = inventoryVariants[0];
+        expect(_.size(newProduct.variants)).toEqual(qty + 2);
+        expect(newInventoryVariant.type).toEqual("inventory");
+        expect(newInventoryVariant.parentId).toEqual(optionVariant._id);
+        expect(newInventoryVariant.barcode).toContain("jasmine");
+        expect(newOptionVariant.inventoryQuantity).toEqual(qty);
+        expect(newProductVariant.inventoryQuantity).toEqual(qty);
         return done();
       });
   });

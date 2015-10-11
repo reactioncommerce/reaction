@@ -455,7 +455,6 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:bootstrap-theme");
 
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
-  api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
   api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");

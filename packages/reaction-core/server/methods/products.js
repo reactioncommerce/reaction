@@ -188,7 +188,6 @@ Meteor.methods({
       inventoryVariant._id = newVariantId;
       inventoryVariant.parentId = parentId;
       inventoryVariant.type = "inventory";
-      check(inventoryVariant, ReactionCore.Schemas.ProductVariant);
     } else {
       inventoryVariant = {
         _id: newVariantId,
@@ -197,11 +196,14 @@ Meteor.methods({
         type: "inventory"
       };
     }
+    // make sure inventoryVariant is structured correctly
+    check(inventoryVariant, ReactionCore.Schemas.ProductVariant);
+    // update product with new variant
     Products.update({
       _id: productId
     }, {
       $addToSet: {
-        variants: newVariant
+        variants: inventoryVariant
       }
     }, {
       validate: false
