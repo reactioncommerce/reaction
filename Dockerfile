@@ -96,12 +96,14 @@ RUN chmod +x /usr/bin/entrypoint.sh
 COPY bin/docker/build-meteor.sh /usr/bin/build-meteor.sh
 RUN chmod +x /usr/bin/build-meteor.sh
 
+COPY bin/docker/cleanup.sh /usr/bin/cleanup.sh
+RUN chmod +x /usr/bin/cleanup.sh
+
 # Make sure we have a directory for the application
 RUN mkdir -p /var/www
 RUN chown -R www-data:www-data /var/www
 
 # add app to /usr/src
-VOLUME ["/usr/src/meteor"]
 VOLUME ["/data/db"]
 COPY . /usr/src/meteor
 WORKDIR /usr/src/meteor/
@@ -115,6 +117,11 @@ WORKDIR /usr/src/meteor/
 # also runs npm install in programs/server
 #
 RUN bash /usr/bin/build-meteor.sh
+
+# cleanup
+RUN apt-get autoremove -y
+RUN npm cache clear
+RUN bash /usr/bin/cleanup.sh
 
 # switch to production meteor bundle
 WORKDIR /var/www/bundle

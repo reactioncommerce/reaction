@@ -1,6 +1,6 @@
 # Logging
 ## Bunyan
-[Bunyan](//github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
+[Bunyan](https://github.com/trentm/node-bunyan) provides a JSON friendly log handler in Reaction Core.
 
 The ongoworks:bunyan package exports `loggers`, and is instantiated by the `ReactionCore.Log` global that can be used anywhere in Reaction code.
 
@@ -10,7 +10,7 @@ Setting a level of _debug_  `isDebug:  "debug"` or higher will display verbose l
 
 _Recommend running meteor with `--raw-log` to remove Meteor's default console formatting. This is the default when you use `./bin/run` to start Meteor._
 
-Feel free to include verbose logging, but follow [Bunyan recommendations on log levels](//github.com/trentm/node-bunyan#levels) and use appropriate levels for your messages.
+Feel free to include verbose logging, but follow [Bunyan recommendations on log levels](https://github.com/trentm/node-bunyan#levels) and use appropriate levels for your messages.
 
 ```
 The log levels in bunyan are as follows. The level descriptions are best practice opinions.
