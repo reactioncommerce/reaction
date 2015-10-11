@@ -3,7 +3,7 @@
  * ShopMembers
  * @return {Array} users
  */
-Meteor.publish("ShopMembers", function() {
+Meteor.publish("ShopMembers", function () {
   let permissions = ["dashboard/orders", "owner", "admin", "dashboard/customers"];
   let shopId = ReactionCore.getShopId(this);
 

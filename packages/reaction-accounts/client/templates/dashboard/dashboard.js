@@ -47,7 +47,7 @@ Template.accountsDashboard.helpers({
    * isShopGuest
    * @return {Boolean} True if the memnber is an administrator
    */
-  members: function() {
+  members: function () {
     let ShopMembers;
     let members = [];
     let shopUsers;
@@ -58,7 +58,7 @@ Template.accountsDashboard.helpers({
       if (ShopMembers.ready()) {
         shopUsers = Meteor.users.find();
 
-        shopUsers.forEach(function(user) {
+        shopUsers.forEach(function (user) {
           let member = {};
 
           member.userId = user._id;
@@ -95,7 +95,6 @@ Template.accountsDashboard.helpers({
       }
     }
   }
-
 });
 
 /**
@@ -119,7 +118,9 @@ Template.accountsSettings.helpers({
     let configurations = ServiceConfiguration.configurations.find().fetch();
 
     let services = serviceHelper.services((item) => {
-      let matchingConfigurations = _.where(configurations, {service: item.name});
+      let matchingConfigurations = _.where(configurations, {
+        service: item.name
+      });
       if (matchingConfigurations.length) {
         return matchingConfigurations[0];
       }
@@ -156,7 +157,6 @@ Template.accountsSettings.helpers({
     return service[fieldName] || "";
   }
 });
-
 
 Template.accountsSettings.events({
 
