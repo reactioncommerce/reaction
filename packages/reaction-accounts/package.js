@@ -133,15 +133,17 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.18.0");
+  api.use("sanjo:jasmine@0.20.2");
   api.use("ecmascript");
   api.use("jquery");
   api.use("underscore");
   api.use("dburles:factory@0.3.10");
-  api.use("velocity:html-reporter@0.8.2");
+  api.use("velocity:html-reporter@0.9.0");
   api.use("velocity:console-reporter@0.1.3");
-
+  api.use("reactioncommerce:core@0.9.0");
   api.use("reactioncommerce:reaction-accounts");
 
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
+  api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
+  api.addFiles("tests/jasmine/server/integration/publications.js", "server");
 });
