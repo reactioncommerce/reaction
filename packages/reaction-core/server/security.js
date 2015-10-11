@@ -143,7 +143,7 @@ Orders.permit("remove").ifHasRole({
  * Can update cart from client. Must insert/remove carts using
  * server methods.
  * Can update all session carts if not logged in or user cart if logged in as that user
- * XXX should verify session match, but doesn"t seem possible? Might have to move all cart updates to server methods, too?
+ * XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
  */
 
 Cart.permit(["insert", "update", "remove"]).ifHasRole({

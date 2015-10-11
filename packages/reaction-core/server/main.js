@@ -76,7 +76,10 @@ _.extend(ReactionCore, {
     }
   },
   getDomain: function () {
-    return Meteor.absoluteUrl().split("/")[2].split(":")[0];
+    if (Meteor.absoluteUrl()) {
+      return Meteor.absoluteUrl().split("/")[2].split(":")[0];
+    }
+    return "localhost";
   },
   /**
    * hasPermission - server permissions checks
