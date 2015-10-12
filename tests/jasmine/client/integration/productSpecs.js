@@ -41,7 +41,7 @@ describe("Product", function () {
       let route = Router.current().url;
       expect(route).toContain("product/example-product");
     });
-    // waitForElement doesn"t play nice with these next two cases
+    // waitForElement doesn't play nice with these next two cases
     it("should have meta:description", function () {
       expect($("meta[name='description']").attr("content")).not.toBeUndefined();
     });
