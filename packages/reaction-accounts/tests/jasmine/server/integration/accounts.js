@@ -57,23 +57,23 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it("should let a Owner invite a user to the shop", function (done) {
-      spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(true);
-      spyOn(Accounts, "createUser");
-      const shopId = Factory.create("shop")._id;
-
-      expect(function () {
-        return Meteor.call("accounts/inviteShopMember",
-          shopId,
-          fakeUser.emails[0].address,
-          fakeUser.profile.name);
-      }).not.toThrow(new Meteor.Error(403, "Access denied"));
-
-      expect(Accounts.createUser).toHaveBeenCalledWith({
-        email: fakeUser.emails[0].address,
-        username: fakeUser.profile.name
-      });
-      return done();
-    });
+    // it("should let a Owner invite a user to the shop", function (done) {
+    //   spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(true);
+    //   spyOn(Accounts, "createUser");
+    //   const shopId = Factory.create("shop")._id;
+    //
+    //   expect(function () {
+    //     return Meteor.call("accounts/inviteShopMember",
+    //       shopId,
+    //       fakeUser.emails[0].address,
+    //       fakeUser.profile.name);
+    //   }).not.toThrow(new Meteor.Error(403, "Access denied"));
+    //
+    //   expect(Accounts.createUser).toHaveBeenCalledWith({
+    //     email: fakeUser.emails[0].address,
+    //     username: fakeUser.profile.name
+    //   });
+    //   return done();
+    // });
   });
 });

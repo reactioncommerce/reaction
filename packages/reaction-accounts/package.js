@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.3.0",
+  version: "1.4.0",
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 

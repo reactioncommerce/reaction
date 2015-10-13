@@ -2,42 +2,41 @@
  * accounts
  */
 
-var Accounts = ReactionCore.Collections.Accounts;
+const Accounts = ReactionCore.Collections.Accounts;
 
-Meteor.publish('Accounts', function(userId) {
+Meteor.publish("Accounts", function (userId) {
   check(userId, Match.OneOf(String, null));
   // global admin can get all accounts
-  if (Roles.userIsInRole(this.userId, ['owner'], Roles.GLOBAL_GROUP)) {
+  if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
     return Accounts.find();
-  // shop admin gets accouns for just this shop
-  } else if (Roles.userIsInRole(this.userId, ['admin', 'owner'], ReactionCore.getShopId(this))) {
+    // shop admin gets accouns for just this shop
+  } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], ReactionCore.getShopId(this))) {
     return Accounts.find({
       shopId: ReactionCore.getShopId(this)
     });
-  // regular users should get just their account
-  } else {
-    return ReactionCore.Collections.Accounts.find({'userId': this.userId});
+    // regular users should get just their account
   }
+  return ReactionCore.Collections.Accounts.find({
+    userId: this.userId
+  });
 });
-
 
 /**
  * userProfile
  * get any user name,social profile image
  * should be limited, secure information
- * users with permissions  ['dashboard/orders', 'owner', 'admin', 'dashboard/customers']
- * may view the profileUserId's profile data.
+ * users with permissions  ["dashboard/orders", "owner", "admin", "dashboard/customers"]
+ * may view the profileUserId"s profile data.
  *
  * @params {String} profileUserId -  view this users profile when permitted
  */
 
-
-Meteor.publish("UserProfile", function(profileUserId) {
+Meteor.publish("UserProfile", function (profileUserId) {
   check(profileUserId, Match.OneOf(String, null));
+  const permissions = ["dashboard/orders", "owner", "admin", "dashboard/customers"];
 
-  var permissions = ['dashboard/orders', 'owner', 'admin', 'dashboard/customers'];
-
-  if (profileUserId !== this.userId && (Roles.userIsInRole(this.userId, permissions, ReactionCore.getCurrentShop(this)._id || Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP)))) {
+  if (profileUserId !== this.userId && Roles.userIsInRole(this.userId, permissions, ReactionCore.getCurrentShop(
+      this)._id || Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP))) {
     return Meteor.users.find({
       _id: profileUserId
     }, {
@@ -59,7 +58,6 @@ Meteor.publish("UserProfile", function(profileUserId) {
     return Meteor.users.find({
       _id: this.userId
     });
-  } else {
-    return [];
   }
+  return [];
 });
