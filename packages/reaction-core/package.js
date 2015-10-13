@@ -50,11 +50,11 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.2");
-  api.use("aldeed:autoform@5.6.0");
+  api.use("aldeed:autoform@5.7.1");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3", "client");
-  api.use("iron:router@1.0.10");
+  api.use("iron:router@1.0.12");
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("ongoworks:security@1.3.0");
 
@@ -67,14 +67,13 @@ Package.onUse(function (api) {
   api.use("utilities:avatar@0.9.2");
 
   api.use("cfs:standard-packages@0.5.9");
-  api.use("cfs:storage-adapter@0.2.2");
+  api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");
   api.use("cfs:gridfs@0.0.33");
   api.use("cfs:filesystem@0.1.2");
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.1.2");
-  api.use("aslagle:reactive-table@0.8.12");
 
   // imply exports package vars
   api.imply("less");
