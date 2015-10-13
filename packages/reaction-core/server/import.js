@@ -12,42 +12,55 @@ Import = function () {
   let contexts = {};
   let query = {};
   let update = {};
+  let bulk = {};
+  contexts.tag = ReactionCore.Schemas.Tag.newContext();
   contexts.product = ReactionCore.Schemas.Product.newContext();
   contexts.variant = ReactionCore.Schemas.ProductVariant.newContext();
+  // Initialize bulk operation for the tags collection.
+  bulk.tags = ReactionCore.Collections.Tags.rawCollection().initializeUnorderedBulkOp();
   while (Import._tags.length > 0) {
     var tag = Import._tags.pop();
     // Upsert tags.
-    ReactionCore.Collections.Tags.update(tag.key, { $set: tag.value }, { upsert: true, validate: false });
+    ReactionCore.Schemas.Tag.clean(tag.value);
+    ReactionCore.Collections.Tags.before.update(Meteor.userId(), tag.value);
+    bulk.tags.find(tag.key).upsert().update({
+      $set: tag.value,
+      $setOnInsert: { createdAt: new Date() }
+    });
   }
+  try {
+    // Can throw an `Invalid Operation, No operations in bulk` error if no
+    // queries were added.
+    bulk.tags.execute(function(error, result) {});
+  } finally {}
+  bulk.products = ReactionCore.Collections.Products.rawCollection().initializeUnorderedBulkOp();
   while (Import._products.length > 0) {
     var product = Import._products.pop();
     // Upsert products.
-    ReactionCore.Schemas.Product.clean(product.value, {});
+    ReactionCore.Schemas.Product.clean(product.value);
     contexts.product.validate(product.value);
-    ReactionCore.Collections.Products.update(product.key, {
-      $set: product.value
-    }, { upsert: true, validate: false });
+    bulk.products.find(product.key).upsert().update({
+      $set: product.value,
+      $setOnInsert: { createdAt: new Date() }
+    });
   }
   while (Import._variants.length > 0) {
     var variant = Import._variants.pop();
     //ReactionCore.Schemas.ProductVariant.clean(Import._variants[i].value, {});
     //contexts.variant.validate(Import._variants[i].value, {});
     // Remove variants with the same key from other parents.
-    ReactionCore.Collections.Products.update({
+    bulk.products.find({
       'variants': { $elemMatch: variant.key },
       $nor: [ variant.parent ]
-    }, {
-      $pull: { 'variants': { $elemMatch: variant.key } }
-    });
+    }).update({ $pull: { 'variants': { $elemMatch: variant.key } } });
     // Make sure the variant exists.
     query = { $nor: [ { 'variants': { $elemMatch: variant.key } } ] };
     for (let key of Object.keys(variant.parent)) {
       query[key] = variant.parent[key];
     }
-    ReactionCore.Collections.Products.update(query, {
-      $push: { 'variants': variant.key }
-    }, { validate: false });
-    // Upsert the variant. This currently overwrites the old variant.
+    bulk.products.find(query).update({ $push: { 'variants': variant.key } });
+    // Upsert the variant.
+    ReactionCore.Schemas.ProductVariant.clean(variant.value, {});
     query = { 'variants': { $elemMatch: variant.key } };
     for (let key of Object.keys(variant.parent)) {
       query[key] = variant.parent[key];
@@ -56,10 +69,13 @@ Import = function () {
     for (let key of Object.keys(variant.value)) {
       update['variants.$.' + key] = variant.value[key];
     }
-    ReactionCore.Collections.Products.update(query, {
-      $set: update
-    }, { validate: false });
+    bulk.products.find(query).update({ $set: update });
   }
+  try {
+    // Can throw an `Invalid Operation, No operations in bulk` error if no
+    // queries were added.
+    bulk.products.execute(function(error, result) {});
+  } finally {}
 }
 
 Import._variants = [];
