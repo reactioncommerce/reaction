@@ -1,4 +1,3 @@
-
 /**
  * Make sure initial admin user has verified their
  * email before allowing them to login.
@@ -6,7 +5,7 @@
  * http://docs.meteor.com/#/full/accounts_validateloginattempt
  */
 
-Accounts.validateLoginAttempt(function(attempt) {
+Accounts.validateLoginAttempt(function (attempt) {
   if (!attempt.allowed) {
     return false;
   }
@@ -25,7 +24,7 @@ Accounts.validateLoginAttempt(function(attempt) {
 
   if (loginEmail && loginEmail === adminEmail) {
     // filter out the matching login email from any existing emails
-    let userEmail = _.filter(attempt.user.emails, function(email) {
+    let userEmail = _.filter(attempt.user.emails, function (email) {
       return email.address === loginEmail;
     });
 

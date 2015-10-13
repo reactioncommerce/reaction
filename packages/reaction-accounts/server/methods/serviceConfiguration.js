@@ -1,16 +1,11 @@
-
-
-
 Meteor.methods({
   "accounts/updateServiceConfiguration": (service, fields) => {
-
     check(service, String);
     check(fields, Array);
+    const dataToSave = {};
 
-    var dataToSave = {};
-
-    _.each(fields, function(field) {
-      dataToSave[field.property] = field.value
+    _.each(fields, function (field) {
+      dataToSave[field.property] = field.value;
     });
 
     if (ReactionCore.hasPermission(["dashboard/accounts"])) {
@@ -20,8 +15,6 @@ Meteor.methods({
         $set: dataToSave
       });
     }
-
     return false;
   }
-
-})
+});

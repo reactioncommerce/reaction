@@ -111,12 +111,10 @@ Meteor.methods({
    * add new addresses to an account
    */
   "accounts/addressBookAdd": function (doc, accountId) {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
-    }
-    this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    this.unblock();
+
     ReactionCore.Schemas.Address.clean(doc);
     if (doc.isShippingDefault || doc.isBillingDefault) {
       if (doc.isShippingDefault) {
@@ -157,12 +155,10 @@ Meteor.methods({
    * update existing address in user's profile
    */
   "accounts/addressBookUpdate": function (doc, accountId) {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
-    }
-    this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    this.unblock();
+
     if (doc.isShippingDefault || doc.isBillingDefault) {
       if (doc.isShippingDefault) {
         ReactionCore.Collections.Accounts.update({
@@ -200,12 +196,10 @@ Meteor.methods({
    * remove existing address in user's profile
    */
   "accounts/addressBookRemove": function (doc, accountId) {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
-    }
-    this.unblock();
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    this.unblock();
+
     ReactionCore.Collections.Accounts.update({
       "_id": accountId,
       "profile.addressBook._id": doc._id
@@ -326,9 +320,6 @@ Meteor.methods({
    * send an email to consumers on sign up
    */
   "accounts/sendWelcomeEmail": function (shopId, userId) {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
-    }
     let email;
     check(shop, Object);
     this.unblock();
