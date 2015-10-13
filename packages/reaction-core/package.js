@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.1",
+  version: "0.9.2",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -50,11 +50,11 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2");
   api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.2");
-  api.use("aldeed:autoform@5.6.0");
+  api.use("aldeed:autoform@5.7.1");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
   api.use("aldeed:template-extension@3.4.3", "client");
-  api.use("iron:router@1.0.10");
+  api.use("iron:router@1.0.12");
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("ongoworks:security@1.3.0");
 
@@ -67,14 +67,13 @@ Package.onUse(function (api) {
   api.use("utilities:avatar@0.9.2");
 
   api.use("cfs:standard-packages@0.5.9");
-  api.use("cfs:storage-adapter@0.2.2");
+  api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");
   api.use("cfs:gridfs@0.0.33");
   api.use("cfs:filesystem@0.1.2");
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.1.2");
-  api.use("aslagle:reactive-table@0.8.12");
 
   // imply exports package vars
   api.imply("less");
@@ -158,6 +157,7 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/ru.json", "server");
   api.addAssets("private/data/i18n/sl.json", "server");
   api.addAssets("private/data/i18n/sv.json", "server");
+  api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
 
   // import fixture data
@@ -444,7 +444,7 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.1");
+  api.use("sanjo:jasmine@0.20.2");
   api.use("underscore");
   api.use("dburles:factory@0.3.10");
   api.use("velocity:html-reporter@0.9.0");
@@ -454,7 +454,6 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:bootstrap-theme");
 
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
-  api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
   api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");

@@ -5,7 +5,6 @@ machine:
 dependencies:
   cache_directories:
     - "~/.meteor"
-    - "/usr/local/bin"
 
 test:
   override:

@@ -436,6 +436,10 @@
     "i18n": "sv",
     "enabled": true
   }, {
+    "label": "Türkçe",
+    "i18n": "tr",
+    "enabled": true
+  }, {
     "label": "tiếng Việt",
     "i18n": "vi",
     "enabled": true
