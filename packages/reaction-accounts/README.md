@@ -8,8 +8,14 @@ This is a core package of Reaction Commerce and provides
 - user management
 - address book CRUD
 
-**Usage**
+## Usage
 
 ```bash
 meteor add reactioncommerce:reaction-accounts
+```
+
+## Testing
+
+```bash
+VELOCITY_TEST_PACKAGES=1 meteor test-packages --port 3006 reactioncommerce:reaction-accounts
 ```
