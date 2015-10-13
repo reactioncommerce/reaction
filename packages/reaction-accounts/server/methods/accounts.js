@@ -111,6 +111,9 @@ Meteor.methods({
    * add new addresses to an account
    */
   "accounts/addressBookAdd": function (doc, accountId) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
     this.unblock();
@@ -152,9 +155,12 @@ Meteor.methods({
   },
 
   /*
-   * update existing address in user"s profile
+   * update existing address in user's profile
    */
   "accounts/addressBookUpdate": function (doc, accountId) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
     this.unblock();
@@ -193,9 +199,13 @@ Meteor.methods({
   },
 
   /*
-   * remove existing address in user"s profile
+   * remove existing address in user's profile
    */
   "accounts/addressBookRemove": function (doc, accountId) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
+
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
     this.unblock();
@@ -219,6 +229,9 @@ Meteor.methods({
    * to permissions as specified in packages/roles
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     let currentUserName;
     let shop;
     let token;
@@ -317,6 +330,9 @@ Meteor.methods({
    * send an email to consumers on sign up
    */
   "accounts/sendWelcomeEmail": function (shopId, userId) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     let email;
     check(shop, Object);
     this.unblock();
@@ -347,6 +363,9 @@ Meteor.methods({
    * @returns {Boolean} success/failure
    */
   "accounts/addUserPermissions": function (userId, permissions, group) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     check(userId, Match.OneOf(String, Array));
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String));
@@ -362,6 +381,9 @@ Meteor.methods({
    * accounts/removeUserPermissions
    */
   "accounts/removeUserPermissions": function (userId, permissions, group) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String, null));
@@ -378,6 +400,9 @@ Meteor.methods({
    * accounts/setUserPermissions
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String));
