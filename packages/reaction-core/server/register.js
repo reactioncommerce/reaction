@@ -122,27 +122,8 @@ ReactionCore.registerPackage({
     label: "Created",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
-  }, {
-    template: "coreOrderShipments",
-    label: "Shipments",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreOrderAdjustments",
-    label: "Adjustments",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreProcessPayment",
-    label: "Payments",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreShipmentShipped",
-    label: "Shipped",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
+  },
+  {
     template: "coreOrderCompleted",
     label: "Completed",
     workflow: "coreOrderWorkflow",
@@ -150,37 +131,32 @@ ReactionCore.registerPackage({
   },
   // Standard Order Fulfillment with shipping
   {
-    template: "coreFulfillmentCreated",
+    template: "coreOrderCreated",
     label: "Created",
-    workflow: "coreOrderFulfillmentWorkflow",
+    workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }, {
-    template: "coreFulfillmentPacking",
+    template: "coreOrderPacking",
     label: "Packing",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }, {
-    template: "coreFulfillmentTracking",
+    template: "coreOrderAdjustments",
     label: "Adjustments",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }, {
-    template: "coreFulfillmentAdjustments",
-    label: "Adjustments",
-    workflow: "coreOrderShipmentWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreFulfillmentPayment",
+    template: "coreProcessPayment",
     label: "Payments",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }, {
-    template: "coreFulfillmentShipped",
+    template: "coreShipmentShipped",
     label: "Shipped",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }, {
-    template: "coreFulfillmentCompleted",
+    template: "coreOrderCompleted",
     label: "Completed",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]

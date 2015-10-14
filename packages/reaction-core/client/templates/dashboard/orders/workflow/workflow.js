@@ -36,9 +36,8 @@ Template.coreOrderWorkflow.onRendered(function () {
   }
 
   if (order.shipping) {
-    if (order.shiiping[0].workflow.status === "coreOrderCompleted") {
+    if (order.shipping[0].workflow.status === "coreOrderCompleted") {
       Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "coreOrderCreated", order._id. order.shipping[0]._id);
     }
   }
-
 });

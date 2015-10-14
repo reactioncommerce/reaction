@@ -109,6 +109,12 @@
                 "cartDrawerItems": {
                     "left": "left"
                 },
+                "orderShipment": {
+                    "tracking": "Tracking",
+                    "addtracking": "Add Tracking",
+                    "shipmentEmpty": "This shipment has no items",
+                    "shipmentPacked": "All Items Packed"
+                },
                 "cartCompleted": {
                     "thankYou": "Thank you!",
                     "itemsFrom": "item(s) from",
