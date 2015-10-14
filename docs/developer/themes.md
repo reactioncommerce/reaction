@@ -1,5 +1,5 @@
 # Themes
-The default Reaction theme (reaction-bootstrap-theme / core-theme) uses [Bootstrap 3](//getbootstrap.com/css/#less) and the [Less](//lesscss.org) preprocessor to build the theme.
+The default Reaction theme (reaction-bootstrap-theme / core-theme) uses [Bootstrap 3](https://getbootstrap.com/css/#less) and the [Less](https://lesscss.org) preprocessor to build the theme.
 
 ## Customizing Themes
 **To add or override custom styles:**
@@ -64,14 +64,14 @@ meteor add reactioncommerce:bootstrap-theme nemo64:bootstrap
 
 Within **reactioncommerce:core** there is a build plugin (reactioncommerce:bootstrap-theme) that takes the files from the **reactioncommerce:core-theme** package and builds the less files in the `client/themes` directory of your application.
 
-You can create your own theme packages, using the [reactioncommerce:core-theme](//github.com/reactioncommerce/reaction-core-theme) and [reactioncommerce:bootstrap-theme]((https://github.com/reactioncommerce/reaction-bootstrap-theme) as a template.
+You can create your own theme packages, using the [reactioncommerce:core-theme](https://github.com/reactioncommerce/reaction-core-theme) and [reactioncommerce:bootstrap-theme]((https://github.com/reactioncommerce/reaction-bootstrap-theme) as a template.
 
-See the [Meteor documentation](//docs.meteor.com/#/full/writingpackages) for details on publishing packages. For testing locally, or if you don't want your custom theme package to be public, just copy the package into the `reaction/packages` directory, or add to the `PACKAGE_DIRS` environment variable.
+See the [Meteor documentation](https://docs.meteor.com/#/full/writingpackages) for details on publishing packages. For testing locally, or if you don't want your custom theme package to be public, just copy the package into the `reaction/packages` directory, or add to the `PACKAGE_DIRS` environment variable.
 
 ## Building Themes
 `reactioncommerce:bootstrap-theme` is the theme build package. This compiles the `reactioncommerce:core-theme` theme (less files) into the app `client/themes/` directory.
 
-For the Bootstrap build package see the documentation at [https://github.com/Nemo64/meteor-bootstrap](//github.com/Nemo64/meteor-bootstrap)
+For the Bootstrap build package see the documentation at [https://github.com/Nemo64/meteor-bootstrap](https://github.com/Nemo64/meteor-bootstrap)
 
 The default configuration file for Reaction build is:
 
@@ -91,7 +91,7 @@ If you are installing into your own application, you should save this in your pr
 ## RTL - Right to Left
 Support for Right to Left languages
 
-The `rtl` class is added when the shops.languages language direction is 'rtl'. See [core-theme/default/mixins.less](//github.com/danielgindi/reaction-core-theme/blob/development/default/mixins.less#L200) file for RTL mixins that you should use instead of standard css properties when editing LESS themes.
+The `rtl` class is added when the shops.languages language direction is 'rtl'. See [core-theme/default/mixins.less](https://github.com/danielgindi/reaction-core-theme/blob/development/default/mixins.less#L200) file for RTL mixins that you should use instead of standard css properties when editing LESS themes.
 
 For example, instead of
 

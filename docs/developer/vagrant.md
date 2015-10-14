@@ -1,5 +1,5 @@
 # Vagrant
-Install [Vagrant](//www.vagrantup.com/downloads.html)
+Install [Vagrant](https://www.vagrantup.com/downloads.html)
 
 ```
 vagrant init hashicorp/precise32

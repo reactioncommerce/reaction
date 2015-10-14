@@ -1,7 +1,7 @@
 # Introduction
 Reaction Commerce is a modern, open source commerce platform for small and medium-sized businesses. It is a lightweight, real-time reactive commerce solution with the goal of simplifying and aligning the user experience to the shop owner/admin experience.
 
-Reaction is developed on [Node.js](//nodejs.org) and the [Meteor](//meteor.com) framework. It is both an open source solution and a Platform as a Service (PaaS) that is available via [reactioncommerce.com](//reactioncommerce.com).
+Reaction is developed on [Node.js](https://nodejs.org) and the [Meteor](https://meteor.com) framework. It is both an open source solution and a Platform as a Service (PaaS) that is available via [reactioncommerce.com](https://reactioncommerce.com).
 
 ## Docs Overview
 
@@ -11,8 +11,8 @@ Reaction is developed on [Node.js](//nodejs.org) and the [Meteor](//meteor.com) 
 
 * The **Packages** section documents details on specific Reaction apps/packages.
 
-This documentation is part of the project pages, which you can browse at [GitHub](//github.com/reactioncommerce/).
+This documentation is part of the project pages, which you can browse at [GitHub](https://github.com/reactioncommerce/).
 
-We welcome [contributions](//reactioncommerce.com/contributors), and ideas, feedback and questions via [GitHub Isues](//github.com/reactioncommerce/reaction/issues?state=open). For general discussion and support, check out our [chat room](//gitter.im/reactioncommerce/reaction).
+We welcome [contributions](https://reactioncommerce.com/contributors), and ideas, feedback and questions via [GitHub Isues](https://github.com/reactioncommerce/reaction/issues?state=open). For general discussion and support, check out our [chat room](https://gitter.im/reactioncommerce/reaction).
 
-Reaction is created by the [Ongo Works](//ongoworks.com) team in Los Angeles, CA.
+Reaction is created by the [Ongo Works](https://ongoworks.com) team in Los Angeles, CA.
