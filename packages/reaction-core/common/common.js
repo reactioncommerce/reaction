@@ -24,12 +24,9 @@ _.extend(ReactionCore, {
   shopIdAutoValue: function () {
     // we should always have a shopId
     if (ReactionCore.getShopId()) {
-      if (this.isSet && this.isFromTrustedCode) {
-        return ReactionCore.getShopId();
-      }
-      if (Meteor.isClient && this.isInsert) {
-        return ReactionCore.getShopId();
-      } else if (Meteor.isServer && (this.isInsert || this.isUpsert)) {
+      if (this.isSet && Meteor.isServer) {
+        return this.value;
+      } else if (Meteor.isServer || Meteor.isClient && this.isInsert) {
         return ReactionCore.getShopId();
       }
       return this.unset();
@@ -42,13 +39,9 @@ _.extend(ReactionCore, {
    * @return {String} returns randomId
    */
   schemaIdAutoValue: function () {
-    if (this.isSet && this.isFromTrustedCode) {
-      return Random.id();
-    }
-    if (Meteor.isClient && this.isInsert) {
-      return Random.id();
-    } else if (Meteor.isServer && (this.isInsert || this.isUpsert || this
-        .isUpdate)) {
+    if (this.isSet && Meteor.isServer) {
+      return this.value;
+    } else if (Meteor.isServer || Meteor.isClient && this.isInsert) {
       return Random.id();
     }
     return this.unset();
