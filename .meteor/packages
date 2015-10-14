@@ -28,10 +28,18 @@ check
 underscore
 less
 oauth-encryption
-accounts-facebook
 audit-argument-checks
 spiderable
 nemo64:bootstrap
+
+# Meteor Auth Packages
+
+accounts-facebook
+accounts-google
+accounts-twitter
+accounts-github
+accounts-weibo
+accounts-oauth
 
 # Reaction Commerce Packages
 
