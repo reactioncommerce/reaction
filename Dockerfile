@@ -40,7 +40,7 @@
 #
 ##############################################################
 
-FROM mongo:latest
+FROM mongo:2.6
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
 

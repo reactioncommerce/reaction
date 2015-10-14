@@ -135,7 +135,7 @@ reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-paypal@1.2.0
 reactioncommerce:reaction-shipping@0.6.0
 reactioncommerce:reaction-social@0.4.0
-reactioncommerce:reaction-stripe@3.0.0
+reactioncommerce:reaction-stripe@2.2.0
 reactive-dict@1.1.2
 reactive-var@1.0.6
 reload@1.1.4
