@@ -100,6 +100,7 @@ Package.onUse(function (api) {
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
+  api.imply("meteorhacks:ssr");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");

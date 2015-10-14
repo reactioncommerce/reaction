@@ -10,7 +10,7 @@ Meteor.methods({
    * user permissions to template are verified
    *
    */
-   /* eslint no-shadow: 0 */
+  /* eslint no-shadow: 0 */
 
   "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus,
     cartId) {
@@ -69,6 +69,11 @@ Meteor.methods({
     let nextWorkflowStepIndex;
     let templateProcessedinWorkflow = false;
     let gotoNextWorkflowStep = false;
+
+    // if we haven't populated workflows lets exit
+    if (!defaultPackageWorkflows.length > 0) {
+      return [];
+    }
 
     // loop through all shop configured layouts, and their default workflows
     // to determine what the next workflow step should be
@@ -315,7 +320,8 @@ Meteor.methods({
         "######## Condition One #########: initialise the " + workflow +
         ":  " + defaultPackageWorkflows[0].template);
 
-      Meteor.call("orders/updateHistory", orderId, defaultPackageWorkflows[0].template);
+      Meteor.call("orders/updateHistory", orderId,
+        defaultPackageWorkflows[0].template);
 
       return Order.update(currentOrder._id, {
         $set: {
