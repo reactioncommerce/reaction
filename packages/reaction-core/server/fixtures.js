@@ -186,11 +186,11 @@ this.Fixtures = new PackageFixture();
  * @param {String} requestUrl - url
  * @return {String} domain name stripped from requestUrl
  */
-let getDomain = function (requestUrl) {
+function getDomain(requestUrl) {
   let url = requestUrl || process.env.ROOT_URL;
   let domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
   return domain;
-};
+}
 
 /**
  * ReactionRegistry createDefaultAdminUser
@@ -203,7 +203,7 @@ let getDomain = function (requestUrl) {
 ReactionRegistry.createDefaultAdminUser = function () {
   const options = {};
   const domain = getDomain();
-  const defaultAdminRoles = ["owner", "admin"];
+  const defaultAdminRoles = ["owner", "admin", "guest"];
   const shopId = ReactionCore.getShopId();
   // if an admin user has already been created, we'll exit
   if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
@@ -278,9 +278,10 @@ ReactionRegistry.createDefaultAdminUser = function () {
     }
     defaultAdminRoles.push(pkg.name);
   }
-
-  Meteor.call("accounts/addUserPermissions", accountId, _.uniq(defaultAdminRoles), shopId);
-  Meteor.call("accounts/addUserPermissions", accountId, ["owner", "admin", "dashboard"], Roles.GLOBAL_GROUP);
+  // we don't use accounts/addUserPermissions here because we may not yet have permissions
+  Roles.setUserRoles(accountId, _.uniq(defaultAdminRoles), shopId);
+  // the reaction owner has permissions to all sites by default
+  Roles.setUserRoles(accountId, _.uniq(defaultAdminRoles), Roles.GLOBAL_GROUP);
 };
 
 /*
@@ -288,7 +289,6 @@ ReactionRegistry.createDefaultAdminUser = function () {
  */
 
 ReactionRegistry.loadFixtures = function () {
-
   Fixtures.loadData(ReactionCore.Collections.Shops);
 
   // start checking once per second if Shops collection is ready,

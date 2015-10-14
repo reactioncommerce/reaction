@@ -90,12 +90,13 @@ _.extend(ReactionCore, {
    */
   hasPermission: function (checkPermissions, checkUserId, group) {
     check(checkPermissions, Match.OneOf(String, Array));
-    // console.log("hasPermission", checkPermissions, userId, group)
-    // console.log("userId", userId, this.userId, Meteor.userId())
-    // use current user if userId if not provided
-    let userId = checkUserId || this.userId || Meteor.userId();
+    check(checkUserId, Match.OneOf(String, null, undefined));
+
     let shopId = group || this.getShopId();
     let permissions = [];
+
+    // use Roles.userIsInRole directly with publications
+    let userId = checkUserId || this.userId || Meteor.userId();
 
     // permissions can be either a string or an array
     // we'll force it into an array so we can add
