@@ -26,10 +26,7 @@ _.extend(ReactionCore, {
     if (ReactionCore.getShopId()) {
       if (this.isSet && Meteor.isServer) {
         return this.value;
-      }
-      if (Meteor.isClient && this.isInsert) {
-        return ReactionCore.getShopId();
-      } else if (Meteor.isServer && (this.isInsert || this.isUpsert)) {
+      } else if (Meteor.isServer || Meteor.isClient && this.isInsert) {
         return ReactionCore.getShopId();
       }
       return this.unset();
@@ -44,11 +41,7 @@ _.extend(ReactionCore, {
   schemaIdAutoValue: function () {
     if (this.isSet && Meteor.isServer) {
       return this.value;
-    }
-    if (Meteor.isClient && this.isInsert) {
-      return Random.id();
-    } else if (Meteor.isServer && (this.isInsert || this.isUpsert || this
-        .isUpdate)) {
+    } else if (Meteor.isServer || Meteor.isClient && this.isInsert) {
       return Random.id();
     }
     return this.unset();
