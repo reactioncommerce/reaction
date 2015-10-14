@@ -24,8 +24,8 @@ _.extend(ReactionCore, {
   shopIdAutoValue: function () {
     // we should always have a shopId
     if (ReactionCore.getShopId()) {
-      if (this.isSet && this.isFromTrustedCode) {
-        return ReactionCore.getShopId();
+      if (this.isSet && Meteor.isServer) {
+        return this.value;
       }
       if (Meteor.isClient && this.isInsert) {
         return ReactionCore.getShopId();
@@ -42,8 +42,8 @@ _.extend(ReactionCore, {
    * @return {String} returns randomId
    */
   schemaIdAutoValue: function () {
-    if (this.isSet && this.isFromTrustedCode) {
-      return Random.id();
+    if (this.isSet && Meteor.isServer) {
+      return this.value;
     }
     if (Meteor.isClient && this.isInsert) {
       return Random.id();
