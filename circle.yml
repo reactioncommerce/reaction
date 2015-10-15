@@ -24,13 +24,15 @@ test:
     - curl --retry 10 --retry-delay 5 -v http://localhost
 
 deployment:
-  hub:
+  prequel:
     branch: development
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push reactioncommerce/prequel
+      - docker tag reactioncommerce/prequel reactioncommerce/prequel:$CIRCLE_BUILD_NUM
+      - docker push reactioncommerce/prequel:$CIRCLE_BUILD_NUM
+  release:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker rename reactioncommerce/prequel reactioncommerce/reaction
-      - docker push reactioncommerce/reaction
+      - docker tag reactioncommerce/prequel reactioncommerce/reaction:$CIRCLE_BUILD_NUM
+      - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM
