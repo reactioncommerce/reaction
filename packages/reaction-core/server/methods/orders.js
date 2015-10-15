@@ -48,6 +48,27 @@ Meteor.methods({
         "coreOrderWorkflow", "coreShipmentPacking", order._id);
     }
   },
+
+  /**
+   * orders/applydiscount
+   *
+   * @summary apply a discount to an order
+   * @param {Object} order - order object
+   * @param {Number} discount - Amount of the discount, as a positive number
+   * @return {Object} return this.processPayment result
+   */
+  "orders/applyDiscount": function (order, discount) {
+    check(order, Object);
+    check(discount, Number);
+    this.unblock();
+
+    return ReactionCore.Collections.Orders.update(order._id, {
+      $set: {
+        "billing.0.invoice.discounts": discount
+      }
+    });
+  },
+
   /**
    * orders/processPayment
    *

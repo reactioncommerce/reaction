@@ -24,6 +24,25 @@ Template.coreShipmentPacking.events({
   "click .btn": function () {
     Meteor.call("orders/shipmentPacking", this);
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentPacking", this._id);
+  },
+
+  "submit form[name=addTrackingForm]": (event, template) => {
+    event.preventDefault();
+
+    console.log("thigs", template.data);
+return
+    let orderId = template.order._id;
+    let tracking = event.target.trackingNumber.value;
+    let shipmentData = $(event.target).closest("[data-shipment]").data();
+    let shipmentId = shipmentData.shipmentId;
+
+    Meteor.call("orders/updateShipmentTracking", orderId, shipmentId,
+      tracking, (error) => {
+        if (!error) {
+          template.orderDep.changed();
+          template.showTrackingEditForm.set(false);
+        }
+      });
   }
 });
 
