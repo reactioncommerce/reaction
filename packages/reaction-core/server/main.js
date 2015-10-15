@@ -7,10 +7,9 @@
  * configure bunyan logging module for reaction server
  * See: https://github.com/trentm/node-bunyan#levels
  */
-
+const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
+const mode = process.env.NODE_ENV || "production";
 let isDebug = Meteor.settings.isDebug || process.env.REACTION_DEBUG || "INFO";
-let levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
-let mode = process.env.NODE_ENV || "production";
 
 if (isDebug === true || mode === "development" && isDebug !== false) {
   if (typeof isDebug !== "boolean" && typeof isDebug !== undefined) {
@@ -160,7 +159,8 @@ _.extend(ReactionCore, {
     if (user && password && host && port) {
       let mailString = `smtp://${user}:${password}@${host}:${port}/`;
       mailUrl = processUrl = settingsUrl = mailString;
-      return mailString;
+      process.env.MAIL_URL = mailUrl;
+      return mailUrl;
     } else if (shopMail.user && shopMail.password && shopMail.host &&
       shopMail.port) {
       ReactionCore.Log.info("setting default mail url to: " + shopMail
@@ -168,9 +168,11 @@ _.extend(ReactionCore, {
       let mailString =
         `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
       let mailUrl = processUrl = settingsUrl = mailString;
+      process.env.MAIL_URL = mailUrl;
       return mailUrl;
     } else if (settingsUrl && !processUrl) {
-      let mailUrl = processUrlL = settingsUrl;
+      let mailUrl = processUrl = settingsUrl;
+      process.env.MAIL_URL = mailUrl;
       return mailUrl;
     }
     if (!process.env.MAIL_URL) {
@@ -192,5 +194,4 @@ Match.OptionalOrNull = function (pattern) {
 
 Meteor.startup(function () {
   ReactionCore.init();
-  return ReactionCore.Log.info("Reaction Core initialization finished. ");
 });

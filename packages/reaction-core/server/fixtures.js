@@ -284,47 +284,12 @@ ReactionRegistry.createDefaultAdminUser = function () {
   Roles.setUserRoles(accountId, _.uniq(defaultAdminRoles), Roles.GLOBAL_GROUP);
 };
 
-/*
- * load core fixture data
- */
-
-ReactionRegistry.loadFixtures = function () {
-  Fixtures.loadData(ReactionCore.Collections.Shops);
-
-  // start checking once per second if Shops collection is ready,
-  // then load the rest of the fixtures when it is
-  let wait = Meteor.setInterval(function () {
-    if (!!ReactionCore.Collections.Shops.find().count()) {
-      Meteor.clearInterval(wait);
-      Fixtures.loadData(ReactionCore.Collections.Products);
-      Fixtures.loadData(ReactionCore.Collections.Tags);
-      Fixtures.loadI18n(ReactionCore.Collections.Translations);
-    }
-  }, 1000);
-
-  let currentDomain;
-
-  try {
-    currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
-  } catch (_error) {
-    ReactionCore.Log.error("Failed to determine default shop.", _error);
-  }
-
-  // if the server domain changes, update shop
-  if (currentDomain && currentDomain !== getDomain()) {
-    ReactionCore.Log.info("Updating domain to " + getDomain());
-    Shops.update({
-      domains: currentDomain
-    }, {
-      $set: {
-        "domains.$": getDomain()
-      }
-    });
-  }
-  //  insert packages into registry
+ReactionRegistry.loadPackages = function () {
+  //  insert Reaction packages into registry
   //  we check to see if the number of packages have changed against current data
   //  if there is a change, we'll either insert or upsert package registry
   //  into the Packages collection
+  //  @see: https://github.com/reactioncommerce/reaction/blob/development/docs/developer/packages.md
   if (ReactionCore.Collections.Packages.find().count() !== ReactionCore.Collections
     .Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
     // for each shop, we're loading packages registry
@@ -364,6 +329,47 @@ ReactionRegistry.loadFixtures = function () {
       }
     });
   });
-  // create default admin user
-  ReactionRegistry.createDefaultAdminUser();
+};
+/*
+ * load core fixture data
+ */
+
+ReactionRegistry.loadFixtures = function () {
+  Fixtures.loadData(ReactionCore.Collections.Shops);
+
+  // start checking once per second if Shops collection is ready,
+  // then load the rest of the fixtures when it is
+  let wait = Meteor.setInterval(function () {
+    if (!!ReactionCore.Collections.Shops.find().count()) {
+      Meteor.clearInterval(wait);
+      Fixtures.loadI18n(ReactionCore.Collections.Translations);
+      Fixtures.loadData(ReactionCore.Collections.Products);
+      Fixtures.loadData(ReactionCore.Collections.Tags);
+      // create default admin user
+      ReactionRegistry.createDefaultAdminUser();
+      // we've finished all reaction core initialization
+      ReactionCore.Log.info("Reaction Core initialization finished.");
+    }
+  }, 1000);
+  // we automatically update the shop domain when ROOT_URL changes
+  let currentDomain;
+  try {
+    currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
+  } catch (_error) {
+    ReactionCore.Log.error("Failed to determine default shop.", _error);
+  }
+  // if the server domain changes, update shop
+  if (currentDomain && currentDomain !== getDomain()) {
+    ReactionCore.Log.info("Updating domain to " + getDomain());
+    Shops.update({
+      domains: currentDomain
+    }, {
+      $set: {
+        "domains.$": getDomain()
+      }
+    });
+  }
+
+  // load package configurations
+  ReactionRegistry.loadPackages();
 };
