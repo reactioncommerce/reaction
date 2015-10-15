@@ -13,7 +13,7 @@ if [ ! -f client/themes/bootstrap/custom.reaction.less ]; then
     echo "info: using development mode in an attempt to create missing files."
     echo "info: this can take 2-5 minutes. be patient."
     # startup development server
-    command="env -i HOME="$HOME" LC_ALL=en_US.UTF-8 LC_CTYPE="${LC_ALL:-${LC_CTYPE:-$LANG}}" PATH="$PATH" USER="$USER" /usr/local/bin/meteor"
+    command="env -i MONGO_URL="" HOME="$HOME" LC_ALL="C" PATH="$PATH" USER="$USER" /usr/local/bin/meteor --allow-incompatible-update"
     log=".build.log"
     match="=> Client modified -- refreshing"
 

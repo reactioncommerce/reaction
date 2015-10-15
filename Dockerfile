@@ -40,11 +40,13 @@
 #
 ##############################################################
 
-FROM mongo:2.6
+FROM mongo:3.0
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
-
 ENV DEBIAN_FRONTEND noninteractive
+
+# https://github.com/meteor/meteor/issues/4019
+# ENV LC_ALL C
 
 # Install git, curl, python, etc
 # Install imagemagick (optional for cfs:graphicsmagick)
@@ -74,8 +76,12 @@ RUN apt-get install -y nodejs
 # Install forever & phantomjs
 RUN npm install --silent -g phantomjs nodemon
 
+# https://github.com/meteor/meteor/wiki/File-Change-Watcher-Efficiency
+# will only work if docker run in priviledged mode
+# RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+
 # Install Meteor
-RUN curl https://install.meteor.com | /bin/sh
+RUN curl -sL https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
 
 # Default (required) Meteor env variables
 ENV PORT 80
@@ -104,6 +110,7 @@ RUN mkdir -p /var/www
 RUN chown -R www-data:www-data /var/www
 
 # add app to /usr/src
+# VOLUME ["/usr/src/meteor"]
 VOLUME ["/data/db"]
 COPY . /usr/src/meteor
 WORKDIR /usr/src/meteor/
