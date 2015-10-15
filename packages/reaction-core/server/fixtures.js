@@ -296,14 +296,15 @@ ReactionRegistry.loadFixtures = function () {
   let wait = Meteor.setInterval(function () {
     if (!!ReactionCore.Collections.Shops.find().count()) {
       Meteor.clearInterval(wait);
+      Fixtures.loadI18n(ReactionCore.Collections.Translations);
       Fixtures.loadData(ReactionCore.Collections.Products);
       Fixtures.loadData(ReactionCore.Collections.Tags);
-      Fixtures.loadI18n(ReactionCore.Collections.Translations);
+      // create default admin user
+      ReactionRegistry.createDefaultAdminUser();
     }
   }, 1000);
-
+  // we automatically update the shop domain when ROOT_URL changes
   let currentDomain;
-
   try {
     currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
   } catch (_error) {
@@ -321,10 +322,11 @@ ReactionRegistry.loadFixtures = function () {
       }
     });
   }
-  //  insert packages into registry
+  //  insert Reaction packages into registry
   //  we check to see if the number of packages have changed against current data
   //  if there is a change, we'll either insert or upsert package registry
   //  into the Packages collection
+  //  @see: https://github.com/reactioncommerce/reaction/blob/development/docs/developer/packages.md
   if (ReactionCore.Collections.Packages.find().count() !== ReactionCore.Collections
     .Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
     // for each shop, we're loading packages registry
@@ -364,6 +366,6 @@ ReactionRegistry.loadFixtures = function () {
       }
     });
   });
-  // create default admin user
-  ReactionRegistry.createDefaultAdminUser();
+  // we've finished all reaction core initialization
+  ReactionCore.Log.info("Reaction Core initialization finished.");
 };
