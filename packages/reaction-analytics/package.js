@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
-  version: "1.1.0",
+  version: "1.1.1",
   git: "https://github.com/reactioncommerce/reaction-analytics.git"
 });
 
@@ -42,7 +42,7 @@ Package.on_use(function (api, where) {
   api.use("less");
   api.use('browser-policy-content', 'server');
   api.use('iron:router@1.0.9', 'client');
-  api.use("reactioncommerce:core@0.8.0");
+  api.use("reactioncommerce:core@0.9.2");
   api.use("reactioncommerce:reaction-analytics-libs@1.1.0", 'client');
 
   api.addFiles([
