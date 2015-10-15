@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.5.0",
+  version: "1.5.1",
   git: "https://github.com/reactioncommerce/reaction-accounts"
 });
 
@@ -34,7 +34,7 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
-  api.use("reactioncommerce:core@0.9.0");
+  api.use("reactioncommerce:core@0.9.2");
 
   // Files
   api.addFiles("common/schemas/accounts.js");
