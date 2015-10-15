@@ -19,10 +19,23 @@ Factory.define("order", ReactionCore.Collections.Orders, {
   userId: faker.reaction.order.userId(),
   sessionId: "Session",
   email: faker.internet.email(),
-  items: [
-    faker.reaction.cartItem(),
-    faker.reaction.cartItem()
-  ],
+  items: function () {
+    let product = faker.reaction.products.getProduct();
+    let product2 = faker.reaction.products.getProduct();
+    return [{
+      _id: Random.id(),
+      shopId: product.shopId,
+      productId: product._id,
+      quantity: 1,
+      variants: product.variants[0]
+    }, {
+      _id: Random.id(),
+      shopId: product2.shopId,
+      productId: product2._id,
+      quantity: 1,
+      variants: product2.variants[0]
+    }];
+  },
   requiresShipping: true,
   shipping: [], // Shipping Schema
   billing: [], // Payment Schema
@@ -38,11 +51,13 @@ Factory.define("order", ReactionCore.Collections.Orders, {
  */
 Factory.define("authorizedApprovedPaypalOrder", ReactionCore.Collections.Orders,
   Factory.extend("order", {
-    payment: {
+    billing: [{
+      _id: Random.id(),
+      address: faker.reaction.address({isBillingDefault: true}),
       paymentMethod: faker.reaction.order.paymentMethod({
         processor: "Paypal",
         mode: "authorize",
         status: "approved"
       })
-    }
+    }]
   }));

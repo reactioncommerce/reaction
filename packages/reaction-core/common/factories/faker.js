@@ -146,9 +146,14 @@ faker.reaction.productVariant = function (options = {}) {
  *
  * @returns {Object} - randomly generated cartItem/orderItem data object
  */
-
 faker.reaction.cartItem = function (options = {}) {
-  const product = _.sample(faker.reaction.products.getProducts(10));
+  const product = {
+    _id: Random.id(),
+    shopId: Random.id(),
+    inventoryQuantity: 1,
+    variants: [faker.reaction.productVariant()]
+  };
+
   const defaults = {
     _id: Random.id(),
     productId: product._id,
@@ -158,7 +163,6 @@ faker.reaction.cartItem = function (options = {}) {
   };
   return _.defaults(options, defaults);
 };
-
 
 /**
  * faker.reaction.order
