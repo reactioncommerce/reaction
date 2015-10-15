@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Social - Social Sharing Package for Reaction",
   name: "reactioncommerce:reaction-social",
-  version: "0.4.0",
+  version: "0.4.1",
   git: "https://github.com/reactioncommerce/reaction-social.git"
 });
 
@@ -28,7 +28,7 @@ Package.onUse(function (api, where) {
 
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.8.0");
+  api.use("reactioncommerce:core@0.9.2");
 
   api.addFiles("server/register.js",["server"]); // register as a reaction package
   api.addFiles("server/policy.js",["server"]); // browser-policies
