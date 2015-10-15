@@ -1,0 +1,91 @@
+[
+  [{
+    "name": "core",
+    "enabled": true,
+    "settings": {
+      "public": {
+        "allowGuestCheckout": true
+      },
+      "mail": {
+        "user": "",
+        "password": "",
+        "host": "",
+        "port": 587
+      },
+      "openexchangerates": {
+        "appId": ""
+      },
+      "services": [{
+        "facebook": {
+          "appId": "",
+          "secret": ""
+        }
+      }]
+    }
+  }, {
+    "name": "reaction-paypal",
+    "enabled": true,
+    "settings": {
+      "express_enabled": true,
+      "express_mode": false,
+      "merchantId": "",
+      "username": "",
+      "password": "",
+      "signature": "",
+      "payflow_enabled": true,
+      "payflow_mode": false,
+      "client_id": "",
+      "client_secret": ""
+    }
+  }, {
+    "name": "reaction-google-analytics",
+    "enabled": false,
+    "settings": {
+      "public": {
+        "api_key": ""
+      }
+    }
+  }, {
+    "name": "reaction-stripe",
+    "enabled": true,
+    "settings": {
+      "api_key": ""
+    }
+  }, {
+    "name": "reaction-social",
+    "enabled": true,
+    "settings": {
+      "public": {
+        "autoInit": true,
+        "appsOrder": [
+          "facebook",
+          "twitter",
+          "pinterest",
+          "googleplus"
+        ],
+        "iconOnly": true,
+        "faSize": "fa-2x",
+        "faClass": "square",
+        "targetWindow": "_self",
+        "apps": {
+          "facebook": {
+            "appId": "",
+            "version": "v2.1",
+            "profilePage": "",
+            "enabled": true,
+            "appSecret": ""
+          },
+          "twitter": {
+            "enabled": true
+          },
+          "googleplus": {
+            "enabled": true
+          },
+          "pinterest": {
+            "enabled": true
+          }
+        }
+      }
+    }
+  }]
+]

@@ -84,19 +84,100 @@ See [the packages development documentation](https://github.com/reactioncommerce
 
 The `Fixtures.loadSettings` method makes it easy to update Reaction package settings on startup. To use, create the app file: `private/settings/reaction.json` with package settings.
 
+Note: _Where `name` is Reaction package name, the `settings` object will update the `Packages` collection on every restart/reload._
+
 Example _private/settings/reaction.json_
 
 ```json
 [
-    {
-        "name": "reaction-paypal",
-        "settings": {
-            "mode": false,
-            "client_id": "<client_id>",
-            "client_secret": "<client_secret"
+  [{
+    "name": "core",
+    "enabled": true,
+    "settings": {
+      "public": {
+        "allowGuestCheckout": true
+      },
+      "mail": {
+        "user": "",
+        "password": "",
+        "host": "",
+        "port": 587
+      },
+      "openexchangerates": {
+        "appId": ""
+      },
+      "services": [{
+        "facebook": {
+          "appId": "",
+          "secret": ""
         }
+      }]
     }
+  }, {
+    "name": "reaction-paypal",
+    "enabled": true,
+    "settings": {
+      "express_enabled": true,
+      "express_mode": false,
+      "merchantId": "",
+      "username": "",
+      "password": "",
+      "signature": "",
+      "payflow_enabled": true,
+      "payflow_mode": false,
+      "client_id": "",
+      "client_secret": ""
+    }
+  }, {
+    "name": "reaction-google-analytics",
+    "enabled": false,
+    "settings": {
+      "public": {
+        "api_key": ""
+      }
+    }
+  }, {
+    "name": "reaction-stripe",
+    "enabled": true,
+    "settings": {
+      "api_key": ""
+    }
+  }, {
+    "name": "reaction-social",
+    "enabled": true,
+    "settings": {
+      "public": {
+        "autoInit": true,
+        "appsOrder": [
+          "facebook",
+          "twitter",
+          "pinterest",
+          "googleplus"
+        ],
+        "iconOnly": true,
+        "faSize": "fa-2x",
+        "faClass": "square",
+        "targetWindow": "_self",
+        "apps": {
+          "facebook": {
+            "appId": "",
+            "version": "v2.1",
+            "profilePage": "",
+            "enabled": true,
+            "appSecret": ""
+          },
+          "twitter": {
+            "enabled": true
+          },
+          "googleplus": {
+            "enabled": true
+          },
+          "pinterest": {
+            "enabled": true
+          }
+        }
+      }
+    }
+  }]
 ]
 ```
-
-Note: _Where `name` is Reaction package name, the `settings` object will update the `Packages` collection on every restart/reload._
