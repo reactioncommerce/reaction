@@ -1,6 +1,6 @@
 /**
- * User factory
- *
+ * User Factory
+ * @summary define user Factory
  */
 
 Factory.define("user", Meteor.users, {

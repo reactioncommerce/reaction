@@ -481,6 +481,7 @@ describe("core product methods", function () {
   describe("updateProductTags", function () {
     beforeEach(function () {
       Products.remove({});
+      Shops.remove({});
       return Tags.remove({});
     });
     it("should throw 403 error by non admin", function (done) {
@@ -499,29 +500,17 @@ describe("core product methods", function () {
     });
     it("should add new tag when passed tag name and null ID by admin",
       function (done) {
-        // let newTag;
-        let product;
-        let tag;
-        let tagName;
         spyOn(Roles, "userIsInRole").and.returnValue(true);
-        product = Factory.create("product");
-        tagName = "Product Tag";
-        newTag = {
-          slug: getSlug(tagName),
-          name: tagName
-        };
-        expect(Tags.findOne({
-          name: tagName
-        })).toEqual(void 0);
-        Meteor.call("products/updateProductTags", product._id,
-          tagName, null);
-        tag = Tags.findOne({
-          name: tagName
-        });
+        Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
+        let product = Factory.create("product");
+        let tagName = "Product Tag";
+        expect(Tags.findOne({name: tagName})).toEqual(void 0);
+
+        Meteor.call("products/updateProductTags", product._id, tagName, null);
+        let tag = Tags.findOne({name: tagName});
         expect(tag.slug).toEqual(getSlug(tagName));
-        product = Products.findOne({
-          _id: product._id
-        });
+
+        product = Products.findOne({_id: product._id});
         expect(product.hashtags).toContain(tag._id);
         return done();
       });

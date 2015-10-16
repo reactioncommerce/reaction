@@ -1,25 +1,24 @@
 /**
- * tag Factory
- *
+ * Tag Factory
+ * @summary define tag Factory
  */
-
 Factory.define("tag", ReactionCore.Collections.Tags, {
   name: "Tag",
   slug: "tag",
   position: _.random(0, 100000),
   //  relatedTagIds: [],
   isTopLevel: true,
-  shopId: Factory.get("shop"),
+  shopId: faker.reaction.shops.getShop()._id,
   createdAt: faker.date.past(),
   updatedAt: new Date()
 });
 
 /**
- * product Factory
+ * Product factory
+ * @summary define product Factory
  */
-
 Factory.define("product", ReactionCore.Collections.Products, {
-  shopId: Factory.get("shop"),
+  shopId: faker.reaction.shops.getShop()._id,
   title: faker.commerce.productName(),
   pageTitle: faker.lorem.sentence(),
   description: faker.lorem.paragraph(),
