@@ -62,11 +62,11 @@ Template.openCartDrawer.events({
     event.stopPropagation();
     event.preventDefault();
     let currentCartId = Cart.findOne()._id;
-    let currentVariant = this.variants;
+    let currentCartItem = this;
 
     return $(event.currentTarget).fadeOut(300, function () {
-      return Meteor.call("cart/removeFromCart", currentCartId,
-        currentVariant);
+      return Meteor.call("cart/removeFromCart",
+        currentCartId, currentCartItem);
     });
   }
 });

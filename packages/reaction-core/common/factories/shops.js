@@ -1,3 +1,7 @@
+/**
+ * Shop Factory
+ * @summary define shop Factory
+ */
 Factory.define("shop", ReactionCore.Collections.Shops, {
   name: faker.company.companyName(),
   description: faker.company.catchPhrase(),
@@ -10,7 +14,7 @@ Factory.define("shop", ReactionCore.Collections.Shops, {
       verified: faker.random.boolean()
     }
   ],
-  currency: "USD",// faker.finance.currencyCode()
+  currency: "USD", // could use faker.finance.currencyCode()
   currencies: {
     USD: {
       format: "%s%v",

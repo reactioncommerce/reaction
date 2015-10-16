@@ -9,7 +9,7 @@ Template.i18nChooser.helpers({
     if (shop !== null ? shop.languages : void 0) {
       for (let language of shop.languages) {
         if (language.enabled === true) {
-          language.translation = "languages." + language.label.toLowercase;
+          language.translation = "languages." + language.label.toLowerCase();
           languages.push(language);
         }
       }

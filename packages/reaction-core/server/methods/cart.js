@@ -243,12 +243,12 @@ Meteor.methods({
    * cart/removeFromCart
    * @summary removes a variant from the cart
    * @param {String} cartId - user cartId
-   * @param {String} variantData - variant object
+   * @param {String} cartItem - cart item object
    * @returns {String} returns Mongo update result
    */
-  "cart/removeFromCart": function (cartId, variantData) {
+  "cart/removeFromCart": function (cartId, cartItem) {
     check(cartId, String);
-    check(variantData, Object);
+    check(cartItem, Object);
     this.unblock();
 
     return Cart.update({
@@ -256,7 +256,7 @@ Meteor.methods({
     }, {
       $pull: {
         items: {
-          variants: variantData
+          variants: cartItem.variants
         }
       }
     });
