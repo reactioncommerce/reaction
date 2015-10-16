@@ -56,6 +56,7 @@ describe("core methods", function () {
   });
   describe("shop/updateHeaderTags", function () {
     beforeEach(function () {
+      Shops.remove({});
       return Tags.remove({});
     });
 
@@ -74,6 +75,7 @@ describe("core methods", function () {
     it("should insert new header tag with 1 argument by admin", function (done) {
       let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
+      Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
       Meteor.call("shop/updateHeaderTags", "new tag");
       expect(Tags.find().count()).toEqual(1);
       tag = Tags.find().fetch()[0];
