@@ -11,7 +11,7 @@ Template.coreShipmentPacking.onCreated(() => {
   }
 
   Tracker.autorun(() => {
-    template.order = getOrder(currentData._id);
+    template.order = getOrder(currentData.orderId);
   });
 });
 
@@ -21,23 +21,22 @@ Template.coreShipmentPacking.onCreated(() => {
  *
  */
 Template.coreShipmentPacking.events({
-  "click .btn": function () {
-    Meteor.call("orders/shipmentPacking", this);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentPacking", this._id);
+  "click [data-event-action=shipmentsPacked]": () => {
+    // Meteor.call("orders/shipmentPacking", this);
+    // Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentPacking", this._id);
   },
 
   "submit form[name=addTrackingForm]": (event, template) => {
     event.preventDefault();
+    event.stopPropagation();
 
-    console.log("thigs", template.data);
-return
-    let orderId = template.order._id;
-    let tracking = event.target.trackingNumber.value;
-    let shipmentData = $(event.target).closest("[data-shipment]").data();
-    let shipmentId = shipmentData.shipmentId;
+    const currentData = Template.currentData();
+    const order = template.order;
+    const shipment = currentData.fulfillment;
+    const tracking = event.target.trackingNumber.value;
 
-    Meteor.call("orders/updateShipmentTracking", orderId, shipmentId,
-      tracking, (error) => {
+    Meteor.call("orders/updateShipmentTracking", order, shipment, tracking,
+      (error) => {
         if (!error) {
           template.orderDep.changed();
           template.showTrackingEditForm.set(false);
@@ -60,10 +59,12 @@ Template.coreShipmentPacking.helpers({
 
 
   items() {
+    let template = Template.instance();
     let currentData = Template.currentData();
+    let shipment = currentData.fulfillment;
 
-    let items = _.map(currentData.items, (item) => {
-      let originalItem = _.findWhere(currentData.items, {
+    let items = _.map(shipment.items, (item) => {
+      let originalItem = _.findWhere(template.order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);
@@ -85,9 +86,14 @@ Template.coreShipmentPacking.helpers({
     return items;
   },
 
+  /**
+   * Order
+   * @summary find a single order using the order id spplied with the template
+   * data context
+   * @return {Object} A single order
+   */
   order() {
     let template = Template.instance();
-    console.log(template.order);
     return template.order;
   },
 

@@ -1,40 +1,45 @@
 <template name="coreOrderWorkflow">
   <div aria-multiselectable="true" class="panel-group" id="core-order-workflow-accordion" role="tablist">
 
+    {{#with order}}
+      {{#each shipment in shipping}}
+      <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
+        <div class="panel-heading">
+          <div class="panel-title">
 
-    {{#each shipment in order.shipping}}
+            <a
+              aria-controls="{{label}}"
+              aria-expanded="true"
+              data-i18n="app.order.fullfilment"
+              data-parent="#core-order-workflow-accordion"
+              data-toggle="collapse"
+              href="#{{template}}-panel"
+              role="button">Fulfillment {{fulfillmentNumber @index}}</a>
 
-    <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
-      <div class="panel-heading">
-              <div class="panel-title">
-                Fulfilment {{fulfillmentNumber @index}}
-
-                <a aria-controls="{{label}}" aria-expanded="true" data-i18n="app.order.fullfilment" data-parent="#core-order-workflow-accordion" data-toggle="collapse" href="#{{template}}-panel" role="button">Fulfillment</a>
-
-                {{!--
-                <span class="pull-right">
-                  {{#if isCompleted}}
-                  <i class="fa fa-check-circle-o 2x"></i>
-                  {{else}}
-                   <i class="fa fa-exclamation 2x"></i>
-                  {{/if}}
-                </span>--}}
-              </div>
-            </div>
-
-      <div class="list-group">
-
-        {{#each reactionTemplate workflow="coreOrderShipmentWorkflow"}}
-
-          <div aria-labelledby="{{template}}" class="list-group-item" id="{{template}}-panel" role="tabpanel">
-            <h3 class="list-group-title" data-i18n="{{template}}.{{label}}">{{label}}</h3>
-            {{> Template.dynamic template=template data=.. }}
+            {{!--
+            <span class="pull-right">
+              {{#if isCompleted}}
+              <i class="fa fa-check-circle-o 2x"></i>
+              {{else}}
+               <i class="fa fa-exclamation 2x"></i>
+              {{/if}}
+            </span>--}}
           </div>
+        </div>
 
-        {{/each}}
-      </div>
+          <div class="list-group">
 
-    </div>
-    {{/each}}
+            {{#each reactionTemplate workflow="coreOrderShipmentWorkflow"}}
+
+              <div aria-labelledby="{{template}}" class="list-group-item" id="{{template}}-panel" role="tabpanel">
+                <h3 class="list-group-title" data-i18n="{{template}}.{{label}}">{{label}}</h3>
+                {{> Template.dynamic template=template data=(orderFulfillmentData ../_id shipment) }}
+              </div>
+
+            {{/each}}
+          </div>
+        </div>
+      {{/each}}
+    {{/with}}
   </div>
 </template>

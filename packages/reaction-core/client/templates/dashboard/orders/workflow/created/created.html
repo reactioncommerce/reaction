@@ -1,6 +1,7 @@
 <template name="coreOrderCreated">
   <div class="core-order-created">
-    {{> orderDetail}}
+    {{#with order}}
+      {{> orderDetail}}
 
     <div class="core-order-created">
       <span>
@@ -29,6 +30,6 @@
     <a class="btn btn-default save-order-pdf" href="/dashboard/pdf/orders/{{_id}}" target="_blank" data-i18n="app.download">
       Download Invoice
     </a>
-
+    {{/with}}
   </div>
 </template>

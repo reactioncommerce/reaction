@@ -1,4 +1,14 @@
 Template.coreOrderWorkflow.helpers({
+
+  orderFulfillmentData(orderId, fulfillment) {
+    return {
+      orderId: orderId,
+      fulfillment: fulfillment
+    };
+  },
+  baseOrder() {
+    return Template.currentData();
+  },
   order() {
     let currentData = Template.currentData();
 
@@ -9,7 +19,7 @@ Template.coreOrderWorkflow.helpers({
     return index + 1;
   },
 
-  "isCompleted": function () {
+  isCompleted() {
     var order = Template.parentData(1);
     if (this.status === true) {
       return order.workflow.status;
@@ -18,7 +28,7 @@ Template.coreOrderWorkflow.helpers({
     }
   },
 
-  "isPending": function () {
+  isPending() {
     if (this.status === this.template) {
       return this.status;
     } else {
@@ -29,7 +39,7 @@ Template.coreOrderWorkflow.helpers({
 
 /* when order is first viewed we'll push the order status to created*/
 Template.coreOrderWorkflow.onRendered(function () {
-  var order = Template.currentData();
+  const order = Template.currentData();
   // force order created to always be completed.
   if (order.workflow.status === "coreOrderCreated") {
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
