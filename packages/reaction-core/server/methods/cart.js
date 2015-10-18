@@ -100,7 +100,6 @@ Meteor.methods({
   "cart/createCart": function (createForUserId) {
     check(createForUserId, Match.Optional(String));
     this.unblock();
-    let shopId = ReactionCore.getShopId();
     let sessionId;
     let userId = createForUserId || this.userId;
     let Cart = ReactionCore.Collections.Cart;
@@ -148,7 +147,6 @@ Meteor.methods({
     if (!currentCartId && anonymousUser === false) {
       currentCartId = Cart.insert({
         sessionId: sessionId,
-        shopId: shopId,
         userId: userId
       });
       ReactionCore.Log.debug("create cart: into new user cart. created: " +
