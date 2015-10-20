@@ -44,6 +44,24 @@ Factory.define("shop", ReactionCore.Collections.Shops, {
       }
     }
   },
+  layout: [{
+    layout: "coreLayout",
+    workflow: "coreLayout",
+    theme: "default",
+    enabled: true
+  }, {
+    layout: "coreLayout",
+    workflow: "coreCartWorkflow",
+    collection: "Cart",
+    theme: "default",
+    enabled: true
+  }, {
+    layout: "coreLayout",
+    workflow: "coreOrderWorkflow",
+    collection: "Orders",
+    theme: "default",
+    enabled: true
+  }],
   public: true,
   timezone: "US/Pacific",
   baseUOM: "OZ",
