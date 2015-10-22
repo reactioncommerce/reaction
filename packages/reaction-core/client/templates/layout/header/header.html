@@ -7,7 +7,7 @@
       <div class="cart-alert">{{> cartPanel}}</div>
       <div class="navbar-accounts">{{> accounts tpl="loginDropdown"}}</div>
       <div class="navbar-languages hidden-xs">{{> i18nChooser}}</div>
-      {{#each reactionTemplate workflow="coreLayout" container="navbar-shop"}}
+      {{#each reactionApps provides="menu"}}
         {{> Template.dynamic template=template}}
       {{/each}}
     </div>
