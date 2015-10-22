@@ -61,6 +61,12 @@ Factory.define("shop", ReactionCore.Collections.Shops, {
     collection: "Orders",
     theme: "default",
     enabled: true
+  }, {
+    layout: "coreLayout",
+    workflow: "coreOrderShipmentWorkflow",
+    collection: "Orders",
+    theme: "default",
+    enabled: true
   }],
   public: true,
   timezone: "US/Pacific",
