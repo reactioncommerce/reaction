@@ -209,6 +209,16 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
     type: ReactionCore.Schemas.Workflow,
     optional: true
   },
+  packed: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
+  shipped: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
   invoice: {
     type: ReactionCore.Schemas.Invoice,
     optional: true

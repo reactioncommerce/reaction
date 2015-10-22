@@ -1,3 +1,8 @@
 <template name="coreOrderCompleted">
-  <h3 data-i18n="coreOrderCompleted.complete">Completed</h3>
+  {{#if isComplete}}
+    <h3 data-i18n="coreOrderCompleted.complete">This Fulfulment is Completed</h3>
+  {{else}}
+    <p data-i18n="coreOrderCompleted.complete">Completion Pending</p>
+    <span data-i18n="">Current Pending Step</span> {{workflow.label}}
+  {{/if}}
 </template>

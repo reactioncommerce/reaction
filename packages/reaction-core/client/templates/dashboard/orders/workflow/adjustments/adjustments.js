@@ -30,8 +30,7 @@ Template.coreOrderAdjustments.events({
 
     let order = template.order;
     let discount = parseFloat(event.target.discount_amount.value) || 0;
-
-    Meteor.call("orders/applyDiscount", order, discount, (error) => {
+    Meteor.call("orders/approvePayment", order, discount, (error) => {
       if (error) {
         // Show error
       }
@@ -49,12 +48,25 @@ Template.coreOrderAdjustments.helpers({
    * Discount
    * @return {Number} current discount amount
    */
-  discount() {
+  invoice() {
     event.preventDefault();
 
     let template = Template.instance();
     let order = template.order;
 
-    return order.billing[0].invoice.discounts;
+    return order.billing[0].invoice;
+  },
+
+  money(amount) {
+    return ReactionCore.Currency.formatNumber(amount);
+  },
+
+  currencySymbol() {
+    return ReactionCore.Locale.currency.symbol
+  },
+
+  order() {
+    let template = Template.instance();
+    return template.order;
   }
 });

@@ -1,14 +1,50 @@
 <template name="coreOrderAdjustments">
 
-
-
   <form class="">
+
     <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="">Discount</label>
-      <input class="form-control amount" type="text" name="discount_amount" value="{{discount}}">
+      <label class="form-control-label reason" for="">Sub total</label>
+      <div class="input-group amount">
+        <div class="input-group-addon">{{currencySymbol}}</div>
+        <input class="form-control amount" type="text" name="subtotal" value="{{money invoice.subtotal}}" disabled>
+      </div>
     </div>
 
-    <button class="btn btn-default btn-block" type="submit">Apply Adjustments</button>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="">Shipping</label>
+      <div class="input-group amount">
+        <div class="input-group-addon">{{currencySymbol}}</div>
+        <input class="form-control amount" type="text" name="shipping_amount" value="{{money invoice.shipping}}">
+      </div>
+    </div>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="">Tax</label>
+      <div class="input-group amount">
+        <div class="input-group-addon">{{currencySymbol}}</div>
+        <input class="form-control amount" type="text" name="tax_amount" value="{{money invoice.tax}}" disabled>
+      </div>
+    </div>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="">Discount</label>
+      <div class="input-group amount">
+        <div class="input-group-addon">{{currencySymbol}}</div>
+        <input class="form-control amount" type="text" name="discount_amount" value="{{money invoice.discount}}">
+      </div>
+    </div>
+    <hr>
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="">Total</label>
+      <div class="input-group amount">
+        <div class="input-group-addon">{{currencySymbol}}</div>
+        <input class="form-control" type="text" name="total" value="{{money invoice.total}}" disabled>
+      </div>
+    </div>
+
+
+    <button class="btn btn-default btn-block" type="submit">Approve Adjustments</button>
 
   </form>
 </template>

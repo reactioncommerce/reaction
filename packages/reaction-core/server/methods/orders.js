@@ -44,27 +44,39 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
-      return Meteor.call("workflow/pushOrderWorkflow",
-        "coreOrderWorkflow", "coreShipmentPacking", order._id);
+      return Meteor.call(
+        "workflow/pushOrderShipmentWorkflow",
+        "coreOrderShipmentWorkflow",
+        "coreOrderPacking",
+        order._id,
+        order.shipping[0]._id
+      );
     }
   },
 
   /**
-   * orders/applydiscount
+   * orders/approvePayment
    *
-   * @summary apply a discount to an order
+   * @summary Approve payment and apply any adjustments
    * @param {Object} order - order object
    * @param {Number} discount - Amount of the discount, as a positive number
    * @return {Object} return this.processPayment result
    */
-  "orders/applyDiscount": function (order, discount) {
+  "orders/approvePayment": function (order, discount) {
     check(order, Object);
     check(discount, Number);
     this.unblock();
 
+    let total =
+      order.billing[0].invoice.subtotal
+      - Math.abs(discount);
+
     return ReactionCore.Collections.Orders.update(order._id, {
       $set: {
-        "billing.0.invoice.discounts": discount
+        "billing.0.paymentMethod.amount": total,
+        "billing.0.paymentMethod.status": "approved",
+        "billing.0.invoice.discounts": discount,
+        "billing.0.invoice.total": total
       }
     });
   },
@@ -339,23 +351,25 @@ Meteor.methods({
     let order = ReactionCore.Collections.Orders.findOne(orderId);
 
     // process order..payment.paymentMethod
-    _.each(order.billing.paymentMethod, function (paymentMethod) {
-      if (paymentMethod.mode === "authorize" && paymentMethod.status ===
-        "approved" && paymentMethod.processor) {
-        Meteor[paymentMethod.processor].capture(paymentMethod.transactionId,
-          paymentMethod.amount,
+    _.each(order.billing, function (billing) {
+      let paymentMethod = billing.paymentMethod;
+
+      if (paymentMethod.mode === "authorize" && paymentMethod.status === "approved" && paymentMethod.processor) {
+        // Grab the amount from the shipment, otherwise use the original amount
+
+        Meteor[paymentMethod.processor].capture(paymentMethod.transactionId, paymentMethod.amount,
           function (error, result) {
             let transactionId;
 
-            if (result.capture) {
+            console.log("*** Result", error, result);
+            if (result.saved) {
               transactionId = paymentMethod.transactionId;
               ReactionCore.Collections.Orders.update({
                 "_id": orderId,
                 "billing.paymentMethod.transactionId": transactionId
               }, {
                 $set: {
-                  "payment.paymentMethod.$.transactionId": result
-                    .capture.id,
+                  // "billing.paymentMethod.$.transactionId": result.capture.id,
                   "billing.paymentMethod.$.mode": "capture",
                   "billing.paymentMethod.$.status": "completed"
                 }

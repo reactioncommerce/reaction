@@ -22,8 +22,10 @@ Template.coreShipmentPacking.onCreated(() => {
  */
 Template.coreShipmentPacking.events({
   "click [data-event-action=shipmentsPacked]": () => {
-    // Meteor.call("orders/shipmentPacking", this);
-    // Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentPacking", this._id);
+    const currentData = Template.instance();
+
+    Meteor.call("orders/shipmentPacking", currentData.order);
+    // Meteor.call("workflow/pushOrderWorkflow", "coreOrderShipmentWorkflow", "coreShipmentPacking", this._id);
   },
 
   "submit form[name=addTrackingForm]": (event, template) => {
@@ -57,6 +59,13 @@ Template.coreShipmentPacking.helpers({
     return false;
   },
 
+  shipment() {
+    let template = Template.instance();
+    let currentData = Template.currentData();
+    let shipment = _.where(template.order.shipping, {_id: currentData.fulfillment._id})[0];
+
+    return shipment;
+  },
 
   items() {
     let template = Template.instance();

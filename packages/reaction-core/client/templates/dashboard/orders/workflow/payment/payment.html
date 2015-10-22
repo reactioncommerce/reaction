@@ -1,6 +1,10 @@
  <template name="coreProcessPayment">
-   {{> ordersListSummary order}}
     <span class="">
-      <button class="btn btn-success btn-block">Capture Payment</button>
+
+      {{#if paymentApproved}}
+        <button class="btn btn-success btn-block" data-event-action="capturePayment">Capture Payment</button>
+      {{else}}
+        Payment not yer approved
+      {{/if}}
     </span>
 </template>

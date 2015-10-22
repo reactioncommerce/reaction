@@ -494,29 +494,22 @@ Meteor.methods({
       nextWorkflowStep.template);
 
     // debug info
-    ReactionCore.Log.debug("currentWorkflowStatus:",
-      currentWorkflowStatus);
-    ReactionCore.Log.debug("workflow/pushOrderWorkflow workflow:",
-      workflow);
+    ReactionCore.Log.debug("currentWorkflowStatus:", currentWorkflowStatus);
+    ReactionCore.Log.debug("workflow/pushOrderWorkflow workflow:", workflow);
     ReactionCore.Log.debug("newWorkflowStatus: ", newWorkflowStatus);
     ReactionCore.Log.debug("current orderId: ", currentOrder._id);
     ReactionCore.Log.debug("current shipmentId: ", currentShipment._id);
     ReactionCore.Log.debug("currentWorkflow: ", currentOrder.workflow.workflow);
     ReactionCore.Log.debug("nextWorkflowStep: ", nextWorkflowStep.template);
-    ReactionCore.Log.debug("statusExistsInWorkflow: ",
-      statusExistsInWorkflow);
-    ReactionCore.Log.debug("templateProcessedinWorkflow: ",
-      templateProcessedinWorkflow);
-    ReactionCore.Log.debug("gotoNextWorkflowStep: ",
-      gotoNextWorkflowStep);
+    ReactionCore.Log.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
+    ReactionCore.Log.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
+    ReactionCore.Log.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
 
     // Condition One
     // if you're going to join the workflow you need a status that is a template name.
     // this status/template is how we know
     // where you are in the flow and configures `gotoNextWorkflowStep`
-
-    if (!gotoNextWorkflowStep && currentWorkflowStatus !==
-      newWorkflowStatus) {
+    if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus) {
       ReactionCore.Log.debug(
         "######## Condition One #########: initialise the " + workflow +
         ":  " + defaultPackageWorkflows[0].template);
@@ -525,7 +518,7 @@ Meteor.methods({
 
       return Order.update({
         "_id": currentOrder._id,
-        "shipment._id": currentShipment._id
+        "shipping._id": currentShipment._id
       }, {
         $set: {
           "shipping.$.workflow.status": defaultPackageWorkflows[0].template
@@ -547,7 +540,7 @@ Meteor.methods({
 
       return Order.update({
         "_id": currentOrder._id,
-        "shipment._id": currentShipment._id
+        "shipping._id": currentShipment._id
       }, {
         $set: {
           "shipping.$.workflow.status": nextWorkflowStep.template
@@ -572,7 +565,7 @@ Meteor.methods({
 
       return Order.update({
         "_id": currentOrder._id,
-        "shipment._id": currentShipment._id
+        "shipping._id": currentShipment._id
       }, {
         $set: {
           "shipping.$.workflow.status": nextWorkflowStep.template

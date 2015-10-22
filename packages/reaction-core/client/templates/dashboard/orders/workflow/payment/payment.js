@@ -19,9 +19,11 @@ Template.coreProcessPayment.onCreated(() => {
  *
  */
 Template.coreProcessPayment.events({
-  "click .btn": function () {
-    Meteor.call("orders/capturePayments", this._id);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", this._id);
+  "click [data-event-action=capturePayment]": () => {
+    let template = Template.instance();
+
+    Meteor.call("orders/capturePayments", template.order._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", template.order._id);
   }
 });
 
@@ -29,5 +31,10 @@ Template.coreProcessPayment.helpers({
   order() {
     let template = Template.instance();
     return template.order;
+  },
+
+  paymentApproved() {
+    let template = Template.instance();
+    return template.order.billing[0].paymentMethod.status === "approved";
   }
 });
