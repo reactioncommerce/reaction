@@ -19,8 +19,15 @@ Template.registerHelper("reactionTemplate", function (options) {
     workflow: options.hash.workflow
   });
 
-  // potentially we can make the default a workflow collection
-  let layoutConfigCollection = layout.collection || "Cart";
+  let layoutConfigCollection;
+
+  if (layout) {
+    // potentially we can make the default a workflow collection
+    layoutConfigCollection = layout.collection || "Cart";
+  } else {
+    ReactionCore.Log.error("Shop Layout Undefined");
+    layoutConfigCollection = "Cart";
+  }
 
   // if we've got an id, we'll use it with the layout's collection
   if (Template.currentData()) {
