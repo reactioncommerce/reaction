@@ -278,7 +278,7 @@ Meteor.methods({
         try {
           Email.send({
             to: email,
-            from: currentUserName + " <" + shop.emails[0] + ">",
+            from: currentUserName + " <" + shop.emails[0].address + ">",
             subject: "You have been invited to join " + shop.name,
             html: SSR.render("shopMemberInvite", {
               homepage: Meteor.absoluteUrl(),
@@ -296,7 +296,7 @@ Meteor.methods({
         try {
           Email.send({
             to: email,
-            from: currentUserName + " <" + shop.emails[0] + ">",
+            from: currentUserName + " <" + shop.emails[0].address + ">",
             subject: "You have been invited to join the " + shop.name,
             html: SSR.render("shopMemberInvite", {
               homepage: Meteor.absoluteUrl(),
