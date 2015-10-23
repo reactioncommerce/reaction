@@ -66,8 +66,10 @@ _.extend(ReactionCore, {
     return cursor;
   },
   getCurrentShop: function (client) {
-    let cursor = this.getCurrentShopCursor(client);
-    return cursor.fetch()[0];
+    if (this.getCurrentShopCursor(client)) {
+      let cursor = this.getCurrentShopCursor(client);
+      return cursor.fetch()[0];
+    }
   },
   getShopId: function (client) {
     if (this.getCurrentShop(client)) {
@@ -96,6 +98,11 @@ _.extend(ReactionCore, {
 
     // use Roles.userIsInRole directly with publications
     let userId = checkUserId || this.userId || Meteor.userId();
+
+    // if we're checking permissions, we better have a userId!!
+    // if (!userId) {
+    //   return false;
+    // }
 
     // permissions can be either a string or an array
     // we'll force it into an array so we can add

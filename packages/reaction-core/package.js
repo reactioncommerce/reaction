@@ -58,7 +58,6 @@ Package.onUse(function (api) {
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("ongoworks:security@1.3.0");
 
-  api.use("dburles:factory@0.3.10");
   api.use("matb33:collection-hooks@0.8.1");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
@@ -120,7 +119,6 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
   api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
   api.addFiles("lib/css/jquery-ui.css", "client");
-  api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("lib/geocoder.js", ["server"]);
   api.addFiles("lib/transliteration.js", ["server"]);
 
@@ -196,13 +194,6 @@ Package.onUse(function (api) {
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js", "client");
-
-  api.addFiles("common/factories/faker.js");
-  api.addFiles("common/factories/users.js");
-  api.addFiles("common/factories/shops.js");
-  api.addFiles("common/factories/products.js");
-  api.addFiles("common/factories/cart.js");
-  api.addFiles("common/factories/orders.js");
 
   // publications
   api.addFiles("server/publications/sessions.js", "server");
@@ -434,9 +425,8 @@ Package.onUse(function (api) {
 
   // Exports
   api.export("ReactionCore");
-  api.export("getSlug");
   api.export("ReactionRegistry", "server");
-  api.export("faker", ["server"]); // for testing only?
+  api.export("getSlug");
 
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
@@ -445,18 +435,28 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.2");
   api.use("underscore");
+  api.use("random");
   api.use("dburles:factory@0.3.10");
-  api.use("velocity:html-reporter@0.9.0");
-  api.use("velocity:console-reporter@0.1.3");
-
+  api.use("sanjo:jasmine@0.20.2");
+  api.use("velocity:html-reporter@0.9.1");
+  api.use("velocity:console-reporter@0.1.4");
+  // reaction core
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:bootstrap-theme");
-
+  // reaction faker tools
+  api.addFiles("lib/faker.js", ["server"]);
+  api.addFiles("common/factories/faker.js");
+  api.addFiles("common/factories/users.js");
+  api.addFiles("common/factories/shops.js");
+  api.addFiles("common/factories/products.js");
+  api.addFiles("common/factories/cart.js");
+  api.addFiles("common/factories/orders.js");
+  // tests
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
   api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
+  api.export("faker", ["server"]);
 });
