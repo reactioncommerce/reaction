@@ -35,7 +35,7 @@ cd ~
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
 ./bin/clone-packages.sh
-meteor --settings settings/dev-settings.json
+meteor --settings settings/dev.settings.json
 ```
 
 This is our recommended practice, and ensure you are working with the default branches (development) for all the Reaction packages.
