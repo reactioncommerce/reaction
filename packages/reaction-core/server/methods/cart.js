@@ -310,6 +310,8 @@ Meteor.methods({
 
     if (order.shipping) {
       if (order.shipping.length > 0) {
+        order.shipping[0].paymentId = order.billing[0]._id;
+
         if (_.isArray(order.shipping[0].items) === false) {
           order.shipping[0].items = [];
         }

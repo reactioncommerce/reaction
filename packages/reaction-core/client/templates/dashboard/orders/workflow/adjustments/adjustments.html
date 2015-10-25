@@ -15,7 +15,7 @@
       <label class="form-control-label reason" for="">Shipping</label>
       <div class="input-group amount">
         <div class="input-group-addon">{{currencySymbol}}</div>
-        <input class="form-control amount" type="text" name="shipping_amount" value="{{money invoice.shipping}}">
+        <input class="form-control amount" type="text" name="shipping_amount" value="{{money invoice.shipping}}" disabled>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
       <label class="form-control-label reason" for="">Discount</label>
       <div class="input-group amount">
         <div class="input-group-addon">{{currencySymbol}}</div>
-        <input class="form-control amount" type="text" name="discount_amount" value="{{money invoice.discount}}">
+        <input class="form-control amount" type="text" name="discount_amount" value="{{money invoice.discounts}}">
       </div>
     </div>
     <hr>

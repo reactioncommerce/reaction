@@ -286,9 +286,9 @@ Router.map(function () {
     }
   });
 
-  return this.route("dashboard/pdf/orders", {
+  this.route("dashboard/pdf/orders", {
     controller: PrintController,
-    path: "dashboard/pdf/orders/:_id",
+    path: "dashboard/pdf/orders/:_id/",
     template: "completedPDFLayout",
     onBeforeAction() {
       this.layout("print");
@@ -299,9 +299,15 @@ Router.map(function () {
     },
     data: function () {
       if (this.ready()) {
-        return ReactionCore.Collections.Orders.findOne({
+        let query = {
           _id: this.params._id
-        });
+        };
+
+        if (this.params.query.shipment) {
+          query["shipping._id"] = this.params.query.shipment;
+        }
+
+        return ReactionCore.Collections.Orders.findOne(query);
       }
     }
   });

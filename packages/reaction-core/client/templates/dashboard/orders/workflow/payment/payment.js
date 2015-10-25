@@ -33,8 +33,23 @@ Template.coreProcessPayment.helpers({
     return template.order;
   },
 
+  totalAmount() {
+    let template = Template.instance();
+    return template.order.billing[0].paymentMethod.amount;
+  },
+
+  paymentPendingApproval() {
+    let template = Template.instance();
+    return template.order.billing[0].paymentMethod.status === "created";
+  },
+
   paymentApproved() {
     let template = Template.instance();
     return template.order.billing[0].paymentMethod.status === "approved";
+  },
+
+  paymentCaptured() {
+    let template = Template.instance();
+    return template.order.billing[0].paymentMethod.status === "completed";
   }
 });

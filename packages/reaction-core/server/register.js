@@ -136,7 +136,7 @@ ReactionCore.registerPackage({
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }, {
-    template: "coreOrderPacking",
+    template: "coreShipmentPacking",
     label: "Packing",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]

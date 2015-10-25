@@ -5,15 +5,19 @@ Template.coreShipmentPacking.onCreated(() => {
   template.orderDep = new Tracker.Dependency;
   template.showTrackingEditForm = ReactiveVar(false);
 
-  function getOrder(orderId) {
+  function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
-    return ReactionCore.Collections.Orders.findOne(orderId);
+    return ReactionCore.Collections.Orders.findOne({
+      "_id": orderId,
+      "shipping._id": shipmentId
+    });
   }
 
   Tracker.autorun(() => {
-    template.order = getOrder(currentData.orderId);
+    template.order = getOrder(currentData.orderId, currentData.fulfillment._id);
   });
 });
+
 
 
 /**
@@ -22,10 +26,9 @@ Template.coreShipmentPacking.onCreated(() => {
  */
 Template.coreShipmentPacking.events({
   "click [data-event-action=shipmentsPacked]": () => {
-    const currentData = Template.instance();
+    const template = Template.instance();
 
-    Meteor.call("orders/shipmentPacking", currentData.order);
-    // Meteor.call("workflow/pushOrderWorkflow", "coreOrderShipmentWorkflow", "coreShipmentPacking", this._id);
+    Meteor.call("orders/shipmentPacked", template.order, template.order.shipping[0], true);
   },
 
   "submit form[name=addTrackingForm]": (event, template) => {

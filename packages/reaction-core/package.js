@@ -225,6 +225,9 @@ Package.onUse(function (api) {
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
 
+  // Email Templates
+  api.addAssets("server/emailTemplates/orders/itemsShipped.html", "server");
+
   // client
   api.addFiles("client/subscriptions.js", "client");
   api.addFiles("client/helpers/layout.js", "client");

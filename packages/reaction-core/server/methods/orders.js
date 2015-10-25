@@ -32,24 +32,38 @@ Meteor.methods({
         "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
+
   /**
-   * orders/shipmentPacking
+   * orders/shipmentPacked
    *
-   * @summary trigger packing status
+   * @summary update packing status
    * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @param {Boolean} packed - packed status
    * @return {Object} return workflow result
    */
-  "orders/shipmentPacking": function (order) {
+  "orders/shipmentPacked": function (order, shipment, packed) {
     check(order, Object);
+    check(shipment, Object);
+    check(packed, Boolean);
     this.unblock();
 
     if (order) {
+      ReactionCore.Collections.Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.packed": packed
+        }
+      });
+
       return Meteor.call(
         "workflow/pushOrderShipmentWorkflow",
         "coreOrderShipmentWorkflow",
         "coreOrderPacking",
         order._id,
-        order.shipping[0]._id
+        shipment._id
       );
     }
   },
@@ -114,8 +128,103 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
+      let shipment = order.shipping[0];
+
+      // Attempt to sent email notification
+      Meteor.call("orders/sendShipmentNotification", order);
+
+      ReactionCore.Collections.Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.shipped": true
+        }
+      });
+
       return Meteor.call("workflow/pushOrderWorkflow",
         "coreOrderWorkflow", "coreShipmentShipped", order._id);
+    }
+  },
+  /**
+   * orders/shipmentShipped
+   *
+   * @summary trigger shipmentShipped status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return workflow result
+   */
+  "orders/sendShipmentNotification": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      let shop = ReactionCore.Collections.Shops.findOne({});
+      let shipment = order.shipping[0];
+
+      try {
+        if (shipment.shipped === false) {
+          ReactionCore.configureMailUrl();
+
+          // TODO: Make this mor easily configurable
+          SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+
+          Email.send({
+            to: order.email,
+            from: "shipping confitmation " + " <" + shop.emails[0].address + ">",
+            subject: "Your items have shipped from " + shop.name,
+            html: SSR.render("itemsShipped", {
+              homepage: Meteor.absoluteUrl(),
+              shop: shop,
+              // currentUserName: currentUserName,
+              // invitedUserName: name,
+              order: order,
+              shipment: shipment
+            })
+          });
+        }
+
+        return true;
+      } catch (_error) {
+        throw new Meteor.Error(403, "Unable to send shipment notification email.");
+      }
+
+
+      return false;
+    }
+  },
+
+  /**
+   * orders/sendNotification
+   *
+   * @summary trigger orderCompleted status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return this.orderCompleted result
+   */
+  "orders/sendNotification": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+      let shop = ReactionCore.Collections.Shops.findOne({});
+      let shipment = orders.shipping[0];
+
+      try {
+        Email.send({
+          to: email,
+          from: currentUserName + " <" + shop.emails[0].address + ">",
+          subject: "Your items have shipped from " + shop.name,
+          html: SSR.render("itemsShipped", {
+            homepage: Meteor.absoluteUrl(),
+            // shop: shop,
+            // currentUserName: currentUserName,
+            // invitedUserName: name,
+            items: shipment.items
+          })
+        });
+      } catch (_error) {
+        throw new Meteor.Error(403, "Unable to send invitation email.");
+      }
     }
   },
   /**
@@ -370,8 +479,8 @@ Meteor.methods({
               }, {
                 $set: {
                   // "billing.paymentMethod.$.transactionId": result.capture.id,
-                  "billing.paymentMethod.$.mode": "capture",
-                  "billing.paymentMethod.$.status": "completed"
+                  "billing.$.paymentMethod.mode": "capture",
+                  "billing.$.paymentMethod.status": "completed"
                 }
               });
             } else {

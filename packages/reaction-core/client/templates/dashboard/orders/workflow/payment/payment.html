@@ -1,10 +1,19 @@
  <template name="coreProcessPayment">
     <span class="">
 
+      <hr>
+
+      {{#if paymentPendingApproval}}
+        <i class="fa fa-exclamation-circle"></i> Payment not yet approved.
+      {{/if}}
+
       {{#if paymentApproved}}
+        <p>Final Sale Value: <strong>{{formatPrice totalAmount}}</strong></p>
         <button class="btn btn-success btn-block" data-event-action="capturePayment">Capture Payment</button>
-      {{else}}
-        Payment not yer approved
+      {{/if}}
+
+      {{#if paymentCaptured}}
+        A payment has been captured
       {{/if}}
     </span>
 </template>

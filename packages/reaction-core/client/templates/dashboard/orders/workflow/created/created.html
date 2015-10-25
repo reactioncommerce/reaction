@@ -25,11 +25,11 @@
         <button class="btn btn-success" data-i18n="coreOrderCreated.startProcessingOrder">Begin</button>
       </span>
     {{/if}}
+  {{/with}}
 
 
-    <a class="btn btn-default save-order-pdf" href="/dashboard/pdf/orders/{{_id}}" target="_blank" data-i18n="app.download">
+    <a class="btn btn-default save-order-pdf" href="/dashboard/pdf/orders/{{orderId}}?shipment={{fulfillment._id}}" target="_blank" data-i18n="app.download">
       Download Invoice
     </a>
-    {{/with}}
   </div>
 </template>

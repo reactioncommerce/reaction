@@ -50,6 +50,10 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
     decimal: true,
     optional: true
   },
+  currency: {
+    type: String,
+    optional: true
+  },
   transactions: {
     type: [Object],
     optional: true,
@@ -99,12 +103,7 @@ ReactionCore.Schemas.Payment = new SimpleSchema({
   _id: {
     type: String,
     label: "Payment Id",
-    autoValue: function () {
-      if (this.isUpdate && !this.isSet) {
-        return Random.id();
-      }
-      this.unset();
-    }
+    autoValue: ReactionCore.schemaIdAutoValue
   },
   address: {
     type: ReactionCore.Schemas.Address,

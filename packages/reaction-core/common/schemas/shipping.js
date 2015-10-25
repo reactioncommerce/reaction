@@ -181,6 +181,11 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
     label: "Shipment Id",
     autoValue: ReactionCore.schemaIdAutoValue
   },
+  paymentId: {
+    type: String,
+    label: "Payment Id",
+    optional: true
+  },
   address: {
     type: ReactionCore.Schemas.Address,
     optional: true
