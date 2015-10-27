@@ -66,8 +66,10 @@ _.extend(ReactionCore, {
     return cursor;
   },
   getCurrentShop: function (client) {
-    let cursor = this.getCurrentShopCursor(client);
-    return cursor.fetch()[0];
+    if (this.getCurrentShopCursor(client)) {
+      let cursor = this.getCurrentShopCursor(client);
+      return cursor.fetch()[0];
+    }
   },
   getShopId: function (client) {
     if (this.getCurrentShop(client)) {
@@ -108,12 +110,14 @@ _.extend(ReactionCore, {
     // if the user has admin, owner permissions we'll always check if those roles are enough
     permissions.push("admin", "owner");
     // check if userIs the Roles
-    if (Roles.userIsInRole(userId, permissions, shopId)) {
+    if (Roles.userIsInRole(userId, permissions, shopId) === true) {
+      ReactionCore.Log.debug("Permission granted.", userId, permissions, shopId);
       return true;
     } else if (Roles.userIsInRole(userId,
         permissions,
         Roles.GLOBAL_GROUP
-      )) {
+      ) === true) {
+      ReactionCore.Log.debug("Permission granted.", userId, permissions, shopId);
       return true;
     }
 

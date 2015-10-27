@@ -3,7 +3,7 @@
  * @summary define shop Factory
  */
 Factory.define("shop", ReactionCore.Collections.Shops, {
-  name: faker.company.companyName(),
+  name: faker.internet.domainName(),
   description: faker.company.catchPhrase(),
   keywords: faker.company.bsAdjective(),
   addressBook: [faker.reaction.address() ],
