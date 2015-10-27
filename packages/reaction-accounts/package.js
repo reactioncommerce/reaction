@@ -34,7 +34,7 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
-  api.use("reactioncommerce:core@0.9.2");
+  api.use("reactioncommerce:core@0.9.3");
 
   // Files
   api.addFiles("common/schemas/accounts.js");
@@ -42,7 +42,6 @@ Package.onUse(function (api) {
   // accounts
   api.addFiles("server/accounts.js", "server");
   api.addFiles("server/policy.js", "server");
-  api.addFiles("common/factories/accounts.js");
   api.addFiles("server/publications/accounts.js", "server");
   api.addFiles("server/methods/serviceConfiguration.js", "server");
 
@@ -131,11 +130,12 @@ Package.onTest(function (api) {
   api.use("jquery");
   api.use("underscore");
   api.use("dburles:factory@0.3.10");
-  api.use("velocity:html-reporter@0.9.0");
-  api.use("velocity:console-reporter@0.1.3");
-  api.use("reactioncommerce:core@0.9.0");
+  api.use("velocity:html-reporter@0.9.1");
+  api.use("velocity:console-reporter@0.1.4");
+  api.use("reactioncommerce:core@0.9.3");
   api.use("reactioncommerce:reaction-accounts");
 
+  api.addFiles("common/factories/accounts.js");
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
   api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
