@@ -83,6 +83,8 @@ Meteor.methods({
 
     let total =
       order.billing[0].invoice.subtotal
+      + order.billing[0].invoice.shipping
+      + order.billing[0].invoice.taxes
       - Math.abs(discount);
 
     return ReactionCore.Collections.Orders.update(order._id, {

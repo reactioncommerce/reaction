@@ -1,10 +1,10 @@
 <template name="orders">
   <div class="container-fluid-sm">
 
-    {{#each orders}}
+    {{#each order in orders}}
 
-    <div class="panel panel-default order-panel">
-
+    <div class="panel order-panel {{activeClassname order._id}}">
+      {{#with order}}
       <div class="panel-heading">
 
         <div class="order-details">
@@ -31,6 +31,7 @@
       <div class="order-panel-items">
         {{> ordersListItems}}
       </div>
+      {{/with}}
 
     </div>
 

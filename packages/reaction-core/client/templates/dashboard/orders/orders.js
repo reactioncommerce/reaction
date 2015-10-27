@@ -1,3 +1,19 @@
+Template.orders.onCreated(() => {
+  let template = Template.instance();
+  let currentData = Template.currentData();
+
+  template.orderDep = new Tracker.Dependency;
+
+  function getOrder(orderId) {
+    template.orderDep.depend();
+    return ReactionCore.Collections.Orders.find({});
+  }
+
+  Tracker.autorun(() => {
+    template.orders = getOrder();
+  });
+});
+
 /**
  * orders helpers
  *
@@ -6,7 +22,14 @@
 Template.orders.helpers({
 
   orders() {
-    return ReactionCore.Collections.Orders.find({});
+    return Template.instance().orders; //ReactionCore.Collections.Orders.find({});
+  },
+
+  activeClassname(orderId) {
+    if (Router.current().params._id === orderId) {
+      return "panel-info";
+    }
+    return "panel-default";
   },
 
   settings: function () {
@@ -59,11 +82,15 @@ Template.orderViewButton.events({
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
     }
 
-    ReactionCore.showActionView({
-      label: "Order Details",
-      data: this,
-      template: "coreOrderWorkflow"
+    Router.go("dashboard/orders", {
+      _id: this._id
     });
+
+    // ReactionCore.showActionView({
+    //   label: "Order Details",
+    //   data: this,
+    //   template: "coreOrderWorkflow"
+    // });
 
   }
 });
