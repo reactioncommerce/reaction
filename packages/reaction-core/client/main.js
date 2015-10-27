@@ -37,6 +37,12 @@ _.extend(ReactionCore, {
     let shopId = group || this.getShopId();
     let permissions = [];
 
+    // if we're checking permissions, we should have a userId!!
+    // the assumption is that a null user doesn't have permissions
+    // for something that with permissions
+    if (!userId) {
+      return false;
+    }
     // permissions can be either a string or an array
     // we'll force it into an array so we can add
     // admin roles

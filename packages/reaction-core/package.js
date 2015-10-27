@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.3",
+  version: "0.9.4",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -12,7 +12,7 @@ Npm.depends({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.2.1");
 
   // meteor base packages
   api.use("standard-minifiers");
@@ -72,7 +72,7 @@ Package.onUse(function (api) {
   api.use("cfs:filesystem@0.1.2");
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
-  api.use("meteorhacks:ssr@2.1.2");
+  api.use("meteorhacks:ssr@2.2.0");
 
   // imply exports package vars
   api.imply("less");
@@ -441,9 +441,12 @@ Package.onTest(function (api) {
   api.use("sanjo:jasmine@0.20.2");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
+  api.use("accounts-base");
+  api.use("accounts-password");
   // reaction core
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:bootstrap-theme");
+
   // reaction faker tools
   api.addFiles("lib/faker.js", ["server"]);
   api.addFiles("common/factories/faker.js");
@@ -452,7 +455,8 @@ Package.onTest(function (api) {
   api.addFiles("common/factories/products.js");
   api.addFiles("common/factories/cart.js");
   api.addFiles("common/factories/orders.js");
-  // tests
+
+  // server integration tests
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");

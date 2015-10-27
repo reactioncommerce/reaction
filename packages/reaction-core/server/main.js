@@ -99,11 +99,6 @@ _.extend(ReactionCore, {
     // use Roles.userIsInRole directly with publications
     let userId = checkUserId || this.userId || Meteor.userId();
 
-    // if we're checking permissions, we better have a userId!!
-    // if (!userId) {
-    //   return false;
-    // }
-
     // permissions can be either a string or an array
     // we'll force it into an array so we can add
     // admin roles
@@ -115,12 +110,14 @@ _.extend(ReactionCore, {
     // if the user has admin, owner permissions we'll always check if those roles are enough
     permissions.push("admin", "owner");
     // check if userIs the Roles
-    if (Roles.userIsInRole(userId, permissions, shopId)) {
+    if (Roles.userIsInRole(userId, permissions, shopId) === true) {
+      ReactionCore.Log.debug("Permission granted.", userId, permissions, shopId);
       return true;
     } else if (Roles.userIsInRole(userId,
         permissions,
         Roles.GLOBAL_GROUP
-      )) {
+      ) === true) {
+      ReactionCore.Log.debug("Permission granted.", userId, permissions, shopId);
       return true;
     }
 
