@@ -228,7 +228,8 @@ Meteor.methods({
           shopId: product.shopId,
           productId: productId,
           quantity: quantity,
-          variants: variantData
+          variants: variantData,
+          type: product.type
         }
       }
     }, function (error) {
