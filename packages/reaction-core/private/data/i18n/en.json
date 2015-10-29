@@ -109,7 +109,16 @@
                 "cartDrawerItems": {
                     "left": "left"
                 },
-                "orderShipment": {
+                "order": {
+                  "created": "Created",
+                  "reference": "Reference",
+                  "invoice": "Invoice"
+                },
+                "orderShipping": {
+                    "shipTo": "Ship To",
+                    "shipped": "Shipped",
+                    "notShipped": "Not Yet Shipped",
+                    "noTracking": "No Tracking",
                     "tracking": "Tracking",
                     "addtracking": "Add Tracking",
                     "shipmentEmpty": "This shipment has no items",

@@ -3,41 +3,40 @@
 
     {{#with order}}
       {{#each shipment in shipping}}
-      <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
-        <div class="panel-heading">
-          <div class="panel-title">
+        <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
+          <div class="panel-heading">
+            <div class="panel-title">
 
-            <a
-              aria-controls="{{label}}"
-              aria-expanded="true"
-              data-i18n="app.order.fullfilment"
-              data-parent="#core-order-workflow-accordion"
-              data-toggle="collapse"
-              href="#{{template}}-panel"
-              role="button">Fulfillment {{fulfillmentNumber @index}}</a>
+              <a
+                aria-controls="{{label}}"
+                aria-expanded="true"
+                data-i18n="app.order.fullfilment"
+                data-parent="#core-order-workflow-accordion"
+                data-toggle="collapse"
+                href="#{{template}}-panel"
+                role="button">Fulfillment {{fulfillmentNumber @index}}</a>
 
-            {{!--
-            <span class="pull-right">
-              {{#if isCompleted}}
-              <i class="fa fa-check-circle-o 2x"></i>
-              {{else}}
-               <i class="fa fa-exclamation 2x"></i>
-              {{/if}}
-            </span>--}}
+              {{!--
+              <span class="pull-right">
+                {{#if isCompleted}}
+                <i class="fa fa-check-circle-o 2x"></i>
+                {{else}}
+                 <i class="fa fa-exclamation 2x"></i>
+                {{/if}}
+              </span>--}}
+            </div>
           </div>
-        </div>
 
-          <div class="list-group">
-
-            {{#each reactionTemplate workflow="coreOrderShipmentWorkflow"}}
-
-              <div aria-labelledby="{{template}}" class="list-group-item" id="{{template}}-panel" role="tabpanel">
-                <h3 class="list-group-title" data-i18n="{{template}}.{{label}}">{{label}}</h3>
+          {{#each reactionTemplate workflow="coreOrderShipmentWorkflow"}}
+            <div aria-labelledby="{{template}}" class="panel panel-default" id="{{template}}-panel" role="tabpanel">
+              <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="{{template}}.{{label}}"><strong>{{label}}</strong></h3>
+              </div>
+              <div class="panel-body">
                 {{> Template.dynamic template=template data=(orderFulfillmentData ../_id shipment) }}
               </div>
-
-            {{/each}}
-          </div>
+            </div>
+          {{/each}}
         </div>
       {{/each}}
     {{/with}}

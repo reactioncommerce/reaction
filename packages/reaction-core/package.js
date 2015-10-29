@@ -354,8 +354,8 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/shipped/shipped.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipping/shipping.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shipping/shipping.js", "client");
 
   api.addFiles("client/templates/dashboard/orders/workflow/shipments/shipments.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/shipments/shipments.js", "client");

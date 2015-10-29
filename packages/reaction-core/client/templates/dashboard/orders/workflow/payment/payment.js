@@ -40,7 +40,8 @@ Template.coreProcessPayment.helpers({
 
   paymentPendingApproval() {
     let template = Template.instance();
-    return template.order.billing[0].paymentMethod.status === "created";
+    let status = template.order.billing[0].paymentMethod.status;
+    return status === "created" || status === "error";
   },
 
   paymentApproved() {

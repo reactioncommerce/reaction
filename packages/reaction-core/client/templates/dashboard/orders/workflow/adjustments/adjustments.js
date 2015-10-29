@@ -35,6 +35,21 @@ Template.coreOrderAdjustments.events({
         // Show error
       }
     });
+  },
+
+  "click [data-event-action=makeAdjustments]": (event, template) => {
+    event.preventDefault();
+
+    Meteor.call("orders/makeAdjustmentsToInvoice", template.order);
+  },
+
+  "click [data-event-action=capturePayment]": (event) => {
+    event.preventDefault();
+
+    let template = Template.instance();
+
+    Meteor.call("orders/capturePayments", template.order._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", template.order._id);
   }
 });
 
@@ -49,8 +64,6 @@ Template.coreOrderAdjustments.helpers({
    * @return {Number} current discount amount
    */
   invoice() {
-    event.preventDefault();
-
     let template = Template.instance();
     let order = template.order;
 
@@ -74,23 +87,25 @@ Template.coreOrderAdjustments.helpers({
       return "disabled";
     }
 
-    return false;
+    return "";
   },
 
   paymentPendingApproval() {
     let template = Template.instance();
-    return template.order.billing[0].paymentMethod.status === "created";
+    let status = template.order.billing[0].paymentMethod.status;
+
+    return status === "created" || status === "adjustments" || status === "error";
   },
 
-  invloceLocked() {
+  canMakeAdjustments() {
     let template = Template.instance();
     let status = template.order.billing[0].paymentMethod.status;
 
     if (status === "approved" || status === "completed") {
-      return true;
+      return false;
     }
 
-    return false;
+    return true;
   },
 
   paymentApproved() {

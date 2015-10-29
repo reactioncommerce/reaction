@@ -1,7 +1,6 @@
 <template name="coreOrderAdjustments">
 
   <form class="">
-
     <div class="order-items">
       {{#each item in items}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
@@ -18,12 +17,12 @@
             </div>
 
             <div class="order-detail-quantity">
-              <span class="badge badge-info">{{item.quantity}}</span>
+              <span class="badge badge-info">{{item.quantity}}</span> -
             </div>
 
           </div>
 
-          {{#if invoiceLocked}}
+          {{#if canMakeAdjustments}}
           <div class="input-group amount order-detail-price">
             <div class="input-group-addon">{{currencySymbol}}</div>
             <input class="form-control amount" type="text" name="shipping_amount" value="{{money item.variants.price}}" disabled>
@@ -42,7 +41,7 @@
     </div>
 
     <hr>
-    {{#if enabled}}
+    {{#if canMakeAdjustments}}
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="">Sub total</label>
         <div class="input-group amount">
@@ -115,18 +114,28 @@
 
     {{/if}}
 
-    {{#if paymentPendingApproval}}
-      <button class="btn btn-info btn-block" type="submit" data-event-action="approveInvoice">Approve</button>
-    {{/if}}
+    <div class="flex">
 
-    {{#if paymentApproved}}
-      <button class="btn btn-link" type="button" data-event-action="makeAdjustments">Make Adjustments</button>
-      <button class="btn btn-success" type="button" data-event-action="capturePayment">Capture Payment</button>
-    {{/if}}
+      {{#if paymentPendingApproval}}
+        <button class="btn btn-info btn-block" type="submit" data-event-action="approveInvoice">Approve</button>
+      {{/if}}
 
-    {{#if paymentCaptured}}
-      A payment has been captured. <button class="btn btn-link" type="button" data-event-action="makeAdjustments">Make adjustments</button>
-    {{/if}}
+      {{#if paymentApproved}}
+          <a
+            class="btn btn-link"
+            href="/dashboard/pdf/orders/{{orderId}}?shipment={{fulfillment._id}}"
+            target="_blank"
+            data-i18n="app.download">
+            Print
+          </a>
+          <button class="btn btn-link flex-item-fill" type="button" data-event-action="makeAdjustments">Make Adjustments</button>
+          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">Capture Payment</button>
+      {{/if}}
+
+      {{#if paymentCaptured}}
+        Payment has been captured.
+      {{/if}}
+    </div>
 
   </form>
 </template>

@@ -60,6 +60,8 @@ Template.orders.helpers({
 });
 
 Template.orders.events({
+
+
   'click .reactive-table tbody tr': function (event) {
     if (this.workflow.status === "new") {
       this.workflow.status = "coreOrderCreated";
@@ -72,6 +74,29 @@ Template.orders.events({
       template: "coreOrderWorkflow"
     });
 
+  }
+});
+
+
+Template.ordersListItem.helpers({
+  activeClassname(orderId) {
+    if (Router.current().params._id === orderId) {
+      return "panel-info";
+    }
+    return "panel-default";
+  }
+});
+
+Template.ordersListItem.events({
+  "click [data-event-action=selectOrder]": function (event) {
+    if (this.workflow.status === "new") {
+      this.workflow.status = "coreOrderCreated";
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+    }
+
+    Router.go("dashboard/orders", {
+      _id: this._id
+    });
   }
 });
 

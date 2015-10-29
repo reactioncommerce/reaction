@@ -1,35 +1,23 @@
 <template name="coreOrderCreated">
   <div class="core-order-created">
-    {{#with order}}
-      {{> orderDetail}}
+
+    <strong data-i18n="orderShipping.shipTo">Ship to</strong>
+    {{> orderDetail order}}
 
     <div class="core-order-created">
-      <span>
-        {{orderAge}} {{dateFormat createdAt format="MMM D"}}
-      </span>
+      <strong  data-i18n="order.created">Created</strong> {{timeAgo order.createdAt}} - {{dateFormat order.createdAt format="MMM D, YYYY"}}
     </div>
-    <div>
-      <p>
-        <span data-i18n="orderDetail.reference">Reference</span>
-        <span>{{_id}}</span>
-      </p>
-      {{#if shipmentTracking}}
-      <p>
-        <span data-i18n="orderDetail.tracking">Tracking</span>
-        <a href="#">{{shipmentTracking}}</a>
-      </p>
-      {{/if}}
+
+    <div class="core-order-reference">
+      <strong data-i18n="order.reference">Reference</strong>
+      <span>{{order._id}}</span>
     </div>
-    {{#if condition workflow.status 'eq' 'coreOrderCreated' }}
-      <span class="pull-right">
-        <button class="btn btn-success" data-i18n="coreOrderCreated.startProcessingOrder">Begin</button>
-      </span>
-    {{/if}}
-  {{/with}}
 
+    <div class="">
+      <strong data-i18n="orderShipping.tracking">Tracking</strong>
+      <span>{{tracking}}</span> -
+      <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
+    </div>
 
-    <a class="btn btn-default save-order-pdf" href="/dashboard/pdf/orders/{{orderId}}?shipment={{fulfillment._id}}" target="_blank" data-i18n="app.download">
-      Download Invoice
-    </a>
   </div>
 </template>

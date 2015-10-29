@@ -1,44 +1,43 @@
 <template name="orders">
   <div class="container-fluid-sm">
-
     {{#each order in orders}}
+      {{> ordersListItem order}}
+    {{/each}}
+  </div>
+</template>
 
-    <div class="panel order-panel {{activeClassname order._id}}">
-      {{#with order}}
-      <div class="panel-heading">
+<template name="ordersListItem">
+  <div class="panel order-panel {{activeClassname _id}}" data-event-action="selectOrder">
 
-        <div class="order-details">
-          <div class="order-detail-item address">
-            {{> orderDetail}}
+    <div class="panel-heading">
 
-          </div>
+      <div class="order-details">
+        <div class="order-detail-item address">
+          {{> orderDetail}}
 
-          <div class="order-detail-item status">
-            {{> orderStatusDetail}}
-
-          </div>
-
-          <div class="order-detail-item summary">
-            {{> ordersListSummary}}
-          </div>
         </div>
 
-        <div class="order-controls">
-          {{> orderViewButton}}
+        <div class="order-detail-item status">
+          {{> orderStatusDetail}}
+
+        </div>
+
+        <div class="order-detail-item summary">
+          {{> ordersListSummary}}
         </div>
       </div>
-
-      <div class="order-panel-items">
-        {{> ordersListItems}}
-      </div>
-      {{/with}}
 
     </div>
 
-    {{/each}}
+    <div class="order-panel-items">
+      {{> ordersListItems}}
+    </div>
+
 
   </div>
+
 </template>
+
 
 <template name="orderStatusDetail">
   <div class="col-xs-8">

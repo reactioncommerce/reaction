@@ -4,13 +4,16 @@ Template.coreOrderCreated.onCreated(() => {
 
   template.orderDep = new Tracker.Dependency;
 
-  function getOrder(orderId) {
+  function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
-    return ReactionCore.Collections.Orders.findOne(orderId);
+    return ReactionCore.Collections.Orders.findOne({
+      "_id": orderId,
+      "shipping._id": shipmentId
+    });
   }
 
   Tracker.autorun(() => {
-    template.order = getOrder(currentData.orderId);
+    template.order = getOrder(currentData.orderId, currentData.fulfillment._id);
   });
 });
 
@@ -45,5 +48,32 @@ Template.coreOrderCreated.helpers({
   order() {
     let template = Template.instance();
     return template.order;
+  },
+  shipment() {
+    return Template.instance().order.shipping[0];
+  },
+  tracking() {
+    let shipment = Template.instance().order.shipping[0];
+    if (shipment.tracking) {
+      return shipment.tracking;
+    }
+
+    return i18n.t("orderShipping.noTracking");
+  },
+  shipmentStatus() {
+    let shipment = Template.instance().order.shipping[0];
+    if (shipment.shipped) {
+      return {
+        shipped: true,
+        status: "success",
+        label: i18n.t("orderShipping.shipped")
+      }
+    }
+
+    return {
+      shipped: false,
+      status: "info",
+      label: i18n.t("orderShipping.notShipped")
+    }
   }
 });
