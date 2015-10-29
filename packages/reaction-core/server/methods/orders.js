@@ -32,22 +32,90 @@ Meteor.methods({
         "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
+
   /**
-   * orders/shipmentPacking
+   * orders/shipmentPacked
    *
-   * @summary trigger packing status
+   * @summary update packing status
    * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @param {Boolean} packed - packed status
    * @return {Object} return workflow result
    */
-  "orders/shipmentPacking": function (order) {
+  "orders/shipmentPacked": function (order, shipment, packed) {
     check(order, Object);
+    check(shipment, Object);
+    check(packed, Boolean);
     this.unblock();
 
     if (order) {
-      return Meteor.call("workflow/pushOrderWorkflow",
-        "coreOrderWorkflow", "coreShipmentPacking", order._id);
+      ReactionCore.Collections.Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.packed": packed
+        }
+      });
+
+      return Meteor.call(
+        "workflow/pushOrderShipmentWorkflow",
+        "coreOrderShipmentWorkflow",
+        "coreOrderPacking",
+        order._id,
+        shipment._id
+      );
     }
   },
+
+  /**
+   * orders/makeAdjustmentsToInvoice
+   *
+   * @summary Update the status of an invoice to allow adjustments to be made
+   * @param {Object} order - order object
+   * @return {Object} Mongo update
+   */
+  "orders/makeAdjustmentsToInvoice": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    return ReactionCore.Collections.Orders.update(order._id, {
+      $set: {
+        "billing.0.paymentMethod.status": "adjustments"
+      }
+    });
+  },
+
+  /**
+   * orders/approvePayment
+   *
+   * @summary Approve payment and apply any adjustments
+   * @param {Object} order - order object
+   * @param {Number} discount - Amount of the discount, as a positive number
+   * @return {Object} return this.processPayment result
+   */
+  "orders/approvePayment": function (order, discount) {
+    check(order, Object);
+    check(discount, Number);
+    this.unblock();
+
+    let total =
+      order.billing[0].invoice.subtotal
+      + order.billing[0].invoice.shipping
+      + order.billing[0].invoice.taxes
+      - Math.abs(discount);
+
+    return ReactionCore.Collections.Orders.update(order._id, {
+      $set: {
+        "billing.0.paymentMethod.amount": total,
+        "billing.0.paymentMethod.status": "approved",
+        "billing.0.paymentMethod.mode": "capture",
+        "billing.0.invoice.discounts": discount,
+        "billing.0.invoice.total": total
+      }
+    });
+  },
+
   /**
    * orders/processPayment
    *
@@ -81,8 +149,103 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
+      let shipment = order.shipping[0];
+
+      // Attempt to sent email notification
+      Meteor.call("orders/sendShipmentNotification", order);
+
+      ReactionCore.Collections.Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.shipped": true
+        }
+      });
+
       return Meteor.call("workflow/pushOrderWorkflow",
         "coreOrderWorkflow", "coreShipmentShipped", order._id);
+    }
+  },
+  /**
+   * orders/shipmentShipped
+   *
+   * @summary trigger shipmentShipped status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return workflow result
+   */
+  "orders/sendShipmentNotification": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      let shop = ReactionCore.Collections.Shops.findOne({});
+      let shipment = order.shipping[0];
+
+      try {
+        if (shipment.shipped === false) {
+          ReactionCore.configureMailUrl();
+
+          // TODO: Make this mor easily configurable
+          SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+
+          Email.send({
+            to: order.email,
+            from: "shipping confitmation " + " <" + shop.emails[0].address + ">",
+            subject: "Your items have shipped from " + shop.name,
+            html: SSR.render("itemsShipped", {
+              homepage: Meteor.absoluteUrl(),
+              shop: shop,
+              // currentUserName: currentUserName,
+              // invitedUserName: name,
+              order: order,
+              shipment: shipment
+            })
+          });
+        }
+
+        return true;
+      } catch (_error) {
+        throw new Meteor.Error(403, "Unable to send shipment notification email.");
+      }
+
+
+      return false;
+    }
+  },
+
+  /**
+   * orders/sendNotification
+   *
+   * @summary trigger orderCompleted status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return this.orderCompleted result
+   */
+  "orders/sendNotification": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+      let shop = ReactionCore.Collections.Shops.findOne({});
+      let shipment = orders.shipping[0];
+
+      try {
+        Email.send({
+          to: email,
+          from: currentUserName + " <" + shop.emails[0].address + ">",
+          subject: "Your items have shipped from " + shop.name,
+          html: SSR.render("itemsShipped", {
+            homepage: Meteor.absoluteUrl(),
+            // shop: shop,
+            // currentUserName: currentUserName,
+            // invitedUserName: name,
+            items: shipment.items
+          })
+        });
+      } catch (_error) {
+        throw new Meteor.Error(403, "Unable to send invitation email.");
+      }
     }
   },
   /**
@@ -101,23 +264,6 @@ Meteor.methods({
         "coreOrderWorkflow", "coreOrderCompleted", order._id);
       return this.orderCompleted(order);
     }
-  },
-  /**
-   * orders/addTracking
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} tracking - tracking id
-   * @return {String} returns order update result
-   */
-  "orders/addTracking": function (orderId, tracking) {
-    check(orderId, String);
-    check(tracking, String);
-    return ReactionCore.Collections.Orders.update(orderId, {
-      $addToSet: {
-        "shipping.shipmentMethod.tracking": tracking
-      }
-    });
   },
 
   /**
@@ -153,19 +299,19 @@ Meteor.methods({
    * orders/updateShipmentTracking
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} shipmentId - shipmentId
-   * @param {String} tracking - add tracking to orderId
+   * @param {Object} order - An Order object
+   * @param {Object} shipment - A Shipment object
+   * @param {String} tracking - tracking id
    * @return {String} returns order update result
    */
-  "orders/updateShipmentTracking": function (orderId, shipmentId, tracking) {
-    check(orderId, String);
-    check(shipmentId, String);
+  "orders/updateShipmentTracking": function (order, shipment, tracking) {
+    check(order, Object);
+    check(shipment, Object);
     check(tracking, String);
 
     return ReactionCore.Collections.Orders.update({
-      "_id": orderId,
-      "shipping._id": shipmentId
+      "_id": order._id,
+      "shipping._id": shipment._id
     }, {
       $set: {
         [`shipping.$.tracking`]: tracking
@@ -335,31 +481,42 @@ Meteor.methods({
     let order = ReactionCore.Collections.Orders.findOne(orderId);
 
     // process order..payment.paymentMethod
-    _.each(order.billing.paymentMethod, function (paymentMethod) {
-      if (paymentMethod.mode === "authorize" && paymentMethod.status ===
-        "approved" && paymentMethod.processor) {
-        Meteor[paymentMethod.processor].capture(paymentMethod.transactionId,
-          paymentMethod.amount,
-          function (error, result) {
-            let transactionId;
+    _.each(order.billing, function (billing) {
+      let paymentMethod = billing.paymentMethod;
 
-            if (result.capture) {
-              transactionId = paymentMethod.transactionId;
+      if (paymentMethod.mode === "capture" && paymentMethod.status === "approved" && paymentMethod.processor) {
+        // Grab the amount from the shipment, otherwise use the original amount
+
+        Meteor[paymentMethod.processor].capture(paymentMethod.transactionId, paymentMethod.amount,
+          function (error, result) {
+            let transactionId = paymentMethod.transactionId;
+
+            if (result.saved) {
               ReactionCore.Collections.Orders.update({
                 "_id": orderId,
                 "billing.paymentMethod.transactionId": transactionId
               }, {
                 $set: {
-                  "payment.paymentMethod.$.transactionId": result
-                    .capture.id,
-                  "billing.paymentMethod.$.mode": "capture",
-                  "billing.paymentMethod.$.status": "completed"
+                  "billing.$.paymentMethod.mode": "capture",
+                  "billing.$.paymentMethod.status": "completed"
                 }
               });
             } else {
-              ReactionCore.Log.warn(
-                "Failed to capture transaction.", order,
-                paymentMethod.transactionId);
+              ReactionCore.Log.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
+
+              ReactionCore.Collections.Orders.update({
+                "_id": orderId,
+                "billing.paymentMethod.transactionId": transactionId
+              }, {
+                $set: {
+                  "billing.$.paymentMethod.mode": "capture",
+                  "billing.$.paymentMethod.status": "error"
+                },
+                $push: {
+                  "billing.$.paymentMethod.transactions": result
+                }
+              });
+
               throw new Meteor.Error(
                 "Failed to capture transaction");
             }

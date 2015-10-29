@@ -1,3 +1,19 @@
+Template.orders.onCreated(() => {
+  let template = Template.instance();
+  let currentData = Template.currentData();
+
+  template.orderDep = new Tracker.Dependency;
+
+  function getOrder(orderId) {
+    template.orderDep.depend();
+    return ReactionCore.Collections.Orders.find({});
+  }
+
+  Tracker.autorun(() => {
+    template.orders = getOrder();
+  });
+});
+
 /**
  * orders helpers
  *
@@ -6,7 +22,14 @@
 Template.orders.helpers({
 
   orders() {
-    return ReactionCore.Collections.Orders.find({});
+    return Template.instance().orders; //ReactionCore.Collections.Orders.find({});
+  },
+
+  activeClassname(orderId) {
+    if (Router.current().params._id === orderId) {
+      return "panel-info";
+    }
+    return "panel-default";
   },
 
   settings: function () {
@@ -19,10 +42,10 @@ Template.orders.helpers({
       showFilter: false,
       showNavigation: true,
       fields: [
-          { key: 'userId', label: 'User', tmpl: Template.orderDetail },
-          { key: 'items', label: 'Items', tmpl: Template.ordersListItems},
-          { key: 'workflow.status', label: 'Status', tmpl: Template.orderStatusDetail },
-          { key: 'invoices', label: 'Summary', tmpl: Template.ordersListSummary}
+          { key: "userId", label: "User", tmpl: Template.orderDetail },
+          { key: "items", label: "Items", tmpl: Template.ordersListItems},
+          { key: "workflow.status", label: "Status", tmpl: Template.orderStatusDetail },
+          { key: "invoices", label: "Summary", tmpl: Template.ordersListSummary}
       ]
     };
   },
@@ -37,7 +60,9 @@ Template.orders.helpers({
 });
 
 Template.orders.events({
-  'click .reactive-table tbody tr': function (event) {
+
+
+  "click .reactive-table tbody tr": function (event) {
     if (this.workflow.status === "new") {
       this.workflow.status = "coreOrderCreated";
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
@@ -48,22 +73,30 @@ Template.orders.events({
       data: this,
       template: "coreOrderWorkflow"
     });
-
   }
 });
 
-Template.orderViewButton.events({
-  'click button': function (event) {
+
+Template.ordersListItem.helpers({
+  activeClassname(orderId) {
+    if (Router.current().params._id === orderId) {
+      return "panel-info";
+    }
+    return "panel-default";
+  }
+});
+
+Template.ordersListItem.events({
+  "click [data-event-action=selectOrder]": function (event) {
+    event.preventDefault();
+
     if (this.workflow.status === "new") {
       this.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderSummary", this._id);
     }
 
-    ReactionCore.showActionView({
-      label: "Order Details",
-      data: this,
-      template: "coreOrderWorkflow"
+    Router.go("dashboard/orders", {
+      _id: this._id
     });
-
   }
 });

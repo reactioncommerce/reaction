@@ -225,3 +225,20 @@ Template.registerHelper("formatPrice", function (currentPrice) {
   }
   return price;
 });
+
+ReactionCore.Currency = {};
+
+ReactionCore.Currency.formatNumber = function (currentPrice) {
+  let price = currentPrice;
+  let format = _.extend({}, ReactionCore.Locale.currency, {format: "%v"});
+
+  try {
+    price = currentPrice * ReactionCore.Locale.exchangeRate.Rate;
+  } catch (error) {
+    ReactionCore.Log.debug("currency error, fallback to shop currency");
+  }
+
+  price = accounting.formatMoney(price, format);
+
+  return price;
+};

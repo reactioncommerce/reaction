@@ -119,33 +119,31 @@ ReactionCore.registerPackage({
     position: "5"
   }, {
     template: "coreOrderCreated",
-    label: "Created",
+    label: "Order Summary",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
-  }, {
-    template: "coreOrderShipments",
-    label: "Shipments",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreOrderAdjustments",
-    label: "Adjustments",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreProcessPayment",
-    label: "Payments",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
-    template: "coreShipmentShipped",
-    label: "Shipped",
-    workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
-  }, {
+  },
+  {
     template: "coreOrderCompleted",
-    label: "Completed",
+    label: "Order Completed",
     workflow: "coreOrderWorkflow",
+    audience: ["dashboard/orders"]
+  },
+  // Standard Order Fulfillment with shipping
+  {
+    template: "coreOrderShippingSummary",
+    label: "Summary",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreOrderShippingInvoice",
+    label: "Invoice",
+    workflow: "coreOrderShipmentWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
+    template: "coreOrderShippingTracking",
+    label: "Shipment Tracking",
+    workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
   }]
 });

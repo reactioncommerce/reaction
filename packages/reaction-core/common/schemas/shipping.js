@@ -181,6 +181,11 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
     label: "Shipment Id",
     autoValue: ReactionCore.schemaIdAutoValue
   },
+  paymentId: {
+    type: String,
+    label: "Payment Id",
+    optional: true
+  },
   address: {
     type: ReactionCore.Schemas.Address,
     optional: true
@@ -208,6 +213,16 @@ ReactionCore.Schemas.Shipment = new SimpleSchema({
   workflow: {
     type: ReactionCore.Schemas.Workflow,
     optional: true
+  },
+  packed: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
+  shipped: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
   },
   invoice: {
     type: ReactionCore.Schemas.Invoice,

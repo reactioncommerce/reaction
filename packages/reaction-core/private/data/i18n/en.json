@@ -109,6 +109,22 @@
                 "cartDrawerItems": {
                     "left": "left"
                 },
+                "order": {
+                  "created": "Created",
+                  "reference": "Reference",
+                  "invoice": "Invoice",
+                  "ordersNotFound": "No Orders Found"
+                },
+                "orderShipping": {
+                    "shipTo": "Ship To",
+                    "shipped": "Shipped",
+                    "notShipped": "Not Yet Shipped",
+                    "noTracking": "No Tracking",
+                    "tracking": "Tracking",
+                    "addtracking": "Add Tracking",
+                    "shipmentEmpty": "This shipment has no items",
+                    "shipmentPacked": "All Items Packed"
+                },
                 "cartCompleted": {
                     "thankYou": "Thank you!",
                     "itemsFrom": "item(s) from",

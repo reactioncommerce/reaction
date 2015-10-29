@@ -53,28 +53,36 @@
     </div>
   </header>
   <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-xs-6">
-        <h2 style='margin-top:1em'>Ship To</h2>
-        {{#with shipping.address}}
-          <strong><div>{{fullName}}</div></strong>
-          <div>{{address1}}</div>
-          <div>{{#if address2}}{{address2}},{{/if}}</div>
-          <div>{{city}}, {{region}} {{postal}} {{country}}</div>
-          <div>{{phone}}</div>
-        {{/with}}
+
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <h2 style='margin-top:1em'>Ship To</h2>
+          {{#each shipment in shipping}}
+            {{#with shipment.address}}
+              <strong><div>{{fullName}}</div></strong>
+              <div>{{address1}}</div>
+              <div>{{#if address2}}{{address2}},{{/if}}</div>
+              <div>{{city}}, {{region}} {{postal}} {{country}}</div>
+              <div>{{phone}}</div>
+            {{/with}}
+          {{/each}}
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+          <h2 style='margin-top:1em'>Bill To</h2>
+          {{#each payment in billing}}
+            {{#with payment.address}}
+              <strong><div>{{fullName}}</div></strong>
+              <div>{{address1}}</div>
+              <div>{{#if address2}}{{address2}},{{/if}}</div>
+              <div>{{city}}, {{region}} {{postal}} {{country}}</div>
+              <div>{{phone}}</div>
+            {{/with}}
+          {{/each}}
+        </div>
       </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <h2 style='margin-top:1em'>Bill To</h2>
-        {{#with payment.address}}
-          <strong><div>{{fullName}}</div></strong>
-          <div>{{address1}}</div>
-          <div>{{#if address2}}{{address2}},{{/if}}</div>
-          <div>{{city}}, {{region}} {{postal}} {{country}}</div>
-          <div>{{phone}}</div>
-        {{/with}}
-      </div>
-    </div>
+
+
   </div>
   <br>
   <h3>Payment</h3>

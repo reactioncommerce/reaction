@@ -8,7 +8,7 @@ Template.completedPDFLayout.inheritsHelpersFrom("dashboardOrdersList");
 Template.completedPDFLayout.inheritsEventsFrom("dashboardOrdersList");
 
 Template.completedPDFLayout.helpers({
-  invoice: function() {
-    return this.payment.invoices[0];
+  invoice: function () {
+    return this.billing[0].invoices;
   }
 });

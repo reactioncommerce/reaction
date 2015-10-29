@@ -307,6 +307,24 @@ Template.registerHelper("dateFormat", function (context, block) {
 });
 
 /**
+ * timeAgo
+ * @description
+ * accept an ISO date using Moment.js and return elapsed time from today
+ * http://momentjs.com/
+ * moment syntax example: moment(Date("2011-07-18T15:50:52")).from(new Date())
+ * @example {{timeAgo creation_date}}
+ * @param {String} context - moment context
+ * @return {Date} return formatted date
+ */
+Template.registerHelper("timeAgo", function (context) {
+  if (window.moment) {
+    return moment(context).from(new Date());
+  }
+  return context;
+});
+
+
+/**
  * pluralize
  * @summary general helper for plurization of strings
  * @example {{plurize "1 thing"}}
