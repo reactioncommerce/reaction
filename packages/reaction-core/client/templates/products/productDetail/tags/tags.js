@@ -91,10 +91,12 @@ Template.productTagInputForm.onRendered(function () {
         attribute: "data-tag-id"
       });
       for (let tag of uiPositions) {
-        hashtagsList.push(tag);
+        if (_.isEmpty(tag) === false) {
+          hashtagsList.push(tag);
+        }
       }
       return Meteor.call("products/updateProductField",
-        selectedProductId(), "hashtags", hashtagsList);
+        selectedProductId(), "hashtags", _.uniq(hashtagsList));
     }
   });
 });
