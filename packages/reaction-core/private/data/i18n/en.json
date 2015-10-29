@@ -112,7 +112,8 @@
                 "order": {
                   "created": "Created",
                   "reference": "Reference",
-                  "invoice": "Invoice"
+                  "invoice": "Invoice",
+                  "ordersNotFound": "No Orders Found"
                 },
                 "orderShipping": {
                     "shipTo": "Ship To",

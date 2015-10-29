@@ -42,10 +42,10 @@ Template.orders.helpers({
       showFilter: false,
       showNavigation: true,
       fields: [
-          { key: 'userId', label: 'User', tmpl: Template.orderDetail },
-          { key: 'items', label: 'Items', tmpl: Template.ordersListItems},
-          { key: 'workflow.status', label: 'Status', tmpl: Template.orderStatusDetail },
-          { key: 'invoices', label: 'Summary', tmpl: Template.ordersListSummary}
+          { key: "userId", label: "User", tmpl: Template.orderDetail },
+          { key: "items", label: "Items", tmpl: Template.ordersListItems},
+          { key: "workflow.status", label: "Status", tmpl: Template.orderStatusDetail },
+          { key: "invoices", label: "Summary", tmpl: Template.ordersListSummary}
       ]
     };
   },
@@ -62,7 +62,7 @@ Template.orders.helpers({
 Template.orders.events({
 
 
-  'click .reactive-table tbody tr': function (event) {
+  "click .reactive-table tbody tr": function (event) {
     if (this.workflow.status === "new") {
       this.workflow.status = "coreOrderCreated";
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
@@ -73,7 +73,6 @@ Template.orders.events({
       data: this,
       template: "coreOrderWorkflow"
     });
-
   }
 });
 
@@ -89,33 +88,15 @@ Template.ordersListItem.helpers({
 
 Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
+    event.preventDefault();
+
     if (this.workflow.status === "new") {
       this.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderSummary", this._id);
     }
 
     Router.go("dashboard/orders", {
       _id: this._id
     });
-  }
-});
-
-Template.orderViewButton.events({
-  'click button': function (event) {
-    if (this.workflow.status === "new") {
-      this.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
-    }
-
-    Router.go("dashboard/orders", {
-      _id: this._id
-    });
-
-    // ReactionCore.showActionView({
-    //   label: "Order Details",
-    //   data: this,
-    //   template: "coreOrderWorkflow"
-    // });
-
   }
 });

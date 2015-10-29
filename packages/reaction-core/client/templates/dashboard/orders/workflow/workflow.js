@@ -4,14 +4,17 @@
  */
 Template.coreOrderWorkflow.onRendered(function () {
   const order = Template.currentData();
-  // force order created to always be completed.
-  if (order.workflow.status === "coreOrderCreated") {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
-  }
 
-  if (order.shipping) {
-    if (order.shipping[0].workflow.status === "new") {
-      Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "coreOrderShippingCreated", order._id. order.shipping[0]._id);
+  if (order) {
+    // force order created to always be completed.
+    if (order.workflow.status === "coreOrderCreated") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
+    }
+
+    if (order.shipping) {
+      if (order.shipping[0].workflow.status === "new") {
+        Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "coreOrderShippingCreated", order._id. order.shipping[0]._id);
+      }
     }
   }
 });
