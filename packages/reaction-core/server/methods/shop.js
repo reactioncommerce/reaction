@@ -5,32 +5,43 @@ Meteor.methods({
   /**
    * shop/createShop
    * @param {String} shopAdminUserId - optionally create shop for provided userId
-   * @param {Object} shop - optionally provide shop object to customize
+   * @param {Object} shopData - optionally provide shop object to customize
    * @return {String} return shopId
    */
-  "shop/createShop": function (shopAdminUserId, shop) {
+  "shop/createShop": function (shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
-    check(shop, Match.Optional(Object));
-
+    check(shopData, Match.Optional(ReactionCore.Schemas.Shop));
+    let shop = {};
     // must have owner access to create new shops
     if (!ReactionCore.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    this.unblock();
-
-    let currentUser = Meteor.userId();
+    // this.unblock();
+    const count =  ReactionCore.Collections.Shops.find().count() || "";
+    const currentUser = Meteor.userId();
+    // we'll accept a shop object, or clone the current shop
+    shop = shopData || ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
+    // if we don't have any shop data, use fixture
+    if (!shop) {
+      shop = EJSON.parse(Assets.getText("private/data/Shops.json"))[0];
+    }
+    // identify a shop admin
     let userId = shopAdminUserId || Meteor.userId();
     let adminRoles = Roles.getRolesForUser(currentUser, ReactionCore.getShopId());
-
+    // ensure unique id and shop name
+    shop._id = Random.id();
+    shop.name = shop.name + count;
+    // check(shop, ReactionCore.Schemas.Shop)
     try {
-      let shopId = Factory.create("shop")._id;
-      ReactionCore.Log.info("Created shop: ", shopId);
-      Roles.addUsersToRoles([currentUser, userId], adminRoles, shopId);
-      return shopId;
+      ReactionCore.Collections.Shops.insert(shop);
     } catch (error) {
       return ReactionCore.Log.error("Failed to shop/createShop", error);
     }
+    // we should have created new shop, or errored
+    ReactionCore.Log.info("Created shop: ", shop._id);
+    Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
+    return shop._id;
   },
 
   /**
