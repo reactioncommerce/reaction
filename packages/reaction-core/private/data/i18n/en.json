@@ -8,6 +8,7 @@
                     "select": "Select Language"
                 },
                 "app": {
+                    "save": "Save",
                     "saveAndContinue": "Save and continue",
                     "cancel": "Cancel",
                     "submit": "Submit",
@@ -23,7 +24,8 @@
                     "yearOptions": "Chose year",
                     "timezoneOptions": "Choose timezone",
                     "shopSettings": "Shop Settings",
-                    "dashboard": "Dashboard"
+                    "dashboard": "Dashboard",
+                    "print": "Print"
                 },
                 "header": {
                     "tagsAdd": "Add tag",
@@ -113,7 +115,11 @@
                   "created": "Created",
                   "reference": "Reference",
                   "invoice": "Invoice",
-                  "ordersNotFound": "No Orders Found"
+                  "ordersNotFound": "No Orders Found",
+                  "approveInvoice": "Approve",
+                  "makeAdjustments": "Make Adjustments",
+                  "capturePayment": "Capture Payment",
+                  "paymentCaptured": "Payment Captured"
                 },
                 "orderShipping": {
                     "shipTo": "Ship To",
@@ -123,7 +129,10 @@
                     "tracking": "Tracking",
                     "addtracking": "Add Tracking",
                     "shipmentEmpty": "This shipment has no items",
-                    "shipmentPacked": "All Items Packed"
+                    "shipmentPacked": "All Items Packed",
+                    "shipped": "Shipped",
+                    "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
+                    "resendShipmentNotification": "Resend Shipment Notification"
                 },
                 "cartCompleted": {
                     "thankYou": "Thank you!",

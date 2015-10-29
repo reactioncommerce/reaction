@@ -3,30 +3,30 @@
    {{#if editTracking}}
    <form class="form-inline" name="addTrackingForm">
      <div class="form-group">
-       {{i18n "core.orderShipment.tracking" "Tracking"}}: <label>{{tracking}}</label>
+       {{i18n "orderShipping.tracking" "Tracking"}}: <label>{{tracking}}</label>
        <input class="form-control" type="text" name="trackingNumber" value="{{shipment.tracking}}">
-       <button class="btn btn-default" type="submit" data-i18n="core.orderShipment.addTracking">Update</button>
+       <button class="btn btn-default" type="submit" data-i18n="app.save">Save</button>
      </div>
    </form>
    {{else}}
-    <strong>Tracking</strong>:
+    <strong data-i18n="orderShipping.tracking">Tracking</strong>:
     <button class="btn btn-link" data-event-action="editTracking">{{shipment.tracking}}</button>
    {{/if}}
 
   {{#if shipment.shipped}}
     <p>Items have been shipped</p>
-    <button class="btn btn-default" data-event-action="resendShipmentNotification">Resend Shipment Notification</button>
+    <button class="btn btn-default" data-event-action="resendShipmentNotification" data-i18n="orderShipping.resendShipmentNotification">Resend Shipment Notification</button>
   {{else}}
 
   <hr>
     {{#if shipmentReady}}
-      <p>Notify the customer that their items will be shipping soon.</p>
-      <button class="btn btn-success btn-block" data-event-action="shipmentShipped">Shipped</button>
+      <p data-i18n="orderShipping.shippingNotifyCustomer">Notify the customer that their items will be shipping soon.</p>
+      <button class="btn btn-success btn-block" data-event-action="shipmentShipped" data-i18n="orderShipping.shipped">Shipped</button>
     {{else}}
       <button
         class="btn btn-default btn-block"
         type="button"
-        data-i18n="core.orderShipment.shipmentPacked"
+        data-i18n="orderShipping.shipmentPacked"
         data-event-action="shipmentPacked">All Items Packed, Ready to Ship</button>
     {{/if}}
   {{/if}}
