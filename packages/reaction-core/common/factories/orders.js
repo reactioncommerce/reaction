@@ -39,7 +39,6 @@ Factory.define("order", ReactionCore.Collections.Orders, {
   requiresShipping: true,
   shipping: [], // Shipping Schema
   billing: [], // Payment Schema
-  totalPrice: _.random(1, 1000),
   state: "new",
   createdAt: new Date,
   updatedAt: new Date

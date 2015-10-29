@@ -78,13 +78,6 @@ ReactionCore.Schemas.Cart = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  totalPrice: {
-    label: "Total Price",
-    type: Number,
-    optional: true,
-    decimal: true,
-    min: 0
-  },
   workflow: {
     type: ReactionCore.Schemas.Workflow,
     optional: true

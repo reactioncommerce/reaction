@@ -13,7 +13,6 @@ Factory.define("cart", ReactionCore.Collections.Cart, {
   ],
   shipping: [],
   billing: [],
-  totalPrice: _.random(1, 1000),
   state: "new",
   createdAt: faker.date.past(),
   updatedAt: new Date()
