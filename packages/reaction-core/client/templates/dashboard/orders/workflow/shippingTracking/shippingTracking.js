@@ -1,4 +1,4 @@
-Template.coreOrderShipping.onCreated(() => {
+Template.coreOrderShippingTracking.onCreated(() => {
   let template = Template.instance();
   let currentData = Template.currentData();
 
@@ -22,10 +22,9 @@ Template.coreOrderShipping.onCreated(() => {
  * coreShipmentShipped events
  *
  */
-Template.coreOrderShipping.events({
+Template.coreOrderShippingTracking.events({
   "click [data-event-action=shipmentShipped]": function () {
     let template = Template.instance();
-    console.log("Shipment thing", template);
     Meteor.call("orders/shipmentShipped", template.order);
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
@@ -54,12 +53,11 @@ Template.coreOrderShipping.events({
       });
   },
   "click [data-event-action=editTracking]": (event, template) => {
-    console.log("for wny");
     template.showTrackingEditForm.set(true);
   }
 });
 
-Template.coreOrderShipping.helpers({
+Template.coreOrderShippingTracking.helpers({
   editTracking() {
     let template = Template.instance();
     if (!template.order.shipping[0].tracking || template.showTrackingEditForm.get()) {

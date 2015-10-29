@@ -491,7 +491,6 @@ Meteor.methods({
           function (error, result) {
             let transactionId = paymentMethod.transactionId;
 
-            console.log("*** Result", error, result);
             if (result.saved) {
               ReactionCore.Collections.Orders.update({
                 "_id": orderId,

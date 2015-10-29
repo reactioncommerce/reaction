@@ -1,4 +1,4 @@
-Template.coreOrderAdjustments.onCreated(() => {
+Template.coreOrderShippingInvoice.onCreated(() => {
   let template = Template.instance();
   let currentData = Template.currentData();
 
@@ -17,7 +17,7 @@ Template.coreOrderAdjustments.onCreated(() => {
 /**
  * coreOrderAdjustments events
  */
-Template.coreOrderAdjustments.events({
+Template.coreOrderShippingInvoice.events({
 
   /**
    * Submit form
@@ -55,9 +55,9 @@ Template.coreOrderAdjustments.events({
 
 
 /**
- * coreOrderAdjustments helpers
+ * coreOrderShippingInvoice helpers
  */
-Template.coreOrderAdjustments.helpers({
+Template.coreOrderShippingInvoice.helpers({
 
   /**
    * Discount

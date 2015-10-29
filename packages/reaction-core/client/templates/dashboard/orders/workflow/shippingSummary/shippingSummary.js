@@ -1,4 +1,4 @@
-Template.coreOrderCreated.onCreated(() => {
+Template.coreOrderShippingSummary.onCreated(() => {
   let template = Template.instance();
   let currentData = Template.currentData();
 
@@ -21,7 +21,7 @@ Template.coreOrderCreated.onCreated(() => {
  * automatically start order processing on first view
  */
 
-Template.coreOrderCreated.onRendered(function () {
+Template.coreOrderShippingSummary.onRendered(function () {
   let template = Template.instance();
   let order = template.order;
 
@@ -37,14 +37,14 @@ Template.coreOrderCreated.onRendered(function () {
  * coreOrderCreated events
  *
  */
-Template.coreOrderCreated.events({
-  'click .btn': function () {
+Template.coreOrderShippingSummary.events({
+  "click .btn": function () {
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
   }
 });
 
 
-Template.coreOrderCreated.helpers({
+Template.coreOrderShippingSummary.helpers({
   order() {
     let template = Template.instance();
     return template.order;

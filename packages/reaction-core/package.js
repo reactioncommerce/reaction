@@ -337,31 +337,18 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/orders/workflow/workflow.html", "client");
   api.addFiles("client/templates/dashboard/orders/workflow/workflow.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/workflow/adjustments/adjustments.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/adjustments/adjustments.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/orderSummary/orderSummary.html", "client");
 
-  api.addFiles("client/templates/dashboard/orders/workflow/created/created.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/created/created.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/orderCompleted/orderCompleted.html", "client");
 
-  api.addFiles("client/templates/dashboard/orders/workflow/completed/completed.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shippingSummary/shippingSummary.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shippingSummary/shippingSummary.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/workflow/documents/documents.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/documents/documents.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shippingInvoice/shippingInvoice.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shippingInvoice/shippingInvoice.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/workflow/packing/packing.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/packing/packing.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/payment/payment.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/shipping/shipping.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/shipping/shipping.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/shipments/shipments.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/shipments/shipments.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/tracking/tracking.js", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shippingTracking/shippingTracking.html", "client");
+  api.addFiles("client/templates/dashboard/orders/workflow/shippingTracking/shippingTracking.js", "client");
 
   api.addFiles("client/templates/dashboard/packages/packages.html", "client");
 
