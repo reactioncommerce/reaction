@@ -1,6 +1,25 @@
 let weightDependency = new Tracker.Dependency;
 
 Template.productSettings.helpers({
+  hasSelectedProducts() {
+    return this.products.length > 0;
+  },
+  itemWeightActive: function (weight) {
+    weightDependency.depend();
+
+    for (let product of this.products) {
+      let position = product.position || {};
+      let currentWeight = position.weight || 0;
+      if (currentWeight === weight) {
+        return "active";
+      }
+    }
+
+    return "";
+  }
+});
+
+Template.productSettingsGridItem.helpers({
   displayPrice: function () {
     if (this._id) {
       return getProductPriceRange(this._id);
@@ -67,18 +86,6 @@ Template.productSettings.helpers({
     }
   },
 
-  itemWeightActive: function (weight) {
-    weightDependency.depend();
-
-    let position = this.position || {};
-    let currentWeight = position.weight || 0;
-    if (currentWeight === weight) {
-      return "active";
-    }
-
-    return "";
-  },
-
   isMediumWeight: function () {
     weightDependency.depend();
 
@@ -109,25 +116,28 @@ Template.productSettings.helpers({
   }
 });
 
+Template.productSettingsListItem.inheritsHelpersFrom("productSettingsGridItem");
+
 /**
  * productExtendedControls events
  */
 
 Template.productSettings.events({
   "click [data-event-action=deleteProduct]": function () {
-    maybeDeleteProduct(this);
+    maybeDeleteProduct(this.products);
   },
   "click [data-event-action=cloneProduct]": function () {
     let title;
     title = this.title;
-    return Meteor.call("products/cloneProduct", this, function (error,
+
+    return Meteor.call("products/cloneProduct", this.products, function (error,
       productId) {
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
-      Router.go("product", {
-        _id: productId
-      });
+      // Router.go("product", {
+      //   _id: productId
+      // });
       return Alerts.add("Cloned " + title, "success", {
         placement: "productManagement",
         id: productId,
@@ -140,38 +150,38 @@ Template.productSettings.events({
 
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
-    let weight = $(event.currentTarget).data("event-data") || 0;
-    let position = {
-      tag: ReactionCore.getCurrentTag(),
-      weight: weight,
-      updatedAt: new Date()
-    };
 
-    this.position = position;
+    for (product of this.products) {
+      let weight = $(event.currentTarget).data("event-data") || 0;
+      let position = {
+        tag: ReactionCore.getCurrentTag(),
+        weight: weight,
+        updatedAt: new Date()
+      };
 
-    Meteor.call("products/updateProductPosition", this._id, position,
-      function () {
-        weightDependency.changed();
-      });
+      product.position = position;
+
+      Meteor.call("products/updateProductPosition", product._id, position,
+        function () {
+          weightDependency.changed();
+        });
+    }
   },
 
   "click [data-event-action=publishProduct]": function () {
-    let self;
-    self = this;
-    return Meteor.call("products/publishProduct", this._id, function (
-      error, result) {
+    function callback(error, result) {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",
-          id: self._id
+          id: product._id
         });
         return {};
       }
       if (result === true) {
         return Alerts.add(self.title + " is now visible", "success", {
           placement: "productGridItem",
-          type: self._id,
-          id: self._id,
+          type: product._id,
+          id: product._id,
           i18nKey: "productDetail.publishProductVisible",
           autoHide: true,
           dismissable: false
@@ -179,13 +189,17 @@ Template.productSettings.events({
       }
       return Alerts.add(self.title + " is hidden", "warning", {
         placement: "productGridItem",
-        type: self._id,
-        id: self._id,
+        type: product._id,
+        id: product._id,
         i18nKey: "productDetail.publishProductHidden",
         autoHide: true,
         dismissable: false
       });
-    });
+    };
+
+    for (product of this.products) {
+      Meteor.call("products/publishProduct", product._id, callback);
+    }
   }
 
 });

@@ -25,7 +25,7 @@
 
 <template name="coreAdminLayout">
   <span class="layout-alerts-global">{{>bootstrapAlerts}}</span>
-  <div class="page {{adminControlsClassname}}">
+  <div class="page {{adminControlsClassname}}" id="reactionAppContainer">
     <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
     <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>

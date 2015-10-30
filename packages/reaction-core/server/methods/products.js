@@ -409,58 +409,71 @@ Meteor.methods({
    * @param {Object} product - product object to clone
    * @returns {String} returns insert result
    */
-  "products/cloneProduct": function (product) {
-    check(product, Object);
+  "products/cloneProduct": function (productOrArray) {
+    check(productOrArray, Match.OneOf(Array, Object));
     // must have createProduct permissions
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
 
-    let i = 0;
+    let products;
+    let results = [];
 
-    let handleCount = Products.find({
-      cloneId: product._id
-    }).count() + 1;
-
-    product.cloneId = product._id;
-    product._id = Random.id();
-    delete product.updatedAt;
-    delete product.createdAt;
-    delete product.publishedAt;
-    delete product.handle;
-    product.isVisible = false;
-    if (product.title) {
-      product.title = product.title + handleCount;
+    if (_.isArray(productOrArray) === false) {
+      products = [productOrArray];
+    } else {
+      products = productOrArray;
     }
-    while (i < product.variants.length) {
-      let newVariantId = Random.id();
-      let oldVariantId = product.variants[i]._id;
-      product.variants[i]._id = newVariantId;
-      ReactionCore.Collections.Media.find({
-        "metadata.variantId": oldVariantId
-      }).forEach(function (fileObj) {
-        let newFile = fileObj.copy();
-        return newFile.update({
-          $set: {
-            "metadata.productId": product._id,
-            "metadata.variantId": newVariantId
-          }
-        });
-      });
-      if (!product.variants[i].parentId) {
-        while (i < product.variants.length) {
-          if (product.variants[i].parentId === oldVariantId) {
-            product.variants[i].parentId = newVariantId;
-          }
-          i++;
-        }
+
+    for (let product of products) {
+      let i = 0;
+
+      let handleCount = Products.find({
+        cloneId: product._id
+      }).count() + 1;
+
+      product.cloneId = product._id;
+      product._id = Random.id();
+      delete product.updatedAt;
+      delete product.createdAt;
+      delete product.publishedAt;
+      delete product.handle;
+      product.isVisible = false;
+      if (product.title) {
+        product.title = product.title + handleCount;
       }
-      i++;
+      while (i < product.variants.length) {
+        let newVariantId = Random.id();
+        let oldVariantId = product.variants[i]._id;
+        product.variants[i]._id = newVariantId;
+        ReactionCore.Collections.Media.find({
+          "metadata.variantId": oldVariantId
+        }).forEach(function (fileObj) {
+          let newFile = fileObj.copy();
+          return newFile.update({
+            $set: {
+              "metadata.productId": product._id,
+              "metadata.variantId": newVariantId
+            }
+          });
+        });
+        if (!product.variants[i].parentId) {
+          while (i < product.variants.length) {
+            if (product.variants[i].parentId === oldVariantId) {
+              product.variants[i].parentId = newVariantId;
+            }
+            i++;
+          }
+        }
+        i++;
+      }
+      let result = Products.insert(product, {
+        validate: false
+      });
+      results.push(result);
     }
-    return Products.insert(product, {
-      validate: false
-    });
+    return results;
   },
 
   /**
@@ -502,17 +515,32 @@ Meteor.methods({
    * @returns {Boolean} returns delete result
    */
   "products/deleteProduct": function (productId) {
-    check(productId, String);
+    check(productId, Match.OneOf(Array, String));
     // must have admin permission to delete
     if (!ReactionCore.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
 
-    let numRemoved = Products.remove(productId);
+    let productIds;
+
+    if (_.isString(productId)) {
+      productIds = [productId];
+    } else {
+      productIds = productId;
+    }
+
+    let numRemoved = Products.remove({
+      _id: {
+        $in: productIds
+      }
+    });
+
     if (numRemoved > 0) {
       ReactionCore.Collections.Media.update({
-        "metadata.productId": productId
+        "metadata.productId": {
+          $in: productIds
+        }
       }, {
         $unset: {
           "metadata.productId": "",

@@ -2,7 +2,6 @@
  * productGrid helpers
  */
 
-
 /**
  * loadMoreProducts
  * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
@@ -13,8 +12,11 @@
 function loadMoreProducts() {
   let threshold;
   let target = $("#productScrollLimitLoader");
+  let scrollContainer = $("#reactionAppContainer") || $(window);
+
   if (target.length) {
-    threshold = $(window).scrollTop() + $(window).height() - target.height();
+    threshold = scrollContainer.scrollTop() + scrollContainer.height() - target.height();
+
     if (target.offset().top < threshold) {
       if (!target.data("visible")) {
         target.data("productScrollLimit", true);
@@ -29,8 +31,51 @@ function loadMoreProducts() {
   }
 }
 
-// run the above func every time the user scrolls
-$(window).scroll(loadMoreProducts());
+Template.productGrid.onCreated(() => {
+  Template.instance().selectedProducts = new ReactiveVar([]);
+});
+
+Template.productGrid.onRendered(() => {
+  // run the above func every time the user scrolls
+  $("#reactionAppContainer").on("scroll", loadMoreProducts);
+  $(window).on("scroll", loadMoreProducts);
+});
+
+Template.productGrid.events({
+
+  "click [data-event-action=loadMoreProducts]": (event) => {
+    event.preventDefault();
+
+    loadMoreProducts();
+  },
+
+  "change input[name=selectProduct]": (event, template) => {
+    let selectedProducts = template.selectedProducts.get();
+
+    if (event.target.checked) {
+      selectedProducts.push(event.target.value);
+    } else {
+      selectedProducts = _.without(selectedProducts, event.target.value);
+    }
+
+    template.selectedProducts.set(_.uniq(selectedProducts));
+    Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
+
+    let products = Template.instance().products;
+    let filteredProducts = _.filter(products, (product) => {
+      return _.contains(selectedProducts, product._id);
+    });
+
+    ReactionCore.showActionView({
+      label: "Edit Product",
+      template: "productSettings",
+      type: "product",
+      data: {
+        products: filteredProducts
+      }
+    });
+  }
+});
 
 Template.productGrid.helpers({
   productScrollLimit: function () {
@@ -111,7 +156,9 @@ Template.productGrid.helpers({
       }
     }
 
-    return gridProducts.sort(compare);
+    const products = gridProducts.sort(compare);
+    Template.instance().products = products;
+    return products;
   }
 });
 
@@ -180,6 +227,15 @@ Template.productGridItems.helpers({
       return "product-small";
     }
   },
+  isSelected(productId) {
+    let selectedProducts = Session.get("productGrid/selectedProducts");
+
+    if (_.contains(selectedProducts, this._id)) {
+      return "active";
+    }
+
+    return "";
+  },
   isMediumWeight: function () {
     let position = this.position || {};
     let weight = position.weight || 0;
@@ -210,6 +266,21 @@ Template.productGridItems.helpers({
  */
 
 Template.productGridItems.events({
+  "click [data-event-action=productClick]": function (event) {
+    if (ReactionCore.hasPermission("createProduct")) {
+      if (event.shiftKey) {
+        event.preventDefault();
+
+        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
+        let checked = checkbox.prop("checked");
+
+        checkbox
+          .prop("checked", !checked)
+          .trigger("change");
+      }
+    }
+  },
+
   "click [data-event-action=showProductSettings]": function (event) {
     event.preventDefault();
 
@@ -217,7 +288,9 @@ Template.productGridItems.events({
       label: "Edit Product",
       template: "productSettings",
       type: "product",
-      data: this
+      data: {
+        products: [this]
+      }
     });
   },
   "click .clone-product": function () {

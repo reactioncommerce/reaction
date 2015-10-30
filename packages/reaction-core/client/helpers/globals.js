@@ -79,10 +79,30 @@ this.getProductsByTag = function (tag) {
  * @return {Object} - returns nothing, and alerts,happen here
  */
 this.maybeDeleteProduct = function (product) {
-  let title = product.title || "the product";
-  let id = product._id;
-  if (confirm("Delete this product?")) {
-    return Meteor.call("products/deleteProduct", id, function (error, result) {
+  let productIds;
+  let title;
+  let confirmTitle = "Delete this product?";
+
+  if (_.isArray(product)) {
+    if (product.length === 1) {
+      title = product[0].title || "the product";
+      productIds = [product[0]._id];
+    } else {
+      title = "the selected products";
+      confirmTitle = "Delete selected products?";
+
+      productIds = _.map(product, (item) => {
+        return item._id;
+      });
+    }
+  } else {
+    title = product.title || "the product";
+    productIds = [product._id];
+  }
+
+  if (confirm(confirmTitle)) {
+    return Meteor.call("products/deleteProduct", productIds, function (error, result) {
+      let id = "product";
       if (error || !result) {
         Alerts.add("There was an error deleting " + title, "danger", {
           type: "prod-delete-" + id,

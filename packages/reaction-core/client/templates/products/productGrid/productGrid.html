@@ -9,17 +9,17 @@
   </div>
 </div>
 
-{{!-- TODO: Finish infinite paganation implementation
+
 {{#if productScrollLimit}}
   <div class="row" id="productScrollLimitLoader">
-      <span class="pager" data-i18n="app.more">More</span>
+      <button class="btn btn-default btn-block" data-i18n="app.more" data-event-action="loadMoreProducts">Load More Products</button>
   </div>
 {{/if}}
---}}
+
 </template>
 
 <template name="productGridItems">
-  <li class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
+  <li class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}" data-id="{{_id}}" id="{{_id}}">
     {{> gridNotice}}
     <span class="product-grid-item-alerts">
       {{> bootstrapAlerts placement="productGridItem" id=_id}}
@@ -28,7 +28,7 @@
     <a class="product-grid-item-images"
       href="{{pathForSEO 'product' 'handle'}}"
       data-event-category="grid"
-      data-event-action="product-click"
+      data-event-action="productClick"
       data-event-label="grid product click"
       data-event-value="{{_id}}">
 
@@ -88,6 +88,9 @@
 <template name="gridControls">
   {{#if hasPermission "createProduct"}}
     <div class="product-grid-controls">
+      <label class="like-button hidden" for="select-product-{{_id}}">
+        <input type="checkbox" name="selectProduct" value="{{_id}}" id="select-product-{{_id}}">
+      </label>
       <button
         class="publish-product"
         data-toggle="tooltip"

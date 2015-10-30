@@ -1,5 +1,5 @@
 <template name="productSettings">
-
+  {{#if hasSelectedProducts}}
   <div class="panel panel-default">
     <div class="panel-heading panel-heading-flex">
       <div class="panel-title">Product</div>
@@ -44,69 +44,19 @@
     </div>
 
     <div class="panel-body">
-      <div class="product-settings-mock-grid">
-        <div class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
-          {{> gridNotice}}
-          <span class="product-grid-item-alerts">
-            {{> bootstrapAlerts placement="productGridItem" id=_id}}
-          </span>
-
-          <a class="product-grid-item-images"
-            href="{{pathForSEO 'product' 'handle'}}"
-            data-event-category="grid"
-            data-event-action="product-click"
-            data-event-label="grid product click"
-            data-event-value="{{_id}}">
-
-            <div class="product-primary-images">
-              {{#with media}}
-                <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
-              {{else}}
-                <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
-              {{/with}}
-            </div>
-
-            {{#if additionalMedia}}
-              {{#if isMediumWeight}}
-                <div class="product-additional-images">
-                  {{#each additionalMedia}}
-                      <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
-
-                  {{/each}}
-                </div>
-              {{/if}}
-            {{/if}}
-          </a>
-
-
-          <div class="grid-content">
-            <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
-              <div class="overlay">
-                <div class="overlay-title">{{title}}</div>
-                <div class="currency-symbol">{{formatPrice displayPrice}}</div>
-              </div>
-            </a>
-          </div>
-
-        </div>
+      <div class="order-items">
+        {{#each product in products}}
+          {{> productSettingsListItem product}}
+        {{/each}}
+      </div>
+      <div class="product-settings-mock-grid hidden">
+        {{#each product in products}}
+          {{> productSettingsGridItem product}}
+        {{/each}}
       </div>
     </div>
 
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -141,5 +91,82 @@
 
     </div>
   </div>
+  {{else}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="pabel-title">No Selected Products. Use the <i class="fa fa-gear"></i>, or shift + click on products to select multiple.</span>
+      </div>
+    </div>
+  {{/if}}
+</template>
 
+<template name="productSettingsListItem">
+  <div class="order-item" data-id="{{_id}}" id="{{_id}}">
+
+
+    <div class="order-item-media">
+      {{#with media}}
+        <img src="{{url store='large'}}">
+      {{else}}
+        <img src="/resources/placeholder.gif">
+      {{/with}}
+    </div>
+
+    <div class="order-item-details">
+      <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
+        <div class="overlay-title">{{title}}</div>
+        <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+      </a>
+    </div>
+
+  </div>
+</template>
+
+
+
+<template name="productSettingsGridItem">
+  <div class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
+    {{> gridNotice}}
+    <span class="product-grid-item-alerts">
+      {{> bootstrapAlerts placement="productGridItem" id=_id}}
+    </span>
+
+    <a class="product-grid-item-images"
+      href="{{pathForSEO 'product' 'handle'}}"
+      data-event-category="grid"
+      data-event-action="product-click"
+      data-event-label="grid product click"
+      data-event-value="{{_id}}">
+
+      <div class="product-primary-images">
+        {{#with media}}
+          <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
+        {{else}}
+          <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
+        {{/with}}
+      </div>
+
+      {{#if additionalMedia}}
+        {{#if isMediumWeight}}
+          <div class="product-additional-images">
+            {{#each additionalMedia}}
+                <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
+
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/if}}
+    </a>
+
+
+    <div class="grid-content">
+      <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
+        <div class="overlay">
+          <div class="overlay-title">{{title}}</div>
+          <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+        </div>
+      </a>
+    </div>
+
+  </div>
 </template>

@@ -153,8 +153,8 @@ Router.map(function () {
     path: "/",
     name: "index",
     template: "products",
-    waitOn: function () {
-      return this.subscribe("Products", Session.get("productScrollLimit"));
+    subscriptions: function () {
+      this.subscribe("Products", Session.get("productScrollLimit"));
     }
   });
 
