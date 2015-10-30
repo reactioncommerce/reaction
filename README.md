@@ -35,6 +35,19 @@ _Note: for windows installation you also need:_
 - Git + msysGit ([git-for-windows/git](https://github.com/git-for-windows/git/releases))
 - ImageMagick
 
+If you want to use shell scripts under Windows:
+- Create file named `meteor` inside `%localappdata%\.meteor` with following contents:
+```
+#!/bin/sh
+cmd //c "$0.bat" "$@"
+```
+- Run shell scripts from `Git Bash`. For example:
+```
+cd reaction/
+bin/clone-packages.sh
+bin/reset
+```
+
 A Docker image is available on the [Reaction Commerce Docker Hub ](https://hub.docker.com/r/reactioncommerce/reaction/).
 
 ## Roadmap
