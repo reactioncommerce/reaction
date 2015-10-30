@@ -12,7 +12,11 @@
 function loadMoreProducts() {
   let threshold;
   let target = $("#productScrollLimitLoader");
-  let scrollContainer = $("#reactionAppContainer") || $(window);
+  let scrollContainer = $("#reactionAppContainer");
+
+  if (scrollContainer.length === 0) {
+    scrollContainer = $(window);
+  }
 
   if (target.length) {
     threshold = scrollContainer.scrollTop() + scrollContainer.height() - target.height();
