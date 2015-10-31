@@ -134,6 +134,7 @@ Package.onTest(function (api) {
   api.use("velocity:console-reporter@0.1.4");
   api.use("reactioncommerce:core@0.9.3");
   api.use("reactioncommerce:reaction-accounts");
+  api.use("reactioncommerce:reaction-factories");
 
   api.addFiles("common/factories/accounts.js");
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
