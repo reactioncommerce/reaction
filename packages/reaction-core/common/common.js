@@ -71,14 +71,14 @@ _.extend(ReactionCore, {
    * @summary Recursive method which trying to find a new handle, given the
    * existing copies
    * @param {String} handle - product handle
-   * @param {Object} product - current product cursor
+   * @param {String} productId - current product _id
    * @return {String} handle - modified handle
    */
-  createHandle: function (handle, product) {
+  createHandle: function (handle, productId) {
     // exception product._id needed for cases then double triggering happens
     let handleCount = Products.find({
       handle: handle,
-      _id: { $nin: [product._id]
+      _id: { $nin: [productId]
       }}).count();
     // current product "copy" number
     let handleNumberSuffix = 0;
@@ -114,7 +114,7 @@ _.extend(ReactionCore, {
 
     // we should check again if there are any new matches with DB
     if (Products.find({ handle: handle }).count() !== 0) {
-      handle = ReactionCore.createHandle(handle, product);
+      handle = ReactionCore.createHandle(handle, productId);
     }
 
     return handle;

@@ -440,8 +440,14 @@ Meteor.methods({
       delete product.publishedAt;
       delete product.handle;
       product.isVisible = false;
+      //if (product.title) {
+      //  product.title = product.title + handleCount;
+      //}
       if (product.title) {
-        product.title = product.title + handleCount;
+        product.handle = ReactionCore.createHandle(
+          getSlug(product.title),
+          product._id
+        );
       }
       while (i < product.variants.length) {
         let newVariantId = Random.id();
@@ -697,7 +703,7 @@ Meteor.methods({
 
     let product = Products.findOne(productId);
     let handle = getSlug(product.title);
-    handle = ReactionCore.createHandle(handle, product);
+    handle = ReactionCore.createHandle(handle, product._id);
     Products.update(product._id, {
       $set: {
         handle: handle
@@ -729,7 +735,7 @@ Meteor.methods({
     // set handle
     if (product.handle === tag.slug) {
       let handle = getSlug(product.title);
-      handle = ReactionCore.createHandle(handle, product);
+      handle = ReactionCore.createHandle(handle, product._id);
       Products.update(product._id, {
         $set: {
           handle: handle
@@ -745,7 +751,7 @@ Meteor.methods({
     for (let currentProduct of existingHandles) {
       let currentProductHandle = ReactionCore.createHandle(
         getSlug(currentProduct.title),
-        currentProduct);
+        currentProduct._id);
       Products.update(currentProduct._id, {
         $set: {
           handle: currentProductHandle
