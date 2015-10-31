@@ -702,13 +702,60 @@ Meteor.methods({
     let product = Products.findOne(productId);
     let tag = Tags.findOne(tagId);
     // set handle
-    if (productId.handle === tag.slug) {
+    if (product.handle === tag.slug) {
       Products.update(product._id, {
         $unset: {
           handle: ""
         }
       });
-      return product._id;
+
+      let handle = getSlug(product.title);
+
+      /**
+       * @summary It trying to find a new handle, given the existing copies
+       */
+      let createHandle = () => {
+        let handleCount = Products.find({ handle: handle }).count();
+        let handleNumberSuffix = 0;
+        let handleString = handle;
+        let copySuffix = handleString.match(/-copy-\d+$/);
+
+        // if product is a duplicate, we should take the copy number, and cut
+        // the handle
+        if (copySuffix) {
+          handleNumberSuffix = +String(copySuffix).match(/\d+$/);
+          handleString = handle.replace(/\d+$/, '');
+        }
+
+        // if we have more than one product with the same handle, we should mark
+        // it as "copy" or increment our product handle if it contain numbers.
+        if (handleCount > 0) {
+          // if we have product with name like "product4", we should take care
+          // about its uniqueness
+          if (handleNumberSuffix > 0) {
+            handle = `${handleString}${handleNumberSuffix + handleCount}`;
+          } else {
+            handle = `${handleString}-copy-${++handleCount}`;
+          }
+        }
+
+        // we should check again if there are any new matches with DB
+        if (Products.find({ handle: handle }).count() !== 0) {
+          createHandle();
+        }
+      }
+
+      createHandle();
+
+      // handle = handleCount === 0 ? handle : `${handle}-${handleCount++}`;
+
+      Products.update(product._id, {
+        $set: {
+          handle: handle
+        }
+      });
+
+      return handle;
     }
     // toggle hangle
     let existingHandles = Products.find({
