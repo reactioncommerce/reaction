@@ -132,9 +132,11 @@ Package.onTest(function (api) {
   api.use("dburles:factory@0.3.10");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
-  api.use("reactioncommerce:core@0.9.3");
-  api.use("reactioncommerce:reaction-accounts");
+
+  api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-factories");
+  api.use("reactioncommerce:reaction-accounts");
+
 
   api.addFiles("common/factories/accounts.js");
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
