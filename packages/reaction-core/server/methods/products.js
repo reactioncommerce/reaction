@@ -683,6 +683,80 @@ Meteor.methods({
   },
 
   /**
+   * @summary copy of "products/setHandleTag", but without tag
+   * @param productId - productId
+   */
+  "products/setHandle": function (productId) {
+    check(productId, String);
+
+    // must have createProduct permission
+    if (!ReactionCore.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+
+    let product = Products.findOne(productId);
+    let handle = getSlug(product.title);
+
+    /**
+     * @summary It trying to find a new handle, given the existing copies
+     * @param {Object} product - product object
+     * @param {String} handle - product handle string
+     */
+    /*let createHandle = (product, handle) => {
+      // exception product._id needed for cases then double triggering happens
+      let handleCount = Products.find({
+        handle: handle,
+        _id: { $nin: [product._id]
+       }}).count();
+      let handleNumberSuffix = 0;
+      let handleString = handle;
+      let copySuffix = handleString.match(/-copy-\d+$/)
+        || handleString.match(/-copy$/);
+
+      // if product is a duplicate, we should take the copy number, and cut
+      // the handle
+      if (copySuffix) {
+        // we can have two cases here: copy-number and just -copy. If there is
+        // no numbers in copySuffix then we should put 1 in handleNumberSuffix
+        handleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
+        // removing last numbers and last "-" if it presents
+        handleString = handle.replace(/\d+$/, '').replace(/-$/, '');
+      }
+
+      // if we have more than one product with the same handle, we should mark
+      // it as "copy" or increment our product handle if it contain numbers.
+      if (handleCount > 0) {
+        // if we have product with name like "product4", we should take care
+        // about its uniqueness
+        if (handleNumberSuffix > 0) {
+          handle = `${handleString}-${handleNumberSuffix + handleCount}`;
+        } else {
+          // first copy will be "...-copy", second: "...-copy-2"
+          handle = `${handleString}-copy${ handleCount > 1
+            ? '-' + handleCount : ''}`;
+        }
+      }
+
+      // we should check again if there are any new matches with DB
+      if (Products.find({ handle: handle }).count() !== 0) {
+        handle = createHandle(product, handle);
+      }
+      return handle;
+    }*/
+
+    handle = ReactionCore.createHandle(handle, product); //createHandle(product, handle);
+
+    Products.update(product._id, {
+      $set: {
+        handle: handle
+      }
+    });
+
+    return handle;
+  },
+
+  /**
    * products/setHandleTag
    * @summary set or toggle product handle
    * @param {String} productId - productId
@@ -703,28 +777,40 @@ Meteor.methods({
     let tag = Tags.findOne(tagId);
     // set handle
     if (product.handle === tag.slug) {
-      Products.update(product._id, {
+      /*Products.update(product._id, {
         $unset: {
           handle: ""
         }
-      });
+      });*/
 
       let handle = getSlug(product.title);
 
       /**
        * @summary It trying to find a new handle, given the existing copies
+       * @param {String} handle - product handle
        */
-      let createHandle = () => {
-        let handleCount = Products.find({ handle: handle }).count();
+      /*let createHandle = (handle) => {
+        // number of product handle copies
+        let handleCount = Products.find({
+          handle: handle,
+          _id: { $nin: [product._id]
+          }}).count();
+        // current product "copy" number
         let handleNumberSuffix = 0;
+        // product handle prefix
         let handleString = handle;
-        let copySuffix = handleString.match(/-copy-\d+$/);
+        // copySuffix "-copy-number" suffix of product
+        let copySuffix = handleString.match(/-copy-\d+$/)
+          || handleString.match(/-copy$/);
 
         // if product is a duplicate, we should take the copy number, and cut
         // the handle
         if (copySuffix) {
-          handleNumberSuffix = +String(copySuffix).match(/\d+$/);
-          handleString = handle.replace(/\d+$/, '');
+          // we can have two cases here: copy-number and just -copy. If there is
+          // no numbers in copySuffix then we should put 1 in handleNumberSuffix
+          handleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
+          // removing last numbers and last "-" if it presents
+          handleString = handle.replace(/\d+$/, '').replace(/-$/, '');
         }
 
         // if we have more than one product with the same handle, we should mark
@@ -735,19 +821,21 @@ Meteor.methods({
           if (handleNumberSuffix > 0) {
             handle = `${handleString}${handleNumberSuffix + handleCount}`;
           } else {
-            handle = `${handleString}-copy-${++handleCount}`;
+            // first copy will be "...-copy", second: "...-copy-2"
+            handle = `${handleString}-copy${ handleCount > 1
+              ? '-' + handleCount : ''}`;
           }
         }
 
         // we should check again if there are any new matches with DB
         if (Products.find({ handle: handle }).count() !== 0) {
-          createHandle();
+          handle = createHandle(handle);
         }
-      }
 
-      createHandle();
+        return handle;
+      }*/
 
-      // handle = handleCount === 0 ? handle : `${handle}-${handleCount++}`;
+      handle = ReactionCore.createHandle(handle, product); // createHandle(handle, product);
 
       Products.update(product._id, {
         $set: {
@@ -762,9 +850,13 @@ Meteor.methods({
       handle: tag.slug
     }).fetch();
     for (let currentProduct of existingHandles) {
+      let currentProductHandle = ReactionCore.createHandle(
+        getSlug(currentProduct.title),
+        currentProduct);
       Products.update(currentProduct._id, {
-        $unset: {
-          handle: ""
+        $set: {
+          //handle: ""
+          handle: currentProductHandle
         }
       });
     }
