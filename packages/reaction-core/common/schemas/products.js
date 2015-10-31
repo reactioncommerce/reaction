@@ -67,7 +67,10 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
-    type: String
+    type: String,
+    autoValue: ReactionCore.schemaIdAutoValue,
+    index: 1,
+    label: "Variant ID"
   },
   parentId: {
     type: String,
@@ -123,6 +126,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Boolean,
     label: "Inventory Tracking",
     optional: true,
+    defaultValue: true,
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
@@ -136,6 +140,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Boolean,
     label: "Deny when out of stock",
     optional: true,
+    defaultValue: true,
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
@@ -171,6 +176,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     decimal: true,
     min: 0,
     optional: true,
+    defaultValue: 0,
     custom: function () {
       if (Meteor.isClient) {
         if (this.siblingField("type").value !== "inventory") {
@@ -249,7 +255,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     label: "Product ShopId"
   },
   title: {
-    type: String
+    type: String,
+    defaultValue: ""
   },
   pageTitle: {
     type: String,
@@ -321,11 +328,26 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   handle: {
     type: String,
     optional: true,
-    index: 1
+    index: 1,
+    autoValue: function () {
+      let slug = getSlug(this.siblingField("title").value || this.siblingField("_id").value || "");
+      if (this.isInsert) {
+        return slug;
+      } else if (this.isUpsert) {
+        return {
+          $setOnInsert: slug
+        };
+      }
+    }
   },
   isVisible: {
     type: Boolean,
-    index: 1
+    index: 1,
+    defaultValue: false
+  },
+  workflow: {
+    type: ReactionCore.Schemas.Workflow,
+    optional: true
   },
   publishedAt: {
     type: Date,
@@ -354,15 +376,7 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   updatedAt: {
     type: Date,
     autoValue: function () {
-      if (this.isUpdate) {
-        return {
-          $set: new Date
-        };
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: new Date
-        };
-      }
+      return new Date;
     },
     optional: true
   }

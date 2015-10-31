@@ -6,7 +6,6 @@ Package.describe({
 });
 
 Npm.depends({
-  "faker": "3.0.1",
   "node-geocoder": "3.0.0",
   "transliteration": "0.1.1"
 });
@@ -83,7 +82,6 @@ Package.onUse(function (api) {
   api.imply("browser-policy");
   api.imply("service-configuration");
   api.imply("ongoworks:security");
-  api.imply("dburles:factory");
   api.imply("mquandalle:bower");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
@@ -193,6 +191,7 @@ Package.onUse(function (api) {
 
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
+  api.addFiles("common/methods/inventory.js");
   api.addFiles("common/methods/cart.js", "client");
 
   // publications
@@ -417,7 +416,6 @@ Package.onUse(function (api) {
   api.export("ReactionCore");
   api.export("ReactionRegistry", "server");
   api.export("getSlug");
-
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
   api.export("currentProduct", ["client", "server"]);
@@ -427,24 +425,16 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("underscore");
   api.use("random");
-  api.use("dburles:factory@0.3.10");
   api.use("sanjo:jasmine@0.20.2");
   api.use("velocity:html-reporter@0.9.1");
+
   api.use("velocity:console-reporter@0.1.4");
   api.use("accounts-base");
   api.use("accounts-password");
   // reaction core
-  api.use("reactioncommerce:core");
+  api.use("reactioncommerce:core@0.9.4");
+  api.use("reactioncommerce:reaction-factories@0.1.0");
   api.use("reactioncommerce:bootstrap-theme");
-
-  // reaction faker tools
-  api.addFiles("lib/faker.js", ["server"]);
-  api.addFiles("common/factories/faker.js");
-  api.addFiles("common/factories/users.js");
-  api.addFiles("common/factories/shops.js");
-  api.addFiles("common/factories/products.js");
-  api.addFiles("common/factories/cart.js");
-  api.addFiles("common/factories/orders.js");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");

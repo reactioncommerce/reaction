@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "faker": {
-      "version": "3.0.1"
-    },
     "node-geocoder": {
       "version": "3.0.0",
       "dependencies": {
