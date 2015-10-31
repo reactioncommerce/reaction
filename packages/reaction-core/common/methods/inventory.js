@@ -58,12 +58,7 @@ Meteor.methods({
     check(product, ReactionCore.Schemas.Product);
     productType = product.type; // a master grouping that identifies this product schema and workflow
     variantsTypes = []; // array of variants that make up this product
-    // reduce variant types.
-    // for (let variant of product.variants) {
-    //   variantTypes.push(variant.type);
-    // }
     variantTypes = product.variants.map(variant => variant.age);
-    console.log(variantTypes);
 
     // workflow schema added to products collection
 
