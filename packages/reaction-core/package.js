@@ -173,6 +173,7 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/tags.js");
   api.addFiles("common/schemas/cart.js");
   api.addFiles("common/schemas/orders.js");
+  api.addFiles("common/schemas/inventory.js");
   api.addFiles("common/schemas/translations.js");
 
   // collections
@@ -202,6 +203,7 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
+  api.addFiles("server/publications/inventory.js", "server");
   api.addFiles("server/publications/translations.js", "server");
 
   // methods
