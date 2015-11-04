@@ -20,6 +20,7 @@ ReactionImport.flush = function () {
     } catch (error) {}
     ReactionImport._buffers[collection] = ReactionCore.Collections[collection].rawCollection().initializeUnorderedBulkOp();
   }
+  ReactionImport._count = 0;
 }
 
 /**
@@ -79,6 +80,9 @@ ReactionImport.product = function (key, product, parent) {
       $setOnInsert: { createdAt: new Date() }
     });
   }
+  if (ReactionImport._count++ >= ReactionImport._limit) {
+    ReactionImport.flush();
+  }
 }
 
 /**
@@ -99,6 +103,9 @@ ReactionImport.tag = function (key, tag) {
     $set: tag,
     $setOnInsert: { createdAt: new Date() }
   });
+  if (ReactionImport._count++ >= ReactionImport._limit) {
+    ReactionImport.flush();
+  }
 }
 
 ReactionImport.image = function (key, image, links) {}
