@@ -108,6 +108,17 @@ ReactionImport.tag = function (key, tag) {
   }
 }
 
+ReactionImport.process = function (json, keys, callback) {
+  let data = JSON.parse(json);
+  for (let i = 0; i < data.length; i++) {
+    let key = {};
+    for (let j = 0; i < keys.length; j++) {
+      key[keys[j]] = data[i][keys[j]];
+    }
+    callback(key, data[i]);
+  }
+}
+
 ReactionImport.image = function (key, image, links) {}
 
 ReactionImport.relation = function (key, relation) {}
