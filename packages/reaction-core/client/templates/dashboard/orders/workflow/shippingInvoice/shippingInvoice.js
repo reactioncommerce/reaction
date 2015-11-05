@@ -3,6 +3,7 @@ Template.coreOrderShippingInvoice.onCreated(() => {
   let currentData = Template.currentData();
 
   template.orderDep = new Tracker.Dependency;
+  template.refunds = new ReactiveVar([]);
 
   function getOrder(orderId) {
     template.orderDep.depend();
@@ -11,6 +12,13 @@ Template.coreOrderShippingInvoice.onCreated(() => {
 
   Tracker.autorun(() => {
     template.order = getOrder(currentData.orderId);
+    let paymentMethod = template.order.billing[0].paymentMethod;
+
+    Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
+      if (!error) {
+        template.refunds.set(result);
+      }
+    });
   });
 });
 
@@ -25,12 +33,31 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "submit form": (event, template) => {
+  "submit form[name=capture]": (event, template) => {
     event.preventDefault();
 
     let order = template.order;
     let discount = parseFloat(event.target.discount_amount.value) || 0;
     Meteor.call("orders/approvePayment", order, discount, (error) => {
+      if (error) {
+        // Show error
+      }
+    });
+  },
+
+  /**
+   * Submit form
+   * @param  {Event} event - Event object
+   * @param  {Template} template - Blaze Template
+   * @return {void}
+   */
+  "submit form[name=refund]": (event, template) => {
+    event.preventDefault();
+
+    let order = template.order;
+    let refund = parseFloat(event.target.refund_amount.value) || 0;
+
+    Meteor.call("orders/applyRefund", order._id, order.billing[0].paymentMethod, refund, (error) => {
       if (error) {
         // Show error
       }
@@ -118,6 +145,33 @@ Template.coreOrderShippingInvoice.helpers({
     return template.order.billing[0].paymentMethod.status === "completed";
   },
 
+  refundTransactions() {
+    let template = Template.instance();
+    let transactions = template.order.billing[0].paymentMethod.transactions;
+
+    return _.filter(transactions, (transaction) => {
+      return transaction.type === "refund";
+    });
+  },
+
+  refunds() {
+    let refunds = Template.instance().refunds.get();
+    return refunds.reverse();
+  },
+
+  adjustedTotal() {
+    let template = Template.instance();
+    let paymentMethod = template.order.billing[0].paymentMethod;
+    let transactions = paymentMethod.transactions;
+
+    return _.reduce(transactions, (memo, transaction) => {
+      if (transaction.type === "refund") {
+        return memo - transaction.amount;
+      }
+
+      return memo;
+    }, paymentMethod.amount);
+  },
 
   /**
    * Order

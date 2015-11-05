@@ -1,6 +1,6 @@
 <template name="coreOrderShippingInvoice">
 
-  <form>
+  <form name="capture">
     <div class="order-items">
       {{#each item in items}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
@@ -138,4 +138,34 @@
     </div>
 
   </form>
+
+
+
+  <form name="refund">
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
+      <div class="input-group amount">
+        <div class="input-group-addon">{{currencySymbol}}</div>
+        <input class="form-control amount" type="text" name="refund_amount">
+      </div>
+    </div>
+
+    {{#each refund in refunds}}
+      <div class="order-summary-form-group">
+        <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
+        <div class="amount">-{{formatPrice refund.amount}}</div>
+      </div>
+    {{/each}}
+
+    <hr>
+
+    <div class="order-summary-form-group">
+      <span class="reason" data-i18n="cartSubTotals.total">Adjusted Total</span>
+      <div class="amount">{{formatPrice adjustedTotal}}</div>
+    </div>
+
+    <button class="btn btn-success flex-item-fill" type="submit" data-event-action="appluRefund" data-i18n="order.applyRefund">Apply Refund</button>
+
+  </form>
+
 </template>

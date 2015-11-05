@@ -119,7 +119,9 @@
                   "approveInvoice": "Approve",
                   "makeAdjustments": "Make Adjustments",
                   "capturePayment": "Capture Payment",
-                  "paymentCaptured": "Payment Captured"
+                  "paymentCaptured": "Payment Captured",
+                  "refundAmount": "Refund Amount",
+                  "applyRefund": "Apply Refund"
                 },
                 "orderShipping": {
                     "shipTo": "Ship To",

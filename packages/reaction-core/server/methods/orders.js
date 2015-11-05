@@ -1,3 +1,6 @@
+
+let Future = Npm.require("fibers/future");
+
 /**
  * Reaction Order Methods
  */
@@ -523,5 +526,84 @@ Meteor.methods({
           });
       }
     });
+  },
+
+  /**
+   * orders/refunds/list
+   *
+   * @summary Get a list of refunds for a particular payment method.
+   * @param {Object} paymentMethod - paymentMethod object
+   * @return {null} no return value
+   */
+  "orders/refunds/list": function (paymentMethod) {
+    check(paymentMethod, Object);
+    this.unblock();
+
+    let future = new Future();
+    const processor = paymentMethod.processor.toLowerCase();
+
+    Meteor.call(`${processor}/refunds/list`, paymentMethod.transactionId, (error, result) => {
+      if (error) {
+        console.log("Did not load transactions", error);
+        future.return(error);
+      } else {
+        console.log("Loaded transactions?", result);
+        future.return(result);
+      }
+    });
+
+    return future.wait();
+  },
+
+  /**
+   * orders/applyRefund
+   *
+   * @summary Apply a refund to an already captured order
+   * @param {String} orderId - order object
+   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Number} amount - Amount of the refund, as a positive number
+   * @return {null} no return value
+   */
+  "orders/applyRefund": function (orderId, paymentMethod, amount) {
+    check(orderId, String);
+    check(paymentMethod, Object);
+    check(amount, Number);
+    this.unblock();
+
+    let order = ReactionCore.Collections.Orders.findOne(orderId);
+
+    Meteor[paymentMethod.processor].refund(paymentMethod.transactionId, amount,
+      function (error, result) {
+        let transactionId = paymentMethod.transactionId;
+
+        if (result.saved) {
+          ReactionCore.Collections.Orders.update({
+            "_id": orderId,
+            "billing.paymentMethod.transactionId": transactionId
+          }, {
+            $push: {
+              "billing.$.paymentMethod.transactions": result
+            }
+          });
+        } else {
+          ReactionCore.Log.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
+
+          ReactionCore.Collections.Orders.update({
+            "_id": orderId,
+            "billing.paymentMethod.transactionId": transactionId
+          }, {
+            $set: {
+              "billing.$.paymentMethod.mode": "capture",
+              "billing.$.paymentMethod.status": "error"
+            },
+            $push: {
+              "billing.$.paymentMethod.transactions": result
+            }
+          });
+
+          throw new Meteor.Error(
+            "Failed to capture transaction");
+        }
+      });
   }
 });
