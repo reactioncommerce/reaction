@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
-  version: "1.1.1",
+  version: "1.2.0",
   git: "https://github.com/reactioncommerce/reaction-analytics.git"
 });
 
