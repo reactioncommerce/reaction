@@ -25,3 +25,18 @@ Router.onRun(function() {
   }
   this.next();
 });
+
+// Using onBeforeAction and not onRun as selectedProductId() is null the first time you view the page
+Router.onBeforeAction(function() {
+  if (this.route.getName() == 'product') {
+    if (selectedProductId()) {
+      let analyticsEvent = {
+        eventType: 'view',
+        value: selectedProductId(),
+        label: 'view product details'
+      }
+      ReactionCore.Collections.AnalyticsEvents.insert(analyticsEvent)
+    }
+  }
+  this.next()
+})

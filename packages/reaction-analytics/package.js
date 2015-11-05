@@ -36,6 +36,7 @@ Package.on_use(function (api, where) {
   api.use("ejson");
   api.use("spacebars");
   api.use("check");
+  api.use("ecmascript");
 
   // meteor add-on packages
 
@@ -47,7 +48,8 @@ Package.on_use(function (api, where) {
 
   api.addFiles([
     "common/routing.js",
-    "common/collections.js"
+    "common/collections.js",
+    "common/hooks.js"
   ], ["client", "server"]);
 
   api.addFiles([
