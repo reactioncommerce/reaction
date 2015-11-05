@@ -1,4 +1,8 @@
 ReactionCore.Schemas.Inventory = new SimpleSchema({
+  _id: {
+    type: String,
+    optional: true // inserted by mongo, we need it for schema validation
+  },
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
@@ -11,8 +15,12 @@ ReactionCore.Schemas.Inventory = new SimpleSchema({
   },
   variantId: {
     type: String,
-    optional: true,
     index: true
+  },
+  orderId: {
+    type: String,
+    index: true,
+    optional: true
   },
   workflow: {
     type: ReactionCore.Schemas.Workflow,
@@ -42,8 +50,7 @@ ReactionCore.Schemas.Inventory = new SimpleSchema({
         return new Date;
       }
       this.unset();
-    },
-    denyUpdate: true
+    }
   },
   updatedAt: {
     type: Date,
@@ -53,3 +60,10 @@ ReactionCore.Schemas.Inventory = new SimpleSchema({
     optional: true
   }
 });
+
+/**
+ * InventoryItems Schema
+ * used in check by inventory/addReserve method
+ */
+
+ReactionCore.Schemas.InventoryItems = new SimpleSchema([ReactionCore.Schemas.Inventory]);

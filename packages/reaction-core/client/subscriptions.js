@@ -38,11 +38,12 @@ cart.observeChanges({
 /**
  * General Subscriptions
  */
-ReactionCore.Subscriptions.Packages =
-  Meteor.subscribe("Packages");
+ReactionCore.Subscriptions.Packages = Meteor.subscribe("Packages");
 
-ReactionCore.Subscriptions.Tags =
-  Meteor.subscribe("Tags");
+ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
 
-ReactionCore.Subscriptions.Media =
-  Meteor.subscribe("Media");
+ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
+
+// admin only
+
+ReactionCore.Subscriptions.Inventory = Meteor.subscribe("Inventory");

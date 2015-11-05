@@ -12,14 +12,22 @@ PackageFixture = class PackageFixture {
    * @summary imports collection fixture data
    * @param {Object} collection - The collection to import
    * @param {String} jsonFile - path to json File.
+   * @param {Object} options - accept: {multi:true}
    * @return {Boolean} boolean -  returns true on insert
    */
-  loadData(collection, jsonFile) {
+  loadData(collection, jsonFile, options) {
     check(collection, Mongo.Collection);
     check(jsonFile, Match.Optional(String));
+    check(options, Match.Optional(Object));
+    let multi = false;
 
-    // prevent import if existing collection data
-    if (collection.find().count() > 0) {
+    if (options) {
+      if (options.multi === true) {
+        multi = true;
+      }
+    }
+
+    if (collection.find().count() > 0 && multi !== true) {
       return false;
     }
 
