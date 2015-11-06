@@ -440,9 +440,6 @@ Meteor.methods({
       delete product.publishedAt;
       delete product.handle;
       product.isVisible = false;
-      //if (product.title) {
-      //  product.title = product.title + handleCount;
-      //}
       if (product.title) {
         product.handle = ReactionCore.createHandle(
           getSlug(product.title),
@@ -748,6 +745,8 @@ Meteor.methods({
     let existingHandles = Products.find({
       handle: tag.slug
     }).fetch();
+    // this is needed to take care about product's handle which(product) was
+    // previously tagged.
     for (let currentProduct of existingHandles) {
       let currentProductHandle = ReactionCore.createHandle(
         getSlug(currentProduct.title),
