@@ -109,7 +109,7 @@ ReactionImport.tag = function (key, tag) {
 }
 
 ReactionImport.process = function (json, keys, callback) {
-  let data = JSON.parse(json);
+  let data = EJSON.parse(json);
   for (let i = 0; i < data.length; i++) {
     let key = {};
     for (let j = 0; i < keys.length; j++) {

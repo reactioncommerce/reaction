@@ -155,9 +155,6 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
 
-  // import fixture data
-  api.addFiles("server/fixtures.js", "server");
-
   // schemas
   api.addFiles("common/schemas/address.js");
   api.addFiles("common/schemas/layouts.js");
@@ -179,6 +176,10 @@ Package.onUse(function (api) {
 
   // collection hooks
   api.addFiles("common/collections/hooks/hooks.js");
+
+  // import fixture data
+  api.addFiles("server/import.js", "server");
+  api.addFiles("server/fixtures.js", "server");
 
   // security
   api.addFiles("server/browserPolicy.js", "server");
@@ -304,6 +305,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/console/icon/icon.html", "client");
   api.addFiles("client/templates/dashboard/console/icon/icon.js", "client");
 
+  api.addFiles("client/templates/dashboard/import/import.html", "client");
+  api.addFiles("client/templates/dashboard/import/import.js", "client");
+
   api.addFiles("client/templates/dashboard/orders/orders.html", "client");
   api.addFiles("client/templates/dashboard/orders/orders.js", "client");
 
@@ -411,6 +415,7 @@ Package.onUse(function (api) {
 
   // Exports
   api.export("ReactionCore");
+  api.export("ReactionImport");
   api.export("ReactionRegistry", "server");
   api.export("getSlug");
   // legacy Exports (TODO: move to ReactionCore)
