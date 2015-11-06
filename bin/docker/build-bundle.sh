@@ -18,6 +18,9 @@ cp -r --parents include/ /usr
 # install npm
 curl https://www.npmjs.com/install.sh | sh
 
+# install forever
+npm install -g forever
+
 # build the meteor application
 cd /var/src
 /usr/bin/build-meteor.sh
