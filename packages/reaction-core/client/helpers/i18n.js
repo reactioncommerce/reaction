@@ -184,7 +184,8 @@ Template.registerHelper("currencySymbol", function () {
  * @return {String} returns locale formatted and exchange rate converted values
  */
 Template.registerHelper("formatPrice", function (currentPrice) {
-  let actualPrice;
+  const { Local } = ReactionCore;
+  // let actualPrice;
   let formattedPrice;
   let price;
 
@@ -193,7 +194,7 @@ Template.registerHelper("formatPrice", function (currentPrice) {
   // TODO: Refactor
   try {
     let prices = currentPrice.split(" - ");
-    for (actualPrice of prices) {
+    for (let actualPrice of prices) {
       let originalPrice = actualPrice;
       if (ReactionCore.Locale) {
         if (ReactionCore.Locale.currency) {

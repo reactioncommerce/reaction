@@ -89,7 +89,7 @@ Meteor.methods({
       }
     }
     // geocode reverse ip lookup
-    let geoCountryCode = geo.geoip(clientAddress).countryCode;
+    let geoCountryCode = geo.geoip(clientAddress).country_code;
 
     // countryCode either from geo or defaults
     let countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
