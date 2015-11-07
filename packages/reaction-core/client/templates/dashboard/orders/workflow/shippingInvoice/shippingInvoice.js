@@ -54,10 +54,11 @@ Template.coreOrderShippingInvoice.events({
   "submit form[name=refund]": (event, template) => {
     event.preventDefault();
 
-    let order = template.order;
-    let refund = parseFloat(event.target.refund_amount.value) || 0;
+    const order = template.order;
+    const refund = parseFloat(event.target.refund_amount.value) || 0;
+    const paymentMethod = order.billing[0].paymentMethod;
 
-    Meteor.call("orders/applyRefund", order._id, order.billing[0].paymentMethod, refund, (error) => {
+    Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
       if (error) {
         // Show error
       }
@@ -156,7 +157,12 @@ Template.coreOrderShippingInvoice.helpers({
 
   refunds() {
     let refunds = Template.instance().refunds.get();
-    return refunds.reverse();
+
+    if (_.isArray(refunds)) {
+      return refunds.reverse();
+    }
+
+    return false;
   },
 
   adjustedTotal() {
@@ -164,12 +170,11 @@ Template.coreOrderShippingInvoice.helpers({
     let paymentMethod = template.order.billing[0].paymentMethod;
     let transactions = paymentMethod.transactions;
 
-    return _.reduce(transactions, (memo, transaction) => {
-      if (transaction.type === "refund") {
-        return memo - transaction.amount;
-      }
+    let refunds = Template.instance().refunds.get();
 
-      return memo;
+
+    return _.reduce(refunds, (memo, refund) => {
+      return memo - Math.abs(refund.amount);
     }, paymentMethod.amount);
   },
 

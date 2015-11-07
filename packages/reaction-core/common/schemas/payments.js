@@ -17,6 +17,11 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   transactionId: {
     type: String
   },
+  metadata: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   workflow: {
     type: ReactionCore.Schemas.Workflow,
     optional: true
@@ -31,11 +36,15 @@ ReactionCore.Schemas.PaymentMethod = new SimpleSchema({
   createdAt: {
     type: Date,
     autoValue: function () {
-      if (this.isUpdate && !this.isSet) {
+      if (this.isInsert) {
         return new Date;
+      } else if (this.isUpsert) {
+        return {
+          $setOnInsert: new Date
+        };
       }
-      this.unset();
-    }
+    },
+    denyUpdate: true
   },
   updatedAt: {
     type: Date,
