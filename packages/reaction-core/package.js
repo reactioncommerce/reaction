@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.4",
+  version: "0.9.5",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -14,8 +14,6 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2.1");
 
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("ecmascript");
@@ -26,6 +24,7 @@ Package.onUse(function (api) {
   api.use("tracker");
 
   // meteor add-on packages
+  api.use("ddp-rate-limiter");
   api.use("underscore");
   api.use("logging");
   api.use("reload");
@@ -173,7 +172,6 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/tags.js");
   api.addFiles("common/schemas/cart.js");
   api.addFiles("common/schemas/orders.js");
-  api.addFiles("common/schemas/inventory.js");
   api.addFiles("common/schemas/translations.js");
 
   // collections
@@ -192,7 +190,6 @@ Package.onUse(function (api) {
 
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
-  api.addFiles("common/methods/inventory.js");
   api.addFiles("common/methods/cart.js", "client");
 
   // publications
@@ -203,7 +200,6 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
-  api.addFiles("server/publications/inventory.js", "server");
   api.addFiles("server/publications/translations.js", "server");
 
   // methods

@@ -182,10 +182,3 @@ ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translat
 ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
 
 ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
-
-/**
-* ReactionCore Collections Inventory
-*/
-ReactionCore.Collections.Inventory = new Mongo.Collection("Inventory");
-
-ReactionCore.Collections.Inventory.attachSchema(ReactionCore.Schemas.Inventory);
