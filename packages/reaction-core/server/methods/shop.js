@@ -52,7 +52,6 @@ Meteor.methods({
    */
   "shop/getLocale": function () {
     this.unblock();
-    let exchangeRate;
     let clientAddress;
     let geo = new GeoCoder();
     let result = {};
@@ -89,7 +88,8 @@ Meteor.methods({
       }
     }
     // geocode reverse ip lookup
-    let geoCountryCode = geo.geoip(clientAddress).country_code;
+    let geoCountryCode = geo.geoip('212.164.231.32').country_code;
+    // let geoCountryCode = geo.geoip(clientAddress).country_code;
 
     // countryCode either from geo or defaults
     let countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
@@ -98,28 +98,45 @@ Meteor.methods({
     result.currency = {};
     result.locale = shop.locales.countries[countryCode];
 
+    // to return default currency if rates will failed, we need to bring access
+    // to this data
+    result.shopCurrency = shop.currencies[shop.currency];
+
     // check if locale has a currency defined
-    if (result.locale) {
-      if (result.locale.currency) {
-        localeCurrency = result.locale.currency.split(",");
-      }
+    if (typeof result.locale === 'object' &&
+      typeof result.locale.currency === 'string') {
+      localeCurrency = result.locale.currency.split(",");
     }
 
     // localeCurrency is an array of allowed currencies
     _.each(localeCurrency, function (currency) {
+      let exchangeRate;
       if (shop.currencies[currency]) {
         result.currency = shop.currencies[currency];
         // only fetch rates if locale and shop currency are not equal
         // if shop.curency = locale currency the rate is 1
         if (shop.currency !== currency) {
-          result.currency.exchangeRate = Meteor.call(
-            "shop/getCurrencyRates", currency);
+          try {
+            exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
+          } catch(error) {
+            if (error.message === 'notConfigured') {
+              ReactionCore.Log.warn(
+                "Open Exchange Rates AppId not configured. Configure for current rates."
+              );
+            }
 
-          if (!exchangeRate) {
-            ReactionCore.Log.warn(
-              "Failed to fetch rate exchange rates.");
+            // todo get rates from db
           }
-          result.currency.exchangeRate = exchangeRate.data;
+          if (!exchangeRate) {
+            ReactionCore.Log.warn("Failed to fetch rate exchange rates.");
+            // exchangeRate = 1;
+          }
+          if (typeof exchangeRate === 'object' &&
+            typeof exchangeRate.data === 'object') {
+            result.currency.exchangeRate = exchangeRate.data;
+          } else {
+            result.currency.exchangeRate = exchangeRate;
+          }
         }
       }
     });
@@ -161,22 +178,32 @@ Meteor.methods({
       }
     });
 
-    // shop open exchange rates appId
-    let openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
-
     // update Shops.currencies[currencyKey].rate
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id, but default to 1
-    if (!openexchangeratesAppId) {
-      ReactionCore.Log.warn(
-        "Open Exchange Rates AppId not configured. Configure for current rates."
-      );
+    if (typeof shopSettings.settings.openexchangerates !== 'object') {
+      throw new Error('notConfigured');
     } else {
-      // we'll update all the available rates in Shops.currencies whenever we get a rate request, using base currency
-      let rateUrl =
-        `https://openexchangerates.org/api/latest.json?base=${baseCurrency}&app_id=${openexchangeratesAppId}`;
-      let rateResults = HTTP.get(rateUrl);
-      let exchangeRates = rateResults.data.rates;
+      // shop open exchange rates appId
+      const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
+
+      // we'll update all the available rates in Shops.currencies whenever we
+      // get a rate request, using base currency
+      const rateUrl = `https://openexchangerates.org/api/latest.json?base=${
+        baseCurrency}&app_id=${openexchangeratesAppId}`;
+      let rateResults;
+
+      // We can get an error if we try to change the base currency with a simple
+      // account
+      try {
+        rateResults = HTTP.get(rateUrl);
+      } catch (error) {
+        ReactionCore.Log.warn('openexchangerates.org: ' +
+          error.response.data.description);
+        return false;
+      }
+
+      const exchangeRates = rateResults.data.rates;
 
       _.each(shopCurrencies, function (currencyConfig, currencyKey) {
         if (exchangeRates[currencyKey] !== undefined) {
@@ -193,6 +220,85 @@ Meteor.methods({
     }
     // default conversion rate 1 to 1
     return 1;
+  },
+
+  /**
+   * @method shop/downloadCurrencyRates
+   * @summary downloads the latest currency rates from
+   * https://openexchangerates.org
+   * usage: Meteor.call("shop/downloadCurrencyRates")
+   * @fires ReactionCore.Collections.Shops#update
+   */
+  "downloadCurrencyRate": function () {
+    this.unblock();
+
+    // debugger;
+    const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
+      fields: {
+        addressBook: 1,
+        locales: 1,
+        currencies: 1,
+        currency: 1
+      }
+    });
+
+    const baseCurrency = shop.currency || "USD";
+    const shopCurrencies = shop.currencies;
+    const shopId = ReactionCore.getShopId();
+
+    // fetch shop settings for api auth credentials
+    const shopSettings = ReactionCore.Collections.Packages.findOne({
+      shopId: shopId,
+      name: "core"
+    }, {
+      fields: {
+        settings: 1
+      }
+    });
+
+    // update Shops.currencies[currencyKey].rate
+    // with current rates from Open Exchange Rates
+    // warn if we don't have app_id, but default to 1
+    if (typeof shopSettings.settings.openexchangerates !== 'object') {
+      throw new Error('notConfigured');
+    } else {
+      // shop open exchange rates appId
+      const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
+
+      // we'll update all the available rates in Shops.currencies whenever we
+      // get a rate request, using base currency
+      const rateUrl = `https://openexchangerates.org/api/latest.json?base=${
+        baseCurrency}&app_id=${openexchangeratesAppId}`;
+      let rateResults;
+
+      // We can get an error if we try to change the base currency with a simple
+      // account
+      try {
+        //rateResults = HTTP.get(rateUrl);
+        //throw new Error('error123');
+      } catch (error) {
+        ReactionCore.Log.error(error.message);
+        //ReactionCore.Log.error('openexchangerates.org: ' +
+        //  error.response.data.description);
+        //throw new Error();
+      }
+
+      const exchangeRates = rateResults.data.rates;
+
+      _.each(shopCurrencies, function (currencyConfig, currencyKey) {
+        if (exchangeRates[currencyKey] !== undefined) {
+          let rateUpdate = {
+            // todo do we need to write update time to db?
+            //'currencies.updatedAt': new Date()
+          };
+          let collectionKey = `currencies.${currencyKey}.rate`;
+          rateUpdate[collectionKey] = exchangeRates[currencyKey];
+          ReactionCore.Collections.Shops.update(shopId, {
+            $set: rateUpdate
+          });
+        }
+      });
+    }
   },
 
   /**

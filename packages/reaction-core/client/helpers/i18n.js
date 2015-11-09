@@ -184,47 +184,56 @@ Template.registerHelper("currencySymbol", function () {
  * @return {String} returns locale formatted and exchange rate converted values
  */
 Template.registerHelper("formatPrice", function (currentPrice) {
-  const { Local } = ReactionCore;
-  // let actualPrice;
-  let formattedPrice;
-  let price;
-
+  const { Locale } = ReactionCore;
   localeDep.depend();
 
-  // TODO: Refactor
-  try {
-    let prices = currentPrice.split(" - ");
-    for (let actualPrice of prices) {
-      let originalPrice = actualPrice;
-      if (ReactionCore.Locale) {
-        if (ReactionCore.Locale.currency) {
-          if (ReactionCore.Locale.exchangeRate) {
-            if (ReactionCore.Locale.exchangeRate.rate) {
-              actualPrice = actualPrice * ReactionCore.Locale.exchangeRate.rate;
-            }
-          }
-        }
-        formattedPrice = accounting.formatMoney(actualPrice, ReactionCore.Locale
-          .currency);
-        price = currentPrice.replace(originalPrice, formattedPrice);
+  if (typeof Locale !== 'object' || typeof Locale.currency !== 'object') {
+    // locale not yet loaded, so we don't need to return anything.
+    return false;
+  }
+
+  // for the cases then we have only one price. It is a number.
+  currentPrice = currentPrice.toString();
+  let price = 0;
+  const prices = ~currentPrice.indexOf(' - ') ?
+    currentPrice.split(" - ") :
+    [currentPrice];
+
+  // basic "for" is faster then "for ...of" for arrays. We need more speed here
+  for (let i = 0; i < prices.length; i++) {
+    let originalPrice = prices[i];
+    try {
+      // we know the locale, but we don't know exchange rate. In that case we
+      // should return to default shop currency
+      if (typeof Locale.currency.exchangeRate !== 'number') {
+        throw new Error('exchangeRateUndefined');
       }
-    }
-  } catch (error) {
-    ReactionCore.Log.debug("currency error, fallback to shop currency");
-    if (ReactionCore.Locale) {
-      if (ReactionCore.Locale.currency) {
-        if (ReactionCore.Locale.exchangeRate) {
-          if (ReactionCore.Locale.exchangeRate.rate) {
-            price = price * ReactionCore.Locale.exchangeRate.Rate;
-            price = accounting.formatMoney(price, ReactionCore.Locale.currency);
-          }
-        } else {
-          price = accounting.formatMoney(currentPrice, ReactionCore.Locale.currency);
-        }
-      }
+      prices[i] *= Locale.currency.exchangeRate;
+
+      price = _formatPrice(price, originalPrice, prices[i], Locale.currency);
+      // todo add special option for currency like ruble (10 - 20 руб.)
+    } catch (error) {
+      ReactionCore.Log.debug("currency error, fallback to shop currency");
+      price = _formatPrice(price, originalPrice, prices[i], Locale.shopCurrency);
     }
   }
   return price;
+
+  /**
+   * @private
+   */
+  function _formatPrice(price, originalPrice, actualPrice, currency) {
+    // this checking for Locale.shopCurrency mostly
+    if (typeof currency !== 'object') {
+      return false;
+    }
+    // accounting api: http://openexchangerates.github.io/accounting.js/
+    const formattedPrice = accounting.formatMoney(actualPrice, currency);
+
+    return ((price === 0) ?
+      currentPrice.replace(originalPrice, formattedPrice) :
+      price.replace(originalPrice, formattedPrice));
+  }
 });
 
 ReactionCore.Currency = {};
@@ -234,7 +243,7 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
   let format = _.extend({}, ReactionCore.Locale.currency, {format: "%v"});
 
   try {
-    price = currentPrice * ReactionCore.Locale.exchangeRate.Rate;
+    price = currentPrice * ReactionCore.Locale.currency.exchangeRate;
   } catch (error) {
     ReactionCore.Log.debug("currency error, fallback to shop currency");
   }

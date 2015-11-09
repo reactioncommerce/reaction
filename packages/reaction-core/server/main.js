@@ -38,12 +38,39 @@ ReactionCore.Log = logger.bunyan.createLogger({
 // set logging level
 ReactionCore.Log.level(isDebug);
 
+
+SyncedCron.add({
+  name: 'Call "shop/downloadCurrencyRates" Method',
+  schedule: parser => {
+    // parser is a later.parse object
+    // http://bunkat.github.io/later/parsers.html
+    return parser.text('every 30 seconds');
+  },
+  job: intendedAt => {
+    try {
+      Meteor.call('downloadCurrencyRate');
+    } catch (error) {
+      if (error.message === 'notConfigured') {
+        ReactionCore.Log.warn(
+          "Open Exchange Rates AppId not configured. Configure for current rates."
+        );
+      }
+    }
+    //console.log('downloadCurrencyRate: finished;');
+    //console.log('job should be running at:' + intendedAt);
+    //return true;
+  }
+});
+
 /**
  * ReactionCore methods (server)
  */
 
 _.extend(ReactionCore, {
   init: function () {
+    // code to run on server at startup
+    SyncedCron.start();
+
     try {
       ReactionRegistry.loadFixtures();
     } catch (error) {
