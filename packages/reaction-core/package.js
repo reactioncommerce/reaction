@@ -230,6 +230,9 @@ Package.onUse(function (api) {
   api.addFiles("client/helpers/permissions.js", "client");
   api.addFiles("client/helpers/utilities.js", "client");
 
+  api.addFiles("client/components/numericInput/numericInput.html", "client");
+  api.addFiles("client/components/numericInput/numericInput.js", "client");
+
   api.addFiles("client/templates/layout/layout.html", "client");
   api.addFiles("client/templates/layout/layout.js", "client");
 

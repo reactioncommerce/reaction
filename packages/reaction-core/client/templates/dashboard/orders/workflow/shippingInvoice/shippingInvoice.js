@@ -4,6 +4,7 @@ Template.coreOrderShippingInvoice.onCreated(() => {
 
   template.orderDep = new Tracker.Dependency;
   template.refunds = new ReactiveVar([]);
+  template.refundAmount = new ReactiveVar(0.00);
 
   function getOrder(orderId) {
     template.orderDep.depend();
@@ -20,6 +21,27 @@ Template.coreOrderShippingInvoice.onCreated(() => {
       }
     });
   });
+});
+
+Template.coreOrderShippingInvoice.onRendered(() => {
+  let template = Template.instance();
+  let paymentMethod = template.order.billing[0].paymentMethod;
+  let refunds = Template.instance().refunds.get();
+  const currency = ReactionCore.Locale.currency;
+
+  const lessAmount = _.reduce(refunds, (memo, refund) => {
+    return memo - Math.abs(refund.amount);
+  }, paymentMethod.amount);
+
+  if (currency) {
+    $("input[name=refund_amount]").autoNumeric({
+      aSep: currency.thousand,
+      dGroup: currency.grouping,
+      aDec: currency.decimal,
+      vMax: lessAmount
+    });
+  }
+
 });
 
 /**
@@ -55,14 +77,18 @@ Template.coreOrderShippingInvoice.events({
     event.preventDefault();
 
     const order = template.order;
-    const refund = parseFloat(event.target.refund_amount.value) || 0;
+    const refund = accounting.unformat(event.target.refund_amount.value) || 0;
     const paymentMethod = order.billing[0].paymentMethod;
 
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
-      if (error) {
-        // Show error
-      }
-    });
+    if (confirm(`Apply refund of ${refund} to this order?`)) {
+      Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+        if (error) {
+          // Show error
+        }
+
+        event.target.refund_amount.value = "";
+      });
+    }
   },
 
   "click [data-event-action=makeAdjustments]": (event, template) => {
@@ -78,6 +104,10 @@ Template.coreOrderShippingInvoice.events({
 
     Meteor.call("orders/capturePayments", template.order._id);
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", template.order._id);
+  },
+
+  "change input[name=refund_amount]": (event, template) => {
+    template.refundAmount.set(accounting.unformat(event.target.value));
   }
 });
 
@@ -86,7 +116,9 @@ Template.coreOrderShippingInvoice.events({
  * coreOrderShippingInvoice helpers
  */
 Template.coreOrderShippingInvoice.helpers({
-
+  refundAmount() {
+    return Template.instance().refundAmount;
+  },
   /**
    * Discount
    * @return {Number} current discount amount
@@ -165,7 +197,31 @@ Template.coreOrderShippingInvoice.helpers({
     return false;
   },
 
+  /**
+   * Get the total after all refunds
+   * @return {Number} the amount after all refunds
+   */
   adjustedTotal() {
+    const template = Template.instance();
+    const paymentMethod = template.order.billing[0].paymentMethod;
+    const refunds = Template.instance().refunds.get();
+
+    let lessAmount =  _.reduce(refunds, (memo, refund) => {
+      return memo - Math.abs(refund.amount);
+    }, paymentMethod.amount);
+
+    return lessAmount;
+  },
+
+  refundSubmitDisabled() {
+    const amount = Template.instance().refundAmount.get() || 0
+    if (amount === 0) {
+      return "disabled";
+    }
+  },
+
+
+  adjustedTotal2() {
     let template = Template.instance();
     let paymentMethod = template.order.billing[0].paymentMethod;
     let transactions = paymentMethod.transactions;
@@ -173,9 +229,20 @@ Template.coreOrderShippingInvoice.helpers({
     let refunds = Template.instance().refunds.get();
 
 
-    return _.reduce(refunds, (memo, refund) => {
+    template.test.set(_.reduce(refunds, (memo, refund) => {
       return memo - Math.abs(refund.amount);
-    }, paymentMethod.amount);
+    }, paymentMethod.amount));
+
+    console.log();
+
+    return template.test
+  },
+
+  refundSubmitDisabled() {
+    const amount = Template.instance().refundAmount.get() || 0
+    if (amount === 0) {
+      return "disabled";
+    }
   },
 
   /**
@@ -235,8 +302,6 @@ Template.coreOrderShippingInvoice.helpers({
 
     return items;
   },
-
-
 
   /**
    * Media - find meda based on a variant

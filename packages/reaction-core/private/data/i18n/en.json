@@ -120,8 +120,10 @@
                   "makeAdjustments": "Make Adjustments",
                   "capturePayment": "Capture Payment",
                   "paymentCaptured": "Payment Captured",
+                  "capturedTotal": "Captured Total",
                   "refundAmount": "Refund Amount",
-                  "applyRefund": "Apply Refund"
+                  "applyRefund": "Apply Refund",
+                  "adjustedTotal": "Adjusted Total"
                 },
                 "orderShipping": {
                     "shipTo": "Ship To",
