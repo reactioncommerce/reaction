@@ -40,7 +40,7 @@ ReactionCore.Log.level(isDebug);
 
 
 SyncedCron.add({
-  name: 'Call "shop/downloadCurrencyRates" Method',
+  name: "Call 'shop/fetchCurrencyRates' Method",
   schedule: parser => {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html
@@ -48,7 +48,7 @@ SyncedCron.add({
   },
   job: intendedAt => {
     try {
-      Meteor.call('downloadCurrencyRate');
+      Meteor.call('fetchCurrencyRate');
     } catch (error) {
       if (error.message === 'notConfigured') {
         ReactionCore.Log.warn(
@@ -56,7 +56,7 @@ SyncedCron.add({
         );
       }
     }
-    //console.log('downloadCurrencyRate: finished;');
+    //console.log('fetchCurrencyRate: finished;');
     //console.log('job should be running at:' + intendedAt);
     //return true;
   }
@@ -68,7 +68,6 @@ SyncedCron.add({
 
 _.extend(ReactionCore, {
   init: function () {
-    // code to run on server at startup
     SyncedCron.start();
 
     try {

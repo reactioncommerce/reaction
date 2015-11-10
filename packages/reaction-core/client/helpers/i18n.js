@@ -181,6 +181,7 @@ Template.registerHelper("currencySymbol", function () {
  * @summary return shop /locale specific formatted price
  * also accepts a range formatted with " - "
  * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
+ * @todo add special option for currency like ruble (10 - 20 руб.)
  * @return {String} returns locale formatted and exchange rate converted values
  */
 Template.registerHelper("formatPrice", function (currentPrice) {
@@ -210,30 +211,16 @@ Template.registerHelper("formatPrice", function (currentPrice) {
       }
       prices[i] *= Locale.currency.exchangeRate;
 
-      price = _formatPrice(price, originalPrice, prices[i], Locale.currency);
-      // todo add special option for currency like ruble (10 - 20 руб.)
+      price = _formatPrice(price, originalPrice, prices[i],
+        currentPrice, Locale.currency);
     } catch (error) {
       ReactionCore.Log.debug("currency error, fallback to shop currency");
-      price = _formatPrice(price, originalPrice, prices[i], Locale.shopCurrency);
+      price = _formatPrice(price, originalPrice, prices[i],
+        currentPrice, Locale.shopCurrency);
     }
   }
+
   return price;
-
-  /**
-   * @private
-   */
-  function _formatPrice(price, originalPrice, actualPrice, currency) {
-    // this checking for Locale.shopCurrency mostly
-    if (typeof currency !== 'object') {
-      return false;
-    }
-    // accounting api: http://openexchangerates.github.io/accounting.js/
-    const formattedPrice = accounting.formatMoney(actualPrice, currency);
-
-    return ((price === 0) ?
-      currentPrice.replace(originalPrice, formattedPrice) :
-      price.replace(originalPrice, formattedPrice));
-  }
 });
 
 ReactionCore.Currency = {};
@@ -252,3 +239,19 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
 
   return price;
 };
+
+/**
+ * @private
+ */
+function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency) {
+  // this checking for Locale.shopCurrency mostly
+  if (typeof currency !== 'object') {
+    return false;
+  }
+  // accounting api: http://openexchangerates.github.io/accounting.js/
+  const formattedPrice = accounting.formatMoney(actualPrice, currency);
+
+  return ((price === 0) ?
+    currentPrice.replace(originalPrice, formattedPrice) :
+    price.replace(originalPrice, formattedPrice));
+}
