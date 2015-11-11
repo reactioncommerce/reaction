@@ -43,6 +43,12 @@ const OrderHelper = {
       };
       break;
 
+    case "canceled":
+      query = {
+        "workflow.status": "canceled"
+      };
+      break;
+
     // Orders that have been refunded partially or fully
     case "refunded":
       query = {
