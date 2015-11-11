@@ -39,7 +39,7 @@ ReactionCore.Log = logger.bunyan.createLogger({
 ReactionCore.Log.level(isDebug);
 
 
-SyncedCron.add({
+/*SyncedCron.add({
   name: "Call 'shop/fetchCurrencyRates' Method",
   schedule: parser => {
     // parser is a later.parse object
@@ -56,11 +56,8 @@ SyncedCron.add({
         );
       }
     }
-    //console.log('fetchCurrencyRate: finished;');
-    //console.log('job should be running at:' + intendedAt);
-    //return true;
   }
-});
+});*/
 
 /**
  * ReactionCore methods (server)
@@ -68,7 +65,10 @@ SyncedCron.add({
 
 _.extend(ReactionCore, {
   init: function () {
-    SyncedCron.start();
+    // Meteor.publish('JobQueue', function () { return Jobs.find({}); });
+    ReactionCore.Log.info("JobServer started:", Jobs.startJobServer());
+    Jobs.setLogStream(process.stdout);
+    //SyncedCron.start();
 
     try {
       ReactionRegistry.loadFixtures();

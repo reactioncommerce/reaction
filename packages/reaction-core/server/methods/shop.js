@@ -157,10 +157,11 @@ Meteor.methods({
    * usage: Meteor.call("shop/fetchCurrencyRates")
    * @fires ReactionCore.Collections.Shops#update
    */
-  "fetchCurrencyRate": function () {
+  "shop/fetchCurrencyRate": function () {
     this.unblock();
 
-    const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
+    const shopId = ReactionCore.getShopId();
+    const shop = ReactionCore.Collections.Shops.findOne(shopId, {
       fields: {
         addressBook: 1,
         locales: 1,
@@ -168,10 +169,8 @@ Meteor.methods({
         currency: 1
       }
     });
-
     const baseCurrency = shop.currency || "USD";
     const shopCurrencies = shop.currencies;
-    const shopId = ReactionCore.getShopId();
 
     // fetch shop settings for api auth credentials
     const shopSettings = ReactionCore.Collections.Packages.findOne({
@@ -203,12 +202,12 @@ Meteor.methods({
       // account
       try {
         //rateResults = HTTP.get(rateUrl);
-        //throw new Error('error123');
+        throw new Meteor.Error(403, "error-1123");
       } catch (error) {
-        ReactionCore.Log.error(error.message);
+        //ReactionCore.Log.error(error.message);
         //ReactionCore.Log.error('openexchangerates.org: ' +
         //  error.response.data.description);
-        //throw new Error();
+        throw new Error();
       }
 
       const exchangeRates = rateResults.data.rates;
@@ -217,12 +216,47 @@ Meteor.methods({
         if (exchangeRates[currencyKey] !== undefined) {
           let rateUpdate = {
             // todo do we need to write update time to db?
-            //'currencies.updatedAt': new Date()
+            'currencies.updatedAt': new Date(rateResults.data.timestamp * 1000)
           };
           let collectionKey = `currencies.${currencyKey}.rate`;
           rateUpdate[collectionKey] = exchangeRates[currencyKey];
           ReactionCore.Collections.Shops.update(shopId, {
             $set: rateUpdate
+          });
+        }
+      });
+    }
+  },
+
+  /**
+   * @method shop/flushCurrencyRates
+   * @description Method calls by cron job
+   * @summary It removes exchange rates that are too old
+   * usage: Meteor.call("shop/flushCurrencyRates")
+   * @fires ReactionCore.Collections.Shops#update
+   */
+  "shop/flushCurrencyRate": function () {
+    this.unblock();
+
+    const shopId = ReactionCore.getShopId();
+    const shop = ReactionCore.Collections.Shops.findOne(shopId, {
+      fields: {
+        currencies: 1
+      }
+    });
+    let updatedAt = shop.currencies.updatedAt;
+    updatedAt.setHours(updatedAt.getHours() + 48);
+    const now = new Date();
+    //if (now > updatedAt) {
+    if (now < updatedAt) { // todo remove this line
+      _.each(shop.currencies, function (currencyConfig, currencyKey) {
+        let rate = `currencies.${currencyKey}.rate`;
+
+        if (typeof currencyConfig.rate === 'number') {
+          ReactionCore.Collections.Shops.update(shopId, {
+            $unset: {
+              [rate]: ""
+            }
           });
         }
       });

@@ -72,7 +72,8 @@ Package.onUse(function (api) {
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.2.0");
-  api.use("percolate:synced-cron@1.3.0");
+  // api.use("percolate:synced-cron@1.3.0");
+  api.use("vsivsi:job-collection@1.2.3");
 
   // imply exports package vars
   api.imply("less");
@@ -100,7 +101,8 @@ Package.onUse(function (api) {
   api.imply("utilities:avatar");
   api.imply("meteorhacks:ssr");
   // for debugging purpose it need to be implied:
-  api.imply("percolate:synced-cron@1.3.0");
+  // api.imply("percolate:synced-cron@1.3.0");
+  api.imply("vsivsi:job-collection@1.2.3");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -188,6 +190,9 @@ Package.onUse(function (api) {
   // security
   api.addFiles("server/browserPolicy.js", "server");
   api.addFiles("server/security.js", "server");
+
+  // cron jobs
+  api.addFiles("server/jobs.js", "server");
 
   // common
   api.addFiles("common/router.js");
