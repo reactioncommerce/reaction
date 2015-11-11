@@ -36,8 +36,8 @@ Template.numericInput.onRendered(() => {
           dGroup: options.grouping,
           aSign: options.symbol,
           aDec: options.decimal,
-          vMax: options.maxValue,
-          vMin: options.minValue,
+          vMax: accounting.toFixed(options.maxValue, 2),
+          vMin: accounting.toFixed(options.minValue, 2),
           wEmpty: "sign"
         });
 
