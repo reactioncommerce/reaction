@@ -3,6 +3,8 @@ Template.coreOrderShippingInvoice.onCreated(() => {
   let currentData = Template.currentData();
 
   template.orderDep = new Tracker.Dependency;
+  template.refunds = new ReactiveVar([]);
+  template.refundAmount = new ReactiveVar(0.00);
 
   function getOrder(orderId) {
     template.orderDep.depend();
@@ -11,7 +13,35 @@ Template.coreOrderShippingInvoice.onCreated(() => {
 
   Tracker.autorun(() => {
     template.order = getOrder(currentData.orderId);
+    let paymentMethod = template.order.billing[0].paymentMethod;
+
+    Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
+      if (!error) {
+        template.refunds.set(result);
+      }
+    });
   });
+});
+
+Template.coreOrderShippingInvoice.onRendered(() => {
+  let template = Template.instance();
+  let paymentMethod = template.order.billing[0].paymentMethod;
+  let refunds = Template.instance().refunds.get();
+  const currency = ReactionCore.Locale.currency;
+
+  const lessAmount = _.reduce(refunds, (memo, refund) => {
+    return memo - Math.abs(refund.amount);
+  }, paymentMethod.amount);
+
+  if (currency) {
+    $("input[name=refund_amount]").autoNumeric({
+      aSep: currency.thousand,
+      dGroup: currency.grouping,
+      aDec: currency.decimal,
+      vMax: lessAmount
+    });
+  }
+
 });
 
 /**
@@ -25,7 +55,7 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "submit form": (event, template) => {
+  "submit form[name=capture]": (event, template) => {
     event.preventDefault();
 
     let order = template.order;
@@ -35,6 +65,30 @@ Template.coreOrderShippingInvoice.events({
         // Show error
       }
     });
+  },
+
+  /**
+   * Submit form
+   * @param  {Event} event - Event object
+   * @param  {Template} template - Blaze Template
+   * @return {void}
+   */
+  "submit form[name=refund]": (event, template) => {
+    event.preventDefault();
+
+    const order = template.order;
+    const refund = accounting.unformat(event.target.refund_amount.value) || 0;
+    const paymentMethod = order.billing[0].paymentMethod;
+
+    if (confirm(`Apply refund of ${refund} to this order?`)) {
+      Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+        if (error) {
+          // Show error
+        }
+
+        event.target.refund_amount.value = "";
+      });
+    }
   },
 
   "click [data-event-action=makeAdjustments]": (event, template) => {
@@ -50,6 +104,10 @@ Template.coreOrderShippingInvoice.events({
 
     Meteor.call("orders/capturePayments", template.order._id);
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", template.order._id);
+  },
+
+  "change input[name=refund_amount]": (event, template) => {
+    template.refundAmount.set(accounting.unformat(event.target.value));
   }
 });
 
@@ -58,7 +116,9 @@ Template.coreOrderShippingInvoice.events({
  * coreOrderShippingInvoice helpers
  */
 Template.coreOrderShippingInvoice.helpers({
-
+  refundAmount() {
+    return Template.instance().refundAmount;
+  },
   /**
    * Discount
    * @return {Number} current discount amount
@@ -118,6 +178,72 @@ Template.coreOrderShippingInvoice.helpers({
     return template.order.billing[0].paymentMethod.status === "completed";
   },
 
+  refundTransactions() {
+    let template = Template.instance();
+    let transactions = template.order.billing[0].paymentMethod.transactions;
+
+    return _.filter(transactions, (transaction) => {
+      return transaction.type === "refund";
+    });
+  },
+
+  refunds() {
+    let refunds = Template.instance().refunds.get();
+
+    if (_.isArray(refunds)) {
+      return refunds.reverse();
+    }
+
+    return false;
+  },
+
+  /**
+   * Get the total after all refunds
+   * @return {Number} the amount after all refunds
+   */
+  adjustedTotal() {
+    const template = Template.instance();
+    const paymentMethod = template.order.billing[0].paymentMethod;
+    const refunds = Template.instance().refunds.get();
+
+    let lessAmount =  _.reduce(refunds, (memo, refund) => {
+      return memo - Math.abs(refund.amount);
+    }, paymentMethod.amount);
+
+    return lessAmount;
+  },
+
+  refundSubmitDisabled() {
+    const amount = Template.instance().refundAmount.get() || 0
+    if (amount === 0) {
+      return "disabled";
+    }
+  },
+
+
+  adjustedTotal2() {
+    let template = Template.instance();
+    let paymentMethod = template.order.billing[0].paymentMethod;
+    let transactions = paymentMethod.transactions;
+
+    let refunds = Template.instance().refunds.get();
+
+
+    template.test.set(_.reduce(refunds, (memo, refund) => {
+      return memo - Math.abs(refund.amount);
+    }, paymentMethod.amount));
+
+    console.log();
+
+    return template.test
+  },
+
+  refundSubmitDisabled() {
+    const amount = Template.instance().refundAmount.get() || 0
+    if (amount === 0) {
+      return "disabled";
+    }
+  },
 
   /**
    * Order
@@ -176,8 +302,6 @@ Template.coreOrderShippingInvoice.helpers({
 
     return items;
   },
-
-
 
   /**
    * Media - find meda based on a variant

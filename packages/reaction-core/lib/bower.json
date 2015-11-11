@@ -12,7 +12,8 @@
     "openexchangerates.accounting": "https://github.com/openexchangerates/accounting.js.git",
     "openexchangerates.money": "https://github.com/openexchangerates/money.js.git",
     "draggabilly": "1.2.0",
-    "imagesloaded": "https://raw.githubusercontent.com/desandro/imagesloaded/v3.1.8/imagesloaded.pkgd.min.js"
+    "imagesloaded": "https://raw.githubusercontent.com/desandro/imagesloaded/v3.1.8/imagesloaded.pkgd.min.js",
+    "autoNumeric": "1.9.41"
   },
   "overrides": {
     "jquery": {
