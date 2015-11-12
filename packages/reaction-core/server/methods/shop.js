@@ -274,6 +274,52 @@ Meteor.methods({
   },
 
   /**
+   *
+   * @param modifier
+   * @param _id
+   */
+  "shop/editOpenExchangeRatesForm": function (modifier/*, _id*/) {
+    /*if (typeof modifier.$set["settings.google.apiKey"] === "string") {
+      const value = modifier.$set["settings.google.apiKey"];
+      check(value,
+        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+    }
+    if (typeof modifier.$set["settings.google.clientId"] === "string") {
+      check(modifier.$set["settings.google.clientId"],
+        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+    }
+    if (typeof modifier.$set["settings.openexchangerates.appId"] === "string") {
+      check(modifier.$set["settings.openexchangerates.appId"],
+        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+    }
+    if (typeof modifier.$set["settings.openexchangerates.refreshPeriod"] === "string") {
+      check(modifier.$set["settings.openexchangerates.refreshPeriod"],
+        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+    }*/
+    check(modifier.$set, {
+      "settings.google.apiKey": Match.Optional(String),
+      "settings.google.clientId": Match.Optional(String),
+      "settings.openexchangerates.appId": Match.Optional(String),
+      "settings.openexchangerates.refreshPeriod": Match.Optional(String)
+    });
+    /*check(modifier.$unset, {
+      "settings.google.apiKey": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
+      "settings.google.clientId": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
+      "settings.openexchangerates.appId": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
+      "settings.openexchangerates.refreshPeriod": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
+      "settings.google": Match.Optional(String)
+    });*/
+    //check(modifier.$unset, Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+    // must have core permissions
+    if (!ReactionCore.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+
+    ReactionCore.Log.info("shop/updateExchangeRefreshPeriod fires");
+  },
+
+  /**
    * shop/locateAddress
    * @summary determine user's full location for autopopulating addresses
    * @param {Number} latitude - latitude

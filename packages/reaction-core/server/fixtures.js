@@ -194,7 +194,6 @@ PackageFixture = class PackageFixture {
       }
     });
     const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod;
-    //const refreshPeriod = 5;
 
     const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
       .priority("normal")
@@ -204,8 +203,8 @@ PackageFixture = class PackageFixture {
         backoff: 'exponential' // delay by twice as long for each subsequent retry
       })
       .repeat({
-        wait: refreshPeriod * 60 * 1000
-        // schedule: Jobs.later.parse.text(`every 30 seconds`)
+        // wait: refreshPeriod * 60 * 1000
+        schedule: Jobs.later.parse.text(refreshPeriod)
       })
       .save({
         // Cancel any jobs of the same type,
@@ -228,8 +227,8 @@ PackageFixture = class PackageFixture {
         backoff: 'exponential'
       })
       .repeat({
-        wait: refreshPeriod * 60 * 1000
-        // schedule: Jobs.later.parse.text("every 30 seconds")
+        // wait: refreshPeriod * 60 * 1000
+        schedule: Jobs.later.parse.text(refreshPeriod)
       })
       .save({
         cancelRepeats: true

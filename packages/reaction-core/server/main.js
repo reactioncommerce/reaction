@@ -65,9 +65,8 @@ ReactionCore.Log.level(isDebug);
 
 _.extend(ReactionCore, {
   init: function () {
-    // Meteor.publish('JobQueue', function () { return Jobs.find({}); });
     ReactionCore.Log.info("JobServer started:", Jobs.startJobServer());
-    Jobs.setLogStream(process.stdout);
+    //Jobs.setLogStream(process.stdout);
     //SyncedCron.start();
 
     try {
