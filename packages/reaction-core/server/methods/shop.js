@@ -185,9 +185,9 @@ Meteor.methods({
     // update Shops.currencies[currencyKey].rate
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id
-    if (typeof shopSettings.settings.openexchangerates !== 'object' ||
-      !shopSettings.settings.openexchangerates.appId) {
-      throw new Error('notConfigured');
+    if (!shopSettings.settings.openexchangerates.appId) {
+      throw new Meteor.Error("notConfigured",
+        "Open Exchange Rates AppId not configured. Configure for current rates.");
     } else {
       // shop open exchange rates appId
       const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
@@ -202,12 +202,15 @@ Meteor.methods({
       // account
       try {
         //rateResults = HTTP.get(rateUrl);
-        throw new Meteor.Error(403, "error-1123");
+        throw new Meteor.Error("123"); // todo remove this
       } catch (error) {
-        //ReactionCore.Log.error(error.message);
-        //ReactionCore.Log.error('openexchangerates.org: ' +
-        //  error.response.data.description);
-        throw new Error();
+        if (error.error) {
+          ReactionCore.Log.error(error.message);
+          throw new Meteor.Error(error.message);
+        } else {
+          // https://openexchangerates.org/documentation#errors
+          throw new Meteor.Error(error.response.data.description);
+        }
       }
 
       const exchangeRates = rateResults.data.rates;
@@ -215,7 +218,7 @@ Meteor.methods({
       _.each(shopCurrencies, function (currencyConfig, currencyKey) {
         if (exchangeRates[currencyKey] !== undefined) {
           let rateUpdate = {
-            // todo do we need to write update time to db?
+            // this needed for shop/flushCurrencyRates Method
             'currencies.updatedAt': new Date(rateResults.data.timestamp * 1000)
           };
           let collectionKey = `currencies.${currencyKey}.rate`;
@@ -245,10 +248,17 @@ Meteor.methods({
       }
     });
     let updatedAt = shop.currencies.updatedAt;
+
+    // if updatedAt is not a Date(), then there is no rates yet
+    if (typeof updatedAt !== "object") {
+      throw new Meteor.Error("notFetched",
+        "Exchange rates have not yet been fetched.");
+    }
+
     updatedAt.setHours(updatedAt.getHours() + 48);
     const now = new Date();
     //if (now > updatedAt) {
-    if (now < updatedAt) { // todo remove this line
+    if (now < updatedAt) { // todo remove this line. its for tests
       _.each(shop.currencies, function (currencyConfig, currencyKey) {
         let rate = `currencies.${currencyKey}.rate`;
 

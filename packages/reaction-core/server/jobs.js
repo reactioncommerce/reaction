@@ -1,20 +1,21 @@
 /**
- * Cron Jobs
+ * JobCollection Workers
  */
 
 const fetchCurrencyRatesQueue = Jobs.processJobs(
   "shop/fetchCurrencyRates",
+  {
+    pollInterval: 30 * 1000,
+    workTimeout: 180 * 1000
+  },
   (job, callback) => {
     Meteor.call("shop/fetchCurrencyRate", error => {
       if (error) {
-        if (error.message === 'notConfigured') {
-          const message = "Open Exchange Rates AppId not configured. Configure for current rates.";
-          ReactionCore.Log.warn(message);
-          //job.fail(message);
-          job.done(message, { repeatId: true });
+        if (error.error === "notConfigured") {
+          ReactionCore.Log.warn(error.message);
+          job.done(error.message, { repeatId: true });
         } else {
-          //job.fail(error);
-          job.done(error, { repeatId: true });
+          job.done(error.toString(), { repeatId: true });
         }
       } else {
         // we should always return "completed" job here, because errors are fine
@@ -32,24 +33,22 @@ const fetchCurrencyRatesQueue = Jobs.processJobs(
   }
 );
 
-const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
-  .priority("normal")
-  .repeat({
-    schedule: Jobs.later.parse.text("every 30 seconds")
-  })
-  .save({
-    // Cancel any jobs of the same type,
-    // but only if this job repeats forever.
-    // Default: false.
-    cancelRepeats: true
-  });
-
 const flushCurrencyRatesQueue = Jobs.processJobs(
   "shop/flushCurrencyRates",
+  {
+    pollInterval: 30 * 1000,
+    workTimeout: 180 * 1000
+  },
   (job, callback) => {
     Meteor.call("shop/flushCurrencyRate", error => {
       if (error) {
-        job.done(error, { repeatId: true });
+        if (error.error === "notFetched") {
+          ReactionCore.Log.warn(error.message);
+          job.done(error.message, { repeatId: true });
+        } else {
+          // ReactionCore.Log.error(error.toString());
+          job.done(error.toString(), { repeatId: true });
+        }
       } else {
         // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
         // -job-will-be-automatically-re-run-by-the-job-collection
@@ -61,15 +60,3 @@ const flushCurrencyRatesQueue = Jobs.processJobs(
     callback();
   }
 );
-
-const flushCurrencyRatesJob = new Job(Jobs, "shop/flushCurrencyRates", {})
-  .priority("normal")
-  .repeat({
-    schedule: Jobs.later.parse.text("every 30 seconds")
-  })
-  .save({
-    // Cancel any jobs of the same type,
-    // but only if this job repeats forever.
-    // Default: false.
-    cancelRepeats: true
-  });
