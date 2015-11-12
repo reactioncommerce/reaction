@@ -11,9 +11,9 @@ Template.coreOrderWorkflow.onRendered(function () {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
     }
 
-    if (order.shipping) {
+    if (_.isArray(order.shipping)) {
       if (order.shipping[0].workflow.status === "new") {
-        Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "coreOrderShippingCreated", order._id. order.shipping[0]._id);
+        Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "coreOrderShippingCreated", order._id, order.shipping[0]._id);
       }
     }
   }

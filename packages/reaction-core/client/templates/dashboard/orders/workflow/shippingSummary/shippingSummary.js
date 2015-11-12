@@ -52,6 +52,15 @@ Template.coreOrderShippingSummary.helpers({
   shipment() {
     return Template.instance().order.shipping[0];
   },
+
+  paymentProcessor() {
+    const processor = Template.instance().order.billing[0].paymentMethod.processor;
+    return {
+      name: processor.toLowerCase(),
+      label: processor
+    };
+  },
+
   tracking() {
     let shipment = Template.instance().order.shipping[0];
     if (shipment.tracking) {

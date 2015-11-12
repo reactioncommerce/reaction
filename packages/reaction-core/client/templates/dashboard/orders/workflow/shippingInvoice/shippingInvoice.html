@@ -1,6 +1,6 @@
 <template name="coreOrderShippingInvoice">
 
-  <form>
+  <form name="capture">
     <div class="order-items">
       {{#each item in items}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
@@ -105,9 +105,22 @@
 
       <hr>
 
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.total">Total</span>
-        <div class="amount">{{formatPrice invoice.total}}</div>
+      <div class="order-summary-form-group {{#if paymentCaptured}}bg-success{{/if}}">
+        <span class="reason">
+          {{#if paymentCaptured}}
+            <i class="fa fa-check-circle text-success"></i>
+            <strong class="text-success" data-i18n="order.capturedTotal">Captured Total</strong>
+          {{else}}
+            <strong data-i18n="cartSubTotals.total">Total</strong>
+          {{/if}}
+        </span>
+        <div class="amount">
+          {{#if paymentCaptured}}
+            <strong class="text-success">{{formatPrice invoice.total}}</strong>
+          {{else}}
+            {{formatPrice invoice.total}}
+          {{/if}}
+          </div>
       </div>
 
       <hr>
@@ -132,10 +145,46 @@
           <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" data-i18n="order.capturePayment">Capture Payment</button>
       {{/if}}
 
-      {{#if paymentCaptured}}
-        <span data-i18n="order.paymentCaptured">Payment has been captured.</span>
-      {{/if}}
+
     </div>
 
   </form>
+
+
+  {{#if paymentCaptured}}
+    <form name="refund">
+      <div class="form-group order-summary-form-group">
+        <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
+        {{> numericInput class="form-control amount" name="refund_amount" maxValue=adjustedTotal}}
+      </div>
+
+      {{#each refund in refunds}}
+        <div class="order-summary-form-group">
+          <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
+          <div class="amount">-{{formatPrice refund.amount}}</div>
+        </div>
+      {{/each}}
+
+      <hr>
+
+      <div class="order-summary-form-group">
+        <span class="reason text-danger">
+          <i class="fa fa-minus-circle"></i>
+          <strong data-i18n="order.adjustedTotal">Adjusted Total</strong>
+        </span>
+        <div class="amount text-danger">
+          <strong>{{formatPrice adjustedTotal}}</strong>
+        </div>
+      </div>
+      <hr>
+      <button
+        class="btn btn-success flex-item-fill"
+        type="submit"
+        data-event-action="appluRefund"
+        data-i18n="order.applyRefund" {{refundSubmitDisabled}}>Apply Refund</button>
+    </form>
+  {{else}}
+
+  {{/if}}
+
 </template>

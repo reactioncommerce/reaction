@@ -1,28 +1,92 @@
-Template.orders.onCreated(() => {
-  let template = Template.instance();
-  let currentData = Template.currentData();
 
-  template.orderDep = new Tracker.Dependency;
+const orderFilters = [
+  {name: "new", label: "New"},
+  {name: "captured", label: "Payment Captured"},
+  {name: "shipped", label: "Shipped"},
+  {name: "completed", label: "Completed"},
+  {name: "canceled", label: "Canceled"},
+  {name: "refunded", label: "Refunded"}
+];
 
-  function getOrder(orderId) {
-    template.orderDep.depend();
-    return ReactionCore.Collections.Orders.find({});
+const OrderHelper = {
+  makeQuery(filter) {
+    let query = {};
+
+    switch (filter) {
+    // New orders
+    case "new":
+      query = {
+        "workflow.status": "new"
+      };
+      break;
+
+    // Orders that have been captured, but not yet shipped
+    case "captured":
+      query = {
+        "billing.paymentMethod.status": "completed",
+        "shipping.shipped": false
+      };
+      break;
+
+    // Orders that have been shipped
+    case "shipped":
+      query = {
+        "shipping.shipped": true
+      };
+      break;
+
+    // Orders that have been both captured & shipped, meaning it is complete
+    case "completed":
+      query = {
+        "billing.paymentMethod.status": "completed",
+        "shipping.shipped": true
+      };
+      break;
+
+    case "canceled":
+      query = {
+        "workflow.status": "canceled"
+      };
+      break;
+
+    // Orders that have been refunded partially or fully
+    case "refunded":
+      query = {
+        "billing.paymentMethod.status": "captured",
+        "shipping.shipped": true
+      };
+      break;
+    default:
+    }
+
+    return query;
   }
+};
 
-  Tracker.autorun(() => {
-    template.orders = getOrder();
+function getOrders(queryParams) {
+  const query = OrderHelper.makeQuery(queryParams.filter);
+  return ReactionCore.Collections.Orders.find(query);
+}
+
+function getFiltersWithCounts() {
+  return orderFilters.map((filter) => {
+    filter.label = i18n.t(`order.filter.${filter.name}`);
+    filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
+    return filter;
   });
-});
+}
 
 /**
  * orders helpers
- *
  */
-
 Template.orders.helpers({
 
   orders() {
-    return Template.instance().orders; //ReactionCore.Collections.Orders.find({});
+    const template = Template.instance();
+    const queryParams = Router.current().params.query;
+    template.orders = getOrders(queryParams);
+
+    return template.orders;
   },
 
   activeClassname(orderId) {
@@ -30,52 +94,8 @@ Template.orders.helpers({
       return "panel-info";
     }
     return "panel-default";
-  },
-
-  settings: function () {
-    // ensure sub is up to date
-    ReactionCore.Subscriptions.Orders = Meteor.subscribe("Orders");
-    // return reactive-table setup
-    return {
-      collection: ReactionCore.Collections.Orders,
-      rowsPerPage: 10,
-      showFilter: false,
-      showNavigation: true,
-      fields: [
-          { key: "userId", label: "User", tmpl: Template.orderDetail },
-          { key: "items", label: "Items", tmpl: Template.ordersListItems},
-          { key: "workflow.status", label: "Status", tmpl: Template.orderStatusDetail },
-          { key: "invoices", label: "Summary", tmpl: Template.ordersListSummary}
-      ]
-    };
-  },
-
-  isOrder: function () {
-    if (this._id) {
-      return true;
-    } else {
-      return false;
-    }
   }
 });
-
-Template.orders.events({
-
-
-  "click .reactive-table tbody tr": function (event) {
-    if (this.workflow.status === "new") {
-      this.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
-    }
-
-    ReactionCore.showActionView({
-      label: "Order Details",
-      data: this,
-      template: "coreOrderWorkflow"
-    });
-  }
-});
-
 
 Template.ordersListItem.helpers({
   activeClassname(orderId) {
@@ -97,6 +117,31 @@ Template.ordersListItem.events({
 
     Router.go("dashboard/orders", {
       _id: this._id
+    }, {
+      query: $.param(Router.current().params.query)
     });
+  }
+});
+
+Template.orderListFilters.events({
+  "click [role=tab]": (event) => {
+    const filter = event.target.getAttribute("data-filter");
+    Router.go("dashboard/orders", {
+      // _id: this._id
+    }, {
+      query: `filter=${filter}`
+    });
+  }
+});
+
+Template.orderListFilters.helpers({
+  filters() {
+    return getFiltersWithCounts();
+  },
+
+  activeClassname(item) {
+    if (item.active === true) {
+      return "active";
+    }
   }
 });

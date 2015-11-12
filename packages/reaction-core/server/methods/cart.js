@@ -44,7 +44,6 @@ Meteor.methods({
       }]
     });
 
-    ReactionCore.Log.debug("sessionCarts", sessionCarts.fetch());
     ReactionCore.Log.debug(
       `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
     );
