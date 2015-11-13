@@ -24,7 +24,7 @@ const fetchCurrencyRatesQueue = Jobs.processJobs(
         // you can read more about job.repeat() here:
         // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
         // -job-will-be-automatically-re-run-by-the-job-collection
-        const success = "Fresh exchange rates was fetched successfully.";
+        const success = "Latest exchange rates was fetched successfully.";
         ReactionCore.Log.info(success);
         job.done(success, { repeatId: true });
       }
@@ -36,13 +36,14 @@ const fetchCurrencyRatesQueue = Jobs.processJobs(
 const flushCurrencyRatesQueue = Jobs.processJobs(
   "shop/flushCurrencyRates",
   {
-    pollInterval: 30 * 1000,
+    pollInterval:/* 60 **/ 60 * 1000, // How often to ask the remote job Collection for
+    // more work, in ms. Every hour will be fine here I suppose. // todo uncomment 60 *
     workTimeout: 180 * 1000
   },
   (job, callback) => {
     Meteor.call("shop/flushCurrencyRate", error => {
       if (error) {
-        if (error.error === "notFetched") {
+        if (error.error === "notExists") {
           ReactionCore.Log.warn(error.message);
           job.done(error.message, { repeatId: true });
         } else {

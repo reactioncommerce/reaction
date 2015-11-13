@@ -99,7 +99,7 @@
       </div>
       <div id="options" class="panel-collapse collapse" role="tabpanel" aria-labelledby="options">
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOpenExchangeRatesForm" type="method-update" meteormethod="shop/editOpenExchangeRatesForm"}}
+          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
             {{> afQuickField name='settings.openexchangerates.appId'}}
             {{> afQuickField name='settings.openexchangerates.refreshPeriod'}}
             {{> afQuickField name='settings.google.clientId'}}

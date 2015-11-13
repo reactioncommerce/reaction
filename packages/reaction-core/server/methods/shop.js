@@ -251,8 +251,8 @@ Meteor.methods({
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
-      throw new Meteor.Error("notFetched",
-        "Exchange rates have not yet been fetched.");
+      throw new Meteor.Error("notExists",
+        "[flushCurrencyRates worker]: There is nothing to flush.");
     }
 
     updatedAt.setHours(updatedAt.getHours() + 48);
@@ -274,49 +274,47 @@ Meteor.methods({
   },
 
   /**
-   *
-   * @param modifier
-   * @param _id
+   * @method shop/updateShopExternalServices
+   * @description On submit OpenExchangeRatesForm handler
+   * @summary we need to rerun fetch exchange rates job on every form submit,
+   * that's why we update autoform type to "method-update"
+   * @param {Object} modifier - the modifier object generated from the form values
+   * @param {String} _id - the _id of the document being updated
+   * @fires ReactionCore.Collections.Packages#update
+   * @todo This method fires Packages collection, so maybe someday it could be
+   * moved to another file
    */
-  "shop/editOpenExchangeRatesForm": function (modifier/*, _id*/) {
-    /*if (typeof modifier.$set["settings.google.apiKey"] === "string") {
-      const value = modifier.$set["settings.google.apiKey"];
-      check(value,
-        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
-    }
-    if (typeof modifier.$set["settings.google.clientId"] === "string") {
-      check(modifier.$set["settings.google.clientId"],
-        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
-    }
-    if (typeof modifier.$set["settings.openexchangerates.appId"] === "string") {
-      check(modifier.$set["settings.openexchangerates.appId"],
-        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
-    }
-    if (typeof modifier.$set["settings.openexchangerates.refreshPeriod"] === "string") {
-      check(modifier.$set["settings.openexchangerates.refreshPeriod"],
-        Match.Optional(ReactionCore.Schemas.CorePackageConfig));
-    }*/
-    check(modifier.$set, {
-      "settings.google.apiKey": Match.Optional(String),
-      "settings.google.clientId": Match.Optional(String),
-      "settings.openexchangerates.appId": Match.Optional(String),
-      "settings.openexchangerates.refreshPeriod": Match.Optional(String)
-    });
-    /*check(modifier.$unset, {
-      "settings.google.apiKey": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
-      "settings.google.clientId": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
-      "settings.openexchangerates.appId": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
-      "settings.openexchangerates.refreshPeriod": Match.Optional(ReactionCore.Schemas.CorePackageConfig),
-      "settings.google": Match.Optional(String)
-    });*/
-    //check(modifier.$unset, Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+  "shop/updateShopExternalServices": function (modifier, _id) {
+    check(modifier, Match.Optional(ReactionCore.Schemas.CorePackageConfig));
+    check(_id, String);
+
     // must have core permissions
     if (!ReactionCore.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
 
-    ReactionCore.Log.info("shop/updateExchangeRefreshPeriod fires");
+    // we should run new job on every form change, even if not all of them will
+    // change currencyRate job
+    const refreshPeriod = modifier.$set["settings.openexchangerates.refreshPeriod"];
+    const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: 'exponential' // delay by twice as long for each subsequent retry
+      })
+      .repeat({
+        // wait: refreshPeriod * 60 * 1000
+        schedule: Jobs.later.parse.text(refreshPeriod)
+      })
+      .save({
+        // Cancel any jobs of the same type,
+        // but only if this job repeats forever.
+        cancelRepeats: true
+      });
+
+    ReactionCore.Collections.Packages.update(_id, modifier);
   },
 
   /**

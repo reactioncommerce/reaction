@@ -113,7 +113,7 @@ AutoForm.hooks({
 });
 
 AutoForm.hooks({
-  shopEditOpenExchangeRatesForm: {
+  shopEditExternalServicesForm: {
     onSuccess: function(operation, result, template) {
       return Alerts.add("Open Exchange settings saved.", "success", {
         autoHide: true
