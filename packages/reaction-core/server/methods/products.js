@@ -438,7 +438,10 @@ Meteor.methods({
       delete product.handle;
       product.isVisible = false;
       if (product.title) {
-        product.title = product.title + handleCount;
+        product.handle = ReactionCore.createHandle(
+          getSlug(product.title),
+          product._id
+        );
       }
       while (i < product.variants.length) {
         let newVariantId = Random.id();
@@ -680,6 +683,31 @@ Meteor.methods({
   },
 
   /**
+   * @summary copy of "products/setHandleTag", but without tag
+   * @param productId - productId
+   */
+  "products/setHandle": function (productId) {
+    check(productId, String);
+
+    // must have createProduct permission
+    if (!ReactionCore.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+
+    let product = Products.findOne(productId);
+    let handle = getSlug(product.title);
+    handle = ReactionCore.createHandle(handle, product._id);
+    Products.update(product._id, {
+      $set: {
+        handle: handle
+      }
+    });
+
+    return handle;
+  },
+
+  /**
    * products/setHandleTag
    * @summary set or toggle product handle
    * @param {String} productId - productId
@@ -699,22 +727,30 @@ Meteor.methods({
     let product = Products.findOne(productId);
     let tag = Tags.findOne(tagId);
     // set handle
-    if (productId.handle === tag.slug) {
+    if (product.handle === tag.slug) {
+      let handle = getSlug(product.title);
+      handle = ReactionCore.createHandle(handle, product._id);
       Products.update(product._id, {
-        $unset: {
-          handle: ""
+        $set: {
+          handle: handle
         }
       });
-      return product._id;
+
+      return handle;
     }
     // toggle hangle
     let existingHandles = Products.find({
       handle: tag.slug
     }).fetch();
+    // this is needed to take care about product's handle which(product) was
+    // previously tagged.
     for (let currentProduct of existingHandles) {
+      let currentProductHandle = ReactionCore.createHandle(
+        getSlug(currentProduct.title),
+        currentProduct._id);
       Products.update(currentProduct._id, {
-        $unset: {
-          handle: ""
+        $set: {
+          handle: currentProductHandle
         }
       });
     }

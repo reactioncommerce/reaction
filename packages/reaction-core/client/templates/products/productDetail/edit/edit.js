@@ -20,7 +20,9 @@ Template.productDetailEdit.helpers({
 
 Template.productDetailEdit.events({
   "change input,textarea": function (event) {
-    Meteor.call("products/updateProductField", selectedProductId(), this.field,
+    const self = this;
+    const productId = selectedProductId();
+    Meteor.call("products/updateProductField", productId, this.field,
       $(event.currentTarget).val(),
       function (error) {
         if (error) {
@@ -28,6 +30,16 @@ Template.productDetailEdit.events({
             placement: "productManagement",
             i18nKey: "productDetail.errorMsg",
             id: this._id
+          });
+        }
+        //
+        if (self.field === 'title') {
+          Meteor.call("products/setHandle", productId, function (error, result) {
+            if (result) {
+              return Router.go("product", {
+                _id: result
+              });
+            }
           });
         }
         // animate updated field

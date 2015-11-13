@@ -119,7 +119,20 @@
                   "approveInvoice": "Approve",
                   "makeAdjustments": "Make Adjustments",
                   "capturePayment": "Capture Payment",
-                  "paymentCaptured": "Payment Captured"
+                  "paymentCaptured": "Payment Captured",
+                  "capturedTotal": "Captured Total",
+                  "refundAmount": "Refund Amount",
+                  "applyRefund": "Apply Refund",
+                  "adjustedTotal": "Adjusted Total",
+                  "processor": "Processor",
+                  "filter": {
+                    "new": "New",
+                    "captured": "Payment Captured",
+                    "shipped": "Shipped",
+                    "completed": "Completed",
+                    "canceled": "Canceled",
+                    "refunded": "Refunded"
+                  }
                 },
                 "orderShipping": {
                     "shipTo": "Ship To",

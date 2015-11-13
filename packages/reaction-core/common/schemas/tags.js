@@ -29,7 +29,16 @@ ReactionCore.Schemas.Tag = new SimpleSchema({
     label: "Tag shopId"
   },
   createdAt: {
-    type: Date
+    type: Date,
+    autoValue: function () {
+      if (this.isInsert) {
+        return new Date;
+      } else if (this.isUpsert) {
+        return {
+          $setOnInsert: new Date
+        };
+      }
+    }
   },
   updatedAt: {
     type: Date
