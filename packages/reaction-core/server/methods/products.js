@@ -295,10 +295,10 @@ Meteor.methods({
       "variants._id": variant._id
     });
     // update variants
-    if (product !== null ? product.variants : void 0) {
+    if (typeof product === "object" ? product.variants : void 0) {
       for (let variants of product.variants) {
         if (variants._id === variant._id) {
-          newVariant = _.extend(variants, variant);
+          newVariant = Object.assign({}, variants, variant);
         }
       }
       return Products.update({

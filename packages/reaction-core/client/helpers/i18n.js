@@ -188,9 +188,12 @@ Template.registerHelper("formatPrice", function (currentPrice) {
   const { Locale } = ReactionCore;
   localeDep.depend();
 
-  if (typeof Locale !== "object" || typeof Locale.currency !== "object" ||
-    typeof currentPrice !== "string") {
+  if (typeof Locale !== "object" || typeof Locale.currency !== "object") {
     // locale not yet loaded, so we don't need to return anything.
+    return false;
+  }
+
+  if (typeof currentPrice !== "string" && typeof currentPrice !== "number") {
     return false;
   }
 
