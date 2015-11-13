@@ -13,7 +13,7 @@ Template.productSocial.helpers({
       media: Session.get("variantImgSrc"),
       url: window.location.href,
       title: current.title,
-      description: product.description !== null ? product.description.substring(0, 254) : void 0,
+      description: typeof product.description === "string" ? product.description.substring(0, 254) : void 0,
       apps: {
         facebook: {
           description: product.facebookMsg

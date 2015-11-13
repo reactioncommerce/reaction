@@ -13,7 +13,8 @@ Template.variant.helpers({
   },
   selectedVariant: function () {
     const current = selectedVariant();
-    if (this._id === (current !== null ? current._id : void 0) || this._id === (current !== null ? current.parentId : void 0)) {
+    if (this._id === (typeof current === "object" ? current._id : void 0) ||
+      this._id === (typeof current === "object" ? current.parentId : void 0)) {
       return "variant-detail-selected";
     }
   },

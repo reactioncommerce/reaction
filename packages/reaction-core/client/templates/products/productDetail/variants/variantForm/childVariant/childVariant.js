@@ -18,7 +18,7 @@ Template.childVariantForm.helpers({
     }
     let _results = [];
     for (let variant of product.variants) {
-      if ((variant !== null ? variant.parentId : void 0) === this._id &&
+      if ((typeof variant === "object" ? variant.parentId : void 0) === this._id &&
         variant.type === "inventory") {
         _results.push(variant);
       }

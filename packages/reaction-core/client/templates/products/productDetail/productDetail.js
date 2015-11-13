@@ -27,7 +27,7 @@ Template.productDetail.helpers({
       childVariants = (function () {
         let _results = [];
         for (let variant of product.variants) {
-          if ((variant !== null ? variant.parentId : void 0) === current._id) {
+          if ((typeof variant === "object" ? variant.parentId : void 0) === current._id) {
             _results.push(variant);
           }
         }

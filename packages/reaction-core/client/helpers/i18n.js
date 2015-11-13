@@ -188,7 +188,8 @@ Template.registerHelper("formatPrice", function (currentPrice) {
   const { Locale } = ReactionCore;
   localeDep.depend();
 
-  if (typeof Locale !== 'object' || typeof Locale.currency !== 'object') {
+  if (typeof Locale !== "object" || typeof Locale.currency !== "object" ||
+    typeof currentPrice !== "string") {
     // locale not yet loaded, so we don't need to return anything.
     return false;
   }
@@ -251,6 +252,9 @@ pos, len) {
     return false;
   }
   let formattedPrice;
+  // @param {string} currency.where: If it presents - in situation then two
+  // prices in string, currency sign will be placed just outside the right price.
+  // For now it should be manually added to fixtures shop data.
   if (typeof currency.where === "string" && currency.where === "right" &&
     len > 1 && pos === 0) {
     let modifiedCurrency = Object.assign({}, currency, { symbol: "" });
