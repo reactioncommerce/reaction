@@ -227,8 +227,7 @@ PackageFixture = class PackageFixture {
         backoff: 'exponential'
       })
       .repeat({
-        // wait: refreshPeriod * 60 * 1000
-        schedule: Jobs.later.parse.text(refreshPeriod)
+        wait: 48 * 60 * 60 * 1000 // every 48 hours
       })
       .save({
         cancelRepeats: true

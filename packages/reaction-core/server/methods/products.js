@@ -26,6 +26,15 @@ Meteor.methods({
     let children;
     let clone;
     let product;
+    const processVariants = (id) => {
+      let results = [];
+      for (let variant of product.variants) {
+        if (typeof variant[id] === "string" && variant[id] === variantId) {
+          results.push(variant);
+        }
+      }
+      return results;
+    };
     // user needs createProduct permission to clone
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -34,24 +43,18 @@ Meteor.methods({
 
     product = Products.findOne(productId);
     // create variant hierachy structure
-    variant = (function () {
-      const results = [];
-      for (let variant of product.variants) {
-        if (variant._id === variantId) {
-          results.push(variant);
-        }
-      }
-      return results;
-    })();
+    const variant = processVariants("_id");
+
     // exit if we're trying to clone a ghost
     if (!(variant.length > 0)) {
       return false;
     }
     // variant is an array, with only
     // selected variant
-    clone = variant[0];
+    clone = Object.assign({}, variant[0]);
     // we use id with variant children
     clone._id = Random.id();
+
     // if this is going to be a child
     if (parentId) {
       ReactionCore.Log.info(
@@ -76,6 +79,7 @@ Meteor.methods({
     delete clone.createdAt;
     delete clone.inventoryQuantity;
     delete clone.title;
+
     // push the new variant to the product
     Products.update({
       _id: productId
@@ -86,20 +90,13 @@ Meteor.methods({
     }, {
       validate: false
     });
+
     // process children
-    children = (function () {
-      let results = [];
-      for (let variant of product.variants) {
-        if (variant.parentId === variantId) {
-          results.push(variant);
-        }
-      }
-      return results;
-    })();
+    children = processVariants("parentId");
     // if we have children
     if (children.length > 0) {
       ReactionCore.Log.info(
-        "products/cloneVariant: create sub child clone from ", parentId
+        "products/cloneVariant: create sub child clone from ", productId
       );
       for (let childClone of children) {
         childClone._id = Random.id();

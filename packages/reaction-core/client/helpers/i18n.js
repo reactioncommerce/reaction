@@ -201,22 +201,23 @@ Template.registerHelper("formatPrice", function (currentPrice) {
     [currentPrice];
 
   // basic "for" is faster then "for ...of" for arrays. We need more speed here
-  for (let i = 0; i < prices.length; i++) {
+  const len = prices.length;
+  for (let i = 0; i < len; i++) {
     let originalPrice = prices[i];
     try {
       // we know the locale, but we don't know exchange rate. In that case we
       // should return to default shop currency
-      if (typeof Locale.currency.exchangeRate !== 'number') {
-        throw new Error('exchangeRateUndefined');
+      if (typeof Locale.currency.rate !== 'number') {
+        throw new Meteor.Error('exchangeRateUndefined');
       }
-      prices[i] *= Locale.currency.exchangeRate;
+      prices[i] *= Locale.currency.rate;
 
       price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, Locale.currency);
+        currentPrice, Locale.currency, i, len);
     } catch (error) {
       ReactionCore.Log.debug("currency error, fallback to shop currency");
       price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, Locale.shopCurrency);
+        currentPrice, Locale.shopCurrency, i, len);
     }
   }
 
@@ -230,7 +231,7 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
   let format = _.extend({}, ReactionCore.Locale.currency, {format: "%v"});
 
   try {
-    price = currentPrice * ReactionCore.Locale.currency.exchangeRate;
+    price = currentPrice * ReactionCore.Locale.currency.rate;
   } catch (error) {
     ReactionCore.Log.debug("currency error, fallback to shop currency");
   }
@@ -243,13 +244,21 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
 /**
  * @private
  */
-function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency) {
+function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
+pos, len) {
   // this checking for Locale.shopCurrency mostly
   if (typeof currency !== 'object') {
     return false;
   }
-  // accounting api: http://openexchangerates.github.io/accounting.js/
-  const formattedPrice = accounting.formatMoney(actualPrice, currency);
+  let formattedPrice;
+  if (typeof currency.where === "string" && currency.where === "right" &&
+    len > 1 && pos === 0) {
+    let modifiedCurrency = Object.assign({}, currency, { symbol: "" });
+    formattedPrice = accounting.formatMoney(actualPrice, modifiedCurrency);
+  } else {
+    // accounting api: http://openexchangerates.github.io/accounting.js/
+    formattedPrice = accounting.formatMoney(actualPrice, currency);
+  }
 
   return ((price === 0) ?
     currentPrice.replace(originalPrice, formattedPrice) :
