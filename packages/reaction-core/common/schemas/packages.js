@@ -142,7 +142,7 @@ ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
     "settings.openexchangerates.refreshPeriod": {
       type: String,
       label: "Open Exchange Rates refresh period",
-      defaultValue: "every 1 minute"
+      defaultValue: "every 1 hour"
     },
     "settings.google.clientId": {
       type: String,
