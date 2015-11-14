@@ -72,7 +72,6 @@ Package.onUse(function (api) {
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.2.0");
-  // api.use("percolate:synced-cron@1.3.0");
   api.use("vsivsi:job-collection@1.2.3");
 
   // imply exports package vars
@@ -100,8 +99,7 @@ Package.onUse(function (api) {
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
   api.imply("meteorhacks:ssr");
-  // for debugging purpose it need to be implied:
-  // api.imply("percolate:synced-cron@1.3.0");
+  // todo do we need this here?
   api.imply("vsivsi:job-collection@1.2.3");
 
   // reaction core dependencies

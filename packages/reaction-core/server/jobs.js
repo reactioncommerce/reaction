@@ -36,8 +36,8 @@ const fetchCurrencyRatesQueue = Jobs.processJobs(
 const flushCurrencyRatesQueue = Jobs.processJobs(
   "shop/flushCurrencyRates",
   {
-    pollInterval:/* 60 **/ 60 * 1000, // How often to ask the remote job Collection for
-    // more work, in ms. Every hour will be fine here I suppose. // todo uncomment 60 *
+    pollInterval: 60 * 60 * 1000, // How often to ask the remote job Collection for
+    // more work, in ms. Every hour will be fine here I suppose.
     workTimeout: 180 * 1000
   },
   (job, callback) => {

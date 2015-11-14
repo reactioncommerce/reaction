@@ -86,17 +86,7 @@ ReactionCore.Schemas.Currency = new SimpleSchema({
   rate: {
     type: Number,
     optional: true
-  }/*,
-  currenciesUpdatedAt: {
-    // todo doesn't work
-    type: Date,
-    autoValue: function () {
-      if (this.isUpdate) {
-        return new Date;
-      }
-    },
-    optional: true
-  }*/
+  }
 });
 
 /**

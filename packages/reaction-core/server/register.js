@@ -25,7 +25,7 @@ ReactionCore.registerPackage({
     },
     openexchangerates: {
       appId: "",
-      refreshPeriod: "every 1 minute"
+      refreshPeriod: "every 60 minutes"
     }
   },
   registry: [{

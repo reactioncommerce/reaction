@@ -33,11 +33,9 @@ Template.productDetail.helpers({
         }
         return _results;
       })();
-      purchasable = childVariants.length > 0 ? false : true;
     }
-    if (purchasable) {
-      return current.price;
-    }
+
+    // todo @aaronjudd, I did not find the reason where purchasable can be necessary
     return getProductPriceRange();
   },
   fieldComponent: function () {

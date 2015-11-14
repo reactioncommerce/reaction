@@ -88,8 +88,7 @@ Meteor.methods({
       }
     }
     // geocode reverse ip lookup
-    let geoCountryCode = geo.geoip('212.164.231.32').country_code;
-    // let geoCountryCode = geo.geoip(clientAddress).country_code;
+    let geoCountryCode = geo.geoip(clientAddress).country_code;
 
     // countryCode either from geo or defaults
     let countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
@@ -201,8 +200,7 @@ Meteor.methods({
       // We can get an error if we try to change the base currency with a simple
       // account
       try {
-        //rateResults = HTTP.get(rateUrl);
-        throw new Meteor.Error("123"); // todo remove this
+        rateResults = HTTP.get(rateUrl);
       } catch (error) {
         if (error.error) {
           ReactionCore.Log.error(error.message);

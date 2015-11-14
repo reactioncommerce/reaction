@@ -181,7 +181,6 @@ Template.registerHelper("currencySymbol", function () {
  * @summary return shop /locale specific formatted price
  * also accepts a range formatted with " - "
  * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
- * @todo add special option for currency like ruble (10 - 20 руб.)
  * @return {String} returns locale formatted and exchange rate converted values
  */
 Template.registerHelper("formatPrice", function (currentPrice) {
