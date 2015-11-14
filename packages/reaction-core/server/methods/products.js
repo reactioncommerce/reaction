@@ -403,8 +403,8 @@ Meteor.methods({
    * @summary clone a whole product, defaulting visibility, etc
    * in the future we are going to do an inheritance product
    * that maintains relationships with the cloned product tree
-   * @param {Object} product - product object to clone
-   * @returns {String} returns insert result
+   * @param {Array} productOrArray - products array to clone
+   * @returns {Array} returns insert results
    */
   "products/cloneProduct": function (productOrArray) {
     check(productOrArray, Match.OneOf(Array, Object));
@@ -416,6 +416,102 @@ Meteor.methods({
 
     let products;
     let results = [];
+    let firstPassed = false; // indicates the iteration state through first variant
+    /**
+     * @private
+     * @function getOptions
+     * @description collect and clone options all of current product variant
+     * @param {Object} product - original product
+     * @param {String} variantOldId - original variant _id
+     * @param {String} variantNewId - cloned variant _id
+     * @return {Array} options - all cloned options for cloned variant
+     */
+    const getOptions = (product, variantOldId, variantNewId) => {
+      const oldId = variantOldId;
+      const newId = variantNewId;
+      const options = [];
+      product.variants.map((variant) => {
+        if (typeof variant.parentId === "string" && variant.parentId === oldId) {
+          const option = Object.assign({}, variant, {
+            _id: Random.id(),
+            parentId: newId
+          });
+          delete option.updatedAt;
+          delete option.createdAt;
+          delete option.publishedAt;
+          options.push(option);
+        }
+      });
+
+      return options;
+    };
+    /**
+     * @private
+     * @function getTopLevelClones
+     * @description  named recursive function which is deeply cloning product
+     * variants
+     * @param {Object} originalProduct - product object
+     * @param {String} newId - new _id for product
+     * @param {Object} originalVariant - current variant
+     * @return {Array}
+     */
+    const getTopLevelClones = function getClones(originalProduct, newId,
+      originalVariant) {
+
+      let clones = [];
+      // this two needs for pulling params inside .map()
+      // const newId = productNewId;
+      // const originalVariant = variant;
+      // const originalProduct = product;
+      for (let i = 0; i < originalProduct.variants.length; i++) {
+        let variant = originalProduct.variants[i];
+      //product.variants.map((variant) => {
+        let result;
+        if (!firstPassed && originalVariant._id !== variant._id && !variant.cloneId &&
+          !variant.parentId && variant.type === "variant") {
+          // this is special case for product entity itself. We need it
+          result = getClones(originalProduct, newId, variant);
+          clones = clones.concat(result);
+          firstPassed = true;
+        }
+        if (originalVariant._id !== variant._id && typeof variant.cloneId === "string" &&
+          variant.cloneId === originalVariant._id) {
+          // this is a clone of "originalVariant"
+          result = getClones(originalProduct, newId, variant);
+          clones = clones.concat(result);
+        }
+      }//);
+
+      // if there is no more clones for this line, then we can begin to process
+      // through "options"
+      if (clones.length === 0) {
+        const variantOldId = originalVariant._id;
+        const variantNewId = Random.id();
+        const newVariant = Object.assign({}, originalVariant, { _id: variantNewId });
+        if (typeof newVariant.cloneId === "string") {
+          newVariant.cloneId = newId;
+        }
+        const options = getOptions(originalProduct, variantOldId, variantNewId);
+        ReactionCore.Collections.Media.find({
+          "metadata.variantId": variantOldId
+        }).forEach(function (fileObj) {
+          let newFile = fileObj.copy();
+          return newFile.update({
+            $set: {
+              "metadata.productId": newId, // todo test this carefully
+              "metadata.variantId": variantNewId
+            }
+          });
+        });
+        delete newVariant.updatedAt;
+        delete newVariant.createdAt;
+        delete newVariant.publishedAt; // todo can variant have this param?
+
+        return [newVariant].concat(options); // the correct sequence
+      }
+
+      return clones;
+    };
 
     if (_.isArray(productOrArray) === false) {
       products = [productOrArray];
@@ -423,56 +519,36 @@ Meteor.methods({
       products = productOrArray;
     }
 
-    for (let product of products) {
-      let i = 0;
-
-      let handleCount = Products.find({
-        cloneId: product._id
-      }).count() + 1;
-
-      product.cloneId = product._id;
-      product._id = Random.id();
-      delete product.updatedAt;
-      delete product.createdAt;
-      delete product.publishedAt;
-      delete product.handle;
-      product.isVisible = false;
-      if (product.title) {
-        product.handle = ReactionCore.createHandle(
-          getSlug(product.title),
-          product._id
+    for (let i = 0; i < products.length; i++) {
+      let product = products[i];
+      // find all clones
+      const productNewId = Random.id();
+      let clonedVariants = getTopLevelClones(product, productNewId,
+        { _id: product._id });
+      // clone current product
+      let newProduct = Object.assign({}, product, { variants: clonedVariants });
+      // end clean new clone
+      newProduct.cloneId = product._id;
+      newProduct._id = productNewId;
+      delete newProduct.updatedAt;
+      delete newProduct.createdAt;
+      delete newProduct.publishedAt;
+      // todo should we delete position?
+      delete newProduct.handle;
+      newProduct.isVisible = false;
+      if (newProduct.title) {
+        newProduct.handle = ReactionCore.createHandle(
+          getSlug(newProduct.title),
+          newProduct._id
         );
       }
-      while (i < product.variants.length) {
-        let newVariantId = Random.id();
-        let oldVariantId = product.variants[i]._id;
-        product.variants[i]._id = newVariantId;
-        ReactionCore.Collections.Media.find({
-          "metadata.variantId": oldVariantId
-        }).forEach(function (fileObj) {
-          let newFile = fileObj.copy();
-          return newFile.update({
-            $set: {
-              "metadata.productId": product._id,
-              "metadata.variantId": newVariantId
-            }
-          });
-        });
-        if (!product.variants[i].parentId) {
-          while (i < product.variants.length) {
-            if (product.variants[i].parentId === oldVariantId) {
-              product.variants[i].parentId = newVariantId;
-            }
-            i++;
-          }
-        }
-        i++;
-      }
-      let result = Products.insert(product, {
+      firstPassed = false; // make it clear for the next product
+      let result = Products.insert(newProduct, {
         validate: false
       });
       results.push(result);
     }
+
     return results;
   },
 
@@ -588,7 +664,6 @@ Meteor.methods({
    * @param {String} productId - productId
    * @param {String} tagName - tagName
    * @param {String} tagId - tagId
-   * @param {String} currentTagId - currentTagId
    * @return {String} return result
    */
   "products/updateProductTags": function (productId, tagName, tagId) {
