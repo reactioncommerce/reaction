@@ -16,16 +16,52 @@ describe("core product methods", function () {
       expect(Products.insert).not.toHaveBeenCalled();
       return done();
     });
-    return it("should clone variant by admin", function (done) {
+    it("should clone variant by admin", function (done) {
       let product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       expect(_.size(product.variants)).toEqual(1);
-      Meteor.call("products/cloneVariant", product._id, product.variants[
-        0]._id);
+      Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
       product = Products.findOne(product._id);
       expect(_.size(product.variants)).toEqual(2);
       return done();
+    });
+    it("option cloned from variant should inherit his _id in parentId property",
+    function() {
+      let product;
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      product = Factory.create("product");
+      Meteor.call("products/createVariant", product._id, product.variants[0],
+        product.variants[0]._id);
+      product = Products.findOne(product._id);
+      expect(product.variants.length).toEqual(2);
+      console.log("new variant: " + product.variants[1]._id);
+      console.log("new variant parentId: " + product.variants[1].parentId);
+      expect(product.variants[1].parentId).toEqual(product.variants[0]._id);
+      return done();
+    });
+    it("cloned top-level variant should have cloneId property equal with original" +
+      " variant _id", function() {
+      let product;
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      product = Factory.create("product");
+      Meteor.call("products/createVariant", product._id, product.variants[0]);
+      product = Products.findOne(product._id);
+      expect(product.variants[1].cloneId).toEqual(product.variants[0]._id);
+      return done();
+    });
+    return it("number of options between original and cloned variants must be equal",
+      function (done) {
+        let product;
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        product = Factory.create("product");
+        Meteor.call("products/createVariant", product._id, product.variants[0]);
+        product = Products.findOne(product._id);
+        expect(product.variants.length).toEqual(2);
+        Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
+        product = Products.findOne(product._id);
+        expect(product.variants.length).toEqual(4);
+        return done();
     });
   });
   describe("products/createVariant", function () {
@@ -70,8 +106,7 @@ describe("core product methods", function () {
       product = Factory.create("product");
       spyOn(Products, "update");
       expect(function () {
-        return Meteor.call("products/updateVariant", product.variants[
-          0]);
+        return Meteor.call("products/updateVariant", product.variants[0]);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -98,7 +133,7 @@ describe("core product methods", function () {
         expect(updatedVariant.price).toEqual(7);
         expect(updatedVariant.title).toEqual("Updated Title");
         return done();
-      });
+     });
     return it(
       "should update individual variant by admin passing in partial object",
       function (done) {
@@ -144,8 +179,7 @@ describe("core product methods", function () {
       function (done) {
         spyOn(Roles, "userIsInRole").and.returnValue(true);
         let product = Factory.create("product");
-        Meteor.call("products/cloneVariant", product._id, product.variants[
-          0]._id);
+        Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
         product = Products.findOne({
           "variants._id": product.variants[0]._id
         });
@@ -177,8 +211,7 @@ describe("core product methods", function () {
       let product = Factory.create("product");
       spyOn(Products, "update");
       expect(function () {
-        return Meteor.call("products/deleteVariant", product.variants[
-          0]._id);
+        return Meteor.call("products/deleteVariant", product.variants[0]._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
       expect(Products.update).not.toHaveBeenCalled();
       return done();
@@ -196,8 +229,8 @@ describe("core product methods", function () {
       function (done) {
         spyOn(Roles, "userIsInRole").and.returnValue(true);
         let product = Factory.create("product");
-        Meteor.call("products/cloneVariant", product._id, product.variants[
-          0]._id, product.variants[0]._id);
+        Meteor.call("products/cloneVariant", product._id, product.variants[0]._id,
+          product.variants[0]._id);
         product = Products.findOne(product._id);
         expect(_.size(product.variants)).toEqual(2);
         Meteor.call("products/deleteVariant", product.variants[0]._id);
@@ -443,7 +476,8 @@ describe("core product methods", function () {
           $ne: product._id
         }
       }).fetch()[0];
-      expect(productCloned.title).toEqual(product.title + "1");
+      expect(productCloned.title).toEqual(product.title);
+      expect(productCloned.handle).toEqual(product.handle + "-copy");
       expect(productCloned.pageTitle).toEqual(product.pageTitle);
       expect(productCloned.description).toEqual(product.description);
       return done();

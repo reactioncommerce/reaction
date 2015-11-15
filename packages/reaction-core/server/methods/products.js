@@ -120,7 +120,7 @@ Meteor.methods({
    * @summary initializes empty variant template (all others are clones)
    * should only be seen when all variants have been deleted from a product.
    * @param {String} productId - the productId where we create variant
-   * @param {String} newVariant - variant object
+   * @param {Object} newVariant - variant object
    * @return {String} new variantId
    */
   "products/createVariant": function (productId, newVariant) {
