@@ -58,7 +58,7 @@ ReactionCore.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    cycle: 3,
+    cycle: 1,
     container: "orders"
   }, {
     route: "dashboard/orders",
@@ -66,7 +66,7 @@ ReactionCore.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    cycle: 3
+    cycle: 1
   }, {
     template: "coreOrderWidgets",
     provides: "widget",
@@ -77,7 +77,30 @@ ReactionCore.registerPackage({
     icon: "fa fa-plus",
     provides: "shortcut"
   }],
-  layout: [{
+  layout: [{ // coreLayout definitions
+    layout: "coreLayout",
+    workflow: "coreLayout",
+    theme: "default",
+    enabled: true
+  }, {
+    layout: "coreLayout",
+    workflow: "coreCartWorkflow",
+    collection: "Cart",
+    theme: "default",
+    enabled: true
+  }, {
+    layout: "coreLayout",
+    workflow: "coreOrderWorkflow",
+    collection: "Orders",
+    theme: "default",
+    enabled: true
+  }, {
+    layout: "coreLayout",
+    workflow: "coreOrderShipmentWorkflow",
+    collection: "Orders",
+    theme: "default",
+    enabled: true
+  }, { // Standard Checkout Workflow
     template: "checkoutLogin",
     label: "Login",
     workflow: "coreCartWorkflow",
@@ -122,15 +145,12 @@ ReactionCore.registerPackage({
     label: "Order Summary",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
-  },
-  {
+  }, {
     template: "coreOrderCompleted",
     label: "Order Completed",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
-  },
-  // Standard Order Fulfillment with shipping
-  {
+  }, { // Standard Order Fulfillment with shipping
     template: "coreOrderShippingSummary",
     label: "Summary",
     workflow: "coreOrderShipmentWorkflow",

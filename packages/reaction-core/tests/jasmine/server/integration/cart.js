@@ -1,14 +1,13 @@
 /* eslint dot-notation: 0 */
 describe("cart methods", function () {
-  // let userId = Factory.get("user");
-  let userId = Meteor.users.insert({}); // Somehow Factory does not work
+  let userId = Factory.create("user");
   ReactionCore.sessionId = "deadbeef"; // Required for creating a cart
   let cartId;
 
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
       cartId = Meteor.call("cart/createCart", userId);
-      let cart = Cart.findOne({
+      let cart = ReactionCore.Collections.Cart.findOne({
         userId: userId
       });
       expect(cartId).toEqual(cart._id);
@@ -17,8 +16,9 @@ describe("cart methods", function () {
   });
   describe("cart items", function () {
     beforeEach(function () {
+
       // Empty test cart
-      Cart.update({
+      ReactionCore.Collections.Cart.update({
         _id: cartId
       }, {
         $pull: {
@@ -31,7 +31,7 @@ describe("cart methods", function () {
         let product = Factory.create("product");
         let productId = product._id;
         let variantData = product.variants[0];
-        let quantity = "1";
+        let quantity = 1;
         Meteor.call("cart/addToCart", cartId, productId,
           variantData, quantity);
         let carts = Cart.find({
@@ -49,7 +49,7 @@ describe("cart methods", function () {
         let product = Factory.create("product");
         let productId = product._id;
         let variantData = product.variants[0];
-        let quantity = "1";
+        let quantity = 1;
         Meteor.call("cart/addToCart", cartId, productId,
           variantData, quantity);
         // add a second item of same variant
@@ -71,7 +71,7 @@ describe("cart methods", function () {
         let product = Factory.create("product");
         let productId = product._id;
         let variantData = product.variants[0];
-        let quantity = "1";
+        let quantity = 1;
         Meteor.call("cart/addToCart", cartId, productId,
           variantData, quantity);
         let carts = Cart.find({
@@ -81,7 +81,7 @@ describe("cart methods", function () {
         }).fetch();
         let cartItem = carts[0].items[0];
         Meteor.call("cart/removeFromCart", cartId, cartItem);
-        carts = Cart.find({
+        carts = ReactionCore.Collections.Cart.find({
           _id: cartId
         }, {
           items: product

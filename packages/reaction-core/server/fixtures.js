@@ -332,7 +332,7 @@ ReactionRegistry.loadPackages = function () {
     _.each(ReactionRegistry.Packages, function (config, pkgName) {
       return ReactionCore.Collections.Shops.find().forEach(function (shop) {
         let shopId = shop._id;
-        ReactionCore.Log.info("Initializing " + shop.name + " " +
+        ReactionCore.Log.debug("Initializing " + shop.name + " " +
           pkgName);
         // existing registry will be upserted with changes
         if (!shopId) return [];

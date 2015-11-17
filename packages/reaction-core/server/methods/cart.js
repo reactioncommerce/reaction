@@ -73,7 +73,7 @@ Meteor.methods({
         // clear the cart that was used for a session
         // and we're also going to do some garbage Collection
         Cart.remove(sessionCart._id);
-        Meteor.users.remove(sessionCart.userId);
+        // Meteor.users.remove(sessionCart.userId);
         ReactionCore.Collections.Accounts.remove({
           userId: sessionCart.userId
         });
@@ -189,7 +189,7 @@ Meteor.methods({
     check(cartId, String);
     check(productId, String);
     check(variantData, ReactionCore.Schemas.ProductVariant);
-    check(quantity, String);
+    check(quantity, Number);
 
     let currentCart = ReactionCore.Collections.Cart.findOne(cartId);
     let cartVariantExists = ReactionCore.Collections.Cart.findOne({
