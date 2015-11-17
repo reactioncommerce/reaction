@@ -180,7 +180,8 @@ ReactionCore.Collections.Products.before.update(function (userId, product,
         }
         return _results;
       })())[0];
-      if (removedVariant.parentId) {
+      if (typeof removedVariant === "object" &&
+        typeof removedVariant.parentId === "string") {
         updatedVariantId = removedVariant.parentId;
         updatedVariant = ((function () {
           let _i, _len, _ref12, _results;
