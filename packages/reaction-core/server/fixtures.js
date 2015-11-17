@@ -176,7 +176,7 @@ PackageFixture = class PackageFixture {
 
   /**
    * @function loadCurrencyJobs
-   * @summary Creates two jobs for fetching fresh and clearing old exchange rates
+   * @summary Creates two jobs for fetching latest and clearing old exchange rates
    */
   loadCurrencyJobs(jobsCollection) {
     const collection = jobsCollection || ReactionCore.Collections.Jobs;
@@ -194,6 +194,10 @@ PackageFixture = class PackageFixture {
       }
     });
     const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod;
+    // for testing mode
+    //if (typeof refreshPeriod !== "string") {
+    //  refreshPeriod = "every 1 hour";
+    //}
 
     const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
       .priority("normal")
