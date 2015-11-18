@@ -26,11 +26,15 @@ random
 ejson
 check
 underscore
-less
 oauth-encryption
 audit-argument-checks
-spiderable
-nemo64:bootstrap
+
+# Recommended Packages
+
+less                   # dependency of bootstrap, core-theme
+spiderable             # use ongoworks:spiderable with Docker
+nemo64:bootstrap       # required only with bootstrap-theme
+# meteorhacks:sikka    # additional ddp, login security
 
 # Meteor Auth Packages
 
@@ -46,11 +50,12 @@ accounts-oauth
 reactioncommerce:core
 reactioncommerce:bootstrap-theme
 reactioncommerce:reaction-accounts
+reactioncommerce:reaction-inventory
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-social
-
+# reactioncommerce:launchdock
 
 # Reaction Payment Packages
 
@@ -60,10 +65,9 @@ reactioncommerce:reaction-stripe
 #reactioncommerce:reaction-braintree
 
 # Testing packages
-
-#velocity:html-reporter
-#sanjo:jasmine
-#velocity:helpers
+# velocity:html-reporter
+# sanjo:jasmine
+# velocity:helpers
 
 # Performance & Debugging Tools
 

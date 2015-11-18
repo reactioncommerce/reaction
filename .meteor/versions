@@ -126,13 +126,14 @@ raix:ui-dropped-event@0.0.7
 random@1.0.5
 rate-limit@1.0.0
 reactioncommerce:bootstrap-theme@1.7.0
-reactioncommerce:core@0.9.4
+reactioncommerce:core@0.9.5
 reactioncommerce:core-theme@1.8.0
 reactioncommerce:reaction-accounts@1.5.2
-reactioncommerce:reaction-analytics@1.1.1
+reactioncommerce:reaction-analytics@1.2.0
 reactioncommerce:reaction-analytics-libs@1.1.0
+reactioncommerce:reaction-inventory@0.1.0
 reactioncommerce:reaction-paypal@1.2.3
-reactioncommerce:reaction-shipping@0.6.1
+reactioncommerce:reaction-shipping@0.6.2
 reactioncommerce:reaction-social@0.4.1
 reactioncommerce:reaction-stripe@3.0.1
 reactive-dict@1.1.3

@@ -1,6 +1,5 @@
 # Packages
 Reaction packages are Meteor packages that add a call to `ReactionCore.registerPackage` declaring the package structure to the Reaction registry.
-
 - [Core Packages](#core-packages)
 - [Public packages](#public-packages)
 - [Private packages](#private-packages)
@@ -9,6 +8,7 @@ Reaction packages are Meteor packages that add a call to `ReactionCore.registerP
   - [Permissions](#permissions)
     - [Owner](#owner)
     - [Admin](#admin)
+
   - [Dashboard](#dashboard)
   - [Routes](#routes)
   - [Collections](#collections)
@@ -230,8 +230,10 @@ layout: [
 For more details about layouts, and workflows see: [workflow.md](workflow.md)
 
 **_Special Usage_**
-- `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
+- `cycle`  1- Core, 2- Community, 3- Public 4 - Local
 - `container` group alike for presentation _example: used to connect settings on dashboard app card registry object_
+
+See: [package-cycles.md](package-cycles.md)
 
 **Dynamic Templates**
 
