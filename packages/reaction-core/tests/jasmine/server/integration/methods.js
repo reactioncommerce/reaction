@@ -11,7 +11,8 @@ describe("core methods", function () {
       expect(Fixtures.loadI18n).not.toHaveBeenCalled();
       return done();
     });
-    return it("should remove and load translations back by admin", function (done) {
+    it("should remove and load translations back by admin", function (done) {
+      spyOn(Meteor, "userId").and.returnValue("0123456789");
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       spyOn(ReactionCore.Collections.Translations, "remove");
       spyOn(Fixtures, "loadI18n");
@@ -42,7 +43,7 @@ describe("core methods", function () {
       expect(Tags.remove).not.toHaveBeenCalled();
       return done();
     });
-    return it("should remove header tag by admin", function (done) {
+    it("should remove header tag by admin", function (done) {
       let currentTag;
       let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);

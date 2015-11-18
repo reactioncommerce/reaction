@@ -79,24 +79,24 @@ ReactionCore.registerPackage({
   }],
   layout: [{ // coreLayout definitions
     layout: "coreLayout",
-    workflow: "coreLayout",
+    provides: "coreLayout",
     theme: "default",
     enabled: true
   }, {
     layout: "coreLayout",
-    workflow: "coreCartWorkflow",
+    provides: "coreCartWorkflow",
     collection: "Cart",
     theme: "default",
     enabled: true
   }, {
     layout: "coreLayout",
-    workflow: "coreOrderWorkflow",
+    provides: "coreOrderWorkflow",
     collection: "Orders",
     theme: "default",
     enabled: true
   }, {
     layout: "coreLayout",
-    workflow: "coreOrderShipmentWorkflow",
+    provides: "coreOrderShipmentWorkflow",
     collection: "Orders",
     theme: "default",
     enabled: true

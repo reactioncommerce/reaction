@@ -190,7 +190,7 @@ Package.onUse(function (api) {
 
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
-  api.addFiles("common/methods/cart.js", "client");
+  api.addFiles("common/methods/cart.js");
 
   // publications
   api.addFiles("server/publications/sessions.js", "server");
