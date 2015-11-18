@@ -145,9 +145,11 @@ Meteor.methods({
       createVariant = {
         _id: newVariantId,
         title: "",
-        price: 0.00
+        price: 0.00,
+        type: "variant"
       };
     }
+
     Products.update({
       _id: productId
     }, {

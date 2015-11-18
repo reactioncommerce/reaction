@@ -637,11 +637,11 @@ describe("core product methods", function () {
 
     it("should set handle tag for product by admin", function (
       done) {
-      let product;
-      let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      product = Factory.create("product");
-      tag = Factory.create("tag");
+      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+      let product = Factory.create("product");
+      let tag = Factory.create("tag");
+
       Meteor.call("products/setHandleTag", product._id, tag._id);
       product = Products.findOne({
         _id: product._id
@@ -658,9 +658,8 @@ describe("core product methods", function () {
     });
 
     it("should throw 403 error by non admin", function (done) {
-      let product;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      product = Factory.create("product");
+      const product = Factory.create("product");
       spyOn(Products, "update");
       expect(function () {
         return Meteor.call("products/updateProductPosition",
@@ -671,22 +670,23 @@ describe("core product methods", function () {
     });
 
     it("should update product position by admin", function (done) {
-      let position;
-      let product;
-      let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      product = Factory.create("product");
-      tag = Factory.create("tag");
-      position = {
+      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+
+      const product = Factory.create("product");
+      const tag = Factory.create("tag");
+      const position = {
         tag: tag._id,
         position: 0,
         weight: 0,
         updatedAt: new Date()
       };
-      Meteor.call("products/updateProductPosition", product._id,
-        position);
-      product = Products.findOne(product._id);
-      expect(product.positions[0].tag).toEqual(tag._id);
+      expect(function () {
+        return Meteor.call("products/updateProductPosition", product._id, position);
+      }).not.toThrow(new Meteor.Error(403, "Access Denied"));
+
+      const updatedProduct = Products.findOne(product._id);
+      expect(updatedProduct.positions[0].tag).toEqual(tag._id);
       return done();
     });
   });
@@ -783,7 +783,7 @@ describe("core product methods", function () {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
       isVisible = product.isVisible;
-      Products.update(product._id, {
+      ReactionCore.Collections.Products.direct.update(product._id, {
         $set: {
           title: ""
         }
