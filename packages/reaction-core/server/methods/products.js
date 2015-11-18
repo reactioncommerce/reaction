@@ -226,13 +226,10 @@ Meteor.methods({
     check(productId, String);
     check(parentId, String);
     check(defaultValue, Match.Optional(String));
-    check(quantity, Match.OneOf(Match.Where(function () {
-      check(quantity, String);
-      return /[0-9]+/.test(quantity);
-    }), Match.Where(function () {
+    check(quantity, Match.Where(function () {
       check(quantity, Number);
       return quantity > 0;
-    })));
+    }));
     this.unblock();
     // must have admin permissions
     if (!Roles.userIsInRole(Meteor.userId(), ["admin"])) {
@@ -686,8 +683,10 @@ Meteor.methods({
   },
 
   /**
+   * products/setHandle
    * @summary copy of "products/setHandleTag", but without tag
-   * @param productId - productId
+   * @param {String} productId - productId
+   * @returns {String} handle - product handle
    */
   "products/setHandle": function (productId) {
     check(productId, String);

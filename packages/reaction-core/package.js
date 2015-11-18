@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.4",
+  version: "0.9.5",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -14,8 +14,6 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2.1");
 
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("ecmascript");
@@ -26,6 +24,7 @@ Package.onUse(function (api) {
   api.use("tracker");
 
   // meteor add-on packages
+  api.use("ddp-rate-limiter");
   api.use("underscore");
   api.use("logging");
   api.use("reload");
@@ -191,8 +190,7 @@ Package.onUse(function (api) {
 
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
-  api.addFiles("common/methods/inventory.js");
-  api.addFiles("common/methods/cart.js", "client");
+  api.addFiles("common/methods/cart.js");
 
   // publications
   api.addFiles("server/publications/sessions.js", "server");

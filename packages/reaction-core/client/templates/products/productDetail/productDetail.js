@@ -142,7 +142,7 @@ Template.productDetail.events({
       }
 
       qtyField = template.$('input[name="addToCartQty"]');
-      quantity = qtyField.val();
+      quantity = parseInt(qtyField.val(), 10);
 
       if (quantity < 1) {
         quantity = 1;

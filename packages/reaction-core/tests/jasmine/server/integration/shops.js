@@ -2,7 +2,7 @@ describe("core shop schema", function () {
   beforeEach(function () {
     return ReactionCore.Collections.Shops.remove({});
   });
-  return it("should create a new factory shop", function (done) {
+  it("should create a new factory shop", function (done) {
     spyOn(Roles, "userIsInRole").and.returnValue(true);
     spyOn(ReactionCore.Collections.Shops, "insert");
     Factory.create("shop");
@@ -25,7 +25,7 @@ describe("core shop methods", function () {
       expect(ReactionCore.Collections.Shops.insert).not.toHaveBeenCalled();
       return done();
     });
-    return it("should create new shop for admin", function (done) {
+    it("should create new shop for admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       spyOn(ReactionCore.Collections.Shops, "insert");
       expect(function () {

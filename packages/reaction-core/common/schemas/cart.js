@@ -33,6 +33,18 @@ ReactionCore.Schemas.CartItem = new SimpleSchema({
 });
 
 /**
+ * CartItem Schema
+ * used in check by inventory/addReserve method
+ */
+
+ReactionCore.Schemas.CartItems = new SimpleSchema({
+  items: {
+    type: [ReactionCore.Schemas.CartItem],
+    optional: true
+  }
+});
+
+/**
  * Cart Schema
  */
 
