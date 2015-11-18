@@ -193,11 +193,11 @@ PackageFixture = class PackageFixture {
         settings: 1
       }
     });
-    const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod;
-    // for testing mode
-    //if (typeof refreshPeriod !== "string") {
-    //  refreshPeriod = "every 1 hour";
-    //}
+    // todo this statement is for compatibility with previously created shops,
+    // update it to `const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod`
+    // over a few months from november of 2015
+    const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod ||
+      "every 1 hour";
 
     const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
       .priority("normal")

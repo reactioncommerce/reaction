@@ -26,7 +26,7 @@ Meteor.methods({
     let children;
     let clone;
     let product;
-    const processVariants = (id) => {
+    const processVariants = id => {
       let results = [];
       for (let variant of product.variants) {
         if (typeof variant[id] === "string" && variant[id] === variantId) {
@@ -74,11 +74,12 @@ Meteor.methods({
       return clone._id;
     }
     // delete original values for new clone
-    clone.cloneId = productId;
+    clone.cloneId = variant[0]._id;
     delete clone.updatedAt;
     delete clone.createdAt;
     delete clone.inventoryQuantity;
     delete clone.title;
+    ReactionCore.copyMedia(productId, variant[0]._id, clone._id);
 
     // push the new variant to the product
     Products.update({
@@ -99,8 +100,11 @@ Meteor.methods({
         "products/cloneVariant: create sub child clone from ", productId
       );
       for (let childClone of children) {
+        const variantOldId = childClone._id;
+        childClone.cloneId = variantOldId;
         childClone._id = Random.id();
         childClone.parentId = clone._id;
+        ReactionCore.copyMedia(productId, variantOldId, childClone._id);
         Products.update({
           _id: productId
         }, {
@@ -416,30 +420,34 @@ Meteor.methods({
 
     let products;
     let results = [];
+    const processedVariants = [];
     let firstPassed = false; // indicates the iteration state through first variant
     /**
      * @private
-     * @function getOptions
+     * @function cloneOptions
      * @description collect and clone options all of current product variant
      * @param {Object} product - original product
      * @param {String} variantOldId - original variant _id
      * @param {String} variantNewId - cloned variant _id
+     * @param {String} newId - cloned product _id
      * @return {Array} options - all cloned options for cloned variant
      */
-    const getOptions = (product, variantOldId, variantNewId) => {
-      const oldId = variantOldId;
-      const newId = variantNewId;
+    const cloneOptions = (product, variantOldId, variantNewId, newId) => {
       const options = [];
       product.variants.map((variant) => {
-        if (typeof variant.parentId === "string" && variant.parentId === oldId) {
+        if (typeof variant.parentId === "string" &&
+          variant.parentId === variantOldId) {
           const option = Object.assign({}, variant, {
             _id: Random.id(),
-            parentId: newId
+            cloneId: variant._id,
+            parentId: variantNewId
           });
           delete option.updatedAt;
           delete option.createdAt;
           delete option.publishedAt;
+          ReactionCore.copyMedia(newId, variant._id, option._id);
           options.push(option);
+          processedVariants.push(variant._id);
         }
       });
 
@@ -447,7 +455,7 @@ Meteor.methods({
     };
     /**
      * @private
-     * @function getTopLevelClones
+     * @function cloneTopLevelClones
      * @description  named recursive function which is deeply cloning product
      * variants
      * @param {Object} originalProduct - product object
@@ -455,62 +463,63 @@ Meteor.methods({
      * @param {Object} originalVariant - current variant
      * @return {Array}
      */
-    const getTopLevelClones = function getClones(originalProduct, newId,
+    const cloneTopLevelVariants = function cloneVariant(originalProduct, newId,
       originalVariant) {
-
       let clones = [];
-      // this two needs for pulling params inside .map()
-      // const newId = productNewId;
-      // const originalVariant = variant;
-      // const originalProduct = product;
-      for (let i = 0; i < originalProduct.variants.length; i++) {
-        let variant = originalProduct.variants[i];
-      //product.variants.map((variant) => {
+      for (let variant of originalProduct.variants) {
         let result;
-        if (!firstPassed && originalVariant._id !== variant._id && !variant.cloneId &&
-          !variant.parentId && variant.type === "variant") {
-          // this is special case for product entity itself. We need it
-          result = getClones(originalProduct, newId, variant);
-          clones = clones.concat(result);
-          firstPassed = true;
-        }
-        if (originalVariant._id !== variant._id && typeof variant.cloneId === "string" &&
-          variant.cloneId === originalVariant._id) {
-          // this is a clone of "originalVariant"
-          result = getClones(originalProduct, newId, variant);
-          clones = clones.concat(result);
-        }
-      }//);
+        if (variant.type === "variant" && ~processedVariants.indexOf(variant._id)) {
+          // todo this `if` could be removed if decide to add cloneId to primary
+          // default variant.
+          // this is special case default product first variant
+          // todo Problem here -- we should somehow to detect top-level variant.
+          // simplest way to do it is to detect first variant in product: is check
+          // on equality with `product.variants[0]._id`. This way can be buggy.
+          if (!firstPassed &&
+            originalVariant._id !== variant._id &&
+            !variant.parentId &&
+            variant._id === originalProduct.variants[0]._id
+            /*!firstPassed &&
+            ((originalVariant._id !== variant._id && !variant.cloneId &&
+            !variant.parentId) || variant._id === originalProduct.variants[0]._id)*/) {
+            firstPassed = true;
+            result = cloneVariant(originalProduct, newId, variant);
+            clones = clones.concat(result);
+          }
 
-      // if there is no more clones for this line, then we can begin to process
-      // through "options"
-      if (clones.length === 0) {
-        const variantOldId = originalVariant._id;
-        const variantNewId = Random.id();
-        const newVariant = Object.assign({}, originalVariant, { _id: variantNewId });
-        if (typeof newVariant.cloneId === "string") {
-          newVariant.cloneId = newId;
-        }
-        const options = getOptions(originalProduct, variantOldId, variantNewId);
-        ReactionCore.Collections.Media.find({
-          "metadata.variantId": variantOldId
-        }).forEach(function (fileObj) {
-          let newFile = fileObj.copy();
-          return newFile.update({
-            $set: {
-              "metadata.productId": newId, // todo test this carefully
-              "metadata.variantId": variantNewId
-            }
-          });
-        });
-        delete newVariant.updatedAt;
-        delete newVariant.createdAt;
-        delete newVariant.publishedAt; // todo can variant have this param?
 
-        return [newVariant].concat(options); // the correct sequence
+          else if ((originalVariant._id !== variant._id &&
+            typeof variant.cloneId === "string" &&
+            typeof variant.parentId !== "string") //&& // to avoid child variants
+            /*variant.cloneId === originalVariant._id*/ // go inside clones of variant
+            ) { // first variant detection
+            // this is a clone of "originalVariant"
+            result = cloneVariant(originalProduct, newId, variant);
+            clones = clones.concat(result);
+          }
+        }
       }
 
-      return clones;
+      // we need somehow out from the recursion then we back from nesting up to
+      // top. For now I see this way to do that, maybe it is not the best:
+      if (originalVariant._id === originalProduct._id) {
+        return clones;
+      }
+
+      const variantOldId = originalVariant._id;
+      const variantNewId = Random.id();
+      const newVariant = Object.assign({}, originalVariant, {
+        _id: variantNewId,
+        cloneId: variantOldId
+      });
+      const options = cloneOptions(originalProduct, variantOldId, variantNewId, newId);
+      ReactionCore.copyMedia(newId, variantOldId, variantNewId);
+      delete newVariant.updatedAt;
+      delete newVariant.createdAt;
+      delete newVariant.publishedAt; // todo can variant have this param?
+      processedVariants.push(variantOldId);
+
+      return [newVariant].concat(options).concat(clones);
     };
 
     if (_.isArray(productOrArray) === false) {
@@ -519,11 +528,12 @@ Meteor.methods({
       products = productOrArray;
     }
 
-    for (let i = 0; i < products.length; i++) {
-      let product = products[i];
+    //for (let i = 0; i < products.length; i++) {
+    for (let product of products) {
+      // let product = products[i];
       // find all clones
       const productNewId = Random.id();
-      let clonedVariants = getTopLevelClones(product, productNewId,
+      let clonedVariants = cloneTopLevelVariants(product, productNewId,
         { _id: product._id });
       // clone current product
       let newProduct = Object.assign({}, product, { variants: clonedVariants });
