@@ -43,7 +43,7 @@ Meteor.methods({
         }
       }]
     });
-    ReactionCore.Log.debug("sessionCarts", sessionCarts.fetch());
+
     ReactionCore.Log.debug(
       `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
     );
@@ -73,10 +73,11 @@ Meteor.methods({
         // clear the cart that was used for a session
         // and we're also going to do some garbage Collection
         Cart.remove(sessionCart._id);
-        Meteor.users.remove(sessionCart.userId);
-        ReactionCore.Collections.Accounts.remove({
-          userId: sessionCart.userId
-        });
+        // cleanup user/accounts
+        // Meteor.users.remove(sessionCart.userId);
+        // ReactionCore.Collections.Accounts.remove({
+        //   userId: sessionCart.userId
+        // });
         ReactionCore.Log.debug(
           `merge cart: delete cart ${sessionCart._id} and user: ${sessionCart.userId}`
         );
@@ -182,23 +183,25 @@ Meteor.methods({
    *  @param {String} cartId - cartId
    *  @param {String} productId - productId to add to Cart
    *  @param {String} variantData - variant object
-   *  @param {String} quantity - qty to add to cart, deducts from inventory
+   *  @param {String} itemQty - optional qty to add to cart, defaults to 1, deducts from inventory
    *  @return {Number} Mongo insert response
    */
-  "cart/addToCart": function (cartId, productId, variantData, quantity) {
+  "cart/addToCart": function (cartId, productId, variantData, itemQty) {
     check(cartId, String);
     check(productId, String);
     check(variantData, ReactionCore.Schemas.ProductVariant);
-    check(quantity, String);
+    check(itemQty, Match.Optional(Number));
+    this.unblock();
 
-    let currentCart = ReactionCore.Collections.Cart.findOne(cartId);
-    let cartVariantExists = ReactionCore.Collections.Cart.findOne({
+    const quantity = itemQty || 1;
+    const currentCart = ReactionCore.Collections.Cart.findOne(cartId);
+    const cartVariantExists = ReactionCore.Collections.Cart.findOne({
       "_id": currentCart._id,
       "items.variants._id": variantData._id
     });
 
-    if (cartVariantExists) {
-      Cart.update({
+    if (cartVariantExists !== undefined) {
+      return ReactionCore.Collections.Cart.update({
         "_id": currentCart._id,
         "items.variants._id": variantData._id
       }, {
@@ -208,18 +211,19 @@ Meteor.methods({
         $inc: {
           "items.$.quantity": quantity
         }
-      });
-      return function (error) {
+      }, function (error, result) {
         if (error) {
           ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections
             .Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
-      };
+        ReactionCore.Log.info(`cart: increment variant ${variantData._id} quantity by ${quantity}`);
+        return result;
+      });
     }
     // cart variant doesn't exist
-    let product = ReactionCore.Collections.Products.findOne(productId);
-    return Cart.update({
+    const product = ReactionCore.Collections.Products.findOne(productId);
+    return ReactionCore.Collections.Cart.update({
       _id: currentCart._id
     }, {
       $addToSet: {
@@ -232,34 +236,14 @@ Meteor.methods({
           type: product.type
         }
       }
-    }, function (error) {
+    }, function (error, result) {
       if (error) {
         ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections
           .Cart.simpleSchema().namedContext().invalidKeys());
-        return;
+        return error;
       }
-    });
-  },
-  /**
-   * cart/removeFromCart
-   * @summary removes a variant from the cart
-   * @param {String} cartId - user cartId
-   * @param {String} cartItem - cart item object
-   * @returns {String} returns Mongo update result
-   */
-  "cart/removeFromCart": function (cartId, cartItem) {
-    check(cartId, String);
-    check(cartItem, Object);
-    this.unblock();
-
-    return Cart.update({
-      _id: cartId
-    }, {
-      $pull: {
-        items: {
-          variants: cartItem.variants
-        }
-      }
+      ReactionCore.Log.info(`cart: add variant ${variantData._id} to cartId ${currentCart._id}`);
+      return result;
     });
   },
 

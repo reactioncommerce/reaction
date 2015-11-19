@@ -69,7 +69,7 @@ Template.productImageGallery.helpers({
           "metadata.priority": 1
         }
       });
-      if (!ReactionCore.hasAdminAccess() && mediaArray.count() < 1) {
+      if (!ReactionCore.hasAdminAccess() && mediaArray.count() < 1 && product) {
         mediaArray = Media.find({
           "metadata.variantId": product.variants[0]._id
         }, {

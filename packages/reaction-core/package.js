@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.4",
+  version: "0.9.5",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
@@ -14,8 +14,6 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2.1");
 
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("ecmascript");
@@ -26,6 +24,7 @@ Package.onUse(function (api) {
   api.use("tracker");
 
   // meteor add-on packages
+  api.use("ddp-rate-limiter");
   api.use("underscore");
   api.use("logging");
   api.use("reload");
@@ -47,12 +46,11 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("mquandalle:bower@1.5.2");
-  api.use("d3js:d3@3.5.5");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("aldeed:autoform@5.7.1");
   api.use("aldeed:collection2@2.5.0");
   api.use("aldeed:simple-schema@1.3.3");
-  api.use("aldeed:template-extension@3.4.3", "client");
+  api.use("aldeed:template-extension@4.0.0", "client");
   api.use("iron:router@1.0.12");
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("ongoworks:security@1.3.0");
@@ -60,7 +58,7 @@ Package.onUse(function (api) {
   api.use("matb33:collection-hooks@0.8.1");
   api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
-  api.use("risul:moment-timezone@0.4.0");
+  api.use("risul:moment-timezone@0.4.1");
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.9.2");
 
@@ -197,8 +195,7 @@ Package.onUse(function (api) {
 
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
-  api.addFiles("common/methods/inventory.js");
-  api.addFiles("common/methods/cart.js", "client");
+  api.addFiles("common/methods/cart.js");
 
   // publications
   api.addFiles("server/publications/sessions.js", "server");
