@@ -29,8 +29,8 @@ describe("core product methods", function () {
       return done();
     });
     
-    it("option cloned from `variant` should inherit his `_id` in `parentId` property",
-    function(done) {
+    it("`child variant` cloned from `variant` should inherit his `_id` in `parentId` property",
+    done => {
       let product;
       product = Factory.create("product");
       spyOn(ReactionCore, "hasPermission").and.returnValue(true);
@@ -42,19 +42,19 @@ describe("core product methods", function () {
       return done();
     });
     
-    it("cloned `variant` should have `cloneId` property equal with product `_id`",
-      function(done) {
+    it("cloned `variant` should have `cloneId` property equal with source `_id`",
+      done => {
       let product;
       product = Factory.create("product");
       spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       Meteor.call("products/cloneVariant", product._id, product.variants[0]._id);
       product = Products.findOne(product._id);
-      expect(product.variants[1].cloneId).toEqual(product._id);
+      expect(product.variants[1].cloneId).toEqual(product.variants[0]._id);
       return done();
     });
     
-    it("number of `options` between original and cloned `variants` should be equal",
-      function (done) {
+    it("number of `child variants` between source and cloned `variants` " +
+      "should be equal", done => {
         let product;
         product = Factory.create("product");
         spyOn(ReactionCore, "hasPermission").and.returnValue(true);
@@ -67,6 +67,12 @@ describe("core product methods", function () {
         expect(product.variants.length).toEqual(6);
         return done();
     });
+
+    it("`variant` and `child variants` media should be intherited when " +
+      "cloning", done => {
+
+      return done();
+    })
   });
 
   describe("products/createVariant", function () {
@@ -514,9 +520,9 @@ describe("core product methods", function () {
       return done();
     });
     
-    it("product should be cloned with all variants and options with equal data," +
-      "but not `_id`s",
-      function (done) {
+    it("product should be cloned with all variants and child variants with equal data," +
+      "but not the same `_id`s",
+      done => {
       let product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
@@ -569,8 +575,14 @@ describe("core product methods", function () {
 
       return done();
     });
+
+    it("product group cloning should create the same number of new products",
+      done => {
+
+      return done();
+    });
     
-    it("images inside variants and options should be cloned", function (done) {
+    it("all hierarchy media should be cloned", done => {
 
       return done();
     });
@@ -707,6 +719,64 @@ describe("core product methods", function () {
       });
       expect(product.hashtags).not.toContain(tag._id);
       expect(Tags.find().count()).toEqual(0);
+      return done();
+    });
+  });
+
+  describe("setHandle", () => {
+    beforeEach(() => {
+      Products.remove({});
+      return Tags.remove({});
+    });
+
+    it("should throw 403 error by non admin", done => {
+      spyOn(Roles, "userIsInRole").and.returnValue(false);
+      spyOn(Products, "update");
+      const product = Factory.create("product");
+      expect(() => Meteor.call("products/setHandle", product._id))
+        .toThrow(new Meteor.Error(403, "Access Denied"));
+      expect(Products.update).not.toHaveBeenCalled();
+      return done();
+    });
+
+    it("should set handle for product by admin", done => {
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+      let product = Factory.create("product");
+      const productHandle = product.handle;
+      Meteor.call("products/updateProductField", product._id,
+        "title", "new product name");
+      Meteor.call("products/setHandle", product._id);
+      product = Products.findOne({ _id: product._id });
+      expect(product.handle).not.toEqual(productHandle);
+      return done();
+    });
+
+    it("should set handle correctly", done => {
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      let product = Factory.create("product");
+      Meteor.call("products/updateProductField", product._id,
+        "title", "new product name");
+      Meteor.call("products/setHandle", product._id);
+      product = Products.findOne({ _id: product._id });
+      expect(product.handle).toEqual("new-product-name");
+      return done();
+    });
+
+    it("products with the same title should receive correct handle", done => {
+      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      let product = Factory.create("product");
+      Meteor.call("products/cloneProduct", product);
+      Meteor.call("products/cloneProduct", product);
+      let newProducts = Products.find({
+        _id: {
+          $ne: product._id
+        }
+      }).fetch();
+      const productCloned = newProducts[0];
+      const productCloned2 = newProducts[1];
+      expect(productCloned.handle).toEqual(product.handle + "-copy");
+      expect(productCloned2.handle).toEqual(product.handle + "-copy-2");
       return done();
     });
   });
