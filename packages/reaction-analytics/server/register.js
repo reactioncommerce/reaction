@@ -21,7 +21,7 @@ ReactionCore.registerPackage({
   registry: [
     {
       provides: "dashboard",
-      label: "Reaction Analytics",
+      label: "Analytics",
       description: "Event tracking and analytics with Reaction",
       route: "dashboard/reactionAnalytics",
       icon: "fa fa-bar-chart-o",
