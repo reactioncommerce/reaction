@@ -357,7 +357,7 @@ ReactionRegistry.loadPackages = function () {
   ReactionCore.Collections.Shops.find().forEach(function (shop) {
     return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
       if (!_.has(ReactionRegistry.Packages, pkg.name)) {
-        ReactionCore.Log.info(`Removing ${pkg.name}`, pkg);
+        ReactionCore.Log.info(`Removing ${pkg.name}`);
         return ReactionCore.Collections.Packages.remove({
           shopId: shop._id,
           name: pkg.name

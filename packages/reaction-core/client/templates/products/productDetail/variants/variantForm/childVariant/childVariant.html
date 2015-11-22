@@ -1,51 +1,19 @@
 <template name="childVariantForm">
   <tr class="child-variant-form" id="{{childVariantFormId}}">
       <td>
-        <input type="text" class="form-control input-sm child-variant-input" value="{{optionTitle}}" name="optionTitle" placeholder="Add option name"/>
+        <input type="text" class="form-control input-sm child-variant-input" value="{{optionTitle}}" name="optionTitle" placeholder="Add option title"/>
       </td>
       <td>
-        <input type="text" class="form-control input-sm child-variant-input" value="{{title}}" name="title" placeholder="Add option label"/>
+        <input type="text" class="form-control input-sm child-variant-input" value="{{title}}" name="title" placeholder="Add cart label"/>
       </td>
       <td>
-        {{#if hasInventoryVariants}}
-          <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY" disabled=disabled/>
-        {{else}}
-          <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY"/>
-        {{/if}}
+        <input type="number" class="form-control input-sm child-variant-input" value="{{inventoryQuantity}}" name="inventoryQuantity" placeholder="QTY"/>
       </td>
       <td>
         <input type="number" class="form-control input-sm child-variant-input" value="{{price}}" name="price" placeholder="Add price"/>
      </td>
      <td>
-       {{#if hasInventoryVariants}}
-         <button id="edit-inventory-variants-{{_id}}" class="edit-inventory-variants btn-small btn-primary btn">{{editInventoryToggleText}}</button>
-       {{else}}
-         <button id="edit-inventory-variants-{{_id}}" class="init-inventory-variants btn-small btn-primary btn" data-i18n="productDetail.startTracking">Start Tracking</button>
-       {{/if}}
-     </td>
-     <td>
         <i class="fa fa-times-circle remove-child-variant" id="remove-child-variant"></i>
      </td>
   </tr>
-  {{#if hasInventoryVariants}}
-    <tr class="{{showInventoryVariants}}">
-      <td colspan="7">
-        <table class="inventory-variant-table table table-striped">
-          <thead>
-            <tr>
-              <th data-i18n="productDetail.barcode">Barcode</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {{> generateInventoryVariantForm}}
-            {{> addInventoryVariantForm}}
-            {{#each inventoryVariants}}
-              {{> inventoryVariantForm}}
-            {{/each}}
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  {{/if}}
 </template>
