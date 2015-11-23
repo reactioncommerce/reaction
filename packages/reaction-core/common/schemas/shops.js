@@ -151,10 +151,6 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: Object, // ReactionCore.Schemas.Currency
     blackbox: true
   },
-  "locale": {
-    type: String,
-    defaultValue: "en"
-  },
   "locales": {
     type: ReactionCore.Schemas.Locale
   },
