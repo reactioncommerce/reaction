@@ -28,12 +28,8 @@ Template.loginFormResetPasswordView.events({
       // return;
     }
 
-    // Make sure mail is properly configured for this shop before we end anything
-    ReactionCore.configureMailUrl();
-
     Accounts.forgotPassword({ email: emailAddress}, (error) => {
       // Show some message confirming result
-
       if (error) {
         templateInstance.formMessages.set({
           alerts: [error]
@@ -41,7 +37,7 @@ Template.loginFormResetPasswordView.events({
       } else {
         templateInstance.formMessages.set({
           info: [{
-            reason: i18n.t("accountsUI.info.passwordResetSend")
+            reason: i18n.t("accountsUI.info.passwordResetSend") || "Password reset mail sent."
           }]
         });
       }

@@ -1,7 +1,6 @@
-
 window.LoginFormSharedHelpers = {
 
-  messages: function() {
+  messages: function () {
     return Template.instance().formMessages.get();
   },
 
@@ -19,10 +18,9 @@ window.LoginFormSharedHelpers = {
     return Template.instance().formErrors.get();
   },
 
-  uniqueId: function() {
+  uniqueId: function () {
     return Template.instance().uniqueId;
   },
-
 
   services() {
     let serviceHelper = new ReactionServiceHelper();
@@ -32,7 +30,9 @@ window.LoginFormSharedHelpers = {
   shouldShowSeperator() {
     let serviceHelper = new ReactionServiceHelper();
     let services = serviceHelper.services();
-    let enabledServices = _.where(services, {enabled: true});
+    let enabledServices = _.where(services, {
+      enabled: true
+    });
 
     return !!Package["accounts-password"] && enabledServices.length > 0;
   },
@@ -42,28 +42,26 @@ window.LoginFormSharedHelpers = {
   }
 };
 
-
 /**
  * registerHelper displayName
  */
-Template.registerHelper("displayName", function (user) {
-  let username;
+Template.registerHelper("displayName", function (displayUser) {
   let authenticated = false;
-  user = user || Meteor.user();
+  const user = displayUser || Meteor.user();
+  if (user) {
+    if (user.profile && user.profile.name) {
+      return user.profile.name;
+    } else if (user.username) {
+      return user.username;
+    }
 
-  if (user && user.profile && user.profile.name) {
-    return user.profile.name;
-  } else if (user && user.username) {
-    return user.username;
-  }
+    if (user.services && user.services !== "anonymous" && user.services !== "resume") {
+      authenticated = true;
+    }
 
-  if (user.services && user.services !== 'anonymous' && user.services !== 'resume') {
-    authenticated = true;
-  }
-
-  if (user && authenticated === true) {
-    return username = (function () {
-      switch (false) {
+    if (authenticated === true) {
+      let username = (function () {
+        switch (false) {
         case !user.services.twitter:
           return user.services.twitter.name;
         case !user.services.google:
@@ -75,11 +73,12 @@ Template.registerHelper("displayName", function (user) {
         case !user.services.pinterest:
           return user.services.pinterest.name;
         default:
-          return i18n.t('accountsUI.guest') || "Guest";
-      }
-    })();
-  } else {
-    return i18n.t('accountsUI.signIn') || "Sign in TEST";
+          return i18n.t("accountsUI.guest") || "Guest";
+        }
+      })();
+      return username;
+    }
+    return i18n.t("accountsUI.signIn") || "Sign in TEST";
   }
 });
 
@@ -87,32 +86,31 @@ Template.registerHelper("displayName", function (user) {
  * registerHelper fName
  */
 
-Template.registerHelper("fName", function (user) {
-  var username;
-  user = user || Meteor.user();
+Template.registerHelper("fName", function (displayUser) {
+  const user = displayUser || Meteor.user();
   if (user && user.profile && user.profile.name) {
     return user.profile.name.split(" ")[0];
   } else if (user && user.username) {
     return user.username.name.split(" ")[0];
   }
   if (user && user.services) {
-    return username = (function () {
+    const username = (function () {
       switch (false) {
-        case !user.services.twitter:
-          return user.services.twitter.first_name;
-        case !user.services.google:
-          return user.services.google.given_name;
-        case !user.services.facebook:
-          return user.services.facebook.first_name;
-        case !user.services.instagram:
-          return user.services.instagram.first_name;
-        case !user.services.pinterest:
-          return user.services.pinterest.first_name;
-        default:
-          return i18n.t('accountsUI.guest') || "Guest";
+      case !user.services.twitter:
+        return user.services.twitter.first_name;
+      case !user.services.google:
+        return user.services.google.given_name;
+      case !user.services.facebook:
+        return user.services.facebook.first_name;
+      case !user.services.instagram:
+        return user.services.instagram.first_name;
+      case !user.services.pinterest:
+        return user.services.pinterest.first_name;
+      default:
+        return i18n.t("accountsUI.guest") || "Guest";
       }
     })();
-  } else {
-    return i18n.t('accountsUI.signIn') || "Sign in";
+    return username;
   }
+  return i18n.t("accountsUI.signIn") || "Sign in";
 });

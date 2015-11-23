@@ -129,7 +129,6 @@ Package.onTest(function (api) {
   api.use("ecmascript");
   api.use("jquery");
   api.use("underscore");
-  api.use("dburles:factory@0.3.10");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
