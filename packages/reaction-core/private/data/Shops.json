@@ -3010,20 +3010,19 @@
     "countyTaxes": true
   }],
   "timezone": "US/Pacific",
-  "unitsOfMeasure": {
-    "OZ": {
-      "name": "Ounces"
-    },
-    "LB": {
-      "name": "Pounds"
-    },
-    "GR": {
-      "name": "Grams"
-    },
-    "KG": {
-      "name": "Kilograms"
-    }
-  },
+  "unitsOfMeasure": [{
+    "uom": "OZ",
+    "label": "Ounces"
+  }, {
+    "uom": "LB",
+    "label": "Pounds"
+  }, {
+    "uom": "GR",
+    "label": "Grams"
+  }, {
+    "uom": "KG",
+    "label": "Kilograms"
+  }],
   "addressBook": [{
     "company": "Reaction Commerce",
     "fullName": "Ongo Works",

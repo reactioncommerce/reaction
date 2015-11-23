@@ -185,6 +185,16 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     defaultValue: "OZ",
     label: "Base Unit of Measure"
   },
+  "unitsOfMeasure": {
+    type: [Object],
+    optional: true
+  },
+  "unitsOfMeasure.$.uom": {
+    type: String
+  },
+  "unitsOfMeasure.$.label": {
+    type: String
+  },
   "metafields": {
     type: [ReactionCore.Schemas.Metafield],
     optional: true

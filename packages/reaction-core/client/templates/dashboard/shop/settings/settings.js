@@ -8,28 +8,28 @@ Template.shopSettings.helpers({
     return ReactionCore.Collections.Shops.findOne();
   },
 
-  packageData: function() {
+  packageData: function () {
     return ReactionCore.Collections.Packages.findOne({
       name: "core"
     });
   },
-  addressBook: function() {
-    var address;
-    address = Shops.findOne().addressBook;
+  addressBook: function () {
+    const address = Shops.findOne().addressBook;
     return address[0];
   },
-  countryOptions: function() {
-    var countries, country, countryOptions, locale;
-    countries = ReactionCore.Collections.Shops.findOne().locales.countries;
-    countryOptions = [];
-    for (locale in countries) {
-      country = countries[locale];
-      countryOptions.push({
-        label: country.name,
-        value: locale
-      });
+  countryOptions: function () {
+    const countries = ReactionCore.Collections.Shops.findOne().locales.countries;
+    const countryOptions = [];
+    for (let locale in countries) {
+      if ({}.hasOwnProperty.call(countries, locale)) {
+        let country = countries[locale];
+        countryOptions.push({
+          label: country.name,
+          value: locale
+        });
+      }
     }
-    countryOptions.sort(function(a, b) {
+    countryOptions.sort(function (a, b) {
       if (a.label < b.label) {
         return -1;
       }
@@ -40,34 +40,34 @@ Template.shopSettings.helpers({
     });
     return countryOptions;
   },
-  currencyOptions: function() {
-    var currencies, currency, currencyOptions, structure;
-    currencies = ReactionCore.Collections.Shops.findOne().currencies;
-    currencyOptions = [];
-    for (currency in currencies) {
-      structure = currencies[currency];
-      currencyOptions.push({
-        label: currency + "  |  " + structure.symbol + "  |  " + structure.format,
-        value: currency
-      });
+  currencyOptions: function () {
+    const currencies = ReactionCore.Collections.Shops.findOne().currencies;
+    const currencyOptions = [];
+    for (let currency in currencies) {
+      if ({}.hasOwnProperty.call(currencies, currency)) {
+        let structure = currencies[currency];
+        currencyOptions.push({
+          label: currency + "  |  " + structure.symbol + "  |  " +
+            structure.format,
+          value: currency
+        });
+      }
     }
     return currencyOptions;
   },
-  uomOptions: function() {
-    var measure, unitsOfMeasure, uom, uomOptions;
-    unitsOfMeasure = ReactionCore.Collections.Shops.findOne().unitsOfMeasure;
-    uomOptions = [];
-    for (measure in unitsOfMeasure) {
+  uomOptions: function () {
+    const unitsOfMeasure = ReactionCore.Collections.Shops.findOne().unitsOfMeasure;
+    const uomOptions = [];
+    for (let measure of unitsOfMeasure) {
       uom = unitsOfMeasure[measure];
       uomOptions.push({
-        label: uom.name,
-        value: measure
+        label: measure.label,
+        value: measure.uom
       });
     }
     return uomOptions;
   }
 });
-
 
 /**
  * shopSettings autoform alerts
@@ -75,64 +75,68 @@ Template.shopSettings.helpers({
 
 AutoForm.hooks({
   shopEditForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function () {
       return Alerts.add("Shop general settings saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
-      return Alerts.add("Shop general settings update failed. " + error, "danger");
+    onError: function (operation, error) {
+      return Alerts.add("Shop general settings update failed. " + error,
+        "danger");
     }
   }
 });
 
 AutoForm.hooks({
   shopEditAddressForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function () {
       return Alerts.add("Shop address settings saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
-      return Alerts.add("Shop address settings update failed. " + error, "danger");
+    onError: function (operation, error) {
+      return Alerts.add("Shop address settings update failed. " + error,
+        "danger");
     }
   }
 });
 
 AutoForm.hooks({
   shopEditEmailForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function () {
       return Alerts.add("Shop mail settings saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
-      return Alerts.add("Shop mail settings update failed. " + error, "danger");
+    onError: function (operation, error) {
+      return Alerts.add("Shop mail settings update failed. " + error,
+        "danger");
     }
   }
 });
 
 AutoForm.hooks({
   shopEditOpenExchangeRatesForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function () {
       return Alerts.add("Open Exchange settings saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
-      return Alerts.add("Open Exchange settings update failed. " + error, "danger");
+    onError: function (operation, error) {
+      return Alerts.add("Open Exchange settings update failed. " + error,
+        "danger");
     }
   }
 });
 
 AutoForm.hooks({
   shopEditSettingsForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function () {
       return Alerts.add("Shop settings saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
+    onError: function (operation, error) {
       return Alerts.add("Shop setting update failed. " + error, "danger");
     }
   }
@@ -140,12 +144,12 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   shopEditOptionsForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function () {
       return Alerts.add("Shop options saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
+    onError: function (operation, error) {
       return Alerts.add("Shop options update failed. " + error, "danger");
     }
   }
