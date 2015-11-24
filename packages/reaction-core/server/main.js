@@ -43,15 +43,6 @@ ReactionCore.Log.level(isDebug);
  */
 
 _.extend(ReactionCore, {
-  init: function () {
-    try {
-      ReactionRegistry.loadFixtures();
-    } catch (error) {
-      ReactionCore.Log.error("loadFixtures: ", error.message);
-    }
-    return true;
-  },
-
   getCurrentShopCursor: function (client) {
     let domain = this.getDomain(client);
     let cursor = ReactionCore.Collections.Shops.find({
@@ -191,11 +182,3 @@ _.extend(ReactionCore, {
 Match.OptionalOrNull = function (pattern) {
   return Match.OneOf(void 0, null, pattern);
 };
-
-/*
- * Execute start up fixtures
- */
-
-Meteor.startup(function () {
-  ReactionCore.init();
-});

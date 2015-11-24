@@ -8,61 +8,6 @@
 
 PackageFixture = class PackageFixture {
   /**
-   * PackageFixture.loadData
-   * @summary imports collection fixture data
-   * @param {Object} collection - The collection to import
-   * @param {String} jsonFile - path to json File.
-   * @param {Object} options - accept: {multi:true}
-   * @return {Boolean} boolean -  returns true on insert
-   */
-  loadData(collection, jsonFile, options) {
-    check(collection, Mongo.Collection);
-    check(jsonFile, Match.Optional(String));
-    check(options, Match.Optional(Object));
-    let multi = false;
-
-    if (options) {
-      if (options.multi === true) {
-        multi = true;
-      }
-    }
-
-    if (collection.find().count() > 0 && multi !== true) {
-      return false;
-    }
-
-    let json = null;
-    let result = null;
-
-    ReactionCore.Log.debug(
-      `Loading fixture data for ${collection._name}`);
-    // if jsonFile was path wasn't provided
-    // we'll assume we're loading collection data
-    if (!jsonFile) {
-      json = EJSON.parse(Assets.getText("private/data/" + collection._name +
-        ".json"));
-    } else {
-      json = EJSON.parse(jsonFile);
-    }
-
-    // loop over each item in json and insert into collection
-    for (let item of json) {
-      try {
-        result = collection.insert(item);
-      } catch (err) {
-        ReactionCore.Log.error("Error adding fixture data to " +
-          collection._name + ":", err.message);
-      }
-    }
-
-    if (result) {
-      ReactionCore.Log.info(
-        `Success importing fixture data to ${collection._name}`
-      );
-    }
-  }
-
-  /**
    * PackageFixture.loadSettings
    * @description
    * This basically allows you to "hardcode" all the settings. You can change them
@@ -134,51 +79,6 @@ PackageFixture = class PackageFixture {
         }
         ReactionCore.Log.info(`loaded local package data: ${item.name}`);
       }
-    }
-  }
-
-  /**
-   * loadI18n fixtures
-   * @summary imports translation fixture data
-   * @param {Object} translationCollection - optional collection object
-   * @returns {null} inserts collection
-   */
-  loadI18n(translationCollection) {
-    let collection = translationCollection || ReactionCore.Collections.Translations;
-    let json;
-
-    if (collection.find().count() > 0) {
-      return;
-    }
-
-    let shop = ReactionCore.Collections.Shops.findOne();
-    if (shop) {
-      ReactionCore.Log.info(
-        `Loading fixture data for ${collection._name}`);
-      if (!(shop !== null ? shop.languages : void 0)) {
-        shop.languages = [{
-          i18n: "en"
-        }];
-      }
-
-      for (let language of shop.languages) {
-        json = EJSON.parse(Assets.getText("private/data/i18n/" + language.i18n +
-          ".json"));
-        for (let item of json) {
-          collection.insert(item, function (error) {
-            if (error) {
-              ReactionCore.Log.warn("Error adding " + language.i18n +
-                " to " + collection._name, item, error);
-            }
-          });
-          ReactionCore.Log.info("Success adding " + language.i18n +
-            " to " +
-            collection._name);
-        }
-      }
-    } else {
-      ReactionCore.Log.error("No shop found. Failed to load languages.");
-      return;
     }
   }
 };
@@ -385,32 +285,5 @@ ReactionRegistry.setDomain = function () {
         "domains.$": getDomain()
       }
     });
-  }
-};
-
-/*
- * load core fixture data
- */
-
-ReactionRegistry.loadFixtures = function () {
-  Fixtures.loadData(ReactionCore.Collections.Shops);
-  // start checking once per second if Shops collection is ready,
-  // then load the rest of the fixtures when it is
-  let wait = Meteor.setInterval(function () {
-    if (!!ReactionCore.Collections.Shops.find().count()) {
-      Meteor.clearInterval(wait);
-      Fixtures.loadI18n(ReactionCore.Collections.Translations);
-      Fixtures.loadData(ReactionCore.Collections.Products);
-      Fixtures.loadData(ReactionCore.Collections.Tags);
-      // create default admin user
-      ReactionRegistry.createDefaultAdminUser();
-      // we've finished all reaction core initialization
-      ReactionCore.Log.info("Reaction Core initialization finished.");
-    }
-  }, 1000);
-  // load package configurations
-  if (ReactionCore.Collections.Shops.find().count()) {
-    ReactionRegistry.setDomain();
-    ReactionRegistry.loadPackages();
   }
 };
