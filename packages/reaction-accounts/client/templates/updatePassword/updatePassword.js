@@ -97,7 +97,7 @@ Template.loginFormUpdatePasswordOverlay.events({
       return;
     }
 
-    Accounts.resetPassword(this.token, password, (error) => {
+    Accounts.resetPassword(template.data.token, password, (error) => {
       if (error) {
         // Show some error message
         templateInstance.formMessages.set({
