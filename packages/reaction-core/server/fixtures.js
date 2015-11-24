@@ -226,33 +226,20 @@ ReactionRegistry.createDefaultAdminUser = function () {
 *  @return {String} returns insert result
 */
 ReactionRegistry.loadPackages = function () {
-  if (ReactionCore.Collections.Packages.find().count() !== ReactionCore.Collections
-    .Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
-    // for each shop, we're loading packages registry
-    _.each(ReactionRegistry.Packages, function (config, pkgName) {
-      return ReactionCore.Collections.Shops.find().forEach(function (shop) {
-        let shopId = shop._id;
-        ReactionCore.Log.debug("Initializing " + shop.name + " " +
-          pkgName);
-        // existing registry will be upserted with changes
-        if (!shopId) return [];
-        let result = ReactionCore.Collections.Packages.upsert({
-          shopId: shopId,
-          name: pkgName
-        }, {
-          $setOnInsert: {
-            shopId: shopId,
-            icon: config.icon,
-            enabled: !!config.autoEnable,
-            settings: config.settings,
-            registry: config.registry,
-            layout: config.layout
-          }
-        });
-        return result;
-      });
+  // for each shop, we're loading packages registry
+  _.each(ReactionRegistry.Packages, function (config, pkgName) {
+    ReactionCore.Log.debug("Initializing package " + pkgName);
+    // existing registry will be upserted with changes
+    ReactionImport.package({
+      name: pkgName,
+      icon: config.icon,
+      enabled: !!config.autoEnable,
+      settings: config.settings,
+      registry: config.registry,
+      layout: config.layout
     });
-  }
+    return result;
+  });
   // remove registry entries for packages that have been removed
   ReactionCore.Collections.Shops.find().forEach(function (shop) {
     return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
