@@ -429,8 +429,8 @@ Package.onTest(function (api) {
   api.use("accounts-base");
   api.use("accounts-password");
   // reaction core
+  api.use("reactioncommerce:reaction-factories@0.2.0");
   api.use("reactioncommerce:core@0.9.4");
-  api.use("reactioncommerce:reaction-factories@0.1.0");
   api.use("reactioncommerce:bootstrap-theme");
 
   // server integration tests
