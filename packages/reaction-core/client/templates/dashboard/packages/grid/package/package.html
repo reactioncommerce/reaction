@@ -18,7 +18,7 @@
           {{!-- {{pkgTypeClass.class}} --}}
 
           {{#if enabled}}
-            {{#if condition name 'neq' 'core'}}
+            {{#if condition cycle 'neq' 1}}
               <a class="pull-right disablePkg"> <i class="fa fa-check-square fa-2x fa-fw"></i></a>
             {{/if}}
             {{#each reactionApps provides="settings" name=name container=container}}

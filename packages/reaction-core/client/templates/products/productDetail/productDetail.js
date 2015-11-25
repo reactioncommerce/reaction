@@ -184,7 +184,7 @@ Template.productDetail.events({
         }, 0);
         // slide out label
         let addToCartText = i18n.t("productDetail.addedToCart");
-        let addToCartTitle = currentVariant.title;
+        let addToCartTitle = currentVariant.title || "";
         $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
         return $(".cart-alert").toggle("slide", {
           direction: i18n.t("languageDirection") === "rtl" ? "left" : "right",

@@ -39,7 +39,7 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
  * completed cart order
  */
 Meteor.publish("CompletedCartOrder", function (userId, cartId) {
-  check(userId, String);
+  check(userId, Match.OneOf(String, null));
   check(cartId, String);
 
   if (userId !== this.userId) {

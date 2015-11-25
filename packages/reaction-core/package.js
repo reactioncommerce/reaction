@@ -406,9 +406,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/products/productDetail/variants/variantForm/variantForm.html", "client");
   api.addFiles("client/templates/products/productDetail/variants/variantForm/variantForm.js", "client");
 
-  api.addFiles("client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.html", "client");
-  api.addFiles("client/templates/products/productDetail/variants/variantForm/inventoryVariant/inventoryVariant.js", "client");
-
   api.addFiles("client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.html", "client");
   api.addFiles("client/templates/products/productDetail/variants/variantForm/childVariant/childVariant.js", "client");
 

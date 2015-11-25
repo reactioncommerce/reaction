@@ -151,10 +151,6 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: Object, // ReactionCore.Schemas.Currency
     blackbox: true
   },
-  "locale": {
-    type: String,
-    defaultValue: "en"
-  },
   "locales": {
     type: ReactionCore.Schemas.Locale
   },
@@ -184,6 +180,16 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     optional: true,
     defaultValue: "OZ",
     label: "Base Unit of Measure"
+  },
+  "unitsOfMeasure": {
+    type: [Object],
+    optional: true
+  },
+  "unitsOfMeasure.$.uom": {
+    type: String
+  },
+  "unitsOfMeasure.$.label": {
+    type: String
   },
   "metafields": {
     type: [ReactionCore.Schemas.Metafield],

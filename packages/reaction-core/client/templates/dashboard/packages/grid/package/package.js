@@ -1,74 +1,73 @@
 /**
-* gridPackage helpers
-*
-*/
+ * gridPackage helpers
+ *
+ */
 
 Template.gridPackage.helpers({
-  pkgTypeClass: function() {
-    var pkg;
-    pkg = (function() {
+  pkgTypeClass: function () {
+    let pkg = function () {
       switch (false) {
-        case this.cycle !== 1:
-          return {
-            "class": "pkg-core-class",
-            text: "Core"
-          };
-        case this.cycle !== 2:
-          return {
-            "class": "pkg-stable-class",
-            text: "Stable"
-          };
-        case this.cycle !== 3:
-          return {
-            "class": "pkg-prerelease-class",
-            text: "Testing"
-          };
-        default:
-          return {
-            "class": "pkg-unstable-class",
-            text: "Early"
-          };
+      case this.cycle !== 1:
+        return {
+          class: "pkg-core-class",
+          text: "Core"
+        };
+      case this.cycle !== 2:
+        return {
+          class: "pkg-stable-class",
+          text: "Foundation"
+        };
+      case this.cycle !== 3:
+        return {
+          class: "pkg-prerelease-class",
+          text: "Community"
+        };
+      default:
+        return {
+          class: "pkg-unstable-class",
+          text: "Local"
+        };
       }
-    }).call(this);
+    }.call(this);
     return pkg;
   }
 });
 
 /**
-* gridPackage events
-*
-*/
+ * gridPackage events
+ *
+ */
 
 Template.gridPackage.events({
-  "click .enablePkg": function(event, template) {
-    var self;
-    self = this;
+  "click .enablePkg": function (event, template) {
+    const self = this;
     event.preventDefault();
     return ReactionCore.Collections.Packages.update(template.data.packageId, {
       $set: {
         enabled: true
       }
-    }, function(error, result) {
+    }, function (error, result) {
       if (result === 1) {
-        Alerts.add(self.label + i18n.t("gridPackage.pkgEnabled"), "success", {
-          type: "pkg-enabled-" + self.name,
-          autoHide: true
-        });
+        Alerts.add(self.label + i18n.t("gridPackage.pkgEnabled"),
+          "success", {
+            type: "pkg-enabled-" + self.name,
+            autoHide: true
+          });
         if (self.route) {
           return Router.go(self.route);
         }
       } else if (error) {
-        return Alerts.add(self.label + i18n.t("gridPackage.pkgDisabled"), "warning", {
-          type: "pkg-enabled-" + self.name,
-          autoHide: true
-        });
+        return Alerts.add(self.label + i18n.t(
+          "gridPackage.pkgDisabled"), "warning", {
+            type: "pkg-enabled-" + self.name,
+            autoHide: true
+          });
       }
     });
   },
-  "click .disablePkg": function(event, template) {
-    var self;
-    self = this;
-    if (self.name === 'core') {
+  "click .disablePkg": function (event, template) {
+    let self = this;
+    if (self.name === "core") {
       return;
     }
     if (confirm("Are you sure you want to disable " + self.label)) {
@@ -77,12 +76,13 @@ Template.gridPackage.events({
         $set: {
           enabled: false
         }
-      }, function(error, result) {
+      }, function (error, result) {
         if (result === 1) {
-          return Alerts.add(self.label + i18n.t("gridPackage.pkgDisabled"), "success", {
-            type: "pkg-enabled-" + self.name,
-            autoHide: true
-          });
+          return Alerts.add(self.label + i18n.t(
+            "gridPackage.pkgDisabled"), "success", {
+              type: "pkg-enabled-" + self.name,
+              autoHide: true
+            });
         } else if (error) {
           throw new Meteor.Error("error disabling package", error);
         }
@@ -90,23 +90,18 @@ Template.gridPackage.events({
     }
   },
 
-
-  "click [data-event-action=showPackageManagement]": function(event, template) {
+  "click [data-event-action=showPackageManagement]": function (event) {
     event.preventDefault();
     event.stopPropagation();
-
     if (this.route) {
       Router.go(this.route);
     }
-
   },
 
-  "click .pkg-settings, click [data-event-action=showPackageSettings]": function(event, template) {
+  "click .pkg-settings, click [data-event-action=showPackageSettings]": function (event) {
     event.preventDefault();
     event.stopPropagation();
-
     // Show the advanced settings view using this package registry entry
-    ReactionCore.showActionView(this)
-
+    ReactionCore.showActionView(this);
   }
 });
