@@ -1,6 +1,3 @@
-getSlug = function (slugString) {
-  return Transliteration.slugify(slugString);
-};
 
 /**
  * Match.OptionalOrNull
