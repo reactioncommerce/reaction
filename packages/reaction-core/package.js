@@ -61,6 +61,7 @@ Package.onUse(function (api) {
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.9.2");
   api.use("meteorhacks:ssr@2.2.0");
+  api.use("vsivsi:job-collection@1.2.3");
 
   // imply exports package vars
   api.imply("less");
@@ -81,6 +82,8 @@ Package.onUse(function (api) {
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
   api.imply("meteorhacks:ssr");
+  // todo do we need this here?
+  api.imply("vsivsi:job-collection@1.2.3");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -146,6 +149,9 @@ Package.onUse(function (api) {
   // security
   api.addFiles("server/browserPolicy.js", "server");
   api.addFiles("server/security.js", "server");
+
+  // cron jobs
+  api.addFiles("server/jobs.js", "server");
 
   // common
   api.addFiles("common/router.js");

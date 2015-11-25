@@ -41,7 +41,7 @@ Template.variantList.helpers({
 
     if (product) {
       let current = selectedVariant();
-      if (current !== null ? current._id : void 0) {
+      if (typeof current === "object" ? current._id : void 0) {
         if (current.parentId) {
           for (let variant of product.variants) {
             if (variant.parentId === current.parentId && variant.optionTitle &&

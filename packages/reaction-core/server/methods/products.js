@@ -26,6 +26,15 @@ Meteor.methods({
     let children;
     let clone;
     let product;
+    const processVariants = id => {
+      let results = [];
+      for (let variant of product.variants) {
+        if (typeof variant[id] === "string" && variant[id] === variantId) {
+          results.push(variant);
+        }
+      }
+      return results;
+    };
     // user needs createProduct permission to clone
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -34,24 +43,18 @@ Meteor.methods({
 
     product = Products.findOne(productId);
     // create variant hierachy structure
-    variant = (function () {
-      const results = [];
-      for (let variant of product.variants) {
-        if (variant._id === variantId) {
-          results.push(variant);
-        }
-      }
-      return results;
-    })();
+    const variant = processVariants("_id");
+
     // exit if we're trying to clone a ghost
     if (!(variant.length > 0)) {
       return false;
     }
     // variant is an array, with only
     // selected variant
-    clone = variant[0];
+    clone = Object.assign({}, variant[0]);
     // we use id with variant children
     clone._id = Random.id();
+
     // if this is going to be a child
     if (parentId) {
       ReactionCore.Log.info(
@@ -71,11 +74,13 @@ Meteor.methods({
       return clone._id;
     }
     // delete original values for new clone
-    clone.cloneId = productId;
+    clone.cloneId = variant[0]._id;
     delete clone.updatedAt;
     delete clone.createdAt;
     delete clone.inventoryQuantity;
     delete clone.title;
+    ReactionCore.copyMedia(productId, variant[0]._id, clone._id);
+
     // push the new variant to the product
     Products.update({
       _id: productId
@@ -86,24 +91,20 @@ Meteor.methods({
     }, {
       validate: false
     });
+
     // process children
-    children = (function () {
-      let results = [];
-      for (let variant of product.variants) {
-        if (variant.parentId === variantId) {
-          results.push(variant);
-        }
-      }
-      return results;
-    })();
+    children = processVariants("parentId");
     // if we have children
     if (children.length > 0) {
       ReactionCore.Log.info(
-        "products/cloneVariant: create sub child clone from ", parentId
+        "products/cloneVariant: create sub child clone from ", productId
       );
       for (let childClone of children) {
+        const variantOldId = childClone._id;
+        childClone.cloneId = variantOldId;
         childClone._id = Random.id();
         childClone.parentId = clone._id;
+        ReactionCore.copyMedia(productId, variantOldId, childClone._id);
         Products.update({
           _id: productId
         }, {
@@ -123,7 +124,7 @@ Meteor.methods({
    * @summary initializes empty variant template (all others are clones)
    * should only be seen when all variants have been deleted from a product.
    * @param {String} productId - the productId where we create variant
-   * @param {String} newVariant - variant object
+   * @param {Object} newVariant - variant object
    * @return {String} new variantId
    */
   "products/createVariant": function (productId, newVariant) {
@@ -187,10 +188,10 @@ Meteor.methods({
       "variants._id": variant._id
     });
     // update variants
-    if (product !== null ? product.variants : void 0) {
+    if (typeof product === "object" ? product.variants : void 0) {
       for (let variants of product.variants) {
         if (variants._id === variant._id) {
-          newVariant = _.extend(variants, variant);
+          newVariant = Object.assign({}, variants, variant);
         }
       }
       return Products.update({
@@ -319,8 +320,8 @@ Meteor.methods({
       let i = 0;
 
       let handleCount = Products.find({
-        cloneId: product._id
-      }).count() + 1;
+          cloneId: product._id
+        }).count() + 1;
 
       product.cloneId = product._id;
       product._id = Random.id();
@@ -367,6 +368,165 @@ Meteor.methods({
     }
     return results;
   },
+  ///**
+  // * products/cloneProduct
+  // * @summary clone a whole product, defaulting visibility, etc
+  // * in the future we are going to do an inheritance product
+  // * that maintains relationships with the cloned product tree
+  // * @param {Array} productOrArray - products array to clone
+  // * @returns {Array} returns insert results
+  // */
+  //"products/cloneProduct": function (productOrArray) {
+  //  check(productOrArray, Match.OneOf(Array, Object));
+  //  // must have createProduct permissions
+  //  if (!ReactionCore.hasPermission("createProduct")) {
+  //    throw new Meteor.Error(403, "Access Denied");
+  //  }
+  //  this.unblock();
+  //
+  //  let products;
+  //  let results = [];
+  //  const processedVariants = [];
+  //  let firstPassed = false; // indicates the iteration state through first variant
+  //  /**
+  //   * @private
+  //   * @function cloneOptions
+  //   * @description collect and clone options all of current product variant
+  //   * @param {Object} product - original product
+  //   * @param {String} variantOldId - original variant _id
+  //   * @param {String} variantNewId - cloned variant _id
+  //   * @param {String} newId - cloned product _id
+  //   * @return {Array} options - all cloned options for cloned variant
+  //   */
+  //  const cloneOptions = (product, variantOldId, variantNewId, newId) => {
+  //    const options = [];
+  //    product.variants.map((variant) => {
+  //      if (typeof variant.parentId === "string" &&
+  //        variant.parentId === variantOldId) {
+  //        const option = Object.assign({}, variant, {
+  //          _id: Random.id(),
+  //          cloneId: variant._id,
+  //          parentId: variantNewId
+  //        });
+  //        delete option.updatedAt;
+  //        delete option.createdAt;
+  //        delete option.publishedAt;
+  //        ReactionCore.copyMedia(newId, variant._id, option._id);
+  //        options.push(option);
+  //        processedVariants.push(variant._id);
+  //      }
+  //    });
+  //
+  //    return options;
+  //  };
+  //  /**
+  //   * @private
+  //   * @function cloneTopLevelClones
+  //   * @description  named recursive function which is deeply cloning product
+  //   * variants
+  //   * @param {Object} originalProduct - product object
+  //   * @param {String} newId - new _id for product
+  //   * @param {Object} originalVariant - current variant
+  //   * @return {Array}
+  //   */
+  //  const cloneTopLevelVariants = function cloneVariant(originalProduct, newId,
+  //    originalVariant) {
+  //    let clones = [];
+  //    for (let variant of originalProduct.variants) {
+  //      let result;
+  //      if (variant.type === "variant" && ~processedVariants.indexOf(variant._id)) {
+  //        // todo this `if` could be removed if decide to add cloneId to primary
+  //        // default variant.
+  //        // this is special case default product first variant
+  //        // todo Problem here -- we should somehow to detect top-level variant.
+  //        // simplest way to do it is to detect first variant in product: is check
+  //        // on equality with `product.variants[0]._id`. This way can be buggy.
+  //        if (!firstPassed &&
+  //          originalVariant._id !== variant._id &&
+  //          !variant.parentId &&
+  //          variant._id === originalProduct.variants[0]._id
+  //          /*!firstPassed &&
+  //          ((originalVariant._id !== variant._id && !variant.cloneId &&
+  //          !variant.parentId) || variant._id === originalProduct.variants[0]._id)*/) {
+  //          firstPassed = true;
+  //          result = cloneVariant(originalProduct, newId, variant);
+  //          clones = clones.concat(result);
+  //        }
+  //
+  //
+  //        else if ((originalVariant._id !== variant._id &&
+  //          typeof variant.cloneId === "string" &&
+  //          typeof variant.parentId !== "string") //&& // to avoid child variants
+  //          /*variant.cloneId === originalVariant._id*/ // go inside clones of variant
+  //          ) { // first variant detection
+  //          // this is a clone of "originalVariant"
+  //          result = cloneVariant(originalProduct, newId, variant);
+  //          clones = clones.concat(result);
+  //        }
+  //      }
+  //    }
+  //
+  //    // we need somehow out from the recursion then we back from nesting up to
+  //    // top. For now I see this way to do that, maybe it is not the best:
+  //    if (originalVariant._id === originalProduct._id) {
+  //      return clones;
+  //    }
+  //
+  //    const variantOldId = originalVariant._id;
+  //    const variantNewId = Random.id();
+  //    const newVariant = Object.assign({}, originalVariant, {
+  //      _id: variantNewId,
+  //      cloneId: variantOldId
+  //    });
+  //    const options = cloneOptions(originalProduct, variantOldId, variantNewId, newId);
+  //    ReactionCore.copyMedia(newId, variantOldId, variantNewId);
+  //    delete newVariant.updatedAt;
+  //    delete newVariant.createdAt;
+  //    delete newVariant.publishedAt; // todo can variant have this param?
+  //    processedVariants.push(variantOldId);
+  //
+  //    return [newVariant].concat(options).concat(clones);
+  //  };
+  //
+  //  if (_.isArray(productOrArray) === false) {
+  //    products = [productOrArray];
+  //  } else {
+  //    products = productOrArray;
+  //  }
+  //
+  //  //for (let i = 0; i < products.length; i++) {
+  //  for (let product of products) {
+  //    // let product = products[i];
+  //    // find all clones
+  //    const productNewId = Random.id();
+  //    let clonedVariants = cloneTopLevelVariants(product, productNewId,
+  //      { _id: product._id });
+  //    // clone current product
+  //    let newProduct = Object.assign({}, product, { variants: clonedVariants });
+  //    // end clean new clone
+  //    newProduct.cloneId = product._id;
+  //    newProduct._id = productNewId;
+  //    delete newProduct.updatedAt;
+  //    delete newProduct.createdAt;
+  //    delete newProduct.publishedAt;
+  //    // todo should we delete position?
+  //    delete newProduct.handle;
+  //    newProduct.isVisible = false;
+  //    if (newProduct.title) {
+  //      newProduct.handle = ReactionCore.createHandle(
+  //        getSlug(newProduct.title),
+  //        newProduct._id
+  //      );
+  //    }
+  //    firstPassed = false; // make it clear for the next product
+  //    let result = Products.insert(newProduct, {
+  //      validate: false
+  //    });
+  //    results.push(result);
+  //  }
+  //
+  //  return results;
+  //},
 
   /**
    * products/createProduct
@@ -480,7 +640,6 @@ Meteor.methods({
    * @param {String} productId - productId
    * @param {String} tagName - tagName
    * @param {String} tagId - tagId
-   * @param {String} currentTagId - currentTagId
    * @return {String} return result
    */
   "products/updateProductTags": function (productId, tagName, tagId) {

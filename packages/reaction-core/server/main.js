@@ -44,6 +44,10 @@ ReactionCore.Log.level(isDebug);
 
 _.extend(ReactionCore, {
   init: function () {
+    ReactionCore.Log.info("JobServer started:", Jobs.startJobServer());
+    // uncomment for JobCollection debug
+    //Jobs.setLogStream(process.stdout);
+
     try {
       ReactionRegistry.loadFixtures();
     } catch (error) {

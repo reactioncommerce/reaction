@@ -181,6 +181,74 @@ PackageFixture = class PackageFixture {
       return;
     }
   }
+
+  /**
+   * @function loadCurrencyJobs
+   * @summary Creates two jobs for fetching latest and clearing old exchange rates
+   */
+  loadCurrencyJobs(jobsCollection) {
+    const collection = jobsCollection || ReactionCore.Collections.Jobs;
+    if (collection.find().count() > 0) {
+      return;
+    }
+
+    const shopId = ReactionCore.getShopId();
+    const shopSettings = ReactionCore.Collections.Packages.findOne({
+      shopId: shopId,
+      name: "core"
+    }, {
+      fields: {
+        settings: 1
+      }
+    });
+    // todo this statement is for compatibility with previously created shops,
+    // update it to `const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod`
+    // over a few months from november of 2015
+    const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod ||
+      "every 1 hour";
+
+    const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: 'exponential' // delay by twice as long for each subsequent retry
+      })
+      .repeat({
+        // wait: refreshPeriod * 60 * 1000
+        schedule: Jobs.later.parse.text(refreshPeriod)
+      })
+      .save({
+        // Cancel any jobs of the same type,
+        // but only if this job repeats forever.
+        // Default: false.
+        // We do not need this here anymore, because fixtures runs one time, but
+        // let it be here anyway for some case...
+        cancelRepeats: true
+      });
+
+    if (fetchCurrencyRatesJob) {
+      ReactionCore.Log.info("Success adding new job for: 'shop/fetchCurrencyRates'");
+    }
+
+    const flushCurrencyRatesJob = new Job(Jobs, "shop/flushCurrencyRates", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: 'exponential'
+      })
+      .repeat({
+        wait: 48 * 60 * 60 * 1000 // every 48 hours
+      })
+      .save({
+        cancelRepeats: true
+      });
+
+    if (flushCurrencyRatesJob) {
+      ReactionCore.Log.info("Success adding new job for: 'shop/flushCurrencyRates'");
+    }
+  }
 };
 
 /*
@@ -402,6 +470,7 @@ ReactionRegistry.loadFixtures = function () {
       Fixtures.loadI18n(ReactionCore.Collections.Translations);
       Fixtures.loadData(ReactionCore.Collections.Products);
       Fixtures.loadData(ReactionCore.Collections.Tags);
+      Fixtures.loadCurrencyJobs(ReactionCore.Collections.Jobs);
       // create default admin user
       ReactionRegistry.createDefaultAdminUser();
       // we've finished all reaction core initialization

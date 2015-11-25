@@ -116,5 +116,26 @@ _.extend(ReactionCore, {
     }
 
     return handle;
+  },
+  /**
+   * @method copyMedia
+   * @description copy images links to cloned variant from original
+   * @param {String} newId - [cloned|original] product _id
+   * @param {String} variantOldId - old variant _id
+   * @param {String} variantNewId - - cloned variant _id
+   * @fires ReactionCore.Collections.Media#update
+   */
+  copyMedia: (newId, variantOldId, variantNewId) => {
+    ReactionCore.Collections.Media.find({
+      "metadata.variantId": variantOldId
+    }).forEach(function (fileObj) {
+      let newFile = fileObj.copy();
+      return newFile.update({
+        $set: {
+          "metadata.productId": newId,
+          "metadata.variantId": variantNewId
+        }
+      });
+    });
   }
 });
