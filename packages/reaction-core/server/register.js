@@ -24,7 +24,8 @@ ReactionCore.registerPackage({
       port: "25"
     },
     openexchangerates: {
-      appId: ""
+      appId: "",
+      refreshPeriod: "every 1 hour"
     }
   },
   registry: [{

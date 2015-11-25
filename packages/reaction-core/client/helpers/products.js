@@ -247,7 +247,7 @@ this.getVariantPriceRange = function (currentVariantId, currentProductId) {
   })();
 
   if (children.length === 0) {
-    if (variant !== null ? variant.price : void 0) {
+    if (typeof variant === "object" ? variant.price : void 0) {
       return variant.price;
     }
     return undefined;
