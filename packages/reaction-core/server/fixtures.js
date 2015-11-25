@@ -185,6 +185,8 @@ PackageFixture = class PackageFixture {
   /**
    * @function loadCurrencyJobs
    * @summary Creates two jobs for fetching latest and clearing old exchange rates
+   * @param {Object} jobsCollection - jobs collection
+   * @returns {undefined}
    */
   loadCurrencyJobs(jobsCollection) {
     const collection = jobsCollection || ReactionCore.Collections.Jobs;
@@ -204,6 +206,7 @@ PackageFixture = class PackageFixture {
     // todo this statement is for compatibility with previously created shops,
     // update it to `const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod`
     // over a few months from november of 2015
+    if (!shopSettings.settings.openexchangerates) shopSettings.settings.openexchangerates = {};
     const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod ||
       "every 1 hour";
 
@@ -212,7 +215,7 @@ PackageFixture = class PackageFixture {
       .retry({
         retries: 5,
         wait: 60000,
-        backoff: 'exponential' // delay by twice as long for each subsequent retry
+        backoff: "exponential" // delay by twice as long for each subsequent retry
       })
       .repeat({
         // wait: refreshPeriod * 60 * 1000
@@ -236,7 +239,7 @@ PackageFixture = class PackageFixture {
       .retry({
         retries: 5,
         wait: 60000,
-        backoff: 'exponential'
+        backoff: "exponential"
       })
       .repeat({
         wait: 48 * 60 * 60 * 1000 // every 48 hours

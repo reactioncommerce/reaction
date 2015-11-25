@@ -47,7 +47,7 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("reactioncommerce:reaction-collections@1.0.0");
+  api.use("reactioncommerce:reaction-collections@1.0.1");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.7.1");
   api.use("iron:router@1.0.12");
@@ -61,7 +61,6 @@ Package.onUse(function (api) {
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.9.2");
   api.use("meteorhacks:ssr@2.2.0");
-  api.use("vsivsi:job-collection@1.2.3");
 
   // imply exports package vars
   api.imply("less");
@@ -82,8 +81,6 @@ Package.onUse(function (api) {
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
   api.imply("meteorhacks:ssr");
-  // todo do we need this here?
-  api.imply("vsivsi:job-collection@1.2.3");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -104,7 +101,6 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
   api.addFiles("lib/css/jquery-ui.css", "client");
   api.addFiles("lib/geocoder.js", ["server"]);
-
 
   // exports
   api.addFiles("common/global.js");
@@ -397,7 +393,7 @@ Package.onTest(function (api) {
   api.use("accounts-base");
   api.use("accounts-password");
   // reaction core
-  api.use("reactioncommerce:reaction-collections@1.0.0");
+  api.use("reactioncommerce:reaction-collections@1.0.1");
   api.use("reactioncommerce:reaction-factories@0.3.0");
   api.use("reactioncommerce:core@0.9.5");
   api.use("reactioncommerce:bootstrap-theme");

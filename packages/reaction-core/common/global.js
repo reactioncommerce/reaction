@@ -17,6 +17,7 @@ if (Meteor.isClient) {
 // convenience
 Alerts = ReactionCore.Alerts;
 Schemas = ReactionCore.Schemas;
+Jobs = ReactionCore.Collections.Jobs;
 
 // not exported to client (private)
 ReactionRegistry = {};
