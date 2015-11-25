@@ -392,7 +392,7 @@ Package.onTest(function (api) {
   api.use("accounts-password");
   // reaction core
   api.use("reactioncommerce:reaction-collections@1.0.0");
-  api.use("reactioncommerce:reaction-factories@0.2.1");
+  api.use("reactioncommerce:reaction-factories@0.3.0");
   api.use("reactioncommerce:core@0.9.5");
   api.use("reactioncommerce:bootstrap-theme");
 
