@@ -36,13 +36,17 @@ grep "reactioncommerce:" .meteor/versions|while read PACKAGE; do
   FOLDER=$(echo $PACKAGE | sed -e 's/reactioncommerce://g')
   if [ -n "$PACKAGE" ]; then
     # if we've not checked it, now would be a good time
-    if [ ! -d "$PKGDST/$FOLDER" ]; then
-     echo "Git clone: " $PACKAGE " @ " $REPO " TO " $PKGDST/$FOLDER
-     git clone $REPO $PKGDST/$FOLDER
+    if [ "$REPO" ]; then
+      if [ ! -d "$PKGDST/$FOLDER" ]; then
+       echo "Git clone: " $PACKAGE " @ " $REPO " TO " $PKGDST/$FOLDER
+       #git clone $REPO $PKGDST/$FOLDER
+      else
+        # yeah, we've got local repos already. let's just pull
+       echo "Git pull: " $PACKAGE " IN" $PKGDST/$FOLDER
+       #git -C $PKGDST/$FOLDER pull
+     fi
     else
-      # yeah, we've got local repos already. let's just pull
-     echo "Git pull: " $PACKAGE " IN" $PKGDST/$FOLDER
-     git -C $PKGDST/$FOLDER pull
+      echo "Skipping: " $PACKAGE " IN local"
     fi
   fi
 done

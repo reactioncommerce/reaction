@@ -1,8 +1,7 @@
 Package.describe({
   summary: "Reaction Schemas - core reaction commerce collection schemas",
   name: "reactioncommerce:reaction-schemas",
-  version: "1.0.0",
-  git: "https://github.com/reactioncommerce/reaction-schemas.git"
+  version: "1.0.0"
 });
 
 Package.onUse(function (api) {

@@ -1,7 +1,7 @@
 # Reaction Schemas
 This is a core  package of Reaction Commerce and provides schema definitions.
 
-`reactioncommerce:core` is dependent on, and includes this package.
+`reactioncommerce:reaction-collections` is dependent on, and includes this package.
 
 ## Installation
 

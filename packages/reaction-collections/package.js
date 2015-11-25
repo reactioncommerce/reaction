@@ -1,8 +1,8 @@
 Package.describe({
   summary: "Reaction Collections - reaction commerce core collections with hooks",
   name: "reactioncommerce:reaction-collections",
-  version: "1.0.0",
-  git: "https://github.com/reactioncommerce/reaction-collections.git"
+  documentation: "README.md",
+  version: "1.0.0"
 });
 
 Package.onUse(function (api) {
