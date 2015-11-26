@@ -1,8 +1,12 @@
 /**
-* Tag Schema
-*/
+ * Tag Schema
+ */
 
 ReactionCore.Schemas.Tag = new SimpleSchema({
+  _id: {
+    type: String,
+    optional: true
+  },
   name: {
     type: String,
     index: 1

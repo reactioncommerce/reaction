@@ -180,3 +180,10 @@ ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translat
 ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
 
 ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
+
+/**
+ * ReactionCore Collections CronJobs
+ */
+ReactionCore.Collections.Jobs = Jobs = new JobCollection('Jobs', {
+  noCollectionSuffix: true
+});
