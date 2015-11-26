@@ -1,2 +1,4 @@
 *
 !.gitignore
+!reaction-schemas/*
+!reaction-collections/*
