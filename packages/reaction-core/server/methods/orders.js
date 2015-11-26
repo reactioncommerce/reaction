@@ -493,7 +493,7 @@ Meteor.methods({
         const processor = paymentMethod.processor.toLowerCase();
 
         Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
-          if (result.saved) {
+          if (result.saved === true) {
             const metadata = Object.assign(billing.paymentMethod.metadata || {}, result.metadata || {});
 
             ReactionCore.Collections.Orders.update({
@@ -510,7 +510,7 @@ Meteor.methods({
               }
             });
           } else {
-            ReactionCore.Log.warn("Failed to capture transaction.", order, paymentMethod.transactionId, error);
+            ReactionCore.Log.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error.stack);
 
             ReactionCore.Collections.Orders.update({
               "_id": orderId,
@@ -525,8 +525,7 @@ Meteor.methods({
               }
             });
 
-            throw new Meteor.Error(
-              "Failed to capture transaction");
+            return {error: "orders/capturePayments: Failed to capture transaction"};
           }
         });
       }

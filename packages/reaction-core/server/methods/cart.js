@@ -52,7 +52,7 @@ Meteor.methods({
       ReactionCore.Log.debug(
         `merge cart: merge user userId: ${userId}, sessionCart.userId: ${sessionCart.userId}, sessionCart id: ${sessionCart._id}`
       );
-      // really if we have no items, there's nothing to merge    "workflow" : {
+      // really if we have no items, there's nothing to merge
       if (sessionCart.items) {
         // merge session cart into current cart
         Cart.update(currentCart._id, {
@@ -265,7 +265,7 @@ Meteor.methods({
     let order = _.clone(cart);
     let user;
     let emails;
-
+    ReactionCore.Log.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
 
@@ -333,11 +333,11 @@ Meteor.methods({
 
     // insert new reaction order
     let orderId = ReactionCore.Collections.Orders.insert(order);
-    ReactionCore.Log.debug("Created orderId", orderId);
+    ReactionCore.Log.info("Created orderId", orderId);
 
     if (orderId) {
       // TODO: check for succesful orders/inventoryAdjust
-      Meteor.call("orders/inventoryAdjust", orderId);
+      // Meteor.call("orders/inventoryAdjust", orderId);
       // trash the old cart
       ReactionCore.Collections.Cart.remove({
         _id: order.cartId
@@ -350,7 +350,7 @@ Meteor.methods({
         Meteor.call("cart/createCart", order.userId);
       }
       // return
-      ReactionCore.Log.debug("Transitioned cart " + cartId + " to order " +
+      ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
       return orderId;
     }
@@ -602,13 +602,13 @@ Meteor.methods({
     }
 
     return ReactionCore.Collections.Cart.update(selector, update,
-      function (error) {
+      function (error, result) {
         if (error) {
           ReactionCore.Log.warn(error);
           throw new Meteor.Error("An error occurred saving the order",
             error);
         }
-        return;
+        return result;
       });
   }
 });

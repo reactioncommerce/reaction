@@ -1,7 +1,6 @@
 {
   "name": "reactioncommerce-core",
   "dependencies": {
-    "transliteration": "https://raw.githubusercontent.com/andyhu/node-transliteration/master/transliteration.min.js",
     "jquery.payment": "1.2.4",
     "autosize": "3.0.7",
     "i18next": "1.10.2",

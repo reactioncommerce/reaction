@@ -1,13 +1,12 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.9.5",
+  version: "0.9.6",
   git: "https://github.com/reactioncommerce/reaction-core.git"
 });
 
 Npm.depends({
-  "node-geocoder": "3.0.0",
-  "transliteration": "0.1.1"
+  "node-geocoder": "3.0.0"
 });
 
 Package.onUse(function (api) {
@@ -47,30 +46,21 @@ Package.onUse(function (api) {
   // community packages
   api.use("mquandalle:bower@1.5.2");
   api.use("underscorestring:underscore.string@3.2.2");
-  api.use("aldeed:autoform@5.7.1");
-  api.use("aldeed:collection2@2.5.0");
-  api.use("aldeed:simple-schema@1.3.3");
+  api.use("ongoworks:transliteration@0.1.1");
+  api.use("reactioncommerce:reaction-collections@1.0.1");
   api.use("aldeed:template-extension@4.0.0", "client");
+  api.use("aldeed:autoform@5.7.1");
   api.use("iron:router@1.0.12");
+
   api.use("ongoworks:bunyan-logger@2.5.0");
+  api.use("alanning:roles@1.2.13");
   api.use("ongoworks:security@1.3.0");
 
-  api.use("matb33:collection-hooks@0.8.1");
-  api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.1");
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.9.2");
-
-  api.use("cfs:standard-packages@0.5.9");
-  api.use("cfs:storage-adapter@0.2.3");
-  api.use("cfs:graphicsmagick@0.0.18");
-  api.use("cfs:gridfs@0.0.33");
-  api.use("cfs:filesystem@0.1.2");
-  api.use("cfs:ui@0.1.3");
-  api.use("raix:ui-dropped-event@0.0.7");
   api.use("meteorhacks:ssr@2.2.0");
-  api.use("vsivsi:job-collection@1.2.3");
 
   // imply exports package vars
   api.imply("less");
@@ -80,25 +70,17 @@ Package.onUse(function (api) {
   api.imply("es5-shim");
   api.imply("browser-policy");
   api.imply("service-configuration");
+  api.imply("reactioncommerce:reaction-collections");
   api.imply("ongoworks:security");
-  api.imply("mquandalle:bower");
-  api.imply("aldeed:collection2");
-  api.imply("aldeed:simple-schema");
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
   api.imply("iron:router");
-  api.imply("cfs:graphicsmagick");
-  api.imply("cfs:filesystem");
-  api.imply("cfs:gridfs");
-  api.imply("raix:ui-dropped-event");
-  api.imply("matb33:collection-hooks");
+
   api.imply("alanning:roles");
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
   api.imply("meteorhacks:ssr");
-  // todo do we need this here?
-  api.imply("vsivsi:job-collection@1.2.3");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -119,7 +101,6 @@ Package.onUse(function (api) {
   api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
   api.addFiles("lib/css/jquery-ui.css", "client");
   api.addFiles("lib/geocoder.js", ["server"]);
-  api.addFiles("lib/transliteration.js", ["server"]);
 
   // exports
   api.addFiles("common/global.js");
@@ -160,28 +141,6 @@ Package.onUse(function (api) {
 
   // import fixture data
   api.addFiles("server/fixtures.js", "server");
-
-  // schemas
-  api.addFiles("common/schemas/address.js");
-  api.addFiles("common/schemas/layouts.js");
-  api.addFiles("common/schemas/packages.js");
-  api.addFiles("common/schemas/shops.js");
-  api.addFiles("common/schemas/payments.js");
-  api.addFiles("common/schemas/shipping.js");
-  api.addFiles("common/schemas/taxes.js");
-  api.addFiles("common/schemas/discounts.js");
-  api.addFiles("common/schemas/products.js");
-  api.addFiles("common/schemas/tags.js");
-  api.addFiles("common/schemas/cart.js");
-  api.addFiles("common/schemas/orders.js");
-  api.addFiles("common/schemas/translations.js");
-
-  // collections
-  api.addFiles("common/collections/collections.js");
-  api.addFiles("common/collections/collectionFS.js");
-
-  // collection hooks
-  api.addFiles("common/collections/hooks/hooks.js");
 
   // security
   api.addFiles("server/browserPolicy.js", "server");
@@ -418,7 +377,6 @@ Package.onUse(function (api) {
   // Exports
   api.export("ReactionCore");
   api.export("ReactionRegistry", "server");
-  api.export("getSlug");
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
   api.export("currentProduct", ["client", "server"]);
@@ -435,8 +393,9 @@ Package.onTest(function (api) {
   api.use("accounts-base");
   api.use("accounts-password");
   // reaction core
-  api.use("reactioncommerce:core@0.9.4");
-  api.use("reactioncommerce:reaction-factories@0.1.0");
+  api.use("reactioncommerce:reaction-collections@1.0.1");
+  api.use("reactioncommerce:reaction-factories@0.3.0");
+  api.use("reactioncommerce:core@0.9.5");
   api.use("reactioncommerce:bootstrap-theme");
 
   // server integration tests
