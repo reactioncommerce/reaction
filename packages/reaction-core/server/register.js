@@ -111,7 +111,7 @@ ReactionCore.registerPackage({
     position: "1"
   }, {
     template: "checkoutAddressBook",
-    label: "Address Details",
+    label: "Shipping Billing",
     workflow: "coreCartWorkflow",
     container: "checkout-steps-main",
     audience: ["guest", "anonymous"],
