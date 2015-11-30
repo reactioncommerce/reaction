@@ -64,7 +64,7 @@ meteor add reactioncommerce:bootstrap-theme nemo64:bootstrap
 
 Within **reactioncommerce:core** there is a build plugin (reactioncommerce:bootstrap-theme) that takes the files from the **reactioncommerce:core-theme** package and builds the less files in the `client/themes` directory of your application.
 
-You can create your own theme packages, using the [reactioncommerce:core-theme](https://github.com/reactioncommerce/reaction-core-theme) and [reactioncommerce:bootstrap-theme]((https://github.com/reactioncommerce/reaction-bootstrap-theme) as a template.
+You can create your own theme packages, using the [reactioncommerce:core-theme](https://github.com/reactioncommerce/reaction-core-theme) and [reactioncommerce:bootstrap-theme](https://github.com/reactioncommerce/reaction-bootstrap-theme) as a template.
 
 See the [Meteor documentation](https://docs.meteor.com/#/full/writingpackages) for details on publishing packages. For testing locally, or if you don't want your custom theme package to be public, just copy the package into the `reaction/packages` directory, or add to the `PACKAGE_DIRS` environment variable.
 
