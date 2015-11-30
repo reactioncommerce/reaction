@@ -1,0 +1,50 @@
+.pkg-card {
+  // background-color: @body-bg;
+  // border-radius: @border-radius-small;
+  // border: 1px solid @table-border-color;
+  // padding: @padding-base-horizontal;
+  // margin-top: 5px;
+
+  .pkg-content {
+    height: 140px;
+  }
+
+  .enablePkg {
+    color: @brand-success;
+  }
+
+  .disablePkg {
+    color: @gray-light;
+  }
+
+  .pkg-controls {
+    position: absolute;
+    .right(10px);
+    bottom: 16px;
+  }
+  .status {
+    color: @gray-light;
+  }
+}
+
+.pkg-core-class {
+  .ribbon(50px,@brand-primary, #fff);
+}
+
+.pkg-stable-class {
+  .ribbon(50px,@brand-success, #fff);
+}
+
+.pkg-prerelease-class {
+  .ribbon(50px,@brand-info, #fff);
+}
+
+.pkg-unstable-class {
+  .ribbon(50px,@brand-warning, #fff);
+}
+
+.pkg-app-card, .pkg-app-card:hover {
+    color: @gray-dark;
+    text-decoration: none;
+    cursor: pointer;
+}
