@@ -1,0 +1,8 @@
+<template name="productSocial">
+<div class="social-media">
+  {{!-- Social Commentary --}}
+  {{#each reactionApps provides="social" name="reaction-social"}}
+    {{> Template.dynamic template=template data=customSocialSettings }}
+  {{/each}}
+</div>
+</template>
