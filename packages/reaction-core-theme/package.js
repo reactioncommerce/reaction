@@ -5,14 +5,13 @@ Package.describe({
   git: "https://github.com/reactioncommerce/core-theme.git"
 });
 
-Package.onUse(function(api) {
-  api.versionsFrom('METEOR@1.2');
+Package.onUse(function (api) {
+  api.versionsFrom("METEOR@1.2");
 
+  api.use("less");
 
-  api.use("less")
-
-  api.addFiles('theme-data.js', 'server');
-  api.export(['ThemeData']);
+  api.addFiles("theme-data.js", "server");
+  api.export(["ThemeData"]);
 
   api.addFiles("lib/bootstrap/dist/js/bootstrap.js", ["client"]);
 
@@ -131,6 +130,6 @@ Package.onUse(function(api) {
     "theme/products/productDetail/variants/variantList/variantList.less",
     "theme/products/productGrid/productGrid.less",
     "theme/products/productList/productList.less",
-    "theme/products/products.less",
+    "theme/products/products.less"
   ], "client", {isImport: true});
 });
