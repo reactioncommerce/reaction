@@ -32,9 +32,10 @@ audit-argument-checks
 # Recommended Packages
 
 less                   # dependency of bootstrap, core-theme
-nemo64:bootstrap       # required only with bootstrap-theme
+# nemo64:bootstrap       # required only with bootstrap-theme
 # spiderable           # adds phantomjs, use ongoworks:spiderable with Docker
 # meteorhacks:sikka    # additional ddp, login security
+fortawesome:fontawesome
 
 # Meteor Auth Packages
 
@@ -48,13 +49,13 @@ accounts-oauth
 # Reaction Commerce Packages
 
 reactioncommerce:core
-reactioncommerce:bootstrap-theme
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-inventory
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-social
+reactioncommerce:core-theme
 # reactioncommerce:launchdock
 
 # Reaction Payment Packages
