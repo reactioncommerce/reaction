@@ -8,16 +8,12 @@ Package.onUse(function (api) {
   // Works with meteor 1.2 and above
   api.versionsFrom("METEOR@1.2");
 
-
-  // Use your favorite preprocessor
+  // Use a preprocessor
   api.use("less");
-  // api.use("stylus");
-
 
   // Include core theme to get its base styles
   // (Optional, but recommended for a starting point)
   api.use("reaction-core-theme@2.0.0");
-
 
   // Add files what will be imported into your theme.less file
   // ** Please note: {isImport: true} stops meteor from processing a file with its
@@ -31,7 +27,6 @@ Package.onUse(function (api) {
 
   // - OR Individually, if you prefer
   // api.addFiles("/path/to/file.less", "client", {isImport: true});
-
 
   // Add top level .less files
   // These will be processed by your included preprocessors (less, styles, or sass)
