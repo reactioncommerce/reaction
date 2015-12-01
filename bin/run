@@ -3,8 +3,19 @@
 set -u
 set -e
 
-DIRNAME=$(cd `dirname $0` && pwd)
+DIRNAME="$(dirname "$(pwd)")"
+CONFIG=$DIRNAME/settings/settings.json
+DEVCONFIG=$DIRNAME/settings/dev.settings.json
 
-CONFIG=$DIRNAME/../settings/settings.json
-. $DIRNAME/check-settings $CONFIG
-meteor run --settings $CONFIG "$@"
+if [ -f $CONFIG ]; then
+   echo "Starting Reaction using '$CONFIG'."
+   meteor run --raw-logs --settings $CONFIG "$@"
+else
+ if [ -f $DEVCONFIG ]; then
+   echo "Starting Reaction using '$DEVCONFIG'."
+   meteor run --raw-logs --settings $DEVCONFIG "$@"
+ else
+   echo "Starting Reaction."
+   meteor run --raw-logs "$@"
+ fi
+fi

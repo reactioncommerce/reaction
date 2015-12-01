@@ -47,7 +47,7 @@ accounts-weibo
 accounts-oauth
 
 # Reaction Commerce Packages
-
+reactioncommerce:core-theme
 reactioncommerce:core
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-inventory
@@ -55,8 +55,7 @@ reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-social
-reactioncommerce:reaction-product-simple
-reactioncommerce:core-theme
+#reactioncommerce:reaction-product-simple
 # reactioncommerce:launchdock
 
 # Reaction Payment Packages
