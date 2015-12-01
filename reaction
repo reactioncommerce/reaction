@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-
+set -u
+set -e
 # copy clone-packages.sh so that any directory
 # can be specified for use in PACKAGE_DIRS config.
 cp bin/clone-packages.sh /usr/local/bin/
@@ -8,4 +9,9 @@ cp bin/clone-packages.sh /usr/local/bin/
 #
 # by default runs settings/dev.settings.json
 # customize by creating settings/settings.json
-bin/run --raw-logs
+echo $@
+if [[ "$@" == "reset" ]]; then
+  bin/reset
+else
+  bin/run "$@"
+fi
