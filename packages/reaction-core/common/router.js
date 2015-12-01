@@ -9,8 +9,10 @@ Router.configure({
   loadingTemplate: "loading",
 
   onRun: function () {
-    $(window).scrollTop(0);
-    ReactionCore.clearActionView();
+    if (Meteor.isClient) {
+      $(window).scrollTop(0);
+      ReactionCore.clearActionView();  
+    }
     this.next();
   },
 
