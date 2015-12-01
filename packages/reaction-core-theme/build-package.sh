@@ -14,7 +14,7 @@ for FILE in $LESS_FILES
 do
   echo "    \"$FILE\"," >> $PACKAGE_JS
 done
-echo "  ], \"client\");" >> $PACKAGE_JS
+echo "  ], \"client\", {isImport: true});" >> $PACKAGE_JS
 
 # end the use statement
 echo "});" >> $PACKAGE_JS
