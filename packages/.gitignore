@@ -6,3 +6,5 @@
 !reaction-ui/*
 !reaction-product-simple/*
 !reaction-core-theme/*
+!reaction-default-theme/*
+!my-custom-theme-template/*

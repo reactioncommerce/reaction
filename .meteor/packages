@@ -47,15 +47,16 @@ accounts-weibo
 accounts-oauth
 
 # Reaction Commerce Packages
-reactioncommerce:core-theme
+
 reactioncommerce:core
+reactioncommerce:core-theme
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-inventory
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-social
-#reactioncommerce:reaction-product-simple
+reactioncommerce:reaction-product-simple
 # reactioncommerce:launchdock
 
 # Reaction Payment Packages
@@ -75,3 +76,7 @@ reactioncommerce:reaction-stripe
 #meteorhacks:kadira
 #meteorhacks:kadira-profiler
 #meteortoys:allthings
+
+# Themes
+reactioncommerce:default-theme
+#my:custom-theme
