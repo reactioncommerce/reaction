@@ -73,12 +73,8 @@ RUN apt-get -qq upgrade
 RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
 RUN apt-get install -y nodejs
 
-# Install forever & phantomjs
+# Install nodemon & phantomjs
 RUN npm install --silent -g phantomjs nodemon
-
-# https://github.com/meteor/meteor/wiki/File-Change-Watcher-Efficiency
-# will only work if docker run in priviledged mode
-# RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
 
 # Install Meteor
 RUN curl -sL https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
@@ -88,23 +84,22 @@ ENV PORT 80
 ENV ROOT_URL http://localhost
 ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
 ENV NODE nodemon
-
+ENV PACKAGE_DIRS "packages"
 # Expose container port 3000 to the host (outside the container)
 # you can always map other ports such as 8080 in docker run
 # 80 is the default meteor production port, while 3000 is development mode
 EXPOSE 80
 
 # Install entrypoint and build scripts
-# adding the files locally
-# and setting permissions.
-COPY bin/docker/entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
+COPY bin/docker /usr/bin
+RUN chmod +x \
+/usr/bin/install-mongodb.sh \
+/usr/bin/build-meteor.sh \
+/usr/bin/cleanup.sh \
+/usr/bin/entrypoint.sh
 
-COPY bin/docker/build-meteor.sh /usr/bin/build-meteor.sh
-RUN chmod +x /usr/bin/build-meteor.sh
-
-COPY bin/docker/cleanup.sh /usr/bin/cleanup.sh
-RUN chmod +x /usr/bin/cleanup.sh
+COPY bin/clone-packages.sh /usr/bin/clone-packages.sh
+RUN chmod +x /usr/bin/clone-packages.sh
 
 # Make sure we have a directory for the application
 RUN mkdir -p /var/www
@@ -117,13 +112,9 @@ COPY . /usr/src/meteor
 WORKDIR /usr/src/meteor/
 
 #
-# Build meteor..
-# most of this can go away with Less updates
-# coming in Meteor 1.2.0 - however unless you
-# package the repo to just run development
-# you'll need to do some trick like this
-# also runs npm install in programs/server
+# Build meteor
 #
+RUN bash /usr/bin/clone-packages.sh
 RUN bash /usr/bin/build-meteor.sh
 
 # cleanup

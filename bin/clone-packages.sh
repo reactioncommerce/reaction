@@ -38,15 +38,20 @@ grep "reactioncommerce:" .meteor/versions|while read PACKAGE; do
     # if we've not checked it, now would be a good time
     if [ "$REPO" ]; then
       if [ ! -d "$PKGDST/$FOLDER" ]; then
-       echo "Git clone: " $PACKAGE " @ " $REPO " TO " $PKGDST/$FOLDER
+       echo "Git clone: $PACKAGE @ $REPO TO $PKGDST/$FOLDER"
        git clone $REPO $PKGDST/$FOLDER
       else
-        # yeah, we've got local repos already. let's just pull
-       echo "Git pull: " $PACKAGE " IN" $PKGDST/$FOLDER
-       git -C $PKGDST/$FOLDER pull
+        # check if we're actually a git repo, we might be a local that been published
+        if [ -d "$PKGDST/$FOLDER/.git" ]; then
+          # yeah, we've got local repos already. let's just pull
+          echo "Git pull: $PACKAGE IN $PKGDST/$FOLDER"
+          git -C $PKGDST/$FOLDER pull
+        else
+          echo "Skipping: $PACKAGE IN $PKGDST/$FOLDER"
+        fi
      fi
     else
-      echo "Skipping: " $PACKAGE " IN local"
+      echo "Skipping: $PACKAGE IN local"
     fi
   fi
 done
