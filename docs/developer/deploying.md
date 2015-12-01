@@ -33,7 +33,7 @@ Build and deploy `reactioncommerce/reaction` on AWS with `docker-machine`:
 
 ```
 docker-machine create --driver amazonec2 --amazonec2-access-key $AWS_KEY --amazonec2-secret-key $AWS_SECRET --amazonec2-instance-type r3.xlarge reaction
-$(docker-machine env reaction)
+eval $(docker-machine env reaction)
 docker build -t reactioncommerce/reaction .
 docker run -d -p :80:3000 reactioncommerce/reaction
 ```
