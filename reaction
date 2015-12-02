@@ -9,7 +9,6 @@ cp bin/clone-packages.sh /usr/local/bin/
 #
 # by default runs settings/dev.settings.json
 # customize by creating settings/settings.json
-echo $@
 if [[ "$@" == "reset" ]]; then
   bin/reset
 else

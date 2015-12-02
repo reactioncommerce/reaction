@@ -1,8 +1,7 @@
 Package.describe({
   summary: "Reaction Inventory",
   name: "reactioncommerce:reaction-inventory",
-  version: "0.1.0",
-  git: "https://github.com/reactioncommerce/reaction-inventory.git"
+  version: "0.2.0"
 });
 
 

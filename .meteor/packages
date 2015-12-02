@@ -56,7 +56,7 @@ reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-social
-reactioncommerce:reaction-product-simple
+# reactioncommerce:reaction-product-simple
 # reactioncommerce:launchdock
 
 # Reaction Payment Packages

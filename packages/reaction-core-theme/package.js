@@ -2,7 +2,7 @@ Package.describe({
   name: "reactioncommerce:core-theme",
   summary: "Reaction Commerce core theme",
   version: "2.0.0",
-  git: "https://github.com/reactioncommerce/core-theme.git"
+  documentation: "README.md"
 });
 
 Package.onUse(function (api) {
