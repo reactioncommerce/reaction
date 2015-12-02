@@ -27,12 +27,12 @@ The container will accept environment variables for configuring `MONGO_URL` to p
 You can pass environment variables to Docker using `-e`, so to pass `ROOT_URL` you would do add `-e ROOT_URL="<myhost>"` to `docker run`.
 
 ```bash
-   docker run --rm  -p ::80
-     -e ROOT_URL="http://localhost" \
-     -e REACTION_EMAIL="youradmin@yourdomain.com" \
-     -e REACTION_USER="admin" \
-     -e REACTION_AUTH="password" \
-     -t reaction
+docker run --rm  -p ::80 \
+-e ROOT_URL="http://localhost" \
+-e REACTION_EMAIL="youradmin@yourdomain.com" \
+-e REACTION_USER="admin" \
+-e REACTION_AUTH="password" \
+-t reaction
 ```
 
 ## Docker Machine
