@@ -18,12 +18,21 @@ docker build -t reaction .
 ### Run
 Start a Docker/Reaction container using [`docker run`](https://docs.docker.com/reference/commandline/cli/#run):
 
+```bash
+docker run -p :8080 -it reaction
+```
+
 The container will accept environment variables for configuring `MONGO_URL` to provide an alternate data source.
 
 You can pass environment variables to Docker using `-e`, so to pass `ROOT_URL` you would do add `-e ROOT_URL="<myhost>"` to `docker run`.
 
 ```bash
-docker run -p :8080 -it reaction
+   docker run --rm  -p ::80
+     -e ROOT_URL="http://localhost" \
+     -e REACTION_EMAIL="youradmin@yourdomain.com" \
+     -e REACTION_USER="admin" \
+     -e REACTION_AUTH="password" \
+     -t reaction
 ```
 
 ## Docker Machine
@@ -35,7 +44,7 @@ Build and deploy `reactioncommerce/reaction` on AWS with `docker-machine`:
 docker-machine create --driver amazonec2 --amazonec2-access-key $AWS_KEY --amazonec2-secret-key $AWS_SECRET --amazonec2-instance-type r3.xlarge reaction
 eval "$(docker-machine env reaction)"
 docker build -t reactioncommerce/reaction .
-docker run -d -p :80:3000 reactioncommerce/reaction
+docker run -d -p ::80 reactioncommerce/reaction
 ```
 
 In this example, you'll need to add port 80 your `security group`'s inbound rules.

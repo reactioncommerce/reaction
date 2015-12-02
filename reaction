@@ -11,6 +11,10 @@ cp bin/clone-packages.sh /usr/local/bin/
 # customize by creating settings/settings.json
 if [[ "$@" == "reset" ]]; then
   bin/reset
+elif [[ "$@" == "pull" ]]; then
+  bin/clone-packages.sh
+elif [[ "$@" == "install" ]]; then
+  bin/install.sh
 else
   bin/run "$@"
 fi

@@ -8,7 +8,7 @@
 set -e
 
 # set default meteor values if they arent set
-: ${PORT:="3000"}
+: ${PORT:="80"}
 : ${ROOT_URL:="http://localhost"}
 : ${MONGO_URL:="mongodb://127.0.0.1:27017/meteor"}
 

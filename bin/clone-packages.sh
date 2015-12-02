@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 #
 # utility to install reactioncommcere:* packages
 # packages are cloned, or pulled to env PACKAGE_DIRS
+# local packages will be skipped
 #
 # used by the circle build scripts to test the complete reaction
 # release with latest development branch packages.
@@ -10,7 +11,9 @@
 # See:  http://stackoverflow.com/questions/14820329/mkdir-home-error
 #
 # Use:
-# cp bin/clone-packages.sh /usr/local/bin
+#   cp bin/clone-packages.sh /usr/local/bin
+#   cd reaction
+#   bin/clone-packages.sh
 #
 # set default meteor packages dir to tmp
 : ${PACKAGE_DIRS:="packages"}
@@ -26,18 +29,23 @@ mkdir -p $PKGDST
 echo "*****************************************************************"
 echo "checking the default branches for reactioncommerce:* packages    "
 echo "*****************************************************************"
-PKGLIST=$(grep "^reactioncommerce:" .meteor/packages)
-VERLIST=$(grep "reactioncommerce:" .meteor/versions)
-REACTIONPACKAGES=$VERLIST || $PKGLIST
-
+PKGLIST="$(grep "^reactioncommerce:" .meteor/packages -s)"
+VERLIST="$(grep "reactioncommerce:" .meteor/versions -s)"
+if [ ! -z "$VERLIST" ]; then
+  REACTIONPACKAGES=$VERLIST
+elif [ ! -z "$PKGLIST" ]; then
+  REACTIONPACKAGES=$PKGLIST
+else
+  echo "No Reaction packages found."
+  exit
+fi
 # loop through packages file and get the reactioncommerce package repos
 while read -r PACKAGE; do
   PACKAGE="$(echo $PACKAGE | sed -e 's/@.*//')"
-  echo "fetching meteor package info ---> $PACKAGE"
-  GITURL=$(meteor show $PACKAGE --show-all |grep 'Git: ' | sed -e 's/Git: //g')
-  REPO=$(basename "$GITURL" ".${GITURL##*.}")
-
   if [ -n "$PACKAGE" ]; then
+    echo "Fetching package details from Atmosphere ---> $PACKAGE"
+    GITURL=$(meteor show $PACKAGE --show-all |grep 'Git: ' | sed -e 's/Git: //g')
+    REPO=$(basename "$GITURL" ".${GITURL##*.}")
     # if we've not checked it, now would be a good time
     if [ "$REPO" ]; then
       if [ ! -d "$PKGDST/$REPO" ]; then

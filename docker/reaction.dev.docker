@@ -14,7 +14,7 @@
 #
 #   Run Reaction, Meteor + local mongo:
 #
-#   docker run --rm  -p ::3000
+#   docker run --rm  -p ::80
 #     -e ROOT_URL="http://localhost" \
 #     -e REACTION_EMAIL="youradmin@yourdomain.com" \
 #     -e REACTION_USER="admin" \
@@ -44,7 +44,7 @@ FROM debian:jessie
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
 # Install git, curl, python, etc
-# Install imagemagick (optional for cfs:graphicsmagick)
+# Install graphicsmagick for Reaction image handling)
 RUN apt-get -qq update && apt-get install -qq -y \
   build-essential \
   apt-utils \
@@ -69,8 +69,18 @@ RUN apt-get -qq upgrade
 RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
 RUN apt-get install -y nodejs
 
+# install the mongodb server binaries
+RUN mkdir -p "/data/db"
+VOLUME /data/db
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+RUN apt-get update
+RUN apt-get -qq -y install --no-install-recommends adduser mongodb-org-server
+
+
 # Install nodemon & phantomjs
-RUN npm install --silent -g phantomjs nodemon
+RUN npm install --silent -g phantomjs nodemon forever
 
 # Install Meteor
 RUN curl -sL https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
@@ -86,21 +96,16 @@ ENV DEBIAN_FRONTEND noninteractive
 # 80 is the default meteor production port, while 3000 is development mode
 EXPOSE 80
 
+
 # Install entrypoint and build scripts
 COPY bin/clone-packages.sh /usr/bin/clone-packages.sh
 COPY bin/docker /usr/bin
 RUN chmod +x \
-/usr/bin/install-mongodb.sh \
 /usr/bin/build-meteor.sh \
 /usr/bin/build-packages.sh \
 /usr/bin/cleanup.sh \
 /usr/bin/entrypoint.sh \
 /usr/bin/clone-packages.sh
-
-# Install mongodb
-RUN bash /usr/bin/install-mongodb.sh
-RUN mkdir -p "/data/db"
-VOLUME /data/db
 
 # add app to /usr/src
 RUN mkdir -p "/var/src" "/var/www"

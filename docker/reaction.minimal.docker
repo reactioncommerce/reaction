@@ -11,7 +11,7 @@ RUN chmod +x \
 
 RUN /usr/bin/install-graphicsmagick.sh
 
-ENV PORT 3000
+ENV PORT 80
 ENV ROOT_URL http://localhost
 ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
 ENV NODE forever
@@ -21,7 +21,7 @@ WORKDIR /var/www/bundle
 
 COPY . /var/src/
 
-EXPOSE 3000
+EXPOSE 80
 
 RUN /usr/bin/build-bundle.sh
 
