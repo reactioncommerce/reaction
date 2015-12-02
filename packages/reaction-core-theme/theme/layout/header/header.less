@@ -30,22 +30,19 @@
 
 .navbar-languages {
   .float(right);
-  padding: @navbar-padding-vertical (@navbar-padding-horizontal * 2);
+  padding: 0 (@navbar-padding-horizontal * 2);
   height: @navbar-height;
   &:hover {
     background-color: @navbar-default-toggle-icon-bar-bg;
     border-color: @navbar-default-toggle-border-color;
   }
-  .dropdown-menu {
-    margin-top: @navbar-padding-vertical;
-  }
+
 }
 
 .navbar-accounts {
   .float(right);
   height: @navbar-height;
-  padding: @navbar-padding-vertical;
-  .padding-left(@navbar-padding-vertical);
+
 
   &:hover {
     background-color: @navbar-default-toggle-icon-bar-bg;
@@ -55,7 +52,19 @@
     background-color: @navbar-default-toggle-icon-bar-bg;
     border-color: @navbar-default-toggle-border-color;
   }
+
+  .dropdown-toggle {
+    .display(flex);
+    .align-items(center);
+    height: 100%;
+
+    padding: 0 @navbar-padding-vertical;
+    .padding-left(@navbar-padding-vertical);
+  }
+
   .dropdown{
+    height: 100%;
+
     .circular-icon {
       width: 40px;
       height: 40px;
@@ -70,21 +79,22 @@
     }
 
     .user-accounts-dropdown {
-      padding: 5px 10px;
+      padding: 10px;
     }
 
     .user-accounts-dropdown-content {
-      min-width: 150px;
+      min-width: 220px;
       min-height: 50px;
-      margin-bottom: 10px;
+      // margin-bottom: 30px;
       color: @gray-darker;
       ul {
-        padding: 1px;
+        padding: 0;
       }
     }
 
     .user-accounts-dropdown-apps {
-      margin-top: 10px;
+      margin: 20px 0 0 0;
+
       i {
         margin: 10px 10px 10px 6px;
         width: 20px;
@@ -97,14 +107,20 @@
       cursor: pointer;
       white-space: nowrap;
       display: block;
+      border-bottom: 1px solid @black10;
+      &:last-child {
+        border-bottom: none;
+      }
 
       a {
         color: @gray;
         text-decoration: none;
         display: block;
+        padding: 5px 0;
+
       }
       a:hover, a:focus {
-        color: @gray-darker;
+        color: @brand-vivid-color;
         text-decoration: none;
         background-color: transparent;
       }
@@ -121,7 +137,7 @@
 
   .dropdown-menu {
     border: 1px solid @dropdown-border;
-    margin-top: 13px;
+    margin-top: 0;
   }
 
   .additional-link-container {
