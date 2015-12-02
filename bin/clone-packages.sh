@@ -21,7 +21,7 @@
 # we'll clone to the package dir
 PKGDST=$PACKAGE_DIRS
 set -u
-set -e
+set +e #ignore errors from grep!
 
 # ensure repos not cached by using .meteor folder
 mkdir -p $PKGDST
@@ -31,6 +31,7 @@ echo "checking the default branches for reactioncommerce:* packages    "
 echo "*****************************************************************"
 PKGLIST="$(grep "^reactioncommerce:" .meteor/packages -s)"
 VERLIST="$(grep "reactioncommerce:" .meteor/versions -s)"
+
 if [ ! -z "$VERLIST" ]; then
   REACTIONPACKAGES=$VERLIST
 elif [ ! -z "$PKGLIST" ]; then
@@ -39,6 +40,7 @@ else
   echo "No Reaction packages found."
   exit
 fi
+
 # loop through packages file and get the reactioncommerce package repos
 while read -r PACKAGE; do
   PACKAGE="$(echo $PACKAGE | sed -e 's/@.*//')"

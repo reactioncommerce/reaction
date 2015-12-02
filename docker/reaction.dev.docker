@@ -113,8 +113,8 @@ COPY . /var/src/
 WORKDIR /var/src/
 
 # build meteor
-RUN bash /usr/bin/clone-packages.sh
-RUN bash /usr/bin/build-meteor.sh
+# this needs to be a single step to avoid Error: EXDEV, rename
+RUN bash /usr/bin/clone-packages.sh && /usr/bin/build-meteor.sh
 
 # cleanup
 RUN apt-get autoremove -y
@@ -123,6 +123,7 @@ RUN bash /usr/bin/cleanup.sh
 
 # switch to production meteor bundle
 WORKDIR /var/www/bundle
+RUN cd /var/www/bundle/programs/server/ && npm install
 
 # start mongo and reaction
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]

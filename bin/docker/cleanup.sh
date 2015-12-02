@@ -12,5 +12,5 @@ rm -rf /var/lib/cache /var/lib/log
 rm -rf /tmp/*
 
 # Clean out Meteor and app src files
-rm -rf ~/.meteor /usr/src/meteor
+rm -rf ~/.meteor /usr/src/meteor /var/src/*
 rm /usr/local/bin/meteor
