@@ -7,6 +7,5 @@
 Dockerfile
 docker
 docs
-.meteor/local
 packages/*/.npm
 packages/*/lib/bower
