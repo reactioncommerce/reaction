@@ -14,6 +14,7 @@ RUN /usr/bin/install-graphicsmagick.sh
 ENV PORT 3000
 ENV ROOT_URL http://localhost
 ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
+ENV NODE forever
 
 RUN mkdir -p "/var/src" "/var/www"
 WORKDIR /var/www/bundle
