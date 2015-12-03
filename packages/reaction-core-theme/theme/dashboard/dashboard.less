@@ -36,7 +36,7 @@
   padding: 0 20px;
 
   border-radius: 0;
-  
+
   i {
     .margin-right(10px);
     font-size: 2rem;
@@ -181,13 +181,9 @@ Dashboard Swiper Pagination Styles
 
 
 .nav-dashboard {
-  .container-fluid-sm();
-
   .display(flex);
   .align-items(center);
-
-  // background-color: @white;
-  height: 80px;
+  height: 100%;
 }
 
 .nav-dashboard-heading {
@@ -196,6 +192,7 @@ Dashboard Swiper Pagination Styles
 
 .nav-dashboard-title {
   margin: 0;
+  .padding-left(20px);
 }
 
 .nav-dashboard-controls {
@@ -207,10 +204,16 @@ Dashboard Swiper Pagination Styles
 
   > button, > .btn {
     .margin-left(10px);
+
+    width: 70px;
+    height: 100%;
+    border: none;
+    border-left: 1px solid @border-color;
+    border-radius: 0;
   }
 
-  ul, 
-  ul > li, 
+  ul,
+  ul > li,
   ul > li > a {
     height: 100%;
     .display(flex);
@@ -227,7 +230,7 @@ Dashboard Swiper Pagination Styles
     border-bottom: 3px solid transparent;
     border-radius: 0;
   }
-  
+
 
   > li > a:hover,
   > li > a:focus {
@@ -235,7 +238,7 @@ Dashboard Swiper Pagination Styles
     border-bottom: 3px solid @brand-accent-color;
   }
 
-  > li.active > a, 
+  > li.active > a,
   > li.active > a:hover,
   > li.active > a:focus {
     background-color: transparent;

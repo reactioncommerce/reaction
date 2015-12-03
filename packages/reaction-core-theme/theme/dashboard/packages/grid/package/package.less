@@ -1,13 +1,4 @@
-.pkg-card {
-  // background-color: @body-bg;
-  // border-radius: @border-radius-small;
-  // border: 1px solid @table-border-color;
-  // padding: @padding-base-horizontal;
-  // margin-top: 5px;
-
-  .pkg-content {
-    height: 140px;
-  }
+.rui.card.package {
 
   .enablePkg {
     color: @brand-success;
@@ -16,35 +7,113 @@
   .disablePkg {
     color: @gray-light;
   }
-
-  .pkg-controls {
-    position: absolute;
-    .right(10px);
-    bottom: 16px;
-  }
-  .status {
-    color: @gray-light;
-  }
 }
 
 .pkg-core-class {
-  .ribbon(50px,@brand-primary, #fff);
+  border: 1px solid @brand-primary;
+  color: @brand-primary;
+  background-color: transparent;
 }
 
 .pkg-stable-class {
-  .ribbon(50px,@brand-success, #fff);
+  border: 1px solid @brand-success;
+  color: @brand-success;
+  background-color: transparent;
 }
 
 .pkg-prerelease-class {
-  .ribbon(50px,@brand-info, #fff);
+  // background-color: @brand-info;
+  border: 1px solid @brand-info;
+  color: @brand-info;
+  background-color: transparent;
 }
 
 .pkg-unstable-class {
-  .ribbon(50px,@brand-warning, #fff);
+  border: 1px solid @brand-warning;
+  color: @brand-warning;
+  background-color: transparent;
 }
 
 .pkg-app-card, .pkg-app-card:hover {
     color: @gray-dark;
     text-decoration: none;
     cursor: pointer;
+}
+
+.pkg-app-card .panel-heading {
+  text-align: center;
+}
+
+
+.rui.card {
+  .display(flex);
+  .flex(1 1 auto);
+
+  background-color: @white;
+  border: 1px solid @border-color;
+}
+
+.rui.card .content {
+  .flex(1 1 auto);
+  padding: 20px;
+}
+
+.rui.card .content .title {
+  margin-top: 0;
+  i {
+    display: block;
+  }
+}
+
+.rui.card .controls {
+  .display(flex);
+  .flex-direction(column);
+  .flex(0 0 auto);
+  min-width: 44px;
+  width: 44px;
+  max-width: 44px;
+  border-left: 1px solid @border-color;
+}
+
+.rui.card .controls button {
+  .display(flex);
+  .flex(1 1 auto);
+  .justify-content(center);
+  .align-items(center);
+  background-color: transparent;
+
+  border: none;
+  border-bottom: 1px solid @border-color;
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background-color: @black05;
+  }
+
+  i {
+    font-size: 16px;
+  }
+}
+
+.rui.packages {
+  .display(flex);
+  .flex-wrap(wrap);
+}
+
+.rui.packages > .rui.package {
+  .display(flex);
+  .flex(1 1 auto);
+  .flex-direction(column);
+  padding: 10px;
+
+  width: 25%;
+  max-width: 25%;
+}
+
+.page.show-settings .rui.packages > .rui.package {
+  width: 33%;
+  max-width: 33%;
 }
