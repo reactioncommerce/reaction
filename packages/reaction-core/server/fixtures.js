@@ -8,61 +8,6 @@
 
 PackageFixture = class PackageFixture {
   /**
-   * PackageFixture.loadData
-   * @summary imports collection fixture data
-   * @param {Object} collection - The collection to import
-   * @param {String} jsonFile - path to json File.
-   * @param {Object} options - accept: {multi:true}
-   * @return {Boolean} boolean -  returns true on insert
-   */
-  loadData(collection, jsonFile, options) {
-    check(collection, Mongo.Collection);
-    check(jsonFile, Match.Optional(String));
-    check(options, Match.Optional(Object));
-    let multi = false;
-
-    if (options) {
-      if (options.multi === true) {
-        multi = true;
-      }
-    }
-
-    if (collection.find().count() > 0 && multi !== true) {
-      return false;
-    }
-
-    let json = null;
-    let result = null;
-
-    ReactionCore.Log.debug(
-      `Loading fixture data for ${collection._name}`);
-    // if jsonFile was path wasn't provided
-    // we'll assume we're loading collection data
-    if (!jsonFile) {
-      json = EJSON.parse(Assets.getText("private/data/" + collection._name +
-        ".json"));
-    } else {
-      json = EJSON.parse(jsonFile);
-    }
-
-    // loop over each item in json and insert into collection
-    for (let item of json) {
-      try {
-        result = collection.insert(item);
-      } catch (err) {
-        ReactionCore.Log.error("Error adding fixture data to " +
-          collection._name + ":", err.message);
-      }
-    }
-
-    if (result) {
-      ReactionCore.Log.info(
-        `Success importing fixture data to ${collection._name}`
-      );
-    }
-  }
-
-  /**
    * PackageFixture.loadSettings
    * @description
    * This basically allows you to "hardcode" all the settings. You can change them
@@ -136,7 +81,6 @@ PackageFixture = class PackageFixture {
       }
     }
   }
-
   /**
    * loadI18n fixtures
    * @summary imports translation fixture data
@@ -397,33 +341,20 @@ ReactionRegistry.createDefaultAdminUser = function () {
 *  @return {String} returns insert result
 */
 ReactionRegistry.loadPackages = function () {
-  if (ReactionCore.Collections.Packages.find().count() !== ReactionCore.Collections
-    .Shops.find().count() * Object.keys(ReactionRegistry.Packages).length) {
-    // for each shop, we're loading packages registry
-    _.each(ReactionRegistry.Packages, function (config, pkgName) {
-      return ReactionCore.Collections.Shops.find().forEach(function (shop) {
-        let shopId = shop._id;
-        ReactionCore.Log.debug("Initializing " + shop.name + " " +
-          pkgName);
-        // existing registry will be upserted with changes
-        if (!shopId) return [];
-        let result = ReactionCore.Collections.Packages.upsert({
-          shopId: shopId,
-          name: pkgName
-        }, {
-          $setOnInsert: {
-            shopId: shopId,
-            icon: config.icon,
-            enabled: !!config.autoEnable,
-            settings: config.settings,
-            registry: config.registry,
-            layout: config.layout
-          }
-        });
-        return result;
-      });
+  // for each shop, we're loading packages registry
+  _.each(ReactionRegistry.Packages, function (config, pkgName) {
+    ReactionCore.Log.debug("Initializing package " + pkgName);
+    // existing registry will be upserted with changes
+    ReactionImport.package({
+      name: pkgName,
+      icon: config.icon,
+      enabled: !!config.autoEnable,
+      settings: config.settings,
+      registry: config.registry,
+      layout: config.layout
     });
-  }
+    return result;
+  });
   // remove registry entries for packages that have been removed
   ReactionCore.Collections.Shops.find().forEach(function (shop) {
     return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
