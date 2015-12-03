@@ -16,3 +16,4 @@ logs
 results
 npm-debug.log
 .fileStorage/
+packages/reaction-core/lib/bower
