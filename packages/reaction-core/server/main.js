@@ -55,7 +55,6 @@ _.extend(ReactionCore, {
     }
     return true;
   },
-
   getCurrentShopCursor: function (client) {
     let domain = this.getDomain(client);
     let cursor = ReactionCore.Collections.Shops.find({
@@ -195,11 +194,3 @@ _.extend(ReactionCore, {
 Match.OptionalOrNull = function (pattern) {
   return Match.OneOf(void 0, null, pattern);
 };
-
-/*
- * Execute start up fixtures
- */
-
-Meteor.startup(function () {
-  ReactionCore.init();
-});

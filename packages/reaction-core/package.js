@@ -140,6 +140,7 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/vi.json", "server");
 
   // import fixture data
+  api.addFiles("server/import.js", "server");
   api.addFiles("server/fixtures.js", "server");
 
   // security
@@ -269,6 +270,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/console/icon/icon.html", "client");
   api.addFiles("client/templates/dashboard/console/icon/icon.js", "client");
 
+  api.addFiles("client/templates/dashboard/import/import.html", "client");
+  api.addFiles("client/templates/dashboard/import/import.js", "client");
+
   api.addFiles("client/templates/dashboard/orders/orders.html", "client");
   api.addFiles("client/templates/dashboard/orders/orders.js", "client");
 
@@ -376,6 +380,7 @@ Package.onUse(function (api) {
 
   // Exports
   api.export("ReactionCore");
+  api.export("ReactionImport");
   api.export("ReactionRegistry", "server");
   // legacy Exports (TODO: move to ReactionCore)
   api.export("Alerts", ["client"]);
