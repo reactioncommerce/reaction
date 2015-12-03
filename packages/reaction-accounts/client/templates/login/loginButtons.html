@@ -1,0 +1,20 @@
+
+<template name="loginFormServiceButton">
+  {{#if condition enabled "eq" true}}
+    <button
+      class="btn btn-primary btn-block provider-{{name}}"
+      type="button"
+      data-event-action="signInWithProvider"
+      data-provider="{{name}}">
+      <i class="fa fa-{{name}}"></i>
+
+      {{#if condition buttonType "eq" "signUp"}}
+        <span data-i18n="accountsUI.signUpWith">Sign up with</span>&nbsp;
+      {{else}}
+        <span data-i18n="accountsUI.signInWith">Sign in with</span>&nbsp;
+      {{/if}}
+
+      <span data-i18n="social.{{name}}">{{capitalizedName}}</span>
+    </button>
+  {{/if}}
+</template>
