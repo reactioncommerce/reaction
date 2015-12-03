@@ -11,7 +11,7 @@ Router.configure({
   onRun: function () {
     if (Meteor.isClient) {
       $(window).scrollTop(0);
-      ReactionCore.clearActionView();  
+      ReactionCore.hideActionView();
     }
     this.next();
   },

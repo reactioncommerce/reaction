@@ -1,4 +1,12 @@
 
+<template name="settingsButton">
+  <button class="btn btn-default" data-event-action="showPackageSettings">
+    <i class="fa fa-gear"></i>
+    <span>Settings</span>
+  </button>
+</template>
+
+
 <template name="settingsHeader">
   <div class="nav nav-dashboard">
     <div class="nav-dashboard-heading">
@@ -11,7 +19,9 @@
     </div>
 
     <div class="nav-dashboard-controls">
-      <button class="btn btn-default" data-event-action="closeSettings"><i class="fa fa-times"></i></button>
+      <button class="btn btn-default" data-event-action="closeSettings">
+        <i class="fa fa-times"></i>
+      </button>
     </div>
 
   </div>

@@ -22,3 +22,9 @@ Template.coreAdminLayout.helpers({
     return "";
   }
 });
+
+Template.coreAdminLayout.events({
+  "click [data-event-action=showPackageSettings]": function () {
+    ReactionCore.showActionView();
+  }
+});

@@ -94,7 +94,11 @@ Template.gridPackage.events({
     event.preventDefault();
     event.stopPropagation();
     if (this.route) {
-      Router.go(this.route);
+      if (Router.routes[this.route]) {
+        Router.go(this.route);
+      } else if (ReactionCore.hasPermission(this.route, Meteor.userId())) {
+        ReactionCore.showActionView(this);
+      }
     }
   },
 
