@@ -395,8 +395,7 @@ Package.onTest(function (api) {
   // reaction core
   api.use("reactioncommerce:reaction-collections@1.0.1");
   api.use("reactioncommerce:reaction-factories@0.3.0");
-  api.use("reactioncommerce:core@0.9.5");
-  api.use("reactioncommerce:bootstrap-theme");
+  api.use("reactioncommerce:core@0.9.6");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
