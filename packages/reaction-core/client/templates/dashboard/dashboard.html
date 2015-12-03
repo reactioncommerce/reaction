@@ -32,16 +32,6 @@
         <h3 class="nav-dashboard-title">
             {{i18n registry.i18nKey registry.i18nLabel}}
         </h3>
-
-        <a href="/dashboard">Dashboard</a>
-      </div>
-
-
-      <div class="nav-dashboard-controls">
-        {{> yield "dashboardControls"}}
-        <button class="btn btn-default" data-event-action="showPackageSettings">
-          <i class="fa fa-gear"></i>
-        </button>
       </div>
     </div>
   {{/if}}

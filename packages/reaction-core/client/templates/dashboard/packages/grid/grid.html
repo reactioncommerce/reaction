@@ -1,8 +1,8 @@
 <template name="packagesGrid">
-  <div class="flex flex-xx available-pkg-grid">
+  <div class="rui packages available-pkg-grid">
     {{#each reactionApps provides='dashboard'}}
       {{#if pkgPermissions}}
-        <div class="flex-item">
+        <div class="rui package">
           {{> gridPackage}}
         </div>
       {{/if}}
