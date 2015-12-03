@@ -34,6 +34,14 @@
   overflow: hidden;
   .transition(width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955));
 
+  box-shadow: 0 0 40px rgba(0,0,0,.1);
+
+
+}
+
+.admin-controls .nav-dashboard {
+  .padding-left(0);
+  .padding-right(0);
 }
 
 .admin-controls.show-settings {
@@ -79,6 +87,8 @@
   // height: 100%;
 
   background-color: @white;
+  position: relative;
+  z-index: @zindex-navbar-fixed;
 }
 
 .admin-controls-menu nav {
