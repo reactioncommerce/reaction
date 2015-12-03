@@ -66,6 +66,10 @@ reactioncommerce:reaction-stripe
 #reactioncommerce:reaction-auth-net
 #reactioncommerce:reaction-braintree
 
+# Reaction Commerce Data
+
+reactioncommerce:reaction-sample-data
+
 # Testing packages
 #velocity:html-reporter
 #sanjo:jasmine
