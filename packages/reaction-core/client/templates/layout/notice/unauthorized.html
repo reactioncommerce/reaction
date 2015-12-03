@@ -1,0 +1,17 @@
+<template name="unauthorized">
+<div class="row">
+  <div class="text-center">
+    <h3>
+      <span data-i18n="app.warning">Oops!</span>
+      <span data-i18n="app.unauthorizedMessage">You don't have permission to view this content.</span>
+    </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-4">
+    <div class="accounts-inline">
+      {{> loginForm}}
+    </div>
+  </div>
+</div>
+</template>

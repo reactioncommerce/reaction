@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "node-geocoder": {
+      "version": "3.0.0",
+      "dependencies": {
+        "q": {
+          "version": "1.4.1"
+        }
+      }
+    }
+  }
+}

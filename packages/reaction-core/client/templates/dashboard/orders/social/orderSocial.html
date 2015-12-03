@@ -1,0 +1,43 @@
+<template name ="orderSocial">
+  <div class="social pull-right">
+  {{!-- Social Commentary --}}
+    {{#if hasPermission "admin"}}
+      <div class="social-media text-right">
+        <span class="facebook-msg">
+          <a href="#" class="facebook-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{facebookMsg}}" tabindex="-1">
+            <i class="fa fa-facebook fa-lg"></i>
+          </a>
+        </span>
+        <span class="twitter-msg">
+          <a href="#" class="twitter-msg-edit editable-empty editable-click" rel='tooltip' data-value="{{twitterMsg}}" tabindex="-1">
+            <i class="fa fa-twitter fa-lg"></i>
+          </a>
+        </span>
+        <span class="pinterest-msg">
+          <a href="#" class="pinterest-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{pinterestMsg}}" tabindex="-1">
+            <i class="fa fa-pinterest fa-lg"></i>
+          </a>
+        </span>
+        <span class="googleplus-msg">
+          <a href="#" class="googleplus-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{googleplusMsg}}" tabindex="-1">
+            <i class="fa fa-google-plus fa-lg"></i>
+          </a>
+        </span>
+        {{!--  orderProfile Email --}}
+        <span class="email-msg">
+          <a href="#" class="email-msg-edit editable-click editable-empty" rel='tooltip' data-value="{{emailMsg}}" tabindex="-1">
+            <i class="fa fa-envelope-o fa-lg"></i>
+          </a>
+        </span>
+      </div>
+      <div class="text-right handle">
+        <div id="handle" data-value="{{handle}}">#{{handle}}</div>
+      </div>
+      {{else }}
+        <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+        <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+        <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
+        <a href="#"><i class="fa fa-googleplus fa-lg"></i></a>
+    {{/if}}
+  </div>
+</template>

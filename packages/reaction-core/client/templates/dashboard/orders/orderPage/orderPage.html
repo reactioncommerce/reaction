@@ -1,0 +1,15 @@
+<template name="orderPage">
+  <a href="/dashboard/pdf/orders/{{_id}}" target="_blank"><button type="button" class="btn btn-success save-order-pdf" data-i18n="app.download">Download Invoice</button></a>
+  <button type="button" class="btn btn-success save-label-pdf" data-i18n="app.download">Download Shipping Label</button>
+  <div class="col-md-6 col-lg-6 col-sm-12">
+    {{>pageOrderDetail}}
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-12">
+      <fieldset>
+        <legend>Order Note</legend>
+        <textarea class="form-control" rows="7" name="note" value={{getNote}}></textarea>
+      </fieldset>
+      <br>
+      <button type="submit" class="btn btn-primary btn-add-note">Add Note</button>
+  </div>
+</template>
