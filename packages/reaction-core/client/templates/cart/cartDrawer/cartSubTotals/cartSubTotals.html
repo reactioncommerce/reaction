@@ -1,0 +1,14 @@
+<template name="cartSubTotals">
+  <div class="cart-items">
+    <div class="cart-totals">
+      <table class="table table-condensed">
+        <thead data-i18n='cartSubTotals.head'>Your cart</thead>
+        <tr><td data-i18n='cartSubTotals.items'>Items in cart</td><td>{{cart.cartCount}}</td></tr>
+        <tr><td data-i18n='cartSubTotals.subtotal'>Sub total</td><td>{{formatPrice cart.cartSubTotal}}</td></tr>
+        <tr><td data-i18n='cartSubTotals.shipping'>Shipping</td><td>{{formatPrice cart.cartShipping}}</td></tr>
+        <tr><td data-i18n='cartSubTotals.tax'>Tax</td><td>{{formatPrice cart.cartTaxes}}</td></tr>
+        <tr><td data-i18n='cartSubTotals.total'>Total</td><td>{{formatPrice cart.cartTotal}}</td></tr>
+      </table>
+    </div>
+  </div>
+</template>

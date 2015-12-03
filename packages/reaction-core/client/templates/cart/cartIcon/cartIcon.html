@@ -1,0 +1,13 @@
+<template name="cartIcon">
+{{#with cart}}
+  <div class="cart-icon">
+    <span data-event-category="cart" data-event-action="cart-click" data-event-label="cart toggle click" data-event-value="{{_id}}">
+      <i class="fa fa-shopping-cart fa-2x"></i>
+    </span>
+    {{#if showCartIconWarning}}
+    <div class="badge badge-warning">!</div>
+    {{/if}}
+    <div class="badge">{{orElse cartCount 0}}</div>
+  </div>
+{{/with}}
+</template>

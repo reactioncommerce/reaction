@@ -1,0 +1,23 @@
+[{
+  "slug": "example-product",
+  "name": "example-product",
+  "isTopLevel": false,
+  "updatedAt": {
+    "$date": "2014-04-12T08:17:20.576-0700"
+  },
+  "createdAt": {
+    "$date": "2014-04-12T08:17:20.576-0700"
+  },
+  "_id": "cseCBSSrJ3t8HQSNP"
+}, {
+  "slug": "products",
+  "name": "Products",
+  "isTopLevel": true,
+  "updatedAt": {
+    "$date": "2014-04-09T13:23:57.412-0700"
+  },
+  "createdAt": {
+    "$date": "2014-04-09T13:23:57.412-0700"
+  },
+  "_id": "rpjCvTBGjhBi2xdro"
+}]

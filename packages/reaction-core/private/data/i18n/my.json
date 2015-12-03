@@ -1,0 +1,166 @@
+[
+    {
+        "language": "Burmese",
+        "i18n": "my",
+        "translation": {
+            "core": {
+                "languages": {
+                    "select": "ဘာသာစကား ရွေးချယ်ရန်"
+                },
+                "app": {
+                    "save-and-continue": "ပြင်ဆင်မှုများကို မှတ်သားပြီးဆက်လုပ်ပါ",
+                    "cancel": "ပယ်ဖျက်ပါ",
+                    "submit": "ဆက်လုပ်ပါ",
+                    "delete": "ပြင်ဆင်မှုများကို ဖျက်ပါ"
+                },
+                "productDetail": {
+                    "productManagement": "ပစ္စည်းစီမံခန့်ခွဲမှု",
+                    "makeInvisible": "ကွယ်ဝှက်ရန်",
+                    "isNotVisible": "ဤပစ္စည်းကိုစျေးဝယ်သူများ မမြင်နိုင်ပါ",
+                    "makeItVisible": "ဤပစ္စည်းကို ပြသနိုင်ပါသည်",
+                    "whenYouAreDone": "ပြင်ဆင်ပြီးပါက",
+                    "tags": "အမျိုးအစား",
+                    "details": "အသေးစိတ် အကြောင်းအရာ",
+                    "options": "ရွေးချယ်မှုများ",
+                    "addToCart": "စျေးခြင်းထဲ ထည့်ပါ",
+                    "chooseOptions": "စျေးခြင်းတောင်းထဲ မထည့်ခင် လိုအပ်သည်များ ရွေးချယ်ပါ",
+                    "outOfStock": "ပစ္စည်းပြတ်နေပါသဖြင့် စိတ်မကောင်းပါ",
+                    "productDeleteError": "ဤပစ္စည်းကို ဖျက်၍ မရပါ",
+                    "publishFirst": "စျေးခြင်းတောင်းထဲ မထည့်ခင် အတည်ပြုပါ",
+                    "selectOption": "စျေးခြင်းတောင်းထဲ မထည့်ခင် လိုအပ်သည်ကို ရွေးချယ်ပါ",
+                    "addedToCart": "စျေးခြင်းတောင်းထဲ ထည့်ပါ"
+                },
+                "variantList": {
+                    "moreOptions": "ဤအတွက်နောက်ထပ်ရွေးချယ်စရာများ ရှိပါသေးသည်",
+                    "createVariant": "အမျိုးအစားတူ ပစ္စည်းတစ်ခု ထပ်လုပ်ရန်"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
+                    "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
+                },
+                "cartDrawer": {
+                    "empty": "စျေးခြင်းတောင်းတွင် ဘာမှ ရှိမနေပါ :(",
+                    "keepShopping": "စျေးဆက်ဝယ်မည်",
+                    "checkout": "ငွေပေးချေမည်"
+                },
+                "cartSubTotals": {
+                    "head": "သင်၏ စျေးခြင်းတောင်း",
+                    "items": "စျေးခြင်းတောင်းရှိ ပစ္စည်းများ",
+                    "subtotal": "ပစ္စည်းများ ကျသင့်ငွေ",
+                    "shipping": "ပစ္စည်းပို့ခ",
+                    "tax": "အခွန်ငွေ",
+                    "total": "စုစုပေါင်း ကျသင့်ငွေ"
+                },
+                "cartDrawerItems": {
+                    "left": "ဘယ်ဘက်"
+                },
+                "checkoutLogin": {
+                    "loginCompleted": "အကောင့်ထဲသို့ရောက်ပါပြီ",
+                    "create-or-login": "ရှေ့ဆက်ရန် အကောင့်အသစ် ဖွင့်ပါ (သို့) အကောင့်ရှိပြီးပါက ထိုအကောင့်ကို အသုံးပြုပါ"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "ပစ္စည်းပို့ရန်နှင့် ဘောက်ချာပို့ရန် လိပ်စာရွေးပါ",
+                    "createDefault": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ",
+                    "selectShipping-address": "ပစ္စည်းပို့ရန် လိပ်စာရွေးပါ",
+                    "selectBilling-address": "ဘောက်ချာပို့ရန် လိပ်စာရွေးပါ"
+                },
+                "addressBookAdd": {
+                    "addAddress": "လိပ်စာအသစ်ထည့်ရန်",
+                    "createAddress": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ"
+                },
+                "checkoutProgressBar": {
+                    "login": "အကောင့်သို့ဝင်ရန်",
+                    "shippingBilling": "ပစ္စည်းပို့ခြင်းနှင့် ငွေချေခြင်း",
+                    "shippingOptions": "ပစ္စည်းပို့ရန် နည်းလမ်းများ",
+                    "reviewPayment": "ငွေစာရင်းကို စစ်ဆေးပါ",
+                    "complete": "ပြီးစီးကြောင်း အသိအမှတ်ပြုပါ"
+                },
+                "accountsUI": {
+                    "add": "ထည့်ရန်",
+                    "and": "နှင့်",
+                    "back": "နောက်ပြန်ဆုတ်ရန်",
+                    "changePassword": "စကားဝှက်ပြောင်းရန်",
+                    "choosePassword": "စကားဝှက်ရွေးပါ",
+                    "clickAgree": "မှတ်ပုံတင်ခြင်းဖြင့် ကျွန်န်ုပ်တို့၏ စည်းကမ်းများကို လက်ခံသည်ဟု သတ်မှတ်ပါသည်",
+                    "configure": "ပြင်ဆင်ရန်",
+                    "createAccount": "အကောင့်အသစ်ဖွင့်ရန်",
+                    "currentPassword": "လက်ရှိ စကားဝှက်",
+                    "dontHaveAnAccount": "အကောင့်မရှိပါ",
+                    "email": "အီးမေးလ်",
+                    "emailAddress": "အီးမေးလ်",
+                    "emailResetLink": "အီးမေးလ်ပြောင်းရန် လင့်ခ်",
+                    "forgotPassword": "စကားဝှက်မေ့သွားပါသလား။",
+                    "ifYouAlreadyHaveAnAccount": "အကောင့်ရှိပြီးသားဖြစ်ပါက",
+                    "newPassword": "စကားဝှက် အသစ်",
+                    "newPasswordAgain": "စကားဝှက် အသစ် ထပ်ရိုက်ပါ",
+                    "optional": "အပိုဖြည့်စွက်ရန်",
+                    "or": "သို့",
+                    "password": "စကားဝှက်",
+                    "passwordAgain": "စကားဝှက် ထပ်ရိုက်ပါ",
+                    "privacyPolicy": "ကိုယ်ရေးဆိုင်ရာ မူဝါဒ",
+                    "remove": "ဖယ်ရှားရန်",
+                    "resetYourPassword": "စကားဝှက်ပြောင်းရန်",
+                    "setPassword": "စကားဝှက် ထားရန်",
+                    "sign": "ဝင်ရန်",
+                    "signIn": "အကောင့်ဝင်ရန်",
+                    "signin": "အကောင့်ဝင်ရန်",
+                    "signOut": "အကောင့်မှ ထွက်ရန်",
+                    "signUp": "မှတ်ပုံတင်ရန်",
+                    "signupCode": "မှတ်ပုံတင်ရန် ကုတ်",
+                    "signUpWithYourEmailAddress": "သင်၏အီးမေးလ်ဖြင့် မှတ်ပုံတင်ပါ",
+                    "terms": "မူဝါဒနှင့် စည်းကမ်းများ",
+                    "updateYourPassword": "စကားဝှက် ပြောင်းရန်",
+                    "username": "အကောင့်နာမည်",
+                    "usernameOrEmail": "အကောင့်နာမည် သို့ အီးမေးလ်",
+                    "with": "နှင့်",
+                    "info": {
+                        "emailSent": "အီးမေးလ်ပို့ထားပြီးပါပြီ",
+                        "emailVerified": "ဤအီးမေးလ်ကို စစ်ဆေးထားပြီးဖြစ်သည်",
+                        "passwordChanged": "စကားဝှက် ပြောင်းလိုက်ပြီးဖြစ်သည်",
+                        "passwordReset": "စကားဝှက် ပြန်ပြောင်းလိုက်ပြီးဖြစ်သည်"
+                    },
+                    "error": {
+                        "emailRequired": "အီးမေးလ်လိုအပ်ပါသည်",
+                        "minChar": "စကားဝှက်သည် အနည်းဆုံးစကားလုံး ၆ လုံး ဖြစ်ရမည်",
+                        "pwdsDontMatch": "စကားဝှက်မှားနေပါသည်",
+                        "pwOneDigit": "စကားဝှက်တွင် အနည်းဆုံးဂဏန်း တစ်လုံး ပါရမည်",
+                        "pwOneLetter": "စကားဝှက်တွင် အနည်းဆုံး အက္ခရာ တစ်လုံး ပါရမည်",
+                        "signInRequired": "ဤအတွက် အကောင့်သို့ အရင် ဝင်ရပါမည်",
+                        "signupCodeIncorrect": "မှတ်ပုံတင် ကုတ် မှားနေပါသည်",
+                        "signupCodeRequired": "မှတ်ပုံတင် ကုတ် လိုအပ်ပါသည်",
+                        "usernameIsEmail": "အကောင့်နာမည်မှာ အီးမေးလ်ဖြစ်၍ မရပါ",
+                        "usernameRequired": "အကောင့်နာမည်ကိုဖြည့်စွက်ပါ",
+                        "emailAlreadyExists": "ဤအီးမေးလ်မှာ မှတ်ပုံတင်ပြီး ဖြစ်ပါသည်",
+                        "emailDoesntMatchTheCriteria": "ဤအီးမေးလ်မှာ သတ်မှတ်ချက်နှင့် မပြည့်စုံပါ",
+                        "invalidLoginToken": "မမှန်ကန်သော အကောင့်တိုကင်",
+                        "loginForbidden": "အကောင့်ဝင်ခွင့် ပိတ်ထားပါသည်",
+                        "serviceUnknown": "အမျိုးအမည်မသိသော ဆားဗစ်",
+                        "unrecognizedOptionsForLoginRequest": "မမှတ်မိသော ရွေးချယ်စရာများနှင့် အကောင့်ဝင်ခြင်း",
+                        "userValidationFailed": "အကောင့်ပိုင်ရှင်ကို တိုက်ဆိုင်စစ်ဆေးမှု မအောင်မြင်ပါ",
+                        "usernameAlreadyExists": "ဤအကောင့်နာမည်မှာ မှတ်ပုံတင်ပြီးဖြစ်သည်",
+                        "youAreNotLoggedIn": "အကောင့်သို့ ဝင်ရောက်ခြင်းမရှိသေးပါ",
+                        "youveBeenLoggedOutByTheServer": "သင်သည် ဆာဗာနှင့် အဆက်အသွယ်ပြတ်သွားပါသဖြင့် အကောင့်သို့ ပြန်လည်ဝင်ပါ",
+                        "yourSessionHasExpired": "အသုံးပြုချိန် ကျော်လွန်သွားပါသဖြင့် အကောင့်သို့ပြန်လည်ဝင်ရောက်ပါ",
+                        "noMatchingLoginAttemptFound": "ဤစကားဝှက်နှင့် သက်ဆိုင်သော အကောင့်ကို ရှာမတွေ့ပါ",
+                        "passwordIsOld": "စကားဝှက်ကို အသုံးပြုသည်မှာ ကြာမြင့်ပြီဖြစ်ပါသဖြင့် စကားဝှက်အသစ်ပြောင်းပါ",
+                        "incorrectPassword": "မှားယွင်းသော စကားဝှက်",
+                        "invalidEmail": "မှားယွင်းသော အီးမေးလ်လိပ်စာ",
+                        "mustBeLoggedIn": "အကောင့်ထဲ ဝင်ရန်လိုအပ်သည်",
+                        "needToSetUsernameOrEmail": "အကောင့်နာမည် သို့ အီးမေးလ် သုံးဖို့လိုပါသည်",
+                        "oldPasswordFormat": "စကားဝှက် ပုံစံဟောင်း",
+                        "passwordMayNotBeEmpty": "စကားဝှက်ကို ချန်လျှပ်ထားခဲ့၍ မရပါ",
+                        "signupsForbidden": "မှတ်ပုံတင်ခွင့် ပိတ်ထားပါသည်",
+                        "tokenExpired": "တိုကင် သက်တမ်းကုန်နေပါသည်",
+                        "tokenHasInvalidEmailAddress": "တိုကင်ရှိ အီးမေးလ်လိပ်စာမှာ မှားယွင်းနေပါသည်",
+                        "userHasNoPasswordSet": "အကောင့်ပိုင်ရှင်တွင် စကားဝှက်သတ်မှတ်ထားခြင်း မရှိသေးပါ",
+                        "userNotFound": "ဤနာမည်နှင့် ပတ်သတ်သောအကောင့် ရှာမတွေ့ပါ",
+                        "verifyEmailLinkExpired": "မှတ်ပုံတင်ရန် လင့်ခ်မှာ သက်တမ်းကုန်သွားပါသည်",
+                        "verifyEmailLinkIsForUnknownAddress": "မှတ်ပုံတင်ရန် လင့်ခ်မှာ အမည်မသိသော လိပ်စာဖြစ်နေပါသည်",
+                        "matchFailed": "တိုက်ဆိုင်စစ်ဆေးချက် မအောင်မြင်ပါ",
+                        "unknownError": "အမျိုးအမည်မသိသော error"
+                    }
+                }
+            }
+        }
+    }
+]

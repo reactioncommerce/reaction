@@ -1,0 +1,70 @@
+<template name="orders">
+  <div class="split-view">
+    <div class="master">
+      {{> orderListFilters}}
+    </div>
+    <div class="detail">
+      {{#each order in orders}}
+        {{> ordersListItem order}}
+      {{else}}
+        <p data-i18n="order.ordersNotFound">No Orders Found</p>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="orderListFilters">
+  <ul class="nav nav-pills nav-stacked" role="tablist">
+    {{#each filters}}
+      <li role="presentation" class="{{activeClassname .}}">
+        <a
+          class="flex"
+          href="#{{name}}"
+          aria-controls="{{name}}"
+          role="tab"
+          data-toggle="tab"
+          data-event-action="toggleFilter"
+          data-filter="{{name}}">
+            <span class="flex-item-fill">{{label}}</span>
+            <span class="badge badge-default flex-item-static">{{count}}</span>
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="ordersListItem">
+  <div class="panel order-panel {{activeClassname _id}}" data-event-action="selectOrder">
+    <div class="panel-heading">
+      <div class="order-details">
+        <div class="order-detail-item address">
+          {{> orderDetail}}
+        </div>
+        <div class="order-detail-item status">
+          {{> orderStatusDetail}}
+        </div>
+        <div class="order-detail-item summary">
+          {{> ordersListSummary}}
+        </div>
+      </div>
+    </div>
+    <div class="order-panel-items">
+      {{> ordersListItems}}
+    </div>
+  </div>
+</template>
+
+
+<template name="orderStatusDetail">
+  <div class="col-xs-8">
+    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D"}}</div>
+    {{#if shipmentTracking}}
+    <p>Tracking: <a href="#">{{shipmentTracking}}</a></p>
+    {{/if}}
+  </div>
+</template>
+
+
+<template name="orderViewButton">
+  <button class="btn btn-success" type="button"><i class="fa fa-edit"></i></button>
+</template>

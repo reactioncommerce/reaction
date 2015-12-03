@@ -1,0 +1,169 @@
+[
+    {
+        "language": "中文(简体)",
+        "i18n": "cn",
+        "translation": {
+                "core": {
+                    "languages": {
+                        "select": "选择语言",
+                        "english": "English",
+                        "chinese": "中文(简体)"
+                    },
+                    "app": {
+                        "save-and-continue": "保存并继续",
+                        "cancel": "取消",
+                        "submit": "提交",
+                        "delete": "删除"
+                    },
+                    "productDetail": {
+                        "productManagement": "产品管理",
+                        "makeInvisible": "使不可见",
+                        "isNotVisible": "这个产品对用户是不可见的",
+                        "makeItVisible": "你能使之可见",
+                        "whenYouAreDone": "当你完成编辑",
+                        "tags": "标签",
+                        "details": "详细信息",
+                        "options": "选项",
+                        "addToCart": "加入购物车",
+                        "chooseOptions": "加入购物车之前请选择",
+                        "outOfStock": "遗憾哦，这个物品断货了",
+                        "productDeleteError": "删除操作出现错误",
+                        "publishFirst": "加入购物车之前请发布产品",
+                        "selectOption": "加入购物车之前请选择一个选项",
+                        "addedToCart": "加入了"
+                    },
+                    "variantList": {
+                        "moreOptions": "这个选择还有更多的选项",
+                        "createVariant": "创建不同规格"
+                    },
+                    "gridPackage": {
+                        "pkgEnabled": " 现在已经启用了",
+                        "pkgDisabled": " 现在已经停用了"
+                    },
+                    "cartDrawer": {
+                        "empty": "遗憾哦，你的购物车还是空的",
+                        "keepShopping": "继续购物",
+                        "checkout": "现在去结帐"
+                    },
+                    "cartSubTotals": {
+                        "head": "购物车",
+                        "items": "购物车中的物品",
+                        "subtotal": "小计",
+                        "shipping": "送货",
+                        "tax": "税",
+                        "total": "总计"
+                    },
+                    "cartDrawerItems": {
+                        "left": "剩余"
+                    },
+                    "checkoutLogin": {
+                        "loginCompleted": "登入完成",
+                        "create-or-login": "创建一个账户或登入以继续"
+                    },
+                    "addressBookGrid": {
+                        "chooseAddress": "选择送货地址和账单接收地址",
+                        "createDefault": "创建默认地址",
+                        "selectShipping-address": "选择送货地址",
+                        "selectBilling-address": "选择账单接收地址"
+                    },
+                    "addressBookAdd": {
+                        "addAddress": "增加一条新地址",
+                        "createAddress": "创建默认地址"
+                    },
+                    "checkoutProgressBar": {
+                        "login": "登入",
+                        "shippingBilling": "送货和账单",
+                        "shippingOptions": "送货选项",
+                        "reviewPayment": "核对并付款",
+                        "complete": "完成"
+                    },
+                    "accountsUI": {
+                        "add": "添加",
+                        "and": "且",
+                        "back": "返回",
+                        "changePassword": "更改密码",
+                        "choosePassword": "选择密码",
+                        "clickAgree": "点击注册表示同意我们的",
+                        "configure": "配置",
+                        "createAccount": "创建一个账户",
+                        "currentPassword": "当前密码",
+                        "dontHaveAnAccount": "没有账户？",
+                        "email": "电子邮件",
+                        "emailAddress": "电子邮件地址",
+                        "emailResetLink": "电子邮件重置链接",
+                        "forgotPassword": "重置密码",
+                        "ifYouAlreadyHaveAnAccount": "如果你已经有了一个账户",
+                        "newPassword": "新密码",
+                        "newPasswordAgain": "新密码（再一次）",
+                        "optional": "非必选",
+                        "or": "或",
+                        "password": "密码",
+                        "passwordAgain": "密码（再一次）",
+                        "privacyPolicy": "隐私政策",
+                        "remove": "移除",
+                        "resetYourPassword": "重置你的密码",
+                        "setPassword": "设置密码",
+                        "sign": "签",
+                        "signIn": "签入",
+                        "signin": "签入",
+                        "signOut": "签出",
+                        "signUp": "注册",
+                        "signupCode": "注册码",
+                        "signUpWithYourEmailAddress": "使用你的电子邮件地址注册",
+                        "terms": "使用条款",
+                        "updateYourPassword": "更新你的密码",
+                        "username": "用户名",
+                        "usernameOrEmail": "用户名或电子邮件",
+                        "with": "和",
+                        "info": {
+                            "emailSent": "电子邮件已发送",
+                            "emailVerified": "电子邮件已验证",
+                            "passwordChanged": "密码已修改",
+                            "passwordReset": "密码已重置"
+                        },
+                        "error": {
+                            "emailRequired": "电子邮件是必须要的",
+                            "passwordMustBeAtLeast6CharactersLong": "密码长度至少6位",
+                            "minChar": "7字符最小密码",
+                            "pwdsDontMatch": "密码不匹配",
+                            "pwOneDigit": "密码至少要有一位数字",
+                            "pwOneLetter": "密码至少要有一位字母",
+                            "signInRequired": "此操作必须先签入后才可进行",
+                            "signupCodeIncorrect": "注册码不正确",
+                            "signupCodeRequired": "注册码是必须要的",
+                            "usernameIsEmail": "用户名不可以是一个电子邮件地址",
+                            "usernameRequired": "用户名是必须要的",
+                            "emailAlreadyExists": "电子邮件地址已经存在",
+                            "emailDoesntMatchTheCriteria": "电子邮件地址不符合条件",
+                            "invalidLoginToken": "登入令牌无效",
+                            "loginForbidden": "登入已被禁止",
+                            "serviceUnknown": "未知服务",
+                            "unrecognizedOptionsForLoginRequest": "未可识别的登入请求选项",
+                            "userValidationFailed": "用户验证失败",
+                            "usernameAlreadyExists": "用户名已经存在",
+                            "youAreNotLoggedIn": "你还未登入",
+                            "youveBeenLoggedOutByTheServer": "你已经退出登入，请重新登入一次",
+                            "yourSessionHasExpired": "你的通讯会话已经过期，请重新登入一次",
+                            "noMatchingLoginAttemptFound": "没有匹配的试图登入被找到",
+                            "passwordIsOld": "密码太旧了，请重置你的密码",
+                            "incorrectPassword": "密码不正确",
+                            "invalidEmail": "电子邮件无效",
+                            "mustBeLoggedIn": "必须先登入",
+                            "needToSetUsernameOrEmail": "需要设置用户名或电子邮件",
+                            "oldPasswordFormat": "旧的密码格式",
+                            "passwordMayNotBeEmpty": "密码不能为空",
+                            "signupsForbidden": "注册已被禁止",
+                            "tokenExpired": "令牌已过期",
+                            "tokenHasInvalidEmailAddress": "令牌含有无效电子邮件地址",
+                            "userHasNoPasswordSet": "用户没有设置密码",
+                            "userNotFound": "没有找到用户",
+                            "verifyEmailLinkExpired": "电子邮件验证链接已过期",
+                            "verifyEmailLinkIsForUnknownAddress": "未知地址的电子邮件验证链接",
+                            "matchFailed": "匹配失败",
+                            "unknownError": "未知错误"
+                        }
+                    }
+                }
+            }
+    }
+]
