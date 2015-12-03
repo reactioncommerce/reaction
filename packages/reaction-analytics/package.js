@@ -2,25 +2,25 @@ Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
   version: "1.2.0",
-  git: "https://github.com/reactioncommerce/reaction-analytics.git"
+  documentation: "README.md"
 });
 
 Package.registerBuildPlugin({
-  name: 'analyticsConfigurator',
+  name: "analyticsConfigurator",
   use: [
-    'underscore@1.0.3',
-    'reactioncommerce:reaction-analytics-libs@1.1.0'
+    "underscore@1.0.3",
+    "reactioncommerce:reaction-analytics-libs@1.1.0"
   ],
   sources: [
-    'server/buildtools/analyticsSources.js',
-    'server/buildtools/defaultConfiguration.js',
-    'server/buildtools/analyticsConfigurator.js'
+    "server/buildtools/analyticsSources.js",
+    "server/buildtools/defaultConfiguration.js",
+    "server/buildtools/analyticsConfigurator.js"
   ],
   npmDependencies: {}
 });
 
-Package.on_use(function (api, where) {
-  api.versionsFrom('METEOR@1.2');
+Package.on_use(function (api) {
+  api.versionsFrom("METEOR@1.2");
   // meteor base packages
   api.use("standard-minifiers");
   api.use("mobile-experience");
@@ -41,10 +41,10 @@ Package.on_use(function (api, where) {
   // meteor add-on packages
 
   api.use("less");
-  api.use('browser-policy-content', 'server');
-  api.use('iron:router@1.0.9', 'client');
+  api.use("browser-policy-content", "server");
+  api.use("iron:router@1.0.9", "client");
   api.use("reactioncommerce:core@0.9.2");
-  api.use("reactioncommerce:reaction-analytics-libs@1.1.0", 'client');
+  api.use("reactioncommerce:reaction-analytics-libs@1.1.0", "client");
 
   api.addFiles([
     "common/routing.js",

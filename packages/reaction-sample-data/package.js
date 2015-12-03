@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Commerce Sample Data",
   name: "reactioncommerce:reaction-sample-data",
   version: "0.1.0",
-  git: "https://github.com/reactioncommerce/reaction-sample-data.git"
+  documentation: "README.md"
 });
 
 Package.onUse(function (api) {
@@ -22,4 +22,4 @@ Package.onUse(function (api) {
   api.addAssets("private/data/Tags.json", "server");
 });
 
-Package.onTest(function (api) {});
+// Package.onTest(function (api) {});

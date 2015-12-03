@@ -2,12 +2,11 @@ Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
   version: "0.6.1",
-  git: "https://github.com/reactioncommerce/reaction-shipping.git"
+  documentation: "README.md"
 });
 
-
 Package.onUse(function (api) {
-  api.versionsFrom('METEOR@1.2');
+  api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
   api.use("standard-minifiers");
@@ -29,17 +28,17 @@ Package.onUse(function (api) {
 
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.9.2",["client","server"]);
+  api.use("reactioncommerce:core@0.9.2", ["client", "server"]);
 
   api.addFiles([
     "common/collections.js", // any unique collections
     "common/routing.js" // add routing for administration templates
-  ],["client","server"]);
+  ], ["client", "server"]);
 
-  api.addFiles("server/register.js",["server"]); // register as a reaction package
-  api.addFiles("server/methods.js",["server"]); // server methods
-  api.addFiles("server/fixtures.js",["server"]); // fixtures
-  api.addAssets('private/data/Shipping.json', 'server');// fixture data
+  api.addFiles("server/register.js", ["server"]); // register as a reaction package
+  api.addFiles("server/methods.js", ["server"]); // server methods
+  api.addFiles("server/fixtures.js", ["server"]); // fixtures
+  api.addAssets("private/data/Shipping.json", "server"); // fixture data
 
   api.addFiles([
     // admin screens
@@ -49,6 +48,5 @@ Package.onUse(function (api) {
     // checkout templates
     "client/templates/cart/checkout/shipping/shipping.html",
     "client/templates/cart/checkout/shipping/shipping.js"
-  ],
-  ["client"]);
+  ], ["client"]);
 });

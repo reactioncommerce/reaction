@@ -1,7 +1,8 @@
 Package.describe({
   summary: "Reaction Schemas - core reaction commerce collection schemas",
   name: "reactioncommerce:reaction-schemas",
-  version: "1.0.1"
+  version: "1.0.1",
+  documentation: "README.md"
 });
 
 Package.onUse(function (api) {
@@ -42,18 +43,16 @@ Package.onUse(function (api) {
   api.imply("ongoworks:transliteration");
   api.export("ReactionCore");
   api.export("getSlug");
+});
 
-  Package.onTest(function (api) {
-    api.use("underscore");
-    api.use("random");
-    api.use("sanjo:jasmine@0.20.2");
-    api.use("velocity:html-reporter@0.9.1");
-    api.use("velocity:console-reporter@0.1.4");
+Package.onTest(function (api) {
+  api.use("underscore");
+  api.use("random");
+  api.use("sanjo:jasmine@0.20.2");
+  api.use("velocity:html-reporter@0.9.1");
+  api.use("velocity:console-reporter@0.1.4");
 
-    // server integration tests
-    //api.addFiles("tests/jasmine/server/integration/schemas.js", "server");
-    api.export("getSlug");
-  });
-
-
+  // server integration tests
+  // api.addFiles("tests/jasmine/server/integration/schemas.js", "server");
+  api.export("getSlug");
 });

@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
   version: "0.1.0",
-  git: "https://github.com/reactioncommerce/reaction-ui.git"
+  documentation: "README.md"
 });
 
 Npm.depends({

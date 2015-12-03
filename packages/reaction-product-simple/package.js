@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Product - Simple",
   name: "reactioncommerce:reaction-product-simple",
   version: "0.1.0",
-  git: "https://github.com/reactioncommerce/reaction-product-simple.git"
+  documentation: "README.md"
 });
 
 Package.onUse(function (api) {

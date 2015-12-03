@@ -1,7 +1,8 @@
 Package.describe({
   summary: "Reaction Inventory",
   name: "reactioncommerce:reaction-inventory",
-  version: "0.2.0"
+  version: "0.2.0",
+  documentation: "README.md"
 });
 
 
