@@ -74,6 +74,8 @@ And finally for the kanban-esque, hardcore real time progress view, take a look 
 
 [Schemas](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/schema.md)
 
+[Imports](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/import.md)
+
 [Template Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/templates.md)
 
 [Deploying](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/deploying.md)
