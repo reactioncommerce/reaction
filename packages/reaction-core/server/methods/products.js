@@ -4,6 +4,83 @@
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
 
+/**
+ * @function createHandle
+ * @description Recursive method which trying to find a new `handle`, given the
+ * existing copies
+ * @param {String} handle - product `handle`
+ * @param {String} productId - current product `_id`
+ * @return {String} handle - modified `handle`
+ */
+function createHandle(handle, productId) {
+  // exception product._id needed for cases then double triggering happens
+  let handleCount = Products.find({
+    handle: handle,
+    _id: { $nin: [productId]
+    }}).count();
+  // current product "copy" number
+  let handleNumberSuffix = 0;
+  // product handle prefix
+  let handleString = handle;
+  // copySuffix "-copy-number" suffix of product
+  let copySuffix = handleString.match(/-copy-\d+$/)
+    || handleString.match(/-copy$/);
+
+  // if product is a duplicate, we should take the copy number, and cut
+  // the handle
+  if (copySuffix) {
+    // we can have two cases here: copy-number and just -copy. If there is
+    // no numbers in copySuffix then we should put 1 in handleNumberSuffix
+    handleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
+    // removing last numbers and last "-" if it presents
+    handleString = handle.replace(/\d+$/, '').replace(/-$/, '');
+  }
+
+  // if we have more than one product with the same handle, we should mark
+  // it as "copy" or increment our product handle if it contain numbers.
+  if (handleCount > 0) {
+    // if we have product with name like "product4", we should take care
+    // about its uniqueness
+    if (handleNumberSuffix > 0) {
+      handle = `${handleString}-${handleNumberSuffix + handleCount}`;
+    } else {
+      // first copy will be "...-copy", second: "...-copy-2"
+      handle = `${handleString}-copy${ handleCount > 1
+        ? '-' + handleCount : ''}`;
+    }
+  }
+
+  // we should check again if there are any new matches with DB
+  if (Products.find({ handle: handle }).count() !== 0) {
+    handle = /*ReactionCore.*/createHandle(handle, productId);
+  }
+
+  return handle;
+}
+
+/**
+ * @function copyMedia
+ * @description copy images links to cloned variant from original
+ * @param {String} newId - [cloned|original] product _id
+ * @param {String} variantOldId - old variant _id
+ * @param {String} variantNewId - - cloned variant _id
+ * @fires ReactionCore.Collections.Media#update
+ * @return {undefined}
+ */
+function copyMedia(newId, variantOldId, variantNewId) {
+  ReactionCore.Collections.Media.find({
+    "metadata.variantId": variantOldId
+  }).forEach(function (fileObj) {
+    let newFile = fileObj.copy();
+    return newFile.update({
+      $set: {
+        "metadata.productId": newId,
+        "metadata.variantId": variantNewId
+      }
+    });
+  });
+}
+
 Meteor.methods({
 
   /**
@@ -79,7 +156,7 @@ Meteor.methods({
     delete clone.createdAt;
     delete clone.inventoryQuantity;
     delete clone.title;
-    ReactionCore.copyMedia(productId, variant[0]._id, clone._id);
+    /*ReactionCore.*/copyMedia(productId, variant[0]._id, clone._id);
 
     // push the new variant to the product
     Products.update({
@@ -104,7 +181,7 @@ Meteor.methods({
         childClone.cloneId = variantOldId;
         childClone._id = Random.id();
         childClone.parentId = clone._id;
-        ReactionCore.copyMedia(productId, variantOldId, childClone._id);
+        /*ReactionCore.*/copyMedia(productId, variantOldId, childClone._id);
         Products.update({
           _id: productId
         }, {
@@ -331,7 +408,7 @@ Meteor.methods({
       delete product.handle;
       product.isVisible = false;
       if (product.title) {
-        product.handle = ReactionCore.createHandle(
+        product.handle = /*ReactionCore.*/createHandle(
           getSlug(product.title),
           product._id
         );
@@ -411,7 +488,7 @@ Meteor.methods({
   //        delete option.updatedAt;
   //        delete option.createdAt;
   //        delete option.publishedAt;
-  //        ReactionCore.copyMedia(newId, variant._id, option._id);
+  //        /*ReactionCore.*/copyMedia(newId, variant._id, option._id);
   //        options.push(option);
   //        processedVariants.push(variant._id);
   //      }
@@ -479,7 +556,7 @@ Meteor.methods({
   //      cloneId: variantOldId
   //    });
   //    const options = cloneOptions(originalProduct, variantOldId, variantNewId, newId);
-  //    ReactionCore.copyMedia(newId, variantOldId, variantNewId);
+  //    /*ReactionCore.*/copyMedia(newId, variantOldId, variantNewId);
   //    delete newVariant.updatedAt;
   //    delete newVariant.createdAt;
   //    delete newVariant.publishedAt; // todo can variant have this param?
@@ -513,7 +590,7 @@ Meteor.methods({
   //    delete newProduct.handle;
   //    newProduct.isVisible = false;
   //    if (newProduct.title) {
-  //      newProduct.handle = ReactionCore.createHandle(
+  //      newProduct.handle = /*ReactionCore.*/createHandle(
   //        getSlug(newProduct.title),
   //        newProduct._id
   //      );
@@ -750,7 +827,7 @@ Meteor.methods({
 
     let product = Products.findOne(productId);
     let handle = getSlug(product.title);
-    handle = ReactionCore.createHandle(handle, product._id);
+    handle = /*ReactionCore.*/createHandle(handle, product._id);
     Products.update(product._id, {
       $set: {
         handle: handle
@@ -782,7 +859,7 @@ Meteor.methods({
     // set handle
     if (product.handle === tag.slug) {
       let handle = getSlug(product.title);
-      handle = ReactionCore.createHandle(handle, product._id);
+      handle = /*ReactionCore.*/createHandle(handle, product._id);
       Products.update(product._id, {
         $set: {
           handle: handle
@@ -798,7 +875,7 @@ Meteor.methods({
     // this is needed to take care about product's handle which(product) was
     // previously tagged.
     for (let currentProduct of existingHandles) {
-      let currentProductHandle = ReactionCore.createHandle(
+      let currentProductHandle = /*ReactionCore.*/createHandle(
         getSlug(currentProduct.title),
         currentProduct._id);
       Products.update(currentProduct._id, {
