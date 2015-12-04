@@ -29,6 +29,10 @@ ReactionImport.fixture = function () {
   return ReactionFixture;
 };
 
+ReactionImport.startup = function () {
+  return true;
+};
+
 ReactionImport.load = function (key, object) {
   check(object, Object);
 

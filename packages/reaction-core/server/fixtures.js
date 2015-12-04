@@ -167,19 +167,21 @@ ReactionRegistry.loadPackages = function () {
       });
     });
     ReactionImport.flush();
-  }
-  // remove registry entries for packages that have been removed
-  ReactionCore.Collections.Shops.find().forEach(function (shop) {
-    return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
-      if (!_.has(ReactionRegistry.Packages, pkg.name)) {
-        ReactionCore.Log.info(`Removing ${pkg.name}`);
-        return ReactionCore.Collections.Packages.remove({
-          shopId: shop._id,
-          name: pkg.name
-        });
-      }
+
+    // package cleanup
+    ReactionCore.Collections.Shops.find().forEach(function (shop) {
+      return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
+        // remove registry entries for packages that have been removed
+        if (!_.has(ReactionRegistry.Packages, pkg.name)) {
+          ReactionCore.Log.info(`Removing ${pkg.name}`);
+          return ReactionCore.Collections.Packages.remove({
+            shopId: shop._id,
+            name: pkg.name
+          });
+        }
+      });
     });
-  });
+  }
 };
 
 /**
@@ -209,13 +211,11 @@ ReactionRegistry.setDomain = function () {
   }
 };
 
+
 ReactionCore.Collections.Shops.find().observe({
   added: function () {
     ReactionRegistry.setDomain();
-    ReactionRegistry.loadPackages();
     ReactionRegistry.createDefaultAdminUser();
-    // we've finished all reaction core initialization
-    ReactionCore.Log.info("Reaction Core initialization finished.");
   },
   removed: function () {
     // TODO SHOP REMOVAL CLEANUP FOR #357

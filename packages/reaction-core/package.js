@@ -106,15 +106,15 @@ Package.onUse(function (api) {
   api.addFiles("common/global.js");
 
   // init reaction core
+  // import fixture data
+  api.addFiles("server/logger.js", "server");
+  api.addFiles("server/import.js", "server");
   api.addFiles("client/main.js", "client");
   api.addFiles("server/main.js", "server");
   api.addFiles("server/register.js", "server");
+  api.addFiles("server/fixtures.js", "server");
+  api.addFiles("server/init.js");
   api.addFiles("common/common.js");
-
-  // Private fixture data
-  api.addAssets("private/data/Products.json", "server");
-  api.addAssets("private/data/Shops.json", "server");
-  api.addAssets("private/data/Tags.json", "server");
 
   // i18n translations
   api.addAssets("private/data/i18n/ar.json", "server");
@@ -138,10 +138,6 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/sv.json", "server");
   api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
-
-  // import fixture data
-  api.addFiles("server/import.js", "server");
-  api.addFiles("server/fixtures.js", "server");
 
   // security
   api.addFiles("server/browserPolicy.js", "server");
