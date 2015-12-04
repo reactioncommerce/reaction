@@ -58,27 +58,27 @@ And finally for the kanban-esque, hardcore real time progress view, take a look 
 ## Developer Documentation
 [Getting started guide](http://blog.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
-[Installation](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/installation.md)
+[Installation](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/installation.md)
 
-[Overview](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/overview.md)
+[Overview](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/overview.md)
 
-[Methods](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/methods.md)
+[Methods](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/methods.md)
 
-[Package Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/packages.md)
+[Package Development](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/packages.md)
 
-[Theme Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/themes.md)
+[Theme Development](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/themes.md)
 
-[i18n Translations](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/i18n.md)
+[i18n Translations](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/i18n.md)
 
-[Workflow](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/workflow.md)
+[Workflow](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/workflow.md)
 
 [Schemas](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/schema.md)
 
 [Imports](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/import.md)
 
-[Template Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/templates.md)
+[Template Development](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/templates.md)
 
-[Deploying](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/deploying.md)
+[Deploying](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/deploying.md)
 
 ### Code Repositories
 Hey! Where's all the code!?
