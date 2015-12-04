@@ -41,13 +41,16 @@ ReactionImport.indication = function (field, collection, probability) {
   check(collection, Mongo.Collection);
   check(probability, Number);
 
-  this._indications[field] = { collection: collection, probability: probability };
+  this._indications[field] = {
+    collection: collection,
+    probability: probability
+  };
 };
 
 /**
  * ReactionImport.identify
  * @summary Tries to identify the schema associated with a document.
- * @param {Object} A document with unknown schema
+ * @param {Object} document - A document with unknown schema
  * @returns {Mongo.Collection} Returns a MongoDB collection in which the
  * document can be inserted.
  * @throws {Error} Throws an error if the schema couldn't be determined.
@@ -67,7 +70,8 @@ ReactionImport.identify = function (document) {
   for (key of Object.keys(document)) {
     if (this._indications[key]) {
       let collection = this._name(this._indications[key].collection);
-      probabilities[collection] = probabilities[collection] || 1.0 * this._indications[key].probability;
+      probabilities[collection] = probabilities[collection] || 1.0 * this._indications[
+        key].probability;
     }
   }
 
@@ -90,14 +94,15 @@ ReactionImport.identify = function (document) {
 
   if (name && max > 0.3) {
     return ReactionCore.Collections[name];
-  } else {
-    throw new Error("Couldn't determine the schema associated with this document");
   }
+  throw new Error(
+    "Couldn't determine the schema associated with this document");
 };
 
 /**
  * @summary Commit the buffer for a given collection to the database.
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
+ * @returns {undefined}
  */
 ReactionImport.flush = function (collection) {
   check(collection, Match.Optional(Mongo.Collection));
@@ -114,7 +119,7 @@ ReactionImport.flush = function (collection) {
 
   // Only commit if the buffer isn't empty (otherwise it'll throw).
   if (this._count[name]) {
-    this.buffer(collection).execute(function(error, result) {
+    this.buffer(collection).execute(function (error, result) {
       // Inserted document counts don't affect the modified document count, so we
       // throw everythin together.
       let nImported = result.nModified + result.nInserted + result.nUpserted;
@@ -123,13 +128,15 @@ ReactionImport.flush = function (collection) {
       // Log some information about the import.
       if (nTouched) {
         let message = "";
-        message += "Modified " + nImported + (nImported === 1 ? " document" : " documents");
+        message += "Modified " + nImported + (nImported === 1 ?
+          " document" : " documents");
         message += " while importing " + nTouched + " to " + name;
         ReactionCore.Log.info(message);
       }
       if (nRemoved) {
         let message = "";
-        message += "Removed " + nRemoved + (nRemoved === 1 ? " document" : " documents");
+        message += "Removed " + nRemoved + (nRemoved === 1 ? " document" :
+          " documents");
         message += " from " + name;
         ReactionCore.Log.info(message);
       }
@@ -149,7 +156,7 @@ ReactionImport.flush = function (collection) {
     delete this._buffers[name];
     this._count[name] = 0;
   }
-}
+};
 
 /**
  * @summary Get a validation context for a given collection.
@@ -168,15 +175,15 @@ ReactionImport.context = function (collection) {
   // Construct a new validation context if necessary.
   if (this._contexts[name]) {
     return this._contexts[name];
-  } else {
-    return this._contexts[name] = collection.simpleSchema().newContext();
   }
-}
+  this._contexts[name] = collection.simpleSchema().newContext();
+  return this._contexts[name];
+};
 
 /**
  * @summary Get an import buffer for a given collection.
  * @param {Object} collection The target collection
- *
+ * @returns {Object} return buffer
  * If no buffer is presented, a new one will be constructed.
  */
 ReactionImport.buffer = function (collection) {
@@ -188,18 +195,18 @@ ReactionImport.buffer = function (collection) {
   // Construct a new buffer if necessary.
   if (this._buffers[name]) {
     return this._buffers[name];
-  } else {
-    this._count[name] = 0;
-    return this._buffers[name] = collection.rawCollection().initializeUnorderedBulkOp();
   }
-}
+  this._count[name] = 0;
+  this._buffers[name] = collection.rawCollection().initializeUnorderedBulkOp();
+  return this._buffers[name];
+};
 
 /**
  * @summary Store a product in the import buffer.
  * @param {Object} key A key to look up the product
  * @param {Object} product The product data to be updated
  * @param {Object} parent A key to identify the parent product
- *
+ * @returns {Object}
  * Importing a variant currently consists of the following steps:
  *
  * * Pull the variant from non-matching parent products.
@@ -213,87 +220,115 @@ ReactionImport.product = function (key, product, parent) {
     ReactionCore.Schemas.ProductVariant.clean(product, {});
     // Remove variants with the same key from other parents.
     this.buffer(collection).find({
-      'variants': { $elemMatch: key },
-      $nor: [ parent ]
-    }).update({ $pull: { 'variants': { $elemMatch: key } } });
+      variants: {
+        $elemMatch: key
+      },
+      $nor: [parent]
+    }).update({
+      $pull: {
+        variants: {
+          $elemMatch: key
+        }
+      }
+    });
     // Make sure the variant exists.
-    query = { $nor: [ { 'variants': { $elemMatch: key } } ] };
-    for (let key of Object.keys(parent)) {
-      query[key] = parent[key];
+    query = {
+      $nor: [{
+        variants: {
+          $elemMatch: key
+        }
+      }]
+    };
+    for (let okey of Object.keys(parent)) {
+      query[okey] = parent[okey];
     }
-    this.buffer(collection).find(query).update({ $push: { 'variants': key } });
+    this.buffer(collection).find(query).update({
+      $push: {
+        variants: okey
+      }
+    });
     // Upsert the variant.
     ReactionCore.Schemas.ProductVariant.clean(product, {});
-    query = { 'variants': { $elemMatch: key } };
-    for (let key of Object.keys(parent)) {
-      query[key] = parent[key];
+    query = {
+      variants: {
+        $elemMatch: okey
+      }
+    };
+
+    for (let okey of Object.keys(parent)) {
+      query[okey] = parent[okey];
     }
     update = {};
-    for (let key of Object.keys(product)) {
-      update['variants.$.' + key] = product[key];
+    for (let okey of Object.keys(product)) {
+      update["variants.$." + okey] = product[okey];
     }
     this.context(collection).validate(update, {});
-    this.buffer(collection).find(query).update({ $set: update });
+    this.buffer(collection).find(query).update({
+      $set: update
+    });
   } else {
     return this.object(ReactionCore.Collections.Products, key, product);
   }
-}
+};
 
 /**
  * @summary Store a package in the import buffer.
- * @param {Object} key A key to look up the package
- * @param {Object} package The package data to be updated
+ * @param {Object} pkg The package data to be updated
+ * @param {String} shopId The package data to be updated
+ * @returns {undefined}
  */
-ReactionImport.package = function (pkg) {
+ReactionImport.package = function (pkg, shopId) {
   check(pkg, Object);
-
-  let collection = ReactionCore.Collections.Packages;
-
-  this.buffer(collection).find({ name: pkg.name }).update({ $set: pkg });
-  if (this._count[this._name(collection)]++ >= this._limit) {
-    this.flush(collection);
-  }
-}
+  check(shopId, String);
+  const key = {name: pkg.name, shopId: shopId};
+  return this.object(ReactionCore.Collections.Packages, key, pkg);
+};
 
 /**
  * @summary Store a translation in the import buffer.
  * @param {Object} key A key to look up the translation
  * @param {Object} translation The translation data to be updated
+ * @returns {Object} updated translation buffer
  */
 ReactionImport.translation = function (key, translation) {
   return this.object(ReactionCore.Collections.Translations, key, translation);
-}
+};
 
 /**
  * @summary Store a shop in the import buffer.
  * @param {Object} key A key to look up the shop
- * @param {Object} tag The shop data to be updated
+ * @param {Object} shop The shop data to be updated
+ * @returns {Object} this shop
  */
 ReactionImport.shop = function (key, shop) {
   let json;
 
-  shop.languages = shop.languages || [{ i18n: "en" }];
+  shop.languages = shop.languages || [{
+    i18n: "en"
+  }];
   for (let language of shop.languages) {
     json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
     this.process(json, ["i18n"], ReactionImport.translation);
   }
   return this.object(ReactionCore.Collections.Shops, key, shop);
-}
+};
 
 /**
  * @summary Store a tag in the import buffer.
  * @param {Object} key A key to look up the tag
  * @param {Object} tag The tag data to be updated
+ * @returns {Object} this tag
  */
 ReactionImport.tag = function (key, tag) {
   return this.object(ReactionCore.Collections.Tags, key, tag);
-}
+};
 
 /**
  * @summary Push a new upsert document to the import buffer.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} key A key to look up the object
  * @param {Object} object The object data to be updated
+ * @returns {undefined}
  */
 ReactionImport.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
@@ -307,14 +342,18 @@ ReactionImport.object = function (collection, key, object) {
   // Upsert the object.
   let find = this.buffer(collection).find(key);
   if (this._upsert()) {
-    find.upsert().update({ $set: object });
+    find.upsert().update({
+      $set: object
+    });
   } else {
-    find.upsert().update({ $setOnInsert: object });
+    find.upsert().update({
+      $setOnInsert: object
+    });
   }
   if (this._count[this._name(collection)]++ >= this._limit) {
     this.flush(collection);
   }
-}
+};
 
 /**
  * @summary Process a json array of import documents using a callback.
@@ -324,6 +363,7 @@ ReactionImport.object = function (collection, key, object) {
  *{}
  * The callback should accept a key document to consult the database as a first
  * parameter and an update document as the second parameter.
+ * @returns {undefined}
  */
 ReactionImport.process = function (json, keys, callback) {
   check(json, String);
@@ -339,7 +379,7 @@ ReactionImport.process = function (json, keys, callback) {
     }
     callback.call(this, key, array[i]);
   }
-}
+};
 
 ReactionImport.indication("i18n", ReactionCore.Collections.Translations, 0.2);
 ReactionImport.indication("hashtags", ReactionCore.Collections.Products, 0.5);

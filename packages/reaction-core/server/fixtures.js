@@ -142,20 +142,32 @@ ReactionRegistry.createDefaultAdminUser = function () {
 *  @return {String} returns insert result
 */
 ReactionRegistry.loadPackages = function () {
-  // for each shop, we're loading packages registry
-  _.each(ReactionRegistry.Packages, function (config, pkgName) {
-    ReactionCore.Log.debug("Initializing package " + pkgName);
-    // existing registry will be upserted with changes
-    ReactionImport.package({
-      name: pkgName,
-      icon: config.icon,
-      enabled: !!config.autoEnable,
-      settings: config.settings,
-      registry: config.registry,
-      layout: config.layout
+  const shopCount = ReactionCore.Collections.Shops.find().count();
+  const regCount = Object.keys(ReactionRegistry.Packages).length;
+  const pkgCount = ReactionCore.Collections.Packages.find().count();
+  // checking the package count to see if registry has changed
+  if (pkgCount !== shopCount * regCount) {
+      // for each shop, we're loading packages a unique registry
+    _.each(ReactionRegistry.Packages, function (config, pkgName) {
+      return ReactionCore.Collections.Shops.find().forEach(function (
+        shop) {
+        let shopId = shop._id;
+        ReactionCore.Log.info("Initializing " + shop.name + " " +
+          pkgName);
+        // existing registry will be upserted with changes
+        if (!shopId) return [];
+        ReactionImport.package({
+          name: pkgName,
+          icon: config.icon,
+          enabled: !!config.autoEnable,
+          settings: config.settings,
+          registry: config.registry,
+          layout: config.layout
+        }, shopId);
+      });
     });
-    return;
-  });
+    ReactionImport.flush();
+  }
   // remove registry entries for packages that have been removed
   ReactionCore.Collections.Shops.find().forEach(function (shop) {
     return ReactionCore.Collections.Packages.find().forEach(function (pkg) {
@@ -169,9 +181,6 @@ ReactionRegistry.loadPackages = function () {
     });
   });
 };
-
-
-
 
 /**
 *  @private ReactionRegistry.setDomain
