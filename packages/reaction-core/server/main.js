@@ -46,13 +46,7 @@ _.extend(ReactionCore, {
   init: function () {
     ReactionCore.Log.info("JobServer started:", Jobs.startJobServer());
     // uncomment for JobCollection debug
-    //Jobs.setLogStream(process.stdout);
-
-    try {
-      ReactionRegistry.loadFixtures();
-    } catch (error) {
-      ReactionCore.Log.error("loadFixtures: ", error.message);
-    }
+    // Jobs.setLogStream(process.stdout);
     return true;
   },
   getCurrentShopCursor: function (client) {

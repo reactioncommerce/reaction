@@ -4,205 +4,6 @@
  * use jsonFile when calling from another package, as we can't read the assets from here
  */
 
-/* eslint no-loop-func: 0*/
-
-PackageFixture = class PackageFixture {
-  /**
-   * PackageFixture.loadSettings
-   * @description
-   * This basically allows you to "hardcode" all the settings. You can change them
-   * via admin etc for the session, but when the server restarts they'll
-   * be restored back to the supplied json
-   *
-   * All settings are private unless added to `settings.public`
-   *
-   * Meteor account services can be added in `settings.services`
-   * @summary updates package settings, accepts json string
-   * @param {Object} json - json object to insert
-   * @return {Boolean} boolean -  returns true on insert
-   * @example
-   *  Fixtures.loadSettings Assets.getText("settings/reaction.json")
-   */
-  loadSettings(json) {
-    check(json, String);
-    let exists;
-    let service;
-    let services;
-    let settings;
-    let validatedJson = EJSON.parse(json);
-    // validate json and error out if not an array
-    if (!_.isArray(validatedJson[0])) {
-      ReactionCore.Log.warn(
-        "Load Settings is not an array. Failed to load settings.");
-      return;
-    }
-    // loop settings and upsert packages.
-    for (let pkg of validatedJson) {
-      for (let item of pkg) {
-        exists = ReactionCore.Collections.Packages.findOne({
-          name: item.name
-        });
-        // insert into the Packages collection
-        if (exists) {
-          result = ReactionCore.Collections.Packages.upsert({
-            name: item.name
-          }, {
-            $set: {
-              settings: item.settings,
-              enabled: item.enabled
-            }
-          }, {
-            multi: true,
-            upsert: true,
-            validate: false
-          });
-        }
-        // sets the private settings of various
-        // accounts authentication services
-        if (item.settings.services) {
-          for (services of item.settings.services) {
-            for (service in services) {
-              // this is just a sanity check required by linter
-              if ({}.hasOwnProperty.call(services, service)) {
-                // actual settings for the service
-                settings = services[service];
-                ServiceConfiguration.configurations.upsert({
-                  service: service
-                }, {
-                  $set: settings
-                });
-                ReactionCore.Log.info("service configuration loaded: " +
-                  item.name + " | " + service);
-              }
-            }
-          }
-        }
-        ReactionCore.Log.info(`loaded local package data: ${item.name}`);
-      }
-    }
-  }
-  /**
-   * loadI18n fixtures
-   * @summary imports translation fixture data
-   * @param {Object} translationCollection - optional collection object
-   * @returns {null} inserts collection
-   */
-  loadI18n(translationCollection) {
-    let collection = translationCollection || ReactionCore.Collections.Translations;
-    let json;
-
-    if (collection.find().count() > 0) {
-      return;
-    }
-
-    let shop = ReactionCore.Collections.Shops.findOne();
-    if (shop) {
-      ReactionCore.Log.info(
-        `Loading fixture data for ${collection._name}`);
-      if (!(shop !== null ? shop.languages : void 0)) {
-        shop.languages = [{
-          i18n: "en"
-        }];
-      }
-
-      for (let language of shop.languages) {
-        json = EJSON.parse(Assets.getText("private/data/i18n/" + language.i18n +
-          ".json"));
-        for (let item of json) {
-          collection.insert(item, function (error) {
-            if (error) {
-              ReactionCore.Log.warn("Error adding " + language.i18n +
-                " to " + collection._name, item, error);
-            }
-          });
-          ReactionCore.Log.info("Success adding " + language.i18n +
-            " to " +
-            collection._name);
-        }
-      }
-    } else {
-      ReactionCore.Log.error("No shop found. Failed to load languages.");
-      return;
-    }
-  }
-
-  /**
-   * @function loadCurrencyJobs
-   * @summary Creates two jobs for fetching latest and clearing old exchange rates
-   * @param {Object} jobsCollection - jobs collection
-   * @returns {undefined}
-   */
-  loadCurrencyJobs(jobsCollection) {
-    const collection = jobsCollection || ReactionCore.Collections.Jobs;
-    if (collection.find().count() > 0) {
-      return;
-    }
-
-    const shopId = ReactionCore.getShopId();
-    const shopSettings = ReactionCore.Collections.Packages.findOne({
-      shopId: shopId,
-      name: "core"
-    }, {
-      fields: {
-        settings: 1
-      }
-    });
-    // todo this statement is for compatibility with previously created shops,
-    // update it to `const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod`
-    // over a few months from november of 2015
-    if (!shopSettings.settings.openexchangerates) shopSettings.settings.openexchangerates = {};
-    const refreshPeriod = shopSettings.settings.openexchangerates.refreshPeriod ||
-      "every 1 hour";
-
-    const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
-      .priority("normal")
-      .retry({
-        retries: 5,
-        wait: 60000,
-        backoff: "exponential" // delay by twice as long for each subsequent retry
-      })
-      .repeat({
-        // wait: refreshPeriod * 60 * 1000
-        schedule: Jobs.later.parse.text(refreshPeriod)
-      })
-      .save({
-        // Cancel any jobs of the same type,
-        // but only if this job repeats forever.
-        // Default: false.
-        // We do not need this here anymore, because fixtures runs one time, but
-        // let it be here anyway for some case...
-        cancelRepeats: true
-      });
-
-    if (fetchCurrencyRatesJob) {
-      ReactionCore.Log.info("Success adding new job for: 'shop/fetchCurrencyRates'");
-    }
-
-    const flushCurrencyRatesJob = new Job(Jobs, "shop/flushCurrencyRates", {})
-      .priority("normal")
-      .retry({
-        retries: 5,
-        wait: 60000,
-        backoff: "exponential"
-      })
-      .repeat({
-        wait: 48 * 60 * 60 * 1000 // every 48 hours
-      })
-      .save({
-        cancelRepeats: true
-      });
-
-    if (flushCurrencyRatesJob) {
-      ReactionCore.Log.info("Success adding new job for: 'shop/flushCurrencyRates'");
-    }
-  }
-};
-
-/*
- * instantiate fixtures
- */
-this.Fixtures = new PackageFixture();
-
 /**
  * getDomain
  * local helper for creating admin users
@@ -353,7 +154,7 @@ ReactionRegistry.loadPackages = function () {
       registry: config.registry,
       layout: config.layout
     });
-    return result;
+    return;
   });
   // remove registry entries for packages that have been removed
   ReactionCore.Collections.Shops.find().forEach(function (shop) {
@@ -368,6 +169,15 @@ ReactionRegistry.loadPackages = function () {
     });
   });
 };
+
+
+
+
+/**
+*  @private ReactionRegistry.setDomain
+*  @summary update the default shop url if ROOT_URL supplied is different from current
+*  @return {String} returns insert result
+*/
 
 ReactionRegistry.setDomain = function () {
   let currentDomain;
@@ -390,30 +200,15 @@ ReactionRegistry.setDomain = function () {
   }
 };
 
-/*
- * load core fixture data
- */
-
-ReactionRegistry.loadFixtures = function () {
-  Fixtures.loadData(ReactionCore.Collections.Shops);
-  // start checking once per second if Shops collection is ready,
-  // then load the rest of the fixtures when it is
-  let wait = Meteor.setInterval(function () {
-    if (!!ReactionCore.Collections.Shops.find().count()) {
-      Meteor.clearInterval(wait);
-      Fixtures.loadI18n(ReactionCore.Collections.Translations);
-      Fixtures.loadData(ReactionCore.Collections.Products);
-      Fixtures.loadData(ReactionCore.Collections.Tags);
-      Fixtures.loadCurrencyJobs(ReactionCore.Collections.Jobs);
-      // create default admin user
-      ReactionRegistry.createDefaultAdminUser();
-      // we've finished all reaction core initialization
-      ReactionCore.Log.info("Reaction Core initialization finished.");
-    }
-  }, 1000);
-  // load package configurations
-  if (ReactionCore.Collections.Shops.find().count()) {
+ReactionCore.Collections.Shops.find().observe({
+  added: function () {
     ReactionRegistry.setDomain();
     ReactionRegistry.loadPackages();
+    ReactionRegistry.createDefaultAdminUser();
+    // we've finished all reaction core initialization
+    ReactionCore.Log.info("Reaction Core initialization finished.");
+  },
+  removed: function () {
+    // TODO SHOP REMOVAL CLEANUP FOR #357
   }
-};
+});

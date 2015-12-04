@@ -9,8 +9,7 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2.1");
 
   // reaction core
-  api.use("reactioncommerce:core");
-  api.use("reactioncommerce:reaction-shipping");
+  api.use("reactioncommerce:core@0.10.0");
 
   // load fixture data
   api.addFiles("server/load.js", "server");

@@ -15,26 +15,26 @@ ReactionImport._limit = 1000;
 
 ReactionImport._name = function (collection) {
   return collection._name;
-}
+};
 
 ReactionImport._upsert = function () {
   return true;
-}
+};
 
 ReactionFixture._upsert = function () {
   return false;
-}
+};
 
 ReactionImport.fixture = function () {
   return ReactionFixture;
-}
+};
 
 ReactionImport.load = function (key, object) {
   check(object, Object);
 
   let collection = this.identify(object);
   this.object(collection, key, object);
-}
+};
 
 ReactionImport.indication = function (field, collection, probability) {
   check(field, String);
@@ -42,9 +42,10 @@ ReactionImport.indication = function (field, collection, probability) {
   check(probability, Number);
 
   this._indications[field] = { collection: collection, probability: probability };
-}
+};
 
 /**
+ * ReactionImport.identify
  * @summary Tries to identify the schema associated with a document.
  * @param {Object} A document with unknown schema
  * @returns {Mongo.Collection} Returns a MongoDB collection in which the
@@ -78,7 +79,7 @@ ReactionImport.identify = function (document) {
   let max = 0.0;
   let name;
   for (key of Object.keys(probabilities)) {
-    let probability = total/probabilities[key];
+    let probability = total / probabilities[key];
     if (probability > max) {
       max = probability;
       name = key;
@@ -92,7 +93,7 @@ ReactionImport.identify = function (document) {
   } else {
     throw new Error("Couldn't determine the schema associated with this document");
   }
-}
+};
 
 /**
  * @summary Commit the buffer for a given collection to the database.
@@ -102,7 +103,7 @@ ReactionImport.flush = function (collection) {
   check(collection, Match.Optional(Mongo.Collection));
 
   if (!collection) {
-    for (name of Object.keys(this._buffers)) {
+    for (let name of Object.keys(this._buffers)) {
       this.flush(ReactionCore.Collections[name]);
     }
     return;
@@ -198,7 +199,7 @@ ReactionImport.buffer = function (collection) {
  * @param {Object} key A key to look up the product
  * @param {Object} product The product data to be updated
  * @param {Object} parent A key to identify the parent product
- * 
+ *
  * Importing a variant currently consists of the following steps:
  *
  * * Pull the variant from non-matching parent products.
@@ -243,12 +244,12 @@ ReactionImport.product = function (key, product, parent) {
  * @param {Object} key A key to look up the package
  * @param {Object} package The package data to be updated
  */
-ReactionImport.package = function (package) {
-  check(package, Object);
+ReactionImport.package = function (pkg) {
+  check(pkg, Object);
 
   let collection = ReactionCore.Collections.Packages;
 
-  this.buffer(collection).find({ name: package.name }).update({ $set: package });
+  this.buffer(collection).find({ name: pkg.name }).update({ $set: pkg });
   if (this._count[this._name(collection)]++ >= this._limit) {
     this.flush(collection);
   }
@@ -298,7 +299,8 @@ ReactionImport.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
-
+  // enforce strings instead of Mongo.ObjectId
+  if (!collection.findOne(key) && !object._id) key._id = Random.id();
   // Clean and validate the object.
   collection.simpleSchema().clean(object);
   this.context(collection).validate(object, {});
