@@ -41,7 +41,7 @@ ReactionCore.Collections.Products.before.update(function (userId, product, field
     if (modifier.$pull.variants) {
       let variantItem = {
         productId: product._id,
-        variantId: product.variants[0]._id,
+        variantId: modifier.$pull.variants._id,
         shopId: product.shopId
       };
       ReactionCore.Log.info("remove inventory variants, call inventory/remove");
@@ -58,8 +58,10 @@ ReactionCore.Collections.Products.after.update(function (userId, product,
     Meteor.call("inventory/register", product);
   }
 
-  // check if modifier is set
-  if (modifier.$set) {
+  // check if modifier is set and $pull and $push are undefined. This need because
+  // anyway on every create or delete operation we have additionally $set modifier
+  // because of auto-updating of `shopId` and `updateAt` schema properties
+  if (modifier.$set && !modifier.$pull && !modifier.$push) {
     modifier.$set.updatedAt = new Date();
     // triggers inventory adjustment
     Meteor.call("inventory/adjust", product);
