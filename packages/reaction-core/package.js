@@ -113,7 +113,7 @@ Package.onUse(function (api) {
   api.addFiles("server/main.js", "server");
   api.addFiles("server/register.js", "server");
   api.addFiles("server/fixtures.js", "server");
-  api.addFiles("server/init.js");
+  api.addFiles("server/init.js", "server");
   api.addFiles("common/common.js");
 
   // i18n translations
