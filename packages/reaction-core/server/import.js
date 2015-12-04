@@ -215,7 +215,6 @@ ReactionImport.buffer = function (collection) {
  */
 ReactionImport.product = function (key, product, parent) {
   let collection = ReactionCore.Collections.Products;
-
   if (parent) {
     ReactionCore.Schemas.ProductVariant.clean(product, {});
     // Remove variants with the same key from other parents.
@@ -244,14 +243,14 @@ ReactionImport.product = function (key, product, parent) {
     }
     this.buffer(collection).find(query).update({
       $push: {
-        variants: okey
+        variants: key
       }
     });
     // Upsert the variant.
     ReactionCore.Schemas.ProductVariant.clean(product, {});
     query = {
       variants: {
-        $elemMatch: okey
+        $elemMatch: key
       }
     };
 
@@ -311,6 +310,16 @@ ReactionImport.shop = function (key, shop) {
     this.process(json, ["i18n"], ReactionImport.translation);
   }
   return this.object(ReactionCore.Collections.Shops, key, shop);
+};
+
+/**
+ * @summary Store shipping in the import buffer.
+ * @param {Object} key A key to look up the tag
+ * @param {Object} shipping The shipping data to be updated
+ * @returns {Object} this shipping
+ */
+ReactionImport.shipping = function (key, shipping) {
+  return this.object(ReactionCore.Collections.Shipping, key, shipping);
 };
 
 /**
