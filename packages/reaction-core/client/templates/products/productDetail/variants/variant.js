@@ -12,9 +12,10 @@ Template.variant.helpers({
     return "progress-bar-success";
   },
   selectedVariant: function () {
+    const _id = this._id;
     const current = selectedVariant();
-    if (this._id === (typeof current === "object" ? current._id : void 0) ||
-      this._id === (typeof current === "object" ? current.parentId : void 0)) {
+    if (typeof current === "object" &&
+      (_id === current._id || ~current.ancestors.indexOf(this._id))) {
       return "variant-detail-selected";
     }
   },
@@ -70,21 +71,20 @@ Template.variant.onRendered(function () {
         forcePlaceholderSize: true,
         axis: "y",
         update: function () {
-          const product = selectedProduct();
+          // TODO needed refactor to fit the new data model
           const newVariants = [];
-          const productVariants = product.variants;
+          const productVariants = getTopVariants();
           // fetch uiPositions
           let uiPositions = $(this).sortable("toArray", {
             attribute: "data-id"
           });
           // get variants of the new order
-          for (let id of uiPositions) {
-            for (let variant of productVariants) {
-              if (variant._id === id) {
-                newVariants.push(variant);
-              }
-            }
-          }
+          uiPositions.map(id => {
+            productVariants.map(variant => {
+              variant._id === id && newVariants.push(variant);
+            });
+          });
+
           // merge and delete old variants to create a newly ordered Array
           // could have (and did do previously) this a lot of different ways
           let updateVariants = _.uniq(_.union(newVariants, productVariants));

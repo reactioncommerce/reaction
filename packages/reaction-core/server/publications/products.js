@@ -11,10 +11,21 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
   let shopAdmin;
   let shop = ReactionCore.getCurrentShop(this);
   let Products = ReactionCore.Collections.Products;
+  // TODO this limit has another meaning now. We should calculate only objects
+  // with type="simple", but we need to get all types for additional images
   let limit = productScrollLimit || 10;
   if (shop) {
     let selector = {
-      shopId: shop._id
+      shopId: shop._id//,
+      // "$where": function () {
+      //   let lim = limit;
+      //   let counter = 0;
+      //   if (this.type === "simple") {
+      //     counter++;
+      //     console.log(counter);
+      //     return true;
+      //   }
+      // }.toString()
     };
     // handle multiple shops
     if (shops) {
@@ -54,8 +65,11 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
  */
 Meteor.publish("Product", function (productId) {
   check(productId, String);
-  let shop = ReactionCore.getCurrentShop(this);
-  let Products = ReactionCore.Collections.Products;
+  // const sub = this;
+  // let variantsHandle = [];
+  let _id;
+  const shop = ReactionCore.getCurrentShop(this);
+  const Products = ReactionCore.Collections.Products;
   let selector = {};
   selector.isVisible = true;
 
@@ -68,12 +82,17 @@ Meteor.publish("Product", function (productId) {
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[A-Za-z0-9]{17}$/)) {
     selector._id = productId;
+    // TODO try/catch here because we can have product handle passed by such regex
+    _id = productId;
   } else {
     selector.handle = {
       $regex: productId,
       $options: "i"
     };
+    _id = Products.find(selector).fetch()[0]._id;
   }
+  selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
+
   return Products.find(selector);
 });
 

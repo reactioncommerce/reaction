@@ -130,7 +130,11 @@ ReactionCore.Collections.Packages.attachSchema(ReactionCore.Schemas.PackageConfi
 */
 ReactionCore.Collections.Products = Products = this.Products = new Mongo.Collection("Products");
 
-ReactionCore.Collections.Products.attachSchema(ReactionCore.Schemas.Product);
+ReactionCore.Collections.Products.attachSchema([
+    { schema: ReactionCore.Schemas.Product, selector: { type: 'simple' }},
+    { schema: ReactionCore.Schemas.ProductVariant, selector: { type: 'variant' }}],
+  { multiple: true }
+);
 
 /**
 * ReactionCore Collections Shipping

@@ -70,7 +70,13 @@ Meteor.methods({
    */
   "inventory/adjust": function (product) {
     // adds or updates inventory collection with this product
-    check(product, ReactionCore.Schemas.Product);
+    switch (product.type) {
+      case "variant":
+        check(product, ReactionCore.Schemas.ProductVariant);
+        break;
+      default:
+        check(product, ReactionCore.Schemas.Product);
+    }
     this.unblock();
 
     // user needs createProduct permission to adjust inventory

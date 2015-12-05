@@ -19,23 +19,9 @@ Template.productDetail.helpers({
     return Template.productDetailTags;
   },
   actualPrice: function () {
-    let childVariants;
-    let purchasable;
-    let current = selectedVariant();
-    let product = selectedProduct();
-    if (product && current) {
-      childVariants = (function () {
-        let _results = [];
-        for (let variant of product.variants) {
-          if ((typeof variant === "object" ? variant.parentId : void 0) === current._id) {
-            _results.push(variant);
-          }
-        }
-        return _results;
-      })();
-      purchasable = childVariants.length > 0 ? false : true;
-    }
-    if (purchasable) {
+    const current = selectedVariant();
+    const childVariants = getVariants(current._id);
+    if (childVariants.length === 0) {
       return current.price;
     }
     return getProductPriceRange();
@@ -67,8 +53,8 @@ Template.productDetail.events({
         return;
       }
 
-      if (variant.parentId) {
-        formName = variant.parentId;
+      if (typeof variant.ancestors[1] === "string") {
+        formName = variant.ancestors[1];
       } else {
         formName = variant._id;
       }
@@ -111,16 +97,8 @@ Template.productDetail.events({
     let currentProduct = selectedProduct();
 
     if (currentVariant) {
-      if (currentVariant.parentId === null) {
-        options = (function () {
-          let _results = [];
-          for (let variant of currentProduct.variants) {
-            if (variant.parentId === currentVariant._id) {
-              _results.push(variant);
-            }
-          }
-          return _results;
-        })();
+      if (currentVariant.ancestors.length === 1) {
+        const options = getVariants(currentVariant._id);
 
         if (options.length > 0) {
           Alerts.add("Please choose options before adding to cart", "danger", {
@@ -208,7 +186,7 @@ Template.productDetail.events({
       errorMsg += "Product title is required. ";
       template.$(".title-edit-input").focus();
     }
-    let variants = self.variants;
+    const variants = getVariants(self._id);
     for (let variant of variants) {
       let index = _.indexOf(variants, variant);
       if (!variant.title) {

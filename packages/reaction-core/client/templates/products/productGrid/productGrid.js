@@ -116,7 +116,7 @@ Template.productGrid.helpers({
     }
 
     let tag = this.tag || this._id || "";
-    let selector = {};
+    let selector = { type: "simple" };
 
     if (tag) {
       hashtags = [];
@@ -174,12 +174,8 @@ Template.productGridItems.helpers({
   media: function () {
     let defaultImage;
     let variantId;
-    let variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const variants = getVariants();
+
     if (variants.length > 0) {
       variantId = variants[0]._id;
       defaultImage = ReactionCore.Collections.Media.findOne({
@@ -195,13 +191,7 @@ Template.productGridItems.helpers({
   additionalMedia: function () {
     let mediaArray;
     let variantId;
-    let variants = [];
-
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const variants = getVariants(this._id);
 
     if (variants.length > 0) {
       variantId = variants[0]._id;
@@ -213,9 +203,9 @@ Template.productGridItems.helpers({
       }, {
         limit: 3
       });
-    }
-    if (mediaArray.count() > 1) {
-      return mediaArray;
+      if (mediaArray.count() > 1) {
+        return mediaArray;
+      }
     }
     return false;
   },
@@ -233,35 +223,20 @@ Template.productGridItems.helpers({
   },
   isSelected(productId) {
     let selectedProducts = Session.get("productGrid/selectedProducts");
-
-    if (_.contains(selectedProducts, this._id)) {
-      return "active";
-    }
-
-    return "";
+    return _.contains(selectedProducts, this._id) ? "active" : "";
   },
   isMediumWeight: function () {
     let position = this.position || {};
     let weight = position.weight || 0;
-
-    if (weight === 1) {
-      return true;
-    }
-    return false;
+    return weight === 1;
   },
   isLargeWeight: function () {
     let position = this.position || {};
     let weight = position.weight || 0;
-    if (weight === 3) {
-      return true;
-    }
-    return false;
+    return weight === 3;
   },
   shouldShowAdditionalImages: function () {
-    if (this.isMediumWeight && this.mediaArray) {
-      return true;
-    }
-    return false;
+    return this.isMediumWeight && this.mediaArray;
   }
 });
 

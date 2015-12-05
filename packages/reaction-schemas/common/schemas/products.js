@@ -68,9 +68,14 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
     type: String,
-    autoValue: ReactionCore.schemaIdAutoValue,
-    index: 1,
-    label: "Variant ID"
+    optional: true
+    // autoValue: ReactionCore.schemaIdAutoValue,
+    // index: 1,
+    // label: "Variant ID"
+  },
+  ancestors: {
+    type: [String],
+    defaultValue: []
   },
   parentId: {
     type: String,
@@ -116,7 +121,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
-            this.value === 0)) {
+          this.value === 0)) {
           return "required";
         }
       }
@@ -130,7 +135,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
-            this.value === false)) {
+          this.value === false)) {
           return "required";
         }
       }
@@ -144,7 +149,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
-            this.value === false)) {
+          this.value === false)) {
           return "required";
         }
       }
@@ -244,6 +249,10 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     type: String,
     optional: true
   },
+  ancestors: {
+    type: [String],
+    defaultValue: []
+  },
   cloneId: {
     type: String,
     optional: true
@@ -282,9 +291,6 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   positions: {
     type: [ReactionCore.Schemas.ProductPosition],
     optional: true
-  },
-  variants: {
-    type: [ReactionCore.Schemas.ProductVariant]
   },
   requiresShipping: {
     label: "Require a shipping address",
@@ -379,5 +385,10 @@ ReactionCore.Schemas.Product = new SimpleSchema({
       return new Date;
     },
     optional: true
+  },
+  variants: {
+    // type: [ReactionCore.Schemas.ProductVariant]
+    type: [String],
+    defaultValue: []
   }
 });
