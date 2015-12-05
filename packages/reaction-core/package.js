@@ -113,7 +113,7 @@ Package.onUse(function (api) {
   api.addFiles("server/main.js", "server");
   api.addFiles("server/register.js", "server");
   api.addFiles("server/fixtures.js", "server");
-  api.addFiles("server/init.js");
+  api.addFiles("server/init.js", "server");
   api.addFiles("common/common.js");
 
   // i18n translations
@@ -390,7 +390,7 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("underscore");
   api.use("random");
-  api.use("sanjo:jasmine@0.20.2");
+  api.use("sanjo:jasmine@0.20.3");
   api.use("velocity:html-reporter@0.9.1");
 
   api.use("velocity:console-reporter@0.1.4");
@@ -398,8 +398,8 @@ Package.onTest(function (api) {
   api.use("accounts-password");
   // reaction core
   api.use("reactioncommerce:reaction-collections@1.0.1");
-  api.use("reactioncommerce:reaction-factories@0.3.0");
-  api.use("reactioncommerce:core@0.9.6");
+  api.use("reactioncommerce:reaction-factories@0.3.1");
+  api.use("reactioncommerce:core@0.10.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
