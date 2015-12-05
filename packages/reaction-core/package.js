@@ -195,6 +195,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/layout.html", "client");
   api.addFiles("client/templates/layout/layout.js", "client");
 
+  api.addFiles("client/templates/layout/admin/admin.html", "client");
+  api.addFiles("client/templates/layout/admin/admin.js", "client");
+
   api.addFiles("client/templates/layout/header/header.html", "client");
   api.addFiles("client/templates/layout/header/header.js", "client");
 
