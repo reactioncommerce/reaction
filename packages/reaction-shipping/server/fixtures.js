@@ -8,4 +8,5 @@
 // });
 Meteor.startup(function () {
   ReactionImport.process(Assets.getText("private/data/Shipping.json"), ["name"], ReactionImport.shipping);
+  ReactionImport.flush();
 });
