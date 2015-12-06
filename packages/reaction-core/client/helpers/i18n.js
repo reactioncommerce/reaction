@@ -199,7 +199,7 @@ Template.registerHelper("formatPrice", function (currentPrice) {
   // for the cases then we have only one price. It is a number.
   currentPrice = currentPrice.toString();
   let price = 0;
-  const prices = ~currentPrice.indexOf(' - ') ?
+  const prices = ~currentPrice.indexOf(" - ") ?
     currentPrice.split(" - ") :
     [currentPrice];
 
@@ -210,8 +210,8 @@ Template.registerHelper("formatPrice", function (currentPrice) {
     try {
       // we know the locale, but we don't know exchange rate. In that case we
       // should return to default shop currency
-      if (typeof Locale.currency.rate !== 'number') {
-        throw new Meteor.Error('exchangeRateUndefined');
+      if (typeof Locale.currency.rate !== "number") {
+        throw new Meteor.Error("exchangeRateUndefined");
       }
       prices[i] *= Locale.currency.rate;
 
@@ -250,7 +250,7 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
 function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
 pos, len) {
   // this checking for Locale.shopCurrency mostly
-  if (typeof currency !== 'object') {
+  if (typeof currency !== "object") {
     return false;
   }
   let formattedPrice;
@@ -266,7 +266,6 @@ pos, len) {
     formattedPrice = accounting.formatMoney(actualPrice, currency);
   }
 
-  return ((price === 0) ?
-    currentPrice.replace(originalPrice, formattedPrice) :
+  return (price === 0 ? currentPrice.replace(originalPrice, formattedPrice) :
     price.replace(originalPrice, formattedPrice));
 }

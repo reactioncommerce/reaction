@@ -329,7 +329,8 @@
       "symbol": "руб.",
       "decimal": ",",
       "thousand": " ",
-      "precision": 0
+      "precision": 0,
+      "where": "right"
     },
     "SEK": {
       "format": "%s%v",

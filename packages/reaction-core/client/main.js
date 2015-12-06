@@ -19,6 +19,23 @@ _.extend(ReactionCore, {
           domains: domain
         });
         self.shopId = shop._id;
+
+        // fix for https://github.com/reactioncommerce/reaction/issues/248
+        // we need to keep an eye for rates changes
+        const { Locale } = ReactionCore;
+        if (typeof Locale.locale === "object" &&
+          typeof Locale.currency === "object" &&
+          typeof Locale.locale.currency === "string") {
+          const localeCurrency = Locale.locale.currency.split(",")[0];
+          Locale.currency.rate = shop.currencies[localeCurrency].rate;
+          localeDep.changed();
+        }
+        // we are looking for a shopCurrency changes here
+        if (typeof Locale.shopCurrency === "object") {
+          Locale.shopCurrency = shop.currencies[shop.currency];
+          localeDep.changed();
+        }
+
         return self;
       }
     });
@@ -102,12 +119,10 @@ _.extend(ReactionCore, {
       shopId: this.shopId
     });
     // we can disable in admin, let's check.
-    if (packageRegistry !== undefined) {
-      if (packageRegistry.settings) {
-        if (packageRegistry.settings.allowGuestCheckout) {
-          allowGuest = packageRegistry.settings.allowGuestCheckout;
-        }
-      }
+    if (typeof packageRegistry === "object" &&
+      typeof packageRegistry.settings === "object" &&
+      packageRegistry.settings.allowGuestCheckout) {
+      allowGuest = packageRegistry.settings.allowGuestCheckout;
     }
     return allowGuest;
   },
@@ -197,17 +212,14 @@ _.extend(ReactionCore, {
  */
 let isDebug = "WARN";
 
-if (Meteor.settings !== undefined) {
-  if (Meteor.settings.public) {
-    if (Meteor.settings.public.debug) {
-      isDebug = Meteor.settings.public.debug;
-    }
-  }
+if (typeof Meteor.settings === "object" &&
+  typeof Meteor.settings.public === "object" && Meteor.settings.public.debug) {
+  isDebug = Meteor.settings.public.debug;
 }
 
-levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
+const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
 
-if (typeof isDebug !== "boolean" && typeof isDebug !== undefined) {
+if (typeof isDebug !== "boolean" && typeof isDebug !== "undefined") {
   isDebug = isDebug.toUpperCase();
 }
 
