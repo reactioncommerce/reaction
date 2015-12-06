@@ -23,20 +23,24 @@ Meteor.methods({
     // we'll accept a shop object, or clone the current shop
     shop = shopData || ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
     // if we don't have any shop data, use fixture
-    if (!shop) {
-      shop = EJSON.parse(Assets.getText("private/data/Shops.json"))[0];
+
+    check(shop, ReactionCore.Schemas.Shop);
+    if (!currentUser) {
+      throw new Meteor.Error("Unable to create shop with specified user");
     }
+
     // identify a shop admin
     let userId = shopAdminUserId || Meteor.userId();
     let adminRoles = Roles.getRolesForUser(currentUser, ReactionCore.getShopId());
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
-    // check(shop, ReactionCore.Schemas.Shop)
+
+    check(shop, ReactionCore.Schemas.Shop);
     try {
       ReactionCore.Collections.Shops.insert(shop);
     } catch (error) {
-      return ReactionCore.Log.error("Failed to shop/createShop", error);
+      return ReactionCore.Log.error("Failed to shop/createShop", sanitizedError);
     }
     // we should have created new shop, or errored
     ReactionCore.Log.info("Created shop: ", shop._id);

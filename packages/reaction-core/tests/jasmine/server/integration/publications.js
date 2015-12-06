@@ -6,17 +6,7 @@ describe("Publication", function () {
     Shops.remove({});
     Orders.remove({});
     // insert products and shops
-    Shops.insert({
-      name: "Cookie Swirl C",
-      currency: "USD",
-      currencies: {},
-      locales: {
-        continents: {},
-        countries: {}
-      },
-      timezone: "US/Pacific"
-    });
-    shop = Shops.findOne();
+    shop = Factory.create("shop");
   });
 
   describe("with products", function () {

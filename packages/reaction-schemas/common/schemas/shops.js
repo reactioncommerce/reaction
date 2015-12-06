@@ -182,14 +182,19 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     label: "Base Unit of Measure"
   },
   "unitsOfMeasure": {
-    type: [Object],
-    optional: true
+    type: [Object]
   },
   "unitsOfMeasure.$.uom": {
-    type: String
+    type: String,
+    defaultValue: "OZ"
   },
   "unitsOfMeasure.$.label": {
-    type: String
+    type: String,
+    defaultValue: "Ounces"
+  },
+  "unitsOfMeasure.$.default": {
+    type: Boolean,
+    defaultValue: false
   },
   "metafields": {
     type: [ReactionCore.Schemas.Metafield],
@@ -235,7 +240,8 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
         };
       }
     },
-    denyUpdate: true
+    denyUpdate: true,
+    optional: true
   },
   "updatedAt": {
     type: Date,
