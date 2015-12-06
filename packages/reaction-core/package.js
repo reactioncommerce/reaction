@@ -398,7 +398,7 @@ Package.onTest(function (api) {
   api.use("accounts-password");
   // reaction core
   api.use("reactioncommerce:reaction-collections@1.0.1");
-  api.use("reactioncommerce:reaction-factories@0.3.1");
+  api.use("reactioncommerce:reaction-factories@0.3.2");
   api.use("reactioncommerce:core@0.10.0");
 
   // server integration tests
