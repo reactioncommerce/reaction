@@ -1,7 +1,56 @@
 
+
+Template.coreAdminLayout.onCreated(() => {
+  const template = Template.instance();
+
+  template.settings = new ReactiveVar();
+
+  template.autorun(() => {
+    let currentRoute = Router.current().route;
+
+    let reactionApp = ReactionCore.Collections.Packages.findOne({
+      "registry.provides": "settings",
+      "registry.route": currentRoute.getName()
+    }, {
+      enabled: 1,
+      registry: 1,
+      name: 1,
+      route: 1
+    });
+    if (reactionApp) {
+      let settingsData = _.find(reactionApp.registry, function (item) {
+        return item.route === Router.current().route.getName() && item.provides === "settings";
+      });
+
+      // return settingsData;
+      if (settingsData) {
+        if (ReactionCore.hasPermission(settingsData.route, Meteor.userId())) {
+          template.settings.set(settingsData);
+        } else {
+          template.settings.set(null);
+        }
+      } else {
+        template.settings.set(null);
+      }
+
+
+
+      console.log("Settings", settingsData);
+
+    }
+  });
+});
+
+Template.coreAdminLayout.onRendered(() => {
+});
+
 Template.coreAdminLayout.helpers({
   template: function () {
     return ReactionCore.getActionView();
+  },
+
+  settings: function() {
+    return Template.instance().settings.get();
   },
 
   isDashboard(route) {
@@ -46,7 +95,7 @@ Template.coreAdminLayout.helpers({
 
 Template.coreAdminLayout.events({
   "click [data-event-action=showPackageSettings]": function () {
-    ReactionCore.showActionView();
+    ReactionCore.showActionView(this);
   },
 
   /**
