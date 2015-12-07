@@ -23,20 +23,24 @@ Meteor.methods({
     // we'll accept a shop object, or clone the current shop
     shop = shopData || ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
     // if we don't have any shop data, use fixture
-    if (!shop) {
-      shop = EJSON.parse(Assets.getText("private/data/Shops.json"))[0];
+
+    check(shop, ReactionCore.Schemas.Shop);
+    if (!currentUser) {
+      throw new Meteor.Error("Unable to create shop with specified user");
     }
+
     // identify a shop admin
     let userId = shopAdminUserId || Meteor.userId();
     let adminRoles = Roles.getRolesForUser(currentUser, ReactionCore.getShopId());
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
-    // check(shop, ReactionCore.Schemas.Shop)
+
+    check(shop, ReactionCore.Schemas.Shop);
     try {
       ReactionCore.Collections.Shops.insert(shop);
     } catch (error) {
-      return ReactionCore.Log.error("Failed to shop/createShop", error);
+      return ReactionCore.Log.error("Failed to shop/createShop", sanitizedError);
     }
     // we should have created new shop, or errored
     ReactionCore.Log.info("Created shop: ", shop._id);
@@ -102,8 +106,8 @@ Meteor.methods({
     result.shopCurrency = shop.currencies[shop.currency];
 
     // check if locale has a currency defined
-    if (typeof result.locale === 'object' &&
-      typeof result.locale.currency === 'string') {
+    if (typeof result.locale === "object" &&
+      typeof result.locale.currency === "string") {
       localeCurrency = result.locale.currency.split(",");
     }
 
@@ -117,7 +121,7 @@ Meteor.methods({
         if (shop.currency !== currency) {
           exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
 
-          if (typeof exchangeRate === 'number') {
+          if (typeof exchangeRate === "number") {
             result.currency.exchangeRate = exchangeRate;
           } else {
             ReactionCore.Log.warn("Failed to get currency exchange rates.");
@@ -145,16 +149,17 @@ Meteor.methods({
       fields: { [field]: 1 }
     });
 
-    return typeof shop.currencies[currency].rate === 'number' &&
+    return typeof shop.currencies[currency].rate === "number" &&
       shop.currencies[currency].rate;
   },
 
   /**
-   * @method shop/fetchCurrencyRates
+   * shop/fetchCurrencyRates
    * @summary fetch the latest currency rates from
    * https://openexchangerates.org
    * usage: Meteor.call("shop/fetchCurrencyRates")
    * @fires ReactionCore.Collections.Shops#update
+   * @returns {undefined}
    */
   "shop/fetchCurrencyRate": function () {
     this.unblock();
@@ -217,7 +222,7 @@ Meteor.methods({
         if (exchangeRates[currencyKey] !== undefined) {
           let rateUpdate = {
             // this needed for shop/flushCurrencyRates Method
-            'currencies.updatedAt': new Date(rateResults.data.timestamp * 1000)
+            "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
           };
           let collectionKey = `currencies.${currencyKey}.rate`;
           rateUpdate[collectionKey] = exchangeRates[currencyKey];
@@ -230,11 +235,12 @@ Meteor.methods({
   },
 
   /**
-   * @method shop/flushCurrencyRates
+   * shop/flushCurrencyRates
    * @description Method calls by cron job
    * @summary It removes exchange rates that are too old
    * usage: Meteor.call("shop/flushCurrencyRates")
    * @fires ReactionCore.Collections.Shops#update
+   * @returns {undefined}
    */
   "shop/flushCurrencyRate": function () {
     this.unblock();
@@ -255,12 +261,12 @@ Meteor.methods({
 
     updatedAt.setHours(updatedAt.getHours() + 48);
     const now = new Date();
-    //if (now > updatedAt) {
+
     if (now < updatedAt) { // todo remove this line. its for tests
       _.each(shop.currencies, function (currencyConfig, currencyKey) {
         let rate = `currencies.${currencyKey}.rate`;
 
-        if (typeof currencyConfig.rate === 'number') {
+        if (typeof currencyConfig.rate === "number") {
           ReactionCore.Collections.Shops.update(shopId, {
             $unset: {
               [rate]: ""
@@ -272,7 +278,7 @@ Meteor.methods({
   },
 
   /**
-   * @method shop/updateShopExternalServices
+   * shop/updateShopExternalServices
    * @description On submit OpenExchangeRatesForm handler
    * @summary we need to rerun fetch exchange rates job on every form submit,
    * that's why we update autoform type to "method-update"
@@ -280,6 +286,7 @@ Meteor.methods({
    * @param {String} _id - the _id of the document being updated
    * @fires ReactionCore.Collections.Packages#update
    * @todo This method fires Packages collection, so maybe someday it could be
+   * @returns {undefined}
    * moved to another file
    */
   "shop/updateShopExternalServices": function (modifier, _id) {
@@ -300,7 +307,7 @@ Meteor.methods({
       .retry({
         retries: 5,
         wait: 60000,
-        backoff: 'exponential' // delay by twice as long for each subsequent retry
+        backoff: "exponential" // delay by twice as long for each subsequent retry
       })
       .repeat({
         // wait: refreshPeriod * 60 * 1000
@@ -402,8 +409,7 @@ Meteor.methods({
           isTopLevel: true
         }
       }, function () {
-        ReactionCore.Log.info('Marked tag "' + existingTag.name +
-          '" as a top level tag');
+        ReactionCore.Log.info(`Marked tag ${existingTag.name} as a top level tag`);
         return true;
       });
     }
@@ -419,12 +425,11 @@ Meteor.methods({
           relatedTagIds: newTagId
         }
       }, function () {
-        ReactionCore.Log.info('Added tag "' + newTag.name +
-          '" to the related tags list for tag ' + currentTagId);
+        ReactionCore.Log.info(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
         return true;
       });
     } else if (newTagId && !currentTagId) {
-      ReactionCore.Log.info('Created tag "' + newTag.name + '"');
+      ReactionCore.Log.info(`Created tag ${newTag.name}`);
       return true;
     }
     throw new Meteor.Error(403, "Failed to update header tags.");
@@ -480,7 +485,16 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     ReactionCore.Collections.Translations.remove({});
-    Fixtures.loadI18n();
+    let shopId = ReactionCore.getShopId();
+    let shops = ReactionCore.Collections.Shops.find({_id: shopId}).fetch();
+    // leaving room for potential future of language per shop
+    for (let shop of shops) {
+      for (let language of shop.languages) {
+        json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
+        ReactionImport.process(json, ["i18n"], ReactionImport.translation);
+      }
+    }
+    ReactionImport.flush();
     ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
     return;
   },

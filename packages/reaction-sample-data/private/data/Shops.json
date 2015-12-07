@@ -1,5 +1,4 @@
 [{
-  "baseUOM": "OZ",
   "currencies": {
     "AED": {
       "format": "%v %s",
@@ -330,7 +329,8 @@
       "symbol": "руб.",
       "decimal": ",",
       "thousand": " ",
-      "precision": 0
+      "precision": 0,
+      "where": "right"
     },
     "SEK": {
       "format": "%s%v",
@@ -3010,20 +3010,21 @@
     "countyTaxes": true
   }],
   "timezone": "US/Pacific",
-  "unitsOfMeasure": {
-    "OZ": {
-      "name": "Ounces"
-    },
-    "LB": {
-      "name": "Pounds"
-    },
-    "GR": {
-      "name": "Grams"
-    },
-    "KG": {
-      "name": "Kilograms"
-    }
-  },
+  "baseUOM": "OZ",
+  "unitsOfMeasure": [{
+    "uom": "OZ",
+    "label": "Ounces",
+    "default": true
+  }, {
+    "uom": "LB",
+    "label": "Pounds"
+  }, {
+    "uom": "GR",
+    "label": "Grams"
+  }, {
+    "uom": "KG",
+    "label": "Kilograms"
+  }],
   "addressBook": [{
     "company": "Reaction Commerce",
     "fullName": "Ongo Works",

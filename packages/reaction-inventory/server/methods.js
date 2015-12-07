@@ -37,21 +37,24 @@ Meteor.methods({
           `inserting ${newQty - inventoryVariantCount} new inventory items for ${variant._id}`
         );
 
+        let items = [];
         while (i <= newQty) {
-          let inventoryItem = ReactionCore.Collections.Inventory.insert({
+          items.push({
             shopId: product.shopId,
             variantId: variant._id,
             productId: product._id
           });
-
-          if (!inventoryItem) {
-            // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
-            return totalNewInventory;
-          }
-          ReactionInventory.Log.debug(`registered ${inventoryItem}`);
-          totalNewInventory++;
           i++;
         }
+
+        let inventoryItem = ReactionCore.Collections.Inventory.batchInsert(items);
+
+        if (!inventoryItem) { // or maybe `inventory.length === 0`?
+          // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
+          return totalNewInventory;
+        }
+        ReactionInventory.Log.debug(`registered ${inventoryItem}`);
+        totalNewInventory += inventoryItem.length;
       }
     }
     // returns the total amount of new inventory created

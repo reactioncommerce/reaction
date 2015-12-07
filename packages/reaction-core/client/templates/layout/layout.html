@@ -23,53 +23,6 @@
 </template>
 
 
-<template name="coreAdminLayout">
-  <span class="layout-alerts-global">{{>bootstrapAlerts}}</span>
-  <div class="page {{adminControlsClassname}}" id="reactionAppContainer">
-    <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
-    <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-    <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
-    <main role="main" id="main">
-      {{> dashboardHeader}}
-      {{> yield}}
-    </main>
-    <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
-  </div>
-
-
-  <div class="admin-controls {{adminControlsClassname}}">
-
-
-      <div class="admin-controls-detail">
-        <div class="admin-controls-heading">
-          {{> settingsHeader}}
-        </div>
-        <div class="admin-controls-content action-view-body">
-          {{> Template.dynamic template=template.template data=template.data}}
-        </div>
-        <div class="admin-controls-footer">
-          <div class="admin-controls-container">
-            {{>yield region="adminControlsFooter"}}
-          </div>
-        </div>
-      </div>
-
-
-  </div>
-
-  <div class="admin-controls-menu">
-    <nav>
-      <a href="/dashboard" class="primary">
-        <i class="fa fa-th"></i>
-        <span>Dashboard</span>
-      </a>
-      {{> yield "dashboardControls"}}
-
-    </nav>
-  </div>
-
-</template>
-
 <template name="coreSettingsLayout">
   <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
   <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>

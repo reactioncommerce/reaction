@@ -1,5 +1,5 @@
 /*
- * Fixtures is a global server object that it can be reused in packages
+ * ReactionRegistry is a global server object that it can be reused in packages
  * assumes collection data in reaction-core/private/data, optionally jsonFile
  * use jsonFile when calling from another package, as we can't read the assets from here
  */
