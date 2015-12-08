@@ -270,7 +270,6 @@ ReactionRegistry.loadPackages = function () {
  *  @summary update the default shop url if ROOT_URL supplied is different from current
  *  @return {String} returns insert result
  */
-
 ReactionRegistry.setDomain = function () {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
@@ -282,7 +281,7 @@ ReactionRegistry.setDomain = function () {
   // if the server domain changes, update shop
   if (currentDomain && currentDomain !== getDomain()) {
     ReactionCore.Log.info("Updating domain to " + getDomain());
-    Shops.update({
+    ReactionCore.Collections.Shops.update({
       domains: currentDomain
     }, {
       $set: {
