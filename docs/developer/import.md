@@ -106,7 +106,7 @@ ReactionImport.tag({ '_id': tag }, { 'name': tag, 'isTopLevel': true });
 
 We can now directly use the `tag` value as a value in the `hashtags` array in the product schema. If we didn't know the `_id` for our tag we'd need to commit the import buffer first and query for the tag with the key we provided, only to obtain this `_id`.
 
-### `Import.product(key, value, parent)` <a name="product"></a>
+### `ReactionImport.product(key, value, parent)` <a name="product"></a>
 The product import provides an extra optional argument `parent` to accomodate for the product hierarchy structure planned for reaction. Currently this extra argument is used to import a variant where `key` identifies the variant and `parent` identifies the product. When called with two arguments the function will import a product. An example:
 
 ```javascript
