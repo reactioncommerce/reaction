@@ -52,7 +52,7 @@ function createHandle(handle, productId) {
 
   // we should check again if there are any new matches with DB
   if (Products.find({ handle: handle }).count() !== 0) {
-    handle = /*ReactionCore.*/createHandle(handle, productId);
+    handle = createHandle(handle, productId);
   }
 
   return handle;
@@ -408,7 +408,7 @@ Meteor.methods({
       delete product.handle;
       product.isVisible = false;
       if (product.title) {
-        product.handle = /*ReactionCore.*/createHandle(
+        product.handle = createHandle(
           getSlug(product.title),
           product._id
         );
@@ -827,7 +827,7 @@ Meteor.methods({
 
     let product = Products.findOne(productId);
     let handle = getSlug(product.title);
-    handle = /*ReactionCore.*/createHandle(handle, product._id);
+    handle = createHandle(handle, product._id);
     Products.update(product._id, {
       $set: {
         handle: handle
@@ -859,7 +859,7 @@ Meteor.methods({
     // set handle
     if (product.handle === tag.slug) {
       let handle = getSlug(product.title);
-      handle = /*ReactionCore.*/createHandle(handle, product._id);
+      handle = createHandle(handle, product._id);
       Products.update(product._id, {
         $set: {
           handle: handle
@@ -875,7 +875,7 @@ Meteor.methods({
     // this is needed to take care about product's handle which(product) was
     // previously tagged.
     for (let currentProduct of existingHandles) {
-      let currentProductHandle = /*ReactionCore.*/createHandle(
+      let currentProductHandle = createHandle(
         getSlug(currentProduct.title),
         currentProduct._id);
       Products.update(currentProduct._id, {

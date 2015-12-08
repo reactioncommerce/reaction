@@ -185,25 +185,49 @@ Dashboard Swiper Pagination Styles
   .align-items(center);
   .padding-left(20px);
   .padding-right(20px);
-  height: @navbar-dashboard-height;
+  min-height: @navbar-dashboard-height;
   background-color: @navbar-dashboard-bg;
   border-bottom: 1px solid @navbar-dashboard-border-color;
+
+  @media screen and (max-width: @screen-lg-min) {
+
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    .flex-direction(column);
+    .align-items(flex-start);
+  }
 }
 
 .nav-dashboard-heading {
   margin: 0 30px 0 0;
+
+  @media screen and (max-width: @screen-lg-min) {
+
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 20px 0;
+  }
 };
 
 .nav-dashboard-title {
   margin: 0;
-  .padding-left(20px);
 }
 
 .nav-dashboard-controls {
   .display(flex);
   .flex(1 1 auto);
   .align-items(center);
-  .justify-content(flex-end);
+  .flex-wrap(wrap);
   height: 100%;
 
   > button, > .btn {
@@ -227,12 +251,31 @@ Dashboard Swiper Pagination Styles
 
 .nav-dashboard-controls .nav-pills {
 
+  .flex-wrap(wrap);
+
   > li > a {
+    .display(flex);
+    .flex-direction(column);
+    .justify-content(center);
+    .align-items(center);
+
+    min-height: @navbar-dashboard-height;
     padding: 0 3rem;
     color: @text-color;
     font-size: 1.6rem;
     border-bottom: 3px solid transparent;
     border-radius: 0;
+
+    .label {
+      color: @text-color;
+      font-size: 1.4rem;
+      font-weight: normal;
+    }
+
+    .count {
+      color: @text-color;
+      font-size: 2rem;
+    }
   }
 
 
@@ -250,4 +293,56 @@ Dashboard Swiper Pagination Styles
     border-radius: 0;
     color: @text-color;
   }
+
+  @media screen and (max-width: @screen-lg-min) {
+    > li > a {
+      padding: 0 1.5rem;
+
+      .label {
+        color: @text-color;
+        font-size: 1.2rem;
+        font-weight: normal;
+      }
+
+      .count {
+        color: @text-color;
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+
+    border-bottom: none;
+
+    > li > a:hover,
+    > li > a:focus {
+      background-color: @brand-accent-color;
+      border-bottom: none;
+    }
+
+
+    > li.active > a,
+    > li.active > a:hover,
+    > li.active > a:focus {
+      background-color: @brand-accent-color;
+      border-bottom: none;
+      border-radius: 0;
+      color: @white;
+    }
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    > li {
+      width: 100%;
+    }
+
+    > li > a {
+      display: block;
+      padding: 1rem 2rem;
+      width: 100%;
+      min-height: auto;
+    }
+  }
+
 }

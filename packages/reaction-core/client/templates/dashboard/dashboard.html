@@ -33,6 +33,9 @@
             {{i18n registry.i18nKey registry.i18nLabel}}
         </h3>
       </div>
+      <div class="nav-dashboard-controls">
+        {{> yield "dashbaordHeaderControls"}}
+      </div>
     </div>
   {{/if}}
 </template>

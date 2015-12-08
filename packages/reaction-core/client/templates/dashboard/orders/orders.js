@@ -70,8 +70,15 @@ function getOrders(queryParams) {
 
 function getFiltersWithCounts() {
   return orderFilters.map((filter) => {
+    const queryParams = Router.current().params.query;
+
     filter.label = i18n.t(`order.filter.${filter.name}`);
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
+
+    if (queryParams) {
+      filter.active = queryParams.filter === filter.name;
+    }
+
     return filter;
   });
 }
@@ -125,7 +132,7 @@ Template.ordersListItem.events({
 
 Template.orderListFilters.events({
   "click [role=tab]": (event) => {
-    const filter = event.target.getAttribute("data-filter");
+    const filter = event.currentTarget.getAttribute("data-filter");
     Router.go("dashboard/orders", {
       // _id: this._id
     }, {

@@ -341,6 +341,18 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/products/productList/productList.html", "client");
   api.addFiles("client/templates/products/productList/productList.js", "client");
 
+  api.addFiles("client/templates/products/productGrid/content/content.html", "client");
+  api.addFiles("client/templates/products/productGrid/content/content.js", "client");
+
+  api.addFiles("client/templates/products/productGrid/notice/notice.html", "client");
+  api.addFiles("client/templates/products/productGrid/notice/notice.js", "client");
+
+  api.addFiles("client/templates/products/productGrid/controls/controls.html", "client");
+  api.addFiles("client/templates/products/productGrid/controls/controls.js", "client");
+
+  api.addFiles("client/templates/products/productGrid/item/item.html", "client");
+  api.addFiles("client/templates/products/productGrid/item/item.js", "client");
+
   api.addFiles("client/templates/products/productGrid/productGrid.html", "client");
   api.addFiles("client/templates/products/productGrid/productGrid.js", "client");
 
