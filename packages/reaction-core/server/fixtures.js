@@ -168,7 +168,8 @@ ReactionRegistry.createDefaultAdminUser = function () {
         "services.launchdock.userId": process.env.LAUNCHDOCK_USERID,
         "services.launchdock.username": process.env.LAUNCHDOCK_USERNAME,
         "services.launchdock.auth": process.env.LAUNCHDOCK_AUTH,
-        "services.launchdock.url": process.env.LAUNCHDOCK_URL
+        "services.launchdock.url": process.env.LAUNCHDOCK_URL,
+        "services.launchdock.stackId": process.env.LAUNCHDOCK_STACK_ID
       }
     });
   }

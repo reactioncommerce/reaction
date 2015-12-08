@@ -112,9 +112,56 @@
 
   width: 25%;
   max-width: 25%;
+  min-width: 300px;
+
+  @media screen and (max-width: @screen-lg-min) {
+    width: 33%;
+    max-width: 33%;
+  }
+
+  @media screen and (max-width: @screen-md-max) {
+    width: 33%;
+    max-width: 33%;
+    min-width: 250px;
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+    width: 33%;
+    max-width: 33%;
+    min-width: 0;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 }
 
 .page.show-settings .rui.packages > .rui.package {
-  // width: 33%;
-  // max-width: 33%;
+  width: 33%;
+  max-width: 33%;
+
+  @media screen and (max-width: @screen-lg-min) {
+    width: 50%;
+    max-width: 50%;
+  }
+
+  @media screen and (max-width: @screen-md-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 250px;
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 }

@@ -53,8 +53,17 @@
     </nav>
     <nav>
       {{> yield "dashboardControls"}}
-      {{thisApp}}
 
+      {{#if settings}}
+        {{#with settings}}
+          <button id="{{route}}" title="{{label}}" data-event-action="showPackageSettings">
+            <i class="fa fa-gear"></i>
+            <span class="icon-text">
+              {{label}}
+            </span>
+          </button>
+        {{/with}}
+      {{/if}}
     </nav>
   </div>
 

@@ -10,7 +10,11 @@
   </li>
   {{/each}}
   {{#if hasPermission "admin"}}
-    <li><a href="#" id="header-edit-tag" class="header-edit-tag" data-current-id="{{tag._id}}"><i class="fa fa-tags fa-lg"></i></a></li>
+    <li>
+      <button id="header-edit-tag" class="btn btn-primary header-edit-tag" data-current-id="{{tag._id}}">
+        <i class="fa fa-tags fa-lg"></i> <span data-i18n="header.tagsAdd">Add Tag</span>
+      </button>
+      </li>
   {{/if}}
    </ul>
 </template>
