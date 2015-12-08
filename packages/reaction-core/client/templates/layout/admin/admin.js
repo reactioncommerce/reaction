@@ -32,11 +32,6 @@ Template.coreAdminLayout.onCreated(() => {
       } else {
         template.settings.set(null);
       }
-
-
-
-      console.log("Settings", settingsData);
-
     }
   });
 });

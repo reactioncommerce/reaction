@@ -203,7 +203,7 @@ Dashboard Swiper Pagination Styles
   .display(flex);
   .flex(1 1 auto);
   .align-items(center);
-  .justify-content(flex-end);
+  .flex-wrap(wrap);
   height: 100%;
 
   > button, > .btn {
@@ -228,11 +228,26 @@ Dashboard Swiper Pagination Styles
 .nav-dashboard-controls .nav-pills {
 
   > li > a {
+    .display(flex);
+    .flex-direction(column);
+    .justify-content(center);
+    .align-items(center);
     padding: 0 3rem;
     color: @text-color;
     font-size: 1.6rem;
     border-bottom: 3px solid transparent;
     border-radius: 0;
+
+    .label {
+      color: @text-color;
+      font-size: 1.4rem;
+      font-weight: normal;
+    }
+
+    .count {
+      color: @text-color;
+      font-size: 2rem;
+    }
   }
 
 
