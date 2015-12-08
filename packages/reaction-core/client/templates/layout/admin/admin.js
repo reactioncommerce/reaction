@@ -32,6 +32,8 @@ Template.coreAdminLayout.onCreated(() => {
       } else {
         template.settings.set(null);
       }
+    } else {
+      template.settings.set(null);
     }
   });
 });
