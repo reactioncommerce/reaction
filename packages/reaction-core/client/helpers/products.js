@@ -110,12 +110,13 @@ this.selectedVariant = function () {
 /**
  * selectedProduct
  * @summary get the currently active/requested product object
- * @return {Object} currently selected product cursor
+ * @return {Object|undefined} currently selected product cursor
  */
 this.selectedProduct = function () {
-  let id;
-  id = selectedProductId();
-  return Products.findOne(id);
+  const id = selectedProductId();
+  if (typeof id === "string") {
+    return Products.findOne(id);
+  }
 };
 
 /**
