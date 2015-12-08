@@ -8,7 +8,8 @@
   "createdAt": {
     "$date": "2014-04-12T08:17:20.576-0700"
   },
-  "_id": "cseCBSSrJ3t8HQSNP"
+  "_id": "cseCBSSrJ3t8HQSNP",
+  "shopId": "J8Bhq3uTtdgwZx3rz"
 }, {
   "slug": "products",
   "name": "Products",
@@ -19,5 +20,6 @@
   "createdAt": {
     "$date": "2014-04-09T13:23:57.412-0700"
   },
-  "_id": "rpjCvTBGjhBi2xdro"
+  "_id": "rpjCvTBGjhBi2xdro",
+  "shopId": "J8Bhq3uTtdgwZx3rz"
 }]
