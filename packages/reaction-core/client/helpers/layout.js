@@ -36,7 +36,7 @@ Template.registerHelper("reactionTemplate", function (options) {
     let currentCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
-    currentId = currentCart._id;
+    currentId = currentCart && currentCart._id;
   }
   // we'll get current cart status by default, as the most common case
   // TODO: expand query options
