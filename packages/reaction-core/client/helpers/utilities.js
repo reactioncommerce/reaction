@@ -12,20 +12,15 @@
  */
 if (Package.blaze) {
   Package.blaze.Blaze.Template.registerHelper("currentUser", function () {
-    if (ReactionCore !== undefined) {
+    if (typeof ReactionCore === "object") {
       // shoppers should always be guests
-      let isGuest = Roles.userIsInRole(Meteor.user(), "guest", ReactionCore
+      const isGuest = Roles.userIsInRole(Meteor.user(), "guest", ReactionCore
         .getShopId());
       // but if a user has never logged in then they are anonymous
-      let isAnonymous = Roles.userIsInRole(Meteor.user(), "anonymous",
+      const isAnonymous = Roles.userIsInRole(Meteor.user(), "anonymous",
         ReactionCore.getShopId());
 
-      if (!isGuest && isAnonymous) {
-        return null;
-      } else if (isGuest && !isAnonymous) {
-        return Meteor.user();
-      }
-      return null;
+      return isGuest && !isAnonymous ? Meteor.user() : null;
     }
   });
 }
@@ -60,14 +55,13 @@ Template.registerHelper("monthOptions", function () {
  * @return {Array} returns array of years [value:, label:]
  */
 Template.registerHelper("yearOptions", function () {
-  let _i;
   let label = i18n.t("app.yearOptions") || "Choose year";
   let yearOptions = [{
     value: "",
     label: label
   }];
   let year = new Date().getFullYear();
-  for (x = _i = 1; _i < 9; x = _i += 1) {
+  for (let i = 1; i < 9; i++) {
     yearOptions.push({
       value: year,
       label: year
@@ -119,8 +113,7 @@ Template.registerHelper("pathForSEO", function (path, params) {
  * @return {String} returns space formatted string
  */
 Template.registerHelper("camelToSpace", function (str) {
-  let downCamel;
-  downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
+  let downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
   return downCamel.toLowerCase();
 });
 
@@ -158,10 +151,10 @@ Template.registerHelper("capitalize", function (str) {
  * toCamelCase
  * @summary camelCases a string
  * @param {String} str - string
- * @return {String} returns camelCased string
+ * @return {String|undefined} returns camelCased string
  */
 Template.registerHelper("toCamelCase", function (str) {
-  if (!!str) return str.toCamelCase();
+  return !!str && str.toCamelCase();
 });
 
 /**
@@ -184,13 +177,8 @@ Template.registerHelper("activeRouteClass", function () {
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", function () {
-  let shop = ReactionCore.Collections.Shops.findOne();
-  if (shop) {
-    if (shop.name) {
-      return shop.name;
-    }
-  }
-  return "";
+  const shop = ReactionCore.Collections.Shops.findOne();
+  return typeof shop === "object" && shop.name ? shop.name : "";
 });
 
 /*
