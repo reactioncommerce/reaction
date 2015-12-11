@@ -2,7 +2,7 @@ const classnames = ReactionUI.Lib.classnames;
 
 class Button extends React.Component {
 
-  props: {
+  props = {
     toggle: false,
     active: false
   }

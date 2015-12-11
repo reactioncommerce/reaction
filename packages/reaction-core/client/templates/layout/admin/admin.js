@@ -50,7 +50,7 @@ Template.coreAdminLayout.helpers({
     return Template.instance().settings.get();
   },
 
-  isDashboard(route) {
+isDashboard(route) {
     if (route === "dashboard") {
       return true;
     }

@@ -2,13 +2,9 @@
 const TextField = ReactionUI.Components.TextField;
 const Button = ReactionUI.Components.Button;
 const Tag = ReactionUI.Components.Tag;
-// const Sortable = ReactionUI.Lib.Sortable;
 const classnames = ReactionUI.Lib.classnames;
 const Sortable = ReactionUI.Lib.Sortable;
 const ReactDOM = ReactionUI.Lib.ReactDOM;
-
-// const Sortable = ReactionUI.Lib.Sortable;
-// const ReactDOM = ReactionUI.Lib.ReactDOM;
 
 class Tags extends React.Component {
   displayName = "Tag List (Tags)"
@@ -16,37 +12,67 @@ class Tags extends React.Component {
   componentDidMount() {
     const element = ReactDOM.findDOMNode(this.refs.tags);
     this._sortable = Sortable.create(element, {
-      onSort: this.handleSort
+      group: "tags",
+      onSort: this.handleDragSort,
+      onAdd: this.handleDragAdd,
+      onRemove: this.handleDragRemove
     });
   }
 
-  handleSort = (event) => {
-    console.log("sorted!!", event);
-    console.log("sorted -- exact --", event.to);
+  handleDragAdd = (event) => {
 
 
-    let newTagsOrder = this.move(this.props.tags, event.oldIndex, event.newIndex)
+    const fromListId = event.from.dataset.id;
+    const toListId = event.to.dataset.id;
+    const movedTagId = event.item.dataset.id;
+
+    // ReactDOM.unmountComponentAtNode(event.item);
+    console.log("Item", movedTagId, "Moved from list", fromListId, `(index ${event.oldIndex}`, "To list", toListId, `(index ${event.newIndex}`, "--", this.props.parentTag._id);
+
+    if (this.props.onTagDragAdd) {
+      this.props.onTagDragAdd(movedTagId, toListId, event.newIndex);
+    }
+  }
+
+  handleDragRemove = (event) => {
+
+    const fromListId = event.from.dataset.id;
+    const toListId = event.to.dataset.id;
+    const movedTagId = event.item.dataset.id;
+
+    if (this.props.onTagRemove) {
+      console.log("Item", movedTagId, "REMOVED from list", fromListId, `(index ${event.oldIndex}`, "To list", toListId, `(index ${event.newIndex}`, "--", this.props.parentTag._id);
+
+      let foundTag = _.find(this.props.tags, (tag) => {
+        return tag._id === movedTagId;
+      });
+
+      this.props.onTagRemove(foundTag, this.props.parentTag);
+    }
 
 
-    let tagIds = newTagsOrder.map((tag) => {
-      return tag._id
-    })
-    // let hashtagsList = [];
-    // let uiPositions = $(this).sortable("toArray", {
-    //   attribute: "data-tag-id"
-    // });
-    // for (let tag of uiPositions) {
-    //   if (_.isEmpty(tag) === false) {
-    //     hashtagsList.push(tag);
-    //   }
-    // }
+  }
 
-    if (this.props.onTagSort) {
-      this.props.onTagSort(tagIds)
+  handleDragSort = (event) => {
+    let newTagsOrder = this.move(this.props.tags, event.oldIndex, event.newIndex);
+    if (newTagsOrder) {
+      let tagIds = newTagsOrder.map((tag) => {
+        if (tag) {
+          return tag._id;
+        }
+      });
+
+      if (this.props.onTagSort) {
+        this.props.onTagSort(tagIds, this.props.parentTag);
+      }
     }
   }
 
   move(array, fromIndex, toIndex) {
+
+    if (!_.isArray(array)) {
+      return null;
+    }
 
     while (fromIndex < 0) {
         fromIndex += array.length;
@@ -60,7 +86,6 @@ class Tags extends React.Component {
             array.push(undefined);
         }
     }
-
 
     array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
 
@@ -80,14 +105,20 @@ class Tags extends React.Component {
     }
   }
 
-  handleTagRemove = (tagId) => {
+  handleTagRemove = (tag) => {
     if (this.props.onTagRemove) {
-      this.props.onTagRemove(tagId);
+      this.props.onTagRemove(tag, this.props.parentTag);
     }
   }
 
-  handleTagUpdate = (event) => {
-
+  handleTagUpdate = (tagId, tagName) => {
+    if (this.props.onTagUpdate) {
+      let parentTagId;
+      if (this.props.parentTag) {
+        parentTagId = this.props.parentTag._id;
+      }
+      this.props.onTagUpdate(tagName, tagId, parentTagId);
+    }
   }
 
   handleTagBookmark = (event) => {
@@ -131,16 +162,22 @@ class Tags extends React.Component {
     });
 
     return (
-      <div className={classes} ref="tags">
+      <div className={classes} data-id={this.props.parentTag._id} ref="tags">
         {this.renderTags()}
       </div>
     );
   }
 }
 
+// Default Props
+Tags.defaultProps = {
+  parentTag: {}
+};
+
 // Prop Types
 Tags.propTypes = {
   editable: React.PropTypes.bool,
+  parentTag: React.PropTypes.objectOf(ReactionCore.Schemas.Tag),
   tags: React.PropTypes.arrayOf(ReactionCore.Schemas.Tag)
 };
 

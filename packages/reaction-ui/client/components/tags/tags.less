@@ -25,17 +25,19 @@
   padding: @padding-base-vertical @padding-base-horizontal;
   border-top-left-radius: @border-radius-base;
   border-bottom-left-radius: @border-radius-base;
+  border-radius: 0;
 
-  background-color: @brand-muted-color;
-  border-color: @brand-muted-color;
+  background-color: @white;
+  border-color: @border-color;
+  border-left: none;
+  border-right: none;
 }
 
 .rui.tag.edit button {
   border-radius: 0;
-  border: none;
-
-  // background-color: darken(@brand-muted-color, 10%);
-  color: #fff;
+  border: 1px solid @border-color;
+  background-color: @white;
+  color: @text-color;
 }
 
 .rui.tag.edit button:first-child {

@@ -37,6 +37,7 @@ Package.onUse(function (api) {
   api.use("browser-policy");
   api.use("service-configuration");
   api.use("amplify@1.0.0");
+  api.use("react-template-helper@0.2.3");
 
   // meteor authentication packages
   api.use("oauth-encryption");
@@ -83,6 +84,7 @@ Package.onUse(function (api) {
   api.imply("meteorhacks:ssr");
 
   // reaction core dependencies
+  api.use("reactioncommerce:reaction-ui@0.1.0");
   api.addFiles("lib/bower.json", "client");
   api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");

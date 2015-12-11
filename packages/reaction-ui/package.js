@@ -38,7 +38,8 @@ Package.onUse(function (api) {
   api.use("cosmos:browserify@0.9.0");
 
   // meteor add-on packages
-  api.use("reactioncommerce:core@0.9.4");
+  // api.use("reactioncommerce:core@0.9.4");
+  api.use("reactioncommerce:reaction-schemas@1.0.1");
 
   api.addFiles("lib/client.browserify.js", "client");
 
@@ -69,8 +70,8 @@ Package.onUse(function (api) {
   api.addFiles("client/components/buttonGroup/buttonGroup.jsx", "client");
   api.addFiles("client/components/buttonGroup/buttonGroup.less", "client");
 
-  api.addFiles("client/components/numericInput/numericInput.html", "client");
-  api.addFiles("client/components/numericInput/numericInput.js", "client");
+  // api.addFiles("client/components/numericInput/numericInput.html", "client");
+  // api.addFiles("client/components/numericInput/numericInput.js", "client");
 
   api.addFiles("client/components/textfield/textfield.jsx", "client");
   api.addFiles("client/components/textfield/textfield.less", "client");

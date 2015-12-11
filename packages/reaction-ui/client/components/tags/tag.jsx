@@ -14,7 +14,7 @@ class Tag extends React.Component {
     event.preventDefault();
 
     if (this.props.onTagCreate) {
-      this.props.onTagCreate(event.target.tag.value);
+      this.props.onTagCreate(event.target.tag.value, this.props.parentTag);
     }
   }
 
@@ -36,7 +36,7 @@ class Tag extends React.Component {
    */
   handleTagRemove = () => {
     if (this.props.onTagRemove) {
-      this.props.onTagRemove(this.props.tag._id);
+      this.props.onTagRemove(this.props.tag);
     }
   }
 
@@ -46,8 +46,8 @@ class Tag extends React.Component {
    * @return {void} no return value
    */
   handleTagUpdate = (event) => {
-    if (this.props.onTagBookmark && event.keycode === 13) {
-      this.props.onTagBookmark(this.props.tag._id, event.target.value);
+    if (this.props.onTagUpdate && event.keyCode === 13) {
+      this.props.onTagUpdate(this.props.tag._id, event.target.value);
     }
   }
 
@@ -61,16 +61,23 @@ class Tag extends React.Component {
     );
   }
 
+  renderBookmarkButton() {
+    if (this.props.showBookmark) {
+      return (
+        <Button icon="bookmark" onClick={this.handleTagBookmark} />
+      );
+    }
+  }
+
   /**
    * Render an admin editable tag
    * @return {JSX} editable tag
    */
   renderEditableTag() {
     return (
-      <div className="rui tag edit">
+      <div className="rui tag edit" data-id={this.props.tag._id}>
         <Button icon="bars" />
         <TextField onKeyDown={this.handleTagUpdate} value={this.props.tag.name} />
-        <Button icon="bookmark" onClick={this.handleTagBookmark} />
         <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
       </div>
     );
@@ -102,7 +109,7 @@ class Tag extends React.Component {
       return this.renderBlankEditableTag();
     }
 
-    return renderTag();
+    return this.renderTag();
   }
 }
 
