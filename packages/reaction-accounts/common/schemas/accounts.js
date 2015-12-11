@@ -94,7 +94,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     index: 1,
-    label: "Accounts ShopId"
+    label: "Accounts UserId"
   },
   "sessions": {
     type: [String],
