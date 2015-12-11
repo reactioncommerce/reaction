@@ -3,7 +3,7 @@
 set -u
 set -e
 
-DIRNAME="$(dirname "$(pwd)")"
+DIRNAME=$(pwd)
 CONFIG=$DIRNAME/settings/settings.json
 DEVCONFIG=$DIRNAME/settings/dev.settings.json
 
