@@ -231,10 +231,15 @@ Meteor.methods({
     return doc;
   },
 
-  /*
+  /**
+   * accounts/inviteShopMember
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
+   * @params {String} shopId - shop to invite user to
+   * @params {String} email - email of invitee
+   * @params {String} name - name to address email to
+   * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
     if (!ReactionCore.hasAdminAccess()) {
@@ -292,13 +297,13 @@ Meteor.methods({
             }
           }
         });
-        SSR.compileTemplate("shopMemberInvite", ReactionEmailTemplate("templates/accounts/shopMemberInvite.html"));
+        SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
         try {
           Email.send({
             to: email,
             from: currentUserName + " <" + shop.emails[0].address + ">",
             subject: "You have been invited to join " + shop.name,
-            html: SSR.render("shopMemberInvite", {
+            html: SSR.render("accounts/inviteShopMember", {
               homepage: Meteor.absoluteUrl(),
               shop: shop,
               currentUserName: currentUserName,
@@ -310,13 +315,13 @@ Meteor.methods({
           throw new Meteor.Error(403, "Unable to send invitation email.");
         }
       } else {
-        SSR.compileTemplate("shopMemberInvite", ReactionEmailTemplate("templates/accounts/shopMemberInvite.html"));
+        SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
         try {
           Email.send({
             to: email,
             from: currentUserName + " <" + shop.emails[0].address + ">",
             subject: "You have been invited to join the " + shop.name,
-            html: SSR.render("shopMemberInvite", {
+            html: SSR.render("accounts/inviteShopMember", {
               homepage: Meteor.absoluteUrl(),
               shop: shop,
               currentUserName: currentUserName,
@@ -343,12 +348,12 @@ Meteor.methods({
     this.unblock();
     email = Meteor.user(userId).emails[0].address;
     ReactionCore.configureMailUrl();
-    SSR.compileTemplate("welcomeNotification", ReactionEmailTemplate("templates/accounts/welcomeNotification.html"));
+    SSR.compileTemplate("accounts/sendWelcomeEmail", ReactionEmailTemplate("accounts/sendWelcomeEmail"));
     Email.send({
       to: email,
       from: shop.emails[0],
       subject: "Welcome to " + shop.name + "!",
-      html: SSR.render("welcomeNotification", {
+      html: SSR.render("accounts/sendWelcomeEmail", {
         homepage: Meteor.absoluteUrl(),
         shop: shop,
         user: Meteor.user()

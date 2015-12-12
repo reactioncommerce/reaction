@@ -48,7 +48,7 @@ Package.onUse(function (api) {
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
   api.use("reactioncommerce:reaction-collections@1.0.1");
-  api.use("reactioncommerce:reaction-email-templates");
+  api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.0");
   api.use("iron:router@1.0.12");
@@ -82,7 +82,6 @@ Package.onUse(function (api) {
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
-  api.imply("meteorhacks:ssr");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");

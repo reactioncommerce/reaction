@@ -155,7 +155,7 @@ Meteor.methods({
       let shipment = order.shipping[0];
 
       // Attempt to sent email notification
-      Meteor.call("orders/sendShipmentNotification", order);
+      Meteor.call("orders/sendNotification", order);
 
       ReactionCore.Collections.Orders.update({
         "_id": order._id,
@@ -177,15 +177,15 @@ Meteor.methods({
    * @param {Object} order - order object
    * @return {Object} return workflow result
    */
-  "orders/sendShipmentNotification": function (order) {
+  "orders/sendNotification": function (order) {
     check(order, Object);
     this.unblock();
-
     if (order) {
-      let shop = ReactionCore.Collections.Shops.findOne({});
+      let shop = ReactionCore.Collections.Shops.findOne(order.shopId);
       let shipment = order.shipping[0];
 
       ReactionCore.configureMailUrl();
+      ReactionCore.Log.info("orders/sendNotification", order.workflow.status);
       // handle missing root shop email
       if (!shop.emails[0].address) {
         shop.emails[0].address = "no-reply@reactioncommerce.com";
@@ -196,14 +196,16 @@ Meteor.methods({
         ReactionCore.Log.warn("No shop email configured. Using anonymous order.");
         return true;
       }
-      // TODO: Make this mor easily configurable
-      SSR.compileTemplate("itemsShipped", ReactionEmailTemplate("templates/orders/itemsShipped.html"));
+      // email templates can be customized in Templates collection
+      // loads defaults from reaction-email-templates/templates
+      let tpl = `orders/${order.workflow.status}`;
+      SSR.compileTemplate(tpl, ReactionEmailTemplate(tpl));
       try {
         return Email.send({
           to: order.email,
-          from: `Shipping confirmation <${shop.emails[0].address}>`,
-          subject: `Your items have shipped from ${shop.name}`,
-          html: SSR.render("itemsShipped", {
+          from: `${shop.name} <${shop.emails[0].address}>`,
+          subject: `Order update from ${shop.name}`,
+          html: SSR.render(tpl, {
             homepage: Meteor.absoluteUrl(),
             shop: shop,
             // currentUserName: currentUserName,
@@ -214,41 +216,6 @@ Meteor.methods({
         });
       } catch (error) {
         throw new Meteor.Error(403, "Unable to send shipment notification email.", error);
-      }
-    }
-  },
-
-  /**
-   * orders/sendNotification
-   *
-   * @summary trigger orderCompleted status and workflow update
-   * @param {Object} order - order object
-   * @return {Object} return this.orderCompleted result
-   */
-  "orders/sendNotification": function (order) {
-    check(order, Object);
-    this.unblock();
-
-    if (order) {
-      SSR.compileTemplate("itemsShipped", ReactionEmailTemplate("templates/orders/itemsShipped.html"));
-      let shop = ReactionCore.Collections.Shops.findOne({});
-      let shipment = orders.shipping[0];
-
-      try {
-        Email.send({
-          to: email,
-          from: currentUserName + " <" + shop.emails[0].address + ">",
-          subject: "Your items have shipped from " + shop.name,
-          html: SSR.render("itemsShipped", {
-            homepage: Meteor.absoluteUrl(),
-            // shop: shop,
-            // currentUserName: currentUserName,
-            // invitedUserName: name,
-            items: shipment.items
-          })
-        });
-      } catch (_error) {
-        throw new Meteor.Error(403, "Unable to send invitation email.");
       }
     }
   },

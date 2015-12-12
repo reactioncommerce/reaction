@@ -144,7 +144,7 @@
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
-        "resendShipmentNotification": "Resend Shipment Notification"
+        "resendNotification": "Resend Shipment Notification"
       },
       "cartCompleted": {
         "thankYou": "Thank you!",
