@@ -12,8 +12,8 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("momentjs:moment@2.10.6");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("aldeed:collection2@2.5.0");
-  api.use("aldeed:simple-schema@1.3.3");
+  api.use("aldeed:collection2@2.6.0");
+  api.use("aldeed:simple-schema@1.5.0");
   api.use("matb33:collection-hooks@0.8.1");
   api.use("mikowals:batch-insert@1.1.13");
 
