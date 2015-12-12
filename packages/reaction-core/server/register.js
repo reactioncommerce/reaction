@@ -54,12 +54,12 @@ ReactionCore.registerPackage({
     icon: "fa fa-cog fa-2x fa-fw",
     container: "dashboard"
   }, {
-    route: 'dashboard/import',
-    provides: 'dashboard',
-    label: 'Import',
-    description: 'Support for imports and migrations.',
-    icon: 'fa fa-upload',
-    cycle: 3,
+    route: "dashboard/import",
+    provides: "dashboard",
+    label: "Import",
+    description: "Support for imports and migrations.",
+    icon: "fa fa-upload",
+    cycle: 3
   }, {
     route: "dashboard/orders",
     provides: "dashboard",

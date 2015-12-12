@@ -50,7 +50,7 @@ Package.onUse(function (api) {
   api.use("ongoworks:transliteration@0.1.1");
   api.use("reactioncommerce:reaction-collections@1.0.1");
   api.use("aldeed:template-extension@4.0.0", "client");
-  api.use("aldeed:autoform@5.7.1");
+  api.use("aldeed:autoform@5.8.0");
   api.use("iron:router@1.0.12");
 
   api.use("ongoworks:bunyan-logger@2.5.0");
