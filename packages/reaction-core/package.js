@@ -203,6 +203,8 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/header/header.html", "client");
   api.addFiles("client/templates/layout/header/header.js", "client");
 
+  api.addFiles("client/templates/layout/header/menu/button.html", "client");
+
   api.addFiles("client/templates/layout/header/tags/tags.html", "client");
   api.addFiles("client/templates/layout/header/tags/tags.js", "client");
 

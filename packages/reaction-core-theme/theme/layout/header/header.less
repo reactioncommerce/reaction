@@ -158,10 +158,15 @@
   // padding-top: 10px;
   // padding-left: 15px;
   border-bottom: @navbar-secondary-border;
+  height: @navbar-height;
+  .display(flex);
+  .flex(1 1 auto);
+  position: relative;
 }
 
 .navbar-tags  {
-
+  width: 100%;
+  height: 100%;
   // padding-top: 10px;
   // padding-bottom: 10px;
 
@@ -180,6 +185,22 @@
   }
 }
 
+.navbar-tags .tag-link-list {
+  .display(flex);
+  .flex(1 1 auto);
+  height: @navbar-height;
+  padding-left: 0;
+  list-style: none;
+}
+
+.navbar-tags .nav-dropbar-toplevel {
+  .display(flex);
+  .flex-wrap(wrap);
+  .align-items(center);
+  padding: 0 10px;
+}
+
+
 @media only screen and (max-width: @screen-xs-max) {
   .navbar-tags > a {
     padding: @navbar-padding-vertical .8rem;
@@ -193,4 +214,323 @@
       .right(-60px);
     }
   }
+}
+
+
+
+
+
+
+
+.nav-dropbar-toplevel {
+  // position: relative;
+
+  .nav-dropbar {
+    display: none;
+  }
+}
+
+.nav-dropbar-toplevel.active .nav-dropbar {
+  display: block;
+}
+
+.nav-dropbar {
+  position: absolute;
+  top: @navbar-height;
+  left: 0;
+  width: 100%;
+  min-height: 200px;
+  margin: 0;
+  padding: 20px;
+
+  background-color: @white;
+  border-bottom: 1px solid @border-color;
+}
+
+.nav-dropbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-dropbar {
+  .rui.items.flex .item {
+    flex: 1 1 15%;
+  }
+}
+
+.rui.tag.group {
+  .display(flex);
+  .flex-wrap(wrap);
+}
+
+.rui.tag.group.item {
+  .flex(1 1 auto);
+  min-width: 200px;
+  width: 15%;
+  max-width: 15%;
+  padding: 10px;
+}
+
+
+.empty-tag-group {
+  .display(flex);
+  .flex-direction(column);
+  .justify-content(center);
+  .align-items(center);
+  background-color: @black10;
+  height: 120px;
+  max-width: 300px;
+}
+
+
+.nav-dropbar .rui.tags {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-height: 100px;
+}
+
+.nav-dropbar .rui.tag {
+  display: flex;
+  width: 100%;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: @border-radius-base;
+}
+
+.nav-dropbar .rui.tag.edit {
+  padding: (@padding-base-vertical / 2) 0;
+}
+
+.nav-dropbar .rui.tag.edit form {
+  display: flex;
+}
+
+.nav-dropbar .rui.tag.edit input {
+  padding: 0 5px;
+  width: 100%;
+  border-radius: 0;
+}
+
+.nav-dropbar .rui.tag.edit button {
+  padding: 2px 5px;
+}
+
+.nav-dropbar .rui.tag.edit button:first-child {
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+.nav-dropbar .rui.tag.edit button:last-child {
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+.nav-dropbar .rui.tag.edit.create {
+
+  input {
+    background-color: @black10;
+    border-color: @black10;
+  }
+
+  button {
+    background-color: @btn-success-bg;
+  }
+}
+
+
+@media screen and (max-width: @screen-lg-min) {
+}
+
+@media screen and (max-width: @screen-sm-max) {
+}
+
+@media screen and (max-width: @screen-xs-max) {
+
+
+
+  .navbar-primary-tags {
+    .flex-direction(column);
+
+    border-bottom: none;
+    border-right: @navbar-secondary-border;
+    height: auto;
+
+    height: 100Vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+    z-index: @zindex-navbar-fixed;
+  }
+
+  .navbar-tags  {
+    width: 100%;
+    height: 100%;
+    // padding-top: 10px;
+    // padding-bottom: 10px;
+
+    a {
+      color: @navbar-inverse-link-color;
+    }
+    a:hover {
+      color: @navbar-inverse-link-hover-color;
+      text-decoration: none;
+      background-color: @navbar-inverse-link-hover-bg;
+    }
+    a:active {
+      color: @navbar-inverse-link-active-color;
+      text-decoration: none;
+      background-color: @navbar-inverse-link-active-bg;
+    }
+  }
+
+  .navbar-tags .tag-link-list {
+    .display(flex);
+    .flex(1 1 auto);
+    .flex-direction(column);
+    height: @navbar-height;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .navbar-tags .nav-dropbar-toplevel {
+    .display(flex);
+    .flex-wrap(wrap);
+    .align-items(center);
+    padding: 0 10px;
+  }
+
+  .navbar-tags .nav-dropbar-toplevel a {
+    padding: 10px 20px;
+  }
+
+
+
+
+  .nav-dropbar-toplevel {
+    // position: relative;
+
+    .nav-dropbar {
+      display: none;
+    }
+  }
+
+  .nav-dropbar-toplevel.active .nav-dropbar {
+    display: block;
+  }
+
+  .nav-dropbar {
+    position: static;
+    top: @navbar-height;
+    left: 0;
+    width: 100%;
+    min-height: 200px;
+    margin: 0;
+    padding: 20px;
+
+    background-color: @white;
+    border-bottom: 1px solid @border-color;
+  }
+
+  .nav-dropbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-dropbar {
+    .rui.items.flex .item {
+      flex: 1 1 15%;
+    }
+  }
+
+  .rui.tag.group {
+    .display(flex);
+    .flex-wrap(wrap);
+  }
+
+  .rui.tag.group.item {
+    .flex(1 1 auto);
+    min-width: 200px;
+    width: 15%;
+    max-width: 15%;
+    padding: 10px;
+  }
+
+
+  .empty-tag-group {
+    .display(flex);
+    .flex-direction(column);
+    .justify-content(center);
+    .align-items(center);
+    background-color: @black10;
+    height: 120px;
+    max-width: 300px;
+  }
+
+  .nav-dropbar .rui.items {
+    .flex-direction(column);
+  }
+
+  .nav-dropbar .rui.header {
+    font-weight: bold;
+  }
+
+  .nav-dropbar .rui.tags {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    min-height: 0;
+    // .margin-left(20px);
+  }
+
+  .nav-dropbar .rui.tag {
+    display: flex;
+    width: 100%;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border-radius: @border-radius-base;
+  }
+
+  .nav-dropbar .rui.tag.edit {
+    padding: (@padding-base-vertical / 2) 0;
+  }
+
+  .nav-dropbar .rui.tag.edit form {
+    display: flex;
+  }
+
+  .nav-dropbar .rui.tag.edit input {
+    padding: 0 5px;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .nav-dropbar .rui.tag.edit button {
+    padding: 2px 5px;
+  }
+
+  .nav-dropbar .rui.tag.edit button:first-child {
+    border-radius: @border-radius-base 0 0 @border-radius-base;
+  }
+
+  .nav-dropbar .rui.tag.edit button:last-child {
+    border-radius: 0 @border-radius-base @border-radius-base 0;
+  }
+
+  .nav-dropbar .rui.tag.edit.create {
+
+    input {
+      background-color: @black10;
+      border-color: @black10;
+    }
+
+    button {
+      background-color: @btn-success-bg;
+    }
+  }
+
 }
