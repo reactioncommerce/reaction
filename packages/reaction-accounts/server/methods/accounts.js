@@ -292,7 +292,7 @@ Meteor.methods({
             }
           }
         });
-        SSR.compileTemplate("shopMemberInvite", Assets.getText("server/emailTemplates/shopMemberInvite.html"));
+        SSR.compileTemplate("shopMemberInvite", ReactionEmailTemplate("templates/accounts/shopMemberInvite.html"));
         try {
           Email.send({
             to: email,
@@ -310,7 +310,7 @@ Meteor.methods({
           throw new Meteor.Error(403, "Unable to send invitation email.");
         }
       } else {
-        SSR.compileTemplate("shopMemberInvite", Assets.getText("server/emailTemplates/shopMemberInvite.html"));
+        SSR.compileTemplate("shopMemberInvite", ReactionEmailTemplate("templates/accounts/shopMemberInvite.html"));
         try {
           Email.send({
             to: email,
@@ -343,7 +343,7 @@ Meteor.methods({
     this.unblock();
     email = Meteor.user(userId).emails[0].address;
     ReactionCore.configureMailUrl();
-    SSR.compileTemplate("welcomeNotification", Assets.getText("server/emailTemplates/welcomeNotification.html"));
+    SSR.compileTemplate("welcomeNotification", ReactionEmailTemplate("templates/accounts/welcomeNotification.html"));
     Email.send({
       to: email,
       from: shop.emails[0],

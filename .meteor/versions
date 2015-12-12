@@ -137,6 +137,7 @@ reactioncommerce:reaction-accounts@1.5.2
 reactioncommerce:reaction-analytics@1.2.0
 reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-collections@1.0.1
+reactioncommerce:reaction-email-templates@0.1.0
 reactioncommerce:reaction-inventory@0.2.0
 reactioncommerce:reaction-paypal@1.2.5
 reactioncommerce:reaction-sample-data@0.1.0

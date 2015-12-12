@@ -197,7 +197,7 @@ Meteor.methods({
         return true;
       }
       // TODO: Make this mor easily configurable
-      SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+      SSR.compileTemplate("itemsShipped", ReactionEmailTemplate("templates/orders/itemsShipped.html"));
       try {
         return Email.send({
           to: order.email,
@@ -230,7 +230,7 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
-      SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+      SSR.compileTemplate("itemsShipped", ReactionEmailTemplate("templates/orders/itemsShipped.html"));
       let shop = ReactionCore.Collections.Shops.findOne({});
       let shipment = orders.shipping[0];
 
