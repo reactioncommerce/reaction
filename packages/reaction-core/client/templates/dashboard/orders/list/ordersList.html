@@ -19,7 +19,11 @@
           </strong>
         </div>
         <div class="col-xs-6 col-sm-10">
-          {{workflow.status}}
+          {{#if orderStatus}}
+              <span data-i18n="orderShipping.shipped">Completed</span>
+          {{else}}
+              <span data-i18n="orderShipping.notShipped">Processing</span>
+          {{/if}}
         </div>
       </div>
 

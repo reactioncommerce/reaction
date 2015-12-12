@@ -264,7 +264,6 @@ Meteor.methods({
     let cart = ReactionCore.Collections.Cart.findOne(cartId);
     let order = _.clone(cart);
     let user;
-    let emails;
     ReactionCore.Log.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
@@ -272,9 +271,16 @@ Meteor.methods({
     // a helper for guest login, we let guest add email afterwords
     // for ease, we'll also add automatically for logged in users
     if (order.userId && !order.email) {
-      user = Meteor.user(order.userId);
-      emails = _.pluck(user.emails, "address");
-      order.email = emails[0];
+      user = ReactionCore.Collections.Accounts.findOne(order.userId);
+      for (let email of user.emails) {
+        // alternate order email address
+        if (email.provides === "orders") {
+          order.email = email.address;
+        } else if (email.provides === "default") {
+          order.email = email.address;
+        }
+      }
+      if (!order.email) order.email = "anonymous@localhost";
     }
 
     // schema should provide order defaults

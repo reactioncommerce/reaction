@@ -29,6 +29,11 @@ Template.coreOrderShippingTracking.events({
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 
+  "click [data-event-action=resendShipmentNotification]": function () {
+    let template = Template.instance();
+    Meteor.call("orders/sendShipmentNotification", template.order);
+  },
+
   "click [data-event-action=shipmentPacked]": () => {
     const template = Template.instance();
 

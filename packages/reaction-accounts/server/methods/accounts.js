@@ -23,7 +23,6 @@ Accounts.registerLoginHandler(function (options) {
   return loginHandler;
 });
 
-
 /**
  * Accounts.onCreateUser event
  * adding either a guest or anonymous role to the user on create
@@ -33,24 +32,41 @@ Accounts.registerLoginHandler(function (options) {
  *
  * see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
+// using a generator function
+function services(obj) {
+  for (let key of Object.keys(obj)) {
+    return [key, obj[key]];
+  }
+}
 
 Accounts.onCreateUser(function (options, user) {
   let shop = ReactionCore.getCurrentShop();
   let shopId = ReactionCore.getShopId();
   let roles = {};
-
-  // clone before adding roles
-  let account = _.clone(user);
-  account.userId = user._id;
-  ReactionCore.Collections.Accounts.insert(account);
+  if (!user.emails) user.emails = [];
   // init default user roles
   if (shop) {
     if (user.services === undefined) {
       roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
     } else {
       roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
+      // also add services with email defined to user.emails[]
+      for (let service of services(user.services)) {
+        if (service.email) {
+          email = {
+            provides: "default",
+            address: service.email,
+            verified: true
+          };
+          user.emails.push(email);
+        }
+      }
     }
   }
+  // clone before adding roles
+  let account = _.clone(user);
+  account.userId = user._id;
+  ReactionCore.Collections.Accounts.insert(account);
   // assign default user roles
   user.roles = roles;
   return user;
@@ -83,7 +99,9 @@ Accounts.onLogin(function (options) {
     ReactionCore.Log.debug("removed anonymous role from user: " + options.user._id);
 
     // onLogin, we want to merge session cart into user cart.
-    cart = ReactionCore.Collections.Cart.findOne({userId: options.user._id});
+    cart = ReactionCore.Collections.Cart.findOne({
+      userId: options.user._id
+    });
     Meteor.call("cart/mergeCart", cart._id);
 
     // logged in users need an additonal worfklow push to get started with checkoutLogin

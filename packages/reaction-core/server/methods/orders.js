@@ -185,35 +185,36 @@ Meteor.methods({
       let shop = ReactionCore.Collections.Shops.findOne({});
       let shipment = order.shipping[0];
 
-      try {
-        if (shipment.shipped === false) {
-          ReactionCore.configureMailUrl();
-
-          // TODO: Make this mor easily configurable
-          SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
-
-          Email.send({
-            to: order.email,
-            from: "shipping confitmation " + " <" + shop.emails[0].address + ">",
-            subject: "Your items have shipped from " + shop.name,
-            html: SSR.render("itemsShipped", {
-              homepage: Meteor.absoluteUrl(),
-              shop: shop,
-              // currentUserName: currentUserName,
-              // invitedUserName: name,
-              order: order,
-              shipment: shipment
-            })
-          });
-        }
-
-        return true;
-      } catch (_error) {
-        throw new Meteor.Error(403, "Unable to send shipment notification email.");
+      ReactionCore.configureMailUrl();
+      // handle missing root shop email
+      if (!shop.emails[0].address) {
+        shop.emails[0].address = "no-reply@reactioncommerce.com";
+        ReactionCore.Log.warn("No shop email configured. Using no-reply to send mail");
       }
-
-
-      return false;
+      // anonymous users without emails.
+      if (!order.email) {
+        ReactionCore.Log.warn("No shop email configured. Using anonymous order.");
+        return true;
+      }
+      // TODO: Make this mor easily configurable
+      SSR.compileTemplate("itemsShipped", Assets.getText("server/emailTemplates/orders/itemsShipped.html"));
+      try {
+        return Email.send({
+          to: order.email,
+          from: `Shipping confirmation <${shop.emails[0].address}>`,
+          subject: `Your items have shipped from ${shop.name}`,
+          html: SSR.render("itemsShipped", {
+            homepage: Meteor.absoluteUrl(),
+            shop: shop,
+            // currentUserName: currentUserName,
+            // invitedUserName: name,
+            order: order,
+            shipment: shipment
+          })
+        });
+      } catch (error) {
+        throw new Meteor.Error(403, "Unable to send shipment notification email.", error);
+      }
     }
   },
 

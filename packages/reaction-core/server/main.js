@@ -126,7 +126,7 @@ _.extend(ReactionCore, {
     let settingsUrl = Meteor.settings.MAIL_URL;
     if (user && password && host && port) {
       let mailString = `smtp://${user}:${password}@${host}:${port}/`;
-      mailUrl = processUrl = settingsUrl = mailString;
+      const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     } else if (shopMail.user && shopMail.password && shopMail.host &&
@@ -135,11 +135,11 @@ _.extend(ReactionCore, {
         .host);
       let mailString =
         `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
-      let mailUrl = processUrl = settingsUrl = mailString;
+      const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     } else if (settingsUrl && !processUrl) {
-      let mailUrl = processUrl = settingsUrl;
+      const mailUrl = processUrl = settingsUrl;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     }

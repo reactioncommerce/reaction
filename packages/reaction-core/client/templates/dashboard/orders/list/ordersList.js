@@ -3,6 +3,11 @@
  *
  */
 Template.dashboardOrdersList.helpers({
+  orderStatus: function () {
+    if (this.workflow.status === "coreOrderCompleted") {
+      return true;
+    }
+  },
   orders: function (data) {
     if (data.hash.data) {
       return data.hash.data;
