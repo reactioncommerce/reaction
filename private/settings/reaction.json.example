@@ -19,6 +19,11 @@
         "facebook": {
           "appId": "",
           "secret": ""
+        },
+        "launchdock": {
+          "url": "",
+          "username": "",
+          "auth": ""
         }
       }]
     }
@@ -38,11 +43,22 @@
       "client_secret": ""
     }
   }, {
-    "name": "reaction-google-analytics",
-    "enabled": false,
+    "name": "reaction-analytics",
+    "enabled": true,
     "settings": {
       "public": {
-        "api_key": ""
+        "segmentio": {
+          "enabled": false,
+          "api_key": ""
+        },
+        "googleAnalytics": {
+          "enabled": false,
+          "api_key": ""
+        },
+        "mixpanel": {
+          "enabled": false,
+          "api_key": ""
+        }
       }
     }
   }, {

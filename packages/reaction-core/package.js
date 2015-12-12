@@ -111,8 +111,8 @@ Package.onUse(function (api) {
   api.addFiles("server/import.js", "server");
   api.addFiles("client/main.js", "client");
   api.addFiles("server/main.js", "server");
+  api.addFiles("server/registry.js", "server");
   api.addFiles("server/register.js", "server");
-  api.addFiles("server/fixtures.js", "server");
   api.addFiles("server/init.js", "server");
   api.addFiles("common/common.js");
 
