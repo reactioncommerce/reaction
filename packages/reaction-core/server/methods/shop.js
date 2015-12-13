@@ -488,15 +488,20 @@ Meteor.methods({
     let shopId = ReactionCore.getShopId();
     let shops = ReactionCore.Collections.Shops.find({_id: shopId}).fetch();
     // leaving room for potential future of language per shop
-    for (let shop of shops) {
-      for (let language of shop.languages) {
-        json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
-        ReactionImport.process(json, ["i18n"], ReactionImport.translation);
+    if (shops) {
+      for (let shop of shops) {
+        if (shop.languages) {
+          for (let language of shop.languages) {
+            json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
+            ReactionImport.process(json, ["i18n"], ReactionImport.translation);
+          }
+        }
       }
+      ReactionImport.flush();
+      ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
+      return;
     }
-    ReactionImport.flush();
-    ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
-    return;
+    throw new Meteor.Error("No shops found to flush translations for.");
   },
 
   /**

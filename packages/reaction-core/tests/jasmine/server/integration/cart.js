@@ -1,11 +1,13 @@
 /* eslint dot-notation: 0 */
 describe("cart methods", function () {
   let user = Factory.create("user");
+  let shop = Factory.create("shop");
   let userId = user._id;
   ReactionCore.sessionId = Random.id(); // Required for creating a cart
 
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
+      spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
       let cartId = Meteor.call("cart/createCart", userId);
       let cart = ReactionCore.Collections.Cart.findOne({
         userId: userId

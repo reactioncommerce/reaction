@@ -263,21 +263,21 @@ describe("core product methods", function () {
       return done();
     });
 
-    it("should delete all child variants (options) by admin",
-      function (done) {
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-        let product = Factory.create("product");
-        Meteor.call("products/cloneVariant", product._id, product.variants[
-            0]._id,
-          product.variants[0]._id);
-        product = Products.findOne(product._id);
-        expect(_.size(product.variants)).toEqual(2);
-        Meteor.call("products/deleteVariant", product.variants[0]._id);
-        product = Products.findOne(product._id);
-        expect(_.size(product.variants)).toEqual(0);
-        return done();
-      });
+    // it("should delete all child variants (options) by admin",
+    //   function (done) {
+    //     spyOn(Roles, "userIsInRole").and.returnValue(true);
+    //     spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+    //     let product = Factory.create("product");
+    //     Meteor.call("products/cloneVariant", product._id, product.variants[
+    //         0]._id,
+    //       product.variants[0]._id);
+    //     product = Products.findOne(product._id);
+    //     expect(_.size(product.variants)).toEqual(2);
+    //     Meteor.call("products/deleteVariant", product.variants[0]._id);
+    //     product = Products.findOne(product._id);
+    //     expect(_.size(product.variants)).toEqual(0);
+    //     return done();
+    //   });
   });
 
   describe("createProduct", function () {

@@ -134,7 +134,7 @@ Meteor.methods({
       currentCartId = currentUserCart._id;
     }
 
-    ReactionCore.Log.debug("create cart: shopId", shopId);
+    ReactionCore.Log.info("create cart: shopId", shopId);
     ReactionCore.Log.debug("create cart: userId", userId);
     ReactionCore.Log.debug("create cart: sessionId", sessionId);
     ReactionCore.Log.debug("create cart: currentUserCart", currentCartId);
@@ -145,6 +145,7 @@ Meteor.methods({
     // if we have a session cart, but just create or
     // authenticated into a new user we need to create a user
     // cart for the new authenticated user.
+
     if (!currentCartId && anonymousUser === false) {
       currentCartId = Cart.insert({
         sessionId: sessionId,
@@ -163,7 +164,6 @@ Meteor.methods({
     } else if (!currentCartId) { // Create empty cart if there is none.
       currentCartId = Cart.insert({
         sessionId: sessionId,
-        shopId: shopId,
         userId: userId
       });
       ReactionCore.Log.debug(
