@@ -208,8 +208,6 @@ Meteor.methods({
           html: SSR.render(tpl, {
             homepage: Meteor.absoluteUrl(),
             shop: shop,
-            // currentUserName: currentUserName,
-            // invitedUserName: name,
             order: order,
             shipment: shipment
           })
