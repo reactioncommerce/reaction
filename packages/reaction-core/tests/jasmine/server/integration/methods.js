@@ -108,30 +108,7 @@ describe("core methods", function () {
   describe("shop/locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
-
-      expect(address).toEqual({
-        formattedAddress: "1111 S Figueroa St, Los Angeles, CA 90015, USA",
-        latitude: 34.043125,
-        longitude: -118.267118,
-        extra:
-         { googlePlaceId: "ChIJ0ygfX7jHwoARdAU7rfbSlxQ",
-           confidence: 1,
-           premise: null,
-           subpremise: null,
-           neighborhood: "Downtown",
-           establishment: null },
-        administrativeLevels:
-         { level2long: "Los Angeles County",
-           level2short: "Los Angeles County",
-           level1long: "California",
-           level1short: "CA" },
-        streetNumber: "1111",
-        streetName: "South Figueroa Street",
-        city: "Los Angeles",
-        country: "United States",
-        countryCode: "US",
-        zipcode: "90015"
-      });
+      expect(address.zipcode).toEqual("90015");
       return done();
     });
 

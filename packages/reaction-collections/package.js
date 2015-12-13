@@ -10,6 +10,7 @@ Package.onUse(function (api) {
   api.use("random");
   api.use("underscore");
   api.use("ecmascript");
+  api.use("check");
 
   api.use("reactioncommerce:reaction-schemas@1.0.2");
   api.use("cfs:standard-packages@0.5.9");
@@ -22,6 +23,7 @@ Package.onUse(function (api) {
   api.use("vsivsi:job-collection@1.2.3");
   api.use("ongoworks:security@1.3.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
+  api.use("alanning:roles@1.2.13");
 
   // ReactionCore declaration
   api.addFiles("common/globals.js");
@@ -59,6 +61,7 @@ Package.onUse(function (api) {
   api.imply("raix:ui-dropped-event");
   api.imply("vsivsi:job-collection");
   api.imply("ongoworks:security");
+  api.imply("alanning:roles");
 
   // ensure schemas vars are passed through
   // api.imply("reactioncommerce:reaction-schemas");

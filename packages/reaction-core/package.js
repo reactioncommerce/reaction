@@ -54,7 +54,6 @@ Package.onUse(function (api) {
   api.use("iron:router@1.0.12");
 
   api.use("ongoworks:bunyan-logger@2.5.0");
-  api.use("alanning:roles@1.2.13");
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.1");
   api.use("utilities:spin@2.3.1", "client");
@@ -73,8 +72,6 @@ Package.onUse(function (api) {
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
   api.imply("iron:router");
-
-  api.imply("alanning:roles");
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
