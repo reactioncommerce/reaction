@@ -48,8 +48,9 @@ Package.onUse(function (api) {
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
   api.use("reactioncommerce:reaction-collections@1.0.1");
+  api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
-  api.use("aldeed:autoform@5.7.1");
+  api.use("aldeed:autoform@5.8.0");
   api.use("iron:router@1.0.12");
 
   api.use("ongoworks:bunyan-logger@2.5.0");
@@ -71,6 +72,7 @@ Package.onUse(function (api) {
   api.imply("browser-policy");
   api.imply("service-configuration");
   api.imply("reactioncommerce:reaction-collections");
+  api.imply("reactioncommerce:reaction-email-templates");
   api.imply("ongoworks:security");
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
@@ -80,7 +82,6 @@ Package.onUse(function (api) {
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
-  api.imply("meteorhacks:ssr");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -111,8 +112,8 @@ Package.onUse(function (api) {
   api.addFiles("server/import.js", "server");
   api.addFiles("client/main.js", "client");
   api.addFiles("server/main.js", "server");
+  api.addFiles("server/registry.js", "server");
   api.addFiles("server/register.js", "server");
-  api.addFiles("server/fixtures.js", "server");
   api.addFiles("server/init.js", "server");
   api.addFiles("common/common.js");
 
@@ -173,9 +174,6 @@ Package.onUse(function (api) {
   // method hooks
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
-
-  // Email Templates
-  api.addAssets("server/emailTemplates/orders/itemsShipped.html", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");

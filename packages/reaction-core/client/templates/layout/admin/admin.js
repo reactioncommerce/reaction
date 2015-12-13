@@ -32,6 +32,8 @@ Template.coreAdminLayout.onCreated(() => {
       } else {
         template.settings.set(null);
       }
+    } else {
+      template.settings.set(null);
     }
   });
 });
@@ -76,7 +78,7 @@ Template.coreAdminLayout.helpers({
       name: 1,
       route: 1
     });
-    console.log("Settings", reactionApp);
+
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
         return item.route === Router.current().route.getName() && item.provides === "settings";
@@ -99,7 +101,7 @@ Template.coreAdminLayout.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a": function (event, template) {
+  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button": function (event, template) {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
@@ -122,7 +124,10 @@ Template.coreAdminLayout.events({
         }
       });
     } else if (this.route) {
-      // return Router.go(this.route);
+      event.preventDefault();
+      event.stopPropagation();
+
+      Router.go(this.route);
     }
   }
 });

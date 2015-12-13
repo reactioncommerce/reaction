@@ -2,7 +2,7 @@
 ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
   // if cart/submit had an error we won't copy cart to Order
   // and we'll throw an error.
-  ReactionCore.Log.info("MethodHooks after cart/submitPayment", options);
+  ReactionCore.Log.debug("MethodHooks after cart/submitPayment", options);
   if (options.error === undefined) {
     let cart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()

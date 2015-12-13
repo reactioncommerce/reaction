@@ -11,6 +11,8 @@ Thanks to Tom De Caluwé for his work on [Reaction Import](https://github.com/td
   - [Importing from files](#importing-from-files)
   - [Automatic collection detection](#automatic-collection-detection)
 
+- [Image uploader](#image-uploader)
+
 - [Reference](#reference)
   - [`ReactionImport.flush`](#flush)
   - [`ReactionImport.fixture`](#fixture)
@@ -64,8 +66,10 @@ ReactionImport.process(Assets.getText(file), ['title'], ReactionImport.product);
 ```
 
 ### Automatic collection detection
-
 The `ReactionImport.identify()` method is provided to determine the collection associated with a document. It is internally called by `ReactionImport.load()` which tries to load any document thorwn at it. These methods are mainly intented to be used with `ReactionImport.process()`, allowing json arrays mixing data from multiple collections to be imported.
+
+## Image uploader
+This package also includes a bulk image uploader as these often need to be uploaded separately when importing from an ERP solution. Currently a filename in the format `${product.variants.barcode}.[${priority}.]${extension}` is expected (where the priority is optional). Images will be used for the product if the priority is equal to zero, but will always show when the corresponding variant is consulted. This uploader can be accessed through the reaction dashboard.
 
 ## Reference
 ### `ReactionImport.flush([collection])` <a name="flush"></a>

@@ -13,13 +13,14 @@ Template.coreOrderShippingInvoice.onCreated(() => {
 
   Tracker.autorun(() => {
     template.order = getOrder(currentData.orderId);
-    let paymentMethod = template.order.billing[0].paymentMethod;
-
-    Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
-      if (!error) {
-        template.refunds.set(result);
-      }
-    });
+    if (template.order) {
+      let paymentMethod = template.order.billing[0].paymentMethod;
+      Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
+        if (!error) {
+          template.refunds.set(result);
+        }
+      });
+    }
   });
 });
 
@@ -41,7 +42,6 @@ Template.coreOrderShippingInvoice.onRendered(() => {
       vMax: lessAmount
     });
   }
-
 });
 
 /**
@@ -135,7 +135,7 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   currencySymbol() {
-    return "$"
+    return "$";
     // return ReactionCore.Locale.currency.symbol
   },
 
@@ -214,7 +214,7 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   refundSubmitDisabled() {
-    const amount = Template.instance().refundAmount.get() || 0
+    const amount = Template.instance().refundAmount.get() || 0;
     if (amount === 0) {
       return "disabled";
     }
@@ -224,27 +224,14 @@ Template.coreOrderShippingInvoice.helpers({
   adjustedTotal2() {
     let template = Template.instance();
     let paymentMethod = template.order.billing[0].paymentMethod;
-    let transactions = paymentMethod.transactions;
+    // let transactions = paymentMethod.transactions;
 
     let refunds = Template.instance().refunds.get();
-
-
     template.test.set(_.reduce(refunds, (memo, refund) => {
       return memo - Math.abs(refund.amount);
     }, paymentMethod.amount));
-
-    console.log();
-
-    return template.test
+    return template.test;
   },
-
-  refundSubmitDisabled() {
-    const amount = Template.instance().refundAmount.get() || 0
-    if (amount === 0) {
-      return "disabled";
-    }
-  },
-
   /**
    * Order
    * @summary find a single order using the order id spplied with the template

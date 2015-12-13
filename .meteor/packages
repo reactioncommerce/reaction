@@ -56,8 +56,9 @@ reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-social
+reactioncommerce:launchdock-connect
 # reactioncommerce:reaction-product-simple
-# reactioncommerce:launchdock
+
 
 # Reaction Payment Packages
 
@@ -71,9 +72,10 @@ reactioncommerce:reaction-stripe
 reactioncommerce:reaction-sample-data
 
 # Testing packages
-#velocity:html-reporter
-#sanjo:jasmine
-#velocity:helpers
+# reactioncommerce:reaction-factories
+# velocity:html-reporter
+# sanjo:jasmine
+# velocity:helpers
 
 # Performance & Debugging Tools
 

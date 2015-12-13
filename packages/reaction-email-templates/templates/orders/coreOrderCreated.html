@@ -356,20 +356,20 @@ small {
 }
 
 a {
-  color: #2ba6cb;
+  color: #555;
   text-decoration: none;
 }
 
 a:hover {
-  color: #2795b6 !important;
+  color: #555 !important;
 }
 
 a:active {
-  color: #2795b6 !important;
+  color: #555 !important;
 }
 
 a:visited {
-  color: #2ba6cb !important;
+  color: #555 !important;
 }
 
 h1 a,
@@ -378,7 +378,7 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-  color: #2ba6cb;
+  color: #555;
 }
 
 h1 a:active,
@@ -387,7 +387,7 @@ h3 a:active,
 h4 a:active,
 h5 a:active,
 h6 a:active {
-  color: #2ba6cb !important;
+  color: #555 !important;
 }
 
 h1 a:visited,
@@ -396,7 +396,7 @@ h3 a:visited,
 h4 a:visited,
 h5 a:visited,
 h6 a:visited {
-  color: #2ba6cb !important;
+  color: #555 !important;
 }
 
 /* Panels */
@@ -434,9 +434,9 @@ table.large-button td {
   display: block;
   width: auto !important;
   text-align: center;
-  background: #2ba6cb;
-  border: 1px solid #2284a1;
-  color: #ffffff;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  color: #555;
   padding: 8px 0;
 }
 
@@ -464,7 +464,7 @@ table.large-button td a {
   font-weight: bold;
   text-decoration: none;
   font-family: Helvetica, Arial, sans-serif;
-  color: #ffffff;
+  color: #555;
   font-size: 16px;
 }
 
@@ -488,13 +488,13 @@ table.large-button td a {
 table.button:hover td,
 table.button:visited td,
 table.button:active td {
-  background: #2795b6 !important;
+  background: #ffffff !important;
 }
 
 table.button:hover td a,
 table.button:visited td a,
 table.button:active td a {
-  color: #fff !important;
+  color: #555 !important;
 }
 
 table.button:hover td,
@@ -502,7 +502,7 @@ table.tiny-button:hover td,
 table.small-button:hover td,
 table.medium-button:hover td,
 table.large-button:hover td {
-  background: #2795b6 !important;
+  background: #ffffff !important;
 }
 
 table.button:hover td a,
@@ -520,7 +520,7 @@ table.medium-button td a:visited,
 table.large-button:hover td a,
 table.large-button:active td a,
 table.large-button td a:visited {
-  color: #ffffff !important;
+  color: #555 !important;
 }
 
 table.secondary td {
@@ -728,7 +728,7 @@ body.outlook p {
     }
 
     .callout .panel {
-      background: #ECF8FF;
+      background: #ffffff;
       border-color: #b9e5ff;
     }
 
@@ -737,7 +737,7 @@ body.outlook p {
     }
 
     .footer .wrapper {
-      background: #ebebeb;
+      background: #ffffff;
     }
 
     .footer h5 {
@@ -823,7 +823,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <p class="lead">Your order has shipped from: <strong>{{shop.name}}</strong>.</p>
+                            <p class="lead">Your <strong>{{shop.name}}</strong> order has been created.</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -840,9 +840,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td class="panel">
-
-                            <p>We're excited to have you at {{shop.name}}!</p>
-                            <p>Tracking #: <strong>{{shipment.tracking}}</strong></p>
+                            <p>We've begun processing your order.</strong></p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -859,7 +857,7 @@ body.outlook p {
                             <table class="button">
                               <tr>
                                 <td>
-                                  <a href="{{homepage}}">Visit {{shop.name}}</a>
+                                  <a href="{{homepage}}">Thank you! - {{shop.name}}</a>
                                 </td>
                               </tr>
                             </table>
