@@ -94,7 +94,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     index: 1,
-    label: "Accounts UserId"
+    label: "Accounts userId"
   },
   "sessions": {
     type: [String],
@@ -105,7 +105,8 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
     regEx: SimpleSchema.RegEx.Id,
-    index: 1
+    index: 1,
+    label: "Accounts shopId"
   },
   "emails": {
     type: [ReactionCore.Schemas.Email],
@@ -139,7 +140,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -151,7 +152,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
   },
   "updatedAt": {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isUpdate) {
         return {
           $set: new Date
