@@ -125,20 +125,32 @@ Meteor.methods({
     return false;
   },
 
-  /*
-   * add new addresses to an account
+  /**
+   * accounts/addressBookAdd
+   * @description add new addresses to an account
+   * @param {Object} doc - address
+   * @param {String} accountId - `account._id` which is need to be updated
+   * @return {Object} doc - address
    */
   "accounts/addressBookAdd": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    if (accountId !== Meteor.userId() || !ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     this.unblock();
+
+    if (!doc._id) {
+      doc._id = Random.id();
+    }
 
     ReactionCore.Schemas.Address.clean(doc);
     if (doc.isShippingDefault || doc.isBillingDefault) {
       if (doc.isShippingDefault) {
         ReactionCore.Collections.Accounts.update({
           "_id": accountId,
-          "userId": accountId,
+          "userId": accountId, // TODO: in some future cases maybe we should have
+          // adminId here
           "profile.addressBook.isShippingDefault": true
         }, {
           $set: {
@@ -166,15 +178,23 @@ Meteor.methods({
         "profile.addressBook": doc
       }
     });
-    return doc;
+    return doc; // TODO: do we need to return an address back here?
+    // maybe we should return nothing or `upsert` result?
   },
 
-  /*
-   * update existing address in user's profile
+  /**
+   * accounts/addressBookUpdate
+   * @description update existing address in user's profile
+   * @param {Object} doc - address
+   * @param {String} accountId - `account._id` which is need to be updated
+   * @return {Object} doc - address
    */
   "accounts/addressBookUpdate": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    if (accountId !== Meteor.userId() || !ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     this.unblock();
 
     if (doc.isShippingDefault || doc.isBillingDefault) {
@@ -210,12 +230,19 @@ Meteor.methods({
     return doc;
   },
 
-  /*
-   * remove existing address in user's profile
+  /**
+   * accounts/addressBookRemove
+   * @description remove existing address in user's profile
+   * @param {Object} doc - address
+   * @param {String} accountId - `account._id` which is need to be updated
+   * @return {Object} doc - address
    */
   "accounts/addressBookRemove": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    if (accountId !== Meteor.userId() || !ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     this.unblock();
 
     ReactionCore.Collections.Accounts.update({

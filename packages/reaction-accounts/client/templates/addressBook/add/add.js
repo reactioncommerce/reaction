@@ -46,23 +46,17 @@ Template.addressBookAdd.events({
   // }
 });
 
-/*
+/**
  * addressBookAddForm form handling
- * gets accountId and calls addressBookAdd method
+ * @description gets accountId and calls addressBookAdd method
+ * @fires accounts/addressBookAdd method
  */
-
 AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
-      let accountId;
       let addressBook = $(this.template.firstNode).closest(".address-book");
-      let account = ReactionCore.Collections.Accounts.findOne();
-      accountId = account._id;
-
-      if (!insertDoc._id) {
-        insertDoc._id = Random.id();
-      }
+      let accountId = ReactionCore.Collections.Accounts.findOne()._id;
 
       try {
         Meteor.call("accounts/addressBookAdd", insertDoc, accountId);
