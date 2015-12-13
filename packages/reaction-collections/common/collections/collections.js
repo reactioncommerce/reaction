@@ -175,15 +175,22 @@ ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
 
 /**
-* ReactionCore Collections Accounts
+* ReactionCore Collections Layouts
 */
 ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
 
 ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
 
 /**
+* ReactionCore Collections Templates
+*/
+ReactionCore.Collections.Templates = new Mongo.Collection("Templates");
+
+ReactionCore.Collections.Templates.attachSchema(ReactionCore.Schemas.Templates);
+
+/**
  * ReactionCore Collections CronJobs
  */
-ReactionCore.Collections.Jobs = Jobs = new JobCollection('Jobs', {
+ReactionCore.Collections.Jobs = Jobs = new JobCollection("Jobs", {
   noCollectionSuffix: true
 });

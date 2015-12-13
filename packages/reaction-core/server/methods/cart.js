@@ -358,6 +358,7 @@ Meteor.methods({
       // return
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
+      Meteor.call("orders/sendNotification", ReactionCore.Collections.Orders.findOne(orderId));
       return orderId;
     }
     // we should not have made it here, throw error

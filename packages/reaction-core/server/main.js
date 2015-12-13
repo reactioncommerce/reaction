@@ -118,12 +118,19 @@ _.extend(ReactionCore, {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
   configureMailUrl: function (user, password, host, port) {
-    let shopMail = ReactionCore.Collections.Packages.findOne({
+    let shopSettings = ReactionCore.Collections.Packages.findOne({
       shopId: this.getShopId(),
       name: "core"
-    }).settings.mail;
+    });
+    let shopMail = {};
+
+    if (shopSettings) {
+      shopMail = shopSettings.settings.mail || {};
+    }
+
     let processUrl = process.env.MAIL_URL;
     let settingsUrl = Meteor.settings.MAIL_URL;
+
     if (user && password && host && port) {
       let mailString = `smtp://${user}:${password}@${host}:${port}/`;
       const mailUrl = processUrl = settingsUrl = mailString;
@@ -131,18 +138,19 @@ _.extend(ReactionCore, {
       return mailUrl;
     } else if (shopMail.user && shopMail.password && shopMail.host &&
       shopMail.port) {
-      ReactionCore.Log.info("setting default mail url to: " + shopMail
-        .host);
       let mailString =
         `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
       const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
+
+      ReactionCore.Log.info(`setting default mail url to: ${shopMail.host}`);
       return mailUrl;
     } else if (settingsUrl && !processUrl) {
       const mailUrl = processUrl = settingsUrl;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     }
+    // return reasonable warning that we're not configured correctly
     if (!process.env.MAIL_URL) {
       ReactionCore.Log.warn(
         "Mail server not configured. Unable to send email.");
