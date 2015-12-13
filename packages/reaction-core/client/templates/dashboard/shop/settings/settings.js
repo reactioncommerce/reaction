@@ -14,7 +14,7 @@ Template.shopSettings.helpers({
     });
   },
   addressBook: function () {
-    const address = Shops.findOne().addressBook;
+    const address = ReactionCore.Collections.Shops.findOne().addressBook;
     return address[0];
   },
   countryOptions: function () {

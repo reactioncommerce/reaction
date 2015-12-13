@@ -1,13 +1,13 @@
-const user = Factory.create("user");
+// const user = Factory.create("user");
 describe("Publication", function () {
   let shop;
   beforeEach(function () {
     // reset
-    Products.remove({});
-    Shops.remove({});
-    Orders.remove({});
+    ReactionCore.Collections.Products.remove({});
+    ReactionCore.Collections.Shops.remove({});
+    ReactionCore.Collections.Orders.remove({});
     // insert products and shops
-    Shops.insert({
+    ReactionCore.Collections.Shops.insert({
       name: faker.company.companyName(),
       currency: "USD",
       currencies: {},
@@ -17,7 +17,7 @@ describe("Publication", function () {
       },
       timezone: "US/Pacific"
     });
-    shop = Shops.findOne();
+    shop = ReactionCore.Collections.Shops.findOne();
   });
 
   describe("ShopMembers", function () {

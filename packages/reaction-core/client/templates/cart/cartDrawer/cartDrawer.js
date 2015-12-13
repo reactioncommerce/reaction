@@ -11,7 +11,7 @@ Template.cartDrawer.helpers({
       return null;
     }
 
-    let storedCart = Cart.findOne();
+    let storedCart = ReactionCore.Collections.Cart.findOne();
     let count = 0;
 
     if (storedCart !== null ? storedCart.items : void 0) {
@@ -37,7 +37,7 @@ Template.openCartDrawer.onRendered(function () {
 
 Template.openCartDrawer.helpers({
   cartItems: function () {
-    return Cart.findOne().items;
+    return ReactionCore.Collections.Cart.findOne().items;
   },
   checkoutView: function () {
     let checkoutView;
@@ -61,7 +61,7 @@ Template.openCartDrawer.events({
   "click .remove-cart-item": function (event) {
     event.stopPropagation();
     event.preventDefault();
-    let currentCartId = Cart.findOne()._id;
+    let currentCartId = ReactionCore.Collections.Cart.findOne()._id;
     let currentCartItem = this;
 
     return $(event.currentTarget).fadeOut(300, function () {

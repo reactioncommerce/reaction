@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.5.2",
+  version: "1.5.3",
   documentation: "README.md"
 });
 
@@ -36,13 +36,9 @@ Package.onUse(function (api) {
   api.use("accounts-password");
   api.use("reactioncommerce:core@0.9.4");
 
-  // Files
-  api.addFiles("common/schemas/accounts.js");
-
   // accounts
   api.addFiles("server/accounts.js", "server");
   api.addFiles("server/policy.js", "server");
-  api.addFiles("server/publications/accounts.js", "server");
   api.addFiles("server/methods/serviceConfiguration.js", "server");
 
 
@@ -51,7 +47,6 @@ Package.onUse(function (api) {
   api.addFiles("server/register.js", "server");
   api.addFiles("server/methods/accounts.js", "server");
   api.addFiles("server/publications/serviceConfiguration.js", "server");
-  api.addFiles("server/publications/members.js", "server");
 
   api.addFiles("common/routing.js", ["client", "server"]);
 
@@ -118,10 +113,11 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/dropdown/dropdown.html", "client");
   api.addFiles("client/templates/dropdown/dropdown.js", "client");
+  api.export("ReactionCore");
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.2");
+  api.use("sanjo:jasmine@0.20.3");
   api.use("ecmascript");
   api.use("jquery");
   api.use("underscore");
@@ -129,11 +125,9 @@ Package.onTest(function (api) {
   api.use("velocity:console-reporter@0.1.4");
 
   api.use("reactioncommerce:core");
-  api.use("reactioncommerce:reaction-factories");
   api.use("reactioncommerce:reaction-accounts");
+  api.use("reactioncommerce:reaction-factories");
 
-
-  api.addFiles("common/factories/accounts.js");
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
   api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");

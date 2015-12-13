@@ -115,7 +115,7 @@ this.selectedVariant = function () {
 this.selectedProduct = function () {
   const id = selectedProductId();
   if (typeof id === "string") {
-    return Products.findOne(id);
+    return ReactionCore.Collections.Products.findOne(id);
   }
 };
 
@@ -228,7 +228,7 @@ this.getVariantPriceRange = function (currentVariantId, currentProductId) {
   let productId = currentProductId || selectedProductId();
   let variantId = currentVariantId || selectedVariant()._id;
 
-  let product = Products.findOne(productId);
+  let product = ReactionCore.Collections.Products.findOne(productId);
   if (!(variantId && productId && product)) {
     return undefined;
   }
@@ -286,7 +286,7 @@ this.getVariantPriceRange = function (currentVariantId, currentProductId) {
  */
 this.getProductPriceRange = function (currentProductId) {
   let productId = currentProductId || selectedProductId();
-  let product = Products.findOne(productId);
+  let product = ReactionCore.Collections.Products.findOne(productId);
 
   if (!product) {
     return undefined;

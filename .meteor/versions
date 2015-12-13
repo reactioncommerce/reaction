@@ -133,7 +133,7 @@ reactioncommerce:core@0.10.0
 reactioncommerce:core-theme@2.0.0
 reactioncommerce:default-theme@1.0.0
 reactioncommerce:launchdock-connect@0.1.2
-reactioncommerce:reaction-accounts@1.5.2
+reactioncommerce:reaction-accounts@1.5.3
 reactioncommerce:reaction-analytics@1.2.0
 reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-collections@1.0.2

@@ -91,7 +91,8 @@ describe("Publication", function () {
         spyOn(ReactionCore, "getCurrentShop").and.returnValue(
           shop);
         // execute
-        cursor = Meteor.server.publish_handlers.Product("shopkins");
+        cursor = Meteor.server.publish_handlers.Product(
+          "shopkins");
         // verify
         data = cursor.fetch()[0];
         expect(data.title).toEqual("Shopkins - Peachy");

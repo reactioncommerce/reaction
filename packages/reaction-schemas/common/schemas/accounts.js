@@ -1,6 +1,6 @@
 /**
-* ReactionCore Schemas Email
-*/
+ * ReactionCore Schemas Email
+ */
 
 ReactionCore.Schemas.Email = new SimpleSchema({
   provides: {
@@ -20,8 +20,8 @@ ReactionCore.Schemas.Email = new SimpleSchema({
 });
 
 /**
-* ReactionCore Schemas Address
-*/
+ * ReactionCore Schemas Address
+ */
 
 ReactionCore.Schemas.Address = new SimpleSchema({
   _id: {
@@ -86,8 +86,8 @@ ReactionCore.Schemas.Address = new SimpleSchema({
 });
 
 /**
-* ReactionCore Schemas Accounts
-*/
+ * ReactionCore Schemas Accounts
+ */
 
 ReactionCore.Schemas.Accounts = new SimpleSchema({
   "userId": {
@@ -139,7 +139,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) {
         return new Date;
       } else if (this.isUpsert) {
@@ -151,7 +151,7 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
   },
   "updatedAt": {
     type: Date,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isUpdate) {
         return {
           $set: new Date
@@ -165,11 +165,3 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     optional: true
   }
 });
-
-
-/**
-* ReactionCore Collections Accounts
-*/
-ReactionCore.Collections.Accounts = new Mongo.Collection("Accounts");
-
-ReactionCore.Collections.Accounts.attachSchema(ReactionCore.Schemas.Accounts);

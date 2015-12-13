@@ -1,17 +1,23 @@
-Meteor.subscribe('Products');
+Meteor.subscribe("Products");
 
 function uploadHandler(event) {
   let shopId = ReactionCore.getShopId();
   let userId = Meteor.userId();
   let files = event.target.files.files;
 
-  for (var i = 0; i < files.length; i++) {
-    console.log(files[i].name);
-    var parts = files[i].name.split('.');
-    var product;
+  for (let i = 0; i < files.length; i++) {
+    let parts = files[i].name.split(".");
+    let product;
     if (parts[0]) {
-      console.log(parts[0]);
-      product = Products.findOne({ 'variants.barcode': parts[0] }, { variants: { $elemMatch: { 'barcode': parts[0] } } });
+      product = ReactionCore.Collections.Products.findOne({
+        "variants.barcode": parts[0]
+      }, {
+        variants: {
+          $elemMatch: {
+            barcode: parts[0]
+          }
+        }
+      });
     }
     if (product) {
       let fileObj;
@@ -29,7 +35,7 @@ function uploadHandler(event) {
 }
 
 Template.import.events({
-  'submit form#form-import-images': function(event) {
+  "submit form#form-import-images": function (event) {
     event.preventDefault();
     uploadHandler(event);
   }

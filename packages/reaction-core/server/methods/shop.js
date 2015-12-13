@@ -320,6 +320,7 @@ Meteor.methods({
       });
 
     ReactionCore.Collections.Packages.update(_id, modifier);
+    return fetchCurrencyRatesJob;
   },
 
   /**
@@ -377,12 +378,12 @@ Meteor.methods({
       name: tagName
     };
 
-    let existingTag = Tags.findOne({
+    let existingTag = ReactionCore.Collections.Tags.findOne({
       name: tagName
     });
 
     if (tagId) {
-      return Tags.update(tagId, {
+      return ReactionCore.Collections.Tags.update(tagId, {
         $set: newTag
       }, function () {
         ReactionCore.Log.info(
@@ -392,7 +393,7 @@ Meteor.methods({
     } else if (existingTag) {
       // if is currentTag
       if (currentTagId) {
-        return Tags.update(currentTagId, {
+        return ReactionCore.Collections.Tags.update(currentTagId, {
           $addToSet: {
             relatedTagIds: existingTag._id
           }
@@ -404,7 +405,7 @@ Meteor.methods({
         });
       }
       // update existing tag
-      return Tags.update(existingTag._id, {
+      return ReactionCore.Collections.Tags.update(existingTag._id, {
         $set: {
           isTopLevel: true
         }
@@ -418,9 +419,9 @@ Meteor.methods({
     newTag.shopId = ReactionCore.getShopId();
     newTag.updatedAt = new Date();
     newTag.createdAt = new Date();
-    newTagId = Tags.insert(newTag);
+    newTagId = ReactionCore.Collections.Tags.insert(newTag);
     if (currentTagId) {
-      return Tags.update(currentTagId, {
+      return ReactionCore.Collections.Tags.update(currentTagId, {
         $addToSet: {
           relatedTagIds: newTagId
         }
@@ -450,26 +451,26 @@ Meteor.methods({
     }
     this.unblock();
     // remove from related tag use
-    Tags.update(currentTagId, {
+    ReactionCore.Collections.Tags.update(currentTagId, {
       $pull: {
         relatedTagIds: tagId
       }
     });
     // check to see if tag is in use.
-    let productCount = Products.find({
+    let productCount = ReactionCore.Collections.Products.find({
       hashtags: {
         $in: [tagId]
       }
     }).count();
     // check to see if in use as a related tag
-    let relatedTagsCount = Tags.find({
+    let relatedTagsCount = ReactionCore.Collections.Tags.find({
       relatedTagIds: {
         $in: [tagId]
       }
     }).count();
     // not in use anywhere, delete it
     if (productCount === 0 && relatedTagsCount === 0) {
-      return Tags.remove(tagId);
+      return ReactionCore.Collections.Tags.remove(tagId);
     }
     // unable to delete anything
     throw new Meteor.Error(403, "Unable to delete tags that are in use.");

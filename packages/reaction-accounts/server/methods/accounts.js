@@ -256,7 +256,7 @@ Meteor.methods({
     check(email, String);
     check(name, String);
     this.unblock();
-    shop = Shops.findOne(shopId);
+    shop = ReactionCore.Collections.Shops.findOne(shopId);
 
     if (!ReactionCore.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access denied");

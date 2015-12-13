@@ -26,7 +26,7 @@ Template.dashboardOrdersList.helpers({
     return this.shipping[0].shipmentMethod.tracking;
   },
   shopName: function () {
-    let shop = Shops.findOne(this.shopId);
+    let shop = ReactionCore.Collections.Shops.findOne(this.shopId);
     return shop !== null ? shop.name : void 0;
   }
 });
