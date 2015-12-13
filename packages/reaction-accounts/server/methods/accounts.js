@@ -132,12 +132,13 @@ Meteor.methods({
    * @description add new addresses to an account
    * @param {Object} doc - address
    * @param {String} accountId - `account._id` which is need to be updated
-   * @return {Object} doc - address
+   * @return {Object} with keys `numberAffected` and `insertedId` if doc was
+   * inserted
    */
   "accounts/addressBookAdd": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
-    if (accountId !== Meteor.userId() || !ReactionCore.hasAdminAccess()) {
+    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access denied");
     }
     this.unblock();
@@ -172,7 +173,8 @@ Meteor.methods({
         });
       }
     }
-    ReactionCore.Collections.Accounts.upsert(accountId, {
+
+    return ReactionCore.Collections.Accounts.upsert(accountId, {
       $set: {
         userId: accountId
       },
@@ -180,8 +182,6 @@ Meteor.methods({
         "profile.addressBook": doc
       }
     });
-    return doc; // TODO: do we need to return an address back here?
-    // maybe we should return nothing or `upsert` result?
   },
 
   /**
@@ -189,12 +189,12 @@ Meteor.methods({
    * @description update existing address in user's profile
    * @param {Object} doc - address
    * @param {String} accountId - `account._id` which is need to be updated
-   * @return {Object} doc - address
+   * @return {Number} The number of affected documents
    */
   "accounts/addressBookUpdate": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
-    if (accountId !== Meteor.userId() || !ReactionCore.hasAdminAccess()) {
+    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access denied");
     }
     this.unblock();
@@ -221,7 +221,8 @@ Meteor.methods({
         });
       }
     }
-    ReactionCore.Collections.Accounts.update({
+
+    return ReactionCore.Collections.Accounts.update({
       "_id": accountId,
       "profile.addressBook._id": doc._id
     }, {
@@ -229,7 +230,6 @@ Meteor.methods({
         "profile.addressBook.$": doc
       }
     });
-    return doc;
   },
 
   /**
@@ -237,17 +237,17 @@ Meteor.methods({
    * @description remove existing address in user's profile
    * @param {Object} doc - address
    * @param {String} accountId - `account._id` which is need to be updated
-   * @return {Object} doc - address
+   * @return {Number} The number of removed documents
    */
   "accounts/addressBookRemove": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
-    if (accountId !== Meteor.userId() || !ReactionCore.hasAdminAccess()) {
+    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access denied");
     }
     this.unblock();
 
-    ReactionCore.Collections.Accounts.update({
+    return ReactionCore.Collections.Accounts.update({
       "_id": accountId,
       "profile.addressBook._id": doc._id
     }, {
@@ -257,7 +257,6 @@ Meteor.methods({
         }
       }
     });
-    return doc;
   },
 
   /**
@@ -265,9 +264,9 @@ Meteor.methods({
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
-   * @params {String} shopId - shop to invite user
-   * @params {String} email - email of invitee
-   * @params {String} name - name to address email
+   * @param {String} shopId - shop to invite user
+   * @param {String} email - email of invitee
+   * @param {String} name - name to address email
    * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {

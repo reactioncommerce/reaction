@@ -58,14 +58,22 @@ AutoForm.hooks({
       let addressBook = $(this.template.firstNode).closest(".address-book");
       let accountId = ReactionCore.Collections.Accounts.findOne()._id;
 
-      try {
-        Meteor.call("accounts/addressBookAdd", insertDoc, accountId);
-      } catch (error) {
-        this.done(new Error("Failed to add address", error));
-        return false;
-      }
-      this.done();
-      addressBook.trigger($.Event("showMainView"));
+      Meteor.call("accounts/addressBookAdd", insertDoc, accountId,
+        (error, result) => {
+          if (error) {
+            Alerts.add("Failed to add address: " + error.message,
+              "danger", {
+                autoHide: true
+              });
+            this.done(new Error("Failed to add address: ", error));
+            return false;
+          }
+          if (result) {
+            this.done();
+            addressBook.trigger($.Event("showMainView"));
+          }
+        }
+      );
     }
   }
 });
