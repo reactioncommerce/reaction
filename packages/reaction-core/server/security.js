@@ -39,6 +39,9 @@ let Taxes = ReactionCore.Collections.Taxes;
 
 let Translations = ReactionCore.Collections.Translations;
 
+let Templates = ReactionCore.Collections.Templates;
+
+let Layouts = ReactionCore.Collections.Layouts;
 /*
  * Define some additional rule chain methods
  */
@@ -95,7 +98,7 @@ Security.defineMethod("ifSessionIdMatches", {
  */
 
 Security.permit(["insert", "update", "remove"]).collections([Products, Tags,
-  Translations, Discounts, Taxes, Shipping, Orders, Packages
+  Translations, Discounts, Taxes, Shipping, Orders, Packages, Layouts, Templates
 ]).ifHasRole({
   role: "admin",
   group: ReactionCore.getShopId()

@@ -280,7 +280,6 @@ Meteor.methods({
           order.email = email.address;
         }
       }
-      if (!order.email) order.email = "anonymous@localhost";
     }
 
     // schema should provide order defaults
