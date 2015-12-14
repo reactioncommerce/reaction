@@ -3,6 +3,61 @@
  */
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
+/* eslint quotes: 0 */
+/**
+ * @function createTitle
+ * @description Recursive method which trying to find a new `title`, given the
+ * existing copies
+ * @param {String} newTitle - product `title`
+ * @param {String} productId - current product `_id`
+ * @return {String} title - modified `title`
+ */
+function createTitle(newTitle, productId) {
+  // exception product._id needed for cases then double triggering happens
+  let title = newTitle || "";
+  let titleCount = ReactionCore.Collections.Products.find({
+    title: title,
+    _id: {
+      $nin: [productId]
+    }
+  }).count();
+  // current product "copy" number
+  let titleNumberSuffix = 0;
+  // product handle prefix
+  let titleString = title;
+  // copySuffix "-copy-number" suffix of product
+  let copySuffix = titleString.match(/-copy-\d+$/) || titleString.match(/-copy$/);
+  // if product is a duplicate, we should take the copy number, and cut
+  // the handle
+  if (copySuffix) {
+    // we can have two cases here: copy-number and just -copy. If there is
+    // no numbers in copySuffix then we should put 1 in handleNumberSuffix
+    titleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
+    // removing last numbers and last "-" if it presents
+    titleString = title.replace(/\d+$/, '').replace(/-$/, '');
+  }
+
+  // if we have more than one product with the same handle, we should mark
+  // it as "copy" or increment our product handle if it contain numbers.
+  if (titleCount > 0) {
+    // if we have product with name like "product4", we should take care
+    // about its uniqueness
+    if (titleNumberSuffix > 0) {
+      title = `${titleString}-${titleNumberSuffix + titleCount}`;
+    } else {
+      // first copy will be "...-copy", second: "...-copy-2"
+      title = `${titleString}-copy${ titleCount > 1 ? "-" + titleCount : ""}`;
+    }
+  }
+
+  // we should check again if there are any new matches with DB
+  if (ReactionCore.Collections.Products.find({
+    title: title
+  }).count() !== 0) {
+    title = createTitle(title, productId);
+  }
+  return title;
+}
 
 /**
  * @function createHandle
@@ -12,7 +67,8 @@
  * @param {String} productId - current product `_id`
  * @return {String} handle - modified `handle`
  */
-function createHandle(handle, productId) {
+function createHandle(productHandle, productId) {
+  let handle = productHandle || "";
   // exception product._id needed for cases then double triggering happens
   let handleCount = ReactionCore.Collections.Products.find({
     handle: handle,
@@ -156,7 +212,8 @@ Meteor.methods({
     delete clone.createdAt;
     delete clone.inventoryQuantity;
     delete clone.title;
-    /*ReactionCore.*/copyMedia(productId, variant[0]._id, clone._id);
+    // clone media
+    copyMedia(productId, variant[0]._id, clone._id);
 
     // push the new variant to the product
     ReactionCore.Collections.Products.update({
@@ -411,6 +468,15 @@ Meteor.methods({
           getSlug(product.title),
           product._id
         );
+        product.handle = createHandle(
+          getSlug(product.title),
+          product._id
+        );
+        product.title = createTitle(
+          product.title,
+          product._id
+        );
+
       }
       while (i < product.variants.length) {
         let newVariantId = Random.id();

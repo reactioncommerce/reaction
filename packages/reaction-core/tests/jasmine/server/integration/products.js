@@ -363,7 +363,7 @@ describe("core product methods", function () {
           $ne: product._id
         }
       }).fetch()[0];
-      expect(productCloned.title).toEqual(product.title);
+      expect(productCloned.title).toEqual(product.title + "-copy");
       expect(productCloned.handle).toEqual(product.handle + "-copy");
       expect(productCloned.pageTitle).toEqual(product.pageTitle);
       expect(productCloned.description).toEqual(product.description);
@@ -651,8 +651,7 @@ describe("core product methods", function () {
         const productCloned = newProducts[0];
         const productCloned2 = newProducts[1];
         expect(productCloned.handle).toEqual(product.handle + "-copy");
-        expect(productCloned2.handle).toEqual(product.handle +
-          "-copy-2");
+        expect(productCloned2.handle).toEqual(product.handle + "-copy-2");
         return done();
       });
   });

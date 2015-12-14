@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.5.3",
+  version: "1.6.0",
   documentation: "README.md"
 });
 
@@ -9,8 +9,6 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");
@@ -34,7 +32,7 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
-  api.use("reactioncommerce:core@0.9.4");
+  api.use("reactioncommerce:core@0.10.0");
 
   // accounts
   api.addFiles("server/accounts.js", "server");
