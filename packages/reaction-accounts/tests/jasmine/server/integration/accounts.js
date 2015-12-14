@@ -35,7 +35,7 @@ describe("Account Meteor method ", function () {
             account2._id);
         }).toThrow();
 
-        expect(ReactionCore.Collections.Accounts.update).toHaveBeenCalled();
+        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
         return done();
       });
   });

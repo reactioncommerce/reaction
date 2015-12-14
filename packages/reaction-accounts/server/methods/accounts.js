@@ -140,15 +140,18 @@ Meteor.methods({
   "accounts/addressBookAdd": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
-    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+    // security, check user ownership
+    if (!ReactionCore.hasAdminAccess()) {
+      if (accountId !== Meteor.userId()) {
+        throw new Meteor.Error(403, "Access denied");
+      }
     }
     this.unblock();
-
+    // required default id
     if (!doc._id) {
       doc._id = Random.id();
     }
-
+    // clean schema
     ReactionCore.Schemas.Address.clean(doc);
     if (doc.isShippingDefault || doc.isBillingDefault) {
       if (doc.isShippingDefault) {
@@ -196,8 +199,11 @@ Meteor.methods({
   "accounts/addressBookUpdate": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
-    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+    // security, check user ownership
+    if (!ReactionCore.hasAdminAccess()) {
+      if (accountId !== Meteor.userId()) {
+        throw new Meteor.Error(403, "Access denied");
+      }
     }
     this.unblock();
 
@@ -244,8 +250,11 @@ Meteor.methods({
   "accounts/addressBookRemove": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
-    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+    // security, check user ownership
+    if (!ReactionCore.hasAdminAccess()) {
+      if (accountId !== Meteor.userId()) {
+        throw new Meteor.Error(403, "Access denied");
+      }
     }
     this.unblock();
 
