@@ -239,7 +239,7 @@ Meteor.methods({
    * @description remove existing address in user's profile
    * @param {Object} doc - address
    * @param {String} accountId - `account._id` which is need to be updated
-   * @return {Number} The number of removed documents
+   * @return {Number|Object} The number of removed documents or error object
    */
   "accounts/addressBookRemove": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
@@ -249,16 +249,24 @@ Meteor.methods({
     }
     this.unblock();
 
-    return ReactionCore.Collections.Accounts.update({
-      "_id": accountId,
-      "profile.addressBook._id": doc._id
-    }, {
-      $pull: {
-        "profile.addressBook": {
-          _id: doc._id
+    // remove this address in cart, if used before completely removing
+    const result = Meteor.call("cart/unsetAddresses", doc._id, accountId);
+
+    if (typeof result === "number") {
+      return ReactionCore.Collections.Accounts.update({
+        "_id": accountId,
+        "profile.addressBook._id": doc._id
+      }, {
+        $pull: {
+          "profile.addressBook": {
+            _id: doc._id
+          }
         }
-      }
-    });
+      });
+    }
+    // error
+    ReactionCore.Log.warn(result);
+    return result;
   },
 
   /**

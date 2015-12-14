@@ -550,7 +550,37 @@ Meteor.methods({
         });
     }
   },
+  /**
+   * cart/unsetAddresses
+   * @description removes address from cart. This used then user remove address,
+   * which was used in cart. This method not called directly from client side.
+   * @param {String} addressId - address._id
+   * @param {String} userId - cart owner _id
+   * @return {Number|Object} The number of removed documents or error object
+   */
+  "cart/unsetAddresses": function (addressId, userId) {
+    check(addressId, String);
+    check(userId, String);
+    this.unblock();
 
+    const cart = ReactionCore.Collections.Cart.findOne({
+      userId: userId
+    });
+    const selector = {
+      _id: cart._id
+    };
+    let update = { $unset: {}};
+    // we assume that the billing/shipping arrays can hold only one element [0]
+    if (typeof cart.billing[0].address === "object" &&
+      cart.billing[0].address._id === addressId) {
+      update.$unset["billing.0.address"] = "";
+    }
+    if (typeof cart.shipping[0].address._id === "object" &&
+      cart.shipping[0].address._id === addressId) {
+      update.$unset["shipping.0.address"] = "";
+    }
+    return ReactionCore.Collections.Cart.update(selector, update);
+  },
   /**
    * cart/submitPayment
    * @summary saves a submitted payment to cart, triggers workflow
