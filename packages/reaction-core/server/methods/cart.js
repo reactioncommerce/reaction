@@ -487,7 +487,7 @@ Meteor.methods({
 
         // this is probably a crappy way to do this
         // let's default the payment address
-        if (!cart.payment) {
+        if (!cart.billing) {
           Meteor.call("cart/setPaymentAddress", cartId, address);
         }
         return;
