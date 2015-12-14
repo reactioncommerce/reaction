@@ -129,20 +129,33 @@ Meteor.methods({
     return false;
   },
 
-  /*
-   * add new addresses to an account
+  /**
+   * accounts/addressBookAdd
+   * @description add new addresses to an account
+   * @param {Object} doc - address
+   * @param {String} accountId - `account._id` which is need to be updated
+   * @return {Object} with keys `numberAffected` and `insertedId` if doc was
+   * inserted
    */
   "accounts/addressBookAdd": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     this.unblock();
+
+    if (!doc._id) {
+      doc._id = Random.id();
+    }
 
     ReactionCore.Schemas.Address.clean(doc);
     if (doc.isShippingDefault || doc.isBillingDefault) {
       if (doc.isShippingDefault) {
         ReactionCore.Collections.Accounts.update({
           "_id": accountId,
-          "userId": accountId,
+          "userId": accountId, // TODO: in some future cases maybe we should have
+          // adminId here
           "profile.addressBook.isShippingDefault": true
         }, {
           $set: {
@@ -162,7 +175,8 @@ Meteor.methods({
         });
       }
     }
-    ReactionCore.Collections.Accounts.upsert(accountId, {
+
+    return ReactionCore.Collections.Accounts.upsert(accountId, {
       $set: {
         userId: accountId
       },
@@ -170,15 +184,21 @@ Meteor.methods({
         "profile.addressBook": doc
       }
     });
-    return doc;
   },
 
-  /*
-   * update existing address in user's profile
+  /**
+   * accounts/addressBookUpdate
+   * @description update existing address in user's profile
+   * @param {Object} doc - address
+   * @param {String} accountId - `account._id` which is need to be updated
+   * @return {Number} The number of affected documents
    */
   "accounts/addressBookUpdate": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     this.unblock();
 
     if (doc.isShippingDefault || doc.isBillingDefault) {
@@ -203,7 +223,8 @@ Meteor.methods({
         });
       }
     }
-    ReactionCore.Collections.Accounts.update({
+
+    return ReactionCore.Collections.Accounts.update({
       "_id": accountId,
       "profile.addressBook._id": doc._id
     }, {
@@ -211,28 +232,41 @@ Meteor.methods({
         "profile.addressBook.$": doc
       }
     });
-    return doc;
   },
 
-  /*
-   * remove existing address in user's profile
+  /**
+   * accounts/addressBookRemove
+   * @description remove existing address in user's profile
+   * @param {Object} doc - address
+   * @param {String} accountId - `account._id` which is need to be updated
+   * @return {Number|Object} The number of removed documents or error object
    */
   "accounts/addressBookRemove": function (doc, accountId) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    if (accountId !== Meteor.userId() && !ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access denied");
+    }
     this.unblock();
 
-    ReactionCore.Collections.Accounts.update({
-      "_id": accountId,
-      "profile.addressBook._id": doc._id
-    }, {
-      $pull: {
-        "profile.addressBook": {
-          _id: doc._id
+    // remove this address in cart, if used before completely removing
+    const result = Meteor.call("cart/unsetAddresses", doc._id, accountId);
+
+    if (typeof result === "number") {
+      return ReactionCore.Collections.Accounts.update({
+        "_id": accountId,
+        "profile.addressBook._id": doc._id
+      }, {
+        $pull: {
+          "profile.addressBook": {
+            _id: doc._id
+          }
         }
-      }
-    });
-    return doc;
+      });
+    }
+    // error
+    ReactionCore.Log.warn(result);
+    return result;
   },
 
   /**
@@ -240,9 +274,9 @@ Meteor.methods({
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
-   * @params {String} shopId - shop to invite user
-   * @params {String} email - email of invitee
-   * @params {String} name - name to address email
+   * @param {String} shopId - shop to invite user
+   * @param {String} email - email of invitee
+   * @param {String} name - name to address email
    * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
