@@ -263,21 +263,21 @@ describe("core product methods", function () {
       return done();
     });
 
-    // it("should delete all child variants (options) by admin",
-    //   function (done) {
-    //     spyOn(Roles, "userIsInRole").and.returnValue(true);
-    //     spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-    //     let product = Factory.create("product");
-    //     Meteor.call("products/cloneVariant", product._id, product.variants[
-    //         0]._id,
-    //       product.variants[0]._id);
-    //     product = Products.findOne(product._id);
-    //     expect(_.size(product.variants)).toEqual(2);
-    //     Meteor.call("products/deleteVariant", product.variants[0]._id);
-    //     product = Products.findOne(product._id);
-    //     expect(_.size(product.variants)).toEqual(0);
-    //     return done();
-    //   });
+    it("should delete all child variants (options) by admin",
+      function (done) {
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+        let product = Factory.create("product");
+        Meteor.call("products/cloneVariant", product._id, product.variants[
+            0]._id,
+          product.variants[0]._id);
+        product = ReactionCore.Collections.Products.findOne(product._id);
+        expect(_.size(product.variants)).toEqual(2);
+        Meteor.call("products/deleteVariant", product.variants[0]._id);
+        product = ReactionCore.Collections.Products.findOne(product._id);
+        expect(_.size(product.variants)).toEqual(0);
+        return done();
+      });
   });
 
   describe("createProduct", function () {
@@ -297,7 +297,8 @@ describe("core product methods", function () {
 
     it("should create new product by admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
+      spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(
+        1);
       expect(Meteor.call("products/createProduct")).toEqual(1);
       expect(ReactionCore.Collections.Products.insert).toHaveBeenCalled();
       return done();
@@ -324,10 +325,12 @@ describe("core product methods", function () {
       let product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      expect(ReactionCore.Collections.Products.find().count()).toEqual(1);
+      expect(ReactionCore.Collections.Products.find().count()).toEqual(
+        1);
       expect(Meteor.call("products/deleteProduct", product._id)).toBe(
         true);
-      expect(ReactionCore.Collections.Products.find().count()).toEqual(0);
+      expect(ReactionCore.Collections.Products.find().count()).toEqual(
+        0);
       return done();
     });
   });
@@ -353,11 +356,13 @@ describe("core product methods", function () {
       let productCloned;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      expect(ReactionCore.Collections.Products.find().count()).toEqual(1);
+      expect(ReactionCore.Collections.Products.find().count()).toEqual(
+        1);
 
       // console.log("product: ", product)
       Meteor.call("products/cloneProduct", product);
-      expect(ReactionCore.Collections.Products.find().count()).toEqual(2);
+      expect(ReactionCore.Collections.Products.find().count()).toEqual(
+        2);
       productCloned = ReactionCore.Collections.Products.find({
         _id: {
           $ne: product._id
@@ -535,11 +540,13 @@ describe("core product methods", function () {
         spyOn(Roles, "userIsInRole").and.returnValue(true);
         product = Factory.create("product");
         tag = Factory.create("tag");
-        expect(ReactionCore.Collections.Tags.find().count()).toEqual(1);
+        expect(ReactionCore.Collections.Tags.find().count()).toEqual(
+          1);
         expect(product.hashtags).not.toContain(tag._id);
         Meteor.call("products/updateProductTags", product._id, tag.name,
           tag._id);
-        expect(ReactionCore.Collections.Tags.find().count()).toEqual(1);
+        expect(ReactionCore.Collections.Tags.find().count()).toEqual(
+          1);
         product = ReactionCore.Collections.Products.findOne({
           _id: product._id
         });
@@ -582,13 +589,15 @@ describe("core product methods", function () {
         _id: product._id
       });
       expect(product.hashtags).toContain(tag._id);
-      expect(ReactionCore.Collections.Tags.find().count()).toEqual(1);
+      expect(ReactionCore.Collections.Tags.find().count()).toEqual(
+        1);
       Meteor.call("products/removeProductTag", product._id, tag._id);
       product = ReactionCore.Collections.Products.findOne({
         _id: product._id
       });
       expect(product.hashtags).not.toContain(tag._id);
-      expect(ReactionCore.Collections.Tags.find().count()).toEqual(0);
+      expect(ReactionCore.Collections.Tags.find().count()).toEqual(
+        0);
       return done();
     });
   });
@@ -647,11 +656,16 @@ describe("core product methods", function () {
           _id: {
             $ne: product._id
           }
-        }, {sort: { handle: 1 }}).fetch();
+        }, {
+          sort: {
+            handle: 1
+          }
+        }).fetch();
         const productCloned = newProducts[0];
         const productCloned2 = newProducts[1];
         expect(productCloned.handle).toEqual(product.handle + "-copy");
-        expect(productCloned2.handle).toEqual(product.handle + "-copy-2");
+        expect(productCloned2.handle).toEqual(product.handle +
+          "-copy-2");
         return done();
       });
   });
@@ -728,7 +742,8 @@ describe("core product methods", function () {
           product._id, position);
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
 
-      const updatedProduct = ReactionCore.Collections.Products.findOne(product._id);
+      const updatedProduct = ReactionCore.Collections.Products.findOne(
+        product._id);
       expect(updatedProduct.positions[0].tag).toEqual(tag._id);
       return done();
     });
