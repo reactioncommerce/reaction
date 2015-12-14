@@ -68,7 +68,7 @@ ReactionSimpleProduct = {
       if (product.hashtags) {
         return _.map(product.hashtags, function (id) {
           console.log("ID", id);
-          return Tags.findOne(id);
+          return ReactionCore.Collections.Tags.findOne(id);
         });
       }
     }

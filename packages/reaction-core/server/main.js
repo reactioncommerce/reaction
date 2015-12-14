@@ -16,36 +16,6 @@ _.extend(ReactionCore, {
     ReactionRegistry.loadPackages();
     return true;
   },
-  getCurrentShopCursor: function (client) {
-    let domain = this.getDomain(client);
-    let cursor = ReactionCore.Collections.Shops.find({
-      domains: domain
-    }, {
-      limit: 1
-    });
-    if (!cursor.count()) {
-      ReactionCore.Log.debug("Add a domain entry to shops for ",
-        domain);
-    }
-    return cursor;
-  },
-  getCurrentShop: function (client) {
-    if (this.getCurrentShopCursor(client)) {
-      let cursor = this.getCurrentShopCursor(client);
-      return cursor.fetch()[0];
-    }
-  },
-  getShopId: function (client) {
-    if (this.getCurrentShop(client)) {
-      return this.getCurrentShop(client)._id;
-    }
-  },
-  getDomain: function () {
-    if (Meteor.absoluteUrl()) {
-      return Meteor.absoluteUrl().split("/")[2].split(":")[0];
-    }
-    return "localhost";
-  },
   /**
    * hasPermission - server permissions checks
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"

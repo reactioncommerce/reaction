@@ -292,8 +292,11 @@ ReactionRegistry.setDomain = function () {
 };
 
 /**
+ *  ReactionRegistry.setShopName
  *  @private ReactionRegistry.setShopName
+ *  @params {Object} shop - shop
  *  @summary when new shop is created, set shop name if REACTION_SHOP_NAME env var exists
+ *  @returns {undefined} undefined
  */
 ReactionRegistry.setShopName = function (shop) {
   const Shops = ReactionCore.Collections.Shops;
@@ -301,7 +304,7 @@ ReactionRegistry.setShopName = function (shop) {
 
   if (shopName) {
     // if this shop name has already been used, don't use it again
-    if (!!Shops.findOne({ name: shopName })) {
+    if (!!ReactionCore.Collections.Shops.findOne({ name: shopName })) {
       ReactionCore.Log.info(`Default shop name ${shopName} already used`);
     } else {
       // update the shop name with the REACTION_SHOP_NAME env var

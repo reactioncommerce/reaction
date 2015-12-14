@@ -2,23 +2,23 @@ describe("Publication", function () {
   let shop;
   beforeEach(function () {
     // reset
-    Products.remove({});
-    Shops.remove({});
-    Orders.remove({});
+    ReactionCore.Collections.Orders.remove({});
+    ReactionCore.Collections.Products.remove({});
+    ReactionCore.Collections.Shops.remove({});
     // insert products and shops
     shop = Factory.create("shop");
   });
 
   describe("with products", function () {
     beforeEach(function () {
-      Products.insert({
+      ReactionCore.Collections.Products.insert({
         title: "My Little Pony",
         shopId: shop._id,
         type: "simple",
         variants: [],
         isVisible: false
       });
-      Products.insert({
+      ReactionCore.Collections.Products.insert({
         title: "Shopkins - Peachy",
         shopId: shop._id,
         type: "simple",
@@ -73,7 +73,7 @@ describe("Publication", function () {
     describe("Product", function () {
       it("should return a product based on an id", function () {
         // setup
-        product = Products.findOne({
+        product = ReactionCore.Collections.Products.findOne({
           isVisible: true
         });
         spyOn(ReactionCore, "getCurrentShop").and.returnValue(
@@ -91,7 +91,8 @@ describe("Publication", function () {
         spyOn(ReactionCore, "getCurrentShop").and.returnValue(
           shop);
         // execute
-        cursor = Meteor.server.publish_handlers.Product("shopkins");
+        cursor = Meteor.server.publish_handlers.Product(
+          "shopkins");
         // verify
         data = cursor.fetch()[0];
         expect(data.title).toEqual("Shopkins - Peachy");
@@ -132,12 +133,12 @@ describe("Publication", function () {
     let userId = Factory.get("user");
 
     beforeEach(function () {
-      Orders.insert({
+      ReactionCore.Collections.Orders.insert({
         shopId: shop._id,
         userId: userId,
         status: "created"
       });
-      order = Orders.findOne();
+      order = ReactionCore.Collections.Orders.findOne();
     });
 
     it("should return shop orders for an admin", function () {

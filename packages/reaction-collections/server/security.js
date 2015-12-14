@@ -17,9 +17,15 @@
  * Assign to some local letiables to keep code
  * short and sweet
  */
+let Accounts = ReactionCore.Collections.Accounts;
+
 let Cart = ReactionCore.Collections.Cart;
 
 let Discounts = ReactionCore.Collections.Discounts;
+
+let Jobs = ReactionCore.Collections.Jobs;
+
+let Layouts = ReactionCore.Collections.Layouts;
 
 let Media = ReactionCore.Collections.Media;
 
@@ -36,6 +42,8 @@ let Shops = ReactionCore.Collections.Shops;
 let Tags = ReactionCore.Collections.Tags;
 
 let Taxes = ReactionCore.Collections.Taxes;
+
+let Templates = ReactionCore.Collections.Templates;
 
 let Translations = ReactionCore.Collections.Translations;
 
@@ -67,7 +75,8 @@ Security.defineMethod("ifFileBelongsToShop", {
 Security.defineMethod("ifUserIdMatches", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
-    return userId && doc.userId && doc.userId !== userId || doc.userId && !userId;
+    return userId && doc.userId && doc.userId !== userId || doc.userId &&
+      !userId;
   }
 });
 
@@ -94,8 +103,19 @@ Security.defineMethod("ifSessionIdMatches", {
  * Permissive security for users with the "admin" role
  */
 
-Security.permit(["insert", "update", "remove"]).collections([Products, Tags,
-  Translations, Discounts, Taxes, Shipping, Orders, Packages
+Security.permit(["insert", "update", "remove"]).collections([
+  Accounts,
+  Products,
+  Tags,
+  Translations,
+  Discounts,
+  Taxes,
+  Shipping,
+  Orders,
+  Packages,
+  Layouts,
+  Templates,
+  Jobs
 ]).ifHasRole({
   role: "admin",
   group: ReactionCore.getShopId()
@@ -150,6 +170,14 @@ Cart.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["anonymous", "guest"],
   group: ReactionCore.getShopId()
 }).ifShopIdMatchesThisId().ifUserIdMatches().ifSessionIdMatches().apply();
+
+/*
+ * Users may update their own account
+ */
+// Accounts.permit(["insert", "update"]).ifHasRole({
+//   role: ["anonymous", "guest"],
+//   group: ReactionCore.getShopId()
+// }).ifUserIdMatches().apply();
 
 /*
  * apply download permissions to file collections

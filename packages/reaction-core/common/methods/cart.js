@@ -20,7 +20,7 @@ Meteor.methods({
     this.unblock();
 
     if (!quantity) {
-      return Cart.update({
+      return ReactionCore.Collections.Cart.update({
         _id: cartId
       }, {
         $pull: {
@@ -40,7 +40,7 @@ Meteor.methods({
     }
     // if quantity lets convert to negative and increment
     let removeQuantity = Math.abs(quantity) * -1;
-    return Cart.update({
+    return ReactionCore.Collections.Cart.update({
       _id: cartId,
       items: cartItem
     }, {

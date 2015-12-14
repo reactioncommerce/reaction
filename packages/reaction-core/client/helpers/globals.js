@@ -67,7 +67,7 @@ this.getProductsByTag = function (tag) {
       $in: hashtags
     };
   }
-  let cursor = Products.find(selector);
+  let cursor = ReactionCore.Collections.Products.find(selector);
   return cursor;
 };
 
