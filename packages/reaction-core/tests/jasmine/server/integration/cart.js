@@ -8,8 +8,9 @@ describe("cart methods", function () {
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
       spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+      spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
 
-      let cartId = Meteor.call("cart/createCart", userId);
+      let cartId = Meteor.call("cart/createCart", userId, shop._id);
       let cart = ReactionCore.Collections.Cart.findOne({
         userId: userId
       });
@@ -26,8 +27,9 @@ describe("cart methods", function () {
 
       it("should add item to cart", function (done) {
         spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         const product = Factory.create("product");
-        const cartId = Meteor.call("cart/createCart", userId);
+        const cartId = Meteor.call("cart/createCart", userId, shop._id);
         const productId = product._id;
         const variantData = product.variants[0];
         const quantity = 1;
@@ -50,11 +52,12 @@ describe("cart methods", function () {
       it("should merge all items of same variant in cart", function (
         done) {
         spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         const product = Factory.create("product");
         const productId = product._id;
         const variantData = product.variants[0];
         const quantity = 1;
-        const cartId = Meteor.call("cart/createCart", userId);
+        const cartId = Meteor.call("cart/createCart", userId, shop._id);
 
         Meteor.call("cart/addToCart", cartId, productId,
           variantData, quantity);
