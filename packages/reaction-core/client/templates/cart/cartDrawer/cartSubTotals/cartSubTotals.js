@@ -5,6 +5,6 @@
  */
 Template.cartSubTotals.helpers({
   cart: function() {
-    return Cart.findOne();
+    return ReactionCore.Collections.Cart.findOne();
   }
 });

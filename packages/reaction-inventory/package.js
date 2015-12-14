@@ -21,7 +21,7 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("ddp-rate-limiter");
   api.use("blaze-html-templates");
-  api.use("reactioncommerce:core@0.9.5");
+  api.use("reactioncommerce:core@0.10.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
 
   api.addFiles("common/globals.js"); // Inventory Globals
@@ -47,14 +47,14 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.2");
+  api.use("sanjo:jasmine@0.20.3");
   api.use("ecmascript");
   api.use("jquery");
   api.use("underscore");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("reactioncommerce:core");
+  api.use("reactioncommerce:core@0.10.0");
   api.use("reactioncommerce:reaction-factories");
   api.use("reactioncommerce:reaction-inventory");
 

@@ -25,6 +25,7 @@ Accounts.registerLoginHandler(function (options) {
 // a generator function
 // for services extraction
 function services(obj) {
+  if (!obj) return [];
   for (let key of Object.keys(obj)) {
     return [key, obj[key]];
   }
@@ -46,7 +47,8 @@ Accounts.onCreateUser(function (options, user) {
   // init default user roles
   // we won't create users unless we have a shop.
   if (shop) {
-    if (user.services === undefined) {
+    // if we don't have user.services we're an anonymous user
+    if (!user.services) {
       roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
     } else {
       roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
@@ -282,7 +284,7 @@ Meteor.methods({
     check(email, String);
     check(name, String);
     this.unblock();
-    shop = Shops.findOne(shopId);
+    shop = ReactionCore.Collections.Shops.findOne(shopId);
 
     if (!ReactionCore.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access denied");
@@ -327,7 +329,7 @@ Meteor.methods({
         });
         SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
         try {
-          Email.send({
+          return Email.send({
             to: email,
             from: `${shop.name} <${shop.emails[0].address}>`,
             subject: `You have been invited to join ${shop.name}`,
@@ -345,7 +347,7 @@ Meteor.methods({
       } else {
         SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
         try {
-          Email.send({
+          return Email.send({
             to: email,
             from: `${shop.name} <${shop.emails[0].address}>`,
             subject: `You have been invited to join the ${shop.name}`,

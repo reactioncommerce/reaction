@@ -7,8 +7,14 @@
 ReactionEmailTemplate = function (template) {
   check(template, String);
   let source;
+  let lang = "en";
 
-  const lang = Meteor.call("shop/getLocale").locale.languages;
+  const shopLocale = Meteor.call("shop/getLocale");
+
+  if (shopLocale && shopLocale.locale && shopLocale.locale.languages) {
+    lang = shopLocale.locale.languages;
+  }
+
   // using layout where in the future a more comprehensive rule based
   // filter of the email templates can be implemented.
   const tpl = ReactionCore.Collections.Layouts.findOne({

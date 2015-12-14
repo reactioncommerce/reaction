@@ -103,12 +103,12 @@ Meteor.methods({
     this.unblock();
     let sessionId;
     let userId = createForUserId || this.userId;
-    let Cart = ReactionCore.Collections.Cart;
+    let shopId = ReactionCore.getShopId();
     let currentCartId;
 
     // find current userCart
     // this is the only true cart
-    let currentUserCart = Cart.findOne({
+    let currentUserCart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
 
@@ -120,7 +120,7 @@ Meteor.methods({
     }
     ReactionCore.Log.debug("current cart serverSession", sessionId);
     // while anonymous and merge into user cart
-    let sessionCartCount = Cart.find({
+    let sessionCartCount = ReactionCore.Collections.Cart.find({
       session: sessionId,
       userId: {
         $ne: userId
@@ -134,7 +134,7 @@ Meteor.methods({
       currentCartId = currentUserCart._id;
     }
 
-    ReactionCore.Log.debug("create cart: shopId", shopId);
+    ReactionCore.Log.info("create cart: shopId", shopId);
     ReactionCore.Log.debug("create cart: userId", userId);
     ReactionCore.Log.debug("create cart: sessionId", sessionId);
     ReactionCore.Log.debug("create cart: currentUserCart", currentCartId);
@@ -145,8 +145,9 @@ Meteor.methods({
     // if we have a session cart, but just create or
     // authenticated into a new user we need to create a user
     // cart for the new authenticated user.
+
     if (!currentCartId && anonymousUser === false) {
-      currentCartId = Cart.insert({
+      currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
         userId: userId
       });
@@ -161,9 +162,8 @@ Meteor.methods({
         " for user " + userId);
       Meteor.call("cart/mergeCart", currentCartId);
     } else if (!currentCartId) { // Create empty cart if there is none.
-      currentCartId = Cart.insert({
+      currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
-        shopId: shopId,
         userId: userId
       });
       ReactionCore.Log.debug(
@@ -280,7 +280,6 @@ Meteor.methods({
           order.email = email.address;
         }
       }
-      if (!order.email) order.email = "anonymous@localhost";
     }
 
     // schema should provide order defaults

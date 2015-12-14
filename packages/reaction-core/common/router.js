@@ -241,9 +241,9 @@ Router.map(function () {
       if (this.ready()) {
         id = this.params._id;
         return {
-          tag: Tags.findOne({
+          tag: ReactionCore.Collections.Tags.findOne({
             slug: id
-          }) || Tags.findOne(id)
+          }) || ReactionCore.Collections.Tags.findOne(id)
         };
       }
     }

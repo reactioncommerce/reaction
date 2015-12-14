@@ -28,7 +28,7 @@ Meteor.methods({
     };
     const { Cart, Packages, Shops } = ReactionCore.Collections;
     const { Log } = ReactionCore;
-    const currentCart = Cart.findOne({
+    const currentCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 

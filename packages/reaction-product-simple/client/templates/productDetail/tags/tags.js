@@ -48,7 +48,7 @@ Template.productTagInputForm.events({
       source: function (request, response) {
         let datums = [];
         let slug = getSlug(request.term);
-        Tags.find({
+        ReactionCore.Collections.Tags.find({
           slug: new RegExp(slug, "i")
         }).forEach(function (tag) {
           return datums.push({

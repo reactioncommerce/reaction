@@ -32,7 +32,7 @@ _.extend(ReactionCore, {
   schemaIdAutoValue: function () {
     if (this.isSet && Meteor.isServer) {
       return this.value;
-    } else if ((Meteor.isServer && this.operator !== "$pull") ||
+    } else if (Meteor.isServer && this.operator !== "$pull" ||
       Meteor.isClient && this.isInsert) {
       return Random.id();
     }

@@ -26,7 +26,7 @@ describe("inventory method", function () {
       const quantity = product.variants[0].inventoryQuantity;
       Meteor.call("products/cloneVariant", productId, product.variants[
         0]._id, product.variants[0]._id);
-      product = Products.findOne(product._id);
+      product = ReactionCore.Collections.Products.findOne(product._id);
       const newChildVariant = product.variants[product.variants.length - 1];
       expect(undefined).toEqual(newChildVariant.inventoryQuantity);
       newChildVariant["inventoryQuantity"] = 10;

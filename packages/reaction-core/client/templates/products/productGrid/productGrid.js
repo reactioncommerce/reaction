@@ -62,7 +62,7 @@ Template.productGrid.events({
     loadMoreProducts();
   },
 
-  "change input[name=selectProduct]": (event, template) => {
+  "change input[name=selectProduct]": (event) => {
     let selectedProducts = Session.get("productGrid/selectedProducts");
 
     if (event.target.checked) {
@@ -143,7 +143,7 @@ Template.productGrid.helpers({
       };
     }
 
-    let gridProducts = Products.find(selector).fetch();
+    let gridProducts = ReactionCore.Collections.Products.find(selector).fetch();
 
     for (let index in gridProducts) {
       if ({}.hasOwnProperty.call(gridProducts, index)) {
