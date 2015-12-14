@@ -1,12 +1,16 @@
 /* eslint dot-notation: 0 */
 describe("cart methods", function () {
   let user = Factory.create("user");
+  let shop = Factory.create("shop");
   let userId = user._id;
   ReactionCore.sessionId = Random.id(); // Required for creating a cart
 
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
-      let cartId = Meteor.call("cart/createCart", userId);
+      spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+      spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+
+      let cartId = Meteor.call("cart/createCart", userId, shop._id);
       let cart = ReactionCore.Collections.Cart.findOne({
         userId: userId
       });
@@ -22,18 +26,23 @@ describe("cart methods", function () {
       });
 
       it("should add item to cart", function (done) {
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         const product = Factory.create("product");
-        const cartId = Meteor.call("cart/createCart", userId);
+        const cartId = Meteor.call("cart/createCart", userId, shop._id);
         const productId = product._id;
         const variantData = product.variants[0];
         const quantity = 1;
+
         Meteor.call("cart/addToCart", cartId, productId,
           variantData, quantity);
+
         let carts = ReactionCore.Collections.Cart.find({
           _id: cartId
         }, {
           items: product
         }).fetch();
+
         expect(_.size(carts)).toEqual(1);
         expect(_.size(carts[0].items)).toEqual(1);
         expect(carts[0].items[0].productId).toEqual(productId);
@@ -42,11 +51,13 @@ describe("cart methods", function () {
 
       it("should merge all items of same variant in cart", function (
         done) {
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         const product = Factory.create("product");
         const productId = product._id;
         const variantData = product.variants[0];
         const quantity = 1;
-        const cartId = Meteor.call("cart/createCart", userId);
+        const cartId = Meteor.call("cart/createCart", userId, shop._id);
 
         Meteor.call("cart/addToCart", cartId, productId,
           variantData, quantity);

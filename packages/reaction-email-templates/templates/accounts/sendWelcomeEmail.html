@@ -728,7 +728,7 @@ body.outlook p {
     }
 
     .callout .panel {
-      background: #ECF8FF;
+      background: #fff;
       border-color: #b9e5ff;
     }
 
@@ -814,7 +814,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <h1>Hi, {{invitedUserName}}</h1>
+                            <h1>Hi, {{user.username}}</h1>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -823,7 +823,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <p class="lead"><strong>{{currentUserName}}</strong> invited you to join <strong>{{shop.name}}</strong>.</p>
+                            <p class="lead">Welcome to <strong>{{shop.name}}</strong>.</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -841,8 +841,9 @@ body.outlook p {
                         <tr>
                           <td class="panel">
 
-                            <p>You're invited!</p>
-                            <p>If you don't want to accept this invitation or think you were mistaken for someone else please let us know!</p>
+                            <p>We're excited to have you at {{shop.name}}!</p>
+                            <p>Thank you for taking the time to register at {{shop.name}}.</p>
+                            <p> We'll keep this introduction simple. Welcome aboard!</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -859,7 +860,7 @@ body.outlook p {
                             <table class="button">
                               <tr>
                                 <td>
-                                  <a href="{{url}}">Accept invitation</a>
+                                  <a href="{{homepage}}">Visit {{shop.name}}</a>
                                 </td>
                               </tr>
                             </table>

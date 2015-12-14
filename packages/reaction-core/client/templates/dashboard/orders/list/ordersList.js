@@ -3,6 +3,11 @@
  *
  */
 Template.dashboardOrdersList.helpers({
+  orderStatus: function () {
+    if (this.workflow.status === "coreOrderCompleted") {
+      return true;
+    }
+  },
   orders: function (data) {
     if (data.hash.data) {
       return data.hash.data;
@@ -21,7 +26,7 @@ Template.dashboardOrdersList.helpers({
     return this.shipping[0].shipmentMethod.tracking;
   },
   shopName: function () {
-    let shop = Shops.findOne(this.shopId);
+    let shop = ReactionCore.Collections.Shops.findOne(this.shopId);
     return shop !== null ? shop.name : void 0;
   }
 });

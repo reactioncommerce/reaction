@@ -4,7 +4,7 @@
   "createdAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
   },
-  "description": "This is an example product. Sign in as administrator to edit.\nYou can clone this product from the product grid.\nYou can upload images click or drag in image box on the left here.\nTag this product below, and then add tag in navigation.\nClick the bookmark in the tag to set product url.\nOption variants, price, quantity, and child variants are created by clicking on the variant below, clone the variant to add more options.\nDetails can be added below the image for more specific product information.\n Login next to the cart, and then click the dashboard icon for more tools.",
+  "description": "Sign in as administrator to edit.\nYou can clone this product from the product grid.\nYou can upload images click or drag in image box on the left here.\nTag this product below, and then add tag in navigation.\nClick the bookmark in the tag to set product url.\nOption variants, price, quantity, and child variants are created by clicking on the variant below, clone the variant to add more options.\nDetails can be added below the image for more specific product information.\n Login next to the cart, and then click the dashboard icon for more tools.",
   "handle": "example-product",
   "hashtags": [
     "rpjCvTBGjhBi2xdro",
@@ -18,9 +18,9 @@
     "key": "Quality",
     "value": "Excellent"
   }],
-  "pageTitle": "Basic Example Product",
+  "pageTitle": "This is a basic product. You can do a lot with it.",
   "type": "simple",
-  "title": "Example Product",
+  "title": "Basic Reaction Product",
   "updatedAt": {
     "$date": "2014-06-01T12:17:13.949-0700"
   },
@@ -37,7 +37,7 @@
       "$date": "2014-04-03T13:46:52.411-0700"
     },
     "weight": 35,
-    "inventoryQuantity": 49,
+    "inventoryQuantity": 15,
     "metafields": [{
       "key": null,
       "value": null
@@ -45,7 +45,7 @@
     "taxable": false
   }, {
     "_id": "SMr4rhDFnYvFMtDTX",
-    "title": "Basic Example Variant",
+    "title": "Option 1 - Red Dwarf",
     "price": 19.99,
     "inventoryManagement": true,
     "inventoryPolicy": true,
@@ -56,17 +56,17 @@
       "$date": "2014-04-03T13:46:52.411-0700"
     },
     "weight": 35,
-    "inventoryQuantity": 45,
+    "inventoryQuantity": 15,
     "metafields": [{
       "key": null,
       "value": null
     }],
     "taxable": false,
     "parentId": "6qiqPwBkeJdtdQc4G",
-    "optionTitle": "Option 1"
+    "optionTitle": "Red"
   }, {
     "_id": "CJoRBm9vRrorc9mxZ",
-    "title": "Basic - Option 2",
+    "title": "Option 2 - Green Tomato",
     "price": 12.99,
     "inventoryManagement": true,
     "inventoryPolicy": true,
@@ -84,7 +84,7 @@
     }],
     "taxable": false,
     "parentId": "6qiqPwBkeJdtdQc4G",
-    "optionTitle": "Option 2"
+    "optionTitle": "Green"
   }],
   "vendor": "Example Manufacturer"
 }]

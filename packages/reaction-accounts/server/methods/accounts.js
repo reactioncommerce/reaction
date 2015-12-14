@@ -3,7 +3,6 @@
  * creates a login type "anonymous"
  * default for all unauthenticated visitors
  */
-
 Accounts.registerLoginHandler(function (options) {
   if (!options.anonymous) {
     return void 0;
@@ -23,7 +22,14 @@ Accounts.registerLoginHandler(function (options) {
   return loginHandler;
 });
 
-
+// a generator function
+// for services extraction
+function services(obj) {
+  if (!obj) return [];
+  for (let key of Object.keys(obj)) {
+    return [key, obj[key]];
+  }
+}
 /**
  * Accounts.onCreateUser event
  * adding either a guest or anonymous role to the user on create
@@ -33,39 +39,53 @@ Accounts.registerLoginHandler(function (options) {
  *
  * see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
-
 Accounts.onCreateUser(function (options, user) {
   let shop = ReactionCore.getCurrentShop();
   let shopId = ReactionCore.getShopId();
   let roles = {};
-
-  // clone before adding roles
-  let account = _.clone(user);
-  account.userId = user._id;
-  ReactionCore.Collections.Accounts.insert(account);
+  if (!user.emails) user.emails = [];
   // init default user roles
+  // we won't create users unless we have a shop.
   if (shop) {
-    if (user.services === undefined) {
+    // if we don't have user.services we're an anonymous user
+    if (!user.services) {
       roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
     } else {
       roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
+      // also add services with email defined to user.emails[]
+      for (let service of services(user.services)) {
+        if (service.email) {
+          email = {
+            provides: "default",
+            address: service.email,
+            verified: true
+          };
+          user.emails.push(email);
+        }
+      }
     }
+    // clone before adding roles
+    let account = _.clone(user);
+    account.userId = user._id;
+    ReactionCore.Collections.Accounts.insert(account);
+    // send welcome email to new users
+    Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+    // assign default user roles
+    user.roles = roles;
+    return user;
   }
-  // assign default user roles
-  user.roles = roles;
-  return user;
 });
 
 /**
  * Accounts.onLogin event
  * automatically push checkoutLogin when users login.
- * let"s remove "anonymous" role, if the login type isn't "anonymous"
- * @param
- * @returns
+ * let's remove "anonymous" role, if the login type isn't "anonymous"
+ * @param {Object} options - user account creation options
+ * @returns {Object} returns workflow/pushCartWorkflow results
  */
 Accounts.onLogin(function (options) {
   // remove anonymous role
-  // all users are guest, but anonymous user don"t have profile access
+  // all users are guest, but anonymous user don' t have profile access
   // or ability to order history, etc. so ensure its removed upon login.
   if (options.type !== "anonymous" && options.type !== "resume") {
     let update = {
@@ -83,7 +103,9 @@ Accounts.onLogin(function (options) {
     ReactionCore.Log.debug("removed anonymous role from user: " + options.user._id);
 
     // onLogin, we want to merge session cart into user cart.
-    cart = ReactionCore.Collections.Cart.findOne({userId: options.user._id});
+    cart = ReactionCore.Collections.Cart.findOne({
+      userId: options.user._id
+    });
     Meteor.call("cart/mergeCart", cart._id);
 
     // logged in users need an additonal worfklow push to get started with checkoutLogin
@@ -213,10 +235,15 @@ Meteor.methods({
     return doc;
   },
 
-  /*
+  /**
+   * accounts/inviteShopMember
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
+   * @params {String} shopId - shop to invite user
+   * @params {String} email - email of invitee
+   * @params {String} name - name to address email
+   * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
     if (!ReactionCore.hasAdminAccess()) {
@@ -231,7 +258,7 @@ Meteor.methods({
     check(email, String);
     check(name, String);
     this.unblock();
-    shop = Shops.findOne(shopId);
+    shop = ReactionCore.Collections.Shops.findOne(shopId);
 
     if (!ReactionCore.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access denied");
@@ -274,13 +301,13 @@ Meteor.methods({
             }
           }
         });
-        SSR.compileTemplate("shopMemberInvite", Assets.getText("server/emailTemplates/shopMemberInvite.html"));
+        SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
         try {
-          Email.send({
+          return Email.send({
             to: email,
-            from: currentUserName + " <" + shop.emails[0].address + ">",
-            subject: "You have been invited to join " + shop.name,
-            html: SSR.render("shopMemberInvite", {
+            from: `${shop.name} <${shop.emails[0].address}>`,
+            subject: `You have been invited to join ${shop.name}`,
+            html: SSR.render("accounts/inviteShopMember", {
               homepage: Meteor.absoluteUrl(),
               shop: shop,
               currentUserName: currentUserName,
@@ -292,13 +319,13 @@ Meteor.methods({
           throw new Meteor.Error(403, "Unable to send invitation email.");
         }
       } else {
-        SSR.compileTemplate("shopMemberInvite", Assets.getText("server/emailTemplates/shopMemberInvite.html"));
+        SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
         try {
-          Email.send({
+          return Email.send({
             to: email,
-            from: currentUserName + " <" + shop.emails[0].address + ">",
-            subject: "You have been invited to join the " + shop.name,
-            html: SSR.render("shopMemberInvite", {
+            from: `${shop.name} <${shop.emails[0].address}>`,
+            subject: `You have been invited to join the ${shop.name}`,
+            html: SSR.render("accounts/inviteShopMember", {
               homepage: Meteor.absoluteUrl(),
               shop: shop,
               currentUserName: currentUserName,
@@ -316,36 +343,63 @@ Meteor.methods({
     return true;
   },
 
-  /*
+  /**
+   * accounts/sendWelcomeEmail
    * send an email to consumers on sign up
+   * @param {String} shopId - shopId of new User
+   * @param {String} userId - new userId to welcome
+   * @returns {Boolean} returns boolean
    */
   "accounts/sendWelcomeEmail": function (shopId, userId) {
-    let email;
-    check(shop, Object);
+    check(shopId, String);
+    check(userId, String);
     this.unblock();
-    email = Meteor.user(userId).emails[0].address;
-    ReactionCore.configureMailUrl();
-    SSR.compileTemplate("welcomeNotification", Assets.getText("server/emailTemplates/welcomeNotification.html"));
-    Email.send({
-      to: email,
-      from: shop.emails[0],
-      subject: "Welcome to " + shop.name + "!",
-      html: SSR.render("welcomeNotification", {
-        homepage: Meteor.absoluteUrl(),
-        shop: shop,
-        user: Meteor.user()
-      })
-    });
-    return true;
-  },
+    const user = ReactionCore.Collections.Accounts.findOne(userId);
+    const shop = ReactionCore.Collections.Shops.findOne(shopId);
+    let shopEmail;
 
-  /*
+    // anonymous users arent welcome here
+    if (!user.emails || !user.emails.length > 0) {
+      return true;
+    }
+
+    let userEmail = user.emails[0].address;
+
+    // provide some defaults for missing shop email.
+    if (!shop.emails) {
+      shopEmail = `${shop.name}@localhost`;
+      ReactionCore.Log.debug(`Shop email address not configured. Using ${shopEmail}`);
+    } else {
+      shopEmail = shop.emails[0].address;
+    }
+
+    // configure email
+    ReactionCore.configureMailUrl();
+    // fetch and send templates
+    SSR.compileTemplate("accounts/sendWelcomeEmail", ReactionEmailTemplate("accounts/sendWelcomeEmail"));
+    try {
+      return Email.send({
+        to: userEmail,
+        from: `${shop.name} <${shopEmail}>`,
+        subject: `Welcome to ${shop.name}!`,
+        html: SSR.render("accounts/sendWelcomeEmail", {
+          homepage: Meteor.absoluteUrl(),
+          shop: shop,
+          user: Meteor.user()
+        })
+      });
+    } catch (e) {
+      ReactionCore.Log.warn(e);
+    }
+  },
+  /**
    * accounts/addUserPermissions
-   * @param {Array|String} permission
+   * @params {String} userId - userId
+   * @params {Array|String} permissions -
    *               Name of role/permission.  If array, users
    *               returned will have at least one of the roles
    *               specified but need not have _all_ roles.
-   * @param {String} [group] Optional name of group to restrict roles to.
+   * @params {String} [group] Optional name of group to restrict roles to.
    *                         User"s Roles.GLOBAL_GROUP will also be checked.
    * @returns {Boolean} success/failure
    */
@@ -383,8 +437,12 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
    * accounts/setUserPermissions
+   * @params {String} userId - userId
+   * @params {String|Array} permissions - string/array of permissions
+   * @params {String} groups - group
+   * @returns {Boolean} returns Roles.setUserRoles result
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {
     if (!ReactionCore.hasAdminAccess()) {
@@ -397,7 +455,8 @@ Meteor.methods({
     try {
       return Roles.setUserRoles(userId, permissions, group);
     } catch (error) {
-      return ReactionCore.Log.info(error);
+      ReactionCore.Log.info(error);
+      return error;
     }
   }
 });

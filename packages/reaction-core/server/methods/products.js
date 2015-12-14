@@ -3,6 +3,61 @@
  */
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
+/* eslint quotes: 0 */
+/**
+ * @function createTitle
+ * @description Recursive method which trying to find a new `title`, given the
+ * existing copies
+ * @param {String} newTitle - product `title`
+ * @param {String} productId - current product `_id`
+ * @return {String} title - modified `title`
+ */
+function createTitle(newTitle, productId) {
+  // exception product._id needed for cases then double triggering happens
+  let title = newTitle || "";
+  let titleCount = ReactionCore.Collections.Products.find({
+    title: title,
+    _id: {
+      $nin: [productId]
+    }
+  }).count();
+  // current product "copy" number
+  let titleNumberSuffix = 0;
+  // product handle prefix
+  let titleString = title;
+  // copySuffix "-copy-number" suffix of product
+  let copySuffix = titleString.match(/-copy-\d+$/) || titleString.match(/-copy$/);
+  // if product is a duplicate, we should take the copy number, and cut
+  // the handle
+  if (copySuffix) {
+    // we can have two cases here: copy-number and just -copy. If there is
+    // no numbers in copySuffix then we should put 1 in handleNumberSuffix
+    titleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
+    // removing last numbers and last "-" if it presents
+    titleString = title.replace(/\d+$/, '').replace(/-$/, '');
+  }
+
+  // if we have more than one product with the same handle, we should mark
+  // it as "copy" or increment our product handle if it contain numbers.
+  if (titleCount > 0) {
+    // if we have product with name like "product4", we should take care
+    // about its uniqueness
+    if (titleNumberSuffix > 0) {
+      title = `${titleString}-${titleNumberSuffix + titleCount}`;
+    } else {
+      // first copy will be "...-copy", second: "...-copy-2"
+      title = `${titleString}-copy${ titleCount > 1 ? "-" + titleCount : ""}`;
+    }
+  }
+
+  // we should check again if there are any new matches with DB
+  if (ReactionCore.Collections.Products.find({
+    title: title
+  }).count() !== 0) {
+    title = createTitle(title, productId);
+  }
+  return title;
+}
 
 /**
  * @function createHandle
@@ -12,9 +67,10 @@
  * @param {String} productId - current product `_id`
  * @return {String} handle - modified `handle`
  */
-function createHandle(handle, productId) {
+function createHandle(productHandle, productId) {
+  let handle = productHandle || "";
   // exception product._id needed for cases then double triggering happens
-  let handleCount = Products.find({
+  let handleCount = ReactionCore.Collections.Products.find({
     handle: handle,
     _id: { $nin: [productId]
     }}).count();
@@ -51,7 +107,7 @@ function createHandle(handle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (Products.find({ handle: handle }).count() !== 0) {
+  if (ReactionCore.Collections.Products.find({ handle: handle }).count() !== 0) {
     handle = createHandle(handle, productId);
   }
 
@@ -118,7 +174,7 @@ Meteor.methods({
     }
     this.unblock();
 
-    product = Products.findOne(productId);
+    product = ReactionCore.Collections.Products.findOne(productId);
     // create variant hierachy structure
     const variant = processVariants("_id");
 
@@ -139,7 +195,7 @@ Meteor.methods({
         parentId);
       clone.parentId = variantId;
       delete clone.inventoryQuantity;
-      Products.update({
+      ReactionCore.Collections.Products.update({
         _id: productId
       }, {
         $push: {
@@ -156,10 +212,11 @@ Meteor.methods({
     delete clone.createdAt;
     delete clone.inventoryQuantity;
     delete clone.title;
-    /*ReactionCore.*/copyMedia(productId, variant[0]._id, clone._id);
+    // clone media
+    copyMedia(productId, variant[0]._id, clone._id);
 
     // push the new variant to the product
-    Products.update({
+    ReactionCore.Collections.Products.update({
       _id: productId
     }, {
       $push: {
@@ -182,7 +239,7 @@ Meteor.methods({
         childClone._id = Random.id();
         childClone.parentId = clone._id;
         /*ReactionCore.*/copyMedia(productId, variantOldId, childClone._id);
-        Products.update({
+        ReactionCore.Collections.Products.update({
           _id: productId
         }, {
           $push: {
@@ -228,7 +285,7 @@ Meteor.methods({
       };
     }
 
-    Products.update({
+    ReactionCore.Collections.Products.update({
       _id: productId
     }, {
       $addToSet: {
@@ -260,8 +317,7 @@ Meteor.methods({
     this.unblock();
 
     let newVariant;
-    let Products = ReactionCore.Collections.Products;
-    let product = Products.findOne({
+    let product = ReactionCore.Collections.Products.findOne({
       "variants._id": variant._id
     });
     // update variants
@@ -271,7 +327,7 @@ Meteor.methods({
           newVariant = Object.assign({}, variants, variant);
         }
       }
-      return Products.update({
+      return ReactionCore.Collections.Products.update({
         "_id": product._id,
         "variants._id": variant._id
       }, {
@@ -297,10 +353,10 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
-    let product = Products.findOne({
+    let product = ReactionCore.Collections.Products.findOne({
       "variants._id": variants[0]._id
     });
-    return Products.update(product._id, {
+    return ReactionCore.Collections.Products.update(product._id, {
       $set: {
         variants: variants
       }
@@ -322,14 +378,14 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
-    let deleted = Products.find({
+    let deleted = ReactionCore.Collections.Products.find({
       $or: [{
         "variants.parentId": variantId
       }, {
         "variants._id": variantId
       }]
     }).fetch();
-    Products.update({
+    ReactionCore.Collections.Products.update({
       "variants.parentId": variantId
     }, {
       $pull: {
@@ -338,7 +394,7 @@ Meteor.methods({
         }
       }
     });
-    Products.update({
+    ReactionCore.Collections.Products.update({
       "variants._id": variantId
     }, {
       $pull: {
@@ -396,9 +452,9 @@ Meteor.methods({
     for (let product of products) {
       let i = 0;
 
-      let handleCount = Products.find({
-          cloneId: product._id
-        }).count() + 1;
+      let handleCount = ReactionCore.Collections.Products.find({
+        cloneId: product._id
+      }).count() + 1;
 
       product.cloneId = product._id;
       product._id = Random.id();
@@ -412,6 +468,15 @@ Meteor.methods({
           getSlug(product.title),
           product._id
         );
+        product.handle = createHandle(
+          getSlug(product.title),
+          product._id
+        );
+        product.title = createTitle(
+          product.title,
+          product._id
+        );
+
       }
       while (i < product.variants.length) {
         let newVariantId = Random.id();
@@ -438,7 +503,7 @@ Meteor.methods({
         }
         i++;
       }
-      let result = Products.insert(product, {
+      let result = ReactionCore.Collections.Products.insert(product, {
         validate: false
       });
       results.push(result);
@@ -622,10 +687,10 @@ Meteor.methods({
     this.unblock();
     // if a product object was provided
     if (product) {
-      return Products.insert(product);
+      return ReactionCore.Collections.Products.insert(product);
     }
     // default product
-    return Products.insert({
+    return ReactionCore.Collections.Products.insert({
       _id: Random.id(),
       title: "",
       variants: [{
@@ -659,7 +724,7 @@ Meteor.methods({
       productIds = productId;
     }
 
-    let numRemoved = Products.remove({
+    let numRemoved = ReactionCore.Collections.Products.remove({
       _id: {
         $in: productIds
       }
@@ -706,7 +771,7 @@ Meteor.methods({
     let stringValue = EJSON.stringify(value);
     let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
 
-    return Products.update(productId, {
+    return ReactionCore.Collections.Products.update(productId, {
       $set: update
     });
   },
@@ -734,12 +799,12 @@ Meteor.methods({
       name: tagName
     };
 
-    let existingTag = Tags.findOne({
+    let existingTag = ReactionCore.Collections.Tags.findOne({
       name: tagName
     });
 
     if (existingTag) {
-      let productCount = Products.find({
+      let productCount = ReactionCore.Collections.Products.find({
         _id: productId,
         hashtags: {
           $in: [existingTag._id]
@@ -748,7 +813,7 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error(403, "Existing Tag, Update Denied");
       }
-      Products.update(productId, {
+      ReactionCore.Collections.Products.update(productId, {
         $push: {
           hashtags: existingTag._id
         }
@@ -762,8 +827,8 @@ Meteor.methods({
       newTag.shopId = ReactionCore.getShopId();
       newTag.updatedAt = new Date();
       newTag.createdAt = new Date();
-      newTag._id = Tags.insert(newTag);
-      Products.update(productId, {
+      newTag._id = ReactionCore.Collections.Tags.insert(newTag);
+      ReactionCore.Collections.Products.update(productId, {
         $push: {
           hashtags: newTag._id
         }
@@ -787,26 +852,26 @@ Meteor.methods({
     }
     this.unblock();
 
-    Products.update(productId, {
+    ReactionCore.Collections.Products.update(productId, {
       $pull: {
         hashtags: tagId
       }
     });
 
-    let productCount = Products.find({
+    let productCount = ReactionCore.Collections.Products.find({
       hashtags: {
         $in: [tagId]
       }
     }).count();
 
-    let relatedTagsCount = Tags.find({
+    let relatedTagsCount = ReactionCore.Collections.Tags.find({
       relatedTagIds: {
         $in: [tagId]
       }
     }).count();
 
     if (productCount === 0 && relatedTagsCount === 0) {
-      return Tags.remove(tagId);
+      return ReactionCore.Collections.Tags.remove(tagId);
     }
   },
 
@@ -825,10 +890,10 @@ Meteor.methods({
     }
     this.unblock();
 
-    let product = Products.findOne(productId);
+    let product = ReactionCore.Collections.Products.findOne(productId);
     let handle = getSlug(product.title);
     handle = createHandle(handle, product._id);
-    Products.update(product._id, {
+    ReactionCore.Collections.Products.update(product._id, {
       $set: {
         handle: handle
       }
@@ -854,13 +919,13 @@ Meteor.methods({
     }
     this.unblock();
 
-    let product = Products.findOne(productId);
-    let tag = Tags.findOne(tagId);
+    let product = ReactionCore.Collections.Products.findOne(productId);
+    let tag = ReactionCore.Collections.Tags.findOne(tagId);
     // set handle
     if (product.handle === tag.slug) {
       let handle = getSlug(product.title);
       handle = createHandle(handle, product._id);
-      Products.update(product._id, {
+      ReactionCore.Collections.Products.update(product._id, {
         $set: {
           handle: handle
         }
@@ -869,7 +934,7 @@ Meteor.methods({
       return handle;
     }
     // toggle hangle
-    let existingHandles = Products.find({
+    let existingHandles = ReactionCore.Collections.Products.find({
       handle: tag.slug
     }).fetch();
     // this is needed to take care about product's handle which(product) was
@@ -878,13 +943,13 @@ Meteor.methods({
       let currentProductHandle = createHandle(
         getSlug(currentProduct.title),
         currentProduct._id);
-      Products.update(currentProduct._id, {
+      ReactionCore.Collections.Products.update(currentProduct._id, {
         $set: {
           handle: currentProductHandle
         }
       });
     }
-    Products.update(product._id, {
+    ReactionCore.Collections.Products.update(product._id, {
       $set: {
         handle: tag.slug
       }
@@ -910,13 +975,13 @@ Meteor.methods({
     this.unblock();
 
     let updateResult;
-    let product = Products.findOne({
+    let product = ReactionCore.Collections.Products.findOne({
       "_id": productId,
       "positions.tag": positionData.tag
     });
 
     function addPosition() {
-      updateResult = Products.update({
+      updateResult = ReactionCore.Collections.Products.update({
         _id: productId
       }, {
         $addToSet: {
@@ -934,7 +999,7 @@ Meteor.methods({
     }
 
     function updatePosition() {
-      updateResult = Products.update({
+      updateResult = ReactionCore.Collections.Products.update({
         "_id": productId,
         "positions.tag": positionData.tag
       }, {
@@ -983,7 +1048,7 @@ Meteor.methods({
     this.unblock();
     // update existing metadata
     if (meta) {
-      return Products.update({
+      return ReactionCore.Collections.Products.update({
         _id: productId,
         metafields: meta
       }, {
@@ -993,7 +1058,7 @@ Meteor.methods({
       });
     }
     // adds metadata
-    return Products.update({
+    return ReactionCore.Collections.Products.update({
       _id: productId
     }, {
       $addToSet: {
@@ -1025,12 +1090,12 @@ Meteor.methods({
       ReactionCore.Log.info("toggle product visibility ", product._id, !
         product.isVisible);
 
-      Products.update(product._id, {
+      ReactionCore.Collections.Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
         }
       });
-      return Products.findOne(product._id).isVisible;
+      return ReactionCore.Collections.Products.findOne(product._id).isVisible;
     }
     ReactionCore.Log.debug("invalid product visibility ", productId);
     throw new Meteor.Error(400, "Bad Request");

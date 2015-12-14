@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Schemas - core reaction commerce collection schemas",
   name: "reactioncommerce:reaction-schemas",
-  version: "1.0.1",
+  version: "1.0.2",
   documentation: "README.md"
 });
 
@@ -25,6 +25,7 @@ Package.onUse(function (api) {
 
   // schemas
   api.addFiles("common/schemas/address.js");
+  api.addFiles("common/schemas/accounts.js");
   api.addFiles("common/schemas/layouts.js");
   api.addFiles("common/schemas/packages.js");
   api.addFiles("common/schemas/shops.js");
@@ -37,6 +38,7 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/cart.js");
   api.addFiles("common/schemas/orders.js");
   api.addFiles("common/schemas/translations.js");
+  api.addFiles("common/schemas/templates.js");
 
   api.imply("matb33:collection-hooks");
   api.imply("aldeed:collection2");
@@ -49,7 +51,7 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("underscore");
   api.use("random");
-  api.use("sanjo:jasmine@0.20.2");
+  api.use("sanjo:jasmine@0.20.3");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 

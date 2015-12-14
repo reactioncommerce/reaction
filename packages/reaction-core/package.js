@@ -48,20 +48,17 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("reactioncommerce:reaction-collections@1.0.1");
+  api.use("reactioncommerce:reaction-collections@1.0.2");
+  api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.0");
   api.use("iron:router@1.0.12");
 
   api.use("ongoworks:bunyan-logger@2.5.0");
-  api.use("alanning:roles@1.2.13");
-  api.use("ongoworks:security@1.3.0");
-
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.1");
   api.use("utilities:spin@2.3.1", "client");
   api.use("utilities:avatar@0.9.2");
-  api.use("meteorhacks:ssr@2.2.0");
 
   // imply exports package vars
   api.imply("less");
@@ -72,16 +69,13 @@ Package.onUse(function (api) {
   api.imply("browser-policy");
   api.imply("service-configuration");
   api.imply("reactioncommerce:reaction-collections");
-  api.imply("ongoworks:security");
+  api.imply("reactioncommerce:reaction-email-templates");
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
   api.imply("iron:router");
-
-  api.imply("alanning:roles");
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
-  api.imply("meteorhacks:ssr");
 
   // reaction core dependencies
   api.use("reactioncommerce:reaction-ui@0.1.0");
@@ -113,8 +107,8 @@ Package.onUse(function (api) {
   api.addFiles("server/import.js", "server");
   api.addFiles("client/main.js", "client");
   api.addFiles("server/main.js", "server");
+  api.addFiles("server/registry.js", "server");
   api.addFiles("server/register.js", "server");
-  api.addFiles("server/fixtures.js", "server");
   api.addFiles("server/init.js", "server");
   api.addFiles("common/common.js");
 
@@ -143,7 +137,6 @@ Package.onUse(function (api) {
 
   // security
   api.addFiles("server/browserPolicy.js", "server");
-  api.addFiles("server/security.js", "server");
 
   // cron jobs
   api.addFiles("server/jobs.js", "server");
@@ -155,16 +148,6 @@ Package.onUse(function (api) {
   api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js");
 
-  // publications
-  api.addFiles("server/publications/sessions.js", "server");
-  api.addFiles("server/publications/shops.js", "server");
-  api.addFiles("server/publications/cart.js", "server");
-  api.addFiles("server/publications/media.js", "server");
-  api.addFiles("server/publications/orders.js", "server");
-  api.addFiles("server/publications/packages.js", "server");
-  api.addFiles("server/publications/products.js", "server");
-  api.addFiles("server/publications/translations.js", "server");
-
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
@@ -175,9 +158,6 @@ Package.onUse(function (api) {
   // method hooks
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
-
-  // Email Templates
-  api.addAssets("server/emailTemplates/orders/itemsShipped.html", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");
@@ -408,20 +388,20 @@ Package.onTest(function (api) {
   api.use("random");
   api.use("sanjo:jasmine@0.20.3");
   api.use("velocity:html-reporter@0.9.1");
-
   api.use("velocity:console-reporter@0.1.4");
+
   api.use("accounts-base");
   api.use("accounts-password");
+
   // reaction core
-  api.use("reactioncommerce:reaction-collections@1.0.1");
+  api.use("reactioncommerce:reaction-collections@1.0.2");
   api.use("reactioncommerce:reaction-factories@0.3.2");
   api.use("reactioncommerce:core@0.10.0");
 
   // server integration tests
-  api.addFiles("tests/jasmine/server/integration/cart.js", "server");
-  api.addFiles("tests/jasmine/server/integration/shops.js", "server");
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
+  api.addFiles("tests/jasmine/server/integration/shops.js", "server");
   api.addFiles("tests/jasmine/server/integration/products.js", "server");
-  api.addFiles("tests/jasmine/server/integration/publications.js", "server");
+  api.addFiles("tests/jasmine/server/integration/cart.js", "server");
   api.export("faker", ["server"]);
 });
