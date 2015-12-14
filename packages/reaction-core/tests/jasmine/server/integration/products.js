@@ -647,7 +647,7 @@ describe("core product methods", function () {
           _id: {
             $ne: product._id
           }
-        }).fetch();
+        }, {sort: { handle: 1 }}).fetch();
         const productCloned = newProducts[0];
         const productCloned2 = newProducts[1];
         expect(productCloned.handle).toEqual(product.handle + "-copy");
