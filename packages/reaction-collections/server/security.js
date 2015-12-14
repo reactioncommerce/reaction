@@ -174,10 +174,10 @@ Cart.permit(["insert", "update", "remove"]).ifHasRole({
 /*
  * Users may update their own account
  */
-// Accounts.permit(["insert", "update"]).ifHasRole({
-//   role: ["anonymous", "guest"],
-//   group: ReactionCore.getShopId()
-// }).ifUserIdMatches().apply();
+Accounts.permit(["insert", "update"]).ifHasRole({
+  role: ["anonymous", "guest"],
+  group: ReactionCore.getShopId()
+}).ifUserIdMatches().apply();
 
 /*
  * apply download permissions to file collections
