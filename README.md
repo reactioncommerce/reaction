@@ -3,14 +3,12 @@ Reaction is a modern reactive, real-time event driven ecommerce platform.
 
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
-See: [Atmosphere Packages for Reaction](https://atmospherejs.com/?q=reaction)
-
 ## Status
-- 0.9.0 Master (beta 1)
-- 0.10.0 Development
-- 0.11.0 Next Stable Release
+- 0.10.1 Master
+- 0.11.0 Development (0.10.0 stability iteration)
+- 0.12.0 New feature releases
 
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
 
 ## Installation
 
@@ -44,7 +42,10 @@ If you want to use shell scripts under Windows:
 - bin/clone-packages.sh
 - bin/reset
 
-Reaction Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
+## Packages 
+ Atmosphere [Meteor Packages for Reaction](https://atmospherejs.com/?q=reaction)
+
+Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
 
 ## Roadmap
 As with all development, some items are ahead of schedule, and some are not. Here's how to get the details:
