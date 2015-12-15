@@ -3,7 +3,7 @@
   "env": {
     "browser": true,
     "node": true,
-    "meteor": true,
+    "meteor": true
   },
   "ecmaFeatures": {
     "arrowFunctions": true,

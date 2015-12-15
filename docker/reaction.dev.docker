@@ -1,0 +1,109 @@
+############################################################
+#  Builds a Meteor + Reaction + MongoDB Docker Image
+#
+#  Important:  Best to run from a clean directory that hasn't had meteor run in it.
+#  Important:  packages/<pkg>/.npm and .build* should not exist
+#
+#  NOTE: this script has some reaction specific scripts,
+#        you probably don't want to use this a generic dockerfile
+#
+#  Usage:
+#   Build:
+#     cd reaction
+#     docker build -t <your org>/reaction .
+#
+#   Run Reaction, Meteor + local mongo:
+#
+#   docker run --rm  -p ::80
+#     -e ROOT_URL="http://localhost" \
+#     -e REACTION_EMAIL="youradmin@yourdomain.com" \
+#     -e REACTION_USER="admin" \
+#     -e REACTION_AUTH="password" \
+#     -t ongoworks/reaction
+#
+#
+#   Optional Meteor parameters (-e):
+#
+#     ROOT_URL="< hostname>"
+#     MONGO_URL="<your mongodb connect string>"
+#     OPLOG_URL="<mongo oplog url>"
+#     PORT="<meteor port>"
+#     METEOR_SETTINGS="{json}"
+#     DISABLE_WEBSOCKETS="1"
+#
+#   Reaction Specific parameter (-e):
+#
+#     MAIL_URL="<smtp connection string>"
+#     REACTION_EMAIL="youradmin@yourdomain.com"
+#     REACTION_USER="admin"
+#     REACTION_AUTH="password"
+#
+##############################################################
+
+FROM debian:jessie
+MAINTAINER Aaron Judd <hello@reactioncommerce.com>
+
+# Install git, curl, python, etc
+# Install graphicsmagick for Reaction image handling)
+RUN apt-get -qq update && apt-get install -qq -y build-essential libssl-dev git-all python graphicsmagick curl
+
+# install node from package nodesource
+RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
+RUN apt-get -qq upgrade && apt-get install -y nodejs
+
+# install the mongodb server binaries
+RUN mkdir -p "/data/db"
+VOLUME /data/db
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+RUN apt-get update && apt-get -qq -y install --no-install-recommends adduser mongodb-org-server
+
+# Install nodemon & phantomjs
+RUN npm install --silent -g phantomjs nodemon forever
+
+# Install Meteor
+RUN curl -sL https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
+
+# Default env variables
+ENV PORT 80
+ENV ROOT_URL http://localhost
+ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
+ENV NODE nodemon
+ENV PACKAGE_DIRS "packages"
+ENV DEBIAN_FRONTEND noninteractive
+
+# 80 is the default meteor production port, while 3000 is development mode
+EXPOSE 80
+
+
+# Install entrypoint and build scripts
+COPY bin/clone-packages.sh /usr/bin/clone-packages.sh
+COPY bin/docker /usr/bin
+RUN chmod +x \
+/usr/bin/build-meteor.sh \
+/usr/bin/build-packages.sh \
+/usr/bin/cleanup.sh \
+/usr/bin/entrypoint.sh \
+/usr/bin/clone-packages.sh
+
+# add app to /usr/src
+RUN mkdir -p "/var/src" "/var/www"
+COPY . /var/src/
+WORKDIR /var/src/
+
+# build meteor
+# this needs to be a single step to avoid Error: EXDEV, rename
+RUN bash /usr/bin/clone-packages.sh && /usr/bin/build-meteor.sh
+
+# cleanup
+RUN apt-get autoremove -y
+RUN npm cache clear
+RUN bash /usr/bin/cleanup.sh
+
+# switch to production meteor bundle
+WORKDIR /var/www/bundle
+
+# start mongo and reaction
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+CMD []

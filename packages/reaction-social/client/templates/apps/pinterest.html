@@ -1,0 +1,6 @@
+<template name='pinterest'>
+  <a target="{{targetWindow}}" class="{{classes}} pinterest-share" href="#">
+    <i class="fa fa-pinterest{{#if faClass}}-{{faClass}}{{/if}} {{faSize}}"></i>
+    {{#if showText}} {{i18n "social.shareOnPinterest" "Share on Pinterest"}} {{/if}}
+  </a>
+</template>

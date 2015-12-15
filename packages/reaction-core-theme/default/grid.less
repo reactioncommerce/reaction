@@ -1,0 +1,111 @@
+// ** Implementation of a flexbox-based grid system will go here
+// ** This grid system will be a drop in replacement for bootstrap's default
+// ** float based grid system. This file is a stub for a future update.
+
+
+
+.flex {
+  .display(flex);
+  .flex-wrap(wrap);
+}
+
+.flex-column {
+  .flex-direction(column);
+}
+
+.flex-align-center {
+  .align-items(center);
+}
+
+.flex-justify--spaceBetween,
+.flex-justify-spaceBetween {
+  .justify-content(space-between);
+}
+
+.flex-item-fill {
+  .flex(1 1 auto);
+}
+
+.flex-item-static {
+  .flex(0 0 auto);
+}
+
+.flex-item-transition {
+  .transition(all 500ms cubic-bezier(0.455, 0.03, 0.515, 0.955));
+}
+
+//
+// -- Desktop - 2 per row
+// -- Tablet - 2 per row
+// -- Phone - Single column, full width per item
+.flex-2x {
+  .flex-item {
+    width: 50%;
+    max-width: 50%;
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+    .flex-item {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+//
+// -- Desktop - As many as can fit
+// -- Tablet - As many as can fit, usually 3 or 4
+// -- Phone - As many as can fit, usually 1 or 2
+.flex-xx {
+  .flex-item {
+    .flex(1 1 auto);
+    min-width: 300px;
+    width: 300px;
+    max-width: 100%;
+  }
+}
+
+//
+// -- Desktop - 4 per row
+// -- Tablet - 3 per row
+// -- Phone - Single column, full width per item
+.flex-item {
+  .display(flex);
+  min-width: 280px;
+  width: 25%;
+  max-width: 25%;
+  padding: 10px;
+
+  @media @tablet {
+    width: 33%;
+  }
+
+  @media @mobile {
+    width: 100%;
+  }
+}
+
+.flex-item > .form-group {
+  margin: 0;
+}
+
+.flex-item > .form-group.form-inline .form-control {
+  width: 100%;
+}
+
+.split-view {
+  display: flex;
+  padding: 10px;
+}
+
+.split-view .master {
+  flex: 1 1 auto;
+  min-width: 300px;
+  max-width: 320px;
+  padding: 10px;
+}
+
+.split-view .detail {
+  flex: 1 1 auto;
+  padding: 10px;
+}

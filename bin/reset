@@ -2,7 +2,7 @@
 
 DIRNAME=$(cd `dirname $0` && pwd)
 
-read -r -p "Do you want to delete all build files first? [y/N] " response
+read -r -p "Resetting Database: also delete build files? [y/N]" response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   meteor reset "$@"
@@ -13,5 +13,3 @@ then
 else
   meteor reset "$@"
 fi
-
-$DIRNAME/run

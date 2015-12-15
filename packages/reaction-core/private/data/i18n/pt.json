@@ -1,0 +1,50 @@
+[
+    {
+        "language": "Portuguese",
+        "i18n": "pt",
+        "translation": {
+            "core": {
+                "accountsUI": {
+                    "and": "e",
+                    "clickAgree": "Ao clicar em Entrar, você aceita nosso",
+                    "configure": "Configurar",
+                    "createAccount": "Criar Conta",
+                    "dontHaveAnAccount": "Não tem conta?",
+                    "email": "E-mail",
+                    "emailAddress": "Endereço de e-mail",
+                    "emailResetLink": "Gerar nova senha",
+                    "forgotPassword": "Esqueceu sua senha?",
+                    "ifYouAlreadyHaveAnAccount": "Se você já tem uma conta",
+                    "optional": "Opcional",
+                    "or": "ou",
+                    "password": "Senha",
+                    "privacyPolicy": "Política de Privacidade",
+                    "resetYourPassword": "Gerar nova senha",
+                    "sign": "Entrar",
+                    "signIn": "Entrar",
+                    "signin": "entrar",
+                    "signOut": "Sair",
+                    "signUp": "Registrar",
+                    "signupCode": "Código de acesso",
+                    "signUpWithYourEmailAddress": "Entre usando seu endereço de e-mail",
+                    "terms": "Termos de Uso",
+                    "updateYourPassword": "Atualizar senha",
+                    "username": "Nome de usuário",
+                    "usernameOrEmail": "Usuario ou e-mail",
+                    "with": "com",
+                    "error": {
+                        "emailRequired": "E-mail é obrigatório.",
+                        "minChar": "Senha requer um mínimo de 6 caracteres.",
+                        "pwOneDigit": "Senha deve conter pelo menos um digito.",
+                        "pwOneLetter": "Senha deve conter pelo menos uma letra.",
+                        "signInRequired": "Você precisa estar logado para fazer isso.",
+                        "signupCodeIncorrect": "Código de acesso incorreto.",
+                        "signupCodeRequired": "É necessário um código de acesso.",
+                        "usernameIsEmail": "Nome de usuário não pode ser um endereço de e-mail.",
+                        "usernameRequired": "Nome de usuário é obrigatório."
+                    }
+                }
+            }
+        }
+    }
+]

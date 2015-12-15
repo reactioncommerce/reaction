@@ -9,6 +9,7 @@ lib-cov
 *.gz
 *.sublime-project
 *.sublime-workspace
+.idea
 .DS_Store
 
 pids
@@ -16,3 +17,4 @@ logs
 results
 npm-debug.log
 .fileStorage/
+packages/reaction-core/lib/bower

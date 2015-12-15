@@ -1,0 +1,68 @@
+.cart-icon {
+  .margin-left(2px);
+  color: @cart-icon-text;
+  border: @cart-icon-border;
+  padding: @cart-icon-padding;
+  border-radius: @cart-icon-border-radius;
+  position: relative;
+  background-color: @cart-icon-bg;
+  height: @navbar-height;
+  
+  a i {
+    color: @cart-icon-color;
+    background-color: transparent;
+  }
+
+  &:hover {
+    background-color: lighten(@cart-icon-bg, 2%);
+  }
+
+
+  .badge {
+    position: absolute;
+    bottom: 4px;
+    .right(1px);
+    background-color: @cart-icon-badge;
+  }
+
+  .badge-warning {
+    .right(33px);
+    font-weight:bold;
+    font-size:inherit;
+    padding:2px 8px 2px 8px;
+    background-color: @cart-icon-badge-warning;
+  }
+}
+.cart-alert{
+  .float(right);
+  position: absolute;
+  top: 0;
+  .right(76px);
+  color: @cart-icon-text;
+  background-color: @cart-icon-bg;
+  display: none;
+  z-index: 99;
+  box-shadow: 0 5px 5px -5px @dropdown-border;
+  .cart-alert-text {
+    padding: @navbar-padding-vertical;
+    height:  @navbar-height;
+    min-width: 225px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .cart-alert-checkout {
+    height:  @navbar-height;
+    padding-left: @navbar-padding-vertical;
+    padding-right: @navbar-padding-vertical;
+    min-width: 225px;
+    white-space: nowrap;
+  }
+}
+
+.navbar-cart:hover{
+  cursor: pointer;
+  // background-color: @body-bg;
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px;
+}

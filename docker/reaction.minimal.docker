@@ -1,0 +1,29 @@
+FROM debian:wheezy
+MAINTAINER Tom De Caluwé <decaluwe.t@gmail.com>
+
+COPY bin/docker /usr/bin
+RUN chmod +x \
+/usr/bin/install-graphicsmagick.sh \
+/usr/bin/install-mongodb.sh \
+/usr/bin/build-meteor.sh \
+/usr/bin/build-bundle.sh \
+/usr/bin/entrypoint.sh
+
+RUN /usr/bin/install-graphicsmagick.sh
+
+ENV PORT 80
+ENV ROOT_URL http://localhost
+ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
+ENV NODE forever
+
+RUN mkdir -p "/var/src" "/var/www"
+WORKDIR /var/www/bundle
+
+COPY . /var/src/
+
+EXPOSE 80
+
+RUN /usr/bin/build-bundle.sh
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+CMD []

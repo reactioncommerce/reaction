@@ -8,9 +8,6 @@ set -e
 # Customize packages
 /bin/bash bin/docker/build-packages.sh
 
-# Check Themes
-/bin/bash bin/docker/build-themes.sh
-
 #
 # build the source
 #

@@ -8,9 +8,12 @@
 set -e
 
 # set default meteor values if they arent set
-: ${PORT:="3000"}
+: ${PORT:="80"}
 : ${ROOT_URL:="http://localhost"}
 : ${MONGO_URL:="mongodb://127.0.0.1:27017/meteor"}
+
+# set default node executable
+: ${NODE:="node"}
 
 #start mongodb (optional)
 if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
@@ -21,4 +24,4 @@ if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
 fi
 
 # Run meteor
-exec nodemon ./main.js
+exec $NODE ./main.js

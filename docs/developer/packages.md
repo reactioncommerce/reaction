@@ -1,6 +1,5 @@
 # Packages
 Reaction packages are Meteor packages that add a call to `ReactionCore.registerPackage` declaring the package structure to the Reaction registry.
-
 - [Core Packages](#core-packages)
 - [Public packages](#public-packages)
 - [Private packages](#private-packages)
@@ -9,22 +8,25 @@ Reaction packages are Meteor packages that add a call to `ReactionCore.registerP
   - [Permissions](#permissions)
     - [Owner](#owner)
     - [Admin](#admin)
-- [Dashboard](#dashboard)
-- [Routes](#routes)
-- [Collections](#collections)
-- [Security](#security)
-- [Publishing](#publishing)
+
+  - [Dashboard](#dashboard)
+  - [Routes](#routes)
+  - [Collections](#collections)
+  - [Security](#security)
+  - [Publishing](#publishing)
 
 ## Core Packages
-For local core package development you must _git clone_ packages locally, either into `reaction/packages`, or define the `PACKAGES_DIR` env variable for an alternate location.
+For local core package development you must _git clone_ packages locally, either into `reaction/packages`, or define the `PACKAGE_DIRS` env variable for an alternate location.
 
-The `bin/clone-packages.sh` is a helper script that will clone all current reactioncommerce:* packages into the PACKAGES_DIR location.
+The `bin/clone-packages.sh` is a helper script that will clone all current reactioncommerce:* packages into the PACKAGE_DIRS location.
 
-First set your PACKAGES_DIR variable:
+First set your PACKAGE_DIRS variable:
 
 ```bash
-export PACKAGES_DIR="~/reaction/packages"
+export PACKAGE_DIRS="/Users/path/to/your/packages"
 ```
+
+By default, if the `PACKAGE_DIRS` ENV variable is not set, we'll assume `PACKAGE_DIRS="~/reaction/packages"`.
 
 Checkout Reaction and execute `clone-packages.sh`.
 
@@ -33,7 +35,7 @@ cd ~
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
 ./bin/clone-packages.sh
-meteor --settings settings/dev-settings.json
+meteor --settings settings/dev.settings.json
 ```
 
 This is our recommended practice, and ensure you are working with the default branches (development) for all the Reaction packages.
@@ -98,6 +100,8 @@ _Tip: You can also add and remove packages by editing `.meteor/packages`_
 ### ReactionCore.registerPackage
 The `ReactionCore.registerPackage` method describes a Meteor package to other Reaction packages.
 
+Note: The registry entries load does not overwrite existing package entries in the `Packages` collection. However, if there is a package settings object, these entries will be refreshed on change. You'll need to either clear the `Packages` collection, or do a `meteor reset` to re-write other changes to a package registry entry.
+
 Integrate packages with reaction-core by adding **server/register.js**
 
 ```javascript
@@ -135,7 +139,7 @@ ReactionCore.registerPackage({
 ```
 
 #### Registry
-The registry is used to settings, routes,  and permissions for Reaction specific packages.
+The registry is used to add settings, routes,  and permissions for Reaction specific packages.
 
 A `registry` object can be any combination of properties, with `provides` being the only required element.
 
@@ -226,8 +230,10 @@ layout: [
 For more details about layouts, and workflows see: [workflow.md](workflow.md)
 
 **_Special Usage_**
-- `cycle`  1- Core, 2- Stable, 3- Testing 4- Early
+- `cycle`  1- Core, 2- Community, 3- Public 4 - Local
 - `container` group alike for presentation _example: used to connect settings on dashboard app card registry object_
+
+See: [package-cycles.md](package-cycles.md)
 
 **Dynamic Templates**
 

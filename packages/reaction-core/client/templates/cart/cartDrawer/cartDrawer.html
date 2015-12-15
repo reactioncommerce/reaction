@@ -1,0 +1,48 @@
+<template name="cartDrawer">
+<div id="cart-drawer-container">
+{{> displayCartDrawer}}
+</div>
+</template>
+
+
+<template name="emptyCartDrawer">
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-empty">
+      <div class="row cart-drawer-empty-msg">
+        <h1 class="text-align">
+          <i class="fa fa-frown-o fa-lg"></i><strong><p data-i18n="cartDrawer.empty">We're sad. Your cart is empty.</p></strong>
+        </h1>
+      </div>
+      <div class="row">
+        <a href="#" class="btn btn-warning btn-lg btn-block" id="btn-keep-shopping" data-i18n="cartDrawer.keepShopping">
+        Keep Shopping
+        </a>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+
+<template name="openCartDrawer">
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer-swiper-container">
+    <div class="cart-drawer-swiper-wrapper">
+      <div class="cart-drawer-swiper-slide">
+        {{>cartSubTotals}}
+      </div>
+      {{#each cartItems}}
+      <div class="cart-drawer-swiper-slide">
+        {{>cartDrawerItems}}
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="cart-drawer-pagination"></div>
+  <div class="row">
+    <span class="btn btn-success btn-lg btn-block" id="btn-checkout" data-i18n="cartDrawer.checkout" data-event-category="cart" data-event-action="checkout-click" data-event-label="checkout button click" data-event-value="{{_id}}">
+    Checkout now
+    </span>
+  </div>
+</div>
+</template>

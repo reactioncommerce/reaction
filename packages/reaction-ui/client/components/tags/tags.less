@@ -1,0 +1,59 @@
+@import "{reactioncommerce:reaction-ui}/client/styles/variables.less";
+
+.rui.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.rui.tag {
+  display: flex;
+  background-color: @brand-muted-color;
+  padding: @padding-base-vertical @padding-base-horizontal;
+  border-radius: @border-radius-base;
+  margin: 5px;
+}
+
+.rui.tag.edit {
+  padding: 0;
+}
+
+.rui.tag.edit form {
+  display: flex;
+}
+
+.rui.tag.edit input {
+  padding: @padding-base-vertical @padding-base-horizontal;
+  border-top-left-radius: @border-radius-base;
+  border-bottom-left-radius: @border-radius-base;
+
+  background-color: @brand-muted-color;
+  border-color: @brand-muted-color;
+}
+
+.rui.tag.edit button {
+  border-radius: 0;
+  border: none;
+
+  // background-color: darken(@brand-muted-color, 10%);
+  color: #fff;
+}
+
+.rui.tag.edit button:first-child {
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+.rui.tag.edit button:last-child {
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+.rui.tag.edit.create {
+
+  input {
+    background-color: @black10;
+    border-color: @black10;
+  }
+
+  button {
+    background-color: @btn-success-bg;
+  }
+}

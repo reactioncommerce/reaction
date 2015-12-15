@@ -1,0 +1,54 @@
+// @import "{reactioncommerce:core-theme}/default/bootstrap.rtl.less";
+
+.social-button(@color) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid @color;
+  color: #fff;
+  background: @color;
+
+  &:hover {
+    border: 1px solid darken(@color, 10%);
+    background: darken(@color, 10%);
+    color: #fff;
+  }
+
+  i {
+    margin-right: 10px;
+    font-size: 1.6rem;
+  }
+}
+
+.loginForm-seperator {
+
+  margin: 15px 0;
+  text-align: center;
+
+  span:first-child,
+  span:last:child {}
+  span.text {
+    font-weight: bold;
+  }
+}
+
+.btn.provider-google {
+  .social-button(#dd4b39);
+}
+
+.btn.provider-facebook {
+  .social-button(#3B5998);
+}
+
+.btn.provider-github {
+  .social-button(#333);
+}
+
+.btn.provider-weibo {
+  .social-button(#D52A29);
+}
+
+.btn.provider-twitter {
+  .social-button(#6CADDE);
+}

@@ -1,0 +1,50 @@
+.autoform-remove-item {
+  height: 25px;
+  width: 25px;
+  margin: 29px 10px;
+  padding: 0px;
+}
+
+
+.container-settings {
+    padding: 30px 30px;
+}
+
+.nav-settings {
+  .display(flex);
+  .align-items(center);
+  .justify-content(space-between);
+  height: 66px;
+  background-color: @navbar-dashboard-bg;
+  border-bottom: 1px solid @navbar-dashboard-border-color;
+}
+
+.nav-settings-heading {
+  .display(flex);
+  .flex(1 1 auto);
+  .align-items(center);
+  .margin-left(20px);
+  height: 100%;
+};
+
+.nav-settings-title {
+  margin: 0;
+}
+
+.nav-settings-controls {
+  .display(flex);
+  .flex(0 0 auto);
+  .align-items(center);
+  .flex-wrap(wrap);
+  height: 100%;
+
+  > button, > .btn {
+    .margin-left(10px);
+
+    width: 70px;
+    height: 100%;
+    border: none;
+    border-left: 1px solid @border-color;
+    border-radius: 0;
+  }
+}

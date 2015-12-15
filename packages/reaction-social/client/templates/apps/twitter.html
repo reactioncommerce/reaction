@@ -1,0 +1,6 @@
+<template name='twitter'>
+  <a target="{{targetWindow}}" class="twitter-share" href="#">
+    <i class="fa fa-twitter{{#if faClass}}-{{faClass}}{{/if}} {{faSize}}"></i>
+    {{#if showText}} {{i18n "social.shareOnTwitter" "Share on Twitter"}} {{/if}}
+  </a>
+</template>

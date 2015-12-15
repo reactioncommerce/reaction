@@ -1,0 +1,116 @@
+.checkout {
+  .flex();
+}
+.checkout-progress {
+  
+  // width: 100%;
+}
+.checkout-steps {
+  .display(flex);
+  .justify-content(space-between);
+  width: 100%;
+  @media screen and (max-width: @screen-xs-max) {
+    .flex-direction(column);
+  }
+}
+.checkout-steps .panel-default > .panel-heading,
+.checkout-steps .panel-default .panel-heading {
+  
+  // .padding-left(38px);
+  .display(flex);
+  .align-items(center);
+}
+.checkout-steps-main {
+  .flex(1 1 auto);
+  max-width: 100%;
+  .margin-right(3rem);
+  @media screen and (max-width: @screen-xs-max) {
+    .margin-right(0);
+  }
+}
+.checkout-steps-side {
+  .flex(1 0 auto);
+  min-width: 300px;
+  max-width: 30%;
+  @media screen and (max-width: @screen-xs-max) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+.cart-checkout-steps {
+  .padding-left(5px);
+  margin-top: 20px;
+  .panel-title {
+    .margin-left(25px);
+  }
+}
+@media screen and (min-width: @screen-sm-min) {
+  .cart-checkout-steps {
+    .col-md-8 {
+      .padding-right(15px);
+    }
+  }
+}
+@media screen and (min-width: @screen-lg-min) {
+  .cart-checkout-steps {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+.checkout-step-pending {
+  position: relative;
+  > .panel-default {
+    height: 300px;
+    margin-bottom: 3rem;
+    background-color: @black05;
+  }
+  > .panel-default .panel-heading,
+  .panel-body {
+    background-color: @black05;
+    border: none;
+  }
+}
+.checkout-step {
+  position: relative;
+  > .panel-default {
+    margin-bottom: 3rem;
+  }
+}
+.checkout-step-badge {
+  .display(flex);
+  .justify-content(center);
+  .align-items(center);
+  .flex(0 0 auto);
+  width: 38px;
+  height: 38px;
+  .margin-right(20px);
+  border-radius: 19px;
+  background: @checkout-progress-next;
+  color: @checkout-progress-next-text;
+  font-size: 16px;
+  font-weight: bold;
+}
+.checkout-step-badge.completed {
+  background: @checkout-progress-visited;
+  color: @checkout-progress-visited-text;
+}
+.checkout-step-badge.active {
+  background: @checkout-progress-active;
+  color: @checkout-progress-active-text;
+}
+
+// patch for payment autoform's mysteriously
+// not getting the form-control class
+.core-payment-method-form.panel-body {
+  margin-left: 0;
+  padding: 10px;
+}
+.core-payment-method-form label {
+  font-weight: lighter;
+}
+.core-payment-method-form input {
+  .form-control;
+}
+.core-payment-method-form select {
+  .form-control;
+}

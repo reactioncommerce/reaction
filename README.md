@@ -1,9 +1,9 @@
-# Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Code Climate](https://codeclimate.com/github/reactioncommerce/reaction/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Reaction is a modern reactive, real-time event driven ecommerce platform.
 
-Reaction is built with JavaScript, Meteor, Node.js and works nicely with Docker.
+Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
-See: [Atmosphere Packages for Reaction](https://atmospherejs.com/?q=reactioncommerce)
+See: [Atmosphere Packages for Reaction](https://atmospherejs.com/?q=reaction)
 
 ## Status
 - 0.9.0 Master (beta 1)
@@ -23,8 +23,8 @@ To install Meteor + Reaction, and start the latest release:
 ```bash
 curl https://install.meteor.com | /bin/sh
 git clone https://github.com/reactioncommerce/reaction.git
-cd reaction && git checkout master
-meteor
+cd reaction && git checkout master # default branch is development
+reaction
 ```
 
 Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
@@ -35,7 +35,16 @@ _Note: for windows installation you also need:_
 - Git + msysGit ([git-for-windows/git](https://github.com/git-for-windows/git/releases))
 - ImageMagick
 
-A Docker image is available on the [Reaction Commerce Docker Hub ](https://hub.docker.com/r/reactioncommerce/reaction/).
+If you want to use shell scripts under Windows:
+- Create file named `meteor` inside `%localappdata%\.meteor` with following contents:
+- !/bin/sh
+- cmd //c "$0.bat" "$@"
+- Run shell scripts from `Git Bash`. For example:
+- cd reaction/
+- bin/clone-packages.sh
+- bin/reset
+
+Reaction Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
 
 ## Roadmap
 As with all development, some items are ahead of schedule, and some are not. Here's how to get the details:
@@ -49,22 +58,34 @@ And finally for the kanban-esque, hardcore real time progress view, take a look 
 ## Developer Documentation
 [Getting started guide](http://blog.reactioncommerce.com/how-to-get-involved-with-reaction-commerce/)
 
-[Installation](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/installation.md)
+[Installation](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/installation.md)
 
-[Overview](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/overview.md)
+[Overview](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/overview.md)
 
-[Methods](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/methods.md)
+[Methods](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/methods.md)
 
-[Package Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/packages.md)
+[Package Development](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/packages.md)
 
-[Theme Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/themes.md)
+[Theme Development](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/themes.md)
 
-[i18n Translations](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/i18n.md)
+[i18n Translations](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/i18n.md)
 
-[Template Development](https://github.com/reactioncommerce/reaction/tree/master/docs/developer/templates.md)
+[Workflow](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/workflow.md)
+
+[Schemas](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/schema.md)
+
+[Imports](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/import.md)
+
+[Template Development](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/templates.md)
+
+[Deploying](https://github.com/reactioncommerce/reaction/tree/development/docs/developer/deploying.md)
 
 ### Code Repositories
-Hey! Where's all the code!? Most of it is in the [reaction-core](https://github.com/reactioncommerce/reaction-core/) package...
+Hey! Where's all the code!?
+
+Most of it is in now in the local `reaction/packages`.
+
+Additional packages are also on [Atmosphere](https://atmospherejs.com/?q=reaction) and [GitHub](https://github.com/reactioncommerce/).
 
 We welcome pull requests to the latest `development` version branch.
 

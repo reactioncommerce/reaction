@@ -1,0 +1,178 @@
+
+.order-panel {
+  cursor: hand;
+  cursor: pointer;
+}
+
+.order-panel.panel-info {
+  box-shadow: 0 0 0 3px @brand-muted-color;
+}
+
+.order-panel > .panel-heading {
+  .display(flex);
+  padding: 0;
+}
+
+.order-panel > .panel-body {
+  .display(flex);
+}
+
+.order-details {
+  .display(flex);
+  .flex-wrap(wrap);
+  .flex(1 1 auto);
+  padding: 10px;
+  height: 100%;
+}
+
+.order-controls {
+  .display(flex);
+  .flex-direction(column);
+  width: 44px;
+  height: 100%;
+  button {
+    flex: 1 1 auto;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.order-detail-item {
+  .display(flex);
+  .flex(1 1 auto);
+  height: 100%;
+}
+
+.order-panel-items {
+  flex: 1 1 auto;
+}
+
+.order-panel-items .order-item {
+  padding: 1rem 1.2rem;
+}
+
+.order-panel-status {
+  flex: 0 0 auto;
+}
+
+.order-item-details .order-detail-title {
+  flex: 1 1 auto;
+}
+
+.order-item-details .order-detail-quantity {
+  flex: 0 0 auto;
+}
+
+.order-item-details .order-detail-price {
+  flex: 0 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.orders-list{
+  .circular-icon {
+    width: 40px;
+    height: 40px;
+    margin: -16px 0px;
+    background-size: 40px;
+    border: 4px solid rgba(129, 122, 122, 0.62);
+    border-radius: 50%;
+    padding: 16px;
+    display: inline-block;
+  }
+
+}
+
+.order-detail {
+    border: 2px solid gray;
+}
+
+.orders-grid .h3 {
+    margin-top: 0px;
+}
+
+.order-list-detail {
+  address {
+    margin-bottom: 0;
+  }
+  .order-group-title {
+    margin-top: 20px;
+    margin-bottom: 5px;
+  }
+
+}
+
+.order-item-img {
+  height: 75px;
+  width: 75px;
+}
+
+.order-list-item-details {
+  margin-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid @gray-lighter;
+}
+
+
+.order-items {
+  list-style-type: none;
+}
+
+.order-item {
+  .display(flex);
+  padding: 1rem 0;
+}
+
+.order-item-media {
+  .flex(0 0 auto);
+  width: 50px;
+
+    img {
+      width: 100%;
+    }
+}
+
+.order-item-details {
+  .display(flex);
+  .flex(1 1 auto);
+  .margin-left(20px);
+  align-items: center;
+}
+
+
+.order-shipments {
+  list-style-type: none;
+}
+
+.order-shipment-item {
+
+}
+
+// Order form summary
+.order-summary-form-group {
+  .display(flex);
+  .align-items(center);
+
+  > .reason {
+    .flex(1 1 auto);
+    .margin-right(20px);
+    .text-align(right);
+  }
+
+
+  > .amount {
+    .flex(0 0 auto);
+    width: 100px;
+  }
+}

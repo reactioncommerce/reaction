@@ -1,11 +1,20 @@
 #!/bin/bash
 #
-
+set -u
+set -e
 # copy clone-packages.sh so that any directory
-# can be specified for use in PACKAGE_DIR config.
+# can be specified for use in PACKAGE_DIRS config.
 cp bin/clone-packages.sh /usr/local/bin/
 
 #
-# example dev.settings
-#
-meteor --raw-logs --settings settings/dev.settings.json
+# by default runs settings/dev.settings.json
+# customize by creating settings/settings.json
+if [[ "$@" == "reset" ]]; then
+  bin/reset
+elif [[ "$@" == "pull" ]]; then
+  git pull && bin/clone-packages.sh
+elif [[ "$@" == "install" ]]; then
+  bin/install.sh
+else
+  bin/run "$@"
+fi

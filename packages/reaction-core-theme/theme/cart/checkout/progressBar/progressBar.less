@@ -1,0 +1,101 @@
+
+.checkout-progress {
+  background-color: @navbar-secondary-bg;
+  border-bottom: @navbar-secondary-border;
+}
+
+.checkout-progress-bar {
+  .display(flex);
+  .justify-content(space-between);
+  .align-items(center);
+
+  list-style-type: none;
+
+  height: 150px;
+  padding: 0 0 20px 0;
+}
+
+.checkout-progress-bar li {
+  .display(flex);
+  .flex(1 1 auto);
+  .align-items(center);
+
+  position: relative;
+  height: 50px;
+
+  &:first-child:before, &:last-child:after {
+    content: "";
+    .display(flex);
+    width: 100%;
+    height: 5px;
+    background-color: @brand-light-color;
+  }
+
+  &:first-child:before {
+    border-radius: 3px 0 0 3px;
+  }
+
+  &:last-child:after {
+    border-radius: 0 3px 3px 0;
+  }
+
+  &:after {
+    content: "";
+    .display(flex);
+    width: 100%;
+    height: 5px;
+    background-color: @brand-light-color;
+  }
+
+  &:before {
+    content: "";
+    .display(flex);
+    width: 100%;
+    height: 5px;
+    background-color: @brand-light-color;
+  }
+
+  // The different states of progress
+  &.visited:before, 
+  &.visited:after, 
+  &.visited .progress-step-badge {
+    background-color: @checkout-progress-visited;
+    color: @checkout-progress-visited-text;
+  }
+
+  &.active:before, 
+  // &.active:after, 
+  &.active .progress-step-badge {
+    background-color: @cart-progress-visited;
+    color: @checkout-progress-visited-text;
+  }
+
+}
+
+.progress-step-badge {
+  .display(flex);
+  .justify-content(center);
+  .align-items(center);
+  .flex(0 0 auto);
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background-color: @checkout-progress-next;
+
+  color: @white;
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 34px;
+    height: 34px;
+    font-size: .8rem;  
+  }
+}
+
+.progress-step-label {
+  position: absolute;
+  left: 0;
+  top: 55px;
+  width: 100%;
+
+  text-align: center;
+}

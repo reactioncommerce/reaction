@@ -1,0 +1,48 @@
+<template name="checkoutLogin">
+  {{#if checkoutLoginCompleted}}
+
+    {{> checkoutLoggedIn}}
+
+  {{else}}
+
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        {{> checkoutStepBadge}}
+
+        {{#if allowGuestCheckout}}
+          <h3 class="panel-title">
+            <span data-i18n="checkoutLogin.guestOrLogin">Sign in, or checkout as a guest</span>
+          </h3>
+        {{else}}
+          <h3 class="panel-title">
+            <span data-i18n="checkoutLogin.createOrLogin">Create an acccount, or sign in</span>
+          </h3>
+        {{/if}}
+      </div>
+      <div class="panel-body">
+        {{> loginInline}}
+      </div>
+    </div>
+
+  {{/if}}
+
+</template>
+
+
+<template name="checkoutLoggedIn">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{> checkoutStepBadge}}
+
+      <h3 class="panel-title">
+        <span data-i18n="checkoutLogin.loginCompleted">Account completed</span>
+      </h3>
+    </div>
+    <div class="panel-body">
+        <h3><span data-i18n="checkoutLogin.welcome">Welcome, it's so good to see you.</span></h3>
+    </div>
+  </div>
+
+</template>

@@ -1,6 +1,9 @@
 # Fixtures
 Multiple ways to load fixture data and configurations.
 
+## Testing
+The [reaction-factories](https://github.com/reactioncommerce/reaction-factories) package supplies Factories and faker data with additional methods for testing Reaction packages.
+
 ## Meteor settings
 A Meteor settings file can be used with the `meteor --settings` option.
 
@@ -61,24 +64,7 @@ _Note: This is not required, but password reset, and a few other items that use 
 
 See: [conventions#logging](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/conventions.md#logging).
 
-**These are the only `reaction specific` variables used from settings.json.**
-
-## Fixture Data
-The `reaction-core` package installs sample data, translations, and other fixture defaults from `packages/reaction-core/private/data/`.
-
-The `Fixtures.loadData` server method is available in any package for inserting collection fixture data:
-
-_server/fixtures.coffee_
-
-```
-Meteor.startup ->
-  jsonFile =  Assets.getText("private/data/Shipping.json")
-  Fixtures.loadData ReactionCore.Collections.Shipping, jsonFile
-```
-
-Each installed package ('Reaction App') can also provide fixture data.
-
-See [the packages development documentation](https://github.com/reactioncommerce/reaction/blob/master/docs/developer/packages.md) for more details on using `Packages` fixture data with the `ReactionCore.registerPackage` method.
+**These are the only `Reaction specific` variables used from settings.json.**
 
 **Reaction package settings**
 
@@ -180,4 +166,20 @@ Example _private/settings/reaction.json_
     }
   }]
 ]
+```
+
+## Importing Data
+The `reaction-core` package installs sample data, translations, and other fixture defaults from `packages/reaction-sample-data/private/data/`.
+
+The `ReactionImport` class provides import functionality.
+
+See: [import.md](import.md) for documentation on `ReactionImport`.
+
+_Example import of shipping records_
+
+```javascript
+Meteor.startup(function () {
+  ReactionImport.process(Assets.getText("private/data/Shipping.json"), ["name"], ReactionImport.shipping);
+  ReactionImport.flush();
+});
 ```

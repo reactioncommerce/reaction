@@ -1,5 +1,11 @@
+.meteor/local
 .build
 .build.*
 .npm
 .git
 .build.log
+Dockerfile
+docker
+docs
+packages/*/.npm
+packages/*/lib/bower
