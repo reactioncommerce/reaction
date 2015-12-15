@@ -432,7 +432,7 @@ Meteor.methods({
         })
       });
     } catch (e) {
-      ReactionCore.Log.warn(e);
+      ReactionCore.Log.warn("Unable to send email, check configuration and port.", e);
     }
   },
   /**
