@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.10.0",
+  version: "0.10.1",
   documentation: "README.md"
 });
 

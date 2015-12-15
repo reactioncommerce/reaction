@@ -14,7 +14,7 @@
           {{/autoForm}}
         </div>
         <div class="panel-body">
-          {{#autoForm collection="Shops" doc=shop id="shopEditForm" type="update"}}
+          {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditForm" type="update"}}
             {{> afQuickField name='name' placeholder="Shop Name"}}
             {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
             {{> afQuickField name='description' placeholder="Description"}}
@@ -34,7 +34,7 @@
       </div>
       <div id="address" class="panel-collapse collapse" role="tabpanel" aria-labelledby="address">
         <div class="panel-body">
-          {{#autoForm collection="Shops" doc=shop id="shopEditAddressForm" type="update"}}
+          {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditAddressForm" type="update"}}
             {{> afQuickField name='addressBook.0.company'}}
             {{> afQuickField name='addressBook.0.fullName'}}
             {{> afQuickField name='addressBook.0.address1'}}
@@ -81,7 +81,7 @@
       </div>
       <div id="localization" class="panel-collapse collapse" role="tabpanel" aria-labelledby="localization">
         <div class="panel-body">
-          {{#autoForm collection="Shops" doc=shop id="shopEditSettingsForm" type="update" autosave=true}}
+          {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditSettingsForm" type="update" autosave=true}}
             {{> afQuickField name='timezone' options=timezoneOptions}}
             {{> afQuickField name='currency' options=currencyOptions}}
             {{> afQuickField name='baseUOM' options=uomOptions}}
