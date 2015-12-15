@@ -1,0 +1,11 @@
+languages:
+   JavaScript: true
+exclude_paths:
+- ".meteor/*"
+engines:
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+  fixme:
+    enabled: true
