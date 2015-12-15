@@ -499,6 +499,7 @@ Meteor.methods({
    * @summary adds addressbook to cart payments
    * @param {String} cartId - cartId to apply payment address
    * @param {Object} address - addressBook object
+   * @todo maybe we need to rename this method to `cart/setBillingAddress`?
    * @return {String} return Mongo update result
    */
   "cart/setPaymentAddress": function (cartId, address) {
@@ -552,15 +553,17 @@ Meteor.methods({
   },
   /**
    * cart/unsetAddresses
-   * @description removes address from cart. This used then user remove address,
-   * which was used in cart. This method not called directly from client side.
+   * @description removes address from cart.
    * @param {String} addressId - address._id
    * @param {String} userId - cart owner _id
+   * @param {String} [type] - billing default or shipping default
+   * @since 0.10.1
    * @return {Number|Object} The number of removed documents or error object
    */
-  "cart/unsetAddresses": function (addressId, userId) {
+  "cart/unsetAddresses": function (addressId, userId, type) {
     check(addressId, String);
     check(userId, String);
+    check(type, Match.Optional(String));
     this.unblock();
 
     const cart = ReactionCore.Collections.Cart.findOne({
@@ -570,14 +573,24 @@ Meteor.methods({
       _id: cart._id
     };
     let update = { $unset: {}};
-    // we assume that the billing/shipping arrays can hold only one element [0]
-    if (typeof cart.billing[0].address === "object" &&
-      cart.billing[0].address._id === addressId) {
-      update.$unset["billing.0.address"] = "";
-    }
-    if (typeof cart.shipping[0].address._id === "object" &&
-      cart.shipping[0].address._id === addressId) {
-      update.$unset["shipping.0.address"] = "";
+    // user could uncheck the checkbox in address to not to be default, then we
+    // reseive `type` arg
+    if (typeof type === "string") {
+      // we assume that the billing/shipping arrays can hold only one element [0]
+      if (typeof cart[type][0].address === "object" &&
+        cart[type][0].address._id === addressId) {
+        update.$unset[`${type}.0.address`] = "";
+      }
+    } else { // or if we remove address itselt, when we run this part
+      // we assume that the billing/shipping arrays can hold only one element [0]
+      if (typeof cart.billing[0].address === "object" &&
+        cart.billing[0].address._id === addressId) {
+        update.$unset["billing.0.address"] = "";
+      }
+      if (typeof cart.shipping[0].address === "object" &&
+        cart.shipping[0].address._id === addressId) {
+        update.$unset["shipping.0.address"] = "";
+      }
     }
     return ReactionCore.Collections.Cart.update(selector, update);
   },

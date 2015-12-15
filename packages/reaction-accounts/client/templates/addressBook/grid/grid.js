@@ -46,15 +46,11 @@ Template.addressBookGrid.helpers({
 
 Template.addressBookGrid.events({
   "click [data-event-action=selectShippingAddress]": function () {
-    let cart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
-    });
-    return Meteor.call("cart/setShipmentAddress", cart._id, this);
+    return Meteor.call("accounts/addressBookUpdate", this, Meteor.userId(),
+      "isShippingDefault");
   },
   "click [data-event-action=selectBillingAddress]": function () {
-    let cart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
-    });
-    return Meteor.call("cart/setPaymentAddress", cart._id, this);
+    return Meteor.call("accounts/addressBookUpdate", this, Meteor.userId(),
+      "isBillingDefault");
   }
 });

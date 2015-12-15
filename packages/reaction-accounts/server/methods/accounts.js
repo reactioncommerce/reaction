@@ -153,7 +153,21 @@ Meteor.methods({
     }
     // clean schema
     ReactionCore.Schemas.Address.clean(doc);
+    // if address got shippment or billing default, we need to update cart
+    // addresses accordingly
     if (doc.isShippingDefault || doc.isBillingDefault) {
+      const cart = ReactionCore.Collections.Cart.findOne({ userId: accountId });
+      // if cart exists
+      // First amend the cart,
+      if (typeof cart === "object") {
+        if (doc.isShippingDefault) {
+          Meteor.call("cart/setShipmentAddress", cart._id, doc);
+        }
+        if (doc.isBillingDefault) {
+          Meteor.call("cart/setPaymentAddress", cart._id, doc);
+        }
+      }
+      // then change the address that has been affected
       if (doc.isShippingDefault) {
         ReactionCore.Collections.Accounts.update({
           "_id": accountId,
@@ -194,11 +208,13 @@ Meteor.methods({
    * @description update existing address in user's profile
    * @param {Object} doc - address
    * @param {String} accountId - `account._id` which is need to be updated
+   * @param {String} [type] - name of selected address type (shipping/billing)
    * @return {Number} The number of affected documents
    */
-  "accounts/addressBookUpdate": function (doc, accountId) {
+  "accounts/addressBookUpdate": function (doc, accountId, type) {
     check(doc, ReactionCore.Schemas.Address);
     check(accountId, String);
+    check(type, Match.Optional(String));
     // security, check user ownership
     if (!ReactionCore.hasAdminAccess()) {
       if (accountId !== Meteor.userId()) {
@@ -207,26 +223,60 @@ Meteor.methods({
     }
     this.unblock();
 
-    if (doc.isShippingDefault || doc.isBillingDefault) {
-      if (doc.isShippingDefault) {
-        ReactionCore.Collections.Accounts.update({
-          "_id": accountId,
-          "profile.addressBook.isShippingDefault": true
-        }, {
-          $set: {
-            "profile.addressBook.$.isShippingDefault": false
-          }
-        });
+    // we need to compare old state of isShippingDefault, isBillingDefault with
+    // new state and if it was enabled/disabled reflect this changes in cart
+    const account = ReactionCore.Collections.Accounts.findOne(accountId);
+    const oldAddress = account.profile.addressBook.find(function (address) {
+      return address._id === doc._id;
+    });
+
+    // happens when the user clicked the address in grid. We need to set type
+    // to `true`
+    if (typeof type === "string") {
+      Object.assign(doc, { [type]: true });
+    }
+
+    if (oldAddress.isShippingDefault !== doc.isShippingDefault ||
+      oldAddress.isBillingDefault !== doc.isBillingDefault) {
+      const cart = ReactionCore.Collections.Cart.findOne({ userId: accountId });
+      // Cart should exist to this moment, so we doesn't need to to verify its
+      // existence.
+      if (oldAddress.isShippingDefault !== doc.isShippingDefault) {
+        // if isShippingDefault was changed and now it is `true`
+        if (doc.isShippingDefault) {
+          // we need to add this address to cart
+          Meteor.call("cart/setShipmentAddress", cart._id, doc);
+          // then, if another address was `ShippingDefault`, we need to unset it
+          ReactionCore.Collections.Accounts.update({
+            "_id": accountId,
+            "profile.addressBook.isShippingDefault": true
+          }, {
+            $set: {
+              "profile.addressBook.$.isShippingDefault": false
+            }
+          });
+        } else {
+          // if new `isShippingDefault` state is false, then we need to remove
+          // this address from `cart.shipping`
+          Meteor.call("cart/unsetAddresses", doc._id, accountId, "shipping");
+        }
       }
-      if (doc.isBillingDefault) {
-        ReactionCore.Collections.Accounts.update({
-          "_id": accountId,
-          "profile.addressBook.isBillingDefault": true
-        }, {
-          $set: {
-            "profile.addressBook.$.isBillingDefault": false
-          }
-        });
+
+      // the same logic used for billing
+      if (oldAddress.isBillingDefault !== doc.isBillingDefault) {
+        if (doc.isBillingDefault) {
+          Meteor.call("cart/setPaymentAddress", cart._id, doc);
+          ReactionCore.Collections.Accounts.update({
+            "_id": accountId,
+            "profile.addressBook.isBillingDefault": true
+          }, {
+            $set: {
+              "profile.addressBook.$.isBillingDefault": false
+            }
+          });
+        } else {
+          Meteor.call("cart/unsetAddresses", doc._id, accountId, "billing");
+        }
       }
     }
 
