@@ -4,7 +4,7 @@ exclude_paths:
 - ".meteor/*"
 engines:
   eslint:
-    enabled: true
+    enabled: false
   csslint:
     enabled: true
   fixme:
