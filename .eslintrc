@@ -27,39 +27,6 @@
     "jsx": true
   },
   "rules": {
-    "jsx-quotes": "prefer-double", // http://eslint.org/docs/rules/jsx-quotes
-    "react/no-deprecated": 1,
-    "react/display-name": 1,
-    "react/forbid-prop-types": 1,
-    "react/jsx-boolean-value": [1, "always"],
-    "react/jsx-closing-bracket-location": 1,
-    "react/jsx-curly-spacing": 1,
-    "react/jsx-indent-props": [1, 2],
-    "react/jsx-max-props-per-line": [1, {
-      "maximum": 4
-    }],
-    "react/jsx-no-bind": 1,
-    "react/jsx-no-duplicate-props": 1,
-    "react/jsx-no-literals": 1,
-    "react/jsx-no-undef": 1,
-    "react/jsx-sort-prop-types": 1,
-    "react/jsx-sort-props": 1,
-    "react/jsx-uses-react": 1,
-    "react/jsx-uses-vars": 1,
-    "react/no-danger": 1,
-    "react/no-did-mount-set-state": 1,
-    "react/no-did-update-set-state": 1,
-    "react/no-direct-mutation-state": 1,
-    "react/no-multi-comp": 1,
-    "react/no-set-state": 1,
-    "react/no-unknown-property": 1,
-    "react/prefer-es6-class": 1,
-    "react/prop-types": 1,
-    "react/react-in-jsx-scope": 0,
-    "react/require-extension": 1,
-    "react/self-closing-comp": 1,
-    "react/sort-comp": 1,
-    "react/wrap-multilines": 1,
     /**
      * Strict mode
      */
@@ -108,6 +75,43 @@
     "no-unreachable": 2, // http://eslint.org/docs/rules/no-unreachable
     "use-isnan": 2, // http://eslint.org/docs/rules/use-isnan
     "block-scoped-var": 0, // http://eslint.org/docs/rules/block-scoped-var
+
+    /**
+     * JSX / React
+     */
+    "jsx-quotes": [2, "prefer-double"], // http://eslint.org/docs/rules/jsx-quotes
+    "react/no-deprecated": 1,
+    "react/display-name": 1,
+    "react/forbid-prop-types": 1,
+    "react/jsx-boolean-value": [1, "always"],
+    "react/jsx-closing-bracket-location": 1,
+    "react/jsx-curly-spacing": 1,
+    "react/jsx-indent-props": [1, 2],
+    "react/jsx-max-props-per-line": [1, {
+      "maximum": 4
+    }],
+    "react/jsx-no-bind": 1,
+    "react/jsx-no-duplicate-props": 1,
+    "react/jsx-no-literals": 1,
+    "react/jsx-no-undef": 1,
+    "react/jsx-sort-prop-types": 1,
+    "react/jsx-sort-props": 1,
+    "react/jsx-uses-react": 1,
+    "react/jsx-uses-vars": 1,
+    "react/no-danger": 1,
+    "react/no-did-mount-set-state": 1,
+    "react/no-did-update-set-state": 1,
+    "react/no-direct-mutation-state": 1,
+    "react/no-multi-comp": 1,
+    "react/no-set-state": 1,
+    "react/no-unknown-property": 1,
+    "react/prefer-es6-class": 1,
+    "react/prop-types": 1,
+    "react/react-in-jsx-scope": 0,
+    "react/require-extension": 1,
+    "react/self-closing-comp": 1,
+    "react/sort-comp": 1,
+    "react/wrap-multilines": 1,
 
     /**
      * Best practices
