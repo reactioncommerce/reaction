@@ -90,7 +90,7 @@ this.setCurrentProduct = function (productId) {
  * @return {Object} currently selected variant object
  */
 this.selectedVariant = function () {
-  return Products.findOne(selectedVariantId());
+  return ReactionCore.Collections.Products.findOne(selectedVariantId());
 };
 
 /**

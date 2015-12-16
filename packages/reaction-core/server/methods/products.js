@@ -198,23 +198,25 @@ Meteor.methods({
       delete clone.createdAt;
       delete clone.inventoryQuantity;
       // TODO try to throw out the productId from `copyMedia`
-      ReactionCore.copyMedia(productId, oldId, clone._id);
+      copyMedia(productId, oldId, clone._id);
 
-      Products.insert(clone, { validate: false }, (error, result) => {
-        if (result) {
-          if (type === "child") {
-            ReactionCore.Log.info(
-              `products/cloneVariant: created sub child clone: ${
-                clone._id} from ${variantId}`
-            );
-          } else {
-            ReactionCore.Log.info(
-              `products/cloneVariant: created clone: ${
-                clone._id} from ${variantId}`
-            );
+      ReactionCore.Collections.Products.insert(clone, { validate: false },
+        (error, result) => {
+          if (result) {
+            if (type === "child") {
+              ReactionCore.Log.info(
+                `products/cloneVariant: created sub child clone: ${
+                  clone._id} from ${variantId}`
+              );
+            } else {
+              ReactionCore.Log.info(
+                `products/cloneVariant: created clone: ${
+                  clone._id} from ${variantId}`
+              );
+            }
           }
         }
-      });
+      );
     });
 
   },
@@ -237,7 +239,7 @@ Meteor.methods({
     this.unblock();
 
     const newVariantId = Random.id();
-    const parent = Products.findOne(parentId);
+    const parent = ReactionCore.Collections.Products.findOne(parentId);
     const { ancestors } = parent;
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
@@ -254,14 +256,16 @@ Meteor.methods({
     }
     check(assembledVariant, ReactionCore.Schemas.ProductVariant);
 
-    Products.insert(assembledVariant, (error, result) => {
-      if (result) {
-        ReactionCore.Log.info(
-          `products/createVariant: created variant: ${
-            newVariantId} for ${parentId}`
-        );
+    ReactionCore.Collections.Products.insert(assembledVariant,
+      (error, result) => {
+        if (result) {
+          ReactionCore.Log.info(
+            `products/createVariant: created variant: ${
+              newVariantId} for ${parentId}`
+          );
+        }
       }
-    });
+    );
 
     return newVariantId;
   },
@@ -455,7 +459,7 @@ Meteor.methods({
       delete newProduct.handle;
       newProduct.isVisible = false;
       if (newProduct.title) {
-        newProduct.handle = ReactionCore.createHandle(
+        newProduct.handle = createHandle(
           getSlug(newProduct.title),
           newProduct._id
         );
@@ -465,11 +469,14 @@ Meteor.methods({
           newProduct._id
         );
       }
-      result = Products.insert(newProduct, { validate: false });
+      result = ReactionCore.Collections.Products.insert(newProduct,
+        { validate: false });
       results.push(result);
 
       // cloning variants
-      const variants = Products.find({ ancestors: { $in: [product._id] }}).fetch();
+      const variants = ReactionCore.Collections.Products.find({
+        ancestors: { $in: [product._id] }
+      }).fetch();
       // TODO maybe we need to sort variants here, in order to keep ancestors tree
       for (let variant of variants) {
         let variantNewId = Random.id();
@@ -483,8 +490,10 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        result = Products.insert(newVariant, { validate: false });
-        ReactionCore.copyMedia(productNewId, variant._id, variantNewId);
+        result = ReactionCore.Collections.Products.insert(
+          newVariant, { validate: false }
+        );
+        copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
     }
@@ -544,7 +553,7 @@ Meteor.methods({
     } else {
       productIds = productId;
     }
-    const productsWithVariants = Products.find({
+    const productsWithVariants = ReactionCore.Collections.Products.find({
       $or: [{ _id: { $in: productIds }}, { ancestors: { $in: productIds }}]
     }, { fields: { type: 1 }}).fetch();
 
@@ -553,7 +562,7 @@ Meteor.methods({
       ids.push(doc._id);
     });
 
-    const numRemoved = Products.remove({
+    const numRemoved = ReactionCore.Collections.Products.remove({
       _id: {
         $in: ids
       }
@@ -602,7 +611,7 @@ Meteor.methods({
     }
     this.unblock();
 
-    const type = Products.findOne(_id).type;
+    const type = ReactionCore.Collections.Products.findOne(_id).type;
     let stringValue = EJSON.stringify(value);
     let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
 
@@ -654,7 +663,7 @@ Meteor.methods({
         }
       });
     } else if (tagId) {
-      Tags.update(tagId, {
+      ReactionCore.Collections.Tags.update(tagId, {
         $set: newTag
       });
     } else {
