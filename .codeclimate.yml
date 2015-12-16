@@ -1,11 +1,16 @@
-languages:
-   JavaScript: true
 exclude_paths:
 - ".meteor/*"
 engines:
+  duplication:
+    enabled: true
   eslint:
     enabled: false
   csslint:
     enabled: true
   fixme:
     enabled: true
+ratings:
+   paths:
+   - "**.js"
+   - "**.jsx"
+   - "**.css"
