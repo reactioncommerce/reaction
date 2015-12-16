@@ -17,17 +17,37 @@
 #
 set -eu
 exec 1>&2
+
 #
-#  check that this is osx or linux
+#  check if we're on a supported OS
 #
 UNAME=$(uname)
+
+# Windows?
+if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
+  echo "Sorry, this install script doesn't support Windows at this time."
+  echo "You will have to manually install Node, NPM, and Meteor."
+  echo "To install Node/NPM, download the installer from:"
+  echo " https://nodejs.org/en/download/package-manager/#windows"
+  echo "To install Meteor, download the installer from:"
+  echo " https://install.meteor.com/windows"
+  echo "Then you can run Reaction with: "
+  echo "  git clone https://github.com/reactioncommerce/reaction "
+  echo "  cd reaction"
+  echo "  meteor"
+  exit 1
+fi
+
+# If not OSX or Linux, exit
 if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
-    echo "Sorry, this install script doesn't support your OS."
-    echo "Install Meteor from https://www.meteor.com/install "
-    echo "git clone https://github.com/reactioncommerce/reaction "
-    echo "cd reaction"
-    echo "meteor"
-    exit 1
+  echo "Sorry, this install script doesn't support your OS."
+  echo "Reaction Commerce requires Meteor to be installed."
+  echo "For more details on supported platforms, see https://www.meteor.com/install"
+  echo "Then you can: "
+  echo "  git clone https://github.com/reactioncommerce/reaction "
+  echo "  cd reaction"
+  echo "  meteor"
+  exit 1
 fi
 
 #
