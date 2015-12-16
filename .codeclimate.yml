@@ -1,3 +1,5 @@
+languages:
+   JavaScript: true
 exclude_paths:
 - ".meteor/*"
 engines:
