@@ -484,13 +484,6 @@ Meteor.methods({
         // it's ok for this to be called multiple times
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
           "coreCheckoutShipping");
-
-        // this is probably a crappy way to do this
-        // let's default the payment address
-        if (!cart.billing) {
-          Meteor.call("cart/setPaymentAddress", cartId, address);
-        }
-        return;
       });
     }
   },
@@ -540,15 +533,7 @@ Meteor.methods({
         };
       }
 
-      ReactionCore.Collections.Cart.update(selector, update,
-        function (error, result) {
-          if (error) {
-            ReactionCore.Log.warn(error);
-          } else {
-            // post payment address Methods
-            return result;
-          }
-        });
+      return ReactionCore.Collections.Cart.update(selector, update);
     }
   },
   /**
@@ -558,7 +543,10 @@ Meteor.methods({
    * @param {String} userId - cart owner _id
    * @param {String} [type] - billing default or shipping default
    * @since 0.10.1
-   * @return {Number|Object} The number of removed documents or error object
+   * @todo check if no more address in cart as shipping, we should reset
+   * `cartWorkflow` to second step
+   * @return {Number|Object|Boolean} The number of removed documents or error
+   * object or `false` if we don't need to update cart
    */
   "cart/unsetAddresses": function (addressId, userId, type) {
     check(addressId, String);
@@ -566,6 +554,8 @@ Meteor.methods({
     check(type, Match.Optional(String));
     this.unblock();
 
+    // do we actually need to change anything?
+    let needToUpdate = false;
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
@@ -577,22 +567,26 @@ Meteor.methods({
     // reseive `type` arg
     if (typeof type === "string") {
       // we assume that the billing/shipping arrays can hold only one element [0]
-      if (typeof cart[type][0].address === "object" &&
+      if (cart[type] && typeof cart[type][0].address === "object" &&
         cart[type][0].address._id === addressId) {
         update.$unset[`${type}.0.address`] = "";
+        needToUpdate = true;
       }
     } else { // or if we remove address itselt, when we run this part
       // we assume that the billing/shipping arrays can hold only one element [0]
-      if (typeof cart.billing[0].address === "object" &&
+      if (cart.billing && typeof cart.billing[0].address === "object" &&
         cart.billing[0].address._id === addressId) {
         update.$unset["billing.0.address"] = "";
+        needToUpdate = true;
       }
-      if (typeof cart.shipping[0].address === "object" &&
+      if (cart.shipping && typeof cart.shipping[0].address === "object" &&
         cart.shipping[0].address._id === addressId) {
         update.$unset["shipping.0.address"] = "";
+        needToUpdate = true;
       }
     }
-    return ReactionCore.Collections.Cart.update(selector, update);
+
+    return needToUpdate && ReactionCore.Collections.Cart.update(selector, update);
   },
   /**
    * cart/submitPayment

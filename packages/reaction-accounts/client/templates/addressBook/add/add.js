@@ -56,7 +56,11 @@ AutoForm.hooks({
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
       let addressBook = $(this.template.firstNode).closest(".address-book");
-      let accountId = ReactionCore.Collections.Accounts.findOne()._id;
+      // TODO: when this template will be transform into component, `accountId`
+      // should be `props`.
+      // TODO: if we will add the ability to edit the address through the
+      // dashboard, the field needs to be changed
+      let accountId = Meteor.userId();
 
       Meteor.call("accounts/addressBookAdd", insertDoc, accountId,
         (error, result) => {
