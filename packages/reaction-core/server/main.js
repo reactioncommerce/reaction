@@ -16,36 +16,6 @@ _.extend(ReactionCore, {
     ReactionRegistry.loadPackages();
     return true;
   },
-  getCurrentShopCursor: function (client) {
-    let domain = this.getDomain(client);
-    let cursor = ReactionCore.Collections.Shops.find({
-      domains: domain
-    }, {
-      limit: 1
-    });
-    if (!cursor.count()) {
-      ReactionCore.Log.debug("Add a domain entry to shops for ",
-        domain);
-    }
-    return cursor;
-  },
-  getCurrentShop: function (client) {
-    if (this.getCurrentShopCursor(client)) {
-      let cursor = this.getCurrentShopCursor(client);
-      return cursor.fetch()[0];
-    }
-  },
-  getShopId: function (client) {
-    if (this.getCurrentShop(client)) {
-      return this.getCurrentShop(client)._id;
-    }
-  },
-  getDomain: function () {
-    if (Meteor.absoluteUrl()) {
-      return Meteor.absoluteUrl().split("/")[2].split(":")[0];
-    }
-    return "localhost";
-  },
   /**
    * hasPermission - server permissions checks
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
@@ -118,31 +88,39 @@ _.extend(ReactionCore, {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
   configureMailUrl: function (user, password, host, port) {
-    let shopMail = ReactionCore.Collections.Packages.findOne({
+    let shopSettings = ReactionCore.Collections.Packages.findOne({
       shopId: this.getShopId(),
       name: "core"
-    }).settings.mail;
+    });
+    let shopMail = {};
+
+    if (shopSettings) {
+      shopMail = shopSettings.settings.mail || {};
+    }
+
     let processUrl = process.env.MAIL_URL;
     let settingsUrl = Meteor.settings.MAIL_URL;
+
     if (user && password && host && port) {
       let mailString = `smtp://${user}:${password}@${host}:${port}/`;
-      mailUrl = processUrl = settingsUrl = mailString;
+      const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     } else if (shopMail.user && shopMail.password && shopMail.host &&
       shopMail.port) {
-      ReactionCore.Log.info("setting default mail url to: " + shopMail
-        .host);
       let mailString =
         `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
-      let mailUrl = processUrl = settingsUrl = mailString;
+      const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
+
+      ReactionCore.Log.info(`setting default mail url to: ${shopMail.host}`);
       return mailUrl;
     } else if (settingsUrl && !processUrl) {
-      let mailUrl = processUrl = settingsUrl;
+      const mailUrl = processUrl = settingsUrl;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     }
+    // return reasonable warning that we're not configured correctly
     if (!process.env.MAIL_URL) {
       ReactionCore.Log.warn(
         "Mail server not configured. Unable to send email.");

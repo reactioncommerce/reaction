@@ -336,7 +336,7 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     optional: true,
     index: 1,
     autoValue: function () {
-      let slug = this.value ||  getSlug(this.siblingField("title").value || this.siblingField("_id").value || "");
+      let slug = this.value ||  getSlug(this.siblingField("title").value) || this.siblingField("_id").value || "";
       if (this.isInsert) {
         return slug;
       } else if (this.isUpsert) {

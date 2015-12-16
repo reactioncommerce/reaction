@@ -1,17 +1,20 @@
+/* eslint no-shadow: 0 */
+
 Meteor.methods({
   /**
    * workflow/pushCartWorkflow
-   * updates cart workflow status
-   * status in the workflow is stored as the current active
+   * @summary updates cart workflow status
+   * @description status in the workflow is stored as the current active
    * workflow step.
    *
    * first sets, second call moves status to next workflow
    * additional calls do nothing
    * user permissions to template are verified
-   *
+   * @param {String} workflow - name of workflow
+   * @param {String} newWorkflowStatus - name of the next workflow stage
+   * @param {String} cartId - cart._id
+   * @return {Array|Boolean|Number}
    */
-  /* eslint no-shadow: 0 */
-
   "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus,
     cartId) {
     check(workflow, String);
@@ -23,8 +26,9 @@ Meteor.methods({
     let nextWorkflowStep = {
       template: ""
     };
-    let Cart = ReactionCore.Collections.Cart;
-    let currentCart = Cart.findOne({
+    const { Cart, Packages, Shops } = ReactionCore.Collections;
+    const { Log } = ReactionCore;
+    const currentCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
@@ -32,13 +36,13 @@ Meteor.methods({
     if (!currentCart) return [];
 
     let currentWorkflowStatus = currentCart.workflow.status;
-    let Packages = ReactionCore.Collections.Packages.find({
+    let packages = Packages.find({
       "shopId": ReactionCore.getShopId(),
       "layout.workflow": workflow
     });
 
     // loop through packages and set the defaultPackageWorkflows
-    Packages.forEach(function (reactionPackage) {
+    packages.forEach(function (reactionPackage) {
       let layouts = _.where(reactionPackage.layout, {
         workflow: workflow
       });
@@ -46,7 +50,7 @@ Meteor.methods({
       _.each(layouts, function (layout) {
         // audience is the layout permissions
         if (layout.audience === undefined) {
-          let defaultRoles = ReactionCore.Collections.Shops.findOne(
+          let defaultRoles = Shops.findOne(
             ReactionCore.getShopId(), {
               sort: {
                 priority: 1
@@ -83,21 +87,18 @@ Meteor.methods({
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {
-          ReactionCore.Log.debug("currentStatusIndex, maxSteps",
-            currentStatusIndex, maxSteps);
+          Log.debug("currentStatusIndex, maxSteps", currentStatusIndex, maxSteps);
           nextWorkflowStepIndex = currentStatusIndex + 1;
         } else {
           nextWorkflowStepIndex = currentStatusIndex;
         }
 
-        ReactionCore.Log.debug("nextWorkflowStepIndex",
-          nextWorkflowStepIndex);
+        Log.debug("nextWorkflowStepIndex", nextWorkflowStepIndex);
         // set the nextWorkflowStep as the next workflow object from registry
         nextWorkflowStep = defaultPackageWorkflows[
           nextWorkflowStepIndex];
 
-        ReactionCore.Log.debug("setting nextWorkflowStep",
-          nextWorkflowStep.template);
+        Log.debug("setting nextWorkflowStep", nextWorkflowStep.template);
       }
     });
 
@@ -108,20 +109,15 @@ Meteor.methods({
       nextWorkflowStep.template);
 
     // debug info
-    ReactionCore.Log.debug("currentWorkflowStatus:",
-      currentWorkflowStatus);
-    ReactionCore.Log.debug("workflow/pushCartWorkflow workflow:",
-      workflow);
-    ReactionCore.Log.debug("newWorkflowStatus: ", newWorkflowStatus);
-    ReactionCore.Log.debug("current cartId: ", currentCart._id);
-    ReactionCore.Log.debug("currentWorkflow: ", currentCart.workflow.workflow);
-    ReactionCore.Log.debug("nextWorkflowStep: ", nextWorkflowStep.template);
-    ReactionCore.Log.debug("statusExistsInWorkflow: ",
-      statusExistsInWorkflow);
-    ReactionCore.Log.debug("templateProcessedinWorkflow: ",
-      templateProcessedinWorkflow);
-    ReactionCore.Log.debug("gotoNextWorkflowStep: ",
-      gotoNextWorkflowStep);
+    Log.debug("currentWorkflowStatus: ",  currentWorkflowStatus);
+    Log.debug("workflow/pushCartWorkflow workflow: ", workflow);
+    Log.debug("newWorkflowStatus: ", newWorkflowStatus);
+    Log.debug("current cartId: ", currentCart._id);
+    Log.debug("currentWorkflow: ", currentCart.workflow.workflow);
+    Log.debug("nextWorkflowStep: ", nextWorkflowStep.template);
+    Log.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
+    Log.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
+    Log.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
 
     // Condition One
     // if you're going to join the workflow you need a status that is a template name.
@@ -130,9 +126,8 @@ Meteor.methods({
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !==
       newWorkflowStatus) {
-      ReactionCore.Log.debug(
-        "######## Condition One #########: initialise the " + workflow +
-        ":  " + defaultPackageWorkflows[0].template);
+      Log.debug(`######## Condition One #########: initialise the ${
+        workflow}: ${defaultPackageWorkflows[0].template}`);
       return Cart.update(currentCart._id, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
@@ -146,8 +141,7 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
       templateProcessedinWorkflow === false) {
-      ReactionCore.Log.debug(
-        "######## Condition Two #########: set status to: ",
+      Log.debug("######## Condition Two #########: set status to: ",
         nextWorkflowStep.template);
 
       return Cart.update(currentCart._id, {
@@ -165,8 +159,7 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
-      ReactionCore.Log.debug(
-        "######## Condition Three #########: complete workflow " +
+      Log.debug("######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
         nextWorkflowStep.template);
       return Cart.update(currentCart._id, {
@@ -184,7 +177,7 @@ Meteor.methods({
     // nice job. now start over with the next step.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === true) {
-      ReactionCore.Log.debug(
+      Log.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
         newWorkflowStatus);
       return true;

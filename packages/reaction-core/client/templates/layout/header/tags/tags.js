@@ -39,7 +39,7 @@ Template.headerTags.helpers({
     let tags = [];
 
     if (this.tag) {
-      let tagDoc = Tags.findOne(this.tag._id);
+      let tagDoc = ReactionCore.Collections.Tags.findOne(this.tag._id);
 
       if (!tagDoc) {
         Session.set("currentTag", "");
@@ -52,11 +52,11 @@ Template.headerTags.helpers({
 
       if (relatedTagIds) {
         for (let relatedTagId of relatedTagIds) {
-          tags.push(Tags.findOne(relatedTagId));
+          tags.push(ReactionCore.Collections.Tags.findOne(relatedTagId));
         }
       }
     } else {
-      tags = Tags.find({
+      tags = ReactionCore.Collections.Tags.find({
         isTopLevel: true
       }, {
         sort: {
@@ -69,7 +69,7 @@ Template.headerTags.helpers({
           if (!_.findWhere(tags, {
             _id: relatedTagId
           })) {
-            tags.push(Tags.findOne(relatedTagId));
+            tags.push(ReactionCore.Collections.Tags.findOne(relatedTagId));
           }
         }
       }
@@ -147,7 +147,7 @@ Template.tagInputForm.events({
       source: function (request, response) {
         let datums = [];
         let slug = getSlug(request.term);
-        Tags.find({
+        ReactionCore.Collections.Tags.find({
           slug: new RegExp(slug, "i")
         }).forEach(function (tag) {
           return datums.push({

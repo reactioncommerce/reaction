@@ -1,20 +1,23 @@
 <template name="orders">
-  <div class="split-view">
-    <div class="master">
-      {{> orderListFilters}}
-    </div>
-    <div class="detail">
-      {{#each order in orders}}
-        {{> ordersListItem order}}
-      {{else}}
-        <p data-i18n="order.ordersNotFound">No Orders Found</p>
-      {{/each}}
-    </div>
+  {{#contentFor "dashbaordHeaderControls"}}
+    {{> orderListFilters}}
+  {{/contentFor}}
+
+  <div class="container-fluid-sm">
+    {{#each order in orders}}
+      {{> ordersListItem order}}
+    {{else}}
+
+      <div class="empty-view-message">
+          <i class="fa fa-sun-o"></i>
+          <p data-i18n="order.ordersNotFound">No Orders Found</p>
+      </div>
+    {{/each}}
   </div>
 </template>
 
 <template name="orderListFilters">
-  <ul class="nav nav-pills nav-stacked" role="tablist">
+  <ul class="nav nav-pills" role="tablist">
     {{#each filters}}
       <li role="presentation" class="{{activeClassname .}}">
         <a
@@ -25,8 +28,8 @@
           data-toggle="tab"
           data-event-action="toggleFilter"
           data-filter="{{name}}">
-            <span class="flex-item-fill">{{label}}</span>
-            <span class="badge badge-default flex-item-static">{{count}}</span>
+            <span class="count">{{count}}</span>
+            <span class="label">{{label}}</span>
         </a>
       </li>
     {{/each}}

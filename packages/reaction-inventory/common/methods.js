@@ -1,24 +1,26 @@
-// Define a rate limiting rule that matches update attempts by non-admin users
-const addReserveRule = {
-  userId: function (userId) {
-    return Roles.userIsInRole(userId, "createProduct", ReactionCore.getShopId());
-  },
-  type: "subscription",
-  method: "Inventory"
-};
+// Disabled for now, needs more testing.
 
-// Define a rate limiting rule that matches backorder attempts by non-admin users
-const addBackorderRule = {
-  userId: function (userId) {
-    return Roles.userIsInRole(userId, "createProduct", ReactionCore.getShopId());
-  },
-  type: "method",
-  method: "inventory/backorder"
-};
-
-// Add the rule, allowing up to 5 messages every 1000 milliseconds.
-DDPRateLimiter.addRule(addReserveRule, 5, 1000);
-DDPRateLimiter.addRule(addBackorderRule, 5, 1000);
+// // Define a rate limiting rule that matches update attempts by non-admin users
+// const addReserveRule = {
+//   userId: function (userId) {
+//     return Roles.userIsInRole(userId, "createProduct", ReactionCore.getShopId());
+//   },
+//   type: "subscription",
+//   method: "Inventory"
+// };
+//
+// // Define a rate limiting rule that matches backorder attempts by non-admin users
+// const addBackorderRule = {
+//   userId: function (userId) {
+//     return Roles.userIsInRole(userId, "createProduct", ReactionCore.getShopId());
+//   },
+//   type: "method",
+//   method: "inventory/backorder"
+// };
+//
+// // Add the rule, allowing up to 5 messages every 1000 milliseconds.
+// DDPRateLimiter.addRule(addReserveRule, 5, 1000);
+// DDPRateLimiter.addRule(addBackorderRule, 5, 1000);
 
 //
 // Inventory methods

@@ -96,12 +96,13 @@ this.selectedVariant = function () {
 /**
  * selectedProduct
  * @summary get the currently active/requested product object
- * @return {Object} currently selected product cursor
+ * @return {Object|undefined} currently selected product cursor
  */
 this.selectedProduct = function () {
-  let id;
-  id = selectedProductId();
-  return Products.findOne(id);
+  const id = selectedProductId();
+  if (typeof id === "string") {
+    return ReactionCore.Collections.Products.findOne(id);
+  }
 };
 
 /**
@@ -171,7 +172,7 @@ this.getVariantPriceRange = currentVariantId => {
 
   switch (children.length) {
     case 0:
-      return Products.findOne(variantId).price;
+      return ReactionCore.Collections.Products.findOne(variantId).price;
     case 1:
       return children[0].price;
     default:
@@ -206,7 +207,7 @@ this.getVariantPriceRange = currentVariantId => {
  */
 this.getProductPriceRange = currentProductId => {
   const productId = currentProductId || selectedProductId();
-  const product = Products.findOne(productId);
+  const product = ReactionCore.Collections.Products.findOne(productId);
   if (!product) {
     return;
   }
@@ -293,7 +294,7 @@ this.getGuestLoginState = function () {
  * @return {Array} Parent variants or empty array
  */
 this.getVariants = (id, type) => {
-  return Products.find({
+  return ReactionCore.Collections.Products.find({
     ancestors: { $in: [id || selectedProductId()] },
     type: type || "variant"
   }).fetch();
@@ -306,7 +307,7 @@ this.getVariants = (id, type) => {
  * @return {Array} Product top level variants or empty array
  */
 this.getTopVariants = id => {
-  return Products.find({
+  return ReactionCore.Collections.Products.find({
     ancestors: [id || selectedProductId()],
     type: "variant"
   }).fetch();

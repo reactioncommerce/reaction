@@ -9,6 +9,7 @@ lib-cov
 *.gz
 *.sublime-project
 *.sublime-workspace
+.idea
 .DS_Store
 
 pids

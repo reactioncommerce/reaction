@@ -42,17 +42,11 @@ Template.addressBookForm.helpers({
   /*
    *  Defaults billing/shipping when 1st new address.
    */
-  isBillingDefault: function() {
-    var ref;
-    if (!(((ref = this.profile) != null ? ref.addressBook : void 0) && !addressBookEditId.get())) {
-      return true;
-    }
+  isBillingDefault: function () {
+    return typeof this.address === "object" ? this.address.isBillingDefault : true;
   },
-  isShippingDefault: function() {
-    var ref;
-    if (!(((ref = this.profile) != null ? ref.addressBook : void 0) && !addressBookEditId.get())) {
-      return true;
-    }
+  isShippingDefault: function () {
+    return typeof this.address === "object" ? this.address.isShippingDefault : true;
   }
 });
 

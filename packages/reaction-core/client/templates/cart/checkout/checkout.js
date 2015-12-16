@@ -20,7 +20,7 @@ Template.cartCheckout.onRendered(function () {
   // ensure checkout drawer does not display
   Session.set("displayCartDrawer", false);
   // init cart workflow
-  if (!ReactionCore.Collections.Cart.findOne().workflow.workflow) {
+  if (ReactionCore.Collections.Cart.findOne().workflow.status === "new") {
     Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
       "checkoutLogin");
   }

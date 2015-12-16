@@ -103,12 +103,12 @@ Meteor.methods({
     this.unblock();
     let sessionId;
     let userId = createForUserId || this.userId;
-    let Cart = ReactionCore.Collections.Cart;
+    let shopId = ReactionCore.getShopId();
     let currentCartId;
 
     // find current userCart
     // this is the only true cart
-    let currentUserCart = Cart.findOne({
+    let currentUserCart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
 
@@ -120,7 +120,7 @@ Meteor.methods({
     }
     ReactionCore.Log.debug("current cart serverSession", sessionId);
     // while anonymous and merge into user cart
-    let sessionCartCount = Cart.find({
+    let sessionCartCount = ReactionCore.Collections.Cart.find({
       session: sessionId,
       userId: {
         $ne: userId
@@ -134,7 +134,7 @@ Meteor.methods({
       currentCartId = currentUserCart._id;
     }
 
-    ReactionCore.Log.debug("create cart: shopId", shopId);
+    ReactionCore.Log.info("create cart: shopId", shopId);
     ReactionCore.Log.debug("create cart: userId", userId);
     ReactionCore.Log.debug("create cart: sessionId", sessionId);
     ReactionCore.Log.debug("create cart: currentUserCart", currentCartId);
@@ -145,8 +145,9 @@ Meteor.methods({
     // if we have a session cart, but just create or
     // authenticated into a new user we need to create a user
     // cart for the new authenticated user.
+
     if (!currentCartId && anonymousUser === false) {
-      currentCartId = Cart.insert({
+      currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
         userId: userId
       });
@@ -161,9 +162,8 @@ Meteor.methods({
         " for user " + userId);
       Meteor.call("cart/mergeCart", currentCartId);
     } else if (!currentCartId) { // Create empty cart if there is none.
-      currentCartId = Cart.insert({
+      currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
-        shopId: shopId,
         userId: userId
       });
       ReactionCore.Log.debug(
@@ -264,7 +264,6 @@ Meteor.methods({
     let cart = ReactionCore.Collections.Cart.findOne(cartId);
     let order = _.clone(cart);
     let user;
-    let emails;
     ReactionCore.Log.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
@@ -272,9 +271,15 @@ Meteor.methods({
     // a helper for guest login, we let guest add email afterwords
     // for ease, we'll also add automatically for logged in users
     if (order.userId && !order.email) {
-      user = Meteor.user(order.userId);
-      emails = _.pluck(user.emails, "address");
-      order.email = emails[0];
+      user = ReactionCore.Collections.Accounts.findOne(order.userId);
+      for (let email of user.emails) {
+        // alternate order email address
+        if (email.provides === "orders") {
+          order.email = email.address;
+        } else if (email.provides === "default") {
+          order.email = email.address;
+        }
+      }
     }
 
     // schema should provide order defaults
@@ -352,6 +357,7 @@ Meteor.methods({
       // return
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
+      Meteor.call("orders/sendNotification", ReactionCore.Collections.Orders.findOne(orderId));
       return orderId;
     }
     // we should not have made it here, throw error
@@ -481,7 +487,7 @@ Meteor.methods({
 
         // this is probably a crappy way to do this
         // let's default the payment address
-        if (!cart.payment) {
+        if (!cart.billing) {
           Meteor.call("cart/setPaymentAddress", cartId, address);
         }
         return;
@@ -544,7 +550,37 @@ Meteor.methods({
         });
     }
   },
+  /**
+   * cart/unsetAddresses
+   * @description removes address from cart. This used then user remove address,
+   * which was used in cart. This method not called directly from client side.
+   * @param {String} addressId - address._id
+   * @param {String} userId - cart owner _id
+   * @return {Number|Object} The number of removed documents or error object
+   */
+  "cart/unsetAddresses": function (addressId, userId) {
+    check(addressId, String);
+    check(userId, String);
+    this.unblock();
 
+    const cart = ReactionCore.Collections.Cart.findOne({
+      userId: userId
+    });
+    const selector = {
+      _id: cart._id
+    };
+    let update = { $unset: {}};
+    // we assume that the billing/shipping arrays can hold only one element [0]
+    if (typeof cart.billing[0].address === "object" &&
+      cart.billing[0].address._id === addressId) {
+      update.$unset["billing.0.address"] = "";
+    }
+    if (typeof cart.shipping[0].address._id === "object" &&
+      cart.shipping[0].address._id === addressId) {
+      update.$unset["shipping.0.address"] = "";
+    }
+    return ReactionCore.Collections.Cart.update(selector, update);
+  },
   /**
    * cart/submitPayment
    * @summary saves a submitted payment to cart, triggers workflow

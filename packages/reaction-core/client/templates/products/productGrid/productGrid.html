@@ -1,117 +1,18 @@
 <template name="productGrid">
   <div class="container-main">
-  <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
-    <ul class="product-grid-list list-unstyled" id="product-grid-list">
-    {{#each products}}
-      {{> productGridItems}}
-    {{/each}}
-    </ul>
+    <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
+      <ul class="product-grid-list list-unstyled" id="product-grid-list">
+      {{#each products}}
+        {{> productGridItems}}
+      {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
 
 
-{{#if productScrollLimit}}
-  <div class="row" id="productScrollLimitLoader">
-      <button class="btn btn-default btn-block" data-i18n="app.more" data-event-action="loadMoreProducts">Load More Products</button>
-  </div>
-{{/if}}
-
-</template>
-
-<template name="productGridItems">
-  <li class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}" data-id="{{_id}}" id="{{_id}}">
-    {{> gridNotice}}
-    <span class="product-grid-item-alerts">
-      {{> bootstrapAlerts placement="productGridItem" id=_id}}
-    </span>
-
-    <a class="product-grid-item-images"
-      href="{{pathForSEO 'product' 'handle'}}"
-      data-event-category="grid"
-      data-event-action="productClick"
-      data-event-label="grid product click"
-      data-event-value="{{_id}}">
-
-      <div class="product-primary-images">
-        {{#with media}}
-          <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
-        {{else}}
-          <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
-        {{/with}}
-      </div>
-
-      {{#if additionalMedia}}
-        {{#if isMediumWeight}}
-          <div class="product-additional-images">
-            {{#each additionalMedia}}
-                <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
-
-            {{/each}}
-          </div>
-        {{/if}}
-      {{/if}}
-    </a>
-
-    {{> gridControls}}
-    {{> gridContent}}
-  </li>
-</template>
-
-
-<template name="gridNotice">
-  {{#if isSoldOut}}
-    {{#if isBackorder}}
-      <span class="variant-qty-sold-out badge" data-i18n="productDetail.backOrder">Backorder</span>
-    {{else}}
-      <span class="variant-qty-sold-out badge" data-i18n="productDetail.soldOut">Sold Out!</span>
-    {{/if}}
-  {{else}}
-    {{#if isLowQuantity}}
-      <div class="badge badge-low-inv-warning" title="" data-i18n="productDetail.limitedSupply">Limited Supply</div>
-    {{/if}}
-  {{/if}}
-</template>
-
-
-<template name="gridContent">
-  <div class="grid-content">
-    <a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
-      <div class="overlay">
-        <div class="overlay-title">{{title}}</div>
-        <div class="currency-symbol">{{formatPrice displayPrice}}</div>
-      </div>
-    </a>
-  </div>
-</template>
-
-
-<template name="gridControls">
-  {{#if hasPermission "createProduct"}}
-    <div class="product-grid-controls">
-      <label class="like-button hidden" for="select-product-{{_id}}">
-        <input type="checkbox" name="selectProduct" value="{{_id}}" id="select-product-{{_id}}">
-      </label>
-      <button
-        class="publish-product"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
-        data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
-        >
-        {{#if isVisible}}
-          <i class="fa fa-eye"></i>
-        {{else}}
-          <i class="fa fa-eye-slash"></i>
-        {{/if}}
-      </button>
-
-      <button
-        class="admin-controls-open"
-        data-toggle="dropdown"
-        title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
-        data-original-title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
-        data-event-action="showProductSettings">
-        <i class="fa fa-gear"></i>
-      </button>
+  {{#if productScrollLimit}}
+    <div class="row" id="productScrollLimitLoader">
+        <button class="btn btn-default btn-block" data-i18n="app.more" data-event-action="loadMoreProducts">Load More Products</button>
     </div>
   {{/if}}
 </template>

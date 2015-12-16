@@ -6,7 +6,7 @@ Template.productMetaFieldForm.events({
   "click .metafield-remove": function () {
     let productId;
     productId = selectedProductId();
-    return Products.update(productId, {
+    return ReactionCore.Collections.Products.update(productId, {
       $pull: {
         metafields: this
       }

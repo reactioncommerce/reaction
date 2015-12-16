@@ -31,14 +31,14 @@
   </div>
 
   <div class="admin-controls-menu">
-    <nav>
+    <nav class="admin-controls-quicklinks">
       <!-- <a href="/dashboard" class="primary">
         <img src="/resources/reaction-logo.svg" width="32">
         <span>Dashboard</span>
       </a> -->
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
-          <a id="{{route}}" title="{{label}}" href="{{pathFor route=route}}">
+          <button id="{{route}}" title="{{label}}">
             {{#if isDashboard route}}
               <img src="/resources/reaction-logo.svg" width="32">
             {{else}}
@@ -47,14 +47,23 @@
             <span class="icon-text">
               {{label}}
             </span>
-          </a>
+          </button>
         {{/if}}
       {{/each}}
     </nav>
     <nav>
       {{> yield "dashboardControls"}}
-      {{thisApp}}
 
+      {{#if settings}}
+        {{#with settings}}
+          <button id="{{route}}" title="{{label}}" data-event-action="showPackageSettings">
+            <i class="fa fa-gear"></i>
+            <span class="icon-text">
+              {{label}}
+            </span>
+          </button>
+        {{/with}}
+      {{/if}}
     </nav>
   </div>
 

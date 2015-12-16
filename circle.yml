@@ -14,12 +14,12 @@ dependencies:
     - chmod +x bin/clone-packages.sh
     - ./bin/clone-packages.sh
     - meteor update
+    - docker build -t reactioncommerce/prequel .
 
 test:
   override:
     - cd $HOME/reaction
-    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter
-    - docker build -t reactioncommerce/prequel .
+    - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity
     - docker run -d -p :80:80 reactioncommerce/prequel; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost
 
@@ -33,6 +33,7 @@ deployment:
   release:
     branch: master
     commands:
+      - docker build -t reactioncommerce/prequel .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker tag reactioncommerce/prequel reactioncommerce/reaction:$CIRCLE_BUILD_NUM
       - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM

@@ -41,9 +41,10 @@ ReactionCore.Collections.Products.before.update(function (userId, product, field
     if (modifier.$pull.variants) {
       let variantItem = {
         productId: product._id,
-        variantId: modifier.$pull.variants._id,
+        variantId: modifier.$pull.variants._id || modifier.$pull.variants.parentId,
         shopId: product.shopId
       };
+
       ReactionCore.Log.info("remove inventory variants, call inventory/remove");
       Meteor.call("inventory/remove", variantItem);
     }

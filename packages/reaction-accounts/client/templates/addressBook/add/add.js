@@ -46,32 +46,34 @@ Template.addressBookAdd.events({
   // }
 });
 
-/*
+/**
  * addressBookAddForm form handling
- * gets accountId and calls addressBookAdd method
+ * @description gets accountId and calls addressBookAdd method
+ * @fires accounts/addressBookAdd method
  */
-
 AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
-      let accountId;
       let addressBook = $(this.template.firstNode).closest(".address-book");
-      let account = ReactionCore.Collections.Accounts.findOne();
-      accountId = account._id;
+      let accountId = ReactionCore.Collections.Accounts.findOne()._id;
 
-      if (!insertDoc._id) {
-        insertDoc._id = Random.id();
-      }
-
-      try {
-        Meteor.call("accounts/addressBookAdd", insertDoc, accountId);
-      } catch (error) {
-        this.done(new Error("Failed to add address", error));
-        return false;
-      }
-      this.done();
-      addressBook.trigger($.Event("showMainView"));
+      Meteor.call("accounts/addressBookAdd", insertDoc, accountId,
+        (error, result) => {
+          if (error) {
+            Alerts.add("Failed to add address: " + error.message,
+              "danger", {
+                autoHide: true
+              });
+            this.done(new Error("Failed to add address: ", error));
+            return false;
+          }
+          if (result) {
+            this.done();
+            addressBook.trigger($.Event("showMainView"));
+          }
+        }
+      );
     }
   }
 });

@@ -1,7 +1,53 @@
 
+
+Template.coreAdminLayout.onCreated(() => {
+  const template = Template.instance();
+
+  template.settings = new ReactiveVar();
+
+  template.autorun(() => {
+    let currentRoute = Router.current().route;
+
+    let reactionApp = ReactionCore.Collections.Packages.findOne({
+      "registry.provides": "settings",
+      "registry.route": currentRoute.getName()
+    }, {
+      enabled: 1,
+      registry: 1,
+      name: 1,
+      route: 1
+    });
+    if (reactionApp) {
+      let settingsData = _.find(reactionApp.registry, function (item) {
+        return item.route === Router.current().route.getName() && item.provides === "settings";
+      });
+
+      // return settingsData;
+      if (settingsData) {
+        if (ReactionCore.hasPermission(settingsData.route, Meteor.userId())) {
+          template.settings.set(settingsData);
+        } else {
+          template.settings.set(null);
+        }
+      } else {
+        template.settings.set(null);
+      }
+    } else {
+      template.settings.set(null);
+    }
+  });
+});
+
+Template.coreAdminLayout.onRendered(() => {
+});
+
 Template.coreAdminLayout.helpers({
   template: function () {
     return ReactionCore.getActionView();
+  },
+
+  settings: function() {
+    return Template.instance().settings.get();
   },
 
   isDashboard(route) {
@@ -32,7 +78,7 @@ Template.coreAdminLayout.helpers({
       name: 1,
       route: 1
     });
-    console.log("Settings", reactionApp);
+
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
         return item.route === Router.current().route.getName() && item.provides === "settings";
@@ -46,7 +92,7 @@ Template.coreAdminLayout.helpers({
 
 Template.coreAdminLayout.events({
   "click [data-event-action=showPackageSettings]": function () {
-    ReactionCore.showActionView();
+    ReactionCore.showActionView(this);
   },
 
   /**
@@ -55,7 +101,7 @@ Template.coreAdminLayout.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a": function (event, template) {
+  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button": function (event, template) {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
@@ -78,7 +124,10 @@ Template.coreAdminLayout.events({
         }
       });
     } else if (this.route) {
-      // return Router.go(this.route);
+      event.preventDefault();
+      event.stopPropagation();
+
+      Router.go(this.route);
     }
   }
 });

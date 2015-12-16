@@ -168,7 +168,8 @@ ReactionRegistry.createDefaultAdminUser = function () {
         "services.launchdock.userId": process.env.LAUNCHDOCK_USERID,
         "services.launchdock.username": process.env.LAUNCHDOCK_USERNAME,
         "services.launchdock.auth": process.env.LAUNCHDOCK_AUTH,
-        "services.launchdock.url": process.env.LAUNCHDOCK_URL
+        "services.launchdock.url": process.env.LAUNCHDOCK_URL,
+        "services.launchdock.stackId": process.env.LAUNCHDOCK_STACK_ID
       }
     });
   }
@@ -269,7 +270,6 @@ ReactionRegistry.loadPackages = function () {
  *  @summary update the default shop url if ROOT_URL supplied is different from current
  *  @return {String} returns insert result
  */
-
 ReactionRegistry.setDomain = function () {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
@@ -281,7 +281,7 @@ ReactionRegistry.setDomain = function () {
   // if the server domain changes, update shop
   if (currentDomain && currentDomain !== getDomain()) {
     ReactionCore.Log.info("Updating domain to " + getDomain());
-    Shops.update({
+    ReactionCore.Collections.Shops.update({
       domains: currentDomain
     }, {
       $set: {
@@ -291,12 +291,40 @@ ReactionRegistry.setDomain = function () {
   }
 };
 
+/**
+ *  ReactionRegistry.setShopName
+ *  @private ReactionRegistry.setShopName
+ *  @params {Object} shop - shop
+ *  @summary when new shop is created, set shop name if REACTION_SHOP_NAME env var exists
+ *  @returns {undefined} undefined
+ */
+ReactionRegistry.setShopName = function (shop) {
+  const Shops = ReactionCore.Collections.Shops;
+  const shopName = process.env.REACTION_SHOP_NAME;
+
+  if (shopName) {
+    // if this shop name has already been used, don't use it again
+    if (!!ReactionCore.Collections.Shops.findOne({ name: shopName })) {
+      ReactionCore.Log.info(`Default shop name ${shopName} already used`);
+    } else {
+      // update the shop name with the REACTION_SHOP_NAME env var
+      try {
+        Shops.update({ _id: shop._id }, { $set: { name: shopName } });
+      } catch (err) {
+        ReactionCore.Log.error("Failed to update shop name", err);
+      }
+    }
+  }
+};
+
+
 ReactionCore.Collections.Shops.find().observe({
-  added: function () {
+  added(doc) {
+    ReactionRegistry.setShopName(doc);
     ReactionRegistry.setDomain();
     ReactionRegistry.createDefaultAdminUser();
   },
-  removed: function () {
+  removed(doc) {
     // TODO SHOP REMOVAL CLEANUP FOR #357
   }
 });

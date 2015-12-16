@@ -85,7 +85,7 @@ ReactionCore.Helpers.cartTransform = {
 /**
 * ReactionCore Collections Cart
 */
-ReactionCore.Collections.Cart = Cart = this.Cart = new Mongo.Collection("Cart", {
+ReactionCore.Collections.Cart = new Mongo.Collection("Cart", {
   transform: function (cart) {
     let newInstance = Object.create(ReactionCore.Helpers.cartTransform);
     return _.extend(newInstance, cart);
@@ -97,7 +97,7 @@ ReactionCore.Collections.Cart.attachSchema(ReactionCore.Schemas.Cart);
 /**
 * ReactionCore Collections Orders
 */
-ReactionCore.Collections.Orders = Orders = this.Orders = new Mongo.Collection("Orders", {
+ReactionCore.Collections.Orders = this.Orders = new Mongo.Collection("Orders", {
   transform: function (order) {
     order.itemCount = function () {
       let count = 0;
@@ -118,6 +118,14 @@ ReactionCore.Collections.Orders.attachSchema([
   ReactionCore.Schemas.OrderItem
 ]);
 
+
+/**
+ * ReactionCore Collections Accounts
+ */
+ReactionCore.Collections.Accounts = new Mongo.Collection("Accounts");
+
+ReactionCore.Collections.Accounts.attachSchema(ReactionCore.Schemas.Accounts);
+
 /**
 * ReactionCore Collections Packages
 */
@@ -128,7 +136,7 @@ ReactionCore.Collections.Packages.attachSchema(ReactionCore.Schemas.PackageConfi
 /**
 * ReactionCore Collections Products
 */
-ReactionCore.Collections.Products = Products = this.Products = new Mongo.Collection("Products");
+ReactionCore.Collections.Products = new Mongo.Collection("Products");
 
 ReactionCore.Collections.Products.attachSchema([
     { schema: ReactionCore.Schemas.Product, selector: { type: 'simple' }},
@@ -160,14 +168,14 @@ ReactionCore.Collections.Discounts.attachSchema(ReactionCore.Schemas.Discounts);
 /**
 * ReactionCore Collections Shops
 */
-ReactionCore.Collections.Shops = Shops = this.Shops = new Mongo.Collection("Shops");
+ReactionCore.Collections.Shops = new Mongo.Collection("Shops");
 
 ReactionCore.Collections.Shops.attachSchema(ReactionCore.Schemas.Shop);
 
 /**
 * ReactionCore Collections Tags
 */
-ReactionCore.Collections.Tags = Tags = this.Tags = new Mongo.Collection("Tags");
+ReactionCore.Collections.Tags = new Mongo.Collection("Tags");
 
 ReactionCore.Collections.Tags.attachSchema(ReactionCore.Schemas.Tag);
 
@@ -179,15 +187,22 @@ ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
 
 /**
-* ReactionCore Collections Accounts
+* ReactionCore Collections Layouts
 */
 ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
 
 ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
 
 /**
+* ReactionCore Collections Templates
+*/
+ReactionCore.Collections.Templates = new Mongo.Collection("Templates");
+
+ReactionCore.Collections.Templates.attachSchema(ReactionCore.Schemas.Templates);
+
+/**
  * ReactionCore Collections CronJobs
  */
-ReactionCore.Collections.Jobs = Jobs = new JobCollection('Jobs', {
+ReactionCore.Collections.Jobs = new JobCollection("Jobs", {
   noCollectionSuffix: true
 });
