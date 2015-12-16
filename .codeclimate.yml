@@ -1,10 +1,11 @@
-languages:
-   JavaScript: true
 exclude_paths:
 - ".meteor/*"
 engines:
   duplication:
     enabled: true
+    config:
+      languages:
+        - javascript
   eslint:
     enabled: false
   csslint:
