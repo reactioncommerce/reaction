@@ -20,6 +20,6 @@ elif [[ "$@" == "install" ]]; then
 elif [[ "$@" == "test" ]]; then
   VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity
 else
-  echo "$@"
   bin/run "$@"
 fi
+exit
