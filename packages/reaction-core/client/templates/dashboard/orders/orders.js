@@ -1,11 +1,11 @@
 
 const orderFilters = [
   {name: "new", label: "New"},
-  {name: "captured", label: "Payment Captured"},
+  {name: "processing", label: "processing"},
   {name: "shipped", label: "Shipped"},
   {name: "completed", label: "Completed"},
-  {name: "canceled", label: "Canceled"},
-  {name: "refunded", label: "Refunded"}
+  // {name: "canceled", label: "Canceled"},
+  // {name: "refunded", label: "Refunded"}
 ];
 
 const OrderHelper = {
@@ -20,11 +20,10 @@ const OrderHelper = {
       };
       break;
 
-    // Orders that have been captured, but not yet shipped
-    case "captured":
+    // Orders that have been shipped
+    case "processing":
       query = {
-        "billing.paymentMethod.status": "completed",
-        "shipping.shipped": false
+        "workflow.status": "coreOrderProcessing"
       };
       break;
 
@@ -38,8 +37,15 @@ const OrderHelper = {
     // Orders that have been both captured & shipped, meaning it is complete
     case "completed":
       query = {
+        "workflow.status": "coreOrderCompleted"
+      };
+      break;
+
+    // Orders that have been captured, but not yet shipped
+    case "captured":
+      query = {
         "billing.paymentMethod.status": "completed",
-        "shipping.shipped": true
+        "shipping.shipped": false
       };
       break;
 
@@ -83,6 +89,18 @@ function getFiltersWithCounts() {
   });
 }
 
+Template.orders.onCreated(() => {
+  Template.instance().autorun(() => {
+    let isActionViewOpen = ReactionCore.isActionViewOpen();
+
+    if (isActionViewOpen === false) {
+      Router.go("dashboard/orders", {}, {
+        query: $.param(Router.current().params.query)
+      });
+    }
+  });
+});
+
 /**
  * orders helpers
  */
@@ -96,6 +114,16 @@ Template.orders.helpers({
     return template.orders;
   },
 
+  currentFilterLabel() {
+    let foundFilter = _.find(orderFilters, (filter) => {
+      return filter.name === Router.current().params.query.filter;
+    });
+
+    if (foundFilter) {
+      return foundFilter.label;
+    }
+  },
+
   activeClassname(orderId) {
     if (Router.current().params._id === orderId) {
       return "panel-info";
@@ -107,9 +135,12 @@ Template.orders.helpers({
 Template.ordersListItem.helpers({
   activeClassname(orderId) {
     if (Router.current().params._id === orderId) {
-      return "panel-info";
+      return "active";
     }
-    return "panel-default";
+  },
+
+  orderIsNew(order) {
+    return order.workflow.status === "new";
   }
 });
 
@@ -117,15 +148,23 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
 
+    Router.go("dashboard/orders", {
+      _id: this._id
+    }, {
+      query: $.param(Router.current().params.query)
+    });
+  },
+  "click [data-event-action=startProcessingOrder]": function (event) {
+    event.preventDefault();
+
     if (this.workflow.status === "new") {
-      this.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderSummary", this._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderProcessing", this);
     }
 
     Router.go("dashboard/orders", {
       _id: this._id
     }, {
-      query: $.param(Router.current().params.query)
+      query: $.param({filter: "processing"})
     });
   }
 });

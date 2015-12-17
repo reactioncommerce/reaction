@@ -1,26 +1,5 @@
 
 /**
- * when order is first viewed we'll push the order status to created
- */
-Template.coreOrderWorkflow.onRendered(function () {
-  const order = Template.currentData();
-
-  if (order) {
-    // force order created to always be completed.
-    if (order.workflow.status === "coreOrderCreated") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
-    }
-
-    if (_.isArray(order.shipping)) {
-      if (order.shipping[0].workflow.status === "new") {
-        Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "coreOrderShippingCreated", order._id, order.shipping[0]._id);
-      }
-    }
-  }
-});
-
-
-/**
  * coreOrderWorkflowHelpers
  */
 Template.coreOrderWorkflow.helpers({

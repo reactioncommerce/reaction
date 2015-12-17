@@ -23,6 +23,13 @@ Meteor.methods({
       tracking);
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow",
       "coreShipmentTracking", order._id);
+
+    // Set the status of the items as shipped
+    const itemIds = template.order.shipping[0].items.map((item) => {
+      return item._id;
+    });
+
+    Meteor.call("workflow/pushItemWorkflow", "tracking", order._id, itemIds);
   },
 
   // shipmentPrepare
@@ -61,6 +68,14 @@ Meteor.methods({
         }
       });
 
+      // Set the status of the items as shipped
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
+      });
+
+      Meteor.call("workflow/pushItemWorkflow", "shipped", order, itemIds);
+
+      // Push the shipment workflow
       return Meteor.call(
         "workflow/pushOrderShipmentWorkflow",
         "coreOrderShipmentWorkflow",
@@ -136,6 +151,15 @@ Meteor.methods({
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow",
           "coreOrderWorkflow", "coreProcessPayment", order._id);
+
+        // Set the status of the items as shipped
+        const itemIds = order.shipping[0].items.map((item) => {
+          return item._id;
+        });
+
+        Meteor.call("workflow/pushItemWorkflow", "captured", order, itemIds);
+
+
         return this.processPayment(order);
       }
     });
@@ -157,19 +181,60 @@ Meteor.methods({
       // Attempt to sent email notification
       Meteor.call("orders/sendNotification", order);
 
-      ReactionCore.Collections.Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.shipped": true
-        }
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
       });
+
+      Meteor.call("workflow/pushItemWorkflow", "shipped", order, itemIds);
 
       return Meteor.call("workflow/pushOrderWorkflow",
         "coreOrderWorkflow", "coreShipmentShipped", order._id);
     }
   },
+
+  /**
+   * orders/shipmentDelivered
+   *
+   * @summary trigger shipmentShipped status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentDelivered": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      let shipment = order.shipping[0];
+
+      // Attempt to sent email notification
+      Meteor.call("orders/sendNotification", order);
+
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
+      });
+
+      Meteor.call("workflow/pushItemWorkflow", "delivered", order._id, itemIds);
+      Meteor.call("workflow/pushItemWorkflow", "completed", order._id, itemIds);
+
+      const isCompleted = _.every(order.items, (item) => {
+        return _.contains(item.workflow.workflow, "completed");
+      });
+
+      if (isCompleted === true) {
+        Meteor.call("workflow/pushOrderWorkflow",
+          "coreOrderWorkflow", "coreOrderCompleted", order._id);
+
+        return true;
+      }
+
+
+      Meteor.call("workflow/pushOrderWorkflow",
+          "coreOrderWorkflow", "coreOrderProcessing", order._id);
+
+      return false;
+    }
+  },
+
   /**
    * orders/shipmentShipped
    *
@@ -217,6 +282,7 @@ Meteor.methods({
       }
     }
   },
+
   /**
    * orders/orderCompleted
    *
@@ -448,7 +514,14 @@ Meteor.methods({
     check(orderId, String);
 
     let order = ReactionCore.Collections.Orders.findOne(orderId);
+    const itemIds = order.shipping[0].items.map((item) => {
+      return item._id;
+    });
 
+    console.log(order);
+    Meteor.call("workflow/pushItemWorkflow", "captured", order, itemIds);
+    return true
+    return
     // process order..payment.paymentMethod
     _.each(order.billing, function (billing) {
       const paymentMethod = billing.paymentMethod;

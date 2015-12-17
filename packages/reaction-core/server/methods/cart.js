@@ -308,24 +308,40 @@ Meteor.methods({
       }
     }
 
+    let expandedItems = [];
+
     // init item level workflow
     _.each(order.items, function (item, index) {
-      order.items[index].workflow = {
-        status: "orderCreated",
-        workflow: ["inventoryAdjusted"]
-      };
+      // Split items based on their quantity
+      for (let i = 0; i < item.quantity; i++) {
+        // Clone Item
+        let itemClone = _.clone(item);
 
+        // Remove the quantity since we'll be expanding each item as
+        // it's own record
+        itemClone.quantity = 1;
 
-      if (order.shipping[0].items) {
-        order.shipping[0].items.push({
-          _id: item._id,
-          productId: item.productId,
-          shopId: item.shopId,
-          variantId: item.variants._id,
-          quantity: item.quantity
-        });
+        itemClone._id = Random.id();
+        itemClone.workflow = {
+          status: "new"
+        };
+
+        expandedItems.push(itemClone);
+
+        // Add each item clone to the first shipment
+        if (order.shipping[0].items) {
+          order.shipping[0].items.push({
+            _id: itemClone._id,
+            productId: itemClone.productId,
+            shopId: itemClone.shopId,
+            variantId: itemClone.variants._id
+          });
+        }
       }
     });
+
+    // Replace the items with the expanded array of items
+    order.items = expandedItems;
 
     if (!order.items) {
       throw new Meteor.Error(

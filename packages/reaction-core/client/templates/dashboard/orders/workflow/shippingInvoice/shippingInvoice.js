@@ -103,7 +103,6 @@ Template.coreOrderShippingInvoice.events({
     let template = Template.instance();
 
     Meteor.call("orders/capturePayments", template.order._id);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", template.order._id);
   },
 
   "change input[name=refund_amount]": (event, template) => {

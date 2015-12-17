@@ -579,5 +579,29 @@ Meteor.methods({
         newWorkflowStatus);
       return true;
     }
+  },
+
+  "workflow/pushItemWorkflow": function (workflow, order, itemIds) {
+    check(workflow, String);
+    check(order, Object);
+    check(itemIds, Array);
+
+    const items = order.items.map((item) => {
+      let workflows = item.workflow.workflow;
+      workflows.push(workflow);
+      item.workflow.workflow = _.uniq(workflows);
+
+      return item;
+    });
+
+    const result = ReactionCore.Collections.Orders.update({
+      _id: order._id
+    }, {
+      $set: {
+        items: items
+      }
+    });
+
+    return result;
   }
 });

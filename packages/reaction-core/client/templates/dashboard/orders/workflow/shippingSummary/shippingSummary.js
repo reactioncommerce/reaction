@@ -28,7 +28,7 @@ Template.coreOrderShippingSummary.onRendered(function () {
   if (order.workflow) {
     if (order.workflow.status === "coreOrderCreated") {
       order.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
     }
   }
 });
@@ -39,7 +39,7 @@ Template.coreOrderShippingSummary.onRendered(function () {
  */
 Template.coreOrderShippingSummary.events({
   "click .btn": function () {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this);
   }
 });
 
