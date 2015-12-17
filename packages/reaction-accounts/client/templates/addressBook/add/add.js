@@ -1,11 +1,20 @@
 Template.addressBookAdd.helpers({
   thisAddress: function () {
     let thisAddress = {};
-    let account = ReactionCore.Collections.Accounts.findOne();
+    // admin should receive his account
+    let account = ReactionCore.Collections.Accounts.findOne(Meteor.userId());
     if (account) {
       if (account.profile) {
         if (account.profile.name) {
           thisAddress.fullName = account.profile.name;
+        }
+        // if this will be the first address we set defaults here and not display
+        // them inside form
+        if (account.profile.addressBook) {
+          if (account.profile.addressBook.length === 0) {
+            thisAddress.isShippingDefault = true;
+            thisAddress.isBillingDefault = true;
+          }
         }
       }
     }
@@ -15,6 +24,7 @@ Template.addressBookAdd.helpers({
       thisAddress.city = Session.get("address").city;
       thisAddress.region = Session.get("address").state;
     }
+
     return thisAddress;
   },
 
