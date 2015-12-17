@@ -481,9 +481,19 @@ Meteor.methods({
         // refresh shipping quotes
         Meteor.call("shipping/updateShipmentQuotes", cartId);
 
-        // it's ok for this to be called multiple times
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "coreCheckoutShipping");
+        // ~~it's ok for this to be called multiple times~~
+        // call it only once then we at the `checkoutAddressBook` step
+        if (cart.workflow.workflow.length === 2) {
+          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+            "coreCheckoutShipping");
+        }
+
+        // if we change default address during further steps, we need to revert
+        // workflow back to `coreCheckoutShipping` step
+        if (cart.workflow.workflow.length > 3) { // "2" index of
+          // `coreCheckoutShipping`
+          Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+        }
       });
     }
   },
@@ -556,6 +566,7 @@ Meteor.methods({
 
     // do we actually need to change anything?
     let needToUpdate = false;
+    let isShippingDeleting = false;
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
@@ -583,10 +594,19 @@ Meteor.methods({
         cart.shipping[0].address._id === addressId) {
         update.$unset["shipping.0.address"] = "";
         needToUpdate = true;
+        isShippingDeleting = true;
       }
     }
 
-    return needToUpdate && ReactionCore.Collections.Cart.update(selector, update);
+    needToUpdate && ReactionCore.Collections.Cart.update(selector, update,
+      (error, result) => {
+        if (result && isShippingDeleting) {
+          // if we remove shipping address from cart, we need to revert
+          // `cartWorkflow` to the `checkoutAddressBook` step.
+          Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+        }
+      }
+    );
   },
   /**
    * cart/submitPayment
