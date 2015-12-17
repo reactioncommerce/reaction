@@ -207,8 +207,8 @@ Meteor.methods({
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow
     if (!~resetToIndex) return false;
-    // remove all steps that further `newWorkflowStatus`
-    const resetedWorkflow = workflow.slice(0, resetToIndex + 1);
+    // remove all steps that further `newWorkflowStatus` and itself
+    const resetedWorkflow = workflow.slice(0, resetToIndex);
 
     return ReactionCore.Collections.Cart.update(cart._id, {
       $set: {

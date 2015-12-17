@@ -483,7 +483,7 @@ Meteor.methods({
 
         // ~~it's ok for this to be called multiple times~~
         // call it only once then we at the `checkoutAddressBook` step
-        if (cart.workflow.workflow.length === 2) {
+        if (cart.workflow.workflow.length <= 2) {
           Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
             "coreCheckoutShipping");
         }
@@ -492,6 +492,7 @@ Meteor.methods({
         // workflow back to `coreCheckoutShipping` step
         if (cart.workflow.workflow.length > 3) { // "2" index of
           // `coreCheckoutShipping`
+          // TODO additionaly recalculate shipping rates here
           Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
         }
       });
