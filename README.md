@@ -1,4 +1,4 @@
-# Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Code Climate](https://codeclimate.com/github/reactioncommerce/reaction/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Code Climate](https://codeclimate.com/repos/567089bf2f400828770006a6/badges/3a15e1b3cd1a4c546957/gpa.svg)](https://codeclimate.com/repos/567089bf2f400828770006a6/feed) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Reaction is a modern reactive, real-time event driven ecommerce platform.
 
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
@@ -22,7 +22,7 @@ To install Meteor + Reaction, and start the latest release:
 curl https://install.meteor.com | /bin/sh
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction && git checkout master # default branch is development
-reaction
+./reaction
 ```
 
 Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
@@ -42,7 +42,7 @@ If you want to use shell scripts under Windows:
 - bin/clone-packages.sh
 - bin/reset
 
-## Packages 
+## Packages
  Atmosphere [Meteor Packages for Reaction](https://atmospherejs.com/?q=reaction)
 
 Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
