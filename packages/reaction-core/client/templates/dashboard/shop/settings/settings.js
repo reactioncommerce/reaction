@@ -117,7 +117,7 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   shopEditExternalServicesForm: {
-    onSuccess: function() {
+    onSuccess: function () {
       return Alerts.add("Open Exchange settings saved.", "success", {
         autoHide: true
       });
