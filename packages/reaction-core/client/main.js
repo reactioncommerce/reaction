@@ -27,7 +27,7 @@ _.extend(ReactionCore, {
           typeof Locale.currency === "object" &&
           typeof Locale.locale.currency === "string") {
           const localeCurrency = Locale.locale.currency.split(",")[0];
-          if (shop.currencies[localeCurrency] &&
+          if (typeof shop.currencies[localeCurrency] === "object" &&
             typeof shop.currencies[localeCurrency].rate === "number") {
             Locale.currency.rate = shop.currencies[localeCurrency].rate;
             localeDep.changed();
