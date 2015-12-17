@@ -35,9 +35,7 @@ Template.addressBookAdd.helpers({
     if (account) {
       if (account.profile) {
         if (account.profile.addressBook) {
-          if (account.profile.addressBook.length > 0) {
-            return true;
-          }
+          return account.profile.addressBook.length > 0;
         }
       }
     }
