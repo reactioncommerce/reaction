@@ -136,6 +136,10 @@ Package.onUse(function (api) {
   // security
   api.addFiles("server/browserPolicy.js", "server");
 
+  // method hooks
+  api.addFiles("server/methods/hooks/hooks.js");
+  api.addFiles("server/methods/hooks/cart.js", "server");
+
   // cron jobs
   api.addFiles("server/jobs.js", "server");
 
@@ -146,6 +150,8 @@ Package.onUse(function (api) {
   api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js");
 
+  api.addFiles("common/hooks/orders.js");
+
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
@@ -153,9 +159,7 @@ Package.onUse(function (api) {
   api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
 
-  // method hooks
-  api.addFiles("server/methods/hooks/hooks.js");
-  api.addFiles("server/methods/hooks/cart.js", "server");
+  api.addFiles("server/methods/workflows/orders.js", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");

@@ -23,14 +23,14 @@ const OrderHelper = {
     // Orders that have been shipped
     case "processing":
       query = {
-        "workflow.status": "coreOrderProcessing"
+        "workflow.status": "coreOrderWorkflow/processing"
       };
       break;
 
     // Orders that have been shipped
     case "shipped":
       query = {
-        "shipping.shipped": true
+        "items.workflow.status": "shipped"
       };
       break;
 
@@ -158,7 +158,7 @@ Template.ordersListItem.events({
     event.preventDefault();
 
     if (this.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderProcessing", this);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
     }
 
     Router.go("dashboard/orders", {

@@ -151,11 +151,13 @@ ReactionCore.registerPackage({
   }, {
     template: "coreOrderProcessing",
     label: "Order Processing",
+    status: "processing",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
   }, {
     template: "coreOrderCompleted",
     label: "Order Completed",
+    status: "completed",
     workflow: "coreOrderWorkflow",
     audience: ["dashboard/orders"]
   }, { // Standard Order Fulfillment with shipping

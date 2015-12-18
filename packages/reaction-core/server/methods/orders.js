@@ -74,15 +74,6 @@ Meteor.methods({
       });
 
       Meteor.call("workflow/pushItemWorkflow", "shipped", order, itemIds);
-
-      // Push the shipment workflow
-      return Meteor.call(
-        "workflow/pushOrderShipmentWorkflow",
-        "coreOrderShipmentWorkflow",
-        "coreOrderPacking",
-        order._id,
-        shipment._id
-      );
     }
   },
 
@@ -186,9 +177,6 @@ Meteor.methods({
       });
 
       Meteor.call("workflow/pushItemWorkflow", "shipped", order, itemIds);
-
-      return Meteor.call("workflow/pushOrderWorkflow",
-        "coreOrderWorkflow", "coreShipmentShipped", order._id);
     }
   },
 
@@ -518,10 +506,8 @@ Meteor.methods({
       return item._id;
     });
 
-    console.log(order);
     Meteor.call("workflow/pushItemWorkflow", "captured", order, itemIds);
-    return true
-    return
+
     // process order..payment.paymentMethod
     _.each(order.billing, function (billing) {
       const paymentMethod = billing.paymentMethod;
