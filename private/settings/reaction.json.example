@@ -13,8 +13,13 @@
         "port": 587
       },
       "openexchangerates": {
-        "appId": ""
+        "appId": "",
+        "refreshPeriod": "every 1 hour"
       },
+      "google" : {
+          "clientId" : "",
+          "apiKey" : ""
+      }
       "services": [{
         "facebook": {
           "appId": "",
