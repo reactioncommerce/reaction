@@ -1,6 +1,4 @@
 # Reaction Accounts
-[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-accounts.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction-accounts)
-
 This is a core package of Reaction Commerce and provides
 - dropdown accounts ui
 - inline accounts ui
