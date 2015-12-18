@@ -180,21 +180,6 @@
       "addressBookEdit": {
         "editAddress": "Editing this address entry"
       },
-      "shop": {
-        "addressBook": {
-          "country": "Country",
-          "fullName": "Full name",
-          "address1": "Address 1",
-          "address2": "Address 2",
-          "postal": "Postal",
-          "city": "City",
-          "region": "Region",
-          "phone": "Phone",
-          "isShippingDefault": "Make this your default shipping address?",
-          "isBillingDefault": "Make this your default billing address?",
-          "isCommercial": "This is a commercial address."
-        }
-      },
       "address": {
         "country": "Country",
         "fullName": "Full name",

@@ -80,7 +80,7 @@
      * JSX / React
      */
     "jsx-quotes": [2, "prefer-double"], // http://eslint.org/docs/rules/jsx-quotes
-    "react/no-deprecated": 1,
+    /*"react/no-deprecated": 1,*/
     "react/display-name": 1,
     "react/forbid-prop-types": 1,
     "react/jsx-boolean-value": [1, "always"],
@@ -90,7 +90,7 @@
     "react/jsx-max-props-per-line": [1, {
       "maximum": 4
     }],
-    "react/jsx-no-bind": 1,
+    /*"react/jsx-no-bind": 1,*/
     "react/jsx-no-duplicate-props": 1,
     "react/jsx-no-literals": 1,
     "react/jsx-no-undef": 1,
