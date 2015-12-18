@@ -71,13 +71,6 @@ reactioncommerce:reaction-stripe
 
 reactioncommerce:reaction-sample-data
 
-# Testing packages
-
-# reactioncommerce:reaction-factories
-# velocity:html-reporter
-# sanjo:jasmine
-# velocity:helpers
-
 # Performance & Debugging Tools
 
 #meteorhacks:kadira
