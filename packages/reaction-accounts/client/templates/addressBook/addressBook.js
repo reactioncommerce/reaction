@@ -86,7 +86,7 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
-    Meteor.call("accounts/addressBookRemove", this, Meteor.userId(),
+    Meteor.call("accounts/addressBookRemove", this._id, Meteor.userId(),
       (error, result) => {
         if (error) {
           Alerts.add("Can't remove this address: " + error.message,
