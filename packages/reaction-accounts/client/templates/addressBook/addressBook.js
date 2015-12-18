@@ -86,28 +86,26 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
-    Meteor.call("accounts/addressBookRemove", this, Meteor.userId(),
-      (error, result) => {
-        if (error) {
-          Alerts.add("Can't remove this address: " + error.message,
-            "danger", {
-              autoHide: true
-            });
-        }
-        if (result) {
-          let account = ReactionCore.Collections.Accounts.findOne({
-            userId: Meteor.userId()
+    Meteor.call("accounts/addressBookRemove", this, (error, result) => {
+      if (error) {
+        Alerts.add("Can't remove this address: " + error.message,
+          "danger", {
+            autoHide: true
           });
-          if (account) {
-            if (account.profile) {
-              if (account.profile.addressBook.length === 0) {
-                template.currentViewTemplate.set("addressBookAdd");
-              }
+      }
+      if (result) {
+        let account = ReactionCore.Collections.Accounts.findOne({
+          userId: Meteor.userId()
+        });
+        if (account) {
+          if (account.profile) {
+            if (account.profile.addressBook.length === 0) {
+              template.currentViewTemplate.set("addressBookAdd");
             }
           }
         }
       }
-    );
+    });
   },
 
   "click [data-event-action=cancelAddressEdit], form submit, showMainView": function (event) {

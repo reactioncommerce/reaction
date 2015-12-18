@@ -483,14 +483,16 @@ Meteor.methods({
 
         // ~~it's ok for this to be called multiple times~~
         // call it only once then we at the `checkoutAddressBook` step
-        if (cart.workflow.workflow.length <= 2) {
+        if (typeof cart.workflow.workflow === "object" &&
+          cart.workflow.workflow.length <= 2) {
           Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
             "coreCheckoutShipping");
         }
 
         // if we change default address during further steps, we need to revert
         // workflow back to `coreCheckoutShipping` step
-        if (cart.workflow.workflow.length > 3) { // "2" index of
+        if (typeof cart.workflow.workflow === "object" &&
+          cart.workflow.workflow.length > 2) { // "2" index of
           // `coreCheckoutShipping`
           // TODO additionaly recalculate shipping rates here
           Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
@@ -584,7 +586,7 @@ Meteor.methods({
         update.$unset[`${type}.0.address`] = "";
         needToUpdate = true;
       }
-    } else { // or if we remove address itselt, when we run this part
+    } else { // or if we remove address itself, when we run this part
       // we assume that the billing/shipping arrays can hold only one element [0]
       if (cart.billing && typeof cart.billing[0].address === "object" &&
         cart.billing[0].address._id === addressId) {

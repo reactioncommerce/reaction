@@ -2,7 +2,9 @@ Template.addressBookAdd.helpers({
   thisAddress: function () {
     let thisAddress = {};
     // admin should receive his account
-    let account = ReactionCore.Collections.Accounts.findOne(Meteor.userId());
+    let account = ReactionCore.Collections.Accounts.findOne({
+      userId: Meteor.userId()
+    });
     if (account) {
       if (account.profile) {
         if (account.profile.name) {
@@ -57,35 +59,28 @@ Template.addressBookAdd.events({
 /**
  * addressBookAddForm form handling
  * @description gets accountId and calls addressBookAdd method
- * @fires accounts/addressBookAdd method
+ * @fires "accounts/addressBookAdd" method
  */
 AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
       let addressBook = $(this.template.firstNode).closest(".address-book");
-      // TODO: when this template will be transform into component, `accountId`
-      // should be `props`.
-      // TODO: if we will add the ability to edit the address through the
-      // dashboard, the field needs to be changed
-      let accountId = Meteor.userId();
 
-      Meteor.call("accounts/addressBookAdd", insertDoc, accountId,
-        (error, result) => {
-          if (error) {
-            Alerts.add("Failed to add address: " + error.message,
-              "danger", {
-                autoHide: true
-              });
-            this.done(new Error("Failed to add address: ", error));
-            return false;
-          }
-          if (result) {
-            this.done();
-            addressBook.trigger($.Event("showMainView"));
-          }
+      Meteor.call("accounts/addressBookAdd", insertDoc, (error, result) => {
+        if (error) {
+          Alerts.add("Failed to add address: " + error.message,
+            "danger", {
+              autoHide: true
+            });
+          this.done(new Error("Failed to add address: ", error));
+          return false;
         }
-      );
+        if (result) {
+          this.done();
+          addressBook.trigger($.Event("showMainView"));
+        }
+      });
     }
   }
 });

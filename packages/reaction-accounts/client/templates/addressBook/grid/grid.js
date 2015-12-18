@@ -58,11 +58,11 @@ Template.addressBookGrid.helpers({
 
 Template.addressBookGrid.events({
   "click [data-event-action=selectShippingAddress]": function () {
-    return Meteor.call("accounts/addressBookUpdate", this, Meteor.userId(),
+    return Meteor.call("accounts/addressBookUpdate", this, null,
       "isShippingDefault");
   },
   "click [data-event-action=selectBillingAddress]": function () {
-    return Meteor.call("accounts/addressBookUpdate", this, Meteor.userId(),
+    return Meteor.call("accounts/addressBookUpdate", this, null,
       "isBillingDefault");
   }
 });
