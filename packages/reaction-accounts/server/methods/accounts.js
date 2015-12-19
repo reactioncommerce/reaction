@@ -303,13 +303,13 @@ Meteor.methods({
   /**
    * accounts/addressBookRemove
    * @description remove existing address in user's profile
-   * @param {Object} address - address
+   * @param {String} addressId - address `_id`
    * @param {String} [accountUserId] - `account.userId` used by admin to edit
    * users
    * @return {Number|Object} The number of removed documents or error object
    */
-  "accounts/addressBookRemove": function (address, accountUserId) {
-    check(address, ReactionCore.Schemas.Address);
+  "accounts/addressBookRemove": function (addressId, accountUserId) {
+    check(addressId, ReactionCore.Schemas.Address);
     check(accountUserId, Match.Optional(String));
     // security, check for admin access. We don't need to check every user call
     // here because we are calling `Meteor.userId` from within this Method.
@@ -323,15 +323,15 @@ Meteor.methods({
 
     const userId = accountUserId || Meteor.userId();
     // remove this address in cart, if used, before completely removing
-    Meteor.call("cart/unsetAddresses", address._id, userId);
+    Meteor.call("cart/unsetAddresses", addressId, userId);
 
     return ReactionCore.Collections.Accounts.update({
       "userId": userId,
-      "profile.addressBook._id": address._id
+      "profile.addressBook._id": addressId
     }, {
       $pull: {
         "profile.addressBook": {
-          _id: address._id
+          _id: addressId
         }
       }
     });

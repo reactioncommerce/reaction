@@ -389,7 +389,8 @@ describe("Account Meteor method ", function () {
         Meteor.call("cart/createCart", userId, shop._id);
 
         // clean account
-        Meteor.call("accounts/addressBookRemove", );
+        Meteor.call("accounts/addressBookRemove",
+          account.profile.addressBook[0]._id);
         // preparation
         let address = Object.assign({}, account.profile.addressBook[0], {
           isShippingDefault: false,
