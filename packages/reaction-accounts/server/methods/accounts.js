@@ -103,7 +103,7 @@ Accounts.onLogin(function (options) {
     ReactionCore.Log.debug("removed anonymous role from user: " + options.user._id);
 
     // onLogin, we want to merge session cart into user cart.
-    cart = ReactionCore.Collections.Cart.findOne({
+    const cart = ReactionCore.Collections.Cart.findOne({
       userId: options.user._id
     });
     Meteor.call("cart/mergeCart", cart._id);
