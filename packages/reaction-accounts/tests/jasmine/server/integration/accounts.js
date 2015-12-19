@@ -63,9 +63,13 @@ describe("Account Meteor method ", function () {
     );
 
     it(
-      "should throw 400 Match Failed error if the `address` doesn't match the Address Schema",
+      "should throw error if wrong arguments were passed",
       function (done) {
         spyOn(ReactionCore.Collections.Accounts, "update");
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookAdd", 123456);
+        }).toThrow();
 
         expect(function () {
           return Meteor.call("accounts/addressBookAdd", {});
@@ -73,6 +77,14 @@ describe("Account Meteor method ", function () {
 
         expect(function () {
           return Meteor.call("accounts/addressBookAdd", null);
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookAdd");
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookAdd", "asdad", 123);
         }).toThrow();
 
         // https://github.com/aldeed/meteor-simple-schema/issues/522
@@ -247,9 +259,13 @@ describe("Account Meteor method ", function () {
     );
 
     it(
-      "should throw error if `address` doesn't match the Address Schema",
+      "should throw error if wrong arguments were passed",
       done => {
         spyOn(ReactionCore.Collections.Accounts, "update");
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookUpdate", 123456);
+        }).toThrow();
 
         expect(function () {
           return Meteor.call("accounts/addressBookUpdate", {});
@@ -257,6 +273,14 @@ describe("Account Meteor method ", function () {
 
         expect(function () {
           return Meteor.call("accounts/addressBookUpdate", null);
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookUpdate");
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookUpdate", "asdad", 123);
         }).toThrow();
 
         // https://github.com/aldeed/meteor-simple-schema/issues/522
@@ -461,7 +485,7 @@ describe("Account Meteor method ", function () {
     );
 
     it(
-      "should throw error if wrong arguments was passed",
+      "should throw error if wrong arguments were passed",
       done => {
         spyOn(ReactionCore.Collections.Accounts, "update");
 

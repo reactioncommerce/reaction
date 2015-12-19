@@ -5,6 +5,10 @@ describe("cart methods", function () {
   let userId = user._id;
   ReactionCore.sessionId = Random.id(); // Required for creating a cart
 
+  beforeEach(() => {
+    ReactionCore.Collections.Cart.remove({});
+  });
+
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
       spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
@@ -17,6 +21,123 @@ describe("cart methods", function () {
       expect(cartId).toEqual(cart._id);
       done();
     });
+  });
+
+  describe("cart/unsetAddresses", function () {
+    it(
+      "should correctly remove addresses from cart",
+      done => {
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(Meteor, "userId").and.returnValue(user._id);
+
+        // creating cart and adding new address which is default for
+        // shipping/billing
+        const cartId = Meteor.call("cart/createCart", user._id, shop._id);
+        const address = Object.assign({}, faker.reaction.address(), {
+          _id: Random.id(),
+          isShippingDefault: true,
+          isBillingDefault: true
+        });
+        Meteor.call("cart/setPaymentAddress", cartId, address);
+        Meteor.call("cart/setShipmentAddress", cartId, address);
+        let cart = ReactionCore.Collections.Cart.findOne(cartId);
+
+        expect(cart.shipping[0].address._id).toEqual(address._id);
+        expect(cart.billing[0].address._id).toEqual(address._id);
+
+        // our Method checking
+        Meteor.call("cart/unsetAddresses", address._id, userId);
+
+        cart = ReactionCore.Collections.Cart.findOne(cartId);
+
+        expect(cart.shipping[0].address).toBeUndefined();
+        expect(cart.billing[0].address).toBeUndefined();
+
+        return done();
+      }
+    );
+
+    it(
+      "should throw error if wrong arguments were passed",
+      done => {
+        spyOn(ReactionCore.Collections.Accounts, "update");
+
+        expect(function () {
+          return Meteor.call("cart/unsetAddresses", 123456);
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("cart/unsetAddresses", {});
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("cart/unsetAddresses", null);
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("cart/unsetAddresses");
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("cart/unsetAddresses", "asdad", 123);
+        }).toThrow();
+
+        // https://github.com/aldeed/meteor-simple-schema/issues/522
+        expect(function () {
+          return Meteor.call(
+            "accounts/addressBookRemove",
+            () => { console.log("test"); }
+          );
+        }).toThrow();
+
+        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+
+        return done();
+      }
+    );
+
+    it(
+      "should update cart via `type` argument",
+      done => {
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(Meteor, "userId").and.returnValue(user._id);
+
+        const cartId = Meteor.call("cart/createCart", user._id, shop._id);
+        const address = Object.assign({}, faker.reaction.address(), {
+          _id: Random.id(),
+          isShippingDefault: true,
+          isBillingDefault: true
+        });
+        Meteor.call("cart/setPaymentAddress", cartId, address);
+        Meteor.call("cart/setShipmentAddress", cartId, address);
+        let cart = ReactionCore.Collections.Cart.findOne(cartId);
+
+        expect(cart.shipping[0].address._id).toEqual(address._id);
+        expect(cart.billing[0].address._id).toEqual(address._id);
+
+        Meteor.call("cart/unsetAddresses", address._id, userId,
+          "billing");
+        Meteor.call("cart/unsetAddresses", address._id, userId,
+          "shipping");
+
+        cart = ReactionCore.Collections.Cart.findOne(cartId);
+
+        expect(cart.shipping[0].address).toBeUndefined();
+        expect(cart.billing[0].address).toBeUndefined();
+
+        return done();
+      }
+    );
+
+    //it(
+    //  "",
+    //  done => {
+    //    let account = Factory.create("account");
+    //    return done();
+    //  }
+    //);
   });
 
   describe("cart items", function () {

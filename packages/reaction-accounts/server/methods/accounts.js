@@ -213,7 +213,7 @@ Meteor.methods({
    * @param {Object} address - address
    * @param {String|null} [accountUserId] - `account.userId` used by admin to
    * edit users
-   * @param {String} [type] - name of selected address type (shipping/billing)
+   * @param {shipping|billing} [type] - name of selected address type
    * @return {Number} The number of affected documents
    */
   "accounts/addressBookUpdate": function (address, accountUserId, type) {

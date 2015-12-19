@@ -192,6 +192,7 @@ Meteor.methods({
    * we need to revert to this step to renew the order
    * @param {String} newWorkflowStatus - name of `cartWorkflow` step, which
    * we need to revert
+   * @todo need tests
    * @return {Number|Boolean} cart update results
    */
   "workflow/revertCartWorkflow": function (newWorkflowStatus) {
@@ -201,8 +202,11 @@ Meteor.methods({
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
-    if (cart && typeof cart.workflow !== "object") return false;
-    const { workflow } = cart.workflow; // todo exists check?
+
+    if (!cart || typeof cart.workflow !== "object") return false;
+    if (typeof cart.workflow.workflow !== "object") return false;
+
+    const { workflow } = cart.workflow;
     // get index of `newWorkflowStatus`
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow
