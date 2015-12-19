@@ -111,7 +111,7 @@ describe("Account Meteor method ", function () {
 
     it(
       "should disabled isShipping/BillingDefault properties inside sibling" +
-      " address if we enable their",
+      " address if we enable their while adding",
       done => {
         let account = Factory.create("account");
         let shop = Factory.create("shop");
@@ -293,6 +293,133 @@ describe("Account Meteor method ", function () {
       }
     );
 
+    it(
+      "enabling isShipping/BillingDefault properties should adds this address to cart",
+      done => {
+        let account = Factory.create("account");
+        let shop = Factory.create("shop");
+
+        spyOn(Meteor, "userId").and.returnValue(account.userId);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+
+        Meteor.call("cart/createCart", account.userId, shop._id);
+        // first we need to disable defaults, because we already have some
+        // random defaults in account, but cart is clean. This is test only
+        // situation.
+        let address = Object.assign({}, account.profile.addressBook[0], {
+          isShippingDefault: false,
+          isBillingDefault: false
+        });
+        Meteor.call("accounts/addressBookUpdate", address);
+        let cart = ReactionCore.Collections.Cart.findOne({
+          userId: account.userId
+        });
+        expect(cart.billing).toBeUndefined();
+        expect(cart.shipping).toBeUndefined();
+
+        address = Object.assign({}, account.profile.addressBook[0], {
+          isShippingDefault: true,
+          isBillingDefault: true
+        });
+        Meteor.call("accounts/addressBookUpdate", address);
+        cart = ReactionCore.Collections.Cart.findOne({
+          userId: account.userId
+        });
+
+        expect(cart.billing[0].address._id).toEqual(address._id);
+        expect(cart.shipping[0].address._id).toEqual(address._id);
+
+        return done();
+      }
+    );
+
+    it(
+      "should disabled isShipping/BillingDefault properties inside sibling" +
+      " address if we enable their while editing",
+      done => {
+        let account = Factory.create("account");
+        let shop = Factory.create("shop");
+
+        spyOn(Meteor, "userId").and.returnValue(account.userId);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+
+        Meteor.call("cart/createCart", account.userId, shop._id);
+        // cart was created without any default addresses, we need to add one
+        let address = Object.assign({}, account.profile.addressBook[0], {
+          isShippingDefault: true,
+          isBillingDefault: true
+        });
+        Meteor.call("accounts/addressBookUpdate", address);
+
+        // we add new address with disabled defaults
+        address = Object.assign({}, faker.reaction.address(), {
+          _id: Random.id(),
+          isShippingDefault: false,
+          isBillingDefault: false
+        });
+        Meteor.call("accounts/addressBookAdd", address);
+        // now we can test edit
+        Object.assign(address, {
+          isShippingDefault: true,
+          isBillingDefault: true
+        });
+        Meteor.call("accounts/addressBookUpdate", address);
+        account = ReactionCore.Collections.Accounts.findOne(account._id);
+
+        expect(account.profile.addressBook[0].isBillingDefault).toBe(false);
+        expect(account.profile.addressBook[0].isShippingDefault).toBe(false);
+
+        return done();
+      }
+    );
+
+    it(
+      "should update cart default addresses via `type` argument",
+      done => {
+        let account = Factory.create("account");
+        const userId = account.userId;
+        let shop = Factory.create("shop");
+
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(Meteor, "userId").and.returnValue(userId);
+
+        Meteor.call("cart/createCart", userId, shop._id);
+
+        // clean account
+        Meteor.call("accounts/addressBookRemove", );
+        // preparation
+        let address = Object.assign({}, account.profile.addressBook[0], {
+          isShippingDefault: false,
+          isBillingDefault: false
+        });
+        Meteor.call("accounts/addressBookUpdate", address);
+
+        // fixme: don't know, but Meteor.userId() return null from here,
+        // that's why I tried to call spyOn again. And it is helps if comment
+        // tests in this Method. Maybe we reach some limits here?
+        // maybe setTimeout need here?
+        // Meteor.setTimeout(() => {
+          spyOn(Meteor, "userId").and.returnValue(userId);
+          Meteor.call("accounts/addressBookUpdate", address, null,
+            "isBillingDefault");
+          spyOn(Meteor, "userId").and.returnValue(userId);
+          Meteor.call("accounts/addressBookUpdate", address, null,
+            "isShippingDefault");
+        // }, 10);
+        let cart = ReactionCore.Collections.Cart.findOne({
+          userId: userId
+        });
+
+        expect(cart.billing[0].address._id).toEqual(address._id);
+        expect(cart.shipping[0].address._id).toEqual(address._id);
+
+        return done();
+      }
+    );
+
     //it(
     //  "",
     //  done => {
@@ -300,6 +427,16 @@ describe("Account Meteor method ", function () {
     //    return done();
     //  }
     //);
+  });
+
+  describe("addressBookRemove", function () {
+    it(
+      "",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    );
   });
 
   describe("accounts/inviteShopMember", function () {

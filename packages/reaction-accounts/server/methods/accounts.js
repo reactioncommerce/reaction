@@ -251,7 +251,6 @@ Meteor.methods({
       const cart = ReactionCore.Collections.Cart.findOne({ userId: userId });
       // Cart should exist to this moment, so we doesn't need to to verify its
       // existence.
-      //if (!cart) return false;
       if (oldAddress.isShippingDefault !== address.isShippingDefault) {
         // if isShippingDefault was changed and now it is `true`
         if (address.isShippingDefault) {

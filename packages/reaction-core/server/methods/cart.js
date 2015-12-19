@@ -601,6 +601,7 @@ Meteor.methods({
       }
     }
 
+    // todo maybe we need synchronous variant here?
     needToUpdate && ReactionCore.Collections.Cart.update(selector, update,
       (error, result) => {
         if (result && isShippingDeleting) {
