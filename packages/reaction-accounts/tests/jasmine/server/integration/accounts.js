@@ -79,8 +79,7 @@ describe("Account Meteor method ", function () {
         expect(function () {
           return Meteor.call(
             "accounts/addressBookAdd",
-            () => { console.log("test"); },
-            () => {}
+            () => { console.log("test"); }
           );
         }).toThrow();
 
@@ -264,8 +263,7 @@ describe("Account Meteor method ", function () {
         expect(function () {
           return Meteor.call(
             "accounts/addressBookUpdate",
-            () => { console.log("test"); },
-            () => {}
+            () => { console.log("test"); }
           );
         }).toThrow();
 
@@ -387,29 +385,26 @@ describe("Account Meteor method ", function () {
         spyOn(Meteor, "userId").and.returnValue(userId);
 
         Meteor.call("cart/createCart", userId, shop._id);
-
         // clean account
         Meteor.call("accounts/addressBookRemove",
           account.profile.addressBook[0]._id);
         // preparation
-        let address = Object.assign({}, account.profile.addressBook[0], {
+        let address = Object.assign({}, faker.reaction.address(), {
+          _id: Random.id(),
           isShippingDefault: false,
           isBillingDefault: false
         });
-        Meteor.call("accounts/addressBookUpdate", address);
+        Meteor.call("accounts/addressBookAdd", address);
+        address = Object.assign(address, {
+          isShippingDefault: true,
+          isBillingDefault: true
+        });
 
-        // fixme: don't know, but Meteor.userId() return null from here,
-        // that's why I tried to call spyOn again. And it is helps if comment
-        // tests in this Method. Maybe we reach some limits here?
-        // maybe setTimeout need here?
-        // Meteor.setTimeout(() => {
-          spyOn(Meteor, "userId").and.returnValue(userId);
-          Meteor.call("accounts/addressBookUpdate", address, null,
-            "isBillingDefault");
-          spyOn(Meteor, "userId").and.returnValue(userId);
-          Meteor.call("accounts/addressBookUpdate", address, null,
-            "isShippingDefault");
-        // }, 10);
+        Meteor.call("accounts/addressBookUpdate", address, null,
+          "isBillingDefault");
+        Meteor.call("accounts/addressBookUpdate", address, null,
+          "isShippingDefault");
+
         let cart = ReactionCore.Collections.Cart.findOne({
           userId: userId
         });
@@ -432,9 +427,126 @@ describe("Account Meteor method ", function () {
 
   describe("addressBookRemove", function () {
     it(
-      "",
+      "should allow user to remove address",
       done => {
         let account = Factory.create("account");
+        const address = account.profile.addressBook[0];
+        // user
+        spyOn(Meteor, "userId").and.returnValue(account.userId);
+
+        expect(account.profile.addressBook.length).toEqual(1);
+        Meteor.call("accounts/addressBookRemove", address._id);
+        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        expect(account.profile.addressBook.length).toEqual(0);
+
+        return done();
+      }
+    );
+
+    it(
+      "should allow Admin to remove other user address",
+      done => {
+        let account = Factory.create("account");
+        const address = account.profile.addressBook[0];
+        // admin
+        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+
+        expect(account.profile.addressBook.length).toEqual(1);
+        Meteor.call("accounts/addressBookRemove", address._id, account.userId);
+        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        expect(account.profile.addressBook.length).toEqual(0);
+
+        return done();
+      }
+    );
+
+    it(
+      "should throw error if wrong arguments was passed",
+      done => {
+        spyOn(ReactionCore.Collections.Accounts, "update");
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookRemove", 123456);
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookRemove", {});
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookRemove", null);
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookRemove");
+        }).toThrow();
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookRemove", "asdad", 123);
+        }).toThrow();
+
+        // https://github.com/aldeed/meteor-simple-schema/issues/522
+        expect(function () {
+          return Meteor.call(
+            "accounts/addressBookRemove",
+            () => { console.log("test"); }
+          );
+        }).toThrow();
+
+        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+
+        return done();
+      }
+    );
+
+    it(
+      "should not let non-Admin to remove address of another user",
+      done => {
+        const account = Factory.create("account");
+        const account2 = Factory.create("account");
+        const address2 = account2.profile.addressBook[0];
+        // user
+        spyOn(Meteor, "userId").and.returnValue(account.userId);
+        spyOn(ReactionCore.Collections.Accounts, "update");
+
+        expect(function () {
+          return Meteor.call("accounts/addressBookRemove",
+            address2._id, account2.userId);
+        }).toThrow();
+
+        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+
+        return done();
+      }
+    );
+
+    it(
+      "should call `cart/unsetAddresses` Method",
+      done => {
+        const account = Factory.create("account");
+        const address = account.profile.addressBook[0];
+        // user
+        spyOn(Meteor, "userId").and.returnValue(account.userId);
+        // spyOn(Meteor, "call");
+
+        Meteor.call("accounts/addressBookRemove", address._id);
+
+        // fixme: don't what syntax will be right here...
+        expect(Meteor.call("cart/unsetAddresses")).toHaveBeenCalled();
+
+        return done();
+      }
+    );
+
+    it(
+      "should return zero(0) if address not exists",
+      done => {
+        spyOn(Meteor, "userId").and.returnValue(fakeUser.userId);
+
+        const result = Meteor.call("accounts/addressBookRemove", "asdasdasd");
+
+        expect(result).toEqual(0);
+
         return done();
       }
     );

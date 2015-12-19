@@ -309,7 +309,7 @@ Meteor.methods({
    * @return {Number|Object} The number of removed documents or error object
    */
   "accounts/addressBookRemove": function (addressId, accountUserId) {
-    check(addressId, ReactionCore.Schemas.Address);
+    check(addressId, String);
     check(accountUserId, Match.Optional(String));
     // security, check for admin access. We don't need to check every user call
     // here because we are calling `Meteor.userId` from within this Method.

@@ -492,7 +492,7 @@ Meteor.methods({
         // if we change default address during further steps, we need to revert
         // workflow back to `coreCheckoutShipping` step
         if (typeof cart.workflow.workflow === "object" &&
-          cart.workflow.workflow.length > 2) { // "2" index of
+          cart.workflow.workflow.length > 3) { // "2" index of
           // `coreCheckoutShipping`
           // TODO additionaly recalculate shipping rates here
           Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
