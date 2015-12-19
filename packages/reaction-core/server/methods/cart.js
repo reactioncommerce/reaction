@@ -8,29 +8,37 @@ Meteor.methods({
    * @summary merge matching sessionId cart into specified userId cart
    *
    * There should be one cart for each independent, non logged in user session
-   * When a user logs in that cart now belongs to that user and we use the a single user cart.
-   * If they are logged in on more than one devices, regardless of session, the user cart will be used
-   * If they had more than one cart, on more than one device,logged in at seperate times then merge the carts
+   * When a user logs in that cart now belongs to that user and we use the a
+   * single user cart.
+   * If they are logged in on more than one devices, regardless of session,the
+   * user cart will be used
+   * If they had more than one cart, on more than one device,logged in at
+   * seperate times then merge the carts
    *
-   * @param {String} cartId - cartId of the cart to merge matching session carts into.
+   * @param {String} cartId - cartId of the cart to merge matching session
+   * carts into.
    * @return {Object} cartId - cartId on success
    */
   "cart/mergeCart": function (cartId) {
     check(cartId, String);
 
-    let Cart = ReactionCore.Collections.Cart; // convienance shorthand
-    let currentCart = Cart.findOne(cartId); // we don't process current cart, but merge into it.
-    let userId = currentCart.userId; // just used to filter out the current cart
-    let sessionId = ReactionCore.sessionId; // persisten sessions, see: publications/sessions.js
-    let shopId = ReactionCore.getShopId();
+    const { Cart } = ReactionCore.Collections; // convienance shorthand
+    const { Log } = ReactionCore;
+    // we don't process current cart, but merge into it.
+    const currentCart = Cart.findOne(cartId);
+    // just used to filter out the current cart
+    const userId = currentCart.userId;
+    // persisten sessions, see: publications/sessions.js
+    const sessionId = ReactionCore.sessionId;
+    const shopId = ReactionCore.getShopId();
 
     // no need to merge anonymous carts
     if (Roles.userIsInRole(userId, "anonymous", shopId)) {
       return false;
     }
-    ReactionCore.Log.debug("merge cart: matching sessionId");
-    ReactionCore.Log.debug("current userId", userId);
-    ReactionCore.Log.debug("sessionId", sessionId);
+    Log.debug("merge cart: matching sessionId");
+    Log.debug("current userId: ", userId);
+    Log.debug("sessionId: ", sessionId);
     // get session carts without current user cart
     let sessionCarts = Cart.find({
       $and: [{
@@ -44,13 +52,15 @@ Meteor.methods({
       }]
     });
 
-    ReactionCore.Log.debug(
-      `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
+    Log.debug(
+      `merge cart: begin merge processing of session ${
+      sessionId} into: ${currentCart._id}`
     );
     // loop through session carts and merge into user cart
     sessionCarts.forEach((sessionCart) => {
-      ReactionCore.Log.debug(
-        `merge cart: merge user userId: ${userId}, sessionCart.userId: ${sessionCart.userId}, sessionCart id: ${sessionCart._id}`
+      Log.debug(
+        `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
+          sessionCart.userId}, sessionCart id: ${sessionCart._id}`
       );
       // really if we have no items, there's nothing to merge
       if (sessionCart.items) {
@@ -78,12 +88,13 @@ Meteor.methods({
         // ReactionCore.Collections.Accounts.remove({
         //   userId: sessionCart.userId
         // });
-        ReactionCore.Log.debug(
-          `merge cart: delete cart ${sessionCart._id} and user: ${sessionCart.userId}`
+        Log.debug(
+          `merge cart: delete cart ${
+          sessionCart._id} and user: ${sessionCart.userId}`
         );
       }
 
-      ReactionCore.Log.debug(
+      Log.debug(
         `merge cart: processed merge for cartId ${sessionCart._id}`
       );
       return currentCart._id;
@@ -193,6 +204,7 @@ Meteor.methods({
     check(itemQty, Match.Optional(Number));
     this.unblock();
 
+    const { Log } = ReactionCore;
     const quantity = itemQty || 1;
     const currentCart = ReactionCore.Collections.Cart.findOne(cartId);
     const cartVariantExists = ReactionCore.Collections.Cart.findOne({
@@ -200,7 +212,7 @@ Meteor.methods({
       "items.variants._id": variantData._id
     });
 
-    if (cartVariantExists !== undefined) {
+    if (typeof cartVariantExists === "object") {
       return ReactionCore.Collections.Cart.update({
         "_id": currentCart._id,
         "items.variants._id": variantData._id
@@ -213,11 +225,17 @@ Meteor.methods({
         }
       }, function (error, result) {
         if (error) {
-          ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections
+          Log.warn("error adding to cart", ReactionCore.Collections
             .Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
-        ReactionCore.Log.info(`cart: increment variant ${variantData._id} quantity by ${quantity}`);
+
+        // refresh shipping quotes
+        // Meteor.call("shipping/updateShipmentQuotes", cartId);
+
+        Log.info(`cart: increment variant ${variantData._id
+          } quantity by ${quantity}`);
+
         return result;
       });
     }
@@ -238,11 +256,16 @@ Meteor.methods({
       }
     }, function (error, result) {
       if (error) {
-        ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections
-          .Cart.simpleSchema().namedContext().invalidKeys());
+        Log.warn("error adding to cart", ReactionCore.Collections.Cart
+          .simpleSchema().namedContext().invalidKeys());
         return error;
       }
-      ReactionCore.Log.info(`cart: add variant ${variantData._id} to cartId ${currentCart._id}`);
+
+      // refresh shipping quotes
+      // Meteor.call("shipping/updateShipmentQuotes", cartId);
+
+      Log.info(`cart: add variant ${variantData._id} to cartId ${
+        currentCart._id}`);
       return result;
     });
   },
