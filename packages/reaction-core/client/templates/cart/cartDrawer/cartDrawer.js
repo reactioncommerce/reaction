@@ -61,10 +61,12 @@ Template.openCartDrawer.events({
   "click .remove-cart-item": function (event) {
     event.stopPropagation();
     event.preventDefault();
-    const currentCartItemId = this._id;
+    let currentCartId = ReactionCore.Collections.Cart.findOne()._id;
+    let currentCartItem = this;
 
     return $(event.currentTarget).fadeOut(300, function () {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
+      return Meteor.call("cart/removeFromCart",
+        currentCartId, currentCartItem);
     });
   }
 });
