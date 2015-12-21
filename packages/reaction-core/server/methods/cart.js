@@ -13,7 +13,7 @@ Meteor.methods({
    * If they are logged in on more than one devices, regardless of session,the
    * user cart will be used
    * If they had more than one cart, on more than one device,logged in at
-   * seperate times then merge the carts
+   * separate times then merge the carts
    *
    * @param {String} cartId - cartId of the cart to merge matching session
    * carts into.
@@ -22,13 +22,13 @@ Meteor.methods({
   "cart/mergeCart": function (cartId) {
     check(cartId, String);
 
-    const { Cart } = ReactionCore.Collections; // convienance shorthand
+    const { Cart } = ReactionCore.Collections; // convenience shorthand
     const { Log } = ReactionCore;
     // we don't process current cart, but merge into it.
     const currentCart = Cart.findOne(cartId);
     // just used to filter out the current cart
     const userId = currentCart.userId;
-    // persisten sessions, see: publications/sessions.js
+    // persistent sessions, see: publications/sessions.js
     const sessionId = ReactionCore.sessionId;
     const shopId = ReactionCore.getShopId();
 
@@ -57,20 +57,35 @@ Meteor.methods({
       sessionId} into: ${currentCart._id}`
     );
     // loop through session carts and merge into user cart
-    sessionCarts.forEach((sessionCart) => {
+    sessionCarts.forEach(sessionCart => {
       Log.debug(
         `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
           sessionCart.userId}, sessionCart id: ${sessionCart._id}`
       );
       // really if we have no items, there's nothing to merge
       if (sessionCart.items) {
+        // if currentCart already have a cartWorkflow, we don't need to clean it
+        // up completely, just to `coreCheckoutShipping` stage. Also, we will
+        // need to recalculate shipping rates
+        if (typeof currentCart.workflow === "object" &&
+        typeof currentCart.workflow.workflow === "object") {
+          if (currentCart.workflow.workflow.length > 3) {
+            // todo uncomment
+            // Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+            // refresh shipping quotes
+            // todo uncomment
+            // Meteor.call("shipping/updateShipmentQuotes", cartId);
+          }
+        } else {
+          // if user logged in he doesn't need to show `checkoutLogin` step
+          // todo uncomment
+          // Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+        }
+
+        // We got an additional db call because of `workflow/revertCartWorkflow`
+        // call, but we also got things more cleaner in my opinion.
         // merge session cart into current cart
         Cart.update(currentCart._id, {
-          $set: {
-            "userId": Meteor.userId(),
-            "workflow.status": "checkoutLogin",
-            "workflow.workflow": ["checkoutLogin"]
-          },
           $addToSet: {
             items: {
               $each: sessionCart.items
@@ -79,24 +94,24 @@ Meteor.methods({
         });
       }
       // cleanup session Carts after merge.
-      if (sessionCart.userId !== this.userId) {
+      if (sessionCart.userId !== userId) {
         // clear the cart that was used for a session
         // and we're also going to do some garbage Collection
         Cart.remove(sessionCart._id);
         // cleanup user/accounts
-        // Meteor.users.remove(sessionCart.userId);
-        // ReactionCore.Collections.Accounts.remove({
-        //   userId: sessionCart.userId
-        // });
+        ReactionCore.Collections.Accounts.remove({
+          userId: sessionCart.userId
+        });
+        Meteor.users.remove(sessionCart.userId);
         Log.debug(
           `merge cart: delete cart ${
           sessionCart._id} and user: ${sessionCart.userId}`
         );
       }
-
       Log.debug(
         `merge cart: processed merge for cartId ${sessionCart._id}`
       );
+
       return currentCart._id;
     });
 
