@@ -3,6 +3,10 @@
  * @author Tom De Caluwé
  */
 
+if (!MongoInternals.NpmModule.Collection.prototype.initializeUnorderedBulkOp) {
+  throw Error("Couldn't detect the MongoDB bulk API, are you using MongoDB 2.6 or above?");
+}
+
 ReactionImport = class {};
 
 ReactionFixture = Object.create(ReactionImport);
