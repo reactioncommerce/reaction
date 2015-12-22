@@ -73,6 +73,13 @@
       "api_key": ""
     }
   }, {
+   "name": "reaction-auth-net",
+   "enabled": true,
+   "settings": {
+     "api_key": "",
+     "transaction_key": ""
+   }
+ }, {
     "name": "reaction-social",
     "enabled": true,
     "settings": {
