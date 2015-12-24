@@ -127,14 +127,15 @@ Meteor.methods({
   "cart/createCart": function (createForUserId) {
     check(createForUserId, Match.Optional(String));
     this.unblock();
+
     let sessionId;
-    let userId = createForUserId || this.userId;
-    let shopId = ReactionCore.getShopId();
+    const userId = createForUserId || this.userId;
+    const shopId = ReactionCore.getShopId();
     let currentCartId;
 
     // find current userCart
     // this is the only true cart
-    let currentUserCart = ReactionCore.Collections.Cart.findOne({
+    const currentUserCart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
 
@@ -154,7 +155,7 @@ Meteor.methods({
     }).count();
 
     // check if user has `anonymous` role.( this is a visitor)
-    let anonymousUser = ReactionCore.hasPermission("anonymous");
+    const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
     // the cart is either current or new
     if (currentUserCart) {
       currentCartId = currentUserCart._id;

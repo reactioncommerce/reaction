@@ -5,7 +5,7 @@
  */
 Accounts.registerLoginHandler(function (options) {
   if (!options.anonymous) {
-    return void 0;
+    return;
   }
   let loginHandler;
   let stampedToken = Accounts._generateStampedLoginToken();
@@ -37,7 +37,7 @@ function services(obj) {
  * we clone the user into accounts, as the user collection is
  * only to be used for authentication.
  *
- * see: http://docs.meteor.com/#/full/accounts_oncreateuser
+ * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
 Accounts.onCreateUser(function (options, user) {
   let shop = ReactionCore.getCurrentShop();
@@ -85,7 +85,7 @@ Accounts.onCreateUser(function (options, user) {
  */
 Accounts.onLogin(function (options) {
   // remove anonymous role
-  // all users are guest, but anonymous user don' t have profile access
+  // all users are guest, but anonymous user don't have profile access
   // or ability to order history, etc. so ensure its removed upon login.
   if (options.type !== "anonymous" && options.type !== "resume") {
     let update = {
@@ -100,7 +100,8 @@ Accounts.onLogin(function (options) {
       multi: true
     });
     // debug info
-    ReactionCore.Log.debug("removed anonymous role from user: " + options.user._id);
+    ReactionCore.Log.debug("removed anonymous role from user: " +
+      options.user._id);
 
     // onLogin, we want to merge session cart into user cart.
     const cart = ReactionCore.Collections.Cart.findOne({
@@ -108,8 +109,10 @@ Accounts.onLogin(function (options) {
     });
     Meteor.call("cart/mergeCart", cart._id);
 
-    // logged in users need an additonal worfklow push to get started with checkoutLogin
-    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+    // logged in users need an additonal worfklow push to get started with
+    // checkoutLogin
+    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+      "checkoutLogin");
   }
 });
 
