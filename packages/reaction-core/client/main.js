@@ -253,9 +253,9 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
   // Accounts.callLoginMethod will be called after clearing cache. We could
   // latch on this computations by running extra check here.
   if (typeof amplify.store("ReactionCore.session") !== "string") {
-    const serverSession = Random.id();
-    amplify.store("ReactionCore.session", serverSession);
-    Session.set("sessionId", serverSession);
+    const newSession = Random.id();
+    amplify.store("ReactionCore.session", newSession);
+    Session.set("sessionId", newSession);
   }
 
   Accounts.callLoginMethod({

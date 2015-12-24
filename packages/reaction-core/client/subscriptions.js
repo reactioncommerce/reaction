@@ -3,15 +3,19 @@
  * Create persistent sessions for users
  * The server returns only one record, so findOne will return that record
  * Stores into client session all data contained in server session
- * supports reactivity when server changes the serverSession
+ * supports reactivity when server changes `newSession`
  * Stores the server session id into local storage / cookies
+ *
+ * Also localStorage session could be set from the client-side. This could
+ * happen when user flush browser's cache, for example.
+ * @see https://github.com/reactioncommerce/reaction/issues/609#issuecomment-166389252
  */
 
 Tracker.autorun(function () {
   if (typeof amplify.store("ReactionCore.session") !== "string") {
-    const serverSession = Random.id();
-    amplify.store("ReactionCore.session", serverSession);
-    Session.set("sessionId", serverSession);
+    const newSession = Random.id();
+    amplify.store("ReactionCore.session", newSession);
+    Session.set("sessionId", newSession);
   }
   if (typeof Session.get("sessionId") !== "string") {
     Session.set("sessionId", amplify.store("ReactionCore.session"));
@@ -25,14 +29,15 @@ Tracker.autorun(function () {
 // why https://github.com/reactioncommerce/reaction/issues/536 happens?
 // Load order is important here, sessions come before cart.
 ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
-  Session.get("sessionId")
+  Session.get("sessionId"),
+  Meteor.userId()
 );
 // detect when a cart has been deleted
 // resubscribe will force cart to be rebuilt
 let cart = ReactionCore.Collections.Cart.find();
 cart.observeChanges({
   removed: function () {
-    Meteor.subscribe("Cart", Session.get("sessionId"));
+    Meteor.subscribe("Cart", Session.get("sessionId"), Meteor.userId());
   }
 });
 

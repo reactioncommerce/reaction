@@ -2,9 +2,9 @@
  * cart
  */
 
-Meteor.publish("Cart", function (sessionId) {
+Meteor.publish("Cart", function (sessionId, userId) {
   check(sessionId, Match.OneOf(String, null));
-
+  check(userId, Match.OptionalOrNull(String));
   // sessionId is required, not for selecting
   // the cart, (userId), but as a key in merging
   // anonymous user carts into authenticated existing
@@ -13,26 +13,28 @@ Meteor.publish("Cart", function (sessionId) {
   if (this.userId === null || sessionId === null) {
     return this.ready();
   }
+
   // shopId is also required.
-  if (!ReactionCore.getShopId()) {
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
     return this.ready();
   }
+
   // select user cart
-  const cart = ReactionCore.Collections.Cart.findOne({
-    userId: this.userId
+  const cart = ReactionCore.Collections.Cart.find({
+    userId: this.userId,
+    shopId: shopId
   });
 
-  let cartId;
-  // we may create a cart if we didn't find one.
-  if (cart) {
-    cartId = cart._id;
-  } else if (this.userId) {
-    cartId = Meteor.call("cart/createCart", this.userId);
-  } else {
-    return this.ready();
+  if (cart.count()) {
+    // we could keep `sessionId` of normal user up to date from here, but with
+    // current session logic we don't need this. That's why we just return
+    // cursor as is with whatever `sessioId`.
+    return cart;
   }
+  // we may create a cart if we didn't find one.
+  const cartId = Meteor.call("cart/createCart", this.userId);
 
-  // return cart cursor
   return ReactionCore.Collections.Cart.find(cartId);
 });
 

@@ -37,8 +37,8 @@ Meteor.methods({
       return false;
     }
     Log.debug("merge cart: matching sessionId");
-    Log.debug("current userId: ", userId);
-    Log.debug("sessionId: ", sessionId);
+    Log.debug("current userId:", userId);
+    Log.debug("sessionId:", sessionId);
     // get session carts without current user cart
     let sessionCarts = Cart.find({
       $and: [{
@@ -58,6 +58,11 @@ Meteor.methods({
     );
     // loop through session carts and merge into user cart
     sessionCarts.forEach(sessionCart => {
+      // cart should belong to the anonymous
+      if (!Roles.userIsInRole(sessionCart.userId, "anonymous", shopId)) {
+        return;
+      }
+
       Log.debug(
         `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
           sessionCart.userId}, sessionCart id: ${sessionCart._id}`
@@ -111,8 +116,6 @@ Meteor.methods({
       Log.debug(
         `merge cart: processed merge for cartId ${sessionCart._id}`
       );
-
-      return currentCart._id;
     });
 
     return currentCart._id;
@@ -129,6 +132,7 @@ Meteor.methods({
     this.unblock();
 
     let sessionId;
+    const { Log } = ReactionCore;
     const userId = createForUserId || this.userId;
     const shopId = ReactionCore.getShopId();
     let currentCartId;
@@ -140,15 +144,17 @@ Meteor.methods({
     });
 
     if (currentUserCart) {
-      ReactionCore.Log.debug("currentUserCart", currentUserCart.sessionId);
+      Log.debug("currentUserCart", currentUserCart.sessionId);
       sessionId = currentUserCart.session;
+      // the cart is either current or new
+      currentCartId = currentUserCart._id;
     } else {
       sessionId = ReactionCore.sessionId;
     }
-    ReactionCore.Log.debug("current cart serverSession", sessionId);
+    Log.debug("current cart serverSession", sessionId);
     // while anonymous and merge into user cart
-    let sessionCartCount = ReactionCore.Collections.Cart.find({
-      session: sessionId,
+    const sessionCartCount = ReactionCore.Collections.Cart.find({
+      sessionId: sessionId,
       userId: {
         $ne: userId
       }
@@ -156,46 +162,38 @@ Meteor.methods({
 
     // check if user has `anonymous` role.( this is a visitor)
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
-    // the cart is either current or new
-    if (currentUserCart) {
-      currentCartId = currentUserCart._id;
-    }
 
-    ReactionCore.Log.info("create cart: shopId", shopId);
-    ReactionCore.Log.debug("create cart: userId", userId);
-    ReactionCore.Log.debug("create cart: sessionId", sessionId);
-    ReactionCore.Log.debug("create cart: currentUserCart", currentCartId);
-    ReactionCore.Log.debug("create cart: sessionCarts.count",
-      sessionCartCount);
-    ReactionCore.Log.debug("create cart: anonymousUser", anonymousUser);
+    Log.info("create cart: shopId", shopId);
+    Log.debug("create cart: userId", userId);
+    Log.debug("create cart: sessionId", sessionId);
+    Log.debug("create cart: currentUserCart", currentCartId);
+    Log.debug("create cart: sessionCarts.count", sessionCartCount);
+    Log.debug("create cart: anonymousUser", anonymousUser);
 
     // if we have a session cart, but just create or
     // authenticated into a new user we need to create a user
     // cart for the new authenticated user.
-
     if (!currentCartId && anonymousUser === false) {
       currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
         userId: userId
       });
-      ReactionCore.Log.debug("create cart: into new user cart. created: " +
-        currentCartId + " for user " + userId);
+      Log.debug("create cart: into new user cart. created: " +  currentCartId +
+        " for user " + userId);
     }
 
     // merge session carts into the current cart
     if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
-      ReactionCore.Log.debug(
-        "create cart: found existing cart. merge into " + currentCartId +
-        " for user " + userId);
+      Log.debug("create cart: found existing cart. merge into " + currentCartId
+        + " for user " + userId);
       Meteor.call("cart/mergeCart", currentCartId);
     } else if (!currentCartId) { // Create empty cart if there is none.
       currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
         userId: userId
       });
-      ReactionCore.Log.debug(
-        `create cart: no existing cart. created: ${currentCartId} currentCartId for sessionId ${sessionId} and userId ${userId}`
-      );
+      Log.debug(`create cart: no existing cart. created: ${currentCartId
+        } currentCartId for sessionId ${sessionId} and userId ${userId}`);
     }
     return currentCartId;
   },
@@ -210,8 +208,9 @@ Meteor.methods({
    *  @param {String} cartId - cartId
    *  @param {String} productId - productId to add to Cart
    *  @param {String} variantData - variant object
-   *  @param {String} itemQty - optional qty to add to cart, defaults to 1, deducts from inventory
-   *  @return {Number} Mongo insert response
+   *  @param {String} [itemQty] - qty to add to cart, defaults to 1, deducts
+   *  from inventory
+   *  @return {Number|Object} Mongo insert response
    */
   "cart/addToCart": function (cartId, productId, variantData, itemQty) {
     check(cartId, String);
@@ -233,9 +232,6 @@ Meteor.methods({
         "_id": currentCart._id,
         "items.variants._id": variantData._id
       }, {
-        $set: {
-          updatedAt: new Date()
-        },
         $inc: {
           "items.$.quantity": quantity
         }
@@ -247,7 +243,7 @@ Meteor.methods({
         }
 
         // refresh shipping quotes
-        // Meteor.call("shipping/updateShipmentQuotes", cartId);
+        Meteor.call("shipping/updateShipmentQuotes", cartId);
 
         Log.info(`cart: increment variant ${variantData._id
           } quantity by ${quantity}`);
@@ -257,6 +253,7 @@ Meteor.methods({
     }
     // cart variant doesn't exist
     const product = ReactionCore.Collections.Products.findOne(productId);
+
     return ReactionCore.Collections.Cart.update({
       _id: currentCart._id
     }, {
@@ -278,10 +275,11 @@ Meteor.methods({
       }
 
       // refresh shipping quotes
-      // Meteor.call("shipping/updateShipmentQuotes", cartId);
+      Meteor.call("shipping/updateShipmentQuotes", cartId);
 
       Log.info(`cart: add variant ${variantData._id} to cartId ${
         currentCart._id}`);
+
       return result;
     });
   },
