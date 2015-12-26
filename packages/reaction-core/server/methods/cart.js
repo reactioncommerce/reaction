@@ -1,4 +1,21 @@
 /**
+ * quantityProcessing
+ * @summary perform calculations admissibility of adding product to cart
+ * @param {String} productId - productId to add to Cart
+ * @param {String} variantId - product variant _id
+ * @param {Number} itemQty - qty to add to cart, defaults to 1, deducts
+ *  from inventory
+ * @return {*}
+ */
+function quantityProcessing(productId, variantId, itemQty = 1) {
+  // todo get min item threshold
+  // todo check of zero qty was sended
+  let quantity = itemQty;
+
+  return quantity;
+}
+
+/**
  * Reaction Cart Methods
  */
 
@@ -205,32 +222,35 @@ Meteor.methods({
    *  with the existing item. We want to fix price, qty, etc into history
    *  however, we could check reactively for price /qty etc, adjustments on
    *  the original and notify them
-   *  @param {String} cartId - cartId
    *  @param {String} productId - productId to add to Cart
-   *  @param {String} variantData - variant object
-   *  @param {String} [itemQty] - qty to add to cart, defaults to 1, deducts
-   *  from inventory
+   *  @param {String} variantId - product variant _id
+   *  @param {Number} [itemQty] - qty to add to cart
    *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (cartId, productId, variantData, itemQty) {
-    check(cartId, String);
-    check(productId, String);
-    check(variantData, ReactionCore.Schemas.ProductVariant);
-    check(itemQty, Match.Optional(Number));
+  "cart/addToCart": function (productId, variantId, itemQty) {
+    new SimpleSchema({
+      productId: { type: String },
+      variantId: { type: String },
+      itemQty: { type: Number, decimal: true, optional: true }
+    }).validate({ productId, variantId, itemQty });
     this.unblock();
 
     const { Log } = ReactionCore;
-    const quantity = itemQty || 1;
-    const currentCart = ReactionCore.Collections.Cart.findOne(cartId);
-    const cartVariantExists = ReactionCore.Collections.Cart.findOne({
-      "_id": currentCart._id,
-      "items.variants._id": variantData._id
-    });
+    // we do not need to check the existence of the cart, because due to system
+    // logic - every user (including anonymous) should have a cart. If we will
+    // get error here - this mean - something went wrong with creating cart to
+    // user.
+    const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
+    // performs calculations admissibility of adding product to cart
+    const quantity = quantityProcessing(productId, variantId, itemQty);
+    // performs search of variant inside cart
+    const cartVariantExists = cart.items &&
+      cart.items.some(item => item.variants._id === variantId);
 
-    if (typeof cartVariantExists === "object") {
+    if (cartVariantExists) {
       return ReactionCore.Collections.Cart.update({
-        "_id": currentCart._id,
-        "items.variants._id": variantData._id
+        "_id": cart._id,
+        "items.variants._id": variantId
       }, {
         $inc: {
           "items.$.quantity": quantity
@@ -243,19 +263,25 @@ Meteor.methods({
         }
 
         // refresh shipping quotes
-        Meteor.call("shipping/updateShipmentQuotes", cartId);
+        Meteor.call("shipping/updateShipmentQuotes", cart._id);
 
-        Log.info(`cart: increment variant ${variantData._id
-          } quantity by ${quantity}`);
+        Log.info(`cart: increment variant ${variantId} quantity by ${
+          quantity}`);
 
         return result;
       });
     }
+
     // cart variant doesn't exist
     const product = ReactionCore.Collections.Products.findOne(productId);
+    const variant = product.variants.find(function (currentVariant) {
+      if (currentVariant._id === variantId) {
+        return currentVariant;
+      }
+    });
 
     return ReactionCore.Collections.Cart.update({
-      _id: currentCart._id
+      _id: cart._id
     }, {
       $addToSet: {
         items: {
@@ -263,7 +289,7 @@ Meteor.methods({
           shopId: product.shopId,
           productId: productId,
           quantity: quantity,
-          variants: variantData,
+          variants: variant,
           type: product.type
         }
       }
@@ -275,10 +301,9 @@ Meteor.methods({
       }
 
       // refresh shipping quotes
-      Meteor.call("shipping/updateShipmentQuotes", cartId);
+      Meteor.call("shipping/updateShipmentQuotes", cart._id);
 
-      Log.info(`cart: add variant ${variantData._id} to cartId ${
-        currentCart._id}`);
+      Log.info(`cart: add variant ${variantId} to cartId ${cart._id}`);
 
       return result;
     });
