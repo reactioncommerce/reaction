@@ -24,22 +24,22 @@ Tracker.autorun(function () {
     Session.get("sessionId"));
 });
 
-// todo maybe we need to move cart subscription inside above autorun?
-// maybe this is the reason
-// why https://github.com/reactioncommerce/reaction/issues/536 happens?
-// Load order is important here, sessions come before cart.
-ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
-  Session.get("sessionId"),
-  Meteor.userId()
-);
+// @see http://guide.meteor.com/data-loading.html#changing-arguments
+Tracker.autorun(() => {
+  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
+    Session.get("sessionId"),
+    Meteor.userId()
+  );
+});
+
 // detect when a cart has been deleted
 // resubscribe will force cart to be rebuilt
-let cart = ReactionCore.Collections.Cart.find();
-cart.observeChanges({
-  removed: function () {
-    Meteor.subscribe("Cart", Session.get("sessionId"), Meteor.userId());
-  }
-});
+//let cart = ReactionCore.Collections.Cart.find();
+//cart.observeChanges({
+//  removed: function () {
+//    Meteor.subscribe("Cart", Session.get("sessionId")/*, Meteor.userId()*/);
+//  }
+//});
 
 /**
  * General Subscriptions

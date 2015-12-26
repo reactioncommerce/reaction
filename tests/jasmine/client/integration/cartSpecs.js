@@ -12,13 +12,14 @@ describe("Cart", function () {
     // empty cart items before each test
     afterEach(function (done) {
       let cartId = ReactionCore.Collections.Cart.findOne()._id;
-      ReactionCore.Collections.Cart.update({
-        _id: cartId
-      }, {
-        $set: {
-          items: []
-        }
-      });
+      // todo we can't clear cart by this way from client side
+      //ReactionCore.Collections.Cart.update({
+      //  _id: cartId
+      //}, {
+      //  $unset: {
+      //    items: ""
+      //  }
+      //});
       done();
     });
 
@@ -29,63 +30,66 @@ describe("Cart", function () {
       expect($("#product-alerts div:first-child").text()).not.toBeNull();
     });
 
-    it("should add selected option to cart", function (done) {
-      let option1 = $(".variant-product-options .variant-select-option")[0];
-      let addToCartButton = $("#add-to-cart");
-      // needs client stubs
-      /* let spyOnCart = spyOn(ReactionCore.Collections.Cart, "update").and.returnValue();*/
+    //it("should add selected option to cart", function (done) {
+    //  let option1 = $(".variant-product-options .variant-select-option")[0];
+    //  let addToCartButton = $("#add-to-cart");
+    //  // needs client stubs
+    //  /* let spyOnCart = spyOn(ReactionCore.Collections.Cart, "update").and.returnValue();*/
+    //
+    //  let spyOnOptionEvent = spyOnEvent(option1, "click");
+    //  let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
+    //
+    //  $(option1).trigger("click");
+    //
+    //  expect("click").toHaveBeenTriggeredOn(option1);
+    //  expect(spyOnOptionEvent).toHaveBeenTriggered();
+    //
+    //  $(addToCartButton).trigger("click");
+    //  expect(spyOnAddToCartEvent).toHaveBeenTriggered();
+    //  /* expect(spyOnCart).toHaveBeenCalled();*/
+    //  done();
+    //});
 
-      let spyOnOptionEvent = spyOnEvent(option1, "click");
-      let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
+    //it("should let the quantity for selected option be changed", function () {
+    //  let option1 = $(".variant-product-options .variant-select-option")[0];
+    //  let addToCartButton = $("#add-to-cart");
+    //
+    //  let spyOnOptionEvent = spyOnEvent(option1, "click");
+    //  let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
+    //
+    //  $("#add-to-cart-quantity").val(22);
+    //  $(option1).trigger("click");
+    //
+    //  expect("click").toHaveBeenTriggeredOn(option1);
+    //  expect(spyOnOptionEvent).toHaveBeenTriggered();
+    //
+    //  $(addToCartButton).trigger("click");
+    //  expect(spyOnAddToCartEvent).toHaveBeenTriggered();
+    //});
 
-      $(option1).trigger("click");
+    //it("should throw an error if not enough quantity", function () {
+    //  let option1 = $(".variant-product-options .variant-select-option")[0];
+    //  let addToCartButton = $("#add-to-cart");
+    //  let cartCount = $(".cart-icon .badge").text();
+    //
+    //  let spyOnOptionEvent = spyOnEvent(option1, "click");
+    //  let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
+    //
+    //  $("#add-to-cart-quantity").val(2002);
+    //  $(option1).trigger("click");
+    //
+    //  expect("click").toHaveBeenTriggeredOn(option1);
+    //  expect(spyOnOptionEvent).toHaveBeenTriggered();
+    //
+    //  $(addToCartButton).trigger("click");
+    //  expect(spyOnAddToCartEvent).toHaveBeenTriggered();
+    //
+    //  expect($(".cart-icon .badge").text()).toEqual(cartCount);
+    //});
 
-      expect("click").toHaveBeenTriggeredOn(option1);
-      expect(spyOnOptionEvent).toHaveBeenTriggered();
-
-      $(addToCartButton).trigger("click");
-      expect(spyOnAddToCartEvent).toHaveBeenTriggered();
-      /* expect(spyOnCart).toHaveBeenCalled();*/
-      done();
-    });
-
-    it("should let the quantity for selected option be changed", function () {
-      let option1 = $(".variant-product-options .variant-select-option")[0];
-      let addToCartButton = $("#add-to-cart");
-
-      let spyOnOptionEvent = spyOnEvent(option1, "click");
-      let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
-
-      $("#add-to-cart-quantity").val(22);
-      $(option1).trigger("click");
-
-      expect("click").toHaveBeenTriggeredOn(option1);
-      expect(spyOnOptionEvent).toHaveBeenTriggered();
-
-      $(addToCartButton).trigger("click");
-      expect(spyOnAddToCartEvent).toHaveBeenTriggered();
-    });
-
-    it("should throw an error if not enough quantity", function () {
-      let option1 = $(".variant-product-options .variant-select-option")[0];
-      let addToCartButton = $("#add-to-cart");
-      let cartCount = $(".cart-icon .badge").text();
-
-      let spyOnOptionEvent = spyOnEvent(option1, "click");
-      let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
-
-      $("#add-to-cart-quantity").val(2002);
-      $(option1).trigger("click");
-
-      expect("click").toHaveBeenTriggeredOn(option1);
-      expect(spyOnOptionEvent).toHaveBeenTriggered();
-
-      $(addToCartButton).trigger("click");
-      expect(spyOnAddToCartEvent).toHaveBeenTriggered();
-
-      expect($(".cart-icon .badge").text()).toEqual(cartCount);
-    });
-
+  });
+  // checkout from pdp
+  describe("Checkout", function () {
     it("should not add to cart without variant/option selected", function () {
       // no option is selected yet
       $("#add-to-cart").trigger("click");
@@ -95,7 +99,7 @@ describe("Cart", function () {
 
     it("should add selected option to cart", function () {
       let option1 = $(".variant-product-options .variant-select-option")[0];
-      let addToCartButton = $("#add-to-cart");
+      let addToCartButton = $("#add-to-cart")[0];
       let spyOnOptionEvent = spyOnEvent(option1, "click");
       let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
 
@@ -104,7 +108,7 @@ describe("Cart", function () {
       expect("click").toHaveBeenTriggeredOn(option1);
       expect(spyOnOptionEvent).toHaveBeenTriggered();
 
-      $("#add-to-cart").trigger("click");
+      $(addToCartButton).trigger("click");
       expect(spyOnAddToCartEvent).toHaveBeenTriggered();
     });
 

@@ -2,6 +2,7 @@ describe("Publication", function () {
   let shop;
   beforeEach(function () {
     // reset
+    ReactionCore.Collections.Cart.remove({});
     ReactionCore.Collections.Orders.remove({});
     ReactionCore.Collections.Products.remove({});
     ReactionCore.Collections.Shops.remove({});
@@ -34,9 +35,9 @@ describe("Publication", function () {
           shop);
         spyOn(Roles, "userIsInRole").and.returnValue(true);
         // execute
-        cursor = Meteor.server.publish_handlers.Products();
+        const cursor = Meteor.server.publish_handlers.Products();
         // verify
-        data = cursor.fetch()[0];
+        const data = cursor.fetch()[0];
         expect(data.title).toEqual("My Little Pony");
       });
       it("should return only visible products to visitors",
@@ -46,9 +47,9 @@ describe("Publication", function () {
             shop);
           spyOn(Roles, "userIsInRole").and.returnValue(false);
           // execute
-          cursor = Meteor.server.publish_handlers.Products();
+          const cursor = Meteor.server.publish_handlers.Products();
           // verify
-          data = cursor.fetch()[0];
+          const data = cursor.fetch()[0];
           expect(data.title).toEqual("Shopkins - Peachy");
         });
       it(
@@ -62,10 +63,10 @@ describe("Publication", function () {
           });
           spyOn(Roles, "userIsInRole").and.returnValue(true);
           // execute
-          cursor = Meteor.server.publish_handlers.Products(
+          const cursor = Meteor.server.publish_handlers.Products(
             productScrollLimit, shopIds);
           // verify
-          data = cursor.fetch()[0];
+          const data = cursor.fetch()[0];
           expect(data.title).toEqual("My Little Pony");
         });
     });
@@ -73,16 +74,16 @@ describe("Publication", function () {
     describe("Product", function () {
       it("should return a product based on an id", function () {
         // setup
-        product = ReactionCore.Collections.Products.findOne({
+        const product = ReactionCore.Collections.Products.findOne({
           isVisible: true
         });
         spyOn(ReactionCore, "getCurrentShop").and.returnValue(
           shop);
         // execute
-        cursor = Meteor.server.publish_handlers.Product(
+        const cursor = Meteor.server.publish_handlers.Product(
           product._id);
         // verify
-        data = cursor.fetch()[0];
+        const data = cursor.fetch()[0];
         expect(data.title).toEqual("Shopkins - Peachy");
       });
 
@@ -91,10 +92,10 @@ describe("Publication", function () {
         spyOn(ReactionCore, "getCurrentShop").and.returnValue(
           shop);
         // execute
-        cursor = Meteor.server.publish_handlers.Product(
+        const cursor = Meteor.server.publish_handlers.Product(
           "shopkins");
         // verify
-        data = cursor.fetch()[0];
+        const data = cursor.fetch()[0];
         expect(data.title).toEqual("Shopkins - Peachy");
       });
 
@@ -106,9 +107,9 @@ describe("Publication", function () {
             shop);
           spyOn(Roles, "userIsInRole").and.returnValue(false);
           // execute
-          cursor = Meteor.server.publish_handlers.Product("my");
+          const cursor = Meteor.server.publish_handlers.Product("my");
           // verify
-          data = cursor.fetch()[0];
+          const data = cursor.fetch()[0];
           expect(data).toBeUndefined();
         });
 
@@ -120,9 +121,9 @@ describe("Publication", function () {
             shop);
           spyOn(Roles, "userIsInRole").and.returnValue(true);
           // execute
-          cursor = Meteor.server.publish_handlers.Product("my");
+          const cursor = Meteor.server.publish_handlers.Product("my");
           // verify
-          data = cursor.fetch()[0];
+          const data = cursor.fetch()[0];
           expect(data.title).toEqual("My Little Pony");
         });
     });
@@ -146,9 +147,9 @@ describe("Publication", function () {
       spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       // execute
-      cursor = Meteor.server.publish_handlers.Orders();
+      const cursor = Meteor.server.publish_handlers.Orders();
       // verify
-      data = cursor.fetch()[0];
+      const data = cursor.fetch()[0];
       expect(data.shopId).toBe(order.shopId);
     });
 
@@ -156,8 +157,70 @@ describe("Publication", function () {
       // setup
       spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      cursor = Meteor.server.publish_handlers.Orders();
+      const cursor = Meteor.server.publish_handlers.Orders();
       expect(cursor).toEqual([]);
     });
+  });
+
+  describe("Cart", () => {
+    const user = Factory.create("user");
+    const userId = user._id;
+    const sessionId = ReactionCore.sessionId = Random.id();
+
+    beforeEach(() => {
+      Meteor.call("cart/createCart", userId, shop._id);
+    });
+
+    it(
+      "should return a cart cursor",
+      done => {
+        const originalCart = Meteor.server.publish_handlers["Cart"];
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(Meteor.server.publish_handlers, "Cart").and.callFake(
+          function () {
+            this.userId = userId;
+            return originalCart.apply(this, arguments);
+          });
+        const cursor = Meteor.server.publish_handlers.Cart(sessionId);
+        const data = cursor.fetch()[0];
+
+        expect(data.userId).toEqual(userId);
+
+        return done();
+      }
+    );
+
+    it(
+      "should return only one cart in cursor",
+      done => {
+        const user2 = Factory.create("user");
+        // mock the `this.userId` call
+        const originalCart = Meteor.server.publish_handlers["Cart"];
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(Meteor.server.publish_handlers, "Cart").and.callFake(
+          function () {
+            this.userId = userId;
+            return originalCart.apply(this, arguments);
+          });
+
+        Meteor.call("cart/createCart", user2._id, shop._id);
+
+        const cursor = Meteor.server.publish_handlers.Cart(sessionId);
+        const data = cursor.fetch();
+
+        expect(data.length).toEqual(1);
+
+        return done();
+      }
+    );
+
+    //it(
+    //  "should",
+    //  done => {
+    //    return done();
+    //  }
+    //);
   });
 });

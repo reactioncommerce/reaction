@@ -4,16 +4,16 @@
  * interactions with the server
  */
 
-let signUp;
+//let signUp;
 
-signUp = function (user, callback) {
-  $(".dropdown-toggle").trigger("click");
-  $("#signup-link").trigger("click");
-  $("#login-email").val(user.email);
-  $("#login-password").val(user.password);
-  $("#login-buttons-password").trigger("click");
-  callback;
-};
+//signUp = function (user, callback) {
+//  $(".dropdown-toggle").trigger("click");
+//  $("#signup-link").trigger("click");
+//  $("#login-email").val(user.email);
+//  $("#login-password").val(user.password);
+//  $("#login-buttons-password").trigger("click");
+//  callback;
+//};
 
 describe("User signup", function () {
   let user = {

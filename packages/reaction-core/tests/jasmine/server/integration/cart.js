@@ -5,6 +5,49 @@ describe("cart methods", function () {
   let userId = user._id;
   ReactionCore.sessionId = Random.id(); // Required for creating a cart
 
+  describe("cart/mergeCart", () => {
+    it(
+      "should merge all `anonymous` carts into `normal` user cart per session",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    );
+
+
+    it(
+      "should ignore `normal` user carts from been merged",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    );
+
+    it(
+      "should merge only into registered user cart",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    );
+
+    it(
+      "should",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    );
+
+    it(
+      "should",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    );
+  });
+
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
       spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);

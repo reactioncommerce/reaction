@@ -3,13 +3,13 @@
  * integration tests are those that check client
  * interactions with the server
  */
-function signUp(user) {
-  $(".dropdown-toggle").trigger("click");
-  $("#signup-link").trigger("click");
-  $("#login-email").val(user.email);
-  $("#login-password").val(user.password);
-  $("#login-buttons-password").trigger("click");
-}
+//function signUp(user) {
+//  $(".dropdown-toggle").trigger("click");
+//  $("#signup-link").trigger("click");
+//  $("#login-email").val(user.email);
+//  $("#login-password").val(user.password);
+//  $("#login-buttons-password").trigger("click");
+//}
 
 describe("User signup", function () {
   let user = {
