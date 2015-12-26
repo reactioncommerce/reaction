@@ -1,16 +1,36 @@
 /**
  * quantityProcessing
  * @summary perform calculations admissibility of adding product to cart
- * @param {String} productId - productId to add to Cart
- * @param {String} variantId - product variant _id
+ * @param {Object} product - product to add to Cart
+ * @param {Object} variant - product variant
  * @param {Number} itemQty - qty to add to cart, defaults to 1, deducts
  *  from inventory
- * @return {*}
+ * @since 1.10.1
+ * @return {Number} quantity - revised quantity to be added to cart
  */
-function quantityProcessing(productId, variantId, itemQty = 1) {
-  // todo get min item threshold
-  // todo check of zero qty was sended
+function quantityProcessing(product, variant, itemQty = 1) {
+  // todo add min item threshold to schema
   let quantity = itemQty;
+  const MIN = variant.min || 1;
+  const MAX = variant.inventoryQuantity || Infinity;
+
+  if (MIN > MAX) {
+    ReactionCore.Log.info(`productId: ${product._id}, variantId ${variant._id
+      }: inventoryQuantity lower then minimum order`);
+    throw Meteor.Error(`productId: ${product._id}, variantId ${variant._id
+      }: inventoryQuantity lower then minimum order`);
+  }
+
+  switch (product.type) {
+  case "not-in-stock":
+    break;
+  default: // type: `simple`
+    if (quantity < MIN) {
+      quantity = MIN;
+    } else if (quantity > MAX) {
+      quantity = MAX;
+    }
+  }
 
   return quantity;
 }
@@ -228,11 +248,15 @@ Meteor.methods({
    *  @return {Number|Object} Mongo insert response
    */
   "cart/addToCart": function (productId, variantId, itemQty) {
-    new SimpleSchema({
-      productId: { type: String },
-      variantId: { type: String },
-      itemQty: { type: Number, decimal: true, optional: true }
-    }).validate({ productId, variantId, itemQty });
+    // todo currently this throw and error. Maybe in Meteor 1.3 it will be fine
+    //new SimpleSchema({
+    //  productId: { type: String },
+    //  variantId: { type: String },
+    //  itemQty: { type: Number, decimal: true, optional: true }
+    //}).validate({ productId, variantId, itemQty });
+    check(productId, String);
+    check(variantId, String);
+    check(itemQty, Match.Optional(Number));
     this.unblock();
 
     const { Log } = ReactionCore;
@@ -241,12 +265,22 @@ Meteor.methods({
     // get error here - this mean - something went wrong with creating cart to
     // user.
     const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
+    const product = ReactionCore.Collections.Products.findOne(productId);
+    const variant = product.variants.find(function (currentVariant) {
+      if (currentVariant._id === variantId) {
+        return currentVariant;
+      }
+    });
     // performs calculations admissibility of adding product to cart
-    const quantity = quantityProcessing(productId, variantId, itemQty);
-    // performs search of variant inside cart
-    const cartVariantExists = cart.items &&
-      cart.items.some(item => item.variants._id === variantId);
-
+    const quantity = quantityProcessing(product, variant, itemQty);
+    let cartVariantExists;
+    if (typeof cart.items === "object") {
+      // performs search of variant inside cart
+      cartVariantExists = cart.items
+        .some(item => item.variants._id === variantId);
+    } else {
+      cartVariantExists = false;
+    }
     if (cartVariantExists) {
       return ReactionCore.Collections.Cart.update({
         "_id": cart._id,
@@ -273,13 +307,6 @@ Meteor.methods({
     }
 
     // cart variant doesn't exist
-    const product = ReactionCore.Collections.Products.findOne(productId);
-    const variant = product.variants.find(function (currentVariant) {
-      if (currentVariant._id === variantId) {
-        return currentVariant;
-      }
-    });
-
     return ReactionCore.Collections.Cart.update({
       _id: cart._id
     }, {

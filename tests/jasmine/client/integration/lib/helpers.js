@@ -65,11 +65,11 @@ waitForElement = function (selector, successCallback) {
   }, checkInterval);
 };
 
-signUp = function (user/*, callback*/) {
+signUp = function (user, callback) {
   $(".dropdown-toggle").trigger("click");
-  $("#signup-link").trigger("click");
-  $("#login-email").val(user.email);
-  $("#login-password").val(user.password);
-  $("#login-buttons-password").trigger("click");
-  //callback;
+  $("[data-event-action=signUp]").trigger("click");
+  $(".login-input-email").val(user.email);
+  $(".login-input-password").val(user.password);
+  $("[data-event-action='register']").trigger("click");
+  callback && callback();
 };
