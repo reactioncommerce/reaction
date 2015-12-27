@@ -17,7 +17,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
   if (MIN > MAX) {
     ReactionCore.Log.info(`productId: ${product._id}, variantId ${variant._id
       }: inventoryQuantity lower then minimum order`);
-    throw Meteor.Error(`productId: ${product._id}, variantId ${variant._id
+    throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
       }: inventoryQuantity lower then minimum order`);
   }
 
@@ -65,6 +65,10 @@ Meteor.methods({
     const currentCart = Cart.findOne(cartId);
     // just used to filter out the current cart
     const userId = currentCart.userId;
+    // user should have an access to operate with only one - his - cart
+    if (userId !== this.userId) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
     // persistent sessions, see: publications/sessions.js
     const sessionId = ReactionCore.sessionId;
     const shopId = ReactionCore.getShopId();
@@ -260,12 +264,16 @@ Meteor.methods({
     this.unblock();
 
     const { Log } = ReactionCore;
-    // we do not need to check the existence of the cart, because due to system
-    // logic - every user (including anonymous) should have a cart. If we will
-    // get error here - this mean - something went wrong with creating cart to
-    // user.
     const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
+    if (!cart) {
+      Log.warn(`Cart is not defined for user: ${ this.userId }`);
+      throw new Meteor.Error("not found", "Cart is not defined!");
+    }
     const product = ReactionCore.Collections.Products.findOne(productId);
+    if (!product) {
+      Log.warn(`Product: ${ productId } was not found in database`);
+      throw new Meteor.Error("not found", "Product is not defined!");
+    }
     const variant = product.variants.find(function (currentVariant) {
       if (currentVariant._id === variantId) {
         return currentVariant;
@@ -273,14 +281,10 @@ Meteor.methods({
     });
     // performs calculations admissibility of adding product to cart
     const quantity = quantityProcessing(product, variant, itemQty);
-    let cartVariantExists;
-    if (typeof cart.items === "object") {
-      // performs search of variant inside cart
-      cartVariantExists = cart.items
-        .some(item => item.variants._id === variantId);
-    } else {
-      cartVariantExists = false;
-    }
+    // performs search of variant inside cart
+    const cartVariantExists = cart.items && cart.items
+      .some(item => item.variants._id === variantId);
+
     if (cartVariantExists) {
       return ReactionCore.Collections.Cart.update({
         "_id": cart._id,
