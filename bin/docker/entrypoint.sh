@@ -23,5 +23,11 @@ if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
 
 fi
 
+# DEV
+# run reaction from source
+/var/www/src/reaction reset
+/var/www/src/reaction
+
+# PROD
 # Run meteor
-exec $NODE ./main.js
+#exec $NODE ./main.js

@@ -99,10 +99,11 @@ RUN bash /usr/bin/clone-packages.sh && /usr/bin/build-meteor.sh
 # cleanup
 RUN apt-get autoremove -y
 RUN npm cache clear
-RUN bash /usr/bin/cleanup.sh
+#RUN bash /usr/bin/cleanup.sh
 
 # switch to production meteor bundle
-WORKDIR /var/www/bundle
+#WORKDIR /var/www/bundle
+WORKDIR /var/www/src
 
 # start mongo and reaction
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
