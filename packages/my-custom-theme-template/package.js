@@ -13,7 +13,7 @@ Package.onUse(function (api) {
 
   // Include core theme to get its base styles
   // (Optional, but recommended for a starting point)
-  api.use("reaction-core-theme@2.0.0");
+  api.use("reactioncommerce:core-theme@2.0.0");
 
   // Add files what will be imported into your theme.less file
   // ** Please note: {isImport: true} stops meteor from processing a file with its
@@ -22,7 +22,7 @@ Package.onUse(function (api) {
 
   // (Array of files)
   api.addFiles([
-    "/path/to/file.less"
+    "styles/base.less"
   ], "client", {isImport: true});
 
   // - OR Individually, if you prefer

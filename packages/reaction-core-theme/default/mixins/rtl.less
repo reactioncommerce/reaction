@@ -1,0 +1,74 @@
+/* RTL mixins
+-------------------------------------------------- */
+
+.rtl(@rules) {
+  html.rtl & {
+    @rules();
+  }
+}
+.ltr(@rules) {
+  html:not(.rtl) & {
+    @rules();
+  }
+}
+
+.left(@n) {
+  .ltr({ left: @n; });
+  .rtl({ right: @n; });
+}
+.right(@n) {
+  .ltr({ right: @n; });
+  .rtl({ left: @n; });
+}
+.margin-left(@n) {
+  .ltr({ margin-left: @n; });
+  .rtl({ margin-right: @n; });
+}
+.margin-right(@n) {
+  .ltr({ margin-right: @n; });
+  .rtl({ margin-left: @n; });
+}
+.padding-left(@n) {
+  .ltr({ padding-left: @n; });
+  .rtl({ padding-right: @n; });
+}
+.padding-right(@n) {
+  .ltr({ padding-right: @n; });
+  .rtl({ padding-left: @n; });
+}
+
+.float(@n) when (@n = left) {
+  .ltr({ float: left; });
+  .rtl({ float: right; });
+}
+.float(@n) when (@n = right) {
+  .ltr({ float: right; });
+  .rtl({ float: left; });
+}
+.float(@n) when not (@n = left) and not (@n = right) {
+  float: @n;
+}
+
+.clear(@n) when (@n = left) {
+  .ltr({ clear: left; });
+  .rtl({ clear: right; });
+}
+.clear(@n) when (@n = right) {
+  .ltr({ clear: right; });
+  .rtl({ clear: left; });
+}
+.clear(@n) when not (@n = left) and not (@n = right) {
+  clear: @n;
+}
+
+.text-align(@n) when (@n = left) {
+  .ltr({ text-align: left; });
+  .rtl({ text-align: right; });
+}
+.text-align(@n) when (@n = right) {
+  .ltr({ text-align: right; });
+  .rtl({ text-align: left; });
+}
+.text-align(@n) when not (@n = left) and not (@n = right) {
+  text-align: @n;
+}
