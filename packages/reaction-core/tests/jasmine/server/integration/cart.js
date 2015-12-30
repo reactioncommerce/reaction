@@ -77,22 +77,30 @@ describe("cart methods", function () {
     });
 
     describe("cart/removeFromCart", function () {
+      beforeEach(function () {
+        ReactionCore.Collections.Cart.remove({});
+      });
+
       it("should remove item from cart", function (done) {
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         spyOn(ReactionCore.Collections.Cart, "update");
         spyOn(Meteor, "userId").and.returnValue(userId);
-        const currentCart = Factory.create("cart");
-        const cartId = currentCart._id;
+        // todo bugged. always uses previous user instead of new one
+        // const currentCart = Factory.create("cart");
+        // const cartId = currentCart._id;
+        const cartId = Meteor.call("cart/createCart", userId);
+        const cart = ReactionCore.Collections.Cart.findOne(cartId);
+        const cartItemId = cart.items[0]._id;
 
-        expect(currentCart.items[0]).toBeDefined();
-        for (let cartItem of currentCart.items) {
-          Meteor.call("cart/removeFromCart", cartItem._id);
-        }
+        expect(cart.items.length).toEqual(2);
+        expect(cart.items[0]).toBeDefined();
+        Meteor.call("cart/removeFromCart", cartItemId);
 
-        let modifiedCart = ReactionCore.Collections.Cart.find({
-          _id: cartId
-        }).fetch();
-        // SERIOUSLY I KNOW THIS WORKS.
-        // expect(_.size(modifiedCart[0].items)).toEqual(0);
+        let modifiedCart = ReactionCore.Collections.Cart.findOne(cartId);
+        expect(cart.items.length).toEqual(1);
+        expect(modifiedCart[0].items[cartItem._id]).toBeUndefined();
+
         done();
       });
     });

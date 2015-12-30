@@ -263,6 +263,8 @@ Meteor.methods({
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
+    if (!cart) return false;
+
     let cartItem;
 
     if (cart.items) {
@@ -302,7 +304,7 @@ Meteor.methods({
     // if quantity lets convert to negative and increment
     let removeQuantity = Math.abs(quantity) * -1;
     return ReactionCore.Collections.Cart.update({
-      _id: cartId,
+      _id: cart._id,
       items: cartItem
     }, {
       $inc: {
