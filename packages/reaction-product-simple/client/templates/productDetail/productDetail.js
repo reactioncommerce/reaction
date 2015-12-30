@@ -116,7 +116,7 @@ Template.productDetail.events({
     let currentProduct = selectedProduct();
 
     if (currentVariant) {
-      if (currentVariant.parentId === null) {
+      if (typeof currentVariant.parentId !== "string") {
         options = (function () {
           let _results = [];
           for (let variant of currentProduct.variants) {
@@ -166,37 +166,44 @@ Template.productDetail.events({
         if (cartId && productId) {
           count = ReactionCore.Collections.Cart.findOne(cartId).cartCount() || 0;
 
-          Meteor.call("cart/addToCart", cartId, productId, currentVariant, quantity, function (error) {
-            let address;
-            if (!error && count === 0) {
-              address = Session.get("address");
-              if (!address) {
-                return locateUser();
+          Meteor.call("cart/addToCart", cartId, productId, currentVariant,
+            quantity, function (error) {
+              let address;
+              if (!error && count === 0) {
+                // todo understand that's going on here
+                //address = Session.get("address");
+                //if (!address) {
+                //  return locateUser();
+                //}
+              } else if (error) {
+                ReactionCore.Log.error("Failed to add to cart.", error);
+                // todo add alert
+                return error;
               }
-            } else if (error) {
-              ReactionCore.Log.error("Failed to add to cart.", error);
-              return error;
-            }
-          });
-        }
 
-        template.$(".variant-select-option").removeClass("active");
-        setCurrentVariant(null);
-        qtyField.val(1);
-        // scroll to top on cart add
-        $("html,body").animate({
-          scrollTop: 0
-        }, 0);
-        // slide out label
-        let addToCartText = i18n.t("productDetail.addedToCart");
-        let addToCartTitle = currentVariant.title;
-        $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
-        return $(".cart-alert").toggle("slide", {
-          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right",
-          width: currentVariant.title.length + 50 + "px"
-        }, 600).delay(4000).toggle("slide", {
-          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right"
-        });
+              template.$(".variant-select-option").removeClass("active");
+              setCurrentVariant(null);
+              qtyField.val(1);
+              // scroll to top on cart add
+              $("html,body").animate({
+                scrollTop: 0
+              }, 0);
+              // slide out label
+              let addToCartText = i18n.t("productDetail.addedToCart");
+              let addToCartTitle = currentVariant.title;
+              $(".cart-alert-text").text(`${quantity} ${addToCartTitle
+                } ${addToCartText}`);
+              return $(".cart-alert").toggle("slide", {
+                direction: i18n.t("languageDirection") === "rtl" ? "left" :
+                  "right",
+                width: currentVariant.title.length + 50 + "px"
+              }, 600).delay(4000).toggle("slide", {
+                direction: i18n.t("languageDirection") === "rtl" ? "left" :
+                  "right"
+              });
+            }
+          );
+        }
       }
     } else {
       Alerts.add("Select an option before adding to cart", "danger", {
