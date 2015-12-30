@@ -258,7 +258,7 @@ Router.map(function () {
     },
     onBeforeAction: function () {
       let variant;
-      variant = this.params.variant || this.params.query.variant;
+      variant = currentProduct.get('variantId') || this.params.variant || this.params.query.variant;
       ReactionCore.setProduct(this.params._id, variant);
       return this.next();
     },
