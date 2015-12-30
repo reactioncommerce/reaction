@@ -79,12 +79,13 @@ describe("cart methods", function () {
     describe("cart/removeFromCart", function () {
       it("should remove item from cart", function (done) {
         spyOn(ReactionCore.Collections.Cart, "update");
+        spyOn(Meteor, "userId").and.returnValue(userId);
         const currentCart = Factory.create("cart");
         const cartId = currentCart._id;
 
         expect(currentCart.items[0]).toBeDefined();
         for (let cartItem of currentCart.items) {
-          Meteor.call("cart/removeFromCart", cartId, cartItem);
+          Meteor.call("cart/removeFromCart", cartItem._id);
         }
 
         let modifiedCart = ReactionCore.Collections.Cart.find({
