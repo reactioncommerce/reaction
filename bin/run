@@ -1,5 +1,20 @@
 #!/bin/bash
 
+if [ $1 = 'debug' ]; then
+  cmd=debug
+  # strip away the debug option
+  TMP_ARGS=()
+  for var in "$@"; do
+     # strip out debug argument
+     [ "$var" != 'debug' ] && TMP_ARGS+=("$var")
+  done
+  ARGS=${TMP_ARGS[@]}
+else
+  cmd=run
+  ARGS=$@
+fi
+
+
 set -u
 set -e
 
@@ -9,13 +24,13 @@ DEVCONFIG=$DIRNAME/settings/dev.settings.json
 
 if [ -f $CONFIG ]; then
    echo "Starting Reaction using '$CONFIG'."
-   meteor run --raw-logs --settings $CONFIG "$@"
+   meteor $cmd --raw-logs --settings $CONFIG "$ARGS"
 else
  if [ -f $DEVCONFIG ]; then
    echo "Starting Reaction using '$DEVCONFIG'."
-   meteor run --raw-logs --settings $DEVCONFIG "$@"
+   meteor $cmd --raw-logs --settings $DEVCONFIG $ARGS
  else
    echo "Starting Reaction."
-   meteor run --raw-logs "$@"
+   meteor $cmd --raw-logs "$ARGS"
  fi
 fi
