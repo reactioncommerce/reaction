@@ -320,6 +320,10 @@
       "format": "%s%v",
       "symbol": "$"
     },
+    "PHP": {
+      "format": "%s %v",
+      "symbol": "PHP"
+    },
     "PLN": {
       "format": "%s%v",
       "symbol": "zł",
