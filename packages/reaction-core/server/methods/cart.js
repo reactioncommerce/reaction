@@ -263,7 +263,12 @@ Meteor.methods({
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
-    if (!cart) return false;
+    if (!cart) {
+      ReactionCore.Log.error("Not found", `Cart was not found for user: ${
+        Meteor.userId()}`);
+      throw new Meteor.Error(404, "Cart not found.",
+        "Unable to find a cart for this user.");
+    }
 
     let cartItem;
 
@@ -277,7 +282,10 @@ Meteor.methods({
 
     // extra check of item exists
     if (typeof cartItem !== "object") {
-      return false;
+      ReactionCore.Log.error("Not found", `Unable to find an item: ${itemId
+        } within the cart: ${cart._id}`);
+      throw new Meteor.Error(404, "Cart item not found.",
+        "Unable to find an item with such id within you cart.");
     }
 
     if (!quantity) {
@@ -295,9 +303,11 @@ Meteor.methods({
             .Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
-        ReactionCore.Log.info(`cart: deleted cart item variant id ${
-          cartItem.variants._id}`);
-        return result;
+        if (result) {
+          ReactionCore.Log.info(`cart: deleted cart item variant id ${
+            cartItem.variants._id}`);
+          return result;
+        }
       });
     }
 
@@ -316,9 +326,11 @@ Meteor.methods({
           .Collections.Cart.simpleSchema().namedContext().invalidKeys());
         return error;
       }
-      ReactionCore.Log.info(`cart: removed variant ${
-        cartItem._id} quantity of ${quantity}`);
-      return result;
+      if (result) {
+        ReactionCore.Log.info(`cart: removed variant ${
+          cartItem._id} quantity of ${quantity}`);
+        return result;
+      }
     });
   },
 
