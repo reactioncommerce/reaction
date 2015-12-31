@@ -544,23 +544,29 @@ describe("Account Meteor method ", function () {
       }
     );
 
-    //it(
-    //  "should call `cart/unsetAddresses` Method",
-    //  done => {
-    //    const account = Factory.create("account");
-    //    const address = account.profile.addressBook[0];
-    //    // user
-    //    spyOn(Meteor, "userId").and.returnValue(account.userId);
-    //    // spyOn(Meteor, "call");
-    //
-    //    Meteor.call("accounts/addressBookRemove", address._id);
-    //
-    //    // fixme: don't what syntax will be right here...
-    //    expect(Meteor.call("cart/unsetAddresses")).toHaveBeenCalled();
-    //
-    //    return done();
-    //  }
-    //);
+    it(
+      "should call `cart/unsetAddresses` Method",
+      done => {
+        const account = Factory.create("account");
+        const address = account.profile.addressBook[0];
+        spyOn(Meteor, "userId").and.returnValue(account.userId);
+        spyOn(Meteor, "call").and.callThrough();
+
+        Meteor.call("accounts/addressBookRemove", address._id);
+
+        expect(Meteor.call.calls.argsFor(0)).toEqual([
+          "accounts/addressBookRemove",
+          address._id
+        ]);
+        expect(Meteor.call.calls.argsFor(1)).toEqual([
+          "cart/unsetAddresses",
+          address._id,
+          account.userId
+        ]);
+
+        return done();
+      }
+    );
 
     it(
       "should return zero(0) if address not exists",
