@@ -132,6 +132,7 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/sv.json", "server");
   api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
+  api.addAssets("private/data/i18n/nb.json", "server");
 
   // security
   api.addFiles("server/browserPolicy.js", "server");
