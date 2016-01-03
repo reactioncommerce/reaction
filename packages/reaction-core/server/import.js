@@ -36,7 +36,13 @@ ReactionImport.startup = function () {
 ReactionImport.load = function (key, object) {
   check(object, Object);
 
-  let collection = this.identify(object);
+  // todo fix this workaround
+  let collection;
+  if (object.type && object.type === "variant") {
+    collection = ReactionCore.Collections.Products;
+  } else {
+  /*let */collection = this.identify(object);
+  }
   this.object(collection, key, object);
 };
 
@@ -170,8 +176,9 @@ ReactionImport.flush = function (collection) {
  * The validation context is requested from the schema associated with the
  * collection.
  */
-ReactionImport.context = function (collection) {
+ReactionImport.context = function (collection, selector) {
   check(collection, Mongo.Collection);
+  check(selector, Match.Optional(Object));
 
   // Construct a context identifier.
   let name = this._name(collection);
@@ -180,6 +187,9 @@ ReactionImport.context = function (collection) {
   if (this._contexts[name]) {
     return this._contexts[name];
   }
+  // todo: find a way to make this work (if it is needed) with flattened
+  // products data structure. I have a filling that we can't use this
+  // `.newContext()` call with new structure.
   this._contexts[name] = collection.simpleSchema().newContext();
   return this._contexts[name];
 };
@@ -350,8 +360,26 @@ ReactionImport.object = function (collection, key, object) {
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
   // Clean and validate the object.
-  collection.simpleSchema().clean(object);
-  this.context(collection).validate(object, {});
+  if (collection._name === "Products") {
+    switch (object.type) {
+      case "variant":
+        collection.simpleSchema(object, { selector: { type: 'variant' } })
+          .clean(object);
+        // todo fix this:
+        //this.context(collection, { selector: { type: 'variant' } })
+        //  .validate(object, {});
+        break;
+      default:
+        collection.simpleSchema(object, { selector: { type: 'simple' } })
+          .clean(object);
+        // todo fix this:
+        //this.context(collection, { selector: { type: 'simple' } })
+        //  .validate(object, {});
+    }
+  } else {
+    collection.simpleSchema().clean(object);
+    this.context(collection).validate(object, {});
+  }
   // Upsert the object.
   let find = this.buffer(collection).find(key);
   if (this._upsert()) {

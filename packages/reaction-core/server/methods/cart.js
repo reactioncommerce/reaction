@@ -193,6 +193,14 @@ Meteor.methods({
     check(itemQty, Match.Optional(Number));
     this.unblock();
 
+    ReactionCore.Collections.Products.insert({
+      title: 'Product test one'
+    }, { selector: { type: 'simple' } });
+    //ReactionCore.Collections.Products
+    //  .update({"_id" : "6qiqPwBkeJdtdQc4G"},
+    //  {$set: {type: 'simple', title: 'foo'}},
+    //  {selector: {type: 'variant'}});
+
     const quantity = itemQty || 1;
     const currentCart = ReactionCore.Collections.Cart.findOne(cartId);
     const cartVariantExists = ReactionCore.Collections.Cart.findOne({

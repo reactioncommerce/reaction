@@ -6,14 +6,14 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.2.1");
   api.use("random");
   api.use("underscore");
   api.use("ecmascript");
   api.use("momentjs:moment@2.10.6");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("aldeed:collection2@2.6.0");
-  api.use("aldeed:simple-schema@1.5.0");
+  api.use("aldeed:collection2@2.8.0");
+  api.use("aldeed:simple-schema@1.5.3");
   api.use("matb33:collection-hooks@0.8.1");
   api.use("mikowals:batch-insert@1.1.13");
 
