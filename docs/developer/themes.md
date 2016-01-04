@@ -54,7 +54,7 @@ Package.onUse(function (api) {
 });
 ```
 
-### Step4
+### Step 3
 
 open `.meteor/packages` and modify the following line at the bottom of the file.
 
@@ -68,7 +68,7 @@ Uncomment (remove the #) on the line with `my:custom-theme` to enable the theme.
 
 If your custom theme is complete enough to replace `reactioncommerce:default-theme` feel free to remove or comment it out.
 
-### Step 3
+### Step 4
 open `main.less` add css and/or imports here.
 
 ```
