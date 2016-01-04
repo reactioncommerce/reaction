@@ -13,7 +13,7 @@
     <button class="btn btn-link" data-event-action="editTracking">{{shipment.tracking}}</button>
    {{/if}}
 
-  {{#if shipment.shipped}}
+  {{#if isShipped}}
     <p>Items have been shipped</p>
     <button class="btn btn-default" data-event-action="resendNotification" data-i18n="orderShipping.resendNotification">Resend Shipment Notification</button>
   {{else}}

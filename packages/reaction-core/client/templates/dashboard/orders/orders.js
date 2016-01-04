@@ -23,7 +23,8 @@ const OrderHelper = {
     // Orders that have been shipped
     case "processing":
       query = {
-        "workflow.status": "coreOrderWorkflow/processing"
+        "workflow.status": "coreOrderWorkflow/processing",
+        "items.workflow.status": {$ne: "shipped"}
       };
       break;
 

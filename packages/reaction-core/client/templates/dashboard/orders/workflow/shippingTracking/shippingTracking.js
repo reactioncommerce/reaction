@@ -25,7 +25,6 @@ Template.coreOrderShippingTracking.onCreated(() => {
 Template.coreOrderShippingTracking.events({
   "click [data-event-action=shipmentShipped]": function () {
     let template = Template.instance();
-    console.log("!!!");
     Meteor.call("orders/shipmentShipped", template.order);
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
@@ -64,6 +63,27 @@ Template.coreOrderShippingTracking.events({
 });
 
 Template.coreOrderShippingTracking.helpers({
+  isShipped() {
+    const currentData = Template.currentData();
+    const order = Template.instance().order;
+
+    console.log("isShipped", currentData, order);
+
+    const shippedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+      const fullItem = _.find(order.items, (orderItem) => {
+        if (orderItem._id === shipmentItem._id) {
+          return true;
+        }
+      });
+
+      return _.contains(fullItem.workflow.workflow, "shipped") || fullItem.workflow === "shipped";
+    });
+
+    console.log("Is every item shipped", shippedItems);
+
+    return shippedItems
+  },
+
   editTracking() {
     let template = Template.instance();
     if (!template.order.shipping[0].tracking || template.showTrackingEditForm.get()) {
