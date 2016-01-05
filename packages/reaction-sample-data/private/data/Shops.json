@@ -421,6 +421,10 @@
     "i18n": "nl",
     "enabled": true
   }, {
+    "label": "Norsk bokmål",
+    "i18n": "nb",
+    "enabled": true
+  }, {
     "label": "Polski",
     "i18n": "pl",
     "enabled": true
