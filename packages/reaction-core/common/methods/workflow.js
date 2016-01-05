@@ -12,7 +12,7 @@ Meteor.methods({
    * user permissions to template are verified
    * @param {String} workflow - name of workflow
    * @param {String} newWorkflowStatus - name of the next workflow stage
-   * @param {String} cartId - cart._id
+   * @param {String} [cartId] - cart._id
    * @return {Array|Boolean|Number}
    */
   "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus,
@@ -28,6 +28,8 @@ Meteor.methods({
     };
     const { Cart, Packages, Shops } = ReactionCore.Collections;
     const { Log } = ReactionCore;
+    // todo `cartId` seems should be used here. Do we need this here?
+    // using `cartId` looks not pretty secure.
     const currentCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
@@ -182,6 +184,42 @@ Meteor.methods({
         newWorkflowStatus);
       return true;
     }
+  },
+
+  /**
+   * workflow/revertCartWorkflow
+   * @description if something was changed on the previous `cartWorkflow` steps
+   * we need to revert to this step to renew the order
+   * @param {String} newWorkflowStatus - name of `cartWorkflow` step, which
+   * we need to revert
+   * @todo need tests
+   * @return {Number|Boolean} cart update results
+   */
+  "workflow/revertCartWorkflow": function (newWorkflowStatus) {
+    check(newWorkflowStatus, String);
+    this.unblock();
+
+    const cart = ReactionCore.Collections.Cart.findOne({
+      userId: Meteor.userId()
+    });
+
+    if (!cart || typeof cart.workflow !== "object") return false;
+    if (typeof cart.workflow.workflow !== "object") return false;
+
+    const { workflow } = cart.workflow;
+    // get index of `newWorkflowStatus`
+    const resetToIndex = workflow.indexOf(newWorkflowStatus);
+    // exit if no such step in workflow
+    if (!~resetToIndex) return false;
+    // remove all steps that further `newWorkflowStatus` and itself
+    const resetedWorkflow = workflow.slice(0, resetToIndex);
+
+    return ReactionCore.Collections.Cart.update(cart._id, {
+      $set: {
+        "workflow.status": newWorkflowStatus,
+        "workflow.workflow": resetedWorkflow
+      }
+    });
   },
 
   /**

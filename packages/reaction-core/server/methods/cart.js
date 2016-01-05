@@ -349,6 +349,93 @@ Meteor.methods({
   },
 
   /**
+   * cart/removeFromCart
+   * @summary removes or adjust quantity of a variant from the cart
+   * @param {String} itemId - cart item _id
+   * @param {Number} [quantity] - if provided will adjust increment by quantity
+   * @returns {boolean|String} returns Mongo update result
+   */
+  "cart/removeFromCart": function (itemId, quantity) {
+    check(itemId, String);
+    check(quantity, Match.Optional(Number));
+
+    this.unblock();
+
+    const userId = Meteor.userId();
+    const cart = ReactionCore.Collections.Cart.findOne({
+      userId: userId
+    });
+    if (!cart) {
+      ReactionCore.Log.error(`Cart was not found for user: ${ userId }`);
+      throw new Meteor.Error(404, "Cart not found.",
+        "Unable to find a cart for this user.");
+    }
+
+    let cartItem;
+
+    if (cart.items) {
+      cart.items.forEach(item => {
+        if (item._id === itemId) {
+          cartItem = item;
+        }
+      });
+    }
+
+    // extra check of item exists
+    if (typeof cartItem !== "object") {
+      ReactionCore.Log.error(`Unable to find an item: ${itemId
+        } within the cart: ${cart._id}`);
+      throw new Meteor.Error(404, "Cart item not found.",
+        "Unable to find an item with such id within you cart.");
+    }
+
+    if (!quantity) {
+      return ReactionCore.Collections.Cart.update({
+        _id: cart._id
+      }, {
+        $pull: {
+          items: {
+            _id: itemId
+          }
+        }
+      }, (error, result) => {
+        if (error) {
+          ReactionCore.Log.warn("error removing from cart", ReactionCore
+            .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          return error;
+        }
+        if (result) {
+          ReactionCore.Log.info(`cart: deleted cart item variant id ${
+            cartItem.variants._id}`);
+          return result;
+        }
+      });
+    }
+
+    // if quantity lets convert to negative and increment
+    let removeQuantity = Math.abs(quantity) * -1;
+    return ReactionCore.Collections.Cart.update({
+      _id: cart._id,
+      items: cartItem
+    }, {
+      $inc: {
+        "items.quantity": removeQuantity
+      }
+    }, (error, result) => {
+      if (error) {
+        ReactionCore.Log.warn("error removing from cart", ReactionCore
+          .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+        return error;
+      }
+      if (result) {
+        ReactionCore.Log.info(`cart: removed variant ${
+          cartItem._id} quantity of ${quantity}`);
+        return result;
+      }
+    });
+  },
+
+  /**
    * cart/copyCartToOrder
    * @summary transform cart to order
    * when a payment is processed we want to copy the cart
@@ -588,16 +675,23 @@ Meteor.methods({
         // refresh shipping quotes
         Meteor.call("shipping/updateShipmentQuotes", cartId);
 
-        // it's ok for this to be called multiple times
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "coreCheckoutShipping");
-
-        // this is probably a crappy way to do this
-        // let's default the payment address
-        if (!cart.billing) {
-          Meteor.call("cart/setPaymentAddress", cartId, address);
+        if (typeof cart.workflow !== "object") return;
+        // ~~it's ok for this to be called multiple times~~
+        // call it only once then we at the `checkoutAddressBook` step
+        if (typeof cart.workflow.workflow === "object" &&
+          cart.workflow.workflow.length <= 2) {
+          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+            "coreCheckoutShipping");
         }
-        return;
+
+        // if we change default address during further steps, we need to revert
+        // workflow back to `coreCheckoutShipping` step
+        if (typeof cart.workflow.workflow === "object" &&
+          cart.workflow.workflow.length > 3) { // "2" index of
+          // `coreCheckoutShipping`
+          // TODO additionally recalculate shipping rates here
+          Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+        }
       });
     }
   },
@@ -606,6 +700,7 @@ Meteor.methods({
    * @summary adds addressbook to cart payments
    * @param {String} cartId - cartId to apply payment address
    * @param {Object} address - addressBook object
+   * @todo maybe we need to rename this method to `cart/setBillingAddress`?
    * @return {String} return Mongo update result
    */
   "cart/setPaymentAddress": function (cartId, address) {
@@ -646,30 +741,30 @@ Meteor.methods({
         };
       }
 
-      ReactionCore.Collections.Cart.update(selector, update,
-        function (error, result) {
-          if (error) {
-            ReactionCore.Log.warn(error);
-          } else {
-            // post payment address Methods
-            return result;
-          }
-        });
+      return ReactionCore.Collections.Cart.update(selector, update);
     }
   },
   /**
    * cart/unsetAddresses
-   * @description removes address from cart. This used then user remove address,
-   * which was used in cart. This method not called directly from client side.
+   * @description removes address from cart.
    * @param {String} addressId - address._id
    * @param {String} userId - cart owner _id
-   * @return {Number|Object} The number of removed documents or error object
+   * @param {String} [type] - billing default or shipping default
+   * @since 0.10.1
+   * @todo check if no more address in cart as shipping, we should reset
+   * `cartWorkflow` to second step
+   * @return {Number|Object|Boolean} The number of removed documents or error
+   * object or `false` if we don't need to update cart
    */
-  "cart/unsetAddresses": function (addressId, userId) {
+  "cart/unsetAddresses": function (addressId, userId, type) {
     check(addressId, String);
     check(userId, String);
+    check(type, Match.Optional(String));
     this.unblock();
 
+    // do we actually need to change anything?
+    let needToUpdate = false;
+    let isShippingDeleting = false;
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
@@ -677,16 +772,40 @@ Meteor.methods({
       _id: cart._id
     };
     let update = { $unset: {}};
-    // we assume that the billing/shipping arrays can hold only one element [0]
-    if (typeof cart.billing[0].address === "object" &&
-      cart.billing[0].address._id === addressId) {
-      update.$unset["billing.0.address"] = "";
+    // user could uncheck the checkbox in address to not to be default, then we
+    // reseive `type` arg
+    if (typeof type === "string") {
+      // we assume that the billing/shipping arrays can hold only one element [0]
+      if (cart[type] && typeof cart[type][0].address === "object" &&
+        cart[type][0].address._id === addressId) {
+        update.$unset[`${type}.0.address`] = "";
+        needToUpdate = true;
+      }
+    } else { // or if we remove address itself, when we run this part
+      // we assume that the billing/shipping arrays can hold only one element [0]
+      if (cart.billing && typeof cart.billing[0].address === "object" &&
+        cart.billing[0].address._id === addressId) {
+        update.$unset["billing.0.address"] = "";
+        needToUpdate = true;
+      }
+      if (cart.shipping && typeof cart.shipping[0].address === "object" &&
+        cart.shipping[0].address._id === addressId) {
+        update.$unset["shipping.0.address"] = "";
+        needToUpdate = true;
+        isShippingDeleting = true;
+      }
     }
-    if (typeof cart.shipping[0].address._id === "object" &&
-      cart.shipping[0].address._id === addressId) {
-      update.$unset["shipping.0.address"] = "";
-    }
-    return ReactionCore.Collections.Cart.update(selector, update);
+
+    // todo maybe we need synchronous variant here?
+    needToUpdate && ReactionCore.Collections.Cart.update(selector, update,
+      (error, result) => {
+        if (result && isShippingDeleting) {
+          // if we remove shipping address from cart, we need to revert
+          // `cartWorkflow` to the `checkoutAddressBook` step.
+          Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+        }
+      }
+    );
   },
   /**
    * cart/submitPayment

@@ -114,7 +114,7 @@ Template.productDetail.events({
     let currentProduct = selectedProduct();
 
     if (currentVariant) {
-      if (currentVariant.parentId === null) {
+      if (typeof currentVariant.parentId !== "string") {
         options = (function () {
           let _results = [];
           for (let variant of currentProduct.variants) {
