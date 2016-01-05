@@ -93,7 +93,7 @@ describe("Account Meteor method ", function () {
             "accounts/addressBookAdd",
             () => { console.log("test"); }
           );
-        }).toThrow();
+        }).not.toThrow();
 
         expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
 
@@ -289,7 +289,7 @@ describe("Account Meteor method ", function () {
             "accounts/addressBookUpdate",
             () => { console.log("test"); }
           );
-        }).toThrow();
+        }).not.toThrow();
 
         expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
         return done();
@@ -515,7 +515,7 @@ describe("Account Meteor method ", function () {
             "accounts/addressBookRemove",
             () => { console.log("test"); }
           );
-        }).toThrow();
+        }).not.toThrow();
 
         expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
 

@@ -89,7 +89,7 @@ describe("cart methods", function () {
             "accounts/addressBookRemove",
             () => { console.log("test"); }
           );
-        }).toThrow();
+        }).not.toThrow();
 
         expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
 
