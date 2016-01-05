@@ -1,5 +1,5 @@
 # Reaction Core
-[![Circle CI](https://circleci.com/gh/reactioncommerce/reaction-core.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction-core) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Reaction Core provides a core set of methods and templates for creating, connecting, and managing user carts, sessions, products, checkout and orders for Reaction Commerce.
 
@@ -12,17 +12,9 @@ If this is a newly created Meteor project:
 ```
 meteor remove insecure
 meteor remove autopublish
-meteor add nemo64:bootstrap
-meteor add reactioncommerce:bootstrap-theme
+meteor add reactioncommerce:core
+meteor add reactioncommerce:core-theme
 meteor add reactioncommerce:reaction-accounts
-```
-
-Create [client/themes/bootstrap/custom.reaction.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.reaction.json) and [client/themes/bootstrap/custom.bootstrap.json](https://github.com/reactioncommerce/reaction/blob/master/client/themes/bootstrap/custom.bootstrap.json). These files configure the default LESS theme.
-
-```
-mkdir -p client/themes/bootstrap
-curl -o client/themes/bootstrap/custom.bootstrap.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.bootstrap.json
-curl -o client/themes/bootstrap/custom.reaction.json https://raw.githubusercontent.com/reactioncommerce/reaction/master/client/themes/bootstrap/custom.reaction.json
 ```
 
 ## Packages
