@@ -6,20 +6,20 @@
       "public": {
         "allowGuestCheckout": true
       },
-      "mail": {
-        "user": "",
-        "password": "",
-        "host": "",
-        "port": 587
-      },
       "openexchangerates": {
         "appId": "",
         "refreshPeriod": "every 1 hour"
       },
-      "google" : {
-          "clientId" : "",
-          "apiKey" : ""
-      }
+      "google": {
+        "clientId": "",
+        "apiKey": ""
+      },
+      "mail": {
+        "user": "",
+        "password": "",
+        "host": "",
+        "port": 465
+      },
       "services": [{
         "facebook": {
           "appId": "",
@@ -73,13 +73,13 @@
       "api_key": ""
     }
   }, {
-   "name": "reaction-auth-net",
-   "enabled": true,
-   "settings": {
-     "api_key": "",
-     "transaction_key": ""
-   }
- }, {
+    "name": "reaction-auth-net",
+    "enabled": true,
+    "settings": {
+      "api_id": "",
+      "transaction_key": ""
+    }
+  }, {
     "name": "reaction-social",
     "enabled": true,
     "settings": {
