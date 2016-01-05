@@ -66,6 +66,7 @@ RUN npm install --silent -g phantomjs nodemon forever
 RUN curl -sL https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
 
 # Default env variables
+ENV REACTION_ENVIRONMENT dev
 ENV PORT 80
 ENV ROOT_URL http://localhost
 ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
