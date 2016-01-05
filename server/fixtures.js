@@ -8,8 +8,10 @@ Meteor.startup(function () {
   try {
     ReactionRegistry.loadSettings(Assets.getText("settings/reaction.json"));
   } catch (error) {
-    if (Assets.getText("settings/reaction.json")) {
-      ReactionCore.Log.warn("loadSettings reaction.json not loaded.", error);
+    try {
+      Assets.getText("settings/reaction.json");
+    } catch (error2) {
+      ReactionCore.Log.warn("loadSettings reaction.json not loaded.", error2);
     }
   }
 });
