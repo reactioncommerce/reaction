@@ -260,9 +260,16 @@ Meteor.methods({
 
     this.unblock();
 
+    const userId = Meteor.userId();
     const cart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
+      userId: userId
     });
+    if (!cart) {
+      ReactionCore.Log.error(`Cart was not found for user: ${ userId }`);
+      throw new Meteor.Error(404, "Cart not found.",
+        "Unable to find a cart for this user.");
+    }
+
     let cartItem;
 
     if (cart.items) {
@@ -275,7 +282,10 @@ Meteor.methods({
 
     // extra check of item exists
     if (typeof cartItem !== "object") {
-      return false;
+      ReactionCore.Log.error(`Unable to find an item: ${itemId
+        } within the cart: ${cart._id}`);
+      throw new Meteor.Error(404, "Cart item not found.",
+        "Unable to find an item with such id within you cart.");
     }
 
     if (!quantity) {
@@ -284,39 +294,43 @@ Meteor.methods({
       }, {
         $pull: {
           items: {
-            variants: cartItem.variants
+            _id: itemId
           }
         }
-      }, function (error, result) {
+      }, (error, result) => {
         if (error) {
           ReactionCore.Log.warn("error removing from cart", ReactionCore
             .Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
-        ReactionCore.Log.info(`cart: deleted cart item variant id ${
-          cartItem.variants._id}`);
-        return result;
+        if (result) {
+          ReactionCore.Log.info(`cart: deleted cart item variant id ${
+            cartItem.variants._id}`);
+          return result;
+        }
       });
     }
 
     // if quantity lets convert to negative and increment
     let removeQuantity = Math.abs(quantity) * -1;
     return ReactionCore.Collections.Cart.update({
-      _id: cartId,
+      _id: cart._id,
       items: cartItem
     }, {
       $inc: {
         "items.quantity": removeQuantity
       }
-    }, function (error, result) {
+    }, (error, result) => {
       if (error) {
         ReactionCore.Log.warn("error removing from cart", ReactionCore
           .Collections.Cart.simpleSchema().namedContext().invalidKeys());
         return error;
       }
-      ReactionCore.Log.info(`cart: removed variant ${
-        cartItem._id} quantity of ${quantity}`);
-      return result;
+      if (result) {
+        ReactionCore.Log.info(`cart: removed variant ${
+          cartItem._id} quantity of ${quantity}`);
+        return result;
+      }
     });
   },
 
