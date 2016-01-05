@@ -30,7 +30,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   }
 
   // if we've got an id, we'll use it with the layout's collection
-  if (Template.currentData()) {
+  if (Template.currentData() && Template.currentData()._id) {
     currentId = Template.currentData()._id;
   } else {
     let currentCart = ReactionCore.Collections.Cart.findOne({

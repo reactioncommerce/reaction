@@ -367,7 +367,12 @@ Meteor.methods({
     }
 
     ReactionCore.configureMailUrl();
-
+    // don't send account emails unless email server configured
+    if (!process.env.MAIL_URL) {
+      ReactionCore.Log.info(`Mail not configured: suppressing invite email output`);
+      return true;
+    }
+    // everything cool? invite user
     if (shop && email && name) {
       let currentUser = Meteor.user();
       if (currentUser) {
@@ -477,6 +482,11 @@ Meteor.methods({
 
     // configure email
     ReactionCore.configureMailUrl();
+    // don't send account emails unless email server configured
+    if (!process.env.MAIL_URL) {
+      ReactionCore.Log.info(`Mail not configured: suppressing welcome email output`);
+      return true;
+    }
     // fetch and send templates
     SSR.compileTemplate("accounts/sendWelcomeEmail", ReactionEmailTemplate("accounts/sendWelcomeEmail"));
     try {
@@ -496,12 +506,12 @@ Meteor.methods({
   },
   /**
    * accounts/addUserPermissions
-   * @params {String} userId - userId
-   * @params {Array|String} permissions -
+   * @param {String} userId - userId
+   * @param {Array|String} permissions -
    *               Name of role/permission.  If array, users
    *               returned will have at least one of the roles
    *               specified but need not have _all_ roles.
-   * @params {String} [group] Optional name of group to restrict roles to.
+   * @param {String} [group] Optional name of group to restrict roles to.
    *                         User"s Roles.GLOBAL_GROUP will also be checked.
    * @returns {Boolean} success/failure
    */
@@ -541,9 +551,9 @@ Meteor.methods({
 
   /**
    * accounts/setUserPermissions
-   * @params {String} userId - userId
-   * @params {String|Array} permissions - string/array of permissions
-   * @params {String} groups - group
+   * @param {String} userId - userId
+   * @param {String|Array} permissions - string/array of permissions
+   * @param {String} group - group
    * @returns {Boolean} returns Roles.setUserRoles result
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {

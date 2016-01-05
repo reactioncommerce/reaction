@@ -1,0 +1,85 @@
+
+/* ribbon for dashboard */
+.ribbon(@size,@color,@textcolor) {
+  position: relative;
+  &:before, &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  &:before {
+    width: @size;
+    height: @size;
+    z-index: 1;
+    /* FF3.6+ */
+    background:
+    -moz-linear-gradient(
+    45deg,
+    rgba(red(@color),green(@color),blue(@color),0) 0%,
+    rgba(red(@color),green(@color),blue(@color),0) 49.9%,
+    rgba(red(@color),green(@color),blue(@color),1) 50%,
+    rgba(red(@color),green(@color),blue(@color),1) 74.9%,
+    rgba(red(@color),green(@color),blue(@color),0) 75%,
+    rgba(red(@color),green(@color),blue(@color),0) 100%);
+    /* Chrome10+,Safari5.1+ */
+    background:
+    -webkit-linear-gradient(
+    45deg,
+    rgba(red(@color),green(@color),blue(@color),0) 0%,
+    rgba(red(@color),green(@color),blue(@color),0) 49.9%,
+    rgba(red(@color),green(@color),blue(@color),1) 50%,
+    rgba(red(@color),green(@color),blue(@color),1) 74.9%,
+    rgba(red(@color),green(@color),blue(@color),0) 75%,
+    rgba(red(@color),green(@color),blue(@color),0) 100%);
+    /* Opera 11.10+ */
+    background:
+    -o-linear-gradient(
+    45deg,
+    rgba(red(@color),green(@color),blue(@color),0) 0%,
+    rgba(red(@color),green(@color),blue(@color),0) 49.9%,
+    rgba(red(@color),green(@color),blue(@color),1) 50%,
+    rgba(red(@color),green(@color),blue(@color),1) 74.9%,
+    rgba(red(@color),green(@color),blue(@color),0) 75%,
+    rgba(red(@color),green(@color),blue(@color),0) 100%);
+    /* IE10+ */
+    background:
+    -ms-linear-gradient(
+    45deg,
+    rgba(red(@color),green(@color),blue(@color),0) 0%,
+    rgba(red(@color),green(@color),blue(@color),0) 49.9%,
+    rgba(red(@color),green(@color),blue(@color),1) 50%,
+    rgba(red(@color),green(@color),blue(@color),1) 74.9%,
+    rgba(red(@color),green(@color),blue(@color),0) 75%,
+    rgba(red(@color),green(@color),blue(@color),0) 100%);
+    /* W3C */
+    background:
+    linear-gradient(
+    45deg,
+    rgba(red(@color),green(@color),blue(@color),0) 0%,
+    rgba(red(@color),green(@color),blue(@color),0) 49.9%,
+    rgba(red(@color),green(@color),blue(@color),1) 50%,
+    rgba(red(@color),green(@color),blue(@color),1) 74.9%,
+    rgba(red(@color),green(@color),blue(@color),0) 75%,
+    rgba(red(@color),green(@color),blue(@color),0) 100%);
+  }
+  &:after {
+    content: attr(data-ribbon);
+    width: @size;
+    height: @size;
+    z-index: 2;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: (@size / 4);
+    right: (@size / 4);
+    color: @textcolor;
+    text-align: center;
+    font-size: (@size / 6.0);
+    letter-spacing: (@size / 28);
+    line-height: 0;
+    text-shadow: 1px 1px 1px darken(@color,30%);
+  }
+
+}

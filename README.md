@@ -27,6 +27,8 @@ cd reaction && git checkout master # default branch is development
 
 Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
 
+_Note: When using a standalone MongoDB server, make sure you are using version 2.6 or later._
+
 _Note: for windows installation you also need:_
 - OpenSSL x86 ([windows installer](https://slproweb.com/products/Win32OpenSSL.html))
 - Visual Studio 2008 redistributables
