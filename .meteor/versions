@@ -9,7 +9,7 @@ accounts-weibo@1.0.6
 alanning:roles@1.2.14
 aldeed:autoform@5.8.1
 aldeed:collection2@2.6.1
-aldeed:simple-schema@1.5.0
+aldeed:simple-schema@1.5.1
 aldeed:template-extension@4.0.0
 amplify@1.0.0
 audit-argument-checks@1.0.4
@@ -51,7 +51,7 @@ cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.1.0
 coffeescript@1.0.11
-cosmos:browserify@0.9.2
+cosmos:browserify@0.9.3
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.2
