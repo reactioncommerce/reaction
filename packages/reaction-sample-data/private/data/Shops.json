@@ -377,6 +377,10 @@
     "i18n": "ar",
     "enabled": true
   }, {
+    "label": "Български",
+    "i18n": "bg",
+    "enabled": true
+  }, {
     "label": "中文(简体)",
     "i18n": "cn",
     "enabled": true
