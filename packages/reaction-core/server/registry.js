@@ -125,6 +125,16 @@ ReactionRegistry.createDefaultAdminUser = function () {
     }
   }
 
+  // set the default shop email to the default admin email
+  ReactionCore.Collections.Shops.update(shopId, {
+    $addToSet: {
+      emails: {
+        address: options.email,
+        verified: true
+      },
+      domains: Meteor.settings.ROOT_URL
+    }
+  });
   // create the new admin user
   // we're checking again to see if this user was created but not specifically for this shop.
   if (Meteor.users.find({
@@ -173,16 +183,6 @@ ReactionRegistry.createDefaultAdminUser = function () {
       }
     });
   }
-  // set the defaut shop email to the default admin email
-  ReactionCore.Collections.Shops.update(shopId, {
-    $addToSet: {
-      emails: {
-        address: options.email,
-        verified: true
-      },
-      domains: Meteor.settings.ROOT_URL
-    }
-  });
   // populate roles with all the packages and their permissions
   // this way the default user has all permissions
   const packages = ReactionCore.Collections.Packages.find().fetch();
