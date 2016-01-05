@@ -3,19 +3,28 @@
 set -u
 set -e
 
-DIRNAME=$(pwd)
-CONFIG=$DIRNAME/settings/settings.json
-DEVCONFIG=$DIRNAME/settings/dev.settings.json
+
+if [[ "$@" == *"debug"* ]]; then
+  CMD=debug
+else
+  CMD=run
+fi
+
+# remove debug arg if it exists
+ARGS="${@//debug}"
+
+CONFIG=$(pwd)/settings/settings.json
+DEVCONFIG=$(pwd)/settings/dev.settings.json
 
 if [ -f $CONFIG ]; then
    echo "Starting Reaction using '$CONFIG'."
-   meteor run --raw-logs --settings $CONFIG "$@"
+   meteor $CMD --raw-logs --settings $CONFIG $ARGS
 else
  if [ -f $DEVCONFIG ]; then
    echo "Starting Reaction using '$DEVCONFIG'."
-   meteor run --raw-logs --settings $DEVCONFIG "$@"
+   meteor $CMD --raw-logs --settings $DEVCONFIG $ARGS
  else
    echo "Starting Reaction."
-   meteor run --raw-logs "$@"
+   meteor $CMD --raw-logs $ARGS
  fi
 fi

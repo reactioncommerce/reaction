@@ -100,7 +100,7 @@
         <div class="panel-body">
           {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
             {{> afQuickField name='settings.openexchangerates.appId'}}
-            {{> afQuickField name='settings.openexchangerates.refreshPeriod'}}
+            {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
             {{> afQuickField name='settings.google.clientId'}}
             {{> afQuickField name='settings.google.apiKey'}}
             {{> shopSettingsSubmitButton}}

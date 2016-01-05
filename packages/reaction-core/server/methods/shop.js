@@ -154,10 +154,10 @@ Meteor.methods({
   },
 
   /**
-   * shop/fetchCurrencyRates
+   * shop/fetchCurrencyRate
    * @summary fetch the latest currency rates from
    * https://openexchangerates.org
-   * usage: Meteor.call("shop/fetchCurrencyRates")
+   * usage: Meteor.call("shop/fetchCurrencyRate")
    * @fires ReactionCore.Collections.Shops#update
    * @returns {undefined}
    */
@@ -189,56 +189,61 @@ Meteor.methods({
     // update Shops.currencies[currencyKey].rate
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id
-    if (!shopSettings.settings.openexchangerates.appId) {
+    if (!shopSettings.settings.openexchangerates) {
       throw new Meteor.Error("notConfigured",
-        "Open Exchange Rates AppId not configured. Configure for current rates.");
+        "Open Exchange Rates not configured. Configure for current rates.");
     } else {
-      // shop open exchange rates appId
-      const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
+      if (!shopSettings.settings.openexchangerates.appId) {
+        throw new Meteor.Error("notConfigured",
+          "Open Exchange Rates AppId not configured. Configure for current rates.");
+      } else {
+        // shop open exchange rates appId
+        const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
 
-      // we'll update all the available rates in Shops.currencies whenever we
-      // get a rate request, using base currency
-      const rateUrl = `https://openexchangerates.org/api/latest.json?base=${
-        baseCurrency}&app_id=${openexchangeratesAppId}`;
-      let rateResults;
+        // we'll update all the available rates in Shops.currencies whenever we
+        // get a rate request, using base currency
+        const rateUrl = `https://openexchangerates.org/api/latest.json?base=${
+          baseCurrency}&app_id=${openexchangeratesAppId}`;
+        let rateResults;
 
-      // We can get an error if we try to change the base currency with a simple
-      // account
-      try {
-        rateResults = HTTP.get(rateUrl);
-      } catch (error) {
-        if (error.error) {
-          ReactionCore.Log.error(error.message);
-          throw new Meteor.Error(error.message);
-        } else {
-          // https://openexchangerates.org/documentation#errors
-          throw new Meteor.Error(error.response.data.description);
+        // We can get an error if we try to change the base currency with a simple
+        // account
+        try {
+          rateResults = HTTP.get(rateUrl);
+        } catch (error) {
+          if (error.error) {
+            ReactionCore.Log.error(error.message);
+            throw new Meteor.Error(error.message);
+          } else {
+            // https://openexchangerates.org/documentation#errors
+            throw new Meteor.Error(error.response.data.description);
+          }
         }
+
+        const exchangeRates = rateResults.data.rates;
+
+        _.each(shopCurrencies, function (currencyConfig, currencyKey) {
+          if (exchangeRates[currencyKey] !== undefined) {
+            let rateUpdate = {
+              // this needed for shop/flushCurrencyRates Method
+              "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
+            };
+            let collectionKey = `currencies.${currencyKey}.rate`;
+            rateUpdate[collectionKey] = exchangeRates[currencyKey];
+            ReactionCore.Collections.Shops.update(shopId, {
+              $set: rateUpdate
+            });
+          }
+        });
       }
-
-      const exchangeRates = rateResults.data.rates;
-
-      _.each(shopCurrencies, function (currencyConfig, currencyKey) {
-        if (exchangeRates[currencyKey] !== undefined) {
-          let rateUpdate = {
-            // this needed for shop/flushCurrencyRates Method
-            "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
-          };
-          let collectionKey = `currencies.${currencyKey}.rate`;
-          rateUpdate[collectionKey] = exchangeRates[currencyKey];
-          ReactionCore.Collections.Shops.update(shopId, {
-            $set: rateUpdate
-          });
-        }
-      });
     }
   },
 
   /**
-   * shop/flushCurrencyRates
+   * shop/flushCurrencyRate
    * @description Method calls by cron job
    * @summary It removes exchange rates that are too old
-   * usage: Meteor.call("shop/flushCurrencyRates")
+   * usage: Meteor.call("shop/flushCurrencyRate")
    * @fires ReactionCore.Collections.Shops#update
    * @returns {undefined}
    */

@@ -1,0 +1,21 @@
+exclude_paths:
+- ".meteor/*"
+- "packages/reaction-core-theme/lib/*"
+- "packages/reaction-core/lib/*"
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - javascript
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+   paths:
+   - "**.js"
+   - "**.jsx"
+   - "**.css"
