@@ -47,6 +47,20 @@ Template.addressBookForm.helpers({
   },
   isShippingDefault: function () {
     return typeof this.address === "object" ? this.address.isShippingDefault : true;
+  },
+  hasAddressBookEntries: function () {
+    let account = ReactionCore.Collections.Accounts.findOne({
+      userId: Meteor.userId()
+    });
+    if (account) {
+      if (account.profile) {
+        if (account.profile.addressBook) {
+          return account.profile.addressBook.length > 0;
+        }
+      }
+    }
+
+    return false;
   }
 });
 
