@@ -168,7 +168,7 @@ describe("Publication", function () {
     const sessionId = ReactionCore.sessionId = Random.id();
 
     beforeEach(() => {
-      Meteor.call("cart/createCart", userId, shop._id);
+      Meteor.call("cart/createCart", sessionId);
     });
 
     it(
@@ -204,7 +204,7 @@ describe("Publication", function () {
             this.userId = userId;
             return originalCart.apply(this, arguments);
           });
-
+// fixme: fix args
         Meteor.call("cart/createCart", user2._id, shop._id);
 
         const cursor = Meteor.server.publish_handlers.Cart(sessionId);

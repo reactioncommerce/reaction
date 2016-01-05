@@ -54,10 +54,12 @@ Meteor.methods({
    *
    * @param {String} cartId - cartId of the cart to merge matching session
    * carts into.
-   * @return {Object} cartId - cartId on success
+   * @param {String} [currentSessionId] - current client session id
+   * @return {Object|Boolean} cartId - cartId on success or false
    */
-  "cart/mergeCart": function (cartId) {
+  "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
+    check(currentSessionId, Match.Optional(String));
 
     const { Cart } = ReactionCore.Collections; // convenience shorthand
     const { Log } = ReactionCore;
@@ -70,7 +72,10 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     // persistent sessions, see: publications/sessions.js
-    const sessionId = ReactionCore.sessionId;
+    // this is the last place where we still need `ReactionCore.sessionId`.
+    // The use case is: on user log in. I don't know how pass `sessionId` down
+    // at that moment.
+    const sessionId = currentSessionId || ReactionCore.sessionId;
     const shopId = ReactionCore.getShopId();
 
     // no need to merge anonymous carts
@@ -140,7 +145,7 @@ Meteor.methods({
         });
       }
       // cleanup session Carts after merge.
-      if (sessionCart.userId !== userId) {
+      if (sessionCart.userId !== this.userId) {
         // clear the cart that was used for a session
         // and we're also going to do some garbage Collection
         Cart.remove(sessionCart._id);
@@ -165,16 +170,17 @@ Meteor.methods({
   /**
    * cart/createCart
    * @summary create and return new cart for user
-   * @param {String} createForUserId - userId to create cart for
+   * @param {String} currentSessionId - current client session id
    * @returns {String} cartId - users cartId
    */
-  "cart/createCart": function (createForUserId) {
-    check(createForUserId, Match.Optional(String));
+  "cart/createCart": function (currentSessionId) {
+    check(currentSessionId, String);
     this.unblock();
 
+    // todo remove it completely
     let sessionId;
     const { Log } = ReactionCore;
-    const userId = createForUserId || this.userId;
+    const userId = this.userId;
     const shopId = ReactionCore.getShopId();
     let currentCartId;
 
@@ -186,11 +192,12 @@ Meteor.methods({
 
     if (currentUserCart) {
       Log.debug("currentUserCart", currentUserCart.sessionId);
+      // todo remove it completely
       sessionId = currentUserCart.session;
       // the cart is either current or new
       currentCartId = currentUserCart._id;
     } else {
-      sessionId = ReactionCore.sessionId;
+      sessionId = currentSessionId;
     }
     Log.debug("current cart serverSession", sessionId);
     // while anonymous and merge into user cart
@@ -227,7 +234,7 @@ Meteor.methods({
     if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
       Log.debug("create cart: found existing cart. merge into " + currentCartId
         + " for user " + userId);
-      Meteor.call("cart/mergeCart", currentCartId);
+      Meteor.call("cart/mergeCart", currentCartId, sessionId);
     } else if (!currentCartId) { // Create empty cart if there is none.
       currentCartId = ReactionCore.Collections.Cart.insert({
         sessionId: sessionId,
@@ -267,12 +274,13 @@ Meteor.methods({
     const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
       Log.warn(`Cart is not defined for user: ${ this.userId }`);
-      throw new Meteor.Error("not found", "Cart is not defined!");
+      throw new Meteor.Error(404, "Cart not found", "Cart is not defined!");
     }
     const product = ReactionCore.Collections.Products.findOne(productId);
     if (!product) {
       Log.warn(`Product: ${ productId } was not found in database`);
-      throw new Meteor.Error("not found", "Product is not defined!");
+      throw new Meteor.Error(404, "Product not found",
+        "Product is not defined!");
     }
     const variant = product.variants.find(function (currentVariant) {
       if (currentVariant._id === variantId) {
@@ -350,13 +358,18 @@ Meteor.methods({
    * @todo:  Partial order processing, shopId processing
    * @todo:  Review Security on this method
    * @param {String} cartId - cartId to transform to order
+   * @param {String} sessionId - current client session id. It is needed to
+   * create new cart within `cart/createCart` method
    * @return {String} returns orderId
    */
-  "cart/copyCartToOrder": (cartId) => {
+  "cart/copyCartToOrder": function (cartId, sessionId) {
     check(cartId, String);
+    check(sessionId, String);
+
     let cart = ReactionCore.Collections.Cart.findOne(cartId);
     let order = _.clone(cart);
     let user;
+    // todo add this.userId === cart.userId check here
     ReactionCore.Log.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
@@ -434,7 +447,7 @@ Meteor.methods({
     ReactionCore.Log.info("Created orderId", orderId);
 
     if (orderId) {
-      // TODO: check for succesful orders/inventoryAdjust
+      // TODO: check for successful orders/inventoryAdjust
       // Meteor.call("orders/inventoryAdjust", orderId);
       // trash the old cart
       ReactionCore.Collections.Cart.remove({
@@ -445,12 +458,13 @@ Meteor.methods({
       // subscription handler, it's not always working
       let newCartExists = ReactionCore.Collections.Cart.find(order.userId);
       if (newCartExists.count() === 0) {
-        Meteor.call("cart/createCart", order.userId);
+        Meteor.call("cart/createCart", sessionId);
       }
       // return
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
-      Meteor.call("orders/sendNotification", ReactionCore.Collections.Orders.findOne(orderId));
+      Meteor.call("orders/sendNotification",
+        ReactionCore.Collections.Orders.findOne(orderId));
       return orderId;
     }
     // we should not have made it here, throw error
@@ -680,10 +694,13 @@ Meteor.methods({
    * and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
    * @param {Object} paymentMethod - paymentMethod object
+   * @param {String} sessionId - current client session id. We don't use it
+   * directly within this method, just throw down though hooks
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethod) {
+  "cart/submitPayment": function (paymentMethod, sessionId) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+    check(sessionId, String);
 
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()

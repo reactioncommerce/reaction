@@ -51,11 +51,6 @@ describe("cart methods", function () {
       return done();
     });
 
-    //afterAll(done => {
-    //
-    //  done();
-    //});
-
     it( // this is a preparation stage for a next test
       "should be able to add product to cart for `anonymous`",
       () => {
@@ -217,54 +212,10 @@ describe("cart methods", function () {
         // now we try to merge two anonymous carts. We expect to see `false`
         // result
         expect(Meteor.call("cart/mergeCart", cartId)).toBeFalsy();
-//
+
         return done();
       }
     );
-
-    //it(
-    //  "should merge only into registered user cart. part 2",
-    //  done => {
-    //    spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
-    //      function () {
-    //        this.userId = anonymousTwoId;
-    //        return originalMergeCart.apply(this, arguments);
-    //      });
-    //    spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-    //      function () {
-    //        this.userId = anonymousTwoId;
-    //        return originalAddToCart.apply(this, arguments);
-    //      });
-    //    spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-    //    spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-    //
-    //    const cartId = Meteor.call("cart/createCart", anonymousTwoId);
-    //    expect(cartId).toBeDefined();
-    //
-    //    Meteor.call("cart/addToCart", product._id, variantId, quantity);
-    //    const cart = ReactionCore.Collections.Cart.findOne(cartId);
-    //    expect(cart.items.length).toBe(1);
-    //    expect(cart.items[0].quantity).toBe(1);
-    //    expect(cart.items[0].variants._id).toEqual(variantId);
-    //
-    //    // now we need to get the number of carts for this session
-    //    const carts = ReactionCore.Collections.Cart.find({
-    //      sessionId: {
-    //        $eq: cart.sessionId
-    //      }
-    //    }).count();
-    //    // we expect 3 carts: 2 from anon + 1 from registered
-    //    expect(carts).toBeGreaterThan(2);
-    //
-    //    // now we try to merge two anonymous carts. We expect to see `false`
-    //    // result
-    //    //expect(() => Meteor.call("cart/mergeCart", cartId)).toEqual(false);//toBeFalsy();
-    //    expect(function () {
-    //      return Meteor.call("cart/mergeCart", cartId);
-    //    }).toBeFalsy();
-    //    return done();
-    //  }
-    //);
 
     //it(
     //  "should ignore `normal` user carts from been merged",
@@ -274,7 +225,6 @@ describe("cart methods", function () {
     //);
     //
 
-    //
     //it(
     //  "should",
     //  done => {
@@ -301,6 +251,22 @@ describe("cart methods", function () {
       expect(cartId).toEqual(cart._id);
       done();
     });
+
+    //it(
+    //  "should call `cart/mergeCart` method if user have a cart",
+    //  done => {
+    //    spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+    //    spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+    //    spyOn(Meteor, "call"); //.and.callThrough();
+    //
+    //    Meteor.call("cart/createCart", userId);
+    //    expect(Meteor.call.calls.argsFor(0)).toEqual(["cart/createCart", userId]);
+    //    expect(Meteor.call.calls.argsFor(1)).toEqual(["cart/mergeCart", userId]);
+    //    expect(Meteor.call.calls.count()).toEqual(2);
+    //
+    //    return done();
+    //  }
+    //);
   });
 
   describe("cart items", function () {
@@ -403,12 +369,13 @@ describe("cart methods", function () {
     describe("cart/removeFromCart", function () {
       it("should remove item from cart", function (done) {
         spyOn(ReactionCore.Collections.Cart, "update");
+        spyOn(Meteor, "userId").and.returnValue(userId);
         const currentCart = Factory.create("cart");
         const cartId = currentCart._id;
 
         expect(currentCart.items[0]).toBeDefined();
         for (let cartItem of currentCart.items) {
-          Meteor.call("cart/removeFromCart", cartId, cartItem);
+          Meteor.call("cart/removeFromCart", cartItem._id);
         }
 
         let modifiedCart = ReactionCore.Collections.Cart.find({
@@ -418,6 +385,44 @@ describe("cart methods", function () {
         // expect(_.size(modifiedCart[0].items)).toEqual(0);
         done();
       });
+
+      it(
+        "should throw an exception when attempting to remove item from cart" +
+        "of another user",
+        done => {
+          const cart = Factory.create("cart");
+          const cart2 = Factory.create("cart");
+          const cartItemId = cart.items[0]._id;
+
+          spyOn(Meteor, "userId").and.returnValue(cart2.userId);
+          spyOn(Meteor, "call").and.callThrough();
+
+          expect(() => {
+            return Meteor.call("cart/removeFromCart", cartItemId);
+          }).toThrow(new Meteor.Error(404, "Cart item not found.",
+            "Unable to find an item with such id within you cart."));
+
+          return done();
+        }
+      );
+
+      it(
+        "should throw an exception when attempting to remove non-existing item",
+        done => {
+          const cart = Factory.create("cart");
+          const cartItemId = Random.id();
+
+          spyOn(Meteor, "userId").and.returnValue(cart.userId);
+          spyOn(Meteor, "call").and.callThrough();
+
+          expect(() => {
+            return Meteor.call("cart/removeFromCart", cartItemId);
+          }).toThrow(new Meteor.Error(404, "Cart item not found.",
+            "Unable to find an item with such id within you cart."));
+
+          return done();
+        }
+      );
     });
   });
 });

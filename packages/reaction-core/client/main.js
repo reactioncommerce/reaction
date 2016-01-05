@@ -260,7 +260,8 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
 
   Accounts.callLoginMethod({
     methodArguments: [{
-      anonymous: true
+      anonymous: true,
+      sessionId: Session.get("sessionId")
     }],
     userCallback: callback
   });

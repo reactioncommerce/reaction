@@ -29,11 +29,11 @@ Meteor.publish("Cart", function (sessionId, userId) {
   if (cart.count()) {
     // we could keep `sessionId` of normal user up to date from here, but with
     // current session logic we don't need this. That's why we just return
-    // cursor as is with whatever `sessioId`.
+    // cursor as is with whatever `sessionId`.
     return cart;
   }
   // we may create a cart if we didn't find one.
-  const cartId = Meteor.call("cart/createCart", this.userId);
+  const cartId = Meteor.call("cart/createCart", sessionId);
 
   return ReactionCore.Collections.Cart.find(cartId);
 });

@@ -107,9 +107,12 @@ Accounts.onLogin(function (options) {
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: options.user._id
     });
-    Meteor.call("cart/mergeCart", cart._id);
+    const currentSessionId = options.methodArguments &&
+      options.methodArguments.length === 1 &&
+      options.methodArguments[0].sessionId;
+    Meteor.call("cart/mergeCart", cart._id, currentSessionId);
 
-    // logged in users need an additonal worfklow push to get started with
+    // logged in users need an additional workflow push to get started with
     // checkoutLogin
     return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
       "checkoutLogin");
