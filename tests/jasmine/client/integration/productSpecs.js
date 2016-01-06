@@ -141,6 +141,24 @@ describe("Product", function () {
       expect(spyOnAddToCartEvent).toHaveBeenTriggered();
     });
 
+    it("should let the quantity for selected option be changed", function () {
+      let option1 = $(".variant-product-options .variant-select-option")[0];
+      let addToCartButton = $("#add-to-cart");
+      // let cartCount = $(".cart-icon .badge").text();
+
+      let spyOnOptionEvent = spyOnEvent(option1, "click");
+      let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
+
+      $("#add-to-cart-quantity").val(22);
+      $(option1).trigger("click");
+
+      expect("click").toHaveBeenTriggeredOn(option1);
+      expect(spyOnOptionEvent).toHaveBeenTriggered();
+
+      $(addToCartButton).trigger("click");
+      expect(spyOnAddToCartEvent).toHaveBeenTriggered();
+    });
+
     it("should throw an error if not enough quantity", function () {
       let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");

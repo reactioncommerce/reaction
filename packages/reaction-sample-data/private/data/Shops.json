@@ -72,10 +72,10 @@
       "symbol": "৳"
     },
     "BGN": {
-      "format": "%s%v",
-      "symbol": "лв",
-      "decimal": ",",
-      "thousand": "."
+      "format": "%v %s",
+      "symbol": "лв.",
+      "decimal": ".",
+      "thousand": "'"
     },
     "BHD": {
       "format": "%v %s",
@@ -383,6 +383,10 @@
     "i18n": "ar",
     "enabled": true
   }, {
+    "label": "Български",
+    "i18n": "bg",
+    "enabled": true
+  }, {
     "label": "中文(简体)",
     "i18n": "cn",
     "enabled": true
@@ -425,6 +429,10 @@
   }, {
     "label": "Nederlands",
     "i18n": "nl",
+    "enabled": true
+  }, {
+    "label": "Norsk bokmål",
+    "i18n": "nb",
     "enabled": true
   }, {
     "label": "Polski",
