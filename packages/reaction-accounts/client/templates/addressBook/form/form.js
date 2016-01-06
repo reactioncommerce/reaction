@@ -20,7 +20,7 @@ Template.addressBookForm.helpers({
   statesForCountry: function() {
     var locale, options, ref, selectedCountry, shop, state;
     shop = ReactionCore.Collections.Shops.findOne();
-    selectedCountry = Session.get('addressBookCountry' || AutoForm.getFieldValue('country'));
+    selectedCountry = Session.get('addressBookCountry') || AutoForm.getFieldValue('country');
     if (!selectedCountry) {
       return false;
     }
