@@ -127,11 +127,11 @@
         "processor": "Процессор",
         "filter": {
           "new": "Новых",
-          "captured": "Payment Captured",
-          "shipped": "Доставлено",
-          "completed": "Готово",
-          "canceled": "Отменено",
-          "refunded": "Возвращено"
+          "captured": "Оплаченных",
+          "shipped": "Доставленых",
+          "completed": "Завершенных",
+          "canceled": "Отмененных",
+          "refunded": "Возвращенных"
         }
       },
       "orderShipping": {
