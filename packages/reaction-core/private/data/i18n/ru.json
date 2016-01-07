@@ -7,10 +7,24 @@
         "select": "Выбрать язык"
       },
       "app": {
-        "save-and-continue": "Сохранить и продолжить",
+        "save": "Сохранить",
+        "saveAndContinue": "Сохранить и продолжить",
         "cancel": "Отменить",
         "submit": "Подтвердить",
-        "delete": "Удалить"
+        "delete": "Удалить",
+        "create": "Создать",
+        "close": "Закрыть",
+        "settings": "Настройки",
+        "loading": "Загрузка",
+        "toggle": "Переключить",
+        "warning": "Упс!",
+        "unauthorizedMessage": "Вы не имеете прав просматривать эти данные.",
+        "monthOptions": "Выберите месяц",
+        "yearOptions": "Выберите год",
+        "timezoneOptions": "Выберите часовой пояс",
+        "shopSettings": "Настройки магазина",
+        "dashboard": "Панель управления",
+        "print": "Распечатать"
       },
       "header": {
         "tagsAdd": "Добавить метку",
@@ -24,37 +38,54 @@
         "whenYouAreDone": "когда закончите редактирование.",
         "tags": "Метки",
         "tagsAdd": "Новая метка",
+        "addInventory": "Добавить позицию",
+        "barcode": "Штрих-код",
+        "confirmDeleteBarcode": "Вы уверены, что хотите удалить штрих-код",
         "details": "Детали",
         "detailsName": "Название характеристики",
         "detailsInfo": "Значение характеристики",
+        "generate": "Сгенерировать",
+        "generateBarcodes": "Сгенерировать штрих-коды",
+        "hideBarcodes": "Скрыть штрих-коды",
         "options": "Варианты",
         "addToCart": "Добавить в корзину",
         "chooseOptions": "Пожалуйста выберите вариант прежде чем добавить товар в корзину",
         "outOfStock": "Извините, этого товара нет в наличии",
         "productDeleteError": "Произошла ошибка во время удаления товара ",
         "publishFirst": "Опубликуйте товар прежде чем добавить в корзину.",
+        "quantityAbbreviation": "Кол-во",
         "selectOption": "Выберите вариант прежде чем добавить в корзину",
         "addedToCart": "добавлено",
+        "showBarcodes": "Показать штрих-коды",
+        "soldOut": "Продано!",
+        "backOrder": "Заказ",
+        "limitedSupply": "Ограниченное кол-во",
+        "publishProductVisible": "теперь виден",
+        "publishProductHidden": "теперь скрыт",
+        "startTracking": "Начать трэкинг",
+        "addBarcode": "Добавить штрих-код",
+        "quantity": "Количество",
+        "quantityGreaterThanZero": "Ошибка: количество должно быть больше нуля",
         "dropFile": "Перетащите фото для загрузки"
       },
       "productDetailEdit": {
         "title": "Название",
         "pageTitle": "Другое название",
         "vendor": "Производитель",
-        "description": "Добавьте описание товара"
-      },
-      "productVariant": {
-        "inventoryQuantity": "Количество",
-        "title": "Название",
-        "price": "Цена",
-        "optionTitle": "Опция",
-        "barcode": "Штрих-код",
-        "compareAtPrice": "Цена(MSRP)",
-        "fulfillmentService": "Обслуживание услуги",
-        "weight": "Вес",
-        "inventoryManagement": "Следить за кол-вом",
-        "inventoryPolicy": "Откл. при нуле",
-        "lowInventoryWarningThreshold": "Сообщить если меньше "
+        "description": "Добавьте описание товара",
+        "facebookMsg": "Сообщение Facebook",
+        "twitterMsg": "Сообщение Twitter",
+        "pinterestMsg": "Сообщение Pinterest",
+        "googleplusMsg": "Сообщение Google+",
+        "duplicateVariant": "Скопировать",
+        "addVariantOption": "Добавить опцию",
+        "removeVariant": "Удалить опцию",
+        "duplicateProduct": "Скопировать товар",
+        "pinProduct": "Закрепить товар",
+        "toggleSize": "Переключить размер",
+        "deleteProduct": "Удалить товар",
+        "publish": "Опубликовать",
+        "moreOptions": "Больше опций"
       },
       "variantList": {
         "moreOptions": "Есть еще варианты доступные для этого выбора.",
@@ -80,19 +111,87 @@
       "cartDrawerItems": {
         "left": "слева"
       },
+      "order": {
+        "created": "Создан",
+        "reference": "Референс",
+        "invoice": "Инвойс",
+        "ordersNotFound": "Не найдено заказов",
+        "approveInvoice": "Подтвердить",
+        "makeAdjustments": "Корректировать",
+        "capturePayment": "Найти платеж",
+        "paymentCaptured": "Платеж найден",
+        "capturedTotal": "Найдено всего",
+        "refundAmount": "Вернуть сумму",
+        "applyRefund": "Подтвердить возврат",
+        "adjustedTotal": "Корректировано всего",
+        "processor": "Процессор",
+        "filter": {
+          "new": "Новых",
+          "captured": "Payment Captured",
+          "shipped": "Доставлено",
+          "completed": "Готово",
+          "canceled": "Отменено",
+          "refunded": "Возвращено"
+        }
+      },
+      "orderShipping": {
+        "shipTo": "Доставить",
+        "shipped": "Доставлено",
+        "notShipped": "Еще не доставлено",
+        "noTracking": "Без трэкинга",
+        "tracking": "Трэкинг",
+        "addtracking": "Добавить трэкинг",
+        "shipmentEmpty": "Эта доставка не содержит товаров",
+        "shipmentPacked": "Все товары запакованы",
+        "shipped": "Доставлено",
+        "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
+        "resendNotification": "Отправить уведомление о доставке еще раз"
+      },
+      "cartCompleted": {
+        "thankYou": "Спасибо!",
+        "itemsFrom": "товары из",
+        "yourOrderIsNow": "Ваш заказ сейчас",
+        "summaryMessage": "Спасибо за ваш заказ.",
+        "submitted": "submitted",
+        "registerGuest": "Привет! Добавьте email для получения обновлений заказа.",
+        "trackYourDelivery": "Обновления заказа будут высланы на",
+        "noOrdersFound": "Заказов не найдено.",
+        "adminMessage": "Вы просматриваете заказы как администратор"
+      },
       "checkoutLogin": {
+        "welcome": "Добро пожаловать, очень приятно видеть вас!",
         "loginCompleted": "Вход выполнен",
-        "create-or-login": "Создайте личный кабинет или авторизируйтесь чтобы продолжить"
+        "createOrLogin": "Создайте аккаунт или авторизируйтесь чтобы продолжить",
+        "guestOrLogin": "Войдите или завершите заказ как гость",
+        "continueAsGuest": "Продолжите как гость",
+        "guestMessage": "Вы можете завершить заказ без создания аккаунт и создать его позднее."
       },
       "addressBookGrid": {
+        "addAddress": "Добавить адрес",
         "chooseAddress": "Выбрать адрес доставки и адрес плательщика",
         "createDefault": "Создать адрес по умолчанию",
-        "selectShipping-address": "Выбрать адрес доставки",
-        "selectBilling-address": "Выбрать адрес плательщика"
+        "selectShippingAddress": "Выбрать адрес доставки",
+        "selectBillingAddress": "Выбрать адрес плательщика"
       },
       "addressBookAdd": {
         "addAddress": "Добавить адрес",
         "createAddress": "Добавить адрес по умолчанию"
+      },
+      "addressBookEdit": {
+        "editAddress": "Редактировать этот адрес"
+      },
+      "address": {
+        "country": "Страна",
+        "fullName": "Полное имя",
+        "address1": "Адрес",
+        "address2": "Адрес",
+        "postal": "Индекс",
+        "city": "Город",
+        "region": "Регион",
+        "phone": "Телефон",
+        "isShippingDefault": "Сделать этот адрес вашим адресом по умолчанию?",
+        "isBillingDefault": "Сделать этот адрес вашим адресом платежа?",
+        "isCommercial": "Это не коммерческий адрес."
       },
       "checkoutProgressBar": {
         "login": "Авторизация",
@@ -100,6 +199,29 @@
         "shippingOptions": "Варианты доставки",
         "reviewPayment": "Подтверждение и Оплата",
         "complete": "Готово"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Выполните платеж и завершите заказ",
+        "processingError": "Произошла ошибка с вашим платежом.",
+        "completeYourOrder": "Завершить ваш заказ"
+      },
+      "checkoutReview": {
+        "review": "Проверить"
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Выберите вариант доставки",
+        "noShippingMethods": "Не указан ни один варинт доставки.",
+        "configureNow": "Укажите сейчас.",
+        "shipping": "Доставка"
+      },
+      "shopEditForm": {
+        "name": "Имя",
+        "email": "Email"
+      },
+      "shopEditAdressForm": {
+        "company": "Компания",
+        "fullname": "Полное имя",
+        "address1": "Адресс 1"
       },
       "consoleIcon": {
         "iconTitle": "Показать панель",
@@ -109,13 +231,24 @@
         "iconTitle": "Добавить товар",
         "text": "Добавить"
       },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
+      },
       "accountsUI": {
+        "members": "Участники",
+        "guest": "Гость",
+        "addMember": "Добавить участника",
         "add": "добавить",
         "and": "и",
         "back": "назад",
         "changePassword": "Сменить пароль",
         "choosePassword": "Придумайте пароль",
-        "clickAgree": "Нажав на Регистрация вы соглашаетесь с условиями",
+        "clickAgree": "Нажав Регистрация вы соглашаетесь с условиями",
         "configure": "Конфигурировать",
         "createAccount": "Создать аккаунт",
         "currentPassword": "Текущий пароль",
@@ -137,26 +270,37 @@
         "setPassword": "Установить пароль",
         "sign": "Подпись",
         "signIn": "Войти",
-        "signedIn": "Вы уже вошли",
         "signin": "войти",
+        "signInWith": "войти с",
+        "signUpWith": "зарегистрироваться с",
+        "signedIn": "Вы уже вошли",
         "signOut": "Выйти",
         "signUp": "Регистрация",
         "signupCode": "Регистрационный код",
         "signUpWithYourEmailAddress": "Зарегистрируйтесь с вашим email адресом",
         "terms": "Условиями пользования",
         "updateYourPassword": "Обновить пароль",
+        "updatePasswordAndContinue": "Обновить и продолжить",
         "username": "Имя пользователя",
         "usernameOrEmail": "Имя пользователя или email",
         "with": "с",
+        "checkoutAsGuest": "Оформить заказ без создания аккаунта",
+        "role": "Роль",
         "info": {
           "emailSent": "Email отправлен",
           "emailVerified": "Email прошел проверку",
           "passwordChanged": "Пароль изменен",
-          "passwordReset": "Пароль сброшен"
+          "passwordReset": "Пароль сброшен",
+          "passwordResetSend": "Email со сбросом пароля отправлен.",
+          "invitationSent": "Приглашение отправлено",
+          "sendInvitation": "Отправить приглашение"
         },
         "error": {
-          "emailRequired": "Email обязательно.",
-          "minChar": "Минимальное кол-во символов для пароля 7.",
+          "emailRequired": "Email обязателен.",
+          "passwordRequired": "Пароль обязателен.",
+          "passwordMustBeAtLeast6CharactersLong": "Пароль должен быть не короче 6 символов.",
+          "passwordMustContainRequirements": "Пароль должен содержать хотя бы одну цифру или символ",
+          "minChar": "Минимальное кол-во символов для пароля 6.",
           "pwdsDontMatch": "Пароли не совпадают",
           "pwOneDigit": "В пароле должна быть хотя бы одна цифра.",
           "pwOneLetter": "В пароле должна быть хотя бы одна буква.",
@@ -180,6 +324,7 @@
           "passwordIsOld": "Пароль устарел. Пожалуйста сбросьте Ваш пароль.",
           "incorrectPassword": "Неправильный пароль",
           "invalidEmail": "Несуществующий Email",
+          "addressMustBeAValidEMailAddress": "Несуществующий Email",
           "mustBeLoggedIn": "Необходимо войти",
           "needToSetUsernameOrEmail": "Необходимо имя пользователя или email",
           "oldPasswordFormat": "старый формат пароля",
