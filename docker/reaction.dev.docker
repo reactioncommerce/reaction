@@ -20,7 +20,7 @@
 #     -e REACTION_USER="admin" \
 #     -e REACTION_AUTH="password" \
 #     -t ongoworks/reaction
-#
+#     -v /your/reaction/source/outside/docker/container:/var/www/src
 #
 #   Optional Meteor parameters (-e):
 #
