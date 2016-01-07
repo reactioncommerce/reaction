@@ -1,7 +1,8 @@
 {
   "scripts": {
     "reaction": "./reaction",
-    "reaction reset": "meteor reset && ./reaction",
-    "reaction clean": "./bin/reset.sh"
+    "reaction reset": "./reaction reset",
+    "reaction pull": "./reaction pull",
+    "reaction install": "./reaction install"
   }
 }
