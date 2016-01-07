@@ -162,13 +162,13 @@
         "welcome": "Добро пожаловать, очень приятно видеть вас!",
         "loginCompleted": "Вход выполнен",
         "createOrLogin": "Создайте аккаунт или авторизируйтесь чтобы продолжить",
-        "guestOrLogin": "Войдите или завершите заказ как гость",
-        "continueAsGuest": "Продолжите как гость",
+        "guestOrLogin": "Войдите или продолжите оформление заказа как гость",
+        "continueAsGuest": "Продолжить как гость",
         "guestMessage": "Вы можете завершить заказ без создания аккаунт и создать его позднее."
       },
       "addressBookGrid": {
         "addAddress": "Добавить адрес",
-        "chooseAddress": "Выбрать адрес доставки и адрес плательщика",
+        "chooseAddress": "Выберите адреса доставки и плательщика",
         "createDefault": "Создать адрес по умолчанию",
         "selectShippingAddress": "Выбрать адрес доставки",
         "selectBillingAddress": "Выбрать адрес плательщика"
@@ -183,34 +183,36 @@
       "address": {
         "country": "Страна",
         "fullName": "Полное имя",
-        "address1": "Адрес",
-        "address2": "Адрес",
+        "address1": "Адрес 1",
+        "address2": "Адрес 2",
         "postal": "Индекс",
         "city": "Город",
         "region": "Регион",
         "phone": "Телефон",
         "isShippingDefault": "Сделать этот адрес вашим адресом по умолчанию?",
-        "isBillingDefault": "Сделать этот адрес вашим адресом платежа?",
+        "isBillingDefault": "Сделать этот адрес вашим адресом плательщика?",
         "isCommercial": "Это не коммерческий адрес."
       },
       "checkoutProgressBar": {
         "login": "Авторизация",
-        "shippingBilling": "Доставки и оплата",
+        "shippingBilling": "Доставка и оплата",
         "shippingOptions": "Варианты доставки",
-        "reviewPayment": "Подтверждение и Оплата",
-        "complete": "Готово"
+        "reviewPayment": "Подтверждение и оплата",
+        "complete": "Завершение"
       },
       "checkoutPayment": {
         "addPaymentToCompleteOrder": "Выполните платеж и завершите заказ",
         "processingError": "Произошла ошибка с вашим платежом.",
-        "completeYourOrder": "Завершить ваш заказ"
+        "completeYourOrder": "Завершить ваш заказ",
+        "noPaymentMethods": "Не указан ни один вариант платежа.",
+        "configureNow": "Укажите сейчас."
       },
       "checkoutReview": {
-        "review": "Проверить"
+        "review": "Проверьте товары и сумму"
       },
       "checkoutShipping": {
         "selectShippingOption": "Выберите вариант доставки",
-        "noShippingMethods": "Не указан ни один варинт доставки.",
+        "noShippingMethods": "Не указан ни один вариант доставки.",
         "configureNow": "Укажите сейчас.",
         "shipping": "Доставка"
       },
