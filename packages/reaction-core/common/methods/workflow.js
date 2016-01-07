@@ -246,6 +246,8 @@ Meteor.methods({
     check(order, Object); // TODO: Validatate as ReactionCore.Schemas.Order
     this.unblock();
 
+    const workflowStatus = `${workflow}/${status}`;
+
     const result = ReactionCore.Collections.Orders.update({
       _id: order._id
     }, {
@@ -255,7 +257,7 @@ Meteor.methods({
         "workflow.status": `${workflow}/${status}`
       },
       $addToSet: {
-        "workflow.workflow": order.workflow.status
+        "workflow.workflow": workflowStatus
       }
     });
 

@@ -29,7 +29,7 @@ Meteor.methods({
       return item._id;
     });
 
-    Meteor.call("workflow/pushItemWorkflow", "tracking", order._id, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/tracking", order._id, itemIds);
   },
 
   // shipmentPrepare
@@ -73,7 +73,7 @@ Meteor.methods({
         return item._id;
       });
 
-      Meteor.call("workflow/pushItemWorkflow", "shipped", order, itemIds);
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     }
   },
 
@@ -148,7 +148,7 @@ Meteor.methods({
           return item._id;
         });
 
-        Meteor.call("workflow/pushItemWorkflow", "captured", order, itemIds);
+        Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
 
         return this.processPayment(order);
@@ -176,7 +176,18 @@ Meteor.methods({
         return item._id;
       });
 
-      Meteor.call("workflow/pushItemWorkflow", "shipped", order, itemIds);
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds, (error) => {
+        // Move to completed status for items
+        // TODO: In the future, this could be handled by shipping delivery status
+        if (!error) {
+          Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds, (error2) => {
+            // Then try to mark order as completed.
+            if (!error2) {
+              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
+            }
+          });
+        }
+      });
     }
   },
 
@@ -201,8 +212,8 @@ Meteor.methods({
         return item._id;
       });
 
-      Meteor.call("workflow/pushItemWorkflow", "delivered", order._id, itemIds);
-      Meteor.call("workflow/pushItemWorkflow", "completed", order._id, itemIds);
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
 
       const isCompleted = _.every(order.items, (item) => {
         return _.contains(item.workflow.workflow, "completed");
@@ -506,7 +517,7 @@ Meteor.methods({
       return item._id;
     });
 
-    Meteor.call("workflow/pushItemWorkflow", "captured", order, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
     // process order..payment.paymentMethod
     _.each(order.billing, function (billing) {

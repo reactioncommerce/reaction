@@ -1,8 +1,8 @@
 
 const orderFilters = [
   {name: "new", label: "New"},
-  {name: "processing", label: "processing"},
-  {name: "shipped", label: "Shipped"},
+  {name: "processing", label: "Processing"},
+  // {name: "shipped", label: "Shipped"},
   {name: "completed", label: "Completed"},
   // {name: "canceled", label: "Canceled"},
   // {name: "refunded", label: "Refunded"}
@@ -20,25 +20,27 @@ const OrderHelper = {
       };
       break;
 
-    // Orders that have been shipped
+    // Orders that have yet to be captured & shipped
     case "processing":
       query = {
-        "workflow.status": "coreOrderWorkflow/processing",
-        "items.workflow.status": {$ne: "shipped"}
+        "workflow.status": "coreOrderWorkflow/processing"
       };
       break;
 
-    // Orders that have been shipped
+    // Orders that have been shipped, based on if the items have been shipped
     case "shipped":
       query = {
-        "items.workflow.status": "shipped"
+        "items.workflow.status": "coreOrderItemWorkflow/shipped"
       };
       break;
 
-    // Orders that have been both captured & shipped, meaning it is complete
+    // Orders that are complete, including all items with complete status
     case "completed":
       query = {
-        "workflow.status": "coreOrderCompleted"
+        "workflow.status": "coreOrderWorkflow/completed",
+        "items.workflow.workflow": {
+          $in: ["coreOrderItemWorkflow/completed"]
+        }
       };
       break;
 

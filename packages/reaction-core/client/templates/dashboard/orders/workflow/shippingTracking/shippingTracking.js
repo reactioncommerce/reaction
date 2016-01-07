@@ -67,8 +67,6 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    console.log("isShipped", currentData, order);
-
     const shippedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
       const fullItem = _.find(order.items, (orderItem) => {
         if (orderItem._id === shipmentItem._id) {
@@ -76,12 +74,27 @@ Template.coreOrderShippingTracking.helpers({
         }
       });
 
-      return _.contains(fullItem.workflow.workflow, "shipped") || fullItem.workflow === "shipped";
+      return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
     });
 
-    console.log("Is every item shipped", shippedItems);
+    return shippedItems;
+  },
 
-    return shippedItems
+  isCompleted() {
+    const currentData = Template.currentData();
+    const order = Template.instance().order;
+
+    const completedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+      const fullItem = _.find(order.items, (orderItem) => {
+        if (orderItem._id === shipmentItem._id) {
+          return true;
+        }
+      });
+
+      return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+    });
+
+    return completedItems;
   },
 
   editTracking() {

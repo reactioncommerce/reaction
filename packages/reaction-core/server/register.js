@@ -175,5 +175,25 @@ ReactionCore.registerPackage({
     label: "Shipment Tracking",
     workflow: "coreOrderShipmentWorkflow",
     audience: ["dashboard/orders"]
+  }, { // Standard Order Item workflow
+    label: "Inventory Adjust",
+    workflow: "coreOrderItemWorkflow",
+    status: "inventoryAdjusted",
+    audience: ["dashboard/orders"]
+  }, {
+    label: "Item Payment Captured",
+    workflow: "coreOrderItemWorkflow",
+    status: "captured",
+    audience: ["dashboard/orders"]
+  }, {
+    label: "Item Ship",
+    workflow: "coreOrderItemWorkflow",
+    status: "shipped",
+    audience: ["dashboard/orders"]
+  }, {
+    label: "Item Delivered",
+    workflow: "coreOrderItemWorkflow",
+    status: "completed",
+    audience: ["dashboard/orders"]
   }]
 });
