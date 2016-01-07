@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "reaction": "meteor --raw-logs --settings settings/dev.settings.json",
-    "reaction reset": "meteor reset && meteor --raw-logs --settings settings/dev.settings.json",
+    "reaction": "./reaction",
+    "reaction reset": "meteor reset && ./reaction",
     "reaction clean": "./bin/reset.sh"
   }
 }
