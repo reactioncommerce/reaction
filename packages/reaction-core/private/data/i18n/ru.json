@@ -9,6 +9,7 @@
       "app": {
         "save": "Сохранить",
         "saveAndContinue": "Сохранить и продолжить",
+        "saveChanges": "Сохранить изменения",
         "cancel": "Отменить",
         "submit": "Подтвердить",
         "delete": "Удалить",
@@ -25,6 +26,13 @@
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
         "print": "Распечатать"
+      },
+      "shopSettings": {
+        "general": "Основные",
+        "address": "Адрес",
+        "mail": "Почта",
+        "localization": "Локализация",
+        "options": "Настройки"
       },
       "header": {
         "tagsAdd": "Добавить метку",

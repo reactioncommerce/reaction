@@ -9,6 +9,7 @@
       "app": {
         "save": "Save",
         "saveAndContinue": "Save and continue",
+        "saveChanges": "Save Changes",
         "cancel": "Cancel",
         "submit": "Submit",
         "delete": "Delete",
@@ -25,6 +26,13 @@
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
         "print": "Print"
+      },
+      "shopSettings": {
+        "general": "General",
+        "address": "Address",
+        "mail": "Mail",
+        "localization": "Localization",
+        "options": "Options"
       },
       "header": {
         "tagsAdd": "Add tag",
