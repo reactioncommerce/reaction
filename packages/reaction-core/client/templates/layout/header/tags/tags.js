@@ -25,7 +25,7 @@ $(document).mouseup(function (e) {
 });
 
 
-
+const {Tags} = ReactionCore.Collections;
 
 const TagComponent = ReactionUI.Components.Tag;
 
@@ -101,7 +101,7 @@ Template.headerTags.helpers({
     //
     // }
 
-    tags = Tags.find({
+    tags = ReactionCore.Collections.Tags.find({
       isTopLevel: true
     }, {
       sort: {
@@ -321,7 +321,7 @@ Template.headerLinks.helpers({
 
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
-      const tags = Tags.find({
+      const tags = ReactionCore.Collections.Tags.find({
         isTopLevel: false,
         _id: {
           $in: parentTag.relatedTagIds
@@ -356,7 +356,7 @@ Template.relatedTags.events({
 Template.relatedTags.helpers({
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
-      const tags = Tags.find({
+      const tags = ReactionCore.Collections.Tags.find({
         isTopLevel: false,
         _id: {
           $in: parentTag.relatedTagIds
@@ -377,7 +377,7 @@ Template.relatedTags.helpers({
 Template.relatedTagsForm.helpers({
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
-      const tags = Tags.find({
+      const tags = ReactionCore.Collections.Tags.find({
         isTopLevel: false,
         _id: {
           $in: parentTag.relatedTagIds
@@ -532,7 +532,7 @@ Template.tagInputForm.onRendered(function () {
       });
       let _results = [];
       for (let tag of uiPositions) {
-        _results.push(Tags.update(tag, {
+        _results.push(ReactionCore.Collections.Tags.update(tag, {
           $set: {
             position: _.indexOf(uiPositions, tag)
           }
