@@ -1,16 +1,14 @@
-# Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Code Climate](https://codeclimate.com/github/reactioncommerce/reaction/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Reaction [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Code Climate](https://codeclimate.com/repos/567089bf2f400828770006a6/badges/3a15e1b3cd1a4c546957/gpa.svg)](https://codeclimate.com/repos/567089bf2f400828770006a6/feed) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Reaction is a modern reactive, real-time event driven ecommerce platform.
 
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
-See: [Atmosphere Packages for Reaction](https://atmospherejs.com/?q=reaction)
-
 ## Status
-- 0.9.0 Master (beta 1)
-- 0.10.0 Development
-- 0.11.0 Next Stable Release
+- 0.10.1 Master
+- 0.11.0 Development (0.10.0 stability iteration)
+- 0.12.0 New feature releases
 
-Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We do not recommend using for production usage yet, unless you are very comfortable with the code, and aren't risk averse. There are still many parts in development!
+Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
 
 ## Installation
 
@@ -24,10 +22,12 @@ To install Meteor + Reaction, and start the latest release:
 curl https://install.meteor.com | /bin/sh
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction && git checkout master # default branch is development
-reaction
+./reaction
 ```
 
 Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
+
+_Note: When using a standalone MongoDB server, make sure you are using version 2.6 or later._
 
 _Note: for windows installation you also need:_
 - OpenSSL x86 ([windows installer](https://slproweb.com/products/Win32OpenSSL.html))
@@ -44,7 +44,10 @@ If you want to use shell scripts under Windows:
 - bin/clone-packages.sh
 - bin/reset
 
-Reaction Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
+## Packages
+ Atmosphere [Meteor Packages for Reaction](https://atmospherejs.com/?q=reaction)
+
+Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
 
 ## Roadmap
 As with all development, some items are ahead of schedule, and some are not. Here's how to get the details:

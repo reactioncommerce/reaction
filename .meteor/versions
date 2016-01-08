@@ -7,9 +7,9 @@ accounts-password@1.1.4
 accounts-twitter@1.0.6
 accounts-weibo@1.0.6
 alanning:roles@1.2.14
-aldeed:autoform@5.8.0
-aldeed:collection2@2.6.0
-aldeed:simple-schema@1.5.0
+aldeed:autoform@5.8.1
+aldeed:collection2@2.6.1
+aldeed:simple-schema@1.5.1
 aldeed:template-extension@4.0.0
 amplify@1.0.0
 audit-argument-checks@1.0.4
@@ -51,7 +51,7 @@ cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.1.0
 coffeescript@1.0.11
-cosmos:browserify@0.9.2
+cosmos:browserify@0.9.3
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.2
@@ -136,7 +136,7 @@ react-runtime@0.14.1_1
 react-runtime-dev@0.14.1
 react-runtime-prod@0.14.1
 react-template-helper@0.2.3
-reactioncommerce:core@0.10.0
+reactioncommerce:core@0.10.2
 reactioncommerce:core-theme@2.0.0
 reactioncommerce:default-theme@1.0.0
 reactioncommerce:launchdock-connect@0.1.2
@@ -146,7 +146,7 @@ reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-collections@1.0.2
 reactioncommerce:reaction-email-templates@0.1.0
 reactioncommerce:reaction-inventory@0.2.0
-reactioncommerce:reaction-paypal@1.2.5
+reactioncommerce:reaction-paypal@1.2.6
 reactioncommerce:reaction-sample-data@0.1.0
 reactioncommerce:reaction-schemas@1.0.2
 reactioncommerce:reaction-shipping@0.6.1

@@ -129,20 +129,53 @@ Meteor.methods({
     return false;
   },
 
-  /*
-   * add new addresses to an account
+  /**
+   * accounts/addressBookAdd
+   * @description add new addresses to an account
+   * @param {Object} address - address
+   * @param {String} [accountUserId] - `account.userId` used by admin to edit
+   * users
+   * @return {Object} with keys `numberAffected` and `insertedId` if doc was
+   * inserted
    */
-  "accounts/addressBookAdd": function (doc, accountId) {
-    check(doc, ReactionCore.Schemas.Address);
-    check(accountId, String);
+  "accounts/addressBookAdd": function (address, accountUserId) {
+    check(address, ReactionCore.Schemas.Address);
+    check(accountUserId, Match.Optional(String));
+    // security, check for admin access. We don't need to check every user call
+    // here because we are calling `Meteor.userId` from within this Method.
+    if (typeof accountUserId === "string") { // if this will not be a String -
+      // `check` will not pass it.
+      if (!ReactionCore.hasAdminAccess()) {
+        throw new Meteor.Error(403, "Access denied");
+      }
+    }
     this.unblock();
 
-    ReactionCore.Schemas.Address.clean(doc);
-    if (doc.isShippingDefault || doc.isBillingDefault) {
-      if (doc.isShippingDefault) {
+    const userId = accountUserId || Meteor.userId();
+    // required default id
+    if (!address._id) {
+      address._id = Random.id();
+    }
+    // clean schema
+    ReactionCore.Schemas.Address.clean(address);
+    // if address got shippment or billing default, we need to update cart
+    // addresses accordingly
+    if (address.isShippingDefault || address.isBillingDefault) {
+      const cart = ReactionCore.Collections.Cart.findOne({ userId: userId });
+      // if cart exists
+      // First amend the cart,
+      if (typeof cart === "object") {
+        if (address.isShippingDefault) {
+          Meteor.call("cart/setShipmentAddress", cart._id, address);
+        }
+        if (address.isBillingDefault) {
+          Meteor.call("cart/setPaymentAddress", cart._id, address);
+        }
+      }
+      // then change the address that has been affected
+      if (address.isShippingDefault) {
         ReactionCore.Collections.Accounts.update({
-          "_id": accountId,
-          "userId": accountId,
+          "userId": userId,
           "profile.addressBook.isShippingDefault": true
         }, {
           $set: {
@@ -150,10 +183,9 @@ Meteor.methods({
           }
         });
       }
-      if (doc.isBillingDefault) {
+      if (address.isBillingDefault) {
         ReactionCore.Collections.Accounts.update({
-          "_id": accountId,
-          "userId": accountId,
+          "userId": userId,
           "profile.addressBook.isBillingDefault": true
         }, {
           $set: {
@@ -162,77 +194,147 @@ Meteor.methods({
         });
       }
     }
-    ReactionCore.Collections.Accounts.upsert(accountId, {
-      $set: {
-        userId: accountId
-      },
-      $addToSet: {
-        "profile.addressBook": doc
-      }
-    });
-    return doc;
-  },
 
-  /*
-   * update existing address in user's profile
-   */
-  "accounts/addressBookUpdate": function (doc, accountId) {
-    check(doc, ReactionCore.Schemas.Address);
-    check(accountId, String);
-    this.unblock();
-
-    if (doc.isShippingDefault || doc.isBillingDefault) {
-      if (doc.isShippingDefault) {
-        ReactionCore.Collections.Accounts.update({
-          "_id": accountId,
-          "profile.addressBook.isShippingDefault": true
-        }, {
-          $set: {
-            "profile.addressBook.$.isShippingDefault": false
-          }
-        });
-      }
-      if (doc.isBillingDefault) {
-        ReactionCore.Collections.Accounts.update({
-          "_id": accountId,
-          "profile.addressBook.isBillingDefault": true
-        }, {
-          $set: {
-            "profile.addressBook.$.isBillingDefault": false
-          }
-        });
-      }
-    }
-    ReactionCore.Collections.Accounts.update({
-      "_id": accountId,
-      "profile.addressBook._id": doc._id
+    return ReactionCore.Collections.Accounts.upsert({
+      userId: userId
     }, {
       $set: {
-        "profile.addressBook.$": doc
+        userId: userId
+      },
+      $addToSet: {
+        "profile.addressBook": address
       }
     });
-    return doc;
   },
 
-  /*
-   * remove existing address in user's profile
+  /**
+   * accounts/addressBookUpdate
+   * @description update existing address in user's profile
+   * @param {Object} address - address
+   * @param {String|null} [accountUserId] - `account.userId` used by admin to
+   * edit users
+   * @param {shipping|billing} [type] - name of selected address type
+   * @return {Number} The number of affected documents
    */
-  "accounts/addressBookRemove": function (doc, accountId) {
-    check(doc, ReactionCore.Schemas.Address);
-    check(accountId, String);
+  "accounts/addressBookUpdate": function (address, accountUserId, type) {
+    check(address, ReactionCore.Schemas.Address);
+    check(accountUserId, Match.OneOf(String, null, undefined));
+    check(type, Match.Optional(String));
+    // security, check for admin access. We don't need to check every user call
+    // here because we are calling `Meteor.userId` from within this Method.
+    if (typeof accountUserId === "string") { // if this will not be a String -
+      // `check` will not pass it.
+      if (!ReactionCore.hasAdminAccess()) {
+        throw new Meteor.Error(403, "Access denied");
+      }
+    }
     this.unblock();
 
-    ReactionCore.Collections.Accounts.update({
-      "_id": accountId,
-      "profile.addressBook._id": doc._id
+    const userId = accountUserId || Meteor.userId();
+    // we need to compare old state of isShippingDefault, isBillingDefault with
+    // new state and if it was enabled/disabled reflect this changes in cart
+    const account = ReactionCore.Collections.Accounts.findOne({
+      userId: userId
+    });
+    const oldAddress = account.profile.addressBook.find(function (addr) {
+      return addr._id === address._id;
+    });
+
+    // happens when the user clicked the address in grid. We need to set type
+    // to `true`
+    if (typeof type === "string") {
+      Object.assign(address, { [type]: true });
+    }
+
+    if (oldAddress.isShippingDefault !== address.isShippingDefault ||
+      oldAddress.isBillingDefault !== address.isBillingDefault) {
+      const cart = ReactionCore.Collections.Cart.findOne({ userId: userId });
+      // Cart should exist to this moment, so we doesn't need to to verify its
+      // existence.
+      if (oldAddress.isShippingDefault !== address.isShippingDefault) {
+        // if isShippingDefault was changed and now it is `true`
+        if (address.isShippingDefault) {
+          // we need to add this address to cart
+          Meteor.call("cart/setShipmentAddress", cart._id, address);
+          // then, if another address was `ShippingDefault`, we need to unset it
+          ReactionCore.Collections.Accounts.update({
+            "userId": userId,
+            "profile.addressBook.isShippingDefault": true
+          }, {
+            $set: {
+              "profile.addressBook.$.isShippingDefault": false
+            }
+          });
+        } else {
+          // if new `isShippingDefault` state is false, then we need to remove
+          // this address from `cart.shipping`
+          Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
+        }
+      }
+
+      // the same logic used for billing
+      if (oldAddress.isBillingDefault !== address.isBillingDefault) {
+        if (address.isBillingDefault) {
+          Meteor.call("cart/setPaymentAddress", cart._id, address);
+          ReactionCore.Collections.Accounts.update({
+            "userId": userId,
+            "profile.addressBook.isBillingDefault": true
+          }, {
+            $set: {
+              "profile.addressBook.$.isBillingDefault": false
+            }
+          });
+        } else {
+          Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
+        }
+      }
+    }
+
+    return ReactionCore.Collections.Accounts.update({
+      "userId": userId,
+      "profile.addressBook._id": address._id
+    }, {
+      $set: {
+        "profile.addressBook.$": address
+      }
+    });
+  },
+
+  /**
+   * accounts/addressBookRemove
+   * @description remove existing address in user's profile
+   * @param {String} addressId - address `_id`
+   * @param {String} [accountUserId] - `account.userId` used by admin to edit
+   * users
+   * @return {Number|Object} The number of removed documents or error object
+   */
+  "accounts/addressBookRemove": function (addressId, accountUserId) {
+    check(addressId, String);
+    check(accountUserId, Match.Optional(String));
+    // security, check for admin access. We don't need to check every user call
+    // here because we are calling `Meteor.userId` from within this Method.
+    if (typeof accountUserId === "string") { // if this will not be a String -
+      // `check` will not pass it.
+      if (!ReactionCore.hasAdminAccess()) {
+        throw new Meteor.Error(403, "Access denied");
+      }
+    }
+    this.unblock();
+
+    const userId = accountUserId || Meteor.userId();
+    // remove this address in cart, if used, before completely removing
+    Meteor.call("cart/unsetAddresses", addressId, userId);
+
+    return ReactionCore.Collections.Accounts.update({
+      "userId": userId,
+      "profile.addressBook._id": addressId
     }, {
       $pull: {
         "profile.addressBook": {
-          _id: doc._id
+          _id: addressId
         }
       }
     });
-    return doc;
   },
 
   /**
@@ -240,9 +342,9 @@ Meteor.methods({
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
-   * @params {String} shopId - shop to invite user
-   * @params {String} email - email of invitee
-   * @params {String} name - name to address email
+   * @param {String} shopId - shop to invite user
+   * @param {String} email - email of invitee
+   * @param {String} name - name to address email
    * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
@@ -265,7 +367,12 @@ Meteor.methods({
     }
 
     ReactionCore.configureMailUrl();
-
+    // don't send account emails unless email server configured
+    if (!process.env.MAIL_URL) {
+      ReactionCore.Log.info(`Mail not configured: suppressing invite email output`);
+      return true;
+    }
+    // everything cool? invite user
     if (shop && email && name) {
       let currentUser = Meteor.user();
       if (currentUser) {
@@ -375,6 +482,11 @@ Meteor.methods({
 
     // configure email
     ReactionCore.configureMailUrl();
+    // don't send account emails unless email server configured
+    if (!process.env.MAIL_URL) {
+      ReactionCore.Log.info(`Mail not configured: suppressing welcome email output`);
+      return true;
+    }
     // fetch and send templates
     SSR.compileTemplate("accounts/sendWelcomeEmail", ReactionEmailTemplate("accounts/sendWelcomeEmail"));
     try {
@@ -389,17 +501,17 @@ Meteor.methods({
         })
       });
     } catch (e) {
-      ReactionCore.Log.warn(e);
+      ReactionCore.Log.warn("Unable to send email, check configuration and port.", e);
     }
   },
   /**
    * accounts/addUserPermissions
-   * @params {String} userId - userId
-   * @params {Array|String} permissions -
+   * @param {String} userId - userId
+   * @param {Array|String} permissions -
    *               Name of role/permission.  If array, users
    *               returned will have at least one of the roles
    *               specified but need not have _all_ roles.
-   * @params {String} [group] Optional name of group to restrict roles to.
+   * @param {String} [group] Optional name of group to restrict roles to.
    *                         User"s Roles.GLOBAL_GROUP will also be checked.
    * @returns {Boolean} success/failure
    */
@@ -439,9 +551,9 @@ Meteor.methods({
 
   /**
    * accounts/setUserPermissions
-   * @params {String} userId - userId
-   * @params {String|Array} permissions - string/array of permissions
-   * @params {String} groups - group
+   * @param {String} userId - userId
+   * @param {String|Array} permissions - string/array of permissions
+   * @param {String} group - group
    * @returns {Boolean} returns Roles.setUserRoles result
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {

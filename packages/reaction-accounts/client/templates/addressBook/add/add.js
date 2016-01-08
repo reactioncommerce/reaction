@@ -1,11 +1,22 @@
 Template.addressBookAdd.helpers({
   thisAddress: function () {
     let thisAddress = {};
-    let account = ReactionCore.Collections.Accounts.findOne();
+    // admin should receive his account
+    let account = ReactionCore.Collections.Accounts.findOne({
+      userId: Meteor.userId()
+    });
     if (account) {
       if (account.profile) {
         if (account.profile.name) {
           thisAddress.fullName = account.profile.name;
+        }
+        // if this will be the first address we set defaults here and not display
+        // them inside form
+        if (account.profile.addressBook) {
+          if (account.profile.addressBook.length === 0) {
+            thisAddress.isShippingDefault = true;
+            thisAddress.isBillingDefault = true;
+          }
         }
       }
     }
@@ -15,6 +26,7 @@ Template.addressBookAdd.helpers({
       thisAddress.city = Session.get("address").city;
       thisAddress.region = Session.get("address").state;
     }
+
     return thisAddress;
   },
 
@@ -25,9 +37,7 @@ Template.addressBookAdd.helpers({
     if (account) {
       if (account.profile) {
         if (account.profile.addressBook) {
-          if (account.profile.addressBook.length > 0) {
-            return true;
-          }
+          return account.profile.addressBook.length > 0;
         }
       }
     }
@@ -46,32 +56,31 @@ Template.addressBookAdd.events({
   // }
 });
 
-/*
+/**
  * addressBookAddForm form handling
- * gets accountId and calls addressBookAdd method
+ * @description gets accountId and calls addressBookAdd method
+ * @fires "accounts/addressBookAdd" method
  */
-
 AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
-      let accountId;
       let addressBook = $(this.template.firstNode).closest(".address-book");
-      let account = ReactionCore.Collections.Accounts.findOne();
-      accountId = account._id;
 
-      if (!insertDoc._id) {
-        insertDoc._id = Random.id();
-      }
-
-      try {
-        Meteor.call("accounts/addressBookAdd", insertDoc, accountId);
-      } catch (error) {
-        this.done(new Error("Failed to add address", error));
-        return false;
-      }
-      this.done();
-      addressBook.trigger($.Event("showMainView"));
+      Meteor.call("accounts/addressBookAdd", insertDoc, (error, result) => {
+        if (error) {
+          Alerts.add("Failed to add address: " + error.message,
+            "danger", {
+              autoHide: true
+            });
+          this.done(new Error("Failed to add address: ", error));
+          return false;
+        }
+        if (result) {
+          this.done();
+          addressBook.trigger($.Event("showMainView"));
+        }
+      });
     }
   }
 });

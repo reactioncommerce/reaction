@@ -86,15 +86,22 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
 
-    Meteor.call("accounts/addressBookRemove", this, Meteor.userId(), function () {
-      let account = ReactionCore.Collections.Accounts.findOne({
-        userId: Meteor.userId()
-      });
-
-      if (account) {
-        if (account.profile) {
-          if (account.profile.addressBook.length === 0) {
-            template.currentViewTemplate.set("addressBookAdd");
+    Meteor.call("accounts/addressBookRemove", this._id, (error, result) => {
+      if (error) {
+        Alerts.add("Can't remove this address: " + error.message,
+          "danger", {
+            autoHide: true
+          });
+      }
+      if (result) {
+        let account = ReactionCore.Collections.Accounts.findOne({
+          userId: Meteor.userId()
+        });
+        if (account) {
+          if (account.profile) {
+            if (account.profile.addressBook.length === 0) {
+              template.currentViewTemplate.set("addressBookAdd");
+            }
           }
         }
       }
