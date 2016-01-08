@@ -141,6 +141,19 @@ Template.tagInputForm.events({
         return template.$(".tags-submit-new").focus();
       });
   },
+  "click .tag-input-group-hide": function (event, template) {
+    return Meteor.call("shop/hideHeaderTag", this._id,
+      function (error) {
+        if (error) {
+          return Alerts.add(
+            "An error occurred, the tag couldn't be hidden.",
+            "warning", {
+              autoHide: true
+            });
+        }
+        return template.$(".tags-submit-new").focus();
+      });
+  },
   "focusin .tags-input-select": function (tagEvent) {
     return $(tagEvent.currentTarget).autocomplete({
       delay: 0,
