@@ -138,10 +138,6 @@ Package.onUse(function (api) {
   // security
   api.addFiles("server/browserPolicy.js", "server");
 
-  // method hooks
-  api.addFiles("server/methods/hooks/hooks.js");
-  api.addFiles("server/methods/hooks/cart.js", "server");
-
   // cron jobs
   api.addFiles("server/jobs.js", "server");
 
@@ -160,6 +156,10 @@ Package.onUse(function (api) {
   api.addFiles("server/methods/products.js", "server");
   api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
+
+  // method hooks
+  api.addFiles("server/methods/hooks/hooks.js");
+  api.addFiles("server/methods/hooks/cart.js", "server");
 
   api.addFiles("server/methods/workflows/orders.js", "server");
 

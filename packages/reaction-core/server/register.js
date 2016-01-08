@@ -149,6 +149,11 @@ ReactionCore.registerPackage({
     priority: 5,
     position: "5"
   }, {
+    label: "Order Processing",
+    status: "created",
+    workflow: "coreOrderWorkflow",
+    audience: ["dashboard/orders"]
+  }, {
     template: "coreOrderProcessing",
     label: "Order Processing",
     status: "processing",

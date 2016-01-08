@@ -398,7 +398,7 @@ Meteor.methods({
     let expandedItems = [];
 
     // init item level workflow
-    _.each(order.items, function (item, index) {
+    _.each(order.items, function (item) {
       // Split items based on their quantity
       for (let i = 0; i < item.quantity; i++) {
         // Clone Item
@@ -437,7 +437,7 @@ Meteor.methods({
 
     // set new workflow status
     order.workflow.status = "new";
-    order.workflow.workflow = ["orderCreated"];
+    order.workflow.workflow = ["coreOrderWorkflow/created"];
 
     // insert new reaction order
     let orderId = ReactionCore.Collections.Orders.insert(order);

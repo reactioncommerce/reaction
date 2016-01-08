@@ -302,7 +302,7 @@ Meteor.methods({
     const items = order.items.map((item) => {
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
-        let workflows = item.workflow.workflow;
+        let workflows = item.workflow.workflow || [];
 
         workflows.push(status);
         item.workflow.workflow = _.uniq(workflows);
