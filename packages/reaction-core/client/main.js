@@ -257,7 +257,6 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
     amplify.store("ReactionCore.session", newSession);
     Session.set("sessionId", newSession);
   }
-
   Accounts.callLoginMethod({
     methodArguments: [{
       anonymous: true,
@@ -267,11 +266,27 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
   });
 };
 
+// @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+let hidden;
+let visibilityState;
+if (typeof document.hidden !== "undefined") {
+  hidden = "hidden";
+  visibilityState = "visibilityState";
+} else if (typeof document.mozHidden !== "undefined") {
+  hidden = "mozHidden";
+  visibilityState = "mozVisibilityState";
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden";
+  visibilityState = "msVisibilityState";
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden";
+  visibilityState = "webkitVisibilityState";
+}
+
 /**
  *  Startup Reaction
  *  Init Reaction client
  */
-
 Meteor.startup(function () {
   // warn on insecure exporting of PackageRegistry settings
   if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
@@ -282,8 +297,24 @@ Meteor.startup(function () {
   ReactionCore.init();
   // initialize anonymous guest users
   return Tracker.autorun(function () {
-    if (ReactionCore.allowGuestCheckout() && !Meteor.userId()) {
-      Accounts.loginWithAnonymous();
+    const userId = Meteor.userId();
+    // TODO: maybe `visibilityState` will be better here
+    let isHidden;
+    let guestAreAllowed;
+    let loggingIn;
+    let sessionId;
+    Tracker.nonreactive(function () {
+      guestAreAllowed = ReactionCore.allowGuestCheckout();
+      isHidden = document[hidden];
+      loggingIn = Accounts.loggingIn();
+      sessionId = amplify.store("ReactionCore.session");
+    });
+    if (guestAreAllowed && !userId) {
+      if (!isHidden && !loggingIn || typeof sessionId !== "string") {
+        Accounts.loginWithAnonymous();
+      }/* else {
+        Tracker.currentComputation.stop();
+      }*/
     }
   });
 });

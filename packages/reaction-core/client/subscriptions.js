@@ -10,10 +10,16 @@
  * happen when user flush browser's cache, for example.
  * @see https://github.com/reactioncommerce/reaction/issues/609#issuecomment-166389252
  */
-
 Tracker.autorun(function () {
-  if (typeof amplify.store("ReactionCore.session") !== "string") {
-    const newSession = Random.id();
+  // we are trying to track both amplify and Session.get here, but the problem
+  // is - we can't track amplify. It just not tracked. So, to track amplify we
+  // are using dirty hack inside Accounts.loginWithAnonymous method.
+  const sessionId = amplify.store("ReactionCore.session");
+  let newSession;
+  Tracker.nonreactive(() => {
+    newSession = Random.id();
+  });
+  if (typeof sessionId !== "string") {
     amplify.store("ReactionCore.session", newSession);
     Session.set("sessionId", newSession);
   }
@@ -26,20 +32,16 @@ Tracker.autorun(function () {
 
 // @see http://guide.meteor.com/data-loading.html#changing-arguments
 Tracker.autorun(() => {
+  let sessionId;
+  // we really don't need to track the sessionId here
+  Tracker.nonreactive(() => {
+    sessionId = Session.get("sessionId");
+  });
   ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
-    Session.get("sessionId"),
+    sessionId,
     Meteor.userId()
   );
 });
-
-// detect when a cart has been deleted
-// resubscribe will force cart to be rebuilt
-//let cart = ReactionCore.Collections.Cart.find();
-//cart.observeChanges({
-//  removed: function () {
-//    Meteor.subscribe("Cart", Session.get("sessionId")/*, Meteor.userId()*/);
-//  }
-//});
 
 /**
  * General Subscriptions
@@ -51,5 +53,5 @@ ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
 ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
 
 // admin only
-
+// todo should we put this inside autorun and detect user changes
 ReactionCore.Subscriptions.Inventory = Meteor.subscribe("Inventory");

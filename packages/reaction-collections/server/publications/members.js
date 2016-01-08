@@ -4,12 +4,17 @@
  * @return {Array} users
  */
 Meteor.publish("ShopMembers", function () {
+  if (this.userId === null) {
+    return this.ready();
+  }
   let permissions = ["dashboard/orders", "owner", "admin", "dashboard/customers"];
-  let shopId = ReactionCore.getShopId(this);
+  let shopId = ReactionCore.getShopId();
 
   if (Roles.userIsInRole(this.userId, permissions, shopId)) {
-    let users = Meteor.users.find({
-      [`roles.${shopId}`]: {
+    // seems like we can't use `` inside db.call directly
+    const rolesShopId = `roles.${shopId}`;
+    return Meteor.users.find({
+      rolesShopId: {
         $nin: ["anonymous"]
       }
     }, {
@@ -45,10 +50,8 @@ Meteor.publish("ShopMembers", function () {
         "services.github.username": 1
       }
     });
-
-    return users;
   }
 
   ReactionCore.Log.debug("ShopMembers access denied");
-  return [];
+  return this.ready();
 });

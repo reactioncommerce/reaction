@@ -9,7 +9,7 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
   check(shops, Match.Optional(Array));
 
   let shopAdmin;
-  let shop = ReactionCore.getCurrentShop(this);
+  let shop = ReactionCore.getCurrentShop();
   let Products = ReactionCore.Collections.Products;
   let limit = productScrollLimit || 10;
   if (shop) {
@@ -54,7 +54,7 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
  */
 Meteor.publish("Product", function (productId) {
   check(productId, String);
-  let shop = ReactionCore.getCurrentShop(this);
+  let shop = ReactionCore.getCurrentShop();
   let Products = ReactionCore.Collections.Products;
   let selector = {};
   selector.isVisible = true;
