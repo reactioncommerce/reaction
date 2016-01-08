@@ -186,6 +186,14 @@ Template.tagInputForm.events({
       }
     });
   },
+  "keypress .tags-input-select": function (event, template) {
+    if (event.keyCode === 13) {
+      event.target.blur();
+    } else if (event.keyCode === 27) {
+      event.target.value = this.name;
+      event.target.blur();
+    }
+  },
   "focusout .tags-input-select": function (event, template) {
     let val;
     val = $(event.currentTarget).val();
