@@ -66,10 +66,10 @@
       "symbol": "৳"
     },
     "BGN": {
-      "format": "%s%v",
-      "symbol": "лв",
-      "decimal": ",",
-      "thousand": "."
+      "format": "%v %s",
+      "symbol": "лв.",
+      "decimal": ".",
+      "thousand": "'"
     },
     "BHD": {
       "format": "%v %s",
@@ -375,6 +375,10 @@
   "languages": [{
     "label": "العربية",
     "i18n": "ar",
+    "enabled": true
+  }, {
+    "label": "Български",
+    "i18n": "bg",
     "enabled": true
   }, {
     "label": "中文(简体)",
