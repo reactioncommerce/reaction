@@ -95,7 +95,9 @@ Meteor.methods({
     // we don't process current cart, but merge into it.
     const currentCart = Cart.findOne(cartId);
     // just used to filter out the current cart
-    const userId = currentCart.userId;
+    // we do additional check of cart exists here and if it not exist, next
+    // check supposed to throw 403 error
+    const userId = currentCart && currentCart.userId;
     // user should have an access to operate with only one - his - cart
     if (this.userId !== null && userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
@@ -485,12 +487,17 @@ Meteor.methods({
     // for ease, we'll also add automatically for logged in users
     if (order.userId && !order.email) {
       const user = ReactionCore.Collections.Accounts.findOne(order.userId);
-      for (let email of user.emails) {
-        // alternate order email address
-        if (email.provides === "orders") {
-          order.email = email.address;
-        } else if (email.provides === "default") {
-          order.email = email.address;
+      // we could have a use case here when email is not defined by some reason,
+      // we could throw an error, but it's not pretty clever, so let it go w/o
+      // email
+      if (typeof user === "object" && user.emails) {
+        for (let email of user.emails) {
+          // alternate order email address
+          if (email.provides === "orders") {
+            order.email = email.address;
+          } else if (email.provides === "default") {
+            order.email = email.address;
+          }
         }
       }
     }
@@ -582,7 +589,7 @@ Meteor.methods({
       return orderId;
     }
     // we should not have made it here, throw error
-    throw new Meteor.Error("cart/copyCartToOrder: Invalid request");
+    throw new Meteor.Error(400, "cart/copyCartToOrder: Invalid request");
   },
 
   /**
@@ -669,7 +676,7 @@ Meteor.methods({
       let update;
       // temp hack until we build out multiple shipment handlers
       // if we have an existing item update it, otherwise add to set.
-      if (cart.shipping) {
+      if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
         selector = {
           "_id": cartId,
           "shipping._id": cart.shipping[0]._id
@@ -744,7 +751,7 @@ Meteor.methods({
       let update;
       // temp hack until we build out multiple billing handlers
       // if we have an existing item update it, otherwise add to set.
-      if (cart.billing) {
+      if (Array.isArray(cart.billing) && cart.billing.length > 0) {
         selector = {
           "_id": cartId,
           "billing._id": cart.billing[0]._id

@@ -4,14 +4,15 @@
  * @return {Array} users
  */
 Meteor.publish("ShopMembers", function () {
-  if (this.userId === null) {
+  // here we are comparing with the string to make it compatible with tests
+  if (typeof this.userId !== "string") {
     return this.ready();
   }
   let permissions = ["dashboard/orders", "owner", "admin", "dashboard/customers"];
   let shopId = ReactionCore.getShopId();
 
   if (Roles.userIsInRole(this.userId, permissions, shopId)) {
-    // seems like we can't use `` inside db.call directly
+    // seems like we can't use "`" inside db.call directly
     const rolesShopId = `roles.${shopId}`;
     return Meteor.users.find({
       rolesShopId: {

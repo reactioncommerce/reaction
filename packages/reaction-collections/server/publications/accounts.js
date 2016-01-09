@@ -6,7 +6,9 @@ const Accounts = ReactionCore.Collections.Accounts;
 
 Meteor.publish("Accounts", function (userId) {
   check(userId, Match.OneOf(String, null));
-  if (userId === null || this.userId === null) {
+  // we could additionally make checks of useId defined, but this could lead to
+  // situation when user will may not have time to get an account
+  if (this.userId === null) {
     return this.ready();
   }
   // global admin can get all accounts
@@ -37,7 +39,7 @@ Meteor.publish("Accounts", function (userId) {
 
 Meteor.publish("UserProfile", function (profileUserId) {
   check(profileUserId, Match.OneOf(String, null));
-  if (this.userId === null || profileUserId === null) {
+  if (this.userId === null) {
     return this.ready();
   }
   const permissions = ["dashboard/orders", "owner", "admin",

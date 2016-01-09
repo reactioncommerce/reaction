@@ -1,7 +1,22 @@
 // to provide a comparison account
 const fakeUser = Factory.create("account");
+const originalSetShipmentAddress = Meteor.server
+  .method_handlers["cart/setShipmentAddress"];
+const originalSetPaymentAddress = Meteor.server
+  .method_handlers["cart/setPaymentAddress"];
 
 describe("Account Meteor method ", function () {
+  const shopId = faker.reaction.shops.getShop()._id;
+
+  afterAll(() => {
+    ReactionCore.Collections.Packages.remove({});
+    ReactionCore.Collections.Cart.remove({});
+    ReactionCore.Collections.Accounts.remove({});
+    ReactionCore.Collections.Orders.remove({});
+    ReactionCore.Collections.Products.remove({});
+    ReactionCore.Collections.Shops.remove({});
+  });
+
   describe("addressBookAdd", function () {
     beforeEach(function () {
       ReactionCore.Collections.Cart.remove({});
@@ -125,14 +140,24 @@ describe("Account Meteor method ", function () {
       " address if we enable their while adding",
       done => {
         let account = Factory.create("account");
-        let shop = Factory.create("shop");
-        ReactionCore.sessionId = Random.id(); // Required for creating a cart
-
+        const sessionId = Random.id(); // Required for creating a cart
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
-        Meteor.call("cart/createCart", account.userId, shop._id);
+        Meteor.call("cart/createCart", account.userId, sessionId);
         // cart was created without any default addresses, we need to add one
         const address = Object.assign({}, faker.reaction.address(), {
           isShippingDefault: true,
@@ -159,17 +184,18 @@ describe("Account Meteor method ", function () {
       }
     );
 
-    //it(
-    //  "",
-    //  done => {
-    //    let account = Factory.create("account");
-    //    return done();
-    //  }
-    //);
+    /* it(
+      "",
+      done => {
+        let account = Factory.create("account");
+        return done();
+      }
+    ); */
   });
 
   describe("addressBookUpdate", function () {
-    ReactionCore.sessionId = Random.id(); // Required for creating a cart
+    // Required for creating a cart
+    const sessionId = Random.id();
 
     beforeEach(() => {
       ReactionCore.Collections.Cart.remove({});
@@ -180,15 +206,24 @@ describe("Account Meteor method ", function () {
       "should allow user to edit addresses",
       done => {
         let account = Factory.create("account");
-        let shop = Factory.create("shop");
-        // ReactionCore.sessionId = Random.id(); // Required for creating a cart
-
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
         spyOn(Meteor, "userId").and.returnValue(account.userId);
         spyOn(ReactionCore.Collections.Accounts, "update");
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
-        Meteor.call("cart/createCart", account.userId, shop._id);
+        Meteor.call("cart/createCart", account.userId, sessionId);
 
         // we put new faker address over current address to test all fields
         // at once, but keep current address._id
@@ -206,14 +241,23 @@ describe("Account Meteor method ", function () {
       "should allow Admin to edit other user address",
       done => {
         let account = Factory.create("account");
-        let shop = Factory.create("shop");
-        // ReactionCore.sessionId = Random.id(); // Required for creating a cart
-
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
         spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
-        Meteor.call("cart/createCart", account.userId, shop._id);
+        Meteor.call("cart/createCart", account.userId, sessionId);
 
         // we put new faker address over current address to test all fields
         // at once, but keep current address._id
@@ -234,14 +278,23 @@ describe("Account Meteor method ", function () {
       "should update fields to exactly the same what we need",
       done => {
         let account = Factory.create("account");
-        let shop = Factory.create("shop");
-        // ReactionCore.sessionId = Random.id(); // Required for creating a cart
-
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
-        Meteor.call("cart/createCart", account.userId, shop._id);
+        Meteor.call("cart/createCart", account.userId, sessionId);
 
         // we put new faker address over current address to test all fields
         // at once, but keep current address._id
@@ -319,13 +372,23 @@ describe("Account Meteor method ", function () {
       "enabling isShipping/BillingDefault properties should adds this address to cart",
       done => {
         let account = Factory.create("account");
-        let shop = Factory.create("shop");
-
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
-        Meteor.call("cart/createCart", account.userId, shop._id);
+        Meteor.call("cart/createCart", account.userId, sessionId);
         // first we need to disable defaults, because we already have some
         // random defaults in account, but cart is clean. This is test only
         // situation.
@@ -361,13 +424,23 @@ describe("Account Meteor method ", function () {
       " address if we enable their while editing",
       done => {
         let account = Factory.create("account");
-        let shop = Factory.create("shop");
-
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
-        Meteor.call("cart/createCart", account.userId, shop._id);
+        Meteor.call("cart/createCart", account.userId, sessionId);
         // cart was created without any default addresses, we need to add one
         let address = Object.assign({}, account.profile.addressBook[0], {
           isShippingDefault: true,
@@ -402,13 +475,23 @@ describe("Account Meteor method ", function () {
       done => {
         let account = Factory.create("account");
         const userId = account.userId;
-        let shop = Factory.create("shop");
-
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetShipmentAddress.apply(this, arguments);
+          });
+        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+        callFake(
+          function () {
+            this.userId = account.userId;
+            return originalSetPaymentAddress.apply(this, arguments);
+          });
+        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
         spyOn(Meteor, "userId").and.returnValue(userId);
 
-        Meteor.call("cart/createCart", userId, shop._id);
+        Meteor.call("cart/createCart", userId, sessionId);
         // clean account
         Meteor.call("accounts/addressBookRemove",
           account.profile.addressBook[0]._id);
@@ -439,14 +522,6 @@ describe("Account Meteor method ", function () {
         return done();
       }
     );
-
-    //it(
-    //  "",
-    //  done => {
-    //    let account = Factory.create("account");
-    //    return done();
-    //  }
-    //);
   });
 
   describe("addressBookRemove", function () {
@@ -585,7 +660,6 @@ describe("Account Meteor method ", function () {
   describe("accounts/inviteShopMember", function () {
     it("should not let non-Owners invite a user to the shop", function (
       done) {
-      const shopId = Factory.create("shop")._id;
       spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(false);
       spyOn(Accounts, "createUser");
       // create user
@@ -602,7 +676,6 @@ describe("Account Meteor method ", function () {
 
     it("should let a Owner invite a user to the shop", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      const shopId = Factory.get("shop")._id;
       //  TODO checking this is failing, even though we can see it happening in the log.
       // spyOn(Email, "send");
       expect(function () {

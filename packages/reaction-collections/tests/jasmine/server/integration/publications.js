@@ -1,5 +1,7 @@
+/* eslint dot-notation: 0 */
+
 describe("Publication", function () {
-  let shop;
+  const shop = faker.reaction.shops.getShop();
   beforeEach(function () {
     // reset
     ReactionCore.Collections.Cart.remove({});
@@ -7,7 +9,7 @@ describe("Publication", function () {
     ReactionCore.Collections.Products.remove({});
     ReactionCore.Collections.Shops.remove({});
     // insert products and shops
-    shop = Factory.create("shop");
+    // shop = Factory.create("shop");
   });
 
   describe("with products", function () {
@@ -168,15 +170,14 @@ describe("Publication", function () {
     const sessionId = ReactionCore.sessionId = Random.id();
 
     beforeEach(() => {
-      Meteor.call("cart/createCart", sessionId);
+      spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+      Meteor.call("cart/createCart", userId, sessionId);
     });
 
     it(
       "should return a cart cursor",
       done => {
         const originalCart = Meteor.server.publish_handlers["Cart"];
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         spyOn(Meteor.server.publish_handlers, "Cart").and.callFake(
           function () {
             this.userId = userId;
@@ -197,15 +198,12 @@ describe("Publication", function () {
         const user2 = Factory.create("user");
         // mock the `this.userId` call
         const originalCart = Meteor.server.publish_handlers["Cart"];
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         spyOn(Meteor.server.publish_handlers, "Cart").and.callFake(
           function () {
             this.userId = userId;
             return originalCart.apply(this, arguments);
           });
-// fixme: fix args
-        Meteor.call("cart/createCart", user2._id, shop._id);
+        Meteor.call("cart/createCart", user2._id, sessionId);
 
         const cursor = Meteor.server.publish_handlers.Cart(sessionId);
         const data = cursor.fetch();
@@ -216,11 +214,11 @@ describe("Publication", function () {
       }
     );
 
-    //it(
+    //  it(
     //  "should",
     //  done => {
     //    return done();
     //  }
-    //);
+    //  );
   });
 });
