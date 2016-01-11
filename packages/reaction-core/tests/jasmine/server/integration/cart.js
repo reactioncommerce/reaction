@@ -1,7 +1,7 @@
 /* eslint dot-notation: 0 */
 describe("cart methods", function () {
   let user = Factory.create("user");
-  let shop = Factory.create("shop");
+  const shop = faker.reaction.shops.getShop();
   let userId = user._id;
   // Required for creating a cart
   const sessionId = ReactionCore.sessionId = Random.id();
@@ -20,200 +20,57 @@ describe("cart methods", function () {
   });
 
   describe("cart/mergeCart", () => {
-    // a lot of users for different tests.
-    let cartUser = Factory.create("user");
-    let cartUserId = cartUser._id;
-    let anonymous = Factory.create("user");
-    let anonymousId = anonymous._id;
-    let anonymous2 = Factory.create("user");
-    let anonymous2Id = anonymous2._id;
-    let anonymousOne = Factory.create("user");
-    let anonymousOneId = anonymousOne._id;
-    let anonymousTwo = Factory.create("user");
-    let anonymousTwoId = anonymousTwo._id;
-    [anonymousId, anonymous2Id, anonymousOneId, anonymousTwoId].forEach(id => {
-      Meteor.users.update(id, {
-        $set: {
-          roles: {
-            [shop._id]: [
-              "anonymous",
-              "guest"
-            ]
-          }
-        }
-      });
-    });
-    const quantity = 1;
-    let product;
-    let variantId;
-
-    beforeAll(done => {
-      ReactionCore.Collections.Cart.remove({});
+    beforeAll(() => {
       ReactionCore.Collections.Products.remove({});
-      product = Factory.create("product");
-      variantId = product.variants[0]._id;
-
-      return done();
     });
 
-    it( // this is a preparation stage for a next test
-      "should be able to add product to cart for `anonymous`",
-      () => {
-        spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
-          function () {
-            this.userId = anonymousId;
-            return originalMergeCart.apply(this, arguments);
-          });
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = anonymousId;
-            return originalAddToCart.apply(this, arguments);
-          });
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-        // passing of check for anonymous role with true result
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-
-        const cartId = Meteor.call("cart/createCart", anonymousId, sessionId);
-        expect(cartId).toBeDefined();
-
-        Meteor.call("cart/addToCart", product._id, variantId, quantity);
-        const cart = ReactionCore.Collections.Cart.findOne(cartId);
-
-        expect(cart.items.length).toBe(1);
-        expect(cart.items[0].quantity).toBe(1);
-        expect(cart.items[0].variants._id).toEqual(variantId);
-      }
-    );
-
-    it(
-      "should merge all `anonymous` carts into newly created `normal` user" +
-      " cart per session",
-      done => {
-        spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
-          function () {
-            this.userId = cartUserId;
-            return originalMergeCart.apply(this, arguments);
-          });
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = cartUserId;
-            return originalAddToCart.apply(this, arguments);
-          });
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-        // not working as expected. We avoid this by updating user roles in db
-        // spyOn(Roles, "userIsInRole").and.callFake(function () {
-        //   return arguments[0] !== cartUserId;
-        // });
-        spyOn(ReactionCore.Collections.Cart, "remove").and.callThrough();
-
-        let anonCart = ReactionCore.Collections.Cart.findOne({
-          userId: anonymousId
-        });
-        const cartId = Meteor.call("cart/createCart", cartUserId, sessionId);
-        // we expect `cart/mergeCart` will be called from `cart/createCart`
-        // expect(Meteor.call.calls.argsFor(1)).toEqual("cart/mergeCart");
-        expect(cartId).toBeDefined();
-
-        // we expect Cart.remove will be called
-        expect(ReactionCore.Collections.Cart.remove).toHaveBeenCalled();
-        let cart = ReactionCore.Collections.Cart.findOne(cartId);
-
-        // we expect anonymous cart will be merged into this user's cart
-        expect(cart.items.length).toBe(1);
-        expect(cart.items[0].quantity).toBe(1);
-        expect(cart.items[0].variants._id).toEqual(variantId);
-        expect(cart.sessionId).toEqual(anonCart.sessionId);
-
-        return done();
-      }
-    );
-
-    it( // we need to repeat first step to emulate user logout
-      "should be able to add product to cart for `anonymous`",
-      () => {
-        spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
-          function () {
-            this.userId = anonymous2Id;
-            return originalMergeCart.apply(this, arguments);
-          });
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = anonymous2Id;
-            return originalAddToCart.apply(this, arguments);
-          });
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
-        spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-        // passing of check for anonymous role with true result
-        // spyOn(Roles, "userIsInRole").and.returnValue(true);
-
-        const cartId = Meteor.call("cart/createCart", anonymous2Id, sessionId);
-        expect(cartId).toBeDefined();
-
-        Meteor.call("cart/addToCart", product._id, variantId, quantity);
-        const cart = ReactionCore.Collections.Cart.findOne(cartId);
-
-        expect(cart.items.length).toBe(1);
-        expect(cart.items[0].quantity).toBe(1);
-        expect(cart.items[0].variants._id).toEqual(variantId);
-      }
-    );
+    beforeEach(() => {
+      ReactionCore.Collections.Cart.remove({});
+    });
 
     it(
       "should merge all `anonymous` carts into existent `normal` user cart" +
       " per session, when logged in",
-      done => {
+      () => {
+        let anonymousCart = Factory.create("anonymousCart");
+        let cart = Factory.create("cart");
+
         spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
           function () {
-            this.userId = cartUserId;
+            this.userId = cart.userId;
             return originalMergeCart.apply(this, arguments);
-          });
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = cartUserId;
-            return originalAddToCart.apply(this, arguments);
-          });
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
+          }
+        );
         spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
         spyOn(ReactionCore.Collections.Cart, "remove").and.callThrough();
-
-        let cart = ReactionCore.Collections.Cart.findOne({
-          userId: cartUserId
+        ReactionCore.Collections.Cart.update({}, {
+          $set: {
+            sessionId: sessionId
+          }
         });
 
         Meteor.call("cart/mergeCart", cart._id, sessionId);
-        let anon2Cart = ReactionCore.Collections.Cart.findOne({
-          userId: anonymous2Id
-        });
-        cart = ReactionCore.Collections.Cart.findOne({
-          userId: cartUserId
-        });
+        anonymousCart = ReactionCore.Collections.
+          Cart.findOne(anonymousCart._id);
+        cart = ReactionCore.Collections.Cart.findOne(cart._id);
 
         expect(ReactionCore.Collections.Cart.remove).toHaveBeenCalled();
-        expect(anon2Cart).toBeUndefined();
-        // we expect to see one item with quantity equal 2, but instead of this
-        // we got two items, which is not bad... such results is fine for us
+        expect(anonymousCart).toBeUndefined();
         expect(cart.items.length).toBe(2);
-        // expect(cart.items[0].quantity).toBe(2);
-
-        return done();
       }
     );
 
     it(
       "should merge only into registered user cart",
       done => {
+        const cart = Factory.create("anonymousCart");
         spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
           function () {
-            this.userId = anonymousOneId;
+            this.userId = cart.userId;
             return originalMergeCart.apply(this, arguments);
           });
-        spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
         spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-
-        const cartId = Meteor.call("cart/createCart", anonymousOneId, sessionId);
-        expect(cartId).toBeDefined();
+        const cartId = cart._id;
 
         // now we try to merge two anonymous carts. We expect to see `false`
         // result
@@ -387,7 +244,7 @@ describe("cart methods", function () {
     );
 
     // it(
-    //   "should call `cart/mergeCart` method if anonymous carts presents for this session",
+    //   "should ",
     //   done => {
     //
     //     return done();

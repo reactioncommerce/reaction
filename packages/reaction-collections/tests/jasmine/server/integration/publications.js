@@ -2,14 +2,13 @@
 
 describe("Publication", function () {
   const shop = faker.reaction.shops.getShop();
+
   beforeEach(function () {
     // reset
     ReactionCore.Collections.Cart.remove({});
     ReactionCore.Collections.Orders.remove({});
     ReactionCore.Collections.Products.remove({});
     ReactionCore.Collections.Shops.remove({});
-    // insert products and shops
-    // shop = Factory.create("shop");
   });
 
   describe("with products", function () {
@@ -168,6 +167,10 @@ describe("Publication", function () {
     const user = Factory.create("user");
     const userId = user._id;
     const sessionId = ReactionCore.sessionId = Random.id();
+    const cartPub = Meteor.server.publish_handlers["Cart"];
+    const thisContext = {
+      userId: userId
+    };
 
     beforeEach(() => {
       spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
@@ -176,49 +179,22 @@ describe("Publication", function () {
 
     it(
       "should return a cart cursor",
-      done => {
-        const originalCart = Meteor.server.publish_handlers["Cart"];
-        spyOn(Meteor.server.publish_handlers, "Cart").and.callFake(
-          function () {
-            this.userId = userId;
-            return originalCart.apply(this, arguments);
-          });
-        const cursor = Meteor.server.publish_handlers.Cart(sessionId);
+      () => {
+        const cursor = cartPub.apply(thisContext, [sessionId]);
         const data = cursor.fetch()[0];
-
         expect(data.userId).toEqual(userId);
-
-        return done();
       }
     );
 
     it(
       "should return only one cart in cursor",
-      done => {
+      () => {
         const user2 = Factory.create("user");
-        // mock the `this.userId` call
-        const originalCart = Meteor.server.publish_handlers["Cart"];
-        spyOn(Meteor.server.publish_handlers, "Cart").and.callFake(
-          function () {
-            this.userId = userId;
-            return originalCart.apply(this, arguments);
-          });
         Meteor.call("cart/createCart", user2._id, sessionId);
-
-        const cursor = Meteor.server.publish_handlers.Cart(sessionId);
+        const cursor = cartPub.apply(thisContext, [sessionId]);
         const data = cursor.fetch();
-
         expect(data.length).toEqual(1);
-
-        return done();
       }
     );
-
-    //  it(
-    //  "should",
-    //  done => {
-    //    return done();
-    //  }
-    //  );
   });
 });

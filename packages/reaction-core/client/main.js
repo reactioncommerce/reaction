@@ -268,19 +268,19 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
 let hidden;
-let visibilityState;
+// let visibilityState; // keep this for a some case
 if (typeof document.hidden !== "undefined") {
   hidden = "hidden";
-  visibilityState = "visibilityState";
+  // visibilityState = "visibilityState";
 } else if (typeof document.mozHidden !== "undefined") {
   hidden = "mozHidden";
-  visibilityState = "mozVisibilityState";
+  // visibilityState = "mozVisibilityState";
 } else if (typeof document.msHidden !== "undefined") {
   hidden = "msHidden";
-  visibilityState = "msVisibilityState";
+  // visibilityState = "msVisibilityState";
 } else if (typeof document.webkitHidden !== "undefined") {
   hidden = "webkitHidden";
-  visibilityState = "webkitVisibilityState";
+  // visibilityState = "webkitVisibilityState";
 }
 
 /**

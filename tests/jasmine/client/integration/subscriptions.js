@@ -46,13 +46,13 @@ describe("Subscriptions", () => {
             // we expect to see anonymous here, but it not to much time to
             // create anonymous, so we will see null.
             // expect(Meteor.userId()).not.toBeNull();
-          expect(Meteor.userId()).not.toEqual(prevUser);
+            expect(Meteor.userId()).not.toEqual(prevUser);
 
-          expect(ReactionCore.Subscriptions.Cart.subscriptionId).toBeDefined();
-          expect(ReactionCore.Subscriptions.Cart.subscriptionId)
-            .not.toEqual(prevSubId);
+            expect(ReactionCore.Subscriptions.Cart.subscriptionId).toBeDefined();
+            expect(ReactionCore.Subscriptions.Cart.subscriptionId)
+              .not.toEqual(prevSubId);
 
-          done();
+            done();
           }, 50);
         });
       }
@@ -115,12 +115,5 @@ describe("Subscriptions", () => {
         }, 3000);
       }
     );
-
-    //it(
-    //  "should",
-    //  done => {
-    //    return done();
-    //  }
-    //);
   });
 });

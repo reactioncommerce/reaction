@@ -18,14 +18,7 @@ describe("Cart", function () {
         // todo update to the next after apllying PR #613
         // Meteor.call("cart/removeFromCart", item._id);
       });
-      // todo we can't clear cart by this way from client side
-      //ReactionCore.Collections.Cart.update({
-      //  _id: cartId
-      //}, {
-      //  $unset: {
-      //    items: ""
-      //  }
-      //});
+
       done();
     });
 
@@ -52,7 +45,7 @@ describe("Cart", function () {
 
       $(addToCartButton).trigger("click");
       expect(spyOnAddToCartEvent).toHaveBeenTriggered();
-      /* expect(spyOnCart).toHaveBeenCalled();*/
+      /* expect(spyOnCart).toHaveBeenCalled(); */
       done();
     });
 
@@ -130,7 +123,7 @@ describe("Cart", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      /* expect(Router.current().url).toEqual("/checkout");*/
+      /* expect(Router.current().url).toEqual("/checkout"); */
       done();
     });
   });
