@@ -67,6 +67,13 @@
         "quantity": "Quantity",
         "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
       },
+      "tags": {
+        "addTag": "Add Tag",
+        "addGroupTag": "Add Group Tag",
+        "addSubTag": "Add Sub Tag",
+        "removeTag": "Remove Tag",
+        "createTag": "Create Tag"
+      },
       "productDetailEdit": {
         "title": "Product title",
         "pageTitle": "Product page title",
