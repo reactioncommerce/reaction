@@ -1,0 +1,23 @@
+// Import Variables
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/bootstrap.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+
+.rui.tagnav .tree > .content {
+  .display(flex);
+  .flex-wrap(wrap);
+}
+
+.rui.tagnav .tree > .footer {
+  .display(flex);
+  .justify-content(flex-end);
+  padding: 10px;
+}
+
+.rui.tagnav .tree .group {
+  .flex(1 1 auto);
+  min-width: 200px;
+  width: 15%;
+  max-width: 15%;
+  padding: 10px;
+}

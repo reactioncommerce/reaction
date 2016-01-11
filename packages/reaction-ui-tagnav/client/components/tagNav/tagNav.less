@@ -1,0 +1,77 @@
+// Import Variables
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/bootstrap.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+
+.rui.tagnav {
+  position: relative;
+}
+
+.rui.tagnav .navbar {
+  background-color: @navbar-inverse-bg;
+  text-transform: uppercase;
+  // line-height: 25px;
+  // padding-top: 10px;
+  // padding-left: 15px;
+  border-bottom: @navbar-secondary-border;
+  height: @navbar-height;
+  .display(flex);
+  .flex(1 1 auto);
+  .align-items(center);
+}
+
+.rui.tagnav .navbar > .rui.tags {
+  .display(flex);
+  .flex-wrap(nowrap);
+  .align-items(center);
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+
+  overflow-x: auto;
+}
+
+.rui.tagnav .navbar .edit-tag-button {
+  .flex(0 0 auto);
+  height: 100%;
+  border: 0;
+  border-left: 1px solid @border-color;
+  background-color: @white;
+}
+
+.rui.tagnav .navbar .rui.tag.edit {
+  max-width: 20%;
+  .flex(0 0 auto);
+  padding: 0 5px;
+}
+
+.rui.tagnav > .dropdown {
+  position: absolute;
+  top: @navbar-height;
+  left: 0;
+  z-index: @zindex-navbar;
+  width: 100%;
+  margin: 0;
+
+  background-color: @white;
+  border-bottom: 1px solid @border-color;
+}
+
+.nav-dropbar-content {
+  .flex(1 1 auto);
+  padding: 10px;
+  min-height: 200px;
+}
+
+.nav-dropbar-footer {
+  .flex(0 0 auto);
+  padding: 10px;
+  min-height: 44px;
+  border-top: 1px solid @border-color;
+}
+
+.nav-dropbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

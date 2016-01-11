@@ -1,0 +1,82 @@
+// Import Variables
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/bootstrap.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+
+
+.rui.tagnav.group {
+  // .display(flex);
+  // .flex-wrap(wrap);
+}
+
+.rui.tagnav.group .item {
+  .flex(1 1 auto);
+  min-width: 200px;
+  width: 15%;
+  max-width: 15%;
+  padding: 10px;
+}
+
+.rui.tagnav.group > .header {
+
+}
+
+.rui.tagnav.group > .header .rui.tag {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rui.tagnav.group > .content {
+
+}
+
+.rui.tagnav.group > .footer {
+
+}
+
+.rui.tagnav.group > .header .rui.tag.edit {
+  text-transform: none;
+
+  @color: lighten(@btn-success-bg, 10%);
+  @color: @brand-secondary-color;
+  @color: #238CC3;
+
+  input {
+    background-color: @color;
+    border-color: @color;
+    color: @white;
+  }
+
+  button {
+    background-color: @color;
+    border-color: @color;
+    color: @white;
+  }
+}
+
+.rui.tagnav.group > .header .rui.tag.edit input {
+  .placeholder(@white);
+}
+
+
+
+.empty-tag-group {
+  .display(flex);
+  .flex-direction(column);
+  .justify-content(center);
+  .align-items(center);
+  background-color: @black10;
+  height: 120px;
+  max-width: 300px;
+}
+
+// .nav-dropbar .rui.header {
+//   margin-bottom: 10px;
+// }
+//
+// .nav-dropbar .rui.content,
+// .nav-dropbar .rui.footer {
+//   @media screen and (max-width: @screen-xs-max) {
+//     .padding-left(10px);
+//   }
+// }

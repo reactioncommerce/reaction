@@ -7,16 +7,19 @@ const Sortable = ReactionUI.Lib.Sortable;
 const ReactDOM = ReactionUI.Lib.ReactDOM;
 
 class Tags extends React.Component {
-  displayName = "Tag List (Tags)"
+  displayName = "Tag List (Tags)";
 
   componentDidMount() {
     const element = ReactDOM.findDOMNode(this.refs.tags);
-    this._sortable = Sortable.create(element, {
-      group: "tags",
-      onSort: this.handleDragSort,
-      onAdd: this.handleDragAdd,
-      onRemove: this.handleDragRemove
-    });
+
+    if (this.props.editable) {
+      this._sortable = Sortable.create(element, {
+        group: "tags",
+        onSort: this.handleDragSort,
+        onAdd: this.handleDragAdd,
+        onRemove: this.handleDragRemove
+      });
+    }
   }
 
   handleDragAdd = (event) => {
@@ -32,7 +35,7 @@ class Tags extends React.Component {
     if (this.props.onTagDragAdd) {
       this.props.onTagDragAdd(movedTagId, toListId, event.newIndex);
     }
-  }
+  };
 
   handleDragRemove = (event) => {
 
@@ -51,7 +54,7 @@ class Tags extends React.Component {
     }
 
 
-  }
+  };
 
   handleDragSort = (event) => {
     let newTagsOrder = this.move(this.props.tags, event.oldIndex, event.newIndex);
@@ -66,7 +69,7 @@ class Tags extends React.Component {
         this.props.onTagSort(tagIds, this.props.parentTag);
       }
     }
-  }
+  };
 
   move(array, fromIndex, toIndex) {
 
@@ -90,26 +93,26 @@ class Tags extends React.Component {
     array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
 
     return array;
-  }
+  };
 
   handleNewTagSubmit = (event) => {
     event.preventDefault();
     if (this.props.onCreateTag) {
-      this.props.onCreateTag(event.target.tag.value);
+      this.props.onCreateTag(event.target.tag.value, this.props.parentTag);
     }
-  }
+  };
 
-  handleTagCreate = (tagId) => {
+  handleTagCreate = (tagId, tagName) => {
     if (this.props.onTagCreate) {
-      this.props.onTagCreate(tagId);
+      this.props.onTagCreate(tagId, tagName);
     }
-  }
+  };
 
   handleTagRemove = (tag) => {
     if (this.props.onTagRemove) {
       this.props.onTagRemove(tag, this.props.parentTag);
     }
-  }
+  };
 
   handleTagUpdate = (tagId, tagName) => {
     if (this.props.onTagUpdate) {
@@ -119,11 +122,11 @@ class Tags extends React.Component {
       }
       this.props.onTagUpdate(tagName, tagId, parentTagId);
     }
-  }
+  };
 
   handleTagBookmark = (event) => {
 
-  }
+  };
 
   renderTags() {
     if (_.isArray(this.props.tags)) {
@@ -141,13 +144,14 @@ class Tags extends React.Component {
       });
 
       // Render an blank tag for creating new tags
-      if (this.props.editable) {
-        // tags.push(
-        //   <Tag
-        //     blank={true}
-        //     onTagCreate={this.handleTagCreate}
-        //   />
-        // );
+      if (this.props.editable && this.props.enableNewTagForm) {
+        tags.push(
+          <Tag
+            blank={true}
+            key="newTagForm"
+            onTagCreate={this.handleTagCreate}
+          />
+        );
       }
 
       return tags;
@@ -177,8 +181,8 @@ Tags.defaultProps = {
 // Prop Types
 Tags.propTypes = {
   editable: React.PropTypes.bool,
-  parentTag: React.PropTypes.objectOf(ReactionCore.Schemas.Tag),
-  tags: React.PropTypes.arrayOf(ReactionCore.Schemas.Tag)
+  parentTag: ReactionCore.PropTypes.Tag,
+  tags: ReactionCore.PropTypes.arrayOfTags
 };
 
 // Export

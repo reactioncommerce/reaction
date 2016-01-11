@@ -220,7 +220,11 @@
 
 
 
+/**
 
+Nav dropdown
+
+*/
 
 .nav-dropbar-toplevel {
   // position: relative;
@@ -238,13 +242,25 @@
   position: absolute;
   top: @navbar-height;
   left: 0;
+  z-index: @zindex-navbar;
   width: 100%;
-  min-height: 200px;
   margin: 0;
-  padding: 20px;
 
   background-color: @white;
   border-bottom: 1px solid @border-color;
+}
+
+.nav-dropbar-content {
+  .flex(1 1 auto);
+  padding: 10px;
+  min-height: 200px;
+}
+
+.nav-dropbar-footer {
+  .flex(0 0 auto);
+  padding: 10px;
+  min-height: 44px;
+  border-top: 1px solid @border-color;
 }
 
 .nav-dropbar ul {
@@ -253,9 +269,14 @@
   padding: 0;
 }
 
-.nav-dropbar {
-  .rui.items.flex .item {
-    flex: 1 1 15%;
+.nav-dropbar .rui.items.flex .item {
+  flex: 1 1 atuo;
+  width: 25%;
+  max-width: 25%;
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    max-width: 100%
   }
 }
 
@@ -283,12 +304,22 @@
   max-width: 300px;
 }
 
+.nav-dropbar .rui.header {
+  margin-bottom: 10px;
+}
+
+.nav-dropbar .rui.content,
+.nav-dropbar .rui.footer {
+  @media screen and (max-width: @screen-xs-max) {
+    .padding-left(10px);
+  }
+}
 
 .nav-dropbar .rui.tags {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  min-height: 100px;
+  // min-height: 100px;
 }
 
 .nav-dropbar .rui.tag {
@@ -304,6 +335,68 @@
   padding: (@padding-base-vertical / 2) 0;
 }
 
+.nav-dropbar .rui.tag.edit button:last-child {
+  min-width: 36px;
+}
+
+.nav-dropbar .rui.content .rui.tag.edit,
+.nav-dropbar .rui.footer .rui.tag.edit  {
+  padding: 0;
+  margin-bottom: -1px;
+}
+
+.nav-dropbar .blankFakeTag {
+  border-radius: @border-radius-base @border-radius-base 0 0;
+  border: 1px solid @border-color;
+  border-bottom: 0;
+  color: @black60;
+  padding: 5px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.nav-dropbar .blankFakeTag.bottom {
+  border-radius: 0 0 @border-radius-base @border-radius-base;
+  border: 1px solid @border-color;
+  border-top: 0;
+}
+
+
+.nav-dropbar .rui.content .rui.tag.edit:first-child button:first-child {
+  border-radius: @border-radius-base 0 0 0;
+}
+
+.nav-dropbar .rui.content .rui.tag.edit:first-child button:last-child {
+  border-radius: 0 @border-radius-base 0 0;
+}
+
+.nav-dropbar .rui.content .rui.tag.edit button {
+  border-radius: 0;
+}
+
+// .nav-dropbar .rui.content .rui.tag.edit:last-child button:first-child,
+.nav-dropbar .rui.footer .rui.tag.edit button:first-child {
+  border-radius: 0 0 0 @border-radius-base;
+  background-color: @black02;
+  color: @text-color;
+}
+
+.nav-dropbar .rui.footer .rui.tag.edit input {
+  background-color: @black02;
+  color: @text-color;
+}
+
+
+// .nav-dropbar .rui.content .rui.tag.edit:last-child button:last-child,
+.nav-dropbar .rui.footer .rui.tag.edit button:last-child {
+  border-radius: 0 0 @border-radius-base 0;
+}
+
+
+
+
+
+
 .nav-dropbar .rui.tag.edit form {
   display: flex;
 }
@@ -311,7 +404,6 @@
 .nav-dropbar .rui.tag.edit input {
   padding: 0 5px;
   width: 100%;
-  border-radius: 0;
 }
 
 .nav-dropbar .rui.tag.edit button {
@@ -338,6 +430,7 @@
   }
 }
 
+// Responsive
 
 @media screen and (max-width: @screen-lg-min) {
 }
@@ -422,11 +515,12 @@
   }
 
   .nav-dropbar {
+    .display(flex);
+    .flex-direction(column);
     position: static;
     top: @navbar-height;
     left: 0;
     width: 100%;
-    min-height: 200px;
     margin: 0;
     padding: 20px;
 
@@ -440,10 +534,9 @@
     padding: 0;
   }
 
-  .nav-dropbar {
-    .rui.items.flex .item {
-      flex: 1 1 15%;
-    }
+  .nav-dropbar .rui.items.flex .item {
+    flex: 1 1 auto;
+    width: 100%;
   }
 
   .rui.tag.group {
@@ -454,8 +547,8 @@
   .rui.tag.group.item {
     .flex(1 1 auto);
     min-width: 200px;
-    width: 15%;
-    max-width: 15%;
+    width: 100%;
+    max-width: 100%;
     padding: 10px;
   }
 

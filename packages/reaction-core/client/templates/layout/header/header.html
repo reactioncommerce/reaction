@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="nav" role="navigation">
     <div class="row navbar-shop">
-      <div class="navbar-menu">{{> menuButton}}</div>
+      {{!--<div class="navbar-menu">{{> menuButton}}</div>--}}
       <div class="navbar-brand">{{> headerBrand}}</div>
       <div class="navbar-cart">{{> cartIcon}}</div>
       <div class="cart-alert">{{> cartPanel}}</div>
@@ -12,9 +12,14 @@
         {{> Template.dynamic template=template}}
       {{/each}}
     </div>
-    <div class="row navbar-primary-tags">
-       <div class="navbar-tags">{{> headerTags}}</div>
-     </div>
+
+    <div class="row">
+      {{> React
+        component=TagNav
+        editable=(hasPermission "admin")
+        tags=tags
+      }}
+    </div>
   </div>
 </div>
 </template>
