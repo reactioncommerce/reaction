@@ -40,6 +40,9 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/translations.js");
   api.addFiles("common/schemas/templates.js");
 
+  // PropType Validators
+  api.addFiles("common/propTypes/tags.js");
+
   api.imply("matb33:collection-hooks");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
