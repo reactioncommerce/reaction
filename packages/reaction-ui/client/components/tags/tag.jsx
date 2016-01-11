@@ -51,6 +51,29 @@ class Tag extends React.Component {
   };
 
   /**
+   * Handle tag mouse out events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @return {void} no return value
+   */
+  handleTagMouseOut = (event) => {
+    event.preventDefault();
+    if (this.props.onTagMouseOut) {
+      this.props.onTagMouseOut(event, this.props.tag);
+    }
+  };
+
+  /**
+   * Handle tag mouse over events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @return {void} no return value
+   */
+  handleTagMouseOver = (event) => {
+    if (this.props.onTagMouseOver) {
+      this.props.onTagMouseOver(event, this.props.tag);
+    }
+  };
+
+  /**
    * Handle tag focus, show autocomplete options
    * TODO: Make this better by not using a jQuery plugin
    * @param  {Event} event Event Object
@@ -89,8 +112,10 @@ class Tag extends React.Component {
     const url = `/product/tag/${this.props.tag.slug}`;
     return (
       <a
-        className="rui tag"
+        className="rui tag link"
         href={url}
+        onMouseOut={this.handleTagMouseOut}
+        onMouseOver={this.handleTagMouseOver}
       >
         {this.props.tag.name}
       </a>
@@ -161,6 +186,8 @@ Tag.propTypes = {
   // Event handelers
   onTagBookmark: React.PropTypes.func,
   onTagCreate: React.PropTypes.func,
+  onTagMouseOut: React.PropTypes.func,
+  onTagMouseOver: React.PropTypes.func,
   onTagRemove: React.PropTypes.func,
   onTagUpdate: React.PropTypes.func,
 

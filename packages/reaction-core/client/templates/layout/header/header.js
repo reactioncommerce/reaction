@@ -17,6 +17,10 @@ Template.layoutHeader.helpers({
     return ReactionUI.TagNav.Components.TagNav;
   },
 
+  isEditable() {
+    return ReactionCore.hasAdminAccess();
+  },
+
 
   tags: function () {
     let tags = [];

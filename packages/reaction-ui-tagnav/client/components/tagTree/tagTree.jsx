@@ -10,6 +10,7 @@ const TagTree = React.createClass({
 
   propTypes: {
     editable: React.PropTypes.bool,
+    onEditMode: React.PropTypes.func,
     onTagCreate: React.PropTypes.func,
     onTagDragAdd: React.PropTypes.func,
     onTagRemove: React.PropTypes.func,
@@ -22,7 +23,7 @@ const TagTree = React.createClass({
 
   getInitialState() {
     return {
-      allowEdit: false
+      isEditing: false
     };
   },
 
@@ -34,13 +35,18 @@ const TagTree = React.createClass({
   },
 
   handleEditableState() {
+    const isEditing = !this.state.isEditing;
     this.setState({
-      allowEdit: !this.state.allowEdit
+      isEditing: isEditing
     });
+
+    if (this.props.onEditMode) {
+      this.props.onEditMode(isEditing);
+    }
   },
 
   renderNewTagGroupField() {
-    if (this.props.editable && this.state.allowEdit) {
+    if (this.props.editable && this.state.isEditing) {
       return (
         <div className="rui tagnav group">
           <div className="header">
@@ -61,26 +67,40 @@ const TagTree = React.createClass({
   },
 
   renderTagGroup() {
-    const subTagGroups = this.data.subTags.map((tag, index) => {
-      return (
-        <TagGroup
-          editable={this.props.editable && this.state.allowEdit}
-          key={tag._id || index}
-          onTagCreate={this.props.onTagCreate}
-          onTagDragAdd={this.props.onTagDragAdd}
-          onTagRemove={this.props.onTagRemove}
-          onTagSort={this.props.onTagSort}
-          onTagUpdate={this.props.onTagUpdate}
-          tag={tag}
-        />
-      );
-    });
+    if (this.data.subTags) {
+      const subTagGroups = this.data.subTags.map((tag, index) => {
+        return (
+          <TagGroup
+            editable={this.props.editable && this.state.isEditing}
+            key={tag._id || index}
+            onTagCreate={this.props.onTagCreate}
+            onTagDragAdd={this.props.onTagDragAdd}
+            onTagRemove={this.props.onTagRemove}
+            onTagSort={this.props.onTagSort}
+            onTagUpdate={this.props.onTagUpdate}
+            tag={tag}
+          />
+        );
+      });
 
-    return subTagGroups;
+      return subTagGroups;
+    }
   },
 
   renderEditButton() {
     if (this.props.editable) {
+      if (this.state.isEditing) {
+        return (
+          <div className="footer">
+            <Button
+              className="btn btn-success"
+              onClick={this.handleEditableState}
+              title="Done"
+            />
+          </div>
+        );
+      }
+
       return (
         <div className="footer">
           <Button
@@ -101,7 +121,7 @@ const TagTree = React.createClass({
           {this.renderTagGroup()}
           {this.renderNewTagGroupField()}
         </div>
-          {this.renderEditButton()}
+        {this.renderEditButton()}
       </div>
     );
   }

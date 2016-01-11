@@ -72,7 +72,6 @@ ReactionUI.TagNav.Helpers = {
       parentTagId = parentTag._id;
     }
 
-    console.log("Would try to update header tags", tagName, parentTagId);
     Meteor.call("shop/updateHeaderTags", tagName, null, parentTagId,
       function (error) {
         if (error) {
@@ -99,7 +98,6 @@ ReactionUI.TagNav.Helpers = {
 
   moveTagToNewParent(movedTagId, toListId, toIndex) {
     console.log(`Would Add item ${movedTagId} to list ${toListId}, with index ${toIndex}`);
-    // return
     ReactionCore.Collections.Tags.update(toListId,
       {
         $addToSet: {

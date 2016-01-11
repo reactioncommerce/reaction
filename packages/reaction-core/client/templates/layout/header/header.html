@@ -16,7 +16,7 @@
     <div class="row">
       {{> React
         component=TagNav
-        editable=(hasPermission "admin")
+        editable=isEditable
         tags=tags
       }}
     </div>
