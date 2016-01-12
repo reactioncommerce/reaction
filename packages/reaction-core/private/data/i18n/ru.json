@@ -25,7 +25,9 @@
         "timezoneOptions": "Выберите часовой пояс",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Страница, которую вы запрашиваете, не найдена."
       },
       "shopSettings": {
         "general": "Основные",
@@ -74,7 +76,9 @@
         "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",
         "quantityGreaterThanZero": "Ошибка: количество должно быть больше нуля",
-        "dropFile": "Перетащите фото для загрузки"
+        "dropFile": "Перетащите фото для загрузки",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Продукт не найден."
       },
       "productDetailEdit": {
         "title": "Название",

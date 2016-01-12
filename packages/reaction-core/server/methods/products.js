@@ -1084,11 +1084,9 @@ Meteor.methods({
 
     if ((product !== null ? product.variants[0].price : void 0) && (
         product !== null ? product.variants[0].title : void 0) && (
-        product !==
-        null ? product.title : void 0)) {
+        product !== null ? product.title : void 0)) {
       // update product visibility
-      ReactionCore.Log.info("toggle product visibility ", product._id, !
-        product.isVisible);
+      ReactionCore.Log.info("toggle product visibility ", product._id, !product.isVisible);
 
       ReactionCore.Collections.Products.update(product._id, {
         $set: {

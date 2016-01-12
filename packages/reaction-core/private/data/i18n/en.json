@@ -25,7 +25,9 @@
         "timezoneOptions": "Choose timezone",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "Page not found."
       },
       "shopSettings": {
         "general": "General",
@@ -73,7 +75,9 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",
-        "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
+        "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "This is not the product you were looking for."
       },
       "productDetailEdit": {
         "title": "Product title",
