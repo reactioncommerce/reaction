@@ -10,13 +10,13 @@ describe("Product", function () {
   describe("create", function () {
     it("should throw 403 error by non admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(Products, "insert");
+      spyOn(ReactionCore.Collections.Products, "insert");
 
       Meteor.call("products/createProduct", function (error) {
         expect(error.error).toEqual(403);
       });
 
-      expect(Products.insert).not.toHaveBeenCalled();
+      expect(ReactionCore.Collections.Products.insert).not.toHaveBeenCalled();
       return done();
     });
 
@@ -65,7 +65,8 @@ describe("Product", function () {
     });
 
     it("should have a title set to Example Product", function () {
-      expect($("title").text()).toEqual("REACTION | Example Product");
+      const product = ReactionCore.Collections.Products.findOne();
+      expect($(".title .title").text().trim()).toEqual(product.title);
     });
 
     it("should have itemprop:price", function () {

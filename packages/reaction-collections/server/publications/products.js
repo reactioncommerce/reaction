@@ -9,7 +9,10 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
   check(shops, Match.Optional(Array));
 
   let shopAdmin;
-  let shop = ReactionCore.getCurrentShop(this);
+  let shop = ReactionCore.getCurrentShop();
+  if (typeof shop !== "object") {
+    return this.ready();
+  }
   let Products = ReactionCore.Collections.Products;
   let limit = productScrollLimit || 10;
   if (shop) {
@@ -54,7 +57,10 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
  */
 Meteor.publish("Product", function (productId) {
   check(productId, String);
-  let shop = ReactionCore.getCurrentShop(this);
+  let shop = ReactionCore.getCurrentShop();
+  if (typeof shop !== "object") {
+    return this.ready();
+  }
   let Products = ReactionCore.Collections.Products;
   let selector = {};
   selector.isVisible = true;
@@ -81,7 +87,11 @@ Meteor.publish("Product", function (productId) {
  * tags
  */
 Meteor.publish("Tags", function () {
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
   return ReactionCore.Collections.Tags.find({
-    shopId: ReactionCore.getShopId()
+    shopId: shopId
   });
 });

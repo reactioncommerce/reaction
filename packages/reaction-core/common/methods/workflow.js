@@ -28,11 +28,18 @@ Meteor.methods({
     };
     const { Cart, Packages, Shops } = ReactionCore.Collections;
     const { Log } = ReactionCore;
-    // todo `cartId` seems should be used here. Do we need this here?
-    // using `cartId` looks not pretty secure.
-    const currentCart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
-    });
+    let currentCart;
+    // This method could be called indirectly from publication method in a time
+    // when `this.userId` will be null, that's why we have a third argument in
+    // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
+    // here.
+    if (typeof cartId === "string") {
+      currentCart = ReactionCore.Collections.Cart.findOne(cartId);
+    } else {
+      currentCart = ReactionCore.Collections.Cart.findOne({
+        userId: Meteor.userId()
+      });
+    }
 
     // exit if a cart doesn't exist.
     if (!currentCart) return [];
@@ -51,7 +58,7 @@ Meteor.methods({
       // for every layout, process the associated workflows
       _.each(layouts, function (layout) {
         // audience is the layout permissions
-        if (layout.audience === undefined) {
+        if (typeof layout.audience !== "object") {
           let defaultRoles = Shops.findOne(
             ReactionCore.getShopId(), {
               sort: {
@@ -60,9 +67,17 @@ Meteor.methods({
             }).defaultRoles;
           layout.audience = defaultRoles;
         }
-        // check permissions so you don't have to on template.
-        if (ReactionCore.hasPermission(layout.audience)) {
-          defaultPackageWorkflows.push(layout);
+        // check permissions so you don't have to on template. For a case, when
+        // this method calls indirectly from publication method, we do this
+        // check which is looks not pretty secure
+        if (typeof Meteor.userId() !== "string") {
+          if (ReactionCore.hasPermission(layout.audience, currentCart.userId)) {
+            defaultPackageWorkflows.push(layout);
+          }
+        } else {
+          if (ReactionCore.hasPermission(layout.audience)) {
+            defaultPackageWorkflows.push(layout);
+          }
         }
       });
     });
@@ -104,7 +119,7 @@ Meteor.methods({
       }
     });
 
-    // check to see if the next step has aready been processed.
+    // check to see if the next step has already been processed.
     // templateProcessedinWorkflow boolean
     gotoNextWorkflowStep = nextWorkflowStep.template;
     templateProcessedinWorkflow = _.contains(currentCart.workflow.workflow,
@@ -200,7 +215,7 @@ Meteor.methods({
     this.unblock();
 
     const cart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
+      userId: this.userId
     });
 
     if (!cart || typeof cart.workflow !== "object") return false;
