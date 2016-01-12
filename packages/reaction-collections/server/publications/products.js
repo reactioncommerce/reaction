@@ -24,9 +24,9 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
         }
       };
       // check if this user is a shopAdmin
-      for (let thisShop of shops) {
+      for (let thisShopId of shops) {
         if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
-            thisShop._id)) {
+            thisShopId)) {
           shopAdmin = true;
         }
       }
