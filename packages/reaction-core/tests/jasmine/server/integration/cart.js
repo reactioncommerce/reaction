@@ -15,6 +15,50 @@ describe("cart methods", function () {
     .method_handlers["cart/setShipmentAddress"];
   const originalSetPaymentAddress = Meteor.server
     .method_handlers["cart/setPaymentAddress"];
+  function spyOnMergeCart(id) {
+    return spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
+      function () {
+        this.userId = id;
+        return originalMergeCart.apply(this, arguments);
+      }
+    );
+  }
+  function spyOnAddToCart(id) {
+    return spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
+      function () {
+        this.userId = id;
+        return originalAddToCart.apply(this, arguments);
+      }
+    );
+  }
+  function spyOnCopyCartToOrder(id) {
+    return spyOn(Meteor.server.method_handlers, "cart/copyCartToOrder").and.
+    callFake(
+      function () {
+        this.userId = id;
+        return originalCopyCartToOrder.apply(this, arguments);
+      }
+    );
+  }
+  function spyOnSetShipmentAddress(id) {
+    return spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
+    callFake(
+      function () {
+        this.userId = id;
+        return originalSetShipmentAddress.apply(this, arguments);
+      }
+    );
+  }
+  function spyOnSetPaymentAddress(id) {
+    return spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
+    callFake(
+      function () {
+        this.userId = id;
+        return originalSetPaymentAddress.apply(this, arguments);
+      }
+    );
+  }
+
   afterAll(() => {
     Meteor.users.remove({});
   });
@@ -124,11 +168,7 @@ describe("cart methods", function () {
 
   describe("cart/createCart", function () {
     it("should create a test cart", function (done) {
-      spyOn(Meteor.server.method_handlers, "cart/mergeCart").and.callFake(
-        function () {
-          this.userId = userId;
-          return originalMergeCart.apply(this, arguments);
-        });
+      spyOnMergeCart(userId);
       spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
       spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
       spyOn(ReactionCore.Collections.Cart, "insert").and.callThrough();
@@ -167,11 +207,7 @@ describe("cart methods", function () {
       function (done) {
         let cart = Factory.create("cart");
         let items = cart.items.length;
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = cart.userId;
-            return originalAddToCart.apply(this, arguments);
-          });
+        spyOnAddToCart(cart.userId);
 
         Meteor.call("cart/addToCart", productId, variantId, quantity);
         cart = ReactionCore.Collections.Cart.findOne(cart._id);
@@ -187,11 +223,7 @@ describe("cart methods", function () {
       done) {
       spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shop._id);
       spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-      spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-        function () {
-          this.userId = userId;
-          return originalAddToCart.apply(this, arguments);
-        });
+      spyOnAddToCart(userId);
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
 
       Meteor.call("cart/addToCart", productId, variantId, quantity);
@@ -209,11 +241,7 @@ describe("cart methods", function () {
       "should throw error an exception if user doesn't have a cart",
       done => {
         const  userWithoutCart = Factory.create("user");
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = userWithoutCart._id;
-            return originalAddToCart.apply(this, arguments);
-          });
+        spyOnAddToCart(userWithoutCart._id);
         expect(() => {
           return Meteor.call("cart/addToCart", productId, variantId,
             quantity);
@@ -228,11 +256,7 @@ describe("cart methods", function () {
       "should throw error an exception if product doesn't exists",
       done => {
         const  cart = Factory.create("cart");
-        spyOn(Meteor.server.method_handlers, "cart/addToCart").and.callFake(
-          function () {
-            this.userId = cart.userId;
-            return originalAddToCart.apply(this, arguments);
-          });
+        spyOnAddToCart(cart.userId);
         expect(() => {
           return Meteor.call("cart/addToCart", "fakeProductId", variantId,
             quantity);
@@ -320,12 +344,7 @@ describe("cart methods", function () {
       "should throw error if cart user not current user",
       done => {
         const cart = Factory.create("cart");
-        spyOn(Meteor.server.method_handlers, "cart/copyCartToOrder").and.
-          callFake(
-          function () {
-            this.userId = "wrongUserId";
-            return originalCopyCartToOrder.apply(this, arguments);
-          });
+        spyOnCopyCartToOrder("wrongUserId");
         expect(() => {
           return Meteor.call("cart/copyCartToOrder", cart._id, sessionId);
         }).toThrow(new Meteor.Error(403, "Access Denied"));
@@ -339,12 +358,7 @@ describe("cart methods", function () {
       done => {
         const user1 = Factory.create("user");
         spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
-        spyOn(Meteor.server.method_handlers, "cart/copyCartToOrder").and.
-        callFake(
-          function () {
-            this.userId = user1._id;
-            return originalCopyCartToOrder.apply(this, arguments);
-          });
+        spyOnCopyCartToOrder(user1._id);
         const cartId = Meteor.call("cart/createCart", user1._id, sessionId);
         expect(cartId).toBeDefined();
         expect(() => {
@@ -360,12 +374,7 @@ describe("cart methods", function () {
        "should throw an error if order creation was failed",
        done => {
          const cart = Factory.create("cartToOrder");
-         spyOn(Meteor.server.method_handlers, "cart/copyCartToOrder").and.
-         callFake(
-           function () {
-             this.userId = cart.userId;
-             return originalCopyCartToOrder.apply(this, arguments);
-           });
+         spyOnCopyCartToOrder(cart.userId);
          // The main moment of test. We are spy on `insert` operation but do not
          // let it through this call
          spyOn(ReactionCore.Collections.Orders, "insert");
@@ -384,12 +393,7 @@ describe("cart methods", function () {
          let cart = Factory.create("cartToOrder");
          spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(cart.shopId);
          spyOn(ReactionCore, "getShopId").and.returnValue(cart.shopId);
-         spyOn(Meteor.server.method_handlers, "cart/copyCartToOrder").and.
-         callFake(
-           function () {
-             this.userId = cart.userId;
-             return originalCopyCartToOrder.apply(this, arguments);
-           });
+         spyOnCopyCartToOrder(cart.userId);
          spyOn(ReactionCore.Collections.Orders, "insert").and.callThrough();
 
          const orderId = Meteor.call("cart/copyCartToOrder", cart._id,
@@ -407,18 +411,8 @@ describe("cart methods", function () {
       "should correctly remove addresses from cart",
       done => {
         let cart = Factory.create("cart");
-        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
-          callFake(
-          function () {
-            this.userId = cart.userId;
-            return originalSetShipmentAddress.apply(this, arguments);
-          });
-        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
-          callFake(
-          function () {
-            this.userId = cart.userId;
-            return originalSetPaymentAddress.apply(this, arguments);
-          });
+        spyOnSetShipmentAddress(cart.userId);
+        spyOnSetPaymentAddress(cart.userId);
 
         const cartId = cart._id;
         const address = Object.assign({}, faker.reaction.address(), {
@@ -490,18 +484,8 @@ describe("cart methods", function () {
       "should update cart via `type` argument",
       done => {
         let cart = Factory.create("cart");
-        spyOn(Meteor.server.method_handlers, "cart/setShipmentAddress").and.
-        callFake(
-          function () {
-            this.userId = cart.userId;
-            return originalSetShipmentAddress.apply(this, arguments);
-          });
-        spyOn(Meteor.server.method_handlers, "cart/setPaymentAddress").and.
-        callFake(
-          function () {
-            this.userId = cart.userId;
-            return originalSetPaymentAddress.apply(this, arguments);
-          });
+        spyOnSetShipmentAddress(cart.userId);
+        spyOnSetPaymentAddress(cart.userId);
 
         const cartId = cart._id;
         const address = Object.assign({}, faker.reaction.address(), {
