@@ -21,8 +21,7 @@ const TagGroup = React.createClass({
 
   getMeteorData() {
     return {
-      currentTag: TagHelpers.currentTag(),
-      subTags: TagHelpers.subTags(this.props.tag)
+      subTags: TagHelpers.subTags(this.props.tag) || []
     };
   },
 

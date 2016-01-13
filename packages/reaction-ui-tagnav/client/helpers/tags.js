@@ -10,13 +10,18 @@ ReactionUI.TagNav.Helpers = {
         _id: {
           $in: parentTag.relatedTagIds
         }
-      }, {
-        sort: {
-          position: 1
-        }
       }).fetch();
 
-      return tags;
+      const poop = parentTag.relatedTagIds.map((tagId) => {
+        return _.find(tags, (tagObject) => {
+          return tagObject._id === tagId;
+        });
+      });
+
+      // console.log("*******************************", poop);
+      // console.log("Tags (helper level)", tags.map(tag => tag._id));
+      // console.log("Tags (helper level ACTUAL)", parentTag.relatedTagIds.map(tag => tag));
+      return poop;
     }
 
     return false;
@@ -96,36 +101,47 @@ ReactionUI.TagNav.Helpers = {
       });
   },
 
-  moveTagToNewParent(movedTagId, toListId, toIndex) {
-    console.log(`Would Add item ${movedTagId} to list ${toListId}, with index ${toIndex}`);
-    ReactionCore.Collections.Tags.update(toListId,
+  moveTagToNewParent(movedTagId, toListId, toIndex, ofList) {
+    // console.log(`Would Add item ${movedTagId} to list ${toListId}, with index ${toIndex}, of list`, ofList);
+    const newList = [
+      ...ofList.map((tag) => tag._id),
+      movedTagId
+    ];
+
+    const result = ReactionCore.Collections.Tags.update(toListId,
       {
-        $addToSet: {
-          relatedTagIds: movedTagId
+        $set: {
+          relatedTagIds: newList
         }
       }
     );
 
+    return result;
   },
 
   sortTags(tagIds, parentTag) {
-    console.log(`Would Sort tags item`, tagIds);
-
     if (_.isArray(tagIds)) {
-      ReactionCore.Collections.Tags.update(parentTag._id,
-        {
+      if (_.isEmpty(parentTag)) {
+        // Top level tags
+        for (let tagId of tagIds) {
+          ReactionCore.Collections.Tags.update(tagId, {
+            $set: {
+              position: tagIds.indexOf(tagId)
+            }
+          });
+        }
+      } else {
+        // Sub tags
+        ReactionCore.Collections.Tags.update(parentTag._id, {
           $set: {
             relatedTagIds: tagIds
           }
-        }
-      );
+        });
+      }
     }
   },
 
   removeTag(tag, parentTag) {
-      // console.log(`Would Remove item ${movedTagId} from list ${fromListId}`);
-      console.log("Trying to remove top level tag", tag);
-
     if (_.isEmpty(parentTag) === false) {
       ReactionCore.Collections.Tags.update(parentTag._id,
         {
@@ -135,7 +151,6 @@ ReactionUI.TagNav.Helpers = {
         }
       );
     } else if (tag.isTopLevel === true) {
-      console.log("Trying to remove top level tag");
       ReactionCore.Collections.Tags.update(tag._id,
         {
           $set: {
@@ -144,17 +159,5 @@ ReactionUI.TagNav.Helpers = {
         }
       );
     }
-
-    return
-    ReactionCore.Collections.Tags.update(fromListId,
-      {
-        $pull: {
-          relatedTags: {
-            $eq: tagIdToRemove
-          }
-        }
-      }
-    );
-  },
-
+  }
 };

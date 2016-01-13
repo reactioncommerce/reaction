@@ -19,7 +19,8 @@ const TagNav = React.createClass({
 
   getInitialState() {
     return {
-      isEditing: false
+      isEditing: false,
+      lockDropdown: true
     };
   },
 
@@ -65,8 +66,8 @@ const TagNav = React.createClass({
     TagHelpers.sortTags(tagIds, parentTag);
   },
 
-  handleTagDragAdd(movedTagId, toListId, toIndex) {
-    TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex);
+  handleTagDragAdd(movedTagId, toListId, toIndex, ofList) {
+    TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
   },
 
   handleDropdownClose(forceClose) {
@@ -160,9 +161,12 @@ const TagNav = React.createClass({
     if (this.props.tags) {
       const subTags = this.props.tags.map((tag, index) => {
         const ref = `tag_${tag._id}`;
+        if (tag._id !== "Y6HERKuC2sMDiy9Yx") {
+          return
+        }
         return (
           <div
-            className="rui tagnav dropdown hidden"
+            className="rui tagnav dropdown"
             data-tag={ref}
             key={tag._id || index}
             ref={ref}

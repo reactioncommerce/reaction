@@ -4,6 +4,7 @@ const Tag = ReactionUI.Components.Tag;
 const TagGroup = ReactionUI.TagNav.Components.TagGroup;
 const TagHelpers = ReactionUI.TagNav.Helpers;
 const Button = ReactionUI.Components.Button;
+const Sortable = ReactionUI.Lib.Sortable;
 
 const TagTree = React.createClass({
   displayName: "Tag Tree",
@@ -27,9 +28,86 @@ const TagTree = React.createClass({
     };
   },
 
+  move(array, fromIndex, toIndex) {
+
+    if (!_.isArray(array)) {
+      return null;
+    }
+
+    while (fromIndex < 0) {
+      fromIndex += array.length;
+    }
+    while (toIndex < 0) {
+      toIndex += array.length;
+    }
+    if (toIndex >= this.length) {
+      var k = toIndex - array.length;
+      while ((k--) + 1) {
+        array.push(undefined);
+      }
+    }
+
+    array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
+
+    return array;
+  },
+
+
+  handleDragSort: (event) => {
+    let newTagsOrder = this.move(this.props.tags, event.oldIndex, event.newIndex);
+
+    if (newTagsOrder) {
+      let tagIds = newTagsOrder.map((tag) => {
+        if (tag) {
+          return tag._id;
+        }
+      });
+
+      if (this.props.onTagSort) {
+        // ReactDOM.unmountComponentAtNode(event.item);
+
+        setTimeout(() => {
+          this.props.onTagSort(tagIds, this.props.parentTag);
+        }, 0);
+      }
+    }
+  },
+
+  componentDidMount() {
+    if (this.props.editable) {
+      const ds = (event) => {
+        const oldTagsArray = this.data.subTags
+        let newTagsOrder = this.move(this.data.subTags, event.oldIndex, event.newIndex);
+
+        if (newTagsOrder) {
+          let tagIds = newTagsOrder.map((tag) => {
+            if (tag) {
+              return tag._id;
+            }
+          });
+
+          if (this.props.onTagSort) {
+            setTimeout(() => {
+              this.props.onTagSort(tagIds, this.props.parentTag);
+            }, 0);
+          }
+        }
+      };
+
+
+      this._sortable = Sortable.create(this.refs.tagTreeContent, {
+        group: "tagTree",
+        onSort: ds,
+        // onAdd: this.handleDragAdd,
+        // onRemove: this.handleDragRemove
+      });
+    }
+  },
+
+
+
   getMeteorData() {
     return {
-      currentTag: TagHelpers.currentTag(),
       subTags: TagHelpers.subTags(this.props.parentTag)
     };
   },
@@ -66,18 +144,19 @@ const TagTree = React.createClass({
     }
   },
 
-  renderTagGroup() {
+  renderTagGroups() {
     if (this.data.subTags) {
       const subTagGroups = this.data.subTags.map((tag, index) => {
         return (
           <TagGroup
-            editable={this.props.editable && this.state.isEditing}
+            editable={this.props.editable && this.state.isEditing || true}
             key={tag._id || index}
             onTagCreate={this.props.onTagCreate}
             onTagDragAdd={this.props.onTagDragAdd}
             onTagRemove={this.props.onTagRemove}
             onTagSort={this.props.onTagSort}
             onTagUpdate={this.props.onTagUpdate}
+            ref="tagGroup"
             tag={tag}
           />
         );
@@ -117,8 +196,8 @@ const TagTree = React.createClass({
   render() {
     return (
       <div className="rui tagnav tree">
-        <div className="content">
-          {this.renderTagGroup()}
+        <div className="content" ref="tagTreeContent">
+          {this.renderTagGroups()}
           {this.renderNewTagGroupField()}
         </div>
         {this.renderEditButton()}

@@ -136,7 +136,10 @@ class Tag extends React.Component {
    */
   renderEditableTag() {
     return (
-      <div className="rui tag edit" data-id={this.props.tag._id}>
+      <div
+        className="rui tag edit"
+        data-id={this.props.tag._id}
+      >
         <Button icon="bars" />
         <TextField
           onFocus={this.handleFocus}

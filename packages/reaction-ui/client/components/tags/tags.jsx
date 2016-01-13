@@ -2,16 +2,22 @@
 const Tag = ReactionUI.Components.Tag;
 const classnames = ReactionUI.Lib.classnames;
 const Sortable = ReactionUI.Lib.Sortable;
-const ReactDOM = ReactionUI.Lib.ReactDOM;
 
 class Tags extends React.Component {
   displayName = "Tag List (Tags)";
 
-  componentDidMount() {
-    const element = ReactDOM.findDOMNode(this.refs.tags);
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: true,
+      tags: props.tags,
+      tagIds: props.tags.map((tag) => tag._id)
+    };
+  }
 
+  componentDidMount() {
     if (this.props.editable) {
-      this._sortable = Sortable.create(element, {
+      this._sortable = Sortable.create(this.refs.tags, {
         group: "tags",
         onSort: this.handleDragSort,
         onAdd: this.handleDragAdd,
@@ -20,56 +26,67 @@ class Tags extends React.Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({
+      tags: this.props.tags,
+      tagIds: this.props.tags.map((tag) => tag._id)
+    });
+
+    if (props.editable && this.state.isEditing) {
+      if (this._sortable) {
+        // this._sortable.option("disabled", false);
+      } else {
+        this._sortable = Sortable.create(this.refs.tags, {
+          group: "tags",
+          onSort: this.handleDragSort,
+          onAdd: this.handleDragAdd,
+          onRemove: this.handleDragRemove
+        });
+      }
+    }
+  }
+
   handleDragAdd = (event) => {
-
-
-    const fromListId = event.from.dataset.id;
     const toListId = event.to.dataset.id;
     const movedTagId = event.item.dataset.id;
 
-    // ReactDOM.unmountComponentAtNode(event.item);
-    console.log("Item", movedTagId, "Moved from list", fromListId, `(index ${event.oldIndex}`, "To list", toListId, `(index ${event.newIndex}`, "--", this.props.parentTag._id);
+    this.setState({
+      tagIds: [
+        ...this.state.tagsIds,
+        movedTagId
+      ]
+    });
 
     if (this.props.onTagDragAdd) {
-      this.props.onTagDragAdd(movedTagId, toListId, event.newIndex);
+      this.props.onTagDragAdd(movedTagId, toListId, event.newIndex, this.props.tags);
     }
   };
 
   handleDragRemove = (event) => {
-
-    const fromListId = event.from.dataset.id;
-    const toListId = event.to.dataset.id;
     const movedTagId = event.item.dataset.id;
 
     if (this.props.onTagRemove) {
-      console.log("Item", movedTagId, "REMOVED from list", fromListId, `(index ${event.oldIndex}`, "To list", toListId, `(index ${event.newIndex}`, "--", this.props.parentTag._id);
-
       let foundTag = _.find(this.props.tags, (tag) => {
         return tag._id === movedTagId;
       });
 
       this.props.onTagRemove(foundTag, this.props.parentTag);
     }
-
-
   };
 
   handleDragSort = (event) => {
-    let newTagsOrder = this.move(this.props.tags, event.oldIndex, event.newIndex);
-    if (newTagsOrder) {
-      let tagIds = newTagsOrder.map((tag) => {
-        if (tag) {
-          return tag._id;
-        }
-      });
+    let newTagsOrder = this.move(this.state.tagIds, event.oldIndex, event.newIndex);
 
+    if (newTagsOrder) {
       if (this.props.onTagSort) {
-        this.props.onTagSort(tagIds, this.props.parentTag);
+        this.props.onTagSort(newTagsOrder, this.props.parentTag);
       }
     }
   };
 
-  move(array, fromIndex, toIndex) {
+  move(array, from, to) {
+    let fromIndex = from;
+    let toIndex = to;
 
     if (!_.isArray(array)) {
       return null;
@@ -82,7 +99,7 @@ class Tags extends React.Component {
       toIndex += array.length;
     }
     if (toIndex >= this.length) {
-      var k = toIndex - array.length;
+      let k = toIndex - array.length;
       while ((k--) + 1) {
         array.push(undefined);
       }
@@ -153,21 +170,23 @@ class Tags extends React.Component {
   };
 
   renderTags() {
-    if (_.isArray(this.props.tags)) {
-      const tags = this.props.tags.map((tag, index) => {
-        return (
-          <Tag
-            data-id={tag._id}
-            editable={this.props.editable}
-            key={index}
-            onTagBookmark={this.handleTagBookmark}
-            onTagMouseOut={this.handleTagMouseOut}
-            onTagMouseOver={this.handleTagMouseOver}
-            onTagRemove={this.handleTagRemove}
-            onTagUpdate={this.handleTagUpdate}
-            tag={tag}
-          />
-        );
+    if (_.isArray(this.state.tags)) {
+      const tags = this.state.tags.map((tag, index) => {
+        if (tag) {
+          return (
+            <Tag
+              data-id={tag._id}
+              editable={this.props.editable}
+              key={tag._id || index}
+              onTagBookmark={this.handleTagBookmark}
+              onTagMouseOut={this.handleTagMouseOut}
+              onTagMouseOver={this.handleTagMouseOver}
+              onTagRemove={this.handleTagRemove}
+              onTagUpdate={this.handleTagUpdate}
+              tag={tag}
+            />
+          );
+        }
       });
 
       // Render an blank tag for creating new tags
@@ -186,6 +205,10 @@ class Tags extends React.Component {
   }
 
   render() {
+    if (this.state.isEditing === false && this._sortable) {
+      this._sortable.option("disabled", true);
+    }
+
     const classes = classnames({
       rui: true,
       tags: true,
@@ -193,7 +216,11 @@ class Tags extends React.Component {
     });
 
     return (
-      <div className={classes} data-id={this.props.parentTag._id} ref="tags">
+      <div
+        className={classes}
+        data-id={this.props.parentTag._id}
+        ref="tags"
+      >
         {this.renderTags()}
       </div>
     );
@@ -217,6 +244,7 @@ Tags.propTypes = {
   onTagMouseOut: React.PropTypes.func,
   onTagMouseOver: React.PropTypes.func,
   onTagRemove: React.PropTypes.func,
+  onTagSort: React.PropTypes.func,
   onTagUpdate: React.PropTypes.func,
 
   parentTag: ReactionCore.PropTypes.Tag,
