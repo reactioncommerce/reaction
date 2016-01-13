@@ -1,4 +1,4 @@
-const shupmentStatus = [
+const shipmentStatus = [
   {
     group: "Payments",
     items: [
@@ -21,7 +21,7 @@ const shupmentStatus = [
       {name: "refunded", label: "Refunded"}
     ]
   }
-]
+];
 
 Template.coreOrderShippingSummary.onCreated(() => {
   let template = Template.instance();
@@ -95,19 +95,32 @@ Template.coreOrderShippingSummary.helpers({
     return i18n.t("orderShipping.noTracking");
   },
   shipmentStatus() {
-    let shipment = Template.instance().order.shipping[0];
-    if (shipment.shipped) {
+    const order = Template.instance().order;
+    const shipment = Template.instance().order.shipping[0];
+    const shipped = _.every(shipment.items, (shipmentItem) => {
+      for (let fullItem of order.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            if (_.isArray(fullItem.workflow.workflow)) {
+              return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+            }
+          }
+        }
+      }
+    });
+
+    if (shipped) {
       return {
         shipped: true,
         status: "success",
         label: i18n.t("orderShipping.shipped")
-      }
+      };
     }
 
     return {
       shipped: false,
       status: "info",
       label: i18n.t("orderShipping.notShipped")
-    }
+    };
   }
 });
