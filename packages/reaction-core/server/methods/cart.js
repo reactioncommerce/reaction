@@ -850,7 +850,7 @@ Meteor.methods({
    * directly within this method, just throw down though hooks
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethod,) {
+  "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
