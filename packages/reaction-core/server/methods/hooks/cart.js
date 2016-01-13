@@ -16,7 +16,6 @@ ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
 
     if (cart) {
       if (cart.items && cart.billing[0].paymentMethod) {
-        // we need to throw an the session below the `cart/createCart` method
         const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
         // Return orderId as result from this after hook call.
         // This is done by extending the existing result.
