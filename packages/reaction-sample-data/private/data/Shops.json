@@ -21,12 +21,6 @@
       "decimal": ",",
       "thousand": "."
     },
-    "POOP": {
-      "format": "%v %s",
-      "symbol": "AMD",
-      "decimal": ",",
-      "thousand": "."
-    },
     "ANG": {
       "format": "%s%v",
       "symbol": "ƒ",
