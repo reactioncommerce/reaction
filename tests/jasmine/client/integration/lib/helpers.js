@@ -9,8 +9,8 @@
 
 
 (function (Meteor, Tracker, Router) {
-  var isRouterReady = false;
-  var callbacks = [];
+  let isRouterReady = false;
+  let callbacks = [];
 
   window.waitForRouter = function (callback) {
     if (isRouterReady) {
@@ -27,8 +27,8 @@
         callbacks.forEach(function (callback) {
           callback();
         });
-        callbacks = []
-      })
+        callbacks = [];
+      });
     }
   });
 
@@ -63,4 +63,13 @@ waitForElement = function (selector, successCallback) {
       successCallback();
     }
   }, checkInterval);
+};
+
+signUp = function (user, callback) {
+  $(".dropdown-toggle").trigger("click");
+  $("[data-event-action=signUp]").trigger("click");
+  $(".login-input-email").val(user.email);
+  $(".login-input-password").val(user.password);
+  $("[data-event-action='register']").trigger("click");
+  callback && callback();
 };

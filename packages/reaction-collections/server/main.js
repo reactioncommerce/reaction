@@ -3,8 +3,8 @@
  */
 
 _.extend(ReactionCore, {
-  getCurrentShopCursor: function (client) {
-    let domain = this.getDomain(client);
+  getCurrentShopCursor: function () {
+    let domain = this.getDomain();
     let cursor = ReactionCore.Collections.Shops.find({
       domains: domain
     }, {
@@ -16,20 +16,24 @@ _.extend(ReactionCore, {
     }
     return cursor;
   },
-  getCurrentShop: function (client) {
-    if (this.getCurrentShopCursor(client)) {
-      let cursor = this.getCurrentShopCursor(client);
-      return cursor.fetch()[0];
+  getCurrentShop: function () {
+    const currentShopCursor = this.getCurrentShopCursor();
+    // also, we could check in such a way: `currentShopCursor instanceof Object`
+    // but not instanceof something.Cursor
+    if (typeof currentShopCursor === "object") {
+      return currentShopCursor.fetch()[0];
     }
   },
-  getShopId: function (client) {
-    if (this.getCurrentShop(client)) {
-      return this.getCurrentShop(client)._id;
+  getShopId: function () {
+    const currentShop = this.getCurrentShop();
+    if (typeof currentShop === "object") {
+      return currentShop._id;
     }
   },
   getDomain: function () {
-    if (Meteor.absoluteUrl()) {
-      return Meteor.absoluteUrl().split("/")[2].split(":")[0];
+    let absoluteUrl = Meteor.absoluteUrl();
+    if (typeof absoluteUrl === "string") {
+      return absoluteUrl.split("/")[2].split(":")[0];
     }
     return "localhost";
   }

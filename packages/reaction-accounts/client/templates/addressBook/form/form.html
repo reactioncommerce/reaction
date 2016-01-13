@@ -68,6 +68,7 @@
   </div>
 </div>
 <div class="row address-options">
+  {{#if hasAddressBookEntries}}
   <div class="form-group{{#if afFieldIsInvalid name='isShippingDefault'}} has-error{{/if}}">
     <label class="control-label"></label>
     {{>afFieldInput name="isShippingDefault" value=isShippingDefault}}
@@ -75,6 +76,10 @@
     <span class="help-block">{{afFieldMessage name="isShippingDefault"}}</span>
     {{/if}}
   </div>
+  {{else}}
+    {{>afFieldInput name="isShippingDefault" value=isShippingDefault type="hidden"}}
+  {{/if}}
+  {{#if hasAddressBookEntries}}
   <div class="form-group{{#if afFieldIsInvalid name='isBillingDefault'}} has-error{{/if}}">
     <label class="control-label"></label>
     {{>afFieldInput name="isBillingDefault" value=isBillingDefault}}
@@ -82,6 +87,9 @@
     <span class="help-block">{{afFieldMessage name="isBillingDefault"}}</span>
     {{/if}}
   </div>
+  {{else}}
+    {{>afFieldInput name="isBillingDefault" value=isBillingDefault type="hidden"}}
+  {{/if}}
   <div class="form-group{{#if afFieldIsInvalid name='isCommercial'}} has-error{{/if}}">
     <label class="control-label"></label>
     {{>afFieldInput name="isCommercial" value=isCommercial}}

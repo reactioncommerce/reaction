@@ -6,8 +6,12 @@
 
 Meteor.startup(function () {
   try {
-    return ReactionRegistry.loadSettings(Assets.getText("settings/reaction.json"));
+    ReactionRegistry.loadSettings(Assets.getText("settings/reaction.json"));
   } catch (error) {
-    ReactionCore.Log.debug("loadSettings reaction.json not loaded.", error);
+    try {
+      Assets.getText("settings/reaction.json");
+    } catch (error2) {
+      ReactionCore.Log.warn("loadSettings reaction.json not loaded.", error2);
+    }
   }
 });

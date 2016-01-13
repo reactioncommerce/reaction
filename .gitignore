@@ -18,3 +18,5 @@ results
 npm-debug.log
 .fileStorage/
 packages/reaction-core/lib/bower
+
+jsdoc.json

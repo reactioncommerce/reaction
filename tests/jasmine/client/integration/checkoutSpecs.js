@@ -53,7 +53,7 @@ describe("Checkout", function () {
       // if this step is already process, we expect the workflow.workflow
       // to already contain this step, and not to see the login flow
       if (thisStep && !thisWorkflow) {
-        expect($(".continue-guest")).toExist();
+        expect($(".continue-guest a")).toExist();
       } else {
         expect(cartWorkflow.workflow).toContain("checkoutLogin");
       }

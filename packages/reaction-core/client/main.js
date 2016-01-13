@@ -92,7 +92,7 @@ _.extend(ReactionCore, {
       for (let key in sellerShopPermissions) {
         if (key) {
           let shop = sellerShopPermissions[key];
-          if (Roles.userIsInRole(checkUserId, permissions, shop)) {
+          if (Roles.userIsInRole(userId, permissions, shop)) {
             return true;
           }
         }
@@ -243,19 +243,50 @@ ReactionCore.Log.level(isDebug);
  */
 
 Accounts.loginWithAnonymous = function (anonymous, callback) {
+  // We need to be sure that every user will work inside a session. Sometimes
+  // session could be destroyed, for example, by clearing browser's cache. In
+  // that case we need to take care about creating new session before new
+  // user or anonymous will be created/logged in.
+  // The problem here - looks like where is no way to track localStorage:
+  // `amplify.store("ReactionCore.session")` itself. That's why we need to use
+  // another way: `accounts` package uses `setTimeout` for monitoring connection
+  // Accounts.callLoginMethod will be called after clearing cache. We could
+  // latch on this computations by running extra check here.
+  if (typeof amplify.store("ReactionCore.session") !== "string") {
+    const newSession = Random.id();
+    amplify.store("ReactionCore.session", newSession);
+    Session.set("sessionId", newSession);
+  }
   Accounts.callLoginMethod({
     methodArguments: [{
-      anonymous: true
+      anonymous: true,
+      sessionId: Session.get("sessionId")
     }],
     userCallback: callback
   });
 };
 
+// @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+let hidden;
+// let visibilityState; // keep this for a some case
+if (typeof document.hidden !== "undefined") {
+  hidden = "hidden";
+  // visibilityState = "visibilityState";
+} else if (typeof document.mozHidden !== "undefined") {
+  hidden = "mozHidden";
+  // visibilityState = "mozVisibilityState";
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden";
+  // visibilityState = "msVisibilityState";
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden";
+  // visibilityState = "webkitVisibilityState";
+}
+
 /**
  *  Startup Reaction
  *  Init Reaction client
  */
-
 Meteor.startup(function () {
   // warn on insecure exporting of PackageRegistry settings
   if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
@@ -265,9 +296,25 @@ Meteor.startup(function () {
   // init the core
   ReactionCore.init();
   // initialize anonymous guest users
-  return Deps.autorun(function () {
-    if (ReactionCore.allowGuestCheckout() && !Meteor.userId()) {
-      Accounts.loginWithAnonymous();
+  return Tracker.autorun(function () {
+    const userId = Meteor.userId();
+    // TODO: maybe `visibilityState` will be better here
+    let isHidden;
+    let guestAreAllowed;
+    let loggingIn;
+    let sessionId;
+    Tracker.nonreactive(function () {
+      guestAreAllowed = ReactionCore.allowGuestCheckout();
+      isHidden = document[hidden];
+      loggingIn = Accounts.loggingIn();
+      sessionId = amplify.store("ReactionCore.session");
+    });
+    if (guestAreAllowed && !userId) {
+      if (!isHidden && !loggingIn || typeof sessionId !== "string") {
+        Accounts.loginWithAnonymous();
+      }/* else {
+        Tracker.currentComputation.stop();
+      }*/
     }
   });
 });

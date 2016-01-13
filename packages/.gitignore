@@ -1,20 +1,20 @@
 *
 !.gitignore
 
-!my-custom-theme-template/*
+!my-custom-theme-template
 
-!reaction-accounts/*
-!reaction-analytics/*
-!reaction-analytics-libs/*
-!reaction-collections/*
-!reaction-core/*
-!reaction-core-theme/*
-!reaction-default-theme/*
-!reaction-inventory/*
-!reaction-product-simple/*
-!reaction-sample-data/*
-!reaction-schemas/*
-!reaction-shipping/*
-!reaction-social/*
-!reaction-ui/*
-!reaction-email-templates/*
+!reaction-accounts
+!reaction-analytics
+!reaction-analytics-libs
+!reaction-collections
+!reaction-core
+!reaction-core-theme
+!reaction-default-theme
+!reaction-inventory
+!reaction-product-simple
+!reaction-sample-data
+!reaction-schemas
+!reaction-shipping
+!reaction-social
+!reaction-ui
+!reaction-email-templates

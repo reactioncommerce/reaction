@@ -12,7 +12,7 @@ Meteor.methods({
    * user permissions to template are verified
    * @param {String} workflow - name of workflow
    * @param {String} newWorkflowStatus - name of the next workflow stage
-   * @param {String} cartId - cart._id
+   * @param {String} [cartId] - cart._id
    * @return {Array|Boolean|Number}
    */
   "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus,
@@ -28,9 +28,18 @@ Meteor.methods({
     };
     const { Cart, Packages, Shops } = ReactionCore.Collections;
     const { Log } = ReactionCore;
-    const currentCart = ReactionCore.Collections.Cart.findOne({
-      userId: Meteor.userId()
-    });
+    let currentCart;
+    // This method could be called indirectly from publication method in a time
+    // when `this.userId` will be null, that's why we have a third argument in
+    // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
+    // here.
+    if (typeof cartId === "string") {
+      currentCart = ReactionCore.Collections.Cart.findOne(cartId);
+    } else {
+      currentCart = ReactionCore.Collections.Cart.findOne({
+        userId: Meteor.userId()
+      });
+    }
 
     // exit if a cart doesn't exist.
     if (!currentCart) return [];
@@ -49,7 +58,7 @@ Meteor.methods({
       // for every layout, process the associated workflows
       _.each(layouts, function (layout) {
         // audience is the layout permissions
-        if (layout.audience === undefined) {
+        if (typeof layout.audience !== "object") {
           let defaultRoles = Shops.findOne(
             ReactionCore.getShopId(), {
               sort: {
@@ -58,9 +67,17 @@ Meteor.methods({
             }).defaultRoles;
           layout.audience = defaultRoles;
         }
-        // check permissions so you don't have to on template.
-        if (ReactionCore.hasPermission(layout.audience)) {
-          defaultPackageWorkflows.push(layout);
+        // check permissions so you don't have to on template. For a case, when
+        // this method calls indirectly from publication method, we do this
+        // check which is looks not pretty secure
+        if (typeof Meteor.userId() !== "string") {
+          if (ReactionCore.hasPermission(layout.audience, currentCart.userId)) {
+            defaultPackageWorkflows.push(layout);
+          }
+        } else {
+          if (ReactionCore.hasPermission(layout.audience)) {
+            defaultPackageWorkflows.push(layout);
+          }
         }
       });
     });
@@ -102,7 +119,7 @@ Meteor.methods({
       }
     });
 
-    // check to see if the next step has aready been processed.
+    // check to see if the next step has already been processed.
     // templateProcessedinWorkflow boolean
     gotoNextWorkflowStep = nextWorkflowStep.template;
     templateProcessedinWorkflow = _.contains(currentCart.workflow.workflow,
@@ -182,6 +199,42 @@ Meteor.methods({
         newWorkflowStatus);
       return true;
     }
+  },
+
+  /**
+   * workflow/revertCartWorkflow
+   * @description if something was changed on the previous `cartWorkflow` steps
+   * we need to revert to this step to renew the order
+   * @param {String} newWorkflowStatus - name of `cartWorkflow` step, which
+   * we need to revert
+   * @todo need tests
+   * @return {Number|Boolean} cart update results
+   */
+  "workflow/revertCartWorkflow": function (newWorkflowStatus) {
+    check(newWorkflowStatus, String);
+    this.unblock();
+
+    const cart = ReactionCore.Collections.Cart.findOne({
+      userId: this.userId
+    });
+
+    if (!cart || typeof cart.workflow !== "object") return false;
+    if (typeof cart.workflow.workflow !== "object") return false;
+
+    const { workflow } = cart.workflow;
+    // get index of `newWorkflowStatus`
+    const resetToIndex = workflow.indexOf(newWorkflowStatus);
+    // exit if no such step in workflow
+    if (!~resetToIndex) return false;
+    // remove all steps that further `newWorkflowStatus` and itself
+    const resetedWorkflow = workflow.slice(0, resetToIndex);
+
+    return ReactionCore.Collections.Cart.update(cart._id, {
+      $set: {
+        "workflow.status": newWorkflowStatus,
+        "workflow.workflow": resetedWorkflow
+      }
+    });
   },
 
   /**
