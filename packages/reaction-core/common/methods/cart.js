@@ -6,7 +6,6 @@ if (Meteor.isClient) {
   Meteor.methods({
     "cart/submitPayment": function (paymentMethod) {
       check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-
       let checkoutCart = ReactionCore.Collections.Cart.findOne({
         userId: Meteor.userId()
       });

@@ -1,0 +1,11 @@
+approve_by_comment: true
+approve_regex: '^(Approved|:\+1:)' # this only matches at the start of a line, just my suggestion -- read the docs for why
+reject_regex: '^(Rejected|:-1:)'
+reset_on_push: false
+reviewers:
+  required: 2
+  members:
+    - aaronjudd
+    - jshimko
+    - mikemurray
+    - zenweasel

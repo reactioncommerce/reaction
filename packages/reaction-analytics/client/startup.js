@@ -17,7 +17,7 @@ Meteor.startup(function() {
         return;
       } else if (!segmentio.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
         _.defer(function() {
-          return Alerts.add('Segment Write Key is not configured. <a href="/dashboard/settings/analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.', "danger", {
+          return Alerts.add('Segment Write Key is not configured. <a href="/dashboard/settings/reaction-analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.', "danger", {
             type: "analytics-not-configured",
             html: true,
             sticky: true
@@ -30,7 +30,7 @@ Meteor.startup(function() {
         ga("create", coreAnalytics.settings["public"].google - analytics.api_key, "auto");
       } else if (!googleAnalytics.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
         _.defer(function() {
-          return Alerts.add('Google Analytics Property is not configured. <a href="/dashboard/settings/analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.', "danger", {
+          return Alerts.add('Google Analytics Property is not configured. <a href="/dashboard/settings/reaction-analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.', "danger", {
             type: "analytics-not-configured",
             html: true,
             sticky: true
@@ -43,7 +43,7 @@ Meteor.startup(function() {
         mixpanel.init(coreAnalytics.settings["public"].mixpanel.api_key);
       } else if (!mixpanel.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
         _.defer(function() {
-          return Alerts.add('Mixpanel token is not configured. <a href="/dashboard/settings/analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.', "danger", {
+          return Alerts.add('Mixpanel token is not configured. <a href="/dashboard/settings/reaction-analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.', "danger", {
             type: "analytics-not-configured",
             html: true,
             sticky: true

@@ -9,6 +9,7 @@
       "app": {
         "save": "Save",
         "saveAndContinue": "Save and continue",
+        "saveChanges": "Save Changes",
         "cancel": "Cancel",
         "submit": "Submit",
         "delete": "Delete",
@@ -20,11 +21,18 @@
         "warning": "Oops!",
         "unauthorizedMessage": "You don't have permission to view this content.",
         "monthOptions": "Choose month",
-        "yearOptions": "Chose year",
+        "yearOptions": "Choose year",
         "timezoneOptions": "Choose timezone",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
         "print": "Print"
+      },
+      "shopSettings": {
+        "general": "General",
+        "address": "Address",
+        "mail": "Mail",
+        "localization": "Localization",
+        "options": "Options"
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -167,7 +175,7 @@
       "checkoutLogin": {
         "welcome": "Welcome, it's so good to see you.",
         "loginCompleted": "Account completed",
-        "createOrLogin": "Create an acccount, or sign in",
+        "createOrLogin": "Create an account, or sign in",
         "guestOrLogin": "Sign in, or checkout as a guest",
         "continueAsGuest": "Continue as Guest",
         "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later."
@@ -209,7 +217,9 @@
       "checkoutPayment": {
         "addPaymentToCompleteOrder": "Add payment to complete order",
         "processingError": "There was a problem with your payment.",
-        "completeYourOrder": "Complete your order"
+        "completeYourOrder": "Complete your order",
+        "noPaymentMethods": "No payment methods are configured.",
+        "configureNow": "Configure now."
       },
       "checkoutReview": {
         "review": "Review"

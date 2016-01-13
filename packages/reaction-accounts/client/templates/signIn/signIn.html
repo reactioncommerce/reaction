@@ -19,7 +19,7 @@
 
       <div class="form-group form-group-email {{hasError messages.errors.email}}">
         <label for="email-{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
-        <input id="email-{{uniqueId}}" class="form-control login-input-email" type="email" tabindex="1" value="{{email}}">
+        <input id="email-{{uniqueId}}" class="form-control login-input-email" type="email" tabindex="1" value="{{credentials.email}}">
 
         {{#if hasError messages.errors.email}}
           <span class="help-block">
@@ -30,7 +30,7 @@
 
       <div class="form-group {{hasError messages.errors.password }}">
         <label for="password-{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
-        <input id="password-{{uniqueId}}" class="form-control login-input-password" type="password" tabindex="2" value="{{password}}">
+        <input id="password-{{uniqueId}}" class="form-control login-input-password" type="password" tabindex="2" value="{{credentials.password}}">
 
         {{#if hasError messages.errors.password}}
           <span class="help-block">

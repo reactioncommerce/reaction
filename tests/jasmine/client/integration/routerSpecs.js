@@ -43,7 +43,10 @@ describe("Router", function () {
       });
 
       it("should have a title set to Index", function () {
-        expect($("title")).toContainText("REACTION | Index");
+        const shop = ReactionCore.Collections.Shops.find().fetch()[0];
+        // jQuery way: $(document).find("title")
+        expect(document.getElementsByTagName("title")[0])
+          .toContainText(shop.name + " | Index");
       });
     });
 
