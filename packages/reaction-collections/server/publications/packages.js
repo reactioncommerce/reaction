@@ -7,12 +7,12 @@
 Meteor.publish("Packages", function (shopCursor) {
   check(shopCursor, Match.Optional(Object));
   let Packages = ReactionCore.Collections.Packages;
-  shop = shopCursor || ReactionCore.getCurrentShop(this);
+  const shop = shopCursor || ReactionCore.getCurrentShop();
   // we should always have a shop
   if (shop) {
     // if admin user, return all shop properties
     if (Roles.userIsInRole(this.userId, ["dashboard", "owner", "admin"],
-        ReactionCore.getShopId(this) || Roles.userIsInRole(this.userId, [
+        ReactionCore.getShopId() || Roles.userIsInRole(this.userId, [
           "owner", "admin"
         ], Roles.GLOBAL_GROUP))) {
       return Packages.find({
@@ -33,5 +33,5 @@ Meteor.publish("Packages", function (shopCursor) {
       }
     });
   }
-  return [];
+  return this.ready();
 });

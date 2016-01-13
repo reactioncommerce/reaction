@@ -231,17 +231,18 @@ ReactionCore.Currency = {};
 
 ReactionCore.Currency.formatNumber = function (currentPrice) {
   let price = currentPrice;
-  let format = _.extend({}, ReactionCore.Locale.currency, {format: "%v"});
+  let format = Object.assign({}, ReactionCore.Locale.currency, {format: "%v"});
+  let shopFormat = Object.assign({}, ReactionCore.Locale.shopCurrency,
+    {format: "%v"});
+  const { Locale } = ReactionCore;
 
-  try {
+  if (typeof Locale.currency === "object" && Locale.currency.rate) {
     price = currentPrice * ReactionCore.Locale.currency.rate;
-  } catch (error) {
-    ReactionCore.Log.debug("currency error, fallback to shop currency");
+    return accounting.formatMoney(price, format);
   }
 
-  price = accounting.formatMoney(price, format);
-
-  return price;
+  ReactionCore.Log.debug("currency error, fallback to shop currency");
+  return accounting.formatMoney(currentPrice, shopFormat);
 };
 
 /**

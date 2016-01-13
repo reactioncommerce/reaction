@@ -6,7 +6,7 @@ ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
   // Default return value is the return value of previous call in method chain
   // or an empty object if there's no result yet.
   let result = options.result || {};
-  if (options.error === undefined) {
+  if (typeof options.error === "undefined") {
     let cart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
@@ -16,7 +16,7 @@ ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
 
     if (cart) {
       if (cart.items && cart.billing[0].paymentMethod) {
-        let orderId = Meteor.call("cart/copyCartToOrder", cart._id);
+        const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
         // Return orderId as result from this after hook call.
         // This is done by extending the existing result.
         result.orderId = orderId;

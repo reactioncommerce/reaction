@@ -101,15 +101,30 @@
     .flex-direction(column);
     .align-items(center);
     .justify-content(center);
+    .flex(0 0 auto);
+    min-height: 88px;
     height: 88px;
 
     border: none;
     border-color: @black10;
-    // border-bottom: 1px solid @black10;
     border-radius: 0;
     font-size: 1rem;
     background-color: transparent;
-    // color: @white;
+
+    .contents {
+      .display(flex);
+      .flex-direction(column);
+      .justify-content(center);
+      .align-items(center);
+      .flex(1 1 auto);
+      height: 100%;
+    }
+    .icon {
+      .flex(0 0 auto);
+    }
+    .icon-text {
+      .flex(0 0 auto);
+    }
 
     &:last-child {
       border: none;
