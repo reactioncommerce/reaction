@@ -8,11 +8,9 @@ Template.addressBookGrid.helpers({
     });
 
     if (cart) {
-      if (cart.billing) {
-        if (cart.billing[0].address) {
-          if (this._id === cart.billing[0].address._id) {
-            return "active";
-          }
+      if (cart.billing && cart.billing[0].address) {
+        if (this._id === cart.billing[0].address._id) {
+          return "active";
         }
       } else { // if this is a first checkout review, we need to push default
         // billing address to cart
@@ -30,11 +28,9 @@ Template.addressBookGrid.helpers({
     });
 
     if (cart) {
-      if (cart.shipping) {
-        if (cart.shipping[0].address) {
-          if (this._id === cart.shipping[0].address._id) {
-            return "active";
-          }
+      if (cart.shipping && cart.shipping[0].address) {
+        if (this._id === cart.shipping[0].address._id) {
+          return "active";
         }
       } else { // if this is a first checkout review, we need to push default
         // shipping address to cart
