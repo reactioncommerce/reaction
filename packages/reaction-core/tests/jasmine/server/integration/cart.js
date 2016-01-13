@@ -295,7 +295,7 @@ describe("cart methods", function () {
         const cart = Factory.create("cart");
         spyOnMethod("copyCartToOrder", "wrongUserId");
         expect(() => {
-          return Meteor.call("cart/copyCartToOrder", cart._id, sessionId);
+          return Meteor.call("cart/copyCartToOrder", cart._id);
         }).toThrow(new Meteor.Error(403, "Access Denied"));
 
         return done();
@@ -311,7 +311,7 @@ describe("cart methods", function () {
         const cartId = Meteor.call("cart/createCart", user1._id, sessionId);
         expect(cartId).toBeDefined();
         expect(() => {
-          return Meteor.call("cart/copyCartToOrder", cartId, sessionId);
+          return Meteor.call("cart/copyCartToOrder", cartId);
         }).toThrow(new Meteor.Error("An error occurred saving the order." +
           " Missing cart items."));
 
@@ -328,7 +328,7 @@ describe("cart methods", function () {
          // let it through this call
          spyOn(ReactionCore.Collections.Orders, "insert");
          expect(() => {
-           return Meteor.call("cart/copyCartToOrder", cart._id, sessionId);
+           return Meteor.call("cart/copyCartToOrder", cart._id);
          }).toThrow(new Meteor.Error(400, "cart/copyCartToOrder: Invalid request"));
          expect(ReactionCore.Collections.Orders.insert).toHaveBeenCalled();
 
@@ -345,8 +345,7 @@ describe("cart methods", function () {
          spyOnMethod("copyCartToOrder", cart.userId);
          spyOn(ReactionCore.Collections.Orders, "insert").and.callThrough();
 
-         const orderId = Meteor.call("cart/copyCartToOrder", cart._id,
-           sessionId);
+         const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
          expect(ReactionCore.Collections.Orders.insert).toHaveBeenCalled();
          expect(typeof orderId).toEqual("string");
 

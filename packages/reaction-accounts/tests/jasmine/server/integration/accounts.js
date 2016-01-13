@@ -1,3 +1,5 @@
+/* eslint dot-notation: 0 */
+
 // to provide a comparison account
 const fakeUser = Factory.create("account");
 let originals = {};
