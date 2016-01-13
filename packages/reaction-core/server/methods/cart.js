@@ -468,16 +468,15 @@ Meteor.methods({
    * create new cart within `cart/createCart` method
    * @return {String} returns orderId
    */
-  "cart/copyCartToOrder": function (cartId, sessionId) {
+  "cart/copyCartToOrder": function (cartId) {
     check(cartId, String);
-    check(sessionId, String);
-
     const cart = ReactionCore.Collections.Cart.findOne(cartId);
     // security check
     if (cart.userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
     }
     const order = Object.assign({}, cart);
+    const sessionId = cart.sessionId;
 
     ReactionCore.Log.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
@@ -848,14 +847,11 @@ Meteor.methods({
    * and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
    * @param {Object} paymentMethod - paymentMethod object
-   * @param {String} sessionId - current client session id. We don't use it
    * directly within this method, just throw down though hooks
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethod, sessionId) {
+  "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-    check(sessionId, String);
-
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
