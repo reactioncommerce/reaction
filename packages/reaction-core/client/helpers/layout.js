@@ -65,7 +65,8 @@ Template.registerHelper("reactionTemplate", function (options) {
   let Packages = ReactionCore.Collections.Packages.find({
     layout: {
       $elemMatch: options.hash
-    }
+    },
+    shopId: shopId
   });
   //  we can have multiple packages contributing to the layout / workflow
   Packages.forEach(function (reactionPackage) {
