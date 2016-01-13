@@ -6,41 +6,37 @@
           <h4 class="panel-title">Segment</h4>
         </div>
         <div class="panel-body">
-        {{>afQuickField name="settings.public.segmentio.enabled"}}
-        {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
-    <button type="submit" class="btn btn-primary pull-right">Update</button>
-        
+          {{>afQuickField name="settings.public.segmentio.enabled"}}
+          {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
+          <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
         </div>
       </div>
-
     {{/if}}
+
     {{#if googleAnalyticsEnabled}}
         <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">Google Analytics</h4>
         </div>
         <div class="panel-body">
-        {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
-        {{>afQuickField name="settings.public.googleAnalytics.api_key" placeholder="UA-XXXXX-X"}}
-    <button type="submit" class="btn btn-primary pull-right">Update</button>
-
+          {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
+          {{>afQuickField name="settings.public.googleAnalytics.api_key" placeholder="UA-XXXXX-X"}}
+          <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
         </div>
       </div>
-
     {{/if}}
+
     {{#if mixpanelEnabled}}
         <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">Mixpanel</h4>
         </div>
         <div class="panel-body">
-        {{>afQuickField name="settings.public.mixpanel.enabled"}}
-        {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
-    <button type="submit" class="btn btn-primary pull-right">Update</button>
-
+          {{>afQuickField name="settings.public.mixpanel.enabled"}}
+          {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
+          <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
         </div>
       </div>
-
     {{/if}}
   {{/autoForm}}
 
@@ -52,7 +48,6 @@
 {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form-quick" autosave=true}}
   <div class="container-fluid-sm flex">
     <div class="flex-item">
-      
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -72,9 +67,8 @@
           </div>
         </div>
       </div>
-
     </div>
-  
+
     <div class="flex-item">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -95,7 +89,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="flex-item">
       <div class="panel panel-default">

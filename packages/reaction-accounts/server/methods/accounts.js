@@ -5,7 +5,7 @@
  */
 Accounts.registerLoginHandler(function (options) {
   if (!options.anonymous) {
-    return void 0;
+    return;
   }
   let loginHandler;
   let stampedToken = Accounts._generateStampedLoginToken();
@@ -37,7 +37,7 @@ function services(obj) {
  * we clone the user into accounts, as the user collection is
  * only to be used for authentication.
  *
- * see: http://docs.meteor.com/#/full/accounts_oncreateuser
+ * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
 Accounts.onCreateUser(function (options, user) {
   let shop = ReactionCore.getCurrentShop();
@@ -78,14 +78,13 @@ Accounts.onCreateUser(function (options, user) {
 
 /**
  * Accounts.onLogin event
- * automatically push checkoutLogin when users login.
  * let's remove "anonymous" role, if the login type isn't "anonymous"
  * @param {Object} options - user account creation options
  * @returns {Object} returns workflow/pushCartWorkflow results
  */
 Accounts.onLogin(function (options) {
   // remove anonymous role
-  // all users are guest, but anonymous user don' t have profile access
+  // all users are guest, but anonymous user don't have profile access
   // or ability to order history, etc. so ensure its removed upon login.
   if (options.type !== "anonymous" && options.type !== "resume") {
     let update = {
@@ -100,16 +99,28 @@ Accounts.onLogin(function (options) {
       multi: true
     });
     // debug info
-    ReactionCore.Log.debug("removed anonymous role from user: " + options.user._id);
+    ReactionCore.Log.debug("removed anonymous role from user: " +
+      options.user._id);
+
+    // do not call `cart/mergeCart` on methodName === `createUser`, because
+    // in this case `cart/mergeCart` calls from cart publication
+    if (options.methodName === "createUser") return true;
 
     // onLogin, we want to merge session cart into user cart.
-    cart = ReactionCore.Collections.Cart.findOne({
+    const cart = ReactionCore.Collections.Cart.findOne({
       userId: options.user._id
     });
-    Meteor.call("cart/mergeCart", cart._id);
+    // for a rare use cases
+    if (typeof cart !== "object") return false;
+    // in current version currentSessionId will be available for anonymous
+    // users only, because it is unknown for me how to pass sessionId when user
+    // logged in
+    const currentSessionId = options.methodArguments &&
+      options.methodArguments.length === 1 &&
+      options.methodArguments[0].sessionId;
 
-    // logged in users need an additonal worfklow push to get started with checkoutLogin
-    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+    // changing of workflow status from now happens within `cart/mergeCart`
+    return Meteor.call("cart/mergeCart", cart._id, currentSessionId);
   }
 });
 

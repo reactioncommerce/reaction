@@ -14,7 +14,7 @@ Template.cartDrawer.helpers({
     let storedCart = ReactionCore.Collections.Cart.findOne();
     let count = 0;
 
-    if (storedCart !== null ? storedCart.items : void 0) {
+    if (typeof storedCart === "object" && storedCart.items) {
       for (let items of storedCart.items) {
         count += items.quantity;
       }

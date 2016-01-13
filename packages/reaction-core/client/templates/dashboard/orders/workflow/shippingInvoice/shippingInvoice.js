@@ -87,6 +87,7 @@ Template.coreOrderShippingInvoice.events({
         }
 
         event.target.refund_amount.value = "";
+        template.refundAmount.set(0);
       });
     }
   },
@@ -105,7 +106,7 @@ Template.coreOrderShippingInvoice.events({
     Meteor.call("orders/capturePayments", template.order._id);
   },
 
-  "change input[name=refund_amount]": (event, template) => {
+  "change input[name=refund_amount], keyup input[name=refund_amount]": (event, template) => {
     template.refundAmount.set(accounting.unformat(event.target.value));
   }
 });

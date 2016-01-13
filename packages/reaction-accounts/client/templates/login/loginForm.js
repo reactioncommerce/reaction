@@ -25,6 +25,16 @@ Template.loginForm.helpers({
   },
 
   /**
+   * Login form data
+   * @return {Object} Object containing data for the current login form view.
+   */
+  loginFormData() {
+    return {
+      credentials: Template.instance().credentials
+    };
+  },
+
+  /**
    * Unique id to use on form elements
    * @return {String} String of the unique ID for the current template
    */
@@ -69,8 +79,10 @@ Template.loginForm.events({
     event.preventDefault();
     event.stopPropagation();
 
-    template.email = template.$(".login-input-email").val();
-    template.password = template.$(".login-input-password").val();
+    template.credentials = {
+      email: template.$(".login-input-email").val(),
+      password: template.$(".login-input-password").val()
+    };
 
     template.loginFormCurrentView.set("loginFormSignInView");
   },
@@ -85,8 +97,10 @@ Template.loginForm.events({
     event.preventDefault();
     event.stopPropagation();
 
-    template.email = template.$(".login-input-email").val();
-    template.password = template.$(".login-input-password").val();
+    template.credentials = {
+      email: template.$(".login-input-email").val(),
+      password: template.$(".login-input-password").val()
+    };
 
     template.loginFormCurrentView.set("loginFormSignUpView");
   },
@@ -101,8 +115,10 @@ Template.loginForm.events({
     event.preventDefault();
     event.stopPropagation();
 
-    template.email = template.$(".login-input-email").val();
-    template.password = template.$(".login-input-password").val();
+    template.credentials = {
+      email: template.$(".login-input-email").val(),
+      password: template.$(".login-input-password").val()
+    };
 
     template.loginFormCurrentView.set("loginFormResetPasswordView");
   }
