@@ -29,6 +29,8 @@ Template.tagNav.helpers({
       // },
 
       onTagSort(tagIds, parentTag) {
+        console.log("just about to sort tags", tags, parentTag);
+
         TagHelpers.sortTags(tagIds, parentTag);
       },
 

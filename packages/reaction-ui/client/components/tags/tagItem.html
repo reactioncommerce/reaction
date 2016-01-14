@@ -21,15 +21,18 @@
     <form>
       {{> button icon="tag"}}
       {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}
-      {{> button icon="plus" type="danger" onClick=handleTagRemove}}
+      {{> button icon="plus" status="danger" onClick=handleTagRemove}}
     </form>
   </div>
 </template>
 
 <template name="tagEditable">
   <div class="rui tag edit" data-id={{tag._id}}>
-    {{> button icon="bars"}}
-    {{> textfield value=tag.name onChange=handleTagNameUpdate}}
-    {{> button icon="times-circle" type="danger" onClick=handleTagRemove}}
+    <form>
+      {{> button icon="bars"}}
+      {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}
+      <button class="hidden" type="submit">Update Tag</button>
+      {{> button icon="times-circle" status="danger" onClick=handleTagRemove}}
+    </form>
   </div>
 </template>

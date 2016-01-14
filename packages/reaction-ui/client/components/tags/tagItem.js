@@ -2,7 +2,6 @@
 Template.tagItem.helpers({
   tagBlankProps(tag) {
     const instance = Template.instance();
-    console.log("instane (tag blank)", instance.data.onTagCreate);
     return {
       something: "asdasd",
       onTagCreate: instance.data.onTagCreate
@@ -11,10 +10,10 @@ Template.tagItem.helpers({
 
   tagEditableProps(tag) {
     const instance = Template.instance();
-    console.log("instane (tag editable)", instance.data.onTagCreate);
     return {
       tag,
-      onTagRemove: instance.data.onTagRemove
+      onTagRemove: instance.data.onTagRemove,
+      onTagUpdate: instance.data.onTagUpdate
     }
   }
 });
@@ -28,16 +27,22 @@ Template.tagEditable.helpers({
         instance.data.onTagRemove(instance.data.tag);
       }
     };
-  }
+  },
 });
 
-Template.tagBlank.helpers({
-  handleTagRemove(event) {
-    return (tag) => {
-      console.log("Remove tag", tag);
+
+Template.tagEditable.events({
+  "submit form"(event) {
+    event.preventDefault();
+    if (this.onTagUpdate) {
+      this.onTagUpdate(this.tag._id, event.target.tag.value);
     }
   }
 });
+
+
+
+Template.tagBlank.helpers({});
 
 Template.tagBlank.events({
   "submit form"(event) {
