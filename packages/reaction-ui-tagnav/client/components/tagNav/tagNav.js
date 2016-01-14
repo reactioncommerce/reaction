@@ -15,7 +15,7 @@ const TagNavHelpers = {
   // },
 
   onTagSort(tagIds, parentTag) {
-    console.log("just about to sort tags", tags, parentTag);
+    // console.log("just about to sort tags", tagIds, parentTag);
 
     TagHelpers.sortTags(tagIds, parentTag);
   },

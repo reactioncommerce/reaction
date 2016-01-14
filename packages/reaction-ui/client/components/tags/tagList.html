@@ -1,6 +1,6 @@
 
 <template name="tagList">
-  <div class="rui tags">
+  <div class="rui tags" data-id={{parentTag._id}}>
     {{#each tag in tags}}
       {{> tagItem (tagProps tag)}}
     {{/each}}

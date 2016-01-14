@@ -103,20 +103,25 @@ const TagHelpers = {
 
   moveTagToNewParent(movedTagId, toListId, toIndex, ofList) {
     // console.log(`Would Add item ${movedTagId} to list ${toListId}, with index ${toIndex}, of list`, ofList);
-    const newList = [
-      ...ofList.map((tag) => tag._id),
-      movedTagId
-    ];
+    // const newList = [
+    //   ...ofList.map((tag) => {
+    //     if (tag) return tag._id;
+    //   }),
+    //   movedTagId
+    // ];
+    // console.log("new list", newList, movedTagId);
 
-    const result = ReactionCore.Collections.Tags.update(toListId,
-      {
-        $set: {
-          relatedTagIds: newList
+    if (movedTagId) {
+      const result = ReactionCore.Collections.Tags.update(toListId,
+        {
+          $addToSet: {
+            relatedTagIds: movedTagId
+          }
         }
-      }
-    );
+      );
 
-    return result;
+      return result;
+    }
   },
 
   sortTags(tagIds, parentTag) {
@@ -134,7 +139,7 @@ const TagHelpers = {
         // Sub tags
         ReactionCore.Collections.Tags.update(parentTag._id, {
           $set: {
-            relatedTagIds: tagIds
+            relatedTagIds: _.compact(tagIds)
           }
         });
       }

@@ -6,6 +6,7 @@ Template.tagTree.helpers({
     return {
       groupTag,
       onTagCreate: instance.data.onTagCreate,
+      onTagDragAdd: instance.data.onTagDragAdd,
       onTagRemove: instance.data.onTagRemove,
       onTagSort: instance.data.onTagSort,
       onTagUpdate: instance.data.onTagUpdate

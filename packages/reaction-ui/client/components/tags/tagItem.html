@@ -27,7 +27,7 @@
 </template>
 
 <template name="tagEditable">
-  <div class="rui tag edit" data-id={{tag._id}}>
+  <div class="rui tag edit draggable" data-id={{tag._id}}>
     <form>
       {{> button icon="bars"}}
       {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}

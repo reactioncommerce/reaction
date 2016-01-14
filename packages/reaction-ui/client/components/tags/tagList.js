@@ -16,8 +16,15 @@ Template.tagList.onRendered(() => {
 
   instance._sortable = Sortable.create(list, {
     group: "tags",
+    draggable: ".rui.tag.edit.draggable",
+    // filter: ".rui.tag.edit.create",
     onSort(event) {
-      let tagIds = instance.data.tags.map(item => item._id);
+      let tagIds = instance.data.tags.map(item => {
+        if (item) {
+          return item._id;
+        }
+      });
+
       let newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
 
       if (newTagsOrder) {
@@ -25,9 +32,35 @@ Template.tagList.onRendered(() => {
           instance.data.onTagSort(newTagsOrder, instance.data.parentTag);
         }
       }
+    },
+
+    // On add from another list
+    onAdd(event) {
+      const toListId = event.to.dataset.id;
+      const movedTagId = event.item.dataset.id;
+      let tagIds = instance.data.tags.map(item => {
+        if (item) {
+          return item._id;
+        }
+      });
+
+      if (instance.data.onTagDragAdd) {
+        instance.data.onTagDragAdd(movedTagId, toListId, event.newIndex, tagIds);
+      }
+    },
+
+    // Tag removed from list becuase it was dragged to a different list
+    onRemove(event) {
+      const movedTagId = event.item.dataset.id;
+
+      if (instance.data.onTagRemove) {
+        let foundTag = _.find(instance.data.tags, (tag) => {
+          return tag._id === movedTagId;
+        });
+
+        instance.data.onTagRemove(foundTag, instance.data.parentTag);
+      }
     }
-    // onAdd: this.handleDragAdd,
-    // onRemove: this.handleDragRemove
   });
 });
 
