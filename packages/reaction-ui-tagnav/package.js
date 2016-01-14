@@ -64,8 +64,13 @@ Package.onUse(function (api) {
   api.addFiles("client/components/tagTree/tagTree.jsx", "client");
   api.addFiles("client/components/tagTree/tagTree.less", "client");
 
-  api.addFiles("client/components/tagNav/tagNav.jsx", "client");
+  // api.addFiles("client/components/tagNav/tagNav.jsx", "client");
+
+  api.addFiles("client/components/tagNav/tagNav.html", "client");
+  api.addFiles("client/components/tagNav/tagNav.js", "client");
   api.addFiles("client/components/tagNav/tagNav.less", "client");
+
+
 
 
   // api.export("TagList");

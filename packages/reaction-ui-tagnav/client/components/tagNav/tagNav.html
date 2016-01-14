@@ -1,0 +1,14 @@
+
+<template name="tagNav">
+  <div class="rui tagnav">
+    <div class="navbar">
+      {{> tagList (tagListProps tags)}}
+
+      {{> button
+        title="Add Tag"
+        icon="tag"
+        type="default"
+      }}
+    </div>
+  </div>
+</template>

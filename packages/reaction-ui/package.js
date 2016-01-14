@@ -53,6 +53,8 @@ Package.onUse(function (api) {
   api.export("Sortable");
 
   api.addFiles("client/components/button/button.jsx", "client");
+  api.addFiles("client/components/button/button.html", "client");
+  api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
 
   api.addFiles("client/components/items/item.jsx", "client");
@@ -74,6 +76,7 @@ Package.onUse(function (api) {
   // api.addFiles("client/components/numericInput/numericInput.js", "client");
 
   api.addFiles("client/components/textfield/textfield.jsx", "client");
+  api.addFiles("client/components/textfield/textfield.html", "client");
   api.addFiles("client/components/textfield/textfield.less", "client");
   api.export("TextField");
 
@@ -85,7 +88,12 @@ Package.onUse(function (api) {
   api.addFiles("client/components/media/media.less", "client");
 
   api.addFiles("client/components/tags/tag.jsx", "client");
+  api.addFiles("client/components/tags/tagItem.html", "client");
+  api.addFiles("client/components/tags/tagItem.js", "client");
   api.addFiles("client/components/tags/tags.jsx", "client");
+  api.addFiles("client/components/tags/tagList.html", "client");
+  api.addFiles("client/components/tags/tagList.js", "client");
+
   api.addFiles("client/components/tags/tags.less", "client");
   api.export("TagList");
 

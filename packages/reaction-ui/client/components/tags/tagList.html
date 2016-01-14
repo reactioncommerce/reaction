@@ -1,0 +1,10 @@
+
+<template name="tagList">
+  <div class="rui tags">
+    {{#each tag in tags}}
+      {{> tagItem (tagProps tag)}}
+    {{/each}}
+
+    {{> tagItem tagBlankProps}}
+  </div>
+</template>
