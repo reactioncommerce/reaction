@@ -1,5 +1,9 @@
 const TagHelpers = ReactionUI.TagNav.Helpers;
 
+Template.tagGroup.onRendered(() => {
+
+});
+
 Template.tagGroup.helpers({
   tagProps(groupTag) {
     const instance = Template.instance();

@@ -2,7 +2,7 @@
 <template name="tagTree">
   <div class="rui tagnav tree">
     <div class="content">
-      {{#each group in (reactionSubTags parentTag)}}
+      {{#each group in subTagGroups}}
         {{> tagGroup (tagGroupProps group)}}
       {{/each}}
       {{> tagTreeNewGroup (newTagGroupProps parentTag)}}
@@ -16,7 +16,7 @@
 
 
 <template name="tagTreeNewGroup">
-  <div class="rui tagnav group">
+  <div class="rui tagnav group create">
     <div class="header">
       {{> tagItem (props tag)}}
     </div>

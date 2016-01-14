@@ -3,6 +3,12 @@
  * @type {Object}
  */
 const TagHelpers = {
+  moveItem(oldArray, fromIndex, toIndex) {
+    const newArray = [...oldArray];
+    newArray.splice(toIndex, 0, newArray.splice(fromIndex, 1)[0]);
+    return newArray;
+  },
+
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
       const tags = ReactionCore.Collections.Tags.find({
@@ -97,25 +103,27 @@ const TagHelpers = {
               autoHide: true
             });
         }
-        // return template.$(".tags-submit-new").val("").focus();
       });
   },
 
   moveTagToNewParent(movedTagId, toListId, toIndex, ofList) {
-    // console.log(`Would Add item ${movedTagId} to list ${toListId}, with index ${toIndex}, of list`, ofList);
-    // const newList = [
-    //   ...ofList.map((tag) => {
-    //     if (tag) return tag._id;
-    //   }),
-    //   movedTagId
-    // ];
-    // console.log("new list", newList, movedTagId);
-
     if (movedTagId) {
-      const result = ReactionCore.Collections.Tags.update(toListId,
+      if (toListId) {
+        const result = ReactionCore.Collections.Tags.update(toListId,
+          {
+            $addToSet: {
+              relatedTagIds: movedTagId
+            }
+          }
+        );
+
+        return result;
+      }
+
+      const result = ReactionCore.Collections.Tags.update(movedTagId,
         {
-          $addToSet: {
-            relatedTagIds: movedTagId
+          $set: {
+            isTopLevel: true
           }
         }
       );
