@@ -10,5 +10,10 @@
         type="default"
       }}
     </div>
+    {{#each tag in tags}}
+      <div class="rui tagnav dropdown" data-tag={{tag._id}}>
+        {{> tagTree (tagTreeProps tag)}}
+      </div>
+    {{/each}}
   </div>
 </template>

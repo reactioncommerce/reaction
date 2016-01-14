@@ -2,7 +2,7 @@
  * Reaction TagNav shared helpers
  * @type {Object}
  */
-ReactionUI.TagNav.Helpers = {
+const TagHelpers = {
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
       const tags = ReactionCore.Collections.Tags.find({
@@ -161,3 +161,7 @@ ReactionUI.TagNav.Helpers = {
     }
   }
 };
+
+Template.registerHelper("reactionSubTags", TagHelpers.subTags);
+
+ReactionUI.TagNav.Helpers = TagHelpers;

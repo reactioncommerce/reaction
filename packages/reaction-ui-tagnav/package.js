@@ -59,9 +59,13 @@ Package.onUse(function (api) {
   // api.export("Sortable");
 
   api.addFiles("client/components/tagGroup/tagGroup.jsx", "client");
+  api.addFiles("client/components/tagGroup/tagGroup.html", "client");
+  api.addFiles("client/components/tagGroup/tagGroup.js", "client");
   api.addFiles("client/components/tagGroup/tagGroup.less", "client");
 
   api.addFiles("client/components/tagTree/tagTree.jsx", "client");
+  api.addFiles("client/components/tagTree/tagTree.html", "client");
+  api.addFiles("client/components/tagTree/tagTree.js", "client");
   api.addFiles("client/components/tagTree/tagTree.less", "client");
 
   // api.addFiles("client/components/tagNav/tagNav.jsx", "client");
