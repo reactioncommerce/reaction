@@ -4,12 +4,15 @@
     <div class="navbar">
       {{> tagList (tagListProps tags)}}
 
-      {{> button
-        title="Edit Tags"
-        icon="tag"
-        type="default"
-        onClick=onEditTags
-      }}
+      {{#if editable}}
+        {{> button
+          title="Edit Tags"
+          className="edit-tag-button"
+          icon="tag"
+          type="default"
+          onClick=onEditTags
+        }}
+      {{/if}}
     </div>
     {{#each tag in tags}}
       <div class="rui tagnav dropdown {{dropDownIsHidden tag}}" data-tag={{tag._id}}>

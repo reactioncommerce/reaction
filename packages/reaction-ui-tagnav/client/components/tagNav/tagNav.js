@@ -72,6 +72,9 @@ Template.tagNav.helpers({
   isEditing() {
     return Template.instance().state.equals("isEditing", true);
   },
+  editable() {
+    return Template.instance().data.editable;
+  },
   onEditTags() {
     const instance = Template.instance();
 
