@@ -2,7 +2,7 @@
 <template name="tagGroup">
   <div class="rui tagnav group {{className}}" data-id={{groupTag._id}}>
     <div class="header">
-      {{> tagItem (tagProps groupTag)}}
+      {{> tagItem (tagGroupProps groupTag)}}
     </div>
     <div class="content">
       {{> tagList (tagListProps groupTag)}}

@@ -65,6 +65,7 @@ Template.tagTree.helpers({
 
     return {
       groupTag,
+      parentTag: instance.data.parentTag,
       editable: instance.data.editable,
       onTagCreate: instance.data.onTagCreate,
       onTagDragAdd: instance.data.onTagDragAdd,

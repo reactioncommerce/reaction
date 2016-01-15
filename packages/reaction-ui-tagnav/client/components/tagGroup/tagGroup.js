@@ -12,12 +12,16 @@ Template.tagGroup.helpers({
     }
   },
 
-  tagProps(groupTag) {
+  tagGroupProps(groupTag) {
     const instance = Template.instance();
 
     return {
       tag: groupTag,
-      editable: instance.data.editable
+      editable: instance.data.editable,
+      onTagRemove(tag) {
+        instance.data.onTagRemove(tag, instance.data.parentTag);
+      },
+      onTagUpdate: instance.data.onTagUpdate
     };
   },
 
@@ -33,8 +37,8 @@ Template.tagGroup.helpers({
           instance.data.onTagCreate(tagName, instance.data.groupTag);
         }
       },
-      onTagRemove(tagName) {
-        instance.data.onTagRemove(tagName, instance.data.groupTag);
+      onTagRemove(tag) {
+        instance.data.onTagRemove(tag, instance.data.groupTag);
       },
       onTagSort(newTagsOrder) {
         instance.data.onTagSort(newTagsOrder, instance.data.groupTag);
