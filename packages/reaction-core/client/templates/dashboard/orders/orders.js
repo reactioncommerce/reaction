@@ -2,10 +2,7 @@
 const orderFilters = [
   {name: "new", label: "New"},
   {name: "processing", label: "Processing"},
-  // {name: "shipped", label: "Shipped"},
-  {name: "completed", label: "Completed"},
-  // {name: "canceled", label: "Canceled"},
-  // {name: "refunded", label: "Refunded"}
+  {name: "completed", label: "Completed"}
 ];
 
 const OrderHelper = {

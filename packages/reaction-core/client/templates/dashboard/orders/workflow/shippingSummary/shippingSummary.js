@@ -1,27 +1,3 @@
-const shipmentStatus = [
-  {
-    group: "Payments",
-    items: [
-      {name: "captured", label: "Tracking Added"},
-      {name: "shipped", label: "Completed"}
-    ]
-  },
-  {
-    group: "Shipping",
-    items: [
-      {name: "tracking", label: "Tracking Added"},
-      {name: "shipped", label: "Completed"}
-    ]
-  },
-  {
-    group: "Completion",
-    items: [
-      {name: "completed", label: "Completed"},
-      {name: "delivered", label: "Delivered"},
-      {name: "refunded", label: "Refunded"}
-    ]
-  }
-];
 
 Template.coreOrderShippingSummary.onCreated(() => {
   let template = Template.instance();
