@@ -1,33 +1,79 @@
+"use strict";
 
 Template.tagItem.helpers({
-  tagBlankProps(tag) {
+  tagBlankProps() {
     const instance = Template.instance();
     return {
-      something: "asdasd",
       onTagCreate: instance.data.onTagCreate
-    }
+    };
   },
 
   tagEditableProps(tag) {
     const instance = Template.instance();
     return {
       tag,
+      selectable: instance.data.selectable,
       onTagRemove: instance.data.onTagRemove,
       onTagUpdate: instance.data.onTagUpdate
-    }
+    };
   }
 });
 
+Template.tagEditable.onCreated(function () {
+  // this.autorun(() => {
+  //   new SimpleSchema({
+  //     tag: {type: }
+  //   })
+  // })
+});
+
+Template.tagEditable.onRendered(() => {
+  const instance = Template.instance();
+  const textInput = instance.$("input")[0];
+
+  $(textInput).autocomplete({
+    delay: 0,
+    source: function (request, response) {
+      let datums = [];
+      let slug = getSlug(request.term);
+      ReactionCore.Collections.Tags.find({
+        slug: new RegExp(slug, "i")
+      }).forEach(function (tag) {
+        return datums.push({
+          label: tag.name
+        });
+      });
+      return response(datums);
+    },
+    select: (selectEvent, ui) => {
+      if (ui.item.value) {
+        if (instance.data.onTagUpdate) {
+          instance.data.onTagUpdate(instance.data.tag._id, ui.item.value);
+        }
+      }
+    }
+  });
+});
+
 Template.tagEditable.helpers({
-  handleTagRemove(event) {
+  handleTagSelect() {
     const instance = Template.instance();
-    return (tag) => {
+    return () => {
       // Pass the tag back up to the parent component
-      if(instance.data.onTagRemove) {
-        instance.data.onTagRemove(instance.data.tag);
+      if (instance.data.onTagSelect) {
+        instance.data.onTagSelect(instance.data.tag);
       }
     };
   },
+  handleTagRemove() {
+    const instance = Template.instance();
+    return () => {
+      // Pass the tag back up to the parent component
+      if (instance.data.onTagRemove) {
+        instance.data.onTagRemove(instance.data.tag);
+      }
+    };
+  }
 });
 
 
@@ -41,6 +87,33 @@ Template.tagEditable.events({
 });
 
 
+Template.tagBlank.onRendered(() => {
+  const instance = Template.instance();
+  const textInput = instance.$("input")[0];
+
+  $(textInput).autocomplete({
+    delay: 0,
+    source: function (request, response) {
+      let datums = [];
+      let slug = getSlug(request.term);
+      ReactionCore.Collections.Tags.find({
+        slug: new RegExp(slug, "i")
+      }).forEach(function (tag) {
+        return datums.push({
+          label: tag.name
+        });
+      });
+      return response(datums);
+    },
+    select: (selectEvent, ui) => {
+      if (ui.item.value) {
+        if (instance.data.onTagUpdate) {
+          instance.data.onTagUpdate(instance.data.tag._id, ui.item.value);
+        }
+      }
+    }
+  });
+});
 
 Template.tagBlank.helpers({});
 

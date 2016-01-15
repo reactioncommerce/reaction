@@ -5,6 +5,13 @@ Template.tagGroup.onRendered(() => {
 });
 
 Template.tagGroup.helpers({
+  className() {
+    const instance = Template.instance();
+    if (instance.data.blank) {
+      return "create";
+    }
+  },
+
   tagProps(groupTag) {
     const instance = Template.instance();
 

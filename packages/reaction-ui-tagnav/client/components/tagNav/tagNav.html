@@ -11,7 +11,7 @@
       }}
     </div>
     {{#each tag in tags}}
-      <div class="rui tagnav dropdown" data-tag={{tag._id}}>
+      <div class="rui tagnav dropdown {{dropDownIsHidden tag}}" data-tag={{tag._id}}>
         {{> tagTree (tagTreeProps tag)}}
       </div>
     {{/each}}

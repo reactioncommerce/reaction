@@ -33,6 +33,9 @@
       {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}
       <button class="hidden" type="submit">Update Tag</button>
       {{> button icon="times-circle" status="danger" onClick=handleTagRemove}}
+      {{#if selectable}}
+        {{> button icon="chevron-down" status="default" onClick=handleTagSelect}}
+      {{/if}}
     </form>
   </div>
 </template>

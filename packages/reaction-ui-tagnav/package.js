@@ -34,6 +34,7 @@ Package.onUse(function (api) {
   api.use("check");
   api.use("react");
   api.use("less");
+  api.use("reactive-dict");
 
   // Community Packages
   // api.use("cosmos:browserify@0.9.0");

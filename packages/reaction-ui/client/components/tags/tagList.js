@@ -70,6 +70,7 @@ Template.tagList.helpers({
     return {
       tag,
       editable: instance.data.editable,
+      selectable: instance.data.selectable,
       onTagRemove(tagToRemove) {
         // Pass the tag back up to the parent component for removal
         // -- include the parent tag

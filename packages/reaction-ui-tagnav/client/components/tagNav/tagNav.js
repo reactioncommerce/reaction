@@ -27,14 +27,27 @@ const TagNavHelpers = {
 
   onTagUpdate(tagId, tagName) {
     TagHelpers.updateTag(tagId, tagName);
+  },
+
+  onTagSelect(tag) {
+
   }
 };
 
 Template.tagNav.onCreated(function () {
-
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    selectedTag: null
+  });
 });
 
 Template.tagNav.helpers({
+  dropDownIsHidden(tag) {
+    const selectedTag = Template.instance().state.get("selectedTag");
+    if (selectedTag && selectedTag._id !== tag._id) {
+      return "hidden";
+    }
+  },
   tagTreeProps(parentTag) {
     return {
       parentTag,
@@ -44,9 +57,16 @@ Template.tagNav.helpers({
     };
   },
   tagListProps(tags) {
+    const instance = Template.instance();
+
     return {
       tags,
       editable: true,
+      selectable: true,
+      selectedTag: instance.state.selectedTag,
+      onTagSelect(tag) {
+        instance.state.set("selectedTag", tag);
+      },
       ...TagNavHelpers
     };
   }
