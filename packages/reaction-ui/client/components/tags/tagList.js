@@ -65,12 +65,23 @@ Template.tagList.onRendered(() => {
 });
 
 Template.tagList.helpers({
+  isEditing() {
+    return Template.instance().data.editable;
+  },
+
   tagProps(tag) {
     const instance = Template.instance();
+    let isSelected = false;
+    if (instance.data.selectedTag && tag) {
+      isSelected = instance.data.selectedTag._id === tag._id;
+    }
+
     return {
       tag,
       editable: instance.data.editable,
       selectable: instance.data.selectable,
+      isSelected,
+      onTagSelect: instance.data.onTagSelect,
       onTagRemove(tagToRemove) {
         // Pass the tag back up to the parent component for removal
         // -- include the parent tag
@@ -96,8 +107,6 @@ Template.tagList.helpers({
     return {
       blank: true,
       onTagCreate(tagName) {
-        console.log("tagList - create tag - ", tagName);
-
         if (instance.data.onTagCreate) {
           instance.data.onTagCreate(tagName, instance.data.parentTag);
         }

@@ -8,7 +8,7 @@ Template.tagTree.onRendered(() => {
 
   instance._sortable = Sortable.create(list, {
     group: "tagGroups",
-    filter: ".rui.tagnav.group.create",
+    draggable: ".rui.tagnav.group.edit",
     onSort(event) {
       let tagIds = instance.data.subTagGroups.map(item => {
         if (item) {
@@ -19,7 +19,6 @@ Template.tagTree.onRendered(() => {
       let newTagsOrder = TagHelpers.moveItem(tagIds, event.oldIndex, event.newIndex);
 
       if (newTagsOrder) {
-        console.log("Am anout to sort tags", newTagsOrder, instance.data.parentTag);
         if (instance.data.onTagSort) {
           instance.data.onTagSort(newTagsOrder, instance.data.parentTag);
         }
@@ -50,10 +49,6 @@ Template.tagTree.onRendered(() => {
           return tag._id === movedTagId;
         });
 
-        console.log("Am anout to (remove) tag", foundTag, instance.data.parentTag);
-
-
-        return;
         instance.data.onTagRemove(foundTag, instance.data.parentTag);
       }
     }
@@ -61,11 +56,16 @@ Template.tagTree.onRendered(() => {
 });
 
 Template.tagTree.helpers({
+  isEditing() {
+    return Template.instance().data.editable;
+  },
+
   tagGroupProps(groupTag) {
     const instance = Template.instance();
 
     return {
       groupTag,
+      editable: instance.data.editable,
       onTagCreate: instance.data.onTagCreate,
       onTagDragAdd: instance.data.onTagDragAdd,
       onTagRemove: instance.data.onTagRemove,
@@ -80,7 +80,6 @@ Template.tagTree.helpers({
       blank: true,
       onTagCreate(newGroupName) {
         if (instance.data.onTagCreate) {
-          console.log("would try to create new group", newGroupName, parentTag);
           instance.data.onTagCreate(newGroupName, parentTag);
         }
       }

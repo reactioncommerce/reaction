@@ -13,7 +13,9 @@
 </template>
 
 <template name="tagLink">
-  <a href="#">{{tag.name}}</a>
+  {{#with tag}}
+    <a class="rui tag link" href="{{pathForSEO "product/tag" "slug"}}" data-id="{{_id}}">{{name}}</a>
+  {{/with}}
 </template>
 
 <template name="tagBlank">
@@ -27,7 +29,7 @@
 </template>
 
 <template name="tagEditable">
-  <div class="rui tag edit draggable" data-id={{tag._id}}>
+  <div class="rui tag edit draggable {{className}}" data-id={{tag._id}}>
     <form>
       {{> button icon="bars"}}
       {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}

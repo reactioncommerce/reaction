@@ -5,9 +5,10 @@
       {{> tagList (tagListProps tags)}}
 
       {{> button
-        title="Add Tag"
+        title="Edit Tags"
         icon="tag"
         type="default"
+        onClick=onEditTags
       }}
     </div>
     {{#each tag in tags}}

@@ -5,7 +5,10 @@
       {{#each group in subTagGroups}}
         {{> tagGroup (tagGroupProps group)}}
       {{/each}}
-      {{> tagTreeNewGroup (newTagGroupProps parentTag)}}
+
+      {{#if isEditing}}
+        {{> tagTreeNewGroup (newTagGroupProps parentTag)}}
+      {{/if}}
     </div>
 
   </div>

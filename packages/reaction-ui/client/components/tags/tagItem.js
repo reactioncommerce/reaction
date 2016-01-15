@@ -12,8 +12,10 @@ Template.tagItem.helpers({
     const instance = Template.instance();
     return {
       tag,
+      isSelected: instance.data.isSelected,
       selectable: instance.data.selectable,
       onTagRemove: instance.data.onTagRemove,
+      onTagSelect: instance.data.onTagSelect,
       onTagUpdate: instance.data.onTagUpdate
     };
   }
@@ -56,6 +58,13 @@ Template.tagEditable.onRendered(() => {
 });
 
 Template.tagEditable.helpers({
+  className() {
+    const instance = Template.instance();
+    if (instance.data.isSelected) {
+      return "selected";
+    }
+  },
+
   handleTagSelect() {
     const instance = Template.instance();
     return () => {
