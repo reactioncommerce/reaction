@@ -18,6 +18,10 @@ ReactionCore.Schemas.Layout = new SimpleSchema({
     type: String,
     optional: true
   },
+  status: {
+    type: String,
+    optional: true
+  },
   container: {
     type: String,
     optional: true
