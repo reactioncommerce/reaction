@@ -216,19 +216,15 @@ Meteor.methods({
       Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
 
       const isCompleted = _.every(order.items, (item) => {
-        return _.contains(item.workflow.workflow, "completed");
+        return _.contains(item.workflow.workflow, "coreOrderItemWorkflow/completed");
       });
 
       if (isCompleted === true) {
-        Meteor.call("workflow/pushOrderWorkflow",
-          "coreOrderWorkflow", "coreOrderCompleted", order._id);
-
+        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
         return true;
       }
 
-
-      Meteor.call("workflow/pushOrderWorkflow",
-          "coreOrderWorkflow", "coreOrderProcessing", order._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
 
       return false;
     }
