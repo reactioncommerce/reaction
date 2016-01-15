@@ -57,7 +57,7 @@ Package.onUse(function (api) {
   api.use("momentjs:moment@2.10.6");
   api.use("risul:moment-timezone@0.4.1");
   api.use("utilities:spin@2.3.1", "client");
-  api.use("utilities:avatar@0.9.2");
+  // api.use("utilities:avatar@0.9.2");
 
   // imply exports package vars
   api.imply("less");
@@ -74,7 +74,7 @@ Package.onUse(function (api) {
   api.imply("iron:router");
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
-  api.imply("utilities:avatar");
+  // api.imply("utilities:avatar");
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");

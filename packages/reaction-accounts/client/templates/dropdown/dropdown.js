@@ -19,7 +19,7 @@ Template.loginDropdown.events({
   "click #logout": (event, template) => {
     Session.set("displayConsoleNavBar", false);
 
-    Meteor.logoutOtherClients();
+    // Meteor.logoutOtherClients();
     Meteor.logout((error) => {
       if (error) {
         ReactionCore.Log.warn("Failed to logout.", error);

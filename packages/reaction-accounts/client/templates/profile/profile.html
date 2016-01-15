@@ -8,7 +8,8 @@
         <div class="panel-heading  panel-title-center">
 
             <div class="profile-image">
-              {{> avatar user=currentUser class="circular-icon" size="large" shape="circle"}}
+              {{!--> avatar user=currentUser class="circular-icon" size="large" shape="circle"--}}
+              <img class="circular-icon" src="{{getGravatar currentUser 80}}" style="width: 80px;" />
               <span class="profile-image-display-name">{{displayName}}</span>
             </div>
 

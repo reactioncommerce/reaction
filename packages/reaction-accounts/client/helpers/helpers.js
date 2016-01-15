@@ -42,12 +42,30 @@ window.LoginFormSharedHelpers = {
   }
 };
 
+Template.registerHelper("getGravatar", function (currentUser, size) {
+  const options = {
+    secure: true,
+    size: size,
+    default: "identicon"
+  };
+  const user = currentUser || Accounts.user();
+  const account = ReactionCore.Collections.Accounts.findOne(user._id);
+  // first we check picture exists. Picture has higher priority to display
+  if (account && account.profile && account.profile.picture) {
+    return account.profile.picture;
+  }
+  if (user.emails && user.emails.length === 1) {
+    const email = user.emails[0].address;
+    return Gravatar.imageUrl(email, options);
+  }
+});
+
 /**
  * registerHelper displayName
  */
 Template.registerHelper("displayName", function (displayUser) {
   let authenticated = false;
-  const user = displayUser || Meteor.user();
+  const user = displayUser || Accounts.user();
   if (user) {
     if (user.profile && user.profile.name) {
       return user.profile.name;
@@ -55,30 +73,12 @@ Template.registerHelper("displayName", function (displayUser) {
       return user.username;
     }
 
-    if (user.services && user.services !== "anonymous" && user.services !== "resume") {
-      authenticated = true;
+    // todo: previous check was user.services !== "anonymous", "resume". Is this
+    // new check covers previous check?
+    if (Roles.userIsInRole(user._id, "account/profile",
+      ReactionCore.getShopId())) {
+      return i18n.t("accountsUI.guest") || "Guest";
     }
-
-    if (authenticated === true) {
-      let username = (function () {
-        switch (false) {
-        case !user.services.twitter:
-          return user.services.twitter.name;
-        case !user.services.google:
-          return user.services.google.name;
-        case !user.services.facebook:
-          return user.services.facebook.name;
-        case !user.services.instagram:
-          return user.services.instagram.name;
-        case !user.services.pinterest:
-          return user.services.pinterest.name;
-        default:
-          return i18n.t("accountsUI.guest") || "Guest";
-        }
-      })();
-      return username;
-    }
-    return i18n.t("accountsUI.signIn") || "Sign in TEST";
   }
 });
 

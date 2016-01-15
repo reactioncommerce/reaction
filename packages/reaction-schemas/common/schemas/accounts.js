@@ -2,6 +2,21 @@
  * ReactionCore Schemas Email
  */
 
+ReactionCore.Schemas.Profile = new SimpleSchema({
+  addressBook: {
+    type: [ReactionCore.Schemas.Address],
+    optional: true
+  },
+  name: {
+    type: String,
+    optional: true
+  },
+  picture: {
+    type: String,
+    optional: true
+  }
+});
+
 ReactionCore.Schemas.Email = new SimpleSchema({
   provides: {
     type: String,
@@ -126,13 +141,13 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     optional: true
   },
   "profile": {
-    type: Object,
+    type: ReactionCore.Schemas.Profile,
     optional: true
   },
-  "profile.addressBook": {
-    type: [ReactionCore.Schemas.Address],
-    optional: true
-  },
+  //"profile.addressBook": {
+  //  type: [ReactionCore.Schemas.Address],
+  //  optional: true
+  //},
   "metafields": {
     type: [ReactionCore.Schemas.Metafield],
     optional: true

@@ -1,7 +1,8 @@
 <template name="member">
   {{!-- TODO: make this a Reactive Table --}}
       <div class="member-list-item-image">
-        {{> avatar user=this.user class="circular-icon" size="medium" shape="circle"}}
+        {{!--> avatar user=this.user class="circular-icon" size="medium" shape="circle"--}}
+        <img class="circular-icon" src="{{getGravatar this.user 40}}" style="width: 40px;"/>
       </div>
       <div class="member-list-item-profile">
         {{displayName this}}
@@ -18,7 +19,8 @@
 
     <div class="panel-heading panel-title-center">
       <div class="profile-image">
-        {{> avatar user=this size="large" shape="circle"}}
+        {{!--> avatar user=this size="large" shape="circle"--}}
+        <img class="circular-icon" src="{{getGravatar this 80}}" style="width: 80px;" />
         <span class="profile-image-display-name">{{displayName this}}</span>
       </div>
     </div>
