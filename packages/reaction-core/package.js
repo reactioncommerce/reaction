@@ -150,6 +150,8 @@ Package.onUse(function (api) {
   api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js");
 
+  api.addFiles("common/hooks/orders.js");
+
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
@@ -160,6 +162,8 @@ Package.onUse(function (api) {
   // method hooks
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
+
+  api.addFiles("server/methods/workflows/orders.js", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");
