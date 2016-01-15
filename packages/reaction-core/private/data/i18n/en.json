@@ -135,6 +135,7 @@
         "filter": {
           "new": "New",
           "captured": "Payment Captured",
+          "processing": "Processing",
           "shipped": "Shipped",
           "completed": "Completed",
           "canceled": "Canceled",

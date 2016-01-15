@@ -37,8 +37,8 @@
 </template>
 
 <template name="ordersListItem">
-  <div class="panel order-panel {{activeClassname _id}}" data-event-action="selectOrder">
-    <div class="panel-heading">
+  <div class="rui card order {{activeClassname _id}}" data-event-action="selectOrder">
+    <div class="content">
       <div class="order-details">
         <div class="order-detail-item address">
           {{> orderDetail}}
@@ -50,9 +50,18 @@
           {{> ordersListSummary}}
         </div>
       </div>
-    </div>
     <div class="order-panel-items">
       {{> ordersListItems}}
+    </div>
+
+    </div>
+
+    <div class="controls">
+      {{#if orderIsNew .}}
+        <button class="btn btn-success" data-event-action="startProcessingOrder">Start</button>
+      {{else}}
+        <button><i class="fa fa-angle-right fa-2x"></i></button>
+      {{/if}}
     </div>
   </div>
 </template>
@@ -60,7 +69,7 @@
 
 <template name="orderStatusDetail">
   <div class="col-xs-8">
-    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D"}}</div>
+    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D, YYYY HH:MM"}}</div>
     {{#if shipmentTracking}}
     <p>Tracking: <a href="#">{{shipmentTracking}}</a></p>
     {{/if}}

@@ -1,11 +1,8 @@
 
 const orderFilters = [
   {name: "new", label: "New"},
-  {name: "captured", label: "Payment Captured"},
-  {name: "shipped", label: "Shipped"},
-  {name: "completed", label: "Completed"},
-  {name: "canceled", label: "Canceled"},
-  {name: "refunded", label: "Refunded"}
+  {name: "processing", label: "Processing"},
+  {name: "completed", label: "Completed"}
 ];
 
 const OrderHelper = {
@@ -20,26 +17,35 @@ const OrderHelper = {
       };
       break;
 
+    // Orders that have yet to be captured & shipped
+    case "processing":
+      query = {
+        "workflow.status": "coreOrderWorkflow/processing"
+      };
+      break;
+
+    // Orders that have been shipped, based on if the items have been shipped
+    case "shipped":
+      query = {
+        "items.workflow.status": "coreOrderItemWorkflow/shipped"
+      };
+      break;
+
+    // Orders that are complete, including all items with complete status
+    case "completed":
+      query = {
+        "workflow.status": "coreOrderWorkflow/completed",
+        "items.workflow.workflow": {
+          $in: ["coreOrderItemWorkflow/completed"]
+        }
+      };
+      break;
+
     // Orders that have been captured, but not yet shipped
     case "captured":
       query = {
         "billing.paymentMethod.status": "completed",
         "shipping.shipped": false
-      };
-      break;
-
-    // Orders that have been shipped
-    case "shipped":
-      query = {
-        "shipping.shipped": true
-      };
-      break;
-
-    // Orders that have been both captured & shipped, meaning it is complete
-    case "completed":
-      query = {
-        "billing.paymentMethod.status": "completed",
-        "shipping.shipped": true
       };
       break;
 
@@ -83,6 +89,18 @@ function getFiltersWithCounts() {
   });
 }
 
+Template.orders.onCreated(() => {
+  Template.instance().autorun(() => {
+    let isActionViewOpen = ReactionCore.isActionViewOpen();
+
+    if (isActionViewOpen === false) {
+      Router.go("dashboard/orders", {}, {
+        query: $.param(Router.current().params.query)
+      });
+    }
+  });
+});
+
 /**
  * orders helpers
  */
@@ -96,6 +114,16 @@ Template.orders.helpers({
     return template.orders;
   },
 
+  currentFilterLabel() {
+    let foundFilter = _.find(orderFilters, (filter) => {
+      return filter.name === Router.current().params.query.filter;
+    });
+
+    if (foundFilter) {
+      return foundFilter.label;
+    }
+  },
+
   activeClassname(orderId) {
     if (Router.current().params._id === orderId) {
       return "panel-info";
@@ -107,9 +135,12 @@ Template.orders.helpers({
 Template.ordersListItem.helpers({
   activeClassname(orderId) {
     if (Router.current().params._id === orderId) {
-      return "panel-info";
+      return "active";
     }
-    return "panel-default";
+  },
+
+  orderIsNew(order) {
+    return order.workflow.status === "new";
   }
 });
 
@@ -117,15 +148,23 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
 
+    Router.go("dashboard/orders", {
+      _id: this._id
+    }, {
+      query: $.param(Router.current().params.query)
+    });
+  },
+  "click [data-event-action=startProcessingOrder]": function (event) {
+    event.preventDefault();
+
     if (this.workflow.status === "new") {
-      this.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderSummary", this._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
     }
 
     Router.go("dashboard/orders", {
       _id: this._id
     }, {
-      query: $.param(Router.current().params.query)
+      query: $.param({filter: "processing"})
     });
   }
 });

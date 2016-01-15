@@ -15,17 +15,11 @@
             <div class="order-detail-title">
               {{item.variants.title}}
             </div>
-
-            <div class="order-detail-quantity">
-              <span class="badge badge-info">{{item.quantity}}</span> -
-            </div>
-
           </div>
 
           {{#if canMakeAdjustments}}
-          <div class="input-group amount order-detail-price">
-            <div class="input-group-addon">{{currencySymbol}}</div>
-            <input class="form-control amount" type="text" name="shipping_amount" value="{{money item.variants.price}}" disabled>
+          <div class="amount order-detail-price">
+            {{> numericInput class="form-control amount" name="item_amount" disabled=true value=item.variants.price}}
           </div>
           {{else}}
           <div class="order-summary-form-group">
@@ -44,43 +38,27 @@
     {{#if canMakeAdjustments}}
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="cartSubTotals.subtotal">Sub total</label>
-        <div class="input-group amount">
-          <div class="input-group-addon">{{currencySymbol}}</div>
-          <input class="form-control amount" type="text" name="subtotal" value="{{money invoice.subtotal}}" disabled>
-        </div>
+        {{> numericInput class="form-control amount" name="subtotal_amount" disabled=true value=invoice.subtotal}}
       </div>
-
 
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="cartSubTotals.shipping">Shipping</label>
-        <div class="input-group amount">
-          <div class="input-group-addon">{{currencySymbol}}</div>
-          <input class="form-control amount" type="text" name="shipping_amount" value="{{money invoice.shipping}}" disabled>
-        </div>
+        {{> numericInput class="form-control amount" name="shipping_amount" disabled=true value=invoice.shipping}}
       </div>
 
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="cartSubTotals.tax">Tax</label>
-        <div class="input-group amount">
-          <div class="input-group-addon">{{currencySymbol}}</div>
-          <input class="form-control amount" type="text" name="tax_amount" value="{{money invoice.tax}}" disabled>
-        </div>
+        {{> numericInput class="form-control amount" name="tax_amount" disabled=true value=invoice.taxes}}
       </div>
 
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
-        <div class="input-group amount">
-          <div class="input-group-addon">{{currencySymbol}}</div>
-          <input class="form-control amount" type="text" name="discount_amount" value="{{money invoice.discounts}}" {{disabled}}>
-        </div>
+        {{> numericInput class="form-control amount" name="discount_amount" value=invoice.discounts}}
       </div>
       <hr>
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="cartSubTotals.total">Total</label>
-        <div class="input-group amount">
-          <div class="input-group-addon">{{currencySymbol}}</div>
-          <input class="form-control" type="text" name="total" value="{{money invoice.total}}" disabled>
-        </div>
+        {{> numericInput class="form-control amount" name="total_amount" value=invoice.total}}
       </div>
     {{else}}
       <div class="order-summary-form-group">
