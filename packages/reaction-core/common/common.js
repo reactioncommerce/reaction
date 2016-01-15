@@ -15,7 +15,7 @@ Match.OptionalOrNull = function (pattern) {
  * @param {Object} pattern - match pattern
  * @return {Boolen} matches - void, null, or pattern
  */
-Match.OrderHookOptions = function (pattern) {
+Match.OrderHookOptions = function () {
   return Match.OneOf(Object);
 };
 
