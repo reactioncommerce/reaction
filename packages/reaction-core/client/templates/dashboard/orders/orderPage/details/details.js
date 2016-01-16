@@ -4,7 +4,7 @@
 */
 Template.pageOrderDetail.helpers({
   userProfile: function () {
-    if (this.userId !== null) {
+    if (typeof this.userId === "string") {
       const userProfile = ReactionCore.Collections.
         Accounts.findOne(this.userId);
       return userProfile.profile;

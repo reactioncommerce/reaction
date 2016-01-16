@@ -144,10 +144,6 @@ ReactionCore.Schemas.Accounts = new SimpleSchema({
     type: ReactionCore.Schemas.Profile,
     optional: true
   },
-  //"profile.addressBook": {
-  //  type: [ReactionCore.Schemas.Address],
-  //  optional: true
-  //},
   "metafields": {
     type: [ReactionCore.Schemas.Metafield],
     optional: true
