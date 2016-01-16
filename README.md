@@ -22,10 +22,12 @@ To install Meteor + Reaction, and start the latest release:
 curl https://install.meteor.com | /bin/sh
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction && git checkout master # default branch is development
-reaction
+./reaction
 ```
 
 Additional installation options are in the [developer documentation](https://github.com/reactioncommerce/reaction/blob/development/docs/developer/installation.md).
+
+_Note: When using a standalone MongoDB server, make sure you are using version 2.6 or later._
 
 _Note: for windows installation you also need:_
 - OpenSSL x86 ([windows installer](https://slproweb.com/products/Win32OpenSSL.html))
@@ -42,7 +44,7 @@ If you want to use shell scripts under Windows:
 - bin/clone-packages.sh
 - bin/reset
 
-## Packages 
+## Packages
  Atmosphere [Meteor Packages for Reaction](https://atmospherejs.com/?q=reaction)
 
 Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).

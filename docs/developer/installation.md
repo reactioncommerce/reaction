@@ -14,8 +14,8 @@
 curl https://install.meteor.com | /bin/sh
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
-reaction pull
-reaction
+./reaction pull
+./reaction
 ```
 
 The `master` branch will ensure your initial installation is the latest published release, and also should work with current packages from the [Meteor package manager](https://atmospherejs.com/).

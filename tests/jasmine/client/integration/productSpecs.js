@@ -10,13 +10,13 @@ describe("Product", function () {
   describe("create", function () {
     it("should throw 403 error by non admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(Products, "insert");
+      spyOn(ReactionCore.Collections.Products, "insert");
 
       Meteor.call("products/createProduct", function (error) {
         expect(error.error).toEqual(403);
       });
 
-      expect(Products.insert).not.toHaveBeenCalled();
+      expect(ReactionCore.Collections.Products.insert).not.toHaveBeenCalled();
       return done();
     });
 
@@ -65,7 +65,8 @@ describe("Product", function () {
     });
 
     it("should have a title set to Example Product", function () {
-      expect($("title").text()).toEqual("REACTION | Example Product");
+      const product = ReactionCore.Collections.Products.findOne();
+      expect($(".title .title").text().trim()).toEqual(product.title);
     });
 
     it("should have itemprop:price", function () {
@@ -121,6 +122,24 @@ describe("Product", function () {
       expect(spyOnAddToCartEvent).toHaveBeenTriggered();
       // expect(spyOnCart).toHaveBeenCalled();
       done();
+    });
+
+    it("should let the quantity for selected option be changed", function () {
+      let option1 = $(".variant-product-options .variant-select-option")[0];
+      let addToCartButton = $("#add-to-cart");
+      // let cartCount = $(".cart-icon .badge").text();
+
+      let spyOnOptionEvent = spyOnEvent(option1, "click");
+      let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
+
+      $("#add-to-cart-quantity").val(22);
+      $(option1).trigger("click");
+
+      expect("click").toHaveBeenTriggeredOn(option1);
+      expect(spyOnOptionEvent).toHaveBeenTriggered();
+
+      $(addToCartButton).trigger("click");
+      expect(spyOnAddToCartEvent).toHaveBeenTriggered();
     });
 
     it("should let the quantity for selected option be changed", function () {

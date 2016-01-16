@@ -54,7 +54,7 @@ Package.onUse(function (api) {
 });
 ```
 
-### Step4
+### Step 3
 
 open `.meteor/packages` and modify the following line at the bottom of the file.
 
@@ -64,11 +64,11 @@ reactioncommerce:default-theme
 #my:custom-theme
 ```
 
-Uncomment (remove the #) on the line with `my:custom-theme` to enable the theme. The name `my:custom-theme` represents the name of your theme package in the `package.js` file in `packages/my-custom-theme/package.js`. If you modified the name, be sure to change it here to match as well.
+Comment the line with `reactioncommerce:default-theme` (add # at the beginning) and uncomment (remove the #) on the line with `my:custom-theme` to enable the theme. The name `my:custom-theme` represents the name of your theme package in the `package.js` file in `packages/my-custom-theme/package.js`. If you modified the name, be sure to change it here to match as well.
 
-If your custom theme is complete enough to replace `reactioncommerce:default-theme` feel free to remove or comment it out.
+If your custom theme is complete enough to replace the standard core-theme altogether, feel free to remove the lines with `@import "{reactioncommerce:core-theme}...` from main.less.
 
-### Step 3
+### Step 4
 open `main.less` add css and/or imports here.
 
 ```

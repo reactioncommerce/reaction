@@ -14,7 +14,7 @@ Template.cartDrawer.helpers({
     let storedCart = ReactionCore.Collections.Cart.findOne();
     let count = 0;
 
-    if (storedCart !== null ? storedCart.items : void 0) {
+    if (typeof storedCart === "object" && storedCart.items) {
       for (let items of storedCart.items) {
         count += items.quantity;
       }
@@ -61,12 +61,10 @@ Template.openCartDrawer.events({
   "click .remove-cart-item": function (event) {
     event.stopPropagation();
     event.preventDefault();
-    let currentCartId = ReactionCore.Collections.Cart.findOne()._id;
-    let currentCartItem = this;
+    const currentCartItemId = this._id;
 
     return $(event.currentTarget).fadeOut(300, function () {
-      return Meteor.call("cart/removeFromCart",
-        currentCartId, currentCartItem);
+      return Meteor.call("cart/removeFromCart", currentCartItemId);
     });
   }
 });

@@ -87,8 +87,6 @@ Template.productDetail.events({
     }
   },
   "click #add-to-cart": function (event, template) {
-    let cartId;
-    let count;
     let options;
     let productId;
     let qtyField;
@@ -133,24 +131,17 @@ Template.productDetail.events({
           autoHide: 10000
         });
       } else {
-        cartId = ReactionCore.Collections.Cart.findOne()._id;
         productId = currentProduct._id;
 
-        if (cartId && productId) {
-          count = ReactionCore.Collections.Cart.findOne(cartId).cartCount() || 0;
-
-          Meteor.call("cart/addToCart", cartId, productId, currentVariant, quantity, function (error) {
-            let address;
-            if (!error && count === 0) {
-              address = Session.get("address");
-              if (!address) {
-                return locateUser();
+        if (productId) {
+          Meteor.call("cart/addToCart", productId, currentVariant._id, quantity,
+            function (error) {
+              if (error) {
+                ReactionCore.Log.error("Failed to add to cart.", error);
+                return error;
               }
-            } else if (error) {
-              ReactionCore.Log.error("Failed to add to cart.", error);
-              return error;
             }
-          });
+          );
         }
 
         template.$(".variant-select-option").removeClass("active");

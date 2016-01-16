@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.10.1",
+  version: "0.10.2",
   documentation: "README.md"
 });
 
@@ -44,7 +44,7 @@ Package.onUse(function (api) {
   api.use("accounts-password");
 
   // community packages
-  api.use("mquandalle:bower@1.5.2");
+  api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
   api.use("reactioncommerce:reaction-collections@1.0.2");
@@ -103,15 +103,16 @@ Package.onUse(function (api) {
   // import fixture data
   api.addFiles("server/logger.js", "server");
   api.addFiles("server/import.js", "server");
+  api.addFiles("server/init.js", "server");
   api.addFiles("client/main.js", "client");
   api.addFiles("server/main.js", "server");
   api.addFiles("server/registry.js", "server");
   api.addFiles("server/register.js", "server");
-  api.addFiles("server/init.js", "server");
   api.addFiles("common/common.js");
 
   // i18n translations
   api.addAssets("private/data/i18n/ar.json", "server");
+  api.addAssets("private/data/i18n/bg.json", "server");
   api.addAssets("private/data/i18n/cn.json", "server");
   api.addAssets("private/data/i18n/cs.json", "server");
   api.addAssets("private/data/i18n/de.json", "server");
@@ -132,6 +133,7 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/sv.json", "server");
   api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
+  api.addAssets("private/data/i18n/nb.json", "server");
 
   // security
   api.addFiles("server/browserPolicy.js", "server");
@@ -146,6 +148,8 @@ Package.onUse(function (api) {
   api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js");
 
+  api.addFiles("common/hooks/orders.js");
+
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
@@ -156,6 +160,8 @@ Package.onUse(function (api) {
   // method hooks
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
+
+  api.addFiles("server/methods/workflows/orders.js", "server");
 
   // client
   api.addFiles("client/subscriptions.js", "client");

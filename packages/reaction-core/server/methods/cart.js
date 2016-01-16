@@ -1,4 +1,68 @@
 /**
+ * quantityProcessing
+ * @summary perform calculations admissibility of adding product to cart
+ * @param {Object} product - product to add to Cart
+ * @param {Object} variant - product variant
+ * @param {Number} itemQty - qty to add to cart, defaults to 1, deducts
+ *  from inventory
+ * @since 1.10.1
+ * @return {Number} quantity - revised quantity to be added to cart
+ */
+function quantityProcessing(product, variant, itemQty = 1) {
+  // todo add min item threshold to schema
+  let quantity = itemQty;
+  const MIN = variant.min || 1;
+  const MAX = variant.inventoryQuantity || Infinity;
+
+  if (MIN > MAX) {
+    ReactionCore.Log.info(`productId: ${product._id}, variantId ${variant._id
+      }: inventoryQuantity lower then minimum order`);
+    throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
+      }: inventoryQuantity lower then minimum order`);
+  }
+
+  switch (product.type) {
+  case "not-in-stock":
+    break;
+  default: // type: `simple`
+    if (quantity < MIN) {
+      quantity = MIN;
+    } else if (quantity > MAX) {
+      quantity = MAX;
+    }
+  }
+
+  return quantity;
+}
+
+/**
+ * getSessionCarts
+ * @summary get Cart cursor with all session carts
+ * @param {String} userId - current user _id
+ * @param {String} sessionId - current user session id
+ * @param {String} shopId - shop id
+ * @since 0.10.2
+ * @return {Mongo.Cursor} with array of session carts
+ */
+function getSessionCarts(userId, sessionId, shopId) {
+  return ReactionCore.Collections.Cart.find({
+    $and: [{
+      userId: {
+        $ne: userId
+      }
+    }, {
+      sessionId: {
+        $eq: sessionId
+      }
+    }, {
+      shopId: {
+        $eq: shopId
+      }
+    }]
+  });
+}
+
+/**
  * Reaction Cart Methods
  */
 
@@ -8,59 +72,89 @@ Meteor.methods({
    * @summary merge matching sessionId cart into specified userId cart
    *
    * There should be one cart for each independent, non logged in user session
-   * When a user logs in that cart now belongs to that user and we use the a single user cart.
-   * If they are logged in on more than one devices, regardless of session, the user cart will be used
-   * If they had more than one cart, on more than one device,logged in at seperate times then merge the carts
+   * When a user logs in that cart now belongs to that user and we use the a
+   * single user cart.
+   * If they are logged in on more than one devices, regardless of session,the
+   * user cart will be used
+   * If they had more than one cart, on more than one device,logged in at
+   * separate times then merge the carts
    *
-   * @param {String} cartId - cartId of the cart to merge matching session carts into.
-   * @return {Object} cartId - cartId on success
+   * @param {String} cartId - cartId of the cart to merge matching session
+   * carts into.
+   * @param {String} [currentSessionId] - current client session id
+   * @todo I think this method should be moved out from methods to a Function
+   * Declaration to keep it more secure
+   * @return {Object|Boolean} cartId - cartId on success or false
    */
-  "cart/mergeCart": function (cartId) {
+  "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
+    check(currentSessionId, Match.Optional(String));
 
-    let Cart = ReactionCore.Collections.Cart; // convienance shorthand
-    let currentCart = Cart.findOne(cartId); // we don't process current cart, but merge into it.
-    let userId = currentCart.userId; // just used to filter out the current cart
-    let sessionId = ReactionCore.sessionId; // persisten sessions, see: publications/sessions.js
-    let shopId = ReactionCore.getShopId();
+    const { Cart } = ReactionCore.Collections; // convenience shorthand
+    const { Log } = ReactionCore;
+    // we don't process current cart, but merge into it.
+    const currentCart = Cart.findOne(cartId);
+    // just used to filter out the current cart
+    // we do additional check of cart exists here and if it not exist, next
+    // check supposed to throw 403 error
+    const userId = currentCart && currentCart.userId;
+    // user should have an access to operate with only one - his - cart
+    if (this.userId !== null && userId !== this.userId) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    // persistent sessions, see: publications/sessions.js
+    // this is the last place where we still need `ReactionCore.sessionId`.
+    // The use case is: on user log in. I don't know how pass `sessionId` down
+    // at that moment.
+    const sessionId = currentSessionId || ReactionCore.sessionId;
+    const shopId = ReactionCore.getShopId();
 
     // no need to merge anonymous carts
     if (Roles.userIsInRole(userId, "anonymous", shopId)) {
       return false;
     }
-    ReactionCore.Log.debug("merge cart: matching sessionId");
-    ReactionCore.Log.debug("current userId", userId);
-    ReactionCore.Log.debug("sessionId", sessionId);
-    // get session carts without current user cart
-    let sessionCarts = Cart.find({
-      $and: [{
-        userId: {
-          $ne: userId
-        }
-      }, {
-        sessionId: {
-          $eq: sessionId
-        }
-      }]
-    });
+    Log.debug("merge cart: matching sessionId");
+    Log.debug("current userId:", userId);
+    Log.debug("sessionId:", sessionId);
+    // get session carts without current user cart cursor
+    let sessionCarts = getSessionCarts(userId, sessionId, shopId);
 
-    ReactionCore.Log.debug(
-      `merge cart: begin merge processing of session ${sessionId} into: ${currentCart._id}`
+    Log.debug(
+      `merge cart: begin merge processing of session ${
+      sessionId} into: ${currentCart._id}`
     );
     // loop through session carts and merge into user cart
-    sessionCarts.forEach((sessionCart) => {
-      ReactionCore.Log.debug(
-        `merge cart: merge user userId: ${userId}, sessionCart.userId: ${sessionCart.userId}, sessionCart id: ${sessionCart._id}`
+    sessionCarts.forEach(sessionCart => {
+      // cart should belong to anonymous
+      if (!Roles.userIsInRole(sessionCart.userId, "anonymous", shopId)) {
+        return false;
+      }
+
+      Log.debug(
+        `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
+          sessionCart.userId}, sessionCart id: ${sessionCart._id}`
       );
       // really if we have no items, there's nothing to merge
       if (sessionCart.items) {
+        // if currentCart already have a cartWorkflow, we don't need to clean it
+        // up completely, just to `coreCheckoutShipping` stage. Also, we will
+        // need to recalculate shipping rates
+        if (typeof currentCart.workflow === "object" &&
+        typeof currentCart.workflow.workflow === "object") {
+          if (currentCart.workflow.workflow.length > 2) {
+            Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+            // refresh shipping quotes
+            Meteor.call("shipping/updateShipmentQuotes", cartId);
+          }
+        } else {
+          // if user logged in he doesn't need to show `checkoutLogin` step
+          Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+        }
+
+        // We got an additional db call because of `workflow/revertCartWorkflow`
+        // call, but we also got things more cleaner in my opinion.
         // merge session cart into current cart
         Cart.update(currentCart._id, {
-          $set: {
-            "userId": Meteor.userId(),
-            "workflow.status": "checkoutLogin",
-            "workflow.workflow": ["checkoutLogin"]
-          },
           $addToSet: {
             items: {
               $each: sessionCart.items
@@ -68,108 +162,103 @@ Meteor.methods({
           }
         });
       }
+
       // cleanup session Carts after merge.
       if (sessionCart.userId !== this.userId) {
         // clear the cart that was used for a session
         // and we're also going to do some garbage Collection
         Cart.remove(sessionCart._id);
         // cleanup user/accounts
-        // Meteor.users.remove(sessionCart.userId);
-        // ReactionCore.Collections.Accounts.remove({
-        //   userId: sessionCart.userId
-        // });
-        ReactionCore.Log.debug(
-          `merge cart: delete cart ${sessionCart._id} and user: ${sessionCart.userId}`
+        ReactionCore.Collections.Accounts.remove({
+          userId: sessionCart.userId
+        });
+        Meteor.users.remove(sessionCart.userId);
+        Log.debug(
+          `merge cart: delete cart ${
+          sessionCart._id} and user: ${sessionCart.userId}`
         );
       }
-
-      ReactionCore.Log.debug(
+      Log.debug(
         `merge cart: processed merge for cartId ${sessionCart._id}`
       );
-      return currentCart._id;
     });
+
+    // `checkoutLogin` should be used for anonymous only. Registered users
+    // no need see this.
+    if (currentCart.workflow.status === "new") {
+      // to call `workflow/pushCartWorkflow` two times is the only way to move
+      // from status "new" to "checkoutAddressBook" which I found without
+      // refactoring of `workflow/pushCartWorkflow`
+      // We send `cartId` as arguments because this method could be called from
+      // publication method and in half cases it could be so, that
+      // Meteor.userId() will be null.
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+        "checkoutLogin", cartId);
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+        "checkoutAddressBook", cartId);
+    }
 
     return currentCart._id;
   },
 
   /**
    * cart/createCart
+   * @description create new cart for user, but all checks for current cart's
+   * existence should go before this method will be called, to keep it clean
    * @summary create and return new cart for user
-   * @param {String} createForUserId - userId to create cart for
+   * @param {String} userId - userId to create cart for
+   * @param {String} sessionId - current client session id
+   * @todo I think this method should be moved out from methods to a Function
+   * Declaration to keep it more secure
    * @returns {String} cartId - users cartId
    */
-  "cart/createCart": function (createForUserId) {
-    check(createForUserId, Match.Optional(String));
+  "cart/createCart": function (userId, sessionId) {
+    check(userId, String);
+    check(sessionId, String);
     this.unblock();
-    let sessionId;
-    let userId = createForUserId || this.userId;
-    let shopId = ReactionCore.getShopId();
-    let currentCartId;
 
-    // find current userCart
-    // this is the only true cart
-    let currentUserCart = ReactionCore.Collections.Cart.findOne({
+    const { Log } = ReactionCore;
+    const shopId = ReactionCore.getShopId();
+    // check if user has `anonymous` role.( this is a visitor)
+    const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+    const sessionCartCount = getSessionCarts(userId, sessionId, shopId).count();
+
+    Log.info("create cart: shopId", shopId);
+    Log.debug("create cart: userId", userId);
+    Log.debug("create cart: sessionId", sessionId);
+    Log.debug("create cart: sessionCarts.count", sessionCartCount);
+    Log.debug("create cart: anonymousUser", anonymousUser);
+
+    // we need to create a user cart for the new authenticated user or
+    // anonymous.
+    const currentCartId = ReactionCore.Collections.Cart.insert({
+      sessionId: sessionId,
       userId: userId
     });
-
-    if (currentUserCart) {
-      ReactionCore.Log.debug("currentUserCart", currentUserCart.sessionId);
-      sessionId = currentUserCart.session;
-    } else {
-      sessionId = ReactionCore.sessionId;
-    }
-    ReactionCore.Log.debug("current cart serverSession", sessionId);
-    // while anonymous and merge into user cart
-    let sessionCartCount = ReactionCore.Collections.Cart.find({
-      session: sessionId,
-      userId: {
-        $ne: userId
-      }
-    }).count();
-
-    // check if user has `anonymous` role.( this is a visitor)
-    let anonymousUser = ReactionCore.hasPermission("anonymous");
-    // the cart is either current or new
-    if (currentUserCart) {
-      currentCartId = currentUserCart._id;
-    }
-
-    ReactionCore.Log.info("create cart: shopId", shopId);
-    ReactionCore.Log.debug("create cart: userId", userId);
-    ReactionCore.Log.debug("create cart: sessionId", sessionId);
-    ReactionCore.Log.debug("create cart: currentUserCart", currentCartId);
-    ReactionCore.Log.debug("create cart: sessionCarts.count",
-      sessionCartCount);
-    ReactionCore.Log.debug("create cart: anonymousUser", anonymousUser);
-
-    // if we have a session cart, but just create or
-    // authenticated into a new user we need to create a user
-    // cart for the new authenticated user.
-
-    if (!currentCartId && anonymousUser === false) {
-      currentCartId = ReactionCore.Collections.Cart.insert({
-        sessionId: sessionId,
-        userId: userId
-      });
-      ReactionCore.Log.debug("create cart: into new user cart. created: " +
-        currentCartId + " for user " + userId);
-    }
+    Log.debug("create cart: into new user cart. created: " +  currentCartId +
+      " for user " + userId);
 
     // merge session carts into the current cart
-    if (currentCartId && sessionCartCount > 0 && anonymousUser === false) {
-      ReactionCore.Log.debug(
-        "create cart: found existing cart. merge into " + currentCartId +
-        " for user " + userId);
-      Meteor.call("cart/mergeCart", currentCartId);
-    } else if (!currentCartId) { // Create empty cart if there is none.
-      currentCartId = ReactionCore.Collections.Cart.insert({
-        sessionId: sessionId,
-        userId: userId
-      });
-      ReactionCore.Log.debug(
-        `create cart: no existing cart. created: ${currentCartId} currentCartId for sessionId ${sessionId} and userId ${userId}`
-      );
+    if (sessionCartCount > 0 && !anonymousUser) {
+      Log.debug("create cart: found existing cart. merge into " + currentCartId
+        + " for user " + userId);
+      Meteor.call("cart/mergeCart", currentCartId, sessionId);
     }
+
+    // we should check for an default billing/shipping address in user account.
+    // this needed after submitting order, when user receives new cart
+    const account = ReactionCore.Collections.Accounts.findOne(userId);
+    if (account && account.profile && account.profile.addressBook) {
+      account.profile.addressBook.forEach(address => {
+        if (address.isBillingDefault) {
+          Meteor.call("cart/setPaymentAddress", currentCartId, address);
+        }
+        if (address.isShippingDefault) {
+          Meteor.call("cart/setShipmentAddress", currentCartId, address);
+        }
+      });
+    }
+
     return currentCartId;
   },
 
@@ -180,59 +269,70 @@ Meteor.methods({
    *  with the existing item. We want to fix price, qty, etc into history
    *  however, we could check reactively for price /qty etc, adjustments on
    *  the original and notify them
-   *  @param {String} cartId - cartId
    *  @param {String} productId - productId to add to Cart
-   *  @param {String} variantData - variant object
-   *  @param {String} itemQty - optional qty to add to cart, defaults to 1, deducts from inventory
-   *  @return {Number} Mongo insert response
+   *  @param {String} variantId - product variant _id
+   *  @param {Number} [itemQty] - qty to add to cart
+   *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (cartId, productId, variantData, itemQty) {
-    check(cartId, String);
+  "cart/addToCart": function (productId, variantId, itemQty) {
     check(productId, String);
-    check(variantData, ReactionCore.Schemas.ProductVariant);
+    check(variantId, String);
     check(itemQty, Match.Optional(Number));
     this.unblock();
 
-    ReactionCore.Collections.Products.insert({
-      title: 'Product test one'
-    }, { selector: { type: 'simple' } });
-    //ReactionCore.Collections.Products
-    //  .update({"_id" : "6qiqPwBkeJdtdQc4G"},
-    //  {$set: {type: 'simple', title: 'foo'}},
-    //  {selector: {type: 'variant'}});
-
-    const quantity = itemQty || 1;
-    const currentCart = ReactionCore.Collections.Cart.findOne(cartId);
-    const cartVariantExists = ReactionCore.Collections.Cart.findOne({
-      "_id": currentCart._id,
-      "items.variants._id": variantData._id
+    const { Log } = ReactionCore;
+    const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
+    if (!cart) {
+      Log.warn(`Cart is not defined for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found", "Cart is not defined!");
+    }
+    const product = ReactionCore.Collections.Products.findOne(productId);
+    if (!product) {
+      Log.warn(`Product: ${ productId } was not found in database`);
+      throw new Meteor.Error(404, "Product not found",
+        "Product is not defined!");
+    }
+    const variant = product.variants.find(function (currentVariant) {
+      if (currentVariant._id === variantId) {
+        return currentVariant;
+      }
     });
+    // performs calculations admissibility of adding product to cart
+    const quantity = quantityProcessing(product, variant, itemQty);
+    // performs search of variant inside cart
+    const cartVariantExists = cart.items && cart.items
+      .some(item => item.variants._id === variantId);
 
-    if (cartVariantExists !== undefined) {
+    if (cartVariantExists) {
       return ReactionCore.Collections.Cart.update({
-        "_id": currentCart._id,
-        "items.variants._id": variantData._id
+        "_id": cart._id,
+        "items.variants._id": variantId
       }, {
-        $set: {
-          updatedAt: new Date()
-        },
         $inc: {
           "items.$.quantity": quantity
         }
       }, function (error, result) {
         if (error) {
-          ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections
+          Log.warn("error adding to cart", ReactionCore.Collections
             .Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
-        ReactionCore.Log.info(`cart: increment variant ${variantData._id} quantity by ${quantity}`);
+
+        // refresh shipping quotes
+        Meteor.call("shipping/updateShipmentQuotes", cart._id);
+        // revert workflow to checkout shipping step.
+        Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+
+        Log.info(`cart: increment variant ${variantId} quantity by ${
+          quantity}`);
+
         return result;
       });
     }
+
     // cart variant doesn't exist
-    const product = ReactionCore.Collections.Products.findOne(productId);
     return ReactionCore.Collections.Cart.update({
-      _id: currentCart._id
+      _id: cart._id
     }, {
       $addToSet: {
         items: {
@@ -240,18 +340,117 @@ Meteor.methods({
           shopId: product.shopId,
           productId: productId,
           quantity: quantity,
-          variants: variantData,
+          variants: variant,
           type: product.type
         }
       }
     }, function (error, result) {
       if (error) {
-        ReactionCore.Log.warn("error adding to cart", ReactionCore.Collections
-          .Cart.simpleSchema().namedContext().invalidKeys());
+        Log.warn("error adding to cart", ReactionCore.Collections.Cart
+          .simpleSchema().namedContext().invalidKeys());
         return error;
       }
-      ReactionCore.Log.info(`cart: add variant ${variantData._id} to cartId ${currentCart._id}`);
+
+      // refresh shipping quotes
+      Meteor.call("shipping/updateShipmentQuotes", cart._id);
+      // revert workflow to checkout shipping step.
+      Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+
+      Log.info(`cart: add variant ${variantId} to cartId ${cart._id}`);
+
       return result;
+    });
+  },
+
+  /**
+   * cart/removeFromCart
+   * @summary removes or adjust quantity of a variant from the cart
+   * @param {String} itemId - cart item _id
+   * @param {Number} [quantity] - if provided will adjust increment by quantity
+   * @returns {boolean|String} returns Mongo update result
+   */
+  "cart/removeFromCart": function (itemId, quantity) {
+    check(itemId, String);
+    check(quantity, Match.Optional(Number));
+
+    this.unblock();
+
+    const userId = Meteor.userId();
+    const cart = ReactionCore.Collections.Cart.findOne({
+      userId: userId
+    });
+    if (!cart) {
+      ReactionCore.Log.error(`Cart was not found for user: ${ userId }`);
+      throw new Meteor.Error(404, "Cart not found.",
+        "Unable to find a cart for this user.");
+    }
+
+    let cartItem;
+
+    if (cart.items) {
+      cart.items.forEach(item => {
+        if (item._id === itemId) {
+          cartItem = item;
+        }
+      });
+    }
+
+    // extra check of item exists
+    if (typeof cartItem !== "object") {
+      ReactionCore.Log.error(`Unable to find an item: ${itemId
+        } within the cart: ${cart._id}`);
+      throw new Meteor.Error(404, "Cart item not found.",
+        "Unable to find an item with such id within you cart.");
+    }
+
+    // refresh shipping quotes
+    Meteor.call("shipping/updateShipmentQuotes", cart._id);
+    // revert workflow to checkout shipping step.
+    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+
+    if (!quantity) {
+      return ReactionCore.Collections.Cart.update({
+        _id: cart._id
+      }, {
+        $pull: {
+          items: {
+            _id: itemId
+          }
+        }
+      }, (error, result) => {
+        if (error) {
+          ReactionCore.Log.warn("error removing from cart", ReactionCore
+            .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          return error;
+        }
+        if (result) {
+          ReactionCore.Log.info(`cart: deleted cart item variant id ${
+            cartItem.variants._id}`);
+          return result;
+        }
+      });
+    }
+
+    // if quantity lets convert to negative and increment
+    let removeQuantity = Math.abs(quantity) * -1;
+    return ReactionCore.Collections.Cart.update({
+      _id: cart._id,
+      items: cartItem
+    }, {
+      $inc: {
+        "items.quantity": removeQuantity
+      }
+    }, (error, result) => {
+      if (error) {
+        ReactionCore.Log.warn("error removing from cart", ReactionCore
+          .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+        return error;
+      }
+      if (result) {
+        ReactionCore.Log.info(`cart: removed variant ${
+          cartItem._id} quantity of ${quantity}`);
+        return result;
+      }
     });
   },
 
@@ -265,13 +464,20 @@ Meteor.methods({
    * @todo:  Partial order processing, shopId processing
    * @todo:  Review Security on this method
    * @param {String} cartId - cartId to transform to order
+   * @param {String} sessionId - current client session id. It is needed to
+   * create new cart within `cart/createCart` method
    * @return {String} returns orderId
    */
-  "cart/copyCartToOrder": (cartId) => {
+  "cart/copyCartToOrder": function (cartId) {
     check(cartId, String);
-    let cart = ReactionCore.Collections.Cart.findOne(cartId);
-    let order = _.clone(cart);
-    let user;
+    const cart = ReactionCore.Collections.Cart.findOne(cartId);
+    // security check
+    if (cart.userId !== this.userId) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    const order = Object.assign({}, cart);
+    const sessionId = cart.sessionId;
+
     ReactionCore.Log.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
@@ -279,13 +485,18 @@ Meteor.methods({
     // a helper for guest login, we let guest add email afterwords
     // for ease, we'll also add automatically for logged in users
     if (order.userId && !order.email) {
-      user = ReactionCore.Collections.Accounts.findOne(order.userId);
-      for (let email of user.emails) {
-        // alternate order email address
-        if (email.provides === "orders") {
-          order.email = email.address;
-        } else if (email.provides === "default") {
-          order.email = email.address;
+      const user = ReactionCore.Collections.Accounts.findOne(order.userId);
+      // we could have a use case here when email is not defined by some reason,
+      // we could throw an error, but it's not pretty clever, so let it go w/o
+      // email
+      if (typeof user === "object" && user.emails) {
+        for (let email of user.emails) {
+          // alternate order email address
+          if (email.provides === "orders") {
+            order.email = email.address;
+          } else if (email.provides === "default") {
+            order.email = email.address;
+          }
         }
       }
     }
@@ -302,38 +513,53 @@ Meteor.methods({
     delete order.cartTotal;
     delete order._id;
 
-    if (!order.shipping) {
-      order.shipping = [];
-    }
-
-    if (order.shipping) {
+    // `order.shipping` is array ?
+    if (Array.isArray(order.shipping)) {
       if (order.shipping.length > 0) {
         order.shipping[0].paymentId = order.billing[0]._id;
 
-        if (_.isArray(order.shipping[0].items) === false) {
+        if (!Array.isArray(order.shipping[0].items)) {
           order.shipping[0].items = [];
         }
       }
+    } else { // if not - create it
+      order.shipping = [];
     }
 
+    let expandedItems = [];
+
     // init item level workflow
-    _.each(order.items, function (item, index) {
-      order.items[index].workflow = {
-        status: "orderCreated",
-        workflow: ["inventoryAdjusted"]
-      };
+    _.each(order.items, function (item) {
+      // Split items based on their quantity
+      for (let i = 0; i < item.quantity; i++) {
+        // Clone Item
+        let itemClone = _.clone(item);
 
+        // Remove the quantity since we'll be expanding each item as
+        // it's own record
+        itemClone.quantity = 1;
 
-      if (order.shipping[0].items) {
-        order.shipping[0].items.push({
-          _id: item._id,
-          productId: item.productId,
-          shopId: item.shopId,
-          variantId: item.variants._id,
-          quantity: item.quantity
-        });
+        itemClone._id = Random.id();
+        itemClone.workflow = {
+          status: "new"
+        };
+
+        expandedItems.push(itemClone);
+
+        // Add each item clone to the first shipment
+        if (order.shipping[0].items) {
+          order.shipping[0].items.push({
+            _id: itemClone._id,
+            productId: itemClone.productId,
+            shopId: itemClone.shopId,
+            variantId: itemClone.variants._id
+          });
+        }
       }
     });
+
+    // Replace the items with the expanded array of items
+    order.items = expandedItems;
 
     if (!order.items) {
       throw new Meteor.Error(
@@ -342,16 +568,15 @@ Meteor.methods({
 
     // set new workflow status
     order.workflow.status = "new";
-    order.workflow.workflow = ["orderCreated"];
+    order.workflow.workflow = ["coreOrderWorkflow/created"];
 
     // insert new reaction order
     let orderId = ReactionCore.Collections.Orders.insert(order);
     ReactionCore.Log.info("Created orderId", orderId);
 
     if (orderId) {
-      // TODO: check for succesful orders/inventoryAdjust
+      // TODO: check for successful orders/inventoryAdjust
       // Meteor.call("orders/inventoryAdjust", orderId);
-      // trash the old cart
       ReactionCore.Collections.Cart.remove({
         _id: order.cartId
       });
@@ -360,16 +585,27 @@ Meteor.methods({
       // subscription handler, it's not always working
       let newCartExists = ReactionCore.Collections.Cart.find(order.userId);
       if (newCartExists.count() === 0) {
-        Meteor.call("cart/createCart", order.userId);
+        Meteor.call("cart/createCart", this.userId, sessionId);
+        // after recreate new cart we need to make it looks like previous by
+        // updating `cart/workflow/status` to "coreCheckoutShipping"
+        // by calling `workflow/pushCartWorkflow` three times. This is the only
+        // way to do that without refactoring of `workflow/pushCartWorkflow`
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+          "checkoutLogin");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+          "checkoutAddressBook");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+          "coreCheckoutShipping");
       }
-      // return
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
-      Meteor.call("orders/sendNotification", ReactionCore.Collections.Orders.findOne(orderId));
+      Meteor.call("orders/sendNotification",
+        ReactionCore.Collections.Orders.findOne(orderId));
+
       return orderId;
     }
     // we should not have made it here, throw error
-    throw new Meteor.Error("cart/copyCartToOrder: Invalid request");
+    throw new Meteor.Error(400, "cart/copyCartToOrder: Invalid request");
   },
 
   /**
@@ -448,7 +684,7 @@ Meteor.methods({
 
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
-      userId: Meteor.userId()
+      userId: this.userId
     });
 
     if (cart) {
@@ -456,7 +692,7 @@ Meteor.methods({
       let update;
       // temp hack until we build out multiple shipment handlers
       // if we have an existing item update it, otherwise add to set.
-      if (cart.shipping) {
+      if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
         selector = {
           "_id": cartId,
           "shipping._id": cart.shipping[0]._id
@@ -489,16 +725,22 @@ Meteor.methods({
         // refresh shipping quotes
         Meteor.call("shipping/updateShipmentQuotes", cartId);
 
-        // it's ok for this to be called multiple times
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "coreCheckoutShipping");
-
-        // this is probably a crappy way to do this
-        // let's default the payment address
-        if (!cart.billing) {
-          Meteor.call("cart/setPaymentAddress", cartId, address);
+        if (typeof cart.workflow !== "object") return;
+        // ~~it's ok for this to be called multiple times~~
+        // call it only once when we at the `checkoutAddressBook` step
+        if (typeof cart.workflow.workflow === "object" &&
+          cart.workflow.workflow.length < 2) {
+          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+            "coreCheckoutShipping");
         }
-        return;
+
+        // if we change default address during further steps, we need to revert
+        // workflow back to `coreCheckoutShipping` step
+        if (typeof cart.workflow.workflow === "object" &&
+          cart.workflow.workflow.length > 2) { // "2" index of
+          // `coreCheckoutShipping`
+          Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+        }
       });
     }
   },
@@ -507,6 +749,7 @@ Meteor.methods({
    * @summary adds addressbook to cart payments
    * @param {String} cartId - cartId to apply payment address
    * @param {Object} address - addressBook object
+   * @todo maybe we need to rename this method to `cart/setBillingAddress`?
    * @return {String} return Mongo update result
    */
   "cart/setPaymentAddress": function (cartId, address) {
@@ -516,7 +759,7 @@ Meteor.methods({
 
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
-      userId: Meteor.userId()
+      userId: this.userId
     });
 
     if (cart) {
@@ -524,7 +767,7 @@ Meteor.methods({
       let update;
       // temp hack until we build out multiple billing handlers
       // if we have an existing item update it, otherwise add to set.
-      if (cart.billing) {
+      if (Array.isArray(cart.billing) && cart.billing.length > 0) {
         selector = {
           "_id": cartId,
           "billing._id": cart.billing[0]._id
@@ -547,30 +790,31 @@ Meteor.methods({
         };
       }
 
-      ReactionCore.Collections.Cart.update(selector, update,
-        function (error, result) {
-          if (error) {
-            ReactionCore.Log.warn(error);
-          } else {
-            // post payment address Methods
-            return result;
-          }
-        });
+      return ReactionCore.Collections.Cart.update(selector, update);
     }
   },
   /**
    * cart/unsetAddresses
-   * @description removes address from cart. This used then user remove address,
-   * which was used in cart. This method not called directly from client side.
+   * @description removes address from cart.
    * @param {String} addressId - address._id
    * @param {String} userId - cart owner _id
-   * @return {Number|Object} The number of removed documents or error object
+   * @param {String} [type] - billing default or shipping default
+   * @since 0.10.1
+   * @todo check if no more address in cart as shipping, we should reset
+   * `cartWorkflow` to second step
+   * @return {Number|Object|Boolean} The number of removed documents or error
+   * object or `false` if we don't need to update cart
    */
-  "cart/unsetAddresses": function (addressId, userId) {
+  "cart/unsetAddresses": function (addressId, userId, type) {
     check(addressId, String);
     check(userId, String);
+    check(type, Match.Optional(String));
     this.unblock();
 
+    // do we actually need to change anything?
+    let needToUpdate = false;
+    // we need to revert the workflow after a "shipping" address was removed
+    let isShippingDeleting = false;
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
@@ -578,16 +822,41 @@ Meteor.methods({
       _id: cart._id
     };
     let update = { $unset: {}};
-    // we assume that the billing/shipping arrays can hold only one element [0]
-    if (typeof cart.billing[0].address === "object" &&
-      cart.billing[0].address._id === addressId) {
-      update.$unset["billing.0.address"] = "";
+    // user could uncheck the checkbox in address to not to be default, then we
+    // receive `type` arg
+    if (typeof type === "string") {
+      // we assume that the billing/shipping arrays can hold only one element [0]
+      if (cart[type] && typeof cart[type][0].address === "object" &&
+        cart[type][0].address._id === addressId) {
+        update.$unset[`${type}.0.address`] = "";
+        needToUpdate = true;
+        isShippingDeleting = type === "shipping";
+      }
+    } else { // or if we remove address itself, when we run this part
+      // we assume that the billing/shipping arrays can hold only one element [0]
+      if (cart.billing && typeof cart.billing[0].address === "object" &&
+        cart.billing[0].address._id === addressId) {
+        update.$unset["billing.0.address"] = "";
+        needToUpdate = true;
+      }
+      if (cart.shipping && typeof cart.shipping[0].address === "object" &&
+        cart.shipping[0].address._id === addressId) {
+        update.$unset["shipping.0.address"] = "";
+        needToUpdate = true;
+        isShippingDeleting = true;
+      }
     }
-    if (typeof cart.shipping[0].address._id === "object" &&
-      cart.shipping[0].address._id === addressId) {
-      update.$unset["shipping.0.address"] = "";
-    }
-    return ReactionCore.Collections.Cart.update(selector, update);
+
+    // todo maybe we need synchronous variant here?
+    needToUpdate && ReactionCore.Collections.Cart.update(selector, update,
+      (error, result) => {
+        if (result && isShippingDeleting) {
+          // if we remove shipping address from cart, we need to revert
+          // `cartWorkflow` to the `checkoutAddressBook` step.
+          Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+        }
+      }
+    );
   },
   /**
    * cart/submitPayment
@@ -595,11 +864,11 @@ Meteor.methods({
    * and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
    * @param {Object} paymentMethod - paymentMethod object
+   * directly within this method, just throw down though hooks
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-
     let checkoutCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });

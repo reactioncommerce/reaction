@@ -23,6 +23,13 @@ Meteor.methods({
       tracking);
     Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow",
       "coreShipmentTracking", order._id);
+
+    // Set the status of the items as shipped
+    const itemIds = template.order.shipping[0].items.map((item) => {
+      return item._id;
+    });
+
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/tracking", order._id, itemIds);
   },
 
   // shipmentPrepare
@@ -61,13 +68,12 @@ Meteor.methods({
         }
       });
 
-      return Meteor.call(
-        "workflow/pushOrderShipmentWorkflow",
-        "coreOrderShipmentWorkflow",
-        "coreOrderPacking",
-        order._id,
-        shipment._id
-      );
+      // Set the status of the items as shipped
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
+      });
+
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     }
   },
 
@@ -136,6 +142,15 @@ Meteor.methods({
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow",
           "coreOrderWorkflow", "coreProcessPayment", order._id);
+
+        // Set the status of the items as shipped
+        const itemIds = order.shipping[0].items.map((item) => {
+          return item._id;
+        });
+
+        Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
+
+
         return this.processPayment(order);
       }
     });
@@ -157,19 +172,64 @@ Meteor.methods({
       // Attempt to sent email notification
       Meteor.call("orders/sendNotification", order);
 
-      ReactionCore.Collections.Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.shipped": true
-        }
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
       });
 
-      return Meteor.call("workflow/pushOrderWorkflow",
-        "coreOrderWorkflow", "coreShipmentShipped", order._id);
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds, (error) => {
+        // Move to completed status for items
+        // TODO: In the future, this could be handled by shipping delivery status
+        if (!error) {
+          Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds, (error2) => {
+            // Then try to mark order as completed.
+            if (!error2) {
+              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
+            }
+          });
+        }
+      });
     }
   },
+
+  /**
+   * orders/shipmentDelivered
+   *
+   * @summary trigger shipmentShipped status and workflow update
+   * @param {Object} order - order object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentDelivered": function (order) {
+    check(order, Object);
+    this.unblock();
+
+    if (order) {
+      let shipment = order.shipping[0];
+
+      // Attempt to sent email notification
+      Meteor.call("orders/sendNotification", order);
+
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
+      });
+
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
+      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
+
+      const isCompleted = _.every(order.items, (item) => {
+        return _.contains(item.workflow.workflow, "coreOrderItemWorkflow/completed");
+      });
+
+      if (isCompleted === true) {
+        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
+        return true;
+      }
+
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
+
+      return false;
+    }
+  },
+
   /**
    * orders/shipmentShipped
    *
@@ -217,6 +277,7 @@ Meteor.methods({
       }
     }
   },
+
   /**
    * orders/orderCompleted
    *
@@ -448,6 +509,11 @@ Meteor.methods({
     check(orderId, String);
 
     let order = ReactionCore.Collections.Orders.findOne(orderId);
+    const itemIds = order.shipping[0].items.map((item) => {
+      return item._id;
+    });
+
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
     // process order..payment.paymentMethod
     _.each(order.billing, function (billing) {
