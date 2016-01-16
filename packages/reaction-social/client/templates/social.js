@@ -6,9 +6,9 @@ Template.reactionSocial.onCreated(function () {
       const socialSettings = ReactionCore.Collections.Packages.findOne({
         name: "reaction-social"
       });
-      self.socialSettings = socialSettings.settings.public;
-
-      return self;
+      if (socialSettings) {
+        self.socialSettings = socialSettings.settings.public;
+      }
     }
   });
 });
