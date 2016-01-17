@@ -7,12 +7,19 @@ let Media = ReactionCore.Collections.Media;
  */
 function uploadHandler(event) {
   let productId = selectedProductId();
-  let variantId = selectedVariantId();
+  // let variantId = selectedVariantId();
+  const variant = selectedVariant();
+  const variantId = variant._id;
   let shopId = selectedProduct().shopId || ReactionCore.getShopId();
   let userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
   }).count();
+  // TODO: we need to mark the first variant images somehow for productGrid.
+  // But how do we know that this is the first, not second or other variant?
+  // Question is open. For now if product has more than 1 top variant, everyone
+  // will have a chance to be displayed
+  const toGrid = variant.ancestors.length === 1;
 
   return FS.Utility.eachFile(event, function (file) {
     let fileObj;
@@ -22,7 +29,8 @@ function uploadHandler(event) {
       productId: productId,
       variantId: variantId,
       shopId: shopId,
-      priority: count
+      priority: count,
+      toGrid: +toGrid // we need number
     };
     Media.insert(fileObj);
     return count++;
@@ -69,16 +77,18 @@ Template.productImageGallery.helpers({
           "metadata.priority": 1
         }
       });
-      if (!ReactionCore.hasAdminAccess() && mediaArray.count() < 1 && product) {
-        mediaArray = Media.find({
-          "metadata.variantId": product.variants[0]._id
-        }, {
-          sort: {
-            "metadata.priority": 1
-          }
-        });
-      }
-    } else {
+      // todo clean this:
+
+      //if (!ReactionCore.hasAdminAccess() && mediaArray.count() < 1 && product) {
+      //  mediaArray = Media.find({
+      //    "metadata.variantId": variant._id/*product.variants[0]._id*/
+      //  }, {
+      //    sort: {
+      //      "metadata.priority": 1
+      //    }
+      //  });
+      //}
+    }/* else { // TODO: is this part make sense?
       if (product) {
         let ids = [];
         for (variant of product.variants) {
@@ -94,7 +104,7 @@ Template.productImageGallery.helpers({
           }
         });
       }
-    }
+    }*/
     return mediaArray;
   },
   variant: function () {
@@ -118,8 +128,7 @@ Template.productImageGallery.onRendered(function () {
         forcePlaceholderSize: true,
         update: function () {
           let variant;
-          if (!(typeof variant !== "undefined" && variant !==
-              null ? variant._id : void 0)) {
+          if (typeof variant !== "object") {
             variant = selectedVariant();
           }
           variant.medias = [];
@@ -148,43 +157,47 @@ Template.productImageGallery.events({
       let target = $(event.currentTarget);
       let variant = selectedVariant();
 
-      if (!variant) {
-        let product = selectedProduct();
-        if (product) {
-          for (let productVariant of product.variants) {
-            let mediaResults = Media.find({
-              "metadata.variantId": productVariant._id
-            }, {
-              sort: {
-                "metadata.priority": 1
-              }
-            }).fetch();
-            // loop within product variants
-            for (let media of mediaResults) {
-              ids.push(media._id);
-              if ($(event.currentTarget).data("index") === media._id) {
-                setCurrentVariant(productVariant._id);
-              }
-            }
-            if (selectedVariant()) {
-              break;
-            }
-          }
-        }
+      // todo clean this:
+      // todo this part is no sense anymore, because we always will have a
+      // variant, right?
 
-        /*
-        hide all images not associated with the highlighted variant
-        to prevent the alternate variant images from being displayed.
-         */
-        if (ids.length > 0) {
-          $(".gallery li").each(function (k, v) {
-            let vId = $(v).data("index");
-            if (_.indexOf(ids, vId) < 0) {
-              return $(v).hide();
-            }
-          });
-        }
-      }
+      //if (!variant) {
+      //  let product = selectedProduct();
+      //  if (product) {
+      //    for (let productVariant of product.variants) {
+      //      let mediaResults = Media.find({
+      //        "metadata.variantId": productVariant._id
+      //      }, {
+      //        sort: {
+      //          "metadata.priority": 1
+      //        }
+      //      }).fetch();
+      //      // loop within product variants
+      //      for (let media of mediaResults) {
+      //        ids.push(media._id);
+      //        if ($(event.currentTarget).data("index") === media._id) {
+      //          setCurrentVariant(productVariant._id);
+      //        }
+      //      }
+      //      if (selectedVariant()) {
+      //        break;
+      //      }
+      //    }
+      //  }
+      //
+      //  /*
+      //  hide all images not associated with the highlighted variant
+      //  to prevent the alternate variant images from being displayed.
+      //   */
+      //  if (ids.length > 0) {
+      //    $(".gallery li").each(function (k, v) {
+      //      let vId = $(v).data("index");
+      //      if (_.indexOf(ids, vId) < 0) {
+      //        return $(v).hide();
+      //      }
+      //    });
+      //  }
+      //}
       if ($(target).data("index") !== first.data("index")) {
         return $(".gallery li:nth-child(1)").fadeOut(400, function () {
           $(this).replaceWith(target);

@@ -832,7 +832,8 @@ Meteor.methods({
           positions: positionData
         },
         $set: {
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          "type": "simple" // for multi-schema
         }
       }, function (error) {
         if (error) {
@@ -851,7 +852,8 @@ Meteor.methods({
           "positions.$.position": positionData.position,
           "positions.$.pinned": positionData.pinned,
           "positions.$.weight": positionData.weight,
-          "positions.$.updatedAt": new Date()
+          "positions.$.updatedAt": new Date(),
+          "type": "simple" // for multi-schema
         }
       }, function (error) {
         if (error) {

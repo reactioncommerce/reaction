@@ -54,14 +54,12 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
     selector.isVisible = true;
   }
 
-  const products = Products.find(selector, {
+  return Products.find(selector, {
     sort: {
       title: 1
     },
     limit: limit
-  }).fetch();
-
-  return products;
+  });
 });
 
 /**
