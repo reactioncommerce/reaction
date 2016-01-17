@@ -9,17 +9,34 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
   check(shops, Match.Optional(Array));
 
   let shopAdmin;
+  let selector;
   let shop = ReactionCore.getCurrentShop();
   if (typeof shop !== "object") {
     return this.ready();
   }
-  let Products = ReactionCore.Collections.Products;
+  const { Products } = ReactionCore.Collections;
   // TODO this limit has another meaning now. We should calculate only objects
   // with type="simple", but we need to get all types for additional images
-  let limit = productScrollLimit || 10;
-  if (shop) {
-    let selector = {
-      shopId: shop._id//,
+  const limit = productScrollLimit || 10;
+  // handle multiple shops
+  if (shops) {
+    selector = {
+      shopId: {
+        $in: shops
+      },
+      type: "simple"
+    };
+    // check if this user is a shopAdmin
+    for (let thisShopId of shops) {
+      if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
+          thisShopId)) {
+        shopAdmin = true;
+      }
+    }
+  } else {
+    selector = {
+      shopId: shop._id,
+      type: "simple"
       // "$where": function () {
       //   let lim = limit;
       //   let counter = 0;
@@ -30,35 +47,21 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
       //   }
       // }.toString()
     };
-    // handle multiple shops
-    if (shops) {
-      selector = {
-        shopId: {
-          $in: shops
-        }
-      };
-      // check if this user is a shopAdmin
-      for (let thisShopId of shops) {
-        if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
-            thisShopId)) {
-          shopAdmin = true;
-        }
-      }
-    }
-
-    // products are always visible to owners
-    if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
-      selector.isVisible = true;
-    }
-
-    return Products.find(selector, {
-      sort: {
-        title: 1
-      },
-      limit: limit
-    });
   }
-  this.ready();
+
+  // products are always visible to owners
+  if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
+    selector.isVisible = true;
+  }
+
+  const products = Products.find(selector, {
+    sort: {
+      title: 1
+    },
+    limit: limit
+  }).fetch();
+
+  return products;
 });
 
 /**

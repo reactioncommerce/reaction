@@ -175,6 +175,7 @@ ReactionImport.flush = function (collection) {
 /**
  * @summary Get a validation context for a given collection.
  * @param {Mongo.Collection} collection The target collection
+ * @param {Object} [selector] - selector for multi-schema
  * @returns {SimpleSchemaValidationContext} A validation context.
  *
  * The validation context is requested from the schema associated with the
@@ -186,7 +187,9 @@ ReactionImport.context = function (collection, selector) {
 
   // Construct a context identifier.
   let name = this._name(collection);
-
+  if (selector) {
+    name = `${name}_${selector.selector.type}`;
+  }
   // Construct a new validation context if necessary.
   if (this._contexts[name]) {
     return this._contexts[name];
@@ -194,7 +197,17 @@ ReactionImport.context = function (collection, selector) {
   // todo: find a way to make this work (if it is needed) with flattened
   // products data structure. I have a filling that we can't use this
   // `.newContext()` call with new structure.
-  this._contexts[name] = collection.simpleSchema().newContext();
+  if (selector) {
+    const { type } = selector.selector;
+    const schemas = collection._c2._simpleSchemas;
+    schemas.forEach((schema) => {
+      if (schema.selector.type === type) {
+        this._contexts[name] = schema.schema.newContext();
+      }
+    });
+  } else {
+    this._contexts[name] = collection.simpleSchema().newContext();
+  }
   return this._contexts[name];
 };
 
@@ -367,18 +380,18 @@ ReactionImport.object = function (collection, key, object) {
   if (collection._name === "Products") {
     switch (object.type) {
       case "variant":
-        collection.simpleSchema(object, { selector: { type: 'variant' } })
-          .clean(object);
+        collection.simpleSchema(object,
+          { selector: { type: 'variant' } }).clean(object);
         // todo fix this:
-        //this.context(collection, { selector: { type: 'variant' } })
-        //  .validate(object, {});
+        this.context(collection,
+          { selector: { type: 'variant' } }).validate(object, {});
         break;
       default:
-        collection.simpleSchema(object, { selector: { type: 'simple' } })
-          .clean(object);
+        collection.simpleSchema(object,
+          { selector: { type: 'simple' } }).clean(object);
         // todo fix this:
-        //this.context(collection, { selector: { type: 'simple' } })
-        //  .validate(object, {});
+        this.context(collection,
+          { selector: { type: 'simple' } }).validate(object, {});
     }
   } else {
     collection.simpleSchema().clean(object);
