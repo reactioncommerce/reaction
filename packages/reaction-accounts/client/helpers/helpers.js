@@ -78,7 +78,7 @@ Template.registerHelper("displayName", function (displayUser) {
       })();
       return username;
     }
-    return i18n.t("accountsUI.signIn") || "Sign in TEST";
+    return i18n.t("accountsUI.signIn") || "Sign in";
   }
 });
 

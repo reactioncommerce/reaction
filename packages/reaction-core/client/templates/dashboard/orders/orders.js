@@ -78,7 +78,7 @@ function getFiltersWithCounts() {
   return orderFilters.map((filter) => {
     const queryParams = Router.current().params.query;
 
-    filter.label = i18n.t(`order.filter.${filter.name}`);
+    filter.label = i18n.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
     if (queryParams) {
