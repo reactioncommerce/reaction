@@ -68,23 +68,23 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
     type: String,
-    optional: true
+    optional: true,
     // autoValue: ReactionCore.schemaIdAutoValue,
-    // index: 1,
-    // label: "Variant ID"
+    index: 1,
+    label: "Variant ID"
   },
   ancestors: {
     type: [String],
     defaultValue: []
   },
-  parentId: {
-    type: String,
-    optional: true
-  },
-  cloneId: {
-    type: String,
-    optional: true
-  },
+  //parentId: {
+  //  type: String,
+  //  optional: true
+  //},
+  //cloneId: {
+  //  type: String,
+  //  optional: true
+  //},
   index: {
     type: String,
     optional: true
@@ -253,10 +253,10 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     type: [String],
     defaultValue: []
   },
-  cloneId: {
-    type: String,
-    optional: true
-  },
+  //cloneId: {
+  //  type: String,
+  //  optional: true
+  //},
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,

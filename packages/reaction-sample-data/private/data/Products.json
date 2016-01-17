@@ -1,5 +1,6 @@
 [{
   "_id": "BCTMZ6HTxFSppJESk",
+  "shopId": "J8Bhq3uTtdgwZx3rz",
   "ancestors": [],
   "createdAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
@@ -34,7 +35,7 @@
   "price": 19.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryQuantity": 49,
+  "inventoryQuantity": 15,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
   },
@@ -54,12 +55,12 @@
     "BCTMZ6HTxFSppJESk",
     "6qiqPwBkeJdtdQc4G"
   ],
-  "title": "Basic Example Variant",
-  "optionTitle": "Option 1",
+  "title": "Option 1 - Red Dwarf",
+  "optionTitle": "Red",
   "price": 19.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryQuantity": 45,
+  "inventoryQuantity": 19,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
   },
@@ -79,8 +80,8 @@
     "BCTMZ6HTxFSppJESk",
     "6qiqPwBkeJdtdQc4G"
   ],
-  "title": "Basic - Option 2",
-  "optionTitle": "Option 2",
+  "title": "Option 2 - Green Tomato",
+  "optionTitle": "Green",
   "price": 12.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
