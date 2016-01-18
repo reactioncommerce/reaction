@@ -1,7 +1,7 @@
 Template.reactionSocial.onCreated(function () {
   let self = this;
   return this.autorun(function () {
-    const subscription = ReactionCore.Subscriptions.Packages; //_self.subscribe("Packages");
+    const subscription = ReactionCore.Subscriptions.Packages;
     if (subscription.ready()) {
       const socialSettings = ReactionCore.Collections.Packages.findOne({
         name: "reaction-social"

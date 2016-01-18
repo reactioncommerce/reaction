@@ -65,7 +65,6 @@ Template.registerHelper("getGravatar", function (currentUser, size) {
  * registerHelper displayName
  */
 Template.registerHelper("displayName", function (displayUser) {
-  let authenticated = false;
   const user = displayUser || Accounts.user();
   if (user) {
     if (user.profile && user.profile.name) {
