@@ -68,8 +68,14 @@ Accounts.onCreateUser(function (options, user) {
     let account = _.clone(user);
     account.userId = user._id;
     ReactionCore.Collections.Accounts.insert(account);
-    // send welcome email to new users
-    Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+
+    // send a welcome email to new users,
+    // but skip the first default admin user
+    // (default admins already get a verification email)
+    if (!Meteor.users.find().count() === 0) {
+      Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+    }
+
     // assign default user roles
     user.roles = roles;
     return user;
