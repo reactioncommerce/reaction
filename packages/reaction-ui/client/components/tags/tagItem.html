@@ -22,7 +22,12 @@
   <div class="rui tag edit create">
     <form>
       {{> button icon="tag"}}
-      {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}
+      {{> textfield
+        name="tag"
+        onChange=handleTagNameUpdate
+        placeholder=(i18n "tags.addTag" "Add Tag")
+        value=tag.name
+      }}
       {{> button icon="plus" status="danger" onClick=handleTagRemove}}
     </form>
   </div>
