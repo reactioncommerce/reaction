@@ -44,7 +44,7 @@ ReactionCore.MetaData = {
       if (params._id) {
         title = params._id.charAt(0).toUpperCase() + params._id.substring(1);
       } else {
-        routeName = Router.current().route.getName();
+        routeName = Router.getRouteName();
         title = routeName.charAt(0).toUpperCase() + routeName.substring(1);
       }
       if (product && product.handle === params._id && product.handle) {

@@ -1,8 +1,4 @@
 <template name="orders">
-  {{#contentFor "dashboardHeaderControls"}}
-    {{> orderListFilters}}
-  {{/contentFor}}
-
   <div class="container-fluid-sm">
     {{#each order in orders}}
       {{> ordersListItem order}}

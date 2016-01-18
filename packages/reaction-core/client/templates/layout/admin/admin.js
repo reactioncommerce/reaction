@@ -1,52 +1,54 @@
-
-
 Template.coreAdminLayout.onCreated(() => {
-  const template = Template.instance();
+  const control = Template.instance();
 
-  template.settings = new ReactiveVar();
+  control.settings = new ReactiveVar();
 
-  template.autorun(() => {
-    let currentRoute = Router.current().route;
-
+  control.autorun(() => {
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": currentRoute.getName()
+      "registry.route": Router.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
       name: 1,
       route: 1
     });
+
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Router.current().route.getName() && item.provides === "settings";
+        return item.route === Router.getRouteName() && item.provides === "settings";
       });
 
       // return settingsData;
       if (settingsData) {
         if (ReactionCore.hasPermission(settingsData.route, Meteor.userId())) {
-          template.settings.set(settingsData);
+          control.settings.set(settingsData);
         } else {
-          template.settings.set(null);
+          control.settings.set(null);
         }
       } else {
-        template.settings.set(null);
+        control.settings.set(null);
       }
     } else {
-      template.settings.set(null);
+      control.settings.set(null);
     }
   });
 });
 
 Template.coreAdminLayout.onRendered(() => {
+  $("body").addClass("admin");
+});
+
+Template.coreAdminLayout.onDestroyed(() => {
+  $("body").removeClass("admin");
 });
 
 Template.coreAdminLayout.helpers({
-  template: function () {
+  control: function () {
     return ReactionCore.getActionView();
   },
 
-  settings: function() {
+  settings: function () {
     return Template.instance().settings.get();
   },
 
@@ -71,7 +73,7 @@ Template.coreAdminLayout.helpers({
   thisApp() {
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": Router.current().route.getName()
+      "registry.route": Router.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
@@ -81,7 +83,7 @@ Template.coreAdminLayout.helpers({
 
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Router.current().route.getName() && item.provides === "settings";
+        return item.route === Router.getRouteName() && item.provides === "settings";
       });
 
       return settingsData;
@@ -101,7 +103,7 @@ Template.coreAdminLayout.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button": function (event, template) {
+  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button": function (event) {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
@@ -118,7 +120,7 @@ Template.coreAdminLayout.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          Router.go("product", {
+          Router.go("/product", {
             _id: productId
           });
         }

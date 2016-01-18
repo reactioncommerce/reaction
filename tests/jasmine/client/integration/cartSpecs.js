@@ -123,7 +123,7 @@ describe("Cart", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      /* expect(Router.current().url).toEqual("/checkout"); */
+      /* expect(Router.current().path).toEqual("/cart/checkout"); */
       done();
     });
   });

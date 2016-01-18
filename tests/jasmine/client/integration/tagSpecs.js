@@ -27,7 +27,7 @@ describe("Tags", function () {
     $(tagLink).trigger("click");
     expect("click").toHaveBeenTriggeredOn(tagLink);
 
-    let route = Router.current().url;
+    let route = Router.current().path;
     expect(route).toEqual(tag);
     done();
   });

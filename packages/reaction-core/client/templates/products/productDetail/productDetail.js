@@ -2,6 +2,11 @@
  * productDetail helpers
  */
 Template.productDetail.helpers({
+  product: function () {
+    // Meteor.subscribe("Product", FlowRouter.getParam("handle"));
+    let product = selectedProduct() || ReactionCore.Collections.Products.findOne();
+    return product;
+  },
   tags: function () {
     let product = selectedProduct();
     if (product) {

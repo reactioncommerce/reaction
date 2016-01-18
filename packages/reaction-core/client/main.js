@@ -179,12 +179,12 @@ _.extend(ReactionCore, {
   },
 
   getCurrentTag: function () {
-    if (Router.current().route.getName() === "/product/tag") {
+    if (Router.getRouteName() === "/product/tag") {
       return Router.current().params._id;
     }
   },
   getRegistryForCurrentRoute: function (provides) {
-    let routeName = Router.current().route.getName();
+    let routeName = Router.getRouteName();
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       // "registry.provides": provides,

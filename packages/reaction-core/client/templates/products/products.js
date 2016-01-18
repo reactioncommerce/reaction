@@ -12,7 +12,7 @@ Template.products.events({
     return $(".product-grid").show();
   },
   "click .product-list-item": function () {
-    return Router.go("product", {
+    return Router.go("/product", {
       _id: this._id
     });
   }

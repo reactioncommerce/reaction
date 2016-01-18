@@ -38,7 +38,7 @@ describe("Product", function () {
   // test various product meta data
   describe("meta data", function () {
     it("url should be product/example-product", function () {
-      let route = Router.current().url;
+      let route = Router.current().path;
       expect(route).toContain("product/example-product");
     });
     // waitForElement doesn't play nice with these next two cases
@@ -218,7 +218,7 @@ describe("Product", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      // expect(Router.current().url).toEqual("/checkout");
+      // expect(Router.current().path).toEqual("/cart/checkout");
       done();
     });
   });

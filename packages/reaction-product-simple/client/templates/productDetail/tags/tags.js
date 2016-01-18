@@ -31,7 +31,7 @@ Template.productTagInputForm.events({
       ._id,
       function (error, result) {
         if (result) {
-          return Router.go("product", {
+          return Router.go("/product", {
             _id: result
           });
         }

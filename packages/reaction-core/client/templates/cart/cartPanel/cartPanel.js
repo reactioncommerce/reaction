@@ -8,6 +8,6 @@ Template.cartPanel.events({
   "click #btn-checkout": function () {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
-    return Router.go("cartCheckout");
+    return Router.go("/cart/checkout");
   }
 });

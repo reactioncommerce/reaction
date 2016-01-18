@@ -8,32 +8,16 @@
 </template>
 
 <template name="print">
-  {{> yield}}
+  {{> Template.dynamic template=printLayout}}
 </template>
 
 <template name="coreLayout">
-  <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
+  <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
   <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-  <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
+  <div class="reaction-dashboard-drawer">{{> Template.dynamic template=dashboard}}</div>
   <main role="main" id="main">
     <span id="layout-alerts">{{>bootstrapAlerts}}</span>
-    {{> yield}}
+    {{> Template.dynamic template=template}}
   </main>
-  <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
-</template>
-
-
-<template name="coreSettingsLayout">
-  <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
-  <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-  <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
-  <main role="main" id="main">
-    <span id="layout-alerts">{{>bootstrapAlerts}}</span>
-    {{> settingsHeader}}
-    <div class="container-fluid">
-      <div class="col-sm-2">{{> settingsSidebar}}</div>
-      <div class="col-sm-10 container-settings">{{> yield}}</div>
-    </div>
-  </main>
-  <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
+  <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
 </template>

@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.10.2",
+  version: "0.11.0",
   documentation: "README.md"
 });
 
@@ -51,7 +51,6 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
-  api.use("iron:router@1.0.12");
 
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("momentjs:moment@2.10.6");
@@ -71,7 +70,7 @@ Package.onUse(function (api) {
   api.imply("reactioncommerce:reaction-email-templates");
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
-  api.imply("iron:router");
+
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
   api.imply("utilities:avatar");
@@ -142,8 +141,6 @@ Package.onUse(function (api) {
   api.addFiles("server/jobs.js", "server");
 
   // common
-  api.addFiles("common/router.js");
-
   api.addFiles("common/methods/layout.js");
   api.addFiles("common/methods/workflow.js");
   api.addFiles("common/methods/cart.js");

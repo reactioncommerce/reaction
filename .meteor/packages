@@ -50,6 +50,7 @@ accounts-oauth
 
 reactioncommerce:core
 reactioncommerce:core-theme
+reactioncommerce:reaction-router
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-inventory
 reactioncommerce:reaction-shipping

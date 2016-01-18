@@ -14,7 +14,7 @@ describe("Router", function () {
 
     describe("meta data", function () {
       it("path should be root url", function () {
-        const route = Router.current().url;
+        const route = Router.current().path;
         expect(route).toEqual("/");
       });
 

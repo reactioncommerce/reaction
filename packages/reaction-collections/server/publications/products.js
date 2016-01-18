@@ -52,16 +52,17 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
 
 /**
  * product detail publication
- * @param {String} productId - productId
+ * @param {String} productId - productId or handle
  * @return {Object} return product cursor
  */
 Meteor.publish("Product", function (productId) {
   check(productId, String);
   let shop = ReactionCore.getCurrentShop();
+  // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
-  let Products = ReactionCore.Collections.Products;
+
   let selector = {};
   selector.isVisible = true;
 
@@ -80,7 +81,7 @@ Meteor.publish("Product", function (productId) {
       $options: "i"
     };
   }
-  return Products.find(selector);
+  return ReactionCore.Collections.Products.find(selector);
 });
 
 /**

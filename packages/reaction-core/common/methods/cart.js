@@ -62,7 +62,7 @@ if (Meteor.isClient) {
             "paymentSubmitted");
           // Client Stub Actions
           if (result === 1) {
-            Router.go("cartCompleted", {
+            Router.go("/cart/completed", {
               _id: cartId
             });
           } else {

@@ -54,7 +54,7 @@ Template.loginDropdown.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          Router.go("product", {
+          Router.go("/product", {
             _id: productId
           });
         }

@@ -40,7 +40,7 @@ this.currentProduct = {
 };
 
 // export currentProduct
-currentProduct = this.currentProduct;
+ReactionCore.currentProduct = currentProduct = this.currentProduct;
 
 /**
  * setCurrentVariant
@@ -70,6 +70,7 @@ this.setCurrentVariant = function (variantId) {
  */
 this.setCurrentProduct = function (productId) {
   let currentId;
+
   if (productId === null) {
     currentProduct.set("productId", null);
   }

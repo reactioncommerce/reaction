@@ -36,7 +36,7 @@ Template.productDetailEdit.events({
         if (self.field === 'title') {
           Meteor.call("products/setHandle", productId, function (error, result) {
             if (result) {
-              return Router.go("product", {
+              return Router.go("/product", {
                 _id: result
               });
             }

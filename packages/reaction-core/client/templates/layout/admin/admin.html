@@ -1,16 +1,15 @@
 <template name="coreAdminLayout">
   <span class="layout-alerts-global">{{>bootstrapAlerts}}</span>
   <div class="page {{adminControlsClassname}}" id="reactionAppContainer">
-    <nav class="reaction-navigation-header">{{> yield region="layoutHeader"}}</nav>
+    <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-    <div class="reaction-dashboard-drawer">{{> yield region="dashboard"}}</div>
+    <div class="reaction-dashboard-drawer">{{> Template.dynamic template=dashboard}}</div>
     <main role="main" id="main">
       {{> dashboardHeader}}
-      {{> yield}}
+      {{> Template.dynamic template=template}}
     </main>
-    <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
+    <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
   </div>
-
 
   <div class="admin-controls {{adminControlsClassname}}">
       <div class="admin-controls-detail">
@@ -18,24 +17,18 @@
           {{> settingsHeader}}
         </div>
         <div class="admin-controls-content action-view-body">
-          {{> Template.dynamic template=template.template data=template.data}}
+          {{> Template.dynamic template=control.template data=control.data}}
         </div>
         <div class="admin-controls-footer">
           <div class="admin-controls-container">
-            {{>yield region="adminControlsFooter"}}
+            {{> Template.dynamic template=adminControlsFooter}}
           </div>
         </div>
       </div>
-
-
   </div>
 
   <div class="admin-controls-menu">
     <nav class="admin-controls-quicklinks">
-      <!-- <a href="/dashboard" class="primary">
-        <img src="/resources/reaction-logo.svg" width="32">
-        <span>Dashboard</span>
-      </a> -->
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
           <button id="{{route}}" title="{{label}}">
@@ -56,7 +49,7 @@
       {{/each}}
     </nav>
     <nav>
-      {{> yield "dashboardControls"}}
+      {{> Template.dynamic template=dashboardControls}}
 
       {{#if settings}}
         {{#with settings}}

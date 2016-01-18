@@ -1,4 +1,4 @@
-<template name="dashboard">
+<template name="dashboardControls">
 {{#if hasDashboardAccess}}
   {{#if displayConsoleNavBar}}
     <div class="dashboard-drawer">
@@ -20,7 +20,7 @@
 <template name="blankControls">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">No controls for this view.</h3>
+      <h3 class="panel-title"><span data-i18n="blankControls.noControls">No controls for this view.</span></h3>
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@
         </h3>
       </div>
       <div class="nav-dashboard-controls">
-        {{> yield "dashboardHeaderControls"}}
+        {{> Template.dynamic template=dashboardHeaderControls}}
       </div>
     </div>
   {{/if}}

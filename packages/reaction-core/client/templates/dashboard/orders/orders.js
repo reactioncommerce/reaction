@@ -76,8 +76,7 @@ function getOrders(queryParams) {
 
 function getFiltersWithCounts() {
   return orderFilters.map((filter) => {
-    const queryParams = Router.current().params.query;
-
+    const queryParams = Router.current().queryParams;
     filter.label = i18n.t(`order.filter.${filter.name}`);
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
@@ -92,11 +91,10 @@ function getFiltersWithCounts() {
 Template.orders.onCreated(() => {
   Template.instance().autorun(() => {
     let isActionViewOpen = ReactionCore.isActionViewOpen();
+    const queryParams = Router.current().queryParams;
 
     if (isActionViewOpen === false) {
-      Router.go("dashboard/orders", {}, {
-        query: $.param(Router.current().params.query)
-      });
+      Router.go("/dashboard/orders", {}, queryParams);
     }
   });
 });
@@ -108,7 +106,7 @@ Template.orders.helpers({
 
   orders() {
     const template = Template.instance();
-    const queryParams = Router.current().params.query;
+    const queryParams = Router.current().queryParams;
     template.orders = getOrders(queryParams);
 
     return template.orders;
@@ -116,7 +114,7 @@ Template.orders.helpers({
 
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {
-      return filter.name === Router.current().params.query.filter;
+      return filter.name === Router.current().queryParams.filter;
     });
 
     if (foundFilter) {
@@ -148,10 +146,10 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
 
-    Router.go("dashboard/orders", {
+    Router.go("/dashboard/orders", {
       _id: this._id
     }, {
-      query: $.param(Router.current().params.query)
+      query: $.param(Router.current().queryParams)
     });
   },
   "click [data-event-action=startProcessingOrder]": function (event) {
@@ -161,7 +159,7 @@ Template.ordersListItem.events({
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
     }
 
-    Router.go("dashboard/orders", {
+    Router.go("/dashboard/orders", {
       _id: this._id
     }, {
       query: $.param({filter: "processing"})
@@ -172,7 +170,7 @@ Template.ordersListItem.events({
 Template.orderListFilters.events({
   "click [role=tab]": (event) => {
     const filter = event.currentTarget.getAttribute("data-filter");
-    Router.go("dashboard/orders", {
+    Router.go("/dashboard/orders", {
       // _id: this._id
     }, {
       query: `filter=${filter}`
