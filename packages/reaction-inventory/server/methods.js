@@ -72,13 +72,18 @@ Meteor.methods({
    * @return {[undefined]} returns undefined
    */
   "inventory/adjust": function (product) {
+    let type;
+    let variant;
     // adds or updates inventory collection with this product
     switch (product.type) {
       case "variant":
         check(product, ReactionCore.Schemas.ProductVariant);
+        type = "variant";
+        variant = product; // just an alias
         break;
       default:
         check(product, ReactionCore.Schemas.Product);
+        type = "simple";
     }
     this.unblock();
 
@@ -88,12 +93,12 @@ Meteor.methods({
     }
 
     // Quantity and variants of this product's variant inventory
-    let inventoryVariants = product.variants.map(variant => {
-      return {
+    if (type === "variant") {
+      let inventoryVariants =  {
         _id: variant._id,
         qty: variant.inventoryQuantity || 0
       };
-    });
+    }
 
     for (let variant of inventoryVariants) {
       let Inventory = ReactionCore.Collections.Inventory.find({

@@ -20,11 +20,13 @@ Template.productDetail.helpers({
   },
   actualPrice: function () {
     const current = selectedVariant();
-    const childVariants = getVariants(current._id);
-    if (childVariants.length === 0) {
-      return current.price;
+    if (typeof current === "object") {
+      const childVariants = getVariants(current._id);
+      if (childVariants.length === 0) {
+        return current.price;
+      }
+      return getProductPriceRange();
     }
-    return getProductPriceRange();
   },
   fieldComponent: function () {
     if (ReactionCore.hasPermission("createProduct")) {

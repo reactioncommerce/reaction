@@ -74,7 +74,7 @@ Meteor.publish("Product", function (productId) {
   if (typeof shop !== "object") {
     return this.ready();
   }
-  let Products = ReactionCore.Collections.Products;
+  const { Products } = ReactionCore.Collections;
   let selector = {};
   selector.isVisible = true;
 
@@ -94,7 +94,12 @@ Meteor.publish("Product", function (productId) {
       $regex: productId,
       $options: "i"
     };
-    _id = Products.find(selector).fetch()[0]._id;
+    const products = Products.find(selector).fetch();
+    if (products.length > 0) {
+      _id = products[0]._id;
+    } else {
+      return this.ready();
+    }
   }
   selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
 

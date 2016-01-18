@@ -275,45 +275,34 @@ Meteor.methods({
    * @summary update individual variant with new values, merges into original
    * only need to supply updated information
    * @param {Object} variant - current variant object
-   * @param {Object} updateDoc - update object
-   * @param {Object} currentDoc - update variant id
+   * @todo some use cases of this method was moved to "products/
+   * updateProductField", but it still used
    * @return {String} returns update result
    */
-  // TODO could be removed. No used anymore. It replaced by "products/updateProductField"
-  //"products/updateVariant": function (variant, updateDoc, currentDoc) {
-  //  check(variant, Object);
-  //  check(updateDoc, Match.OptionalOrNull(Object));
-  //  check(currentDoc, Match.OptionalOrNull(String));
-  //  // must have createProduct permissions
-  //  if (!ReactionCore.hasPermission("createProduct")) {
-  //    throw new Meteor.Error(403, "Access Denied");
-  //  }
-  //  this.unblock();
-  //
-  //  let newVariant;
-  //  let Products = ReactionCore.Collections.Products;
-  //  let product = Products.findOne({
-  //    "variants._id": variant._id
-  //  });
-  //  // update variants
-  //  if (typeof product === "object" ? product.variants : void 0) {
-  //    for (let variants of product.variants) {
-  //      if (variants._id === variant._id) {
-  //        newVariant = Object.assign({}, variants, variant);
-  //      }
-  //    }
-  //    return Products.update({
-  //      "_id": product._id,
-  //      "variants._id": variant._id
-  //    }, {
-  //      $set: {
-  //        "variants.$": newVariant
-  //      }
-  //    }, {
-  //      validate: false
-  //    });
-  //  }
-  //},
+  "products/updateVariant": function (variant) {
+    check(variant, Object);
+    // must have createProduct permissions
+    if (!ReactionCore.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+
+    const { Products } = ReactionCore.Collections;
+    let currentVariant = Products.findOne(variant._id);
+    // update variants
+    if (typeof currentVariant === "object") {
+      const newVariant = Object.assign({}, currentVariant, variant);
+
+      return Products.update({
+        "_id": variant._id
+      }, {
+        $set: newVariant // newVariant already contain `type` property, so we
+        // do not need to pass it explicitly
+      }, {
+        validate: false
+      });
+    }
+  },
 
   /**
    * products/updateVariants
@@ -345,7 +334,8 @@ Meteor.methods({
    * products/deleteVariant
    * @summary delete variant, which should also delete child variants
    * @param {String} variantId - variantId to delete
-   * @returns {String} returns update results
+   * @returns {Boolean} returns update results: `true` - if at least one variant
+   * was removed or `false` if nothing was removed
    */
   "products/deleteVariant": function (variantId) {
     check(variantId, String);
@@ -354,50 +344,78 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
-    let deleted = ReactionCore.Collections.Products.find({
+    const selector = {
       $or: [{
-        "variants.parentId": variantId
+        "_id": variantId
       }, {
-        "variants._id": variantId
+        ancestors: {
+          $in: [variantId]
+        }
       }]
-    }).fetch();
-    ReactionCore.Collections.Products.update({
-      "variants.parentId": variantId
-    }, {
-      $pull: {
-        variants: {
-          parentId: variantId
-        }
-      }
-    });
-    ReactionCore.Collections.Products.update({
-      "variants._id": variantId
-    }, {
-      $pull: {
-        variants: {
-          _id: variantId
-        }
-      }
-    });
-    _.each(deleted, function (product) {
-      return _.each(product.variants, function (variant) {
-        if (variant.parentId === variantId || variant._id ===
-          variantId) {
-          return ReactionCore.Collections.Media.update({
-            "metadata.variantId": variant._id
-          }, {
-            $unset: {
-              "metadata.productId": "",
-              "metadata.variantId": "",
-              "metadata.priority": ""
-            }
-          }, {
-            multi: true
-          });
-        }
+    };
+    const toDelete = ReactionCore.Collections.Products.find(selector).fetch();
+    // out if nothing to delete
+    if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
+    const deleted = ReactionCore.Collections.Products.remove(selector);
+
+    // todo clean this:
+
+    //ReactionCore.Collections.Products.update({
+    //  "variants.parentId": variantId
+    //}, {
+    //  $pull: {
+    //    variants: {
+    //      parentId: variantId
+    //    }
+    //  }
+    //});
+    //ReactionCore.Collections.Products.update({
+    //  "variants._id": variantId
+    //}, {
+    //  $pull: {
+    //    variants: {
+    //      _id: variantId
+    //    }
+    //  }
+    //});
+
+    // TODO we don't need to keep images from removed variants. We need to
+    // remove it too. Or we have another plans for this junk?
+    toDelete.map(variant => {
+      return ReactionCore.Collections.Media.remove({
+        "metadata.variantId": variant._id
       });
+      /*return ReactionCore.Collections.Media.update({
+        "metadata.variantId": variant._id
+      }, {
+        $unset: {
+          "metadata.productId": "",
+          "metadata.variantId": "",
+          "metadata.priority": ""
+        }
+      }, {
+        multi: true
+      });*/
     });
-    return true;
+    //_.each(deleted, function (product) {
+    //  return _.each(product.variants, function (variant) {
+    //    if (variant.parentId === variantId || variant._id ===
+    //      variantId) {
+    //      return ReactionCore.Collections.Media.update({
+    //        "metadata.variantId": variant._id
+    //      }, {
+    //        $unset: {
+    //          "metadata.productId": "",
+    //          "metadata.variantId": "",
+    //          "metadata.priority": ""
+    //        }
+    //      }, {
+    //        multi: true
+    //      });
+    //    }
+    //  });
+    //});
+    return typeof deleted === "number" && deleted > 0;
   },
 
   /**
@@ -518,17 +536,22 @@ Meteor.methods({
     if (product) {
       return ReactionCore.Collections.Products.insert(product);
     }
-    // default product
+
     return ReactionCore.Collections.Products.insert({
-      _id: Random.id(),
-      title: "",
-      variants: [{
-        _id: Random.id(),
-        title: "",
-        price: 0.00
-      }]
+      //_id: _id,
+      type: "simple" // needed for multi-schema
     }, {
       validate: false
+    }, (error, result) => {
+      // additionally, we want to create a variant to a new product
+      if (result) {
+        ReactionCore.Collections.Products.insert({
+          ancestors: [result],
+          price: 0.00,
+          title: "",
+          type: "variant" // needed for multi-schema
+        });
+      }
     });
   },
 
@@ -598,7 +621,7 @@ Meteor.methods({
    * @todo we need to know which type of entity field belongs. For that we could
    * do something like: const type = Products.findOne(_id).type or transmit type
    * as param if it possible
-   * latest changes. its used by products and variants
+   * latest changes. its used for products and variants
    * @return {String} returns update result
    */
   "products/updateProductField": function (_id, field, value) {
@@ -661,7 +684,7 @@ Meteor.methods({
         $push: {
           hashtags: existingTag._id
         }
-      });
+      }, { selector: { type: "simple" } });
     } else if (tagId) {
       ReactionCore.Collections.Tags.update(tagId, {
         $set: newTag
@@ -676,7 +699,7 @@ Meteor.methods({
         $push: {
           hashtags: newTag._id
         }
-      });
+      }, { selector: { type: "simple" } });
     }
   },
 
@@ -700,7 +723,7 @@ Meteor.methods({
       $pull: {
         hashtags: tagId
       }
-    });
+    }, { selector: { type: "simple" } });
 
     let productCount = ReactionCore.Collections.Products.find({
       hashtags: {
@@ -739,7 +762,8 @@ Meteor.methods({
     handle = createHandle(handle, product._id);
     ReactionCore.Collections.Products.update(product._id, {
       $set: {
-        handle: handle
+        handle: handle,
+        type: "simple"
       }
     });
 
@@ -761,6 +785,15 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+
+    function getSet(handle) {
+      return {
+        $set: {
+          handle: handle,
+          type: "simple"
+        }
+      };
+    }
     this.unblock();
 
     let product = ReactionCore.Collections.Products.findOne(productId);
@@ -769,15 +802,11 @@ Meteor.methods({
     if (product.handle === tag.slug) {
       let handle = getSlug(product.title);
       handle = createHandle(handle, product._id);
-      ReactionCore.Collections.Products.update(product._id, {
-        $set: {
-          handle: handle
-        }
-      });
+      ReactionCore.Collections.Products.update(product._id, getSet(handle));
 
       return handle;
     }
-    // toggle hangle
+    // toggle handle
     let existingHandles = ReactionCore.Collections.Products.find({
       handle: tag.slug
     }).fetch();
@@ -787,17 +816,11 @@ Meteor.methods({
       let currentProductHandle = createHandle(
         getSlug(currentProduct.title),
         currentProduct._id);
-      ReactionCore.Collections.Products.update(currentProduct._id, {
-        $set: {
-          handle: currentProductHandle
-        }
-      });
+      ReactionCore.Collections.Products.update(currentProduct._id,
+        getSet(currentProductHandle));
     }
-    ReactionCore.Collections.Products.update(product._id, {
-      $set: {
-        handle: tag.slug
-      }
-    });
+    ReactionCore.Collections.Products.update(product._id, getSet(tag.slug));
+
     return tag.slug;
   },
 
@@ -934,15 +957,17 @@ Meteor.methods({
     let variantValidator = true;
 
     if (typeof product === "object" && product.title.length > 1) {
-      variants.map(variant => {
-        if (!(typeof variant.price === "number" && variant.price > 0 &&
-          variant.title.length > 1)) {
-          variantValidator = false;
-        }
-        if (typeof optionTitle === "string" && !(optionTitle.length > 0)) {
-          variantValidator = false;
-        }
-      });
+      if (variants.length > 0) {
+        variants.map(variant => {
+          if (!(typeof variant.price === "number" && variant.price > 0 &&
+            variant.title.length > 1)) {
+            variantValidator = false;
+          }
+          if (typeof optionTitle === "string" && !(optionTitle.length > 0)) {
+            variantValidator = false;
+          }
+        });
+      }
 
       if (!variantValidator) {
         ReactionCore.Log.debug("invalid product visibility ", productId);
@@ -953,12 +978,16 @@ Meteor.methods({
       ReactionCore.Log.info("toggle product visibility ", product._id, !
         product.isVisible);
 
-      ReactionCore.Collections.Products.update(product._id, {
+      return Boolean(ReactionCore.Collections.Products.update(product._id, {
         $set: {
-          isVisible: !product.isVisible
+          isVisible: !product.isVisible,
+          type: "simple" // required by multi-schema
         }
-      });
-      return ReactionCore.Collections.Products.findOne(product._id).isVisible;
+      }));
+      // return Boolean(result);
+    } else {
+      ReactionCore.Log.debug("invalid product visibility ", productId);
+      throw new Meteor.Error(400, "Bad Request");
     }
   }
 });

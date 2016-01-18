@@ -90,7 +90,10 @@ this.setCurrentProduct = function (productId) {
  * @return {Object} currently selected variant object
  */
 this.selectedVariant = function () {
-  return ReactionCore.Collections.Products.findOne(selectedVariantId());
+  const id = selectedVariantId();
+  if (typeof id === "string") {
+    return ReactionCore.Collections.Products.findOne(id);
+  }
 };
 
 /**
