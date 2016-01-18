@@ -5,13 +5,25 @@
       {{> tagList (tagListProps tags)}}
 
       {{#if editable}}
-        {{> button
-          title="Edit Tags"
-          className="edit-tag-button"
-          icon="tag"
-          type="default"
-          onClick=onEditTags
-        }}
+        {{#if isEditing}}
+          {{> button
+            className="edit-tag-button"
+            icon="tag"
+            onClick=onEditTags
+            status="success"
+            title="Done"
+            type="button"
+          }}
+        {{else}}
+          {{> button
+            className="edit-tag-button"
+            icon="tag"
+            onClick=onEditTags
+            status="default"
+            title="Edit Tags"
+            type="button"
+          }}
+        {{/if}}
       {{/if}}
     </div>
     {{#each tag in tags}}
