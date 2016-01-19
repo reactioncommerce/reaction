@@ -43,5 +43,12 @@ _.extend(ReactionCore, {
     }
     setCurrentProduct(productId);
     setCurrentVariant(variantId);
+  },
+  // TODO: after 1.3 move this to other place out of global scope
+  getVariants(id, type) {
+    return ReactionCore.Collections.Products.find({
+      ancestors: { $in: [id] },
+      type: type || "variant"
+    }).fetch();
   }
 });

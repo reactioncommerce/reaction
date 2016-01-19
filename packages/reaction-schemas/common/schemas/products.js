@@ -192,6 +192,12 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
       }
     }
   },
+  shopId: {
+    type: String,
+    autoValue: ReactionCore.shopIdAutoValue,
+    index: 1,
+    label: "Variant ShopId"
+  },
   sku: {
     label: "SKU",
     type: String,

@@ -34,7 +34,7 @@ ReactionCore.Collections.Cart.after.update(function (userId, cart, fieldNames, m
 
 //
 // before product update
-//
+// todo add before remove
 ReactionCore.Collections.Products.before.update(function (userId, product, fieldNames, modifier) {
   // removing  items
   if (modifier.$pull) {
