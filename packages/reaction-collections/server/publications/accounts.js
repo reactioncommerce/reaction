@@ -11,17 +11,20 @@ Meteor.publish("Accounts", function (userId) {
   if (this.userId === null) {
     return this.ready();
   }
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
     return Accounts.find();
     // shop admin gets accounts for just this shop
-  } else if (Roles.userIsInRole(this.userId, ["admin", "owner"],
-      ReactionCore.getShopId())) {
+  } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
     return Accounts.find({
-      shopId: ReactionCore.getShopId()
+      shopId: shopId
     });
-    // regular users should get just their account
   }
+  // regular users should get just their account
   return ReactionCore.Collections.Accounts.find({
     userId: this.userId
   });
@@ -29,6 +32,7 @@ Meteor.publish("Accounts", function (userId) {
 
 /**
  * userProfile
+ * @deprecated since version 0.10.2
  * get any user name,social profile image
  * should be limited, secure information
  * users with permissions  ["dashboard/orders", "owner", "admin", "dashboard/
@@ -36,14 +40,31 @@ Meteor.publish("Accounts", function (userId) {
  *
  * @params {String} profileUserId -  view this users profile when permitted
  */
-
 Meteor.publish("UserProfile", function (profileUserId) {
   check(profileUserId, Match.OneOf(String, null));
   if (this.userId === null) {
     return this.ready();
   }
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
   const permissions = ["dashboard/orders", "owner", "admin",
     "dashboard/customers"];
+  // no need to normal user so see his password hash
+  const fields = {
+    "emails": 1,
+    "profile.firstName": 1,
+    "profile.lastName": 1,
+    "profile.familyName": 1,
+    "profile.secondName": 1,
+    "profile.name": 1,
+    "services.twitter.profile_image_url_https": 1,
+    "services.facebook.id": 1,
+    "services.google.picture": 1,
+    "services.github.username": 1,
+    "services.instagram.profile_picture": 1
+  };
   // TODO: this part currently not working as expected.
   // we could have three situation here:
   // 1 - registered user log in.
@@ -54,28 +75,18 @@ Meteor.publish("UserProfile", function (profileUserId) {
   // `profileUserId`, but admin user already could be found by `this.userId`
   // In that case what we should do here?
   if (profileUserId !== this.userId && Roles.userIsInRole(this.userId,
-    permissions, ReactionCore.getCurrentShop()._id ||
+    permissions, shopId ||
     Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP))) {
     return Meteor.users.find({
       _id: profileUserId
     }, {
-      fields: {
-        "emails": true,
-        "profile.firstName": true,
-        "profile.lastName": true,
-        "profile.familyName": true,
-        "profile.secondName": true,
-        "profile.name": true,
-        "services.twitter.profile_image_url_https": true,
-        "services.facebook.id": true,
-        "services.google.picture": true,
-        "services.github.username": true,
-        "services.instagram.profile_picture": true
-      }
+      fields: fields
     });
   }
 
   return Meteor.users.find({
     _id: this.userId
+  }, {
+    fields: fields
   });
 });

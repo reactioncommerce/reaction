@@ -1,4 +1,4 @@
-Router.map(function() {
+Router.map(function () {
   return this.route('dashboard/inventory', {
     controller: ShopAdminController,
     path: 'dashboard/inventory',
@@ -7,7 +7,7 @@ Router.map(function() {
       return ReactionCore.Subscriptions.Packages;
     },
     subscriptions: function() {
-      return Meteor.subscribe("Inventory");
+      return ReactionCore.Subscriptions.Inventory;
     }
   });
 });

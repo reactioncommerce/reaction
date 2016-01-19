@@ -10,7 +10,9 @@ Meteor.publish("ShopMembers", function () {
   }
   let permissions = ["dashboard/orders", "owner", "admin", "dashboard/customers"];
   let shopId = ReactionCore.getShopId();
-
+  if (!shopId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(this.userId, permissions, shopId)) {
     // seems like we can't use "`" inside db.call directly
     const rolesShopId = `roles.${shopId}`;
