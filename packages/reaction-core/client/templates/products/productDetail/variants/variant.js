@@ -23,6 +23,8 @@ Template.variant.helpers({
     return getVariantPriceRange(this._id);
   },
   isSoldOut: function () {
+    // TODO: with flattened model this method is not worked as expected.
+    // it is looks only at top level variants and misses options
     if (this.inventoryQuantity < 1) {
       return true;
     }

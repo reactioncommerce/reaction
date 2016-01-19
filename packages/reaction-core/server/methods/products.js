@@ -121,7 +121,6 @@ function createHandle(productHandle, productId) {
  * @param {String} variantOldId - old variant _id
  * @param {String} variantNewId - - cloned variant _id
  * @fires ReactionCore.Collections.Media#update
- * @return {undefined}
  */
 function copyMedia(newId, variantOldId, variantNewId) {
   ReactionCore.Collections.Media.find({
@@ -171,8 +170,14 @@ Meteor.methods({
       return;
     }
     const variantNewId = Random.id(); // for the parent variant
+    // we need to make sure that top level variant will be cloned first, his
+    // descendants later.
+    // we could use this way in future: http://stackoverflow.com/questions/
+    // 9040161/mongo-order-by-length-of-array, by now following are allowed
+    // @link http://underscorejs.org/#sortBy
+    const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
 
-    variants.map(variant => {
+    sortedVariants.map(variant => {
       const oldId = variant._id;
       let type = "child";
       let clone = {};
@@ -197,7 +202,6 @@ Meteor.methods({
       delete clone.updatedAt;
       delete clone.createdAt;
       delete clone.inventoryQuantity;
-      // TODO try to throw out the productId from `copyMedia`
       copyMedia(productId, oldId, clone._id);
 
       ReactionCore.Collections.Products.insert(clone, { validate: false },
@@ -215,10 +219,15 @@ Meteor.methods({
               );
             }
           }
+          if (error) {
+            ReactionCore.Log.error(
+              `products/cloneVariant: cloning of ${variantId} was failed: ${
+                error}`
+            );
+          }
         }
       );
     });
-
   },
 
   /**
@@ -357,29 +366,9 @@ Meteor.methods({
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
     const deleted = ReactionCore.Collections.Products.remove(selector);
 
-    // todo clean this:
-
-    //ReactionCore.Collections.Products.update({
-    //  "variants.parentId": variantId
-    //}, {
-    //  $pull: {
-    //    variants: {
-    //      parentId: variantId
-    //    }
-    //  }
-    //});
-    //ReactionCore.Collections.Products.update({
-    //  "variants._id": variantId
-    //}, {
-    //  $pull: {
-    //    variants: {
-    //      _id: variantId
-    //    }
-    //  }
-    //});
 
     // TODO we don't need to keep images from removed variants. We need to
-    // remove it too. Or we have another plans for this junk?
+    // remove it too. Or we have another plans for this?
     toDelete.map(variant => {
       return ReactionCore.Collections.Media.remove({
         "metadata.variantId": variant._id
@@ -396,24 +385,7 @@ Meteor.methods({
         multi: true
       });*/
     });
-    //_.each(deleted, function (product) {
-    //  return _.each(product.variants, function (variant) {
-    //    if (variant.parentId === variantId || variant._id ===
-    //      variantId) {
-    //      return ReactionCore.Collections.Media.update({
-    //        "metadata.variantId": variant._id
-    //      }, {
-    //        $unset: {
-    //          "metadata.productId": "",
-    //          "metadata.variantId": "",
-    //          "metadata.priority": ""
-    //        }
-    //      }, {
-    //        multi: true
-    //      });
-    //    }
-    //  });
-    //});
+
     return typeof deleted === "number" && deleted > 0;
   },
 
@@ -433,9 +405,11 @@ Meteor.methods({
     }
     this.unblock();
 
-    const results = [];
     let result;
+    let products;
+    const results = [];
     const pool = []; // pool of id pairs: { oldId, newId }
+
     const getIds = id => {
       return pool.filter(function (pair) {
         return pair.oldId === this.id
@@ -452,9 +426,9 @@ Meteor.methods({
 
       return newAncestors;
     };
-    let products;
 
-    if (_.isArray(productOrArray) === false) {
+    // TODO: test this case
+    if (!Array.isArray(productOrArray)) {
       products = [productOrArray];
     } else {
       products = productOrArray;
@@ -476,13 +450,10 @@ Meteor.methods({
       delete newProduct.handle;
       newProduct.isVisible = false;
       if (newProduct.title) {
+        // todo test this
+        newProduct.title = createTitle(newProduct.title, newProduct._id);
         newProduct.handle = createHandle(
           getSlug(newProduct.title),
-          newProduct._id
-        );
-        // todo test this
-        newProduct.title = createTitle(
-          newProduct.title,
           newProduct._id
         );
       }
@@ -492,10 +463,12 @@ Meteor.methods({
 
       // cloning variants
       const variants = ReactionCore.Collections.Products.find({
-        ancestors: { $in: [product._id] }
+        ancestors: { $in: [product._id] },
+        type: "variant"
       }).fetch();
-      // TODO maybe we need to sort variants here, in order to keep ancestors tree
-      for (let variant of variants) {
+      // why we are using `_.sortBy` described in `products/cloneVariant`
+      const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
+      for (let variant of sortedVariants) {
         let variantNewId = Random.id();
         setId({ oldId: variant._id, newId: variantNewId });
         let ancestors = buildAncestors(variant.ancestors);
@@ -506,6 +479,8 @@ Meteor.methods({
         delete newVariant.updatedAt;
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
+        delete newVariant.inventoryQuantity; // TODO: I'm not sure we should do
+        // that
 
         result = ReactionCore.Collections.Products.insert(
           newVariant, { validate: false }
@@ -514,6 +489,7 @@ Meteor.methods({
         results.push(result);
       }
     }
+    return results;
   },
 
   /**

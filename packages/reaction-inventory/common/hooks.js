@@ -52,8 +52,12 @@ ReactionCore.Collections.Products.after.remove(function (userId, doc) {
 //
 // after product update
 //
-ReactionCore.Collections.Products.after.update(function (userId, product,
+ReactionCore.Collections.Products.after.update(function (userId, doc,
   fieldNames, modifier) {
+  // product update can't affect on inventory, so we don't manage this cases
+  // we should keep in mind that returning false within hook prevents other
+  // hooks to be run
+  if (doc.type !== "variant") return false;
   if (modifier.$push) { // if we're adding a new product or variant
     Meteor.call("inventory/register", product);
   }
@@ -65,6 +69,6 @@ ReactionCore.Collections.Products.after.update(function (userId, product,
   if (modifier.$set && !modifier.$pull && !modifier.$push) {
     modifier.$set.updatedAt = new Date();
     // triggers inventory adjustment
-    Meteor.call("inventory/adjust", product);
+    Meteor.call("inventory/adjust", doc);
   }
 });
