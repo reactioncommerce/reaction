@@ -10,7 +10,6 @@ Meteor.methods({
    * @return {Number} - returns the total amount of new inventory created
    */
   "inventory/register": function (product) {
-    // check(product, ReactionCore.Schemas.Product);
     let type;
     switch (product.type) {
       case "variant":
@@ -21,24 +20,20 @@ Meteor.methods({
         check(product, ReactionCore.Schemas.Product);
         type = "simple";
     }
-    this.unblock();
-    let totalNewInventory = 0;
     // user needs createProduct permission to register new inventory
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+    this.unblock();
 
-    let variants;
+    let totalNewInventory = 0;
+    const productId = type === "variant" ? product.ancestors[0] : product._id;
+    const variants = ReactionCore.getVariants(productId);
+
     // we'll check each variant to see if it has been fully registered
-    if (type === "variant") {
-      variants = ReactionCore.getVariants(product.ancestors[0]);
-
-    } else if (type === "simple") {
-      variants = ReactionCore.getVariants(product._id);
-    }
     for (let variant of variants) {
       let inventory = ReactionCore.Collections.Inventory.find({
-        productId: product._id,
+        productId: productId,
         variantId: variant._id,
         shopId: product.shopId
       });
@@ -51,13 +46,14 @@ Meteor.methods({
         let i = inventoryVariantCount + 1;
 
         ReactionInventory.Log.info(
-          `inserting ${newQty - inventoryVariantCount} new inventory items for ${variant._id}`
+          `inserting ${newQty - inventoryVariantCount
+            } new inventory items for ${variant._id}`
         );
 
         let items = [];
         while (i <= newQty) {
           items.push({
-            productId: product._id,
+            productId: productId,
             variantId: variant._id,
             shopId: product.shopId,
             createdAt: new Date,
@@ -105,20 +101,14 @@ Meteor.methods({
         check(product, ReactionCore.Schemas.Product);
         type = "simple";
     }
-    this.unblock();
-
     // user needs createProduct permission to adjust inventory
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    //let inventoryVariants;
+    this.unblock();
+
     // Quantity and variants of this product's variant inventory
     if (type === "variant") {
-      //inventoryVariants = ReactionCore.Collections.Products.find({
-      //  ancestors: {
-      //    $in: [product.ancestors[0]]
-      //  }
-      //});
       const variant = {
         _id: product._id,
         qty: product.inventoryQuantity || 0
@@ -170,11 +160,11 @@ Meteor.methods({
    */
   "inventory/remove": function (inventoryItem) {
     check(inventoryItem, ReactionCore.Schemas.Inventory);
-    this.unblock();
     // user needs createProduct permission to adjust inventory
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+    this.unblock();
 
     ReactionInventory.Log.debug("inventory/remove", inventoryItem);
     return ReactionCore.Collections.Inventory.remove(inventoryItem);

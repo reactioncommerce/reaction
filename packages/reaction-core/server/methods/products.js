@@ -244,17 +244,16 @@ Meteor.methods({
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
-      ancestors: ancestors
+      ancestors: ancestors,
+      type: "variant"
     });
 
     if (!newVariant) {
       Object.assign(assembledVariant, {
         title: "",
-        price: 0.00,
-        type: "variant"
+        price: 0.00
       });
     }
-    check(assembledVariant, ReactionCore.Schemas.ProductVariant);
 
     ReactionCore.Collections.Products.insert(assembledVariant,
       (error, result) => {
