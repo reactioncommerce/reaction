@@ -101,7 +101,6 @@ matb33:collection-hooks@0.8.1
 mdg:validation-error@0.2.0
 meteor@1.1.10
 meteor-base@1.0.1
-meteorhacks:inject-initial@1.0.3
 meteorhacks:ssr@2.2.0
 mikowals:batch-insert@1.1.13
 minifiers@1.1.7
@@ -167,9 +166,8 @@ tracker@1.0.9
 twitter@1.1.5
 ui@1.0.8
 underscore@1.0.4
-underscorestring:underscore.string@3.2.2
+underscorestring:underscore.string@3.2.3
 url@1.0.5
-utilities:avatar@0.9.2
 utilities:spin@2.3.1
 vsivsi:job-collection@1.2.3
 webapp@1.2.3

@@ -307,6 +307,12 @@ describe("cart methods", function () {
       done => {
         const user1 = Factory.create("user");
         spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+        spyOn(ReactionCore.Collections.Accounts, "findOne").and.returnValue({
+          emails: [{
+            address: "test@localhost",
+            provides: "default"
+          }]
+        });
         spyOnMethod("copyCartToOrder", user1._id);
         const cartId = Meteor.call("cart/createCart", user1._id, sessionId);
         expect(cartId).toBeDefined();

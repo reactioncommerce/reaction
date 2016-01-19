@@ -58,7 +58,7 @@ Template.registerHelper("reactionApps", function (optionHash) {
   let registryFilter;
 
   let options = optionHash.hash; // _ref = options.hash;
-  let packageSubscription = Meteor.subscribe("Packages");
+  let packageSubscription = ReactionCore.Subscriptions.Packages;
 
   // you could provide a shopId in optionHash
   if (packageSubscription.ready()) {

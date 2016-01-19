@@ -22,14 +22,6 @@ Accounts.registerLoginHandler(function (options) {
   return loginHandler;
 });
 
-// a generator function
-// for services extraction
-function services(obj) {
-  if (!obj) return [];
-  for (let key of Object.keys(obj)) {
-    return [key, obj[key]];
-  }
-}
 /**
  * Accounts.onCreateUser event
  * adding either a guest or anonymous role to the user on create
@@ -40,9 +32,12 @@ function services(obj) {
  * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
  */
 Accounts.onCreateUser(function (options, user) {
-  let shop = ReactionCore.getCurrentShop();
-  let shopId = ReactionCore.getShopId();
+  const shop = ReactionCore.getCurrentShop();
+  const shopId = shop._id;
   let roles = {};
+  let additionals = {
+    profile: {}
+  };
   if (!user.emails) user.emails = [];
   // init default user roles
   // we won't create users unless we have a shop.
@@ -53,23 +48,43 @@ Accounts.onCreateUser(function (options, user) {
     } else {
       roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
       // also add services with email defined to user.emails[]
-      for (let service of services(user.services)) {
-        if (service.email) {
-          email = {
+      for (let service in user.services) {
+        if (user.services[service].email) {
+          let email = {
             provides: "default",
-            address: service.email,
+            address: user.services[service].email,
             verified: true
           };
           user.emails.push(email);
         }
+        if (user.services[service].name) {
+          user.username = user.services[service].name;
+          additionals.profile.name = user.services[service].name;
+        }
+        // TODO: For now we have here instagram, twitter and google avatar cases
+        // need to make complete list
+        if (user.services[service].picture) {
+          additionals.profile.picture = user.services[service].picture;
+        } else if (user.services[service].profile_image_url_https) {
+          additionals.profile.picture = user.services[service].
+            dprofile_image_url_https;
+        } else if (user.services[service].profile_picture) {
+          additionals.profile.picture = user.services[service].profile_picture;
+        }
       }
     }
     // clone before adding roles
-    let account = _.clone(user);
+    let account = Object.assign({}, user, additionals);
     account.userId = user._id;
     ReactionCore.Collections.Accounts.insert(account);
-    // send welcome email to new users
-    Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+
+    // send a welcome email to new users,
+    // but skip the first default admin user
+    // (default admins already get a verification email)
+    if (!Meteor.users.find().count() === 0) {
+      Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+    }
+
     // assign default user roles
     user.roles = roles;
     return user;
@@ -80,7 +95,7 @@ Accounts.onCreateUser(function (options, user) {
  * Accounts.onLogin event
  * let's remove "anonymous" role, if the login type isn't "anonymous"
  * @param {Object} options - user account creation options
- * @returns {Object} returns workflow/pushCartWorkflow results
+ * @fires "cart/mergeCart" Method
  */
 Accounts.onLogin(function (options) {
   // remove anonymous role

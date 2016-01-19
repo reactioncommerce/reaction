@@ -54,8 +54,12 @@ Meteor.publish("Cart", function (sessionId, userId) {
  */
 
 Meteor.publish("Shipping", function () {
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
   return ReactionCore.Collections.Shipping.find({
-    shopId: ReactionCore.getShopId()
+    shopId: shopId
   });
 });
 
@@ -64,8 +68,12 @@ Meteor.publish("Shipping", function () {
  */
 
 Meteor.publish("Taxes", function () {
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
   return ReactionCore.Collections.Taxes.find({
-    shopId: ReactionCore.getShopId()
+    shopId: shopId
   });
 });
 
@@ -74,7 +82,11 @@ Meteor.publish("Taxes", function () {
  */
 
 Meteor.publish("Discounts", function () {
+  const shopId = ReactionCore.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
   return ReactionCore.Collections.Discounts.find({
-    shopId: ReactionCore.getShopId()
+    shopId: shopId
   });
 });

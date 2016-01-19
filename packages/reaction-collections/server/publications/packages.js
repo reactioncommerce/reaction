@@ -6,7 +6,10 @@
  */
 Meteor.publish("Packages", function (shopCursor) {
   check(shopCursor, Match.Optional(Object));
-  let Packages = ReactionCore.Collections.Packages;
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const { Packages } = ReactionCore.Collections;
   const shop = shopCursor || ReactionCore.getCurrentShop();
   // we should always have a shop
   if (shop) {
@@ -24,12 +27,12 @@ Meteor.publish("Packages", function (shopCursor) {
       shopId: shop._id
     }, {
       fields: {
-        "shopId": true,
-        "name": true,
-        "enabled": true,
-        "registry": true,
-        "layout": true,
-        "settings.public": true
+        "shopId": 1,
+        "name": 1,
+        "enabled": 1,
+        "registry": 1,
+        "layout": 1,
+        "settings.public": 1
       }
     });
   }
