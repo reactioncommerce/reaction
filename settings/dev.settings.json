@@ -8,10 +8,5 @@
     "REACTION_EMAIL": ""
   },
   "isDebug": "info",
-  "public": {
-    "velocity:html-reporter": {
-      "position": "top right",
-      "tab-index" : 1
-    }
-  }
+  "public": {}
 }
