@@ -141,6 +141,19 @@ Template.tagInputForm.events({
         return template.$(".tags-submit-new").focus();
       });
   },
+  "click .tag-input-group-hide": function (event, template) {
+    return Meteor.call("shop/hideHeaderTag", this._id,
+      function (error) {
+        if (error) {
+          return Alerts.add(
+            "An error occurred, the tag couldn't be hidden.",
+            "warning", {
+              autoHide: true
+            });
+        }
+        return template.$(".tags-submit-new").focus();
+      });
+  },
   "focusin .tags-input-select": function (tagEvent) {
     return $(tagEvent.currentTarget).autocomplete({
       delay: 0,
@@ -172,6 +185,14 @@ Template.tagInputForm.events({
         }
       }
     });
+  },
+  "keypress .tags-input-select": function (event, template) {
+    if (event.keyCode === 13) {
+      event.target.blur();
+    } else if (event.keyCode === 27) {
+      event.target.value = this.name;
+      event.target.blur();
+    }
   },
   "focusout .tags-input-select": function (event, template) {
     let val;
