@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Collections - core collections + hooks, cfs, jobs",
   name: "reactioncommerce:reaction-collections",
   documentation: "README.md",
-  version: "1.0.2"
+  version: "1.0.3"
 });
 
 Package.onUse(function (api) {
@@ -12,7 +12,7 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("check");
 
-  api.use("reactioncommerce:reaction-schemas@1.0.2");
+  api.use("reactioncommerce:reaction-schemas@1.0.3");
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");

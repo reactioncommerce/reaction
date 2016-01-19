@@ -4,7 +4,7 @@
       "version": "2.2.0"
     },
     "react": {
-      "version": "0.14.3",
+      "version": "0.14.6",
       "dependencies": {
         "envify": {
           "version": "3.4.0",
@@ -34,7 +34,7 @@
           }
         },
         "fbjs": {
-          "version": "0.3.2",
+          "version": "0.6.1",
           "dependencies": {
             "core-js": {
               "version": "1.2.6"
@@ -48,7 +48,7 @@
               }
             },
             "promise": {
-              "version": "7.0.4",
+              "version": "7.1.1",
               "dependencies": {
                 "asap": {
                   "version": "2.0.3"
@@ -56,7 +56,7 @@
               }
             },
             "ua-parser-js": {
-              "version": "0.7.9"
+              "version": "0.7.10"
             },
             "whatwg-fetch": {
               "version": "0.9.0"
