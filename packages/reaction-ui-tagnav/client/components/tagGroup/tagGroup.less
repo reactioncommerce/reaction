@@ -2,14 +2,17 @@
 @import "{reactioncommerce:core-theme}/lib/bootstrap/less/bootstrap.less";
 @import "{reactioncommerce:core-theme}/default/variables.less";
 @import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
 
 
-.rui.tagnav.group {
-  // .display(flex);
-  // .flex-wrap(wrap);
+.rui.grouptag {
+
+  @media screen and (max-width: @screen-sm-max) {
+    margin-bottom: 20px;
+  }
 }
 
-.rui.tagnav.group .item {
+.rui.grouptag .item {
   .flex(1 1 auto);
   min-width: 200px;
   width: 15%;
@@ -17,24 +20,34 @@
   padding: 10px;
 }
 
-.rui.tagnav.group > .header {
-
+.rui.grouptag > .header {
+  border-bottom: 1px solid @border-color;
 }
 
-.rui.tagnav.group > .header .rui.tag {
+.rui.grouptag > .header .rui.tag {
   font-weight: 600;
   text-transform: uppercase;
+
+  @media screen and (max-width: @screen-sm-max) {
+    .padding-left(30px);
+
+    &:after {
+
+    }
+  }
 }
 
-.rui.tagnav.group > .content {
+.rui.grouptag > .content {
+  @media screen and (max-width: @screen-sm-max) {
+    .padding-left(40px);
+  }
+}
+
+.rui.grouptag > .footer {
 
 }
 
-.rui.tagnav.group > .footer {
-
-}
-
-.rui.tagnav.group > .header .rui.tag.edit {
+.rui.grouptag > .header .rui.tag.edit {
   text-transform: none;
 
   @color: lighten(@btn-success-bg, 10%);
@@ -54,11 +67,20 @@
   }
 }
 
-.rui.tagnav.group > .header .rui.tag.edit input {
+.rui.grouptag > .header .rui.tag.edit input {
   .placeholder(@white);
 }
 
+.rui.grouptag > .content .rui.tag.link {
+  text-transform: none;
 
+  @media screen and (max-width: @screen-sm-max) {
+    .display(flex);
+    .align-items(center);
+    font-size: 1.3rem;
+    padding: 3px 0;
+  }
+}
 
 .empty-tag-group {
   .display(flex);
@@ -68,15 +90,8 @@
   background-color: @black10;
   height: 120px;
   max-width: 300px;
-}
 
-// .nav-dropbar .rui.header {
-//   margin-bottom: 10px;
-// }
-//
-// .nav-dropbar .rui.content,
-// .nav-dropbar .rui.footer {
-//   @media screen and (max-width: @screen-xs-max) {
-//     .padding-left(10px);
-//   }
-// }
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+  }
+}

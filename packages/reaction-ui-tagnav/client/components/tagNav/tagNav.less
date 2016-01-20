@@ -5,9 +5,23 @@
 
 .rui.tagnav {
   position: relative;
+
+  @media screen and (max-width: @screen-sm-max) {
+    // display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: @zindex-navbar;
+    padding: 20px 0;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
 }
 
-.rui.tagnav .navbar {
+.rui.tagnav {
   background-color: @navbar-inverse-bg;
   text-transform: uppercase;
   border-bottom: @navbar-secondary-border;
@@ -15,9 +29,14 @@
   .display(flex);
   .flex(1 1 auto);
   .align-items(center);
+
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+    height: 100vh;
+  }
 }
 
-.rui.tagnav .navbar > .rui.tags {
+.rui.tagnav > .rui.tags {
   .display(flex);
   .flex-wrap(nowrap);
   .align-items(center);
@@ -25,18 +44,48 @@
   height: 100%;
   padding: 0 5px;
   overflow-x: auto;
+
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+  }
 }
 
-.rui.tagnav .navbar .edit-tag-button {
+.rui.tagnav .edit-tag-button {
   .flex(0 0 auto);
   height: 100%;
   border: 0;
   border-left: 1px solid @border-color;
   border-radius: 0;
   background-color: @white;
+
+  @media screen and (max-width: @screen-sm-max) {
+    height: auto;
+  }
 }
 
-.rui.tagnav .navbar .edit-tag-button.btn-success {
+.rui.tagnav .navbar-items {
+  .display(flex);
+  .flex(1 1 auto);
+  height: 100%;
+
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+    width: 100%;
+  }
+}
+
+.rui.tagnav .navbar-items > .navbar-item {
+  .display(flex);
+  .align-items(center);
+  .flex(0 0 auto);
+
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+    margin: 0 0 10px 0;
+  }
+}
+
+.rui.tagnav .edit-tag-button.btn-success {
   .flex(0 0 auto);
   height: 100%;
   border: 0;
@@ -46,35 +95,61 @@
   background-color: @btn-success-bg;
 }
 
-.rui.tagnav .navbar .rui.tag.link {
+.rui.tagnav .navbar-item > .rui.tag.link {
   .display(flex);
   .align-items(center);
   .flex(0 0 auto);
   width: auto;
   height: 100%;
   padding: 0 10px;
+  text-transform: uppercase;
+
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+    height: auto;
+    padding: 0 20px;
+  }
 }
 
-.rui.tagnav .navbar .rui.tag.edit {
+.rui.tagnav .navbar-item > .rui.tag.edit {
   .flex(0 0 auto);
   width: auto;
   min-width: 150px;
   max-width: 150px;
   padding: 0 5px;
+
+  @media screen and (max-width: @screen-sm-max) {
+    padding: 0;
+  }
 }
 
-.rui.tagnav .navbar .rui.tag.edit.selected button,
-.rui.tagnav .navbar .rui.tag.edit.selected input {
+.rui.tagnav .rui.tag.edit.selected button,
+.rui.tagnav .rui.tag.edit.selected input {
   border-color: @black60;
   background-color: @black60;
   color: @white;
 }
 
-.rui.tagnav .navbar .rui.tag.edit.selected button:last-child {
+.rui.tagnav .rui.tag.edit.selected button:last-child {
   color: @btn-success-color;
 }
 
-.rui.tagnav > .dropdown {
+.rui.tagnav .navbar-item {
+  height: 100%;
+
+  @media screen and (max-width: @screen-sm-max) {
+    height: auto;
+  }
+}
+
+.rui.tagnav .navbar-item .dropdown {
+  display: none;
+}
+
+// .rui.tagnav .navbar .navbar-item:hover .dropdown,
+// .rui.tagnav .navbar .navbar-item:focus .dropdown,
+.rui.tagnav .navbar-item.selected .dropdown {
+  display: block;
   position: absolute;
   top: @navbar-height;
   left: 0;
@@ -84,6 +159,14 @@
 
   background-color: @white;
   border-bottom: 1px solid @border-color;
+}
+
+@media screen and (max-width: @screen-sm-max) {
+  .rui.tagnav .navbar-item.selected .dropdown,
+  .rui.tagnav .navbar-item .dropdown {
+    display: block !important;
+    position: static;
+  }
 }
 
 .nav-dropbar-content {

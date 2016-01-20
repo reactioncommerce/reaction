@@ -7,8 +7,9 @@ Template.tagTree.onRendered(() => {
   const list = instance.$(".content")[0];
 
   instance._sortable = Sortable.create(list, {
-    group: "tagGroups",
-    draggable: ".rui.tagnav.group.edit",
+    group: "tagGroup",
+    handle: ".js-drag-handle",
+    draggable: ".rui.tagnav.group",
     onSort(event) {
       let tagIds = instance.data.subTagGroups.map(item => {
         if (item) {

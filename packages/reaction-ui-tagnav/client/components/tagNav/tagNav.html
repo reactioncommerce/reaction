@@ -1,35 +1,37 @@
 
 <template name="tagNav">
   <div class="rui tagnav">
-    <div class="navbar">
-      {{> tagList (tagListProps tags)}}
+    <div class="navbar-items">
+      {{#each tag in tags}}
+        <div class="navbar-item {{navbarSelectedClassName tag}}" data-id={{tag._id}}>
+          {{> tagItem (tagProps tag)}}
 
-      {{#if editable}}
-        {{#if isEditing}}
-          {{> button
-            className="edit-tag-button"
-            icon="tag"
-            onClick=onEditTags
-            status="success"
-            title="Done"
-            type="button"
-          }}
-        {{else}}
-          {{> button
-            className="edit-tag-button"
-            icon="tag"
-            onClick=onEditTags
-            status="default"
-            title="Edit Tags"
-            type="button"
-          }}
-        {{/if}}
-      {{/if}}
+          <div class="dropdown" data-tag={{tag._id}}>
+            {{> tagTree (tagTreeProps tag)}}
+          </div>
+        </div>
+      {{/each}}
     </div>
-    {{#each tag in tags}}
-      <div class="rui tagnav dropdown {{dropDownIsHidden tag}}" data-tag={{tag._id}}>
-        {{> tagTree (tagTreeProps tag)}}
-      </div>
-    {{/each}}
+    {{#if editable}}
+      {{#if isEditing}}
+        {{> button
+          className="edit-tag-button"
+          icon="tag"
+          onClick=onEditTags
+          status="success"
+          title="Done"
+          type="button"
+        }}
+      {{else}}
+        {{> button
+          className="edit-tag-button"
+          icon="tag"
+          onClick=onEditTags
+          status="default"
+          title="Edit Tags"
+          type="button"
+        }}
+      {{/if}}
+      {{/if}}
   </div>
 </template>
