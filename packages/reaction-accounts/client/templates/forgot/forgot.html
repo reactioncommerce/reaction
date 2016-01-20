@@ -11,7 +11,7 @@
 
     <div class="form-group {{hasError messages.errors.email}}">
       <label for="email-{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email Address</label>
-      <input id="email-{{uniqueId}}" class="form-control login-input-email" type="text" value="{{email}}">
+      <input id="email-{{uniqueId}}" class="form-control login-input-email" type="text" value="{{credentials.email}}">
 
       {{#if hasError messages.errors.email}}
         <span class="help-block">

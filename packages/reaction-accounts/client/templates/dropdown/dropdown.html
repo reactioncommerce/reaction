@@ -2,7 +2,8 @@
   <div class="dropdown" role="menu">
     {{#if currentUser}}
     <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-      {{> avatar user=currentUser class="circular-icon" size="small" shape="circle"}}
+      {{!--> avatar user=currentUser class="circular-icon" size="small" shape="circle"--}}
+      <img class="circular-icon" src="{{getGravatar currentUser 40}}" alt="avatar" />
       <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
     </div>
     <div class="dropdown-menu pull-right" role="menu">

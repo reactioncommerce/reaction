@@ -6,17 +6,26 @@
  */
 Meteor.publish("Packages", function (shopCursor) {
   check(shopCursor, Match.Optional(Object));
-  let Packages = ReactionCore.Collections.Packages;
-  shop = shopCursor || ReactionCore.getCurrentShop(this);
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const {
+    Packages
+  } = ReactionCore.Collections;
+  const shop = shopCursor || ReactionCore.getCurrentShop();
   // we should always have a shop
   if (shop) {
     // if admin user, return all shop properties
     if (Roles.userIsInRole(this.userId, ["dashboard", "owner", "admin"],
-        ReactionCore.getShopId(this) || Roles.userIsInRole(this.userId, [
+        ReactionCore.getShopId() || Roles.userIsInRole(this.userId, [
           "owner", "admin"
         ], Roles.GLOBAL_GROUP))) {
       return Packages.find({
         shopId: shop._id
+      }, {
+        sort: {
+          name: 1
+        }
       });
     }
     // else we'll just return without private settings
@@ -24,14 +33,18 @@ Meteor.publish("Packages", function (shopCursor) {
       shopId: shop._id
     }, {
       fields: {
-        "shopId": true,
-        "name": true,
-        "enabled": true,
-        "registry": true,
-        "layout": true,
-        "settings.public": true
+        "shopId": 1,
+        "name": 1,
+        "enabled": 1,
+        "registry": 1,
+        "layout": 1,
+        "settings.public": 1
+      }
+    }, {
+      sort: {
+        name: 1
       }
     });
   }
-  return [];
+  return this.ready();
 });

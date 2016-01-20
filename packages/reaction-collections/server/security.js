@@ -87,6 +87,7 @@ Security.defineMethod("ifUserIdMatchesProp", {
   }
 });
 
+// todo do we need this?
 Security.defineMethod("ifSessionIdMatches", {
   fetch: [],
   deny: function (type, arg, userId, doc) {

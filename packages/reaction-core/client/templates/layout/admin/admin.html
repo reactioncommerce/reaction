@@ -39,14 +39,18 @@
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
           <button id="{{route}}" title="{{label}}">
-            {{#if isDashboard route}}
-              <img src="/resources/reaction-logo.svg" width="32">
-            {{else}}
-              <i class="{{icon}}"></i>
-            {{/if}}
-            <span class="icon-text">
-              {{label}}
-            </span>
+            <div class="contents">
+              <div class="icon">
+                {{#if isDashboard route}}
+                  <img src="/resources/reaction-logo.svg" width="32">
+                {{else}}
+                  <i class="{{icon}}"></i>
+                {{/if}}
+              </div>
+              <div class="icon-text">
+                {{label}}
+              </div>
+            </div>
           </button>
         {{/if}}
       {{/each}}

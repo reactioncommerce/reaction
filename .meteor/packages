@@ -66,6 +66,7 @@ reactioncommerce:reaction-paypal
 reactioncommerce:reaction-stripe
 #reactioncommerce:reaction-auth-net
 #reactioncommerce:reaction-braintree
+reactioncommerce:reaction-paymentmethod
 
 # Reaction Commerce Data
 
@@ -84,3 +85,4 @@ reactioncommerce:default-theme
 # Forced updates on packages
 jparker:gravatar@0.4.1
 cosmos:browserify@0.9.2
+

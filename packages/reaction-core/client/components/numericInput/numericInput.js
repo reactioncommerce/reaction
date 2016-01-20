@@ -1,20 +1,13 @@
 
 /**
- * numericInput onCreated
- */
-Template.numericInput.onCreated(() => {
-  const template = Template.instance();
-
-  // Initial method for autoNumeirc field
-  template.autoNumericFieldState = "init";
-});
-
-/**
  * numericInput onRendered
  * @summary attaches "autoNumeric" to the input element of this template
  */
 Template.numericInput.onRendered(() => {
   const template = Template.instance();
+
+  // Initial initialization on autoNumeric
+  $(template.find("input")).autoNumeric("init");
 
   template.autorun(() => {
     const data = Template.currentData();
@@ -31,7 +24,8 @@ Template.numericInput.onRendered(() => {
           data
         );
 
-        $(template.find("input")).autoNumeric(template.autoNumericFieldState, {
+        // Update autoNumeric field with currency for current locale
+        $(template.find("input")).autoNumeric("update", {
           aSep: options.thousand,
           dGroup: options.grouping,
           aSign: options.symbol,
@@ -40,9 +34,6 @@ Template.numericInput.onRendered(() => {
           vMin: accounting.toFixed(options.minValue, 2),
           wEmpty: "sign"
         });
-
-        // Subsquent calls runs will update autoNumeric on our field, instead of init
-        template.autoNumericFieldState = "update";
       }
     });
   });

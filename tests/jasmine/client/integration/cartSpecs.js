@@ -11,14 +11,14 @@ describe("Cart", function () {
   describe("Add to cart", function () {
     // empty cart items before each test
     afterEach(function (done) {
-      let cartId = ReactionCore.Collections.Cart.findOne()._id;
-      ReactionCore.Collections.Cart.update({
-        _id: cartId
-      }, {
-        $set: {
-          items: []
-        }
+      const cart = ReactionCore.Collections.Cart.findOne();
+      // we manually remove all items from cart
+      cart.items && cart.items.forEach((item) => {
+        Meteor.call("cart/removeFromCart", cart._id, item);
+        // todo update to the next after apllying PR #613
+        // Meteor.call("cart/removeFromCart", item._id);
       });
+
       done();
     });
 
@@ -45,7 +45,7 @@ describe("Cart", function () {
 
       $(addToCartButton).trigger("click");
       expect(spyOnAddToCartEvent).toHaveBeenTriggered();
-      /* expect(spyOnCart).toHaveBeenCalled();*/
+      /* expect(spyOnCart).toHaveBeenCalled(); */
       done();
     });
 
@@ -85,7 +85,10 @@ describe("Cart", function () {
 
       expect($(".cart-icon .badge").text()).toEqual(cartCount);
     });
+  });
 
+  // checkout from pdp
+  describe("Checkout", function () {
     it("should not add to cart without variant/option selected", function () {
       // no option is selected yet
       $("#add-to-cart").trigger("click");
@@ -95,7 +98,7 @@ describe("Cart", function () {
 
     it("should add selected option to cart", function () {
       let option1 = $(".variant-product-options .variant-select-option")[0];
-      let addToCartButton = $("#add-to-cart");
+      let addToCartButton = $("#add-to-cart")[0];
       let spyOnOptionEvent = spyOnEvent(option1, "click");
       let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
 
@@ -104,7 +107,7 @@ describe("Cart", function () {
       expect("click").toHaveBeenTriggeredOn(option1);
       expect(spyOnOptionEvent).toHaveBeenTriggered();
 
-      $("#add-to-cart").trigger("click");
+      $(addToCartButton).trigger("click");
       expect(spyOnAddToCartEvent).toHaveBeenTriggered();
     });
 
@@ -120,7 +123,7 @@ describe("Cart", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      /* expect(Router.current().url).toEqual("/checkout");*/
+      /* expect(Router.current().url).toEqual("/checkout"); */
       done();
     });
   });

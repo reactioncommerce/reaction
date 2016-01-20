@@ -1,51 +1,71 @@
-// const user = Factory.create("user");
+/* eslint dot-notation: 0 */
+
+const shopId = faker.reaction.shops.getShop()._id;
+const publication = Meteor.server.publish_handlers["ShopMembers"];
+
 describe("Account Publications", function () {
-  let shop;
   beforeEach(function () {
     // reset
-    ReactionCore.Collections.Products.remove({});
-    ReactionCore.Collections.Shops.remove({});
-    ReactionCore.Collections.Orders.remove({});
-    shop = Factory.create("shop");
+    Meteor.users.remove({});
   });
 
   describe("ShopMembers", function () {
-    beforeEach(function () {
-      // Meteor.users.remove({});
-    });
+    it(
+      "should let an admin fetch userIds",
+      () => {
+        const user = Factory.create("user");
+        const thisContext = {
+          userId: user._id
+        };
+        // setup
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        // execute
+        const cursor = publication.apply(thisContext);
+        // verify
+        data = cursor.fetch()[0];
+        expect(data._id).toEqual(user._id);
+      }
+    );
 
-    afterEach(function () {
-      // Meteor.users.remove({});
-    });
+    it(
+      "should not let a regular user fetch userIds",
+      () => {
+        const thisContext = {
+          userId: "notAdminUser",
+          ready: function () { return "ready"; }
+        };
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
+        spyOn(Roles, "userIsInRole").and.returnValue(false);
+        const cursor = publication.apply(thisContext);
+        expect(cursor).toEqual("ready");
+      }
+    );
 
-    // it("should let an admin fetch userIds", function () {
-    //   // setup
-    //   spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
-    //   spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(true);
-    //   // execute
-    //   cursor = Meteor.server.publish_handlers.ShopMembers();
-    //   // verify
-    //   data = cursor.fetch()[0];
-    //   // console.log(data);
-    //   expect(data._id).toEqual(user);
-    // });
-
-    it("should not let a regular user fetch userIds", function () {
-      // setup
-      spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
-      spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(false);
-      cursor = Meteor.server.publish_handlers.ShopMembers();
-      expect(cursor).toEqual([]);
-    });
-
-    // it("should not overpublish user data to admins", function () {
-    //   spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
-    //   spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(true);
-    //   // execute
-    //   cursor = Meteor.server.publish_handlers.ShopMembers();
-    //   // verify
-    //   data = cursor.fetch()[0];
-    //   expect(data.services).toBeUndefined();
-    // });
+    it(
+      "should not overpublish user data to admins",
+      () => {
+        const user = Factory.create("user");
+        Factory.create("registeredUser");
+        const thisContext = {
+          userId: user._id,
+          ready: function () { return "ready"; }
+        };
+        // setup
+        spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        // execute
+        const cursor = publication.apply(thisContext);
+        // verify
+        data = cursor.fetch();
+        // we expect services will be clean object
+        expect(data.some(_user => {
+          // we expect two users. First will be without services, second with
+          // clean services object
+          return typeof _user.services === "object" &&
+            _.isEqual(_user.services, {});
+        })).toEqual(true);
+      }
+    );
   });
 });

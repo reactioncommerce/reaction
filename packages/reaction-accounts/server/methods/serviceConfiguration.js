@@ -1,5 +1,5 @@
 Meteor.methods({
-  "accounts/updateServiceConfiguration": (service, fields) => {
+  "accounts/updateServiceConfiguration": function (service, fields) {
     check(service, String);
     check(fields, Array);
     const dataToSave = {};

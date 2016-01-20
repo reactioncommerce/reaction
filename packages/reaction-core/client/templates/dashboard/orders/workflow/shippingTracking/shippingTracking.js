@@ -63,6 +63,40 @@ Template.coreOrderShippingTracking.events({
 });
 
 Template.coreOrderShippingTracking.helpers({
+  isShipped() {
+    const currentData = Template.currentData();
+    const order = Template.instance().order;
+
+    const shippedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+      const fullItem = _.find(order.items, (orderItem) => {
+        if (orderItem._id === shipmentItem._id) {
+          return true;
+        }
+      });
+
+      return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
+    });
+
+    return shippedItems;
+  },
+
+  isCompleted() {
+    const currentData = Template.currentData();
+    const order = Template.instance().order;
+
+    const completedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+      const fullItem = _.find(order.items, (orderItem) => {
+        if (orderItem._id === shipmentItem._id) {
+          return true;
+        }
+      });
+
+      return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+    });
+
+    return completedItems;
+  },
+
   editTracking() {
     let template = Template.instance();
     if (!template.order.shipping[0].tracking || template.showTrackingEditForm.get()) {
