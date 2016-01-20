@@ -1,6 +1,6 @@
 Package.describe({
   // Name of your package
-  name: "my:custom-theme",
+  name: "my:custom-theme-template",
 
   // Brief summary or title of your package
   summary: "My Custom Theme",
