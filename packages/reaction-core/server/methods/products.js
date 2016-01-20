@@ -140,14 +140,11 @@ Meteor.methods({
   /**
    * products/cloneVariant
    * @summary clones a product variant into a new variant
-   * @description the products/cloneVariant method copies variants, but will also create
-   * and clone child variants (options)
-   * productId,variantId to clone
-   * add parentId to create children
-   * Note: parentId and variantId can be the same if creating a child variant.
-   * @param {String} productId - the productId we're whose variant we're cloning
+   * @description the method copies variants, but will also create and clone
+   * child variants (options)
+   * @param {String} productId - the productId we're whose variant we're
+   * cloning
    * @param {String} variantId - the variantId that we're cloning
-   * @todo in debug mode method runs twice sometimes
    * @todo we don't need productId. Currently it used for mediaCopy only
    * @todo rewrite @description
    * @return {undefined}
@@ -314,6 +311,7 @@ Meteor.methods({
 
   /**
    * products/updateVariants
+   * @deprecated @since 0.11.0
    * @summary update whole variants array
    * @param {Array} variants - array of variants to update
    * @return {String} returns update result
@@ -364,26 +362,13 @@ Meteor.methods({
     const toDelete = ReactionCore.Collections.Products.find(selector).fetch();
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
+
     const deleted = ReactionCore.Collections.Products.remove(selector);
-
-
-    // TODO we don't need to keep images from removed variants. We need to
-    // remove it too. Or we have another plans for this?
     toDelete.map(variant => {
-      return ReactionCore.Collections.Media.remove({
+      // useless to return results here because all happens async
+      ReactionCore.Collections.Media.remove({
         "metadata.variantId": variant._id
       });
-      /*return ReactionCore.Collections.Media.update({
-        "metadata.variantId": variant._id
-      }, {
-        $unset: {
-          "metadata.productId": "",
-          "metadata.variantId": "",
-          "metadata.priority": ""
-        }
-      }, {
-        multi: true
-      });*/
     });
 
     return typeof deleted === "number" && deleted > 0;
@@ -479,8 +464,6 @@ Meteor.methods({
         delete newVariant.updatedAt;
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
-        delete newVariant.inventoryQuantity; // TODO: I'm not sure we should do
-        // that
 
         result = ReactionCore.Collections.Products.insert(
           newVariant, { validate: false }
@@ -513,7 +496,6 @@ Meteor.methods({
     }
 
     return ReactionCore.Collections.Products.insert({
-      //_id: _id,
       type: "simple" // needed for multi-schema
     }, {
       validate: false
@@ -534,7 +516,7 @@ Meteor.methods({
    * products/deleteProduct
    * @summary delete a product and unlink it from all media
    * @param {String} productId - productId to delete
-   * @returns {Boolean} returns delete result
+   * @returns {Number|Error} returns number of removed media
    */
   "products/deleteProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
@@ -546,7 +528,7 @@ Meteor.methods({
 
     let productIds;
 
-    if (_.isString(productId)) {
+    if (!Array.isArray(productId)) {
       productIds = [productId];
     } else {
       productIds = productId;
@@ -567,23 +549,18 @@ Meteor.methods({
     });
 
     if (numRemoved > 0) {
-      ReactionCore.Collections.Media.update({
+      // we can get removes results only in async way
+      ReactionCore.Collections.Media.remove({
         "metadata.productId": {
           $in: ids
+        },
+        "metadata.variantId": {
+          $in: ids
         }
-      }, {
-        $unset: {
-          "metadata.productId": "",
-          "metadata.variantId": "",
-          "metadata.priority": ""
-        }
-      }, {
-        multi: true
       });
-      return true;
+      return numRemoved
     }
-    // return false if unable to delete
-    return false;
+    throw new Meteor.Error(304, "Something goes wrong, nothing was deleted");
   },
 
   /**
@@ -959,7 +936,6 @@ Meteor.methods({
           type: "simple" // required by multi-schema
         }
       }));
-      // return Boolean(result);
     } else {
       ReactionCore.Log.debug("invalid product visibility ", productId);
       throw new Meteor.Error(400, "Bad Request");

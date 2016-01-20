@@ -150,7 +150,7 @@ Template.productGrid.helpers({
         let gridProduct = gridProducts[index];
         if (gridProduct.positions) {
           let _results = [];
-          for (position of gridProduct.positions) {
+          for (let position of gridProduct.positions) {
             if (position.tag === ReactionCore.getCurrentTag()) {
               _results.push(position);
             }

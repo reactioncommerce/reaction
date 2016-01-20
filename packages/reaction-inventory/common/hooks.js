@@ -58,9 +58,6 @@ ReactionCore.Collections.Products.after.update(function (userId, doc,
   // we should keep in mind that returning false within hook prevents other
   // hooks to be run
   if (doc.type !== "variant") return false;
-  if (modifier.$push) { // if we're adding a new product or variant
-    Meteor.call("inventory/register", product);
-  }
 
   // check if modifier is set and $pull and $push are undefined. This need
   // because anyway on every create or delete operation we have additionally
@@ -71,4 +68,13 @@ ReactionCore.Collections.Products.after.update(function (userId, doc,
     // triggers inventory adjustment
     Meteor.call("inventory/adjust", doc);
   }
+});
+
+/**
+ * after insert
+ * @summary should fires on create new variants, on clones products/variants
+ */
+ReactionCore.Collections.Products.after.insert(function (userId, doc) {
+  if (doc.type !== "variant") return false;
+  Meteor.call("inventory/register", doc);
 });

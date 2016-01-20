@@ -220,22 +220,22 @@ this.getProductPriceRange = currentProductId => {
     let variantPrices = [];
     variants.map(variant => {
       let range = getVariantPriceRange(variant._id);
-    if (typeof range === "string") {
-      let firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
-      let lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
-      variantPrices.push(firstPrice, lastPrice);
-    } else {
-      variantPrices.push(range);
-    }
-  });
-  let priceMin = _.min(variantPrices);
-  let priceMax = _.max(variantPrices);
+      if (typeof range === "string") {
+        let firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
+        let lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
+        variantPrices.push(firstPrice, lastPrice);
+      } else {
+        variantPrices.push(range);
+      }
+    });
+    let priceMin = _.min(variantPrices);
+    let priceMax = _.max(variantPrices);
 
-  if (priceMin === priceMax) {
-    return priceMin.toString();
+    if (priceMin === priceMax) {
+      return priceMin.toString();
+    }
+    return `${priceMin} - ${priceMax}`;
   }
-  return `${priceMin} - ${priceMax}`;
-}
 };
 
 /**

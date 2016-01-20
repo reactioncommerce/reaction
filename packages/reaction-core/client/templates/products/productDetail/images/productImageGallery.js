@@ -7,8 +7,12 @@ let Media = ReactionCore.Collections.Media;
  */
 function uploadHandler(event) {
   let productId = selectedProductId();
-  // let variantId = selectedVariantId();
   const variant = selectedVariant();
+  if (typeof variant !== "object") {
+    return Alerts.add("Please, create new Variant first.", "danger", {
+      autoHide: true
+    });
+  }
   const variantId = variant._id;
   let shopId = selectedProduct().shopId || ReactionCore.getShopId();
   let userId = Meteor.userId();
