@@ -4,6 +4,20 @@
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
 /* eslint quotes: 0 */
+
+/**
+ * @array toDenormalize
+ * @summary contains a list of fields, which should be denormalized
+ * @type {string[]}
+ */
+const toDenormalize = [
+  "price",
+  "inventoryQuantity",
+  "lowInventoryWarningThreshold",
+  "inventoryPolicy",
+  "inventoryManagement"
+];
+
 /**
  * @function createTitle
  * @description Recursive method which trying to find a new `title`, given the
@@ -136,6 +150,44 @@ function copyMedia(newId, variantOldId, variantNewId) {
   });
 }
 
+/**
+ * @function denormalize
+ * @description With flattened model we do not want to get variant docs in
+ * `products` publication, but we need some data from variants to display price,
+ * quantity, etc. That's why we are denormalizing these properties into product
+ * doc. Also, this way should have a speed benefit comparing the way where we
+ * could dynamically build denormalization inside `products` publication.
+ * @summary update product denormalized properties if variant was updated or
+ * removed
+ * @param {String} id - product _id
+ * @param {String} field - type of field. Could be:
+ * "price",
+ * "inventoryQuantity",
+ * "management",
+ * "policy",
+ * "threshold"
+ * @since 0.12.0
+ * @return {Number} - number of successful update operations. Should be "1".
+ */
+function denormalize(id, field) {
+  switch (field) {
+    case "inventoryQuantity":
+      return;
+    case "management":
+      return;
+    case "policy":
+      return;
+    case "threshold":
+      return;
+    default: // "price"
+      // set "0" if no variants in product. If all variants were removed.
+      const priceRange = ReactionCore.getProductPriceRange(id) || 0;
+      return ReactionCore.Collections.Products.update(id, {
+        $set: { price: priceRange }
+      }, { selector: { type: "simple" } });
+  }
+}
+
 Meteor.methods({
   /**
    * products/cloneVariant
@@ -245,8 +297,7 @@ Meteor.methods({
     this.unblock();
 
     const newVariantId = Random.id();
-    const parent = ReactionCore.Collections.Products.findOne(parentId);
-    const { ancestors } = parent;
+    const { ancestors } = ReactionCore.Collections.Products.findOne(parentId);
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
@@ -305,6 +356,19 @@ Meteor.methods({
         // do not need to pass it explicitly
       }, {
         validate: false
+      }, (error, result) => {
+        if (result) {
+          const productId = currentVariant.ancestors[0];
+          // we need manually check is these fields were updated?
+          // we can't stop after successful denormalization, because we have a
+          // case when several fields could be changed in top-level variant
+          // before form will be submitted.
+          toDenormalize.forEach(field => {
+            if (currentVariant[field] !== variant[field]) {
+              denormalize(productId, field);
+            }
+          });
+        }
       });
     }
   },
@@ -370,6 +434,11 @@ Meteor.methods({
         "metadata.variantId": variant._id
       });
     });
+
+    // after variant were removed from product, we need to recalculate all
+    // denormalized fields
+    const productId = toDelete[0].ancestors[0];
+    toDenormalize.forEach(field => denormalize(productId, field));
 
     return typeof deleted === "number" && deleted > 0;
   },
@@ -586,13 +655,18 @@ Meteor.methods({
     }
     this.unblock();
 
-    const type = ReactionCore.Collections.Products.findOne(_id).type;
+    const doc = ReactionCore.Collections.Products.findOne(_id);
+    const type = doc.type;
     let stringValue = EJSON.stringify(value);
     let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
 
     return ReactionCore.Collections.Products.update(_id, {
       $set: update
-    }, { selector: { type: type } });
+    }, { selector: { type: type } }, (error, result) => {
+      if (result && type === "variant" && ~toDenormalize.indexOf(field)) {
+        denormalize(doc.ancestors[0], field);
+      }
+    });
   },
 
   /**

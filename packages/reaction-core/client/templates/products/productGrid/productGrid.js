@@ -103,7 +103,6 @@ Template.productGrid.helpers({
      */
     let hashtags;
     let newRelatedTags;
-    let position;
     let relatedTags;
 
     // function to compare and sort position

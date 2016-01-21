@@ -34,6 +34,30 @@ ReactionCore.Schemas.VariantMedia = new SimpleSchema({
 });
 
 /**
+ * Schema "Price range" for a product
+ * @summary needed for denormalizing of price range
+ * @type {SimpleSchema}
+ * @todo I'm not sure what is the best way: to keep it as string "5 - 10", or
+ * as two numbers in object. The second could be faster for cases with discount,
+ * or not too much? If we decide to keep priceRange as string, then this SS
+ * could be removed.
+ */
+ReactionCore.Schemas.PriceRange = new SimpleSchema({
+  min: {
+    label: "Minimum product price",
+    type: Number,
+    decimal: true,
+    defaultValue: 0
+  },
+  max: {
+    label: "Maximum product price",
+    type: Number,
+    decimal: true,
+    defaultValue: 0
+  }
+});
+
+/**
  * ProductPosition Schema
  */
 ReactionCore.Schemas.ProductPosition = new SimpleSchema({
@@ -298,6 +322,35 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     type: [ReactionCore.Schemas.ProductPosition],
     optional: true
   },
+  price: {
+    label: "Denormalized field: Variants price range for a product",
+    // type: ReactionCore.Schemas.PriceRange
+    type: String,
+    defaultValue: "0",
+    max: 100
+  },
+  inventoryManagement: {
+    label: 'Denormalized "inventoryManagement" field',
+    type: Boolean,
+    defaultValue: true
+  },
+  inventoryPolicy: {
+    label: 'Denormalized "inventoryPolicy" field',
+    type: Boolean,
+    defaultValue: true
+  },
+  inventoryQuantity: {
+    label: "Denormalized field: Variants common quantity",
+    type: Number,
+    defaultValue: 0
+  },
+  // this will be just a boolean. I suppose the goal of this field is to display
+  // to admin that this product needs his attention.
+  lowInventoryWarningThreshold: {
+    label: 'Denormalized "lowInventoryWarningThreshold" field',
+    type: Boolean,
+    defaultValue: false
+  },
   requiresShipping: {
     label: "Require a shipping address",
     type: Boolean,
@@ -357,18 +410,6 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     index: 1,
     defaultValue: false
   },
-  workflow: {
-    type: ReactionCore.Schemas.Workflow,
-    optional: true
-  },
-  publishedAt: {
-    type: Date,
-    optional: true
-  },
-  publishedScope: {
-    type: String,
-    optional: true
-  },
   templateSuffix: {
     type: String,
     optional: true
@@ -392,9 +433,16 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     },
     optional: true
   },
-  variants: {
-    // type: [ReactionCore.Schemas.ProductVariant]
-    type: [String],
-    defaultValue: []
+  publishedAt: {
+    type: Date,
+    optional: true
+  },
+  publishedScope: {
+    type: String,
+    optional: true
+  },
+  workflow: {
+    type: ReactionCore.Schemas.Workflow,
+    optional: true
   }
 });

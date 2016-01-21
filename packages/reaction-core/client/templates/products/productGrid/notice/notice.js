@@ -1,15 +1,13 @@
 /**
  * gridNotice helpers
+ * @todo update all these helpers to support flattened model
+ * @todo currently this functionality not reachable for us, because we not
+ * published on variants in `productGrid` only on products.
  */
-
 Template.gridNotice.helpers({
   isLowQuantity: function () {
-    let variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const variants = getTopVariants();
+    // TODO: what is the logic of this helper?
     if (variants.length > 0) {
       for (let variant of variants) {
         if (variant.inventoryQuantity <= variant.lowInventoryWarningThreshold) {
@@ -21,15 +19,11 @@ Template.gridNotice.helpers({
     }
   },
   isSoldOut: function () {
-    let variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const variants = getTopVariants();
 
     if (variants.length > 0) {
       for (let variant of variants) {
+        // todo this is wrong. Current logic works for the first variant only
         if (!variant.inventoryManagement || variant.inventoryQuantity > 0) {
           return false;
         }
@@ -38,12 +32,8 @@ Template.gridNotice.helpers({
     }
   },
   isBackorder: function () {
-    let variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const variants = getTopVariants();
+
     if (variants.length > 0) {
       for (let variant of variants) {
         if (!variant.inventoryManagement || variant.inventoryQuantity > 0) {

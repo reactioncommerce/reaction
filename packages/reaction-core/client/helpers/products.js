@@ -184,19 +184,19 @@ this.getVariantPriceRange = currentVariantId => {
 
       children.map(child => {
         if (child.price < priceMin) {
-      priceMin = child.price;
-    }
-      if (child.price > priceMax) {
-        priceMax = child.price;
-      }
-  });
+          priceMin = child.price;
+        }
+          if (child.price > priceMax) {
+            priceMax = child.price;
+          }
+      });
 
-  if (priceMin === priceMax) {
-    // TODO check impact on i18n/formatPrice from moving return to string
-    return priceMin.toString();
+      if (priceMin === priceMax) {
+        // TODO check impact on i18n/formatPrice from moving return to string
+        return priceMin.toString();
+      }
+      return `${priceMin} - ${priceMax}`;
   }
-  return `${priceMin} - ${priceMax}`;
-}
 };
 
 /**
