@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.10.2",
+  version: "0.11.0",
   documentation: "README.md"
 });
 
@@ -48,17 +48,16 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("reactioncommerce:reaction-collections@1.0.2");
+  api.use("reactioncommerce:reaction-collections@1.0.4");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
   api.use("iron:router@1.0.12");
 
   api.use("ongoworks:bunyan-logger@2.5.0");
-  api.use("momentjs:moment@2.10.6");
+  api.use("momentjs:moment@2.11.1");
   api.use("risul:moment-timezone@0.4.1");
   api.use("utilities:spin@2.3.1", "client");
-  api.use("utilities:avatar@0.9.2");
 
   // imply exports package vars
   api.imply("less");
@@ -75,7 +74,6 @@ Package.onUse(function (api) {
   api.imply("iron:router");
   api.imply("momentjs:moment");
   api.imply("utilities:spin", ["client"]);
-  api.imply("utilities:avatar");
 
   // reaction core dependencies
   api.use("reactioncommerce:reaction-ui@0.1.0");
@@ -397,9 +395,9 @@ Package.onTest(function (api) {
   api.use("accounts-password");
 
   // reaction core
-  api.use("reactioncommerce:reaction-collections@1.0.2");
-  api.use("reactioncommerce:reaction-factories@0.3.2");
-  api.use("reactioncommerce:core@0.10.0");
+  api.use("reactioncommerce:reaction-collections@1.0.4");
+  api.use("reactioncommerce:reaction-factories@0.3.7");
+  api.use("reactioncommerce:core@0.11.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");

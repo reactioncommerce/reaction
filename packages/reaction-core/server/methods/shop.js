@@ -482,6 +482,26 @@ Meteor.methods({
   },
 
   /**
+   * shop/hideHeaderTag
+   * @param {String} tagId - method to remove tag navigation tags
+   * @param {String} currentTagId - currentTagId
+   * @return {String} returns remove result
+   */
+  "shop/hideHeaderTag": function (tagId) {
+    check(tagId, String);
+    // must have core permissions
+    if (!ReactionCore.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+    // hide it
+    console.log({ _id: tagId });
+    return ReactionCore.Collections.Tags.update({ _id: tagId }, {
+      $set: { isTopLevel: false }
+    });
+  },
+
+  /**
    * flushTranslations
    * @summary Helper method to remove all translations, and reload from jsonFiles
    * @return {undefined}

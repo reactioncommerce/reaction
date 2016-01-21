@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Inventory",
   name: "reactioncommerce:reaction-inventory",
-  version: "0.2.0",
+  version: "0.2.1",
   documentation: "README.md"
 });
 
@@ -21,7 +21,7 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("ddp-rate-limiter");
   api.use("blaze-html-templates");
-  api.use("reactioncommerce:core@0.10.0");
+  api.use("reactioncommerce:core@0.11.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
 
   api.addFiles("common/globals.js"); // Inventory Globals
@@ -54,7 +54,7 @@ Package.onTest(function (api) {
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("reactioncommerce:core@0.10.0");
+  api.use("reactioncommerce:core@0.11.0");
   api.use("reactioncommerce:reaction-factories");
   api.use("reactioncommerce:reaction-inventory");
 
