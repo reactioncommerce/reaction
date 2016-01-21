@@ -87,7 +87,7 @@ iron:location@1.0.11
 iron:middleware-stack@1.0.11
 iron:router@1.0.12
 iron:url@1.0.11
-jeremy:stripe@1.0.0
+jeremy:stripe@1.1.0
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
@@ -98,7 +98,7 @@ livedata@1.0.15
 localstorage@1.0.5
 logging@1.0.8
 matb33:collection-hooks@0.8.1
-mdg:validation-error@0.2.0
+mdg:validation-error@0.4.0
 meteor@1.1.10
 meteor-base@1.0.1
 meteorhacks:ssr@2.2.0
@@ -107,7 +107,7 @@ minifiers@1.1.7
 minimongo@1.0.10
 mobile-experience@1.0.1
 mobile-status-bar@1.0.6
-momentjs:moment@2.10.6
+momentjs:moment@2.11.1
 mongo@1.1.3
 mongo-id@1.0.1
 mongo-livedata@1.0.9
@@ -135,16 +135,16 @@ reactioncommerce:core@0.11.0
 reactioncommerce:core-theme@2.0.1
 reactioncommerce:default-theme@1.0.3
 reactioncommerce:launchdock-connect@0.1.3
-reactioncommerce:reaction-accounts@1.6.1
+reactioncommerce:reaction-accounts@1.6.2
 reactioncommerce:reaction-analytics@1.2.1
 reactioncommerce:reaction-analytics-libs@1.1.0
-reactioncommerce:reaction-collections@1.0.3
-reactioncommerce:reaction-email-templates@0.1.1
+reactioncommerce:reaction-collections@1.0.4
+reactioncommerce:reaction-email-templates@0.1.2
 reactioncommerce:reaction-inventory@0.2.1
 reactioncommerce:reaction-paymentmethod@0.0.1
 reactioncommerce:reaction-paypal@1.2.7
 reactioncommerce:reaction-sample-data@0.1.1
-reactioncommerce:reaction-schemas@1.0.3
+reactioncommerce:reaction-schemas@1.0.4
 reactioncommerce:reaction-shipping@0.6.2
 reactioncommerce:reaction-social@0.4.2
 reactioncommerce:reaction-stripe@3.0.3
