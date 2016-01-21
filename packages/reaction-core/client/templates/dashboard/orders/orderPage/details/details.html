@@ -1,9 +1,10 @@
 <template name="pageOrderDetail">
   <li class="list-group-item order-detail">
     <div class="row order-profile">
-      {{#with userProfile.profile}}
+      {{#with userProfile}}
         {{#if picture}}
-        <span class="circular-icon" style="background: url({{picture}}) no-repeat center;"></span>
+          <img class="circular-icon" src="{{picture}}" style="width: 50px;border-radius: 50%;">
+        {{!--<span class="circular-icon" style="background: url({{picture}}) no-repeat center;"></span>--}}
         {{/if}}
         <strong>{{name}}</strong>
       {{/with}}

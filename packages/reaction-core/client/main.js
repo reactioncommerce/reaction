@@ -312,9 +312,7 @@ Meteor.startup(function () {
     if (guestAreAllowed && !userId) {
       if (!isHidden && !loggingIn || typeof sessionId !== "string") {
         Accounts.loginWithAnonymous();
-      }/* else {
-        Tracker.currentComputation.stop();
-      }*/
+      }
     }
   });
 });

@@ -28,6 +28,7 @@ Package.onUse(function (api) {
   api.use("less");
   api.use("reactioncommerce:core@0.11.0");
 
+
   api.addFiles([
     "common/collections.js" // any unique collections
   ], ["client", "server"]);

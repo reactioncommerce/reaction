@@ -40,9 +40,14 @@ Meteor.methods({
         let items = [];
         while (i <= newQty) {
           items.push({
-            shopId: product.shopId,
+            productId: product._id,
             variantId: variant._id,
-            productId: product._id
+            shopId: product.shopId,
+            createdAt: new Date,
+            updatedAt: new Date,
+            workflow: { // we add this line because `batchInsert` doesn't know
+              status: "new" // about SimpleSchema, so `defaultValue` will not
+            } // work with it
           });
           i++;
         }
@@ -90,11 +95,11 @@ Meteor.methods({
     });
 
     for (let variant of inventoryVariants) {
-      let Inventory = ReactionCore.Collections.Inventory.find({
+      let inventory = ReactionCore.Collections.Inventory.find({
         productId: product._id,
         variantId: variant._id
       });
-      let itemCount = Inventory.count();
+      let itemCount = inventory.count();
 
       if (itemCount !== variant.qty) {
         ReactionInventory.Log.info(
@@ -104,10 +109,9 @@ Meteor.methods({
         if (itemCount < variant.qty) {
           // we need to register some new variants to inventory
           Meteor.call("inventory/register", product);
-        }
-        else if (itemCount > variant.qty) {
+        } else if (itemCount > variant.qty) {
           // determine how many records to delete
-          removeQty = itemCount - variant.qty;
+          let removeQty = itemCount - variant.qty;
           // we're only going to delete records that are new
           let removeInventory = ReactionCore.Collections.Inventory.find({
             "productId": product._id,
@@ -128,7 +132,6 @@ Meteor.methods({
         }
       }
     }
-    return;
   },
   /**
    * inventory/remove

@@ -7,14 +7,10 @@
  */
 Template.orderDetail.helpers({
   userProfile: function () {
-    let profileId;
-    let userProfile;
-    profileId = this.userId;
-    if (profileId !== null) {
-      userProfile = Meteor.subscribe("UserProfile", profileId);
-      if (userProfile.ready()) {
-        return Meteor.users.findOne(profileId);
-      }
+    if (typeof this.userId === "string") {
+      const userProfile = ReactionCore.Collections.
+        Accounts.findOne(this.userId);
+      return userProfile.profile;
     }
   },
   orderAge: function () {

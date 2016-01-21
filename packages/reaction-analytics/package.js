@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
-  version: "1.2.1",
+  version: "1.2.2",
   documentation: "README.md"
 });
 
@@ -22,8 +22,6 @@ Package.registerBuildPlugin({
 Package.on_use(function (api) {
   api.versionsFrom("METEOR@1.2");
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");

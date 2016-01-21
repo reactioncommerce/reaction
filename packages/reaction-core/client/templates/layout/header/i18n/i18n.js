@@ -4,9 +4,9 @@
 
 Template.i18nChooser.helpers({
   languages: function () {
-    const languages = [];
-    const shop = ReactionCore.Collections.Shops.findOne();
-    if (shop && shop.languages) {
+    let languages = [];
+    let shop = ReactionCore.Collections.Shops.findOne();
+    if (typeof shop === "object" && shop.languages) {
       for (let language of shop.languages) {
         if (language.enabled === true) {
           language.translation = "languages." + language.label.toLowerCase();

@@ -561,7 +561,7 @@ Meteor.methods({
     // Replace the items with the expanded array of items
     order.items = expandedItems;
 
-    if (!order.items) {
+    if (!order.items || order.items.length === 0) {
       throw new Meteor.Error(
         "An error occurred saving the order. Missing cart items.");
     }
