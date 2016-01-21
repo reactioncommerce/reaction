@@ -230,10 +230,8 @@ Router.map(function () {
     controller: ShopController,
     path: "product/tag/:_id",
     template: "products",
-    waitOn: function () {
-      return this.subscribe("Products", Session.get("productScrollLimit"));
-    },
     subscriptions: function () {
+      this.tagSubsription = this.subscribe("Products", Session.get("productScrollLimit"));
       return this.subscribe("Tags");
     },
     data: function () {
