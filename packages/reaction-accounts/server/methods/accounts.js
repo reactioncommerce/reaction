@@ -87,6 +87,11 @@ Accounts.onCreateUser(function (options, user) {
 
     // assign default user roles
     user.roles = roles;
+
+    // run onCreateUser hooks
+    // (the user object must be returned by all callbacks)
+    user = ReactionCore.Hooks.Events.run("onCreateUser", user, options);
+
     return user;
   }
 });
@@ -98,6 +103,10 @@ Accounts.onCreateUser(function (options, user) {
  * @fires "cart/mergeCart" Method
  */
 Accounts.onLogin(function (options) {
+  // run onLogin hooks
+  // (the options object must be returned by all callbacks)
+  options = ReactionCore.Hooks.Events.run("onLogin", options);
+
   // remove anonymous role
   // all users are guest, but anonymous user don't have profile access
   // or ability to order history, etc. so ensure its removed upon login.
