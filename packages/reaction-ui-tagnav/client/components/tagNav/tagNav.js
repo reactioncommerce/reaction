@@ -212,10 +212,8 @@ Template.tagNav.helpers({
 
 
 Template.tagNav.events({
-
   "click .navbar-item > .rui.tag.link"(event, instance) {
-
-    if (window.matchMedia("(max-width: 767px)").matches) {
+    if (window.matchMedia("(max-width: 991px)").matches) {
       const tagId = event.target.dataset.id;
       const tags = instance.data.tags;
       const foundTag = _.find(tags, (tag) => {
@@ -225,6 +223,9 @@ Template.tagNav.events({
       if (foundTag) {
         if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
           event.preventDefault();
+
+          instance.state.set("selectedTag", foundTag);
+
           console.log("show the dropdown instead of navigating to the link");
         }
       }
@@ -233,6 +234,10 @@ Template.tagNav.events({
 
   "mouseover .navbar-item, focus .navbar-item"(event, instance) {
     const tagId = event.currentTarget.dataset.id;
+
+    if (window.matchMedia("(max-width: 991px)").matches) {
+      return;
+    }
 
     if (instance.state.equals("isEditing", false)) {
       // Attach an event listener to the document body

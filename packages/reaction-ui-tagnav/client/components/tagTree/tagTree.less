@@ -4,34 +4,34 @@
 @import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
 @import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
 
-.rui.tagtree {
-  @media screen and (max-width: @screen-sm-max) {
-    position: static;
-    border-bottom: 1px solid @border-color;
-    background-color: @black02;
-  }
+.rui.tagtree {}
+
+.rui.tagnav.vertical .rui.tagtree  {
+  position: static;
+  border-bottom: 1px solid @border-color;
+  background-color: @black02;
 }
 
 .rui.tagtree > .content {
   .display(flex);
   .flex-wrap(wrap);
   padding: 20px;
+}
 
-  @media screen and (max-width: @screen-sm-max) {
-    display: block;
-  }
+.rui.tagnav.vertical .rui.tagtree > .content {
+  display: block;
+  padding: 0;
 }
 
 .rui.tagtree > .header {
   .display(flex);
-  // .justify-content(flex-start);
   .align-items(center);
   padding: 20px;
   background-color: @black02;
+}
 
-  @media screen and (max-width: @screen-sm-max) {
-    display: block;
-  }
+.rui.tagnav.vertical .rui.tagtree > .header {
+  display: block;
 }
 
 .rui.tagtree > .header .title {
@@ -40,15 +40,14 @@
   .padding-right(20px);
 }
 
-
 .rui.tagtree > .footer {
   .display(flex);
   .justify-content(flex-end);
   padding: 10px;
+}
 
-  @media screen and (max-width: @screen-sm-max) {
-    display: block;
-  }
+.rui.tagnav.vertical .rui.tagtree > .footer {
+  display: block;
 }
 
 .rui.tagtree .group {

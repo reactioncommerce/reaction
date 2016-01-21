@@ -5,11 +5,10 @@
 @import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
 
 
-.rui.grouptag {
+.rui.grouptag {}
 
-  @media screen and (max-width: @screen-sm-max) {
-    margin-bottom: 20px;
-  }
+.rui.tagnav.vertical .rui.grouptag {
+  margin-bottom: 40px;
 }
 
 .rui.grouptag .item {
@@ -24,35 +23,35 @@
   border-bottom: 1px solid @border-color;
 }
 
+.rui.tagnav.vertical .rui.grouptag > .header {
+  padding: 0 20px;
+}
+
 .rui.grouptag > .header .rui.tag {
   font-weight: 600;
   text-transform: uppercase;
-
-  @media screen and (max-width: @screen-sm-max) {
-    .padding-left(30px);
-
-    &:after {
-
-    }
-  }
 }
 
-.rui.grouptag > .content {
-  @media screen and (max-width: @screen-sm-max) {
-    .padding-left(40px);
-  }
+.rui.tagnav.vertical .rui.grouptag > .header .rui.tag {
+  // padding: 0 20px;
 }
 
-.rui.grouptag > .footer {
 
+.rui.grouptag > .content {}
+
+.rui.tagnav.vertical .rui.grouptag > .content {
+  padding: 0 20px;
 }
 
-.rui.grouptag > .header .rui.tag.edit {
+.rui.grouptag > .footer {}
+
+.rui.grouptag > .header .rui.tag.edit,
+.rui.grouptag > .header .rui.tag.edit.create {
   text-transform: none;
 
   @color: lighten(@btn-success-bg, 10%);
   @color: @brand-secondary-color;
-  @color: #238CC3;
+  // @color: #238CC3;
 
   input {
     background-color: @color;
@@ -67,20 +66,22 @@
   }
 }
 
-.rui.grouptag > .header .rui.tag.edit input {
+.rui.grouptag > .header .rui.tag.edit input,
+.rui.grouptag > .header .rui.tag.edit.create input {
   .placeholder(@white);
 }
 
 .rui.grouptag > .content .rui.tag.link {
   text-transform: none;
-
-  @media screen and (max-width: @screen-sm-max) {
-    .display(flex);
-    .align-items(center);
-    font-size: 1.3rem;
-    padding: 3px 0;
-  }
 }
+
+.rui.tagnav.vertical .rui.grouptag > .content .rui.tag.link {
+  .display(flex);
+  .align-items(center);
+  font-size: 1.3rem;
+  padding: 3px 0;
+}
+
 
 .empty-tag-group {
   .display(flex);
@@ -90,8 +91,8 @@
   background-color: @black10;
   height: 120px;
   max-width: 300px;
+}
 
-  @media screen and (max-width: @screen-sm-max) {
-    display: block;
-  }
+.rui.tagnav.vertical .empty-tag-group {
+  display: block;
 }

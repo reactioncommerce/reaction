@@ -17,8 +17,6 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2");
 
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");

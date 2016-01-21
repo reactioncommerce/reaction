@@ -1,6 +1,9 @@
 
 <template name="tagNav">
-  <div class="rui tagnav">
+  <div class="rui tagnav vertical">
+    <div class="navbar-header">
+
+    </div>
     <div class="navbar-items">
       {{#each tag in tags}}
         <div class="navbar-item {{navbarSelectedClassName tag}}" data-id={{tag._id}}>
@@ -12,26 +15,28 @@
         </div>
       {{/each}}
     </div>
-    {{#if editable}}
-      {{#if isEditing}}
-        {{> button
-          className="edit-tag-button"
-          icon="tag"
-          onClick=onEditTags
-          status="success"
-          title="Done"
-          type="button"
-        }}
-      {{else}}
-        {{> button
-          className="edit-tag-button"
-          icon="tag"
-          onClick=onEditTags
-          status="default"
-          title="Edit Tags"
-          type="button"
-        }}
+    <div class="navbar-footer">
+      {{#if editable}}
+        {{#if isEditing}}
+          {{> button
+            className="edit-tag-button"
+            icon="tag"
+            onClick=onEditTags
+            status="success"
+            title="Done"
+            type="button"
+          }}
+        {{else}}
+          {{> button
+            className="edit-tag-button"
+            icon="tag"
+            onClick=onEditTags
+            status="default"
+            title="Edit Tags"
+            type="button"
+          }}
+        {{/if}}
       {{/if}}
-      {{/if}}
+    </div>
   </div>
 </template>

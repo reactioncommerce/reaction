@@ -52,19 +52,25 @@
 .rui.tagnav .rui.tag.edit.create {
   @color: lighten(@btn-success-bg, 10%);
   @color: @brand-secondary-color;
-  @color: #238CC3;
+  // @color: #238CC3;
+  // @color: @white;
 
   input {
-    background-color: @color;
-    border-color: @color;
+    // background-color: @color;
+    // border-color: @color;
+    background-color: @white;
+    color: @text-color;
+    .placeholder(@color);
   }
 
   button {
-    background-color: @color;
-    border-color: @color;
+    // background-color: @color;
+    // border-color: @color;
+    background-color: @white;
+    color: @color;
   }
 }
 
 .rui.tagnav .rui.tag.edit.create input {
-  .placeholder(@white);
+  .placeholder(@brand-secondary-color);
 }
