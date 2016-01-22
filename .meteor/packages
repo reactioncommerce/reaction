@@ -48,6 +48,7 @@ accounts-oauth
 reactioncommerce:core
 reactioncommerce:core-theme
 reactioncommerce:reaction-ui
+reactioncommerce:reaction-ui-navbar
 reactioncommerce:reaction-ui-tagnav
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-inventory

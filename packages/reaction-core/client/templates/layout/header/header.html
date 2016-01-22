@@ -1,23 +1,13 @@
 <template name="layoutHeader">
 <div class="container-fluid">
   <div class="nav" role="navigation">
-    <div class="row navbar-shop">
-      {{!--<div class="navbar-menu">{{> menuButton}}</div>--}}
-      <div class="navbar-brand">{{> headerBrand}}</div>
-      <div class="navbar-cart">{{> cartIcon}}</div>
-      <div class="cart-alert">{{> cartPanel}}</div>
-      <div class="navbar-accounts">{{> accounts tpl="loginDropdown"}}</div>
-      <div class="navbar-languages hidden-xs">{{> i18nChooser}}</div>
-      {{#each reactionApps provides="menu"}}
-        {{> Template.dynamic template=template}}
-      {{/each}}
+
+    <div class="row">
+      {{> CoreNavigationBar coreNavProps}}
     </div>
 
     <div class="row">
-      {{> tagNav
-        editable=isEditable
-        tags=tags
-      }}
+      {{> tagNav tagNavProps}}
     </div>
   </div>
 </div>

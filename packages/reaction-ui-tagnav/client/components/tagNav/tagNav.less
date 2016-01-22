@@ -1,7 +1,8 @@
 // Import Variables
-@import "{reactioncommerce:core-theme}/lib/bootstrap/less/bootstrap.less";
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
 @import "{reactioncommerce:core-theme}/default/variables.less";
 @import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
 
 // Base Tag Navigation
 // -- Horizontal Layout
@@ -21,6 +22,9 @@
 .rui.tagnav.vertical {
   .display(flex);
   .flex-direction(column);
+}
+
+.rui.tagnav.fixed {
   position: fixed;
   top: 0;
   left: 0;
@@ -29,6 +33,14 @@
   -webkit-overflow-scrolling: touch;
   z-index: @zindex-navbar;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.rui.tagnav.fixed.open {
+  .display(flex);
+}
+
+.rui.tagnav.fixed.closed {
+  display: none;
 }
 
 // Tag navigation tag list
@@ -62,6 +74,14 @@
 // -- Vertical Layout
 .rui.tagnav.vertical .edit-tag-button {
   height: auto;
+}
+
+.rui.tagnav .navbar-header {
+  display: none;
+
+  @media screen and (max-width: @screen-sm-max) {
+    .display(flex);
+  }
 }
 
 .rui.tagnav.vertical .navbar-header {
@@ -120,6 +140,25 @@
   background-color: @btn-success-bg;
 }
 
+.rui.tagnav.vertical .navbar-item.has-dropdown {}
+
+.rui.tagnav.vertical .navbar-item.has-dropdown > .rui.tag.link {
+  position: relative;
+}
+
+.rui.tagnav.vertical .navbar-item.has-dropdown > .rui.tag.link:after {
+  content: "\f107";
+  font-family: "fontawesome";
+  position: absolute;
+  top: 0;
+  right: 10px;
+  height: 100%;
+  .display(flex);
+  .align-items(center);
+  font-size: 16px;
+}
+
+
 .rui.tagnav .navbar-item > .rui.tag.link {
   .display(flex);
   .align-items(center);
@@ -128,6 +167,11 @@
   height: 100%;
   padding: 0 10px;
   text-transform: uppercase;
+  border-radius: 0;
+}
+
+.rui.tagnav .navbar-item:hover > .rui.tag.link {
+  background-color: @black10;
 }
 
 .rui.tagnav.vertical .navbar-item > .rui.tag.link {

@@ -2,28 +2,49 @@
 const Sortable = ReactionUI.Lib.Sortable;
 const TagHelpers = ReactionUI.TagNav.Helpers;
 
+const NavbarStates = {
+  Orientation: "stateNavbarOrientation",
+  Position: "stateNavbarPosition",
+  Anchor: "stateNavbarAnchor",
+  Visible: "stateNavbarVisible"
+};
+
+const NavbarOrientation = {
+  Vertical: "vertical",
+  Horizontal: "horizontal"
+};
+
+const NavbarVisibility = {
+  Shown: "shown",
+  Hidden: "hidden"
+};
+
+const NavbarPosition = {
+  Static: "static",
+  Fixed: "fixed"
+};
+
+const NavbarAnchor = {
+  Top: "top",
+  Right: "right",
+  Bottom: "bottom",
+  Left: "left",
+  None: "inline"
+};
+
 const TagNavHelpers = {
   onTagCreate(tagName, parentTag) {
-    // console.log("just about to create tag", tagName, parentTag);
     TagHelpers.createTag(tagName, undefined, parentTag);
   },
   onTagRemove(tag, parentTag) {
-    // console.log("(X) just about to remove tag", tag, parentTag);
-
     TagHelpers.removeTag(tag, parentTag);
   },
-
   onTagSort(tagIds, parentTag) {
-    // console.log("(-) just about to sort tags", tagIds, parentTag);
-
     TagHelpers.sortTags(tagIds, parentTag);
   },
-
   onTagDragAdd(movedTagId, toListId, toIndex, ofList) {
-    // console.log("(+) just about to add tag", movedTagId, toListId, toIndex, ofList);
     TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
   },
-
   onTagUpdate(tagId, tagName) {
     TagHelpers.updateTag(tagId, tagName);
   }
@@ -34,13 +55,25 @@ Template.tagNav.onCreated(function () {
   this.state.setDefault({
     attachedBodyListener: false,
     isEditing: false,
-    selectedTag: null
+    selectedTag: null,
+    [NavbarStates.Visible]: false
   });
 
   this.moveItem = (array, fromIndex, toIndex) => {
     array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
     return array;
   };
+
+  this.toggleNavbarVisibility = () => {
+    const isVisible = this.state.get(NavbarStates.Visible);
+    this.state.set(NavbarStates.Visible, !isVisible);
+  };
+
+  this.data.onToggleMenu(this.toggleNavbarVisibility);
+
+  if (this.data.name) {
+    document.body.addEventListener(`${this.data.name}_toggleMenuVisibility`, this.toggleNavbarVisibility);
+  }
 
   this.attachBodyListener = () => {
     document.body.addEventListener("mouseover", this.closeDropdown);
@@ -54,9 +87,6 @@ Template.tagNav.onCreated(function () {
 
   this.closeDropdown = (event) => {
     if ($(event.target).closest(".navbar-item").length === 0) {
-
-      console.log(event.target, $(event.target).parents(".navbar-item"));
-
       this.closeDropdownTimeout = setTimeout(() => {
         this.state.set("selectedTag", null);
         this.detachhBodyListener();
@@ -67,11 +97,28 @@ Template.tagNav.onCreated(function () {
       }
     }
   };
+
+  this.state.set(NavbarStates.Visibility, NavbarVisibility.Hidden);
+
+
+  this.onWindowResize = () => {
+    if (window.matchMedia("(max-width: 991px)").matches) {
+      this.state.set(NavbarStates.Orientation, NavbarOrientation.Vertical);
+      this.state.set(NavbarStates.Position, NavbarPosition.Fixed);
+      this.state.set(NavbarStates.Anchor, NavbarAnchor.Left);
+    } else {
+      this.state.set(NavbarStates.Orientation, NavbarOrientation.Horizontal);
+      this.state.set(NavbarStates.Position, NavbarPosition.Static);
+      this.state.set(NavbarStates.Anchor, NavbarAnchor.None);
+    }
+  };
 });
 
 Template.tagNav.onRendered(() => {
   const instance = Template.instance();
   const list = instance.$(".navbar-items")[0];
+
+  $(window).on("resize", instance.onWindowResize).trigger("resize");
 
   // return
   instance._sortable = Sortable.create(list, {
@@ -125,7 +172,34 @@ Template.tagNav.onRendered(() => {
   });
 });
 
+Template.tagNav.onDestroyed(function () {
+  // $(window).off("resize", this.onWindowResize);
+});
+
+
 Template.tagNav.helpers({
+
+  navbarOrientation() {
+    return Template.instance().state.get(NavbarStates.Orientation);
+  },
+
+  navbarPosition() {
+    return Template.instance().state.get(NavbarStates.Position);
+  },
+
+  navbarAnchor() {
+    return Template.instance().state.get(NavbarStates.Anchor);
+  },
+
+  navbarVisibility() {
+    const isVisible = Template.instance().state.equals(NavbarStates.Visible, true);
+
+    if (isVisible) {
+      return "open";
+    }
+    return "closed";
+  },
+
   navbarSelectedClassName(tag) {
     const selectedTag = Template.instance().state.get("selectedTag");
 
@@ -135,6 +209,11 @@ Template.tagNav.helpers({
       }
     }
     return "";
+  },
+  hasDropdownClassName(tag) {
+    if (_.isArray(tag.relatedTagIds)) {
+      return "has-dropdown";
+    }
   },
   isEditing() {
     return Template.instance().state.equals("isEditing", true);
@@ -154,6 +233,15 @@ Template.tagNav.helpers({
       }
     };
   },
+
+  handleMenuClose() {
+    const instance = Template.instance();
+
+    return () => {
+      instance.toggleNavbarVisibility();
+    };
+  },
+
   tagTreeProps(parentTag) {
     const instance = Template.instance();
 
@@ -223,10 +311,7 @@ Template.tagNav.events({
       if (foundTag) {
         if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
           event.preventDefault();
-
           instance.state.set("selectedTag", foundTag);
-
-          console.log("show the dropdown instead of navigating to the link");
         }
       }
     }

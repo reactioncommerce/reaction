@@ -1,12 +1,16 @@
 
 <template name="tagNav">
-  <div class="rui tagnav vertical">
+  <div class="rui tagnav {{navbarOrientation}} {{navbarPosition}} {{navbarAnchor}} {{navbarVisibility}}">
     <div class="navbar-header">
-
+      {{> button
+        icon="times"
+        status="default"
+        onClick=handleMenuClose
+      }}
     </div>
     <div class="navbar-items">
       {{#each tag in tags}}
-        <div class="navbar-item {{navbarSelectedClassName tag}}" data-id={{tag._id}}>
+        <div class="navbar-item {{navbarSelectedClassName tag}} {{hasDropdownClassName tag}}" data-id={{tag._id}}>
           {{> tagItem (tagProps tag)}}
 
           <div class="dropdown" data-tag={{tag._id}}>

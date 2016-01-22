@@ -17,11 +17,17 @@ Template.layoutHeader.helpers({
     return ReactionUI.TagNav.Components.TagNav;
   },
 
-  isEditable() {
-    return ReactionCore.hasAdminAccess();
+  coreNavProps() {
+    const instance = Template.instance();
+    return {
+      onMenuButtonClick() {
+        instance.toggleMenuCallback();
+      }
+    };
   },
 
-  tags() {
+  tagNavProps() {
+    const instance = Template.instance();
     let tags = [];
 
     tags = ReactionCore.Collections.Tags.find({
@@ -32,6 +38,14 @@ Template.layoutHeader.helpers({
       }
     }).fetch();
 
-    return tags;
+    return {
+      name: "coreHeaderNavigation",
+      isEditable: ReactionCore.hasAdminAccess(),
+      tags: tags,
+      onToggleMenu(callback) {
+        // Register the callback
+        instance.toggleMenuCallback = callback;
+      }
+    };
   }
 });
