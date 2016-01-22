@@ -40,7 +40,7 @@ Template.layoutHeader.helpers({
 
     return {
       name: "coreHeaderNavigation",
-      isEditable: ReactionCore.hasAdminAccess(),
+      editable: ReactionCore.hasAdminAccess(),
       tags: tags,
       onToggleMenu(callback) {
         // Register the callback
