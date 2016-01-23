@@ -231,7 +231,7 @@ Router.map(function () {
     path: "product/tag/:_id",
     template: "products",
     subscriptions: function () {
-      this.tagSubsription = this.subscribe("Products", Session.get("productScrollLimit"));
+      this.tagSubscription = this.subscribe("Products", Session.get("productScrollLimit"));
       return this.subscribe("Tags");
     },
     data: function () {
