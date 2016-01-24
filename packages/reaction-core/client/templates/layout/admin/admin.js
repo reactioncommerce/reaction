@@ -96,7 +96,7 @@ Template.coreAdminLayout.events({
   },
 
   /**
-   * Submit sign up form
+   * Create a new object with 'back' button working
    * @param  {Event} event - jQuery Event
    * @param  {Template} template - Blaze Template
    * @return {void}
@@ -105,11 +105,9 @@ Template.coreAdminLayout.events({
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
-
       Meteor.call("products/createProduct", (error, productId) => {
         let currentTag;
         let currentTagId;
-
         if (error) {
           throw new Meteor.Error("createProduct error", error);
         } else if (productId) {
@@ -120,6 +118,18 @@ Template.coreAdminLayout.events({
           }
           Router.go("product", {
             _id: productId
+          });
+        }
+      });
+    } else if (this.route === "createPage") {
+      event.preventDefault();
+      event.stopPropagation();
+      Meteor.call("pages/createPage", (error, pageId) => {
+        if (error) {
+          throw new Meteor.Error("createPage error", error);
+        } else if (pageId) {
+          Router.go("page", {
+            _id: pageId
           });
         }
       });
