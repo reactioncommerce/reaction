@@ -47,6 +47,22 @@ const TagNavHelpers = {
   },
   onTagUpdate(tagId, tagName) {
     TagHelpers.updateTag(tagId, tagName);
+  },
+  isMobile() {
+    return window.matchMedia("(max-width: 991px)").matches;
+  },
+  tagById(tagId, tags) {
+    return _.find(tags, (tag) => tag._id === tagId);
+  },
+  hasSubTags(tagId, tags) {
+    const foundTag = this.tagById(tagId, tags);
+
+    if (foundTag) {
+      if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
@@ -301,37 +317,46 @@ Template.tagNav.helpers({
 
 Template.tagNav.events({
   "click .navbar-item > .rui.tag.link"(event, instance) {
-    if (window.matchMedia("(max-width: 991px)").matches) {
+    if (TagNavHelpers.isMobile()) {
       const tagId = event.target.dataset.id;
       const tags = instance.data.tags;
-      const foundTag = _.find(tags, (tag) => {
-        return tag._id === tagId;
-      });
+      const selectedTag = instance.state.get("selectedTag");
 
-      if (foundTag) {
-        if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
-          event.preventDefault();
-          instance.state.set("selectedTag", foundTag);
-        }
+      if (selectedTag && selectedTag._id === tagId) {
+        return instance.state.set("selectedTag", null);
+      }
+
+      if (TagNavHelpers.hasSubTags(tagId, tags)) {
+        event.preventDefault();
+        instance.state.set("selectedTag", TagNavHelpers.tagById(tagId, tags));
       }
     }
   },
 
   "mouseover .navbar-item, focus .navbar-item"(event, instance) {
     const tagId = event.currentTarget.dataset.id;
+    // const tagId = event.target.dataset.id;
+    const tags = instance.data.tags;
 
-    if (window.matchMedia("(max-width: 991px)").matches) {
+    if (TagNavHelpers.isMobile()) {
       return;
     }
 
+    // While in edit mode, don't trigger the hover hide/show menu
     if (instance.state.equals("isEditing", false)) {
-      // Attach an event listener to the document body
+      // User mode
+      // Don't show dropdown if there are no subtags
+      if (TagNavHelpers.hasSubTags(tagId, tags) === false) {
+        instance.state.set("selectedTag", null);
+        return;
+      }
+
+      // Otherwise, show the menu
+      // And Attach an event listener to the document body
       // This will check to see if the dropdown should be closed if the user
       // leaves the tag nav bar
       instance.attachBodyListener();
-
-      const foundTag = _.find(instance.data.tags, (tag) => tag._id === tagId);
-      instance.state.set("selectedTag", foundTag);
+      instance.state.set("selectedTag", TagNavHelpers.tagById(tagId, tags));
     }
   }
 });
