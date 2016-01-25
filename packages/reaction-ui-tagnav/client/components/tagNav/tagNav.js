@@ -298,18 +298,13 @@ Template.tagNav.helpers({
       }
     };
   },
-  tagListProps(tags) {
+  blankTagProps() {
     const instance = Template.instance();
 
     return {
-      tags,
       editable: instance.state.equals("isEditing", true),
-      selectable: true,
-      selectedTag: instance.state.get("selectedTag"),
-      onTagSelect(tag) {
-        instance.state.set("selectedTag", tag);
-      },
-      ...TagNavHelpers
+      blank: true,
+      onTagCreate: TagNavHelpers.onTagCreate
     };
   }
 });

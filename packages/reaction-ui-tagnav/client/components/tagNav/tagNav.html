@@ -18,6 +18,11 @@
           </div>
         </div>
       {{/each}}
+      {{#if isEditing}}
+        <div class="navbar-item create">
+          {{> tagItem blankTagProps}}
+        </div>
+      {{/if}}
     </div>
     <div class="navbar-footer">
       {{#if editable}}
