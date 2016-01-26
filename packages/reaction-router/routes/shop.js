@@ -5,8 +5,8 @@
 // todo: set up from Registry Layout
 //
 Router = FlowRouter;
-
 ReactionRouter = FlowRouter.group({});
+
 const layout = {
   template: "products",
   layoutHeader: "layoutHeader",
@@ -14,7 +14,8 @@ const layout = {
   loadingTemplate: "loading",
   notFoundTemplate: "notFound",
   unauthorized: "unauthorized",
-  printLayout: "printLayout"
+  printLayout: "printLayout",
+  dashboardControls: "dashboardControls"
 };
 
 FlowRouter.notFound = {
@@ -25,12 +26,12 @@ FlowRouter.notFound = {
   }
 };
 
-
 //
 // index / home route
 //
 
 ReactionRouter.route("/", {
+  name: "index",
   subscriptions: function () {
     Meteor.subscribe("Products", Session.get("productScrollLimit"));
   },

@@ -15,27 +15,18 @@ const dashboardLayout = {
 // define dashboard group
 //
 
-dashboardRoutes = FlowRouter.group({
-  prefix: "/dashboard",
-  name: "dashboard"
-    // triggersEnter: [function () {
-    //   $("body").addClass("admin");
-    // }],
-    // triggersExit: [function () {
-    //   $("body").removeClass("admin");
-    // }]
+dashboard = FlowRouter.group({
+  prefix: "/dashboard"
 });
 
 //
 // dashboard home
 //
 
-ReactionRouter.route("/dashboard", {
+dashboard.route("/dashboard", {
   name: "dashboard",
   action: function () {
-    Session.set("dashboard", true);
     $(document).trigger("closeAllPopovers");
-    ReactionCore.setActionView();
     BlazeLayout.render("coreAdminLayout", dashboardLayout);
   }
 });
@@ -43,16 +34,12 @@ ReactionRouter.route("/dashboard", {
 //
 // dashboard orders
 //
-ReactionRouter.route("/dashboard/orders", {
+dashboard.route("/orders", {
   name: "dashboard/orders",
   subscriptions: function () {
     Meteor.subscribe("Orders");
   },
   action: function (params) {
-    Session.set("dashboard", true);
-    ReactionCore.setActionView();
-    // these templates override
-    // the default dashboardLayout
     let orderLayout =  {
       template: "orders",
       dashboardHeaderControls: "orderListFilters",
@@ -78,15 +65,13 @@ ReactionRouter.route("/dashboard/orders", {
 //
 // dashboard package settings
 //
-ReactionRouter.route("/dashboard/:dashboard", {
+dashboard.route("/:dashboard", {
   action: function (params) {
-    Session.set("dashboard", true);
     let packageDetailLayout =  {
       template: params.dashboard
     };
 
     let layout =  Object.assign({}, dashboardLayout, packageDetailLayout);
-    ReactionCore.setActionView();
     BlazeLayout.render("coreAdminLayout", layout);
   }
 });

@@ -6,9 +6,7 @@
 </template>
 
 <template name="accountsDashboard">
-
-  {{> contentFor region="dashboardControls" template="accountsDashboardControls"}}
-
+  {{> Template.dynamic template=dashboardControls}}
   <div class="container-fluid-sm">
 
     <div class="panel panel-default">

@@ -161,8 +161,6 @@
     }], // http://eslint.org/docs/rules/max-len
     "valid-jsdoc": 2, // http://eslint.org/docs/rules/valid-jsdoc
     "quote-props": [2, "consistent-as-needed"], // http://eslint.org/docs/rules/quote-props
-    "no-console": 2, // http://eslint.org/docs/rules/no-console
-
     /**
      * Style
      */

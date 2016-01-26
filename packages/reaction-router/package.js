@@ -16,10 +16,10 @@ Package.onUse(function (api) {
   api.imply("kadira:flow-router");
   api.imply("kadira:blaze-layout");
 
-  api.addFiles("routes/init.js");
-  api.addFiles("client/helpers.js", "client");
   api.addFiles("routes/shop.js");
   api.addFiles("routes/dashboard.js");
+  api.addFiles("client/helpers.js", "client");
+  api.addFiles("routes/main.js");
 
   api.export("ReactionRouter");
   api.export("Router");
