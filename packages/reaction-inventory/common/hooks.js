@@ -22,6 +22,12 @@ ReactionCore.Collections.Cart.after.update(function (userId, cart, fieldNames, m
     ReactionCore.Log.info("after variant increment, call inventory/addReserve");
     Meteor.call("inventory/addReserve", cart.items);
   }
+});
+/**
+ * Before cart update. When Item is removed from Cart, release the inventory reservation.
+ */
+
+ReactionCore.Collections.Cart.before.update(function (userId, cart, fieldNames, modifier) {
   // removing  cart items, clear inventory reserve
   if (modifier.$pull) {
     if (modifier.$pull.items) {
