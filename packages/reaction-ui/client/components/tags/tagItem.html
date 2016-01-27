@@ -36,7 +36,7 @@
 <template name="tagEditable">
   <div class="rui tag edit draggable {{className}}" data-id={{tag._id}}>
     <form>
-      {{> button icon="bars" className="js-drag-handle"}}
+      {{> button icon="bars" className="js-drag-handle" status="default"}}
       {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}
       <button class="hidden" type="submit">Update Tag</button>
       {{> button icon="times-circle" status="danger" onClick=handleTagRemove}}

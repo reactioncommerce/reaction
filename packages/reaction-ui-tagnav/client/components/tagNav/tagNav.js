@@ -136,11 +136,10 @@ Template.tagNav.onRendered(() => {
 
   $(window).on("resize", instance.onWindowResize).trigger("resize");
 
-  // return
   instance._sortable = Sortable.create(list, {
     group: "tags",
-    handle: ".js-drag-handle",
-    // draggable: ".rui.tag.edit.draggable",
+    handle: ".js-tagNav-item",
+    // draggable: ".navbar-item",
     // filter: ".rui.tag.edit.create",
     onSort(event) {
       let tagIds = instance.data.tags.map(item => {
@@ -152,9 +151,7 @@ Template.tagNav.onRendered(() => {
       let newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
 
       if (newTagsOrder) {
-        if (instance.data.onTagSort) {
-          instance.data.onTagSort(newTagsOrder, instance.data.parentTag);
-        }
+        TagNavHelpers.onTagSort(newTagsOrder, instance.data.parentTag);
       }
     },
 
@@ -168,22 +165,17 @@ Template.tagNav.onRendered(() => {
         }
       });
 
-      if (instance.data.onTagDragAdd) {
-        instance.data.onTagDragAdd(movedTagId, toListId, event.newIndex, tagIds);
-      }
+      TagNavHelpers.onTagDragAdd(movedTagId, toListId, event.newIndex, tagIds);
     },
 
     // Tag removed from list becuase it was dragged to a different list
     onRemove(event) {
       const movedTagId = event.item.dataset.id;
+      let foundTag = _.find(instance.data.tags, (tag) => {
+        return tag._id === movedTagId;
+      });
 
-      if (instance.data.onTagRemove) {
-        let foundTag = _.find(instance.data.tags, (tag) => {
-          return tag._id === movedTagId;
-        });
-
-        instance.data.onTagRemove(foundTag, instance.data.parentTag);
-      }
+      TagNavHelpers.onTagRemove(foundTag, instance.data.parentTag);
     }
   });
 });
@@ -280,6 +272,7 @@ Template.tagNav.helpers({
       editable: instance.state.equals("isEditing", true),
       selectable: true,
       isSelected,
+      className: "js-tagNav-item",
       onTagSelect(selectedTag) {
         instance.state.set("selectedTag", selectedTag);
       },

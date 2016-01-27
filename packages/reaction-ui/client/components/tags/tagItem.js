@@ -1,4 +1,5 @@
 "use strict";
+const classnames = ReactionUI.Lib.classnames;
 
 Template.tagItem.helpers({
   tagBlankProps() {
@@ -12,6 +13,7 @@ Template.tagItem.helpers({
     const instance = Template.instance();
     return {
       tag,
+      className: instance.data.className,
       isSelected: instance.data.isSelected,
       selectable: instance.data.selectable,
       onTagRemove: instance.data.onTagRemove,
@@ -60,9 +62,10 @@ Template.tagEditable.onRendered(() => {
 Template.tagEditable.helpers({
   className() {
     const instance = Template.instance();
-    if (instance.data.isSelected) {
-      return "selected";
-    }
+
+    return classnames(instance.data.className, {
+      selected: instance.data.classes
+    });
   },
 
   handleTagSelect() {

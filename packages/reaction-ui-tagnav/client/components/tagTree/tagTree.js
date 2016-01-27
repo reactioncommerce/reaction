@@ -9,7 +9,7 @@ Template.tagTree.onRendered(() => {
   instance._sortable = Sortable.create(list, {
     group: "tagGroup",
     handle: ".js-drag-handle",
-    draggable: ".rui.tagnav.group",
+    draggable: ".rui.grouptag",
     onSort(event) {
       let tagIds = instance.data.subTagGroups.map(item => {
         if (item) {

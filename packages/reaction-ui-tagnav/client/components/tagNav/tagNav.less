@@ -124,7 +124,10 @@
 // -- Vertical Layout
 .rui.tagnav.vertical .navbar-items > .navbar-item {
   display: block;
-  margin: 0 0 10px 0;
+}
+
+.rui.tagnav .navbar-footer {
+  height: 100%;
 }
 
 .rui.tagnav.vertical .navbar-footer {
@@ -183,16 +186,22 @@
 .rui.tagnav.vertical .navbar-item > .rui.tag.link {
   display: block;
   height: auto;
-  padding: 5px 20px;
+  padding: 10px 20px;
 }
 
-
 .rui.tagnav .navbar-item > .rui.tag.edit {
+  .display(flex);
+  .align-items(center);
   .flex(0 0 auto);
   width: auto;
   min-width: 150px;
   max-width: 150px;
+  height: 100%;
   padding: 0 5px;
+}
+
+.rui.tagnav .navbar-item > .rui.tag.edit form {
+  height: 26px;
 }
 
 .rui.tagnav.vertical .navbar-item > .rui.tag.edit {
