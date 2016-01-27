@@ -1,0 +1,3 @@
+[submodule "packages/meteor-collection2"]
+	path = packages/meteor-collection2
+	url = https://github.com/newsiberian/meteor-collection2.git
