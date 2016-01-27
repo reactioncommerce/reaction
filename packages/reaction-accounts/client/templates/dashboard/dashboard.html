@@ -1,8 +1,9 @@
-
-
 <template name="accountsDashboardControls">
-  <button type="button" class="btn btn-default" data-event-action="addShopMember">
-    <i class="fa fa-plus"></i> Add Member
+  <button type="button" data-event-action="addShopMember" title="{{i18n 'accounts.addMember'}}">
+      <div class="contents">
+          <div class="icon"><i class="fa fa-plus"></i></div>
+          <div class="icon-text" data-i18n="accounts.addMember">Add Member</div>
+      </div>
   </button>
 </template>
 
@@ -14,7 +15,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Shop Members</h3>
+        <h3 class="panel-title" data-i18n="accounts.shopMembers">Shop Members</h3>
       </div>
 
       <ul class="list-group">
@@ -28,12 +29,10 @@
       </ul>
     </div>
 
-
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Guests</h3>
+        <h3 class="panel-title" data-i18n="accounts.guests">Guests</h3>
       </div>
-
       <ul class="list-group">
         {{#each members}}
           {{#if isShopGuest}}
@@ -44,7 +43,6 @@
         {{/each}}
       </ul>
     </div>
-
 
   </div>
 </template>

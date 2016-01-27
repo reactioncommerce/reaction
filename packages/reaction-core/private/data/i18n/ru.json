@@ -6,6 +6,51 @@
       "languages": {
         "select": "Выбрать язык"
       },
+      "admin": {
+        "shortcuts": {
+          "dashboard": "Панель управления",
+          "orders": "Заказы",
+          "addProduct": "Создать продукт",
+          "accounts": "Пользователи"
+        },
+        "dashboard": {
+          "coreLabel": "Ядро",
+          "coreDescription": "Ядро Reaction Commerce",
+          "ordersLabel": "Заказы",
+          "ordersDescription": "Управление заказами",
+          "importLabel": "Импорт",
+          "importDescription": "Поддержка импорта и миграций",
+          "accountsLabel": "Пользователи",
+          "accountsDescription": "Управление правами пользователей",
+          "socialLabel": "Социальные сети",
+          "socialDescription": "Интеграция Reaction Commerce с соц. сетями",
+          "shippingLabel": "Доставка",
+          "shippingDescription": "Фиксированная ставка для расчет доставки",
+          "inventoryLabel": "Inventory",
+          "inventoryDescription": "Basic Inventory Management",
+          "analyticsLabel": "Аналитика",
+          "analyticsDescription": "Отслеживание событий и аналитика для Reaction Commerce",
+          "paypalLabel": "PayPal",
+          "paypalDescription": "PayPal платежи для Reaction Commerce",
+          "paymentLabel": "Generic Payment",
+          "paymentDescription": "Generic Payment Method"
+        },
+        "settings": {
+          "account": "Настройки входа",
+          "shop": "Настройки магазина",
+          "social": "Настройки соц. сетей",
+          "shipping": "Настройки доставки",
+          "inventory": "Настройки Inventory",
+          "analytics": "Настройки аналитики",
+          "paypal": "Настройки PayPal",
+          "payment": "Настройки Generic Payment"
+        }
+      },
+      "accounts": {
+        "addMember": "Пригласить пользователя",
+        "shopMembers": "Пользователи",
+        "guests": "Гости"
+      },
       "app": {
         "save": "Сохранить",
         "saveAndContinue": "Сохранить и продолжить",
