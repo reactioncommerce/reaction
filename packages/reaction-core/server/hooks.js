@@ -2,6 +2,7 @@
  * Callback hooks to alter the behavior of common operations or trigger other things.
  * @namespace ReactionCore.Hooks.Events
  */
+ReactionCore.Hooks = {};
 ReactionCore.Hooks.Events = {};
 
 
