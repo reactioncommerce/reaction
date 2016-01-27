@@ -134,7 +134,7 @@ rate-limit@1.0.0
 reactioncommerce:core@0.11.0
 reactioncommerce:core-theme@2.0.1
 reactioncommerce:default-theme@1.0.3
-reactioncommerce:launchdock-connect@0.1.4
+reactioncommerce:launchdock-connect@0.1.5
 reactioncommerce:reaction-accounts@1.6.2
 reactioncommerce:reaction-analytics@1.2.1
 reactioncommerce:reaction-analytics-libs@1.1.0
