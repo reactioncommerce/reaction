@@ -1,3 +1,13 @@
 [submodule "packages/meteor-collection2"]
 	path = packages/meteor-collection2
 	url = https://github.com/newsiberian/meteor-collection2.git
+
+[submodule "packages/meteor-collection2-core"]
+	path = packages/meteor-collection2-core
+	url = https://github.com/newsiberian/meteor-collection2-core.git
+	branch = flattened
+
+[submodule "packages/reaction-factories"]
+	path = packages/reaction-factories
+	url = https://github.com/newsiberian/reaction-factories.git
+	branch = flattened
