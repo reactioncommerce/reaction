@@ -12,19 +12,19 @@ Meteor.methods({
   "inventory/register": function (product) {
     let type;
     switch (product.type) {
-      case "variant":
-        check(product, ReactionCore.Schemas.ProductVariant);
-        type = "variant";
-        break;
-      default:
-        check(product, ReactionCore.Schemas.Product);
-        type = "simple";
+    case "variant":
+      check(product, ReactionCore.Schemas.ProductVariant);
+      type = "variant";
+      break;
+    default:
+      check(product, ReactionCore.Schemas.Product);
+      type = "simple";
     }
     // user needs createProduct permission to register new inventory
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+    // this.unblock();
 
     let totalNewInventory = 0;
     const productId = type === "variant" ? product.ancestors[0] : product._id;
@@ -50,9 +50,11 @@ Meteor.methods({
             } new inventory items for ${variant._id}`
         );
 
-        let items = [];
+        const batch = ReactionCore.Collections.Inventory.
+        _collection.rawCollection().initializeUnorderedBulkOp();
         while (i <= newQty) {
-          items.push({
+          batch.insert({
+            _id: ReactionCore.Collections.Inventory._makeNewID(),
             productId: productId,
             variantId: variant._id,
             shopId: product.shopId,
@@ -60,19 +62,22 @@ Meteor.methods({
             updatedAt: new Date,
             workflow: { // we add this line because `batchInsert` doesn't know
               status: "new" // about SimpleSchema, so `defaultValue` will not
-            } // work with it
+            }
           });
           i++;
         }
 
-        let inventoryItem = ReactionCore.Collections.Inventory.batchInsert(items);
+        // took from: http://guide.meteor.com/collections.html#bulk-data-changes
+        let execute = Meteor.wrapAsync(batch.execute, batch);
+        let inventoryItem = execute();
+        let inserted = inventoryItem.nInserted;
 
-        if (!inventoryItem) { // or maybe `inventory.length === 0`?
+        if (!inserted) { // or maybe `inventory.length === 0`?
           // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
           return totalNewInventory;
         }
-        ReactionInventory.Log.debug(`registered ${inventoryItem}`);
-        totalNewInventory += inventoryItem.length;
+        ReactionInventory.Log.debug(`registered ${inserted}`);
+        totalNewInventory += inserted;
       }
     }
     // returns the total amount of new inventory created
@@ -80,32 +85,33 @@ Meteor.methods({
   },
   /**
    * inventory/adjust
-   * @summary adjust existing inventory when changes are made
-   * we get the inventoryQuantity for each product variant,
-   * and compare the qty to the qty in the inventory records
-   * we will add inventoryItems as needed to have the same amount as the inventoryQuantity
-   * but when deleting, we'll refuse to delete anything not workflow.status = "new"
+   * @summary adjust existing inventory when changes are made we get the
+   * inventoryQuantity for each product variant, and compare the qty to the qty
+   * in the inventory records we will add inventoryItems as needed to have the
+   * same amount as the inventoryQuantity but when deleting, we'll refuse to
+   * delete anything not workflow.status = "new"
    *
    * @param  {Object} product - ReactionCore.Schemas.Product object
    * @return {[undefined]} returns undefined
    */
-  "inventory/adjust": function (product) {
+  "inventory/adjust": function (product) { // TODO: this should be variant
     let type;
+    let results;
     // adds or updates inventory collection with this product
     switch (product.type) {
-      case "variant":
-        check(product, ReactionCore.Schemas.ProductVariant);
-        type = "variant";
-        break;
-      default:
-        check(product, ReactionCore.Schemas.Product);
-        type = "simple";
+    case "variant":
+      check(product, ReactionCore.Schemas.ProductVariant);
+      type = "variant";
+      break;
+    default:
+      check(product, ReactionCore.Schemas.Product);
+      type = "simple";
     }
     // user needs createProduct permission to adjust inventory
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+    // this.unblock();
 
     // Quantity and variants of this product's variant inventory
     if (type === "variant") {
@@ -121,19 +127,14 @@ Meteor.methods({
       const itemCount = inventory.count();
 
       if (itemCount !== variant.qty) {
-        ReactionInventory.Log.info(
-          `adjust variant ${variant._id} from ${itemCount} to ${variant.qty}`
-        );
-
         if (itemCount < variant.qty) {
           // we need to register some new variants to inventory
-          return Meteor.call("inventory/register", product);
+          results = itemCount + Meteor.call("inventory/register", product);
         } else if (itemCount > variant.qty) {
           // determine how many records to delete
           const removeQty = itemCount - variant.qty;
           // we're only going to delete records that are new
           const removeInventory = ReactionCore.Collections.Inventory.find({
-            "productId": product._id,
             "variantId": variant._id,
             "workflow.status": "new"
           }, {
@@ -143,12 +144,16 @@ Meteor.methods({
             limit: removeQty
           }).fetch();
 
+          results = itemCount;
           // delete latest inventory "status:new" records
           for (let inventoryItem of removeInventory) {
-            Meteor.call("inventory/remove", inventoryItem);
+            results -= Meteor.call("inventory/remove", inventoryItem);
             // we could add handling for the case when aren't enough "new" items
           }
         }
+        ReactionInventory.Log.info(
+          `adjust variant ${variant._id} from ${itemCount} to ${results}`
+        );
       }
     }
   },
@@ -164,7 +169,8 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+    // this.unblock();
+    // todo add bulkOp here
 
     ReactionInventory.Log.debug("inventory/remove", inventoryItem);
     return ReactionCore.Collections.Inventory.remove(inventoryItem);

@@ -180,7 +180,6 @@ Meteor.methods({
       }
     }
     ReactionInventory.Log.info("inventory/clearReserve", newStatus);
-    return;
   },
   /**
    * inventory/clearReserve
@@ -251,6 +250,5 @@ Meteor.methods({
     check(product, ReactionCore.Schemas.Product);
     // WIP placeholder
     ReactionInventory.Log.info("inventory/lowStock");
-    return;
   }
 });

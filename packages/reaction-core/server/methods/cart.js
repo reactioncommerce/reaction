@@ -11,7 +11,7 @@
 function quantityProcessing(product, variant, itemQty = 1) {
   // todo add min item threshold to schema
   let quantity = itemQty;
-  const MIN = variant.min || 1;
+  const MIN = variant.minOrderQuantity || 1;
   const MAX = variant.inventoryQuantity || Infinity;
 
   if (MIN > MAX) {
@@ -21,10 +21,11 @@ function quantityProcessing(product, variant, itemQty = 1) {
       }: inventoryQuantity lower then minimum order`);
   }
 
+  // TODO: think about #152 implementation here
   switch (product.type) {
   case "not-in-stock":
     break;
-  default: // type: `simple`
+  default: // type: `simple` // todo: maybe it should be "variant"
     if (quantity < MIN) {
       quantity = MIN;
     } else if (quantity > MAX) {
@@ -215,7 +216,6 @@ Meteor.methods({
   "cart/createCart": function (userId, sessionId) {
     check(userId, String);
     check(sessionId, String);
-    this.unblock();
 
     const { Log } = ReactionCore;
     const shopId = ReactionCore.getShopId();
@@ -278,25 +278,44 @@ Meteor.methods({
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
-    this.unblock();
 
     const { Log } = ReactionCore;
     const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
-      Log.warn(`Cart is not defined for user: ${ this.userId }`);
-      throw new Meteor.Error(404, "Cart not found", "Cart is not defined!");
+      Log.error(`Cart not found for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found",
+        "Cart not found for user with such id");
     }
-    const product = ReactionCore.Collections.Products.findOne(productId);
+    // With the flattened model we no longer need to work directly with the
+    // products. But product still could be necessary for a `quantityProcessing`
+    // TODO: need to understand: do we really need product inside
+    // `quantityProcessing`?
+    let product;
+    let variant;
+    ReactionCore.Collections.Products.find({ _id: { $in: [
+      productId,
+      variantId
+    ]}}).forEach(doc => {
+      if (doc.type === "simple") {
+        product = doc;
+      } else {
+        variant = doc;
+      }
+    });
+    // TODO: this lines still needed. We could uncomment them in future if
+    // decide to not completely remove product data from this method
+    // const product = ReactionCore.Collections.Products.findOne(productId);
+    // const variant = ReactionCore.Collections.Products.findOne(variantId);
     if (!product) {
       Log.warn(`Product: ${ productId } was not found in database`);
       throw new Meteor.Error(404, "Product not found",
-        "Product is not defined!");
+        "Product with such id was not found!");
     }
-    const variant = product.variants.find(function (currentVariant) {
-      if (currentVariant._id === variantId) {
-        return currentVariant;
-      }
-    });
+    if (!variant) {
+      Log.warn(`Product variant: ${ variantId } was not found in database`);
+      throw new Meteor.Error(404, "ProductVariant not found",
+        "ProductVariant with such id was not found!");
+    }
     // performs calculations admissibility of adding product to cart
     const quantity = quantityProcessing(product, variant, itemQty);
     // performs search of variant inside cart
@@ -367,22 +386,20 @@ Meteor.methods({
    * @summary removes or adjust quantity of a variant from the cart
    * @param {String} itemId - cart item _id
    * @param {Number} [quantity] - if provided will adjust increment by quantity
-   * @returns {boolean|String} returns Mongo update result
+   * @returns {Number} returns Mongo update result
    */
   "cart/removeFromCart": function (itemId, quantity) {
     check(itemId, String);
     check(quantity, Match.Optional(Number));
-
-    this.unblock();
 
     const userId = Meteor.userId();
     const cart = ReactionCore.Collections.Cart.findOne({
       userId: userId
     });
     if (!cart) {
-      ReactionCore.Log.error(`Cart was not found for user: ${ userId }`);
-      throw new Meteor.Error(404, "Cart not found.",
-        "Unable to find a cart for this user.");
+      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found",
+        "Cart not found for user with such id");
     }
 
     let cartItem;
@@ -456,16 +473,13 @@ Meteor.methods({
 
   /**
    * cart/copyCartToOrder
-   * @summary transform cart to order
-   * when a payment is processed we want to copy the cart
-   * over to an order object, and give the user a new empty
-   * cart. reusing the cart schema makes sense, but integrity of
-   * the order, we don't want to just make another cart item
+   * @summary transform cart to order when a payment is processed we want to
+   * copy the cart over to an order object, and give the user a new empty
+   * cart. reusing the cart schema makes sense, but integrity of the order, we
+   * don't want to just make another cart item
    * @todo:  Partial order processing, shopId processing
    * @todo:  Review Security on this method
    * @param {String} cartId - cartId to transform to order
-   * @param {String} sessionId - current client session id. It is needed to
-   * create new cart within `cart/createCart` method
    * @return {String} returns orderId
    */
   "cart/copyCartToOrder": function (cartId) {
@@ -576,7 +590,7 @@ Meteor.methods({
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
-      // Meteor.call("orders/inventoryAdjust", orderId);
+      Meteor.call("orders/inventoryAdjust", orderId);
       ReactionCore.Collections.Cart.remove({
         _id: order.cartId
       });
@@ -613,7 +627,7 @@ Meteor.methods({
    * @summary saves method as order default
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} method - shipmentMethod object
-   * @return {String} return Mongo update result
+   * @return {Number} return Mongo update result
    */
   "cart/setShipmentMethod": function (cartId, method) {
     check(cartId, String);
@@ -623,9 +637,10 @@ Meteor.methods({
       _id: cartId,
       userId: Meteor.userId()
     });
-    // a cart is required!
     if (!cart) {
-      return;
+      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found",
+        "Cart not found for user with such id");
     }
 
     // temp hack until we build out multiple shipping handlers
@@ -656,17 +671,16 @@ Meteor.methods({
       };
     }
     // update or insert method
-    ReactionCore.Collections.Cart.update(selector, update, function (
+    return ReactionCore.Collections.Cart.update(selector, update, function (
       error) {
       if (error) {
         ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`,
           error);
-        return;
+        return error;
       }
       // this will transition to review
       Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
         "coreCheckoutShipping");
-      return;
     });
   },
 
@@ -675,74 +689,79 @@ Meteor.methods({
    * @summary adds address book to cart shipping
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} address - addressBook object
-   * @return {String} return Mongo update result
+   * @return {Number} return Mongo update result
    */
   "cart/setShipmentAddress": function (cartId, address) {
     check(cartId, String);
     check(address, ReactionCore.Schemas.Address);
-    this.unblock();
 
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
+    if (!cart) {
+      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found",
+        "Cart not found for user with such id");
+    }
 
-    if (cart) {
-      let selector;
-      let update;
-      // temp hack until we build out multiple shipment handlers
-      // if we have an existing item update it, otherwise add to set.
-      if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
-        selector = {
-          "_id": cartId,
-          "shipping._id": cart.shipping[0]._id
-        };
-        update = {
-          $set: {
-            "shipping.$.address": address
+    let selector;
+    let update;
+    // temp hack until we build out multiple shipment handlers
+    // if we have an existing item update it, otherwise add to set.
+    if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
+      selector = {
+        "_id": cartId,
+        "shipping._id": cart.shipping[0]._id
+      };
+      update = {
+        $set: {
+          "shipping.$.address": address
+        }
+      };
+    } else {
+      selector = {
+        _id: cartId
+      };
+      update = {
+        $addToSet: {
+          shipping: {
+            address: address
           }
-        };
-      } else {
-        selector = {
-          _id: cartId
-        };
-        update = {
-          $addToSet: {
-            shipping: {
-              address: address
-            }
-          }
-        };
+        }
+      };
+    }
+
+    // add / or set the shipping address
+    return ReactionCore.Collections.Cart.update(selector, update, function (
+      error) {
+      if (error) {
+        ReactionCore.Log.warn(error);
+        return error;
+      }
+      // refresh shipping quotes
+      Meteor.call("shipping/updateShipmentQuotes", cartId);
+
+      if (typeof cart.workflow !== "object") {
+        throw new Meteor.Error(500, "Internal Server Error",
+          "Cart workflow object not detected.");
+      }
+      // ~~it's ok for this to be called multiple times~~
+      // call it only once when we at the `checkoutAddressBook` step
+      if (typeof cart.workflow.workflow === "object" &&
+        cart.workflow.workflow.length < 2) {
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+          "coreCheckoutShipping");
       }
 
-      // add / or set the shipping address
-      ReactionCore.Collections.Cart.update(selector, update, function (
-        error) {
-        if (error) {
-          ReactionCore.Log.warn(error);
-          return;
-        }
-        // refresh shipping quotes
-        Meteor.call("shipping/updateShipmentQuotes", cartId);
-
-        if (typeof cart.workflow !== "object") return;
-        // ~~it's ok for this to be called multiple times~~
-        // call it only once when we at the `checkoutAddressBook` step
-        if (typeof cart.workflow.workflow === "object" &&
-          cart.workflow.workflow.length < 2) {
-          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-            "coreCheckoutShipping");
-        }
-
-        // if we change default address during further steps, we need to revert
-        // workflow back to `coreCheckoutShipping` step
-        if (typeof cart.workflow.workflow === "object" &&
-          cart.workflow.workflow.length > 2) { // "2" index of
-          // `coreCheckoutShipping`
-          Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
-        }
-      });
-    }
+      // if we change default address during further steps, we need to revert
+      // workflow back to `coreCheckoutShipping` step
+      if (typeof cart.workflow.workflow === "object" &&
+        cart.workflow.workflow.length > 2) { // "2" index of
+        // `coreCheckoutShipping`
+        Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+      }
+    });
   },
   /**
    * cart/setPaymentAddress
@@ -750,48 +769,50 @@ Meteor.methods({
    * @param {String} cartId - cartId to apply payment address
    * @param {Object} address - addressBook object
    * @todo maybe we need to rename this method to `cart/setBillingAddress`?
-   * @return {String} return Mongo update result
+   * @return {Number} return Mongo update result
    */
   "cart/setPaymentAddress": function (cartId, address) {
     check(cartId, String);
     check(address, ReactionCore.Schemas.Address);
-    this.unblock();
 
     let cart = ReactionCore.Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
-
-    if (cart) {
-      let selector;
-      let update;
-      // temp hack until we build out multiple billing handlers
-      // if we have an existing item update it, otherwise add to set.
-      if (Array.isArray(cart.billing) && cart.billing.length > 0) {
-        selector = {
-          "_id": cartId,
-          "billing._id": cart.billing[0]._id
-        };
-        update = {
-          $set: {
-            "billing.$.address": address
-          }
-        };
-      } else {
-        selector = {
-          _id: cartId
-        };
-        update = {
-          $addToSet: {
-            billing: {
-              address: address
-            }
-          }
-        };
-      }
-
-      return ReactionCore.Collections.Cart.update(selector, update);
+    if (!cart) {
+      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found",
+        "Cart not found for user with such id");
     }
+
+    let selector;
+    let update;
+    // temp hack until we build out multiple billing handlers
+    // if we have an existing item update it, otherwise add to set.
+    if (Array.isArray(cart.billing) && cart.billing.length > 0) {
+      selector = {
+        "_id": cartId,
+        "billing._id": cart.billing[0]._id
+      };
+      update = {
+        $set: {
+          "billing.$.address": address
+        }
+      };
+    } else {
+      selector = {
+        _id: cartId
+      };
+      update = {
+        $addToSet: {
+          billing: {
+            address: address
+          }
+        }
+      };
+    }
+
+    return ReactionCore.Collections.Cart.update(selector, update);
   },
   /**
    * cart/unsetAddresses
@@ -809,7 +830,6 @@ Meteor.methods({
     check(addressId, String);
     check(userId, String);
     check(type, Match.Optional(String));
-    this.unblock();
 
     // do we actually need to change anything?
     let needToUpdate = false;
@@ -822,7 +842,7 @@ Meteor.methods({
       _id: cart._id
     };
     let update = { $unset: {}};
-    // user could uncheck the checkbox in address to not to be default, then we
+    // user could turn off the checkbox in address to not to be default, then we
     // receive `type` arg
     if (typeof type === "string") {
       // we assume that the billing/shipping arrays can hold only one element [0]
@@ -832,8 +852,8 @@ Meteor.methods({
         needToUpdate = true;
         isShippingDeleting = type === "shipping";
       }
-    } else { // or if we remove address itself, when we run this part
-      // we assume that the billing/shipping arrays can hold only one element [0]
+    } else { // or if we remove address itself, when we run this part we assume
+      // that the billing/shipping arrays can hold only one element [0]
       if (cart.billing && typeof cart.billing[0].address === "object" &&
         cart.billing[0].address._id === addressId) {
         update.$unset["billing.0.address"] = "";
@@ -848,8 +868,8 @@ Meteor.methods({
     }
 
     // todo maybe we need synchronous variant here?
-    needToUpdate && ReactionCore.Collections.Cart.update(selector, update,
-      (error, result) => {
+    return needToUpdate && ReactionCore.Collections.Cart.update(selector,
+      update, (error, result) => {
         if (result && isShippingDeleting) {
           // if we remove shipping address from cart, we need to revert
           // `cartWorkflow` to the `checkoutAddressBook` step.

@@ -45,7 +45,7 @@ ReactionImport.load = function (key, object) {
   if (object.type && object.type === "variant") {
     collection = ReactionCore.Collections.Products;
   } else {
-  /*let */collection = this.identify(object);
+    collection = this.identify(object);
   }
   this.object(collection, key, object);
 };
@@ -200,7 +200,8 @@ ReactionImport.context = function (collection, selector) {
   if (selector) {
     const { type } = selector.selector;
     const schemas = collection._c2._simpleSchemas;
-    schemas.forEach((schema) => {
+    // additionally check that schemas exists
+    schemas && schemas.forEach((schema) => {
       if (schema.selector.type === type) {
         this._contexts[name] = schema.schema.newContext();
       }
@@ -245,6 +246,7 @@ ReactionImport.buffer = function (collection) {
  * * Update the variant.
  */
 ReactionImport.product = function (key, product, parent) {
+  // TODO this need to be reviewed due to flattened model
   let collection = ReactionCore.Collections.Products;
   if (parent) {
     ReactionCore.Schemas.ProductVariant.clean(product, {});

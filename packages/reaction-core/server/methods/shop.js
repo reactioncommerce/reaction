@@ -539,7 +539,7 @@ Meteor.methods({
   "shop/getWorkflow": function (name) {
     check(name, String);
 
-    shopWorkflows = ReactionCore.Collections.Shops.findOne({
+    const shopWorkflows = ReactionCore.Collections.Shops.findOne({
       defaultWorkflows: {
         $elemMatch: {
           provides: name

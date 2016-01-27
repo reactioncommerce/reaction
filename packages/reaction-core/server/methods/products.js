@@ -121,7 +121,9 @@ function createHandle(productHandle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (ReactionCore.Collections.Products.find({ handle: handle }).count() !== 0) {
+  if (ReactionCore.Collections.Products.find({
+    handle: handle
+  }).count() !== 0) {
     handle = createHandle(handle, productId);
   }
 
@@ -134,7 +136,7 @@ function createHandle(productHandle, productId) {
  * @param {String} newId - [cloned|original] product _id
  * @param {String} variantOldId - old variant _id
  * @param {String} variantNewId - - cloned variant _id
- * @fires ReactionCore.Collections.Media#update
+ * @return {Number} ReactionCore.Collections.Media#update result
  */
 function copyMedia(newId, variantOldId, variantNewId) {
   ReactionCore.Collections.Media.find({
@@ -163,29 +165,110 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * @param {String} field - type of field. Could be:
  * "price",
  * "inventoryQuantity",
- * "management",
- * "policy",
- * "threshold"
- * @since 0.12.0
+ * "inventoryManagement",
+ * "inventoryPolicy",
+ * "lowInventoryWarningThreshold"
+ * @since 0.11.0
  * @return {Number} - number of successful update operations. Should be "1".
  */
 function denormalize(id, field) {
-  switch (field) {
-    case "inventoryQuantity":
-      return;
-    case "management":
-      return;
-    case "policy":
-      return;
-    case "threshold":
-      return;
-    default: // "price"
-      // set "0" if no variants in product. If all variants were removed.
-      const priceRange = ReactionCore.getProductPriceRange(id) || 0;
-      return ReactionCore.Collections.Products.update(id, {
-        $set: { price: priceRange }
-      }, { selector: { type: "simple" } });
+  const doc = ReactionCore.Collections.Products.findOne(id);
+  let variants;
+  if (doc.type === "simple") {
+    variants = ReactionCore.getTopVariants(id);
+  } else if (doc.type === "variant" && doc.ancestors.length === 1) {
+    variants = ReactionCore.getVariants(id);
   }
+  let update = {};
+
+  switch (field) {
+  case "inventoryPolicy":
+  case "inventoryQuantity":
+  case "inventoryManagement":
+    Object.assign(update, {
+      isSoldOut: isSoldOut(variants),
+      isLowQuantity: isLowQuantity(variants),
+      isBackorder: isBackorder(variants)
+    });
+    break;
+  case "lowInventoryWarningThreshold":
+    Object.assign(update, {
+      isLowQuantity: isLowQuantity(variants)
+    });
+    break;
+  default: // "price"
+    // set "0" if no variants in product. If all variants were removed.
+    const priceRange = ReactionCore.getProductPriceRange(id) || 0;
+    Object.assign(update, { price: priceRange });
+  }
+
+  ReactionCore.Collections.Products.update(id, {
+    $set: update
+  }, { selector: { type: "simple" } });
+}
+
+/**
+ * isSoldOut
+ * @description We are stop accepting new orders if product marked as
+ * `isSoldOut`.
+ * @param {Array} variants - Array with top-level variants
+ * @return {Boolean} true if summary product quantity is zero.
+ */
+function isSoldOut(variants) {
+  return variants.every(variant => {
+    if (variant.inventoryManagement && variant.inventoryPolicy) {
+      return ReactionCore.getVariantQuantity(variant) === 0;
+    }
+    return false;
+  });
+}
+
+/**
+ * isLowQuantity
+ * @description If at least one of the variants is less than the threshold,
+ * then function returns `true`
+ * @param {Array} variants - array of child variants
+ * @return {boolean} low quantity or not
+ */
+function isLowQuantity(variants) {
+  return variants.some(variant => {
+    const quantity = ReactionCore.getVariantQuantity(variant);
+    // we need to keep an eye on `inventoryPolicy` too and qty > 0
+    if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
+      return quantity <= variant.lowInventoryWarningThreshold;
+    }
+    // TODO: need to test this function with real data
+    return false;
+  });
+}
+
+function isBackorder(variants) {
+  return variants.every(variant => {
+    return !variant.inventoryPolicy && variant.inventoryManagement &&
+      variant.inventoryQuantity === 0;
+  });
+}
+
+/**
+ * flushQuantity
+ * @description if variant `inventoryQuantity` not zero, function update it to
+ * zero. This needed in case then option with it's own `inventoryQuantity`
+ * creates to top-level variant. In that case top-level variant should display
+ * sum of his options `inventoryQuantity` fields.
+ * @param {String} id - variant _id
+ * @return {Number} - collection update results
+ */
+function flushQuantity(id) {
+  const variant = ReactionCore.Collections.Products.findOne(id);
+  // if variant already have descendants, quantity should be 0, and we don't
+  // need to do all next actions
+  if (variant.inventoryQuantity === 0) {
+    return 1; // let them think that we have one successful operation here
+  }
+
+  return ReactionCore.Collections.Products.update({ _id: id}, {
+    $set: { inventoryQuantity: 0 }
+  }, { selector: { type: "variant" } });
 }
 
 Meteor.methods({
@@ -197,9 +280,8 @@ Meteor.methods({
    * @param {String} productId - the productId we're whose variant we're
    * cloning
    * @param {String} variantId - the variantId that we're cloning
-   * @todo we don't need productId. Currently it used for mediaCopy only
    * @todo rewrite @description
-   * @return {undefined}
+   * @return {String} - cloned variant _id
    */
   "products/cloneVariant": function (productId, variantId) {
     check(productId, String);
@@ -208,7 +290,6 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     const variants = ReactionCore.Collections.Products.find({
       $or: [{ _id: variantId }, { ancestors: { $in: [variantId] }}],
@@ -253,29 +334,29 @@ Meteor.methods({
       delete clone.inventoryQuantity;
       copyMedia(productId, oldId, clone._id);
 
-      ReactionCore.Collections.Products.insert(clone, { validate: false },
-        (error, result) => {
-          if (result) {
-            if (type === "child") {
-              ReactionCore.Log.info(
-                `products/cloneVariant: created sub child clone: ${
-                  clone._id} from ${variantId}`
-              );
-            } else {
-              ReactionCore.Log.info(
-                `products/cloneVariant: created clone: ${
-                  clone._id} from ${variantId}`
-              );
-            }
-          }
-          if (error) {
-            ReactionCore.Log.error(
-              `products/cloneVariant: cloning of ${variantId} was failed: ${
-                error}`
+      return ReactionCore.Collections.Products.insert(clone, {
+        validate: false
+      }, (error, result) => {
+        if (result) {
+          if (type === "child") {
+            ReactionCore.Log.info(
+              `products/cloneVariant: created sub child clone: ${
+                clone._id} from ${variantId}`
+            );
+          } else {
+            ReactionCore.Log.info(
+              `products/cloneVariant: created clone: ${
+                clone._id} from ${variantId}`
             );
           }
         }
-      );
+        if (error) {
+          ReactionCore.Log.error(
+            `products/cloneVariant: cloning of ${variantId} was failed: ${
+              error}`
+          );
+        }
+      });
     });
   },
 
@@ -289,14 +370,14 @@ Meteor.methods({
    */
   "products/createVariant": function (parentId, newVariant) {
     check(parentId, String);
-    check(newVariant, Match.OneOf(Object, void 0));
+    check(newVariant, Match.Optional(Object));
     // must have createProduct permissions
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     const newVariantId = Random.id();
+    // get parent ancestors to build new ancestors array
     const { ancestors } = ReactionCore.Collections.Products.findOne(parentId);
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
@@ -310,6 +391,13 @@ Meteor.methods({
         title: "",
         price: 0.00
       });
+    }
+
+    // if we are inserting child variant to top-level variant, we need to remove
+    // all top-level's variant inventory records and flush it's quantity,
+    // because it will be hold sum of all it descendants quantities.
+    if (ancestors.length === 2) {
+      flushQuantity(parentId);
     }
 
     ReactionCore.Collections.Products.insert(assembledVariant,
@@ -329,11 +417,12 @@ Meteor.methods({
   /**
    * products/updateVariant
    * @summary update individual variant with new values, merges into original
-   * only need to supply updated information
+   * only need to supply updated information. Currently used for a one use case
+   * - to manage top-level variant autoform.
    * @param {Object} variant - current variant object
    * @todo some use cases of this method was moved to "products/
    * updateProductField", but it still used
-   * @return {String} returns update result
+   * @return {Number} returns update result
    */
   "products/updateVariant": function (variant) {
     check(variant, Object);
@@ -341,7 +430,6 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     const { Products } = ReactionCore.Collections;
     let currentVariant = Products.findOne(variant._id);
@@ -350,7 +438,7 @@ Meteor.methods({
       const newVariant = Object.assign({}, currentVariant, variant);
 
       return Products.update({
-        "_id": variant._id
+        _id: variant._id
       }, {
         $set: newVariant // newVariant already contain `type` property, so we
         // do not need to pass it explicitly
@@ -374,33 +462,6 @@ Meteor.methods({
   },
 
   /**
-   * products/updateVariants
-   * @deprecated @since 0.11.0
-   * @summary update whole variants array
-   * @param {Array} variants - array of variants to update
-   * @return {String} returns update result
-   * @todo remove this method
-   */
-  "products/updateVariants": function (variants) {
-    check(variants, [Object]);
-    // must have createProduct permissions
-    if (!ReactionCore.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-    this.unblock();
-    let product = ReactionCore.Collections.Products.findOne({
-      "variants._id": variants[0]._id
-    });
-    return ReactionCore.Collections.Products.update(product._id, {
-      $set: {
-        variants: variants
-      }
-    }, {
-      validate: false
-    });
-  },
-
-  /**
    * products/deleteVariant
    * @summary delete variant, which should also delete child variants
    * @param {String} variantId - variantId to delete
@@ -413,10 +474,10 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+
     const selector = {
       $or: [{
-        "_id": variantId
+        _id: variantId
       }, {
         ancestors: {
           $in: [variantId]
@@ -428,7 +489,7 @@ Meteor.methods({
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
     const deleted = ReactionCore.Collections.Products.remove(selector);
-    toDelete.map(variant => {
+    toDelete.forEach(variant => {
       // useless to return results here because all happens async
       ReactionCore.Collections.Media.remove({
         "metadata.variantId": variant._id
@@ -457,31 +518,31 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+    // this.unblock();
 
     let result;
     let products;
     const results = [];
     const pool = []; // pool of id pairs: { oldId, newId }
 
-    const getIds = id => {
+    function getIds(id) {
       return pool.filter(function (pair) {
-        return pair.oldId === this.id
+        return pair.oldId === this.id;
       }, { id: id });
-    };
-    const setId = ids => pool.push(ids);
-    const buildAncestors = ancestors => {
+    }
+    function setId(ids) {
+      return pool.push(ids);
+    }
+    function buildAncestors(ancestors) {
       const newAncestors = [];
       ancestors.map(oldId => {
         let pair = getIds(oldId);
         // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
       });
-
       return newAncestors;
-    };
+    }
 
-    // TODO: test this case
     if (!Array.isArray(productOrArray)) {
       products = [productOrArray];
     } else {
@@ -546,10 +607,9 @@ Meteor.methods({
 
   /**
    * products/createProduct
-   * @summary when we create a new product, we create it with
-   * an empty variant. all products have a variant
-   * with pricing and details
-   * @param {Object} product - optional product object
+   * @summary when we create a new product, we create it with an empty variant.
+   * all products have a variant with pricing and details
+   * @param {Object} [product] - optional product object
    * @return {String} return insert result
    */
   "products/createProduct": function (product) {
@@ -558,7 +618,7 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+
     // if a product object was provided
     if (product) {
       return ReactionCore.Collections.Products.insert(product);
@@ -585,7 +645,7 @@ Meteor.methods({
    * products/deleteProduct
    * @summary delete a product and unlink it from all media
    * @param {String} productId - productId to delete
-   * @returns {Number|Error} returns number of removed media
+   * @returns {Number} returns number of removed products
    */
   "products/deleteProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
@@ -593,7 +653,6 @@ Meteor.methods({
     if (!ReactionCore.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     let productIds;
 
@@ -627,7 +686,7 @@ Meteor.methods({
           $in: ids
         }
       });
-      return numRemoved
+      return numRemoved;
     }
     throw new Meteor.Error(304, "Something goes wrong, nothing was deleted");
   },
@@ -643,7 +702,7 @@ Meteor.methods({
    * do something like: const type = Products.findOne(_id).type or transmit type
    * as param if it possible
    * latest changes. its used for products and variants
-   * @return {String} returns update result
+   * @return {Number} returns update result
    */
   "products/updateProductField": function (_id, field, value) {
     check(_id, String);
@@ -653,7 +712,6 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     const doc = ReactionCore.Collections.Products.findOne(_id);
     const type = doc.type;
@@ -671,11 +729,11 @@ Meteor.methods({
 
   /**
    * products/updateProductTags
-   * @summary method to insert or update tag with hierachy
+   * @summary method to insert or update tag with hierarchy
    * @param {String} productId - productId
    * @param {String} tagName - tagName
    * @param {String} tagId - tagId
-   * @return {String} return result
+   * @return {Number} return result
    */
   "products/updateProductTags": function (productId, tagName, tagId) {
     check(productId, String);
@@ -706,27 +764,27 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error(403, "Existing Tag, Update Denied");
       }
-      ReactionCore.Collections.Products.update(productId, {
+      return ReactionCore.Collections.Products.update(productId, {
         $push: {
           hashtags: existingTag._id
         }
       }, { selector: { type: "simple" } });
     } else if (tagId) {
-      ReactionCore.Collections.Tags.update(tagId, {
+      return ReactionCore.Collections.Tags.update(tagId, {
         $set: newTag
       });
-    } else {
-      newTag.isTopLevel = false;
-      newTag.shopId = ReactionCore.getShopId();
-      newTag.updatedAt = new Date();
-      newTag.createdAt = new Date();
-      newTag._id = ReactionCore.Collections.Tags.insert(newTag);
-      ReactionCore.Collections.Products.update(productId, {
-        $push: {
-          hashtags: newTag._id
-        }
-      }, { selector: { type: "simple" } });
     }
+
+    newTag.isTopLevel = false;
+    newTag.shopId = ReactionCore.getShopId();
+    newTag.updatedAt = new Date();
+    newTag.createdAt = new Date();
+    newTag._id = ReactionCore.Collections.Tags.insert(newTag);
+    return ReactionCore.Collections.Products.update(productId, {
+      $push: {
+        hashtags: newTag._id
+      }
+    }, { selector: { type: "simple" } });
   },
 
   /**
@@ -739,11 +797,9 @@ Meteor.methods({
   "products/removeProductTag": function (productId, tagId) {
     check(productId, String);
     check(tagId, String);
-
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     ReactionCore.Collections.Products.update(productId, {
       $pull: {
@@ -776,12 +832,10 @@ Meteor.methods({
    */
   "products/setHandle": function (productId) {
     check(productId, String);
-
     // must have createProduct permission
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     let product = ReactionCore.Collections.Products.findOne(productId);
     let handle = getSlug(product.title);
@@ -806,7 +860,6 @@ Meteor.methods({
   "products/setHandleTag": function (productId, tagId) {
     check(productId, String);
     check(tagId, String);
-
     // must have createProduct permission
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -820,7 +873,6 @@ Meteor.methods({
         }
       };
     }
-    this.unblock();
 
     let product = ReactionCore.Collections.Products.findOne(productId);
     let tag = ReactionCore.Collections.Tags.findOne(tagId);
@@ -855,16 +907,14 @@ Meteor.methods({
    * @summary update product grid positions
    * @param {String} productId - productId
    * @param {Object} positionData -  an object with tag,position,dimensions
-   * @return {String} returns
+   * @return {Number} collection update returns
    */
   "products/updateProductPosition": function (productId, positionData) {
     check(productId, String);
     check(positionData, Object);
-
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
     this.unblock();
 
     let updateResult;
@@ -882,7 +932,7 @@ Meteor.methods({
         },
         $set: {
           updatedAt: new Date(),
-          "type": "simple" // for multi-schema
+          type: "simple" // for multi-schema
         }
       }, function (error) {
         if (error) {
@@ -924,13 +974,46 @@ Meteor.methods({
 
     return updateResult;
   },
+
+  /**
+   * products/updateVariantsPosition
+   * @description updates top level variant position index
+   * @param {Array} sortedVariantIds - array of top level variant `_id`s
+   * @since 0.11.0
+   * @return {Number} ReactionCore.Collections.Products.update result
+   */
+  "products/updateVariantsPosition"(sortedVariantIds) {
+    check(sortedVariantIds, [String]);
+    // TODO: to make this work we need to remove auditArgumentsCheck I suppose
+    // new SimpleSchema({
+    //   sortedVariantIds: { type: [String] }
+    // }).validate({ sortedVariantIds });
+
+    if (!ReactionCore.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    sortedVariantIds.forEach((id, index) => {
+      ReactionCore.Collections.Products.update(id, {
+        $set: { index: index }
+      }, { selector: { type: "variant" } }, (error, result) => {
+        if (result) {
+          ReactionCore.Log.info(
+            `Variant ${id} position was updated to index ${index}`
+          );
+        }
+      });
+    });
+  },
+
   /**
    * products/updateMetaFields
-   * @summary update product grid positions
+   * @summary update product metafield
    * @param {String} productId - productId
    * @param {Object} updatedMeta - update object with metadata
    * @param {Object} meta - current meta object
-   * @return {String} returns update result
+   * @todo should this method works for variants also?
+   * @return {Number} collection update result
    */
   "products/updateMetaFields": function (productId, updatedMeta, meta) {
     check(productId, String);
@@ -940,7 +1023,7 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+
     // update existing metadata
     if (meta) {
       return ReactionCore.Collections.Products.update({
@@ -950,7 +1033,7 @@ Meteor.methods({
         $set: {
           "metafields.$": updatedMeta
         }
-      });
+      }, { selector: { type: "simple" } });
     }
     // adds metadata
     return ReactionCore.Collections.Products.update({
@@ -959,7 +1042,7 @@ Meteor.methods({
       $addToSet: {
         metafields: updatedMeta
       }
-    });
+    }, { selector: { type: "simple" } });
   },
 
   /**
@@ -974,7 +1057,6 @@ Meteor.methods({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
 
     const product = ReactionCore.Collections.Products.findOne(productId);
     const variants = ReactionCore.Collections.Products.find({
@@ -986,18 +1068,22 @@ Meteor.methods({
       if (variants.length > 0) {
         variants.map(variant => {
           if (!(typeof variant.price === "number" && variant.price > 0 &&
-            variant.title.length > 1)) {
+            typeof variant.title === "string" && variant.title.length > 1)) {
             variantValidator = false;
           }
           if (typeof optionTitle === "string" && !(optionTitle.length > 0)) {
             variantValidator = false;
           }
         });
+      } else {
+        ReactionCore.Log.debug("invalid product visibility ", productId);
+        throw new Meteor.Error(403, "Forbidden", "Variant is required");
       }
 
       if (!variantValidator) {
         ReactionCore.Log.debug("invalid product visibility ", productId);
-        throw new Meteor.Error(400, "Bad Request");
+        throw new Meteor.Error(403, "Forbidden",
+          "Some properties are missing.");
       }
 
       // update product visibility
@@ -1006,13 +1092,11 @@ Meteor.methods({
 
       return Boolean(ReactionCore.Collections.Products.update(product._id, {
         $set: {
-          isVisible: !product.isVisible,
-          type: "simple" // required by multi-schema
+          isVisible: !product.isVisible
         }
-      }));
-    } else {
-      ReactionCore.Log.debug("invalid product visibility ", productId);
-      throw new Meteor.Error(400, "Bad Request");
+      }, { selector: { type: "simple" } }));
     }
+    ReactionCore.Log.debug("invalid product visibility ", productId);
+    throw new Meteor.Error(400, "Bad Request");
   }
 });

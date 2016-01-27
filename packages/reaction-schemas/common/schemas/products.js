@@ -34,30 +34,6 @@ ReactionCore.Schemas.VariantMedia = new SimpleSchema({
 });
 
 /**
- * Schema "Price range" for a product
- * @summary needed for denormalizing of price range
- * @type {SimpleSchema}
- * @todo I'm not sure what is the best way: to keep it as string "5 - 10", or
- * as two numbers in object. The second could be faster for cases with discount,
- * or not too much? If we decide to keep priceRange as string, then this SS
- * could be removed.
- */
-ReactionCore.Schemas.PriceRange = new SimpleSchema({
-  min: {
-    label: "Minimum product price",
-    type: Number,
-    decimal: true,
-    defaultValue: 0
-  },
-  max: {
-    label: "Maximum product price",
-    type: Number,
-    decimal: true,
-    defaultValue: 0
-  }
-});
-
-/**
  * ProductPosition Schema
  */
 ReactionCore.Schemas.ProductPosition = new SimpleSchema({
@@ -88,12 +64,10 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 /**
  * ProductVariant Schema
  */
-
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
-    // autoValue: ReactionCore.schemaIdAutoValue,
     index: 1,
     label: "Variant ID"
   },
@@ -101,16 +75,11 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: [String],
     defaultValue: []
   },
-  //parentId: {
-  //  type: String,
-  //  optional: true
-  //},
-  //cloneId: {
-  //  type: String,
-  //  optional: true
-  //},
+  // this property since implementing of flattened model is used for keeping
+  // array index. This is needed for moving variants through list (drug'n'drop)
   index: {
-    type: String,
+    label: "Variant position number in list",
+    type: Number,
     optional: true
   },
   barcode: {
@@ -165,6 +134,9 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
       }
     }
   },
+  // this represents an ability to sell item without keeping it on stock. In
+  // other words if it is disabled, then you can sell item even if it is not in
+  // stock.
   inventoryPolicy: {
     type: Boolean,
     label: "Deny when out of stock",
@@ -198,6 +170,11 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
         }
       }
     }
+  },
+  minOrderQuantity: {
+    label: "Minimum order quantity",
+    type: Number,
+    optional: true
   },
   price: {
     label: "Price",
@@ -273,7 +250,6 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
 /**
  * Product Schema
  */
-
 ReactionCore.Schemas.Product = new SimpleSchema({
   _id: {
     type: String,
@@ -283,10 +259,6 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     type: [String],
     defaultValue: []
   },
-  //cloneId: {
-  //  type: String,
-  //  optional: true
-  //},
   shopId: {
     type: String,
     autoValue: ReactionCore.shopIdAutoValue,
@@ -329,27 +301,26 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     defaultValue: "0",
     max: 100
   },
-  inventoryManagement: {
-    label: 'Denormalized "inventoryManagement" field',
+  // Denormalized field: Indicates when at least one of variants
+  // `inventoryQuantity` are lower then their `lowInventoryWarningThreshold`.
+  // This is some kind of marketing course.
+  isLowQuantity: {
+    label: "Indicates that the product quantity is too low",
     type: Boolean,
-    defaultValue: true
+    optional: true
   },
-  inventoryPolicy: {
-    label: 'Denormalized "inventoryPolicy" field',
+  // Denormalized field: Indicates when all variants `inventoryQuantity` is zero
+  isSoldOut: {
+    label: "Indicates when the product quantity is zero",
     type: Boolean,
-    defaultValue: true
+    optional: true
   },
-  inventoryQuantity: {
-    label: "Denormalized field: Variants common quantity",
-    type: Number,
-    defaultValue: 0
-  },
-  // this will be just a boolean. I suppose the goal of this field is to display
-  // to admin that this product needs his attention.
-  lowInventoryWarningThreshold: {
-    label: 'Denormalized "lowInventoryWarningThreshold" field',
+  // Denormalized field. It is `true` if product not in stock, but customers
+  // anyway could order it.
+  isBackorder: {
+    label: "Indicates when the seller has blocked the sale of product",
     type: Boolean,
-    defaultValue: false
+    optional: true
   },
   requiresShipping: {
     label: "Require a shipping address",
@@ -395,7 +366,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     optional: true,
     index: 1,
     autoValue: function () {
-      let slug = this.value ||  getSlug(this.siblingField("title").value) || this.siblingField("_id").value || "";
+      let slug = this.value ||  getSlug(this.siblingField("title").value) ||
+        this.siblingField("_id").value || "";
       if (this.isInsert) {
         return slug;
       } else if (this.isUpsert) {

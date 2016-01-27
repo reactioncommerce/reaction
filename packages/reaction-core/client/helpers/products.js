@@ -113,6 +113,7 @@ this.selectedProduct = function () {
  * @summary get the currently active/requested product
  * @return {String} currently selected product id
  */
+//this.selectedProductId = () => currentProduct.get("productId");
 this.selectedProductId = function () {
   return currentProduct.get("productId");
 };
@@ -166,38 +167,12 @@ this.checkInventoryVariants = function (parentVariantId) {
  * @summary get price range of a variant if it has child options.
  * if no child options, return main price value
  * @todo remove string return and replace with object
- * @param {String} [currentVariantId] - currentVariantId
+ * @param {String} [id] - current variant _Id
  * @return {String} formatted price or price range
  */
-this.getVariantPriceRange = currentVariantId => {
-  const variantId = currentVariantId || selectedVariant()._id;
-  const children = getVariants(variantId);
+this.getVariantPriceRange = id => ReactionCore.getVariantPriceRange(id ||
+  selectedVariant()._id);
 
-  switch (children.length) {
-    case 0:
-      return ReactionCore.Collections.Products.findOne(variantId).price;
-    case 1:
-      return children[0].price;
-    default:
-      let priceMin = Number.POSITIVE_INFINITY;
-      let priceMax = Number.NEGATIVE_INFINITY;
-
-      children.map(child => {
-        if (child.price < priceMin) {
-          priceMin = child.price;
-        }
-          if (child.price > priceMax) {
-            priceMax = child.price;
-          }
-      });
-
-      if (priceMin === priceMax) {
-        // TODO check impact on i18n/formatPrice from moving return to string
-        return priceMin.toString();
-      }
-      return `${priceMin} - ${priceMax}`;
-  }
-};
 
 /**
  * getProductPriceRange
@@ -205,38 +180,12 @@ this.getVariantPriceRange = currentVariantId => {
  * if no only one price available, return it
  * otherwise return a string range
  * @todo remove string return and replace with object
- * @param {String} [currentProductId] - currentProductId
- * @return {String|undefined} formatted price or price range
+ * @param {String} [id] - current product _id
+ * @return {String} formatted price or price range
  */
-this.getProductPriceRange = currentProductId => {
-  const productId = currentProductId || selectedProductId();
-  const product = ReactionCore.Collections.Products.findOne(productId);
-  if (!product) {
-    return;
-  }
-  const variants = getTopVariants(product._id);
+this.getProductPriceRange = id => ReactionCore.getProductPriceRange(id ||
+  selectedProductId());
 
-  if (variants.length > 0) {
-    let variantPrices = [];
-    variants.map(variant => {
-      let range = getVariantPriceRange(variant._id);
-      if (typeof range === "string") {
-        let firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
-        let lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
-        variantPrices.push(firstPrice, lastPrice);
-      } else {
-        variantPrices.push(range);
-      }
-    });
-    let priceMin = _.min(variantPrices);
-    let priceMax = _.max(variantPrices);
-
-    if (priceMin === priceMax) {
-      return priceMin.toString();
-    }
-    return `${priceMin} - ${priceMax}`;
-  }
-};
 
 /**
  * getCardTypes
@@ -289,6 +238,16 @@ this.getGuestLoginState = function () {
 };
 
 /**
+ * getVariantQuantity
+ * @description middleware method which calls the same named common method.
+ * @todo maybe we could remove this after 1.3. But for now I like how it looks.
+ * @param {Object} doc - variant object
+ * @return {Number} summary of options quantity or top-level variant
+ * inventoryQuantity
+ */
+this.getVariantQuantity = doc => ReactionCore.getVariantQuantity(doc);
+
+/**
  * @method getVariants
  * @description Get all parent variants
  * @summary could be useful for products and for top level variants
@@ -296,12 +255,8 @@ this.getGuestLoginState = function () {
  * @param {String} [type] - type of variant
  * @return {Array} Parent variants or empty array
  */
-this.getVariants = (id, type) => {
-  return ReactionCore.Collections.Products.find({
-    ancestors: { $in: [id || selectedProductId()] },
-    type: type || "variant"
-  }).fetch();
-};
+this.getVariants = (id, type) => ReactionCore.getVariants(id ||
+  selectedProductId(), type);
 
 /**
  * @method getTopVariants
@@ -309,9 +264,5 @@ this.getVariants = (id, type) => {
  * @param {String} [id] - product _id
  * @return {Array} Product top level variants or empty array
  */
-this.getTopVariants = id => {
-  return ReactionCore.Collections.Products.find({
-    ancestors: [id || selectedProductId()],
-    type: "variant"
-  }).fetch();
-};
+this.getTopVariants = id => ReactionCore.getTopVariants(id ||
+  selectedProductId());

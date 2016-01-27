@@ -8,7 +8,7 @@ if (!ReactionCore) ReactionCore = {};
 _.extend(ReactionCore, {
   /**
    * ReactionCore.shopIdAutoValue
-   * @summary used for schemea injection autoValue
+   * @summary used for schema injection autoValue
    * @example autoValue: ReactionCore.shopIdAutoValue
    * @return {String} returns current shopId
    */
@@ -17,7 +17,8 @@ _.extend(ReactionCore, {
     if (ReactionCore.getShopId()) {
       if (this.isSet && Meteor.isServer) {
         return this.value;
-      } else if (Meteor.isServer || Meteor.isClient && this.isInsert) {
+      } else if (Meteor.isServer && !this.isUpdate ||
+        Meteor.isClient && this.isInsert) {
         return ReactionCore.getShopId();
       }
       return this.unset();

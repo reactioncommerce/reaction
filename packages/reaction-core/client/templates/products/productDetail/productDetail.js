@@ -89,7 +89,6 @@ Template.productDetail.events({
     }
   },
   "click #add-to-cart": function (event, template) {
-    let options;
     let productId;
     let qtyField;
     let quantity;

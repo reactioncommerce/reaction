@@ -9,15 +9,16 @@ Template.variantList.helpers({
     if (variants.length > 0) {
       // calculate inventory total for all variants
       for (let variant of variants) {
-        if (!isNaN(variant.inventoryQuantity)) {
-          inventoryTotal += variant.inventoryQuantity;
+        let qty = getVariantQuantity(variant);
+        if (typeof qty === "number") {
+          inventoryTotal += qty;
         }
       }
       // calculate percentage of total inventory of this product
       for (let variant of variants) {
+        let qty = getVariantQuantity(variant);
         variant.inventoryTotal = inventoryTotal;
-        variant.inventoryPercentage = parseInt(variant.inventoryQuantity /
-          inventoryTotal * 100, 10);
+        variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
         if (variant.title) {
           variant.inventoryWidth = parseInt(variant.inventoryPercentage -
             variant.title.length, 10);
@@ -25,6 +26,9 @@ Template.variantList.helpers({
           variant.inventoryWidth = 0;
         }
       }
+      // sort variants in correct order
+      variants.sort((a, b) => a.index - b.index);
+
       return variants;
     }
   },
@@ -35,7 +39,7 @@ Template.variantList.helpers({
       const current = selectedVariant();
 
       if (! current) {
-        return;
+        return [];
       }
 
       if (current.ancestors.length === 1) {
@@ -46,7 +50,6 @@ Template.variantList.helpers({
             variant.type !== "inventory") {
             childVariants.push(variant);
           }
-          //}
         });
       } else {
         // TODO not sure we need this part...

@@ -11,7 +11,11 @@
     "rpjCvTBGjhBi2xdro",
     "cseCBSSrJ3t8HQSNP"
   ],
+  "price": "12.99 - 19.99",
   "isVisible": true,
+  "isLowQuantity": false,
+  "isSoldOut": false,
+  "isBackorder": false,
   "metafields": [{
     "key": "Material",
     "value": "Cotton"

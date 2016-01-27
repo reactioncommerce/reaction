@@ -1,4 +1,6 @@
 describe("core shop schema", function () {
+  let shop;
+
   beforeEach(function () {
     return ReactionCore.Collections.Shops.remove({});
   });

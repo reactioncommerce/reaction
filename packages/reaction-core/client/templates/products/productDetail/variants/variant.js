@@ -19,16 +19,14 @@ Template.variant.helpers({
       return "variant-detail-selected";
     }
   },
+  displayQuantity: function () {
+    return getVariantQuantity(this);
+  },
   displayPrice: function () {
     return getVariantPriceRange(this._id);
   },
   isSoldOut: function () {
-    // TODO: with flattened model this method is not worked as expected.
-    // it is looks only at top level variants and misses options
-    if (this.inventoryQuantity < 1) {
-      return true;
-    }
-    return false;
+    return getVariantQuantity(this) < 1;
   }
 });
 
@@ -73,26 +71,11 @@ Template.variant.onRendered(function () {
         forcePlaceholderSize: true,
         axis: "y",
         update: function () {
-          // TODO needed refactor to fit the new data model
-          const newVariants = [];
-          const productVariants = getTopVariants();
-          // fetch uiPositions
-          let uiPositions = $(this).sortable("toArray", {
+          const uiPositions = $(this).sortable("toArray", {
             attribute: "data-id"
           });
-          // get variants of the new order
-          uiPositions.map(id => {
-            productVariants.map(variant => {
-              variant._id === id && newVariants.push(variant);
-            });
-          });
-
-          // merge and delete old variants to create a newly ordered Array
-          // could have (and did do previously) this a lot of different ways
-          let updateVariants = _.uniq(_.union(newVariants, productVariants));
-          return Meteor.defer(function () {
-            return Meteor.call("products/updateVariants",
-              updateVariants);
+          Meteor.defer(function () {
+            Meteor.call("products/updateVariantsPosition", uiPositions);
           });
         },
         start: function (event, ui) {

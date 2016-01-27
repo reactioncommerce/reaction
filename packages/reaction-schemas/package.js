@@ -15,13 +15,10 @@ Package.onUse(function (api) {
   api.use("aldeed:collection2@2.8.0");
   api.use("aldeed:simple-schema@1.5.3");
   api.use("matb33:collection-hooks@0.8.1");
-  api.use("mikowals:batch-insert@1.1.13");
-
 
   // ReactionCore declaration
   api.addFiles("common/common.js");
   api.addFiles("common/globals.js");
-
 
   // schemas
   api.addFiles("common/schemas/address.js");

@@ -18,7 +18,7 @@ ReactionCore.Collections.Cart.after.update(function (userId, cart, fieldNames,
       Meteor.call("inventory/addReserve", cart.items);
     }
   }
-  // or we're adding more quuantity
+  // or we're adding more quantity
   if (modifier.$inc) {
     ReactionCore.Log.info("after variant increment, call inventory/addReserve");
     Meteor.call("inventory/addReserve", cart.items);
@@ -63,7 +63,7 @@ ReactionCore.Collections.Products.after.update(function (userId, doc,
   // because anyway on every create or delete operation we have additionally
   // $set modifier because of auto-updating of `shopId` and `updateAt` schema
   // properties
-  if (modifier.$set && !modifier.$pull && !modifier.$push) {
+  if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
     modifier.$set.updatedAt = new Date();
     // triggers inventory adjustment
     Meteor.call("inventory/adjust", doc);

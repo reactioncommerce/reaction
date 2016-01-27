@@ -6,6 +6,7 @@ Template.productMetaFieldForm.events({
   "click .metafield-remove": function () {
     let productId;
     productId = selectedProductId();
+    // todo: whats happen here? why we update collection directly?
     return ReactionCore.Collections.Products.update(productId, {
       $pull: {
         metafields: this

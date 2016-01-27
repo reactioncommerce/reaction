@@ -44,24 +44,26 @@ _.extend(ReactionCore, {
     setCurrentProduct(productId);
     setCurrentVariant(variantId);
   },
-  // TODO: after 1.3 move this to other place out of global scope
-  getVariants(id, type) {
-    return ReactionCore.Collections.Products.find({
-      ancestors: { $in: [id] },
-      type: type || "variant"
-    }).fetch();
-  },
-  // TODO: move all this methods this to export function after 1.3
+  /**
+   * getProductPriceRange
+   * @summary get price range of a product
+   * if no only one price available, return it
+   * otherwise return a string range
+   * @todo remove string return and replace with object
+   * @todo move all this methods this to export function after 1.3
+   * @param {String} [productId] - current product _id
+   * @return {String} formatted price or price range
+   */
   getProductPriceRange(productId) {
     const product = ReactionCore.Collections.Products.findOne(productId);
     if (!product) {
-      return;
+      return "";
     }
     const variants = ReactionCore.getTopVariants(product._id);
 
     if (variants.length > 0) {
       let variantPrices = [];
-      variants.map(variant => {
+      variants.forEach(variant => {
         let range = ReactionCore.getVariantPriceRange(variant._id);
         if (typeof range === "string") {
           let firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
@@ -71,11 +73,6 @@ _.extend(ReactionCore, {
           variantPrices.push(range);
         }
       });
-
-      //if (Meteor.isServer) {
-      //  return { min: _.min(variantPrices), max: _.max(variantPrices) };
-      //}
-
       let priceMin = _.min(variantPrices);
       let priceMax = _.max(variantPrices);
 
@@ -85,40 +82,76 @@ _.extend(ReactionCore, {
       return `${priceMin} - ${priceMax}`;
     }
   },
+  /**
+   * getVariantPriceRange
+   * @summary get price range of a variant if it has child options.
+   * if no child options, return main price value
+   * @todo remove string return and replace with object
+   * @param {String} [variantId] - current variant _Id
+   * @return {String} formatted price or price range
+   */
   getVariantPriceRange(variantId) {
     const children = ReactionCore.getVariants(variantId);
 
     switch (children.length) {
-      case 0:
-        return ReactionCore.Collections.Products.findOne(variantId).price;
-      case 1:
-        return children[0].price;
-      default:
-        let priceMin = Number.POSITIVE_INFINITY;
-        let priceMax = Number.NEGATIVE_INFINITY;
+    case 0:
+      return ReactionCore.Collections.Products.findOne(variantId).price;
+    case 1:
+      return children[0].price;
+    default:
+      let priceMin = Number.POSITIVE_INFINITY;
+      let priceMax = Number.NEGATIVE_INFINITY;
 
-        children.map(child => {
-          if (child.price < priceMin) {
-            priceMin = child.price;
-          }
-          if (child.price > priceMax) {
-            priceMax = child.price;
-          }
-        });
-
-        if (priceMin === priceMax) {
-          // TODO check impact on i18n/formatPrice from moving return to string
-          return priceMin.toString();
+      children.map(child => {
+        if (child.price < priceMin) {
+          priceMin = child.price;
         }
-        return `${priceMin} - ${priceMax}`;
+        if (child.price > priceMax) {
+          priceMax = child.price;
+        }
+      });
+
+      if (priceMin === priceMax) {
+        // TODO check impact on i18n/formatPrice from moving return to string
+        return priceMin.toString();
+      }
+      return `${priceMin} - ${priceMax}`;
     }
   },
+  /**
+   * getVariantQuantity
+   * @description calculate a sum of descendants `inventoryQuantity`
+   * @param {Object} variant - top-level variant
+   * @return {Number} summary of options quantity
+   */
+  getVariantQuantity(variant) {
+    const options = ReactionCore.getVariants(variant._id);
+    if (options && options.length) {
+      return options.reduce((sum, option) =>
+        sum + option.inventoryQuantity || 0, 0);
+    }
+    return variant.inventoryQuantity || 0;
+  },
+  /**
+   * @method getVariants
+   * @description Get all parent variants
+   * @summary could be useful for products and for top level variants
+   * @param {String} [id] - product _id
+   * @param {String} [type] - type of variant
+   * @return {Array} Parent variants or empty array
+   */
   getVariants(id, type) {
     return ReactionCore.Collections.Products.find({
       ancestors: { $in: [id] },
       type: type || "variant"
     }).fetch();
   },
+  /**
+   * @method getTopVariants
+   * @description Get only product top level variants
+   * @param {String} [id] - product _id
+   * @return {Array} Product top level variants or empty array
+   */
   getTopVariants(id) {
     return ReactionCore.Collections.Products.find({
       ancestors: [id],
