@@ -3060,7 +3060,18 @@
     "layout": "coreLayout",
     "workflow": "coreLayout",
     "theme": "default",
-    "enabled": true
+    "enabled": true,
+    "structure": {
+      "template": "products",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "layoutFooter",
+      "loadingTemplate": "loading",
+      "notFoundTemplate": "notFound",
+      "unauthorized": "unauthorized",
+      "printLayout": "printLayout",
+      "dashboardControls": "dashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
   }, {
     "layout": "coreLayout",
     "workflow": "coreCartWorkflow",

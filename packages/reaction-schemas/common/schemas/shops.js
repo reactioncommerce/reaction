@@ -224,10 +224,14 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: String,
     optional: true
   },
+  "layout.$.structure": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "layout.$.enabled": {
     type: Boolean,
     defaultValue: true
-
   },
   "createdAt": {
     type: Date,

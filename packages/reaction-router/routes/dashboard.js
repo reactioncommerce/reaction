@@ -1,21 +1,8 @@
-const dashboardLayout = {
-  template: "dashboardPackages", // main content area
-  dashboard: "dashboard", // dashboard-drawer
-  layoutHeader: "layoutHeader", // navigation
-  layoutFooter: "layoutFooter", // footer
-  loadingTemplate: "loading",
-  notFoundTemplate: "notFound",
-  unauthorized: "unauthorized",
-  printLayout: "printLayout",
-  adminControlsFooter: "adminControlsFooter",
-  dashboardControls: "dashboardControls"
-};
-
 //
 // define dashboard group
 //
 
-dashboard = FlowRouter.group({
+dashboard = Router.group({
   prefix: "/dashboard"
 });
 
@@ -27,7 +14,9 @@ dashboard.route("/dashboard", {
   name: "dashboard",
   action: function () {
     $(document).trigger("closeAllPopovers");
-    BlazeLayout.render("coreAdminLayout", dashboardLayout);
+    const layout = Session.get("ReactionLayout");
+    const dashboardLayout =  Object.assign({}, layout, {template: "dashboardPackages"});
+    BlazeLayout.render("coreLayout", dashboardLayout);
   }
 });
 
@@ -40,14 +29,14 @@ dashboard.route("/orders", {
     Meteor.subscribe("Orders");
   },
   action: function (params) {
-    let orderLayout =  {
+    let dashboardLayout =  {
       template: "orders",
       dashboardHeaderControls: "orderListFilters",
       dashboardControls: ""
     };
-
-    let layout =  Object.assign({}, dashboardLayout, orderLayout);
-    BlazeLayout.render("coreAdminLayout", layout);
+    let layout = Session.get("ReactionLayout");
+    let orderLayout =  Object.assign({}, layout, dashboardLayout);
+    BlazeLayout.render("coreLayout", orderLayout);
 
     if (ReactionCore.hasDashboardAccess() && params._id) {
       ReactionCore.showActionView({
@@ -67,12 +56,12 @@ dashboard.route("/orders", {
 //
 dashboard.route("/:dashboard", {
   action: function (params) {
-    let packageDetailLayout =  {
+    let dashboardLayout =  {
       template: params.dashboard
     };
-
-    let layout =  Object.assign({}, dashboardLayout, packageDetailLayout);
-    BlazeLayout.render("coreAdminLayout", layout);
+    let layout = Session.get("ReactionLayout");
+    let packageDetailLayout =  Object.assign({}, layout, dashboardLayout);
+    BlazeLayout.render("coreLayout", packageDetailLayout);
   }
 });
 

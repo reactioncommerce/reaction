@@ -14,7 +14,7 @@ Template.registerHelper("pathForSEO", function (path, params) {
   if (this[params]) {
     return  "/" + path + "/" + this[params];
   }
-  return  "/" + FlowRouter.pathDef(path, this);
+  return  "/" + Router.pathDef(path, this);
 });
 
 
@@ -22,7 +22,7 @@ Template.registerHelper("pathFor", function (path, params) {
   if (this[params]) {
     return  "/" + path + "/" + this[params];
   }
-  return  "/" + FlowRouter.path(path);
+  return Router.path(path);
 });
 
 

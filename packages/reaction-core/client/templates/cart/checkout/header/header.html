@@ -1,12 +1,7 @@
 <template name="checkoutHeader">
-  <div class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="{{pathFor 'index'}}">{{{siteName}}}</a>
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
+  <div class="nav" role="navigation">
+    <div class="row navbar-shop">
+      <div class="navbar-brand">{{> headerBrand}}</div>
     </div>
   </div>
 </template>
