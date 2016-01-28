@@ -53,8 +53,9 @@ Meteor.methods({
         const batch = ReactionCore.Collections.Inventory.
         _collection.rawCollection().initializeUnorderedBulkOp();
         while (i <= newQty) {
+          let id = ReactionCore.Collections.Inventory._makeNewID();
           batch.insert({
-            _id: ReactionCore.Collections.Inventory._makeNewID(),
+            _id: id,
             productId: productId,
             variantId: variant._id,
             shopId: product.shopId,

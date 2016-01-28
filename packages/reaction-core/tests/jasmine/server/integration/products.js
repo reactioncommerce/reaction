@@ -10,7 +10,21 @@ describe("core product methods", function () {
   // it, but this is not recommended in droves
 
   beforeAll(function () {
-    ReactionCore.Collections.Products.remove({});
+    // We are mocking inventory hooks, because we don't need them here, but
+    // if you want to do a real stress test, you could try to comment out
+    // this three lines. This is needed only for ./reaction test. In one
+    // package test this is ignoring.
+    if (Array.isArray(ReactionCore.Collections.Products._hookAspects.remove.
+      after) && ReactionCore.Collections.Products._hookAspects.remove.after.
+      length) {
+      spyOn(ReactionCore.Collections.Products._hookAspects.update.after[0],
+        "aspect");
+      spyOn(ReactionCore.Collections.Products._hookAspects.remove.after[0],
+        "aspect");
+      spyOn(ReactionCore.Collections.Products._hookAspects.insert.after[0],
+        "aspect");
+    }
+    ReactionCore.Collections.Products.direct.remove({});
   });
 
   describe("products/cloneVariant", function () {

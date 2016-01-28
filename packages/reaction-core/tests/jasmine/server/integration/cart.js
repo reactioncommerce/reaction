@@ -33,6 +33,20 @@ describe("cart methods", function () {
 
   describe("cart/mergeCart", () => {
     beforeAll(() => {
+      // We are mocking inventory hooks, because we don't need them here, but
+      // if you want to do a real stress test, you could try to comment out
+      // this two lines and uncomment the following spyOn line. This is needed
+      // only for `./reaction test`. In one package test this is ignoring.
+      if (Array.isArray(ReactionCore.Collections.Products._hookAspects.remove.
+        after) && ReactionCore.Collections.Products._hookAspects.remove.after.
+        length) {
+        spyOn(ReactionCore.Collections.Cart._hookAspects.update.after[0],
+          "aspect");
+        spyOn(ReactionCore.Collections.Products._hookAspects.remove.after[0],
+          "aspect");
+      }
+      // this is needed for `inventory/remove`. Don't ask me why;)
+      // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       ReactionCore.Collections.Products.remove({});
     });
 
@@ -141,6 +155,8 @@ describe("cart methods", function () {
     let variantId;
 
     beforeAll(() => {
+      // this is needed for `inventory/register`
+      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       product = faker.reaction.products.add();
       productId = product._id;
       variantId = ReactionCore.Collections.Products.findOne({
