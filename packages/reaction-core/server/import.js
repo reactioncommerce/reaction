@@ -40,14 +40,7 @@ ReactionImport.startup = function () {
 ReactionImport.load = function (key, object) {
   check(object, Object);
 
-  // todo fix this workaround
-  let collection;
-  if (object.type && object.type === "variant") {
-    collection = ReactionCore.Collections.Products;
-  } else {
-    collection = this.identify(object);
-  }
-  this.object(collection, key, object);
+  this.object(this.identify(object), key, object);
 };
 
 ReactionImport.indication = function (field, collection, probability) {
@@ -443,7 +436,9 @@ ReactionImport.process = function (json, keys, callback) {
 
 ReactionImport.indication("i18n", ReactionCore.Collections.Translations, 0.2);
 ReactionImport.indication("hashtags", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("variants", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("barcode", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("price", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("ancestors", ReactionCore.Collections.Products, 0.5);
 ReactionImport.indication("languages", ReactionCore.Collections.Shops, 0.5);
 ReactionImport.indication("currencies", ReactionCore.Collections.Shops, 0.5);
 ReactionImport.indication("timezone", ReactionCore.Collections.Shops, 0.5);
