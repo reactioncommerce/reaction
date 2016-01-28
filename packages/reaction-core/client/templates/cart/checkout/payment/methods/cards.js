@@ -8,7 +8,7 @@
  */
 Template.corePaymentMethods.helpers({
   isOpen: function (current) {
-    if (current.priority === 0) {
+    if (current.priority === "0") {
       return "in";
     }
   },
