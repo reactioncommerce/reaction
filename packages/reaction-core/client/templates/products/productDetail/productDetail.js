@@ -3,7 +3,7 @@
  */
 Template.productDetail.helpers({
   product: function () {
-    // Meteor.subscribe("Product", FlowRouter.getParam("handle"));
+    // Meteor.subscribe("Product", Router.getParam("handle"));
     let product = selectedProduct() || ReactionCore.Collections.Products.findOne();
     return product;
   },

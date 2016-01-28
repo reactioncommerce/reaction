@@ -3077,13 +3077,35 @@
     "workflow": "coreCartWorkflow",
     "collection": "Cart",
     "theme": "default",
-    "enabled": true
+    "enabled": true,
+    "structure": {
+      "template": "cartCheckout",
+      "layoutHeader": "checkoutHeader",
+      "layoutFooter": "layoutFooter",
+      "loadingTemplate": "loading",
+      "notFoundTemplate": "notFound",
+      "unauthorized": "unauthorized",
+      "printLayout": "printLayout",
+      "dashboardControls": "dashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
   }, {
     "layout": "coreLayout",
     "workflow": "coreOrderWorkflow",
     "collection": "Orders",
     "theme": "default",
-    "enabled": true
+    "enabled": true,
+    "structure": {
+      "template": "coreOrderWorkflow",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "layoutFooter",
+      "loadingTemplate": "loading",
+      "notFoundTemplate": "notFound",
+      "unauthorized": "unauthorized",
+      "printLayout": "printLayout",
+      "dashboardControls": "dashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
   }, {
     "layout": "coreLayout",
     "workflow": "coreOrderShipmentWorkflow",

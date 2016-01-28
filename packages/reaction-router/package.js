@@ -16,7 +16,6 @@ Package.onUse(function (api) {
   api.use("kadira:blaze-layout");
 
   api.addFiles("routes/router.js");
-  api.addFiles("client/layout.js", "client");
   api.addFiles("routes/shop.js");
   api.addFiles("routes/products.js");
   api.addFiles("routes/tags.js");

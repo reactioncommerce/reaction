@@ -35,7 +35,7 @@ Template.registerHelper("activeRouteClass", function () {
   let args = Array.prototype.slice.call(arguments, 0);
   args.pop();
   let active = _.any(args, function (name) {
-    return location.pathname === FlowRouter.path(name);
+    return location.pathname === Router.path(name);
   });
   return active && "active";
 });

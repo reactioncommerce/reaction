@@ -14,9 +14,10 @@ dashboard.route("/dashboard", {
   name: "dashboard",
   action: function () {
     $(document).trigger("closeAllPopovers");
-    const layout = Session.get("ReactionLayout");
-    const dashboardLayout =  Object.assign({}, layout, {template: "dashboardPackages"});
-    BlazeLayout.render("coreLayout", dashboardLayout);
+    // initialize reaction layout
+    renderLayout(this, "coreLayout", "coreLayout", {
+      template: "dashboardPackages"
+    });
   }
 });
 
@@ -34,9 +35,8 @@ dashboard.route("/orders", {
       dashboardHeaderControls: "orderListFilters",
       dashboardControls: ""
     };
-    let layout = Session.get("ReactionLayout");
-    let orderLayout =  Object.assign({}, layout, dashboardLayout);
-    BlazeLayout.render("coreLayout", orderLayout);
+    // initialize reaction layout
+    renderLayout(this, "coreLayout", "coreLayout", dashboardLayout);
 
     if (ReactionCore.hasDashboardAccess() && params._id) {
       ReactionCore.showActionView({
@@ -59,9 +59,8 @@ dashboard.route("/:dashboard", {
     let dashboardLayout =  {
       template: params.dashboard
     };
-    let layout = Session.get("ReactionLayout");
-    let packageDetailLayout =  Object.assign({}, layout, dashboardLayout);
-    BlazeLayout.render("coreLayout", packageDetailLayout);
+    // initialize reaction layout
+    renderLayout(this, "coreLayout", "coreLayout", dashboardLayout);
   }
 });
 

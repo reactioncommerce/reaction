@@ -1,4 +1,4 @@
-product = FlowRouter.group({
+product = Router.group({
   name: "product",
   prefix: "/product"
 });
@@ -14,11 +14,9 @@ product.route("/:handle/:variant?", {
   action: function (params) {
     const variant = ReactionCore.currentProduct.get("variantId") || params.variant;
     ReactionCore.setProduct(params.handle, variant);
-    let layout = Session.get("ReactionLayout");
-    const productDetailLayout = Object.assign({}, layout, {
-      template: "productDetail"
-    });
-    BlazeLayout.render("coreLayout", productDetailLayout);
+    // initialize reaction layout
+    renderLayout(this, "coreLayout", "coreLayout", {template: "productDetail"});
+
     // will default to published product
     // let product = selectedProduct() || ReactionCore.Collections.Products.findOne();
     //

@@ -1,4 +1,4 @@
-cart = FlowRouter.group({
+cart = Router.group({
   name: "cart",
   prefix: "/cart"
 });
@@ -13,12 +13,7 @@ cart.route("/checkout", {
     Meteor.subscribe("AccountOrders");
   },
   action: function () {
-    let layout = Session.get("ReactionLayout");
-    const checkoutLayout = Object.assign({}, layout, {
-      template: "cartCheckout",
-      layoutHeader: "checkoutHeader"
-    });
-    BlazeLayout.render("coreLayout", checkoutLayout);
+    renderLayout(this, "coreLayout", "coreCartWorkflow");
   }
 });
 
@@ -32,11 +27,9 @@ cart.route("/completed", {
     Meteor.subscribe("CompletedCartOrder", Meteor.userId(), params._id);
   },
   action: function () {
-    let layout = Session.get("ReactionLayout");
-    const checkoutLayout = Object.assign({}, layout, {
+    renderLayout(this, "coreLayout", "coreCartWorkflow", {
       template: "cartCompleted"
     });
-    BlazeLayout.render("coreLayout", checkoutLayout);
   }
 });
 
@@ -47,10 +40,8 @@ cart.route("/completed/:_id", {
     Meteor.subscribe("CompletedCartOrder", Meteor.userId(), params._id);
   },
   action: function () {
-    let layout = Session.get("ReactionLayout");
-    const checkoutLayout = Object.assign({}, layout, {
+    renderLayout(this, "coreLayout", "coreCartWorkflow", {
       template: "cartCompleted"
     });
-    BlazeLayout.render("coreLayout", checkoutLayout);
   }
 });

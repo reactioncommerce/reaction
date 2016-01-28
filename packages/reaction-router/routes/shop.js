@@ -12,6 +12,6 @@ shop.route("/", {
     Meteor.subscribe("Products", Session.get("productScrollLimit"));
   },
   action: function () {
-    BlazeLayout.render("coreLayout", Session.get("ReactionLayout"));
+    renderLayout(this);
   }
 });
