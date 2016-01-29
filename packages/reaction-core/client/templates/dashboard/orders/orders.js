@@ -1,37 +1,41 @@
-
-const orderFilters = [
-  {name: "new", label: "New"},
-  {name: "processing", label: "Processing"},
-  {name: "completed", label: "Completed"}
-];
+const orderFilters = [{
+  name: "new",
+  label: "New"
+}, {
+  name: "processing",
+  label: "Processing"
+}, {
+  name: "completed",
+  label: "Completed"
+}];
 
 const OrderHelper = {
   makeQuery(filter) {
     let query = {};
 
     switch (filter) {
-    // New orders
+      // New orders
     case "new":
       query = {
         "workflow.status": "new"
       };
       break;
 
-    // Orders that have yet to be captured & shipped
+      // Orders that have yet to be captured & shipped
     case "processing":
       query = {
         "workflow.status": "coreOrderWorkflow/processing"
       };
       break;
 
-    // Orders that have been shipped, based on if the items have been shipped
+      // Orders that have been shipped, based on if the items have been shipped
     case "shipped":
       query = {
         "items.workflow.status": "coreOrderItemWorkflow/shipped"
       };
       break;
 
-    // Orders that are complete, including all items with complete status
+      // Orders that are complete, including all items with complete status
     case "completed":
       query = {
         "workflow.status": "coreOrderWorkflow/completed",
@@ -41,7 +45,7 @@ const OrderHelper = {
       };
       break;
 
-    // Orders that have been captured, but not yet shipped
+      // Orders that have been captured, but not yet shipped
     case "captured":
       query = {
         "billing.paymentMethod.status": "completed",
@@ -55,7 +59,7 @@ const OrderHelper = {
       };
       break;
 
-    // Orders that have been refunded partially or fully
+      // Orders that have been refunded partially or fully
     case "refunded":
       query = {
         "billing.paymentMethod.status": "captured",
@@ -103,7 +107,6 @@ Template.orders.onCreated(() => {
  * orders helpers
  */
 Template.orders.helpers({
-
   orders() {
     const template = Template.instance();
     const queryParams = Router.current().queryParams;
@@ -111,7 +114,6 @@ Template.orders.helpers({
 
     return template.orders;
   },
-
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {
       return filter.name === Router.current().queryParams.filter;
@@ -121,7 +123,6 @@ Template.orders.helpers({
       return foundFilter.label;
     }
   },
-
   activeClassname(orderId) {
     if (Router.current().params._id === orderId) {
       return "panel-info";
@@ -162,7 +163,9 @@ Template.ordersListItem.events({
     Router.go("/dashboard/orders", {
       _id: this._id
     }, {
-      query: $.param({filter: "processing"})
+      query: $.param({
+        filter: "processing"
+      })
     });
   }
 });
@@ -182,7 +185,6 @@ Template.orderListFilters.helpers({
   filters() {
     return getFiltersWithCounts();
   },
-
   activeClassname(item) {
     if (item.active === true) {
       return "active";
