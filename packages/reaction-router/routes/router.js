@@ -1,8 +1,8 @@
 /**
  * isCurrentLayout
- * @param {Object} element - element of shops.layout array
- * @param {Object} layout - layout
- * @param {Object} workflow - workflow
+ * @param {Object} layout - element of shops.layout array
+ * @param {Object} setLayout - layout
+ * @param {Object} setWorkflow - workflow
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
 selectLayout = (layout, setLayout, setWorkflow) => {
@@ -40,6 +40,7 @@ renderLayout = (context, layout, workflow, options) => {
 
 // define Router export
 Router = FlowRouter;
+ReactionRouter = Router;
 
 // default not found route
 Router.notFound = {
@@ -48,4 +49,18 @@ Router.notFound = {
       template: "notFound"
     });
   }
+};
+
+// these are old iron:router methods
+// that we'd like to warn are deprecated
+Router.waitOn = () => {
+  console.error("Deprecated. Router.waitOn is only supported for iron-router.")
+};
+
+Router.configure = () => {
+  console.error("Deprecated. Router.configure is only supported for iron-router.")
+};
+
+Router.map = () => {
+  console.error("Router.map is deprecated. Use ReactionCore.registerPackage to define routes.")
 };

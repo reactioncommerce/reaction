@@ -66,11 +66,13 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema({
     optional: true
   },
   "registry.$.provides": {
-    type: String
+    type: String,
+    index: true
   },
   "registry.$.route": {
     type: String,
-    optional: true
+    optional: true,
+    index: true
   },
   "registry.$.template": {
     type: String,

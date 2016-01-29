@@ -10,14 +10,14 @@ dashboard = Router.group({
 // dashboard home
 //
 
-dashboard.route("/dashboard", {
+dashboard.route("/", {
   name: "dashboard",
-  action: function () {
+  action: () => {
+    // not sure the behavior this trying to resolve
     $(document).trigger("closeAllPopovers");
+
     // initialize reaction layout
-    renderLayout(this, "coreLayout", "coreLayout", {
-      template: "dashboardPackages"
-    });
+    renderLayout(this, "coreAdminLayout", "coreLayout");
   }
 });
 
@@ -36,7 +36,7 @@ dashboard.route("/orders", {
       dashboardControls: ""
     };
     // initialize reaction layout
-    renderLayout(this, "coreLayout", "coreLayout", dashboardLayout);
+    renderLayout(this, "coreAdminLayout", "coreLayout", dashboardLayout);
 
     if (ReactionCore.hasDashboardAccess() && params._id) {
       ReactionCore.showActionView({
@@ -60,7 +60,7 @@ dashboard.route("/:dashboard", {
       template: params.dashboard
     };
     // initialize reaction layout
-    renderLayout(this, "coreLayout", "coreLayout", dashboardLayout);
+    renderLayout(this, "coreAdminLayout", "coreLayout", dashboardLayout);
   }
 });
 

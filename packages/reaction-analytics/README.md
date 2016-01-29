@@ -38,7 +38,7 @@ Thanks to [Nemo64](https://github.com/Nemo64) for his [meteor-bootstrap](https:/
 Example use:
 
 ```
-<a href="{{pathForSEO 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-product="{{_id}}">
+<a href="{{pathFor 'product' 'handle'}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-product="{{_id}}">
 ```
 
 Stores event tracking data in ReactionAnalytics collection.

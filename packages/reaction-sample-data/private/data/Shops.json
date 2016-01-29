@@ -3073,6 +3073,22 @@
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
+    "layout": "coreAdminLayout",
+    "workflow": "coreLayout",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "dashboardPackages",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "layoutFooter",
+      "loadingTemplate": "loading",
+      "notFoundTemplate": "notFound",
+      "unauthorized": "unauthorized",
+      "printLayout": "printLayout",
+      "dashboardControls": "dashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
     "layout": "coreLayout",
     "workflow": "coreCartWorkflow",
     "collection": "Cart",

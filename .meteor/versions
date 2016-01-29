@@ -85,7 +85,7 @@ jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
 jquery@1.11.4
 kadira:blaze-layout@2.0.1
-kadira:flow-router@2.0.2
+kadira:flow-router@2.1.1
 launch-screen@1.0.4
 less@2.5.1
 livedata@1.0.15

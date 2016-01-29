@@ -1,5 +1,4 @@
 product = Router.group({
-  name: "product",
   prefix: "/product"
 });
 
@@ -8,6 +7,7 @@ product = Router.group({
 //
 
 product.route("/:handle/:variant?", {
+  name: "product",
   subscriptions: function (params) {
     Meteor.subscribe("Product", params.handle);
   },

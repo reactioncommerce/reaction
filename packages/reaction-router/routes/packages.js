@@ -14,8 +14,8 @@ for (let pkg of pkgs) {
       // console.log(registryItem);
       packages.route(registryItem.route, {
         name: registryItem.route,
-        action: function () {
-          BlazeLayout.render("coreLayout", registryItem.template);
+        action: (context) => {
+          renderLayout(context, "coreAdminLayout", "coreLayout", {template: registryItem.template});
         }
       });
     }

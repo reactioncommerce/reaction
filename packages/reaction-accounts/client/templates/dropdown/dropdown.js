@@ -52,16 +52,17 @@ Template.loginDropdown.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          Router.go("/product", {
+          let params = {
             _id: productId
-          });
+          };
+          Router.go("product", params);
         }
       });
     } else if (this.route) {
+      let path = Router.path(this.route);
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
-
-      return Router.go(this.route);
+      Router.go(path);
     }
   }
 });
