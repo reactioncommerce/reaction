@@ -151,7 +151,6 @@ Package.onUse(function (api) {
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
-  api.addFiles("server/methods/products.js", "server");
   api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
 
@@ -401,7 +400,6 @@ Package.onTest(function (api) {
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
-  api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
   api.export("faker", ["server"]);
 });

@@ -75,7 +75,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: [String],
     defaultValue: []
   },
-  // this property since implementing of flattened model is used for keeping
+  // since implementing of flattened model this property is used for keeping
   // array index. This is needed for moving variants through list (drug'n'drop)
   index: {
     label: "Variant position number in list",
@@ -318,7 +318,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
   // Denormalized field. It is `true` if product not in stock, but customers
   // anyway could order it.
   isBackorder: {
-    label: "Indicates when the seller has blocked the sale of product",
+    label: "Indicates when the seller has allowed the sale of product which" +
+    " is not in stock",
     type: Boolean,
     optional: true
   },

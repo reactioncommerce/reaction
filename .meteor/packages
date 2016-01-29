@@ -47,6 +47,7 @@ accounts-oauth
 # Reaction Commerce Packages
 
 reactioncommerce:core
+reactioncommerce:reaction-catalog
 reactioncommerce:core-theme
 reactioncommerce:reaction-accounts
 reactioncommerce:reaction-inventory
