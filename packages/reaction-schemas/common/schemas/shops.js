@@ -1,4 +1,87 @@
 /**
+ * @summary ShopLayout Schema
+ * package workflow schema for defining workflow patterns
+ * "layout": "coreLayout",
+ *  "workflow": "coreWorkflow",
+ *  "theme": "default",
+ *  "enabled": true,
+ *  "structure": {
+ *   "template": "products",
+ *   "layoutHeader": "layoutHeader",
+ *   "layoutFooter": "layoutFooter",
+ *   "loading": "loading",
+ *   "notFound": "notFound",
+ *   "unauthorized": "unauthorized",
+ *   "dashboardControls": "dashboardControls",
+ *   "adminControlsFooter": "adminControlsFooter"
+ */
+ReactionCore.Schemas.ShopLayout = new SimpleSchema({
+  "layout": {
+    type: String,
+    defaultValue: "coreLayout",
+    index: true
+  },
+  "workflow": {
+    type: String,
+    index: true
+  },
+  "collection": {
+    type: String,
+    optional: true
+  },
+  "theme": {
+    type: String,
+    defaultValue: "default",
+    optional: true
+  },
+  "enabled": {
+    type: Boolean,
+    defaultValue: true
+  },
+  "structure": {
+    type: Object,
+    optional: true
+  },
+  "structure.template": {
+    type: String,
+    index: true,
+    optional: true
+  },
+  "structure.layoutHeader": {
+    type: String,
+    index: true
+  },
+  "structure.layoutFooter": {
+    type: String,
+    optional: true
+  },
+  "structure.loading": {
+    type: String,
+    optional: true
+  },
+  "structure.notFound": {
+    type: String,
+    optional: true
+  },
+  "structure.unauthorized": {
+    type: String,
+    optional: true
+  },
+  "structure.dashboardHeader": {
+    type: String,
+    optional: true
+  },
+  "structure.dashboardControls": {
+    type: String,
+    optional: true
+  },
+  "structure.adminControlsFooter": {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * CustomEmailSettings Schema
  */
 
@@ -205,33 +288,8 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     defaultValue: ["guest", "account/profile"]
   },
   "layout": {
-    type: [Object],
+    type: [ReactionCore.Schemas.ShopLayout],
     optional: true
-  },
-  "layout.$.layout": {
-    type: String,
-    defaultValue: "coreLayout"
-  },
-  "layout.$.theme": {
-    type: String,
-    defaultValue: "default"
-  },
-  "layout.$.workflow": {
-    type: String,
-    optional: true
-  },
-  "layout.$.collection": {
-    type: String,
-    optional: true
-  },
-  "layout.$.structure": {
-    type: Object,
-    blackbox: true,
-    optional: true
-  },
-  "layout.$.enabled": {
-    type: Boolean,
-    defaultValue: true
   },
   "createdAt": {
     type: Date,

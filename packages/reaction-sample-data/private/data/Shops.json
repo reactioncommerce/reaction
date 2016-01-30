@@ -3138,6 +3138,7 @@
     }
   }, {
     "layout": "printLayout",
+    "workflow": "coreOrderWorkflow",
     "structure": {
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter"
