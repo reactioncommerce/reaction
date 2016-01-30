@@ -37,15 +37,6 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
     selector = {
       shopId: shop._id,
       type: "simple"
-      // "$where": function () {
-      //   let lim = limit;
-      //   let counter = 0;
-      //   if (this.type === "simple") {
-      //     counter++;
-      //     console.log(counter);
-      //     return true;
-      //   }
-      // }.toString()
     };
   }
 

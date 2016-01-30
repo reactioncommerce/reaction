@@ -81,34 +81,7 @@ Template.productImageGallery.helpers({
           "metadata.priority": 1
         }
       });
-      // todo clean this:
-
-      //if (!ReactionCore.hasAdminAccess() && mediaArray.count() < 1 && product) {
-      //  mediaArray = Media.find({
-      //    "metadata.variantId": variant._id/*product.variants[0]._id*/
-      //  }, {
-      //    sort: {
-      //      "metadata.priority": 1
-      //    }
-      //  });
-      //}
-    }/* else { // TODO: is this part make sense?
-      if (product) {
-        let ids = [];
-        for (variant of product.variants) {
-          ids.push(variant._id);
-        }
-        mediaArray = Media.find({
-          "metadata.variantId": {
-            $in: ids
-          }
-        }, {
-          sort: {
-            "metadata.priority": 1
-          }
-        });
-      }
-    }*/
+    }
     return mediaArray;
   },
   variant: function () {
@@ -154,54 +127,10 @@ Template.productImageGallery.onRendered(function () {
  */
 Template.productImageGallery.events({
   "mouseenter .gallery > li": function (event) {
-    let ids = [];
     event.stopImmediatePropagation();
     if (!ReactionCore.hasPermission("createProduct")) {
       let first = $(".gallery li:nth-child(1)");
       let target = $(event.currentTarget);
-      let variant = selectedVariant();
-
-      // todo clean this:
-      // todo this part is no sense anymore, because we always will have a
-      // variant, right?
-
-      //if (!variant) {
-      //  let product = selectedProduct();
-      //  if (product) {
-      //    for (let productVariant of product.variants) {
-      //      let mediaResults = Media.find({
-      //        "metadata.variantId": productVariant._id
-      //      }, {
-      //        sort: {
-      //          "metadata.priority": 1
-      //        }
-      //      }).fetch();
-      //      // loop within product variants
-      //      for (let media of mediaResults) {
-      //        ids.push(media._id);
-      //        if ($(event.currentTarget).data("index") === media._id) {
-      //          setCurrentVariant(productVariant._id);
-      //        }
-      //      }
-      //      if (selectedVariant()) {
-      //        break;
-      //      }
-      //    }
-      //  }
-      //
-      //  /*
-      //  hide all images not associated with the highlighted variant
-      //  to prevent the alternate variant images from being displayed.
-      //   */
-      //  if (ids.length > 0) {
-      //    $(".gallery li").each(function (k, v) {
-      //      let vId = $(v).data("index");
-      //      if (_.indexOf(ids, vId) < 0) {
-      //        return $(v).hide();
-      //      }
-      //    });
-      //  }
-      //}
       if ($(target).data("index") !== first.data("index")) {
         return $(".gallery li:nth-child(1)").fadeOut(400, function () {
           $(this).replaceWith(target);

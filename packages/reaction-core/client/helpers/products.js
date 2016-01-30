@@ -113,10 +113,7 @@ this.selectedProduct = function () {
  * @summary get the currently active/requested product
  * @return {String} currently selected product id
  */
-//this.selectedProductId = () => currentProduct.get("productId");
-this.selectedProductId = function () {
-  return currentProduct.get("productId");
-};
+this.selectedProductId = () => currentProduct.get("productId");
 
 /**
  * selectedVariantId

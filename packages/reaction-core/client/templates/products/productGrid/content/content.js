@@ -4,8 +4,6 @@
 
 Template.gridContent.helpers({
   displayPrice: function () {
-    if (this._id) {
-      return this.price;
-    }
+    return this._id && this.price;
   }
 });

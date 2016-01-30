@@ -9,7 +9,6 @@
  * @return {Number} quantity - revised quantity to be added to cart
  */
 function quantityProcessing(product, variant, itemQty = 1) {
-  // todo add min item threshold to schema
   let quantity = itemQty;
   const MIN = variant.minOrderQuantity || 1;
   const MAX = variant.inventoryQuantity || Infinity;
