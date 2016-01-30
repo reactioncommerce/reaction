@@ -6,8 +6,8 @@ BlazeLayout.setRoot("body");
 /**
  * pathFor
  * @summary get current router path
- * @param {String} path - path to featch
- * @param {Object} params - url params
+ * @param {String} reqPath - path to fetch
+ * @param {Object} reqParams - url params
  * @return {String} returns current router path
  */
 pathFor = (reqPath, reqParams) => {
@@ -15,6 +15,7 @@ pathFor = (reqPath, reqParams) => {
   let params = reqParams;
   // accept "path/value" case
   if (!path.hash && params && !params.hash) {
+    path = Router.path(path);
     const shortcut = path + "/" + params;
     return Router.path(shortcut);
   }

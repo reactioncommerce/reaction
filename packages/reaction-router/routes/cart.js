@@ -13,7 +13,9 @@ cart.route("/checkout", {
     Meteor.subscribe("AccountOrders");
   },
   action: function () {
-    renderLayout(this, "coreLayout", "coreCartWorkflow");
+    renderLayout({
+      workflow: "coreCartWorkflow"
+    });
   }
 });
 
@@ -27,12 +29,12 @@ cart.route("/completed", {
     Meteor.subscribe("CompletedCartOrder", Meteor.userId(), params._id);
   },
   action: function () {
-    renderLayout(this, "coreLayout", "coreCartWorkflow", {
+    renderLayout({
+      workflow: "coreCartWorkflow",
       template: "cartCompleted"
     });
   }
 });
-
 
 cart.route("/completed/:_id", {
   subscriptions: function (params) {
@@ -40,8 +42,9 @@ cart.route("/completed/:_id", {
     Meteor.subscribe("CompletedCartOrder", Meteor.userId(), params._id);
   },
   action: function () {
-    renderLayout(this, "coreLayout", "coreCartWorkflow", {
-      template: "cartCompleted"
+    renderLayout({
+      template: "cartCompleted",
+      workflow: "coreCartWorkflow"
     });
   }
 });

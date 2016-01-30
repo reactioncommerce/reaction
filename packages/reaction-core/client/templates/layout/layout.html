@@ -12,12 +12,17 @@
 </template>
 
 <template name="coreLayout">
-  <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
-  <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-  <div class="reaction-dashboard-drawer">{{> Template.dynamic template=dashboard}}</div>
-  <main role="main" id="main">
-    <span id="layout-alerts">{{>bootstrapAlerts}}</span>
-    {{> Template.dynamic template=template}}
-  </main>
-  <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
+  {{#if hasDashboardAccess}}
+    {{> coreAdminLayout}}
+  {{else}}
+    <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
+    <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
+    <main role="main" id="main">
+      <span id="layout-alerts">{{>bootstrapAlerts}}</span>
+      {{#if hasPermission 'anonymous'}}
+        {{> Template.dynamic template=template}}
+      {{/if}}
+    </main>
+    <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
+  {{/if}}
 </template>

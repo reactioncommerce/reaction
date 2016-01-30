@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.11.0",
+  version: "0.12.0",
   documentation: "README.md"
 });
 
@@ -47,7 +47,7 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("reactioncommerce:reaction-collections@1.0.4");
+  api.use("reactioncommerce:reaction-collections@1.0.5");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
@@ -198,9 +198,7 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/layout/loading/loading.html", "client");
   api.addFiles("client/templates/layout/notFound/notFound.html", "client");
-
   api.addFiles("client/templates/layout/notice/unauthorized.html", "client");
-  api.addFiles("client/templates/layout/notice/shopNotFound.html", "client");
 
   api.addFiles("client/templates/cart/cartDrawer/cartDrawer.html", "client");
   api.addFiles("client/templates/cart/cartDrawer/cartDrawer.js", "client");
@@ -383,7 +381,7 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("underscore");
   api.use("random");
-  api.use("sanjo:jasmine@0.20.3");
+  api.use("sanjo:jasmine@0.21.0");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
@@ -391,9 +389,9 @@ Package.onTest(function (api) {
   api.use("accounts-password");
 
   // reaction core
-  api.use("reactioncommerce:reaction-collections@1.0.4");
+  api.use("reactioncommerce:reaction-collections@1.0.5");
   api.use("reactioncommerce:reaction-factories@0.3.7");
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("reactioncommerce:core@0.12.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");

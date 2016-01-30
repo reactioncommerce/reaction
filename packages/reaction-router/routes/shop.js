@@ -12,6 +12,6 @@ shop.route("/", {
     Meteor.subscribe("Products", Session.get("productScrollLimit"));
   },
   action: function () {
-    renderLayout(this);
+    renderLayout();
   }
 });

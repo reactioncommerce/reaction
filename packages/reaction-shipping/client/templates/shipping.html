@@ -6,8 +6,7 @@
 </template>
 
 <template name="shipping">
-
-  {{> contentFor region="dashboardControls" template="shippingDashboardControls"}}
+  {{> Template.dynamic template=dashboardControls}}
 
   <div class="container-fluid-sm">
     <div class="shipping-rate-tables">
@@ -177,9 +176,9 @@
         </div>
       </div>
     </div>
-    
+
     {{>afArrayField name='validLocales' template="inlineRange" class="form-control"}}
-    
+
     {{>afArrayField name='validRanges' template="inlineRange"}}
 
 
@@ -236,7 +235,7 @@
         meteormethod="updateShippingProvider"
         resetOnSuccess=false
         }}
-        
+
         <div class="col-md-12">
           {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
           {{>afQuickField name='provider.label'}}
@@ -313,7 +312,7 @@
         </label>
       {{/unless}}
       {{> afFieldInput afFieldInputAtts}}
-      
+
       {{#if afFieldMessage name=this.name}}
         <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
       {{/if}}
@@ -333,9 +332,9 @@
         </label>
       </div>
       {{/unless}}
-      
+
       {{> afFieldInput afFieldInputAtts}}
-      
+
       {{#if afFieldMessage name=this.name}}
         <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
       {{/if}}

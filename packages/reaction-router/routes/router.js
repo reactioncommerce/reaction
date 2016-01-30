@@ -7,7 +7,7 @@
  */
 selectLayout = (layout, setLayout, setWorkflow) => {
   const currentLayout = setLayout || "coreLayout";
-  const currentWorkflow = setWorkflow || "coreLayout";
+  const currentWorkflow = setWorkflow || "coreWorkflow";
   if (layout.layout === currentLayout && layout.workflow === currentWorkflow && layout.enabled === true) {
     return layout;
   }
@@ -22,18 +22,23 @@ selectLayout = (layout, setLayout, setWorkflow) => {
  * @param {String} options - layout.structure overrides
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
-renderLayout = (context, layout, workflow, options) => {
-  const coreLayout = layout || "coreLayout";
-  const coreWorkflow = workflow || "coreLayout";
+renderLayout = (options = {}) => {
+  const layout = options.layout || "coreLayout";
+  const workflow = options.workflow || "coreWorkflow";
 
   Tracker.autorun(function () {
     shopHandle = Meteor.subscribe("Shops");
     if (shopHandle.ready()) {
       const shop = ReactionCore.Collections.Shops.findOne();
-      const newLayout = shop.layout.find((x) => selectLayout(x, coreLayout, coreWorkflow));
+      const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
+      // if (!newLayout) {
+      //   console.error("failed to render coreLayout", options);
+      //   BlazeLayout.render("notFound");
+      //   stop();
+      // }
       const layoutToRender = Object.assign({}, newLayout.structure, options);
-      // console.log("render coreLayout", layoutToRender);
-      BlazeLayout.render(coreLayout, layoutToRender);
+      // console.log(`layoutToRender ${layout}`, layoutToRender);
+      BlazeLayout.render(layout, layoutToRender);
     }
   });
 };
@@ -43,24 +48,24 @@ Router = FlowRouter;
 ReactionRouter = Router;
 
 // default not found route
-Router.notFound = {
-  action() {
-    BlazeLayout.render("coreLayout", {
-      template: "notFound"
-    });
-  }
-};
+// Router.notFound = {
+//   action() {
+//     renderLayout({
+//       template: "notFound"
+//     });
+//   }
+// };
 
 // these are old iron:router methods
 // that we'd like to warn are deprecated
 Router.waitOn = () => {
-  console.error("Deprecated. Router.waitOn is only supported for iron-router.")
+  console.warn("Deprecated. Router.waitOn is only supported for iron-router.")
 };
 
 Router.configure = () => {
-  console.error("Deprecated. Router.configure is only supported for iron-router.")
+  console.warn("Deprecated. Router.configure is only supported for iron-router.")
 };
 
 Router.map = () => {
-  console.error("Router.map is deprecated. Use ReactionCore.registerPackage to define routes.")
+  console.warn("Router.map is deprecated. Use ReactionCore.registerPackage to define routes.")
 };

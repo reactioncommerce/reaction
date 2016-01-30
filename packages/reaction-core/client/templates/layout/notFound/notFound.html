@@ -1,14 +1,19 @@
 <template name="notFound">
-  <nav class="reaction-navigation-header">{{> layoutHeader}}</nav>
-  <main role="main" id="main">
-    <div class="container-fluid">
-      <h1>Oops!<small> Page not found.</small></h1>
+  <div class="container-fluid-sm">
+    <div class="empty-view-message">
+      <i class="fa fa-sun-o"></i>
+      <p>404</p>
+      <p data-i18n="app.notFound">This page was not found.</p>
     </div>
-  </main>
-  <footer class="reaction-navigation-footer">{{> layoutFooter}}</footer>
+  </div>
 </template>
 
-
 <template name="productNotFound">
-  <h1>Oops!<small> This is not the product you were looking for.</small></h1>
+  <div class="container-fluid-sm">
+    <div class="empty-view-message">
+      <i class="fa fa-sun-o"></i>
+      <p data-i18n="app.warning">Oops</p>
+      <p data-i18n="app.productNotFound">This product was not found.</p>
+    </div>
+  </div>
 </template>

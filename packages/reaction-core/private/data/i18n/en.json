@@ -25,7 +25,11 @@
         "timezoneOptions": "Choose timezone",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "notFound": "This page was not found.",
+        "pageNotFound": "This page was not found.",
+        "productNotFound": "This product was not found."
+
       },
       "shopSettings": {
         "general": "General",

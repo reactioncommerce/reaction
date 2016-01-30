@@ -36,6 +36,7 @@ ReactionCore.registerPackage({
     icon: "fa fa-th",
     cycle: 1,
     container: "dashboard",
+    template: "shopDashboard",
     permissions: [{
       label: "Dashboard",
       permission: "dashboard"
@@ -51,7 +52,6 @@ ReactionCore.registerPackage({
     template: "shopSettings",
     label: "Shop Settings",
     provides: "settings",
-    icon: "fa fa-cog fa-2x fa-fw",
     container: "dashboard"
   }, {
     route: "dashboard/import",
@@ -67,7 +67,8 @@ ReactionCore.registerPackage({
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
     cycle: 1,
-    container: "orders"
+    container: "orders",
+    template: "orders"
   }, {
     route: "dashboard/orders",
     provides: "shortcut",
@@ -85,30 +86,7 @@ ReactionCore.registerPackage({
     icon: "fa fa-plus",
     provides: "shortcut"
   }],
-  layout: [{ // coreLayout definitions
-    layout: "coreLayout",
-    provides: "coreLayout",
-    theme: "default",
-    enabled: true
-  }, {
-    layout: "coreLayout",
-    provides: "coreCartWorkflow",
-    collection: "Cart",
-    theme: "default",
-    enabled: true
-  }, {
-    layout: "coreLayout",
-    provides: "coreOrderWorkflow",
-    collection: "Orders",
-    theme: "default",
-    enabled: true
-  }, {
-    layout: "coreLayout",
-    provides: "coreOrderShipmentWorkflow",
-    collection: "Orders",
-    theme: "default",
-    enabled: true
-  }, { // Standard Checkout Workflow
+  layout: [{ // Standard Checkout Workflow
     template: "checkoutLogin",
     label: "Login",
     workflow: "coreCartWorkflow",

@@ -1,17 +1,17 @@
 tags = Router.group({
-  name: "tags",
-  prefix: "/tags"
+  prefix: "/tag"
 });
 
 //
 // tag grid
 //
 tags.route("/:_tag", {
+  name: "tag",
   subscriptions: function () {
     Meteor.subscribe("Products", Session.get("productScrollLimit"));
   },
   action: function () {
     // initialize reaction layout
-    renderLayout(this, "coreLayout", "coreLayout", {template: "products"});
+    renderLayout({template: "products"});
   }
 });

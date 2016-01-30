@@ -17,7 +17,11 @@ dashboard.route("/", {
     $(document).trigger("closeAllPopovers");
 
     // initialize reaction layout
-    renderLayout(this, "coreAdminLayout", "coreLayout");
+    let dashboardLayout =  {
+      workflow: "coreDashboardWorkflow"
+    };
+    // initialize reaction layout
+    renderLayout(dashboardLayout);
   }
 });
 
@@ -29,15 +33,30 @@ dashboard.route("/orders", {
   subscriptions: function () {
     Meteor.subscribe("Orders");
   },
-  action: function (params) {
+  action: function () {
     let dashboardLayout =  {
-      template: "orders",
-      dashboardHeaderControls: "orderListFilters",
-      dashboardControls: ""
+      workflow: "coreOrderWorkflow"
     };
     // initialize reaction layout
-    renderLayout(this, "coreAdminLayout", "coreLayout", dashboardLayout);
+    renderLayout(dashboardLayout);
+  }
+});
 
+//
+// dashboard orders
+//
+dashboard.route("/orders/:_id", {
+  name: "orders",
+  subscriptions: function () {
+    Meteor.subscribe("Orders");
+  },
+  action: function (params) {
+    let dashboardLayout =  {
+      workflow: "coreOrderWorkflow"
+    };
+    // initialize reaction layout
+    renderLayout(dashboardLayout);
+    // enable order details view
     if (ReactionCore.hasDashboardAccess() && params._id) {
       ReactionCore.showActionView({
         label: "Order Details",
@@ -57,10 +76,11 @@ dashboard.route("/orders", {
 dashboard.route("/:dashboard", {
   action: function (params) {
     let dashboardLayout =  {
+      worflow: "coreDashboardWorkflow",
       template: params.dashboard
     };
     // initialize reaction layout
-    renderLayout(this, "coreAdminLayout", "coreLayout", dashboardLayout);
+    renderLayout(dashboardLayout);
   }
 });
 

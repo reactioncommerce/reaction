@@ -5,7 +5,7 @@
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
     <div class="reaction-dashboard-drawer">{{> Template.dynamic template=dashboard}}</div>
     <main role="main" id="main">
-      {{> dashboardHeader}}
+      {{> Template.dynamic template=dashboardHeader}}
       {{> Template.dynamic template=template}}
     </main>
     <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>

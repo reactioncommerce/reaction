@@ -3058,33 +3058,47 @@
   ],
   "layout": [{
     "layout": "coreLayout",
-    "workflow": "coreLayout",
+    "workflow": "coreWorkflow",
     "theme": "default",
     "enabled": true,
     "structure": {
       "template": "products",
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter",
-      "loadingTemplate": "loading",
-      "notFoundTemplate": "notFound",
+      "loading": "loading",
+      "notFound": "notFound",
       "unauthorized": "unauthorized",
-      "printLayout": "printLayout",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
-    "layout": "coreAdminLayout",
-    "workflow": "coreLayout",
+    "layout": "coreLayout",
+    "workflow": "coreProductWorkflow",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "productDetail",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "layoutFooter",
+      "loading": "loading",
+      "notFound": "productNotFound",
+      "unauthorized": "unauthorized",
+      "dashboardControls": "dashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "coreLayout",
+    "workflow": "coreDashboardWorkflow",
     "theme": "default",
     "enabled": true,
     "structure": {
       "template": "dashboardPackages",
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter",
-      "loadingTemplate": "loading",
-      "notFoundTemplate": "notFound",
+      "loading": "loading",
+      "notFound": "notFound",
       "unauthorized": "unauthorized",
-      "printLayout": "printLayout",
+      "dashboardHeader": "dashboardHeader",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
@@ -3098,10 +3112,10 @@
       "template": "cartCheckout",
       "layoutHeader": "checkoutHeader",
       "layoutFooter": "layoutFooter",
-      "loadingTemplate": "loading",
-      "notFoundTemplate": "notFound",
+      "loading": "loading",
+      "notFound": "notFound",
       "unauthorized": "unauthorized",
-      "printLayout": "printLayout",
+      "dashboardHeader": "dashboardHeader",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
@@ -3112,15 +3126,21 @@
     "theme": "default",
     "enabled": true,
     "structure": {
-      "template": "coreOrderWorkflow",
+      "template": "orders",
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter",
-      "loadingTemplate": "loading",
-      "notFoundTemplate": "notFound",
+      "loading": "loading",
+      "notFound": "notFound",
       "unauthorized": "unauthorized",
-      "printLayout": "printLayout",
+      "dashboardHeader": "dashboardHeader",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "printLayout",
+    "structure": {
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "layoutFooter"
     }
   }, {
     "layout": "coreLayout",

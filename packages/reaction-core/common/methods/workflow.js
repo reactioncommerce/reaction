@@ -43,7 +43,7 @@ Meteor.methods({
 
     // exit if a cart doesn't exist.
     if (!currentCart) return [];
-
+    // TODO doc this
     let currentWorkflowStatus = currentCart.workflow.status;
     let packages = Packages.find({
       "shopId": ReactionCore.getShopId(),
