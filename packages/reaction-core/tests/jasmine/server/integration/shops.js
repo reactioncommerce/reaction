@@ -1,6 +1,4 @@
 describe("core shop schema", function () {
-  let shop;
-
   beforeEach(function () {
     return ReactionCore.Collections.Shops.remove({});
   });
@@ -15,6 +13,7 @@ describe("core shop schema", function () {
 });
 
 describe("core shop methods", function () {
+  let shop;
   beforeEach(function () {
     shop = Factory.create("shop");
   });
