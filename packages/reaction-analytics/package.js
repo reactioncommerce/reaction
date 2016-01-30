@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
-  version: "1.2.2",
+  version: "1.2.3",
   documentation: "README.md"
 });
 
@@ -41,11 +41,10 @@ Package.on_use(function (api) {
   api.use("less");
   api.use("browser-policy-content", "server");
   api.use("reactioncommerce:reaction-router@1.0.0");
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-analytics-libs@1.1.0", "client");
 
   api.addFiles([
-    // "common/router.js",  // replaced by registry + reaction-router
     "common/collections.js",
     "common/hooks.js"
   ], ["client", "server"]);

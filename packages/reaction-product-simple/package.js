@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Product - Simple",
   name: "reactioncommerce:reaction-product-simple",
-  version: "0.1.0",
+  version: "0.1.1",
   documentation: "README.md"
 });
 
@@ -29,7 +29,7 @@ Package.onUse(function (api) {
   // meteor add-on packages
 
   api.use("less");
-  api.use("reactioncommerce:core@0.9.4");
+  api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-ui@0.1.0");
 
   api.addFiles("server/register.js", ["server"]); // register as a reaction package

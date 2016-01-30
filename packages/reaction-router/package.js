@@ -24,8 +24,6 @@ Package.onUse(function (api) {
   api.addFiles("routes/packages.js");
   api.addFiles("client/helpers.js", "client");
 
-  api.imply("kadira:flow-router");
-  api.imply("kadira:blaze-layout");
   api.export("Router");
   api.export("ReactionRouter");
 });

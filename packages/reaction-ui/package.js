@@ -1,15 +1,15 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.2.0",
+  version: "0.3.0",
   documentation: "README.md"
 });
 
 Npm.depends({
-  "classnames": "2.2.0",
-  "react-textarea-autosize": "3.1.0",
+  "classnames": "2.2.3",
+  "react-textarea-autosize": "3.3.0",
   "sortablejs": "1.4.2",
-  "react-dom": "0.14.1"
+  "react-dom": "0.14.7"
   // "react-anything-sortable": "1.0.0"
 });
 
@@ -36,7 +36,7 @@ Package.onUse(function (api) {
   api.use("cosmos:browserify@0.9.3");
 
   // meteor add-on packages
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("reactioncommerce:core@0.12.0");
 
   api.addFiles("lib/client.browserify.js", "client");
 
