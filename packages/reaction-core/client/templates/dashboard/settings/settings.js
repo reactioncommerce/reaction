@@ -12,7 +12,7 @@ Template.settingsHeader.helpers({
     let registry = ReactionCore.getActionView() || {};
     registry.nameSpace = registry.name || registry.template || "app";
     registry.i18nLabel = registry.label || registry.provides || "Settings";
-    registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase();
+    registry.i18nKey = registry.i18nKey || (registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase());
     return registry;
   },
 
