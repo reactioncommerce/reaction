@@ -15,8 +15,7 @@ pathFor = (reqPath, reqParams) => {
   let params = reqParams;
   // accept "path/value" case
   if (!path.hash && params && !params.hash) {
-    path = Router.path(path);
-    const shortcut = path + "/" + params;
+    const shortcut = "/" + path + "/" + params;
     return Router.path(shortcut);
   }
   // accept path/param/value
