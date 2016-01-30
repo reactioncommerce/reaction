@@ -60,11 +60,11 @@ reactioncommerce:launchdock-connect
 
 # Reaction Payment Packages
 
-#reactioncommerce:reaction-paymentmethod
+reactioncommerce:reaction-paymentmethod
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-stripe
-#reactioncommerce:reaction-auth-net
-#reactioncommerce:reaction-braintree
+reactioncommerce:reaction-auth-net
+reactioncommerce:reaction-braintree
 
 
 # Reaction Commerce Data
