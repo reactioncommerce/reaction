@@ -28,10 +28,10 @@ Template.dashboardControls.helpers({
 
 Template.dashboardControls.events({
   "click .dashboard-navbar-package": function (event) {
-    Session.set("currentPackage", this.route);
+    event.preventDefault();
     if (this.route !== null) {
-      event.preventDefault();
-      return Router.go(this.route);
+      Session.set("currentPackage", this.route);
+      return Router.go("/" + this.route);
     }
   }
 });

@@ -3094,7 +3094,7 @@
     "structure": {
       "template": "dashboardPackages",
       "layoutHeader": "layoutHeader",
-      "layoutFooter": "layoutFooter",
+      "layoutFooter": "",
       "loading": "loading",
       "notFound": "notFound",
       "unauthorized": "unauthorized",
@@ -3111,7 +3111,7 @@
     "structure": {
       "template": "cartCheckout",
       "layoutHeader": "checkoutHeader",
-      "layoutFooter": "layoutFooter",
+      "layoutFooter": "",
       "loading": "loading",
       "notFound": "notFound",
       "unauthorized": "unauthorized",
@@ -3128,7 +3128,7 @@
     "structure": {
       "template": "orders",
       "layoutHeader": "layoutHeader",
-      "layoutFooter": "layoutFooter",
+      "layoutFooter": "",
       "loading": "loading",
       "notFound": "notFound",
       "unauthorized": "unauthorized",

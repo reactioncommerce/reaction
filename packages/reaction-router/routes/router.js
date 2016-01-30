@@ -48,13 +48,13 @@ Router = FlowRouter;
 ReactionRouter = Router;
 
 // default not found route
-// Router.notFound = {
-//   action() {
-//     renderLayout({
-//       template: "notFound"
-//     });
-//   }
-// };
+Router.notFound = {
+  action() {
+    renderLayout({
+      template: "notFound"
+    });
+  }
+};
 
 // these are old iron:router methods
 // that we'd like to warn are deprecated
