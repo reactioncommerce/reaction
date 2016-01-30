@@ -21,6 +21,7 @@ Package.onUse(function (api) {
   api.use("session");
   api.use("jquery");
   api.use("tracker");
+  api.use("reactive-dict");
 
   // meteor add-on packages
   api.use("ddp-rate-limiter");
