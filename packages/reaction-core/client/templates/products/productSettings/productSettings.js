@@ -31,7 +31,7 @@ Template.productSettingsGridItem.helpers({
       "metadata.productId": this._id,
       "metadata.priority": 0,
       "metadata.toGrid": 1
-    }, { sort: {"uploadedAt": 1} });
+    }, { sort: { uploadedAt: 1 } });
 
     return media instanceof FS.File ? media : false;
   },
@@ -172,7 +172,7 @@ Template.productSettings.events({
         autoHide: true,
         dismissable: false
       });
-    };
+    }
 
     for (product of this.products) {
       Meteor.call("products/publishProduct", product._id, callback);

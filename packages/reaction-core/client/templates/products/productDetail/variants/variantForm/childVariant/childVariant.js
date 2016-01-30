@@ -23,10 +23,10 @@ Template.childVariantForm.events({
 
     Meteor.call("products/updateProductField", variant._id, field, value,
       error => {
-      if (error) {
-        throw new Meteor.Error("error updating variant", error);
-      }
-    });
+        if (error) {
+          throw new Meteor.Error("error updating variant", error);
+        }
+      });
     return setCurrentVariant(variant._id);
   },
   "click #remove-child-variant": function (event) {

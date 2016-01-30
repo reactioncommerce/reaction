@@ -16,11 +16,9 @@ function getSummary(items, prop, prop2) {
       if (prop2) {
         return sum + (item[prop[0]] * prop2.length === 1 ? item[prop2[0]] :
           item[prop2[0]][prop2[1]]);
-      } else {
-        // todo remove else
-        return sum + (prop.length === 1 ? item[prop[0]] :
-          item[prop[0]][prop[1]]);
       }
+      return sum + (prop.length === 1 ? item[prop[0]] :
+        item[prop[0]][prop[1]]);
     }, 0);
   }
 }

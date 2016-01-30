@@ -71,7 +71,6 @@ Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
     let variant = selectedVariant();
-    let product = selectedProduct();
 
     if (variant) {
       mediaArray = Media.find({
