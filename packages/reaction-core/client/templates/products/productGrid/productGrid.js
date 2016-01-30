@@ -142,6 +142,9 @@ Template.productGrid.helpers({
         $in: hashtags
       };
     }
+    _.each(_.values(Session.get('filtration-selector')), function(filter) {
+      $.extend(selector, filter);
+    });
 
     let gridProducts = ReactionCore.Collections.Products.find(selector).fetch();
 
