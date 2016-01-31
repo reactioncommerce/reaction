@@ -104,21 +104,19 @@ Template.productGridItems.helpers({
 Template.productGridItems.events({
   "click [data-event-action=productClick]": function (event) {
     if (ReactionCore.hasPermission("createProduct")) {
-      if (event.metaKey || event.ctrlKey) {
-        event.preventDefault();
-        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
-        checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
-      } else if (event.shiftKey) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey) {
         event.preventDefault();
         let checkbox = $(`input[type=checkbox][value=${this._id}]`);
         let selected = $('li.product-grid-item.active').length;
-        if (selected > 0) {
+        if (event.shiftKey && selected > 0) {
           let indexes = [$('li.product-grid-item').index(checkbox.parents('li.product-grid-item')),
             $('li.product-grid-item').index($('li.product-grid-item.active').get(0)),
             $('li.product-grid-item').index($('li.product-grid-item.active').get(selected-1))];
           for (let i=_.min(indexes); i<=_.max(indexes); i++) {
             $('input[type=checkbox]', $('li.product-grid-item').get(i)).prop("checked", true).trigger("change");
           }
+        } else {
+          checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
         }
       }
     }
