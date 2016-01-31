@@ -37,7 +37,12 @@ ReactionCore.registerPackage({
     icon: "fa fa-share-alt",
     cycle: "2",
     container: "dashboard",
-    template: "socialDashboard"
+    template: "socialDashboard",
+    permissions: [{
+      label: "Social",
+      permission: "dashboard/social",
+      group: "Shop Settings"
+    }]
   }, {
     label: "Social Settings",
     route: "dashboard/social",
@@ -46,10 +51,5 @@ ReactionCore.registerPackage({
   }, {
     template: "reactionSocial",
     provides: "social"
-  }],
-  permissions: [{
-    label: "Social",
-    permission: "dashboard/social",
-    group: "Shop Settings"
   }]
 });

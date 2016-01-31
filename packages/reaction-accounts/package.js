@@ -13,6 +13,7 @@ Package.onUse(function (api) {
   api.use("mongo");
   api.use("blaze-html-templates");
   api.use("session");
+  api.use("browser-policy");
   api.use("jquery");
   api.use("tracker");
   api.use("logging");
@@ -36,6 +37,7 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:core@0.12.0");
 
   // accounts
+  api.addFiles("server/register.js", "server");
   api.addFiles("server/accounts.js", "server");
   api.addFiles("server/policy.js", "server");
   api.addFiles("server/methods/serviceConfiguration.js", "server");
