@@ -103,32 +103,29 @@ Template.productGridItems.helpers({
 
 Template.productGridItems.events({
   "click [data-event-action=productClick]": function (event) {
+    event.preventDefault();
     if (ReactionCore.hasPermission("createProduct")) {
-      if (event.shiftKey) {
-        event.preventDefault();
-
-        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
-        let checked = checkbox.prop("checked");
-
-        checkbox
-          .prop("checked", !checked)
-          .trigger("change");
+      let checkbox = $(`input[type=checkbox][value=${this._id}]`);
+      if (event.metaKey || event.ctrlKey) {
+        checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
+      } else if (event.shiftKey) {
+        let selected = $('li.product-grid-item.active').length;
+        if (selected > 0) {
+          let indexes = [$('li.product-grid-item').index(checkbox.parents('li.product-grid-item')),
+            $('li.product-grid-item').index($('li.product-grid-item.active').get(0)),
+            $('li.product-grid-item').index($('li.product-grid-item.active').get(selected-1))];
+          for (let i=_.min(indexes); i<=_.max(indexes); i++) {
+            $('input[type=checkbox]', $('li.product-grid-item').get(i)).prop("checked", true).trigger("change");
+          }
+        }
       }
     }
   },
-
   "click [data-event-action=selectSingleProduct]": function (event) {
     event.preventDefault();
-
-    const checkbox = $(`input[type=checkbox][value=${this._id}]`);
-
-    // Reset selected products
+    let checkbox = $(`input[type=checkbox][value=${this._id}]`);
     Session.set("productGrid/selectedProducts", []);
-
-    // Select just this product
-    checkbox
-      .prop("checked", true)
-      .trigger("change");
+    checkbox.prop("checked", true).trigger("change");
   },
   "click .clone-product": function () {
     let title;
