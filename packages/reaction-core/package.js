@@ -103,7 +103,15 @@ Package.onUse(function (api) {
   api.addFiles("server/init.js", "server");
   api.addFiles("client/main.js", "client");
   api.addFiles("server/main.js", "server");
-  api.addFiles("server/registry.js", "server");
+  // reaction registry
+  api.addFiles("server/registry/assignRoles.js", "server");
+  api.addFiles("server/registry/setDomain.js", "server");
+  api.addFiles("server/registry/loadPackages.js", "server");
+  api.addFiles("server/registry/loadSettings.js", "server");
+  api.addFiles("server/registry/defaultAdmin.js", "server");
+  api.addFiles("server/registry/shopName.js", "server");
+  api.addFiles("server/registry/registry.js", "server");
+  // finish init
   api.addFiles("server/register.js", "server");
   api.addFiles("common/common.js");
 

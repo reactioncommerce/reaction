@@ -14,6 +14,9 @@ _.extend(ReactionCore, {
     // uncomment for JobCollection debug
     // Jobs.setLogStream(process.stdout);
     ReactionRegistry.loadPackages();
+    // timing is important, packages are rqd
+    // for initilial permissions configuration.
+    ReactionRegistry.createDefaultAdminUser();
     return true;
   },
   /**

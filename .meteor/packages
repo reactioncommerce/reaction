@@ -47,14 +47,15 @@ accounts-oauth
 
 reactioncommerce:core
 reactioncommerce:core-theme
-reactioncommerce:reaction-router
+reactioncommerce:launchdock-connect
 reactioncommerce:reaction-accounts
-reactioncommerce:reaction-inventory
-reactioncommerce:reaction-shipping
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
+reactioncommerce:reaction-inventory
+reactioncommerce:reaction-router
+reactioncommerce:reaction-shipping
 reactioncommerce:reaction-social
-reactioncommerce:launchdock-connect
+
 # reactioncommerce:reaction-product-simple
 
 
