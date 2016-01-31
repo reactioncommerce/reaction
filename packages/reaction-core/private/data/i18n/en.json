@@ -70,6 +70,8 @@
         "limitedSupply": "Limited Supply",
         "publishProductVisible": "is now visible",
         "publishProductHidden": "is now hidden",
+        "clonedAlert": "Cloned",
+        "deletedAlert": "Deleted",
         "startTracking": "Start Tracking",
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",

@@ -70,6 +70,8 @@
         "limitedSupply": "Ограниченное кол-во",
         "publishProductVisible": "теперь виден",
         "publishProductHidden": "теперь скрыт",
+        "clonedAlert": "Скопирован",
+        "deletedAlert": "Удален",
         "startTracking": "Начать трэкинг",
         "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",
