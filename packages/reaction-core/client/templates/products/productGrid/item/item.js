@@ -103,12 +103,14 @@ Template.productGridItems.helpers({
 
 Template.productGridItems.events({
   "click [data-event-action=productClick]": function (event) {
-    event.preventDefault();
     if (ReactionCore.hasPermission("createProduct")) {
-      let checkbox = $(`input[type=checkbox][value=${this._id}]`);
       if (event.metaKey || event.ctrlKey) {
+        event.preventDefault();
+        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
         checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
       } else if (event.shiftKey) {
+        event.preventDefault();
+        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
         let selected = $('li.product-grid-item.active').length;
         if (selected > 0) {
           let indexes = [$('li.product-grid-item').index(checkbox.parents('li.product-grid-item')),
