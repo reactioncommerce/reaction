@@ -31,7 +31,7 @@
     <nav class="admin-controls-quicklinks">
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
-          <button id="{{route}}" title="{{label}}">
+          <button id="{{route}}" title="{{label}}" class="btn btn-default {{active route}}">
             <div class="contents">
               <div class="icon">
                 {{#if isDashboard route}}

@@ -32,10 +32,10 @@ ReactionCore.registerPackage({
   registry: [{
     provides: "dashboard",
     label: "Social",
-    description: "Social Sharing for Reaction Commerce",
+    description: "Social Channel configuration",
     route: "dashboard/social",
     icon: "fa fa-share-alt",
-    cycle: "4",
+    cycle: "2",
     container: "dashboard",
     template: "socialDashboard"
   }, {

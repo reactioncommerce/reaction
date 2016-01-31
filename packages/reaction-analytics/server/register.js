@@ -18,28 +18,23 @@ ReactionCore.registerPackage({
       }
     }
   },
-  registry: [
-    {
-      provides: "dashboard",
-      label: "Analytics",
-      description: "Event tracking and analytics with Reaction",
-      route: "dashboard/reactionAnalytics",
-      icon: "fa fa-bar-chart-o",
-      cycle: "3",
-      container: "dashboard"
-    }, {
-      label: "Analytics Settings",
-      route: "dashboard/reactionAnalytics",
-      provides: "settings",
-      container: "dashboard",
-      template: "reactionAnalyticsSettings"
-    }
-  ],
-  permissions: [
-    {
+  registry: [{
+    provides: "dashboard",
+    label: "Analytics",
+    description: "Analytics and tracking integrations",
+    route: "dashboard/analytics",
+    icon: "fa fa-bar-chart-o",
+    cycle: "3",
+    container: "dashboard",
+    permissions: [{
       label: "Reaction Analytics",
-      permission: "dashboard/settings",
-      group: "Shop Settings"
-    }
-  ]
+      permission: "dashboard/analytics"
+    }]
+  }, {
+    label: "Analytics Settings",
+    route: "dashboard/analytics",
+    provides: "settings",
+    container: "dashboard",
+    template: "reactionAnalyticsSettings"
+  }]
 });

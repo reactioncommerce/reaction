@@ -37,14 +37,6 @@ Template.dashboardControls.events({
 });
 
 Template.dashboardHeader.helpers({
-  showHeader: function () {
-    if (Router.getRouteName().indexOf("dashboard") === 0) {
-      return true;
-    }
-
-    return false;
-  },
-
   registry: function () {
     // just some handle little helpers for default package i18nKey/i18nLabel
     let registry = ReactionCore.getRegistryForCurrentRoute("dashboard") || {};
@@ -53,12 +45,7 @@ Template.dashboardHeader.helpers({
     registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel
       .toCamelCase();
     return registry;
-  },
-
-  thisDashboard: function () {
-    return ReactionCore.getRegistryForCurrentRoute("dashboard");
   }
-
 });
 
 Template.dashboardHeader.events({

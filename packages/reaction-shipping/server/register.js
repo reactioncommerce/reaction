@@ -10,10 +10,10 @@ ReactionCore.registerPackage({
     {
       provides: "dashboard",
       route: "dashboard/shipping",
-      label: "Basic Shipping",
-      description: "Use flat rates for shipping calculations",
+      label: "Shipping",
+      description: "Use flat rates for shipping",
       icon: "fa fa-truck",
-      cycle: 3,
+      cycle: 1,
       group: "reaction-shipping"
     },
     {

@@ -71,6 +71,10 @@ ReactionCore.Schemas.ShopLayout = new SimpleSchema({
     type: String,
     optional: true
   },
+  "structure.dashboardHeaderControls": {
+    type: String,
+    optional: true
+  },
   "structure.dashboardControls": {
     type: String,
     optional: true

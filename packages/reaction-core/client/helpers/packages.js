@@ -162,19 +162,9 @@ Template.registerHelper("reactionApps", function (optionHash) {
       }
     }
     // we only need any given package once, let's be sure.
-    // app sorts by priority, we priority
     reactionApps = _.uniq(reactionApps);
-    reactionApps = reactionApps.sort((a, b) => b.priority - a.priority).slice();
-    // create priorities by index after sort.
-    for (let index in reactionApps) {
-      if ({}.hasOwnProperty.call(reactionApps, index)) {
-        let app = reactionApps[index];
-        if (!app.priority) {
-          reactionApps[index].priority = index;
-        }
-      }
-    }
-
+    // sort cycle to ensure order
+    reactionApps = reactionApps.sort((a, b) => a.cycle - b.cycle).slice();
     return reactionApps;
   }
 });

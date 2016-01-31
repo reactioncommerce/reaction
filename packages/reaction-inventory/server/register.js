@@ -8,12 +8,17 @@ ReactionCore.registerPackage({
   },
   registry: [{
     provides: "dashboard",
-    // route: "dashboard/inventory",
+    route: "dashboard/inventory",
+    template: "inventoryDashboard",
     label: "Inventory",
-    description: "Basic Inventory Management",
+    description: "Inventory utilities",
     icon: "fa fa-building",
-    cycle: 1,
-    group: "reaction-inventory"
+    cycle: 3,
+    group: "reaction-inventory",
+    permissions: [{
+      label: "Inventory",
+      permission: "dashboard/inventory"
+    }]
   }, {
     label: "Inventory Settings",
     route: "dashboard/inventory",
