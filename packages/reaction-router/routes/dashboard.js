@@ -26,13 +26,24 @@ dashboard.route("/", {
 });
 
 //
+// dashboard accounts
+//
+dashboard.route("/accounts", {
+  name: "dashboard/accounts",
+  action: function () {
+    let dashboardLayout =  {
+      workflow: "coreAccountsWorkflow"
+    };
+    // initialize reaction layout
+    renderLayout(dashboardLayout);
+  }
+});
+
+//
 // dashboard orders
 //
 dashboard.route("/orders", {
   name: "dashboard/orders",
-  subscriptions: function () {
-    Meteor.subscribe("Orders");
-  },
   action: function () {
     let dashboardLayout =  {
       workflow: "coreOrderWorkflow"
@@ -47,9 +58,6 @@ dashboard.route("/orders", {
 //
 dashboard.route("/orders/:_id", {
   name: "orders",
-  subscriptions: function () {
-    Meteor.subscribe("Orders");
-  },
   action: function (params) {
     let dashboardLayout =  {
       workflow: "coreOrderWorkflow"

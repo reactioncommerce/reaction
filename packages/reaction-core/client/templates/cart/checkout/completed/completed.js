@@ -3,6 +3,10 @@
  *
  * if order status = new translate submitted message
  */
+Template.cartCompleted.onCreated = function () {
+  Meteor.subscribe("Orders");
+  // Meteor.subscribe("CompletedCartOrder", Meteor.userId(), Router.getParam("_id"));
+};
 
 Template.cartCompleted.helpers({
   orderStatus: function () {

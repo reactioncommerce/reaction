@@ -31,19 +31,30 @@ renderLayout = (options = {}) => {
     if (shopHandle.ready()) {
       const shop = ReactionCore.Collections.Shops.findOne();
       const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
-      // if (!newLayout) {
-      //   console.error("failed to render coreLayout", options);
-      //   BlazeLayout.render("notFound");
-      //   stop();
-      // }
-      const layoutToRender = Object.assign({}, newLayout.structure, options);
-      // console.log(`layoutToRender ${layout}`, layoutToRender);
-      BlazeLayout.render(layout, layoutToRender);
+      if (!newLayout) {
+        ReactionCore.Log.warn("Failed to render layout", layout, workflow);
+        BlazeLayout.render("notFound");
+      } else {
+        const layoutToRender = Object.assign({}, newLayout.structure, options);
+        // console.log(`layoutToRender ${layout}`, layoutToRender);
+        BlazeLayout.render(layout, layoutToRender);
+      }
     }
   });
 };
 
+// const hasLayoutPermission = (context, redirect, stop) => {
+//   // const role = shop.layout.find((x) => selectLayout(x, layout, workflow));
+//   if (!ReactionCore.hasPermission(context.route.name)) {
+//     renderLayout({
+//       template: "unauthorized"
+//     });
+//     stop();
+//   }
+// };
+
 // define Router export
+// FlowRouter.triggers.enter([hasLayoutPermission]);
 Router = FlowRouter;
 ReactionRouter = Router;
 
@@ -56,16 +67,29 @@ Router.notFound = {
   }
 };
 
+// var localeGroup = FlowRouter.group({
+//   prefix: '/:locale?',
+//   triggersEnter: [localeCheck]
+// });
+//
+// localeGroup.route('/login', {
+//   action: function (params, queryParams) {
+//     BlazeLayout.render('componentLayout', {content: 'login'});
+//   }
+// });
+//
+
+
 // these are old iron:router methods
 // that we'd like to warn are deprecated
 Router.waitOn = () => {
-  console.warn("Deprecated. Router.waitOn is only supported for iron-router.")
+  ReactionCore.Log.warn("Deprecated. Router.waitOn is only supported for iron-router.");
 };
 
 Router.configure = () => {
-  console.warn("Deprecated. Router.configure is only supported for iron-router.")
+  ReactionCore.Log.warn("Deprecated. Router.configure is only supported for iron-router.");
 };
 
 Router.map = () => {
-  console.warn("Router.map is deprecated. Use ReactionCore.registerPackage to define routes.")
+  ReactionCore.Log.warn("Router.map is deprecated. Use ReactionCore.registerPackage to define routes.");
 };

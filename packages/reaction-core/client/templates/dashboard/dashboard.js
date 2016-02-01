@@ -8,11 +8,13 @@ Template.dashboardControls.helpers({
   route: function () {
     return Router.getRouteName();
   },
+  // TODO deprecate displayConsoleNavBar
   displayConsoleNavBar: function () {
     if (ReactionCore.hasPermission("console") && Session.get("displayConsoleNavBar")) {
       return true;
     }
   },
+  // TODO deprecate displayConsoleDrawer
   displayConsoleDrawer: function () {
     if (ReactionCore.hasPermission("console") && Session.get("displayConsoleDrawer")) {
       return true;

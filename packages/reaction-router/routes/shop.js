@@ -8,9 +8,6 @@ shop = Router.group({
 //
 shop.route("/", {
   name: "index",
-  subscriptions: function () {
-    Meteor.subscribe("Products", Session.get("productScrollLimit"));
-  },
   action: function () {
     renderLayout();
   }

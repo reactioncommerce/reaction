@@ -8,9 +8,6 @@ product = Router.group({
 
 product.route("/:handle/:variant?", {
   name: "product",
-  subscriptions: function (params) {
-    Meteor.subscribe("Product", params.handle);
-  },
   action: function (params) {
     const variant = ReactionCore.currentProduct.get("variantId") || params.variant;
     ReactionCore.setProduct(params.handle, variant);
