@@ -37,6 +37,7 @@ Package.onUse(function (api) {
   api.use("browser-policy");
   api.use("service-configuration");
   api.use("amplify@1.0.0");
+  api.use("react-template-helper@0.2.3");
 
   // meteor authentication packages
   api.use("oauth-encryption");
@@ -74,6 +75,7 @@ Package.onUse(function (api) {
   api.imply("utilities:spin", ["client"]);
 
   // reaction core dependencies
+  api.use("reactioncommerce:reaction-ui@0.1.0");
   api.addFiles("lib/bower.json", "client");
   api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
@@ -190,8 +192,7 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/header/header.html", "client");
   api.addFiles("client/templates/layout/header/header.js", "client");
 
-  api.addFiles("client/templates/layout/header/tags/tags.html", "client");
-  api.addFiles("client/templates/layout/header/tags/tags.js", "client");
+  api.addFiles("client/templates/layout/header/menu/button.html", "client");
 
   api.addFiles("client/templates/layout/header/i18n/i18n.html", "client");
   api.addFiles("client/templates/layout/header/i18n/i18n.js", "client");

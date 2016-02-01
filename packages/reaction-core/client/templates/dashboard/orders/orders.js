@@ -74,7 +74,6 @@ const OrderHelper = {
 };
 
 function getOrders(queryParams) {
-  console.log("query", queryParams);
   const query = OrderHelper.makeQuery(queryParams);
 
 
@@ -83,12 +82,11 @@ function getOrders(queryParams) {
 
 function getFiltersWithCounts() {
   return orderFilters.map((filter) => {
-    const queryParams = ReactionRouter.current().queryParams;
-    filter.label = i18n.t(`order.filter.${filter.name}`);
+    filter.label = i18n.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
     if (queryParams) {
-      filter.active = queryParams.filter === filter.name;
+      filter.active = ReactionRoute.getParam("filter") === filter.name;
     }
 
     return filter;

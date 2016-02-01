@@ -1,0 +1,15 @@
+
+<template name="button">
+  <button type="{{type}}" class="btn btn-{{status}} {{className}}">
+    {{#if toggle}}
+      {{#if toggleOn}}
+        <i class="fa fa-{{onIcon}}"></i>
+      {{else}}
+        <i class="fa fa-{{icon}}"></i>
+      {{/if}}
+    {{else}}
+      <i class="fa fa-{{icon}}"></i>
+    {{/if}}
+    {{title}}
+  </button>
+</template>

@@ -2,7 +2,9 @@
 
 if (!ReactionCore) ReactionCore = {};
 if (!ReactionCore.Schemas) ReactionCore.Schemas = {};
+if (!ReactionCore.PropTypes) ReactionCore.PropTypes = {};
 if (!ReactionCore.Collections) ReactionCore.Collections = {};
+if (!ReactionCore.PropTypes) ReactionCore.PropTypes = {}; // PropTypes for React
 if (!ReactionCore.Helpers) ReactionCore.Helpers = {};
 if (!ReactionCore.MetaData) ReactionCore.MetaData = {};
 if (!ReactionCore.Locale) ReactionCore.Locale = {};

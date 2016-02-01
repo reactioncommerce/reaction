@@ -84,8 +84,9 @@ jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
 jquery@1.11.4
+jsx@0.1.6
 kadira:blaze-layout@2.3.0
-kadira:flow-router@2.10.0
+kadira:flow-router@2.10.1
 launch-screen@1.0.4
 less@2.5.1
 livedata@1.0.15
@@ -125,6 +126,12 @@ raix:eventemitter@0.1.3
 raix:ui-dropped-event@0.0.7
 random@1.0.5
 rate-limit@1.0.0
+react@0.1.10
+react-meteor-data@0.1.6
+react-runtime@0.14.4
+react-runtime-dev@0.14.4
+react-runtime-prod@0.14.4
+react-template-helper@0.2.5
 reactioncommerce:core@0.12.0
 reactioncommerce:core-theme@2.0.1
 reactioncommerce:default-theme@1.0.3
@@ -145,6 +152,9 @@ reactioncommerce:reaction-schemas@1.0.5
 reactioncommerce:reaction-shipping@0.6.3
 reactioncommerce:reaction-social@0.4.3
 reactioncommerce:reaction-stripe@3.0.3
+reactioncommerce:reaction-ui@0.3.0
+reactioncommerce:reaction-ui-navbar@0.1.0
+reactioncommerce:reaction-ui-tagnav@0.1.0
 reactive-dict@1.1.3
 reactive-var@1.0.6
 reload@1.1.4

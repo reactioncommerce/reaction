@@ -1,0 +1,13 @@
+
+<template name="CoreNavigationBar">
+  <div class="rui navbar">
+    <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
+    <div class="brand">{{> CoreNavigationBrand}}</div>
+    <div class="menu"></div>
+
+    <div class="languages hidden-xs">{{> i18nChooser}}</div>
+    <div class="accounts">{{> accounts tpl="loginDropdown"}}</div>
+    <div class="cart">{{> cartIcon}}</div>
+    <div class="cart-alert">{{> cartPanel}}</div>
+  </div>
+</template>
