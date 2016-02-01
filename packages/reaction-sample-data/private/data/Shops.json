@@ -3099,6 +3099,7 @@
       "notFound": "notFound",
       "unauthorized": "unauthorized",
       "dashboardHeader": "dashboardHeader",
+      "dashboardHeaderControls": "dashboardHeaderControls",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
@@ -3117,6 +3118,7 @@
       "unauthorized": "unauthorized",
       "dashboardHeader": "",
       "dashboardControls": "dashboardControls",
+      "dashboardHeaderControls": "",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
@@ -3135,6 +3137,24 @@
       "dashboardHeader": "dashboardHeader",
       "dashboardHeaderControls": "orderListFilters",
       "dashboardControls": "dashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "coreLayout",
+    "workflow": "coreAccountsWorkflow",
+    "collection": "Accounts",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "accountsDashboard",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "",
+      "loading": "loading",
+      "notFound": "notFound",
+      "unauthorized": "unauthorized",
+      "dashboardHeader": "dashboardHeader",
+      "dashboardHeaderControls": "",
+      "dashboardControls": "accountsDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {

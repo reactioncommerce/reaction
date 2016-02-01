@@ -1,14 +1,13 @@
 ReactionCore.registerPackage({
   label: "Inventory",
   name: "reaction-inventory",
-  icon: "fa fa-truck",
+  icon: "fa fa-building",
   autoEnable: true,
   settings: {
     name: "Inventory"
   },
   registry: [{
     provides: "dashboard",
-    // route: "dashboard/inventory",
     template: "inventoryDashboard",
     label: "Inventory",
     description: "Inventory utilities",
@@ -19,12 +18,6 @@ ReactionCore.registerPackage({
       label: "Inventory",
       permission: "dashboard/inventory"
     }]
-  }, {
-    label: "Inventory Settings",
-    // route: "dashboard/inventory",
-    provides: "settings",
-    group: "reaction-inventory",
-    template: "inventorySettings"
   }],
   layout: [{
     layout: "coreLayout",
@@ -34,3 +27,12 @@ ReactionCore.registerPackage({
     enabled: true
   }]
 });
+
+
+// {
+//   label: "Inventory Settings",
+//   route: "dashboard/inventory",
+//   provides: "settings",
+//   group: "reaction-inventory",
+//   template: "inventorySettings"
+// }],

@@ -33,7 +33,7 @@ ReactionCore.registerPackage({
     label: "Core",
     description: "Reaction Core configuration",
     icon: "fa fa-th",
-    cycle: 1,
+    cycle: 0,
     container: "dashboard",
     permissions: [{
       label: "Dashboard",
