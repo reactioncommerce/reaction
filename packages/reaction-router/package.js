@@ -10,10 +10,10 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("session");
   api.use("blaze-html-templates");
-  api.use("reactioncommerce:reaction-collections");
+  api.use("reactioncommerce:reaction-collections@1.0.5");
   // Flow router packages
-  api.use("kadira:flow-router");
-  api.use("kadira:blaze-layout");
+  api.use("kadira:flow-router@2.10.0");
+  api.use("kadira:blaze-layout@2.3.0");
 
   api.addFiles("routes/router.js");
   api.addFiles("routes/shop.js");
