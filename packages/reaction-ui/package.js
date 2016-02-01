@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.3.0",
+  version: "0.4.0",
   documentation: "README.md"
 });
 
@@ -36,6 +36,7 @@ Package.onUse(function (api) {
   api.use("cosmos:browserify@0.9.3");
 
   // meteor add-on packages
+  api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-schemas@1.0.1");
 
   api.addFiles("lib/client.browserify.js", "client");

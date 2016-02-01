@@ -75,7 +75,6 @@ Package.onUse(function (api) {
   api.imply("utilities:spin", ["client"]);
 
   // reaction core dependencies
-  api.use("reactioncommerce:reaction-ui@0.1.0");
   api.addFiles("lib/bower.json", "client");
   api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
   api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
