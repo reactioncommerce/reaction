@@ -5,11 +5,17 @@
  *
  * @returns user profile details on orders
  */
+Template.orderDetail.onCreated = function () {
+  Meteor.subscribe("UserProfile", this.userId);
+};
+
 Template.orderDetail.helpers({
   userProfile: function () {
     if (typeof this.userId === "string") {
-      const userProfile = ReactionCore.Collections.
-        Accounts.findOne(this.userId);
+      const userProfile = ReactionCore.Collections.Accounts.findOne(this.userId);
+      if (!userProfile) {
+        return {};
+      }
       return userProfile.profile;
     }
   },
