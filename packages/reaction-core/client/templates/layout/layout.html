@@ -19,7 +19,7 @@
     <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
     <main role="main" id="main">
       <span id="layout-alerts">{{>bootstrapAlerts}}</span>
-      {{#if hasPermission 'anonymous'}}
+      {{#if hasPermission 'guest'}}
         {{> Template.dynamic template=template}}
       {{/if}}
     </main>

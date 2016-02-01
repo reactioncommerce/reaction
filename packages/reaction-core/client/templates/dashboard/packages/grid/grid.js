@@ -5,10 +5,14 @@
 Template.packagesGrid.helpers({
   pkgPermissions: function () {
     if (ReactionCore.hasPermission("dashboard")) {
+      // route specific permissions
       if (this.route) {
         return ReactionCore.hasPermission(this.route);
       }
-      return ReactionCore.hasPermission(this.name);
+      // name is a global group role for packages
+      if (this.name) {
+        return ReactionCore.hasPermission(this.name);
+      }
     }
     return false;
   }

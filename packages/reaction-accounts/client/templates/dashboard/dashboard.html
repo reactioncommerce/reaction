@@ -6,83 +6,94 @@
 </template>
 
 <template name="accountsDashboard">
-  {{> Template.dynamic template=dashboardControls}}
-  <div class="container-fluid-sm">
+  {{#if hasPermission 'accounts'}}
+    <div class="container-fluid-sm">
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">
-          <span data-i18n="accountsDashboardControls.shopMembers">Shop Members</span>
-        </h3>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <span data-i18n="accountsDashboardControls.shopMembers">Shop Members</span>
+          </h3>
+        </div>
+
+        <ul class="list-group">
+          {{#each members}}
+            {{#if isShopMember}}
+              <li class="list-group-item flex">
+                {{> member}}
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
       </div>
 
-      <ul class="list-group">
-        {{#each members}} {{#if isShopMember}}
-        <li class="list-group-item flex">
-          {{> member}}
-        </li>
-        {{/if}} {{/each}}
-      </ul>
-    </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <span data-i18n="accountsDashboardControls.guests">Guests</span>
+          </h3>
+        </div>
 
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">
-          <span data-i18n="accountsDashboardControls.guests">Guests</span>
-        </h3>
+        <ul class="list-group">
+          {{#each members}}
+            {{#if isShopGuest}}
+              <li class="list-group-item flex">
+                {{> member}}
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
       </div>
 
-      <ul class="list-group">
-        {{#each members}} {{#if isShopGuest}}
-        <li class="list-group-item flex">
-          {{> member}}
-        </li>
-        {{/if}} {{/each}}
-      </ul>
     </div>
-
-
-  </div>
+  {{/if}}
 </template>
-
 
 <template name="accountsSettings">
   {{#each service in services}}
-  <div class="panel panel-default">
-    <div class="panel-heading panel-heading-flex">
-      <div class="panel-title">
-        <i class="fa fa-{{service.name}}"></i> {{service.label}} <span data-i18n="accountsUI.signIn">Sign In</span>
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <i class="fa fa-{{service.name}}"></i>
+          {{service.label}}
+          <span data-i18n="accountsUI.signIn">Sign In</span>
+        </div>
+        <div class="panel-controls">
+          <input class="checkbox-switch" type="checkbox" name="enabled" value="{{service.name}}" {{checked service.enabled}}>
+        </div>
       </div>
-      <div class="panel-controls">
-        <input class="checkbox-switch" type="checkbox" name="enabled" value="{{service.name}}" {{checked service.enabled}}>
-      </div>
-    </div>
-    <div class="panel-body {{shown service.enabled}}">
-      <form name="{{service.name}}Settings">
-        <input type="hidden" value="{{service.name}}" name="service"> {{#each field in service.fields}}
-        <div class="form-group ">
-          <label for="{{name}}SettingsClientId">{{field.label}}</label>
+      <div class="panel-body {{shown service.enabled}}">
+        <form name="{{service.name}}Settings">
+          <input type="hidden" value="{{service.name}}" name="service">
+          {{#each field in service.fields}}
+            <div class="form-group ">
+              <label for="{{name}}SettingsClientId">{{field.label}}</label>
 
-          <div class="{{#if condition field.property " eq " "secret "}}form-inline{{/if}}">
-            <input class="form-control" id="{{service.name}}SettingsClientId" type="{{field.type}}" name="{{field.property}}" value="{{valueForField field.property service}}"> {{#if condition field.property "eq" "secret"}}
-            <button class="btn btn-default" type="button" data-event-action="showSecret">Show</button>
-            {{/if}}
+              <div class="{{#if condition field.property 'eq' 'secret'}}form-inline{{/if}}">
+                <input
+                  class="form-control"
+                  id="{{service.name}}SettingsClientId"
+                  type="{{field.type}}"
+                  name="{{field.property}}"
+                  value="{{valueForField field.property service}}">
+                {{#if condition field.property 'eq' 'secret'}}
+                  <button class="btn btn-default" type="button" data-event-action="showSecret">Show</button>
+                {{/if}}
+              </div>
+
+            </div>
+          {{/each}}
+          <div class="form-group">
+            <button class="btn btn-primary" type="submit" data-i18n="accountsDashboardControls.updateSettings">Update Settings</button>
           </div>
-
-        </div>
-        {{/each}}
-        <div class="form-group">
-          <button class="btn btn-primary" type="submit" data-i18n="accountsDashboardControls.updateSettings">Update Settings</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-  {{else}}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title" data-i18n="accountsDashboardControls.noAdditionalServices">No Additional login services available</div>
+    {{else}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title" data-i18n="accountsDashboardControls.noAdditionalServices">No Additional login services available</div>
+      </div>
     </div>
-  </div>
   {{/each}}
 </template>

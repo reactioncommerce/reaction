@@ -1,15 +1,17 @@
 <template name="orders">
-  <div class="container-fluid-sm">
-    {{#each order in orders}}
-      {{> ordersListItem order}}
-    {{else}}
+  {{#if hasPermission 'orders'}}
+    <div class="container-fluid-sm">
+      {{#each order in orders}}
+        {{> ordersListItem order}}
+      {{else}}
 
-      <div class="empty-view-message">
-          <i class="fa fa-sun-o"></i>
-          <p data-i18n="order.ordersNotFound">No Orders Found</p>
-      </div>
-    {{/each}}
-  </div>
+        <div class="empty-view-message">
+            <i class="fa fa-sun-o"></i>
+            <p data-i18n="order.ordersNotFound">No Orders Found</p>
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
 </template>
 
 <template name="orderListFilters">

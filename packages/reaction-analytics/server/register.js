@@ -23,6 +23,7 @@ ReactionCore.registerPackage({
     label: "Analytics",
     description: "Analytics and tracking integrations",
     route: "dashboard/analytics",
+    template: "reactionAnalytics",
     icon: "fa fa-bar-chart-o",
     cycle: "3",
     container: "dashboard",

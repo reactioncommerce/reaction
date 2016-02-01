@@ -126,7 +126,7 @@
         "created": "Created",
         "reference": "Reference",
         "invoice": "Invoice",
-        "ordersNotFound": "No Orders Found",
+        "ordersNotFound": "You have no orders, yet.",
         "approveInvoice": "Approve",
         "makeAdjustments": "Make Adjustments",
         "capturePayment": "Capture Payment",
