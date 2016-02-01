@@ -202,7 +202,7 @@ Template.registerHelper("condition", function (v1, operator, v2) {
   case "gte":
     return v1 >= v2;
   default:
-    throw new Meteor.error(`Undefined conditional operator ${operator}`);
+    throw new Meteor.Error(`Undefined conditional operator ${operator}`);
   }
 });
 
