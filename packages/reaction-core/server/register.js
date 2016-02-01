@@ -33,7 +33,7 @@ ReactionCore.registerPackage({
     label: "Core",
     description: "Reaction Core configuration",
     icon: "fa fa-th",
-    cycle: 0,
+    cycle: 1,
     container: "dashboard",
     permissions: [{
       label: "Dashboard",
@@ -51,14 +51,6 @@ ReactionCore.registerPackage({
     label: "Shop Settings",
     provides: "settings",
     container: "dashboard"
-  }, {
-    route: "dashboard/import",
-    provides: "dashboard",
-    label: "Import",
-    description: "Import and migration tools",
-    icon: "fa fa-upload",
-    cycle: 3,
-    template: "import"
   }, {
     route: "dashboard/orders",
     provides: "dashboard",

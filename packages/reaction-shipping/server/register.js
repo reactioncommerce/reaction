@@ -11,9 +11,9 @@ ReactionCore.registerPackage({
       provides: "dashboard",
       route: "dashboard/shipping",
       label: "Shipping",
-      description: "Use flat rates for shipping",
+      description: "Provide shipping rates",
       icon: "fa fa-truck",
-      cycle: 1,
+      cycle: 2,
       group: "reaction-shipping"
     },
     {

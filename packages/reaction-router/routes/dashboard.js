@@ -70,19 +70,19 @@ dashboard.route("/orders/:_id", {
   }
 });
 
-//
-// dashboard package settings
-//
-dashboard.route("/:dashboard", {
-  action: function (params) {
-    let dashboardLayout =  {
-      worflow: "coreDashboardWorkflow",
-      template: params.dashboard
-    };
-    // initialize reaction layout
-    renderLayout(dashboardLayout);
-  }
-});
+// //
+// // dashboard package settings
+// //
+// dashboard.route("/:dashboard", {
+//   action: function (params) {
+//     let dashboardLayout =  {
+//       worflow: "coreDashboardWorkflow",
+//       template: params.dashboard
+//     };
+//     // initialize reaction layout
+//     renderLayout(dashboardLayout);
+//   }
+// });
 
 // this.route("dashboard", {
 //   controller: ShopAdminController,

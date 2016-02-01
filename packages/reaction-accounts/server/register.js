@@ -11,15 +11,15 @@ ReactionCore.registerPackage({
     description: "Manage how members sign into your shop.",
     icon: "fa fa-sign-in",
     container: "accounts",
-    template: "accounts",
+    template: "accountsDashboard",
     cycle: 1,
     permissions: [{
-      label: "Accounts",
+      label: "Account Dashboard",
       permission: "dashboard/accounts"
     }]
   }, {
+    route: "dashboard/accounts/settings",
     label: "Account Settings",
-    route: "dashboard/accounts",
     provides: "settings",
     container: "accounts",
     template: "accountsSettings"
@@ -34,9 +34,5 @@ ReactionCore.registerPackage({
     label: "Profile",
     icon: "fa fa-user",
     provides: "userAccountDropdown"
-  }],
-  permissions: [{
-    label: "Accounts",
-    permission: "dashboard/accounts"
   }]
 });

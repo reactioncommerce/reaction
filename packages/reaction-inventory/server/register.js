@@ -8,7 +8,7 @@ ReactionCore.registerPackage({
   },
   registry: [{
     provides: "dashboard",
-    route: "dashboard/inventory",
+    // route: "dashboard/inventory",
     template: "inventoryDashboard",
     label: "Inventory",
     description: "Inventory utilities",
@@ -21,7 +21,7 @@ ReactionCore.registerPackage({
     }]
   }, {
     label: "Inventory Settings",
-    route: "dashboard/inventory",
+    // route: "dashboard/inventory",
     provides: "settings",
     group: "reaction-inventory",
     template: "inventorySettings"

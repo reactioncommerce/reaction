@@ -48,15 +48,18 @@ Template.registerHelper("reactionTemplate", function (options) {
     layoutConfigCollection];
   let currentCollection = workflowTargetCollection.findOne(currentId);
 
+
+  // TODO review this functionality.
   // if we be here without a workflow, we're layouteers
   // if there isn't a layout defined
-  if (!currentCollection) {
-    currentCollection = ReactionCore.Collections.Layouts.findOne(
-      currentId);
-    if (!currentCollection) {
-      return [];
-    }
-  }
+
+  // if (!currentCollection) {
+  //   currentCollection = ReactionCore.Collections.Layouts.findOne(
+  //     currentId);
+  //   if (!currentCollection) {
+  //     return [];
+  //   }
+  // }
 
   let currentStatus = currentCollection.workflow.status;
   let currentCollectionWorkflow = currentCollection.workflow.workflow;

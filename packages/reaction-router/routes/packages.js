@@ -14,6 +14,7 @@ Router.registerPackageLayouts = () => {
     for (let registryItem of pkg.registry) {
       // should we add a permissions check here?
       if (registryItem.route && registryItem.template) {
+        // console.log(registryItem.route, registryItem.template);
         const segments = registryItem.route.split("/");
         let newRoute = registryItem.route;
         let isGroup = false;
