@@ -1,4 +1,4 @@
-cart = Router.group({
+cart = ReactionRouter.group({
   name: "cart",
   prefix: "/cart"
 });

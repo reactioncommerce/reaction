@@ -1,4 +1,4 @@
-tags = Router.group({
+tags = ReactionRouter.group({
   prefix: "/tag"
 });
 

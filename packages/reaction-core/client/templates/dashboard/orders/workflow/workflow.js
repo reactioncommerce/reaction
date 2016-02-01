@@ -31,12 +31,10 @@ Template.coreOrderWorkflow.helpers({
    * @return {Object|Boolean} An order or false
    */
   order() {
-    let currentData = Template.currentData();
-
-    if (currentData) {
-      return ReactionCore.Collections.Orders.findOne(currentData._id);
+    let id = ReactionRouter.getQueryParam("_id");
+    if (id) {
+      return ReactionCore.Collections.Orders.findOne(id);
     }
-
     return false;
   },
 

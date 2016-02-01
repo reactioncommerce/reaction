@@ -22,7 +22,7 @@ ReactionCore.registerPackage({
       route: "dashboard/shipping",
       provides: "settings",
       group: "reaction-shipping",
-      template: "shippingSettings"
+      template: "shippingProviderTable"
     },
     {
       template: "flatRateCheckoutShipping",

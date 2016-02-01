@@ -54,7 +54,7 @@ Template.gridPackage.events({
             autoHide: true
           });
         if (self.route) {
-          return Router.go(self.route);
+          return ReactionRouter.go(self.route);
         }
       } else if (error) {
         return Alerts.add(self.label + i18n.t(
@@ -95,7 +95,7 @@ Template.gridPackage.events({
     event.stopPropagation();
     if (this.route) {
       if (this.route) {
-        Router.go(this.route);
+        ReactionRouter.go(this.route);
       } else if (ReactionCore.hasPermission(this.route, Meteor.userId())) {
         ReactionCore.showActionView(this);
       }

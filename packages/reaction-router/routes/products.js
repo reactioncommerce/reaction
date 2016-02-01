@@ -1,4 +1,4 @@
-product = Router.group({
+product = ReactionRouter.group({
   prefix: "/product"
 });
 

@@ -111,7 +111,7 @@ this.maybeDeleteProduct = function (product) {
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
         setCurrentProduct(null);
-        Router.go("/");
+        ReactionRouter.go("/");
         return Alerts.add("Deleted " + title, "info", {
           type: "prod-delete-" + id
         });

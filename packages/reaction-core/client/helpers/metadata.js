@@ -10,7 +10,7 @@ ReactionCore.MetaData = {
     ignore: ["viewport", "fragment"]
   },
   render: function () {
-    let metaContent = Blaze.toHTMLWithData(Template.coreHead, Router.current().getName);
+    let metaContent = Blaze.toHTMLWithData(Template.coreHead, ReactionRouter.current().name);
     $("head").append(metaContent);
     return metaContent;
   },
@@ -30,7 +30,7 @@ ReactionCore.MetaData = {
     return _results;
   },
   update: function (route, params, updateMeta) {
-    if (!Router.current()) {
+    if (!ReactionRouter.current()) {
       return false;
     }
     let product = selectedProduct();
@@ -44,7 +44,7 @@ ReactionCore.MetaData = {
       if (params._id) {
         title = params._id.charAt(0).toUpperCase() + params._id.substring(1);
       } else {
-        routeName = Router.getRouteName();
+        routeName = ReactionRouter.getRouteName();
         title = routeName.charAt(0).toUpperCase() + routeName.substring(1);
       }
       if (product && product.handle === params._id && product.handle) {

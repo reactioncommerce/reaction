@@ -6,7 +6,7 @@ Template.coreAdminLayout.onCreated(() => {
   control.autorun(() => {
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": Router.getRouteName()
+      "registry.route": ReactionRouter.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
@@ -16,7 +16,7 @@ Template.coreAdminLayout.onCreated(() => {
 
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Router.getRouteName() && item.provides === "settings";
+        return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
       });
 
       // return settingsData;
@@ -73,7 +73,7 @@ Template.coreAdminLayout.helpers({
   thisApp() {
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": Router.getRouteName()
+      "registry.route": ReactionRouter.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
@@ -83,7 +83,7 @@ Template.coreAdminLayout.helpers({
 
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Router.getRouteName() && item.provides === "settings";
+        return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
       });
 
       return settingsData;
@@ -120,7 +120,7 @@ Template.coreAdminLayout.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          Router.go("/product", {
+          ReactionRouter.go("/product", {
             _id: productId
           });
         }
@@ -129,7 +129,7 @@ Template.coreAdminLayout.events({
       event.preventDefault();
       event.stopPropagation();
 
-      Router.go(this.route);
+      ReactionRouter.go(this.route);
     }
   }
 });

@@ -59,7 +59,7 @@ Router = FlowRouter;
 ReactionRouter = Router;
 
 // default not found route
-Router.notFound = {
+ReactionRouter.notFound = {
   action() {
     renderLayout({
       template: "notFound"

@@ -1,5 +1,5 @@
 // define default routing groups
-shop = Router.group({
+shop = ReactionRouter.group({
   name: "shop"
 });
 

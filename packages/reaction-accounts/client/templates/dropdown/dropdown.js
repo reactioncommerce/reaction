@@ -55,14 +55,14 @@ Template.loginDropdown.events({
           let params = {
             _id: productId
           };
-          Router.go("product", params);
+          ReactionRouter.go("product", params);
         }
       });
     } else if (this.route) {
-      let path = Router.path(this.route);
+      let path = ReactionRouter.path(this.route);
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
-      Router.go(path);
+      ReactionRouter.go(path);
     }
   }
 });

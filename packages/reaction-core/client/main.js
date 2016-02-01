@@ -39,7 +39,10 @@ _.extend(ReactionCore, {
           Locale.shopCurrency = shop.currencies[shop.currency];
           localeDep.changed();
         }
-
+        //
+        // Initialize Package routes
+        //
+        ReactionRouter.registerPackageLayouts();
         return self;
       }
     });
@@ -179,12 +182,12 @@ _.extend(ReactionCore, {
   },
 
   getCurrentTag: function () {
-    if (Router.getRouteName() === "/product/tag") {
-      return Router.current().params._id;
+    if (ReactionRouter.getRouteName() === "/product/tag") {
+      return ReactionRouter.current().params._id;
     }
   },
   getRegistryForCurrentRoute: function (provides) {
-    let routeName = Router.getRouteName();
+    let routeName = ReactionRouter.getRouteName();
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       // "registry.provides": provides,

@@ -21,6 +21,7 @@ Package.onUse(function (api) {
   api.addFiles("routes/tags.js");
   api.addFiles("routes/cart.js");
   api.addFiles("routes/dashboard.js");
+  api.addFiles("routes/orders.js");
   api.addFiles("routes/packages.js");
   api.addFiles("client/helpers.js", "client");
 

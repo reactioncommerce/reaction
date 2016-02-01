@@ -6,7 +6,7 @@
 
 Template.dashboardControls.helpers({
   route: function () {
-    return Router.getRouteName();
+    return ReactionRouter.getRouteName();
   },
   // TODO deprecate displayConsoleNavBar
   displayConsoleNavBar: function () {
@@ -33,7 +33,7 @@ Template.dashboardControls.events({
     event.preventDefault();
     if (this.route !== null) {
       Session.set("currentPackage", this.route);
-      return Router.go("/" + this.route);
+      return ReactionRouter.go("/" + this.route);
     }
   }
 });

@@ -1,7 +1,7 @@
 /**
  * Router for all things related to account profiles, sign in and management
  */
-Router.map(function () {
+ReactionRouter.map(function () {
   // Dashboard
   this.route("dashboard/accounts", {
     controller: ShopAdminController,

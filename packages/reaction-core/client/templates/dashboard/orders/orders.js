@@ -74,13 +74,16 @@ const OrderHelper = {
 };
 
 function getOrders(queryParams) {
-  const query = OrderHelper.makeQuery(queryParams.filter);
+  console.log("query", queryParams);
+  const query = OrderHelper.makeQuery(queryParams);
+
+
   return ReactionCore.Collections.Orders.find(query);
 }
 
 function getFiltersWithCounts() {
   return orderFilters.map((filter) => {
-    const queryParams = Router.current().queryParams;
+    const queryParams = ReactionRouter.current().queryParams;
     filter.label = i18n.t(`order.filter.${filter.name}`);
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
@@ -95,10 +98,10 @@ function getFiltersWithCounts() {
 Template.orders.onCreated(() => {
   Template.instance().autorun(() => {
     let isActionViewOpen = ReactionCore.isActionViewOpen();
-    const queryParams = Router.current().queryParams;
+    const queryParams = ReactionRouter.current().queryParams;
 
     if (isActionViewOpen === false) {
-      Router.go("/dashboard/orders", {}, queryParams);
+      ReactionRouter.go("/dashboard/orders", {}, queryParams);
     }
   });
 });
@@ -109,14 +112,14 @@ Template.orders.onCreated(() => {
 Template.orders.helpers({
   orders() {
     const template = Template.instance();
-    const queryParams = Router.current().queryParams;
+    const queryParams = ReactionRouter.current().queryParams;
     template.orders = getOrders(queryParams);
 
     return template.orders;
   },
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {
-      return filter.name === Router.current().queryParams.filter;
+      return filter.name === ReactionRouter.current().queryParams.filter;
     });
 
     if (foundFilter) {
@@ -124,7 +127,7 @@ Template.orders.helpers({
     }
   },
   activeClassname(orderId) {
-    if (Router.current().params._id === orderId) {
+    if (ReactionRouter.current().params._id === orderId) {
       return "panel-info";
     }
     return "panel-default";
@@ -133,7 +136,7 @@ Template.orders.helpers({
 
 Template.ordersListItem.helpers({
   activeClassname(orderId) {
-    if (Router.current().params._id === orderId) {
+    if (ReactionRouter.current().params._id === orderId) {
       return "active";
     }
   },
@@ -146,11 +149,8 @@ Template.ordersListItem.helpers({
 Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
-
-    Router.go("/dashboard/orders", {
+    ReactionRouter.setQueryParams({
       _id: this._id
-    }, {
-      query: $.param(Router.current().queryParams)
     });
   },
   "click [data-event-action=startProcessingOrder]": function (event) {
@@ -159,13 +159,9 @@ Template.ordersListItem.events({
     if (this.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
     }
-
-    Router.go("/dashboard/orders", {
-      _id: this._id
-    }, {
-      query: $.param({
-        filter: "processing"
-      })
+    ReactionRouter.setQueryParams({
+      _id: this._id,
+      filter: "processing"
     });
   }
 });
@@ -173,10 +169,8 @@ Template.ordersListItem.events({
 Template.orderListFilters.events({
   "click [role=tab]": (event) => {
     const filter = event.currentTarget.getAttribute("data-filter");
-    Router.go("/dashboard/orders", {
-      // _id: this._id
-    }, {
-      query: `filter=${filter}`
+    ReactionRouter.setQueryParams({
+      filter: filter
     });
   }
 });

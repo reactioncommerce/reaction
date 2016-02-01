@@ -18,7 +18,7 @@ ProductDetail = React.createClass({
 
   getMeteorData() {
     let data = {};
-    const handle = Meteor.subscribe("Product", Router.current().params._id);
+    const handle = Meteor.subscribe("Product", ReactionRouter.getParam("_id");
 
     data = {
       isLoadingProduct: handle.ready(),

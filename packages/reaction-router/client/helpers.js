@@ -16,7 +16,7 @@ pathFor = (reqPath, reqParams) => {
   // accept "path/value" case
   if (!path.hash && params && !params.hash) {
     const shortcut = "/" + path + "/" + params;
-    return Router.path(shortcut);
+    return ReactionRouter.path(shortcut);
   }
   // accept path/param/value
   if (path.hash) {
@@ -24,8 +24,8 @@ pathFor = (reqPath, reqParams) => {
     path = params.hash.route;
     delete params.hash.route;
   }
-  let query = params.hash.query ? Router._qs.parse(params.hash.query) : {};
-  return Router.path(path, params.hash, query);
+  let query = params.hash.query ? ReactionRouter._qs.parse(params.hash.query) : {};
+  return ReactionRouter.path(path, params.hash, query);
 };
 // return path
 Template.registerHelper("pathFor", pathFor);
@@ -44,11 +44,11 @@ Template.registerHelper("urlFor", (path, params) => {
  * @return {String} return "active" or null
  */
 Template.registerHelper("active", (route) => {
-  Router.watchPathChange();
-  return Router.current().route.name === route ? "active" : "";
+  ReactionRouter.watchPathChange();
+  return ReactionRouter.current().route.name === route ? "active" : "";
 });
 // common in meteor apps.
 Template.registerHelper("currentRoute", (route) => {
-  Router.watchPathChange();
-  return Router.current().route.name === route ? "active" : "";
+  ReactionRouter.watchPathChange();
+  return ReactionRouter.current().route.name === route ? "active" : "";
 });

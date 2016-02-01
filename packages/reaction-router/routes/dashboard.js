@@ -2,7 +2,7 @@
 // define dashboard group
 //
 
-dashboard = Router.group({
+dashboard = ReactionRouter.group({
   prefix: "/dashboard"
 });
 
@@ -39,44 +39,7 @@ dashboard.route("/accounts", {
   }
 });
 
-//
-// dashboard orders
-//
-dashboard.route("/orders", {
-  name: "dashboard/orders",
-  action: function () {
-    let dashboardLayout =  {
-      workflow: "coreOrderWorkflow"
-    };
-    // initialize reaction layout
-    renderLayout(dashboardLayout);
-  }
-});
 
-//
-// dashboard orders
-//
-dashboard.route("/orders/:_id", {
-  name: "orders",
-  action: function (params) {
-    let dashboardLayout =  {
-      workflow: "coreOrderWorkflow"
-    };
-    // initialize reaction layout
-    renderLayout(dashboardLayout);
-    // enable order details view
-    if (ReactionCore.hasDashboardAccess() && params._id) {
-      ReactionCore.showActionView({
-        label: "Order Details",
-        data: this.data(),
-        props: {
-          size: "large"
-        },
-        template: "coreOrderWorkflow"
-      });
-    }
-  }
-});
 
 // //
 // // dashboard package settings

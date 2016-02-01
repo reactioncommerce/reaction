@@ -1,4 +1,9 @@
-packages = Router.group({
+//
+//  Initialized in the ReactionCore.init
+//  ReactionRouter.registerPackageLayouts();
+//
+
+packages = ReactionRouter.group({
   name: "packages"
 });
 
@@ -8,7 +13,8 @@ packages = Router.group({
  * registryItem.route && registryItem.template
  * @returns {undefined} returns undefined
  */
-Router.registerPackageLayouts = () => {
+ReactionRouter.registerPackageLayouts = () => {
+  ReactionCore.Log.info("Reaction: registerPackageLayouts");
   const pkgs = ReactionCore.Collections.Packages.find().fetch();
   for (let pkg of pkgs) {
     for (let registryItem of pkg.registry) {
@@ -33,7 +39,7 @@ Router.registerPackageLayouts = () => {
         }
         // see if we can add to group
         if (segments.length > 1 && isGroup === true) {
-          group = Router.group({prefix: "/" + segments[0]});
+          group = ReactionRouter.group({prefix: "/" + segments[0]});
           group.route(newRoute, {
             name: registryItem.route,
             action: (context) => {
@@ -43,7 +49,7 @@ Router.registerPackageLayouts = () => {
             }
           });
         } else { // if path in registry starts with "/"
-          Router.route(newRoute, {
+          ReactionRouter.route(newRoute, {
             name: newRoute.replace("/", ""),
             action: (context) => {
               renderLayout({
@@ -56,7 +62,3 @@ Router.registerPackageLayouts = () => {
     }
   }
 };
-
-Meteor.startup(function () {
-  Router.registerPackageLayouts();
-});

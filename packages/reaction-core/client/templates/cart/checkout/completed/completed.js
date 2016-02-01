@@ -5,7 +5,7 @@
  */
 Template.cartCompleted.onCreated = function () {
   Meteor.subscribe("Orders");
-  // Meteor.subscribe("CompletedCartOrder", Meteor.userId(), Router.getParam("_id"));
+  // Meteor.subscribe("CompletedCartOrder", Meteor.userId(), ReactionRouter.getParam("_id"));
 };
 
 Template.cartCompleted.helpers({

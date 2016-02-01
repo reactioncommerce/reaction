@@ -40,6 +40,10 @@ Meteor.publish("Packages", function (shopCursor) {
         "layout": 1,
         "settings.public": 1
       }
+    }, {
+      sort: {
+        cycle: 1
+      }
     });
   }
   return this.ready();

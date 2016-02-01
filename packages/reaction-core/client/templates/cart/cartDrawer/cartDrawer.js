@@ -42,7 +42,7 @@ Template.openCartDrawer.helpers({
   checkoutView: function () {
     let checkoutView;
     checkoutView = "display:block";
-    if (Router.getRouteName() === "cartCheckout") {
+    if (ReactionRouter.getRouteName() === "cartCheckout") {
       return checkoutView;
     }
   }
@@ -56,7 +56,7 @@ Template.openCartDrawer.events({
   "click #btn-checkout": function () {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
-    return Router.go("/cart/checkout");
+    return ReactionRouter.go("/cart/checkout");
   },
   "click .remove-cart-item": function (event) {
     event.stopPropagation();

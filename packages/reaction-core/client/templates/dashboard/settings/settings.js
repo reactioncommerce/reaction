@@ -23,7 +23,7 @@ Template.settingsHeader.helpers({
   thisApp() {
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": Router.getRouteName()
+      "registry.route": ReactionRouter.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
@@ -33,7 +33,7 @@ Template.settingsHeader.helpers({
 
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Router.getRouteName() && item.provides === "settings";
+        return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
       });
 
       return settingsData;
@@ -90,7 +90,7 @@ Template.settingsSidebarItem.helpers({
    * @return {String} "active" || ""
    */
   active(route) {
-    if (route === Router.getRouteName()) {
+    if (route === ReactionRouter.getRouteName()) {
       return "active";
     }
 

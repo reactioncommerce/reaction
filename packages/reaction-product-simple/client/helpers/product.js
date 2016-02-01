@@ -41,7 +41,7 @@ ReactionSimpleProduct = {
         if (self.field === 'title') {
           Meteor.call("products/setHandle", productId, function (error, result) {
             if (result) {
-              return Router.go("/product", {
+              return ReactionRouter.go("/product", {
                 _id: result
               });
             }

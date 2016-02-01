@@ -135,7 +135,7 @@ Template.productSettings.events({
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
-      // Router.go("/product", {
+      // ReactionRouter.go("/product", {
       //   _id: productId
       // });
       return Alerts.add("Cloned " + title, "success", {

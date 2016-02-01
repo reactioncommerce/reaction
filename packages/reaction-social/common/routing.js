@@ -1,4 +1,4 @@
-Router.map(function() {
+ReactionRouter.map(function() {
   return this.route("dashboard/social", {
     controller: ShopAdminController,
     path: "dashboard/social",
