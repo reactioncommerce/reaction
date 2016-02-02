@@ -88,14 +88,6 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema({
     type: String,
     optional: true
   },
-  "registry.$.i18nKeyLabel": {
-    type: String,
-    optional: true
-  },
-  "registry.$.i18nKeyDescription": {
-    type: String,
-    optional: true
-  },
   "registry.$.container": {
     type: String,
     optional: true
