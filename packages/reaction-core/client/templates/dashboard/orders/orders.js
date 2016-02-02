@@ -85,8 +85,8 @@ function getFiltersWithCounts() {
     filter.label = i18n.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
-    if (queryParams) {
-      filter.active = ReactionRoute.getParam("filter") === filter.name;
+    if (ReactionRouter.getQueryParam("filter")) {
+      filter.active = ReactionRouter.getQueryParam("filter") === filter.name;
     }
 
     return filter;
