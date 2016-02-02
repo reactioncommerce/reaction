@@ -14,12 +14,12 @@ packages = ReactionRouter.group({
  * @returns {undefined} returns undefined
  */
 ReactionRouter.registerPackageLayouts = () => {
-  ReactionCore.Log.info("Reaction: registerPackageLayouts");
   const pkgs = ReactionCore.Collections.Packages.find().fetch();
   for (let pkg of pkgs) {
     for (let registryItem of pkg.registry) {
       // should we add a permissions check here?
       if (registryItem.route && registryItem.template) {
+
         // console.log(registryItem.route, registryItem.template);
         const segments = registryItem.route.split("/");
         let newRoute = registryItem.route;
@@ -37,6 +37,7 @@ ReactionRouter.registerPackageLayouts = () => {
           isGroup = true; //
           newRoute = `${newRoute.replace(segments[0], "")}`;
         }
+        ReactionCore.Log.info("registering package route for ", newRoute);
         // see if we can add to group
         if (segments.length > 1 && isGroup === true) {
           group = ReactionRouter.group({prefix: "/" + segments[0]});

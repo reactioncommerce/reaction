@@ -24,8 +24,6 @@ dashboard = ReactionRouter.group({
 dashboard.route("/orders", {
   name: "orders",
   action: function (params, queryParams) {
-    console.log("orders", params, queryParams);
-
     let dashboardLayout =  {
       workflow: "coreOrderWorkflow"
     };

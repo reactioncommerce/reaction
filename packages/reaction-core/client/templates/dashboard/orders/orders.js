@@ -9,7 +9,7 @@ const orderFilters = [{
   label: "Completed"
 }];
 
-const OrderHelper = {
+const OrderHelper =  {
   makeQuery(filter) {
     let query = {};
 
@@ -73,10 +73,8 @@ const OrderHelper = {
   }
 };
 
-function getOrders(queryParams) {
-  const query = OrderHelper.makeQuery(queryParams);
-
-
+function getOrders(filter) {
+  const query = OrderHelper.makeQuery(filter);
   return ReactionCore.Collections.Orders.find(query);
 }
 
@@ -110,7 +108,7 @@ Template.orders.onCreated(() => {
 Template.orders.helpers({
   orders() {
     const template = Template.instance();
-    const queryParams = ReactionRouter.current().queryParams;
+    const queryParams = ReactionRouter.getQueryParam("filter");
     template.orders = getOrders(queryParams);
 
     return template.orders;
