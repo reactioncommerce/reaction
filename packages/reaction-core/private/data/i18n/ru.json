@@ -7,11 +7,11 @@
         "select": "Выбрать язык"
       },
       "admin": {
-        "shortcuts": {
-          "dashboard": "Панель управления",
-          "orders": "Заказы",
-          "addProduct": "Создать продукт",
-          "accounts": "Пользователи"
+        "shortcut": {
+          "dashboardLabel": "Панель управления",
+          "ordersLabel": "Заказы",
+          "addProductLabel": "Создать продукт",
+          "accountsLabel": "Пользователи"
         },
         "dashboard": {
           "coreLabel": "Ядро",
@@ -24,26 +24,26 @@
           "accountsDescription": "Управление правами пользователей",
           "socialLabel": "Социальные сети",
           "socialDescription": "Интеграция Reaction Commerce с соц. сетями",
-          "shippingLabel": "Доставка",
-          "shippingDescription": "Фиксированная ставка для расчет доставки",
+          "basicShippingLabel": "Доставка",
+          "basicShippingDescription": "Фиксированная ставка для расчета доставки",
           "inventoryLabel": "Inventory",
           "inventoryDescription": "Basic Inventory Management",
           "analyticsLabel": "Аналитика",
           "analyticsDescription": "Отслеживание событий и аналитика для Reaction Commerce",
           "paypalLabel": "PayPal",
           "paypalDescription": "PayPal платежи для Reaction Commerce",
-          "paymentLabel": "Generic Payment",
-          "paymentDescription": "Generic Payment Method"
+          "genericPaymentLabel": "Generic Payment",
+          "genericPaymentDescription": "Generic Payment Method"
         },
         "settings": {
-          "account": "Настройки входа",
-          "shop": "Настройки магазина",
-          "social": "Настройки соц. сетей",
-          "shipping": "Настройки доставки",
-          "inventory": "Настройки Inventory",
-          "analytics": "Настройки аналитики",
-          "paypal": "Настройки PayPal",
-          "payment": "Настройки Generic Payment"
+          "accountSettingsLabel": "Настройки входа",
+          "shopSettingsLabel": "Настройки магазина",
+          "socialSettingsLabel": "Настройки соц. сетей",
+          "shippingSettingsLabel": "Настройки доставки",
+          "inventorySettingsLabel": "Настройки Inventory",
+          "analyticsSettingsLabel": "Настройки аналитики",
+          "paypalSettingsLabel": "Настройки PayPal",
+          "genericPaymentSettingsLabel": "Настройки Generic Payment"
         }
       },
       "accounts": {

@@ -7,11 +7,11 @@
         "select": "Select Language"
       },
       "admin": {
-        "shortcuts": {
-          "dashboard": "Dashboard",
-          "orders": "Orders",
-          "addProduct": "Add Product",
-          "accounts": "Accounts"
+        "shortcut": {
+          "dashboardLabel": "Dashboard",
+          "ordersLabel": "Orders",
+          "addProductLabel": "Add Product",
+          "accountsLabel": "Accounts"
         },
         "dashboard": {
           "coreLabel": "Core",
@@ -24,26 +24,26 @@
           "accountsDescription": "Manage how members sign into your shop",
           "socialLabel": "Social",
           "socialDescription": "Social Sharing for Reaction Commerce",
-          "shippingLabel": "Basic Shipping",
-          "shippingDescription": "Use flat rates for shipping calculations",
+          "basicShippingLabel": "Basic Shipping",
+          "basicShippingDescription": "Use flat rates for shipping calculations",
           "inventoryLabel": "Inventory",
           "inventoryDescription": "Basic Inventory Management",
           "analyticsLabel": "Analytics",
           "analyticsDescription": "Event tracking and analytics with Reaction Commerce",
           "paypalLabel": "PayPal",
           "paypalDescription": "PayPal Payment for Reaction Commerce",
-          "paymentLabel": "Generic Payment",
-          "paymentDescription": "Generic Payment Method"
+          "genericPaymentLabel": "Generic Payment",
+          "genericPaymentDescription": "Generic Payment Method"
         },
         "settings": {
-          "account": "Account Settings",
-          "shop": "Shop Settings",
-          "social": "Social Settings",
-          "shipping": "Shipping Settings",
-          "inventory": "Inventory Settings",
-          "analytics": "Analytics Settings",
-          "paypal": "PayPal Settings",
-          "payment": "Generic Payment Settings"
+          "accountSettingsLabel": "Account Settings",
+          "shopSettingsLabel": "Shop Settings",
+          "socialSettingsLabel": "Social Settings",
+          "shippingSettingsLabel": "Shipping Settings",
+          "inventorySettingsLabel": "Inventory Settings",
+          "analyticsSettingsLabel": "Analytics Settings",
+          "paypalSettingsLabel": "PayPal Settings",
+          "genericPaymentSettingsLabel": "Generic Payment Settings"
         }
       },
       "accounts": {

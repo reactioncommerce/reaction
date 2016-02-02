@@ -33,8 +33,6 @@ ReactionCore.registerPackage({
     provides: "dashboard",
     label: "Core",
     description: "Reaction Commerce Core",
-    i18nKeyLabel: "admin.dashboard.coreLabel",
-    i18nKeyDescription: "admin.dashboard.coreDescription",
     icon: "fa fa-th",
     cycle: 1,
     container: "dashboard",
@@ -46,14 +44,12 @@ ReactionCore.registerPackage({
     route: "dashboard",
     provides: "shortcut",
     label: "Dashboard",
-    i18nKeyLabel: "admin.shortcuts.dashboard",
     icon: "fa fa-th",
     cycle: 1
   }, {
     route: "dashboard/shop",
     template: "shopSettings",
     label: "Shop Settings",
-    i18nKeyLabel: "admin.settings.shop",
     provides: "settings",
     icon: "fa fa-cog fa-2x fa-fw",
     container: "dashboard"
@@ -62,8 +58,6 @@ ReactionCore.registerPackage({
     provides: "dashboard",
     label: "Import",
     description: "Support for imports and migrations.",
-    i18nKeyLabel: "admin.dashboard.importLabel",
-    i18nKeyDescription: "admin.dashboard.importDescription",
     icon: "fa fa-upload",
     cycle: 3
   }, {
@@ -71,8 +65,6 @@ ReactionCore.registerPackage({
     provides: "dashboard",
     label: "Orders",
     description: "Fulfill your orders",
-    i18nKeyLabel: "admin.dashboard.ordersLabel",
-    i18nKeyDescription: "admin.dashboard.ordersDescription",
     icon: "fa fa-sun-o",
     cycle: 1,
     container: "orders"
@@ -80,7 +72,6 @@ ReactionCore.registerPackage({
     route: "dashboard/orders",
     provides: "shortcut",
     label: "Orders",
-    i18nKeyLabel: "admin.shortcuts.orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
     cycle: 1
@@ -91,7 +82,6 @@ ReactionCore.registerPackage({
   }, {
     route: "createProduct",
     label: "Add Product",
-    i18nKeyLabel: "admin.shortcuts.addProduct",
     icon: "fa fa-plus",
     provides: "shortcut"
   }],

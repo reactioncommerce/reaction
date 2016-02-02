@@ -36,15 +36,12 @@ ReactionCore.registerPackage({
       provides: "dashboard",
       label: "Social",
       description: "Social Sharing for Reaction Commerce",
-      i18nKeyLabel: "admin.dashboard.socialLabel",
-      i18nKeyDescription: "admin.dashboard.socialDescription",
       route: "dashboard/social",
       icon: "fa fa-share-alt",
       cycle: "4",
       container: "dashboard"
     }, {
       label: "Social Settings",
-      i18nKeyLabel: "admin.settings.social",
       route: "dashboard/social",
       template: "socialDashboard",
       provides: "settings",
