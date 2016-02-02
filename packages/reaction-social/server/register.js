@@ -33,11 +33,9 @@ ReactionCore.registerPackage({
     provides: "dashboard",
     label: "Social",
     description: "Social Channel configuration",
-    route: "dashboard/social",
     icon: "fa fa-share-alt",
     cycle: "2",
     container: "dashboard",
-    template: "socialDashboard",
     permissions: [{
       label: "Social",
       permission: "dashboard/social",
