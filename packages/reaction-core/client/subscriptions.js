@@ -52,6 +52,8 @@ ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
 
 ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
 
+ReactionCore.Subscriptions.Products = Meteor.subscribe("Products", Session.get("productScrollLimit"));
+
 // admin only
 // todo should we put this inside autorun and detect user changes
 ReactionCore.Subscriptions.Inventory = Meteor.subscribe("Inventory");

@@ -1,5 +1,3 @@
-Meteor.subscribe("Products");
-
 function uploadHandler(event) {
   let shopId = ReactionCore.getShopId();
   let userId = Meteor.userId();
