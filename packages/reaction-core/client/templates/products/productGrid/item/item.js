@@ -102,30 +102,38 @@ Template.productGridItems.helpers({
  */
 
 Template.productGridItems.events({
-  "click [data-event-action=productClick]": function (event) {
+  "click [data-event-action=productClick]": function (event, template) {
     if (ReactionCore.hasPermission("createProduct")) {
       if (event.metaKey || event.ctrlKey || event.shiftKey) {
         event.preventDefault();
-        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
-        let selected = $('li.product-grid-item.active').length;
+
+        const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+        const $items = $("li.product-grid-item");
+        const $activeItems = $("li.product-grid-item.active");
+        const selected = $activeItems.length;
+
         if (event.shiftKey && selected > 0) {
-          let indexes = [$('li.product-grid-item').index(checkbox.parents('li.product-grid-item')),
-            $('li.product-grid-item').index($('li.product-grid-item.active').get(0)),
-            $('li.product-grid-item').index($('li.product-grid-item.active').get(selected-1))];
-          for (let i=_.min(indexes); i<=_.max(indexes); i++) {
-            $('input[type=checkbox]', $('li.product-grid-item').get(i)).prop("checked", true).trigger("change");
+          const indexes = [
+            $items.index($checkbox.parents("li.product-grid-item")),
+            $items.index($activeItems.get(0)),
+            $items.index($activeItems.get(selected - 1))
+          ];
+          for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+            $("input[type=checkbox]", $items.get(i)).prop("checked", true).trigger("change");
           }
         } else {
-          checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
+          $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
         }
       }
     }
   },
-  "click [data-event-action=selectSingleProduct]": function (event) {
+  "click [data-event-action=selectSingleProduct]": function (event, template) {
     event.preventDefault();
-    let checkbox = $(`input[type=checkbox][value=${this._id}]`);
+
+    const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+
     Session.set("productGrid/selectedProducts", []);
-    checkbox.prop("checked", true).trigger("change");
+    $checkbox.prop("checked", true).trigger("change");
   },
   "click .clone-product": function () {
     let title;
