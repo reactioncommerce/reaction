@@ -250,12 +250,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/cart/checkout/addressBook/addressBook.html", "client");
   api.addFiles("client/templates/cart/checkout/addressBook/addressBook.js", "client");
 
-  api.addFiles("client/templates/dashboard/console/console.html", "client");
-  api.addFiles("client/templates/dashboard/console/console.js", "client");
-
-  api.addFiles("client/templates/dashboard/console/icon/icon.html", "client");
-  api.addFiles("client/templates/dashboard/console/icon/icon.js", "client");
-
   api.addFiles("client/templates/dashboard/import/import.html", "client");
   api.addFiles("client/templates/dashboard/import/import.js", "client");
 

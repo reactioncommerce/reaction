@@ -68,10 +68,6 @@ ReactionCore.registerPackage({
     icon: "fa fa-sun-o",
     cycle: 1
   }, {
-    template: "coreOrderWidgets",
-    provides: "widget",
-    route: "dashboard/orders"
-  }, {
     route: "createProduct",
     label: "Add Product",
     icon: "fa fa-plus",

@@ -1,20 +1,7 @@
 <template name="dashboardControls">
-{{#if hasDashboardAccess}}
-  {{#if displayConsoleNavBar}}
-    <div class="dashboard-drawer">
-    {{#if displayConsoleDrawer}}
-      <div class="dashboard-container">
-        <div class="dashboard-widget-wrapper">
-          {{#each reactionApps provides='widget' route=route}}
-            {{> consoleWidgets}}
-          {{/each}}
-        </div>
-      </div>
-    {{/if}}
-    </div>
-    {{> consoleNavBar}}
+  {{#if hasDashboardAccess}}
+  <!-- dashboardControls -->
   {{/if}}
-{{/if}}
 </template>
 
 <template name="blankControls">
@@ -33,6 +20,7 @@
         </h3>
       </div>
       <div class="nav-dashboard-controls">
+        <!-- dashboardHeaderControls -->
         {{> Template.dynamic template=dashboardHeaderControls}}
       </div>
     </div>

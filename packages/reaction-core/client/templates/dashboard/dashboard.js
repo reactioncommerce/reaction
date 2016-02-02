@@ -1,42 +1,18 @@
 /**
- * dashboard helpers
- *
- * manages view / permissions for the console
- */
-
-Template.dashboardControls.helpers({
-  route: function () {
-    return ReactionRouter.getRouteName();
-  },
-  // TODO deprecate displayConsoleNavBar
-  displayConsoleNavBar: function () {
-    if (ReactionCore.hasPermission("console") && Session.get("displayConsoleNavBar")) {
-      return true;
-    }
-  },
-  // TODO deprecate displayConsoleDrawer
-  displayConsoleDrawer: function () {
-    if (ReactionCore.hasPermission("console") && Session.get("displayConsoleDrawer")) {
-      return true;
-    }
-  }
-});
-
-/**
  * dashboard events
  *
  * routes console links to packages routes from ReactionRegistry
  */
 
-Template.dashboardControls.events({
-  "click .dashboard-navbar-package": function (event) {
-    event.preventDefault();
-    if (this.route !== null) {
-      Session.set("currentPackage", this.route);
-      return ReactionRouter.go("/" + this.route);
-    }
-  }
-});
+// Template.dashboardControls.events({
+//   "click .dashboard-navbar-package": function (event) {
+//     event.preventDefault();
+//     if (this.route !== null) {
+//       Session.set("currentPackage", this.route);
+//       return ReactionRouter.go("/" + this.route);
+//     }
+//   }
+// });
 
 Template.dashboardHeader.helpers({
   registry: function () {

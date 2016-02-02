@@ -18,15 +18,15 @@ Template.loginDropdown.events({
    */
   "click #logout": (event, template) => {
     event.preventDefault();
-    Session.set("displayConsoleNavBar", false);
-
+    template.$(".dropdown-toggle").dropdown("toggle");
     // Meteor.logoutOtherClients();
     Meteor.logout((error) => {
       if (error) {
         ReactionCore.Log.warn("Failed to logout.", error);
       }
+      // go home on logout
+      ReactionRouter.go("/");
     });
-    template.$(".dropdown-toggle").dropdown("toggle");
   },
 
   /**
