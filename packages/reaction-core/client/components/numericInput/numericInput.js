@@ -16,7 +16,7 @@ Template.numericInput.onRendered(() => {
       if (_.isObject(result)) {
         // Set options
         const options = Object.assign({},
-          result.currency,
+          result.shopCurrency,
           {
             minValue: "0.00",
             maxValue: "999999999.99"
