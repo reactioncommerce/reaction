@@ -1,7 +1,15 @@
 <template name="checkoutHeader">
-  <div class="nav" role="navigation">
-    <div class="row navbar-shop">
-      <div class="navbar-brand">{{> headerBrand}}</div>
+  <div class="container-fluid">
+    <div class="nav" role="navigation">
+
+      <div class="row">
+        <div class="rui navbar">
+          <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
+          <div class="brand">{{> CoreNavigationBrand}}</div>
+          <div class="menu"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
