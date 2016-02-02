@@ -44,7 +44,7 @@ ReactionCore.registerPackage({
     provides: "shortcut",
     label: "Dashboard",
     icon: "fa fa-th",
-    cycle: 1
+    cycle: 0
   }, {
     route: "dashboard/shop",
     template: "shopSettings",

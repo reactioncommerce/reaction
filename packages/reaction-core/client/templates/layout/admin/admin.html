@@ -52,6 +52,7 @@
   <div class="admin-controls-menu">
 
     <nav class="admin-controls-quicklinks">
+      <!-- begin provides shortcut -->
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
           <button id="{{route}}" title="{{label}}" class="btn btn-default {{active route}}">
@@ -68,6 +69,7 @@
           </button>
         {{/if}}
       {{/each}}
+      <!-- end provides shortcut -->
     </nav>
 
     <nav>

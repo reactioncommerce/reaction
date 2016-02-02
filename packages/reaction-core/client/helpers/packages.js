@@ -164,7 +164,7 @@ Template.registerHelper("reactionApps", function (optionHash) {
     // we only need any given package once, let's be sure.
     reactionApps = _.uniq(reactionApps);
     // sort cycle to ensure order
-    // reactionApps = reactionApps.sort((a, b) => a.cycle - b.cycle).slice();
+    reactionApps = reactionApps.sort((a, b) => a.cycle - b.cycle).slice();
     return reactionApps;
   }
 });
