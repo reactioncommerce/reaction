@@ -55,8 +55,7 @@ renderLayout = (options = {}) => {
 
 // define Router export
 // FlowRouter.triggers.enter([hasLayoutPermission]);
-Router = FlowRouter;
-ReactionRouter = Router;
+ReactionRouter = FlowRouter;
 
 // default not found route
 ReactionRouter.notFound = {
@@ -65,31 +64,4 @@ ReactionRouter.notFound = {
       template: "notFound"
     });
   }
-};
-
-// var localeGroup = FlowRouter.group({
-//   prefix: '/:locale?',
-//   triggersEnter: [localeCheck]
-// });
-//
-// localeGroup.route('/login', {
-//   action: function (params, queryParams) {
-//     BlazeLayout.render('componentLayout', {content: 'login'});
-//   }
-// });
-//
-
-
-// these are old iron:router methods
-// that we'd like to warn are deprecated
-Router.waitOn = () => {
-  ReactionCore.Log.warn("Deprecated. Router.waitOn is only supported for iron-router.");
-};
-
-Router.configure = () => {
-  ReactionCore.Log.warn("Deprecated. Router.configure is only supported for iron-router.");
-};
-
-Router.map = () => {
-  ReactionCore.Log.warn("Router.map is deprecated. Use ReactionCore.registerPackage to define routes.");
 };

@@ -115,7 +115,7 @@ Template.orders.helpers({
   },
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {
-      return filter.name === ReactionRouter.current().queryParams.filter;
+      return filter.name === ReactionRouter.getQueryParam("filter");
     });
 
     if (foundFilter) {
@@ -123,7 +123,7 @@ Template.orders.helpers({
     }
   },
   activeClassname(orderId) {
-    if (ReactionRouter.current().params._id === orderId) {
+    if (ReactionRouter.getQueryParam("_id") === orderId) {
       return "panel-info";
     }
     return "panel-default";
@@ -132,7 +132,7 @@ Template.orders.helpers({
 
 Template.ordersListItem.helpers({
   activeClassname(orderId) {
-    if (ReactionRouter.current().params._id === orderId) {
+    if (ReactionRouter.getQueryParam("_id") === orderId) {
       return "active";
     }
   },
@@ -144,7 +144,19 @@ Template.ordersListItem.helpers({
 
 Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
-    event.preventDefault();
+    // event.preventDefault();
+    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    // toggle detail views
+    if (isActionViewOpen === false) {
+      ReactionCore.showActionView({
+        label: "Order Details",
+        data: this,
+        props: {
+          size: "large"
+        },
+        template: "coreOrderWorkflow"
+      });
+    }
     ReactionRouter.setQueryParams({
       _id: this._id
     });
@@ -164,9 +176,15 @@ Template.ordersListItem.events({
 
 Template.orderListFilters.events({
   "click [role=tab]": (event) => {
+    event.preventDefault();
     const filter = event.currentTarget.getAttribute("data-filter");
+    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    if (isActionViewOpen === true) {
+      ReactionCore.hideActionView();
+    }
     ReactionRouter.setQueryParams({
-      filter: filter
+      filter: filter,
+      _id: null
     });
   }
 });
