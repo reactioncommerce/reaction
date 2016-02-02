@@ -45,10 +45,10 @@ Template.registerHelper("urlFor", (path, params) => {
  */
 Template.registerHelper("active", (route) => {
   ReactionRouter.watchPathChange();
-  return ReactionRouter.current().route.name === route ? "active" : "";
+  return ReactionRouter.current().path === "/" + route ? "active" : "";
 });
 // common in meteor apps.
 Template.registerHelper("currentRoute", (route) => {
   ReactionRouter.watchPathChange();
-  return ReactionRouter.current().route.name === route ? "active" : "";
+  return ReactionRouter.current().path === "/" + route ? "active" : "";
 });
