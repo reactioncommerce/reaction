@@ -15,14 +15,25 @@
   {{#if hasDashboardAccess}}
     {{> coreAdminLayout}}
   {{else}}
-    <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
-    <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
+    <nav class="reaction-navigation-header">
+      <!-- begin layoutHeader -->
+      {{> Template.dynamic template=layoutHeader}}
+      <!-- end layoutHeader -->
+    </nav>
+
+    <nav class="reaction-cart-drawer">
+      {{>cartDrawer}}
+    </nav>
+
     <main role="main" id="main">
       <span id="layout-alerts">{{>bootstrapAlerts}}</span>
       {{#if hasPermission 'guest'}}
+        <!-- begin template region -->
         {{> Template.dynamic template=template}}
+        <!-- end template region -->
       {{/if}}
     </main>
+
     <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
   {{/if}}
 </template>

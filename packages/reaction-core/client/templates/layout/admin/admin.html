@@ -1,33 +1,56 @@
 <template name="coreAdminLayout">
-  <span class="layout-alerts-global">{{>bootstrapAlerts}}</span>
+  <span class="layout-alerts-global">{{> bootstrapAlerts}}</span>
   <div class="page {{adminControlsClassname}}" id="reactionAppContainer">
-    <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
-    <nav class="reaction-cart-drawer">{{>cartDrawer}}</nav>
-    <div class="reaction-dashboard-drawer">{{> Template.dynamic template=dashboard}}</div>
+    <nav class="reaction-navigation-header">
+      <!-- begin layoutHeader -->
+      {{> Template.dynamic template=layoutHeader}}
+      <!-- end layoutHeader -->
+    </nav>
+
+    <nav class="reaction-cart-drawer">
+      {{> cartDrawer}}
+    </nav>
+
     <main role="main" id="main">
+      <!-- begin dashboardHeader -->
       {{> Template.dynamic template=dashboardHeader}}
+      <!-- end dashboardHeader -->
+
+      <!-- begin template region -->
       {{> Template.dynamic template=template}}
+      <!-- end template region -->
     </main>
-    <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
+
+    <footer class="reaction-navigation-footer footer-default">
+      <!-- begin layoutFooter -->
+      {{> Template.dynamic template=layoutFooter}}
+      <!-- end layoutFooter -->
+    </footer>
+
   </div>
 
   <div class="admin-controls {{adminControlsClassname}}">
-      <div class="admin-controls-detail">
-        <div class="admin-controls-heading">
-          {{> settingsHeader}}
-        </div>
-        <div class="admin-controls-content action-view-body">
-          {{> Template.dynamic template=control.template data=control.data}}
-        </div>
-        <div class="admin-controls-footer">
-          <div class="admin-controls-container">
-            {{> Template.dynamic template=adminControlsFooter}}
-          </div>
+    <div class="admin-controls-detail">
+      <div class="admin-controls-heading">
+        {{> settingsHeader}}
+      </div>
+      <div class="admin-controls-content action-view-body">
+        <!-- begin admin controls -->
+        {{> Template.dynamic template=control.template data=control.data}}
+        <!-- end aadmin controls-->
+      </div>
+      <div class="admin-controls-footer">
+        <div class="admin-controls-container">
+          <!-- begin adminControlsFooter -->
+          {{> Template.dynamic template=adminControlsFooter}}
+          <!-- end adminControlsFooter -->
         </div>
       </div>
+    </div>
   </div>
 
   <div class="admin-controls-menu">
+
     <nav class="admin-controls-quicklinks">
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
@@ -35,10 +58,8 @@
             <div class="contents">
               <div class="icon">
                 {{#if isDashboard route}}
-                  <img src="/resources/reaction-logo.svg" width="32">
-                {{else}}
-                  <i class="{{icon}}"></i>
-                {{/if}}
+                <img src="/resources/reaction-logo.svg" width="32"> {{else}}
+                <i class="{{icon}}"></i> {{/if}}
               </div>
               <div class="icon-text">
                 {{label}}
@@ -48,20 +69,24 @@
         {{/if}}
       {{/each}}
     </nav>
+
     <nav>
+      <!-- begin dashboardControls -->
       {{> Template.dynamic template=dashboardControls}}
+      <!-- end dashboardControls -->
 
       {{#if settings}}
         {{#with settings}}
           <button id="{{route}}" title="{{label}}" data-event-action="showPackageSettings">
             <i class="fa fa-gear"></i>
             <span class="icon-text">
-              {{label}}
-            </span>
+                  {{label}}
+                </span>
           </button>
         {{/with}}
       {{/if}}
     </nav>
+
   </div>
 
 </template>
