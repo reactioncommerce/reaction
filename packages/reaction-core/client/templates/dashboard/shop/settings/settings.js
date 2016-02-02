@@ -66,6 +66,24 @@ Template.shopSettings.helpers({
       });
     }
     return uomOptions;
+  },
+  paymentMethodOptions() {
+    const paymentMethods = ReactionCore.Apps({provides: "paymentMethod"});
+    const options = [{
+      label: "Auto",
+      value: "none"
+    }];
+
+    if (_.isArray(paymentMethods)) {
+      for (let method of paymentMethods) {
+        options.push({
+          label: method.name,
+          value: method.name
+        });
+      }
+    }
+
+    return options;
   }
 });
 

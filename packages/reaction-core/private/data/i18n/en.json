@@ -32,7 +32,8 @@
         "address": "Address",
         "mail": "Mail",
         "localization": "Localization",
-        "options": "Options"
+        "options": "Options",
+        "paymentMethods": "Payment Methods"
       },
       "header": {
         "tagsAdd": "Add tag",
