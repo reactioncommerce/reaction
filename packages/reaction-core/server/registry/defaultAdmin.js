@@ -7,7 +7,7 @@
  * @returns {String} return userId
  */
 ReactionRegistry.createDefaultAdminUser = function () {
-  const options = {};
+  let options = {};
   const domain = ReactionRegistry.getRegistryDomain();
   const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
   const shopId = ReactionCore.getShopId();
@@ -17,6 +17,10 @@ ReactionRegistry.createDefaultAdminUser = function () {
   if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
     return ""; // this default admin has already been created for this shop.
   }
+
+  // run hooks on options object before creating user
+  // (the options object must be returned from all callbacks)
+  options = ReactionCore.Hooks.Events.run("beforeCreateDefaultAdminUser", options);
 
   //
   // process Meteor settings and env variables for initial user config
@@ -116,5 +120,9 @@ ReactionRegistry.createDefaultAdminUser = function () {
       \n  PASSWORD: ${options.password}
       \n ********************************* \n\n`
   );
+
+  // run hooks on new user object
+  const user = Meteor.users.findOne(accountId);
+  ReactionCore.Hooks.Events.run("afterCreateDefaultAdminUser", user);
   return accountId;
 };

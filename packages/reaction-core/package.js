@@ -165,6 +165,9 @@ Package.onUse(function (api) {
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
 
+  // misc hooks
+  api.addFiles("server/hooks.js", "server");
+
   api.addFiles("server/methods/workflows/orders.js", "server");
 
   // client
