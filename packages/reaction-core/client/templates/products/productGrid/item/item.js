@@ -63,14 +63,8 @@ Template.productGridItems.helpers({
       return "product-small";
     }
   },
-  isSelected(productId) {
-    let selectedProducts = Session.get("productGrid/selectedProducts");
-
-    if (_.contains(selectedProducts, this._id)) {
-      return "active";
-    }
-
-    return "";
+  isSelected: function() {
+    return _.contains(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
   },
   isMediumWeight: function () {
     let position = this.position || {};
@@ -107,7 +101,7 @@ Template.productGridItems.events({
       if (event.metaKey || event.ctrlKey || event.shiftKey) {
         event.preventDefault();
 
-        const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+        let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
         const $items = $("li.product-grid-item");
         const $activeItems = $("li.product-grid-item.active");
         const selected = $activeItems.length;
@@ -119,7 +113,10 @@ Template.productGridItems.events({
             $items.index($activeItems.get(selected - 1))
           ];
           for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-            $("input[type=checkbox]", $items.get(i)).prop("checked", true).trigger("change");
+            $checkbox = $("input[type=checkbox]", $items.get(i));
+            if ($checkbox.prop("checked") === false) {
+              $checkbox.prop("checked", true).trigger("change");
+            }
           }
         } else {
           $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
