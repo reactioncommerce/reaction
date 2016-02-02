@@ -75,10 +75,10 @@ this.getProductsByTag = function (tag) {
  * publishProduct
  * @summary product publishing and alert
  * @param {Object} productOrArray - product Object
- * @returns {Function}
+ * @return {Object} - returns nothing, and alerts, happen here
  */
-this.publishProduct = function (productOrArray) {
-  let products = (_.isArray(productOrArray) === false) ? [productOrArray] : productOrArray;
+publishProduct = function (productOrArray) {
+  let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
   for (let product of products) {
     Meteor.call("products/publishProduct", product._id, function (error, result) {
       if (error) {
@@ -112,11 +112,11 @@ this.publishProduct = function (productOrArray) {
  * @summary product cloning and alert
  * @param {Object} productOrArray - product Object
  * @param {Boolean} redirect - shoud we do redirect after cloning?
- * @returns {any}
+ * @return {Object} - returns nothing, and alerts, happen here
  */
-this.cloneProduct = function(productOrArray, redirect) {
-  let products = (_.isArray(productOrArray) === false) ? [productOrArray] : productOrArray;
-  return Meteor.call("products/cloneProduct", products, function (error, productIdsNew) {
+cloneProduct = function (productOrArray, redirect) {
+  let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
+  return Meteor.call("products/cloneProduct", products, function (error) {
     if (error) {
       throw new Meteor.Error("error cloning product", error);
     }
@@ -142,8 +142,8 @@ this.cloneProduct = function(productOrArray, redirect) {
  * @param {Object} productOrArray - product Object
  * @return {Object} - returns nothing, and alerts, happen here
  */
-this.maybeDeleteProduct = function (productOrArray) {
-  let products = (_.isArray(productOrArray) === false) ? [productOrArray] : productOrArray;
+maybeDeleteProduct = function (productOrArray) {
+  let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
   let title;
   let confirmTitle;
   let productIds = _.map(products, (product) => {
