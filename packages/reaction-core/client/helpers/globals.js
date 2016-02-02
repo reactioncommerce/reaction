@@ -75,7 +75,7 @@ this.getProductsByTag = function (tag) {
  * publishProduct
  * @summary product publishing and alert
  * @param {Object} productOrArray - product Object
- * @return {Object} - returns nothing, and alerts, happen here
+ * @returns {Object} - returns nothing, and alerts, happen here
  */
 publishProduct = function (productOrArray) {
   let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
@@ -112,7 +112,7 @@ publishProduct = function (productOrArray) {
  * @summary product cloning and alert
  * @param {Object} productOrArray - product Object
  * @param {Boolean} redirect - shoud we do redirect after cloning?
- * @return {Object} - returns nothing, and alerts, happen here
+ * @returns {Object} - returns nothing, and alerts, happen here
  */
 cloneProduct = function (productOrArray, redirect) {
   let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
@@ -140,7 +140,7 @@ cloneProduct = function (productOrArray, redirect) {
  * maybeDeleteProduct
  * @summary confirm product deletion, delete, and alert
  * @param {Object} productOrArray - product Object
- * @return {Object} - returns nothing, and alerts, happen here
+ * @returns {Object} - returns nothing, and alerts, happen here
  */
 maybeDeleteProduct = function (productOrArray) {
   let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
