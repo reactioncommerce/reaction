@@ -186,24 +186,24 @@ _.extend(ReactionCore, {
       return ReactionRouter.current().params._id;
     }
   },
-  getRegistryForCurrentRoute: function (provides) {
+  getRegistryForCurrentRoute: function (routeProvides) {
+    let provides = "dashboard" || routeProvides;
     let routeName = ReactionRouter.getRouteName();
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
-      // "registry.provides": provides,
+      "registry.provides": provides,
       "registry.route": routeName
     }, {
       enabled: 1,
       registry: 1,
-      name: 1,
-      route: 1
+      route: 1,
+      name: 1
     });
 
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
         return item.provides === provides && item.route === routeName;
       });
-
       return settingsData;
     }
 
