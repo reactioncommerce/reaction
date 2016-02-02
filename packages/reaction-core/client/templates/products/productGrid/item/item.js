@@ -63,7 +63,7 @@ Template.productGridItems.helpers({
       return "product-small";
     }
   },
-  isSelected: function() {
+  isSelected: function () {
     return _.contains(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
   },
   isMediumWeight: function () {

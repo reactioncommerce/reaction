@@ -5,7 +5,7 @@ Template.gridControls.onRendered(function () {
 });
 
 Template.gridControls.helpers({
-  checked: function() {
+  checked: function () {
     const selectedProducts = Session.get("productGrid/selectedProducts");
     return _.isArray(selectedProducts) ? selectedProducts.indexOf(this._id) >= 0 : false;
   }
