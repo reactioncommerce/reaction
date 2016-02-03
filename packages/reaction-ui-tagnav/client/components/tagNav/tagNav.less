@@ -12,9 +12,7 @@
   .align-items(center);
 
   position: relative;
-  background-color: @navbar-inverse-bg;
   text-transform: uppercase;
-  border-bottom: @navbar-secondary-border;
   height: @navbar-height;
 }
 
@@ -174,13 +172,14 @@
   .flex(0 0 auto);
   width: auto;
   height: 100%;
-  padding: 0 10px;
+  padding: 0 20px;
   text-transform: uppercase;
   border-radius: 0;
 }
 
 .rui.tagnav .navbar-item:hover > .rui.tag.link {
   background-color: @black10;
+  color: @text-color;
 }
 
 .rui.tagnav.vertical .navbar-item > .rui.tag.link {
@@ -232,6 +231,17 @@
 
 .rui.tagnav .navbar-item .dropdown {
   display: none;
+  color: @text-color;
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
+}
+
+.rui.tagnav .navbar-item .dropdown a {
+  color: @link-color;
+}
+
+.rui.tagnav .navbar-item .dropdown .rui.tag,
+.rui.tagnav .rui.tag.edit input {
+  color: @text-color;
 }
 
 .rui.tagnav .navbar-item.selected > .rui.tag {

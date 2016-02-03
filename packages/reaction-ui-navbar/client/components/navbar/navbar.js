@@ -21,9 +21,32 @@ Template.CoreNavigationBar.helpers({
   onMenuButtonClick() {
     const instance = Template.instance();
     return (event) => {
-      if (instance.data.onMenuButtonClick) {
-        instance.data.onMenuButtonClick(event);
+      if (instance.toggleMenuCallback) {
+        instance.toggleMenuCallback();
       }
     };
   },
+
+  tagNavProps() {
+    const instance = Template.instance();
+    let tags = [];
+
+    tags = ReactionCore.Collections.Tags.find({
+      isTopLevel: true
+    }, {
+      sort: {
+        position: 1
+      }
+    }).fetch();
+
+    return {
+      name: "coreHeaderNavigation",
+      editable: ReactionCore.hasAdminAccess(),
+      tags: tags,
+      onToggleMenu(callback) {
+        // Register the callback
+        instance.toggleMenuCallback = callback;
+      }
+    };
+  }
 });
