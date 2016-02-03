@@ -157,7 +157,7 @@ Router.map(function () {
     template: "products",
     subscriptions: function () {
       Session.set("productFilters", {});
-      Deps.autorun(function() {
+      Deps.autorun(function () {
         Meteor.subscribe("Products", Session.get("productScrollLimit"), Session.get("productFilters"));
       });
     }
@@ -237,7 +237,7 @@ Router.map(function () {
       const id = this.params._id;
       const tag = ReactionCore.Collections.Tags.findOne(id) || ReactionCore.Collections.Tags.findOne({slug: id});
       Session.set("productFilters", {"tag": tag._id});
-      Deps.autorun(function() {
+      Deps.autorun(function () {
         Meteor.subscribe("Products", Session.get("productScrollLimit"), Session.get("productFilters"));
       });
       Meteor.subscribe("Tags");
