@@ -58,6 +58,7 @@ reactioncommerce:reaction-inventory
 reactioncommerce:reaction-router
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-social
+reactioncommerce:reaction-product-variant
 
 # reactioncommerce:reaction-product-simple
 
