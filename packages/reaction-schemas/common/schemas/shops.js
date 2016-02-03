@@ -229,6 +229,11 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [ReactionCore.Schemas.Email],
     optional: true
   },
+  "defaultPaymentMethod": {
+    label: "Default Payment Method",
+    type: String,
+    defaultValue: "none"
+  },
   "currency": {
     label: "Base Currency",
     type: String,
