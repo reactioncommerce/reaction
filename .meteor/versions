@@ -141,6 +141,7 @@ reactioncommerce:reaction-analytics@1.2.3
 reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-auth-net@0.6.0
 reactioncommerce:reaction-braintree@1.5.3
+reactioncommerce:reaction-checkout@1.0.0
 reactioncommerce:reaction-collections@1.0.5
 reactioncommerce:reaction-email-templates@0.1.2
 reactioncommerce:reaction-inventory@0.2.3
@@ -150,7 +151,7 @@ reactioncommerce:reaction-product-variant@0.1.0
 reactioncommerce:reaction-router@1.0.0
 reactioncommerce:reaction-sample-data@0.1.2
 reactioncommerce:reaction-schemas@1.0.5
-reactioncommerce:reaction-shipping@0.6.3
+reactioncommerce:reaction-shipping@0.7.0
 reactioncommerce:reaction-social@0.4.3
 reactioncommerce:reaction-stripe@3.0.3
 reactioncommerce:reaction-ui@0.4.0

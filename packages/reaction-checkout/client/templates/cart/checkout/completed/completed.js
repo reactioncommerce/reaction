@@ -5,12 +5,15 @@
  */
 Template.cartCompleted.helpers({
   order: function () {
-    const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), ReactionRouter.getQueryParam("_id"));
-    if (ccoSub.ready()) {
-      return ReactionCore.Collections.Orders.findOne({
-        userId: Meteor.userId(),
-        cartId: ReactionRouter.getQueryParam("_id")
-      });
+    const id =  ReactionRouter.getQueryParam("_id");
+    if (id) {
+      const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
+      if (ccoSub.ready()) {
+        return ReactionCore.Collections.Orders.findOne({
+          userId: Meteor.userId(),
+          cartId: ReactionRouter.getQueryParam("_id")
+        });
+      }
     }
   },
   orderStatus: function () {

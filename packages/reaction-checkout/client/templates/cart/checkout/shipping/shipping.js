@@ -31,16 +31,19 @@ Template.coreCheckoutShipping.helpers({
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: function () {
-    let cart = ReactionCore.Collections.Cart.findOne();
+    const cart = ReactionCore.Collections.Cart.findOne();
+
     return cartShippingMethods(cart);
   },
 
   // helper to make sure there are some shipping providers
   shippingConfigured: function () {
-    let exists = ReactionCore.Collections.Shipping.find({
-      "methods.enabled": true
-    }).count();
-    return exists;
+    const shipSub = Meteor.subscribe("Shipping");
+    if (shipSub.ready()) {
+      return ReactionCore.Collections.Shipping.find({
+        "methods.enabled": true
+      }).count();
+    }
   },
 
   // helper to display currently selected shipmentMethod
