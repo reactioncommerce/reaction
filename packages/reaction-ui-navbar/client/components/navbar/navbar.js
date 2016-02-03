@@ -42,6 +42,7 @@ Template.CoreNavigationBar.helpers({
     return {
       name: "coreHeaderNavigation",
       editable: ReactionCore.hasAdminAccess(),
+      isEditing: true,
       tags: tags,
       onToggleMenu(callback) {
         // Register the callback

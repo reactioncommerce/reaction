@@ -4,7 +4,7 @@
   {{#if blank}}
     {{> tagBlank (tagBlankProps tag)}}
   {{else}}
-    {{#if editable}}
+    {{#if isEditing}}
       {{> tagEditable (tagEditableProps tag)}}
     {{else}}
       {{> tagLink}}

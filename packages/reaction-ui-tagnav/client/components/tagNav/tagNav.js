@@ -75,6 +75,13 @@ Template.tagNav.onCreated(function () {
     [NavbarStates.Visible]: false
   });
 
+  this.autorun(() => {
+    const isEditing = Session.equals("reaction/editModeEnabled", true);
+console.log(isEditing);
+    // Update local state from global session state
+    this.state.set("isEditing", isEditing);
+  });
+
   this.moveItem = (array, fromIndex, toIndex) => {
     array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
     return array;
@@ -218,28 +225,19 @@ Template.tagNav.helpers({
     }
     return "";
   },
+
   hasDropdownClassName(tag) {
     if (_.isArray(tag.relatedTagIds)) {
       return "has-dropdown";
     }
   },
+
   isEditing() {
     return Template.instance().state.equals("isEditing", true);
   },
-  editable() {
-    return Template.instance().data.editable;
-  },
-  onEditTags() {
-    const instance = Template.instance();
 
-    return () => {
-      if (instance.data.editable) {
-        const isEditing = instance.state.equals("isEditing", true);
-        instance.state.set("isEditing", !isEditing);
-        instance.state.set("selectedTag", null);
-        // instance.detachhBodyListener();
-      }
-    };
+  canEdit() {
+    return Template.instance().data.canEdit;
   },
 
   handleMenuClose() {
@@ -256,7 +254,7 @@ Template.tagNav.helpers({
     return {
       parentTag,
       subTagGroups: TagHelpers.subTags(parentTag),
-      editable: instance.state.equals("isEditing", true),
+      isEditing: instance.state.equals("isEditing", true),
       ...TagNavHelpers
     };
   },
@@ -269,7 +267,7 @@ Template.tagNav.helpers({
 
     return {
       tag,
-      editable: instance.state.equals("isEditing", true),
+      isEditing: instance.state.equals("isEditing", true),
       selectable: true,
       isSelected,
       className: "js-tagNav-item",
@@ -295,7 +293,7 @@ Template.tagNav.helpers({
     const instance = Template.instance();
 
     return {
-      editable: instance.state.equals("isEditing", true),
+      isEditing: instance.state.equals("isEditing", true),
       blank: true,
       onTagCreate: TagNavHelpers.onTagCreate
     };

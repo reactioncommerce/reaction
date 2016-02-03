@@ -66,7 +66,7 @@ Template.tagList.onRendered(() => {
 
 Template.tagList.helpers({
   isEditing() {
-    return Template.instance().data.editable;
+    return Template.instance().data.isEditing;
   },
 
   tagProps(tag) {
@@ -78,7 +78,7 @@ Template.tagList.helpers({
 
     return {
       tag,
-      editable: instance.data.editable,
+      isEditing: instance.data.isEditing,
       selectable: instance.data.selectable,
       isSelected,
       onTagSelect: instance.data.onTagSelect,

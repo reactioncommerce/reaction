@@ -93,7 +93,17 @@ Template.coreAdminLayout.helpers({
 });
 
 Template.coreAdminLayout.events({
-  "click [data-event-action=showPackageSettings]": function () {
+
+  "click [data-event-action=toggleEditMode]"() {
+    console.log("poop");
+    if (Session.equals("reaction/editModeEnabled", true)) {
+      Session.set("reaction/editModeEnabled", false);
+    } else {
+      Session.set("reaction/editModeEnabled", true);
+    }
+  },
+
+  "click [data-event-action=showPackageSettings]"() {
     ReactionCore.showActionView(this);
   },
 
@@ -103,7 +113,7 @@ Template.coreAdminLayout.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button": function (event) {
+  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button"(event) {
     if (this.route === "createProduct") {
       event.preventDefault();
       event.stopPropagation();

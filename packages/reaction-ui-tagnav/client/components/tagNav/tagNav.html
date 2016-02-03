@@ -25,28 +25,5 @@
         </div>
       {{/if}}
     </div>
-    <div class="navbar-footer">
-      {{#if editable}}
-        {{#if isEditing}}
-          {{> button
-            className="edit-tag-button"
-            icon="tag"
-            onClick=onEditTags
-            status="success"
-            title="Done"
-            type="button"
-          }}
-        {{else}}
-          {{> button
-            className="edit-tag-button"
-            icon="tag"
-            onClick=onEditTags
-            status="default"
-            title="Edit Tags"
-            type="button"
-          }}
-        {{/if}}
-      {{/if}}
-    </div>
   </div>
 </template>

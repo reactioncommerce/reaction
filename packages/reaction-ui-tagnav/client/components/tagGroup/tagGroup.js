@@ -17,7 +17,7 @@ Template.tagGroup.helpers({
 
     return {
       tag: groupTag,
-      editable: instance.data.editable,
+      isEditing: instance.data.isEditing,
       onTagRemove(tag) {
         instance.data.onTagRemove(tag, instance.data.parentTag);
       },
@@ -31,7 +31,7 @@ Template.tagGroup.helpers({
     return {
       parentTag: groupTag,
       tags: TagHelpers.subTags(groupTag),
-      editable: instance.data.editable,
+      isEditing: instance.data.isEditing,
       onTagCreate(tagName) {
         if (instance.data.onTagCreate) {
           instance.data.onTagCreate(tagName, instance.data.groupTag);

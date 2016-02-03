@@ -58,7 +58,7 @@ Template.tagTree.onRendered(() => {
 
 Template.tagTree.helpers({
   isEditing() {
-    return Template.instance().data.editable;
+    return Template.instance().data.isEditing;
   },
 
   tagGroupProps(groupTag) {
@@ -67,7 +67,7 @@ Template.tagTree.helpers({
     return {
       groupTag,
       parentTag: instance.data.parentTag,
-      editable: instance.data.editable,
+      isEditing: instance.data.isEditing,
       onTagCreate: instance.data.onTagCreate,
       onTagDragAdd: instance.data.onTagDragAdd,
       onTagRemove: instance.data.onTagRemove,
