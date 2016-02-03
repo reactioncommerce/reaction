@@ -3,12 +3,16 @@
  *
  * if order status = new translate submitted message
  */
-Template.cartCompleted.onCreated = function () {
-  Meteor.subscribe("Orders");
-  // Meteor.subscribe("CompletedCartOrder", Meteor.userId(), ReactionRouter.getParam("_id"));
-};
-
 Template.cartCompleted.helpers({
+  order: function () {
+    const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), ReactionRouter.getQueryParam("_id"));
+    if (ccoSub.ready()) {
+      return ReactionCore.Collections.Orders.findOne({
+        userId: Meteor.userId(),
+        cartId: ReactionRouter.getQueryParam("_id")
+      });
+    }
+  },
   orderStatus: function () {
     if (this.workflow.status === "new") {
       return i18n.t("cartCompleted.submitted");
@@ -18,7 +22,8 @@ Template.cartCompleted.helpers({
   userOrders: function () {
     if (Meteor.user()) {
       return ReactionCore.Collections.Orders.find({
-        userId: Meteor.userId()
+        userId: Meteor.userId(),
+        cartId: this._id
       });
     }
   }

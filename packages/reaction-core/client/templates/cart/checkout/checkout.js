@@ -2,14 +2,6 @@
 // cartCheckout is a wrapper template
 // controlling the load order of checkout step templates
 //
-//
-// If you are looking for:
-//  - cartWorkflow
-//  - cartWorkflowPosition
-//  - cartWorkflowCompleted
-// see helpers/cart.coffee
-//
-
 Template.cartCheckout.helpers({
   cart: function () {
     return ReactionCore.Collections.Cart.findOne();
@@ -17,8 +9,6 @@ Template.cartCheckout.helpers({
 });
 
 Template.cartCheckout.onRendered(function () {
-  // ensure checkout drawer does not display
-  Session.set("displayCartDrawer", false);
   // init cart workflow. For registered users we are called `workflow/
   // pushCartWorkflow` within `cart\mergeCart`, but anonymous doesn't have
   // access to that method, that's why we are calling workflow changes from here.
@@ -33,7 +23,6 @@ Template.cartCheckout.onRendered(function () {
  * checkoutSteps Helpers
  * helper isPending evaluates that this is
  * the current step, or has been processed already
- *
  */
 Template.checkoutSteps.helpers({
   isCompleted: function () {
@@ -53,12 +42,10 @@ Template.checkoutSteps.helpers({
 
 /**
  * checkoutStepBadge Helpers
- *
  */
-
 Template.checkoutStepBadge.helpers({
   checkoutStepBadgeClass: function () {
-    let workflowStep = Template.instance().data;
+    const workflowStep = Template.instance().data;
     // let currentStatus = ReactionCore.Collections.Cart.findOne().workflow.status;
     if (workflowStep.status === true || workflowStep.status === this.template) {
       return "active";

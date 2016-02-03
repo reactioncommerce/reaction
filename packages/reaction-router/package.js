@@ -23,6 +23,7 @@ Package.onUse(function (api) {
   api.addFiles("routes/dashboard.js");
   api.addFiles("routes/orders.js");
   api.addFiles("routes/packages.js");
+  api.addFiles("routes/accounts.js");
   api.addFiles("client/helpers.js", "client");
 
   api.export("Router");
