@@ -52,7 +52,7 @@ Template.coreAdminLayout.helpers({
     return Template.instance().settings.get();
   },
 
-isDashboard(route) {
+  isDashboard(route) {
     if (route === "dashboard") {
       return true;
     }
@@ -120,9 +120,7 @@ Template.coreAdminLayout.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          ReactionRouter.go("/product", {
-            _id: productId
-          });
+          ReactionRouter.go("/product/" + productId);
         }
       });
     } else if (this.route) {

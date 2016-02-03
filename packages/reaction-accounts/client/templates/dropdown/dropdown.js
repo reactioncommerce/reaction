@@ -52,10 +52,7 @@ Template.loginDropdown.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          let params = {
-            _id: productId
-          };
-          ReactionRouter.go("product", params);
+          ReactionRouter.go("/product/" + productId);
         }
       });
     } else if (this.route) {
