@@ -141,8 +141,13 @@ _.extend(ReactionCore, {
    * @returns {String} Session "admin/showActionView"
    */
   showActionView: function (viewData) {
-    Session.set("admin/showActionView", true);
-    ReactionCore.setActionView(viewData);
+    if (Session.get("admin/showActionView") === true && viewData &&
+      JSON.stringify(Session.get("admin/actionView")) === JSON.stringify(viewData)) {
+        Session.set("admin/showActionView", false);
+    } else {
+      Session.set("admin/showActionView", true);
+      ReactionCore.setActionView(viewData);
+    }
   },
 
   isActionViewOpen: function () {
