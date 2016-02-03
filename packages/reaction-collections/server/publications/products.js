@@ -76,9 +76,6 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
 
     }
 
-    ReactionCore.Log.info(JSON.stringify(productFilters));
-    ReactionCore.Log.info(JSON.stringify(selector));
-
     // products are always visible to owners
     if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
       selector.isVisible = true;
