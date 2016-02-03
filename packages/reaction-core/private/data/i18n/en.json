@@ -25,14 +25,16 @@
         "timezoneOptions": "Choose timezone",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "loadMoreProducts": "Load more products"
       },
       "shopSettings": {
         "general": "General",
         "address": "Address",
         "mail": "Mail",
         "localization": "Localization",
-        "options": "Options"
+        "options": "Options",
+        "paymentMethods": "Payment Methods"
       },
       "header": {
         "tagsAdd": "Add tag",

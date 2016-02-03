@@ -21,6 +21,7 @@ Package.onUse(function (api) {
   api.use("session");
   api.use("jquery");
   api.use("tracker");
+  api.use("reactive-dict");
 
   // meteor add-on packages
   api.use("ddp-rate-limiter");
@@ -158,6 +159,9 @@ Package.onUse(function (api) {
   // method hooks
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
+
+  // misc hooks
+  api.addFiles("server/hooks.js", "server");
 
   api.addFiles("server/methods/workflows/orders.js", "server");
 

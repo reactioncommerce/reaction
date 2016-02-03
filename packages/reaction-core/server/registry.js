@@ -105,7 +105,7 @@ ReactionRegistry.loadSettings = function (json) {
  * @returns {String} return userId
  */
 ReactionRegistry.createDefaultAdminUser = function () {
-  const options = {};
+  let options = {};
   const domain = getDomain();
   const defaultAdminRoles = ["owner", "admin", "guest"];
   const shopId = ReactionCore.getShopId();
@@ -130,6 +130,10 @@ ReactionRegistry.createDefaultAdminUser = function () {
       ReactionCore.Log.info("Using meteor --settings to create admin user");
     }
   }
+
+  // run hooks on options object before creating user
+  // (the options object must be returned from all callbacks)
+  options = ReactionCore.Hooks.Events.run("beforeCreateDefaultAdminUser", options);
 
   // set the default shop email to the default admin email
   ReactionCore.Collections.Shops.update(shopId, {
@@ -175,21 +179,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
         "Unable to send admin account verification email.", error);
     }
   }
-  // launchdock is the Reaction PaaS solution
-  // if we have launchdock credentials, we'll configure them
-  if (process.env.LAUNCHDOCK_USERID) {
-    Meteor.users.update({
-      _id: accountId
-    }, {
-      $set: {
-        "services.launchdock.userId": process.env.LAUNCHDOCK_USERID,
-        "services.launchdock.username": process.env.LAUNCHDOCK_USERNAME,
-        "services.launchdock.auth": process.env.LAUNCHDOCK_AUTH,
-        "services.launchdock.url": process.env.LAUNCHDOCK_URL,
-        "services.launchdock.stackId": process.env.LAUNCHDOCK_STACK_ID
-      }
-    });
-  }
+
   // populate roles with all the packages and their permissions
   // this way the default user has all permissions
   const packages = ReactionCore.Collections.Packages.find().fetch();
@@ -217,6 +207,10 @@ ReactionRegistry.createDefaultAdminUser = function () {
       \n  PASSWORD: ${options.password}
       \n ********************************* \n\n`
   );
+
+  // run hooks on new user object
+  const user = Meteor.users.findOne(accountId);
+  ReactionCore.Hooks.Events.run("afterCreateDefaultAdminUser", user);
 };
 
 /**
