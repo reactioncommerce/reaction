@@ -34,7 +34,8 @@
         "address": "Адрес",
         "mail": "Почта",
         "localization": "Локализация",
-        "options": "Настройки"
+        "options": "Настройки",
+        "paymentMethods": "Платежные методы"
       },
       "header": {
         "tagsAdd": "Добавить метку",
