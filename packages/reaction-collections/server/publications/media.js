@@ -7,7 +7,9 @@ Meteor.publish("Media", function (shops) {
   const { Media } = ReactionCore.Collections;
   let selector;
   let shopId = ReactionCore.getShopId();
-
+  if (!shopId) {
+    return this.ready();
+  }
   if (shopId) {
     selector = {
       "metadata.shopId": shopId

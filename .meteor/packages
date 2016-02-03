@@ -20,22 +20,19 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 # Meteor Community Packages
 
-logging
-reload
-random
-ejson
-check
-underscore
-oauth-encryption
-audit-argument-checks
+logging                 # meteor logging
+reload                  # hot reload
+random                  # random library
+ejson                   # ejson libary
+check                   # argument validation utility
+underscore              # helper library underscore.js
+oauth-encryption        # oauth encryption for accounts
+audit-argument-checks   # ensure meteor method argument validation
 
 # Recommended Packages
 
-less                   # dependency of bootstrap, core-theme
-# nemo64:bootstrap       # required only with bootstrap-theme
-# spiderable           # adds phantomjs, use ongoworks:spiderable with Docker
-# meteorhacks:sikka    # additional ddp, login security
-fortawesome:fontawesome
+less                    # dependency of bootstrap, core-theme
+fortawesome:fontawesome # font awesome library
 
 # Meteor Auth Packages
 
@@ -62,25 +59,29 @@ reactioncommerce:launchdock-connect
 
 # Reaction Payment Packages
 
+reactioncommerce:reaction-paymentmethod
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-stripe
 #reactioncommerce:reaction-auth-net
 #reactioncommerce:reaction-braintree
 
+
 # Reaction Commerce Data
 
-reactioncommerce:reaction-sample-data
-
-# Performance & Debugging Tools
-
-#meteorhacks:kadira
-#meteorhacks:kadira-profiler
-#meteortoys:allthings
+reactioncommerce:reaction-sample-data   # default Reaction data
 
 # Themes
-reactioncommerce:default-theme
+reactioncommerce:default-theme          # default Reaction theme
 #my:custom-theme
 
 # Forced updates on packages
-jparker:gravatar@0.4.1
 cosmos:browserify@0.9.2
+mdg:validation-error@0.4.0
+
+# Performance & Debugging Tools
+
+#meteorhacks:kadira   # performance profiling
+#meteorhacks:kadira-profiler
+#meteortoys:allthings # developer tools
+#spiderable           # adds phantomjs, use ongoworks:spiderable with Docker
+#meteorhacks:sikka    # additional ddp, login security

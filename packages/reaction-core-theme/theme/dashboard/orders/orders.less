@@ -1,4 +1,20 @@
 
+.rui.card.order {
+  margin-bottom: 20px;
+}
+
+.rui.card.order .controls {
+  width: 66px;
+  max-width: 66px;
+}
+
+// TODO: Once reaction ui is enabled, use `rui button success`
+.rui.card.order .controls .btn-success {
+  .btn-success();
+  border-radius: 0;
+}
+
+
 .order-panel {
   cursor: hand;
   cursor: pointer;
@@ -22,7 +38,6 @@
   .flex-wrap(wrap);
   .flex(1 1 auto);
   padding: 10px;
-  height: 100%;
 }
 
 .order-controls {
@@ -41,7 +56,10 @@
 .order-detail-item {
   .display(flex);
   .flex(1 1 auto);
-  height: 100%;
+}
+
+.order-detail-item .cart-totals {
+  white-space: nowrap;
 }
 
 .order-panel-items {

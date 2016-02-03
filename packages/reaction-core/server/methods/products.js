@@ -451,7 +451,7 @@ Meteor.methods({
 
     for (let product of products) {
       let i = 0;
-
+      let j = 0;
       let handleCount = ReactionCore.Collections.Products.find({
         cloneId: product._id
       }).count() + 1;
@@ -476,7 +476,6 @@ Meteor.methods({
           product.title,
           product._id
         );
-
       }
       while (i < product.variants.length) {
         let newVariantId = Random.id();
@@ -494,11 +493,11 @@ Meteor.methods({
           });
         });
         if (!product.variants[i].parentId) {
-          while (i < product.variants.length) {
-            if (product.variants[i].parentId === oldVariantId) {
-              product.variants[i].parentId = newVariantId;
+          while (j < product.variants.length) {
+            if (product.variants[j].parentId === oldVariantId) {
+              product.variants[j].parentId = newVariantId;
             }
-            i++;
+            j++;
           }
         }
         i++;

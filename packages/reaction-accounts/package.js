@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.6.0",
+  version: "1.6.2",
   documentation: "README.md"
 });
 
@@ -32,7 +32,8 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
-  api.use("reactioncommerce:core@0.10.0");
+  api.use("jparker:gravatar@0.4.1");
+  api.use("reactioncommerce:core@0.11.0");
 
   // accounts
   api.addFiles("server/accounts.js", "server");

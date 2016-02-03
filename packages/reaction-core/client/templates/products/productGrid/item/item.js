@@ -63,14 +63,8 @@ Template.productGridItems.helpers({
       return "product-small";
     }
   },
-  isSelected(productId) {
-    let selectedProducts = Session.get("productGrid/selectedProducts");
-
-    if (_.contains(selectedProducts, this._id)) {
-      return "active";
-    }
-
-    return "";
+  isSelected: function () {
+    return _.contains(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
   },
   isMediumWeight: function () {
     let position = this.position || {};
@@ -102,33 +96,41 @@ Template.productGridItems.helpers({
  */
 
 Template.productGridItems.events({
-  "click [data-event-action=productClick]": function (event) {
+  "click [data-event-action=productClick]": function (event, template) {
     if (ReactionCore.hasPermission("createProduct")) {
-      if (event.shiftKey) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey) {
         event.preventDefault();
 
-        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
-        let checked = checkbox.prop("checked");
+        let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+        const $items = $("li.product-grid-item");
+        const $activeItems = $("li.product-grid-item.active");
+        const selected = $activeItems.length;
 
-        checkbox
-          .prop("checked", !checked)
-          .trigger("change");
+        if (event.shiftKey && selected > 0) {
+          const indexes = [
+            $items.index($checkbox.parents("li.product-grid-item")),
+            $items.index($activeItems.get(0)),
+            $items.index($activeItems.get(selected - 1))
+          ];
+          for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+            $checkbox = $("input[type=checkbox]", $items.get(i));
+            if ($checkbox.prop("checked") === false) {
+              $checkbox.prop("checked", true).trigger("change");
+            }
+          }
+        } else {
+          $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
+        }
       }
     }
   },
-
-  "click [data-event-action=selectSingleProduct]": function (event) {
+  "click [data-event-action=selectSingleProduct]": function (event, template) {
     event.preventDefault();
 
-    const checkbox = $(`input[type=checkbox][value=${this._id}]`);
+    const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
 
-    // Reset selected products
     Session.set("productGrid/selectedProducts", []);
-
-    // Select just this product
-    checkbox
-      .prop("checked", true)
-      .trigger("change");
+    $checkbox.prop("checked", true).trigger("change");
   },
   "click .clone-product": function () {
     let title;

@@ -3,23 +3,20 @@
 *
 */
 Template.pageOrderDetail.helpers({
-  userProfile: function() {
-    var profileId, userProfile;
-    profileId = this.userId;
-    if (profileId != null) {
-      userProfile = Meteor.subscribe("UserProfile", profileId);
-      if (userProfile.ready()) {
-        return Meteor.users.findOne(profileId);
-      }
+  userProfile: function () {
+    if (typeof this.userId === "string") {
+      const userProfile = ReactionCore.Collections.
+        Accounts.findOne(this.userId);
+      return userProfile.profile;
     }
   },
-  orderAge: function() {
+  orderAge: function () {
     return moment(this.createdAt).fromNow();
   },
-  shipmentTracking: function() {
+  shipmentTracking: function () {
     return this.shipping.shipmentMethod.tracking;
   },
-  paymentMethod: function() {
+  paymentMethod: function () {
     return this.payment.paymentMethod[0].processor;
   }
 });

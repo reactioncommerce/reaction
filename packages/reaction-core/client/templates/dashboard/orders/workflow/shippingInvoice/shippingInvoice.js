@@ -58,8 +58,10 @@ Template.coreOrderShippingInvoice.events({
   "submit form[name=capture]": (event, template) => {
     event.preventDefault();
 
-    let order = template.order;
-    let discount = parseFloat(event.target.discount_amount.value) || 0;
+    const order = template.order;
+    const value = $(event.target.discount_amount).autoNumeric("get") || 0;
+    const discount = parseFloat(accounting.toFixed(value, 2));
+
     Meteor.call("orders/approvePayment", order, discount, (error) => {
       if (error) {
         // Show error
@@ -104,7 +106,6 @@ Template.coreOrderShippingInvoice.events({
     let template = Template.instance();
 
     Meteor.call("orders/capturePayments", template.order._id);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", template.order._id);
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, template) => {

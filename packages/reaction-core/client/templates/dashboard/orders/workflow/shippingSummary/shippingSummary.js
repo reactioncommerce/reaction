@@ -1,3 +1,4 @@
+
 Template.coreOrderShippingSummary.onCreated(() => {
   let template = Template.instance();
   let currentData = Template.currentData();
@@ -28,7 +29,7 @@ Template.coreOrderShippingSummary.onRendered(function () {
   if (order.workflow) {
     if (order.workflow.status === "coreOrderCreated") {
       order.workflow.status = "coreOrderCreated";
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
     }
   }
 });
@@ -39,7 +40,7 @@ Template.coreOrderShippingSummary.onRendered(function () {
  */
 Template.coreOrderShippingSummary.events({
   "click .btn": function () {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this);
   }
 });
 
@@ -70,19 +71,32 @@ Template.coreOrderShippingSummary.helpers({
     return i18n.t("orderShipping.noTracking");
   },
   shipmentStatus() {
-    let shipment = Template.instance().order.shipping[0];
-    if (shipment.shipped) {
+    const order = Template.instance().order;
+    const shipment = Template.instance().order.shipping[0];
+    const shipped = _.every(shipment.items, (shipmentItem) => {
+      for (let fullItem of order.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            if (_.isArray(fullItem.workflow.workflow)) {
+              return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+            }
+          }
+        }
+      }
+    });
+
+    if (shipped) {
       return {
         shipped: true,
         status: "success",
         label: i18n.t("orderShipping.shipped")
-      }
+      };
     }
 
     return {
       shipped: false,
       status: "info",
       label: i18n.t("orderShipping.notShipped")
-    }
+    };
   }
 });

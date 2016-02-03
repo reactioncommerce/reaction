@@ -13,14 +13,15 @@
 if (Package.blaze) {
   Package.blaze.Blaze.Template.registerHelper("currentUser", function () {
     if (typeof ReactionCore === "object") {
+      const shopId = ReactionCore.getShopId();
+      const user = Accounts.user();
+      if (!shopId || typeof user !== "object") return null;
       // shoppers should always be guests
-      const isGuest = Roles.userIsInRole(Meteor.user(), "guest", ReactionCore
-        .getShopId());
+      const isGuest = Roles.userIsInRole(user, "guest", shopId);
       // but if a user has never logged in then they are anonymous
-      const isAnonymous = Roles.userIsInRole(Meteor.user(), "anonymous",
-        ReactionCore.getShopId());
+      const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
 
-      return isGuest && !isAnonymous ? Meteor.user() : null;
+      return isGuest && !isAnonymous ? user : null;
     }
   });
 }
