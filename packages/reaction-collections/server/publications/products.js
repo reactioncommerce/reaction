@@ -23,6 +23,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
     if (productFilters) {
       // handle multiple shops
       if (productFilters.shops) {
+        check(productFilters.shops, Array);
         _.extend(selector, {shopId: {$in: productFilters.shops}});
 
         // check if this user is a shopAdmin
@@ -35,6 +36,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
 
       // filter by tag
       if (productFilters.tag) {
+        check(productFilters.tag, String);
         _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
       }
     }
