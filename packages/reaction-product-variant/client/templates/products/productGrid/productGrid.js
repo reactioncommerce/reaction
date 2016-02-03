@@ -35,12 +35,16 @@ function loadMoreProducts() {
   }
 }
 
-Template.productGrid.onCreated(() => {
+Template.productGrid.onCreated(function () {
   Session.set("productGrid/selectedProducts", []);
 
-  Template.instance().autorun(() => {
+  // Update product subscription
+  this.autorun(() => {
+    Meteor.subscribe("Products", Session.get("productScrollLimit"));
+  });
+
+  this.autorun(() => {
     let isActionViewOpen = ReactionCore.isActionViewOpen();
-    let actionView = ReactionCore.getActionView();
 
     if (isActionViewOpen === false) {
       Session.set("productGrid/selectedProducts", []);
