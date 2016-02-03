@@ -8,16 +8,15 @@ Meteor.publish("ShopMembers", function () {
   if (typeof this.userId !== "string") {
     return this.ready();
   }
-  let permissions = ["dashboard/orders", "owner", "admin", "dashboard/customers"];
+  let permissions = ["dashboard/orders", "owner", "admin", "dashboard/accounts"];
   let shopId = ReactionCore.getShopId();
   if (!shopId) {
     return this.ready();
   }
   if (Roles.userIsInRole(this.userId, permissions, shopId)) {
     // seems like we can't use "`" inside db.call directly
-    const rolesShopId = `roles.${shopId}`;
-    return Meteor.users.find({
-      rolesShopId: {
+    const rolesQuery = `{
+      roles.${shopId}: {
         $nin: ["anonymous"]
       }
     }, {
@@ -52,7 +51,9 @@ Meteor.publish("ShopMembers", function () {
         "services.github.email": 1,
         "services.github.username": 1
       }
-    });
+    }`;
+
+    return Meteor.users.find(rolesQuery);
   }
 
   ReactionCore.Log.debug("ShopMembers access denied");
