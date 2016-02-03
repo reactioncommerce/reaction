@@ -14,7 +14,7 @@
         <div class="navbar-item {{navbarSelectedClassName tag}} {{hasDropdownClassName tag}}" data-id={{tag._id}}>
           {{> tagItem (tagProps tag)}}
 
-          <div class="dropdown" data-tag={{tag._id}}>
+          <div class="dropdown-container" data-tag={{tag._id}}>
             {{> tagTree (tagTreeProps tag)}}
           </div>
         </div>

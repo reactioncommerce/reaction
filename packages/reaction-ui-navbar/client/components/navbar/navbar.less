@@ -71,6 +71,23 @@
   cursor: pointer;
 }
 
+.rui.navbar .dropdown a {
+  color: @link-color;
+}
+
+.rui.navbar .dropdown {
+  height: 100%;
+}
+
+.rui.navbar .dropdown-toggle {
+  .display(flex);
+  .align-items(center);
+  height: 100%;
+
+  padding: 0 @navbar-padding-vertical;
+  .padding-left(@navbar-padding-vertical);
+}
+
 .rui.navbar .languages {
   .display(flex);
   .align-items(center);
