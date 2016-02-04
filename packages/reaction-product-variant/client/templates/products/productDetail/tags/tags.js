@@ -67,10 +67,7 @@ Template.productTagInputForm.events({
         function (error) {
           template.$(".tags-submit-new").val("").focus();
           if (error) {
-            Alerts.add("Tag already exists, or is empty.",
-              "danger", {
-                autoHide: true
-              });
+            Alerts.toast("Tag already exists, or is empty.", "error");
             return false;
           }
         });

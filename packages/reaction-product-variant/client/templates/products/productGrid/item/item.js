@@ -143,7 +143,7 @@ Template.productGridItems.events({
       ReactionRouter.go("/product", {
         _id: productId
       });
-      return Alerts.add("Cloned " + title, "success", {
+      return Alerts.inline(`Cloned ${title}`, "success", {
         placement: "productManagement",
         id: productId,
         i18nKey: "productDetail.cloneMsg",
@@ -197,14 +197,14 @@ Template.productGridItems.events({
     return Meteor.call("products/publishProduct", this._id, function (
       error, result) {
       if (error) {
-        Alerts.add(error, "danger", {
+        Alerts.inline(error, "error", {
           placement: "productGridItem",
           id: self._id
         });
         return {};
       }
       if (result === true) {
-        return Alerts.add(self.title + " is now visible", "success", {
+        return Alerts.inline(`${self.title} is now visible`, "success", {
           placement: "productGridItem",
           type: self._id,
           id: self._id,
@@ -213,7 +213,7 @@ Template.productGridItems.events({
           dismissable: false
         });
       }
-      return Alerts.add(self.title + " is hidden", "warning", {
+      return Alerts.inline(`${self.title} is hidden`, "warning", {
         placement: "productGridItem",
         type: self._id,
         id: self._id,
@@ -224,9 +224,6 @@ Template.productGridItems.events({
     });
   }
 });
-
-
-
 
 Template.productGridItems.onRendered(function () {
   if (ReactionCore.hasPermission("createProduct")) {

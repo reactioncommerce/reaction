@@ -179,8 +179,7 @@ Template.accountsSettings.events({
 
     Meteor.call("accounts/updateServiceConfiguration", service, fields, (error) => {
       if (!error) {
-        Alerts.add(`Updated service configuration for ${niceName}`, {
-          type: `service-config-${service}`,
+        Alerts.toast(`Updated service configuration for ${niceName}`, "error", {
           i18nKey: `serviceConfig.successUpdate${niceName}`
         });
       }

@@ -66,7 +66,7 @@ if (Meteor.isClient) {
               _id: cartId
             });
           } else {
-            Alerts.add("Failed to place order.", "danger", {
+            Alerts.inline("Failed to place order.", "danger", {
               autoHide: true,
               placement: "paymentMethod"
             });

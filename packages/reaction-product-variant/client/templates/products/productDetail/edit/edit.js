@@ -26,15 +26,15 @@ Template.productDetailEdit.events({
       $(event.currentTarget).val(),
       function (error) {
         if (error) {
-          return Alerts.add(error.reason, "danger", {
+          return Alerts.inline(error.reason, "error", {
             placement: "productManagement",
             i18nKey: "productDetail.errorMsg",
             id: this._id
           });
         }
         //
-        if (self.field === 'title') {
-          Meteor.call("products/setHandle", productId, function (error, result) {
+        if (self.field === "title") {
+          Meteor.call("products/setHandle", productId, function (setHandleError, result) {
             if (result) {
               return ReactionRouter.go("/product", {
                 _id: result

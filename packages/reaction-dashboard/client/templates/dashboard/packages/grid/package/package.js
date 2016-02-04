@@ -48,46 +48,42 @@ Template.gridPackage.events({
       }
     }, function (error, result) {
       if (result === 1) {
-        Alerts.add(self.label + i18n.t("gridPackage.pkgEnabled"),
-          "success", {
-            type: "pkg-enabled-" + self.name,
-            autoHide: true
-          });
+        Alerts.toast(self.label + i18n.t("gridPackage.pkgEnabled"), "error", {
+          type: "pkg-enabled-" + self.name
+        });
         if (self.route) {
           return ReactionRouter.go(self.route);
         }
       } else if (error) {
-        return Alerts.add(self.label + i18n.t(
-          "gridPackage.pkgDisabled"), "warning", {
-            type: "pkg-enabled-" + self.name,
-            autoHide: true
-          });
+        return Alerts.toast(self.label + i18n.t("gridPackage.pkgDisabled"), "warning");
       }
     });
   },
   "click .disablePkg": function (event, template) {
+    event.preventDefault();
+
     let self = this;
     if (self.name === "core") {
       return;
     }
-    if (confirm("Are you sure you want to disable " + self.label)) {
-      event.preventDefault();
-      ReactionCore.Collections.Packages.update(template.data.packageId, {
-        $set: {
-          enabled: false
-        }
-      }, function (error, result) {
-        if (result === 1) {
-          return Alerts.add(self.label + i18n.t(
-            "gridPackage.pkgDisabled"), "success", {
-              type: "pkg-enabled-" + self.name,
-              autoHide: true
-            });
-        } else if (error) {
-          throw new Meteor.Error("error disabling package", error);
-        }
+
+    Alerts.alert(
+      "Disable Package",
+      `Are tou sure you want to disable ${self.label}`,
+      {type: "warning"},
+      () => {
+        ReactionCore.Collections.Packages.update(template.data.packageId, {
+          $set: {
+            enabled: false
+          }
+        }, function (error, result) {
+          if (result === 1) {
+            return Alerts.toast(self.label + i18n.t("gridPackage.pkgDisabled"), "success");
+          } else if (error) {
+            throw new Meteor.Error("error disabling package", error);
+          }
+        });
       });
-    }
   },
 
   "click [data-event-action=showPackageManagement]": function (event) {

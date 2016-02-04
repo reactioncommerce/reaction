@@ -170,6 +170,7 @@ Template.registerHelper("siteName", function () {
  * @return {Boolean} returns true/false
  */
 Template.registerHelper("condition", function (v1, operator, v2) {
+  console.log("----", v1, operator, v2);
   switch (operator) {
   case "==":
   case "eq":

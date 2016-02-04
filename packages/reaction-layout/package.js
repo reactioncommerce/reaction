@@ -31,7 +31,9 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.12.0");
-
+  api.use("juliancwirko:s-alert@3.1.4");
+  api.use("juliancwirko:s-alert-stackslide@3.1.3");
+  api.use("kevohagan:sweetalert@1.0.0");
 
   api.addFiles("server/register.js", "server");
 
@@ -64,6 +66,7 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/footer/footer.html", "client");
 
   api.addFiles("client/templates/layout/alerts/bootstrapAlerts.js", "client");
+  api.addFiles("client/templates/layout/alerts/reactionAlerts.js", "client");
   api.addFiles("client/templates/layout/alerts/alerts.html", "client");
   api.addFiles("client/templates/layout/alerts/alerts.js", "client");
 

@@ -1,5 +1,9 @@
 let weightDependency = new Tracker.Dependency;
 
+function weightDependencyUpdate() {
+  weightDependency.changed();
+}
+
 Template.productSettings.helpers({
   hasSelectedProducts() {
     return this.products.length > 0;
@@ -138,7 +142,7 @@ Template.productSettings.events({
       // ReactionRouter.go("/product", {
       //   _id: productId
       // });
-      return Alerts.add("Cloned " + title, "success", {
+      return Alerts.inline(`Cloned ${title}`, "success", {
         placement: "productManagement",
         id: productId,
         i18nKey: "productDetail.cloneMsg",
@@ -161,24 +165,21 @@ Template.productSettings.events({
 
       product.position = position;
 
-      Meteor.call("products/updateProductPosition", product._id, position,
-        function () {
-          weightDependency.changed();
-        });
+      Meteor.call("products/updateProductPosition", product._id, position, weightDependencyUpdate);
     }
   },
 
   "click [data-event-action=publishProduct]": function () {
     function callback(error, result) {
       if (error) {
-        Alerts.add(error, "danger", {
+        Alerts.inline(error, "error", {
           placement: "productGridItem",
           id: product._id
         });
         return {};
       }
       if (result === true) {
-        return Alerts.add(self.title + " is now visible", "success", {
+        return Alerts.inline(`${self.title} is now visible`, "success", {
           placement: "productGridItem",
           type: product._id,
           id: product._id,
@@ -187,7 +188,7 @@ Template.productSettings.events({
           dismissable: false
         });
       }
-      return Alerts.add(self.title + " is hidden", "warning", {
+      return Alerts.inline(`${self.title} is hidden`, "warning", {
         placement: "productGridItem",
         type: product._id,
         id: product._id,
@@ -195,7 +196,7 @@ Template.productSettings.events({
         autoHide: true,
         dismissable: false
       });
-    };
+    }
 
     for (product of this.products) {
       Meteor.call("products/publishProduct", product._id, callback);

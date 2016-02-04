@@ -94,13 +94,10 @@ Template.shopSettings.helpers({
 AutoForm.hooks({
   shopEditForm: {
     onSuccess: function () {
-      return Alerts.add("Shop general settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast("Shop general settings saved.", "success");
     },
     onError: function (operation, error) {
-      return Alerts.add("Shop general settings update failed. " + error,
-        "danger");
+      return Alerts.toast(`Shop general settings update failed. ${error}`, "error");
     }
   }
 });
@@ -108,13 +105,10 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditAddressForm: {
     onSuccess: function () {
-      return Alerts.add("Shop address settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast("Shop address settings saved.", "success");
     },
     onError: function (operation, error) {
-      return Alerts.add("Shop address settings update failed. " + error,
-        "danger");
+      return Alerts.toast(`Shop address settings update failed. ${error}`, "error");
     }
   }
 });
@@ -122,13 +116,11 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditEmailForm: {
     onSuccess: function () {
-      return Alerts.add("Shop mail settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast("Shop mail settings saved.", "success");
     },
     onError: function (operation, error) {
-      return Alerts.add("Shop mail settings update failed. " + error,
-        "danger");
+      return Alerts.toast("Shop mail settings update failed. " + error,
+        "error");
     }
   }
 });
@@ -136,13 +128,10 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditExternalServicesForm: {
     onSuccess: function () {
-      return Alerts.add("Open Exchange settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast("Open Exchange settings saved.", "success");
     },
     onError: function (operation, error) {
-      return Alerts.add("Open Exchange settings update failed. " + error,
-        "danger");
+      return Alerts.toast(`Open Exchange settings update failed. ${error}`, "error");
     }
   }
 });
@@ -150,12 +139,10 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditSettingsForm: {
     onSuccess: function () {
-      return Alerts.add("Shop settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast("Shop settings saved.", "success");
     },
     onError: function (operation, error) {
-      return Alerts.add("Shop setting update failed. " + error, "danger");
+      return Alerts.toast(`Shop setting update failed. ${error}`, "error");
     }
   }
 });
@@ -163,12 +150,10 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditOptionsForm: {
     onSuccess: function () {
-      return Alerts.add("Shop options saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast("Shop options saved.", "success");
     },
     onError: function (operation, error) {
-      return Alerts.add("Shop options update failed. " + error, "danger");
+      return Alerts.toast(`Shop options update failed. ${error}`, "error");
     }
   }
 });

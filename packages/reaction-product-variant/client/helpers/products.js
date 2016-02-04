@@ -383,17 +383,14 @@ ReactionProduct.maybeDeleteProduct = (product) => {
     return Meteor.call("products/deleteProduct", productIds, function (error, result) {
       let id = "product";
       if (error || !result) {
-        Alerts.add("There was an error deleting " + title, "danger", {
-          type: "prod-delete-" + id,
+        Alerts.toast(`There was an error deleting ${title}`, "error", {
           i18nKey: "productDetail.productDeleteError"
         });
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
         ReactionProduct.setCurrentProduct(null);
         ReactionRouter.go("/");
-        return Alerts.add("Deleted " + title, "info", {
-          type: "prod-delete-" + id
-        });
+        return Alerts.toast(`Deleted ${title}`, "info");
       }
     });
   }

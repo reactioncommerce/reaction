@@ -129,7 +129,7 @@ Template.productDetail.events({
         })();
 
         if (options.length > 0) {
-          Alerts.add("Please choose options before adding to cart", "danger", {
+          Alerts.inline("Please choose options before adding to cart", "warning", {
             placement: "productDetail",
             i18nKey: "productDetail.chooseOptions",
             autoHide: 10000
@@ -139,7 +139,7 @@ Template.productDetail.events({
       }
 
       if (currentVariant.inventoryPolicy && currentVariant.inventoryQuantity < 1) {
-        Alerts.add("Sorry, this item is out of stock!", "danger", {
+        Alerts.inline("Sorry, this item is out of stock!", "warning", {
           placement: "productDetail",
           i18nKey: "productDetail.outOfStock",
           autoHide: 10000
@@ -155,7 +155,7 @@ Template.productDetail.events({
       }
 
       if (!this.isVisible) {
-        Alerts.add("Publish product before adding to cart.", "danger", {
+        Alerts.inline("Publish product before adding to cart.", "error", {
           placement: "productDetail",
           i18nKey: "productDetail.publishFirst",
           autoHide: 10000
@@ -193,7 +193,7 @@ Template.productDetail.events({
         });
       }
     } else {
-      Alerts.add("Select an option before adding to cart", "danger", {
+      Alerts.inline("Select an option before adding to cart", "warning", {
         placement: "productDetail",
         i18nKey: "productDetail.selectOption",
         autoHide: 8000
@@ -218,14 +218,14 @@ Template.productDetail.events({
       }
     }
     if (errorMsg.length > 0) {
-      Alerts.add(errorMsg, "danger", {
+      Alerts.inline(errorMsg, "warning", {
         placement: "productManagement",
         i18nKey: "productDetail.errorMsg"
       });
     } else {
       Meteor.call("products/publishProduct", self._id, function (error) {
         if (error) {
-          return Alerts.add(error.reason, "danger", {
+          return Alerts.inline(error.reason, "error", {
             placement: "productManagement",
             id: self._id,
             i18nKey: "productDetail.errorMsg"
