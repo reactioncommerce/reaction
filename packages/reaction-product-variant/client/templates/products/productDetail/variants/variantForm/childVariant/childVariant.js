@@ -14,7 +14,7 @@ Template.childVariantForm.helpers({
 
 Template.childVariantForm.events({
   "click .child-variant-form :input, click li": function (event, template) {
-    return setCurrentVariant(template.data._id);
+    return ReactionProduct.setCurrentVariant(template.data._id);
   },
   "change .child-variant-form :input": function (event, template) {
     let variant = template.data;
@@ -27,7 +27,7 @@ Template.childVariantForm.events({
         throw new Meteor.Error("error updating variant", error);
       }
     });
-    return setCurrentVariant(template.data._id);
+    return ReactionProduct.setCurrentVariant(template.data._id);
   },
   "click #remove-child-variant": function (event) {
     event.stopPropagation();
@@ -37,8 +37,8 @@ Template.childVariantForm.events({
       let id = this._id;
       return Meteor.call("products/deleteVariant", id, function (error,
         result) {
-        if (result && selectedVariantId() === id) {
-          return setCurrentVariant(null);
+        if (result && ReactionProduct.selectedVariantId() === id) {
+          return ReactionProduct.setCurrentVariant(null);
         }
       });
     }

@@ -5,7 +5,7 @@ Template.variantList.helpers({
   variants: function () {
     let inventoryTotal = 0;
     const variants = [];
-    const product = selectedProduct();
+    const product = ReactionProduct.selectedProduct();
 
     if (product) {
       // top level variants
@@ -37,10 +37,10 @@ Template.variantList.helpers({
   },
   childVariants: function () {
     const variants = [];
-    const product = selectedProduct();
+    const product = ReactionProduct.selectedProduct();
 
     if (product) {
-      let current = selectedVariant();
+      let current = ReactionProduct.selectedVariant();
       if (typeof current === "object" ? current._id : void 0) {
         if (current.parentId) {
           for (let variant of product.variants) {
@@ -75,6 +75,6 @@ Template.variantList.events({
     template.$(".variant-select-option").removeClass("active");
     $(event.target).addClass("active");
     Alerts.removeSeen();
-    return setCurrentVariant(this._id);
+    return ReactionProduct.setCurrentVariant(this._id);
   }
 });

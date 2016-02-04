@@ -21,7 +21,7 @@ Template.productDetailEdit.helpers({
 Template.productDetailEdit.events({
   "change input,textarea": function (event) {
     const self = this;
-    const productId = selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     Meteor.call("products/updateProductField", productId, this.field,
       $(event.currentTarget).val(),
       function (error) {

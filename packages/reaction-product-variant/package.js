@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Basic Reaction Product with Variants",
   name: "reactioncommerce:reaction-product-variant",
-  version: "0.1.0",
+  version: "1.0.0",
   documentation: "README.md"
 });
 
@@ -31,7 +31,8 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.12.0");
-
+  // helpers
+  api.addFiles("client/helpers/products.js", "client");
   // Product Templates
   api.addFiles("client/templates/products/products.html", "client");
   api.addFiles("client/templates/products/products.js", "client");
@@ -89,6 +90,7 @@ Package.onUse(function (api) {
 
   // Exports
   api.export("currentProduct", ["client", "server"]);
+  api.export("ReactionProduct");
 });
 
 //

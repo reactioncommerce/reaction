@@ -117,31 +117,6 @@ Package.onUse(function (api) {
   api.addFiles("server/register.js", "server");
   api.addFiles("common/common.js");
 
-  // i18n translations
-  api.addAssets("private/data/i18n/ar.json", "server");
-  api.addAssets("private/data/i18n/bg.json", "server");
-  api.addAssets("private/data/i18n/cn.json", "server");
-  api.addAssets("private/data/i18n/cs.json", "server");
-  api.addAssets("private/data/i18n/de.json", "server");
-  api.addAssets("private/data/i18n/en.json", "server");
-  api.addAssets("private/data/i18n/el.json", "server");
-  api.addAssets("private/data/i18n/es.json", "server");
-  api.addAssets("private/data/i18n/fr.json", "server");
-  api.addAssets("private/data/i18n/he.json", "server");
-  api.addAssets("private/data/i18n/hr.json", "server");
-  api.addAssets("private/data/i18n/hu.json", "server");
-  api.addAssets("private/data/i18n/it.json", "server");
-  api.addAssets("private/data/i18n/my.json", "server");
-  api.addAssets("private/data/i18n/nl.json", "server");
-  api.addAssets("private/data/i18n/pl.json", "server");
-  api.addAssets("private/data/i18n/pt.json", "server");
-  api.addAssets("private/data/i18n/ru.json", "server");
-  api.addAssets("private/data/i18n/sl.json", "server");
-  api.addAssets("private/data/i18n/sv.json", "server");
-  api.addAssets("private/data/i18n/tr.json", "server");
-  api.addAssets("private/data/i18n/vi.json", "server");
-  api.addAssets("private/data/i18n/nb.json", "server");
-
   // security
   api.addFiles("server/browserPolicy.js", "server");
 
@@ -177,8 +152,6 @@ Package.onUse(function (api) {
   api.addFiles("client/helpers/packages.js", "client");
   api.addFiles("client/helpers/cart.js", "client");
   api.addFiles("client/helpers/globals.js", "client");
-  api.addFiles("client/helpers/products.js", "client");
-  api.addFiles("client/helpers/i18n.js", "client");
   api.addFiles("client/helpers/metadata.js", "client");
   api.addFiles("client/helpers/permissions.js", "client");
   api.addFiles("client/helpers/utilities.js", "client");
@@ -186,103 +159,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/numericInput/numericInput.html", "client");
   api.addFiles("client/components/numericInput/numericInput.js", "client");
 
-  api.addFiles("client/templates/layout/layout.html", "client");
-  api.addFiles("client/templates/layout/layout.js", "client");
-
-  api.addFiles("client/templates/layout/admin/admin.html", "client");
-  api.addFiles("client/templates/layout/admin/admin.js", "client");
-
-  api.addFiles("client/templates/layout/header/header.html", "client");
-  api.addFiles("client/templates/layout/header/header.js", "client");
-
-  api.addFiles("client/templates/layout/header/menu/button.html", "client");
-
-  api.addFiles("client/templates/layout/header/i18n/i18n.html", "client");
-  api.addFiles("client/templates/layout/header/i18n/i18n.js", "client");
-
-  api.addFiles("client/templates/layout/header/brand/brand.html", "client");
-
-  api.addFiles("client/templates/layout/footer/footer.html", "client");
-
-  api.addFiles("client/templates/layout/alerts/bootstrapAlerts.js", "client");
-  api.addFiles("client/templates/layout/alerts/alerts.html", "client");
-  api.addFiles("client/templates/layout/alerts/alerts.js", "client");
-
-  api.addFiles("client/templates/layout/loading/loading.html", "client");
-  api.addFiles("client/templates/layout/notFound/notFound.html", "client");
-  api.addFiles("client/templates/layout/notice/unauthorized.html", "client");
-
-  api.addFiles("client/templates/dashboard/import/import.html", "client");
-  api.addFiles("client/templates/dashboard/import/import.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/orders.html", "client");
-  api.addFiles("client/templates/dashboard/orders/orders.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/orderPage/orderPage.html", "client");
-  api.addFiles("client/templates/dashboard/orders/orderPage/orderPage.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/orderPage/details/details.html", "client");
-  api.addFiles("client/templates/dashboard/orders/orderPage/details/details.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/list/ordersList.html", "client");
-  api.addFiles("client/templates/dashboard/orders/list/ordersList.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/list/items/items.html", "client");
-  api.addFiles("client/templates/dashboard/orders/list/items/items.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/list/summary/summary.html", "client");
-  api.addFiles("client/templates/dashboard/orders/list/summary/summary.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/list/pdf/pdf.html", "client");
-  api.addFiles("client/templates/dashboard/orders/list/pdf/pdf.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/widget/widget.html", "client");
-  api.addFiles("client/templates/dashboard/orders/widget/widget.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/details/detail.html", "client");
-  api.addFiles("client/templates/dashboard/orders/details/detail.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/social/orderSocial.html", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/workflow.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/workflow.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/orderSummary/orderSummary.html", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/orderCompleted/orderCompleted.html", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/shippingSummary/shippingSummary.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/shippingSummary/shippingSummary.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/shippingInvoice/shippingInvoice.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/shippingInvoice/shippingInvoice.js", "client");
-
-  api.addFiles("client/templates/dashboard/orders/workflow/shippingTracking/shippingTracking.html", "client");
-  api.addFiles("client/templates/dashboard/orders/workflow/shippingTracking/shippingTracking.js", "client");
-
-  api.addFiles("client/templates/dashboard/packages/packages.html", "client");
-
-  api.addFiles("client/templates/dashboard/packages/grid/package/package.html", "client");
-  api.addFiles("client/templates/dashboard/packages/grid/package/package.js", "client");
-
-  api.addFiles("client/templates/dashboard/packages/grid/grid.html", "client");
-  api.addFiles("client/templates/dashboard/packages/grid/grid.js", "client");
-
-  api.addFiles("client/templates/dashboard/dashboard.html", "client");
-  api.addFiles("client/templates/dashboard/dashboard.js", "client");
-
-  api.addFiles("client/templates/dashboard/settings/settings.html", "client");
-  api.addFiles("client/templates/dashboard/settings/settings.js", "client");
-
-  api.addFiles("client/templates/dashboard/shop/settings/settings.html", "client");
-  api.addFiles("client/templates/dashboard/shop/settings/settings.js", "client");
-
   // Exports
   api.export("ReactionCore");
   api.export("ReactionImport");
   api.export("ReactionRegistry", "server");
-  // legacy Exports (TODO: move to ReactionCore)
-  api.export("Alerts", ["client"]);
 });
 
 

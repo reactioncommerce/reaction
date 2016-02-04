@@ -154,7 +154,7 @@ Template.productGridItems.events({
   },
   "click .delete-product": function (event) {
     event.preventDefault();
-    maybeDeleteProduct(this);
+    ReactionProduct.maybeDeleteProduct(this);
   },
   "click .pin-product": function (event) {
     let pin;

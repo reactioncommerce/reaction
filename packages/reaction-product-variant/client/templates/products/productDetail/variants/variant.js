@@ -12,14 +12,14 @@ Template.variant.helpers({
     return "progress-bar-success";
   },
   selectedVariant: function () {
-    const current = selectedVariant();
+    const current = ReactionProduct.selectedVariant();
     if (this._id === (typeof current === "object" ? current._id : void 0) ||
       this._id === (typeof current === "object" ? current.parentId : void 0)) {
       return "variant-detail-selected";
     }
   },
   displayPrice: function () {
-    return getVariantPriceRange(this._id);
+    return ReactionProduct.getVariantPriceRange(this._id);
   },
   isSoldOut: function () {
     if (this.inventoryQuantity < 1) {
@@ -35,12 +35,12 @@ Template.variant.helpers({
 
 Template.variant.events({
   "click .variant-edit": function () {
-    setCurrentVariant(this._id);
+    ReactionProduct.setCurrentVariant(this._id);
     return toggleSession("variant-form-" + this._id);
   },
   "dblclick .variant-detail": function () {
     if (ReactionCore.hasPermission("createProduct")) {
-      setCurrentVariant(this._id);
+      ReactionProduct.setCurrentVariant(this._id);
       return toggleSession("variant-form-" + this._id);
     }
   },
@@ -48,7 +48,7 @@ Template.variant.events({
     event.preventDefault();
     event.stopPropagation();
     Alerts.removeSeen();
-    return setCurrentVariant(this._id);
+    return ReactionProduct.setCurrentVariant(this._id);
   }
 });
 
@@ -70,7 +70,7 @@ Template.variant.onRendered(function () {
         forcePlaceholderSize: true,
         axis: "y",
         update: function () {
-          const product = selectedProduct();
+          const product = ReactionProduct.selectedProduct();
           const newVariants = [];
           const productVariants = product.variants;
           // fetch uiPositions

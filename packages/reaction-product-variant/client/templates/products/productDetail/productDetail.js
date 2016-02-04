@@ -1,14 +1,17 @@
+Template.productDetail.onCreated(() => {
+  Tracker.autorun(() => {
+    Meteor.subscribe("Product", ReactionProduct.selectedProductId());
+  });
+});
 /**
  * productDetail helpers
  */
 Template.productDetail.helpers({
   product: function () {
-    // Meteor.subscribe("Product", ReactionRouter.getParam("handle"));
-    let product = selectedProduct() || ReactionCore.Collections.Products.findOne();
-    return product;
+    return ReactionCore.Collections.Products.findOne();
   },
   tags: function () {
-    let product = selectedProduct();
+    let product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.hashtags) {
         return _.map(product.hashtags, function (id) {
@@ -26,8 +29,8 @@ Template.productDetail.helpers({
   actualPrice: function () {
     let childVariants;
     let purchasable;
-    let current = selectedVariant();
-    let product = selectedProduct();
+    let current = ReactionProduct.selectedVariant();
+    let product = ReactionProduct.selectedProduct();
     if (product && current) {
       childVariants = (function () {
         let _results = [];
@@ -43,7 +46,7 @@ Template.productDetail.helpers({
     if (purchasable) {
       return current.price;
     }
-    return getProductPriceRange();
+    return ReactionProduct.getProductPriceRange();
   },
   fieldComponent: function () {
     if (ReactionCore.hasPermission("createProduct")) {
@@ -67,7 +70,7 @@ Template.productDetail.events({
   "click #price": function () {
     let formName;
     if (ReactionCore.hasPermission("createProduct")) {
-      let variant = selectedVariant();
+      let variant = ReactionProduct.selectedVariant();
       if (!variant) {
         return;
       }
@@ -93,7 +96,7 @@ Template.productDetail.events({
     let quantity;
     event.preventDefault();
     event.stopPropagation();
-    currentVariant = selectedVariant();
+    currentVariant = ReactionProduct.selectedVariant();
     if (currentVariant) {
       qtyField = template.$('input[name="addToCartQty"]');
       quantity = qtyField.val();
@@ -110,8 +113,8 @@ Template.productDetail.events({
     let productId;
     let qtyField;
     let quantity;
-    let currentVariant = selectedVariant();
-    let currentProduct = selectedProduct();
+    let currentVariant = ReactionProduct.selectedVariant();
+    let currentProduct = ReactionProduct.selectedProduct();
 
     if (currentVariant) {
       if (currentVariant.parentId === null) {
@@ -172,7 +175,7 @@ Template.productDetail.events({
         }
 
         template.$(".variant-select-option").removeClass("active");
-        setCurrentVariant(null);
+        ReactionProduct.setCurrentVariant(null);
         qtyField.val(1);
         // scroll to top on cart add
         $("html,body").animate({
@@ -232,7 +235,7 @@ Template.productDetail.events({
     }
   },
   "click .delete-product-link": function () {
-    maybeDeleteProduct(this);
+    ReactionProduct.maybeDeleteProduct(this);
   },
   "click .fa-facebook": function () {
     if (ReactionCore.hasPermission("createProduct")) {

@@ -23,6 +23,9 @@
 !reaction-router
 !reaction-product-variant
 !reaction-checkout
+!reaction-i18n
+!reaction-layout
+!reaction-dashboard
 
 # For some reason the above inverse ignore rules don't play well with some
 # editors, so we also add inverse ignore rules for their subdirectories.
@@ -47,3 +50,6 @@
 !reaction-router/*
 !reaction-product-variant/*
 !reaction-checkout/*
+!reaction-i18n/*
+!reaction-layout/*
+!reaction-dashboard/*

@@ -33,7 +33,7 @@ ReactionCore.MetaData = {
     if (!ReactionRouter.current()) {
       return false;
     }
-    let product = selectedProduct();
+    let product = ReactionProduct.selectedProduct();
     let shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
     let meta = updateMeta || [];
     let title = "";

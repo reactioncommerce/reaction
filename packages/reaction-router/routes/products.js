@@ -9,8 +9,8 @@ product = ReactionRouter.group({
 product.route("/:handle/:variant?", {
   name: "product",
   action: function (params) {
-    const variant = ReactionCore.currentProduct.get("variantId") || params.variant;
-    ReactionCore.setProduct(params.handle, variant);
+    const variant = ReactionProduct.currentProduct.get("variantId") || params.variant;
+    ReactionProduct.setProduct(params.handle, variant);
     // initialize reaction layout
     renderLayout({
       workflow: "coreProductWorkflow"

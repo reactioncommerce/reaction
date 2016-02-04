@@ -9,12 +9,14 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
   check(shops, Match.Optional(Array));
 
   let shopAdmin;
-  let shop = ReactionCore.getCurrentShop();
+  const limit = productScrollLimit || 10;
+  const shop = ReactionCore.getCurrentShop();
+  const Products = ReactionCore.Collections.Products;
+
   if (typeof shop !== "object") {
     return this.ready();
   }
-  let Products = ReactionCore.Collections.Products;
-  let limit = productScrollLimit || 10;
+
   if (shop) {
     let selector = {
       shopId: shop._id
@@ -56,7 +58,12 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
  * @return {Object} return product cursor
  */
 Meteor.publish("Product", function (productId) {
-  check(productId, String);
+  check(productId, Match.Optional(String));
+  if (!productId) {
+    ReactionCore.Log.info("ignoring null request on Product subscription");
+    return this.ready();
+  }
+
   let shop = ReactionCore.getCurrentShop();
   // verify that shop is ready
   if (typeof shop !== "object") {

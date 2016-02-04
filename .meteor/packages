@@ -52,17 +52,17 @@ reactioncommerce:reaction-ui
 reactioncommerce:reaction-ui-navbar
 reactioncommerce:reaction-ui-tagnav
 reactioncommerce:reaction-accounts
+reactioncommerce:reaction-router
+reactioncommerce:reaction-layout
+reactioncommerce:reaction-i18n
+reactioncommerce:reaction-product-variant
+reactioncommerce:reaction-dashboard
+reactioncommerce:reaction-checkout
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-inventory
-reactioncommerce:reaction-layout
-reactioncommerce:reaction-router
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-social
-reactioncommerce:reaction-product-variant
-reactioncommerce:reaction-checkout
-
-# reactioncommerce:reaction-product-simple
 
 
 # Reaction Payment Packages
