@@ -65,7 +65,7 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/layout/footer/footer.html", "client");
 
-  api.addFiles("client/templates/layout/alerts/bootstrapAlerts.js", "client");
+  api.addFiles("client/templates/layout/alerts/inlineAlerts.js", "client");
   api.addFiles("client/templates/layout/alerts/reactionAlerts.js", "client");
   api.addFiles("client/templates/layout/alerts/alerts.html", "client");
   api.addFiles("client/templates/layout/alerts/alerts.js", "client");
@@ -75,5 +75,4 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/notice/unauthorized.html", "client");
 
   api.export("Alerts", ["client"]);
-
 });

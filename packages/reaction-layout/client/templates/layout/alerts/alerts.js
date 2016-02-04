@@ -1,13 +1,13 @@
 /**
- * bootstrapAlert helpers
+ * inlineAlert helpers
  */
 
-Template.bootstrapAlert.onCreated(function () {
+Template.inlineAlert.onCreated(function () {
   this.isFirstRender = true;
   return this.isFirstRender;
 });
 
-Template.bootstrapAlert.onRendered(function () {
+Template.inlineAlert.onRendered(function () {
   let alert = this.data;
   let $node = $(this.firstNode);
 
@@ -30,7 +30,7 @@ Template.bootstrapAlert.onRendered(function () {
   });
 });
 
-Template.bootstrapAlerts.helpers({
+Template.inlineAlerts.helpers({
   alerts: function (alertPlacement, alertId) {
     let id = alertId;
     let placement = alertPlacement;
@@ -47,7 +47,7 @@ Template.bootstrapAlerts.helpers({
   }
 });
 
-Template.bootstrapAlert.events({
+Template.inlineAlert.events({
   "click button.close": function () {
     return Alerts.collection_.remove(this._id);
   }

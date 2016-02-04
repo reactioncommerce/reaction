@@ -45,7 +45,7 @@ Alerts = {
 
     /*
      * define placement to only show where matches
-     * use: {{boostrapAlerts placement="cart"}}
+     * use: {{inlineAlerts placement="cart"}}
      * Alerts.add "message","danger", placement:"cart"
      */
     placement: "",

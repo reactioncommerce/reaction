@@ -20,7 +20,7 @@
             <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeItVisible">You can make it visible</a>
             <span data-i18n="productDetail.whenYouAreDone">when you're done editing.</span>
           </div>
-          <span id="product-management-alerts">{{>bootstrapAlerts placement="productManagement"}}</span>
+          <span id="product-management-alerts">{{> inlineAlerts placement="productManagement"}}</span>
         </div>
         {{/unless}}
       {{/if}}
@@ -92,7 +92,7 @@
 
               {{!-- Cart Add Block --}}
               <div class="row">
-                <span id="product-alerts">{{>bootstrapAlerts placement="productDetail"}}</span>
+                <span id="product-alerts">{{> inlineAlerts placement="productDetail"}}</span>
                 <div class="btn btn-success add-to-cart-block" id="add-to-cart">
                   <div class="add-to-cart-quantity pull-left">
                     <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1" min="1"/>

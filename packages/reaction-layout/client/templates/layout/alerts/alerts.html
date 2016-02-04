@@ -17,14 +17,14 @@
     </div>
 </template>
 
-<template name="bootstrapAlerts">
+<template name="inlineAlerts">
     {{#each alerts placement id}}
-      {{> bootstrapAlert}}
+      {{> inlineAlert}}
     {{/each}}
 </template>
 
 
-<template name="bootstrapAlert">
+<template name="inlineAlert">
     <div class="alert alert-{{mode}} {{#if options.dismissable}}alert-dismissable{{/if}} {{#if isFirstRender}}hide{{/if}} {{options.classes}}">
         {{#if options.dismissable}}
         <!--suppress CheckDtdReferences -->

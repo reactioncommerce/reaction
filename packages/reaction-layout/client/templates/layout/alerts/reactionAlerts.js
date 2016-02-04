@@ -38,7 +38,7 @@ Meteor.startup(function () {
 Object.assign(Alerts, {
 
   inline(alertMessage, type, alertOptions) {
-    // Convert error to danger, for bootstrapAlerts
+    // Convert error to danger, for inlineAlerts
     const mode = type === "error" ? "danger" : type;
     return this.add(alertMessage, mode, alertOptions);
   },
