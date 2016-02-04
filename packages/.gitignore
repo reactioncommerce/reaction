@@ -12,6 +12,7 @@
 !reaction-core-theme
 !reaction-default-theme
 !reaction-inventory
+!reaction-layout
 !reaction-product-simple
 !reaction-sample-data
 !reaction-schemas
@@ -33,6 +34,7 @@
 !reaction-core-theme/*
 !reaction-default-theme/*
 !reaction-inventory/*
+!reaction-layout/*
 !reaction-product-simple/*
 !reaction-sample-data/*
 !reaction-schemas/*

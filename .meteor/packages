@@ -60,6 +60,7 @@ reactioncommerce:reaction-shipping
 reactioncommerce:reaction-social
 reactioncommerce:reaction-product-variant
 reactioncommerce:reaction-checkout
+reactioncommerce:reaction-layout
 
 # reactioncommerce:reaction-product-simple
 
