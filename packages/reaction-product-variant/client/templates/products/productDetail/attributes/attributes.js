@@ -5,7 +5,7 @@
 Template.productMetaFieldForm.events({
   "click .metafield-remove": function () {
     let productId;
-    productId = selectedProductId();
+    productId = ReactionProduct.selectedProductId();
     return ReactionCore.Collections.Products.update(productId, {
       $pull: {
         metafields: this
@@ -27,7 +27,7 @@ Template.metaComponent.events({
         ".metafield-value-input").val()
     };
     if (this.key) {
-      let productId = selectedProductId();
+      let productId = ReactionProduct.selectedProductId();
       Meteor.call("products/updateMetaFields", productId, updateMeta,
         this);
       $(event.currentTarget).animate({

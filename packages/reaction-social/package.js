@@ -26,6 +26,7 @@ Package.onUse(function (api) {
 
   api.use("templating");
   api.use("less");
+  api.use("reactioncommerce:reaction-product-variant@1.0.0");
   api.use("reactioncommerce:core@0.12.0");
 
   api.addFiles("server/register.js", ["server"]); // register as a reaction package

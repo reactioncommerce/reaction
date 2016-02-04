@@ -6,9 +6,9 @@ let Media = ReactionCore.Collections.Media;
  * uploadHandler method
  */
 function uploadHandler(event) {
-  let productId = selectedProductId();
-  let variantId = selectedVariantId();
-  let shopId = selectedProduct().shopId || ReactionCore.getShopId();
+  let productId = ReactionProduct.selectedProductId();
+  let variantId = ReactionProduct.selectedVariantId();
+  let shopId = ReactionProduct.selectedProduct().shopId || ReactionCore.getShopId();
   let userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
@@ -58,8 +58,8 @@ function updateImagePriorities() {
 Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
-    let variant = selectedVariant();
-    let product = selectedProduct();
+    let variant = ReactionProduct.selectedVariant();
+    let product = ReactionProduct.selectedProduct();
 
     if (variant) {
       mediaArray = Media.find({
@@ -98,7 +98,7 @@ Template.productImageGallery.helpers({
     return mediaArray;
   },
   variant: function () {
-    return selectedVariant();
+    return ReactionProduct.selectedVariant();
   }
 });
 
@@ -120,7 +120,7 @@ Template.productImageGallery.onRendered(function () {
           let variant;
           if (!(typeof variant !== "undefined" && variant !==
               null ? variant._id : void 0)) {
-            variant = selectedVariant();
+            variant = ReactionProduct.selectedVariant();
           }
           variant.medias = [];
           return updateImagePriorities();
@@ -146,10 +146,10 @@ Template.productImageGallery.events({
     if (!ReactionCore.hasPermission("createProduct")) {
       let first = $(".gallery li:nth-child(1)");
       let target = $(event.currentTarget);
-      let variant = selectedVariant();
+      let variant = ReactionProduct.selectedVariant();
 
       if (!variant) {
-        let product = selectedProduct();
+        let product = ReactionProduct.selectedProduct();
         if (product) {
           for (let productVariant of product.variants) {
             let mediaResults = Media.find({
@@ -163,10 +163,10 @@ Template.productImageGallery.events({
             for (let media of mediaResults) {
               ids.push(media._id);
               if ($(event.currentTarget).data("index") === media._id) {
-                setCurrentVariant(productVariant._id);
+                ReactionProduct.setCurrentVariant(productVariant._id);
               }
             }
-            if (selectedVariant()) {
+            if (ReactionProduct.selectedVariant()) {
               break;
             }
           }

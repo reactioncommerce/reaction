@@ -10,7 +10,7 @@ Template.variantForm.helpers({
     return Template.childVariantForm;
   },
   childVariants: function () {
-    let product = selectedProduct();
+    let product = ReactionProduct.selectedProduct();
     if (!product) {
       return {};
     }
@@ -24,13 +24,13 @@ Template.variantForm.helpers({
     return _results;
   },
   hasChildVariants: function () {
-    if (checkChildVariants(this._id) > 0) {
+    if (ReactionProduct.checkChildVariants(this._id) > 0) {
       return true;
     }
   },
   hasInventoryVariants: function () {
     if (!hasChildVariants()) {
-      if (checkInventoryVariants(this._id) > 0) {
+      if (ReactionProduct.checkInventoryVariants(this._id) > 0) {
         return true;
       }
     }
@@ -67,13 +67,13 @@ Template.variantForm.events({
     let formId;
     formId = "#variant-form-" + template.data._id;
     template.$(formId).submit();
-    setCurrentVariant(template.data._id);
+    ReactionProduct.setCurrentVariant(template.data._id);
   },
   "click .btn-child-variant-form": function (event, template) {
     let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = selectedProductId();
+    productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }
@@ -85,8 +85,8 @@ Template.variantForm.events({
     if (confirm("Are you sure you want to delete " + title)) {
       let id = this._id;
       Meteor.call("products/deleteVariant", id, function (error, result) {
-        if (result && selectedVariantId() === id) {
-          return setCurrentVariant(null);
+        if (result && ReactionProduct.selectedVariantId() === id) {
+          return ReactionProduct.setCurrentVariant(null);
         }
       });
     }
@@ -95,7 +95,7 @@ Template.variantForm.events({
     let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = selectedProductId();
+    productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }

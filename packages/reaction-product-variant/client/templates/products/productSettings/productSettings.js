@@ -22,7 +22,7 @@ Template.productSettings.helpers({
 Template.productSettingsGridItem.helpers({
   displayPrice: function () {
     if (this._id) {
-      return getProductPriceRange(this._id);
+      return ReactionProduct.getProductPriceRange(this._id);
     }
   },
 
@@ -124,7 +124,7 @@ Template.productSettingsListItem.inheritsHelpersFrom("productSettingsGridItem");
 
 Template.productSettings.events({
   "click [data-event-action=deleteProduct]": function () {
-    maybeDeleteProduct(this.products);
+    ReactionProduct.maybeDeleteProduct(this.products);
   },
   "click [data-event-action=cloneProduct]": function () {
     let title;

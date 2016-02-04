@@ -1,6 +1,6 @@
 Template.productDetailTags.helpers({
   currentHashTag: function () {
-    let product = selectedProduct();
+    let product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.handle) {
         if (product.handle === product.handle.toLowerCase()) {
@@ -13,7 +13,7 @@ Template.productDetailTags.helpers({
 
 Template.productTagInputForm.helpers({
   hashtagMark: function () {
-    const product = selectedProduct();
+    const product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.handle) {
         if (this.handle === product.handle.toLowerCase() || getSlug(product.handle) === this.slug) {
@@ -27,7 +27,7 @@ Template.productTagInputForm.helpers({
 
 Template.productTagInputForm.events({
   "click .tag-input-hashtag": function () {
-    return Meteor.call("products/setHandleTag", selectedProductId(), this
+    return Meteor.call("products/setHandleTag", ReactionProduct.selectedProductId(), this
       ._id,
       function (error, result) {
         if (result) {
@@ -38,7 +38,7 @@ Template.productTagInputForm.events({
       });
   },
   "click .tag-input-group-remove": function () {
-    return Meteor.call("products/removeProductTag", selectedProductId(),
+    return Meteor.call("products/removeProductTag", ReactionProduct.selectedProductId(),
       this._id);
   },
   "click .tags-input-select": function (event) {
@@ -62,7 +62,7 @@ Template.productTagInputForm.events({
   "focusout .tags-input-select": function (event, template) {
     let val = $(event.currentTarget).val();
     if (val) {
-      return Meteor.call("products/updateProductTags", selectedProductId(),
+      return Meteor.call("products/updateProductTags", ReactionProduct.selectedProductId(),
         val, this._id,
         function (error) {
           template.$(".tags-submit-new").val("").focus();
@@ -96,7 +96,7 @@ Template.productTagInputForm.onRendered(function () {
         }
       }
       return Meteor.call("products/updateProductField",
-        selectedProductId(), "hashtags", _.uniq(hashtagsList));
+        ReactionProduct.selectedProductId(), "hashtags", _.uniq(hashtagsList));
     }
   });
 });
