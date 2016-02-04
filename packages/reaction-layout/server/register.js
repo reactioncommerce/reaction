@@ -20,7 +20,7 @@ ReactionCore.registerPackage({
     },
     {
       label: "Layout Settings",
-      route: "dashboard/layout/settings",
+      route: "dashboard/layout",
       provides: "settings",
       container: "dashboard",
       template: "reactionLayoutSettings"

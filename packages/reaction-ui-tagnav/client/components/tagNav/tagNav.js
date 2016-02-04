@@ -77,7 +77,7 @@ Template.tagNav.onCreated(function () {
 
   this.autorun(() => {
     const isEditing = Session.equals("reaction/editModeEnabled", true);
-console.log(isEditing);
+
     // Update local state from global session state
     this.state.set("isEditing", isEditing);
   });

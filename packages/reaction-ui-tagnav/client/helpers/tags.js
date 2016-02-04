@@ -18,16 +18,13 @@ const TagHelpers = {
         }
       }).fetch();
 
-      const poop = parentTag.relatedTagIds.map((tagId) => {
+      const subTags = parentTag.relatedTagIds.map((tagId) => {
         return _.find(tags, (tagObject) => {
           return tagObject._id === tagId;
         });
       });
 
-      // console.log("*******************************", poop);
-      // console.log("Tags (helper level)", tags.map(tag => tag._id));
-      // console.log("Tags (helper level ACTUAL)", parentTag.relatedTagIds.map(tag => tag));
-      return poop;
+      return subTags;
     }
 
     return false;

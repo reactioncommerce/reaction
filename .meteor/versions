@@ -143,9 +143,11 @@ reactioncommerce:reaction-auth-net@0.6.0
 reactioncommerce:reaction-braintree@1.5.3
 reactioncommerce:reaction-checkout@1.0.0
 reactioncommerce:reaction-collections@1.0.5
+reactioncommerce:reaction-dashboard@1.0.0
 reactioncommerce:reaction-email-templates@0.1.2
+reactioncommerce:reaction-i18n@1.0.0
 reactioncommerce:reaction-inventory@0.2.3
-reactioncommerce:reaction-layout@0.1.0
+reactioncommerce:reaction-layout@1.0.0
 reactioncommerce:reaction-paymentmethod@0.0.3
 reactioncommerce:reaction-paypal@1.2.8
 reactioncommerce:reaction-product-variant@1.0.0
