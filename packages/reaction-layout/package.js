@@ -27,4 +27,12 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:core@0.12.0");
 
   api.addFiles("server/register.js", "server");
+
+  api.addFiles("client/templates/theme/theme.js", "client");
+  api.addFiles("client/templates/theme/theme.html", "client");
+
+  api.addFiles("client/templates/settings/settings.html", "client");
+  api.addFiles("client/templates/settings/settings.js", "client");
+
+  api.addFiles("client/templates/dashboard/dashboard.html", "client");
 });

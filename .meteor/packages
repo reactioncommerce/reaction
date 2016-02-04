@@ -55,12 +55,12 @@ reactioncommerce:reaction-accounts
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
 reactioncommerce:reaction-inventory
+reactioncommerce:reaction-layout
 reactioncommerce:reaction-router
 reactioncommerce:reaction-shipping
 reactioncommerce:reaction-social
 reactioncommerce:reaction-product-variant
 reactioncommerce:reaction-checkout
-reactioncommerce:reaction-layout
 
 # reactioncommerce:reaction-product-simple
 
