@@ -1,5 +1,8 @@
 
 Template.button.helpers({
+  status() {
+    return Template.instance().data.status || "default";
+  },
   type() {
     return Template.instance().data.type || "button";
   }

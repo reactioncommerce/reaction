@@ -43,7 +43,8 @@ Template.tagGroup.helpers({
       onTagSort(newTagsOrder) {
         instance.data.onTagSort(newTagsOrder, instance.data.groupTag);
       },
-      onTagDragAdd: instance.data.onTagDragAdd
+      onTagDragAdd: instance.data.onTagDragAdd,
+      onTagUpdate: instance.data.onTagUpdate
     };
   }
 });

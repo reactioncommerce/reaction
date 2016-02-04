@@ -92,9 +92,15 @@ Template.tagEditable.helpers({
 Template.tagEditable.events({
   "submit form"(event) {
     event.preventDefault();
+
     if (this.onTagUpdate) {
       this.onTagUpdate(this.tag._id, event.target.tag.value);
     }
+  },
+
+  "blur input"(event) {
+    // Trigger form submit
+    $(event.target).closest("form").submit();
   }
 });
 
@@ -132,11 +138,26 @@ Template.tagBlank.helpers({});
 Template.tagBlank.events({
   "submit form"(event) {
     event.preventDefault();
+    const value = event.target.tag.value.trim();
 
-    if (this.onTagCreate) {
-      this.onTagCreate(event.target.tag.value);
+    if (this.onTagCreate && _.isEmpty(value) === false) {
+      this.onTagCreate(value);
     }
 
     event.target.tag.value = "";
+  },
+
+  "blur input"(event) {
+    // Trigger form submit
+    $(event.target).closest("form").submit();
+  },
+
+  "keydown input"(event) {
+    if (event.keyCode === 9) {
+      event.preventDefault();
+
+      // Trigger form submit
+      $(event.target).closest("form").submit();
+    }
   }
 });
