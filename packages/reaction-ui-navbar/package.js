@@ -26,6 +26,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // meteor add-on packages
+  api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-ui@0.1.0");
   api.use("reactioncommerce:core-theme@2.0.1");
 
@@ -42,6 +43,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/navbar/navbar.html", "client");
   api.addFiles("client/components/navbar/navbar.js", "client");
   api.addFiles("client/components/navbar/navbar.less", "client");
+
+  // Add Assets for theme editor
+  api.addAssets("theme/navbar.css", "server");
+  api.addFiles("theme/theme.js", "server");
 
   // api.addFiles("client/styles/base.less", "client");
 });

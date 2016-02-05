@@ -1,14 +1,21 @@
 <template name="reactionLayoutSettings">
   <div class="panel-group">
     {{#each selector in selectors}}
-      <div class="panel panel-default">
+      <div class="panel panel-objectmap" data-selector={{selector}} data-rule="true">
         <div class="panel-heading">
-          <div class="panel-title">{{selector}}</div>
+          <div class="panel-title">
+            {{#with (annotation selector)}}
+              <span class="label">{{label}}</span>
+            {{/with}}
+              <span class="label-selector hidden">{{selector}}</span>
+          </div>
         </div>
         <div class="list-group">
           {{#each style in (styles selector)}}
             <div class="list-group-item form-group" data-selector={{selector}}>
-              <label>{{style.property}}</label>
+              <label>
+                {{style.property}}:
+              </label>
               {{> textfield name=style.property value=style.value}}
             </div>
           {{/each}}
@@ -26,5 +33,4 @@
 
   </div>
   {{> button title="Save" onClick=updateStyles}}
-  <button type="button">Save</button>
 </template>

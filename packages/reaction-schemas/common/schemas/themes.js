@@ -4,12 +4,38 @@
  */
 
 ReactionCore.Schemas.Themes = new SimpleSchema({
-  name: {
+  theme: {
     type: String,
     index: true
   },
-  styles: {
+
+  author: {
     type: String,
+    optional: true
+  },
+
+  url: {
+    type: String,
+    optional: true
+  },
+
+  stylesheets: {
+    type: [Object],
+    optional: true
+  },
+
+  "stylesheets.$.name": {
+    type: String,
+    unique: true
+  },
+
+  "stylesheets.$.stylesheet": {
+    type: String,
+    optional: true
+  },
+  "stylesheets.$.annotations": {
+    type: [Object],
+    blackbox: true,
     optional: true
   }
 });

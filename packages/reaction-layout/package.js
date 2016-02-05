@@ -8,7 +8,8 @@ Package.describe({
 Npm.depends({
   "postcss": "5.0.14",
   "postcss-js": "0.1.1",
-  "autoprefixer": "6.3.1"
+  "autoprefixer": "6.3.1",
+  "css-annotation": "0.6.0"
 });
 
 Package.onUse(function (api) {
@@ -38,7 +39,6 @@ Package.onUse(function (api) {
   // community packages
   api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-ui@0.4.0");
-  api.use("juliancwirko:postcss@0.2.5");
   api.use("juliancwirko:s-alert@3.1.4");
   api.use("juliancwirko:s-alert-stackslide@3.1.3");
   api.use("kevohagan:sweetalert@1.0.0");
@@ -53,6 +53,7 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/settings/settings.html", "client");
   api.addFiles("client/templates/settings/settings.js", "client");
+  api.addFiles("client/templates/settings/settings.less", "client");
 
   api.addFiles("client/templates/dashboard/dashboard.html", "client");
 

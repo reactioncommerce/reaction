@@ -20,6 +20,9 @@
         }
       }
     },
+    "css-annotation": {
+      "version": "0.6.0"
+    },
     "postcss": {
       "version": "5.0.14",
       "dependencies": {

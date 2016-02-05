@@ -1,0 +1,55 @@
+// Import Variables
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
+
+
+.panel-objectmap {
+  padding: 10px;
+  border-bottom: 0;
+}
+
+.panel-objectmap:last-child {
+  
+}
+
+.panel-objectmap .panel-heading {
+  padding: 5px 10px;
+}
+
+.panel-objectmap .panel-title {
+  font-size: 14px;
+}
+
+.panel-objectmap .panel-title .label {
+  color: @text-color;
+  display: block;
+  font-size: 14px;
+  text-align: left;
+  padding: 0;
+  font-weight: 500;
+}
+
+.panel-objectmap .panel-title .label-selector {
+  color: @black40;
+}
+
+.panel-objectmap .list-group-item {
+  .display(flex);
+  .align-items(center);
+  padding: 0;
+  border: none;
+  .padding-left(30px);
+}
+
+.panel-objectmap .list-group-item label {
+  margin: 0 10px 0 0;
+  color: @brand-secondary-color;
+  font-weight: normal;
+}
+
+.panel-objectmap .list-group-item input {
+  border: none;
+  padding: 2px;
+}
