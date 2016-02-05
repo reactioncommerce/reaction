@@ -19,6 +19,7 @@ _.extend(ReactionCore, {
           domains: domain
         });
         self.shopId = shop._id;
+        createCountryCollection(shop);
 
         // fix for https://github.com/reactioncommerce/reaction/issues/248
         // we need to keep an eye for rates changes
@@ -316,3 +317,38 @@ Meteor.startup(function () {
     }
   });
 });
+
+/**
+ * createCountryCollection
+ * Create a client-side only collection of Countries for a dropdown form
+ * properly sorted*
+ * @params {object} shop -  currentShop
+ */
+createCountryCollection = function (shop) {
+  ReactionCore.Collections.Countries = new Mongo.Collection(null);
+  const countryOptions = [];
+  const countries = shop.locales.countries;
+  for (let locale in countries) {
+    if ({}.hasOwnProperty.call(countries, locale)) {
+      let country = countries[locale];
+      countryOptions.push({
+        label: country.name,
+        value: locale
+      });
+    }
+  }
+  countryOptions.sort(function (a, b) {
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  });
+
+  for (let country in countryOptions) {
+    ReactionCore.Collections.Countries.insert(countryOptions[country]);
+  }
+};
+
