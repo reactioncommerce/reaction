@@ -1,47 +1,23 @@
 /**
  *  currentProduct
  *  @summary Reactive current product dependency, ensuring reactive products, without session
- *  @todo rename as this can easily be confused with ReactionCore.setCurrentProduct
+ *  @todo rename as this can easily be confused with ReactionCore.setProduct
  *  @todo this is a messy class implementation, normalize it.
  *  @description
  *  products:
- *  set usage: ReactionProduct.currentProduct.set "productId",string
- *  get usage: ReactionProduct.currentProduct.get "productId"
- *  variants:
- *  set usage: ReactionProduct.currentProduct.set "variantId",string
- *  get usage: ReactionProduct.currentProduct.get "variantId"
+
  */
-ReactionProduct = {};
-ReactionProduct.currentProduct = {
-  keys: {},
-  deps: {},
-  equals: function (key) {
-    return this.keys[key];
-  },
-  get: function (key) {
-    this.ensureDeps(key);
-    this.deps[key].depend();
-    return this.keys[key];
-  },
-  set: function (key, value) {
-    this.ensureDeps(key);
-    this.keys[key] = value;
-    return this.deps[key].changed();
-  },
-  changed: function (key) {
-    this.ensureDeps(key);
-    return this.deps[key].changed();
-  },
-  ensureDeps: function (key) {
-    if (!this.deps[key]) {
-      this.deps[key] = new Tracker.Dependency();
-      return this.deps[key];
+ReactionProduct = new ReactiveDict("currentProduct");
+
+Tracker.autorun(function () {
+  ReactionRouter.watchPathChange();
+  if (ReactionRouter.getParam("handle")) {
+    const prodSub = ReactionSubMan.subscribe("Product", ReactionRouter.getParam("handle"));
+    if (prodSub.ready()) {
+      return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variant"));
     }
   }
-};
-
-// export currentProduct
-// ReactionCore.currentProduct = currentProduct = this.currentProduct;
+});
 
 /**
  * setCurrentVariant
@@ -51,8 +27,8 @@ ReactionProduct.currentProduct = {
 ReactionProduct.setCurrentVariant = (variantId) => {
   let currentId;
   if (variantId === null) {
-    ReactionProduct.currentProduct.set("variantId", null);
-    ReactionProduct.currentProduct.set("variantId", ReactionProduct.selectedVariantId());
+    ReactionProduct.set("variant", null);
+    ReactionProduct.set("variant", ReactionProduct.selectedVariantId());
   }
   if (!variantId) {
     return;
@@ -61,29 +37,7 @@ ReactionProduct.setCurrentVariant = (variantId) => {
   if (currentId === variantId) {
     return;
   }
-  ReactionProduct.currentProduct.set("variantId", variantId);
-};
-
-/**
- * setCurrentProduct
- * @param {String} productId - set current productId
- * @return {undefined}
- */
-ReactionProduct.setCurrentProduct = (productId) => {
-  let currentId;
-
-  if (productId === null) {
-    ReactionProduct.currentProduct.set("productId", null);
-  }
-  if (!productId) {
-    return;
-  }
-  currentId = ReactionProduct.selectedProductId();
-  if (currentId === productId) {
-    return;
-  }
-  ReactionProduct.currentProduct.set("productId", productId);
-  ReactionProduct.currentProduct.set("variantId", null);
+  ReactionProduct.set("variant", variantId);
 };
 
 /**
@@ -94,43 +48,20 @@ ReactionProduct.setCurrentProduct = (productId) => {
  * @return {undefined} return nothing, sets in session
  */
 ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
-  let productId = currentProductId;
-  let variantId = currentVariantId;
-  if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
-    let product = ReactionCore.Collections.Products.findOne({
-      handle: productId.toLowerCase()
-    });
-    if (product) {
-      productId = product._id;
-    }
-  }
-  ReactionProduct.setCurrentProduct(productId);
-  ReactionProduct.setCurrentVariant(variantId);
-};
-
-
-/**
- * selectedVariant
- * @summary get the currently active/requested variant object
- * @return {Object} currently selected variant object
- */
-ReactionProduct.selectedVariant = () => {
-  let id;
+  let productId = currentProductId || ReactionRouter.getParam("handle");
+  let variantId = currentVariantId || ReactionRouter.getParam("variant");
   let product;
-  let variant;
-  id = ReactionProduct.selectedVariantId();
-  if (!id) {
-    return {};
+  let handle;
+  if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
+    handle = productId.toLowerCase();
+    product = ReactionCore.Collections.Products.findOne({
+      handle: handle
+    });
   }
-  product = ReactionProduct.selectedProduct();
-  if (!product) {
-    return {};
-  }
-  variant = _.findWhere(product.variants, {
-    _id: id
-  });
-  return variant;
+  ReactionProduct.set("handle", handle);
+  ReactionProduct.set("variant", variantId);
 };
+
 
 /**
  * selectedProduct
@@ -138,10 +69,12 @@ ReactionProduct.selectedVariant = () => {
  * @return {Object|undefined} currently selected product cursor
  */
 ReactionProduct.selectedProduct = () => {
-  const id = ReactionProduct.selectedProductId();
-  if (typeof id === "string") {
-    return ReactionCore.Collections.Products.findOne(id);
-  }
+  const handle  = ReactionRouter.getParam("handle") || ReactionProduct.get("handle") ;
+  const product = ReactionCore.Collections.Products.findOne({
+    handle: handle
+  });
+  return product;
+
 };
 
 /**
@@ -150,8 +83,20 @@ ReactionProduct.selectedProduct = () => {
  * @return {String} currently selected product id
  */
 ReactionProduct.selectedProductId = () => {
-  return ReactionProduct.currentProduct.get("productId");
+  if (ReactionProduct.selectedProduct() !== undefined) {
+    return ReactionProduct.selectedProduct()._id;
+  }
 };
+
+/**
+ * selectedVariant
+ * @summary get the currently active/requested variant object
+ * @return {Object} currently selected variant object
+ */
+ReactionProduct.selectedVariant = () => {
+  return ReactionProduct.get("variant");
+};
+
 
 /**
  * selectedVariantId
@@ -159,7 +104,7 @@ ReactionProduct.selectedProductId = () => {
  * @return {String} currently selected variant id
  */
 ReactionProduct.selectedVariantId = () => {
-  let id = ReactionProduct.currentProduct.get("variantId");
+  let id = ReactionProduct.get("variant");
   if (id !== null) {
     return id;
   }
@@ -184,7 +129,7 @@ ReactionProduct.selectedVariantId = () => {
   }
 
   id = variants[0]._id;
-  ReactionProduct.currentProduct.set("variantId", id);
+  ReactionProduct.set("variant", id);
   return id;
 };
 
@@ -311,8 +256,7 @@ ReactionProduct.getVariantPriceRange = (currentVariantId, currentProductId) => {
  */
 ReactionProduct.getProductPriceRange = (currentProductId) => {
   let productId = currentProductId || ReactionProduct.selectedProductId();
-  let product = ReactionCore.Collections.Products.findOne(productId);
-
+  let product = ReactionProduct.selectedProduct();
   if (!product) {
     return undefined;
   } else if (!product._id) {
@@ -388,7 +332,7 @@ ReactionProduct.maybeDeleteProduct = (product) => {
         });
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
-        ReactionProduct.setCurrentProduct(null);
+        ReactionProduct.setProduct(null);
         ReactionRouter.go("/");
         return Alerts.toast(`Deleted ${title}`, "info");
       }

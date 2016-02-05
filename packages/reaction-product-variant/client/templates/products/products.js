@@ -21,8 +21,9 @@ Template.products.events({
     return $(".product-grid").show();
   },
   "click .product-list-item": function () {
-    return ReactionRouter.go("/product", {
-      _id: this._id
+    // go to new product
+    ReactionRouter.go("product", {
+      handle: this._id
     });
   }
 });

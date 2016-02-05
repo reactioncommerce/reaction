@@ -27,12 +27,11 @@ Template.productTagInputForm.helpers({
 
 Template.productTagInputForm.events({
   "click .tag-input-hashtag": function () {
-    return Meteor.call("products/setHandleTag", ReactionProduct.selectedProductId(), this
-      ._id,
+    return Meteor.call("products/setHandleTag", ReactionProduct.selectedProductId(), this._id,
       function (error, result) {
         if (result) {
-          return ReactionRouter.go("/product", {
-            _id: result
+          return ReactionRouter.go("product", {
+            handle: result
           });
         }
       });

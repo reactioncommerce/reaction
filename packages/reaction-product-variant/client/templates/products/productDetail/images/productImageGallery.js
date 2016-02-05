@@ -6,10 +6,10 @@ let Media = ReactionCore.Collections.Media;
  * uploadHandler method
  */
 function uploadHandler(event) {
-  let productId = ReactionProduct.selectedProductId();
-  let variantId = ReactionProduct.selectedVariantId();
-  let shopId = ReactionProduct.selectedProduct().shopId || ReactionCore.getShopId();
-  let userId = Meteor.userId();
+  const productId = ReactionProduct.selectedProductId();
+  const variantId = ReactionProduct.selectedVariantId();
+  const shopId = ReactionProduct.selectedProduct().shopId || ReactionCore.getShopId();
+  const userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
   }).count();
@@ -33,7 +33,7 @@ function uploadHandler(event) {
  * updateImagePriorities method
  */
 function updateImagePriorities() {
-  let sortedMedias = _.map($(".gallery").sortable("toArray", {
+  const sortedMedias = _.map($(".gallery").sortable("toArray", {
     attribute: "data-index"
   }), function (index) {
     return {
@@ -41,15 +41,15 @@ function updateImagePriorities() {
     };
   });
 
-  let _results = [];
+  const results = [];
   for (let image of sortedMedias) {
-    _results.push(Media.update(image.mediaId, {
+    results.push(Media.update(image.mediaId, {
       $set: {
         "metadata.priority": _.indexOf(sortedMedias, image)
       }
     }));
   }
-  return _results;
+  return results;
 }
 
 /*
@@ -58,8 +58,8 @@ function updateImagePriorities() {
 Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
-    let variant = ReactionProduct.selectedVariant();
-    let product = ReactionProduct.selectedProduct();
+    const variant = ReactionProduct.selectedVariant();
+    const product = ReactionProduct.selectedProduct();
 
     if (variant) {
       mediaArray = Media.find({
@@ -81,8 +81,8 @@ Template.productImageGallery.helpers({
     } else {
       if (product) {
         let ids = [];
-        for (variant of product.variants) {
-          ids.push(variant._id);
+        for (let thisVariant of product.variants) {
+          ids.push(thisVariant._id);
         }
         mediaArray = Media.find({
           "metadata.variantId": {
@@ -118,8 +118,7 @@ Template.productImageGallery.onRendered(function () {
         forcePlaceholderSize: true,
         update: function () {
           let variant;
-          if (!(typeof variant !== "undefined" && variant !==
-              null ? variant._id : void 0)) {
+          if (variant && variant._id) {
             variant = ReactionProduct.selectedVariant();
           }
           variant.medias = [];
@@ -202,7 +201,6 @@ Template.productImageGallery.events({
   },
   "dropped #galleryDropPane": uploadHandler
 });
-
 
 /**
  * imageUploader events

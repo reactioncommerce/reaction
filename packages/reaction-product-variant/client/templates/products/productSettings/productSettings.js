@@ -133,16 +133,17 @@ Template.productSettings.events({
   "click [data-event-action=cloneProduct]": function () {
     let title;
     title = this.title;
-
-    return Meteor.call("products/cloneProduct", this.products, function (error,
-      productId) {
+    // clone the product
+    return Meteor.call("products/cloneProduct", this.products, function (error, productId) {
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
-      // ReactionRouter.go("/product", {
-      //   _id: productId
-      // });
-      return Alerts.inline(`Cloned ${title}`, "success", {
+      // go to new product
+      ReactionRouter.go("product", {
+        handle: productId
+      });
+      // alert of clone success
+      Alerts.inline(`Cloned ${title}`, "success", {
         placement: "productManagement",
         id: productId,
         i18nKey: "productDetail.cloneMsg",

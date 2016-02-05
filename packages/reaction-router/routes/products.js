@@ -1,3 +1,7 @@
+//
+// product route group
+//
+
 product = ReactionRouter.group({
   prefix: "/product"
 });
@@ -8,9 +12,7 @@ product = ReactionRouter.group({
 
 product.route("/:handle/:variant?", {
   name: "product",
-  action: function (params) {
-    const variant = ReactionProduct.currentProduct.get("variantId") || params.variant;
-    ReactionProduct.setProduct(params.handle, variant);
+  action: function () {
     // initialize reaction layout
     renderLayout({
       workflow: "coreProductWorkflow"

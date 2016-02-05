@@ -4,15 +4,19 @@
 
 Template.productSocial.helpers({
   customSocialSettings: function () {
-    const product = Template.parentData();
-    const current = ReactionProduct.selectedVariant();
+    const product = ReactionProduct.selectedProduct();
+    let title = product.title;
+    if (ReactionProduct.selectedVariant()) {
+      title = ReactionProduct.selectedVariant().title;
+    }
+
     const settings = {
       placement: "productDetail",
       faClass: "",
       faSize: "fa-lg",
       media: Session.get("variantImgSrc"),
       url: window.location.href,
-      title: current.title || product.title,
+      title: title || "",
       description: typeof product.description === "string" ? product.description.substring(0, 254) : void 0,
       apps: {
         facebook: {

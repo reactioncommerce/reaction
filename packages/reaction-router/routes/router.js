@@ -56,6 +56,11 @@ renderLayout = (options = {}) => {
 // define Router export
 // FlowRouter.triggers.enter([hasLayoutPermission]);
 ReactionRouter = FlowRouter;
+//
+// Subscription Manager
+// See: https://github.com/kadirahq/subs-manager
+//
+ReactionSubMan = new SubsManager();
 
 // default not found route
 ReactionRouter.notFound = {

@@ -130,7 +130,10 @@ Template.coreAdminLayout.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          ReactionRouter.go("/product/" + productId);
+          // go to new product
+          ReactionRouter.go("product", {
+            handle: productId
+          });
         }
       });
     } else if (this.route) {

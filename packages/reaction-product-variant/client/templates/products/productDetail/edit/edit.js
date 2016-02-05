@@ -32,17 +32,18 @@ Template.productDetailEdit.events({
             id: this._id
           });
         }
-        //
+        // redirect to new url on title change
         if (self.field === "title") {
           Meteor.call("products/setHandle", productId, function (setHandleError, result) {
             if (result) {
-              return ReactionRouter.go("/product", {
-                _id: result
+              ReactionRouter.go("product", {
+                handle: result
               });
             }
           });
         }
         // animate updated field
+        // TODO this needs to be moved into a component
         return $(event.currentTarget).animate({
           backgroundColor: "#e2f2e2"
         }).animate({
@@ -64,10 +65,10 @@ Template.productDetailEdit.events({
 
 Template.productDetailField.events({
   "click .product-detail-field": function () {
-    if (ReactionCore.hasOwnerAccess()) {
+    if (ReactionCore.hasPermission("createProduct")) {
       let fieldClass = "editing-" + this.field;
       Session.set(fieldClass, true);
-      Tracker.flush();
+      // Tracker.flush();
       return $(`.${this.field}-edit-input`).focus();
     }
   }

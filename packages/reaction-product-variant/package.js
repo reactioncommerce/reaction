@@ -30,6 +30,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // community packages
+  api.use("reactioncommerce:reaction-router@1.0.0");
   api.use("reactioncommerce:core@0.12.0");
   // helpers
   api.addFiles("client/helpers/products.js", "client");

@@ -140,8 +140,9 @@ Template.productGridItems.events({
       if (error) {
         throw new Meteor.Error("error cloning product", error);
       }
-      ReactionRouter.go("/product", {
-        _id: productId
+      // go to new product
+      ReactionRouter.go("product", {
+        handle: productId
       });
       return Alerts.inline(`Cloned ${title}`, "success", {
         placement: "productManagement",

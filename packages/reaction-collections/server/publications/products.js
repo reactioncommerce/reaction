@@ -58,10 +58,10 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
  * @return {Object} return product cursor
  */
 Meteor.publish("Product", function (productId) {
-  check(productId, Match.Optional(String));
+  check(productId, Match.OptionalOrNull(String));
   if (!productId) {
     ReactionCore.Log.info("ignoring null request on Product subscription");
-    return this.ready();
+    return this.stop();
   }
 
   let shop = ReactionCore.getCurrentShop();

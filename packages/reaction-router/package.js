@@ -11,10 +11,13 @@ Package.onUse(function (api) {
   api.use("session");
   api.use("blaze-html-templates");
   api.use("reactioncommerce:reaction-collections@1.0.5");
-  // Flow router packages
+  // flow-router packages
   api.use("kadira:flow-router@2.10.0");
   api.use("kadira:blaze-layout@2.3.0");
-
+  api.use("meteorhacks:subs-manager");
+  // helpers
+  api.addFiles("client/helpers.js", "client");
+  // routes
   api.addFiles("routes/router.js");
   api.addFiles("routes/shop.js");
   api.addFiles("routes/products.js");
@@ -24,8 +27,7 @@ Package.onUse(function (api) {
   api.addFiles("routes/orders.js");
   api.addFiles("routes/packages.js");
   api.addFiles("routes/accounts.js");
-  api.addFiles("client/helpers.js", "client");
-
-  api.export("Router");
+  // export router and subscription manager
   api.export("ReactionRouter");
+  api.export("ReactionSubMan");
 });

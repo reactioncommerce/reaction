@@ -1,14 +1,11 @@
-Template.productDetail.onCreated(() => {
-  Tracker.autorun(() => {
-    Meteor.subscribe("Product", ReactionProduct.selectedProductId());
-  });
-});
 /**
  * productDetail helpers
+ * see helper/product.js for
+ * product data source
  */
 Template.productDetail.helpers({
   product: function () {
-    return ReactionCore.Collections.Products.findOne();
+    return ReactionProduct.selectedProduct();
   },
   tags: function () {
     let product = ReactionProduct.selectedProduct();
