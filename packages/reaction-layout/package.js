@@ -5,6 +5,12 @@ Package.describe({
   documentation: "README.md"
 });
 
+Npm.depends({
+  "postcss": "5.0.14",
+  "postcss-js": "0.1.1",
+  "autoprefixer": "6.3.1"
+});
+
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2.1");
 
@@ -31,11 +37,15 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:reaction-ui@0.4.0");
+  api.use("juliancwirko:postcss@0.2.5");
   api.use("juliancwirko:s-alert@3.1.4");
   api.use("juliancwirko:s-alert-stackslide@3.1.3");
   api.use("kevohagan:sweetalert@1.0.0");
 
+
   api.addFiles("server/register.js", "server");
+  api.addFiles("server/processTheme.js", "server");
 
   // Theme Templates
   api.addFiles("client/templates/theme/theme.js", "client");

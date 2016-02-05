@@ -3,15 +3,19 @@ ReactionCore.registerPackage({
   name: "reaction-layout",
   icon: "fa fa-css3",
   autoEnable: true,
+  settings: {
+
+  },
   registry: [
     {
       provides: "dashboard",
+      container: "dashboard",
       route: "dashboard/layout",
       label: "Layout",
       description: "Theme and layout manager",
       icon: "fa fa-css3",
       cycle: 1,
-      group: "reaction-core",
+      group: "core",
       template: "layoutDashboard",
       permissions: [{
         label: "Reaction Layout",

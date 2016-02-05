@@ -39,6 +39,7 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/orders.js");
   api.addFiles("common/schemas/translations.js");
   api.addFiles("common/schemas/templates.js");
+  api.addFiles("common/schemas/themes.js");
 
   // PropType Validators
   api.addFiles("common/propTypes/tags.js");
