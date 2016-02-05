@@ -255,8 +255,8 @@ ReactionProduct.getVariantPriceRange = (currentVariantId, currentProductId) => {
  * @return {String} formatted price or price range
  */
 ReactionProduct.getProductPriceRange = (currentProductId) => {
-  let productId = currentProductId || ReactionProduct.selectedProductId();
-  let product = ReactionProduct.selectedProduct();
+  const productId = currentProductId || ReactionProduct.selectedProductId();
+  const product = ReactionCore.Collections.Products.findOne(productId);
   if (!product) {
     return undefined;
   } else if (!product._id) {
