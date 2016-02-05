@@ -50,7 +50,6 @@ ReactionProduct.setCurrentVariant = (variantId) => {
 ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
   let productId = currentProductId || ReactionRouter.getParam("handle");
   let variantId = currentVariantId || ReactionRouter.getParam("variant");
-  let product;
   let handle;
   if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
     handle = productId.toLowerCase();
@@ -69,12 +68,11 @@ ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
  * @return {Object|undefined} currently selected product cursor
  */
 ReactionProduct.selectedProduct = () => {
-  const handle  = ReactionRouter.getParam("handle") || ReactionProduct.get("handle") ;
+  const handle  = ReactionRouter.getParam("handle") || ReactionProduct.get("handle");
   const product = ReactionCore.Collections.Products.findOne({
     handle: handle
   });
   return product;
-
 };
 
 /**
@@ -94,7 +92,19 @@ ReactionProduct.selectedProductId = () => {
  * @return {Object} currently selected variant object
  */
 ReactionProduct.selectedVariant = () => {
-  return ReactionProduct.get("variant");
+  const product = ReactionProduct.selectedProduct();
+  const id = ReactionProduct.selectedVariantId();
+  if (!id) {
+    return {};
+  }
+
+  if (!product) {
+    return {};
+  }
+  let variant = _.findWhere(product.variants, {
+    _id: id
+  });
+  return variant;
 };
 
 
