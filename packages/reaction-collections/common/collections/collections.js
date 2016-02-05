@@ -197,6 +197,14 @@ ReactionCore.Collections.Templates = new Mongo.Collection("Templates");
 ReactionCore.Collections.Templates.attachSchema(ReactionCore.Schemas.Templates);
 
 /**
+* ReactionCore Collections Themes
+*/
+ReactionCore.Collections.Themes = new Mongo.Collection("Themes");
+
+ReactionCore.Collections.Themes.attachSchema(ReactionCore.Schemas.Themes);
+
+
+/**
  * ReactionCore Collections CronJobs
  */
 ReactionCore.Collections.Jobs = new JobCollection("Jobs", {

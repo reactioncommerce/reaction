@@ -46,6 +46,7 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
   api.addFiles("server/publications/translations.js", "server");
+  api.addFiles("server/publications/themes.js", "server");
 
   // security
   api.addFiles("server/logger.js", "server");
