@@ -4,5 +4,22 @@
     "reaction reset": "./reaction reset",
     "reaction pull": "./reaction pull",
     "reaction install": "./reaction install"
-  }
+  },
+  "name": "reaction",
+  "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
+  "version": "0.12.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git"
+  },
+  "author": "Reaction Commerce",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction"
 }
