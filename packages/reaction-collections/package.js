@@ -24,6 +24,7 @@ Package.onUse(function (api) {
   api.use("ongoworks:security@1.3.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("alanning:roles@1.2.13");
+  api.use("tmeasday:publish-counts@0.7.3");
 
   // ReactionCore declaration
   api.addFiles("common/globals.js");
@@ -62,6 +63,7 @@ Package.onUse(function (api) {
   api.imply("vsivsi:job-collection");
   api.imply("ongoworks:security");
   api.imply("alanning:roles");
+  api.imply("tmeasday:publish-counts");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");

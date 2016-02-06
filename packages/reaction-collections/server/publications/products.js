@@ -81,6 +81,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
       selector.isVisible = true;
     }
 
+    Counts.publish(this, 'Products', Products.find(selector), {noReady: true});
     return Products.find(selector, {
       sort: sort,
       limit: limit
