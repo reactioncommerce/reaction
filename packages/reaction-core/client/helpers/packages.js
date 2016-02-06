@@ -56,10 +56,13 @@ function getReactionApps(optionHash) {
   let reactionApps;
   let reactionPackages;
   let registryFilter;
+  let options = {};
 
-  let options = optionHash.hash || optionHash; // _ref = options.hash;
+  if (optionHash && optionHash.hash) {
+    options = optionHash.hash;
+  }
+
   let packageSubscription = ReactionCore.Subscriptions.Packages;
-
   // you could provide a shopId in optionHash
   if (packageSubscription.ready()) {
     if (!options.shopId) {
@@ -173,4 +176,6 @@ function getReactionApps(optionHash) {
 ReactionCore.Apps = getReactionApps;
 
 // Register global template helper
-Template.registerHelper("reactionApps", getReactionApps);
+Template.registerHelper("reactionApps", (optionHash) => {
+  return getReactionApps(optionHash);
+});

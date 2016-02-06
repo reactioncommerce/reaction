@@ -3,6 +3,9 @@
  *
  */
 Template.packagesGrid.helpers({
+  shopId: function () {
+    return ReactionCore.getShopId();
+  },
   pkgPermissions: function () {
     if (ReactionCore.hasPermission("dashboard")) {
       // route specific permissions

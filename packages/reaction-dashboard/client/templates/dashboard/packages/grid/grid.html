@@ -1,6 +1,6 @@
 <template name="packagesGrid">
   <div class="rui packages available-pkg-grid">
-    {{#each reactionApps provides='dashboard'}}
+    {{#each reactionApps provides='dashboard' shopId=shopId}}
       {{#if pkgPermissions}}
         <div class="rui package">
           {{> gridPackage}}
