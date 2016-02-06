@@ -14,7 +14,7 @@ Tracker.autorun(function () {
   if (ReactionRouter.getParam("handle")) {
     const prodSub = ReactionSubMan.subscribe("Product", ReactionRouter.getParam("handle"));
     if (prodSub.ready()) {
-      return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variant"));
+      return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variantId"));
     }
   }
 });
@@ -25,19 +25,18 @@ Tracker.autorun(function () {
  * @return {undefined}
  */
 ReactionProduct.setCurrentVariant = (variantId) => {
-  let currentId;
   if (variantId === null) {
-    ReactionProduct.set("variant", null);
-    ReactionProduct.set("variant", ReactionProduct.selectedVariantId());
+    ReactionProduct.set("variantId", null);
+    ReactionProduct.set("variantId", ReactionProduct.selectedVariantId());
   }
   if (!variantId) {
     return;
   }
-  currentId = ReactionProduct.selectedVariantId();
+  let currentId = ReactionProduct.selectedVariantId();
   if (currentId === variantId) {
     return;
   }
-  ReactionProduct.set("variant", variantId);
+  ReactionProduct.set("variantId", variantId);
 };
 
 /**
@@ -49,16 +48,27 @@ ReactionProduct.setCurrentVariant = (variantId) => {
  */
 ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
   let productId = currentProductId || ReactionRouter.getParam("handle");
-  let variantId = currentVariantId || ReactionRouter.getParam("variant");
-  let handle;
+  let variantId = currentVariantId || ReactionRouter.getParam("variantId");
+
   if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
     handle = productId.toLowerCase();
     product = ReactionCore.Collections.Products.findOne({
       handle: handle
     });
+    productId = product._id;
+  } else {
+    product = ReactionCore.Collections.Products.findOne({
+      _id: productId
+    });
   }
-  ReactionProduct.set("handle", handle);
-  ReactionProduct.set("variant", variantId);
+  // set the default variant
+  // as the default.
+  if (!variantId) {
+    variantId = product.variants[0]._id;
+  }
+  // set in our reactive dictionary
+  ReactionProduct.set("productId", productId);
+  ReactionProduct.set("variantId", variantId);
 };
 
 
@@ -68,10 +78,7 @@ ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
  * @return {Object|undefined} currently selected product cursor
  */
 ReactionProduct.selectedProduct = () => {
-  const handle  = ReactionRouter.getParam("handle") || ReactionProduct.get("handle");
-  const product = ReactionCore.Collections.Products.findOne({
-    handle: handle
-  });
+  const product = ReactionCore.Collections.Products.findOne(ReactionProduct.get("productId"));
   return product;
 };
 
@@ -81,9 +88,7 @@ ReactionProduct.selectedProduct = () => {
  * @return {String} currently selected product id
  */
 ReactionProduct.selectedProductId = () => {
-  if (ReactionProduct.selectedProduct() !== undefined) {
-    return ReactionProduct.selectedProduct()._id;
-  }
+  return ReactionProduct.get("productId");
 };
 
 /**
@@ -114,7 +119,7 @@ ReactionProduct.selectedVariant = () => {
  * @return {String} currently selected variant id
  */
 ReactionProduct.selectedVariantId = () => {
-  let id = ReactionProduct.get("variant");
+  let id = ReactionProduct.get("variantId");
   if (id !== null) {
     return id;
   }
@@ -139,7 +144,7 @@ ReactionProduct.selectedVariantId = () => {
   }
 
   id = variants[0]._id;
-  ReactionProduct.set("variant", id);
+  // ReactionProduct.set("variantId", id);
   return id;
 };
 
@@ -206,7 +211,7 @@ ReactionProduct.checkInventoryVariants = (parentVariantId) => {
  */
 ReactionProduct.getVariantPriceRange = (currentVariantId, currentProductId) => {
   let productId = currentProductId || ReactionProduct.selectedProductId();
-  let variantId = currentVariantId || ReactionProduct.selectedVariant()._id;
+  let variantId = currentVariantId || ReactionProduct.selectedVariantId();
 
   let product = ReactionCore.Collections.Products.findOne(productId);
   if (!(variantId && productId && product)) {

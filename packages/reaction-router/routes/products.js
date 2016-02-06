@@ -10,7 +10,7 @@ product = ReactionRouter.group({
 //  product detail page
 //
 
-product.route("/:handle/:variant?", {
+product.route("/:handle/:variantId?", {
   name: "product",
   action: function () {
     // initialize reaction layout

@@ -19,7 +19,7 @@ Future: Potentially support iron-router and flow-router with a layer like: [http
 alias: `pathForSEO`
 
 ```
-{{pathFor 'product' handle=_id variant=variants._id}}
+{{pathFor 'product' handle=_id variantId=variants._id}}
 ```
 
 Result: `/product/P4hP8ZcFP9rDDEMpa/CJoRBm9vRrorc9mxZ`

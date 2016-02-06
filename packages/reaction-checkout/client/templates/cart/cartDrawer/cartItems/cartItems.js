@@ -26,6 +26,9 @@ Template.cartDrawerItems.onRendered(function () {
  * @returns default product image
  */
 Template.cartDrawerItems.helpers({
+  product: function () {
+    return ReactionCore.Collections.Products.findOne(this.productId);
+  },
   media: function () {
     let product = ReactionCore.Collections.Products.findOne(this.productId);
     let defaultImage = ReactionCore.Collections.Media.findOne({
