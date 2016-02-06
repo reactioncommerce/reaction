@@ -1,11 +1,15 @@
 /**
  * Router for core routes related to account profiles, sign in and management
  */
-
+// define default routing groups
+account = ReactionRouter.group({
+  name: "account",
+  prefix: "/account"
+});
 //
 // accounts/profile
 //
-ReactionRouter.route("/account/profile", {
+account.route("/profile", {
   name: "account/profile",
   action: function (params, queryParams) {
     renderLayout({
@@ -15,7 +19,7 @@ ReactionRouter.route("/account/profile", {
 });
 
 // Sign in page
-ReactionRouter.route("/account/signIn", {
+account.route("/signIn", {
   path: "signin",
   action: function (params, queryParams) {
     renderLayout({

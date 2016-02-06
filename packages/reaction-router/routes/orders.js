@@ -1,11 +1,11 @@
-dashboard = ReactionRouter.group({
+orders = ReactionRouter.group({
   prefix: "/dashboard"
 });
 
 //
 // dashboard orders
 //
-dashboard.route("/orders", {
+orders.route("/orders", {
   name: "orders",
   action: function (params, queryParams) {
     let dashboardLayout =  {
