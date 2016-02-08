@@ -133,7 +133,7 @@ Template.productGridItems.events({
     publishProduct(this);
   },
   "click .clone-product": function () {
-    cloneProduct(this, true);
+    cloneProduct(this);
   },
   "click .delete-product": function (event) {
     event.preventDefault();

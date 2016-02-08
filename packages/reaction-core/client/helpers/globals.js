@@ -78,7 +78,7 @@ this.getProductsByTag = function (tag) {
  * @returns {Object} - returns nothing, and alerts, happen here
  */
 publishProduct = function (productOrArray) {
-  let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
+  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
   for (let product of products) {
     Meteor.call("products/publishProduct", product._id, function (error, result) {
       if (error) {
@@ -111,11 +111,11 @@ publishProduct = function (productOrArray) {
  * cloneProduct
  * @summary product cloning and alert
  * @param {Object} productOrArray - product Object
- * @param {Boolean} redirect - shoud we do redirect after cloning?
  * @returns {Object} - returns nothing, and alerts, happen here
  */
-cloneProduct = function (productOrArray, redirect) {
-  let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
+cloneProduct = function (productOrArray) {
+  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
+
   return Meteor.call("products/cloneProduct", products, function (error) {
     if (error) {
       throw new Meteor.Error("error cloning product", error);
@@ -128,14 +128,13 @@ cloneProduct = function (productOrArray, redirect) {
         dismissable: false
       });
     }
-    if (redirect) {
+    if (!_.isArray(productOrArray)) {
       Router.go("product", {
-        _id: productId
+        _id: productOrArray._id
       });
     }
   });
 };
-
 /**
  * maybeDeleteProduct
  * @summary confirm product deletion, delete, and alert
@@ -143,12 +142,10 @@ cloneProduct = function (productOrArray, redirect) {
  * @returns {Object} - returns nothing, and alerts, happen here
  */
 maybeDeleteProduct = function (productOrArray) {
-  let products = _.isArray(productOrArray) === false ? [productOrArray] : productOrArray;
+  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
+  const productIds = _.map(products, product => product._id);
   let title;
   let confirmTitle;
-  let productIds = _.map(products, (product) => {
-    return product._id;
-  });
   if (products.length === 1) {
     title = products[0].title || "the product";
     confirmTitle = "Delete this product?";
