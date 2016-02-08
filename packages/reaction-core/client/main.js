@@ -350,7 +350,7 @@ createCountryCollection = function (shop) {
   });
 
   for (let country of countryOptions) {
-    ReactionCore.Collections.Countries.insert(countryOptions[country]);
+    ReactionCore.Collections.Countries.insert(country);
   }
   return countryOptions;
 };
