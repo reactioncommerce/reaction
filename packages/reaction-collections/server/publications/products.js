@@ -4,37 +4,77 @@
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit, shops) {
+Meteor.publish("Products", function (productScrollLimit, productFilters) {
   check(productScrollLimit, Match.OneOf(null, undefined, Number));
-  check(shops, Match.Optional(Array));
+  check(productFilters, Match.OneOf(null, undefined, Object));
 
   let shopAdmin;
   const limit = productScrollLimit || 10;
   const shop = ReactionCore.getCurrentShop();
   const Products = ReactionCore.Collections.Products;
+  const sort = {title: 1};
 
   if (typeof shop !== "object") {
     return this.ready();
   }
 
   if (shop) {
-    let selector = {
-      shopId: shop._id
-    };
-    // handle multiple shops
-    if (shops) {
-      selector = {
-        shopId: {
-          $in: shops
-        }
-      };
-      // check if this user is a shopAdmin
-      for (let thisShopId of shops) {
-        if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
-            thisShopId)) {
-          shopAdmin = true;
+    let selector = {shopId: shop._id};
+
+    if (productFilters) {
+      // handle multiple shops
+      if (productFilters.shops) {
+        check(productFilters.shops, Array);
+        _.extend(selector, {shopId: {$in: productFilters.shops}});
+
+        // check if this user is a shopAdmin
+        for (let thisShopId of productFilters.shops) {
+          if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
+            shopAdmin = true;
+          }
         }
       }
+
+      // filter by tag
+      if (productFilters.tag) {
+        check(productFilters.tag, String);
+        _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
+      }
+
+      // filter by query
+      if (productFilters.query) {
+        check(productFilters.query, String);
+        let cond = {$regex: productFilters.query, $options: 'i'};
+        _.extend(selector, {$or: [{'title': cond}, {'pageTitle': cond}, {'description': cond}]});
+      }
+
+      // filter by details
+      if (productFilters.details) {
+        check(productFilters.details, Object);
+        _.extend(selector, {metafields: {$elemMatch: {key: {$regex: productFilters.details.key, $options: 'i'},
+          value: {$regex: productFilters.details.value, $options: 'i'}}}});
+      }
+
+      // filter by visibility
+      if (productFilters.visibility !== undefined) {
+        check(productFilters.visibility, Boolean);
+        _.extend(selector, {'isVisible': productFilters.visibility});
+      }
+
+      // filter by price
+      if (productFilters.price) {
+        check(productFilters.price, Object);
+        _.extend(selector, {variants: {$elemMatch: {price: {$gte: productFilters.price.min,
+          $lte: productFilters.price.max}}}});
+      }
+
+      // filter by weight
+      if (productFilters.weight) {
+        check(productFilters.weight, Object);
+        _.extend(selector, {variants: {$elemMatch: {weight: {$gte: productFilters.weight.min,
+          $lte: productFilters.weight.max}}}});
+      }
+
     }
 
     // products are always visible to owners
@@ -42,10 +82,11 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
       selector.isVisible = true;
     }
 
+    //ReactionCore.Log.info(EJSON.stringify(selector));
+
+    Counts.publish(this, 'Products', Products.find(selector), {noReady: true});
     return Products.find(selector, {
-      sort: {
-        title: 1
-      },
+      sort: sort,
       limit: limit
     });
   }

@@ -27,9 +27,8 @@
         "dashboard": "Dashboard",
         "print": "Print",
         "notFound": "This page was not found.",
-        "pageNotFound": "This page was not found.",
-        "productNotFound": "This product was not found."
-
+        "productNotFound": "This product was not found.",
+        "loadMoreProducts": "Load more products"
       },
       "shopSettings": {
         "general": "General",

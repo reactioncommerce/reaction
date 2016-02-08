@@ -70,8 +70,8 @@ reactioncommerce:reaction-social
 reactioncommerce:reaction-paymentmethod
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-stripe
-reactioncommerce:reaction-auth-net
-reactioncommerce:reaction-braintree
+# reactioncommerce:reaction-auth-net
+# reactioncommerce:reaction-braintree
 
 
 # Reaction Commerce Data
@@ -93,3 +93,7 @@ mdg:validation-error@0.4.0
 #meteortoys:allthings # developer tools
 #spiderable           # adds phantomjs, use ongoworks:spiderable with Docker
 #meteorhacks:sikka    # additional ddp, login security
+
+
+ramusus:reaction-flat-pages
+ramusus:reaction-filtration

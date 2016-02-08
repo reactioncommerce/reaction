@@ -3068,7 +3068,7 @@
       "loading": "loading",
       "notFound": "notFound",
       "unauthorized": "unauthorized",
-      "dashboardControls": "dashboardControls",
+      "dashboardControls": "filtrationDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
@@ -6241,7 +6241,7 @@
       "loading": "loading",
       "notFound": "notFound",
       "unauthorized": "unauthorized",
-      "dashboardControls": "dashboardControls",
+      "dashboardControls": "filtrationDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {

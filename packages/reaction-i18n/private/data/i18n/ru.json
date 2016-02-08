@@ -25,7 +25,10 @@
         "timezoneOptions": "Выберите часовой пояс",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "notFound": "Страница не найдена.",
+        "productNotFound": "Продукт не найден.",
+        "loadMoreProducts": "Загрузить больше продуктов"
       },
       "shopSettings": {
         "general": "Основные",
