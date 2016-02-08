@@ -322,9 +322,11 @@ Meteor.startup(function () {
  * createCountryCollection
  * Create a client-side only collection of Countries for a dropdown form
  * properly sorted*
- * @params {object} shop -  currentShop
+ * @param {Object} shop -  currentShop
+ * @returns {Array} countryOptions - Sorted array of countries
  */
 createCountryCollection = function (shop) {
+  check(shop, ReactionCore.Schemas.Shop);
   ReactionCore.Collections.Countries = new Mongo.Collection(null);
   const countryOptions = [];
   const countries = shop.locales.countries;
@@ -347,8 +349,9 @@ createCountryCollection = function (shop) {
     return 0;
   });
 
-  for (let country in countryOptions) {
+  for (let country of countryOptions) {
     ReactionCore.Collections.Countries.insert(countryOptions[country]);
   }
+  return countryOptions;
 };
 
