@@ -14,6 +14,12 @@ ReactionCore.Schemas.Themes = new SimpleSchema({
     optional: true
   },
 
+  layout: {
+    type: String,
+    optional: true,
+    defaultValue: "coreLayout"
+  },
+
   url: {
     type: String,
     optional: true
