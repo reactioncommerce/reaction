@@ -30,29 +30,30 @@ function cssToObject(styles) {
 
 function objectToCSS(styles) {
   const prefixedStyles = prefixer(styles);
-  return postcss().process(prefixedStyles, {parser: postcssJS})
+  return postcss().process(prefixedStyles, {parser: postcssJS});
 }
 
-function processStyles(styles) {
-  check(styles, Object);
+function processStyles(data) {
+  check(data, Object);
   this.unblock();
 
-  objectToCSS(styles)
+  objectToCSS(data.styles)
     .then((result) => {
-      ReactionCore.Collections.Themes.upsert({
-        name: "base"
+      ReactionCore.Collections.Themes.update({
+        "theme": data.theme.theme,
+        "stylesheets.name": data.stylesheet.name
       }, {
         $set: {
-          styles: result.css
+          "stylesheets.$.styles": result.css
         }
       });
     });
 }
 
-function registerTheme(stylesheet) {
-  check(stylesheet, String);
+function registerTheme(styles) {
+  check(styles, String);
 
-  const annotations = annotation.parse(stylesheet);
+  const annotations = annotation.parse(styles);
   const {
     name,
     theme
@@ -71,7 +72,7 @@ function registerTheme(stylesheet) {
       $set: {
         "stylesheets.$": {
           name,
-          stylesheet,
+          styles,
           annotations
         }
       }
@@ -86,7 +87,7 @@ function registerTheme(stylesheet) {
       $push: {
         stylesheets: {
           name,
-          stylesheet,
+          styles,
           annotations
         }
       }

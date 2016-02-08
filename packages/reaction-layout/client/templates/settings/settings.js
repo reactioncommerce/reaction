@@ -8,23 +8,24 @@ Template.reactionLayoutSettings.onCreated(function () {
 
   Meteor.subscribe("Themes");
 
-  this.annotationsBySelector = {}
+  this.annotationsBySelector = {};
   this.annotations = new ReactiveDict();
+  this.theme = {};
 
   this.autorun(() => {
-    const theme = ReactionCore.Collections.Themes.findOne({theme: "base"})
+    this.theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
 
-    if (theme) {
-      const styles =  theme.stylesheets[0].stylesheet;
+    if (this.theme) {
+      this.currentStylesheet = this.theme.stylesheets[0];
 
-      $("#reactionLayoutStyles").text(styles);
+      $("#reactionLayoutStyles").text(this.currentStylesheet.styles);
 
-      Meteor.call("layout/processAnnotations", styles, (error, result) => {
+      Meteor.call("layout/processAnnotations", this.currentStylesheet.styles, (error, result) => {
         if (result) {
           let annotations = {};
 
           for (let annotation of result) {
-            const {label, rule} = annotation
+            const {rule} = annotation;
 
             if (rule) {
               annotations[rule] = annotation;
@@ -32,12 +33,11 @@ Template.reactionLayoutSettings.onCreated(function () {
           }
 
           this.annotations.setDefault(annotations);
-          this.annotationsBySelector = annotations
+          this.annotationsBySelector = annotations;
         }
-      })
+      });
 
-
-      Meteor.call("layout/cssToObject", styles, (error, result) => {
+      Meteor.call("layout/cssToObject", this.currentStylesheet.styles, (error, result) => {
         if (result) {
           let selectors = [];
           this.styles = result;
@@ -68,7 +68,7 @@ Template.reactionLayoutSettings.helpers({
       label: selector
     };
 
-    return result
+    return result;
   },
 
   styles(selector) {
@@ -86,7 +86,7 @@ Template.reactionLayoutSettings.helpers({
 
   updateStyles() {
     return () => {
-    }
+    };
   }
 });
 
@@ -96,27 +96,32 @@ Template.reactionLayoutSettings.events({
 
     $(selector).css({
       boxShadow: "0 0 5px 2px #00dcdd"
-    })
+    });
   },
 
   "mouseout [data-rule]"(event) {
     const selector = event.currentTarget.dataset.selector;
     $(selector).css({
       boxShadow: "none"
-    })
+    });
   },
 
 
   "input input"(event, template) {
-
     const selector = $(event.target).closest("[data-selector]").data("selector");
     const property = event.target.name;
     const value = event.target.value;
 
     // Update style value
-    template.styles[selector][property] = value
+    template.styles[selector][property] = value;
 
-    Meteor.call("layout/processStyles", template.styles, (error, result) => {
+    const data = {
+      theme: template.theme,
+      stylesheet: template.currentStylesheet,
+      styles: template.styles
+    };
+
+    Meteor.call("layout/processStyles", data, (error, result) => {
       if (result) {
         // console.log(result);
       }

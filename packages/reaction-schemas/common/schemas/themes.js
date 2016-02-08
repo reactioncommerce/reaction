@@ -35,7 +35,7 @@ ReactionCore.Schemas.Themes = new SimpleSchema({
     unique: true
   },
 
-  "stylesheets.$.stylesheet": {
+  "stylesheets.$.styles": {
     type: String,
     optional: true
   },
