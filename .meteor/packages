@@ -28,6 +28,7 @@ check                   # argument validation utility
 underscore              # helper library underscore.js
 oauth-encryption        # oauth encryption for accounts
 audit-argument-checks   # ensure meteor method argument validation
+mdg:validated-method
 
 # Recommended Packages
 
