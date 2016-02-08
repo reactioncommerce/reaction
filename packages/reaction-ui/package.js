@@ -68,6 +68,9 @@ Package.onUse(function (api) {
   api.addFiles("client/components/metadata/metadata.jsx", "client");
   api.addFiles("client/components/metadata/metadata.less", "client");
 
+  api.addFiles("client/components/select/select.html", "client");
+  api.addFiles("client/components/select/select.js", "client");
+  api.addFiles("client/components/select/select.less", "client");
 
   api.addFiles("client/components/media/media.jsx", "client");
   api.addFiles("client/components/media/media.less", "client");
