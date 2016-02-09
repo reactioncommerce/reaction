@@ -1,7 +1,57 @@
 {
   "dependencies": {
+    "autoprefixer": {
+      "version": "6.3.1",
+      "dependencies": {
+        "postcss-value-parser": {
+          "version": "3.2.3"
+        },
+        "normalize-range": {
+          "version": "0.1.2"
+        },
+        "num2fraction": {
+          "version": "1.2.2"
+        },
+        "browserslist": {
+          "version": "1.1.2"
+        },
+        "caniuse-db": {
+          "version": "1.0.30000409"
+        }
+      }
+    },
     "classnames": {
       "version": "2.2.3"
+    },
+    "css-annotation": {
+      "version": "0.6.0"
+    },
+    "postcss": {
+      "version": "5.0.14",
+      "dependencies": {
+        "supports-color": {
+          "version": "3.1.2",
+          "dependencies": {
+            "has-flag": {
+              "version": "1.0.0"
+            }
+          }
+        },
+        "source-map": {
+          "version": "0.5.3"
+        },
+        "js-base64": {
+          "version": "2.1.9"
+        }
+      }
+    },
+    "postcss-js": {
+      "version": "0.1.1",
+      "dependencies": {
+        "camelcase-css": {
+          "version": "1.0.0"
+        }
+      }
     },
     "react": {
       "version": "0.14.7",

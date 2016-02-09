@@ -27,7 +27,7 @@ Package.onUse(function (api) {
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-ui@0.1.0");
+  api.use("reactioncommerce:reaction-ui@0.5.0");
   api.use("reactioncommerce:core-theme@2.0.1");
 
   // api.addFiles("client/components/components.jsx", "client");
@@ -45,8 +45,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/navbar/navbar.less", "client");
 
   // Add Assets for theme editor
-  api.addAssets("theme/navbar.css", "server");
-  api.addFiles("theme/theme.js", "server");
+  api.addAssets("private/themes/navbar.css", "server");
+
+  // Register Package
+  api.addFiles("server/register.js", "server");
 
   // api.addFiles("client/styles/base.less", "client");
 });

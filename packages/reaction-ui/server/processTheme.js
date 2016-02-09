@@ -103,5 +103,5 @@ Meteor.methods({
   "layout/registerTheme": registerTheme,
   "layout/processAnnotations": annotateCSS
 });
-
-ReactionCore.Themes.registerTheme = registerTheme
+console.log("Reacton UI", ReactionUI);
+ReactionUI.registerTheme = registerTheme;

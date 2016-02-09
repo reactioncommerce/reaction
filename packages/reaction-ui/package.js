@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.4.0",
+  version: "0.5.0",
   documentation: "README.md"
 });
 
@@ -9,7 +9,11 @@ Npm.depends({
   "classnames": "2.2.3",
   "react-textarea-autosize": "3.3.0",
   "sortablejs": "1.4.2",
-  "react-dom": "0.14.7"
+  "react-dom": "0.14.7",
+  "postcss": "5.0.14",
+  "postcss-js": "0.1.1",
+  "autoprefixer": "6.3.1",
+  "css-annotation": "0.6.0"
   // "react-anything-sortable": "1.0.0"
 });
 
@@ -31,6 +35,7 @@ Package.onUse(function (api) {
   api.use("check");
   api.use("react");
   api.use("less");
+  api.use("reactive-dict");
 
   // Community Packages
   api.use("cosmos:browserify@0.9.3");
@@ -39,6 +44,7 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-schemas@1.0.1");
 
+  api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");
 
   api.addFiles("client/styles/base.less", "client");
@@ -87,6 +93,18 @@ Package.onUse(function (api) {
   api.addFiles("client/styles/variables.less", "client");
   api.addFiles("client/styles/rtl.less", "client");
   api.addFiles("client/styles/mixins.less", "client");
+
+
+    api.addFiles("client/settings/settings.html", "client");
+    api.addFiles("client/settings/settings.js", "client");
+    api.addFiles("client/settings/settings.less", "client");
+
+
+  api.addAssets("private/themes/button.css", "server");
+
+  api.addFiles("server/processTheme.js", "server");
+  api.addFiles("server/register.js", "server");
+
   // Exports
   api.export("ReactionUI");
   api.export("Sortable");
