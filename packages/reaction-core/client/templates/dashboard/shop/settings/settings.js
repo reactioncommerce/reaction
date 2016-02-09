@@ -18,27 +18,7 @@ Template.shopSettings.helpers({
     return address[0];
   },
   countryOptions: function () {
-    const countries = ReactionCore.Collections.Shops.findOne().locales.countries;
-    const countryOptions = [];
-    for (let locale in countries) {
-      if ({}.hasOwnProperty.call(countries, locale)) {
-        let country = countries[locale];
-        countryOptions.push({
-          label: country.name,
-          value: locale
-        });
-      }
-    }
-    countryOptions.sort(function (a, b) {
-      if (a.label < b.label) {
-        return -1;
-      }
-      if (a.label > b.label) {
-        return 1;
-      }
-      return 0;
-    });
-    return countryOptions;
+    return ReactionCore.Collections.Countries.find().fetch();
   },
   currencyOptions: function () {
     const currencies = ReactionCore.Collections.Shops.findOne().currencies;
@@ -66,6 +46,24 @@ Template.shopSettings.helpers({
       });
     }
     return uomOptions;
+  },
+  paymentMethodOptions() {
+    const paymentMethods = ReactionCore.Apps({provides: "paymentMethod"});
+    const options = [{
+      label: "Auto",
+      value: "none"
+    }];
+
+    if (_.isArray(paymentMethods)) {
+      for (let method of paymentMethods) {
+        options.push({
+          label: method.name,
+          value: method.name
+        });
+      }
+    }
+
+    return options;
   }
 });
 

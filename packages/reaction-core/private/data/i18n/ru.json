@@ -6,6 +6,51 @@
       "languages": {
         "select": "Выбрать язык"
       },
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Панель управления",
+          "ordersLabel": "Заказы",
+          "addProductLabel": "Создать продукт",
+          "accountsLabel": "Пользователи"
+        },
+        "dashboard": {
+          "coreLabel": "Ядро",
+          "coreDescription": "Ядро Reaction Commerce",
+          "ordersLabel": "Заказы",
+          "ordersDescription": "Управление заказами",
+          "importLabel": "Импорт",
+          "importDescription": "Поддержка импорта и миграций",
+          "accountsLabel": "Пользователи",
+          "accountsDescription": "Управление правами пользователей",
+          "socialLabel": "Социальные сети",
+          "socialDescription": "Интеграция Reaction Commerce с соц. сетями",
+          "basicShippingLabel": "Доставка",
+          "basicShippingDescription": "Фиксированная ставка для расчета доставки",
+          "inventoryLabel": "Inventory",
+          "inventoryDescription": "Basic Inventory Management",
+          "analyticsLabel": "Аналитика",
+          "analyticsDescription": "Отслеживание событий и аналитика для Reaction Commerce",
+          "paypalLabel": "PayPal",
+          "paypalDescription": "PayPal платежи для Reaction Commerce",
+          "genericPaymentLabel": "Generic Payment",
+          "genericPaymentDescription": "Generic Payment Method"
+        },
+        "settings": {
+          "accountSettingsLabel": "Настройки входа",
+          "shopSettingsLabel": "Настройки магазина",
+          "socialSettingsLabel": "Настройки соц. сетей",
+          "shippingSettingsLabel": "Настройки доставки",
+          "inventorySettingsLabel": "Настройки Inventory",
+          "analyticsSettingsLabel": "Настройки аналитики",
+          "paypalSettingsLabel": "Настройки PayPal",
+          "genericPaymentSettingsLabel": "Настройки Generic Payment"
+        }
+      },
+      "accounts": {
+        "addMember": "Пригласить пользователя",
+        "shopMembers": "Пользователи",
+        "guests": "Гости"
+      },
       "app": {
         "save": "Сохранить",
         "saveAndContinue": "Сохранить и продолжить",
@@ -25,7 +70,8 @@
         "timezoneOptions": "Выберите часовой пояс",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "loadMoreProducts": "Загрузить больше продуктов"
       },
       "shopSettings": {
         "general": "Основные",

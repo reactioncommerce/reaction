@@ -1,10 +1,6 @@
 
-// .panelGarden {
-//     .display(flex);
-// }
-
 .panelGarden--2x {
-  > .panel {
+  >.panel {
     .flex(1 1 50%);
     max-width: 50%;
     marign: 2%;
@@ -49,6 +45,18 @@
   border-right: none;
   border-top: none;
   margin-bottom: 0;
+}
+
+
+.panel-group-accordian a.panel-heading.collapsed {
+  background: @white;
+}
+
+.panel-group-accordian a.panel-heading,
+.panel-group-accordian a.panel-heading:hover,
+.panel-group-accordian a.panel-heading:active {
+  text-decoration: none;
+  background: @black02;
 }
 
 .panel-heading-flex {

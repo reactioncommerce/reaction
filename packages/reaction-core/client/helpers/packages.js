@@ -46,7 +46,7 @@
  *  }]
  */
 
-Template.registerHelper("reactionApps", function (optionHash) {
+function getReactionApps(optionHash) {
   let fields;
   let filter;
   let key;
@@ -57,7 +57,7 @@ Template.registerHelper("reactionApps", function (optionHash) {
   let reactionPackages;
   let registryFilter;
 
-  let options = optionHash.hash; // _ref = options.hash;
+  let options = optionHash.hash || optionHash; // _ref = options.hash;
   let packageSubscription = ReactionCore.Subscriptions.Packages;
 
   // you could provide a shopId in optionHash
@@ -152,6 +152,9 @@ Template.registerHelper("reactionApps", function (optionHash) {
             if (match === Object.keys(registryFilter).length) {
               registry.name = app.name;
               if (registry.enabled !== false) {
+                let i18nKey = `admin.${registry.provides}.${registry.label.toCamelCase()}`;
+                registry.i18nKeyLabel = `${i18nKey}Label`;
+                registry.i18nKeyDescription = `${i18nKey}Description`;
                 registry.enabled = registry.enabled || app.enabled;
                 registry.packageId = app._id;
                 reactionApps.push(registry);
@@ -177,4 +180,10 @@ Template.registerHelper("reactionApps", function (optionHash) {
 
     return reactionApps;
   }
-});
+}
+
+// Export
+ReactionCore.Apps = getReactionApps;
+
+// Register global template helper
+Template.registerHelper("reactionApps", getReactionApps);

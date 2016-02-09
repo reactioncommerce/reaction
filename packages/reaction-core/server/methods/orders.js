@@ -542,7 +542,7 @@ Meteor.methods({
               }
             });
           } else {
-            ReactionCore.Log.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error.stack);
+            ReactionCore.Log.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
 
             ReactionCore.Collections.Orders.update({
               "_id": orderId,
