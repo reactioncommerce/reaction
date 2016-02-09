@@ -123,31 +123,15 @@ Template.productSettingsListItem.inheritsHelpersFrom("productSettingsGridItem");
  */
 
 Template.productSettings.events({
+  "click [data-event-action=publishProduct]": function () {
+    publishProduct(this.products);
+  },
+  "click [data-event-action=cloneProduct]": function () {
+    cloneProduct(this.products);
+  },
   "click [data-event-action=deleteProduct]": function () {
     maybeDeleteProduct(this.products);
   },
-  "click [data-event-action=cloneProduct]": function () {
-    let title;
-    title = this.title;
-
-    return Meteor.call("products/cloneProduct", this.products, function (error,
-      productId) {
-      if (error) {
-        throw new Meteor.Error("error cloning product", error);
-      }
-      // Router.go("product", {
-      //   _id: productId
-      // });
-      return Alerts.add("Cloned " + title, "success", {
-        placement: "productManagement",
-        id: productId,
-        i18nKey: "productDetail.cloneMsg",
-        autoHide: true,
-        dismissable: false
-      });
-    });
-  },
-
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
 
@@ -166,40 +150,5 @@ Template.productSettings.events({
           weightDependency.changed();
         });
     }
-  },
-
-  "click [data-event-action=publishProduct]": function () {
-    function callback(error, result) {
-      if (error) {
-        Alerts.add(error, "danger", {
-          placement: "productGridItem",
-          id: product._id
-        });
-        return {};
-      }
-      if (result === true) {
-        return Alerts.add(self.title + " is now visible", "success", {
-          placement: "productGridItem",
-          type: product._id,
-          id: product._id,
-          i18nKey: "productDetail.publishProductVisible",
-          autoHide: true,
-          dismissable: false
-        });
-      }
-      return Alerts.add(self.title + " is hidden", "warning", {
-        placement: "productGridItem",
-        type: product._id,
-        id: product._id,
-        i18nKey: "productDetail.publishProductHidden",
-        autoHide: true,
-        dismissable: false
-      });
-    };
-
-    for (product of this.products) {
-      Meteor.call("products/publishProduct", product._id, callback);
-    }
   }
-
 });

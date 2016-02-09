@@ -24,8 +24,7 @@ function loadMoreProducts() {
     if (target.offset().top < threshold) {
       if (!target.data("visible")) {
         target.data("productScrollLimit", true);
-        Session.set("productScrollLimit",
-          Session.get("productScrollLimit") + ITEMS_INCREMENT || 10);
+        Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 10);
       }
     } else {
       if (target.data("visible")) {
@@ -55,13 +54,10 @@ Template.productGrid.onRendered(() => {
 });
 
 Template.productGrid.events({
-
   "click [data-event-action=loadMoreProducts]": (event) => {
     event.preventDefault();
-
     loadMoreProducts();
   },
-
   "change input[name=selectProduct]": (event) => {
     let selectedProducts = Session.get("productGrid/selectedProducts");
 
@@ -90,10 +86,8 @@ Template.productGrid.events({
 });
 
 Template.productGrid.helpers({
-  productScrollLimit: function () {
-    // if count less rows than we asked for, we've got all the rows in the collection.
-    return !(ReactionCore.Collections.Products.find().count() < Session.get(
-      "productScrollLimit"));
+  loadMoreProducts: function () {
+    return ReactionCore.Collections.Products.find().count() >= Session.get("productScrollLimit");
   },
   products: function () {
     /*
@@ -101,10 +95,6 @@ Template.productGrid.helpers({
      * then resort using positions.position for this tag
      * retaining natural sort of untouched items
      */
-    let hashtags;
-    let newRelatedTags;
-    let position;
-    let relatedTags;
 
     // function to compare and sort position
     function compare(a, b) {
@@ -123,34 +113,14 @@ Template.productGrid.helpers({
       return a.position.position - b.position.position;
     }
 
-    let tag = this.tag || this._id || "";
-    let selector = {};
-
-    if (tag) {
-      hashtags = [];
-      relatedTags = [tag];
-      while (relatedTags.length) {
-        newRelatedTags = [];
-        for (let relatedTag of relatedTags) {
-          if (hashtags.indexOf(relatedTag._id) === -1) {
-            hashtags.push(relatedTag._id);
-          }
-        }
-        relatedTags = newRelatedTags;
-      }
-      selector.hashtags = {
-        $in: hashtags
-      };
-    }
-
-    let gridProducts = ReactionCore.Collections.Products.find(selector).fetch();
+    let gridProducts = ReactionCore.Collections.Products.find({}).fetch();
 
     for (let index in gridProducts) {
       if ({}.hasOwnProperty.call(gridProducts, index)) {
         let gridProduct = gridProducts[index];
         if (gridProduct.positions) {
           let _results = [];
-          for (position of gridProduct.positions) {
+          for (let position of gridProduct.positions) {
             if (position.tag === ReactionCore.getCurrentTag()) {
               _results.push(position);
             }
