@@ -75,7 +75,7 @@ this.getProductsByTag = function (tag) {
  * publishProduct
  * @summary product publishing and alert
  * @param {Object} productOrArray - product Object
- * @returns {Object} - returns nothing, and alerts, happen here
+ * @returns {undefined} - returns nothing, and alerts, happen here
  */
 publishProduct = function (productOrArray) {
   const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
@@ -84,24 +84,19 @@ publishProduct = function (productOrArray) {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",
-          id: self._id
+          id: product._id,
         });
-        return {};
       }
+      const alertSettings = {
+        placement: "productGridItem",
+        id: product._id,
+        autoHide: true,
+        dismissable: false
+      };
       if (result === true) {
-        return Alerts.add(product.title + " " + i18n.t("productDetail.publishProductVisible"), "success", {
-          placement: "productGridItem",
-          id: product._id,
-          autoHide: true,
-          dismissable: false
-        });
+        Alerts.add(product.title + " " + i18n.t("productDetail.publishProductVisible"), "success", alertSettings);
       } else {
-        return Alerts.add(product.title + " " + i18n.t("productDetail.publishProductHidden"), "warning", {
-          placement: "productGridItem",
-          id: product._id,
-          autoHide: true,
-          dismissable: false
-        });
+        Alerts.add(product.title + " " + i18n.t("productDetail.publishProductHidden"), "warning", alertSettings);
       }
     });
   }
@@ -111,7 +106,7 @@ publishProduct = function (productOrArray) {
  * cloneProduct
  * @summary product cloning and alert
  * @param {Object} productOrArray - product Object
- * @returns {Object} - returns nothing, and alerts, happen here
+ * @returns {undefined} - returns nothing, and alerts, happen here
  */
 cloneProduct = function (productOrArray) {
   const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
@@ -139,7 +134,7 @@ cloneProduct = function (productOrArray) {
  * maybeDeleteProduct
  * @summary confirm product deletion, delete, and alert
  * @param {Object} productOrArray - product Object
- * @returns {Object} - returns nothing, and alerts, happen here
+ * @returns {undefined} - returns nothing, and alerts, happen here
  */
 maybeDeleteProduct = function (productOrArray) {
   const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
@@ -155,7 +150,7 @@ maybeDeleteProduct = function (productOrArray) {
   }
 
   if (confirm(confirmTitle)) {
-    return Meteor.call("products/deleteProduct", productIds, function (error, result) {
+    Meteor.call("products/deleteProduct", productIds, function (error, result) {
       if (error || !result) {
         Alerts.add("There was an error deleting " + title, "danger", {
           i18nKey: "productDetail.productDeleteError"
