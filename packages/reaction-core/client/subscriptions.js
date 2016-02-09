@@ -26,7 +26,7 @@ Tracker.autorun(function () {
   if (typeof Session.get("sessionId") !== "string") {
     Session.set("sessionId", amplify.store("ReactionCore.session"));
   }
-  ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions",
+  ReactionCore.Subscriptions.Sessions = ReactionSubscriptions.subscribe("Sessions",
     Session.get("sessionId"));
 });
 
@@ -37,7 +37,7 @@ Tracker.autorun(() => {
   Tracker.nonreactive(() => {
     sessionId = Session.get("sessionId");
   });
-  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
+  ReactionCore.Subscriptions.Cart = ReactionSubscriptions.subscribe("Cart",
     sessionId,
     Meteor.userId()
   );
@@ -46,12 +46,14 @@ Tracker.autorun(() => {
 /**
  * General Subscriptions
  */
-ReactionCore.Subscriptions.Packages = Meteor.subscribe("Packages");
+ReactionCore.Subscriptions.Shops = Meteor.subscribe("Shops");
 
-ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
+ReactionCore.Subscriptions.Packages = ReactionSubscriptions.subscribe("Packages");
 
-ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
+ReactionCore.Subscriptions.Tags = ReactionSubscriptions.subscribe("Tags");
+
+ReactionCore.Subscriptions.Media = ReactionSubscriptions.subscribe("Media");
 
 // admin only
 // todo should we put this inside autorun and detect user changes
-ReactionCore.Subscriptions.Inventory = Meteor.subscribe("Inventory");
+ReactionCore.Subscriptions.Inventory = ReactionSubscriptions.subscribe("Inventory");

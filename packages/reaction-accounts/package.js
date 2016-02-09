@@ -31,8 +31,8 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
   api.use("oauth-encryption");
-  api.use("accounts-base");
-  api.use("accounts-password");
+  api.use("accounts-base@1.2.2");
+  api.use("accounts-password@1.1.4");
   api.use("jparker:gravatar@0.4.1");
   api.use("reactioncommerce:core@0.12.0");
 

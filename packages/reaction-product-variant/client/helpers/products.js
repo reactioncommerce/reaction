@@ -12,7 +12,7 @@ ReactionProduct = new ReactiveDict("currentProduct");
 Tracker.autorun(function () {
   ReactionRouter.watchPathChange();
   if (ReactionRouter.getParam("handle")) {
-    const prodSub = ReactionSubMan.subscribe("Product", ReactionRouter.getParam("handle"));
+    const prodSub = ReactionSubscriptions.subscribe("Product", ReactionRouter.getParam("handle"));
     if (prodSub.ready()) {
       return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variantId"));
     }

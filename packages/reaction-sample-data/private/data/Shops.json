@@ -3068,6 +3068,7 @@
       "loading": "loading",
       "notFound": "notFound",
       "unauthorized": "unauthorized",
+      "dashboardHeader": "",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
@@ -3083,6 +3084,7 @@
       "loading": "loading",
       "notFound": "productNotFound",
       "unauthorized": "unauthorized",
+      "dashboardHeader": "",
       "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }

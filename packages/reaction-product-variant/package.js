@@ -93,25 +93,3 @@ Package.onUse(function (api) {
   api.export("currentProduct", ["client", "server"]);
   api.export("ReactionProduct");
 });
-
-//
-// Package.onTest(function (api) {
-//   api.use("underscore");
-//   api.use("random");
-//   api.use("sanjo:jasmine@0.21.0");
-//   api.use("velocity:html-reporter@0.9.1");
-//   api.use("velocity:console-reporter@0.1.4");
-//
-//   api.use("accounts-base");
-//   api.use("accounts-password");
-//
-//   // reaction core
-//   api.use("reactioncommerce:reaction-collections@1.0.5");
-//   api.use("reactioncommerce:reaction-factories@0.3.7");
-//   api.use("reactioncommerce:core@0.12.0");
-//
-//   // server integration tests
-//   api.addFiles("tests/jasmine/server/integration/products.js", "server");
-//
-//   api.export("faker", ["server"]);
-// });

@@ -7,13 +7,12 @@ _.extend(ReactionCore, {
   init: function () {
     let self;
     self = this;
+    // keep an eye out for shop change
     return Tracker.autorun(function () {
       let domain;
       let shop;
-      let shopHandle;
-      // keep an eye out for shop change
-      shopHandle = Meteor.subscribe("Shops");
-      if (shopHandle.ready()) {
+      // for clarity this subscription is defined in subscriptions.js
+      if (ReactionCore.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
         shop = ReactionCore.Collections.Shops.findOne({
           domains: domain
@@ -39,16 +38,15 @@ _.extend(ReactionCore, {
           Locale.shopCurrency = shop.currencies[shop.currency];
           localeDep.changed();
         }
-        //
-        // Initialize Package routes
-        //
-        ReactionRouter.registerPackageLayouts();
         return self;
       }
     });
   },
   /**
-   * hasPermission - client permissions checks
+   * hasPermission
+   * client permissions checks
+   * hasPermission exists on both the server and the client.
+   *
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} checkUserId - userId, defaults to Meteor.userId()
    * @param {String} group - default to shopId
@@ -199,14 +197,14 @@ _.extend(ReactionCore, {
       route: 1,
       name: 1
     });
-
+    // valid application
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
         return item.provides === provides && item.route === routeName;
       });
       return settingsData;
     }
-
+    ReactionCore.Log.warn("reactionApp not found", routeName, routeProvides);
     return null;
   }
 

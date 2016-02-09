@@ -20,10 +20,11 @@ Package.onUse(function (api) {
   api.use("cfs:filesystem@0.1.2");
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
-  api.use("vsivsi:job-collection@1.2.3");
+  api.use("vsivsi:job-collection@1.3.0");
   api.use("ongoworks:security@1.3.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
-  api.use("alanning:roles@1.2.13");
+  api.use("alanning:roles@1.2.14");
+  api.use("meteorhacks:subs-manager@1.6.3");
 
   // ReactionCore declaration
   api.addFiles("common/globals.js");
@@ -63,9 +64,12 @@ Package.onUse(function (api) {
   api.imply("vsivsi:job-collection");
   api.imply("ongoworks:security");
   api.imply("alanning:roles");
+  api.imply("alanning:roles");
+  api.imply("meteorhacks:subs-manager");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");
+  api.export("ReactionSubscriptions");
   api.export("getSlug");
 });
 

@@ -125,8 +125,6 @@ Accounts.onLogin(function (opts) {
     // debug info
     ReactionCore.Log.debug("removed anonymous role from user: " +
       options.user._id);
-    // register users package
-    ReactionRouter.registerPackageLayouts();
 
     // do not call `cart/mergeCart` on methodName === `createUser`, because
     // in this case `cart/mergeCart` calls from cart publication

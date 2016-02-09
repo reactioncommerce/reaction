@@ -19,7 +19,7 @@ ReactionCore.registerPackage({
     },
     {
       label: "Shipping Settings",
-      route: "dashboard/shipping",
+      route: "dashboard/shipping/settings",
       provides: "settings",
       group: "reaction-shipping",
       template: "shippingProviderTable"
