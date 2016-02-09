@@ -70,7 +70,8 @@
         "timezoneOptions": "Choose timezone",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "loadMoreProducts": "Load more products"
       },
       "shopSettings": {
         "general": "General",

@@ -70,7 +70,8 @@
         "timezoneOptions": "Выберите часовой пояс",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "loadMoreProducts": "Загрузить больше продуктов"
       },
       "shopSettings": {
         "general": "Основные",
