@@ -72,48 +72,96 @@ this.getProductsByTag = function (tag) {
 };
 
 /**
- * maybeDeleteProduct
- * @summary confirm product deletion, delete, and alert
- * @todo - refactor this back into templates. this is bad.
- * @param {Object} product - product Object
- * @return {Object} - returns nothing, and alerts,happen here
+ * publishProduct
+ * @summary product publishing and alert
+ * @param {Object} productOrArray - product Object
+ * @returns {undefined} - returns nothing, and alerts, happen here
  */
-this.maybeDeleteProduct = function (product) {
-  let productIds;
-  let title;
-  let confirmTitle = "Delete this product?";
+publishProduct = function (productOrArray) {
+  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
+  for (let product of products) {
+    Meteor.call("products/publishProduct", product._id, function (error, result) {
+      if (error) {
+        Alerts.add(error, "danger", {
+          placement: "productGridItem",
+          id: product._id
+        });
+      }
+      const alertSettings = {
+        placement: "productGridItem",
+        id: product._id,
+        autoHide: true,
+        dismissable: false
+      };
+      if (result === true) {
+        Alerts.add(product.title + " " + i18n.t("productDetail.publishProductVisible"), "success", alertSettings);
+      } else {
+        Alerts.add(product.title + " " + i18n.t("productDetail.publishProductHidden"), "warning", alertSettings);
+      }
+    });
+  }
+};
 
-  if (_.isArray(product)) {
-    if (product.length === 1) {
-      title = product[0].title || "the product";
-      productIds = [product[0]._id];
-    } else {
-      title = "the selected products";
-      confirmTitle = "Delete selected products?";
+/**
+ * cloneProduct
+ * @summary product cloning and alert
+ * @param {Object} productOrArray - product Object
+ * @returns {undefined} - returns nothing, and alerts, happen here
+ */
+cloneProduct = function (productOrArray) {
+  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
 
-      productIds = _.map(product, (item) => {
-        return item._id;
+  return Meteor.call("products/cloneProduct", products, function (error) {
+    if (error) {
+      throw new Meteor.Error("error cloning product", error);
+    }
+    for (let product of products) {
+      Alerts.add(i18n.t("productDetail.clonedAlert") + " " + product.title, "success", {
+        placement: "productGridItem",
+        id: product._id,
+        autoHide: true,
+        dismissable: false
       });
     }
+    if (!_.isArray(productOrArray)) {
+      Router.go("product", {
+        _id: productOrArray._id
+      });
+    }
+  });
+};
+/**
+ * maybeDeleteProduct
+ * @summary confirm product deletion, delete, and alert
+ * @param {Object} productOrArray - product Object
+ * @returns {undefined} - returns nothing, and alerts, happen here
+ */
+maybeDeleteProduct = function (productOrArray) {
+  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
+  const productIds = _.map(products, product => product._id);
+  let title;
+  let confirmTitle;
+  if (products.length === 1) {
+    title = products[0].title || "the product";
+    confirmTitle = "Delete this product?";
   } else {
-    title = product.title || "the product";
-    productIds = [product._id];
+    title = "the selected products";
+    confirmTitle = "Delete selected products?";
   }
 
   if (confirm(confirmTitle)) {
-    return Meteor.call("products/deleteProduct", productIds, function (error, result) {
-      let id = "product";
+    Meteor.call("products/deleteProduct", productIds, function (error, result) {
       if (error || !result) {
         Alerts.add("There was an error deleting " + title, "danger", {
-          type: "prod-delete-" + id,
           i18nKey: "productDetail.productDeleteError"
         });
-        throw new Meteor.Error("Error deleting product " + id, error);
+        throw new Meteor.Error("Error deleting " + title, error);
       } else {
         setCurrentProduct(null);
         Router.go("/");
-        return Alerts.add("Deleted " + title, "info", {
-          type: "prod-delete-" + id
+        return Alerts.add(i18n.t("productDetail.deletedAlert") + " " + title, "info", {
+          autoHide: true,
+          dismissable: false
         });
       }
     });

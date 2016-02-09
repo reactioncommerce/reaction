@@ -132,25 +132,11 @@ Template.productGridItems.events({
     Session.set("productGrid/selectedProducts", []);
     $checkbox.prop("checked", true).trigger("change");
   },
+  "click .publish-product": function () {
+    publishProduct(this);
+  },
   "click .clone-product": function () {
-    let title;
-    title = this.title;
-    return Meteor.call("products/cloneProduct", this, function (error,
-      productId) {
-      if (error) {
-        throw new Meteor.Error("error cloning product", error);
-      }
-      Router.go("product", {
-        _id: productId
-      });
-      return Alerts.add("Cloned " + title, "success", {
-        placement: "productManagement",
-        id: productId,
-        i18nKey: "productDetail.cloneMsg",
-        autoHide: true,
-        dismissable: false
-      });
-    });
+    cloneProduct(this);
   },
   "click .delete-product": function (event) {
     event.preventDefault();
@@ -190,43 +176,8 @@ Template.productGridItems.events({
     };
     Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
-  },
-  "click .publish-product": function () {
-    let self;
-    self = this;
-    return Meteor.call("products/publishProduct", this._id, function (
-      error, result) {
-      if (error) {
-        Alerts.add(error, "danger", {
-          placement: "productGridItem",
-          id: self._id
-        });
-        return {};
-      }
-      if (result === true) {
-        return Alerts.add(self.title + " is now visible", "success", {
-          placement: "productGridItem",
-          type: self._id,
-          id: self._id,
-          i18nKey: "productDetail.publishProductVisible",
-          autoHide: true,
-          dismissable: false
-        });
-      }
-      return Alerts.add(self.title + " is hidden", "warning", {
-        placement: "productGridItem",
-        type: self._id,
-        id: self._id,
-        i18nKey: "productDetail.publishProductHidden",
-        autoHide: true,
-        dismissable: false
-      });
-    });
   }
 });
-
-
-
 
 Template.productGridItems.onRendered(function () {
   if (ReactionCore.hasPermission("createProduct")) {
