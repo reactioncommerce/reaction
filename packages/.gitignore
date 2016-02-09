@@ -26,6 +26,7 @@
 !reaction-i18n
 !reaction-layout
 !reaction-dashboard
+!reaction-orders
 
 # For some reason the above inverse ignore rules don't play well with some
 # editors, so we also add inverse ignore rules for their subdirectories.
@@ -53,3 +54,4 @@
 !reaction-i18n/*
 !reaction-layout/*
 !reaction-dashboard/*
+!reaction-orders/*

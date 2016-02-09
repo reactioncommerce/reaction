@@ -74,4 +74,7 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/cart/checkout/addressBook/addressBook.html", "client");
   api.addFiles("client/templates/cart/checkout/addressBook/addressBook.js", "client");
+
+  // register package
+  api.addFiles("server/register.js", "server");
 });

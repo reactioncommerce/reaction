@@ -185,8 +185,10 @@ _.extend(ReactionCore, {
     }
   },
   getRegistryForCurrentRoute: function (routeProvides) {
-    let provides = "dashboard" || routeProvides;
-    let routeName = ReactionRouter.getRouteName();
+    const provides = "dashboard" || routeProvides;
+    const currentRoute = ReactionRouter.current();
+    const routeName = currentRoute.route.path.replace("/", "");
+
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
       "registry.provides": provides,
@@ -204,7 +206,7 @@ _.extend(ReactionCore, {
       });
       return settingsData;
     }
-    ReactionCore.Log.warn("reactionApp not found", routeName, routeProvides);
+    ReactionCore.Log.debug("getRegistryForCurrentRoute not found", routeName, routeProvides);
     return null;
   }
 

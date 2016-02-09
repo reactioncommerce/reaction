@@ -17,20 +17,24 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
   const defaultRoles = ["owner", "admin", "dashboard", pkgName];
   const globalRoles = defaultRoles;
   // each registry define
-  for (let registryItem of registry) {
-    // default is that packages don't need to define specific
-    // permissions to routes.
-    if (registryItem.route && registryItem.template) {
-      defaultRoles.push(pkgName + "/" + registryItem.provides);
-      defaultRoles.push(registryItem.route);
-    }
-    // Get all defined permissions, add them to an array
-    // define permissions if you need to check custom permission
-    if (registryItem.permissions) {
-      for (let permission of registryItem.permissions) {
-        defaultRoles.push(permission.permission);
+  if (registry) {
+    for (let registryItem of registry) {
+      // default is that packages don't need to define specific
+      // permissions to routes.
+      if (registryItem.route && registryItem.template) {
+        defaultRoles.push(pkgName + "/" + registryItem.provides);
+        defaultRoles.push(registryItem.route);
+      }
+      // Get all defined permissions, add them to an array
+      // define permissions if you need to check custom permission
+      if (registryItem.permissions) {
+        for (let permission of registryItem.permissions) {
+          defaultRoles.push(permission.permission);
+        }
       }
     }
+  } else {
+    ReactionCore.Log.info(`No routes loaded for ${pkgName}`);
   }
   // only unique roles
   const defaultOwnerRoles = _.uniq(defaultRoles);
