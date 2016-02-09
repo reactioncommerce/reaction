@@ -6,6 +6,51 @@
       "languages": {
         "select": "Select Language"
       },
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Dashboard",
+          "ordersLabel": "Orders",
+          "addProductLabel": "Add Product",
+          "accountsLabel": "Accounts"
+        },
+        "dashboard": {
+          "coreLabel": "Core",
+          "coreDescription": "Reaction Commerce Core",
+          "ordersLabel": "Orders",
+          "ordersDescription": "Fulfill your orders",
+          "importLabel": "Import",
+          "importDescription": "Support for imports and migrations",
+          "accountsLabel": "Accounts",
+          "accountsDescription": "Manage how members sign into your shop",
+          "socialLabel": "Social",
+          "socialDescription": "Social Sharing for Reaction Commerce",
+          "basicShippingLabel": "Basic Shipping",
+          "basicShippingDescription": "Use flat rates for shipping calculations",
+          "inventoryLabel": "Inventory",
+          "inventoryDescription": "Basic Inventory Management",
+          "analyticsLabel": "Analytics",
+          "analyticsDescription": "Event tracking and analytics with Reaction Commerce",
+          "paypalLabel": "PayPal",
+          "paypalDescription": "PayPal Payment for Reaction Commerce",
+          "genericPaymentLabel": "Generic Payment",
+          "genericPaymentDescription": "Generic Payment Method"
+        },
+        "settings": {
+          "accountSettingsLabel": "Account Settings",
+          "shopSettingsLabel": "Shop Settings",
+          "socialSettingsLabel": "Social Settings",
+          "shippingSettingsLabel": "Shipping Settings",
+          "inventorySettingsLabel": "Inventory Settings",
+          "analyticsSettingsLabel": "Analytics Settings",
+          "paypalSettingsLabel": "PayPal Settings",
+          "genericPaymentSettingsLabel": "Generic Payment Settings"
+        }
+      },
+      "accounts": {
+        "addMember": "Add Member",
+        "shopMembers": "Shop Members",
+        "guests": "Guests"
+      },
       "app": {
         "save": "Save",
         "saveAndContinue": "Save and continue",

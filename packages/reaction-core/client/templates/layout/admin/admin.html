@@ -11,34 +11,27 @@
     <footer class="reaction-navigation-footer footer-default">{{>yield region="layoutFooter"}}</footer>
   </div>
 
-
   <div class="admin-controls {{adminControlsClassname}}">
-      <div class="admin-controls-detail">
-        <div class="admin-controls-heading">
-          {{> settingsHeader}}
-        </div>
-        <div class="admin-controls-content action-view-body">
-          {{> Template.dynamic template=template.template data=template.data}}
-        </div>
-        <div class="admin-controls-footer">
-          <div class="admin-controls-container">
-            {{>yield region="adminControlsFooter"}}
-          </div>
+    <div class="admin-controls-detail">
+      <div class="admin-controls-heading">
+        {{> settingsHeader}}
+      </div>
+      <div class="admin-controls-content action-view-body">
+        {{> Template.dynamic template=template.template data=template.data}}
+      </div>
+      <div class="admin-controls-footer">
+        <div class="admin-controls-container">
+          {{>yield region="adminControlsFooter"}}
         </div>
       </div>
-
-
+    </div>
   </div>
 
   <div class="admin-controls-menu">
     <nav class="admin-controls-quicklinks">
-      <!-- <a href="/dashboard" class="primary">
-        <img src="/resources/reaction-logo.svg" width="32">
-        <span>Dashboard</span>
-      </a> -->
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
-          <button id="{{route}}" title="{{label}}">
+          <button id="{{route}}" title="{{i18n i18nKeyLabel label}}">
             <div class="contents">
               <div class="icon">
                 {{#if isDashboard route}}
@@ -47,7 +40,7 @@
                   <i class="{{icon}}"></i>
                 {{/if}}
               </div>
-              <div class="icon-text">
+              <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
                 {{label}}
               </div>
             </div>
@@ -57,12 +50,11 @@
     </nav>
     <nav>
       {{> yield "dashboardControls"}}
-
       {{#if settings}}
         {{#with settings}}
-          <button id="{{route}}" title="{{label}}" data-event-action="showPackageSettings">
+          <button id="{{route}}" title="{{i18n i18nKeyLabel label}}" data-event-action="showPackageSettings">
             <i class="fa fa-gear"></i>
-            <span class="icon-text">
+            <span class="icon-text" data-i18n="{{i18nKeyLabel}}">
               {{label}}
             </span>
           </button>
@@ -70,5 +62,4 @@
       {{/if}}
     </nav>
   </div>
-
 </template>
