@@ -84,7 +84,7 @@ publishProduct = function (productOrArray) {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",
-          id: product._id,
+          id: product._id
         });
       }
       const alertSettings = {
