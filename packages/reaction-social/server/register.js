@@ -38,8 +38,7 @@ ReactionCore.registerPackage({
     container: "dashboard",
     permissions: [{
       label: "Social",
-      permission: "dashboard/social",
-      group: "Shop Settings"
+      permission: "dashboard/social"
     }]
   }, {
     label: "Social Settings",

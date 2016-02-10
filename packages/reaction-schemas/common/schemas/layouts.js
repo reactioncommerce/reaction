@@ -18,6 +18,19 @@
  *   "adminControlsFooter": "adminControlsFooter"
  */
 
+/**
+ * Permissions Schema
+ */
+
+ReactionCore.Schemas.Audience = new SimpleSchema({
+  permission: {
+    type: String
+  },
+  label: {
+    type: String
+  }
+});
+
 ReactionCore.Schemas.LayoutStructure = new SimpleSchema({
   template: {
     type: String,
@@ -60,51 +73,50 @@ ReactionCore.Schemas.LayoutStructure = new SimpleSchema({
   }
 });
 
-
 ReactionCore.Schemas.Layout = new SimpleSchema({
-  "layout": {
+  layout: {
     type: String,
     optional: true,
     index: true
   },
-  "workflow": {
+  workflow: {
     type: String,
     optional: true
   },
-  "collection": {
+  collection: {
     type: String,
     optional: true
   },
-  "theme": {
+  theme: {
     type: String,
     optional: true
   },
-  "enabled": {
+  enabled: {
     type: Boolean,
     defaultValue: true
   },
-  "status": {
+  status: {
     type: String,
     optional: true
   },
-  "label": {
+  label: {
     type: String,
     optional: true
   },
-  "audience": {
-    type: [ReactionCore.Schemas.Permissions],
+  audience: {
+    type: [ReactionCore.Schemas.Audience],
     optional: true
   },
-  "structure": {
+  structure: {
     type: ReactionCore.Schemas.LayoutStructure,
     optional: true
   },
-  "priority": {
+  priority: {
     type: String,
     optional: true,
     defaultValue: 1
   },
-  "position": {
+  position: {
     type: String,
     optional: true,
     defaultValue: 1

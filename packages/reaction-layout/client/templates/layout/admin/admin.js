@@ -95,7 +95,6 @@ Template.coreAdminLayout.helpers({
 Template.coreAdminLayout.events({
 
   "click [data-event-action=toggleEditMode]"() {
-    console.log("poop");
     if (Session.equals("reaction/editModeEnabled", true)) {
       Session.set("reaction/editModeEnabled", false);
     } else {

@@ -14,11 +14,12 @@
  */
 
 ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
-  const defaultRoles = ["owner", "admin", "dashboard", "guest", pkgName];
+  const defaultRoles = ["owner", "admin", "createProduct", "guest", pkgName];
   const globalRoles = defaultRoles;
-  // each registry define
+
   if (registry) {
-    for (let registryItem in registry) {
+      // for each registry item define and push roles
+    for (let registryItem of registry) {
       // default is that packages don't need to define specific
       // permissions to routes.
       if (registryItem.route && registryItem.template && registryItem.provides) {

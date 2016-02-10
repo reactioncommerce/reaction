@@ -1,3 +1,21 @@
+/**
+* Permissions Schema
+*/
+
+ReactionCore.Schemas.Permissions = new SimpleSchema({
+  permission: {
+    type: String
+  },
+  label: {
+    type: String
+  }
+});
+
+/**
+* Permissions Registry
+* the registry entries in the Package registry
+*/
+
 ReactionCore.Schemas.Registry = new SimpleSchema({
   provides: {
     type: String,
@@ -41,18 +59,7 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
     optional: true
   }
 });
-/**
-* Permissions Schema
-*/
 
-ReactionCore.Schemas.Permissions = new SimpleSchema({
-  permission: {
-    type: String
-  },
-  label: {
-    type: String
-  }
-});
 
 /**
  * workflow schema for attaching to collection where

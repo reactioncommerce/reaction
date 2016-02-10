@@ -32,8 +32,9 @@ _.extend(ReactionCore, {
 
     let shopId = group || this.getShopId();
     let permissions = [];
-    // testing: don't have Meteor.userId() on server as this should work for publications as well
-    let userId = checkUserId || this.userId;
+    // Meteor.userId not be allowed in publications
+    // could present an issue if called from a publication
+    let userId = checkUserId || this.userId || Meteor.userId();
 
     // permissions can be either a string or an array
     // we'll force it into an array so we can add admin roles

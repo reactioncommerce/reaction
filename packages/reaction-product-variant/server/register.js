@@ -3,21 +3,18 @@ ReactionCore.registerPackage({
   name: "reaction-product-variant",
   icon: "fa fa-cubes",
   autoEnable: true,
-  settings: {
-    name: "Products"
-  },
-  registry: {
-    route: "createProduct",
+  registry: [{
+    route: "products/createProduct",
     label: "Add Product",
     icon: "fa fa-plus",
     template: "productDetail",
     provides: "shortcut",
+    priority: 1,
     permissions: [{
       label: "Create Product",
-      permission: "createProduct",
-      group: "Shop Settings"
+      permission: "createProduct"
     }]
-  },
+  }],
   layout: [{
     layout: "coreLayout",
     workflow: "coreProductWorkflow",

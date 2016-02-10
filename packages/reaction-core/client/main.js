@@ -56,7 +56,7 @@ _.extend(ReactionCore, {
     check(checkPermissions, Match.OneOf(String, Array));
     // use current user if userId if not provided
     let userId = checkUserId || this.userId || Meteor.userId();
-    let shopId = group || this.getShopId();
+    let shopId = group || ReactionCore.getShopId();
     let permissions = [];
 
     // if we're checking permissions, we should have a userId!!
