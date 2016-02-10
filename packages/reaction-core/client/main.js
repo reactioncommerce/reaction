@@ -184,8 +184,7 @@ _.extend(ReactionCore, {
       return ReactionRouter.current().params._id;
     }
   },
-  getRegistryForCurrentRoute: function (routeProvides) {
-    const provides = "dashboard" || routeProvides;
+  getRegistryForCurrentRoute: (provides = "dashboard") => {
     const currentRoute = ReactionRouter.current();
     const routeName = currentRoute.route.path.replace("/", "");
 
@@ -197,7 +196,8 @@ _.extend(ReactionCore, {
       enabled: 1,
       registry: 1,
       route: 1,
-      name: 1
+      name: 1,
+      label: 1
     });
     // valid application
     if (reactionApp) {
@@ -206,7 +206,7 @@ _.extend(ReactionCore, {
       });
       return settingsData;
     }
-    ReactionCore.Log.debug("getRegistryForCurrentRoute not found", routeName, routeProvides);
+    ReactionCore.Log.debug("getRegistryForCurrentRoute not found", routeName, provides);
     return null;
   }
 

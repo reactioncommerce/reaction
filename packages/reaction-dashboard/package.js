@@ -31,6 +31,8 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.12.0");
+  // register package
+  api.addFiles("server/register.js", "server");
   // dashboard templates
   api.addFiles("client/templates/dashboard/import/import.html", "client");
   api.addFiles("client/templates/dashboard/import/import.js", "client");

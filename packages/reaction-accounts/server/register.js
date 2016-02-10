@@ -34,5 +34,22 @@ ReactionCore.registerPackage({
     label: "Profile",
     icon: "fa fa-user",
     provides: "userAccountDropdown"
+  }],
+  layout: [{
+    layout: "coreLayout",
+    workflow: "coreAccountsWorkflow",
+    collection: "Accounts",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "accountsDashboard",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "",
+      notFound: "notFound",
+      dashboardHeader: "dashboardHeader",
+      dashboardControls: "accountsDashboardControls",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
   }]
 });

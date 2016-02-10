@@ -6,7 +6,13 @@ ReactionCore.registerPackage({
   settings: {
     name: "Products"
   },
-  registry: "",
+  registry: {
+    route: "createProduct",
+    label: "Add Product",
+    icon: "fa fa-plus",
+    template: "productDetail",
+    provides: "shortcut"
+  },
   layout: [{
     layout: "coreLayout",
     workflow: "coreProductWorkflow",
@@ -23,5 +29,10 @@ ReactionCore.registerPackage({
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
     }
+  }],
+  permissions: [{
+    label: "Create Product",
+    permission: "createProduct",
+    group: "Shop Settings"
   }]
 });
