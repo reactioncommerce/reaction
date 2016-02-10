@@ -12,7 +12,7 @@ ReactionCore.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    cycle: 1,
+    priority: 1,
     container: "orders",
     template: "orders"
   }, {
@@ -21,7 +21,7 @@ ReactionCore.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    cycle: 1
+    priority: 1
   }],
   layout: [{
     layout: "coreLayout",
@@ -33,7 +33,7 @@ ReactionCore.registerPackage({
       template: "orders",
       layoutHeader: "layoutHeader",
       layoutFooter: "layoutFooter",
-      notFound: "productNotFound",
+      notFound: "notFound",
       dashboardHeader: "dashboardHeader",
       dashboardHeaderControls: "orderListFilters",
       dashboardControls: "dashboardControls",

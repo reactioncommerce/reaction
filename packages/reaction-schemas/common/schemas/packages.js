@@ -1,3 +1,46 @@
+ReactionCore.Schemas.Registry = new SimpleSchema({
+  provides: {
+    type: String,
+    index: true
+  },
+  route: {
+    type: String,
+    optional: true,
+    index: true
+  },
+  template: {
+    type: String,
+    optional: true
+  },
+  description: {
+    type: String,
+    optional: true
+  },
+  icon: {
+    type: String,
+    optional: true
+  },
+  label: {
+    type: String,
+    optional: true
+  },
+  container: {
+    type: String,
+    optional: true
+  },
+  priority: {
+    type: Number,
+    optional: true
+  },
+  enabled: {
+    type: Boolean,
+    optional: true
+  },
+  permissions: {
+    type: [ReactionCore.Schemas.Permissions],
+    optional: true
+  }
+});
 /**
 * Permissions Schema
 */
@@ -58,53 +101,12 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema({
     optional: true,
     blackbox: true
   },
+  "registry": {
+    type: [ReactionCore.Schemas.Registry],
+    optional: true
+  },
   "layout": {
     type: [ReactionCore.Schemas.Layout],
-    optional: true
-  },
-  "registry": {
-    type: [Object],
-    optional: true
-  },
-  "registry.$.provides": {
-    type: String,
-    index: true
-  },
-  "registry.$.route": {
-    type: String,
-    optional: true,
-    index: true
-  },
-  "registry.$.template": {
-    type: String,
-    optional: true
-  },
-  "registry.$.description": {
-    type: String,
-    optional: true
-  },
-  "registry.$.icon": {
-    type: String,
-    optional: true
-  },
-  "registry.$.label": {
-    type: String,
-    optional: true
-  },
-  "registry.$.container": {
-    type: String,
-    optional: true
-  },
-  "registry.$.cycle": {
-    type: Number,
-    optional: true
-  },
-  "registry.$.enabled": {
-    type: Boolean,
-    optional: true
-  },
-  "registry.$.permissions": {
-    type: [ReactionCore.Schemas.Permissions],
     optional: true
   }
 });

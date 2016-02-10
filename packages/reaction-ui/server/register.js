@@ -3,9 +3,7 @@ ReactionCore.registerPackage({
   name: "reaction-ui",
   icon: "fa fa-html5",
   autoEnable: true,
-  settings: {
-
-  },
+  settings: "",
   registry: [
     {
       provides: "dashboard",
@@ -14,7 +12,7 @@ ReactionCore.registerPackage({
       label: "UI",
       description: "Themes and UI Components",
       icon: "fa fa-html5",
-      cycle: 1,
+      priority: 1,
       group: "core",
       template: "uiDashboard",
       permissions: [{
@@ -28,13 +26,6 @@ ReactionCore.registerPackage({
       provides: "settings",
       container: "dashboard",
       template: "reactionUISettings"
-    }
-  ],
-  permissions: [
-    {
-      label: "Reaction Layout",
-      permission: "dashboard/layout",
-      group: "Reaction Layout"
     }
   ]
 });

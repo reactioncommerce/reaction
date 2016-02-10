@@ -1,39 +1,4 @@
 /**
- * gridPackage helpers
- *
- */
-
-Template.gridPackage.helpers({
-  pkgTypeClass: function () {
-    let pkg = function () {
-      switch (false) {
-      case this.cycle !== 1:
-        return {
-          class: "pkg-core-class",
-          text: "Core"
-        };
-      case this.cycle !== 2:
-        return {
-          class: "pkg-stable-class",
-          text: "Foundation"
-        };
-      case this.cycle !== 3:
-        return {
-          class: "pkg-prerelease-class",
-          text: "Community"
-        };
-      default:
-        return {
-          class: "pkg-unstable-class",
-          text: "Local"
-        };
-      }
-    }.call(this);
-    return pkg;
-  }
-});
-
-/**
  * gridPackage events
  *
  */

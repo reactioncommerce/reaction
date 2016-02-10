@@ -11,7 +11,7 @@ ReactionCore.registerPackage({
     label: "Core",
     description: "Reaction Core configuration",
     icon: "fa fa-th",
-    cycle: 0,
+    priority: 0,
     container: "dashboard",
     permissions: [{
       label: "Dashboard",
@@ -22,7 +22,7 @@ ReactionCore.registerPackage({
     provides: "shortcut",
     label: "Dashboard",
     icon: "fa fa-th",
-    cycle: 0
+    priority: 0
   }, {
     route: "dashboard/shop",
     template: "shopSettings",
@@ -45,10 +45,5 @@ ReactionCore.registerPackage({
       dashboardHeaderControls: "dashboardHeaderControls",
       adminControlsFooter: "adminControlsFooter"
     }
-  }],
-  permissions: [{
-    label: "Dashboard",
-    permission: "dashboard",
-    group: "Shop Settings"
   }]
 });

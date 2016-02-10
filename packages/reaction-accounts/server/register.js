@@ -12,11 +12,7 @@ ReactionCore.registerPackage({
     icon: "fa fa-sign-in",
     container: "accounts",
     template: "accountsDashboard",
-    cycle: 1,
-    permissions: [{
-      label: "Account Dashboard",
-      permission: "dashboard/accounts"
-    }]
+    priority: 1
   }, {
     route: "dashboard/accounts/settings",
     label: "Account Settings",
@@ -28,7 +24,7 @@ ReactionCore.registerPackage({
     provides: "shortcut",
     label: "Accounts",
     icon: "fa fa-users",
-    cycle: 1
+    priority: 1
   }, {
     route: "account/profile",
     label: "Profile",

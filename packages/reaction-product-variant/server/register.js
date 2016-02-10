@@ -11,7 +11,12 @@ ReactionCore.registerPackage({
     label: "Add Product",
     icon: "fa fa-plus",
     template: "productDetail",
-    provides: "shortcut"
+    provides: "shortcut",
+    permissions: [{
+      label: "Create Product",
+      permission: "createProduct",
+      group: "Shop Settings"
+    }]
   },
   layout: [{
     layout: "coreLayout",
@@ -29,10 +34,5 @@ ReactionCore.registerPackage({
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
     }
-  }],
-  permissions: [{
-    label: "Create Product",
-    permission: "createProduct",
-    group: "Shop Settings"
   }]
 });

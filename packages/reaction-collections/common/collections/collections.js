@@ -182,12 +182,6 @@ ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
 
-/**
-* ReactionCore Collections Layouts
-*/
-ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
-
-ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
 
 /**
 * ReactionCore Collections Templates

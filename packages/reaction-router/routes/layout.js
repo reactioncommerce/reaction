@@ -59,7 +59,7 @@ initPackageRoutes = () => {
     const newRoutes = [];
     // pkg registry
     if (pkg.registry) {
-      for (let registryItem of pkg.registry) {
+      for (let registryItem in pkg.registry) {
         // registryItems
         if (registryItem.route && registryItem.template) {
           const segments = registryItem.route.split("/");
