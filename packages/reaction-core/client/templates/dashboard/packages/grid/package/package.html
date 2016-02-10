@@ -1,11 +1,13 @@
 <template name="gridPackage">
   <div class="rui card package" data-settings-view="{{packageSettings.template}}">
     {{!-- display overview route --}}
+
+
     <div class="content" data-event-action="showPackageManagement">
       <h3 class="title">
-        <i class="{{icon}}"></i> <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+        <i class="{{icon}}"></i> {{label}}
       </h3>
-      <small data-i18n="{{i18nKeyDescription}}">{{{description}}}</small>
+      <small>{{{description}}}</small>
 
       <div>
         <span class="badge {{pkgTypeClass.class}}">{{pkgTypeClass.text}}</span>
