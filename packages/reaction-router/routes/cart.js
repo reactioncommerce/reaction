@@ -19,7 +19,7 @@ cart.route("/checkout", {
 //  completed cart, order summary page
 //
 cart.route("/completed/:_id?", {
-  name: "cartCompleted",
+  name: "cart/completed",
   action: function () {
     renderLayout({
       template: "cartCompleted",
