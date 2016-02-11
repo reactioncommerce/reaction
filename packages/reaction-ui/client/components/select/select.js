@@ -4,13 +4,13 @@ Template.select.onCreated(function () {
 });
 
 Template.select.events({
-  "select select"(event, template) {
-    if (template.instance.data.onSelect) {
-      template.instance.data.onSelect(event.target.value);
+  "change select"(event, template) {
+    if (template.data.onSelect) {
+      template.data.onSelect(event.target.value);
     }
   }
 });
 
 Template.select.helpers({
-  
+
 });

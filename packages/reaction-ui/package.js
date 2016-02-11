@@ -8,6 +8,7 @@ Package.describe({
 Npm.depends({
   "classnames": "2.2.3",
   "react-textarea-autosize": "3.3.0",
+  "react-color": "1.3.6",
   "sortablejs": "1.4.2",
   "react-dom": "0.14.7",
   "postcss": "5.0.14",
@@ -34,6 +35,7 @@ Package.onUse(function (api) {
   api.use("spacebars");
   api.use("check");
   api.use("react");
+  api.use("react-template-helper");
   api.use("less");
   api.use("reactive-dict");
 
@@ -95,9 +97,11 @@ Package.onUse(function (api) {
   api.addFiles("client/styles/mixins.less", "client");
 
 
-    api.addFiles("client/settings/settings.html", "client");
-    api.addFiles("client/settings/settings.js", "client");
-    api.addFiles("client/settings/settings.less", "client");
+  api.addFiles("client/templates/dashboard/dashboard.html", "client");
+
+  api.addFiles("client/templates/settings/settings.html", "client");
+  api.addFiles("client/templates/settings/settings.js", "client");
+  api.addFiles("client/templates/settings/settings.less", "client");
 
 
   api.addAssets("private/themes/button.css", "server");

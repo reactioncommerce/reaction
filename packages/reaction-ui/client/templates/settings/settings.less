@@ -5,24 +5,24 @@
 @import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
 
 
-.panel-objectmap {
+.rui.objectmap {
   padding: 10px;
   border-bottom: 0;
 }
 
-.panel-objectmap:last-child {
+.rui.objectmap:last-child {
 
 }
 
-.panel-objectmap .panel-heading {
+.rui.objectmap .panel-heading {
   padding: 5px 10px;
 }
 
-.panel-objectmap .panel-title {
+.rui.objectmap .panel-title {
   font-size: 14px;
 }
 
-.panel-objectmap .panel-title .label {
+.rui.objectmap .panel-title .label {
   color: @text-color;
   display: block;
   font-size: 14px;
@@ -31,25 +31,33 @@
   font-weight: 500;
 }
 
-.panel-objectmap .panel-title .label-selector {
+.rui.objectmap .panel-title .label-selector {
   color: @black40;
 }
 
-.panel-objectmap .list-group-item {
+.rui.objectmap .rui.list-item {
   .display(flex);
+  .flex(0 0 auto);
   .align-items(center);
+  .flex-wrap(wrap);
+  width: 100%;
   padding: 0;
-  border: none;
   .padding-left(30px);
+  border: none;
 }
 
-.panel-objectmap .list-group-item label {
+.rui.objectmap .rui.list-item label {
+  .flex(1 1 auto);
   margin: 0 10px 0 0;
   color: @brand-secondary-color;
   font-weight: normal;
 }
 
-.panel-objectmap .list-group-item input {
+.rui.objectmap .rui.list-item input {
   border: none;
   padding: 2px;
+}
+
+.rui.objectmap .rui.list-item input:hover {
+  border: 1px solid border-color;
 }

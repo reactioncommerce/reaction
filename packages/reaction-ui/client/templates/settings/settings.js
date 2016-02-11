@@ -12,7 +12,9 @@ Template.reactionUISettings.onCreated(function () {
 
   this.findComponentByName = (name) => {
     const theme = this.state.get("theme");
+
     if (theme) {
+      console.log(theme.components, name);
       return _.find(theme.components, (component) => {
         return component.name === name;
       });
@@ -38,6 +40,10 @@ Template.reactionUISettings.onCreated(function () {
     if (this.state.equals("selectedComponent", null) && this.theme) {
       this.state.set("selectedComponent", this.theme.components[0].name);
     }
+
+    // if (this.theme) {
+    //   this.previewStyles(this.theme);
+    // }
   });
 });
 

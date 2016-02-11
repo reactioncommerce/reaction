@@ -29,3 +29,5 @@ ReactionCore.registerPackage({
     }
   ]
 });
+
+ReactionUI.registerTheme(Assets.getText("private/themes/button.css"));

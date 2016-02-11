@@ -43,8 +43,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/theme/theme.js", "client");
   api.addFiles("client/templates/theme/theme.html", "client");
 
-  api.addFiles("client/templates/dashboard/dashboard.html", "client");
-
   // layout templates
   api.addFiles("client/templates/layout/layout.html", "client");
   api.addFiles("client/templates/layout/layout.js", "client");

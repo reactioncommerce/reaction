@@ -115,6 +115,40 @@
         }
       }
     },
+    "react-color": {
+      "version": "1.3.6",
+      "dependencies": {
+        "lodash": {
+          "version": "4.3.0"
+        },
+        "lodash.debounce": {
+          "version": "4.0.1"
+        },
+        "lodash.isplainobject": {
+          "version": "4.0.1"
+        },
+        "lodash.throttle": {
+          "version": "4.0.0"
+        },
+        "material-colors": {
+          "version": "1.0.0"
+        },
+        "merge": {
+          "version": "1.2.0"
+        },
+        "reactcss": {
+          "version": "0.3.2",
+          "dependencies": {
+            "lodash": {
+              "version": "3.10.1"
+            }
+          }
+        },
+        "tinycolor2": {
+          "version": "1.3.0"
+        }
+      }
+    },
     "react-dom": {
       "version": "0.14.7"
     },
