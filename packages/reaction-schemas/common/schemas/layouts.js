@@ -34,6 +34,7 @@ ReactionCore.Schemas.Audience = new SimpleSchema({
 ReactionCore.Schemas.LayoutStructure = new SimpleSchema({
   template: {
     type: String,
+    optional: true,
     index: true
   },
   layoutHeader: {
@@ -112,12 +113,12 @@ ReactionCore.Schemas.Layout = new SimpleSchema({
     optional: true
   },
   priority: {
-    type: String,
+    type: Number,
     optional: true,
     defaultValue: 1
   },
   position: {
-    type: String,
+    type: Number,
     optional: true,
     defaultValue: 1
   }

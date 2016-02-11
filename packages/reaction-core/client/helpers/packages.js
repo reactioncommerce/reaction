@@ -38,7 +38,7 @@
  *   label: "Stripe"
  *   name: "reaction-stripe"
  *   packageId: "QqkGsQCDRhg2LSn8J"
- *   priority: "1"
+ *   priority: 1
  *   provides: "paymentMethod"
  *   template: "stripePaymentForm"
  *   etc: "additional properties as defined in Packages.registry"

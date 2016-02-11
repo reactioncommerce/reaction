@@ -24,7 +24,7 @@ ReactionCore.registerPackage({
     description: "Analytics and tracking integrations",
     template: "reactionAnalytics",
     icon: "fa fa-bar-chart-o",
-    priority: "3",
+    priority: 3,
     container: "dashboard",
     permissions: [{
       label: "Reaction Analytics",

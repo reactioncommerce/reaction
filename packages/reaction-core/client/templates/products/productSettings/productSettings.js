@@ -1,9 +1,5 @@
 let weightDependency = new Tracker.Dependency;
 
-function weightDependencyUpdate() {
-  weightDependency.changed();
-}
-
 Template.productSettings.helpers({
   hasSelectedProducts() {
     return this.products.length > 0;
@@ -26,7 +22,7 @@ Template.productSettings.helpers({
 Template.productSettingsGridItem.helpers({
   displayPrice: function () {
     if (this._id) {
-      return ReactionProduct.getProductPriceRange(this._id);
+      return getProductPriceRange(this._id);
     }
   },
 
@@ -149,7 +145,10 @@ Template.productSettings.events({
 
       product.position = position;
 
-      Meteor.call("products/updateProductPosition", product._id, position, weightDependencyUpdate);
+      Meteor.call("products/updateProductPosition", product._id, position,
+        function () {
+          weightDependency.changed();
+        });
     }
   }
 });

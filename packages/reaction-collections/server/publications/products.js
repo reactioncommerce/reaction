@@ -4,36 +4,41 @@
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit, shops) {
+Meteor.publish("Products", function (productScrollLimit, productFilters) {
   check(productScrollLimit, Match.OneOf(null, undefined, Number));
-  check(shops, Match.Optional(Array));
+  check(productFilters, Match.OneOf(null, undefined, Object));
 
   let shopAdmin;
   const limit = productScrollLimit || 10;
   const shop = ReactionCore.getCurrentShop();
   const Products = ReactionCore.Collections.Products;
+  let sort = {title: 1};
 
   if (typeof shop !== "object") {
     return this.ready();
   }
 
   if (shop) {
-    let selector = {
-      shopId: shop._id
-    };
-    // handle multiple shops
-    if (shops) {
-      selector = {
-        shopId: {
-          $in: shops
+    let selector = {shopId: shop._id};
+
+    if (productFilters) {
+      // handle multiple shops
+      if (productFilters.shops) {
+        check(productFilters.shops, Array);
+        _.extend(selector, {shopId: {$in: productFilters.shops}});
+
+        // check if this user is a shopAdmin
+        for (let thisShopId of productFilters.shops) {
+          if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
+            shopAdmin = true;
+          }
         }
-      };
-      // check if this user is a shopAdmin
-      for (let thisShopId of shops) {
-        if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
-            thisShopId)) {
-          shopAdmin = true;
-        }
+      }
+
+      // filter by tag
+      if (productFilters.tag) {
+        check(productFilters.tag, String);
+        _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
       }
     }
 
@@ -43,9 +48,7 @@ Meteor.publish("Products", function (productScrollLimit, shops) {
     }
 
     return Products.find(selector, {
-      sort: {
-        title: 1
-      },
+      sort: sort,
       limit: limit
     });
   }

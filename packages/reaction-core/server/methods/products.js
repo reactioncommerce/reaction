@@ -429,7 +429,7 @@ Meteor.methods({
    * @summary clone a whole product, defaulting visibility, etc
    * in the future we are going to do an inheritance product
    * that maintains relationships with the cloned product tree
-   * @param {Object} product - product object to clone
+   * @param {Object} productOrArray - product object to clone
    * @returns {String} returns insert result
    */
   "products/cloneProduct": function (productOrArray) {

@@ -34,7 +34,7 @@ ReactionCore.registerPackage({
     label: "Social",
     description: "Social Channel configuration",
     icon: "fa fa-share-alt",
-    priority: "2",
+    priority: 2,
     container: "dashboard",
     permissions: [{
       label: "Social",
