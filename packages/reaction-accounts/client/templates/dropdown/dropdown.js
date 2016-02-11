@@ -36,7 +36,7 @@ Template.loginDropdown.events({
    * @return {void}
    */
   "click .user-accounts-dropdown-apps a": function (event, template) {
-    if (this.route === "createProduct") {
+    if (this.route === "products/createProduct") {
       event.preventDefault();
       event.stopPropagation();
 

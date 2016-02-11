@@ -113,7 +113,7 @@ Template.coreAdminLayout.events({
    * @return {void}
    */
   "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button"(event) {
-    if (this.route === "createProduct") {
+    if (this.route === "products/createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
