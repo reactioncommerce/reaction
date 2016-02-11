@@ -1,3 +1,5 @@
+
+
 const orderFilters = [{
   name: "new",
   label: "New"
@@ -107,11 +109,13 @@ Template.orders.onCreated(() => {
  */
 Template.orders.helpers({
   orders() {
-    const template = Template.instance();
-    const queryParams = ReactionRouter.getQueryParam("filter");
-    template.orders = getOrders(queryParams);
-
-    return template.orders;
+    ReactionCore.Subscriptions.Orders = ReactionSubscriptions.subscribe("Orders");
+    if (ReactionCore.Subscriptions.Orders.ready()) {
+      const template = Template.instance();
+      const queryParams = ReactionRouter.getQueryParam("filter");
+      template.orders = getOrders(queryParams);
+      return template.orders;
+    }
   },
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {

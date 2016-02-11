@@ -46,7 +46,7 @@ Tracker.autorun(() => {
 /**
  * General Subscriptions
  */
-ReactionCore.Subscriptions.Shops = Meteor.subscribe("Shops");
+ReactionCore.Subscriptions.Shops = ReactionSubscriptions.subscribe("Shops");
 
 ReactionCore.Subscriptions.Packages = ReactionSubscriptions.subscribe("Packages");
 

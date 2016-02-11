@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.use("accounts-base");
   api.use("reactioncommerce:reaction-collections@2.0.0");
   // flow-router packages
-  api.use("kadira:flow-router@2.10.0");
+  api.use("kadira:flow-router@2.10.1");
   api.use("kadira:blaze-layout@2.3.0");
   api.use("kadira:dochead@1.4.0");
 
