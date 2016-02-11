@@ -36,7 +36,7 @@
   {{#each ./tags}}
     {{#unless currentHashTag}}
       <li class="list-group-item product-detail-tags-list">
-        <a href="{{pathFor "tag" slug}}" data-event-category="tag" data-event-action="tag-click" data-event-label="product detail tag click" data-event-value="{{name}}">{{name}}</a>
+        <a href="{{pathFor "tag" slug=slug}}" data-event-category="tag" data-event-action="tag-click" data-event-label="product detail tag click" data-event-value="{{name}}">{{name}}</a>
       </li>
     {{/unless}}
   {{/each}}
