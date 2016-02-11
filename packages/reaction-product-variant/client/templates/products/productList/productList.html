@@ -5,7 +5,7 @@
         {{#each products}}
         <tr class="product-list-item">
           <td>
-            <a href="{{pathFor 'product' handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+            <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
             {{#with media}}
               <img src="{{url}}" class="product-grid-item-images img-responsive">
             {{else}}

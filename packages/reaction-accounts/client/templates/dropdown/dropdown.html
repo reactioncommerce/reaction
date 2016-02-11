@@ -38,7 +38,7 @@
     {{#each reactionApps provides="shortcut" enabled=true}}
       {{#if hasPermission route}}
       <li class="dropdown-apps-icon">
-        <a id="{{route}}" title="{{label}}">
+        <a href={{pathFor route}} id="dropdown-apps-{{route}}" title="{{label}}">
           <i class="{{icon}}"></i>
           <span class="icon-text">
             {{label}}

@@ -1,28 +1,29 @@
-
 /**
  * reactionTemplate helper
+ * use the reactionTemplate helper when you are using templates defined
+ * as workflow templates in the package registery.Layout
+ * use "collection" on the layout to indicate a workflow source
+ *
  * @summary reactionTemplate provides templates as defined in ReactionRegistry.Layout
- * @param {String} workflow defaults to "default"
- * @peram {id} workflow collection id
- * @returns
+ * @param {Object} options - workflow defaults to "coreLayout/coreWorkflow"
+ * @returns {Array} returns an array with labels, templates that match workflow
  */
-
 Template.registerHelper("reactionTemplate", function (options) {
-  let shopId = options.hash.shopId || ReactionCore.getShopId();
+  const shopId = options.hash.shopId || ReactionCore.getShopId();
   // get shop info, defaults to current
-  let Shop = ReactionCore.Collections.Shops.findOne(shopId);
-  // let layoutConfiguration = Shop.layout;
-  let reactionTemplates = [];
-
+  const Shop = ReactionCore.Collections.Shops.findOne(shopId);
+  const reactionTemplates = [];
   // fetch collection from shop.layout configuration
   let layout = _.findWhere(Shop.layout, {
-    workflow: options.hash.workflow
+    workflow: options.hash.workflow || "coreWorkflow"
   });
-
   let layoutConfigCollection;
+  let currentId;
 
+  // determine if workflow has a target
+  // collection defined. This is where we'll
+  // fetch/save workflow changes.
   if (layout) {
-    // potentially we can make the default a workflow collection
     layoutConfigCollection = layout.collection || "Cart";
   } else {
     ReactionCore.Log.error("Shop Layout Undefined");
@@ -30,10 +31,11 @@ Template.registerHelper("reactionTemplate", function (options) {
   }
 
   // if we've got an id, we'll use it with the layout's collection
+  // and get the current status of the workflowTargetCollection
   if (Template.currentData() && Template.currentData()._id) {
     currentId = Template.currentData()._id;
   } else {
-    let currentCart = ReactionCore.Collections.Cart.findOne({
+    const currentCart = ReactionCore.Collections.Cart.findOne({
       userId: Meteor.userId()
     });
     currentId = currentCart && currentCart._id;
@@ -44,44 +46,26 @@ Template.registerHelper("reactionTemplate", function (options) {
 
   // The currentCollection must have workflow schema attached.
   // layoutConfigCollection is the collection defined in Shops.workflow
-  let workflowTargetCollection = ReactionCore.Collections[
-    layoutConfigCollection];
-  let currentCollection = workflowTargetCollection.findOne(currentId);
-
-
-  // TODO review this functionality.
-  // if we be here without a workflow, we're layouteers
-  // if there isn't a layout defined
-
-  // if (!currentCollection) {
-  //   currentCollection = ReactionCore.Collections.Layouts.findOne(
-  //     currentId);
-  //   if (!currentCollection) {
-  //     return [];
-  //   }
-  // }
-
-  let currentStatus = currentCollection.workflow.status;
-  let currentCollectionWorkflow = currentCollection.workflow.workflow;
-
-  // find the packages with these options
-  let Packages = ReactionCore.Collections.Packages.find({
+  const workflowTargetCollection = ReactionCore.Collections[layoutConfigCollection];
+  const currentCollection = workflowTargetCollection.findOne(currentId);
+  const currentStatus = currentCollection.workflow.status;
+  const currentCollectionWorkflow = currentCollection.workflow.workflow;
+  const Packages = ReactionCore.Collections.Packages.find({
     layout: {
       $elemMatch: options.hash
     },
     shopId: shopId
   });
+
   //  we can have multiple packages contributing to the layout / workflow
   Packages.forEach(function (reactionPackage) {
     // match template or workflow
-    let layoutWorkflows = _.where(reactionPackage.layout, options.hash);
+    const layoutWorkflows = _.where(reactionPackage.layout, options.hash);
     for (layout of layoutWorkflows) {
       // audience is layout permissions
       if (layout.audience === undefined) {
-        defaultRoles = ReactionCore.Collections.Shops.findOne().defaultRoles;
-        layout.audience = defaultRoles;
+        layout.audience = Shop.defaultRoles;
       }
-
       // check permissions so you don't have to on template.
       if (ReactionCore.hasPermission(layout.audience)) {
         // default boolean status

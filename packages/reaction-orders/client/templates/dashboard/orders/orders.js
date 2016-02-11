@@ -97,7 +97,7 @@ Template.orders.onCreated(() => {
     const queryParams = ReactionRouter.current().queryParams;
 
     if (isActionViewOpen === false) {
-      ReactionRouter.go("/dashboard/orders", {}, queryParams);
+      ReactionRouter.go("orders", {}, queryParams);
     }
   });
 });

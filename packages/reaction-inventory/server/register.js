@@ -27,12 +27,3 @@ ReactionCore.registerPackage({
     enabled: true
   }]
 });
-
-
-// {
-//   label: "Inventory Settings",
-//   route: "dashboard/inventory",
-//   provides: "settings",
-//   group: "reaction-inventory",
-//   template: "inventorySettings"
-// }],

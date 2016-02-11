@@ -29,14 +29,14 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
 
-  // community packages
+  // reaction and community packages
   api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-ui@0.5.0");
   api.use("juliancwirko:s-alert@3.1.4");
   api.use("juliancwirko:s-alert-stackslide@3.1.3");
   api.use("kevohagan:sweetalert@1.0.0");
 
-
+  // register reaction package
   api.addFiles("server/register.js", "server");
 
   // Theme Templates

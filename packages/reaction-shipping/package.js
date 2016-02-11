@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
-  version: "0.7.0",
+  version: "0.8.0",
   documentation: "README.md"
 });
 

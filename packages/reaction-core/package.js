@@ -50,7 +50,7 @@ Package.onUse(function (api) {
   api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("reactioncommerce:reaction-collections@1.0.5");
+  api.use("reactioncommerce:reaction-collections@2.0.0");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
@@ -176,7 +176,7 @@ Package.onTest(function (api) {
   api.use("accounts-password");
 
   // reaction core
-  api.use("reactioncommerce:reaction-collections@1.0.5");
+  api.use("reactioncommerce:reaction-collections@2.0.0");
   api.use("reactioncommerce:reaction-factories@0.3.7");
   api.use("reactioncommerce:core@0.12.0");
 

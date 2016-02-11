@@ -8,6 +8,7 @@ ReactionCore.registerPackage({
   },
   registry: [{
     provides: "dashboard",
+    workflow: "coreDashboardWorkflow",
     label: "Core",
     description: "Reaction Core configuration",
     icon: "fa fa-th",
@@ -19,6 +20,7 @@ ReactionCore.registerPackage({
     }]
   }, {
     route: "dashboard",
+    workflow: "coreDashboardWorkflow",
     provides: "shortcut",
     label: "Dashboard",
     icon: "fa fa-th",
@@ -47,3 +49,44 @@ ReactionCore.registerPackage({
     }
   }]
 });
+
+//
+// define dashboard group
+//
+//
+// dashboard = ReactionRouter.group({
+//   prefix: "/dashboard"
+// });
+//
+// //
+// // dashboard home
+// //
+//
+// dashboard.route("/", {
+//   name: "dashboard",
+//   action: () => {
+//     // not sure the behavior this is trying to resolve
+//     $(document).trigger("closeAllPopovers");
+//
+//     // initialize reaction layout
+//     let dashboardLayout =  {
+//       workflow: "coreDashboardWorkflow"
+//     };
+//     // initialize reaction layout
+//     renderLayout(dashboardLayout);
+//   }
+// });
+//
+// //
+// // dashboard accounts
+// //
+// dashboard.route("/accounts", {
+//   name: "dashboard/accounts",
+//   action: function () {
+//     let dashboardLayout =  {
+//       workflow: "coreAccountsWorkflow"
+//     };
+//     // initialize reaction layout
+//     renderLayout(dashboardLayout);
+//   }
+// });

@@ -139,7 +139,7 @@ Template.coreAdminLayout.events({
       event.preventDefault();
       event.stopPropagation();
 
-      ReactionRouter.go(this.route);
+      ReactionRouter.go(ReactionRouter.pathFor(this.route));
     }
   }
 });

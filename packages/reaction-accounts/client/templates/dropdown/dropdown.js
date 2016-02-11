@@ -58,10 +58,9 @@ Template.loginDropdown.events({
         }
       });
     } else if (this.route) {
-      let path = ReactionRouter.path(this.route);
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
-      ReactionRouter.go(path);
+      ReactionRouter.go(ReactionRouter.pathFor(this.route));
     }
   }
 });

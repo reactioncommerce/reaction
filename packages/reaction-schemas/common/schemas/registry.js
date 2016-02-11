@@ -30,6 +30,10 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
     type: String,
     optional: true
   },
+  workflow: {
+    type: String,
+    optional: true
+  },
   description: {
     type: String,
     optional: true

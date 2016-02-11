@@ -17,7 +17,7 @@ Template.gridPackage.events({
           type: "pkg-enabled-" + self.name
         });
         if (self.route) {
-          return ReactionRouter.go(self.route);
+          return ReactionRouter.go(ReactionRouter.pathFor(self.route));
         }
       } else if (error) {
         return Alerts.toast(self.label + i18n.t("gridPackage.pkgDisabled"), "warning");
@@ -58,7 +58,7 @@ Template.gridPackage.events({
       if (this.route) {
         // we're not using the route, but (pkg) name + provides
         // which we've defined as the true route name
-        ReactionRouter.go(this.name + "/" + this.provides);
+        ReactionRouter.go(ReactionRouter.pathFor(thisRoute));
       } else if (ReactionCore.hasPermission(this.route, Meteor.userId())) {
         ReactionCore.showActionView(this);
       }

@@ -14,7 +14,6 @@ ReactionCore.registerPackage({
     template: "accountsDashboard",
     priority: 1
   }, {
-    route: "dashboard/accounts/settings",
     label: "Account Settings",
     provides: "settings",
     container: "accounts",
@@ -27,6 +26,7 @@ ReactionCore.registerPackage({
     priority: 1
   }, {
     route: "account/profile",
+    template: "accountProfile",
     label: "Profile",
     icon: "fa fa-user",
     provides: "userAccountDropdown"

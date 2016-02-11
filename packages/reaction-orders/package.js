@@ -29,10 +29,12 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
 
-  // community packages
+  // reaction packages
   api.use("reactioncommerce:core@0.12.0");
+
   // register packages
   api.addFiles("server/register.js", "server");
+
   // order templates
   api.addFiles("client/templates/dashboard/orders/orders.html", "client");
   api.addFiles("client/templates/dashboard/orders/orders.js", "client");

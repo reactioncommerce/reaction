@@ -7,7 +7,7 @@ cart = ReactionRouter.group({
 //  cart checkout
 //
 cart.route("/checkout", {
-  name: "cartCheckout",
+  name: "checkout",
   action: function () {
     renderLayout({
       workflow: "coreCartWorkflow"
@@ -18,17 +18,8 @@ cart.route("/checkout", {
 //
 //  completed cart, order summary page
 //
-cart.route("/completed", {
+cart.route("/completed/:_id?", {
   name: "cartCompleted",
-  action: function () {
-    renderLayout({
-      workflow: "coreCartWorkflow",
-      template: "cartCompleted"
-    });
-  }
-});
-
-cart.route("/completed/:_id", {
   action: function () {
     renderLayout({
       template: "cartCompleted",

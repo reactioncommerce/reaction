@@ -49,42 +49,47 @@ _.extend(ReactionCore, {
    *
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} checkUserId - userId, defaults to Meteor.userId()
-   * @param {String} group - default to shopId
+   * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission: function (checkPermissions, checkUserId, group) {
-    check(checkPermissions, Match.OneOf(String, Array));
-    // use current user if userId if not provided
-    let userId = checkUserId || this.userId || Meteor.userId();
-    let shopId = group || ReactionCore.getShopId();
-    let permissions = [];
+  hasPermission: function (checkPermissions, checkUserId, checkGroup) {
+    let group = ReactionCore.getShopId();
+    let permissions = ["owner"];
 
-    // if we're checking permissions, we should have a userId!!
-    // the assumption is that a null user doesn't have permissions
-    // for something that with permissions
+    // default group to the shop or global if shop
+    // isn't defined for some reason.
+    if (checkGroup !== undefined && typeof checkGroup === "string") {
+      group = checkGroup;
+    }
+    if (!group) {
+      group = Roles.GLOBAL_GROUP;
+    }
+
+    // use current user if userId if not provided
+    // becauase you gotta have a user to check permissions
+    const userId = checkUserId || this.userId || Meteor.userId();
     if (!userId) {
       return false;
     }
     // permissions can be either a string or an array
-    // we'll force it into an array so we can add
-    // admin roles
-    if (!_.isArray(checkPermissions)) {
+    // we'll force it into an array and use that
+    if (checkPermissions === undefined) {
+      permissions = ["owner"];
+    } else if (typeof checkPermissions === "string") {
       permissions = [checkPermissions];
     } else {
       permissions = checkPermissions;
     }
     // if the user has admin, owner permissions we'll always check if those roles are enough
-    permissions.push("admin", "owner");
-    // check if userIs the Roles
-    if (Roles.userIsInRole(userId, permissions, shopId)) {
-      return true;
-    } else if (Roles.userIsInRole(userId,
-        permissions,
-        Roles.GLOBAL_GROUP
-      )) {
+    permissions.push("owner");
+    permissions = _.uniq(permissions);
+
+    //
+    // return if user has permissions in the group
+    //
+    if (Roles.userIsInRole(userId, permissions, group)) {
       return true;
     }
-
     // global roles check
     let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
     // we're looking for seller permissions.

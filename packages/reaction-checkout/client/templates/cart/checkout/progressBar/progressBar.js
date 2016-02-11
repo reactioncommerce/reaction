@@ -5,17 +5,15 @@
 
 Template.checkoutProgressBar.helpers({
   progressbarStatusClass: function () {
-    var cartWorkflow = ReactionCore.Collections.Cart.findOne().workflow;
-    var thisStep = (cartWorkflow.status === this.template); // active
-    var previouslyVisited = _.contains(cartWorkflow.workflow, this.template);
+    const cartWorkflow = ReactionCore.Collections.Cart.findOne().workflow;
+    const thisStep = cartWorkflow.status === this.template; // active
+    const previouslyVisited = _.contains(cartWorkflow.workflow, this.template);
 
     if (previouslyVisited === true && thisStep === false) {
       return "visited";
     } else if (thisStep === true) {
       return "visited active";
-    } else {
-      return "";
     }
-
+    return "";
   }
 });
