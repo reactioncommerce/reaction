@@ -4,18 +4,22 @@
 //
 Template.cartCheckout.helpers({
   cart: function () {
-    return ReactionCore.Collections.Cart.findOne();
+    if (ReactionCore.Subscriptions.Cart.ready()) {
+      return ReactionCore.Collections.Cart.findOne();
+    }
   }
 });
 
 Template.cartCheckout.onRendered(function () {
+  // Session.set("displayCartDrawer", false); deprecated with layout.
   // init cart workflow. For registered users we are called `workflow/
   // pushCartWorkflow` within `cart\mergeCart`, but anonymous doesn't have
   // access to that method, that's why we are calling workflow changes from here.
-  if (ReactionCore.Collections.Cart.findOne().workflow.status === "new") {
+
+  const cart = ReactionCore.Collections.Cart.findOne();
+  if (cart.workflow && cart.workflow.status === "new") {
     // if user logged in as normal user, we must pass it through the first stage
-    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-      "checkoutLogin");
+    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id);
   }
 });
 

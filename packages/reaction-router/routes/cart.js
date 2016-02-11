@@ -7,7 +7,7 @@ cart = ReactionRouter.group({
 //  cart checkout
 //
 cart.route("/checkout", {
-  name: "checkout",
+  name: "cart/checkout",
   action: function () {
     renderLayout({
       workflow: "coreCartWorkflow"

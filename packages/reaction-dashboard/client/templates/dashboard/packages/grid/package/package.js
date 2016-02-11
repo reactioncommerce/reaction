@@ -58,7 +58,7 @@ Template.gridPackage.events({
       if (this.route) {
         // we're not using the route, but (pkg) name + provides
         // which we've defined as the true route name
-        ReactionRouter.go(ReactionRouter.pathFor(thisRoute));
+        ReactionRouter.go(ReactionRouter.pathFor(this.route));
       } else if (ReactionCore.hasPermission(this.route, Meteor.userId())) {
         ReactionCore.showActionView(this);
       }

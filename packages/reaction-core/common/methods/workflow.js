@@ -15,20 +15,26 @@ Meteor.methods({
    * @param {String} [cartId] - cart._id
    * @return {Array|Boolean|Number}
    */
-  "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus,
-    cartId) {
+  "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus, cartId) {
     check(workflow, String);
     check(newWorkflowStatus, String);
     check(cartId, Match.Optional(String));
     this.unblock();
 
+    let currentCart;
     let defaultPackageWorkflows = [];
     let nextWorkflowStep = {
       template: ""
     };
-    const { Cart, Packages, Shops } = ReactionCore.Collections;
-    const { Log } = ReactionCore;
-    let currentCart;
+    const {
+      Cart,
+      Packages,
+      Shops
+    } = ReactionCore.Collections;
+    const {
+      Log
+    } = ReactionCore;
+
     // This method could be called indirectly from publication method in a time
     // when `this.userId` will be null, that's why we have a third argument in
     // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
@@ -52,41 +58,42 @@ Meteor.methods({
 
     // loop through packages and set the defaultPackageWorkflows
     packages.forEach(function (reactionPackage) {
-      let layouts = _.where(reactionPackage.layout, {
-        workflow: workflow
-      });
-      // for every layout, process the associated workflows
-      _.each(layouts, function (layout) {
-        // audience is the layout permissions
-        if (typeof layout.audience !== "object") {
-          let defaultRoles = Shops.findOne(
-            ReactionCore.getShopId(), {
-              sort: {
-                priority: 1
-              }
-            }).defaultRoles;
-          layout.audience = defaultRoles;
-        }
-        // check permissions so you don't have to on template. For a case, when
-        // this method calls indirectly from publication method, we do this
-        // check which is looks not pretty secure
-        if (typeof Meteor.userId() !== "string") {
-          if (ReactionCore.hasPermission(layout.audience, currentCart.userId)) {
-            defaultPackageWorkflows.push(layout);
+      // todo fix this hack for not filtering nicely
+      if (!reactionPackage.layout.layout) {
+        let layouts = _.where(reactionPackage.layout, {
+          workflow: workflow
+        });
+        // for every layout, process the associated workflows
+        _.each(layouts, function (layout) {
+          // audience is the layout permissions
+          if (typeof layout.audience !== "object") {
+            let defaultRoles = Shops.findOne(
+              ReactionCore.getShopId(), {
+                sort: {
+                  priority: 1
+                }
+              }).defaultRoles;
+            layout.audience = defaultRoles;
           }
-        } else {
-          if (ReactionCore.hasPermission(layout.audience)) {
-            defaultPackageWorkflows.push(layout);
+          // check permissions so you don't have to on template. For a case, when
+          // this method calls indirectly from publication method, we do this
+          // check which is looks not pretty secure
+          if (typeof Meteor.userId() !== "string") {
+            if (ReactionCore.hasPermission(layout.audience, currentCart.userId  && !layout.layout)) {
+              defaultPackageWorkflows.push(layout);
+            }
+          } else {
+            if (ReactionCore.hasPermission(layout.audience) && !layout.layout) {
+              defaultPackageWorkflows.push(layout);
+            }
           }
-        }
-      });
+        });
+      }
     });
 
     // statusExistsInWorkflow boolean
-    let statusExistsInWorkflow = _.contains(currentCart.workflow.workflow,
-      newWorkflowStatus);
-
-    let maxSteps = defaultPackageWorkflows.length;
+    const statusExistsInWorkflow = _.contains(currentCart.workflow.workflow, newWorkflowStatus);
+    const maxSteps = defaultPackageWorkflows.length;
     let nextWorkflowStepIndex;
     let templateProcessedinWorkflow = false;
     let gotoNextWorkflowStep = false;
@@ -99,8 +106,7 @@ Meteor.methods({
     // loop through all shop configured layouts, and their default workflows
     // to determine what the next workflow step should be
     // the cart workflow status while processing is neither true nor false (set to template)
-    _.each(defaultPackageWorkflows, function (workflow,
-      currentStatusIndex) {
+    _.each(defaultPackageWorkflows, function (workflow, currentStatusIndex) {
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {
@@ -126,7 +132,7 @@ Meteor.methods({
       nextWorkflowStep.template);
 
     // debug info
-    Log.debug("currentWorkflowStatus: ",  currentWorkflowStatus);
+    Log.debug("currentWorkflowStatus: ", currentWorkflowStatus);
     Log.debug("workflow/pushCartWorkflow workflow: ", workflow);
     Log.debug("newWorkflowStatus: ", newWorkflowStatus);
     Log.debug("current cartId: ", currentCart._id);
@@ -143,8 +149,9 @@ Meteor.methods({
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !==
       newWorkflowStatus) {
-      Log.debug(`######## Condition One #########: initialise the ${
-        workflow}: ${defaultPackageWorkflows[0].template}`);
+      Log.debug(
+        `######## Condition One #########: initialise the ${workflow}: ${defaultPackageWorkflows[0].template}`
+      );
       return Cart.update(currentCart._id, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
@@ -221,7 +228,9 @@ Meteor.methods({
     if (!cart || typeof cart.workflow !== "object") return false;
     if (typeof cart.workflow.workflow !== "object") return false;
 
-    const { workflow } = cart.workflow;
+    const {
+      workflow
+    } = cart.workflow;
     // get index of `newWorkflowStatus`
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow

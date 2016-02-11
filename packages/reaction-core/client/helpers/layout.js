@@ -17,6 +17,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   let layout = _.findWhere(Shop.layout, {
     workflow: options.hash.workflow || "coreWorkflow"
   });
+
   let layoutConfigCollection;
   let currentId;
 
@@ -59,28 +60,33 @@ Template.registerHelper("reactionTemplate", function (options) {
 
   //  we can have multiple packages contributing to the layout / workflow
   Packages.forEach(function (reactionPackage) {
-    // match template or workflow
     const layoutWorkflows = _.where(reactionPackage.layout, options.hash);
+    // check the packages for layout workflow templates
     for (layout of layoutWorkflows) {
       // audience is layout permissions
       if (layout.audience === undefined) {
-        layout.audience = Shop.defaultRoles;
+        layout.audience = Shop.defaultRoles || "owner";
       }
+
       // check permissions so you don't have to on template.
       if (ReactionCore.hasPermission(layout.audience)) {
-        // default boolean status
-        layout.status = _.contains(currentCollectionWorkflow,
-          layout.template);
-        // if the current template is already the current status
-        if (layout.template === currentStatus) {
-          layout.status = currentStatus;
+        // todo: review this hack to remove layout
+        // from the workflow
+        if (!layout.layout) {
+          // default is boolean false status
+          // true = we've completed this workflow
+          // false = pending (future) step
+          // <template> = in process (current) step.
+          layout.status = _.contains(currentCollectionWorkflow, layout.template);
+          // if the current template is already the current status
+          if (layout.template === currentStatus) {
+            layout.status = currentStatus;
+          }
+          // push to reactionTemplates
+          reactionTemplates.push(layout);
         }
-        // add to templates list
-        reactionTemplates.push(layout);
       }
     }
   });
-
-  ReactionCore.Log.debug("reactionTemplates", reactionTemplates);
   return reactionTemplates;
 });
