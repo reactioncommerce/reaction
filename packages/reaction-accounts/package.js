@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.6.3",
+  version: "1.7.0",
   documentation: "README.md"
 });
 

@@ -1,3 +1,11 @@
+const getPermissionMap = (permissions) => {
+  const permissionMap = {};
+  _.each(permissions, function (existing) {
+    permissionMap[existing.permission] = existing.label;
+  });
+  return permissionMap;
+};
+
 /**
  * shopMember helpers
  * permissions / roles controls
@@ -49,10 +57,8 @@ Template.memberSettings.helpers({
     });
 
     packages.forEach(function (pkg) {
-      let permissions = [];
-      let permissionMap = {};
-
-      if (pkg.enabled) {
+      const permissions = [];
+      if (pkg.registry && pkg.enabled) {
         for (let registryItem of pkg.registry) {
           // Skip entires with missing routes
           if (!registryItem.route) {
@@ -61,21 +67,19 @@ Template.memberSettings.helpers({
 
           // Get all permissions, add them to an array
           if (registryItem.permissions) {
-            _.each(registryItem.permissions, function (permission) {
+            for (let permission of registryItem.permissions) {
               permission.shopId = shopId;
               permissions.push(permission);
-            });
+            }
           }
 
           // Also create an object map of those same permissions as above
-          _.each(permissions, function (existing) {
-            permissionMap[existing.permission] = existing.label;
-          });
+          let permissionMap = getPermissionMap(permissions);
 
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: registryItem.route,
+              permission: pkg.name + "/" + registryItem.route,
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });
