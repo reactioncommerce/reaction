@@ -44,7 +44,7 @@ _.extend(ReactionCore, {
     });
   },
   /**
-   * hasPermission
+   * hasPermission - client
    * client permissions checks
    * hasPermission exists on both the server and the client.
    *
@@ -362,4 +362,3 @@ createCountryCollection = function (shop) {
   }
   return countryOptions;
 };
-

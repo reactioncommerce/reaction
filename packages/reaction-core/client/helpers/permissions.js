@@ -12,8 +12,6 @@
  * @return {Boolean}
  */
 Template.registerHelper("hasPermission", function (permissions, options) {
-  check(permissions, Match.OneOf(String, Array));
-  check(options.hash, Match.Optional(Object));
   // default to checking this.userId
   let userId = Meteor.userId();
   let shopId = ReactionCore.getShopId();
