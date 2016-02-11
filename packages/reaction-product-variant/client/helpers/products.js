@@ -316,7 +316,7 @@ ReactionProduct.getProductPriceRange = (currentProductId) => {
  * @param {Object} product - product Object
  * @return {Object} - returns nothing, and alerts,happen here
  */
-ReactionProduct.maybeDeleteProduct = (product) => {
+ReactionProduct.maybeDeleteProduct = maybeDeleteProduct = (product) => {
   let productIds;
   let title;
   let confirmTitle = "Delete this product?";

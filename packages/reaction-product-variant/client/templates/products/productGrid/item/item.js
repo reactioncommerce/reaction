@@ -133,10 +133,10 @@ Template.productGridItems.events({
     $checkbox.prop("checked", true).trigger("change");
   },
   "click .publish-product": function () {
-    publishProduct(this);
+    ReactionProduct.publishProduct(this);
   },
   "click .clone-product": function () {
-    cloneProduct(this);
+    ReactionProduct.cloneProduct(this);
   },
   "click .delete-product": function (event) {
     event.preventDefault();

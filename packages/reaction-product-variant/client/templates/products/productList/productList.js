@@ -6,7 +6,7 @@ let Media;
 Media = ReactionCore.Collections.Media;
 Template.productList.helpers({
   products: function () {
-    return getProductsByTag(this.tag);
+    return ReactionProducts.getProductsByTag(this.tag);
   },
   media: function () {
     let defaultImage;

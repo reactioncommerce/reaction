@@ -743,10 +743,9 @@ Meteor.methods({
       }, {
         multi: true
       });
-      return true;
     }
     // return false if unable to delete
-    return false;
+    return numRemoved;
   },
 
   /**

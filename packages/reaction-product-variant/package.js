@@ -34,8 +34,11 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:core@0.12.0");
   // register package
   api.addFiles("server/register.js", "server");
+
   // helpers
   api.addFiles("client/helpers/products.js", "client");
+  api.addFiles("client/helpers/globals.js", "client");
+
   // Product Templates
   api.addFiles("client/templates/products/products.html", "client");
   api.addFiles("client/templates/products/products.js", "client");

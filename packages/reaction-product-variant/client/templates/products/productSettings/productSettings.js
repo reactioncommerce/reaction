@@ -1,9 +1,5 @@
 let weightDependency = new Tracker.Dependency;
 
-function weightDependencyUpdate() {
-  weightDependency.changed();
-}
-
 Template.productSettings.helpers({
   hasSelectedProducts() {
     return this.products.length > 0;
@@ -128,13 +124,13 @@ Template.productSettingsListItem.inheritsHelpersFrom("productSettingsGridItem");
 
 Template.productSettings.events({
   "click [data-event-action=publishProduct]": function () {
-    publishProduct(this.products);
+    ReactionProduct.publishProduct(this.products);
   },
   "click [data-event-action=cloneProduct]": function () {
-    cloneProduct(this.products);
+    ReactionProduct.cloneProduct(this.products);
   },
   "click [data-event-action=deleteProduct]": function () {
-    maybeDeleteProduct(this.products);
+    ReactionProduct.maybeDeleteProduct(this.products);
   },
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
@@ -149,7 +145,10 @@ Template.productSettings.events({
 
       product.position = position;
 
-      Meteor.call("products/updateProductPosition", product._id, position, weightDependencyUpdate);
+      Meteor.call("products/updateProductPosition", product._id, position,
+        function () {
+          weightDependency.changed();
+        });
     }
   }
 });
