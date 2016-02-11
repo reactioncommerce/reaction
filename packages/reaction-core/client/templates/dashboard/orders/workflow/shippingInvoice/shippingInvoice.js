@@ -58,8 +58,10 @@ Template.coreOrderShippingInvoice.events({
   "submit form[name=capture]": (event, template) => {
     event.preventDefault();
 
-    let order = template.order;
-    let discount = parseFloat(event.target.discount_amount.value) || 0;
+    const order = template.order;
+    const value = $(event.target.discount_amount).autoNumeric("get") || 0;
+    const discount = parseFloat(accounting.toFixed(value, 2));
+
     Meteor.call("orders/approvePayment", order, discount, (error) => {
       if (error) {
         // Show error

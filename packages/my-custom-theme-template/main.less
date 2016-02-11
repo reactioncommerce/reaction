@@ -1,27 +1,21 @@
-
 /*
-  Write and/or import all other styles into this file
-  Be sure to also include them in package.js under
-
-
-  api.addFiles([
-    "/path/to/file.less"
-  ], "client", {isImport: true});
-
-  - or -
-
-  api.addFiles("/path/to/file.less", "client", {isImport: true})
-
+  You may import all other styles into this file.
 */
 
 // Import Bootstrap 3 Styles
+// This provides the base styles needed for the theme to function properly
 @import "{reactioncommerce:core-theme}/lib/bootstrap/less/bootstrap.less";
 
-// Import Reaction Core Theme Styles
-@import "{reactioncommerce:core-theme}/default/alerts.less";
+// Import Reaction Core Theme Variables
+// Variable overrides and additions provided by core-theme
+@import "{reactioncommerce:core-theme}/default/variables.less";
 
-// Disabled: Reaction-UI can handle RTL
-// @import "{reactioncommerce:core-theme}/default/bootstrap.rtl.less";
+// *** Import our variable overrides
+@import "styles/variables.less";
+
+// Import Reaction Core Theme Styles
+@import "{reactioncommerce:core-theme}/default/bootstrap.rtl.less";
+@import "{reactioncommerce:core-theme}/default/alerts.less";
 @import "{reactioncommerce:core-theme}/default/dropdowns.less";
 @import "{reactioncommerce:core-theme}/default/forms.less";
 @import "{reactioncommerce:core-theme}/default/grid.less";
@@ -29,7 +23,6 @@
 @import "{reactioncommerce:core-theme}/default/navs.less";
 @import "{reactioncommerce:core-theme}/default/panels.less";
 @import "{reactioncommerce:core-theme}/default/popovers.less";
-@import "{reactioncommerce:core-theme}/default/variables.less";
 @import "{reactioncommerce:core-theme}/default/base.less";
 @import "{reactioncommerce:core-theme}/theme/accounts/accounts.less";
 @import "{reactioncommerce:core-theme}/theme/accounts/inline/inline.less";
@@ -63,8 +56,12 @@
 @import "{reactioncommerce:core-theme}/theme/products/productList/productList.less";
 @import "{reactioncommerce:core-theme}/theme/products/products.less";
 
-// Get bootstrap variables
-@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
+/**
+  Import your styles here
+  *** YOU ALSO HAVE TO INCLUDE YOUR STYLES IN THE package.js FILE ***
 
-// Import our styles
+  api.addFiles("/path/to/file.less", "client", {isImport: true});
+**/
+
+// Import our other styles
 @import "styles/base.less";

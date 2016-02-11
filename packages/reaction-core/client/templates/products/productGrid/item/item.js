@@ -63,14 +63,8 @@ Template.productGridItems.helpers({
       return "product-small";
     }
   },
-  isSelected(productId) {
-    let selectedProducts = Session.get("productGrid/selectedProducts");
-
-    if (_.contains(selectedProducts, this._id)) {
-      return "active";
-    }
-
-    return "";
+  isSelected: function () {
+    return _.contains(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
   },
   isMediumWeight: function () {
     let position = this.position || {};
@@ -102,53 +96,47 @@ Template.productGridItems.helpers({
  */
 
 Template.productGridItems.events({
-  "click [data-event-action=productClick]": function (event) {
+  "click [data-event-action=productClick]": function (event, template) {
     if (ReactionCore.hasPermission("createProduct")) {
-      if (event.shiftKey) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey) {
         event.preventDefault();
 
-        let checkbox = $(`input[type=checkbox][value=${this._id}]`);
-        let checked = checkbox.prop("checked");
+        let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+        const $items = $("li.product-grid-item");
+        const $activeItems = $("li.product-grid-item.active");
+        const selected = $activeItems.length;
 
-        checkbox
-          .prop("checked", !checked)
-          .trigger("change");
+        if (event.shiftKey && selected > 0) {
+          const indexes = [
+            $items.index($checkbox.parents("li.product-grid-item")),
+            $items.index($activeItems.get(0)),
+            $items.index($activeItems.get(selected - 1))
+          ];
+          for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+            $checkbox = $("input[type=checkbox]", $items.get(i));
+            if ($checkbox.prop("checked") === false) {
+              $checkbox.prop("checked", true).trigger("change");
+            }
+          }
+        } else {
+          $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
+        }
       }
     }
   },
-
-  "click [data-event-action=selectSingleProduct]": function (event) {
+  "click [data-event-action=selectSingleProduct]": function (event, template) {
     event.preventDefault();
 
-    const checkbox = $(`input[type=checkbox][value=${this._id}]`);
+    const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
 
-    // Reset selected products
     Session.set("productGrid/selectedProducts", []);
-
-    // Select just this product
-    checkbox
-      .prop("checked", true)
-      .trigger("change");
+    $checkbox.prop("checked", true).trigger("change");
+  },
+  "click .publish-product": function () {
+    publishProduct(this);
   },
   "click .clone-product": function () {
-    let title;
-    title = this.title;
-    return Meteor.call("products/cloneProduct", this, function (error,
-      productId) {
-      if (error) {
-        throw new Meteor.Error("error cloning product", error);
-      }
-      Router.go("product", {
-        _id: productId
-      });
-      return Alerts.add("Cloned " + title, "success", {
-        placement: "productManagement",
-        id: productId,
-        i18nKey: "productDetail.cloneMsg",
-        autoHide: true,
-        dismissable: false
-      });
-    });
+    cloneProduct(this);
   },
   "click .delete-product": function (event) {
     event.preventDefault();
@@ -188,43 +176,8 @@ Template.productGridItems.events({
     };
     Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
-  },
-  "click .publish-product": function () {
-    let self;
-    self = this;
-    return Meteor.call("products/publishProduct", this._id, function (
-      error, result) {
-      if (error) {
-        Alerts.add(error, "danger", {
-          placement: "productGridItem",
-          id: self._id
-        });
-        return {};
-      }
-      if (result === true) {
-        return Alerts.add(self.title + " is now visible", "success", {
-          placement: "productGridItem",
-          type: self._id,
-          id: self._id,
-          i18nKey: "productDetail.publishProductVisible",
-          autoHide: true,
-          dismissable: false
-        });
-      }
-      return Alerts.add(self.title + " is hidden", "warning", {
-        placement: "productGridItem",
-        type: self._id,
-        id: self._id,
-        i18nKey: "productDetail.publishProductHidden",
-        autoHide: true,
-        dismissable: false
-      });
-    });
   }
 });
-
-
-
 
 Template.productGridItems.onRendered(function () {
   if (ReactionCore.hasPermission("createProduct")) {

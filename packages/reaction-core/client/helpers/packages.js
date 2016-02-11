@@ -46,7 +46,7 @@
  *  }]
  */
 
-Template.registerHelper("reactionApps", function (optionHash) {
+function getReactionApps(optionHash) {
   let fields;
   let filter;
   let key;
@@ -57,7 +57,7 @@ Template.registerHelper("reactionApps", function (optionHash) {
   let reactionPackages;
   let registryFilter;
 
-  let options = optionHash.hash; // _ref = options.hash;
+  let options = optionHash.hash || optionHash; // _ref = options.hash;
   let packageSubscription = ReactionCore.Subscriptions.Packages;
 
   // you could provide a shopId in optionHash
@@ -177,4 +177,10 @@ Template.registerHelper("reactionApps", function (optionHash) {
 
     return reactionApps;
   }
-});
+}
+
+// Export
+ReactionCore.Apps = getReactionApps;
+
+// Register global template helper
+Template.registerHelper("reactionApps", getReactionApps);

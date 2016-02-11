@@ -25,7 +25,8 @@
         "timezoneOptions": "Выберите часовой пояс",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "loadMoreProducts": "Загрузить больше продуктов"
       },
       "shopSettings": {
         "general": "Основные",
@@ -70,6 +71,8 @@
         "limitedSupply": "Ограниченное кол-во",
         "publishProductVisible": "теперь виден",
         "publishProductHidden": "теперь скрыт",
+        "clonedAlert": "Скопирован",
+        "deletedAlert": "Удален",
         "startTracking": "Начать трэкинг",
         "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",

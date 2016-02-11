@@ -1,15 +1,27 @@
-/**
- * corePaymentMethods helpers
- *
- * app details defaults the icon and label to the package dashboard settings
- * but you can override by setting in the package registry
- * eventually admin editable as well.
- * label is also translated with checkoutPayment.{{app name}}.label
- */
+
+const openClassName = "in";
+
+Template.corePaymentMethods.onCreated(function () {
+  // Set the default paymentMethod
+  // Note: we do this once, so if the admin decides to change the default payment method
+  // while a user is trying to checkout, they wont get a jarring experience.
+  const shop = ReactionCore.Collections.Shops.findOne();
+
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    defaultPaymentMethod: shop.defaultPaymentMethod || "none"
+  });
+});
+
 Template.corePaymentMethods.helpers({
-  isOpen: function (current) {
-    if (current.priority === 0) {
-      return "in";
+  isOpen(current) {
+    const instance = Template.instance();
+    const state = instance.state;
+    const name = current.name;
+    const priority = current.priority;
+
+    if (state.equals("defaultPaymentMethod", name) || priority === "0" && state.equals("defaultPaymentMethod", "none")) {
+      return openClassName;
     }
   },
   appDetails: function () {
