@@ -181,7 +181,7 @@ function processStyles(data) {
 function registerTheme(styles) {
   check(styles, String);
 
-  const annotations = annotation.parse(styles);
+  const annotations = cssAnnotation.parse(styles);
   const {
     name,
     label,
