@@ -61,14 +61,16 @@ ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
       _id: productId
     });
   }
-  // set the default variant
-  // as the default.
-  if (!variantId) {
-    variantId = product.variants[0]._id;
+  if (product) {
+    // set the default variant
+    // as the default.
+    if (!variantId) {
+      variantId = product.variants[0]._id;
+    }
+    // set in our reactive dictionary
+    ReactionProduct.set("productId", productId);
+    ReactionProduct.set("variantId", variantId);
   }
-  // set in our reactive dictionary
-  ReactionProduct.set("productId", productId);
-  ReactionProduct.set("variantId", variantId);
 };
 
 

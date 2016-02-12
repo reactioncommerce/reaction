@@ -11,6 +11,9 @@ Package.onUse(function (api) {
   api.use("underscore");
   api.use("ecmascript");
   api.use("check");
+  api.use("tracker");
+  api.use("session");
+  api.use("amplify");
 
   api.use("reactioncommerce:reaction-schemas@2.0.0");
   api.use("cfs:standard-packages@0.5.9");
@@ -54,6 +57,9 @@ Package.onUse(function (api) {
   api.addFiles("server/main.js", "server");
   api.addFiles("server/security.js", "server");
 
+  // client subscriptions
+  api.addFiles("client/subscriptions.js", "client");
+
   // imply to share
   api.imply("cfs:standard-packages");
   api.imply("cfs:storage-adapter");
@@ -66,6 +72,7 @@ Package.onUse(function (api) {
   api.imply("alanning:roles");
   api.imply("alanning:roles");
   api.imply("meteorhacks:subs-manager");
+  // api.imply("amplify");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");

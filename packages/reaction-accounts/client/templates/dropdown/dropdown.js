@@ -25,6 +25,8 @@ Template.loginDropdown.events({
         ReactionCore.Log.warn("Failed to logout.", error);
       }
       // go home on logout
+      ReactionSubscriptions.reset();
+      ReactionRouter.reload();
       ReactionRouter.go("index");
     });
   },

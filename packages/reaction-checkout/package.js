@@ -32,6 +32,9 @@ Package.onUse(function (api) {
   // community packages
   api.use("reactioncommerce:core@0.12.0");
 
+  // template helpers
+  api.addFiles("client/helpers/cart.js", "client");
+
   // Cart Templates
   api.addFiles("client/templates/cart/cartDrawer/cartDrawer.html", "client");
   api.addFiles("client/templates/cart/cartDrawer/cartDrawer.js", "client");
