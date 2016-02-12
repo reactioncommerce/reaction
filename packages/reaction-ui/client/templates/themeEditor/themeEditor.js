@@ -1,5 +1,5 @@
 
-Template.reactionUISettings.onCreated(function () {
+Template.uiThemeEditor.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
     selectors: [],
@@ -47,7 +47,7 @@ Template.reactionUISettings.onCreated(function () {
 });
 
 
-Template.reactionUISettings.helpers({
+Template.uiThemeEditor.helpers({
   component() {
     const instance = Template.instance();
     const theme = instance.state.get("theme");
@@ -108,7 +108,7 @@ Template.reactionUISettings.helpers({
   }
 });
 
-Template.reactionUISettings.events({
+Template.uiThemeEditor.events({
   "mouseover [data-rule]"(event) {
     const selector = event.currentTarget.dataset.selector;
 

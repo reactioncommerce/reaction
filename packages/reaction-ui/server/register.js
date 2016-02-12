@@ -18,12 +18,6 @@ ReactionCore.registerPackage({
       label: "Reaction UI",
       permission: "dashboard/ui"
     }]
-  }, {
-    label: "Layout Settings",
-    route: "dashboard/ui/settings",
-    provides: "settings",
-    container: "dashboard",
-    template: "reactionUISettings"
   }],
   layout: [{
     layout: "coreLayout",

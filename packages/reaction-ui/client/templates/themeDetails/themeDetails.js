@@ -18,7 +18,7 @@ Template.uiThemeDetails.onCreated(function () {
         props: {
           size: "large"
         },
-        template: "reactionUISettings"
+        template: "uiThemeEditor"
       });
     }
   });

@@ -102,9 +102,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/dashboard.html", "client");
   api.addFiles("client/templates/dashboard/dashboard.js", "client");
 
-  api.addFiles("client/templates/settings/settings.html", "client");
-  api.addFiles("client/templates/settings/settings.js", "client");
-  api.addFiles("client/templates/settings/settings.less", "client");
+  api.addFiles("client/templates/themeEditor/themeEditor.html", "client");
+  api.addFiles("client/templates/themeEditor/themeEditor.js", "client");
+  api.addFiles("client/templates/themeEditor/themeEditor.less", "client");
 
   api.addFiles("client/templates/themeDetails/themeDetails.html", "client");
   api.addFiles("client/templates/themeDetails/themeDetails.js", "client");
