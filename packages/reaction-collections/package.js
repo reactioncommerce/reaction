@@ -26,13 +26,9 @@ Package.onUse(function (api) {
   api.use("vsivsi:job-collection@1.3.0");
   api.use("ongoworks:security@1.3.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
-<<<<<<< HEAD
-  api.use("alanning:roles@1.2.13");
-  api.use("tmeasday:publish-counts@0.7.3");
-=======
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
->>>>>>> features-v0.12
+  api.use("tmeasday:publish-counts@0.7.3");
 
   // ReactionCore declaration
   api.addFiles("common/globals.js");

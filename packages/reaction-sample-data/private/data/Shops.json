@@ -3066,7 +3066,6 @@
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter",
       "notFound": "notFound",
-      "unauthorized": "unauthorized",
       "dashboardHeader": "",
       "dashboardControls": "filtrationDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
@@ -6230,7 +6229,6 @@
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter",
       "notFound": "notFound",
-      "unauthorized": "unauthorized",
       "dashboardControls": "filtrationDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
