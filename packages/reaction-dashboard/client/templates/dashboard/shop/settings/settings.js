@@ -54,7 +54,7 @@ Template.shopSettings.helpers({
       value: "none"
     }];
 
-    if (_.isArray(paymentMethods)) {
+    if (paymentMethods && _.isArray(paymentMethods)) {
       for (let method of paymentMethods) {
         options.push({
           label: method.name,
