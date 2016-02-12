@@ -1,0 +1,39 @@
+<template name="dashboardProductBundles">
+  {{!-- navbar --}}
+  <div class='container'>
+    <h1>Product Bundles</h1>
+  </div>
+  <div class='container'>
+    <table class="table table-hover">
+      <thead>
+        <th>Title</th>
+        <th>Midlayer?</th>
+        <th>Colorways</th>
+      </thead>
+      <tbody>
+        {{#each bundles}}
+          {{> dashboardProductBundle}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template name="dashboardProductBundle">
+  {{! context is bundles }}
+  <tr style="border-top:2px solid #666;">
+    <a href="{{pathFor 'product-bundle'}}">
+      <th scope="row">{{title}}</th>
+    </a>
+    <th>{{hasMidlayer}}</th>
+    <td>{{colorWaysCount colorWays}}</td>
+
+  </tr>
+  {{#each colorWaysKeys colorWays}}
+    <tr>
+      <th scope="row">-</th>
+      <th></th>
+      <td>{{this}}</td>
+    </tr>
+  {{/each}}
+</template>

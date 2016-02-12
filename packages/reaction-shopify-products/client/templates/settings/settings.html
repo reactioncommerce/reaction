@@ -1,0 +1,20 @@
+<template name="shopifyProductsSettings">
+  <div class="panel-body">
+    {{#autoForm
+        collection="ReactionCore.Collections.Packages"
+        schema="ReactionCore.Schemas.ShopifyProductsPackageConfig"
+        doc=packageData
+        type="update"
+        id="shopify-products-update-form"
+        }}
+
+      <p>Shopify Account Setup</p>
+
+      {{>afQuickField  name='settings.shopify.shopname' placeholder='Ex: "shopname" in shopname.myshopify.com'}}
+      {{>afQuickField  name='settings.shopify.key'}}
+      {{>afQuickField  name='settings.shopify.password'}}
+
+      <button type="submit" class="btn btn-primary pull-right">Save Changes</button>
+    {{/autoForm}}
+  </div>
+</template>
