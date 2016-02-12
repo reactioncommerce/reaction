@@ -1,55 +1,8 @@
 const postcss = Npm.require("postcss");
 const postcssJS = Npm.require("postcss-js");
 const autoprefixer = Npm.require("autoprefixer");
-const util = Npm.require("util");
-const annotation = Npm.require("css-annotation");
+const cssAnnotation = Npm.require("css-annotation");
 const prefixer = postcssJS.sync([autoprefixer]);
-const Future = Npm.require("fibers/future");
-
-// TODO: Move this into a testing
-const test = `
-/**
- * @theme base
- * @label Navbar
- * @name navbar
- * @author Reaction Commerce
- * @url https://reactioncommerce.com
- */
-@import "variables.css";
-@import "variables2.css" @media screen and (max-width: 10em);
-
-body {
-  /**
-   * @label Page Background
-   * @example <body>
-   * </body>
-   */
-  background-color: white;
-
-  @media screen and (max-width: 32em) {
-    /**
-     * @label Mobile
-     */
-    background-color: #ff00ff;
-  }
-
-  @media screen and (max-width: 48em) {
-    /**
-     * @label Tablet
-     */
-    background-color: #FBFBFB;
-  }
-}
-
-.navbar {
-  @media screen and (max-width: 32em) {
-    /**
-     * @label Mobile
-     */
-    background-color: green;
-  }
-}
-`
 
 function everything(style) {
   // -- Begin very verbose comments
@@ -78,7 +31,7 @@ function everything(style) {
   // Loop through all selectors in the cssObject
   _.each(cssObject, (properties, selector) => {
     // Create a blank item to start storing our selectors, decelarations, etc.
-    let item = {}
+    let item = {};
 
     // If the properties of this particulary declaration block are an object
     //
@@ -101,24 +54,22 @@ function everything(style) {
 
       // Loop through all the properties for this given style declaration block
       _.each(properties, (value, property) => {
-
         // If the name of the property starts with an @ [at sign], then its an atrule
         // For example: @media is an atrule;
         // @media screen and (max-width: 32em) {}
         //
         if (property.indexOf("@") === 0) {
-
           // If the vale of the atrule is an object containing properties
           if (_.isObject(value)) {
             // A place to store any at rule property declarations
-            let atRuleDeclarations = []
+            let atRuleDeclarations = [];
 
             // We loop through those properties and save them to subProps
             _.each(value, (atRuleValue, atRuleProperty) => {
               atRuleDeclarations.push({
                 property: atRuleProperty,
                 value: atRuleValue,
-                type: "atrule",
+                type: "atrule"
               });
             });
 
@@ -126,13 +77,11 @@ function everything(style) {
             item.declarations.push({
               property,
               declarations: atRuleDeclarations,
-              annotation: _.find(annotations, (annotation) => {
-                return `@${annotation.atrule} ${annotation.params}` === property
+              annotation: _.find(annotations, (atRuleAnnotation) => {
+                return `@${atRuleAnnotation.atrule} ${atRuleAnnotation.params}` === property;
               })
             });
-
           } else {
-
             // Other wise the at rule's value is added to our item object's declarations
             // For example: @import "style.css"
             // the value is literal true, because theres no block like a @media {} query
@@ -142,7 +91,6 @@ function everything(style) {
             });
           }
         } else {
-
           // If the propetry name is not some special declaration, then handle it normally
           // For example:
           // "backgroundColor": "#ff00ff"
@@ -162,12 +110,12 @@ function everything(style) {
       item = {
         selector,
         value: properties
-      }
+      };
     }
 
     // Add to our ongoing selectors array;
     selectors.push(item);
-  })
+  });
 
   // And at last, return the result
   // Suitable for inserting into a collection or using with template {{#each}} statements
@@ -184,7 +132,7 @@ function getStyleObject() {
 
 function annotateCSS(stylesheet) {
   check(stylesheet, String);
-  return annotation.parse(stylesheet);
+  return cssAnnotation.parse(stylesheet);
 }
 
 function cssToObject(styles) {
@@ -201,13 +149,16 @@ function objectToCSS(styles) {
   return postcss().process(prefixedStyles, {parser: postcssJS});
 }
 
-function processAllStyles(styles) {
+function themeToCSS(theme) {
+  check(theme, Object);
   let output = "";
 
-  for (let style of styles) {
-    const prefixedStyles = prefixer(styles);
-    output += postcss().process(prefixedStyles, {parser: postcssJS});
-  }
+  // TODO: Implement
+  // for (let style of theme.components) {
+  //   const prefixedStyles = prefixer(styles);
+  //   output += postcss().process(prefixedStyles, {parser: postcssJS});
+  // }
+  return output;
 }
 
 function processStyles(data) {
@@ -255,7 +206,6 @@ function registerTheme(styles) {
         }
       }
     });
-
   } else {
     ReactionCore.Collections.Themes.upsert({
       theme
@@ -289,12 +239,13 @@ function duplicateTheme(name) {
 
 
 Meteor.methods({
-  "layout/getStyleObject": getStyleObject,
-  "layout/processStyles": processStyles,
-  "layout/cssToObject": cssToObject,
-  "layout/registerTheme": registerTheme,
-  "layout/processAnnotations": annotateCSS,
-  "ui/duplicateTheme": duplicateTheme
+  "ui/getStyleObject": getStyleObject,
+  "ui/processStyles": processStyles,
+  "ui/cssToObject": cssToObject,
+  "ui/registerTheme": registerTheme,
+  "ui/processAnnotations": annotateCSS,
+  "ui/duplicateTheme": duplicateTheme,
+  "ui/themeToCSS": themeToCSS
 });
 
 ReactionUI.registerTheme = registerTheme;
