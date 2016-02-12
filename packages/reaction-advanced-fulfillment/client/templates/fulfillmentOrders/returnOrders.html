@@ -1,0 +1,75 @@
+<template name='returnOrders'>
+  {{> afNavbar}}
+  <div class='container-fluid'>
+    <div class='col-md-9 col-sm-12'>
+      <h1>Orders waiting to be Returned</h1>
+    </div>
+    <table class='table table-hover'>
+      <thead>
+        {{#if ordersAreSelected}}
+          <th colspan="9">
+            <div class="row">
+              <div class="col-xs-7 col-sm-3 col-md-2">
+                <i class="fa fa-check-square-o fa-lg" style="cursor: pointer;" id="checkboxAllOrders"></i>
+                {{ordersSelected}} Selected Orders
+              </div>
+              <div class="col-xs-5 col-sm-2 col-md-2">
+                <select class="form-control input-sm" id="bulkActions">
+                  <option>Bulk Actions</option>
+                  <option value="return">Mark {{ordersSelected}} Orders as Returned</option>
+                  <option value="complete">Mark {{ordersSelected}} Orders as Completed</option>
+                  {{status}}
+                </select>
+              </div>
+            </div>
+          </th>
+        {{else}}
+          <th>
+            <i class="fa fa-square-o fa-lg" style="cursor: pointer;" id="checkboxAllOrders"></i>
+          </th>
+          <th>#</th>
+          <th><i class='fa fa-truck'></i></th>
+          <th>Expected Return On</th>
+          <th class="hidden-xs hidden-sm">Customer Ship for Return</th>
+          <th class="hidden-xs hidden-sm">Last Ski Day</th>
+          <th>Customer</th>
+          <th>Returning From</th>
+          <th>Status</th>
+        {{/if}}
+      </thead>
+      <tbody>
+        {{#each orders}}
+          {{> returnOrder}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template name='returnOrder'>
+  <tr class="orderRow" style="cursor: pointer;" data-id='{{_id}}'>
+    <td class="no-click">
+      {{#if orderSelected}}
+        <input type="checkbox" name="order_{{_id}}" id="checkboxOrder_{{_id}}" class="hide" data-id={{_id}} checked=checked><label for="order_{{_id}}" style="cursor: pointer;"><i class="fa fa-check-square-o fa-lg"></i></label>
+      {{else}}
+        <input type="checkbox" name="order_{{_id}}" id="checkboxOrder_{{_id}}" class="hide" data-id={{_id}}><label for="order_{{_id}}" style="cursor: pointer;"><i class="fa fa-square-o fa-lg"></i></label>
+      {{/if}}
+    </td>
+    <td><strong>{{orderNumber}}</strong></td>
+    <td>
+      {{#if advancedFulfillment.localDelivery}}
+        <span class="label label-info" style="font-size: 14px;">LOCAL</span>
+      {{else}}
+        <span class="label label-primary" style="font-size: 14px;">GROUND</span>
+      {{/if}}
+    </td>
+    <td>
+      {{returningDate}}
+    </td>
+    <td class="hidden-xs hidden-sm">{{shippingDay}}</td>
+    <td class="hidden-xs hidden-sm">{{lastSkiDay}}</td>
+    <td>{{returnName}}</td>
+    <td>{{shippingLoc}}</td>
+    <td>{{status}}</td>
+  </tr>
+</template>
