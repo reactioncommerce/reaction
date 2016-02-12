@@ -75,15 +75,8 @@ Alerts = {
     let message = alertMessage;
     let options = alertOptions;
     // check options to see if we have translation
-    if (options) {
-      if (options.i18nKey) {
-        if (options.i18nKey === i18n.t(options.i18nKey)) {
-          i18nMsg = i18n.t(options.i18nKey);
-          if (i18nMsg !== options.i18nKey) {
-            message = i18n.t(options.i18nKey);
-          }
-        }
-      }
+    if (options && options.i18nKey && options.i18nKey !== i18n.t(options.i18nKey)) {
+      message = i18n.t(options.i18nKey);
     }
     // get default options
     options = _.defaults(alertOptions || {}, Alerts.defaultOptions);

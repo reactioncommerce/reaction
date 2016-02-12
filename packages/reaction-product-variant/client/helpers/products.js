@@ -12,7 +12,7 @@ ReactionProduct = new ReactiveDict("currentProduct");
 Tracker.autorun(function () {
   ReactionRouter.watchPathChange();
   if (ReactionRouter.getParam("handle")) {
-    const prodSub = ReactionSubMan.subscribe("Product", ReactionRouter.getParam("handle"));
+    const prodSub = ReactionSubscriptions.subscribe("Product", ReactionRouter.getParam("handle"));
     if (prodSub.ready()) {
       return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variantId"));
     }
@@ -61,14 +61,16 @@ ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
       _id: productId
     });
   }
-  // set the default variant
-  // as the default.
-  if (!variantId) {
-    variantId = product.variants[0]._id;
+  if (product) {
+    // set the default variant
+    // as the default.
+    if (!variantId) {
+      variantId = product.variants[0]._id;
+    }
+    // set in our reactive dictionary
+    ReactionProduct.set("productId", productId);
+    ReactionProduct.set("variantId", variantId);
   }
-  // set in our reactive dictionary
-  ReactionProduct.set("productId", productId);
-  ReactionProduct.set("variantId", variantId);
 };
 
 
@@ -316,7 +318,7 @@ ReactionProduct.getProductPriceRange = (currentProductId) => {
  * @param {Object} product - product Object
  * @return {Object} - returns nothing, and alerts,happen here
  */
-ReactionProduct.maybeDeleteProduct = (product) => {
+ReactionProduct.maybeDeleteProduct = maybeDeleteProduct = (product) => {
   let productIds;
   let title;
   let confirmTitle = "Delete this product?";
@@ -348,7 +350,7 @@ ReactionProduct.maybeDeleteProduct = (product) => {
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
         ReactionProduct.setProduct(null);
-        ReactionRouter.go("/");
+        ReactionRouter.go("index");
         return Alerts.toast(`Deleted ${title}`, "info");
       }
     });

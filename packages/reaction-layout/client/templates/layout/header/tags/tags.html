@@ -6,7 +6,7 @@
 <ul class="list-inline tag-link-list" id="tag-link-list">
   {{#each ./tags}}
    <li class="{{activeTag}}">
-    <a href="{{pathFor "tag" slug}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}" data-event-category="tag" data-event-action="tag-click" data-event-label="navigation tag click" data-event-value="{{name}}">{{name}}</a>
+    <a href="{{pathFor "tag" slug=slug}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}" data-event-category="tag" data-event-action="tag-click" data-event-label="navigation tag click" data-event-value="{{name}}">{{name}}</a>
   </li>
   {{/each}}
   {{#if hasPermission "admin"}}

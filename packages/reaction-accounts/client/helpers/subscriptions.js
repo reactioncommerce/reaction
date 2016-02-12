@@ -1,2 +1,2 @@
 ReactionCore.Subscriptions.Account =
-  Meteor.subscribe("Accounts", Meteor.userId());
+  ReactionSubscriptions.subscribe("Accounts", Meteor.userId());

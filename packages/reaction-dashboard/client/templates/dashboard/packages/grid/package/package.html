@@ -2,16 +2,12 @@
   <div class="rui card package" data-settings-view="{{packageSettings.template}}">
     {{!-- display overview route --}}
 
-
     <div class="content" data-event-action="showPackageManagement">
       <h3 class="title">
         <i class="{{icon}}"></i> {{label}}
       </h3>
       <small>{{{description}}}</small>
 
-      <!-- <div>
-        <span class="badge {{pkgTypeClass.class}}">{{pkgTypeClass.text}}</span>
-      </div> -->
     </div>
 
     <div class="controls">
@@ -28,6 +24,10 @@
           </button>
           {{/if}}
         {{/each}}
+
+        {{#if route}}
+          {{> button icon="angle-right" onClick=showDashboard}}
+        {{/if}}
       {{else}}
         <button class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}">
           <i class="fa fa-plus-square fa-fw"></i>

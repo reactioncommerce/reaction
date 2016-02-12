@@ -5,13 +5,6 @@ Package.describe({
   documentation: "README.md"
 });
 
-Npm.depends({
-  "postcss": "5.0.14",
-  "postcss-js": "0.1.1",
-  "autoprefixer": "6.3.1",
-  "css-annotation": "0.6.0"
-});
-
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2.1");
 
@@ -36,26 +29,19 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
 
-  // community packages
+  // reaction and community packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-ui@0.4.0");
+  api.use("reactioncommerce:reaction-ui@0.5.0");
   api.use("juliancwirko:s-alert@3.1.4");
   api.use("juliancwirko:s-alert-stackslide@3.1.3");
   api.use("kevohagan:sweetalert@1.0.0");
 
-
+  // register reaction package
   api.addFiles("server/register.js", "server");
-  api.addFiles("server/processTheme.js", "server");
 
   // Theme Templates
   api.addFiles("client/templates/theme/theme.js", "client");
   api.addFiles("client/templates/theme/theme.html", "client");
-
-  api.addFiles("client/templates/settings/settings.html", "client");
-  api.addFiles("client/templates/settings/settings.js", "client");
-  api.addFiles("client/templates/settings/settings.less", "client");
-
-  api.addFiles("client/templates/dashboard/dashboard.html", "client");
 
   // layout templates
   api.addFiles("client/templates/layout/layout.html", "client");
@@ -83,7 +69,11 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/layout/loading/loading.html", "client");
   api.addFiles("client/templates/layout/notFound/notFound.html", "client");
+
   api.addFiles("client/templates/layout/notice/unauthorized.html", "client");
+
+  // Theme Assets
+  api.addAssets("private/themes/notFound.css", "server");
 
   api.export("Alerts", ["client"]);
 });

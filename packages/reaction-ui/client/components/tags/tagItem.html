@@ -14,7 +14,7 @@
 
 <template name="tagLink">
   {{#with tag}}
-    <a class="rui tag link" href="{{pathFor "tag" slug}}" data-id="{{_id}}">{{name}}</a>
+    <a class="rui tag link" href="{{pathFor "tag" slug=slug}}" data-id="{{_id}}">{{name}}</a>
   {{/with}}
 </template>
 

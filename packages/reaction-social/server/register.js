@@ -34,12 +34,11 @@ ReactionCore.registerPackage({
     label: "Social",
     description: "Social Channel configuration",
     icon: "fa fa-share-alt",
-    cycle: "2",
+    priority: 2,
     container: "dashboard",
     permissions: [{
       label: "Social",
-      permission: "dashboard/social",
-      group: "Shop Settings"
+      permission: "dashboard/social"
     }]
   }, {
     label: "Social Settings",

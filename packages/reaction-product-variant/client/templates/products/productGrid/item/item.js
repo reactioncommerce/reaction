@@ -132,26 +132,11 @@ Template.productGridItems.events({
     Session.set("productGrid/selectedProducts", []);
     $checkbox.prop("checked", true).trigger("change");
   },
+  "click .publish-product": function () {
+    ReactionProduct.publishProduct(this);
+  },
   "click .clone-product": function () {
-    let title;
-    title = this.title;
-    return Meteor.call("products/cloneProduct", this, function (error,
-      productId) {
-      if (error) {
-        throw new Meteor.Error("error cloning product", error);
-      }
-      // go to new product
-      ReactionRouter.go("product", {
-        handle: productId
-      });
-      return Alerts.inline(`Cloned ${title}`, "success", {
-        placement: "productManagement",
-        id: productId,
-        i18nKey: "productDetail.cloneMsg",
-        autoHide: true,
-        dismissable: false
-      });
-    });
+    ReactionProduct.cloneProduct(this);
   },
   "click .delete-product": function (event) {
     event.preventDefault();
@@ -191,38 +176,6 @@ Template.productGridItems.events({
     };
     Meteor.call("products/updateProductPosition", this._id, position);
     return Tracker.flush();
-  },
-  "click .publish-product": function () {
-    let self;
-    self = this;
-    return Meteor.call("products/publishProduct", this._id, function (
-      error, result) {
-      if (error) {
-        Alerts.inline(error, "error", {
-          placement: "productGridItem",
-          id: self._id
-        });
-        return {};
-      }
-      if (result === true) {
-        return Alerts.inline(`${self.title} is now visible`, "success", {
-          placement: "productGridItem",
-          type: self._id,
-          id: self._id,
-          i18nKey: "productDetail.publishProductVisible",
-          autoHide: true,
-          dismissable: false
-        });
-      }
-      return Alerts.inline(`${self.title} is hidden`, "warning", {
-        placement: "productGridItem",
-        type: self._id,
-        id: self._id,
-        i18nKey: "productDetail.publishProductHidden",
-        autoHide: true,
-        dismissable: false
-      });
-    });
   }
 });
 

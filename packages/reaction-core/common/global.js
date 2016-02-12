@@ -13,8 +13,8 @@ if (!ReactionCore.Locale) ReactionCore.Locale = {};
 if (!ReactionCore.Log) ReactionCore.Log = {}; // Move logger create here
 
 if (Meteor.isClient) {
-  ReactionCore.Alerts = {};
-  ReactionCore.Subscriptions = {};
+  if (!ReactionCore.Alerts) ReactionCore.Alerts = {};
+  if (!ReactionCore.Subscriptions) ReactionCore.Subscriptions = {};
 }
 
 // convenience

@@ -22,7 +22,7 @@ ReactionRegistry.loadPackages = function () {
         let shopId = shop._id;
         if (!shopId) return [];
         // existing registry will be upserted with changes, perhaps we should add:
-        // ReactionRegistry.assignOwnerRoles(shopId, pkgName, config.registry);
+        ReactionRegistry.assignOwnerRoles(shopId, pkgName, config.registry);
         ReactionImport.package({
           name: pkgName,
           icon: config.icon,

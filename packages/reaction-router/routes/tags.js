@@ -5,7 +5,7 @@ tags = ReactionRouter.group({
 //
 // tag grid
 //
-tags.route("/:_tag", {
+tags.route("/:slug", {
   name: "tag",
   action: function () {
     // initialize reaction layout

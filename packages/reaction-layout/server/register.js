@@ -1,40 +1,21 @@
+
+// Register Themes
+// ReactionUI.registerTheme(Assets.getText("private/themes/notFound.css"));
+//
 ReactionCore.registerPackage({
   label: "Layout",
   name: "reaction-layout",
-  icon: "fa fa-css3",
+  icon: "fa fa-object-group",
   autoEnable: true,
   settings: {
-
+    name: "Layout"
   },
-  registry: [
-    {
-      provides: "dashboard",
-      container: "dashboard",
-      route: "dashboard/layout",
-      label: "Layout",
-      description: "Theme and layout manager",
-      icon: "fa fa-css3",
-      cycle: 1,
-      group: "core",
-      template: "layoutDashboard",
-      permissions: [{
-        label: "Reaction Layout",
-        permission: "dashboard/layout"
-      }]
-    },
-    {
-      label: "Layout Settings",
-      route: "dashboard/layout",
-      provides: "settings",
-      container: "dashboard",
-      template: "reactionLayoutSettings"
-    }
-  ],
-  permissions: [
-    {
-      label: "Reaction Layout",
-      permission: "dashboard/layout",
-      group: "Reaction Layout"
-    }
-  ]
+  registry: [{
+    provides: "dashboard",
+    template: "layoutDashboard",
+    label: "Layout",
+    description: "Layout utilities",
+    icon: "fa fa-object-group",
+    priority: 4
+  }]
 });

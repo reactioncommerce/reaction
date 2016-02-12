@@ -10,27 +10,23 @@ BlazeLayout.setRoot("body");
  * @param {Object} reqParams - url params
  * @return {String} returns current router path
  */
-pathFor = (reqPath, reqParams) => {
-  let path = reqPath;
-  let params = reqParams;
-  // accept "path/value" case
-  if (!path.hash && params && !params.hash) {
-    const shortcut = "/" + path + "/" + params;
-    return ReactionRouter.path(shortcut);
+ReactionRouter.pathFor = pathFor = (path, options = {}) => {
+  // let {params, query} = options;
+  let params = options.hash;
+  // let query = params.hash.query ? ReactionRouter._qs.parse(params.hash.query) : {};
+  let route = ReactionRouter.path(path, params);
+  // not sure why FlowRoute.path isn't prefixing
+  if (route.substring(0, 1) !== "/") {
+    route = "/" + route;
   }
-  // accept path/param/value
-  if (path.hash) {
-    params = path;
-    path = params.hash.route;
-    delete params.hash.route;
-  }
-  let query = params.hash.query ? ReactionRouter._qs.parse(params.hash.query) : {};
-  return ReactionRouter.path(path, params.hash, query);
+  // console.log(`Requested path for ${path} and returned route: ${route}`);
+  return route;
 };
 // return path
 Template.registerHelper("pathFor", pathFor);
-// deprecated same as pathFor
-Template.registerHelper("pathForSEO", pathFor);
+// deprecated same as pathForSEO
+// Template.registerHelper("pathForSEO", pathFor);
+
 // absolute + path
 Template.registerHelper("urlFor", (path, params) => {
   return Meteor.absoluteUrl(pathFor(path, params).substr(1));

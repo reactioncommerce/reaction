@@ -38,13 +38,6 @@ Template.openCartDrawer.onRendered(function () {
 Template.openCartDrawer.helpers({
   cartItems: function () {
     return ReactionCore.Collections.Cart.findOne().items;
-  },
-  checkoutView: function () {
-    let checkoutView;
-    checkoutView = "display:block";
-    if (ReactionRouter.getRouteName() === "cartCheckout") {
-      return checkoutView;
-    }
   }
 });
 
@@ -56,7 +49,7 @@ Template.openCartDrawer.events({
   "click #btn-checkout": function () {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
-    return ReactionRouter.go("/cart/checkout");
+    return ReactionRouter.go("cart/checkout");
   },
   "click .remove-cart-item": function (event) {
     event.stopPropagation();

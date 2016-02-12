@@ -12,7 +12,7 @@ ReactionCore.registerPackage({
     label: "Inventory",
     description: "Inventory utilities",
     icon: "fa fa-building",
-    cycle: 3,
+    priority: 3,
     group: "reaction-inventory",
     permissions: [{
       label: "Inventory",
@@ -27,12 +27,3 @@ ReactionCore.registerPackage({
     enabled: true
   }]
 });
-
-
-// {
-//   label: "Inventory Settings",
-//   route: "dashboard/inventory",
-//   provides: "settings",
-//   group: "reaction-inventory",
-//   template: "inventorySettings"
-// }],

@@ -7,15 +7,13 @@
 Template.checkoutLogin.helpers({
   checkoutLoginCompleted: function () {
     const self = this;
-    let guestUser = ReactionCore.hasPermission("guest", Meteor.user());
+    const guestUser = ReactionCore.hasPermission("guest", Meteor.user());
     const cart = ReactionCore.Collections.Cart.findOne();
     if (cart && cart.workflow) {
-      let currentStatus = cart.workflow.status;
-      let anonUser = Roles.userIsInRole("anonymous", Meteor.user(),
-        ReactionCore.getShopId());
+      const currentStatus = cart.workflow.status;
+      const anonUser = Roles.userIsInRole("anonymous", Meteor.user(), ReactionCore.getShopId());
 
-      if (currentStatus !== self.template && guestUser === true &&
-        anonUser === false) {
+      if (currentStatus !== self.template && guestUser === true && anonUser === false) {
         return true;
       }
     }

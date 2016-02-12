@@ -29,12 +29,17 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
 
-  // community packages
+  // reaction packages
   api.use("reactioncommerce:core@0.12.0");
+
   // client
   api.addFiles("client/helpers/i18n.js", "client");
+
   // server
   api.addFiles("server/import.js", "server");
+
+  // register reaction package
+  api.addFiles("server/register.js", "server");
 
   // i18n translations
   api.addAssets("private/data/i18n/ar.json", "server");

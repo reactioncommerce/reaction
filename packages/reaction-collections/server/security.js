@@ -25,8 +25,6 @@ let Discounts = ReactionCore.Collections.Discounts;
 
 let Jobs = ReactionCore.Collections.Jobs;
 
-let Layouts = ReactionCore.Collections.Layouts;
-
 let Media = ReactionCore.Collections.Media;
 
 let Orders = ReactionCore.Collections.Orders;
@@ -114,7 +112,6 @@ Security.permit(["insert", "update", "remove"]).collections([
   Shipping,
   Orders,
   Packages,
-  Layouts,
   Templates,
   Jobs
 ]).ifHasRole({

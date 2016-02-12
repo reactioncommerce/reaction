@@ -1,15 +1,20 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.4.0",
+  version: "0.5.0",
   documentation: "README.md"
 });
 
 Npm.depends({
   "classnames": "2.2.3",
   "react-textarea-autosize": "3.3.0",
+  "react-color": "1.3.6",
   "sortablejs": "1.4.2",
-  "react-dom": "0.14.7"
+  "react-dom": "0.14.7",
+  "postcss": "5.0.14",
+  "postcss-js": "0.1.1",
+  "autoprefixer": "6.3.1",
+  "css-annotation": "0.6.0"
   // "react-anything-sortable": "1.0.0"
 });
 
@@ -30,15 +35,18 @@ Package.onUse(function (api) {
   api.use("spacebars");
   api.use("check");
   api.use("react");
+  api.use("react-template-helper");
   api.use("less");
+  api.use("reactive-dict");
 
   // Community Packages
   api.use("cosmos:browserify@0.9.3");
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-schemas@1.0.1");
+  api.use("reactioncommerce:reaction-schemas@2.0.0");
 
+  api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");
 
   api.addFiles("client/styles/base.less", "client");
@@ -47,6 +55,8 @@ Package.onUse(function (api) {
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
+
+  api.addFiles("client/components/cards/cards.less", "client");
 
   api.addFiles("client/components/items/item.jsx", "client");
   api.addFiles("client/components/sortable/sortable.jsx", "client");
@@ -68,6 +78,9 @@ Package.onUse(function (api) {
   api.addFiles("client/components/metadata/metadata.jsx", "client");
   api.addFiles("client/components/metadata/metadata.less", "client");
 
+  api.addFiles("client/components/select/select.html", "client");
+  api.addFiles("client/components/select/select.js", "client");
+  api.addFiles("client/components/select/select.less", "client");
 
   api.addFiles("client/components/media/media.jsx", "client");
   api.addFiles("client/components/media/media.less", "client");
@@ -84,6 +97,25 @@ Package.onUse(function (api) {
   api.addFiles("client/styles/variables.less", "client");
   api.addFiles("client/styles/rtl.less", "client");
   api.addFiles("client/styles/mixins.less", "client");
+
+
+  api.addFiles("client/templates/dashboard/dashboard.html", "client");
+  api.addFiles("client/templates/dashboard/dashboard.js", "client");
+
+  api.addFiles("client/templates/themeEditor/themeEditor.html", "client");
+  api.addFiles("client/templates/themeEditor/themeEditor.js", "client");
+  api.addFiles("client/templates/themeEditor/themeEditor.less", "client");
+
+  api.addFiles("client/templates/themeDetails/themeDetails.html", "client");
+  api.addFiles("client/templates/themeDetails/themeDetails.js", "client");
+
+
+
+  api.addAssets("private/themes/button.css", "server");
+
+  api.addFiles("server/processTheme.js", "server");
+  api.addFiles("server/register.js", "server");
+
   // Exports
   api.export("ReactionUI");
   api.export("Sortable");

@@ -25,7 +25,9 @@ Template.loginDropdown.events({
         ReactionCore.Log.warn("Failed to logout.", error);
       }
       // go home on logout
-      ReactionRouter.go("/");
+      ReactionSubscriptions.reset();
+      ReactionRouter.reload();
+      ReactionRouter.go("index");
     });
   },
 
@@ -36,7 +38,7 @@ Template.loginDropdown.events({
    * @return {void}
    */
   "click .user-accounts-dropdown-apps a": function (event, template) {
-    if (this.route === "createProduct") {
+    if (this.route === "products/createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
@@ -58,10 +60,9 @@ Template.loginDropdown.events({
         }
       });
     } else if (this.route) {
-      let path = ReactionRouter.path(this.route);
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
-      ReactionRouter.go(path);
+      ReactionRouter.go(ReactionRouter.pathFor(this.route));
     }
   }
 });

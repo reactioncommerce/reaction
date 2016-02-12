@@ -14,28 +14,20 @@ ReactionCore.Schemas.Themes = new SimpleSchema({
     optional: true
   },
 
+  layout: {
+    type: String,
+    optional: true,
+    defaultValue: "coreLayout"
+  },
+
   url: {
     type: String,
     optional: true
   },
 
-  stylesheets: {
+  components: {
     type: [Object],
-    optional: true
-  },
-
-  "stylesheets.$.name": {
-    type: String,
-    unique: true
-  },
-
-  "stylesheets.$.stylesheet": {
-    type: String,
-    optional: true
-  },
-  "stylesheets.$.annotations": {
-    type: [Object],
-    blackbox: true,
-    optional: true
+    optional: true,
+    blackbox: true
   }
 });

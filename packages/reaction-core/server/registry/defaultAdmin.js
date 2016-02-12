@@ -104,6 +104,8 @@ ReactionRegistry.createDefaultAdminUser = function () {
   // // the reaction owner has permissions to all sites by default
   Roles.setUserRoles(accountId, _.uniq(defaultAdminRoles), Roles.GLOBAL_GROUP);
   // initialize package permissions
+  // we don't need to do any further permission configuration
+  // it is taken care of in the assignOwnerRoles
   let packages = ReactionCore.Collections.Packages.find().fetch();
   for (let pkg of packages) {
     ReactionRegistry.assignOwnerRoles(shopId, pkg.name, pkg.registry);

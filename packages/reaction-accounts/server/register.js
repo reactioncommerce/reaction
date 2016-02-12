@@ -12,13 +12,8 @@ ReactionCore.registerPackage({
     icon: "fa fa-sign-in",
     container: "accounts",
     template: "accountsDashboard",
-    cycle: 1,
-    permissions: [{
-      label: "Account Dashboard",
-      permission: "dashboard/accounts"
-    }]
+    priority: 1
   }, {
-    route: "dashboard/accounts/settings",
     label: "Account Settings",
     provides: "settings",
     container: "accounts",
@@ -28,11 +23,29 @@ ReactionCore.registerPackage({
     provides: "shortcut",
     label: "Accounts",
     icon: "fa fa-users",
-    cycle: 1
+    priority: 1
   }, {
     route: "account/profile",
+    template: "accountProfile",
     label: "Profile",
     icon: "fa fa-user",
     provides: "userAccountDropdown"
+  }],
+  layout: [{
+    layout: "coreLayout",
+    workflow: "coreAccountsWorkflow",
+    collection: "Accounts",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "accountsDashboard",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "",
+      notFound: "notFound",
+      dashboardHeader: "dashboardHeader",
+      dashboardControls: "accountsDashboardControls",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
   }]
 });

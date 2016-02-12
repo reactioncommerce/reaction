@@ -41,38 +41,6 @@ this.toggleSession = function (sessionVariable, positiveState) {
   return Session.get(sessionVariable);
 };
 
-/**
- * getProductsByTag
- * @summary method to return tag specific product
- * @param {String} tag - tag string
- * @return {Object} - return products collection cursor filtered by tag
- */
-this.getProductsByTag = function (tag) {
-  let hashtags;
-  let newRelatedTags;
-  let relatedTag;
-  let relatedTags;
-  let selector = {};
-
-  if (tag) {
-    hashtags = [];
-    relatedTags = [tag];
-    while (relatedTags.length) {
-      newRelatedTags = [];
-      for (relatedTag of relatedTags) {
-        if (hashtags.indexOf(relatedTag._id) === -1) {
-          hashtags.push(relatedTag._id);
-        }
-      }
-      relatedTags = newRelatedTags;
-    }
-    selector.hashtags = {
-      $in: hashtags
-    };
-  }
-  let cursor = ReactionCore.Collections.Products.find(selector);
-  return cursor;
-};
 
 /**
  * locateUser

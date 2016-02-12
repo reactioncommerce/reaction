@@ -19,5 +19,3 @@ Package.onUse(function (api) {
   api.addAssets("private/data/Shops.json", "server");
   api.addAssets("private/data/Tags.json", "server");
 });
-
-// Package.onTest(function (api) {});

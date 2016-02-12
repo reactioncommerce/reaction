@@ -13,13 +13,13 @@ ReactionCore.registerPackage({
       label: "Shipping",
       description: "Provide shipping rates",
       icon: "fa fa-truck",
-      cycle: 2,
+      priority: 2,
       group: "reaction-shipping",
       template: "shipping"
     },
     {
       label: "Shipping Settings",
-      route: "dashboard/shipping",
+      route: "dashboard/shipping/settings",
       provides: "settings",
       group: "reaction-shipping",
       template: "shippingProviderTable"
