@@ -13,9 +13,6 @@ dashboard = ReactionRouter.group({
 dashboard.route("/", {
   name: "dashboard",
   action: () => {
-    // not sure the behavior this is trying to resolve
-    $(document).trigger("closeAllPopovers");
-
     // initialize reaction layout
     let dashboardLayout =  {
       workflow: "coreDashboardWorkflow"
