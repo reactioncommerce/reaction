@@ -23,6 +23,11 @@ Template.reactionUISettings.onCreated(function () {
     this.state.set("selectedComponent", name);
   };
 
+  this.autorun(() => {
+    const selectedComponent = ReactionRouter.getQueryParam("component");
+    this.state.set("selectedComponent", selectedComponent);
+  });
+
   this.previewStyles = (theme) => {
     let output = "";
     for (let stylesheet of theme.stylesheets) {

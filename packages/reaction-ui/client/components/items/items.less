@@ -1,4 +1,8 @@
-@import "{reactioncommerce:reaction-ui}/client/styles/variables.less";
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
+
 
 .rui.items {
   width: 100%;
@@ -30,8 +34,8 @@
 }
 
 .rui.items.flex .item {
+  display: flex;
   flex: 1 1 50%;
-
 }
 
 .rui.items.flex.quarter .item {
@@ -40,6 +44,7 @@
 
 .rui.items.flex.third .item {
   flex: 1 1 33%;
+  max-width: 33%;
 }
 
 .rui.items.flex.half .item {
@@ -81,5 +86,13 @@
 
 
 .rui.item {
-  // display: flex;
+  .display(flex);
+}
+
+.rui.item.axis.vertical {
+  flex-direction: column;
+}
+
+.rui.item.axis.horizontal {
+  flex-direction: row;
 }

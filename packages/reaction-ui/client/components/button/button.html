@@ -10,6 +10,11 @@
     {{else}}
       <i class="fa fa-{{icon}}"></i>
     {{/if}}
-    {{title}}
+
+    {{#if i18nTitle}}
+      {{i18n i18nTitle title}}
+    {{else}}
+      {{title}}
+    {{/if}}
   </button>
 </template>

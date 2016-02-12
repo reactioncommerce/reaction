@@ -274,13 +274,27 @@ function registerTheme(styles) {
   }
 }
 
+function duplicateTheme(name) {
+  check(name, String);
+
+  const theme = ReactionCore.Collections.Themes.find({
+    theme: name
+  });
+
+  delete theme._id;
+  theme.theme = `${name} copy`;
+
+  return ReactionCore.Collections.Themes.insert(theme);
+}
+
 
 Meteor.methods({
   "layout/getStyleObject": getStyleObject,
   "layout/processStyles": processStyles,
   "layout/cssToObject": cssToObject,
   "layout/registerTheme": registerTheme,
-  "layout/processAnnotations": annotateCSS
+  "layout/processAnnotations": annotateCSS,
+  "ui/duplicateTheme": duplicateTheme
 });
 
 ReactionUI.registerTheme = registerTheme;

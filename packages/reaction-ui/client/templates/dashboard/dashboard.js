@@ -16,7 +16,36 @@ Template.uiDashboard.onCreated(function () {
 });
 
 Template.uiDashboard.helpers({
+
+  duplicateThemeButtonProps(theme) {
+    return {
+      icon: "files-o fa-fw",
+      onClick() {
+        Alerts.alert({
+          title: "Duplicate Theme",
+          showCancelButton: true,
+          confirmButtonText: "Duplicate"
+        }, () => {
+          Meteor.call("ui/duplicateTheme", theme.theme, (error, result) => {
+            if (error) {
+
+            }
+          });
+        });
+      }
+    }
+  },
+
   themes() {
     return Template.instance().state.get("themes");
+  }
+});
+
+
+Template.uiDashboard.events({
+  "click [data-event-action=showTheme]"(event) {
+    ReactionRouter.go("dashboard/uiThemeDetails", {
+      id: event.currentTarget.dataset.theme
+    });
   }
 });

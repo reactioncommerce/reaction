@@ -56,6 +56,8 @@ Package.onUse(function (api) {
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
 
+  api.addFiles("client/components/cards/cards.less", "client");
+
   api.addFiles("client/components/items/item.jsx", "client");
   api.addFiles("client/components/sortable/sortable.jsx", "client");
   api.addFiles("client/components/items/items.jsx", "client");
@@ -103,6 +105,10 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/settings/settings.html", "client");
   api.addFiles("client/templates/settings/settings.js", "client");
   api.addFiles("client/templates/settings/settings.less", "client");
+
+  api.addFiles("client/templates/themeDetails/themeDetails.html", "client");
+  api.addFiles("client/templates/themeDetails/themeDetails.js", "client");
+
 
 
   api.addAssets("private/themes/button.css", "server");

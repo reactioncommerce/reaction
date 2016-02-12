@@ -32,7 +32,7 @@ ReactionCore.registerPackage({
     theme: "default",
     enabled: true,
     structure: {
-      template: "uiDashboard",
+      template: "accountsDashboard",
       layoutHeader: "layoutHeader",
       layoutFooter: "",
       notFound: "notFound",

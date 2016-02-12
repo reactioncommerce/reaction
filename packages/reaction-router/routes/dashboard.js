@@ -38,3 +38,14 @@ dashboard.route("/accounts", {
     renderLayout(dashboardLayout);
   }
 });
+
+dashboard.route("/ui/:id", {
+  name: "dashboard/uiThemeDetails",
+  action: function () {
+    let dashboardLayout =  {
+      template: "uiThemeDetails"
+    };
+    // initialize reaction layout
+    renderLayout(dashboardLayout);
+  }
+});

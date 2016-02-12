@@ -1,9 +1,5 @@
 <template name="reactionUISettings">
   <div>
-    {{> select componentSelectProps}}
-  </div>
-
-  <div>
     <h2>{{component.label}}</h2>
   </div>
 
@@ -16,23 +12,13 @@
               {{style.annotation.label}}
             {{/if}}
 
-              <span class="label-selector">{{style.selector}}</span>
+              <span class="label-selector hidden">{{style.selector}}</span>
           </div>
         </div>
           {{> uiStyleDeclarations declarations=style.declarations}}
       </div>
     {{/each}}
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          {{> textfield name="newSelector"}}
-        </div>
-      </div>
-    </div>
-
   </div>
-  {{> button title="Save" onClick=updateStyles}}
 </template>
 
 <template name="uiStyleDeclarations">

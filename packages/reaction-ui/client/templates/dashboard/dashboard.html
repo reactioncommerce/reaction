@@ -1,30 +1,33 @@
 <template name="uiDashboard">
+  <div class="container-fluid-sm">
+    <h2>Available Themes</h2>
+    <div class="rui items flex third">
+      {{#each theme in themes}}
+        <div class="rui item axis vertical">
+          <div class="rui card" data-event-action="showTheme" data-theme={{theme._id}}>
+            {{!-- display overview route --}}
 
-  <div class="rui packages available-pkg-grid">
-    {{#each theme in themes}}
-      <div class="rui card package" data-settings-view="{{packageSettings.template}}">
-        {{!-- display overview route --}}
+            <div class="content" data-event-action="showPackageManagement">
+              <h3 class="title">
+                <i class="{{icon}}"></i> {{theme.theme}}
+              </h3>
+              <small></small>
 
-        <div class="content" data-event-action="showPackageManagement">
-          <h3 class="title">
-            <i class="{{icon}}"></i> {{theme.label}}
-          </h3>
-          <small></small>
+            </div>
 
+            <div class="controls">
+              {{> button icon="check-square fa-fw"}}
+              {{> button (duplicateThemeButtonProps theme)}}
+            </div>
+
+          </div>
         </div>
-
-        <div class="controls">
-          <button class="pull-right disablePkg">
-            <i class="fa fa-check-square fa-fw"></i>
-          </button>
+      {{else}}
+        <div class="empty-view-message">
+            <i class="fa fa-exclamation-triangle"></i>
+            <p>No Available UI Themes</p>
         </div>
-
-      </div>
-    {{else}}
-      <div class="empty-view-message">
-          <i class="fa fa-exclamation-triangle"></i>
-          <p>No Available UI Themes</p>
-      </div>
-    {{/each}}
+      {{/each}}
+    </div>
   </div>
 </template>
