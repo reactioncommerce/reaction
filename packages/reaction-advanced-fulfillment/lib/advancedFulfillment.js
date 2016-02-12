@@ -1,3 +1,5 @@
+Products = ReactionCore.Collections.Products;
+
 AdvancedFulfillment = {};
 
 AdvancedFulfillment.humanActionStatuses = {

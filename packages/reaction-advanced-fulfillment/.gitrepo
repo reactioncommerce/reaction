@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@github.com:getoutfitted/reaction-advanced-fulfillment.git
 	branch = development
-	commit = e4338571db7060a600f4a682e23f6fe967c7d024
-	parent = fa0c6c14b3894fe0ad712933936907b960fb1a7d
+	commit = 8149909a4fc0a6bf0fda4a006a1c520dd8ae2e62
+	parent = 1509846fe1f5d276c62de2ae9c69d5a731615d6b
 	cmdver = 0.3.0
