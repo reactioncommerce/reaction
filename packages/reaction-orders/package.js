@@ -57,9 +57,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/dashboard/orders/list/pdf/pdf.html", "client");
   api.addFiles("client/templates/dashboard/orders/list/pdf/pdf.js", "client");
 
-  api.addFiles("client/templates/dashboard/orders/widget/widget.html", "client");
-  api.addFiles("client/templates/dashboard/orders/widget/widget.js", "client");
-
   api.addFiles("client/templates/dashboard/orders/details/detail.html", "client");
   api.addFiles("client/templates/dashboard/orders/details/detail.js", "client");
 
