@@ -1,8 +1,18 @@
 /**
- * gridPackage events
- *
+ * gridPackage helpers
  */
+Template.gridPackage.helpers({
+  showDashboard() {
+    let data = Template.currentData();
+    return () => {
+      ReactionRouter.go(ReactionRouter.pathFor(data.route));
+    };
+  }
+});
 
+/**
+ * gridPackage events
+ */
 Template.gridPackage.events({
   "click .enablePkg": function (event, template) {
     const self = this;
