@@ -1,0 +1,84 @@
+<template name='updateOrderItem'>
+  {{> afNavbar}}
+  <div class='container-fluid'>
+    <div class='row'>
+      <div class='text-center'>
+        <h1>Order Numer: {{_id}} | Shopify Order Number {{shopifyOrderNumber}}</h1>
+      </div>
+    </div>
+    <div class='container'>
+      <div class='row'>
+        Current Item:
+      </div>
+      <div class='row'>
+        <div class='col-xs-3'>
+          <h5>{{item.afItem.itemDescription}}</h5>
+        </div>
+        <div class='col-xs-2'>
+          <h5>{{item.regItem.variants.color}}</h5>
+        </div>
+        <div class='col-xs-2'>
+          <h5>{{item.regItem.variants.size}}</h5>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class='container'>
+      <h3>Replace Current item with:</h3>
+    </div>
+    {{> productSelector}}
+  </div>
+</template>
+
+
+<template name='productSelector'>
+  <div class='container'>
+    <div class='text-center'>
+      <select   class='form-control productType-selector'>
+        <option disabled selected> -- select a product type -- </option>
+        {{#each possibleProductType in productTypes}}
+          <option class="form-control" value="{{possibleProductType}}">{{possibleProductType}}</option>
+        {{/each}}
+      </select>
+      {{#if productTypeSelected}}
+        <select   class='form-control gender-selector'>
+          <option disabled selected> -- select gender -- </option>
+          {{#each possibleGender in productGenders}}
+            <option class="form-control" value="{{possibleGender}}">{{possibleGender}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      {{#if productGenderSelected}}
+        <select   class='form-control product-selector'>
+          <option disabled selected> -- select product -- </option>
+          {{#each possibleProduct in productTitles}}
+            <option class="form-control" value="{{possibleProduct}}">{{possibleProduct}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      {{#if productTitleSelected}}
+         <select   class='form-control color-selector'>
+          <option disabled selected> -- select color -- </option>
+          {{#each possibleColor in productColorWays}}
+            <option class="form-control" value="{{possibleColor}}">{{possibleColor}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      {{#if productColorSelected}}
+         <select   class='form-control size-selector'>
+          <option disabled selected> -- select size-- </option>
+          {{#each possibleSize in productSizes}}
+            <option class="form-control" value="{{possibleSize._id}}">{{possibleSize.size}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      {{#if productVariantSelected}}
+        {{#if addItem}}
+          <a class='btn btn-lg btn-block btn-danger add-item' href="#">Add item to Order</a>
+        {{else}}
+          <a class='btn btn-lg btn-block btn-danger replace-item' data-item-id='{{item.afItem._id}}' href="#">Update exisiting item in order with selected item</a>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</template>

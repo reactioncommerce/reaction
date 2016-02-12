@@ -1,0 +1,75 @@
+<template name='missingDamaged'>
+  {{> afNavbar}}
+  <div class='container'>
+    <h1>{{typeOf}} Items</h1>
+    <div class='row'>
+      <div class='col-sm-5'>
+        <div class='row'>
+          <div class='col-sm-5'>
+            <h3>{{typeOf}} Item</h3>
+          </div>
+          <div class='col-sm-4'>
+            <h3>Variant Id</h3>
+          </div>
+          <div class='col-sm-1'>
+            <h3>Value</h3>
+          </div>
+        </div>
+      </div>
+      <div class='col-sm-4'>
+        <h3>Order Info</h3>
+      </div>
+      <div class='col-sm-3'>
+        <h3>Contact Info</h3>
+      </div>
+    </div>
+    <hr>
+    {{#each orders}}
+      {{> missingDamagedOrder}}
+    {{/each}}
+  </div>
+</template>
+
+<template name='missingDamagedOrder'>
+
+  <div class='row'>
+    <div class='col-sm-5'>
+      {{#each missingDamagedItems}}
+        {{>  missingDamagedItem}}
+      {{/each}}
+    </div>
+    <div class='col-sm-4'>
+      <p>Order Id: <a href="{{pathFor 'orderDetails'}}">{{_id}}</a></p>
+      <p>OverDue: {{daysOverDue}} </p>
+    </div>
+    <div class='col-sm-3'>
+      <p>Billing Name: <strong>{{userName}}</strong></p>
+      <p>Email: {{email}}</p>
+      <p>Phone: {{userPhone}}</p>
+    </div>
+  </div>
+  <hr>
+</template>
+
+<template name='missingDamagedItem'>
+  <div class='row'>
+    <div class='col-sm-5'>
+      {{itemDescription}}
+    </div>
+    <div class='col-sm-4'>
+      <small>{{variantId}}</small>
+    </div>
+    <div class='col-sm-1 '>
+      ${{value productId variantId}}
+    </div>
+  </div>
+  {{#if missing}}
+    <div class='row'>
+      <a class='btn btn-info btn-xs returned-button' data-order-id='{{../_id}}' data-item-status='{{workflow.status}}' data-item-description='{{itemDescription}}' href="#">Item Returned</a>
+    </div>
+  {{else}}
+    <div class='row'>
+      <a class='btn btn-success btn-xs repaired-button' data-order-id='{{../_id}}' data-item-status='{{workflow.status}}' data-item-description='{{itemDescription}}' href="#">Item Repaired</a>
+    </div>
+  {{/if}}
+</template>
