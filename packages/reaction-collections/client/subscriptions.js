@@ -10,6 +10,25 @@
  * happen when user flush browser's cache, for example.
  * @see https://github.com/reactioncommerce/reaction/issues/609#issuecomment-166389252
  */
+
+/**
+ * General Subscriptions
+ */
+ReactionCore.Subscriptions.Shops = ReactionSubscriptions.subscribe("Shops");
+
+ReactionCore.Subscriptions.Packages = ReactionSubscriptions.subscribe("Packages");
+
+ReactionCore.Subscriptions.Tags = ReactionSubscriptions.subscribe("Tags");
+
+ReactionCore.Subscriptions.Media = ReactionSubscriptions.subscribe("Media");
+
+// admin only
+// todo should we put this inside autorun and detect user changes
+ReactionCore.Subscriptions.Inventory = ReactionSubscriptions.subscribe("Inventory");
+
+/**
+ * Subscriptions that need to reload on new sessions
+ */
 Tracker.autorun(function () {
   // we are trying to track both amplify and Session.get here, but the problem
   // is - we can't track amplify. It just not tracked. So, to track amplify we
@@ -42,18 +61,3 @@ Tracker.autorun(() => {
     Meteor.userId()
   );
 });
-
-/**
- * General Subscriptions
- */
-ReactionCore.Subscriptions.Shops = ReactionSubscriptions.subscribe("Shops");
-
-ReactionCore.Subscriptions.Packages = ReactionSubscriptions.subscribe("Packages");
-
-ReactionCore.Subscriptions.Tags = ReactionSubscriptions.subscribe("Tags");
-
-ReactionCore.Subscriptions.Media = ReactionSubscriptions.subscribe("Media");
-
-// admin only
-// todo should we put this inside autorun and detect user changes
-ReactionCore.Subscriptions.Inventory = ReactionSubscriptions.subscribe("Inventory");

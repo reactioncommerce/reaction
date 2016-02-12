@@ -31,6 +31,11 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.12.0");
+  api.use("ongoworks:bunyan-logger@2.5.0");
+
+  // cart common workflow methods
+  api.addFiles("common/methods/workflow.js");
+  api.addFiles("common/methods/cart.js");
 
   // template helpers
   api.addFiles("client/helpers/cart.js", "client");
@@ -80,4 +85,5 @@ Package.onUse(function (api) {
 
   // register package
   api.addFiles("server/register.js", "server");
+  // api.addFiles("server/logger.js", "server");
 });

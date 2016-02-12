@@ -24,6 +24,7 @@ Package.onUse(function (api) {
 
 
   // schemas
+  api.addFiles("common/schemas/workflow.js");
   api.addFiles("common/schemas/address.js");
   api.addFiles("common/schemas/accounts.js");
   api.addFiles("common/schemas/layouts.js");

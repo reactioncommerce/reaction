@@ -21,9 +21,6 @@ Package.onUse(function (api) {
   api.use("session");
   api.use("jquery");
   api.use("tracker");
-  api.use("reactive-dict");
-
-  // meteor add-on packages
   api.use("ddp-rate-limiter");
   api.use("underscore");
   api.use("logging");
@@ -34,6 +31,7 @@ Package.onUse(function (api) {
   api.use("less");
   api.use("http");
   api.use("reactive-var");
+  api.use("reactive-dict");
   api.use("email");
   api.use("browser-policy");
   api.use("service-configuration");
@@ -61,6 +59,9 @@ Package.onUse(function (api) {
 
   // imply exports package vars
   api.imply("less");
+  api.imply("ejson");
+  api.imply("session");
+  api.imply("tracker");
   api.imply("amplify");
   api.imply("accounts-base");
   api.imply("ecmascript");
@@ -73,6 +74,8 @@ Package.onUse(function (api) {
   api.imply("aldeed:template-extension");
   api.imply("mdg:validated-method");
   api.imply("momentjs:moment");
+  api.imply("ongoworks:bunyan-logger");
+
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -122,11 +125,6 @@ Package.onUse(function (api) {
 
   // cron jobs
   api.addFiles("server/jobs.js", "server");
-
-  // common
-  api.addFiles("common/methods/layout.js");
-  api.addFiles("common/methods/workflow.js");
-  api.addFiles("common/methods/cart.js");
 
   api.addFiles("common/hooks/orders.js");
 

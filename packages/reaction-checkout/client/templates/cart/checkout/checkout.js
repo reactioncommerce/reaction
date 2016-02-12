@@ -2,6 +2,8 @@
 // cartCheckout is a wrapper template
 // controlling the load order of checkout step templates
 //
+
+
 Template.cartCheckout.helpers({
   cart: function () {
     if (ReactionCore.Subscriptions.Cart.ready()) {
@@ -10,16 +12,13 @@ Template.cartCheckout.helpers({
   }
 });
 
-Template.cartCheckout.onRendered(function () {
-  // Session.set("displayCartDrawer", false); deprecated with layout.
-  // init cart workflow. For registered users we are called `workflow/
-  // pushCartWorkflow` within `cart\mergeCart`, but anonymous doesn't have
-  // access to that method, that's why we are calling workflow changes from here.
 
-  const cart = ReactionCore.Collections.Cart.findOne();
-  if (cart.workflow && cart.workflow.status === "new") {
-    // if user logged in as normal user, we must pass it through the first stage
-    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id);
+Template.cartCheckout.onCreated(function () {
+  if (ReactionCore.Subscriptions.Cart.ready()) {
+    if (cart.workflow && cart.workflow.status === "new") {
+        // if user logged in as normal user, we must pass it through the first stage
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id);
+    }
   }
 });
 

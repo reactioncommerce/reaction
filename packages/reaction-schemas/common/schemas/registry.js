@@ -1,6 +1,6 @@
 /**
-* Permissions Schema
-*/
+ * Permissions Schema
+ */
 
 ReactionCore.Schemas.Permissions = new SimpleSchema({
   permission: {
@@ -12,9 +12,9 @@ ReactionCore.Schemas.Permissions = new SimpleSchema({
 });
 
 /**
-* Permissions Registry
-* the registry entries in the Package registry
-*/
+ * Permissions Registry
+ * the registry entries in the Package registry
+ */
 
 ReactionCore.Schemas.Registry = new SimpleSchema({
   provides: {
@@ -64,30 +64,11 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
   }
 });
 
-
 /**
- * workflow schema for attaching to collection where
- * PackageWorkflow is controlling view flow
- * Shop defaultWorkflow is defined in Shop
+ * PackageConfig Schema
  */
-
-ReactionCore.Schemas.Workflow = new SimpleSchema({
-  status: {
-    type: String,
-    defaultValue: "new"
-  },
-  workflow: {
-    type: [String],
-    optional: true
-  }
-});
-
-/**
-* PackageConfig Schema
-*/
-
 ReactionCore.Schemas.PackageConfig = new SimpleSchema({
-  "shopId": {
+  shopId: {
     type: String,
     index: 1,
     // see: https://github.com/reactioncommerce/reaction/issues/646#issuecomment-169351842
@@ -95,38 +76,37 @@ ReactionCore.Schemas.PackageConfig = new SimpleSchema({
     label: "PackageConfig ShopId",
     optional: true
   },
-  "name": {
+  name: {
     type: String,
     index: 1
   },
-  "enabled": {
+  enabled: {
     type: Boolean,
     defaultValue: true
   },
-  "icon": {
+  icon: {
     type: String,
     optional: true
   },
-  "settings": {
+  settings: {
     type: Object,
     optional: true,
     blackbox: true
   },
-  "registry": {
+  registry: {
     type: [ReactionCore.Schemas.Registry],
     optional: true
   },
-  "layout": {
+  layout: {
     type: [ReactionCore.Schemas.Layout],
     optional: true
   }
 });
 
-
 /**
-* CorePackageConfig Schema
-* Core Reaction Settings
-*/
+ * CorePackageConfig Schema
+ * Core Reaction Settings
+ */
 
 ReactionCore.Schemas.CorePackageConfig = new SimpleSchema([
   ReactionCore.Schemas.PackageConfig, {

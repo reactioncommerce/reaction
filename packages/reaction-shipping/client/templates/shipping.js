@@ -1,7 +1,7 @@
 /*
  * Template shipping Helpers
  */
-Meteor.subscribe("Shipping");
+
 
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
@@ -12,6 +12,12 @@ Template.shippingDashboardControls.events({
   }
 });
 
+Template.shippingSettings.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("Shipping");
+  });
+});
+
 Template.shippingSettings.helpers({
   packageData() {
     return ReactionCore.Collections.Packages.findOne({
@@ -19,9 +25,12 @@ Template.shippingSettings.helpers({
     });
   },
   shipping() {
-    return ReactionCore.Collections.Shipping.find({
-      shopId: ReactionCore.getShopId()
-    });
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
+      return ReactionCore.Collections.Shipping.find({
+        shopId: ReactionCore.getShopId()
+      });
+    }
   },
   selectedShippingProvider() {
     return Session.equals("selectedShippingProvider", true);
