@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:getoutfitted/reaction-rental-products.git
+	branch = master
+	commit = fe51e9464a71b18d9b434ee0ad44f7e7de8f4845
+	parent = e1f945a74c0624378d59d7c3316fdc71bf300ed4
+	cmdver = 0.3.0

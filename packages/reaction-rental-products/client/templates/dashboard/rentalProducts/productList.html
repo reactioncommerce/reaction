@@ -1,0 +1,29 @@
+<template name="dashboardRentalProducts">
+  {{!-- navbar --}}
+  <div class='container'>
+    <h1>Rental Products</h1>
+  </div>
+  <div class='container'>
+    <table class="table table-hover">
+      <thead>
+        <th>Title</th>
+        <th>ID</th>
+        <th>Variants</th>
+      </thead>
+      <tbody>
+        {{#each rentalProducts}}
+          {{> dashboardRentalProduct}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template name="dashboardRentalProduct">
+  {{! context is rentalProducts }}
+  <tr>
+    <th scope="row">{{title}}</th>
+    <td>{{_id}}</td>
+    <td>{{variants.length}}</td>
+  </tr>
+</template>
