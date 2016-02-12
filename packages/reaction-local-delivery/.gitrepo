@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:getoutfitted/reaction-local-delivery.git
+	branch = master
+	commit = 10b85bbb9756347a8ed655f4eda09746e85d827d
+	parent = fca20e045742f553e657d0bc4e61aba650464c11
+	cmdver = 0.3.0
