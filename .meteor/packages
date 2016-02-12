@@ -65,10 +65,13 @@ reactioncommerce:reaction-stripe
 #reactioncommerce:reaction-auth-net
 #reactioncommerce:reaction-braintree
 
+# GetOutfitted packages
 
-# Reaction Commerce Data
-
-reactioncommerce:reaction-sample-data   # default Reaction data
+getoutfitted:reaction-rental-products
+getoutfitted:reaction-advanced-fulfillment
+getoutfitted:reaction-shopify-orders
+getoutfitted:reaction-shopify-products
+getoutfitted:reaction-local-delivery
 
 # Themes
 reactioncommerce:default-theme          # default Reaction theme
