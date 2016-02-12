@@ -1,6 +1,7 @@
 describe('getoutfitted:reaction-rental-products methods', function () {
   describe('rentalProducts/setProductType', function () {
     beforeEach(function () {
+      Products = ReactionCore.Collections.Products;
       Products.remove({});
       InventoryVariants.remove({});
     });

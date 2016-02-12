@@ -1,6 +1,8 @@
 describe('getoutfitted:reaction-rental-products cart methods', function () {
   describe('rentalProducts/setRentalPeriod', function () {
     beforeEach(function () {
+      Products = ReactionCore.Collections.Products;
+      Cart = ReactionCore.Collections.Cart;
       Cart.remove({});
       Products.remove({});
     });

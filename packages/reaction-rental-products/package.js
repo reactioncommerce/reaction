@@ -15,18 +15,17 @@ Package.onUse(function (api) {
   api.use('momentjs:twix@0.7.0');
   api.use('matb33:collection-hooks');
   api.use('meteor-platform@1.2.1');
-  api.use('reactioncommerce:core@0.9.5');
+  api.use('reactioncommerce:core@0.11.0');
   api.use('reactioncommerce:reaction-inventory');
   api.use('aldeed:collection2@2.5.0');
   api.use('aldeed:simple-schema@1.3.3');
   api.use('aldeed:template-extension@4.0.0');
   api.use('aldeed:autoform@5.7.1');
   api.use('rajit:bootstrap3-datepicker@1.4.1', ['client']);
-  // api.use('reactioncommerce:reaction-factories');
 
   api.imply('momentjs:moment'); // Make moment available to all packages
   api.imply('momentjs:twix'); // Make moment twix available to all packages
-
+  api.addFiles('lib/rentalProducts.js');
   api.addFiles([
     'server/register.js'
   ], ['server']); // register as a reaction package
@@ -80,9 +79,6 @@ Package.onUse(function (api) {
     'client/datepicker.js',
     'client/templates.js'
   ], ['client']);
-
-  // Generating data
-  // api.addFiles('server/factories.js', 'server');
 });
 
 Package.onTest(function (api) {
@@ -95,10 +91,9 @@ Package.onTest(function (api) {
   api.use('velocity:html-reporter@0.9.1');
   api.use('velocity:console-reporter@0.1.4');
 
-  api.use('reactioncommerce:core');
+  api.use('reactioncommerce:core@0.11.0');
   api.use('reactioncommerce:reaction-factories');
-  api.use('reactioncommerce:bootstrap-theme');
-  api.use('getoutfitted:reaction-rental-products'); // Add our own package as a dep for testing!
+  api.use('getoutfitted:reaction-rental-products@0.2.0'); // Add our own package as a dep for testing!
 
   api.addFiles('server/factories.js', 'server');
   api.addFiles('tests/jasmine/server/integration/rentalProducts.js', 'server');
