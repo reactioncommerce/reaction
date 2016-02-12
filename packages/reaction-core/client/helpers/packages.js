@@ -53,7 +53,7 @@ function getReactionApps(optionHash) {
   let match;
   let packages;
 
-  let reactionApps;
+  let reactionApps = [];
   let reactionPackages;
   let registryFilter;
   let options = {};
@@ -99,90 +99,89 @@ function getReactionApps(optionHash) {
 
   // fetch the packages
   reactionPackages = ReactionCore.Collections.Packages.find(filter, fields).fetch();
-  if (!reactionPackages) {
-    throw new Error("Packages not loaded.");
-  }
 
-  // filter by package and enabled true/false
-  if (filter.name && filter.enabled) {
-    packages = (function () {
-      const results = [];
-      for (let pkg of reactionPackages) {
-        if (pkg.name === filter.name && pkg.enabled === filter.enabled) {
+  if (reactionPackages.length) {
+    // filter by package and enabled true/false
+    if (filter.name && filter.enabled) {
+      packages = (function () {
+        const results = [];
+        for (let pkg of reactionPackages) {
+          if (pkg.name === filter.name && pkg.enabled === filter.enabled) {
+            results.push(pkg);
+          }
+        }
+        return results;
+      })();
+      // we want all entries by package name
+    } else if (filter.name) {
+      packages = (function () {
+        const results = [];
+        for (let pkg of reactionPackages) {
+          if (pkg.name === filter.name) {
+            results.push(pkg);
+          }
+        }
+        return results;
+      })();
+      // just all enabled packages
+    } else if (filter.enabled) {
+      packages = (function () {
+        const results = [];
+        for (let pkg of reactionPackages) {
+          if (pkg.enabled === filter.enabled) {
+            results.push(pkg);
+          }
+        }
+        return results;
+      })();
+      // no filter
+    } else {
+      packages = (function () {
+        const results = [];
+        for (let pkg of reactionPackages) {
           results.push(pkg);
         }
-      }
-      return results;
-    })();
-    // we want all entries by package name
-  } else if (filter.name) {
-    packages = (function () {
-      const results = [];
-      for (let pkg of reactionPackages) {
-        if (pkg.name === filter.name) {
-          results.push(pkg);
-        }
-      }
-      return results;
-    })();
-    // just all enabled packages
-  } else if (filter.enabled) {
-    packages = (function () {
-      const results = [];
-      for (let pkg of reactionPackages) {
-        if (pkg.enabled === filter.enabled) {
-          results.push(pkg);
-        }
-      }
-      return results;
-    })();
-    // no filter
-  } else {
-    packages = (function () {
-      const results = [];
-      for (let pkg of reactionPackages) {
-        results.push(pkg);
-      }
-      return results;
-    })();
-  }
-  // we have all the package app registry entries
-  for (let app of packages) {
-    // go through the registry entries and push enabled entries
-    if (app.registry) {
-      for (let registry of app.registry) {
-        match = 0;
-        for (key in registryFilter) {
-          // make sure we're dealing with valid keys
-          if ({}.hasOwnProperty.call(registryFilter, key)) {
-            value = registryFilter[key];
-            if (registry[key] === value) {
-              match += 1;
-            }
-            if (match === Object.keys(registryFilter).length) {
-              registry.name = app.name;
-              if (registry.enabled !== false) {
-                registry.enabled = registry.enabled || app.enabled;
-                registry.packageId = app._id;
-                reactionApps.push(registry);
+        return results;
+      })();
+    }
+    // we have all the package app registry entries
+    for (let app of packages) {
+      // go through the registry entries and push enabled entries
+      if (app.registry) {
+        for (let registry of app.registry) {
+          match = 0;
+          for (key in registryFilter) {
+            // make sure we're dealing with valid keys
+            if ({}.hasOwnProperty.call(registryFilter, key)) {
+              value = registryFilter[key];
+              if (registry[key] === value) {
+                match += 1;
+              }
+              if (match === Object.keys(registryFilter).length) {
+                registry.name = app.name;
+                if (registry.enabled !== false) {
+                  registry.enabled = registry.enabled || app.enabled;
+                  registry.packageId = app._id;
+                  reactionApps.push(registry);
+                }
               }
             }
           }
         }
       }
     }
-  }
+    // we only need any given package once, let's be sure.
+    reactionApps = _.uniq(reactionApps);
 
-  // we only need any given package once, let's be sure.
-  reactionApps = _.uniq(reactionApps);
+    // sort cycle to ensure order
+    reactionApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
+  } // end reactionPackages check
 
   // enable debug to find missing reaction apps
   if (reactionApps.length === 0) {
-    ReactionCore.Log.debug("Failed to return matching reaction apps for", optionHash);
+    ReactionCore.Log.info("Failed to return matching reaction apps for", optionHash);
   }
-
-  // sort cycle to ensure order
-  reactionApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
+  // we're done.
   return reactionApps;
 }
 
