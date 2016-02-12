@@ -37,3 +37,21 @@
 !reaction-social/*
 !reaction-ui/*
 !reaction-email-templates/*
+
+# GetOutfitted packages
+!reaction-advanced-fulfillment
+!reaction-advanced-fulfillment/*
+!reaction-rental-products
+!reaction-rental-products/*
+!reaction-local-delivery
+!reaction-local-delivery/*
+!reaction-location-enabled-products
+!reaction-location-enabled-products/*
+!reaction-shopify-orders
+!reaction-shopify-orders/*
+!reaction-shopify-products
+!reaction-shopify-products/*
+!reaction-ambassador
+!reaction-ambassador/*
+!reaction-zopim
+!reaction-zopim/*
