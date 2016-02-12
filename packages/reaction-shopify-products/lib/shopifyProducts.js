@@ -1,1 +1,0 @@
-Products = ReactionCore.Collections.Products;
