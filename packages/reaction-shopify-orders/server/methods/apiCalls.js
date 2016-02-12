@@ -751,6 +751,7 @@ function createReactionOrder(order) {
     shopifyOrderNumber: order.order_number,
     shopifyOrderId: order.id,
     shopifyOrderCreatedAt: new Date(order.created_at),
+    sessionId: 'SHOPIFYIMPORTORDER',
     email: order.email,
     shopId: ReactionCore.getShopId(),
     userId: Random.id(),

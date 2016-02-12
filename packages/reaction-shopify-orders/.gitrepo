@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@github.com:getoutfitted/reaction-shopify-orders.git
 	branch = development
-	commit = bb1e0e14c02971b106fdfae7085a3dec6df6d573
-	parent = 00360dae31551a4366a0f46b3e654a8b14c14c08
+	commit = b964214e93a988493ea4e929a531c993347bd9c3
+	parent = 0ab477ddb06029aaf8ab8c6efefce2dcdb9b27b2
 	cmdver = 0.3.0
