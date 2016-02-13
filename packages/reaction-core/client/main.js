@@ -25,9 +25,6 @@ _.extend(ReactionCore, {
           // initialize local client Countries collection
           createCountryCollection(shop);
 
-          // initialize client routing
-          ReactionRouter.initPackageRoutes();
-
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes
           const { Locale } = ReactionCore;
