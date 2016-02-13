@@ -16,6 +16,7 @@ ReactionCore.registerPackage({
     label: "Layout",
     description: "Layout utilities",
     icon: "fa fa-object-group",
-    priority: 4
+    priority: 4,
+    container: "appearance"
   }]
 });

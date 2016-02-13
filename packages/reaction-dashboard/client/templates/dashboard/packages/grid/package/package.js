@@ -2,10 +2,12 @@
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
-  showDashboard() {
-    let data = Template.currentData();
-    return () => {
-      ReactionRouter.go(ReactionRouter.pathFor(data.route));
+  showDashboardButtonProps(pkg) {
+    return {
+      icon: "angle-right",
+      onClick() {
+        ReactionRouter.go(ReactionRouter.pathFor(pkg.route));
+      }
     };
   }
 });
@@ -61,24 +63,26 @@ Template.gridPackage.events({
       });
   },
 
-  "click [data-event-action=showPackageManagement]": function (event) {
+  "click [data-event-action=showPackageManagement]": function (event, instance) {
     event.preventDefault();
     event.stopPropagation();
-    if (this.route) {
-      if (this.route) {
+
+    const packageData = instance.data.package || {};
+    const route = packageData.route;
+
+    if (route) {
+      if (ReactionCore.hasPermission(route, Meteor.userId())) {
         // we're not using the route, but (pkg) name + provides
         // which we've defined as the true route name
-        ReactionRouter.go(ReactionRouter.pathFor(this.route));
-      } else if (ReactionCore.hasPermission(this.route, Meteor.userId())) {
-        ReactionCore.showActionView(this);
+        ReactionRouter.go(ReactionRouter.pathFor(route));
       }
     }
   },
 
-  "click .pkg-settings, click [data-event-action=showPackageSettings]": function (event) {
+  "click .pkg-settings, click [data-event-action=showPackageSettings]": function (event, instance) {
     event.preventDefault();
     event.stopPropagation();
     // Show the advanced settings view using this package registry entry
-    ReactionCore.showActionView(this);
+    ReactionCore.showActionView(instance.data);
   }
 });

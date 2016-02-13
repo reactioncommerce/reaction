@@ -13,7 +13,7 @@ ReactionCore.registerPackage({
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
     priority: 1,
-    container: "orders",
+    container: "core",
     template: "orders"
   }, {
     route: "dashboard/orders",

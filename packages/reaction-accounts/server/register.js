@@ -10,7 +10,7 @@ ReactionCore.registerPackage({
     label: "Accounts",
     description: "Manage how members sign into your shop.",
     icon: "fa fa-sign-in",
-    container: "accounts",
+    container: "core",
     template: "accountsDashboard",
     priority: 1
   }, {

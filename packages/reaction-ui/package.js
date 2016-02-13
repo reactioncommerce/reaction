@@ -49,13 +49,13 @@ Package.onUse(function (api) {
   api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");
 
-  api.addFiles("client/styles/base.less", "client");
-
   api.addFiles("client/components/components.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
 
+  api.addFiles("client/components/cards/cardGroup.html", "client");
+  api.addFiles("client/components/cards/cardGroup.less", "client");
   api.addFiles("client/components/cards/cards.less", "client");
 
   api.addFiles("client/components/items/item.jsx", "client");
@@ -89,15 +89,9 @@ Package.onUse(function (api) {
   api.addFiles("client/components/tags/tagItem.js", "client");
   api.addFiles("client/components/tags/tagList.html", "client");
   api.addFiles("client/components/tags/tagList.js", "client");
-
   api.addFiles("client/components/tags/tags.less", "client");
-  api.export("TagList");
 
-  // api.addFiles("client/styles/base.less", "client");
   api.addFiles("client/styles/variables.less", "client");
-  api.addFiles("client/styles/rtl.less", "client");
-  api.addFiles("client/styles/mixins.less", "client");
-
 
   api.addFiles("client/templates/dashboard/dashboard.html", "client");
   api.addFiles("client/templates/dashboard/dashboard.js", "client");
@@ -109,8 +103,7 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/themeDetails/themeDetails.html", "client");
   api.addFiles("client/templates/themeDetails/themeDetails.js", "client");
 
-
-
+  // Assets for theme
   api.addAssets("private/themes/button.css", "server");
 
   api.addFiles("server/processTheme.js", "server");

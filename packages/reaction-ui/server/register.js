@@ -6,18 +6,14 @@ ReactionCore.registerPackage({
   settings: "",
   registry: [{
     provides: "dashboard",
-    container: "dashboard",
+    container: "appearance",
     route: "dashboard/ui",
     label: "UI",
     description: "Themes and UI Components",
     icon: "fa fa-html5",
     priority: 1,
     group: "core",
-    template: "uiDashboard",
-    permissions: [{
-      label: "Reaction UI",
-      permission: "dashboard/ui"
-    }]
+    template: "uiDashboard"
   }],
   layout: [{
     layout: "coreLayout",

@@ -14,7 +14,7 @@ ReactionCore.registerPackage({
       description: "Provide shipping rates",
       icon: "fa fa-truck",
       priority: 2,
-      group: "reaction-shipping",
+      container: "core",
       template: "shipping"
     },
     {

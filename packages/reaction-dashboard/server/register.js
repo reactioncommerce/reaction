@@ -13,7 +13,7 @@ ReactionCore.registerPackage({
     description: "Reaction Core configuration",
     icon: "fa fa-th",
     priority: 0,
-    container: "dashboard",
+    container: "core",
     permissions: [{
       label: "Dashboard",
       permission: "dashboard"

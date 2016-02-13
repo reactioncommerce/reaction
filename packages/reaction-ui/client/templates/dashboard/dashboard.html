@@ -1,7 +1,7 @@
 <template name="uiDashboard">
   <div class="container-fluid-sm">
     <h2>Available Themes</h2>
-    <div class="rui items flex third">
+    <div class="rui items flex quarter flex third">
       {{#each theme in themes}}
         <div class="rui item axis vertical">
           <div class="rui card" data-event-action="showTheme" data-theme={{theme._id}}>

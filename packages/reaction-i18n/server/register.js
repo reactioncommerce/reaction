@@ -12,6 +12,7 @@ ReactionCore.registerPackage({
     label: "i18n",
     description: "Internationalization utilities",
     icon: "fa fa-language",
-    priority: 2
+    priority: 2,
+    container: "utilities"
   }]
 });
