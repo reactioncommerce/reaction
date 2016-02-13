@@ -16,8 +16,6 @@ Meteor.methods({
    * @return {Array|Boolean|Number} return
    */
   "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus, cartId) {
-    Log.debug("message", workflow, newWorkflowStatus, cartId);
-
     check(workflow, String);
     check(newWorkflowStatus, String);
     check(cartId, Match.Optional(String));
@@ -29,7 +27,7 @@ Meteor.methods({
       template: ""
     };
     const { Cart, Packages, Shops } = ReactionCore.Collections;
-    const { Log } = ReactionCart;
+    const { Log } = ReactionCore;
 
     // This method could be called indirectly from publication method in a time
     // when `this.userId` will be null, that's why we have a third argument in
@@ -78,7 +76,7 @@ Meteor.methods({
               defaultPackageWorkflows.push(layout);
             }
           } else {
-            if (ReactionCore.hasPermission(layout.audience) && !layout.layout) {
+            if (ReactionCore.hasPermission(layout.audience, currentCart.userId) && !layout.layout) {
               defaultPackageWorkflows.push(layout);
             }
           }
