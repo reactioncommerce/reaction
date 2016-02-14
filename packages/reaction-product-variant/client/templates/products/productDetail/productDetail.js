@@ -1,3 +1,11 @@
+Template.productDetail.onCreated(function () {
+  this.productId = () => ReactionRouter.getParam("handle");
+  this.variantId = () => ReactionRouter.getParam("variantId");
+  this.autorun(() => {
+    this.subscribe("Product", this.productId());
+  });
+});
+
 /**
  * productDetail helpers
  * see helper/product.js for
@@ -5,7 +13,35 @@
  */
 Template.productDetail.helpers({
   product: function () {
-    return ReactionProduct.selectedProduct();
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
+      let productId = instance.productId();
+      let variantId = instance.variantId() || ReactionRouter.getParam("variantId");
+
+      if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
+        handle = productId.toLowerCase();
+        product = ReactionCore.Collections.Products.findOne({
+          handle: handle
+        });
+        productId = product._id;
+      } else {
+        product = ReactionCore.Collections.Products.findOne({
+          _id: productId
+        });
+      }
+      if (product) {
+        // set the default variant
+        // as the default.
+        if (!variantId) {
+          variantId = product.variants[0]._id;
+        }
+        // set in our reactive dictionary
+        ReactionProduct.set("productId", productId);
+        // set on reactive dict for legacy
+        ReactionProduct.set("variantId", variantId);
+        return product;
+      }
+    }
   },
   tags: function () {
     let product = ReactionProduct.selectedProduct();

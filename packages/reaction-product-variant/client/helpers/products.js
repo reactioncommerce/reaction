@@ -9,16 +9,6 @@
  */
 ReactionProduct = new ReactiveDict("currentProduct");
 
-Tracker.autorun(function () {
-  ReactionRouter.watchPathChange();
-  if (ReactionRouter.getParam("handle")) {
-    const prodSub = ReactionSubscriptions.subscribe("Product", ReactionRouter.getParam("handle"));
-    if (prodSub.ready()) {
-      return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variantId"));
-    }
-  }
-});
-
 /**
  * setCurrentVariant
  * @param {String} variantId - set current variantId
@@ -349,7 +339,6 @@ ReactionProduct.maybeDeleteProduct = maybeDeleteProduct = (product) => {
         });
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
-        ReactionProduct.setProduct(null);
         ReactionRouter.go("index");
         return Alerts.toast(`Deleted ${title}`, "info");
       }
