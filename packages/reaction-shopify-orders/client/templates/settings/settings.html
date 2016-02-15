@@ -1,0 +1,31 @@
+<template name="shopifyOrdersSettings">
+  <div class="panel-body">
+    {{#autoForm
+        collection="ReactionCore.Collections.Packages"
+        schema="ReactionCore.Schemas.ShopifyOrdersPackageConfig"
+        doc=packageData
+        type="update"
+        id="shopify-orders-update-form"
+        }}
+      <p>Shopify Account Setup</p>
+      {{>afQuickField  name='settings.shopify.shopname' placeholder='Ex: "shopname" in shopname.myshopify.com'}}
+      {{>afQuickField  name='settings.shopify.password'}}
+      {{>afQuickField  name='settings.shopify.key'}}
+      {{>afQuickField name='settings.shopify.sharedSecret'}}
+      {{>afQuickField name="settings.shopify.preSharedKey"}}
+      <br />
+      <p>Fedex Account Setup</p>
+      {{>afQuickField  name='settings.fedex.liveApi'}}
+      {{>afQuickField  name='settings.fedex.password'}}
+      {{>afQuickField  name='settings.fedex.key'}}
+      {{>afQuickField  name='settings.fedex.accountNumber'}}
+      {{>afQuickField  name='settings.fedex.meterNumber'}}
+      <br />
+      <p>Aftership Account Setup</p>
+      {{>afQuickField name="settings.aftership.preSharedKey"}}
+      
+
+      <button type="submit" class="btn btn-primary pull-right">Save Changes</button>
+    {{/autoForm}}
+  </div>
+</template>
