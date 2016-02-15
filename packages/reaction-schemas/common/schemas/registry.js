@@ -28,7 +28,6 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
   },
   name: {
     type: String,
-    optional: true,
     index: true
   },
   template: {
@@ -37,6 +36,21 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
   },
   workflow: {
     type: String,
+    optional: true
+  },
+  triggersEnter: {
+    label: "Trigger on Entry",
+    type: [String],
+    optional: true
+  },
+  triggersExit: {
+    label: "Trigger on Exit",
+    type: [String],
+    optional: true
+  },
+  options: {
+    label: "Routing Options",
+    type: Object,
     optional: true
   },
   description: {
