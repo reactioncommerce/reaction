@@ -49,12 +49,18 @@ ReactionRouter.getRouteName = (packageName, registryItem) => {
 ReactionRouter.initPackageRoutes = (userId) => {
   const pkgs = ReactionCore.Collections.Packages.find().fetch();
   const prefix = ReactionCore.getShopName().toLowerCase(); // todo add shopId
-
+  // this is likely to be a bad thing
+  // testing in progress
+  // the goal here is to reset routes on LOGIN
+  // but need to make sure routes defined outside are kept
+  // so we'll probably need to do this one route at a time.
+  ReactionRouter._routes = [];
   // initialize index
   // define default routing groups
   let shop = ReactionRouter.group({
     name: "shop"
   });
+
 
   //
   // index / home route
@@ -73,7 +79,6 @@ ReactionRouter.initPackageRoutes = (userId) => {
     if (pkg.registry) {
       const registry = Array.from(pkg.registry);
       for (let registryItem of registry) {
-        // console.log(registryItem)
         // registryItems
         if (registryItem.route) {
           let {
@@ -86,17 +91,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
           let options = {};
           let routeName;
 
-          //
-          // if (template && workflow) {
-          //   options = {
-          //     template: template,
-          //     workflow: workflow
-          //   };
-          // }
-
           routeName = ReactionRouter.getRouteName(pkg.name, registryItem);
-          // console.log(pkg.name, routeName, route, userId)
-          // console.log(ReactionCore.hasPermission(pkg.name, userId),  ReactionCore.hasPermission(route, userId));
           // check route permissions
           if (ReactionCore.hasPermission(routeName, userId) || ReactionCore.hasPermission(route, userId)) {
             options.template = template;
@@ -149,3 +144,14 @@ ReactionRouter.initPackageRoutes = (userId) => {
     // console.log ("Flow router already initialized.");
   }
 };
+
+/**
+ * Hook to setup default admin user with Launchdock credentials (if they exist)
+ */
+if (ReactionCore && ReactionCore.Hooks) {
+  // ensure that routes are reloaded with template/authentication changes
+  ReactionCore.Hooks.Events.add("onLogin", (user) => {
+    ReactionRouter.reload();
+    return user;
+  });
+}
