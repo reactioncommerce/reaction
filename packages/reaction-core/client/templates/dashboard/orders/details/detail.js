@@ -10,7 +10,9 @@ Template.orderDetail.helpers({
     if (typeof this.userId === "string") {
       const userProfile = ReactionCore.Collections.
         Accounts.findOne(this.userId);
-      return userProfile.profile;
+      if (typeof userProfile !== "undefined") {
+        return userProfile.profile;
+      }
     }
   },
   orderAge: function () {
