@@ -1,0 +1,24 @@
+<template name='missingItemDetails'>
+  {{> afNavbar}}
+  <div class="container-fluid">
+    <div class='row text-center'>
+      <h2><strong>Orders with Missing Item Details</strong></h2>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <th>#</th>
+        <th>First Ski Day</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Shipping Address</th>
+        <th>Update</th>
+      </thead>
+      <tbody>
+        {{#each missingItemsFromOrder}}
+          {{> csDetails}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

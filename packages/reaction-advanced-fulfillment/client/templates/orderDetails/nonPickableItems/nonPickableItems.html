@@ -1,0 +1,149 @@
+<template name='nonPickableItems'>
+  <div class='container-fluid'>
+    <div class='row'>
+      <h2>Non Pickable Items included in this Order</h2>
+    </div>
+    {{# if anydamageCoverage}}
+      {{> damageCoverage}}
+    {{/if}}
+    {{#if rushShippingPaid}}
+      {{> rushDeliveryPaid}}
+    {{/if}}
+    {{#if skiPackagesPurchased}}
+      {{> skiPackages}}
+    {{/if}}
+    {{#if kayakRented}}
+      {{> kayakRentals}}
+    {{/if}}
+    {{#if anyOtherItems}}
+      {{> otherItems}}
+    {{/if}}
+  </div>
+</template>
+
+
+<template name='damageCoverage'>
+    <div class='row'>
+      <div class='row'>
+        <div class='col-xs-3'>
+          <h3>Damage Coverage:</h3>
+        </div>
+        <div class='col-xs-3'>
+          <h4>Packages Covered</h4>
+          <p>Qty: {{qty 'packages'}} | Cost: {{subtotal 'packages'}} </p>
+        </div>
+        <div class='col-xs-3'>
+          <h4>Products Covered</h4>
+          <p>Qty: {{qty 'products'}} | Cost: {{subtotal 'products'}} </p>
+        </div>
+      </div>
+    </div>
+    <hr>
+</template>
+
+<template name='skiPackages'>
+  <div class='row'>
+    <h3>Ski Packages included in this order</h3>
+  </div>
+  <div class='table-responsive'>
+    <table class='table table-hover'>
+      <thead>
+        <tr>
+          <th>Vendor</th>
+          <th>For</th>
+          <th>Package</th>
+          <th>Helmet Added</th>
+          <th>Gender</th>
+          <th>Height</th>
+          <th>Weight</th>
+          <th>Age</th>
+          <th>Shoe Size</th>
+          <th>Skill Level</th>
+          {{#if noCustomerInfo}}
+            <th></th>
+          {{/if}}
+
+        </tr>
+      </thead>
+      <tbody>
+        {{#each skiPackages}}
+        <tr>
+          <td>{{vendor}}</td>
+          <td>{{customerName}}</td>
+          <td>{{packageName}}</td>
+          <td>{{helmet}}</td>
+          <td>{{gender}}</td>
+          <td>{{height}}</td>
+          <td>{{weight}}</td>
+          <td>{{{ifAge}}}</td>
+          <td>{{{ifShoe}}}</td>
+          <td>{{{ifSkiLevel}}}</td>
+          {{#if noCustomerInfo}}
+            <td><a class='btn btn-success btn-lg save-customer-info' data-id={{_id}} href="#">Save</a></td>
+          {{/if}}
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template name='kayakRentals'>
+  <div class='row'>
+    <div class='col-xs-3'>
+      <h3>Kayak Rental Details:</h3>
+    </div>
+    <div class='col-xs-3'>
+      <h4>Vendor: <strong>{{kayakVendor}}</strong></h4>
+    </div>
+    <div class='col-xs-3'>
+      <h4>Quantity: <strong>{{kayakQty}}</strong></h4>
+    </div>
+  </div>
+  <hr>
+</template>
+
+<template name='rushDeliveryPaid'>
+  <div class='row'>
+    <div class='col-xs-3'>
+      <h3>Rush Delivery Paid:</h3>
+    </div>
+    <div class='col-xs-3'>
+      <h4>Rush Quantity: <strong>{{rushQuantity}}</strong></h4>
+    </div>
+    <div class='col-xs-3'>
+      <h4>Cost: <strong>{{rushCost}}</strong></h4>
+    </div>
+  </div>
+  <hr>
+</template>
+
+<template name='otherItems'>
+  <div class='row'>
+    <h3>Other Items In This Order</h3>
+  </div>
+  <div class='table-responsive'>
+    <table class='table table-hover'>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Vendor</th>
+          <th>Variant</th>
+          <th>Quantity</th>
+          <th>Price Per</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each item in otherItems}}
+          <tr>
+            <td>{{item.product}}</td>
+            <td>{{item.vendor}}</td>
+            <td>{{item.variantTitle}}</td>
+            <td>{{item.qty}}</td>
+            <td> $ {{item.price}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

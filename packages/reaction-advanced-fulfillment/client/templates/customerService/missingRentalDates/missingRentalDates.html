@@ -1,0 +1,45 @@
+<template name='missingRentalDates'>
+  {{> afNavbar}}
+  <div class="container-fluid">
+    <div class='row text-center'>
+      <h2><strong>Orders with Missing Rental Dates</strong></h2>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Shipping Address</th>
+        <th>Update Dates</th>
+      </thead>
+      <tbody>
+        {{#each missingRentalDates}}
+          <tr>
+            <td><a href="{{pathFor 'orderDetails'}}"><strong>{{shopifyOrderNumber}}</strong></a></td>
+            <td>{{billingName}}</td>
+            <td><a href="tel:{{billingPhone}}">{{billingPhone}}</a></td>
+            <td><a href="mailto: {{email}}">{{email}}</a></td>
+            <td>{{shippingAddress}}</td>
+            <td>
+              <div class='picker' id='{{_id}}'>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class='input-daterange input-group' id='datepicker'>
+                      <input type='text' class='input-sm form-control' name='start' />
+                      <span class='input-group-addon'>to</span>
+                      <input type='text' class='input-sm form-control' name='end' />
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <button class='btn btn-block btn-primary update-rental-dates'>Save Dates</button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

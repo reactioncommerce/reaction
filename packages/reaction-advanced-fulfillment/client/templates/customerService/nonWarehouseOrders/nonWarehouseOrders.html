@@ -1,0 +1,30 @@
+<template name='nonWarehouseOrders'>
+  {{> afNavbar}}
+  <div class="container-fluid">
+    <div class='row text-center'>
+      <h2><strong>Orders with no items to be picked in Warehouse</strong></h2>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <th>#</th>
+        <th>Activity Date</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Shipping Address</th>
+      </thead>
+      <tbody>
+        {{#each nonWarehouseOrders }}
+          <tr>
+            <td><a href="{{pathFor 'orderDetails'}}"><strong>{{shopifyOrderNumber}}</strong></a></td>
+            <td>{{formattedDate startTime}}</td>
+            <td>{{billingName this}}</td>
+            <td>{{billingPhone this}}</td>
+            <td>{{email this}}</td>
+            <td>{{shippingAddress this}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
