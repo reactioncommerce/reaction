@@ -1,0 +1,11 @@
+<template name="rentalProductsDatepicker">
+  <div class="col-sm-12 col-md-6 col-lg-4">
+    <span class="startHuman">{{startDateHuman}}</span>
+    <span class="endHuman">{{endDateHuman}}</span>
+    <div class="input-daterange input-group" id="datepicker">
+      <input type="text" class="input-sm form-control start" id="rental-start" name="start" value={{startDate}} />
+      <span class="input-group-addon">to</span>
+      <input type="text" class="input-sm form-control end" id="rental-end" name="end" value="{{endDate}}" />
+    </div>
+  </div>
+</template>

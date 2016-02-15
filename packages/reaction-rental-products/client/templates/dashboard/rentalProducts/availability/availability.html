@@ -1,0 +1,48 @@
+<template name="dashboardRentalProductAvailability">
+  {{!-- navbar --}}
+  <div class='container'>
+    <h1>{{title}}</h1>
+  </div>
+  <span class="pull-left viewPrevCalendar"><i class="fa fa-3x fa-chevron-left"></i> Prev Month</span>
+  <span>{{currentMonth}}</span>
+  <span class="pull-right viewNextCalendar"><i class="fa fa-3x fa-chevron-right"></i> Next Month</span>
+  <div class='container'>
+    {{#each skus}}
+      {{> dashboardVariantAvailability}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="dashboardVariantAvailability">
+  {{! context is variant }}
+  <div class="row">
+    <div class="col-md-12">
+      <h2>{{sku}} - {{title}}</h2>
+    </div>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <th>Barcode</th>
+      {{#each days}}
+        {{> dashboardCalendarDay}}
+      {{/each}}
+    </thead>
+    <tbody>
+      {{#each variant in inventoryVariants}}
+        <tr>
+          <th>{{variant.barcode}}</th>
+          {{#each day in days}}
+            <td>
+              <i class="{{isDayBooked day variant.unavailableDates}} fa fa-square"></i>
+            </td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="dashboardCalendarDay">
+  <th>{{formattedDay start}}</th>
+  {{inventoryVariants}}
+</template>
