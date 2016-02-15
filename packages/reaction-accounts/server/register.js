@@ -5,7 +5,8 @@ ReactionCore.registerPackage({
   autoEnable: true,
   settings: {},
   registry: [{
-    route: "dashboard/accounts",
+    route: "/dashboard/accounts",
+    name: "accounts",
     provides: "dashboard",
     label: "Accounts",
     description: "Manage how members sign into your shop.",
@@ -19,13 +20,13 @@ ReactionCore.registerPackage({
     container: "accounts",
     template: "accountsSettings"
   }, {
-    route: "dashboard/accounts",
+    route: "/dashboard/accounts",
     provides: "shortcut",
     label: "Accounts",
     icon: "fa fa-users",
     priority: 1
   }, {
-    route: "account/profile",
+    route: "/account/profile",
     template: "accountProfile",
     label: "Profile",
     icon: "fa fa-user",

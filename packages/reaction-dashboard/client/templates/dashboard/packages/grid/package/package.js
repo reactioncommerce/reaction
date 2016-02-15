@@ -6,7 +6,7 @@ Template.gridPackage.helpers({
     return {
       icon: "angle-right",
       onClick() {
-        ReactionRouter.go(ReactionRouter.pathFor(pkg.route));
+        ReactionRouter.go(pkg.route);
       }
     };
   }
@@ -29,7 +29,7 @@ Template.gridPackage.events({
           type: "pkg-enabled-" + self.name
         });
         if (self.route) {
-          return ReactionRouter.go(ReactionRouter.pathFor(self.route));
+          return ReactionRouter.go(self.route);
         }
       } else if (error) {
         return Alerts.toast(self.label + i18n.t("gridPackage.pkgDisabled"), "warning");
@@ -74,7 +74,7 @@ Template.gridPackage.events({
       if (ReactionCore.hasPermission(route, Meteor.userId())) {
         // we're not using the route, but (pkg) name + provides
         // which we've defined as the true route name
-        ReactionRouter.go(ReactionRouter.pathFor(route));
+        ReactionRouter.go(route);
       }
     }
   },

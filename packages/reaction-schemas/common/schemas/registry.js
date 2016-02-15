@@ -26,6 +26,11 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
     optional: true,
     index: true
   },
+  name: {
+    type: String,
+    optional: true,
+    index: true
+  },
   template: {
     type: String,
     optional: true

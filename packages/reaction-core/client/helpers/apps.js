@@ -158,6 +158,8 @@ function getReactionApps(optionHash) {
                 match += 1;
               }
               if (match === Object.keys(registryFilter).length) {
+                registry.route = ReactionRouter.getRouteName(app.name, registry);
+                registry.routeName = registry.route;
                 registry.name = app.name;
                 if (registry.enabled !== false) {
                   registry.enabled = registry.enabled || app.enabled;

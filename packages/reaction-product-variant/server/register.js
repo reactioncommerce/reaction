@@ -4,10 +4,18 @@ ReactionCore.registerPackage({
   icon: "fa fa-cubes",
   autoEnable: true,
   registry: [{
-    route: "/:handle/:variantId?",
+    route: "/product/:handle/:variantId?",
+    name: "product",
+    template: "productDetail",
     workflow: "coreProductWorkflow"
   }, {
-    route: "products/createProduct",
+    route: "/tag/:slug",
+    name: "tag",
+    template: "products",
+    workflow: "coreProductWorkflow"
+  }, {
+    route: "/products/createProduct",
+    name: "createProduct",
     label: "Add Product",
     icon: "fa fa-plus",
     template: "productDetail",

@@ -18,7 +18,7 @@ describe("Checkout", function () {
       }
     });
 
-    Router.go("/cart/checkout");
+    Router.go("cart/checkout");
     Tracker.afterFlush(done);
   });
 

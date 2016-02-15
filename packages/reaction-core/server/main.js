@@ -29,9 +29,9 @@ _.extend(ReactionCore, {
    * @return {Boolean} Boolean - true if has permission
    */
   hasPermission: function (checkPermissions, userId, checkGroup) {
-    check(checkPermissions, Match.OneOf(String, Array));
-    check(userId, String);
-    check(checkGroup, Match.Optional(String));
+    // check(checkPermissions, Match.OneOf(String, Array));
+    // check(userId, String);
+    // check(checkGroup, Match.Optional(String));
     let permissions = ["owner"];
     // default group to the shop or global if shop
     // isn't defined for some reason.

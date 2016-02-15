@@ -21,17 +21,20 @@ Package.onUse(function (api) {
   // register reaction package
   api.addFiles("server/register.js", "server");
 
-  // routes
-  api.addFiles("routes/layout.js", ["client", "server"]);
-  api.addFiles("routes/init.js", ["client", "server"]);
+  // router configuration
+  api.addFiles("common/init.js", ["client", "server"]);
+  api.addFiles("common/layout.js", ["client", "server"]);
 
-  api.addFiles("routes/shop.js", ["client", "server"]);
-  api.addFiles("routes/products.js", ["client", "server"]);
-  api.addFiles("routes/tags.js", ["client", "server"]);
-  api.addFiles("routes/cart.js", ["client", "server"]);
-  api.addFiles("routes/dashboard.js", ["client", "server"]);
-  api.addFiles("routes/orders.js", ["client", "server"]);
-  api.addFiles("routes/accounts.js", ["client", "server"]);
+  // routes
+  // api.addFiles("routes/index.js", ["client", "server"]);
+
+  // api.addFiles("routes/shop.js", ["client", "server"]);
+  // api.addFiles("routes/products.js", ["client", "server"]);
+  // api.addFiles("routes/tags.js", ["client", "server"]);
+  // api.addFiles("routes/cart.js", ["client", "server"]);
+  // api.addFiles("routes/dashboard.js", ["client", "server"]);
+  // api.addFiles("routes/orders.js", ["client", "server"]);
+  // api.addFiles("routes/accounts.js", ["client", "server"]);
 
   // helpers
   api.addFiles("client/helpers.js", "client");

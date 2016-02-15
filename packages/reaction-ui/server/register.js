@@ -5,15 +5,19 @@ ReactionCore.registerPackage({
   autoEnable: true,
   settings: "",
   registry: [{
+    route: "/dashboard/ui",
+    name: "reaction-ui/uiDashboard",
     provides: "dashboard",
     container: "appearance",
-    route: "dashboard/ui",
     label: "UI",
     description: "Themes and UI Components",
     icon: "fa fa-html5",
     priority: 1,
-    group: "core",
     template: "uiDashboard"
+  }, {
+    route: "/dashboard/ui/:id",
+    name: "dashboard/uiThemeDetails",
+    template: "uiThemeDetails"
   }],
   layout: [{
     layout: "coreLayout",

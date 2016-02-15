@@ -7,8 +7,9 @@ ReactionCore.registerPackage({
     name: "Orders"
   },
   registry: [{
-    route: "dashboard/orders",
+    route: "/dashboard/orders",
     provides: "dashboard",
+    name: "orders",
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
@@ -16,7 +17,7 @@ ReactionCore.registerPackage({
     container: "core",
     template: "orders"
   }, {
-    route: "dashboard/orders",
+    route: "/dashboard/orders",
     provides: "shortcut",
     label: "Orders",
     description: "Fulfill your orders",

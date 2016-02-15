@@ -146,7 +146,7 @@ Package.onUse(function (api) {
 
   // client
   api.addFiles("client/helpers/layout.js", "client");
-  api.addFiles("client/helpers/packages.js", "client");
+  api.addFiles("client/helpers/apps.js", "client");
   api.addFiles("client/helpers/globals.js", "client");
   api.addFiles("client/helpers/permissions.js", "client");
   api.addFiles("client/helpers/utilities.js", "client");

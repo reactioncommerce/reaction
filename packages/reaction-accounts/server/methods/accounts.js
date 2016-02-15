@@ -44,9 +44,9 @@ Accounts.onCreateUser(function (options, user) {
   if (shop) {
     // if we don't have user.services we're an anonymous user
     if (!user.services) {
-      roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
+      roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
     } else {
-      roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
+      roles[shopId] = shop.defaultRoles || ["guest", "accountProfile", "product", "tag", "index", "checkout"];
       // also add services with email defined to user.emails[]
       for (let service in user.services) {
         if (user.services[service].email) {

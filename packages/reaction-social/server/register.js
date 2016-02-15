@@ -42,7 +42,7 @@ ReactionCore.registerPackage({
     }]
   }, {
     label: "Social Settings",
-    route: "dashboard/social",
+    route: "/dashboard/social",
     provides: "settings",
     container: "dashboard",
     template: "socialSettings"

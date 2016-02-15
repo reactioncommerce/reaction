@@ -3054,7 +3054,8 @@
   }],
   "defaultRoles": [
     "guest",
-    "account/profile"
+    "account/profile",
+    "core/index"
   ],
   "layout": [{
     "layout": "coreLayout",
@@ -6217,7 +6218,8 @@
   }],
   "defaultRoles": [
     "guest",
-    "account/profile"
+    "account/profile",
+    "core/index"
   ],
   "layout": [{
     "layout": "coreLayout",

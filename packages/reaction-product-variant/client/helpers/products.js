@@ -31,6 +31,8 @@ ReactionProduct.setCurrentVariant = (variantId) => {
 
 /**
  * ReactionCore.setProduct
+ * this will be deprecated in favor of template.instance data.
+ *
  * @summary method to set default/parameterized product variant
  * @param {String} currentProductId - set current productId
  * @param {String} currentVariantId - set current variantId

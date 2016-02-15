@@ -32,7 +32,7 @@ ReactionCore.registerPackage({
     }]
   }, {
     label: "Analytics Settings",
-    route: "dashboard/analytics/settings",
+    route: "/dashboard/analytics/settings",
     provides: "settings",
     container: "dashboard",
     template: "reactionAnalyticsSettings"

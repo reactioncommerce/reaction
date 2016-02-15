@@ -9,7 +9,8 @@ ReactionCore.registerPackage({
   registry: [{
     provides: "dashboard",
     workflow: "coreDashboardWorkflow",
-    label: "Core",
+    template: "dashboardPackages",
+    label: "Dashboard",
     description: "Reaction Core configuration",
     icon: "fa fa-th",
     priority: 0,
@@ -19,14 +20,16 @@ ReactionCore.registerPackage({
       permission: "dashboard"
     }]
   }, {
-    route: "dashboard",
+    route: "/dashboard",
+    name: "dashboard",
     workflow: "coreDashboardWorkflow",
     provides: "shortcut",
     label: "Dashboard",
+    template: "dashboardPackages",
     icon: "fa fa-th",
     priority: 0
   }, {
-    route: "dashboard/shop",
+    route: "/dashboard/settings",
     template: "shopSettings",
     label: "Shop Settings",
     provides: "settings",
