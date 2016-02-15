@@ -105,6 +105,20 @@ ReactionCore.Schemas.Locale = new SimpleSchema({
 });
 
 /**
+ * Locale Schema
+ */
+
+ReactionCore.Schemas.ShopTheme = new SimpleSchema({
+  themeId: {
+    type: String
+  },
+  styles: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * Shop Schema
  */
 
@@ -211,6 +225,10 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
   },
   "layout": {
     type: [ReactionCore.Schemas.Layout],
+    optional: true
+  },
+  "theme": {
+    type: ReactionCore.Schemas.ShopTheme,
     optional: true
   },
   "createdAt": {

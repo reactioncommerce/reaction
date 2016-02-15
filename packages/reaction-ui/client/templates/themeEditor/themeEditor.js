@@ -5,6 +5,7 @@ Template.uiThemeEditor.onCreated(function () {
     selectors: [],
     annotations: {},
     selectedComponent: null,
+    styles: {},
     theme: {}
   });
 
@@ -24,8 +25,25 @@ Template.uiThemeEditor.onCreated(function () {
   };
 
   this.autorun(() => {
-    const selectedComponent = ReactionRouter.getQueryParam("component");
-    this.state.set("selectedComponent", selectedComponent);
+    const componentName = ReactionRouter.getQueryParam("component");
+    const component = this.findComponentByName(componentName);
+    this.state.set("selectedComponent", component);
+    if (component) {
+      // Get a freestyle-like object from raw css
+      Meteor.call("ui/cssToObject", component.styles, (error, result) => {
+        this.state.set("styles", result);
+      });
+
+      const annotations = {};
+
+      for (let annotation of component.annotations) {
+        if (annotation.rule) {
+          annotations[annotation.rule] = annotation;
+        }
+      }
+
+      this.state.set("annotations", annotations);
+    }
   });
 
   this.previewStyles = (theme) => {
@@ -39,10 +57,6 @@ Template.uiThemeEditor.onCreated(function () {
   this.autorun(() => {
     this.theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
     this.state.set("theme", this.theme);
-
-    if (this.state.equals("selectedComponent", null) && this.theme) {
-      this.state.set("selectedComponent", this.theme.components[0].name);
-    }
   });
 });
 
@@ -52,32 +66,31 @@ Template.uiThemeEditor.helpers({
     const instance = Template.instance();
     const theme = instance.state.get("theme");
     const selectedComponent = instance.state.get("selectedComponent");
-
     if (theme) {
-      return instance.findComponentByName(selectedComponent);
+      return selectedComponent;
     }
   },
 
-  // annotation(selector) {
-  //   const instance = Template.instance();
-  //   const result = instance.annotationsBySelector[selector] || {
-  //     label: selector
-  //   };
-  //
-  //   return result;
-  // },
+  styles() {
+    const instance = Template.instance();
+    const stylesObject = instance.state.get("styles");
+    const annotations = instance.state.get("annotations") || {};
 
-  styles(selector) {
-    let props = Template.instance().styles[selector] || {};
-
-    const styles = _.map(props, (value, property) => {
+    const stylesArray = _.map(stylesObject, (declarations, selector) => {
       return {
-        property,
-        value
+        selector,
+        annotation: annotations[selector] || {
+          label: selector
+        },
+        declarations: _.map(declarations, (value, property) => {
+          return {
+            property,
+            value
+          };
+        })
       };
     });
-
-    return styles;
+    return stylesArray;
   },
 
   updateStyles() {
@@ -129,17 +142,20 @@ Template.uiThemeEditor.events({
     const selector = $(event.target).closest("[data-selector]").data("selector");
     const property = event.target.name;
     const value = event.target.value;
+    const theme = template.state.get("theme");
+    const component = template.state.get("selectedComponent");
+    const styles = template.state.get("styles");
+
+    styles[selector][property] = value;
 
     // Update style value
-    template.styles[selector][property] = value;
-
     const data = {
-      theme: template.theme,
-      stylesheet: template.currentStylesheet,
-      styles: template.styles
+      theme,
+      component,
+      styles
     };
 
-    Meteor.call("layout/processStyles", data, (error, result) => {
+    Meteor.call("ui/updateStyles", data, (error, result) => {
       if (result) {
         // console.log(result);
       }
