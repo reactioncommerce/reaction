@@ -13,6 +13,7 @@ ReactionCore.registerPackage({
     icon: "fa fa-sign-in",
     container: "core",
     template: "accountsDashboard",
+    workflow: "coreAccountsWorkflow",
     priority: 1
   }, {
     label: "Account Settings",

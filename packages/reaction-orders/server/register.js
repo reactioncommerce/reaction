@@ -9,6 +9,7 @@ ReactionCore.registerPackage({
   registry: [{
     route: "/dashboard/orders",
     provides: "dashboard",
+    workflow: "coreOrderWorkflow",
     name: "orders",
     label: "Orders",
     description: "Fulfill your orders",
