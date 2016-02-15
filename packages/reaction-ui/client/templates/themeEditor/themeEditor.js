@@ -9,7 +9,7 @@ Template.uiThemeEditor.onCreated(function () {
     theme: {}
   });
 
-  Meteor.subscribe("Themes");
+  this.subscribe("Themes");
 
   this.findComponentByName = (name) => {
     const theme = this.state.get("theme");
@@ -27,6 +27,7 @@ Template.uiThemeEditor.onCreated(function () {
   this.autorun(() => {
     const componentName = ReactionRouter.getQueryParam("component");
     const component = this.findComponentByName(componentName);
+
     this.state.set("selectedComponent", component);
     if (component) {
       // Get a freestyle-like object from raw css
@@ -46,17 +47,21 @@ Template.uiThemeEditor.onCreated(function () {
     }
   });
 
-  this.previewStyles = (theme) => {
+  this.previewTheme = (theme) => {
     let output = "";
-    for (let stylesheet of theme.stylesheets) {
-      output += stylesheet.styles;
+    for (let component of theme.components) {
+      output += component.styles;
     }
     $("#reactionLayoutStyles").text(output);
   };
 
   this.autorun(() => {
-    this.theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
-    this.state.set("theme", this.theme);
+    const theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
+    this.state.set("theme", theme);
+
+    if (theme) {
+      this.previewTheme(theme);
+    }
   });
 });
 
@@ -138,13 +143,13 @@ Template.uiThemeEditor.events({
   },
 
 
-  "input input"(event, template) {
-    const selector = $(event.target).closest("[data-selector]").data("selector");
+  "input input"(event, instance) {
+    const selector = $(event.target).closest("[data-selector]").attr("data-selector");
     const property = event.target.name;
     const value = event.target.value;
-    const theme = template.state.get("theme");
-    const component = template.state.get("selectedComponent");
-    const styles = template.state.get("styles");
+    const theme = instance.state.get("theme");
+    const component = instance.state.get("selectedComponent");
+    const styles = instance.state.get("styles");
 
     styles[selector][property] = value;
 
@@ -155,9 +160,9 @@ Template.uiThemeEditor.events({
       styles
     };
 
-    Meteor.call("ui/updateStyles", data, (error, result) => {
-      if (result) {
-        // console.log(result);
+    Meteor.call("ui/updateStyles", data, (error) => {
+      if (error) {
+        Alerts.toast(`Could't update theme ${theme.theme}`);
       }
     });
   }
