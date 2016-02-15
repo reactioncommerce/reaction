@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:getoutfitted/reaction-shopify-products.git
+	branch = master
+	commit = 1b4f46a35362519df499f79dd3ab99bdbd7bc7b0
+	parent = 48b3fa1960a5585d17d55c10c4454f88a8183683
+	cmdver = 0.3.0

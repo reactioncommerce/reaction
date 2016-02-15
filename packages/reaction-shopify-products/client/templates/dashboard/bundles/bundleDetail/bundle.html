@@ -1,0 +1,123 @@
+<template name="dashboardBundleDetail">
+  {{!-- navbar --}}
+  <div class='container'>
+    <h1>{{bundle.title}}</h1>
+  </div>
+  <div>
+    {{#if Template.subscriptionsReady}}
+      {{#each colors}}
+        {{> dashboardBundleSettings}}
+      {{/each}}
+    {{else}}
+      Loading...
+    {{/if}}
+  </div>
+
+</template>
+
+<template name="dashboardBundleSettings">
+  {{!-- navbar --}}
+  <div class='container'>
+    <h1>{{this}}</h1>
+    <form id="updateBundle" class="form-inline">
+      <div class="form-group">
+        <label for="jacket" class="sr-only">Jacket</label>
+        <select class="form-control jacket updateBundleProduct" name="jacket" id="jacket">
+          <option id="jacket-unselected" name="jacket-unselected" class="form-control" value="">Choose Jacket</option>
+          {{#each jackets}}
+            {{> bundleProductOption product='jacket'}}
+          {{/each}}
+        </select>
+        {{#if productSelected 'jacket'}}
+          {{> bundleProductColorSelect product='Jacket' color=this}}
+        {{/if}}
+      </div>
+      {{#if hasMidlayer}}
+        <br />
+        <div class="form-group">
+          <label for="midlayer" class="sr-only">Midlayer (if any)</label>
+          <select class="form-control midlayer updateBundleProduct" name="midlayer" id="midlayer">
+            <option id="midlayer-unselected" name="midlayer-unselected" class="form-control" value="">Choose Midlayer</option>
+            {{#each midlayers}}
+              {{> bundleProductOption product='midlayer'}}
+            {{/each}}
+          </select>
+          {{#if productSelected 'midlayer'}}
+            {{> bundleProductColorSelect product='Midlayer' color=this}}
+          {{/if}}
+        </div>
+      {{/if}}
+      <br />
+      <div class="form-group">
+        <label for="pants" class="sr-only">Pants</label>
+        <select class="form-control pants updateBundleProduct" name="pants" id="pants">
+          <option id="pants-unselected" name="pants-unselected" class="form-control" value="">Choose Pants</option>
+          {{#each pants}}
+            {{> bundleProductOption product='pants'}}
+          {{/each}}
+        </select>
+        {{#if productSelected 'pants'}}
+          {{> bundleProductColorSelect product='Pants' color=this}}
+        {{/if}}
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="gloves" class="sr-only">Gloves</label>
+        <select class="form-control gloves updateBundleProduct" name="gloves" id="gloves">
+          <option id="gloves-unselected" name="gloves-unselected" class="form-control" value="">Choose Gloves</option>
+          {{#each gloves}}
+            {{> bundleProductOption product='gloves'}}
+          {{/each}}
+        </select>
+        {{#if productSelected 'gloves'}}
+          {{> bundleProductColorSelect product='Gloves' color=this}}
+        {{/if}}
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="stdGoggles" class="sr-only">Standard Goggles</label>
+        <select class="form-control std-goggles updateBundleProduct" name="stdGoggles" id="stdGoggles">
+          <option id="std-goggles-unselected" name="std-goggles-unselected" class="form-control" value="">Choose Standard Goggles</option>
+          {{#each stdGoggles}}
+            {{> bundleProductOption product='stdGoggles'}}
+          {{/each}}
+        </select>
+        {{#if productSelected 'stdGoggles'}}
+          {{> bundleProductColorSelect product='StdGoggles' color=this}}
+        {{/if}}
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="otgGoggles" class="sr-only">OTG Goggles</label>
+        <select class="form-control otg-goggles updateBundleProduct" name="otgGoggles" id="otgGoggles">
+          <option id="otg-goggles-unselected" name="otg-goggles-unselected" class="form-control" value="">Choose OTG Goggles</option>
+          {{#each otgGoggles}}
+            {{> bundleProductOption product='otgGoggles'}}
+          {{/each}}
+        </select>
+        {{#if productSelected 'otgGoggles'}}
+          {{> bundleProductColorSelect product='OtgGoggles' color=this}}
+        {{/if}}
+      </div>
+    </form>
+  </div>
+</template>
+
+<template name='bundleProductOption'>
+  <option id="{{product}}-{{../_id}}" name="{{product}}-{{../_id}}" class="form-control" value="{{../_id}}" {{isSelectedProduct product ../_id}}>{{../gender}} {{../vendor}} {{../title}}</option>
+</template>
+
+<template name='bundleProductColorSelect'>
+  <select class="form-control {{productType}} updateBundleColor" name="{{productType}}" id="{{productType}}">
+    <option id="{{product}}-color-unselected" name="{{product}}-color-unselected" class="form-control" value="">Choose {{product}} Color</option>
+    {{#if Template.subscriptionsReady}}
+      {{#each colors}}
+        {{> bundleProductColorOption}}
+      {{/each}}
+    {{/if}}
+  </select>
+</template>
+
+<template name='bundleProductColorOption'>
+  <option name="{{../productId}}-{{this}}" class="form-control" value="{{this}}" {{isSelectedColor ../productType this}}>{{this}}</option>
+</template>
