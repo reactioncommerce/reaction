@@ -4,8 +4,8 @@
   </div>
 
   <div class="panel-group">
-    {{#each style in component.styles}}
-      <div class="rui objectmap" data-selector={{selector}} data-rule="true">
+    {{#each style in styles}}
+      <div class="rui objectmap" data-selector={{style.selector}} data-rule="true">
         <div class="panel-heading">
           <div class="panel-title">
             {{#if style.annotation}}

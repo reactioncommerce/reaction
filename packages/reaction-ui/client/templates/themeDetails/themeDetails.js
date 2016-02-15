@@ -56,6 +56,18 @@ Template.uiThemeDetails.helpers({
     }
 
     return components;
+  },
+
+  publishTheme() {
+    const instance = Template.instance();
+    return () => {
+      const theme = instance.state.get("theme") || {};
+      Meteor.call("ui/publishTheme", theme, (error) => {
+        if (error) {
+          Alerts.toast(`Couldn't publish theme ${theme.theme}`, "error");
+        }
+      });
+    };
   }
 });
 

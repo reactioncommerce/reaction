@@ -1,6 +1,9 @@
 
 <template name="button">
-  <button type="{{type}}" class="rui button btn btn-{{status}} {{className}}">
+  <button
+    type="{{type}}"
+    class="rui button btn btn-{{status}} {{className}}"
+    data-event-action="{{title}}">
     {{#if toggle}}
       {{#if toggleOn}}
         <i class="fa fa-{{onIcon}}"></i>

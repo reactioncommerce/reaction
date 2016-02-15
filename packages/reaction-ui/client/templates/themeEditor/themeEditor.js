@@ -5,10 +5,11 @@ Template.uiThemeEditor.onCreated(function () {
     selectors: [],
     annotations: {},
     selectedComponent: null,
+    styles: {},
     theme: {}
   });
 
-  Meteor.subscribe("Themes");
+  this.subscribe("Themes");
 
   this.findComponentByName = (name) => {
     const theme = this.state.get("theme");
@@ -24,24 +25,42 @@ Template.uiThemeEditor.onCreated(function () {
   };
 
   this.autorun(() => {
-    const selectedComponent = ReactionRouter.getQueryParam("component");
-    this.state.set("selectedComponent", selectedComponent);
+    const componentName = ReactionRouter.getQueryParam("component");
+    const component = this.findComponentByName(componentName);
+
+    this.state.set("selectedComponent", component);
+    if (component) {
+      // Get a freestyle-like object from raw css
+      Meteor.call("ui/cssToObject", component.styles, (error, result) => {
+        this.state.set("styles", result);
+      });
+
+      const annotations = {};
+
+      for (let annotation of component.annotations) {
+        if (annotation.rule) {
+          annotations[annotation.rule] = annotation;
+        }
+      }
+
+      this.state.set("annotations", annotations);
+    }
   });
 
-  this.previewStyles = (theme) => {
+  this.previewTheme = (theme) => {
     let output = "";
-    for (let stylesheet of theme.stylesheets) {
-      output += stylesheet.styles;
+    for (let component of theme.components) {
+      output += component.styles;
     }
     $("#reactionLayoutStyles").text(output);
   };
 
   this.autorun(() => {
-    this.theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
-    this.state.set("theme", this.theme);
+    const theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
+    this.state.set("theme", theme);
 
-    if (this.state.equals("selectedComponent", null) && this.theme) {
-      this.state.set("selectedComponent", this.theme.components[0].name);
+    if (theme) {
+      this.previewTheme(theme);
     }
   });
 });
@@ -52,32 +71,31 @@ Template.uiThemeEditor.helpers({
     const instance = Template.instance();
     const theme = instance.state.get("theme");
     const selectedComponent = instance.state.get("selectedComponent");
-
     if (theme) {
-      return instance.findComponentByName(selectedComponent);
+      return selectedComponent;
     }
   },
 
-  // annotation(selector) {
-  //   const instance = Template.instance();
-  //   const result = instance.annotationsBySelector[selector] || {
-  //     label: selector
-  //   };
-  //
-  //   return result;
-  // },
+  styles() {
+    const instance = Template.instance();
+    const stylesObject = instance.state.get("styles");
+    const annotations = instance.state.get("annotations") || {};
 
-  styles(selector) {
-    let props = Template.instance().styles[selector] || {};
-
-    const styles = _.map(props, (value, property) => {
+    const stylesArray = _.map(stylesObject, (declarations, selector) => {
       return {
-        property,
-        value
+        selector,
+        annotation: annotations[selector] || {
+          label: selector
+        },
+        declarations: _.map(declarations, (value, property) => {
+          return {
+            property,
+            value
+          };
+        })
       };
     });
-
-    return styles;
+    return stylesArray;
   },
 
   updateStyles() {
@@ -125,23 +143,26 @@ Template.uiThemeEditor.events({
   },
 
 
-  "input input"(event, template) {
-    const selector = $(event.target).closest("[data-selector]").data("selector");
+  "input input"(event, instance) {
+    const selector = $(event.target).closest("[data-selector]").attr("data-selector");
     const property = event.target.name;
     const value = event.target.value;
+    const theme = instance.state.get("theme");
+    const component = instance.state.get("selectedComponent");
+    const styles = instance.state.get("styles");
+
+    styles[selector][property] = value;
 
     // Update style value
-    template.styles[selector][property] = value;
-
     const data = {
-      theme: template.theme,
-      stylesheet: template.currentStylesheet,
-      styles: template.styles
+      theme,
+      component,
+      styles
     };
 
-    Meteor.call("layout/processStyles", data, (error, result) => {
-      if (result) {
-        // console.log(result);
+    Meteor.call("ui/updateStyles", data, (error) => {
+      if (error) {
+        Alerts.toast(`Could't update theme ${theme.theme}`);
       }
     });
   }
