@@ -1,10 +1,13 @@
 /**
  * productImageGallery helpers
  */
+
 let Media = ReactionCore.Collections.Media;
-/*
+
+/**
  * uploadHandler method
  */
+
 function uploadHandler(event) {
   const productId = ReactionProduct.selectedProductId();
   const variantId = ReactionProduct.selectedVariantId();
@@ -29,9 +32,10 @@ function uploadHandler(event) {
   });
 }
 
-/*
+/**
  * updateImagePriorities method
  */
+
 function updateImagePriorities() {
   const sortedMedias = _.map($(".gallery").sortable("toArray", {
     attribute: "data-index"
@@ -52,9 +56,10 @@ function updateImagePriorities() {
   return results;
 }
 
-/*
+/**
  *  Product Image Gallery
  */
+
 Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
@@ -138,6 +143,7 @@ Template.productImageGallery.onRendered(function () {
 /**
  * productImageGallery events
  */
+
 Template.productImageGallery.events({
   "mouseenter .gallery > li": function (event) {
     let ids = [];

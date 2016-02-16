@@ -55,7 +55,7 @@
       <!-- begin provides shortcut -->
       {{#each reactionApps provides='shortcut' enabled=true}}
         {{#if hasPermission route}}
-          <button id="{{route}}" title="{{label}}" class="btn btn-default {{active route}}">
+          <button id="{{route}}"  title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active route}}">
             <div class="contents">
               <div class="icon">
                 {{#if isDashboard route}}
@@ -64,7 +64,7 @@
                   <i class="{{icon}}"></i>
                 {{/if}}
               </div>
-              <div class="icon-text">
+              <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
                 {{label}}
               </div>
             </div>
@@ -76,9 +76,9 @@
         <div class="icon">
           <i class="fa fa-gear"></i>
         </div>
-        <div class="icon-text">
+        <span class="icon-text" data-i18n="app.editMode">
           Edit Mode
-        </div>
+        </span>
       </button>
     </nav>
 
@@ -89,11 +89,11 @@
 
       {{#if settings}}
         {{#with settings}}
-          <button id="{{route}}" title="{{label}}" data-event-action="showPackageSettings">
+          <button id="{{route}}" title="{{i18n i18nKeyLabel label}}" data-event-action="showPackageSettings">
             <i class="fa fa-gear"></i>
-            <span class="icon-text">
-                  {{label}}
-                </span>
+            <span class="icon-text" data-i18n="{{i18nKeyLabel}}">
+              {{label}}
+            </span>
           </button>
         {{/with}}
       {{/if}}

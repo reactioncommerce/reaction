@@ -21,7 +21,7 @@ ReactionCore.registerPackage({
       label: "Shipping Settings",
       route: "/dashboard/shipping/settings",
       provides: "settings",
-      template: "shippingProviderTable"
+      template: "shippingSettings"
     },
     {
       template: "flatRateCheckoutShipping",

@@ -148,10 +148,10 @@ ReactionRouter.initPackageRoutes = (userId) => {
 /**
  * Hook to setup default admin user with Launchdock credentials (if they exist)
  */
-if (ReactionCore && ReactionCore.Hooks) {
-  // ensure that routes are reloaded with template/authentication changes
-  ReactionCore.Hooks.Events.add("onLogin", (user) => {
-    ReactionRouter.reload();
-    return user;
-  });
-}
+// if (ReactionCore && ReactionCore.Hooks && ReactionRouter.reload) {
+//   // ensure that routes are reloaded with template/authentication changes
+//   ReactionCore.Hooks.Events.add("onLogin", (user) => {
+//     ReactionRouter.reload();
+//     return user;
+//   });
+// }
