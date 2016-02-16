@@ -1,0 +1,49 @@
+<template name='impossibleDates'>
+  {{> afNavbar}}
+  <div class="container-fluid">
+    <div class='row text-center'>
+      <h2><strong>Orders with Impossible to Serve Dates</strong></h2>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Shipping Address</th>
+        <th class="text-center">Update Dates</th>
+        <th>Cancel Order?</th>
+      </thead>
+      <tbody>
+        {{#each impossibleDates}}
+          <tr>
+            <td><a href="{{pathFor 'orderDetails'}}"><strong>{{shopifyOrderNumber}}</strong></a></td>
+            <td>{{billingName}}</td>
+            <td><a href="tel:{{billingPhone}}">{{billingPhone}}</a></td>
+            <td><a href="mailto: {{email}}">{{email}}</a></td>
+            <td>{{shippingAddress}}</td>
+            <td>
+              <div class='picker' id='{{_id}}'>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class='input-daterange input-group' id='datepicker'>
+                      <input type='text' class='input-sm form-control' name='start' placeholder="First Day" />
+                      <span class='input-group-addon'>to</span>
+                      <input type='text' class='input-sm form-control' name='end' placeholder="Last Day" />
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <button class='btn btn-block btn-primary update-rental-dates'>Save</button>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <a class='btn btn-block btn-primary btn-danger cancel-order' href="#">Cancel Order</a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

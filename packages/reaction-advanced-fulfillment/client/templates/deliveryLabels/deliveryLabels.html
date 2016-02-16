@@ -1,0 +1,19 @@
+<template name='deliveryLabels'>
+  {{#if pastDate this.advancedFulfillment.shipmentDate }}
+    {{#if this.advancedFulfillment.localDelivery}}
+      <span class="label label-info" style="background-color: #2A09BF; font-size: 14px;">LOCAL</span>
+    {{else}}
+      <span class="label label-danger" style="font-size: 14px;">RUSH</span>
+    {{/if}}
+  {{else}}
+    {{#if this.advancedFulfillment.localDelivery}}
+      <span class="label label-info" style="font-size: 14px;">LOCAL</span>
+    {{else}}
+      {{#if this.advancedFulfillment.rushDelivery}}
+        <span class="label label-warning" style="font-size: 14px;">RUSH</span>
+      {{else}}
+        <span class="label label-primary" style="font-size: 14px;">GROUND</span>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</template>

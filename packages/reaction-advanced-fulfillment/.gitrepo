@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:getoutfitted/reaction-advanced-fulfillment.git
+	branch = master
+	commit = a23607323b1b1e44f8e6c9c368f4b707450f985e
+	parent = 28dcae5c047b210aa87172da28574111e85d5c90
+	cmdver = 0.3.0
