@@ -26,6 +26,8 @@
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
         "print": "Распечатать",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Страница, которую вы запрашиваете, не найдена.",
         "loadMoreProducts": "Загрузить больше продуктов"
       },
       "shopSettings": {
@@ -33,7 +35,8 @@
         "address": "Адрес",
         "mail": "Почта",
         "localization": "Локализация",
-        "options": "Настройки"
+        "options": "Настройки",
+        "paymentMethods": "Платежные методы"
       },
       "header": {
         "tagsAdd": "Добавить метку",
@@ -77,7 +80,9 @@
         "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",
         "quantityGreaterThanZero": "Ошибка: количество должно быть больше нуля",
-        "dropFile": "Перетащите фото для загрузки"
+        "dropFile": "Перетащите фото для загрузки",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Продукт не найден."
       },
       "productDetailEdit": {
         "title": "Название",
