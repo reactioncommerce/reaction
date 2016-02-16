@@ -26,7 +26,7 @@ ReactionCore.registerPackage({
     provides: "shortcut",
     label: "Dashboard",
     template: "dashboardPackages",
-    icon: "fa fa-th",
+    icon: "icon-reaction-logo",
     priority: 0
   }, {
     route: "/dashboard/settings",

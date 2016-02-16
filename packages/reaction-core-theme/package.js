@@ -115,6 +115,7 @@ Package.onUse(function (api) {
     "theme/cart/checkout/progressBar/progressBar.less",
     "theme/dashboard/console/console.less",
     "theme/dashboard/dashboard.less",
+    "theme/dashboard/icon.less",
     "theme/dashboard/orders/orders.less",
     "theme/dashboard/packages/grid/package/package.less",
     "theme/dashboard/shop/accounts.less",
