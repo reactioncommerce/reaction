@@ -75,11 +75,10 @@ Template.memberSettings.helpers({
 
           // Also create an object map of those same permissions as above
           let permissionMap = getPermissionMap(permissions);
-
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: pkg.name + "/" + registryItem.route,
+              permission: pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });

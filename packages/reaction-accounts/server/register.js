@@ -22,7 +22,8 @@ ReactionCore.registerPackage({
     template: "accountsSettings"
   }, {
     route: "/dashboard/accounts",
-    name: "accounts",
+    name: "dashboard/accounts",
+    workflow: "coreAccountsWorkflow",
     provides: "shortcut",
     label: "Accounts",
     icon: "fa fa-users",

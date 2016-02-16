@@ -3,10 +3,10 @@ function pkgPermissions(pkg) {
   if (ReactionCore.hasPermission("dashboard")) {
     // route specific permissions
     if (pkg.route) {
-      return ReactionCore.hasPermission(pkg.route);
+      return ReactionCore.hasPermission(pkg.name);
     }
     // name is a global group role for packages
-    if (pkg.name) {
+    if (pkg.name && pkg.template) {
       return ReactionCore.hasPermission(pkg.name);
     }
   }

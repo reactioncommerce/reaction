@@ -380,14 +380,11 @@ Meteor.methods({
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
    * @param {String} shopId - shop to invite user
-   * @param {String} email - email of invitee
    * @param {String} name - name to address email
+   * @param {String} email - email of invitee
    * @returns {Boolean} returns true
    */
-  "accounts/inviteShopMember": function (shopId, email, name) {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
-    }
+  "accounts/inviteShopMember": function (shopId, name, email) {
     let currentUserName;
     let shop;
     let token;
@@ -399,7 +396,7 @@ Meteor.methods({
     this.unblock();
     shop = ReactionCore.Collections.Shops.findOne(shopId);
 
-    if (!ReactionCore.hasOwnerAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access denied");
     }
 
@@ -553,7 +550,7 @@ Meteor.methods({
    * @returns {Boolean} success/failure
    */
   "accounts/addUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, Match.OneOf(String, Array));
@@ -571,13 +568,14 @@ Meteor.methods({
    * accounts/removeUserPermissions
    */
   "accounts/removeUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String, null));
     this.unblock();
+
     try {
       return Roles.removeUsersFromRoles(userId, permissions, group);
     } catch (error) {
@@ -594,7 +592,7 @@ Meteor.methods({
    * @returns {Boolean} returns Roles.setUserRoles result
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, String);

@@ -200,11 +200,13 @@ _.extend(ReactionCore, {
     }
   },
   getRegistryForCurrentRoute: (provides = "dashboard") => {
+    ReactionRouter.watchPathChange();
+    const currentRouteName = ReactionRouter.current().route.name;
     const currentRoute = ReactionRouter.current();
     const template = currentRoute.route.options.template;
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
-      "registry.template": template,
+      "registry.name": currentRouteName,
       "registry.provides": provides
     }, {
       enabled: 1,

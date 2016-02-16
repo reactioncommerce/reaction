@@ -19,6 +19,7 @@ ReactionCore.registerPackage({
     template: "orders"
   }, {
     route: "/dashboard/orders",
+    name: "dashboard/orders",
     provides: "shortcut",
     label: "Orders",
     description: "Fulfill your orders",

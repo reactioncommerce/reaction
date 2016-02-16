@@ -14,13 +14,19 @@ Template.accountsDashboardControls.events({
   }
 });
 
+Template.accountsDashboard.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("ShopMembers");
+  });
+});
+
 Template.accountsDashboard.helpers({
   /**
    * isShopMember
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
-    let roles = ["Dashboard", "Administrator", "Owner"];
+    let roles = ["dashboard", "admin", "owner"];
 
     if (_.contains(roles, this.role)) {
       return true;
@@ -31,10 +37,10 @@ Template.accountsDashboard.helpers({
 
   /**
    * isShopGuest
-   * @return {Boolean} True if the memnber is an administrator
+   * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {
-    let roles = ["Dashboard", "Administrator", "Owner"];
+    let roles = ["dashboard", "admin", "owner"];
 
     if (_.contains(roles, this.role) === false) {
       return true;
@@ -44,20 +50,17 @@ Template.accountsDashboard.helpers({
   },
 
   /**
-   * isShopGuest
-   * @return {Boolean} True if the memnber is an administrator
+   * members
+   * @return {Boolean} True array of adminsitrative members
    */
   members: function () {
-    let ShopMembers;
     let members = [];
     let shopUsers;
 
-    if (ReactionCore.hasPermission("dashboard/accounts")) {
-      ShopMembers = Meteor.subscribe("ShopMembers");
-
-      if (ShopMembers.ready()) {
+    if (ReactionCore.hasPermission("reaction-accounts")) {
+      const instance = Template.instance();
+      if (instance.subscriptionsReady()) {
         shopUsers = Meteor.users.find();
-
         shopUsers.forEach(function (user) {
           let member = {};
 
@@ -75,17 +78,17 @@ Template.accountsDashboard.helpers({
           member.services = user.services;
 
           if (Roles.userIsInRole(member.userId, "dashboard", ReactionCore.getShopId())) {
-            member.role = "Dashboard";
+            member.role = "dashboard";
           }
 
           if (Roles.userIsInRole(member.userId, "admin", ReactionCore.getShopId())) {
-            member.role = "Administrator";
+            member.role = "owner";
           }
 
           if (Roles.userIsInRole(member.userId, "owner", ReactionCore.getShopId())) {
-            member.role = "Owner";
+            member.role = "owner";
           } else if (Roles.userIsInRole(member.userId, ReactionCore.getShopId(), ReactionCore.getShopId())) {
-            member.role = "Guest";
+            member.role = "guest";
           }
 
           members.push(member);
