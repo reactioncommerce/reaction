@@ -73,11 +73,11 @@ facebook@1.2.2
 fastclick@1.0.7
 fortawesome:fontawesome@4.5.0
 geojson-utils@1.0.4
-getoutfitted:reaction-advanced-fulfillment@0.6.0
-getoutfitted:reaction-local-delivery@0.1.0
-getoutfitted:reaction-rental-products@0.2.0
-getoutfitted:reaction-shopify-orders@0.5.0
-getoutfitted:reaction-shopify-products@0.3.0
+getoutfitted:reaction-advanced-fulfillment@0.7.0
+getoutfitted:reaction-local-delivery@0.2.0
+getoutfitted:reaction-rental-products@0.3.0
+getoutfitted:reaction-shopify-orders@0.6.0
+getoutfitted:reaction-shopify-products@0.4.0
 github@1.1.4
 google@1.1.7
 harrison:papa-parse@1.1.1
