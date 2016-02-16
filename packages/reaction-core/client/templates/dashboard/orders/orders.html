@@ -69,7 +69,7 @@
 
 <template name="orderStatusDetail">
   <div class="col-xs-8">
-    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D, YYYY HH:MM"}}</div>
+    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D, YYYY hh:mm:ss A"}}</div>
     {{#if shipmentTracking}}
     <p>Tracking: <a href="#">{{shipmentTracking}}</a></p>
     {{/if}}
