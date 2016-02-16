@@ -152,6 +152,10 @@ function getReactionApps(optionHash) {
             if (match === Object.keys(registryFilter).length) {
               registry.name = app.name;
               if (registry.enabled !== false) {
+                const registryLabel = registry.label ? registry.label.toCamelCase() : '';
+                const i18nKey = `admin.${registry.provides}.${registryLabel}`;
+                registry.i18nKeyLabel = `${i18nKey}Label`;
+                registry.i18nKeyDescription = `${i18nKey}Description`;
                 registry.enabled = registry.enabled || app.enabled;
                 registry.packageId = app._id;
                 reactionApps.push(registry);
