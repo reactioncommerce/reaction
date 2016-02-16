@@ -3052,10 +3052,23 @@
     "isShippingDefault": true,
     "isBillingDefault": true
   }],
-  "defaultRoles": [
+  "defaultVisitorRole": [
+    "anonymous",
     "guest",
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
+  ],
+  "defaultRoles": [
     "account/profile",
-    "core/index"
+    "guest",
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
   ],
   "layout": [{
     "layout": "coreLayout",
@@ -6232,10 +6245,23 @@
     "isShippingDefault": true,
     "isBillingDefault": true
   }],
-  "defaultRoles": [
+  "defaultVisitorRole": [
+    "anonymous",
     "guest",
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
+  ],
+  "defaultRoles": [
     "account/profile",
-    "core/index"
+    "guest",
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
   ],
   "layout": [{
     "layout": "coreLayout",

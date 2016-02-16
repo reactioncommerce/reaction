@@ -90,6 +90,8 @@ function getReactionApps(optionHash) {
       }
     }
   }
+
+  // return these fields
   fields = {
     enabled: 1,
     registry: 1,
@@ -100,6 +102,7 @@ function getReactionApps(optionHash) {
   // fetch the packages
   reactionPackages = ReactionCore.Collections.Packages.find(filter, fields).fetch();
 
+  // apply filters to registry items
   if (reactionPackages.length) {
     // filter by package and enabled true/false
     if (filter.name && filter.enabled) {
@@ -144,6 +147,7 @@ function getReactionApps(optionHash) {
         return results;
       })();
     }
+
     // we have all the package app registry entries
     for (let app of packages) {
       // go through the registry entries and push enabled entries
@@ -158,8 +162,9 @@ function getReactionApps(optionHash) {
                 match += 1;
               }
               if (match === Object.keys(registryFilter).length) {
-                registry.name = app.name;
+                if (!registry.name) registry.name = app.name;
                 if (registry.enabled !== false) {
+                  // TODO move this to a function and reuse with Template.dashboardHeader.helpers
                   const registryLabel = registry.label ? registry.label.toCamelCase() : "";
                   const i18nKey = `admin.${registry.provides}.${registryLabel}`;
                   registry.i18nKeyLabel = `${i18nKey}Label`;

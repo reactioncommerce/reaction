@@ -5,7 +5,7 @@
  */
 Accounts.registerLoginHandler(function (options) {
   if (!options.anonymous) {
-    return;
+    return {};
   }
   let loginHandler;
   let stampedToken = Accounts._generateStampedLoginToken();
@@ -34,6 +34,8 @@ Accounts.registerLoginHandler(function (options) {
 Accounts.onCreateUser(function (options, user) {
   const shop = ReactionCore.getCurrentShop();
   const shopId = shop._id;
+  const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
+  const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
   let roles = {};
   let additionals = {
     profile: {}
@@ -44,9 +46,9 @@ Accounts.onCreateUser(function (options, user) {
   if (shop) {
     // if we don't have user.services we're an anonymous user
     if (!user.services) {
-      roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
+      roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
     } else {
-      roles[shopId] = shop.defaultRoles || ["guest", "accountProfile", "product", "tag", "index", "checkout"];
+      roles[shopId] = shop.defaultRoles || defaultRoles;
       // also add services with email defined to user.emails[]
       for (let service in user.services) {
         if (user.services[service].email) {

@@ -18,8 +18,6 @@ Template.coreAdminLayout.onCreated(() => {
       let settingsData = _.find(reactionApp.registry, function (item) {
         return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
       });
-
-      // return settingsData;
       if (settingsData) {
         if (ReactionCore.hasPermission(settingsData.route, Meteor.userId())) {
           control.settings.set(settingsData);
@@ -50,13 +48,6 @@ Template.coreAdminLayout.helpers({
 
   settings: function () {
     return Template.instance().settings.get();
-  },
-
-  isDashboard(route) {
-    if (route === "dashboard") {
-      return true;
-    }
-    return false;
   },
 
   adminControlsClassname: function () {
@@ -113,7 +104,7 @@ Template.coreAdminLayout.events({
    * @return {void}
    */
   "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button"(event) {
-    if (this.route === "products/createProduct") {
+    if (this.name === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
@@ -139,7 +130,7 @@ Template.coreAdminLayout.events({
       event.preventDefault();
       event.stopPropagation();
 
-      ReactionRouter.go(this.route);
+      ReactionRouter.go(this.name);
     }
   }
 });

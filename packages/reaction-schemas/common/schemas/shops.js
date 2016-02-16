@@ -219,9 +219,13 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [ReactionCore.Schemas.Metafield],
     optional: true
   },
+  "defaultVisitorRole": {
+    type: [String],
+    defaultValue: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"]
+  },
   "defaultRoles": {
     type: [String],
-    defaultValue: ["guest", "account/profile"]
+    defaultValue: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"]
   },
   "layout": {
     type: [ReactionCore.Schemas.Layout],

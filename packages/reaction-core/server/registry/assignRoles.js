@@ -13,7 +13,7 @@ const getRouteName = (packageName, registryItem) => {
   let routeName;
   if (packageName && registryItem) {
     if (registryItem.name) {
-      routeName = `${registryItem.name}`;
+      routeName = registryItem.name;
     } else if (registryItem.template) {
       routeName = `${packageName}/${registryItem.template}`;
     } else {

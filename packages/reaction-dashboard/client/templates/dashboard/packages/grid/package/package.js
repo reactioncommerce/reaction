@@ -68,12 +68,9 @@ Template.gridPackage.events({
     event.stopPropagation();
 
     const packageData = instance.data.package || {};
-    const route = packageData.route;
-
+    const route = ReactionRouter.path(packageData.name || packageData.route);
     if (route) {
       if (ReactionCore.hasPermission(route, Meteor.userId())) {
-        // we're not using the route, but (pkg) name + provides
-        // which we've defined as the true route name
         ReactionRouter.go(route);
       }
     }
@@ -83,6 +80,6 @@ Template.gridPackage.events({
     event.preventDefault();
     event.stopPropagation();
     // Show the advanced settings view using this package registry entry
-    ReactionCore.showActionView(instance.data);
+    ReactionCore.showActionView(this);
   }
 });

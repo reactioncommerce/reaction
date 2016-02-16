@@ -49,12 +49,7 @@ ReactionRouter.getRouteName = (packageName, registryItem) => {
 ReactionRouter.initPackageRoutes = (userId) => {
   const pkgs = ReactionCore.Collections.Packages.find().fetch();
   const prefix = ReactionCore.getShopName().toLowerCase(); // todo add shopId
-  // this is likely to be a bad thing
-  // testing in progress
-  // the goal here is to reset routes on LOGIN
-  // but need to make sure routes defined outside are kept
-  // so we'll probably need to do this one route at a time.
-  ReactionRouter._routes = [];
+
   // initialize index
   // define default routing groups
   let shop = ReactionRouter.group({
@@ -145,13 +140,11 @@ ReactionRouter.initPackageRoutes = (userId) => {
   }
 };
 
-/**
- * Hook to setup default admin user with Launchdock credentials (if they exist)
- */
-// if (ReactionCore && ReactionCore.Hooks && ReactionRouter.reload) {
-//   // ensure that routes are reloaded with template/authentication changes
-//   ReactionCore.Hooks.Events.add("onLogin", (user) => {
-//     ReactionRouter.reload();
-//     return user;
-//   });
-// }
+Accounts.onLogin(function() {
+  // this is likely to be a bad thing
+  // testing in progress
+  // the goal here is to reset routes on LOGIN
+  // but need to make sure routes defined outside are kept
+  // so we'll probably need to do this one route at a time.
+  ReactionRouter._routes = [];
+});

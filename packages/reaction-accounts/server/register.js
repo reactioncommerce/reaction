@@ -22,6 +22,7 @@ ReactionCore.registerPackage({
     template: "accountsSettings"
   }, {
     route: "/dashboard/accounts",
+    name: "accounts",
     provides: "shortcut",
     label: "Accounts",
     icon: "fa fa-users",
@@ -29,6 +30,7 @@ ReactionCore.registerPackage({
   }, {
     route: "/account/profile",
     template: "accountProfile",
+    name: "account/profile",
     label: "Profile",
     icon: "fa fa-user",
     provides: "userAccountDropdown"

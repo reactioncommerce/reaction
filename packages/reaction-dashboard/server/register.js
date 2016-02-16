@@ -29,8 +29,9 @@ ReactionCore.registerPackage({
     icon: "icon-reaction-logo",
     priority: 0
   }, {
-    route: "/dashboard/settings",
+    route: "/dashboard/shop/settings",
     template: "shopSettings",
+    name: "shopSettings",
     label: "Shop Settings",
     provides: "settings",
     container: "dashboard"
