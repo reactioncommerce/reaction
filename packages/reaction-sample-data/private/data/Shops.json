@@ -3149,6 +3149,22 @@
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
+    "layout": "coreLayout",
+    "workflow": "coreUIWorkflow",
+    "collection": "Themes",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "uiDashboard",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "",
+      "notFound": "notFound",
+      "dashboardHeader": "dashboardHeader",
+      "dashboardHeaderControls": "",
+      "dashboardControls": "",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
     "layout": "printLayout",
     "workflow": "coreOrderWorkflow",
     "structure": {
@@ -6308,6 +6324,22 @@
       "dashboardHeader": "dashboardHeader",
       "dashboardHeaderControls": "",
       "dashboardControls": "accountsDashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "coreLayout",
+    "workflow": "coreUIWorkflow",
+    "collection": "Themes",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "uiDashboard",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "",
+      "notFound": "notFound",
+      "dashboardHeader": "dashboardHeader",
+      "dashboardHeaderControls": "",
+      "dashboardControls": "",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
