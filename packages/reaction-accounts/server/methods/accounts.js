@@ -384,7 +384,7 @@ Meteor.methods({
    * @param {String} email - email of invitee
    * @returns {Boolean} returns true
    */
-  "accounts/inviteShopMember": function (shopId, name, email) {
+  "accounts/inviteShopMember": function (shopId, email, name) {
     let currentUserName;
     let shop;
     let token;
