@@ -38,7 +38,13 @@ Template.registerHelper("urlFor", (path, params) => {
  */
 Template.registerHelper("active", (routeName) => {
   ReactionRouter.watchPathChange();
-  const prefix = ReactionRouter.current().route.group.prefix;
+  const group = ReactionRouter.current().route.group;
+  let prefix;
+  if (group && group.prefix) {
+    prefix = ReactionRouter.current().route.group.prefix;
+  } else {
+    prefix = "";
+  }
   const path = ReactionRouter.current().route.path;
   const routeDef = path.replace(prefix + "/", "");
   return routeDef === routeName ? "active" : "";

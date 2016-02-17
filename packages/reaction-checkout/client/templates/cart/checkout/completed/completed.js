@@ -41,7 +41,7 @@ Template.cartCompleted.events({
   "click #update-order": function (event, template) {
     const email = template.find("input[name=email]").value;
     check(email, String);
-    return Meteor.call("orders/addOrderEmail", Template.parentData()._id,
-      email);
+    const cartId = ReactionRouter.getQueryParam("_id");
+    return Meteor.call("orders/addOrderEmail", cartId, email);
   }
 });

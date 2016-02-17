@@ -3,20 +3,23 @@
  *
  * order state tracking, user profile helpers
  *
- * @returns user profile details on orders
+ * @returns {undefined} user profile details on orders
  */
-Template.orderDetail.onCreated = function () {
-  Meteor.subscribe("UserProfile", this.userId);
-};
+Template.orderDetail.onCreated(function () {
+  this.subscribe("UserProfile", this.userId);
+});
 
 Template.orderDetail.helpers({
   userProfile: function () {
-    if (typeof this.userId === "string") {
-      const userProfile = ReactionCore.Collections.Accounts.findOne(this.userId);
-      if (!userProfile) {
-        return {};
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
+      if (typeof this.userId === "string") {
+        const userProfile = ReactionCore.Collections.Accounts.findOne(this.userId);
+        if (!userProfile) {
+          return {};
+        }
+        return userProfile.profile;
       }
-      return userProfile.profile;
     }
   },
   orderAge: function () {
