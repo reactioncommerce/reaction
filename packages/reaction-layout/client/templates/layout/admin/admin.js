@@ -1,3 +1,5 @@
+const Drop = ReactionUI.Lib.Drop;
+
 Template.coreAdminLayout.onCreated(() => {
   const control = Template.instance();
 
@@ -33,7 +35,7 @@ Template.coreAdminLayout.onCreated(() => {
   });
 });
 
-Template.coreAdminLayout.onRendered(() => {
+Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
 });
 
@@ -93,6 +95,22 @@ Template.coreAdminLayout.events({
     }
   },
 
+  "click [data-event-action=addItem]"() {
+    if (!this.dropInstance) {
+      this.dropInstance = new Drop({
+        target: event.target,
+        content: "",
+        constrainToWindow: true,
+        classes: "drop-theme-arrows",
+        position: "right center"
+      });
+
+      Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);
+    }
+
+    this.dropInstance.open();
+  },
+
   "click [data-event-action=showPackageSettings]"() {
     ReactionCore.showActionView(this);
   },
@@ -103,29 +121,24 @@ Template.coreAdminLayout.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button"(event) {
+  "click .admin-controls-quicklinks a, click .admin-controls-quicklinks button"(event) {
     if (this.name === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
-      Meteor.call("products/createProduct", (error, productId) => {
-        let currentTag;
-        let currentTagId;
+      if (!this.dropInstance) {
+        this.dropInstance = new Drop({
+          target: event.target,
+          content: "",
+          constrainToWindow: true,
+          classes: "drop-theme-arrows",
+          position: "right center"
+        });
 
-        if (error) {
-          throw new Meteor.Error("createProduct error", error);
-        } else if (productId) {
-          currentTagId = Session.get("currentTag");
-          currentTag = ReactionCore.Collections.Tags.findOne(currentTagId);
-          if (currentTag) {
-            Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-          }
-          // go to new product
-          ReactionRouter.go("product", {
-            handle: productId
-          });
-        }
-      });
+        Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);
+      }
+
+      this.dropInstance.open();
     } else if (this.route) {
       event.preventDefault();
       event.stopPropagation();

@@ -1,0 +1,7 @@
+<template name="createContentMenu">
+  <div class="rui items flex quarter">
+    {{#each item in items}}
+      {{> button (buttonProps item)}}
+    {{/each}}
+  </div>
+</template>

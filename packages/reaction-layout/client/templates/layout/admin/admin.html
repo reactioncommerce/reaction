@@ -20,7 +20,6 @@
       {{> Template.dynamic template=template}}
       <!-- end template region -->
 
-
       <footer class="reaction-navigation-footer footer-default">
         <!-- begin layoutFooter -->
         {{> Template.dynamic template=layoutFooter}}
@@ -53,19 +52,27 @@
 
     <nav class="admin-controls-quicklinks">
       <!-- begin provides shortcut -->
-      {{#each reactionApps provides='shortcut' enabled=true}}
-        <button id="{{route}}"  title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active name}}">
+      {{#each reactionApps provides='shortcut' enabled=true container=undefined}}
+        <a href="{{route}}" title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active name}}">
           <div class="contents">
             <div class="icon">
-                <i class="{{icon}}"></i>
+              <i class="{{icon}}"></i>
             </div>
             <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
               {{label}}
             </div>
           </div>
-        </button>
+        </a>
       {{/each}}
       <!-- end provides shortcut -->
+      <button data-event-action="addItem">
+        <div class="icon">
+          <i class="fa fa-plus"></i>
+        </div>
+        <span class="icon-text">
+          Add
+        </span>
+      </button>
       <button data-event-action="toggleEditMode">
         <div class="icon">
           <i class="fa fa-gear"></i>

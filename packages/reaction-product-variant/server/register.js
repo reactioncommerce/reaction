@@ -20,6 +20,7 @@ ReactionCore.registerPackage({
     icon: "fa fa-plus",
     template: "productDetail",
     provides: "shortcut",
+    container: "addItem",
     priority: 1,
     permissions: [{
       label: "Create Product",
