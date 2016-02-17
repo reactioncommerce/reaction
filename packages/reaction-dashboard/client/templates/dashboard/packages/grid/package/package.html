@@ -2,7 +2,7 @@
   <div class="rui card package" data-settings-view="{{package.template}}">
     {{!-- display overview route --}}
 
-    <div class="content" data-event-action="showPackageManagement">
+    <div class="content" data-event-action="{{showPackageManagement package}}">
       <h3 class="title">
         <i class="{{package.icon}}"></i> <span data-i18n="{{i18nKeyLabel}}">{{package.label}}</span>
       </h3>
@@ -11,7 +11,7 @@
 
     <div class="controls">
       {{#if package.enabled}}
-        {{#if condition cycle 'gt' 1}}
+        {{#if condition priority 'gt' 1}}
           <button class="pull-right disablePkg">
             <i class="fa fa-check-square fa-fw"></i>
           </button>

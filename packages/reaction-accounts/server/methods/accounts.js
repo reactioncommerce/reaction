@@ -380,8 +380,8 @@ Meteor.methods({
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
    * @param {String} shopId - shop to invite user
-   * @param {String} name - name to address email
    * @param {String} email - email of invitee
+   * @param {String} name - name to address email
    * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {

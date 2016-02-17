@@ -38,7 +38,7 @@ Template.loginDropdown.events({
    * @return {void}
    */
   "click .user-accounts-dropdown-apps a": function (event, template) {
-    if (this.route === "products/createProduct") {
+    if (this.name === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
@@ -59,10 +59,11 @@ Template.loginDropdown.events({
           });
         }
       });
-    } else if (this.route) {
+    } else if (this.route || this.name) {
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
-      ReactionRouter.go(this.route);
+      const route = this.name || this.route;
+      ReactionRouter.go(route);
     }
   }
 });

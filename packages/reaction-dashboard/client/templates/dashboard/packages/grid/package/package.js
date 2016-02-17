@@ -6,9 +6,15 @@ Template.gridPackage.helpers({
     return {
       icon: "angle-right",
       onClick() {
-        ReactionRouter.go(pkg.route);
+        const route = pkg.name || pkg.route;
+        ReactionRouter.go(route);
       }
     };
+  },
+  showPackageManagement(pkg) {
+    if (pkg.name && pkg.route && pkg.template) {
+      return "showPackageManagement";
+    }
   }
 });
 
@@ -28,8 +34,9 @@ Template.gridPackage.events({
         Alerts.toast(self.label + i18n.t("gridPackage.pkgEnabled"), "error", {
           type: "pkg-enabled-" + self.name
         });
-        if (self.route) {
-          return ReactionRouter.go(self.route);
+        if (self.name || self.route) {
+          const route = self.name || self.route;
+          return ReactionRouter.go(route);
         }
       } else if (error) {
         return Alerts.toast(self.label + i18n.t("gridPackage.pkgDisabled"), "warning");
@@ -76,7 +83,7 @@ Template.gridPackage.events({
     }
   },
 
-  "click .pkg-settings, click [data-event-action=showPackageSettings]": function (event, instance) {
+  "click .pkg-settings, click [data-event-action=showPackageSettings]": function (event) {
     event.preventDefault();
     event.stopPropagation();
     // Show the advanced settings view using this package registry entry
