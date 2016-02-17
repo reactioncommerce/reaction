@@ -140,7 +140,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
   }
 };
 
-Accounts.onLogin(function() {
+Accounts.onLogin(function () {
   // this is likely to be a bad thing
   // testing in progress
   // the goal here is to reset routes on LOGIN

@@ -109,7 +109,6 @@ function getReactionApps(optionHash) {
       packages = (function () {
         const results = [];
         for (let pkg of reactionPackages) {
-          console.log("pushing enabled", pkg.name)
           if (pkg.name === filter.name && pkg.enabled === filter.enabled) {
             results.push(pkg);
           }

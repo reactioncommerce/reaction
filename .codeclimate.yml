@@ -2,6 +2,8 @@ exclude_paths:
 - ".meteor/*"
 - "packages/reaction-core-theme/lib/*"
 - "packages/reaction-core/lib/*"
+- "packages/reaction-ui/private/*"
+- "packages/reaction-ui-navbar/private/*"
 engines:
   duplication:
     enabled: true
@@ -11,7 +13,7 @@ engines:
   eslint:
     enabled: true
   csslint:
-    enabled: true
+    enabled: false
   fixme:
     enabled: true
 ratings:
