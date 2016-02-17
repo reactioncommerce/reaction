@@ -18,6 +18,7 @@ ReactionCore.registerPackage({
   }, {
     label: "Account Settings",
     provides: "settings",
+    route: "/dashboard/account/settings",
     container: "accounts",
     workflow: "coreAccountsWorkflow",
     template: "accountsSettings"

@@ -7,10 +7,10 @@ Template.dashboardHeader.helpers({
     let route = ReactionRouter.current().route.name;
     let registry = ReactionCore.getRegistryForCurrentRoute() || {};
     if (registry && route) {
-      // associate with template first, it's the natural relationship
-      registry.nameSpace = registry.template || registry.name || "app";
-      registry.i18nLabel = registry.label || registry.provides || route.charAt(0).toUpperCase() + route.slice(1);
-      registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase();
+      // TODO move this to a function and reuse with reactionApps in apps.js
+      const registryLabel = registry.label ? registry.label.toCamelCase() : "";
+      const i18nKey = `admin.${registry.provides}.${registryLabel}`;
+      registry.i18nKeyLabel = `${i18nKey}Title`;
       return registry;
     }
   }

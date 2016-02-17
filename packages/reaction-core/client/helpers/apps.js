@@ -16,7 +16,7 @@
  *     unnecessary data not retrieved with the cost of additional requests.
  *   - context filter should be considered experimental
  *
- *   @example {{#each reactionApps provides="settings" name=name container=container}}
+ *   @example {{#each reactionApps provides="settings" name=packageName container=container}}
  *   @example {{#each reactionApps provides="userAccountDropdown" enabled=true}}
  *   @example
  *     {{#each reactionApps provides="social" name="reaction-social"}}
@@ -109,6 +109,7 @@ function getReactionApps(optionHash) {
       packages = (function () {
         const results = [];
         for (let pkg of reactionPackages) {
+          console.log("pushing enabled", pkg.name)
           if (pkg.name === filter.name && pkg.enabled === filter.enabled) {
             results.push(pkg);
           }
@@ -162,7 +163,7 @@ function getReactionApps(optionHash) {
                 match += 1;
               }
               if (match === Object.keys(registryFilter).length) {
-                if (!registry.name) registry.name = app.name;
+                if (!registry.packageName) registry.packageName = app.name;
                 if (registry.enabled !== false) {
                   // TODO move this to a function and reuse with Template.dashboardHeader.helpers
                   const registryLabel = registry.label ? registry.label.toCamelCase() : "";
@@ -171,7 +172,10 @@ function getReactionApps(optionHash) {
                   registry.i18nKeyDescription = `${i18nKey}Description`;
                   registry.enabled = registry.enabled || app.enabled;
                   registry.packageId = app._id;
-                  reactionApps.push(registry);
+                  // check permissions before pushing so that templates aren't required.
+                  if (ReactionCore.hasPermission([registry.name, registry.route])) {
+                    reactionApps.push(registry);
+                  }
                 }
               }
             }

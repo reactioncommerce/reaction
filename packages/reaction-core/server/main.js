@@ -3,7 +3,6 @@
  * ReactionCore Server Configuration
  */
 
-
 /**
  * ReactionCore methods (server)
  */
@@ -28,10 +27,11 @@ _.extend(ReactionCore, {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission: function (checkPermissions, userId, checkGroup) {
-    // check(checkPermissions, Match.OneOf(String, Array));
-    // check(userId, String);
-    // check(checkGroup, Match.Optional(String));
+  hasPermission: function (checkPermissions, userId = Meteor.userId(), checkGroup = ReactionCore.getShopId()) {
+    check(checkPermissions, Match.OneOf(String, Array));
+    check(userId, String);
+    check(checkGroup, Match.Optional(String));
+
     let permissions = ["owner"];
     // default group to the shop or global if shop
     // isn't defined for some reason.

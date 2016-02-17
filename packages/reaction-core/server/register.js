@@ -13,12 +13,6 @@ ReactionCore.registerPackage({
   name: "core",
   icon: "fa fa-th",
   autoEnable: true,
-  registry: [{
-    route: "/",
-    name: "index",
-    template: "products",
-    workflow: "coreWorkflow"
-  }],
   settings: {
     public: {
       allowGuestCheckout: true

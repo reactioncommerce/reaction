@@ -54,18 +54,16 @@
     <nav class="admin-controls-quicklinks">
       <!-- begin provides shortcut -->
       {{#each reactionApps provides='shortcut' enabled=true}}
-        {{#if hasPermission route}}
-          <button id="{{route}}"  title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active route}}">
-            <div class="contents">
-              <div class="icon">
-                  <i class="{{icon}}"></i>
-              </div>
-              <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
-                {{label}}
-              </div>
+        <button id="{{route}}"  title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active name}}">
+          <div class="contents">
+            <div class="icon">
+                <i class="{{icon}}"></i>
             </div>
-          </button>
-        {{/if}}
+            <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
+              {{label}}
+            </div>
+          </div>
+        </button>
       {{/each}}
       <!-- end provides shortcut -->
       <button data-event-action="toggleEditMode">

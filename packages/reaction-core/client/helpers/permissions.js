@@ -1,7 +1,8 @@
 /*
  * Methods for the reaction permissions
- * https://github.com/ongoworks/reaction#rolespermissions-system
- * use: {{hasPermissions admin userId}}
+ * helpers for roles, uses alanning:meteor-roles
+ * see: http://alanning.github.io/meteor-roles/classes/Roles.html
+ * use: {{hasPermission admin userId}}
  */
 
 /**

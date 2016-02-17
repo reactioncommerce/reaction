@@ -1,6 +1,8 @@
 describe("Product", function () {
   beforeEach(function (done) {
-    ReactionRouter.go("product", {handle: "example-product"});
+    ReactionRouter.go("product", {
+      handle: "example-product"
+    });
     Tracker.afterFlush(done);
   });
 
@@ -20,19 +22,17 @@ describe("Product", function () {
       return done();
     });
 
-    /*
-    it("should create new product by admin", function(done) {
+    it("should create new product by admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       productSpy = spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
 
-      expect(function() {
+      expect(function () {
         return Meteor.call("flushTranslations");
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
 
       expect(productSpy).toHaveBeenCalled();
       return done();
-
-    });*/
+    });
   });
 
   // test various product meta data
@@ -218,7 +218,7 @@ describe("Product", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      // expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
       done();
     });
   });

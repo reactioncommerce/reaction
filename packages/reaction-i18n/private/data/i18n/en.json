@@ -16,6 +16,7 @@
         "dashboard": {
           "coreLabel": "Core",
           "coreDescription": "Reaction Commerce Core",
+          "coreTitle": "Dashboard",
           "ordersLabel": "Orders",
           "ordersDescription": "Fulfill your orders",
           "importLabel": "Import",

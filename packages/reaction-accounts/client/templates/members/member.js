@@ -78,7 +78,7 @@ Template.memberSettings.helpers({
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
+              permission: registryItem.name || pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });

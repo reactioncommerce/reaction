@@ -63,8 +63,8 @@ Template.settingsSidebar.helpers({
    */
   pkgPermissions() {
     if (ReactionCore.hasPermission("dashboard")) {
-      if (this.route) {
-        return ReactionCore.hasPermission(this.route);
+      if (this.name) {
+        return ReactionCore.hasPermission(this.name);
       }
 
       return ReactionCore.hasPermission(this.name);
@@ -82,18 +82,5 @@ Template.settingsSidebarItem.helpers({
    */
   label() {
     return Template.parentData(1).label || this.label;
-  },
-
-  /**
-   * active
-   * @param {String} route Route for item
-   * @return {String} "active" || ""
-   */
-  active(route) {
-    if (route === ReactionRouter.getRouteName()) {
-      return "active";
-    }
-
-    return "";
   }
 });

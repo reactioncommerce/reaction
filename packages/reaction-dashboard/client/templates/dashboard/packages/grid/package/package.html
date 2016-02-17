@@ -16,12 +16,10 @@
             <i class="fa fa-check-square fa-fw"></i>
           </button>
         {{/if}}
-        {{#each reactionApps provides="settings" name=package.name}}
-          {{#if hasPermission package.route}}
+        {{#each reactionApps provides="settings" name=package.packageName}}
           <button class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}">
             <i class="{{orElse icon 'fa fa-cog fa-fw'}}"></i>
           </button>
-          {{/if}}
         {{/each}}
 
         {{#if package.route}}

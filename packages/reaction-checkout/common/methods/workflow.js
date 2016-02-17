@@ -71,14 +71,15 @@ Meteor.methods({
           // check permissions so you don't have to on template. For a case, when
           // this method calls indirectly from publication method, we do this
           // check which is looks not pretty secure
+          let hasPermission;
           if (typeof Meteor.userId() !== "string") {
-            if (ReactionCore.hasPermission(layout.audience, currentCart.userId  && !layout.layout)) {
-              defaultPackageWorkflows.push(layout);
-            }
+            hasPermission = Roles.userIsInRole(currentCart.userId, layout.audience, ReactionCore.getShopId());
           } else {
-            if (ReactionCore.hasPermission(layout.audience, currentCart.userId) && !layout.layout) {
-              defaultPackageWorkflows.push(layout);
-            }
+            hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, ReactionCore.getShopId());
+          }
+
+          if (hasPermission  && !layout.layout) {
+            defaultPackageWorkflows.push(layout);
           }
         });
       }

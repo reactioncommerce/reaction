@@ -37,7 +37,7 @@ Result: `http://localhost:3000/product/P4hP8ZcFP9rDDEMpa/CJoRBm9vRrorc9mxZ`
 General helper to return "active" when on current path alias:  `currentRoute`
 
 ```
-<li class="{{active route}}">
+<li class="{{active name}}">
   <a class="dashboard-navbar-package" data-package="{{name}}" title="{{name}}">
     {{label}}
   </a>
