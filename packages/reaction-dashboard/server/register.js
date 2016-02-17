@@ -10,7 +10,7 @@ ReactionCore.registerPackage({
     provides: "dashboard",
     workflow: "coreDashboardWorkflow",
     template: "dashboardPackages",
-    name: "dashboard",
+    name: "dashboardPackages",
     label: "Core",
     description: "Reaction core shop configuration",
     icon: "fa fa-th",
@@ -22,7 +22,7 @@ ReactionCore.registerPackage({
     }]
   }, {
     route: "/dashboard",
-    name: "dashboardShortcut",
+    name: "dashboard",
     workflow: "coreDashboardWorkflow",
     provides: "shortcut",
     label: "Dashboard",
