@@ -341,7 +341,7 @@ ReactionProduct.maybeDeleteProduct = maybeDeleteProduct = (product) => {
         });
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
-        ReactionRouter.go("index");
+        ReactionRouter.go("/");
         return Alerts.toast(`Deleted ${title}`, "info");
       }
     });

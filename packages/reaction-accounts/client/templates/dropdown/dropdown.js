@@ -27,7 +27,7 @@ Template.loginDropdown.events({
       // go home on logout
       ReactionSubscriptions.reset();
       ReactionRouter.reload();
-      ReactionRouter.go("index");
+      ReactionRouter.go("/");
     });
   },
 
