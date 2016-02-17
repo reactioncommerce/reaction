@@ -1,0 +1,34 @@
+<template name="uiThemeDetails">
+  <div class="container-fluid-sm">
+    <h3>Components</h3>
+    {{> button title="Publish Theme" onClick=publishTheme}}
+    <div class="rui items">
+      {{#each component in components}}
+        <div class="rui item axis vertical">
+          <div
+            class="rui card {{activeClassName component.name}}"
+            data-event-action="editComponentTheme"
+            data-component={{component.name}}
+            >
+
+            <div class="content" data-event-action="showPackageManagement">
+              <h3 class="title">
+                <i class="{{icon}}"></i> {{component.label}}
+              </h3>
+            </div>
+
+            <div class="controls">
+              {{> button icon="gear fa-fw"}}
+            </div>
+
+          </div>
+        </div>
+      {{else}}
+        <div class="empty-view-message">
+            <i class="fa fa-exclamation-triangle"></i>
+            <p>No Components In This Theme</p>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>

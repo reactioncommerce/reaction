@@ -3,7 +3,6 @@
  * ReactionCore Server Configuration
  */
 
-
 /**
  * ReactionCore methods (server)
  */
@@ -14,54 +13,60 @@ _.extend(ReactionCore, {
     // uncomment for JobCollection debug
     // Jobs.setLogStream(process.stdout);
     ReactionRegistry.loadPackages();
+    // timing is important, packages are rqd
+    // for initilial permissions configuration.
+    ReactionRegistry.createDefaultAdminUser();
     return true;
   },
   /**
-   * hasPermission - server permissions checks
+   * hasPermission - server
+   * server permissions checks
+   * hasPermission exists on both the server and the client.
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} checkUserId - userId, defaults to Meteor.userId()
-   * @param {String} group - default to shopId
+   * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission: function (checkPermissions, checkUserId, group) {
-    check(checkPermissions, Match.OneOf(String, Array));
-    check(checkUserId, Match.OneOf(String, null, undefined));
+  hasPermission: function (checkPermissions, userId = Meteor.userId(), checkGroup = ReactionCore.getShopId()) {
+    // check(checkPermissions, Match.OneOf(String, Array));
+    // check(userId, String);
+    // check(checkGroup, Match.Optional(String));
 
-    let shopId = group || this.getShopId();
-    let permissions = [];
-
-    // use Roles.userIsInRole directly with publications
-    let userId = checkUserId || this.userId || Meteor.userId();
+    let permissions;
+    // default group to the shop or global if shop
+    // isn't defined for some reason.
+    if (checkGroup !== undefined && typeof checkGroup === "string") {
+      group = checkGroup;
+    } else {
+      group = ReactionCore.getShopId() || Roles.GLOBAL_GROUP;
+    }
 
     // permissions can be either a string or an array
-    // we'll force it into an array so we can add
-    // admin roles
-    if (!_.isArray(checkPermissions)) {
+    // we'll force it into an array and use that
+    if (checkPermissions === undefined) {
+      permissions = ["owner"];
+    } else if (typeof checkPermissions === "string") {
       permissions = [checkPermissions];
     } else {
       permissions = checkPermissions;
     }
     // if the user has admin, owner permissions we'll always check if those roles are enough
-    permissions.push("admin", "owner");
-    // check if userIs the Roles
-    if (Roles.userIsInRole(userId, permissions, shopId) === true) {
-      ReactionCore.Log.debug("Permission granted.", userId, permissions, shopId);
-      return true;
-    } else if (Roles.userIsInRole(userId,
-        permissions,
-        Roles.GLOBAL_GROUP
-      ) === true) {
-      ReactionCore.Log.debug("Permission granted.", userId, permissions, shopId);
+    permissions.push("owner");
+    permissions = _.uniq(permissions);
+
+    //
+    // return if user has permissions in the group
+    //
+    if (Roles.userIsInRole(userId, permissions, group)) {
       return true;
     }
-
     // global roles check
     let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
     // we're looking for seller permissions.
     if (sellerShopPermissions) {
       // loop through shops roles and check permissions
       for (let key in sellerShopPermissions) {
-        if ({}.hasOwnProperty.call(sellerShopPermissions, key)) {
+        if (key) {
           let shop = sellerShopPermissions[key];
           if (Roles.userIsInRole(userId, permissions, shop)) {
             return true;

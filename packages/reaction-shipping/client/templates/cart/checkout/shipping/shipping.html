@@ -13,7 +13,7 @@
     {{else}}
         <div class="alert alert-danger">
           <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured. </span>
-          <a href="/dashboard/settings/shipping">
+          <a href="{{pathFor 'dashboard/shipping'}}">
             <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
           </a>
         </div>

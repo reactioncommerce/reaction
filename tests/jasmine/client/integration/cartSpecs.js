@@ -1,7 +1,7 @@
 /* Product Detail Page Specs*/
 describe("Cart", function () {
   beforeEach(function (done) {
-    Router.go("/product/example-product");
+    ReactionRouter.go("product" {"handle:" "example-product"});
     Tracker.afterFlush(done);
   });
 
@@ -123,7 +123,7 @@ describe("Cart", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      /* expect(Router.current().url).toEqual("/checkout"); */
+      expect(ReactionRouter.current().route.path).toEqual("cart/checkout");
       done();
     });
   });

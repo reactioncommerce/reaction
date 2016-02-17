@@ -1,0 +1,111 @@
+.tooltip-element, .tooltip-element:after, .tooltip-element:before, .tooltip-element *, .tooltip-element *:after, .tooltip-element *:before {
+  box-sizing: border-box; }
+
+.tooltip-element {
+  position: absolute;
+  display: none; }
+  .tooltip-element.tooltip-open {
+    display: block; }
+
+.tooltip-element.tooltip-theme-arrows {
+  max-width: 100%;
+  max-height: 100%; }
+  .tooltip-element.tooltip-theme-arrows .tooltip-content {
+    border-radius: 5px;
+    position: relative;
+    font-family: inherit;
+    background: #000;
+    color: #eee;
+    padding: 1em;
+    font-size: 1.1em;
+    line-height: 1.5em; }
+    .tooltip-element.tooltip-theme-arrows .tooltip-content:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-width: 8px;
+      border-style: solid; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-center .tooltip-content {
+    margin-bottom: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-center .tooltip-content:before {
+      top: 100%;
+      left: 50%;
+      margin-left: -8px;
+      border-top-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-center .tooltip-content {
+    margin-top: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-center .tooltip-content:before {
+      bottom: 100%;
+      left: 50%;
+      margin-left: -8px;
+      border-bottom-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-right.tooltip-element-attached-middle .tooltip-content {
+    margin-right: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-right.tooltip-element-attached-middle .tooltip-content:before {
+      left: 100%;
+      top: 50%;
+      margin-top: -8px;
+      border-left-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-left.tooltip-element-attached-middle .tooltip-content {
+    margin-left: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-left.tooltip-element-attached-middle .tooltip-content:before {
+      right: 100%;
+      top: 50%;
+      margin-top: -8px;
+      border-right-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-bottom .tooltip-content {
+    margin-top: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-bottom .tooltip-content:before {
+      bottom: 100%;
+      left: 8px;
+      border-bottom-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-bottom .tooltip-content {
+    margin-top: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-bottom .tooltip-content:before {
+      bottom: 100%;
+      right: 8px;
+      border-bottom-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-top .tooltip-content {
+    margin-bottom: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-top .tooltip-content:before {
+      top: 100%;
+      left: 8px;
+      border-top-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-top .tooltip-content {
+    margin-bottom: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-top .tooltip-content:before {
+      top: 100%;
+      right: 8px;
+      border-top-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content {
+    margin-right: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content:before {
+      top: 8px;
+      left: 100%;
+      border-left-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content {
+    margin-left: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content:before {
+      top: 8px;
+      right: 100%;
+      border-right-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content {
+    margin-right: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content:before {
+      bottom: 8px;
+      left: 100%;
+      border-left-color: #000; }
+  .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content {
+    margin-left: 8px; }
+    .tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content:before {
+      bottom: 8px;
+      right: 100%;
+      border-right-color: #000; }
+
+.tooltip-element.tooltip-theme-arrows {
+  pointer-events: none; }
+  .tooltip-element.tooltip-theme-arrows .tooltip-content {
+    padding: 0.5em 1em; }

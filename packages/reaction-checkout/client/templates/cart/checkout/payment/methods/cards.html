@@ -1,0 +1,36 @@
+<template name="corePaymentMethods">
+<div class="panel-group panel-group-accordian" id="payment-methods-accordian" role="tablist" aria-multiselectable="true">
+  {{#each reactionApps provides='paymentMethod' enabled=true}}
+    {{#with appDetails}}
+    <div class="panel panel-default">
+      <a
+        class="panel-heading"
+        role="tab"
+        id="{{name}}"
+        data-toggle="collapse"
+        data-parent="#payment-methods-accordian"
+        aria-expanded="false"
+        aria-controls="{{template}}"
+        href="#{{template}}"
+      >
+        <h4 class="panel-title">
+          <i class="{{icon}}"></i>&nbsp;<span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+        </h4>
+      </a>
+      <div id="{{template}}" class="panel-collapse collapse {{isOpen this}}" role="tabpanel" aria-labelledby="{{name}}">
+        <div class="core-payment-method-form panel-body">
+          {{> Template.dynamic template=template}}
+        </div>
+      </div>
+    </div>
+    {{/with}}
+  {{else}}
+    <div class="alert alert-danger">
+      <span data-i18n="checkoutPayment.noPaymentMethods">No payment methods are configured.</span>
+      <a href="/dashboard">
+        <span data-i18n="checkoutPayment.configureNow">Configure now.</span>
+      </a>
+    </div>
+  {{/each}}
+</div>
+</template>

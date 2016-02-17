@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Social - Social Sharing Package for Reaction",
   name: "reactioncommerce:reaction-social",
-  version: "0.4.2",
+  version: "0.4.3",
   documentation: "README.md"
 });
 
@@ -26,13 +26,13 @@ Package.onUse(function (api) {
 
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("reactioncommerce:reaction-product-variant@1.0.0");
+  api.use("reactioncommerce:core@0.12.0");
 
   api.addFiles("server/register.js", ["server"]); // register as a reaction package
   api.addFiles("server/policy.js", ["server"]); // browser-policies
 
   api.addFiles([
-    "common/routing.js",
     "common/schemas.js"   // Social Apps Config
   ], ["client", "server"]);
 

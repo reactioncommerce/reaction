@@ -9,30 +9,20 @@
 
 meteor-base             # Packages every Meteor app needs to have
 mobile-experience       # Packages for a great mobile UX
-mongo                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
-session                 # Client-side reactive dictionary for your app
-jquery                  # Helpful client-side library
-tracker                 # Meteor's client-side reactive programming library
 standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
-
-# Meteor Community Packages
-
-logging                 # meteor logging
-reload                  # hot reload
-random                  # random library
-ejson                   # ejson libary
-check                   # argument validation utility
-underscore              # helper library underscore.js
-oauth-encryption        # oauth encryption for accounts
 audit-argument-checks   # ensure meteor method argument validation
 
-# Recommended Packages
-
-less                    # dependency of bootstrap, core-theme
-fortawesome:fontawesome # font awesome library
+# Performance & Debugging Tools
+#meteorhacks:fast-render                   # improve initial page loads
+#meteortoys:allthings                      # developer tools
+#meteortoys:notifications                  # logging notification
+#meteorhacks:kadira                        # performance monitoring
+#meteorhacks:kadira-profiler               # cpu profiling
+#spiderable                                # adds phantomjs, use ongoworks:spiderable with Docker
+#meteorhacks:sikka                         # additional ddp, login security
 
 # Meteor Auth Packages
 
@@ -47,23 +37,31 @@ accounts-oauth
 
 reactioncommerce:core
 reactioncommerce:core-theme
+reactioncommerce:reaction-layout
+reactioncommerce:launchdock-connect
 reactioncommerce:reaction-accounts
-reactioncommerce:reaction-inventory
-reactioncommerce:reaction-shipping
+reactioncommerce:reaction-router
+reactioncommerce:reaction-i18n
+reactioncommerce:reaction-product-variant
+reactioncommerce:reaction-dashboard
+reactioncommerce:reaction-orders
 reactioncommerce:reaction-analytics-libs
 reactioncommerce:reaction-analytics
+reactioncommerce:reaction-inventory
+reactioncommerce:reaction-shipping
 reactioncommerce:reaction-social
-reactioncommerce:launchdock-connect
-# reactioncommerce:reaction-product-simple
-
+reactioncommerce:reaction-checkout
+reactioncommerce:reaction-ui
+reactioncommerce:reaction-ui-navbar
+reactioncommerce:reaction-ui-tagnav
 
 # Reaction Payment Packages
 
 reactioncommerce:reaction-paymentmethod
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-stripe
-#reactioncommerce:reaction-auth-net
-#reactioncommerce:reaction-braintree
+reactioncommerce:reaction-auth-net
+reactioncommerce:reaction-braintree
 
 
 # Reaction Commerce Data
@@ -75,13 +73,4 @@ reactioncommerce:default-theme          # default Reaction theme
 #my:custom-theme
 
 # Forced updates on packages
-cosmos:browserify@0.9.2
 mdg:validation-error@0.4.0
-
-# Performance & Debugging Tools
-
-#meteorhacks:kadira   # performance profiling
-#meteorhacks:kadira-profiler
-#meteortoys:allthings # developer tools
-#spiderable           # adds phantomjs, use ongoworks:spiderable with Docker
-#meteorhacks:sikka    # additional ddp, login security

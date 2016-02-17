@@ -12,6 +12,7 @@
 !reaction-core-theme
 !reaction-default-theme
 !reaction-inventory
+!reaction-layout
 !reaction-product-simple
 !reaction-sample-data
 !reaction-schemas
@@ -19,6 +20,13 @@
 !reaction-social
 !reaction-ui
 !reaction-email-templates
+!reaction-router
+!reaction-product-variant
+!reaction-checkout
+!reaction-i18n
+!reaction-layout
+!reaction-dashboard
+!reaction-orders
 
 # For some reason the above inverse ignore rules don't play well with some
 # editors, so we also add inverse ignore rules for their subdirectories.
@@ -30,10 +38,20 @@
 !reaction-core-theme/*
 !reaction-default-theme/*
 !reaction-inventory/*
+!reaction-layout/*
 !reaction-product-simple/*
 !reaction-sample-data/*
 !reaction-schemas/*
 !reaction-shipping/*
 !reaction-social/*
 !reaction-ui/*
+!reaction-ui-navbar/*
+!reaction-ui-tagnav/*
 !reaction-email-templates/*
+!reaction-router/*
+!reaction-product-variant/*
+!reaction-checkout/*
+!reaction-i18n/*
+!reaction-layout/*
+!reaction-dashboard/*
+!reaction-orders/*

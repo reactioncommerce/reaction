@@ -105,6 +105,20 @@ ReactionCore.Schemas.Locale = new SimpleSchema({
 });
 
 /**
+ * Locale Schema
+ */
+
+ReactionCore.Schemas.ShopTheme = new SimpleSchema({
+  themeId: {
+    type: String
+  },
+  styles: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * Shop Schema
  */
 
@@ -205,34 +219,21 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [ReactionCore.Schemas.Metafield],
     optional: true
   },
+  "defaultVisitorRole": {
+    type: [String],
+    defaultValue: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"]
+  },
   "defaultRoles": {
     type: [String],
-    defaultValue: ["guest", "account/profile"]
+    defaultValue: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"]
   },
   "layout": {
-    type: [Object],
+    type: [ReactionCore.Schemas.Layout],
     optional: true
   },
-  "layout.$.layout": {
-    type: String,
-    defaultValue: "coreLayout"
-  },
-  "layout.$.theme": {
-    type: String,
-    defaultValue: "default"
-  },
-  "layout.$.workflow": {
-    type: String,
+  "theme": {
+    type: ReactionCore.Schemas.ShopTheme,
     optional: true
-  },
-  "layout.$.collection": {
-    type: String,
-    optional: true
-  },
-  "layout.$.enabled": {
-    type: Boolean,
-    defaultValue: true
-
   },
   "createdAt": {
     type: Date,

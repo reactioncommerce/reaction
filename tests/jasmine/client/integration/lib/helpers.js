@@ -20,7 +20,7 @@
     }
   };
 
-  Router.onAfterAction(function () {
+  ReactionRouter.onAfterAction(function () {
     if (!isRouterReady && this.ready()) {
       Tracker.afterFlush(function () {
         isRouterReady = true;
@@ -32,12 +32,12 @@
     }
   });
 
-  Router.onRerun(function () {
+  ReactionRouter.onRerun(function () {
     isRouterReady = false;
     this.next();
   });
 
-  Router.onStop(function () {
+  ReactionRouter.onStop(function () {
     isRouterReady = false;
     if (this.next) {
       this.next();

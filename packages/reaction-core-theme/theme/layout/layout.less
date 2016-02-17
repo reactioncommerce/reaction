@@ -10,13 +10,14 @@ body.admin {
 }
 
 .page {
-
+  .display(flex);
+  .flex-direction(column);
   .flex(1 1 auto);
   // min-width: 100vw;
   height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  // overflow-x: hidden;
+  // overflow-y: auto;
+  // -webkit-overflow-scrolling: touch;
 
   // transform: scale(.9);
   // .lh-transition(all 200ms);
@@ -24,6 +25,13 @@ body.admin {
   //
   // .transition(width 5000ms);
   //
+}
+
+.page #main {
+  .flex(1 1 auto);
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 

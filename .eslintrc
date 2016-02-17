@@ -103,7 +103,7 @@
     "react/no-did-update-set-state": 1,
     "react/no-direct-mutation-state": 1,
     "react/no-multi-comp": 1,
-    "react/no-set-state": 1,
+    "react/no-set-state": 0,
     "react/no-unknown-property": 1,
     "react/prefer-es6-class": 1,
     "react/prop-types": 1,
@@ -161,8 +161,6 @@
     }], // http://eslint.org/docs/rules/max-len
     "valid-jsdoc": 2, // http://eslint.org/docs/rules/valid-jsdoc
     "quote-props": [2, "consistent-as-needed"], // http://eslint.org/docs/rules/quote-props
-    "no-console": 2, // http://eslint.org/docs/rules/no-console
-
     /**
      * Style
      */
@@ -185,7 +183,7 @@
     "comma-style": [2, "last"], // http://eslint.org/docs/rules/comma-style
     "eol-last": 2, // http://eslint.org/docs/rules/eol-last
     "func-names": 0, // http://eslint.org/docs/rules/func-names
-    "func-style": [2, "declaration"], // http://eslint.org/docs/rules/func-style
+    "func-style": [2, "declaration", {"allowArrowFunctions": true }], // http://eslint.org/docs/rules/func-style
     "key-spacing": [2, { // http://eslint.org/docs/rules/key-spacing
       "beforeColon": false,
       "afterColon": true

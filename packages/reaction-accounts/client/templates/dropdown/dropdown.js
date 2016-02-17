@@ -18,15 +18,17 @@ Template.loginDropdown.events({
    */
   "click #logout": (event, template) => {
     event.preventDefault();
-    Session.set("displayConsoleNavBar", false);
-
+    template.$(".dropdown-toggle").dropdown("toggle");
     // Meteor.logoutOtherClients();
     Meteor.logout((error) => {
       if (error) {
         ReactionCore.Log.warn("Failed to logout.", error);
       }
+      // go home on logout
+      ReactionSubscriptions.reset();
+      ReactionRouter.reload();
+      ReactionRouter.go("/");
     });
-    template.$(".dropdown-toggle").dropdown("toggle");
   },
 
   /**
@@ -36,7 +38,7 @@ Template.loginDropdown.events({
    * @return {void}
    */
   "click .user-accounts-dropdown-apps a": function (event, template) {
-    if (this.route === "createProduct") {
+    if (this.name === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
@@ -52,16 +54,16 @@ Template.loginDropdown.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          Router.go("product", {
-            _id: productId
+          ReactionRouter.go("product", {
+            handle: productId
           });
         }
       });
-    } else if (this.route) {
+    } else if (this.route || this.name) {
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
-
-      return Router.go(this.route);
+      const route = this.name || this.route;
+      ReactionRouter.go(route);
     }
   }
 });

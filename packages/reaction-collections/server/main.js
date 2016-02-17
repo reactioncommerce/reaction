@@ -11,7 +11,7 @@ _.extend(ReactionCore, {
       limit: 1
     });
     if (!cursor.count()) {
-      ReactionCollections.Log.debug("Add a domain entry to shops for ",
+      ReactionSubscriptions.Log.debug("Add a domain entry to shops for ",
         domain);
     }
     return cursor;
