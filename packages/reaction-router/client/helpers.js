@@ -32,16 +32,14 @@ Template.registerHelper("urlFor", (path, params) => {
 /**
  * active
  * @summary general helper to return "active" when on current path
- * @example {{active "route"}}
- * @param {String} path - iron router path
+ * @example {{active "name"}}
+ * @param {String} routeName - route name as defined in registry
  * @return {String} return "active" or null
  */
-Template.registerHelper("active", (route) => {
+Template.registerHelper("active", (routeName) => {
   ReactionRouter.watchPathChange();
-  return ReactionRouter.current().path === "/" + route ? "active" : "";
-});
-// common in meteor apps.
-Template.registerHelper("currentRoute", (route) => {
-  ReactionRouter.watchPathChange();
-  return ReactionRouter.current().path === "/" + route ? "active" : "";
+  const prefix = ReactionRouter.current().route.group.prefix;
+  const path = ReactionRouter.current().route.path;
+  const routeDef = path.replace(prefix + "/", "");
+  return routeDef === routeName ? "active" : "";
 });
