@@ -3,6 +3,7 @@ Template.productDetail.onCreated(function () {
   this.variantId = () => ReactionRouter.getParam("variantId");
   this.autorun(() => {
     this.subscribe("Product", this.productId());
+    this.subscribe("Tags");
   });
 });
 
