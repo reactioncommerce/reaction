@@ -47,6 +47,9 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/layout.html", "client");
   api.addFiles("client/templates/layout/layout.js", "client");
 
+  api.addFiles("client/templates/layout/createContentMenu/createContentMenu.html", "client");
+  api.addFiles("client/templates/layout/createContentMenu/createContentMenu.js", "client");
+
   api.addFiles("client/templates/layout/admin/admin.html", "client");
   api.addFiles("client/templates/layout/admin/admin.js", "client");
 
@@ -66,6 +69,7 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/alerts/reactionAlerts.js", "client");
   api.addFiles("client/templates/layout/alerts/alerts.html", "client");
   api.addFiles("client/templates/layout/alerts/alerts.js", "client");
+
 
   api.addFiles("client/templates/layout/loading/loading.html", "client");
   api.addFiles("client/templates/layout/notFound/notFound.html", "client");

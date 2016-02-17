@@ -53,9 +53,13 @@
 
     <nav class="admin-controls-quicklinks">
       <!-- begin provides shortcut -->
-      {{#each reactionApps provides='shortcut' enabled=true}}
+      {{#each reactionApps provides='shortcut' enabled=true container=undefined}}
         {{#if hasPermission route}}
-          <button id="{{route}}"  title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active route}}">
+          <a
+            href="{{route}}"
+            title="{{i18n i18nKeyLabel label}}"
+            class="btn btn-default {{active route}}"
+          >
             <div class="contents">
               <div class="icon">
                   <i class="{{icon}}"></i>
@@ -64,10 +68,18 @@
                 {{label}}
               </div>
             </div>
-          </button>
+          </a>
         {{/if}}
       {{/each}}
       <!-- end provides shortcut -->
+      <button data-event-action="addItem">
+        <div class="icon">
+          <i class="fa fa-plus"></i>
+        </div>
+        <span class="icon-text">
+          Add
+        </span>
+      </button>
       <button data-event-action="toggleEditMode">
         <div class="icon">
           <i class="fa fa-gear"></i>
