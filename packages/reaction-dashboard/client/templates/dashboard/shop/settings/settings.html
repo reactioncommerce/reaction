@@ -14,6 +14,23 @@
           {{/autoForm}}
         </div>
         <div class="panel-body">
+          <div class="rui items flex quarter">
+            {{#each logo in siteLogos}}
+              <div class="rui item">
+                {{#with logo}}
+                  <div class="rui brand">
+                    <img src="{{url}}" width="50">
+                  </div>
+                {{/with}}
+              </div>
+            {{/each}}
+          </div>
+          <div id="dropzone" class="dropzone">
+           <input name="files" id="files" class="" type="file" multiple/>
+            <div class="btn btn-default btn-block" id="btn-upload" data-i18n="productDetail.dropFile">Drop file to upload</div>
+          </div>
+        </div>
+        <div class="panel-body">
           {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditForm" type="update"}}
             {{> afQuickField name='name' placeholder="Shop Name"}}
             {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}

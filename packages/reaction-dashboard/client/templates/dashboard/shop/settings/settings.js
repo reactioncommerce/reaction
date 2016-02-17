@@ -1,9 +1,48 @@
+let Media = ReactionCore.Collections.Media;
+
+/**
+ * uploadHandler method
+ */
+
+function uploadHandler(event) {
+  const productId = ReactionProduct.selectedProductId();
+  const variantId = ReactionProduct.selectedVariantId();
+  const shopId = ReactionCore.getShopId();
+  const userId = Meteor.userId();
+  let count = Media.find({
+    "metadata.variantId": variantId
+  }).count();
+
+  return FS.Utility.eachFile(event, function (file) {
+    let fileObj;
+    fileObj = new FS.File(file);
+    fileObj.metadata = {
+      type: "siteLogo",
+      ownerId: userId,
+      shopId: shopId,
+      priority: count
+    };
+    const result = Media.insert(fileObj);
+    return count++;
+  });
+}
+
+Template.shopSettings.events({
+  "change #files": uploadHandler,
+  "dropped #dropzone": uploadHandler
+});
+
 /**
  * shopSettings helpers
  *
  */
 Template.shopSettings.helpers({
-
+  siteLogos() {
+    const media = ReactionCore.Collections.Media.find({
+      "metadata.type": "siteLogo"
+    });
+    return media;
+  },
   shop: function () {
     return ReactionCore.Collections.Shops.findOne();
   },

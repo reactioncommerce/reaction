@@ -18,9 +18,15 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  logo() {
+    const media = ReactionCore.Collections.Media.findOne({
+      "metadata.type": "siteLogo"
+    });
+    return media;
+  },
   onMenuButtonClick() {
     const instance = Template.instance();
-    return (event) => {
+    return () => {
       if (instance.toggleMenuCallback) {
         instance.toggleMenuCallback();
       }
