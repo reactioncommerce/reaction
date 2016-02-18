@@ -11,7 +11,9 @@ Template.layoutHeader.events({
     return $(".dashboard-navbar-packages ul li").removeClass("active");
   },
   "keydown .navbar-search input": function () {
-    Router.go("/")
+    setTimeout(function(){
+      Session.set(SessionKey.Search,  $(".navbar-search input").val())
+    },0)
   }
 
 
