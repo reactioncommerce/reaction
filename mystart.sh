@@ -1,1 +1,1 @@
-./reaction
+meteor --production
