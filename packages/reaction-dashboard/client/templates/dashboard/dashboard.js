@@ -10,7 +10,7 @@ Template.dashboardHeader.helpers({
       // TODO move this to a function and reuse with reactionApps in apps.js
       const registryLabel = registry.label ? registry.label.toCamelCase() : "";
       const i18nKey = `admin.${registry.provides}.${registryLabel}`;
-      registry.i18nKeyLabel = `${i18nKey}Title`;
+      registry.i18nKeyLabel = `${i18nKey}Label`;
       return registry;
     }
   }
