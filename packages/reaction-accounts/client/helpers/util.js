@@ -45,10 +45,10 @@ ReactionServiceHelper = class ReactionServiceHelper {
   }
 
   services(extendEach) {
-    let services = this.availableServices();
+    let availableServices = this.availableServices();
     let configurations = ServiceConfiguration.configurations.find().fetch();
 
-    return _.map(services, (name) => {
+    return _.map(availableServices, (name) => {
       let matchingConfigurations = _.where(configurations, {service: name});
       let service = {
         name: name,
