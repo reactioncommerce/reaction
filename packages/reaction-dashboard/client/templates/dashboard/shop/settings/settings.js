@@ -50,14 +50,14 @@ Template.shopSettings.helpers({
   paymentMethodOptions() {
     const paymentMethods = ReactionCore.Apps({provides: "paymentMethod"});
     const options = [{
-      label: "Auto",
+      label: i18n.t("app.auto"),
       value: "none"
     }];
 
     if (paymentMethods && _.isArray(paymentMethods)) {
       for (let method of paymentMethods) {
         options.push({
-          label: method.packageName,
+          label: i18n.t(method.i18nKeyLabel),
           value: method.packageName
         });
       }
