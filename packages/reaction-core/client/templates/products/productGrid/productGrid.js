@@ -120,11 +120,11 @@ Template.productGrid.helpers({
     if (keyword) {
       let reg = new RegExp(keyword);
       sel = {
-        "metafields": { 
+        "metafields": {
           "$elemMatch": {
-            $or: [
-              {$and: [{"key": "a1"}, {value: reg}]},
-              {$and: [{"key": "a2"}, {value: reg}]}]
+            "$or": [
+              {"$and": [{"key": "a1"}, {"value": reg}]},
+              {"$and": [{"key": "a2"}, {"value": reg}]}]
           }
         }
       }
