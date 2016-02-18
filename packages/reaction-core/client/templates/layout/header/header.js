@@ -9,5 +9,10 @@ Template.layoutHeader.events({
   },
   "click .header-tag, click .navbar-brand": function () {
     return $(".dashboard-navbar-packages ul li").removeClass("active");
+  },
+  "keydown .navbar-search input": function () {
+    Router.go("/")
   }
+
+
 });

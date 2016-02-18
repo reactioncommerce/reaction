@@ -113,7 +113,23 @@ Template.productGrid.helpers({
       return a.position.position - b.position.position;
     }
 
-    let gridProducts = ReactionCore.Collections.Products.find({}).fetch();
+    let keyword = Session.get(SessionKey.Search);
+
+    let sel = {};
+
+    if (keyword) {
+      let reg = new RegExp(keyword);
+      sel = {
+        "metafields": {
+          "$elemMatch": {
+            $or: [
+              {$and: [{"key": "a1"}, {value: reg}]},
+              {$and: [{"key": "a2"}, {value: reg}]}]
+          }
+        }
+      }
+    }
+    let gridProducts = ReactionCore.Collections.Products.find(sel).fetch();
 
     for (let index in gridProducts) {
       if ({}.hasOwnProperty.call(gridProducts, index)) {
