@@ -119,14 +119,21 @@ Template.productGrid.helpers({
 
     if (keyword) {
       let reg = new RegExp(keyword);
+      //sel = {
+      //  "metafields": {
+      //    "$elemMatch": {
+      //      "$or": [
+      //        {"$and": [{"key": "a1"}, {"value": reg}]},
+      //        {"$and": [{"key": "a2"}, {"value": reg}]}]
+      //    }
+      //  }
+      //}
+      //work in mongoVUE but not in meteor
       sel = {
-        "metafields": {
-          "$elemMatch": {
-            "$or": [
-              {"$and": [{"key": "a1"}, {"value": reg}]},
-              {"$and": [{"key": "a2"}, {"value": reg}]}]
-          }
-        }
+        $or: [
+          {$and: [{"metafields.key": "a1"}, {"metafields.value": reg}]},
+          {$and: [{"metafields.key": "a2"}, {"metafields.value": reg}]}
+        ]
       }
     }
     let gridProducts = ReactionCore.Collections.Products.find(sel).fetch();
