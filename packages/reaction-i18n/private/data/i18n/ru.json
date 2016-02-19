@@ -26,7 +26,7 @@
           "braintreeDescription": "Платежи через Braintree",
           "coreLabel": "Ядро",
           "coreDescription": "Базовые настройки магазина Reaction",
-          "genericPaymentLabel": "Образец Платёжной системы",
+          "genericPaymentLabel": "Образец платёжной системы",
           "genericPaymentDescription": "Тестирование платежей. Образец для портирования любых Платёжных систем",
           "i18NLabel": "i18n",
           "i18NDescription": "Интернационализация",
@@ -129,7 +129,7 @@
         "tagsEdit": "Редактировать метку",
         "tagExists": "Метка пуста, либо такая уже существует.",
         "dropFiles": "Бросьте сюда файлы для их загрузки",
-        "addInventory": "Добавить Позицию",
+        "addInventory": "Добавить позицию",
         "barcode": "Штрих-код",
         "confirmDeleteBarcode": "Вы уверены, что хотите удалить штрих-код",
         "details": "Подробности",
@@ -216,7 +216,7 @@
         "pkgDisabled": " отключен"
       },
       "cartDrawer": {
-        "empty": "Очень жаль, Ваша корзина пуста",
+        "empty": "Очень жаль, ваша корзина пуста",
         "keepShopping": "Продолжить покупки",
         "checkout": "Оформить заказ"
       },
@@ -290,7 +290,7 @@
         "guestMessage": "Вы можете оформить заказ без создания учётной записи. У вас будет возможность создать её позже."
       },
       "addressBookGrid": {
-        "addAddress": "Добавить Адрес",
+        "addAddress": "Добавить адрес",
         "chooseAddress": "Выбор адреса доставки и платёжного адреса",
         "createDefault": "Добавить адрес по умолчанию",
         "selectShippingAddress": "Выберите адрес доставки",
@@ -333,7 +333,7 @@
         "descriptionPlaceholder": "Опишите свой магазин для SEO",
         "descriptionTooltip": "This field used by meta description tag. It is allow to search engines to describe your shop",
         "email": "Email",
-        "emailPlaceholder": "Основной Email магазина",
+        "emailPlaceholder": "Основной email магазина",
         "keywords": "Ключевые слова",
         "keywordsPlaceholder": "Ключевые слова для SEO",
         "timezone": "Часовой пояс",
