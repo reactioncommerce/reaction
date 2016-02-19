@@ -1,0 +1,35 @@
+<template name="gridPackage">
+  <div class="rui card package" data-settings-view="{{package.template}}">
+    {{!-- display overview route --}}
+    <div class="content" data-event-action="{{showPackageManagement package}}">
+      <h3 class="title">
+        <i class="{{package.icon}}"></i> <span data-i18n="{{i18nKeyLabel}}">{{package.label}}</span>
+      </h3>
+      <small data-i18n="{{i18nKeyDescription}}">{{{package.description}}}</small>
+    </div>
+
+    <div class="controls">
+      {{#if package.enabled}}
+        {{#if condition priority 'gt' 1}}
+          <button class="pull-right disablePkg">
+            <i class="fa fa-check-square fa-fw"></i>
+          </button>
+        {{/if}}
+        {{#each reactionApps provides="settings" name=package.packageName}}
+          <button class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}">
+            <i class="{{orElse icon 'fa fa-cog fa-fw'}}"></i>
+          </button>
+        {{/each}}
+
+        {{#if package.route}}
+          {{> button (showDashboardButtonProps package)}}
+        {{/if}}
+      {{else}}
+        <button class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}">
+          <i class="fa fa-plus-square fa-fw"></i>
+        </button>
+      {{/if}}
+    </div>
+
+  </div>
+</template>

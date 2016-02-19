@@ -1,0 +1,11 @@
+
+<template name="tagGroup">
+  <div class="rui grouptag {{className}}" data-id={{groupTag._id}}>
+    <div class="header">
+      {{> tagItem (tagGroupProps groupTag)}}
+    </div>
+    <div class="content">
+      {{> tagList (tagListProps groupTag)}}
+    </div>
+  </div>
+</template>

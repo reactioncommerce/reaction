@@ -91,15 +91,14 @@ describe("Publication", function () {
         " provided",
         function () {
           // setup
-          let shopIds = [shop._id];
+          let filters = {shops: [shop._id]};
           const productScrollLimit = 20;
           spyOn(ReactionCore, "getCurrentShop").and.returnValue({
             _id: "123"
           });
           spyOn(Roles, "userIsInRole").and.returnValue(true);
           // execute
-          const cursor = Meteor.server.publish_handlers.Products(
-            productScrollLimit, shopIds);
+          const cursor = Meteor.server.publish_handlers.Products(productScrollLimit, filters);
           // verify
           const data = cursor.fetch()[0];
           expect(["My Little Pony", "Shopkins - Peachy"].
@@ -146,8 +145,7 @@ describe("Publication", function () {
         "should not return a product based on a regex if it isn't visible",
         function () {
           // setup
-          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
-            shop);
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
           spyOn(Roles, "userIsInRole").and.returnValue(false);
           // execute
           const cursor = productPub.apply(thisContext, ["my"]);
@@ -160,8 +158,7 @@ describe("Publication", function () {
         "should return a product based on a regex to admin if it isn't visible",
         function () {
           // setup
-          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
-            shop);
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
           spyOn(Roles, "userIsInRole").and.returnValue(true);
           // execute
           const cursor = Meteor.server.publish_handlers.Product("my");

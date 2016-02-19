@@ -42,6 +42,7 @@ _.extend(ReactionCore, {
 });
 
 if (!ReactionCore.Schemas) ReactionCore.Schemas = {};
+if (!ReactionCore.PropTypes) ReactionCore.PropTypes = {};
 if (!ReactionCore.Collections) ReactionCore.Collections = {};
 if (!ReactionCore.Helpers) ReactionCore.Helpers = {};
 if (!ReactionCore.MetaData) ReactionCore.MetaData = {};

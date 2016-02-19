@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Analytics - Integrate third-party analytics libraries",
   name: "reactioncommerce:reaction-analytics",
-  version: "1.2.1",
+  version: "1.2.3",
   documentation: "README.md"
 });
 
@@ -22,8 +22,6 @@ Package.registerBuildPlugin({
 Package.on_use(function (api) {
   api.versionsFrom("METEOR@1.2");
   // meteor base packages
-  api.use("standard-minifiers");
-  api.use("mobile-experience");
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");
@@ -42,12 +40,12 @@ Package.on_use(function (api) {
 
   api.use("less");
   api.use("browser-policy-content", "server");
-  api.use("iron:router@1.0.12", "client");
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("reactioncommerce:reaction-router@1.0.0");
+  api.use("reactioncommerce:reaction-layout@1.0.0");
+  api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-analytics-libs@1.1.0", "client");
 
   api.addFiles([
-    "common/routing.js",
     "common/collections.js",
     "common/hooks.js"
   ], ["client", "server"]);

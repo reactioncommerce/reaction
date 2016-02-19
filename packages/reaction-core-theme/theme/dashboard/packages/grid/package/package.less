@@ -44,64 +44,6 @@
   text-align: center;
 }
 
-// TODO: Move to reaction-ui
-.rui.card {
-  .display(flex);
-  .flex(1 1 auto);
-
-  background-color: @white;
-  border: 1px solid @border-color;
-}
-
-.rui.card.active {
-  box-shadow: 0 0 0 3px @brand-vivid-color;
-  border: 1px solid @brand-vivid-color;
-
-}
-
-.rui.card .content {
-  .flex(1 1 auto);
-  padding: 20px;
-  cursor: pointer;
-}
-
-.rui.card .content .title {
-  margin-top: 0;
-}
-
-.rui.card .controls {
-  .display(flex);
-  .flex-direction(column);
-  .flex(0 0 auto);
-  min-width: 44px;
-  width: 44px;
-  max-width: 44px;
-  border-left: 1px solid @border-color;
-}
-
-.rui.card .controls button {
-  .display(flex);
-  .flex(1 1 auto);
-  .justify-content(center);
-  .align-items(center);
-  background-color: transparent;
-
-  border: none;
-  border-bottom: 1px solid @border-color;
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    text-decoration: none;
-    background-color: @black05;
-  }
-
-  i {
-    font-size: 16px;
-  }
-}
-
 // ---
 .rui.packages {
   .display(flex);

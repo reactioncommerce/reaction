@@ -3,42 +3,56 @@ ReactionCore.registerPackage({
   name: "reaction-accounts",
   icon: "fa fa-sign-in",
   autoEnable: true,
-  registry: [
-    {
-      route: "dashboard/accounts",
-      provides: "dashboard",
-      label: "Accounts",
-      description: "Manage how members sign into your shop.",
-      icon: "fa fa-sign-in",
-      cycle: 1,
-      container: "accounts"
-    },
-    {
-      label: "Account Settings",
-      route: "dashboard/accounts",
-      provides: "settings",
-      container: "accounts",
-      template: "accountsSettings"
-    },
-    {
-      route: "dashboard/accounts",
-      provides: "shortcut",
-      label: "Accounts",
-      icon: "fa fa-users",
-      cycle: 1
-    },
-    {
-      route: "account/profile",
-      label: "Profile",
-      icon: "fa fa-user",
-      provides: "userAccountDropdown"
+  settings: {},
+  registry: [{
+    route: "/dashboard/accounts",
+    name: "accounts",
+    provides: "dashboard",
+    label: "Accounts",
+    description: "Manage how members sign into your shop.",
+    icon: "fa fa-sign-in",
+    container: "core",
+    template: "accountsDashboard",
+    workflow: "coreAccountsWorkflow",
+    priority: 1
+  }, {
+    label: "Account Settings",
+    provides: "settings",
+    route: "/dashboard/account/settings",
+    container: "accounts",
+    workflow: "coreAccountsWorkflow",
+    template: "accountsSettings"
+  }, {
+    route: "/dashboard/accounts",
+    name: "dashboard/accounts",
+    workflow: "coreAccountsWorkflow",
+    provides: "shortcut",
+    label: "Accounts",
+    icon: "fa fa-users",
+    priority: 1
+  }, {
+    route: "/account/profile",
+    template: "accountProfile",
+    name: "account/profile",
+    label: "Profile",
+    icon: "fa fa-user",
+    provides: "userAccountDropdown"
+  }],
+  layout: [{
+    layout: "coreLayout",
+    workflow: "coreAccountsWorkflow",
+    collection: "Accounts",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "accountsDashboard",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "",
+      notFound: "notFound",
+      dashboardHeader: "dashboardHeader",
+      dashboardControls: "accountsDashboardControls",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
     }
-  ],
-  permissions: [
-    {
-      label: "Accounts",
-      permission: "dashboard/accounts",
-      group: "Shop Settings"
-    }
-  ]
+  }]
 });

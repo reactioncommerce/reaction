@@ -1,0 +1,238 @@
+/**
+ * @theme base
+ * @label Navbar
+ * @name navbar
+ * @author Reaction Commerce
+ * @url https://reactioncommerce.com
+ */
+
+
+:root {
+  /**
+   * @label Variables
+   */
+  --link-color: #337ab7;
+}
+
+.rui.navbar {
+  /**
+   * @label Navigation Bar
+   */
+  background-color: --;
+  color: --;
+}
+
+.rui.navbar a,
+.rui.navbar a:hover,
+.rui.navbar a:focus,
+.rui.navbar .dropdown-toggle {
+  /**
+   * @label Navbar Buttons (Top Level)
+   */
+  color: --;
+}
+
+.rui.navbar .showmenu {
+  /**
+   * @label Show Menu Container
+   */
+}
+.rui.navbar .showmenu button {
+  /**
+   * @label Show Menu Button
+   */
+}
+.rui.navbar .brand {
+  /**
+   * @label Brand Container
+   */
+}
+.rui.navbar .menu {
+  /**
+   * @label Menu Container
+   */
+}
+
+.rui.navbar .rui.tagnav {
+  /**
+   * @label Tag Navigation
+   */
+  background: --;
+}
+
+.rui.navbar .rui.tagnav.vertical {
+  /**
+   * @label Vertical Tag Navigation (Mobile)
+   */
+  background: --;
+}
+
+.rui.navbar .rui.tagnav.vertical .rui.tag.link {
+  /**
+   * @label Tag Link
+   */
+ color: var(--link-color);
+}
+
+.rui.navbar .cart {
+  /**
+   * @label Cart Button Container
+   */
+}
+
+.rui.navbar .dropdown a {
+  /**
+   * @label Dropdown Link Color
+   */
+ color: var(--link-color);
+}
+
+.rui.navbar .dropdown {
+  /**
+   * @label Dropdowns
+   */
+}
+.rui.navbar .dropdown-toggle {
+  /**
+   * @label Dropdown Toggle Button
+   */
+}
+.rui.navbar .languages {
+  /**
+   * @label Language Menu Button
+   */
+}
+
+.rui.navbar .languages:hover {
+  /**
+   * @label Language Button: On Hover
+   */
+  background-color: --;
+  border-color: --;
+}
+
+.rui.navbar .accounts {
+  /**
+   * @label Accounts Menu Button
+   */
+}
+
+.rui.navbar .accounts:hover {
+  /**
+   * @label Accounts Button Hover
+   */
+  background-color: --;
+  border-color: --;
+}
+
+.rui.navbar .accounts:active {
+  /**
+   * @label Accounts Button: Active
+   */
+  background-color: --;
+  border-color: --;
+}
+
+.rui.navbar .accounts .dropdown-toggle {
+  /**
+   * @label Accounts Dropdown Toggle
+   */
+}
+
+.rui.navbar .accounts .dropdown {
+  /**
+   * @label Accounts Dropdown
+   */
+}
+
+.rui.navbar .accounts .additional-link-container a {
+  /**
+   * @label Accounts Dropdown Link
+   */
+  color: var(--link-color);
+}
+
+.rui.navbar .accounts .additional-link-container a:hover {
+  /**
+   * @label Accounts Dropdown Link Hover
+   */
+  color: var(--link-hover-color);
+  background-color: --;
+}
+
+.rui.navbar .accounts .dropdown .circular-icon {
+  /**
+   * @label Profile Image
+   */
+  border: --;
+}
+
+.rui.navbar .accounts .dropdown .circular-icon .avatar-initials {
+  /**
+   * @label Profile Name
+   */
+}
+.rui.navbar .accounts .dropdown .user-accounts-dropdown {
+  /**
+   * @label Accounts Dropdown
+   */
+}
+
+.rui.navbar .accounts .dropdown .user-accounts-dropdown-content {
+  /**
+   * @label Accounts Dropdown Content
+   */
+  color: --;
+}
+
+.rui.navbar .accounts .dropdown ul {
+  /**
+   * @label Accounts Dropdown List
+   */
+}
+.rui.navbar .accounts .dropdown .user-accounts-dropdown-apps {
+  /**
+   * @label Accounts Dropdown Apps
+   */
+}
+.rui.navbar .accounts .dropdown .user-accounts-dropdown-apps i {
+  /**
+   * @label Accounts Dropdown Icons
+   */
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon {
+  /**
+   * @label Accounts Dropdown List Item
+   */
+ border-bottom: --;
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon:last-child {
+  /**
+   * @label Accounts Dropdown Last Link
+   */
+ border-bottom: none;
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon a {
+  /**
+   * @label Accounts Dropdown Link
+   */
+  color: --;
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon a:hover,
+.rui.navbar .accounts .dropdown .dropdown-apps-icon a:focus {
+  /**
+   * @label Accounts Dropdown LinkL: On Hover
+   */
+  color: var(--vivid-color);
+}
+
+.rui.navbar .accounts .dropdown-menu {
+  /**
+   * @label Accounts Dropdown Menu
+   */
+  border: --;
+}

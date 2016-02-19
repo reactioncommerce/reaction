@@ -4,64 +4,77 @@
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit, shops) {
+Meteor.publish("Products", function (productScrollLimit, productFilters) {
   check(productScrollLimit, Match.OneOf(null, undefined, Number));
-  check(shops, Match.Optional(Array));
+  check(productFilters, Match.Optional(Object));
 
   let shopAdmin;
   let selector;
-  let shop = ReactionCore.getCurrentShop();
-  if (typeof shop !== "object") {
-    return this.ready();
-  }
-  const { Products } = ReactionCore.Collections;
   // TODO this limit has another meaning now. We should calculate only objects
   // with type="simple", but we need to get all types for additional images
   const limit = productScrollLimit || 10;
-  // handle multiple shops
-  if (shops) {
-    selector = {
-      shopId: {
-        $in: shops
-      },
-      type: "simple"
-    };
-    // check if this user is a shopAdmin
-    for (let thisShopId of shops) {
-      if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
-          thisShopId)) {
-        shopAdmin = true;
-      }
-    }
-  } else {
+  const shop = ReactionCore.getCurrentShop();
+  const { Products } = ReactionCore.Collections;
+  let sort = {title: 1};
+
+  if (typeof shop !== "object") {
+    return this.ready();
+  }
+
+  if (shop) {
     selector = {
       shopId: shop._id,
       type: "simple"
     };
-  }
 
-  // products are always visible to owners
-  if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
-    selector.isVisible = true;
-  }
+    if (productFilters) {
+      // handle multiple shops
+      if (productFilters.shops) {
+        check(productFilters.shops, Array);
+        _.extend(selector, {shopId: {$in: productFilters.shops}});
 
-  return Products.find(selector, {
-    sort: {
-      title: 1
-    },
-    limit: limit
-  });
+        // check if this user is a shopAdmin
+        for (let thisShopId of productFilters.shops) {
+          if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
+            shopAdmin = true;
+          }
+        }
+      }
+
+      // filter by tag
+      if (productFilters.tag) {
+        check(productFilters.tag, String);
+        _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
+      }
+    }
+
+    // products are always visible to owners
+    if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
+      selector.isVisible = true;
+    }
+
+    return Products.find(selector, {
+      sort: sort,
+      limit: limit
+    });
+  }
+  this.ready();
 });
 
 /**
  * product detail publication
- * @param {String} productId - productId
+ * @param {String} productId - productId or handle
  * @return {Object} return product cursor
  */
 Meteor.publish("Product", function (productId) {
-  check(productId, String);
+  check(productId, Match.OptionalOrNull(String));
+  if (!productId) {
+    ReactionCore.Log.info("ignoring null request on Product subscription");
+    return this.stop();
+  }
   let _id;
   let shop = ReactionCore.getCurrentShop();
+  // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
@@ -94,7 +107,7 @@ Meteor.publish("Product", function (productId) {
   }
   selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
 
-  return Products.find(selector);
+  return ReactionCore.Collections.Products.find(selector);
 });
 
 /**

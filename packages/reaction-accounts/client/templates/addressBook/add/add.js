@@ -69,10 +69,7 @@ AutoForm.hooks({
 
       Meteor.call("accounts/addressBookAdd", insertDoc, (error, result) => {
         if (error) {
-          Alerts.add("Failed to add address: " + error.message,
-            "danger", {
-              autoHide: true
-            });
+          Alerts.toast(`Failed to add address: ${error.message}`, "error");
           this.done(new Error("Failed to add address: ", error));
           return false;
         }

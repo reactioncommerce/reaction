@@ -1,0 +1,49 @@
+<template name="headerTags">
+    {{>tagsComponent tags=tags}}
+</template>
+
+<template name="headerLinks">
+<ul class="list-inline tag-link-list" id="tag-link-list">
+  {{#each ./tags}}
+   <li class="{{activeTag}}">
+    <a href="{{pathFor "tag" slug=slug}}" class="header-tag" id="tag-{{_id}}" data-tag-id="{{_id}}" data-event-category="tag" data-event-action="tag-click" data-event-label="navigation tag click" data-event-value="{{name}}">{{name}}</a>
+  </li>
+  {{/each}}
+  {{#if hasPermission "admin"}}
+    <li>
+      <button id="header-edit-tag" class="btn btn-primary header-edit-tag" data-current-id="{{tag._id}}">
+        <i class="fa fa-tags fa-lg"></i> <span data-i18n="header.tagsAdd">Add Tag</span>
+      </button>
+      </li>
+  {{/if}}
+   </ul>
+</template>
+
+
+<template name="tagInputForm">
+<ul class="list-inline tag-edit-list" id="tag-edit-list">
+{{#each ./tags}}
+  <li data-tag-id="{{_id}}">
+    <div class="tag-input-group">
+      <span class="tag-input-group-handle">
+        <i class="fa fa-bars fa-lg"></i>
+      </span>
+      <span class="tag-input">
+        <input type="text" class="tags-input-select" value="{{name}}" placeholder="Edit tags"/>
+      </span>
+      <span class="tag-input-group-controls">
+        <i class="tag-input-group-hide fa fa-minus-circle fa-lg"></i>
+        <i class="tag-input-group-remove fa fa-times-circle fa-lg"></i>
+      </span>
+    </div>
+  </li>
+{{/each}}
+  <li data-tag-id="{{_id}}">
+    <div class="tag-input-group">
+      <span class="tag-input">
+        <input type="text" class="tags-input-select tags-submit-new" value="{{name}}" placeholder="{{i18n 'header.tagsAdd' 'Add tag'}}" autofocus/>
+      </span>
+    </div>
+  </li>
+</ul>
+</template>

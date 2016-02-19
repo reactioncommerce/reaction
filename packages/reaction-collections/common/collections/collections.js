@@ -167,12 +167,6 @@ ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
 
-/**
-* ReactionCore Collections Layouts
-*/
-ReactionCore.Collections.Layouts = new Mongo.Collection("Layouts");
-
-ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
 
 /**
 * ReactionCore Collections Templates
@@ -180,6 +174,14 @@ ReactionCore.Collections.Layouts.attachSchema(ReactionCore.Schemas.Layouts);
 ReactionCore.Collections.Templates = new Mongo.Collection("Templates");
 
 ReactionCore.Collections.Templates.attachSchema(ReactionCore.Schemas.Templates);
+
+/**
+* ReactionCore Collections Themes
+*/
+ReactionCore.Collections.Themes = new Mongo.Collection("Themes");
+
+ReactionCore.Collections.Themes.attachSchema(ReactionCore.Schemas.Themes);
+
 
 /**
  * ReactionCore Collections CronJobs

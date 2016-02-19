@@ -164,7 +164,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (this.siblingField("type").value !== "inventory") {
-          if (checkChildVariants(this.docId) === 0 && !this.value) {
+          if (ReactionProduct.checkChildVariants(this.docId) === 0 && !this.value) {
             return "required";
           }
         }
@@ -186,7 +186,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (this.siblingField("type").value !== "inventory") {
-          if (checkChildVariants(this.docId) === 0 && !this.value) {
+          if (ReactionProduct.checkChildVariants(this.docId) === 0 && !this.value) {
             return "required";
           }
         }

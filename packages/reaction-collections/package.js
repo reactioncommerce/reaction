@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Collections - core collections + hooks, cfs, jobs",
   name: "reactioncommerce:reaction-collections",
   documentation: "README.md",
-  version: "1.0.4"
+  version: "2.0.0"
 });
 
 Package.onUse(function (api) {
@@ -11,8 +11,12 @@ Package.onUse(function (api) {
   api.use("underscore");
   api.use("ecmascript");
   api.use("check");
+  api.use("tracker");
+  api.use("session");
+  api.use("amplify");
+  api.use("ejson");
 
-  api.use("reactioncommerce:reaction-schemas@1.0.4");
+  api.use("reactioncommerce:reaction-schemas@2.0.0");
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");
@@ -20,10 +24,11 @@ Package.onUse(function (api) {
   api.use("cfs:filesystem@0.1.2");
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
-  api.use("vsivsi:job-collection@1.2.3");
+  api.use("vsivsi:job-collection@1.3.0");
   api.use("ongoworks:security@1.3.0");
   api.use("ongoworks:bunyan-logger@2.5.0");
-  api.use("alanning:roles@1.2.13");
+  api.use("alanning:roles@1.2.14");
+  api.use("meteorhacks:subs-manager@1.6.3");
 
   // ReactionCore declaration
   api.addFiles("common/globals.js");
@@ -46,11 +51,15 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/packages.js", "server");
   api.addFiles("server/publications/products.js", "server");
   api.addFiles("server/publications/translations.js", "server");
+  api.addFiles("server/publications/themes.js", "server");
 
   // security
   api.addFiles("server/logger.js", "server");
   api.addFiles("server/main.js", "server");
   api.addFiles("server/security.js", "server");
+
+  // client subscriptions
+  api.addFiles("client/subscriptions.js", "client");
 
   // imply to share
   api.imply("cfs:standard-packages");
@@ -62,14 +71,18 @@ Package.onUse(function (api) {
   api.imply("vsivsi:job-collection");
   api.imply("ongoworks:security");
   api.imply("alanning:roles");
+  api.imply("alanning:roles");
+  api.imply("meteorhacks:subs-manager");
+  // api.imply("amplify");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");
+  api.export("ReactionSubscriptions");
   api.export("getSlug");
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.3");
+  api.use("sanjo:jasmine@0.21.0");
   api.use("ecmascript");
   api.use("random");
   api.use("underscore");

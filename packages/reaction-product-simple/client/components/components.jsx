@@ -1,2 +1,0 @@
-ReactionProductSimple = ReactionProductSimple || {};
-ReactionProductSimple.Components = {};

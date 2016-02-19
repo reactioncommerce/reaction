@@ -5,7 +5,7 @@
  */
 Accounts.registerLoginHandler(function (options) {
   if (!options.anonymous) {
-    return;
+    return {};
   }
   let loginHandler;
   let stampedToken = Accounts._generateStampedLoginToken();
@@ -34,6 +34,8 @@ Accounts.registerLoginHandler(function (options) {
 Accounts.onCreateUser(function (options, user) {
   const shop = ReactionCore.getCurrentShop();
   const shopId = shop._id;
+  const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
+  const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
   let roles = {};
   let additionals = {
     profile: {}
@@ -44,9 +46,9 @@ Accounts.onCreateUser(function (options, user) {
   if (shop) {
     // if we don't have user.services we're an anonymous user
     if (!user.services) {
-      roles[shopId] = shop.defaultVisitorRole || ["anonymous", "guest"];
+      roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
     } else {
-      roles[shopId] = shop.defaultRoles || ["guest", "account/profile"];
+      roles[shopId] = shop.defaultRoles || defaultRoles;
       // also add services with email defined to user.emails[]
       for (let service in user.services) {
         if (user.services[service].email) {
@@ -87,7 +89,12 @@ Accounts.onCreateUser(function (options, user) {
 
     // assign default user roles
     user.roles = roles;
-    return user;
+
+    // run onCreateUser hooks
+    // (the user object must be returned by all callbacks)
+    userDoc = ReactionCore.Hooks.Events.run("onCreateUser", user, options);
+
+    return userDoc;
   }
 });
 
@@ -97,7 +104,11 @@ Accounts.onCreateUser(function (options, user) {
  * @param {Object} options - user account creation options
  * @fires "cart/mergeCart" Method
  */
-Accounts.onLogin(function (options) {
+Accounts.onLogin(function (opts) {
+  // run onLogin hooks
+  // (the options object must be returned by all callbacks)
+  options = ReactionCore.Hooks.Events.run("onLogin", opts);
+
   // remove anonymous role
   // all users are guest, but anonymous user don't have profile access
   // or ability to order history, etc. so ensure its removed upon login.
@@ -374,9 +385,6 @@ Meteor.methods({
    * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
-    }
     let currentUserName;
     let shop;
     let token;
@@ -388,7 +396,7 @@ Meteor.methods({
     this.unblock();
     shop = ReactionCore.Collections.Shops.findOne(shopId);
 
-    if (!ReactionCore.hasOwnerAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access denied");
     }
 
@@ -542,7 +550,7 @@ Meteor.methods({
    * @returns {Boolean} success/failure
    */
   "accounts/addUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, Match.OneOf(String, Array));
@@ -560,13 +568,14 @@ Meteor.methods({
    * accounts/removeUserPermissions
    */
   "accounts/removeUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, String);
     check(permissions, Match.OneOf(String, Array));
     check(group, Match.Optional(String, null));
     this.unblock();
+
     try {
       return Roles.removeUsersFromRoles(userId, permissions, group);
     } catch (error) {
@@ -583,7 +592,7 @@ Meteor.methods({
    * @returns {Boolean} returns Roles.setUserRoles result
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, String);

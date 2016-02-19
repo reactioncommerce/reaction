@@ -1,0 +1,39 @@
+<body>
+  {{> sAlert template="reactionToastAlert"}}
+</body>
+
+<template name="reactionToastAlert">
+    <div class="custom-alert-class s-alert-box s-alert-{{this.condition}} s-alert-{{position}} s-alert-effect-{{effect}} s-alert-show" id="{{_id}}" style="{{boxPosition}}">
+        <div class="s-alert-box-inner">
+            <div class="alert-header">
+                <h1><i class="fa fa-{{sAlertIcon}}"></i> {{sAlertTitle}}</h1>
+            </div>
+            <div class="alert-content">
+                <i class="fa fa-fw fa-cog"></i>
+                {{message}}
+            </div>
+        </div>
+        <span class="s-alert-close"></span>
+    </div>
+</template>
+
+<template name="inlineAlerts">
+    {{#each alerts placement id}}
+      {{> inlineAlert}}
+    {{/each}}
+</template>
+
+
+<template name="inlineAlert">
+    <div class="alert alert-{{mode}} {{#if options.dismissable}}alert-dismissable{{/if}} {{#if isFirstRender}}hide{{/if}} {{options.classes}}">
+        {{#if options.dismissable}}
+        <!--suppress CheckDtdReferences -->
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{/if}}
+        {{#unless options.html}}
+            {{message}}
+        {{else}}
+            {{{message}}}
+        {{/unless}}
+    </div>
+</template>

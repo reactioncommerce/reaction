@@ -1,0 +1,408 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "translation": {
+    "core": {
+      "languages": {
+        "select": "Выбрать язык"
+      },
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Панель управления",
+          "ordersLabel": "Заказы",
+          "addProductLabel": "Создать продукт",
+          "accountsLabel": "Пользователи"
+        },
+        "dashboard": {
+          "coreLabel": "Ядро",
+          "coreDescription": "Ядро Reaction Commerce",
+          "ordersLabel": "Заказы",
+          "ordersDescription": "Управление заказами",
+          "importLabel": "Импорт",
+          "importDescription": "Поддержка импорта и миграций",
+          "accountsLabel": "Пользователи",
+          "accountsDescription": "Управление правами пользователей",
+          "socialLabel": "Социальные сети",
+          "socialDescription": "Интеграция Reaction Commerce с соц. сетями",
+          "basicShippingLabel": "Доставка",
+          "basicShippingDescription": "Фиксированная ставка для расчета доставки",
+          "inventoryLabel": "Inventory",
+          "inventoryDescription": "Basic Inventory Management",
+          "analyticsLabel": "Аналитика",
+          "analyticsDescription": "Отслеживание событий и аналитика для Reaction Commerce",
+          "paypalLabel": "PayPal",
+          "paypalDescription": "PayPal платежи для Reaction Commerce",
+          "genericPaymentLabel": "Generic Payment",
+          "genericPaymentDescription": "Generic Payment Method"
+        },
+        "settings": {
+          "accountSettingsLabel": "Настройки входа",
+          "shopSettingsLabel": "Настройки магазина",
+          "socialSettingsLabel": "Настройки соц. сетей",
+          "shippingSettingsLabel": "Настройки доставки",
+          "inventorySettingsLabel": "Настройки Inventory",
+          "analyticsSettingsLabel": "Настройки аналитики",
+          "paypalSettingsLabel": "Настройки PayPal",
+          "genericPaymentSettingsLabel": "Настройки Generic Payment"
+        }
+      },
+      "accounts": {
+        "addMember": "Пригласить пользователя",
+        "shopMembers": "Пользователи",
+        "guests": "Гости"
+      },
+      "app": {
+        "save": "Сохранить",
+        "saveAndContinue": "Сохранить и продолжить",
+        "saveChanges": "Сохранить изменения",
+        "cancel": "Отменить",
+        "submit": "Подтвердить",
+        "delete": "Удалить",
+        "create": "Создать",
+        "close": "Закрыть",
+        "settings": "Настройки",
+        "loading": "Загрузка",
+        "toggle": "Переключить",
+        "warning": "Упс!",
+        "unauthorizedMessage": "Вы не имеете прав просматривать эти данные.",
+        "monthOptions": "Выберите месяц",
+        "yearOptions": "Выберите год",
+        "timezoneOptions": "Выберите часовой пояс",
+        "shopSettings": "Настройки магазина",
+        "dashboard": "Панель управления",
+        "print": "Распечатать",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Страница, которую вы запрашиваете, не найдена.",
+        "loadMoreProducts": "Загрузить больше продуктов"
+      },
+      "shopSettings": {
+        "general": "Основные",
+        "address": "Адрес",
+        "mail": "Почта",
+        "localization": "Локализация",
+        "options": "Настройки",
+        "paymentMethods": "Платежные методы"
+      },
+      "header": {
+        "tagsAdd": "Добавить метку",
+        "search": "Искать товары..."
+      },
+      "productDetail": {
+        "productManagement": "Управление товарами",
+        "makeInvisible": "Сделать невидимым",
+        "isNotVisible": "Этот товар невидим для покупателей.",
+        "makeItVisible": "Вы можете сделать его видимым",
+        "whenYouAreDone": "когда закончите редактирование.",
+        "tags": "Метки",
+        "tagsAdd": "Новая метка",
+        "addInventory": "Добавить позицию",
+        "barcode": "Штрих-код",
+        "confirmDeleteBarcode": "Вы уверены, что хотите удалить штрих-код",
+        "details": "Детали",
+        "detailsName": "Название характеристики",
+        "detailsInfo": "Значение характеристики",
+        "generate": "Сгенерировать",
+        "generateBarcodes": "Сгенерировать штрих-коды",
+        "hideBarcodes": "Скрыть штрих-коды",
+        "options": "Варианты",
+        "addToCart": "Добавить в корзину",
+        "chooseOptions": "Пожалуйста выберите вариант прежде чем добавить товар в корзину",
+        "outOfStock": "Извините, этого товара нет в наличии",
+        "productDeleteError": "Произошла ошибка во время удаления товара ",
+        "publishFirst": "Опубликуйте товар прежде чем добавить в корзину.",
+        "quantityAbbreviation": "Кол-во",
+        "selectOption": "Выберите вариант прежде чем добавить в корзину",
+        "addedToCart": "добавлено",
+        "showBarcodes": "Показать штрих-коды",
+        "soldOut": "Продано!",
+        "backOrder": "Заказ",
+        "limitedSupply": "Ограниченное кол-во",
+        "publishProductVisible": "теперь виден",
+        "publishProductHidden": "теперь скрыт",
+        "clonedAlert": "Скопирован",
+        "deletedAlert": "Удален",
+        "startTracking": "Начать трэкинг",
+        "addBarcode": "Добавить штрих-код",
+        "quantity": "Количество",
+        "quantityGreaterThanZero": "Ошибка: количество должно быть больше нуля",
+        "dropFile": "Перетащите фото для загрузки",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Продукт не найден."
+      },
+      "productDetailEdit": {
+        "title": "Название",
+        "pageTitle": "Другое название",
+        "vendor": "Производитель",
+        "description": "Добавьте описание товара",
+        "facebookMsg": "Сообщение Facebook",
+        "twitterMsg": "Сообщение Twitter",
+        "pinterestMsg": "Сообщение Pinterest",
+        "googleplusMsg": "Сообщение Google+",
+        "duplicateVariant": "Скопировать",
+        "addVariantOption": "Добавить опцию",
+        "removeVariant": "Удалить опцию",
+        "duplicateProduct": "Скопировать товар",
+        "pinProduct": "Закрепить товар",
+        "toggleSize": "Переключить размер",
+        "deleteProduct": "Удалить товар",
+        "publish": "Опубликовать",
+        "moreOptions": "Больше опций"
+      },
+      "variantList": {
+        "moreOptions": "Есть еще варианты доступные для этого выбора.",
+        "createVariant": "Создать вариант"
+      },
+      "gridPackage": {
+        "pkgEnabled": " подключен.",
+        "pkgDisabled": " отключен."
+      },
+      "cartDrawer": {
+        "empty": "Очень жаль, Ваша корзина пуста :(",
+        "keepShopping": "Продолжить покупки",
+        "checkout": "Оформить заказ"
+      },
+      "cartSubTotals": {
+        "head": "Ваша корзина",
+        "items": "Товаров",
+        "subtotal": "Цена",
+        "shipping": "Доставка",
+        "tax": "Налог",
+        "total": "Сумма"
+      },
+      "cartDrawerItems": {
+        "left": "слева"
+      },
+      "order": {
+        "created": "Создан",
+        "reference": "Референс",
+        "invoice": "Инвойс",
+        "ordersNotFound": "Не найдено заказов",
+        "approveInvoice": "Подтвердить",
+        "makeAdjustments": "Корректировать",
+        "capturePayment": "Найти платеж",
+        "paymentCaptured": "Платеж найден",
+        "capturedTotal": "Найдено всего",
+        "refundAmount": "Вернуть сумму",
+        "applyRefund": "Подтвердить возврат",
+        "adjustedTotal": "Корректировано всего",
+        "processor": "Процессор",
+        "filter": {
+          "new": "Новых",
+          "captured": "Оплаченных",
+          "shipped": "Доставленых",
+          "completed": "Завершенных",
+          "canceled": "Отмененных",
+          "refunded": "Возвращенных"
+        }
+      },
+      "orderShipping": {
+        "shipTo": "Доставить",
+        "shipped": "Доставлено",
+        "notShipped": "Еще не доставлено",
+        "noTracking": "Без трэкинга",
+        "tracking": "Трэкинг",
+        "addtracking": "Добавить трэкинг",
+        "shipmentEmpty": "Эта доставка не содержит товаров",
+        "shipmentPacked": "Все товары запакованы",
+        "shipped": "Доставлено",
+        "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
+        "resendNotification": "Отправить уведомление о доставке еще раз"
+      },
+      "cartCompleted": {
+        "thankYou": "Спасибо!",
+        "itemsFrom": "товары из",
+        "yourOrderIsNow": "Ваш заказ сейчас",
+        "summaryMessage": "Спасибо за ваш заказ.",
+        "submitted": "submitted",
+        "registerGuest": "Привет! Добавьте email для получения обновлений заказа.",
+        "trackYourDelivery": "Обновления заказа будут высланы на",
+        "noOrdersFound": "Заказов не найдено.",
+        "adminMessage": "Вы просматриваете заказы как администратор"
+      },
+      "checkoutLogin": {
+        "welcome": "Добро пожаловать, очень приятно видеть вас!",
+        "loginCompleted": "Вход выполнен",
+        "createOrLogin": "Создайте аккаунт или авторизируйтесь чтобы продолжить",
+        "guestOrLogin": "Войдите или продолжите оформление заказа как гость",
+        "continueAsGuest": "Продолжить как гость",
+        "guestMessage": "Вы можете завершить заказ без создания аккаунт и создать его позднее."
+      },
+      "addressBookGrid": {
+        "addAddress": "Добавить адрес",
+        "chooseAddress": "Выберите адреса доставки и плательщика",
+        "createDefault": "Создать адрес по умолчанию",
+        "selectShippingAddress": "Выбрать адрес доставки",
+        "selectBillingAddress": "Выбрать адрес плательщика"
+      },
+      "addressBookAdd": {
+        "addAddress": "Добавить адрес",
+        "createAddress": "Добавить адрес по умолчанию"
+      },
+      "addressBookEdit": {
+        "editAddress": "Редактировать этот адрес"
+      },
+      "address": {
+        "country": "Страна",
+        "fullName": "Полное имя",
+        "address1": "Адрес 1",
+        "address2": "Адрес 2",
+        "postal": "Индекс",
+        "city": "Город",
+        "region": "Регион",
+        "phone": "Телефон",
+        "isShippingDefault": "Сделать этот адрес вашим адресом по умолчанию?",
+        "isBillingDefault": "Сделать этот адрес вашим адресом плательщика?",
+        "isCommercial": "Это не коммерческий адрес."
+      },
+      "checkoutProgressBar": {
+        "login": "Авторизация",
+        "shippingBilling": "Доставка и оплата",
+        "shippingOptions": "Варианты доставки",
+        "reviewPayment": "Подтверждение и оплата",
+        "complete": "Завершение"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Выполните платеж и завершите заказ",
+        "processingError": "Произошла ошибка с вашим платежом.",
+        "completeYourOrder": "Завершить ваш заказ",
+        "noPaymentMethods": "Не указан ни один вариант платежа.",
+        "configureNow": "Укажите сейчас."
+      },
+      "checkoutReview": {
+        "review": "Проверьте товары и сумму"
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Выберите вариант доставки",
+        "noShippingMethods": "Не указан ни один вариант доставки.",
+        "configureNow": "Укажите сейчас.",
+        "shipping": "Доставка"
+      },
+      "shopEditForm": {
+        "name": "Имя",
+        "email": "Email"
+      },
+      "shopEditAdressForm": {
+        "company": "Компания",
+        "fullname": "Полное имя",
+        "address1": "Адресс 1"
+      },
+      "consoleIcon": {
+        "iconTitle": "Показать панель",
+        "text": "Настройки"
+      },
+      "createProductIcon": {
+        "iconTitle": "Добавить товар",
+        "text": "Добавить"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
+      },
+      "accountsUI": {
+        "members": "Участники",
+        "guest": "Гость",
+        "addMember": "Добавить участника",
+        "add": "добавить",
+        "and": "и",
+        "back": "назад",
+        "changePassword": "Сменить пароль",
+        "choosePassword": "Придумайте пароль",
+        "clickAgree": "Нажав Регистрация вы соглашаетесь с условиями",
+        "configure": "Конфигурировать",
+        "createAccount": "Создать аккаунт",
+        "currentPassword": "Текущий пароль",
+        "dontHaveAnAccount": "Нет аккаунта?",
+        "email": "Email",
+        "emailAddress": "Email",
+        "emailResetLink": "Отправить ссылку для сброса",
+        "forgotPassword": "Забыли пароль?",
+        "ifYouAlreadyHaveAnAccount": "Если у вас уже есть аккаунт",
+        "newPassword": "Новый пароль",
+        "newPasswordAgain": "Новый пароль (еще раз)",
+        "optional": "Необязательно",
+        "or": "ИЛИ",
+        "password": "Пароль",
+        "passwordAgain": "Пароль (еще раз)",
+        "privacyPolicy": "Политики безопасности",
+        "remove": "Удалить",
+        "resetYourPassword": "Сбросить пароль",
+        "setPassword": "Установить пароль",
+        "sign": "Подпись",
+        "signIn": "Войти",
+        "signin": "войти",
+        "signInWith": "войти с",
+        "signUpWith": "зарегистрироваться с",
+        "signedIn": "Вы уже вошли",
+        "signOut": "Выйти",
+        "signUp": "Регистрация",
+        "signupCode": "Регистрационный код",
+        "signUpWithYourEmailAddress": "Зарегистрируйтесь с вашим email адресом",
+        "terms": "Условиями пользования",
+        "updateYourPassword": "Обновить пароль",
+        "updatePasswordAndContinue": "Обновить и продолжить",
+        "username": "Имя пользователя",
+        "usernameOrEmail": "Имя пользователя или email",
+        "with": "с",
+        "checkoutAsGuest": "Оформить заказ без создания аккаунта",
+        "role": "Роль",
+        "info": {
+          "emailSent": "Email отправлен",
+          "emailVerified": "Email прошел проверку",
+          "passwordChanged": "Пароль изменен",
+          "passwordReset": "Пароль сброшен",
+          "passwordResetSend": "Email со сбросом пароля отправлен.",
+          "invitationSent": "Приглашение отправлено",
+          "sendInvitation": "Отправить приглашение"
+        },
+        "error": {
+          "emailRequired": "Email обязателен.",
+          "passwordRequired": "Пароль обязателен.",
+          "passwordMustBeAtLeast6CharactersLong": "Пароль должен быть не короче 6 символов.",
+          "passwordMustContainRequirements": "Пароль должен содержать хотя бы одну цифру или символ",
+          "minChar": "Минимальное кол-во символов для пароля 6.",
+          "pwdsDontMatch": "Пароли не совпадают",
+          "pwOneDigit": "В пароле должна быть хотя бы одна цифра.",
+          "pwOneLetter": "В пароле должна быть хотя бы одна буква.",
+          "signInRequired": "Необходимо войти для чтобы продолжить.",
+          "signupCodeIncorrect": "Неправильный регистрационный код.",
+          "signupCodeRequired": "Необходим регистрациооный код.",
+          "usernameIsEmail": "Имя пользователя не может быть адресом email.",
+          "usernameRequired": "Имя пользователя обязательно.",
+          "emailAlreadyExists": "Email уже существует",
+          "emailDoesntMatchTheCriteria": "Email не соответствует критериям.",
+          "invalidLoginToken": "Неверный токен для входа",
+          "loginForbidden": "Вход запрещен",
+          "serviceUnknown": "Cервис неизвестен",
+          "unrecognizedOptionsForLoginRequest": "Неизвестные параметры для запроса входа",
+          "userValidationFailed": "Проверка пользователя неудалась",
+          "usernameAlreadyExists": "Пользователь существует.",
+          "youAreNotLoggedIn": "Вы не вошли.",
+          "youveBeenLoggedOutByTheServer": "Сервер инициировал выход. Пожалуйста войдите еще раз.",
+          "yourSessionHasExpired": "Ваша сессия устарела. Пожалуйста войдите еще раз.",
+          "noMatchingLoginAttemptFound": "Не было найдено соответствующей попытки войти",
+          "passwordIsOld": "Пароль устарел. Пожалуйста сбросьте Ваш пароль.",
+          "incorrectPassword": "Неправильный пароль",
+          "invalidEmail": "Несуществующий Email",
+          "addressMustBeAValidEMailAddress": "Несуществующий Email",
+          "mustBeLoggedIn": "Необходимо войти",
+          "needToSetUsernameOrEmail": "Необходимо имя пользователя или email",
+          "oldPasswordFormat": "старый формат пароля",
+          "passwordMayNotBeEmpty": "Пароль не может быть пустым",
+          "signupsForbidden": "Регистрация отключена",
+          "tokenExpired": "Время действия токена истекло",
+          "tokenHasInvalidEmailAddress": "У токена неправильный email адрес",
+          "userHasNoPasswordSet": "У пользователя не установлен пароль",
+          "userNotFound": "Пользователь не найден",
+          "verifyEmailLinkExpired": "Ссылка подтверждения email устарела",
+          "verifyEmailLinkIsForUnknownAddress": "Ссылка подтверждения email для неизвестного адреса",
+          "matchFailed": "Не совпадают",
+          "unknownError": "Неизвестная ошибка"
+        }
+      }
+    }
+  }
+}]

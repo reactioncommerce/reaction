@@ -88,10 +88,7 @@ Template.addressBook.events({
 
     Meteor.call("accounts/addressBookRemove", this._id, (error, result) => {
       if (error) {
-        Alerts.add("Can't remove this address: " + error.message,
-          "danger", {
-            autoHide: true
-          });
+        Alerts.toast(`Can't remove this address: ${error.message}`, "error");
       }
       if (result) {
         let account = ReactionCore.Collections.Accounts.findOne({

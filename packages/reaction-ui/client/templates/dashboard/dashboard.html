@@ -1,0 +1,33 @@
+<template name="uiDashboard">
+  <div class="container-fluid-sm">
+    <h2>Available Themes</h2>
+    <div class="rui items flex quarter flex third">
+      {{#each theme in themes}}
+        <div class="rui item axis vertical">
+          <div class="rui card" data-event-action="showTheme" data-theme={{theme._id}}>
+            {{!-- display overview route --}}
+
+            <div class="content" data-event-action="showPackageManagement">
+              <h3 class="title">
+                <i class="{{icon}}"></i> {{theme.theme}}
+              </h3>
+              <small></small>
+
+            </div>
+
+            <div class="controls">
+              {{> button icon="check-square fa-fw"}}
+              {{> button (duplicateThemeButtonProps theme)}}
+            </div>
+
+          </div>
+        </div>
+      {{else}}
+        <div class="empty-view-message">
+            <i class="fa fa-exclamation-triangle"></i>
+            <p>No Available UI Themes</p>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
