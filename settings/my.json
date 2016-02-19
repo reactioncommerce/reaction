@@ -1,5 +1,5 @@
 {
-  "ROOT_URL": "",
+  "ROOT_URL": "http://reaction.jsonsong.com",
   "MONGO_URL": "",
   "MAIL_URL": "",
   "reaction": {
