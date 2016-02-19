@@ -310,11 +310,6 @@
           }
         }
       },
-      "packageConfig": {
-        "settings": {
-
-        }
-      },
       "shop": {
         "defaultPaymentMethod": "Default Payment Method",
         "name": "Name",

@@ -8,34 +8,34 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Панель Управления",
+          "dashboardLabel": "Панель управления",
           "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
           "accountsLabel": "Пользователи"
         },
         "dashboard": {
           "accountsLabel": "Учётные записи",
-          "accountsDescription": "Управляйте сервисами, через которые пользователи могут регистрироваться в Вашем магазине",
+          "accountsDescription": "Управление сервисами авторизации",
           "analyticsLabel": "Аналитика",
           "analyticsDescription": "Внедрение аналитики и отслеживания событий",
           "authorizeNetLabel": "Authorize.net",
           "authorizeNetDescription": "Платежи через Authorize.net",
           "shippingLabel": "Доставка",
-          "shippingDescription": "Предлагайте тарифы по доставке",
+          "shippingDescription": "Настройки тарифов по доставке",
           "braintreeLabel": "Braintree",
           "braintreeDescription": "Платежи через Braintree",
           "coreLabel": "Ядро",
           "coreDescription": "Базовые настройки магазина Reaction",
           "genericPaymentLabel": "Образец Платёжной системы",
-          "genericPaymentDescription": "Тестируйте платежи, либо используйте её как образец для портирования любых Платёжных систем",
+          "genericPaymentDescription": "Тестирование платежей. Образец для портирования любых Платёжных систем",
           "i18NLabel": "i18n",
           "i18NDescription": "Интернационализация",
           "inventoryLabel": "Товары",
           "inventoryDescription": "Утилиты для работы с товарами",
           "connectLabel": "Connect",
-          "connectDescription": "Подключите Reaction как развёрнутый сервис",
+          "connectDescription": "Подключение Reaction как развёрнутого сервиса",
           "ordersLabel": "Заказы",
-          "ordersDescription": "Выполняйте заказы",
+          "ordersDescription": "Управление заказами",
           "paypalLabel": "PayPal",
           "paypalDescription": "Платежи через PayPal",
           "socialLabel": "Социальные сети",
@@ -44,11 +44,11 @@
           "stripeDescription": "Платежи через Stripe"
         },
         "settings": {
-          "accountSettingsLabel": "Настройки Управления Учётными Записями",
-          "shopSettingsLabel": "Настройки Магазина",
+          "accountSettingsLabel": "Настройки учетных записей",
+          "shopSettingsLabel": "Настройки магазина",
           "socialSettingsLabel": "Настройки соц. сетей",
           "shippingSettingsLabel": "Настройки доставки",
-          "inventorySettingsLabel": "Настройки Управления товарами",
+          "inventorySettingsLabel": "Настройки управления товарами",
           "analyticsSettingsLabel": "Настройки аналитики",
           "paypalSettingsLabel": "Настройки PayPal",
           "genericPaymentSettingsLabel": "Настройки Generic Payment"
@@ -95,7 +95,7 @@
         "localization": "Локализация",
         "options": "Настройки",
         "paymentMethods": "Платёжные системы",
-        "externalServices": "Сторонние Сервисы",
+        "externalServices": "Сторонние сервисы",
         "shopGeneralSettingsSaved": "Настройки магазина обновлены.",
         "shopGeneralSettingsFailed": "Не удалось изменить основные настройки магазина. ",
         "shopAddressSettingsSaved": "Адрес магазина изменён.",
@@ -108,8 +108,8 @@
         "shopLocalizationSettingsFailed": "Не удалось изменить настройки локализации. ",
         "shopOptionsSettingsSaved": "Настройка магазина обновлена.",
         "shopOptionsSettingsFailed": "Не удалось изменить настройку. ",
-        "shopPaymentMethodsSaved": "Настройки Платёжных Систем обновлены.",
-        "shopPaymentMethodsFailed": "Не удалось изменить настройки Платёжных Систем. "
+        "shopPaymentMethodsSaved": "Настройки платёжных систем обновлены.",
+        "shopPaymentMethodsFailed": "Не удалось изменить настройки платёжных систем. "
       },
       "header": {
         "tagsAdd": "Добавить метку",
@@ -133,8 +133,8 @@
         "detailsName": "Название характеристики",
         "detailsInfo": "Значение характеристики",
         "generate": "Сформировать",
-        "generateBarcodes": "Сформировать Штрих-коды",
-        "hideBarcodes": "Скрыть Штрих-коды",
+        "generateBarcodes": "Сформировать штрих-коды",
+        "hideBarcodes": "Скрыть штрих-коды",
         "options": "Варианты",
         "addToCart": "Добавить в корзину",
         "chooseOptions": "Пожалуйста выберите вариант прежде чем добавить товар в корзину",
@@ -144,7 +144,7 @@
         "quantityAbbreviation": "Кол-во",
         "selectOption": "Выберите вариант прежде чем добавить в корзину",
         "addedToCart": "добавлено",
-        "showBarcodes": "Показать Штрих-коды",
+        "showBarcodes": "Показать штрих-коды",
         "soldOut": "Распродано!",
         "backOrder": "Доступно под заказ",
         "limitedSupply": "Предложение ограничено",
@@ -153,7 +153,7 @@
         "clonedAlert": "Скопирован",
         "deletedAlert": "Удален",
         "startTracking": "Начать слежение",
-        "addBarcode": "Добавить Штрих-код",
+        "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",
         "quantityGreaterThanZero": "Ошибка: Количество должно быть больше нуля",
         "notFoundTitle": "Ой!",
@@ -231,7 +231,7 @@
       "order": {
         "created": "Создан",
         "reference": "Референс",
-        "invoice": "Инвойс",
+        "invoice": "Счёт-фактура",
         "ordersNotFound": "Не найдено заказов",
         "approveInvoice": "Подтвердить",
         "makeAdjustments": "Корректировать",
@@ -322,11 +322,6 @@
           }
         }
       },
-      "packageConfig": {
-        "settings": {
-
-        }
-      },
       "shop": {
         "defaultPaymentMethod": "Платёжная система по умолчанию",
         "name": "Название",
@@ -372,10 +367,10 @@
         "isCommercial": "Это юридический адрес"
       },
       "checkoutProgressBar": {
-        "login": "Вход в Учётную Запись",
+        "login": "Вход в учётную запись",
         "shippingBilling": "Адреса",
         "shippingOptions": "Варианты доставки",
-        "reviewPayment": "Подтверждение и Оплата",
+        "reviewPayment": "Подтверждение и оплата",
         "complete": "Готово"
       },
       "checkoutPayment": {
@@ -435,7 +430,7 @@
         "back": "назад",
         "changePassword": "Сменить пароль",
         "choosePassword": "Придумайте пароль",
-        "clickAgree": "Нажав Регистрация вы соглашаетесь с условиями",
+        "clickAgree": "Нажав \"Регистрация\", вы соглашаетесь с условиями",
         "configure": "Конфигурировать",
         "createAccount": "Создать аккаунт",
         "currentPassword": "Текущий пароль",
