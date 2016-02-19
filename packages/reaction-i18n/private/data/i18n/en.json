@@ -45,9 +45,12 @@
         },
         "settings": {
           "accountSettingsLabel": "Account Settings",
+          "authorizenetSettingsLabel": "Authorize.net Settings",
+          "braintreeSettingsLabel": "Braintree Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
+          "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",

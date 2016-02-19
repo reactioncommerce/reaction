@@ -45,9 +45,12 @@
         },
         "settings": {
           "accountSettingsLabel": "Настройки учетных записей",
+          "authorizenetSettingsLabel": "Настройки Authorize.net",
+          "braintreeSettingsLabel": "Настройки Braintree",
           "shopSettingsLabel": "Настройки магазина",
           "socialSettingsLabel": "Настройки соц. сетей",
           "shippingSettingsLabel": "Настройки доставки",
+          "stripeSettingsLabel": "Настройки Stripe",
           "inventorySettingsLabel": "Настройки управления товарами",
           "analyticsSettingsLabel": "Настройки аналитики",
           "paypalSettingsLabel": "Настройки PayPal",
