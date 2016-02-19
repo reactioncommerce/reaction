@@ -164,22 +164,7 @@ function getReactionApps(optionHash) {
               if (match === Object.keys(registryFilter).length) {
                 if (!registry.packageName) registry.packageName = app.name;
                 if (registry.enabled !== false) {
-                  // TODO move this to a function and reuse with Template.dashboardHeader.helpers
-                  let registryLabel = "";
-                  let i18nKey;
-                  // first we check the default place for a label
-                  if (registry.label) {
-                    registryLabel = registry.label.toCamelCase();
-                    i18nKey = `admin.${registry.provides}.${registryLabel}`;
-                    // and if we don't find it, we are trying to look at first
-                    // registry entry
-                  } else if (app.registry && app.registry.length &&
-                    app.registry[0].label) {
-                    registryLabel = app.registry[0].label.toCamelCase();
-                    i18nKey = `admin.${app.registry[0].provides}.${registryLabel}`;
-                  }
-                  registry.i18nKeyLabel = `${i18nKey}Label`;
-                  registry.i18nKeyDescription = `${i18nKey}Description`;
+                  registry = ReactionCore.translateRegistry(registry, app);
                   registry.enabled = registry.enabled || app.enabled;
                   registry.packageId = app._id;
                   // check permissions before pushing so that templates aren't required.
