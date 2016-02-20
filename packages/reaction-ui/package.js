@@ -12,7 +12,7 @@ Npm.depends({
   "postcss": "5.0.14",
   "postcss-js": "0.1.1",
   "autoprefixer": "6.3.1",
-  "css-annotation": "0.6.0",
+  "css-annotation": "0.6.2",
   "tether-drop": "1.4.2",
   "tether-tooltip": "1.2.0"
   // "react-anything-sortable": "1.0.0"
