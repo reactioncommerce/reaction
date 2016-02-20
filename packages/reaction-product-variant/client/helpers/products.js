@@ -36,18 +36,20 @@ ReactionProduct.setCurrentVariant = (variantId) => {
  * @summary method to set default/parameterized product variant
  * @param {String} currentProductId - set current productId
  * @param {String} currentVariantId - set current variantId
- * @return {undefined} return nothing, sets in session
+ * @return {Object} product object
  */
 ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
   let productId = currentProductId || ReactionRouter.getParam("handle");
   let variantId = currentVariantId || ReactionRouter.getParam("variantId");
+  let product;
+  let handle;
 
   if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
     handle = productId.toLowerCase();
     product = ReactionCore.Collections.Products.findOne({
       handle: handle
     });
-    productId = product._id;
+    productId = product && product._id;
   } else {
     product = ReactionCore.Collections.Products.findOne({
       _id: productId
@@ -57,22 +59,15 @@ ReactionProduct.setProduct = (currentProductId, currentVariantId) => {
     // set the default variant
     // as the default.
     if (!variantId) {
-      variantId = product.variants[0]._id;
+      const variants = ReactionProduct.getTopVariants(productId);
+      variantId = Array.isArray(variants) && variants.length &&
+        variants[0]._id || null;
     }
     // set in our reactive dictionary
     ReactionProduct.set("productId", productId);
     ReactionProduct.set("variantId", variantId);
   }
-};
 
-
-/**
- * selectedProduct
- * @summary get the currently active/requested product object
- * @return {Object|undefined} currently selected product cursor
- */
-ReactionProduct.selectedProduct = () => {
-  const product = ReactionCore.Collections.Products.findOne(ReactionProduct.get("productId"));
   return product;
 };
 
@@ -81,40 +76,7 @@ ReactionProduct.selectedProduct = () => {
  * @summary get the currently active/requested product
  * @return {String} currently selected product id
  */
-ReactionProduct.selectedProductId = () => {
-  return ReactionProduct.get("productId");
-};
-
-/**
- * selectedVariant
- * @summary get the currently active/requested variant object
- * @return {Object} currently selected variant object
- */
-ReactionProduct.selectedVariant = function () {
-  const id = selectedVariantId();
-  if (typeof id === "string") {
-    return ReactionCore.Collections.Products.findOne(id);
-  }
-};
-
-/**
- * selectedProduct
- * @summary get the currently active/requested product object
- * @return {Object|undefined} currently selected product cursor
- */
-ReactionProduct.selectedProduct = function () {
-  const id = selectedProductId();
-  if (typeof id === "string") {
-    return ReactionCore.Collections.Products.findOne(id);
-  }
-};
-
-/**
- * selectedProductId
- * @summary get the currently active/requested product
- * @return {String} currently selected product id
- */
-ReactionProduct.selectedProductId = () => currentProduct.get("productId");
+ReactionProduct.selectedProductId = () => ReactionProduct.get("productId");
 
 /**
  * selectedVariantId
@@ -126,7 +88,7 @@ ReactionProduct.selectedVariantId = () => {
   if (id !== null) {
     return id;
   }
-  const variants = getVariants();
+  const variants = ReactionProduct.getVariants();
 
   if (!(variants.length > 0)) {
     return [];
@@ -135,6 +97,30 @@ ReactionProduct.selectedVariantId = () => {
   id = variants[0]._id;
   // ReactionProduct.set("variantId", id);
   return id;
+};
+
+/**
+ * selectedVariant
+ * @summary get the currently active/requested variant object
+ * @return {Object} currently selected variant object
+ */
+ReactionProduct.selectedVariant = function () {
+  const id = ReactionProduct.selectedVariantId();
+  if (typeof id === "string") {
+    return ReactionCore.Collections.Products.findOne(id);
+  }
+};
+
+/**
+ * selectedProduct
+ * @summary get the currently active/requested product object
+ * @return {Object|undefined} currently selected product cursor
+ */
+ReactionProduct.selectedProduct = function () {
+  const id = ReactionProduct.selectedProductId();
+  if (typeof id === "string") {
+    return ReactionCore.Collections.Products.findOne(id);
+  }
 };
 
 /**
@@ -156,8 +142,9 @@ ReactionProduct.checkChildVariants = function (parentVariantId) {
  * @return {Number} count of inventory variants for this parentVariantId
  */
 ReactionProduct.checkInventoryVariants = function (parentVariantId) {
-  const inventoryVariants = ReactionProduct.getVariants(parentVariantId, "inventory");
-  return inventoryVariants.length ? childVariants.length : 0;
+  const inventoryVariants = ReactionProduct.getVariants(parentVariantId,
+    "inventory");
+  return inventoryVariants.length ? inventoryVariants.length : 0;
 };
 
 /**
@@ -168,9 +155,8 @@ ReactionProduct.checkInventoryVariants = function (parentVariantId) {
  * @param {String} [id] - current variant _Id
  * @return {String} formatted price or price range
  */
-ReactionProduct.getVariantPriceRange = id => ReactionCore.getVariantPriceRange(id ||
-  selectedVariant()._id);
-
+ReactionProduct.getVariantPriceRange = id => ReactionCore.
+  getVariantPriceRange(id || ReactionProduct.selectedVariant()._id);
 
 /**
  * getProductPriceRange
@@ -181,9 +167,8 @@ ReactionProduct.getVariantPriceRange = id => ReactionCore.getVariantPriceRange(i
  * @param {String} [id] - current product _id
  * @return {String} formatted price or price range
  */
-ReactionProduct.getProductPriceRange = id => ReactionCore.getProductPriceRange(id ||
-  selectedProductId());
-
+ReactionProduct.getProductPriceRange = id => ReactionCore.
+  getProductPriceRange(id || ReactionProduct.selectedProductId());
 
 /**
  * maybeDeleteProduct
@@ -249,7 +234,7 @@ ReactionProduct.getVariantQuantity = doc => ReactionCore.getVariantQuantity(doc)
  * @return {Array} Parent variants or empty array
  */
 ReactionProduct.getVariants = (id, type) => ReactionCore.getVariants(id ||
-  selectedProductId(), type);
+  ReactionProduct.selectedProductId(), type);
 
 /**
  * @method getTopVariants
@@ -258,4 +243,4 @@ ReactionProduct.getVariants = (id, type) => ReactionCore.getVariants(id ||
  * @return {Array} Product top level variants or empty array
  */
 ReactionProduct.getTopVariants = id => ReactionCore.getTopVariants(id ||
-  selectedProductId());
+  ReactionProduct.selectedProductId());

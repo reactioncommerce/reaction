@@ -214,6 +214,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Boolean,
     optional: true
   },
+  // Label for customers
   title: {
     label: "Label",
     type: String,
@@ -226,6 +227,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
       }
     }
   },
+  // Option internal name
   optionTitle: {
     label: "Option",
     type: String,

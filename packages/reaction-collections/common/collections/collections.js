@@ -14,13 +14,20 @@ function getSummary(items, prop, prop2) {
   if (Array.isArray(items)) {
     return items.reduce((sum, item) => {
       if (prop2) {
-        return sum + (item[prop[0]] * prop2.length === 1 ? item[prop2[0]] :
+        // S + a * b, where b could be b1 or b2
+        return sum + item[prop[0]] * (prop2.length === 1 ? item[prop2[0]] :
           item[prop2[0]][prop2[1]]);
       }
+      // S + b, where b could be b1 or b2
       return sum + (prop.length === 1 ? item[prop[0]] :
         item[prop[0]][prop[1]]);
     }, 0);
   }
+
+  // If data not prepared we should send a number to avoid exception with
+  // `toFixed`. This could happens if user stuck on `completed` checkout stage
+  // by some reason.
+  return 0;
 }
 
 /**
@@ -59,8 +66,9 @@ ReactionCore.Helpers.cartTransform = {
     shippingTotal = parseFloat(shippingTotal);
     // TODO: includes taxes?
     if (typeof shippingTotal === "number" && shippingTotal > 0) {
-      return (subTotal + shippingTotal).toFixed(2);
+      subTotal += shippingTotal;
     }
+    return subTotal.toFixed(2);
   }
 };
 
@@ -166,7 +174,6 @@ ReactionCore.Collections.Tags.attachSchema(ReactionCore.Schemas.Tag);
 ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
-
 
 /**
 * ReactionCore Collections Templates

@@ -27,46 +27,23 @@ Template.productSettingsGridItem.helpers({
   },
 
   media: function () {
-    let defaultImage;
-    const variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const media = ReactionCore.Collections.Media.findOne({
+      "metadata.productId": this._id,
+      "metadata.priority": 0,
+      "metadata.toGrid": 1
+    }, { sort: { uploadedAt: 1 } });
 
-    if (variants.length > 0) {
-      let variantId = variants[0]._id;
-      defaultImage = ReactionCore.Collections.Media.findOne({
-        "metadata.variantId": variantId,
-        "metadata.priority": 0
-      });
-    }
-    if (defaultImage) {
-      return defaultImage;
-    }
-    return false;
+    return media instanceof FS.File ? media : false;
   },
   additionalMedia: function () {
-    let mediaArray;
-    const variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
+    const mediaArray = ReactionCore.Collections.Media.find({
+      "metadata.productId": this._id,
+      "metadata.priority": {
+        $gt: 0
+      },
+      "metadata.toGrid": 1
+    }, { limit: 3 });
 
-    if (variants.length > 0) {
-      let variantId = variants[0]._id;
-      mediaArray = ReactionCore.Collections.Media.find({
-        "metadata.variantId": variantId,
-        "metadata.priority": {
-          $gt: 0
-        }
-      }, {
-        limit: 3
-      });
-    }
     if (mediaArray.count() > 1) {
       return mediaArray;
     }
@@ -91,20 +68,14 @@ Template.productSettingsGridItem.helpers({
 
     let position = this.position || {};
     let weight = position.weight || 0;
-    if (weight === 1) {
-      return true;
-    }
-    return false;
+    return weight === 1;
   },
   isLargeWeight: function () {
     weightDependency.depend();
 
     let position = this.position || {};
     let weight = position.weight || 0;
-    if (weight === 3) {
-      return true;
-    }
-    return false;
+    return weight === 3;
   },
   shouldShowAdditionalImages: function () {
     weightDependency.depend();

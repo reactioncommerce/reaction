@@ -5,60 +5,56 @@
  * @return {Object} return product cursor
  */
 Meteor.publish("Products", function (productScrollLimit, productFilters) {
-  check(productScrollLimit, Match.OneOf(null, undefined, Number));
+  check(productScrollLimit, Match.Optional(Number));
   check(productFilters, Match.Optional(Object));
 
   let shopAdmin;
-  let selector;
   // TODO this limit has another meaning now. We should calculate only objects
   // with type="simple", but we need to get all types for additional images
   const limit = productScrollLimit || 10;
   const shop = ReactionCore.getCurrentShop();
-  const { Products } = ReactionCore.Collections;
-  let sort = {title: 1};
+  let sort = { title: 1 };
 
   if (typeof shop !== "object") {
     return this.ready();
   }
 
-  if (shop) {
-    selector = {
-      shopId: shop._id,
-      type: "simple"
-    };
+  let selector = {
+    shopId: shop._id,
+    type: "simple"
+  };
 
-    if (productFilters) {
-      // handle multiple shops
-      if (productFilters.shops) {
-        check(productFilters.shops, Array);
-        _.extend(selector, {shopId: {$in: productFilters.shops}});
+  if (productFilters) {
+    // handle multiple shops
+    if (productFilters.shops) {
+      check(productFilters.shops, Array);
+      _.extend(selector, {shopId: {$in: productFilters.shops}});
 
-        // check if this user is a shopAdmin
-        for (let thisShopId of productFilters.shops) {
-          if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
-            shopAdmin = true;
-          }
+      // check if this user is a shopAdmin
+      for (let thisShopId of productFilters.shops) {
+        if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
+          thisShopId)) {
+          shopAdmin = true;
         }
       }
-
-      // filter by tag
-      if (productFilters.tag) {
-        check(productFilters.tag, String);
-        _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
-      }
     }
 
-    // products are always visible to owners
-    if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
-      selector.isVisible = true;
+    // filter by tag
+    if (productFilters.tag) {
+      check(productFilters.tag, String);
+      _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
     }
-
-    return Products.find(selector, {
-      sort: sort,
-      limit: limit
-    });
   }
-  this.ready();
+
+  // products are always visible to owners
+  if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
+    selector.isVisible = true;
+  }
+
+  return ReactionCore.Collections.Products.find(selector, {
+    sort: sort,
+    limit: limit
+  });
 });
 
 /**
@@ -78,7 +74,6 @@ Meteor.publish("Product", function (productId) {
   if (typeof shop !== "object") {
     return this.ready();
   }
-  const { Products } = ReactionCore.Collections;
   let selector = {};
   selector.isVisible = true;
 
@@ -98,7 +93,7 @@ Meteor.publish("Product", function (productId) {
       $regex: productId,
       $options: "i"
     };
-    const products = Products.find(selector).fetch();
+    const products = ReactionCore.Collections.Products.find(selector).fetch();
     if (products.length > 0) {
       _id = products[0]._id;
     } else {

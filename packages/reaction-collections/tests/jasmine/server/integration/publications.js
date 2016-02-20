@@ -215,7 +215,9 @@ describe("Publication", function () {
   });
 
   describe("Cart", () => {
-    const user = Factory.create("user");
+    // for this: "should return only one cart in cursor" test we need to avoid
+    // user carts merging. We need registered users for here.
+    const user = Factory.create("registeredUser");
     const userId = user._id;
     const sessionId = ReactionCore.sessionId = Random.id();
     const cartPub = Meteor.server.publish_handlers["Cart"];
@@ -241,7 +243,7 @@ describe("Publication", function () {
     it(
       "should return only one cart in cursor",
       () => {
-        const user2 = Factory.create("user");
+        const user2 = Factory.create("registeredUser");
         Meteor.call("cart/createCart", user2._id, sessionId);
         const cursor = cartPub.apply(thisContext, [sessionId]);
         const data = cursor.fetch();

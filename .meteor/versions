@@ -103,7 +103,6 @@ meteor@1.1.10
 meteor-base@1.0.1
 meteorhacks:ssr@2.2.0
 meteorhacks:subs-manager@1.6.3
-mikowals:batch-insert@1.1.13
 minifiers@1.1.7
 minimongo@1.0.10
 mobile-experience@1.0.1
@@ -147,6 +146,7 @@ reactioncommerce:reaction-analytics@1.2.3
 reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-auth-net@0.6.0
 reactioncommerce:reaction-braintree@1.5.3
+reactioncommerce:reaction-catalog@0.2.0
 reactioncommerce:reaction-checkout@1.0.0
 reactioncommerce:reaction-collections@2.0.0
 reactioncommerce:reaction-dashboard@1.0.0

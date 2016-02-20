@@ -14,7 +14,7 @@ Template.childVariantForm.helpers({
 
 Template.childVariantForm.events({
   "click .child-variant-form :input, click li": function (event, template) {
-    return setCurrentVariant(template.data._id);
+    return ReactionProduct.setCurrentVariant(template.data._id);
   },
   "change .child-variant-form :input": function (event, template) {
     const variant = template.data;

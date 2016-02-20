@@ -45,9 +45,14 @@ describe("cart methods", function () {
         spyOn(ReactionCore.Collections.Products._hookAspects.remove.after[0],
           "aspect");
       }
+
       // this is needed for `inventory/remove`. Don't ask me why;)
       // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       ReactionCore.Collections.Products.remove({});
+
+      // mock it. If you want to make full integration test, comment this out
+      spyOn(Meteor.server.method_handlers, "workflow/pushCartWorkflow").and.
+      callFake(() => true);
     });
 
     beforeEach(() => {

@@ -173,6 +173,7 @@ Package.onTest(function (api) {
   // reaction core
   api.use("reactioncommerce:reaction-collections@2.0.0");
   api.use("reactioncommerce:reaction-factories@0.3.7");
+  api.use("reactioncommerce:reaction-checkout@1.0.0");
   api.use("reactioncommerce:core@0.12.0");
 
   // server integration tests

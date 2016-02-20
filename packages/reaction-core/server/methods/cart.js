@@ -45,7 +45,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
  * @return {Mongo.Cursor} with array of session carts
  */
 function getSessionCarts(userId, sessionId, shopId) {
-  return ReactionCore.Collections.Cart.find({
+  const carts = ReactionCore.Collections.Cart.find({
     $and: [{
       userId: {
         $ne: userId
@@ -60,6 +60,19 @@ function getSessionCarts(userId, sessionId, shopId) {
       }
     }]
   });
+
+  // we can't use Array.map here, because we need to reduce the number of array
+  // elements if element belongs to registered user, we should throw it.
+  const allowedCarts = [];
+
+  // only anonymous user carts allowed
+  carts.forEach(cart => {
+    if (Roles.userIsInRole(cart.userId, "anonymous", shopId)) {
+      allowedCarts.push(cart);
+    }
+  });
+
+  return allowedCarts;
 }
 
 /**
@@ -125,11 +138,6 @@ Meteor.methods({
     );
     // loop through session carts and merge into user cart
     sessionCarts.forEach(sessionCart => {
-      // cart should belong to anonymous
-      if (!Roles.userIsInRole(sessionCart.userId, "anonymous", shopId)) {
-        return false;
-      }
-
       Log.debug(
         `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
           sessionCart.userId}, sessionCart id: ${sessionCart._id}`
@@ -220,7 +228,7 @@ Meteor.methods({
     const shopId = ReactionCore.getShopId();
     // check if user has `anonymous` role.( this is a visitor)
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
-    const sessionCartCount = getSessionCarts(userId, sessionId, shopId).count();
+    let sessionCartCount = getSessionCarts(userId, sessionId, shopId).length;
 
     Log.info("create cart: shopId", shopId);
     Log.debug("create cart: userId", userId);
@@ -589,7 +597,7 @@ Meteor.methods({
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
-      Meteor.call("orders/inventoryAdjust", orderId);
+//      Meteor.call("orders/inventoryAdjust", orderId);
       ReactionCore.Collections.Cart.remove({
         _id: order.cartId
       });

@@ -70,6 +70,9 @@ ReactionCore.Collections.Products.after.update(function (userId, doc,
   // $set modifier because of auto-updating of `shopId` and `updateAt` schema
   // properties
   if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
+    if (!modifier.$set) {
+      modifier.$set = {};
+    }
     modifier.$set.updatedAt = new Date();
     // triggers inventory adjustment
     Meteor.call("inventory/adjust", doc);

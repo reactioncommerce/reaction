@@ -23,9 +23,9 @@ Template.gridPackage.helpers({
  */
 Template.gridPackage.events({
   "click .enablePkg": function (event, template) {
-    const self = this;
+    const self = this.package;
     event.preventDefault();
-    return ReactionCore.Collections.Packages.update(template.data.packageId, {
+    return ReactionCore.Collections.Packages.update(self.packageId, {
       $set: {
         enabled: true
       }

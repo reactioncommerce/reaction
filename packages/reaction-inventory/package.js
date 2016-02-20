@@ -56,6 +56,7 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-factories");
   api.use("reactioncommerce:reaction-inventory");
+  api.use("reactioncommerce:reaction-catalog");
 
   api.addFiles("tests/jasmine/server/integration/inventorySpecs.js", "server");
 });
