@@ -13,9 +13,9 @@ Package.onUse(function (api) {
   api.use("check");
   api.use("tracker");
   api.use("session");
-  api.use("amplify");
   api.use("ejson");
 
+  api.use("amplify@1.0.0");
   api.use("reactioncommerce:reaction-schemas@2.0.1");
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.3");
