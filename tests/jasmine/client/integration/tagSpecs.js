@@ -11,8 +11,6 @@ describe("Tags", function () {
     Tracker.afterFlush(done);
   });
 
-  beforeEach(waitForRouter);
-
   it("loads navigation header", function () {
     expect($(".navbar-tags")).toBeInDOM();
 

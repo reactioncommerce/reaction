@@ -74,3 +74,4 @@ reactioncommerce:default-theme          # default Reaction theme
 
 # Forced updates on packages
 mdg:validation-error@0.4.0
+cosmos:browserify@0.9.3
