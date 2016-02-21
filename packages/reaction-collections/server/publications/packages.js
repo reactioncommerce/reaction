@@ -9,10 +9,11 @@ Meteor.publish("Packages", function (shopCursor) {
   if (this.userId === null) {
     return this.ready();
   }
+  const shop = shopCursor || ReactionCore.getCurrentShop();
   const {
     Packages
   } = ReactionCore.Collections;
-  const shop = shopCursor || ReactionCore.getCurrentShop();
+
   // we should always have a shop
   if (shop) {
     // if admin user, return all shop properties
@@ -22,10 +23,6 @@ Meteor.publish("Packages", function (shopCursor) {
         ], Roles.GLOBAL_GROUP))) {
       return Packages.find({
         shopId: shop._id
-      }, {
-        sort: {
-          name: 1
-        }
       });
     }
     // else we'll just return without private settings
@@ -39,10 +36,6 @@ Meteor.publish("Packages", function (shopCursor) {
         "registry": 1,
         "layout": 1,
         "settings.public": 1
-      }
-    }, {
-      sort: {
-        name: 1
       }
     });
   }

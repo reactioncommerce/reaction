@@ -1,0 +1,14 @@
+<template name="CoreNavigationLanguage">
+<div class="dropdown" role="language">
+  <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+    <i class="fa fa-language fa-lg"></i> <span class="caret"></span>
+  </div>
+  <ul class="dropdown-menu text-center" role="menu">
+    <li role="presentation" class="dropdown-header" data-i18n="languages.select">Select Language</li>
+    <li class="divider"></li>
+    {{#each languages}}
+     <li class="{{active}}"><a role="menuitem" class="i18n-language" data-i18n="{{translation}}">{{label}}</a></li>
+    {{/each}}
+  </ul>
+</div>
+</template>

@@ -1,0 +1,16 @@
+<template name="checkoutProgressBar">
+  <div class="checkout-progress-container">
+    <ul class="checkout-progress-bar">
+
+      {{#each reactionTemplate workflow="coreCartWorkflow"}}
+        {{#if label}}
+          <li class="{{progressbarStatusClass}}">
+            <span class="progress-step-badge">{{position}}</span>
+            <span class="progress-step-label" data-i18n="checkoutProgressBar.{{toCamelCase label}}">{{label}}</span>
+          </li>
+        {{/if}}
+      {{/each}}
+
+    </ul>
+  </div>
+</template>

@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Schemas - core reaction commerce collection schemas",
   name: "reactioncommerce:reaction-schemas",
-  version: "1.0.4",
+  version: "2.0.1",
   documentation: "README.md"
 });
 
@@ -20,14 +20,13 @@ Package.onUse(function (api) {
 
   // ReactionCore declaration
   api.addFiles("common/common.js");
-  api.addFiles("common/globals.js");
-
 
   // schemas
+  api.addFiles("common/schemas/workflow.js");
   api.addFiles("common/schemas/address.js");
   api.addFiles("common/schemas/accounts.js");
   api.addFiles("common/schemas/layouts.js");
-  api.addFiles("common/schemas/packages.js");
+  api.addFiles("common/schemas/registry.js");
   api.addFiles("common/schemas/shops.js");
   api.addFiles("common/schemas/payments.js");
   api.addFiles("common/schemas/shipping.js");
@@ -39,11 +38,14 @@ Package.onUse(function (api) {
   api.addFiles("common/schemas/orders.js");
   api.addFiles("common/schemas/translations.js");
   api.addFiles("common/schemas/templates.js");
+  api.addFiles("common/schemas/themes.js");
+
+  // PropType Validators
+  api.addFiles("common/propTypes/tags.js");
 
   api.imply("matb33:collection-hooks");
   api.imply("aldeed:collection2");
   api.imply("aldeed:simple-schema");
-  api.imply("ongoworks:transliteration");
   api.export("ReactionCore");
   api.export("getSlug");
 });
@@ -51,7 +53,7 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("underscore");
   api.use("random");
-  api.use("sanjo:jasmine@0.20.3");
+  api.use("sanjo:jasmine@0.21.0");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 

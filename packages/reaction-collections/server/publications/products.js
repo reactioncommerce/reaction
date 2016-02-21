@@ -9,13 +9,14 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
   check(productFilters, Match.OneOf(null, undefined, Object));
 
   let shopAdmin;
-  let shop = ReactionCore.getCurrentShop();
+  const limit = productScrollLimit || 10;
+  const shop = ReactionCore.getCurrentShop();
+  const Products = ReactionCore.Collections.Products;
+  const sort = {title: 1};
+
   if (typeof shop !== "object") {
     return this.ready();
   }
-  let Products = ReactionCore.Collections.Products;
-  let limit = productScrollLimit || 10;
-  let sort = {title: 1};
 
   if (shop) {
     let selector = {shopId: shop._id};
@@ -81,6 +82,8 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
       selector.isVisible = true;
     }
 
+    ReactionCore.Log.debug("Products publication selector", EJSON.stringify(selector));
+
     Counts.publish(this, 'Products', Products.find(selector), {noReady: true});
     return Products.find(selector, {
       sort: sort,
@@ -92,16 +95,22 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
 
 /**
  * product detail publication
- * @param {String} productId - productId
+ * @param {String} productId - productId or handle
  * @return {Object} return product cursor
  */
 Meteor.publish("Product", function (productId) {
-  check(productId, String);
+  check(productId, Match.OptionalOrNull(String));
+  if (!productId) {
+    ReactionCore.Log.info("ignoring null request on Product subscription");
+    return this.stop();
+  }
+
   let shop = ReactionCore.getCurrentShop();
+  // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
-  let Products = ReactionCore.Collections.Products;
+
   let selector = {};
   selector.isVisible = true;
 
@@ -120,7 +129,7 @@ Meteor.publish("Product", function (productId) {
       $options: "i"
     };
   }
-  return Products.find(selector);
+  return ReactionCore.Collections.Products.find(selector);
 });
 
 /**

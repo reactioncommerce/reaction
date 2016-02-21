@@ -3,19 +3,8 @@ Template.addressBookForm.helpers({
   /*
    * TODO: update for i18n
    */
-  countryOptions: function() {
-    var country, locale, options, ref, shop;
-    options = [];
-    shop = ReactionCore.Collections.Shops.findOne();
-    ref = shop != null ? shop.locales.countries : void 0;
-    for (country in ref) {
-      locale = ref[country];
-      options.push({
-        'label': locale.name,
-        'value': country
-      });
-    }
-    return options;
+  countryOptions: function () {
+    return ReactionCore.Collections.Countries.find().fetch();
   },
   statesForCountry: function() {
     var locale, options, ref, selectedCountry, shop, state;

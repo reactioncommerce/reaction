@@ -1,0 +1,31 @@
+
+<template name="tagTree">
+  <div class="rui tagtree">
+    <div class="header">
+      <span class="title">{{parentTag.name}}</span>
+      <a href="#">View All <i class="fa fa-angle-right"></i></a>
+    </div>
+    <div class="content">
+      {{#each group in subTagGroups}}
+        {{> tagGroup (tagGroupProps group)}}
+      {{/each}}
+
+      {{#if isEditing}}
+        {{> tagTreeNewGroup (newTagGroupProps parentTag)}}
+      {{/if}}
+    </div>
+
+  </div>
+</template>
+
+<template name="tageTreeGroup">
+</template>
+
+
+<template name="tagTreeNewGroup">
+  <div class="rui grouptag create">
+    <div class="header">
+      {{> tagItem (props tag)}}
+    </div>
+  </div>
+</template>

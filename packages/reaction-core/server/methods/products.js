@@ -429,7 +429,7 @@ Meteor.methods({
    * @summary clone a whole product, defaulting visibility, etc
    * in the future we are going to do an inheritance product
    * that maintains relationships with the cloned product tree
-   * @param {Object} product - product object to clone
+   * @param {Object} productOrArray - product object to clone
    * @returns {String} returns insert result
    */
   "products/cloneProduct": function (productOrArray) {
@@ -680,7 +680,7 @@ Meteor.methods({
   "products/createProduct": function (product) {
     check(product, Match.Optional(Object));
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!ReactionCore.hasPermission("createProduct", this.userId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -743,10 +743,9 @@ Meteor.methods({
       }, {
         multi: true
       });
-      return true;
     }
     // return false if unable to delete
-    return false;
+    return numRemoved;
   },
 
   /**

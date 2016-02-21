@@ -11,7 +11,7 @@ _.extend(ReactionCore, {
       limit: 1
     });
     if (!cursor.count()) {
-      ReactionCollections.Log.debug("Add a domain entry to shops for ",
+      ReactionSubscriptions.Log.debug("Add a domain entry to shops for ",
         domain);
     }
     return cursor;
@@ -36,5 +36,11 @@ _.extend(ReactionCore, {
       return absoluteUrl.split("/")[2].split(":")[0];
     }
     return "localhost";
+  },
+  getShopName: function () {
+    const currentShop = this.getCurrentShop();
+    if (typeof currentShop === "object") {
+      return currentShop.name;
+    }
   }
 });

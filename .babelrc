@@ -1,0 +1,8 @@
+{
+  "whitelist": [
+    "es7.decorators",
+    "es7.classProperties",
+    "es7.exportExtensions",
+    "es7.comprehensions"
+  ]
+}

@@ -1,0 +1,38 @@
+/**
+ * @theme base
+ * @name notFound
+ * @label Not Found Page
+ * @author Reaction commerce
+ * @url https://reactioncommerce.com
+ */
+
+.rui.not-found {
+  /**
+   * @label Not Found Container
+   */
+  border: --;
+  padding: --;
+  background-color: --;
+}
+
+.rui.not-found i {
+  /**
+   * @label Icon
+   */
+}
+
+.rui.not-found .title {
+  /**
+   * @label
+   */
+  color: --;
+  font: --;
+}
+
+.rui.not-found .message {
+  /**
+   * @label
+   */
+  color: --;
+  font: --;
+}

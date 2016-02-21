@@ -11,8 +11,8 @@
   "_id": "cseCBSSrJ3t8HQSNP",
   "shopId": "J8Bhq3uTtdgwZx3rz"
 }, {
-  "slug": "products",
-  "name": "Products",
+  "slug": "shop",
+  "name": "Shop",
   "isTopLevel": true,
   "updatedAt": {
     "$date": "2014-04-09T13:23:57.412-0700"

@@ -1,7 +1,7 @@
 Package.describe({
   name: "reactioncommerce:default-theme",
   summary: "Reaction Commerce Default theme",
-  version: "1.0.3"
+  version: "1.0.4"
 });
 
 Package.onUse(function (api) {
@@ -10,6 +10,7 @@ Package.onUse(function (api) {
 
   // Using less only for this theme
   api.use("less");
+  api.use("fortawesome:fontawesome@4.5.0");
 
   // Include core theme to get its base styles
   api.use("reactioncommerce:core-theme@2.0.1");
