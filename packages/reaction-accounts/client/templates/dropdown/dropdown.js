@@ -26,8 +26,17 @@ Template.loginDropdown.events({
       }
       // go home on logout
       ReactionSubscriptions.reset();
-      ReactionRouter.reload();
-      ReactionRouter.go("/");
+
+      if (ReactionRouter.current().path === "/") {
+        // Making sure that no residue of logged in state is left.
+        // This should usually not be necessary.
+        ReactionRouter.reload();
+      } else {
+        // Necessary if the user is on a page that is only intended for logged
+        // in users.
+        // TODO: Don't redirect away from public pages
+        ReactionRouter.go("/");
+      }
     });
   },
 
