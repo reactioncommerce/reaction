@@ -197,10 +197,10 @@
         "errorDisabling": "Error disabling package: ",
         "errorEnabling": "Error enabling package: ",
         "details": "Details",
-        "disable": "Are tou sure you want to disable {{app}}?",
-        "disableConfirm": "Are you sure you want to disable ",
-        "pkgEnabled": " is now enabled.",
-        "pkgDisabled": " is now disabled."
+        "disable": "Disable",
+        "disableConfirm": "Are you sure you want to disable {{app}}?",
+        "pkgEnabled": "{{app}} is now enabled.",
+        "pkgDisabled": "{{app}} is now disabled."
       },
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",
