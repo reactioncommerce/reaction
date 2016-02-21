@@ -12,6 +12,7 @@ ReactionCore.registerPackage({
     label: "Email",
     description: "Email templates",
     icon: "fa fa-envelope-square",
-    priority: 4
+    priority: 4,
+    container: "appearance"
   }]
 });

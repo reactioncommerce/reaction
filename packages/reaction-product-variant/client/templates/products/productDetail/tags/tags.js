@@ -1,9 +1,13 @@
 Template.productDetailTags.helpers({
+  tags: function () {
+    const instance = this;
+    return instance.tags;
+  },
   currentHashTag: function () {
     let product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.handle) {
-        if (product.handle === product.handle.toLowerCase()) {
+        if (this.handle === product.handle.toLowerCase() || getSlug(product.handle) === this.slug) {
           return true;
         }
       }

@@ -21,9 +21,6 @@ Package.onUse(function (api) {
   api.use("session");
   api.use("jquery");
   api.use("tracker");
-  api.use("reactive-dict");
-
-  // meteor add-on packages
   api.use("ddp-rate-limiter");
   api.use("underscore");
   api.use("logging");
@@ -34,6 +31,7 @@ Package.onUse(function (api) {
   api.use("less");
   api.use("http");
   api.use("reactive-var");
+  api.use("reactive-dict");
   api.use("email");
   api.use("browser-policy");
   api.use("service-configuration");
@@ -49,8 +47,7 @@ Package.onUse(function (api) {
   // community packages
   api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
-  api.use("ongoworks:transliteration@0.1.1");
-  api.use("reactioncommerce:reaction-collections@2.0.0");
+  api.use("reactioncommerce:reaction-collections@2.0.1");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
@@ -61,6 +58,9 @@ Package.onUse(function (api) {
 
   // imply exports package vars
   api.imply("less");
+  api.imply("ejson");
+  api.imply("session");
+  api.imply("tracker");
   api.imply("amplify");
   api.imply("accounts-base");
   api.imply("ecmascript");
@@ -73,6 +73,8 @@ Package.onUse(function (api) {
   api.imply("aldeed:template-extension");
   api.imply("mdg:validated-method");
   api.imply("momentjs:moment");
+  api.imply("ongoworks:bunyan-logger");
+
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -123,11 +125,6 @@ Package.onUse(function (api) {
   // cron jobs
   api.addFiles("server/jobs.js", "server");
 
-  // common
-  api.addFiles("common/methods/layout.js");
-  api.addFiles("common/methods/workflow.js");
-  api.addFiles("common/methods/cart.js");
-
   api.addFiles("common/hooks/orders.js");
 
   // methods
@@ -148,7 +145,7 @@ Package.onUse(function (api) {
 
   // client
   api.addFiles("client/helpers/layout.js", "client");
-  api.addFiles("client/helpers/packages.js", "client");
+  api.addFiles("client/helpers/apps.js", "client");
   api.addFiles("client/helpers/globals.js", "client");
   api.addFiles("client/helpers/permissions.js", "client");
   api.addFiles("client/helpers/utilities.js", "client");
@@ -164,7 +161,9 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function (api) {
+  api.use("meteor-base");
   api.use("underscore");
+  api.use("ecmascript");
   api.use("random");
   api.use("sanjo:jasmine@0.21.0");
   api.use("velocity:html-reporter@0.9.1");
@@ -174,8 +173,9 @@ Package.onTest(function (api) {
   api.use("accounts-password");
 
   // reaction core
-  api.use("reactioncommerce:reaction-collections@2.0.0");
-  api.use("reactioncommerce:reaction-factories@0.3.7");
+  api.use("reactioncommerce:reaction-checkout@1.0.0");
+  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-factories@0.4.0");
   api.use("reactioncommerce:core@0.12.0");
 
   // server integration tests
@@ -183,5 +183,4 @@ Package.onTest(function (api) {
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
   api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
-  api.export("faker", ["server"]);
 });

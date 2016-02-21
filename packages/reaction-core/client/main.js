@@ -21,12 +21,9 @@ _.extend(ReactionCore, {
 
         if (shop) {
           self.shopId = shop._id;
-
+          self.shopName = shop.name;
           // initialize local client Countries collection
           createCountryCollection(shop);
-
-          // initialize client routing
-          ReactionRouter.initPackageRoutes();
 
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes
@@ -132,6 +129,9 @@ _.extend(ReactionCore, {
   getShopId: function () {
     return this.shopId;
   },
+  getShopName: function () {
+    return this.shopName;
+  },
   allowGuestCheckout: function () {
     let allowGuest = true;
     let packageRegistry = ReactionCore.Collections.Packages.findOne({
@@ -200,13 +200,14 @@ _.extend(ReactionCore, {
     }
   },
   getRegistryForCurrentRoute: (provides = "dashboard") => {
+    ReactionRouter.watchPathChange();
+    const currentRouteName = ReactionRouter.current().route.name;
     const currentRoute = ReactionRouter.current();
-    const routeName = currentRoute.route.path.replace("/", "");
-
+    const template = currentRoute.route.options.template;
     // find registry entries for routeName
     let reactionApp = ReactionCore.Collections.Packages.findOne({
-      "registry.provides": provides,
-      "registry.route": routeName
+      "registry.name": currentRouteName,
+      "registry.provides": provides
     }, {
       enabled: 1,
       registry: 1,
@@ -214,15 +215,16 @@ _.extend(ReactionCore, {
       name: 1,
       label: 1
     });
+
     // valid application
     if (reactionApp) {
       let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.provides === provides && item.route === routeName;
+        return item.provides === provides && item.template === template;
       });
       return settingsData;
     }
-    ReactionCore.Log.debug("getRegistryForCurrentRoute not found", routeName, provides);
-    return null;
+    ReactionCore.Log.debug("getRegistryForCurrentRoute not found", template, provides);
+    return {};
   }
 
 });

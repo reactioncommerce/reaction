@@ -12,6 +12,7 @@ ReactionCore.registerPackage({
     label: "Routing",
     description: "Routing utilities",
     icon: "fa fa-share-square-o",
-    priority: 4
+    priority: 4,
+    container: "utilities"
   }]
 });

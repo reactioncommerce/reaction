@@ -25,14 +25,14 @@ ReactionCore.registerPackage({
     template: "reactionAnalytics",
     icon: "fa fa-bar-chart-o",
     priority: 3,
-    container: "dashboard",
+    container: "connect",
     permissions: [{
       label: "Reaction Analytics",
       permission: "dashboard/analytics"
     }]
   }, {
     label: "Analytics Settings",
-    route: "dashboard/analytics/settings",
+    route: "/dashboard/analytics/settings",
     provides: "settings",
     container: "dashboard",
     template: "reactionAnalyticsSettings"

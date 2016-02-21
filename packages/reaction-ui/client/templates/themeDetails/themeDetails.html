@@ -1,6 +1,7 @@
 <template name="uiThemeDetails">
   <div class="container-fluid-sm">
     <h3>Components</h3>
+    {{> button title="Publish Theme" onClick=publishTheme}}
     <div class="rui items">
       {{#each component in components}}
         <div class="rui item axis vertical">

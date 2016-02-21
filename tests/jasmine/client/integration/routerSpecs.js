@@ -6,15 +6,13 @@
 describe("Router", function () {
   describe("Index", function () {
     beforeEach(function (done) {
-      Router.go("/");
+      ReactionRouter.go("/");
       Tracker.afterFlush(done);
     });
 
-    beforeEach(waitForRouter);
-
     describe("meta data", function () {
       it("path should be root url", function () {
-        const route = Router.current().path;
+        const route = ReactionRouter.current().path;
         expect(route).toEqual("/");
       });
 

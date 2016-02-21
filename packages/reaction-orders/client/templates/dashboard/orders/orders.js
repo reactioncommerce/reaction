@@ -148,7 +148,7 @@ Template.ordersListItem.helpers({
 
 Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
-    // event.preventDefault();
+    event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
     // toggle detail views
     if (isActionViewOpen === false) {
@@ -167,13 +167,25 @@ Template.ordersListItem.events({
   },
   "click [data-event-action=startProcessingOrder]": function (event) {
     event.preventDefault();
+    const isActionViewOpen = ReactionCore.isActionViewOpen();
 
     if (this.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
     }
+    // toggle detail views
+    if (isActionViewOpen === false) {
+      ReactionCore.showActionView({
+        label: "Order Details",
+        data: this,
+        props: {
+          size: "large"
+        },
+        template: "coreOrderWorkflow"
+      });
+    }
     ReactionRouter.setQueryParams({
-      _id: this._id,
-      filter: "processing"
+      filter: "processing",
+      _id: this._id
     });
   }
 });

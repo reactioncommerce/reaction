@@ -57,8 +57,8 @@ Template.shopSettings.helpers({
     if (paymentMethods && _.isArray(paymentMethods)) {
       for (let method of paymentMethods) {
         options.push({
-          label: method.name,
-          value: method.name
+          label: method.packageName,
+          value: method.packageName
         });
       }
     }

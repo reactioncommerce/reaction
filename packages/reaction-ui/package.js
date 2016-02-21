@@ -7,14 +7,14 @@ Package.describe({
 
 Npm.depends({
   "classnames": "2.2.3",
-  "react-textarea-autosize": "3.3.0",
   "react-color": "1.3.6",
   "sortablejs": "1.4.2",
-  "react-dom": "0.14.7",
   "postcss": "5.0.14",
   "postcss-js": "0.1.1",
   "autoprefixer": "6.3.1",
-  "css-annotation": "0.6.0"
+  "css-annotation": "0.6.0",
+  "tether-drop": "1.4.2",
+  "tether-tooltip": "1.2.0"
   // "react-anything-sortable": "1.0.0"
 });
 
@@ -44,23 +44,22 @@ Package.onUse(function (api) {
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-schemas@2.0.0");
+  api.use("reactioncommerce:reaction-schemas@2.0.1");
 
   api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");
-
-  api.addFiles("client/styles/base.less", "client");
 
   api.addFiles("client/components/components.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
 
+  api.addFiles("client/components/cards/cardGroup.html", "client");
+  api.addFiles("client/components/cards/cardGroup.less", "client");
   api.addFiles("client/components/cards/cards.less", "client");
 
-  api.addFiles("client/components/items/item.jsx", "client");
   api.addFiles("client/components/sortable/sortable.jsx", "client");
-  api.addFiles("client/components/items/items.jsx", "client");
+
   api.addFiles("client/components/items/items.less", "client");
 
   api.addFiles("client/components/seperator/seperator.jsx", "client");
@@ -71,6 +70,9 @@ Package.onUse(function (api) {
 
   // api.addFiles("client/components/numericInput/numericInput.html", "client");
   // api.addFiles("client/components/numericInput/numericInput.js", "client");
+
+  api.addFiles("client/components/popover/popover.less", "client");
+  api.addFiles("client/components/tooltip/tooltip.less", "client");
 
   api.addFiles("client/components/textfield/textfield.html", "client");
   api.addFiles("client/components/textfield/textfield.less", "client");
@@ -89,15 +91,9 @@ Package.onUse(function (api) {
   api.addFiles("client/components/tags/tagItem.js", "client");
   api.addFiles("client/components/tags/tagList.html", "client");
   api.addFiles("client/components/tags/tagList.js", "client");
-
   api.addFiles("client/components/tags/tags.less", "client");
-  api.export("TagList");
 
-  // api.addFiles("client/styles/base.less", "client");
   api.addFiles("client/styles/variables.less", "client");
-  api.addFiles("client/styles/rtl.less", "client");
-  api.addFiles("client/styles/mixins.less", "client");
-
 
   api.addFiles("client/templates/dashboard/dashboard.html", "client");
   api.addFiles("client/templates/dashboard/dashboard.js", "client");
@@ -109,14 +105,14 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/themeDetails/themeDetails.html", "client");
   api.addFiles("client/templates/themeDetails/themeDetails.js", "client");
 
-
-
+  // Assets for theme
   api.addAssets("private/themes/button.css", "server");
 
   api.addFiles("server/processTheme.js", "server");
   api.addFiles("server/register.js", "server");
 
   // Exports
+  api.imply("cosmos:browserify");
   api.export("ReactionUI");
   api.export("Sortable");
 });

@@ -9,20 +9,22 @@ ReactionCore.registerPackage({
   registry: [
     {
       provides: "dashboard",
-      route: "dashboard/shipping",
+      route: "/dashboard/shipping",
+      name: "shipping",
       label: "Shipping",
       description: "Provide shipping rates",
       icon: "fa fa-truck",
       priority: 2,
-      group: "reaction-shipping",
+      container: "core",
+      workflow: "coreDashboardWorkflow",
       template: "shipping"
     },
     {
       label: "Shipping Settings",
-      route: "dashboard/shipping/settings",
+      route: "/dashboard/shipping/settings",
+      name: "shipping/settings",
       provides: "settings",
-      group: "reaction-shipping",
-      template: "shippingProviderTable"
+      template: "shippingSettings"
     },
     {
       template: "flatRateCheckoutShipping",

@@ -1,20 +1,42 @@
 
 <template name="button">
-  <button type="{{type}}" class="rui button btn btn-{{status}} {{className}}">
-    {{#if toggle}}
-      {{#if toggleOn}}
-        <i class="fa fa-{{onIcon}}"></i>
+  {{#Template.dynamic template=element data=elementProps}}
+    <span class="icon">
+      {{#if ../toggle}}
+        {{#if ../toggleOn}}
+          <i class="fa fa-{{../onIcon}}"></i>
+        {{else}}
+          <i class="fa fa-{{../icon}}"></i>
+        {{/if}}
       {{else}}
-        <i class="fa fa-{{icon}}"></i>
+        <i class="fa fa-{{../icon}}"></i>
       {{/if}}
-    {{else}}
-      <i class="fa fa-{{icon}}"></i>
-    {{/if}}
+    </span>
+    <span class="title">
+      {{#if i18nKeyTitle}}
+        {{i18n i18nKeyTitle title}}
+      {{else}}
+        {{title}}
+      {{/if}}
+    </span>
+  {{/Template.dynamic}}
+</template>
 
-    {{#if i18nTitle}}
-      {{i18n i18nTitle title}}
-    {{else}}
-      {{title}}
-    {{/if}}
+<template name="uiButtonElement">
+  <button
+    type="{{type}}"
+    class="rui button btn btn-{{status}} {{className}}"
+    data-event-action="{{title}}">
+    {{> Template.contentBlock}}
   </button>
+</template>
+
+<template name="uiLinkElement">
+  <a
+    href="{{href}}"
+    class="rui button btn btn-{{status}} {{className}}"
+    data-event-action="{{title}}"
+  >
+    {{> Template.contentBlock}}
+  </a>
 </template>

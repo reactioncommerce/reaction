@@ -1,3 +1,5 @@
+const Drop = ReactionUI.Lib.Drop;
+
 Template.coreAdminLayout.onCreated(() => {
   const control = Template.instance();
 
@@ -18,8 +20,6 @@ Template.coreAdminLayout.onCreated(() => {
       let settingsData = _.find(reactionApp.registry, function (item) {
         return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
       });
-
-      // return settingsData;
       if (settingsData) {
         if (ReactionCore.hasPermission(settingsData.route, Meteor.userId())) {
           control.settings.set(settingsData);
@@ -35,7 +35,7 @@ Template.coreAdminLayout.onCreated(() => {
   });
 });
 
-Template.coreAdminLayout.onRendered(() => {
+Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
 });
 
@@ -50,13 +50,6 @@ Template.coreAdminLayout.helpers({
 
   settings: function () {
     return Template.instance().settings.get();
-  },
-
-  isDashboard(route) {
-    if (route === "dashboard") {
-      return true;
-    }
-    return false;
   },
 
   adminControlsClassname: function () {
@@ -102,6 +95,22 @@ Template.coreAdminLayout.events({
     }
   },
 
+  "click [data-event-action=addItem]"() {
+    if (!this.dropInstance) {
+      this.dropInstance = new Drop({
+        target: event.target,
+        content: "",
+        constrainToWindow: true,
+        classes: "drop-theme-arrows",
+        position: "right center"
+      });
+
+      Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);
+    }
+
+    this.dropInstance.open();
+  },
+
   "click [data-event-action=showPackageSettings]"() {
     ReactionCore.showActionView(this);
   },
@@ -112,34 +121,29 @@ Template.coreAdminLayout.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .user-accounts-dropdown-apps a, click .admin-controls-quicklinks button"(event) {
-    if (this.route === "products/createProduct") {
+  "click .admin-controls-quicklinks a, click .admin-controls-quicklinks button"(event) {
+    if (this.name === "createProduct") {
       event.preventDefault();
       event.stopPropagation();
 
-      Meteor.call("products/createProduct", (error, productId) => {
-        let currentTag;
-        let currentTagId;
+      if (!this.dropInstance) {
+        this.dropInstance = new Drop({
+          target: event.target,
+          content: "",
+          constrainToWindow: true,
+          classes: "drop-theme-arrows",
+          position: "right center"
+        });
 
-        if (error) {
-          throw new Meteor.Error("createProduct error", error);
-        } else if (productId) {
-          currentTagId = Session.get("currentTag");
-          currentTag = ReactionCore.Collections.Tags.findOne(currentTagId);
-          if (currentTag) {
-            Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-          }
-          // go to new product
-          ReactionRouter.go("product", {
-            handle: productId
-          });
-        }
-      });
+        Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);
+      }
+
+      this.dropInstance.open();
     } else if (this.route) {
       event.preventDefault();
       event.stopPropagation();
 
-      ReactionRouter.go(ReactionRouter.pathFor(this.route));
+      ReactionRouter.go(this.name);
     }
   }
 });

@@ -1,5 +1,5 @@
 /**
- * isCurrentLayout
+ * selectLayout
  * @param {Object} layout - element of shops.layout array
  * @param {Object} setLayout - layout
  * @param {Object} setWorkflow - workflow
@@ -17,8 +17,8 @@ selectLayout = (layout, setLayout, setWorkflow) => {
  * renderLayout
  * sets and returns reaction layout structure
  * @param {Object} context - this router context
- * @param {String} layout - string of shop.layout.layout (defaults to coreLayout)
- * @param {String} workflow - string of shop.layout.workflow (defaults to coreLayout)
+ * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
+ * @param {String} options.workflow - string of shop.layout.workflow (defaults to coreLayout)
  * @param {String} options - layout.structure overrides
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
@@ -34,7 +34,7 @@ renderLayout = (options = {}) => {
         // oops this layout wasn't found. render notFound
         if (!newLayout) {
           ReactionCore.Log.warn("Failed to render layout", layout, workflow);
-          BlazeLayout.render("notFound");
+          // BlazeLayout.render("notFound");
         } else {
           const layoutToRender = Object.assign({}, newLayout.structure, options);
           BlazeLayout.render(layout, layoutToRender);

@@ -13,7 +13,7 @@ Meteor.methods({
    * @param {String} workflow - name of workflow
    * @param {String} newWorkflowStatus - name of the next workflow stage
    * @param {String} [cartId] - cart._id
-   * @return {Array|Boolean|Number}
+   * @return {Array|Boolean|Number} return
    */
   "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus, cartId) {
     check(workflow, String);
@@ -26,27 +26,20 @@ Meteor.methods({
     let nextWorkflowStep = {
       template: ""
     };
-    const {
-      Cart,
-      Packages,
-      Shops
-    } = ReactionCore.Collections;
-    const {
-      Log
-    } = ReactionCore;
+    const { Cart, Packages, Shops } = ReactionCore.Collections;
+    const { Log } = ReactionCore;
 
     // This method could be called indirectly from publication method in a time
     // when `this.userId` will be null, that's why we have a third argument in
     // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
     // here.
     if (typeof cartId === "string") {
-      currentCart = ReactionCore.Collections.Cart.findOne(cartId);
+      currentCart = Cart.findOne(cartId);
     } else {
-      currentCart = ReactionCore.Collections.Cart.findOne({
-        userId: Meteor.userId()
+      currentCart = Cart.findOne({
+        userId: this.userId
       });
     }
-
     // exit if a cart doesn't exist.
     if (!currentCart) return [];
     // TODO doc this
@@ -78,14 +71,15 @@ Meteor.methods({
           // check permissions so you don't have to on template. For a case, when
           // this method calls indirectly from publication method, we do this
           // check which is looks not pretty secure
+          let hasPermission;
           if (typeof Meteor.userId() !== "string") {
-            if (ReactionCore.hasPermission(layout.audience, currentCart.userId  && !layout.layout)) {
-              defaultPackageWorkflows.push(layout);
-            }
+            hasPermission = Roles.userIsInRole(currentCart.userId, layout.audience, ReactionCore.getShopId());
           } else {
-            if (ReactionCore.hasPermission(layout.audience) && !layout.layout) {
-              defaultPackageWorkflows.push(layout);
-            }
+            hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, ReactionCore.getShopId());
+          }
+
+          if (hasPermission  && !layout.layout) {
+            defaultPackageWorkflows.push(layout);
           }
         });
       }
@@ -118,8 +112,7 @@ Meteor.methods({
 
         Log.debug("nextWorkflowStepIndex", nextWorkflowStepIndex);
         // set the nextWorkflowStep as the next workflow object from registry
-        nextWorkflowStep = defaultPackageWorkflows[
-          nextWorkflowStepIndex];
+        nextWorkflowStep = defaultPackageWorkflows[nextWorkflowStepIndex];
 
         Log.debug("setting nextWorkflowStep", nextWorkflowStep.template);
       }
@@ -137,7 +130,7 @@ Meteor.methods({
     Log.debug("newWorkflowStatus: ", newWorkflowStatus);
     Log.debug("current cartId: ", currentCart._id);
     Log.debug("currentWorkflow: ", currentCart.workflow.workflow);
-    Log.debug("nextWorkflowStep: ", nextWorkflowStep.template);
+    Log.debug("nextWorkflowStep: ", nextWorkflowStep.template || defaultPackageWorkflows[0].template);
     Log.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
     Log.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
     Log.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
@@ -147,16 +140,17 @@ Meteor.methods({
     // this status/template is how we know
     // where you are in the flow and configures `gotoNextWorkflowStep`
 
-    if (!gotoNextWorkflowStep && currentWorkflowStatus !==
-      newWorkflowStatus) {
+    if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus) {
       Log.debug(
-        `######## Condition One #########: initialise the ${workflow}: ${defaultPackageWorkflows[0].template}`
+        `######## Condition One #########: initialise the ${currentCart._id} ${workflow}: ${defaultPackageWorkflows[0].template}`
       );
-      return Cart.update(currentCart._id, {
+      let result = Cart.update(currentCart._id, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
         }
       });
+      Log.debug(result);
+      return result;
     }
 
     // Condition Two
@@ -228,9 +222,7 @@ Meteor.methods({
     if (!cart || typeof cart.workflow !== "object") return false;
     if (typeof cart.workflow.workflow !== "object") return false;
 
-    const {
-      workflow
-    } = cart.workflow;
+    const { workflow } = cart.workflow;
     // get index of `newWorkflowStatus`
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow

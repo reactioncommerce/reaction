@@ -14,48 +14,38 @@
  */
 
 /*
- * Assign to some local letiables to keep code
- * short and sweet
+ * Assign to some local short names to keep code short and sweet
  */
-let Accounts = ReactionCore.Collections.Accounts;
-
-let Cart = ReactionCore.Collections.Cart;
-
-let Discounts = ReactionCore.Collections.Discounts;
-
-let Jobs = ReactionCore.Collections.Jobs;
-
-let Media = ReactionCore.Collections.Media;
-
-let Orders = ReactionCore.Collections.Orders;
-
-let Packages = ReactionCore.Collections.Packages;
-
-let Products = ReactionCore.Collections.Products;
-
-let Shipping = ReactionCore.Collections.Shipping;
-
-let Shops = ReactionCore.Collections.Shops;
-
-let Tags = ReactionCore.Collections.Tags;
-
-let Taxes = ReactionCore.Collections.Taxes;
-
-let Templates = ReactionCore.Collections.Templates;
-
-let Translations = ReactionCore.Collections.Translations;
+const {
+  Accounts,
+  Cart,
+  Packages,
+  Discounts,
+  Jobs,
+  Media,
+  Orders,
+  Products,
+  Shipping,
+  Shops,
+  Tags,
+  Taxes,
+  Templates,
+  Translations
+} = ReactionCore.Collections;
 
 /*
  * Define some additional rule chain methods
  */
-
+// use this rule for collections other than Shops
+// matches this.shopId
 Security.defineMethod("ifShopIdMatches", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
     return doc.shopId !== ReactionCore.getShopId();
   }
 });
-
+// this rule is for the Shops collection
+// use ifShopIdMatches for match on this._id
 Security.defineMethod("ifShopIdMatchesThisId", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
@@ -73,8 +63,7 @@ Security.defineMethod("ifFileBelongsToShop", {
 Security.defineMethod("ifUserIdMatches", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
-    return userId && doc.userId && doc.userId !== userId || doc.userId &&
-      !userId;
+    return userId && doc.userId && doc.userId !== userId || doc.userId && !userId;
   }
 });
 
@@ -146,14 +135,14 @@ Shops.permit(["update", "remove"]).ifHasRole({
 Products.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["createProduct"],
   group: ReactionCore.getShopId()
-}).ifShopIdMatchesThisId().apply();
+}).ifShopIdMatches().apply();
 
 /*
  * Users with the "owner" role may remove orders for their shop
  */
 
 Orders.permit("remove").ifHasRole({
-  role: "owner",
+  role: ["admin", "owner"],
   group: ReactionCore.getShopId()
 }).ifShopIdMatches().exceptProps(["shopId"]).apply();
 
@@ -167,7 +156,7 @@ Orders.permit("remove").ifHasRole({
 Cart.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["anonymous", "guest"],
   group: ReactionCore.getShopId()
-}).ifShopIdMatchesThisId().ifUserIdMatches().ifSessionIdMatches().apply();
+}).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().apply();
 
 /*
  * Users may update their own account

@@ -7,16 +7,19 @@ ReactionCore.registerPackage({
     name: "Orders"
   },
   registry: [{
-    route: "dashboard/orders",
+    route: "/dashboard/orders",
     provides: "dashboard",
+    workflow: "coreOrderWorkflow",
+    name: "orders",
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
     priority: 1,
-    container: "orders",
+    container: "core",
     template: "orders"
   }, {
-    route: "dashboard/orders",
+    route: "/dashboard/orders",
+    name: "dashboard/orders",
     provides: "shortcut",
     label: "Orders",
     description: "Fulfill your orders",

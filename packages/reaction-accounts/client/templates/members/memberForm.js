@@ -6,11 +6,11 @@ Template.memberForm.events({
   "submit form": function (event, template) {
     event.preventDefault();
 
-    let newMemberEmail = template.$('input[name="name"]').val();
-    let newMemberName = template.$('input[name="email"]').val();
+    let newMemberEmail = template.$('input[name="email"]').val();
+    let newMemberName = template.$('input[name="name"]').val();
 
     return Meteor.call("accounts/inviteShopMember", ReactionCore.getShopId(), newMemberEmail, newMemberName, function (error) {
-      if (error !== null) {
+      if (error) {
         if (error.reason !== "") {
           Alerts.toast(error, "error", {
             html: true,

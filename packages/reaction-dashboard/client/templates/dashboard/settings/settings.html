@@ -44,17 +44,14 @@
 <template name="settingsSidebarItem">
 
   {{#if enabled}}
-
-      {{#each reactionApps provides="settings" name=name container=container}}
-        {{#if hasPermission route}}
-        <li class="{{active route}}">
-
-          <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}" href="{{route}}">
-            <i class="{{../icon}}"></i> {{label}}
-          </a>
-          </li>
-        {{/if}}
-      {{/each}}
+  {{packageName}}
+    {{#each reactionApps provides="settings" name=packageName container=container}}
+      <li class="{{active name}}">
+        <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}" href="{{name}}">
+          <i class="{{../icon}}"></i> {{label}}
+        </a>
+      </li>
+    {{/each}}
   {{/if}}
 
 </template>

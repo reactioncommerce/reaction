@@ -5,11 +5,11 @@
 
 describe("Tags", function () {
   beforeAll(function (done) {
-    Router.go("/product/tag/products");
+    ReactionRouter.go("tag", {
+      slug: "products"
+    });
     Tracker.afterFlush(done);
   });
-
-  beforeEach(waitForRouter);
 
   it("loads navigation header", function () {
     expect($(".navbar-tags")).toBeInDOM();
@@ -27,7 +27,7 @@ describe("Tags", function () {
     $(tagLink).trigger("click");
     expect("click").toHaveBeenTriggeredOn(tagLink);
 
-    let route = Router.current().path;
+    let route = ReactionRouter.current().path;
     expect(route).toEqual(tag);
     done();
   });

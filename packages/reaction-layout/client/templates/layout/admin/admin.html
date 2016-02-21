@@ -20,7 +20,6 @@
       {{> Template.dynamic template=template}}
       <!-- end template region -->
 
-
       <footer class="reaction-navigation-footer footer-default">
         <!-- begin layoutFooter -->
         {{> Template.dynamic template=layoutFooter}}
@@ -53,34 +52,34 @@
 
     <nav class="admin-controls-quicklinks">
       <!-- begin provides shortcut -->
-      {{#each reactionApps provides='shortcut' enabled=true}}
-        {{#if hasPermission route}}
-          <button id="{{route}}" title="{{label}}" class="btn btn-default {{active route}}">
-            <div class="contents">
-              <div class="icon">
-                {{#if isDashboard route}}
-                  <img src="/resources/reaction-logo.svg" width="32">
-                {{else}}
-                  <i class="{{icon}}"></i>
-                {{/if}}
-              </div>
-              <div class="icon-text">
-                {{label}}
-              </div>
+      {{#each reactionApps provides='shortcut' enabled=true container=undefined}}
+        <a href="{{route}}" title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active name}}">
+          <div class="contents">
+            <div class="icon">
+              <i class="{{icon}}"></i>
             </div>
-          </button>
-        {{/if}}
+            <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
+              {{label}}
+            </div>
+          </div>
+        </a>
       {{/each}}
       <!-- end provides shortcut -->
-      <button data-event-action="toggleEditMode">
-        <div class="contents">
-          <div class="icon">
-            <i class="fa fa-gear"></i>
-          </div>
-          <div class="icon-text">
-            Edit Mode
-          </div>
+      <button data-event-action="addItem">
+        <div class="icon">
+          <i class="fa fa-plus"></i>
         </div>
+        <span class="icon-text">
+          Add
+        </span>
+      </button>
+      <button data-event-action="toggleEditMode">
+        <div class="icon">
+          <i class="fa fa-gear"></i>
+        </div>
+        <span class="icon-text" data-i18n="app.editMode">
+          Edit Mode
+        </span>
       </button>
     </nav>
 
@@ -91,11 +90,11 @@
 
       {{#if settings}}
         {{#with settings}}
-          <button id="{{route}}" title="{{label}}" data-event-action="showPackageSettings">
+          <button id="{{route}}" title="{{i18n i18nKeyLabel label}}" data-event-action="showPackageSettings">
             <i class="fa fa-gear"></i>
-            <span class="icon-text">
-                  {{label}}
-                </span>
+            <span class="icon-text" data-i18n="{{i18nKeyLabel}}">
+              {{label}}
+            </span>
           </button>
         {{/with}}
       {{/if}}

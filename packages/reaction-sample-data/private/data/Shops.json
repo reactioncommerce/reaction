@@ -3052,9 +3052,23 @@
     "isShippingDefault": true,
     "isBillingDefault": true
   }],
-  "defaultRoles": [
+  "defaultVisitorRole": [
+    "anonymous",
     "guest",
-    "account/profile"
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
+  ],
+  "defaultRoles": [
+    "account/profile",
+    "guest",
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
   ],
   "layout": [{
     "layout": "coreLayout",
@@ -3145,6 +3159,22 @@
       "dashboardHeader": "dashboardHeader",
       "dashboardHeaderControls": "",
       "dashboardControls": "accountsDashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "coreLayout",
+    "workflow": "coreUIWorkflow",
+    "collection": "Themes",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "uiDashboard",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "",
+      "notFound": "notFound",
+      "dashboardHeader": "dashboardHeader",
+      "dashboardHeaderControls": "",
+      "dashboardControls": "",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
@@ -6215,9 +6245,23 @@
     "isShippingDefault": true,
     "isBillingDefault": true
   }],
-  "defaultRoles": [
+  "defaultVisitorRole": [
+    "anonymous",
     "guest",
-    "account/profile"
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
+  ],
+  "defaultRoles": [
+    "account/profile",
+    "guest",
+    "product",
+    "tag",
+    "index",
+    "cart/checkout",
+    "cart/completed"
   ],
   "layout": [{
     "layout": "coreLayout",
@@ -6306,6 +6350,22 @@
       "dashboardHeader": "dashboardHeader",
       "dashboardHeaderControls": "",
       "dashboardControls": "accountsDashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "coreLayout",
+    "workflow": "coreUIWorkflow",
+    "collection": "Themes",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "uiDashboard",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "",
+      "notFound": "notFound",
+      "dashboardHeader": "dashboardHeader",
+      "dashboardHeaderControls": "",
+      "dashboardControls": "",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {

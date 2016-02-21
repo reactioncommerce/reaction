@@ -680,7 +680,7 @@ Meteor.methods({
   "products/createProduct": function (product) {
     check(product, Match.Optional(Object));
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!ReactionCore.hasPermission("createProduct", this.userId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();

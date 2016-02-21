@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Collections - core collections + hooks, cfs, jobs",
   name: "reactioncommerce:reaction-collections",
   documentation: "README.md",
-  version: "2.0.0"
+  version: "2.0.1"
 });
 
 Package.onUse(function (api) {
@@ -13,9 +13,10 @@ Package.onUse(function (api) {
   api.use("check");
   api.use("tracker");
   api.use("session");
-  api.use("amplify");
+  api.use("ejson");
 
-  api.use("reactioncommerce:reaction-schemas@2.0.0");
+  api.use("amplify@1.0.0");
+  api.use("reactioncommerce:reaction-schemas@2.0.1");
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");
@@ -46,6 +47,9 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/sessions.js", "server");
   api.addFiles("server/publications/shops.js", "server");
   api.addFiles("server/publications/cart.js", "server");
+  api.addFiles("server/publications/discounts.js", "server");
+  api.addFiles("server/publications/taxes.js", "server");
+  api.addFiles("server/publications/shipping.js", "server");
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
@@ -74,25 +78,26 @@ Package.onUse(function (api) {
   api.imply("tmeasday:publish-counts");
   api.imply("alanning:roles");
   api.imply("meteorhacks:subs-manager");
-  // api.imply("amplify");
+  api.imply("reactioncommerce:reaction-schemas");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");
   api.export("ReactionSubscriptions");
-  api.export("getSlug");
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.21.0");
-  api.use("ecmascript");
-  api.use("random");
+  api.use("meteor-base");
   api.use("underscore");
+  api.use("random");
+  api.use("sanjo:jasmine@0.21.0");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
+  api.use("accounts-base");
+  api.use("accounts-password");
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-collections");
-  api.use("reactioncommerce:reaction-factories");
+  api.use("reactioncommerce:reaction-factories@0.4.0");
 
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
 });

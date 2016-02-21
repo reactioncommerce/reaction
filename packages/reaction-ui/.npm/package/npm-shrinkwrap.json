@@ -152,11 +152,24 @@
     "react-dom": {
       "version": "0.14.7"
     },
-    "react-textarea-autosize": {
-      "version": "3.3.0"
-    },
     "sortablejs": {
       "version": "1.4.2"
+    },
+    "tether-drop": {
+      "version": "1.4.2",
+      "dependencies": {
+        "tether": {
+          "version": "1.1.1"
+        }
+      }
+    },
+    "tether-tooltip": {
+      "version": "1.2.0",
+      "dependencies": {
+        "tether": {
+          "version": "1.1.1"
+        }
+      }
     }
   }
 }

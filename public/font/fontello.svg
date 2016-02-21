@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2016 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="reaction-logo" unicode="&#xe800;" d="M190 193c6 0 13-1 18-4l67-41c8-4 19-3 26 2l212 163c5 3 11 6 18 6 7 1 14-1 19-4l51-33c7-4 19-3 25 2l373 303 0 42-374-304c-5-4-12-6-19-7-7 0-14 1-19 5l-52 33c-7 4-18 3-25-2l-211-162c-5-4-11-6-18-6-7-1-14 0-19 3l-67 41c-7 4-19 3-26-2l-158-123c-3-2-7-4-11-5l0-46 171 132c5 4 12 6 19 7m-10 87c7 1 14-1 19-4l67-40c8-4 19-3 26 2l211 162c5 4 12 7 19 7 7 0 14-1 19-4l51-33c7-4 18-4 25 2l377 306c1 1 3 2 5 3l0 44-383-312c-5-4-12-6-19-7-7 0-14 1-19 4l-52 33c-7 5-19 4-26-1l-210-162c-5-4-12-6-18-7-7 0-14 1-19 4l-67 40c-8 5-19 4-26-1l-159-123c0 0 0 0-1-1l0-43 162 125c5 4 11 6 18 6m-27 82c5 3 11 6 18 6 7 1 14-1 19-4l67-40c7-5 19-4 26 2l211 162c5 4 12 6 19 7 7 0 14-1 18-5l52-32c7-5 18-4 25 1l377 307c3 3 8 5 14 6l0 77-999 0 0-606 153 119m481-124c-5-4-12-7-19-7-7-1-14 1-19 4l-52 33c-7 4-18 4-25-2l-211-162c-5-3-11-6-18-6-7-1-14 1-19 4l-67 40c-7 4-19 4-26-2l-158-122c-5-4-11-6-17-7-1 0-2 0-3 0l0-161 999 0 0 684-365-296" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

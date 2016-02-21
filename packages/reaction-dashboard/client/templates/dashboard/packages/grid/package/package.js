@@ -2,11 +2,19 @@
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
-  showDashboard() {
-    let data = Template.currentData();
-    return () => {
-      ReactionRouter.go(ReactionRouter.pathFor(data.route));
+  showDashboardButtonProps(pkg) {
+    return {
+      icon: "angle-right",
+      onClick() {
+        const route = pkg.name || pkg.route;
+        ReactionRouter.go(route);
+      }
     };
+  },
+  showPackageManagement(pkg) {
+    if (pkg.name && pkg.route && pkg.template) {
+      return "showPackageManagement";
+    }
   }
 });
 
@@ -26,8 +34,9 @@ Template.gridPackage.events({
         Alerts.toast(self.label + i18n.t("gridPackage.pkgEnabled"), "error", {
           type: "pkg-enabled-" + self.name
         });
-        if (self.route) {
-          return ReactionRouter.go(ReactionRouter.pathFor(self.route));
+        if (self.name || self.route) {
+          const route = self.name || self.route;
+          return ReactionRouter.go(route);
         }
       } else if (error) {
         return Alerts.toast(self.label + i18n.t("gridPackage.pkgDisabled"), "warning");
@@ -61,16 +70,15 @@ Template.gridPackage.events({
       });
   },
 
-  "click [data-event-action=showPackageManagement]": function (event) {
+  "click [data-event-action=showPackageManagement]": function (event, instance) {
     event.preventDefault();
     event.stopPropagation();
-    if (this.route) {
-      if (this.route) {
-        // we're not using the route, but (pkg) name + provides
-        // which we've defined as the true route name
-        ReactionRouter.go(ReactionRouter.pathFor(this.route));
-      } else if (ReactionCore.hasPermission(this.route, Meteor.userId())) {
-        ReactionCore.showActionView(this);
+
+    const packageData = instance.data.package || {};
+    const route = ReactionRouter.path(packageData.name || packageData.route);
+    if (route) {
+      if (ReactionCore.hasPermission(route, Meteor.userId())) {
+        ReactionRouter.go(route);
       }
     }
   },

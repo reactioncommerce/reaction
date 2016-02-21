@@ -7,12 +7,14 @@ ReactionCore.registerPackage({
     name: "Checkout"
   },
   registry: [{
-    route: "cart/checkout",
+    route: "/cart/checkout",
+    name: "cart/checkout",
     workflow: "coreCartWorkflow",
     label: "Checkout",
     template: "cartCheckout"
   }, {
-    route: "cart/completed/:_id?",
+    route: "/cart/completed/:_id?",
+    name: "cart/completed",
     template: "cartCompleted",
     workflow: "coreCartWorkflow"
   }],

@@ -36,16 +36,14 @@
     {{> userAccountsDropdown}}
     <!--administrative shortcut icons -->
     {{#each reactionApps provides="shortcut" enabled=true}}
-      {{#if hasPermission route}}
       <li class="dropdown-apps-icon">
-        <a href={{pathFor route}} id="dropdown-apps-{{route}}" title="{{label}}">
+        <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
           <i class="{{icon}}"></i>
           <span class="icon-text">
             {{label}}
           </span>
         </a>
       </li>
-      {{/if}}
     {{/each}}
   </ul>
 </template>
@@ -53,16 +51,14 @@
 <template name="userAccountsDropdown">
   <!--user account shortcut icons -->
   {{#each reactionApps provides="userAccountDropdown" enabled=true}}
-    {{#if hasPermission route}}
     <li class="dropdown-apps-icon">
-      <a id="{{route}}" title="{{label}}">
+      <a id="user-dropdown-apps-{{name}}" title="{{label}}">
         <i class="{{icon}}"></i>
         <span class="icon-text">
           {{label}}
         </span>
       </a>
     </li>
-    {{/if}}
   {{else}}
   <li class="dropdown-apps-icon">
     <i class="fa fa-user-secret"></i>

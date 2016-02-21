@@ -61,8 +61,7 @@ describe("core product methods", function () {
       });
 
     it(
-      "number of `child variants` between source and cloned `variants` " +
-      "should be equal", done => {
+      "number of `child variants` between source and cloned `variants` " + "should be equal", done => {
         let product;
         product = Factory.create("product");
         spyOn(ReactionCore, "hasPermission").and.returnValue(true);
@@ -80,8 +79,7 @@ describe("core product methods", function () {
       });
 
     it(
-      "`variant` and `child variants` media should be intherited when " +
-      "cloning", done => {
+      "`variant` and `child variants` media should be intherited when " + "cloning", done => {
         return done();
       });
   });
@@ -325,12 +323,9 @@ describe("core product methods", function () {
       let product;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       product = Factory.create("product");
-      expect(ReactionCore.Collections.Products.find().count()).toEqual(
-        1);
-      expect(Meteor.call("products/deleteProduct", product._id)).toBe(
-        true);
-      expect(ReactionCore.Collections.Products.find().count()).toEqual(
-        0);
+      expect(ReactionCore.Collections.Products.find().count()).toEqual(1);
+      expect(Meteor.call("products/deleteProduct", product._id)).toBe(1);
+      expect(ReactionCore.Collections.Products.find().count()).toEqual(0);
       return done();
     });
   });
@@ -379,52 +374,52 @@ describe("core product methods", function () {
       "product should be cloned with all variants and child variants with equal data," +
       "but not the same `_id`s",
       done => {
-         let product;
-         spyOn(Roles, "userIsInRole").and.returnValue(true);
-         product = Factory.create("product");
-         for (let i = 0; i < 2; i++) {
-           Meteor.call("products/cloneVariant", product._id, product.variants[0]._id, product.variants[0]._id);
-         }
-         product = ReactionCore.Collections.Products.findOne(product._id);
-         expect(product.variants.length).toEqual(3);
-         const variant = Object.assign({}, product.variants[0], {
-           title: "test variant 1",
-           price: 7
-         });
-         const optionOne = Object.assign({}, product.variants[1], {
-           title: "test option 1",
-           price: 7,
-           inventoryQuantity: 10
-         });
-         const optionTwo = Object.assign({}, product.variants[2], {
-           title: "test option 2",
-           price: 17,
-           inventoryQuantity: 20
-         });
-         Meteor.call("products/updateVariant", variant);
-         Meteor.call("products/updateVariant", optionOne);
-         Meteor.call("products/updateVariant", optionTwo);
-         Meteor.call("products/cloneProduct", product);
-         const productCloned = ReactionCore.Collections.Products.find({
-           _id: {
-             $ne: product._id
-           }
-         }).fetch()[0];
-         expect(productCloned.variants[0].title).toEqual(product.variants[0].title);
-         expect(productCloned.variants[0].price).toEqual(product.variants[0].price);
-         expect(productCloned.variants[0]._id).not.toEqual(product.variants[0]._id);
+        let product;
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        product = Factory.create("product");
+        for (let i = 0; i < 2; i++) {
+          Meteor.call("products/cloneVariant", product._id, product.variants[0]._id, product.variants[0]._id);
+        }
+        product = ReactionCore.Collections.Products.findOne(product._id);
+        expect(product.variants.length).toEqual(3);
+        const variant = Object.assign({}, product.variants[0], {
+          title: "test variant 1",
+          price: 7
+        });
+        const optionOne = Object.assign({}, product.variants[1], {
+          title: "test option 1",
+          price: 7,
+          inventoryQuantity: 10
+        });
+        const optionTwo = Object.assign({}, product.variants[2], {
+          title: "test option 2",
+          price: 17,
+          inventoryQuantity: 20
+        });
+        Meteor.call("products/updateVariant", variant);
+        Meteor.call("products/updateVariant", optionOne);
+        Meteor.call("products/updateVariant", optionTwo);
+        Meteor.call("products/cloneProduct", product);
+        const productCloned = ReactionCore.Collections.Products.find({
+          _id: {
+            $ne: product._id
+          }
+        }).fetch()[0];
+        expect(productCloned.variants[0].title).toEqual(product.variants[0].title);
+        expect(productCloned.variants[0].price).toEqual(product.variants[0].price);
+        expect(productCloned.variants[0]._id).not.toEqual(product.variants[0]._id);
 
-         expect(productCloned.variants[1].title).toEqual(product.variants[1].title);
-         expect(productCloned.variants[1].price).toEqual(product.variants[1].price);
-         expect(productCloned.variants[1].inventoryQuantity).toEqual(product.variants[1].inventoryQuantity);
-         expect(productCloned.variants[1]._id).not.toEqual(product.variants[1]._id);
-         expect(productCloned.variants[1].parentId).toEqual(productCloned.variants[0]._id);
+        expect(productCloned.variants[1].title).toEqual(product.variants[1].title);
+        expect(productCloned.variants[1].price).toEqual(product.variants[1].price);
+        expect(productCloned.variants[1].inventoryQuantity).toEqual(product.variants[1].inventoryQuantity);
+        expect(productCloned.variants[1]._id).not.toEqual(product.variants[1]._id);
+        expect(productCloned.variants[1].parentId).toEqual(productCloned.variants[0]._id);
 
-         expect(productCloned.variants[2].title).toEqual(product.variants[2].title);
-         expect(productCloned.variants[2].price).toEqual(product.variants[2].price);
-         expect(productCloned.variants[2].inventoryQuantity).toEqual(product.variants[2].inventoryQuantity);
-         expect(productCloned.variants[2]._id).not.toEqual(product.variants[2]._id);
-         expect(productCloned.variants[2].parentId).toEqual(productCloned.variants[0]._id);
+        expect(productCloned.variants[2].title).toEqual(product.variants[2].title);
+        expect(productCloned.variants[2].price).toEqual(product.variants[2].price);
+        expect(productCloned.variants[2].inventoryQuantity).toEqual(product.variants[2].inventoryQuantity);
+        expect(productCloned.variants[2]._id).not.toEqual(product.variants[2]._id);
+        expect(productCloned.variants[2].parentId).toEqual(productCloned.variants[0]._id);
 
         return done();
       });

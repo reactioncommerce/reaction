@@ -1,7 +1,9 @@
 <template name="accountsDashboardControls">
-  <button type="button" class="btn btn-default" data-event-action="addShopMember">
-    <i class="fa fa-plus"></i>
-    <span data-i18n="accountsDashboardControls.addMember">Add Member</span>
+  <button type="button" class="btn btn-default" data-event-action="addShopMember" title="{{i18n 'accounts.addMember'}}">
+    <div class="contents">
+      <div class="icon"><i class="fa fa-plus"></i></div>
+      <div class="icon-text" data-i18n="accounts.addShopMember">Add Member</div>
+    </div>
   </button>
 </template>
 
@@ -12,7 +14,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
-            <span data-i18n="accountsDashboardControls.shopMembers">Shop Members</span>
+            <span data-i18n="accounts.shopMembers">Shop Members</span>
           </h3>
         </div>
 
@@ -30,7 +32,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
-            <span data-i18n="accountsDashboardControls.guests">Guests</span>
+            <span data-i18n="accounts.guests">Guests</span>
           </h3>
         </div>
 
@@ -69,14 +71,15 @@
             <div class="form-group ">
               <label for="{{name}}SettingsClientId">{{field.label}}</label>
 
-              <div class="{{#if condition field.property 'eq' 'secret'}}form-inline{{/if}}">
+              <div class="{{#if condition field.property "eq" "secret"}}form-inline{{/if}}">
                 <input
                   class="form-control"
                   id="{{service.name}}SettingsClientId"
                   type="{{field.type}}"
                   name="{{field.property}}"
                   value="{{valueForField field.property service}}">
-                {{#if condition field.property 'eq' 'secret'}}
+
+                {{#if condition field.property "eq" "secret"}}
                   <button class="btn btn-default" type="button" data-event-action="showSecret">Show</button>
                 {{/if}}
               </div>

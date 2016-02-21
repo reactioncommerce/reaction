@@ -118,7 +118,7 @@ ReactionProduct.maybeDeleteProduct = function (productOrArray) {
         });
         throw new Meteor.Error("Error deleting " + title, error);
       } else {
-        ReactionRouter.go("index");
+        ReactionRouter.go("/");
         Alerts.toast(i18n.t("productDetail.deletedAlert") + " " + title, "info");
       }
     });

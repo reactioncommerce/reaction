@@ -27,19 +27,24 @@ function getShipmentMethod(currentCart) {
   return undefined;
 }
 
+Template.coreCheckoutShipping.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("Shipping");
+  });
+});
+
 Template.coreCheckoutShipping.helpers({
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: function () {
     const cart = ReactionCore.Collections.Cart.findOne();
-
     return cartShippingMethods(cart);
   },
 
   // helper to make sure there are some shipping providers
   shippingConfigured: function () {
-    const shipSub = Meteor.subscribe("Shipping");
-    if (shipSub.ready()) {
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
       return ReactionCore.Collections.Shipping.find({
         "methods.enabled": true
       }).count();

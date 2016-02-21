@@ -9,16 +9,6 @@
  */
 ReactionProduct = new ReactiveDict("currentProduct");
 
-Tracker.autorun(function () {
-  ReactionRouter.watchPathChange();
-  if (ReactionRouter.getParam("handle")) {
-    const prodSub = ReactionSubscriptions.subscribe("Product", ReactionRouter.getParam("handle"));
-    if (prodSub.ready()) {
-      return ReactionProduct.setProduct(ReactionRouter.getParam("handle"), ReactionRouter.getParam("variantId"));
-    }
-  }
-});
-
 /**
  * setCurrentVariant
  * @param {String} variantId - set current variantId
@@ -41,6 +31,8 @@ ReactionProduct.setCurrentVariant = (variantId) => {
 
 /**
  * ReactionCore.setProduct
+ * this will be deprecated in favor of template.instance data.
+ *
  * @summary method to set default/parameterized product variant
  * @param {String} currentProductId - set current productId
  * @param {String} currentVariantId - set current variantId
@@ -349,8 +341,7 @@ ReactionProduct.maybeDeleteProduct = maybeDeleteProduct = (product) => {
         });
         throw new Meteor.Error("Error deleting product " + id, error);
       } else {
-        ReactionProduct.setProduct(null);
-        ReactionRouter.go("index");
+        ReactionRouter.go("/");
         return Alerts.toast(`Deleted ${title}`, "info");
       }
     });

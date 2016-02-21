@@ -75,17 +75,16 @@ Template.memberSettings.helpers({
 
           // Also create an object map of those same permissions as above
           let permissionMap = getPermissionMap(permissions);
-
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: pkg.name + "/" + registryItem.route,
+              permission: registryItem.name || pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });
           }
         }
-
+        // todo review this, hardcoded WIP
         const label = pkg.name.replace("reaction", "").replace(/(-.)/g, function (x) {
           return " " + x[1].toUpperCase();
         });

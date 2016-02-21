@@ -1,7 +1,6 @@
 /*
  * Template shipping Helpers
  */
-Meteor.subscribe("Shipping");
 
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
@@ -12,6 +11,12 @@ Template.shippingDashboardControls.events({
   }
 });
 
+Template.shippingSettings.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("Shipping");
+  });
+});
+
 Template.shippingSettings.helpers({
   packageData() {
     return ReactionCore.Collections.Packages.findOne({
@@ -19,20 +24,32 @@ Template.shippingSettings.helpers({
     });
   },
   shipping() {
-    return ReactionCore.Collections.Shipping.find({
-      shopId: ReactionCore.getShopId()
-    });
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
+      return ReactionCore.Collections.Shipping.find({
+        shopId: ReactionCore.getShopId()
+      });
+    }
   },
   selectedShippingProvider() {
     return Session.equals("selectedShippingProvider", true);
   }
 });
 
+Template.shippingProviderTable.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("Shipping");
+  });
+});
+
 Template.shippingProviderTable.helpers({
   shipping() {
-    return ReactionCore.Collections.Shipping.find({
-      shopId: ReactionCore.getShopId()
-    });
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
+      return ReactionCore.Collections.Shipping.find({
+        shopId: ReactionCore.getShopId()
+      });
+    }
   }
 });
 
@@ -51,7 +68,6 @@ Template.shipping.events({
     });
   }
 });
-
 
 /*
  * template addShippingMethod Helpers
@@ -103,12 +119,11 @@ Template.addShippingProvider.events({
  * template addShippingMethods events
  */
 Template.addShippingMethod.events({
-  "click .cancel"(event) {
+  "click .cancel"(event){
     event.preventDefault();
     toggleSession("selectedAddShippingMethod");
   }
 });
-
 
 /*
  * Template shippingProviderTable Helpers
@@ -136,7 +151,6 @@ Template.shippingProviderTable.helpers({
     }
   }
 });
-
 
 /*
  * template shippingProviderTable events
@@ -184,7 +198,6 @@ Template.shippingProviderTable.events({
     });
   }
 });
-
 
 /*
  * Autoform hooks
