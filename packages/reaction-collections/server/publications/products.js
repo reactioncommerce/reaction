@@ -82,7 +82,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
       selector.isVisible = true;
     }
 
-    //ReactionCore.Log.info(EJSON.stringify(selector));
+    ReactionCore.Log.debug("Products publication selector", EJSON.stringify(selector));
 
     Counts.publish(this, 'Products', Products.find(selector), {noReady: true});
     return Products.find(selector, {

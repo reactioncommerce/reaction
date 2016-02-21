@@ -60,8 +60,8 @@ reactioncommerce:reaction-ui-tagnav
 reactioncommerce:reaction-paymentmethod
 reactioncommerce:reaction-paypal
 reactioncommerce:reaction-stripe
-# reactioncommerce:reaction-auth-net
-# reactioncommerce:reaction-braintree
+reactioncommerce:reaction-auth-net
+reactioncommerce:reaction-braintree
 
 
 # Reaction Commerce Data
@@ -75,13 +75,5 @@ reactioncommerce:default-theme          # default Reaction theme
 # Forced updates on packages
 mdg:validation-error@0.4.0
 cosmos:browserify@0.9.3
-
-# Performance & Debugging Tools
-#meteorhacks:fast-render # improve initial page loads
-#meteorhacks:kadira   # performance profiling
-#meteorhacks:kadira-profiler
-#meteortoys:allthings # developer tools
-#spiderable           # adds phantomjs, use ongoworks:spiderable with Docker
-#meteorhacks:sikka    # additional ddp, login security
 
 ramusus:reaction-filtration

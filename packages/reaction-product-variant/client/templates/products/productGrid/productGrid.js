@@ -36,14 +36,14 @@ function loadMoreProducts() {
 
 Template.productGrid.onCreated(function () {
   Session.set("productGrid/selectedProducts", []);
-
+  ReactionFiltration.reset();
   // Update product subscription
   this.autorun(() => {
-    const tagId = ReactionRouter.getParam("_tag");
+    const tagId = ReactionRouter.getParam("slug");
     if (tagId) {
       const tag = ReactionCore.Collections.Tags.findOne({ slug: tagId }) || ReactionCore.Collections.Tags.findOne(tagId);
       if (tag) {
-        Session.set("productFilters", {"tag": tag._id});
+        ReactionFiltration.update('tag', tag._id);
       } else {
         // TODO: show notFound template
       }
@@ -52,8 +52,7 @@ Template.productGrid.onCreated(function () {
   });
 
   this.autorun(() => {
-    let isActionViewOpen = ReactionCore.isActionViewOpen();
-
+    const isActionViewOpen = ReactionCore.isActionViewOpen();
     if (isActionViewOpen === false) {
       Session.set("productGrid/selectedProducts", []);
     }

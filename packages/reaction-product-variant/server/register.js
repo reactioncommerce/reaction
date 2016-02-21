@@ -12,7 +12,7 @@ ReactionCore.registerPackage({
     route: "/tag/:slug",
     name: "tag",
     template: "products",
-    workflow: "coreProductWorkflow"
+    workflow: "coreWorkflow"
   }, {
     route: "/products/createProduct",
     name: "createProduct",
