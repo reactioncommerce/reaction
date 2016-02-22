@@ -25,6 +25,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
     }).validate(productFilters);
   } catch (e) {
     ReactionCore.Log.error(e);
+    throw new Meteor.Error(e);
   }
 
   let shopAdmin;
