@@ -7,6 +7,25 @@
 Meteor.publish("Products", function (productScrollLimit, productFilters) {
   check(productScrollLimit, Match.OneOf(null, undefined, Number));
   check(productFilters, Match.OneOf(null, undefined, Object));
+  try {
+    new SimpleSchema({
+      "shops": {type: [String], optional: true},
+      "tag": {type: String, optional: true},
+      "query": {type: String, optional: true},
+      "visibility": {type: Boolean, optional: true},
+      "details": {type: Object, optional: true},
+      "details.key": {type: String},
+      "details.value": {type: String},
+      "price": {type: Object, optional: true},
+      "price.min": {type: Number},
+      "price.max": {type: Number},
+      "weight": {type: Object, optional: true},
+      "weight.min": {type: Number},
+      "weight.max": {type: Number}
+    }).validate(productFilters);
+  } catch (e) {
+    ReactionCore.Log.error(e);
+  }
 
   let shopAdmin;
   const limit = productScrollLimit || 10;
@@ -24,7 +43,6 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
     if (productFilters) {
       // handle multiple shops
       if (productFilters.shops) {
-        check(productFilters.shops, Array);
         _.extend(selector, {shopId: {$in: productFilters.shops}});
 
         // check if this user is a shopAdmin
@@ -37,40 +55,34 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
 
       // filter by tag
       if (productFilters.tag) {
-        check(productFilters.tag, String);
         _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
       }
 
       // filter by query
       if (productFilters.query) {
-        check(productFilters.query, String);
         let cond = {$regex: productFilters.query, $options: 'i'};
         _.extend(selector, {$or: [{'title': cond}, {'pageTitle': cond}, {'description': cond}]});
       }
 
       // filter by details
       if (productFilters.details) {
-        check(productFilters.details, Object);
         _.extend(selector, {metafields: {$elemMatch: {key: {$regex: productFilters.details.key, $options: 'i'},
           value: {$regex: productFilters.details.value, $options: 'i'}}}});
       }
 
       // filter by visibility
       if (productFilters.visibility !== undefined) {
-        check(productFilters.visibility, Boolean);
         _.extend(selector, {'isVisible': productFilters.visibility});
       }
 
       // filter by price
       if (productFilters.price) {
-        check(productFilters.price, Object);
         _.extend(selector, {variants: {$elemMatch: {price: {$gte: productFilters.price.min,
           $lte: productFilters.price.max}}}});
       }
 
       // filter by weight
       if (productFilters.weight) {
-        check(productFilters.weight, Object);
         _.extend(selector, {variants: {$elemMatch: {weight: {$gte: productFilters.weight.min,
           $lte: productFilters.weight.max}}}});
       }

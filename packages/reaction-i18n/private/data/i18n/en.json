@@ -214,7 +214,6 @@
         "addtracking": "Add Tracking",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
-        "shipped": "Shipped",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
       },
@@ -412,6 +411,27 @@
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
+      },
+      "filtration": {
+        "filters": {
+          "titleLabel": "Title",
+          "titlePlaceholder": "Filter by title",
+          "priceLabel": "Price",
+          "weightLabel": "Weight",
+          "tagLabel": "Tag",
+          "tagPlaceholder": "Filter by tag",
+          "detailsLabel": "Details",
+          "detailNamePlaceholder": "Filter by detail name",
+          "detailValuePlaceholder": "Filter by detail value",
+          "visibilityLabel": "Visibility",
+          "visibilityAny": "Any",
+          "visibilityNotVisible": "Not visible",
+          "visibilityVisible": "Visible"
+        },
+        "showFilters": "Show Filters",
+        "settings": "Filters",
+        "found": "Found",
+        "products": "products"
       }
     }
   }
