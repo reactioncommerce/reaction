@@ -26,6 +26,19 @@ Template.createContentMenu.helpers({
               }
             }
           });
+        } else if (item.route === "/pages/createPage") {
+          Meteor.call("ReactionFlatPages.methods.createPage", (error, pageId) => {
+            if (Meteor.isClient) {
+              if (error) {
+                throw new Meteor.Error("createProduct error", error);
+              } else if (pageId) {
+                // go to new page
+                ReactionRouter.go("page", {
+                  handle: pageId
+                });
+              }
+            }
+          });
         }
       }
     };

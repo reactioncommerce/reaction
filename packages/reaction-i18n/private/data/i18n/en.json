@@ -11,7 +11,9 @@
           "dashboardLabel": "Dashboard",
           "ordersLabel": "Orders",
           "addProductLabel": "Add Product",
-          "accountsLabel": "Accounts"
+          "addPageLabel": "Add Page",
+          "accountsLabel": "Accounts",
+          "flatPagesLabel": "Flat pages"
         },
         "dashboard": {
           "coreLabel": "Core",
@@ -34,7 +36,9 @@
           "paypalLabel": "PayPal",
           "paypalDescription": "PayPal Payment for Reaction Commerce",
           "genericPaymentLabel": "Generic Payment",
-          "genericPaymentDescription": "Generic Payment Method"
+          "genericPaymentDescription": "Generic Payment Method",
+          "flatPagesLabel": "Flat Pages",
+          "flatPagesDescription": "Easily add flat pages anywhere into Reaction"
         },
         "settings": {
           "accountSettingsLabel": "Account Settings",
@@ -44,7 +48,8 @@
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
-          "genericPaymentSettingsLabel": "Generic Payment Settings"
+          "genericPaymentSettingsLabel": "Generic Payment Settings",
+          "flatPagesSettingsLabel": "Flat Pages"
         }
       },
       "accounts": {
@@ -215,7 +220,6 @@
         "addtracking": "Add Tracking",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
-        "shipped": "Shipped",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
       },
@@ -413,6 +417,24 @@
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
+      },
+      "pageDetail": {
+        "pageManagement": "Page management",
+        "makeInvisible": "Make invisible",
+        "isNotVisible": "This page is not visible to customers.",
+        "makeItVisible": "You can make it visible",
+        "whenYouAreDone": "when you're done editing.",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "This is no the page you were looking for.",
+        "publishPageVisible": "is now visible",
+        "publishPageHidden": "is now hidden",
+        "noTitle": "No title"
+      },
+      "pageDetailEdit": {
+        "title": "Page title",
+        "pageTitle": "Page subtitle",
+        "content": "Add a page content",
+        "handle": "Add address of page"
       }
     }
   }

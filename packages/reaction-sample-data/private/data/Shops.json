@@ -3100,6 +3100,20 @@
     }
   }, {
     "layout": "coreLayout",
+    "workflow": "corePageWorkflow",
+    "theme": "default",
+    "enabled": true,
+    "structure": {
+      "template": "pageDetail",
+      "layoutHeader": "layoutHeader",
+      "layoutFooter": "layoutFooter",
+      "notFound": "pageNotFound",
+      "dashboardHeader": "",
+      "dashboardControls": "flatpagesDashboardControls",
+      "adminControlsFooter": "adminControlsFooter"
+    }
+  }, {
+    "layout": "coreLayout",
     "workflow": "coreDashboardWorkflow",
     "theme": "default",
     "enabled": true,

@@ -11,7 +11,9 @@
           "dashboardLabel": "Панель управления",
           "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
-          "accountsLabel": "Пользователи"
+          "addPageLabel": "Создать страницу",
+          "accountsLabel": "Пользователи",
+          "flatPagesLabel": "Простые страницы"
         },
         "dashboard": {
           "coreLabel": "Ядро",
@@ -33,7 +35,9 @@
           "paypalLabel": "PayPal",
           "paypalDescription": "PayPal платежи для Reaction Commerce",
           "genericPaymentLabel": "Generic Payment",
-          "genericPaymentDescription": "Generic Payment Method"
+          "genericPaymentDescription": "Generic Payment Method",
+          "flatPagesLabel": "Простые страницы",
+          "flatPagesDescription": "Управление простыми страницами в Reaction"
         },
         "settings": {
           "accountSettingsLabel": "Настройки входа",
@@ -43,7 +47,8 @@
           "inventorySettingsLabel": "Настройки Inventory",
           "analyticsSettingsLabel": "Настройки аналитики",
           "paypalSettingsLabel": "Настройки PayPal",
-          "genericPaymentSettingsLabel": "Настройки Generic Payment"
+          "genericPaymentSettingsLabel": "Настройки Generic Payment",
+          "flatPagesSettingsLabel": "Простые страницы"
         }
       },
       "accounts": {
@@ -204,7 +209,6 @@
         "addtracking": "Добавить трэкинг",
         "shipmentEmpty": "Эта доставка не содержит товаров",
         "shipmentPacked": "Все товары запакованы",
-        "shipped": "Доставлено",
         "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
       },
@@ -402,6 +406,24 @@
           "matchFailed": "Не совпадают",
           "unknownError": "Неизвестная ошибка"
         }
+      },
+      "pageDetail": {
+        "pageManagement": "Управление страницей",
+        "makeInvisible": "Сделать невидимой",
+        "isNotVisible": "Эта страница невидима для покупателей.",
+        "makeItVisible": "Вы можете сделать его видимой",
+        "whenYouAreDone": "когда закончите редактирование.",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Страница не найдена.",
+        "publishPageVisible": "теперь виден",
+        "publishPageHidden": "теперь скрыт",
+        "noTitle": "Без заголовка"
+      },
+      "pageDetailEdit": {
+        "title": "Название",
+        "pageTitle": "Другое название",
+        "content": "Добавьте содержимое страницы",
+        "handle": "Укажите адрес страницы"
       }
     }
   }
