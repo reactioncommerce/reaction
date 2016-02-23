@@ -36,5 +36,11 @@ _.extend(ReactionCore, {
       return absoluteUrl.split("/")[2].split(":")[0];
     }
     return "localhost";
+  },
+  getShopName: function () {
+    const currentShop = this.getCurrentShop();
+    if (typeof currentShop === "object") {
+      return currentShop.name;
+    }
   }
 });

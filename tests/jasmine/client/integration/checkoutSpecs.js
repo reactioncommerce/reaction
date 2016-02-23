@@ -22,7 +22,6 @@ describe("Checkout", function () {
     Tracker.afterFlush(done);
   });
 
-  beforeEach(waitForRouter);
 
   describe("checkoutLogin", function () {
     it("should go to checkout route", function (done) {

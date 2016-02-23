@@ -10,8 +10,6 @@ describe("Router", function () {
       Tracker.afterFlush(done);
     });
 
-    beforeEach(waitForRouter);
-
     describe("meta data", function () {
       it("path should be root url", function () {
         const route = ReactionRouter.current().path;

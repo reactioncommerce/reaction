@@ -78,9 +78,8 @@ Template.shopSettings.helpers({
     const unitsOfMeasure = ReactionCore.Collections.Shops.findOne().unitsOfMeasure;
     const uomOptions = [];
     for (let measure of unitsOfMeasure) {
-      uom = unitsOfMeasure[measure];
       uomOptions.push({
-        label: measure.label,
+        label: i18n.t(`uom.${measure.uom}`),
         value: measure.uom
       });
     }
@@ -89,14 +88,14 @@ Template.shopSettings.helpers({
   paymentMethodOptions() {
     const paymentMethods = ReactionCore.Apps({provides: "paymentMethod"});
     const options = [{
-      label: "Auto",
+      label: i18n.t("app.auto"),
       value: "none"
     }];
 
     if (paymentMethods && _.isArray(paymentMethods)) {
       for (let method of paymentMethods) {
         options.push({
-          label: method.packageName,
+          label: i18n.t(method.i18nKeyLabel),
           value: method.packageName
         });
       }
@@ -113,10 +112,13 @@ Template.shopSettings.helpers({
 AutoForm.hooks({
   shopEditForm: {
     onSuccess: function () {
-      return Alerts.toast("Shop general settings saved.", "success");
+      return Alerts.toast(i18n.t("shopSettings.shopGeneralSettingsSaved"),
+        "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(`Shop general settings update failed. ${error}`, "error");
+      return Alerts.toast(
+        `${i18n.t("shopSettings.shopGeneralSettingsFailed")} ${error}`, "error"
+      );
     }
   }
 });
@@ -124,10 +126,13 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditAddressForm: {
     onSuccess: function () {
-      return Alerts.toast("Shop address settings saved.", "success");
+      return Alerts.toast(i18n.t("shopSettings.shopAddressSettingsSaved"),
+        "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(`Shop address settings update failed. ${error}`, "error");
+      return Alerts.toast(
+        `${i18n.t("shopSettings.shopAddressSettingsFailed")} ${error}`, "error"
+      );
     }
   }
 });
@@ -135,11 +140,12 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditEmailForm: {
     onSuccess: function () {
-      return Alerts.toast("Shop mail settings saved.", "success");
+      return Alerts.toast(i18n.t("shopSettings.shopMailSettingsSaved"),
+        "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast("Shop mail settings update failed. " + error,
-        "error");
+      return Alerts.toast(`${i18n.t("shopSettings.shopMailSettingsFailed")
+        } ${error}`, "error");
     }
   }
 });
@@ -147,21 +153,30 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditExternalServicesForm: {
     onSuccess: function () {
-      return Alerts.toast("Open Exchange settings saved.", "success");
+      return Alerts.toast(
+        i18n.t("shopSettings.shopExternalServicesSettingsSaved"), "success"
+      );
     },
     onError: function (operation, error) {
-      return Alerts.toast(`Open Exchange settings update failed. ${error}`, "error");
+      return Alerts.toast(
+        `${i18n.t("shopSettings.shopExternalServicesSettingsFailed")} ${error}`,
+        "error"
+      );
     }
   }
 });
 
 AutoForm.hooks({
-  shopEditSettingsForm: {
+  shopEditLocalizationSettingsForm: {
     onSuccess: function () {
-      return Alerts.toast("Shop settings saved.", "success");
+      return Alerts.toast(i18n.t("shopSettings.shopLocalizationSettingsSaved"),
+        "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(`Shop setting update failed. ${error}`, "error");
+      return Alerts.toast(
+        `${i18n.t("shopSettings.shopLocalizationSettingsFailed")} ${error}`,
+        "error"
+      );
     }
   }
 });
@@ -169,10 +184,27 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditOptionsForm: {
     onSuccess: function () {
-      return Alerts.toast("Shop options saved.", "success");
+      return Alerts.toast(i18n.t("shopSettings.shopOptionsSettingsSaved"),
+        "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(`Shop options update failed. ${error}`, "error");
+      return Alerts.toast(
+        `${i18n.t("shopSettings.shopOptionsSettingsFailed")} ${error}`, "error"
+      );
+    }
+  }
+});
+
+AutoForm.hooks({
+  shopEditPaymentMethodsForm: {
+    onSuccess: function () {
+      return Alerts.toast(i18n.t("shopSettings.shopPaymentMethodsSaved"),
+        "success");
+    },
+    onError: function (operation, error) {
+      return Alerts.toast(
+        `${i18n.t("shopSettings.shopPaymentMethodsFailed")} ${error}`, "error"
+      );
     }
   }
 });

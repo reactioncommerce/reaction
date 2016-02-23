@@ -5,8 +5,6 @@ describe("Cart", function () {
     Tracker.afterFlush(done);
   });
 
-  beforeEach(waitForRouter);
-
   // add to cart from pdp
   describe("Add to cart", function () {
     // empty cart items before each test
