@@ -14,33 +14,43 @@
           "accountsLabel": "Accounts"
         },
         "dashboard": {
-          "coreLabel": "Core",
-          "coreDescription": "Reaction Commerce Core",
-          "coreTitle": "Dashboard",
-          "ordersLabel": "Orders",
-          "ordersDescription": "Fulfill your orders",
-          "importLabel": "Import",
-          "importDescription": "Support for imports and migrations",
           "accountsLabel": "Accounts",
           "accountsDescription": "Manage how members sign into your shop",
-          "socialLabel": "Social",
-          "socialDescription": "Social Sharing for Reaction Commerce",
-          "basicShippingLabel": "Basic Shipping",
-          "basicShippingDescription": "Use flat rates for shipping calculations",
-          "inventoryLabel": "Inventory",
-          "inventoryDescription": "Basic Inventory Management",
           "analyticsLabel": "Analytics",
-          "analyticsDescription": "Event tracking and analytics with Reaction Commerce",
-          "paypalLabel": "PayPal",
-          "paypalDescription": "PayPal Payment for Reaction Commerce",
+          "analyticsDescription": "Analytics and tracking integrations",
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetDescription": "Authorize.net payments",
+          "shippingLabel": "Shipping",
+          "shippingDescription": "Provide shipping rates",
+          "braintreeLabel": "Braintree",
+          "braintreeDescription": "Braintree payments",
+          "coreLabel": "Core",
+          "coreDescription": "Reaction core shop configuration",
           "genericPaymentLabel": "Generic Payment",
-          "genericPaymentDescription": "Generic Payment Method"
+          "genericPaymentDescription": "Generic Payment Method",
+          "i18NLabel": "i18n",
+          "i18NDescription": "Internationalization utilities",
+          "inventoryLabel": "Inventory",
+          "inventoryDescription": "Inventory utilities",
+          "connectLabel": "Connect",
+          "connectDescription": "Connect Reaction as a deployed service",
+          "ordersLabel": "Orders",
+          "ordersDescription": "Fulfill your orders",
+          "paypalLabel": "PayPal",
+          "paypalDescription": "PayPal payments",
+          "socialLabel": "Social",
+          "socialDescription": "Social Channel configuration",
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe payments"
         },
         "settings": {
           "accountSettingsLabel": "Account Settings",
+          "authorizenetSettingsLabel": "Authorize.net Settings",
+          "braintreeSettingsLabel": "Braintree Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
+          "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
@@ -53,9 +63,11 @@
         "guests": "Guests"
       },
       "app": {
+        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
         "saveChanges": "Save Changes",
+        "selectOne": "(Select One)",
         "cancel": "Cancel",
         "submit": "Submit",
         "delete": "Delete",
@@ -68,7 +80,6 @@
         "unauthorizedMessage": "You don't have permission to view this content.",
         "monthOptions": "Choose month",
         "yearOptions": "Choose year",
-        "timezoneOptions": "Choose timezone",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
         "print": "Print",
@@ -81,10 +92,26 @@
       "shopSettings": {
         "general": "General",
         "address": "Address",
+        "import": "Import",
         "mail": "Mail",
         "localization": "Localization",
         "options": "Options",
-        "paymentMethods": "Payment Methods"
+        "paymentMethods": "Payment Methods",
+        "externalServices": "External Services",
+        "shopGeneralSettingsSaved": "Shop general settings saved.",
+        "shopGeneralSettingsFailed": "Shop general settings update failed. ",
+        "shopAddressSettingsSaved": "Shop address settings saved.",
+        "shopAddressSettingsFailed": "Shop address settings update failed. ",
+        "shopMailSettingsSaved": "Shop mail settings saved.",
+        "shopMailSettingsFailed": "Shop mail settings update failed. ",
+        "shopExternalServicesSettingsSaved": "Shop external services settings saved.",
+        "shopExternalServicesSettingsFailed": "Shop external services settings update failed. ",
+        "shopLocalizationSettingsSaved": "Shop localization settings saved.",
+        "shopLocalizationSettingsFailed": "Shop localization settings update failed. ",
+        "shopOptionsSettingsSaved": "Shop options saved.",
+        "shopOptionsSettingsFailed": "Shop options update failed. ",
+        "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed. "
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -98,6 +125,9 @@
         "whenYouAreDone": "when you're done editing.",
         "tags": "Tags",
         "tagsAdd": "Add tag",
+        "tagsEdit": "Edit tags",
+        "tagExists": "Tag already exists, or is empty.",
+        "dropFiles": "Drop files to upload",
         "addInventory": "Add Inventory",
         "barcode": "Barcode",
         "confirmDeleteBarcode": "Are you sure you want to delete barcode",
@@ -162,8 +192,14 @@
         "createVariant": "Create Variant"
       },
       "gridPackage": {
-        "pkgEnabled": " is now enabled.",
-        "pkgDisabled": " is now disabled."
+        "enable": "Enable",
+        "errorDisabling": "Error disabling package: ",
+        "errorEnabling": "Error enabling package: ",
+        "details": "Details",
+        "disable": "Disable",
+        "disableConfirm": "Are you sure you want to disable {{app}}?",
+        "pkgEnabled": "{{app}} is now enabled.",
+        "pkgDisabled": "{{app}} is now disabled."
       },
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",
@@ -207,7 +243,6 @@
       },
       "orderShipping": {
         "shipTo": "Ship To",
-        "shipped": "Shipped",
         "notShipped": "Not Yet Shipped",
         "noTracking": "No Tracking",
         "tracking": "Tracking",
@@ -216,6 +251,10 @@
         "shipmentPacked": "All Items Packed",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
+      },
+      "cartCheckout": {
+        "surprise": "Woah!",
+        "emptyCheckoutCart": "looks like your cart is empty!"
       },
       "cartCompleted": {
         "thankYou": "Thank you!",
@@ -249,6 +288,58 @@
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "mail": {
+            "user": "Username",
+            "password": "Password",
+            "host": "Host",
+            "port": "Port"
+          },
+          "public": {
+            "allowGuestCheckout": "Allow Guest Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Open Exchange Rates refresh period",
+            "refreshPeriodPlaceholder": "i.e. every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "shop": {
+        "defaultPaymentMethod": "Default Payment Method",
+        "name": "Name",
+        "namePlaceholder": "Shop Name",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe your shop for SEO",
+        "descriptionTooltip": "This field used by meta description tag. It is allow to search engines to describe your shop",
+        "email": "Email",
+        "emailPlaceholder": "Primary Contact Email",
+        "keywords": "Keywords",
+        "keywordsPlaceholder": "Meta keywords for SEO",
+        "timezone": "Timezone",
+        "timezoneOptions": "Choose timezone",
+        "currency": "Base Currency",
+        "currencyTooltip": "Shop default currency",
+        "baseUOM": "Base Unit of Measure",
+        "addressBook": {
+          "country": "Country",
+          "fullName": "Full name",
+          "address1": "Address",
+          "address2": "Address",
+          "postal": "Postal",
+          "city": "City",
+          "region": "Region",
+          "phone": "Phone",
+          "isShippingDefault": "Make this your default shipping address?",
+          "isBillingDefault": "Make this your default billing address?",
+          "isCommercial": "This is a commercial address."
+        }
       },
       "address": {
         "country": "Country",
@@ -286,14 +377,21 @@
         "configureNow": "Configure now.",
         "shipping": "Shipping"
       },
-      "shopEditForm": {
-        "name": "Name",
-        "email": "Email"
-      },
-      "shopEditAdressForm": {
+      "shopEditAddressForm": {
         "company": "Company",
+        "companyPlaceholder": "This business name",
         "fullname": "Full name",
-        "address1": "Address 1"
+        "fullnamePlaceholder": "Your organization name",
+        "address1": "Address",
+        "address1Placeholder": "Your organization address",
+        "address1Tooltip": "This address will be visible to visitors",
+        "address2Placeholder": "Additional address"
+      },
+      "uom": {
+        "OZ": "Ounces",
+        "LB": "Pounds",
+        "GR": "Grams",
+        "KG": "Kilograms"
       },
       "consoleIcon": {
         "iconTitle": "View Console",
@@ -432,6 +530,11 @@
         "settings": "Filters",
         "found": "Found",
         "products": "products"
+      },
+      "error": {
+        "nameRequired": "Name is required.",
+        "isRequired": "{{field}} is required.",
+        "mustBeNumber": "{{field}} must be a number."
       }
     }
   }

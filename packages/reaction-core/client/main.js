@@ -23,7 +23,7 @@ _.extend(ReactionCore, {
           self.shopId = shop._id;
           self.shopName = shop.name;
           // initialize local client Countries collection
-          createCountryCollection(shop);
+          createCountryCollection(shop.locales.countries);
 
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes
@@ -341,14 +341,13 @@ Meteor.startup(function () {
  * createCountryCollection
  * Create a client-side only collection of Countries for a dropdown form
  * properly sorted*
- * @param {Object} shop -  currentShop
+ * @param {Object} countries -  The countries array on the Shop collection
  * @returns {Array} countryOptions - Sorted array of countries
  */
-createCountryCollection = function (shop) {
-  check(shop, ReactionCore.Schemas.Shop);
+createCountryCollection = function (countries) {
+  check(countries, Object);
   ReactionCore.Collections.Countries = new Mongo.Collection(null);
   const countryOptions = [];
-  const countries = shop.locales.countries;
   for (let locale in countries) {
     if ({}.hasOwnProperty.call(countries, locale)) {
       let country = countries[locale];
