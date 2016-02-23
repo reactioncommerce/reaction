@@ -12,8 +12,8 @@
           "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
           "addPageLabel": "Создать страницу",
-          "accountsLabel": "Пользователи",
-          "flatPagesLabel": "Простые страницы"
+          "flatPagesLabel": "Простые страницы",
+          "accountsLabel": "Пользователи"
         },
         "dashboard": {
           "accountsLabel": "Учётные записи",
@@ -30,6 +30,8 @@
           "coreDescription": "Базовые настройки магазина Reaction",
           "genericPaymentLabel": "Образец платёжной системы",
           "genericPaymentDescription": "Тестирование платежей. Образец для портирования любых Платёжных систем",
+          "flatPagesLabel": "Простые страницы",
+          "flatPagesDescription": "Управление простыми страницами в Reaction",
           "i18NLabel": "i18n",
           "i18NDescription": "Интернационализация",
           "inventoryLabel": "Товары",
@@ -43,11 +45,10 @@
           "socialLabel": "Социальные сети",
           "socialDescription": "Интеграция с соц. сетями",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Платежи через Stripe",
-          "flatPagesLabel": "Простые страницы",
-          "flatPagesDescription": "Управление простыми страницами в Reaction"
+          "stripeDescription": "Платежи через Stripe"
         },
         "settings": {
+          "flatPagesSettingsLabel": "Простые страницы",
           "accountSettingsLabel": "Настройки учетных записей",
           "authorizenetSettingsLabel": "Настройки Authorize.net",
           "braintreeSettingsLabel": "Настройки Braintree",
@@ -58,8 +59,7 @@
           "inventorySettingsLabel": "Настройки управления товарами",
           "analyticsSettingsLabel": "Настройки аналитики",
           "paypalSettingsLabel": "Настройки PayPal",
-          "genericPaymentSettingsLabel": "Настройки Generic Payment",
-          "flatPagesSettingsLabel": "Простые страницы"
+          "genericPaymentSettingsLabel": "Настройки Generic Payment"
         }
       },
       "accounts": {
@@ -267,6 +267,7 @@
         "addtracking": "Добавить трэкинг",
         "shipmentEmpty": "Эта доставка не содержит товаров",
         "shipmentPacked": "Все товары запакованы",
+        "shipped": "Доставлено",
         "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
       },

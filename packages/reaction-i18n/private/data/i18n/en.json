@@ -12,8 +12,8 @@
           "ordersLabel": "Orders",
           "addProductLabel": "Add Product",
           "addPageLabel": "Add Page",
-          "accountsLabel": "Accounts",
-          "flatPagesLabel": "Flat pages"
+          "flatPagesLabel": "Flat pages",
+          "accountsLabel": "Accounts"
         },
         "dashboard": {
           "accountsLabel": "Accounts",
@@ -48,6 +48,7 @@
           "stripeDescription": "Stripe payments"
         },
         "settings": {
+          "flatPagesSettingsLabel": "Flat Pages",
           "accountSettingsLabel": "Account Settings",
           "authorizenetSettingsLabel": "Authorize.net Settings",
           "braintreeSettingsLabel": "Braintree Settings",
@@ -58,8 +59,7 @@
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
-          "genericPaymentSettingsLabel": "Generic Payment Settings",
-          "flatPagesSettingsLabel": "Flat Pages"
+          "genericPaymentSettingsLabel": "Generic Payment Settings"
         }
       },
       "accounts": {
@@ -255,6 +255,7 @@
         "addtracking": "Add Tracking",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
+        "shipped": "Shipped",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
       },
