@@ -37,6 +37,7 @@ Package.onUse(function (api) {
 
   // server
   api.addFiles("server/import.js", "server");
+  api.addFiles("server/methods.js", "server");
 
   // register reaction package
   api.addFiles("server/register.js", "server");

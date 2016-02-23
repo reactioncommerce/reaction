@@ -502,35 +502,6 @@ Meteor.methods({
   },
 
   /**
-   * flushTranslations
-   * @summary Helper method to remove all translations, and reload from jsonFiles
-   * @return {undefined}
-   */
-  "flushTranslations": function () {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-    ReactionCore.Collections.Translations.remove({});
-    let shopId = ReactionCore.getShopId();
-    let shops = ReactionCore.Collections.Shops.find({_id: shopId}).fetch();
-    // leaving room for potential future of language per shop
-    if (shops) {
-      for (let shop of shops) {
-        if (shop.languages) {
-          for (let language of shop.languages) {
-            json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
-            ReactionImport.process(json, ["i18n"], ReactionImport.translation);
-          }
-        }
-      }
-      ReactionImport.flush();
-      ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
-      return;
-    }
-    throw new Meteor.Error("No shops found to flush translations for.");
-  },
-
-  /**
    * shop/getWorkflow
    * @summary gets the current shop workflows
    * @param {String} name - workflow name
