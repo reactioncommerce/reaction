@@ -8,8 +8,8 @@ accounts-twitter@1.0.6
 accounts-weibo@1.0.6
 alanning:roles@1.2.14
 aldeed:autoform@5.8.1
-aldeed:collection2@2.8.0
-aldeed:collection2-core@1.0.0
+aldeed:collection2@2.9.0
+aldeed:collection2-core@1.1.0
 aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3

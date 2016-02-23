@@ -12,7 +12,7 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("momentjs:moment@2.10.6");
   api.use("ongoworks:transliteration@0.1.1");
-  api.use("aldeed:collection2@2.8.0");
+  api.use("aldeed:collection2@2.9.0");
   api.use("aldeed:simple-schema@1.5.3");
   api.use("matb33:collection-hooks@0.8.1");
 

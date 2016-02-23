@@ -1,12 +1,6 @@
 *
 !.gitignore
 
-# temporary here
-!meteor-collection2-core-fork
-!meteor-collection2-core-fork/*
-!meteor-collection2-fork
-!meteor-collection2-fork/*
-
 !my-custom-theme-template
 !my-custom-theme-template/*
 
