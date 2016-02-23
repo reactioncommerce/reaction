@@ -105,7 +105,24 @@ ReactionCore.Schemas.Locale = new SimpleSchema({
 });
 
 /**
- * Locale Schema
+ * Languages Schema
+ */
+
+ReactionCore.Schemas.Languages = new SimpleSchema({
+  label: {
+    type: String
+  },
+  i18n: {
+    type: String
+  },
+  enabled: {
+    type: Boolean,
+    defaultValue: true
+  }
+});
+
+/**
+ * ShopTheme Schema
  */
 
 ReactionCore.Schemas.ShopTheme = new SimpleSchema({
@@ -168,31 +185,28 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
   },
   "currencies": {
     type: Object, // ReactionCore.Schemas.Currency
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   "locales": {
     type: ReactionCore.Schemas.Locale
   },
+  "language": {
+    label: "Base Language",
+    type: String,
+    defaultValue: "en"
+  },
   "languages": {
-    type: [Object],
+    type: [ReactionCore.Schemas.Languages],
     optional: true
-  },
-  "languages.$.label": {
-    type: String
-  },
-  "languages.$.i18n": {
-    type: String
-  },
-  "languages.$.enabled": {
-    type: Boolean,
-    defaultValue: false
   },
   "public": {
     type: String,
     optional: true
   },
   "timezone": {
-    type: String
+    type: String,
+    defaultValue: "US/Pacific"
   },
   "baseUOM": {
     type: String,

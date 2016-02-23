@@ -58,9 +58,6 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/layout/header/menu/button.html", "client");
 
-  api.addFiles("client/templates/layout/header/i18n/i18n.html", "client");
-  api.addFiles("client/templates/layout/header/i18n/i18n.js", "client");
-
   api.addFiles("client/templates/layout/header/brand/brand.html", "client");
 
   api.addFiles("client/templates/layout/footer/footer.html", "client");

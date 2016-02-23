@@ -32,7 +32,7 @@ Template.gridPackage.events({
     }, function (error, result) {
       if (result === 1) {
         Alerts.toast(
-          i18n.t("gridPackage.pkgEnabled", { app: i18n.t(self.i18nKeyLabel) }),
+          i18next.t("gridPackage.pkgEnabled", { app: i18next.t(self.i18nKeyLabel) }),
           "error", {
             type: "pkg-enabled-" + self.name
           }
@@ -43,7 +43,7 @@ Template.gridPackage.events({
         }
       } else if (error) {
         return Alerts.toast(
-          i18n.t("gridPackage.pkgDisabled", { app: i18n.t(self.i18nKeyLabel) }),
+          i18next.t("gridPackage.pkgDisabled", { app: i18next.t(self.i18nKeyLabel) }),
           "warning"
         );
       }
@@ -59,7 +59,7 @@ Template.gridPackage.events({
 
     Alerts.alert(
       "Disable Package",
-      i18n.t("gridPackage.disableConfirm", { app: i18n.t(self.i18nKeyLabel) }),
+      i18next.t("gridPackage.disableConfirm", { app: i18next.t(self.i18nKeyLabel) }),
       { type: "warning" },
       () => {
         ReactionCore.Collections.Packages.update(self.packageId, {
@@ -69,8 +69,8 @@ Template.gridPackage.events({
         }, function (error, result) {
           if (result === 1) {
             return Alerts.toast(
-              i18n.t("gridPackage.pkgDisabled", {
-                app: i18n.t(self.i18nKeyLabel)
+              i18next.t("gridPackage.pkgDisabled", {
+                app: i18next.t(self.i18nKeyLabel)
               }),
               "success"
             );
