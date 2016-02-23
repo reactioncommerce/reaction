@@ -63,6 +63,8 @@
         "guests": "Guests"
       },
       "app": {
+        "add": "Add",
+        "editMode": "Edit mode",
         "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
