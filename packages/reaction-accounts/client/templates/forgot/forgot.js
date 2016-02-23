@@ -37,7 +37,7 @@ Template.loginFormResetPasswordView.events({
       } else {
         templateInstance.formMessages.set({
           info: [{
-            reason: i18n.t("accountsUI.info.passwordResetSend") || "Password reset mail sent."
+            reason: i18next.t("accountsUI.info.passwordResetSend") || "Password reset mail sent."
           }]
         });
       }

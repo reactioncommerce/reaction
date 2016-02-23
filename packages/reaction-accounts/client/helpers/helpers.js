@@ -77,7 +77,7 @@ Template.registerHelper("displayName", function (displayUser) {
     // new check covers previous check?
     if (Roles.userIsInRole(user._id, "account/profile",
       ReactionCore.getShopId())) {
-      return i18n.t("accountsUI.guest") || "Guest";
+      return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
     }
   }
 });
@@ -107,10 +107,10 @@ Template.registerHelper("fName", function (displayUser) {
       case !user.services.pinterest:
         return user.services.pinterest.first_name;
       default:
-        return i18n.t("accountsUI.guest") || "Guest";
+        return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
       }
     })();
     return username;
   }
-  return i18n.t("accountsUI.signIn") || "Sign in";
+  return i18next.t("accountsUI.signIn", {defaultValue: "Sign in"});
 });

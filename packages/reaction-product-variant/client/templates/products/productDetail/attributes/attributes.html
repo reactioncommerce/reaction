@@ -1,35 +1,35 @@
 <template name="productMetaField">
-{{#if ./metafields}}
-  <ul class="list-group metafield-list hidden-xs">
-    {{#each ./metafields}}
-      <li class="list-group-item metafield-list-item">
-        <div class="row">
-        {{#if key}}<div class="col-sm-4">{{key}}</div>{{/if}}
-        {{#if value}}<div class="col-sm-8">{{value}}</div>{{/if}}
-        </div>
-      </li>
-    {{/each}}
-  </ul>
-{{/if}}
+  {{#if ./metafields}}
+    <ul class="list-group metafield-list hidden-xs">
+      {{#each ./metafields}}
+        <li class="list-group-item metafield-list-item">
+          <div class="row">
+          {{#if key}}<div class="col-sm-4">{{key}}</div>{{/if}}
+          {{#if value}}<div class="col-sm-8">{{value}}</div>{{/if}}
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
 </template>
 
 <template name="productMetaFieldForm">
-<ul class="list-group product-detail-edit">
-  {{#each ./metafields}}
-    <li class="list-group-item metafield-list-item">
+  <ul class="list-group product-detail-edit">
+    {{#each ./metafields}}
+      <li class="list-group-item metafield-list-item">
+        {{>metaComponent}}
+        <span class="metafield-remove"><i class="fa fa-times-circle"></i></span>
+      </li>
+    {{/each}}
+    <li class="list-group-item metafield-new-item">
       {{>metaComponent}}
-      <span class="metafield-remove"><i class="fa fa-times-circle"></i></span>
     </li>
-  {{/each}}
-  <li class="list-group-item metafield-new-item">
-    {{>metaComponent}}
-  </li>
-</ul>
+  </ul>
 </template>
 
 <template name="metaComponent">
-<form role="form" name="metafield-component" class="form form-inline metafield-component">
-    <input type="text" name="key" class="form-control metafield-key-input" value="{{key}}" placeholder="{{i18n 'productDetail.detailsName'}}"/>
-    <input type="text" name="value" class="form-control metafield-value-input" value="{{value}}" placeholder="{{i18n 'productDetail.detailsInfo'}}"/>
-</form>
+  <form role="form" name="metafield-component" class="form form-inline metafield-component">
+    <input type="text" name="key" class="form-control metafield-key-input" value="{{key}}" placeholder="{{i18n 'productDetail.detailsName' 'Detail name'}}"/>
+    <input type="text" name="value" class="form-control metafield-value-input" value="{{value}}" placeholder="{{i18n 'productDetail.detailsInfo' 'Detail information'}}"/>
+  </form>
 </template>

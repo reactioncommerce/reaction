@@ -14,5 +14,10 @@ ReactionCore.registerPackage({
     icon: "fa fa-language",
     priority: 2,
     container: "utilities"
+  }, {
+    provides: "settings",
+    template: "i18nSettings",
+    label: "Localization and i18n",
+    container: "reaction-i18n"
   }]
 });

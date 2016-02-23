@@ -11,9 +11,9 @@
   <div class="nav nav-settings">
     <div class="nav-settings-heading">
       <h3 class="nav-settings-title">
-        <span>
-          {{i18n registry.i18nKeyLabel ""}}
-        </span>
+        {{#with registry}}
+         <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+        {{/with}}
         {{> Template.dynamic template=settingsHeaderControls}}
       </h3>
     </div>

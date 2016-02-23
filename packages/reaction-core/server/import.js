@@ -305,24 +305,15 @@ ReactionImport.translation = function (key, translation) {
 // See reaction-i18n/server/import.js
 //
 
-// /**
-//  * @summary Store a shop in the import buffer.
-//  * @param {Object} key A key to look up the shop
-//  * @param {Object} shop The shop data to be updated
-//  * @returns {Object} this shop
-//  */
-// ReactionImport.shop = function (key, shop) {
-//   let json;
-//
-//   shop.languages = shop.languages || [{
-//     i18n: "en"
-//   }];
-//   for (let language of shop.languages) {
-//     json = Assets.getText("{reactioncommerce:reaction-i18n}private/data/i18n/" + language.i18n + ".json");
-//     this.process(json, ["i18n"], ReactionImport.translation);
-//   }
-//   return this.object(ReactionCore.Collections.Shops, key, shop);
-// };
+/**
+ * @summary Store a shop in the import buffer.
+ * @param {Object} key A key to look up the shop
+ * @param {Object} shop The shop data to be updated
+ * @returns {Object} this shop
+ */
+ReactionImport.shop = function (key, shop) {
+  return this.object(ReactionCore.Collections.Shops, key, shop);
+};
 
 /**
  * @summary Store shipping in the import buffer.
@@ -357,18 +348,20 @@ ReactionImport.object = function (collection, key, object) {
   check(object, Object);
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
+  // hooks for additional import manipulation.
+  const importObject = ReactionCore.Hooks.Events.run(`onImport${this._name(collection)}`, object);
   // Clean and validate the object.
-  collection.simpleSchema().clean(object);
-  this.context(collection).validate(object, {});
+  collection.simpleSchema().clean(importObject);
+  this.context(collection).validate(importObject, {});
   // Upsert the object.
   let find = this.buffer(collection).find(key);
   if (this._upsert()) {
     find.upsert().update({
-      $set: object
+      $set: importObject
     });
   } else {
     find.upsert().update({
-      $setOnInsert: object
+      $setOnInsert: importObject
     });
   }
   if (this._count[this._name(collection)]++ >= this._limit) {

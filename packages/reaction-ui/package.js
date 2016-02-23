@@ -44,7 +44,7 @@ Package.onUse(function (api) {
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-schemas@2.0.1");
+  api.use("reactioncommerce:reaction-schemas@2.0.2");
 
   api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");

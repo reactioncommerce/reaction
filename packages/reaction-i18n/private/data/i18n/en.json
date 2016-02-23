@@ -63,6 +63,8 @@
         "guests": "Guests"
       },
       "app": {
+        "add": "Add",
+        "editMode": "Edit mode",
         "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
@@ -187,6 +189,20 @@
         "deleteProduct": "Delete Product",
         "publish": "Publish",
         "moreOptions": "More Options"
+      },
+      "productVariant": {
+        "inventoryQuantity": "Quantity",
+        "title": "Label",
+        "price": "Price",
+        "optionTitle": "Option",
+        "barcode": "Barcode",
+        "compareAtPrice": "Price (MSRP)",
+        "fulfillmentService": "Fulfillment service",
+        "weight": "Weight",
+        "taxable": "Taxable",
+        "inventoryManagement": "Inventory tracking",
+        "inventoryPolicy": "Deny when out of stock",
+        "lowInventoryWarningThreshold": "Warn @"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",
@@ -330,6 +346,7 @@
         "currencyTooltip": "Shop default currency",
         "baseUOM": "Base Unit of Measure",
         "addressBook": {
+          "company": "Company",
           "country": "Country",
           "fullName": "Full name",
           "address1": "Address",
