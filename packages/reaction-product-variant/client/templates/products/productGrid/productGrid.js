@@ -43,7 +43,7 @@ Template.productGrid.onCreated(function () {
     if (tagId) {
       const tag = ReactionCore.Collections.Tags.findOne({ slug: tagId }) || ReactionCore.Collections.Tags.findOne(tagId);
       if (tag) {
-        ReactionFiltration.update('tag', tag._id);
+        ReactionFiltration.update("tag", tag._id);
       } else {
         // TODO: show notFound template
       }

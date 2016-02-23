@@ -61,19 +61,19 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
 
       // filter by query
       if (productFilters.query) {
-        let cond = {$regex: productFilters.query, $options: 'i'};
-        _.extend(selector, {$or: [{'title': cond}, {'pageTitle': cond}, {'description': cond}]});
+        let cond = {$regex: productFilters.query, $options: "i"};
+        _.extend(selector, {$or: [{title: cond}, {pageTitle: cond}, {description: cond}]});
       }
 
       // filter by details
       if (productFilters.details) {
-        _.extend(selector, {metafields: {$elemMatch: {key: {$regex: productFilters.details.key, $options: 'i'},
-          value: {$regex: productFilters.details.value, $options: 'i'}}}});
+        _.extend(selector, {metafields: {$elemMatch: {key: {$regex: productFilters.details.key, $options: "i"},
+          value: {$regex: productFilters.details.value, $options: "i"}}}});
       }
 
       // filter by visibility
       if (productFilters.visibility !== undefined) {
-        _.extend(selector, {'isVisible': productFilters.visibility});
+        _.extend(selector, {isVisible: productFilters.visibility});
       }
 
       // filter by price
@@ -87,7 +87,6 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
         _.extend(selector, {variants: {$elemMatch: {weight: {$gte: productFilters.weight.min,
           $lte: productFilters.weight.max}}}});
       }
-
     }
 
     // products are always visible to owners
@@ -98,7 +97,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
     ReactionCore.Log.debug("Products publication limit", productScrollLimit);
     ReactionCore.Log.debug("Products publication selector", EJSON.stringify(selector));
 
-    Counts.publish(this, 'Products', Products.find(selector), {noReady: true});
+    Counts.publish(this, "Products", Products.find(selector), {noReady: true});
     return Products.find(selector, {
       sort: sort,
       limit: limit
