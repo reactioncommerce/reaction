@@ -6,7 +6,6 @@ describe("Product", function () {
     Tracker.afterFlush(done);
   });
 
-  beforeEach(waitForRouter);
   // TODO: Tags should equal current Tag
   // TOOO: Goto Tag, Check for visibility of product
   describe("create", function () {

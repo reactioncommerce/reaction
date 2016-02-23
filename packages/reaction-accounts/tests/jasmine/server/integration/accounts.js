@@ -609,11 +609,11 @@ describe("Account Meteor method ", function () {
       // create user
       expect(function () {
         return Meteor.call("accounts/inviteShopMember", shopId,
-          fakeUser.emails[0].address, fakeUser.profile.name);
+          fakeUser.emails[0].address, fakeUser.profile.addressBook[0].fullName);
       }).toThrow(new Meteor.Error(403, "Access denied"));
       // expect that createUser shouldnt have run
       expect(Accounts.createUser).not.toHaveBeenCalledWith({
-        username: fakeUser.profile.name
+        username: fakeUser.profile.addressBook[0].fullName
       });
       return done();
     });
@@ -626,7 +626,7 @@ describe("Account Meteor method ", function () {
         return Meteor.call("accounts/inviteShopMember",
           shopId,
           fakeUser.emails[0].address,
-          fakeUser.profile.name);
+          fakeUser.profile.addressBook[0].fullName);
       }).not.toThrow(new Meteor.Error(403, "Access denied"));
       // expect(Email.send).toHaveBeenCalled();
       return done();

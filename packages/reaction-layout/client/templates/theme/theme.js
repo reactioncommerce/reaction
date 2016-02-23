@@ -2,8 +2,7 @@
 
 Meteor.startup(() => {
   Tracker.autorun(() => {
-    const subscription = Meteor.subscribe("Shops");
-
+    const subscription = ReactionCore.Subscriptions.Shops;
     if (subscription.ready()) {
       const shop = ReactionCore.Collections.Shops.findOne({});
 

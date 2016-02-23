@@ -127,3 +127,24 @@ ReactionCore.Schemas.Payment = new SimpleSchema({
     optional: true
   }
 });
+
+ReactionCore.Schemas.Refund = new SimpleSchema({
+  type: {
+    type: String
+  },
+  amount: {
+    type: Number,
+    decimal: true
+  },
+  created: {
+    type: Number
+  },
+  currency: {
+    type: String
+  },
+  raw: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  }
+});
