@@ -85,10 +85,11 @@
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
         "print": "Распечатать",
-        "notFound": "Страница не найдена.",
+        "notFound": "This page was not found.",
+        "pageNotFound": "This page was not found.",
         "notFoundTitle": "Ой!",
         "notFoundError": "Страница, которую вы запрашиваете, не найдена.",
-        "productNotFound": "Продукт не найден.",
+        "productNotFound": "This product was not found.",
         "loadMoreProducts": "Загрузить больше продуктов"
       },
       "shopSettings": {
@@ -263,6 +264,7 @@
         "addtracking": "Добавить трэкинг",
         "shipmentEmpty": "Эта доставка не содержит товаров",
         "shipmentPacked": "Все товары запакованы",
+        "shipped": "Доставлено",
         "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
       },

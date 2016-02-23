@@ -41,7 +41,9 @@
           "socialLabel": "Social",
           "socialDescription": "Social Channel configuration",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments"
+          "stripeDescription": "Stripe payments",
+          "filtrationLabel": "Filtration",
+          "filtrationDescription": "Products filtration for Reaction"
         },
         "settings": {
           "accountSettingsLabel": "Account Settings",
@@ -84,6 +86,7 @@
         "dashboard": "Dashboard",
         "print": "Print",
         "notFound": "This page was not found.",
+        "pageNotFound": "This page was not found.",
         "notFoundTitle": "Oops!",
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
@@ -249,6 +252,7 @@
         "addtracking": "Add Tracking",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
+        "shipped": "Shipped",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
       },
