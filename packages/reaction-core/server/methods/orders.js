@@ -580,6 +580,7 @@ Meteor.methods({
       if (error) {
         future.return(error);
       } else {
+        check(result, [ReactionCore.Schemas.Refund]);
         future.return(result);
       }
     });

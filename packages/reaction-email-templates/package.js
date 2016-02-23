@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.2");
   api.use("ecmascript");
   api.use("check");
-  api.use("reactioncommerce:reaction-collections@2.0.0");
+  api.use("reactioncommerce:reaction-collections@2.0.1");
   api.use("meteorhacks:ssr@2.2.0");
   api.imply("meteorhacks:ssr");
 

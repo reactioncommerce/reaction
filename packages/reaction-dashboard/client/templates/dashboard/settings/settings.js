@@ -8,12 +8,7 @@ Template.settingsHeader.helpers({
    * @return {Object} Registry entry for item
    */
   registry: function () {
-    // just some handle little helpers for default package i18nKey/i18nLabel
-    let registry = ReactionCore.getActionView() || {};
-    registry.nameSpace = registry.name || registry.template || "app";
-    registry.i18nLabel = registry.label || registry.provides || "Settings";
-    registry.i18nKey = registry.nameSpace.toCamelCase() + "." + registry.i18nLabel.toCamelCase();
-    return registry;
+    return ReactionCore.getActionView() || {};
   },
 
   /**
