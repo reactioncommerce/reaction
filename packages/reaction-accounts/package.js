@@ -33,6 +33,7 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base@1.2.2");
   api.use("accounts-password@1.1.4");
+  api.use("service-configuration");
   api.use("jparker:gravatar@0.4.1");
   api.use("reactioncommerce:core@0.12.0");
 
