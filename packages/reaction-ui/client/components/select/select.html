@@ -13,22 +13,27 @@
 </template>
 
 <template name="selectAsRadioButtons">
-  {{#each option in options}}
-    <div class="rui item">
-      <label>
-        {{> Template.dynamic template=optionTemplate data=option}}
-        <input type="radio" name="navbarBrand" value={{option._id}} {{checked option}}>
-      </label>
-    </div>
-  {{/each}}
+  <div class="rui items flex quarter">
+    {{#each option in options}}
+      <div class="rui item">
+        <label>
+          {{> Template.dynamic template=optionTemplate data=option}}
+          <input type="radio" name="navbarBrand" value={{option._id}} {{checked option}}>
+        </label>
+      </div>
+    {{/each}}
+  </div>
 </template>
 
 <template name="selectAsCheckboxes">
-  <div class="rui select">
-    <select name="{{name}}">
-      {{#each option in options}}
-        <option value="{{option.value}}">{{option.label}}</option>
-      {{/each}}
-    </select>
+  <div class="rui items flex quarter">
+    {{#each option in options}}
+      <div class="rui item">
+        <label>
+          <input type="checkbox" name="navbarBrand" value={{option._id}} {{checked option}}>
+          {{> Template.dynamic template=optionTemplate data=option}}
+        </label>
+      </div>
+    {{/each}}
   </div>
 </template>

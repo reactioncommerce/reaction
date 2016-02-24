@@ -33,9 +33,27 @@ Template.select.helpers({
 });
 
 /**
- * Select (As a set of Radio Buttons) - helpers
+ * Select (As a set of radio buttons) - helpers
  */
 Template.selectAsRadioButtons.helpers({
+  /**
+   * checked attribute helper
+   * @param  {Object} option Option object
+   * @return {String|undefined} returns "chekced" if selected, undefined otherwise
+   */
+  checked(option) {
+    const data = Template.currentData();
+
+    if (data.selected === option[data.key || "_id"]) {
+      return "checked";
+    }
+  }
+});
+
+/**
+ * Select (As a set of checkboxes) - helpers
+ */
+Template.selectAsCheckboxes.helpers({
   /**
    * checked attribute helper
    * @param  {Object} option Option object
