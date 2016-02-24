@@ -551,5 +551,33 @@ Meteor.methods({
       }
     });
     return shopWorkflows;
+  },
+
+  /**
+   * shop/updateBrandAsset
+   * @param {Object} asset - brand asset {mediaId: "", type, ""}
+   * @return {Int} returns update result
+   */
+  "shop/updateBrandAssets": function (asset) {
+    check(asset, {
+      mediaId: String,
+      type: String
+    });
+    // must have core permissions
+    if (!ReactionCore.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+    return ReactionCore.Collections.Shops.update({
+      "_id": ReactionCore.getShopId(),
+      "brandAssets.type": "navbarBrandImage"
+    }, {
+      $set: {
+        "brandAssets.$": {
+          mediaId: asset.mediaId,
+          type: asset.type
+        }
+      }
+    });
   }
 });

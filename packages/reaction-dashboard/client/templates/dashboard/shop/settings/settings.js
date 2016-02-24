@@ -1,48 +1,68 @@
-let Media = ReactionCore.Collections.Media;
-
-/**
- * uploadHandler method
- */
-
-function uploadHandler(event) {
-  const productId = ReactionProduct.selectedProductId();
-  const variantId = ReactionProduct.selectedVariantId();
-  const shopId = ReactionCore.getShopId();
-  const userId = Meteor.userId();
-  let count = Media.find({
-    "metadata.variantId": variantId
-  }).count();
-
-  return FS.Utility.eachFile(event, function (file) {
-    let fileObj;
-    fileObj = new FS.File(file);
-    fileObj.metadata = {
-      type: "siteLogo",
-      ownerId: userId,
-      shopId: shopId,
-      priority: count
-    };
-    const result = Media.insert(fileObj);
-    return count++;
-  });
-}
-
-Template.shopSettings.events({
-  "change #files": uploadHandler,
-  "dropped #dropzone": uploadHandler
-});
+const Media = ReactionCore.Collections.Media;
 
 /**
  * shopSettings helpers
  *
  */
 Template.shopSettings.helpers({
-  siteLogos() {
+  brandImageSelectProps() {
     const media = ReactionCore.Collections.Media.find({
-      "metadata.type": "siteLogo"
+      "metadata.type": "brandAsset"
     });
-    return media;
+
+    const shop = ReactionCore.Collections.Shops.findOne({
+      "_id": ReactionCore.getShopId(),
+      "brandAssets.type": "navbarBrandImage"
+    });
+
+    let selectedMediaId;
+    if (_.isArray(shop.brandAssets)) {
+      selectedMediaId = shop.brandAssets[0].mediaId;
+    }
+
+    return {
+      type: "radio",
+      options: media,
+      key: "_id",
+      optionTemplate: "shopBrandImage",
+      selected: selectedMediaId,
+      onSelect(value) {
+        const asset = {
+          mediaId: value,
+          type: "navbarBrandImage"
+        };
+
+        Meteor.call("shop/updateBrandAssets", asset, (error, result) => {
+          if (error) {
+            // Display Error
+            return Alerts.toast("Couldn't update brand asset.", "error");
+          }
+
+          if (result === 1) {
+            Alerts.toast("Updated brand asset", "success");
+          }
+        });
+      }
+    };
   },
+
+  handleFileUpload() {
+    const userId = Meteor.userId();
+    const shopId = ReactionCore.getShopId();
+
+    return (files) => {
+      for (let file of files) {
+        file.metadata = {
+          type: "brandAsset",
+          ownerId: userId,
+          shopId: shopId
+        };
+
+        Media.insert(file);
+      }
+    };
+  },
+
   shop: function () {
     return ReactionCore.Collections.Shops.findOne();
   },
