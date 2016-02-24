@@ -41,7 +41,7 @@ ReactionRegistry.loadSettings = function (json) {
       //
       // insert into the Packages collection
       if (exists) {
-        result = ReactionCore.Collections.Packages.upsert({
+        ReactionCore.Collections.Packages.upsert({
           name: item.name
         }, {
           $set: {
