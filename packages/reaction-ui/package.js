@@ -50,6 +50,7 @@ Package.onUse(function (api) {
   api.addFiles("lib/client.browserify.js", "client");
 
   api.addFiles("client/components/components.jsx", "client");
+  api.addFiles("client/components/button/button.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
@@ -74,8 +75,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/popover/popover.less", "client");
   api.addFiles("client/components/tooltip/tooltip.less", "client");
 
+  api.addFiles("client/components/textfield/textfield.jsx", "client");
   api.addFiles("client/components/textfield/textfield.html", "client");
   api.addFiles("client/components/textfield/textfield.less", "client");
+  api.export("TextField");
 
   api.addFiles("client/components/metadata/metadata.jsx", "client");
   api.addFiles("client/components/metadata/metadata.less", "client");
@@ -87,8 +90,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/media/media.jsx", "client");
   api.addFiles("client/components/media/media.less", "client");
 
+  api.addFiles("client/components/tags/tag.jsx", "client");
   api.addFiles("client/components/tags/tagItem.html", "client");
   api.addFiles("client/components/tags/tagItem.js", "client");
+  api.addFiles("client/components/tags/tags.jsx", "client");
   api.addFiles("client/components/tags/tagList.html", "client");
   api.addFiles("client/components/tags/tagList.js", "client");
   api.addFiles("client/components/tags/tags.less", "client");
