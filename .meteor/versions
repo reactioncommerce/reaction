@@ -146,7 +146,7 @@ reactioncommerce:reaction-analytics@1.2.3
 reactioncommerce:reaction-analytics-libs@1.1.0
 reactioncommerce:reaction-auth-net@0.6.0
 reactioncommerce:reaction-braintree@1.5.3
-reactioncommerce:reaction-catalog@0.2.0
+reactioncommerce:reaction-catalog@0.2.1
 reactioncommerce:reaction-checkout@1.0.0
 reactioncommerce:reaction-collections@2.0.1
 reactioncommerce:reaction-dashboard@1.0.0
