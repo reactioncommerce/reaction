@@ -23,15 +23,15 @@ ReactionRouter.notFound = {
  * @param  {[type]} registryItem [registry object]
  * @return {String}              [route name]
  */
-ReactionRouter.getRouteName = (packageName, registryItem) => {
+const getRegistryRouteName = (packageName, registryItem) => {
   let routeName;
   if (packageName && registryItem) {
     if (registryItem.name) {
-      routeName = `${registryItem.name}`;
+      routeName = registryItem.name;
     } else if (registryItem.template) {
       routeName = `${packageName}/${registryItem.template}`;
     } else {
-      routeName = `${packageName}`;
+      routeName = packageName;
     }
     // dont include params in the name
     routeName = routeName.split(":")[0];
@@ -86,7 +86,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
           let options = {};
           let routeName;
 
-          routeName = ReactionRouter.getRouteName(pkg.name, registryItem);
+          routeName = getRegistryRouteName(pkg.name, registryItem);
           // check route permissions
           if (ReactionCore.hasPermission(routeName, userId) || ReactionCore.hasPermission(route, userId)) {
             options.template = template;
