@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Catalog",
   name: "reactioncommerce:reaction-catalog",
-  version: "0.2.0",
+  version: "0.2.1",
   git: "https://github.com/reactioncommerce/reaction-catalog.git"
 });
 
@@ -26,14 +26,14 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.3");
+  api.use("sanjo:jasmine@0.21.0");
   api.use("random");
   api.use("underscore");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("reactioncommerce:reaction-collections@2.0.0");
-  api.use("reactioncommerce:reaction-factories@0.3.7");
+  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-factories@0.4.0");
   api.use("reactioncommerce:core@0.12.0");
   api.use("reactioncommerce:reaction-catalog");
 
