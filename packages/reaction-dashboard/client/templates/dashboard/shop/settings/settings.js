@@ -1,5 +1,51 @@
 const Media = ReactionCore.Collections.Media;
 
+Template.shopBrandImageOption.helpers({
+  cardProps(data) {
+    let props = {
+      controls: []
+    };
+
+    // Show the delete button for brand assets that are not enabled.
+    // This will prevent users from deleting assets that are being used at the moment.
+    if (!data.selected) {
+      props.controls.push({
+        icon: "trash-o",
+        onClick() {
+          Media.remove(data._id);
+        }
+      });
+    }
+
+    // Add the enable / disable toggle button
+    props.controls.push({
+      icon: "circle",
+      onIcon: "check",
+      toggle: true,
+      toggleOn: data.selected,
+      onClick() {
+        const asset = {
+          mediaId: data._id,
+          type: "navbarBrandImage"
+        };
+
+        Meteor.call("shop/updateBrandAssets", asset, (error, result) => {
+          if (error) {
+            // Display Error
+            return Alerts.toast("Couldn't update brand asset.", "error");
+          }
+
+          if (result === 1) {
+            Alerts.toast("Updated brand asset", "success");
+          }
+        });
+      }
+    });
+
+    return props;
+  }
+});
+
 /**
  * shopSettings helpers
  *
@@ -24,8 +70,9 @@ Template.shopSettings.helpers({
       type: "radio",
       options: media,
       key: "_id",
-      optionTemplate: "shopBrandImage",
+      optionTemplate: "shopBrandImageOption",
       selected: selectedMediaId,
+      hideControl: true,
       onSelect(value) {
         const asset = {
           mediaId: value,

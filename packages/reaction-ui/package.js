@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.5.0",
+  version: "0.6.0",
   documentation: "README.md"
 });
 
@@ -56,6 +56,8 @@ Package.onUse(function (api) {
 
   api.addFiles("client/components/cards/cardGroup.html", "client");
   api.addFiles("client/components/cards/cardGroup.less", "client");
+  api.addFiles("client/components/cards/cards.html", "client");
+  api.addFiles("client/components/cards/cards.js", "client");
   api.addFiles("client/components/cards/cards.less", "client");
 
   api.addFiles("client/components/sortable/sortable.jsx", "client");

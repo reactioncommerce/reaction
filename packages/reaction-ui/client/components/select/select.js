@@ -1,3 +1,5 @@
+const classnames = ReactionUI.Lib.classnames;
+
 /**
  * Select - onCreated
  */
@@ -36,6 +38,26 @@ Template.select.helpers({
  * Select (As a set of radio buttons) - helpers
  */
 Template.selectAsRadioButtons.helpers({
+  className() {
+    const instance = Template.instance();
+    const data = instance.data;
+
+    const classes = classnames({
+      hidden: data.hideControl
+    });
+
+    return classes;
+  },
+
+  templateData(option) {
+    const instance = Template.instance();
+    const data = instance.data;
+
+    return {
+      selected: data.selected === option[data.key || "_id"],
+      option
+    }
+  },
   /**
    * checked attribute helper
    * @param  {Object} option Option object

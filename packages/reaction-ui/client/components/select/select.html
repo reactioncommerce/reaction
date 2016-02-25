@@ -17,8 +17,14 @@
     {{#each option in options}}
       <div class="rui item">
         <label>
-          {{> Template.dynamic template=optionTemplate data=option}}
-          <input type="radio" name="navbarBrand" value={{option._id}} {{checked option}}>
+          {{> Template.dynamic template=optionTemplate data=(templateData option)}}
+          <input
+            type="radio"
+            name="navbarBrand"
+            value={{option._id}}
+            {{checked option}}
+            class={{className}}
+          >
         </label>
       </div>
     {{/each}}

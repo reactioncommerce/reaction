@@ -1,7 +1,12 @@
-<template name="shopBrandImage">
-  <div class="rui brand">
-    <img src="{{url}}" width="50">
-  </div>
+<template name="shopBrandImageOption">
+  <img src="{{url}}" width="100%">
+  {{#card (cardProps this)}}
+    {{#with option}}
+      <div class="rui brand">
+        <img src="{{url}}" width="100%">
+      </div>
+    {{/with}}
+  {{/card}}
 </template>
 
 <template name="shopSettings">
