@@ -7,15 +7,16 @@ Package.describe({
 
 Npm.depends({
   "classnames": "2.2.3",
+  "react-textarea-autosize": "3.3.0",
   "react-color": "1.3.6",
   "sortablejs": "1.4.2",
+  "react-dom": "0.14.7",
   "postcss": "5.0.14",
   "postcss-js": "0.1.1",
   "autoprefixer": "6.3.1",
   "css-annotation": "0.6.2",
   "tether-drop": "1.4.2",
   "tether-tooltip": "1.2.0"
-  // "react-anything-sortable": "1.0.0"
 });
 
 Package.onUse(function (api) {
