@@ -49,6 +49,8 @@ Package.onUse(function (api) {
   api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");
 
+  api.addFiles("client/helpers/helpers.js", "client");
+
   api.addFiles("client/components/components.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");

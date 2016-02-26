@@ -6,26 +6,15 @@ Template.shopBrandImageOption.helpers({
       controls: []
     };
 
-    // Show the delete button for brand assets that are not enabled.
-    // This will prevent users from deleting assets that are being used at the moment.
-    if (!data.selected) {
-      props.controls.push({
-        icon: "trash-o",
-        onClick() {
-          Media.remove(data._id);
-        }
-      });
-    }
-
     // Add the enable / disable toggle button
     props.controls.push({
-      icon: "circle",
-      onIcon: "check",
+      icon: "square-o",
+      onIcon: "check-square-o",
       toggle: true,
       toggleOn: data.selected,
       onClick() {
         const asset = {
-          mediaId: data._id,
+          mediaId: data.option._id,
           type: "navbarBrandImage"
         };
 
@@ -41,6 +30,24 @@ Template.shopBrandImageOption.helpers({
         });
       }
     });
+
+    // Show the delete button for brand assets that are not enabled.
+    // This will prevent users from deleting assets that are being used at the moment.
+    if (!data.selected) {
+      props.controls.push({
+        icon: "trash-o",
+        onClick() {
+          Alerts.alert({
+            title: "Remove this brand image?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Remove"
+          }, () => {
+            Media.findOne(data.option._id).remove();
+          });
+        }
+      });
+    }
 
     return props;
   }
@@ -72,7 +79,10 @@ Template.shopSettings.helpers({
       key: "_id",
       optionTemplate: "shopBrandImageOption",
       selected: selectedMediaId,
-      hideControl: true,
+      classNames: {
+        itemList: {half: true},
+        input: {hidden: true}
+      },
       onSelect(value) {
         const asset = {
           mediaId: value,

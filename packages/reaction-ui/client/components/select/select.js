@@ -1,4 +1,4 @@
-const classnames = ReactionUI.Lib.classnames;
+const templateClassName = ReactionUI.Helpers.templateClassName;
 
 /**
  * Select - onCreated
@@ -38,15 +38,28 @@ Template.select.helpers({
  * Select (As a set of radio buttons) - helpers
  */
 Template.selectAsRadioButtons.helpers({
-  className() {
-    const instance = Template.instance();
-    const data = instance.data;
+  itemListClassName() {
+    return templateClassName(Template.instance(), {
+      rui: true,
+      items: true,
+      flex: true,
+      quarter: true
+    }, "itemList");
+  },
 
-    const classes = classnames({
-      hidden: data.hideControl
-    });
+  itemClassName() {
+    return templateClassName(Template.instance(), {
+      rui: true,
+      item: true
+    }, "item");
+  },
 
-    return classes;
+  labelClassName() {
+    return templateClassName(Template.instance(), undefined, "label");
+  },
+
+  inputClassName() {
+    return templateClassName(Template.instance(), undefined, "input");
   },
 
   templateData(option) {
@@ -56,7 +69,7 @@ Template.selectAsRadioButtons.helpers({
     return {
       selected: data.selected === option[data.key || "_id"],
       option
-    }
+    };
   },
   /**
    * checked attribute helper

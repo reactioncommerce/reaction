@@ -13,17 +13,17 @@
 </template>
 
 <template name="selectAsRadioButtons">
-  <div class="rui items flex quarter">
+  <div class="{{itemListClassName}}">
     {{#each option in options}}
-      <div class="rui item">
-        <label>
+      <div class="{{itemClassName}}">
+        <label class="{{labelClassName}}">
           {{> Template.dynamic template=optionTemplate data=(templateData option)}}
           <input
             type="radio"
             name="navbarBrand"
             value={{option._id}}
             {{checked option}}
-            class={{className}}
+            class={{inputClassName}}
           >
         </label>
       </div>
