@@ -1,12 +1,12 @@
 const Items = ReactionUI.Components.Items;
 const classnames = ReactionUI.Lib.classnames;
 
-class Seperator extends React.Component {
+class Separator extends React.Component {
 
   render() {
     const classes = classnames({
       rui: true,
-      seperator: true,
+      separator: true,
       labeled: this.props.label
     });
 
@@ -27,4 +27,4 @@ class Seperator extends React.Component {
   }
 }
 
-ReactionUI.Components.Seperator = Seperator;
+ReactionUI.Components.Separator = Separator;

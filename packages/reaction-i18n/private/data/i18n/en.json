@@ -63,6 +63,7 @@
         "guests": "Guests"
       },
       "app": {
+        "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
@@ -76,6 +77,7 @@
         "settings": "Settings",
         "loading": "Loading",
         "toggle": "Toggle",
+        "toggleEditMode": "Toggle Edit Mode",
         "warning": "Oops!",
         "unauthorizedMessage": "You don't have permission to view this content.",
         "monthOptions": "Choose month",

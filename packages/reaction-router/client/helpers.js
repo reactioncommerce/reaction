@@ -12,8 +12,8 @@ BlazeLayout.setRoot("body");
  */
 ReactionRouter.pathFor = pathFor = (path, options = {}) => {
   // let {params, query} = options;
-  let params = options.hash;
-  let query = options.hash.query ? ReactionRouter._qs.parse(options.hash.query) : {};
+  let params = options.hash || {};
+  let query = params.query ? ReactionRouter._qs.parse(params.query) : {};
   let route = ReactionRouter.path(path, params, query);
   // console.log(`Requested path for ${path} and returned route: ${route}`);
   return route;
@@ -30,13 +30,13 @@ Template.registerHelper("urlFor", (path, params) => {
 });
 
 /**
- * active
+ * isActive
  * @summary general helper to return "active" when on current path
  * @example {{active "name"}}
  * @param {String} routeName - route name as defined in registry
  * @return {String} return "active" or null
  */
-Template.registerHelper("active", (routeName) => {
+ReactionRouter.isActiveClassName = (routeName) => {
   ReactionRouter.watchPathChange();
   const group = ReactionRouter.current().route.group;
   let prefix;
@@ -48,4 +48,6 @@ Template.registerHelper("active", (routeName) => {
   const path = ReactionRouter.current().route.path;
   const routeDef = path.replace(prefix + "/", "");
   return routeDef === routeName ? "active" : "";
-});
+};
+
+Template.registerHelper("active", ReactionRouter.isActiveClassName);
