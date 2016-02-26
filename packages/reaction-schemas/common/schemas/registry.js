@@ -38,6 +38,10 @@ ReactionCore.Schemas.Registry = new SimpleSchema({
     type: String,
     optional: true
   },
+  layout: {
+    type: String,
+    optional: true
+  },
   triggersEnter: {
     label: "Trigger on Entry",
     type: [String],
