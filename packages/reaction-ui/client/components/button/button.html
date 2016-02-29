@@ -30,10 +30,13 @@
 
 <template name="uiButtonElement">
   <button
+    href="#"
     type="{{type}}"
     class="rui button btn btn-{{status}} {{className}}"
     data-event-action="{{title}}">
-    {{> Template.contentBlock}}
+    <div class="contents">
+      {{> Template.contentBlock}}
+    </div>
   </button>
 </template>
 

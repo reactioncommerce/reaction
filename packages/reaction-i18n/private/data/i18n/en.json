@@ -44,6 +44,7 @@
           "stripeDescription": "Stripe payments"
         },
         "settings": {
+          "addShopMemberLabel": "Add Shop Member",
           "accountSettingsLabel": "Account Settings",
           "authorizenetSettingsLabel": "Authorize.net Settings",
           "braintreeSettingsLabel": "Braintree Settings",
