@@ -69,7 +69,7 @@ Template.shopSettings.helpers({
     });
 
     let selectedMediaId;
-    if (_.isArray(shop.brandAssets)) {
+    if (shop && _.isArray(shop.brandAssets)) {
       selectedMediaId = shop.brandAssets[0].mediaId;
     }
 
