@@ -4,7 +4,7 @@
  *  we check to see if the number of packages have changed against current data
  *  if there is a change, we'll either insert or upsert package registry
  *  into the Packages collection
- *  @see: https://github.com/reactioncommerce/reaction/blob/development/docs/developer/packages.md
+ *  import is processed on hook in ReactionCore.init
  *  @return {String} returns insert result
  */
 ReactionRegistry.loadPackages = function () {
@@ -34,9 +34,6 @@ ReactionRegistry.loadPackages = function () {
         ReactionCore.Log.info(`Initializing ${shop.name} ${pkgName}`);
       });
     });
-    // finish package transaction
-    ReactionImport.flush();
-
     //
     // package cleanup
     //

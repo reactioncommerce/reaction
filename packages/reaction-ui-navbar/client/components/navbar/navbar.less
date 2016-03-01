@@ -38,11 +38,6 @@
   color: @white;
 }
 
-.rui.navbar .brand {
-  .flex(0 0 auto);
-  .margin-left(10px);
-}
-
 .rui.navbar .menu {
   .flex(1 1 auto);
   margin: 0 10px;
@@ -74,6 +69,10 @@
 
 .rui.navbar .dropdown a {
   color: @link-color;
+}
+
+.rui.navbar .dropdown .dropdown-menu > .active > a{
+  color: @white;
 }
 
 .rui.navbar .dropdown {

@@ -27,15 +27,12 @@ Package.onUse(function (api) {
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-ui@0.5.0");
+  api.use("reactioncommerce:reaction-ui@0.6.0");
   api.use("reactioncommerce:core-theme@2.0.1");
 
-  // api.addFiles("client/components/components.jsx", "client");
-  // api.addFiles("client/helpers/helpers.js", "client");
-  // api.addFiles("client/helpers/tags.js", "client");
-
-
   api.addFiles("client/components/brand/brand.html", "client");
+  api.addFiles("client/components/brand/brand.js", "client");
+  api.addFiles("client/components/brand/brand.less", "client");
 
   api.addFiles("client/components/i18n/i18n.html", "client");
   api.addFiles("client/components/i18n/i18n.js", "client");
@@ -49,6 +46,4 @@ Package.onUse(function (api) {
 
   // Register Package
   api.addFiles("server/register.js", "server");
-
-  // api.addFiles("client/styles/base.less", "client");
 });

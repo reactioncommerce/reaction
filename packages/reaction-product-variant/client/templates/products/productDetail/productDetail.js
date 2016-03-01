@@ -171,14 +171,14 @@ Template.productDetail.events({
           scrollTop: 0
         }, 0);
         // slide out label
-        let addToCartText = i18n.t("productDetail.addedToCart");
+        let addToCartText = i18next.t("productDetail.addedToCart");
         let addToCartTitle = currentVariant.title || "";
         $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
         return $(".cart-alert").toggle("slide", {
-          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right",
+          direction: i18next.t("languageDirection") === "rtl" ? "left" : "right",
           width: currentVariant.title.length + 50 + "px"
         }, 600).delay(4000).toggle("slide", {
-          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right"
+          direction: i18next.t("languageDirection") === "rtl" ? "left" : "right"
         });
       }
     } else {

@@ -16,6 +16,13 @@ ReactionCore.registerPackage({
     workflow: "coreAccountsWorkflow",
     priority: 1
   }, {
+    label: "Add Shop Member",
+    icon: "fa fa-user-plus",
+    provides: "settings",
+    container: "accounts",
+    template: "memberForm",
+    priority: 2
+  }, {
     label: "Account Settings",
     provides: "settings",
     route: "/dashboard/account/settings",
@@ -50,8 +57,8 @@ ReactionCore.registerPackage({
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",
-      dashboardControls: "accountsDashboardControls",
-      dashboardHeaderControls: "",
+      dashboardControls: "",
+      dashboardHeaderControls: "accountsDashboardControls",
       adminControlsFooter: "adminControlsFooter"
     }
   }]

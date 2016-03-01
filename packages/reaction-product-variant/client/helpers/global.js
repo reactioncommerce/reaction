@@ -54,9 +54,9 @@ ReactionProduct.publishProduct = function (productOrArray) {
         dismissable: false
       };
       if (result === true) {
-        Alerts.add(product.title + " " + i18n.t("productDetail.publishProductVisible"), "success", alertSettings);
+        Alerts.add(product.title + " " + i18next.t("productDetail.publishProductVisible"), "success", alertSettings);
       } else {
-        Alerts.add(product.title + " " + i18n.t("productDetail.publishProductHidden"), "warning", alertSettings);
+        Alerts.add(product.title + " " + i18next.t("productDetail.publishProductHidden"), "warning", alertSettings);
       }
     });
   }
@@ -76,7 +76,7 @@ ReactionProduct.cloneProduct = function (productOrArray) {
       throw new Meteor.Error("error cloning product", error);
     }
     for (let product of products) {
-      Alerts.add(i18n.t("productDetail.clonedAlert") + " " + product.title, "success", {
+      Alerts.add(i18next.t("productDetail.clonedAlert") + " " + product.title, "success", {
         placement: "productGridItem",
         id: product._id,
         autoHide: true,
@@ -119,7 +119,7 @@ ReactionProduct.maybeDeleteProduct = function (productOrArray) {
         throw new Meteor.Error("Error deleting " + title, error);
       } else {
         ReactionRouter.go("/");
-        Alerts.toast(i18n.t("productDetail.deletedAlert") + " " + title, "info");
+        Alerts.toast(i18next.t("productDetail.deletedAlert") + " " + title, "info");
       }
     });
   }

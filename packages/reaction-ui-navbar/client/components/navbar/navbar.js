@@ -20,7 +20,7 @@ Template.CoreNavigationBar.events({
 Template.CoreNavigationBar.helpers({
   onMenuButtonClick() {
     const instance = Template.instance();
-    return (event) => {
+    return () => {
       if (instance.toggleMenuCallback) {
         instance.toggleMenuCallback();
       }

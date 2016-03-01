@@ -6,7 +6,28 @@
  */
 Meteor.publish("Products", function (productScrollLimit, productFilters) {
   check(productScrollLimit, Match.Optional(Number));
-  check(productFilters, Match.Optional(Object));
+  // check(productFilters, Match.Optional(Object));
+  // FIXME: We need to keep an eye on performance degradation with this check
+  // and if it will be visible, I don't need we need this check in this
+  // publication, because where is nothing important in product's data what we
+  // need to protect so much.
+  // Once again: this pub a bottleneck of all Reaction. This place should be as
+  // as fast as possible.
+  check(productFilters, Match.Optional({
+    "shops": Match.Optional([String]),
+    "tag": Match.Optional(String),
+    "query": Match.Optional(String),
+    "visibility": Match.Optional(Boolean),
+    "details": Match.Optional(Object),
+    "details.key": String,
+    "details.value": String,
+    "price": Match.Optional(Object),
+    "price.min": Number,
+    "price.max": Number,
+    "weight": Match.Optional(Object),
+    "weight.min": Number,
+    "weight.max": Number
+  });
 
   let shopAdmin;
   // TODO this limit has another meaning now. We should calculate only objects
@@ -24,11 +45,10 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
     type: "simple"
   };
 
-  if (productFilters) {
-    // handle multiple shops
-    if (productFilters.shops) {
-      check(productFilters.shops, Array);
-      _.extend(selector, {shopId: {$in: productFilters.shops}});
+    if (productFilters) {
+      // handle multiple shops
+      if (productFilters.shops) {
+        _.extend(selector, {shopId: {$in: productFilters.shops}});
 
       // check if this user is a shopAdmin
       for (let thisShopId of productFilters.shops) {
@@ -39,18 +59,48 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
       }
     }
 
-    // filter by tag
-    if (productFilters.tag) {
-      check(productFilters.tag, String);
-      _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
+      // filter by tag
+      if (productFilters.tag) {
+        _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
+      }
+
+      // filter by query
+      if (productFilters.query) {
+        let cond = {$regex: productFilters.query, $options: "i"};
+        _.extend(selector, {$or: [{title: cond}, {pageTitle: cond}, {description: cond}]});
+      }
+
+      // filter by details
+      if (productFilters.details) {
+        _.extend(selector, {metafields: {$elemMatch: {key: {$regex: productFilters.details.key, $options: "i"},
+          value: {$regex: productFilters.details.value, $options: "i"}}}});
+      }
+
+      // filter by visibility
+      if (productFilters.visibility !== undefined) {
+        _.extend(selector, {isVisible: productFilters.visibility});
+      }
+
+      // filter by price
+      if (productFilters.price) {
+        _.extend(selector, {variants: {$elemMatch: {price: {$gte: productFilters.price.min,
+          $lte: productFilters.price.max}}}});
+      }
+
+      // filter by weight
+      if (productFilters.weight) {
+        _.extend(selector, {variants: {$elemMatch: {weight: {$gte: productFilters.weight.min,
+          $lte: productFilters.weight.max}}}});
+      }
     }
-  }
 
   // products are always visible to owners
   if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
     selector.isVisible = true;
   }
 
+  // TODO: What is this for?
+  // Counts.publish(this, "Products", Products.find(selector), {noReady: true});
   return ReactionCore.Collections.Products.find(selector, {
     sort: sort,
     limit: limit
@@ -74,6 +124,7 @@ Meteor.publish("Product", function (productId) {
   if (typeof shop !== "object") {
     return this.ready();
   }
+
   let selector = {};
   selector.isVisible = true;
 
