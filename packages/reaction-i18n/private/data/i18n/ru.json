@@ -24,6 +24,8 @@
           "shippingDescription": "Настройки тарифов по доставке",
           "braintreeLabel": "Braintree",
           "braintreeDescription": "Платежи через Braintree",
+          "catalogLabel": "Каталог",
+          "catalogDescription": "Позволяет создавать простые продукты",
           "coreLabel": "Ядро",
           "coreDescription": "Базовые настройки Reaction",
           "genericPaymentLabel": "Образец платёжной системы",
@@ -44,6 +46,15 @@
           "stripeDescription": "Платежи через Stripe",
           "filtrationLabel": "Фильтрация",
           "filtrationDescription": "Фильтрация продуктов в Reaction"
+        },
+        "groups": {
+          "appearance": "Внешний вид",
+          "connect": "Connect",
+          "core": "Ядро",
+          "dashboard": "Панель управления",
+          "misc": "Разное",
+          "paymentMethod": "Платёжные системы",
+          "utilities": "Утилиты"
         },
         "settings": {
           "accountSettingsLabel": "Настройки учетных записей",

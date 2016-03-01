@@ -24,6 +24,8 @@
           "shippingDescription": "Provide shipping rates",
           "braintreeLabel": "Braintree",
           "braintreeDescription": "Braintree payments",
+          "catalogLabel": "Catalog",
+          "catalogDescription": "Allows to create simple products",
           "coreLabel": "Core",
           "coreDescription": "Reaction core shop configuration",
           "genericPaymentLabel": "Generic Payment",
@@ -44,6 +46,15 @@
           "stripeDescription": "Stripe payments",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
+        },
+        "groups": {
+          "appearance": "Appearance",
+          "connect": "Connect",
+          "core": "Core",
+          "dashboard": "Dashboard",
+          "misc": "Misc",
+          "paymentMethod": "Payment Providers",
+          "utilities": "Utilities"
         },
         "settings": {
           "addShopMemberLabel": "Add Shop Member",
