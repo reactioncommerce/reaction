@@ -10,7 +10,7 @@ ReactionCore.MetaData = {
     ignore: ["viewport", "fragment"]
   },
   render: function () {
-    let metaContent = Blaze.toHTMLWithData(Template.coreHead, ReactionRouter.current().name);
+    let metaContent = Blaze.toHTMLWithData(Template.coreHead, ReactionRouter.getRouteName());
     $("head").append(metaContent);
     return metaContent;
   },

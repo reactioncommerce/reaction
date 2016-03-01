@@ -7,9 +7,8 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   meteor reset "$@"
   rm .meteor/versions 2> /dev/null
-  rm -r client/themes/custom*.less 2> /dev/null
-  rm -r client/themes/bootstrap/custom*.less 2> /dev/null
-  rm -rf $PACKAGE_DIRS/core/lib/bower 2> /dev/null
+  find . -name bower -exec rm -rf {} \;
+  find . -name node_modules -exec rm -rf {} \;
 else
   meteor reset "$@"
 fi

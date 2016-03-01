@@ -18,7 +18,7 @@ Meteor.methods({
     }
 
     // this.unblock();
-    const count =  ReactionCore.Collections.Shops.find().count() || "";
+    const count = ReactionCore.Collections.Shops.find().count() || "";
     const currentUser = Meteor.userId();
     // we'll accept a shop object, or clone the current shop
     shop = shopData || ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
@@ -146,7 +146,9 @@ Meteor.methods({
 
     const field = `currencies.${currency}.rate`;
     const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId(), {
-      fields: { [field]: 1 }
+      fields: {
+        [field]: 1
+      }
     });
 
     return typeof shop.currencies[currency].rate === "number" &&
@@ -202,7 +204,8 @@ Meteor.methods({
 
         // we'll update all the available rates in Shops.currencies whenever we
         // get a rate request, using base currency
-        const rateUrl = `https://openexchangerates.org/api/latest.json?base=${
+        const rateUrl =
+          `https://openexchangerates.org/api/latest.json?base=${
           baseCurrency}&app_id=${openexchangeratesAppId}`;
         let rateResults;
 
@@ -495,39 +498,13 @@ Meteor.methods({
     }
     this.unblock();
     // hide it
-    console.log({ _id: tagId });
-    return ReactionCore.Collections.Tags.update({ _id: tagId }, {
-      $set: { isTopLevel: false }
-    });
-  },
-
-  /**
-   * flushTranslations
-   * @summary Helper method to remove all translations, and reload from jsonFiles
-   * @return {undefined}
-   */
-  "flushTranslations": function () {
-    if (!ReactionCore.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-    ReactionCore.Collections.Translations.remove({});
-    let shopId = ReactionCore.getShopId();
-    let shops = ReactionCore.Collections.Shops.find({_id: shopId}).fetch();
-    // leaving room for potential future of language per shop
-    if (shops) {
-      for (let shop of shops) {
-        if (shop.languages) {
-          for (let language of shop.languages) {
-            json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
-            ReactionImport.process(json, ["i18n"], ReactionImport.translation);
-          }
-        }
+    return ReactionCore.Collections.Tags.update({
+      _id: tagId
+    }, {
+      $set: {
+        isTopLevel: false
       }
-      ReactionImport.flush();
-      ReactionCore.Log.info(Meteor.userId() + " Flushed Translations.");
-      return;
-    }
-    throw new Meteor.Error("No shops found to flush translations for.");
+    });
   },
 
   /**
@@ -551,6 +528,31 @@ Meteor.methods({
       }
     });
     return shopWorkflows;
+  },
+  /**
+   * shop/updateLanguageConfiguration
+   * @summary enable / disable a language
+   * @param {String} language - language name
+   * @param {Boolean} enabled - true / false
+   * @return {Array} returns workflow array
+   */
+  "shop/updateLanguageConfiguration": function (language, enabled) {
+    check(language, String);
+    check(enabled, Boolean);
+    // must have core permissions
+    if (!ReactionCore.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+    return ReactionCore.Collections.Shops.update({
+      "_id": ReactionCore.getShopId(),
+      "languages.i18n": language
+    }, {
+      $set: {
+        "languages.$.enabled": enabled
+      }
+    });
+
   },
 
   /**
@@ -600,5 +602,6 @@ Meteor.methods({
         enabled: !enabled
       }
     });
+
   }
 });

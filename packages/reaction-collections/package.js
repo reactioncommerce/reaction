@@ -16,7 +16,7 @@ Package.onUse(function (api) {
   api.use("ejson");
 
   api.use("amplify@1.0.0");
-  api.use("reactioncommerce:reaction-schemas@2.0.1");
+  api.use("reactioncommerce:reaction-schemas@2.0.2");
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");
@@ -26,7 +26,7 @@ Package.onUse(function (api) {
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("vsivsi:job-collection@1.3.0");
   api.use("ongoworks:security@1.3.0");
-  api.use("ongoworks:bunyan-logger@2.5.0");
+  api.use("ongoworks:bunyan-logger@2.6.1");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
   api.use("tmeasday:publish-counts@0.7.3");

@@ -63,6 +63,8 @@ reactioncommerce:reaction-stripe
 reactioncommerce:reaction-auth-net
 reactioncommerce:reaction-braintree
 
+# Add on community packages
+ramusus:reaction-filtration
 
 # Reaction Commerce Data
 
@@ -74,6 +76,3 @@ reactioncommerce:default-theme          # default Reaction theme
 
 # Forced updates on packages
 mdg:validation-error@0.4.0
-cosmos:browserify@0.9.3
-
-ramusus:reaction-filtration
