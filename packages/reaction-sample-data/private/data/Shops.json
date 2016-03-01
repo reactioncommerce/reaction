@@ -3081,7 +3081,7 @@
       "layoutFooter": "layoutFooter",
       "notFound": "notFound",
       "dashboardHeader": "",
-      "dashboardControls": "dashboardControls",
+      "dashboardControls": "filtrationDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {
@@ -6273,7 +6273,7 @@
       "layoutHeader": "layoutHeader",
       "layoutFooter": "layoutFooter",
       "notFound": "notFound",
-      "dashboardControls": "dashboardControls",
+      "dashboardControls": "filtrationDashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {

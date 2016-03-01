@@ -41,7 +41,9 @@
           "socialLabel": "Социальные сети",
           "socialDescription": "Интеграция с соц. сетями",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Платежи через Stripe"
+          "stripeDescription": "Платежи через Stripe",
+          "filtrationLabel": "Фильтрация",
+          "filtrationDescription": "Фильтрация продуктов в Reaction"
         },
         "settings": {
           "accountSettingsLabel": "Настройки учетных записей",
@@ -524,6 +526,27 @@
           "matchFailed": "Не совпадают",
           "unknownError": "Неизвестная ошибка"
         }
+      },
+      "filtration": {
+        "filters": {
+          "titleLabel": "Название",
+          "titlePlaceholder": "Введите название",
+          "priceLabel": "Цена",
+          "weightLabel": "Вес",
+          "tagLabel": "Тэг",
+          "tagPlaceholder": "Введите тег",
+          "detailsLabel": "Характеристики",
+          "detailNamePlaceholder": "Название",
+          "detailValuePlaceholder": "Значение",
+          "visibilityLabel": "Видимость",
+          "visibilityAny": "Все",
+          "visibilityNotVisible": "Невидимые",
+          "visibilityVisible": "Видимые"
+        },
+        "showFilters": "Показать фильтры",
+        "settings": "Фильтры",
+        "found": "Найдено",
+        "products": "продуктов"
       },
       "error": {
         "nameRequired": "Название обязательно.",
