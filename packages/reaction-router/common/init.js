@@ -63,6 +63,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
   shop.route("/", {
     name: "index",
     action: function () {
+      ReactionFiltration.reset();
       renderLayout();
     }
   });
@@ -79,6 +80,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
           let {
             route,
             template,
+            layout,
             workflow,
             triggersEnter,
             triggersExit
@@ -91,10 +93,12 @@ ReactionRouter.initPackageRoutes = (userId) => {
           if (ReactionCore.hasPermission(routeName, userId) || ReactionCore.hasPermission(route, userId)) {
             options.template = template;
             options.workflow = workflow;
+            options.layout = layout;
           } else {
             // WIP - known issue with auth/login/reload
             options.template = "unauthorized";
             options.workflow = workflow;
+            options.layout = layout;
           }
 
           // define new route
@@ -104,6 +108,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
             options: {
               name: routeName,
               template: options.template,
+              layout: options.layout,
               triggersEnter: triggersEnter,
               triggersExit: triggersExit,
               action: () => {

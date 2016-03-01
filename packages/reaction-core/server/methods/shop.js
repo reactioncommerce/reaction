@@ -552,5 +552,26 @@ Meteor.methods({
         "languages.$.enabled": enabled
       }
     });
+  },
+
+  /**
+   * shop/togglePackage
+   * @summary enable/disable Reaction package
+   * @param {String} packageId - package _id
+   * @param {Boolean} enabled - current package `enabled` state
+   * @return {Number} mongo update result
+   */
+  "shop/togglePackage": function (packageId, enabled) {
+    check(packageId, String);
+    check(enabled, Boolean);
+    if (!ReactionCore.hasAdminAccess()) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    return ReactionCore.Collections.Packages.update(packageId, {
+      $set: {
+        enabled: !enabled
+      }
+    });
   }
 });

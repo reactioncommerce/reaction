@@ -49,7 +49,7 @@ Template.registerHelper("getGravatar", function (currentUser, size) {
     default: "identicon"
   };
   const user = currentUser || Accounts.user();
-  if (typeof user !== "object") return false;
+  if (!user) return false;
   const account = ReactionCore.Collections.Accounts.findOne(user._id);
   // first we check picture exists. Picture has higher priority to display
   if (account && account.profile && account.profile.picture) {
@@ -75,7 +75,7 @@ Template.registerHelper("displayName", function (displayUser) {
 
     // todo: previous check was user.services !== "anonymous", "resume". Is this
     // new check covers previous check?
-    if (Roles.userIsInRole(user._id, "account/profile",
+    if (Roles.userIsInRole(user._id || user.userId, "account/profile",
       ReactionCore.getShopId())) {
       return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
     }
