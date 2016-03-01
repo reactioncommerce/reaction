@@ -135,29 +135,9 @@ Template.productGridItems.events({
   "click .publish-product": function () {
     ReactionProduct.publishProduct(this);
   },
-  "click .clone-product": function () {
-    ReactionProduct.cloneProduct(this);
-  },
   "click .delete-product": function (event) {
     event.preventDefault();
     ReactionProduct.maybeDeleteProduct(this);
-  },
-  "click .pin-product": function (event) {
-    let pin;
-    let position;
-    event.preventDefault();
-    if (this.position.pinned === true) {
-      pin = false;
-    } else {
-      pin = true;
-    }
-    position = {
-      tag: share.tag,
-      pinned: pin,
-      updatedAt: new Date()
-    };
-    Meteor.call("products/updateProductPosition", this._id, position);
-    return Tracker.flush();
   },
   "click .update-product-weight": function (event) {
     let position;

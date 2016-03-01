@@ -24,7 +24,7 @@ Meteor.publish("ShopMembers", function () {
     const publish = {
       fields: {
         _id: 1,
-        email: 1,
+        emails: 1,
         username: 1,
         roles: 1,
         "services.google.name": 1,
