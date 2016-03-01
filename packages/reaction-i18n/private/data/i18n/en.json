@@ -43,9 +43,7 @@
           "socialLabel": "Social",
           "socialDescription": "Social Channel configuration",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments",
-          "filtrationLabel": "Filtration",
-          "filtrationDescription": "Products filtration for Reaction"
+          "stripeDescription": "Stripe payments"
         },
         "groups": {
           "appearance": "Appearance",
@@ -552,27 +550,6 @@
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
-      },
-      "filtration": {
-        "filters": {
-          "titleLabel": "Title",
-          "titlePlaceholder": "Filter by title",
-          "priceLabel": "Price",
-          "weightLabel": "Weight",
-          "tagLabel": "Tag",
-          "tagPlaceholder": "Filter by tag",
-          "detailsLabel": "Details",
-          "detailNamePlaceholder": "Filter by detail name",
-          "detailValuePlaceholder": "Filter by detail value",
-          "visibilityLabel": "Visibility",
-          "visibilityAny": "Any",
-          "visibilityNotVisible": "Not visible",
-          "visibilityVisible": "Visible"
-        },
-        "showFilters": "Show Filters",
-        "settings": "Filters",
-        "found": "Found",
-        "products": "products"
       },
       "error": {
         "nameRequired": "Name is required.",

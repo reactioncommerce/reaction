@@ -36,25 +36,15 @@ function loadMoreProducts() {
 
 Template.productGrid.onCreated(function () {
   Session.set("productGrid/selectedProducts", []);
-  ReactionFiltration.reset();
+
   // Update product subscription
   this.autorun(() => {
-    const tagId = ReactionRouter.getParam("slug");
-    if (tagId) {
-      const tag = ReactionCore.Collections.Tags.findOne({ slug: tagId }) ||
-        ReactionCore.Collections.Tags.findOne(tagId);
-      if (tag) {
-        ReactionFiltration.update("tag", tag._id);
-      } else {
-        // TODO: show notFound template
-      }
-    }
-    Meteor.subscribe("Products", Session.get("productScrollLimit"),
-      Session.get("productFilters"));
+    Meteor.subscribe("Products", Session.get("productScrollLimit"));
   });
 
   this.autorun(() => {
-    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    let isActionViewOpen = ReactionCore.isActionViewOpen();
+
     if (isActionViewOpen === false) {
       Session.set("productGrid/selectedProducts", []);
     }
