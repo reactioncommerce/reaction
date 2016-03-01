@@ -65,7 +65,7 @@ reactioncommerce:reaction-auth-net
 reactioncommerce:reaction-braintree
 
 # Add on community packages
-ramusus:reaction-filtration
+# ramusus:reaction-filtration
 
 # Reaction Commerce Data
 

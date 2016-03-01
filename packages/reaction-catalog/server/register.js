@@ -1,4 +1,3 @@
-// FIXME: Please fix me a good man
 ReactionCore.registerPackage({
   label: "Catalog",
   name: "reaction-catalog",
@@ -10,12 +9,11 @@ ReactionCore.registerPackage({
   registry: [
     {
       provides: "dashboard",
-      // route: "dashboard/catalog",
       label: "Catalog",
-      description: "Allows to create simple product",
+      description: "Product catalog",
       icon: "fa fa-archive",
-      cycle: 1,
-      group: "reaction-catalog"
+      priority: 2,
+      container: "core"
     }/* ,
     {
       label: "Catalog Settings",
