@@ -10,12 +10,19 @@ engines:
     config:
       languages:
         - javascript
+        javascript:
+          mass_threshold: 150
+
   eslint:
     enabled: true
   csslint:
     enabled: false
   fixme:
     enabled: true
+    config:
+      strings:
+      - FIXME
+      - BUG
 ratings:
    paths:
    - "**.js"
