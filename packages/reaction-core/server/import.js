@@ -36,8 +36,7 @@ ReactionImport.startup = function () {
 ReactionImport.load = function (key, object) {
   check(object, Object);
 
-  let collection = this.identify(object);
-  this.object(collection, key, object);
+  this.object(this.identify(object), key, object);
 };
 
 ReactionImport.indication = function (field, collection, probability) {
@@ -165,22 +164,26 @@ ReactionImport.flush = function (collection) {
 /**
  * @summary Get a validation context for a given collection.
  * @param {Mongo.Collection} collection The target collection
+ * @param {Object} [selector] A selector object to retrieve the correct schema.
  * @returns {SimpleSchemaValidationContext} A validation context.
  *
  * The validation context is requested from the schema associated with the
  * collection.
  */
-ReactionImport.context = function (collection) {
+ReactionImport.context = function (collection, selector) {
   check(collection, Mongo.Collection);
+  check(selector, Match.Optional(Object));
 
   // Construct a context identifier.
   let name = this._name(collection);
-
+  if (selector && selector.type) {
+    name = `${name}_${selector.type}`;
+  }
   // Construct a new validation context if necessary.
   if (this._contexts[name]) {
     return this._contexts[name];
   }
-  this._contexts[name] = collection.simpleSchema().newContext();
+  this._contexts[name] = collection.simpleSchema(selector).newContext();
   return this._contexts[name];
 };
 
@@ -222,60 +225,9 @@ ReactionImport.buffer = function (collection) {
  * * Update the variant.
  */
 ReactionImport.product = function (key, product, parent) {
-  let collection = ReactionCore.Collections.Products;
-  if (parent) {
-    ReactionCore.Schemas.ProductVariant.clean(product, {});
-    // Remove variants with the same key from other parents.
-    this.buffer(collection).find({
-      variants: {
-        $elemMatch: key
-      },
-      $nor: [parent]
-    }).update({
-      $pull: {
-        variants: {
-          $elemMatch: key
-        }
-      }
-    });
-    // Make sure the variant exists.
-    query = {
-      $nor: [{
-        variants: {
-          $elemMatch: key
-        }
-      }]
-    };
-    for (let okey of Object.keys(parent)) {
-      query[okey] = parent[okey];
-    }
-    this.buffer(collection).find(query).update({
-      $push: {
-        variants: key
-      }
-    });
-    // Upsert the variant.
-    ReactionCore.Schemas.ProductVariant.clean(product, {});
-    query = {
-      variants: {
-        $elemMatch: key
-      }
-    };
+  check(parent, Object);
 
-    for (let okey of Object.keys(parent)) {
-      query[okey] = parent[okey];
-    }
-    update = {};
-    for (let okey of Object.keys(product)) {
-      update["variants.$." + okey] = product[okey];
-    }
-    this.context(collection).validate(update, {});
-    this.buffer(collection).find(query).update({
-      $set: update
-    });
-  } else {
-    return this.object(ReactionCore.Collections.Products, key, product);
-  }
+  return this.object(ReactionCore.Collections.Products, key, product);
 };
 
 /**
@@ -346,13 +298,16 @@ ReactionImport.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
+
+  let selector = object;
+
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
   // hooks for additional import manipulation.
   const importObject = ReactionCore.Hooks.Events.run(`onImport${this._name(collection)}`, object);
   // Clean and validate the object.
-  collection.simpleSchema().clean(importObject);
-  this.context(collection).validate(importObject, {});
+  collection.simpleSchema(importObject).clean(importObject);
+  this.context(collection, selector).validate(importObject, {});
   // Upsert the object.
   let find = this.buffer(collection).find(key);
   if (this._upsert()) {
@@ -397,7 +352,9 @@ ReactionImport.process = function (json, keys, callback) {
 
 ReactionImport.indication("i18n", ReactionCore.Collections.Translations, 0.2);
 ReactionImport.indication("hashtags", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("variants", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("barcode", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("price", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("ancestors", ReactionCore.Collections.Products, 0.5);
 ReactionImport.indication("languages", ReactionCore.Collections.Shops, 0.5);
 ReactionImport.indication("currencies", ReactionCore.Collections.Shops, 0.5);
 ReactionImport.indication("timezone", ReactionCore.Collections.Shops, 0.5);

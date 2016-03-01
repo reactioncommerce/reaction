@@ -33,13 +33,15 @@ Template.productDetailEdit.events({
         }
         // redirect to new url on title change
         if (self.field === "title") {
-          Meteor.call("products/setHandle", productId, function (setHandleError, result) {
-            if (result) {
-              ReactionRouter.go("product", {
-                handle: result
-              });
+          Meteor.call("products/setHandle", productId,
+            function (setHandleError, result) {
+              if (result) {
+                ReactionRouter.go("product", {
+                  handle: result
+                });
+              }
             }
-          });
+          );
         }
         // animate updated field
         // TODO this needs to be moved into a component

@@ -13,7 +13,7 @@ Meteor.methods({
     // temp hack until we build out multiple payment handlers
     let cart = ReactionCore.Collections.Cart.findOne(cartId);
     let paymentId = "";
-    if (cart.biling) {
+    if (cart.billing) {
       paymentId = cart.billing[0]._id;
     }
 

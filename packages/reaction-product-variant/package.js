@@ -39,7 +39,7 @@ Package.onUse(function (api) {
 
   // helpers
   api.addFiles("client/helpers/products.js", "client");
-  api.addFiles("client/helpers/globals.js", "client");
+  api.addFiles("client/helpers/global.js", "client");
 
   // Product Templates
   api.addFiles("client/templates/products/products.html", "client");
