@@ -9,7 +9,6 @@ engines:
     enabled: true
     config:
       languages:
-        - javascript
         javascript:
           mass_threshold: 150
 
