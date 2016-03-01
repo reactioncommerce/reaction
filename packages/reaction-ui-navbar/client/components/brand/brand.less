@@ -1,0 +1,19 @@
+// Import Variables
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
+
+.rui.navbar .brand {
+  .display(flex);
+  .flex(0 0 auto);
+  .align-items(center);
+  .margin-left(10px);
+}
+
+.rui.navbar .brand .logo img {
+  max-height: @navbar-height - 5;
+  .padding-right(10px);
+}
+
+.rui.navbar .brand .title {}

@@ -1,3 +1,14 @@
+<template name="shopBrandImageOption">
+  <img src="{{url}}" width="100%">
+  {{#card (cardProps this)}}
+    {{#with option}}
+      <div class="rui brand">
+        <img src="{{url}}" width="100%">
+      </div>
+    {{/with}}
+  {{/card}}
+</template>
+
 <template name="shopSettings">
 
   <div class="panel-group" id="shopSettingsAccordian" role="tablist" aria-multiselectable="true">
@@ -12,6 +23,10 @@
           {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig" doc=packageData id="shopEditOptionsForm" type="update" autosave=true}}
             {{> afFieldInput name='settings.public.allowGuestCheckout'}}
           {{/autoForm}}
+        </div>
+        <div class="panel-body">
+          {{> select brandImageSelectProps}}
+          {{> upload onUpload=handleFileUpload}}
         </div>
         <div class="panel-body">
           {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditForm" type="update"}}

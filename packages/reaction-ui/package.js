@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.5.0",
+  version: "0.6.0",
   documentation: "README.md"
 });
 
@@ -50,6 +50,8 @@ Package.onUse(function (api) {
   api.addFiles("common/global.js", ["client", "server"]);
   api.addFiles("lib/client.browserify.js", "client");
 
+  api.addFiles("client/helpers/helpers.js", "client");
+
   api.addFiles("client/components/components.jsx", "client");
   api.addFiles("client/components/button/button.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
@@ -58,6 +60,8 @@ Package.onUse(function (api) {
 
   api.addFiles("client/components/cards/cardGroup.html", "client");
   api.addFiles("client/components/cards/cardGroup.less", "client");
+  api.addFiles("client/components/cards/cards.html", "client");
+  api.addFiles("client/components/cards/cards.js", "client");
   api.addFiles("client/components/cards/cards.less", "client");
 
   api.addFiles("client/components/sortable/sortable.jsx", "client");
@@ -99,8 +103,12 @@ Package.onUse(function (api) {
   api.addFiles("client/components/tags/tagList.js", "client");
   api.addFiles("client/components/tags/tags.less", "client");
 
+  api.addFiles("client/components/upload/upload.html", "client");
+  api.addFiles("client/components/upload/upload.js", "client");
+
   api.addFiles("client/styles/variables.less", "client");
 
+  // Templates
   api.addFiles("client/templates/dashboard/dashboard.html", "client");
   api.addFiles("client/templates/dashboard/dashboard.js", "client");
 
