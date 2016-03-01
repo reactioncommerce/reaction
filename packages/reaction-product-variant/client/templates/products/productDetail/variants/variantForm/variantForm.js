@@ -4,35 +4,28 @@
 
 Template.variantForm.helpers({
   variantDetails: function () {
-    if (this.parentId === null) {
+    if (this.ancestors.length === 1) {
       return Template.parentVariantForm;
     }
     return Template.childVariantForm;
   },
   childVariants: function () {
-    let product = ReactionProduct.selectedProduct();
-    if (!product) {
-      return {};
-    }
-    let _results = [];
-    for (let variant of product.variants) {
-      if ((typeof variant === "object" ? variant.parentId : void 0) === this._id &&
-        variant.type !== "inventory") {
-        _results.push(variant);
+    const _id = this._id;
+    const variants = ReactionProduct.getVariants();
+    const childVariants = [];
+    variants.map(variant => {
+      if (~variant.ancestors.indexOf(_id) && variant.type !== "inventory") {
+        childVariants.push(variant);
       }
-    }
-    return _results;
+    });
+    return childVariants;
   },
   hasChildVariants: function () {
-    if (ReactionProduct.checkChildVariants(this._id) > 0) {
-      return true;
-    }
+    return ReactionProduct.checkChildVariants(this._id) > 0;
   },
   hasInventoryVariants: function () {
     if (!hasChildVariants()) {
-      if (ReactionProduct.checkInventoryVariants(this._id) > 0) {
-        return true;
-      }
+      return ReactionProduct.checkInventoryVariants(this._id) > 0;
     }
   },
   nowDate: function () {
@@ -77,8 +70,7 @@ Template.variantForm.events({
     if (!productId) {
       return;
     }
-    Meteor.call("products/cloneVariant", productId, template.data._id,
-      this._id);
+    Meteor.call("products/createVariant", template.data._id);
   },
   "click .btn-remove-variant": function () {
     let title = this.title || "this variant";

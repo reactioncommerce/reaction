@@ -22,7 +22,7 @@ Template.memberForm.events({
         return false;
       }
 
-      Alerts.toast(i18n.t("accountsUI.info.invitationSent", "Invitation sent."), "success");
+      Alerts.toast(i18next.t("accountsUI.info.invitationSent", "Invitation sent."), "success");
 
       template.$("input[type=text], input[type=email]").val("");
       $(".settings-account-list").show();

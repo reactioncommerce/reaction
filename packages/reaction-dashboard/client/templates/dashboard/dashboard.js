@@ -4,7 +4,7 @@
 Template.dashboardHeader.helpers({
   registry: function () {
     // just some handle little helpers for default package i18nKey/i18nLabel
-    let route = ReactionRouter.current().route.name;
+    let route = ReactionRouter.getRouteName();
     let registry = ReactionCore.getRegistryForCurrentRoute() || {};
     if (registry && route) {
       return ReactionCore.translateRegistry(registry);

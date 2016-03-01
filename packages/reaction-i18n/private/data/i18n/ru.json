@@ -67,6 +67,8 @@
         "guests": "Гости"
       },
       "app": {
+        "add": "Создать",
+        "editMode": "Режим редактирования",
         "auto": "Автоматически",
         "save": "Сохранить",
         "saveAndContinue": "Сохранить и продолжить",
@@ -199,9 +201,10 @@
         "price": "Цена",
         "optionTitle": "Опция",
         "barcode": "Штрих-код",
-        "compareAtPrice": "Цена(MSRP)",
+        "compareAtPrice": "Цена (MSRP)",
         "fulfillmentService": "Обслуживание услуги",
         "weight": "Вес",
+        "taxable": "Налогооблагаемый",
         "inventoryManagement": "Следить за кол-вом",
         "inventoryPolicy": "Откл. при нуле",
         "lowInventoryWarningThreshold": "Сообщить если меньше "
@@ -253,6 +256,7 @@
         "filter": {
           "new": "Новых",
           "captured": "Оплаченных",
+          "processing": "В работе",
           "shipped": "Доставленых",
           "completed": "Завершенных",
           "canceled": "Отмененных",

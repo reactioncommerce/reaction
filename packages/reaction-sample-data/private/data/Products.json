@@ -1,6 +1,7 @@
 [{
   "_id": "BCTMZ6HTxFSppJESk",
   "shopId": "J8Bhq3uTtdgwZx3rz",
+  "ancestors": [],
   "createdAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
   },
@@ -10,7 +11,11 @@
     "rpjCvTBGjhBi2xdro",
     "cseCBSSrJ3t8HQSNP"
   ],
+  "price": "12.99 - 19.99",
   "isVisible": true,
+  "isLowQuantity": false,
+  "isSoldOut": false,
+  "isBackorder": false,
   "metafields": [{
     "key": "Material",
     "value": "Cotton"
@@ -24,67 +29,81 @@
   "updatedAt": {
     "$date": "2014-06-01T12:17:13.949-0700"
   },
-  "variants": [{
-    "_id": "6qiqPwBkeJdtdQc4G",
-    "title": "Basic Example Variant",
-    "price": 19.99,
-    "inventoryManagement": true,
-    "inventoryPolicy": true,
-    "updatedAt": {
-      "$date": "2014-04-03T13:46:52.411-0700"
-    },
-    "createdAt": {
-      "$date": "2014-04-03T13:46:52.411-0700"
-    },
-    "weight": 35,
-    "inventoryQuantity": 15,
-    "metafields": [{
-      "key": null,
-      "value": null
-    }],
-    "taxable": false
-  }, {
-    "_id": "SMr4rhDFnYvFMtDTX",
-    "title": "Option 1 - Red Dwarf",
-    "price": 19.99,
-    "inventoryManagement": true,
-    "inventoryPolicy": true,
-    "updatedAt": {
-      "$date": "2014-04-03T13:46:52.411-0700"
-    },
-    "createdAt": {
-      "$date": "2014-04-03T13:46:52.411-0700"
-    },
-    "weight": 35,
-    "inventoryQuantity": 15,
-    "metafields": [{
-      "key": null,
-      "value": null
-    }],
-    "taxable": false,
-    "parentId": "6qiqPwBkeJdtdQc4G",
-    "optionTitle": "Red"
-  }, {
-    "_id": "CJoRBm9vRrorc9mxZ",
-    "title": "Option 2 - Green Tomato",
-    "price": 12.99,
-    "inventoryManagement": true,
-    "inventoryPolicy": true,
-    "updatedAt": {
-      "$date": "2014-04-03T13:46:52.411-0700"
-    },
-    "createdAt": {
-      "$date": "2014-04-03T13:46:52.411-0700"
-    },
-    "weight": 35,
-    "inventoryQuantity": 42,
-    "metafields": [{
-      "key": null,
-      "value": null
-    }],
-    "taxable": false,
-    "parentId": "6qiqPwBkeJdtdQc4G",
-    "optionTitle": "Green"
-  }],
   "vendor": "Example Manufacturer"
+}, {
+  "_id": "6qiqPwBkeJdtdQc4G",
+  "ancestors": [
+    "BCTMZ6HTxFSppJESk"
+  ],
+  "title": "Basic Example Variant",
+  "price": 19.99,
+  "inventoryManagement": true,
+  "inventoryPolicy": true,
+  "inventoryQuantity": 15,
+  "updatedAt": {
+    "$date": "2014-04-03T13:46:52.411-0700"
+  },
+  "createdAt": {
+    "$date": "2014-04-03T13:46:52.411-0700"
+  },
+  "weight": 35,
+  "metafields": [{
+    "key": null,
+    "value": null
+  }],
+  "shopId": "J8Bhq3uTtdgwZx3rz",
+  "taxable": false,
+  "type": "variant"
+}, {
+  "_id": "SMr4rhDFnYvFMtDTX",
+  "ancestors": [
+    "BCTMZ6HTxFSppJESk",
+    "6qiqPwBkeJdtdQc4G"
+  ],
+  "title": "Option 1 - Red Dwarf",
+  "optionTitle": "Red",
+  "price": 19.99,
+  "inventoryManagement": true,
+  "inventoryPolicy": true,
+  "inventoryQuantity": 19,
+  "updatedAt": {
+    "$date": "2014-04-03T13:46:52.411-0700"
+  },
+  "createdAt": {
+    "$date": "2014-04-03T13:46:52.411-0700"
+  },
+  "weight": 35,
+  "metafields": [{
+    "key": null,
+    "value": null
+  }],
+  "shopId": "J8Bhq3uTtdgwZx3rz",
+  "taxable": false,
+  "type": "variant"
+}, {
+  "_id": "CJoRBm9vRrorc9mxZ",
+  "ancestors": [
+    "BCTMZ6HTxFSppJESk",
+    "6qiqPwBkeJdtdQc4G"
+  ],
+  "title": "Option 2 - Green Tomato",
+  "optionTitle": "Green",
+  "price": 12.99,
+  "inventoryManagement": true,
+  "inventoryPolicy": true,
+  "inventoryQuantity": 42,
+  "updatedAt": {
+    "$date": "2014-04-03T13:46:52.411-0700"
+  },
+  "createdAt": {
+    "$date": "2014-04-03T13:46:52.411-0700"
+  },
+  "weight": 35,
+  "metafields": [{
+    "key": null,
+    "value": null
+  }],
+  "shopId": "J8Bhq3uTtdgwZx3rz",
+  "taxable": false,
+  "type": "variant"
 }]

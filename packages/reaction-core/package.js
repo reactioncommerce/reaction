@@ -47,7 +47,7 @@ Package.onUse(function (api) {
   // community packages
   api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
-  api.use("reactioncommerce:reaction-logger");
+  api.use("reactioncommerce:reaction-logger@0.1.0");
   api.use("reactioncommerce:reaction-collections@2.0.1");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
@@ -128,7 +128,6 @@ Package.onUse(function (api) {
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
-  api.addFiles("server/methods/products.js", "server");
   api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
 
@@ -179,6 +178,5 @@ Package.onTest(function (api) {
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
-  api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
 });

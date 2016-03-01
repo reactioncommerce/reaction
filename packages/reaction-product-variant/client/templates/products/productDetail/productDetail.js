@@ -16,32 +16,8 @@ Template.productDetail.helpers({
   product: function () {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      let productId = instance.productId();
-      let variantId = instance.variantId() || ReactionRouter.getParam("variantId");
-
-      if (!productId.match(/^[A-Za-z0-9]{17}$/)) {
-        handle = productId.toLowerCase();
-        product = ReactionCore.Collections.Products.findOne({
-          handle: handle
-        });
-        productId = product._id;
-      } else {
-        product = ReactionCore.Collections.Products.findOne({
-          _id: productId
-        });
-      }
-      if (product) {
-        // set the default variant
-        // as the default.
-        if (!variantId) {
-          variantId = product.variants[0]._id;
-        }
-        // set in our reactive dictionary
-        ReactionProduct.set("productId", productId);
-        // set on reactive dict for legacy
-        ReactionProduct.set("variantId", variantId);
-        return product;
-      }
+      return ReactionProduct.setProduct(instance.productId(),
+        instance.variantId());
     }
   },
   tags: function () {
@@ -61,26 +37,14 @@ Template.productDetail.helpers({
     return Template.productDetailTags;
   },
   actualPrice: function () {
-    let childVariants;
-    let purchasable;
-    let current = ReactionProduct.selectedVariant();
-    let product = ReactionProduct.selectedProduct();
-    if (product && current) {
-      childVariants = (function () {
-        let _results = [];
-        for (let variant of product.variants) {
-          if ((typeof variant === "object" ? variant.parentId : void 0) === current._id) {
-            _results.push(variant);
-          }
-        }
-        return _results;
-      })();
-      purchasable = childVariants.length > 0 ? false : true;
+    const current = ReactionProduct.selectedVariant();
+    if (typeof current === "object") {
+      const childVariants = ReactionProduct.getVariants(current._id);
+      if (childVariants.length === 0) {
+        return current.price;
+      }
+      return ReactionProduct.getProductPriceRange();
     }
-    if (purchasable) {
-      return current.price;
-    }
-    return ReactionProduct.getProductPriceRange();
   },
   fieldComponent: function () {
     if (ReactionCore.hasPermission("createProduct")) {
@@ -109,8 +73,8 @@ Template.productDetail.events({
         return;
       }
 
-      if (variant.parentId) {
-        formName = variant.parentId;
+      if (typeof variant.ancestors[1] === "string") {
+        formName = variant.ancestors[1];
       } else {
         formName = variant._id;
       }
@@ -143,7 +107,6 @@ Template.productDetail.events({
     }
   },
   "click #add-to-cart": function (event, template) {
-    let options;
     let productId;
     let qtyField;
     let quantity;
@@ -151,16 +114,8 @@ Template.productDetail.events({
     let currentProduct = ReactionProduct.selectedProduct();
 
     if (currentVariant) {
-      if (currentVariant.parentId === null) {
-        options = (function () {
-          let _results = [];
-          for (let variant of currentProduct.variants) {
-            if (variant.parentId === currentVariant._id) {
-              _results.push(variant);
-            }
-          }
-          return _results;
-        })();
+      if (currentVariant.ancestors.length === 1) {
+        const options = ReactionProduct.getVariants(currentVariant._id);
 
         if (options.length > 0) {
           Alerts.inline("Please choose options before adding to cart", "warning", {
@@ -216,14 +171,14 @@ Template.productDetail.events({
           scrollTop: 0
         }, 0);
         // slide out label
-        let addToCartText = i18n.t("productDetail.addedToCart");
+        let addToCartText = i18next.t("productDetail.addedToCart");
         let addToCartTitle = currentVariant.title || "";
         $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
         return $(".cart-alert").toggle("slide", {
-          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right",
+          direction: i18next.t("languageDirection") === "rtl" ? "left" : "right",
           width: currentVariant.title.length + 50 + "px"
         }, 600).delay(4000).toggle("slide", {
-          direction: i18n.t("languageDirection") === "rtl" ? "left" : "right"
+          direction: i18next.t("languageDirection") === "rtl" ? "left" : "right"
         });
       }
     } else {
@@ -241,7 +196,7 @@ Template.productDetail.events({
       errorMsg += "Product title is required. ";
       template.$(".title-edit-input").focus();
     }
-    let variants = self.variants;
+    const variants = ReactionProduct.getVariants(self._id);
     for (let variant of variants) {
       let index = _.indexOf(variants, variant);
       if (!variant.title) {

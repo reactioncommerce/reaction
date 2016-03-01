@@ -183,9 +183,9 @@ Template.accountsSettings.events({
 
     Meteor.call("accounts/updateServiceConfiguration", service, fields, (error) => {
       if (!error) {
-        Alerts.toast(i18n.t(
+        Alerts.toast(i18next.t(
           "accountsUI.updatedServiceConfiguration",
-          { service: i18n.t(`social.${service}`) }
+          { service: i18next.t(`social.${service}`) }
         ));
       }
     });

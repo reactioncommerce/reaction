@@ -68,6 +68,8 @@
         "guests": "Guests"
       },
       "app": {
+        "add": "Add",
+        "editMode": "Edit mode",
         "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
@@ -195,6 +197,20 @@
         "deleteProduct": "Delete Product",
         "publish": "Publish",
         "moreOptions": "More Options"
+      },
+      "productVariant": {
+        "inventoryQuantity": "Quantity",
+        "title": "Label",
+        "price": "Price",
+        "optionTitle": "Option",
+        "barcode": "Barcode",
+        "compareAtPrice": "Price (MSRP)",
+        "fulfillmentService": "Fulfillment service",
+        "weight": "Weight",
+        "taxable": "Taxable",
+        "inventoryManagement": "Inventory tracking",
+        "inventoryPolicy": "Deny when out of stock",
+        "lowInventoryWarningThreshold": "Warn @"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",

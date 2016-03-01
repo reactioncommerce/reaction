@@ -17,17 +17,17 @@ Template.childVariantForm.events({
     return ReactionProduct.setCurrentVariant(template.data._id);
   },
   "change .child-variant-form :input": function (event, template) {
-    let variant = template.data;
-    let value = $(event.currentTarget).val();
-    let field = $(event.currentTarget).attr("name");
+    const variant = template.data;
+    const value = $(event.currentTarget).val();
+    const field = $(event.currentTarget).attr("name");
 
-    variant[field] = value;
-    Meteor.call("products/updateVariant", variant, function (error) {
-      if (error) {
-        throw new Meteor.Error("error updating variant", error);
-      }
-    });
-    return ReactionProduct.setCurrentVariant(template.data._id);
+    Meteor.call("products/updateProductField", variant._id, field, value,
+      error => {
+        if (error) {
+          throw new Meteor.Error("error updating variant", error);
+        }
+      });
+    return ReactionProduct.setCurrentVariant(variant._id);
   },
   "click #remove-child-variant": function (event) {
     event.stopPropagation();

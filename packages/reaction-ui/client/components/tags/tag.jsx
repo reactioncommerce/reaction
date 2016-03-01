@@ -160,7 +160,7 @@ class Tag extends React.Component {
       <div className="rui tag edit create">
         <form onSubmit={this.handleTagCreate}>
           <Button icon="tag" />
-          <TextField i18nPlaceholder={i18n.t(this.props.placeholder) || i18n.t("tags.addTag")} name="tag" />
+          <TextField i18nPlaceholder={i18next.t(this.props.placeholder) || i18next.t("tags.addTag")} name="tag" />
           <Button icon="plus" />
         </form>
       </div>

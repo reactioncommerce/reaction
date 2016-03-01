@@ -188,7 +188,7 @@ Template.loginFormChangePassword.events({
         // // Close dropdown or navigate to page
         templateInstance.formMessages.set({
           info: [{
-            reason: i18n.t("accountsUI.info.passwordChanged")
+            reason: i18next.t("accountsUI.info.passwordChanged")
           }]
         });
       }
