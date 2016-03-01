@@ -113,8 +113,11 @@ Meteor.publish("Products", function (productScrollLimit, productFilters, shops) 
     selector.isVisible = true;
   }
 
-  // TODO: What is this for?
-  // Counts.publish(this, "Products", Products.find(selector), {noReady: true});
+  // Find out how much `Counts.publish()` reflects to performance with a large
+  // number of products
+  Counts.publish(this, "Products",
+    ReactionCore.Collections.Products.find(selector), {noReady: true});
+
   return ReactionCore.Collections.Products.find(selector, {
     sort: sort,
     limit: limit
