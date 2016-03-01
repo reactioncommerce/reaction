@@ -10,6 +10,7 @@
 !reaction-collections
 !reaction-core
 !reaction-core-theme
+!reaction-catalog
 !reaction-default-theme
 !reaction-inventory
 !reaction-layout
@@ -36,6 +37,7 @@
 !reaction-collections/*
 !reaction-core/*
 !reaction-core-theme/*
+!reaction-catalog/*
 !reaction-default-theme/*
 !reaction-inventory/*
 !reaction-layout/*

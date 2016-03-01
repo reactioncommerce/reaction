@@ -37,6 +37,7 @@ accounts-oauth
 
 reactioncommerce:core
 reactioncommerce:core-theme
+reactioncommerce:reaction-catalog
 reactioncommerce:reaction-layout
 reactioncommerce:launchdock-connect
 reactioncommerce:reaction-accounts

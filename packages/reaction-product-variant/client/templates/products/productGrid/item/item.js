@@ -4,51 +4,27 @@
 
 Template.productGridItems.helpers({
   media: function () {
-    let defaultImage;
-    let variantId;
-    let variants = [];
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
-    if (variants.length > 0) {
-      variantId = variants[0]._id;
-      defaultImage = ReactionCore.Collections.Media.findOne({
-        "metadata.variantId": variantId,
-        "metadata.priority": 0
-      });
-    }
-    if (defaultImage) {
-      return defaultImage;
-    }
-    return false;
+    const media = ReactionCore.Collections.Media.findOne({
+      "metadata.productId": this._id,
+      "metadata.priority": 0,
+      "metadata.toGrid": 1
+    }, { sort: { uploadedAt: 1 } });
+
+    return media instanceof FS.File ? media : false;
   },
   additionalMedia: function () {
-    let mediaArray;
-    let variantId;
-    let variants = [];
+    const mediaArray = ReactionCore.Collections.Media.find({
+      "metadata.productId": this._id,
+      "metadata.priority": {
+        $gt: 0
+      },
+      "metadata.toGrid": 1
+    }, { limit: 3 });
 
-    for (let variant of this.variants) {
-      if (!variant.parentId) {
-        variants.push(variant);
-      }
-    }
-
-    if (variants.length > 0) {
-      variantId = variants[0]._id;
-      mediaArray = ReactionCore.Collections.Media.find({
-        "metadata.variantId": variantId,
-        "metadata.priority": {
-          $gt: 0
-        }
-      }, {
-        limit: 3
-      });
-    }
     if (mediaArray.count() > 1) {
       return mediaArray;
     }
+
     return false;
   },
   weightClass: function () {
@@ -83,6 +59,7 @@ Template.productGridItems.helpers({
     }
     return false;
   },
+  // TODO is it used?
   shouldShowAdditionalImages: function () {
     if (this.isMediumWeight && this.mediaArray) {
       return true;

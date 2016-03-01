@@ -7,15 +7,25 @@ let Media = ReactionCore.Collections.Media;
 /**
  * uploadHandler method
  */
-
 function uploadHandler(event) {
-  const productId = ReactionProduct.selectedProductId();
-  const variantId = ReactionProduct.selectedVariantId();
-  const shopId = ReactionProduct.selectedProduct().shopId || ReactionCore.getShopId();
-  const userId = Meteor.userId();
+  let productId = ReactionProduct.selectedProductId();
+  const variant = ReactionProduct.selectedVariant();
+  if (typeof variant !== "object") {
+    return Alerts.add("Please, create new Variant first.", "danger", {
+      autoHide: true
+    });
+  }
+  const variantId = variant._id;
+  let shopId = ReactionProduct.selectedProduct().shopId || ReactionCore.getShopId();
+  let userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
   }).count();
+  // TODO: we need to mark the first variant images somehow for productGrid.
+  // But how do we know that this is the first, not second or other variant?
+  // Question is open. For now if product has more than 1 top variant, everyone
+  // will have a chance to be displayed
+  const toGrid = variant.ancestors.length === 1;
 
   return FS.Utility.eachFile(event, function (file) {
     let fileObj;
@@ -25,7 +35,8 @@ function uploadHandler(event) {
       productId: productId,
       variantId: variantId,
       shopId: shopId,
-      priority: count
+      priority: count,
+      toGrid: +toGrid // we need number
     };
     Media.insert(fileObj);
     return count++;
@@ -35,7 +46,6 @@ function uploadHandler(event) {
 /**
  * updateImagePriorities method
  */
-
 function updateImagePriorities() {
   const sortedMedias = _.map($(".gallery").sortable("toArray", {
     attribute: "data-index"
@@ -63,8 +73,7 @@ function updateImagePriorities() {
 Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
-    const variant = ReactionProduct.selectedVariant();
-    const product = ReactionProduct.selectedProduct();
+    let variant = ReactionProduct.selectedVariant();
 
     if (variant) {
       mediaArray = Media.find({
@@ -74,31 +83,6 @@ Template.productImageGallery.helpers({
           "metadata.priority": 1
         }
       });
-      if (!ReactionCore.hasAdminAccess() && mediaArray.count() < 1 && product) {
-        mediaArray = Media.find({
-          "metadata.variantId": product.variants[0]._id
-        }, {
-          sort: {
-            "metadata.priority": 1
-          }
-        });
-      }
-    } else {
-      if (product) {
-        let ids = [];
-        for (let thisVariant of product.variants) {
-          ids.push(thisVariant._id);
-        }
-        mediaArray = Media.find({
-          "metadata.variantId": {
-            $in: ids
-          }
-        }, {
-          sort: {
-            "metadata.priority": 1
-          }
-        });
-      }
     }
     return mediaArray;
   },
@@ -123,7 +107,7 @@ Template.productImageGallery.onRendered(function () {
         forcePlaceholderSize: true,
         update: function () {
           let variant;
-          if (variant && variant._id) {
+          if (typeof variant !== "object") {
             variant = ReactionProduct.selectedVariant();
           }
           variant.medias = [];
@@ -146,50 +130,10 @@ Template.productImageGallery.onRendered(function () {
 
 Template.productImageGallery.events({
   "mouseenter .gallery > li": function (event) {
-    let ids = [];
     event.stopImmediatePropagation();
     if (!ReactionCore.hasPermission("createProduct")) {
       let first = $(".gallery li:nth-child(1)");
       let target = $(event.currentTarget);
-      let variant = ReactionProduct.selectedVariant();
-
-      if (!variant) {
-        let product = ReactionProduct.selectedProduct();
-        if (product) {
-          for (let productVariant of product.variants) {
-            let mediaResults = Media.find({
-              "metadata.variantId": productVariant._id
-            }, {
-              sort: {
-                "metadata.priority": 1
-              }
-            }).fetch();
-            // loop within product variants
-            for (let media of mediaResults) {
-              ids.push(media._id);
-              if ($(event.currentTarget).data("index") === media._id) {
-                ReactionProduct.setCurrentVariant(productVariant._id);
-              }
-            }
-            if (ReactionProduct.selectedVariant()) {
-              break;
-            }
-          }
-        }
-
-        /*
-        hide all images not associated with the highlighted variant
-        to prevent the alternate variant images from being displayed.
-         */
-        if (ids.length > 0) {
-          $(".gallery li").each(function (k, v) {
-            let vId = $(v).data("index");
-            if (_.indexOf(ids, vId) < 0) {
-              return $(v).hide();
-            }
-          });
-        }
-      }
       if ($(target).data("index") !== first.data("index")) {
         return $(".gallery li:nth-child(1)").fadeOut(400, function () {
           $(this).replaceWith(target);

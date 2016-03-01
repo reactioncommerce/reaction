@@ -1,6 +1,37 @@
 /**
 * ReactionCore Collections
-*
+*/
+
+/**
+ * getSummary
+ * @summary iterates over cart items with computations
+ * @param {Array} items - cart.items array
+ * @param {Array} prop - path to item property represented by array
+ * @param {Array} [prop2] - path to another item property represented by array
+ * @return {Number} - computations result
+ */
+function getSummary(items, prop, prop2) {
+  if (Array.isArray(items)) {
+    return items.reduce((sum, item) => {
+      if (prop2) {
+        // S + a * b, where b could be b1 or b2
+        return sum + item[prop[0]] * (prop2.length === 1 ? item[prop2[0]] :
+          item[prop2[0]][prop2[1]]);
+      }
+      // S + b, where b could be b1 or b2
+      return sum + (prop.length === 1 ? item[prop[0]] :
+        item[prop[0]][prop[1]]);
+    }, 0);
+  }
+
+  // If data not prepared we should send a number to avoid exception with
+  // `toFixed`. This could happens if user stuck on `completed` checkout stage
+  // by some reason.
+  return 0;
+}
+
+/**
+* ReactionCore transform collections
 *
 * transform methods used to return cart calculated values
 * cartCount, cartSubTotal, cartShipping, cartTaxes, cartTotal
@@ -9,76 +40,35 @@
 * in template: {{cart.cartCount}}
 * in code: ReactionCore.Collections.Cart.findOne().cartTotal()
 */
-
-/**
-* ReactionCore transform collections
-*/
 ReactionCore.Helpers.cartTransform = {
   cartCount: function () {
-    let count = 0;
-    if (typeof this !== "undefined" && this !== null ? this.items : void 0) {
-      for (let items of this.items) {
-        count += items.quantity;
-      }
-    }
-    return count;
+    return getSummary(this.items, ["quantity"]);
   },
   cartShipping: function () {
-    let shippingTotal = 0;
     // loop through the cart.shipping, sum shipments.
-    if (this.shipping) {
-      for (let shipment of this.shipping) {
-        shippingTotal += shipment.shipmentMethod.rate;
-      }
-    }
-    return parseFloat(shippingTotal);
+    return parseFloat(getSummary(this.shipping, ["shipmentMethod", "rate"]));
   },
   cartSubTotal: function () {
-    let subtotal = 0;
-    if (typeof this !== "undefined" && this !== null ? this.items : void 0) {
-      for (let items of this.items) {
-        subtotal += items.quantity * items.variants.price;
-      }
-    }
-    subtotal = subtotal.toFixed(2);
-    return subtotal;
+    return getSummary(this.items, ["quantity"], ["variants", "price"]).
+      toFixed(2);
   },
   cartTaxes: function () {
-    let subtotal = 0;
-    if (typeof this !== "undefined" && this !== null ? this.items : void 0) {
-      for (let items of this.items) {
-        let tax = this.tax || 0;
-        subtotal += items.variants.price * tax;
-      }
-    }
-    subtotal = subtotal.toFixed(2);
-    return subtotal;
+    const tax = this.tax || 0;
+    return (getSummary(this.items, ["variants", "price"]) * tax).toFixed(2);
   },
   cartDiscounts: function () {
     return "0.00";
   },
   cartTotal: function () {
-    let total;
-    let subtotal = 0;
-    let shippingTotal = 0;
-    if (this.items) {
-      for (let items of this.items) {
-        subtotal += items.quantity * items.variants.price;
-      }
-    }
+    let subTotal = getSummary(this.items, ["quantity"], ["variants", "price"]);
     // loop through the cart.shipping, sum shipments.
-    if (this.shipping) {
-      for (let shipment of this.shipping) {
-        shippingTotal += shipment.shipmentMethod.rate;
-      }
-    }
-
+    let shippingTotal = getSummary(this.shipping, ["shipmentMethod", "rate"]);
     shippingTotal = parseFloat(shippingTotal);
-    if (!isNaN(shippingTotal)) {
-      subtotal = subtotal + shippingTotal;
+    // TODO: includes taxes?
+    if (typeof shippingTotal === "number" && shippingTotal > 0) {
+      subTotal += shippingTotal;
     }
-    total = subtotal.toFixed(2);
-    return total;
+    return subTotal.toFixed(2);
   }
 };
 
@@ -101,7 +91,7 @@ ReactionCore.Collections.Orders = this.Orders = new Mongo.Collection("Orders", {
   transform: function (order) {
     order.itemCount = function () {
       let count = 0;
-      if (order !== null ? order.items : void 0) {
+      if (order && Array.isArray(order.items)) {
         for (let items of order.items) {
           count += items.quantity;
         }
@@ -138,7 +128,10 @@ ReactionCore.Collections.Packages.attachSchema(ReactionCore.Schemas.PackageConfi
 */
 ReactionCore.Collections.Products = new Mongo.Collection("Products");
 
-ReactionCore.Collections.Products.attachSchema(ReactionCore.Schemas.Product);
+ReactionCore.Collections.Products.attachSchema(ReactionCore.Schemas.Product,
+  { selector: { type: "simple" } });
+ReactionCore.Collections.Products.attachSchema(ReactionCore.Schemas.ProductVariant,
+  { selector: { type: "variant" } });
 
 /**
 * ReactionCore Collections Shipping
@@ -181,7 +174,6 @@ ReactionCore.Collections.Tags.attachSchema(ReactionCore.Schemas.Tag);
 ReactionCore.Collections.Translations = new Mongo.Collection("Translations");
 
 ReactionCore.Collections.Translations.attachSchema(ReactionCore.Schemas.Translation);
-
 
 /**
 * ReactionCore Collections Templates

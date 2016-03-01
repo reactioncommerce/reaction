@@ -12,20 +12,21 @@ Template.variant.helpers({
     return "progress-bar-success";
   },
   selectedVariant: function () {
+    const _id = this._id;
     const current = ReactionProduct.selectedVariant();
-    if (this._id === (typeof current === "object" ? current._id : void 0) ||
-      this._id === (typeof current === "object" ? current.parentId : void 0)) {
+    if (typeof current === "object" &&
+      (_id === current._id || ~current.ancestors.indexOf(this._id))) {
       return "variant-detail-selected";
     }
+  },
+  displayQuantity: function () {
+    return ReactionProduct.getVariantQuantity(this);
   },
   displayPrice: function () {
     return ReactionProduct.getVariantPriceRange(this._id);
   },
   isSoldOut: function () {
-    if (this.inventoryQuantity < 1) {
-      return true;
-    }
-    return false;
+    return ReactionProduct.getVariantQuantity(this) < 1;
   }
 });
 
@@ -70,27 +71,11 @@ Template.variant.onRendered(function () {
         forcePlaceholderSize: true,
         axis: "y",
         update: function () {
-          const product = ReactionProduct.selectedProduct();
-          const newVariants = [];
-          const productVariants = product.variants;
-          // fetch uiPositions
-          let uiPositions = $(this).sortable("toArray", {
+          const uiPositions = $(this).sortable("toArray", {
             attribute: "data-id"
           });
-          // get variants of the new order
-          for (let id of uiPositions) {
-            for (let variant of productVariants) {
-              if (variant._id === id) {
-                newVariants.push(variant);
-              }
-            }
-          }
-          // merge and delete old variants to create a newly ordered Array
-          // could have (and did do previously) this a lot of different ways
-          let updateVariants = _.uniq(_.union(newVariants, productVariants));
-          return Meteor.defer(function () {
-            return Meteor.call("products/updateVariants",
-              updateVariants);
+          Meteor.defer(function () {
+            Meteor.call("products/updateVariantsPosition", uiPositions);
           });
         },
         start: function (event, ui) {

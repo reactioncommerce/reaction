@@ -40,7 +40,7 @@ ReactionProduct.getProductsByTag = function (tag) {
 ReactionProduct.publishProduct = function (productOrArray) {
   const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
   for (let product of products) {
-    Meteor.call("products/publishProduct", product._id, function (error, result) {
+    Meteor.call("products/publishProduct", product._id, (error, result) => {
       if (error) {
         Alerts.add(error, "danger", {
           placement: "productGridItem",

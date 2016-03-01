@@ -1,71 +1,82 @@
 /* eslint dot-notation: 0 */
+
 describe("inventory method", function () {
+  let product;
+  let variant;
+  let options;
+  let quantity;
+  // The thing is... the `inventory/register` called when we creating product
+  // and variants within `beforeAll`, so we need to remove all it insert first
+  // time before running specs.
+  beforeAll(() => {
+    spyOn(Roles, "userIsInRole").and.returnValue(true);
+    product = faker.reaction.products.add();
+    variant = ReactionCore.Collections.Products.findOne({
+      ancestors: [product._id]
+    });
+    options = ReactionCore.Collections.Products.find({
+      ancestors: [product._id, variant._id]
+    }).fetch();
+    quantity = options[0].inventoryQuantity;
+  });
+
   beforeEach(function () {
+    // again hack. w/o this we can't remove products from previous spec.
     ReactionCore.Collections.Inventory.remove({}); // Empty Inventory
-    ReactionCore.Collections.Products.remove({}); // Empty Products
-    ReactionCore.Collections.Cart.remove({}); // Empty Cart
   });
+
   describe("inventory/register", function () {
-    it("should add inventory items for product", function (done) {
-      let product = Factory.create("product");
-      let productId = product._id;
-      let quantity = product.variants[0].inventoryQuantity;
-      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-      expect(Meteor.call("inventory/register", product)).toEqual(quantity);
-      let inventory = ReactionCore.Collections.Inventory.find({
-        productId: productId
-      }).fetch();
-      expect(_.size(inventory)).toEqual(quantity);
-      done();
-    });
+    it(
+      "should add inventory items for child variant",
+      function (done) {
+        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+        let inventory = ReactionCore.Collections.Inventory.find({
+          variantId: options[0]._id
+        }).count();
+        expect(inventory).toEqual(0);
 
-    it("should add inventory items for a new child variant", done => {
-      spyOn(Roles, "userIsInRole").and.returnValue(true);
-      let product = Factory.create("product");
-      const productId = product._id;
-      const quantity = product.variants[0].inventoryQuantity;
-      Meteor.call("products/cloneVariant", productId, product.variants[
-        0]._id, product.variants[0]._id);
-      product = ReactionCore.Collections.Products.findOne(product._id);
-      const newChildVariant = product.variants[product.variants.length - 1];
-      expect(undefined).toEqual(newChildVariant.inventoryQuantity);
-      newChildVariant["inventoryQuantity"] = 10;
-      Meteor.call("products/updateVariant", newChildVariant);
-      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-      const totalQuantity = quantity + newChildVariant.inventoryQuantity;
-      Meteor.call("inventory/register", product);
-      // uncommenting that leads to test failure. looks like a bug in tests;
-      // expect(Meteor.call("inventory/register", product)).toEqual(totalQuantity);
-      const inventory = ReactionCore.Collections.Inventory.find({
-        productId: productId
-      }).fetch();
-      expect(inventory.length).toEqual(totalQuantity);
-      done();
-    });
+        Meteor.call("inventory/register", options[0]);
+        inventory = ReactionCore.Collections.Inventory.find({
+          variantId: options[0]._id
+        }).count();
+        expect(inventory).toEqual(quantity);
 
-    it("should remove deleted variants from inventory", function (done) {
-      let product = Factory.create("product");
-      let productId = product._id;
-      let quantity = product.variants[0].inventoryQuantity;
-
-      expect(_.size(product.variants)).toEqual(1);
-      // register inventory (that we'll should delete on variant removal)
-      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-      // Meteor.call("inventory/register", product);
-      expect(Meteor.call("inventory/register", product)).toEqual(quantity);
-
-      // delete variant
-      Meteor.call("products/deleteVariant", product.variants[0]._id);
-
-      let inventory = ReactionCore.Collections.Inventory.find({
-        productId: productId
-      }).fetch();
-
-      expect(_.size(inventory)).not.toEqual(quantity);
-      expect(_.size(inventory)).toEqual(0);
-      done();
-    });
+        return done();
+      }
+    );
   });
+
+  describe("inventory/remove", function () {
+    it(
+      "should remove deleted variants from inventory",
+      function (done) {
+        // register inventory (that we'll should delete on variant removal)
+        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+        // checking our option quantity. It should be greater than zero.
+        let qty =  options[1].inventoryQuantity;
+        expect(qty).toBeGreaterThan(0);
+
+        // before spec we're cleared collection, so we need to insert all docs
+        // again and make sure quantity will be equal with `qty`
+        Meteor.call("inventory/register", options[1]);
+        let midQty = ReactionCore.Collections.Inventory.find({
+          variantId: options[1]._id
+        }).count();
+        expect(midQty).toEqual(qty);
+
+        // then we are removing option and docs should be automatically removed
+        Meteor.call("products/deleteVariant", options[1]._id);
+        let newQty = ReactionCore.Collections.Inventory.find({
+          variantId: options[1]._id
+        }).count();
+        expect(newQty).not.toEqual(qty);
+        expect(newQty).toEqual(0);
+
+        return done();
+      }
+    );
+  });
+
   //
   // inventory/register is invoked from hooks.js before cart update
   //
@@ -125,8 +136,6 @@ describe("inventory method", function () {
     //   console.log('reservedInventory', reservedInventory);
     //   expect(reservedInventory).toEqual(quantity);;
     // });
-
-
 
     //
     // it("should remove inventory reservation when removed cart", function (
