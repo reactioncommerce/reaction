@@ -46,7 +46,6 @@
           "filtrationDescription": "Products filtration for Reaction"
         },
         "settings": {
-          "addShopMemberLabel": "Add Shop Member",
           "accountSettingsLabel": "Account Settings",
           "addShopMemberSettingsLabel": "Add Shop Member",
           "authorizenetSettingsLabel": "Authorize.net Settings",

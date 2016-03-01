@@ -3,6 +3,23 @@
 //
 
 /**
+ * getLang
+ * @summary detects device default language
+ * @return {String} language code
+ */
+const getLang = () => {
+  if (typeof navigator.languages !== "undefined")  {
+    if (~navigator.languages[0].indexOf("-")) {
+      return navigator.languages[0].split("-")[0];
+    } else if (~navigator.languages[0].indexOf("_")) {
+      return navigator.languages[0].split("_")[0];
+    }
+    return navigator.languages[0];
+  }
+  return navigator.language || navigator.browserLanguage;
+};
+
+/**
  * getLabelsFor
  * get Labels for simple.schema keys
  * @param  {Object} schema - schema
@@ -65,7 +82,7 @@ Meteor.startup(function () {
     // const defaultLanguage = lng.detect() || shopLanguage;
 
     // set default session language
-    Session.setDefault("language", defaultLanguage);
+    Session.setDefault("language", getLang());
 
     // every package gets a namespace, fetch them
     const packageNamespaces = [];

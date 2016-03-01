@@ -431,10 +431,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
-        "members": "Участники",
+        "members": "Сотрудники",
         "manage": "Настроить",
         "guest": "Гость",
-        "addMember": "Добавить участника",
+        "addMember": "Добавить сотрудника",
         "add": "добавить",
         "and": "и",
         "back": "назад",
