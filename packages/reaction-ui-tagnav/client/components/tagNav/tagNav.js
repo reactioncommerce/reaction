@@ -146,8 +146,6 @@ Template.tagNav.onRendered(() => {
   instance._sortable = Sortable.create(list, {
     group: "tags",
     handle: ".js-tagNav-item",
-    // draggable: ".navbar-item",
-    // filter: ".rui.tag.edit.create",
     onSort(event) {
       let tagIds = instance.data.tags.map(item => {
         if (item) {
@@ -274,19 +272,7 @@ Template.tagNav.helpers({
       onTagSelect(selectedTag) {
         instance.state.set("selectedTag", selectedTag);
       },
-      onTagRemove(tagToRemove) {
-        // Pass the tag back up to the parent component for removal
-        // -- include the parent tag
-        if (instance.data.onTagCreate) {
-          instance.data.onTagRemove(tagToRemove, instance.data.parentTag);
-        }
-      },
-      onTagUpdate(tagId, tagName) {
-        // Pass the tagId and tagName back up to the parent component for updating
-        if (instance.data.onTagUpdate) {
-          instance.data.onTagUpdate(tagId, tagName);
-        }
-      }
+      ...TagNavHelpers
     };
   },
   blankTagProps() {
@@ -321,7 +307,6 @@ Template.tagNav.events({
 
   "mouseover .navbar-item, focus .navbar-item"(event, instance) {
     const tagId = event.currentTarget.dataset.id;
-    // const tagId = event.target.dataset.id;
     const tags = instance.data.tags;
 
     if (TagNavHelpers.isMobile()) {
