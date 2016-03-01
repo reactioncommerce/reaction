@@ -1,9 +1,22 @@
+const Tooltip = ReactionUI.Lib.Tooltip;
+const Icon = ReactionUI.Components.Icon;
 
 Template.button.onRendered(function () {
-
+  if (this.data.tooltip) {
+    const buttonElement = this.$("button, a")[0];
+    this.tooltip = new Tooltip({
+      target: buttonElement,
+      position: this.data.tooltipPosition || "top left",
+      content: this.data.tooltip
+    });
+  }
 });
 
 Template.button.helpers({
+  iconComponent() {
+    return Icon;
+  },
+
   elementProps() {
     const data = Template.currentData();
     return {
@@ -42,7 +55,5 @@ Template.button.events({
     if (instance.data.onClick) {
       instance.data.onClick(event);
     }
-  },
-  "mouseover .rui.button"(event) {
   }
 });

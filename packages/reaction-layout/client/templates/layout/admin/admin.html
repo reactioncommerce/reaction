@@ -51,36 +51,16 @@
   <div class="admin-controls-menu">
 
     <nav class="admin-controls-quicklinks">
-      <!-- begin provides shortcut -->
-      {{#each reactionApps provides='shortcut' enabled=true container=undefined}}
-        <a href="{{route}}" title="{{i18n i18nKeyLabel label}}" class="btn btn-default {{active name}}">
-          <div class="contents">
-            <div class="icon">
-              <i class="{{icon}}"></i>
-            </div>
-            <div class="icon-text" data-i18n="{{i18nKeyLabel}}">
-              {{label}}
-            </div>
+      {{!-- ReactionCore.Apps provides=shortcut --}}
+      {{#each props in shortcutButtons}}
+        {{#if isSeperator props}}
+          <div class="rui separator padding xs">
+            <hr>
           </div>
-        </a>
+        {{else}}
+          {{> button props}}
+        {{/if}}
       {{/each}}
-      <!-- end provides shortcut -->
-      <button data-event-action="addItem">
-        <div class="icon">
-          <i class="fa fa-plus"></i>
-        </div>
-        <span class="icon-text" data-i18n="app.add">
-          Add
-        </span>
-      </button>
-      <button data-event-action="toggleEditMode">
-        <div class="icon">
-          <i class="fa fa-gear"></i>
-        </div>
-        <span class="icon-text" data-i18n="app.editMode">
-          Edit Mode
-        </span>
-      </button>
     </nav>
 
     <nav>
@@ -88,16 +68,9 @@
       {{> Template.dynamic template=dashboardControls}}
       <!-- end dashboardControls -->
 
-      {{#if settings}}
-        {{#with settings}}
-          <button id="{{route}}" title="{{i18n i18nKeyLabel label}}" data-event-action="showPackageSettings">
-            <i class="fa fa-gear"></i>
-            <span class="icon-text" data-i18n="{{i18nKeyLabel}}">
-              {{label}}
-            </span>
-          </button>
-        {{/with}}
-      {{/if}}
+      {{#each buttonProps in packageButtons}}
+        {{> button buttonProps}}
+      {{/each}}
     </nav>
 
   </div>

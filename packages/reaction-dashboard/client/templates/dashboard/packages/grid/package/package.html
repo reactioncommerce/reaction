@@ -11,13 +11,17 @@
     <div class="controls">
       {{#if package.enabled}}
         {{#if condition priority 'gt' 1}}
-          <button class="pull-right disablePkg">
-            <i class="fa fa-check-square fa-fw"></i>
+          <button class="rui button pull-right disablePkg">
+            <div class="contents">
+              <i class="fa fa-check-square fa-fw"></i>
+            </div>
           </button>
         {{/if}}
         {{#each reactionApps provides="settings" name=package.packageName}}
-          <button class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}">
-            <i class="{{orElse icon 'fa fa-cog fa-fw'}}"></i>
+          <button class="rui button pkg-settings" title="{{i18n 'app.settings' 'Settings'}}">
+            <div class="contents">
+              <i class="{{orElse icon 'fa fa-cog fa-fw'}}"></i>
+            </div>
           </button>
         {{/each}}
 
@@ -25,11 +29,12 @@
           {{> button (showDashboardButtonProps package)}}
         {{/if}}
       {{else}}
-        <button class="pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}">
-          <i class="fa fa-plus-square fa-fw"></i>
+        <button class="rui button pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}">
+          <div class="contents">
+            <i class="fa fa-plus-square fa-fw"></i>
+          </div>
         </button>
       {{/if}}
     </div>
-
   </div>
 </template>

@@ -1,7 +1,6 @@
 /**
  * CustomEmailSettings Schema
  */
-
 ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema({
   username: {
     type: String,
@@ -25,7 +24,6 @@ ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema({
 /**
  * Metafield Schema
  */
-
 ReactionCore.Schemas.Metafield = new SimpleSchema({
   key: {
     type: String,
@@ -58,7 +56,6 @@ ReactionCore.Schemas.Metafield = new SimpleSchema({
 /**
  * Currency Schema
  */
-
 ReactionCore.Schemas.Currency = new SimpleSchema({
   symbol: {
     type: String,
@@ -92,7 +89,6 @@ ReactionCore.Schemas.Currency = new SimpleSchema({
 /**
  * Locale Schema
  */
-
 ReactionCore.Schemas.Locale = new SimpleSchema({
   continents: {
     type: Object,
@@ -124,7 +120,6 @@ ReactionCore.Schemas.Languages = new SimpleSchema({
 /**
  * ShopTheme Schema
  */
-
 ReactionCore.Schemas.ShopTheme = new SimpleSchema({
   themeId: {
     type: String
@@ -136,9 +131,22 @@ ReactionCore.Schemas.ShopTheme = new SimpleSchema({
 });
 
 /**
+ * Shop Theme Schema
+ */
+ReactionCore.Schemas.BrandAsset = new SimpleSchema({
+  mediaId: {
+    type: String,
+    optional: true
+  },
+  type: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * Shop Schema
  */
-
 ReactionCore.Schemas.Shop = new SimpleSchema({
   "_id": {
     type: String,
@@ -247,6 +255,10 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
   },
   "theme": {
     type: ReactionCore.Schemas.ShopTheme,
+    optional: true
+  },
+  "brandAssets": {
+    type: [ReactionCore.Schemas.BrandAsset],
     optional: true
   },
   "createdAt": {

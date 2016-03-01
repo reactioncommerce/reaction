@@ -2,6 +2,46 @@
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
+  cardProps() {
+    const instance = Template.instance();
+    const data = instance.data;
+    const apps = ReactionCore.Apps({
+      provides: "settings",
+      name: data.package.packageName
+    });
+
+    let controls = [];
+
+    if (data.package.enabled === true && data.package.priority > 1) {
+      controls.push({
+        icon: "fa fa-check-square fa-fw",
+        onClick() {
+          console.log("enable / disable package");
+        }
+      })
+    }
+
+    for (let app in apps) {
+      controls.push({
+        icon: app.icon || "fa fa-cog fa-fw",
+      })
+    }
+
+    if (data.package.route) {
+      controls.push({
+        icon: "angle-right",
+        onClick() {
+          const route = data.package.name || data.package.route;
+          ReactionRouter.go(route);
+        }
+      });
+    }
+
+    return {
+      controls
+    }
+  },
+
   showDashboardButtonProps(pkg) {
     return {
       icon: "angle-right",
@@ -96,8 +136,8 @@ Template.gridPackage.events({
           (error, result) => {
             if (result === 1) {
               return Alerts.toast(
-                i18n.t("gridPackage.pkgDisabled", {
-                  app: i18n.t(self.i18nKeyLabel)
+                i18next.t("gridPackage.pkgDisabled", {
+                  app: i18next.t(self.i18nKeyLabel)
                 }),
                 "success"
               );
@@ -105,22 +145,7 @@ Template.gridPackage.events({
               throw new Meteor.Error("error disabling package", error);
             }
           }
-<<<<<<< HEAD
         );
-=======
-        }, function (error, result) {
-          if (result === 1) {
-            return Alerts.toast(
-              i18next.t("gridPackage.pkgDisabled", {
-                app: i18next.t(self.i18nKeyLabel)
-              }),
-              "success"
-            );
-          } else if (error) {
-            throw new Meteor.Error("error disabling package", error);
-          }
-        });
->>>>>>> origin/i18n-747
       });
   },
 
