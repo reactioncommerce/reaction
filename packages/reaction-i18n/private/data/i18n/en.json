@@ -46,6 +46,7 @@
           "filtrationDescription": "Products filtration for Reaction"
         },
         "settings": {
+          "addShopMemberLabel": "Add Shop Member",
           "accountSettingsLabel": "Account Settings",
           "addShopMemberSettingsLabel": "Add Shop Member",
           "authorizenetSettingsLabel": "Authorize.net Settings",
@@ -67,6 +68,7 @@
         "guests": "Guests"
       },
       "app": {
+        "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
@@ -80,6 +82,7 @@
         "settings": "Settings",
         "loading": "Loading",
         "toggle": "Toggle",
+        "toggleEditMode": "Toggle Edit Mode",
         "warning": "Oops!",
         "unauthorizedMessage": "You don't have permission to view this content.",
         "updateSettings": "Update Settings",

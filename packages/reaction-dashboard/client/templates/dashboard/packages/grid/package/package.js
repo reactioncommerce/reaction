@@ -2,6 +2,46 @@
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
+  cardProps() {
+    const instance = Template.instance();
+    const data = instance.data;
+    const apps = ReactionCore.Apps({
+      provides: "settings",
+      name: data.package.packageName
+    });
+
+    let controls = [];
+
+    if (data.package.enabled === true && data.package.priority > 1) {
+      controls.push({
+        icon: "fa fa-check-square fa-fw",
+        onClick() {
+          console.log("enable / disable package");
+        }
+      })
+    }
+
+    for (let app in apps) {
+      controls.push({
+        icon: app.icon || "fa fa-cog fa-fw",
+      })
+    }
+
+    if (data.package.route) {
+      controls.push({
+        icon: "angle-right",
+        onClick() {
+          const route = data.package.name || data.package.route;
+          ReactionRouter.go(route);
+        }
+      });
+    }
+
+    return {
+      controls
+    }
+  },
+
   showDashboardButtonProps(pkg) {
     return {
       icon: "angle-right",

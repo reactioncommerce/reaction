@@ -53,6 +53,9 @@ Package.onUse(function (api) {
   api.addFiles("client/helpers/helpers.js", "client");
 
   api.addFiles("client/components/components.jsx", "client");
+
+  api.addFiles("client/components/icon/icon.jsx", "client");
+
   api.addFiles("client/components/button/button.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
@@ -68,8 +71,8 @@ Package.onUse(function (api) {
 
   api.addFiles("client/components/items/items.less", "client");
 
-  api.addFiles("client/components/seperator/seperator.jsx", "client");
-  api.addFiles("client/components/seperator/seperator.less", "client");
+  api.addFiles("client/components/separator/separator.jsx", "client");
+  api.addFiles("client/components/separator/separator.less", "client");
 
   api.addFiles("client/components/buttonGroup/buttonGroup.jsx", "client");
   api.addFiles("client/components/buttonGroup/buttonGroup.less", "client");
