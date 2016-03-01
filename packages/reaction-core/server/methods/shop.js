@@ -552,7 +552,6 @@ Meteor.methods({
         "languages.$.enabled": enabled
       }
     });
-
   },
 
   /**
@@ -570,12 +569,34 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
-    return ReactionCore.Collections.Shops.update({
+
+    // Does our shop contain the brandasset we're tring to add
+    const shopWithBrandAsset = ReactionCore.Collections.Shops.findOne({
       "_id": ReactionCore.getShopId(),
-      "brandAssets.type": "navbarBrandImage"
+      "brandAssets.type": asset.type
+    });
+
+    // If it does, then we update it with the new asset reference
+    if (shopWithBrandAsset) {
+      return ReactionCore.Collections.Shops.update({
+        "_id": ReactionCore.getShopId(),
+        "brandAssets.type": "navbarBrandImage"
+      }, {
+        $set: {
+          "brandAssets.$": {
+            mediaId: asset.mediaId,
+            type: asset.type
+          }
+        }
+      });
+    }
+
+    // Otherwise we insert a new brand asset reference
+    return ReactionCore.Collections.Shops.update({
+      _id: ReactionCore.getShopId()
     }, {
-      $set: {
-        "brandAssets.$": {
+      $push: {
+        brandAssets: {
           mediaId: asset.mediaId,
           type: asset.type
         }
@@ -602,6 +623,5 @@ Meteor.methods({
         enabled: !enabled
       }
     });
-
   }
 });
