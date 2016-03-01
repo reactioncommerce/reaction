@@ -41,14 +41,16 @@ Template.productGrid.onCreated(function () {
   this.autorun(() => {
     const tagId = ReactionRouter.getParam("slug");
     if (tagId) {
-      const tag = ReactionCore.Collections.Tags.findOne({ slug: tagId }) || ReactionCore.Collections.Tags.findOne(tagId);
+      const tag = ReactionCore.Collections.Tags.findOne({ slug: tagId }) ||
+        ReactionCore.Collections.Tags.findOne(tagId);
       if (tag) {
         ReactionFiltration.update("tag", tag._id);
       } else {
         // TODO: show notFound template
       }
     }
-    Meteor.subscribe("Products", Session.get("productScrollLimit"), Session.get("productFilters"));
+    Meteor.subscribe("Products", Session.get("productScrollLimit"),
+      Session.get("productFilters"));
   });
 
   this.autorun(() => {

@@ -1,10 +1,11 @@
 /**
  * products publication
  * @param {Number} productScrollLimit - optional, defaults to 20
+ * @param {Object} productFilters - options for filtration
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit, productFilters) {
+Meteor.publish("Products", function (productScrollLimit, productFilters, shops) {
   check(productScrollLimit, Match.Optional(Number));
   // check(productFilters, Match.Optional(Object));
   // FIXME: We need to keep an eye on performance degradation with this check
@@ -13,21 +14,25 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
   // need to protect so much.
   // Once again: this pub a bottleneck of all Reaction. This place should be as
   // as fast as possible.
-  check(productFilters, Match.Optional({
-    "shops": Match.Optional([String]),
+  check(productFilters, {
     "tag": Match.Optional(String),
     "query": Match.Optional(String),
     "visibility": Match.Optional(Boolean),
     "details": Match.Optional(Object),
-    "details.key": String,
-    "details.value": String,
+    "details.key": Match.Optional(String),
+    "details.value": Match.Optional(String),
     "price": Match.Optional(Object),
-    "price.min": Number,
-    "price.max": Number,
+    "price.min": Match.Optional(Number),
+    "price.max": Match.Optional(Number),
     "weight": Match.Optional(Object),
-    "weight.min": Number,
-    "weight.max": Number
+    "weight.min": Match.Optional(Number),
+    "weight.max": Match.Optional(Number)
   });
+  // Why I remove `shops` from `productFilters`? Because `shops` have nothing
+  // in common with filtering. In future, `shops` could be necessary in some
+  // cases and for such cases it will be performance degradation if they will
+  // additionally check against all `productFilters` checks.
+  check(shops, Match.Optional([String]));
 
   let shopAdmin;
   // TODO this limit has another meaning now. We should calculate only objects
@@ -36,7 +41,7 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
   const shop = ReactionCore.getCurrentShop();
   let sort = { title: 1 };
 
-  if (typeof shop !== "object") {
+  if (!shop) {
     return this.ready();
   }
 
@@ -45,54 +50,63 @@ Meteor.publish("Products", function (productScrollLimit, productFilters) {
     type: "simple"
   };
 
-    if (productFilters) {
-      // handle multiple shops
-      if (productFilters.shops) {
-        _.extend(selector, {shopId: {$in: productFilters.shops}});
+  // handle multiple shops
+  if (shops) {
+    _.extend(selector, {shopId: {$in: shops}});
 
-      // check if this user is a shopAdmin
-      for (let thisShopId of productFilters.shops) {
-        if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
+    // check if this user is a shopAdmin
+    for (let thisShopId of shops) {
+      if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
           thisShopId)) {
-          shopAdmin = true;
-        }
+        shopAdmin = true;
       }
     }
+  }
 
-      // filter by tag
-      if (productFilters.tag) {
-        _.extend(selector, {hashtags: {$in: [productFilters.tag]}});
-      }
-
-      // filter by query
-      if (productFilters.query) {
-        let cond = {$regex: productFilters.query, $options: "i"};
-        _.extend(selector, {$or: [{title: cond}, {pageTitle: cond}, {description: cond}]});
-      }
-
-      // filter by details
-      if (productFilters.details) {
-        _.extend(selector, {metafields: {$elemMatch: {key: {$regex: productFilters.details.key, $options: "i"},
-          value: {$regex: productFilters.details.value, $options: "i"}}}});
-      }
-
-      // filter by visibility
-      if (productFilters.visibility !== undefined) {
-        _.extend(selector, {isVisible: productFilters.visibility});
-      }
-
-      // filter by price
-      if (productFilters.price) {
-        _.extend(selector, {variants: {$elemMatch: {price: {$gte: productFilters.price.min,
-          $lte: productFilters.price.max}}}});
-      }
-
-      // filter by weight
-      if (productFilters.weight) {
-        _.extend(selector, {variants: {$elemMatch: {weight: {$gte: productFilters.weight.min,
-          $lte: productFilters.weight.max}}}});
-      }
+  // TODO we need to add some var to `productFilters` to indicate it is filled,
+  // like `productFilters.enabled = true/false`. Temporary we will check against
+  // required parameter, i.e. "price.min"
+  if (productFilters["price.min"]) {
+    // filter by tag
+    if (productFilters.tag) {
+      _.extend(selector, { hashtags: { $in: [productFilters.tag] }});
     }
+
+    // filter by query
+    if (productFilters.query) {
+      let cond = { $regex: productFilters.query, $options: "i" };
+      _.extend(selector, { $or: [{ title: cond }, { pageTitle: cond },
+        { description: cond }] });
+    }
+
+    // filter by details
+    if (productFilters.details) {
+      _.extend(selector, { metafields: { $elemMatch: { key: {
+        $regex: productFilters.details.key, $options: "i"
+      }, value: { $regex: productFilters.details.value, $options: "i" }}}});
+    }
+
+    // filter by visibility
+    if (productFilters.visibility !== undefined) {
+      _.extend(selector, { isVisible: productFilters.visibility });
+    }
+
+    // filter by price
+    if (productFilters.price) {
+      _.extend(selector, { variants: { $elemMatch: { price: {
+        $gte: productFilters.price.min,
+        $lte: productFilters.price.max
+      }}}});
+    }
+
+    // filter by weight
+    if (productFilters.weight) {
+      _.extend(selector, { variants: { $elemMatch: { weight: {
+        $gte: productFilters.weight.min,
+        $lte: productFilters.weight.max
+      }}}});
+    }
+  }
 
   // products are always visible to owners
   if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
