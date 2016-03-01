@@ -22,7 +22,7 @@ Package.onUse(function (api) {
   api.use("ddp-rate-limiter");
   api.use("blaze-html-templates");
   api.use("reactioncommerce:core@0.12.0");
-  api.use("ongoworks:bunyan-logger@2.6.1");
+  api.use("reactioncommerce:reaction-logger@0.1.0");
 
   api.addFiles("common/globals.js"); // Inventory Globals
   api.addFiles("common/schema.js"); // ReactionCore.Schemas.Inventory
