@@ -95,9 +95,9 @@ Template.gridPackage.events({
       (error, result) => {
         if (result === 1) {
           Alerts.toast(
-            i18n.t(
+            i18next.t(
               "gridPackage.pkgEnabled",
-              { app: i18n.t(self.i18nKeyLabel) }
+              { app: i18next.t(self.i18nKeyLabel) }
             ),
             "error", {
               type: "pkg-enabled-" + self.name
@@ -109,7 +109,7 @@ Template.gridPackage.events({
           }
         } else if (error) {
           return Alerts.toast(
-            i18n.t(
+            i18next.t(
               "gridPackage.pkgDisabled",
               { app: i18next.t(self.i18nKeyLabel) }
             ),
