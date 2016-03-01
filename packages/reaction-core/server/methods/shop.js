@@ -552,6 +552,7 @@ Meteor.methods({
         "languages.$.enabled": enabled
       }
     });
+
   },
 
   /**
@@ -573,5 +574,6 @@ Meteor.methods({
         enabled: !enabled
       }
     });
+
   }
 });

@@ -37,6 +37,17 @@ Template.gridPackage.events({
             type: "pkg-enabled-" + self.name
           }
         );
+
+        if (self.name || self.route) {
+          const route = self.name || self.route;
+          return ReactionRouter.go(route);
+        }
+      } else if (error) {
+        return Alerts.toast(
+          i18next.t("gridPackage.pkgDisabled", { app: i18next.t(self.i18nKeyLabel) }),
+          "warning"
+        );
+
       }
     });
 
@@ -94,7 +105,22 @@ Template.gridPackage.events({
               throw new Meteor.Error("error disabling package", error);
             }
           }
+<<<<<<< HEAD
         );
+=======
+        }, function (error, result) {
+          if (result === 1) {
+            return Alerts.toast(
+              i18next.t("gridPackage.pkgDisabled", {
+                app: i18next.t(self.i18nKeyLabel)
+              }),
+              "success"
+            );
+          } else if (error) {
+            throw new Meteor.Error("error disabling package", error);
+          }
+        });
+>>>>>>> origin/i18n-747
       });
   },
 
