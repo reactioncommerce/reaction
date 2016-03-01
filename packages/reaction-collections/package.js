@@ -26,7 +26,7 @@ Package.onUse(function (api) {
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("vsivsi:job-collection@1.3.0");
   api.use("ongoworks:security@1.3.0");
-  api.use("ongoworks:bunyan-logger@2.6.0");
+  api.use("ongoworks:bunyan-logger@2.6.1");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
 

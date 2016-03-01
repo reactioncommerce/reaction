@@ -31,7 +31,7 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.12.0");
-  api.use("ongoworks:bunyan-logger@2.6.0");
+  api.use("ongoworks:bunyan-logger@2.6.1");
 
   // cart common workflow methods
   api.addFiles("common/methods/workflow.js");

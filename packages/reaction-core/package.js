@@ -52,7 +52,7 @@ Package.onUse(function (api) {
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
 
-  api.use("ongoworks:bunyan-logger@2.6.0");
+  api.use("ongoworks:bunyan-logger@2.6.1");
   api.use("momentjs:moment@2.11.1");
   api.use("risul:moment-timezone@0.5.0_5");
 

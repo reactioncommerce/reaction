@@ -538,14 +538,14 @@ Meteor.methods({
    */
   "shop/updateLanguageConfiguration": function (language, enabled) {
     check(language, String);
-    check(enabled, Boolean)
-      // must have core permissions
+    check(enabled, Boolean);
+    // must have core permissions
     if (!ReactionCore.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
     return ReactionCore.Collections.Shops.update({
-      _id: ReactionCore.getShopId(),
+      "_id": ReactionCore.getShopId(),
       "languages.i18n": language
     }, {
       $set: {

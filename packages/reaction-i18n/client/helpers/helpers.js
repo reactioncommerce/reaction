@@ -38,7 +38,7 @@ Template.registerHelper("currencySymbol", function () {
  * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
  * @return {String} returns locale formatted and exchange rate converted values
  */
-Template.registerHelper("formatPrice", function (currentPrice) {
+Template.registerHelper("formatPrice", function (formatPrice) {
   const {
     Locale
   } = ReactionCore;
@@ -49,12 +49,12 @@ Template.registerHelper("formatPrice", function (currentPrice) {
     return false;
   }
 
-  if (typeof currentPrice !== "string" && typeof currentPrice !== "number") {
+  if (typeof formatPrice !== "string" && typeof formatPrice !== "number") {
     return false;
   }
 
   // for the cases then we have only one price. It is a number.
-  currentPrice = currentPrice.toString();
+  let currentPrice = formatPrice.toString();
   let price = 0;
   const prices = ~currentPrice.indexOf(" - ") ?
     currentPrice.split(" - ") : [currentPrice];
@@ -107,7 +107,17 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
 };
 
 /**
+ * _formatPrice
+ * private function for formatting locale currency
  * @private
+ * @param  {Number} price         price
+ * @param  {Number} originalPrice originalPrice
+ * @param  {Number} actualPrice   actualPrice
+ * @param  {Number} currentPrice  currentPrice
+ * @param  {Number} currency      currency
+ * @param  {Number} pos           position
+ * @param  {Number} len           length
+ * @return {Number}               formatted price
  */
 function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
   pos, len) {
@@ -130,8 +140,7 @@ function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
     formattedPrice = accounting.formatMoney(actualPrice, currency);
   }
 
-  return (price === 0 ? currentPrice.replace(originalPrice, formattedPrice) :
-    price.replace(originalPrice, formattedPrice));
+  return price === 0 ? currentPrice.replace(originalPrice, formattedPrice) : price.replace(originalPrice, formattedPrice);
 }
 
 Object.assign(ReactionCore, {
