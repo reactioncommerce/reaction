@@ -29,6 +29,7 @@ Package.onUse(function (api) {
   api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
+  api.use("tmeasday:publish-counts@0.7.3");
 
   // ReactionCore declaration
   api.addFiles("common/globals.js");
@@ -74,6 +75,7 @@ Package.onUse(function (api) {
   api.imply("vsivsi:job-collection");
   api.imply("ongoworks:security");
   api.imply("alanning:roles");
+  api.imply("tmeasday:publish-counts");
   api.imply("alanning:roles");
   api.imply("meteorhacks:subs-manager");
   api.imply("reactioncommerce:reaction-schemas");

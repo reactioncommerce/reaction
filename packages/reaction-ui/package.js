@@ -7,15 +7,16 @@ Package.describe({
 
 Npm.depends({
   "classnames": "2.2.3",
+  "react-textarea-autosize": "3.3.0",
   "react-color": "1.3.6",
   "sortablejs": "1.4.2",
+  "react-dom": "0.14.7",
   "postcss": "5.0.14",
   "postcss-js": "0.1.1",
   "autoprefixer": "6.3.1",
   "css-annotation": "0.6.2",
   "tether-drop": "1.4.2",
   "tether-tooltip": "1.2.0"
-  // "react-anything-sortable": "1.0.0"
 });
 
 Package.onUse(function (api) {
@@ -53,6 +54,7 @@ Package.onUse(function (api) {
 
   api.addFiles("client/components/icon/icon.jsx", "client");
 
+  api.addFiles("client/components/button/button.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
@@ -77,8 +79,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/popover/popover.less", "client");
   api.addFiles("client/components/tooltip/tooltip.less", "client");
 
+  api.addFiles("client/components/textfield/textfield.jsx", "client");
   api.addFiles("client/components/textfield/textfield.html", "client");
   api.addFiles("client/components/textfield/textfield.less", "client");
+  api.export("TextField");
 
   api.addFiles("client/components/metadata/metadata.jsx", "client");
   api.addFiles("client/components/metadata/metadata.less", "client");
@@ -90,8 +94,10 @@ Package.onUse(function (api) {
   api.addFiles("client/components/media/media.jsx", "client");
   api.addFiles("client/components/media/media.less", "client");
 
+  api.addFiles("client/components/tags/tag.jsx", "client");
   api.addFiles("client/components/tags/tagItem.html", "client");
   api.addFiles("client/components/tags/tagItem.js", "client");
+  api.addFiles("client/components/tags/tags.jsx", "client");
   api.addFiles("client/components/tags/tagList.html", "client");
   api.addFiles("client/components/tags/tagList.js", "client");
   api.addFiles("client/components/tags/tags.less", "client");

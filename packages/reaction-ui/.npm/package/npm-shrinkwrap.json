@@ -152,6 +152,9 @@
     "react-dom": {
       "version": "0.14.7"
     },
+    "react-textarea-autosize": {
+      "version": "3.3.0"
+    },
     "sortablejs": {
       "version": "1.4.2"
     },
