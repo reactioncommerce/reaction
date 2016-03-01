@@ -54,7 +54,7 @@ cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.1.0
 coffeescript@1.0.11
-cosmos:browserify@0.9.3
+cosmos:browserify@0.10.0
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.2
@@ -157,6 +157,7 @@ reactioncommerce:reaction-email-templates@0.2.0
 reactioncommerce:reaction-i18n@1.0.0
 reactioncommerce:reaction-inventory@0.2.3
 reactioncommerce:reaction-layout@1.0.0
+reactioncommerce:reaction-logger@0.1.0
 reactioncommerce:reaction-orders@1.0.0
 reactioncommerce:reaction-paymentmethod@0.0.3
 reactioncommerce:reaction-paypal@1.3.0
