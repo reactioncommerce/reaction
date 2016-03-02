@@ -4,25 +4,21 @@
  */
 Template.ordersListItems.helpers({
   media: function () {
-    // not sure what this is supposed to do
-    let defaultImage;
-    if (defaultImage === ReactionCore.Collections.Media.findOne({
+    const variantImage = ReactionCore.Collections.Media.findOne({
+      "metadata.productId": this.productId,
       "metadata.variantId": this.variants._id
-    })) {
-      return defaultImage;
-    }
-    // default
-    let product = ReactionCore.Collections.Products.findOne(this.productId);
-    if (!product) {
-      return {};
-    }
-    let img = null;
-    _.any(product.variants, function (v) {
-      img = ReactionCore.Collections.Media.findOne({
-        "metadata.variantId": v._id
-      });
-      return !!img;
     });
-    return img;
+    // variant image
+    if (variantImage) {
+      return variantImage;
+    }
+    // find a default image
+    const productImage = ReactionCore.Collections.Media.findOne({
+      "metadata.productId": this.productId
+    });
+    if (productImage) {
+      return productImage;
+    }
+    return false;
   }
 });
