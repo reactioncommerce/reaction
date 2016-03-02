@@ -166,7 +166,6 @@ Template.coreOrderShippingInvoice.helpers({
     if (status === "approved" || status === "completed") {
       return false;
     }
-
     return true;
   },
 
@@ -207,12 +206,11 @@ Template.coreOrderShippingInvoice.helpers({
     const template = Template.instance();
     const paymentMethod = template.order.billing[0].paymentMethod;
     const refunds = Template.instance().refunds.get();
-
-    let lessAmount =  _.reduce(refunds, (memo, refund) => {
-      return memo - Math.abs(refund.amount);
-    }, paymentMethod.amount);
-
-    return lessAmount;
+    let refundTotal = 0;
+    _.each(refunds, function (item) {
+      refundTotal += item.amount;
+    });
+    return paymentMethod.total - refundTotal;
   },
 
   refundSubmitDisabled() {
@@ -222,18 +220,6 @@ Template.coreOrderShippingInvoice.helpers({
     }
   },
 
-
-  adjustedTotal2() {
-    let template = Template.instance();
-    let paymentMethod = template.order.billing[0].paymentMethod;
-    // let transactions = paymentMethod.transactions;
-
-    let refunds = Template.instance().refunds.get();
-    template.test.set(_.reduce(refunds, (memo, refund) => {
-      return memo - Math.abs(refund.amount);
-    }, paymentMethod.amount));
-    return template.test;
-  },
   /**
    * Order
    * @summary find a single order using the order id spplied with the template
@@ -243,17 +229,6 @@ Template.coreOrderShippingInvoice.helpers({
   order() {
     let template = Template.instance();
     return template.order;
-  },
-
-
-  showTrackingEdit() {
-    let template = Template.instance();
-    let currentData = Template.currentData();
-
-    if (!currentData.tracking || template.showTrackingEditForm.get()) {
-      return true;
-    }
-    return false;
   },
 
   shipment() {
@@ -268,19 +243,6 @@ Template.coreOrderShippingInvoice.helpers({
     let template = Template.instance();
     let currentData = Template.currentData();
     let shipment = currentData.fulfillment;
-
-    let items = _.map(shipment.items, (item) => {
-      let originalItem = _.findWhere(template.order.items, {
-        _id: item._id
-      });
-      return _.extend(originalItem, item);
-    });
-
-    return items;
-  },
-
-  shipmentItems(shipment) {
-    let template = Template.instance();
 
     let items = _.map(shipment.items, (item) => {
       let originalItem = _.findWhere(template.order.items, {
