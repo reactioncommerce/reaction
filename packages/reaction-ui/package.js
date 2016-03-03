@@ -110,6 +110,7 @@ Package.onUse(function (api) {
   api.addFiles("client/components/upload/upload.js", "client");
 
   api.addFiles("client/styles/variables.less", "client");
+  api.addFiles("client/styles/mixins.less", "client");
 
   // Templates
   api.addFiles("client/templates/dashboard/dashboard.html", "client");
