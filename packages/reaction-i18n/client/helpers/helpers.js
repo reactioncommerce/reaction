@@ -16,8 +16,10 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
   check(i18nKey, String);
   check(i18nMessage, String);
 
-  // i18nextDep.depend();
-  let message = new Handlebars.SafeString(i18nMessage);
+  i18nextDep.depend();
+
+  const message = new Handlebars.SafeString(i18nMessage);
+
   // returning translated key
   return i18next.t(i18nKey, {defaultValue: message});
 });
