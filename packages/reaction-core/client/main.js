@@ -139,22 +139,11 @@ _.extend(ReactionCore, {
         name: "core",
         shopId: this.shopId
       });
-      if (typeof packageRegistry === "undefined") {
-        throw Meteor.Error("400", "Package Info not available, couldn't check value");
-      }
-      // we can disable in admin, let's check.
-      if (typeof packageRegistry === "object" &&
-        typeof packageRegistry.settings === "object" &&
-        typeof packageRegistry.settings.public === "object" &&
-        typeof packageRegistry.settings.public.allowGuestCheckout === "boolean") {
-        allowGuest = packageRegistry.settings.public.allowGuestCheckout;
-      } else {
-        allowGuest = true;
-      }
-      ReactionCore.Log.info("alowGuestCheckout: " + allowGuest);
+      allowGuest = packageRegistry.settings.public.allowGuestCheckout;
+      ReactionCore.Log.debug("alowGuestCheckout: " + allowGuest);
       return allowGuest;
     }
-    console.log("Package subscription not ready when allowGuestCheckout was checked");
+    Meteor.Error("400", "Package subscription not ready when allowGuestCheckout was checked");
     return false;
   },
   getSellerShopId: function () {
