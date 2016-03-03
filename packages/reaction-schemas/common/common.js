@@ -17,7 +17,8 @@ _.extend(ReactionCore, {
     if (ReactionCore.getShopId()) {
       if (this.isSet && Meteor.isServer) {
         return this.value;
-      } else if (Meteor.isServer || Meteor.isClient && this.isInsert) {
+      } else if (Meteor.isServer && !this.isUpdate ||
+        Meteor.isClient && this.isInsert) {
         return ReactionCore.getShopId();
       }
       return this.unset();
