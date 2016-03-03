@@ -133,7 +133,7 @@ _.extend(ReactionCore, {
     return this.shopName;
   },
   allowGuestCheckout: function () {
-    let allowGuest = true;
+    let allowGuest;
     let packageRegistry = ReactionCore.Collections.Packages.findOne({
       name: "core",
       shopId: this.shopId
@@ -141,8 +141,11 @@ _.extend(ReactionCore, {
     // we can disable in admin, let's check.
     if (typeof packageRegistry === "object" &&
       typeof packageRegistry.settings === "object" &&
-      packageRegistry.settings.allowGuestCheckout) {
-      allowGuest = packageRegistry.settings.allowGuestCheckout;
+      typeof packageRegistry.settings.public === "object" &&
+      typeof packageRegistry.settings.public.allowGuestCheckout === "boolean") {
+      allowGuest = packageRegistry.settings.public.allowGuestCheckout;
+    } else {
+      allowGuest = true;
     }
     return allowGuest;
   },
