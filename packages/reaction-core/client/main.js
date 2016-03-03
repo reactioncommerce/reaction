@@ -139,6 +139,9 @@ _.extend(ReactionCore, {
         name: "core",
         shopId: this.shopId
       });
+      if (typeof packageRegistry === "undefined") {
+        throw Meteor.Error("400", "Package Info not available, couldn't check value");
+      }
       // we can disable in admin, let's check.
       if (typeof packageRegistry === "object" &&
         typeof packageRegistry.settings === "object" &&
