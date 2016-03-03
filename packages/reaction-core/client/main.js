@@ -133,21 +133,26 @@ _.extend(ReactionCore, {
     return this.shopName;
   },
   allowGuestCheckout: function () {
-    let allowGuest;
-    let packageRegistry = ReactionCore.Collections.Packages.findOne({
-      name: "core",
-      shopId: this.shopId
-    });
-    // we can disable in admin, let's check.
-    if (typeof packageRegistry === "object" &&
-      typeof packageRegistry.settings === "object" &&
-      typeof packageRegistry.settings.public === "object" &&
-      typeof packageRegistry.settings.public.allowGuestCheckout === "boolean") {
-      allowGuest = packageRegistry.settings.public.allowGuestCheckout;
-    } else {
-      allowGuest = true;
+    if (ReactionCore.Subscriptions.Packages.ready()) {
+      let allowGuest;
+      let packageRegistry = ReactionCore.Collections.Packages.findOne({
+        name: "core",
+        shopId: this.shopId
+      });
+      // we can disable in admin, let's check.
+      if (typeof packageRegistry === "object" &&
+        typeof packageRegistry.settings === "object" &&
+        typeof packageRegistry.settings.public === "object" &&
+        typeof packageRegistry.settings.public.allowGuestCheckout === "boolean") {
+        allowGuest = packageRegistry.settings.public.allowGuestCheckout;
+      } else {
+        allowGuest = true;
+      }
+      ReactionCore.Log.info("alowGuestCheckout: " + allowGuest);
+      return allowGuest;
     }
-    return allowGuest;
+    console.log("Package subscription not ready when allowGuestCheckout was checked");
+    return false;
   },
   getSellerShopId: function () {
     return Roles.getGroupsForUser(this.userId, "admin");
@@ -191,10 +196,6 @@ _.extend(ReactionCore, {
 
   hideActionView: function () {
     Session.set("admin/showActionView", false);
-  },
-
-  clearActionView: function () {
-    Session.set("admin/actionView", undefined);
   },
 
   getCurrentTag: function () {
