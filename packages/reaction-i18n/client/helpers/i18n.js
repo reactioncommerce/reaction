@@ -8,7 +8,7 @@
  * @return {String} language code
  */
 const getLang = () => {
-  if (typeof navigator.languages !== "undefined")  {
+  if (typeof navigator.languages !== "undefined") {
     if (~navigator.languages[0].indexOf("-")) {
       return navigator.languages[0].split("-")[0];
     } else if (~navigator.languages[0].indexOf("_")) {
@@ -73,108 +73,125 @@ function getMessagesFor() {
  *  initialize i18n and load data resources for the current language and fallback "EN"
  *
  */
+ReactionCore.translationDependency = this.i18nextDep = new Tracker.Dependency();
 this.localeDep = new Tracker.Dependency();
-Meteor.startup(function () {
-  if (ReactionCore.Subscriptions.Shops.ready()) {
-    const shopLanguage = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId()).language;
-    const defaultLanguage = shopLanguage;
-    // TODO: i18nextBrowserLanguageDetector
-    // const defaultLanguage = lng.detect() || shopLanguage;
+const packageNamespaces = [];
+let shopLanguage;
+let defaultLanguage;
+let packages;
 
-    // set default session language
-    Session.setDefault("language", getLang());
+Meteor.startup(() => {
+  Tracker.autorun(function () {
+    if (ReactionCore.Subscriptions.Shops.ready()) {
+      const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
+      shopLanguage = shop.language;
+      defaultLanguage = shopLanguage;
+      // TODO: i18nextBrowserLanguageDetector
+      // const defaultLanguage = lng.detect() || shopLanguage;
 
-    // every package gets a namespace, fetch them
-    const packageNamespaces = [];
-    const packages = ReactionCore.Collections.Packages.find({}, {
-      fields: {
-        name: 1
+      // set default session language
+      Session.setDefault("language", getLang());
+
+      // every package gets a namespace, fetch them
+      // const packageNamespaces = [];
+      packages = ReactionCore.Collections.Packages.find({}, {
+        fields: {
+          name: 1
+        }
+      }).fetch();
+      for (const pkg of packages) {
+        packageNamespaces.push(pkg.name);
       }
-    }).fetch();
-    for (const pkg of packages) {
-      packageNamespaces.push(pkg.name);
-    }
 
-    // use i18n detected language to getLocale info
-    Meteor.call("shop/getLocale", function (error, result) {
-      if (result) {
-        ReactionCore.Locale = result;
-        ReactionCore.Locale.language = Session.get("language");
-        moment.locale(ReactionCore.Locale.language);
-        localeDep.changed();
-      }
-    });
-
-    // use tracker autorun to detect language changes
-    Tracker.autorun(function () {
-      let userLanguage = Session.get("language");
-      return Meteor.subscribe("Translations", userLanguage, () => {
-        // fetch reaction translations
-        let translations = ReactionCore.Collections.Translations
-          .find({}, {
-            fields: {
-              _id: 0
-            }
-          }).fetch();
-        // map reduce translations into i18next formatting
-        const resources = translations.reduce(function (x, y) {
-          x[y.i18n] = y.translation;
-          return x;
-        }, {});
-        //
-        // initialize i18next
-        //
-        i18next
-          .use(i18nextBrowserLanguageDetector)
-          .use(i18nextLocalStorageCache)
-          .use(i18nextSprintfPostProcessor)
-          .use(i18nextJquery)
-          .init({
-            debug: false,
-            ns: packageNamespaces, // translation namespace for every package
-            defaultNS: "core", // reaction "core" is the default namespace
-            lng: Session.get("language"), // user session language
-            fallbackLng: shopLanguage, // Shop language
-            resources: resources
-              // saveMissing: true,
-              // missingKeyHandler: function (lng, ns, key, fallbackValue) {
-              //   Meteor.call("i18n/addTranslation", lng, ns, key, fallbackValue);
-              // }
-          }, (err, t) => {
-            // someday this should work
-            // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-            for (let schema in ReactionCore.Schemas) {
-              if ({}.hasOwnProperty.call(ReactionCore.Schemas, schema)) {
-                let ss = ReactionCore.Schemas[schema];
-                ss.labels(getLabelsFor(ss, schema));
-                ss.messages(getMessagesFor(ss, schema));
-              }
-            }
-            // global first time init event finds and replaces
-            // data-i18n attributes in html/template source.
-            $elements = $("[data-i18n]").localize();
-
-            // apply language direction to html
-            if (t("languageDirection") === "rtl") {
-              return $("html").addClass("rtl");
-            }
-            return $("html").removeClass("rtl");
-          });
+      // use i18n detected language to getLocale info
+      Meteor.call("shop/getLocale", function (error, result) {
+        if (result) {
+          ReactionCore.Locale = result;
+          ReactionCore.Locale.language = Session.get("language");
+          moment.locale(ReactionCore.Locale.language);
+          localeDep.changed();
+        }
       });
-    });
-  } // end subscribe check
 
-  // global onRendered event finds and replaces
-  // data-i18n attributes in html/template source.
-  // uses methods from i18nextJquery
-  Template.onRendered(function () {
-    this.autorun((function () {
-      return function () {
-        $elements = $("[data-i18n]").localize();
-      };
-    })(this));
+      // Stop the tracker
+      this.stop();
+    }
   });
-}); // end tracker
+});
+
+// use tracker autorun to detect language changes
+Tracker.autorun(function () {
+  let userLanguage = Session.get("language");
+  return Meteor.subscribe("Translations", userLanguage, () => {
+    // fetch reaction translations
+    let translations = ReactionCore.Collections.Translations
+      .find({}, {
+        fields: {
+          _id: 0
+        }
+      }).fetch();
+    // map reduce translations into i18next formatting
+    const resources = translations.reduce(function (x, y) {
+      x[y.i18n] = y.translation;
+      return x;
+    }, {});
+
+    //
+    // initialize i18next
+    //
+    i18next
+      .use(i18nextBrowserLanguageDetector)
+      .use(i18nextLocalStorageCache)
+      .use(i18nextSprintfPostProcessor)
+      .use(i18nextJquery)
+      .init({
+        debug: false,
+        ns: packageNamespaces, // translation namespace for every package
+        defaultNS: "core", // reaction "core" is the default namespace
+        lng: Session.get("language"), // user session language
+        fallbackLng: shopLanguage, // Shop language
+        resources: resources
+          // saveMissing: true,
+          // missingKeyHandler: function (lng, ns, key, fallbackValue) {
+          //   Meteor.call("i18n/addTranslation", lng, ns, key, fallbackValue);
+          // }
+      }, (err, t) => {
+        // someday this should work
+        // see: https://github.com/aldeed/meteor-simple-schema/issues/494
+        for (let schema in ReactionCore.Schemas) {
+          if ({}.hasOwnProperty.call(ReactionCore.Schemas, schema)) {
+            let ss = ReactionCore.Schemas[schema];
+            ss.labels(getLabelsFor(ss, schema));
+            ss.messages(getMessagesFor(ss, schema));
+          }
+        }
+
+        i18nextDep.changed();
+
+        // global first time init event finds and replaces
+        // data-i18n attributes in html/template source.
+        $elements = $("[data-i18n]").localize();
+
+        // apply language direction to html
+        if (t("languageDirection") === "rtl") {
+          return $("html").addClass("rtl");
+        }
+        return $("html").removeClass("rtl");
+      });
+  });
+});
+
+// global onRendered event finds and replaces
+// data-i18n attributes in html/template source.
+// uses methods from i18nextJquery
+Template.onRendered(function () {
+  this.autorun((function () {
+    return function () {
+      i18nextDep.depend();
+      $elements = $("[data-i18n]").localize();
+    };
+  })(this));
+});
 
 //
 // init i18nextJquery

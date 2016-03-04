@@ -277,7 +277,9 @@ describe("cart methods", function () {
         // fixme: we expect decrease the number of items, but this does not
         // occur by some unknown reason
         // This was work for a while, but I forgot how I fix it :(
-        // expect(cart.items.length).toEqual(1);
+        // this test could be broken because of `shopIdAutoValue` if it is
+        // setting shopId (`$set`) on `$pull`
+        expect(cart.items.length).toEqual(1);
 
         return done();
       }

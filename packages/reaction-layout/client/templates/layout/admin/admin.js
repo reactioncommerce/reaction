@@ -29,7 +29,8 @@ Template.coreAdminLayout.helpers({
           href: ReactionRouter.pathFor(shortcut.name),
           className: ReactionRouter.isActiveClassName(shortcut.name),
           icon: shortcut.icon,
-          tooltip: i18next.t(shortcut.i18nKeyLabel, shortcut.i18n),
+          tooltip: shortcut.label || "POOOOP??",
+          i18nKeyTooltip: shortcut.i18nKeyLabel,
           tooltipPosition: "left middle"
         });
       }
@@ -41,7 +42,8 @@ Template.coreAdminLayout.helpers({
 
     items.push({
       icon: "plus",
-      tooltip: i18next.t("app.createContent", "Create Content"),
+      tooltip: "Create Content",
+      i18nKeyTooltip: "app.createContent",
       tooltipPosition: "left middle",
       onClick(event) {
         if (!instance.dropInstance) {
@@ -62,7 +64,8 @@ Template.coreAdminLayout.helpers({
 
     items.push({
       icon: "edit",
-      tooltip: i18next.t("app.toggleEditMode", "Toggle Edit Mode"),
+      tooltip: "Toggle Edit Mode",
+      i18nKeyTooltip: "app.toggleEditMode",
       tooltipPosition: "left middle",
       onClick() {
         if (Session.equals("reaction/editModeEnabled", true)) {

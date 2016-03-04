@@ -83,6 +83,7 @@ function getOrders(filter) {
 function getFiltersWithCounts() {
   return orderFilters.map((filter) => {
     filter.label = i18next.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
+    filter.i18nKeyLabel = `order.filter.${filter.name}`;
     filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
     if (ReactionRouter.getQueryParam("filter")) {
