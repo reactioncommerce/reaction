@@ -16,7 +16,7 @@ ReactionRegistry.loadPackages = function () {
 
   // Attempt to load reaction.json fixture data
   try {
-    settingsJSONAsset = AppAssets.getText("settings/reaction-poop.json");
+    settingsJSONAsset = AppAssets.getText("settings/reaction.json");
     const validatedJson = EJSON.parse(settingsJSONAsset);
 
     if (!_.isArray(validatedJson[0])) {
