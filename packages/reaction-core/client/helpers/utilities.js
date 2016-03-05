@@ -10,7 +10,7 @@
  * @summary overrides Meteor Package.blaze currentUser method
  * @return {[Boolean]} returns true/null if user has registered
  */
-currentUser = function () {
+_currentUser = function () {
   if (typeof ReactionCore === "object") {
     const shopId = ReactionCore.getShopId();
     const user = Accounts.user();
@@ -28,7 +28,7 @@ currentUser = function () {
  */
 if (Package.blaze) {
   Package.blaze.Blaze.Template.registerHelper("currentUser", function () {
-    return this.currentUser;
+    return _currentUser();
   });
 }
 
@@ -39,7 +39,7 @@ if (Package.blaze) {
  */
 if (Package.blaze) {
   Package.blaze.Blaze.Template.registerHelper("guestLoginOk", function () {
-    let currentUser = this.currentUser;
+    let currentUser = _currentUser();
     let guestLoginOk = !currentUser && ReactionCore.allowGuestCheckout();
     return guestLoginOk;
   });
