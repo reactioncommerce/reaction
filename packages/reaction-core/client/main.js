@@ -143,8 +143,7 @@ _.extend(ReactionCore, {
       ReactionCore.Log.debug("alowGuestCheckout: " + allowGuest);
       return allowGuest;
     }
-    Meteor.Error("400", "Package subscription not ready when allowGuestCheckout was checked");
-    return false;
+    throw new Meteor.Error("400", "Package subscription not ready when allowGuestCheckout was checked");
   },
   getSellerShopId: function () {
     return Roles.getGroupsForUser(this.userId, "admin");
