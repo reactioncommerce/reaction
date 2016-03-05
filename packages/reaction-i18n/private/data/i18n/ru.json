@@ -552,7 +552,8 @@
       "error": {
         "nameRequired": "Название обязательно.",
         "isRequired": "Поле \"{{field}}\" обязательно.",
-        "mustBeNumber": "Поле \"{{field}}\" должно быть числом."
+        "mustBeNumber": "Поле \"{{field}}\" должно быть числом.",
+        "variantFieldIsRequired": "Поле \"{{field}}\" варианта {{number}} обязательно."
       }
     }
   }

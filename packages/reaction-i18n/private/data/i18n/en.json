@@ -554,7 +554,8 @@
       "error": {
         "nameRequired": "Name is required.",
         "isRequired": "{{field}} is required.",
-        "mustBeNumber": "{{field}} must be a number."
+        "mustBeNumber": "{{field}} must be a number.",
+        "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
       }
     }
   }
