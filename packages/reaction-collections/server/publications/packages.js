@@ -6,9 +6,6 @@
  */
 Meteor.publish("Packages", function (shopCursor) {
   check(shopCursor, Match.Optional(Object));
-  if (this.userId === null) {
-    return this.ready();
-  }
   const shop = shopCursor || ReactionCore.getCurrentShop();
   const {
     Packages

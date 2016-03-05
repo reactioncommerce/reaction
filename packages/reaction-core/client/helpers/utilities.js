@@ -10,21 +10,41 @@
  * @summary overrides Meteor Package.blaze currentUser method
  * @return {[Boolean]} returns true/null if user has registered
  */
+_currentUser = function () {
+  if (typeof ReactionCore === "object") {
+    const shopId = ReactionCore.getShopId();
+    const user = Accounts.user();
+    if (!shopId || typeof user !== "object") return null;
+    // shoppers should always be guests
+    const isGuest = Roles.userIsInRole(user, "guest", shopId);
+    // but if a user has never logged in then they are anonymous
+    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+    return isGuest && !isAnonymous ? user : null;
+  }
+};
+
+/**
+ * register currentUser as a template helper
+ */
 if (Package.blaze) {
   Package.blaze.Blaze.Template.registerHelper("currentUser", function () {
-    if (typeof ReactionCore === "object") {
-      const shopId = ReactionCore.getShopId();
-      const user = Accounts.user();
-      if (!shopId || typeof user !== "object") return null;
-      // shoppers should always be guests
-      const isGuest = Roles.userIsInRole(user, "guest", shopId);
-      // but if a user has never logged in then they are anonymous
-      const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
-
-      return isGuest && !isAnonymous ? user : null;
-    }
+    return _currentUser();
   });
 }
+
+/**
+ * registerHelper guestLoginOk
+ * @summary Determines whether whether guest login is both applicable and allowed
+ * @return {Boolean} If no current user and allowGuestCheckout is not disabled
+ */
+if (Package.blaze) {
+  Package.blaze.Blaze.Template.registerHelper("guestLoginOk", function () {
+    let currentUser = _currentUser();
+    let guestLoginOk = !currentUser && ReactionCore.allowGuestCheckout();
+    return guestLoginOk;
+  });
+}
+
 
 /**
  * registerHelper monthOptions

@@ -133,18 +133,17 @@ _.extend(ReactionCore, {
     return this.shopName;
   },
   allowGuestCheckout: function () {
-    let allowGuest = true;
-    let packageRegistry = ReactionCore.Collections.Packages.findOne({
-      name: "core",
-      shopId: this.shopId
-    });
-    // we can disable in admin, let's check.
-    if (typeof packageRegistry === "object" &&
-      typeof packageRegistry.settings === "object" &&
-      packageRegistry.settings.allowGuestCheckout) {
-      allowGuest = packageRegistry.settings.allowGuestCheckout;
+    if (ReactionCore.Subscriptions.Packages.ready()) {
+      let allowGuest;
+      let packageRegistry = ReactionCore.Collections.Packages.findOne({
+        name: "core",
+        shopId: this.shopId
+      });
+      allowGuest = packageRegistry.settings.public.allowGuestCheckout;
+      ReactionCore.Log.debug("alowGuestCheckout: " + allowGuest);
+      return allowGuest;
     }
-    return allowGuest;
+    throw new Meteor.Error("400", "Package subscription not ready when allowGuestCheckout was checked");
   },
   getSellerShopId: function () {
     return Roles.getGroupsForUser(this.userId, "admin");
@@ -188,10 +187,6 @@ _.extend(ReactionCore, {
 
   hideActionView: function () {
     Session.set("admin/showActionView", false);
-  },
-
-  clearActionView: function () {
-    Session.set("admin/actionView", undefined);
   },
 
   getCurrentTag: function () {
