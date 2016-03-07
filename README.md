@@ -18,9 +18,11 @@ The Reaction documentation source is located in the [reaction-docs](https://gith
 > Reaction requires [Meteor](https://www.meteor.com/install), [Node](http://nodejs.org/), [npm](https://www.npmjs.com/) and [ImageMagick](http://www.imagemagick.org/script/binary-releases.php)
 
 ```bash
+curl https://install.meteor.com | /bin/sh
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
-./reaction install
+reaction pull
+reaction
 ```
 
 Developers using **Windows** should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
