@@ -21,35 +21,44 @@ Template.productDetailEdit.events({
   "change input,textarea": function (event) {
     const self = this;
     const productId = ReactionProduct.selectedProductId();
-    Meteor.call("products/updateProductField", productId, this.field,
+    Meteor.call("products/updateProductField", productId, self.field,
       $(event.currentTarget).val(),
-      function (error) {
+      (error, result) => {
         if (error) {
           return Alerts.inline(error.reason, "error", {
             placement: "productManagement",
             i18nKey: "productDetail.errorMsg",
-            id: this._id
+            id: self._id
           });
         }
-        // redirect to new url on title change
-        if (self.field === "title") {
-          Meteor.call("products/setHandle", productId,
-            function (setHandleError, result) {
-              if (result) {
-                ReactionRouter.go("product", {
-                  handle: result
-                });
+        if (result) {
+          // redirect to new url on title change
+          if (self.field === "title") {
+            Meteor.call("products/setHandle", productId,
+              (err, res) => {
+                if (err) {
+                  Alerts.inline(err.reason, "error", {
+                    placement: "productManagement",
+                    i18nKey: "productDetail.errorMsg",
+                    id: self._id
+                  });
+                }
+                if (res) {
+                  ReactionRouter.go("product", {
+                    handle: res
+                  });
+                }
               }
-            }
-          );
+            );
+          }
+          // animate updated field
+          // TODO this needs to be moved into a component
+          return $(event.currentTarget).animate({
+            backgroundColor: "#e2f2e2"
+          }).animate({
+            backgroundColor: "#fff"
+          });
         }
-        // animate updated field
-        // TODO this needs to be moved into a component
-        return $(event.currentTarget).animate({
-          backgroundColor: "#e2f2e2"
-        }).animate({
-          backgroundColor: "#fff"
-        });
       });
 
     if (this.type === "textarea") {
