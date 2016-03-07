@@ -397,6 +397,9 @@
         "isBillingDefault": "Make this your default billing address?",
         "isCommercial": "This is a commercial address."
       },
+      "i18nSettings": {
+        "enabledLanguages": "Languages"
+      },
       "checkoutProgressBar": {
         "login": "Account",
         "shippingBilling": "Address Details",
@@ -521,6 +524,8 @@
           "usernameRequired": "Username is required.",
           "emailAlreadyExists": "Email already exists.",
           "emailDoesntMatchTheCriteria": "Email doesn't match the criteria.",
+          "errorSendingEmail": "Error sending email, possible configuration issue.",
+          "unableToSendInvitationEmail": "Unable to send invitation email.",
           "failedToLogout": "Failed to logout.",
           "invalidLoginToken": "Invalid login token",
           "loginForbidden": "Login forbidden",
@@ -554,7 +559,8 @@
       "error": {
         "nameRequired": "Name is required.",
         "isRequired": "{{field}} is required.",
-        "mustBeNumber": "{{field}} must be a number."
+        "mustBeNumber": "{{field}} must be a number.",
+        "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
       }
     }
   }

@@ -95,7 +95,7 @@ Package.onTest(function (api) {
   api.use("accounts-password");
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-collections");
-  api.use("reactioncommerce:reaction-factories@0.4.0");
+  api.use("reactioncommerce:reaction-factories@0.4.1");
 
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
 });

@@ -109,7 +109,8 @@ Package.onUse(function (api) {
   api.addFiles("client/components/upload/upload.html", "client");
   api.addFiles("client/components/upload/upload.js", "client");
 
-  api.addFiles("client/styles/variables.less", "client");
+  api.addFiles("client/styles/variables.less", "client", {isImport: true});
+  api.addFiles("client/styles/mixins.less", "client", {isImport: true});
 
   // Templates
   api.addFiles("client/templates/dashboard/dashboard.html", "client");

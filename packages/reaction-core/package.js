@@ -6,7 +6,8 @@ Package.describe({
 });
 
 Npm.depends({
-  "node-geocoder": "3.0.0"
+  "node-geocoder": "3.0.0",
+  "lodash.merge": "4.3.2"
 });
 
 Package.onUse(function (api) {
@@ -172,7 +173,7 @@ Package.onTest(function (api) {
   // reaction core
   api.use("reactioncommerce:reaction-checkout@1.0.0");
   api.use("reactioncommerce:reaction-collections@2.0.1");
-  api.use("reactioncommerce:reaction-factories@0.4.0");
+  api.use("reactioncommerce:reaction-factories@0.4.1");
   api.use("reactioncommerce:core@0.12.0");
 
   // server integration tests

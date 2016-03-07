@@ -126,7 +126,7 @@ Package.onTest(function (api) {
 
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-accounts");
-  api.use("reactioncommerce:reaction-factories@0.4.0");
+  api.use("reactioncommerce:reaction-factories@0.4.1");
 
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
   api.addFiles("tests/jasmine/server/integration/accounts.js", "server");

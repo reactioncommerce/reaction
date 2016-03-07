@@ -395,6 +395,9 @@
         "isBillingDefault": "Сделать вашим платёжным адресом по умолчанию?",
         "isCommercial": "Это юридический адрес"
       },
+      "i18nSettings": {
+        "enabledLanguages": "Языки"
+      },
       "checkoutProgressBar": {
         "login": "Вход в учётную запись",
         "shippingBilling": "Адреса",
@@ -519,6 +522,8 @@
           "usernameRequired": "Имя пользователя обязательно.",
           "emailAlreadyExists": "Email уже существует",
           "emailDoesntMatchTheCriteria": "Email не соответствует критериям.",
+          "errorSendingEmail": "Ошибка при отправке письма. Возможно проблемы с настройками.",
+          "unableToSendInvitationEmail": "Не удалось отправить приглашение.",
           "failedToLogout": "Не удалось выйти",
           "invalidLoginToken": "Неверный токен для входа",
           "loginForbidden": "Вход запрещен",
@@ -552,7 +557,8 @@
       "error": {
         "nameRequired": "Название обязательно.",
         "isRequired": "Поле \"{{field}}\" обязательно.",
-        "mustBeNumber": "Поле \"{{field}}\" должно быть числом."
+        "mustBeNumber": "Поле \"{{field}}\" должно быть числом.",
+        "variantFieldIsRequired": "Поле \"{{field}}\" варианта {{number}} обязательно."
       }
     }
   }

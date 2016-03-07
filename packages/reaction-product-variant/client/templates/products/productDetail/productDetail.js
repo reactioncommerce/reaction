@@ -193,17 +193,17 @@ Template.productDetail.events({
     let errorMsg = "";
     const self = this;
     if (!self.title) {
-      errorMsg += "Product title is required. ";
+      errorMsg += `${i18next.t("error.isRequired", { field: i18next.t("productDetailEdit.title") })} `;
       template.$(".title-edit-input").focus();
     }
     const variants = ReactionProduct.getVariants(self._id);
     for (let variant of variants) {
       let index = _.indexOf(variants, variant);
       if (!variant.title) {
-        errorMsg += "Variant " + (index + 1) + " label is required. ";
+        errorMsg += `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
       }
       if (!variant.price) {
-        errorMsg += "Variant " + (index + 1) + " price is required. ";
+        errorMsg += `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
       }
     }
     if (errorMsg.length > 0) {
