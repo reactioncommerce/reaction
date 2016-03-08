@@ -63,16 +63,13 @@ const filters = new SimpleSchema({
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, filters));
 
   let shopAdmin;
   const shop = ReactionCore.getCurrentShop();
   const Products = ReactionCore.Collections.Products;
-  const sort = {
-    title: 1
-  };
 
   if (typeof shop !== "object") {
     return this.ready();
