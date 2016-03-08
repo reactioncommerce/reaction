@@ -23,10 +23,8 @@ Developers using **Windows** should review the [Windows specific installation re
 curl https://install.meteor.com | /bin/sh # installs Meteor
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
-./reaction pull
 ./reaction
 ```
-
 
 Additional setup options, such as how to set the default credentials, can be found in the  [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
 
