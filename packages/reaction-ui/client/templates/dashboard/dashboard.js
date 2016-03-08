@@ -17,7 +17,7 @@ Template.uiDashboard.helpers({
     return {
       onContentClick() {
         ReactionRouter.go("dashboard/uiThemeDetails", {
-          id: theme.theme
+          id: theme.name
         });
       },
       controls: [

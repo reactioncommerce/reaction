@@ -1,6 +1,11 @@
 <template name="uiThemeEditor">
-  <div>
-    <h2>{{component.label}}</h2>
+
+  <div class="panel panel-default" data-selector={{style.selector}} data-rule="true">
+    <div class="panel-heading">
+      <div class="panel-title">
+        {{component.label}}
+      </div>
+    </div>
   </div>
 
   <div class="panel-group">

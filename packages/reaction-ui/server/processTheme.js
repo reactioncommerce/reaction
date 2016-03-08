@@ -41,7 +41,7 @@ function updateStyles(data) {
   objectToCSS(data.styles).then((result) => {
     if (result.css) {
       return ReactionCore.Collections.Themes.update({
-        "theme": data.theme.theme,
+        "name": data.theme.name,
         "components.name": data.component.name
       }, {
         $set: {
@@ -80,13 +80,13 @@ function registerTheme(styles) {
   } = annotations[0];
 
   const hasComponent = ReactionCore.Collections.Themes.find({
-    "theme": theme,
+    "name": theme,
     "components.name": name
   }).count();
 
   if (hasComponent) {
     ReactionCore.Collections.Themes.update({
-      theme,
+      "name": theme,
       "components.name": name
     }, {
       $set: {
@@ -100,10 +100,10 @@ function registerTheme(styles) {
     });
   } else {
     ReactionCore.Collections.Themes.upsert({
-      theme
+      "name": theme
     }, {
       $set: {
-        theme
+        "name": theme
       },
       $push: {
         components: {
@@ -125,7 +125,7 @@ function duplicateTheme(name) {
   });
 
   delete theme._id;
-  theme.theme = `${name} copy`;
+  theme.name = `${name} copy`;
 
   return ReactionCore.Collections.Themes.insert(theme);
 }

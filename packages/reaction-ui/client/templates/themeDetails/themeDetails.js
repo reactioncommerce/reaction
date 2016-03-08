@@ -24,7 +24,7 @@ Template.uiThemeDetails.onCreated(function () {
   });
 
   this.autorun(() => {
-    this.theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
+    this.theme = ReactionCore.Collections.Themes.findOne({name: "base"});
     this.state.set("theme", this.theme);
   });
 });
@@ -64,7 +64,7 @@ Template.uiThemeDetails.helpers({
       const theme = instance.state.get("theme") || {};
       Meteor.call("ui/publishTheme", theme, (error) => {
         if (error) {
-          Alerts.toast(`Couldn't publish theme ${theme.theme}`, "error");
+          Alerts.toast(`Couldn't publish theme ${theme.name}`, "error");
         }
       });
     };

@@ -56,7 +56,7 @@ Template.uiThemeEditor.onCreated(function () {
   };
 
   this.autorun(() => {
-    const theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
+    const theme = ReactionCore.Collections.Themes.findOne({name: "base"});
     this.state.set("theme", theme);
 
     if (theme) {
@@ -162,7 +162,7 @@ Template.uiThemeEditor.events({
 
     Meteor.call("ui/updateStyles", data, (error) => {
       if (error) {
-        Alerts.toast(`Could't update theme ${theme.theme}`);
+        Alerts.toast(`Could't update theme ${theme.name}`);
       }
     });
   }
