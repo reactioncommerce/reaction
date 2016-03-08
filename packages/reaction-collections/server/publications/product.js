@@ -7,7 +7,7 @@ Meteor.publish("Product", function (productId) {
   check(productId, Match.OptionalOrNull(String));
   if (!productId) {
     ReactionCore.Log.info("ignoring null request on Product subscription");
-    return;
+    return this.ready();
   }
   let _id;
   let shop = ReactionCore.getCurrentShop();
