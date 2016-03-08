@@ -197,8 +197,7 @@ function denormalize(id, field) {
     });
     break;
   default: // "price" is object with range, min, max
-    // set "0" if no variants in product. If all variants were removed.
-    const priceObject = ReactionCore.getProductPriceRange(id) || 0;
+    const priceObject = ReactionCore.getProductPriceRange(id);
     Object.assign(update, {price: priceObject});
   }
   ReactionCore.Collections.Products.update(id, {
