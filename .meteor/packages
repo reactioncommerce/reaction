@@ -64,9 +64,6 @@ reactioncommerce:reaction-stripe
 reactioncommerce:reaction-auth-net
 reactioncommerce:reaction-braintree
 
-# Add on community packages
-# ramusus:reaction-filtration
-
 # Reaction Commerce Data
 
 reactioncommerce:reaction-sample-data   # default Reaction data

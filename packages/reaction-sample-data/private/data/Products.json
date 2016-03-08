@@ -11,7 +11,9 @@
     "rpjCvTBGjhBi2xdro",
     "cseCBSSrJ3t8HQSNP"
   ],
-  "price": "12.99 - 19.99",
+  "price.range": "12.99 - 19.99",
+  "price.min": 12.99,
+  "price.max": 19.99,
   "isVisible": true,
   "isLowQuantity": false,
   "isSoldOut": false,
