@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+printf "\n[-] Performing final cleanup...\n"
+
 # Clean out docs
 rm -rf /usr/share/doc /usr/share/doc-base /usr/share/man /usr/share/locale /usr/share/zoneinfo
 
@@ -17,6 +19,7 @@ rm -rf /root/.npm /root/.cache /root/.config /root/.cordova /root/.local
 rm -rf /tmp/*
 
 # remove npm
+npm cache clean
 rm -rf /usr/bin/npm
 rm -rf /usr/lib/node_modules/npm
 
@@ -24,7 +27,7 @@ rm -rf /usr/lib/node_modules/npm
 rm -rf /usr/bin/meteor
 rm -rf /root/.meteor
 
-# remove dependencies
+# remove os dependencies
 apt-get -qq -y purge ca-certificates curl git
 apt-get -qq -y autoremove
 rm -rf /var/lib/apt/lists/*
