@@ -99,7 +99,7 @@ describe("Publication", function () {
         function () {
           // setup
           let filters = {shops: [shop._id]};
-          const productScrollLimit = 20;
+          const productScrollLimit = 24;
           spyOn(ReactionCore, "getCurrentShop").and.returnValue({
             _id: "123"
           });

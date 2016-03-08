@@ -24,7 +24,7 @@ function loadMoreProducts() {
     if (target.offset().top < threshold) {
       if (!target.data("visible")) {
         target.data("productScrollLimit", true);
-        Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 10);
+        Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
       }
     } else {
       if (target.data("visible")) {

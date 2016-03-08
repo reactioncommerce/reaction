@@ -59,11 +59,11 @@ const filters = new SimpleSchema({
 
 /**
  * products publication
- * @param {Number} productScrollLimit - optional, defaults to 20
+ * @param {Number} productScrollLimit - optional, defaults to 24
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit = 10, productFilters) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, filters));
 
@@ -191,9 +191,6 @@ Meteor.publish("Products", function (productScrollLimit = 10, productFilters) {
     if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
       selector.isVisible = true;
     }
-
-    ReactionCore.Log.debug("Products publication limit", productScrollLimit);
-    ReactionCore.Log.debug("Products publication selector", selector);
 
     return Products.find(selector, {
       sort: sort,
