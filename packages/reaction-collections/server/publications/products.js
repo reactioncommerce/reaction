@@ -65,7 +65,7 @@ const filters = new SimpleSchema({
  */
 Meteor.publish("Products", function (productScrollLimit = 10, productFilters) {
   check(productScrollLimit, Number);
-  check(productFilters, filters);
+  check(productFilters, Match.OneOf(undefined, filters));
 
   let shopAdmin;
   const shop = ReactionCore.getCurrentShop();
@@ -195,9 +195,6 @@ Meteor.publish("Products", function (productScrollLimit = 10, productFilters) {
     ReactionCore.Log.debug("Products publication limit", productScrollLimit);
     ReactionCore.Log.debug("Products publication selector", selector);
 
-    Counts.publish(this, "Products", Products.find(selector), {
-      noReady: true
-    });
     return Products.find(selector, {
       sort: sort,
       limit: productScrollLimit

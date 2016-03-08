@@ -30,6 +30,11 @@ describe("Publication", function () {
     const thisContext = {
       ready: function () { return "ready"; }
     };
+    const priceRange = {
+      range: "1.00 - 12.99",
+      min: 1.00,
+      max: 12.99
+    };
 
     beforeAll(function () {
       ReactionCore.Collections.Products.insert({
@@ -37,6 +42,7 @@ describe("Publication", function () {
         title: "My Little Pony",
         shopId: shop._id,
         type: "simple",
+        price: priceRange,
         isVisible: false,
         isLowQuantity: false,
         isSoldOut: false,
@@ -46,6 +52,7 @@ describe("Publication", function () {
         ancestors: [],
         title: "Shopkins - Peachy",
         shopId: shop._id,
+        price: priceRange,
         type: "simple",
         isVisible: true,
         isLowQuantity: false,
