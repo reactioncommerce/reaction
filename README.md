@@ -4,7 +4,7 @@ Reaction is a modern reactive, real-time event driven ecommerce platform.
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
 ## Status
-- 0.11.0 Master
+- 0.11.1 Master
 - 0.12.0 Development (new feature release)
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
@@ -17,15 +17,16 @@ The Reaction documentation source is located in the [reaction-docs](https://gith
 ## Installation
 > Reaction requires [Meteor](https://www.meteor.com/install), [Node](http://nodejs.org/), [npm](https://www.npmjs.com/) and [ImageMagick](http://www.imagemagick.org/script/binary-releases.php)
 
+Developers using **Windows** should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
+
 ```bash
-curl https://install.meteor.com | /bin/sh
+curl https://install.meteor.com | /bin/sh # installs Meteor
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
-reaction pull
-reaction
+./reaction pull
+./reaction
 ```
 
-Developers using **Windows** should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
 
 Additional setup options, such as how to set the default credentials, can be found in the  [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
 
