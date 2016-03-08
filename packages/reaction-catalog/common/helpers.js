@@ -28,7 +28,7 @@ Object.assign(ReactionCore, {
    * @todo remove string return and replace with object
    * @todo move all this methods this to export function after 1.3
    * @param {String} [productId] - current product _id
-   * @return {String} formatted price or price range
+   * @return {Object} range, min, max
    */
   getProductPriceRange(productId) {
     const product = ReactionCore.Collections.Products.findOne(productId);
@@ -51,11 +51,17 @@ Object.assign(ReactionCore, {
       });
       let priceMin = _.min(variantPrices);
       let priceMax = _.max(variantPrices);
-
+      let priceRange = `${priceMin} - ${priceMax}`;
+      // if we don't have a range
       if (priceMin === priceMax) {
-        return priceMin.toString();
+        priceRange = priceMin.toString();
       }
-      return `${priceMin} - ${priceMax}`;
+      const priceObject = {
+        range: priceRange,
+        min: priceMin,
+        max: priceMax
+      };
+      return priceObject;
     }
   },
   /**

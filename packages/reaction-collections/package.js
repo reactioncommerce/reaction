@@ -29,7 +29,8 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:reaction-logger@0.1.0");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
-
+  api.use("alanning:roles@1.2.14");
+  api.use("tmeasday:publish-counts@0.7.3");
   // ReactionCore declaration
   api.addFiles("common/globals.js");
 
@@ -52,7 +53,9 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
+  api.addFiles("server/publications/product.js", "server");
   api.addFiles("server/publications/products.js", "server");
+  api.addFiles("server/publications/tags.js", "server");
   api.addFiles("server/publications/translations.js", "server");
   api.addFiles("server/publications/themes.js", "server");
 
