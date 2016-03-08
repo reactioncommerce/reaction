@@ -189,6 +189,9 @@
         "createTag": "Create Tag"
       },
       "productDetailEdit": {
+        "productSettings": "Product Settings",
+        "product": "Product",
+        "size": "Size",
         "title": "Product title",
         "pageTitle": "Product page title",
         "vendor": "Product vendor",

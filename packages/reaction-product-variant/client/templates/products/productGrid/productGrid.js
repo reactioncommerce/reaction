@@ -79,7 +79,7 @@ Template.productGrid.events({
     });
 
     ReactionCore.showActionView({
-      label: "Edit Product",
+      label: i18next.t("productDetailEdit.productSettings"),
       template: "productSettings",
       type: "product",
       data: {
