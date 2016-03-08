@@ -21,8 +21,12 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:core@0.12.0");
 
   api.addFiles("common/helpers.js"); // product common helpers
+  api.addFiles("common/methods.js"); // product common Validated Methods
+
   api.addFiles("server/methods.js", ["server"]); // products server methods
   api.addFiles("server/register.js", ["server"]); // register as a reaction package
+
+  api.export("ReactionProductAPI");
 });
 
 Package.onTest(function (api) {

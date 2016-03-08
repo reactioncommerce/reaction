@@ -98,7 +98,7 @@ localstorage@1.0.5
 logging@1.0.8
 matb33:collection-hooks@0.8.1
 mdg:validated-method@1.0.1
-mdg:validation-error@0.5.0
+mdg:validation-error@0.5.1
 meteor@1.1.10
 meteor-base@1.0.1
 meteorhacks:ssr@2.2.0
