@@ -36,7 +36,8 @@ Object.assign(ReactionCore, {
       return "";
     }
     const variants = ReactionCore.getTopVariants(product._id);
-
+    // if we have variants we have a price range.
+    // this processing will default on the server
     if (variants.length > 0) {
       let variantPrices = [];
       variants.forEach(variant => {
@@ -63,6 +64,9 @@ Object.assign(ReactionCore, {
       };
       return priceObject;
     }
+    // if we have no variants subscribed to (client)
+    // we'll get the price object previously from the product
+    return product.price;
   },
   /**
    * getVariantPriceRange

@@ -80,6 +80,7 @@ Meteor.publish("Products", function (productScrollLimit = 10, productFilters) {
 
   if (shop) {
     let selector = {
+      ancestors: { $exists: true, $eq: [] },
       shopId: shop._id
     };
 
@@ -202,5 +203,4 @@ Meteor.publish("Products", function (productScrollLimit = 10, productFilters) {
       limit: productScrollLimit
     });
   }
-  this.ready();
 });
