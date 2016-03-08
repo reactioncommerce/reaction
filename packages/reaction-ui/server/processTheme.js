@@ -100,10 +100,10 @@ function registerTheme(styles) {
     });
   } else {
     ReactionCore.Collections.Themes.upsert({
-      "name": theme
+      name: theme
     }, {
       $set: {
-        "name": theme
+        name: theme
       },
       $push: {
         components: {
