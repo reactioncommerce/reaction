@@ -170,7 +170,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       // filter with a price range
       if (productFilters["price.min"] && productFilters["price.max"]) {
         _.extend(selector, {
-          $or: [ {
+          $and: [ {
             "price.max": { $lte: parseFloat(productFilters["price.max"])}
           }, {
             "price.min": { $gte: parseFloat(productFilters["price.min"])}
@@ -199,7 +199,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       // filter with a weight range
       if (productFilters["weight.min"] && productFilters["weight.max"]) {
         _.extend(selector, {
-          $or: [ {
+          $and: [ {
             "weight.max": { $lte: parseFloat(productFilters["weight.max"])}
           }, {
             "weight.min": { $gte: parseFloat(productFilters["weight.min"])}
