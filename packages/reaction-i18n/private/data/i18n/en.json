@@ -43,7 +43,9 @@
           "socialLabel": "Social",
           "socialDescription": "Social Channel configuration",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments"
+          "stripeDescription": "Stripe payments",
+          "filtrationLabel": "Filtration",
+          "filtrationDescription": "Products filtration for Reaction"
         },
         "groups": {
           "appearance": "Appearance",

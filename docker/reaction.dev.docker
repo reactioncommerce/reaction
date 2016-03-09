@@ -9,27 +9,25 @@
 #
 #  Usage:
 #   Build:
-#     cd reaction
 #     docker build -t <your org>/reaction .
 #
 #   Run Reaction, Meteor + local mongo:
 #
-#   docker run --rm  -p ::80
+#   docker run -d -p 80:80
 #     -e ROOT_URL="http://localhost" \
 #     -e REACTION_EMAIL="youradmin@yourdomain.com" \
 #     -e REACTION_USER="admin" \
 #     -e REACTION_AUTH="password" \
-#     -t ongoworks/reaction
+#     -t <your org>/reaction
 #
 #
 #   Optional Meteor parameters (-e):
 #
 #     ROOT_URL="< hostname>"
 #     MONGO_URL="<your mongodb connect string>"
-#     OPLOG_URL="<mongo oplog url>"
+#     MONGO_OPLOG_URL="<mongo oplog url>"
 #     PORT="<meteor port>"
 #     METEOR_SETTINGS="{json}"
-#     DISABLE_WEBSOCKETS="1"
 #
 #   Reaction Specific parameter (-e):
 #
@@ -43,67 +41,56 @@
 FROM debian:jessie
 MAINTAINER Aaron Judd <hello@reactioncommerce.com>
 
-# Install git, curl, python, etc
-# Install graphicsmagick for Reaction image handling)
-RUN apt-get -qq update && apt-get install -qq -y build-essential libssl-dev git-all python graphicsmagick curl
+ENV NODE_VERSION "0.10.41"
 
-# install node from package nodesource
-RUN curl -sL https://deb.nodesource.com/setup_0.10 | bash -
-RUN apt-get -qq upgrade && apt-get install -y nodejs
+# Install PhantomJS
+ENV INSTALL_PHANTOMJS "true"
+ENV PHANTOMJS_VERSION "2.1.3"
 
-# install the mongodb server binaries
-RUN mkdir -p "/data/db"
-VOLUME /data/db
+# Install MongoDB
+ENV INSTALL_MONGO "false"
+ENV MONGO_MAJOR "2.6"
+ENV MONGO_VERSION "2.6.11"
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-RUN apt-get update && apt-get -qq -y install --no-install-recommends adduser mongodb-org-server
-
-# Install nodemon & phantomjs
-RUN npm install --silent -g phantomjs nodemon forever
-
-# Install Meteor
-RUN curl -sL https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
-
-# Default env variables
-ENV PORT 80
-ENV ROOT_URL http://localhost
-ENV MONGO_URL mongodb://127.0.0.1:27017/meteor
-ENV NODE nodemon
+# Meteor environment variables
+ENV PORT "80"
+ENV ROOT_URL "http://localhost"
+ENV MONGO_URL "mongodb://127.0.0.1:27017/meteor"
 ENV PACKAGE_DIRS "packages"
-ENV DEBIAN_FRONTEND noninteractive
+
+# build script directories
+ENV APP_SOURCE_DIR "/var/src"
+ENV APP_BUNDLE_DIR "/var/www"
+ENV BUILD_SCRIPTS_DIR "/opt/reaction"
+
+# Install entrypoint and build scripts
+COPY bin/clone-packages.sh /opt/reaction/clone-packages.sh
+COPY bin/docker $BUILD_SCRIPTS_DIR
+
+RUN chmod -R +x /opt/reaction
+
+# Install deps, cleanup
+RUN bash $BUILD_SCRIPTS_DIR/install-deps.sh && \
+		bash $BUILD_SCRIPTS_DIR/install-mongodb.sh && \
+		bash $BUILD_SCRIPTS_DIR/install-node.sh && \
+		bash $BUILD_SCRIPTS_DIR/install-phantom.sh && \
+		bash $BUILD_SCRIPTS_DIR/post-install-cleanup.sh
+
+# copy the app to the container, build it, cleanup
+COPY . $APP_SOURCE_DIR
+
+RUN cd $APP_SOURCE_DIR && \
+		bash $BUILD_SCRIPTS_DIR/install-meteor.sh && \
+		bash $BUILD_SCRIPTS_DIR/clone-packages.sh && \
+		bash $BUILD_SCRIPTS_DIR/build-meteor.sh && \
+		bash $BUILD_SCRIPTS_DIR/post-build-cleanup.sh
+
+# switch to production meteor bundle
+WORKDIR $APP_BUNDLE_DIR/bundle
 
 # 80 is the default meteor production port, while 3000 is development mode
 EXPOSE 80
 
-
-# Install entrypoint and build scripts
-COPY bin/clone-packages.sh /usr/bin/clone-packages.sh
-COPY bin/docker /usr/bin
-RUN chmod +x \
-/usr/bin/build-meteor.sh \
-/usr/bin/build-packages.sh \
-/usr/bin/cleanup.sh \
-/usr/bin/entrypoint.sh \
-/usr/bin/clone-packages.sh
-
-# add app to /usr/src
-RUN mkdir -p "/var/src" "/var/www"
-COPY . /var/src/
-WORKDIR /var/src/
-
-# build meteor
-# this needs to be a single step to avoid Error: EXDEV, rename
-RUN bash /usr/bin/clone-packages.sh && /usr/bin/build-meteor.sh
-
-# cleanup
-RUN apt-get autoremove -y
-RUN npm cache clear
-RUN bash /usr/bin/cleanup.sh
-
-# switch to production meteor bundle
-WORKDIR /var/www/bundle
-
 # start mongo and reaction
-ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
 CMD []

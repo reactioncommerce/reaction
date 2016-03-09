@@ -108,7 +108,7 @@ Package.onTest(function (api) {
   // reaction core
   api.use("reactioncommerce:reaction-i18n@2.0.0");
   api.use("reactioncommerce:reaction-collections@2.0.1");
-  api.use("reactioncommerce:reaction-factories@0.4.1");
+  api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.12.0");
 
   // server integration tests

@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Schemas - core reaction commerce collection schemas",
   name: "reactioncommerce:reaction-schemas",
-  version: "2.0.2",
+  version: "2.0.3",
   documentation: "README.md"
 });
 

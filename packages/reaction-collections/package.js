@@ -16,7 +16,7 @@ Package.onUse(function (api) {
   api.use("ejson");
 
   api.use("amplify@1.0.0");
-  api.use("reactioncommerce:reaction-schemas@2.0.2");
+  api.use("reactioncommerce:reaction-schemas@2.0.3");
   api.use("cfs:standard-packages@0.5.9");
   api.use("cfs:storage-adapter@0.2.3");
   api.use("cfs:graphicsmagick@0.0.18");
@@ -29,7 +29,7 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:reaction-logger@0.1.0");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
-
+  api.use("alanning:roles@1.2.14");
   // ReactionCore declaration
   api.addFiles("common/globals.js");
 
@@ -52,7 +52,9 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/media.js", "server");
   api.addFiles("server/publications/orders.js", "server");
   api.addFiles("server/publications/packages.js", "server");
+  api.addFiles("server/publications/product.js", "server");
   api.addFiles("server/publications/products.js", "server");
+  api.addFiles("server/publications/tags.js", "server");
   api.addFiles("server/publications/translations.js", "server");
   api.addFiles("server/publications/themes.js", "server");
 
@@ -95,7 +97,7 @@ Package.onTest(function (api) {
   api.use("accounts-password");
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-collections");
-  api.use("reactioncommerce:reaction-factories@0.4.1");
+  api.use("reactioncommerce:reaction-factories@0.4.2");
 
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
 });
