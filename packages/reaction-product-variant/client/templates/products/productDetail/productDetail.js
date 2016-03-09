@@ -43,7 +43,7 @@ Template.productDetail.helpers({
       if (childVariants.length === 0) {
         return current.price;
       }
-      return ReactionProduct.getProductPriceRange();
+      return  ReactionProduct.getProductPriceRange().range;
     }
   },
   fieldComponent: function () {

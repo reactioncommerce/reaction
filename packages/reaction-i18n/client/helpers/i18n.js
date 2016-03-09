@@ -121,8 +121,7 @@ Meteor.startup(() => {
 
 // use tracker autorun to detect language changes
 Tracker.autorun(function () {
-  let userLanguage = Session.get("language");
-  return Meteor.subscribe("Translations", userLanguage, () => {
+  return Meteor.subscribe("Translations", Session.get("language"), () => {
     // fetch reaction translations
     let translations = ReactionCore.Collections.Translations
       .find({}, {

@@ -5,7 +5,7 @@
 #
 
 if [ -f bin/docker/packages ]; then
-    echo "info: using custom build package file."
-    cp bin/docker/packages .meteor/packages
-    exit 0
+  echo "[-] Using custom Meteor packages file..."
+  cp bin/docker/packages .meteor/packages
+  exit 0
 fi

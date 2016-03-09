@@ -28,7 +28,7 @@ Object.assign(ReactionCore, {
    * @todo remove string return and replace with object
    * @todo move all this methods this to export function after 1.3
    * @param {String} [productId] - current product _id
-   * @return {String} formatted price or price range
+   * @return {Object} range, min, max
    */
   getProductPriceRange(productId) {
     const product = ReactionCore.Collections.Products.findOne(productId);
@@ -36,7 +36,8 @@ Object.assign(ReactionCore, {
       return "";
     }
     const variants = ReactionCore.getTopVariants(product._id);
-
+    // if we have variants we have a price range.
+    // this processing will default on the server
     if (variants.length > 0) {
       let variantPrices = [];
       variants.forEach(variant => {
@@ -51,12 +52,21 @@ Object.assign(ReactionCore, {
       });
       let priceMin = _.min(variantPrices);
       let priceMax = _.max(variantPrices);
-
+      let priceRange = `${priceMin} - ${priceMax}`;
+      // if we don't have a range
       if (priceMin === priceMax) {
-        return priceMin.toString();
+        priceRange = priceMin.toString();
       }
-      return `${priceMin} - ${priceMax}`;
+      const priceObject = {
+        range: priceRange,
+        min: priceMin,
+        max: priceMax
+      };
+      return priceObject;
     }
+    // if we have no variants subscribed to (client)
+    // we'll get the price object previously from the product
+    return product.price;
   },
   /**
    * getVariantPriceRange

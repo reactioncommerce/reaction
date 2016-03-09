@@ -1,117 +1,221 @@
+//
+// define search filters as a schema so we can validate
+// params supplied to the products publication
+//
+const filters = new SimpleSchema({
+  "shops": {
+    type: [String],
+    optional: true
+  },
+  "tags": {
+    type: [String],
+    optional: true
+  },
+  "query": {
+    type: String,
+    optional: true
+  },
+  "visibility": {
+    type: Boolean,
+    optional: true
+  },
+  "details": {
+    type: Object,
+    optional: true
+  },
+  "details.key": {
+    type: String,
+    optional: true
+  },
+  "details.value": {
+    type: String,
+    optional: true
+  },
+  "price": {
+    type: Object,
+    optional: true
+  },
+  "price.min": {
+    type: String,
+    optional: true
+  },
+  "price.max": {
+    type: String,
+    optional: true
+  },
+  "weight": {
+    type: Object,
+    optional: true
+  },
+  "weight.min": {
+    type: String,
+    optional: true
+  },
+  "weight.max": {
+    type: String,
+    optional: true
+  }
+});
 
 /**
  * products publication
- * @param {Number} productScrollLimit - optional, defaults to 20
+ * @param {Number} productScrollLimit - optional, defaults to 24
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit, shops) {
-  check(productScrollLimit, Match.OneOf(null, undefined, Number));
-  check(shops, Match.OneOf(undefined, null, Array));
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
+  check(productScrollLimit, Number);
+  check(productFilters, Match.OneOf(undefined, filters));
 
   let shopAdmin;
-  let selector;
-  let shop = ReactionCore.getCurrentShop();
+  const shop = ReactionCore.getCurrentShop();
+  const Products = ReactionCore.Collections.Products;
+
   if (typeof shop !== "object") {
     return this.ready();
   }
-  const { Products } = ReactionCore.Collections;
-  // TODO this limit has another meaning now. We should calculate only objects
-  // with type="simple", but we need to get all types for additional images
-  const limit = productScrollLimit || 10;
-  // handle multiple shops
-  if (shops) {
-    selector = {
-      shopId: {
-        $in: shops
-      },
-      type: "simple"
+
+  if (shop) {
+    let selector = {
+      ancestors: { $exists: true, $eq: [] },
+      shopId: shop._id
     };
-    // check if this user is a shopAdmin
-    for (let thisShopId of shops) {
-      if (Roles.userIsInRole(this.userId, ["admin", "createProduct"],
-          thisShopId)) {
-        shopAdmin = true;
+
+    if (productFilters) {
+      // handle multiple shops
+      if (productFilters.shops) {
+        _.extend(selector, {
+          shopId: {
+            $in: productFilters.shops
+          }
+        });
+
+        // check if this user is a shopAdmin
+        for (let thisShopId of productFilters.shops) {
+          if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
+            shopAdmin = true;
+          }
+        }
+      }
+
+      // filter by tags
+      if (productFilters.tags) {
+        _.extend(selector, {
+          hashtags: {
+            $in: productFilters.tags
+          }
+        });
+      }
+
+      // filter by query
+      if (productFilters.query) {
+        let cond = {
+          $regex: productFilters.query,
+          $options: "i"
+        };
+        _.extend(selector, {
+          $or: [{
+            title: cond
+          }, {
+            pageTitle: cond
+          }, {
+            description: cond
+          }]
+        });
+      }
+
+      // filter by details
+      if (productFilters.details) {
+        _.extend(selector, {
+          metafields: {
+            $elemMatch: {
+              key: {
+                $regex: productFilters.details.key,
+                $options: "i"
+              },
+              value: {
+                $regex: productFilters.details.value,
+                $options: "i"
+              }
+            }
+          }
+        });
+      }
+
+      // filter by visibility
+      if (productFilters.visibility !== undefined) {
+        _.extend(selector, {
+          isVisible: productFilters.visibility
+        });
+      }
+
+      // filter by gte minimum price
+      if (productFilters["price.min"] && !productFilters["price.max"]) {
+        _.extend(selector, {
+          "price.min": {
+            $gte: parseFloat(productFilters["price.min"])
+          }
+        });
+      }
+
+      // filter by lte maximum price
+      if (productFilters["price.max"] && !productFilters["price.min"]) {
+        _.extend(selector, {
+          "price.max": {
+            $lte: parseFloat(productFilters["price.max"])
+          }
+        });
+      }
+
+      // filter with a price range
+      if (productFilters["price.min"] && productFilters["price.max"]) {
+        _.extend(selector, {
+          $and: [ {
+            "price.max": { $lte: parseFloat(productFilters["price.max"])}
+          }, {
+            "price.min": { $gte: parseFloat(productFilters["price.min"])}
+          }]
+        });
+      }
+
+      // filter by gte minimum weight
+      if (productFilters["weight.min"] && !productFilters["weight.max"]) {
+        _.extend(selector, {
+          weight: {
+            $gte: parseFloat(productFilters["weight.min"])
+          }
+        });
+      }
+
+      // filter by lte maximum weight
+      if (productFilters["weight.max"] && !productFilters["weight.min"]) {
+        _.extend(selector, {
+          weight: {
+            $lte: parseFloat(productFilters["weight.max"])
+          }
+        });
+      }
+
+      // filter with a weight range
+      if (productFilters["weight.min"] && productFilters["weight.max"]) {
+        _.extend(selector, {
+          $and: [ {
+            "weight.max": { $lte: parseFloat(productFilters["weight.max"])}
+          }, {
+            "weight.min": { $gte: parseFloat(productFilters["weight.min"])}
+          }]
+        });
       }
     }
-  } else {
-    selector = {
-      shopId: shop._id,
-      type: "simple"
-    };
-  }
 
-  // products are always visible to owners
-  if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
-    selector.isVisible = true;
-  }
-
-  return Products.find(selector, {
-    sort: {
-      title: 1
-    },
-    limit: limit
-  });
-});
-
-/**
- * product detail publication
- * @param {String} productId - productId or handle
- * @return {Object} return product cursor
- */
-Meteor.publish("Product", function (productId) {
-  check(productId, Match.OptionalOrNull(String));
-  if (!productId) {
-    ReactionCore.Log.info("ignoring null request on Product subscription");
-    return this.stop();
-  }
-  let _id;
-  let shop = ReactionCore.getCurrentShop();
-  // verify that shop is ready
-  if (typeof shop !== "object") {
-    return this.ready();
-  }
-
-  let selector = {};
-  selector.isVisible = true;
-
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
-      shop._id)) {
-    selector.isVisible = {
-      $in: [true, false]
-    };
-  }
-  // TODO review for REGEX / DOS vulnerabilities.
-  if (productId.match(/^[A-Za-z0-9]{17}$/)) {
-    selector._id = productId;
-    // TODO try/catch here because we can have product handle passed by such regex
-    _id = productId;
-  } else {
-    selector.handle = {
-      $regex: productId,
-      $options: "i"
-    };
-    const products = ReactionCore.Collections.Products.find(selector).fetch();
-    if (products.length > 0) {
-      _id = products[0]._id;
-    } else {
-      return this.ready();
+    // products are always visible to owners
+    if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
+      selector.isVisible = true;
     }
-  }
-  selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
 
-  return ReactionCore.Collections.Products.find(selector);
-});
-
-/**
- * tags
- */
-Meteor.publish("Tags", function () {
-  const shopId = ReactionCore.getShopId();
-  if (!shopId) {
-    return this.ready();
+    return Products.find(selector, {
+      sort: sort,
+      limit: productScrollLimit
+    });
   }
-  return ReactionCore.Collections.Tags.find({
-    shopId: shopId
-  });
 });

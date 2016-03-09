@@ -18,13 +18,11 @@ dependencies:
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -t reactioncommerce/prequel .
     - mkdir -p ~/docker; docker save reactioncommerce/prequel > ~/docker/image.tar
-    
+
 test:
   override:
     - cd $HOME/reaction
     - VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity
-    - docker run -d -p :80:80 reactioncommerce/prequel; sleep 10
-    - curl --retry 10 --retry-delay 5 -v http://localhost
 
 deployment:
   prequel:
