@@ -14,7 +14,6 @@ dependencies:
     - cd $HOME/reaction
     - chmod +x bin/clone-packages.sh
     - ./bin/clone-packages.sh
-    - meteor update
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -t reactioncommerce/prequel .
     - mkdir -p ~/docker; docker save reactioncommerce/prequel > ~/docker/image.tar
