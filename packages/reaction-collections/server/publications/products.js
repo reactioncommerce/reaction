@@ -149,16 +149,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         });
       }
 
-      // filter by minimum price
-      if (productFilters["price.min"]) {
+      // filter by gte minimum price
+      if (productFilters["price.min"] && !productFilters["price.max"]) {
         _.extend(selector, {
           "price.min": {
             $gte: parseFloat(productFilters["price.min"])
           }
         });
       }
-      // filter by maximum price
-      if (productFilters["price.max"]) {
+
+      // filter by lte maximum price
+      if (productFilters["price.max"] && !productFilters["price.min"]) {
         _.extend(selector, {
           "price.max": {
             $lte: parseFloat(productFilters["price.max"])
@@ -166,20 +167,43 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         });
       }
 
-      // filter by minimum weight
-      if (productFilters["weight.min"]) {
+      // filter with a price range
+      if (productFilters["price.min"] && productFilters["price.max"]) {
+        _.extend(selector, {
+          $or: [ {
+            "price.max": { $lte: parseFloat(productFilters["price.max"])}
+          }, {
+            "price.min": { $gte: parseFloat(productFilters["price.min"])}
+          }]
+        });
+      }
+
+      // filter by gte minimum weight
+      if (productFilters["weight.min"] && !productFilters["weight.max"]) {
         _.extend(selector, {
           weight: {
             $gte: parseFloat(productFilters["weight.min"])
           }
         });
       }
-      // filter by maximum weight
-      if (productFilters["weight.max"]) {
+
+      // filter by lte maximum weight
+      if (productFilters["weight.max"] && !productFilters["weight.min"]) {
         _.extend(selector, {
           weight: {
             $lte: parseFloat(productFilters["weight.max"])
           }
+        });
+      }
+
+      // filter with a weight range
+      if (productFilters["weight.min"] && productFilters["weight.max"]) {
+        _.extend(selector, {
+          $or: [ {
+            "weight.max": { $lte: parseFloat(productFilters["weight.max"])}
+          }, {
+            "weight.min": { $gte: parseFloat(productFilters["weight.min"])}
+          }]
         });
       }
     }
