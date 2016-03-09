@@ -13,7 +13,7 @@
 #
 #   Run Reaction, Meteor + local mongo:
 #
-#   docker run -d  -p 80:80
+#   docker run -d -p 80:80
 #     -e ROOT_URL="http://localhost" \
 #     -e REACTION_EMAIL="youradmin@yourdomain.com" \
 #     -e REACTION_USER="admin" \
@@ -65,7 +65,7 @@ ENV BUILD_SCRIPTS_DIR "/opt/reaction"
 
 # Install entrypoint and build scripts
 COPY bin/clone-packages.sh /opt/reaction/clone-packages.sh
-COPY bin/docker /opt/reaction
+COPY bin/docker $BUILD_SCRIPTS_DIR
 
 RUN chmod -R +x /opt/reaction
 
@@ -92,5 +92,5 @@ WORKDIR $APP_BUNDLE_DIR/bundle
 EXPOSE 80
 
 # start mongo and reaction
-ENTRYPOINT ["/opt/reaction/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
 CMD []
