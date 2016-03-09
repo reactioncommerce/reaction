@@ -508,6 +508,16 @@
           "invitationSent": "Invitation Sent",
           "sendInvitation": "Send invitation"
         },
+        "reactionUI": {
+          "editTheme": "Edit Theme",
+          "duplicateTheme": "Duplicate Theme",
+          "duplicateThemeError": "Could't duplicate theme",
+          "publishThemeError": "`Couldn't publish theme {{themeName}}",
+          "components": {
+            "navbar": "Navigation Bar",
+            "button": "Button"
+          }
+        },
         "error": {
           "emailRequired": "Email is required.",
           "passwordRequired": "Password is required.",

@@ -28,13 +28,16 @@ Template.uiDashboard.helpers({
           icon: "files-o fa-fw",
           onClick() {
             Alerts.alert({
-              title: "Duplicate Theme",
+              title: i18n.t("reactionUI.duplicateTheme", "Duplicate Theme"),
               showCancelButton: true,
               confirmButtonText: "Duplicate"
             }, () => {
-              Meteor.call("ui/duplicateTheme", theme.theme, (error) => {
+              Meteor.call("ui/duplicateTheme", theme.name, (error) => {
                 if (error) {
-                  Alerts.toast("Could't duplicate theme", "error");
+                  const alertDescription = i18next.t("reactionUI.duplicateThemeError", {
+                    defaultValue: "Could't duplicate theme"
+                  });
+                  Alerts.toast(alertDescription, "error");
                 }
               });
             });
