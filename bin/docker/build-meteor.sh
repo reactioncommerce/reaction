@@ -5,20 +5,11 @@
 #
 set -e
 
-printf "\n[-] Building Meteor application...\n\n"
-
-: ${APP_BUNDLE_DIR:="/var/www"}
-
-cd $APP_SOURCE_DIR
-
 # Customize packages
-bash $BUILD_SCRIPTS_DIR/build-packages.sh
+/bin/bash bin/docker/build-packages.sh
 
-
+#
 # build the source
-mkdir -p $APP_BUNDLE_DIR
-meteor build --directory $APP_BUNDLE_DIR
-cd $APP_BUNDLE_DIR/bundle/programs/server/ && npm install
-
-# put the entrypoint script in WORKDIR
-mv $BUILD_SCRIPTS_DIR/entrypoint.sh $APP_BUNDLE_DIR/bundle/entrypoint.sh
+#
+meteor build --directory /var/www
+cd /var/www/bundle/programs/server/ && npm install

@@ -1,11 +1,27 @@
 #!/bin/bash
 
+#  Starts local mongdb installation.
+#  Starts application main.js
 #
-# add bin/docker/packages to use custom build packages
+#  MONGO_URL env variable will prevent local db start
 #
+set -e
 
-if [ -f bin/docker/packages ]; then
-  echo "[-] Using custom Meteor packages file..."
-  cp bin/docker/packages .meteor/packages
-  exit 0
+# set default meteor values if they arent set
+: ${PORT:="80"}
+: ${ROOT_URL:="http://localhost"}
+: ${MONGO_URL:="mongodb://127.0.0.1:27017/meteor"}
+
+# set default node executable
+: ${NODE:="node"}
+
+#start mongodb (optional)
+if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
+  echo "Starting local MongoDB..."
+  # startup mongodb
+  /usr/bin/mongod --smallfiles --fork --logpath /var/log/mongodb.log
+
 fi
+
+# Run meteor
+exec $NODE ./main.js
