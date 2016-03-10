@@ -54,8 +54,6 @@ window.LoginFormValidation = {
    * @return {Boolean|{error: String, reason: String}} true if valid | Error object otherwise
    */
   password(password, options) {
-    // Must have one number and/or symbol
-    const validPasswordRegex = /^.*(?=.*[a-zA-Z])(?=.*[\d\W]).*$/;
     const passwordOptions = options || {};
 
     // Only check if a password has been entered at all.
@@ -71,8 +69,7 @@ window.LoginFormValidation = {
       };
     }
 
-    // ---
-    // Validate the password pased on some rules
+    // Validate the password on some rules
     // This is useful for cases where a password needs to be created or updated.
     //
     let errors = [];
@@ -83,14 +80,6 @@ window.LoginFormValidation = {
         reason: i18next.t("accountsUI.error.passwordMustBeAtLeast6CharactersLong")
       });
     }
-
-    if (password.match(validPasswordRegex) === null) {
-      errors.push({
-        error: "INVALID_PASSWORD",
-        reason: i18next.t("accountsUI.error.passwordMustContainRequirements")
-      });
-    }
-
 
     if (errors.length) {
       return errors;
