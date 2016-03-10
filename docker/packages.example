@@ -1,0 +1,76 @@
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+###
+# Core Meteor Packages
+###
+
+meteor-base             # Packages every Meteor app needs to have
+mobile-experience       # Packages for a great mobile UX
+blaze-html-templates    # Compile .html files into Meteor Blaze views
+standard-minifiers      # JS/CSS minifiers run for production mode
+es5-shim                # ECMAScript 5 compatibility for older browsers.
+ecmascript              # Enable ECMAScript2015+ syntax in app code
+audit-argument-checks   # ensure meteor method argument validation
+
+# Performance & Debugging Tools
+#meteorhacks:fast-render                   # improve initial page loads
+#meteortoys:allthings                      # developer tools
+#meteortoys:notifications                  # logging notification
+#meteorhacks:kadira                        # performance monitoring
+#meteorhacks:kadira-profiler               # cpu profiling
+#spiderable                                # adds phantomjs, use ongoworks:spiderable with Docker
+#meteorhacks:sikka                         # additional ddp, login security
+
+# Meteor Auth Packages
+
+accounts-facebook
+accounts-google
+accounts-twitter
+accounts-github
+accounts-weibo
+accounts-oauth
+
+# Reaction Commerce Packages
+
+reactioncommerce:core
+reactioncommerce:core-theme
+reactioncommerce:reaction-catalog
+reactioncommerce:reaction-layout
+reactioncommerce:launchdock-connect
+reactioncommerce:reaction-accounts
+reactioncommerce:reaction-router
+reactioncommerce:reaction-i18n
+reactioncommerce:reaction-product-variant
+reactioncommerce:reaction-dashboard
+reactioncommerce:reaction-orders
+reactioncommerce:reaction-analytics-libs
+reactioncommerce:reaction-analytics
+reactioncommerce:reaction-inventory
+reactioncommerce:reaction-shipping
+reactioncommerce:reaction-social
+reactioncommerce:reaction-checkout
+reactioncommerce:reaction-ui
+reactioncommerce:reaction-ui-navbar
+reactioncommerce:reaction-ui-tagnav
+
+# Reaction Payment Packages
+
+reactioncommerce:reaction-paymentmethod
+reactioncommerce:reaction-paypal
+reactioncommerce:reaction-stripe
+reactioncommerce:reaction-auth-net
+reactioncommerce:reaction-braintree
+
+# Reaction Commerce Data
+
+reactioncommerce:reaction-sample-data   # default Reaction data
+
+# Themes
+reactioncommerce:default-theme          # default Reaction theme
+#my:custom-theme
+
+# Forced updates on packages
+mdg:validation-error@0.4.0
