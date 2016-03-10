@@ -155,11 +155,12 @@ Template.productGridItems.onRendered(function () {
         let index = _.indexOf(uiPositions, productId);
         let _i;
         let _len;
+        const tag = ReactionRouter.getParam("slug");
         for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++
           _i) {
           productId = uiPositions[index];
           position = {
-            tag: ReactionCore.getCurrentTag(),
+            tag,
             position: index,
             updatedAt: new Date()
           };
