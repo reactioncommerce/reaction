@@ -14,6 +14,6 @@ rm -rf /root/.cache /root/.config /root/.local
 rm -rf /tmp/*
 
 # remove os dependencies
-apt-get -qq -y purge ca-certificates curl
+apt-get -qq -y purge ca-certificates curl bzip2
 apt-get -qq -y autoremove
 rm -rf /var/lib/apt/lists/*
