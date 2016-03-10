@@ -1,0 +1,15 @@
+# used for CircleCI curl tests
+
+reaction:
+  image: reactioncommerce/prequel
+  links:
+    - mongo
+  ports:
+    - "80:80"
+  environment:
+    ROOT_URL: "http://localhost"
+    MONGO_URL: "mongodb://mongo:27017/reaction"
+
+mongo:
+  image: mongo:2.6.11
+  command: mongod --smallfiles
