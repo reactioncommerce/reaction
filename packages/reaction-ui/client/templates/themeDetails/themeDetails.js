@@ -48,7 +48,6 @@ Template.uiThemeDetails.helpers({
 
     if (theme) {
       components = theme.components.map((component) => {
-        console.log(`reactionUI.components.${component.name}`);
         return {
           label: i18next.t(`reactionUI.components.${component.name}`, {
             defaultValue: component.label
