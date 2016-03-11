@@ -113,7 +113,8 @@ describe("Publication", function () {
           const data = cursor.fetch()[0];
           expect(cursor.fetch().length).toEqual(2);
           // check first product result
-          expect(data.title).toEqual("Fresh Tomatoes");
+          expect(["Fresh Tomatoes", "Shopkins - Peachy"].
+            some(title => title === data.title)).toBeTruthy();
         }
       );
 
@@ -229,8 +230,7 @@ describe("Publication", function () {
           // verify
           expect(cursor.fetch().length).toEqual(3);
           const data = cursor.fetch()[1];
-          expect(["My Little Pony", "Shopkins - Peachy"].
-          some(title => title === data.title)).toBeTruthy();
+          expect(["My Little Pony", "Shopkins - Peachy"].some(title => title === data.title)).toBeTruthy();
         }
       );
     });
