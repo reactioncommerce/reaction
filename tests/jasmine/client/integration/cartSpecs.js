@@ -1,7 +1,7 @@
 /* Product Detail Page Specs*/
 describe("Cart", function () {
   beforeEach(function (done) {
-    ReactionRouter.go("product" {"handle:" "example-product"});
+    ReactionRouter.go("product", {handle: "example-product"});
     Tracker.afterFlush(done);
   });
 
