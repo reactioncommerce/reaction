@@ -1,10 +1,12 @@
 @font-face {
   font-family: 'fontello';
-  src: url('/font/fontello.eot?80093381');
-  src: url('/font/fontello.eot?80093381#iefix') format('embedded-opentype'),
-       url('/font/fontello.woff?80093381') format('woff'),
-       url('/font/fontello.ttf?80093381') format('truetype'),
-       url('/font/fontello.svg?80093381#fontello') format('svg');
+  src: url('fonts/fontello.eot?59440230');
+  src: local('☺'),
+       url('../../fonts/fontello.eot?59440230#iefix') format('embedded-opentype'),
+       url('../../fonts/fontello.woff2?59440230') format('woff2'),
+       url('../../fonts/fontello.woff?59440230') format('woff'),
+       url('../../fonts/fontello.ttf?59440230') format('truetype'),
+       url('../../fonts/fontello.svg?59440230#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?80093381#fontello') format('svg');
+    src: url('../font/fontello.svg?59440230#fontello') format('svg');
   }
 }
 */
@@ -24,10 +26,9 @@
   font-style: normal;
   font-weight: normal;
   speak: none;
-
+  color: #238CC3;
   display: inline-block;
   text-decoration: inherit;
-  color: #238CC3;
   width: 1em;
   margin-right: .2em;
   text-align: center;
@@ -45,7 +46,7 @@
   margin-left: .2em;
 
   /* you can be more comfortable with increased icons size */
-  /* font-size: 200%; */
+  /* font-size: 120%; */
 
   /* Font smoothing. That was taken from TWBS */
   -webkit-font-smoothing: antialiased;
