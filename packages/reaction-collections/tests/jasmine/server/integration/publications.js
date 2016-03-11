@@ -30,29 +30,49 @@ describe("Publication", function () {
     const thisContext = {
       ready: function () { return "ready"; }
     };
-    const priceRange = {
+    const priceRangeA = {
       range: "1.00 - 12.99",
       min: 1.00,
       max: 12.99
     };
 
+    const priceRangeB = {
+      range: "12.99 - 19.99",
+      min: 12.99,
+      max: 19.99
+    };
+
     beforeAll(function () {
+      // a product with price range A, and not visible
       ReactionCore.Collections.Products.insert({
         ancestors: [],
         title: "My Little Pony",
         shopId: shop._id,
         type: "simple",
-        price: priceRange,
+        price: priceRangeA,
         isVisible: false,
         isLowQuantity: false,
         isSoldOut: false,
         isBackorder: false
       });
+      // a product with price range B, and visible
       ReactionCore.Collections.Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
         shopId: shop._id,
-        price: priceRange,
+        price: priceRangeB,
+        type: "simple",
+        isVisible: true,
+        isLowQuantity: false,
+        isSoldOut: false,
+        isBackorder: false
+      });
+      // a product with price range A, and visible
+      ReactionCore.Collections.Products.insert({
+        ancestors: [],
+        title: "Fresh Tomatoes",
+        shopId: shop._id,
+        price: priceRangeA,
         type: "simple",
         isVisible: true,
         isLowQuantity: false,
@@ -72,7 +92,9 @@ describe("Publication", function () {
           // execute
           const cursor = productsPub();
           // verify
-          const data = cursor.fetch()[0];
+          expect(cursor.fetch().length).toEqual(3);
+          // check product data
+          const data = cursor.fetch()[1];
           expect(["My Little Pony", "Shopkins - Peachy"].
             some(title => title === data.title)).toBeTruthy();
         }
@@ -89,16 +111,114 @@ describe("Publication", function () {
           const cursor = productsPub();
           // verify
           const data = cursor.fetch()[0];
+          expect(cursor.fetch().length).toEqual(2);
+          // check first product result
+          expect(data.title).toEqual("Fresh Tomatoes");
+        }
+      );
+
+      it(
+        "should return only products matching query",
+        function () {
+          // setup
+          const productScrollLimit = 24;
+          const filters = {query: "Shopkins"};
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
+            shop);
+          spyOn(Roles, "userIsInRole").and.returnValue(false);
+          // execute
+          const cursor = productsPub(productScrollLimit, filters);
+          // verify
+          const data = cursor.fetch()[0];
           expect(data.title).toEqual("Shopkins - Peachy");
         }
       );
 
       it(
-        "should return products from all shops when multiple shops are" +
-        " provided",
+        "should not return products not matching query",
         function () {
           // setup
-          let filters = {shops: [shop._id]};
+          const productScrollLimit = 24;
+          const filters = {query: "random search"};
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
+            shop);
+          spyOn(Roles, "userIsInRole").and.returnValue(false);
+          // execute
+          const cursor = productsPub(productScrollLimit, filters);
+          // verify
+          expect(cursor.fetch().length).toEqual(0);
+        }
+      );
+
+      it(
+        "should return products in price.min query",
+        function () {
+          // setup
+          const productScrollLimit = 24;
+          const filters = {"price.min": "2.00"};
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
+            shop);
+          spyOn(Roles, "userIsInRole").and.returnValue(false);
+          // execute
+          const cursor = productsPub(productScrollLimit, filters);
+          // verify
+          expect(cursor.fetch().length).toEqual(1);
+        }
+      );
+
+      it(
+        "should return products in price.max query",
+        function () {
+          // setup
+          const productScrollLimit = 24;
+          const filters = {"price.max": "24.00"};
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
+            shop);
+          spyOn(Roles, "userIsInRole").and.returnValue(false);
+          // execute
+          const cursor = productsPub(productScrollLimit, filters);
+          // verify
+          expect(cursor.fetch().length).toEqual(2);
+        }
+      );
+
+      it(
+        "should return products in price.min - price.max range query",
+        function () {
+          // setup
+          const productScrollLimit = 24;
+          const filters = {"price.min": "12.00", "price.max": "19.98"};
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
+            shop);
+          spyOn(Roles, "userIsInRole").and.returnValue(false);
+          // execute
+          const cursor = productsPub(productScrollLimit, filters);
+          // verify
+          expect(cursor.fetch().length).toEqual(2);
+        }
+      );
+
+      it(
+        "should return products where value is in price set query",
+        function () {
+          // setup
+          const productScrollLimit = 24;
+          const filters = {"price.min": "13.00", "price.max": "24.00"};
+          spyOn(ReactionCore, "getCurrentShop").and.returnValue(
+            shop);
+          spyOn(Roles, "userIsInRole").and.returnValue(false);
+          // execute
+          const cursor = productsPub(productScrollLimit, filters);
+          // verify
+          expect(cursor.fetch().length).toEqual(1);
+        }
+      );
+
+      it(
+        "should return products from all shops when multiple shops are provided",
+        function () {
+          // setup
+          const filters = {shops: [shop._id]};
           const productScrollLimit = 24;
           spyOn(ReactionCore, "getCurrentShop").and.returnValue({
             _id: "123"
@@ -107,7 +227,8 @@ describe("Publication", function () {
           // execute
           const cursor = Meteor.server.publish_handlers.Products(productScrollLimit, filters);
           // verify
-          const data = cursor.fetch()[0];
+          expect(cursor.fetch().length).toEqual(3);
+          const data = cursor.fetch()[1];
           expect(["My Little Pony", "Shopkins - Peachy"].
           some(title => title === data.title)).toBeTruthy();
         }
