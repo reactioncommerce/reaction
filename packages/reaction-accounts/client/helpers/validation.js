@@ -1,5 +1,5 @@
 
-window.LoginFormValidation = {
+const validationMethods = {
   /**
    * Username validation
    * @summary Determins if a username meets the minimum requirement of 3 characters
@@ -7,6 +7,8 @@ window.LoginFormValidation = {
    * @return {Boolean|Object} true if valid, error object if invalid
    */
   username(username) {
+    check(username, Match.OptionalOrNull(String));
+
     // Valid
     if (username.length >= 3) {
       return true;
@@ -15,7 +17,8 @@ window.LoginFormValidation = {
     // Invalid
     return {
       error: "INVALID_USERNAME",
-      reason: "Username must be at least 3 characters long"
+      reason: "Username must be at least 3 characters long",
+      i18nKeyReason: "accountsUI.error.usernameMinLength"
     };
   },
 
@@ -27,6 +30,9 @@ window.LoginFormValidation = {
    * @return {Boolean|Object} Returns true if valid; Returns an error object if invalid
    */
   email(email, optional) {
+    check(email, Match.OptionalOrNull(String));
+    check(optional, Match.OptionalOrNull(Boolean));
+
     const processedEmail = email.trim();
 
     // Valid
@@ -39,7 +45,8 @@ window.LoginFormValidation = {
     // Invalid
     return {
       error: "INVALID_EMAIL",
-      reason: i18next.t("accountsUI.error.invalidEmail")
+      reason: "Email address is invalid",
+      i18nKeyReason: "accountsUI.error.invalidEmail"
     };
   },
 
@@ -51,10 +58,14 @@ window.LoginFormValidation = {
    * @param  {String} password Password to validate
    * @param  {Object} options Options to apply to the password validator
    * @param  {String} options.validationLevel "exists" | undefined (default)
-   * @return {Boolean|{error: String, reason: String}} true if valid | Error object otherwise
+   * @return {Boolean|[{error: String, reason: String}]} true if valid | Error object otherwise
    */
   password(password, options) {
+    check(password, Match.OptionalOrNull(String));
+    check(options, Match.OptionalOrNull(Object));
+
     const passwordOptions = options || {};
+    let errors = [];
 
     // Only check if a password has been entered at all.
     // This is usefull for the login forms
@@ -63,22 +74,21 @@ window.LoginFormValidation = {
         return true;
       }
 
-      return {
-        error: "INVALID_PASSWORD",
-        reason: i18next.t("accountsUI.error.passwordRequired")
-      };
-    }
-
-    // Validate the password on some rules
-    // This is useful for cases where a password needs to be created or updated.
-    //
-    let errors = [];
-
-    if (password.length < 6) {
       errors.push({
         error: "INVALID_PASSWORD",
-        reason: i18next.t("accountsUI.error.passwordMustBeAtLeast6CharactersLong")
+        reason: "Password is required",
+        i18nKeyReason: "accountsUI.error.passwordRequired"
       });
+    } else {
+      // Validate the password on some rules
+      // This is useful for cases where a password needs to be created or updated.
+      if (password.length < 6) {
+        errors.push({
+          error: "INVALID_PASSWORD",
+          reason: "Password must be at least 6 characters long.",
+          i18nKeyReason: "accountsUI.error.passwordMustBeAtLeast6CharactersLong"
+        });
+      }
     }
 
     if (errors.length) {
@@ -89,3 +99,13 @@ window.LoginFormValidation = {
     return true;
   }
 };
+
+// Export object globally
+LoginFormValidation = validationMethods;
+
+// Register validation methods as meteor methods
+Meteor.methods({
+  "accounts/validation/username": validationMethods.username,
+  "accounts/validation/email": validationMethods.email,
+  "accounts/validation/password": validationMethods.password
+});
