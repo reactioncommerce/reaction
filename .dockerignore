@@ -5,7 +5,7 @@
 .git
 .build.log
 Dockerfile
-docker
+docker/reaction.*
 docs
 packages/*/.npm
 packages/*/lib/bower

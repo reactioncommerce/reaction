@@ -26,6 +26,8 @@
           "shippingDescription": "Provide shipping rates",
           "braintreeLabel": "Braintree",
           "braintreeDescription": "Braintree payments",
+          "catalogLabel": "Catalog",
+          "catalogDescription": "Allows to create simple products",
           "coreLabel": "Core",
           "coreDescription": "Reaction core shop configuration",
           "genericPaymentLabel": "Generic Payment",
@@ -45,13 +47,27 @@
           "socialLabel": "Social",
           "socialDescription": "Social Channel configuration",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments"
+          "stripeDescription": "Stripe payments",
+          "filtrationLabel": "Filtration",
+          "filtrationDescription": "Products filtration for Reaction"
+        },
+        "groups": {
+          "appearance": "Appearance",
+          "connect": "Connect",
+          "core": "Core",
+          "dashboard": "Dashboard",
+          "misc": "Misc",
+          "paymentMethod": "Payment Providers",
+          "utilities": "Utilities"
         },
         "settings": {
           "flatPagesSettingsLabel": "Flat Pages",
           "accountSettingsLabel": "Account Settings",
+          "addShopMemberLabel": "Add Shop Member",
           "authorizenetSettingsLabel": "Authorize.net Settings",
+          "permissionsSettingsLabel": "Permissions",
           "braintreeSettingsLabel": "Braintree Settings",
+          "localizationAndI18NLabel": "Localization and i18n",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
@@ -68,6 +84,9 @@
         "guests": "Guests"
       },
       "app": {
+        "add": "Add",
+        "editMode": "Edit mode",
+        "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
@@ -81,8 +100,10 @@
         "settings": "Settings",
         "loading": "Loading",
         "toggle": "Toggle",
+        "toggleEditMode": "Toggle Edit Mode",
         "warning": "Oops!",
         "unauthorizedMessage": "You don't have permission to view this content.",
+        "updateSettings": "Update Settings",
         "monthOptions": "Choose month",
         "yearOptions": "Choose year",
         "shopSettings": "Shop Settings",
@@ -192,6 +213,20 @@
         "deleteProduct": "Delete Product",
         "publish": "Publish",
         "moreOptions": "More Options"
+      },
+      "productVariant": {
+        "inventoryQuantity": "Quantity",
+        "title": "Label",
+        "price": "Price",
+        "optionTitle": "Option",
+        "barcode": "Barcode",
+        "compareAtPrice": "Price (MSRP)",
+        "fulfillmentService": "Fulfillment service",
+        "weight": "Weight",
+        "taxable": "Taxable",
+        "inventoryManagement": "Inventory tracking",
+        "inventoryPolicy": "Deny when out of stock",
+        "lowInventoryWarningThreshold": "Warn @"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",
@@ -329,16 +364,24 @@
         "emailPlaceholder": "Primary Contact Email",
         "keywords": "Keywords",
         "keywordsPlaceholder": "Meta keywords for SEO",
+        "language": "Base Language",
+        "languageTooltip": "This language will be used if device language detection will be failed",
         "timezone": "Timezone",
         "timezoneOptions": "Choose timezone",
         "currency": "Base Currency",
         "currencyTooltip": "Shop default currency",
         "baseUOM": "Base Unit of Measure",
         "addressBook": {
+          "company": "Company",
+          "companyPlaceholder": "This business name",
           "country": "Country",
           "fullName": "Full name",
+          "fullNamePlaceholder": "Your organization name",
           "address1": "Address",
+          "address1Placeholder": "Your organization address",
+          "address1Tooltip": "This address will be visible to visitors",
           "address2": "Address",
+          "address2Placeholder": "Additional address",
           "postal": "Postal",
           "city": "City",
           "region": "Region",
@@ -360,6 +403,9 @@
         "isShippingDefault": "Make this your default shipping address?",
         "isBillingDefault": "Make this your default billing address?",
         "isCommercial": "This is a commercial address."
+      },
+      "i18nSettings": {
+        "enabledLanguages": "Languages"
       },
       "checkoutProgressBar": {
         "login": "Account",
@@ -384,16 +430,6 @@
         "configureNow": "Configure now.",
         "shipping": "Shipping"
       },
-      "shopEditAddressForm": {
-        "company": "Company",
-        "companyPlaceholder": "This business name",
-        "fullname": "Full name",
-        "fullnamePlaceholder": "Your organization name",
-        "address1": "Address",
-        "address1Placeholder": "Your organization address",
-        "address1Tooltip": "This address will be visible to visitors",
-        "address2Placeholder": "Additional address"
-      },
       "uom": {
         "OZ": "Ounces",
         "LB": "Pounds",
@@ -413,11 +449,14 @@
         "google": "Google",
         "github": "GitHub",
         "meetup": "Meetup",
+        "ok": "Ok",
         "twitter": "Twitter",
+        "vk": "VK",
         "weibo": "Weibo"
       },
       "accountsUI": {
         "members": "Members",
+        "manage": "Manage",
         "guest": "Guest",
         "addMember": "Add a member",
         "add": "add",
@@ -435,6 +474,7 @@
         "emailResetLink": "Email Reset Link",
         "forgotPassword": "Reset password",
         "ifYouAlreadyHaveAnAccount": "If you already have an account",
+        "name": "Name",
         "newPassword": "New Password",
         "newPasswordAgain": "New Password (again)",
         "optional": "Optional",
@@ -447,17 +487,20 @@
         "setPassword": "Set Password",
         "sign": "Sign",
         "signIn": "Sign In",
+        "signInService": "{{service}} Sign In",
         "signin": "sign in",
         "signInWith": "Sign in with",
         "signUpWith": "Sign up with",
         "signedIn": "You are signed in.",
         "signOut": "Sign Out",
         "signUp": "Register",
+        "signUpButton": "Register",
         "signupCode": "Registration Code",
         "signUpWithYourEmailAddress": "Register with your email address",
         "terms": "Terms of Use",
         "updateYourPassword": "Update your password",
         "updatePasswordAndContinue": "Update and continue",
+        "updatedServiceConfiguration": "Updated service configuration for {{service}}",
         "username": "Username",
         "usernameOrEmail": "Username or email",
         "with": "with",
@@ -476,7 +519,7 @@
           "emailRequired": "Email is required.",
           "passwordRequired": "Password is required.",
           "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
-          "passwordMustContainRequirements": "Password must contain at least one number or symbol",
+          "passwordMustContainRequirements": "Password must contain at least one number or symbol.",
           "minChar": "6 character minimum password.",
           "pwdsDontMatch": "Passwords don't match",
           "pwOneDigit": "Password must have at least one digit.",
@@ -488,6 +531,9 @@
           "usernameRequired": "Username is required.",
           "emailAlreadyExists": "Email already exists.",
           "emailDoesntMatchTheCriteria": "Email doesn't match the criteria.",
+          "errorSendingEmail": "Error sending email, possible configuration issue.",
+          "unableToSendInvitationEmail": "Unable to send invitation email.",
+          "failedToLogout": "Failed to logout.",
           "invalidLoginToken": "Invalid login token",
           "loginForbidden": "Login forbidden",
           "serviceUnknown": "Service unknown",
@@ -538,7 +584,8 @@
       "error": {
         "nameRequired": "Name is required.",
         "isRequired": "{{field}} is required.",
-        "mustBeNumber": "{{field}} must be a number."
+        "mustBeNumber": "{{field}} must be a number.",
+        "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
       }
     }
   }

@@ -24,7 +24,7 @@
       "version": "2.2.3"
     },
     "css-annotation": {
-      "version": "0.6.0"
+      "version": "0.6.2"
     },
     "postcss": {
       "version": "5.0.14",
@@ -151,6 +151,9 @@
     },
     "react-dom": {
       "version": "0.14.7"
+    },
+    "react-textarea-autosize": {
+      "version": "3.3.0"
     },
     "sortablejs": {
       "version": "1.4.2"

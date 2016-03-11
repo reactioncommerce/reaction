@@ -68,7 +68,7 @@ Template.coreOrderShippingSummary.helpers({
       return shipment.tracking;
     }
 
-    return i18n.t("orderShipping.noTracking");
+    return i18next.t("orderShipping.noTracking");
   },
   shipmentStatus() {
     const order = Template.instance().order;
@@ -89,14 +89,14 @@ Template.coreOrderShippingSummary.helpers({
       return {
         shipped: true,
         status: "success",
-        label: i18n.t("orderShipping.shipped")
+        label: i18next.t("orderShipping.shipped")
       };
     }
 
     return {
       shipped: false,
       status: "info",
-      label: i18n.t("orderShipping.notShipped")
+      label: i18next.t("orderShipping.notShipped")
     };
   }
 });

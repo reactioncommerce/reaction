@@ -1,8 +1,6 @@
 // Import Variables
-@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
-@import "{reactioncommerce:core-theme}/default/variables.less";
-@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
-@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
+@import "{reactioncommerce:reaction-ui}/client/styles/variables.less";
+@import "{reactioncommerce:reaction-ui}/client/styles/mixins.less";
 
 .rui.navbar {
   .display(flex);
@@ -38,11 +36,6 @@
   color: @white;
 }
 
-.rui.navbar .brand {
-  .flex(0 0 auto);
-  .margin-left(10px);
-}
-
 .rui.navbar .menu {
   .flex(1 1 auto);
   margin: 0 10px;
@@ -74,6 +67,10 @@
 
 .rui.navbar .dropdown a {
   color: @link-color;
+}
+
+.rui.navbar .dropdown .dropdown-menu > .active > a{
+  color: @white;
 }
 
 .rui.navbar .dropdown {

@@ -6,7 +6,8 @@ Package.describe({
 });
 
 Npm.depends({
-  "node-geocoder": "3.0.0"
+  "node-geocoder": "3.0.0",
+  "lodash.merge": "4.3.2"
 });
 
 Package.onUse(function (api) {
@@ -47,12 +48,11 @@ Package.onUse(function (api) {
   // community packages
   api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.2.2");
+  api.use("reactioncommerce:reaction-logger@0.1.0");
   api.use("reactioncommerce:reaction-collections@2.0.1");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
-
-  api.use("ongoworks:bunyan-logger@2.5.0");
   api.use("momentjs:moment@2.11.1");
   api.use("risul:moment-timezone@0.5.0_5");
 
@@ -67,14 +67,13 @@ Package.onUse(function (api) {
   api.imply("es5-shim");
   api.imply("browser-policy");
   api.imply("service-configuration");
+  api.imply("reactioncommerce:reaction-logger");
   api.imply("reactioncommerce:reaction-collections");
   api.imply("reactioncommerce:reaction-email-templates");
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
   api.imply("mdg:validated-method");
   api.imply("momentjs:moment");
-  api.imply("ongoworks:bunyan-logger");
-
 
   // reaction core dependencies
   api.addFiles("lib/bower.json", "client");
@@ -130,7 +129,6 @@ Package.onUse(function (api) {
   // methods
   api.addFiles("server/methods/cart.js", "server");
   api.addFiles("server/methods/orders.js", "server");
-  api.addFiles("server/methods/products.js", "server");
   api.addFiles("server/methods/shipping.js", "server");
   api.addFiles("server/methods/shop.js", "server");
 
@@ -175,12 +173,11 @@ Package.onTest(function (api) {
   // reaction core
   api.use("reactioncommerce:reaction-checkout@1.0.0");
   api.use("reactioncommerce:reaction-collections@2.0.1");
-  api.use("reactioncommerce:reaction-factories@0.4.0");
+  api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.12.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");
   api.addFiles("tests/jasmine/server/integration/shops.js", "server");
-  api.addFiles("tests/jasmine/server/integration/products.js", "server");
   api.addFiles("tests/jasmine/server/integration/cart.js", "server");
 });

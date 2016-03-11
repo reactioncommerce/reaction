@@ -26,7 +26,7 @@ describe("Product", function () {
       productSpy = spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
 
       expect(function () {
-        return Meteor.call("flushTranslations");
+        return Meteor.call("i18n/flushTranslations");
       }).not.toThrow(new Meteor.Error(403, "Access Denied"));
 
       expect(productSpy).toHaveBeenCalled();

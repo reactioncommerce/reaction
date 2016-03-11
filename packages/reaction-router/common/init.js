@@ -23,15 +23,15 @@ ReactionRouter.notFound = {
  * @param  {[type]} registryItem [registry object]
  * @return {String}              [route name]
  */
-ReactionRouter.getRouteName = (packageName, registryItem) => {
+const getRegistryRouteName = (packageName, registryItem) => {
   let routeName;
   if (packageName && registryItem) {
     if (registryItem.name) {
-      routeName = `${registryItem.name}`;
+      routeName = registryItem.name;
     } else if (registryItem.template) {
       routeName = `${packageName}/${registryItem.template}`;
     } else {
-      routeName = `${packageName}`;
+      routeName = packageName;
     }
     // dont include params in the name
     routeName = routeName.split(":")[0];
@@ -79,6 +79,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
           let {
             route,
             template,
+            layout,
             workflow,
             triggersEnter,
             triggersExit
@@ -86,15 +87,20 @@ ReactionRouter.initPackageRoutes = (userId) => {
           let options = {};
           let routeName;
 
-          routeName = ReactionRouter.getRouteName(pkg.name, registryItem);
+          routeName = getRegistryRouteName(pkg.name, registryItem);
+          // If route doesn't start with "/" we add it to avoid the flow-router error
+          route = route.substring(0, 1) !== "/" ? "/" + route : route;
+
           // check route permissions
           if (ReactionCore.hasPermission(routeName, userId) || ReactionCore.hasPermission(route, userId)) {
             options.template = template;
             options.workflow = workflow;
+            options.layout = layout;
           } else {
             // WIP - known issue with auth/login/reload
             options.template = "unauthorized";
             options.workflow = workflow;
+            options.layout = layout;
           }
 
           // define new route
@@ -104,6 +110,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
             options: {
               name: routeName,
               template: options.template,
+              layout: options.layout,
               triggersEnter: triggersEnter,
               triggersExit: triggersExit,
               action: () => {

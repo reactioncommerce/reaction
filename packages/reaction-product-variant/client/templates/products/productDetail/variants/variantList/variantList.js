@@ -4,27 +4,21 @@
 Template.variantList.helpers({
   variants: function () {
     let inventoryTotal = 0;
-    const variants = [];
-    const product = ReactionProduct.selectedProduct();
+    const variants = ReactionProduct.getTopVariants();
 
-    if (product) {
-      // top level variants
-      for (let variant of product.variants) {
-        if (!variant.parentId) {
-          variants.push(variant);
-        }
-      }
+    if (variants.length > 0) {
       // calculate inventory total for all variants
       for (let variant of variants) {
-        if (!isNaN(variant.inventoryQuantity)) {
-          inventoryTotal += variant.inventoryQuantity;
+        let qty = ReactionProduct.getVariantQuantity(variant);
+        if (typeof qty === "number") {
+          inventoryTotal += qty;
         }
       }
       // calculate percentage of total inventory of this product
       for (let variant of variants) {
+        let qty = ReactionProduct.getVariantQuantity(variant);
         variant.inventoryTotal = inventoryTotal;
-        variant.inventoryPercentage = parseInt(variant.inventoryQuantity /
-          inventoryTotal * 100, 10);
+        variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
         if (variant.title) {
           variant.inventoryWidth = parseInt(variant.inventoryPercentage -
             variant.title.length, 10);
@@ -32,33 +26,45 @@ Template.variantList.helpers({
           variant.inventoryWidth = 0;
         }
       }
+      // sort variants in correct order
+      variants.sort((a, b) => a.index - b.index);
+
       return variants;
     }
   },
   childVariants: function () {
-    const variants = [];
-    const product = ReactionProduct.selectedProduct();
+    const childVariants = [];
+    const variants = ReactionProduct.getVariants();
+    if (variants.length > 0) {
+      const current = ReactionProduct.selectedVariant();
 
-    if (product) {
-      let current = ReactionProduct.selectedVariant();
-      if (typeof current === "object" ? current._id : void 0) {
-        if (current.parentId) {
-          for (let variant of product.variants) {
-            if (variant.parentId === current.parentId && variant.optionTitle &&
-              variant.type !== "inventory") {
-              variants.push(variant);
-            }
-          }
-        } else {
-          for (let variant of product.variants) {
-            if (variant.parentId === current._id && variant.optionTitle &&
-              variant.type !== "inventory") {
-              variants.push(variant);
-            }
-          }
-        }
+      if (! current) {
+        return [];
       }
-      return variants;
+
+      if (current.ancestors.length === 1) {
+        variants.map(variant => {
+          if (typeof variant.ancestors[1] === "string" &&
+            variant.ancestors[1] === current._id &&
+            variant.optionTitle &&
+            variant.type !== "inventory") {
+            childVariants.push(variant);
+          }
+        });
+      } else {
+        // TODO not sure we need this part...
+        variants.map(variant => {
+          if (typeof variant.ancestors[1] === "string" &&
+            variant.ancestors.length === current.ancestors.length &&
+            variant.ancestors[1] === current.ancestors[1] &&
+            variant.optionTitle
+          ) {
+            childVariants.push(variant);
+          }
+        });
+      }
+
+      return childVariants;
     }
   }
 });

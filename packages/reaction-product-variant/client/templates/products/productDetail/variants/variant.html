@@ -2,12 +2,12 @@
 <li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
   <div class="variant-detail {{selectedVariant}}">
     <div class="progress">
-      <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{inventoryQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
+      <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{displayQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
       </span>
       <div class="variant-progress-item">
         {{#if inventoryManagement}}
           {{#unless isSoldOut }}
-            <span class="variant-qty badge">{{inventoryQuantity}}</span>
+            <span class="variant-qty badge">{{displayQuantity}}</span>
           {{else}}
             {{#if inventoryPolicy }}
             <span class="variant-qty-sold-out badge">Sold Out!</span>

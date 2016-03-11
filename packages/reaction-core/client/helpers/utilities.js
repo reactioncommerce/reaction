@@ -32,7 +32,7 @@ if (Package.blaze) {
  * @return {Array} returns array of months [value:, label:]
  */
 Template.registerHelper("monthOptions", function () {
-  let label = i18n.t("app.monthOptions") || "Choose month";
+  let label = i18next.t("app.monthOptions", "Choose month");
   let monthOptions = [{
     value: "",
     label: label
@@ -56,7 +56,7 @@ Template.registerHelper("monthOptions", function () {
  * @return {Array} returns array of years [value:, label:]
  */
 Template.registerHelper("yearOptions", function () {
-  let label = i18n.t("app.yearOptions") || "Choose year";
+  let label = i18next.t("app.yearOptions", "Choose year");
   let yearOptions = [{
     value: "",
     label: label
@@ -78,7 +78,7 @@ Template.registerHelper("yearOptions", function () {
  * @return {Array} returns array of timezones [value:, label:]
  */
 Template.registerHelper("timezoneOptions", function () {
-  let label = i18n.t("app.timezoneOptions") || "Choose timezone";
+  let label = i18next.t("app.timezoneOptions", "Choose timezone");
   let timezoneOptions = [{
     value: "",
     label: label

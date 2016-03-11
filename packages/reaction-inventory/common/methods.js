@@ -32,6 +32,7 @@ Meteor.methods({
    * @summary sets status from one status to a new status. Defaults to "new" to "reserved"
    * @param  {Array} cartItems array of objects of type ReactionCore.Schemas.CartItems
    * @param  {String} status optional - sets the inventory workflow status, defaults to "reserved"
+   * @todo move this to bulkOp
    * @return {undefined} returns undefined
    */
   "inventory/setStatus": function (cartItems, status, currentStatus, notFoundStatus) {
@@ -180,7 +181,6 @@ Meteor.methods({
       }
     }
     ReactionInventory.Log.info("inventory/clearReserve", newStatus);
-    return;
   },
   /**
    * inventory/clearReserve
@@ -213,12 +213,22 @@ Meteor.methods({
    *
    * @param {Object} reservation ReactionCore.Schemas.Inventory
    * @param {Number} backOrderQty number of backorder items to create
-   * @returns {Array} inserts into collection and returns array of inserted inventory id
+   * @returns {Number} number of inserted backorder documents
    */
   "inventory/backorder": function (reservation, backOrderQty) {
     check(reservation, ReactionCore.Schemas.Inventory);
     check(backOrderQty, Number);
     this.unblock();
+
+    // this use case could happen then mergeCart is fires. We don't add anything
+    // or remove, just item owner changed. We need to add this check here
+    // because of bulk operation. It thows exception if nothing to operate.
+    if (backOrderQty === 0) {
+      return 0;
+    }
+
+    // TODO: need to look carefully and understand is it possible ho have a
+    // negative `backOrderQty` value here?
 
     // check basic user permissions
     // if (!ReactionCore.hasPermission(["guest","anonymous"])) {
@@ -226,7 +236,6 @@ Meteor.methods({
     // }
 
     // set defaults
-    const inventoryBackorder = [];
     let newReservation = reservation;
     if (!newReservation.workflow) {
       newReservation.workflow = {
@@ -236,13 +245,22 @@ Meteor.methods({
 
     // insert backorder
     let i = 0;
+    const batch = ReactionCore.Collections.Inventory.
+      _collection.rawCollection().initializeUnorderedBulkOp();
     while (i < backOrderQty) {
-      inventoryId = ReactionCore.Collections.Inventory.insert(newReservation);
-      inventoryBackorder.push(inventoryId);
-      ReactionInventory.Log.debug("demand created backorder", inventoryId);
+      let id = ReactionCore.Collections.Inventory._makeNewID();
+      batch.insert(Object.assign({ _id: id }, newReservation));
       i++;
     }
-    return inventoryBackorder;
+
+    const execute = Meteor.wrapAsync(batch.execute, batch);
+    const inventoryBackorder = execute();
+    const inserted = inventoryBackorder.nInserted;
+    ReactionInventory.Log.info(
+      `created ${inserted} backorder records for product ${
+        newReservation.productId}, variant ${newReservation.variantId}`);
+
+    return inserted;
   },
   //
   // send low stock warnings
@@ -251,6 +269,5 @@ Meteor.methods({
     check(product, ReactionCore.Schemas.Product);
     // WIP placeholder
     ReactionInventory.Log.info("inventory/lowStock");
-    return;
   }
 });

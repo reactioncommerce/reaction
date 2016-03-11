@@ -1,9 +1,37 @@
+const Tooltip = ReactionUI.Lib.Tooltip;
+const Icon = ReactionUI.Components.Icon;
 
-Template.button.onRendered(function () {
+Template.button.onCreated(function () {
 
 });
 
+Template.button.onRendered(function () {
+  const buttonElement = this.$("button, a")[0];
+
+  this.createTooltip = () => {
+    if (this.data.tooltip) {
+      if (this.tooltip) {
+        this.tooltip.destroy();
+      }
+      this.tooltip = new Tooltip({
+        target: buttonElement,
+        position: this.data.tooltipPosition || "top left",
+        content: i18next.t(this.data.i18nKeyTooltip, this.data.tooltip) || this.data.tooltip
+      });
+    }
+  };
+
+  this.autorun(() => {
+    ReactionCore.translationDependency.depend();
+    this.createTooltip();
+  });
+});
+
 Template.button.helpers({
+  iconComponent() {
+    return Icon;
+  },
+
   elementProps() {
     const data = Template.currentData();
     return {
@@ -42,7 +70,5 @@ Template.button.events({
     if (instance.data.onClick) {
       instance.data.onClick(event);
     }
-  },
-  "mouseover .rui.button"(event) {
   }
 });

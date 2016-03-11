@@ -7,6 +7,12 @@
 */
 
 ReactionCore.Schemas.Translation = new SimpleSchema({
+  shopId: {
+    type: String,
+    index: 1,
+    autoValue: ReactionCore.shopIdAutoValue,
+    label: "Translation ShopId"
+  },
   language: {
     type: String
   },

@@ -1,17 +1,23 @@
 
 <template name="button">
   {{#Template.dynamic template=element data=elementProps}}
-    <span class="icon">
-      {{#if ../toggle}}
-        {{#if ../toggleOn}}
-          <i class="fa fa-{{../onIcon}}"></i>
-        {{else}}
-          <i class="fa fa-{{../icon}}"></i>
-        {{/if}}
+    {{#if ../toggle}}
+      {{#if ../toggleOn}}
+      <span class="rui icon on">
+        {{> React component=iconComponent icon=../onIcon}}
+      </span>
       {{else}}
-        <i class="fa fa-{{../icon}}"></i>
+        <span class="rui icon">
+          {{> React component=iconComponent icon=../icon}}
+        </span>
       {{/if}}
-    </span>
+    {{else}}
+      {{#if ../icon}}
+        <span class="icon">
+          {{> React component=iconComponent icon=../icon}}
+        </span>
+      {{/if}}
+    {{/if}}
     <span class="title">
       {{#if i18nKeyTitle}}
         {{i18n i18nKeyTitle title}}
@@ -24,10 +30,13 @@
 
 <template name="uiButtonElement">
   <button
+    href="#"
     type="{{type}}"
     class="rui button btn btn-{{status}} {{className}}"
     data-event-action="{{title}}">
-    {{> Template.contentBlock}}
+    <div class="contents">
+      {{> Template.contentBlock}}
+    </div>
   </button>
 </template>
 

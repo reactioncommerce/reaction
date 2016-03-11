@@ -9,13 +9,20 @@
 
 _.extend(ReactionCore, {
   init: function () {
+    // run onCoreInit hooks
+    ReactionCore.Hooks.Events.run("onCoreInit", this);
+    // start job server
     ReactionCore.Log.info("JobServer started:", Jobs.startJobServer());
     // uncomment for JobCollection debug
     // Jobs.setLogStream(process.stdout);
     ReactionRegistry.loadPackages();
+    // process imports from packages and any hooked imports
+    ReactionImport.flush();
     // timing is important, packages are rqd
     // for initilial permissions configuration.
     ReactionRegistry.createDefaultAdminUser();
+    // hook after init finished
+    ReactionCore.Hooks.Events.run("afterCoreInit", this);
     return true;
   },
   /**

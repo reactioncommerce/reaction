@@ -2,6 +2,46 @@
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
+  cardProps() {
+    const instance = Template.instance();
+    const data = instance.data;
+    const apps = ReactionCore.Apps({
+      provides: "settings",
+      name: data.package.packageName
+    });
+
+    let controls = [];
+
+    if (data.package.enabled === true && data.package.priority > 1) {
+      controls.push({
+        icon: "fa fa-check-square fa-fw",
+        onClick() {
+          console.log("enable / disable package");
+        }
+      })
+    }
+
+    for (let app in apps) {
+      controls.push({
+        icon: app.icon || "fa fa-cog fa-fw",
+      })
+    }
+
+    if (data.package.route) {
+      controls.push({
+        icon: "angle-right",
+        onClick() {
+          const route = data.package.name || data.package.route;
+          ReactionRouter.go(route);
+        }
+      });
+    }
+
+    return {
+      controls
+    }
+  },
+
   showDashboardButtonProps(pkg) {
     return {
       icon: "angle-right",
@@ -22,7 +62,7 @@ Template.gridPackage.helpers({
  * gridPackage events
  */
 Template.gridPackage.events({
-  "click .enablePkg": function (event, template) {
+  "click .enablePkg": function (event/* , template */) {
     const self = this.package;
     event.preventDefault();
     return ReactionCore.Collections.Packages.update(self.packageId, {
@@ -32,24 +72,54 @@ Template.gridPackage.events({
     }, function (error, result) {
       if (result === 1) {
         Alerts.toast(
-          i18n.t("gridPackage.pkgEnabled", { app: i18n.t(self.i18nKeyLabel) }),
+          i18next.t("gridPackage.pkgEnabled", { app: i18next.t(self.i18nKeyLabel) }),
           "error", {
             type: "pkg-enabled-" + self.name
           }
         );
+
         if (self.name || self.route) {
           const route = self.name || self.route;
           return ReactionRouter.go(route);
         }
       } else if (error) {
         return Alerts.toast(
-          i18n.t("gridPackage.pkgDisabled", { app: i18n.t(self.i18nKeyLabel) }),
+          i18next.t("gridPackage.pkgDisabled", { app: i18next.t(self.i18nKeyLabel) }),
           "warning"
         );
+
       }
     });
+
+    Meteor.call("shop/togglePackage", self.packageId, false,
+      (error, result) => {
+        if (result === 1) {
+          Alerts.toast(
+            i18next.t(
+              "gridPackage.pkgEnabled",
+              { app: i18next.t(self.i18nKeyLabel) }
+            ),
+            "error", {
+              type: "pkg-enabled-" + self.name
+            }
+          );
+          if (self.name || self.route) {
+            const route = self.name || self.route;
+            return ReactionRouter.go(route);
+          }
+        } else if (error) {
+          return Alerts.toast(
+            i18next.t(
+              "gridPackage.pkgDisabled",
+              { app: i18next.t(self.i18nKeyLabel) }
+            ),
+            "warning"
+          );
+        }
+      }
+    );
   },
-  "click .disablePkg": function (event, template) {
+  "click .disablePkg": function (event/* , template */) {
     event.preventDefault();
 
     const self = this.package;
@@ -59,25 +129,23 @@ Template.gridPackage.events({
 
     Alerts.alert(
       "Disable Package",
-      i18n.t("gridPackage.disableConfirm", { app: i18n.t(self.i18nKeyLabel) }),
+      i18next.t("gridPackage.disableConfirm", { app: i18next.t(self.i18nKeyLabel) }),
       { type: "warning" },
       () => {
-        ReactionCore.Collections.Packages.update(self.packageId, {
-          $set: {
-            enabled: false
+        Meteor.call("shop/togglePackage", self.packageId, true,
+          (error, result) => {
+            if (result === 1) {
+              return Alerts.toast(
+                i18next.t("gridPackage.pkgDisabled", {
+                  app: i18next.t(self.i18nKeyLabel)
+                }),
+                "success"
+              );
+            } else if (error) {
+              throw new Meteor.Error("error disabling package", error);
+            }
           }
-        }, function (error, result) {
-          if (result === 1) {
-            return Alerts.toast(
-              i18n.t("gridPackage.pkgDisabled", {
-                app: i18n.t(self.i18nKeyLabel)
-              }),
-              "success"
-            );
-          } else if (error) {
-            throw new Meteor.Error("error disabling package", error);
-          }
-        });
+        );
       });
   },
 

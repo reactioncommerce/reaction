@@ -9,6 +9,7 @@ Template.accountsDashboardControls.events({
   "click [data-event-action=addShopMember]": () => {
     ReactionCore.showActionView({
       label: "Add Shop Member",
+      i18nKeyLabel: "admin.settings.addShopMemberSettingsLabel",
       template: "memberForm"
     });
   }
@@ -54,47 +55,46 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True array of adminsitrative members
    */
   members: function () {
-    let members = [];
-    let shopUsers;
-
     if (ReactionCore.hasPermission("reaction-accounts")) {
+      const shopId = ReactionCore.getShopId();
       const instance = Template.instance();
       if (instance.subscriptionsReady()) {
-        shopUsers = Meteor.users.find();
-        shopUsers.forEach(function (user) {
+        const shopUsers = Meteor.users.find();
+
+        return shopUsers.map(user => {
           let member = {};
 
           member.userId = user._id;
 
-          if (user.email) {
-            if (user.emails[0] !== null) {
-              member.email = user.emails[0];
-            }
+          if (user.emails && user.emails.length) {
+            // this is some kind of denormalization. It is helpful to have both
+            // of this string and array. Array goes to avatar, string goes to
+            // template
+            member.emails = user.emails;
+            member.email = user.emails[0].address;
           }
-          member.user = user;
-          member.username = user !== null ? user.username : void 0;
-          member.isAdmin = Roles.userIsInRole(user._id, "admin", ReactionCore.getShopId());
+          // member.user = user;
+          member.username = user.username;
+          member.isAdmin = Roles.userIsInRole(user._id, "admin", shopId);
           member.roles = user.roles;
           member.services = user.services;
 
-          if (Roles.userIsInRole(member.userId, "dashboard", ReactionCore.getShopId())) {
+          if (Roles.userIsInRole(member.userId, "dashboard", shopId)) {
             member.role = "dashboard";
           }
 
-          if (Roles.userIsInRole(member.userId, "admin", ReactionCore.getShopId())) {
-            member.role = "owner";
+          if (Roles.userIsInRole(member.userId, "admin", shopId)) {
+            member.role = "admin";
           }
 
-          if (Roles.userIsInRole(member.userId, "owner", ReactionCore.getShopId())) {
+          if (Roles.userIsInRole(member.userId, "owner", shopId)) {
             member.role = "owner";
-          } else if (Roles.userIsInRole(member.userId, ReactionCore.getShopId(), ReactionCore.getShopId())) {
+          } else if (Roles.userIsInRole(member.userId, "guest", shopId)) {
             member.role = "guest";
           }
 
-          members.push(member);
+          return member;
         });
-
-        return members;
       }
     }
   }
@@ -174,7 +174,8 @@ Template.accountsSettings.events({
     let service = event.target.service.value;
     let serviceHelper = new ReactionServiceHelper();
     let fields = serviceHelper.configFieldsForService(service);
-    let niceName = serviceHelper.capitalizedServiceName(service);
+    // todo remove this after i18next 2 will be installed
+    // let niceName = serviceHelper.capitalizedServiceName(service);
 
     for (let field of fields) {
       field.value = event.target[field.property].value;
@@ -182,9 +183,10 @@ Template.accountsSettings.events({
 
     Meteor.call("accounts/updateServiceConfiguration", service, fields, (error) => {
       if (!error) {
-        Alerts.toast(`Updated service configuration for ${niceName}`, "error", {
-          i18nKey: `serviceConfig.successUpdate${niceName}`
-        });
+        Alerts.toast(i18next.t(
+          "accountsUI.updatedServiceConfiguration",
+          { service: i18next.t(`social.${service}`) }
+        ));
       }
     });
   },

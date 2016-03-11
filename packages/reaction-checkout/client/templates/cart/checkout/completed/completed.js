@@ -18,7 +18,7 @@ Template.cartCompleted.helpers({
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {
-      return i18n.t("cartCompleted.submitted");
+      return i18next.t("cartCompleted.submitted");
     }
     return this.workflow.status;
   },
@@ -44,4 +44,18 @@ Template.cartCompleted.events({
     const cartId = ReactionRouter.getQueryParam("_id");
     return Meteor.call("orders/addOrderEmail", cartId, email);
   }
+});
+
+/**
+ * cartCompleted onCreated
+ *
+ * when the order is completed we need to destroy and recreate
+ * the subscription to get the new cart
+ */
+Template.cartCompleted.onCreated(function () {
+  let sessionId = Session.get("sessionId");
+  let userId = Meteor.userId();
+  let cartSub = ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
+  cartSub.stop();
+  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
 });

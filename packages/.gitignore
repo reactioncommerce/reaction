@@ -10,9 +10,11 @@
 !reaction-collections
 !reaction-core
 !reaction-core-theme
+!reaction-catalog
 !reaction-default-theme
 !reaction-inventory
 !reaction-layout
+!reaction-logging
 !reaction-product-simple
 !reaction-sample-data
 !reaction-schemas
@@ -36,6 +38,7 @@
 !reaction-collections/*
 !reaction-core/*
 !reaction-core-theme/*
+!reaction-catalog/*
 !reaction-default-theme/*
 !reaction-inventory/*
 !reaction-layout/*

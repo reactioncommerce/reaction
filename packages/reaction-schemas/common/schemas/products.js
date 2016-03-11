@@ -64,24 +64,22 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 /**
  * ProductVariant Schema
  */
-
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
     type: String,
-    autoValue: ReactionCore.schemaIdAutoValue,
+    optional: true,
     index: 1,
     label: "Variant ID"
   },
-  parentId: {
-    type: String,
-    optional: true
+  ancestors: {
+    type: [String],
+    defaultValue: []
   },
-  cloneId: {
-    type: String,
-    optional: true
-  },
+  // since implementing of flattened model this property is used for keeping
+  // array index. This is needed for moving variants through list (drag'n'drop)
   index: {
-    type: String,
+    label: "Variant position number in list",
+    type: Number,
     optional: true
   },
   barcode: {
@@ -116,7 +114,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
-            this.value === 0)) {
+          this.value === 0)) {
           return "required";
         }
       }
@@ -130,12 +128,15 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
-            this.value === false)) {
+          this.value === false)) {
           return "required";
         }
       }
     }
   },
+  // this represents an ability to sell item without keeping it on stock. In
+  // other words if it is disabled, then you can sell item even if it is not in
+  // stock.
   inventoryPolicy: {
     type: Boolean,
     label: "Deny when out of stock",
@@ -144,7 +145,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     custom: function () {
       if (Meteor.isClient) {
         if (!(this.siblingField("type").value === "inventory" || this.value ||
-            this.value === false)) {
+          this.value === false)) {
           return "required";
         }
       }
@@ -170,6 +171,11 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
       }
     }
   },
+  minOrderQuantity: {
+    label: "Minimum order quantity",
+    type: Number,
+    optional: true
+  },
   price: {
     label: "Price",
     type: Number,
@@ -187,6 +193,12 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
       }
     }
   },
+  shopId: {
+    type: String,
+    autoValue: ReactionCore.shopIdAutoValue,
+    index: 1,
+    label: "Variant ShopId"
+  },
   sku: {
     label: "SKU",
     type: String,
@@ -202,6 +214,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
     type: Boolean,
     optional: true
   },
+  // Label for customers
   title: {
     label: "Label",
     type: String,
@@ -214,6 +227,7 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
       }
     }
   },
+  // Option internal name
   optionTitle: {
     label: "Option",
     type: String,
@@ -235,18 +249,33 @@ ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   }
 });
 
+ReactionCore.Schemas.PriceRange = new SimpleSchema({
+  range: {
+    type: String
+  },
+  min: {
+    type: Number,
+    decimal: true,
+    optional: true
+  },
+  max: {
+    type: Number,
+    decimal: true,
+    optional: true
+  }
+});
+
 /**
  * Product Schema
  */
-
 ReactionCore.Schemas.Product = new SimpleSchema({
   _id: {
     type: String,
     optional: true
   },
-  cloneId: {
-    type: String,
-    optional: true
+  ancestors: {
+    type: [String],
+    defaultValue: []
   },
   shopId: {
     type: String,
@@ -283,8 +312,32 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     type: [ReactionCore.Schemas.ProductPosition],
     optional: true
   },
-  variants: {
-    type: [ReactionCore.Schemas.ProductVariant]
+  // Denormalized field: object with range string, min and max
+  price: {
+    label: "Price",
+    type: ReactionCore.Schemas.PriceRange
+  },
+  // Denormalized field: Indicates when at least one of variants
+  // `inventoryQuantity` are lower then their `lowInventoryWarningThreshold`.
+  // This is some kind of marketing course.
+  isLowQuantity: {
+    label: "Indicates that the product quantity is too low",
+    type: Boolean,
+    optional: true
+  },
+  // Denormalized field: Indicates when all variants `inventoryQuantity` is zero
+  isSoldOut: {
+    label: "Indicates when the product quantity is zero",
+    type: Boolean,
+    optional: true
+  },
+  // Denormalized field. It is `true` if product not in stock, but customers
+  // anyway could order it.
+  isBackorder: {
+    label: "Indicates when the seller has allowed the sale of product which" +
+    " is not in stock",
+    type: Boolean,
+    optional: true
   },
   requiresShipping: {
     label: "Require a shipping address",
@@ -330,7 +383,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     optional: true,
     index: 1,
     autoValue: function () {
-      let slug = this.value ||  getSlug(this.siblingField("title").value) || this.siblingField("_id").value || "";
+      let slug = this.value ||  getSlug(this.siblingField("title").value) ||
+        this.siblingField("_id").value || "";
       if (this.isInsert) {
         return slug;
       } else if (this.isUpsert) {
@@ -344,18 +398,6 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     type: Boolean,
     index: 1,
     defaultValue: false
-  },
-  workflow: {
-    type: ReactionCore.Schemas.Workflow,
-    optional: true
-  },
-  publishedAt: {
-    type: Date,
-    optional: true
-  },
-  publishedScope: {
-    type: String,
-    optional: true
   },
   templateSuffix: {
     type: String,
@@ -378,6 +420,18 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     autoValue: function () {
       return new Date;
     },
+    optional: true
+  },
+  publishedAt: {
+    type: Date,
+    optional: true
+  },
+  publishedScope: {
+    type: String,
+    optional: true
+  },
+  workflow: {
+    type: ReactionCore.Schemas.Workflow,
     optional: true
   }
 });
