@@ -3056,6 +3056,7 @@
     "anonymous",
     "guest",
     "product",
+    "page",
     "tag",
     "index",
     "cart/checkout",
@@ -3065,6 +3066,7 @@
     "account/profile",
     "guest",
     "product",
+    "page",
     "tag",
     "index",
     "cart/checkout",
@@ -3109,7 +3111,7 @@
       "layoutFooter": "layoutFooter",
       "notFound": "pageNotFound",
       "dashboardHeader": "",
-      "dashboardControls": "flatpagesDashboardControls",
+      "dashboardControls": "dashboardControls",
       "adminControlsFooter": "adminControlsFooter"
     }
   }, {

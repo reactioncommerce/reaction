@@ -61,7 +61,7 @@
           "utilities": "Utilities"
         },
         "settings": {
-          "flatPagesSettingsLabel": "Flat Pages",
+          "flatPagesLabel": "Flat Pages",
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
           "authorizenetSettingsLabel": "Authorize.net Settings",

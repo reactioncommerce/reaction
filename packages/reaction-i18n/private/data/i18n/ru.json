@@ -59,7 +59,7 @@
           "utilities": "Утилиты"
         },
         "settings": {
-          "flatPagesSettingsLabel": "Простые страницы",
+          "flatPagesLabel": "Простые страницы",
           "accountSettingsLabel": "Настройки учетных записей",
           "addShopMemberLabel": "Добавить сотрудника",
           "authorizenetSettingsLabel": "Настройки Authorize.net",

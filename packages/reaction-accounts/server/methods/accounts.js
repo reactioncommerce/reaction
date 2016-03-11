@@ -34,8 +34,8 @@ Accounts.registerLoginHandler(function (options) {
 Accounts.onCreateUser(function (options, user) {
   const shop = ReactionCore.getCurrentShop();
   const shopId = shop._id;
-  const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
-  const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
+  const defaultVisitorRole =  ["anonymous", "guest", "product", "page", "tag", "index", "cart/checkout", "cart/completed"];
+  const defaultRoles =  ["guest", "account/profile", "product", "page", "tag", "index", "cart/checkout", "cart/completed"];
   let roles = {};
   let additionals = {
     profile: {}
