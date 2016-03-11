@@ -96,9 +96,9 @@ ReactionProduct.cloneProduct = function (productOrArray) {
         );
       }
     }
-    if (!_.isArray(productOrArray)) {
+    if (products.length === 1) {
       ReactionRouter.go("product", {
-        handle: productOrArray._id
+        handle: result[0]
       });
     }
   });
