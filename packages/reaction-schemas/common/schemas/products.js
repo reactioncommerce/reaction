@@ -309,7 +309,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     optional: true
   },
   positions: {
-    type: [ReactionCore.Schemas.ProductPosition],
+    type: Object, // ReactionCore.Schemas.ProductPosition
+    blackbox: true,
     optional: true
   },
   // Denormalized field: object with range string, min and max

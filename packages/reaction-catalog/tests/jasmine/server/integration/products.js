@@ -774,7 +774,7 @@ describe("core product methods", function () {
         spyOn(Roles, "userIsInRole").and.returnValue(false);
         spyOn(ReactionCore.Collections.Products, "update");
         expect(function () {
-          return Meteor.call("products/updateProductPosition", "fakeId", {});
+          return Meteor.call("products/updateProductPosition", "fakeId", {}, "tag");
         }).toThrow(new Meteor.Error(403, "Access Denied"));
         expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
       }
@@ -787,19 +787,18 @@ describe("core product methods", function () {
         spyOn(Roles, "userIsInRole").and.returnValue(true);
         const tag = Factory.create("tag");
         const position = {
-          tag: tag._id,
           position: 0,
           weight: 0,
           updatedAt: new Date()
         };
         expect(function () {
           return Meteor.call("products/updateProductPosition",
-            product._id, position);
+            product._id, position, tag.slug);
         }).not.toThrow(new Meteor.Error(403, "Access Denied"));
         const updatedProduct = ReactionCore.Collections.Products.findOne(
           product._id
         );
-        expect(updatedProduct.positions[0].tag).toEqual(tag._id);
+        expect(updatedProduct.positions[tag.slug].position).toEqual(0);
 
         return done();
       }
