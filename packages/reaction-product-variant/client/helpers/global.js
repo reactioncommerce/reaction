@@ -66,11 +66,13 @@ ReactionProduct.publishProduct = function (productOrArray) {
 /**
  * cloneProduct
  * @summary product cloning and alert
- * @param {Object} productOrArray - product Object
+ * @param {Object|Array} productOrArray - if this method calls from productGrid
+ * it receives and array with product _id or _ids, but if it calls from PDP, when
+ * it receive a `Object` with _id. It needed to determine the source of call.
  * @returns {undefined} - returns nothing, and alerts, happen here
  */
 ReactionProduct.cloneProduct = function (productOrArray) {
-  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
+  const products = !Array.isArray(productOrArray) ? [productOrArray] : productOrArray;
 
   return Meteor.call("products/cloneProduct", products, function (error, result) {
     if (error) {
@@ -96,7 +98,9 @@ ReactionProduct.cloneProduct = function (productOrArray) {
         );
       }
     }
-    if (products.length === 1) {
+    // this statement allow us to redirect to a new clone PDP if clone action
+    // was fired within PDP, not within productGrid.
+    if (!Array.isArray(productOrArray)) {
       ReactionRouter.go("product", {
         handle: result[0]
       });
