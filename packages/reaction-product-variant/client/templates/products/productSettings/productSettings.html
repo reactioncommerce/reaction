@@ -96,7 +96,11 @@
   {{else}}
     <div class="panel panel-default">
       <div class="panel-heading">
-        <span class="panel-title">No selected products. Use the <i class="fa fa-gear"></i> or shift|ctrl|cmd + click on products to select multiple.</span>
+        <span class="panel-title">
+          {{i18n "productDetailEdit.noSelectedProducts"
+          "No selected products. Use the "}}<i class="fa fa-gear"></i>{{i18n "productDetailEdit.orShiftCtrlCmd"
+          " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products."}}
+        </span>
       </div>
     </div>
   {{/if}}
