@@ -7,7 +7,8 @@ Package.describe({
 
 Npm.depends({
   "node-geocoder": "3.0.0",
-  "lodash.merge": "4.3.2"
+  "lodash.merge": "4.3.2",
+  "lodash.uniqwith": "4.2.0"
 });
 
 Package.onUse(function (api) {

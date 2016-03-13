@@ -1,5 +1,5 @@
 const merge = Npm.require("lodash.merge");
-
+const uniqWith = Npm.require("lodash.uniqwith");
 /**
  *  ReactionRegistry.loadPackages
  *  insert Reaction packages into registry
@@ -27,11 +27,12 @@ ReactionRegistry.loadPackages = function () {
   } catch (error) {
     ReactionCore.Log.warn("loadSettings reaction.json not loaded.", error);
   }
-
+  let layouts = [];
   // for each shop, we're loading packages a unique registry
   _.each(ReactionRegistry.Packages, (config, pkgName) => {
     return ReactionCore.Collections.Shops.find().forEach((shop) => {
       let shopId = shop._id;
+
       if (!shopId) return [];
       // existing registry will be upserted with changes, perhaps we should add:
       ReactionRegistry.assignOwnerRoles(shopId, pkgName, config.registry);
@@ -61,18 +62,33 @@ ReactionRegistry.loadPackages = function () {
         }
       });
 
-      const combinedSettings = merge(
-        {},
+      const combinedSettings = merge({},
         settingsFromPackage,
         settingsFromFixture || {},
         settingsFromDB || {}
       );
 
+      // populate array of layouts that
+      // don't already exist in Shops
+      if (combinedSettings.layout) {
+        // filter out layout Templates
+        for (let pkg of combinedSettings.layout) {
+          if (pkg.layout) {
+            layouts.push(pkg);
+          }
+        }
+      }
       // Import package data
       ReactionImport.package(combinedSettings, shopId);
-
       ReactionCore.Log.info(`Initializing ${shop.name} ${pkgName}`);
-    });
+    }); // end shops
+  });
+
+  // helper for removing layout duplicates
+  const uniqLayouts = uniqWith(layouts, _.isEqual);
+  // import layouts into Shops
+  ReactionCore.Collections.Shops.find().forEach((shop) => {
+    ReactionImport.layout(uniqLayouts, shop._id);
   });
 
   //
