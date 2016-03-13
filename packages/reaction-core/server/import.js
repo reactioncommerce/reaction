@@ -272,7 +272,7 @@ ReactionImport.shop = function (key, shop) {
 
 /**
  * @summary store a shop layout in the import buffer
- * @param {Array} array of layouts to be added to shop
+ * @param {Array} layout - an array of layouts to be added to shop
  * @param {String} shopId shopId
  * @returns {Object} this shop
  */
