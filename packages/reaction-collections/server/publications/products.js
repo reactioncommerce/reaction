@@ -213,6 +213,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       selector.isVisible = true;
     }
 
+    // check quantity
+    _.extend(selector, {
+      isSoldOut: false
+    });
+    /*
+    _.extend(selector, {
+      "inventoryQuantity": {
+        $gte: 0
+      }
+    });*/
+
     return Products.find(selector, {
       sort: sort,
       limit: productScrollLimit

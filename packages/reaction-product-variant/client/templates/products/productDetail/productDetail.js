@@ -157,6 +157,15 @@ Template.productDetail.events({
             function (error) {
               if (error) {
                 ReactionCore.Log.error("Failed to add to cart.", error);
+
+                if (error.reason == "Not enough items in stock") {
+                  Alerts.inline("Sorry, can't add more items than available!", "warning", {
+                    placement: "productDetail",
+                    i18nKey: "productDetail.outOfStock",
+                    autoHide: 10000
+                  });
+                }
+
                 return error;
               }
             }

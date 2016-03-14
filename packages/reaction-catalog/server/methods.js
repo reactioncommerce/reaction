@@ -185,6 +185,8 @@ function denormalize(id, field) {
   case "inventoryPolicy":
   case "inventoryQuantity":
   case "inventoryManagement":
+    ReactionCore.Log.info("denormalize() isSoldOut(variants): ",isSoldOut(variants),"doc.type:",doc.type,"id:",id,"variants:",variants);
+    
     Object.assign(update, {
       isSoldOut: isSoldOut(variants),
       isLowQuantity: isLowQuantity(variants),
@@ -214,8 +216,9 @@ function denormalize(id, field) {
  */
 function isSoldOut(variants) {
   return variants.every(variant => {
+    ReactionCore.Log.info("isSoldOut() - variant.inventoryManagement:",variant.inventoryManagement,"variant.inventoryPolicy:",variant.inventoryPolicy,"ReactionCore.getVariantQuantity(variant):",ReactionCore.getVariantQuantity(variant));
     if (variant.inventoryManagement && variant.inventoryPolicy) {
-      return ReactionCore.getVariantQuantity(variant) === 0;
+      return ReactionCore.getVariantQuantity(variant) < 1;
     }
     return false;
   });

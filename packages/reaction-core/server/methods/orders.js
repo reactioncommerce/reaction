@@ -483,7 +483,31 @@ Meteor.methods({
   "orders/inventoryAdjust": function (orderId) {
     check(orderId, String);
     const order = ReactionCore.Collections.Orders.findOne(orderId);
+    ReactionCore.Log.info("orders/inventoryAdjust orderId ",orderId," ");
     order.items.forEach(item => {
+      ReactionCore.Log.info("orders/inventoryAdjust item.variants._id ",item.variants._id," by ",-item.quantity," item.inventoryQuantity: ",item.variants.inventoryQuantity);
+      ReactionCore.Log.info("orders/inventoryAdjust item.inventoryQuantity: ",item.variants.inventoryQuantity," ");
+
+      let currVariant = ReactionCore.Collections.Products.findOne({_id: item.variants._id, type: "variant"});
+      ReactionCore.Log.info("orders/inventoryAdjust OLO 1 ",);
+      if (currVariant) {
+        ReactionCore.Log.info("orders/inventoryAdjust OLO 2 currVariant.inventoryQuantity ",currVariant.inventoryQuantity);
+        if (currVariant.inventoryQuantity - item.quantity < 1) {
+          ReactionCore.Log.info("orders/inventoryAdjust OLO 2.1 ",);
+          ReactionCore.Collections.Products.update({
+            _id: item.productId
+          }, {
+            $set: {
+              isSoldOut: true
+            }
+          }, { selector: { type: "simple" } });
+          ReactionCore.Log.info("orders/inventoryAdjust OLO 2.2 ",);
+        }
+      }
+      ReactionCore.Log.info("orders/inventoryAdjust OLO 3 ",);
+
+      ReactionCore.Log.info("orders/inventoryAdjust OLO 4 ",);
+
       ReactionCore.Collections.Products.update({
         _id: item.variants._id
       }, {
@@ -491,6 +515,10 @@ Meteor.methods({
           inventoryQuantity: -item.quantity
         }
       }, { selector: { type: "variant" } });
+
+      // WTF? why is this never printed?
+      ReactionCore.Log.info("orders/inventoryAdjust OLO 5 ",);
+
     });
   },
 
