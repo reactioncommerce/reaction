@@ -1097,14 +1097,17 @@ Meteor.methods({
       }
 
       // update product visibility
-      ReactionCore.Log.info("toggle product visibility ", product._id, !
-        product.isVisible);
+      ReactionCore.Log.info("toggle product visibility ", product._id,
+        !product.isVisible);
 
-      return Boolean(ReactionCore.Collections.Products.update(product._id, {
+      const res = ReactionCore.Collections.Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
         }
-      }, { selector: { type: "simple" } }));
+      }, { selector: { type: "simple" } });
+
+      // if collection updated we return new `isVisible` state
+      return res === 1 && !product.isVisible;
     }
     ReactionCore.Log.debug("invalid product visibility ", productId);
     throw new Meteor.Error(400, "Bad Request");

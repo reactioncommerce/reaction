@@ -15,6 +15,7 @@ rm -rf /tmp/*
 
 # clean source tree
 rm -rf $APP_SOURCE_DIR/packages/*/lib/bower
+rm -rf $APP_SOURCE_DIR/packages/*/.git
 rm -rf $APP_SOURCE_DIR/packages/*/.npm
 rm -rf $APP_SOURCE_DIR/.meteor/local
 
@@ -26,8 +27,6 @@ rm -rf /tmp/*
 npm cache clean
 rm -rf /opt/nodejs/bin/npm
 rm -rf /opt/nodejs/lib/node_modules/npm/
-# rm -rf /usr/bin/npm
-# rm -rf /usr/lib/node_modules/npm
 
 # remove meteor
 rm -rf /usr/bin/meteor

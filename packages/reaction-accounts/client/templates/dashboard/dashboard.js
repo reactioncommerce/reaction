@@ -1,20 +1,6 @@
 /**
  * Accounts helpers
  */
-Template.accountsDashboardControls.events({
-  /**
-   * Accounts helpers
-   * @return {void}
-   */
-  "click [data-event-action=addShopMember]": () => {
-    ReactionCore.showActionView({
-      label: "Add Shop Member",
-      i18nKeyLabel: "admin.settings.addShopMemberSettingsLabel",
-      template: "memberForm"
-    });
-  }
-});
-
 Template.accountsDashboard.onCreated(function () {
   this.autorun(() => {
     this.subscribe("ShopMembers");
