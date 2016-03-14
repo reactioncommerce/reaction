@@ -37,8 +37,8 @@ Package.onUse(function (api) {
   api.use("browser-policy");
   api.use("service-configuration");
   api.use("amplify@1.0.0");
-  api.use("mdg:validated-method@1.0.1");
-  api.use("react-template-helper@0.2.3");
+  api.use("mdg:validated-method@1.0.2");
+  api.use("react-template-helper@0.2.6");
 
   // meteor authentication packages
   api.use("oauth-encryption");
@@ -47,13 +47,13 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("mquandalle:bower@1.5.2_1");
-  api.use("underscorestring:underscore.string@3.2.2");
+  api.use("underscorestring:underscore.string@3.3.4");
   api.use("reactioncommerce:reaction-logger@0.1.0");
   api.use("reactioncommerce:reaction-collections@2.0.1");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
-  api.use("momentjs:moment@2.11.1");
+  api.use("momentjs:moment@2.12.0");
   api.use("risul:moment-timezone@0.5.0_5");
 
   // imply exports package vars
