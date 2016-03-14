@@ -46,6 +46,7 @@ ReactionProduct.publishProduct = function (productOrArray) {
           placement: "productGridItem",
           id: product._id
         });
+        throw new Meteor.Error("error publishing product", error);
       }
       const alertSettings = {
         placement: "productGridItem",
@@ -53,10 +54,10 @@ ReactionProduct.publishProduct = function (productOrArray) {
         autoHide: true,
         dismissable: false
       };
-      if (result === true) {
-        Alerts.add(product.title + " " + i18next.t("productDetail.publishProductVisible"), "success", alertSettings);
+      if (result) {
+        Alerts.add(i18next.t("productDetail.publishProductVisible", { product: product.title }), "success", alertSettings);
       } else {
-        Alerts.add(product.title + " " + i18next.t("productDetail.publishProductHidden"), "warning", alertSettings);
+        Alerts.add(i18next.t("productDetail.publishProductHidden", { product: product.title }), "warning", alertSettings);
       }
     });
   }
@@ -65,27 +66,43 @@ ReactionProduct.publishProduct = function (productOrArray) {
 /**
  * cloneProduct
  * @summary product cloning and alert
- * @param {Object} productOrArray - product Object
+ * @param {Object|Array} productOrArray - if this method calls from productGrid
+ * it receives and array with product _id or _ids, but if it calls from PDP, when
+ * it receive a `Object` with _id. It needed to determine the source of call.
  * @returns {undefined} - returns nothing, and alerts, happen here
  */
 ReactionProduct.cloneProduct = function (productOrArray) {
-  const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
+  const products = !Array.isArray(productOrArray) ? [productOrArray] : productOrArray;
 
-  return Meteor.call("products/cloneProduct", products, function (error) {
+  return Meteor.call("products/cloneProduct", products, function (error, result) {
     if (error) {
+      Alerts.add(error, "danger", { placement: "productGridItem" });
       throw new Meteor.Error("error cloning product", error);
     }
-    for (let product of products) {
-      Alerts.add(i18next.t("productDetail.clonedAlert") + " " + product.title, "success", {
-        placement: "productGridItem",
-        id: product._id,
-        autoHide: true,
-        dismissable: false
-      });
+    if (result) {
+      if (products.length === 1) {
+        Alerts.add(i18next.t("productDetail.clonedAlert", { product: products[0].title }), "success", {
+          placement: "productGridItem",
+          id: products[0]._id,
+          autoHide: true,
+          dismissable: false
+        });
+      } else {
+        Alerts.add(i18next.t("productDetail.clonedAlert_plural", { product: i18next.t("productDetail.theSelectedProducts"), count: 0 }),
+          "success", {
+            placement: "productGridItem",
+            id: products[0]._id,
+            autoHide: true,
+            dismissable: false
+          }
+        );
+      }
     }
-    if (!_.isArray(productOrArray)) {
+    // this statement allow us to redirect to a new clone PDP if clone action
+    // was fired within PDP, not within productGrid.
+    if (!Array.isArray(productOrArray)) {
       ReactionRouter.go("product", {
-        handle: productOrArray._id
+        handle: result[0]
       });
     }
   });
@@ -100,26 +117,36 @@ ReactionProduct.cloneProduct = function (productOrArray) {
 ReactionProduct.maybeDeleteProduct = function (productOrArray) {
   const products = !_.isArray(productOrArray) ? [productOrArray] : productOrArray;
   const productIds = _.map(products, product => product._id);
-  let title;
   let confirmTitle;
+  // we have to use so difficult logic with `length` check because of some
+  // languages, which have different phrase forms for each of cases.
+  // we are using i18next `plural` functionality here.
+  // @see: http://i18next.com/translate/pluralSimple
   if (products.length === 1) {
-    title = products[0].title || "the product";
-    confirmTitle = "Delete this product?";
+    confirmTitle = i18next.t("productDetailEdit.deleteThisProduct");
   } else {
-    title = "the selected products";
-    confirmTitle = "Delete selected products?";
+    confirmTitle = i18next.t("productDetailEdit.deleteSelectedProducts");
   }
 
   if (confirm(confirmTitle)) {
     Meteor.call("products/deleteProduct", productIds, function (error, result) {
-      if (error !== undefined || !result) {
-        Alerts.toast(`There was an error deleting ${title}`, "error", {
-          i18nKey: "productDetail.productDeleteError"
-        });
+      let title;
+      if (error) {
+        title = products.length === 1 ?
+          products[0].title || i18next.t("productDetail.deleteErrorTheProduct") :
+          i18next.t("productDetail.theSelectedProducts");
+        Alerts.toast(i18next.t("productDetail.productDeleteError", { product: title }), "error");
         throw new Meteor.Error("Error deleting " + title, error);
-      } else {
+      }
+      if (result) {
         ReactionRouter.go("/");
-        Alerts.toast(i18next.t("productDetail.deletedAlert") + " " + title, "info");
+        if (products.length === 1) {
+          title = products[0].title || "productDetail.";
+          Alerts.toast(i18next.t("productDetail.deletedAlert", { product: title }), "info");
+        } else {
+          title = i18next.t("productDetail.theSelectedProducts");
+          Alerts.toast(i18next.t("productDetail.deletedAlert_plural", { product: title, count: 0 }), "info");
+        }
       }
     });
   }
