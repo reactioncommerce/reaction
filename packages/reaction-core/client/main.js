@@ -195,8 +195,8 @@ _.extend(ReactionCore, {
   },
 
   getCurrentTag: function () {
-    if (ReactionRouter.getRouteName() === "/product/tag") {
-      return ReactionRouter.current().params._id;
+    if (ReactionRouter.getRouteName() === "tag") {
+      return ReactionRouter.current().params.slug;
     }
   },
   getRegistryForCurrentRoute: (provides = "dashboard") => {

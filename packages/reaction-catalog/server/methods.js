@@ -566,7 +566,7 @@ Meteor.methods({
       delete newProduct.updatedAt;
       delete newProduct.createdAt;
       delete newProduct.publishedAt;
-      // todo should we delete position?
+      delete newProduct.positions;
       delete newProduct.handle;
       newProduct.isVisible = false;
       if (newProduct.title) {
@@ -916,73 +916,61 @@ Meteor.methods({
    * products/updateProductPosition
    * @summary update product grid positions
    * @param {String} productId - productId
-   * @param {Object} positionData -  an object with tag,position,dimensions
+   * @param {Object} positionData -  an object with position,dimensions
+   * @param {String} tag - current route name. If it is not tag, then we using
+   * shop name as base `positions` name. Could be useful for multi-shopping.
    * @return {Number} collection update returns
    */
-  "products/updateProductPosition": function (productId, positionData) {
+  "products/updateProductPosition": function (productId, positionData, tag) {
     check(productId, String);
     check(positionData, Object);
+    check(tag, String);
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
 
-    let updateResult;
-    let product = ReactionCore.Collections.Products.findOne({
-      "_id": productId,
-      "positions.tag": positionData.tag
+    const positions = `positions.${tag}`;
+    const product = ReactionCore.Collections.Products.findOne({
+      _id: productId,
+      [positions]: { $exists: true }
     });
 
     function addPosition() {
-      updateResult = ReactionCore.Collections.Products.update({
+      return ReactionCore.Collections.Products.update({
         _id: productId
       }, {
-        $addToSet: {
-          positions: positionData
-        },
         $set: {
+          [positions]: positionData,
           updatedAt: new Date(),
           type: "simple" // for multi-schema
-        }
-      }, function (error) {
-        if (error) {
-          ReactionCore.Log.warn(error);
-          throw new Meteor.Error(403, error);
         }
       });
     }
 
     function updatePosition() {
-      updateResult = ReactionCore.Collections.Products.update({
-        "_id": productId,
-        "positions.tag": positionData.tag
+      const position = `positions.${tag}.position`;
+      const pinned = `positions.${tag}.pinned`;
+      const weight = `positions.${tag}.weight`;
+      const updatedAt = `positions.${tag}.updatedAt`;
+
+      return ReactionCore.Collections.Products.update({
+        _id: productId
       }, {
         $set: {
-          "positions.$.position": positionData.position,
-          "positions.$.pinned": positionData.pinned,
-          "positions.$.weight": positionData.weight,
-          "positions.$.updatedAt": new Date(),
-          "type": "simple" // for multi-schema
-        }
-      }, function (error) {
-        if (error) {
-          ReactionCore.Log.warn(error);
-          throw new Meteor.Error(403, error);
+          [position]: positionData.position,
+          [pinned]: positionData.pinned,
+          [weight]: positionData.weight,
+          [updatedAt]: new Date(),
+          type: "simple" // for multi-schema
         }
       });
     }
 
-    if (!product) {
-      addPosition();
-    } else {
-      if (product.positions) {
-        updatePosition();
-      } else {
-        addPosition();
-      }
+    if (product && product.positions && product.positions[tag]) {
+      return updatePosition();
     }
-
-    return updateResult;
+    return addPosition();
   },
 
   /**

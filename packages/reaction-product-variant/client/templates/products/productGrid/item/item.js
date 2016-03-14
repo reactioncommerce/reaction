@@ -28,8 +28,9 @@ Template.productGridItems.helpers({
     return false;
   },
   weightClass: function () {
-    let position = this.position || {};
-    let weight = position.weight || 0;
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    const weight = positions.weight || 0;
     switch (weight) {
     case 1:
       return "product-medium";
@@ -43,21 +44,18 @@ Template.productGridItems.helpers({
     return _.contains(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
   },
   isMediumWeight: function () {
-    let position = this.position || {};
-    let weight = position.weight || 0;
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    const weight = positions.weight || 0;
 
-    if (weight === 1) {
-      return true;
-    }
-    return false;
+    return weight === 1;
   },
   isLargeWeight: function () {
-    let position = this.position || {};
-    let weight = position.weight || 0;
-    if (weight === 3) {
-      return true;
-    }
-    return false;
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    const weight = positions.weight || 0;
+
+    return weight === 3;
   },
   // TODO is it used?
   shouldShowAdditionalImages: function () {
@@ -65,6 +63,11 @@ Template.productGridItems.helpers({
       return true;
     }
     return false;
+  },
+  // this is needed to get `pinned` from the item template
+  positions() {
+    const tag = ReactionProduct.getTag();
+    return this.positions && this.positions[tag] || {};
   }
 });
 
@@ -117,21 +120,28 @@ Template.productGridItems.events({
     ReactionProduct.maybeDeleteProduct(this);
   },
   "click .update-product-weight": function (event) {
-    let position;
-    let weight;
     event.preventDefault();
-    weight = this.position.weight || 0;
+
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    let weight = positions.weight || 0;
+
     if (weight < 2) {
       weight++;
     } else {
       weight = 0;
     }
-    position = {
-      tag: share.tag,
+
+    const position = {
       weight: weight,
       updatedAt: new Date()
     };
-    Meteor.call("products/updateProductPosition", this._id, position);
+    Meteor.call("products/updateProductPosition", this._id, position, tag, error => {
+      if (error) {
+        ReactionCore.Log.warn(error);
+        throw new Meteor.Error(403, error);
+      }
+    });
     return Tracker.flush();
   }
 });
@@ -147,7 +157,6 @@ Template.productGridItems.onRendered(function () {
       revert: true,
       scroll: false,
       update: function (event, ui) {
-        let position;
         let productId = ui.item[0].id;
         let uiPositions = $(this).sortable("toArray", {
           attribute: "data-id"
@@ -155,16 +164,20 @@ Template.productGridItems.onRendered(function () {
         let index = _.indexOf(uiPositions, productId);
         let _i;
         let _len;
-        for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++
-          _i) {
+        const tag = ReactionProduct.getTag();
+        for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++_i) {
           productId = uiPositions[index];
-          position = {
-            tag: ReactionCore.getCurrentTag(),
+          let position = {
             position: index,
             updatedAt: new Date()
           };
-          Meteor.call("products/updateProductPosition", productId,
-            position);
+          Meteor.call("products/updateProductPosition", productId, position, tag,
+            error => {
+              if (error) {
+                ReactionCore.Log.warn(error);
+                throw new Meteor.Error(403, error);
+              }
+            });
         }
         return Tracker.flush();
       }
