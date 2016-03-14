@@ -17,9 +17,11 @@ Package.onUse(function (api) {
   api.use("kadira:flow-router-ssr@3.11.2");
   api.use("kadira:blaze-layout@2.3.0");
   api.use("kadira:dochead@1.4.0");
-
   // register reaction package
   api.addFiles("server/register.js", "server");
+
+  // title and meta data
+  api.addFiles("common/metadata.js");
 
   // router configuration
   api.addFiles("common/init.js", ["client", "server"]);
@@ -28,8 +30,9 @@ Package.onUse(function (api) {
   // helpers
   api.addFiles("client/helpers.js", "client");
 
-  // exports
+  // export DocHead
   api.imply("kadira:dochead");
+
   // export router and subscription manager
   api.export("ReactionRouter");
 });

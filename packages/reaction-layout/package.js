@@ -45,7 +45,6 @@ Package.onUse(function (api) {
 
   // layout templates
   api.addFiles("client/templates/layout/layout.html", "client");
-  api.addFiles("client/templates/layout/layout.js", "client");
 
   api.addFiles("client/templates/layout/createContentMenu/createContentMenu.html", "client");
   api.addFiles("client/templates/layout/createContentMenu/createContentMenu.js", "client");
@@ -67,7 +66,6 @@ Package.onUse(function (api) {
   api.addFiles("client/templates/layout/alerts/alerts.html", "client");
   api.addFiles("client/templates/layout/alerts/alerts.js", "client");
 
-
   api.addFiles("client/templates/layout/loading/loading.html", "client");
   api.addFiles("client/templates/layout/notFound/notFound.html", "client");
 
@@ -76,5 +74,6 @@ Package.onUse(function (api) {
   // Theme Assets
   api.addAssets("private/themes/notFound.css", "server");
 
+  // exports
   api.export("Alerts", ["client"]);
 });

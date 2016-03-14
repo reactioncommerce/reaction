@@ -24,6 +24,9 @@ ReactionRouter.notFound = {
   }
 };
 
+// initialize title and meta data
+ReactionRouter.triggers.enter([MetaData.init]);
+
 /**
  * getRouteName
  * assemble route name to be standard
