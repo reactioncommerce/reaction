@@ -24,7 +24,7 @@ describe("Account Registration Validation ", function () {
     );
   });
 
-  describe("email address valiation ", function () {
+  describe("email address validation ", function () {
     it(
       "should not allow an invalid email address",
       done => {
