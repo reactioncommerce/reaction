@@ -131,7 +131,7 @@ Template.productGrid.helpers({
         if (gridProduct.positions) {
           let _results = [];
           for (let position of gridProduct.positions) {
-            if (position.tag === ReactionCore.getCurrentTag()) {
+            if (position.tag === ReactionRouter.getParam("slug")) {
               _results.push(position);
             }
             gridProducts[index].position = _results[0];
