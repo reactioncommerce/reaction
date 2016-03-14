@@ -215,7 +215,9 @@
         "deleteThisProduct": "Delete this product?",
         "deleteSelectedProducts": "Delete selected products?",
         "publish": "Publish",
-        "moreOptions": "More Options"
+        "moreOptions": "More Options",
+        "noSelectedProducts": "No selected products. Use the ",
+        "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products."
       },
       "productVariant": {
         "inventoryQuantity": "Quantity",
