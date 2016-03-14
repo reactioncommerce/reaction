@@ -65,32 +65,6 @@ Template.gridPackage.events({
   "click .enablePkg": function (event/* , template */) {
     const self = this.package;
     event.preventDefault();
-    return ReactionCore.Collections.Packages.update(self.packageId, {
-      $set: {
-        enabled: true
-      }
-    }, function (error, result) {
-      if (result === 1) {
-        Alerts.toast(
-          i18next.t("gridPackage.pkgEnabled", { app: i18next.t(self.i18nKeyLabel) }),
-          "error", {
-            type: "pkg-enabled-" + self.name
-          }
-        );
-
-        if (self.name || self.route) {
-          const route = self.name || self.route;
-          return ReactionRouter.go(route);
-        }
-      } else if (error) {
-        return Alerts.toast(
-          i18next.t("gridPackage.pkgDisabled", { app: i18next.t(self.i18nKeyLabel) }),
-          "warning"
-        );
-
-      }
-    });
-
     Meteor.call("shop/togglePackage", self.packageId, false,
       (error, result) => {
         if (result === 1) {
