@@ -14,7 +14,7 @@ Template.uiThemeDetails.onCreated(function () {
 
     if (selectedComponent) {
       ReactionCore.showActionView({
-        label: i18n.t("reactionUI.editTheme", "Edit Theme"),
+        label: i18next.t("reactionUI.editTheme", "Edit Theme"),
         props: {
           size: "large"
         },
