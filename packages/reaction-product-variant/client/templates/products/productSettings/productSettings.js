@@ -14,7 +14,6 @@ Template.productSettings.helpers({
         return "active";
       }
     }
-
     return "";
   }
 });
