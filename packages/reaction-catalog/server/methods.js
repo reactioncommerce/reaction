@@ -955,7 +955,7 @@ Meteor.methods({
       const updatedAt = `positions.${tag}.updatedAt`;
 
       return ReactionCore.Collections.Products.update({
-        "_id": productId
+        _id: productId
       }, {
         $set: {
           [position]: positionData.position,
