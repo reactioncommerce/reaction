@@ -20,6 +20,22 @@
         }
       }
     },
+    "lodash.uniqwith": {
+      "version": "4.2.0",
+      "dependencies": {
+        "lodash._baseuniq": {
+          "version": "4.5.0",
+          "dependencies": {
+            "lodash._createset": {
+              "version": "4.0.1"
+            },
+            "lodash._setcache": {
+              "version": "4.1.1"
+            }
+          }
+        }
+      }
+    },
     "node-geocoder": {
       "version": "3.0.0",
       "dependencies": {

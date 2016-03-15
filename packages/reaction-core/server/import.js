@@ -239,7 +239,10 @@ ReactionImport.product = function (key, product, parent) {
 ReactionImport.package = function (pkg, shopId) {
   check(pkg, Object);
   check(shopId, String);
-  const key = {name: pkg.name, shopId: shopId};
+  const key = {
+    name: pkg.name,
+    shopId: shopId
+  };
   return this.object(ReactionCore.Collections.Packages, key, pkg);
 };
 
@@ -265,6 +268,22 @@ ReactionImport.translation = function (key, translation) {
  */
 ReactionImport.shop = function (key, shop) {
   return this.object(ReactionCore.Collections.Shops, key, shop);
+};
+
+/**
+ * @summary store a shop layout in the import buffer
+ * @param {Array} layout - an array of layouts to be added to shop
+ * @param {String} shopId shopId
+ * @returns {Object} this shop
+ */
+ReactionImport.layout = function (layout, shopId) {
+  const key = {
+    _id: shopId
+  };
+  return this.object(ReactionCore.Collections.Shops, key, {
+    "_id:": shopId,
+    "layout": layout
+  });
 };
 
 /**
