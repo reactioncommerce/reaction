@@ -4,7 +4,16 @@
 /* eslint no-loop-func: 0 */
 
 ReactionRouter = FlowRouter;
-ReactionRouter.wait();
+
+// client should wait on subs
+if (Meteor.isClient) {
+  ReactionRouter.wait();
+}
+
+// server can defer loading
+if (Meteor.isServer) {
+  ReactionRouter.setDeferScriptLoading(true);
+}
 
 // default not found route
 ReactionRouter.notFound = {
@@ -14,6 +23,9 @@ ReactionRouter.notFound = {
     });
   }
 };
+
+// initialize title and meta data
+ReactionRouter.triggers.enter([MetaData.init]);
 
 /**
  * getRouteName

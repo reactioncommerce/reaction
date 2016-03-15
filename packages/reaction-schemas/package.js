@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.use("random");
   api.use("underscore");
   api.use("ecmascript");
-  api.use("momentjs:moment@2.10.6");
+  api.use("momentjs:moment@2.12.0");
   api.use("ongoworks:transliteration@0.1.1");
   api.use("aldeed:collection2@2.9.0");
   api.use("aldeed:simple-schema@1.5.3");

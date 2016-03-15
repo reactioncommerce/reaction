@@ -71,6 +71,3 @@ reactioncommerce:reaction-sample-data   # default Reaction data
 # Themes
 reactioncommerce:default-theme          # default Reaction theme
 #my:custom-theme
-
-# Forced updates on packages
-mdg:validation-error@0.4.0

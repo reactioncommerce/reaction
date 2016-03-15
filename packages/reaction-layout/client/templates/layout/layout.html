@@ -1,12 +1,3 @@
-<template name="coreHead">
-  <head>
-    <title>{{metaData.name}} | {{metaData.title}}</title>
-    {{#each metaData.meta}}
-      <meta name="{{name}}" content="{{content}}">
-    {{/each}}
-  </head>
-</template>
-
 <template name="print">
   {{> Template.dynamic template=printLayout}}
 </template>

@@ -11,20 +11,27 @@ BlazeLayout.setRoot("body");
  * @return {String} returns current router path
  */
 ReactionRouter.pathFor = pathFor = (path, options = {}) => {
-  // let {params, query} = options;
   let params = options.hash || {};
   let query = params.query ? ReactionRouter._qs.parse(params.query) : {};
-  let route = ReactionRouter.path(path, params, query);
-  // console.log(`Requested path for ${path} and returned route: ${route}`);
-  return route;
+  // prevent undefined param error
+  for (let i in params) {
+    if (params[i] === null || params[i] === undefined) {
+      params[i] = "/";
+    }
+  }
+  return ReactionRouter.path(path, params, query);
 };
 
-// return path
+//
+// pathFor
+// template helper to return path
+//
 Template.registerHelper("pathFor", pathFor);
-// deprecated same as pathForSEO
-// Template.registerHelper("pathForSEO", pathFor);
 
-// absolute + path
+//
+// urlFor
+// template helper to return absolute + path
+//
 Template.registerHelper("urlFor", (path, params) => {
   return Meteor.absoluteUrl(pathFor(path, params).substr(1));
 });
