@@ -14,7 +14,7 @@ Template.uiThemeDetails.onCreated(function () {
 
     if (selectedComponent) {
       ReactionCore.showActionView({
-        label: "Edit Theme",
+        label: i18next.t("reactionUI.editTheme", "Edit Theme"),
         props: {
           size: "large"
         },
@@ -24,7 +24,7 @@ Template.uiThemeDetails.onCreated(function () {
   });
 
   this.autorun(() => {
-    this.theme = ReactionCore.Collections.Themes.findOne({theme: "base"});
+    this.theme = ReactionCore.Collections.Themes.findOne({name: "base"});
     this.state.set("theme", this.theme);
   });
 });
@@ -49,7 +49,9 @@ Template.uiThemeDetails.helpers({
     if (theme) {
       components = theme.components.map((component) => {
         return {
-          label: component.label || component.name,
+          label: i18next.t(`reactionUI.components.${component.name}`, {
+            defaultValue: component.label
+          }),
           name: component.name
         };
       });
@@ -64,7 +66,11 @@ Template.uiThemeDetails.helpers({
       const theme = instance.state.get("theme") || {};
       Meteor.call("ui/publishTheme", theme, (error) => {
         if (error) {
-          Alerts.toast(`Couldn't publish theme ${theme.theme}`, "error");
+          const alertDescription = i18next.t("reactionUI.publishThemeError", {
+            defaultValue: `Couldn't publish theme ${theme.name}`,
+            themeName: theme.name
+          });
+          Alerts.toast(alertDescription, "error");
         }
       });
     };
