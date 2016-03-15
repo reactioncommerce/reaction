@@ -8,6 +8,11 @@ let Media = ReactionCore.Collections.Media;
  * uploadHandler method
  */
 function uploadHandler(event) {
+  // TODO: It would be cool to move this logic to common ValidatedMethod, but
+  // I can't find a way to do this, because of browser's `FileList` collection
+  // and it `Blob`s which is our event.target.files.
+  // There is a way to do this: http://stackoverflow.com/a/24003932. but it's too
+  // tricky
   let productId = ReactionProduct.selectedProductId();
   const variant = ReactionProduct.selectedVariant();
   if (typeof variant !== "object") {
@@ -54,16 +59,7 @@ function updateImagePriorities() {
       mediaId: index
     };
   });
-
-  const results = [];
-  for (let image of sortedMedias) {
-    results.push(Media.update(image.mediaId, {
-      $set: {
-        "metadata.priority": _.indexOf(sortedMedias, image)
-      }
-    }));
-  }
-  return results;
+  return ReactionProductAPI.methods.updateMediaPriorities.call({ sortedMedias });
 }
 
 /**
@@ -146,8 +142,16 @@ Template.productImageGallery.events({
     }
   },
   "click .remove-image": function () {
-    this.remove();
-    updateImagePriorities();
+    const mediaId = this._id;
+    ReactionProductAPI.methods.removeMedia.call({ mediaId }, error => {
+      // Media doesn't return success result
+      if (error) {
+        Alerts.inline(error.reason, "warning", {
+          autoHide: 10000
+        });
+      }
+      return updateImagePriorities();
+    });
   },
   "dropped #galleryDropPane": uploadHandler
 });
