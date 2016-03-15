@@ -193,6 +193,9 @@
         "createTag": "Create Tag"
       },
       "productDetailEdit": {
+        "productSettings": "Настройки товара",
+        "product": "Товар",
+        "size": "Размер",
         "title": "Название товара",
         "pageTitle": "Название страницы товара",
         "vendor": "Производитель",
