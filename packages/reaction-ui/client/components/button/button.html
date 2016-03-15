@@ -29,11 +29,7 @@
 </template>
 
 <template name="uiButtonElement">
-  <button
-    href="#"
-    type="{{type}}"
-    class="rui button btn btn-{{status}} {{className}}"
-    data-event-action="{{title}}">
+  <button {{buttonAttributes}}>
     <div class="contents">
       {{> Template.contentBlock}}
     </div>
@@ -41,11 +37,7 @@
 </template>
 
 <template name="uiLinkElement">
-  <a
-    href="{{href}}"
-    class="rui button btn btn-{{status}} {{className}}"
-    data-event-action="{{title}}"
-  >
+  <a {{buttonAttributes}}>
     {{> Template.contentBlock}}
   </a>
 </template>
