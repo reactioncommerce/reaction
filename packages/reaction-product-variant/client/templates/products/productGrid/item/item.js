@@ -106,14 +106,15 @@ Template.productGridItems.events({
   },
   "click [data-event-action=selectSingleProduct]": function (event, template) {
     event.preventDefault();
+    const { data } = Template.instance();
 
-    const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+    const $checkbox = template.$(`input[type=checkbox][value=${data._id}]`);
 
     Session.set("productGrid/selectedProducts", []);
     $checkbox.prop("checked", true).trigger("change");
   },
-  "click .publish-product": function () {
-    ReactionProduct.publishProduct(this);
+  "click .publish-product"(event, instance) {
+    ReactionProduct.publishProduct(instance.data);
   },
   "click .delete-product": function (event) {
     event.preventDefault();
