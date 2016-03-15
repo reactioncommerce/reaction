@@ -1,7 +1,30 @@
+/* eslint no-loop-func: 0 */
+
+/**
+ * Navigate to package
+ * @param  {Object} reactionPackage Reaction package definition
+ * @return {Boolean} false if navigation was blocked
+ */
+function showPackageDashboard(reactionPackage) {
+  const route = reactionPackage.name || reactionPackage.route;
+
+  if (ReactionCore.hasPermission(route, Meteor.userId())) {
+    ReactionRouter.go(route);
+    return true;
+  }
+
+  return false;
+}
+
 /**
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
+  /**
+   * Properties for the card
+   * @see packages/reaction-ui/client/components/cards/cards.js
+   * @return {CardProps} Object of properties for the card component
+   */
   cardProps() {
     const instance = Template.instance();
     const data = instance.data;
@@ -12,134 +35,49 @@ Template.gridPackage.helpers({
 
     let controls = [];
 
-    if (data.package.enabled === true && data.package.priority > 1) {
+    if (data.package.priority > 1) {
       controls.push({
-        icon: "fa fa-check-square fa-fw",
+        icon: "fa fa-plus-square fa-fw",
+        onIcon: "fa fa-check-square fa-fw",
+        toggle: true,
+        toggleOn: data.package.enabled,
         onClick() {
-          console.log("enable / disable package");
+          if (instance.data.enablePackage) {
+            instance.data.enablePackage(data.package, !data.package.enabled);
+          }
         }
-      })
+      });
     }
 
-    for (let app in apps) {
+    for (let app of apps) {
       controls.push({
         icon: app.icon || "fa fa-cog fa-fw",
-      })
+        onClick() {
+          ReactionCore.showActionView(app);
+        }
+      });
     }
 
     if (data.package.route) {
       controls.push({
         icon: "angle-right",
         onClick() {
-          const route = data.package.name || data.package.route;
-          ReactionRouter.go(route);
+          showPackageDashboard(data.package);
         }
       });
     }
 
     return {
-      controls
-    }
-  },
-
-  showDashboardButtonProps(pkg) {
-    return {
-      icon: "angle-right",
-      onClick() {
-        const route = pkg.name || pkg.route;
-        ReactionRouter.go(route);
+      controls,
+      onContentClick() {
+        showPackageDashboard(data.package);
       }
     };
   },
-  showPackageManagement(pkg) {
+
+  showPackageManagementEvent(pkg) {
     if (pkg.name && pkg.route && pkg.template) {
       return "showPackageManagement";
     }
-  }
-});
-
-/**
- * gridPackage events
- */
-Template.gridPackage.events({
-  "click .enablePkg": function (event/* , template */) {
-    const self = this.package;
-    event.preventDefault();
-    Meteor.call("shop/togglePackage", self.packageId, false,
-      (error, result) => {
-        if (result === 1) {
-          Alerts.toast(
-            i18next.t(
-              "gridPackage.pkgEnabled",
-              { app: i18next.t(self.i18nKeyLabel) }
-            ),
-            "error", {
-              type: "pkg-enabled-" + self.name
-            }
-          );
-          if (self.name || self.route) {
-            const route = self.name || self.route;
-            return ReactionRouter.go(route);
-          }
-        } else if (error) {
-          return Alerts.toast(
-            i18next.t(
-              "gridPackage.pkgDisabled",
-              { app: i18next.t(self.i18nKeyLabel) }
-            ),
-            "warning"
-          );
-        }
-      }
-    );
-  },
-  "click .disablePkg": function (event/* , template */) {
-    event.preventDefault();
-
-    const self = this.package;
-    if (self.name === "core") {
-      return;
-    }
-
-    Alerts.alert(
-      "Disable Package",
-      i18next.t("gridPackage.disableConfirm", { app: i18next.t(self.i18nKeyLabel) }),
-      { type: "warning" },
-      () => {
-        Meteor.call("shop/togglePackage", self.packageId, true,
-          (error, result) => {
-            if (result === 1) {
-              return Alerts.toast(
-                i18next.t("gridPackage.pkgDisabled", {
-                  app: i18next.t(self.i18nKeyLabel)
-                }),
-                "success"
-              );
-            } else if (error) {
-              throw new Meteor.Error("error disabling package", error);
-            }
-          }
-        );
-      });
-  },
-
-  "click [data-event-action=showPackageManagement]": function (event, instance) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const packageData = instance.data.package || {};
-    const route = ReactionRouter.path(packageData.name || packageData.route);
-    if (route) {
-      if (ReactionCore.hasPermission(route, Meteor.userId())) {
-        ReactionRouter.go(route);
-      }
-    }
-  },
-
-  "click .pkg-settings, click [data-event-action=showPackageSettings]": function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    // Show the advanced settings view using this package registry entry
-    ReactionCore.showActionView(this);
   }
 });

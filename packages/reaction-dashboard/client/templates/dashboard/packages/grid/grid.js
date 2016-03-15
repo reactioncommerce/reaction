@@ -13,6 +13,70 @@ function pkgPermissions(pkg) {
   return ReactionCore.hasPermission(pkg.name);
 }
 
+function enableReactionPackage(reactionPackage) {
+  const self = reactionPackage;
+
+  Meteor.call("shop/togglePackage", self.packageId, false,
+    (error, result) => {
+      if (result === 1) {
+        Alerts.toast(
+          i18next.t(
+            "gridPackage.pkgEnabled",
+            { app: i18next.t(self.i18nKeyLabel) }
+          ),
+          "error", {
+            type: "pkg-enabled-" + self.name
+          }
+        );
+        if (self.name || self.route) {
+          const route = self.name || self.route;
+          return ReactionRouter.go(route);
+        }
+      } else if (error) {
+        return Alerts.toast(
+          i18next.t(
+            "gridPackage.pkgDisabled",
+            { app: i18next.t(self.i18nKeyLabel) }
+          ),
+          "warning"
+        );
+      }
+    }
+  );
+}
+
+function disableReactionPackage(reactionPackage) {
+  const self = reactionPackage;
+
+  if (self.name === "core") {
+    return;
+  }
+
+  Alerts.alert(
+    "Disable Package",
+    i18next.t("gridPackage.disableConfirm", { app: i18next.t(self.i18nKeyLabel) }),
+    {
+      type: "warning",
+      showCancelButton: true
+    },
+    () => {
+      Meteor.call("shop/togglePackage", self.packageId, true,
+        (error, result) => {
+          if (result === 1) {
+            return Alerts.toast(
+              i18next.t("gridPackage.pkgDisabled", {
+                app: i18next.t(self.i18nKeyLabel)
+              }),
+              "success"
+            );
+          } else if (error) {
+            throw new Meteor.Error("error disabling package", error);
+          }
+        }
+      );
+    });
+}
+
 Template.packagesGrid.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -26,7 +90,6 @@ Template.packagesGrid.onCreated(function () {
     const groupedApps = _.groupBy(apps, (app) => {
       return app.container || "misc";
     });
-
     this.state.set("apps", apps);
     this.state.set("appsByGroup", groupedApps);
     this.state.set("groups", Object.keys(groupedApps));
@@ -46,12 +109,27 @@ Template.packagesGrid.helpers({
     return group[groupName] || false;
   },
 
-  shopId: function () {
+  shopId() {
     return ReactionCore.getShopId();
   },
+
+
   pkgPermissions
 });
 
 Template.packagesGridGroup.helpers({
-  pkgPermissions
+  pkgPermissions,
+
+  packageProps(app) {
+    return {
+      package: app,
+      enablePackage(reactionPackage, value) {
+        if (value === true) {
+          enableReactionPackage(reactionPackage);
+        } else {
+          disableReactionPackage(reactionPackage);
+        }
+      }
+    };
+  }
 });

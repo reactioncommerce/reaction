@@ -15,7 +15,7 @@
     {{#each app in apps}}
       {{#if (pkgPermissions app)}}
         <div class="rui item flex vertical">
-          {{> gridPackage package=app}}
+          {{> gridPackage (packageProps app)}}
         </div>
       {{/if}}
     {{/each}}
