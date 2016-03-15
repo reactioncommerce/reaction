@@ -1,40 +1,10 @@
 <template name="gridPackage">
-  <div class="rui card package" data-settings-view="{{package.template}}">
-    {{!-- display overview route --}}
-    <div class="content" data-event-action="{{showPackageManagement package}}">
+  {{# card cardProps}}
+    <div class="content" data-event-action="{{showPackageManagementEvent package}}">
       <h3 class="title">
         <i class="{{package.icon}}"></i> <span data-i18n="{{package.i18nKeyLabel}}">{{package.label}}</span>
       </h3>
       <small data-i18n="{{package.i18nKeyDescription}}">{{{package.description}}}</small>
     </div>
-
-    <div class="controls">
-      {{#if package.enabled}}
-        {{#if condition priority 'gt' 1}}
-          <button class="rui button pull-right disablePkg">
-            <div class="contents">
-              <i class="fa fa-check-square fa-fw"></i>
-            </div>
-          </button>
-        {{/if}}
-        {{#each reactionApps provides="settings" name=package.packageName}}
-          <button class="rui button pkg-settings" title="{{i18n 'app.settings' 'Settings'}}">
-            <div class="contents">
-              <i class="{{orElse icon 'fa fa-cog fa-fw'}}"></i>
-            </div>
-          </button>
-        {{/each}}
-
-        {{#if package.route}}
-          {{> button (showDashboardButtonProps package)}}
-        {{/if}}
-      {{else}}
-        <button class="rui button pull-right enablePkg" title="{{i18n 'app.toggle' 'Toggle'}}">
-          <div class="contents">
-            <i class="fa fa-plus-square fa-fw"></i>
-          </div>
-        </button>
-      {{/if}}
-    </div>
-  </div>
+  {{/card}}
 </template>
