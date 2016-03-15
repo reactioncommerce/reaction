@@ -162,7 +162,7 @@ Template.uiThemeEditor.events({
 
     Meteor.call("ui/updateStyles", data, (error) => {
       if (error) {
-        Alerts.toast(`Could't update theme ${theme.name}`);
+        Alerts.toast(`Couldn't update theme ${theme.name}`);
       }
     });
   }

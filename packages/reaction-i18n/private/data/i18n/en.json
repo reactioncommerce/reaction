@@ -521,7 +521,7 @@
         "reactionUI": {
           "editTheme": "Edit Theme",
           "duplicateTheme": "Duplicate Theme",
-          "duplicateThemeError": "Could't duplicate theme",
+          "duplicateThemeError": "Couldn't duplicate theme",
           "publishThemeError": "`Couldn't publish theme {{themeName}}",
           "components": {
             "navbar": "Navigation Bar",

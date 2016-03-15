@@ -35,7 +35,7 @@ Template.uiDashboard.helpers({
               Meteor.call("ui/duplicateTheme", theme.name, (error) => {
                 if (error) {
                   const alertDescription = i18next.t("reactionUI.duplicateThemeError", {
-                    defaultValue: "Could't duplicate theme"
+                    defaultValue: "Couldn't duplicate theme"
                   });
                   Alerts.toast(alertDescription, "error");
                 }
