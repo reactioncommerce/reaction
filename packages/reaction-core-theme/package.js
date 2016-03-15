@@ -23,7 +23,7 @@ Package.onUse(function (api) {
     "fonts/fontello.woff", // Most modern browsers
     "fonts/fontello.woff2" // Chrome 36+, Opera 23+; improves compression
   ], ["client"]);
-  api.addFiles("theme/dashboard/icon.css", "client")
+  api.addFiles("theme/dashboard/icon.css", "client");
 
   // bootstrap + custom reaction less
   api.addFiles([
