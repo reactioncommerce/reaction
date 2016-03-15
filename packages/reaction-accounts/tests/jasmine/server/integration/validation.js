@@ -1,6 +1,6 @@
 
 describe("Account Registration Validation ", function () {
-  describe("usernamne valiation ", function () {
+  describe("username validation ", function () {
     it(
       "should not allow a invalid username of length 3",
       done => {
