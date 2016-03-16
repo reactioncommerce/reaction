@@ -40,8 +40,16 @@ checkRouterPermissions = (context) => {
     }
     return context;
   }
+  // determine if this is a valid route or a 404
+  const routeExists = _.find(ReactionRouter._routes, function (route) {
+    return route.path === context.path;
+  });
+
+  // if route exists (otherwise this will return 404)
   // return unauthorized flag on context
-  context.unauthorized = true;
+  if (routeExists) {
+    context.unauthorized = true;
+  }
   return context;
 };
 // initialize title and meta data and check permissions
