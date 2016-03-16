@@ -2,7 +2,9 @@
 Template.createContentMenu.helpers({
   buttonProps(item) {
     return {
-      ...item,
+      label: item.label,
+      i18nKeyLabel: item.i18nKeyLabel,
+      status: "default",
       onClick() {
         // TODO: Move this to somewhere better, like, core or product package
         if (item.route === "/products/createProduct") {
