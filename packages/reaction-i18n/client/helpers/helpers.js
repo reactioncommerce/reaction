@@ -171,6 +171,7 @@ Object.assign(ReactionCore, {
     registry.i18nKeyDescription = `${i18nKey}Description`;
     registry.i18nKeyPlaceholder = `${i18nKey}Placeholder`;
     registry.i18nKeyTooltip = `${i18nKey}Tooltip`;
+    registry.i18nKeyTitle = `${i18nKey}Title`;
 
     return registry;
   }
