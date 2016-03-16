@@ -6,11 +6,15 @@
  * @return {Boolean} false if navigation was blocked
  */
 function showPackageDashboard(reactionPackage) {
-  const route = reactionPackage.name || reactionPackage.route;
+  const routeName = reactionPackage.name || reactionPackage.route;
 
-  if (ReactionCore.hasPermission(route, Meteor.userId())) {
-    ReactionRouter.go(route);
-    return true;
+  if (routeName && reactionPackage.route) {
+    const route = ReactionRouter.path(routeName);
+
+    if (route && ReactionCore.hasPermission(route, Meteor.userId())) {
+      ReactionRouter.go(route);
+      return true;
+    }
   }
 
   return false;
