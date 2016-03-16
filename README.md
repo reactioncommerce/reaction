@@ -4,8 +4,8 @@ Reaction is a modern reactive, real-time event driven ecommerce platform.
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
 ## Status
-- 0.11.1 Master
-- 0.12.0 Development (new feature release)
+- 0.12.0 Master
+- 0.13.0 Development (new feature release)
 
 Currently good for contributing/observing progress, testing. It goes without saying that we're constantly refactoring, even things that are functionally done. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
 
@@ -45,6 +45,8 @@ For grouping of development channels by feature, review the [project milestones]
 And finally for the kanban-esque, hardcore real time progress overview of Reaction, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
 
 ## Feedback
-**GitHub Issues** on the [Reaction](https://github.com/reactioncommerce/reaction) project are the best way to let us know about a feature request, or to report an issue.
+**Create a GitHub Issue** on the [Reaction project ](https://github.com/reactioncommerce/reaction) to report an issue.
 
-Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)** to discuss, communicate, and share community support.
+Visit the **[Reaction discourse forum](http://discourse.reactioncommerce.com/)** to engage with the core team and community on new feature requests, or get community support with customization of Reaction.
+
+Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)** to engage with other Meteor and Reaction users.
