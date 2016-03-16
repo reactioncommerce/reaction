@@ -1,0 +1,32 @@
+/**
+ * @theme base
+ * @label Buttons
+ * @component button
+ * @name button
+ * @author Reaction Commerce
+ * @url https://reactioncommerce.com
+ */
+
+.rui.button {
+  /**
+   * @label Button
+   */
+  background-color: --;
+  color: --;
+}
+
+.rui.button:hover {
+  /**
+   * @label Button Hover (Mouse Over)
+   */
+  background-color: --;
+  color: --;
+}
+
+.rui.button:active {
+  /**
+   * @label Button Active (On Click)
+   */
+   background-color: --;
+   color: --;
+}

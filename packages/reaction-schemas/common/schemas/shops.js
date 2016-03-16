@@ -1,7 +1,6 @@
 /**
  * CustomEmailSettings Schema
  */
-
 ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema({
   username: {
     type: String,
@@ -25,7 +24,6 @@ ReactionCore.Schemas.CustomEmailSettings = new SimpleSchema({
 /**
  * Metafield Schema
  */
-
 ReactionCore.Schemas.Metafield = new SimpleSchema({
   key: {
     type: String,
@@ -58,7 +56,6 @@ ReactionCore.Schemas.Metafield = new SimpleSchema({
 /**
  * Currency Schema
  */
-
 ReactionCore.Schemas.Currency = new SimpleSchema({
   symbol: {
     type: String,
@@ -92,7 +89,6 @@ ReactionCore.Schemas.Currency = new SimpleSchema({
 /**
  * Locale Schema
  */
-
 ReactionCore.Schemas.Locale = new SimpleSchema({
   continents: {
     type: Object,
@@ -105,9 +101,52 @@ ReactionCore.Schemas.Locale = new SimpleSchema({
 });
 
 /**
- * Shop Schema
+ * Languages Schema
  */
 
+ReactionCore.Schemas.Languages = new SimpleSchema({
+  label: {
+    type: String
+  },
+  i18n: {
+    type: String
+  },
+  enabled: {
+    type: Boolean,
+    defaultValue: true
+  }
+});
+
+/**
+ * ShopTheme Schema
+ */
+ReactionCore.Schemas.ShopTheme = new SimpleSchema({
+  themeId: {
+    type: String
+  },
+  styles: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
+ * Shop Theme Schema
+ */
+ReactionCore.Schemas.BrandAsset = new SimpleSchema({
+  mediaId: {
+    type: String,
+    optional: true
+  },
+  type: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
+ * Shop Schema
+ */
 ReactionCore.Schemas.Shop = new SimpleSchema({
   "_id": {
     type: String,
@@ -154,31 +193,28 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
   },
   "currencies": {
     type: Object, // ReactionCore.Schemas.Currency
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   "locales": {
     type: ReactionCore.Schemas.Locale
   },
+  "language": {
+    label: "Base Language",
+    type: String,
+    defaultValue: "en"
+  },
   "languages": {
-    type: [Object],
+    type: [ReactionCore.Schemas.Languages],
     optional: true
-  },
-  "languages.$.label": {
-    type: String
-  },
-  "languages.$.i18n": {
-    type: String
-  },
-  "languages.$.enabled": {
-    type: Boolean,
-    defaultValue: false
   },
   "public": {
     type: String,
     optional: true
   },
   "timezone": {
-    type: String
+    type: String,
+    defaultValue: "US/Pacific"
   },
   "baseUOM": {
     type: String,
@@ -205,34 +241,25 @@ ReactionCore.Schemas.Shop = new SimpleSchema({
     type: [ReactionCore.Schemas.Metafield],
     optional: true
   },
+  "defaultVisitorRole": {
+    type: [String],
+    defaultValue: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"]
+  },
   "defaultRoles": {
     type: [String],
-    defaultValue: ["guest", "account/profile"]
+    defaultValue: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"]
   },
   "layout": {
-    type: [Object],
+    type: [ReactionCore.Schemas.Layout],
     optional: true
   },
-  "layout.$.layout": {
-    type: String,
-    defaultValue: "coreLayout"
-  },
-  "layout.$.theme": {
-    type: String,
-    defaultValue: "default"
-  },
-  "layout.$.workflow": {
-    type: String,
+  "theme": {
+    type: ReactionCore.Schemas.ShopTheme,
     optional: true
   },
-  "layout.$.collection": {
-    type: String,
+  "brandAssets": {
+    type: [ReactionCore.Schemas.BrandAsset],
     optional: true
-  },
-  "layout.$.enabled": {
-    type: Boolean,
-    defaultValue: true
-
   },
   "createdAt": {
     type: Date,

@@ -1,14 +1,14 @@
 <template name="member">
   {{!-- TODO: make this a Reactive Table --}}
       <div class="member-list-item-image">
-        {{!--> avatar user=this.user class="circular-icon" size="medium" shape="circle"--}}
-        <img class="circular-icon" src="{{getGravatar this.user 40}}" style="width: 40px;border-radius: 50%;"/>
+        <img class="circular-icon" src="{{getGravatar this 40}}" style="width: 40px;border-radius: 50%;"/>
       </div>
       <div class="member-list-item-profile">
         {{displayName this}}
+        <span>&nbsp;({{this.email}})</span>
       </div>
       <div class="member-list-item-controls">
-        <button class="btn btn-default" data-event-action="showMemberSettings">Manage</button>
+        <button class="btn btn-default" data-event-action="showMemberSettings" data-i18n="accountsUI.manage">Manage</button>
       </div>
 
 </template>
@@ -19,9 +19,9 @@
 
     <div class="panel-heading panel-title-center">
       <div class="profile-image">
-        {{!--> avatar user=this size="large" shape="circle"--}}
         <img class="circular-icon" src="{{getGravatar this 80}}" style="width: 80px;border-radius: 50%;" />
         <span class="profile-image-display-name">{{displayName this}}</span>
+        <span>{{this.email}}</span>
       </div>
     </div>
 

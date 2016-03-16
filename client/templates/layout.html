@@ -1,0 +1,14 @@
+<template name="layout">
+  <!-- to use, implement Template.layout.replaces "coreLayout" -->
+  <nav class="reaction-navigation-header">{{> Template.dynamic template=layoutHeader}}</nav>
+  <nav class="reaction-cart-drawer">{{> cartDrawer}}</nav>
+  <div class="reaction-dashboard-drawer">{{> Template.dynamic template=dashboard}}</div>
+  <main role="main" id="main">
+    <div class="container-fluid">
+      <span id="layout-alerts">{{> inlineAlerts}}</span>
+      {{> Template.dynamic template=template}}
+    </div>
+
+    <footer class="reaction-navigation-footer">{{> Template.dynamic template=layoutFooter}}</footer>
+  </main>
+</template>

@@ -18,7 +18,7 @@ elif [[ "$@" == "install" ]]; then
   cp reaction /usr/local/bin/reaction && chmod + /usr/local/bin/reaction
   bin/install
 elif [[ "$@" == "test" ]]; then
-  VELOCITY_TEST_PACKAGES=1 meteor test-packages --driver-package velocity:html-reporter --velocity
+  VELOCITY_TEST_PACKAGES=1 meteor test-packages --port 3006 --driver-package velocity:html-reporter --velocity
 else
   bin/run "$@"
 fi

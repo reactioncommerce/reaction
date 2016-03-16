@@ -1,0 +1,24 @@
+<template name="packagesGrid">
+  <div class="rui items">
+    {{#each group in groups}}
+      <div class="rui item">
+        {{#cardGroup title=group}}
+          {{> packagesGridGroup apps=(appsInGroup group)}}
+        {{/cardGroup}}
+      </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="packagesGridGroup">
+  <div class="rui items flex third">
+    {{#each app in apps}}
+      {{#if (pkgPermissions app)}}
+        <div class="rui item flex vertical">
+          {{> gridPackage (packageProps app)}}
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
+
+</template>

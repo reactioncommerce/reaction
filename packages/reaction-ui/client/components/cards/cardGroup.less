@@ -1,0 +1,42 @@
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
+
+.rui.card-group {
+
+
+
+  // border: 1px solid @border-color;
+  width: 100%;
+  // background-color: @white;
+
+  // border-bottom: 1px solid @border-color;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.rui.card-group .header {
+  .display(flex);
+  .flex(1 1 auto);
+  .align-items(center);
+
+  min-height: 66px;
+  padding: 10px;
+  border-bottom: 1px solid @border-color;
+  text-transform: capitalize;
+  font-size: 2rem;
+}
+
+.rui.card-group > .content {
+  display: flex;
+  flex-wrap: wrap;
+  // padding: 10px;
+  // background-color: @brand-muted-color;
+}
+
+.rui.card-group .content > .rui.item {
+  .display(flex);
+  .flex(1 1 auto);
+  .flex-wrap(wrap);
+}

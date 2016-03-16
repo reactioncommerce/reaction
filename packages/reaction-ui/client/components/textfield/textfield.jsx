@@ -8,6 +8,14 @@ class TextField extends React.Component {
     value: ""
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: props.value
+    };
+  }
+
   /**
    * onValueChange
    * @summary set the state when the value of the input is changed
@@ -64,7 +72,7 @@ class TextField extends React.Component {
         placeholder={this.props.i18nPlaceholder}
         value={this.state.value}
         onChange={this.onValueChange}
-/>
+      />
     );
   }
 

@@ -1,0 +1,23 @@
+<template name="coreCheckoutShipping">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{> checkoutStepBadge}}
+
+      <h3 class="panel-title">
+        <span data-i18n="checkoutShipping.selectShippingOption">Select shipping option</span>
+      </h3>
+    </div>
+    {{#each reactionApps provides='shippingMethod' enabled=true}}
+      {{> Template.dynamic template=template}}
+    {{else}}
+      <div class="panel-body">
+        <div class="alert alert-danger">
+          <span data-i18n="checkoutShipping.noShippingPackages">No shipping packages are configured. </span>
+          <a href="{{pathFor 'dashboard/shipping'}}">
+            <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
+          </a>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</template>

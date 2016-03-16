@@ -1,8 +1,6 @@
-var DefaultSocialApp;
-
-DefaultSocialApp = {
-  "profilePage": "",
-  "enabled": false
+let DefaultSocialApp = {
+  profilePage: "",
+  enabled: false
 };
 
 ReactionCore.registerPackage({
@@ -11,18 +9,18 @@ ReactionCore.registerPackage({
   icon: "fa fa-share-alt",
   autoEnable: true,
   settings: {
-    "public": {
+    public: {
       autoInit: true,
       apps: {
-        "facebook": _.extend({
-          "appId": void 0,
-          "version": "v2.1"
+        facebook: _.extend({
+          appId: void 0,
+          version: "v2.1"
         }, DefaultSocialApp),
-        "twitter": _.extend({
-          "username": void 0
+        twitter: _.extend({
+          username: void 0
         }, DefaultSocialApp),
-        "googleplus": _.extend({}, DefaultSocialApp),
-        "pinterest": _.extend({}, DefaultSocialApp)
+        googleplus: _.extend({}, DefaultSocialApp),
+        pinterest: _.extend({}, DefaultSocialApp)
       },
       appsOrder: ["facebook", "twitter", "pinterest", "googleplus"],
       iconOnly: true,
@@ -31,31 +29,25 @@ ReactionCore.registerPackage({
       targetWindow: "_self"
     }
   },
-  registry: [
-    {
-      provides: "dashboard",
+  registry: [{
+    provides: "dashboard",
+    label: "Social",
+    description: "Social Channel configuration",
+    icon: "fa fa-share-alt",
+    priority: 2,
+    container: "connect",
+    permissions: [{
       label: "Social",
-      description: "Social Sharing for Reaction Commerce",
-      route: "dashboard/social",
-      icon: "fa fa-share-alt",
-      cycle: "4",
-      container: "dashboard"
-    }, {
-      label: "Social Settings",
-      route: "dashboard/social",
-      template: "socialDashboard",
-      provides: "settings",
-      template: "socialSettings"
-    }, {
-      template: "reactionSocial",
-      provides: "social"
-    }
-  ],
-  permissions: [
-    {
-      label: "Social",
-      permission: "dashboard/social",
-      group: "Shop Settings"
-    }
-  ]
+      permission: "dashboard/social"
+    }]
+  }, {
+    label: "Social Settings",
+    route: "/dashboard/social",
+    provides: "settings",
+    container: "dashboard",
+    template: "socialSettings"
+  }, {
+    template: "reactionSocial",
+    provides: "social"
+  }]
 });

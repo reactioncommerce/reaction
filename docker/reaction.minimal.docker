@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER Tom De Caluwé <decaluwe.t@gmail.com>
 
 COPY bin/docker /usr/bin

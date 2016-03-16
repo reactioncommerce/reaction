@@ -1,0 +1,43 @@
+
+<template name="button">
+  {{#Template.dynamic template=element data=elementProps}}
+    {{#if ../toggle}}
+      {{#if ../toggleOn}}
+      <span class="rui icon on">
+        {{> React component=iconComponent icon=../onIcon}}
+      </span>
+      {{else}}
+        <span class="rui icon">
+          {{> React component=iconComponent icon=../icon}}
+        </span>
+      {{/if}}
+    {{else}}
+      {{#if ../icon}}
+        <span class="icon">
+          {{> React component=iconComponent icon=../icon}}
+        </span>
+      {{/if}}
+    {{/if}}
+    <span class="title">
+      {{#if i18nKeyTitle}}
+        {{i18n i18nKeyTitle title}}
+      {{else}}
+        {{title}}
+      {{/if}}
+    </span>
+  {{/Template.dynamic}}
+</template>
+
+<template name="uiButtonElement">
+  <button {{buttonAttributes}}>
+    <div class="contents">
+      {{> Template.contentBlock}}
+    </div>
+  </button>
+</template>
+
+<template name="uiLinkElement">
+  <a {{buttonAttributes}}>
+    {{> Template.contentBlock}}
+  </a>
+</template>

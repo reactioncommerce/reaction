@@ -1,0 +1,10 @@
+<template name="gridPackage">
+  {{# card cardProps}}
+    <div class="content" data-event-action="{{showPackageManagementEvent package}}">
+      <h3 class="title">
+        <i class="{{package.icon}}"></i> <span data-i18n="{{package.i18nKeyLabel}}">{{package.label}}</span>
+      </h3>
+      <small data-i18n="{{package.i18nKeyDescription}}">{{{package.description}}}</small>
+    </div>
+  {{/card}}
+</template>

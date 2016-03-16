@@ -44,7 +44,7 @@ Template.loginFormSignUpView.events({
     templateInstance.formMessages.set({});
 
     if (validatedEmail !== true) {
-      errors.email = validatedEmail.reason;
+      errors.email = validatedEmail;
     }
 
     if (validatedPassword !== true) {

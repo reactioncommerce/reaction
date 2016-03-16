@@ -1,0 +1,12 @@
+<template name="products">
+  {{>productGrid tag}}
+</template>
+
+<template name="productListGrid">
+  <div class="row">
+    {{>productGrid}}
+    {{#if hasPermission "createProduct"}}
+      {{>productList}}
+    {{/if}}
+  </div>
+</template>

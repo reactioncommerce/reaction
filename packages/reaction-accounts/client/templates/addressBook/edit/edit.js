@@ -12,10 +12,7 @@ AutoForm.hooks({
       const addressBook = $(this.template.firstNode).closest(".address-book");
       Meteor.call("accounts/addressBookUpdate", insertDoc, (error, result) => {
         if (error) {
-          Alerts.add("Something goes wrong: " + error.message,
-            "danger", {
-              autoHide: true
-            });
+          Alerts.toast(`Something went wrong: ${error.message}`, "error");
           this.done(new Error(error));
           return false;
         }

@@ -1,9 +1,9 @@
+/* eslint no-extra-parens: 0 */
 const TextField = ReactionUI.Components.TextField;
 const Button = ReactionUI.Components.Button;
-const TagSchema = ReactionCore.Schemas.Tag.newContext();
 
 class Tag extends React.Component {
-  displayName: "Tag"
+  displayName: "Tag";
 
   /**
    * Handle tag create events and pass them up the component chain
@@ -12,11 +12,10 @@ class Tag extends React.Component {
    */
   handleTagCreate = (event) => {
     event.preventDefault();
-
     if (this.props.onTagCreate) {
-      this.props.onTagCreate(event.target.tag.value);
+      this.props.onTagCreate(event.target.tag.value, this.props.parentTag);
     }
-  }
+  };
 
   /**
    * Handle tag bookmark events and pass them up the component chain
@@ -27,7 +26,7 @@ class Tag extends React.Component {
     if (this.props.onTagBookmark) {
       this.props.onTagBookmark(this.props.tag._id);
     }
-  }
+  };
 
   /**
    * Handle tag remove events and pass them up the component chain
@@ -36,9 +35,9 @@ class Tag extends React.Component {
    */
   handleTagRemove = () => {
     if (this.props.onTagRemove) {
-      this.props.onTagRemove(this.props.tag._id);
+      this.props.onTagRemove(this.props.tag);
     }
-  }
+  };
 
   /**
    * Handle tag update events and pass them up the component chain
@@ -46,19 +45,89 @@ class Tag extends React.Component {
    * @return {void} no return value
    */
   handleTagUpdate = (event) => {
-    if (this.props.onTagBookmark && event.keycode === 13) {
-      this.props.onTagBookmark(this.props.tag._id, event.target.value);
+    if (this.props.onTagUpdate && event.keyCode === 13) {
+      this.props.onTagUpdate(this.props.tag._id, event.target.value);
     }
-  }
+  };
+
+  /**
+   * Handle tag mouse out events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @return {void} no return value
+   */
+  handleTagMouseOut = (event) => {
+    event.preventDefault();
+    if (this.props.onTagMouseOut) {
+      this.props.onTagMouseOut(event, this.props.tag);
+    }
+  };
+
+  /**
+   * Handle tag mouse over events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @return {void} no return value
+   */
+  handleTagMouseOver = (event) => {
+    if (this.props.onTagMouseOver) {
+      this.props.onTagMouseOver(event, this.props.tag);
+    }
+  };
+
+  /**
+   * Handle tag focus, show autocomplete options
+   * TODO: Make this better by not using a jQuery plugin
+   * @param  {Event} event Event Object
+   * @return {void} no return value
+   */
+  handleFocus = (event) => {
+    $(event.currentTarget).autocomplete({
+      delay: 0,
+      source: function (request, response) {
+        let datums = [];
+        let slug = getSlug(request.term);
+        ReactionCore.Collections.Tags.find({
+          slug: new RegExp(slug, "i")
+        }).forEach(function (tag) {
+          return datums.push({
+            label: tag.name
+          });
+        });
+        return response(datums);
+      },
+      select: (selectEvent, ui) => {
+        if (ui.item.value) {
+          if (this.props.onTagUpdate) {
+            this.props.onTagUpdate(this.props.tag._id, ui.item.value);
+          }
+        }
+      }
+    });
+  };
 
   /**
    * Render a simple tag for display purposes only
    * @return {JSX} simple tag
    */
   renderTag() {
+    const url = `/product/tag/${this.props.tag.slug}`;
     return (
-      <span className="rui tag">{this.props.tag.name}</span>
+      <a
+        className="rui tag link"
+        href={url}
+        onMouseOut={this.handleTagMouseOut}
+        onMouseOver={this.handleTagMouseOver}
+      >
+        {this.props.tag.name}
+      </a>
     );
+  }
+
+  renderBookmarkButton() {
+    if (this.props.showBookmark) {
+      return (
+        <Button icon="bookmark" onClick={this.handleTagBookmark} />
+      );
+    }
   }
 
   /**
@@ -67,10 +136,16 @@ class Tag extends React.Component {
    */
   renderEditableTag() {
     return (
-      <div className="rui tag edit">
+      <div
+        className="rui tag edit"
+        data-id={this.props.tag._id}
+      >
         <Button icon="bars" />
-        <TextField onKeyDown={this.handleTagUpdate} value={this.props.tag.name} />
-        <Button icon="bookmark" onClick={this.handleTagBookmark} />
+        <TextField
+          onFocus={this.handleFocus}
+          onKeyDown={this.handleTagUpdate}
+          value={this.props.tag.name}
+        />
         <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
       </div>
     );
@@ -84,7 +159,8 @@ class Tag extends React.Component {
     return (
       <div className="rui tag edit create">
         <form onSubmit={this.handleTagCreate}>
-          <TextField i18nPlaceholder="addTag" name="tag" />
+          <Button icon="tag" />
+          <TextField i18nPlaceholder={i18next.t(this.props.placeholder) || i18next.t("tags.addTag")} name="tag" />
           <Button icon="plus" />
         </form>
       </div>
@@ -102,7 +178,7 @@ class Tag extends React.Component {
       return this.renderBlankEditableTag();
     }
 
-    return renderTag();
+    return this.renderTag();
   }
 }
 
@@ -113,14 +189,15 @@ Tag.propTypes = {
   // Event handelers
   onTagBookmark: React.PropTypes.func,
   onTagCreate: React.PropTypes.func,
+  onTagMouseOut: React.PropTypes.func,
+  onTagMouseOver: React.PropTypes.func,
   onTagRemove: React.PropTypes.func,
   onTagUpdate: React.PropTypes.func,
 
-  tag: (props, propName) => {
-    if (TagSchema.validate(props[propName]) === false) {
-      return new Error("Tag must be of type: ReactionCore.Schemas.Tag");
-    }
-  }
+  parentTag: ReactionCore.PropTypes.Tag,
+  placeholder: React.PropTypes.string,
+  showBookmark: React.PropTypes.bool,
+  tag: ReactionCore.PropTypes.Tag
 };
 
 ReactionUI.Components.Tag = Tag;

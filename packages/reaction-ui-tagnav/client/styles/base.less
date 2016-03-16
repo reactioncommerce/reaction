@@ -1,0 +1,78 @@
+// Import Variables
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
+@import "{reactioncommerce:core-theme}/lib/bootstrap/less/mixins.less";
+@import "{reactioncommerce:core-theme}/default/variables.less";
+@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
+@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
+
+
+.rui.tagnav .rui.tags {
+  .display(flex);
+  .flex-wrap(wrap)
+  // min-height: 100px;
+}
+
+.rui.tagnav .rui.tag {
+  display: flex;
+  width: 100%;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: @border-radius-base;
+}
+
+.rui.tagnav .rui.tag.edit {
+  padding: (@padding-base-vertical / 2) 0;
+}
+
+.rui.tagnav .rui.tag.edit button:last-child {
+  min-width: 36px;
+}
+
+
+.rui.tagnav .rui.tag.edit form {
+  display: flex;
+}
+
+.rui.tagnav .rui.tag.edit input {
+  padding: 0 5px;
+  width: 100%;
+}
+
+.rui.tagnav .rui.tag.edit button {
+  padding: 2px 5px;
+}
+
+.rui.tagnav .rui.tag.edit button:first-child {
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+.rui.tagnav .rui.tag.edit button:last-child {
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+.rui.tagnav .rui.tag.edit.create {
+  @color: lighten(@btn-success-bg, 10%);
+  @color: @brand-secondary-color;
+  // @color: #238CC3;
+  // @color: @white;
+
+  input {
+    // background-color: @color;
+    // border-color: @color;
+    background-color: @white;
+    color: @text-color;
+    .placeholder(@color);
+  }
+
+  button {
+    // background-color: @color;
+    // border-color: @color;
+    background-color: @white;
+    color: @color;
+  }
+}
+
+.rui.tagnav .rui.tag.edit.create input {
+  .placeholder(@brand-secondary-color);
+}

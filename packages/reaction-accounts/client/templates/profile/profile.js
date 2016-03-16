@@ -29,7 +29,8 @@ Template.accountProfile.helpers({
    * @return {Array|null} an array of available orders for the user
    */
   userOrders() {
-    if (Meteor.user()) {
+    const orderSub = Meteor.subscribe("AccountOrders", Meteor.userId());
+    if (orderSub.ready()) {
       return ReactionCore.Collections.Orders.find({
         userId: Meteor.userId()
       }, {

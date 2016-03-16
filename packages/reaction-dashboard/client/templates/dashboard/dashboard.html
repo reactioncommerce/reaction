@@ -1,0 +1,28 @@
+<template name="dashboardControls">
+  <!-- dashboardControls -->
+</template>
+
+<template name="blankControls">
+  <!-- setActionView blankControls  -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span data-i18n="blankControls.noControls">No controls for this view.</span></h3>
+    </div>
+  </div>
+</template>
+
+<template name="dashboardHeader">
+    <div class="nav nav-dashboard">
+      <div class="nav-dashboard-heading">
+        <h3 class="nav-dashboard-title">
+          {{#with registry}}
+           <span>{{i18n i18nKeyTitle label}}</span>
+          {{/with}}
+        </h3>
+      </div>
+      <div class="nav-dashboard-controls">
+        <!-- dashboardHeaderControls -->
+        {{> Template.dynamic template=dashboardHeaderControls}}
+      </div>
+    </div>
+</template>

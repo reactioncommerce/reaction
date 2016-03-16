@@ -1,0 +1,51 @@
+<template name="productTagInputForm">
+  {{#if ./tags}}
+  <h3 data-i18n="productDetail.tags">Tags</h3>
+  {{/if}}
+  <div class="tags">
+    <ul class="list-inline tag-edit-list" id="tag-edit-list">
+    {{#each ./tags}}
+      <li data-tag-id="{{_id}}">
+        <div class="tag-input-group">
+          <span class="tag-input-group-handle">
+            <i class="fa fa-bars"></i>
+          </span>
+          <span class="tag-input">
+            <input type="text" class="tags-input-select" value="{{name}}" placeholder="Edit tags"/>
+          </span>
+          <span class="tag-input-hashtag">
+            <i class="fa {{hashtagMark}}"></i>
+          </span>
+          <span class="tag-input-group-remove">
+             <i class="fa fa-times-circle"></i>
+          </span>
+        </div>
+      </li>
+    {{/each}}
+      <li data-tag-id="{{_id}}">
+        <div class="tag-input-group">
+          <span class="tag-input">
+            <input type="text" class="tags-input-select tags-submit-new" value="{{name}}" placeholder="{{i18n 'productDetail.tagsAdd'}}" />
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<template name="productDetailTags">
+  {{#if tags}}
+  <h3 data-i18n="productDetail.tags">Tags</h3>
+  {{/if}}
+  <div class="tags">
+    <ul class="list-inline">
+    {{#each tags}}
+      {{#unless currentHashTag}}
+        <li class="list-group-item product-detail-tags-list">
+          <a href="{{pathFor "tag" slug=slug}}" data-event-category="tag" data-event-action="tag-click" data-event-label="product detail tag click" data-event-value="{{name}}">{{name}}</a>
+        </li>
+      {{/unless}}
+    {{/each}}
+    </ul>
+  </div>
+</template>
