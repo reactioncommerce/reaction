@@ -23,9 +23,11 @@ Package.onUse(function (api) {
   // title and meta data
   api.addFiles("common/metadata.js");
 
-  // router configuration
-  api.addFiles("common/init.js", ["client", "server"]);
-  api.addFiles("common/layout.js", ["client", "server"]);
+  // ReactionRouter configuration
+  api.addFiles("common/init.js");
+
+  // ReactionLayout
+  api.addFiles("common/layout.js");
 
   // helpers
   api.addFiles("client/helpers.js", "client");
@@ -35,4 +37,5 @@ Package.onUse(function (api) {
 
   // export router and subscription manager
   api.export("ReactionRouter");
+  api.export("ReactionLayout");
 });

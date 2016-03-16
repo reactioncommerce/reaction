@@ -14,7 +14,7 @@ selectLayout = (layout, setLayout, setWorkflow) => {
 };
 
 /**
- * renderLayout
+ * ReactionLayout
  * sets and returns reaction layout structure
  * @param {Object} context - this router context
  * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
@@ -22,10 +22,24 @@ selectLayout = (layout, setLayout, setWorkflow) => {
  * @param {String} options - layout.structure overrides
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
-renderLayout = (options = {}) => {
+ReactionLayout = (options = {}) => {
   const layout = options.layout || "coreLayout";
   const workflow = options.workflow || "coreWorkflow";
+  if (!options.layout) {
+    options.layout = "coreLayout";
+  }
+  if (!options.workflow) {
+    options.workflow = "coreWorkflow";
+  }
 
+  // check if router has denied permissions
+  // see: checkRouterPermissions
+  let unauthorized = {};
+  if (ReactionRouter.current().unauthorized) {
+    unauthorized.template = "unauthorized";
+  }
+
+  // autorun router rendering
   Tracker.autorun(function () {
     if (ReactionCore.Subscriptions.Shops.ready()) {
       const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
@@ -33,13 +47,13 @@ renderLayout = (options = {}) => {
         const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
         // oops this layout wasn't found. render notFound
         if (!newLayout) {
-          ReactionCore.Log.warn("Failed to render layout", layout, workflow);
-          // BlazeLayout.render("notFound");
+          BlazeLayout.render("notFound");
         } else {
-          const layoutToRender = Object.assign({}, newLayout.structure, options);
+          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
           BlazeLayout.render(layout, layoutToRender);
         }
       }
     }
   });
+  return options;
 };

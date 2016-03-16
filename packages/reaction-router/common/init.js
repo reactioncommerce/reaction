@@ -18,21 +18,41 @@ if (Meteor.isServer) {
 // default not found route
 ReactionRouter.notFound = {
   action() {
-    renderLayout({
+    ReactionLayout({
       template: "notFound"
     });
   }
 };
 
-// initialize title and meta data
-ReactionRouter.triggers.enter([MetaData.init]);
+/**
+ * checkRouterPermissions
+ * check if user has route permissions
+ * @param  {Object} context - route context
+ * @param  {redirect} null object
+ * @return {Object} return context
+ */
+checkRouterPermissions = (context) => {
+  const routeName = context.route.name;
+  if (ReactionCore.hasPermission(routeName, Meteor.userId())) {
+    if (context.unauthorized === true) {
+      delete context.unauthorized;
+      return context;
+    }
+    return context;
+  }
+  // return unauthorized flag on context
+  context.unauthorized = true;
+  return context;
+};
+// initialize title and meta data and check permissions
+ReactionRouter.triggers.enter([checkRouterPermissions, MetaData.init]);
 
 /**
  * getRouteName
  * assemble route name to be standard
  * prefix/package name + registry name or route
- * @param  {[type]} packageName  [package name]
- * @param  {[type]} registryItem [registry object]
+ * @param  {String} packageName  [package name]
+ * @param  {Object} registryItem [registry object]
  * @return {String}              [route name]
  */
 const getRegistryRouteName = (packageName, registryItem) => {
@@ -58,7 +78,7 @@ const getRegistryRouteName = (packageName, registryItem) => {
  * @param {String} userId - userId
  * @returns {undefined} returns undefined
  */
-ReactionRouter.initPackageRoutes = (userId) => {
+ReactionRouter.initPackageRoutes = () => {
   const pkgs = ReactionCore.Collections.Packages.find().fetch();
   const prefix = ReactionCore.getShopName().toLowerCase(); // todo add shopId
 
@@ -68,14 +88,13 @@ ReactionRouter.initPackageRoutes = (userId) => {
     name: "shop"
   });
 
-
   //
   // index / home route
   //
   shop.route("/", {
     name: "index",
     action: function () {
-      renderLayout();
+      ReactionLayout();
     }
   });
 
@@ -96,24 +115,16 @@ ReactionRouter.initPackageRoutes = (userId) => {
             triggersEnter,
             triggersExit
           } = registryItem;
-          let options = {};
-          let routeName;
 
-          routeName = getRegistryRouteName(pkg.name, registryItem);
-          // If route doesn't start with "/" we add it to avoid the flow-router error
-          route = route.substring(0, 1) !== "/" ? "/" + route : route;
+          // get registry route name
+          const routeName = getRegistryRouteName(pkg.name, registryItem);
 
-          // check route permissions
-          if (ReactionCore.hasPermission(routeName, userId) || ReactionCore.hasPermission(route, userId)) {
-            options.template = template;
-            options.workflow = workflow;
-            options.layout = layout;
-          } else {
-            // WIP - known issue with auth/login/reload
-            options.template = "unauthorized";
-            options.workflow = workflow;
-            options.layout = layout;
-          }
+          // layout option structure
+          const options = {
+            template: template,
+            workflow: workflow,
+            layout: layout
+          };
 
           // define new route
           // we could allow the options to be passed in the registry if we need to be more flexible
@@ -126,7 +137,7 @@ ReactionRouter.initPackageRoutes = (userId) => {
               triggersEnter: triggersEnter,
               triggersExit: triggersExit,
               action: () => {
-                renderLayout(options);
+                ReactionLayout(options);
               }
             }
           };
@@ -155,15 +166,6 @@ ReactionRouter.initPackageRoutes = (userId) => {
   try {
     ReactionRouter.initialize();
   } catch (e) {
-    // console.log ("Flow router already initialized.");
+    ReactionRouter.reload();
   }
 };
-
-Accounts.onLogin(function () {
-  // this is likely to be a bad thing
-  // testing in progress
-  // the goal here is to reset routes on LOGIN
-  // but need to make sure routes defined outside are kept
-  // so we'll probably need to do this one route at a time.
-  ReactionRouter._routes = [];
-});
