@@ -12,7 +12,7 @@ ReactionCore.registerPackage({
     label: "i18n",
     description: "Internationalization utilities",
     icon: "fa fa-language",
-    priority: 2,
+    priority: 1,
     container: "utilities"
   }, {
     provides: "settings",
