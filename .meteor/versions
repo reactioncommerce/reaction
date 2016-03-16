@@ -160,7 +160,7 @@ reactioncommerce:reaction-inventory@0.2.3
 reactioncommerce:reaction-layout@1.0.0
 reactioncommerce:reaction-logger@0.1.0
 reactioncommerce:reaction-orders@1.0.0
-reactioncommerce:reaction-paymentmethod@0.0.3
+reactioncommerce:reaction-paymentmethod@0.0.4
 reactioncommerce:reaction-paypal@1.3.0
 reactioncommerce:reaction-product-variant@1.0.0
 reactioncommerce:reaction-router@1.1.0
