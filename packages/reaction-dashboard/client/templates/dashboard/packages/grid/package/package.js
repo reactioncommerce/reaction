@@ -8,7 +8,7 @@
 function showPackageDashboard(reactionPackage) {
   const route = reactionPackage.name || reactionPackage.route;
 
-  if (ReactionCore.hasPermission(route, Meteor.userId())) {
+  if (route && ReactionCore.hasPermission(route, Meteor.userId())) {
     ReactionRouter.go(route);
     return true;
   }
