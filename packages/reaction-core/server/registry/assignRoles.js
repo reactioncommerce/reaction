@@ -63,7 +63,7 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
       }
     }
   } else {
-    ReactionCore.Log.info(`No routes loaded for ${pkgName}`);
+    ReactionCore.Log.debug(`No routes loaded for ${pkgName}`);
   }
   // only unique roles
   const defaultOwnerRoles = _.uniq(defaultRoles);
