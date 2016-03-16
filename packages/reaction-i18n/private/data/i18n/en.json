@@ -26,7 +26,7 @@
           "braintreeDescription": "Braintree payments",
           "catalogLabel": "Catalog",
           "catalogDescription": "Allows to create simple products",
-          "coreLabel": "Core",
+          "coreLabel": "Dashboard",
           "coreDescription": "Reaction core shop configuration",
           "genericPaymentLabel": "Generic Payment",
           "genericPaymentDescription": "Generic Payment Method",
