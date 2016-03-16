@@ -44,5 +44,15 @@ ReactionCore.registerPackage({
       dashboardControls: "dashboardControls",
       adminControlsFooter: "adminControlsFooter"
     }
+  }, {
+    layout: "coreLayout",
+    workflow: "coreWorkflow",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "unauthorized",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "layoutFooter"
+    }
   }]
 });
