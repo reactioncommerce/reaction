@@ -6,12 +6,7 @@ Template.productMetaFieldForm.events({
   "click .metafield-remove": function () {
     let productId;
     productId = ReactionProduct.selectedProductId();
-    // todo: whats happen here? why we update collection directly?
-    return ReactionCore.Collections.Products.update(productId, {
-      $pull: {
-        metafields: this
-      }
-    });
+    Meteor.call("products/removeMetaFields", productId, this);
   }
 });
 
