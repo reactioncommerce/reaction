@@ -2,6 +2,7 @@
     {
         "language": "Italian",
         "i18n": "it",
+        "ns": "core",
         "translation": {
             "core": {
                 "languages": {

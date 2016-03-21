@@ -2,6 +2,7 @@
     {
         "language": "Hungarian",
         "i18n": "hu",
+        "ns": "core",
         "translation": {
             "core": {
                 "languages": {

@@ -2,6 +2,7 @@
     {
         "language": "Türkçe",
         "i18n": "tr",
+        "ns": "core",
         "translation": {
             "core": {
                 "languages": {

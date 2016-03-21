@@ -2,6 +2,7 @@
     {
         "language": "Czech",
         "i18n": "cs",
+        "ns": "core",
         "translation": {
             "core": {
                 "accountsUI": {
