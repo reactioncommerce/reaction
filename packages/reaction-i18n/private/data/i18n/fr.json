@@ -2,6 +2,7 @@
     {
         "language": "French",
         "i18n": "fr",
+        "ns": "core",
         "translation": {
             "core": {
                 "accountsUI": {

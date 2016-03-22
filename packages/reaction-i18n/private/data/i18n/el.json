@@ -2,6 +2,7 @@
     {
         "language": "Ελληνικά",
         "i18n": "el",
+        "ns": "core",
         "translation": {
             "core": {
                 "languages": {

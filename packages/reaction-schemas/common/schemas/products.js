@@ -67,8 +67,6 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
     type: String,
-    optional: true,
-    index: 1,
     label: "Variant ID"
   },
   ancestors: {
@@ -271,7 +269,7 @@ ReactionCore.Schemas.PriceRange = new SimpleSchema({
 ReactionCore.Schemas.Product = new SimpleSchema({
   _id: {
     type: String,
-    optional: true
+    label: "Product Id"
   },
   ancestors: {
     type: [String],
