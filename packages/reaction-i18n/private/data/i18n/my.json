@@ -2,6 +2,7 @@
     {
         "language": "Burmese",
         "i18n": "my",
+        "ns": "core",
         "translation": {
             "core": {
                 "languages": {

@@ -1,6 +1,7 @@
 [{
   "language": "Russian",
   "i18n": "ru",
+  "ns": "core",
   "translation": {
     "core": {
       "languages": {
@@ -169,8 +170,8 @@
         "barcode": "Штрих-код",
         "confirmDeleteBarcode": "Вы уверены, что хотите удалить штрих-код",
         "details": "Подробности",
-        "detailsName": "Название характеристики",
-        "detailsInfo": "Значение характеристики",
+        "detailsName": "Свойство",
+        "detailsInfo": "Подробности",
         "generate": "Сформировать",
         "generateBarcodes": "Сформировать штрих-коды",
         "hideBarcodes": "Скрыть штрих-коды",

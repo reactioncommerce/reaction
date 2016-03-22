@@ -2,6 +2,7 @@
     {
         "language": "Hebrew",
         "i18n": "he",
+        "ns": "core",
         "translation": {
             "core": {
                 "languageDirection": "rtl",

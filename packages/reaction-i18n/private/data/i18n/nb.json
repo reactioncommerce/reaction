@@ -1,6 +1,7 @@
 [{
   "language": "Norwegian",
   "i18n": "nb",
+  "ns": "core",
   "translation": {
     "core": {
       "languages": {

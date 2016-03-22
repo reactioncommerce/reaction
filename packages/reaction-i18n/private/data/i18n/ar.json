@@ -2,6 +2,7 @@
     {
         "language": "Arabic",
         "i18n": "ar",
+        "ns": "core",
         "translation": {
             "core": {
                 "languageDirection": "rtl",
