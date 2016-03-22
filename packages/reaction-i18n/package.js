@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce i18n utilities",
   name: "reactioncommerce:reaction-i18n",
-  version: "2.0.0",
+  version: "2.0.1",
   documentation: "README.md"
 });
 
