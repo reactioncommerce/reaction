@@ -2,6 +2,7 @@
     {
         "language": "Croatian",
         "i18n": "hr",
+        "ns": "core",
         "translation": {
             "core": {
                 "languages": {

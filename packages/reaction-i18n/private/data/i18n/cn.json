@@ -1,6 +1,7 @@
 [{
   "language": "中文(简体)",
   "i18n": "cn",
+  "ns": "core",
   "translation": {
     "core": {
       "languages": {

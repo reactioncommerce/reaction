@@ -253,7 +253,8 @@ ReactionImport.package = function (pkg, shopId) {
  * @returns {Object} updated translation buffer
  */
 ReactionImport.translation = function (key, translation) {
-  return this.object(ReactionCore.Collections.Translations, key, translation);
+  const modifiedKey = Object.assign(key, { ns: translation.ns });
+  return this.object(ReactionCore.Collections.Translations, modifiedKey, translation);
 };
 
 //

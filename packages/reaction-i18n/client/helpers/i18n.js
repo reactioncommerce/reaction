@@ -131,7 +131,13 @@ Tracker.autorun(function () {
       }).fetch();
     // map reduce translations into i18next formatting
     const resources = translations.reduce(function (x, y) {
-      x[y.i18n] = y.translation;
+      const ns = Object.keys(y.translation)[0];
+      // first creating the structure, when add additional namespaces
+      if (x[y.i18n]) {
+        x[y.i18n][ns] = y.translation[ns];
+      } else {
+        x[y.i18n] = y.translation;
+      }
       return x;
     }, {});
 
