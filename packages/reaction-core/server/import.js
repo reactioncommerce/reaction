@@ -105,14 +105,18 @@ ReactionImport.identify = function (document) {
 /**
  * @summary Commit the buffer for a given collection to the database.
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
+ * @param {function} callback Function to execute after flush succeeded
  * @returns {undefined}
  */
-ReactionImport.flush = function (collection) {
+ReactionImport.flush = function (collection, callback) {
   check(collection, Match.Optional(Mongo.Collection));
-
+  check(callback, Match.OneOf(undefined, Function));
   if (!collection) {
     for (let name of Object.keys(this._buffers)) {
       this.flush(ReactionCore.Collections[name]);
+    }
+    if (callback) {
+      callback();
     }
     return;
   }
@@ -158,6 +162,9 @@ ReactionImport.flush = function (collection) {
     // Reset the buffer.
     delete this._buffers[name];
     this._count[name] = 0;
+  }
+  if (callback) {
+    callback();
   }
 };
 

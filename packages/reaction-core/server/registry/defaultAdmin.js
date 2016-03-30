@@ -7,14 +7,21 @@
  * @returns {String} return userId
  */
 ReactionRegistry.createDefaultAdminUser = function () {
+  ReactionCore.Log.info("Starting createDefaultAdminUser");
   let options = {};
   const domain = ReactionRegistry.getRegistryDomain();
   const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
-  const shopId = ReactionCore.getShopId();
   let accountId;
+
+  while (!ReactionCore.getShopId()) {
+    ReactionCore.Log.info("No shopId, waiting one second...");
+    Meteor._sleepForMs(1000);
+  }
+  const shopId = ReactionCore.getShopId();
 
   // if an admin user has already been created, we'll exit
   if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
+    ReactionCore.Log.info("Not creating default admin user, already exists");
     return ""; // this default admin has already been created for this shop.
   }
 
