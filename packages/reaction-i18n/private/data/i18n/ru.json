@@ -230,6 +230,7 @@
         "removeVariant": "Удалить",
         "removeVariantConfirm": "Вы уверены, что хотите удалить {{title}}?",
         "thisVariant": "этот вариант",
+        "thisOption": "эту опцию",
         "duplicateProduct": "Скопировать товар",
         "pinProduct": "Закрепить товар",
         "toggleSize": "Поменять размер",
