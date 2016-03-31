@@ -220,6 +220,7 @@
         "createTag": "Create Tag"
       },
       "productDetailEdit": {
+        "editOption": "Edit option",
         "productSettings": "Product Settings",
         "product": "Product",
         "size": "Size",
@@ -234,6 +235,8 @@
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",
+        "removeVariantConfirm": "Are you sure you want to delete {{title}}",
+        "thisVariant": "this variant",
         "duplicateProduct": "Duplicate Product",
         "pinProduct": "Pin Product",
         "toggleSize": "Toggle Size",
@@ -256,8 +259,11 @@
         "weight": "Weight",
         "taxable": "Taxable",
         "inventoryManagement": "Inventory tracking",
+        "inventoryManagementLabel": "Register product in inventory system and track its status",
         "inventoryPolicy": "Deny when out of stock",
-        "lowInventoryWarningThreshold": "Warn @"
+        "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
+        "lowInventoryWarningThreshold": "Warn @",
+        "lowInventoryWarningThresholdLabel": "Warn customers that the product ends when the quantity reached the next threshold"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",
