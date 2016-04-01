@@ -6,31 +6,38 @@ Template.variantList.helpers({
     let inventoryTotal = 0;
     const variants = ReactionProduct.getTopVariants();
 
-    if (variants.length > 0) {
+    if (variants.length) {
       // calculate inventory total for all variants
-      for (let variant of variants) {
-        let qty = ReactionProduct.getVariantQuantity(variant);
+      variants.forEach(variant => {
+        const qty = ReactionProduct.getVariantQuantity(variant);
         if (typeof qty === "number") {
           inventoryTotal += qty;
         }
-      }
+      });
       // calculate percentage of total inventory of this product
-      for (let variant of variants) {
-        let qty = ReactionProduct.getVariantQuantity(variant);
+      variants.forEach(variant => {
+        const qty = ReactionProduct.getVariantQuantity(variant);
         variant.inventoryTotal = inventoryTotal;
-        variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
+        if (inventoryTotal) {
+          variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
+        } else {
+          // for cases when sellers doesn't use inventory we should always show
+          // "green" progress bar
+          variant.inventoryPercentage = 100;
+        }
         if (variant.title) {
           variant.inventoryWidth = parseInt(variant.inventoryPercentage -
             variant.title.length, 10);
         } else {
           variant.inventoryWidth = 0;
         }
-      }
+      });
       // sort variants in correct order
       variants.sort((a, b) => a.index - b.index);
 
       return variants;
     }
+    return [];
   },
   childVariants: function () {
     const childVariants = [];
