@@ -264,7 +264,7 @@
         "inventoryPolicy": "Deny when out of stock",
         "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
         "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "Warn customers that the product ends when the quantity reached the next threshold"
+        "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",
