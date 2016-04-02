@@ -199,17 +199,20 @@ Template.productDetail.events({
       template.$(".title-edit-input").focus();
     }
     const variants = ReactionProduct.getVariants(self._id);
-    for (let variant of variants) {
-      let index = _.indexOf(variants, variant);
+    variants.forEach((variant, index) => {
       if (!variant.title) {
         errorMsg +=
           `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
       }
-      if (!variant.price) {
-        errorMsg +=
-          `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
+      // if top variant has children, it is not necessary to check its price
+      if (variant.ancestors.length === 1 && !ReactionProduct.checkChildVariants(variant._id) ||
+        variant.ancestors.length !== 1) {
+        if (!variant.price) {
+          errorMsg +=
+            `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
+        }
       }
-    }
+    });
     if (errorMsg.length > 0) {
       Alerts.inline(errorMsg, "warning", {
         placement: "productManagement",
