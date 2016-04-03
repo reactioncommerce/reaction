@@ -142,15 +142,19 @@ Template.productGrid.helpers({
       return 0;
     }
 
-    // we are passing `type`, because in case when we turn back from PDP
+    // we are passing `ancestors: []`, because in case when we turn back from PDP
     // for a moment we still subscribed to variants too, and we will get an error
     // because of it, because our `productGrid` component can't work with variants
     // objects.
-    // In future we could add more type to this list
+    //
     // Also, we it is possible to change this selector to the following:
-    // `ancestors: []`
+    // `type: { $in: ["simple"] }`, but I found this way is not kind to package
+    // creators, because to specify they new product type, they will need to change
+    // this file, which broke another piece of compatibility with `reaction`
     let gridProducts = ReactionCore.Collections.Products.find({
-      type: { $in: ["simple"] }
+      ancestors: []
+      // keep this, as an example
+      // type: { $in: ["simple"] }
     }).fetch();
     const products = gridProducts.sort(compare);
     Template.instance().products = products;
