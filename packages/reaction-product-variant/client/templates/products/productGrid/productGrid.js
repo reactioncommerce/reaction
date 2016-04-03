@@ -142,7 +142,16 @@ Template.productGrid.helpers({
       return 0;
     }
 
-    let gridProducts = ReactionCore.Collections.Products.find({}).fetch();
+    // we are passing `type`, because in case when we turn back from PDP
+    // for a moment we still subscribed to variants too, and we will get an error
+    // because of it, because our `productGrid` component can't work with variants
+    // objects.
+    // In future we could add more type to this list
+    // Also, we it is possible to change this selector to the following:
+    // `ancestors: []`
+    let gridProducts = ReactionCore.Collections.Products.find({
+      type: { $in: ["simple"] }
+    }).fetch();
     const products = gridProducts.sort(compare);
     Template.instance().products = products;
     return products;
