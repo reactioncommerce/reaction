@@ -959,7 +959,7 @@ describe("core product methods", function () {
     );
 
     it(
-      "should not publish product when missing even one variant price",
+      "should not publish product when missing even one of child variant price",
       function (done) {
         let product = faker.reaction.products.add();
         const isVisible = product.isVisible;
@@ -989,6 +989,11 @@ describe("core product methods", function () {
 
         return done();
       }
+    );
+
+    it(
+      "should not publish product when top variant has no children and no price",
+      function (done) { return done(); }
     );
 
     it(
