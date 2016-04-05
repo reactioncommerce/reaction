@@ -301,7 +301,7 @@ Meteor.methods({
    * cloning
    * @param {String} variantId - the variantId that we're cloning
    * @todo rewrite @description
-   * @return {String} - cloned variant _id
+   * @return {Array} - list with cloned variants _ids
    */
   "products/cloneVariant": function (productId, variantId) {
     check(productId, String);
@@ -333,7 +333,7 @@ Meteor.methods({
     // @link http://underscorejs.org/#sortBy
     const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
 
-    sortedVariants.map(variant => {
+    return sortedVariants.map(variant => {
       const oldId = variant._id;
       let type = "child";
       let clone = {};
