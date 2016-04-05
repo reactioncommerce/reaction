@@ -17,12 +17,11 @@ _.extend(ReactionCore, {
     // Jobs.setLogStream(process.stdout);
     ReactionRegistry.loadPackages();
     // process imports from packages and any hooked imports
-    ReactionCore.Log.info("Flushing db and creating default admin user");
+    ReactionImport.flush();
     // timing is important, packages are rqd
-    // for initial permissions configuration.
-    ReactionImport.flush(null);
-    // hook after init finished
+    // for initilial permissions configuration.
     ReactionRegistry.createDefaultAdminUser();
+    // hook after init finished
     ReactionCore.Hooks.Events.run("afterCoreInit", this);
     return true;
   },
@@ -31,7 +30,7 @@ _.extend(ReactionCore, {
    * server permissions checks
    * hasPermission exists on both the server and the client.
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} userId - userId, defaults to Meteor.userId()
+   * @param {String} checkUserId - userId, defaults to Meteor.userId()
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
