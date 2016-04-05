@@ -73,9 +73,9 @@ Template.variantForm.events({
     Meteor.call("products/createVariant", template.data._id);
   },
   "click .btn-remove-variant": function () {
-    let title = this.title || "this variant";
-    if (confirm("Are you sure you want to delete " + title)) {
-      let id = this._id;
+    const title = this.title || i18next.t("productDetailEdit.thisVariant");
+    if (confirm(i18next.t("productDetailEdit.removeVariantConfirm", { title }))) {
+      const id = this._id;
       Meteor.call("products/deleteVariant", id, function (error, result) {
         if (result && ReactionProduct.selectedVariantId() === id) {
           return ReactionProduct.setCurrentVariant(null);

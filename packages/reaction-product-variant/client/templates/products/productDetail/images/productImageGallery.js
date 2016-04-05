@@ -127,6 +127,10 @@ Template.productImageGallery.onRendered(function () {
 Template.productImageGallery.events({
   "mouseenter .gallery > li": function (event) {
     event.stopImmediatePropagation();
+    // This is a workaround for an issue with FF refiring mouseover when the contents change
+    if (event.relatedTarget === null) {
+      return undefined;
+    }
     if (!ReactionCore.hasPermission("createProduct")) {
       let first = $(".gallery li:nth-child(1)");
       let target = $(event.currentTarget);
@@ -140,6 +144,7 @@ Template.productImageGallery.events({
         });
       }
     }
+    return undefined;
   },
   "click .remove-image": function () {
     const mediaId = this._id;

@@ -177,7 +177,7 @@
         "hideBarcodes": "Скрыть штрих-коды",
         "options": "Варианты",
         "addToCart": "Добавить в корзину",
-        "chooseOptions": "Пожалуйста выберите вариант прежде чем добавить товар в корзину",
+        "chooseOptions": "Пожалуйста, выберите вариант прежде чем добавить товар в корзину",
         "outOfStock": "Извините, этого товара нет в наличии",
         "productDeleteError": "Произошла ошибка во время удаления {{product}}.",
         "deleteErrorTheProduct": "товара",
@@ -213,12 +213,13 @@
         "createTag": "Create Tag"
       },
       "productDetailEdit": {
+        "editOption": "Редактировать вариант",
         "productSettings": "Настройки товара",
         "product": "Товар",
         "size": "Размер",
         "title": "Название товара",
         "pageTitle": "Название страницы товара",
-        "vendor": "Производитель",
+        "vendor": "Изготовитель",
         "description": "Добавьте описание товара",
         "facebookMsg": "Сообщение Facebook",
         "twitterMsg": "Сообщение Twitter",
@@ -226,10 +227,13 @@
         "googleplusMsg": "Сообщение Google+",
         "duplicateVariant": "Скопировать",
         "addVariantOption": "Добавить опцию",
-        "removeVariant": "Удалить опцию",
+        "removeVariant": "Удалить",
+        "removeVariantConfirm": "Вы уверены, что хотите удалить {{title}}?",
+        "thisVariant": "этот вариант",
+        "thisOption": "эту опцию",
         "duplicateProduct": "Скопировать товар",
         "pinProduct": "Закрепить товар",
-        "toggleSize": "Переключить размер",
+        "toggleSize": "Поменять размер",
         "deleteProduct": "Удалить товар",
         "deleteThisProduct": "Удалить этот товар?",
         "deleteSelectedProducts": "Удалить выбранные товары?",
@@ -249,11 +253,14 @@
         "weight": "Вес",
         "taxable": "Налогооблагаемый",
         "inventoryManagement": "Следить за кол-вом",
+        "inventoryManagementLabel": "Сделать товар складским и отслеживать его состояние",
         "inventoryPolicy": "Откл. при нуле",
-        "lowInventoryWarningThreshold": "Сообщить если меньше "
+        "inventoryPolicyLabel": "Не продавать вариант товара, когда его нет в наличие",
+        "lowInventoryWarningThreshold": "Предупреждать при",
+        "lowInventoryWarningThresholdLabel": "Предупреждать покупателей о том, что продукт заканчивается, когда количество достигло следующего порога"
       },
       "variantList": {
-        "moreOptions": "Есть еще варианты доступные для этого выбора.",
+        "moreOptions": "Для этого варианта доступны следующие опции:",
         "createVariant": "Создать вариант"
       },
       "gridPackage": {
