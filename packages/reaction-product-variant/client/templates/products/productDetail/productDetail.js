@@ -103,7 +103,7 @@ Template.productDetail.events({
       if (quantity < 1) {
         quantity = 1;
       }
-      if (currentVariant.inventoryPolicy && quantity > currentVariant.inventoryQuantity) {
+      if (currentVariant.inventoryManagement && quantity > currentVariant.inventoryQuantity) {
         qtyField.val(currentVariant.inventoryQuantity);
       }
     }
