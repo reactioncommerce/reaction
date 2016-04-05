@@ -1,14 +1,24 @@
 Package.describe({
   summary: "Reaction Commerce Core",
   name: "reactioncommerce:core",
-  version: "0.12.1",
+  version: "0.13.0",
   documentation: "README.md"
 });
 
 Npm.depends({
   "node-geocoder": "3.0.0",
   "lodash.merge": "4.3.2",
-  "lodash.uniqwith": "4.2.0"
+  "lodash.uniqwith": "4.2.0",
+  "jquery.payment": "1.2.4",
+  "autosize": "3.0.15",
+  "swiper": "3.3.1",
+  "tether": "1.0.2",
+  "jquery-tags-input": "1.3.5",
+  "accounting": "0.4.1",
+  "money": "0.2.0",
+  "draggabilly": "1.2.0",
+  "imagesloaded": "4.1.0",
+  "autonumeric": "1.9.43"
 });
 
 Package.onUse(function (api) {
@@ -39,7 +49,6 @@ Package.onUse(function (api) {
   api.use("service-configuration");
   api.use("amplify@1.0.0");
   api.use("mdg:validated-method@1.0.2");
-  api.use("react-template-helper@0.2.6");
 
   // meteor authentication packages
   api.use("oauth-encryption");
@@ -47,10 +56,10 @@ Package.onUse(function (api) {
   api.use("accounts-password");
 
   // community packages
-  api.use("mquandalle:bower@1.5.2_1");
+  // api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.3.4");
   api.use("reactioncommerce:reaction-logger@0.1.0");
-  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-collections@2.1.0");
   api.use("reactioncommerce:reaction-email-templates@0.1.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
@@ -77,24 +86,24 @@ Package.onUse(function (api) {
   api.imply("momentjs:moment");
 
   // reaction core dependencies
-  api.addFiles("lib/bower.json", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/mouse.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/position.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/autocomplete.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/sortable.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/draggable.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/droppable.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/effect.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/effect-slide.js", "client");
-  api.addFiles("lib/bower/jquery.ui/ui/menu.js", "client");
-  api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
-  api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
-  api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
-  api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
-  api.addFiles("lib/css/jquery-ui.css", "client");
-  api.addFiles("lib/geocoder.js", ["server"]);
+  // api.addFiles("lib/bower.json", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/mouse.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/position.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/autocomplete.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/sortable.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/draggable.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/droppable.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/effect.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/effect-slide.js", "client");
+  // api.addFiles("lib/bower/jquery.ui/ui/menu.js", "client");
+  // api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
+  // api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
+  // api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
+  // api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
+  // api.addFiles("lib/css/jquery-ui.css", "client");
+  // api.addFiles("lib/geocoder.js", ["server"]);
 
   // exports
   api.addFiles("common/global.js");
@@ -173,9 +182,9 @@ Package.onTest(function (api) {
 
   // reaction core
   api.use("reactioncommerce:reaction-checkout@1.0.0");
-  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-collections@2.1.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");

@@ -7,24 +7,24 @@ Package.describe({
 
 Npm.depends({
   "classnames": "2.2.3",
-  "react-textarea-autosize": "3.3.0",
-  "react-color": "1.3.6",
   "sortablejs": "1.4.2",
-  "react-dom": "0.14.7",
   "postcss": "5.0.14",
   "postcss-js": "0.1.1",
   "autoprefixer": "6.3.1",
   "css-annotation": "0.6.2",
   "tether-drop": "1.4.2",
-  "tether-tooltip": "1.2.0"
+  "tether-tooltip": "1.2.0",
+  "react-textarea-autosize": "3.3.0",
+  "react-color": "1.3.6"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
   api.use("mongo");
+  api.use("ecmascript");
   api.use("blaze-html-templates");
   api.use("session");
   api.use("jquery");
@@ -39,16 +39,16 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // Community Packages
-  api.use("react@0.1.10");
-  api.use("react-template-helper@0.2.6");
-  api.use("cosmos:browserify@0.9.3");
+  // api.use("react@0.14.7");
+  // api.use("react-template-helper@0.2.7");
+  // api.use("react-meteor-data@0.2.7");
 
   // meteor add-on packages
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-schemas@2.0.3");
 
   api.addFiles("common/global.js", ["client", "server"]);
-  api.addFiles("lib/client.browserify.js", "client");
+  api.addFiles("lib/imports.js", "client");
 
   api.addFiles("client/helpers/helpers.js", "client");
 
@@ -56,7 +56,7 @@ Package.onUse(function (api) {
 
   api.addFiles("client/components/icon/icon.jsx", "client");
 
-  api.addFiles("client/components/button/button.jsx", "client");
+  // api.addFiles("client/components/button/button.jsx", "client");
   api.addFiles("client/components/button/button.html", "client");
   api.addFiles("client/components/button/button.js", "client");
   api.addFiles("client/components/button/button.less", "client");
@@ -83,25 +83,25 @@ Package.onUse(function (api) {
   api.addFiles("client/components/popover/popover.less", "client");
   api.addFiles("client/components/tooltip/tooltip.less", "client");
 
-  api.addFiles("client/components/textfield/textfield.jsx", "client");
+  // api.addFiles("client/components/textfield/textfield.jsx", "client");
   api.addFiles("client/components/textfield/textfield.html", "client");
   api.addFiles("client/components/textfield/textfield.less", "client");
   api.export("TextField");
 
-  api.addFiles("client/components/metadata/metadata.jsx", "client");
+  // api.addFiles("client/components/metadata/metadata.jsx", "client");
   api.addFiles("client/components/metadata/metadata.less", "client");
 
   api.addFiles("client/components/select/select.html", "client");
   api.addFiles("client/components/select/select.js", "client");
   api.addFiles("client/components/select/select.less", "client");
 
-  api.addFiles("client/components/media/media.jsx", "client");
+  // api.addFiles("client/components/media/media.jsx", "client");
   api.addFiles("client/components/media/media.less", "client");
 
-  api.addFiles("client/components/tags/tag.jsx", "client");
+  // api.addFiles("client/components/tags/tag.jsx", "client");
   api.addFiles("client/components/tags/tagItem.html", "client");
   api.addFiles("client/components/tags/tagItem.js", "client");
-  api.addFiles("client/components/tags/tags.jsx", "client");
+  // api.addFiles("client/components/tags/tags.jsx", "client");
   api.addFiles("client/components/tags/tagList.html", "client");
   api.addFiles("client/components/tags/tagList.js", "client");
   api.addFiles("client/components/tags/tags.less", "client");
@@ -130,7 +130,8 @@ Package.onUse(function (api) {
   api.addFiles("server/register.js", "server");
 
   // Exports
-  api.imply("cosmos:browserify");
+  // api.imply("cosmos:browserify");
+  api.export("React");
   api.export("ReactionUI");
   api.export("Sortable");
 });

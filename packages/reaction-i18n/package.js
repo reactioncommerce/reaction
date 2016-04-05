@@ -14,7 +14,7 @@ Npm.depends({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
@@ -35,10 +35,10 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // reaction packages
-  api.use("reactioncommerce:reaction-collections@2.0.1");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:reaction-collections@2.1.0");
+  api.use("reactioncommerce:core@0.13.0");
   // temp until Meteor 1.3 and we switch to modules
-  api.use("cosmos:browserify@0.10.0", "client");
+  // api.use("cosmos:browserify@0.10.0", "client");
 
   // server
   api.addFiles("server/import.js", "server");
@@ -46,7 +46,7 @@ Package.onUse(function (api) {
   api.addFiles("server/methods.js", "server");
 
   // export client i18next
-  api.addFiles("client/i18next.browserify.js", "client");
+  api.addFiles("client/i18next.js", "client");
 
   // register reaction package
   api.addFiles("server/register.js", "server");
@@ -107,9 +107,9 @@ Package.onTest(function (api) {
 
   // reaction core
   api.use("reactioncommerce:reaction-i18n@2.0.0");
-  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-collections@2.1.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");

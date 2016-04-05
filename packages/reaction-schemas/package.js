@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
   api.use("random");
   api.use("underscore");
   api.use("ecmascript");

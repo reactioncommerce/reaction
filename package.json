@@ -12,14 +12,29 @@
   "directories": {
     "test": "tests"
   },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "reaction@reactioncommerce.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/reactioncommerce/reaction.git"
   },
-  "author": "Reaction Commerce",
-  "license": "GPLv3",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/reaction"
+  "dependencies": {
+    "assert": "^1.3.0",
+    "bunyan": "^1.8.0",
+    "bunyan-format": "0.2.1",
+    "bunyan-loggly": "0.0.5",
+    "emitter": "0.0.5",
+    "events": "^1.1.0",
+    "stream": "0.0.2",
+    "util": "^0.10.3"
+  },
+  "eslintConfig": {
+    "extends": "airbnb"
+  }
 }

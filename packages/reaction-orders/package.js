@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
@@ -30,7 +30,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // reaction packages
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   // register packages
   api.addFiles("server/register.js", "server");

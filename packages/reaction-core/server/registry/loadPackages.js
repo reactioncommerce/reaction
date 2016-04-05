@@ -1,5 +1,5 @@
-const merge = Npm.require("lodash.merge");
-const uniqWith = Npm.require("lodash.uniqwith");
+const merge = require("lodash.merge");
+const uniqWith = require("lodash.uniqwith");
 /**
  *  ReactionRegistry.loadPackages
  *  insert Reaction packages into registry

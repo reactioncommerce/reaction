@@ -6,7 +6,7 @@ Package.describe({
 
 Package.onUse(function (api) {
   // Works with meteor 1.2 and above
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // Using less only for this theme
   api.use("less");

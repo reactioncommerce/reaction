@@ -8,19 +8,18 @@ Package.describe({
 Package.registerBuildPlugin({
   name: "analyticsConfigurator",
   use: [
-    "underscore@1.0.3",
+    "underscore@1.0.6",
     "reactioncommerce:reaction-analytics-libs@1.1.0"
   ],
   sources: [
     "server/buildtools/analyticsSources.js",
     "server/buildtools/defaultConfiguration.js",
     "server/buildtools/analyticsConfigurator.js"
-  ],
-  npmDependencies: {}
+  ]
 });
 
 Package.on_use(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
   // meteor base packages
   api.use("meteor-base");
   api.use("mongo");
@@ -42,7 +41,7 @@ Package.on_use(function (api) {
   api.use("browser-policy-content", "server");
   api.use("reactioncommerce:reaction-router@1.1.0");
   api.use("reactioncommerce:reaction-layout@1.0.0");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-analytics-libs@1.1.0", "client");
 
   api.addFiles([
