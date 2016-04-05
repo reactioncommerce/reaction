@@ -20,6 +20,10 @@ ReactionCore.Schemas.Translation = new SimpleSchema({
     type: String,
     index: 1
   },
+  ns: {
+    type: String,
+    label: "Namespace"
+  },
   translation: {
     type: Object,
     blackbox: true

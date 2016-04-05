@@ -12,7 +12,7 @@ ReactionCore.registerPackage({
     label: "Inventory",
     description: "Inventory utilities",
     icon: "fa fa-building",
-    priority: 3,
+    priority: 1,
     container: "utilities",
     permissions: [{
       label: "Inventory",

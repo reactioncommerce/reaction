@@ -1,13 +1,10 @@
 // Import Variables
-@import "{reactioncommerce:core-theme}/lib/bootstrap/less/variables.less";
-@import "{reactioncommerce:core-theme}/default/variables.less";
-@import "{reactioncommerce:core-theme}/default/mixins/flexbox.less";
-@import "{reactioncommerce:core-theme}/default/mixins/rtl.less";
-
+@import "{reactioncommerce:reaction-ui}/client/styles/variables.less";
+@import "{reactioncommerce:reaction-ui}/client/styles/mixins.less";
 
 .rui.objectmap {
   padding: 10px;
-  border-bottom: 0;
+  border-bottom: 1px solid @border-color;
 }
 
 .rui.objectmap:last-child {
@@ -47,14 +44,14 @@
 }
 
 .rui.objectmap .rui.list-item label {
-  .flex(1 1 auto);
+  .flex(0 0 auto);
   margin: 0 10px 0 0;
   color: @brand-secondary-color;
   font-weight: normal;
 }
 
 .rui.objectmap .rui.list-item input {
-  border: none;
+  // border: none;
   padding: 2px;
 }
 

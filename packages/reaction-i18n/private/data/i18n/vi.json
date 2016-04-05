@@ -2,6 +2,7 @@
     {
         "language": "Vietnamese",
         "i18n": "vi",
+        "ns": "core",
         "translation": {
             "core": {
                 "accountsUI": {

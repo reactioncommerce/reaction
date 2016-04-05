@@ -244,3 +244,12 @@ ReactionProduct.getVariants = (id, type) => ReactionCore.getVariants(id ||
  */
 ReactionProduct.getTopVariants = id => ReactionCore.getTopVariants(id ||
   ReactionProduct.selectedProductId());
+
+/**
+ * getTag
+ * @summary This needed for naming `positions` object. Method could return `tag`
+ * route name or shop name as default name.
+ * @return {String} tag name or shop name
+ */
+ReactionProduct.getTag = () => ReactionCore.getCurrentTag() ||
+  ReactionCore.getShopName().toLowerCase();

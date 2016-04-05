@@ -67,8 +67,6 @@ ReactionCore.Schemas.ProductPosition = new SimpleSchema({
 ReactionCore.Schemas.ProductVariant = new SimpleSchema({
   _id: {
     type: String,
-    optional: true,
-    index: 1,
     label: "Variant ID"
   },
   ancestors: {
@@ -271,7 +269,7 @@ ReactionCore.Schemas.PriceRange = new SimpleSchema({
 ReactionCore.Schemas.Product = new SimpleSchema({
   _id: {
     type: String,
-    optional: true
+    label: "Product Id"
   },
   ancestors: {
     type: [String],
@@ -309,7 +307,8 @@ ReactionCore.Schemas.Product = new SimpleSchema({
     optional: true
   },
   positions: {
-    type: [ReactionCore.Schemas.ProductPosition],
+    type: Object, // ReactionCore.Schemas.ProductPosition
+    blackbox: true,
     optional: true
   },
   // Denormalized field: object with range string, min and max

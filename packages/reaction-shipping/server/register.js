@@ -14,7 +14,7 @@ ReactionCore.registerPackage({
       label: "Shipping",
       description: "Provide shipping rates",
       icon: "fa fa-truck",
-      priority: 2,
+      priority: 1,
       container: "core",
       workflow: "coreDashboardWorkflow",
       template: "shipping"

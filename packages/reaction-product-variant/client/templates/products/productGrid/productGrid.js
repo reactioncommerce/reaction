@@ -85,7 +85,7 @@ Template.productGrid.events({
     });
 
     ReactionCore.showActionView({
-      label: "Edit Product",
+      label: i18next.t("productDetailEdit.productSettings"),
       template: "productSettings",
       type: "product",
       data: {
@@ -102,52 +102,60 @@ Template.productGrid.helpers({
   products: function () {
     /*
      * take natural sort, sorting by updatedAt
-     * then resort using positions.position for this tag
+     * then resort using positions[currentTag].position for this tag
      * retaining natural sort of untouched items
      */
 
+    // we are caching `currentTag` or if we are not inside tag route, we will
+    // use shop name as `base` name for `positions` object
+    const currentTag = ReactionProduct.getTag();
+
     // function to compare and sort position
     function compare(a, b) {
-      if (a.position.position === b.position.position) {
-        let x = a.position.updatedAt;
-        let y = b.position.updatedAt;
+      // we need to check that fields exists
+      // todo we could remove part of this checks of `positions` and `base`
+      // settings will be required fields
+      if (a.positions && a.positions[currentTag] &&
+        b.positions && b.positions[currentTag]) {
+        if (a.positions[currentTag].position === b.positions[currentTag].position) {
+          const x = a.positions[currentTag].createdAt;
+          const y = b.positions[currentTag].createdAt;
 
-        if (x > y) {
-          return -1;
-        } else if (x < y) {
-          return 1;
-        }
-
-        return 0;
-      }
-      return a.position.position - b.position.position;
-    }
-
-    let gridProducts = ReactionCore.Collections.Products.find({}).fetch();
-
-    for (let index in gridProducts) {
-      if ({}.hasOwnProperty.call(gridProducts, index)) {
-        let gridProduct = gridProducts[index];
-        if (gridProduct.positions) {
-          let _results = [];
-          for (let position of gridProduct.positions) {
-            if (position.tag === ReactionCore.getCurrentTag()) {
-              _results.push(position);
-            }
-            gridProducts[index].position = _results[0];
+          if (x > y) {
+            return -1;
+          } else if (x < y) {
+            return 1;
           }
+
+          return 0;
         }
-        if (!gridProduct.position) {
-          gridProducts[index].position = {
-            position: 0,
-            weight: 0,
-            pinned: false,
-            updatedAt: gridProduct.updatedAt
-          };
-        }
+        return a.positions[currentTag].position - b.positions[currentTag].position;
+      } // if some of them not exist, we need to comprare products `updatedAt`
+      const x = a.createdAt;
+      const y = b.createdAt;
+
+      if (x > y) {
+        return -1;
+      } else if (x < y) {
+        return 1;
       }
+      return 0;
     }
 
+    // we are passing `ancestors: []`, because in case when we turn back from PDP
+    // for a moment we still subscribed to variants too, and we will get an error
+    // because of it, because our `productGrid` component can't work with variants
+    // objects.
+    //
+    // Also, we it is possible to change this selector to the following:
+    // `type: { $in: ["simple"] }`, but I found this way is not kind to package
+    // creators, because to specify they new product type, they will need to change
+    // this file, which broke another piece of compatibility with `reaction`
+    let gridProducts = ReactionCore.Collections.Products.find({
+      ancestors: []
+      // keep this, as an example
+      // type: { $in: ["simple"] }
+    }).fetch();
     const products = gridProducts.sort(compare);
     Template.instance().products = products;
     return products;

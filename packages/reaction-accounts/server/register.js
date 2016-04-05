@@ -58,7 +58,7 @@ ReactionCore.registerPackage({
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",
       dashboardControls: "",
-      dashboardHeaderControls: "accountsDashboardControls",
+      dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
     }
   }]

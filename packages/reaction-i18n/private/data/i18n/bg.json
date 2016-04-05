@@ -1,6 +1,7 @@
 [{
 	"language": "Български",
 	"i18n": "bg",
+	"ns": "core",
 	"translation": {
 		"core": {
 			"languages": {

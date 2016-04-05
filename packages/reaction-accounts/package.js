@@ -50,7 +50,7 @@ Package.onUse(function (api) {
 
   // Helpers
   api.addFiles("client/helpers/util.js", ["client", "server"]);
-  api.addFiles("client/helpers/validation.js", "client");
+  api.addFiles("client/helpers/validation.js", ["client", "server"]);
   api.addFiles("client/helpers/helpers.js", "client");
   api.addFiles("client/helpers/subscriptions.js", "client");
 
@@ -126,9 +126,11 @@ Package.onTest(function (api) {
 
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-accounts");
+  api.use("reactioncommerce:reaction-i18n@2.0.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
 
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
   api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
+  api.addFiles("tests/jasmine/server/integration/validation.js", "server");
 });

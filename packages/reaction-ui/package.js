@@ -35,12 +35,12 @@ Package.onUse(function (api) {
   api.use("ejson");
   api.use("spacebars");
   api.use("check");
-  api.use("react");
-  api.use("react-template-helper");
   api.use("less");
   api.use("reactive-dict");
 
   // Community Packages
+  api.use("react@0.1.10");
+  api.use("react-template-helper@0.2.6");
   api.use("cosmos:browserify@0.9.3");
 
   // meteor add-on packages

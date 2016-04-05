@@ -86,19 +86,6 @@ Template.coreAdminLayout.helpers({
     return false;
   },
 
-  // shortcutButtonProps(data) {
-  //   return {
-  //     type: "link",
-  //     href: data.route,
-  //     // label: data.label,
-  //     // i18nLabel: data.i18nKeyLabel,
-  //     //active
-  //     icon: data.icon,
-  //     tooltip: i18next.t(data.i18nKeyLabel, data.i18n),
-  //     tooltipPosition: "left middle"
-  //   }
-  // },
-
   packageButtons() {
     const routeName = ReactionRouter.getRouteName();
 
@@ -167,36 +154,36 @@ Template.coreAdminLayout.helpers({
   }
 });
 
-Template.coreAdminLayout.events({
-  /**
-   * Submit sign up form
-   * @param  {Event} event - jQuery Event
-   * @param  {Template} template - Blaze Template
-   * @return {void}
-   */
-  "click .admin-controls-quicklinks a, click .admin-controls-quicklinks button"(event) {
-    if (this.name === "createProduct") {
-      event.preventDefault();
-      event.stopPropagation();
-
-      if (!this.dropInstance) {
-        this.dropInstance = new Drop({
-          target: event.target,
-          content: "",
-          constrainToWindow: true,
-          classes: "drop-theme-arrows",
-          position: "right center"
-        });
-
-        Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);
-      }
-
-      this.dropInstance.open();
-    } else if (this.route) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      ReactionRouter.go(this.name);
-    }
-  }
-});
+// Template.coreAdminLayout.events({
+//   /**
+//    * Submit sign up form
+//    * @param  {Event} event - jQuery Event
+//    * @param  {Template} template - Blaze Template
+//    * @return {void}
+//    */
+//   "click .admin-controls-quicklinks a, click .admin-controls-quicklinks button"(event) {
+//     if (this.name === "createProduct") {
+//       event.preventDefault();
+//       event.stopPropagation();
+//
+//       if (!this.dropInstance) {
+//         this.dropInstance = new Drop({
+//           target: event.target,
+//           content: "",
+//           constrainToWindow: true,
+//           classes: "drop-theme-arrows",
+//           position: "right center"
+//         });
+//
+//         Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);
+//       }
+//
+//       this.dropInstance.open();
+//     } else if (this.route) {
+//       event.preventDefault();
+//       event.stopPropagation();
+//
+//       ReactionRouter.go(this.name);
+//     }
+//   }
+// });

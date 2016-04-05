@@ -66,6 +66,7 @@ const filters = new SimpleSchema({
 Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, filters));
+  check(sort, Match.OneOf(undefined, Object));
 
   let shopAdmin;
   const shop = ReactionCore.getCurrentShop();
@@ -77,7 +78,10 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
   if (shop) {
     let selector = {
-      ancestors: { $exists: true, $eq: [] },
+      ancestors: {
+        $exists: true,
+        $eq: []
+      },
       shopId: shop._id
     };
 
@@ -169,12 +173,18 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
       // filter with a price range
       if (productFilters["price.min"] && productFilters["price.max"]) {
+        const pmin = parseFloat(productFilters["price.min"]);
+        const pmax = parseFloat(productFilters["price.max"]);
+        // where product A has min 12.99 variant and a 19.99 variant
+        // price.min=12.99&price.max=19.98
+        // should return product A
         _.extend(selector, {
-          $and: [ {
-            "price.max": { $lte: parseFloat(productFilters["price.max"])}
-          }, {
-            "price.min": { $gte: parseFloat(productFilters["price.min"])}
-          }]
+          "price.min": {
+            $lt: pmax
+          },
+          "price.max": {
+            $gt: pmin
+          }
         });
       }
 
@@ -198,12 +208,13 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
       // filter with a weight range
       if (productFilters["weight.min"] && productFilters["weight.max"]) {
+        const wmin = parseFloat(productFilters["weight.min"]);
+        const wmax = parseFloat(productFilters["weight.max"]);
         _.extend(selector, {
-          $and: [ {
-            "weight.max": { $lte: parseFloat(productFilters["weight.max"])}
-          }, {
-            "weight.min": { $gte: parseFloat(productFilters["weight.min"])}
-          }]
+          weight: {
+            $lt: wmax,
+            $gt: wmin
+          }
         });
       }
     }

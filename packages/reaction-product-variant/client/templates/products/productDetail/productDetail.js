@@ -1,9 +1,11 @@
 Template.productDetail.onCreated(function () {
+  this.subscribe("Tags");
   this.productId = () => ReactionRouter.getParam("handle");
   this.variantId = () => ReactionRouter.getParam("variantId");
   this.autorun(() => {
-    this.subscribe("Product", this.productId());
-    this.subscribe("Tags");
+    if (this.productId()) {
+      this.subscribe("Product", this.productId());
+    }
   });
 });
 
@@ -43,7 +45,7 @@ Template.productDetail.helpers({
       if (childVariants.length === 0) {
         return current.price;
       }
-      return  ReactionProduct.getProductPriceRange().range;
+      return ReactionProduct.getProductPriceRange().range;
     }
   },
   fieldComponent: function () {
@@ -101,7 +103,7 @@ Template.productDetail.events({
       if (quantity < 1) {
         quantity = 1;
       }
-      if (currentVariant.inventoryPolicy && quantity > currentVariant.inventoryQuantity) {
+      if (currentVariant.inventoryManagement && quantity > currentVariant.inventoryQuantity) {
         qtyField.val(currentVariant.inventoryQuantity);
       }
     }
@@ -197,15 +199,20 @@ Template.productDetail.events({
       template.$(".title-edit-input").focus();
     }
     const variants = ReactionProduct.getVariants(self._id);
-    for (let variant of variants) {
-      let index = _.indexOf(variants, variant);
+    variants.forEach((variant, index) => {
       if (!variant.title) {
-        errorMsg += `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
+        errorMsg +=
+          `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
       }
-      if (!variant.price) {
-        errorMsg += `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
+      // if top variant has children, it is not necessary to check its price
+      if (variant.ancestors.length === 1 && !ReactionProduct.checkChildVariants(variant._id) ||
+        variant.ancestors.length !== 1) {
+        if (!variant.price) {
+          errorMsg +=
+            `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
+        }
       }
-    }
+    });
     if (errorMsg.length > 0) {
       Alerts.inline(errorMsg, "warning", {
         placement: "productManagement",

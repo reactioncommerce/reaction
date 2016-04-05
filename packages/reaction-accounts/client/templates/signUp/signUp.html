@@ -18,21 +18,23 @@
 
     <div class="form-group form-group-email {{hasError messages.errors.email}}">
       <label for="email-{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email</label>
-      <input id="email-{{uniqueId}}" class="form-control login-input-email" type="email" value="{{credentials.email}}"> {{#if hasError messages.errors.email}}
-      <span class="help-block">
-        {{messages.errors.email}}
-      </span>
+      <input id="email-{{uniqueId}}" class="form-control login-input-email" type="email" value="{{credentials.email}}">
+      {{#if hasError messages.errors.email}}
+        <span class="help-block">
+          {{i18n messages.errors.email.i18nKeyReason messages.errors.email.reason}}
+        </span>
       {{/if}}
     </div>
 
     <div class="form-group form-group-password {{hasError messages.errors.password }}">
       <label for="password-{{uniqueId}}" class="control-label" data-i18n="accountsUI.password">Password</label>
-      <input id="password-{{uniqueId}}" class="form-control login-input-password" type="password" value="{{credentials.password}}"> {{#if hasError messages.errors.password}}
-      <span class="help-block">
-        {{#each messages.errors.password}}
-        <p>{{reason}}</p>
-        {{/each}}
-      </span>
+      <input id="password-{{uniqueId}}" class="form-control login-input-password" type="password" value="{{credentials.password}}">
+      {{#if hasError messages.errors.password}}
+        <span class="help-block">
+          {{#each messages.errors.password}}
+          <p>{{i18n i18nKeyReason reason}}</p>
+          {{/each}}
+        </span>
       {{/if}}
     </div>
 

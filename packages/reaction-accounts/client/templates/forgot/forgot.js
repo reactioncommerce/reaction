@@ -17,7 +17,7 @@ Template.loginFormResetPasswordView.events({
     templateInstance.formMessages.set({});
 
     if (validatedEmail !== true) {
-      errors.email = validatedEmail.reason;
+      errors.email = validatedEmail;
     }
 
     if ($.isEmptyObject(errors) === false) {

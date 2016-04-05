@@ -105,11 +105,11 @@ ReactionImport.identify = function (document) {
 /**
  * @summary Commit the buffer for a given collection to the database.
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
+ * @param {function} callback Function to execute after flush succeeded
  * @returns {undefined}
  */
 ReactionImport.flush = function (collection) {
   check(collection, Match.Optional(Mongo.Collection));
-
   if (!collection) {
     for (let name of Object.keys(this._buffers)) {
       this.flush(ReactionCore.Collections[name]);
@@ -239,7 +239,10 @@ ReactionImport.product = function (key, product, parent) {
 ReactionImport.package = function (pkg, shopId) {
   check(pkg, Object);
   check(shopId, String);
-  const key = {name: pkg.name, shopId: shopId};
+  const key = {
+    name: pkg.name,
+    shopId: shopId
+  };
   return this.object(ReactionCore.Collections.Packages, key, pkg);
 };
 
@@ -250,7 +253,8 @@ ReactionImport.package = function (pkg, shopId) {
  * @returns {Object} updated translation buffer
  */
 ReactionImport.translation = function (key, translation) {
-  return this.object(ReactionCore.Collections.Translations, key, translation);
+  const modifiedKey = Object.assign(key, { ns: translation.ns });
+  return this.object(ReactionCore.Collections.Translations, modifiedKey, translation);
 };
 
 //
@@ -265,6 +269,22 @@ ReactionImport.translation = function (key, translation) {
  */
 ReactionImport.shop = function (key, shop) {
   return this.object(ReactionCore.Collections.Shops, key, shop);
+};
+
+/**
+ * @summary store a shop layout in the import buffer
+ * @param {Array} layout - an array of layouts to be added to shop
+ * @param {String} shopId shopId
+ * @returns {Object} this shop
+ */
+ReactionImport.layout = function (layout, shopId) {
+  const key = {
+    _id: shopId
+  };
+  return this.object(ReactionCore.Collections.Shops, key, {
+    "_id:": shopId,
+    "layout": layout
+  });
 };
 
 /**

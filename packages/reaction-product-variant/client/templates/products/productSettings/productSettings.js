@@ -6,15 +6,14 @@ Template.productSettings.helpers({
   },
   itemWeightActive: function (weight) {
     weightDependency.depend();
-
+    const tag = ReactionProduct.getTag();
     for (let product of this.products) {
-      let position = product.position || {};
-      let currentWeight = position.weight || 0;
+      let positions = product.positions && product.positions[tag] || {};
+      let currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
         return "active";
       }
     }
-
     return "";
   }
 });
@@ -51,8 +50,9 @@ Template.productSettingsGridItem.helpers({
   },
   weightClass: function () {
     weightDependency.depend();
-    let position = this.position || {};
-    let weight = position.weight || 0;
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    const weight = positions.weight || 0;
     switch (weight) {
     case 1:
       return "product-medium";
@@ -65,16 +65,16 @@ Template.productSettingsGridItem.helpers({
 
   isMediumWeight: function () {
     weightDependency.depend();
-
-    let position = this.position || {};
-    let weight = position.weight || 0;
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    const weight = positions.weight || 0;
     return weight === 1;
   },
   isLargeWeight: function () {
     weightDependency.depend();
-
-    let position = this.position || {};
-    let weight = position.weight || 0;
+    const tag = ReactionProduct.getTag();
+    const positions = this.positions && this.positions[tag] || {};
+    const weight = positions.weight || 0;
     return weight === 3;
   },
   shouldShowAdditionalImages: function () {
@@ -105,21 +105,24 @@ Template.productSettings.events({
   },
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
-
-    for (product of this.products) {
+    const tag = ReactionProduct.getTag();
+    for (let product of this.products) {
       let weight = $(event.currentTarget).data("event-data") || 0;
-      let position = {
-        tag: ReactionCore.getCurrentTag(),
+      let positions = {
         weight: weight,
         updatedAt: new Date()
       };
-
-      product.position = position;
-
-      Meteor.call("products/updateProductPosition", product._id, position,
-        function () {
-          weightDependency.changed();
-        });
+      Meteor.call("products/updateProductPosition", product._id, positions, tag,
+        (error, result) => {
+          if (error) {
+            ReactionCore.Log.warn(error);
+            throw new Meteor.Error(403, error);
+          }
+          if (result) {
+            weightDependency.changed();
+          }
+        }
+      );
     }
   }
 });

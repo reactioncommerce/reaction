@@ -4,27 +4,25 @@
       <label class="like-button hidden" for="select-product-{{_id}}">
         <input type="checkbox" name="selectProduct" value="{{_id}}" id="select-product-{{_id}}" checked={{checked}}>
       </label>
-      <button
-        class="publish-product"
-        data-toggle="tooltip"
-        title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
-        data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
-        >
-        {{#if isVisible}}
-          <i class="fa fa-eye"></i>
-        {{else}}
-          <i class="fa fa-eye-slash"></i>
-        {{/if}}
-      </button>
 
-      <button
-        class="admin-controls-open"
-        data-toggle="dropdown"
-        title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
-        data-original-title="{{i18n 'productDetailEdit.moreOptions' 'More Options'}}"
-        data-event-action="selectSingleProduct">
-        <i class="fa fa-gear"></i>
-      </button>
+      {{> button
+        className="publish-product"
+        tooltip="Publish"
+        i18nKeyTooltip="productDetailEdit.publish"
+        toggle=true
+        toggleOn=isVisible
+        icon="eye-slash"
+        onIcon="eye"
+        data-event-action="toggleProductVisibility"
+      }}
+
+      {{> button
+        className="admin-controls-open"
+        tooltip="More Options"
+        i18nKeyTooltip="productDetailEdit.moreOptions"
+        icon="gear"
+        data-event-action="selectSingleProduct"
+      }}
     </div>
   {{/if}}
 </template>

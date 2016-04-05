@@ -2,7 +2,7 @@
 
 # install dependencies
 apt-get update
-apt-get -qq -y install --no-install-recommends ca-certificates curl git
+apt-get -qq -y install --no-install-recommends ca-certificates bzip2 curl git
 
 # install meteor
 curl --progress-bar --fail "https://d3sqy0vbqsdhku.cloudfront.net/packages-bootstrap/1.2.1/meteor-bootstrap-os.linux.x86_64.tar.gz" | tar -xzf - -C "/root" -o
@@ -19,7 +19,7 @@ cp -r --parents include/ /usr
 curl https://www.npmjs.com/install.sh | sh
 
 # install forever and phantomjs
-npm install -g forever phantomjs
+npm install -g forever phantomjs-prebuilt
 
 # build the meteor application
 cd /var/src
@@ -43,6 +43,6 @@ rm -rf /usr/bin/meteor
 rm -rf /root/.meteor
 
 # remove dependencies
-apt-get -qq -y purge ca-certificates curl git
+apt-get -qq -y purge ca-certificates curl git bzip2
 apt-get -qq -y autoremove
 rm -rf /var/lib/apt/lists/*

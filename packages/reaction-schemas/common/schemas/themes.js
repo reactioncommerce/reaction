@@ -4,7 +4,7 @@
  */
 
 ReactionCore.Schemas.Themes = new SimpleSchema({
-  theme: {
+  name: {
     type: String,
     index: true
   },
