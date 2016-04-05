@@ -8,17 +8,19 @@ Template.variantList.helpers({
 
     if (variants.length) {
       // calculate inventory total for all variants
-      variants.forEach(variant => {
-        const qty = ReactionProduct.getVariantQuantity(variant);
-        if (typeof qty === "number") {
-          inventoryTotal += qty;
+      for (let variant of variants) {
+        if (variant.inventoryManagement) {
+          let qty = ReactionProduct.getVariantQuantity(variant);
+          if (typeof qty === "number") {
+            inventoryTotal += qty;
+          }
         }
-      });
+      }
       // calculate percentage of total inventory of this product
-      variants.forEach(variant => {
-        const qty = ReactionProduct.getVariantQuantity(variant);
+      for (let variant of variants) {
+        let qty = ReactionProduct.getVariantQuantity(variant);
         variant.inventoryTotal = inventoryTotal;
-        if (inventoryTotal) {
+        if (variant.inventoryManagement && inventoryTotal) {
           variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
         } else {
           // for cases when sellers doesn't use inventory we should always show
@@ -31,7 +33,7 @@ Template.variantList.helpers({
         } else {
           variant.inventoryWidth = 0;
         }
-      });
+      }
       // sort variants in correct order
       variants.sort((a, b) => a.index - b.index);
 
