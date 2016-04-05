@@ -231,11 +231,11 @@ Meteor.methods({
   },
 
   /**
-   * orders/shipmentShipped
+   * orders/sendNotification
    *
-   * @summary trigger shipmentShipped status and workflow update
+   * @summary send order notification email
    * @param {Object} order - order object
-   * @return {Object} return workflow result
+   * @return {Boolean} email sent or not
    */
   "orders/sendNotification": function (order) {
     check(order, Object);
@@ -273,7 +273,8 @@ Meteor.methods({
           })
         });
       } catch (error) {
-        throw new Meteor.Error(403, "Unable to send shipment notification email.", error);
+        ReactionCore.Log.fatal("Unable to send notification email: " + error);
+        throw new Meteor.Error("error-sending-email", "Unable to send order notification email.", error);
       }
     }
   },
@@ -344,7 +345,7 @@ Meteor.methods({
       "shipping._id": shipment._id
     }, {
       $set: {
-        [`shipping.$.tracking`]: tracking
+        ["shipping.$.tracking"]: tracking
       }
     });
   },
