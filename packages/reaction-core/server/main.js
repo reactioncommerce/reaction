@@ -18,10 +18,11 @@ _.extend(ReactionCore, {
     ReactionRegistry.loadPackages();
     // process imports from packages and any hooked imports
     ReactionCore.Log.info("Flushing db and creating default admin user");
-    ReactionImport.flush(null, ReactionRegistry.createDefaultAdminUser);
+    ReactionImport.flush(null);
     // timing is important, packages are rqd
     // for initial permissions configuration.
     // hook after init finished
+    ReactionRegistry.createDefaultAdminUser();
     ReactionCore.Hooks.Events.run("afterCoreInit", this);
     return true;
   },
