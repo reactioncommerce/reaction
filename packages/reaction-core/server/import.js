@@ -105,11 +105,11 @@ ReactionImport.identify = function (document) {
 /**
  * @summary Commit the buffer for a given collection to the database.
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
+ * @param {function} callback Function to execute after flush succeeded
  * @returns {undefined}
  */
 ReactionImport.flush = function (collection) {
   check(collection, Match.Optional(Mongo.Collection));
-
   if (!collection) {
     for (let name of Object.keys(this._buffers)) {
       this.flush(ReactionCore.Collections[name]);

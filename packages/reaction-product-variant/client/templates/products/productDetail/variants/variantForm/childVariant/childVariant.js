@@ -32,11 +32,11 @@ Template.childVariantForm.events({
   "click #remove-child-variant": function (event) {
     event.stopPropagation();
     event.preventDefault();
-    let optionTitle = this.optionTitle || "this option";
-    if (confirm("Are you sure you want to delete " + optionTitle)) {
-      let id = this._id;
-      return Meteor.call("products/deleteVariant", id, function (error,
-        result) {
+    const title = this.optionTitle || i18next.t("productDetailEdit.thisOption");
+    if (confirm(i18next.t("productDetailEdit.removeVariantConfirm", { title }))) {
+      const id = this._id;
+      return Meteor.call("products/deleteVariant", id, function (error, result) {
+        // TODO why we have this on option remove?
         if (result && ReactionProduct.selectedVariantId() === id) {
           return ReactionProduct.setCurrentVariant(null);
         }

@@ -301,7 +301,7 @@ Meteor.methods({
    * cloning
    * @param {String} variantId - the variantId that we're cloning
    * @todo rewrite @description
-   * @return {String} - cloned variant _id
+   * @return {Array} - list with cloned variants _ids
    */
   "products/cloneVariant": function (productId, variantId) {
     check(productId, String);
@@ -333,7 +333,7 @@ Meteor.methods({
     // @link http://underscorejs.org/#sortBy
     const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
 
-    sortedVariants.map(variant => {
+    return sortedVariants.map(variant => {
       const oldId = variant._id;
       let type = "child";
       let clone = {};
@@ -1178,12 +1178,21 @@ Meteor.methods({
 
     if (typeof product === "object" && product.title.length > 1) {
       if (variants.length > 0) {
-        variants.map(variant => {
-          if (!(typeof variant.price === "number" && variant.price > 0 &&
-              typeof variant.title === "string" && variant.title.length > 1)) {
+        variants.forEach(variant => {
+          // if this is a top variant with children, we avoid it to check price
+          // because we using price of its children
+          if (variant.ancestors.length === 1 &&
+            !ReactionCore.getVariants(variant._id, "variant").length ||
+            variant.ancestors.length !== 1) {
+            if (!(typeof variant.price === "number" && variant.price > 0)) {
+              variantValidator = false;
+            }
+          }
+          // if variant has no title
+          if (typeof variant.title === "string" && !variant.title.length) {
             variantValidator = false;
           }
-          if (typeof optionTitle === "string" && !(optionTitle.length > 0)) {
+          if (typeof optionTitle === "string" && !optionTitle.length) {
             variantValidator = false;
           }
         });
