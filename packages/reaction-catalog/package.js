@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Catalog",
   name: "reactioncommerce:reaction-catalog",
-  version: "0.2.2",
+  version: "0.2.3",
   git: "https://github.com/reactioncommerce/reaction-catalog.git"
 });
 
