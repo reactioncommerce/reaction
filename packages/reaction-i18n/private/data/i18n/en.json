@@ -94,6 +94,9 @@
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
           "genericPaymentSettingsLabel": "Generic Payment Settings"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Profile"
         }
       },
       "accounts": {
@@ -544,6 +547,8 @@
         "with": "with",
         "checkoutAsGuest": "Checkout without user account",
         "role": "Role",
+        "yourOrders": "Your Orders",
+        "addressBook": "Address Book",
         "info": {
           "emailSent": "Email Sent",
           "emailVerified": "Email verified",
