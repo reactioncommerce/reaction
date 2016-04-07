@@ -12,6 +12,8 @@
           "dashboardLabel": "Dashboard",
           "ordersLabel": "Orders",
           "addProductLabel": "Add Product",
+          "addPageLabel": "Add Page",
+          "flatPagesLabel": "Flat pages",
           "accountsLabel": "Accounts"
         },
         "dashboard": {
@@ -38,6 +40,8 @@
           "coreDescription": "Reaction core shop configuration",
           "genericPaymentLabel": "Generic Payment",
           "genericPaymentDescription": "Generic Payment Method",
+          "flatPagesLabel": "Flat Pages",
+          "flatPagesDescription": "Easily add flat pages anywhere into Reaction",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internationalization utilities",
@@ -80,6 +84,7 @@
           "utilities": "Utilities"
         },
         "settings": {
+          "flatPagesLabel": "Flat Pages",
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
           "authorizenetSettingsLabel": "Authorize.net Settings",
@@ -611,6 +616,24 @@
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
+      },
+      "pageDetail": {
+        "pageManagement": "Page management",
+        "makeInvisible": "Make invisible",
+        "isNotVisible": "This page is not visible to customers.",
+        "makeItVisible": "You can make it visible",
+        "whenYouAreDone": "when you're done editing.",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "This is no the page you were looking for.",
+        "publishPageVisible": "is now visible",
+        "publishPageHidden": "is now hidden",
+        "noTitle": "No title"
+      },
+      "pageDetailEdit": {
+        "title": "Page title",
+        "pageTitle": "Page subtitle",
+        "content": "Add a page content",
+        "handle": "Add address of page"
       },
       "error": {
         "nameRequired": "Name is required.",

@@ -12,6 +12,8 @@
           "dashboardLabel": "Панель управления",
           "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
+          "addPageLabel": "Создать страницу",
+          "flatPagesLabel": "Простые страницы",
           "accountsLabel": "Пользователи"
         },
         "dashboard": {
@@ -36,6 +38,8 @@
           "coreDescription": "Базовые настройки Reaction",
           "genericPaymentLabel": "Образец платёжной системы",
           "genericPaymentDescription": "Тестирование платежей. Образец для портирования любых Платёжных систем",
+          "flatPagesLabel": "Простые страницы",
+          "flatPagesDescription": "Управление простыми страницами в Reaction",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация",
@@ -75,6 +79,7 @@
           "utilities": "Утилиты"
         },
         "settings": {
+          "flatPagesLabel": "Простые страницы",
           "accountSettingsLabel": "Настройки учетных записей",
           "addShopMemberLabel": "Добавить сотрудника",
           "authorizenetSettingsLabel": "Настройки Authorize.net",
@@ -593,6 +598,24 @@
           "matchFailed": "Не совпадают",
           "unknownError": "Неизвестная ошибка"
         }
+      },
+      "pageDetail": {
+        "pageManagement": "Управление страницей",
+        "makeInvisible": "Сделать невидимой",
+        "isNotVisible": "Эта страница невидима для покупателей.",
+        "makeItVisible": "Вы можете сделать его видимой",
+        "whenYouAreDone": "когда закончите редактирование.",
+        "notFoundTitle": "Упс!",
+        "notFoundError": "Страница не найдена.",
+        "publishPageVisible": "теперь виден",
+        "publishPageHidden": "теперь скрыт",
+        "noTitle": "Без заголовка"
+      },
+      "pageDetailEdit": {
+        "title": "Название",
+        "pageTitle": "Другое название",
+        "content": "Добавьте содержимое страницы",
+        "handle": "Укажите адрес страницы"
       },
       "error": {
         "nameRequired": "Название обязательно.",
