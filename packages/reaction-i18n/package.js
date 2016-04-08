@@ -37,8 +37,6 @@ Package.onUse(function (api) {
   // reaction packages
   api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:core@0.13.0");
-  // temp until Meteor 1.3 and we switch to modules
-  // api.use("cosmos:browserify@0.10.0", "client");
 
   // server
   api.addFiles("server/import.js", "server");

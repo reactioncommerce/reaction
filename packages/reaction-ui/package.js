@@ -38,8 +38,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // Community Packages
-  api.use("react-template-helper@0.2.7");
-  // api.use("react-meteor-data@0.2.7");
+  api.use("react-template-helper@0.2.8");
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.13.0");
