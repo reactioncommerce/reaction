@@ -1,0 +1,21 @@
+{
+  "name": "reaction-logger",
+  "description": "Reaction Logger - core logging libs for Reaction Commerce",
+  "version": "0.2.0",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "readme": "README.md",
+  "main": "client/main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.0",
+    "bunyan-format": "0.2.1",
+    "bunyan-loggly": "0.0.5"
+  }
+}
