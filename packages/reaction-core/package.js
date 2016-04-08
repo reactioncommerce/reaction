@@ -51,8 +51,8 @@ Package.onUse(function (api) {
 
   // meteor authentication packages
   api.use("oauth-encryption");
-  api.use("accounts-base@1.2.5", {weak: true});
-  api.use("accounts-password@1.1.7", {weak: true});
+  api.use("accounts-base");
+  api.use("accounts-password");
 
   // community packages
   api.use("underscorestring:underscore.string@3.3.4");
@@ -157,8 +157,8 @@ Package.onTest(function (api) {
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("accounts-base@1.2.5", {weak: true});
-  api.use("accounts-password@1.1.7", {weak: true});
+  api.use("accounts-base");
+  api.use("accounts-password");
 
   // reaction core
   api.use("reactioncommerce:reaction-checkout@1.0.0");

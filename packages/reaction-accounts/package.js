@@ -31,8 +31,8 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
   api.use("oauth-encryption");
-  api.use("accounts-base@1.2.5");
-  api.use("accounts-password@1.1.7");
+  api.use("accounts-base");
+  api.use("accounts-password");
   api.use("jparker:gravatar@0.4.1");
   api.use("reactioncommerce:core@0.13.0");
 
@@ -112,6 +112,9 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/dropdown/dropdown.html", "client");
   api.addFiles("client/templates/dropdown/dropdown.js", "client");
+
+  api.imply("accounts-base");
+  api.imply("accounts-password");
   api.export("ReactionCore");
 });
 
