@@ -1,3 +1,6 @@
+const $ = require("jquery");
+// load everything
+require("jquery-ui/sortable");
 /**
  * productImageGallery helpers
  */

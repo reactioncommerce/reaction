@@ -48,7 +48,6 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("sanjo:jasmine@0.21.0");
   api.use("ecmascript");
-  // api.use("jquery");
   api.use("underscore");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");

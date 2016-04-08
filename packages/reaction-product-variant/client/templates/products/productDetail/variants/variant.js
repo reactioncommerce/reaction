@@ -1,3 +1,7 @@
+const $ = require("jquery");
+// load everything
+require("jquery-ui/sortable");
+
 /**
  * variant helpers
  */
