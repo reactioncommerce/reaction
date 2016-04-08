@@ -4,7 +4,7 @@ Reaction is a modern reactive, real-time event driven ecommerce platform.
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
 ## Status
-- 0.12.2 Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
+- 0.12.3 Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
 - 0.13.0 Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) / [0.13.0](https://github.com/reactioncommerce/reaction/tree/development-v0.13) )
 
 Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases.  Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
