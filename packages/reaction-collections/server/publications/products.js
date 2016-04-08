@@ -36,11 +36,13 @@ const filters = new SimpleSchema({
     optional: true
   },
   "price.min": {
-    type: String,
+    type: Number,
+    decimal: true,
     optional: true
   },
   "price.max": {
-    type: String,
+    type: Number,
+    decimal: true,
     optional: true
   },
   "weight": {
@@ -48,11 +50,11 @@ const filters = new SimpleSchema({
     optional: true
   },
   "weight.min": {
-    type: String,
+    type: Number,
     optional: true
   },
   "weight.max": {
-    type: String,
+    type: Number,
     optional: true
   }
 });
@@ -153,67 +155,46 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         });
       }
 
-      // filter by gte minimum price
-      if (productFilters["price.min"] && !productFilters["price.max"]) {
-        _.extend(selector, {
-          "price.min": {
-            $gte: parseFloat(productFilters["price.min"])
-          }
-        });
+      if (productFilters.price) {
+        let filter = {};
+        if (productFilters.price.max) {
+          filter["price.min"] = {
+            $lte: parseFloat(productFilters.price.max)
+          };
+        }
+        if (productFilters.price.min) {
+          filter["price.max"] = {
+            $gte: parseFloat(productFilters.price.min)
+          };
+        }
+        _.extend(selector, filter);
       }
 
-      // filter by lte maximum price
-      if (productFilters["price.max"] && !productFilters["price.min"]) {
-        _.extend(selector, {
-          "price.max": {
-            $lte: parseFloat(productFilters["price.max"])
-          }
-        });
-      }
-
-      // filter with a price range
-      if (productFilters["price.min"] && productFilters["price.max"]) {
-        const pmin = parseFloat(productFilters["price.min"]);
-        const pmax = parseFloat(productFilters["price.max"]);
-        // where product A has min 12.99 variant and a 19.99 variant
-        // price.min=12.99&price.max=19.98
-        // should return product A
-        _.extend(selector, {
-          "price.min": {
-            $lt: pmax
+      if (productFilters.weight) {
+        let filter = {};
+        if (productFilters.weight.min) {
+          filter.$gte = parseFloat(productFilters.weight.min);
+        }
+        if (productFilters.weight.max) {
+          filter.$lte = parseFloat(productFilters.weight.max);
+        }
+        const products = Products.find({
+          ancestors: {
+            $exists: true,
+            $ne: []
           },
-          "price.max": {
-            $gt: pmin
+          shopId: shop._id,
+          type: "variant",
+          weight: filter
+        }, {
+          fields: {
+            ancestors: 1,
+            _id: 0
           }
-        });
-      }
-
-      // filter by gte minimum weight
-      if (productFilters["weight.min"] && !productFilters["weight.max"]) {
+        }).fetch();
         _.extend(selector, {
-          weight: {
-            $gte: parseFloat(productFilters["weight.min"])
-          }
-        });
-      }
-
-      // filter by lte maximum weight
-      if (productFilters["weight.max"] && !productFilters["weight.min"]) {
-        _.extend(selector, {
-          weight: {
-            $lte: parseFloat(productFilters["weight.max"])
-          }
-        });
-      }
-
-      // filter with a weight range
-      if (productFilters["weight.min"] && productFilters["weight.max"]) {
-        const wmin = parseFloat(productFilters["weight.min"]);
-        const wmax = parseFloat(productFilters["weight.max"]);
-        _.extend(selector, {
-          weight: {
-            $lt: wmax,
-            $gt: wmin
+          _id: {
+            $in: products.map((p) => p.ancestors[0])
           }
         });
       }
@@ -224,6 +205,10 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       selector.isVisible = true;
     }
 
+    //ReactionCore.Log.debug("Products publication limit", productScrollLimit);
+    //ReactionCore.Log.debug("Products publication selector", EJSON.stringify(selector));
+
+    Counts.publish(this, "Products", Products.find(selector), {noReady: true});
     return Products.find(selector, {
       sort: sort,
       limit: productScrollLimit

@@ -15,6 +15,9 @@
           "accountsLabel": "Пользователи"
         },
         "dashboard": {
+          "filtrationLabel": "Фильтрация",
+          "filtrationTitle": "Фильтрация",
+          "filtrationDescription": "Фильтры для товаров",
           "accountsLabel": "Учётные записи",
           "accountsTitle": "Учётные записи",
           "accountsDescription": "Управление сервисами авторизации",
@@ -75,6 +78,7 @@
           "utilities": "Утилиты"
         },
         "settings": {
+          "filtersLabel": "Фильтры",
           "accountSettingsLabel": "Настройки учетных записей",
           "addShopMemberLabel": "Добавить сотрудника",
           "authorizenetSettingsLabel": "Настройки Authorize.net",
@@ -599,6 +603,27 @@
         "isRequired": "Поле \"{{field}}\" обязательно.",
         "mustBeNumber": "Поле \"{{field}}\" должно быть числом.",
         "variantFieldIsRequired": "Поле \"{{field}}\" варианта {{number}} обязательно."
+      },
+        "filtration": {
+            "filters": {
+              "titleLabel": "Название",
+            "titlePlaceholder": "Введите название",
+            "priceLabel": "Цена",
+            "weightLabel": "Вес",
+            "tagLabel": "Тэг",
+            "tagPlaceholder": "Введите тег",
+            "detailsLabel": "Характеристики",
+            "detailNamePlaceholder": "Название",
+            "detailValuePlaceholder": "Значение",
+            "visibilityLabel": "Видимость",
+            "visibilityAny": "Все",
+            "visibilityNotVisible": "Невидимые",
+            "visibilityVisible": "Видимые"
+          },
+        "showFilters": "Показать фильтры",
+        "settings": "Фильтры",
+        "found": "Найдено",
+        "products": "продуктов"
       }
     }
   }

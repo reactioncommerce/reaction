@@ -36,17 +36,16 @@ function loadMoreProducts() {
 
 Template.productGrid.onCreated(function () {
   Session.set("productGrid/selectedProducts", []);
+  ReactionFiltration.reset();
   // Update product subscription
   this.autorun(() => {
     const slug = ReactionRouter.getParam("slug");
     const { Tags } = ReactionCore.Collections;
     const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
-    let tags = {}; // this could be shop default implementation needed
     if (tag) {
-      tags = {tags: [tag._id]};
+      ReactionFiltration.update("tags", [tag._id]);
     }
-    const queryParams = Object.assign({}, tags, ReactionRouter.current().queryParams);
-    Meteor.subscribe("Products", Session.get("productScrollLimit"), queryParams);
+    Meteor.subscribe("Products", Session.get("productScrollLimit"), Session.get("productFilters"));
   });
 
   this.autorun(() => {

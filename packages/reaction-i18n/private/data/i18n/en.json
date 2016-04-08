@@ -15,6 +15,9 @@
           "accountsLabel": "Accounts"
         },
         "dashboard": {
+          "filtrationLabel": "Filtration",
+          "filtrationTitle": "Filtration",
+          "filtrationDescription": "Products filtration for Reaction",
           "accountsLabel": "Accounts",
           "accountsTitle": "Accounts",
           "accountsDescription": "Manage how members sign into your shop",
@@ -66,9 +69,7 @@
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments",
-          "filtrationLabel": "Filtration",
-          "filtrationDescription": "Products filtration for Reaction"
+          "stripeDescription": "Stripe payments"
         },
         "groups": {
           "appearance": "Appearance",
@@ -80,6 +81,7 @@
           "utilities": "Utilities"
         },
         "settings": {
+          "filtersLabel": "Filters",
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
           "authorizenetSettingsLabel": "Authorize.net Settings",
@@ -617,6 +619,27 @@
         "isRequired": "{{field}} is required.",
         "mustBeNumber": "{{field}} must be a number.",
         "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
+      },
+      "filtration": {
+          "filters": {
+            "titleLabel": "Title",
+          "titlePlaceholder": "Filter by title",
+          "priceLabel": "Price",
+          "weightLabel": "Weight",
+          "tagLabel": "Tag",
+          "tagPlaceholder": "Filter by tag",
+          "detailsLabel": "Details",
+          "detailNamePlaceholder": "Filter by detail name",
+          "detailValuePlaceholder": "Filter by detail value",
+          "visibilityLabel": "Visibility",
+          "visibilityAny": "Any",
+          "visibilityNotVisible": "Not visible",
+          "visibilityVisible": "Visible"
+        },
+        "showFilters": "Show Filters",
+        "settings": "Filters",
+        "found": "Found",
+        "products": "products"
       }
     }
   }

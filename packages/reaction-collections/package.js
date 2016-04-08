@@ -30,6 +30,8 @@ Package.onUse(function (api) {
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
   api.use("alanning:roles@1.2.14");
+  api.use("tmeasday:publish-counts@0.7.3");
+
   // ReactionCore declaration
   api.addFiles("common/globals.js");
 
@@ -76,9 +78,9 @@ Package.onUse(function (api) {
   api.imply("vsivsi:job-collection");
   api.imply("ongoworks:security");
   api.imply("alanning:roles");
-  api.imply("alanning:roles");
   api.imply("meteorhacks:subs-manager");
   api.imply("reactioncommerce:reaction-schemas");
+  api.imply("tmeasday:publish-counts");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");
