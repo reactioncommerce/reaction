@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Basic Reaction Product with Variants",
   name: "reactioncommerce:reaction-product-variant",
-  version: "1.0.0",
+  version: "1.0.1",
   documentation: "README.md"
 });
 
