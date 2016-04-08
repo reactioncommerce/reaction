@@ -1,3 +1,5 @@
+import React from "react";
+
 const Items = ReactionUI.Components.Items;
 const classnames = ReactionUI.Lib.classnames;
 

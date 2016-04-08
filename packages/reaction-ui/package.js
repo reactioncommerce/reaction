@@ -40,7 +40,7 @@ Package.onUse(function (api) {
 
   // Community Packages
   // api.use("react@0.14.7");
-  // api.use("react-template-helper@0.2.7");
+  api.use("react-template-helper@0.2.7");
   // api.use("react-meteor-data@0.2.7");
 
   // meteor add-on packages

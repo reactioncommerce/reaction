@@ -1,5 +1,10 @@
 {
   "dependencies": {
+    "accounting": {
+      "version": "0.4.1",
+      "resolved": "https://registry.npmjs.org/accounting/-/accounting-0.4.1.tgz",
+      "from": "https://registry.npmjs.org/accounting/-/accounting-0.4.1.tgz"
+    },
     "i18next": {
       "version": "2.2.0",
       "resolved": "https://registry.npmjs.org/i18next/-/i18next-2.2.0.tgz",

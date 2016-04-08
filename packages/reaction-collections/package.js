@@ -25,7 +25,7 @@ Package.onUse(function (api) {
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
   api.use("vsivsi:job-collection@1.3.0");
-  api.use("ongoworks:security@1.3.0");
+  api.use("ongoworks:security@2.0.1");
   api.use("reactioncommerce:reaction-logger@0.1.0");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");

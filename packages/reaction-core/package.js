@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Npm.depends({
-  "node-geocoder": "3.0.0",
+  "node-geocoder": "3.9.1",
   "lodash.merge": "4.3.2",
   "lodash.uniqwith": "4.2.0",
   "jquery.payment": "1.2.4",
@@ -22,7 +22,7 @@ Npm.depends({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");

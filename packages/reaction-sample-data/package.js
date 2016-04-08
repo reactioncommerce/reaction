@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Sample Data",
   name: "reactioncommerce:reaction-sample-data",
-  version: "0.1.2",
+  version: "0.1.3",
   documentation: "README.md"
 });
 

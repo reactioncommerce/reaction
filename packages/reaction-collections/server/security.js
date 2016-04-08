@@ -106,7 +106,7 @@ Security.permit(["insert", "update", "remove"]).collections([
 ]).ifHasRole({
   role: "admin",
   group: ReactionCore.getShopId()
-}).ifShopIdMatches().exceptProps(["shopId"]).apply();
+}).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
 /*
  * Permissive security for users with the "admin" role for FS.Collections
@@ -115,7 +115,7 @@ Security.permit(["insert", "update", "remove"]).collections([
 Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
   role: ["admin", "owner", "createProduct"],
   group: ReactionCore.getShopId()
-}).ifFileBelongsToShop().apply();
+}).ifFileBelongsToShop().allowInClientCode();
 
 /*
  * Users with the "admin" or "owner" role may update and
@@ -125,7 +125,7 @@ Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
 Shops.permit(["update", "remove"]).ifHasRole({
   role: ["admin", "owner"],
   group: ReactionCore.getShopId()
-}).ifShopIdMatchesThisId().apply();
+}).ifShopIdMatchesThisId().allowInClientCode();
 
 /*
  * Users with the "admin" or "owner" role may update and
@@ -135,7 +135,7 @@ Shops.permit(["update", "remove"]).ifHasRole({
 Products.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["createProduct"],
   group: ReactionCore.getShopId()
-}).ifShopIdMatches().apply();
+}).ifShopIdMatches().allowInClientCode();
 
 /*
  * Users with the "owner" role may remove orders for their shop
@@ -144,7 +144,7 @@ Products.permit(["insert", "update", "remove"]).ifHasRole({
 Orders.permit("remove").ifHasRole({
   role: ["admin", "owner"],
   group: ReactionCore.getShopId()
-}).ifShopIdMatches().exceptProps(["shopId"]).apply();
+}).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
 /*
  * Can update cart from client. Must insert/remove carts using
@@ -156,7 +156,7 @@ Orders.permit("remove").ifHasRole({
 Cart.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["anonymous", "guest"],
   group: ReactionCore.getShopId()
-}).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().apply();
+}).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().allowInClientCode();
 
 /*
  * Users may update their own account
@@ -164,7 +164,7 @@ Cart.permit(["insert", "update", "remove"]).ifHasRole({
 Accounts.permit(["insert", "update"]).ifHasRole({
   role: ["anonymous", "guest"],
   group: ReactionCore.getShopId()
-}).ifUserIdMatches().apply();
+}).ifUserIdMatches().allowInClientCode();
 
 /*
  * apply download permissions to file collections

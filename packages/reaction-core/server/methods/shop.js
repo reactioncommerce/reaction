@@ -1,3 +1,4 @@
+import { GeoCoder } from "../../lib/geocoder.js";
 /**
  * Reaction Shop Methods
  */

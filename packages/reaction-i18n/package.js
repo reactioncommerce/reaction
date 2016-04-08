@@ -6,6 +6,7 @@ Package.describe({
 });
 
 Npm.depends({
+  "accounting": "0.4.1",
   "i18next": "2.2.0",
   "i18next-sprintf-postprocessor": "0.0.6",
   "i18next-browser-languagedetector": "0.0.14",

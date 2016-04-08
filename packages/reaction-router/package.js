@@ -12,7 +12,7 @@ Package.onUse(function (api) {
   api.use("session");
   api.use("tracker");
   api.use("blaze-html-templates");
-  api.use("accounts-base");
+  api.use("accounts-base@1.2.5", {weak: true});
   api.use("reactioncommerce:reaction-collections@2.1.0");
   // flow-router packages
   api.use("kadira:flow-router-ssr@3.12.1");

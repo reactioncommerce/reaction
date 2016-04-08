@@ -164,9 +164,9 @@
       "from": "https://registry.npmjs.org/money/-/money-0.2.0.tgz"
     },
     "node-geocoder": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/node-geocoder/-/node-geocoder-3.0.0.tgz",
-      "from": "https://registry.npmjs.org/node-geocoder/-/node-geocoder-3.0.0.tgz",
+      "version": "3.9.1",
+      "resolved": "https://registry.npmjs.org/node-geocoder/-/node-geocoder-3.9.1.tgz",
+      "from": "https://registry.npmjs.org/node-geocoder/-/node-geocoder-3.9.1.tgz",
       "dependencies": {
         "q": {
           "version": "1.4.1",
