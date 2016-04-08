@@ -31,7 +31,7 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:core@0.13.0");
-  api.use("reactioncommerce:reaction-logger@0.1.0");
+  api.use("reactioncommerce:reaction-logger@0.2.0");
 
   // cart common workflow methods
   api.addFiles("common/methods/workflow.js");
