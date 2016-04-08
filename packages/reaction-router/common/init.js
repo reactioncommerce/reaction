@@ -102,6 +102,7 @@ ReactionRouter.initPackageRoutes = () => {
   shop.route("/", {
     name: "index",
     action: function () {
+      ReactionFiltration.reset();
       ReactionLayout();
     }
   });

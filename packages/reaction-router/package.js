@@ -17,6 +17,8 @@ Package.onUse(function (api) {
   api.use("kadira:flow-router-ssr@3.11.2");
   api.use("kadira:blaze-layout@2.3.0");
   api.use("kadira:dochead@1.4.0");
+  api.use("ramusus:reaction-filtration@0.0.5");
+
   // register reaction package
   api.addFiles("server/register.js", "server");
 
