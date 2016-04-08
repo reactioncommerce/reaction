@@ -28,6 +28,8 @@
     "bunyan": "^1.8.0",
     "bunyan-format": "0.2.1",
     "bunyan-loggly": "0.0.5",
+    "jquery": "^2.2.3",
+    "jquery-ui": "^1.10.5",
     "meteor-node-stubs": "^0.2.1",
     "react": "0.14.7",
     "react-dom": "0.14.7"

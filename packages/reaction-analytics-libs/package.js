@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce - Analytics Libraries",
   name: "reactioncommerce:reaction-analytics-libs",
-  version: "1.1.0",
+  version: "1.2.0",
   documentation: "README.md"
 });
 

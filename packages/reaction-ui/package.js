@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.6.0",
+  version: "0.7.0",
   documentation: "README.md"
 });
 
@@ -39,7 +39,6 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // Community Packages
-  // api.use("react@0.14.7");
   api.use("react-template-helper@0.2.7");
   // api.use("react-meteor-data@0.2.7");
 
@@ -130,7 +129,6 @@ Package.onUse(function (api) {
   api.addFiles("server/register.js", "server");
 
   // Exports
-  // api.imply("cosmos:browserify");
   api.export("React");
   api.export("ReactionUI");
   api.export("Sortable");

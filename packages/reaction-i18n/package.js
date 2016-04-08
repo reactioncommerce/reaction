@@ -24,7 +24,7 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
+  // api.use("jquery");
   api.use("tracker");
 
   // meteor add-on packages
@@ -36,7 +36,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // reaction packages
-  api.use("reactioncommerce:reaction-collections@2.1.0");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:core@0.13.0");
   // temp until Meteor 1.3 and we switch to modules
   // api.use("cosmos:browserify@0.10.0", "client");
@@ -108,7 +108,7 @@ Package.onTest(function (api) {
 
   // reaction core
   api.use("reactioncommerce:reaction-i18n@2.0.0");
-  api.use("reactioncommerce:reaction-collections@2.1.0");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.13.0");
 

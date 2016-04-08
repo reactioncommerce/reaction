@@ -1,7 +1,7 @@
 Package.describe({
   name: "reactioncommerce:core-theme",
   summary: "Reaction Commerce core theme",
-  version: "2.0.1",
+  version: "2.0.2",
   documentation: "README.md"
 });
 

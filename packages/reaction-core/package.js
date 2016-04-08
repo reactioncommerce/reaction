@@ -31,7 +31,6 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
   api.use("tracker");
   api.use("ddp-rate-limiter");
   api.use("underscore");
@@ -52,15 +51,14 @@ Package.onUse(function (api) {
 
   // meteor authentication packages
   api.use("oauth-encryption");
-  api.use("accounts-base");
-  api.use("accounts-password");
+  api.use("accounts-base@1.2.5", {weak: true});
+  api.use("accounts-password@1.1.7", {weak: true});
 
   // community packages
-  // api.use("mquandalle:bower@1.5.2_1");
   api.use("underscorestring:underscore.string@3.3.4");
-  api.use("reactioncommerce:reaction-logger@0.1.0");
-  api.use("reactioncommerce:reaction-collections@2.1.0");
-  api.use("reactioncommerce:reaction-email-templates@0.1.0");
+  api.use("reactioncommerce:reaction-logger@0.2.0");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
+  api.use("reactioncommerce:reaction-email-templates@0.2.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
   api.use("momentjs:moment@2.12.0");
@@ -72,7 +70,6 @@ Package.onUse(function (api) {
   api.imply("session");
   api.imply("tracker");
   api.imply("amplify");
-  api.imply("accounts-base");
   api.imply("ecmascript");
   api.imply("es5-shim");
   api.imply("browser-policy");
@@ -86,24 +83,7 @@ Package.onUse(function (api) {
   api.imply("momentjs:moment");
 
   // reaction core dependencies
-  // api.addFiles("lib/bower.json", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/core.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/widget.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/mouse.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/position.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/autocomplete.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/sortable.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/draggable.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/droppable.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/effect.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/effect-slide.js", "client");
-  // api.addFiles("lib/bower/jquery.ui/ui/menu.js", "client");
-  // api.addFiles("lib/bower/autosize/dist/autosize.js", "client");
-  // api.addFiles("lib/bower/openexchangerates.accounting/accounting.min.js", "client");
-  // api.addFiles("lib/bower/openexchangerates.money/money.js", "client");
-  // api.addFiles("lib/bower/jquery.tagsinput/dist/jquery.tagsinput.min.css", "client");
-  // api.addFiles("lib/css/jquery-ui.css", "client");
-  // api.addFiles("lib/geocoder.js", ["server"]);
+  api.addFiles("lib/geocoder.js", ["server"]);
 
   // exports
   api.addFiles("common/global.js");
@@ -177,12 +157,12 @@ Package.onTest(function (api) {
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("accounts-base");
-  api.use("accounts-password");
+  api.use("accounts-base@1.2.5", {weak: true});
+  api.use("accounts-password@1.1.7", {weak: true});
 
   // reaction core
   api.use("reactioncommerce:reaction-checkout@1.0.0");
-  api.use("reactioncommerce:reaction-collections@2.1.0");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.13.0");
 

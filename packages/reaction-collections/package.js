@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Collections - core collections + hooks, cfs, jobs",
   name: "reactioncommerce:reaction-collections",
   documentation: "README.md",
-  version: "2.1.0"
+  version: "2.2.0"
 });
 
 Package.onUse(function (api) {

@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Cart and Checkout",
   name: "reactioncommerce:reaction-checkout",
-  version: "1.0.0",
+  version: "1.0.1",
   documentation: "README.md"
 });
 
@@ -15,7 +15,7 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
+  // api.use("jquery");
   api.use("tracker");
 
   // meteor add-on packages

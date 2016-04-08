@@ -15,7 +15,7 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
+  // api.use("jquery");
   api.use("tracker");
 
   // meteor add-on packages

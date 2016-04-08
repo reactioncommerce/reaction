@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Router for Reaction Commerce",
   name: "reactioncommerce:reaction-router",
-  version: "1.1.0",
+  version: "1.1.1",
   documentation: "README.md"
 });
 
@@ -13,7 +13,7 @@ Package.onUse(function (api) {
   api.use("tracker");
   api.use("blaze-html-templates");
   api.use("accounts-base@1.2.5", {weak: true});
-  api.use("reactioncommerce:reaction-collections@2.1.0");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   // flow-router packages
   api.use("kadira:flow-router-ssr@3.12.1");
   api.use("kadira:blaze-layout@2.3.0");

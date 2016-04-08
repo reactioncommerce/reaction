@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.use("blaze-html-templates");
   api.use("session");
   api.use("browser-policy");
-  api.use("jquery");
+  // api.use("jquery");
   api.use("tracker");
   api.use("logging");
   api.use("reload");
@@ -31,8 +31,8 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
   api.use("oauth-encryption");
-  api.use("accounts-base@1.2.2");
-  api.use("accounts-password@1.1.4");
+  api.use("accounts-base@1.2.5");
+  api.use("accounts-password@1.1.7");
   api.use("jparker:gravatar@0.4.1");
   api.use("reactioncommerce:core@0.13.0");
 
@@ -119,7 +119,7 @@ Package.onTest(function (api) {
   api.use("sanjo:jasmine@0.21.0");
   api.use("ecmascript");
   api.use("random");
-  api.use("jquery");
+  // api.use("jquery");
   api.use("underscore");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
