@@ -17,7 +17,9 @@ Npm.depends({
   "react-textarea-autosize": "3.3.0",
   "react-color": "1.3.6",
   "autonumeric": "1.9.43",
-  "accounting-js": "1.1.1"
+  "accounting-js": "1.1.1",
+  "jquery": "2.2.3",
+  "jquery-ui": "1.10.5"
 });
 
 Package.onUse(function (api) {

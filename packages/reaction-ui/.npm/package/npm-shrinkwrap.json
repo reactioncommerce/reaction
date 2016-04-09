@@ -71,6 +71,16 @@
       "resolved": "https://registry.npmjs.org/css-annotation/-/css-annotation-0.6.2.tgz",
       "from": "https://registry.npmjs.org/css-annotation/-/css-annotation-0.6.2.tgz"
     },
+    "jquery": {
+      "version": "2.2.3",
+      "resolved": "https://registry.npmjs.org/jquery/-/jquery-2.2.3.tgz",
+      "from": "jquery@2.2.3"
+    },
+    "jquery-ui": {
+      "version": "1.10.5",
+      "resolved": "https://registry.npmjs.org/jquery-ui/-/jquery-ui-1.10.5.tgz",
+      "from": "jquery-ui@1.10.5"
+    },
     "postcss": {
       "version": "5.0.14",
       "resolved": "https://registry.npmjs.org/postcss/-/postcss-5.0.14.tgz",
