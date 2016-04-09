@@ -11,14 +11,9 @@ Npm.depends({
   "lodash.uniqwith": "4.2.0",
   "jquery.payment": "1.2.4",
   "autosize": "3.0.15",
-  "swiper": "3.3.1",
   "tether": "1.0.2",
-  "jquery-tags-input": "1.3.5",
-  "accounting": "0.4.1",
-  "money": "0.2.0",
   "draggabilly": "1.2.0",
-  "imagesloaded": "4.1.0",
-  "autonumeric": "1.9.43"
+  "imagesloaded": "4.1.0"
 });
 
 Package.onUse(function (api) {
@@ -137,9 +132,6 @@ Package.onUse(function (api) {
   api.addFiles("client/helpers/globals.js", "client");
   api.addFiles("client/helpers/permissions.js", "client");
   api.addFiles("client/helpers/utilities.js", "client");
-
-  api.addFiles("client/components/numericInput/numericInput.html", "client");
-  api.addFiles("client/components/numericInput/numericInput.js", "client");
 
   // Exports
   api.export("ReactionCore");

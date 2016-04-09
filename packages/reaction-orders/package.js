@@ -1,8 +1,14 @@
 Package.describe({
   summary: "Reaction Commerce Orders",
   name: "reactioncommerce:reaction-orders",
-  version: "1.0.0",
+  version: "1.1.0",
   documentation: "README.md"
+});
+
+Npm.depends({
+  "money": "0.2.0",
+  "autonumeric": "1.9.43",
+  "accounting-js": "1.1.1"
 });
 
 Package.onUse(function (api) {

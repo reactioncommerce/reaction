@@ -5,6 +5,10 @@ Package.describe({
   documentation: "README.md"
 });
 
+Npm.depends({
+  swiper: "3.3.1"
+});
+
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
 

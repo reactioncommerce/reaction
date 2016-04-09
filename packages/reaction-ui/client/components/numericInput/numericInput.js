@@ -1,3 +1,5 @@
+const accounting = require("accounting-js");
+require("autonumeric");
 
 /**
  * numericInput onCreated
@@ -5,7 +7,7 @@
 Template.numericInput.onCreated(() => {
   const template = Template.instance();
 
-  // Initial method for autoNumeirc field
+  // Initial method for autoNumeric field
   template.autoNumericFieldState = "init";
 });
 

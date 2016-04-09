@@ -1,5 +1,5 @@
 const $ = require("jquery");
-// load everything
+// load modules
 require("jquery-ui/sortable");
 
 /**

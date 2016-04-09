@@ -13,7 +13,6 @@ Npm.depends({
   "money": "0.2.0",
   "draggabilly": "1.2.0",
   "imagesloaded": "4.1.0",
-  "autonumeric": "1.9.43",
   "jquery": "2.2.3",
   "jquery-ui": "1.10.5"
 });

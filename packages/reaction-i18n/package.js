@@ -1,17 +1,17 @@
 Package.describe({
   summary: "Reaction Commerce i18n utilities",
   name: "reactioncommerce:reaction-i18n",
-  version: "2.0.2",
+  version: "2.1.0",
   documentation: "README.md"
 });
 
 Npm.depends({
-  "accounting": "0.4.1",
   "i18next": "2.2.0",
   "i18next-sprintf-postprocessor": "0.0.6",
   "i18next-browser-languagedetector": "0.0.14",
   "i18next-localstorage-cache": "0.0.4",
-  "jquery-i18next": "0.0.14"
+  "jquery-i18next": "0.0.14",
+  "accounting-js": "1.1.1"
 });
 
 Package.onUse(function (api) {
@@ -104,7 +104,7 @@ Package.onTest(function (api) {
   api.use("velocity:console-reporter@0.1.4");
 
   // reaction core
-  api.use("reactioncommerce:reaction-i18n@2.0.0");
+  api.use("reactioncommerce:reaction-i18n@2.1.0");
   api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.13.0");

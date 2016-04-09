@@ -1,6 +1,6 @@
 "use strict";
 const $ = require("jquery");
-// load everything
+// load modules
 require("jquery-ui/autocomplete");
 const classnames = ReactionUI.Lib.classnames;
 

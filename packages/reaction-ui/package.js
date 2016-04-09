@@ -15,7 +15,9 @@ Npm.depends({
   "tether-drop": "1.4.2",
   "tether-tooltip": "1.2.0",
   "react-textarea-autosize": "3.3.0",
-  "react-color": "1.3.6"
+  "react-color": "1.3.6",
+  "autonumeric": "1.9.43",
+  "accounting-js": "1.1.1"
 });
 
 Package.onUse(function (api) {
@@ -74,8 +76,8 @@ Package.onUse(function (api) {
   api.addFiles("client/components/buttonGroup/buttonGroup.jsx", "client");
   api.addFiles("client/components/buttonGroup/buttonGroup.less", "client");
 
-  // api.addFiles("client/components/numericInput/numericInput.html", "client");
-  // api.addFiles("client/components/numericInput/numericInput.js", "client");
+  api.addFiles("client/components/numericInput/numericInput.html", "client");
+  api.addFiles("client/components/numericInput/numericInput.js", "client");
 
   api.addFiles("client/components/popover/popover.less", "client");
   api.addFiles("client/components/tooltip/tooltip.less", "client");
