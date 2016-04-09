@@ -362,6 +362,8 @@
         "addAddress": "Добавить адрес",
         "chooseAddress": "Выбор адреса доставки и платёжного адреса",
         "createDefault": "Добавить адрес по умолчанию",
+        "edit": "Редактировать",
+        "removeAddress": "Удалить адрес",
         "selectShippingAddress": "Выберите адрес доставки",
         "selectBillingAddress": "Выберите платёжный адрес"
       },

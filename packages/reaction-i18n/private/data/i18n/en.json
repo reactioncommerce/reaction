@@ -362,6 +362,8 @@
         "addAddress": "Add Address",
         "chooseAddress": "Choose shipping & billing address",
         "createDefault": "Create your default address",
+        "edit": "Edit",
+        "removeAddress": "Remove Address",
         "selectShippingAddress": "Select a shipping address",
         "selectBillingAddress": "Select a billing address"
       },
