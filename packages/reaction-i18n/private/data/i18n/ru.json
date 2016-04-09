@@ -365,14 +365,17 @@
         "edit": "Редактировать",
         "removeAddress": "Удалить адрес",
         "selectShippingAddress": "Выберите адрес доставки",
-        "selectBillingAddress": "Выберите платёжный адрес"
+        "selectBillingAddress": "Выберите платёжный адрес",
+        "cantRemoveThisAddress": "Невозможно удалить этот адрес: {{err}}"
       },
       "addressBookAdd": {
         "addAddress": "Добавить ещё адрес",
-        "createAddress": "Добавить адрес по умолчанию"
+        "createAddress": "Добавить адрес по умолчанию",
+        "failedToAddAddress": "Добавить адрес не удалось: {{err}}"
       },
       "addressBookEdit": {
-        "editAddress": "Редактирование адреса"
+        "editAddress": "Редактирование адреса",
+        "somethingWentWrong": "Что-то пошло не так: {{err}}"
       },
       "corePackageConfig": {
         "settings": {
