@@ -24,6 +24,7 @@ Npm.depends({
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
+  api.use("tmeasday:check-npm-versions@0.3.0");
 
   // meteor base packages
   api.use("meteor-base");
