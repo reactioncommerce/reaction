@@ -3,17 +3,17 @@
     "accounting-js": {
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/accounting-js/-/accounting-js-1.1.1.tgz",
-      "from": "accounting-js@1.1.1",
+      "from": "https://registry.npmjs.org/accounting-js/-/accounting-js-1.1.1.tgz",
       "dependencies": {
         "is-string": {
           "version": "1.0.4",
           "resolved": "https://registry.npmjs.org/is-string/-/is-string-1.0.4.tgz",
-          "from": "is-string@>=1.0.4 <2.0.0"
+          "from": "https://registry.npmjs.org/is-string/-/is-string-1.0.4.tgz"
         },
         "object-assign": {
           "version": "4.0.1",
           "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz",
-          "from": "object-assign@>=4.0.1 <5.0.0"
+          "from": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz"
         }
       }
     },
