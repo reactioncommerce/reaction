@@ -6,6 +6,7 @@ Package.describe({
 });
 
 Npm.depends({
+  "jquery": "2.2.3",
   "money": "0.2.0",
   "autonumeric": "1.9.43",
   "accounting-js": "1.1.1"
@@ -13,6 +14,7 @@ Npm.depends({
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
+  api.use("tmeasday:check-npm-versions@0.3.0");
 
   // meteor base packages
   api.use("meteor-base");
@@ -34,7 +36,7 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
 
-  // reaction packages
+  // reaction core imports
   api.use("reactioncommerce:core@0.13.0");
 
   // register packages

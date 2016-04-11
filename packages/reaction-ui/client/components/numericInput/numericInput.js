@@ -1,6 +1,6 @@
 const accounting = require("accounting-js");
+import $ from "jquery";
 require("autonumeric");
-
 
 /**
  * numericInput onCreated
