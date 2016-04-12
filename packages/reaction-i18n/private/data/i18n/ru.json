@@ -22,11 +22,13 @@
           "analyticsTitle": "Аналитика",
           "analyticsDescription": "Внедрение аналитики и отслеживания событий",
           "authorizeNetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
           "authorizeNetDescription": "Платежи через Authorize.net",
           "shippingLabel": "Доставка",
           "shippingTitle": "Доставка",
           "shippingDescription": "Настройки тарифов по доставке",
           "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "Платежи через Braintree",
           "catalogLabel": "Каталог",
           "catalogTitle": "Каталог",
@@ -46,6 +48,7 @@
           "layoutTitle": "план",
           "layoutDescription": "план",
           "connectLabel": "Connect",
+          "connectTitle": "Connect",
           "connectDescription": "Подключение Reaction как развёрнутого сервиса",
           "ordersLabel": "Заказы",
           "ordersTitle": "Заказы",
@@ -53,17 +56,19 @@
           "paypalLabel": "PayPal",
           "paypalTitle": "PayPal",
           "paypalDescription": "Платежи через PayPal",
-          "routingLabel": "маршрутизация",
-          "routingTitle": "маршрутизация",
-          "routingDescription": "Маршрутизация утилиты",
-          "themesLabel": "основа",
-          "themesTitle": "основа",
-          "themesDescription": "основа UI и компонент",
+          "routingLabel": "Маршрутизация",
+          "routingTitle": "Маршрутизация",
+          "routingDescription": "Утилиты маршрутизации",
           "socialLabel": "Социальные сети",
           "socialTitle": "Социальные сети",
           "socialDescription": "Интеграция с соц. сетями",
+          "themesLabel": "Темы",
+          "themesTitle": "Темы",
+          "themesDescription": "Темы и UI компоненты",
           "stripeLabel": "Stripe",
-          "stripeDescription": "Платежи через Stripe"
+          "stripeDescription": "Платежи через Stripe",
+          "filtrationLabel": "Filtration",
+          "filtrationDescription": "Products filtration for Reaction"
         },
         "groups": {
           "appearance": "Внешний вид",
@@ -89,6 +94,9 @@
           "analyticsSettingsLabel": "Настройки аналитики",
           "paypalSettingsLabel": "Настройки PayPal",
           "genericPaymentSettingsLabel": "Настройки Generic Payment"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Профиль"
         }
       },
       "accounts": {
@@ -99,6 +107,7 @@
       "app": {
         "add": "Создать",
         "editMode": "Режим редактирования",
+        "createContent": "Создать содержимое",
         "auto": "Автоматически",
         "save": "Сохранить",
         "saveAndContinue": "Сохранить и продолжить",
@@ -112,6 +121,7 @@
         "settings": "Настройки",
         "loading": "Загрузка",
         "toggle": "Переключить",
+        "toggleEditMode": "Переключить режим редактирования",
         "warning": "Ой!",
         "unauthorizedMessage": "У вас недостаточно прав для просмотра содержимого.",
         "updateSettings": "Обновить настройки",
@@ -352,15 +362,20 @@
         "addAddress": "Добавить адрес",
         "chooseAddress": "Выбор адреса доставки и платёжного адреса",
         "createDefault": "Добавить адрес по умолчанию",
+        "edit": "Редактировать",
+        "removeAddress": "Удалить адрес",
         "selectShippingAddress": "Выберите адрес доставки",
-        "selectBillingAddress": "Выберите платёжный адрес"
+        "selectBillingAddress": "Выберите платёжный адрес",
+        "cantRemoveThisAddress": "Невозможно удалить этот адрес: {{err}}"
       },
       "addressBookAdd": {
         "addAddress": "Добавить ещё адрес",
-        "createAddress": "Добавить адрес по умолчанию"
+        "createAddress": "Добавить адрес по умолчанию",
+        "failedToAddAddress": "Добавить адрес не удалось: {{err}}"
       },
       "addressBookEdit": {
-        "editAddress": "Редактирование адреса"
+        "editAddress": "Редактирование адреса",
+        "somethingWentWrong": "Что-то пошло не так: {{err}}"
       },
       "corePackageConfig": {
         "settings": {
@@ -537,6 +552,8 @@
         "with": "с",
         "checkoutAsGuest": "Оформить заказ без создания учётной записи",
         "role": "Роль",
+        "yourOrders": "Ваши заказы",
+        "addressBook": "Адресная книга",
         "info": {
           "emailSent": "Email отправлен",
           "emailVerified": "Email прошел проверку",
