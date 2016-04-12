@@ -45,6 +45,10 @@ Template.productGrid.onCreated(function () {
     if (tag) {
       tags = {tags: [tag._id]};
     }
+    // if we get an invalid slug, don't return all products
+    if (!tag && slug) {
+      return;
+    }
     const queryParams = Object.assign({}, tags, ReactionRouter.current().queryParams);
     Meteor.subscribe("Products", Session.get("productScrollLimit"), queryParams);
   });
