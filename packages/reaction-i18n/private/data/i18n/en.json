@@ -94,6 +94,9 @@
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
           "genericPaymentSettingsLabel": "Generic Payment Settings"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Profile"
         }
       },
       "accounts": {
@@ -359,15 +362,20 @@
         "addAddress": "Add Address",
         "chooseAddress": "Choose shipping & billing address",
         "createDefault": "Create your default address",
+        "edit": "Edit",
+        "removeAddress": "Remove Address",
         "selectShippingAddress": "Select a shipping address",
-        "selectBillingAddress": "Select a billing address"
+        "selectBillingAddress": "Select a billing address",
+        "cantRemoveThisAddress": "Can't remove this address: {{err}}"
       },
       "addressBookAdd": {
         "addAddress": "Add a new address entry",
-        "createAddress": "Create your default address"
+        "createAddress": "Create your default address",
+        "failedToAddAddress": "Failed to add address: {{err}}"
       },
       "addressBookEdit": {
-        "editAddress": "Editing this address entry"
+        "editAddress": "Editing this address entry",
+        "somethingWentWrong": "Something went wrong: {{err}}"
       },
       "corePackageConfig": {
         "settings": {
@@ -544,6 +552,8 @@
         "with": "with",
         "checkoutAsGuest": "Checkout without user account",
         "role": "Role",
+        "yourOrders": "Your Orders",
+        "addressBook": "Address Book",
         "info": {
           "emailSent": "Email Sent",
           "emailVerified": "Email verified",
