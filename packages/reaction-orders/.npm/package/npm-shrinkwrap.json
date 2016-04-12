@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "accounting-js": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/accounting-js/-/accounting-js-1.1.1.tgz",
+      "from": "https://registry.npmjs.org/accounting-js/-/accounting-js-1.1.1.tgz",
+      "dependencies": {
+        "is-string": {
+          "version": "1.0.4",
+          "resolved": "https://registry.npmjs.org/is-string/-/is-string-1.0.4.tgz",
+          "from": "https://registry.npmjs.org/is-string/-/is-string-1.0.4.tgz"
+        },
+        "object-assign": {
+          "version": "4.0.1",
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz",
+          "from": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz"
+        }
+      }
+    },
+    "autonumeric": {
+      "version": "1.9.43",
+      "resolved": "https://registry.npmjs.org/autonumeric/-/autonumeric-1.9.43.tgz",
+      "from": "https://registry.npmjs.org/autonumeric/-/autonumeric-1.9.43.tgz"
+    },
+    "jquery": {
+      "version": "2.2.3",
+      "resolved": "https://registry.npmjs.org/jquery/-/jquery-2.2.3.tgz",
+      "from": "https://registry.npmjs.org/jquery/-/jquery-2.2.3.tgz"
+    },
+    "money": {
+      "version": "0.2.0",
+      "resolved": "https://registry.npmjs.org/money/-/money-0.2.0.tgz",
+      "from": "https://registry.npmjs.org/money/-/money-0.2.0.tgz"
+    }
+  }
+}

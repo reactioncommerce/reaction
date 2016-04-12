@@ -1,12 +1,16 @@
 Package.describe({
   summary: "Reaction Cart and Checkout",
   name: "reactioncommerce:reaction-checkout",
-  version: "1.0.0",
+  version: "1.0.1",
   documentation: "README.md"
 });
 
+Npm.depends({
+  swiper: "3.3.1"
+});
+
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
@@ -15,7 +19,6 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
   api.use("tracker");
 
   // meteor add-on packages
@@ -30,8 +33,8 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // community packages
-  api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-logger@0.1.0");
+  api.use("reactioncommerce:core@0.13.0");
+  api.use("reactioncommerce:reaction-logger@0.2.0");
 
   // cart common workflow methods
   api.addFiles("common/methods/workflow.js");

@@ -25,6 +25,7 @@ Developers using **Windows** should review the [Windows specific installation re
 curl https://install.meteor.com | /bin/sh # installs Meteor
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
+meteor npm install
 ./reaction
 ```
 

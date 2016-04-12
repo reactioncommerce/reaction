@@ -1,3 +1,8 @@
+const $ = require("jquery");
+// load modules
+require("jquery-ui");
+
+
 Template.productDetail.onCreated(function () {
   this.subscribe("Tags");
   this.productId = () => ReactionRouter.getParam("handle");

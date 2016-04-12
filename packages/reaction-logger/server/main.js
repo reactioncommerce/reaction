@@ -1,5 +1,5 @@
-const bunyan = Npm.require("bunyan");
-const bunyanFormat = Npm.require("bunyan-format");
+bunyan = require("bunyan");
+const bunyanFormat = require("bunyan-format");
 
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels
@@ -27,7 +27,7 @@ if (process.env.VELOCITY_CI === "1") {
   });
 }
 
-Logger = bunyan.createLogger({
+export const Logger = bunyan.createLogger({
   name: "Reaction",
   stream: isDebug !== "DEBUG" ? formatOut : process.stdout,
   level: "debug"

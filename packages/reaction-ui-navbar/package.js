@@ -6,14 +6,13 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
   api.use("tracker");
   api.use("logging");
   api.use("reload");
@@ -26,7 +25,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // meteor add-on packages
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-ui@0.6.0");
   api.use("reactioncommerce:core-theme@2.0.1");
 

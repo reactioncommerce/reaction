@@ -10,28 +10,24 @@
 meteor-base             # Packages every Meteor app needs to have
 mobile-experience       # Packages for a great mobile UX
 blaze-html-templates    # Compile .html files into Meteor Blaze views
-standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks   # ensure meteor method argument validation
-
-# Performance & Debugging Tools
-#meteorhacks:fast-render                   # improve initial page loads
-#meteortoys:allthings                      # developer tools
-#meteortoys:notifications                  # logging notification
-#meteorhacks:kadira                        # performance monitoring
-#meteorhacks:kadira-profiler               # cpu profiling
-#spiderable                                # adds phantomjs, use ongoworks:spiderable with Docker
-#meteorhacks:sikka                         # additional ddp, login security
+browser-policy          # security-related policies enforced by newer browsers
+standard-minifier-css   # reduces amount of white-space parsing CSS
+standard-minifier-js    # a minifier plugin used for Meteor apps by default
+session                 # ReactiveDict whose contents are preserved across Hot Code Push
+tracker                 # Meteor transparent reactive programming library
 
 # Meteor Auth Packages
-
+accounts-base
+accounts-password
 accounts-facebook
 accounts-google
 accounts-twitter
-accounts-github
-accounts-weibo
-accounts-oauth
+# accounts-github
+# accounts-weibo
+# accounts-oauth
 
 # Reaction Commerce Packages
 
@@ -56,6 +52,8 @@ reactioncommerce:reaction-ui
 reactioncommerce:reaction-ui-navbar
 reactioncommerce:reaction-ui-tagnav
 
+reactioncommerce:reaction-logger
+
 # Reaction Payment Packages
 
 reactioncommerce:reaction-paymentmethod
@@ -65,9 +63,23 @@ reactioncommerce:reaction-auth-net
 reactioncommerce:reaction-braintree
 
 # Reaction Commerce Data
-
 reactioncommerce:reaction-sample-data   # default Reaction data
 
 # Themes
 reactioncommerce:default-theme          # default Reaction theme
-#my:custom-theme
+# my:custom-theme                       # Example custom theme
+
+# Forced version updates
+# mdg:validation-error@0.5.1
+
+# Performance & Debugging Tools
+# meteorhacks:fast-render                   # improve initial page loads
+# meteortoys:allthings                      # developer tools
+# meteortoys:notifications                  # logging notification
+# meteorhacks:kadira                        # performance monitoring
+# meteorhacks:kadira-profiler               # cpu profiling
+# spiderable                                # adds phantomjs SEO rendering, use ongoworks:spiderable with Docker
+# meteorhacks:sikka                         # additional ddp, login security
+
+
+# Custom Packages

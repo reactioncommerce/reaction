@@ -13,7 +13,7 @@ if (typeof Meteor.wrapAsync === "undefined") {
 }
 
 // init geocoder
-GeoCoder = function geoCoderConstructor(options) {
+export const GeoCoder = function geoCoderConstructor(options) {
   let extra;
   let self = this;
   // fetch shop settings for api auth credentials
@@ -43,7 +43,7 @@ GeoCoder = function geoCoderConstructor(options) {
 };
 
 function gc(address, options, callback) {
-  let g = Npm.require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
+  let g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
     options.extra);
   g.geocode(address, callback);
 }
@@ -63,7 +63,7 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
 };
 
 function rv(lat, lng, options, callback) {
-  let g = Npm.require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
+  let g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
     options.extra);
   g.reverse({
     lat: lat,

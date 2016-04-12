@@ -7,7 +7,7 @@ Package.describe({
 
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
@@ -21,8 +21,8 @@ Package.onUse(function (api) {
   api.use("ecmascript");
   api.use("ddp-rate-limiter");
   api.use("blaze-html-templates");
-  api.use("reactioncommerce:core@0.12.0");
-  api.use("reactioncommerce:reaction-logger@0.1.0");
+  api.use("reactioncommerce:core@0.13.0");
+  api.use("reactioncommerce:reaction-logger@0.2.0");
 
   api.addFiles("common/globals.js"); // Inventory Globals
   api.addFiles("common/schema.js"); // ReactionCore.Schemas.Inventory
@@ -48,12 +48,11 @@ Package.onUse(function (api) {
 Package.onTest(function (api) {
   api.use("sanjo:jasmine@0.21.0");
   api.use("ecmascript");
-  api.use("jquery");
   api.use("underscore");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-factories");
   api.use("reactioncommerce:reaction-inventory");
   api.use("reactioncommerce:reaction-catalog");

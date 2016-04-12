@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 /**
  * i18n
  * see: http://i18next.com/

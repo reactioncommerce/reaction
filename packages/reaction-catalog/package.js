@@ -7,7 +7,7 @@ Package.describe({
 
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   // TODO: @Aaron, please, check this deps list.
@@ -18,7 +18,7 @@ Package.onUse(function (api) {
   api.use("ejson");
   api.use("check");
   api.use("ecmascript");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   api.addFiles("common/helpers.js"); // product common helpers
   api.addFiles("common/methods.js"); // product common Validated Methods
@@ -36,9 +36,9 @@ Package.onTest(function (api) {
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
-  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-catalog");
 
   api.addFiles("tests/jasmine/server/integration/products.js", "server");

@@ -7,19 +7,28 @@
   },
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.12.3",
+  "version": "0.13.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
   },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "reaction@reactioncommerce.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/reactioncommerce/reaction.git"
   },
-  "author": "Reaction Commerce",
-  "license": "GPLv3",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/reaction"
+  "dependencies": {
+    "bunyan": "^1.8.0",
+    "bunyan-format": "0.2.1",
+    "meteor-node-stubs": "^0.2.1",
+    "react": "15.0.1",
+    "react-dom": "15.0.1"
+  }
 }
