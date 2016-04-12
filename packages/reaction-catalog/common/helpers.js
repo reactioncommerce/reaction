@@ -81,7 +81,9 @@ Object.assign(ReactionCore, {
 
     switch (children.length) {
     case 0:
-      return ReactionCore.Collections.Products.findOne(variantId).price;
+      const topVariant = ReactionCore.Collections.Products.findOne(variantId);
+      // topVariant could be undefined when we removing last top variant
+      return topVariant && topVariant.price;
     case 1:
       return children[0].price;
     default:
