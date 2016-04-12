@@ -16,6 +16,9 @@ cd $APP_SOURCE_DIR
 bash $BUILD_SCRIPTS_DIR/build-packages.sh
 
 
+# Install app deps (Meteor 1.3 style)
+npm install --production
+
 # build the source
 mkdir -p $APP_BUNDLE_DIR
 meteor build --directory $APP_BUNDLE_DIR

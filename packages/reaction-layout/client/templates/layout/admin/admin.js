@@ -14,6 +14,7 @@ Template.coreAdminLayout.onDestroyed(() => {
 Template.coreAdminLayout.helpers({
   shortcutButtons() {
     const instance = Template.instance();
+    const editModeIsEnabled = Session.equals("reaction/editModeEnabled", true);
     const shortcuts = ReactionCore.Apps({
       provides: "shortcut",
       enabled: true,
@@ -29,7 +30,7 @@ Template.coreAdminLayout.helpers({
           href: ReactionRouter.pathFor(shortcut.name),
           className: ReactionRouter.isActiveClassName(shortcut.name),
           icon: shortcut.icon,
-          tooltip: shortcut.label || "POOOOP??",
+          tooltip: shortcut.label || "",
           i18nKeyTooltip: shortcut.i18nKeyLabel,
           tooltipPosition: "left middle"
         });
@@ -67,6 +68,7 @@ Template.coreAdminLayout.helpers({
       tooltip: "Toggle Edit Mode",
       i18nKeyTooltip: "app.toggleEditMode",
       tooltipPosition: "left middle",
+      className: editModeIsEnabled ? "active" : "",
       onClick() {
         if (Session.equals("reaction/editModeEnabled", true)) {
           Session.set("reaction/editModeEnabled", false);

@@ -1,4 +1,6 @@
 /* eslint no-extra-parens: 0 */
+import React from "react";
+
 const TextField = ReactionUI.Components.TextField;
 const Button = ReactionUI.Components.Button;
 

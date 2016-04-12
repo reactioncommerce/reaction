@@ -1,20 +1,21 @@
 Package.describe({
   summary: "Router for Reaction Commerce",
   name: "reactioncommerce:reaction-router",
-  version: "1.1.0",
+  version: "1.1.1",
   documentation: "README.md"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
+
   api.use("ecmascript");
   api.use("session");
   api.use("tracker");
   api.use("blaze-html-templates");
   api.use("accounts-base");
-  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   // flow-router packages
-  api.use("kadira:flow-router-ssr@3.11.2");
+  api.use("kadira:flow-router-ssr@3.12.1");
   api.use("kadira:blaze-layout@2.3.0");
   api.use("kadira:dochead@1.4.0");
   // register reaction package

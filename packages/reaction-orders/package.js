@@ -1,12 +1,20 @@
 Package.describe({
   summary: "Reaction Commerce Orders",
   name: "reactioncommerce:reaction-orders",
-  version: "1.0.0",
+  version: "1.1.0",
   documentation: "README.md"
 });
 
+Npm.depends({
+  "jquery": "2.2.3",
+  "money": "0.2.0",
+  "autonumeric": "1.9.43",
+  "accounting-js": "1.1.1"
+});
+
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
+  api.use("tmeasday:check-npm-versions@0.3.0");
 
   // meteor base packages
   api.use("meteor-base");
@@ -15,7 +23,6 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
   api.use("tracker");
 
   // meteor add-on packages
@@ -29,8 +36,8 @@ Package.onUse(function (api) {
   api.use("reactive-var");
   api.use("reactive-dict");
 
-  // reaction packages
-  api.use("reactioncommerce:core@0.12.0");
+  // reaction core imports
+  api.use("reactioncommerce:core@0.13.0");
 
   // register packages
   api.addFiles("server/register.js", "server");

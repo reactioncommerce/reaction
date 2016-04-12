@@ -1,3 +1,10 @@
+require("money");
+import $ from "jquery";
+require("autonumeric");
+
+//
+// core order shipping invoice templates
+//
 Template.coreOrderShippingInvoice.onCreated(() => {
   let template = Template.instance();
   let currentData = Template.currentData();
@@ -137,8 +144,7 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   currencySymbol() {
-    return "$";
-    // return ReactionCore.Locale.currency.symbol
+    return ReactionCore.Locale.currency.symbol;
   },
 
   disabled() {

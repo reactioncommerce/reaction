@@ -3,14 +3,14 @@ Package.describe({
   summary: "Reaction Email Templates - set of basic email templates",
   name: "reactioncommerce:reaction-email-templates",
   documentation: "README.md",
-  version: "0.2.0"
+  version: "0.2.1"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
   api.use("ecmascript");
   api.use("check");
-  api.use("reactioncommerce:reaction-collections@2.0.1");
+  api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("meteorhacks:ssr@2.2.0");
   api.imply("meteorhacks:ssr");
 

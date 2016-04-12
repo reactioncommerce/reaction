@@ -1,3 +1,4 @@
+import autosize from "autosize";
 /**
  * productDetailEdit helpers
  */

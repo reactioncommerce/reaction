@@ -1,3 +1,8 @@
+const $ = require("jquery");
+// load modules
+require("jquery-ui/sortable");
+require("jquery-ui/autocomplete");
+
 Template.productDetailTags.helpers({
   tags: function () {
     const instance = this;
@@ -76,8 +81,8 @@ Template.productTagInputForm.events({
         });
     }
   },
-  "mousedown .tag-input-group-handle": function (event, template) {
-    return template.$(".tag-edit-list").sortable("refresh");
+  "mousedown .tag-input-group-handle": function () {
+    return $(".tag-edit-list").sortable("refresh");
   }
 });
 

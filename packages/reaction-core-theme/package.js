@@ -1,12 +1,12 @@
 Package.describe({
   name: "reactioncommerce:core-theme",
   summary: "Reaction Commerce core theme",
-  version: "2.0.1",
+  version: "2.0.2",
   documentation: "README.md"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   api.use("less");
 

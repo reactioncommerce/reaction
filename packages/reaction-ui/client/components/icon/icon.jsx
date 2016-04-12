@@ -1,3 +1,5 @@
+import React from "react";
+
 const classnames = ReactionUI.Lib.classnames;
 
 const Icon = React.createClass({

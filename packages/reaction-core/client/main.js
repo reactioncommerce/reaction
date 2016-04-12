@@ -1,3 +1,4 @@
+import bunyan from "bunyan";
 /**
  * ReactionCore
  * Global reaction shop permissions methods and shop initialization

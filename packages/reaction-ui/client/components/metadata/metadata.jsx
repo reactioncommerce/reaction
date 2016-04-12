@@ -1,5 +1,5 @@
-// TODO: Placeholder imports
-// import React from "react"
+import React from "react";
+
 // import TextField from "reaction-ui/textfield"
 // TODO: For now lets pretend we have to do imports
 const TextField = ReactionUI.Components.TextField;

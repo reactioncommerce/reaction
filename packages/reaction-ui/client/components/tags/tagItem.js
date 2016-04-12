@@ -1,4 +1,7 @@
 "use strict";
+const $ = require("jquery");
+// load modules
+require("jquery-ui/autocomplete");
 const classnames = ReactionUI.Lib.classnames;
 
 Template.tagItem.helpers({

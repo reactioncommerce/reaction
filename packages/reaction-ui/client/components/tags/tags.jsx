@@ -1,4 +1,6 @@
 /* eslint no-extra-parens: 0 */
+import React from "react";
+
 const Tag = ReactionUI.Components.Tag;
 const classnames = ReactionUI.Lib.classnames;
 const Sortable = ReactionUI.Lib.Sortable;

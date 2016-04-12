@@ -1,12 +1,25 @@
 Package.describe({
   summary: "Basic Reaction Product with Variants",
   name: "reactioncommerce:reaction-product-variant",
-  version: "1.0.0",
+  version: "1.0.1",
   documentation: "README.md"
 });
 
+Npm.depends({
+  "jquery.payment": "1.2.4",
+  "autosize": "3.0.15",
+  "jquery-tags-input": "1.3.5",
+  "accounting": "0.4.1",
+  "money": "0.2.0",
+  "draggabilly": "1.2.0",
+  "imagesloaded": "4.1.0",
+  "jquery": "2.2.3",
+  "jquery-ui": "1.10.5"
+});
+
+
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
@@ -15,7 +28,6 @@ Package.onUse(function (api) {
   api.use("es5-shim");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
   api.use("tracker");
 
   // meteor add-on packages
@@ -31,7 +43,7 @@ Package.onUse(function (api) {
 
   // community packages
   api.use("reactioncommerce:reaction-router@1.1.0");
-  api.use("reactioncommerce:core@0.12.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   // register package
   api.addFiles("server/register.js", "server");
