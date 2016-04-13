@@ -80,6 +80,10 @@ Package.onUse(function (api) {
   api.imply("meteorhacks:subs-manager");
   api.imply("reactioncommerce:reaction-schemas");
 
+  // Main modules
+  api.mainModule("client/collections.js", "client");
+  api.mainModule("server/collections.js", "server");
+
   // ensure schemas vars are passed through
   api.export("ReactionCore");
   api.export("ReactionSubscriptions");

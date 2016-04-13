@@ -126,7 +126,7 @@ ReactionCore.Collections.Packages.attachSchema(ReactionCore.Schemas.PackageConfi
 /**
 * ReactionCore Collections Products
 */
-ReactionCore.Collections.Products = new Mongo.Collection("Products");
+export const Products = ReactionCore.Collections.Products = new Mongo.Collection("Products");
 
 ReactionCore.Collections.Products.attachSchema(ReactionCore.Schemas.Product,
   { selector: { type: "simple" } });
