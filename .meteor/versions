@@ -142,7 +142,7 @@ reactioncommerce:launchdock-connect@0.2.2
 reactioncommerce:reaction-accounts@1.7.0
 reactioncommerce:reaction-analytics@1.3.0
 reactioncommerce:reaction-analytics-libs@1.2.0
-reactioncommerce:reaction-auth-net@0.6.0
+reactioncommerce:reaction-auth-net@0.6.2
 reactioncommerce:reaction-braintree@1.5.3
 reactioncommerce:reaction-catalog@0.2.3
 reactioncommerce:reaction-checkout@1.0.1
