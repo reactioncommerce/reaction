@@ -1,15 +1,39 @@
+import { ReactiveDict } from "meteor/reactive-dict";
+import { _ } from "meteor/underscore";
 const $ = require("jquery");
 // load modules
 require("jquery-ui");
 
 
 Template.productDetail.onCreated(function () {
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    product: {},
+    tags: []
+  });
   this.subscribe("Tags");
   this.productId = () => ReactionRouter.getParam("handle");
   this.variantId = () => ReactionRouter.getParam("variantId");
   this.autorun(() => {
     if (this.productId()) {
       this.subscribe("Product", this.productId());
+    }
+  });
+
+  this.autorun(() => {
+    if (this.subscriptionsReady()) {
+      // Get the product
+      const product = ReactionProduct.setProduct(this.productId(), this.variantId());
+      this.state.set("product", product);
+
+      // Get the product tags
+      if (_.isArray(product.hashtags)) {
+        const tags = _.map(product.hashtags, function (id) {
+          return ReactionCore.Collections.Tags.findOne(id);
+        });
+
+        this.state.set("tags", tags);
+      }
     }
   });
 });
@@ -20,6 +44,70 @@ Template.productDetail.onCreated(function () {
  * product data source
  */
 Template.productDetail.helpers({
+  tagListProps() {
+    const instance = Template.instance();
+    const product = instance.state.get("product") || {};
+    const tags = instance.state.get("tags");
+    const productId = product._id;
+    const canEdit = ReactionCore.hasPermission("createProduct");
+
+    return {
+      tags,
+      isEditing: canEdit,
+      controls: [
+        {
+          type: "button",
+          icon: "bookmark-o",
+          onIcon: "bookmark",
+          toggle: true,
+          toggleOn(tag) {
+            const handle = product.handle;
+            if (getSlug(handle) === tag.slug) {
+              return true;
+            }
+            return false;
+          },
+          onClick(event, tag) {
+            Meteor.call("products/setHandleTag", productId, tag._id,
+              function (error, result) {
+                if (result) {
+                  return ReactionRouter.go("product", {
+                    handle: result
+                  });
+                }
+              });
+          }
+        }
+      ],
+      onTagCreate(tagName) {
+        Meteor.call("products/updateProductTags", productId, tagName, null,
+          function (error) {
+            if (error) {
+              Alerts.toast("Tag already exists, duplicate add failed.", "error");
+            }
+          });
+      },
+      onTagRemove(tag) {
+        Meteor.call("products/removeProductTag", productId, tag._id,
+          function (error) {
+            if (error) {
+              Alerts.toast("Tag already exists, duplicate add failed.", "error");
+            }
+          });
+      },
+      onTagSort(tagIds) {
+        Meteor.call("products/updateProductField", productId, "hashtags", _.uniq(tagIds));
+      },
+      onTagUpdate(tagId, tagName) {
+        Meteor.call("products/updateProductTags", productId, tagName, tagId,
+          function (error) {
+            if (error) {
+              Alerts.toast("Tag already exists, duplicate add failed.", "error");
+            }
+          });
+      }
+    };
+  },
   product: function () {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {

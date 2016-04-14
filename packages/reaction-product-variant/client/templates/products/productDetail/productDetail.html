@@ -42,7 +42,8 @@
           <div class="col-sm-5 pdp-left-column">
             {{> productImageGallery}}
             <!-- Product Tags -->
-            {{>tagsComponent tags=tags}}
+            <h3 data-i18n="productDetail.tags">Tags</h3>
+            {{> tagList tagListProps}}
             <h3 data-i18n="productDetail.details">Details</h3>
             {{> metaComponent }}
           </div>

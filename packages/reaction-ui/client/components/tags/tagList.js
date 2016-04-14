@@ -80,6 +80,7 @@ Template.tagList.helpers({
       tag,
       isEditing: instance.data.isEditing,
       selectable: instance.data.selectable,
+      controls: instance.data.controls,
       isSelected,
       onTagSelect: instance.data.onTagSelect,
       onTagRemove(tagToRemove) {

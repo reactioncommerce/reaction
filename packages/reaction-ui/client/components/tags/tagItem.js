@@ -14,8 +14,27 @@ Template.tagItem.helpers({
 
   tagEditableProps(tag) {
     const instance = Template.instance();
+
     return {
       tag,
+      controls: _.map(instance.data.controls, (control) => {
+        return {
+          ...control,
+          toggleOn() {
+            if (control.toggleOn) {
+              if (_.isFunction(control.toggleOn)) {
+                return control.toggleOn(tag);
+              }
+
+              return control.toggleOn;
+            }
+          },
+          onClick(event) {
+            // Call the original onClick and add the current tag
+            control.onClick(event, tag);
+          }
+        };
+      }),
       className: instance.data.className,
       isSelected: instance.data.isSelected,
       selectable: instance.data.selectable,
@@ -34,7 +53,7 @@ Template.tagEditable.onCreated(function () {
   // })
 });
 
-Template.tagEditable.onRendered(() => {
+Template.tagEditable.onRendered(function () {
   const instance = Template.instance();
   const textInput = instance.$("input")[0];
 
@@ -60,6 +79,17 @@ Template.tagEditable.onRendered(() => {
       }
     }
   });
+
+  this.updateTag = () => {
+    const input = instance.$("input");
+    const value = input.val().trim();
+
+    if (this.data.onTagCreate && _.isEmpty(value) === false) {
+      this.data.onTagUpdate(this.data.tag._id, value);
+    }
+
+    input.val("");
+  };
 });
 
 Template.tagEditable.helpers({
@@ -91,24 +121,18 @@ Template.tagEditable.helpers({
   }
 });
 
-
 Template.tagEditable.events({
-  "submit form"(event) {
+  "submit form"(event, instance) {
     event.preventDefault();
-
-    if (this.onTagUpdate) {
-      this.onTagUpdate(this.tag._id, event.target.tag.value);
-    }
+    instance.updateTag();
   },
 
-  "blur input"(event) {
-    // Trigger form submit
-    $(event.target).closest("form").submit();
+  "blur input"(event, instance) {
+    instance.updateTag();
   }
 });
 
-
-Template.tagBlank.onRendered(() => {
+Template.tagBlank.onRendered(function () {
   const instance = Template.instance();
   const textInput = instance.$("input")[0];
 
@@ -134,33 +158,35 @@ Template.tagBlank.onRendered(() => {
       }
     }
   });
+
+  this.submitInput = () => {
+    const input = instance.$("input");
+    const value = input.val().trim();
+
+    if (this.data.onTagCreate && _.isEmpty(value) === false) {
+      this.data.onTagCreate(value);
+    }
+
+    input.val("");
+  };
 });
 
 Template.tagBlank.helpers({});
 
 Template.tagBlank.events({
-  "submit form"(event) {
+  "submit form"(event, instance) {
     event.preventDefault();
-    const value = event.target.tag.value.trim();
-
-    if (this.onTagCreate && _.isEmpty(value) === false) {
-      this.onTagCreate(value);
-    }
-
-    event.target.tag.value = "";
+    instance.submitInput();
   },
 
-  "blur input"(event) {
-    // Trigger form submit
-    $(event.target).closest("form").submit();
+  "blur input"(event, instance) {
+    instance.submitInput();
   },
 
-  "keydown input"(event) {
+  "keydown input"(event, instance) {
     if (event.keyCode === 9) {
       event.preventDefault();
-
-      // Trigger form submit
-      $(event.target).closest("form").submit();
+      instance.submitInput();
     }
   }
 });
