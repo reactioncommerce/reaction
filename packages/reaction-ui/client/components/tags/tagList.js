@@ -16,7 +16,7 @@ Template.tagList.onRendered(() => {
 
   instance._sortable = Sortable.create(list, {
     group: "tags",
-    draggable: ".rui.tag.edit.draggable",
+    draggable: ".rui.item.draggable",
     // filter: ".rui.tag.edit.create",
     onSort(event) {
       let tagIds = instance.data.tags.map(item => {

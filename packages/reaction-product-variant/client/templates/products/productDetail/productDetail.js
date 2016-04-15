@@ -27,12 +27,14 @@ Template.productDetail.onCreated(function () {
       this.state.set("product", product);
 
       // Get the product tags
-      if (_.isArray(product.hashtags)) {
-        const tags = _.map(product.hashtags, function (id) {
-          return ReactionCore.Collections.Tags.findOne(id);
-        });
+      if (product) {
+        if (_.isArray(product.hashtags)) {
+          const tags = _.map(product.hashtags, function (id) {
+            return ReactionCore.Collections.Tags.findOne(id);
+          });
 
-        this.state.set("tags", tags);
+          this.state.set("tags", tags);
+        }
       }
     }
   });
@@ -107,6 +109,35 @@ Template.productDetail.helpers({
           });
       }
     };
+  },
+  showTagTitle() {
+    const instance = Template.instance();
+    const product = instance.state.get("product") || {};
+
+    if (ReactionCore.hasPermission("createProduct")) {
+      return true;
+    }
+
+    if (_.isArray(product.hashtags) && product.hashtags.length) {
+      return true;
+    }
+
+    return false;
+  },
+
+  showDetailTitle() {
+    const instance = Template.instance();
+    const product = instance.state.get("product") || {};
+
+    if (ReactionCore.hasPermission("createProduct")) {
+      return true;
+    }
+
+    if (_.isArray(product.metafields) && product.metafields.length) {
+      return true;
+    }
+
+    return false;
   },
   product: function () {
     const instance = Template.instance();

@@ -84,11 +84,9 @@ Template.tagEditable.onRendered(function () {
     const input = instance.$("input");
     const value = input.val().trim();
 
-    if (this.data.onTagCreate && _.isEmpty(value) === false) {
+    if (this.data.onTagUpdate && _.isEmpty(value) === false) {
       this.data.onTagUpdate(this.data.tag._id, value);
     }
-
-    input.val("");
   };
 });
 
@@ -122,13 +120,16 @@ Template.tagEditable.helpers({
 });
 
 Template.tagEditable.events({
-  "submit form"(event, instance) {
-    event.preventDefault();
+  "blur input"(event, instance) {
     instance.updateTag();
   },
 
-  "blur input"(event, instance) {
-    instance.updateTag();
+  "keydown input"(event, instance) {
+    // 9 == Tab key
+    // 13 == Enter Key
+    if (event.keyCode === 9 || event.keyCode === 13) {
+      instance.updateTag();
+    }
   }
 });
 
@@ -174,18 +175,14 @@ Template.tagBlank.onRendered(function () {
 Template.tagBlank.helpers({});
 
 Template.tagBlank.events({
-  "submit form"(event, instance) {
-    event.preventDefault();
-    instance.submitInput();
-  },
-
   "blur input"(event, instance) {
     instance.submitInput();
   },
 
   "keydown input"(event, instance) {
-    if (event.keyCode === 9) {
-      event.preventDefault();
+    // 9 == Tab key
+    // 13 == Enter Key
+    if (event.keyCode === 9 || event.keyCode === 13) {
       instance.submitInput();
     }
   }
