@@ -264,11 +264,11 @@ AutoForm.hooks({
 });
 
 
-Blaze.TemplateInstance.prototype.parentTemplate = function(levels) {
+Blaze.TemplateInstance.prototype.parentTemplate = function(levels=1) {
     let view = Blaze.currentView;
-    if (typeof levels === "undefined") {
-        levels = 1;
-    }
+   /* if (typeof levels === "undefined") {*/
+        //levels = 1;
+    /*}*/
     while (view) {
         if (view.name.substring(0, 9) === "Template." && !levels--) {
             return view.templateInstance();
