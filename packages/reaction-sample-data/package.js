@@ -1,15 +1,15 @@
 Package.describe({
   summary: "Reaction Commerce Sample Data",
   name: "reactioncommerce:reaction-sample-data",
-  version: "0.1.1",
+  version: "0.1.3",
   documentation: "README.md"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2.1");
+  api.versionsFrom("METEOR@1.3");
 
   // reaction core
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   // load fixture data
   api.addFiles("server/load.js", "server");
@@ -19,5 +19,3 @@ Package.onUse(function (api) {
   api.addAssets("private/data/Shops.json", "server");
   api.addAssets("private/data/Tags.json", "server");
 });
-
-// Package.onTest(function (api) {});

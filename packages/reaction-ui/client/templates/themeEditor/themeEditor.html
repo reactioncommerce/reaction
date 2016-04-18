@@ -1,0 +1,46 @@
+<template name="uiThemeEditor">
+
+  <div class="panel panel-default" data-selector={{style.selector}} data-rule="true">
+    <div class="panel-heading">
+      <div class="panel-title">
+        {{component.label}}
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-group">
+    {{#each style in styles}}
+      <div class="rui objectmap" data-selector={{style.selector}} data-rule="true">
+        <div class="panel-heading">
+          <div class="panel-title">
+            {{#if style.annotation}}
+              {{style.annotation.label}}
+            {{/if}}
+
+              <span class="label-selector hidden">{{style.selector}}</span>
+          </div>
+        </div>
+          {{> uiStyleDeclarations declarations=style.declarations}}
+      </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="uiStyleDeclarations">
+
+
+  <div class="rui list">
+    {{#each declaration in declarations}}
+      <div class="rui list-item form-group" data-selector={{selector}}>
+        <label>
+          {{declaration.property}}:
+        </label>
+        {{#if declaration.declarations}}
+          {{> uiStyleDeclarations declarations=declaration.declarations}}
+        {{else}}
+          {{> textfield name=declaration.property value=declaration.value}}
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+</template>

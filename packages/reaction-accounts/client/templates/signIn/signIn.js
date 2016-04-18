@@ -42,11 +42,11 @@ Template.loginFormSignInView.events({
     templateInstance.formMessages.set({});
 
     if (validatedEmail !== true) {
-      errors.email = validatedEmail.reason;
+      errors.email = validatedEmail;
     }
 
     if (validatedPassword !== true) {
-      errors.password = validatedPassword.reason;
+      errors.password = validatedPassword;
     }
 
     if ($.isEmptyObject(errors) === false) {

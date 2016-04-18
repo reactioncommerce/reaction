@@ -1,0 +1,178 @@
+<template name="productSettings">
+  {{#if hasSelectedProducts}}
+  <div class="panel panel-default">
+    <div class="panel-heading panel-heading-flex">
+      <div class="panel-title" data-i18n="productDetailEdit.product">Product</div>
+      <div class="panel-controls">
+        <button
+          type="button"
+          class="btn btn-default"
+          data-toggle="tooltip"
+          title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+          data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+          data-event-action="publishProduct"
+          >
+          {{#if isVisible}}
+            <span class="fa fa-eye fa-lg"></span>
+          {{else}}
+            <span class="fa fa-eye-slash fa-lg"></span>
+          {{/if}}
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-default"
+          data-toggle="tooltip"
+          title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+          data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+          data-event-action="cloneProduct"
+          >
+          <span class="fa fa-files-o fa-lg"></span>
+        </button>
+
+        <button
+          type="button"
+          class="delete-product2 btn btn-danger"
+          data-toggle="tooltip"
+          title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+          data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+          data-event-action="deleteProduct"
+          >
+          <span class="fa fa-trash-o fa-lg"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="order-items">
+        {{#each product in products}}
+          {{> productSettingsListItem product}}
+        {{/each}}
+      </div>
+      {{!-- Todo: if theres only one selected
+      <div class="product-settings-mock-grid hidden">
+        {{#each product in products}}
+          {{> productSettingsGridItem product}}
+        {{/each}}
+      </div>
+      --}}
+    </div>
+
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title" data-i18n="productDetailEdit.size">Size</h4>
+    </div>
+
+    <div class="product-settings-size-controls list-group">
+
+      <div class="list-group-item {{itemWeightActive 0}}" data-event-action="changeProductWeight" data-event-data="0">
+        <div class="product-settings-size-control">
+            <div class="main"></div>
+        </div>
+      </div>
+
+      <div class="list-group-item {{itemWeightActive 1}}" data-event-action="changeProductWeight" data-event-data="1">
+
+        <div class="product-settings-size-control main-wide">
+            <div class="main"></div>
+            <div class="side">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+        </div>
+      </div>
+
+      <div class="list-group-item {{itemWeightActive 2}}" data-event-action="changeProductWeight" data-event-data="2">
+        <div class="product-settings-size-control main-full">
+          <div class="main"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {{else}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="panel-title">
+          {{i18n "productDetailEdit.noSelectedProducts"
+          "No selected products. Use the "}}<i class="fa fa-gear"></i>{{i18n "productDetailEdit.orShiftCtrlCmd"
+          " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products."}}
+        </span>
+      </div>
+    </div>
+  {{/if}}
+</template>
+
+<template name="productSettingsListItem">
+  <div class="order-item" data-id="{{_id}}" id="{{_id}}">
+
+
+    <div class="order-item-media">
+      {{#with media}}
+        <img src="{{url store='large'}}">
+      {{else}}
+        <img src="/resources/placeholder.gif">
+      {{/with}}
+    </div>
+
+    <div class="order-item-details">
+      <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
+        <div class="overlay-title">{{title}}</div>
+        <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+      </a>
+    </div>
+
+  </div>
+</template>
+
+
+
+<template name="productSettingsGridItem">
+  <div class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
+    {{> gridNotice}}
+    <span class="product-grid-item-alerts">
+      {{> inlineAlerts placement="productGridItem" id=_id}}
+    </span>
+
+    <a class="product-grid-item-images"
+      href="{{pathFor 'product' handle=handle}}"
+      data-event-category="grid"
+      data-event-action="product-click"
+      data-event-label="grid product click"
+      data-event-value="{{_id}}">
+
+      <div class="product-primary-images">
+        {{#with media}}
+          <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
+        {{else}}
+          <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
+        {{/with}}
+      </div>
+
+      {{#if additionalMedia}}
+        {{#if isMediumWeight}}
+          <div class="product-additional-images">
+            {{#each additionalMedia}}
+                <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
+
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/if}}
+    </a>
+
+
+    <div class="grid-content">
+      <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
+        <div class="overlay">
+          <div class="overlay-title">{{title}}</div>
+          <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</template>

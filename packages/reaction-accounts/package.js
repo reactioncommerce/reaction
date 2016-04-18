@@ -1,19 +1,19 @@
 Package.describe({
   summary: "Reaction Accounts - Authentication UI for Reaction Commerce",
   name: "reactioncommerce:reaction-accounts",
-  version: "1.6.1",
+  version: "1.7.0",
   documentation: "README.md"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
+  api.use("browser-policy");
   api.use("tracker");
   api.use("logging");
   api.use("reload");
@@ -32,9 +32,11 @@ Package.onUse(function (api) {
   api.use("oauth-encryption");
   api.use("accounts-base");
   api.use("accounts-password");
-  api.use("reactioncommerce:core@0.11.0");
+  api.use("jparker:gravatar@0.4.1");
+  api.use("reactioncommerce:core@0.13.0");
 
   // accounts
+  api.addFiles("server/register.js", "server");
   api.addFiles("server/accounts.js", "server");
   api.addFiles("server/policy.js", "server");
   api.addFiles("server/methods/serviceConfiguration.js", "server");
@@ -42,14 +44,12 @@ Package.onUse(function (api) {
 
   // Core Reaction packages
   // register as a reaction package
-  api.addFiles("server/register.js", "server");
   api.addFiles("server/methods/accounts.js", "server");
   api.addFiles("server/publications/serviceConfiguration.js", "server");
 
-  api.addFiles("common/routing.js", ["client", "server"]);
-
+  // Helpers
   api.addFiles("client/helpers/util.js", ["client", "server"]);
-  api.addFiles("client/helpers/validation.js", "client");
+  api.addFiles("client/helpers/validation.js", ["client", "server"]);
   api.addFiles("client/helpers/helpers.js", "client");
   api.addFiles("client/helpers/subscriptions.js", "client");
 
@@ -111,23 +111,28 @@ Package.onUse(function (api) {
 
   api.addFiles("client/templates/dropdown/dropdown.html", "client");
   api.addFiles("client/templates/dropdown/dropdown.js", "client");
+
+  api.imply("accounts-base");
+  api.imply("accounts-password");
   api.export("ReactionCore");
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.20.3");
+  api.use("sanjo:jasmine@0.21.0");
   api.use("ecmascript");
   api.use("random");
-  api.use("jquery");
+
   api.use("underscore");
   api.use("velocity:html-reporter@0.9.1");
   api.use("velocity:console-reporter@0.1.4");
 
   api.use("reactioncommerce:core");
   api.use("reactioncommerce:reaction-accounts");
-  api.use("reactioncommerce:reaction-factories");
+  api.use("reactioncommerce:reaction-i18n@2.0.0");
+  api.use("reactioncommerce:reaction-factories@0.4.2");
 
   api.addFiles("tests/jasmine/client/integration/login.js", "client");
   api.addFiles("tests/jasmine/server/integration/accounts.js", "server");
   api.addFiles("tests/jasmine/server/integration/publications.js", "server");
+  api.addFiles("tests/jasmine/server/integration/validation.js", "server");
 });

@@ -1,0 +1,18 @@
+<template name="uiDashboard">
+  <div class="container-fluid-sm">
+    <div class="rui items flex third">
+      {{#each theme in themes}}
+        <div class="rui item axis vertical">
+          {{# card (themeCardProps theme)}}
+            {{> cardStandardContent title=theme.name}}
+          {{/card}}
+        </div>
+      {{else}}
+        <div class="empty-view-message">
+            <i class="fa fa-exclamation-triangle"></i>
+            <p>No Available UI Themes</p>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>

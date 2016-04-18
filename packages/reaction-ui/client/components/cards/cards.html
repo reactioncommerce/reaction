@@ -1,0 +1,17 @@
+<template name="card">
+  <div class="rui card">
+    <div class="content">
+      {{> Template.contentBlock}}
+    </div>
+
+    <div class="controls">
+      {{#each controlProps in controls}}
+        {{> button controlProps}}
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="cardStandardContent">
+  <h2>{{title}}</h2>
+</template>

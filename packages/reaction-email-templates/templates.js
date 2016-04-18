@@ -17,8 +17,8 @@ ReactionEmailTemplate = function (template) {
 
   // using layout where in the future a more comprehensive rule based
   // filter of the email templates can be implemented.
-  const tpl = ReactionCore.Collections.Layouts.findOne({
-    template: template
+  const tpl = ReactionCore.Collections.Packages.findOne({
+    "layout.template": template
   });
 
   if (tpl) {

@@ -1,40 +1,30 @@
 Template.reactionAnalyticsSettings.helpers({
-  packageData: function() {
+  packageData() {
     return ReactionCore.Collections.Packages.findOne({
       name: "reaction-analytics"
     });
   },
-  googleAnalyticsEnabled: function() {
-    return typeof ga === 'function';
+  googleAnalyticsEnabled() {
+    return typeof ga === "function";
   },
-  segmentioEnabled: function() {
-    return typeof analytics === 'object';
+  segmentioEnabled() {
+    return typeof analytics === "object";
   },
-  mixpanelEnabled: function() {
-    return typeof mixpanel === 'object';
+  mixpanelEnabled() {
+    return typeof mixpanel === "object";
   }
-});
-
-
-Template.reactionAnalytics.events({
-  
 });
 
 
 AutoForm.hooks({
   "analytics-update-form": {
-    onSuccess: function(operation, result, template) {
+    onSuccess() {
       Alerts.removeType("analytics-not-configured");
-      return Alerts.add("Analytics settings saved.", "success", {
-        type: "analytics-settings"
-      });
+      return Alerts.toast("Analytics settings saved.", "success");
     },
-    onError: function(operation, error, template) {
-      var msg;
-      msg = error.message || error.reason || "Unknown error";
-      return Alerts.add("Analytics settings update failed: " + msg, "danger", {
-        type: "analytics-settings"
-      });
+    onError(operation, error) {
+      let msg = error.message || error.reason || "Unknown error";
+      return Alerts.toast(`Analytics settings update failed: ${msg}`, "error");
     }
   }
 });

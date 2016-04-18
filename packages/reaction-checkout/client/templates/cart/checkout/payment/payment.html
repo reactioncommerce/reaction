@@ -1,0 +1,17 @@
+<template name="checkoutPayment">
+  <div class="panel panel-default">
+
+    <div class="panel-heading">
+      {{> checkoutStepBadge}}
+
+      <h3 class="panel-title">
+        <span data-i18n="checkoutPayment.addPaymentToCompleteOrder">Add payment to complete order</span></h3>
+    </div>
+
+    <div class="core-payment-methods panel-body">
+      {{> corePaymentMethods}}
+      <div id="payment-alerts">{{> inlineAlerts placement="paymentMethod"}}</div>
+    </div>
+
+  </div>
+</template>

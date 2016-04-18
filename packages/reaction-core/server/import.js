@@ -3,10 +3,6 @@
  * @author Tom De Caluwé
  */
 
-if (!MongoInternals.NpmModule.Collection.prototype.initializeUnorderedBulkOp) {
-  throw Error("Couldn't detect the MongoDB bulk API, are you using MongoDB 2.6 or above?");
-}
-
 ReactionImport = class {};
 
 ReactionFixture = Object.create(ReactionImport);
@@ -40,8 +36,7 @@ ReactionImport.startup = function () {
 ReactionImport.load = function (key, object) {
   check(object, Object);
 
-  let collection = this.identify(object);
-  this.object(collection, key, object);
+  this.object(this.identify(object), key, object);
 };
 
 ReactionImport.indication = function (field, collection, probability) {
@@ -112,16 +107,8 @@ ReactionImport.identify = function (document) {
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
  * @returns {undefined}
  */
-ReactionImport.flush = function (collection) {
-  check(collection, Match.Optional(Mongo.Collection));
-
-  if (!collection) {
-    for (let name of Object.keys(this._buffers)) {
-      this.flush(ReactionCore.Collections[name]);
-    }
-    return;
-  }
-
+ReactionImport.commit = function (collection) {
+  check(collection, Mongo.Collection);
   // Construct a collection identifier.
   let name = this._name(collection);
 
@@ -167,24 +154,43 @@ ReactionImport.flush = function (collection) {
 };
 
 /**
+ * @summary Process the buffer for a given collection and commit the database.
+ * @param {Mongo.Collection} collection optional - supply a Mongo collection, or leave empty to commit all buffer entries
+ * @returns {undefined}
+ */
+ReactionImport.flush = function (collection) {
+  if (!collection) {
+    for (let name of Object.keys(this._buffers)) {
+      this.commit(ReactionCore.Collections[name]);
+    }
+    return;
+  }
+  this.commit(collection);
+};
+
+/**
  * @summary Get a validation context for a given collection.
  * @param {Mongo.Collection} collection The target collection
+ * @param {Object} [selector] A selector object to retrieve the correct schema.
  * @returns {SimpleSchemaValidationContext} A validation context.
  *
  * The validation context is requested from the schema associated with the
  * collection.
  */
-ReactionImport.context = function (collection) {
+ReactionImport.context = function (collection, selector) {
   check(collection, Mongo.Collection);
+  check(selector, Match.Optional(Object));
 
   // Construct a context identifier.
   let name = this._name(collection);
-
+  if (selector && selector.type) {
+    name = `${name}_${selector.type}`;
+  }
   // Construct a new validation context if necessary.
   if (this._contexts[name]) {
     return this._contexts[name];
   }
-  this._contexts[name] = collection.simpleSchema().newContext();
+  this._contexts[name] = collection.simpleSchema(selector).newContext();
   return this._contexts[name];
 };
 
@@ -196,6 +202,10 @@ ReactionImport.context = function (collection) {
  */
 ReactionImport.buffer = function (collection) {
   check(collection, Mongo.Collection);
+
+  if (!MongoInternals.NpmModule.Collection.prototype.initializeUnorderedBulkOp) {
+    throw Error("Couldn't detect the MongoDB bulk API, are you using MongoDB 2.6 or above?");
+  }
 
   // Construct a buffer identifier.
   let name = this._name(collection);
@@ -222,60 +232,9 @@ ReactionImport.buffer = function (collection) {
  * * Update the variant.
  */
 ReactionImport.product = function (key, product, parent) {
-  let collection = ReactionCore.Collections.Products;
-  if (parent) {
-    ReactionCore.Schemas.ProductVariant.clean(product, {});
-    // Remove variants with the same key from other parents.
-    this.buffer(collection).find({
-      variants: {
-        $elemMatch: key
-      },
-      $nor: [parent]
-    }).update({
-      $pull: {
-        variants: {
-          $elemMatch: key
-        }
-      }
-    });
-    // Make sure the variant exists.
-    query = {
-      $nor: [{
-        variants: {
-          $elemMatch: key
-        }
-      }]
-    };
-    for (let okey of Object.keys(parent)) {
-      query[okey] = parent[okey];
-    }
-    this.buffer(collection).find(query).update({
-      $push: {
-        variants: key
-      }
-    });
-    // Upsert the variant.
-    ReactionCore.Schemas.ProductVariant.clean(product, {});
-    query = {
-      variants: {
-        $elemMatch: key
-      }
-    };
+  check(parent, Object);
 
-    for (let okey of Object.keys(parent)) {
-      query[okey] = parent[okey];
-    }
-    update = {};
-    for (let okey of Object.keys(product)) {
-      update["variants.$." + okey] = product[okey];
-    }
-    this.context(collection).validate(update, {});
-    this.buffer(collection).find(query).update({
-      $set: update
-    });
-  } else {
-    return this.object(ReactionCore.Collections.Products, key, product);
-  }
+  return this.object(ReactionCore.Collections.Products, key, product);
 };
 
 /**
@@ -287,7 +246,10 @@ ReactionImport.product = function (key, product, parent) {
 ReactionImport.package = function (pkg, shopId) {
   check(pkg, Object);
   check(shopId, String);
-  const key = {name: pkg.name, shopId: shopId};
+  const key = {
+    name: pkg.name,
+    shopId: shopId
+  };
   return this.object(ReactionCore.Collections.Packages, key, pkg);
 };
 
@@ -298,8 +260,13 @@ ReactionImport.package = function (pkg, shopId) {
  * @returns {Object} updated translation buffer
  */
 ReactionImport.translation = function (key, translation) {
-  return this.object(ReactionCore.Collections.Translations, key, translation);
+  const modifiedKey = Object.assign(key, { ns: translation.ns });
+  return this.object(ReactionCore.Collections.Translations, modifiedKey, translation);
 };
+
+//
+// See reaction-i18n/server/import.js
+//
 
 /**
  * @summary Store a shop in the import buffer.
@@ -308,16 +275,23 @@ ReactionImport.translation = function (key, translation) {
  * @returns {Object} this shop
  */
 ReactionImport.shop = function (key, shop) {
-  let json;
-
-  shop.languages = shop.languages || [{
-    i18n: "en"
-  }];
-  for (let language of shop.languages) {
-    json = Assets.getText("private/data/i18n/" + language.i18n + ".json");
-    this.process(json, ["i18n"], ReactionImport.translation);
-  }
   return this.object(ReactionCore.Collections.Shops, key, shop);
+};
+
+/**
+ * @summary store a shop layout in the import buffer
+ * @param {Array} layout - an array of layouts to be added to shop
+ * @param {String} shopId shopId
+ * @returns {Object} this shop
+ */
+ReactionImport.layout = function (layout, shopId) {
+  const key = {
+    _id: shopId
+  };
+  return this.object(ReactionCore.Collections.Shops, key, {
+    "_id:": shopId,
+    "layout": layout
+  });
 };
 
 /**
@@ -351,20 +325,25 @@ ReactionImport.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
+
+  let selector = object;
+
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
+  // hooks for additional import manipulation.
+  const importObject = ReactionCore.Hooks.Events.run(`onImport${this._name(collection)}`, object);
   // Clean and validate the object.
-  collection.simpleSchema().clean(object);
-  this.context(collection).validate(object, {});
+  collection.simpleSchema(importObject).clean(importObject);
+  this.context(collection, selector).validate(importObject, {});
   // Upsert the object.
   let find = this.buffer(collection).find(key);
   if (this._upsert()) {
     find.upsert().update({
-      $set: object
+      $set: importObject
     });
   } else {
     find.upsert().update({
-      $setOnInsert: object
+      $setOnInsert: importObject
     });
   }
   if (this._count[this._name(collection)]++ >= this._limit) {
@@ -400,7 +379,9 @@ ReactionImport.process = function (json, keys, callback) {
 
 ReactionImport.indication("i18n", ReactionCore.Collections.Translations, 0.2);
 ReactionImport.indication("hashtags", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("variants", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("barcode", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("price", ReactionCore.Collections.Products, 0.5);
+ReactionImport.indication("ancestors", ReactionCore.Collections.Products, 0.5);
 ReactionImport.indication("languages", ReactionCore.Collections.Shops, 0.5);
 ReactionImport.indication("currencies", ReactionCore.Collections.Shops, 0.5);
 ReactionImport.indication("timezone", ReactionCore.Collections.Shops, 0.5);

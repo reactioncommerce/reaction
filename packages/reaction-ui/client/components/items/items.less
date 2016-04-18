@@ -1,4 +1,7 @@
+// Imports
 @import "{reactioncommerce:reaction-ui}/client/styles/variables.less";
+@import "{reactioncommerce:reaction-ui}/client/styles/mixins.less";
+
 
 .rui.items {
   width: 100%;
@@ -30,24 +33,29 @@
 }
 
 .rui.items.flex .item {
+  display: flex;
   flex: 1 1 50%;
-
+  max-width: 50%;
 }
 
 .rui.items.flex.quarter .item {
   flex: 1 1 25%;
+  max-width: 25%;
 }
 
 .rui.items.flex.third .item {
   flex: 1 1 33%;
+  max-width: 33%;
 }
 
 .rui.items.flex.half .item {
   flex: 1 1 50%;
+  max-width: 50%;
 }
 
 .rui.items.flex.three-quarters .item {
   flex: 1 1 75%;
+  max-width: 75%;
 }
 
 
@@ -81,5 +89,16 @@
 
 
 .rui.item {
-  // display: flex;
+  .display(flex);
+}
+
+.rui.item.flex.vertical,
+.rui.item.axis.vertical {
+  flex-direction: column;
+}
+
+
+.rui.item.flex.horizontal,
+.rui.item.axis.horizontal {
+  flex-direction: row;
 }

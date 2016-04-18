@@ -1,11 +1,13 @@
+import React from "react";
+
 const classnames = ReactionUI.Lib.classnames;
 
 class Button extends React.Component {
 
-  props: {
+  props = {
     toggle: false,
     active: false
-  }
+  };
 
   renderOnStateIcon() {
     if (this.props.onIcon) {
@@ -42,9 +44,15 @@ class Button extends React.Component {
       "btn-warning": this.props.status === "warning"
     });
 
+    const {
+      title,
+      ...props
+    } = this.props
+
     return (
-      <button type="button" className={classes} {...this.props}>
+      <button type="button" className={classes} {...props}>
         {this.renderIcon()}
+        {title}
         {this.props.children}
       </button>
     );

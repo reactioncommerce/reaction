@@ -1,0 +1,45 @@
+<template name="select">
+  {{> Template.dynamic template=template data=.}}
+</template>
+
+<template name="selectAsDropdown">
+  <div class="rui select">
+    <select name="{{name}}">
+      {{#each option in options}}
+        <option value="{{option.value}}">{{option.label}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>
+
+<template name="selectAsRadioButtons">
+  <div class="{{itemListClassName}}">
+    {{#each option in options}}
+      <div class="{{itemClassName}}">
+        <label class="{{labelClassName}}">
+          {{> Template.dynamic template=optionTemplate data=(templateData option)}}
+          <input
+            type="radio"
+            name="navbarBrand"
+            value={{option._id}}
+            {{checked option}}
+            class={{inputClassName}}
+          >
+        </label>
+      </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="selectAsCheckboxes">
+  <div class="rui items flex quarter">
+    {{#each option in options}}
+      <div class="rui item">
+        <label>
+          <input type="checkbox" name="navbarBrand" value={{option._id}} {{checked option}}>
+          {{> Template.dynamic template=optionTemplate data=option}}
+        </label>
+      </div>
+    {{/each}}
+  </div>
+</template>

@@ -1,19 +1,18 @@
 Package.describe({
   summary: "Reaction Shipping - Flat Rate shipping for Reaction Commerce",
   name: "reactioncommerce:reaction-shipping",
-  version: "0.6.2",
+  version: "0.8.0",
   documentation: "README.md"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // meteor base packages
   api.use("meteor-base");
   api.use("mongo");
   api.use("blaze-html-templates");
   api.use("session");
-  api.use("jquery");
   api.use("tracker");
   api.use("logging");
   api.use("reload");
@@ -26,11 +25,11 @@ Package.onUse(function (api) {
 
   api.use("templating");
   api.use("less");
-  api.use("reactioncommerce:core@0.11.0", ["client", "server"]);
+  api.use("reactioncommerce:reaction-checkout@1.0.0");
+  api.use("reactioncommerce:core@0.13.0");
 
   api.addFiles([
-    "common/collections.js", // any unique collections
-    "common/routing.js" // add routing for administration templates
+    "common/collections.js" // any unique collections
   ], ["client", "server"]);
 
   api.addFiles("server/register.js", ["server"]); // register as a reaction package

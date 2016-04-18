@@ -1,29 +1,29 @@
 Template.socialSettings.helpers({
-  packageData: function() {
+  packageData() {
     return ReactionCore.Collections.Packages.findOne({
-      name: 'reaction-social'
+      name: "reaction-social"
     });
   },
 
   checkboxAtts: function () {
     return {
       class: "checkbox-switch"
-    }
+    };
   }
 });
 
 
 AutoForm.hooks({
   "social-update-form": {
-    onSuccess: function(operation, result, template) {
+    onSuccess() {
       Alerts.removeSeen();
-      return Alerts.add("Social settings saved.", "success", {
+      return Alerts.toast("Social settings saved.", "success", {
         autoHide: true
       });
     },
-    onError: function(operation, error, template) {
+    onError(operation, error) {
       Alerts.removeSeen();
-      return Alerts.add("Social settings update failed. " + error, "danger");
+      return Alerts.toast(`Social settings update failed. ${error}`, "error");
     }
   }
 });

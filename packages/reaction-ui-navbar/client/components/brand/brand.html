@@ -1,0 +1,10 @@
+<template name="coreNavigationBrand">
+  <a class="brand" href="{{pathFor '/'}}">
+    {{#with logo}}
+      <div class="logo">
+        <img src="{{url}}">
+      </div>
+    {{/with}}
+    <span class="title">{{siteName}}</span>
+  </a>
+</template>

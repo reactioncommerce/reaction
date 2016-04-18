@@ -231,11 +231,11 @@ Meteor.methods({
   },
 
   /**
-   * orders/shipmentShipped
+   * orders/sendNotification
    *
-   * @summary trigger shipmentShipped status and workflow update
+   * @summary send order notification email
    * @param {Object} order - order object
-   * @return {Object} return workflow result
+   * @return {Boolean} email sent or not
    */
   "orders/sendNotification": function (order) {
     check(order, Object);
@@ -273,7 +273,8 @@ Meteor.methods({
           })
         });
       } catch (error) {
-        throw new Meteor.Error(403, "Unable to send shipment notification email.", error);
+        ReactionCore.Log.fatal("Unable to send notification email: " + error);
+        throw new Meteor.Error("error-sending-email", "Unable to send order notification email.", error);
       }
     }
   },
@@ -344,7 +345,7 @@ Meteor.methods({
       "shipping._id": shipment._id
     }, {
       $set: {
-        [`shipping.$.tracking`]: tracking
+        ["shipping.$.tracking"]: tracking
       }
     });
   },
@@ -414,21 +415,22 @@ Meteor.methods({
   /**
    * orders/addOrderEmail
    * @summary Adds email to order, used for guest users
-   * @param {String} orderId - add tracking to orderId
+   * @param {String} cartId - add tracking to orderId
    * @param {String} email - valid email address
    * @return {String} returns order update result
    */
-  "orders/addOrderEmail": function (orderId, email) {
-    check(orderId, String);
+  "orders/addOrderEmail": function (cartId, email) {
+    check(cartId, String);
     check(email, String);
-    return ReactionCore.Collections.Orders.update(orderId, {
+
+    return ReactionCore.Collections.Orders.update({cartId: cartId}, {
       $set: {
         email: email
       }
     });
   },
   /**
-   * orders/addOrderEmail
+   * orders/updateDocuments
    * @summary Adds file, documents to order. use for packing slips, labels, customs docs, etc
    * @param {String} orderId - add tracking to orderId
    * @param {String} docId - CFS collection docId
@@ -481,19 +483,16 @@ Meteor.methods({
    */
   "orders/inventoryAdjust": function (orderId) {
     check(orderId, String);
-    let order = ReactionCore.Collections.Orders.findOne(orderId);
-
-    _.each(order.items, function (product) {
+    const order = ReactionCore.Collections.Orders.findOne(orderId);
+    order.items.forEach(item => {
       ReactionCore.Collections.Products.update({
-        "_id": product.productId,
-        "variants._id": product.variants._id
+        _id: item.variants._id
       }, {
         $inc: {
-          "variants.$.inventoryQuantity": -product.quantity
+          inventoryQuantity: -item.quantity
         }
-      });
+      }, { selector: { type: "variant" } });
     });
-    return;
   },
 
   /**
@@ -542,7 +541,7 @@ Meteor.methods({
               }
             });
           } else {
-            ReactionCore.Log.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error.stack);
+            ReactionCore.Log.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
 
             ReactionCore.Collections.Orders.update({
               "_id": orderId,
@@ -582,6 +581,7 @@ Meteor.methods({
       if (error) {
         future.return(error);
       } else {
+        check(result, [ReactionCore.Schemas.Refund]);
         future.return(result);
       }
     });

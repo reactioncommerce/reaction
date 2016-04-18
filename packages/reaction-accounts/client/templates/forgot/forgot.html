@@ -15,7 +15,7 @@
 
       {{#if hasError messages.errors.email}}
         <span class="help-block">
-          {{messages.errors.email}}
+          {{i18n messages.errors.email.i18nKeyReason messages.errors.email.reason}}
         </span>
       {{/if}}
     </div>
