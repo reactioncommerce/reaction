@@ -13,7 +13,7 @@ engines:
           mass_threshold: 150
 
   eslint:
-    enabled: true
+    enabled: false
   csslint:
     enabled: false
   fixme:
