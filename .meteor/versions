@@ -180,6 +180,7 @@ spacebars-compiler@1.0.10
 srp@1.0.7
 standard-minifier-css@1.0.5
 standard-minifier-js@1.0.5
+standard-minifiers@1.0.5
 templating@1.1.8
 templating-tools@1.0.3
 tmeasday:check-npm-versions@0.3.0
