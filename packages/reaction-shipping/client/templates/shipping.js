@@ -243,9 +243,11 @@ AutoForm.hooks({
   "shipping-method-edit-form": {
     onSubmit(doc) {
       let error;
+      let provider_id = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
-        Meteor.call("updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), doc);
+        Meteor.call("updateShippingMethods", provider_id, Template.parentData(1), doc);
         this.done();
+        ReactionCore.hideActionView();
       } catch (_error) {
         error = _error;
         this.done(new Error("Submission failed"));
@@ -260,3 +262,17 @@ AutoForm.hooks({
     }
   }
 });
+
+
+Blaze.TemplateInstance.prototype.parentTemplate = function(levels) {
+    let view = Blaze.currentView;
+    if (typeof levels === "undefined") {
+        levels = 1;
+    }
+    while (view) {
+        if (view.name.substring(0, 9) === "Template." && !levels--) {
+            return view.templateInstance();
+        }
+        view = view.parentView;
+    }
+};
