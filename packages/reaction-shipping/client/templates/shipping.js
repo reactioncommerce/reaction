@@ -255,6 +255,7 @@ AutoForm.hooks({
       return error || false;
     },
     onSuccess() {
+      // ReactionCore.hideActionView();
       return Alerts.inline("Shipping method rate updated.", "success", {
         autoHide: true,
         placement: "shippingPackage"
