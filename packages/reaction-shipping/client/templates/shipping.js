@@ -244,7 +244,9 @@ AutoForm.hooks({
     onSubmit(doc) {
       let error;
       try {
-        Meteor.call("updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), doc);
+        provider_id = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
+        Meteor.call("updateShippingMethods", provider_id, Template.parentData(1), doc);
+        ReactionCore.hideActionView();
         this.done();
       } catch (_error) {
         error = _error;
@@ -260,3 +262,18 @@ AutoForm.hooks({
     }
   }
 });
+
+Blaze.TemplateInstance.prototype.parentTemplate = function(levels) {
+    var view = Blaze.currentView;
+    if (typeof levels === "undefined") {
+        levels = 1;
+    }
+    while (view) {
+        if (view.name.substring(0, 9) === "Template." && !(levels--)) {
+            return view.templateInstance();
+        }
+        view = view.parentView;
+    }
+};
+
+
