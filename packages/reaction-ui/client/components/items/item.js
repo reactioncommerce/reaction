@@ -10,4 +10,10 @@ class Item extends React.Component {
   }
 }
 
+Item.displayName = "Item";
+
+Item.propTypes = {
+  children: React.PropTypes.node
+};
+
 export default Item;
