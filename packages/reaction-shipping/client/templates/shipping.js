@@ -65,6 +65,7 @@ Template.shipping.events({
       label: "Add Shipping Provider",
       template: "addShippingProvider"
     });
+    
   }
 });
 
@@ -77,6 +78,22 @@ Template.addShippingMethod.helpers({
     return ReactionCore.Collections.Shipping.find();
   }
 });
+
+
+/*
+ *  template editShippingMethod helpers
+ */
+
+Template.editShippingMethod.helpers({  
+  selectedMethodDoc: function () {
+    Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
+    if(Doc){
+      return Doc;
+    }
+  }
+});
+
+
 
 Template.afFormGroup_validLocales.helpers({
   afFieldInputAtts() {
@@ -163,6 +180,9 @@ Template.shippingProviderTable.events({
       data: this,
       template: "editShippingMethod"
     });
+
+    Session.set("updatedMethodObj", "");
+    Session.set("selectedMethodObj", this);
   },
   "click [data-event-action=editShippingProvider]"(event) {
     event.preventDefault();
@@ -240,13 +260,14 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   "shipping-method-edit-form": {
-    onSubmit(doc) {
+    onSubmit(insertDoc, updateDoc, currentDoc) {
       let error;
       let providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
-        Meteor.call("updateShippingMethods", providerId, Template.parentData(1), doc);
+        _.extend(insertDoc,{'_id':currentDoc._id});
+        Meteor.call("updateShippingMethods", providerId, currentDoc, insertDoc);
+        Session.set("updatedMethodObj",insertDoc);
         this.done();
-        ReactionCore.hideActionView();
       } catch (_error) {
         error = _error;
         this.done(new Error("Submission failed"));
@@ -262,6 +283,8 @@ AutoForm.hooks({
 
   }
 });
+
+
 
 
 Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
