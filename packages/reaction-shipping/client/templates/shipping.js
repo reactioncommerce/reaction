@@ -83,10 +83,10 @@ Template.addShippingMethod.helpers({
  *  template editShippingMethod helpers
  */
 
-Template.editShippingMethod.helpers({  
-  selectedMethodDoc: function () {
+Template.editShippingMethod.helpers({
+  selectedMethodDoc() {
     Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
-    if(Doc) {
+    if (Doc) {
       return Doc;
     }
   }
