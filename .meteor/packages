@@ -14,10 +14,41 @@ es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks   # ensure meteor method argument validation
 browser-policy          # security-related policies enforced by newer browsers
-standard-minifier-css   # reduces amount of white-space parsing CSS
+juliancwirko:postcss    # CSS post-processing plugin (replaces standard-minifier-css)
 standard-minifier-js    # a minifier plugin used for Meteor apps by default
 session                 # ReactiveDict whose contents are preserved across Hot Code Push
 tracker                 # Meteor transparent reactive programming library
+random
+reactive-var
+reactive-dict
+check
+http
+ddp-rate-limiter
+underscore
+logging
+reload
+ejson
+less
+email
+service-configuration
+amplify
+mdg:validated-method
+aldeed:template-extension
+aldeed:autoform
+momentjs:moment
+risul:moment-timezone
+cfs:standard-packages
+cfs:storage-adapter
+cfs:graphicsmagick
+cfs:gridfs
+cfs:filesystem
+cfs:ui
+raix:ui-dropped-event
+vsivsi:job-collection
+ongoworks:security
+meteorhacks:subs-manager
+alanning:roles
+jparker:gravatar
 
 # Meteor Auth Packages
 accounts-base
@@ -25,45 +56,46 @@ accounts-password
 accounts-facebook
 accounts-google
 accounts-twitter
+oauth-encryption
 # accounts-github
 # accounts-weibo
 # accounts-oauth
 
 # Reaction Commerce Packages
 
-reactioncommerce:core
+# reactioncommerce:core
 reactioncommerce:core-theme
-reactioncommerce:reaction-catalog
-reactioncommerce:reaction-layout
-reactioncommerce:launchdock-connect
-reactioncommerce:reaction-accounts
-reactioncommerce:reaction-router
-reactioncommerce:reaction-i18n
-reactioncommerce:reaction-product-variant
-reactioncommerce:reaction-dashboard
-reactioncommerce:reaction-orders
-reactioncommerce:reaction-analytics-libs
-reactioncommerce:reaction-analytics
-reactioncommerce:reaction-inventory
-reactioncommerce:reaction-shipping
-reactioncommerce:reaction-social
-reactioncommerce:reaction-checkout
-reactioncommerce:reaction-ui
-reactioncommerce:reaction-ui-navbar
-reactioncommerce:reaction-ui-tagnav
+# reactioncommerce:reaction-catalog
+# reactioncommerce:reaction-layout
+# reactioncommerce:launchdock-connect
+# reactioncommerce:reaction-accounts
+# reactioncommerce:reaction-router
+# reactioncommerce:reaction-i18n
+# reactioncommerce:reaction-product-variant
+# reactioncommerce:reaction-dashboard
+# reactioncommerce:reaction-orders
+# reactioncommerce:reaction-analytics-libs
+# reactioncommerce:reaction-analytics
+# reactioncommerce:reaction-inventory
+# reactioncommerce:reaction-shipping
+# reactioncommerce:reaction-social
+# reactioncommerce:reaction-checkout
+# reactioncommerce:reaction-ui
+# reactioncommerce:reaction-ui-navbar
+# reactioncommerce:reaction-ui-tagnav
 
-reactioncommerce:reaction-logger
+# reactioncommerce:reaction-logger
 
 # Reaction Payment Packages
 
-reactioncommerce:reaction-paymentmethod
-reactioncommerce:reaction-paypal
-reactioncommerce:reaction-stripe
-reactioncommerce:reaction-auth-net
-reactioncommerce:reaction-braintree
+# reactioncommerce:reaction-paymentmethod
+# reactioncommerce:reaction-paypal
+# reactioncommerce:reaction-stripe
+# reactioncommerce:reaction-auth-net
+# reactioncommerce:reaction-braintree
 
 # Reaction Commerce Data
-reactioncommerce:reaction-sample-data   # default Reaction data
+# reactioncommerce:reaction-sample-data   # default Reaction data
 
 # Themes
 reactioncommerce:default-theme          # default Reaction theme
