@@ -46,7 +46,7 @@ Package.onUse(function (api) {
   api.use("react-template-helper@0.2.8");
 
   // meteor add-on packages
-  api.use("reactioncommerce:core@0.13.0");
+  // api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-schemas@2.0.3");
 
   api.addFiles("common/global.js", ["client", "server"]);

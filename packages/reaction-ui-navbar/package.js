@@ -25,7 +25,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // meteor add-on packages
-  api.use("reactioncommerce:core@0.13.0");
+  // api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-ui@0.6.0");
   api.use("reactioncommerce:core-theme@2.0.1");
 

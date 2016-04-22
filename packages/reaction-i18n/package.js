@@ -36,7 +36,7 @@ Package.onUse(function (api) {
 
   // reaction packages
   api.use("reactioncommerce:reaction-collections@2.2.0");
-  api.use("reactioncommerce:core@0.13.0");
+  // api.use("reactioncommerce:core@0.13.0");
 
   // server
   api.addFiles("server/import.js", "server");
@@ -107,7 +107,7 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:reaction-i18n@2.1.0");
   api.use("reactioncommerce:reaction-collections@2.2.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
-  api.use("reactioncommerce:core@0.13.0");
+  // api.use("reactioncommerce:core@0.13.0");
 
   // server integration tests
   api.addFiles("tests/jasmine/server/integration/methods.js", "server");

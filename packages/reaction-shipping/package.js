@@ -26,7 +26,7 @@ Package.onUse(function (api) {
   api.use("templating");
   api.use("less");
   api.use("reactioncommerce:reaction-checkout@1.0.0");
-  api.use("reactioncommerce:core@0.13.0");
+  // api.use("reactioncommerce:core@0.13.0");
 
   api.addFiles([
     "common/collections.js" // any unique collections

@@ -25,10 +25,27 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "bunyan": "^1.8.0",
-    "bunyan-format": "0.2.1",
+    "bunyan": "^1.8.1",
+    "bunyan-format": "^0.2.1",
+    "bunyan-loggly": "^1.0.0",
     "meteor-node-stubs": "^0.2.1",
+    "node-geocoder": "^3.9.1",
     "react": "15.0.1",
     "react-dom": "15.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel-eslint": "^6.0.3",
+    "eslint": "^2.8.0",
+    "eslint-plugin-react": "^5.0.1"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    }
   }
 }
