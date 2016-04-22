@@ -65,7 +65,6 @@ Template.shipping.events({
       label: "Add Shipping Provider",
       template: "addShippingProvider"
     });
-    
   }
 });
 
@@ -87,12 +86,11 @@ Template.addShippingMethod.helpers({
 Template.editShippingMethod.helpers({  
   selectedMethodDoc: function () {
     Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
-    if(Doc){
+    if(Doc) {
       return Doc;
     }
   }
 });
-
 
 
 Template.afFormGroup_validLocales.helpers({
@@ -264,9 +262,9 @@ AutoForm.hooks({
       let error;
       let providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
-        _.extend(insertDoc,{'_id':currentDoc._id});
+        _.extend(insertDoc, { _id: currentDoc._id });
         Meteor.call("updateShippingMethods", providerId, currentDoc, insertDoc);
-        Session.set("updatedMethodObj",insertDoc);
+        Session.set("updatedMethodObj", insertDoc);
         this.done();
       } catch (_error) {
         error = _error;
@@ -283,9 +281,6 @@ AutoForm.hooks({
 
   }
 });
-
-
-
 
 Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
   let view = Blaze.currentView;
