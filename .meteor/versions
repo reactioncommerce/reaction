@@ -6,6 +6,10 @@ accounts-password@1.1.8
 accounts-twitter@1.0.9
 alanning:roles@1.2.15
 aldeed:autoform@5.8.1
+aldeed:collection2@2.8.0
+aldeed:collection2-core@1.0.0
+aldeed:schema-deny@1.0.1
+aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 aldeed:template-extension@4.0.0
 allow-deny@1.0.4
