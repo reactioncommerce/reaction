@@ -1,8 +1,10 @@
+import { Themes } from "/lib/collections";
+
 /**
  * Themes
  * @returns {Object} thtmes - themes cursor
  */
 
 Meteor.publish("Themes", function () {
-  return ReactionCore.Collections.Themes.find({});
+  return Themes.find({});
 });

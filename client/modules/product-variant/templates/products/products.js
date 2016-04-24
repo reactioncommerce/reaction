@@ -1,3 +1,5 @@
+import { Tags } from "/lib/collections";
+
 /**
  * loadMoreProducts
  * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
@@ -43,7 +45,6 @@ Template.products.onCreated(function () {
   // Update product subscription
   this.autorun(() => {
     const slug = ReactionRouter.getParam("slug");
-    const { Tags } = ReactionCore.Collections;
     const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
     const scrollLimit = Session.get("productScrollLimit");
     let tags = {}; // this could be shop default implementation needed
@@ -86,7 +87,7 @@ Template.products.onCreated(function () {
   });
 
   this.autorun(() => {
-    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    const isActionViewOpen = Reaction.isActionViewOpen();
     if (isActionViewOpen === false) {
       Session.set("productGrid/selectedProducts", []);
     }
@@ -103,7 +104,7 @@ Template.products.helpers({
   tag: function () {
     const id = ReactionRouter.getParam("_tag");
     return {
-      tag: ReactionCore.Collections.Tags.findOne({ slug: id }) || ReactionCore.Collections.Tags.findOne(id)
+      tag: Tags.findOne({ slug: id }) || Tags.findOne(id)
     };
   },
 

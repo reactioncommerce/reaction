@@ -1,3 +1,5 @@
+import Collections from "/lib/collections";
+
 /**
 * pageOrderDetail helpers
 *
@@ -5,8 +7,7 @@
 Template.pageOrderDetail.helpers({
   userProfile: function () {
     if (typeof this.userId === "string") {
-      const userProfile = ReactionCore.Collections.
-        Accounts.findOne(this.userId);
+      const userProfile = Collections.Accounts.findOne(this.userId);
       return userProfile.profile;
     }
   },

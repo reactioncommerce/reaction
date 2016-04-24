@@ -1,3 +1,6 @@
+import { Packages, Shops, Translations } from "/lib/collections";
+import Schemas from "/lib/collections/schemas";
+
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
 //
@@ -83,7 +86,7 @@ let packages;
 Meteor.startup(() => {
   Tracker.autorun(function () {
     if (ReactionCore.Subscriptions.Shops.ready()) {
-      const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
+      const shop = Shops.findOne(ReactionCore.getShopId());
       shopLanguage = shop.language;
       defaultLanguage = shopLanguage;
       // TODO: i18nextBrowserLanguageDetector
@@ -94,7 +97,7 @@ Meteor.startup(() => {
 
       // every package gets a namespace, fetch them
       // const packageNamespaces = [];
-      packages = ReactionCore.Collections.Packages.find({}, {
+      packages = Packages.find({}, {
         fields: {
           name: 1
         }
@@ -123,7 +126,7 @@ Meteor.startup(() => {
 Tracker.autorun(function () {
   return Meteor.subscribe("Translations", Session.get("language"), () => {
     // fetch reaction translations
-    let translations = ReactionCore.Collections.Translations
+    let translations = Translations
       .find({}, {
         fields: {
           _id: 0
@@ -163,9 +166,9 @@ Tracker.autorun(function () {
       }, (err, t) => {
         // someday this should work
         // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-        for (let schema in ReactionCore.Schemas) {
-          if ({}.hasOwnProperty.call(ReactionCore.Schemas, schema)) {
-            let ss = ReactionCore.Schemas[schema];
+        for (let schema in Schemas) {
+          if ({}.hasOwnProperty.call(Schemas, schema)) {
+            let ss = Schemas[schema];
             ss.labels(getLabelsFor(ss, schema));
             ss.messages(getMessagesFor(ss, schema));
           }

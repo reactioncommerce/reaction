@@ -1,3 +1,4 @@
+import { Discounts } from "/lib/collections";
 
 /**
  * discounts
@@ -8,7 +9,7 @@ Meteor.publish("Discounts", function () {
   if (!shopId) {
     return this.ready();
   }
-  return ReactionCore.Collections.Discounts.find({
+  return Discounts.find({
     shopId: shopId
   });
 });

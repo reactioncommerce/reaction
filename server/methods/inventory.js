@@ -1,3 +1,6 @@
+import { Inventory } from "/lib/collections";
+import Schemas from "/lib/collections/schemas";
+
 // Disabled for now, needs more testing.
 
 // // Define a rate limiting rule that matches update attempts by non-admin users
@@ -30,13 +33,13 @@ Meteor.methods({
   /**
    * inventory/setStatus
    * @summary sets status from one status to a new status. Defaults to "new" to "reserved"
-   * @param  {Array} cartItems array of objects of type ReactionCore.Schemas.CartItems
+   * @param  {Array} cartItems array of objects of type Schemas.CartItems
    * @param  {String} status optional - sets the inventory workflow status, defaults to "reserved"
    * @todo move this to bulkOp
    * @return {undefined} returns undefined
    */
   "inventory/setStatus": function (cartItems, status, currentStatus, notFoundStatus) {
-    check(cartItems, [ReactionCore.Schemas.CartItem]);
+    check(cartItems, [Schemas.CartItem]);
     check(status, Match.Optional(String));
     check(currentStatus, Match.Optional(String));
     check(notFoundStatus, Match.Optional(String));
@@ -56,7 +59,7 @@ Meteor.methods({
     // update inventory status for cartItems
     for (let item of cartItems) {
       // check of existing reserved inventory for this cart
-      let existingReservations = ReactionCore.Collections.Inventory.find({
+      let existingReservations = Inventory.find({
         productId: item.productId,
         variantId: item.variants._id,
         shopId: item.shopId,
@@ -64,7 +67,7 @@ Meteor.methods({
       });
 
       // define a new reservation
-      let availableInventory = ReactionCore.Collections.Inventory.find({
+      let availableInventory = Inventory.find({
         "productId": item.productId,
         "variantId": item.variants._id,
         "shopId": item.shopId,
@@ -110,7 +113,7 @@ Meteor.methods({
         // we should be updating existing inventory here.
         // backorder process created additional backorder inventory if there
         // wasn't enough.
-        ReactionCore.Collections.Inventory.update({
+        Inventory.update({
           "productId": item.productId,
           "variantId": item.variants._id,
           "shopId": item.shopId,
@@ -132,13 +135,13 @@ Meteor.methods({
   /**
    * inventory/clearStatus
    * @summary used to reset status on inventory item (defaults to "new")
-   * @param  {Array} cartItems array of objects ReactionCore.Schemas.CartItem
+   * @param  {Array} cartItems array of objects Schemas.CartItem
    * @param  {[type]} status optional reset workflow.status, defaults to "new"
    * @param  {[type]} currentStatus optional matching workflow.status, defaults to "reserved"
    * @return {undefined} undefined
    */
   "inventory/clearStatus": function (cartItems, status, currentStatus) {
-    check(cartItems, [ReactionCore.Schemas.CartItem]);
+    check(cartItems, [Schemas.CartItem]);
     check(status, Match.Optional(String)); // workflow status
     check(currentStatus, Match.Optional(String));
     this.unblock();
@@ -155,7 +158,7 @@ Meteor.methods({
     // remove each cart item in inventory
     for (let item of cartItems) {
       // check of existing reserved inventory for this cart
-      let existingReservations = ReactionCore.Collections.Inventory.find({
+      let existingReservations = Inventory.find({
         "productId": item.productId,
         "variantId": item.variants._id,
         "shopId": item.shopId,
@@ -165,7 +168,7 @@ Meteor.methods({
       let i = existingReservations.count();
       // reset existing cartItem reservations
       while (i <= item.quantity) {
-        ReactionCore.Collections.Inventory.update({
+        Inventory.update({
           "productId": item.productId,
           "variantId": item.variants._id,
           "shopId": item.shopId,
@@ -185,21 +188,21 @@ Meteor.methods({
   /**
    * inventory/clearReserve
    * @summary resets "reserved" items to "new"
-   * @param  {Array} cartItems array of objects ReactionCore.Schemas.CartItem
+   * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/clearReserve": function (cartItems) {
-    check(cartItems, [ReactionCore.Schemas.CartItem]);
+    check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/clearStatus", cartItems);
   },
   /**
    * inventory/clearReserve
    * converts new items to reserved, or backorders
-   * @param  {Array} cartItems array of objects ReactionCore.Schemas.CartItem
+   * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/addReserve": function (cartItems) {
-    check(cartItems, [ReactionCore.Schemas.CartItem]);
+    check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/setStatus", cartItems);
   },
   /**
@@ -211,12 +214,12 @@ Meteor.methods({
    * A note on DDP Limits.
    * As these are wide open we defined some ddp limiting rules http://docs.meteor.com/#/full/ddpratelimiter
    *
-   * @param {Object} reservation ReactionCore.Schemas.Inventory
+   * @param {Object} reservation Schemas.Inventory
    * @param {Number} backOrderQty number of backorder items to create
    * @returns {Number} number of inserted backorder documents
    */
   "inventory/backorder": function (reservation, backOrderQty) {
-    check(reservation, ReactionCore.Schemas.Inventory);
+    check(reservation, Schemas.Inventory);
     check(backOrderQty, Number);
     this.unblock();
 
@@ -245,10 +248,10 @@ Meteor.methods({
 
     // insert backorder
     let i = 0;
-    const batch = ReactionCore.Collections.Inventory.
+    const batch = Inventory.
       _collection.rawCollection().initializeUnorderedBulkOp();
     while (i < backOrderQty) {
-      let id = ReactionCore.Collections.Inventory._makeNewID();
+      let id = Inventory._makeNewID();
       batch.insert(Object.assign({ _id: id }, newReservation));
       i++;
     }
@@ -266,7 +269,7 @@ Meteor.methods({
   // send low stock warnings
   //
   "inventory/lowStock": function (product) {
-    check(product, ReactionCore.Schemas.Product);
+    check(product, Schemas.Product);
     // WIP placeholder
     ReactionInventory.Log.info("inventory/lowStock");
   }

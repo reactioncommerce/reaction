@@ -1,32 +1,34 @@
+import { Orders, Shops } from "/lib/collections";
+
 /**
  * dashboardOrdersList helpers
  *
  */
 Template.dashboardOrdersList.helpers({
-  orderStatus: function () {
+  orderStatus() {
     if (this.workflow.status === "coreOrderCompleted") {
       return true;
     }
   },
-  orders: function (data) {
+  orders(data) {
     if (data.hash.data) {
       return data.hash.data;
     }
-    return ReactionCore.Collections.Orders.find({}, {
+    return Orders.find({}, {
       sort: {
         createdAt: -1
       },
       limit: 25
     });
   },
-  orderAge: function () {
+  orderAge() {
     return moment(this.createdAt).fromNow();
   },
-  shipmentTracking: function () {
+  shipmentTracking() {
     return this.shipping[0].shipmentMethod.tracking;
   },
-  shopName: function () {
-    let shop = ReactionCore.Collections.Shops.findOne(this.shopId);
+  shopName() {
+    let shop = Shops.findOne(this.shopId);
     return shop !== null ? shop.name : void 0;
   }
 });

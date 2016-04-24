@@ -1,5 +1,7 @@
-/* eslint no-extra-parens: 0 */
 import React from "react";
+import { Tags } from "/lib/collections";
+
+/* eslint no-extra-parens: 0 */
 
 const TextField = ReactionUI.Components.TextField;
 const Button = ReactionUI.Components.Button;
@@ -87,7 +89,7 @@ class Tag extends React.Component {
       source: function (request, response) {
         let datums = [];
         let slug = getSlug(request.term);
-        ReactionCore.Collections.Tags.find({
+        Tags.find({
           slug: new RegExp(slug, "i")
         }).forEach(function (tag) {
           return datums.push({

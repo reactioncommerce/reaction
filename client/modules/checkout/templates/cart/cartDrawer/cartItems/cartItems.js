@@ -1,4 +1,7 @@
+import { Media, Products } from "/lib/collections";
+
 require("swiper");
+
 /**
  * Add swiper to cartDrawerItems
  *
@@ -28,11 +31,11 @@ Template.cartDrawerItems.onRendered(function () {
  */
 Template.cartDrawerItems.helpers({
   product: function () {
-    return ReactionCore.Collections.Products.findOne(this.productId);
+    return Products.findOne(this.productId);
   },
   media: function () {
-    let product = ReactionCore.Collections.Products.findOne(this.productId);
-    let defaultImage = ReactionCore.Collections.Media.findOne({
+    let product = Products.findOne(this.productId);
+    let defaultImage = Media.findOne({
       "metadata.variantId": this.variants._id
     });
 
@@ -40,7 +43,7 @@ Template.cartDrawerItems.helpers({
       return defaultImage;
     } else if (product) {
       _.any(product.variants, function (variant) {
-        defaultImage = ReactionCore.Collections.Media.findOne({
+        defaultImage = Media.findOne({
           "metadata.variantId": variant._id
         });
         return !!defaultImage;

@@ -1,3 +1,5 @@
+import Collections from "/lib/collections";
+
 /**
  * @file Exposes the ReactionImport object implementing methods for bulk imports.
  * @author Tom De Caluwé
@@ -96,7 +98,7 @@ ReactionImport.identify = function (document) {
   }
 
   if (name && max > 0.3) {
-    return ReactionCore.Collections[name];
+    return Collections[name];
   }
   throw new Error(
     "Couldn't determine the schema associated with this document");
@@ -161,7 +163,7 @@ ReactionImport.commit = function (collection) {
 ReactionImport.flush = function (collection) {
   if (!collection) {
     for (let name of Object.keys(this._buffers)) {
-      this.commit(ReactionCore.Collections[name]);
+      this.commit(Collections[name]);
     }
     return;
   }
@@ -234,7 +236,7 @@ ReactionImport.buffer = function (collection) {
 ReactionImport.product = function (key, product, parent) {
   check(parent, Object);
 
-  return this.object(ReactionCore.Collections.Products, key, product);
+  return this.object(Collections.Products, key, product);
 };
 
 /**
@@ -250,7 +252,7 @@ ReactionImport.package = function (pkg, shopId) {
     name: pkg.name,
     shopId: shopId
   };
-  return this.object(ReactionCore.Collections.Packages, key, pkg);
+  return this.object(Collections.Packages, key, pkg);
 };
 
 /**
@@ -261,7 +263,7 @@ ReactionImport.package = function (pkg, shopId) {
  */
 ReactionImport.translation = function (key, translation) {
   const modifiedKey = Object.assign(key, { ns: translation.ns });
-  return this.object(ReactionCore.Collections.Translations, modifiedKey, translation);
+  return this.object(Collections.Translations, modifiedKey, translation);
 };
 
 //
@@ -275,7 +277,7 @@ ReactionImport.translation = function (key, translation) {
  * @returns {Object} this shop
  */
 ReactionImport.shop = function (key, shop) {
-  return this.object(ReactionCore.Collections.Shops, key, shop);
+  return this.object(Collections.Shops, key, shop);
 };
 
 /**
@@ -288,7 +290,7 @@ ReactionImport.layout = function (layout, shopId) {
   const key = {
     _id: shopId
   };
-  return this.object(ReactionCore.Collections.Shops, key, {
+  return this.object(Collections.Shops, key, {
     "_id": shopId,
     "layout": layout
   });
@@ -301,7 +303,7 @@ ReactionImport.layout = function (layout, shopId) {
  * @returns {Object} this shipping
  */
 ReactionImport.shipping = function (key, shipping) {
-  return this.object(ReactionCore.Collections.Shipping, key, shipping);
+  return this.object(Collections.Shipping, key, shipping);
 };
 
 /**
@@ -311,7 +313,7 @@ ReactionImport.shipping = function (key, shipping) {
  * @returns {Object} this tag
  */
 ReactionImport.tag = function (key, tag) {
-  return this.object(ReactionCore.Collections.Tags, key, tag);
+  return this.object(Collections.Tags, key, tag);
 };
 
 /**
@@ -461,13 +463,13 @@ ReactionImport.process = function (json, keys, callback) {
   }
 };
 
-ReactionImport.indication("i18n", ReactionCore.Collections.Translations, 0.2);
-ReactionImport.indication("hashtags", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("barcode", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("price", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("ancestors", ReactionCore.Collections.Products, 0.5);
-ReactionImport.indication("languages", ReactionCore.Collections.Shops, 0.5);
-ReactionImport.indication("currencies", ReactionCore.Collections.Shops, 0.5);
-ReactionImport.indication("timezone", ReactionCore.Collections.Shops, 0.5);
-ReactionImport.indication("isTopLevel", ReactionCore.Collections.Tags, 0.4);
-ReactionImport.indication("slug", ReactionCore.Collections.Tags, 0.5);
+ReactionImport.indication("i18n", Collections.Translations, 0.2);
+ReactionImport.indication("hashtags", Collections.Products, 0.5);
+ReactionImport.indication("barcode", Collections.Products, 0.5);
+ReactionImport.indication("price", Collections.Products, 0.5);
+ReactionImport.indication("ancestors", Collections.Products, 0.5);
+ReactionImport.indication("languages", Collections.Shops, 0.5);
+ReactionImport.indication("currencies", Collections.Shops, 0.5);
+ReactionImport.indication("timezone", Collections.Shops, 0.5);
+ReactionImport.indication("isTopLevel", Collections.Tags, 0.4);
+ReactionImport.indication("slug", Collections.Tags, 0.5);

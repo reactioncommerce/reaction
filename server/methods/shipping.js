@@ -1,3 +1,6 @@
+import { Shipping } from "/lib/collections";
+import { Reaction } from "/server/api";
+
 Meteor.methods({
   /*
    * add new shipping methods
@@ -5,11 +8,11 @@ Meteor.methods({
   addShippingMethod: function (insertDoc, currentDoc) {
     check(insertDoc, Object);
     check(currentDoc, String);
-    if (!ReactionCore.hasPermission("shipping")) {
+    if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       _id: currentDoc
     }, {
       $addToSet: {
@@ -30,11 +33,11 @@ Meteor.methods({
     check(providerId, String);
     check(methodId, String);
     check(updateMethod, Object);
-    if (!ReactionCore.hasPermission("shipping")) {
+    if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       "_id": providerId,
       "methods._id": methodId
     }, {
@@ -50,11 +53,11 @@ Meteor.methods({
   removeShippingMethod: function (providerId, removeDoc) {
     check(providerId, String);
     check(removeDoc, Object);
-    if (!ReactionCore.hasPermission("shipping")) {
+    if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       '_id': providerId,
       'methods': removeDoc
     }, {
@@ -69,10 +72,10 @@ Meteor.methods({
    */
   addShippingProvider: function (doc) {
     check(doc, Object);
-    if (!ReactionCore.hasPermission("shipping")) {
+    if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    return ReactionCore.Collections.Shipping.insert(doc);
+    return Shipping.insert(doc);
   },
 
   /*
@@ -81,11 +84,10 @@ Meteor.methods({
   updateShippingProvider: function (updateDoc, currentDoc) {
     check(updateDoc, Object);
     check(currentDoc, String);
-    if (!ReactionCore.hasPermission("shipping")) {
+    if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       '_id': currentDoc
     }, updateDoc);
   }

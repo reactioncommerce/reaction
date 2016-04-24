@@ -1,11 +1,13 @@
+import { Packages } from "/lib/collections";
+
 Template.socialSettings.helpers({
   packageData() {
-    return ReactionCore.Collections.Packages.findOne({
+    return Packages.findOne({
       name: "reaction-social"
     });
   },
 
-  checkboxAtts: function () {
+  checkboxAtts() {
     return {
       class: "checkbox-switch"
     };

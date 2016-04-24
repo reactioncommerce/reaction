@@ -1,3 +1,6 @@
+import Collections from "/lib/collections";
+import Schemas from "/lib/collections/schemas";
+
 /**
  * Reaction Accounts handlers
  * creates a login type "anonymous"
@@ -78,7 +81,7 @@ Accounts.onCreateUser(function (options, user) {
     // clone before adding roles
     let account = Object.assign({}, user, additionals);
     account.userId = user._id;
-    ReactionCore.Collections.Accounts.insert(account);
+    Collections.Accounts.insert(account);
 
     // send a welcome email to new users,
     // but skip the first default admin user
@@ -133,7 +136,7 @@ Accounts.onLogin(function (opts) {
     if (options.methodName === "createUser") return true;
 
     // onLogin, we want to merge session cart into user cart.
-    const cart = ReactionCore.Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       userId: options.user._id
     });
     // for a rare use cases
@@ -176,7 +179,7 @@ Meteor.methods({
    * inserted
    */
   "accounts/addressBookAdd": function (address, accountUserId) {
-    check(address, ReactionCore.Schemas.Address);
+    check(address, Schemas.Address);
     check(accountUserId, Match.Optional(String));
     // security, check for admin access. We don't need to check every user call
     // here because we are calling `Meteor.userId` from within this Method.
@@ -194,11 +197,11 @@ Meteor.methods({
       address._id = Random.id();
     }
     // clean schema
-    ReactionCore.Schemas.Address.clean(address);
+    Schemas.Address.clean(address);
     // if address got shippment or billing default, we need to update cart
     // addresses accordingly
     if (address.isShippingDefault || address.isBillingDefault) {
-      const cart = ReactionCore.Collections.Cart.findOne({ userId: userId });
+      const cart = Collections.Cart.findOne({ userId: userId });
       // if cart exists
       // First amend the cart,
       if (typeof cart === "object") {
@@ -211,7 +214,7 @@ Meteor.methods({
       }
       // then change the address that has been affected
       if (address.isShippingDefault) {
-        ReactionCore.Collections.Accounts.update({
+        Collections.Accounts.update({
           "userId": userId,
           "profile.addressBook.isShippingDefault": true
         }, {
@@ -221,7 +224,7 @@ Meteor.methods({
         });
       }
       if (address.isBillingDefault) {
-        ReactionCore.Collections.Accounts.update({
+        Collections.Accounts.update({
           "userId": userId,
           "profile.addressBook.isBillingDefault": true
         }, {
@@ -232,7 +235,7 @@ Meteor.methods({
       }
     }
 
-    return ReactionCore.Collections.Accounts.upsert({
+    return Collections.Accounts.upsert({
       userId: userId
     }, {
       $set: {
@@ -254,7 +257,7 @@ Meteor.methods({
    * @return {Number} The number of affected documents
    */
   "accounts/addressBookUpdate": function (address, accountUserId, type) {
-    check(address, ReactionCore.Schemas.Address);
+    check(address, Schemas.Address);
     check(accountUserId, Match.OneOf(String, null, undefined));
     check(type, Match.Optional(String));
     // security, check for admin access. We don't need to check every user call
@@ -270,7 +273,7 @@ Meteor.methods({
     const userId = accountUserId || Meteor.userId();
     // we need to compare old state of isShippingDefault, isBillingDefault with
     // new state and if it was enabled/disabled reflect this changes in cart
-    const account = ReactionCore.Collections.Accounts.findOne({
+    const account = Collections.Accounts.findOne({
       userId: userId
     });
     const oldAddress = account.profile.addressBook.find(function (addr) {
@@ -285,7 +288,7 @@ Meteor.methods({
 
     if (oldAddress.isShippingDefault !== address.isShippingDefault ||
       oldAddress.isBillingDefault !== address.isBillingDefault) {
-      const cart = ReactionCore.Collections.Cart.findOne({ userId: userId });
+      const cart = Collections.Cart.findOne({ userId: userId });
       // Cart should exist to this moment, so we doesn't need to to verify its
       // existence.
       if (oldAddress.isShippingDefault !== address.isShippingDefault) {
@@ -294,7 +297,7 @@ Meteor.methods({
           // we need to add this address to cart
           Meteor.call("cart/setShipmentAddress", cart._id, address);
           // then, if another address was `ShippingDefault`, we need to unset it
-          ReactionCore.Collections.Accounts.update({
+          Collections.Accounts.update({
             "userId": userId,
             "profile.addressBook.isShippingDefault": true
           }, {
@@ -313,7 +316,7 @@ Meteor.methods({
       if (oldAddress.isBillingDefault !== address.isBillingDefault) {
         if (address.isBillingDefault) {
           Meteor.call("cart/setPaymentAddress", cart._id, address);
-          ReactionCore.Collections.Accounts.update({
+          Collections.Accounts.update({
             "userId": userId,
             "profile.addressBook.isBillingDefault": true
           }, {
@@ -327,7 +330,7 @@ Meteor.methods({
       }
     }
 
-    return ReactionCore.Collections.Accounts.update({
+    return Collections.Accounts.update({
       "userId": userId,
       "profile.addressBook._id": address._id
     }, {
@@ -362,7 +365,7 @@ Meteor.methods({
     // remove this address in cart, if used, before completely removing
     Meteor.call("cart/unsetAddresses", addressId, userId);
 
-    return ReactionCore.Collections.Accounts.update({
+    return Collections.Accounts.update({
       "userId": userId,
       "profile.addressBook._id": addressId
     }, {
@@ -394,7 +397,7 @@ Meteor.methods({
     check(email, String);
     check(name, String);
     this.unblock();
-    shop = ReactionCore.Collections.Shops.findOne(shopId);
+    shop = Collections.Shops.findOne(shopId);
 
     if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access denied");
@@ -495,8 +498,8 @@ Meteor.methods({
     check(shopId, String);
     check(userId, String);
     this.unblock();
-    const user = ReactionCore.Collections.Accounts.findOne(userId);
-    const shop = ReactionCore.Collections.Shops.findOne(shopId);
+    const user = Collections.Accounts.findOne(userId);
+    const shop = Collections.Shops.findOne(shopId);
     let shopEmail;
 
     // anonymous users arent welcome here

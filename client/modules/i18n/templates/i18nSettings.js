@@ -1,17 +1,20 @@
+import { Countries } from "/client/collections";
+import { Shops } from "/lib/collections";
+
 Template.i18nSettings.helpers({
-  shop: function () {
+  shop() {
     if (ReactionCore.Subscriptions.Shops.ready()) {
-      return ReactionCore.Collections.Shops.findOne();
+      return Shops.findOne();
     }
   },
   checked(enabled) {
     return enabled === true ? "checked" : "";
   },
-  countryOptions: function () {
-    return ReactionCore.Collections.Countries.find().fetch();
+  countryOptions() {
+    return Countries.find().fetch();
   },
-  currencyOptions: function () {
-    const currencies = ReactionCore.Collections.Shops.findOne().currencies;
+  currencyOptions() {
+    const currencies = Shops.findOne().currencies;
     const currencyOptions = [];
     for (let currency in currencies) {
       if ({}.hasOwnProperty.call(currencies, currency)) {
@@ -25,8 +28,8 @@ Template.i18nSettings.helpers({
     }
     return currencyOptions;
   },
-  uomOptions: function () {
-    const unitsOfMeasure = ReactionCore.Collections.Shops.findOne().unitsOfMeasure;
+  uomOptions() {
+    const unitsOfMeasure = Shops.findOne().unitsOfMeasure;
     const uomOptions = [];
     for (let measure of unitsOfMeasure) {
       uomOptions.push({
@@ -36,9 +39,9 @@ Template.i18nSettings.helpers({
     }
     return uomOptions;
   },
-  enabledLanguages: function () {
+  enabledLanguages() {
     let languages = [];
-    const shop = ReactionCore.Collections.Shops.findOne();
+    const shop = Shops.findOne();
     if (typeof shop === "object" && shop.languages) {
       for (let language of shop.languages) {
         if (language.enabled === true) {
@@ -51,9 +54,9 @@ Template.i18nSettings.helpers({
       return languages;
     }
   },
-  languages: function () {
+  languages() {
     let languages = [];
-    const shop = ReactionCore.Collections.Shops.findOne();
+    const shop = Shops.findOne();
     if (typeof shop === "object" && shop.languages) {
       for (let language of shop.languages) {
         const i18nKey = "languages." + language.label.toLowerCase();
@@ -80,11 +83,11 @@ Template.i18nSettings.events({
 
 AutoForm.hooks({
   shopEditLocalizationSettingsForm: {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("shopSettings.shopLocalizationSettingsSaved"),
         "success");
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       return Alerts.toast(
         `${i18next.t("shopSettings.shopLocalizationSettingsFailed")} ${error}`,
         "error"

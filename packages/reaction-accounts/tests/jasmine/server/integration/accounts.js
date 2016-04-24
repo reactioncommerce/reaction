@@ -1,3 +1,5 @@
+import Collections from "/lib/collections";
+
 /* eslint dot-notation: 0 */
 
 // to provide a comparison account
@@ -23,18 +25,18 @@ describe("Account Meteor method ", function () {
   const shopId = faker.reaction.shops.getShop()._id;
 
   afterAll(() => {
-    ReactionCore.Collections.Packages.remove({});
-    ReactionCore.Collections.Cart.remove({});
-    ReactionCore.Collections.Accounts.remove({});
-    ReactionCore.Collections.Orders.remove({});
-    ReactionCore.Collections.Products.remove({});
-    ReactionCore.Collections.Shops.remove({});
+    Collections.Packages.remove({});
+    Collections.Cart.remove({});
+    Collections.Accounts.remove({});
+    Collections.Orders.remove({});
+    Collections.Products.remove({});
+    Collections.Shops.remove({});
   });
 
   describe("addressBookAdd", function () {
     beforeEach(function () {
-      ReactionCore.Collections.Cart.remove({});
-      return ReactionCore.Collections.Accounts.remove({});
+      Collections.Cart.remove({});
+      return Collections.Accounts.remove({});
     });
 
     it(
@@ -47,7 +49,7 @@ describe("Account Meteor method ", function () {
         // we already have one address by default
         expect(account.profile.addressBook.length).toEqual(1);
         Meteor.call("accounts/addressBookAdd", address);
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         expect(account.profile.addressBook.length).toEqual(2);
 
         return done();
@@ -64,7 +66,7 @@ describe("Account Meteor method ", function () {
         expect(account.profile.addressBook.length).toEqual(1);
         Meteor.call("accounts/addressBookAdd", address, account.userId);
 
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         expect(account.profile.addressBook.length).toEqual(2);
 
         return done();
@@ -78,7 +80,7 @@ describe("Account Meteor method ", function () {
         spyOn(Meteor, "userId").and.returnValue(account.userId);
         const address = faker.reaction.address();
         Meteor.call("accounts/addressBookAdd", address);
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         expect(account.profile.addressBook.length).toEqual(2);
 
         // comparing two addresses to equality
@@ -94,7 +96,7 @@ describe("Account Meteor method ", function () {
     it(
       "should throw error if wrong arguments were passed",
       function (done) {
-        spyOn(ReactionCore.Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "update");
 
         expect(function () {
           return Meteor.call("accounts/addressBookAdd", 123456);
@@ -124,7 +126,7 @@ describe("Account Meteor method ", function () {
           );
         }).not.toThrow();
 
-        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+        expect(Collections.Accounts.update).not.toHaveBeenCalled();
 
         return done();
       }
@@ -135,15 +137,15 @@ describe("Account Meteor method ", function () {
       function (done) {
         const account2 = Factory.create("account");
         spyOn(Meteor, "userId").and.returnValue(fakeUser._id);
-        spyOn(ReactionCore.Collections.Accounts, "update");
-        spyOn(ReactionCore.Collections.Accounts, "upsert");
+        spyOn(Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "upsert");
 
         expect(function () {
           return Meteor.call("accounts/addressBookAdd", faker.reaction.address(),
             account2._id);
         }).toThrow();
-        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
-        expect(ReactionCore.Collections.Accounts.upsert).not.toHaveBeenCalled();
+        expect(Collections.Accounts.update).not.toHaveBeenCalled();
+        expect(Collections.Accounts.upsert).not.toHaveBeenCalled();
 
         return done();
       }
@@ -178,7 +180,7 @@ describe("Account Meteor method ", function () {
         Meteor.call("accounts/addressBookAdd", newAddress);
 
         // now we need to get address ids from cart and compare their
-        const cart = ReactionCore.Collections.Cart.findOne({
+        const cart = Collections.Cart.findOne({
           userId: account.userId
         });
         expect(cart.shipping[0].address._id).toEqual(newAddress._id);
@@ -202,8 +204,8 @@ describe("Account Meteor method ", function () {
     const sessionId = Random.id();
 
     beforeEach(() => {
-      ReactionCore.Collections.Cart.remove({});
-      ReactionCore.Collections.Accounts.remove({});
+      Collections.Cart.remove({});
+      Collections.Accounts.remove({});
     });
 
     it(
@@ -213,7 +215,7 @@ describe("Account Meteor method ", function () {
         spyOnMethod("setShipmentAddress", account.userId);
         spyOnMethod("setPaymentAddress", account.userId);
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore.Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "update");
         spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
         spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
@@ -225,7 +227,7 @@ describe("Account Meteor method ", function () {
           faker.reaction.address());
 
         Meteor.call("accounts/addressBookUpdate", address);
-        expect(ReactionCore.Collections.Accounts.update).toHaveBeenCalled();
+        expect(Collections.Accounts.update).toHaveBeenCalled();
 
         return done();
       }
@@ -250,7 +252,7 @@ describe("Account Meteor method ", function () {
         Meteor.call("accounts/addressBookUpdate", address, account.userId);
 
         // comparing two addresses to equality
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         const newAddress = account.profile.addressBook[0];
         expect(_.isEqual(address, newAddress)).toEqual(true);
 
@@ -277,7 +279,7 @@ describe("Account Meteor method ", function () {
         Meteor.call("accounts/addressBookUpdate", address);
 
         // comparing two addresses to equality
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         const newAddress = account.profile.addressBook[0];
         expect(_.isEqual(address, newAddress)).toEqual(true);
 
@@ -288,7 +290,7 @@ describe("Account Meteor method ", function () {
     it(
       "should throw error if wrong arguments were passed",
       done => {
-        spyOn(ReactionCore.Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "update");
 
         expect(function () {
           return Meteor.call("accounts/addressBookUpdate", 123456);
@@ -318,7 +320,7 @@ describe("Account Meteor method ", function () {
           );
         }).not.toThrow();
 
-        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+        expect(Collections.Accounts.update).not.toHaveBeenCalled();
         return done();
       }
     );
@@ -329,14 +331,14 @@ describe("Account Meteor method ", function () {
         let account = Factory.create("account");
         const account2 = Factory.create("account");
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore.Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "update");
 
         expect(function () {
           return Meteor.call("accounts/addressBookUpdate",
             faker.reaction.address(), account2._id);
         }).toThrow();
 
-        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+        expect(Collections.Accounts.update).not.toHaveBeenCalled();
 
         return done();
       }
@@ -361,7 +363,7 @@ describe("Account Meteor method ", function () {
           isBillingDefault: false
         });
         Meteor.call("accounts/addressBookUpdate", address);
-        let cart = ReactionCore.Collections.Cart.findOne({
+        let cart = Collections.Cart.findOne({
           userId: account.userId
         });
         expect(cart.billing).toBeUndefined();
@@ -372,7 +374,7 @@ describe("Account Meteor method ", function () {
           isBillingDefault: true
         });
         Meteor.call("accounts/addressBookUpdate", address);
-        cart = ReactionCore.Collections.Cart.findOne({
+        cart = Collections.Cart.findOne({
           userId: account.userId
         });
 
@@ -415,7 +417,7 @@ describe("Account Meteor method ", function () {
           isBillingDefault: true
         });
         Meteor.call("accounts/addressBookUpdate", address);
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
 
         expect(account.profile.addressBook[0].isBillingDefault).toBe(false);
         expect(account.profile.addressBook[0].isShippingDefault).toBe(false);
@@ -456,7 +458,7 @@ describe("Account Meteor method ", function () {
         Meteor.call("accounts/addressBookUpdate", address, null,
           "isShippingDefault");
 
-        let cart = ReactionCore.Collections.Cart.findOne({
+        let cart = Collections.Cart.findOne({
           userId: userId
         });
 
@@ -479,7 +481,7 @@ describe("Account Meteor method ", function () {
 
         expect(account.profile.addressBook.length).toEqual(1);
         Meteor.call("accounts/addressBookRemove", address._id);
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         expect(account.profile.addressBook.length).toEqual(0);
 
         return done();
@@ -496,7 +498,7 @@ describe("Account Meteor method ", function () {
 
         expect(account.profile.addressBook.length).toEqual(1);
         Meteor.call("accounts/addressBookRemove", address._id, account.userId);
-        account = ReactionCore.Collections.Accounts.findOne(account._id);
+        account = Collections.Accounts.findOne(account._id);
         expect(account.profile.addressBook.length).toEqual(0);
 
         return done();
@@ -506,7 +508,7 @@ describe("Account Meteor method ", function () {
     it(
       "should throw error if wrong arguments were passed",
       done => {
-        spyOn(ReactionCore.Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "update");
 
         expect(function () {
           return Meteor.call("accounts/addressBookRemove", 123456);
@@ -536,7 +538,7 @@ describe("Account Meteor method ", function () {
           );
         }).not.toThrow();
 
-        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+        expect(Collections.Accounts.update).not.toHaveBeenCalled();
 
         return done();
       }
@@ -550,14 +552,14 @@ describe("Account Meteor method ", function () {
         const address2 = account2.profile.addressBook[0];
         // user
         spyOn(Meteor, "userId").and.returnValue(account.userId);
-        spyOn(ReactionCore.Collections.Accounts, "update");
+        spyOn(Collections.Accounts, "update");
 
         expect(function () {
           return Meteor.call("accounts/addressBookRemove",
             address2._id, account2.userId);
         }).toThrow();
 
-        expect(ReactionCore.Collections.Accounts.update).not.toHaveBeenCalled();
+        expect(Collections.Accounts.update).not.toHaveBeenCalled();
 
         return done();
       }

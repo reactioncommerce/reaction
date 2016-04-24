@@ -1,3 +1,5 @@
+import { Inventory, Products } from "/lib/collections";
+
 /* eslint dot-notation: 0 */
 
 describe("inventory method", function () {
@@ -11,10 +13,10 @@ describe("inventory method", function () {
   beforeAll(() => {
     spyOn(Roles, "userIsInRole").and.returnValue(true);
     product = faker.reaction.products.add();
-    variant = ReactionCore.Collections.Products.findOne({
+    variant = Products.findOne({
       ancestors: [product._id]
     });
-    options = ReactionCore.Collections.Products.find({
+    options = Products.find({
       ancestors: [product._id, variant._id]
     }).fetch();
     quantity = options[0].inventoryQuantity;
@@ -22,7 +24,7 @@ describe("inventory method", function () {
 
   beforeEach(function () {
     // again hack. w/o this we can't remove products from previous spec.
-    ReactionCore.Collections.Inventory.remove({}); // Empty Inventory
+    Inventory.remove({}); // Empty Inventory
   });
 
   describe("inventory/register", function () {
@@ -30,13 +32,13 @@ describe("inventory method", function () {
       "should add inventory items for child variant",
       function (done) {
         spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-        let inventory = ReactionCore.Collections.Inventory.find({
+        let inventory = Inventory.find({
           variantId: options[0]._id
         }).count();
         expect(inventory).toEqual(0);
 
         Meteor.call("inventory/register", options[0]);
-        inventory = ReactionCore.Collections.Inventory.find({
+        inventory = Inventory.find({
           variantId: options[0]._id
         }).count();
         expect(inventory).toEqual(quantity);
@@ -59,14 +61,14 @@ describe("inventory method", function () {
         // before spec we're cleared collection, so we need to insert all docs
         // again and make sure quantity will be equal with `qty`
         Meteor.call("inventory/register", options[1]);
-        let midQty = ReactionCore.Collections.Inventory.find({
+        let midQty = Inventory.find({
           variantId: options[1]._id
         }).count();
         expect(midQty).toEqual(qty);
 
         // then we are removing option and docs should be automatically removed
         Meteor.call("products/deleteVariant", options[1]._id);
-        let newQty = ReactionCore.Collections.Inventory.find({
+        let newQty = Inventory.find({
           variantId: options[1]._id
         }).count();
         expect(newQty).not.toEqual(qty);
@@ -89,13 +91,13 @@ describe("inventory method", function () {
     //   let variantData = product.variants[0];
     //
     //   spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-    //   spyOn(ReactionCore.Collections.Cart.after, "update");
+    //   spyOn(Cart.after, "update");
     //   expect(_.size(product.variants)).toEqual(1);
     //
     //   // add to cart
     //   Meteor.call("cart/addToCart", cartId, productId, variantData, quantity, function () {
     //     // fetch reserved inventory
-    //     let inventory = ReactionCore.Collections.Inventory.find({
+    //     let inventory = Inventory.find({
     //       "workflow.status": "backorder"
     //     });
     //
@@ -116,21 +118,21 @@ describe("inventory method", function () {
     //   spyOn(ReactionCore, "hasPermission").and.returnValue(true);
     //
     //   //Setup a spy to watch for calls to Inventory.insert
-    //   spyOn(ReactionCore.Collections.Inventory, "insert");
-    //   spyOn(ReactionCore.Collections.Cart, "update");
+    //   spyOn(Inventory, "insert");
+    //   spyOn(Cart, "update");
     //   Meteor.call("inventory/register", product);
-    //   expect(ReactionCore.Collections.Inventory.insert).toHaveBeenCalled();
+    //   expect(Inventory.insert).toHaveBeenCalled();
     //
     //   // add to cart (expect to reserve)
     //   Meteor.call("cart/addToCart", cartId, productId, variantData, quantity);
-    //   expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+    //   expect(Cart.update).toHaveBeenCalled();
     //
     //   // fetch reserved inventory
     //   console.log("productId", productId);
     //   console.log("variantId", product.variants[0]._id);
     //   console.log("orderId", cartId);
     //
-    //   let reservedInventory = ReactionCore.Collections.Inventory.find({
+    //   let reservedInventory = Inventory.find({
     //     "workflow.status": "reserved"
     //   }).count();
     //   console.log('reservedInventory', reservedInventory);

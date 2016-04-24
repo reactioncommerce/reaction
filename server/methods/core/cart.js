@@ -1,3 +1,6 @@
+import Collections from "/lib/collections";
+import Schemas from "/lib/collections/schemas";
+
 /**
  * quantityProcessing
  * @summary perform calculations admissibility of adding product to cart
@@ -45,7 +48,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
  * @return {Mongo.Cursor} with array of session carts
  */
 function getSessionCarts(userId, sessionId, shopId) {
-  const carts = ReactionCore.Collections.Cart.find({
+  const carts = Collections.Cart.find({
     $and: [{
       userId: {
         $ne: userId
@@ -103,7 +106,6 @@ Meteor.methods({
     check(cartId, String);
     check(currentSessionId, Match.Optional(String));
 
-    const { Cart } = ReactionCore.Collections; // convenience shorthand
     const { Log } = ReactionCore;
     // we don't process current cart, but merge into it.
     const currentCart = Cart.findOne(cartId);
@@ -177,7 +179,7 @@ Meteor.methods({
         // and we're also going to do some garbage Collection
         Cart.remove(sessionCart._id);
         // cleanup user/accounts
-        ReactionCore.Collections.Accounts.remove({
+        Collections.Accounts.remove({
           userId: sessionCart.userId
         });
         Meteor.users.remove(sessionCart.userId);
@@ -238,7 +240,7 @@ Meteor.methods({
 
     // we need to create a user cart for the new authenticated user or
     // anonymous.
-    const currentCartId = ReactionCore.Collections.Cart.insert({
+    const currentCartId = Collections.Cart.insert({
       sessionId: sessionId,
       userId: userId
     });
@@ -254,7 +256,7 @@ Meteor.methods({
 
     // we should check for an default billing/shipping address in user account.
     // this needed after submitting order, when user receives new cart
-    const account = ReactionCore.Collections.Accounts.findOne(userId);
+    const account = Collections.Accounts.findOne(userId);
     if (account && account.profile && account.profile.addressBook) {
       account.profile.addressBook.forEach(address => {
         if (address.isBillingDefault) {
@@ -287,7 +289,7 @@ Meteor.methods({
     check(itemQty, Match.Optional(Number));
 
     const { Log } = ReactionCore;
-    const cart = ReactionCore.Collections.Cart.findOne({ userId: this.userId });
+    const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
       Log.error(`Cart not found for user: ${ this.userId }`);
       throw new Meteor.Error(404, "Cart not found",
@@ -299,7 +301,7 @@ Meteor.methods({
     // `quantityProcessing`?
     let product;
     let variant;
-    ReactionCore.Collections.Products.find({ _id: { $in: [
+    Collections.Products.find({ _id: { $in: [
       productId,
       variantId
     ]}}).forEach(doc => {
@@ -311,8 +313,8 @@ Meteor.methods({
     });
     // TODO: this lines still needed. We could uncomment them in future if
     // decide to not completely remove product data from this method
-    // const product = ReactionCore.Collections.Products.findOne(productId);
-    // const variant = ReactionCore.Collections.Products.findOne(variantId);
+    // const product = Collections.Products.findOne(productId);
+    // const variant = Collections.Products.findOne(variantId);
     if (!product) {
       Log.warn(`Product: ${ productId } was not found in database`);
       throw new Meteor.Error(404, "Product not found",
@@ -330,7 +332,7 @@ Meteor.methods({
       .some(item => item.variants._id === variantId);
 
     if (cartVariantExists) {
-      return ReactionCore.Collections.Cart.update({
+      return Collections.Cart.update({
         "_id": cart._id,
         "items.variants._id": variantId
       }, {
@@ -339,8 +341,8 @@ Meteor.methods({
         }
       }, function (error, result) {
         if (error) {
-          Log.warn("error adding to cart", ReactionCore.Collections
-            .Cart.simpleSchema().namedContext().invalidKeys());
+          Log.warn("error adding to cart",
+            Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
 
@@ -359,7 +361,7 @@ Meteor.methods({
     }
 
     // cart variant doesn't exist
-    return ReactionCore.Collections.Cart.update({
+    return Collections.Cart.update({
       _id: cart._id
     }, {
       $addToSet: {
@@ -375,7 +377,7 @@ Meteor.methods({
       }
     }, function (error, result) {
       if (error) {
-        Log.warn("error adding to cart", ReactionCore.Collections.Cart
+        Log.warn("error adding to cart", Collections.Cart
           .simpleSchema().namedContext().invalidKeys());
         return error;
       }
@@ -405,7 +407,7 @@ Meteor.methods({
     check(quantity, Match.Optional(Number));
 
     const userId = Meteor.userId();
-    const cart = ReactionCore.Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       userId: userId
     });
     if (!cart) {
@@ -440,7 +442,7 @@ Meteor.methods({
     Meteor.call("cart/resetShipmentMethod", cart._id);
 
     if (!quantity) {
-      return ReactionCore.Collections.Cart.update({
+      return Collections.Cart.update({
         _id: cart._id
       }, {
         $pull: {
@@ -464,7 +466,7 @@ Meteor.methods({
 
     // if quantity lets convert to negative and increment
     let removeQuantity = Math.abs(quantity) * -1;
-    return ReactionCore.Collections.Cart.update({
+    return Collections.Cart.update({
       _id: cart._id,
       items: cartItem
     }, {
@@ -498,7 +500,7 @@ Meteor.methods({
    */
   "cart/copyCartToOrder": function (cartId) {
     check(cartId, String);
-    const cart = ReactionCore.Collections.Cart.findOne(cartId);
+    const cart = Collections.Cart.findOne(cartId);
     // security check
     if (cart.userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
@@ -513,7 +515,7 @@ Meteor.methods({
     // a helper for guest login, we let guest add email afterwords
     // for ease, we'll also add automatically for logged in users
     if (order.userId && !order.email) {
-      const user = ReactionCore.Collections.Accounts.findOne(order.userId);
+      const user = Collections.Accounts.findOne(order.userId);
       // we could have a use case here when email is not defined by some reason,
       // we could throw an error, but it's not pretty clever, so let it go w/o
       // email
@@ -599,19 +601,19 @@ Meteor.methods({
     order.workflow.workflow = ["coreOrderWorkflow/created"];
 
     // insert new reaction order
-    let orderId = ReactionCore.Collections.Orders.insert(order);
+    let orderId = Collections.Orders.insert(order);
     ReactionCore.Log.info("Created orderId", orderId);
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
 //      Meteor.call("orders/inventoryAdjust", orderId);
-      ReactionCore.Collections.Cart.remove({
+      Collections.Cart.remove({
         _id: order.cartId
       });
       // create a new cart for the user
       // even though this should be caught by
       // subscription handler, it's not always working
-      let newCartExists = ReactionCore.Collections.Cart.find(order.userId);
+      let newCartExists = Collections.Cart.find(order.userId);
       if (newCartExists.count() === 0) {
         Meteor.call("cart/createCart", this.userId, sessionId);
         // after recreate new cart we need to make it looks like previous by
@@ -628,7 +630,7 @@ Meteor.methods({
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
       Meteor.call("orders/sendNotification",
-        ReactionCore.Collections.Orders.findOne(orderId));
+        Collections.Orders.findOne(orderId));
 
       return orderId;
     }
@@ -647,7 +649,7 @@ Meteor.methods({
     check(cartId, String);
     check(method, Object);
     // get current cart
-    let cart = ReactionCore.Collections.Cart.findOne({
+    let cart = Collections.Cart.findOne({
       _id: cartId,
       userId: Meteor.userId()
     });
@@ -685,7 +687,7 @@ Meteor.methods({
       };
     }
     // update or insert method
-    return ReactionCore.Collections.Cart.update(selector, update, function (
+    return Collections.Cart.update(selector, update, function (
       error) {
       if (error) {
         ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`,
@@ -731,9 +733,9 @@ Meteor.methods({
    */
   "cart/setShipmentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, ReactionCore.Schemas.Address);
+    check(address, Schemas.Address);
 
-    let cart = ReactionCore.Collections.Cart.findOne({
+    let cart = Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
@@ -771,7 +773,7 @@ Meteor.methods({
     }
 
     // add / or set the shipping address
-    return ReactionCore.Collections.Cart.update(selector, update, function (
+    return Collections.Cart.update(selector, update, function (
       error) {
       if (error) {
         ReactionCore.Log.warn(error);
@@ -811,9 +813,9 @@ Meteor.methods({
    */
   "cart/setPaymentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, ReactionCore.Schemas.Address);
+    check(address, Schemas.Address);
 
-    let cart = ReactionCore.Collections.Cart.findOne({
+    let cart = Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
@@ -850,7 +852,7 @@ Meteor.methods({
       };
     }
 
-    return ReactionCore.Collections.Cart.update(selector, update);
+    return Collections.Cart.update(selector, update);
   },
   /**
    * cart/unsetAddresses
@@ -873,7 +875,7 @@ Meteor.methods({
     let needToUpdate = false;
     // we need to revert the workflow after a "shipping" address was removed
     let isShippingDeleting = false;
-    const cart = ReactionCore.Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       userId: userId
     });
     const selector = {
@@ -906,7 +908,7 @@ Meteor.methods({
     }
 
     // todo maybe we need synchronous variant here?
-    return needToUpdate && ReactionCore.Collections.Cart.update(selector,
+    return needToUpdate && Collections.Cart.update(selector,
       update, (error, result) => {
         if (result && isShippingDeleting) {
           // if we remove shipping address from cart, we need to revert
@@ -926,8 +928,8 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethod) {
-    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-    let checkoutCart = ReactionCore.Collections.Cart.findOne({
+    check(paymentMethod, Schemas.PaymentMethod);
+    let checkoutCart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
@@ -972,7 +974,7 @@ Meteor.methods({
       };
     }
 
-    return ReactionCore.Collections.Cart.update(selector, update,
+    return Collections.Cart.update(selector, update,
       function (error, result) {
         if (error) {
           ReactionCore.Log.warn(error);

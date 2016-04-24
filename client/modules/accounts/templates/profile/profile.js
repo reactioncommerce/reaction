@@ -1,3 +1,5 @@
+import Collections from "/lib/collections";
+
 /**
  * onCreated: Account Profile View
  */
@@ -31,7 +33,7 @@ Template.accountProfile.helpers({
   userOrders() {
     const orderSub = Meteor.subscribe("AccountOrders", Meteor.userId());
     if (orderSub.ready()) {
-      return ReactionCore.Collections.Orders.find({
+      return Collections.Orders.find({
         userId: Meteor.userId()
       }, {
         sort: {
@@ -47,7 +49,7 @@ Template.accountProfile.helpers({
    * @return {Object} account profile
    */
   account() {
-    return ReactionCore.Collections.Accounts.findOne();
+    return Collections.Accounts.findOne();
   },
 
   /**
@@ -55,7 +57,7 @@ Template.accountProfile.helpers({
    * @return {String} "addressBookGrid" || "addressBookAdd"
    */
   addressBookView: function () {
-    let account = ReactionCore.Collections.Accounts.findOne();
+    let account = Collections.Accounts.findOne();
     if (account.profile) {
       return "addressBookGrid";
     }

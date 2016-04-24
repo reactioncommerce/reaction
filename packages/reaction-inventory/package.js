@@ -25,7 +25,7 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:reaction-logger@0.2.0");
 
   api.addFiles("common/globals.js"); // Inventory Globals
-  api.addFiles("common/schema.js"); // ReactionCore.Schemas.Inventory
+  api.addFiles("common/schema.js"); // Schemas.Inventory
   api.addFiles("common/collections.js"); // Inventory collection
   api.addFiles("common/hooks.js"); // hook into core collection updates
   api.addFiles("common/methods.js"); // inventory methods

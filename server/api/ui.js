@@ -1,7 +1,9 @@
-const postcss = Npm.require("postcss");
-const postcssJS = Npm.require("postcss-js");
-const autoprefixer = Npm.require("autoprefixer");
-const cssAnnotation = Npm.require("css-annotation");
+import postcss from "postcss";
+import postcssJS from "postcss-js";
+import autoprefixer from "autoprefixer";
+import cssAnnotation from "css-annotation";
+import { Shops, Themes } from "/lib/collections";
+
 const prefixer = postcssJS.sync([autoprefixer]);
 
 function annotateCSS(stylesheet) {
@@ -40,7 +42,7 @@ function updateStyles(data) {
 
   objectToCSS(data.styles).then((result) => {
     if (result.css) {
-      return ReactionCore.Collections.Themes.update({
+      return Themes.update({
         "name": data.theme.name,
         "components.name": data.component.name
       }, {
@@ -57,7 +59,7 @@ function publishTheme(theme) {
   this.unblock();
   const styles = themeToCSS(theme);
 
-  ReactionCore.Collections.Shops.update({
+  Shops.update({
     _id: ReactionCore.getShopId()
   }, {
     $set: {
@@ -79,13 +81,13 @@ function registerTheme(styles) {
     theme
   } = annotations[0];
 
-  const hasComponent = ReactionCore.Collections.Themes.find({
+  const hasComponent = Themes.find({
     "name": theme,
     "components.name": name
   }).count();
 
   if (hasComponent) {
-    ReactionCore.Collections.Themes.update({
+    Themes.update({
       "name": theme,
       "components.name": name
     }, {
@@ -99,7 +101,7 @@ function registerTheme(styles) {
       }
     });
   } else {
-    ReactionCore.Collections.Themes.upsert({
+    Themes.upsert({
       name: theme
     }, {
       $set: {
@@ -120,14 +122,14 @@ function registerTheme(styles) {
 function duplicateTheme(name) {
   check(name, String);
 
-  const theme = ReactionCore.Collections.Themes.find({
+  const theme = Themes.find({
     theme: name
   });
 
   delete theme._id;
   theme.name = `${name} copy`;
 
-  return ReactionCore.Collections.Themes.insert(theme);
+  return Themes.insert(theme);
 }
 
 

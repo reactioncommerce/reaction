@@ -1,5 +1,7 @@
+import { Cart, Products } from "/lib/collections";
+
 /**
- * ReactionCore Collection Hooks
+ * Collection Hooks
  * transform collections based on events
  *
  * See: https://github.com/matb33/meteor-collection-hooks
@@ -9,7 +11,7 @@
  * After cart update
  */
 
-ReactionCore.Collections.Cart.after.update(function (userId, cart, fieldNames,
+Cart.after.update(function (userId, cart, fieldNames,
   modifier) {
   // if we're adding a new product or variant to the cart
   if (modifier.$addToSet) {
@@ -28,7 +30,7 @@ ReactionCore.Collections.Cart.after.update(function (userId, cart, fieldNames,
  * Before cart update. When Item is removed from Cart, release the inventory reservation.
  */
 
-ReactionCore.Collections.Cart.before.update(function (userId, cart, fieldNames, modifier) {
+Cart.before.update(function (userId, cart, fieldNames, modifier) {
   // removing  cart items, clear inventory reserve
   if (modifier.$pull) {
     if (modifier.$pull.items) {
@@ -42,7 +44,7 @@ ReactionCore.Collections.Cart.before.update(function (userId, cart, fieldNames, 
  * after variant were removed
  * @fires `inventory/remove` Method
  */
-ReactionCore.Collections.Products.after.remove(function (userId, doc) {
+Products.after.remove(function (userId, doc) {
   if (doc.type === "variant") {
     const variantItem = {
       productId: doc.ancestors[0],
@@ -58,7 +60,7 @@ ReactionCore.Collections.Products.after.remove(function (userId, doc) {
 //
 // after product update
 //
-ReactionCore.Collections.Products.after.update(function (userId, doc,
+Products.after.update(function (userId, doc,
   fieldNames, modifier) {
   // product update can't affect on inventory, so we don't manage this cases
   // we should keep in mind that returning false within hook prevents other
@@ -83,7 +85,7 @@ ReactionCore.Collections.Products.after.update(function (userId, doc,
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-ReactionCore.Collections.Products.after.insert(function (userId, doc) {
+Products.after.insert(function (userId, doc) {
   if (doc.type !== "variant") return false;
   Meteor.call("inventory/register", doc);
 });

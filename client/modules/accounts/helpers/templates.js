@@ -1,3 +1,5 @@
+import Collections from "/lib/collections";
+
 Template.registerHelper("getGravatar", function (currentUser, size) {
   const options = {
     secure: true,
@@ -6,7 +8,7 @@ Template.registerHelper("getGravatar", function (currentUser, size) {
   };
   const user = currentUser || Accounts.user();
   if (!user) return false;
-  const account = ReactionCore.Collections.Accounts.findOne(user._id);
+  const account = Collections.Accounts.findOne(user._id);
   // first we check picture exists. Picture has higher priority to display
   if (account && account.profile && account.profile.picture) {
     return account.profile.picture;

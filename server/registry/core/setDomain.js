@@ -1,3 +1,5 @@
+import { Shops } from "/lib/collections";
+
 /**
  * getDomain
  * local helper for creating admin users
@@ -20,7 +22,7 @@ ReactionRegistry.setDomain = function () {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
   try {
-    currentDomain = ReactionCore.Collections.Shops.findOne().domains[0];
+    currentDomain = Shops.findOne().domains[0];
   } catch (_error) {
     ReactionCore.Log.error("Failed to determine default shop.", _error);
   }
@@ -28,7 +30,7 @@ ReactionRegistry.setDomain = function () {
   let domain = ReactionRegistry.getRegistryDomain();
   if (currentDomain && currentDomain !== domain) {
     ReactionCore.Log.info("Updating domain to " + domain);
-    ReactionCore.Collections.Shops.update({
+    Shops.update({
       domains: currentDomain
     }, {
       $set: {

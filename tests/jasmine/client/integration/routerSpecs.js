@@ -1,3 +1,5 @@
+import { Shops } from "/lib/collections";
+
 /*
  * client integration tests for layouts
  * integration tests are those that check client
@@ -41,7 +43,7 @@ describe("Router", function () {
       });
 
       it("should have a title set to Index", function () {
-        const shop = ReactionCore.Collections.Shops.find().fetch()[0];
+        const shop = Shops.find().fetch()[0];
         // jQuery way: $(document).find("title")
         expect(document.getElementsByTagName("title")[0])
           .toContainText(shop.name + " | Index");

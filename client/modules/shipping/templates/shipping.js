@@ -1,3 +1,5 @@
+import { Packages, Shipping } from "/lib/collections";
+
 /*
  * Template shipping Helpers
  */
@@ -18,14 +20,14 @@ Template.shippingSettings.onCreated(function () {
 
 Template.shippingSettings.helpers({
   packageData() {
-    return ReactionCore.Collections.Packages.findOne({
+    return Packages.findOne({
       name: "reaction-shipping"
     });
   },
   shipping() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      return ReactionCore.Collections.Shipping.find({
+      return Shipping.find({
         shopId: ReactionCore.getShopId()
       });
     }
@@ -45,7 +47,7 @@ Template.shippingProviderTable.helpers({
   shipping() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      return ReactionCore.Collections.Shipping.find({
+      return Shipping.find({
         shopId: ReactionCore.getShopId()
       });
     }
@@ -74,7 +76,7 @@ Template.shipping.events({
 
 Template.addShippingMethod.helpers({
   shipping() {
-    return ReactionCore.Collections.Shipping.find();
+    return Shipping.find();
   }
 });
 
@@ -144,7 +146,7 @@ Template.addShippingMethod.events({
  */
 Template.shippingProviderTable.helpers({
   shipping() {
-    return ReactionCore.Collections.Shipping.find();
+    return Shipping.find();
   },
   selectedShippingMethod() {
     let session = Session.get("selectedShippingMethod");

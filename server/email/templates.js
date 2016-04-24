@@ -1,3 +1,5 @@
+import { Packages, Templates } from "/lib/collections";
+
 /**
  * ReactionEmailTemplate - Returns a template source for SSR consumption
  * layout must be defined + template
@@ -17,12 +19,12 @@ ReactionEmailTemplate = function (template) {
 
   // using layout where in the future a more comprehensive rule based
   // filter of the email templates can be implemented.
-  const tpl = ReactionCore.Collections.Packages.findOne({
+  const tpl = Packages.findOne({
     "layout.template": template
   });
 
   if (tpl) {
-    const tplSource = ReactionCore.Collections.Templates.findOne({
+    const tplSource = Templates.findOne({
       template: template,
       language: lang
     });

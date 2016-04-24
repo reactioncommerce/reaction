@@ -1,3 +1,5 @@
+import { Media } from "/lib/collections";
+
 ReactionProductAPI = {};
 ReactionProductAPI.methods = {};
 
@@ -17,7 +19,7 @@ ReactionProductAPI.methods.removeMedia = new ValidatedMethod({
     if (!ReactionCore.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    return ReactionCore.Collections.Media.remove({ _id: mediaId });
+    return Media.remove({ _id: mediaId });
   }
 });
 
@@ -39,7 +41,7 @@ ReactionProductAPI.methods.updateMediaPriorities = new ValidatedMethod({
     }
     const results = [];
     sortedMedias.forEach((image, index) => {
-      results.push(ReactionCore.Collections.Media.update(image.mediaId, {
+      results.push(Media.update(image.mediaId, {
         $set: {
           "metadata.priority": index
         }

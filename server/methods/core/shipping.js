@@ -1,3 +1,5 @@
+import { Cart, Shipping } from "/lib/collections";
+
 /*
  * ReactionCore Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
@@ -16,7 +18,7 @@ Meteor.methods({
     }
     check(cartId, String);
     this.unblock();
-    let cart = ReactionCore.Collections.Cart.findOne(cartId);
+    let cart = Cart.findOne(cartId);
     if (cart) {
       let rates = Meteor.call("shipping/getShippingRates", cart);
       // no rates found
@@ -51,7 +53,7 @@ Meteor.methods({
       }
       // add quotes to the cart
       if (rates.length > 0) {
-        ReactionCore.Collections.Cart.update(selector, update, function (error) {
+        Cart.update(selector, update, function (error) {
           if (error) {
             ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
             return;
@@ -97,7 +99,7 @@ Meteor.methods({
       };
     }
 
-    let shippingMethods = ReactionCore.Collections.Shipping.find(selector);
+    let shippingMethods = Shipping.find(selector);
 
     shippingMethods.forEach(function (shipping) {
       let _results = [];

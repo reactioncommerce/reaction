@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 // Meteor.after to call after
 ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
   // if cart/submit had an error we won't copy cart to Order
@@ -7,7 +9,7 @@ ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
   // or an empty object if there's no result yet.
   let result = options.result || {};
   if (typeof options.error === "undefined") {
-    let cart = ReactionCore.Collections.Cart.findOne({
+    let cart = Cart.findOne({
       userId: Meteor.userId()
     });
     // update workflow

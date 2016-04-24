@@ -1,3 +1,5 @@
+import { Products } from "/lib/collections";
+
 /**
  * product detail publication
  * @param {String} productId - productId or handle
@@ -35,7 +37,7 @@ Meteor.publish("Product", function (productId) {
       $regex: productId,
       $options: "i"
     };
-    const products = ReactionCore.Collections.Products.find(selector).fetch();
+    const products = Products.find(selector).fetch();
     if (products.length > 0) {
       _id = products[0]._id;
     } else {
@@ -44,5 +46,5 @@ Meteor.publish("Product", function (productId) {
   }
   selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
 
-  return ReactionCore.Collections.Products.find(selector);
+  return Products.find(selector);
 });

@@ -1,4 +1,5 @@
-
+import { ReactionRouter } from "/client/modules/router";
+import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{
   name: "new",
@@ -87,14 +88,14 @@ Template.orders.onCreated(function () {
     this.subscribe("Orders");
     const filter = ReactionRouter.getQueryParam("filter");
     const query = OrderHelper.makeQuery(filter);
-    const orders = ReactionCore.Collections.Orders.find(query).fetch();
+    const orders = Orders.find(query).fetch();
 
     this.state.set("orders", orders);
   });
 
   // Watch for updates to shop collection
   this.autorun(() => {
-    const shop = ReactionCore.Collections.Shops.findOne({});
+    const shop = Shops.findOne({});
 
     // Update currency information, this is passed to child components containing
     // Numeric inputs
@@ -165,7 +166,6 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event, instance) {
     event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
-
     // toggle detail views
     if (isActionViewOpen === false) {
       ReactionCore.showActionView({

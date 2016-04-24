@@ -1,3 +1,4 @@
+import { Tags } from "/lib/collections";
 
 Template.createContentMenu.helpers({
   buttonProps(item) {
@@ -17,7 +18,7 @@ Template.createContentMenu.helpers({
                 throw new Meteor.Error("createProduct error", error);
               } else if (productId) {
                 currentTagId = Session.get("currentTag");
-                currentTag = ReactionCore.Collections.Tags.findOne(currentTagId);
+                currentTag = Tags.findOne(currentTagId);
                 if (currentTag) {
                   Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
                 }

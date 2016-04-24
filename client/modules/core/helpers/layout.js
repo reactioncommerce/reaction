@@ -1,3 +1,5 @@
+import Collections from "/lib/collections";
+
 /**
  * reactionTemplate helper
  * use the reactionTemplate helper when you are using templates defined
@@ -11,7 +13,7 @@
 Template.registerHelper("reactionTemplate", function (options) {
   const shopId = options.hash.shopId || ReactionCore.getShopId();
   // get shop info, defaults to current
-  const Shop = ReactionCore.Collections.Shops.findOne(shopId);
+  const Shop = Collections.Shops.findOne(shopId);
   const reactionTemplates = [];
   // fetch collection from shop.layout configuration
   let layout = _.findWhere(Shop.layout, {
@@ -36,7 +38,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   if (Template.currentData() && Template.currentData()._id) {
     currentId = Template.currentData()._id;
   } else {
-    const currentCart = ReactionCore.Collections.Cart.findOne({
+    const currentCart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
     currentId = currentCart && currentCart._id;
@@ -47,11 +49,11 @@ Template.registerHelper("reactionTemplate", function (options) {
 
   // The currentCollection must have workflow schema attached.
   // layoutConfigCollection is the collection defined in Shops.workflow
-  const workflowTargetCollection = ReactionCore.Collections[layoutConfigCollection];
+  const workflowTargetCollection = Collections[layoutConfigCollection];
   const currentCollection = workflowTargetCollection.findOne(currentId);
   const currentStatus = currentCollection.workflow.status;
   const currentCollectionWorkflow = currentCollection.workflow.workflow;
-  const Packages = ReactionCore.Collections.Packages.find({
+  const packages = Collections.Packages.find({
     layout: {
       $elemMatch: options.hash
     },
@@ -59,7 +61,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   });
 
   //  we can have multiple packages contributing to the layout / workflow
-  Packages.forEach(function (reactionPackage) {
+  packages.forEach(function (reactionPackage) {
     const layoutWorkflows = _.where(reactionPackage.layout, options.hash);
     // check the packages for layout workflow templates
     for (layout of layoutWorkflows) {

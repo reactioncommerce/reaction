@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  *
  * reactionApps
@@ -100,7 +102,7 @@ function getReactionApps(optionHash) {
   };
 
   // fetch the packages
-  reactionPackages = ReactionCore.Collections.Packages.find(filter, fields).fetch();
+  reactionPackages = Packages.find(filter, fields).fetch();
 
   // apply filters to registry items
   if (reactionPackages.length) {

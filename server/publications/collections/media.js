@@ -1,10 +1,11 @@
+import { Media } from "/lib/collections";
+
 /**
  * CollectionFS - Image/Video Publication
  * @params {Array} shops - array of current shop object
  */
 Meteor.publish("Media", function (shops) {
   check(shops, Match.Optional(Array));
-  const { Media } = ReactionCore.Collections;
   let selector;
   let shopId = ReactionCore.getShopId();
   if (!shopId) {

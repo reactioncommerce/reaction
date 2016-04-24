@@ -31,7 +31,7 @@ Template.productGrid.events({
         return _.contains(selectedProducts, product._id);
       });
 
-      ReactionCore.showActionView({
+      Reaction.showActionView({
         label: i18next.t("productDetailEdit.productSettings"),
         template: "productSettings",
         type: "product",

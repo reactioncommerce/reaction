@@ -1,6 +1,8 @@
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
-const $ = require("jquery");
+import { $ } from "meteor/jquery";
+import { Tags } from "/lib/collections";
+
 // load modules
 require("jquery-ui");
 
@@ -151,7 +153,7 @@ Template.productDetail.helpers({
     if (product) {
       if (product.hashtags) {
         return _.map(product.hashtags, function (id) {
-          return ReactionCore.Collections.Tags.findOne(id);
+          return Tags.findOne(id);
         });
       }
     }

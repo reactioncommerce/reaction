@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 let user;
 describe("Subscriptions", () => {
   beforeAll(done => {
@@ -14,7 +16,7 @@ describe("Subscriptions", () => {
     it(
       "cart cursor should return only one cart",
       done => {
-        const carts = ReactionCore.Collections.Cart.find().count();
+        const carts = Cart.find().count();
         expect(carts).toBe(1);
 
         return done();
@@ -81,14 +83,14 @@ describe("Subscriptions", () => {
       "should not have access to previous user's cart",
       done => {
         const prevUser = Meteor.userId();
-        const carts = ReactionCore.Collections.Cart.find().fetch();
+        const carts = Cart.find().fetch();
         expect(carts.length).toBe(1);
         const firstCart = carts[0];
 
         Meteor.logout(() => {
           Meteor.setTimeout(() => {
             expect(Meteor.userId()).not.toEqual(prevUser);
-            const carts2 = ReactionCore.Collections.Cart.find().fetch();
+            const carts2 = Cart.find().fetch();
             expect(carts2.length).toBe(1);
             expect(carts2[0]._id).not.toEqual(firstCart._id);
 

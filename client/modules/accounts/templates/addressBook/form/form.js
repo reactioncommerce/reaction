@@ -1,14 +1,17 @@
+import { Countries } from "/client/collections";
+import Collections from "/lib/collections";
+
 Template.addressBookForm.helpers({
 
   /*
    * TODO: update for i18n
    */
   countryOptions: function () {
-    return ReactionCore.Collections.Countries.find().fetch();
+    return Countries.find().fetch();
   },
   statesForCountry: function() {
     var locale, options, ref, selectedCountry, shop, state;
-    shop = ReactionCore.Collections.Shops.findOne();
+    shop = Collections.Shops.findOne();
     selectedCountry = Session.get('addressBookCountry') || AutoForm.getFieldValue('country');
     if (!selectedCountry) {
       return false;
@@ -38,7 +41,7 @@ Template.addressBookForm.helpers({
     return typeof this.address === "object" ? this.address.isShippingDefault : true;
   },
   hasAddressBookEntries: function () {
-    let account = ReactionCore.Collections.Accounts.findOne({
+    let account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
     if (account) {

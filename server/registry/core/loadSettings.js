@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  * ReactionRegistry.loadSettings
  * @description
@@ -32,7 +34,7 @@ ReactionRegistry.loadSettings = function (json) {
   // loop settings and upsert packages.
   for (let pkg of validatedJson) {
     for (let item of pkg) {
-      exists = ReactionCore.Collections.Packages.findOne({
+      exists = Packages.findOne({
         name: item.name
       });
       //
@@ -41,7 +43,7 @@ ReactionRegistry.loadSettings = function (json) {
       //
       // insert into the Packages collection
       if (exists) {
-        result = ReactionCore.Collections.Packages.upsert({
+        result = Packages.upsert({
           name: item.name
         }, {
           $set: {

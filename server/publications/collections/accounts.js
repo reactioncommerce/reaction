@@ -1,8 +1,8 @@
+import Collections from "/lib/collections";
+
 /**
  * accounts
  */
-
-const Accounts = ReactionCore.Collections.Accounts;
 
 Meteor.publish("Accounts", function (userId) {
   check(userId, Match.OneOf(String, null));
@@ -17,15 +17,15 @@ Meteor.publish("Accounts", function (userId) {
   }
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
-    return Accounts.find();
+    return Collections.Accounts.find();
     // shop admin gets accounts for just this shop
   } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
-    return Accounts.find({
+    return Collections.Accounts.find({
       shopId: shopId
     });
   }
   // regular users should get just their account
-  return ReactionCore.Collections.Accounts.find({
+  return Collections.Accounts.find({
     userId: this.userId
   });
 });

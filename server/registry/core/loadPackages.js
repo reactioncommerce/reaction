@@ -1,5 +1,6 @@
-const merge = require("lodash.merge");
-const uniqWith = require("lodash.uniqwith");
+import { merge, uniqWith } from "lodash";
+import { Packages, Shops } from "/lib/collections";
+
 /**
  *  ReactionRegistry.loadPackages
  *  insert Reaction packages into registry
@@ -12,7 +13,7 @@ const uniqWith = require("lodash.uniqwith");
 ReactionRegistry.loadPackages = function () {
   let settingsJSONAsset;
   let settingsFromJSON;
-  const packages = ReactionCore.Collections.Packages.find({}).fetch();
+  const packages = Packages.find({}).fetch();
 
   // Attempt to load reaction.json fixture data
   try {
@@ -30,7 +31,7 @@ ReactionRegistry.loadPackages = function () {
   let layouts = [];
   // for each shop, we're loading packages a unique registry
   _.each(ReactionRegistry.Packages, (config, pkgName) => {
-    return ReactionCore.Collections.Shops.find().forEach((shop) => {
+    return Shops.find().forEach((shop) => {
       let shopId = shop._id;
 
       if (!shopId) return [];
@@ -87,19 +88,19 @@ ReactionRegistry.loadPackages = function () {
   // helper for removing layout duplicates
   const uniqLayouts = uniqWith(layouts, _.isEqual);
   // import layouts into Shops
-  ReactionCore.Collections.Shops.find().forEach((shop) => {
+  Shops.find().forEach((shop) => {
     ReactionImport.layout(uniqLayouts, shop._id);
   });
 
   //
   // package cleanup
   //
-  ReactionCore.Collections.Shops.find().forEach((shop) => {
-    return ReactionCore.Collections.Packages.find().forEach((pkg) => {
+  Shops.find().forEach((shop) => {
+    return Packages.find().forEach((pkg) => {
       // delete registry entries for packages that have been removed
       if (!_.has(ReactionRegistry.Packages, pkg.name)) {
         ReactionCore.Log.info(`Removing ${pkg.name}`);
-        return ReactionCore.Collections.Packages.remove({
+        return Packages.remove({
           shopId: shop._id,
           name: pkg.name
         });

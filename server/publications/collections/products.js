@@ -1,3 +1,5 @@
+import { Products } from "/lib/collections";
+
 //
 // define search filters as a schema so we can validate
 // params supplied to the products publication
@@ -70,7 +72,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
   let shopAdmin;
   const shop = ReactionCore.getCurrentShop();
-  const Products = ReactionCore.Collections.Products;
 
   if (typeof shop !== "object") {
     return this.ready();

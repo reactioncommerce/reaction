@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 Meteor.methods({
   /**
    * payments/paymentMethod
@@ -11,7 +13,7 @@ Meteor.methods({
     check(paymentMethod, Object);
 
     // temp hack until we build out multiple payment handlers
-    let cart = ReactionCore.Collections.Cart.findOne(cartId);
+    let cart = Cart.findOne(cartId);
     let paymentId = "";
     if (cart.billing) {
       paymentId = cart.billing[0]._id;

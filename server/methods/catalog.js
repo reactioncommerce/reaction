@@ -1,3 +1,5 @@
+import { Media, Products, Tags } from "/lib/collections";
+
 /**
  * Reaction Product Methods
  */
@@ -29,7 +31,7 @@ const toDenormalize = [
 function createTitle(newTitle, productId) {
   // exception product._id needed for cases then double triggering happens
   let title = newTitle || "";
-  let titleCount = ReactionCore.Collections.Products.find({
+  let titleCount = Products.find({
     title: title,
     _id: {
       $nin: [productId]
@@ -65,7 +67,7 @@ function createTitle(newTitle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (ReactionCore.Collections.Products.find({
+  if (Products.find({
     title: title
   }).count() !== 0) {
     title = createTitle(title, productId);
@@ -84,7 +86,7 @@ function createTitle(newTitle, productId) {
 function createHandle(productHandle, productId) {
   let handle = productHandle || "";
   // exception product._id needed for cases then double triggering happens
-  let handleCount = ReactionCore.Collections.Products.find({
+  let handleCount = Products.find({
     handle: handle,
     _id: {
       $nin: [productId]
@@ -122,7 +124,7 @@ function createHandle(productHandle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (ReactionCore.Collections.Products.find({
+  if (Products.find({
     handle: handle
   }).count() !== 0) {
     handle = createHandle(handle, productId);
@@ -137,10 +139,10 @@ function createHandle(productHandle, productId) {
  * @param {String} newId - [cloned|original] product _id
  * @param {String} variantOldId - old variant _id
  * @param {String} variantNewId - - cloned variant _id
- * @return {Number} ReactionCore.Collections.Media#update result
+ * @return {Number} Media#update result
  */
 function copyMedia(newId, variantOldId, variantNewId) {
-  ReactionCore.Collections.Media.find({
+  Media.find({
     "metadata.variantId": variantOldId
   }).forEach(function (fileObj) {
     let newFile = fileObj.copy();
@@ -173,7 +175,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * @return {Number} - number of successful update operations. Should be "1".
  */
 function denormalize(id, field) {
-  const doc = ReactionCore.Collections.Products.findOne(id);
+  const doc = Products.findOne(id);
   let variants;
   if (doc.type === "simple") {
     variants = ReactionCore.getTopVariants(id);
@@ -203,7 +205,7 @@ function denormalize(id, field) {
       price: priceObject
     });
   }
-  ReactionCore.Collections.Products.update(id, {
+  Products.update(id, {
     $set: update
   }, {
     selector: {
@@ -271,14 +273,14 @@ function isBackorder(variants) {
  * @return {Number} - collection update results
  */
 function flushQuantity(id) {
-  const variant = ReactionCore.Collections.Products.findOne(id);
+  const variant = Products.findOne(id);
   // if variant already have descendants, quantity should be 0, and we don't
   // need to do all next actions
   if (variant.inventoryQuantity === 0) {
     return 1; // let them think that we have one successful operation here
   }
 
-  return ReactionCore.Collections.Products.update({
+  return Products.update({
     _id: id
   }, {
     $set: {
@@ -311,7 +313,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const variants = ReactionCore.Collections.Products.find({
+    const variants = Products.find({
       $or: [{
         _id: variantId
       }, {
@@ -360,7 +362,7 @@ Meteor.methods({
       delete clone.inventoryQuantity;
       copyMedia(productId, oldId, clone._id);
 
-      return ReactionCore.Collections.Products.insert(clone, {
+      return Products.insert(clone, {
         validate: false
       }, (error, result) => {
         if (result) {
@@ -406,7 +408,7 @@ Meteor.methods({
     // get parent ancestors to build new ancestors array
     const {
       ancestors
-    } = ReactionCore.Collections.Products.findOne(parentId);
+    } = Products.findOne(parentId);
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
@@ -428,7 +430,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
-    ReactionCore.Collections.Products.insert(assembledVariant,
+    Products.insert(assembledVariant,
       (error, result) => {
         if (result) {
           ReactionCore.Log.info(
@@ -459,9 +461,6 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const {
-      Products
-    } = ReactionCore.Collections;
     let currentVariant = Products.findOne(variant._id);
     // update variants
     if (typeof currentVariant === "object") {
@@ -514,14 +513,14 @@ Meteor.methods({
         }
       }]
     };
-    const toDelete = ReactionCore.Collections.Products.find(selector).fetch();
+    const toDelete = Products.find(selector).fetch();
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-    const deleted = ReactionCore.Collections.Products.remove(selector);
+    const deleted = Products.remove(selector);
     toDelete.forEach(variant => {
       // useless to return results here because all happens async
-      ReactionCore.Collections.Media.remove({
+      Media.remove({
         "metadata.variantId": variant._id
       });
     });
@@ -609,13 +608,13 @@ Meteor.methods({
           newProduct._id
         );
       }
-      result = ReactionCore.Collections.Products.insert(newProduct, {
+      result = Products.insert(newProduct, {
         validate: false
       });
       results.push(result);
 
       // cloning variants
-      const variants = ReactionCore.Collections.Products.find({
+      const variants = Products.find({
         ancestors: {
           $in: [product._id]
         },
@@ -638,7 +637,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        result = ReactionCore.Collections.Products.insert(
+        result = Products.insert(
           newVariant, {
             validate: false
           }
@@ -666,17 +665,17 @@ Meteor.methods({
 
     // if a product object was provided
     if (product) {
-      return ReactionCore.Collections.Products.insert(product);
+      return Products.insert(product);
     }
 
-    return ReactionCore.Collections.Products.insert({
+    return Products.insert({
       type: "simple" // needed for multi-schema
     }, {
       validate: false
     }, (error, result) => {
       // additionally, we want to create a variant to a new product
       if (result) {
-        ReactionCore.Collections.Products.insert({
+        Products.insert({
           ancestors: [result],
           price: 0.00,
           title: "",
@@ -706,7 +705,7 @@ Meteor.methods({
     } else {
       productIds = productId;
     }
-    const productsWithVariants = ReactionCore.Collections.Products.find({
+    const productsWithVariants = Products.find({
       $or: [{
         _id: {
           $in: productIds
@@ -727,7 +726,7 @@ Meteor.methods({
       ids.push(doc._id);
     });
 
-    const numRemoved = ReactionCore.Collections.Products.remove({
+    const numRemoved = Products.remove({
       _id: {
         $in: ids
       }
@@ -735,7 +734,7 @@ Meteor.methods({
 
     if (numRemoved > 0) {
       // we can get removes results only in async way
-      ReactionCore.Collections.Media.remove({
+      Media.remove({
         "metadata.productId": {
           $in: ids
         },
@@ -770,13 +769,13 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const doc = ReactionCore.Collections.Products.findOne(_id);
+    const doc = Products.findOne(_id);
     const type = doc.type;
     let stringValue = EJSON.stringify(value);
     let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
 
     // we need to use sync mode here, to return correct error and result to UI
-    const result = ReactionCore.Collections.Products.update(_id, {
+    const result = Products.update(_id, {
       $set: update
     }, {
       selector: {
@@ -816,12 +815,12 @@ Meteor.methods({
       name: tagName
     };
 
-    let existingTag = ReactionCore.Collections.Tags.findOne({
+    let existingTag = Tags.findOne({
       name: tagName
     });
 
     if (existingTag) {
-      let productCount = ReactionCore.Collections.Products.find({
+      let productCount = Products.find({
         _id: productId,
         hashtags: {
           $in: [existingTag._id]
@@ -830,7 +829,7 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error(403, "Existing Tag, Update Denied");
       }
-      return ReactionCore.Collections.Products.update(productId, {
+      return Products.update(productId, {
         $push: {
           hashtags: existingTag._id
         }
@@ -840,7 +839,7 @@ Meteor.methods({
         }
       });
     } else if (tagId) {
-      return ReactionCore.Collections.Tags.update(tagId, {
+      return Tags.update(tagId, {
         $set: newTag
       });
     }
@@ -849,8 +848,8 @@ Meteor.methods({
     newTag.shopId = ReactionCore.getShopId();
     newTag.updatedAt = new Date();
     newTag.createdAt = new Date();
-    newTag._id = ReactionCore.Collections.Tags.insert(newTag);
-    return ReactionCore.Collections.Products.update(productId, {
+    newTag._id = Tags.insert(newTag);
+    return Products.update(productId, {
       $push: {
         hashtags: newTag._id
       }
@@ -875,7 +874,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    ReactionCore.Collections.Products.update(productId, {
+    Products.update(productId, {
       $pull: {
         hashtags: tagId
       }
@@ -885,20 +884,20 @@ Meteor.methods({
       }
     });
 
-    let productCount = ReactionCore.Collections.Products.find({
+    let productCount = Products.find({
       hashtags: {
         $in: [tagId]
       }
     }).count();
 
-    let relatedTagsCount = ReactionCore.Collections.Tags.find({
+    let relatedTagsCount = Tags.find({
       relatedTagIds: {
         $in: [tagId]
       }
     }).count();
 
     if (productCount === 0 && relatedTagsCount === 0) {
-      return ReactionCore.Collections.Tags.remove(tagId);
+      return Tags.remove(tagId);
     }
   },
 
@@ -915,10 +914,10 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    let product = ReactionCore.Collections.Products.findOne(productId);
+    let product = Products.findOne(productId);
     let handle = getSlug(product.title);
     handle = createHandle(handle, product._id);
-    ReactionCore.Collections.Products.update(product._id, {
+    Products.update(product._id, {
       $set: {
         handle: handle,
         type: "simple"
@@ -952,18 +951,18 @@ Meteor.methods({
       };
     }
 
-    let product = ReactionCore.Collections.Products.findOne(productId);
-    let tag = ReactionCore.Collections.Tags.findOne(tagId);
+    let product = Products.findOne(productId);
+    let tag = Tags.findOne(tagId);
     // set handle
     if (product.handle === tag.slug) {
       let handle = getSlug(product.title);
       handle = createHandle(handle, product._id);
-      ReactionCore.Collections.Products.update(product._id, getSet(handle));
+      Products.update(product._id, getSet(handle));
 
       return handle;
     }
     // toggle handle
-    let existingHandles = ReactionCore.Collections.Products.find({
+    let existingHandles = Products.find({
       handle: tag.slug
     }).fetch();
     // this is needed to take care about product's handle which(product) was
@@ -972,10 +971,10 @@ Meteor.methods({
       let currentProductHandle = createHandle(
         getSlug(currentProduct.title),
         currentProduct._id);
-      ReactionCore.Collections.Products.update(currentProduct._id,
+      Products.update(currentProduct._id,
         getSet(currentProductHandle));
     }
-    ReactionCore.Collections.Products.update(product._id, getSet(tag.slug));
+    Products.update(product._id, getSet(tag.slug));
 
     return tag.slug;
   },
@@ -999,7 +998,7 @@ Meteor.methods({
     this.unblock();
 
     const positions = `positions.${tag}`;
-    const product = ReactionCore.Collections.Products.findOne({
+    const product = Products.findOne({
       _id: productId,
       [positions]: {
         $exists: true
@@ -1007,7 +1006,7 @@ Meteor.methods({
     });
 
     function addPosition() {
-      return ReactionCore.Collections.Products.update({
+      return Products.update({
         _id: productId
       }, {
         $set: {
@@ -1024,7 +1023,7 @@ Meteor.methods({
       const weight = `positions.${tag}.weight`;
       const updatedAt = `positions.${tag}.updatedAt`;
 
-      return ReactionCore.Collections.Products.update({
+      return Products.update({
         _id: productId
       }, {
         $set: {
@@ -1048,7 +1047,7 @@ Meteor.methods({
    * @description updates top level variant position index
    * @param {Array} sortedVariantIds - array of top level variant `_id`s
    * @since 0.11.0
-   * @return {Number} ReactionCore.Collections.Products.update result
+   * @return {Number} Products.update result
    */
   "products/updateVariantsPosition": function (sortedVariantIds) {
     check(sortedVariantIds, [String]);
@@ -1062,7 +1061,7 @@ Meteor.methods({
     }
 
     sortedVariantIds.forEach((id, index) => {
-      ReactionCore.Collections.Products.update(id, {
+      Products.update(id, {
         $set: {
           index: index
         }
@@ -1100,7 +1099,7 @@ Meteor.methods({
 
     // update existing metadata
     if (meta) {
-      return ReactionCore.Collections.Products.update({
+      return Products.update({
         _id: productId,
         metafields: meta
       }, {
@@ -1114,7 +1113,7 @@ Meteor.methods({
       });
     }
     // adds metadata
-    return ReactionCore.Collections.Products.update({
+    return Products.update({
       _id: productId
     }, {
       $addToSet: {
@@ -1145,7 +1144,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    return ReactionCore.Collections.Products.update({
+    return Products.update({
       _id: productId,
       type: type
     }, {
@@ -1168,8 +1167,8 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const product = ReactionCore.Collections.Products.findOne(productId);
-    const variants = ReactionCore.Collections.Products.find({
+    const product = Products.findOne(productId);
+    const variants = Products.find({
       ancestors: {
         $in: [productId]
       }
@@ -1210,7 +1209,7 @@ Meteor.methods({
       // update product visibility
       ReactionCore.Log.info("toggle product visibility ", product._id, !product.isVisible);
 
-      const res = ReactionCore.Collections.Products.update(product._id, {
+      const res = Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
         }

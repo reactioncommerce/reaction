@@ -1,8 +1,9 @@
 require("money");
+require("autonumeric");
 import $ from "jquery";
 import accounting from "accounting-js";
-import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
-require("autonumeric");
+import { NumericInput } from "/client/modules/ui";
+import { Media, Orders, Shops } from "/lib/collections";
 
 //
 // core order shipping invoice templates
@@ -16,13 +17,13 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
   // function getOrder(orderId) {
   //   template.orderDep.depend();
-  //   return ReactionCore.Collections.Orders.findOne(orderId);
+  //   return Orders.findOne(orderId);
   // }
 
   this.autorun(() => {
     const currentData = Template.currentData();
-    const order = ReactionCore.Collections.Orders.findOne(currentData.orderId);
-    const shop = ReactionCore.Collections.Shops.findOne({});
+    const order = Orders.findOne(currentData.orderId);
+    const shop = Shops.findOne({});
 
     this.state.set("order", order);
     this.state.set("currency", shop.currencies[shop.currency]);
@@ -357,7 +358,7 @@ Template.coreOrderShippingInvoice.helpers({
       variantId = variantObjectOrId._id;
     }
 
-    let defaultImage = ReactionCore.Collections.Media.findOne({
+    let defaultImage = Media.findOne({
       "metadata.variantId": variantId,
       "metadata.priority": 0
     });

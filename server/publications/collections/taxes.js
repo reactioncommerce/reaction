@@ -1,3 +1,5 @@
+import { Taxes } from "/lib/collections";
+
 /**
  * taxes
  */
@@ -7,7 +9,7 @@ Meteor.publish("Taxes", function () {
   if (!shopId) {
     return this.ready();
   }
-  return ReactionCore.Collections.Taxes.find({
+  return Taxes.find({
     shopId: shopId
   });
 });

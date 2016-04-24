@@ -1,3 +1,5 @@
+import { Packages, Shops } from "/lib/collections";
+
 /**
  * ReactionRegistry createDefaultAdminUser
  * @summary Method that creates default admin user
@@ -51,7 +53,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
   }
 
   // set the default shop email to the default admin email
-  ReactionCore.Collections.Shops.update(shopId, {
+  Shops.update(shopId, {
     $addToSet: {
       emails: {
         address: options.email,
@@ -113,7 +115,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
   // initialize package permissions
   // we don't need to do any further permission configuration
   // it is taken care of in the assignOwnerRoles
-  let packages = ReactionCore.Collections.Packages.find().fetch();
+  let packages = Packages.find().fetch();
   for (let pkg of packages) {
     ReactionRegistry.assignOwnerRoles(shopId, pkg.name, pkg.registry);
   }

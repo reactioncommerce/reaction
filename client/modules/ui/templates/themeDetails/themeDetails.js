@@ -1,3 +1,4 @@
+import { Themes } from "/lib/collections";
 
 Template.uiThemeDetails.onCreated(function () {
   this.state = new ReactiveDict();
@@ -24,7 +25,7 @@ Template.uiThemeDetails.onCreated(function () {
   });
 
   this.autorun(() => {
-    this.theme = ReactionCore.Collections.Themes.findOne({name: "base"});
+    this.theme = Themes.findOne({name: "base"});
     this.state.set("theme", this.theme);
   });
 });

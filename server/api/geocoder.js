@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  * meteor-geocoder
  * modifed for reaction core.
@@ -17,7 +19,7 @@ export const GeoCoder = function geoCoderConstructor(options) {
   let extra;
   let self = this;
   // fetch shop settings for api auth credentials
-  let shopSettings = ReactionCore.Collections.Packages.findOne({
+  let shopSettings = Packages.findOne({
     shopId: ReactionCore.getShopId(),
     name: "core"
   }, {

@@ -1,4 +1,4 @@
-import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
+import { Media } from "/lib/collections";
 
 /**
  * ordersListItems helpers
@@ -6,7 +6,7 @@ import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
  */
 Template.ordersListItems.helpers({
   media: function () {
-    const variantImage = ReactionCore.Collections.Media.findOne({
+    const variantImage = Media.findOne({
       "metadata.productId": this.productId,
       "metadata.variantId": this.variants._id
     });
@@ -15,7 +15,7 @@ Template.ordersListItems.helpers({
       return variantImage;
     }
     // find a default image
-    const productImage = ReactionCore.Collections.Media.findOne({
+    const productImage = Media.findOne({
       "metadata.productId": this.productId
     });
     if (productImage) {

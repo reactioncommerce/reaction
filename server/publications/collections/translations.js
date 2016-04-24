@@ -1,3 +1,5 @@
+import { Shops, Translations } from "/lib/collections";
+
 /**
  * Translations publication
  * @param {String} sessionLanguage - current sessionLanguage default to 'en'
@@ -9,8 +11,8 @@ Meteor.publish("Translations", function (sessionLanguage) {
   // on the client
   if (sessionLanguage) {
     const shopId = ReactionCore.getShopId();
-    const shopLanguage = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId()).language || "en";
-    return ReactionCore.Collections.Translations.find({
+    const shopLanguage = Shops.findOne(ReactionCore.getShopId()).language || "en";
+    return Translations.find({
       $or: [{
         i18n: shopLanguage,
         shopId: shopId

@@ -1,3 +1,5 @@
+import { Orders } from "/lib/collections";
+
 /**
  * orders
  */
@@ -11,11 +13,11 @@ Meteor.publish("Orders", function () {
     return this.ready();
   }
   if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
-    return ReactionCore.Collections.Orders.find({
+    return Orders.find({
       shopId: shopId
     });
   }
-  return ReactionCore.Collections.Orders.find({
+  return Orders.find({
     shopId: shopId,
     userId: this.userId
   });
@@ -37,7 +39,7 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
   if (!shopId) {
     return this.ready();
   }
-  return ReactionCore.Collections.Orders.find({
+  return Orders.find({
     shopId: shopId,
     userId: this.userId
   });
@@ -56,7 +58,7 @@ Meteor.publish("CompletedCartOrder", function (userId, cartId) {
     return this.ready();
   }
 
-  return ReactionCore.Collections.Orders.find({
+  return Orders.find({
     cartId: cartId,
     userId: userId
   });

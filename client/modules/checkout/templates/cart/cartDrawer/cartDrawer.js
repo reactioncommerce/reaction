@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 /**
  * cartDrawer helpers
  *
@@ -11,7 +13,7 @@ Template.cartDrawer.helpers({
       return null;
     }
 
-    let storedCart = ReactionCore.Collections.Cart.findOne();
+    let storedCart = Cart.findOne();
     let count = 0;
 
     if (typeof storedCart === "object" && storedCart.items) {
@@ -37,7 +39,7 @@ Template.openCartDrawer.onRendered(function () {
 
 Template.openCartDrawer.helpers({
   cartItems: function () {
-    return ReactionCore.Collections.Cart.findOne().items;
+    return Cart.findOne().items;
   }
 });
 

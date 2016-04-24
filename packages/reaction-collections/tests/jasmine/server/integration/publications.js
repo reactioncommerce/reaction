@@ -1,3 +1,5 @@
+import { Cart, Orders, Products } from "/lib/collections";
+
 /* eslint dot-notation: 0 */
 
 describe("Publication", function () {
@@ -8,19 +10,19 @@ describe("Publication", function () {
     // if you want to do a real stress test, you could try to comment out
     // this spyOn lines. This is needed only for ./reaction test. In one
     // package test this is ignoring.
-    if (Array.isArray(ReactionCore.Collections.Products._hookAspects.remove.
-      after) && ReactionCore.Collections.Products._hookAspects.remove.after.
+    if (Array.isArray(Products._hookAspects.remove.
+      after) && Products._hookAspects.remove.after.
       length) {
-      spyOn(ReactionCore.Collections.Products._hookAspects.remove.after[0],
+      spyOn(Products._hookAspects.remove.after[0],
         "aspect");
-      spyOn(ReactionCore.Collections.Products._hookAspects.insert.after[0],
+      spyOn(Products._hookAspects.insert.after[0],
         "aspect");
     }
-    ReactionCore.Collections.Products.remove({});
+    Products.remove({});
     // really strange to see this, but without this `remove` finishes in
     // async way (somewhere in a middle of testing process)
     Meteor.setTimeout(function () {
-      ReactionCore.Collections.Orders.remove({});
+      Orders.remove({});
     }, 500);
   });
 
@@ -44,7 +46,7 @@ describe("Publication", function () {
 
     beforeAll(function () {
       // a product with price range A, and not visible
-      ReactionCore.Collections.Products.insert({
+      Products.insert({
         ancestors: [],
         title: "My Little Pony",
         shopId: shop._id,
@@ -56,7 +58,7 @@ describe("Publication", function () {
         isBackorder: false
       });
       // a product with price range B, and visible
-      ReactionCore.Collections.Products.insert({
+      Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
         shopId: shop._id,
@@ -68,7 +70,7 @@ describe("Publication", function () {
         isBackorder: false
       });
       // a product with price range A, and visible
-      ReactionCore.Collections.Products.insert({
+      Products.insert({
         ancestors: [],
         title: "Fresh Tomatoes",
         shopId: shop._id,
@@ -240,7 +242,7 @@ describe("Publication", function () {
         "should return a product based on an id",
         function () {
           // setup
-          const product = ReactionCore.Collections.Products.findOne({
+          const product = Products.findOne({
             isVisible: true
           });
           spyOn(ReactionCore, "getCurrentShop").and.returnValue(
@@ -354,7 +356,7 @@ describe("Publication", function () {
     };
 
     beforeEach(() => {
-      ReactionCore.Collections.Cart.remove({});
+      Cart.remove({});
       spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
       Meteor.call("cart/createCart", userId, sessionId);
     });
