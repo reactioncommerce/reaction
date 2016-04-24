@@ -34,7 +34,9 @@ service-configuration
 amplify
 mdg:validated-method
 aldeed:template-extension
+aldeed:collection2
 aldeed:autoform
+aldeed:schema-index
 momentjs:moment
 risul:moment-timezone
 cfs:standard-packages
