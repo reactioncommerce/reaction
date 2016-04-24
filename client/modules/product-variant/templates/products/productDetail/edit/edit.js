@@ -1,4 +1,6 @@
 import autosize from "autosize";
+import { ReactionProduct } from "/lib/api";
+
 /**
  * productDetailEdit helpers
  */
