@@ -1,3 +1,5 @@
+import { Media } from "/lib/collections";
+
 let weightDependency = new Tracker.Dependency;
 
 Template.productSettings.helpers({
@@ -26,7 +28,7 @@ Template.productSettingsGridItem.helpers({
   },
 
   media: function () {
-    const media = ReactionCore.Collections.Media.findOne({
+    const media = Media.findOne({
       "metadata.productId": this._id,
       "metadata.priority": 0,
       "metadata.toGrid": 1
@@ -35,7 +37,7 @@ Template.productSettingsGridItem.helpers({
     return media instanceof FS.File ? media : false;
   },
   additionalMedia: function () {
-    const mediaArray = ReactionCore.Collections.Media.find({
+    const mediaArray = Media.find({
       "metadata.productId": this._id,
       "metadata.priority": {
         $gt: 0

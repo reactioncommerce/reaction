@@ -1,3 +1,5 @@
+import { Shipping } from "/lib/collections";
+
 /**
  * shipping
  */
@@ -7,7 +9,7 @@ Meteor.publish("Shipping", function () {
   if (!shopId) {
     return this.ready();
   }
-  return ReactionCore.Collections.Shipping.find({
+  return Shipping.find({
     shopId: shopId
   });
 });

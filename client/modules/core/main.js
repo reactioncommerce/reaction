@@ -1,4 +1,4 @@
-import bunyan from "bunyan";
+import { Packages, Shops } from "/lib/collections";
 
 /**
  * ReactionCore
@@ -16,7 +16,7 @@ _.extend(ReactionCore, {
       // for clarity this subscription is defined in subscriptions.js
       if (ReactionCore.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
-        shop = ReactionCore.Collections.Shops.findOne({
+        shop = Shops.findOne({
           domains: domain
         });
 
@@ -136,7 +136,7 @@ _.extend(ReactionCore, {
   },
   allowGuestCheckout: function () {
     let allowGuest = true;
-    let packageRegistry = ReactionCore.Collections.Packages.findOne({
+    let packageRegistry = Packages.findOne({
       name: "core",
       shopId: this.shopId
     });
@@ -207,7 +207,7 @@ _.extend(ReactionCore, {
     const currentRoute = ReactionRouter.current();
     const template = currentRoute.route.options.template;
     // find registry entries for routeName
-    let reactionApp = ReactionCore.Collections.Packages.findOne({
+    let reactionApp = Packages.findOne({
       "registry.name": currentRouteName,
       "registry.provides": provides
     }, {
@@ -346,9 +346,8 @@ Meteor.startup(function () {
  * @param {Object} countries -  The countries array on the Shop collection
  * @returns {Array} countryOptions - Sorted array of countries
  */
-createCountryCollection = function (countries) {
+function createCountryCollection(countries) {
   check(countries, Object);
-  ReactionCore.Collections.Countries = new Mongo.Collection(null);
   const countryOptions = [];
   for (let locale in countries) {
     if ({}.hasOwnProperty.call(countries, locale)) {
@@ -370,7 +369,7 @@ createCountryCollection = function (countries) {
   });
 
   for (let country of countryOptions) {
-    ReactionCore.Collections.Countries.insert(country);
+    Countries.insert(country);
   }
   return countryOptions;
-};
+}

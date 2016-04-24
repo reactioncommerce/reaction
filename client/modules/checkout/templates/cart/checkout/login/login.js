@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 /**
  * checkoutLoginCompleted
  * returns true if we've already past this stage,
@@ -7,7 +9,7 @@
 Template.checkoutLogin.helpers({
   checkoutLoginCompleted: function () {
     const self = this;
-    const cart = ReactionCore.Collections.Cart.findOne();
+    const cart = Cart.findOne();
     if (cart && cart.workflow) {
       const currentStatus = cart.workflow.status;
       const guestUser = ReactionCore.hasPermission("guest", Meteor.user());

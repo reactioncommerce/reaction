@@ -1,3 +1,5 @@
+import { Shops } from "/lib/collections";
+
 /*
  *
  * Reaction Spacebars helpers
@@ -152,7 +154,7 @@ Template.registerHelper("toCamelCase", function (str) {
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", function () {
-  const shop = ReactionCore.Collections.Shops.findOne();
+  const shop = Shops.findOne();
   return typeof shop === "object" && shop.name ? shop.name : "";
 });
 

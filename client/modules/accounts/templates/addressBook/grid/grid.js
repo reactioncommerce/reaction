@@ -1,9 +1,11 @@
+import  Collections from "/lib/collections";
+
 /*
  * handles display of addressBook grid
  */
 Template.addressBookGrid.helpers({
   selectedBilling: function () {
-    let cart = ReactionCore.Collections.Cart.findOne({
+    let cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
@@ -25,7 +27,7 @@ Template.addressBookGrid.helpers({
   },
 
   selectedShipping: function () {
-    let cart = ReactionCore.Collections.Cart.findOne({
+    let cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
@@ -46,7 +48,7 @@ Template.addressBookGrid.helpers({
     }
   },
   account: function () {
-    return ReactionCore.Collections.Accounts.findOne({
+    return Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
   }

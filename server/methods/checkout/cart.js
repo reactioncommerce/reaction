@@ -1,3 +1,6 @@
+import { Cart } from "/lib/collections";
+import Schemas from "/lib/collections/schemas";
+
 //
 // Client Cart Methods
 // Stubs with matching server methods.
@@ -5,8 +8,8 @@
 if (Meteor.isClient) {
   Meteor.methods({
     "cart/submitPayment": function (paymentMethod) {
-      check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-      let checkoutCart = ReactionCore.Collections.Cart.findOne({
+      check(paymentMethod, Schemas.PaymentMethod);
+      let checkoutCart = Cart.findOne({
         userId: Meteor.userId()
       });
 
@@ -50,7 +53,7 @@ if (Meteor.isClient) {
         };
       }
 
-      ReactionCore.Collections.Cart.update(selector, update, function (
+      Cart.update(selector, update, function (
         error, result) {
         if (error) {
           ReactionCore.Log.warn(error);

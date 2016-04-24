@@ -1,4 +1,6 @@
-const $ = require("jquery");
+import { $ } from "meteor/jquery";
+import { Tags } from "/lib/collections";
+
 // load modules
 require("jquery-ui/sortable");
 require("jquery-ui/autocomplete");
@@ -56,7 +58,7 @@ Template.productTagInputForm.events({
       source: function (request, response) {
         let datums = [];
         let slug = getSlug(request.term);
-        ReactionCore.Collections.Tags.find({
+        Tags.find({
           slug: new RegExp(slug, "i")
         }).forEach(function (tag) {
           return datums.push({

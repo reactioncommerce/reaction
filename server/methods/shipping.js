@@ -1,3 +1,5 @@
+import { Shipping } from "/lib/collections";
+
 Meteor.methods({
   /*
    * add new shipping methods
@@ -8,7 +10,7 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
       return false;
     }
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       '_id': currentDoc
     }, {
       $addToSet: {
@@ -27,7 +29,7 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
       return false;
     }
-    updateDoc = ReactionCore.Collections.Shipping.update({
+    updateDoc = Shipping.update({
       '_id': docId,
       'methods': currentDoc
     }, {
@@ -47,7 +49,7 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
       return false;
     }
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       '_id': providerId,
       'methods': removeDoc
     }, {
@@ -65,7 +67,7 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
       return false;
     }
-    return ReactionCore.Collections.Shipping.insert(doc);
+    return Shipping.insert(doc);
   },
 
   /*
@@ -77,7 +79,7 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
       return false;
     }
-    return ReactionCore.Collections.Shipping.update({
+    return Shipping.update({
       '_id': currentDoc
     }, updateDoc);
   }

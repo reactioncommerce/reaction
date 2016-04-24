@@ -1,3 +1,4 @@
+import { Themes } from "/lib/collections";
 
 Template.uiDashboard.onCreated(function () {
   this.state = new ReactiveDict();
@@ -7,7 +8,7 @@ Template.uiDashboard.onCreated(function () {
 
   this.autorun(() => {
     this.subscribe("Themes");
-    const themes = ReactionCore.Collections.Themes.find({}).fetch();
+    const themes = Themes.find({}).fetch();
     this.state.set("themes", themes);
   });
 });

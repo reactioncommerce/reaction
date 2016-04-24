@@ -1,11 +1,13 @@
+import { Cart } from "/lib/collections";
+
 /**
  * checkoutProgressBar helpers
  * progressbar status: "visited first","previous visited","active","next"
  */
 
 Template.checkoutProgressBar.helpers({
-  progressbarStatusClass: function () {
-    const cartWorkflow = ReactionCore.Collections.Cart.findOne().workflow;
+  progressbarStatusClass() {
+    const cartWorkflow = Cart.findOne().workflow;
     const thisStep = cartWorkflow.status === this.template; // active
     const previouslyVisited = _.contains(cartWorkflow.workflow, this.template);
 

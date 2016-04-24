@@ -1,3 +1,5 @@
+import { Inventory } from "/lib/collections";
+
 Meteor.publish("Inventory", function () {
   if (this.userId === null) {
     return this.ready();
@@ -8,7 +10,7 @@ Meteor.publish("Inventory", function () {
   }
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "createProduct"],
     shopId)) {
-    return ReactionCore.Collections.Inventory.find({
+    return Inventory.find({
       shopId: shopId
     });
   }

@@ -1,3 +1,4 @@
+import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingSummary.onCreated(() => {
   let template = Template.instance();
@@ -7,7 +8,7 @@ Template.coreOrderShippingSummary.onCreated(() => {
 
   function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
-    return ReactionCore.Collections.Orders.findOne({
+    return Orders.findOne({
       "_id": orderId,
       "shipping._id": shipmentId
     });

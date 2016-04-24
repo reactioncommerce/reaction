@@ -1,9 +1,11 @@
+import { AnalyticsEvents } from "/lib/collections";
+
 Meteor.publish("AnalyticsEvents", function () {
   const shopId = ReactionCore.getShopId();
   if (!shopId) {
     return this.ready();
   }
-  return ReactionCore.Collections.AnalyticsEvents.find({
+  return AnalyticsEvents.find({
     shopId: shopId
   });
 });

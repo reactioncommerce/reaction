@@ -1,11 +1,11 @@
-const $ = require("jquery");
+import { $ } from "meteor/jquery";
+import { Media } from "/lib/collections";
+
 // load modules
 require("jquery-ui/sortable");
 /**
  * productImageGallery helpers
  */
-
-let Media = ReactionCore.Collections.Media;
 
 /**
  * uploadHandler method

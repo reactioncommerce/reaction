@@ -1,3 +1,5 @@
+import { Shops } from "/lib/collections";
+
 /**
  * ReactionCore methods (server)
  */
@@ -5,7 +7,7 @@
 _.extend(ReactionCore, {
   getCurrentShopCursor: function () {
     let domain = this.getDomain();
-    let cursor = ReactionCore.Collections.Shops.find({
+    let cursor = Shops.find({
       domains: domain
     }, {
       limit: 1

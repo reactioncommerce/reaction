@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  * Packages contains user specific configuration
  * @summary  package publication settings, filtered by permissions
@@ -6,13 +8,12 @@
  */
 Meteor.publish("Packages", function (shopCursor) {
   check(shopCursor, Match.Optional(Object));
+
   if (this.userId === null) {
     return this.ready();
   }
+
   const shop = shopCursor || ReactionCore.getCurrentShop();
-  const {
-    Packages
-  } = ReactionCore.Collections;
 
   // we should always have a shop
   if (shop) {

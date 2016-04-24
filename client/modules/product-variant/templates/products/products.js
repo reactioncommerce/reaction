@@ -1,8 +1,10 @@
+import { Tags } from "/lib/collections";
+
 Template.products.helpers({
   tag: function () {
     const id = ReactionRouter.getParam("_tag");
     return {
-      tag: ReactionCore.Collections.Tags.findOne({ slug: id }) || ReactionCore.Collections.Tags.findOne(id)
+      tag: Tags.findOne({ slug: id }) || Tags.findOne(id)
     };
   }
 });

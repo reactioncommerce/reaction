@@ -1,3 +1,5 @@
+import { Shops } from "/lib/collections";
+
 /*
  * ReactionRegistry is a global server object that it can be reused in packages
  * assumes collection data in reaction-core/private/data, optionally jsonFile
@@ -5,7 +7,7 @@
  */
 
  // initialize shop registry when a new shop is added
-ReactionCore.Collections.Shops.find().observe({
+Shops.find().observe({
   added(doc) {
     ReactionRegistry.setShopName(doc);
     ReactionRegistry.setDomain();

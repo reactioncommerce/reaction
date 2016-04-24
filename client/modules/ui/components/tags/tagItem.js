@@ -1,6 +1,6 @@
-"use strict";
-const $ = require("jquery");
-// load modules
+import $ from "jquery";
+import { Tags } from "/lib/collections";
+
 require("jquery-ui/autocomplete");
 const classnames = ReactionUI.Lib.classnames;
 
@@ -43,7 +43,7 @@ Template.tagEditable.onRendered(() => {
     source: function (request, response) {
       let datums = [];
       let slug = getSlug(request.term);
-      ReactionCore.Collections.Tags.find({
+      Tags.find({
         slug: new RegExp(slug, "i")
       }).forEach(function (tag) {
         return datums.push({
@@ -117,7 +117,7 @@ Template.tagBlank.onRendered(() => {
     source: function (request, response) {
       let datums = [];
       let slug = getSlug(request.term);
-      ReactionCore.Collections.Tags.find({
+      Tags.find({
         slug: new RegExp(slug, "i")
       }).forEach(function (tag) {
         return datums.push({

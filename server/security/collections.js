@@ -1,21 +1,5 @@
-/**
- * security definitions
- *
- * The following security definitions use the ongoworks:security package.
- * Rules within a single chain stack with AND relationship. Multiple
- * chains for the same collection stack with OR relationship.
- * See https://github.com/ongoworks/meteor-security
- *
- * It"s important to note that these security rules are for inserts,
- * updates, and removes initiated from untrusted (client) code.
- * Thus there may be other actions that certain roles are allowed to
- * take, but they do not necessarily need to be listed here if the
- * database operation is executed in a server method.
- */
+import Collections from "/lib/collections";
 
-/*
- * Assign to some local short names to keep code short and sweet
- */
 const {
   Accounts,
   Cart,
@@ -31,7 +15,22 @@ const {
   Taxes,
   Templates,
   Translations
-} = ReactionCore.Collections;
+} = Collections;
+
+/**
+ * security definitions
+ *
+ * The following security definitions use the ongoworks:security package.
+ * Rules within a single chain stack with AND relationship. Multiple
+ * chains for the same collection stack with OR relationship.
+ * See https://github.com/ongoworks/meteor-security
+ *
+ * It"s important to note that these security rules are for inserts,
+ * updates, and removes initiated from untrusted (client) code.
+ * Thus there may be other actions that certain roles are allowed to
+ * take, but they do not necessarily need to be listed here if the
+ * database operation is executed in a server method.
+ */
 
 /*
  * Define some additional rule chain methods

@@ -1,7 +1,9 @@
+import { AnalyticsEvents, Packages } from "/lib/collections";
+
 Meteor.startup(function () {
   Tracker.autorun(function () {
     var coreAnalytics, googleAnalytics, mixpanel, segmentio;
-    coreAnalytics = ReactionCore.Collections.Packages.findOne({
+    coreAnalytics = Packages.findOne({
       name: "reaction-analytics"
     });
     if (!coreAnalytics || !coreAnalytics.enabled) {
@@ -92,7 +94,7 @@ Meteor.startup(function () {
           "Value": analyticsEvent.value
         });
       }
-      return ReactionCore.Collections.AnalyticsEvents.insert(analyticsEvent);
+      return AnalyticsEvents.insert(analyticsEvent);
     });
   });
 });

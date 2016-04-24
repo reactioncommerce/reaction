@@ -1,3 +1,5 @@
+import { Tags } from "/lib/collections";
+
 /**
  * layoutHeader events
  */
@@ -28,9 +30,8 @@ Template.layoutHeader.helpers({
 
   tagNavProps() {
     const instance = Template.instance();
-    let tags = [];
 
-    tags = ReactionCore.Collections.Tags.find({
+    const tags = Tags.find({
       isTopLevel: true
     }, {
       sort: {

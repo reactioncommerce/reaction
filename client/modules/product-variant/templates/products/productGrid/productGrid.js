@@ -1,3 +1,5 @@
+import { Products, Tags } from "/lib/collections";
+
 /**
  * productGrid helpers
  */
@@ -39,7 +41,6 @@ Template.productGrid.onCreated(function () {
   // Update product subscription
   this.autorun(() => {
     const slug = ReactionRouter.getParam("slug");
-    const { Tags } = ReactionCore.Collections;
     const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
     let tags = {}; // this could be shop default implementation needed
     if (tag) {
@@ -101,7 +102,7 @@ Template.productGrid.events({
 
 Template.productGrid.helpers({
   loadMoreProducts: function () {
-    return ReactionCore.Collections.Products.find().count() >= Session.get("productScrollLimit");
+    return Products.find().count() >= Session.get("productScrollLimit");
   },
   products: function () {
     /*
@@ -155,7 +156,7 @@ Template.productGrid.helpers({
     // `type: { $in: ["simple"] }`, but I found this way is not kind to package
     // creators, because to specify they new product type, they will need to change
     // this file, which broke another piece of compatibility with `reaction`
-    let gridProducts = ReactionCore.Collections.Products.find({
+    let gridProducts = Products.find({
       ancestors: []
       // keep this, as an example
       // type: { $in: ["simple"] }

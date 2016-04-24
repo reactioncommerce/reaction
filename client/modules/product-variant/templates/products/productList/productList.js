@@ -1,12 +1,12 @@
+import { Media } from "/lib/collections";
+
 /**
  * productList helpers
  */
 
-let Media;
-Media = ReactionCore.Collections.Media;
 Template.productList.helpers({
   products: function () {
-    return ReactionProducts.getProductsByTag(this.tag);
+    return ReactionProduct.getProductsByTag(this.tag);
   },
   media: function () {
     let defaultImage;

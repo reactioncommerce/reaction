@@ -1,3 +1,4 @@
+import { Packages, Shops } from "/lib/collections";
 
 const openClassName = "in";
 
@@ -5,7 +6,7 @@ Template.corePaymentMethods.onCreated(function () {
   // Set the default paymentMethod
   // Note: we do this once, so if the admin decides to change the default payment method
   // while a user is trying to checkout, they wont get a jarring experience.
-  const shop = ReactionCore.Collections.Shops.findOne();
+  const shop = Shops.findOne();
 
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -27,7 +28,7 @@ Template.corePaymentMethods.helpers({
   appDetails: function () {
     let self = this;
     if (!(this.icon && this.label)) {
-      let app = ReactionCore.Collections.Packages.findOne(this.packageId);
+      let app = Packages.findOne(this.packageId);
       for (let registry of app.registry) {
         if (!(registry.provides === "dashboard")) {
           continue;

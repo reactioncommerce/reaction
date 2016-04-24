@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 /**
  * cart
  */
@@ -32,7 +34,7 @@ Meteor.publish("Cart", function (sessionId, userId) {
   }
 
   // select user cart
-  const cart = ReactionCore.Collections.Cart.find({
+  const cart = Cart.find({
     userId: this.userId,
     shopId: shopId
   });
@@ -46,5 +48,5 @@ Meteor.publish("Cart", function (sessionId, userId) {
   // we may create a cart if we didn't find one.
   const cartId = Meteor.call("cart/createCart", this.userId, sessionId);
 
-  return ReactionCore.Collections.Cart.find(cartId);
+  return Cart.find(cartId);
 });

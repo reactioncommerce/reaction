@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  * Application Startup
  * ReactionCore Server Configuration
@@ -100,7 +102,7 @@ _.extend(ReactionCore, {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
   configureMailUrl: function (user, password, host, port) {
-    let shopSettings = ReactionCore.Collections.Packages.findOne({
+    let shopSettings = Packages.findOne({
       shopId: this.getShopId(),
       name: "core"
     });

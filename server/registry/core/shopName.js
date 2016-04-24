@@ -1,3 +1,5 @@
+import { Shops } from "/lib/collections";
+
 /**
  *  ReactionRegistry.setShopName
  *  @private ReactionRegistry.setShopName
@@ -6,12 +8,11 @@
  *  @returns {undefined} undefined
  */
 ReactionRegistry.setShopName = function (shop) {
-  const Shops = ReactionCore.Collections.Shops;
   const shopName = process.env.REACTION_SHOP_NAME;
 
   if (shopName) {
     // if this shop name has already been used, don't use it again
-    if (!!ReactionCore.Collections.Shops.findOne({
+    if (!!Shops.findOne({
       name: shopName
     })) {
       ReactionCore.Log.info(`Default shop name ${shopName} already used`);

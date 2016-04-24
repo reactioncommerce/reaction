@@ -1,3 +1,5 @@
+import { Orders } from "/lib/collections";
+
 /**
  * cartCompleted helpers
  *
@@ -9,7 +11,7 @@ Template.cartCompleted.helpers({
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
       if (ccoSub.ready()) {
-        return ReactionCore.Collections.Orders.findOne({
+        return Orders.findOne({
           userId: Meteor.userId(),
           cartId: ReactionRouter.getQueryParam("_id")
         });
@@ -24,7 +26,7 @@ Template.cartCompleted.helpers({
   },
   userOrders: function () {
     if (Meteor.user()) {
-      return ReactionCore.Collections.Orders.find({
+      return Orders.find({
         userId: Meteor.userId(),
         cartId: this._id
       });

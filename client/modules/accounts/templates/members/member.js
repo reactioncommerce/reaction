@@ -1,3 +1,5 @@
+import { Packages, Shops } from "/lib/collections";
+
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
   _.each(permissions, function (existing) {
@@ -43,7 +45,7 @@ Template.memberSettings.helpers({
   },
   shopLabel: function (thisShopId) {
     const shopId = thisShopId || Template.currentData();
-    let shop = ReactionCore.Collections.Shops.findOne({
+    let shop = Shops.findOne({
       _id: shopId
     });
     if (shop && shop.name) {
@@ -53,7 +55,7 @@ Template.memberSettings.helpers({
   permissionGroups: function (thisShopId) {
     let permissionGroups = [];
     const shopId = thisShopId || Template.currentData();
-    const packages = ReactionCore.Collections.Packages.find({
+    const packages = Packages.find({
       shopId: shopId
     });
 

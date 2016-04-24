@@ -1,7 +1,6 @@
-const Drop = ReactionUI.Lib.Drop;
+import { Packages } from "/lib/collections";
 
-Template.coreAdminLayout.onCreated(function () {
-});
+const Drop = ReactionUI.Lib.Drop;
 
 Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
@@ -135,7 +134,7 @@ Template.coreAdminLayout.helpers({
    * @return {Object} Registry entry for item
    */
   thisApp() {
-    let reactionApp = ReactionCore.Collections.Packages.findOne({
+    let reactionApp = Packages.findOne({
       "registry.provides": "settings",
       "registry.route": ReactionRouter.getRouteName()
     }, {

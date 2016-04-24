@@ -1,4 +1,4 @@
-const Media = ReactionCore.Collections.Media;
+import { Media, Packages, Shops } from "/lib/collections";
 
 Template.shopBrandImageOption.helpers({
   cardProps(data) {
@@ -59,11 +59,11 @@ Template.shopBrandImageOption.helpers({
  */
 Template.shopSettings.helpers({
   brandImageSelectProps() {
-    const media = ReactionCore.Collections.Media.find({
+    const media = Media.find({
       "metadata.type": "brandAsset"
     });
 
-    const shop = ReactionCore.Collections.Shops.findOne({
+    const shop = Shops.findOne({
       "_id": ReactionCore.getShopId(),
       "brandAssets.type": "navbarBrandImage"
     });
@@ -121,15 +121,15 @@ Template.shopSettings.helpers({
   },
 
   shop: function () {
-    return ReactionCore.Collections.Shops.findOne();
+    return Shops.findOne();
   },
   packageData: function () {
-    return ReactionCore.Collections.Packages.findOne({
+    return Packages.findOne({
       name: "core"
     });
   },
   addressBook: function () {
-    const address = ReactionCore.Collections.Shops.findOne().addressBook;
+    const address = Shops.findOne().addressBook;
     return address[0];
   },
   paymentMethodOptions() {

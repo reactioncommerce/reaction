@@ -1,22 +1,24 @@
+import { Shops, Tags } from "/lib/collections";
+
 describe("core methods", function () {
   describe("shop/removeHeaderTag", function () {
     beforeEach(function () {
-      return ReactionCore.Collections.Tags.remove({});
+      return Tags.remove({});
     });
 
     it("should throw 403 error by non admin", function (done) {
       let currentTag;
       let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(ReactionCore.Collections.Tags, "update");
-      spyOn(ReactionCore.Collections.Tags, "remove");
+      spyOn(Tags, "update");
+      spyOn(Tags, "remove");
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
       expect(function () {
         return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
-      expect(ReactionCore.Collections.Tags.update).not.toHaveBeenCalled();
-      expect(ReactionCore.Collections.Tags.remove).not.toHaveBeenCalled();
+      expect(Tags.update).not.toHaveBeenCalled();
+      expect(Tags.remove).not.toHaveBeenCalled();
       return done();
     });
     it("should remove header tag by admin", function (done) {
@@ -25,28 +27,28 @@ describe("core methods", function () {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
-      expect(ReactionCore.Collections.Tags.find().count()).toEqual(2);
+      expect(Tags.find().count()).toEqual(2);
       Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
-      expect(ReactionCore.Collections.Tags.find().count()).toEqual(1);
+      expect(Tags.find().count()).toEqual(1);
       return done();
     });
   });
 
   describe("shop/updateHeaderTags", function () {
     beforeEach(function () {
-      ReactionCore.Collections.Shops.remove({});
-      return ReactionCore.Collections.Tags.remove({});
+      Shops.remove({});
+      return Tags.remove({});
     });
 
     it("should throw 403 error by non admin", function (done) {
       let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(ReactionCore.Collections.Tags, "update");
+      spyOn(Tags, "update");
       tag = Factory.create("tag");
       expect(function () {
         return Meteor.call("shop/updateHeaderTags", tag._id);
       }).toThrow(new Meteor.Error(403, "Access Denied"));
-      expect(ReactionCore.Collections.Tags.update).not.toHaveBeenCalled();
+      expect(Tags.update).not.toHaveBeenCalled();
       return done();
     });
 
@@ -56,12 +58,12 @@ describe("core methods", function () {
       // spyOn(ReactionCore.hasPermission, "createProduct").and.returnValue(true);
       let tag;
 
-      let tagCount = ReactionCore.Collections.Tags.find().count();
+      let tagCount = Tags.find().count();
 
       Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
       Meteor.call("shop/updateHeaderTags", "new tag");
-      expect(ReactionCore.Collections.Tags.find().count()).toEqual(tagCount + 1);
-      tag = ReactionCore.Collections.Tags.find().fetch()[0];
+      expect(Tags.find().count()).toEqual(tagCount + 1);
+      tag = Tags.find().fetch()[0];
       expect(tag.name).toEqual("new tag");
       expect(tag.slug).toEqual("new-tag");
       return done();
@@ -72,8 +74,8 @@ describe("core methods", function () {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       tag = Factory.create("tag");
       Meteor.call("shop/updateHeaderTags", "updated tag", tag._id);
-      expect(ReactionCore.Collections.Tags.find().count()).toEqual(1);
-      tag = ReactionCore.Collections.Tags.find().fetch()[0];
+      expect(Tags.find().count()).toEqual(1);
+      tag = Tags.find().fetch()[0];
       expect(tag.name).toEqual("updated tag");
       expect(tag.slug).toEqual("updated-tag");
       return done();

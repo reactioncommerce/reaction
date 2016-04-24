@@ -1,17 +1,19 @@
-ReactionCore.Collections.AnalyticsEvents.allow({
-  insert: function(userId, analyticsEvent) {
-    if (Match.test(analyticsEvent, ReactionCore.Schemas.AnalyticsEvents)) {
-      return true
+import { AnalyticsEvents } from "/lib/collections";
+
+AnalyticsEvents.allow({
+  insert(userId, analyticsEvent) {
+    if (Match.test(analyticsEvent, AnalyticsEvents.Schema)) {
+      return true;
     }
-    return false
+    return false;
   },
-  update: function(userId, analyticsEvent, fields, modifier) {
+  update(userId, analyticsEvent, fields, modifier) {
     if (modifier.$set && modifier.$set.shopId) {
       return false;
     }
     return true;
   },
-  remove: function(userId, analyticsEvent) {
+  remove(userId, analyticsEvent) {
     if (analyticsEvent.shopId !== ReactionCore.getShopId()) {
       return false;
     }

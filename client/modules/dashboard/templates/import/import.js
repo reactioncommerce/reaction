@@ -1,3 +1,5 @@
+import { Media, Products } from "/lib/collections";
+
 function uploadHandler(event) {
   let shopId = ReactionCore.getShopId();
   let userId = Meteor.userId();
@@ -7,7 +9,7 @@ function uploadHandler(event) {
     let parts = files[i].name.split(".");
     let product;
     if (parts[0]) {
-      product = ReactionCore.Collections.Products.findOne({
+      product = Products.findOne({
         "variants.barcode": parts[0]
       }, {
         variants: {
@@ -27,7 +29,7 @@ function uploadHandler(event) {
         shopId: shopId,
         priority: Number(parts[1]) || 0
       };
-      ReactionCore.Collections.Media.insert(fileObj);
+      Media.insert(fileObj);
     }
   }
 }

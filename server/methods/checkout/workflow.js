@@ -1,3 +1,5 @@
+import { Cart, Orders, Packages, Shops } from "/lib/collections";
+
 /* eslint no-shadow: 0 */
 
 Meteor.methods({
@@ -26,7 +28,7 @@ Meteor.methods({
     let nextWorkflowStep = {
       template: ""
     };
-    const { Cart, Packages, Shops } = ReactionCore.Collections;
+
     const { Log } = ReactionCore;
 
     // This method could be called indirectly from publication method in a time
@@ -215,7 +217,7 @@ Meteor.methods({
     check(newWorkflowStatus, String);
     this.unblock();
 
-    const cart = ReactionCore.Collections.Cart.findOne({
+    const cart = Cart.findOne({
       userId: this.userId
     });
 
@@ -230,7 +232,7 @@ Meteor.methods({
     // remove all steps that further `newWorkflowStatus` and itself
     const resetedWorkflow = workflow.slice(0, resetToIndex);
 
-    return ReactionCore.Collections.Cart.update(cart._id, {
+    return Cart.update(cart._id, {
       $set: {
         "workflow.status": newWorkflowStatus,
         "workflow.workflow": resetedWorkflow
@@ -253,18 +255,18 @@ Meteor.methods({
    * @summary Update the order workflow
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
-   * @param  {Order} order - ReactionCore.Schemas.Order, an order object
+   * @param  {Order} order - Schemas.Order, an order object
    * @return {Boolean} true if update was successful
    */
   "workflow/pushOrderWorkflow": function (workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object); // TODO: Validatate as ReactionCore.Schemas.Order
+    check(order, Object); // TODO: Validatate as Schemas.Order
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
 
-    const result = ReactionCore.Collections.Orders.update({
+    const result = Orders.update({
       _id: order._id
     }, {
       $set: {
@@ -287,7 +289,7 @@ Meteor.methods({
    * @summary Pull a previous order status
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
-   * @param  {Order} order - ReactionCore.Schemas.Order, an order object
+   * @param  {Order} order - Schemas.Order, an order object
    * @return {Boolean} true if update was successful
    */
   "workflow/pullOrderWorkflow": function (workflow, status, order) {
@@ -296,7 +298,7 @@ Meteor.methods({
     check(order, Object);
     this.unblock();
 
-    const result = ReactionCore.Collections.Orders.update({
+    const result = Orders.update({
       _id: order._id
     }, {
       $set: {
@@ -329,7 +331,7 @@ Meteor.methods({
       return item;
     });
 
-    const result = ReactionCore.Collections.Orders.update({
+    const result = Orders.update({
       _id: order._id
     }, {
       $set: {

@@ -1,6 +1,8 @@
+import { Packages } from "/lib/collections";
+
 Template.reactionAnalyticsSettings.helpers({
   packageData() {
-    return ReactionCore.Collections.Packages.findOne({
+    return Packages.findOne({
       name: "reaction-analytics"
     });
   },

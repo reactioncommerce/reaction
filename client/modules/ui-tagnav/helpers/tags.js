@@ -1,3 +1,5 @@
+import { Tags } from "/lib/collections";
+
 /**
  * Reaction TagNav shared helpers
  * @type {Object}
@@ -11,7 +13,7 @@ const TagHelpers = {
 
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
-      const tags = ReactionCore.Collections.Tags.find({
+      const tags = Tags.find({
         isTopLevel: false,
         _id: {
           $in: parentTag.relatedTagIds
@@ -37,7 +39,7 @@ const TagHelpers = {
   getTags() {
     let tags = [];
 
-    tags = ReactionCore.Collections.Tags.find({
+    tags = Tags.find({
       isTopLevel: true
     }, {
       sort: {
@@ -100,7 +102,7 @@ const TagHelpers = {
   moveTagToNewParent(movedTagId, toListId, toIndex, ofList) {
     if (movedTagId) {
       if (toListId) {
-        const result = ReactionCore.Collections.Tags.update(toListId,
+        const result = Tags.update(toListId,
           {
             $addToSet: {
               relatedTagIds: movedTagId
@@ -111,7 +113,7 @@ const TagHelpers = {
         return result;
       }
 
-      const result = ReactionCore.Collections.Tags.update(movedTagId,
+      const result = Tags.update(movedTagId,
         {
           $set: {
             isTopLevel: true
@@ -128,7 +130,7 @@ const TagHelpers = {
       if (_.isEmpty(parentTag)) {
         // Top level tags
         for (let tagId of tagIds) {
-          ReactionCore.Collections.Tags.update(tagId, {
+          Tags.update(tagId, {
             $set: {
               position: tagIds.indexOf(tagId)
             }
@@ -136,7 +138,7 @@ const TagHelpers = {
         }
       } else {
         // Sub tags
-        ReactionCore.Collections.Tags.update(parentTag._id, {
+        Tags.update(parentTag._id, {
           $set: {
             relatedTagIds: _.compact(tagIds)
           }
@@ -147,7 +149,7 @@ const TagHelpers = {
 
   removeTag(tag, parentTag) {
     if (_.isEmpty(parentTag) === false) {
-      ReactionCore.Collections.Tags.update(parentTag._id,
+      Tags.update(parentTag._id,
         {
           $pullAll: {
             relatedTagIds: [tag._id]
@@ -155,7 +157,7 @@ const TagHelpers = {
         }
       );
     } else if (tag.isTopLevel === true) {
-      ReactionCore.Collections.Tags.update(tag._id,
+      Tags.update(tag._id,
         {
           $set: {
             isTopLevel: false

@@ -1,3 +1,5 @@
+import { Translations } from "/lib/collections";
+
 /**
  * Reaction Shop Methods
  */
@@ -12,7 +14,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     const shopId = ReactionCore.getShopId();
-    ReactionCore.Collections.Translations.remove({
+    Translations.remove({
       shopId: shopId
     });
     loadCoreTranslations();
@@ -47,6 +49,6 @@ Meteor.methods({
     `;
 
     const setTran = `"translation.${namespace}.${key}": "${message}"`;
-    ReactionCore.Collections.Translations.update({tran}, {setTran});
+    Translations.update({tran}, {setTran});
   }
 });

@@ -1,3 +1,5 @@
+import { Media, Orders } from "/lib/collections";
+
 require("money");
 import $ from "jquery";
 require("autonumeric");
@@ -15,7 +17,7 @@ Template.coreOrderShippingInvoice.onCreated(() => {
 
   function getOrder(orderId) {
     template.orderDep.depend();
-    return ReactionCore.Collections.Orders.findOne(orderId);
+    return Orders.findOne(orderId);
   }
 
   Tracker.autorun(() => {
@@ -272,7 +274,7 @@ Template.coreOrderShippingInvoice.helpers({
       variantId = variantObjectOrId._id;
     }
 
-    let defaultImage = ReactionCore.Collections.Media.findOne({
+    let defaultImage = Media.findOne({
       "metadata.variantId": variantId,
       "metadata.priority": 0
     });

@@ -1,3 +1,5 @@
+import { Tags } from "/lib/collections";
+
 /**
  * tags
  */
@@ -6,7 +8,7 @@ Meteor.publish("Tags", function () {
   if (!shopId) {
     return this.ready();
   }
-  return ReactionCore.Collections.Tags.find({
+  return Tags.find({
     shopId: shopId
   });
 });

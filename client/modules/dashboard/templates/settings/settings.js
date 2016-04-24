@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  * Helpers for Settings Header (actionView)
  */
@@ -16,7 +18,7 @@ Template.settingsHeader.helpers({
    * @return {Object} Registry entry for item
    */
   thisApp() {
-    let reactionApp = ReactionCore.Collections.Packages.findOne({
+    let reactionApp = Packages.findOne({
       "registry.provides": "settings",
       "registry.route": ReactionRouter.getRouteName()
     }, {

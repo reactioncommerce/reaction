@@ -1,3 +1,5 @@
+import { Cart } from "/lib/collections";
+
 /* Product Detail Page Specs*/
 describe("Cart", function () {
   beforeEach(function (done) {
@@ -9,7 +11,7 @@ describe("Cart", function () {
   describe("Add to cart", function () {
     // empty cart items before each test
     afterEach(function (done) {
-      const cart = ReactionCore.Collections.Cart.findOne();
+      const cart = Cart.findOne();
       // we manually remove all items from cart
       cart.items && cart.items.forEach((item) => {
         Meteor.call("cart/removeFromCart", cart._id, item);
@@ -31,7 +33,7 @@ describe("Cart", function () {
       let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");
       // needs client stubs
-      /* let spyOnCart = spyOn(ReactionCore.Collections.Cart, "update").and.returnValue();*/
+      /* let spyOnCart = spyOn(Cart, "update").and.returnValue();*/
 
       let spyOnOptionEvent = spyOnEvent(option1, "click");
       let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
