@@ -1,6 +1,7 @@
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
 import { $ } from "meteor/jquery";
+import { ReactionProduct } from "/lib/api";
 import { Tags } from "/lib/collections";
 
 // load modules

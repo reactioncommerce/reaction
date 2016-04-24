@@ -1,3 +1,5 @@
+import { ReactionProduct } from "/lib/api";
+
 /**
  * variantList helpers
  */

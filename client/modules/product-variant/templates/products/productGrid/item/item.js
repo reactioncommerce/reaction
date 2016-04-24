@@ -1,4 +1,5 @@
 import { $ } from "meteor/jquery";
+import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
 // load modules

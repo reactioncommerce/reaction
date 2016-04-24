@@ -1,3 +1,6 @@
+import { ReactionProduct } from "/lib/api";
+import { Products, Tags } from "/lib/collections";
+
 /**
  * productGrid helpers
  */

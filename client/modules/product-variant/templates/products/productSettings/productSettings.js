@@ -1,6 +1,7 @@
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
-import { Media } from "/lib/collections";
+import { ReactionProduct } from "/lib/api";
+import { Media, Products } from "/lib/collections";
 
 Template.productSettings.onCreated(function () {
   this.state = new ReactiveDict();
@@ -16,7 +17,7 @@ Template.productSettings.onCreated(function () {
         return product._id;
       });
 
-      const products = Collections.Products.find({
+      const products = Products.find({
         _id: {
           $in: productIds
         }

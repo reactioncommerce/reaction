@@ -1,4 +1,6 @@
-const $ = require("jquery");
+import { $ } from "meteor/jquery";
+import { ReactionProduct } from "/lib/api";
+
 // load modules
 require("jquery-ui/sortable");
 

@@ -1,3 +1,4 @@
+import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
 /**
