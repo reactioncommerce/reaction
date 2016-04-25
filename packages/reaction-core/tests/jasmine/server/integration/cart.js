@@ -1,3 +1,5 @@
+import * as Collections from "/lib/collections";
+
 /* eslint dot-notation: 0 */
 describe("cart methods", function () {
   let user = Factory.create("user");

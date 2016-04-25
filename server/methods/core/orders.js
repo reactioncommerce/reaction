@@ -1,6 +1,6 @@
 import Future from "fibers/future";
 import { Cart, Orders, Products, Shops } from "/lib/collections";
-import Schemas from "/lib/collections/schemas";
+import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/server/api";
 
 /**
@@ -76,7 +76,7 @@ Meteor.methods({
 
       const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
       if (result === 1) {
-        return ReactionCore.Collections.Orders.update({
+        return Orders.update({
           "_id": order._id,
           "shipping._id": shipment._id
         }, {
@@ -194,7 +194,7 @@ Meteor.methods({
     check(order, Object);
     check(shipment, Object);
 
-    if (!ReactionCore.hasPermission("orders")) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 

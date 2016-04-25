@@ -1,4 +1,4 @@
-import Collections from "/lib/collections";
+import * as Collections from "/lib/collections";
 
 Template.registerHelper("getGravatar", function (currentUser, size) {
   const options = {

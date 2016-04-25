@@ -1,5 +1,5 @@
 import { Inventory } from "/lib/collections";
-import Schemas from "/lib/collections/schemas";
+import * as Schemas from "/lib/collections/schemas";
 
 // Disabled for now, needs more testing.
 
