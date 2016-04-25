@@ -7,7 +7,7 @@ class Button extends React.Component {
   props = {
     toggle: false,
     active: false
-  };
+  }
 
   renderOnStateIcon() {
     if (this.props.onIcon) {
