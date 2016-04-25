@@ -41,9 +41,9 @@ const getRouteName = (packageName, registryItem) => {
 
 ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
   const defaultRoles = ["owner", "admin", "guest"];
-  var packageRoles = defaultRoles.slice();
+  let packageRoles = defaultRoles.slice();
   packageRoles.push(pkgName);
-  var globalRoles = packageRoles.slice();
+  let globalRoles = packageRoles.slice();
 
   if (registry) {
       // for each registry item define and push roles
@@ -69,7 +69,7 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
   }
   // only unique roles
   packageRoles = _.uniq(packageRoles);
-  //globalRoles = _.uniq(globalRoles);
+  // globalRoles = _.uniq(globalRoles);
   const defaultOwnerRoles = ["owner"];
   // get existing shop owners to add new roles to
   const owners = [];
