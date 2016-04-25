@@ -1,5 +1,5 @@
 import { Packages, Shops, Translations } from "/lib/collections";
-import Schemas from "/lib/collections/schemas";
+import * as Schemas from "/lib/collections/schemas";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support

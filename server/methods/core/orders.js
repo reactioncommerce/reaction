@@ -1,6 +1,6 @@
 import Future from "fibers/future";
 import { Cart, Orders, Products, Shops } from "/lib/collections";
-import Schemas from "/lib/collections/schemas";
+import * as Schemas from "/lib/collections/schemas";
 
 /**
  * Reaction Order Methods

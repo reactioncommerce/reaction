@@ -1,4 +1,4 @@
-import Collections from "/lib/collections";
+import * as Collections from "/lib/collections";
 
 /**
  * accounts

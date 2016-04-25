@@ -1,5 +1,5 @@
 import { Cart } from "/lib/collections";
-import Schemas from "/lib/collections/schemas";
+import * as Schemas from "/lib/collections/schemas";
 
 //
 // Client Cart Methods

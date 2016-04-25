@@ -1,5 +1,5 @@
 import { Countries } from "/client/collections";
-import Collections from "/lib/collections";
+import * as Collections from "/lib/collections";
 
 Template.addressBookForm.helpers({
 
