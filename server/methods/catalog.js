@@ -1,3 +1,4 @@
+import { Catalog } from "/lib/api";
 import { Media, Products, Tags } from "/lib/collections";
 import { Logger } from "/server/api";
 
@@ -179,9 +180,9 @@ function denormalize(id, field) {
   const doc = Products.findOne(id);
   let variants;
   if (doc.type === "simple") {
-    variants = ReactionCore.getTopVariants(id);
+    variants = Catalog.getTopVariants(id);
   } else if (doc.type === "variant" && doc.ancestors.length === 1) {
-    variants = ReactionCore.getVariants(id);
+    variants = Catalog.getVariants(id);
   }
   let update = {};
 
@@ -201,7 +202,7 @@ function denormalize(id, field) {
     });
     break;
   default: // "price" is object with range, min, max
-    const priceObject = ReactionCore.getProductPriceRange(id);
+    const priceObject = Catalog.getProductPriceRange(id);
     Object.assign(update, {
       price: priceObject
     });
@@ -225,7 +226,7 @@ function denormalize(id, field) {
 function isSoldOut(variants) {
   return variants.every(variant => {
     if (variant.inventoryManagement && variant.inventoryPolicy) {
-      return ReactionCore.getVariantQuantity(variant) === 0;
+      return Catalog.getVariantQuantity(variant) === 0;
     }
     return false;
   });
@@ -240,7 +241,7 @@ function isSoldOut(variants) {
  */
 function isLowQuantity(variants) {
   return variants.some(variant => {
-    const quantity = ReactionCore.getVariantQuantity(variant);
+    const quantity = Catalog.getVariantQuantity(variant);
     // we need to keep an eye on `inventoryPolicy` too and qty > 0
     if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
       return quantity <= variant.lowInventoryWarningThreshold;
@@ -1182,7 +1183,7 @@ Meteor.methods({
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
           if (variant.ancestors.length === 1 &&
-            !ReactionCore.getVariants(variant._id, "variant").length ||
+            !Catalog.getVariants(variant._id, "variant").length ||
             variant.ancestors.length !== 1) {
             if (!(typeof variant.price === "number" && variant.price > 0)) {
               variantValidator = false;
