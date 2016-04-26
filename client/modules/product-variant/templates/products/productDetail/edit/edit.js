@@ -1,4 +1,5 @@
 import autosize from "autosize";
+import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 
 /**
@@ -9,7 +10,7 @@ Template.productDetailEdit.helpers({
   i18nPlaceholder: function () {
     let i18nKey = `productDetailEdit.${this.field}`;
     if (i18next.t(i18nKey) === i18nKey) {
-      ReactionCore.Log.info(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
+      Logger.info(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
     } else {
       return i18next.t(i18nKey);
     }

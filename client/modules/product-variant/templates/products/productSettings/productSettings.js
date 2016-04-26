@@ -1,5 +1,6 @@
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
+import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";
 
@@ -140,7 +141,7 @@ Template.productSettings.events({
       Meteor.call("products/updateProductPosition", product._id, positions, tag,
         (error) => {
           if (error) {
-            ReactionCore.Log.warn(error);
+            Logger.warn(error);
             throw new Meteor.Error(403, error);
           }
         }

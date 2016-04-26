@@ -1,3 +1,4 @@
+import Logger from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
 
 /**
@@ -225,118 +226,10 @@ _.extend(ReactionCore, {
       });
       return settingsData;
     }
-    ReactionCore.Log.debug("getRegistryForCurrentRoute not found", template, provides);
+    Logger.debug("getRegistryForCurrentRoute not found", template, provides);
     return {};
   }
 
-});
-
-/*
- * configure bunyan logging module for reaction client
- * See: https://github.com/trentm/node-bunyan#levels
- * client we'll cofigure WARN as default
- */
-let isDebug = "WARN";
-
-if (typeof Meteor.settings === "object" &&
-  typeof Meteor.settings.public === "object" && Meteor.settings.public.debug) {
-  isDebug = Meteor.settings.public.debug;
-}
-
-const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
-
-if (typeof isDebug !== "boolean" && typeof isDebug !== "undefined") {
-  isDebug = isDebug.toUpperCase();
-}
-
-if (!_.contains(levels, isDebug)) {
-  isDebug = "INFO";
-}
-
-ReactionCore.Log = bunyan.createLogger({
-  name: "core-client"
-});
-
-ReactionCore.Log.level(isDebug);
-
-/*
- * registerLoginHandler
- * method to create anonymous users
- */
-
-Accounts.loginWithAnonymous = function (anonymous, callback) {
-  // We need to be sure that every user will work inside a session. Sometimes
-  // session could be destroyed, for example, by clearing browser's cache. In
-  // that case we need to take care about creating new session before new
-  // user or anonymous will be created/logged in.
-  // The problem here - looks like where is no way to track localStorage:
-  // `amplify.store("ReactionCore.session")` itself. That's why we need to use
-  // another way: `accounts` package uses `setTimeout` for monitoring connection
-  // Accounts.callLoginMethod will be called after clearing cache. We could
-  // latch on this computations by running extra check here.
-  if (typeof amplify.store("ReactionCore.session") !== "string") {
-    const newSession = Random.id();
-    amplify.store("ReactionCore.session", newSession);
-    Session.set("sessionId", newSession);
-  }
-  Accounts.callLoginMethod({
-    methodArguments: [{
-      anonymous: true,
-      sessionId: Session.get("sessionId")
-    }],
-    userCallback: callback
-  });
-};
-
-// @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
-let hidden;
-// let visibilityState; // keep this for a some case
-if (typeof document.hidden !== "undefined") {
-  hidden = "hidden";
-  // visibilityState = "visibilityState";
-} else if (typeof document.mozHidden !== "undefined") {
-  hidden = "mozHidden";
-  // visibilityState = "mozVisibilityState";
-} else if (typeof document.msHidden !== "undefined") {
-  hidden = "msHidden";
-  // visibilityState = "msVisibilityState";
-} else if (typeof document.webkitHidden !== "undefined") {
-  hidden = "webkitHidden";
-  // visibilityState = "webkitVisibilityState";
-}
-
-/**
- *  Startup Reaction
- *  Init Reaction client
- */
-Meteor.startup(function () {
-  // warn on insecure exporting of PackageRegistry settings
-  if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
-    let msg = "PackageRegistry: Insecure export to client.";
-    ReactionCore.Log.warn(msg, PackageRegistry);
-  }
-  // init the core
-  ReactionCore.init();
-  // initialize anonymous guest users
-  return Tracker.autorun(function () {
-    const userId = Meteor.userId();
-    // TODO: maybe `visibilityState` will be better here
-    let isHidden;
-    let guestAreAllowed;
-    let loggingIn;
-    let sessionId;
-    Tracker.nonreactive(function () {
-      guestAreAllowed = ReactionCore.allowGuestCheckout();
-      isHidden = document[hidden];
-      loggingIn = Accounts.loggingIn();
-      sessionId = amplify.store("ReactionCore.session");
-    });
-    if (guestAreAllowed && !userId) {
-      if (!isHidden && !loggingIn || typeof sessionId !== "string") {
-        Accounts.loginWithAnonymous();
-      }
-    }
-  });
 });
 
 /**
