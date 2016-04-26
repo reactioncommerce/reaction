@@ -1,6 +1,5 @@
-"use strict";
-const Sortable = ReactionUI.Lib.Sortable;
-const TagHelpers = ReactionUI.TagNav.Helpers;
+import Sortable from "sortable";
+import { TagHelpers } from "client/helpers/ui-tagnav/helpers";
 
 const NavbarStates = {
   Orientation: "stateNavbarOrientation",
