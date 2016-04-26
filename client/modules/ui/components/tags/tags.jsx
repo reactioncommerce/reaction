@@ -1,6 +1,6 @@
 // /* eslint no-extra-parens: 0 */
 // import React from "react";
-//
+// import { PropTypes } from "/lib/api";
 // const Tag = ReactionUI.Components.Tag;
 // const classnames = ReactionUI.Lib.classnames;
 // const Sortable = ReactionUI.Lib.Sortable;
@@ -249,11 +249,11 @@
 //   onTagSort: React.PropTypes.func,
 //   onTagUpdate: React.PropTypes.func,
 //
-//   parentTag: ReactionCore.PropTypes.Tag,
+//   parentTag: PropTypes.Tag,
 //   placeholder: React.PropTypes.string,
 //   showBookmark: React.PropTypes.bool,
-//   // tag: ReactionCore.PropTypes.Tag
-//   tags: ReactionCore.PropTypes.arrayOfTags
+//   // tag: PropTypes.Tag
+//   tags: PropTypes.arrayOfTags
 // };
 //
 // // Export

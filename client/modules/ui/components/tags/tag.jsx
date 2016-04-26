@@ -1,4 +1,5 @@
 // import React from "react";
+// import { PropTypes } from "/lib/api";
 // import { Tags } from "/lib/collections";
 //
 // /* eslint no-extra-parens: 0 */
@@ -198,10 +199,10 @@
 //   onTagRemove: React.PropTypes.func,
 //   onTagUpdate: React.PropTypes.func,
 //
-//   parentTag: ReactionCore.PropTypes.Tag,
+//   parentTag: PropTypes.Tag,
 //   placeholder: React.PropTypes.string,
 //   showBookmark: React.PropTypes.bool,
-//   tag: ReactionCore.PropTypes.Tag
+//   tag: PropTypes.Tag
 // };
 //
 // ReactionUI.Components.Tag = Tag;
