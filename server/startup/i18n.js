@@ -1,4 +1,5 @@
-const fs = Npm.require("fs");
+import fs from "fs";
+import { Hooks, Logger } from "/server/api";
 
 // taken from here: http://stackoverflow.com/a/32749571
 const directoryExists = dirPath => {
@@ -22,7 +23,7 @@ loadCoreTranslations = () => {
         if (err) throw new Meteor.Error("No translations found for import.", err);
         for (let file of files) {
           if (file.indexOf("json")) {
-            ReactionCore.Log.debug(`Importing Translations from ${file}`);
+            Logger.debug(`Importing Translations from ${file}`);
             let json = fs.readFileSync(i18nFolder + file, "utf8");
             ReactionImport.process(json, ["i18n"], ReactionImport.translation);
           }
@@ -32,11 +33,11 @@ loadCoreTranslations = () => {
   });
 };
 
-/**
- * Hook to setup core i18n imports during ReactionCore init
- */
-if (ReactionCore && ReactionCore.Hooks) {
-  ReactionCore.Hooks.Events.add("onCoreInit", () => {
+export default function () {
+  /**
+   * Hook to setup core i18n imports during ReactionCore init
+   */
+  Hooks.Events.add("onCoreInit", () => {
     loadCoreTranslations();
   });
 }

@@ -1,4 +1,6 @@
 import * as Collections from "/lib/collections";
+import Hooks from "./hooks";
+import Logger from "./logger";
 
 /**
  * @file Exposes the ReactionImport object implementing methods for bulk imports.
@@ -406,7 +408,7 @@ ReactionImport.object = function (collection, key, object) {
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
   // hooks for additional import manipulation.
-  const importObject = ReactionCore.Hooks.Events.run(`onImport${this._name(collection)}`, object);
+  const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
 
   // Clone object for cleaning
   let cleanedObject = Object.assign({}, importObject);
