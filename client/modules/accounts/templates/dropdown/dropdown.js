@@ -1,3 +1,4 @@
+import Logger from "/client/modules/logger";
 import { Tags } from "/lib/collections";
 
 Template.loginDropdown.events({
@@ -24,7 +25,7 @@ Template.loginDropdown.events({
     // Meteor.logoutOtherClients();
     Meteor.logout((error) => {
       if (error) {
-        ReactionCore.Log.warn("Failed to logout.", error);
+        Logger.warn("Failed to logout.", error);
       }
       // go home on logout
       ReactionSubscriptions.reset();

@@ -1,4 +1,6 @@
 import accounting from "accounting-js";
+import Logger from "/client/modules/logger";
+
 /**
  * i18n
  * see: http://i18next.com/
@@ -11,7 +13,7 @@ import accounting from "accounting-js";
  */
 Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
   if (!i18nKey || typeof i18nMessage !== "string") {
-    ReactionCore.Log.info("i18n key string required to translate", i18nKey, i18nMessage);
+    Logger.info("i18n key string required to translate", i18nKey, i18nMessage);
     return "";
   }
   check(i18nKey, String);
@@ -77,7 +79,7 @@ Template.registerHelper("formatPrice", function (formatPrice) {
       price = _formatPrice(price, originalPrice, prices[i],
         currentPrice, Locale.currency, i, len);
     } catch (error) {
-      ReactionCore.Log.debug("currency error, fallback to shop currency");
+      Logger.debug("currency error, fallback to shop currency");
       price = _formatPrice(price, originalPrice, prices[i],
         currentPrice, Locale.shopCurrency, i, len);
     }
@@ -105,7 +107,7 @@ ReactionCore.Currency.formatNumber = function (currentPrice) {
     return accounting.formatMoney(price, format);
   }
 
-  ReactionCore.Log.debug("currency error, fallback to shop currency");
+  Logger.debug("currency error, fallback to shop currency");
   return accounting.formatMoney(currentPrice, shopFormat);
 };
 

@@ -1,3 +1,4 @@
+import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
@@ -118,7 +119,7 @@ Template.productSettings.events({
       Meteor.call("products/updateProductPosition", product._id, positions, tag,
         (error, result) => {
           if (error) {
-            ReactionCore.Log.warn(error);
+            Logger.warn(error);
             throw new Meteor.Error(403, error);
           }
           if (result) {

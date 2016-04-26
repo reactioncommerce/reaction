@@ -1,4 +1,5 @@
 import { $ } from "meteor/jquery";
+import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Tags } from "/lib/collections";
 
@@ -168,7 +169,7 @@ Template.productDetail.events({
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity,
             function (error) {
               if (error) {
-                ReactionCore.Log.error("Failed to add to cart.", error);
+                Logger.error("Failed to add to cart.", error);
                 return error;
               }
             }

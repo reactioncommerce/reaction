@@ -1,3 +1,4 @@
+import Logger from "/client/modules/logger";
 import * as Collections from "/lib/collections";
 
 /**
@@ -29,7 +30,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   if (layout) {
     layoutConfigCollection = layout.collection || "Cart";
   } else {
-    ReactionCore.Log.error("Shop Layout Undefined");
+    Logger.error("Shop Layout Undefined");
     layoutConfigCollection = "Cart";
   }
 

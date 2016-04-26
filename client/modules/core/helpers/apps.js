@@ -1,3 +1,4 @@
+import Logger from "/client/modules/logger";
 import { Packages } from "/lib/collections";
 
 /**
@@ -189,7 +190,7 @@ function getReactionApps(optionHash) {
 
   // enable debug to find missing reaction apps
   if (reactionApps.length === 0) {
-    ReactionCore.Log.info("Failed to return matching reaction apps for", optionHash);
+    Logger.info("Failed to return matching reaction apps for", optionHash);
   }
   // we're done.
   return reactionApps;

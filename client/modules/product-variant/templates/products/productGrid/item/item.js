@@ -1,4 +1,5 @@
 import { $ } from "meteor/jquery";
+import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
@@ -146,7 +147,7 @@ Template.productGridItems.events({
     };
     Meteor.call("products/updateProductPosition", this._id, position, tag, error => {
       if (error) {
-        ReactionCore.Log.warn(error);
+        Logger.warn(error);
         throw new Meteor.Error(403, error);
       }
     });
@@ -182,7 +183,7 @@ Template.productGridItems.onRendered(function () {
           Meteor.call("products/updateProductPosition", productId, position, tag,
             error => {
               if (error) {
-                ReactionCore.Log.warn(error);
+                Logger.warn(error);
                 throw new Meteor.Error(403, error);
               }
             });
