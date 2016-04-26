@@ -1,4 +1,5 @@
 import { Products } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  * product detail publication
@@ -8,7 +9,7 @@ import { Products } from "/lib/collections";
 Meteor.publish("Product", function (productId) {
   check(productId, Match.OptionalOrNull(String));
   if (!productId) {
-    ReactionCore.Log.info("ignoring null request on Product subscription");
+    Logger.info("ignoring null request on Product subscription");
     return this.ready();
   }
   let _id;

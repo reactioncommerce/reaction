@@ -1,4 +1,5 @@
 import { Packages } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  * meteor-geocoder
@@ -126,7 +127,7 @@ GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
       geoAddress = Meteor.wrapAsync(gi)(geoAddress);
       return geoAddress.data;
     } catch (error) {
-      ReactionCore.Log.warn("shop/getLocale geoip lookup failure", error);
+      Logger.warn("shop/getLocale geoip lookup failure", error);
       return {};
     }
   }

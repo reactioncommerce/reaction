@@ -27,7 +27,7 @@ if (process.env.VELOCITY_CI === "1") {
   });
 }
 
-export const Logger = bunyan.createLogger({
+const Logger = bunyan.createLogger({
   name: "Reaction",
   stream: isDebug !== "DEBUG" ? formatOut : process.stdout,
   level: "debug"
@@ -35,3 +35,5 @@ export const Logger = bunyan.createLogger({
 
 // set logging level
 Logger.level(isDebug);
+
+export default Logger;

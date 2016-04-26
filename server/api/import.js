@@ -128,25 +128,25 @@ ReactionImport.commit = function (collection) {
         message += "Modified " + nImported + (nImported === 1 ?
           " document" : " documents");
         message += " while importing " + nTouched + " to " + name;
-        ReactionCore.Log.info(message);
+        Logger.info(message);
       }
       if (nRemoved) {
         let message = "";
         message += "Removed " + nRemoved + (nRemoved === 1 ? " document" :
           " documents");
         message += " from " + name;
-        ReactionCore.Log.info(message);
+        Logger.info(message);
       }
       // Log any errors returned.
       let message = "";
       message += "Error while importing to " + name;
       let writeErrors = result.getWriteErrors();
       for (let i = 0; i < writeErrors.length; i++) {
-        ReactionCore.Log.warn(message + ": " + writeErrors[i].errmsg);
+        Logger.warn(message + ": " + writeErrors[i].errmsg);
       }
       let writeConcernError = result.getWriteConcernError();
       if (writeConcernError) {
-        ReactionCore.Log.warn(message + ": " + writeConcernError.errmsg);
+        Logger.warn(message + ": " + writeConcernError.errmsg);
       }
     });
     // Reset the buffer.

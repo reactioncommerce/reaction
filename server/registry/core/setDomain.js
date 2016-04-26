@@ -1,4 +1,5 @@
 import { Shops } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  * getDomain
@@ -24,12 +25,12 @@ ReactionRegistry.setDomain = function () {
   try {
     currentDomain = Shops.findOne().domains[0];
   } catch (_error) {
-    ReactionCore.Log.error("Failed to determine default shop.", _error);
+    Logger.error("Failed to determine default shop.", _error);
   }
   // if the server domain changes, update shop
   let domain = ReactionRegistry.getRegistryDomain();
   if (currentDomain && currentDomain !== domain) {
-    ReactionCore.Log.info("Updating domain to " + domain);
+    Logger.info("Updating domain to " + domain);
     Shops.update({
       domains: currentDomain
     }, {

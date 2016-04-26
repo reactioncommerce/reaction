@@ -1,4 +1,5 @@
 import { Shops } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  *  ReactionRegistry.setShopName
@@ -15,7 +16,7 @@ ReactionRegistry.setShopName = function (shop) {
     if (!!Shops.findOne({
       name: shopName
     })) {
-      ReactionCore.Log.info(`Default shop name ${shopName} already used`);
+      Logger.info(`Default shop name ${shopName} already used`);
     } else {
       // update the shop name with the REACTION_SHOP_NAME env var
       try {
@@ -27,7 +28,7 @@ ReactionRegistry.setShopName = function (shop) {
           }
         });
       } catch (err) {
-        ReactionCore.Log.error("Failed to update shop name", err);
+        Logger.error("Failed to update shop name", err);
       }
     }
   }

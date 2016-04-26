@@ -9,21 +9,21 @@ import { Packages, Shops } from "/lib/collections";
  * @returns {String} return userId
  */
 ReactionRegistry.createDefaultAdminUser = function () {
-  ReactionCore.Log.info("Starting createDefaultAdminUser");
+  Logger.info("Starting createDefaultAdminUser");
   let options = {};
   const domain = ReactionRegistry.getRegistryDomain();
   const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
   let accountId;
 
   while (!ReactionCore.getShopId()) {
-    ReactionCore.Log.info("No shopId, waiting one second...");
+    Logger.info("No shopId, waiting one second...");
     Meteor._sleepForMs(1000);
   }
   const shopId = ReactionCore.getShopId();
 
   // if an admin user has already been created, we'll exit
   if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
-    ReactionCore.Log.info("Not creating default admin user, already exists");
+    Logger.info("Not creating default admin user, already exists");
     return ""; // this default admin has already been created for this shop.
   }
 
@@ -48,7 +48,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
         8);
       options.email = Meteor.settings.reaction.REACTION_EMAIL || Random.id(8)
         .toLowerCase() + "@" + domain;
-      ReactionCore.Log.info("Using meteor --settings to create admin user");
+      Logger.info("Using meteor --settings to create admin user");
     }
   }
 
@@ -99,7 +99,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
       // are caught, but admin isn't verified.
       Accounts.sendVerificationEmail(accountId);
     } catch (error) {
-      ReactionCore.Log.warn(
+      Logger.warn(
         "Unable to send admin account verification email.", error);
     }
   }
@@ -124,7 +124,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
   //  notify user that admin was created account email should print on console
   //
 
-  ReactionCore.Log.warn(
+  Logger.warn(
     `\n *********************************
       \n  IMPORTANT! DEFAULT ADMIN INFO
       \n  EMAIL/LOGIN: ${options.email}

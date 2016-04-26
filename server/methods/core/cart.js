@@ -1,5 +1,6 @@
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { Logger } from "/server/api";
 
 /**
  * quantityProcessing
@@ -17,7 +18,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
   const MAX = variant.inventoryQuantity || Infinity;
 
   if (MIN > MAX) {
-    ReactionCore.Log.info(`productId: ${product._id}, variantId ${variant._id
+    Logger.info(`productId: ${product._id}, variantId ${variant._id
       }: inventoryQuantity lower then minimum order`);
     throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
       }: inventoryQuantity lower then minimum order`);
@@ -406,7 +407,7 @@ Meteor.methods({
       userId: userId
     });
     if (!cart) {
-      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${ this.userId }`);
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
@@ -423,7 +424,7 @@ Meteor.methods({
 
     // extra check of item exists
     if (typeof cartItem !== "object") {
-      ReactionCore.Log.error(`Unable to find an item: ${itemId
+      Logger.error(`Unable to find an item: ${itemId
         } within the cart: ${cart._id}`);
       throw new Meteor.Error(404, "Cart item not found.",
         "Unable to find an item with such id within you cart.");
@@ -445,12 +446,12 @@ Meteor.methods({
         }
       }, (error, result) => {
         if (error) {
-          ReactionCore.Log.warn("error removing from cart", ReactionCore
+          Logger.warn("error removing from cart", ReactionCore
             .Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
         if (result) {
-          ReactionCore.Log.info(`cart: deleted cart item variant id ${
+          Logger.info(`cart: deleted cart item variant id ${
             cartItem.variants._id}`);
           return result;
         }
@@ -468,12 +469,12 @@ Meteor.methods({
       }
     }, (error, result) => {
       if (error) {
-        ReactionCore.Log.warn("error removing from cart", ReactionCore
+        Logger.warn("error removing from cart", ReactionCore
           .Collections.Cart.simpleSchema().namedContext().invalidKeys());
         return error;
       }
       if (result) {
-        ReactionCore.Log.info(`cart: removed variant ${
+        Logger.info(`cart: removed variant ${
           cartItem._id} quantity of ${quantity}`);
         return result;
       }
@@ -501,7 +502,7 @@ Meteor.methods({
     const order = Object.assign({}, cart);
     const sessionId = cart.sessionId;
 
-    ReactionCore.Log.info("cart/copyCartToOrder", cartId);
+    Logger.info("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
 
@@ -595,7 +596,7 @@ Meteor.methods({
 
     // insert new reaction order
     let orderId = Collections.Orders.insert(order);
-    ReactionCore.Log.info("Created orderId", orderId);
+    Logger.info("Created orderId", orderId);
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
@@ -620,7 +621,7 @@ Meteor.methods({
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
           "coreCheckoutShipping");
       }
-      ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
+      Logger.info("Transitioned cart " + cartId + " to order " +
         orderId);
       Meteor.call("orders/sendNotification",
         Collections.Orders.findOne(orderId));
@@ -647,7 +648,7 @@ Meteor.methods({
       userId: Meteor.userId()
     });
     if (!cart) {
-      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${ this.userId }`);
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
@@ -683,7 +684,7 @@ Meteor.methods({
     return Collections.Cart.update(selector, update, function (
       error) {
       if (error) {
-        ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`,
+        Logger.warn(`Error adding rates to cart ${cartId}`,
           error);
         return error;
       }
@@ -709,7 +710,7 @@ Meteor.methods({
       userId: this.userId
     });
     if (!cart) {
-      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${ this.userId }`);
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
@@ -745,7 +746,7 @@ Meteor.methods({
     return Collections.Cart.update(selector, update, function (
       error) {
       if (error) {
-        ReactionCore.Log.warn(error);
+        Logger.warn(error);
         return error;
       }
       // refresh shipping quotes
@@ -789,7 +790,7 @@ Meteor.methods({
       userId: this.userId
     });
     if (!cart) {
-      ReactionCore.Log.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${ this.userId }`);
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
@@ -946,7 +947,7 @@ Meteor.methods({
     return Collections.Cart.update(selector, update,
       function (error, result) {
         if (error) {
-          ReactionCore.Log.warn(error);
+          Logger.warn(error);
           throw new Meteor.Error("An error occurred saving the order",
             error);
         }

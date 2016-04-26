@@ -1,3 +1,5 @@
+import Logger from "./logger";
+
 /**
  * JobCollection Workers
  */
@@ -12,7 +14,7 @@ const fetchCurrencyRatesQueue = Jobs.processJobs(
     Meteor.call("shop/fetchCurrencyRate", error => {
       if (error) {
         if (error.error === "notConfigured") {
-          ReactionCore.Log.warn(error.message);
+          Logger.warn(error.message);
           job.done(error.message, { repeatId: true });
         } else {
           job.done(error.toString(), { repeatId: true });
@@ -25,7 +27,7 @@ const fetchCurrencyRatesQueue = Jobs.processJobs(
         // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
         // -job-will-be-automatically-re-run-by-the-job-collection
         const success = "Latest exchange rates was fetched successfully.";
-        ReactionCore.Log.info(success);
+        Logger.info(success);
         job.done(success, { repeatId: true });
       }
     });
@@ -44,17 +46,17 @@ const flushCurrencyRatesQueue = Jobs.processJobs(
     Meteor.call("shop/flushCurrencyRate", error => {
       if (error) {
         if (error.error === "notExists") {
-          ReactionCore.Log.warn(error.message);
+          Logger.warn(error.message);
           job.done(error.message, { repeatId: true });
         } else {
-          // ReactionCore.Log.error(error.toString());
+          // Logger.error(error.toString());
           job.done(error.toString(), { repeatId: true });
         }
       } else {
         // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
         // -job-will-be-automatically-re-run-by-the-job-collection
         const success = "Too old exchange rates was flushed.";
-        ReactionCore.Log.info(success);
+        Logger.info(success);
         job.done(success, { repeatId: true });
       }
     });

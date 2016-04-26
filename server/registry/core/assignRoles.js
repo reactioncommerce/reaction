@@ -1,3 +1,5 @@
+import { Logger } from "/server/api";
+
 /**
  * getRouteName
  * assemble route name to be standard
@@ -63,7 +65,7 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
       }
     }
   } else {
-    ReactionCore.Log.debug(`No routes loaded for ${pkgName}`);
+    Logger.debug(`No routes loaded for ${pkgName}`);
   }
   // only unique roles
   const defaultOwnerRoles = _.uniq(defaultRoles);
@@ -72,7 +74,7 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
   const shopOwners = Roles.getUsersInRole(defaultOwnerRoles).fetch();
   // just a nice warning. something is misconfigured.
   if (!shopOwners) {
-    ReactionCore.Log.warn("Cannot assign roles without existing owner users.");
+    Logger.warn("Cannot assign roles without existing owner users.");
     return;
   }
   // assign this package permission to each existing owner.
@@ -85,5 +87,5 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
   // the reaction owner has permissions to all sites by default
   Roles.addUsersToRoles(owners, globalRoles, Roles.GLOBAL_GROUP);
 
-  ReactionCore.Log.debug(`Owner permissions added for ${pkgName}`);
+  Logger.debug(`Owner permissions added for ${pkgName}`);
 };

@@ -1,5 +1,6 @@
 import { Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { Logger } from "/server/api";
 
 //
 // Client Cart Methods
@@ -56,7 +57,7 @@ if (Meteor.isClient) {
       Cart.update(selector, update, function (
         error, result) {
         if (error) {
-          ReactionCore.Log.warn(error);
+          Logger.warn(error);
           throw new Meteor.Error("An error occurred saving the order",
             error);
         } else {

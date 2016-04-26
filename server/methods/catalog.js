@@ -1,4 +1,5 @@
 import { Media, Products, Tags } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  * Reaction Product Methods
@@ -367,19 +368,19 @@ Meteor.methods({
       }, (error, result) => {
         if (result) {
           if (type === "child") {
-            ReactionCore.Log.info(
+            Logger.info(
               `products/cloneVariant: created sub child clone: ${
                 clone._id} from ${variantId}`
             );
           } else {
-            ReactionCore.Log.info(
+            Logger.info(
               `products/cloneVariant: created clone: ${
                 clone._id} from ${variantId}`
             );
           }
         }
         if (error) {
-          ReactionCore.Log.error(
+          Logger.error(
             `products/cloneVariant: cloning of ${variantId} was failed: ${
               error}`
           );
@@ -433,7 +434,7 @@ Meteor.methods({
     Products.insert(assembledVariant,
       (error, result) => {
         if (result) {
-          ReactionCore.Log.info(
+          Logger.info(
             `products/createVariant: created variant: ${
               newVariantId} for ${parentId}`
           );
@@ -1071,7 +1072,7 @@ Meteor.methods({
         }
       }, (error, result) => {
         if (result) {
-          ReactionCore.Log.info(
+          Logger.info(
             `Variant ${id} position was updated to index ${index}`
           );
         }
@@ -1196,18 +1197,18 @@ Meteor.methods({
           }
         });
       } else {
-        ReactionCore.Log.debug("invalid product visibility ", productId);
+        Logger.debug("invalid product visibility ", productId);
         throw new Meteor.Error(403, "Forbidden", "Variant is required");
       }
 
       if (!variantValidator) {
-        ReactionCore.Log.debug("invalid product visibility ", productId);
+        Logger.debug("invalid product visibility ", productId);
         throw new Meteor.Error(403, "Forbidden",
           "Some properties are missing.");
       }
 
       // update product visibility
-      ReactionCore.Log.info("toggle product visibility ", product._id, !product.isVisible);
+      Logger.info("toggle product visibility ", product._id, !product.isVisible);
 
       const res = Products.update(product._id, {
         $set: {
@@ -1222,7 +1223,7 @@ Meteor.methods({
       // if collection updated we return new `isVisible` state
       return res === 1 && !product.isVisible;
     }
-    ReactionCore.Log.debug("invalid product visibility ", productId);
+    Logger.debug("invalid product visibility ", productId);
     throw new Meteor.Error(400, "Bad Request");
   }
 });

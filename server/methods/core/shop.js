@@ -1,6 +1,6 @@
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { GeoCoder } from "/server/api/geocoder";
+import { GeoCoder, Logger } from "/server/api";
 
 /**
  * Reaction Shop Methods
@@ -44,10 +44,10 @@ Meteor.methods({
     try {
       Collections.Shops.insert(shop);
     } catch (error) {
-      return ReactionCore.Log.error("Failed to shop/createShop", sanitizedError);
+      return Logger.error("Failed to shop/createShop", sanitizedError);
     }
     // we should have created new shop, or errored
-    ReactionCore.Log.info("Created shop: ", shop._id);
+    Logger.info("Created shop: ", shop._id);
     Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
     return shop._id;
   },
@@ -128,7 +128,7 @@ Meteor.methods({
           if (typeof exchangeRate === "number") {
             result.currency.exchangeRate = exchangeRate;
           } else {
-            ReactionCore.Log.warn("Failed to get currency exchange rates.");
+            Logger.warn("Failed to get currency exchange rates.");
           }
         }
       }
@@ -219,7 +219,7 @@ Meteor.methods({
           rateResults = HTTP.get(rateUrl);
         } catch (error) {
           if (error.error) {
-            ReactionCore.Log.error(error.message);
+            Logger.error(error.message);
             throw new Meteor.Error(error.message);
           } else {
             // https://openexchangerates.org/documentation#errors
@@ -398,7 +398,7 @@ Meteor.methods({
       return Collections.Tags.update(tagId, {
         $set: newTag
       }, function () {
-        ReactionCore.Log.info(
+        Logger.info(
           `Changed name of tag ${tagId} to ${tagName}`);
         return true;
       });
@@ -410,7 +410,7 @@ Meteor.methods({
             relatedTagIds: existingTag._id
           }
         }, function () {
-          ReactionCore.Log.info(
+          Logger.info(
             `Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`
           );
           return true;
@@ -422,7 +422,7 @@ Meteor.methods({
           isTopLevel: true
         }
       }, function () {
-        ReactionCore.Log.info(`Marked tag ${existingTag.name} as a top level tag`);
+        Logger.info(`Marked tag ${existingTag.name} as a top level tag`);
         return true;
       });
     }
@@ -438,11 +438,11 @@ Meteor.methods({
           relatedTagIds: newTagId
         }
       }, function () {
-        ReactionCore.Log.info(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
+        Logger.info(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
         return true;
       });
     } else if (newTagId && !currentTagId) {
-      ReactionCore.Log.info(`Created tag ${newTag.name}`);
+      Logger.info(`Created tag ${newTag.name}`);
       return true;
     }
     throw new Meteor.Error(403, "Failed to update header tags.");
