@@ -1,6 +1,6 @@
 "use strict";
 import Sortable from "sortable";
-import { TagHelpers } from "/client/helpers/ui-tagnav/helpers";
+import { TagHelpers } from "/client/modules/ui-tagnav/helpers";
 
 Template.tagTree.onRendered(() => {
   const instance = Template.instance();

@@ -1,5 +1,5 @@
 import Sortable from "sortable";
-import { TagHelpers } from "/client/helpers/ui-tagnav/helpers";
+import { TagHelpers } from "/client/modules/ui-tagnav/helpers";
 
 const NavbarStates = {
   Orientation: "stateNavbarOrientation",

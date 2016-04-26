@@ -1,4 +1,4 @@
-import { TagHelpers } from "/client/helpers/ui-tagnav/helpers";
+import { TagHelpers } from "/client/modules/ui-tagnav/helpers";
 
 Template.tagGroup.onRendered(() => {
 
