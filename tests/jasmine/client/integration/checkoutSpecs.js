@@ -1,4 +1,5 @@
 import { Cart } from "/lib/collections";
+import { Logger } from "/server/api";
 
 function checkoutState(callback) {
   if (callback) {
@@ -120,7 +121,7 @@ describe("Checkout", function () {
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
       // if addressbook has succeeded at least once
       if (thisWorkflow && cartWorkflow.workflow.indexOf("checkoutAddressBook") > 1) {
-        ReactionCore.Log.info("add secondary addressBook: ", cartWorkflow.status);
+        Logger.info("add secondary addressBook: ", cartWorkflow.status);
         let fakeAddress = ReactionFaker.address();
 
         $("*[data-event-action='addNewAddress']").trigger("click");
