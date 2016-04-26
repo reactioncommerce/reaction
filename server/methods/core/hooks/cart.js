@@ -1,7 +1,8 @@
 import { Cart } from "/lib/collections";
+import { Logger, MethodHooks } from "/server/api";
 
-// Meteor.after to call after
-ReactionCore.MethodHooks.after("cart/submitPayment", function (options) {
+// // Meteor.after to call after
+MethodHooks.after("cart/submitPayment", function (options) {
   // if cart/submit had an error we won't copy cart to Order
   // and we'll throw an error.
   ReactionCore.Log.debug("MethodHooks after cart/submitPayment", options);
