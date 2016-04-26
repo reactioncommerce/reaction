@@ -1,8 +1,7 @@
+import { Template }  from "meteor/templating";
 import { _ } from "meteor/underscore";
-
-const Tooltip = ReactionUI.Lib.Tooltip;
-const Icon = ReactionUI.Components.Icon;
-
+import { Icon } from "/client/modules/ui/components";
+import Tooltip from "tether-tooltip";
 
 Template.button.onCreated(function () {
 
@@ -88,7 +87,6 @@ Template.button.helpers({
       return toggleOn;
     }
   }
-
 });
 
 Template.button.events({

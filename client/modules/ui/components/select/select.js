@@ -1,4 +1,4 @@
-const templateClassName = ReactionUI.Helpers.templateClassName;
+import { templateClassName } from "/client/modules/ui/helpers/helpers";
 
 /**
  * Select - onCreated

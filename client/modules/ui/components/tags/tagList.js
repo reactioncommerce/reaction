@@ -1,6 +1,4 @@
-"use strict";
-const Sortable = ReactionUI.Lib.Sortable;
-
+import sortable from "sortable";
 
 Template.tagList.onCreated(function () {
   this.moveItem = (array, fromIndex, toIndex) => {

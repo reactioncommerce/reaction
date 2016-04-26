@@ -1,7 +1,5 @@
 import React from "react";
-
-const Items = ReactionUI.Components.Items;
-const classnames = ReactionUI.Lib.classnames;
+import classnames from "classnames";
 
 class Separator extends React.Component {
 
@@ -29,4 +27,4 @@ class Separator extends React.Component {
   }
 }
 
-ReactionUI.Components.Separator = Separator;
+export default Separator;
