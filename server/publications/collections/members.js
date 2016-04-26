@@ -1,3 +1,5 @@
+import { Logger } from "/server/api";
+
 /* eslint quote-props: 0 */
 /**
  * ShopMembers
@@ -48,6 +50,6 @@ Meteor.publish("ShopMembers", function () {
     return Meteor.users.find(EJSON.parse(selector), publish);
   }
 
-  ReactionCore.Log.debug("ShopMembers access denied");
+  Logger.debug("ShopMembers access denied");
   return this.ready();
 });

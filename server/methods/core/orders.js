@@ -1,7 +1,7 @@
 import Future from "fibers/future";
 import { Cart, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Reaction } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /**
  * Reaction Order Methods
@@ -69,6 +69,15 @@ Meteor.methods({
     }
 
     if (order) {
+      Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.packed": packed
+        }
+      });
+
       // Set the status of the items as shipped
       const itemIds = shipment.items.map((item) => {
         return item._id;
@@ -295,15 +304,15 @@ Meteor.methods({
       let shipment = order.shipping[0];
 
       ReactionCore.configureMailUrl();
-      ReactionCore.Log.info("orders/sendNotification", order.workflow.status);
+      Logger.info("orders/sendNotification", order.workflow.status);
       // handle missing root shop email
       if (!shop.emails[0].address) {
         shop.emails[0].address = "no-reply@reactioncommerce.com";
-        ReactionCore.Log.warn("No shop email configured. Using no-reply to send mail");
+        Logger.warn("No shop email configured. Using no-reply to send mail");
       }
       // anonymous users without emails.
       if (!order.email) {
-        ReactionCore.Log.warn("No shop email configured. Using anonymous order.");
+        Logger.warn("No shop email configured. Using anonymous order.");
         return true;
       }
       // email templates can be customized in Templates collection
@@ -323,7 +332,7 @@ Meteor.methods({
           })
         });
       } catch (error) {
-        ReactionCore.Log.fatal("Unable to send notification email: " + error);
+        Logger.fatal("Unable to send notification email: " + error);
         throw new Meteor.Error("error-sending-email", "Unable to send order notification email.", error);
       }
     }
@@ -640,7 +649,7 @@ Meteor.methods({
               }
             });
           } else {
-            ReactionCore.Log.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
+            Logger.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
 
             Orders.update({
               "_id": orderId,
@@ -728,7 +737,7 @@ Meteor.methods({
       });
 
       if (result.saved === false) {
-        ReactionCore.Log.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
+        Logger.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
 
         throw new Meteor.Error(
           "Failed to capture transaction");

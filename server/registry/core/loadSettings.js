@@ -1,4 +1,5 @@
 import { Packages } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  * ReactionRegistry.loadSettings
@@ -26,7 +27,7 @@ ReactionRegistry.loadSettings = function (json) {
 
   // validate json and error out if not an array
   if (!_.isArray(validatedJson[0])) {
-    ReactionCore.Log.warn(
+    Logger.warn(
       "Load Settings is not an array. Failed to load settings.");
     return;
   }
@@ -69,13 +70,13 @@ ReactionRegistry.loadSettings = function (json) {
               }, {
                 $set: settings
               });
-              ReactionCore.Log.info("service configuration loaded: " +
+              Logger.info("service configuration loaded: " +
                 item.name + " | " + service);
             }
           }
         }
       }
-      ReactionCore.Log.info(`loaded local package data: ${item.name}`);
+      Logger.info(`loaded local package data: ${item.name}`);
     }
   }
 };

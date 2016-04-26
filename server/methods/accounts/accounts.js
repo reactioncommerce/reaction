@@ -1,5 +1,6 @@
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { Logger, ReactionCore } from "/server/api";
 
 /**
  * Reaction Account Methods
@@ -254,7 +255,7 @@ Meteor.methods({
     ReactionCore.configureMailUrl();
     // don't send account emails unless email server configured
     if (!process.env.MAIL_URL) {
-      ReactionCore.Log.info(`Mail not configured: suppressing invite email output`);
+      Logger.info(`Mail not configured: suppressing invite email output`);
       return true;
     }
     // everything cool? invite user
@@ -360,7 +361,7 @@ Meteor.methods({
     // provide some defaults for missing shop email.
     if (!shop.emails) {
       shopEmail = `${shop.name}@localhost`;
-      ReactionCore.Log.debug(`Shop email address not configured. Using ${shopEmail}`);
+      Logger.debug(`Shop email address not configured. Using ${shopEmail}`);
     } else {
       shopEmail = shop.emails[0].address;
     }
@@ -369,7 +370,7 @@ Meteor.methods({
     ReactionCore.configureMailUrl();
     // don't send account emails unless email server configured
     if (!process.env.MAIL_URL) {
-      ReactionCore.Log.info(`Mail not configured: suppressing welcome email output`);
+      Logger.info(`Mail not configured: suppressing welcome email output`);
       return true;
     }
     // fetch and send templates
@@ -386,7 +387,7 @@ Meteor.methods({
         })
       });
     } catch (e) {
-      ReactionCore.Log.warn("Unable to send email, check configuration and port.", e);
+      Logger.warn("Unable to send email, check configuration and port.", e);
     }
   },
   /**
@@ -411,7 +412,7 @@ Meteor.methods({
     try {
       return Roles.addUsersToRoles(userId, permissions, group);
     } catch (error) {
-      return ReactionCore.Log.info(error);
+      return Logger.info(error);
     }
   },
 
@@ -430,7 +431,7 @@ Meteor.methods({
     try {
       return Roles.removeUsersFromRoles(userId, permissions, group);
     } catch (error) {
-      ReactionCore.Log.info(error);
+      Logger.info(error);
       throw new Meteor.Error(403, "Access Denied");
     }
   },
@@ -453,7 +454,7 @@ Meteor.methods({
     try {
       return Roles.setUserRoles(userId, permissions, group);
     } catch (error) {
-      ReactionCore.Log.info(error);
+      Logger.info(error);
       return error;
     }
   }

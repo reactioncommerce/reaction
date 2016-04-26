@@ -1,4 +1,5 @@
 import { Cart, Shipping } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /*
  * ReactionCore Shipping Methods
@@ -55,10 +56,10 @@ Meteor.methods({
       if (rates.length > 0) {
         Cart.update(selector, update, function (error) {
           if (error) {
-            ReactionCore.Log.warn(`Error adding rates to cart ${cartId}`, error);
+            Logger.warn(`Error adding rates to cart ${cartId}`, error);
             return;
           }
-          ReactionCore.Log.debug(`Success adding rates to cart ${cartId}`, rates);
+          Logger.debug(`Success adding rates to cart ${cartId}`, rates);
         });
       }
     }
@@ -123,8 +124,8 @@ Meteor.methods({
       }
       return _results;
     });
-    ReactionCore.Log.info("getShippingrates returning rates");
-    ReactionCore.Log.debug("rates", rates);
+    Logger.info("getShippingrates returning rates");
+    Logger.debug("rates", rates);
     return rates;
   }
 });

@@ -1,5 +1,6 @@
 import { merge, uniqWith } from "lodash";
 import { Packages, Shops } from "/lib/collections";
+import { Logger } from "/server/api";
 
 /**
  *  ReactionRegistry.loadPackages
@@ -21,12 +22,12 @@ ReactionRegistry.loadPackages = function () {
     const validatedJson = EJSON.parse(settingsJSONAsset);
 
     if (!_.isArray(validatedJson[0])) {
-      ReactionCore.Log.warn("Load Settings is not an array. Failed to load settings.");
+      Logger.warn("Load Settings is not an array. Failed to load settings.");
     } else {
       settingsFromJSON = validatedJson;
     }
   } catch (error) {
-    ReactionCore.Log.warn("loadSettings reaction.json not loaded.", error);
+    Logger.warn("loadSettings reaction.json not loaded.", error);
   }
   let layouts = [];
   // for each shop, we're loading packages a unique registry
@@ -81,7 +82,7 @@ ReactionRegistry.loadPackages = function () {
       }
       // Import package data
       ReactionImport.package(combinedSettings, shopId);
-      ReactionCore.Log.info(`Initializing ${shop.name} ${pkgName}`);
+      Logger.info(`Initializing ${shop.name} ${pkgName}`);
     }); // end shops
   });
 
@@ -99,7 +100,7 @@ ReactionRegistry.loadPackages = function () {
     return Packages.find().forEach((pkg) => {
       // delete registry entries for packages that have been removed
       if (!_.has(ReactionRegistry.Packages, pkg.name)) {
-        ReactionCore.Log.info(`Removing ${pkg.name}`);
+        Logger.info(`Removing ${pkg.name}`);
         return Packages.remove({
           shopId: shop._id,
           name: pkg.name
