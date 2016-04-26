@@ -1,9 +1,9 @@
 /**
  * Callback hooks to alter the behavior of common operations or trigger other things.
- * @namespace ReactionCore.Hooks.Events
+ * @namespace Hooks.Events
  */
-ReactionCore.Hooks = {};
-ReactionCore.Hooks.Events = {};
+const Hooks = {};
+Hooks.Events = {};
 
 
 /**
@@ -12,12 +12,12 @@ ReactionCore.Hooks.Events = {};
  * @param {Function} callback - The callback function
  * @return {Array} array of the currently defined hooks
  */
-ReactionCore.Hooks.Events.add = (name, callback) => {
+Hooks.Events.add = (name, callback) => {
   // if callback array doesn't exist yet, initialize it
-  if (typeof ReactionCore.Hooks.Events[name] === "undefined") {
-    ReactionCore.Hooks.Events[name] = [];
+  if (typeof Hooks.Events[name] === "undefined") {
+    Hooks.Events[name] = [];
   }
-  return ReactionCore.Hooks.Events[name].push(callback);
+  return Hooks.Events[name].push(callback);
 };
 
 
@@ -27,12 +27,12 @@ ReactionCore.Hooks.Events.add = (name, callback) => {
  * @param {String} callbackName - The name of the function to remove
  * @return {Array} array of remaining callbacks
  */
-ReactionCore.Hooks.Events.remove = (name, callbackName) => {
-  ReactionCore.Hooks.Events[name] = _.reject(ReactionCore.Hooks.Events[name], (callback) => {
+Hooks.Events.remove = (name, callbackName) => {
+  Hooks.Events[name] = _.reject(Hooks.Events[name], (callback) => {
     return callback.name === callbackName;
   });
 
-  return ReactionCore.Hooks.Events;
+  return Hooks.Events;
 };
 
 
@@ -43,8 +43,8 @@ ReactionCore.Hooks.Events.remove = (name, callbackName) => {
  * @param {Object} [constant] - An optional constant that will be passed along to each callback
  * @return {Object} Returns the item after it has been through all callbacks for this hook
  */
-ReactionCore.Hooks.Events.run = (name, item, constant) => {
-  const callbacks = ReactionCore.Hooks.Events[name];
+Hooks.Events.run = (name, item, constant) => {
+  const callbacks = Hooks.Events[name];
 
   // if the hook exists, and contains callbacks to run
   if (typeof callbacks !== "undefined" && !!callbacks.length) {
@@ -63,8 +63,8 @@ ReactionCore.Hooks.Events.run = (name, item, constant) => {
  * @param {Object} [constant] - An optional constant that will be passed along to each callback
  * @return {Object} Returns the item after it has been through all callbacks for this hook
  */
-ReactionCore.Hooks.Events.runAsync = (name, item, constant) => {
-  const callbacks = ReactionCore.Hooks.Events[name];
+Hooks.Events.runAsync = (name, item, constant) => {
+  const callbacks = Hooks.Events[name];
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
     // use defer to avoid holding up client
@@ -74,7 +74,8 @@ ReactionCore.Hooks.Events.runAsync = (name, item, constant) => {
         callback(item, constant);
       });
     });
-  } else {
-    return item;
   }
+  return item;
 };
+
+export default Hooks;

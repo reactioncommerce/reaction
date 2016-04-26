@@ -1,4 +1,7 @@
+import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
 import { Packages, Shops } from "/lib/collections";
+import { Hooks, Logger, ReactionCore } from "/server/api";
 
 /**
  * ReactionRegistry createDefaultAdminUser
@@ -29,7 +32,7 @@ ReactionRegistry.createDefaultAdminUser = function () {
 
   // run hooks on options object before creating user
   // (the options object must be returned from all callbacks)
-  options = ReactionCore.Hooks.Events.run("beforeCreateDefaultAdminUser", options);
+  options = Hooks.Events.run("beforeCreateDefaultAdminUser", options);
 
   //
   // process Meteor settings and env variables for initial user config
@@ -134,6 +137,6 @@ ReactionRegistry.createDefaultAdminUser = function () {
 
   // run hooks on new user object
   const user = Meteor.users.findOne(accountId);
-  ReactionCore.Hooks.Events.run("afterCreateDefaultAdminUser", user);
+  Hooks.Events.run("afterCreateDefaultAdminUser", user);
   return accountId;
 };
