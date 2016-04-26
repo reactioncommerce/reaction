@@ -33,25 +33,6 @@ email
 service-configuration
 amplify
 mdg:validated-method
-aldeed:template-extension
-aldeed:collection2
-aldeed:autoform
-aldeed:schema-index
-momentjs:moment
-risul:moment-timezone
-cfs:standard-packages
-cfs:storage-adapter
-cfs:graphicsmagick
-cfs:gridfs
-cfs:filesystem
-cfs:ui
-raix:ui-dropped-event
-vsivsi:job-collection
-ongoworks:security
-meteorhacks:subs-manager
-alanning:roles
-jparker:gravatar
-kadira:flow-router-ssr
 
 # Meteor Auth Packages
 accounts-base
@@ -64,30 +45,30 @@ oauth-encryption
 # accounts-weibo
 # accounts-oauth
 
+# Community Packages
+alanning:roles
+aldeed:autoform
+aldeed:collection2
+aldeed:schema-index
+aldeed:template-extension
+cfs:filesystem
+cfs:graphicsmagick
+cfs:gridfs
+cfs:standard-packages
+cfs:storage-adapter
+cfs:ui
+jparker:gravatar
+kadira:flow-router-ssr
+meteorhacks:subs-manager
+momentjs:moment
+ongoworks:security
+raix:ui-dropped-event
+risul:moment-timezone
+vsivsi:job-collection
+
 # Reaction Commerce Packages
-
-# reactioncommerce:core
 reactioncommerce:core-theme
-# reactioncommerce:reaction-catalog
-# reactioncommerce:reaction-layout
-# reactioncommerce:launchdock-connect
-# reactioncommerce:reaction-accounts
-# reactioncommerce:reaction-router
-# reactioncommerce:reaction-i18n
-# reactioncommerce:reaction-product-variant
-# reactioncommerce:reaction-dashboard
-# reactioncommerce:reaction-orders
-# reactioncommerce:reaction-analytics-libs
-# reactioncommerce:reaction-analytics
-# reactioncommerce:reaction-inventory
-# reactioncommerce:reaction-shipping
-# reactioncommerce:reaction-social
-# reactioncommerce:reaction-checkout
-# reactioncommerce:reaction-ui
-# reactioncommerce:reaction-ui-navbar
-# reactioncommerce:reaction-ui-tagnav
-
-# reactioncommerce:reaction-logger
+reactioncommerce:default-theme
 
 # Reaction Payment Packages
 
@@ -99,13 +80,6 @@ reactioncommerce:core-theme
 
 # Reaction Commerce Data
 # reactioncommerce:reaction-sample-data   # default Reaction data
-
-# Themes
-reactioncommerce:default-theme          # default Reaction theme
-# my:custom-theme                       # Example custom theme
-
-# Forced version updates
-# mdg:validation-error@0.5.1
 
 # Performance & Debugging Tools
 # meteorhacks:fast-render                   # improve initial page loads
