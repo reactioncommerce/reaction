@@ -1,8 +1,8 @@
 import $ from "jquery";
 import { Tags } from "/lib/collections";
+import classnames from "classnames";
 
 require("jquery-ui/autocomplete");
-const classnames = ReactionUI.Lib.classnames;
 
 Template.tagItem.helpers({
   tagBlankProps() {

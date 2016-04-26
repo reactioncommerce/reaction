@@ -1,5 +1,6 @@
-const Tooltip = ReactionUI.Lib.Tooltip;
-const Icon = ReactionUI.Components.Icon;
+import { Template }  from "meteor/templating";
+import { Icon } from "/client/modules/ui/components";
+import Tooltip from "tether-tooltip";
 
 Template.button.onCreated(function () {
 

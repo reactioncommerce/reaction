@@ -1,12 +1,7 @@
 import React from "react";
+import classnames from "classnames";
 
-const classnames = ReactionUI.Lib.classnames;
-
-const Icon = React.createClass({
-  propTypes: {
-    icon: React.PropTypes.string.isRequired
-  },
-
+class Icon extends React.Component {
   render() {
     let classes;
 
@@ -25,6 +20,10 @@ const Icon = React.createClass({
       <i className={classes} />
     );
   }
-});
+}
 
-ReactionUI.Components.Icon = Icon;
+Icon.propTypes = {
+  icon: React.PropTypes.string.isRequired
+};
+
+export default Icon;
