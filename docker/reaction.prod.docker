@@ -1,16 +1,16 @@
 FROM debian:jessie
 MAINTAINER Reaction Commerce <hello@reactioncommerce.com>
 
-ENV NODE_VERSION "0.10.41"
+ENV NODE_VERSION "0.10.43"
 
 # Install PhantomJS
 ENV INSTALL_PHANTOMJS "true"
-ENV PHANTOMJS_VERSION "2.1.3"
+ENV PHANTOMJS_VERSION "2.1.7"
 
 # Install MongoDB
-ENV INSTALL_MONGO "false"
-ENV MONGO_MAJOR "2.6"
-ENV MONGO_VERSION "2.6.11"
+ENV INSTALL_MONGO "true"
+ENV MONGO_MAJOR "3.2"
+ENV MONGO_VERSION "3.2.4"
 
 # Meteor environment variables
 ENV PORT "80"
