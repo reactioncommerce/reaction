@@ -51,6 +51,7 @@ ongoworks:security
 meteorhacks:subs-manager
 alanning:roles
 jparker:gravatar
+kadira:flow-router-ssr
 
 # Meteor Auth Packages
 accounts-base
