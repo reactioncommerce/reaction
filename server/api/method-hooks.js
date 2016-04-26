@@ -1,9 +1,12 @@
+import { Meteor } from "meteor/meteor";
+import _ from "underscore";
+
 /*
  *  Blatant reuse of Meteor method hooks from
  *  @see https://github.com/hitchcott/meteor-method-hooks
  *  @see https://github.com/Workpop/meteor-method-hooks
  */
-ReactionCore.MethodHooks = {};
+export const MethodHooks = {};
 
 /**
  * A hook to be run before or after a method.
@@ -26,20 +29,20 @@ ReactionCore.MethodHooks = {};
  * @type {Object.<String, [Hook]>} A mapping from method names to arrays of hooks
  * @private
  */
-ReactionCore.MethodHooks._afterHooks = {};
+MethodHooks._afterHooks = {};
 
 /**
  * A collection of before hooks
  * @type {Object.<String, [Hook]>} A mapping from method names to arrays of hooks
  * @private
  */
-ReactionCore.MethodHooks._beforeHooks = {};
+MethodHooks._beforeHooks = {};
 
 /**
  * handlers
  * The method handler definitions appropriate to the environment
  */
-ReactionCore.MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
+MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
   Meteor.server.method_handlers;
 
 /**
@@ -47,14 +50,14 @@ ReactionCore.MethodHooks._handlers = Meteor.isClient ? Meteor.connection._method
  * @type {Object.<String, Function>} Method handler mapping
  * @private
  */
-ReactionCore.MethodHooks._originalMethodHandlers = {};
+MethodHooks._originalMethodHandlers = {};
 
 /**
  * Wrappers
  * @type {Object.<String, Function>} A mapping from method names to method functions
  * @private
  */
-ReactionCore.MethodHooks._wrappers = {};
+MethodHooks._wrappers = {};
 
 /**
  *  initializeHook
@@ -65,26 +68,26 @@ ReactionCore.MethodHooks._wrappers = {};
  * @private
  * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
+MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   mapping[methodName] = mapping[methodName] || [];
   mapping[methodName].push(hookFunction);
 
   // Initialize a wrapper for the given method name. Idempotent, it will not erase existing handlers.
-  let method = ReactionCore.MethodHooks._handlers[methodName];
+  let method = MethodHooks._handlers[methodName];
   // If no method is found, or a wrapper already exists, return
-  if (!method || ReactionCore.MethodHooks._wrappers[methodName]) {
+  if (!method || MethodHooks._wrappers[methodName]) {
     return;
   }
 
   // Get a reference to the original handler
-  ReactionCore.MethodHooks._originalMethodHandlers[methodName] = method;
+  MethodHooks._originalMethodHandlers[methodName] = method;
 
-  ReactionCore.MethodHooks._wrappers[methodName] = function () {
+  MethodHooks._wrappers[methodName] = function () {
     // Get arguments you can mutate
     let args = _.toArray(arguments);
     let beforeResult;
     // Call the before hooks
-    let beforeHooks = ReactionCore.MethodHooks._beforeHooks[methodName];
+    let beforeHooks = MethodHooks._beforeHooks[methodName];
     _.each(beforeHooks, function (beforeHook, hooksProcessed) {
       beforeResult = beforeHook.call(this, {
         result: undefined,
@@ -107,13 +110,13 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
     // Call the main method body
     // check(args, Match.Any);
     try {
-      methodResult = ReactionCore.MethodHooks._originalMethodHandlers[methodName].apply(this, args);
+      methodResult = MethodHooks._originalMethodHandlers[methodName].apply(this, args);
     } catch (error) {
       methodError = error;
     }
 
     // Call after hooks, providing the result and the original arguments
-    let afterHooks = ReactionCore.MethodHooks._afterHooks[methodName];
+    let afterHooks = MethodHooks._afterHooks[methodName];
     _.each(afterHooks, function (afterHook, hooksProcessed) {
       let hookResult = afterHook.call(this, {
         result: methodResult,
@@ -139,7 +142,7 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
   };
 
   // Assign to a new handler
-  ReactionCore.MethodHooks._handlers[methodName] = ReactionCore.MethodHooks._wrappers[
+  MethodHooks._handlers[methodName] = MethodHooks._wrappers[
     methodName];
 };
 
@@ -150,32 +153,32 @@ ReactionCore.MethodHooks._initializeHook = function (mapping, methodName, hookFu
  * @param {String} beforeFunction - beforeFunction
  * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks.before = function (methodName, beforeFunction) {
-  ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._beforeHooks,
+MethodHooks.before = function (methodName, beforeFunction) {
+  MethodHooks._initializeHook(MethodHooks._beforeHooks,
     methodName, beforeFunction);
 };
 
 /**
- * ReactionCore.MethodHooks.after
+ * MethodHooks.after
  * Add a function to call after the specified method
  * @param {String} methodName - methodName
  * @param {String} afterFunction - afterFunction
  * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks.after = function (methodName, afterFunction) {
-  ReactionCore.MethodHooks._initializeHook(ReactionCore.MethodHooks._afterHooks,
+MethodHooks.after = function (methodName, afterFunction) {
+  MethodHooks._initializeHook(MethodHooks._afterHooks,
     methodName, afterFunction);
 };
 
 /**
- * ReactionCore.MethodHooks.beforeMethods
+ * MethodHooks.beforeMethods
  * Call the provided hook in values for the key'd method names
  * @param {Object.<string, Hook>} dict - dict
  * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks.beforeMethods = function (dict) {
+MethodHooks.beforeMethods = function (dict) {
   _.each(dict, function (v, k) {
-    ReactionCore.MethodHooks.before(k, v);
+    MethodHooks.before(k, v);
   });
 };
 
@@ -184,8 +187,8 @@ ReactionCore.MethodHooks.beforeMethods = function (dict) {
  * @param {Object.<string, Hook>} dict - dict
  * @return {String} - returns transformed data
  */
-ReactionCore.MethodHooks.afterMethods = function (dict) {
+MethodHooks.afterMethods = function (dict) {
   _.each(dict, function (v, k) {
-    ReactionCore.MethodHooks.after(k, v);
+    MethodHooks.after(k, v);
   });
 };
