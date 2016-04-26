@@ -466,7 +466,8 @@
         "processingError": "There was a problem with your payment.",
         "completeYourOrder": "Complete your order",
         "noPaymentMethods": "No payment methods are configured.",
-        "configureNow": "Configure now."
+        "configureNow": "Configure now.",
+        "failedToPlaceOrder": "Failed to place order."
       },
       "checkoutReview": {
         "review": "Review"
