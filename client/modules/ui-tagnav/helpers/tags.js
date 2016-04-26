@@ -4,7 +4,7 @@ import { Tags } from "/lib/collections";
  * Reaction TagNav shared helpers
  * @type {Object}
  */
-const TagHelpers = {
+export const TagHelpers = {
   moveItem(oldArray, fromIndex, toIndex) {
     const newArray = [...oldArray];
     newArray.splice(toIndex, 0, newArray.splice(fromIndex, 1)[0]);
@@ -169,5 +169,3 @@ const TagHelpers = {
 };
 
 Template.registerHelper("reactionSubTags", TagHelpers.subTags);
-
-ReactionUI.TagNav.Helpers = TagHelpers;

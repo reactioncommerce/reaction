@@ -1,4 +1,4 @@
-const TagHelpers = ReactionUI.TagNav.Helpers;
+import { TagHelpers } from "client/helpers/ui-tagnav/helpers";
 
 Template.tagGroup.onRendered(() => {
 

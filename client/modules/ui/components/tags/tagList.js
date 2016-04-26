@@ -1,4 +1,4 @@
-import sortable from "sortable";
+import Sortable from "sortable";
 
 Template.tagList.onCreated(function () {
   this.moveItem = (array, fromIndex, toIndex) => {
