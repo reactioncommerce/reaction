@@ -291,10 +291,10 @@
       "cartSubTotals": {
         "head": "Ваша корзина",
         "items": "Товаров",
-        "subtotal": "Цена",
+        "subtotal": "Сумма",
         "shipping": "Доставка",
         "tax": "Налог",
-        "total": "Сумма"
+        "total": "Итого"
       },
       "cartDrawerItems": {
         "left": "слева"
@@ -457,11 +457,11 @@
         "login": "Вход в учётную запись",
         "shippingBilling": "Адреса",
         "shippingOptions": "Варианты доставки",
-        "reviewPayment": "Подтверждение и оплата",
+        "reviewPayment": "Обзор",
         "complete": "Готово"
       },
       "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Добавить способ оплаты для завершения заказа",
+        "addPaymentToCompleteOrder": "Добавить платёж для завершения заказа",
         "processingError": "С вашим платежом возникли сложности.",
         "completeYourOrder": "Завершить ваш заказ",
         "noPaymentMethods": "Не указан ни один вариант платежа.",
@@ -469,7 +469,7 @@
         "failedToPlaceOrder": "Разместить заказ не удалось."
       },
       "checkoutReview": {
-        "review": "Итого"
+        "review": "Обзор"
       },
       "checkoutShipping": {
         "selectShippingOption": "Выбор способа доставки",
