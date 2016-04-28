@@ -59,6 +59,7 @@ cfs:storage-adapter
 cfs:ui
 jparker:gravatar
 kadira:flow-router-ssr
+matb33:collection-hooks
 meteorhacks:subs-manager
 momentjs:moment
 ongoworks:security
