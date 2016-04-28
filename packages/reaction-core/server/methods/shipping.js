@@ -111,7 +111,7 @@ Meteor.methods({
         if (!method.handling) {
           method.handling = 0;
         }
-        rate = method.rate + method.handling;
+        let rate = method.rate + method.handling;
         _results.push(rates.push({
           carrier: shipping.provider.label,
           method: method,
