@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger } from "/server/api";
@@ -314,7 +316,7 @@ Meteor.methods({
     // we should run new job on every form change, even if not all of them will
     // change currencyRate job
     const refreshPeriod = modifier.$set["settings.openexchangerates.refreshPeriod"];
-    const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
+    const fetchCurrencyRatesJob = new Job(Collections.Jobs, "shop/fetchCurrencyRates", {})
       .priority("normal")
       .retry({
         retries: 5,
