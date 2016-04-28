@@ -8,7 +8,6 @@
 Template.addressBook.onCreated(function () {
   this.currentViewTemplate = ReactiveVar("addressBookAdd");
   this.templateData = ReactiveVar({});
-  this.currentViewTemplate.set("addressBookGrid");
 
   this.autorun(() => {
     let account = ReactionCore.Collections.Accounts.findOne({
