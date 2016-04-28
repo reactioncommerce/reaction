@@ -98,11 +98,13 @@ ReactionRouter.initPackageRoutes = () => {
 
   //
   // index / home route
+  // to overide layout, ie: home page templates
+  // set DEFAULT_LAYOUT, in config.js
   //
   shop.route("/", {
     name: "index",
     action: function () {
-      ReactionLayout();
+      ReactionLayout(INDEX_OPTIONS);
     }
   });
 
