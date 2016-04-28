@@ -57,7 +57,8 @@
     "sortablejs": "^1.4.2",
     "swiper": "^3.3.1",
     "tether-drop": "^1.4.2",
-    "tether-tooltip": "^1.2.0"
+    "tether-tooltip": "^1.2.0",
+    "transliteration": "^0.1.1"
   },
   "devDependencies": {
     "babel": "^6.5.2",
