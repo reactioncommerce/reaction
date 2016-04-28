@@ -348,6 +348,8 @@ Meteor.methods({
         Meteor.call("shipping/updateShipmentQuotes", cart._id);
         // revert workflow to checkout shipping step.
         Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+        // reset selected shipment method
+        Meteor.call("cart/resetShipmentMethod", cart._id);
 
         Log.info(`cart: increment variant ${variantId} quantity by ${
           quantity}`);
@@ -381,6 +383,8 @@ Meteor.methods({
       Meteor.call("shipping/updateShipmentQuotes", cart._id);
       // revert workflow to checkout shipping step.
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+      // reset selected shipment method
+      Meteor.call("cart/resetShipmentMethod", cart._id);
 
       Log.info(`cart: add variant ${variantId} to cartId ${cart._id}`);
 
@@ -431,6 +435,8 @@ Meteor.methods({
     Meteor.call("shipping/updateShipmentQuotes", cart._id);
     // revert workflow to checkout shipping step.
     Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+    // reset selected shipment method
+    Meteor.call("cart/resetShipmentMethod", cart._id);
 
     if (!quantity) {
       return ReactionCore.Collections.Cart.update({
@@ -692,11 +698,35 @@ Meteor.methods({
   },
 
   /**
+   * cart/resetShipmentMethod
+   * @summary removes `shipmentMethod` object from cart
+   * @param {String} cartId - cart _id
+   * @return {Number} update result
+   */
+  "cart/resetShipmentMethod": function (cartId) {
+    check(cartId, String);
+
+    const cart = ReactionCore.Collections.Cart.findOne({
+      _id: cartId,
+      userId: this.userId
+    });
+    if (!cart) {
+      ReactionCore.Log.error(`Cart not found for user: ${this.userId}`);
+      throw new Meteor.Error(404, "Cart not found",
+        `Cart: ${cartId} not found for user: ${this.userId}`);
+    }
+
+    return ReactionCore.Collections.Cart.update({ _id: cartId }, {
+      $unset: { "shipping.0.shipmentMethod": "" }
+    });
+  },
+
+  /**
    * cart/setShipmentAddress
    * @summary adds address book to cart shipping
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} address - addressBook object
-   * @return {Number} return Mongo update result
+   * @return {Number} update result
    */
   "cart/setShipmentAddress": function (cartId, address) {
     check(cartId, String);
