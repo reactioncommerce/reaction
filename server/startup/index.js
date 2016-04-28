@@ -3,6 +3,7 @@ import i18n from "./i18n";
 import Inventory from "./inventory";
 import Orders from "./orders";
 import Packages from "./packages";
+import Registry from "./registry";
 import Init from "./init";
 
 export default function () {
@@ -11,5 +12,6 @@ export default function () {
   Inventory();
   Orders();
   Packages();
+  Registry();
   Init();
 }
