@@ -1,10 +1,9 @@
-import { Shops } from "/lib/collections";
-import { Hooks, Logger } from "./logger";
+import { Jobs, Shops } from "/lib/collections";
+import { Hooks, Logger } from "/server/api";
+import { loadPackages } from "./loadPackages";
+import { createDefaultAdminUser } from "./defaultAdmin";
 
-/**
- * ReactionCore methods (server)
- */
-export class ReactionCore {
+export default {
 
   init() {
     // run onCoreInit hooks
@@ -13,19 +12,27 @@ export class ReactionCore {
     Logger.info("JobServer started:", Jobs.startJobServer());
     // uncomment for JobCollection debug
     // Jobs.setLogStream(process.stdout);
-    ReactionRegistry.loadPackages();
+    loadPackages();
     // process imports from packages and any hooked imports
-    ReactionImport.flush();
+    // ReactionImport.flush();
     // timing is important, packages are rqd
     // for initilial permissions configuration.
-    ReactionRegistry.createDefaultAdminUser();
+    createDefaultAdminUser();
     // hook after init finished
     Hooks.Events.run("afterCoreInit", this);
 
     Logger.info("ReactionCore.init() has run");
 
     return true;
-  }
+  },
+
+  Packages: {},
+
+  registerPackage(packageInfo) {
+    let registeredPackage = this.Packages[packageInfo.name] =
+      packageInfo;
+    return registeredPackage;
+  },
 
   /**
    * hasPermission - server
@@ -47,7 +54,7 @@ export class ReactionCore {
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
     } else {
-      group = ReactionCore.getShopId() || Roles.GLOBAL_GROUP;
+      group = this.getShopId() || Roles.GLOBAL_GROUP;
     }
 
     // permissions can be either a string or an array
@@ -86,26 +93,26 @@ export class ReactionCore {
     }
     // no specific permissions found returning false
     return false;
-  }
+  },
 
   hasOwnerAccess() {
     let ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
-  }
+  },
 
   hasAdminAccess() {
     let adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
-  }
+  },
 
   hasDashboardAccess() {
     let dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
-  }
+  },
 
   getSellerShopId() {
     return Roles.getGroupsForUser(this.userId, "admin");
-  }
+  },
 
   configureMailUrl(user, password, host, port) {
     let shopSettings = Packages.findOne({
@@ -146,7 +153,7 @@ export class ReactionCore {
         "Mail server not configured. Unable to send email.");
       return false;
     }
-  }
+  },
 
   getCurrentShopCursor() {
     let domain = this.getDomain();
@@ -156,11 +163,10 @@ export class ReactionCore {
       limit: 1
     });
     if (!cursor.count()) {
-      ReactionSubscriptions.Log.debug("Add a domain entry to shops for ",
-        domain);
+      Logger.debug(domain, "Add a domain entry to shops for ");
     }
     return cursor;
-  }
+  },
 
   getCurrentShop() {
     const currentShopCursor = this.getCurrentShopCursor();
@@ -170,7 +176,7 @@ export class ReactionCore {
       return currentShopCursor.fetch()[0];
     }
     return null;
-  }
+  },
 
   getShopId() {
     const currentShop = this.getCurrentShop();
@@ -178,7 +184,7 @@ export class ReactionCore {
       return currentShop._id;
     }
     return null;
-  }
+  },
 
   getDomain() {
     let absoluteUrl = Meteor.absoluteUrl();
@@ -186,7 +192,7 @@ export class ReactionCore {
       return absoluteUrl.split("/")[2].split(":")[0];
     }
     return "localhost";
-  }
+  },
 
   getShopName() {
     const currentShop = this.getCurrentShop();
@@ -195,4 +201,4 @@ export class ReactionCore {
     }
     return null;
   }
-}
+};

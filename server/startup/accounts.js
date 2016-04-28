@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import * as Collections from "/lib/collections";
-import { Hooks, Logger, ReactionCore } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 export default function () {
   /**
@@ -37,7 +37,7 @@ export default function () {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const shop = ReactionCore.getCurrentShop();
+    const shop = Reaction.getCurrentShop();
     const shopId = shop._id;
     const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
@@ -122,7 +122,7 @@ export default function () {
         $pullAll: {}
       };
 
-      update.$pullAll["roles." + ReactionCore.getShopId()] = ["anonymous"];
+      update.$pullAll["roles." + Reaction.getShopId()] = ["anonymous"];
 
       Meteor.users.update({
         _id: options.user._id

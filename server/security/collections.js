@@ -1,4 +1,5 @@
 import * as Collections from "/lib/collections";
+import { Reaction } from "/server/api";
 
 const {
   Accounts,
@@ -40,7 +41,7 @@ const {
 Security.defineMethod("ifShopIdMatches", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
-    return doc.shopId !== ReactionCore.getShopId();
+    return doc.shopId !== Reaction.getShopId();
   }
 });
 // this rule is for the Shops collection
@@ -48,14 +49,14 @@ Security.defineMethod("ifShopIdMatches", {
 Security.defineMethod("ifShopIdMatchesThisId", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
-    return doc._id !== ReactionCore.getShopId();
+    return doc._id !== Reaction.getShopId();
   }
 });
 
 Security.defineMethod("ifFileBelongsToShop", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
-    return doc.metadata.shopId !== ReactionCore.getShopId();
+    return doc.metadata.shopId !== Reaction.getShopId();
   }
 });
 
@@ -77,7 +78,7 @@ Security.defineMethod("ifUserIdMatchesProp", {
 Security.defineMethod("ifSessionIdMatches", {
   fetch: [],
   deny: function (type, arg, userId, doc) {
-    return doc.sessionId !== ReactionCore.sessionId;
+    return doc.sessionId !== Reaction.sessionId;
   }
 });
 
@@ -104,7 +105,7 @@ Security.permit(["insert", "update", "remove"]).collections([
   Jobs
 ]).ifHasRole({
   role: "admin",
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
 /*
@@ -113,7 +114,7 @@ Security.permit(["insert", "update", "remove"]).collections([
 
 Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
   role: ["admin", "owner", "createProduct"],
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifFileBelongsToShop().allowInClientCode();
 
 /*
@@ -123,7 +124,7 @@ Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
 
 Shops.permit(["update", "remove"]).ifHasRole({
   role: ["admin", "owner"],
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifShopIdMatchesThisId().allowInClientCode();
 
 /*
@@ -133,7 +134,7 @@ Shops.permit(["update", "remove"]).ifHasRole({
 
 Products.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["createProduct"],
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifShopIdMatches().allowInClientCode();
 
 /*
@@ -142,7 +143,7 @@ Products.permit(["insert", "update", "remove"]).ifHasRole({
 
 Orders.permit("remove").ifHasRole({
   role: ["admin", "owner"],
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
 /*
@@ -154,15 +155,15 @@ Orders.permit("remove").ifHasRole({
 
 Cart.permit(["insert", "update", "remove"]).ifHasRole({
   role: ["anonymous", "guest"],
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().allowInClientCode();
 
 /*
  * Users may update their own account
  */
-Accounts.permit(["insert", "update"]).ifHasRole({
+Collections.Accounts.permit(["insert", "update"]).ifHasRole({
   role: ["anonymous", "guest"],
-  group: ReactionCore.getShopId()
+  group: Reaction.getShopId()
 }).ifUserIdMatches().allowInClientCode();
 
 /*
