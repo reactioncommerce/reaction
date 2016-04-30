@@ -289,6 +289,7 @@
         "checkout": "Оформить заказ"
       },
       "cartSubTotals": {
+        "discount": "Скидка",
         "head": "Ваша корзина",
         "items": "Товаров",
         "subtotal": "Цена",
@@ -301,8 +302,8 @@
       },
       "order": {
         "created": "Создан",
-        "reference": "Референс",
-        "invoice": "Счёт-фактура",
+        "reference": "Ссылка",
+        "invoice": "Счёт",
         "ordersNotFound": "Не найдено заказов",
         "approveInvoice": "Подтвердить",
         "makeAdjustments": "Корректировать",
@@ -312,7 +313,7 @@
         "refundAmount": "Вернуть сумму",
         "applyRefund": "Подтвердить возврат",
         "adjustedTotal": "Корректировано всего",
-        "processor": "Процессор",
+        "processor": "Платёжная система",
         "filter": {
           "new": "Новых",
           "captured": "Оплаченных",
@@ -324,16 +325,23 @@
         }
       },
       "orderShipping": {
-        "shipTo": "Доставить",
-        "notShipped": "Еще не доставлено",
-        "noTracking": "Без трэкинга",
-        "tracking": "Трэкинг",
-        "addtracking": "Добавить трэкинг",
+        "shipTo": "Доставить до",
+        "notShipped": "Ещё не доставлено",
+        "noTracking": "Не отслеживается",
+        "tracking": "Отслеживание",
+        "addTracking": "Добавить идентификатор",
         "shipmentEmpty": "Эта доставка не содержит товаров",
         "shipmentPacked": "Все товары запакованы",
         "shipped": "Доставлено",
-        "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
+        "shippingNotifyCustomer": "Известить клиента о том, что его товары скоро будут доставлены.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
+      },
+      "orderWorkflow": {
+        "fulfillment": "Движение заказа",
+        "orderDetails": "Детали заказа",
+        "summary": "Сводка",
+        "invoice": "Счёт",
+        "shipmentTracking": "Отслеживание посылки"
       },
       "cartCheckout": {
         "surprise": "Ого!",
