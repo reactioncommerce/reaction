@@ -312,6 +312,7 @@
         "paymentCaptured": "Payment Captured",
         "capturedTotal": "Captured Total",
         "refundAmount": "Refund Amount",
+        "applyRefundToThisOrder": "Apply refund of {{refund}} to this order?",
         "applyRefund": "Apply Refund",
         "adjustedTotal": "Adjusted Total",
         "processor": "Processor",

@@ -311,6 +311,7 @@
         "paymentCaptured": "Платеж найден",
         "capturedTotal": "Найдено всего",
         "refundAmount": "Вернуть сумму",
+        "applyRefundToThisOrder": "Вернуть {{refund}} по этому заказу?",
         "applyRefund": "Подтвердить возврат",
         "adjustedTotal": "Корректировано всего",
         "processor": "Платёжная система",
