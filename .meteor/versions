@@ -156,14 +156,14 @@ reactioncommerce:reaction-logger@0.2.0
 reactioncommerce:reaction-orders@1.1.0
 reactioncommerce:reaction-paymentmethod@0.0.5
 reactioncommerce:reaction-paypal@1.4.0
-reactioncommerce:reaction-product-variant@1.0.1
+reactioncommerce:reaction-product-variant@1.1.0
 reactioncommerce:reaction-router@1.1.1
 reactioncommerce:reaction-sample-data@0.1.3
 reactioncommerce:reaction-schemas@2.0.5
 reactioncommerce:reaction-shipping@0.8.0
 reactioncommerce:reaction-social@0.4.3
 reactioncommerce:reaction-stripe@3.1.2
-reactioncommerce:reaction-ui@0.7.0
+reactioncommerce:reaction-ui@0.7.1
 reactioncommerce:reaction-ui-navbar@0.1.0
 reactioncommerce:reaction-ui-tagnav@0.1.0
 reactive-dict@1.1.6

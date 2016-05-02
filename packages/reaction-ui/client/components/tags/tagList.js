@@ -16,7 +16,7 @@ Template.tagList.onRendered(() => {
 
   instance._sortable = Sortable.create(list, {
     group: "tags",
-    draggable: ".rui.tag.edit.draggable",
+    draggable: ".rui.item.draggable",
     // filter: ".rui.tag.edit.create",
     onSort(event) {
       let tagIds = instance.data.tags.map(item => {
@@ -80,6 +80,7 @@ Template.tagList.helpers({
       tag,
       isEditing: instance.data.isEditing,
       selectable: instance.data.selectable,
+      controls: instance.data.controls,
       isSelected,
       onTagSelect: instance.data.onTagSelect,
       onTagRemove(tagToRemove) {
