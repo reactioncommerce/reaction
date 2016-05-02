@@ -303,7 +303,7 @@ Meteor.methods({
       let shop = Shops.findOne(order.shopId);
       let shipment = order.shipping[0];
 
-      ReactionCore.configureMailUrl();
+      Reaction.configureMailUrl();
       Logger.info("orders/sendNotification", order.workflow.status);
       // handle missing root shop email
       if (!shop.emails[0].address) {

@@ -1,4 +1,5 @@
 import { Products } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 //
 // define search filters as a schema so we can validate
@@ -71,7 +72,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   check(sort, Match.OneOf(undefined, Object));
 
   let shopAdmin;
-  const shop = ReactionCore.getCurrentShop();
+  const shop = Reaction.getCurrentShop();
 
   if (typeof shop !== "object") {
     return this.ready();

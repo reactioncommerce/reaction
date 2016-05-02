@@ -1,5 +1,5 @@
 import { Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /**
  * meteor-geocoder
@@ -21,7 +21,7 @@ export const GeoCoder = function geoCoderConstructor(options) {
   let self = this;
   // fetch shop settings for api auth credentials
   let shopSettings = Packages.findOne({
-    shopId: ReactionCore.getShopId(),
+    shopId: Reaction.getShopId(),
     name: "core"
   }, {
     fields: {

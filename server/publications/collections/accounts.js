@@ -1,4 +1,5 @@
 import * as Collections from "/lib/collections";
+import { Reaction } from "/server/api";
 
 /**
  * accounts
@@ -11,7 +12,7 @@ Meteor.publish("Accounts", function (userId) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = ReactionCore.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
@@ -45,7 +46,7 @@ Meteor.publish("UserProfile", function (profileUserId) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = ReactionCore.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

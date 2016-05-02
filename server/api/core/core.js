@@ -22,7 +22,7 @@ export default {
     // hook after init finished
     Hooks.Events.run("afterCoreInit", this);
 
-    Logger.info("ReactionCore.init() has run");
+    Logger.info("Reaction.init() has run");
 
     return true;
   },
