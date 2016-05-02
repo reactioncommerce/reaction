@@ -332,6 +332,7 @@
         "noTracking": "No Tracking",
         "tracking": "Tracking",
         "addTracking": "Add Tracking",
+        "itemsHaveBeenShipped": "Items have been shipped",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
