@@ -1,7 +1,6 @@
 /*
  * Template shipping Helpers
  */
-
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
     ReactionCore.showActionView({
@@ -79,6 +78,21 @@ Template.addShippingMethod.helpers({
   }
 });
 
+
+/*
+ *  template editShippingMethod helpers
+ */
+
+Template.editShippingMethod.helpers({
+  selectedMethodDoc() {
+    Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
+    if (Doc) {
+      return Doc;
+    }
+  }
+});
+
+
 Template.afFormGroup_validLocales.helpers({
   afFieldInputAtts() {
     return _.extend({
@@ -119,7 +133,7 @@ Template.addShippingProvider.events({
  * template addShippingMethods events
  */
 Template.addShippingMethod.events({
-  "click .cancel"(event){
+  "click .cancel"(event) {
     event.preventDefault();
     toggleSession("selectedAddShippingMethod");
   }
@@ -164,6 +178,9 @@ Template.shippingProviderTable.events({
       data: this,
       template: "editShippingMethod"
     });
+
+    Session.set("updatedMethodObj", "");
+    Session.set("selectedMethodObj", this);
   },
   "click [data-event-action=editShippingProvider]"(event) {
     event.preventDefault();
@@ -184,10 +201,10 @@ Template.shippingProviderTable.events({
       type: "warning",
       closeOnConfirm: false
     },
-    () => {
-      Meteor.call("removeShippingMethod", $(event.currentTarget).data("provider-id"), this);
-      Alerts.alert("Shipping method deleted.", "", "success");
-    });
+      () => {
+        Meteor.call("removeShippingMethod", $(event.currentTarget).data("provider-id"), this);
+        Alerts.alert("Shipping method deleted.", "", "success");
+      });
   },
   "click [data-event-action=addShippingMethod]"(event) {
     event.preventDefault();
@@ -241,10 +258,13 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   "shipping-method-edit-form": {
-    onSubmit(doc) {
+    onSubmit(insertDoc, updateDoc, currentDoc) {
       let error;
+      let providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
-        Meteor.call("updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), doc);
+        _.extend(insertDoc, { _id: currentDoc._id });
+        Meteor.call("updateShippingMethods", providerId, currentDoc, insertDoc);
+        Session.set("updatedMethodObj", insertDoc);
         this.done();
       } catch (_error) {
         error = _error;
@@ -258,5 +278,17 @@ AutoForm.hooks({
         placement: "shippingPackage"
       });
     }
+
   }
 });
+
+Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
+  let view = Blaze.currentView;
+  let numLevel = levels;
+  while (view) {
+    if (view.name.substring(0, 9) === "Template." && !numLevel--) {
+      return view.templateInstance();
+    }
+    view = view.parentView;
+  }
+};
