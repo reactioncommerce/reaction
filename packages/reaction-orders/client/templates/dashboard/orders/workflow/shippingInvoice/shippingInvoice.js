@@ -89,7 +89,7 @@ Template.coreOrderShippingInvoice.events({
     const refund = accounting.unformat(event.target.refund_amount.value) || 0;
     const paymentMethod = order.billing[0].paymentMethod;
 
-    if (confirm(`Apply refund of ${refund} to this order?`)) {
+    if (confirm(i18next.t("order.applyRefundToThisOrder", { refund: refund }))) {
       Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
         if (error) {
           // Show error

@@ -289,6 +289,7 @@
         "checkout": "Оформить заказ"
       },
       "cartSubTotals": {
+        "discount": "Скидка",
         "head": "Ваша корзина",
         "items": "Товаров",
         "subtotal": "Сумма",
@@ -301,18 +302,19 @@
       },
       "order": {
         "created": "Создан",
-        "reference": "Референс",
-        "invoice": "Счёт-фактура",
+        "reference": "Ссылка",
+        "invoice": "Счёт",
         "ordersNotFound": "Не найдено заказов",
         "approveInvoice": "Подтвердить",
         "makeAdjustments": "Корректировать",
         "capturePayment": "Найти платеж",
         "paymentCaptured": "Платеж найден",
-        "capturedTotal": "Найдено всего",
+        "capturedTotal": "Получено всего",
         "refundAmount": "Вернуть сумму",
+        "applyRefundToThisOrder": "Вернуть {{refund}} по этому заказу?",
         "applyRefund": "Подтвердить возврат",
-        "adjustedTotal": "Корректировано всего",
-        "processor": "Процессор",
+        "adjustedTotal": "Итого после возврата",
+        "processor": "Платёжная система",
         "filter": {
           "new": "Новых",
           "captured": "Оплаченных",
@@ -324,16 +326,24 @@
         }
       },
       "orderShipping": {
-        "shipTo": "Доставить",
-        "notShipped": "Еще не доставлено",
-        "noTracking": "Без трэкинга",
-        "tracking": "Трэкинг",
-        "addtracking": "Добавить трэкинг",
+        "shipTo": "Доставить до",
+        "notShipped": "Ещё не доставлено",
+        "noTracking": "Не отслеживается",
+        "tracking": "Трекинг номер",
+        "addTracking": "Добавить идентификатор",
+        "itemsHaveBeenShipped": "Товары отправлены",
         "shipmentEmpty": "Эта доставка не содержит товаров",
-        "shipmentPacked": "Все товары запакованы",
+        "shipmentPacked": "Все товары запакованы и готовы к отгрузке",
         "shipped": "Доставлено",
-        "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
+        "shippingNotifyCustomer": "Известить клиента о том, что его товары скоро будут доставлены.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
+      },
+      "orderWorkflow": {
+        "fulfillment": "Движение заказа",
+        "orderDetails": "Детали заказа",
+        "summary": "Сводка",
+        "invoice": "Счёт",
+        "shipmentTracking": "Отслеживание посылки"
       },
       "cartCheckout": {
         "surprise": "Ого!",

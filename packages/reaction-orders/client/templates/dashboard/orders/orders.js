@@ -155,6 +155,7 @@ Template.ordersListItem.events({
     if (isActionViewOpen === false) {
       ReactionCore.showActionView({
         label: "Order Details",
+        i18nKeyLabel: "orderWorkflow.orderDetails",
         data: this,
         props: {
           size: "large"
@@ -177,6 +178,7 @@ Template.ordersListItem.events({
     if (isActionViewOpen === false) {
       ReactionCore.showActionView({
         label: "Order Details",
+        i18nKeyLabel: "orderWorkflow.orderDetails",
         data: this,
         props: {
           size: "large"
