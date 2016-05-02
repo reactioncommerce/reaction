@@ -1,5 +1,6 @@
 import { Shops } from "/lib/collections";
-import initRegistry from "./registry";
+import { Reaction } from "/server/api";
+import initRegistry from "./registry/index";
 
 export default function () {
   initRegistry();
@@ -7,8 +8,8 @@ export default function () {
    // initialize shop registry when a new shop is added
   Shops.find().observe({
     added(doc) {
-      ReactionRegistry.setShopName(doc);
-      ReactionRegistry.setDomain();
+      Reaction.setShopName(doc);
+      Reaction.setDomain();
     },
     removed() {
       // TODO SHOP REMOVAL CLEANUP FOR #357

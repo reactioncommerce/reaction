@@ -10,7 +10,7 @@ const directoryExists = dirPath => {
   }
 };
 
-loadCoreTranslations = () => {
+const loadCoreTranslations = () => {
   const readFolder = Meteor.wrapAsync(fs.readdir, fs);
   const meteorPath = fs.realpathSync(process.cwd() + "/../");
   // get the list of package folder names which have assets.
