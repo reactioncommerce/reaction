@@ -1,4 +1,5 @@
 import { Media } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 /**
  * CollectionFS - Image/Video Publication
@@ -7,7 +8,7 @@ import { Media } from "/lib/collections";
 Meteor.publish("Media", function (shops) {
   check(shops, Match.Optional(Array));
   let selector;
-  let shopId = ReactionCore.getShopId();
+  let shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

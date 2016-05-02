@@ -1,5 +1,5 @@
 import { Cart, Shipping } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /*
  * ReactionCore Shipping Methods
@@ -78,7 +78,7 @@ Meteor.methods({
     let products = cart.items;
     // default selector is current shop
     let selector = {
-      shopId: ReactionCore.getShopId()
+      shopId: Reaction.getShopId()
     };
     // must have products to calculate shipping
     if (!cart.items) {

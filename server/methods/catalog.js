@@ -1,6 +1,6 @@
 import { Catalog } from "/lib/api";
 import { Media, Products, Tags } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /**
  * Reaction Product Methods
@@ -311,7 +311,7 @@ Meteor.methods({
     check(productId, String);
     check(variantId, String);
     // user needs createProduct permission to clone
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -402,7 +402,7 @@ Meteor.methods({
     check(parentId, String);
     check(newVariant, Match.Optional(Object));
     // must have createProduct permissions
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -459,7 +459,7 @@ Meteor.methods({
   "products/updateVariant": function (variant) {
     check(variant, Object);
     // must have createProduct permissions
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -502,7 +502,7 @@ Meteor.methods({
   "products/deleteVariant": function (variantId) {
     check(variantId, String);
     // must have createProduct permissions
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -546,7 +546,7 @@ Meteor.methods({
   "products/cloneProduct": function (productOrArray) {
     check(productOrArray, Match.OneOf(Array, Object));
     // must have createProduct permissions
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();
@@ -661,7 +661,7 @@ Meteor.methods({
   "products/createProduct": function (product) {
     check(product, Match.Optional(Object));
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -696,7 +696,7 @@ Meteor.methods({
   "products/deleteProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
     // must have admin permission to delete
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!Reaction.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -767,7 +767,7 @@ Meteor.methods({
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean));
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -807,7 +807,7 @@ Meteor.methods({
     check(tagName, String);
     check(tagId, Match.OneOf(String, null));
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -847,7 +847,7 @@ Meteor.methods({
     }
 
     newTag.isTopLevel = false;
-    newTag.shopId = ReactionCore.getShopId();
+    newTag.shopId = Reaction.getShopId();
     newTag.updatedAt = new Date();
     newTag.createdAt = new Date();
     newTag._id = Tags.insert(newTag);
@@ -872,7 +872,7 @@ Meteor.methods({
   "products/removeProductTag": function (productId, tagId) {
     check(productId, String);
     check(tagId, String);
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -912,7 +912,7 @@ Meteor.methods({
   "products/setHandle": function (productId) {
     check(productId, String);
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -940,7 +940,7 @@ Meteor.methods({
     check(productId, String);
     check(tagId, String);
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -994,7 +994,7 @@ Meteor.methods({
     check(productId, String);
     check(positionData, Object);
     check(tag, String);
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -1058,7 +1058,7 @@ Meteor.methods({
     //   sortedVariantIds: { type: [String] }
     // }).validate({ sortedVariantIds });
 
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -1095,7 +1095,7 @@ Meteor.methods({
     check(updatedMeta, Object);
     check(meta, Match.OptionalOrNull(Object));
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -1142,7 +1142,7 @@ Meteor.methods({
     check(type, String);
 
     // must have createProduct permission
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -1165,7 +1165,7 @@ Meteor.methods({
    */
   "products/publishProduct": function (productId) {
     check(productId, String);
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 

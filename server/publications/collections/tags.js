@@ -1,10 +1,11 @@
 import { Tags } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 /**
  * tags
  */
 Meteor.publish("Tags", function () {
-  const shopId = ReactionCore.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

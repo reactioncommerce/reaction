@@ -1,5 +1,5 @@
 import { Products } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /**
  * product detail publication
@@ -13,7 +13,7 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  let shop = ReactionCore.getCurrentShop();
+  let shop = Reaction.getCurrentShop();
   // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();

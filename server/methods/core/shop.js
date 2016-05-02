@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { GeoCoder, Logger } from "/server/api";
+import { GeoCoder, Logger, Reaction } from "/server/api";
 
 /**
  * Reaction Shop Methods
@@ -19,7 +19,7 @@ Meteor.methods({
     check(shopData, Match.Optional(Schemas.Shop));
     let shop = {};
     // must have owner access to create new shops
-    if (!ReactionCore.hasOwnerAccess()) {
+    if (!Reaction.hasOwnerAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -27,7 +27,7 @@ Meteor.methods({
     const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.userId();
     // we'll accept a shop object, or clone the current shop
-    shop = shopData || Collections.Shops.findOne(ReactionCore.getShopId());
+    shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
     // if we don't have any shop data, use fixture
 
     check(shop, Schemas.Shop);
@@ -37,7 +37,7 @@ Meteor.methods({
 
     // identify a shop admin
     let userId = shopAdminUserId || Meteor.userId();
-    let adminRoles = Roles.getRolesForUser(currentUser, ReactionCore.getShopId());
+    let adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
@@ -75,7 +75,7 @@ Meteor.methods({
     }
 
     // get shop locale/currency related data
-    let shop = Collections.Shops.findOne(ReactionCore.getShopId(), {
+    let shop = Collections.Shops.findOne(Reaction.getShopId(), {
       fields: {
         addressBook: 1,
         locales: 1,
@@ -151,7 +151,7 @@ Meteor.methods({
     this.unblock();
 
     const field = `currencies.${currency}.rate`;
-    const shop = Collections.Shops.findOne(ReactionCore.getShopId(), {
+    const shop = Collections.Shops.findOne(Reaction.getShopId(), {
       fields: {
         [field]: 1
       }
@@ -172,7 +172,7 @@ Meteor.methods({
   "shop/fetchCurrencyRate": function () {
     this.unblock();
 
-    const shopId = ReactionCore.getShopId();
+    const shopId = Reaction.getShopId();
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         addressBook: 1,
@@ -259,7 +259,7 @@ Meteor.methods({
   "shop/flushCurrencyRate": function () {
     this.unblock();
 
-    const shopId = ReactionCore.getShopId();
+    const shopId = Reaction.getShopId();
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         currencies: 1
@@ -308,7 +308,7 @@ Meteor.methods({
     check(_id, String);
 
     // must have core permissions
-    if (!ReactionCore.hasPermission("core")) {
+    if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -382,7 +382,7 @@ Meteor.methods({
 
     let newTagId;
     // must have 'core' permissions
-    if (!ReactionCore.hasPermission("core")) {
+    if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -430,7 +430,7 @@ Meteor.methods({
     }
     // create newTags
     newTag.isTopLevel = !currentTagId;
-    newTag.shopId = ReactionCore.getShopId();
+    newTag.shopId = Reaction.getShopId();
     newTag.updatedAt = new Date();
     newTag.createdAt = new Date();
     newTagId = Collections.Tags.insert(newTag);
@@ -460,7 +460,7 @@ Meteor.methods({
     check(tagId, String);
     check(currentTagId, String);
     // must have core permissions
-    if (!ReactionCore.hasPermission("core")) {
+    if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -499,7 +499,7 @@ Meteor.methods({
   "shop/hideHeaderTag": function (tagId) {
     check(tagId, String);
     // must have core permissions
-    if (!ReactionCore.hasPermission("core")) {
+    if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
@@ -546,12 +546,12 @@ Meteor.methods({
     check(language, String);
     check(enabled, Boolean);
     // must have core permissions
-    if (!ReactionCore.hasPermission("core")) {
+    if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
     return Collections.Shops.update({
-      "_id": ReactionCore.getShopId(),
+      "_id": Reaction.getShopId(),
       "languages.i18n": language
     }, {
       $set: {
@@ -571,21 +571,21 @@ Meteor.methods({
       type: String
     });
     // must have core permissions
-    if (!ReactionCore.hasPermission("core")) {
+    if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
 
     // Does our shop contain the brandasset we're tring to add
     const shopWithBrandAsset = Collections.Shops.findOne({
-      "_id": ReactionCore.getShopId(),
+      "_id": Reaction.getShopId(),
       "brandAssets.type": asset.type
     });
 
     // If it does, then we update it with the new asset reference
     if (shopWithBrandAsset) {
       return Collections.Shops.update({
-        "_id": ReactionCore.getShopId(),
+        "_id": Reaction.getShopId(),
         "brandAssets.type": "navbarBrandImage"
       }, {
         $set: {
@@ -599,7 +599,7 @@ Meteor.methods({
 
     // Otherwise we insert a new brand asset reference
     return Collections.Shops.update({
-      _id: ReactionCore.getShopId()
+      _id: Reaction.getShopId()
     }, {
       $push: {
         brandAssets: {
@@ -620,7 +620,7 @@ Meteor.methods({
   "shop/togglePackage": function (packageId, enabled) {
     check(packageId, String);
     check(enabled, Boolean);
-    if (!ReactionCore.hasAdminAccess()) {
+    if (!Reaction.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 

@@ -1,4 +1,5 @@
 import { Packages } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 /**
  * Packages contains user specific configuration
@@ -13,13 +14,13 @@ Meteor.publish("Packages", function (shopCursor) {
     return this.ready();
   }
 
-  const shop = shopCursor || ReactionCore.getCurrentShop();
+  const shop = shopCursor || Reaction.getCurrentShop();
 
   // we should always have a shop
   if (shop) {
     // if admin user, return all shop properties
     if (Roles.userIsInRole(this.userId, ["dashboard", "owner", "admin"],
-        ReactionCore.getShopId() || Roles.userIsInRole(this.userId, [
+        Reaction.getShopId() || Roles.userIsInRole(this.userId, [
           "owner", "admin"
         ], Roles.GLOBAL_GROUP))) {
       return Packages.find({

@@ -1,3 +1,7 @@
+import { Meteor } from "meteor/meteor";
+import { Reaction } from "/server/api";
+
+
 Meteor.methods({
   "accounts/updateServiceConfiguration": function (service, fields) {
     check(service, String);
@@ -8,7 +12,7 @@ Meteor.methods({
       dataToSave[field.property] = field.value;
     });
 
-    if (ReactionCore.hasPermission(["dashboard/accounts"])) {
+    if (Reaction.hasPermission(["dashboard/accounts"])) {
       return ServiceConfiguration.configurations.upsert({
         service: service
       }, {

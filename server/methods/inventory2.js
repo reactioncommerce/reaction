@@ -1,6 +1,7 @@
 import { Catalog } from "/lib/api";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { Logger } from "/server/api";
 
 //
 // Inventory methods
@@ -49,7 +50,7 @@ Meteor.methods({
         let newQty = variant.inventoryQuantity || 0;
         let i = inventoryVariantCount + 1;
 
-        ReactionInventory.Log.info(
+        Logger.info(
           `inserting ${newQty - inventoryVariantCount
             } new inventory items for ${variant._id}`
         );
@@ -81,7 +82,7 @@ Meteor.methods({
           // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
           return totalNewInventory;
         }
-        ReactionInventory.Log.debug(`registered ${inserted}`);
+        Logger.debug(`registered ${inserted}`);
         totalNewInventory += inserted;
       }
     }
@@ -156,7 +157,7 @@ Meteor.methods({
             // we could add handling for the case when aren't enough "new" items
           }
         }
-        ReactionInventory.Log.info(
+        Logger.info(
           `adjust variant ${variant._id} from ${itemCount} to ${results}`
         );
       }
@@ -177,7 +178,7 @@ Meteor.methods({
     // this.unblock();
     // todo add bulkOp here
 
-    ReactionInventory.Log.debug("inventory/remove", inventoryItem);
+    Logger.debug("inventory/remove", inventoryItem);
     return Inventory.remove(inventoryItem);
   },
   /**

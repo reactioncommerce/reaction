@@ -1,3 +1,7 @@
+import { Meteor } from "meteor/meteor";
+import { Reaction } from "/server/api";
+
+
 /**
  *  Step 4 of the "workflow/pushOrderWorkflow" flow
  *	The following methods are called from Orders.before.update hook.
@@ -17,7 +21,7 @@ Meteor.methods({
     check(options, Match.OrderHookOptions());
     const userId = options.userId;
 
-    return ReactionCore.hasPermission(["dashboard/orders"], userId);
+    return Reaction.hasPermission(["dashboard/orders"], userId);
   },
 
   /**

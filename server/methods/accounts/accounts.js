@@ -1,6 +1,7 @@
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, ReactionCore } from "/server/api";
+import { Logger, Reaction } from "/server/api";
+
 
 /**
  * Reaction Account Methods
@@ -34,7 +35,7 @@ Meteor.methods({
     // here because we are calling `Meteor.userId` from within this Method.
     if (typeof accountUserId === "string") { // if this will not be a String -
       // `check` will not pass it.
-      if (!ReactionCore.hasAdminAccess()) {
+      if (!Reaction.hasAdminAccess()) {
         throw new Meteor.Error(403, "Access denied");
       }
     }
@@ -113,7 +114,7 @@ Meteor.methods({
     // here because we are calling `Meteor.userId` from within this Method.
     if (typeof accountUserId === "string") { // if this will not be a String -
       // `check` will not pass it.
-      if (!ReactionCore.hasAdminAccess()) {
+      if (!Reaction.hasAdminAccess()) {
         throw new Meteor.Error(403, "Access denied");
       }
     }
@@ -204,7 +205,7 @@ Meteor.methods({
     // here because we are calling `Meteor.userId` from within this Method.
     if (typeof accountUserId === "string") { // if this will not be a String -
       // `check` will not pass it.
-      if (!ReactionCore.hasAdminAccess()) {
+      if (!Reaction.hasAdminAccess()) {
         throw new Meteor.Error(403, "Access denied");
       }
     }
@@ -248,11 +249,11 @@ Meteor.methods({
     this.unblock();
     shop = Collections.Shops.findOne(shopId);
 
-    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
+    if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access denied");
     }
 
-    ReactionCore.configureMailUrl();
+    Reaction.configureMailUrl();
     // don't send account emails unless email server configured
     if (!process.env.MAIL_URL) {
       Logger.info(`Mail not configured: suppressing invite email output`);
@@ -367,7 +368,7 @@ Meteor.methods({
     }
 
     // configure email
-    ReactionCore.configureMailUrl();
+    Reaction.configureMailUrl();
     // don't send account emails unless email server configured
     if (!process.env.MAIL_URL) {
       Logger.info(`Mail not configured: suppressing welcome email output`);
@@ -402,7 +403,7 @@ Meteor.methods({
    * @returns {Boolean} success/failure
    */
   "accounts/addUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
+    if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, Match.OneOf(String, Array));
@@ -420,7 +421,7 @@ Meteor.methods({
    * accounts/removeUserPermissions
    */
   "accounts/removeUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
+    if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, String);
@@ -444,7 +445,7 @@ Meteor.methods({
    * @returns {Boolean} returns Roles.setUserRoles result
    */
   "accounts/setUserPermissions": function (userId, permissions, group) {
-    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), group)) {
+    if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
       throw new Meteor.Error(403, "Access denied");
     }
     check(userId, String);

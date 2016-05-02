@@ -1,4 +1,6 @@
+import { Meteor } from "meteor/meteor";
 import { Cart, Orders, Packages, Shops } from "/lib/collections";
+import { Logger, Reaction } from "/server/api";
 
 /* eslint no-shadow: 0 */
 
@@ -29,8 +31,6 @@ Meteor.methods({
       template: ""
     };
 
-    const { Log } = ReactionCore;
-
     // This method could be called indirectly from publication method in a time
     // when `this.userId` will be null, that's why we have a third argument in
     // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
@@ -47,7 +47,7 @@ Meteor.methods({
     // TODO doc this
     let currentWorkflowStatus = currentCart.workflow.status;
     let packages = Packages.find({
-      "shopId": ReactionCore.getShopId(),
+      "shopId": Reaction.getShopId(),
       "layout.workflow": workflow
     });
 
@@ -63,7 +63,7 @@ Meteor.methods({
           // audience is the layout permissions
           if (typeof layout.audience !== "object") {
             let defaultRoles = Shops.findOne(
-              ReactionCore.getShopId(), {
+              Reaction.getShopId(), {
                 sort: {
                   priority: 1
                 }
@@ -75,9 +75,9 @@ Meteor.methods({
           // check which is looks not pretty secure
           let hasPermission;
           if (typeof Meteor.userId() !== "string") {
-            hasPermission = Roles.userIsInRole(currentCart.userId, layout.audience, ReactionCore.getShopId());
+            hasPermission = Roles.userIsInRole(currentCart.userId, layout.audience, Reaction.getShopId());
           } else {
-            hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, ReactionCore.getShopId());
+            hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
           }
 
           if (hasPermission  && !layout.layout) {
@@ -106,17 +106,18 @@ Meteor.methods({
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {
-          Log.debug("currentStatusIndex, maxSteps", currentStatusIndex, maxSteps);
+          Logger.debug("currentStatusIndex, maxSteps", currentStatusIndex, maxSteps);
+          Logger.debug("currentStatusIndex, maxSteps", currentStatusIndex, maxSteps);
           nextWorkflowStepIndex = currentStatusIndex + 1;
         } else {
           nextWorkflowStepIndex = currentStatusIndex;
         }
 
-        Log.debug("nextWorkflowStepIndex", nextWorkflowStepIndex);
+        Logger.debug("nextWorkflowStepIndex", nextWorkflowStepIndex);
         // set the nextWorkflowStep as the next workflow object from registry
         nextWorkflowStep = defaultPackageWorkflows[nextWorkflowStepIndex];
 
-        Log.debug("setting nextWorkflowStep", nextWorkflowStep.template);
+        Logger.debug("setting nextWorkflowStep", nextWorkflowStep.template);
       }
     });
 
@@ -127,15 +128,15 @@ Meteor.methods({
       nextWorkflowStep.template);
 
     // debug info
-    Log.debug("currentWorkflowStatus: ", currentWorkflowStatus);
-    Log.debug("workflow/pushCartWorkflow workflow: ", workflow);
-    Log.debug("newWorkflowStatus: ", newWorkflowStatus);
-    Log.debug("current cartId: ", currentCart._id);
-    Log.debug("currentWorkflow: ", currentCart.workflow.workflow);
-    Log.debug("nextWorkflowStep: ", nextWorkflowStep.template || defaultPackageWorkflows[0].template);
-    Log.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
-    Log.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
-    Log.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
+    Logger.debug("currentWorkflowStatus: ", currentWorkflowStatus);
+    Logger.debug("workflow/pushCartWorkflow workflow: ", workflow);
+    Logger.debug("newWorkflowStatus: ", newWorkflowStatus);
+    Logger.debug("current cartId: ", currentCart._id);
+    Logger.debug("currentWorkflow: ", currentCart.workflow.workflow);
+    Logger.debug("nextWorkflowStep: ", nextWorkflowStep.template || defaultPackageWorkflows[0].template);
+    Logger.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
+    Logger.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
+    Logger.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
 
     // Condition One
     // if you're going to join the workflow you need a status that is a template name.
@@ -143,7 +144,7 @@ Meteor.methods({
     // where you are in the flow and configures `gotoNextWorkflowStep`
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus) {
-      Log.debug(
+      Logger.debug(
         `######## Condition One #########: initialise the ${currentCart._id} ${workflow}: ${defaultPackageWorkflows[0].template}`
       );
       let result = Cart.update(currentCart._id, {
@@ -151,7 +152,7 @@ Meteor.methods({
           "workflow.status": defaultPackageWorkflows[0].template
         }
       });
-      Log.debug(result);
+      Logger.debug(result);
       return result;
     }
 
@@ -161,7 +162,7 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
       templateProcessedinWorkflow === false) {
-      Log.debug("######## Condition Two #########: set status to: ",
+      Logger.debug("######## Condition Two #########: set status to: ",
         nextWorkflowStep.template);
 
       return Cart.update(currentCart._id, {
@@ -179,7 +180,7 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
-      Log.debug("######## Condition Three #########: complete workflow " +
+      Logger.debug("######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
         nextWorkflowStep.template);
       return Cart.update(currentCart._id, {
@@ -197,7 +198,7 @@ Meteor.methods({
     // nice job. now start over with the next step.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === true) {
-      Log.debug(
+      Logger.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
         newWorkflowStatus);
       return true;

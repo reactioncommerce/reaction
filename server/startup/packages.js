@@ -1,4 +1,5 @@
 import { Packages, Products } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 export default function () {
   /**
@@ -15,9 +16,7 @@ export default function () {
     if (modifier.$set) {
       if (modifier.$set.settings) {
         if (modifier.$set.settings.mail || modifier.$set["settings.mail.user"]) {
-          if (Meteor.isServer) {
-            return ReactionCore.configureMailUrl();
-          }
+          return Reaction.configureMailUrl();
         }
       }
     }

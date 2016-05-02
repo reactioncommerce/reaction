@@ -1,5 +1,6 @@
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { Logger } from "/server/api";
 
 // Disabled for now, needs more testing.
 
@@ -78,14 +79,14 @@ Meteor.methods({
       const availableInventoryQty = availableInventory.count();
       let existingReservationQty = existingReservations.count();
 
-      ReactionInventory.Log.info("totalRequiredQty", totalRequiredQty);
-      ReactionInventory.Log.info("availableInventoryQty", availableInventoryQty);
+      Logger.info("totalRequiredQty", totalRequiredQty);
+      Logger.info("availableInventoryQty", availableInventoryQty);
 
       // if we don't have existing inventory we create backorders
       if (totalRequiredQty > availableInventoryQty) {
         // TODO put in a dashboard setting to allow backorder or altenate handler to be used
         let backOrderQty = Number(totalRequiredQty - availableInventoryQty - existingReservationQty);
-        ReactionInventory.Log.info(`no inventory found, create ${backOrderQty} ${backorderStatus}`);
+        Logger.info(`no inventory found, create ${backOrderQty} ${backorderStatus}`);
         // define a new reservation
         const reservation = {
           productId: item.productId,
@@ -101,14 +102,14 @@ Meteor.methods({
         existingReservationQty = backOrderQty;
       }
       // if we have inventory available, only create additional required reservations
-      ReactionInventory.Log.debug("existingReservationQty", existingReservationQty);
+      Logger.debug("existingReservationQty", existingReservationQty);
       reservationCount = existingReservationQty;
       let newReservedQty = totalRequiredQty - existingReservationQty + 1;
       let i = 1;
 
       while (i < newReservedQty) {
         // updated existing new inventory to be reserved
-        ReactionInventory.Log.info(
+        Logger.info(
           `updating reservation status ${i} of ${newReservedQty - 1}/${totalRequiredQty} items.`);
         // we should be updating existing inventory here.
         // backorder process created additional backorder inventory if there
@@ -128,7 +129,7 @@ Meteor.methods({
         i++;
       }
     }
-    ReactionInventory.Log.info(
+    Logger.info(
       `finished creating ${reservationCount} new ${reservationStatus} reservations`);
     return reservationCount;
   },
@@ -183,7 +184,7 @@ Meteor.methods({
         i++;
       }
     }
-    ReactionInventory.Log.info("inventory/clearReserve", newStatus);
+    Logger.info("inventory/clearReserve", newStatus);
   },
   /**
    * inventory/clearReserve
@@ -259,7 +260,7 @@ Meteor.methods({
     const execute = Meteor.wrapAsync(batch.execute, batch);
     const inventoryBackorder = execute();
     const inserted = inventoryBackorder.nInserted;
-    ReactionInventory.Log.info(
+    Logger.info(
       `created ${inserted} backorder records for product ${
         newReservation.productId}, variant ${newReservation.variantId}`);
 
@@ -271,6 +272,6 @@ Meteor.methods({
   "inventory/lowStock": function (product) {
     check(product, Schemas.Product);
     // WIP placeholder
-    ReactionInventory.Log.info("inventory/lowStock");
+    Logger.info("inventory/lowStock");
   }
 });
