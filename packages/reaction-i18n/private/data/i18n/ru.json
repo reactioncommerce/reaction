@@ -329,7 +329,7 @@
         "shipTo": "Доставить до",
         "notShipped": "Ещё не доставлено",
         "noTracking": "Не отслеживается",
-        "tracking": "Отслеживание",
+        "tracking": "Трекинг номер",
         "addTracking": "Добавить идентификатор",
         "itemsHaveBeenShipped": "Товары отправлены",
         "shipmentEmpty": "Эта доставка не содержит товаров",
