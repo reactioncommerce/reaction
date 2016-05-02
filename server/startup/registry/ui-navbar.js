@@ -1,2 +1,5 @@
+import { Reaction } from "/server/api";
 
-// ReactionUI.registerTheme(Assets.getText("private/themes/navbar.css"));
+export default function () {
+  Reaction.registerTheme(Assets.getText("themes/navbar.css"));
+}
