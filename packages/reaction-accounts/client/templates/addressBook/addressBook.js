@@ -10,6 +10,8 @@ Template.addressBook.onCreated(function () {
   this.templateData = ReactiveVar({});
 
   this.autorun(() => {
+    this.subscribe("Accounts", Meteor.userId());
+
     let account = ReactionCore.Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
