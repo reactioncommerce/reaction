@@ -1,24 +1,20 @@
 import Core from "./core";
-import * as assignRoles from "./assignRoles";
-import * as defaultAdmin from "./defaultAdmin";
-import * as loadPackages from "./loadPackages";
-import * as loadSettings from "./loadSettings";
-import * as setDomain from "./setDomain";
-import * as shopName from "./shopName";
-import * as ui from "./ui";
+import * as AssignRoles from "./assignRoles";
+import * as LoadSettings from "./loadSettings";
+import * as SetDomain from "./setDomain";
+import * as ShopName from "./shopName";
+import * as UI from "./ui";
 
 /**
  * Reaction methods (server)
  */
 const Reaction = Object.assign(
   Core,
-  assignRoles,
-  defaultAdmin,
-  loadPackages,
-  loadSettings,
-  setDomain,
-  shopName,
-  ui
+  AssignRoles,
+  LoadSettings,
+  SetDomain,
+  ShopName,
+  UI
 );
 
 export default Reaction;
