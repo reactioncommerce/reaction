@@ -43,5 +43,5 @@ export default function () {
     }]
   });
 
-  // ReactionUI.registerTheme(Assets.getText("private/themes/button.css"));
+  Reaction.registerTheme(Assets.getText("themes/button.css"));
 }
