@@ -56,24 +56,25 @@ Meteor.methods({
     check(order, Object);
     check(shipment, Object);
     check(packed, Boolean);
-    this.unblock();
 
     if (order) {
-      ReactionCore.Collections.Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.packed": packed
-        }
-      });
-
       // Set the status of the items as shipped
       const itemIds = shipment.items.map((item) => {
         return item._id;
       });
 
-      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+      if (result === 1) {
+        return ReactionCore.Collections.Orders.update({
+          "_id": order._id,
+          "shipping._id": shipment._id
+        }, {
+          $set: {
+            "shipping.$.packed": packed
+          }
+        });
+      }
+      return result;
     }
   },
 
