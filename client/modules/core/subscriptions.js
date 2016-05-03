@@ -1,3 +1,17 @@
+import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
+import { Session } from "meteor/session";
+import { Tracker } from "meteor/tracker";
+import { SubsManager } from "meteor/meteorhacks:subs-manager";
+
+export const Subscriptions = {};
+
+// Subscription Manager
+// See: https://github.com/kadirahq/subs-manager
+Subscriptions.Manager = new SubsManager();
+
+Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userId());
+
 /*
  * ReactionCore.session
  * Create persistent sessions for users
@@ -14,17 +28,17 @@
 /**
  * General Subscriptions
  */
-ReactionCore.Subscriptions.Shops = Meteor.subscribe("Shops");
+Subscriptions.Shops = Meteor.subscribe("Shops");
 
-ReactionCore.Subscriptions.Packages = Meteor.subscribe("Packages");
+Subscriptions.Packages = Meteor.subscribe("Packages");
 
-ReactionCore.Subscriptions.Tags = Meteor.subscribe("Tags");
+Subscriptions.Tags = Meteor.subscribe("Tags");
 
-ReactionCore.Subscriptions.Media = Meteor.subscribe("Media");
+Subscriptions.Media = Meteor.subscribe("Media");
 
 // admin only
 // todo should we put this inside autorun and detect user changes
-ReactionCore.Subscriptions.Inventory = Meteor.subscribe("Inventory");
+Subscriptions.Inventory = Meteor.subscribe("Inventory");
 
 /**
  * Subscriptions that need to reload on new sessions
@@ -45,8 +59,7 @@ Tracker.autorun(function () {
   if (typeof Session.get("sessionId") !== "string") {
     Session.set("sessionId", amplify.store("ReactionCore.session"));
   }
-  ReactionCore.Subscriptions.Sessions = Meteor.subscribe("Sessions",
-    Session.get("sessionId"));
+  Subscriptions.Sessions = Meteor.subscribe("Sessions", Session.get("sessionId"));
 });
 
 // @see http://guide.meteor.com/data-loading.html#changing-arguments
@@ -56,8 +69,5 @@ Tracker.autorun(() => {
   Tracker.nonreactive(() => {
     sessionId = Session.get("sessionId");
   });
-  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart",
-    sessionId,
-    Meteor.userId()
-  );
+  Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, Meteor.userId());
 });

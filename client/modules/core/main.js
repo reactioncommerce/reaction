@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
 
@@ -5,17 +7,17 @@ import { Packages, Shops } from "/lib/collections";
  * ReactionCore
  * Global reaction shop permissions methods and shop initialization
  */
-_.extend(ReactionCore, {
+export default {
   shopId: null,
-  init: function () {
-    let self;
-    self = this;
+
+  init() {
+    let self = this;
     // keep an eye out for shop change
     return Tracker.autorun(function () {
       let domain;
       let shop;
       // for clarity this subscription is defined in subscriptions.js
-      if (ReactionCore.Subscriptions.Shops.ready()) {
+      if (this.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
         shop = Shops.findOne({
           domains: domain
@@ -52,6 +54,7 @@ _.extend(ReactionCore, {
       }
     });
   },
+
   /**
    * hasPermission - client
    * client permissions checks
@@ -62,8 +65,8 @@ _.extend(ReactionCore, {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission: function (checkPermissions, checkUserId, checkGroup) {
-    let group = ReactionCore.getShopId();
+  hasPermission(checkPermissions, checkUserId, checkGroup) {
+    let group = this.getShopId();
     let permissions = ["owner"];
 
     // default group to the shop or global if shop
@@ -117,25 +120,31 @@ _.extend(ReactionCore, {
     // no specific permissions found returning false
     return false;
   },
-  hasOwnerAccess: function () {
+
+  hasOwnerAccess() {
     let ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
   },
-  hasAdminAccess: function () {
+
+  hasAdminAccess() {
     let adminPermissions = ["owner", "admin"];
     return this.hasPermission(adminPermissions);
   },
-  hasDashboardAccess: function () {
+
+  hasDashboardAccess() {
     let dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
-  getShopId: function () {
+
+  getShopId() {
     return this.shopId;
   },
-  getShopName: function () {
+
+  getShopName() {
     return this.shopName;
   },
-  allowGuestCheckout: function () {
+
+  allowGuestCheckout() {
     let allowGuest = true;
     let packageRegistry = Packages.findOne({
       name: "core",
@@ -149,7 +158,8 @@ _.extend(ReactionCore, {
     }
     return allowGuest;
   },
-  getSellerShopId: function () {
+
+  getSellerShopId() {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
 
@@ -159,50 +169,51 @@ _.extend(ReactionCore, {
    * @param {String} viewData {label, template, data}
    * @returns {String} Session "admin/showActionView"
    */
-  showActionView: function (viewData) {
+  showActionView(viewData) {
     Session.set("admin/showActionView", true);
-    ReactionCore.setActionView(viewData);
+    this.setActionView(viewData);
   },
 
-  isActionViewOpen: function () {
+  isActionViewOpen() {
     return Session.equals("admin/showActionView", true);
   },
 
-  setActionView: function (viewData) {
+  setActionView(viewData) {
     if (viewData) {
       Session.set("admin/actionView", viewData);
     } else {
-      let registryItem = ReactionCore.getRegistryForCurrentRoute(
+      let registryItem = this.getRegistryForCurrentRoute(
         "settings");
 
       if (registryItem) {
-        ReactionCore.setActionView(registryItem);
+        this.setActionView(registryItem);
       } else {
-        ReactionCore.setActionView({
+        this.setActionView({
           template: "blankControls"
         });
       }
     }
   },
 
-  getActionView: function () {
+  getActionView() {
     return Session.get("admin/actionView");
   },
 
-  hideActionView: function () {
+  hideActionView() {
     Session.set("admin/showActionView", false);
   },
 
-  clearActionView: function () {
+  clearActionView() {
     Session.set("admin/actionView", undefined);
   },
 
-  getCurrentTag: function () {
+  getCurrentTag() {
     if (ReactionRouter.getRouteName() === "tag") {
       return ReactionRouter.current().params.slug;
     }
   },
-  getRegistryForCurrentRoute: (provides = "dashboard") => {
+
+  getRegistryForCurrentRoute(provides = "dashboard") {
     ReactionRouter.watchPathChange();
     const currentRouteName = ReactionRouter.getRouteName();
     const currentRoute = ReactionRouter.current();
@@ -230,7 +241,7 @@ _.extend(ReactionCore, {
     return {};
   }
 
-});
+};
 
 /**
  * createCountryCollection

@@ -49,7 +49,7 @@ import { Packages } from "/lib/collections";
  *  }]
  */
 
-function getReactionApps(optionHash) {
+export function getReactionApps(optionHash) {
   let fields;
   let filter;
   let key;
@@ -195,9 +195,6 @@ function getReactionApps(optionHash) {
   // we're done.
   return reactionApps;
 }
-
-// Export
-ReactionCore.Apps = getReactionApps;
 
 // Register global template helper
 Template.registerHelper("reactionApps", (optionHash) => {
