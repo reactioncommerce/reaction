@@ -2,10 +2,8 @@
   <div class="container-main">
     <div class="product-grid" data-event-category="grid" data-event-action="generic-click" data-event-label="product grid click">
       <ul class="product-grid-list list-unstyled" id="product-grid-list">
-       {{#if products}}
         {{#each products}}
           {{> productGridItems}}
-        {{/each}}
         {{else}}
           <div class="row">
             <div class="text-center">
@@ -14,7 +12,7 @@
               </h3>
             </div>
           </div>
-       {{/if}}
+        {{/each}}
       </ul>
     </div>
   </div>
