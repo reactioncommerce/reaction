@@ -25,7 +25,7 @@ Template.coreOrderShippingTracking.onCreated(() => {
 Template.coreOrderShippingTracking.events({
   "click [data-event-action=shipmentShipped]": function () {
     let template = Template.instance();
-    Meteor.call("orders/shipmentShipped", template.order);
+    Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0]);
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 

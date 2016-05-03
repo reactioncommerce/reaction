@@ -161,35 +161,42 @@ Meteor.methods({
    *
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
-   * @return {Object} return workflow result
+   * @param {Object} shipment - shipment object
+   * @return {Object} return results of several operations
    */
-  "orders/shipmentShipped": function (order) {
+  "orders/shipmentShipped": function (order, shipment) {
     check(order, Object);
     this.unblock();
 
-    if (order) {
-      let shipment = order.shipping[0];
+    let completedItemsResult;
+    let completedOrderResult;
 
-      // Attempt to sent email notification
-      Meteor.call("orders/sendNotification", order);
+    // Attempt to sent email notification
+    const notifyResult = Meteor.call("orders/sendNotification", order);
 
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
 
-      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds, (error) => {
-        // Move to completed status for items
-        // TODO: In the future, this could be handled by shipping delivery status
-        if (!error) {
-          Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds, (error2) => {
-            // Then try to mark order as completed.
-            if (!error2) {
-              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
-            }
-          });
-        }
-      });
+    // TODO: In the future, this could be handled by shipping delivery status
+    const workflowResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds);
+
+    if (workflowResult === 1) {
+      // Move to completed status for items
+      completedItemsResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
+
+      if (completedItemsResult === 1) {
+        // Then try to mark order as completed.
+        completedOrderResult = Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
+      }
     }
+
+    return {
+      notify: notifyResult,
+      workflow: workflowResult,
+      completedItems: completedItemsResult,
+      completedOrder: completedOrderResult
+    };
   },
 
   /**
