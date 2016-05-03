@@ -46,7 +46,12 @@ ReactionCore.Helpers.cartTransform = {
   },
   cartShipping: function () {
     // loop through the cart.shipping, sum shipments.
-    return parseFloat(getSummary(this.shipping, ["shipmentMethod", "rate"]));
+    // shipmentMethod could be undefined if we resets workflow from more higher
+    // stage by adding new item to cart for example
+    if (typeof this.shipping[0].shipmentMethod === "object") {
+      return parseFloat(getSummary(this.shipping, ["shipmentMethod", "rate"]));
+    }
+    return 0;
   },
   cartSubTotal: function () {
     return getSummary(this.items, ["quantity"], ["variants", "price"]).
@@ -62,7 +67,10 @@ ReactionCore.Helpers.cartTransform = {
   cartTotal: function () {
     let subTotal = getSummary(this.items, ["quantity"], ["variants", "price"]);
     // loop through the cart.shipping, sum shipments.
-    let shippingTotal = getSummary(this.shipping, ["shipmentMethod", "rate"]);
+    let shippingTotal = 0;
+    if (typeof this.shipping[0].shipmentMethod === "object") {
+      shippingTotal = getSummary(this.shipping, ["shipmentMethod", "rate"]);
+    }
     shippingTotal = parseFloat(shippingTotal);
     // TODO: includes taxes?
     if (typeof shippingTotal === "number" && shippingTotal > 0) {
