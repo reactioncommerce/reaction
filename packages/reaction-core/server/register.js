@@ -46,7 +46,7 @@ ReactionCore.registerPackage({
     }
   }, {
     layout: "coreLayout",
-    workflow: "coreWorkflow",
+    workflow: "coreUnauthorized",
     theme: "default",
     enabled: true,
     structure: {
