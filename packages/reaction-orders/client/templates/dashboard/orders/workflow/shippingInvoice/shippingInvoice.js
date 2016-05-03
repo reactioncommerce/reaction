@@ -217,7 +217,7 @@ Template.coreOrderShippingInvoice.helpers({
     _.each(refunds, function (item) {
       refundTotal += item.amount;
     });
-    return paymentMethod.total - refundTotal;
+    return paymentMethod.amount - refundTotal;
   },
 
   refundSubmitDisabled() {
