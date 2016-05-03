@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Cart } from "/lib/collections";
 
 /**
@@ -73,7 +74,7 @@ Template.emptyCartDrawer.events({
     event.stopPropagation();
     event.preventDefault();
     return $("#cart-drawer-container").fadeOut(300, function () {
-      return toggleSession("displayCart");
+      return Reaction.toggleSession("displayCart");
     });
   }
 });

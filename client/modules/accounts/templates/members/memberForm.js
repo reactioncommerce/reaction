@@ -1,3 +1,5 @@
+import { Reaction } from "/client/modules/core";
+
 /**
  * memberForm events
  *
@@ -9,7 +11,7 @@ Template.memberForm.events({
     let newMemberEmail = template.$('input[name="email"]').val();
     let newMemberName = template.$('input[name="name"]').val();
 
-    return Meteor.call("accounts/inviteShopMember", ReactionCore.getShopId(),
+    return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(),
       newMemberEmail, newMemberName, function (error, result) {
         if (error) {
           let message;

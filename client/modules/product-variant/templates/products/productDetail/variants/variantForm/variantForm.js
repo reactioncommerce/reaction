@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
 
 /**
@@ -95,7 +96,7 @@ Template.variantForm.events({
     }
     Meteor.call("products/cloneVariant", productId, template.data._id,
       function (error, result) {
-        return toggleSession("variant-form-" + result);
+        return Reaction.toggleSession("variant-form-" + result);
       });
   }
 });

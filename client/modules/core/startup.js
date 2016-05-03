@@ -1,4 +1,6 @@
+import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
+import Reaction from "./main";
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
 let hidden;
@@ -28,7 +30,7 @@ Meteor.startup(function () {
     Logger.warn(msg, PackageRegistry);
   }
   // init the core
-  ReactionCore.init();
+  Reaction.init();
   // initialize anonymous guest users
   return Tracker.autorun(function () {
     const userId = Meteor.userId();
@@ -38,10 +40,10 @@ Meteor.startup(function () {
     let loggingIn;
     let sessionId;
     Tracker.nonreactive(function () {
-      guestAreAllowed = ReactionCore.allowGuestCheckout();
+      guestAreAllowed = Reaction.allowGuestCheckout();
       isHidden = document[hidden];
       loggingIn = Accounts.loggingIn();
-      sessionId = amplify.store("ReactionCore.session");
+      sessionId = amplify.store("Reaction.session");
     });
     if (guestAreAllowed && !userId) {
       if (!isHidden && !loggingIn || typeof sessionId !== "string") {

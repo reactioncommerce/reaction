@@ -1,3 +1,5 @@
+import { Reaction } from "../";
+
 /*
  * Methods for the reaction permissions
  * helpers for roles, uses alanning:meteor-roles
@@ -15,17 +17,17 @@
 Template.registerHelper("hasPermission", function (permissions, options) {
   // default to checking this.userId
   let userId = Meteor.userId();
-  let shopId = ReactionCore.getShopId();
+  let shopId = Reaction.getShopId();
   // we don't necessarily need to check here
   // as these same checks and defaults are
-  // also performed in ReactionCore.hasPermission
+  // also performed in Reaction.hasPermission
   if (typeof options === "object") {
     if (options.hash.userId) {
       userId = options.hash.userId;
-      return ReactionCore.hasPermission(permissions, userId, shopId);
+      return Reaction.hasPermission(permissions, userId, shopId);
     }
   }
-  return ReactionCore.hasPermission(permissions, userId, shopId);
+  return Reaction.hasPermission(permissions, userId, shopId);
 });
 
 /**
@@ -34,7 +36,7 @@ Template.registerHelper("hasPermission", function (permissions, options) {
  * @return {Boolean} return true if owner
  */
 Template.registerHelper("hasOwnerAccess", function () {
-  return ReactionCore.hasOwnerAccess();
+  return Reaction.hasOwnerAccess();
 });
 
 /**
@@ -43,7 +45,7 @@ Template.registerHelper("hasOwnerAccess", function () {
  * @return {Boolean} return true if admin
  */
 Template.registerHelper("hasAdminAccess", function () {
-  return ReactionCore.hasAdminAccess();
+  return Reaction.hasAdminAccess();
 });
 
 /**
@@ -52,7 +54,7 @@ Template.registerHelper("hasAdminAccess", function () {
  * @return {Boolean} return true if user has dashboard permission
  */
 Template.registerHelper("hasDashboardAccess", function () {
-  return ReactionCore.hasDashboardAccess();
+  return Reaction.hasDashboardAccess();
 });
 
 /**
@@ -61,5 +63,5 @@ Template.registerHelper("hasDashboardAccess", function () {
  * @return {Boolean} return true if shop has guest checkout enabled
  */
 Template.registerHelper("allowGuestCheckout", function () {
-  return ReactionCore.allowGuestCheckout();
+  return Reaction.allowGuestCheckout();
 });

@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
 import { Products, Tags } from "/lib/collections";
 
@@ -56,7 +57,7 @@ Template.productGrid.onCreated(function () {
   });
 
   this.autorun(() => {
-    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    const isActionViewOpen = Reaction.isActionViewOpen();
     if (isActionViewOpen === false) {
       Session.set("productGrid/selectedProducts", []);
     }
@@ -90,7 +91,7 @@ Template.productGrid.events({
       return _.contains(selectedProducts, product._id);
     });
 
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: i18next.t("productDetailEdit.productSettings"),
       template: "productSettings",
       type: "product",

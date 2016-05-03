@@ -1,7 +1,8 @@
+import { Reaction } from "/client/modules/core";
 import { Media, Products } from "/lib/collections";
 
 function uploadHandler(event) {
-  let shopId = ReactionCore.getShopId();
+  let shopId = Reaction.getShopId();
   let userId = Meteor.userId();
   let files = event.target.files.files;
 

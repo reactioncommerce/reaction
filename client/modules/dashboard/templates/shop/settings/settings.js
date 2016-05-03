@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Media, Packages, Shops } from "/lib/collections";
 
 Template.shopBrandImageOption.helpers({
@@ -64,7 +65,7 @@ Template.shopSettings.helpers({
     });
 
     const shop = Shops.findOne({
-      "_id": ReactionCore.getShopId(),
+      "_id": Reaction.getShopId(),
       "brandAssets.type": "navbarBrandImage"
     });
 
@@ -105,7 +106,7 @@ Template.shopSettings.helpers({
 
   handleFileUpload() {
     const userId = Meteor.userId();
-    const shopId = ReactionCore.getShopId();
+    const shopId = Reaction.getShopId();
 
     return (files) => {
       for (let file of files) {
@@ -133,7 +134,7 @@ Template.shopSettings.helpers({
     return address[0];
   },
   paymentMethodOptions() {
-    const paymentMethods = ReactionCore.Apps({provides: "paymentMethod"});
+    const paymentMethods = Reaction.Apps({provides: "paymentMethod"});
     const options = [{
       label: i18next.t("app.auto"),
       value: "none"

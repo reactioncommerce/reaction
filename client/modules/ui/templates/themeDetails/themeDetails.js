@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Themes } from "/lib/collections";
 
 Template.uiThemeDetails.onCreated(function () {
@@ -14,7 +15,7 @@ Template.uiThemeDetails.onCreated(function () {
     this.state.set("selectedComponent", selectedComponent);
 
     if (selectedComponent) {
-      ReactionCore.showActionView({
+      Reaction.showActionView({
         label: i18next.t("reactionUI.editTheme", "Edit Theme"),
         props: {
           size: "large"

@@ -1,3 +1,6 @@
+import i18next from "i18next";
+import i18nextJquery from "jquery-i18next";
+import { Reaction } from "/client/modules/core";
 import { Packages, Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
@@ -76,7 +79,7 @@ function getMessagesFor() {
  *  initialize i18n and load data resources for the current language and fallback "EN"
  *
  */
-ReactionCore.translationDependency = this.i18nextDep = new Tracker.Dependency();
+Reaction.translationDependency = this.i18nextDep = new Tracker.Dependency();
 this.localeDep = new Tracker.Dependency();
 const packageNamespaces = [];
 let shopLanguage;
@@ -85,8 +88,8 @@ let packages;
 
 Meteor.startup(() => {
   Tracker.autorun(function () {
-    if (ReactionCore.Subscriptions.Shops.ready()) {
-      const shop = Shops.findOne(ReactionCore.getShopId());
+    if (Reaction.Subscriptions.Shops.ready()) {
+      const shop = Shops.findOne(Reaction.getShopId());
       shopLanguage = shop.language;
       defaultLanguage = shopLanguage;
       // TODO: i18nextBrowserLanguageDetector
@@ -109,9 +112,9 @@ Meteor.startup(() => {
       // use i18n detected language to getLocale info
       Meteor.call("shop/getLocale", function (error, result) {
         if (result) {
-          ReactionCore.Locale = result;
-          ReactionCore.Locale.language = Session.get("language");
-          moment.locale(ReactionCore.Locale.language);
+          Reaction.Locale = result;
+          Reaction.Locale.language = Session.get("language");
+          moment.locale(Reaction.Locale.language);
           localeDep.changed();
         }
       });

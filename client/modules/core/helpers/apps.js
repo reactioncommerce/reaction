@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { Packages } from "/lib/collections";
 
@@ -72,7 +73,7 @@ export function getReactionApps(optionHash) {
 
   // you could provide a shopId in optionHash
   if (!options.shopId) {
-    options.shopId = ReactionCore.getShopId();
+    options.shopId = Reaction.getShopId();
   }
 
   reactionApps = [];
@@ -167,11 +168,11 @@ export function getReactionApps(optionHash) {
               if (match === Object.keys(registryFilter).length) {
                 if (!registry.packageName) registry.packageName = app.name;
                 if (registry.enabled !== false) {
-                  registry = ReactionCore.translateRegistry(registry, app);
+                  registry = Reaction.translateRegistry(registry, app);
                   registry.enabled = registry.enabled || app.enabled;
                   registry.packageId = app._id;
                   // check permissions before pushing so that templates aren't required.
-                  if (ReactionCore.hasPermission([registry.name, registry.route])) {
+                  if (Reaction.hasPermission([registry.name, registry.route])) {
                     reactionApps.push(registry);
                   }
                 }

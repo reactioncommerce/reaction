@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Shops } from "/lib/collections";
 
 /**
@@ -7,7 +8,7 @@ import { Shops } from "/lib/collections";
 Template.i18nChooser.helpers({
   languages() {
     let languages = [];
-    if (ReactionCore.Subscriptions.Shops.ready()) {
+    if (Reaction.Subscriptions.Shops.ready()) {
       let shop = Shops.findOne();
       if (typeof shop === "object" && shop.languages) {
         for (let language of shop.languages) {

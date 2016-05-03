@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Tags } from "/lib/collections";
 
 /**
@@ -41,7 +42,7 @@ Template.layoutHeader.helpers({
 
     return {
       name: "coreHeaderNavigation",
-      editable: ReactionCore.hasAdminAccess(),
+      editable: Reaction.hasAdminAccess(),
       tags: tags,
       onToggleMenu(callback) {
         // Register the callback

@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Cart } from "/lib/collections";
 
 /**
@@ -12,8 +13,8 @@ Template.checkoutLogin.helpers({
     const cart = Cart.findOne();
     if (cart && cart.workflow) {
       const currentStatus = cart.workflow.status;
-      const guestUser = ReactionCore.hasPermission("guest", Meteor.user());
-      const anonUser = Roles.userIsInRole("anonymous", Meteor.user(), ReactionCore.getShopId());
+      const guestUser = Reaction.hasPermission("guest", Meteor.user());
+      const anonUser = Roles.userIsInRole("anonymous", Meteor.user(), Reaction.getShopId());
 
       if (currentStatus !== self.template && guestUser === true && anonUser === false) {
         return true;

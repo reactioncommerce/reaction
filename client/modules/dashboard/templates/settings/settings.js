@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Packages } from "/lib/collections";
 
 /**
@@ -10,7 +11,7 @@ Template.settingsHeader.helpers({
    * @return {Object} Registry entry for item
    */
   registry: function () {
-    return ReactionCore.getActionView() || {};
+    return Reaction.getActionView() || {};
   },
 
   /**
@@ -45,7 +46,7 @@ Template.settingsHeader.helpers({
  */
 Template.settingsHeader.events({
   "click [data-event-action=closeSettings]": () => {
-    ReactionCore.hideActionView();
+    Reaction.hideActionView();
   }
 });
 
@@ -59,12 +60,12 @@ Template.settingsSidebar.helpers({
    * @return {Boolean} user has permission to see settings for this package
    */
   pkgPermissions() {
-    if (ReactionCore.hasPermission("dashboard")) {
+    if (Reaction.hasPermission("dashboard")) {
       if (this.name) {
-        return ReactionCore.hasPermission(this.name);
+        return Reaction.hasPermission(this.name);
       }
 
-      return ReactionCore.hasPermission(this.name);
+      return Reaction.hasPermission(this.name);
     }
 
     return false;

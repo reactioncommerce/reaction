@@ -1,4 +1,5 @@
 import { $ } from "meteor/jquery";
+import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
@@ -85,7 +86,7 @@ Template.productGridItems.helpers({
 
 Template.productGridItems.events({
   "click [data-event-action=productClick]": function (event, template) {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       if (event.metaKey || event.ctrlKey || event.shiftKey) {
         event.preventDefault();
 
@@ -156,7 +157,7 @@ Template.productGridItems.events({
 });
 
 Template.productGridItems.onRendered(function () {
-  if (ReactionCore.hasPermission("createProduct")) {
+  if (Reaction.hasPermission("createProduct")) {
     let productSort = $(".product-grid-list");
 
     productSort.sortable({

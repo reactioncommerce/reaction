@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Cart } from "/lib/collections";
 
 let user;
@@ -28,7 +29,7 @@ describe("Subscriptions", () => {
       done => {
         const prevUser = Meteor.userId();
         expect(prevUser).not.toBeNull();
-        const subscriptionId1 = ReactionCore.Subscriptions.Cart.subscriptionId;
+        const subscriptionId1 = Reaction.Subscriptions.Cart.subscriptionId;
         expect(subscriptionId1).toBeDefined();
 
         return done();
@@ -38,7 +39,7 @@ describe("Subscriptions", () => {
     it(
       "should change `subscriptionId` after logout",
       done => {
-        const prevSubId = ReactionCore.Subscriptions.Cart.subscriptionId;
+        const prevSubId = Reaction.Subscriptions.Cart.subscriptionId;
         const prevUser = Meteor.userId();
 
         Meteor.logout(() => {
@@ -50,8 +51,8 @@ describe("Subscriptions", () => {
             // expect(Meteor.userId()).not.toBeNull();
             expect(Meteor.userId()).not.toEqual(prevUser);
 
-            expect(ReactionCore.Subscriptions.Cart.subscriptionId).toBeDefined();
-            expect(ReactionCore.Subscriptions.Cart.subscriptionId)
+            expect(Reaction.Subscriptions.Cart.subscriptionId).toBeDefined();
+            expect(Reaction.Subscriptions.Cart.subscriptionId)
               .not.toEqual(prevSubId);
 
             done();
@@ -63,15 +64,15 @@ describe("Subscriptions", () => {
     it(
       "should change `subscriptionId` when user login",
       done => {
-        const prevSubId = ReactionCore.Subscriptions.Cart.subscriptionId;
+        const prevSubId = Reaction.Subscriptions.Cart.subscriptionId;
         const prevUser = Meteor.userId();
 
         Meteor.loginWithPassword(user.email, user.password, error => {
           expect(error).toBeUndefined();
           expect(Meteor.userId()).not.toBeNull();
           expect(Meteor.userId()).not.toEqual(prevUser);
-          expect(ReactionCore.Subscriptions.Cart.subscriptionId).toBeDefined();
-          expect(ReactionCore.Subscriptions.Cart.subscriptionId)
+          expect(Reaction.Subscriptions.Cart.subscriptionId).toBeDefined();
+          expect(Reaction.Subscriptions.Cart.subscriptionId)
             .not.toEqual(prevSubId);
 
           done();
@@ -103,13 +104,13 @@ describe("Subscriptions", () => {
     it(
       "should be reassigned after localStorage reset",
       done => {
-        const subscriptionId1 = ReactionCore.Subscriptions.Cart.subscriptionId;
+        const subscriptionId1 = Reaction.Subscriptions.Cart.subscriptionId;
         expect(subscriptionId1).toBeDefined();
         window.localStorage.clear();
         let subscriptionId2;
 
         Meteor.setTimeout(() => {
-          subscriptionId2 = ReactionCore.Subscriptions.Cart.subscriptionId;
+          subscriptionId2 = Reaction.Subscriptions.Cart.subscriptionId;
           expect(subscriptionId1).toBeDefined();
           expect(subscriptionId2)
             .not.toEqual(subscriptionId1);
