@@ -1,9 +1,10 @@
 import { Countries } from "/client/collections";
+import { Reaction } from "/client/modules/core";
 import { Shops } from "/lib/collections";
 
 Template.i18nSettings.helpers({
   shop() {
-    if (ReactionCore.Subscriptions.Shops.ready()) {
+    if (Reaction.Subscriptions.Shops.ready()) {
       return Shops.findOne();
     }
   },

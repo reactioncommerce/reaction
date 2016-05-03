@@ -1,5 +1,6 @@
 import { Template }  from "meteor/templating";
 import { _ } from "meteor/underscore";
+import { Reaction } from "/client/modules/core";
 import { Icon } from "/client/modules/ui/components";
 import Tooltip from "tether-tooltip";
 
@@ -24,7 +25,7 @@ Template.button.onRendered(function () {
   };
 
   this.autorun(() => {
-    ReactionCore.translationDependency.depend();
+    Reaction.translationDependency.depend();
     this.createTooltip();
   });
 });

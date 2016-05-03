@@ -1,9 +1,10 @@
+import { Reaction } from "/client/modules/core";
 import { Packages } from "/lib/collections";
 
 Template.reactionSocial.onCreated(function () {
   let self = this;
   return this.autorun(function () {
-    const subscription = ReactionCore.Subscriptions.Packages;
+    const subscription = Reaction.Subscriptions.Packages;
     if (subscription.ready()) {
       const socialSettings = Packages.findOne({
         name: "reaction-social"

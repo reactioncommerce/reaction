@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import * as Collections from "/lib/collections";
 
 Template.registerHelper("getGravatar", function (currentUser, size) {
@@ -34,7 +35,7 @@ Template.registerHelper("displayName", function (displayUser) {
     // todo: previous check was user.services !== "anonymous", "resume". Is this
     // new check covers previous check?
     if (Roles.userIsInRole(user._id || user.userId, "account/profile",
-      ReactionCore.getShopId())) {
+      Reaction.getShopId())) {
       return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
     }
   }

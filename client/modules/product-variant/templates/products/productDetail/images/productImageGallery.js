@@ -1,4 +1,5 @@
 import { $ } from "meteor/jquery";
+import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
@@ -25,7 +26,7 @@ function uploadHandler(event) {
     });
   }
   const variantId = variant._id;
-  let shopId = ReactionProduct.selectedProduct().shopId || ReactionCore.getShopId();
+  let shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
   let userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
@@ -98,7 +99,7 @@ Template.productImageGallery.helpers({
 Template.productImageGallery.onRendered(function () {
   return this.autorun(function () {
     let $gallery;
-    if (ReactionCore.hasAdminAccess()) {
+    if (Reaction.hasAdminAccess()) {
       $gallery = $(".gallery");
       return $gallery.sortable({
         cursor: "move",
@@ -135,7 +136,7 @@ Template.productImageGallery.events({
     if (event.relatedTarget === null) {
       return undefined;
     }
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       let first = $(".gallery li:nth-child(1)");
       let target = $(event.currentTarget);
       if ($(target).data("index") !== first.data("index")) {

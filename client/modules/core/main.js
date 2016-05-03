@@ -4,7 +4,7 @@ import Logger from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
 
 /**
- * ReactionCore
+ * Reaction core namespace
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
@@ -32,21 +32,20 @@ export default {
 
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes
-          const { Locale } = ReactionCore;
-          if (typeof Locale.locale === "object" &&
-            typeof Locale.currency === "object" &&
-            typeof Locale.locale.currency === "string") {
-            const localeCurrency = Locale.locale.currency.split(",")[0];
+          if (typeof this.Locale.locale === "object" &&
+            typeof this.Locale.currency === "object" &&
+            typeof this.Locale.locale.currency === "string") {
+            const localeCurrency = this.Locale.locale.currency.split(",")[0];
             if (typeof shop.currencies[localeCurrency] === "object") {
               if (typeof shop.currencies[localeCurrency].rate === "number") {
-                Locale.currency.rate = shop.currencies[localeCurrency].rate;
+                this.Locale.currency.rate = shop.currencies[localeCurrency].rate;
                 localeDep.changed();
               }
             }
           }
           // we are looking for a shopCurrency changes here
-          if (typeof Locale.shopCurrency === "object") {
-            Locale.shopCurrency = shop.currencies[shop.currency];
+          if (typeof this.Locale.shopCurrency === "object") {
+            this.Locale.shopCurrency = shop.currencies[shop.currency];
             localeDep.changed();
           }
           return self;

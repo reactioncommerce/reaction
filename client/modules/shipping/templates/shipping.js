@@ -1,4 +1,6 @@
+import { Reaction } from "/client/modules/core";
 import { Packages, Shipping } from "/lib/collections";
+import i18next from "i18next";
 
 /*
  * Template shipping Helpers
@@ -28,7 +30,7 @@ Template.shippingSettings.helpers({
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       return Shipping.find({
-        shopId: ReactionCore.getShopId()
+        shopId: Reaction.getShopId()
       });
     }
   },
@@ -48,7 +50,7 @@ Template.shippingProviderTable.helpers({
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       return Shipping.find({
-        shopId: ReactionCore.getShopId()
+        shopId: Reaction.getShopId()
       });
     }
   }
@@ -63,7 +65,7 @@ Template.shipping.events({
     return Alerts.removeSeen();
   },
   "click [data-action=addShippingProvider]"() {
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });
@@ -117,7 +119,7 @@ Template.afFormGroup_validRanges.helpers({
 Template.editShippingProvider.events({
   "click [data-event-action=cancelUpdateShippingProvider]"(event) {
     event.preventDefault();
-    ReactionCore.hideActionView();
+    Reaction.hideActionView();
   }
 });
 
@@ -127,7 +129,7 @@ Template.editShippingProvider.events({
 Template.addShippingProvider.events({
   "click [data-event-action=cancelAddShippingProvider]"(event) {
     event.preventDefault();
-    ReactionCore.hideActionView();
+    Reaction.hideActionView();
   }
 });
 
@@ -137,7 +139,7 @@ Template.addShippingProvider.events({
 Template.addShippingMethod.events({
   "click .cancel"(event) {
     event.preventDefault();
-    toggleSession("selectedAddShippingMethod");
+    Reaction.toggleSession("selectedAddShippingMethod");
   }
 });
 
@@ -175,7 +177,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=editShippingMethod]"(event) {
     event.preventDefault();
 
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: i18next.t("shipping.editShippingMethod"),
       data: this,
       template: "editShippingMethod"
@@ -187,7 +189,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=editShippingProvider]"(event) {
     event.preventDefault();
 
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: i18next.t("shipping.editShippingProvider"),
       data: this,
       template: "editShippingProvider"
@@ -211,7 +213,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=addShippingMethod]"(event) {
     event.preventDefault();
 
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: i18next.t("shipping.addShippingMethod"),
       template: "addShippingMethod"
     });
@@ -226,7 +228,7 @@ Template.shippingProviderTable.events({
 AutoForm.hooks({
   "shipping-provider-add-form": {
     onSuccess() {
-      toggleSession("selectedShippingProvider");
+      Reaction.toggleSession("selectedShippingProvider");
       return Alerts.inline(i18next.t("shipping.shippingProviderSaved"), "success", {
         autoHide: true,
         placement: "shippingPackage"
@@ -249,7 +251,7 @@ AutoForm.hooks({
       return error || false;
     },
     onSuccess() {
-      toggleSession("selectedAddShippingMethod");
+      Reaction.toggleSession("selectedAddShippingMethod");
       return Alerts.inline(i18next.t("shipping.shippingMethodRateAdded"), "success", {
         autoHide: true,
         placement: "shippingPackage"
@@ -280,7 +282,6 @@ AutoForm.hooks({
         placement: "shippingPackage"
       });
     }
-
   }
 });
 

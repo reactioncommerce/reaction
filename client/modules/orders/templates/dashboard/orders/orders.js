@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { ReactionRouter } from "/client/modules/router";
 import { Orders, Shops } from "/lib/collections";
 
@@ -184,7 +185,7 @@ Template.ordersListItem.events({
   },
   "click [data-event-action=startProcessingOrder]": function (event, instance) {
     event.preventDefault();
-    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    const isActionViewOpen = Reaction.isActionViewOpen();
     const { order } = instance.data;
 
     if (order.workflow.status === "new") {
@@ -192,7 +193,7 @@ Template.ordersListItem.events({
     }
     // toggle detail views
     if (isActionViewOpen === false) {
-      ReactionCore.showActionView({
+      Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
         data: order,
@@ -236,9 +237,9 @@ Template.orderListFilters.events({
   "click [role=tab]": (event) => {
     event.preventDefault();
     const filter = event.currentTarget.getAttribute("data-filter");
-    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    const isActionViewOpen = Reaction.isActionViewOpen();
     if (isActionViewOpen === true) {
-      ReactionCore.hideActionView();
+      Reaction.hideActionView();
     }
     ReactionRouter.setQueryParams({
       filter: filter,

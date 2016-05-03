@@ -1,4 +1,5 @@
 import { $ } from "meteor/jquery";
+import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
 
 // load modules
@@ -43,12 +44,12 @@ Template.variant.helpers({
 Template.variant.events({
   "click .variant-edit": function () {
     ReactionProduct.setCurrentVariant(this._id);
-    return toggleSession("variant-form-" + this._id);
+    return Reaction.toggleSession("variant-form-" + this._id);
   },
   "dblclick .variant-detail": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       ReactionProduct.setCurrentVariant(this._id);
-      return toggleSession("variant-form-" + this._id);
+      return Reaction.toggleSession("variant-form-" + this._id);
     }
   },
   "click .variant-detail > *": function (event) {
@@ -66,7 +67,7 @@ Template.variant.events({
 Template.variant.onRendered(function () {
   return this.autorun(function () {
     let variantSort;
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       variantSort = $(".variant-list");
       return variantSort.sortable({
         items: "> li.variant-list-item",

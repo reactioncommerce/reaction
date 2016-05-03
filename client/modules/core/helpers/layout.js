@@ -1,4 +1,5 @@
 import Logger from "/client/modules/logger";
+import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 
 /**
@@ -12,7 +13,7 @@ import * as Collections from "/lib/collections";
  * @returns {Array} returns an array with labels, templates that match workflow
  */
 Template.registerHelper("reactionTemplate", function (options) {
-  const shopId = options.hash.shopId || ReactionCore.getShopId();
+  const shopId = options.hash.shopId || Reaction.getShopId();
   // get shop info, defaults to current
   const Shop = Collections.Shops.findOne(shopId);
   const reactionTemplates = [];
@@ -72,7 +73,7 @@ Template.registerHelper("reactionTemplate", function (options) {
       }
 
       // check permissions so you don't have to on template.
-      if (ReactionCore.hasPermission(layout.audience)) {
+      if (Reaction.hasPermission(layout.audience)) {
         // todo: review this hack to remove layout
         // from the workflow
         if (!layout.layout) {

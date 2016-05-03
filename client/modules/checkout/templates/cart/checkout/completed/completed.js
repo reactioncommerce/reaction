@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Orders } from "/lib/collections";
 
 /**
@@ -57,7 +58,7 @@ Template.cartCompleted.events({
 Template.cartCompleted.onCreated(function () {
   let sessionId = Session.get("sessionId");
   let userId = Meteor.userId();
-  let cartSub = ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
+  let cartSub = Reaction.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
   cartSub.stop();
-  ReactionCore.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
+  Reaction.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
 });

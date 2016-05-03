@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Tags } from "/lib/collections";
 
 Template.CoreNavigationBar.onCreated(function () {
@@ -42,7 +43,7 @@ Template.CoreNavigationBar.helpers({
 
     return {
       name: "coreHeaderNavigation",
-      editable: ReactionCore.hasAdminAccess(),
+      editable: Reaction.hasAdminAccess(),
       isEditing: true,
       tags: tags,
       onToggleMenu(callback) {

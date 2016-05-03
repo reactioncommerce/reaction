@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Tags } from "/lib/collections";
 
 Template.createContentMenu.helpers({
@@ -35,7 +36,7 @@ Template.createContentMenu.helpers({
   },
 
   items() {
-    const apps = ReactionCore.Apps({provides: "shortcut", container: "addItem"}) || [];
+    const apps = Reaction.Apps({provides: "shortcut", container: "addItem"}) || [];
     return apps;
   }
 });

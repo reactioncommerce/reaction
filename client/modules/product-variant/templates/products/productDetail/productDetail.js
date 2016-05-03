@@ -1,6 +1,7 @@
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
 import { $ } from "meteor/jquery";
+import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Tags } from "/lib/collections";
@@ -161,7 +162,7 @@ Template.productDetail.helpers({
     }
   },
   tagsComponent: function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       return Template.productTagInputForm;
     }
     return Template.productDetailTags;
@@ -179,13 +180,13 @@ Template.productDetail.helpers({
     }
   },
   fieldComponent: function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       return Template.productDetailEdit;
     }
     return Template.productDetailField;
   },
   metaComponent: function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       return Template.productMetaFieldForm;
     }
     return Template.productMetaField;
@@ -199,7 +200,7 @@ Template.productDetail.helpers({
 Template.productDetail.events({
   "click #price": function () {
     let formName;
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       let variant = ReactionProduct.selectedVariant();
       if (!variant) {
         return;
@@ -364,25 +365,25 @@ Template.productDetail.events({
     ReactionProduct.maybeDeleteProduct(this);
   },
   "click .fa-facebook": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       $(".facebookMsg-edit").fadeIn();
       return $(".facebookMsg-edit-input").focus();
     }
   },
   "click .fa-twitter": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       $(".twitterMsg-edit").fadeIn();
       return $(".twitterMsg-edit-input").focus();
     }
   },
   "click .fa-pinterest": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       $(".pinterestMsg-edit").fadeIn();
       return $(".pinterestMsg-edit-input").focus();
     }
   },
   "click .fa-google-plus": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       $(".googleplusMsg-edit").fadeIn();
       return $(".googleplusMsg-edit-input").focus();
     }

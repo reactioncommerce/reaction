@@ -8,7 +8,7 @@
 //    * @return {void} no return value
 //    */
 //   handleDrop = (event) => {
-//     // ReactionCore.Media.productFileUpload(event);
+//     // Reaction.Media.productFileUpload(event);
 //     console.log("Drop!", event);
 //   }
 //

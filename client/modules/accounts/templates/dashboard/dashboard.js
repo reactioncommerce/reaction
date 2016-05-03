@@ -1,3 +1,5 @@
+import { Reaction } from "/client/modules/core";
+
 /**
  * Accounts helpers
  */
@@ -41,8 +43,8 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True array of adminsitrative members
    */
   members: function () {
-    if (ReactionCore.hasPermission("reaction-accounts")) {
-      const shopId = ReactionCore.getShopId();
+    if (Reaction.hasPermission("reaction-accounts")) {
+      const shopId = Reaction.getShopId();
       const instance = Template.instance();
       if (instance.subscriptionsReady()) {
         const shopUsers = Meteor.users.find();

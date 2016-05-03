@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Cart } from "/lib/collections";
 
 //
@@ -7,7 +8,7 @@ import { Cart } from "/lib/collections";
 
 Template.cartCheckout.helpers({
   cart() {
-    if (ReactionCore.Subscriptions.Cart.ready()) {
+    if (Reaction.Subscriptions.Cart.ready()) {
       return Cart.findOne();
     }
   }
@@ -15,7 +16,7 @@ Template.cartCheckout.helpers({
 
 
 Template.cartCheckout.onCreated(function () {
-  if (ReactionCore.Subscriptions.Cart.ready()) {
+  if (Reaction.Subscriptions.Cart.ready()) {
     const cart = Cart.findOne();
     if (cart.workflow && cart.workflow.status === "new") {
         // if user logged in as normal user, we must pass it through the first stage

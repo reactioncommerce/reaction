@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Packages, Shops } from "/lib/collections";
 
 const getPermissionMap = (permissions) => {
@@ -11,12 +12,12 @@ const getPermissionMap = (permissions) => {
 /**
  * shopMember helpers
  * permissions / roles controls
- * we use userInRole instead of ReactionCore intentionally
+ * we use userInRole instead of Reaction intentionally
  * to check each users permissions
  */
 Template.member.events({
   "click [data-event-action=showMemberSettings]": function () {
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: "Permissions",
       i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
       data: this,

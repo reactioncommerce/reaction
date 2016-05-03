@@ -1,4 +1,5 @@
 import autosize from "autosize";
+import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 
@@ -79,7 +80,7 @@ Template.productDetailEdit.events({
 
 Template.productDetailField.events({
   "click .product-detail-field": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       let fieldClass = "editing-" + this.field;
       Session.set(fieldClass, true);
       // Tracker.flush();

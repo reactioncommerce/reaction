@@ -44,7 +44,7 @@ Template.coreOrderShippingInvoice.onRendered(function () {
   const order = this.state.get("order");
   const paymentMethod = order.billing[0].paymentMethod;
   const refunds = this.refunds.get();
-  const currency = ReactionCore.Locale.currency;
+  const currency = Reaction.Locale.currency;
 
   const lessAmount = _.reduce(refunds, (memo, refund) => {
     return memo - Math.abs(refund.amount);
@@ -211,11 +211,11 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   money(amount) {
-    return ReactionCore.Currency.formatNumber(amount);
+    return Reaction.Currency.formatNumber(amount);
   },
 
   currencySymbol() {
-    return ReactionCore.Locale.currency.symbol;
+    return Reaction.Locale.currency.symbol;
   },
 
   disabled() {
