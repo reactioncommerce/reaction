@@ -48,7 +48,7 @@ ReactionCore.Helpers.cartTransform = {
     // loop through the cart.shipping, sum shipments.
     // shipmentMethod could be undefined if we resets workflow from more higher
     // stage by adding new item to cart for example
-    if (typeof this.shipping[0].shipmentMethod === "object") {
+    if (this.shipping && typeof this.shipping[0].shipmentMethod === "object") {
       return parseFloat(getSummary(this.shipping, ["shipmentMethod", "rate"]));
     }
     return 0;
@@ -68,7 +68,7 @@ ReactionCore.Helpers.cartTransform = {
     let subTotal = getSummary(this.items, ["quantity"], ["variants", "price"]);
     // loop through the cart.shipping, sum shipments.
     let shippingTotal = 0;
-    if (typeof this.shipping[0].shipmentMethod === "object") {
+    if (this.shipping && typeof this.shipping[0].shipmentMethod === "object") {
       shippingTotal = getSummary(this.shipping, ["shipmentMethod", "rate"]);
     }
     shippingTotal = parseFloat(shippingTotal);
