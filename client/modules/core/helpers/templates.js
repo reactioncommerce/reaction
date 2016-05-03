@@ -1,3 +1,4 @@
+import { Reaction } from "../";
 import { Shops } from "/lib/collections";
 
 /*
@@ -14,8 +15,8 @@ import { Shops } from "/lib/collections";
  */
 if (Package.blaze) {
   Package.blaze.Blaze.Template.registerHelper("currentUser", function () {
-    if (typeof ReactionCore === "object") {
-      const shopId = ReactionCore.getShopId();
+    if (typeof Reaction === "object") {
+      const shopId = Reaction.getShopId();
       const user = Accounts.user();
       if (!shopId || typeof user !== "object") return null;
       // shoppers should always be guests
