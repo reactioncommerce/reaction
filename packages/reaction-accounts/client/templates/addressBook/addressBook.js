@@ -6,26 +6,28 @@
  */
 
 Template.addressBook.onCreated(function () {
-  let account = ReactionCore.Collections.Accounts.findOne({
-    userId: Meteor.userId()
-  });
-
   this.currentViewTemplate = ReactiveVar("addressBookAdd");
   this.templateData = ReactiveVar({});
-  if (account) {
-    if (account.profile) {
-      if (account.profile.addressBook) {
-        if (account.profile.addressBook.length > 0) {
-          this.currentViewTemplate.set("addressBookGrid");
 
-          // TODO: make this more bullet proof
-          // Assume that if we"re seeing the address book grid
-          // then we should have both a default billing and shipping
-          // address selected
+  this.autorun(() => {
+    this.subscribe("Accounts", Meteor.userId());
+
+    let account = ReactionCore.Collections.Accounts.findOne({
+      userId: Meteor.userId()
+    });
+
+    if (account) {
+      if (account.profile) {
+        if (account.profile.addressBook) {
+          if (account.profile.addressBook.length === 0) {
+            this.currentViewTemplate.set("addressBookAdd");
+          } else {
+            this.currentViewTemplate.set("addressBookGrid");
+          }
         }
       }
     }
-  }
+  });
 });
 
 // Template.addressBook.onRendered(function () {

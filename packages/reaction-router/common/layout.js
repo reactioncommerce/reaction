@@ -23,8 +23,12 @@ selectLayout = (layout, setLayout, setWorkflow) => {
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
 ReactionLayout = (options = {}) => {
-  const layout = options.layout || "coreLayout";
-  const workflow = options.workflow || "coreWorkflow";
+  const layout = options.layout || DEFAULT_LAYOUT || "coreLayout";
+  const workflow = options.workflow || DEFAULT_WORKFLOW || "coreWorkflow";
+
+  // this only occurs if you aren't overriding
+  // with custom options, merges the default (that is already assigned to layout/workflow)
+  // so that the "newLayout" is actually the old layout
   if (!options.layout) {
     options.layout = "coreLayout";
   }
@@ -44,7 +48,7 @@ ReactionLayout = (options = {}) => {
     if (ReactionCore.Subscriptions.Shops.ready()) {
       const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
       if (shop) {
-        const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
+        const newLayout = shop.layout.reverse().find((x) => selectLayout(x, layout, workflow));
         // oops this layout wasn't found. render notFound
         if (!newLayout) {
           BlazeLayout.render("notFound");

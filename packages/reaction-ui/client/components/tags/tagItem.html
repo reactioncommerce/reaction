@@ -19,8 +19,8 @@
 </template>
 
 <template name="tagBlank">
-  <div class="rui tag edit create">
-    <form>
+  <div class="rui item edit create">
+    <div class="rui tag edit create">
       {{> button icon="tag"}}
       {{> textfield
         name="tag"
@@ -29,20 +29,25 @@
         value=tag.name
       }}
       {{> button type="submit" icon="plus" status="danger" onClick=handleTagRemove}}
-    </form>
+    </div>
   </div>
 </template>
 
 <template name="tagEditable">
-  <div class="rui tag edit draggable {{className}}" data-id={{tag._id}}>
-    <form>
+  <div class="rui item edit draggable">
+    <div class="rui tag edit draggable {{className}}" data-id={{tag._id}}>
       {{> button icon="bars" className="js-drag-handle" status="default"}}
       {{> textfield name="tag" value=tag.name onChange=handleTagNameUpdate}}
       <button class="hidden" type="submit">Update Tag</button>
+      {{#if controls}}
+        {{#each control in controls}}
+          {{> button control}}
+        {{/each}}
+      {{/if}}
       {{> button icon="times-circle" status="danger" onClick=handleTagRemove}}
       {{#if selectable}}
         {{> button icon="chevron-down" status="default" onClick=handleTagSelect}}
       {{/if}}
-    </form>
+    </div>
   </div>
 </template>

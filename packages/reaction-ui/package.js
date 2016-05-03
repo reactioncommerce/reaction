@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.7.0",
+  version: "0.7.1",
   documentation: "README.md"
 });
 

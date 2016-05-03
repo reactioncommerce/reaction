@@ -1,13 +1,42 @@
-let weightDependency = new Tracker.Dependency;
+import { ReactiveDict } from "meteor/reactive-dict";
+import { Collections } from "meteor/reactioncommerce:reaction-collections";
+import { _ } from "meteor/underscore";
+
+Template.productSettings.onCreated(function () {
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    products: []
+  });
+
+  this.autorun(() => {
+    const currentData = Template.currentData();
+
+    if (_.isArray(currentData.products)) {
+      const productIds = currentData.products.map((product) => {
+        return product._id;
+      });
+
+      const products = Collections.Products.find({
+        _id: {
+          $in: productIds
+        }
+      }).fetch();
+
+      this.state.set("products", products);
+    }
+  });
+});
 
 Template.productSettings.helpers({
   hasSelectedProducts() {
     return this.products.length > 0;
   },
   itemWeightActive: function (weight) {
-    weightDependency.depend();
+    const instance = Template.instance();
+    const products = instance.state.get("products");
     const tag = ReactionProduct.getTag();
-    for (let product of this.products) {
+
+    for (let product of products) {
       let positions = product.positions && product.positions[tag] || {};
       let currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
@@ -49,7 +78,6 @@ Template.productSettingsGridItem.helpers({
     return false;
   },
   weightClass: function () {
-    weightDependency.depend();
     const tag = ReactionProduct.getTag();
     const positions = this.positions && this.positions[tag] || {};
     const weight = positions.weight || 0;
@@ -64,22 +92,18 @@ Template.productSettingsGridItem.helpers({
   },
 
   isMediumWeight: function () {
-    weightDependency.depend();
     const tag = ReactionProduct.getTag();
     const positions = this.positions && this.positions[tag] || {};
     const weight = positions.weight || 0;
     return weight === 1;
   },
   isLargeWeight: function () {
-    weightDependency.depend();
     const tag = ReactionProduct.getTag();
     const positions = this.positions && this.positions[tag] || {};
     const weight = positions.weight || 0;
     return weight === 3;
   },
   shouldShowAdditionalImages: function () {
-    weightDependency.depend();
-
     if (this.isMediumWeight && this.mediaArray) {
       return true;
     }
@@ -113,13 +137,10 @@ Template.productSettings.events({
         updatedAt: new Date()
       };
       Meteor.call("products/updateProductPosition", product._id, positions, tag,
-        (error, result) => {
+        (error) => {
           if (error) {
             ReactionCore.Log.warn(error);
             throw new Meteor.Error(403, error);
-          }
-          if (result) {
-            weightDependency.changed();
           }
         }
       );

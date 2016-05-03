@@ -1,5 +1,6 @@
 require("money");
 import $ from "jquery";
+import accounting from "accounting-js";
 require("autonumeric");
 
 //
@@ -42,7 +43,7 @@ Template.coreOrderShippingInvoice.onRendered(() => {
   }, paymentMethod.amount);
 
   if (currency) {
-    $("input[name=refund_amount]").autoNumeric({
+    $("input[name=refund_amount]").autoNumeric("init", {
       aSep: currency.thousand,
       dGroup: currency.grouping,
       aDec: currency.decimal,
@@ -66,7 +67,7 @@ Template.coreOrderShippingInvoice.events({
     event.preventDefault();
 
     const order = template.order;
-    const value = $(event.target.discount_amount).autoNumeric("get") || 0;
+    const value = $(event.target.discount_amount).autoNumeric("init").autoNumeric("get") || 0;
     const discount = parseFloat(accounting.toFixed(value, 2));
 
     Meteor.call("orders/approvePayment", order, discount, (error) => {
@@ -89,7 +90,7 @@ Template.coreOrderShippingInvoice.events({
     const refund = accounting.unformat(event.target.refund_amount.value) || 0;
     const paymentMethod = order.billing[0].paymentMethod;
 
-    if (confirm(`Apply refund of ${refund} to this order?`)) {
+    if (confirm(i18next.t("order.applyRefundToThisOrder", { refund: refund }))) {
       Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
         if (error) {
           // Show error
@@ -216,7 +217,7 @@ Template.coreOrderShippingInvoice.helpers({
     _.each(refunds, function (item) {
       refundTotal += item.amount;
     });
-    return paymentMethod.total - refundTotal;
+    return paymentMethod.amount - refundTotal;
   },
 
   refundSubmitDisabled() {
