@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction UI - Components for Reaction Commerce",
   name: "reactioncommerce:reaction-ui",
-  version: "0.7.1",
+  version: "0.7.2",
   documentation: "README.md"
 });
 
@@ -24,7 +24,7 @@ Npm.depends({
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
-  api.use("tmeasday:check-npm-versions@0.3.0");
+  api.use("tmeasday:check-npm-versions@0.3.1");
 
   // meteor base packages
   api.use("meteor-base");
@@ -43,7 +43,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // Community Packages
-  api.use("react-template-helper@0.2.8");
+  api.use("react-template-helper@0.2.9");
 
   // meteor add-on packages
   api.use("reactioncommerce:core@0.13.0");

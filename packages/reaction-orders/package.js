@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Reaction Commerce Orders",
   name: "reactioncommerce:reaction-orders",
-  version: "1.1.0",
+  version: "1.1.1",
   documentation: "README.md"
 });
 
@@ -14,7 +14,7 @@ Npm.depends({
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
-  api.use("tmeasday:check-npm-versions@0.3.0");
+  api.use("tmeasday:check-npm-versions@0.3.1");
 
   // meteor base packages
   api.use("meteor-base");
