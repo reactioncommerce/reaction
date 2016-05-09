@@ -1,5 +1,6 @@
 import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
 import { Products, Tags } from "/lib/collections";
 
 /**

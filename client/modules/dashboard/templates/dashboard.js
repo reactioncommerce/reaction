@@ -1,4 +1,5 @@
 import { Reaction } from "/client/modules/core";
+import { ReactionRouter } from "/client/modules/router";
 
 //
 // registry helper for the dashboard, assembles i18n labels

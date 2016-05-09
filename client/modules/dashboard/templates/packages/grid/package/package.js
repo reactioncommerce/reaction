@@ -1,4 +1,5 @@
 import { Reaction } from "/client/modules/core";
+import { ReactionRouter } from "/client/modules/router";
 
 /* eslint no-loop-func: 0 */
 

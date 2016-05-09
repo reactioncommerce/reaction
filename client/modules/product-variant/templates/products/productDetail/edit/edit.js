@@ -2,6 +2,7 @@ import autosize from "autosize";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
 
 /**
  * productDetailEdit helpers

@@ -1,3 +1,4 @@
+import { ReactionRouter } from "/client/modules/router";
 /**
  * cartPanel events
  *
