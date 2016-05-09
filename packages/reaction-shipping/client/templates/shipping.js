@@ -197,7 +197,7 @@ Template.shippingProviderTable.events({
 
     Alerts.alert({
       title: i18next.t("shipping.removeShippingMethodTitle"),
-      text: i18next.t("shipping.removeShippingMethod", { method: this.name }),
+      text: i18next.t("shipping.removeShippingMethodConfirm", { method: this.name }),
       type: "warning",
       closeOnConfirm: false
     },
