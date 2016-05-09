@@ -82,6 +82,9 @@ jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
 jquery@1.11.8
 juliancwirko:postcss@1.1.0
+juliancwirko:s-alert@3.1.4
+juliancwirko:s-alert-stackslide@3.1.3
+kadira:blaze-layout@2.3.0
 kadira:flow-router-ssr@3.13.0
 launch-screen@1.0.11
 less@2.6.0
@@ -90,7 +93,7 @@ localstorage@1.0.9
 logging@1.0.12
 matb33:collection-hooks@0.8.1
 mdg:validated-method@1.1.0
-mdg:validation-error@0.2.0
+mdg:validation-error@0.5.1
 meteor@1.1.14
 meteor-base@1.0.4
 meteorhacks:fast-render@2.14.0
