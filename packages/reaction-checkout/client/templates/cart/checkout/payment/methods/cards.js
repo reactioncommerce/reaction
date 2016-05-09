@@ -17,7 +17,7 @@ Template.corePaymentMethods.helpers({
   isOpen(current) {
     const instance = Template.instance();
     const state = instance.state;
-    const name = current.name;
+    const name = current.packageName;
     const priority = current.priority;
 
     if (state.equals("defaultPaymentMethod", name) || priority === "0" && state.equals("defaultPaymentMethod", "none")) {
