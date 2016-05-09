@@ -1,4 +1,5 @@
 import Logger from "/client/modules/logger";
+import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
 
 Template.loginDropdown.events({

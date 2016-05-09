@@ -4,6 +4,7 @@ import { $ } from "meteor/jquery";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
 
 // load modules

@@ -105,7 +105,7 @@ Template.orders.onCreated(function () {
 
   // Open the action view when necessary
   this.autorun(() => {
-    let isActionViewOpen = ReactionCore.isActionViewOpen();
+    let isActionViewOpen = Reaction.isActionViewOpen();
     const queryParams = ReactionRouter.current().queryParams;
 
     if (isActionViewOpen === false) {
@@ -166,10 +166,10 @@ Template.ordersListItem.helpers({
 Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event, instance) {
     event.preventDefault();
-    const isActionViewOpen = ReactionCore.isActionViewOpen();
+    const isActionViewOpen = Reaction.isActionViewOpen();
     // toggle detail views
     if (isActionViewOpen === false) {
-      ReactionCore.showActionView({
+      Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
         data: instance.data.order,
@@ -220,7 +220,7 @@ Template.orderListFilters.onCreated(function () {
     const filters = orderFilters.map((filter) => {
       filter.label = i18next.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
       filter.i18nKeyLabel = `order.filter.${filter.name}`;
-      filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
+      filter.count = Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
       if (queryFilter) {
         filter.active = queryFilter === filter.name;

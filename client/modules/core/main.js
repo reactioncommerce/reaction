@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
+import { ReactionRouter } from "/client/modules/router";
 import { Packages, Shops } from "/lib/collections";
 
 /**
@@ -11,9 +12,8 @@ export default {
   shopId: null,
 
   init() {
-    let self = this;
     // keep an eye out for shop change
-    return Tracker.autorun(function () {
+    return Tracker.autorun(() => {
       let domain;
       let shop;
       // for clarity this subscription is defined in subscriptions.js
@@ -25,8 +25,8 @@ export default {
 
 
         if (shop) {
-          self.shopId = shop._id;
-          self.shopName = shop.name;
+          this.shopId = shop._id;
+          this.shopName = shop.name;
           // initialize local client Countries collection
           createCountryCollection(shop.locales.countries);
 
@@ -48,7 +48,7 @@ export default {
             this.Locale.shopCurrency = shop.currencies[shop.currency];
             localeDep.changed();
           }
-          return self;
+          return this;
         }
       }
     });

@@ -1,3 +1,4 @@
+import { ReactionRouter } from "/client/modules/router";
 import { Themes } from "/lib/collections";
 
 Template.uiThemeEditor.onCreated(function () {
