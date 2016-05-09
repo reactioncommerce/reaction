@@ -6,6 +6,7 @@ import { Subscriptions } from "./subscriptions";
 export const Reaction = Object.assign(
   Core,
   Apps,
-  Globals,
-  Subscriptions
+  Globals
 );
+
+Reaction.Subscriptions = Subscriptions;
