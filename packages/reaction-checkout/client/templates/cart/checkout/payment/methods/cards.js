@@ -25,6 +25,7 @@ Template.corePaymentMethods.helpers({
     }
   },
   appDetails: function () {
+    // Provides a fallback to the package icon / label if one is not found for this reaction app
     let self = this;
     if (!(this.icon && this.label)) {
       let app = ReactionCore.Collections.Packages.findOne(this.packageId);
