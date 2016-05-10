@@ -4,9 +4,9 @@
   <div class="panel panel-default order-list-detail">
     <div class="panel-heading">
       <h3 class="panel-title">
-        <span data-i18n="cartCompleted.placed">Placed</span>
+        <span data-i18n="order.placed">Placed</span>
         <span>{{orderAge}}</span>
-        <span data-i18n="cartCompleted.on">on</span>
+        <span data-i18n="order.on">on</span>
         <span>{{dateFormat createdAt format="MMM D h:mm"}}</span>
       </h3>
     </div>
@@ -15,14 +15,14 @@
       <div class="row">
         <div class="col-xs-6 col-sm-2">
           <strong>
-            <span data-i18n="cartCompleted.status">Status</span>
+            <span data-i18n="order.status">Status</span>
           </strong>
         </div>
         <div class="col-xs-6 col-sm-10">
           {{#if orderStatus}}
-              <span data-i18n="orderShipping.shipped">Completed</span>
+              <span data-i18n="order.completed">Completed</span>
           {{else}}
-              <span data-i18n="orderShipping.notShipped">Processing</span>
+              <span data-i18n="order.processing">Processing</span>
           {{/if}}
         </div>
       </div>
@@ -30,7 +30,7 @@
       <div class="row order-address-info">
         <div class="col-xs-6 col-sm-2">
           <strong>
-            <span data-i18n="cartCompleted.destination">Destination</span>
+            <span data-i18n="order.destination">Destination</span>
           </strong>
         </div>
         <div class="col-xs-10">
@@ -52,7 +52,7 @@
       <div class="row order-shipment-info">
         <div class="col-xs-6 col-sm-2">
           <strong>
-            <span data-i18n="cartCompleted.shipment">Shipment</span>
+            <span data-i18n="order.shipment">Shipment</span>
           </strong>
         </div>
         {{#each shipping}}
@@ -65,13 +65,13 @@
       <div class="row order-payment-info">
         <div class="col-xs-6 col-sm-2">
           <strong>
-            <span data-i18n="cartCompleted.payment">Payment</span>
+            <span data-i18n="order.payment">Payment</span>
           </strong>
         </div>
         <div class="col-xs-10">
           {{#each billing}}
           <span id="order-payment-method">{{paymentMethod.storedCard}}</span>
-          <span data-id="cartCompleted.reference">Ref:</span>
+          <span data-id="order.reference">Ref:</span>
           <span id="order-payment-transaction">{{paymentMethod.transactionId}}</span>
           &nbsp;
           {{/each}}
@@ -82,7 +82,7 @@
         <div class="col-xs-12">
           <strong>
             <span id="order-item-count">{{itemCount}}</span>
-            <span data-i18n="cartCompleted.itemsFrom">item(s) from</span>
+            <span data-i18n="order.itemsFrom">item(s) from</span>
             <span id="order-group-name">{{shopName}}</span>
           </strong>
         </div>
