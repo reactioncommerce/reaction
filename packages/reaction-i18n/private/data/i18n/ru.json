@@ -482,10 +482,64 @@
         "review": "Обзор"
       },
       "checkoutShipping": {
-        "selectShippingOption": "Выбор способа доставки",
-        "noShippingMethods": "Нет настроенных способов доставки.",
+        "selectShippingOption": "Выбор тарифа",
+        "noShippingMethods": "Ни один тариф не настроен.",
         "configureNow": "Настроить сейчас.",
         "shipping": "Доставка"
+      },
+      "shipping": {
+        "addShippingProvider": "Добавить поставщика услуг",
+        "editShippingProvider": "Редактировать поставщика",
+        "addShippingMethod": "Добавить тариф",
+        "editShippingMethod": "Редактировать тариф",
+        "deleteShippingMethod": "Удалить тариф",
+        "noSettingsForThisView": "Настройки отсутствуют",
+        "noShippingMethods": "Ни один тариф не настроен.",
+        "removeShippingMethodConfirm": "Вы уверены в том, что хотите удалить {{method}}?",
+        "removeShippingMethodTitle": "Удалить тариф",
+        "shippingMethodDeleted": "Этот тариф был удалён.",
+        "shippingProviderSaved": "Поставщик услуг по доставке сохранён.",
+        "shippingProviderUpdated": "Данные поставщика услуг по доставке обновлены.",
+        "shippingMethodRateAdded": "Тариф добавлен.",
+        "shippingMethodRateUpdated": "Тариф обновлён.",
+        "name": "Название",
+        "label": "Метка",
+        "group": "Группа",
+        "cost": "Стоимость",
+        "handling": "Комплектация",
+        "rate": "Ставка",
+        "enabled": "Включен",
+        "disabled": "Отключен",
+        "addRate": "Добавить ",
+        "updateRate": "Обновить тариф {{name}}",
+        "addNewCondition": "Добавить новое условие",
+        "deleteCondition": "Удалить условие",
+        "provider": {
+          "name": "Сервисный код",
+          "label": "Общедоступное название",
+          "enabled": "Подключен"
+        }
+      },
+      "shippingMethod": {
+        "name": "Название",
+        "label": "Метка",
+        "group": "Группа",
+        "cost": "Стоимость",
+        "handling": "Обслуживание",
+        "rate": "Ставка",
+        "enabled": "Включен",
+        "matchingCartRanges": "Соответствующий диапазон стоимости заказа",
+        "validRanges": {
+          "begin": "Минимальная стоимость заказа",
+          "end": "Максимальная стоимость заказа"
+        },
+        "matchingLocales": "Соответствующие зоны доставки",
+        "validLocales": {
+          "origination": "Откуда",
+          "destination": "Куда",
+          "deliveryBegin": "Ожидаемый срок комплектации",
+          "deliveryEnd": "Ожидаемый срок доставки"
+        }
       },
       "uom": {
         "OZ": "Унции",

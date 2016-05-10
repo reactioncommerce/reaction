@@ -5,37 +5,43 @@ Meteor.methods({
   addShippingMethod: function (insertDoc, currentDoc) {
     check(insertDoc, Object);
     check(currentDoc, String);
-    if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
-      return false;
+    if (!ReactionCore.hasPermission("shipping")) {
+      throw new Meteor.Error(403, "Access Denied");
     }
+
     return ReactionCore.Collections.Shipping.update({
-      '_id': currentDoc
+      _id: currentDoc
     }, {
       $addToSet: {
-        'methods': insertDoc
+        methods: insertDoc
       }
     });
   },
 
-  /*
-   * Update Shipping methods for a provider
+  /**
+   * updateShippingMethods
+   * @summary update Shipping methods for a provider
+   * @param {String} providerId
+   * @param {String} methodId
+   * @param {Object} updateMethod - updated method itself
+   * @return update result
    */
-  updateShippingMethods: function (docId, currentDoc, updateDoc) {
-    check(docId, String);
-    check(currentDoc, Object);
-    check(updateDoc, Object);
-    if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
-      return false;
+  updateShippingMethods: function (providerId, methodId, updateMethod) {
+    check(providerId, String);
+    check(methodId, String);
+    check(updateMethod, Object);
+    if (!ReactionCore.hasPermission("shipping")) {
+      throw new Meteor.Error(403, "Access Denied");
     }
-    updateDoc = ReactionCore.Collections.Shipping.update({
-      '_id': docId,
-      'methods': currentDoc
+
+    return ReactionCore.Collections.Shipping.update({
+      "_id": providerId,
+      "methods._id": methodId
     }, {
       $set: {
-        'methods.$': updateDoc
+        "methods.$": updateMethod
       }
     });
-    return updateDoc;
   },
 
   /*
@@ -44,9 +50,10 @@ Meteor.methods({
   removeShippingMethod: function (providerId, removeDoc) {
     check(providerId, String);
     check(removeDoc, Object);
-    if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
-      return false;
+    if (!ReactionCore.hasPermission("shipping")) {
+      throw new Meteor.Error(403, "Access Denied");
     }
+
     return ReactionCore.Collections.Shipping.update({
       '_id': providerId,
       'methods': removeDoc
@@ -62,8 +69,8 @@ Meteor.methods({
    */
   addShippingProvider: function (doc) {
     check(doc, Object);
-    if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
-      return false;
+    if (!ReactionCore.hasPermission("shipping")) {
+      throw new Meteor.Error(403, "Access Denied");
     }
     return ReactionCore.Collections.Shipping.insert(doc);
   },
@@ -74,9 +81,10 @@ Meteor.methods({
   updateShippingProvider: function (updateDoc, currentDoc) {
     check(updateDoc, Object);
     check(currentDoc, String);
-    if (!Roles.userIsInRole(Meteor.userId(), ['admin', 'shipping'])) {
-      return false;
+    if (!ReactionCore.hasPermission("shipping")) {
+      throw new Meteor.Error(403, "Access Denied");
     }
+
     return ReactionCore.Collections.Shipping.update({
       '_id': currentDoc
     }, updateDoc);
