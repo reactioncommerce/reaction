@@ -17,7 +17,7 @@ Template.corePaymentMethods.helpers({
   isOpen(current) {
     const instance = Template.instance();
     const state = instance.state;
-    const name = current.name;
+    const name = current.packageName;
     const priority = current.priority;
 
     if (state.equals("defaultPaymentMethod", name) || priority === "0" && state.equals("defaultPaymentMethod", "none")) {
@@ -25,6 +25,7 @@ Template.corePaymentMethods.helpers({
     }
   },
   appDetails: function () {
+    // Provides a fallback to the package icon / label if one is not found for this reaction app
     let self = this;
     if (!(this.icon && this.label)) {
       let app = ReactionCore.Collections.Packages.findOne(this.packageId);
