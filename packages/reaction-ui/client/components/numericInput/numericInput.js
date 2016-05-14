@@ -1,52 +1,127 @@
+import React from "react";
+import classnames from "classnames";
 const accounting = require("accounting-js");
-import $ from "jquery";
-require("autonumeric");
 
-/**
- * numericInput onCreated
- */
-Template.numericInput.onCreated(() => {
-  const template = Template.instance();
+function setCaretPosition(ctrl, pos) {
+  if (ctrl.setSelectionRange) {
+    ctrl.focus();
+    ctrl.setSelectionRange(pos, pos);
+  } else if (ctrl.createTextRange) {
+    const range = ctrl.createTextRange();
 
-  // Initial method for autoNumeric field
-  template.autoNumericFieldState = "init";
-});
+    range.collapse(true);
+    range.moveEnd("character", pos);
+    range.moveStart("character", pos);
+    range.select();
+  }
+}
 
-/**
- * numericInput onRendered
- * @summary attaches "autoNumeric" to the input element of this template
- */
-Template.numericInput.onRendered(() => {
-  const template = Template.instance();
+class NumericInput extends React.Component {
+  constructor(props) {
+    super(props);
 
-  template.autorun(() => {
-    const data = Template.currentData();
+    // Set default state
+    this.state = {
+      value: this.props.value,
+      displayValue: this.format(this.props.value)
+    };
 
-    Meteor.call("shop/getLocale", (error, result) => {
-      if (_.isObject(result)) {
-        // Set options
-        const options = Object.assign({},
-          result.currency,
-          {
-            minValue: "0.00",
-            maxValue: "999999999.99"
-          },
-          data
-        );
+    // Bind event handlers
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-        $(template.find("input")).autoNumeric(template.autoNumericFieldState, {
-          aSep: options.thousand,
-          dGroup: options.grouping,
-          aSign: options.symbol,
-          aDec: options.decimal,
-          vMax: accounting.toFixed(options.maxValue, 2),
-          vMin: accounting.toFixed(options.minValue, 2),
-          wEmpty: "sign"
-        });
+  /**
+   * update state when component receives props
+   * @param  {Object} nextProps new props
+   * @return {undefined}
+   */
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      value: nextProps.value
+    });
+  }
 
-        // Subsquent calls runs will update autoNumeric on our field, instead of init
-        template.autoNumericFieldState = "update";
+  /**
+   * format a numeric string
+   * @param  {String} value Value to format
+   * @param  {Object} format Object containing settings for formatting value
+   * @return {String} Foramtted numeric string
+   */
+  format(value, format) {
+    const moneyFormat = format || this.props.format || {};
+    const decimal = moneyFormat.decimal || undefined;
+    const unformatedValue = this.unformat(value, decimal);
+
+    return accounting.formatMoney(unformatedValue, moneyFormat);
+  }
+
+  /**
+   * unformat numeric string
+   * @param  {String} value String value to unformat
+   * @param  {String} decimal String representing the decimal place
+   * @return {String} unformatted numeric string
+   */
+  unformat(value, decimal) {
+    return accounting.unformat(value, decimal);
+  }
+
+  /**
+   * Handle change event from text input
+   * @param  {SytheticEvent} event Change event
+   * @return {undefined}
+   */
+  handleChange(event) {
+    const input = event.currentTarget;
+    const value = event.currentTarget.value;
+    const numberValue = this.unformat(value);
+
+    this.setState({
+      value: this.unformat(value),
+      displayValue: this.format(value),
+      caretPosition: input.selectionStart
+    }, () => {
+      setCaretPosition(input, Math.max(this.state.caretPosition, 0));
+
+      if (this.props.onChange) {
+        this.props.onChange(event, { value, numberValue });
       }
     });
-  });
-});
+  }
+
+  /**
+   * render
+   * @return {ReactElement} markup
+   */
+  render() {
+    const { classNames } = this.props;
+    const fieldClassName = classnames({
+      "form-control": true,
+      ...(classNames.input || {})
+    });
+
+    return (
+      <div className="rui control numeric-input">
+        <input
+          className={fieldClassName}
+          disabled={this.props.disabled}
+          onChange={this.handleChange}
+          value={this.state.displayValue}
+        />
+      </div>
+    );
+  }
+}
+
+NumericInput.defaultProps = {
+  disabled: false
+};
+
+NumericInput.propTypes = {
+  format: React.PropTypes.shape({}),
+  classNames: React.PropTypes.object,
+  disabled: React.PropTypes.bool,
+  onChange: React.PropTypes.func,
+  value: React.PropTypes.string
+};
+
+export default NumericInput;

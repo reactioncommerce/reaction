@@ -131,6 +131,8 @@ Package.onUse(function (api) {
   api.addFiles("server/processTheme.js", "server");
   api.addFiles("server/register.js", "server");
 
+  api.mainModule("client/main.js", "client");
+
   // Exports
   api.export("React");
   api.export("ReactionUI");
