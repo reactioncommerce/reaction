@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Default shipping provider",
+    "methods": [
+      {
+        "name": "Free",
+        "label": "Free Shipping",
+        "group": "Ground",
+        "enabled": true,
+        "rate": 0,
+        "validLocales": [
+          {
+            "deliveryBegin": 2,
+            "deliveryEnd": 7
+          }
+        ],
+        "validRanges": [
+          {
+            "begin": 50
+          }
+        ]
+      },
+      {
+        "name": "Standard",
+        "label": "Standard",
+        "group": "Ground",
+        "enabled": true,
+        "rate": 2.99,
+        "validLocales": [
+          {
+            "deliveryBegin": 2,
+            "deliveryEnd": 7
+          }
+        ]
+      },
+      {
+        "name": "Priority",
+        "label": "Priority",
+        "group": "Priority",
+        "enabled": true,
+        "rate": 6.99,
+        "validLocales": [
+          {
+            "deliveryBegin": 1,
+            "deliveryEnd": 3
+          }
+        ]
+      }
+    ],
+    "provider": {
+      "name": "Flat Rate",
+      "label": "Flat Rate",
+      "enabled": true
+    }
+  }
+]

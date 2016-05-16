@@ -2,6 +2,7 @@ import Accounts from "./accounts";
 import i18n from "./i18n";
 import Inventory from "./inventory";
 import Jobs from "./jobs";
+import Load from "./load-data";
 import Orders from "./orders";
 import Packages from "./packages";
 import Registry from "./registry";
@@ -12,6 +13,7 @@ export default function () {
   i18n();
   Inventory();
   Jobs();
+  Load();
   Orders();
   Packages();
   Registry();
