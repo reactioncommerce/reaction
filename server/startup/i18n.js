@@ -1,5 +1,5 @@
 import fs from "fs";
-import { Hooks, Logger } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 // taken from here: http://stackoverflow.com/a/32749571
 const directoryExists = dirPath => {
@@ -25,7 +25,7 @@ const loadCoreTranslations = () => {
           if (file.indexOf("json")) {
             Logger.debug(`Importing Translations from ${file}`);
             let json = fs.readFileSync(i18nFolder + file, "utf8");
-            ReactionImport.process(json, ["i18n"], ReactionImport.translation);
+            Reaction.Import.process(json, ["i18n"], Reaction.Import.translation);
           }
         }
       });

@@ -1,3 +1,5 @@
+import { Reaction } from "/server/api";
+
 /*
  * Fixture - we always want a record
  */
@@ -7,6 +9,6 @@
 //   return Fixtures.loadData(Collections.Shipping, jsonFile);
 // });
 Meteor.startup(function () {
-  ReactionImport.process(Assets.getText("private/data/Shipping.json"), ["name"], ReactionImport.shipping);
-  ReactionImport.flush();
+  Reaction.Import.process(Assets.getText("private/data/Shipping.json"), ["name"], Reaction.Import.shipping);
+  Reaction.Import.flush();
 });
