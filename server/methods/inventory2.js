@@ -1,7 +1,7 @@
 import { Catalog } from "/lib/api";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 //
 // Inventory methods
@@ -26,7 +26,7 @@ Meteor.methods({
       type = "simple";
     }
     // user needs createProduct permission to register new inventory
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();
@@ -114,7 +114,7 @@ Meteor.methods({
       type = "simple";
     }
     // user needs createProduct permission to adjust inventory
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();
@@ -172,7 +172,7 @@ Meteor.methods({
   "inventory/remove": function (inventoryItem) {
     check(inventoryItem, Schemas.Inventory);
     // user needs createProduct permission to adjust inventory
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();

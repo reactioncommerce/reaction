@@ -1,10 +1,11 @@
 import { Inventory } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 Meteor.publish("Inventory", function () {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = ReactionCore.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

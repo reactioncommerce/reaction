@@ -1,4 +1,5 @@
 import { Media } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 ReactionProductAPI = {};
 ReactionProductAPI.methods = {};
@@ -16,7 +17,7 @@ ReactionProductAPI.methods.removeMedia = new ValidatedMethod({
     mediaId: { type: String }
   }).validator(),
   run({ mediaId }) {
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     return Media.remove({ _id: mediaId });
@@ -36,7 +37,7 @@ ReactionProductAPI.methods.updateMediaPriorities = new ValidatedMethod({
     sortedMedias: { type: [new SimpleSchema({ mediaId: { type: String } })] }
   }).validator(),
   run({ sortedMedias }) {
-    if (!ReactionCore.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     const results = [];

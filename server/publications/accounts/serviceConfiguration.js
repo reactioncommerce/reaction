@@ -1,3 +1,5 @@
+import { Reaction } from "/server/api";
+
 /**
  * Publish ServiceConfiguration
  * @param {String} checkUserId - we not using it directly because if shows not
@@ -10,7 +12,7 @@ Meteor.publish("ServiceConfiguration", function (checkUserId) {
   }
   // Admins and account managers can manage the login methods for the shop
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "dashboard/accounts"],
-      ReactionCore.getShopId())) {
+      Reaction.getShopId())) {
     return ServiceConfiguration.configurations.find({}, {
       fields: {
         secret: 1
