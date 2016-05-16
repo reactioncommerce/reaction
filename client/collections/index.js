@@ -1,5 +1,1 @@
-import * as collections from "./collections";
-
-export default {
-  ...collections
-};
+export * from "./collections";
