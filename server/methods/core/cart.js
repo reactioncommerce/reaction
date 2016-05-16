@@ -228,7 +228,6 @@ Meteor.methods({
     check(userId, String);
     check(sessionId, String);
 
-    const { Log } = Reaction;
     const shopId = Reaction.getShopId();
     // check if user has `anonymous` role.( this is a visitor)
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
@@ -615,7 +614,7 @@ Meteor.methods({
       // create a new cart for the user
       // even though this should be caught by
       // subscription handler, it's not always working
-      let newCartExists = Collections.Cart.find(order.userId);
+      let newCartExists = Collections.Cart.find({ userId: order.userId });
       if (newCartExists.count() === 0) {
         Meteor.call("cart/createCart", this.userId, sessionId);
         // after recreate new cart we need to make it looks like previous by

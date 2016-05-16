@@ -8,7 +8,7 @@ import { Logger } from "/server/api";
  *  @summary when new shop is created, set shop name if REACTION_SHOP_NAME env var exists
  *  @returns {undefined} undefined
  */
-export const setShopName = function (shop) {
+export function setShopName(shop) {
   const shopName = process.env.REACTION_SHOP_NAME;
 
   if (shopName) {
@@ -32,4 +32,4 @@ export const setShopName = function (shop) {
       }
     }
   }
-};
+}

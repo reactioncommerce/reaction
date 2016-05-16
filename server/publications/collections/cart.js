@@ -1,4 +1,5 @@
 import { Cart } from "/lib/collections";
+import { Logger, Reaction } from "/server/api";
 
 /**
  * cart
@@ -28,7 +29,7 @@ Meteor.publish("Cart", function (sessionId, userId) {
   // issues/5103
 
   // shopId is also required.
-  const shopId = ReactionCore.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

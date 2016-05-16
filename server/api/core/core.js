@@ -15,7 +15,7 @@ export default {
     // Jobs.setLogStream(process.stdout);
     this.loadPackages();
     // process imports from packages and any hooked imports
-    // ReactionImport.flush();
+    // this.Import.flush();
     // timing is important, packages are rqd
     // for initilial permissions configuration.
     this.createDefaultAdminUser();
@@ -376,7 +376,7 @@ export default {
 
         if (!shopId) return [];
         // existing registry will be upserted with changes, perhaps we should add:
-        assignOwnerRoles(shopId, pkgName, config.registry);
+        this.assignOwnerRoles(shopId, pkgName, config.registry);
 
         // Settings from the package registry.js
         const settingsFromPackage = {

@@ -7,11 +7,11 @@ import { Logger } from "/server/api";
  * @param {String} requestUrl - url
  * @return {String} domain name stripped from requestUrl
  */
-export const getRegistryDomain = (requestUrl) => {
+export function getRegistryDomain(requestUrl) {
   let url = requestUrl || process.env.ROOT_URL;
   let domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
   return domain;
-};
+}
 
 
 /**
@@ -19,7 +19,7 @@ export const getRegistryDomain = (requestUrl) => {
  *  @summary update the default shop url if ROOT_URL supplied is different from current
  *  @return {String} returns insert result
  */
-export const setDomain = function () {
+export function setDomain() {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
   try {
@@ -39,4 +39,4 @@ export const setDomain = function () {
       }
     });
   }
-};
+}

@@ -1,4 +1,4 @@
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /* eslint quote-props: 0 */
 /**
@@ -14,7 +14,7 @@ Meteor.publish("ShopMembers", function () {
     return this.ready();
   }
   let readPermissions = ["reaction-orders", "owner", "admin", "reaction-accounts"];
-  let shopId = ReactionCore.getShopId();
+  let shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

@@ -1,13 +1,13 @@
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 // Disabled for now, needs more testing.
 
 // // Define a rate limiting rule that matches update attempts by non-admin users
 // const addReserveRule = {
 //   userId: function (userId) {
-//     return Roles.userIsInRole(userId, "createProduct", ReactionCore.getShopId());
+//     return Roles.userIsInRole(userId, "createProduct", Reaction.getShopId());
 //   },
 //   type: "subscription",
 //   method: "Inventory"
@@ -16,7 +16,7 @@ import { Logger } from "/server/api";
 // // Define a rate limiting rule that matches backorder attempts by non-admin users
 // const addBackorderRule = {
 //   userId: function (userId) {
-//     return Roles.userIsInRole(userId, "createProduct", ReactionCore.getShopId());
+//     return Roles.userIsInRole(userId, "createProduct", Reaction.getShopId());
 //   },
 //   type: "method",
 //   method: "inventory/backorder"
@@ -47,7 +47,7 @@ Meteor.methods({
     this.unblock();
 
     // check basic user permissions
-    // if (!ReactionCore.hasPermission(["guest", "anonymous"])) {
+    // if (!Reaction.hasPermission(["guest", "anonymous"])) {
     //   throw new Meteor.Error(403, "Access Denied");
     // }
 
@@ -148,7 +148,7 @@ Meteor.methods({
     this.unblock();
 
     // // check basic user permissions
-    // if (!ReactionCore.hasPermission(["guest", "anonymous"])) {
+    // if (!Reaction.hasPermission(["guest", "anonymous"])) {
     //   throw new Meteor.Error(403, "Access Denied");
     // }
 
@@ -235,7 +235,7 @@ Meteor.methods({
     // negative `backOrderQty` value here?
 
     // check basic user permissions
-    // if (!ReactionCore.hasPermission(["guest","anonymous"])) {
+    // if (!Reaction.hasPermission(["guest","anonymous"])) {
     //   throw new Meteor.Error(403, "Access Denied");
     // }
 

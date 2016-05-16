@@ -12,7 +12,7 @@ import { Logger } from "/server/api";
  * @param  {[type]} registryItem [registry object]
  * @return {String}              [route name]
  */
-const getRouteName = (packageName, registryItem) => {
+function getRouteName(packageName, registryItem) {
   let routeName;
   if (packageName && registryItem) {
     if (registryItem.name) {
@@ -26,7 +26,8 @@ const getRouteName = (packageName, registryItem) => {
     routeName = routeName.split(":")[0];
     return routeName;
   }
-};
+  return null;
+}
 
 
 /**
@@ -43,7 +44,7 @@ const getRouteName = (packageName, registryItem) => {
  * @return {undefined}
  */
 
-export const assignOwnerRoles = (shopId, pkgName, registry) => {
+export function assignOwnerRoles(shopId, pkgName, registry) {
   const defaultRoles = ["owner", "admin", "createProduct", "guest", pkgName];
   const globalRoles = defaultRoles;
 
@@ -90,4 +91,4 @@ export const assignOwnerRoles = (shopId, pkgName, registry) => {
   Roles.addUsersToRoles(owners, globalRoles, Roles.GLOBAL_GROUP);
 
   Logger.debug(`Owner permissions added for ${pkgName}`);
-};
+}
