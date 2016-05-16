@@ -1,27 +1,27 @@
 import * as Collections from "/lib/collections";
-import Hooks from "./hooks";
-import Logger from "./logger";
+import Hooks from "../hooks";
+import Logger from "../logger";
 
 /**
- * @file Exposes the ReactionImport object implementing methods for bulk imports.
+ * @file Exposes the Import object implementing methods for bulk imports.
  * @author Tom De Caluwé
  */
 
-ReactionImport = class {};
+const Import = {};
 
-ReactionFixture = Object.create(ReactionImport);
+export const ReactionFixture = Object.create(Import);
 
-ReactionImport._buffers = {};
-ReactionImport._contexts = {};
-ReactionImport._count = {};
-ReactionImport._indications = {};
-ReactionImport._limit = 1000;
+Import._buffers = {};
+Import._contexts = {};
+Import._count = {};
+Import._indications = {};
+Import._limit = 1000;
 
-ReactionImport._name = function (collection) {
+Import._name = function (collection) {
   return collection._name;
 };
 
-ReactionImport._upsert = function () {
+Import._upsert = function () {
   return true;
 };
 
@@ -29,33 +29,30 @@ ReactionFixture._upsert = function () {
   return false;
 };
 
-ReactionImport.fixture = function () {
+Import.fixture = function () {
   return ReactionFixture;
 };
 
-ReactionImport.startup = function () {
+Import.startup = function () {
   return true;
 };
 
-ReactionImport.load = function (key, object) {
+Import.load = function (key, object) {
   check(object, Object);
 
   this.object(this.identify(object), key, object);
 };
 
-ReactionImport.indication = function (field, collection, probability) {
+Import.indication = function (field, collection, probability) {
   check(field, String);
   check(collection, Mongo.Collection);
   check(probability, Number);
 
-  this._indications[field] = {
-    collection: collection,
-    probability: probability
-  };
+  this._indications[field] = { collection, probability };
 };
 
 /**
- * ReactionImport.identify
+ * Import.identify
  * @summary Tries to identify the schema associated with a document.
  * @param {Object} document - A document with unknown schema
  * @returns {Mongo.Collection} Returns a MongoDB collection in which the
@@ -69,7 +66,7 @@ ReactionImport.indication = function (field, collection, probability) {
  * Afterwards the schema with the maximal probability is selected. An error is
  * thrown if the schema cannot be determined.
  */
-ReactionImport.identify = function (document) {
+Import.identify = function (document) {
   check(document, Object);
 
   let probabilities = {};
@@ -111,7 +108,7 @@ ReactionImport.identify = function (document) {
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
  * @returns {undefined}
  */
-ReactionImport.commit = function (collection) {
+Import.commit = function (collection) {
   check(collection, Mongo.Collection);
   // Construct a collection identifier.
   let name = this._name(collection);
@@ -162,7 +159,7 @@ ReactionImport.commit = function (collection) {
  * @param {Mongo.Collection} collection optional - supply a Mongo collection, or leave empty to commit all buffer entries
  * @returns {undefined}
  */
-ReactionImport.flush = function (collection) {
+Import.flush = function (collection) {
   if (!collection) {
     for (let name of Object.keys(this._buffers)) {
       this.commit(Collections[name]);
@@ -181,7 +178,7 @@ ReactionImport.flush = function (collection) {
  * The validation context is requested from the schema associated with the
  * collection.
  */
-ReactionImport.context = function (collection, selector) {
+Import.context = function (collection, selector) {
   check(collection, Mongo.Collection);
   check(selector, Match.Optional(Object));
 
@@ -204,7 +201,7 @@ ReactionImport.context = function (collection, selector) {
  * @returns {Object} return buffer
  * If no buffer is presented, a new one will be constructed.
  */
-ReactionImport.buffer = function (collection) {
+Import.buffer = function (collection) {
   check(collection, Mongo.Collection);
 
   if (!MongoInternals.NpmModule.Collection.prototype.initializeUnorderedBulkOp) {
@@ -235,7 +232,7 @@ ReactionImport.buffer = function (collection) {
  * * Push the variant if it doesn't exist.
  * * Update the variant.
  */
-ReactionImport.product = function (key, product, parent) {
+Import.product = function (key, product, parent) {
   check(parent, Object);
 
   return this.object(Collections.Products, key, product);
@@ -247,7 +244,7 @@ ReactionImport.product = function (key, product, parent) {
  * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
-ReactionImport.package = function (pkg, shopId) {
+Import.package = function (pkg, shopId) {
   check(pkg, Object);
   check(shopId, String);
   const key = {
@@ -263,7 +260,7 @@ ReactionImport.package = function (pkg, shopId) {
  * @param {Object} translation The translation data to be updated
  * @returns {Object} updated translation buffer
  */
-ReactionImport.translation = function (key, translation) {
+Import.translation = function (key, translation) {
   const modifiedKey = Object.assign(key, { ns: translation.ns });
   return this.object(Collections.Translations, modifiedKey, translation);
 };
@@ -278,7 +275,7 @@ ReactionImport.translation = function (key, translation) {
  * @param {Object} shop The shop data to be updated
  * @returns {Object} this shop
  */
-ReactionImport.shop = function (key, shop) {
+Import.shop = function (key, shop) {
   return this.object(Collections.Shops, key, shop);
 };
 
@@ -288,7 +285,7 @@ ReactionImport.shop = function (key, shop) {
  * @param {String} shopId shopId
  * @returns {Object} this shop
  */
-ReactionImport.layout = function (layout, shopId) {
+Import.layout = function (layout, shopId) {
   const key = {
     _id: shopId
   };
@@ -304,7 +301,7 @@ ReactionImport.layout = function (layout, shopId) {
  * @param {Object} shipping The shipping data to be updated
  * @returns {Object} this shipping
  */
-ReactionImport.shipping = function (key, shipping) {
+Import.shipping = function (key, shipping) {
   return this.object(Collections.Shipping, key, shipping);
 };
 
@@ -314,7 +311,7 @@ ReactionImport.shipping = function (key, shipping) {
  * @param {Object} tag The tag data to be updated
  * @returns {Object} this tag
  */
-ReactionImport.tag = function (key, tag) {
+Import.tag = function (key, tag) {
   return this.object(Collections.Tags, key, tag);
 };
 
@@ -398,7 +395,7 @@ function doRightJoinNoIntersection (leftSet, rightSet) {
  * @param {Object} object The object data to be updated
  * @returns {undefined}
  */
-ReactionImport.object = function (collection, key, object) {
+Import.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
@@ -449,7 +446,7 @@ ReactionImport.object = function (collection, key, object) {
  * parameter and an update document as the second parameter.
  * @returns {undefined}
  */
-ReactionImport.process = function (json, keys, callback) {
+Import.process = function (json, keys, callback) {
   check(json, String);
   check(keys, Array);
   check(callback, Function);
@@ -465,13 +462,16 @@ ReactionImport.process = function (json, keys, callback) {
   }
 };
 
-ReactionImport.indication("i18n", Collections.Translations, 0.2);
-ReactionImport.indication("hashtags", Collections.Products, 0.5);
-ReactionImport.indication("barcode", Collections.Products, 0.5);
-ReactionImport.indication("price", Collections.Products, 0.5);
-ReactionImport.indication("ancestors", Collections.Products, 0.5);
-ReactionImport.indication("languages", Collections.Shops, 0.5);
-ReactionImport.indication("currencies", Collections.Shops, 0.5);
-ReactionImport.indication("timezone", Collections.Shops, 0.5);
-ReactionImport.indication("isTopLevel", Collections.Tags, 0.4);
-ReactionImport.indication("slug", Collections.Tags, 0.5);
+Import.indication("i18n", Collections.Translations, 0.2);
+Import.indication("hashtags", Collections.Products, 0.5);
+Import.indication("barcode", Collections.Products, 0.5);
+Import.indication("price", Collections.Products, 0.5);
+Import.indication("ancestors", Collections.Products, 0.5);
+Import.indication("languages", Collections.Shops, 0.5);
+Import.indication("currencies", Collections.Shops, 0.5);
+Import.indication("timezone", Collections.Shops, 0.5);
+Import.indication("isTopLevel", Collections.Tags, 0.4);
+Import.indication("slug", Collections.Tags, 0.5);
+
+
+export default Import;

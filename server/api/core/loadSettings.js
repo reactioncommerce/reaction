@@ -17,7 +17,7 @@ import { Logger } from "/server/api";
  * @example
  *  ReactionRegistry.loadSettings Assets.getText("settings/reaction.json")
  */
-export const loadSettings = function (json) {
+export function loadSettings(json) {
   check(json, String);
   let exists;
   let service;
@@ -39,8 +39,8 @@ export const loadSettings = function (json) {
         name: item.name
       });
       //
-      // TODO migrate functionality to ReactionImport
-      // ReactionImport.package(item, shopId);
+      // TODO migrate functionality to Reaction.Import
+      // Reaction.Import.package(item, shopId);
       //
       // insert into the Packages collection
       if (exists) {

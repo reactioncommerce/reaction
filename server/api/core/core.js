@@ -420,7 +420,7 @@ export default {
           }
         }
         // Import package data
-        ReactionImport.package(combinedSettings, shopId);
+        this.Import.package(combinedSettings, shopId);
         Logger.info(`Initializing ${shop.name} ${pkgName}`);
       }); // end shops
     });
@@ -429,7 +429,7 @@ export default {
     const uniqLayouts = uniqWith(layouts, _.isEqual);
     // import layouts into Shops
     Shops.find().forEach((shop) => {
-      ReactionImport.layout(uniqLayouts, shop._id);
+      this.Import.layout(uniqLayouts, shop._id);
     });
 
     //
