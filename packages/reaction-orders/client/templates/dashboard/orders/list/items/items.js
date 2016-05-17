@@ -1,3 +1,5 @@
+import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
+
 /**
  * ordersListItems helpers
  *
@@ -20,5 +22,26 @@ Template.ordersListItems.helpers({
       return productImage;
     }
     return false;
+  },
+
+  items() {
+    const { order } = Template.instance().data;
+
+    if (order) {
+      return order.items;
+    }
+
+    return false;
+  },
+
+  numericInputProps(value) {
+    const { currencyFormat } = Template.instance().data;
+
+    return {
+      component: NumericInput,
+      value,
+      format: currencyFormat,
+      isEditing: false
+    };
   }
 });

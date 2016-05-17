@@ -22,8 +22,7 @@ class NumericInput extends React.Component {
 
     // Set default state
     this.state = {
-      value: this.props.value,
-      displayValue: this.format(this.props.value)
+      value: this.props.value
     };
 
     // Bind event handlers
@@ -41,6 +40,38 @@ class NumericInput extends React.Component {
     });
   }
 
+  get moneyFormat() {
+    const moneyFormat = this.props.format || {};
+    // precision is mis-represented in accounting.js. Precision in this case is actually scale
+    // so we add the property for precision based on scale.
+    moneyFormat.precision = moneyFormat.scale !== undefined ? moneyFormat.scale : 2;
+
+    return moneyFormat;
+  }
+
+  get displayValue() {
+    const value = this.state.value;
+
+    if (typeof value === "number") {
+      if (this.props.format && this.props.format.scale === 0) {
+        return this.format(value * 100);
+      }
+      return this.format(value);
+    }
+
+    return 0;
+  }
+
+  get scale() {
+    const parts = this.state.value.split(".");
+
+    if (parts.length === 2) {
+      return parts[1].length;
+    }
+
+    return 0;
+  }
+
   /**
    * format a numeric string
    * @param  {String} value Value to format
@@ -48,7 +79,12 @@ class NumericInput extends React.Component {
    * @return {String} Foramtted numeric string
    */
   format(value, format) {
-    const moneyFormat = format || this.props.format || {};
+    const moneyFormat = format || this.moneyFormat;
+
+
+    // value * (10 ^ (2 - moneyFormat.scale))
+
+    // console.log(moneyFormat, value, value * Math.pow(10, 2 - moneyFormat.precision));
     const decimal = moneyFormat.decimal || undefined;
     const unformatedValue = this.unformat(value, decimal);
 
@@ -73,11 +109,14 @@ class NumericInput extends React.Component {
   handleChange(event) {
     const input = event.currentTarget;
     const value = event.currentTarget.value;
-    const numberValue = this.unformat(value);
+    let numberValue = this.unformat(value);
+
+    if (this.props.format.scale === 0) {
+      numberValue = numberValue / 100;
+    }
 
     this.setState({
-      value: this.unformat(value),
-      displayValue: this.format(value),
+      value: numberValue,
       caretPosition: input.selectionStart
     }, () => {
       setCaretPosition(input, Math.max(this.state.caretPosition, 0));
@@ -94,6 +133,22 @@ class NumericInput extends React.Component {
    */
   render() {
     const { classNames } = this.props;
+
+
+    if (this.props.isEditing === false) {
+      const textValueClassName = classnames({
+        rui: true,
+        text: true,
+        ...(classNames.text || {})
+      });
+
+      return (
+        <span className={textValueClassName}>
+          {this.displayValue}
+        </span>
+      );
+    }
+
     const fieldClassName = classnames({
       "form-control": true,
       ...(classNames.input || {})
@@ -105,7 +160,7 @@ class NumericInput extends React.Component {
           className={fieldClassName}
           disabled={this.props.disabled}
           onChange={this.handleChange}
-          value={this.state.displayValue}
+          value={this.displayValue}
         />
       </div>
     );
@@ -113,15 +168,20 @@ class NumericInput extends React.Component {
 }
 
 NumericInput.defaultProps = {
-  disabled: false
+  disabled: false,
+  isEditing: true,
+  classNames: {}
 };
 
 NumericInput.propTypes = {
-  format: React.PropTypes.shape({}),
   classNames: React.PropTypes.object,
   disabled: React.PropTypes.bool,
+  format: React.PropTypes.shape({
+    scale: React.PropTypes.number
+  }),
+  isEditing: React.PropTypes.bool,
   onChange: React.PropTypes.func,
-  value: React.PropTypes.string
+  value: React.PropTypes.number
 };
 
 export default NumericInput;

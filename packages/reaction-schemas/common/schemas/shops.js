@@ -65,9 +65,9 @@ ReactionCore.Schemas.Currency = new SimpleSchema({
     type: String,
     defaultValue: "%s%v"
   },
-  precision: {
-    type: String,
-    defaultValue: "0",
+  scale: {
+    type: Number,
+    defaultValue: 2,
     optional: true
   },
   decimal: {

@@ -138,14 +138,22 @@ Template.coreOrderShippingInvoice.helpers({
 
   numericInputProps(fieldName, value, enabled = true) {
     const { state } = Template.instance();
+    const order = state.get("order");
+    const status = order.billing[0].paymentMethod.status;
+    const isApprovedAmount = (status === "approved" || status === "completed");
+
     return {
       component: NumericInput,
-      type: "currency",
+      numericType: "currency",
       value: value,
       disabled: !enabled,
+      isEditing: !isApprovedAmount, // Dont allow editing if its approved
       format: state.get("currency"),
       classNames: {
-        input: {amount: true}
+        input: {amount: true},
+        text: {
+          "text-success": status === "completed"
+        }
       },
       onChange(event, data) {
         state.set(`field-${fieldName}`, data.numberValue);

@@ -171,8 +171,8 @@
               "from": "core-js@>=1.0.0 <2.0.0"
             },
             "loose-envify": {
-              "version": "1.1.0",
-              "resolved": "https://registry.npmjs.org/loose-envify/-/loose-envify-1.1.0.tgz",
+              "version": "1.2.0",
+              "resolved": "https://registry.npmjs.org/loose-envify/-/loose-envify-1.2.0.tgz",
               "from": "loose-envify@>=1.0.0 <2.0.0",
               "dependencies": {
                 "js-tokens": {

@@ -94,8 +94,16 @@ function getFiltersWithCounts() {
   });
 }
 
-Template.orders.onCreated(() => {
-  Template.instance().autorun(() => {
+Template.orders.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    const shop = ReactionCore.Collections.Shops.findOne({});
+
+    this.state.set("currency", shop.currencies[shop.currency]);
+  });
+
+  this.autorun(() => {
     let isActionViewOpen = ReactionCore.isActionViewOpen();
     const queryParams = ReactionRouter.current().queryParams;
 
@@ -109,6 +117,13 @@ Template.orders.onCreated(() => {
  * orders helpers
  */
 Template.orders.helpers({
+  itemProps(order) {
+    return {
+      order,
+      currencyFormat: Template.instance().state.get("currency")
+    };
+  },
+
   orders() {
     ReactionCore.Subscriptions.Orders = ReactionSubscriptions.subscribe("Orders");
     if (ReactionCore.Subscriptions.Orders.ready()) {
@@ -136,6 +151,9 @@ Template.orders.helpers({
 });
 
 Template.ordersListItem.helpers({
+  order() {
+    return Template.currentData().order;
+  },
   activeClassname(orderId) {
     if (ReactionRouter.getQueryParam("_id") === orderId) {
       return "active";
@@ -148,15 +166,16 @@ Template.ordersListItem.helpers({
 });
 
 Template.ordersListItem.events({
-  "click [data-event-action=selectOrder]": function (event) {
+  "click [data-event-action=selectOrder]": function (event, instance) {
     event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
+    console.log(instance);
     // toggle detail views
     if (isActionViewOpen === false) {
       ReactionCore.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: this,
+        data: instance.data.order,
         props: {
           size: "large"
         },
@@ -164,10 +183,10 @@ Template.ordersListItem.events({
       });
     }
     ReactionRouter.setQueryParams({
-      _id: this._id
+      _id: instance.data.order._id
     });
   },
-  "click [data-event-action=startProcessingOrder]": function (event) {
+  "click [data-event-action=startProcessingOrder]": function (event, instance) {
     event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
 
@@ -179,7 +198,7 @@ Template.ordersListItem.events({
       ReactionCore.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: this,
+        data: instance.data.order,
         props: {
           size: "large"
         },
@@ -188,7 +207,7 @@ Template.ordersListItem.events({
     }
     ReactionRouter.setQueryParams({
       filter: "processing",
-      _id: this._id
+      _id: instance.data.order._id
     });
   }
 });
