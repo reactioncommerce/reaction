@@ -251,6 +251,9 @@ describe("cart methods", function () {
   describe("cart/removeFromCart", function () {
     beforeEach(function () {
       ReactionCore.Collections.Cart.remove({});
+      // we want to avoid calling this method while testing `cart/removeFromCart`
+      spyOn(Meteor.server.method_handlers, "cart/resetShipmentMethod").and.
+      callFake(() => true);
     });
 
     it(

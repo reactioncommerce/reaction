@@ -15,6 +15,11 @@ Meteor.methods({
   "orders/shipmentTracking": function (order, tracking) {
     check(order, Object);
     check(tracking, String);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
     let orderId = order._id;
 
@@ -56,24 +61,29 @@ Meteor.methods({
     check(order, Object);
     check(shipment, Object);
     check(packed, Boolean);
-    this.unblock();
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
 
     if (order) {
-      ReactionCore.Collections.Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.packed": packed
-        }
-      });
-
       // Set the status of the items as shipped
       const itemIds = shipment.items.map((item) => {
         return item._id;
       });
 
-      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+      if (result === 1) {
+        return ReactionCore.Collections.Orders.update({
+          "_id": order._id,
+          "shipping._id": shipment._id
+        }, {
+          $set: {
+            "shipping.$.packed": packed
+          }
+        });
+      }
+      return result;
     }
   },
 
@@ -86,6 +96,11 @@ Meteor.methods({
    */
   "orders/makeAdjustmentsToInvoice": function (order) {
     check(order, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     return ReactionCore.Collections.Orders.update(order._id, {
@@ -106,6 +121,11 @@ Meteor.methods({
   "orders/approvePayment": function (order, discount) {
     check(order, Object);
     check(discount, Number);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     let total =
@@ -134,6 +154,11 @@ Meteor.methods({
    */
   "orders/processPayment": function (order) {
     check(order, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     return Meteor.call("orders/processPayments", order._id, function (
@@ -160,35 +185,48 @@ Meteor.methods({
    *
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
-   * @return {Object} return workflow result
+   * @param {Object} shipment - shipment object
+   * @return {Object} return results of several operations
    */
-  "orders/shipmentShipped": function (order) {
+  "orders/shipmentShipped": function (order, shipment) {
     check(order, Object);
+    check(shipment, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
-    if (order) {
-      let shipment = order.shipping[0];
+    let completedItemsResult;
+    let completedOrderResult;
 
-      // Attempt to sent email notification
-      Meteor.call("orders/sendNotification", order);
+    // Attempt to sent email notification
+    const notifyResult = Meteor.call("orders/sendNotification", order);
 
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
 
-      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds, (error) => {
-        // Move to completed status for items
-        // TODO: In the future, this could be handled by shipping delivery status
-        if (!error) {
-          Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds, (error2) => {
-            // Then try to mark order as completed.
-            if (!error2) {
-              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
-            }
-          });
-        }
-      });
+    // TODO: In the future, this could be handled by shipping delivery status
+    const workflowResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds);
+
+    if (workflowResult === 1) {
+      // Move to completed status for items
+      completedItemsResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
+
+      if (completedItemsResult === 1) {
+        // Then try to mark order as completed.
+        completedOrderResult = Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
+      }
     }
+
+    return {
+      notifyResult: notifyResult,
+      workflowResult: workflowResult,
+      completedItems: completedItemsResult,
+      completedOrder: completedOrderResult
+    };
   },
 
   /**
@@ -200,6 +238,11 @@ Meteor.methods({
    */
   "orders/shipmentDelivered": function (order) {
     check(order, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     if (order) {
@@ -239,6 +282,11 @@ Meteor.methods({
    */
   "orders/sendNotification": function (order) {
     check(order, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
     if (order) {
       let shop = ReactionCore.Collections.Shops.findOne(order.shopId);
@@ -288,6 +336,11 @@ Meteor.methods({
    */
   "orders/orderCompleted": function (order) {
     check(order, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     if (order) {
@@ -308,6 +361,10 @@ Meteor.methods({
   "orders/addShipment": function (orderId, data) {
     check(orderId, String);
     check(data, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
 
     // temp hack until we build out multiple payment handlers
     let cart = ReactionCore.Collections.Cart.findOne(cartId);
@@ -340,6 +397,10 @@ Meteor.methods({
     check(shipment, Object);
     check(tracking, String);
 
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     return ReactionCore.Collections.Orders.update({
       "_id": order._id,
       "shipping._id": shipment._id
@@ -364,6 +425,10 @@ Meteor.methods({
     check(shipmentId, String);
     check(item, Object);
 
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     return ReactionCore.Collections.Orders.update({
       "_id": orderId,
       "shipping._id": shipmentId
@@ -378,6 +443,10 @@ Meteor.methods({
     check(orderId, String);
     check(shipmentId, Number);
     check(item, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
 
     return ReactionCore.Collections.Orders.update({
       "_id": orderId,
@@ -400,6 +469,11 @@ Meteor.methods({
   "orders/removeShipment": function (orderId, shipmentIndex) {
     check(orderId, String);
     check(shipmentIndex, Number);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     ReactionCore.Collections.Orders.update(orderId, {
       $unset: {
         [`shipments.${shipmentIndex}`]: 1
@@ -423,6 +497,10 @@ Meteor.methods({
     check(cartId, String);
     check(email, String);
 
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     return ReactionCore.Collections.Orders.update({cartId: cartId}, {
       $set: {
         email: email
@@ -441,6 +519,11 @@ Meteor.methods({
     check(orderId, String);
     check(docId, String);
     check(docType, String);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     return ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
         documents: {
@@ -463,6 +546,11 @@ Meteor.methods({
     check(orderId, String);
     check(event, String);
     check(value, Match.Optional(String));
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     return ReactionCore.Collections.Orders.update(orderId, {
       $addToSet: {
         history: {
@@ -483,6 +571,11 @@ Meteor.methods({
    */
   "orders/inventoryAdjust": function (orderId) {
     check(orderId, String);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     const order = ReactionCore.Collections.Orders.findOne(orderId);
     order.items.forEach(item => {
       ReactionCore.Collections.Products.update({
@@ -506,6 +599,10 @@ Meteor.methods({
    */
   "orders/capturePayments": (orderId) => {
     check(orderId, String);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
 
     let order = ReactionCore.Collections.Orders.findOne(orderId);
     const itemIds = order.shipping[0].items.map((item) => {
@@ -572,6 +669,11 @@ Meteor.methods({
    */
   "orders/refunds/list": function (paymentMethod) {
     check(paymentMethod, Object);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     let future = new Future();
@@ -602,6 +704,11 @@ Meteor.methods({
     check(orderId, String);
     check(paymentMethod, Object);
     check(amount, Number);
+
+    if (!ReactionCore.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     this.unblock();
 
     const processor = paymentMethod.processor.toLowerCase();

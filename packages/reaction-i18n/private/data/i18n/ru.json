@@ -289,30 +289,41 @@
         "checkout": "Оформить заказ"
       },
       "cartSubTotals": {
+        "discount": "Скидка",
         "head": "Ваша корзина",
         "items": "Товаров",
-        "subtotal": "Цена",
+        "subtotal": "Сумма",
         "shipping": "Доставка",
         "tax": "Налог",
-        "total": "Сумма"
+        "total": "Итого"
       },
       "cartDrawerItems": {
         "left": "слева"
       },
       "order": {
         "created": "Создан",
-        "reference": "Референс",
-        "invoice": "Счёт-фактура",
+        "reference": "Ссылка",
+        "invoice": "Счёт",
         "ordersNotFound": "Не найдено заказов",
         "approveInvoice": "Подтвердить",
         "makeAdjustments": "Корректировать",
         "capturePayment": "Найти платеж",
         "paymentCaptured": "Платеж найден",
-        "capturedTotal": "Найдено всего",
+        "capturedTotal": "Получено всего",
         "refundAmount": "Вернуть сумму",
+        "applyRefundToThisOrder": "Вернуть {{refund}} по этому заказу?",
         "applyRefund": "Подтвердить возврат",
-        "adjustedTotal": "Корректировано всего",
-        "processor": "Процессор",
+        "adjustedTotal": "Итого после возврата",
+        "processor": "Платёжная система",
+        "placed": "Размещён",
+        "on": ",",
+        "status": "Статус",
+        "completed": "Завершён",
+        "processing": "Обрабатывается",
+        "destination": "Место назначения",
+        "shipment": "Перевозка",
+        "payment": "Платёж",
+        "itemsFrom": "ед. товара от",
         "filter": {
           "new": "Новых",
           "captured": "Оплаченных",
@@ -324,16 +335,24 @@
         }
       },
       "orderShipping": {
-        "shipTo": "Доставить",
-        "notShipped": "Еще не доставлено",
-        "noTracking": "Без трэкинга",
-        "tracking": "Трэкинг",
-        "addtracking": "Добавить трэкинг",
+        "shipTo": "Доставить до",
+        "notShipped": "Ещё не доставлено",
+        "noTracking": "Не отслеживается",
+        "tracking": "Трекинг номер",
+        "addTracking": "Добавить идентификатор",
+        "itemsHaveBeenShipped": "Товары отправлены",
         "shipmentEmpty": "Эта доставка не содержит товаров",
-        "shipmentPacked": "Все товары запакованы",
+        "shipmentPacked": "Все товары запакованы и готовы к отгрузке",
         "shipped": "Доставлено",
-        "shippingNotifyCustomer": "Известить клиента что его товары будут доставлено скоро.",
+        "shippingNotifyCustomer": "Известить клиента о том, что его товары скоро будут доставлены.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
+      },
+      "orderWorkflow": {
+        "fulfillment": "Движение заказа",
+        "orderDetails": "Детали заказа",
+        "summary": "Сводка",
+        "invoice": "Счёт",
+        "shipmentTracking": "Отслеживание посылки"
       },
       "cartCheckout": {
         "surprise": "Ого!",
@@ -342,10 +361,10 @@
       "cartCompleted": {
         "thankYou": "Благодарим!",
         "itemsFrom": "товар(ы) из",
-        "yourOrderIsNow": "Ваш заказ сейчас",
+        "yourOrderIsNow": "Ваш заказ ",
         "summaryMessage": "Благодарим за заказ.",
-        "submitted": "submitted",
-        "registerGuest": "Привет! Добавьте email для получения обновлений заказа.",
+        "submitted": "размещён",
+        "registerGuest": "Здравствуйте! Добавьте email для получения обновлений заказа.",
         "trackYourDelivery": "Обновления заказа будут высланы на",
         "noOrdersFound": "Заказов не найдено.",
         "adminMessage": "Вы просматриваете заказы как администратор"
@@ -457,24 +476,79 @@
         "login": "Вход в учётную запись",
         "shippingBilling": "Адреса",
         "shippingOptions": "Варианты доставки",
-        "reviewPayment": "Подтверждение и оплата",
+        "reviewPayment": "Обзор",
         "complete": "Готово"
       },
       "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Добавить способ оплаты для завершения заказа",
+        "addPaymentToCompleteOrder": "Добавить платёж для завершения заказа",
         "processingError": "С вашим платежом возникли сложности.",
         "completeYourOrder": "Завершить ваш заказ",
         "noPaymentMethods": "Не указан ни один вариант платежа.",
-        "configureNow": "Укажите сейчас."
+        "configureNow": "Укажите сейчас.",
+        "failedToPlaceOrder": "Разместить заказ не удалось."
       },
       "checkoutReview": {
-        "review": "Итого"
+        "review": "Обзор"
       },
       "checkoutShipping": {
-        "selectShippingOption": "Выбор способа доставки",
-        "noShippingMethods": "Нет настроенных способов доставки.",
+        "selectShippingOption": "Выбор тарифа",
+        "noShippingMethods": "Ни один тариф не настроен.",
         "configureNow": "Настроить сейчас.",
         "shipping": "Доставка"
+      },
+      "shipping": {
+        "addShippingProvider": "Добавить поставщика услуг",
+        "editShippingProvider": "Редактировать поставщика",
+        "addShippingMethod": "Добавить тариф",
+        "editShippingMethod": "Редактировать тариф",
+        "deleteShippingMethod": "Удалить тариф",
+        "noSettingsForThisView": "Настройки отсутствуют",
+        "noShippingMethods": "Ни один тариф не настроен.",
+        "removeShippingMethodConfirm": "Вы уверены в том, что хотите удалить {{method}}?",
+        "removeShippingMethodTitle": "Удалить тариф",
+        "shippingMethodDeleted": "Этот тариф был удалён.",
+        "shippingProviderSaved": "Поставщик услуг по доставке сохранён.",
+        "shippingProviderUpdated": "Данные поставщика услуг по доставке обновлены.",
+        "shippingMethodRateAdded": "Тариф добавлен.",
+        "shippingMethodRateUpdated": "Тариф обновлён.",
+        "name": "Название",
+        "label": "Метка",
+        "group": "Группа",
+        "cost": "Стоимость",
+        "handling": "Комплектация",
+        "rate": "Ставка",
+        "enabled": "Включен",
+        "disabled": "Отключен",
+        "addRate": "Добавить ",
+        "updateRate": "Обновить тариф {{name}}",
+        "addNewCondition": "Добавить новое условие",
+        "deleteCondition": "Удалить условие",
+        "provider": {
+          "name": "Сервисный код",
+          "label": "Общедоступное название",
+          "enabled": "Подключен"
+        }
+      },
+      "shippingMethod": {
+        "name": "Название",
+        "label": "Метка",
+        "group": "Группа",
+        "cost": "Стоимость",
+        "handling": "Обслуживание",
+        "rate": "Ставка",
+        "enabled": "Включен",
+        "matchingCartRanges": "Соответствующий диапазон стоимости заказа",
+        "validRanges": {
+          "begin": "Минимальная стоимость заказа",
+          "end": "Максимальная стоимость заказа"
+        },
+        "matchingLocales": "Соответствующие зоны доставки",
+        "validLocales": {
+          "origination": "Откуда",
+          "destination": "Куда",
+          "deliveryBegin": "Ожидаемый срок комплектации",
+          "deliveryEnd": "Ожидаемый срок доставки"
+        }
       },
       "uom": {
         "OZ": "Унции",

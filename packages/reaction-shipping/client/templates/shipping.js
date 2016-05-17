@@ -1,11 +1,10 @@
 /*
  * Template shipping Helpers
  */
-
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
     ReactionCore.showActionView({
-      label: "Add Shipping Provider",
+      label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });
   }
@@ -63,7 +62,7 @@ Template.shipping.events({
   },
   "click [data-action=addShippingProvider]"() {
     ReactionCore.showActionView({
-      label: "Add Shipping Provider",
+      label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });
   }
@@ -78,6 +77,21 @@ Template.addShippingMethod.helpers({
     return ReactionCore.Collections.Shipping.find();
   }
 });
+
+
+/*
+ *  template editShippingMethod helpers
+ */
+
+Template.editShippingMethod.helpers({
+  selectedMethodDoc() {
+    Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
+    if (Doc) {
+      return Doc;
+    }
+  }
+});
+
 
 Template.afFormGroup_validLocales.helpers({
   afFieldInputAtts() {
@@ -119,7 +133,7 @@ Template.addShippingProvider.events({
  * template addShippingMethods events
  */
 Template.addShippingMethod.events({
-  "click .cancel"(event){
+  "click .cancel"(event) {
     event.preventDefault();
     toggleSession("selectedAddShippingMethod");
   }
@@ -160,16 +174,19 @@ Template.shippingProviderTable.events({
     event.preventDefault();
 
     ReactionCore.showActionView({
-      label: "Edit Shipping Method",
+      label: i18next.t("shipping.editShippingMethod"),
       data: this,
       template: "editShippingMethod"
     });
+
+    Session.set("updatedMethodObj", "");
+    Session.set("selectedMethodObj", this);
   },
   "click [data-event-action=editShippingProvider]"(event) {
     event.preventDefault();
 
     ReactionCore.showActionView({
-      label: "Edit Shipping Provider",
+      label: i18next.t("shipping.editShippingProvider"),
       data: this,
       template: "editShippingProvider"
     });
@@ -179,21 +196,21 @@ Template.shippingProviderTable.events({
     event.stopPropagation();
 
     Alerts.alert({
-      title: "Remove Shipping Method",
-      text: `Are you sure you want to delete ${this.name}`,
+      title: i18next.t("shipping.removeShippingMethodTitle"),
+      text: i18next.t("shipping.removeShippingMethodConfirm", { method: this.name }),
       type: "warning",
       closeOnConfirm: false
     },
-    () => {
-      Meteor.call("removeShippingMethod", $(event.currentTarget).data("provider-id"), this);
-      Alerts.alert("Shipping method deleted.", "", "success");
-    });
+      () => {
+        Meteor.call("removeShippingMethod", $(event.currentTarget).data("provider-id"), this);
+        Alerts.alert(i18next.t("shipping.shippingMethodDeleted"), "", "success");
+      });
   },
   "click [data-event-action=addShippingMethod]"(event) {
     event.preventDefault();
 
     ReactionCore.showActionView({
-      label: "Add Shipping Method",
+      label: i18next.t("shipping.addShippingMethod"),
       template: "addShippingMethod"
     });
   }
@@ -208,7 +225,7 @@ AutoForm.hooks({
   "shipping-provider-add-form": {
     onSuccess() {
       toggleSession("selectedShippingProvider");
-      return Alerts.inline("Shipping provider saved.", "success", {
+      return Alerts.inline(i18next.t("shipping.shippingProviderSaved"), "success", {
         autoHide: true,
         placement: "shippingPackage"
       });
@@ -231,7 +248,7 @@ AutoForm.hooks({
     },
     onSuccess() {
       toggleSession("selectedAddShippingMethod");
-      return Alerts.inline("Shipping method rate added.", "success", {
+      return Alerts.inline(i18next.t("shipping.shippingMethodRateAdded"), "success", {
         autoHide: true,
         placement: "shippingPackage"
       });
@@ -241,10 +258,13 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   "shipping-method-edit-form": {
-    onSubmit(doc) {
+    onSubmit(insertDoc, updateDoc, currentDoc) {
       let error;
+      let providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
-        Meteor.call("updateShippingMethods", Template.parentData(2)._id, Template.parentData(1), doc);
+        _.extend(insertDoc, { _id: currentDoc._id });
+        Meteor.call("updateShippingMethods", providerId, currentDoc._id, insertDoc);
+        Session.set("updatedMethodObj", insertDoc);
         this.done();
       } catch (_error) {
         error = _error;
@@ -253,10 +273,22 @@ AutoForm.hooks({
       return error || false;
     },
     onSuccess() {
-      return Alerts.inline("Shipping method rate updated.", "success", {
+      return Alerts.inline(i18next.t("shipping.shippingMethodRateUpdated"), "success", {
         autoHide: true,
         placement: "shippingPackage"
       });
     }
+
   }
 });
+
+Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
+  let view = Blaze.currentView;
+  let numLevel = levels;
+  while (view) {
+    if (view.name.substring(0, 9) === "Template." && !numLevel--) {
+      return view.templateInstance();
+    }
+    view = view.parentView;
+  }
+};

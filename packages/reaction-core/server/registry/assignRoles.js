@@ -40,8 +40,10 @@ const getRouteName = (packageName, registryItem) => {
  */
 
 ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
-  const defaultRoles = ["owner", "admin", "createProduct", "guest", pkgName];
-  const globalRoles = defaultRoles;
+  const defaultRoles = ["owner", "admin", "guest"];
+  let packageRoles = defaultRoles.slice();
+  packageRoles.push(pkgName);
+  let globalRoles = packageRoles.slice();
 
   if (registry) {
       // for each registry item define and push roles
@@ -51,14 +53,14 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
       // todo: check dependency on this.
       const roleName = getRouteName(pkgName, registryItem);
       if (roleName) {
-        defaultRoles.push(roleName);
+        packageRoles.push(roleName);
       }
 
       // Get all defined permissions, add them to an array
       // define permissions if you need to check custom permission
       if (registryItem.permissions) {
         for (let permission of registryItem.permissions) {
-          defaultRoles.push(permission.permission);
+          packageRoles.push(permission.permission);
         }
       }
     }
@@ -66,7 +68,9 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
     ReactionCore.Log.debug(`No routes loaded for ${pkgName}`);
   }
   // only unique roles
-  const defaultOwnerRoles = _.uniq(defaultRoles);
+  packageRoles = _.uniq(packageRoles);
+  // globalRoles = _.uniq(globalRoles);
+  const defaultOwnerRoles = ["owner"];
   // get existing shop owners to add new roles to
   const owners = [];
   const shopOwners = Roles.getUsersInRole(defaultOwnerRoles).fetch();
@@ -80,7 +84,7 @@ ReactionRegistry.assignOwnerRoles = (shopId, pkgName, registry) => {
     owners.push(account._id);
   }
   // we don't use accounts/addUserPermissions here because we may not yet have permissions
-  Roles.addUsersToRoles(owners, defaultOwnerRoles, shopId);
+  Roles.addUsersToRoles(owners, packageRoles, shopId);
 
   // the reaction owner has permissions to all sites by default
   Roles.addUsersToRoles(owners, globalRoles, Roles.GLOBAL_GROUP);

@@ -15,7 +15,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   const reactionTemplates = [];
   // fetch collection from shop.layout configuration
   let layout = _.findWhere(Shop.layout, {
-    workflow: options.hash.workflow || "coreWorkflow"
+    workflow: options.hash.workflow || DEFAULT_WORKFLOW || "coreWorkflow"
   });
 
   let layoutConfigCollection;

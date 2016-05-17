@@ -52,7 +52,7 @@ Package.onUse(function (api) {
   // community packages
   api.use("underscorestring:underscore.string@3.3.4");
   api.use("reactioncommerce:reaction-logger@0.2.0");
-  api.use("reactioncommerce:reaction-collections@2.2.0");
+  api.use("reactioncommerce:reaction-collections@2.2.1");
   api.use("reactioncommerce:reaction-email-templates@0.2.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
@@ -154,7 +154,7 @@ Package.onTest(function (api) {
 
   // reaction core
   api.use("reactioncommerce:reaction-checkout@1.0.0");
-  api.use("reactioncommerce:reaction-collections@2.2.0");
+  api.use("reactioncommerce:reaction-collections@2.2.1");
   api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.13.0");
 
