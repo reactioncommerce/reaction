@@ -61,11 +61,7 @@ if (Meteor.isClient) {
           Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
             "paymentSubmitted");
           // Client Stub Actions
-          if (result === 1) {
-            ReactionRouter.go("cart/completed", {}, {
-              _id: cartId
-            });
-          } else {
+          if (!result) {
             Alerts.inline(i18next.t("checkoutPayment.failedToPlaceOrder"), "danger", {
               autoHide: true,
               placement: "paymentMethod"
