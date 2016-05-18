@@ -75,34 +75,33 @@ const OrderHelper =  {
   }
 };
 
-function getOrders(filter) {
-  const query = OrderHelper.makeQuery(filter);
-  return ReactionCore.Collections.Orders.find(query);
-}
-
-function getFiltersWithCounts() {
-  return orderFilters.map((filter) => {
-    filter.label = i18next.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
-    filter.i18nKeyLabel = `order.filter.${filter.name}`;
-    filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
-
-    if (ReactionRouter.getQueryParam("filter")) {
-      filter.active = ReactionRouter.getQueryParam("filter") === filter.name;
-    }
-
-    return filter;
-  });
-}
-
 Template.orders.onCreated(function () {
   this.state = new ReactiveDict();
+  this.state.setDefault({
+    orders: []
+  });
 
+  // Watch for updates to the subscription and query params
+  // fetch available orders
+  this.autorun(() => {
+    this.subscribe("Orders");
+    const filter = ReactionRouter.getQueryParam("filter");
+    const query = OrderHelper.makeQuery(filter);
+    const orders = ReactionCore.Collections.Orders.find(query).fetch();
+
+    this.state.set("orders", orders)
+  });
+
+  // Watch for updates to shop collection
   this.autorun(() => {
     const shop = ReactionCore.Collections.Shops.findOne({});
 
+    // Update currency information, this is passed to child components containing
+    // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
   });
 
+  // Open the action view when necessary
   this.autorun(() => {
     let isActionViewOpen = ReactionCore.isActionViewOpen();
     const queryParams = ReactionRouter.current().queryParams;
@@ -125,14 +124,9 @@ Template.orders.helpers({
   },
 
   orders() {
-    ReactionCore.Subscriptions.Orders = ReactionSubscriptions.subscribe("Orders");
-    if (ReactionCore.Subscriptions.Orders.ready()) {
-      const template = Template.instance();
-      const queryParams = ReactionRouter.getQueryParam("filter");
-      template.orders = getOrders(queryParams);
-      return template.orders;
-    }
+    return Template.instance().state.get("orders") || false;
   },
+
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {
       return filter.name === ReactionRouter.getQueryParam("filter");
@@ -141,6 +135,8 @@ Template.orders.helpers({
     if (foundFilter) {
       return foundFilter.label;
     }
+
+    return "";
   },
   activeClassname(orderId) {
     if (ReactionRouter.getQueryParam("_id") === orderId) {
@@ -169,7 +165,7 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event, instance) {
     event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
-    console.log(instance);
+
     // toggle detail views
     if (isActionViewOpen === false) {
       ReactionCore.showActionView({
@@ -212,6 +208,29 @@ Template.ordersListItem.events({
   }
 });
 
+Template.orderListFilters.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    const queryFilter = ReactionRouter.getQueryParam("filter");
+    this.subscribe("Orders");
+
+    const filters = orderFilters.map((filter) => {
+      filter.label = i18next.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
+      filter.i18nKeyLabel = `order.filter.${filter.name}`;
+      filter.count = ReactionCore.Collections.Orders.find(OrderHelper.makeQuery(filter.name)).count();
+
+      if (queryFilter) {
+        filter.active = queryFilter === filter.name;
+      }
+
+      return filter;
+    });
+
+    this.state.set("filters", filters)
+  });
+});
+
 Template.orderListFilters.events({
   "click [role=tab]": (event) => {
     event.preventDefault();
@@ -229,8 +248,9 @@ Template.orderListFilters.events({
 
 Template.orderListFilters.helpers({
   filters() {
-    return getFiltersWithCounts();
+    return Template.instance().state.get("filters");
   },
+
   activeClassname(item) {
     if (item.active === true) {
       return "active";
