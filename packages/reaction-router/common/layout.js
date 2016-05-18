@@ -45,17 +45,24 @@ ReactionLayout = (options = {}) => {
 
   // autorun router rendering
   Tracker.autorun(function () {
+    const defaultLayout = "coreLayout";
     if (ReactionCore.Subscriptions.Shops.ready()) {
       const shop = ReactionCore.Collections.Shops.findOne(ReactionCore.getShopId());
       if (shop) {
-        const newLayout = shop.layout.reverse().find((x) => selectLayout(x, layout, workflow));
-        // oops this layout wasn't found. render notFound
+        let newLayout = shop.layout.reverse().find((x) => selectLayout(x, layout, workflow));
+        let fallbackLayout = {};
         if (!newLayout) {
-          BlazeLayout.render("notFound");
-        } else {
-          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
-          BlazeLayout.render(layout, layoutToRender);
+          // Look for a layout using the coreLayout and fall back to that
+          ReactionCore.Log.debug("Could not find custom layout, falling back to core");
+          fallbackLayout = shop.layout.reverse().find((x) => selectLayout(x, defaultLayout, workflow));
+          if (!fallbackLayout) {
+            // still not found, log and render the notfound template
+            ReactionCore.Log.warn(`Missing layout for ${layout}/${workflow}`);
+            BlazeLayout.render("notFound");
+          }
         }
+        const layoutToRender = Object.assign({}, newLayout.structure, fallbackLayout.structure, options, unauthorized);
+        BlazeLayout.render(layout, layoutToRender);
       }
     }
   });

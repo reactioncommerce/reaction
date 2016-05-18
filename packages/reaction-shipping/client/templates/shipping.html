@@ -1,7 +1,7 @@
 
 <template name="shippingDashboardControls">
   <button type="button" class="btn btn-default" data-event-action="addShippingProvider">
-    <i class="fa fa-plus fa-lg" title="Add shipping provider"></i> Add Provider
+    <i class="fa fa-plus fa-lg" title="{{i18n 'shipping.addShippingProvider' 'Add shipping provider'}}"></i> Add Provider
   </button>
 </template>
 
@@ -20,7 +20,7 @@
 <template name="shippingSettings">
   <div class="panel">
     <div class="panel-heading">
-      <div class="panel-title">No settings for this view</div>
+      <div class="panel-title" data-i18n="shipping.noSettingsForThisView">No settings for this view</div>
     </div>
   </div>
 
@@ -33,7 +33,7 @@
         <div class="panel-heading" data-event-action="editShippingProvider">
           <span class="text-left">{{provider.name}}</span>
           <span class="pull-right">
-            <i class="fa fa-cog" id="edit-shipping-provider" title="Edit shipping provider"></i>
+            <i class="fa fa-cog" id="edit-shipping-provider" title="{{i18n 'shipping.editShippingProvider' 'Edit shipping provider'}}"></i>
           </span>
         </div>
         {{#if selectedShippingProvider}}
@@ -46,14 +46,14 @@
           <table class="table table-striped">
             <thead>
               <tr class="info">
-                <th>Name</th>
-                <th>Label</th>
-                <th>Group</th>
-                <th>Cost</th>
-                <th>Handling</th>
-                <th>Rate</th>
-                <th>Enabled</th>
-                <th><i class="fa fa-plus pull-right add-shipping-method" title="Add shipping method" data-event-action="addShippingMethod"></i></th>
+                <th>{{i18n "shippingMethod.name" "Name"}}</th>
+                <th>{{i18n "shippingMethod.label" "Label"}}</th>
+                <th>{{i18n "shippingMethod.group" "Group"}}</th>
+                <th>{{i18n "shippingMethod.cost" "Cost"}}</th>
+                <th>{{i18n "shippingMethod.handling" "Handling"}}</th>
+                <th>{{i18n "shippingMethod.rate" "Rate"}}</th>
+                <th>{{i18n "shippingMethod.enabled" "Enabled"}}</th>
+                <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'shipping.addShippingMethod' 'Add shipping method'}}" data-event-action="addShippingMethod"></i></th>
               </tr>
             </thead>
             <tbody>
@@ -80,8 +80,8 @@
                   {{/if}}
                 </td>
                 <td class="text-right">
-                  <i class="fa fa-cog edit-shipping-method" title="Edit shipping method" data-event-action="editShippingMethod"></i>
-                  <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="Delete shipping method" data-event-action="deleteShippingMethod"></i>
+                  <i class="fa fa-cog edit-shipping-method" title="{{i18n 'shipping.editShippingMethod' 'Edit shipping method'}}" data-event-action="editShippingMethod"></i>
+                  <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="{{i18n 'shipping.deleteShippingMethod' 'Delete shipping method'}}" data-event-action="deleteShippingMethod"></i>
                 </td>
               </tr>
               {{#if selectedShippingMethod}}
@@ -116,7 +116,7 @@
     }}
 
     <div class="panel panel-default">
-      <div class="panel-heading">Add rate</div>
+      <div class="panel-heading" data-i18n="shipping.addRate">Add rate</div>
       <div class="panel-body">
         <div class="col-md-6">
           {{>afQuickField name='name' autofocus=''}}
@@ -130,8 +130,8 @@
           {{>afQuickField name='rate'}}
         </div>
         <div class="pull-right">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <button type="cancel" class="btn btn-primary cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="app.submit">Submit</button>
+          <button type="cancel" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
         </div>
       </div>
     </div>
@@ -252,7 +252,7 @@
 <template name="afArrayField_inlineRange">
   <div class="panel panel-default">
     <div class="panel-heading">{{afFieldLabelText name=this.atts.name}}
-    <span class="autoform-add-item pull-right" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="fa fa-plus-square-o fa-lg"></span></span>
+    <span class="autoform-add-item pull-right" title="{{i18n 'shipping.addNewCondition' 'Add new condition'}}" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="fa fa-plus-square-o fa-lg"></span></span>
     </div>
     {{#if afFieldIsInvalid name=this.name}}
     <div class="panel-body has-error">
@@ -266,7 +266,7 @@
           {{> afQuickField name=this.name label=false options=afOptionsFromSchema template=../atts.name}}
           <div class="col-sm-12">
             {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-              <span class="pull-right"><span class="fa fa-trash-o fa-lg"></span></span>
+              <span class="pull-right" title="{{i18n 'shipping.deleteCondition' 'Delete condition'}}"><span class="fa fa-trash-o fa-lg"></span></span>
             {{/if}}
           </div>
         </div>

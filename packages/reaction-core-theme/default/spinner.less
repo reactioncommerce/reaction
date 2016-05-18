@@ -1,0 +1,30 @@
+/* Loading indicator, spreads over whole screen estate to intercept mouse events until view is rendered. */
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.spinner-container-lg {
+  padding: 60px 0;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-width: 2px 2px 2px 2px;
+  border-color: black black transparent transparent;
+  border-style: solid;
+  border-radius: 22px;
+
+  animation-name: spinToWin;
+  animation-duration: 600ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spinToWin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

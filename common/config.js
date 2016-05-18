@@ -15,7 +15,7 @@ if (Meteor.isClient) {
   INDEX_OPTIONS = {};
 
   // default load qty for product grid
-  ITEMS_INCREMENT = 24;
+  ITEMS_INCREMENT = 12;
   // sets default number of product displayed on a grid
   Session.setDefault("productScrollLimit", ITEMS_INCREMENT);
 }
