@@ -26,9 +26,32 @@ Template.ordersListItems.helpers({
 
   items() {
     const { order } = Template.instance().data;
+    let combinedItems = [];
+
 
     if (order) {
-      return order.items;
+      // Lopp through all items in the order. The items are split into indivital items
+      for (let orderItem of order.items) {
+        // Find an exising item in the combinedItems array
+        const foundItem = combinedItems.find((combinedItem) => {
+          // If and item variant exists, then we return true
+          if (combinedItem.variants) {
+            return combinedItem.variants._id === orderItem.variants._id;
+          }
+
+          return false;
+        });
+
+        // Increment the quantity count for the duplicate product variants
+        if (foundItem) {
+          foundItem.quantity++;
+        } else {
+          // Otherwise push the unique item into the combinedItems array
+          combinedItems.push(orderItem);
+        }
+      }
+
+      return combinedItems;
     }
 
     return false;
