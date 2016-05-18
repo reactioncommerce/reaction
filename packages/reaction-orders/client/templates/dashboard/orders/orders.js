@@ -185,16 +185,17 @@ Template.ordersListItem.events({
   "click [data-event-action=startProcessingOrder]": function (event, instance) {
     event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
+    const { order } = instance.data
 
-    if (this.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
+    if (order.workflow.status === "new") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
     }
     // toggle detail views
     if (isActionViewOpen === false) {
       ReactionCore.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: instance.data.order,
+        data: order,
         props: {
           size: "large"
         },
@@ -203,7 +204,7 @@ Template.ordersListItem.events({
     }
     ReactionRouter.setQueryParams({
       filter: "processing",
-      _id: instance.data.order._id
+      _id: order._id
     });
   }
 });
