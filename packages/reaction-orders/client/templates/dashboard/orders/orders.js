@@ -89,7 +89,7 @@ Template.orders.onCreated(function () {
     const query = OrderHelper.makeQuery(filter);
     const orders = ReactionCore.Collections.Orders.find(query).fetch();
 
-    this.state.set("orders", orders)
+    this.state.set("orders", orders);
   });
 
   // Watch for updates to shop collection
@@ -185,7 +185,7 @@ Template.ordersListItem.events({
   "click [data-event-action=startProcessingOrder]": function (event, instance) {
     event.preventDefault();
     const isActionViewOpen = ReactionCore.isActionViewOpen();
-    const { order } = instance.data
+    const { order } = instance.data;
 
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
@@ -228,7 +228,7 @@ Template.orderListFilters.onCreated(function () {
       return filter;
     });
 
-    this.state.set("filters", filters)
+    this.state.set("filters", filters);
   });
 });
 

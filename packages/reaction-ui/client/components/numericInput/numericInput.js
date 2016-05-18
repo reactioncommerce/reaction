@@ -150,7 +150,7 @@ class NumericInput extends React.Component {
     }
 
     const fieldClassName = classnames({
-      "form-control": true,
+      "form-control": true, // eslint-disable-line: quote-props
       ...(classNames.input || {})
     });
 
@@ -167,6 +167,8 @@ class NumericInput extends React.Component {
   }
 }
 
+NumericInput.displayName = "Numeric Input";
+
 NumericInput.defaultProps = {
   disabled: false,
   isEditing: true,
@@ -174,7 +176,7 @@ NumericInput.defaultProps = {
 };
 
 NumericInput.propTypes = {
-  classNames: React.PropTypes.object,
+  classNames: React.PropTypes.shape({}),
   disabled: React.PropTypes.bool,
   format: React.PropTypes.shape({
     scale: React.PropTypes.number
