@@ -88,7 +88,7 @@ const getRegistryRouteName = (packageName, registryItem) => {
  */
 ReactionRouter.initPackageRoutes = () => {
   const pkgs = ReactionCore.Collections.Packages.find().fetch();
-  const prefix = ReactionCore.getShopName().toLowerCase(); // todo add shopId
+  const prefix = getSlug(ReactionCore.getShopName().toLowerCase()); // todo add shopId
 
   // initialize index
   // define default routing groups
@@ -160,10 +160,20 @@ ReactionRouter.initPackageRoutes = () => {
       // add group and routes to routing table
       //
       let uniqRoutes = new Set(newRoutes);
-      for (const route of uniqRoutes) {
-        shop.newGroup = ReactionRouter.group({
-          prefix: "/" + prefix
-        });
+      for (let route of uniqRoutes) {
+        // allow overriding of prefix in route definitions
+        // define an "absolute" url by excluding "/"
+        if (route.route.substring(0, 1) !== "/") {
+          route.route = "/" + route.route;
+          shop.newGroup = ReactionRouter.group({
+            prefix: ""
+          });
+        } else {
+          shop.newGroup = ReactionRouter.group({
+            prefix: "/" + prefix
+          });
+        }
+
         // todo: look for a cheap way to validate and prevent duplicate additions
         shop.newGroup.route(route.route, route.options);
       }
