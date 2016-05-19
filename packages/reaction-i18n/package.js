@@ -64,7 +64,6 @@ Package.onUse(function (api) {
   // i18n translations
   api.addAssets("private/data/i18n/ar.json", "server");
   api.addAssets("private/data/i18n/bg.json", "server");
-  api.addAssets("private/data/i18n/cn.json", "server");
   api.addAssets("private/data/i18n/cs.json", "server");
   api.addAssets("private/data/i18n/de.json", "server");
   api.addAssets("private/data/i18n/en.json", "server");
@@ -85,6 +84,8 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
   api.addAssets("private/data/i18n/nb.json", "server");
+  api.addAssets("private/data/i18n/zh.json", "server");
+
   // exports
   api.imply("jquery");
   api.export("i18next");
