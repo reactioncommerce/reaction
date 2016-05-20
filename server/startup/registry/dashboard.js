@@ -1,6 +1,6 @@
 import { Reaction } from "/server/api";
 
-export default function () {    
+export default function () {
   Reaction.registerPackage({
     label: "Dashboard",
     name: "reaction-dashboard",

@@ -88,12 +88,10 @@ function selectLayout(layout, setLayout, setWorkflow) {
 /**
  * ReactionLayout
  * sets and returns reaction layout structure
- * @param {Object} context - this router context
+ * @param {Object} options - this router context
  * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
  * @param {String} options.workflow - string of shop.layout.workflow (defaults to coreLayout)
- * @param {String} options - layout.structure overrides
- * @returns {Obj
- * ect} layout - return object of template definitions for Blaze Layout
+ * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
 export function ReactionLayout(options = {}) {
   const layout = options.layout || "coreLayout";
