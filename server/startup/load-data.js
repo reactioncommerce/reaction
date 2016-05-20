@@ -5,7 +5,6 @@ export default function () {
   /**
    * Hook to setup core additional imports during ReactionCore init (shops process first)
    */
-
   Hooks.Events.add("onCoreInit", () => {
     Logger.info("Initialize using reaction-sample-data");
     Reaction.Import.fixture().process(Assets.getText("data/Shops.json"), ["name"], Reaction.Import.shop);

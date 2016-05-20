@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
+import { Countries } from "/client/collections";
 import { ReactionRouter } from "/client/modules/router";
 import { Packages, Shops } from "/lib/collections";
 
