@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Router for Reaction Commerce",
   name: "reactioncommerce:reaction-router",
-  version: "1.1.2",
+  version: "1.1.3",
   documentation: "README.md"
 });
 
