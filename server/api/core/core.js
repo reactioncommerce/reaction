@@ -10,12 +10,14 @@ export default {
     // run onCoreInit hooks
     Hooks.Events.run("onCoreInit", this);
     // start job server
-    Logger.info("JobServer started:", Jobs.startJobServer());
+    Jobs.startJobServer(() => {
+      Logger.info("JobServer started");
+    });
     // uncomment for JobCollection debug
     // Jobs.setLogStream(process.stdout);
     this.loadPackages();
     // process imports from packages and any hooked imports
-    // this.Import.flush();
+    this.Import.flush();
     // timing is important, packages are rqd
     // for initilial permissions configuration.
     this.createDefaultAdminUser();
@@ -116,11 +118,12 @@ export default {
   },
 
   configureMailUrl(user, password, host, port) {
-    let shopSettings = Packages.findOne({
+    const shopSettings = Packages.findOne({
       shopId: this.getShopId(),
       name: "core"
     });
-    let shopMail = {};
+
+    let shopMail;
 
     if (shopSettings) {
       shopMail = shopSettings.settings.mail || {};
@@ -357,7 +360,7 @@ export default {
 
     // Attempt to load reaction.json fixture data
     try {
-      settingsJSONAsset = Assets.getText("settings/reaction.json");
+      settingsJSONAsset = Assets.getText("reaction.json");
       const validatedJson = EJSON.parse(settingsJSONAsset);
 
       if (!_.isArray(validatedJson[0])) {
@@ -366,13 +369,13 @@ export default {
         settingsFromJSON = validatedJson;
       }
     } catch (error) {
-      Logger.warn("loadSettings reaction.json not loaded.", error);
+      Logger.warn(error, "loadSettings reaction.json not loaded.");
     }
     let layouts = [];
     // for each shop, we're loading packages a unique registry
     _.each(this.Packages, (config, pkgName) => {
       return Shops.find().forEach((shop) => {
-        let shopId = shop._id;
+        const shopId = shop._id;
 
         if (!shopId) return [];
         // existing registry will be upserted with changes, perhaps we should add:
@@ -438,7 +441,7 @@ export default {
     Shops.find().forEach((shop) => {
       return Packages.find().forEach((pkg) => {
         // delete registry entries for packages that have been removed
-        if (!_.has(ReactionRegistry.Packages, pkg.name)) {
+        if (!_.has(this.Packages, pkg.name)) {
           Logger.info(`Removing ${pkg.name}`);
           return Packages.remove({
             shopId: shop._id,
