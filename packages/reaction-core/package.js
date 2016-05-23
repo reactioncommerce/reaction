@@ -120,6 +120,7 @@ Package.onUse(function (api) {
   // method hooks
   api.addFiles("server/methods/hooks/hooks.js");
   api.addFiles("server/methods/hooks/cart.js", "server");
+  api.addFiles("server/methods/hooks/shop.js");
 
   // misc hooks
   api.addFiles("server/hooks.js", "server");

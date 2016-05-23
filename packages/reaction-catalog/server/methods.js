@@ -845,14 +845,12 @@ Meteor.methods({
       });
     }
 
-    newTag.isTopLevel = false;
-    newTag.shopId = ReactionCore.getShopId();
-    newTag.updatedAt = new Date();
-    newTag.createdAt = new Date();
-    newTag._id = ReactionCore.Collections.Tags.insert(newTag);
+    // newTagId could be an Error... we don't check it. Maybe we should add this
+    // check in future.
+    const newTagId = Meteor.call("shop/createTag", tagName, false);
     return ReactionCore.Collections.Products.update(productId, {
       $push: {
-        hashtags: newTag._id
+        hashtags: newTagId
       }
     }, {
       selector: {

@@ -80,6 +80,37 @@ describe("core methods", function () {
     });
   });
 
+  describe("shop/createTag", () => {
+    beforeAll(() => {
+      ReactionCore.Collections.Tags.remove({});
+    });
+
+    it(
+      "should throw 403 error by non admin",
+      () => {
+        spyOn(Roles, "userIsInRole").and.returnValue(false);
+        spyOn(ReactionCore.Collections.Tags, "insert");
+
+        expect(function () {
+          return Meteor.call("shop/createTag", "testTag", true);
+        }).toThrow(new Meteor.Error(403, "Access Denied"));
+        expect(ReactionCore.Collections.Tags.insert).not.toHaveBeenCalled();
+      }
+    );
+
+    it(
+      "should create new tag",
+      done => {
+        spyOn(Roles, "userIsInRole").and.returnValue(true);
+        spyOn(ReactionCore.Collections.Tags, "insert").and.returnValue(1);
+        expect(Meteor.call("shop/createTag", "testTag", true)).toEqual(1);
+        expect(ReactionCore.Collections.Tags.insert).toHaveBeenCalled();
+
+        return done();
+      }
+    );
+  });
+
   describe("shop/locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
