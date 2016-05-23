@@ -117,7 +117,9 @@
     <form name="refund">
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
-        {{> numericInput class="form-control amount" name="refund_amount" maxValue=adjustedTotal}}
+        <div class="amount">
+          {{> React refundInputProps}}
+        </div>
       </div>
 
       {{#each refund in refunds}}

@@ -92,20 +92,26 @@ Template.coreOrderShippingInvoice.events({
   "submit form[name=refund]": (event, instance) => {
     event.preventDefault();
 
+    const { state } = Template.instance();
     const order = instance.state.get("order");
     const refund = state.get("field-refund") || 0;
     const paymentMethod = order.billing[0].paymentMethod;
 
-    if (confirm(i18next.t("order.applyRefundToThisOrder", { refund: refund }))) {
-      Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
-        if (error) {
-          // Show error
-        }
+    Alerts.alert({
+      title: i18next.t("order.applyRefundToThisOrder", { refund: refund }),
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.applyRefund")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+          if (error) {
+            // Show error
+          }
 
-        event.target.refund_amount.value = "";
-        instance.refundAmount.set(0);
-      });
-    }
+          state.set("field-refund", 0);
+        });
+      }
+    });
   },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
@@ -136,7 +142,7 @@ Template.coreOrderShippingInvoice.helpers({
     return NumericInput;
   },
 
-  numericInputProps(fieldName, value, enabled = true) {
+  numericInputProps(fieldName, value = 0, enabled = true) {
     const { state } = Template.instance();
     const order = state.get("order");
     const status = order.billing[0].paymentMethod.status;
@@ -157,6 +163,34 @@ Template.coreOrderShippingInvoice.helpers({
       },
       onChange(event, data) {
         state.set(`field-${fieldName}`, data.numberValue);
+      }
+    };
+  },
+
+  refundInputProps() {
+    const { state } = Template.instance();
+    const order = state.get("order");
+    const paymentMethod = order.billing[0].paymentMethod;
+    const refunds = Template.instance().refunds.get();
+
+    let refundTotal = 0;
+    _.each(refunds, function (item) {
+      refundTotal += item.amount;
+    });
+
+    const adjustedTotal = paymentMethod.amount - refundTotal;
+
+    return {
+      component: NumericInput,
+      numericType: "currency",
+      value: 0,
+      maxValue: adjustedTotal,
+      format: state.get("currency"),
+      classNames: {
+        input: {amount: true}
+      },
+      onChange(event, data) {
+        state.set("field-refund", data.numberValue);
       }
     };
   },
@@ -265,12 +299,12 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   refundSubmitDisabled() {
-    const amount = Template.instance().refundAmount.get() || 0;
+    const amount = Template.instance().state.get("field-refund") || 0;
     if (amount === 0) {
       return "disabled";
     }
 
-    return false;
+    return null;
   },
 
   /**
