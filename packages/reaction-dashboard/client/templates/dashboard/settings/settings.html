@@ -12,7 +12,9 @@
     <div class="nav-settings-heading">
       <h3 class="nav-settings-title">
         {{#with registry}}
-         <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+         <span data-i18n="{{i18nKeyLabel}}">
+           <span>{{label}}</span>
+         </span>
         {{/with}}
         {{> Template.dynamic template=settingsHeaderControls}}
       </h3>

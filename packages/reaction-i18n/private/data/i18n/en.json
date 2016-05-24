@@ -93,7 +93,9 @@
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
-          "genericPaymentSettingsLabel": "Generic Payment Settings"
+          "genericPaymentSettingsLabel": "Generic Payment Settings",
+          "reactionConnectLabel": "Reaction Connect",
+          "examplePaymentSettingsLabel": "Example Payment"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
