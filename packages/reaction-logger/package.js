@@ -5,12 +5,6 @@ Package.describe({
   version: "0.2.1"
 });
 
-Npm.depends({
-  "bunyan": "1.8.0",
-  "bunyan-format": "0.2.1",
-  "bunyan-loggly": "0.0.5"
-});
-
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
   api.use("tmeasday:check-npm-versions@0.3.1");
