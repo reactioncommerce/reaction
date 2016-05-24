@@ -73,11 +73,13 @@
     },
     "BHD": {
       "format": "%v %s",
-      "symbol": ".د.ب"
+      "symbol": ".د.ب",
+      "scale": 3
     },
     "BIF": {
       "format": "%s%v",
-      "symbol": "$"
+      "symbol": "$",
+      "scale": 0
     },
     "BMD": {
       "format": "%v %s",
@@ -113,7 +115,8 @@
       "format": "%s%v",
       "symbol": "p.",
       "decimal": ",",
-      "thousand": "."
+      "thousand": ".",
+      "scale": 0
     },
     "BZD": {
       "format": "%s%v",
@@ -135,7 +138,8 @@
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
-      "thousand": "."
+      "thousand": ".",
+      "scale": 0
     },
     "CNY": {
       "format": "%s%v",
@@ -177,7 +181,8 @@
     },
     "DJF": {
       "format": "%v %s",
-      "symbol": "Fdj"
+      "symbol": "Fdj",
+      "scale": 0
     },
     "DKK": {
       "format": "%s%v",
@@ -251,9 +256,18 @@
       "format": "%s%v",
       "symbol": "£"
     },
+    "GNF": {
+      "format": "%v %s",
+      "symbol": "FG",
+      "scale": 0
+    },
     "GTQ": {
       "format": "%s%v",
       "symbol": "Q"
+    },
+    "GYD": {
+      "format": "%s%v",
+      "symbol": "$"
     },
     "HKD": {
       "format": "%s%v",
@@ -280,15 +294,18 @@
     },
     "ISK": {
       "format": "%s%v",
-      "symbol": "kr"
+      "symbol": "kr",
+      "scale": 0
     },
     "JPY": {
       "format": "%s%v",
-      "symbol": "¥"
+      "symbol": "¥",
+      "scale": 0
     },
     "KRW": {
       "format": "%s%v",
-      "symbol": "₩"
+      "symbol": "₩",
+      "scale": 0
     },
     "KZT": {
       "format": "%v %s",
@@ -334,7 +351,7 @@
       "symbol": "руб.",
       "decimal": ",",
       "thousand": " ",
-      "precision": 0,
+      "scale": 0,
       "where": "right"
     },
     "SEK": {
@@ -360,7 +377,8 @@
     },
     "XAF": {
       "format": "%v %s",
-      "symbol": "CFA"
+      "symbol": "CFA",
+      "scale": 0
     },
     "XCD": {
       "format": "%s%v",
@@ -368,7 +386,8 @@
     },
     "XOF": {
       "format": "%v %s",
-      "symbol": "CFA"
+      "symbol": "CFA",
+      "scale": 0
     }
   },
   "currency": "USD",
@@ -3145,11 +3164,13 @@
     },
     "BHD": {
       "format": "%v %s",
-      "symbol": ".د.ب"
+      "symbol": ".د.ب",
+      "scale": 3
     },
     "BIF": {
       "format": "%s%v",
-      "symbol": "$"
+      "symbol": "$",
+      "scale": 0
     },
     "BMD": {
       "format": "%v %s",
@@ -3185,7 +3206,8 @@
       "format": "%s%v",
       "symbol": "p.",
       "decimal": ",",
-      "thousand": "."
+      "thousand": ".",
+      "scale": 0
     },
     "BZD": {
       "format": "%s%v",
@@ -3207,7 +3229,8 @@
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
-      "thousand": "."
+      "thousand": ".",
+      "scale": 0
     },
     "CNY": {
       "format": "%s%v",
@@ -3249,7 +3272,8 @@
     },
     "DJF": {
       "format": "%v %s",
-      "symbol": "Fdj"
+      "symbol": "Fdj",
+      "scale": 0
     },
     "DKK": {
       "format": "%s%v",
@@ -3323,9 +3347,18 @@
       "format": "%s%v",
       "symbol": "£"
     },
+    "GNF": {
+      "format": "%v %s",
+      "symbol": "FG",
+      "scale": 0
+    },
     "GTQ": {
       "format": "%s%v",
       "symbol": "Q"
+    },
+    "GYD": {
+      "format": "%s%v",
+      "symbol": "$"
     },
     "HKD": {
       "format": "%s%v",
@@ -3352,15 +3385,18 @@
     },
     "ISK": {
       "format": "%s%v",
-      "symbol": "kr"
+      "symbol": "kr",
+      "scale": 0
     },
     "JPY": {
       "format": "%s%v",
-      "symbol": "¥"
+      "symbol": "¥",
+      "scale": 0
     },
     "KRW": {
       "format": "%s%v",
-      "symbol": "₩"
+      "symbol": "₩",
+      "scale": 0
     },
     "KZT": {
       "format": "%v %s",
@@ -3406,7 +3442,7 @@
       "symbol": "руб.",
       "decimal": ",",
       "thousand": " ",
-      "precision": 0,
+      "scale": 0,
       "where": "right"
     },
     "SEK": {
@@ -3432,7 +3468,8 @@
     },
     "XAF": {
       "format": "%v %s",
-      "symbol": "CFA"
+      "symbol": "CFA",
+      "scale": 0
     },
     "XCD": {
       "format": "%s%v",
@@ -3440,7 +3477,8 @@
     },
     "XOF": {
       "format": "%v %s",
-      "symbol": "CFA"
+      "symbol": "CFA",
+      "scale": 0
     }
   },
   "currency": "USD",

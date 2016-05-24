@@ -17,15 +17,13 @@
             </div>
           </div>
 
-          {{#if canMakeAdjustments}}
+
           <div class="amount order-detail-price">
-            {{> numericInput class="form-control amount" name="item_amount" disabled=true value=item.variants.price}}
+            <div class="amount">
+              {{> React (numericInputProps "item" item.variants.price false)}}
+            </div>
           </div>
-          {{else}}
-          <div class="order-summary-form-group">
-            <div class="amount">{{formatPrice item.variants.price}}</div>
-          </div>
-          {{/if}}
+
         </div>
       {{else}}
         <div class="order-item list-group-item" data-i18n="orderShipping.shipmentEmpty">
@@ -35,54 +33,45 @@
     </div>
 
     <hr>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.subtotal">Sub total</label>
+      <div class="amount">
+        {{> React (numericInputProps "subtotal" invoice.subtotal false)}}
+      </div>
+    </div>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.shipping">Shipping</label>
+      <div class="amount">
+        {{> React (numericInputProps "shipping" invoice.shipping false)}}
+      </div>
+    </div>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.tax">Tax</label>
+      <div class="amount">
+        {{> React (numericInputProps "discount" invoice.tax false)}}
+      </div>
+    </div>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
+      <div class="amount">
+        {{> React (numericInputProps "discount" invoice.discounts)}}
+      </div>
+    </div>
+
+    <hr>
+
     {{#if canMakeAdjustments}}
       <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="cartSubTotals.subtotal">Sub total</label>
-        {{> numericInput class="form-control amount" name="subtotal_amount" disabled=true value=invoice.subtotal}}
-      </div>
-
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="cartSubTotals.shipping">Shipping</label>
-        {{> numericInput class="form-control amount" name="shipping_amount" disabled=true value=invoice.shipping}}
-      </div>
-
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="cartSubTotals.tax">Tax</label>
-        {{> numericInput class="form-control amount" name="tax_amount" disabled=true value=invoice.taxes}}
-      </div>
-
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
-        {{> numericInput class="form-control amount" name="discount_amount" value=invoice.discounts}}
-      </div>
-      <hr>
-      <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="cartSubTotals.total">Total</label>
-        {{> numericInput class="form-control amount" name="total_amount" value=invoice.total}}
+        <div class="amount">
+          {{> React (numericInputProps "total" invoice.total false)}}
+        </div>
       </div>
     {{else}}
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.subtotal">Sub total</span>
-        <div class="amount">{{formatPrice invoice.subtotal}}</div>
-      </div>
-
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.shipping">Shipping</span>
-        <div class="amount">{{formatPrice invoice.shipping}}</div>
-      </div>
-
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.tax">Tax</span>
-        <div class="amount">{{formatPrice invoice.taxes}}</div>
-      </div>
-
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.discount">Discount</span>
-        <div class="amount">{{formatPrice invoice.discounts}}</div>
-      </div>
-
-      <hr>
-
       <div class="order-summary-form-group {{#if paymentCaptured}}bg-success{{/if}}">
         <span class="reason">
           {{#if paymentCaptured}}
@@ -93,17 +82,12 @@
           {{/if}}
         </span>
         <div class="amount">
-          {{#if paymentCaptured}}
-            <strong class="text-success">{{formatPrice invoice.total}}</strong>
-          {{else}}
-            {{formatPrice invoice.total}}
-          {{/if}}
-          </div>
+          {{> React (numericInputProps "total" invoice.total false)}}
+        </div>
       </div>
-
-      <hr>
-
     {{/if}}
+
+    <hr>
 
     <div class="flex">
 
@@ -133,7 +117,9 @@
     <form name="refund">
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
-        {{> numericInput class="form-control amount" name="refund_amount" maxValue=adjustedTotal}}
+        <div class="amount">
+          {{> React refundInputProps}}
+        </div>
       </div>
 
       {{#each refund in refunds}}
