@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
@@ -29,7 +30,7 @@ Template.loginDropdown.events({
         Logger.warn("Failed to logout.", error);
       }
       // go home on logout
-      ReactionSubscriptions.reset();
+      Reaction.Subscriptions.Manager.reset();
       ReactionRouter.reload();
       ReactionRouter.go("/");
     });
