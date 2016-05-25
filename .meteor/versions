@@ -81,7 +81,7 @@ jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
 jquery@1.11.8
-juliancwirko:postcss@1.1.0
+juliancwirko:postcss@1.1.1
 juliancwirko:s-alert@3.1.4
 juliancwirko:s-alert-stackslide@3.1.3
 kadira:blaze-layout@2.3.0
@@ -101,6 +101,7 @@ meteorhacks:fast-render@2.14.0
 meteorhacks:inject-data@2.0.0
 meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
+meteorhacks:ssr@2.2.0
 meteorhacks:subs-manager@1.6.4
 minifier-css@1.1.11
 minifier-js@1.1.11
