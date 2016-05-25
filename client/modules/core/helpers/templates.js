@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import { Reaction } from "../";
-import { Shops } from "/lib/collections";
+import * as Collections from "/lib/collections";
+import * as Schemas from "/lib/collections/schemas";
 
 /*
  *
@@ -8,6 +9,14 @@ import { Shops } from "/lib/collections";
  * See: http://docs.meteor.com/#/full/template_registerhelper
  *
  */
+
+Template.registerHelper("Collections", function () {
+  return Collections;
+});
+
+Template.registerHelper("Schemas", function () {
+  return Schemas;
+});
 
 /**
  * currentUser
@@ -156,7 +165,7 @@ Template.registerHelper("toCamelCase", function (str) {
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", function () {
-  const shop = Shops.findOne();
+  const shop = Collections.Shops.findOne();
   return typeof shop === "object" && shop.name ? shop.name : "";
 });
 

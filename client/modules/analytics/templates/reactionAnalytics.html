@@ -1,5 +1,5 @@
 <template name="reactionAnalyticsSettings">
-  {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form"}}
+  {{#autoForm collection=Collections.Packages schema=Schemas.ReactionAnalyticsPackageConfig doc=packageData type="update" id="analytics-update-form"}}
     {{#if segmentioEnabled}}
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -45,7 +45,7 @@
 
 
 <template name="reactionAnalytics">
-{{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.ReactionAnalyticsPackageConfig" doc=packageData type="update" id="analytics-update-form-quick" autosave=true}}
+{{#autoForm collection=Collections.Packages schema=Schemas.ReactionAnalyticsPackageConfig doc=packageData type="update" id="analytics-update-form-quick" autosave=true}}
   <div class="container-fluid-sm flex">
     <div class="flex-item">
 
