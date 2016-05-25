@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
 import { $ } from "meteor/jquery";
@@ -36,7 +37,7 @@ Template.productDetail.onCreated(function () {
       if (product) {
         if (_.isArray(product.hashtags)) {
           const tags = _.map(product.hashtags, function (id) {
-            return ReactionCore.Collections.Tags.findOne(id);
+            return Tags.findOne(id);
           });
 
           this.state.set("tags", tags);
@@ -57,7 +58,7 @@ Template.productDetail.helpers({
     const product = instance.state.get("product") || {};
     const tags = instance.state.get("tags");
     const productId = product._id;
-    const canEdit = ReactionCore.hasPermission("createProduct");
+    const canEdit = Reaction.hasPermission("createProduct");
 
     return {
       tags,
@@ -120,7 +121,7 @@ Template.productDetail.helpers({
     const instance = Template.instance();
     const product = instance.state.get("product") || {};
 
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       return true;
     }
 

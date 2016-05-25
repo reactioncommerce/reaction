@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { Reaction } from "/client/modules/core";
 import { Media, Packages, Shops } from "/lib/collections";
 

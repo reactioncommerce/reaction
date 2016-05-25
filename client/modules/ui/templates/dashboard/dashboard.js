@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { ReactionRouter } from "/client/modules/router";
 import { Themes } from "/lib/collections";
 

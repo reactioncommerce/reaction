@@ -1,3 +1,5 @@
+import i18next from "i18next";
+import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
 import { ReactionRouter } from "/client/modules/router";
 import { Products, Tags } from "/lib/collections";

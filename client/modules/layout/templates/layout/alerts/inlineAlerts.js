@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 /*
  * Forked and modifed from https://github.com/asktomsk/bootstrap-alerts/
  */

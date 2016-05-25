@@ -1,4 +1,5 @@
 import accounting from "accounting-js";
+import i18next from "i18next";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 

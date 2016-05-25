@@ -1,3 +1,4 @@
+// import i18next from "i18next";
 // import React from "react";
 // import { slugify } from "transliteration";
 // import { PropTypes } from "/lib/api";
