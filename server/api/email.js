@@ -32,11 +32,11 @@ ReactionEmailTemplate = function (template) {
       return tplSource.source;
     }
   }
-  let file = `templates/${template}.html`;
+  let file = `email/templates/${template}.html`;
   try {
     source = Assets.getText(file);
   } catch (e) { // default blank template
-    source = Assets.getText("templates/coreDefault.html");
+    source = Assets.getText("email/templates/coreDefault.html");
   }
   return source;
 };
