@@ -1,4 +1,4 @@
-import Sortable from "sortable";
+import Sortable from "sortablejs";
 import { TagHelpers } from "/client/modules/ui-tagnav/helpers";
 
 const NavbarStates = {

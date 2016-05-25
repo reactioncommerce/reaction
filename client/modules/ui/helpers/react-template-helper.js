@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import _ from 'meteor/underscore';
+import { _ } from 'meteor/underscore';
 
 // Empty template; logic in `onRendered` below
 Template.React = new Template('Template.React', function() { return []; });

@@ -1,3 +1,4 @@
+import { Reaction } from "/client/modules/core";
 import { Media, Shops } from "/lib/collections";
 
 Template.coreNavigationBrand.helpers({

@@ -4,10 +4,6 @@ import { Reaction } from "/client/modules/core";
 import { Icon } from "/client/modules/ui/components";
 import Tooltip from "tether-tooltip";
 
-Template.button.onCreated(function () {
-
-});
-
 Template.button.onRendered(function () {
   const buttonElement = this.$("button, a")[0];
 
