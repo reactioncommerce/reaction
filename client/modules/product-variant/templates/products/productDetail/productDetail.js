@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";

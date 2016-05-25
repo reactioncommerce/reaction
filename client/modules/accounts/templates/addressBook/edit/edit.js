@@ -1,3 +1,4 @@
+import i18next from "i18next";
 
 /*
  * update address book (cart) form handling

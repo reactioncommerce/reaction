@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingSummary.onCreated(() => {

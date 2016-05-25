@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 
 ModalHelper = {

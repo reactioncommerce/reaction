@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { Reaction } from "../";
 import { Shops } from "/lib/collections";
 

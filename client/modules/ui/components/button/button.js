@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { Template }  from "meteor/templating";
 import { Reaction } from "/client/modules/core";
 import { Icon } from "/client/modules/ui/components";
