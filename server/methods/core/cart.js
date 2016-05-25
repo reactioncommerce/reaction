@@ -110,7 +110,7 @@ Meteor.methods({
     check(currentSessionId, Match.Optional(String));
 
     // we don't process current cart, but merge into it.
-    const currentCart = Cart.findOne(cartId);
+    const currentCart = Collections.Cart.findOne(cartId);
     // just used to filter out the current cart
     // we do additional check of cart exists here and if it not exist, next
     // check supposed to throw 403 error
@@ -166,7 +166,7 @@ Meteor.methods({
         // We got an additional db call because of `workflow/revertCartWorkflow`
         // call, but we also got things more cleaner in my opinion.
         // merge session cart into current cart
-        Cart.update(currentCart._id, {
+        Collections.Cart.update(currentCart._id, {
           $addToSet: {
             items: {
               $each: sessionCart.items
@@ -179,7 +179,7 @@ Meteor.methods({
       if (sessionCart.userId !== this.userId) {
         // clear the cart that was used for a session
         // and we're also going to do some garbage Collection
-        Cart.remove(sessionCart._id);
+        Collections.Cart.remove(sessionCart._id);
         // cleanup user/accounts
         Collections.Accounts.remove({
           userId: sessionCart.userId
@@ -343,7 +343,7 @@ Meteor.methods({
       }, function (error, result) {
         if (error) {
           Logger.warn("error adding to cart",
-            Cart.simpleSchema().namedContext().invalidKeys());
+            Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
 
