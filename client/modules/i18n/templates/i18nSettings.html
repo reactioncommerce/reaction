@@ -1,7 +1,7 @@
 <template name="i18nSettings">
   <div class="panel panel-default">
     <div class="panel-body">
-      {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditLocalizationSettingsForm" type="update" autosave=true}}
+      {{#autoForm collection=Collections.Shops doc=shop id="shopEditLocalizationSettingsForm" type="update" autosave=true}}
         {{> afQuickField name='timezone' options=timezoneOptions}}
         {{> afQuickField name='currency' options=currencyOptions}}
         {{> afQuickField name='baseUOM' options=uomOptions}}

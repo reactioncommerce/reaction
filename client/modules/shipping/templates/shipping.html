@@ -109,7 +109,7 @@
 
 <template name="addShippingMethod">
   {{#autoForm
-    schema="ReactionCore.Schemas.ShippingMethod"
+    schema=Schemas.ShippingMethod
     doc=.
     id="shipping-method-add-form"
     resetOnSuccess=false
@@ -144,7 +144,7 @@
 
 <template name="editShippingMethod">
   {{#autoForm
-    schema="ReactionCore.Schemas.ShippingMethod"
+    schema=Schemas.ShippingMethod
     id="shipping-method-edit-form"
     template="bootstrap3-inline"
     doc=.
@@ -188,7 +188,7 @@
   <div class="panel">
     <div class="panel-body">
       {{#autoForm
-        collection="ReactionCore.Collections.Shipping"
+        collection=Collections.Shipping
         doc=.
         id="shipping-provider-add-form"
         template="bootstrap3-inline"
@@ -225,7 +225,7 @@
     </div>
     <div class="panel-body">
       {{#autoForm
-        schema="ReactionCore.Schemas.Shipping"
+        schema=Schemas.Shipping
         doc=.
         template="bootstrap3-inline"
         id="shipping-provider-update-form"

@@ -8,6 +8,7 @@ Template.i18nSettings.helpers({
     if (Reaction.Subscriptions.Shops.ready()) {
       return Shops.findOne();
     }
+    return null;
   },
   checked(enabled) {
     return enabled === true ? "checked" : "";

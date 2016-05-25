@@ -27,7 +27,7 @@
       </div>
       <div id="general" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="General">
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig"
+          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
           doc=packageData id="shopEditOptionsForm" type="update" autosave=true}}
             {{> afFieldInput name='settings.public.allowGuestCheckout'}}
           {{/autoForm}}
@@ -37,7 +37,7 @@
           {{> upload onUpload=handleFileUpload}}
         </div>
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditForm" type="update"}}
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditForm" type="update"}}
             {{> afQuickField name='name' placeholder="Shop Name"}}
             {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
             {{> afQuickField name='description' placeholder="Description"}}
@@ -63,7 +63,7 @@
       </div>
       <div id="address" class="panel-collapse collapse" role="tabpanel" aria-labelledby="address">
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditAddressForm" type="update"}}
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditAddressForm" type="update"}}
             {{> afQuickField name='addressBook.0.company'}}
             {{> afQuickField name='addressBook.0.fullName'}}
             {{> afQuickField name='addressBook.0.address1'}}
@@ -96,7 +96,7 @@
       </div>
       <div id="mail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mail">
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig"
+          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
           doc=packageData id="shopEditEmailForm" type="update"}}
             {{> afQuickField name='settings.mail.user'}}
             {{> afQuickField name='settings.mail.password'}}
@@ -122,7 +122,7 @@
       </div>
       <div id="payment-methods" class="panel-collapse collapse" role="tabpanel" aria-labelledby="paymentMethods">
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Shops" doc=shop id="shopEditPaymentMethodsForm" type="update"
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditPaymentMethodsForm" type="update"
           autosave=true}}
             {{> afQuickField name='defaultPaymentMethod' options=paymentMethodOptions}}
           {{/autoForm}}
@@ -144,7 +144,7 @@
       </div>
       <div id="options" class="panel-collapse collapse" role="tabpanel" aria-labelledby="options">
         <div class="panel-body">
-          {{#autoForm collection="ReactionCore.Collections.Packages" schema="ReactionCore.Schemas.CorePackageConfig"
+          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
           doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
             {{> afQuickField name='settings.openexchangerates.appId'}}
             {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
