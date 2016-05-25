@@ -1,3 +1,8 @@
 // export ButtonGroup from "./buttonGroup/buttonGroup";
-export Icon from "./icon/icon.jsx";
-export Seperator from "./separator/separator";
+import Icon from "./icon/icon";
+import Seperator from "./separator/separator";
+
+export {
+  Icon,
+  Seperator
+};
