@@ -1,3 +1,4 @@
+import { slugify } from "transliteration";
 import $ from "jquery";
 import { Tags } from "/lib/collections";
 import classnames from "classnames";
@@ -42,7 +43,7 @@ Template.tagEditable.onRendered(() => {
     delay: 0,
     source: function (request, response) {
       let datums = [];
-      let slug = getSlug(request.term);
+      let slug = slugify(request.term);
       Tags.find({
         slug: new RegExp(slug, "i")
       }).forEach(function (tag) {
@@ -116,7 +117,7 @@ Template.tagBlank.onRendered(() => {
     delay: 0,
     source: function (request, response) {
       let datums = [];
-      let slug = getSlug(request.term);
+      let slug = slugify(request.term);
       Tags.find({
         slug: new RegExp(slug, "i")
       }).forEach(function (tag) {
