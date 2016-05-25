@@ -64,6 +64,7 @@ kadira:blaze-layout
 kadira:dochead
 kadira:flow-router-ssr
 matb33:collection-hooks
+meteorhacks:ssr
 meteorhacks:subs-manager
 momentjs:moment
 ongoworks:security
