@@ -1,4 +1,5 @@
 // import React from "react";
+// import { slugify } from "transliteration";
 // import { PropTypes } from "/lib/api";
 // import { Tags } from "/lib/collections";
 //
@@ -89,7 +90,7 @@
 //       delay: 0,
 //       source: function (request, response) {
 //         let datums = [];
-//         let slug = getSlug(request.term);
+//         let slug = slugify(request.term);
 //         Tags.find({
 //           slug: new RegExp(slug, "i")
 //         }).forEach(function (tag) {

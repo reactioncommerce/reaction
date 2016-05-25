@@ -1,3 +1,4 @@
+import { slugify } from "transliteration";
 import { Meteor } from "meteor/meteor";
 import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
@@ -388,7 +389,7 @@ Meteor.methods({
     this.unblock();
 
     let newTag = {
-      slug: getSlug(tagName),
+      slug: slugify(tagName),
       name: tagName
     };
 

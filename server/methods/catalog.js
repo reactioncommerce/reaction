@@ -1,3 +1,4 @@
+import { slugify } from "transliteration";
 import { Catalog } from "/lib/api";
 import { Media, Products, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
@@ -606,7 +607,7 @@ Meteor.methods({
         // todo test this
         newProduct.title = createTitle(newProduct.title, newProduct._id);
         newProduct.handle = createHandle(
-          getSlug(newProduct.title),
+          slugify(newProduct.title),
           newProduct._id
         );
       }
@@ -813,7 +814,7 @@ Meteor.methods({
     this.unblock();
 
     let newTag = {
-      slug: getSlug(tagName),
+      slug: slugify(tagName),
       name: tagName
     };
 
@@ -917,7 +918,7 @@ Meteor.methods({
     }
 
     let product = Products.findOne(productId);
-    let handle = getSlug(product.title);
+    let handle = slugify(product.title);
     handle = createHandle(handle, product._id);
     Products.update(product._id, {
       $set: {
@@ -957,7 +958,7 @@ Meteor.methods({
     let tag = Tags.findOne(tagId);
     // set handle
     if (product.handle === tag.slug) {
-      let handle = getSlug(product.title);
+      let handle = slugify(product.title);
       handle = createHandle(handle, product._id);
       Products.update(product._id, getSet(handle));
 
@@ -971,7 +972,7 @@ Meteor.methods({
     // previously tagged.
     for (let currentProduct of existingHandles) {
       let currentProductHandle = createHandle(
-        getSlug(currentProduct.title),
+        slugify(currentProduct.title),
         currentProduct._id);
       Products.update(currentProduct._id,
         getSet(currentProductHandle));
