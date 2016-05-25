@@ -361,30 +361,36 @@ Template.productDetail.events({
   },
   "click .fa-facebook": function () {
     if (ReactionCore.hasPermission("createProduct")) {
-      $(".facebookMsg-edit").fadeIn();
+      $(".social-media-inputs").show();
+      $(".social-input.facebook").show();
       return $(".facebookMsg-edit-input").focus();
     }
   },
   "click .fa-twitter": function () {
     if (ReactionCore.hasPermission("createProduct")) {
-      $(".twitterMsg-edit").fadeIn();
+      $(".social-media-inputs").show();
+      $(".social-input.twitter").show();
       return $(".twitterMsg-edit-input").focus();
     }
   },
   "click .fa-pinterest": function () {
     if (ReactionCore.hasPermission("createProduct")) {
-      $(".pinterestMsg-edit").fadeIn();
+      $(".social-media-inputs").show();
+      $(".social-input.pinterest").show();
       return $(".pinterestMsg-edit-input").focus();
     }
   },
   "click .fa-google-plus": function () {
     if (ReactionCore.hasPermission("createProduct")) {
-      $(".googleplusMsg-edit").fadeIn();
+      $(".social-media-inputs").show();
+      $(".social-input.googleplus").show();
       return $(".googleplusMsg-edit-input").focus();
     }
   },
-  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": function () {
+
+  "click .js-social-done-btn": function () {
     Session.set("editing-" + this.field, false);
-    return $(".social-media-inputs > *").hide();
+    $(".social-media-inputs").hide();
+    return $(".social-media-inputs > .social-input").hide();
   }
 });
