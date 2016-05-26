@@ -13,7 +13,7 @@ describe("core methods", function () {
     spyEnv.clearSpies();
   });
 
-  describe.skip("shop/removeHeaderTag", function () {
+  describe("shop/removeHeaderTag", function () {
     before(function () {
       return ReactionCore.Collections.Tags.remove({});
     });
@@ -33,14 +33,18 @@ describe("core methods", function () {
       expect(ReactionCore.Collections.Tags.remove).not.toHaveBeenCalled();
       return done();
     });
+  });
+
+  describe("shop/removeHeaderTag", function () {
+    before(function () {
+      return ReactionCore.Collections.Tags.remove({});
+    });
     it("should remove header tag by admin", function (done) {
       let currentTag;
       let tag;
       spyOn(Roles, "userIsInRole").and.returnValue(true);
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
-      let tagCount = ReactionCore.Collections.Tags.find().count();
-      console.log("tagCount: ========================" + tagCount);
       expect(ReactionCore.Collections.Tags.find().count()).toEqual(2);
       Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       expect(ReactionCore.Collections.Tags.find().count()).toEqual(1);
