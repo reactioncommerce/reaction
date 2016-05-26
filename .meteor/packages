@@ -29,6 +29,12 @@ accounts-twitter
 # accounts-weibo
 # accounts-oauth
 
+# Testing packages
+dispatch:mocha-phantomjs
+dispatch:mocha-browser
+practicalmeteor:chai
+dispatch:mocha
+
 # Reaction Commerce Packages
 
 reactioncommerce:core
@@ -83,6 +89,3 @@ reactioncommerce:default-theme          # default Reaction theme
 
 
 # Custom Packages
-dispatch:mocha-phantomjs
-dispatch:mocha-browser
-practicalmeteor:chai
