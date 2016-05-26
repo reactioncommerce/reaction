@@ -9,10 +9,25 @@
     </ul>
   </div>
   {{#if childVariants}}
-  <small data-i18n="variantList.moreOptions">There are more options available for this selection.</small>
+    <hr>
+    <small data-i18n="variantList.moreOptions">There are more options available for this selection.</small>
     <div class="row variant-product-options">
       {{#each childVariants}}
-      <button type="button" class="btn btn-default variant-select-option">{{title}}</button>
+        <div class="variant-select-option">
+        <button type="button" class="btn btn-default">
+          {{#with media}}
+            <div class="media">
+              <img src="{{url store='large'}}">
+            </div>
+          {{else}}
+            <div class="media">
+              <img src="/resources/placeholder.gif">
+            </div>
+          {{/with}}
+
+          <span class="title">{{optionTitle}}</span>
+        </button>
+      </div>
       {{/each}}
     </div>
   {{/if}}

@@ -38,16 +38,25 @@ Template.variant.helpers({
  * variant events
  */
 
+function showVariant(variant) {
+  ReactionProduct.setCurrentVariant(variant._id);
+  Session.set("variant-form-" + variant._id, true);
+
+  if (ReactionCore.hasPermission("createProduct")) {
+    ReactionCore.showActionView({
+      label: i18next.t("productDetailEdit.editVariant"),
+      template: "variantForm",
+      data: variant
+    });
+  }
+}
+
 Template.variant.events({
   "click .variant-edit": function () {
-    ReactionProduct.setCurrentVariant(this._id);
-    return toggleSession("variant-form-" + this._id);
+    showVariant(this);
   },
   "dblclick .variant-detail": function () {
-    if (ReactionCore.hasPermission("createProduct")) {
-      ReactionProduct.setCurrentVariant(this._id);
-      return toggleSession("variant-form-" + this._id);
-    }
+    showVariant(this);
   },
   "click .variant-detail > *": function (event) {
     event.preventDefault();

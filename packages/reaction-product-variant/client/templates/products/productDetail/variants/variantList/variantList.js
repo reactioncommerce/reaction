@@ -2,6 +2,13 @@
  * variantList helpers
  */
 Template.variantList.helpers({
+  media: function () {
+    const media = ReactionCore.Collections.Media.findOne({
+      "metadata.variantId": this._id
+    }, { sort: { uploadedAt: 1 } });
+
+    return media instanceof FS.File ? media : false;
+  },
   variants: function () {
     let inventoryTotal = 0;
     const variants = ReactionProduct.getTopVariants();
