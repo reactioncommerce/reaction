@@ -127,6 +127,7 @@
           "dependencies": {
             "jstransform": {
               "version": "10.1.0",
+              "resolved": "https://registry.npmjs.org/jstransform/-/jstransform-10.1.0.tgz",
               "from": "jstransform@>=10.0.1 <11.0.0",
               "dependencies": {
                 "base62": {
