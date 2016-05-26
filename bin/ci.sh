@@ -2,9 +2,8 @@
 
 set -u
 set -e
-
 # test using velocity
-VELOCITY_TEST_PACKAGES=1
+export VELOCITY_TEST_PACKAGES=1
 # send testing output to log
 meteor test-packages --driver-package velocity:html-reporter --velocity >& logfile.log &
 # tail log for passed tests notice
