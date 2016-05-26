@@ -83,3 +83,6 @@ reactioncommerce:default-theme          # default Reaction theme
 
 
 # Custom Packages
+dispatch:mocha-phantomjs
+dispatch:mocha-browser
+practicalmeteor:chai
