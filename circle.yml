@@ -21,7 +21,7 @@ dependencies:
 test:
   override:
     - cd $HOME/reaction
-    - bin/ci.sh
+    - meteor test-packages --once --full-app --driver-package dispatch:mocha reactioncommerce:core
     - docker-compose -f docker/docker-compose.test.yml up -d; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost
 

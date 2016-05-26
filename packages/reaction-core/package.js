@@ -13,7 +13,9 @@ Npm.depends({
   "autosize": "3.0.15",
   "tether": "1.0.2",
   "draggabilly": "1.2.0",
-  "imagesloaded": "4.1.0"
+  "imagesloaded": "4.1.0",
+  "@sanjo/jasmine-spy": "1.0.1",
+  "@sanjo/jasmine-expect": "1.0.0"
 });
 
 Package.onUse(function (api) {
@@ -157,9 +159,8 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:core@0.13.0");
 
   // server integration tests
-  api.addFiles("imports/setup.app-tests.js", "server");
-  api.addFiles("imports/setup.spec.js", "server");
-  api.addFiles("server/methods/cart.app-test.js", "server");
+  // api.addFiles("imports/setup.spec.js", "server");
+  // api.addFiles("server/methods/cart.app-test.js", "server");
   api.addFiles("server/methods/methods.app-test.js", "server");
-  api.addFiles("server/methods/shops.app-test.js", "server");
+  // api.addFiles("server/methods/shops.app-test.js", "server");
 });

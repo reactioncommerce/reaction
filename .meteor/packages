@@ -30,7 +30,6 @@ accounts-twitter
 # accounts-oauth
 
 # Testing packages
-dispatch:mocha-phantomjs
 dispatch:mocha-browser
 practicalmeteor:chai
 dispatch:mocha
