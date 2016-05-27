@@ -1,3 +1,5 @@
+const Media = ReactionCore.Collections.Media;
+
 /**
  * childVariantForm helpers
  */
@@ -5,6 +7,33 @@
 Template.childVariantForm.helpers({
   childVariantFormId: function () {
     return "child-variant-form-" + this._id;
+  },
+  media: function () {
+    const media = ReactionCore.Collections.Media.findOne({
+      "metadata.variantId": this._id
+    }, { sort: { uploadedAt: 1 } });
+
+    return media instanceof FS.File ? media : false;
+  },
+  handleFileUpload() {
+    const ownerId = Meteor.userId();
+    const productId = ReactionProduct.selectedProductId();
+    const shopId = ReactionCore.getShopId();
+    const currentData = Template.currentData();
+    const variantId = currentData._id;
+
+    return (files) => {
+      for (let file of files) {
+        file.metadata = {
+          variantId,
+          productId,
+          shopId,
+          ownerId
+        };
+
+        Media.insert(file);
+      }
+    };
   }
 });
 

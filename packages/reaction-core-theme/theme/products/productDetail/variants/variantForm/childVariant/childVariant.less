@@ -41,3 +41,47 @@
   justify-content: center;
   padding: 10px;
 }
+
+.child-variant-table {
+  padding: 0;
+}
+
+.child-variant-table > thead > tr > th {
+  padding: 5px 5px;
+  border-right: 1px solid @border-color;
+}
+
+.child-variant-table > tbody > tr > td {
+  padding: 0;
+
+  border-right: 1px solid @border-color;
+
+  input {
+    border: none;
+    padding: 2px 5px;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    margin: 0;
+    border-radius: 0;
+    display: block;
+  }
+}
+
+.child-variant-table .column-price {
+  width: 15%;
+  min-width: 70px;
+}
+
+
+.child-variant-form .media {
+  width: 100px;
+
+  img {
+    width: 100%;
+  }
+}
