@@ -17,7 +17,7 @@
         "dashboard": {
           "accountsLabel": "Accounts",
           "accountsTitle": "Accounts",
-          "accountsDescription": "Manage how members sign into your shop",
+          "accountsDescription": "Manage member permissions",
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Analytics and tracking integrations",
@@ -32,7 +32,7 @@
           "braintreeDescription": "Braintree payments",
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog",
-          "catalogDescription": "Allows to create simple products",
+          "catalogDescription": "Product Catalog",
           "coreLabel": "Core",
           "coreTitle": "Dashboard",
           "coreDescription": "Reaction core shop configuration",
