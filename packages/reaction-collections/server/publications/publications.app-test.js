@@ -1,9 +1,22 @@
 /* eslint dot-notation: 0 */
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
 
 describe("Publication", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   const shop = faker.reaction.shops.getShop();
 
-  beforeAll(function () {
+  before(function () {
     // We are mocking inventory hooks, because we don't need them here, but
     // if you want to do a real stress test, you could try to comment out
     // this spyOn lines. This is needed only for ./reaction test. In one
@@ -42,7 +55,7 @@ describe("Publication", function () {
       max: 19.99
     };
 
-    beforeAll(function () {
+    before(function () {
       // a product with price range A, and not visible
       ReactionCore.Collections.Products.insert({
         ancestors: [],
@@ -306,7 +319,7 @@ describe("Publication", function () {
     };
     let order;
 
-    beforeAll(() => {
+    before(() => {
       // this is another hack. We put this factory inside hook because, first
       // we need to mock collectionHooks to Inventory. This way we do all things
       // in a right order. This is make sense only for --velocity (all package)

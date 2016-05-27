@@ -5,6 +5,11 @@ Package.describe({
   version: "2.2.2"
 });
 
+Npm.depends({
+  "@sanjo/jasmine-spy": "1.0.1",
+  "@sanjo/jasmine-expect": "1.0.0"
+});
+
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
   api.use("random");
@@ -98,9 +103,6 @@ Package.onTest(function (api) {
   api.use("meteor-base");
   api.use("underscore");
   api.use("random");
-  api.use("sanjo:jasmine@0.21.0");
-  api.use("velocity:html-reporter@0.9.1");
-  api.use("velocity:console-reporter@0.1.4");
 
   api.use("accounts-base");
   api.use("accounts-password");
@@ -108,5 +110,5 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:reaction-collections");
   api.use("reactioncommerce:reaction-factories@0.4.2");
 
-  api.addFiles("tests/jasmine/server/integration/publications.js", "server");
+  api.addFiles("server/publications/publications.app-test.js", "server");
 });
