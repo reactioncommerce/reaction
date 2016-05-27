@@ -1,7 +1,20 @@
 /* eslint dot-notation: 0 */
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
 
 
 describe("cart methods", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   let user = Factory.create("user");
   const shop = faker.reaction.shops.getShop();
   let userId = user._id;
@@ -127,14 +140,6 @@ describe("cart methods", function () {
         return done();
       }
     );
-
-    // it(
-    //   "should",
-    //   done => {
-    //
-    //     return done();
-    //   }
-    // );
   });
 
   describe("cart/createCart", function () {
