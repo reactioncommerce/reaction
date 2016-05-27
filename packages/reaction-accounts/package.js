@@ -133,8 +133,7 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:reaction-i18n@2.0.0");
   api.use("reactioncommerce:reaction-factories@0.4.2");
 
-  // api.addFiles("tests/jasmine/client/integration/login.js", "client");
   api.addFiles("server/methods/accounts.app-test.js", "server");
-  // api.addFiles("tests/jasmine/server/integration/publications.js", "server");
+  api.addFiles("server/publications/publications.app-test.js", "server");
   api.addFiles("server/methods/accounts.validation.app-test.js", "server");
 });
