@@ -36,8 +36,8 @@
           "analyticsDescription": "事件跟踪与分析",
           "paypalLabel": "PayPal",
           "paypalDescription": "用PayPal付款",
-          "genericPaymentLabel": "普通付款",
-          "genericPaymentDescription": "普通付款方式"
+          "examplePaymentProviderLabel": "普通付款",
+          "examplePaymentProviderDescription": "普通付款方式"
         },
         "settings": {
           "accountSettingsLabel": "账户设置",
