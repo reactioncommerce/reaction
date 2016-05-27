@@ -3,17 +3,14 @@ ReactionCore.registerPackage({
   name: "reaction-catalog",
   icon: "fa fa-archive",
   autoEnable: true,
-  settings: {
-    name: "Catalog"
-  },
   registry: [
     {
       provides: "dashboard",
       label: "Catalog",
       description: "Product catalog",
       icon: "fa fa-archive",
-      priority: 2,
-      container: "core"
+      priority: 1,
+      container: "utilities"
     }/* ,
     {
       label: "Catalog Settings",

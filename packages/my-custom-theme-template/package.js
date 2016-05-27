@@ -11,7 +11,7 @@ Package.describe({
 
 Package.onUse(function (api) {
   // The package is set to work with meteor 1.2 and above
-  api.versionsFrom("METEOR@1.2");
+  api.versionsFrom("METEOR@1.3");
 
   // Use a preprocessor, LESS CSS in this case.
   api.use("less");

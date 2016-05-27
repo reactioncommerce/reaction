@@ -9,7 +9,7 @@ set -e
 if [[ "$@" == "reset" ]]; then
   bin/reset
 elif [[ "$@" == "pull" ]]; then
-  git pull && bin/clone-packages.sh
+  git pull && meteor npm install && bin/clone-packages.sh 
 elif [[ "$@" == "install" ]]; then
   # copy clone-packages.sh so that any directory
   # can be specified for use in PACKAGE_DIRS config.

@@ -3,9 +3,6 @@ ReactionCore.registerPackage({
   name: "reaction-shipping",
   icon: "fa fa-truck",
   autoEnable: true,
-  settings: {
-    name: "Flat Rate Service"
-  },
   registry: [
     {
       provides: "dashboard",
@@ -18,13 +15,6 @@ ReactionCore.registerPackage({
       container: "core",
       workflow: "coreDashboardWorkflow",
       template: "shipping"
-    },
-    {
-      label: "Shipping Settings",
-      route: "/dashboard/shipping/settings",
-      name: "shipping/settings",
-      provides: "settings",
-      template: "shippingSettings"
     },
     {
       template: "flatRateCheckoutShipping",

@@ -1,3 +1,5 @@
+import React from "react";
+
 const classnames = ReactionUI.Lib.classnames;
 
 class Button extends React.Component {

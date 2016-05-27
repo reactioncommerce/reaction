@@ -1,33 +1,48 @@
-Template.coreOrderShippingInvoice.onCreated(() => {
-  let template = Template.instance();
-  let currentData = Template.currentData();
+require("money");
+import $ from "jquery";
+import accounting from "accounting-js";
+import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
+require("autonumeric");
 
-  template.orderDep = new Tracker.Dependency;
-  template.refunds = new ReactiveVar([]);
-  template.refundAmount = new ReactiveVar(0.00);
+//
+// core order shipping invoice templates
+//
+Template.coreOrderShippingInvoice.onCreated(function () {
+  this.state = new ReactiveDict();
 
-  function getOrder(orderId) {
-    template.orderDep.depend();
-    return ReactionCore.Collections.Orders.findOne(orderId);
-  }
+  // template.orderDep = new Tracker.Dependency;
+  this.refunds = new ReactiveVar([]);
+  this.refundAmount = new ReactiveVar(0.00);
 
-  Tracker.autorun(() => {
-    template.order = getOrder(currentData.orderId);
-    if (template.order) {
-      let paymentMethod = template.order.billing[0].paymentMethod;
+  // function getOrder(orderId) {
+  //   template.orderDep.depend();
+  //   return ReactionCore.Collections.Orders.findOne(orderId);
+  // }
+
+  this.autorun(() => {
+    const currentData = Template.currentData();
+    const order = ReactionCore.Collections.Orders.findOne(currentData.orderId);
+    const shop = ReactionCore.Collections.Shops.findOne({});
+
+    this.state.set("order", order);
+    this.state.set("currency", shop.currencies[shop.currency]);
+
+    // template.order = getOrder(currentData.orderId);
+    if (order) {
+      let paymentMethod = order.billing[0].paymentMethod;
       Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
         if (!error) {
-          template.refunds.set(result);
+          this.refunds.set(result);
         }
       });
     }
   });
 });
 
-Template.coreOrderShippingInvoice.onRendered(() => {
-  let template = Template.instance();
-  let paymentMethod = template.order.billing[0].paymentMethod;
-  let refunds = Template.instance().refunds.get();
+Template.coreOrderShippingInvoice.onRendered(function () {
+  const order = this.state.get("order");
+  const paymentMethod = order.billing[0].paymentMethod;
+  const refunds = this.refunds.get();
   const currency = ReactionCore.Locale.currency;
 
   const lessAmount = _.reduce(refunds, (memo, refund) => {
@@ -35,7 +50,7 @@ Template.coreOrderShippingInvoice.onRendered(() => {
   }, paymentMethod.amount);
 
   if (currency) {
-    $("input[name=refund_amount]").autoNumeric({
+    $("input[name=refund_amount]").autoNumeric("init", {
       aSep: currency.thousand,
       dGroup: currency.grouping,
       aDec: currency.decimal,
@@ -48,19 +63,18 @@ Template.coreOrderShippingInvoice.onRendered(() => {
  * coreOrderAdjustments events
  */
 Template.coreOrderShippingInvoice.events({
-
   /**
    * Submit form
    * @param  {Event} event - Event object
-   * @param  {Template} template - Blaze Template
+   * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "submit form[name=capture]": (event, template) => {
+  "submit form[name=capture]": (event, instance) => {
     event.preventDefault();
 
-    const order = template.order;
-    const value = $(event.target.discount_amount).autoNumeric("get") || 0;
-    const discount = parseFloat(accounting.toFixed(value, 2));
+    const state = instance.state;
+    const order = state.get("order");
+    const discount = state.get("field-discount") || 0;
 
     Meteor.call("orders/approvePayment", order, discount, (error) => {
       if (error) {
@@ -72,44 +86,50 @@ Template.coreOrderShippingInvoice.events({
   /**
    * Submit form
    * @param  {Event} event - Event object
-   * @param  {Template} template - Blaze Template
+   * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "submit form[name=refund]": (event, template) => {
+  "submit form[name=refund]": (event, instance) => {
     event.preventDefault();
 
-    const order = template.order;
-    const refund = accounting.unformat(event.target.refund_amount.value) || 0;
+    const { state } = Template.instance();
+    const order = instance.state.get("order");
+    const refund = state.get("field-refund") || 0;
     const paymentMethod = order.billing[0].paymentMethod;
 
-    if (confirm(`Apply refund of ${refund} to this order?`)) {
-      Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
-        if (error) {
-          // Show error
-        }
+    Alerts.alert({
+      title: i18next.t("order.applyRefundToThisOrder", { refund: refund }),
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.applyRefund")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+          if (error) {
+            // Show error
+          }
 
-        event.target.refund_amount.value = "";
-        template.refundAmount.set(0);
-      });
-    }
+          state.set("field-refund", 0);
+        });
+      }
+    });
   },
 
-  "click [data-event-action=makeAdjustments]": (event, template) => {
+  "click [data-event-action=makeAdjustments]": (event, instance) => {
     event.preventDefault();
 
-    Meteor.call("orders/makeAdjustmentsToInvoice", template.order);
+    Meteor.call("orders/makeAdjustmentsToInvoice", instance.state.get("order"));
   },
 
-  "click [data-event-action=capturePayment]": (event) => {
+  "click [data-event-action=capturePayment]": (event, instance) => {
     event.preventDefault();
 
-    let template = Template.instance();
+    const order = instance.state.get("order");
 
-    Meteor.call("orders/capturePayments", template.order._id);
+    Meteor.call("orders/capturePayments", order._id);
   },
 
-  "change input[name=refund_amount], keyup input[name=refund_amount]": (event, template) => {
-    template.refundAmount.set(accounting.unformat(event.target.value));
+  "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
+    instance.refundAmount.set(accounting.unformat(event.target.value));
   }
 });
 
@@ -118,6 +138,63 @@ Template.coreOrderShippingInvoice.events({
  * coreOrderShippingInvoice helpers
  */
 Template.coreOrderShippingInvoice.helpers({
+  NumericInput() {
+    return NumericInput;
+  },
+
+  numericInputProps(fieldName, value = 0, enabled = true) {
+    const { state } = Template.instance();
+    const order = state.get("order");
+    const status = order.billing[0].paymentMethod.status;
+    const isApprovedAmount = (status === "approved" || status === "completed");
+
+    return {
+      component: NumericInput,
+      numericType: "currency",
+      value: value,
+      disabled: !enabled,
+      isEditing: !isApprovedAmount, // Dont allow editing if its approved
+      format: state.get("currency"),
+      classNames: {
+        input: {amount: true},
+        text: {
+          "text-success": status === "completed"
+        }
+      },
+      onChange(event, data) {
+        state.set(`field-${fieldName}`, data.numberValue);
+      }
+    };
+  },
+
+  refundInputProps() {
+    const { state } = Template.instance();
+    const order = state.get("order");
+    const paymentMethod = order.billing[0].paymentMethod;
+    const refunds = Template.instance().refunds.get();
+
+    let refundTotal = 0;
+    _.each(refunds, function (item) {
+      refundTotal += item.amount;
+    });
+
+    const adjustedTotal = paymentMethod.amount - refundTotal;
+
+    return {
+      component: NumericInput,
+      numericType: "currency",
+      value: 0,
+      maxValue: adjustedTotal,
+      format: state.get("currency"),
+      classNames: {
+        input: {amount: true}
+      },
+      onChange(event, data) {
+        state.set("field-refund", data.numberValue);
+      }
+    };
+  },
+
   refundAmount() {
     return Template.instance().refundAmount;
   },
@@ -126,8 +203,8 @@ Template.coreOrderShippingInvoice.helpers({
    * @return {Number} current discount amount
    */
   invoice() {
-    let template = Template.instance();
-    let order = template.order;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
 
     return order.billing[0].invoice;
   },
@@ -137,13 +214,13 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   currencySymbol() {
-    return "$";
-    // return ReactionCore.Locale.currency.symbol
+    return ReactionCore.Locale.currency.symbol;
   },
 
   disabled() {
-    let template = Template.instance();
-    let status = template.order.billing[0].paymentMethod.status;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const status = order.billing[0].paymentMethod.status;
 
     if (status === "approved" || status === "completed") {
       return "disabled";
@@ -153,15 +230,17 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   paymentPendingApproval() {
-    let template = Template.instance();
-    let status = template.order.billing[0].paymentMethod.status;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const status = order.billing[0].paymentMethod.status;
 
     return status === "created" || status === "adjustments" || status === "error";
   },
 
   canMakeAdjustments() {
-    let template = Template.instance();
-    let status = template.order.billing[0].paymentMethod.status;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const status = order.billing[0].paymentMethod.status;
 
     if (status === "approved" || status === "completed") {
       return false;
@@ -170,18 +249,23 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   paymentApproved() {
-    let template = Template.instance();
-    return template.order.billing[0].paymentMethod.status === "approved";
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+
+    return order.billing[0].paymentMethod.status === "approved";
   },
 
   paymentCaptured() {
-    let template = Template.instance();
-    return template.order.billing[0].paymentMethod.status === "completed";
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+
+    return order.billing[0].paymentMethod.status === "completed";
   },
 
   refundTransactions() {
-    let template = Template.instance();
-    let transactions = template.order.billing[0].paymentMethod.transactions;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const transactions = order.billing[0].paymentMethod.transactions;
 
     return _.filter(transactions, (transaction) => {
       return transaction.type === "refund";
@@ -203,21 +287,24 @@ Template.coreOrderShippingInvoice.helpers({
    * @return {Number} the amount after all refunds
    */
   adjustedTotal() {
-    const template = Template.instance();
-    const paymentMethod = template.order.billing[0].paymentMethod;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const paymentMethod = order.billing[0].paymentMethod;
     const refunds = Template.instance().refunds.get();
     let refundTotal = 0;
     _.each(refunds, function (item) {
       refundTotal += item.amount;
     });
-    return paymentMethod.total - refundTotal;
+    return paymentMethod.amount - refundTotal;
   },
 
   refundSubmitDisabled() {
-    const amount = Template.instance().refundAmount.get() || 0;
+    const amount = Template.instance().state.get("field-refund") || 0;
     if (amount === 0) {
       return "disabled";
     }
+
+    return null;
   },
 
   /**
@@ -227,25 +314,29 @@ Template.coreOrderShippingInvoice.helpers({
    * @return {Object} A single order
    */
   order() {
-    let template = Template.instance();
-    return template.order;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+
+    return order;
   },
 
   shipment() {
-    let template = Template.instance();
-    let currentData = Template.currentData();
-    let shipment = _.where(template.order.shipping, {_id: currentData.fulfillment._id})[0];
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+
+    let shipment = _.where(order.shipping, {_id: currentData.fulfillment._id})[0];
 
     return shipment;
   },
 
   items() {
-    let template = Template.instance();
-    let currentData = Template.currentData();
-    let shipment = currentData.fulfillment;
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const currentData = Template.currentData();
+    const shipment = currentData.fulfillment;
 
     let items = _.map(shipment.items, (item) => {
-      let originalItem = _.findWhere(template.order.items, {
+      let originalItem = _.findWhere(order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);

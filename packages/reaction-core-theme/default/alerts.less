@@ -21,3 +21,40 @@
     margin-bottom: 2rem;
   }
 }
+
+.rui.alert {
+  display: flex;
+  padding: 0;
+  border-radius: 0;
+}
+
+.rui.alert > .content {
+  flex: 1 1 auto;
+  padding: 20px;
+  .padding-right(10px);
+}
+
+.rui.alert > .controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rui.alert > .controls .control {
+  flex: 0 0 auto;
+  width: 44px;
+  min-height: 44px;
+}
+
+.rui.alert .s-alert-close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: static;
+  text-indent: 0;
+  height: auto;
+  transform: none;
+  &:before, &:after {
+    content: none;
+  }
+}

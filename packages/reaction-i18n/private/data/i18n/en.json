@@ -17,7 +17,7 @@
         "dashboard": {
           "accountsLabel": "Accounts",
           "accountsTitle": "Accounts",
-          "accountsDescription": "Manage how members sign into your shop",
+          "accountsDescription": "Manage member permissions",
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Analytics and tracking integrations",
@@ -32,12 +32,12 @@
           "braintreeDescription": "Braintree payments",
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog",
-          "catalogDescription": "Allows to create simple products",
+          "catalogDescription": "Product Catalog",
           "coreLabel": "Core",
           "coreTitle": "Dashboard",
           "coreDescription": "Reaction core shop configuration",
-          "genericPaymentLabel": "Generic Payment",
-          "genericPaymentDescription": "Generic Payment Method",
+          "examplePaymentProviderLabel": "Example Payment",
+          "examplePaymentProviderDescription": "Example Payment Method",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internationalization utilities",
@@ -93,7 +93,12 @@
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
           "paypalSettingsLabel": "PayPal Settings",
-          "genericPaymentSettingsLabel": "Generic Payment Settings"
+          "genericPaymentSettingsLabel": "Generic Payment Settings",
+          "reactionConnectLabel": "Reaction Connect",
+          "examplePaymentSettingsLabel": "Example Payment"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Profile"
         }
       },
       "accounts": {
@@ -132,7 +137,8 @@
         "notFoundTitle": "Oops!",
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
-        "loadMoreProducts": "Load more products"
+        "loadMoreProducts": "Load more products",
+        "noProductsFound": "No Products found"
       },
       "shopSettings": {
         "general": "General",
@@ -286,6 +292,7 @@
         "checkout": "Checkout now"
       },
       "cartSubTotals": {
+        "discount": "Discount",
         "head": "Your cart",
         "items": "Items in cart",
         "subtotal": "Sub total",
@@ -307,9 +314,19 @@
         "paymentCaptured": "Payment Captured",
         "capturedTotal": "Captured Total",
         "refundAmount": "Refund Amount",
+        "applyRefundToThisOrder": "Apply refund of {{refund}} to this order?",
         "applyRefund": "Apply Refund",
         "adjustedTotal": "Adjusted Total",
         "processor": "Processor",
+        "placed": "Placed",
+        "on": "on",
+        "status": "Status",
+        "completed": "Completed",
+        "processing": "Processing",
+        "destination": "Destination",
+        "shipment": "Shipment",
+        "payment": "Payment",
+        "itemsFrom": "item(s) from",
         "filter": {
           "new": "New",
           "captured": "Payment Captured",
@@ -325,12 +342,20 @@
         "notShipped": "Not Yet Shipped",
         "noTracking": "No Tracking",
         "tracking": "Tracking",
-        "addtracking": "Add Tracking",
+        "addTracking": "Add Tracking",
+        "itemsHaveBeenShipped": "Items have been shipped",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
+      },
+      "orderWorkflow": {
+        "fulfillment": "Fulfillment",
+        "orderDetails": "Order Details",
+        "summary": "Summary",
+        "invoice": "Invoice",
+        "shipmentTracking": "Shipment Tracking"
       },
       "cartCheckout": {
         "surprise": "Woah!",
@@ -359,15 +384,20 @@
         "addAddress": "Add Address",
         "chooseAddress": "Choose shipping & billing address",
         "createDefault": "Create your default address",
+        "edit": "Edit",
+        "removeAddress": "Remove Address",
         "selectShippingAddress": "Select a shipping address",
-        "selectBillingAddress": "Select a billing address"
+        "selectBillingAddress": "Select a billing address",
+        "cantRemoveThisAddress": "Can't remove this address: {{err}}"
       },
       "addressBookAdd": {
         "addAddress": "Add a new address entry",
-        "createAddress": "Create your default address"
+        "createAddress": "Create your default address",
+        "failedToAddAddress": "Failed to add address: {{err}}"
       },
       "addressBookEdit": {
-        "editAddress": "Editing this address entry"
+        "editAddress": "Editing this address entry",
+        "somethingWentWrong": "Something went wrong: {{err}}"
       },
       "corePackageConfig": {
         "settings": {
@@ -457,7 +487,8 @@
         "processingError": "There was a problem with your payment.",
         "completeYourOrder": "Complete your order",
         "noPaymentMethods": "No payment methods are configured.",
-        "configureNow": "Configure now."
+        "configureNow": "Configure now.",
+        "failedToPlaceOrder": "Failed to place order."
       },
       "checkoutReview": {
         "review": "Review"
@@ -467,6 +498,60 @@
         "noShippingMethods": "No shipping methods are configured.",
         "configureNow": "Configure now.",
         "shipping": "Shipping"
+      },
+      "shipping": {
+        "addShippingProvider": "Add shipping provider",
+        "editShippingProvider": "Edit shipping provider",
+        "addShippingMethod": "Add shipping method",
+        "editShippingMethod": "Edit shipping method",
+        "deleteShippingMethod": "Delete shipping method",
+        "noSettingsForThisView": "No settings for this view",
+        "noShippingMethods": "No shipping methods are configured.",
+        "removeShippingMethodConfirm": "Are you sure you want to delete {{method}}?",
+        "removeShippingMethodTitle": "Remove Shipping Method",
+        "shippingMethodDeleted": "This shipping method has been deleted.",
+        "shippingProviderSaved": "Shipping provider saved.",
+        "shippingProviderUpdated": "Shipping provider data updated.",
+        "shippingMethodRateAdded": "Shipping method rate added.",
+        "shippingMethodRateUpdated": "Shipping method rate updated.",
+        "name": "Name",
+        "label": "Label",
+        "group": "Group",
+        "cost": "Cost",
+        "handling": "Handling",
+        "rate": "Rate",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "addRate": "Add rate",
+        "updateRate": "Update {{name}} rate",
+        "addNewCondition": "Add new condition",
+        "deleteCondition": "Delete condition",
+        "provider": {
+          "name": "Service Code",
+          "label": "Public Label",
+          "enabled": "Enabled"
+        }
+      },
+      "shippingMethod": {
+        "name": "Method Name",
+        "label": "Public Label",
+        "group": "Group",
+        "cost": "Cost",
+        "handling": "Handling",
+        "rate": "Rate",
+        "enabled": "Enabled",
+        "matchingCartRanges": "Matching Cart Ranges",
+        "validRanges": {
+          "begin": "Begin",
+          "end": "End"
+        },
+        "matchingLocales": "Matching Locales",
+        "validLocales": {
+          "origination": "From",
+          "destination": "To",
+          "deliveryBegin": "Shipping Est.",
+          "deliveryEnd": "Delivery Est."
+        }
       },
       "uom": {
         "OZ": "Ounces",
@@ -544,6 +629,8 @@
         "with": "with",
         "checkoutAsGuest": "Checkout without user account",
         "role": "Role",
+        "yourOrders": "Your Orders",
+        "addressBook": "Address Book",
         "info": {
           "emailSent": "Email Sent",
           "emailVerified": "Email verified",

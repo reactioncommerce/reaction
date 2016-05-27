@@ -1,3 +1,4 @@
+require("swiper");
 /**
  * Add swiper to cartDrawerItems
  *

@@ -1,3 +1,5 @@
+import React from "react";
+
 const classnames = ReactionUI.Lib.classnames;
 const Item = ReactionUI.Components.Item;
 const ReactSortableMixin = ReactionUI.Lib.ReactSortableMixin;

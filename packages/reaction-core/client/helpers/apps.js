@@ -81,7 +81,7 @@ function getReactionApps(optionHash) {
   //
   for (key in options) {
     if ({}.hasOwnProperty.call(options, key)) {
-      const value = options[key];
+      let value = options[key];
       if (!(key === "enabled" || key === "name" || key === "shopId")) {
         filter["registry." + key] = value;
         registryFilter[key] = value;
@@ -157,7 +157,7 @@ function getReactionApps(optionHash) {
           for (key in registryFilter) {
             // make sure we're dealing with valid keys
             if ({}.hasOwnProperty.call(registryFilter, key)) {
-              value = registryFilter[key];
+              let value = registryFilter[key];
               if (registry[key] === value) {
                 match += 1;
               }

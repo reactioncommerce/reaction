@@ -1,3 +1,7 @@
+const $ = require("jquery");
+// load modules
+require("jquery-ui/sortable");
+
 /**
  * productGridItems helpers
  */

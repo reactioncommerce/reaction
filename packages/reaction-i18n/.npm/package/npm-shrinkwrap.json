@@ -1,24 +1,53 @@
 {
   "dependencies": {
+    "accounting-js": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/accounting-js/-/accounting-js-1.1.1.tgz",
+      "from": "https://registry.npmjs.org/accounting-js/-/accounting-js-1.1.1.tgz",
+      "dependencies": {
+        "is-string": {
+          "version": "1.0.4",
+          "resolved": "https://registry.npmjs.org/is-string/-/is-string-1.0.4.tgz",
+          "from": "https://registry.npmjs.org/is-string/-/is-string-1.0.4.tgz"
+        },
+        "object-assign": {
+          "version": "4.0.1",
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz",
+          "from": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz"
+        }
+      }
+    },
     "i18next": {
-      "version": "2.2.0"
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/i18next/-/i18next-2.2.0.tgz",
+      "from": "https://registry.npmjs.org/i18next/-/i18next-2.2.0.tgz"
     },
     "i18next-browser-languagedetector": {
-      "version": "0.0.14"
+      "version": "0.0.14",
+      "resolved": "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-0.0.14.tgz",
+      "from": "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-0.0.14.tgz"
     },
     "i18next-localstorage-cache": {
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "resolved": "https://registry.npmjs.org/i18next-localstorage-cache/-/i18next-localstorage-cache-0.0.4.tgz",
+      "from": "https://registry.npmjs.org/i18next-localstorage-cache/-/i18next-localstorage-cache-0.0.4.tgz"
     },
     "i18next-sprintf-postprocessor": {
       "version": "0.0.6",
+      "resolved": "https://registry.npmjs.org/i18next-sprintf-postprocessor/-/i18next-sprintf-postprocessor-0.0.6.tgz",
+      "from": "https://registry.npmjs.org/i18next-sprintf-postprocessor/-/i18next-sprintf-postprocessor-0.0.6.tgz",
       "dependencies": {
         "sprintf-js": {
-          "version": "1.0.3"
+          "version": "1.0.3",
+          "resolved": "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz",
+          "from": "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
         }
       }
     },
     "jquery-i18next": {
-      "version": "0.0.14"
+      "version": "0.0.14",
+      "resolved": "https://registry.npmjs.org/jquery-i18next/-/jquery-i18next-0.0.14.tgz",
+      "from": "https://registry.npmjs.org/jquery-i18next/-/jquery-i18next-0.0.14.tgz"
     }
   }
 }

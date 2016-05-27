@@ -26,9 +26,6 @@ ReactionCore.registerPackage({
     openexchangerates: {
       appId: "",
       refreshPeriod: "every 1 hour"
-    },
-    paymentMethod: {
-      defaultPaymentMethod: ""
     }
   },
   layout: [{
@@ -46,7 +43,7 @@ ReactionCore.registerPackage({
     }
   }, {
     layout: "coreLayout",
-    workflow: "coreWorkflow",
+    workflow: "coreUnauthorized",
     theme: "default",
     enabled: true,
     structure: {

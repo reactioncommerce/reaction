@@ -142,7 +142,25 @@
   }
 }
 
+.pdp-container .rui.tag.edit {
+  width: 100%;
+}
 
+.pdp-container .rui.tags > .rui.item {
+  width: 50%;
+
+  @media only screen and (max-width: @screen-md-max) {
+    width: 100%;
+  }
+}
+
+.pdp-container .rui.tags > .rui.item .fa-bookmark {
+  color: @btn-success-bg;
+}
+
+.pdp-container .rui.tags > .rui.item input {
+  width: 0;
+}
 
 
 @media only screen and (max-width: @screen-xs-max) {
