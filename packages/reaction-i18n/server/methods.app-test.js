@@ -1,4 +1,18 @@
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
 describe("i18n methods", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   describe("i18n/flushTranslations", function () {
     it("should throw 403 error by non admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(false);

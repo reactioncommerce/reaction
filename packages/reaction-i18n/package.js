@@ -11,7 +11,9 @@ Npm.depends({
   "i18next-browser-languagedetector": "0.0.14",
   "i18next-localstorage-cache": "0.0.4",
   "jquery-i18next": "0.0.14",
-  "accounting-js": "1.1.1"
+  "accounting-js": "1.1.1",
+  "@sanjo/jasmine-spy": "1.0.1",
+  "@sanjo/jasmine-expect": "1.0.0"
 });
 
 Package.onUse(function (api) {
@@ -100,9 +102,6 @@ Package.onTest(function (api) {
   api.use("underscore");
   api.use("ecmascript");
   api.use("random");
-  api.use("sanjo:jasmine@0.21.0");
-  api.use("velocity:html-reporter@0.9.1");
-  api.use("velocity:console-reporter@0.1.4");
 
   // reaction core
   api.use("reactioncommerce:reaction-i18n@2.1.0");
@@ -111,5 +110,5 @@ Package.onTest(function (api) {
   api.use("reactioncommerce:core@0.13.0");
 
   // server integration tests
-  api.addFiles("tests/jasmine/server/integration/methods.js", "server");
+  api.addFiles("server/methods.app-test.js", "server");
 });
