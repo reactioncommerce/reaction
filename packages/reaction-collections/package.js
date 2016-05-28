@@ -2,7 +2,7 @@ Package.describe({
   summary: "Reaction Collections - core collections + hooks, cfs, jobs",
   name: "reactioncommerce:reaction-collections",
   documentation: "README.md",
-  version: "2.2.0"
+  version: "2.2.2"
 });
 
 Package.onUse(function (api) {
@@ -24,12 +24,13 @@ Package.onUse(function (api) {
   api.use("cfs:filesystem@0.1.2");
   api.use("cfs:ui@0.1.3");
   api.use("raix:ui-dropped-event@0.0.7");
-  api.use("vsivsi:job-collection@1.3.0");
+  api.use("vsivsi:job-collection@1.3.3");
   api.use("ongoworks:security@2.0.1");
   api.use("reactioncommerce:reaction-logger@0.2.0");
   api.use("alanning:roles@1.2.14");
   api.use("meteorhacks:subs-manager@1.6.3");
   api.use("alanning:roles@1.2.14");
+  api.use("tmeasday:publish-counts@0.7.3");
   // ReactionCore declaration
   api.addFiles("common/globals.js");
 
@@ -58,6 +59,9 @@ Package.onUse(function (api) {
   api.addFiles("server/publications/translations.js", "server");
   api.addFiles("server/publications/themes.js", "server");
 
+  // count publications
+  api.addFiles("server/publications/counts.js", "server");
+
   // security
   api.addFiles("server/logger.js", "server");
   api.addFiles("server/main.js", "server");
@@ -79,6 +83,11 @@ Package.onUse(function (api) {
   api.imply("alanning:roles");
   api.imply("meteorhacks:subs-manager");
   api.imply("reactioncommerce:reaction-schemas");
+  api.imply("tmeasday:publish-counts");
+
+  // Main modules
+  api.mainModule("client/collections.js", "client");
+  api.mainModule("server/collections.js", "server");
 
   // ensure schemas vars are passed through
   api.export("ReactionCore");

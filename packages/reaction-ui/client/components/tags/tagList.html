@@ -5,8 +5,8 @@
       {{> tagItem (tagProps tag)}}
     {{/each}}
 
+    {{#if isEditing}}
+      {{> tagItem tagBlankProps}}
+    {{/if}}
   </div>
-  {{#if isEditing}}
-    {{> tagItem tagBlankProps}}
-  {{/if}}
 </template>

@@ -1,5 +1,8 @@
+import { _ } from "meteor/underscore";
+
 const Tooltip = ReactionUI.Lib.Tooltip;
 const Icon = ReactionUI.Components.Icon;
+
 
 Template.button.onCreated(function () {
 
@@ -72,7 +75,20 @@ Template.button.helpers({
   title() {
     const data = Template.instance().data;
     return data.title || data.label;
+  },
+  toggleOn() {
+    const instance = Template.instance();
+    const toggleOn = instance.data.toggleOn;
+
+    if (toggleOn) {
+      if (_.isFunction(toggleOn)) {
+        return toggleOn(instance.data);
+      }
+
+      return toggleOn;
+    }
   }
+
 });
 
 Template.button.events({

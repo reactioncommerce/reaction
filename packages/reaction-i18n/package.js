@@ -35,7 +35,7 @@ Package.onUse(function (api) {
   api.use("reactive-dict");
 
   // reaction packages
-  api.use("reactioncommerce:reaction-collections@2.2.0");
+  api.use("reactioncommerce:reaction-collections@2.2.1");
   api.use("reactioncommerce:core@0.13.0");
 
   // server
@@ -64,7 +64,6 @@ Package.onUse(function (api) {
   // i18n translations
   api.addAssets("private/data/i18n/ar.json", "server");
   api.addAssets("private/data/i18n/bg.json", "server");
-  api.addAssets("private/data/i18n/cn.json", "server");
   api.addAssets("private/data/i18n/cs.json", "server");
   api.addAssets("private/data/i18n/de.json", "server");
   api.addAssets("private/data/i18n/en.json", "server");
@@ -85,6 +84,8 @@ Package.onUse(function (api) {
   api.addAssets("private/data/i18n/tr.json", "server");
   api.addAssets("private/data/i18n/vi.json", "server");
   api.addAssets("private/data/i18n/nb.json", "server");
+  api.addAssets("private/data/i18n/zh.json", "server");
+
   // exports
   api.imply("jquery");
   api.export("i18next");
@@ -105,7 +106,7 @@ Package.onTest(function (api) {
 
   // reaction core
   api.use("reactioncommerce:reaction-i18n@2.1.0");
-  api.use("reactioncommerce:reaction-collections@2.2.0");
+  api.use("reactioncommerce:reaction-collections@2.2.1");
   api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.13.0");
 

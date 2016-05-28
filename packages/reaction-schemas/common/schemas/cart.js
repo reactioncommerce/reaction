@@ -25,6 +25,9 @@ ReactionCore.Schemas.CartItem = new SimpleSchema({
   variants: {
     type: ReactionCore.Schemas.ProductVariant
   },
+  title: {
+    type: String
+  },
   type: {
     label: "Product Type",
     type: String,

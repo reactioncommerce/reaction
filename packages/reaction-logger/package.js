@@ -2,18 +2,17 @@ Package.describe({
   summary: "Reaction Logger - core logging libs for Reaction Commerce",
   name: "reactioncommerce:reaction-logger",
   documentation: "README.md",
-  version: "0.2.0"
+  version: "0.2.1"
 });
 
 Npm.depends({
-  "bunyan": "1.8.0",
-  "bunyan-format": "0.2.1",
-  "bunyan-loggly": "0.0.5"
+  "bunyan": "1.8.1",
+  "bunyan-format": "0.2.1"
 });
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
-  api.use("tmeasday:check-npm-versions@0.3.0");
+  api.use("tmeasday:check-npm-versions@0.3.1");
   api.use([
     "ecmascript",
     "underscore"
