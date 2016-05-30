@@ -1,9 +1,6 @@
 import { Media } from "/lib/collections";
 import { Reaction } from "/server/api";
 
-ReactionProductAPI = {};
-ReactionProductAPI.methods = {};
-
 /**
  * removeMedia
  * @summary remove media from mongodb collection
@@ -11,7 +8,7 @@ ReactionProductAPI.methods = {};
  * @param {String} mediaId - media _id
  * @return {Error|Undefined} object with error or nothing
  */
-ReactionProductAPI.methods.removeMedia = new ValidatedMethod({
+export const removeMedia = new ValidatedMethod({
   name: "removeMedia",
   validate: new SimpleSchema({
     mediaId: { type: String }
@@ -31,7 +28,7 @@ ReactionProductAPI.methods.removeMedia = new ValidatedMethod({
  * @param {Array} sortedMedias - array with images _ids
  * @return {Array} with results
  */
-ReactionProductAPI.methods.updateMediaPriorities = new ValidatedMethod({
+export const updateMediaPriorities = new ValidatedMethod({
   name: "updateMediaPriorities",
   validate: new SimpleSchema({
     sortedMedias: { type: [new SimpleSchema({ mediaId: { type: String } })] }
