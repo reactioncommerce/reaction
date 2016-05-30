@@ -1,5 +1,13 @@
 import i18next from "i18next";
+import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
+import i18nextLocalStorageCache from "i18next-localstorage-cache";
+import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import i18nextJquery from "jquery-i18next";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
+import { Session } from "meteor/session";
+import { _ } from "meteor/underscore";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/modules/core";
 import { Packages, Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -9,11 +17,11 @@ import * as Schemas from "/lib/collections/schemas";
 //
 
 /**
- * getLang
+ * getBrowserLanguage
  * @summary detects device default language
  * @return {String} language code
  */
-const getLang = () => {
+export function getBrowserLanguage() {
   if (typeof navigator.languages !== "undefined") {
     if (~navigator.languages[0].indexOf("-")) {
       return navigator.languages[0].split("-")[0];
@@ -23,7 +31,7 @@ const getLang = () => {
     return navigator.languages[0];
   }
   return navigator.language || navigator.browserLanguage;
-};
+}
 
 /**
  * getLabelsFor
@@ -79,28 +87,28 @@ function getMessagesFor() {
  *  initialize i18n and load data resources for the current language and fallback "EN"
  *
  */
-Reaction.translationDependency = this.i18nextDep = new Tracker.Dependency();
-this.localeDep = new Tracker.Dependency();
+export const i18nextDep = new Tracker.Dependency();
+export const localeDep = new Tracker.Dependency();
 const packageNamespaces = [];
-let shopLanguage;
-let defaultLanguage;
-let packages;
 
 Meteor.startup(() => {
-  Tracker.autorun(function () {
+  Tracker.autorun(function (c) {
     if (Reaction.Subscriptions.Shops.ready()) {
       const shop = Shops.findOne(Reaction.getShopId());
-      shopLanguage = shop.language;
-      defaultLanguage = shopLanguage;
+
+      if (!shop) {
+        return null;
+      }
+
       // TODO: i18nextBrowserLanguageDetector
-      // const defaultLanguage = lng.detect() || shopLanguage;
+      // const defaultLanguage = lng.detect() || shop.language;
 
       // set default session language
-      Session.setDefault("language", getLang());
+      Session.setDefault("language", getBrowserLanguage());
 
       // every package gets a namespace, fetch them
       // const packageNamespaces = [];
-      packages = Packages.find({}, {
+      const packages = Packages.find({}, {
         fields: {
           name: 1
         }
@@ -112,15 +120,16 @@ Meteor.startup(() => {
       // use i18n detected language to getLocale info
       Meteor.call("shop/getLocale", function (error, result) {
         if (result) {
-          Reaction.Locale = result;
-          Reaction.Locale.language = Session.get("language");
-          moment.locale(Reaction.Locale.language);
+          const locale = result;
+          locale.language = Session.get("language");
+          moment.locale(locale.language);
+          Session.set("locale", locale);
           localeDep.changed();
         }
       });
 
       // Stop the tracker
-      this.stop();
+      c.stop();
     }
   });
 });
@@ -129,7 +138,7 @@ Meteor.startup(() => {
 Tracker.autorun(function () {
   return Meteor.subscribe("Translations", Session.get("language"), () => {
     // fetch reaction translations
-    let translations = Translations
+    const translations = Translations
       .find({}, {
         fields: {
           _id: 0
@@ -147,6 +156,8 @@ Tracker.autorun(function () {
       return x;
     }, {});
 
+    const shop = Shops.findOne(Reaction.getShopId());
+
     //
     // initialize i18next
     //
@@ -160,7 +171,7 @@ Tracker.autorun(function () {
         ns: packageNamespaces, // translation namespace for every package
         defaultNS: "core", // reaction "core" is the default namespace
         lng: Session.get("language"), // user session language
-        fallbackLng: shopLanguage, // Shop language
+        fallbackLng: shop ? shop.language : null, // Shop language
         resources: resources
           // saveMissing: true,
           // missingKeyHandler: function (lng, ns, key, fallbackValue) {
@@ -169,7 +180,7 @@ Tracker.autorun(function () {
       }, (err, t) => {
         // someday this should work
         // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-        for (let schema in Schemas) {
+        for (let schema in _.omit(Schemas, "__esModule")) {
           if ({}.hasOwnProperty.call(Schemas, schema)) {
             let ss = Schemas[schema];
             ss.labels(getLabelsFor(ss, schema));
