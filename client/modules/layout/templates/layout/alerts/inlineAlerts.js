@@ -1,4 +1,5 @@
 import i18next from "i18next";
+import { Mongo } from "meteor/mongo";
 
 /*
  * Forked and modifed from https://github.com/asktomsk/bootstrap-alerts/

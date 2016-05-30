@@ -1,3 +1,5 @@
+import { Mongo } from "meteor/mongo";
+
 /**
  * Client side collections
  */

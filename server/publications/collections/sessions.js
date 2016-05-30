@@ -1,3 +1,4 @@
+import { Mongo } from "meteor/mongo";
 import { Reaction } from "/server/api";
 
 /**
