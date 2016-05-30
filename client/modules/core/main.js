@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
+import { localeDep } from  "/client/modules/i18n";
 import { ReactionRouter } from "/client/modules/router";
 import { Packages, Shops } from "/lib/collections";
 
@@ -17,13 +18,12 @@ export default {
     return Tracker.autorun(() => {
       let domain;
       let shop;
-      // for clarity this subscription is defined in subscriptions.js
+
       if (this.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
         shop = Shops.findOne({
           domains: domain
         });
-
 
         if (shop) {
           this.shopId = shop._id;
@@ -31,22 +31,24 @@ export default {
           // initialize local client Countries collection
           createCountryCollection(shop.locales.countries);
 
+          const locale = Session.get("locale");
+
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes
-          if (typeof this.Locale.locale === "object" &&
-            typeof this.Locale.currency === "object" &&
-            typeof this.Locale.locale.currency === "string") {
-            const localeCurrency = this.Locale.locale.currency.split(",")[0];
+          if (typeof locale.locale === "object" &&
+            typeof locale.currency === "object" &&
+            typeof locale.locale.currency === "string") {
+            const localeCurrency = locale.locale.currency.split(",")[0];
             if (typeof shop.currencies[localeCurrency] === "object") {
               if (typeof shop.currencies[localeCurrency].rate === "number") {
-                this.Locale.currency.rate = shop.currencies[localeCurrency].rate;
+                locale.currency.rate = shop.currencies[localeCurrency].rate;
                 localeDep.changed();
               }
             }
           }
           // we are looking for a shopCurrency changes here
-          if (typeof this.Locale.shopCurrency === "object") {
-            this.Locale.shopCurrency = shop.currencies[shop.currency];
+          if (typeof locale.shopCurrency === "object") {
+            locale.shopCurrency = shop.currencies[shop.currency];
             localeDep.changed();
           }
           return this;

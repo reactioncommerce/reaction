@@ -1,5 +1,6 @@
 import accounting from "accounting-js";
 import i18next from "i18next";
+import { localeDep, i18nextDep } from  "./i18n";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 
@@ -35,7 +36,8 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
  * @returns {String} return current locale currency symbol
  */
 Template.registerHelper("currencySymbol", function () {
-  return Reaction.Locale.currency.symbol;
+  const locale = Session.get("locale");
+  return locale.currency.symbol;
 });
 
 /**
@@ -46,12 +48,11 @@ Template.registerHelper("currencySymbol", function () {
  * @return {String} returns locale formatted and exchange rate converted values
  */
 Template.registerHelper("formatPrice", function (formatPrice) {
-  const {
-    Locale
-  } = Reaction;
   localeDep.depend();
 
-  if (typeof Locale !== "object" || typeof Locale.currency !== "object") {
+  const locale = Session.get("locale");
+
+  if (typeof locale !== "object" || typeof locale.currency !== "object") {
     // locale not yet loaded, so we don"t need to return anything.
     return false;
   }
@@ -73,17 +74,17 @@ Template.registerHelper("formatPrice", function (formatPrice) {
     try {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
-      if (typeof Locale.currency.rate !== "number") {
+      if (typeof locale.currency.rate !== "number") {
         throw new Meteor.Error("exchangeRateUndefined");
       }
-      prices[i] *= Locale.currency.rate;
+      prices[i] *= locale.currency.rate;
 
       price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, Locale.currency, i, len);
+        currentPrice, locale.currency, i, len);
     } catch (error) {
       Logger.debug("currency error, fallback to shop currency");
       price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, Locale.shopCurrency, i, len);
+        currentPrice, locale.shopCurrency, i, len);
     }
   }
 
@@ -93,19 +94,17 @@ Template.registerHelper("formatPrice", function (formatPrice) {
 Reaction.Currency = {};
 
 Reaction.Currency.formatNumber = function (currentPrice) {
+  const locale = Session.get("locale");
   let price = currentPrice;
-  let format = Object.assign({}, Reaction.Locale.currency, {
+  let format = Object.assign({}, locale.currency, {
     format: "%v"
   });
-  let shopFormat = Object.assign({}, Reaction.Locale.shopCurrency, {
+  let shopFormat = Object.assign({}, locale.shopCurrency, {
     format: "%v"
   });
-  const {
-    Locale
-  } = Reaction;
 
-  if (typeof Locale.currency === "object" && Locale.currency.rate) {
-    price = currentPrice * Reaction.Locale.currency.rate;
+  if (typeof locale.currency === "object" && locale.currency.rate) {
+    price = currentPrice * locale.currency.rate;
     return accounting.formatMoney(price, format);
   }
 
@@ -128,7 +127,7 @@ Reaction.Currency.formatNumber = function (currentPrice) {
  */
 function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
   pos, len) {
-  // this checking for Locale.shopCurrency mostly
+  // this checking for locale.shopCurrency mostly
   if (typeof currency !== "object") {
     return false;
   }
