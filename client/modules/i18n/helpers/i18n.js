@@ -94,12 +94,6 @@ const packageNamespaces = [];
 Meteor.startup(() => {
   Tracker.autorun(function (c) {
     if (Reaction.Subscriptions.Shops.ready()) {
-      const shop = Shops.findOne(Reaction.getShopId());
-
-      if (!shop) {
-        return null;
-      }
-
       // TODO: i18nextBrowserLanguageDetector
       // const defaultLanguage = lng.detect() || shop.language;
 
@@ -125,11 +119,11 @@ Meteor.startup(() => {
           moment.locale(locale.language);
           Session.set("locale", locale);
           localeDep.changed();
+
+          // Stop the tracker
+          c.stop();
         }
       });
-
-      // Stop the tracker
-      c.stop();
     }
   });
 });
