@@ -31,7 +31,7 @@ export default {
           // initialize local client Countries collection
           createCountryCollection(shop.locales.countries);
 
-          const locale = Session.get("locale");
+          const locale = Session.get("locale") || {};
 
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes
