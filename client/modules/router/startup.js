@@ -7,7 +7,9 @@ Meteor.startup(function () {
   Tracker.autorun(function () {
     // initialize client routing
     if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
-      ReactionRouter.initPackageRoutes();
+      if (!ReactionRouter._initialized) {
+        ReactionRouter.initPackageRoutes();
+      }
     }
   });
 });
