@@ -1,4 +1,14 @@
 /* eslint dot-notation: 0 */
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
 
 // to provide a comparison account
 const fakeUser = Factory.create("account");
@@ -20,9 +30,13 @@ function spyOnMethod(method, id) {
 }
 
 describe("Account Meteor method ", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   const shopId = faker.reaction.shops.getShop()._id;
 
-  afterAll(() => {
+  after(() => {
     ReactionCore.Collections.Packages.remove({});
     ReactionCore.Collections.Cart.remove({});
     ReactionCore.Collections.Accounts.remove({});

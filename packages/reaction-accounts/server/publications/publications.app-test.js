@@ -1,4 +1,13 @@
 /* eslint dot-notation: 0 */
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
 
 const shopId = faker.reaction.shops.getShop()._id;
 const publication = Meteor.server.publish_handlers["ShopMembers"];
@@ -7,6 +16,10 @@ describe("Account Publications", function () {
   beforeEach(function () {
     // reset
     Meteor.users.remove({});
+  });
+
+  afterEach(function () {
+    spyEnv.clearSpies();
   });
 
   describe("ShopMembers", function () {

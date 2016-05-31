@@ -1,3 +1,11 @@
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const expect = expectEnv.expect;
+const jasmineAny = expectEnv.any;
+
 
 describe("Account Registration Validation ", function () {
   describe("username validation ", function () {
@@ -6,7 +14,7 @@ describe("Account Registration Validation ", function () {
       done => {
         const username = "tn";
         Meteor.call("accounts/validation/username", username, function (error, result) {
-          expect(result).toEqual(jasmine.any(Object));
+          expect(result).toEqual(jasmineAny(Object));
           return done();
         });
       }
@@ -30,7 +38,7 @@ describe("Account Registration Validation ", function () {
       done => {
         const email = "emailwebsite.com";
         Meteor.call("accounts/validation/email", email, false, function (error, result) {
-          expect(result).toEqual(jasmine.any(Object));
+          expect(result).toEqual(jasmineAny(Object));
           return done();
         });
       }
@@ -74,7 +82,7 @@ describe("Account Registration Validation ", function () {
       done => {
         const email = "emailwebsite.com";
         Meteor.call("accounts/validation/email", email, true, function (error, result) {
-          expect(result).toEqual(jasmine.any(Object));
+          expect(result).toEqual(jasmineAny(Object));
           return done();
         });
       }
@@ -87,7 +95,7 @@ describe("Account Registration Validation ", function () {
       done => {
         const password = "abc12";
         Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
-          expect(result).toEqual(jasmine.any(Object));
+          expect(result).toEqual(jasmineAny(Object));
           return done();
         });
       }

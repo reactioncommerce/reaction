@@ -1,6 +1,17 @@
 /* eslint dot-notation: 0 */
 /* eslint no-loop-func: 0 */
 
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
+
 describe("core product methods", function () {
   // we can't clean Products collection after each test from now, because we
   // have functions which called from async db operations callbacks. So, if we
@@ -9,7 +20,11 @@ describe("core product methods", function () {
   // So, if you need to clean the collection for your test, you could try to do
   // it, but this is not recommended in droves
 
-  beforeAll(function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
+  before(function () {
     // We are mocking inventory hooks, because we don't need them here, but
     // if you want to do a real stress test, you could try to comment out
     // this three lines. This is needed only for ./reaction test. In one
@@ -89,12 +104,6 @@ describe("core product methods", function () {
         return done();
       }
     );
-
-    // it(
-    //  "`variant` and `child variants` media should be inherited when " +
-    //  "cloning", done => {
-    //    return done();
-    // });
   });
 
   describe("products/createVariant", function () {

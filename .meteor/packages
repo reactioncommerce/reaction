@@ -29,6 +29,11 @@ accounts-twitter
 # accounts-weibo
 # accounts-oauth
 
+# Testing packages
+dispatch:mocha-browser
+practicalmeteor:chai
+dispatch:mocha
+
 # Reaction Commerce Packages
 
 reactioncommerce:core

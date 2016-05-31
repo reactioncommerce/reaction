@@ -5,6 +5,11 @@ Package.describe({
   git: "https://github.com/reactioncommerce/reaction-catalog.git"
 });
 
+Npm.depends({
+  "@sanjo/jasmine-spy": "1.0.1",
+  "@sanjo/jasmine-expect": "1.0.0"
+});
+
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.3");
@@ -30,16 +35,13 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use("sanjo:jasmine@0.21.0");
   api.use("random");
   api.use("underscore");
-  api.use("velocity:html-reporter@0.9.1");
-  api.use("velocity:console-reporter@0.1.4");
 
   api.use("reactioncommerce:reaction-collections@2.2.1");
   api.use("reactioncommerce:reaction-factories@0.4.2");
   api.use("reactioncommerce:core@0.13.0");
   api.use("reactioncommerce:reaction-catalog");
 
-  api.addFiles("tests/jasmine/server/integration/products.js", "server");
+  api.addFiles("server/products.app-test.js", "server");
 });

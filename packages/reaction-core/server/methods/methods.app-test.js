@@ -1,6 +1,20 @@
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
 describe("core methods", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   describe("shop/removeHeaderTag", function () {
-    beforeEach(function () {
+    before(function () {
       return ReactionCore.Collections.Tags.remove({});
     });
 
@@ -18,6 +32,12 @@ describe("core methods", function () {
       expect(ReactionCore.Collections.Tags.update).not.toHaveBeenCalled();
       expect(ReactionCore.Collections.Tags.remove).not.toHaveBeenCalled();
       return done();
+    });
+  });
+
+  describe("shop/removeHeaderTag", function () {
+    before(function () {
+      return ReactionCore.Collections.Tags.remove({});
     });
     it("should remove header tag by admin", function (done) {
       let currentTag;
@@ -58,7 +78,7 @@ describe("core methods", function () {
 
       let tagCount = ReactionCore.Collections.Tags.find().count();
 
-      Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
+      Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn"t fail
       Meteor.call("shop/updateHeaderTags", "new tag");
       expect(ReactionCore.Collections.Tags.find().count()).toEqual(tagCount + 1);
       tag = ReactionCore.Collections.Tags.find().fetch()[0];
@@ -81,6 +101,7 @@ describe("core methods", function () {
   });
 
   describe("shop/locateAddress", function () {
+    this.timeout(10000);
     it("should locate an address based on known US coordinates", function (done) {
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
       expect(address.zipcode).toEqual("90015");
@@ -88,12 +109,14 @@ describe("core methods", function () {
     });
 
     it("should locate an address with known international coordinates", function (done) {
+      this.timeout(10000);
       let address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
       expect(address.formattedAddress).toContain("Molyneux Rd, Kensington, Liverpool, Merseyside L6 6AW, UK");
       return done();
     });
 
     it("should provide default empty address", function (done) {
+      this.timeout(10000);
       let address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
 
       expect(address).toEqual({

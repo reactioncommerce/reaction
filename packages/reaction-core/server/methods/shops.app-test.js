@@ -1,4 +1,19 @@
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
+
 describe("core shop schema", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   beforeEach(function () {
     return ReactionCore.Collections.Shops.remove({});
   });
@@ -16,6 +31,10 @@ describe("core shop methods", function () {
   let shop;
   beforeEach(function () {
     shop = Factory.create("shop");
+  });
+
+  afterEach(function () {
+    spyEnv.clearSpies();
   });
 
   describe("shop/createShop", function () {

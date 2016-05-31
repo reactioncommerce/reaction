@@ -1,5 +1,20 @@
 /* eslint dot-notation: 0 */
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
+
 describe("cart methods", function () {
+  afterEach(function () {
+    spyEnv.clearSpies();
+  });
+
   let user = Factory.create("user");
   const shop = faker.reaction.shops.getShop();
   let userId = user._id;
@@ -27,12 +42,12 @@ describe("cart methods", function () {
     );
   }
 
-  afterAll(() => {
+  after(() => {
     Meteor.users.remove({});
   });
 
   describe("cart/mergeCart", () => {
-    beforeAll(() => {
+    before(() => {
       // We are mocking inventory hooks, because we don't need them here, but
       // if you want to do a real stress test, you could try to comment out
       // this two lines and uncomment the following spyOn line. This is needed
@@ -125,14 +140,6 @@ describe("cart methods", function () {
         return done();
       }
     );
-
-    // it(
-    //   "should",
-    //   done => {
-    //
-    //     return done();
-    //   }
-    // );
   });
 
   describe("cart/createCart", function () {
@@ -159,7 +166,7 @@ describe("cart methods", function () {
     let productId;
     let variantId;
 
-    beforeAll(() => {
+    before(() => {
       // this is needed for `inventory/register`
       spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       product = faker.reaction.products.add();
