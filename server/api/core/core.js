@@ -360,7 +360,7 @@ export default {
 
     // Attempt to load reaction.json fixture data
     try {
-      settingsJSONAsset = Assets.getText("reaction.json");
+      settingsJSONAsset = Assets.getText("settings/reaction.json");
       const validatedJson = EJSON.parse(settingsJSONAsset);
 
       if (!_.isArray(validatedJson[0])) {
@@ -369,7 +369,8 @@ export default {
         settingsFromJSON = validatedJson;
       }
     } catch (error) {
-      Logger.warn(error, "loadSettings reaction.json not loaded.");
+      Logger.warn("Skipped loading settings from reaction.json.");
+      Logger.debug(error, "loadSettings reaction.json not loaded.");
     }
     let layouts = [];
     // for each shop, we're loading packages a unique registry
