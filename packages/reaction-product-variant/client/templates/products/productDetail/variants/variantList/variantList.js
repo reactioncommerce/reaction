@@ -82,6 +82,14 @@ Template.variantList.helpers({
 
       return childVariants;
     }
+  },
+  selectedVariant() {
+    const _id = this._id;
+    const current = ReactionProduct.selectedVariant();
+    if (typeof current === "object" &&
+      (_id === current._id || ~current.ancestors.indexOf(this._id))) {
+      return "variant-detail-selected";
+    }
   }
 });
 

@@ -69,6 +69,27 @@
   width: 55%;
 }
 
+@media only screen and (max-width: @screen-xs-max) {
+  .pdp-content .pdp.column.left {
+    width: 100%;
+  }
+
+  .pdp-content .pdp.column.right {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: @screen-md-max) {
+  .page.show-settings .pdp.column.left {
+    width: 100%;
+  }
+
+  .page.show-settings .pdp-content .pdp.column.right {
+    width: 100%;
+  }
+}
+
+
 
 
 // Right Column
@@ -94,6 +115,10 @@
   font-size: @product-price-font-size;
   overflow: visible;
   display:inline-block;
+
+  @media only screen and (max-width: @screen-sm-max) {
+    font-size: 24px;
+  }
 }
 
 .pdp .currency-symbol {

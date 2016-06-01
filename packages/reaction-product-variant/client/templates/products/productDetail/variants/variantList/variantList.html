@@ -14,7 +14,7 @@
     <div class="row variant-product-options">
       {{#each childVariants}}
         <div class="variant-select-option">
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default {{selectedVariant}}">
           {{#with media}}
             <div class="media">
               <img src="{{url store='large'}}">

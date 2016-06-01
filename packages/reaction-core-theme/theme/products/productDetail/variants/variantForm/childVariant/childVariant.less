@@ -24,6 +24,18 @@
   flex: 1 1 auto;
   max-width: 25%;
   padding: 10px;
+
+  @media only screen and (max-width: @screen-xs-max) {
+    max-width: 33%;
+    width: 33%;
+  }
+}
+
+.page.show-settings .variant-select-option {
+  @media only screen and (max-width: @screen-sm-max) {
+    max-width: 33%;
+    width: 33%;
+  }
 }
 
 .variant-select-option button {

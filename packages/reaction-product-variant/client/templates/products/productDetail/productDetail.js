@@ -234,7 +234,7 @@ Template.productDetail.events({
       }
     }
   },
-  "click #add-to-cart": function (event, template) {
+  "click .js-add-to-cart": function (event, template) {
     let productId;
     let qtyField;
     let quantity;

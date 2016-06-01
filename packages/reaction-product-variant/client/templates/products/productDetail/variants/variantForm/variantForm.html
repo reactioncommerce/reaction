@@ -3,6 +3,17 @@
     <div class="panel panel-default variant-form">
       <div class="panel-heading panel-heading-flex">
         <div class="panel-title">
+          {{#if inventoryManagement}}
+            {{#unless isSoldOut }}
+              <span class="variant-qty badge">{{displayQuantity}}</span>
+            {{else}}
+              {{#if inventoryPolicy }}
+              <span class="variant-qty-sold-out badge">Sold Out!</span>
+              {{ else }}
+              <span class="variant-qty-sold-out badge">Backorder</span>
+              {{/if}}
+            {{/unless}}
+          {{/if}}
           <span data-i18n="productDetailEdit.variantDetails">Variant Details</span>
         </div>
         <div class="panel-controls">

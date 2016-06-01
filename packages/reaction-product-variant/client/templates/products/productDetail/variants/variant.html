@@ -2,31 +2,28 @@
   <li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
     <div class="variant-detail {{selectedVariant}}">
       <div class="title">
-        {{#if inventoryManagement}}
-          {{#unless isSoldOut }}
-            <span class="variant-qty badge">{{displayQuantity}}</span>
-          {{else}}
-            {{#if inventoryPolicy }}
-            <span class="variant-qty-sold-out badge">Sold Out!</span>
-            {{ else }}
-            <span class="variant-qty-sold-out badge">Backorder</span>
-            {{/if}}
-          {{/unless}}
-        {{/if}}
         <span class="variant-title">{{title}}</span>
-        <span class="variant-price">{{formatPrice displayPrice}}</span>
       </div>
 
       <div class="actions">
-        <div class="progress">
-          <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{displayQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
-          </span>
-        </div>
+        <span class="variant-price">{{formatPrice displayPrice}}</span>
 
         {{#if hasPermission "createProduct"}}
           <div class="variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
               <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
           </div>
+        {{/if}}
+      </div>
+
+      <div class="alerts">
+        {{#if inventoryManagement}}
+          {{#if isSoldOut}}
+            {{#if inventoryPolicy }}
+            <span class="variant-qty-sold-out badge badge-warning">Sold Out!</span>
+            {{ else }}
+            <span class="variant-qty-sold-out badge badge-info">Backorder</span>
+            {{/if}}
+          {{/if}}
         {{/if}}
       </div>
     </div>

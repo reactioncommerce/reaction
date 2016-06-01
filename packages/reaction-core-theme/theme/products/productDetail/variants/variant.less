@@ -1,20 +1,13 @@
 
 .variant-detail {
-
-}
-
-.variant-detail {
   display: flex;
+  position: relative;
   // height: 44px;
   border-radius: @border-radius-base;
   font-size: 16x;
   border: 1px solid @border-color;
   background-color: @white;
   padding: 10px 20px;
-}
-
-.variant-detail {
-
 }
 
 .variant-detail > .title {
@@ -37,6 +30,23 @@
   }
 }
 
+.variant-detail .variant-price {
+  font-size: 20px;
+}
+
+.variant-detail:hover {
+  .variant-detail-selected;
+}
+
+.variant-detail-selected{
+  border: 1px solid @brand-accent-color;
+}
+
+.variant-detail .alerts {
+  position: absolute;
+  .right(-10px);
+  top: -10px;
+}
 
 //
 // .variant-detail:hover {
