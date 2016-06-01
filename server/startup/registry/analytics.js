@@ -1,4 +1,6 @@
-import { Reaction } from "/server/api";
+import {
+  Reaction
+} from "/server/api";
 
 export default function () {
   Reaction.registerPackage({
