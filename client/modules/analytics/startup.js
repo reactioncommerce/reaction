@@ -1,26 +1,38 @@
-import { AnalyticsEvents, Packages } from "/lib/collections";
+import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
+import {
+  AnalyticsEvents,
+  Packages
+} from "/lib/collections";
 
+//
+// Initialize analytics event tracking
+//
 Meteor.startup(function () {
   Tracker.autorun(function () {
-    var coreAnalytics, googleAnalytics, mixpanel, segmentio;
-    coreAnalytics = Packages.findOne({
+    const coreAnalytics = Packages.findOne({
       name: "reaction-analytics"
     });
+
+    // check if installed and enabled
     if (!coreAnalytics || !coreAnalytics.enabled) {
-      Alerts.removeType("analytics-not-configured");
-      return;
+      return Alerts.removeType("analytics-not-configured");
     }
-    googleAnalytics = coreAnalytics.settings["public"].googleAnalytics;
-    mixpanel = coreAnalytics.settings["public"].mixpanel;
-    segmentio = coreAnalytics.settings["public"].segmentio;
+
+    const googleAnalytics = coreAnalytics.settings.public.googleAnalytics;
+    const mixpanel = coreAnalytics.settings.public.mixpanel;
+    const segmentio = coreAnalytics.settings.public.segmentio;
+    const settingsURL = ReactionRouter.pathFor("dashboard");
+    //
+    // segment.io
+    //
     if (segmentio.enabled) {
       if (segmentio.api_key) {
-        analytics.load(coreAnalytics.settings["public"].segmentio.api_key);
-        return;
+        analytics.load(coreAnalytics.settings.public.segmentio.api_key);
+        return {};
       } else if (!segmentio.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
         _.defer(function () {
           return Alerts.toast(
-            `Segment Write Key is not configured. <a href="/dashboard/settings/reaction-analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.`,
+            `Segment Write Key is not configured. <a href="${settingsURL}">Configure now</a>.`,
             "danger", {
               html: true,
               sticky: true
@@ -28,13 +40,17 @@ Meteor.startup(function () {
         });
       }
     }
+
+    //
+    // Google Analytics
+    //
     if (googleAnalytics.enabled) {
       if (googleAnalytics.api_key) {
-        ga("create", coreAnalytics.settings["public"].google - analytics.api_key, "auto");
+        ga("create", coreAnalytics.settings.public.google - analytics.api_key, "auto");
       } else if (!googleAnalytics.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
         _.defer(function () {
           return Alerts.toast(
-            `Google Analytics Property is not configured. <a href="/dashboard/settings/reaction-analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.`,
+            `Google Analytics Property is not configured. <a href="${settingsURL}">Configure now</a>.`,
             "errorr", {
               type: "analytics-not-configured",
               html: true,
@@ -43,13 +59,17 @@ Meteor.startup(function () {
         });
       }
     }
+
+    //
+    // mixpanel
+    //
     if (mixpanel.enabled) {
       if (mixpanel.api_key) {
-        mixpanel.init(coreAnalytics.settings["public"].mixpanel.api_key);
+        mixpanel.init(coreAnalytics.settings.public.mixpanel.api_key);
       } else if (!mixpanel.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
         _.defer(function () {
           return Alerts.toast(
-            `Mixpanel token is not configured. <a href="/dashboard/settings/reaction-analytics">Configure now</a> or <a href="/dashboard">disable the Analytics package</a>.`,
+            `Mixpanel Token is not configured. <a href="${settingsURL}">Configure now</a>.`,
             "error", {
               type: "analytics-not-configured",
               html: true,
@@ -58,18 +78,21 @@ Meteor.startup(function () {
         });
       }
     }
+
     if (!Roles.userIsInRole(Meteor.user(), "admin")) {
       return Alerts.removeType("analytics-not-configured");
     }
   });
+
+  //
+  // analytics event processing
+  //
   return $(document.body).click(function (e) {
-    var $targets;
-    $targets = $(e.target).closest("*[data-event-action]");
+    let $targets = $(e.target).closest("*[data-event-action]");
     $targets = $targets.parents("*[data-event-action]").add($targets);
     return $targets.each(function (index, element) {
-      var $element, analyticsEvent;
-      $element = $(element);
-      analyticsEvent = {
+      let $element = $(element);
+      const analyticsEvent = {
         eventType: "event",
         category: $element.data("event-category"),
         action: $element.data("event-action"),
@@ -82,18 +105,20 @@ Meteor.startup(function () {
       }
       if (typeof mixpanel === "object" && mixpanel.length > 0) {
         mixpanel.track(analyticsEvent.action, {
-          "Category": analyticsEvent.category,
-          "Label": analyticsEvent.label,
-          "Value": analyticsEvent.value
+          Category: analyticsEvent.category,
+          Label: analyticsEvent.label,
+          Value: analyticsEvent.value
         });
       }
       if (typeof analytics === "object" && analytics.length > 0) {
         analytics.track(analyticsEvent.action, {
-          "Category": analyticsEvent.category,
-          "Label": analyticsEvent.label,
-          "Value": analyticsEvent.value
+          Category: analyticsEvent.category,
+          Label: analyticsEvent.label,
+          Value: analyticsEvent.value
         });
       }
+      // we could add a hook here, but not needed as
+      // you can trigger using the collection hooks
       return AnalyticsEvents.insert(analyticsEvent);
     });
   });
