@@ -1,3 +1,4 @@
+/* eslint camelcase: 0 */
 import {
   Reaction
 } from "/server/api";
@@ -8,7 +9,7 @@ export default function () {
     icon: "fa fa-bar-chart-o",
     autoEnable: false,
     settings: {
-      "public": {
+      public: {
         segmentio: {
           enabled: false,
           api_key: ""
