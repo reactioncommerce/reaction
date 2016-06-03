@@ -1,9 +1,13 @@
-import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
+import {
+  FlowRouter as ReactionRouter
+} from "meteor/kadira:flow-router-ssr";
 import {
   AnalyticsEvents,
   Packages
 } from "/lib/collections";
-import { Reaction } from "/client/modules/core";
+import {
+  Reaction
+} from "/client/modules/core";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];
@@ -71,7 +75,7 @@ analytics.load = function (key) {
   script.src = (document.location.protocol === "https:" ? "https://" : "http://") +
     "cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";
   // Insert our script next to the first script element.
-  let first = document.getElementsByTagName("script")[0];
+  const first = document.getElementsByTagName("script")[0];
   first.parentNode.insertBefore(script, first);
 };
 
@@ -87,31 +91,40 @@ analytics.SNIPPET_VERSION = "3.1.0";
 // move this call however you"d like.
 // analytics.page();
 
-
 //
 // Initialize analytics page tracking
 //
 
-// segment tracking
+// segment page tracking
 function notifySegment(context) {
-  analytics.page({
-    userId: Meteor.userId(),
-    properties: {
-      url: context.path,
-      shopId: Reaction.getShopId()
-    }
-  });
+  if (typeof analytics !== "undefined") {
+    analytics.page({
+      userId: Meteor.userId(),
+      properties: {
+        url: context.path,
+        shopId: Reaction.getShopId()
+      }
+    });
+  }
+}
+// google analytics page tracking
+function notifyGoogleAnalytics(context) {
+  if (typeof ga !== "undefined") {
+    ga("send", "pageview", context.path);
+  }
 }
 
-// function notifyGoogleAnalytics(context) {
-//   // ga("send", "pageview", context.path);
-// }
-//
-// function notifyMixpanel(context) {
-//   // ga("send", "pageview", context.path);
-// }
+// mixpanel page tracking
+function notifyMixpanel(context) {
+  if (typeof mixpanel !== "undefined") {
+    mixpanel.track("page viewed", {
+      "page name": document.title,
+      "url": context.path
+    });
+  }
+}
 
-FlowRouter.triggers.enter([notifySegment]);
+FlowRouter.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
 
 //
 // Initialize analytics event tracking
@@ -135,10 +148,9 @@ Meteor.startup(function () {
     // segment.io
     //
     if (segmentio.enabled) {
-      if (segmentio.api_key) {
-        analytics.load(coreAnalytics.settings.public.segmentio.api_key);
-        return {};
-      } else if (!segmentio.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
+      if (segmentio.api_key && analytics.invoked === true) {
+        analytics.load(segmentio.api_key);
+      } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
             `Segment Write Key is not configured. <a href="${settingsURL}">Configure now</a>.`,
@@ -155,8 +167,8 @@ Meteor.startup(function () {
     //
     if (googleAnalytics.enabled) {
       if (googleAnalytics.api_key) {
-        ga("create", coreAnalytics.settings.public.google - analytics.api_key, "auto");
-      } else if (!googleAnalytics.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
+        ga("create", googleAnalytics.api_key, "auto");
+      } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
             `Google Analytics Property is not configured. <a href="${settingsURL}">Configure now</a>.`,
@@ -174,8 +186,8 @@ Meteor.startup(function () {
     //
     if (mixpanel.enabled) {
       if (mixpanel.api_key) {
-        mixpanel.init(coreAnalytics.settings.public.mixpanel.api_key);
-      } else if (!mixpanel.api_key && Roles.userIsInRole(Meteor.user(), "admin")) {
+        mixpanel.init(mixpanel.api_key);
+      } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
             `Mixpanel Token is not configured. <a href="${settingsURL}">Configure now</a>.`,
@@ -188,7 +200,7 @@ Meteor.startup(function () {
       }
     }
 
-    if (!Roles.userIsInRole(Meteor.user(), "admin")) {
+    if (!Reaction.hasAdminAccess()) {
       return Alerts.removeType("analytics-not-configured");
     }
   });
@@ -209,8 +221,7 @@ Meteor.startup(function () {
         value: $element.data("event-value")
       };
       if (typeof ga === "function") {
-        ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label,
-          analyticsEvent.value);
+        ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value);
       }
       if (typeof mixpanel === "object" && mixpanel.length > 0) {
         mixpanel.track(analyticsEvent.action, {
