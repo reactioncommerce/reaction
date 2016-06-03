@@ -96,7 +96,9 @@
           "googleAnalyticsNotConfigured": "Google Analytics Property not configured.",
           "mixpanelNotConfigured": "Mixpanel not configured.",
           "paypalSettingsLabel": "PayPal Settings",
-          "genericPaymentSettingsLabel": "Generic Payment Settings"
+          "genericPaymentSettingsLabel": "Generic Payment Settings",
+          "analyticsSettingsSaved": "Analytics settings saved.",
+          "analyticsSettingsFailed": "Analytics settings update failed:"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
