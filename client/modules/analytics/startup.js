@@ -125,7 +125,7 @@ function notifyMixpanel(context) {
   }
 }
 
-FlowRouter.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
+ReactionRouter.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
 
 //
 // Initialize analytics event tracking
@@ -144,7 +144,7 @@ Meteor.startup(function () {
     const googleAnalytics = coreAnalytics.settings.public.googleAnalytics;
     const mixpanel = coreAnalytics.settings.public.mixpanel;
     const segmentio = coreAnalytics.settings.public.segmentio;
-    const settingsURL = ReactionRouter.pathFor("dashboard");
+
     //
     // segment.io
     //
@@ -154,7 +154,7 @@ Meteor.startup(function () {
       } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
-            `${i18next.t("settings.segmentNotConfigured")}`,
+            `${i18next.t("admin.settings.segmentNotConfigured")}`,
             "danger", {
               html: true,
               sticky: true
@@ -172,7 +172,7 @@ Meteor.startup(function () {
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
-            `${i18next.t("settings.googleNotConfigured")}`,
+            `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
             "error", {
               type: "analytics-not-configured",
               html: true,
@@ -191,7 +191,7 @@ Meteor.startup(function () {
       } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
-            `${i18next.t("settings.mixpanelNotConfigured")}`,
+            `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
             "error", {
               type: "analytics-not-configured",
               html: true,

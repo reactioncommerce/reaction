@@ -1,4 +1,5 @@
 import { Packages } from "/lib/collections";
+import i18next from "i18next";
 
 Template.reactionAnalyticsSettings.helpers({
   packageData() {
@@ -22,11 +23,11 @@ AutoForm.hooks({
   "analytics-update-form": {
     onSuccess() {
       Alerts.removeType("analytics-not-configured");
-      return Alerts.toast("Analytics settings saved.", "success");
+      return Alerts.toast(i18next.t("admin.settings.analyticsSettingsSaved"), "success");
     },
     onError(operation, error) {
       let msg = error.message || error.reason || "Unknown error";
-      return Alerts.toast(`Analytics settings update failed: ${msg}`, "error");
+      return Alerts.toast(`${i18next.t("admin.settings.analyticsSettingsFailed")} ${msg}`, "error");
     }
   }
 });
