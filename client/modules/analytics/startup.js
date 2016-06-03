@@ -8,6 +8,7 @@ import {
 import {
   Reaction
 } from "/client/modules/core";
+import i18next from "i18next";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];
@@ -153,7 +154,7 @@ Meteor.startup(function () {
       } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
-            `Segment Write Key is not configured. <a href="${settingsURL}">Configure now</a>.`,
+            `${i18next.t("settings.segmentNotConfigured")}`,
             "danger", {
               html: true,
               sticky: true
@@ -171,8 +172,8 @@ Meteor.startup(function () {
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
-            `Google Analytics Property is not configured. <a href="${settingsURL}">Configure now</a>.`,
-            "errorr", {
+            `${i18next.t("settings.googleNotConfigured")}`,
+            "error", {
               type: "analytics-not-configured",
               html: true,
               sticky: true
@@ -190,7 +191,7 @@ Meteor.startup(function () {
       } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
         _.defer(function () {
           return Alerts.toast(
-            `Mixpanel Token is not configured. <a href="${settingsURL}">Configure now</a>.`,
+            `${i18next.t("settings.mixpanelNotConfigured")}`,
             "error", {
               type: "analytics-not-configured",
               html: true,
@@ -221,7 +222,8 @@ Meteor.startup(function () {
         value: $element.data("event-value")
       };
       if (typeof ga === "function") {
-        ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label, analyticsEvent.value);
+        ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label,
+          analyticsEvent.value);
       }
       if (typeof mixpanel === "object" && mixpanel.length > 0) {
         mixpanel.track(analyticsEvent.action, {
