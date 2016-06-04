@@ -38,6 +38,8 @@ Package.onUse(function (api) {
   api.use("reactioncommerce:reaction-collections@2.2.1");
   api.use("reactioncommerce:core@0.13.0");
 
+  api.addFiles("common/resources.js");
+
   // server
   api.addFiles("server/import.js", "server");
   api.addFiles("server/i18next.js", "server");

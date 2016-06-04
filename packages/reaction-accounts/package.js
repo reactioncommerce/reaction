@@ -25,7 +25,6 @@ Package.onUse(function (api) {
 
   // meteor add-on packages
   api.use("less");
-  api.use("email");
   api.use("random");
   api.use("reactive-var");
   api.use("reactive-dict");

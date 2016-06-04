@@ -270,6 +270,13 @@
                         "matchFailed": "Abgleich fehlgeschlagen",
                         "unknownError": "Unbekannter Fehler"
                     }
+                },
+                "emailTemplate": {
+                    "greeting": "Guten Tag %s,",
+                    "thankYouForYourOrderAt": "Vielen Dank für Ihre Bestellung bei <strong>%s</strong>.",
+                    "weHaveReceivedYourOrder": "Ihre Bestellung ist bei uns eingegangen!",
+                    "orderStayTuned": "Wir werden Sie über den Fortschritt Ihrer Bestellung auf dem Laufenden halten.",
+                    "sentBySignature": "Eine automatische Nachricht von: <a href=\"%s\">%s</a>"
                 }
             }
         }

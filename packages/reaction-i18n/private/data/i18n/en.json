@@ -702,6 +702,13 @@
         "isRequired": "{{field}} is required.",
         "mustBeNumber": "{{field}} must be a number.",
         "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
+      },
+      "emailTemplate": {
+         "greeting": "Hi, %s",
+         "thankYouForYourOrderAt": "Thank you for your new <strong>%s</strong> order.",
+         "weHaveReceivedYourOrder": "We've received your order!",
+         "orderStayTuned": "We'll update you on the progress of your order as we prepare it for shipping.",
+         "sentBySignature": "Sent by <a href=\"%s\">%s</a>"
       }
     }
   }

@@ -53,7 +53,6 @@ Package.onUse(function (api) {
   api.use("underscorestring:underscore.string@3.3.4");
   api.use("reactioncommerce:reaction-logger@0.2.0");
   api.use("reactioncommerce:reaction-collections@2.2.1");
-  api.use("reactioncommerce:reaction-email-templates@0.2.0");
   api.use("aldeed:template-extension@4.0.0", "client");
   api.use("aldeed:autoform@5.8.1");
   api.use("momentjs:moment@2.12.0");
@@ -71,7 +70,6 @@ Package.onUse(function (api) {
   api.imply("service-configuration");
   api.imply("reactioncommerce:reaction-logger");
   api.imply("reactioncommerce:reaction-collections");
-  api.imply("reactioncommerce:reaction-email-templates");
   api.imply("aldeed:autoform");
   api.imply("aldeed:template-extension");
   api.imply("mdg:validated-method");

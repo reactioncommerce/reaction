@@ -23,6 +23,17 @@ _.extend(ReactionCore, {
     ReactionRegistry.createDefaultAdminUser();
     // hook after init finished
     ReactionCore.Hooks.Events.run("afterCoreInit", this);
+
+    // Make sure this event is registered last.
+    ReactionCore.Hooks.Events.add("orders/sendNotification", (result) => {
+      if (!result) {
+        //  If event was successfully captured the result will be falsy.
+        //  No-op
+      } else {
+         ReactionCore.Log.warn("Package email-notifications seems not being " +
+          "installed. Try fix it with `meteor add reaction-email-templates`.");
+      }
+    });
     return true;
   },
   /**

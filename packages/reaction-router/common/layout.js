@@ -16,7 +16,6 @@ selectLayout = (layout, setLayout, setWorkflow) => {
 /**
  * ReactionLayout
  * sets and returns reaction layout structure
- * @param {Object} context - this router context
  * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
  * @param {String} options.workflow - string of shop.layout.workflow (defaults to coreLayout)
  * @param {String} options - layout.structure overrides

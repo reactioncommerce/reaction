@@ -121,26 +121,14 @@ Meteor.startup(() => {
 
 // use tracker autorun to detect language changes
 Tracker.autorun(function () {
-  return Meteor.subscribe("Translations", Session.get("language"), () => {
-    // fetch reaction translations
-    let translations = ReactionCore.Collections.Translations
-      .find({}, {
-        fields: {
-          _id: 0
-        }
-      }).fetch();
-    // map reduce translations into i18next formatting
-    const resources = translations.reduce(function (x, y) {
-      const ns = Object.keys(y.translation)[0];
-      // first creating the structure, when add additional namespaces
-      if (x[y.i18n]) {
-        x[y.i18n][ns] = y.translation[ns];
-      } else {
-        x[y.i18n] = y.translation;
-      }
-      return x;
-    }, {});
+  ReactionCore.Locale.language = Session.get("language");
+  // We want to access the selected language on the server as well..
+  ReactionCore.Collections.Accounts.update(
+    Meteor.userId(),
+    {$set: {"profile.language": Session.get("language")}}
+  );
 
+  Meteor.subscribe("Translations", Session.get("language"), () => {
     //
     // initialize i18next
     //
@@ -155,7 +143,7 @@ Tracker.autorun(function () {
         defaultNS: "core", // reaction "core" is the default namespace
         lng: Session.get("language"), // user session language
         fallbackLng: shopLanguage, // Shop language
-        resources: resources
+        resources: fetchTranslationResources()
           // saveMissing: true,
           // missingKeyHandler: function (lng, ns, key, fallbackValue) {
           //   Meteor.call("i18n/addTranslation", lng, ns, key, fallbackValue);

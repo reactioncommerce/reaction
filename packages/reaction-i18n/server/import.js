@@ -38,5 +38,17 @@ loadCoreTranslations = () => {
 if (ReactionCore && ReactionCore.Hooks) {
   ReactionCore.Hooks.Events.add("onCoreInit", () => {
     loadCoreTranslations();
+
+    // init i18next for SSR translations
+    i18next.
+      use(i18nextSprintfPostProcessor).
+      init({
+         debug: false,
+         defaultNS: "core",
+         resources: fetchTranslationResources()
+       }, (err, t) => {
+          if (err) throw new Meteor.Error("No translations resources found.", err);
+          ReactionCore.Log.info("Finishing loading of server side translations.");
+       });
   });
 }
