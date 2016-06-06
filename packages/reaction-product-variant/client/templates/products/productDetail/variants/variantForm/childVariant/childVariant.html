@@ -1,11 +1,13 @@
 <template name="childVariantImageMedia">
-  <div class="media">
-    {{#with media}}
+  {{#each media}}
+    <div class="media-item">
       <img src="{{url store='large'}}">
-    {{else}}
+    </div>
+  {{else}}
+    <div class="media-item">
       <img src="/resources/placeholder.gif">
-    {{/with}}
-  </div>
+    </div>
+  {{/each}}
 </template>
 
 <template name="childVariantForm">
@@ -15,7 +17,7 @@
         {{optionTitle}} - {{formatPrice price}}
       </div>
       <div class="panel-controls">
-        {{> button icon="trash" className="btn btn-default remove-child-variant"}}
+        {{> button icon="trash" className="btn btn-default js-remove-child-variant"}}
       </div>
     </div>
     <div class="panel-body">

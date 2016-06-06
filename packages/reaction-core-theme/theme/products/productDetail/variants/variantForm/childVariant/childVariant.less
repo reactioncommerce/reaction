@@ -91,9 +91,36 @@
 
 
 .child-variant-form .media {
-  width: 100px;
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
 
   img {
     width: 100%;
   }
+}
+
+.child-variant-form .media-item {
+  width: 25%;
+}
+
+.child-variant-form .form-group {
+  width: 100%;
+}
+
+.child-variant-form .js-dropzone {
+  // display: flex;
+  border: 1px solid @border-color;
+  border-radius: @border-radius-base;
+  margin-bottom: 20px;
+}
+
+
+
+.child-variant-form .upload-form button {
+  flex: 1 1 auto;
+  text-align: center;
+  border-radius: 0 0 @btn-border-radius-base @btn-border-radius-base;
+  background-color: @white;
+  border-top: 1px solid @border-color;
 }

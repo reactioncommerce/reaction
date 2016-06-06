@@ -9,11 +9,15 @@ Template.childVariantForm.helpers({
     return "child-variant-form-" + this._id;
   },
   media: function () {
-    const media = ReactionCore.Collections.Media.findOne({
+    const media = Media.find({
       "metadata.variantId": this._id
-    }, { sort: { uploadedAt: 1 } });
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
 
-    return media instanceof FS.File ? media : false;
+    return media;
   },
   handleFileUpload() {
     const ownerId = Meteor.userId();
@@ -58,12 +62,12 @@ Template.childVariantForm.events({
       });
     return ReactionProduct.setCurrentVariant(variant._id);
   },
-  "click #remove-child-variant": function (event) {
+  "click .js-remove-child-variant": function (event, instance) {
     event.stopPropagation();
     event.preventDefault();
-    const title = this.optionTitle || i18next.t("productDetailEdit.thisOption");
+    const title = instance.data.optionTitle || i18next.t("productDetailEdit.thisOption");
     if (confirm(i18next.t("productDetailEdit.removeVariantConfirm", { title }))) {
-      const id = this._id;
+      const id = instance.data._id;
       return Meteor.call("products/deleteVariant", id, function (error, result) {
         // TODO why we have this on option remove?
         if (result && ReactionProduct.selectedVariantId() === id) {

@@ -5,7 +5,11 @@ Template.variantList.helpers({
   media: function () {
     const media = ReactionCore.Collections.Media.findOne({
       "metadata.variantId": this._id
-    }, { sort: { uploadedAt: 1 } });
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
 
     return media instanceof FS.File ? media : false;
   },
