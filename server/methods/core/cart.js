@@ -710,17 +710,17 @@ Meteor.methods({
   "cart/resetShipmentMethod": function (cartId) {
     check(cartId, String);
 
-    const cart = ReactionCore.Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
     if (!cart) {
-      ReactionCore.Log.error(`Cart not found for user: ${this.userId}`);
+      Logger.error(`Cart not found for user: ${this.userId}`);
       throw new Meteor.Error(404, "Cart not found",
         `Cart: ${cartId} not found for user: ${this.userId}`);
     }
 
-    return ReactionCore.Collections.Cart.update({ _id: cartId }, {
+    return Collections.Cart.update({ _id: cartId }, {
       $unset: { "shipping.0.shipmentMethod": "" }
     });
   },

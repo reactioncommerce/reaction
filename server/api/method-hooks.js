@@ -147,7 +147,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
 };
 
 /**
- * ReactionCore MethodHooks before
+ * Reaction MethodHooks before
  * @summary Add a function to call before the specified method
  * @param {String} methodName - methodName
  * @param {String} beforeFunction - beforeFunction

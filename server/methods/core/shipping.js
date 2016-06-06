@@ -2,7 +2,7 @@ import { Cart, Shipping } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /*
- * ReactionCore Shipping Methods
+ * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
  */
 Meteor.methods({
@@ -114,7 +114,7 @@ Meteor.methods({
         if (!method.handling) {
           method.handling = 0;
         }
-        let rate = method.rate + method.handling;
+        const rate = method.rate + method.handling;
         _results.push(rates.push({
           carrier: shipping.provider.label,
           method: method,

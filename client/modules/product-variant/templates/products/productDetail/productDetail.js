@@ -1,4 +1,5 @@
 import i18next from "i18next";
+import { slugify } from "transliteration";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
 import { $ } from "meteor/jquery";
@@ -71,7 +72,7 @@ Template.productDetail.helpers({
           toggle: true,
           toggleOn(tag) {
             const handle = product.handle;
-            if (getSlug(handle) === tag.slug) {
+            if (slugify(handle) === tag.slug) {
               return true;
             }
             return false;
@@ -136,7 +137,7 @@ Template.productDetail.helpers({
     const instance = Template.instance();
     const product = instance.state.get("product") || {};
 
-    if (ReactionCore.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct")) {
       return true;
     }
 

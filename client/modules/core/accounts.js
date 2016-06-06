@@ -12,13 +12,13 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
   // that case we need to take care about creating new session before new
   // user or anonymous will be created/logged in.
   // The problem here - looks like where is no way to track localStorage:
-  // `amplify.store("ReactionCore.session")` itself. That's why we need to use
+  // `amplify.store("Reaction.session")` itself. That's why we need to use
   // another way: `accounts` package uses `setTimeout` for monitoring connection
   // Accounts.callLoginMethod will be called after clearing cache. We could
   // latch on this computations by running extra check here.
-  if (typeof amplify.store("ReactionCore.session") !== "string") {
+  if (typeof amplify.store("Reaction.session") !== "string") {
     const newSession = Random.id();
-    amplify.store("ReactionCore.session", newSession);
+    amplify.store("Reaction.session", newSession);
     Session.set("sessionId", newSession);
   }
   Accounts.callLoginMethod({

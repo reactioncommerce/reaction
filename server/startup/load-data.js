@@ -3,7 +3,7 @@ import { Hooks, Logger, Reaction } from "/server/api";
 
 export default function () {
   /**
-   * Hook to setup core additional imports during ReactionCore init (shops process first)
+   * Hook to setup core additional imports during Reaction init (shops process first)
    */
   Hooks.Events.add("onCoreInit", () => {
     Logger.info("Initialize using reaction-sample-data");

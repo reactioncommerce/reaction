@@ -15,7 +15,7 @@ Template.addressBook.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Accounts", Meteor.userId());
 
-    let account = ReactionCore.Collections.Accounts.findOne({
+    let account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
 

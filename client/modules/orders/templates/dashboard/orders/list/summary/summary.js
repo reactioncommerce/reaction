@@ -1,4 +1,4 @@
-import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
+import { NumericInput } from "/client/modules/ui/components/numericInput/numericInput";
 
 /**
  * ordersListSummary helpers
@@ -6,7 +6,7 @@ import { NumericInput } from "meteor/reactioncommerce:reaction-ui";
  * @returns paymentInvoice
  */
 Template.ordersListSummary.helpers({
-  invoice: function () {
+  invoice() {
     return this.invoice;
   },
 

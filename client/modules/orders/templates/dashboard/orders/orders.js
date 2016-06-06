@@ -106,7 +106,7 @@ Template.orders.onCreated(function () {
 
   // Open the action view when necessary
   this.autorun(() => {
-    let isActionViewOpen = Reaction.isActionViewOpen();
+    const isActionViewOpen = Reaction.isActionViewOpen();
     const queryParams = ReactionRouter.current().queryParams;
 
     if (isActionViewOpen === false) {

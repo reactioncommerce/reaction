@@ -3,7 +3,7 @@ import { Reaction } from "/server/api";
 
 export default function () {
   /**
-   * ReactionCore Collection Hooks
+   * Reaction Collection Hooks
    * transform collections based on events
    *
    * See: https://github.com/matb33/meteor-collection-hooks

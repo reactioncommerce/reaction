@@ -38,8 +38,7 @@ export function toggleSession(sessionVariable, positiveState) {
     Session.set(sessionVariable, positive);
   }
   return Session.get(sessionVariable);
-};
-
+}
 
 /**
  * locateUser
@@ -69,7 +68,7 @@ export function locateUser() {
     return navigator.geolocation.getCurrentPosition(successFunction,
       errorFunction);
   }
-};
+}
 
 /**
  * getCardTypes
@@ -96,7 +95,7 @@ export function getCardType(cardNumber) {
     return "discover";
   }
   return "";
-};
+}
 
 /**
  * getGuestLoginState
@@ -118,4 +117,4 @@ export function getGuestLoginState() {
     return true;
   }
   return false;
-};
+}

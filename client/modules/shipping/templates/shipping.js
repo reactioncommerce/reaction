@@ -7,7 +7,7 @@ import i18next from "i18next";
  */
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
-    ReactionCore.showActionView({
+    Reaction.showActionView({
       label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });

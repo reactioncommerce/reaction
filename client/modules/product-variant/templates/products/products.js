@@ -1,5 +1,7 @@
+import { Reaction } from "/client/modules/core";
 import { ReactionRouter } from "/client/modules/router";
-import { Tags } from "/lib/collections";
+import { ReactionProduct } from "/lib/api";
+import { Products, Tags } from "/lib/collections";
 
 /**
  * loadMoreProducts
@@ -71,7 +73,7 @@ Template.products.onCreated(function () {
     // we are caching `currentTag` or if we are not inside tag route, we will
     // use shop name as `base` name for `positions` object
     const currentTag = ReactionProduct.getTag();
-    const products = ReactionCore.Collections.Products.find({
+    const products = Products.find({
       ancestors: []
       // keep this, as an example
       // type: { $in: ["simple"] }
