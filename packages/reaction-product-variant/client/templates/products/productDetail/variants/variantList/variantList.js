@@ -2,6 +2,17 @@
  * variantList helpers
  */
 Template.variantList.helpers({
+  media: function () {
+    const media = ReactionCore.Collections.Media.findOne({
+      "metadata.variantId": this._id
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    return media instanceof FS.File ? media : false;
+  },
   variants: function () {
     let inventoryTotal = 0;
     const variants = ReactionProduct.getTopVariants();
@@ -74,6 +85,14 @@ Template.variantList.helpers({
       }
 
       return childVariants;
+    }
+  },
+  selectedVariant() {
+    const _id = this._id;
+    const current = ReactionProduct.selectedVariant();
+    if (typeof current === "object" &&
+      (_id === current._id || ~current.ancestors.indexOf(this._id))) {
+      return "variant-detail-selected";
     }
   }
 });

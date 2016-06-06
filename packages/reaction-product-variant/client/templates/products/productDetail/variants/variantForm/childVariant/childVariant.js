@@ -1,3 +1,5 @@
+const Media = ReactionCore.Collections.Media;
+
 /**
  * childVariantForm helpers
  */
@@ -5,6 +7,37 @@
 Template.childVariantForm.helpers({
   childVariantFormId: function () {
     return "child-variant-form-" + this._id;
+  },
+  media: function () {
+    const media = Media.find({
+      "metadata.variantId": this._id
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    return media;
+  },
+  handleFileUpload() {
+    const ownerId = Meteor.userId();
+    const productId = ReactionProduct.selectedProductId();
+    const shopId = ReactionCore.getShopId();
+    const currentData = Template.currentData();
+    const variantId = currentData._id;
+
+    return (files) => {
+      for (let file of files) {
+        file.metadata = {
+          variantId,
+          productId,
+          shopId,
+          ownerId
+        };
+
+        Media.insert(file);
+      }
+    };
   }
 });
 
@@ -29,12 +62,12 @@ Template.childVariantForm.events({
       });
     return ReactionProduct.setCurrentVariant(variant._id);
   },
-  "click #remove-child-variant": function (event) {
+  "click .js-remove-child-variant": function (event, instance) {
     event.stopPropagation();
     event.preventDefault();
-    const title = this.optionTitle || i18next.t("productDetailEdit.thisOption");
+    const title = instance.data.optionTitle || i18next.t("productDetailEdit.thisOption");
     if (confirm(i18next.t("productDetailEdit.removeVariantConfirm", { title }))) {
-      const id = this._id;
+      const id = instance.data._id;
       return Meteor.call("products/deleteVariant", id, function (error, result) {
         // TODO why we have this on option remove?
         if (result && ReactionProduct.selectedVariantId() === id) {
