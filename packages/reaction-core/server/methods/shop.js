@@ -363,6 +363,35 @@ Meteor.methods({
   },
 
   /**
+   * shop/createTag
+   * @summary creates new tag
+   * @param {String} tagName - new tag name
+   * @param {Boolean} isTopLevel - if true -- new tag will be created on top of
+   * tags tree
+   * @return {String} with created tag _id
+   */
+  "shop/createTag": function (tagName, isTopLevel) {
+    check(tagName, String);
+    check(isTopLevel, Boolean);
+
+    // must have 'core' permissions
+    if (!ReactionCore.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    // we assume what tag is not exist.
+    const tag = {
+      name: tagName,
+      slug: getSlug(tagName),
+      isTopLevel: isTopLevel,
+      updatedAt: new Date(),
+      createdAt: new Date()
+    };
+
+    return ReactionCore.Collections.Tags.insert(tag);
+  },
+
+  /**
    * shop/updateHeaderTags
    * @summary method to insert or update tag with hierarchy
    * @param {String} tagName will insert, tagName + tagId will update existing
@@ -424,12 +453,8 @@ Meteor.methods({
       });
     }
     // create newTags
-    newTag.isTopLevel = !currentTagId;
-    newTag.shopId = ReactionCore.getShopId();
-    newTag.updatedAt = new Date();
-    newTag.createdAt = new Date();
-    newTagId = ReactionCore.Collections.Tags.insert(newTag);
-    if (currentTagId) {
+    newTagId = Meteor.call("shop/createTag", tagName, !currentTagId);
+    if (currentTagId && typeof newTagId === "string") {
       return ReactionCore.Collections.Tags.update(currentTagId, {
         $addToSet: {
           relatedTagIds: newTagId
@@ -438,8 +463,7 @@ Meteor.methods({
         ReactionCore.Log.info(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
         return true;
       });
-    } else if (newTagId && !currentTagId) {
-      ReactionCore.Log.info(`Created tag ${newTag.name}`);
+    } else if (typeof newTagId === "string" && !currentTagId) {
       return true;
     }
     throw new Meteor.Error(403, "Failed to update header tags.");
