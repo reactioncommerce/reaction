@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 import { Template }  from "meteor/templating";
 import { _ } from "meteor/underscore";
 import { Reaction } from "/client/modules/core";

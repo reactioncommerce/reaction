@@ -1,5 +1,5 @@
-import i18next from "i18next";
 import { Reaction } from "/client/modules/core";
+import { i18next } from "/client/modules/i18n";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
